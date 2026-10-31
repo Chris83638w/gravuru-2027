@@ -78,10 +78,10 @@ for(const shape of ['rect','ellipse','contour'])test(`${shape}: motif move/scale
  const preview=await s.preview(f.root,data);assert.match(preview.svg,/data-object="motiv-1"/);assert.match(preview.svg,/data:image\/png;base64,/);
  const saved=await s.save(f.root,data,{actor:'123'});assert.equal(saved.changed,true);assert.equal(saved.fit.sizes[0].status,'passt nicht');assert.match(fs.readFileSync(path.join(f.root,f.base+'design.svg'),'utf8'),/<path/);
 });
-test('contour drilling keepout uses shared physical fit and cannot be replaced from the client',async t=>{
- const f=fixture(t,{shape:'contour'}),s=service(),opened=await s.open(f.root,f),data=input(f,opened);
- Object.assign(text(data),{x:6,y:30,size:2});
- const fit=await s.fit(f.root,data);assert.equal(fit.sizes[0].status,'passt nicht');assert.match(fit.sizes[0].issues.join(' '),/Bohrloch/);
+test('artwork may cross contour drilling, but authoritative physical geometry cannot be replaced',async t=>{
+ const f=fixture(t,{shape:'contour',price:1999}),s=service(),opened=await s.open(f.root,f),data=input(f,opened);
+ Object.assign(text(data),{x:6,y:30,size:3});
+ const fit=await s.fit(f.root,data);assert.equal(fit.sizes[0].status,'passt');assert.deepEqual(fit.sizes[0].issues,[]);
  data.document.config.profile.geometry={width:999,height:999,shape:'rect',holes:[]};data.document.config.localResources.fonts.Michroma={regular:{units:1,glyphs:{}}};
  assert.deepEqual(await s.fit(f.root,data),fit,'client geometry and glyph data never become authoritative');
 });

@@ -16,6 +16,7 @@ export function installCommerce({el,config,files,pending}){
  button.addEventListener('click',async event=>{
   event.preventDefault();event.stopImmediatePropagation();if(busy)return;failure.clear();message='';update();
   try{
+   if(el.uxCheckLayout&&!await el.uxCheckLayout())return;
    if(pending())throw Error('Bitte warten, bis das Bild vollständig geladen ist.');
    if(r.querySelector('dialog[open]:not([data-commerce-review])'))throw Error('Bitte die Bildbearbeitung zuerst abschließen.');
    const missing=el.state.objects.filter(o=>!o.uxHidden&&o.type==='photoSlot'&&o.required&&!files.has(o.uxUploadId));

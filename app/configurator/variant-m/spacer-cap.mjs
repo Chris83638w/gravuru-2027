@@ -1,3 +1,4 @@
+import {SCREW_HEAD_IMAGE} from './screw-head-image.mjs';
 // Native 12 mm preview geometry. Visual reference: Christopher's attachment, 2026-09-27.
 export const SPACER_FINISHES=[{id:'silver',label:'Silber',base:'#55595b',face:'#a6abad',shine:'#f2f4f5'},{id:'black',label:'Schwarz',base:'#101214',face:'#363a3d',shine:'#767d81'},{id:'rose-gold',label:'Roségold',base:'#81544b',face:'#c59082',shine:'#f9ddd1'},{id:'bronze',label:'Bronze',base:'#67442c',face:'#a78051',shine:'#e7c997'},{id:'white',label:'Weiß',base:'#b7b9b7',face:'#e6e7e3',shine:'#ffffff'}];
 function blend(a,b,t){const rgb=v=>[1,3,5].map(i=>parseInt(v.slice(i,i+2),16));return '#'+rgb(a).map((v,i)=>Math.round(v+(rgb(b)[i]-v)*t).toString(16).padStart(2,'0')).join('');}
@@ -13,13 +14,9 @@ export function spacerCap(finishId='silver'){
 }
 
 
-// Schraubenkopf für die Vorschau (Kreuzschlitz, Edelstahl, ca. 8 mm). Nur Ansicht, nie Gravurgeometrie.
-export function screwHead(diameterMm=8){
- const r=diameterMm/2,c=r*.42,w=r*.16;
- return `<circle cy="${(r*.12).toFixed(3)}" r="${r}" fill="#000" opacity=".28"/>`
-  +`<circle r="${r}" fill="#6f7477"/><circle r="${(r*.94).toFixed(3)}" fill="#b9bec1"/>`
-  +`<circle r="${(r*.94).toFixed(3)}" fill="none" stroke="#eef1f2" stroke-width="${(r*.08).toFixed(3)}" stroke-dasharray="${(r*1.6).toFixed(3)} ${(r*4.3).toFixed(3)}" transform="rotate(200)" opacity=".8"/>`
-  +`<circle cx="${(-r*.28).toFixed(3)}" cy="${(-r*.3).toFixed(3)}" r="${(r*.42).toFixed(3)}" fill="#f4f6f7" opacity=".35"/>`
-  +`<path d="M${-c} ${-w}H${-w}V${-c}H${w}V${-w}H${c}V${w}H${w}V${c}H${-w}V${w}H${-c}Z" fill="#3b3f42"/>`
-  +`<path d="M${-c} ${w}H${-w}V${c}" fill="none" stroke="#e6e9ea" stroke-width="${(r*.05).toFixed(3)}" opacity=".7"/>`;
+// Customer-confirmed head diameter: 4.5 mm. Preview only; drilling stays source-bound.
+export function screwHead(diameterMm=4.5){
+ // Original alpha bounds: (11,10)-(390,390). Square viewBox keeps proportions;
+ // the visible head fits exactly in the requested physical diameter.
+ return '<svg data-screw-head-mm="'+diameterMm+'" x="'+(-diameterMm/2)+'" y="'+(-diameterMm/2)+'" width="'+diameterMm+'" height="'+diameterMm+'" viewBox="10.5 10 380 380"><image width="400" height="400" href="'+SCREW_HEAD_IMAGE+'"/></svg>';
 }

@@ -2,6 +2,7 @@ import {cleanObject} from './contract.mjs';
 import {printArtwork} from './print-export.mjs';
 import {createAcrylicDraftClient} from './acrylic-draft-client.mjs';
 import {installShopCart} from './shop-cart.mjs';
+import {logoMediaPayload} from './logo-upload.mjs';
 
 const base64=blob=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=()=>reject(Error('Die Bilddatei konnte nicht gelesen werden.'));reader.readAsDataURL(blob);});
 async function referencePng(svg,geometry){
@@ -15,7 +16,7 @@ export function installWorkshopReview(api,footer){
  const request=window.parent.GravuruMerchantRequest||fetch;
  const testGate=window.parent.GravuruConfiguratorTest;
  const universalTest=()=>typeof testGate?.submitCart==='function'&&testGate.productId===binding.productId&&testGate.productRevision===binding.productRevision;
- if(!binding||(!api.config?.acrylic&&!api.config?.doorbell&&!['slate','steel'].includes(api.config?.profile?.material?.kind)))return;
+ if(!binding||(!api.config?.acrylic&&!api.config?.doorbell&&!api.config?.familyAcrylic&&!['slate','steel'].includes(api.config?.profile?.material?.kind)))return;
  // Öffentlicher Shop-Einstieg (SHOP-ENTRY.txt): Kunden sehen „In den Warenkorb“ statt der Werkstatt-/Testknöpfe.
  if(window.parent.GravuruShopEntry)return void installShopCart(api,footer,window.parent.GravuruShopEntry);
  const button=document.createElement('button'),status=document.createElement('p'),link=document.createElement('a');
@@ -53,8 +54,8 @@ export function installWorkshopReview(api,footer){
   try{
    if(api.pending?.())throw Error('Bitte warten, bis das Foto vollständig geladen ist.');
    const fingerprint=JSON.stringify(api.el.state),art=await printArtwork(api),used=new Set(api.el.state.objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId)),media=[];
-   for(const id of used){const asset=api.files.get(id);if(!asset?.file)throw Error('Ein Originalfoto fehlt. Bitte erneut hochladen.');media.push({id,original:await base64(asset.file),...(asset.blob?{edited:await base64(asset.blob)}:{})});}
-   const payload={...binding,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:Number(api.r.querySelector('[data-fk-quantity]').value||1),media,preview:await referencePng(art.svg,art.geometry)};
+   for(const id of used)media.push(await logoMediaPayload(api.files.get(id),id));
+   const payload={...binding,textOnTop:true,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:Number(api.r.querySelector('[data-fk-quantity]').value||1),media,preview:await referencePng(art.svg,art.geometry)};
    if(fingerprint!==JSON.stringify(api.el.state))throw Error('Die Gestaltung wurde während der Sicherung geändert. Bitte erneut sichern.');
    const session=await request('/api/workshop/session'),credentials=await session.json();if(!session.ok||!['local-operator','shopify-merchant-test'].includes(credentials.scope))throw Error('Die Werkstattprüfung benötigt eine geschützte Werkstattsitzung.');
    savePrivate??=createAcrylicDraftClient({storage:sessionStorage,fetchImpl:request});

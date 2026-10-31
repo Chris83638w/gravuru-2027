@@ -28,6 +28,7 @@ export async function exportCommerce({el,config,files,selection,binding}){
  const ui=editorUi(state.ui);
  // Ü6.1: Hilfsebenen (role guide) bleiben Vorschau und gehen nie in Fertigungsdateien.
  const active=productionObjects(design.objects),assets=[],used=new Set(active.filter(o=>o.uxUploadId).map(o=>o.uxUploadId));
+ if(active.some(o=>o.uxVectorLogo))throw Error('Vektorlogos benötigen die neue gesicherte Warenkorbanbindung. Dieser ältere Bestellweg unterstützt sie noch nicht.');
  const rasterObjects=active.filter(o=>o.type==='motif-raster'),rasterAssets=new Map();
  let vectors='',layout='';
  for(const o of active){

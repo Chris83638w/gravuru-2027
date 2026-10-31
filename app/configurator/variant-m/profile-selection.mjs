@@ -14,9 +14,13 @@ export function motifChoices(entries, selection = null, excludedKeys = new Set()
   return selectionIds([...index.keys()], selection).map(id => index.get(id));
 }
 
-export function bestsellerChoices(available, fallback, selection = null) {
+export function bestsellerChoices(available, fallback, selection = null, {fillTo=0} = {}) {
   // A bestseller cannot re-introduce a motif excluded by the product/category profile.
-  return selectionIds(available.map(entry => entry.key), selection ?? fallback.map(entry => entry.key)).map(key => ({key}));
+  const known=available.map(entry => entry.key),keys=selectionIds(known,selection ?? fallback.map(entry => entry.key));
+  // Only fill the uncurated starter selection. Explicit lists, including [],
+  // remain authoritative; no sales rank or catalogue flag is manufactured.
+  if(selection===null)for(const key of known){if(keys.length>=fillTo)break;if(!keys.includes(key))keys.push(key);}
+  return keys.map(key => ({key}));
 }
 
 export function colorPalettes(fallback, selection = null) {

@@ -3,6 +3,7 @@
 // Der Desktop (≥ 768 px) behält die Reiter aus ux.mjs unverändert; dieses Modul
 // bildet die vorhandenen Reiter nur auf Schritte ab und verschiebt keine Logik.
 
+import {customerTextLine} from './text-summary.mjs';
 import {visibleBy,optionFields,fieldValue,fieldDisplay} from './option-fields.mjs';
 
 export const MOBILE_MAX_WIDTH=767;
@@ -94,8 +95,8 @@ export function summaryRows({profile,legacy,state,quantity=1,totalText='',design
   rows.push(...fieldRows);
   if(designName)rows.push(['Design',designName]);
   const objects=(state?.objects||[]).filter(o=>!o.uxHidden);
-  const texts=objects.filter(o=>o.type==='text').map(o=>String(o.text||'').trim()).filter(Boolean);
-  rows.push(['Texte',texts.length?texts.join(' · '):'Keine']);
+  const texts=customerTextLine(objects,profile?.designs?.find(d=>d.id===state?.designId));
+  rows.push(['Texte',texts||'Keine']);
   const photos=objects.filter(o=>o.uxUploadId).length;
   if(photos)rows.push(['Fotos / Logos',String(photos)]);
   rows.push(['Menge',String(Math.max(1,Number(quantity)||1))]);
@@ -158,7 +159,7 @@ export async function installMobileSteps(api){
     for(const b of all('[data-ux=mobile-step]')){const is=b.dataset.step===current;if(is)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current');b.classList.toggle('is-done',stepIndex(steps,b.dataset.step)<state.index);}
     prev.hidden=state.index===0;next.hidden=current==='review';
     cartSlot.hidden=current!=='review';
-    const upcoming=steps[state.index+1];next.textContent=upcoming?.id==='review'?'Zur Prüfung ›':'Weiter ›';
+    const upcoming=steps[state.index+1];if(!next.dataset.loading)next.textContent=upcoming?.id==='review'?'Zur Prüfung ›':'Weiter ›';
   }
   function applyPanels(){
     const step=steps.find(s=>s.id===current);
@@ -243,9 +244,15 @@ export async function installMobileSteps(api){
   r.addEventListener('click',e=>{
     if(!active)return;const b=e.target.closest('[data-ux]');if(!b||b.disabled)return;const key=b.dataset.ux;
     // Schrittwechsel über die Leiste: Auswahl auf der Platte nur in Text/Foto/Motiv behalten.
-    const go=id=>{if(!id)return;if(!['text','media','motif'].includes(id)&&el.state.selected){el.state.selected=null;el.sync();}showStep(id);};
+    const go=async id=>{if(!id)return;if(['review'].includes(id)&&el.uxCheckLayout&&!await el.uxCheckLayout())return;if(!['text','media','motif'].includes(id)&&el.state.selected){el.state.selected=null;el.sync();}showStep(id);};
     if(key==='mobile-step'||key==='mobile-goto'){go(b.dataset.step);return;}
-    if(key==='mobile-prev'||key==='mobile-next'){go(neighbourStep(steps,current,key==='mobile-next'?1:-1));return;}
+    if(key==='mobile-prev'||key==='mobile-next'){
+     const target=neighbourStep(steps,current,key==='mobile-next'?1:-1);
+     if(key==='mobile-prev'){go(target);return;}
+     if(b.dataset.loading)return;b.dataset.loading='true';b.disabled=true;b.setAttribute('aria-busy','true');b.textContent='Lädt…';
+     requestAnimationFrame(async()=>{try{if(!el.uxCheckLayout||await el.uxCheckLayout())await go(target);}catch(error){say(error.message||'Bitte die Gestaltung prüfen.');}finally{delete b.dataset.loading;b.disabled=false;b.removeAttribute('aria-busy');renderSteps();}});
+     return;
+    }
     if(key==='mobile-issue'){el.uxRevealTextIssue?.(b.dataset.id);return;}
   });
   const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args);if(active){renderSteps();applyPanels();renderReview();updateTotal();}return result;};

@@ -56,3 +56,15 @@ button{cursor:pointer} button:disabled{cursor:not-allowed;opacity:.5!important}b
 .ux-account-thumb{width:72px;height:72px;object-fit:contain;border:1px solid var(--ux-border);border-radius:8px;background:#fff}
 /* K14 / Ü11.1: Mengenstaffel neben der Menge (eigene Zeile im Kaufbereich). */
 .ux-quantity-tiers{display:block;grid-column:1/-1;font-size:12px;line-height:1.35;color:#46574d;margin:2px 0 0}.ux-quantity-tiers[hidden]{display:none!important}.ux-quantity-tiers[data-ux-tier-active]{color:#1c3327;font-weight:600}
+.ux-dialog.ux-vector-logo-dialog{width:min(900px,calc(100vw - 24px))!important;max-width:calc(100vw - 24px)!important;max-height:calc(100dvh - 24px)!important;overflow:auto}
+.ux-logo-comparison{display:grid;grid-template-columns:1fr 1.4fr;gap:16px}
+.ux-logo-comparison figure{margin:0;padding:12px;border:1px solid #cdd1d5;border-radius:12px;background:#f4f5f6;min-width:0}
+.ux-logo-comparison figcaption{font-weight:650;margin-bottom:12px}
+.ux-logo-comparison img,.ux-logo-comparison svg{display:block;width:100%;height:auto;max-height:290px;object-fit:contain}
+.ux-logo-comparison img{min-height:160px}
+.ux-logo-detail{padding:12px;border-left:3px solid #626b75;background:#f4f5f6}
+.ux-dialog.ux-vector-logo-dialog .ux-logo-check{display:flex;align-items:flex-start;gap:10px;font-size:16px!important;font-weight:600!important;padding:12px 0}
+.ux-logo-check input{width:20px;height:20px;flex:none;margin:2px 0}
+@media(max-width:600px){.ux-logo-comparison{grid-template-columns:1fr}.ux-logo-comparison img,.ux-logo-comparison svg{max-height:180px}.ux-vector-logo-dialog{font-size:16px}.ux-vector-logo-dialog .ux-actions{display:grid;grid-template-columns:1fr}}
+
+.ux-dialog.ux-vector-logo-dialog button{font-size:16px!important}

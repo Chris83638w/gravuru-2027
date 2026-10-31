@@ -1,3 +1,4 @@
+import {createCustomerDesignImages} from './customer-design-image.mjs';
 import fs from 'node:fs';
 import {createModelSlimmer,surfaceSwapsFrom,DEFAULT_SURFACE_DIR} from './shop-model-slim.mjs';
 import {createHash,randomBytes} from 'node:crypto';
@@ -9,6 +10,7 @@ import {createShopDesignGallery} from './shop-design-gallery.mjs';
 import {shopGalleryModel} from './shop-gallery-model.mjs';
 import {queueGalleryPreview} from './shop-gallery-preview-queue.mjs';
 import {prepareAcrylicReview} from './acrylic-review.mjs';
+import {customerVectorLogoPreview,VECTOR_LOGO_REQUEST_BYTES} from './customer-vector-logo-media.mjs';
 import {loadCartRevision,loadCartRevisionPhoto} from './cart-edit-revision.mjs';
 import {CART_CONFIG_ID,CART_LINE_ID} from './cart-configuration.mjs';
 import {PAUSED_MESSAGE} from './konfi-status.mjs';
@@ -22,7 +24,7 @@ import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mj
 // Warenkorb des vorhandenen Pfads (bound-test-cart → draft-cart-handoff). Keine Händleranmeldung,
 // Galerie nur nach Sitzungsprüfung im selben Datenbereich; keine Preise aus dem Browser, keine Fertigungsfreigabe.
 const API='/api/shop-entry/';
-const PAGE_FILES=['shop-entry-page.mjs','shop-entry-client.mjs','shop-design-switch.mjs'];
+const PAGE_FILES=['shop-entry-page.mjs','shop-entry-client.mjs','shop-design-switch.mjs','shop-selection-transfer.mjs'];
 const WARM_RUNTIME={'/_merchant-acryl-editor.html':['/_acryl-runtime/lazy/katalog-kern.json']};
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const gid=(value,kind)=>typeof value==='string'&&new RegExp('^gid://shopify/'+kind+'/[1-9][0-9]{0,19}$').test(value);
@@ -53,7 +55,7 @@ function createWindowLimiter(perMinute,clock){
  return key=>{const minute=Math.floor(clock()/60000);if(windows.size>4096)windows.clear();const entry=windows.get(key);if(!entry||entry.minute!==minute){windows.set(key,{minute,count:1});return true;}entry.count++;return entry.count<=perMinute;};
 }
 
-export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,logger=event=>console.warn(JSON.stringify(event))}){
+export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,logger=event=>console.warn(JSON.stringify(event))}){
  let address;try{address=new URL(origin);}catch{}
  if(!address||address.origin!==origin||address.protocol!=='https:'||address.username||address.password||!/^[-a-z0-9]+\.myshopify\.com$/.test(shopDomain||'')||typeof secret!=='string'||secret.length<16||!Array.isArray(stores)||!stores.length||stores.length>8||
    typeof proxyPath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*$/.test(proxyPath)||typeof pagePath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/$/.test(pagePath)||pagePath.startsWith('/api/')||proxyPath.startsWith('/api/')||proxyPath+'/'===pagePath)
@@ -80,6 +82,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
  const startPath=proxyPath+'/start';
  const PAGE_CSP=pageCsp(shopDomain);
  // Shop-seitige Module über den App-Proxy; shop-embed.mjs kennt Konfigurator-Host und Proxy-Pfad fest.
+ const customerImages=createCustomerDesignImages({origin,shopDomain,secret,stores:fixed});
  const themeFiles=new Map(['theme-cart-ui.mjs','theme-cart-client.mjs','shop-embed.mjs'].map(name=>[proxyPath+'/'+name,name==='shop-embed.mjs'?Buffer.from(fs.readFileSync(ui(name),'utf8').replaceAll('__EDITOR_ORIGIN__',origin).replaceAll('__PROXY_PATH__',proxyPath)):fs.readFileSync(ui(name))]));
  const themeTransfers=new Map(),themePath=proxyPath+'/cart';
 
@@ -250,7 +253,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
    if(theme){
     for(const [token,t] of themeTransfers)if(t.expiresAt<=clock())themeTransfers.delete(token);
     if(themeTransfers.size>=limit.maxContexts)fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
-    const args={workshop:store.workshop,registry:store.registry,shopDomain,proxyPath};
+    const args={workshop:store.workshop,registry:store.registry,shopDomain,proxyPath,...(typeof store.workshop.orderIntake.imageSnapshot==='function'?{customerImageUrl:id=>customerImages.url(store.storeId,id)}:{})};
     const prepared=prepareThemeCart(args,binding,data,{draftToken}),token=randomBytes(32).toString('hex');
     themeTransfers.set(token,{args,binding:structuredClone(binding),input:structuredClone(data),draftToken,sessionToken:req.headers['x-gravuru-shop-session'],customerId:session.customerId,expiresAt:clock()+limit.contextTtlMs});
     return json(res,200,{handoffUrl:'https://'+shopDomain+themePath+'#handoff='+token,shopDomain,configuration:prepared.payload.configuration,quantity:prepared.payload.quantity,totalCents:prepared.payload.totalCents,mode:'theme',paymentConfirmed:false,productionReady:false});
@@ -293,7 +296,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   }finally{reviewJobs.delete(job);}
  }
 
- function themeProxy(req,res,url){
+ async function themeProxy(req,res,url){
   const proxy=verifyProxy(url.searchParams);
   // Skriptdateien sind öffentlicher, für alle gleicher Code und werden auf jeder Produktseite geladen:
   // nicht auf das Warenkorb-Limit anrechnen (sonst blockieren Seitenaufrufe zahlende Kunden) und kurz zwischenspeichern.
@@ -314,7 +317,13 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
   if((proxy.customerId??null)!==(context.session.customerId??null))fail(403,'theme_cart_customer','Bitte die Produktseite erneut öffnen.');
   requireDoorbellApproval(context.store,transfer.binding);
   const prepared=prepareThemeCart(transfer.args,transfer.binding,transfer.input,{draftToken:transfer.draftToken});
-  if(url.pathname===themePath+'/data'&&req.method==='GET')return json(res,200,prepared.payload);
+  if(url.pathname===themePath+'/data'&&req.method==='GET'){
+   if(checkoutImage){
+    prepared.payload.properties._gravuru_checkout_image=await checkoutImage(prepared.payload.properties._gravuru_bild);
+    active({headers:{'x-gravuru-shop-session':transfer.sessionToken}});prepared.resolve();
+   }
+   return json(res,200,prepared.payload);
+  }
   if(url.pathname===themePath+'/claim'&&req.method==='POST'){
    if(req.headers.origin!=='https://'+shopDomain)fail(403,'shop_entry_origin','Diese Anfrage ist nicht zulässig.');
    return json(res,200,prepared.claim(token));
@@ -328,13 +337,17 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
  }
  return Object.freeze({
   pagePath,startPath,
-  matches:pathname=>fontRoute.test(pathname)||pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pageFiles.has(pathname)||pathname.startsWith(API),
+  matches:pathname=>customerImages.matches(pathname)||fontRoute.test(pathname)||pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pageFiles.has(pathname)||pathname.startsWith(API),
   async handle(req,res,url){
    try{
     if(req.headers.host!==address.host||req.headers['x-forwarded-proto']!=='https')fail(403,'shop_entry_host','Diese Anfrage ist nicht zulässig.');
+    if(customerImages.matches(url.pathname)){
+     if(!['GET','HEAD'].includes(req.method)||url.search)fail(404,'design_image_not_found','Gestaltungsbild nicht gefunden.');
+     const bytes=customerImages.read(url.pathname);res.writeHead(200,headersFor('image/png',{'Content-Length':bytes.length,'Cache-Control':'private, max-age=3600'}));return res.end(req.method==='HEAD'?undefined:bytes);
+    }
     const pathname=url.pathname;
     if(pathname===startPath)return start(req,res,url);
-    if(pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname))return themeProxy(req,res,url);
+    if(pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname))return await themeProxy(req,res,url);
     const fontFile=pathname.match(fontRoute);
     if(fontFile){
      if(!['GET','HEAD'].includes(req.method))fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
@@ -367,6 +380,14 @@ export function createShopEntry({origin,shopDomain,secret,stores,proxyPath,pageP
      if([...url.searchParams.keys()].some(k=>!['page','theme'].includes(k))||url.searchParams.getAll('page').length>1||url.searchParams.getAll('theme').length>1||!['preferred','all'].includes(url.searchParams.get('theme')||'preferred')||!/^\d{1,5}$/.test(url.searchParams.get('page')||'0'))fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
      checkOrigin(req,{mutating:false});const context=active(req);checkGalleryBinding(context.store,context.binding,cardFor(context.store,context.binding));
      const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0),theme:url.searchParams.get('theme')||'preferred'});active(req);
+     return json(res,200,result);
+    }
+    if(action==='customer-vector-logo/preview'){
+     if(req.method!=='POST')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
+     if(url.search)fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');
+     checkOrigin(req,{mutating:true});const context=active(req),input=await body(req,VECTOR_LOGO_REQUEST_BYTES);
+     if(input.productId!==context.session.productId||input.productRevision!==context.session.productRevision)fail(409,'shop_entry_product','Die Logodatei gehört nicht zu diesem Produktstand.');
+     const result=await customerVectorLogoPreview(modelFor(context.store,context.binding).universal,input);active(req);
      return json(res,200,result);
     }
     if(action==='design-gallery-preview'){

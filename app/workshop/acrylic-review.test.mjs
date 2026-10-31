@@ -1,3 +1,4 @@
+import {acrylicArtwork} from './acrylic-artwork.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';import os from 'node:os';import path from 'node:path';
@@ -47,7 +48,7 @@ test('native acrylic handoff pins rights, all 28 prices, originals and immutable
  const post=(data,headers={})=>fetch(base+'/api/workshop/acrylic-reviews',{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':csrfToken,...headers},body:JSON.stringify(data)});
  assert.equal((await post(input,{'X-Gravuru-CSRF':''})).status,403);
  assert.equal((await post(input,{Origin:'https://foreign.example'})).status,403);
- for(const bad of [{...input,totalCents:1},{...input,quantity:undefined},{...input,productRevision:undefined},{...input,options:{size:'invented'}},{...input,media:[]},{...input,media:[{id:'other',original:png}]},{...input,preview:Buffer.from('<svg onload="alert(1)"/>').toString('base64')}])assert.equal((await post(bad)).status,422);
+ for(const bad of [{...input,totalCents:1},{...input,quantity:undefined},{...input,productRevision:undefined},{...input,options:{size:'invented'}},{...input,media:[]},{...input,media:[{id:'other',original:png}]},{...input,preview:Buffer.from('<svg onload="alert(1)"/>').toString('base64')},{...input,customerPreview:Buffer.from('<svg/>').toString('base64')},{...input,customerPreview:42}])assert.equal((await post(bad)).status,422);
  const locked=structuredClone(input);locked.objects.find(o=>o.acrylicFixed).x+=1;assert.equal((await post(locked)).status,422);
  const response=await post(input);const saved=await response.json();assert.equal(response.status,201,JSON.stringify(saved));
  const repeat=await (await post(input)).json();assert.equal(repeat.id,saved.id);assert.equal(w.customerDrafts.listSnapshots().length,1);
@@ -126,6 +127,11 @@ test('profile fonts that are present in the product library are accepted on save
  const bundle=await prepareAcrylicReview({record,config,input,assets:w.assets});
  const frozen=JSON.parse(readReviewPackage(bundle.package,bundle.manifest.packageSha256,ACRYLIC_REVIEW).files.get('konfigurator-quellen.json'));
  assert.ok(Object.hasOwn(frozen.localResources.fonts,id),'genutzte Profilschrift liegt im Paket');
+ assert.equal(Object.hasOwn(record.document.config.localResources.fonts,id),false,'profile font was not in the original product document');
+ const art=await acrylicArtwork(bundle.package,bundle.manifest.packageSha256);
+ assert.ok(art.textFields.length>0);assert.match(art.svg,/<path/);assert.doesNotMatch(art.svg,/<text(?:\s|>)/,'frozen font is emitted as paths');
+ await assert.rejects(acrylicArtwork(bundle.package,'0'.repeat(64)),/Paketprüfung/);
+
  text.font='Nicht vorhanden · 000000000000';
  await assert.rejects(prepareAcrylicReview({record,config,input,assets:w.assets}),/Schrift/);
  // Ohne Schriftauswahl im Profil bleibt es beim bisherigen Rahmen: Produktschriften und Grundset, keine Fremdschrift.

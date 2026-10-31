@@ -13,6 +13,7 @@ import {cleanObject,isGuideObject,choiceOptions,optionFieldEntries} from '../con
 // (produkt-und-gestaltung.json, state.options) behält beide für Bearbeiten und Fertigung.
 import {commercePrice} from '../configurator/variant-m/commerce-model.mjs';
 import {prepareCustomerPhoto} from './customer-photo.mjs';
+import {verifyCustomerVectorLogoMedia,vectorLogoMetadata} from './customer-vector-logo-media.mjs';
 import {zipFiles} from '../configurator/variant-m/print-export-model.mjs';
 import {textsNearHoles} from '../platform/sources/app/shared/models/hole-proximity.mjs';
 import {selectedProfile} from '../configurator/variant-m/contract.mjs';
@@ -29,22 +30,29 @@ const keys=(o,allowed)=>{if(!o||typeof o!=='object'||Array.isArray(o)||Object.ke
 // come from the pinned server record. The submitted PNG is a visual reference,
 // explicitly not server-verified artwork or a production file.
 export function validateAcrylicReview(record,config,input){
- keys(input,['productId','productRevision','designId','objects','options','quantity','media','preview','ui']);
+ keys(input,['productId','productRevision','designId','objects','options','quantity','media','preview','customerPreview','ui','textOnTop']);
  const ui=editorUi(input.ui);
- if((!config.acrylic&&!config.doorbell&&!['slate','steel'].includes(config.profile?.material?.kind))||input.productId!==record.id||input.productRevision!==record.revision)fail('Produkt und feste Revision stimmen nicht überein.');
+ if((!config.acrylic&&!config.doorbell&&!config.familyAcrylic&&!['slate','steel'].includes(config.profile?.material?.kind))||input.productId!==record.id||input.productRevision!==record.revision)fail('Produkt und feste Revision stimmen nicht überein.');
  if(!Number.isSafeInteger(input.quantity)||input.quantity<1||input.quantity>99)fail('Menge: 1 bis 99.');
  if(!Array.isArray(input.objects)||input.objects.length>120)fail('Ungültiger Elementumfang.');
  const source=config.profile.designs.find(d=>d.id===input.designId);if(!source)fail('Design gehört nicht zum Produkt.');
  // Schriften, die nativeReviewConfig für dieses Produkt freigegeben und mit Pfaden geladen hat (z. B. importierte
  // Profilschriften „Lato Regular · …“), gelten bei der Inhaltsprüfung als vorhanden – nur in diesem Prüfpfad.
  const document={...record.document,config:{...record.document.config,localResources:{...record.document.config.localResources,fonts:{...record.document.config.localResources?.fonts,...config.localResources.fonts}}}};
- const design=validateProductDesign(document,{...structuredClone(source),objects:input.objects.map(cleanObject)},{options:input.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
+ const design=validateProductDesign(document,{...structuredClone(source),...(input.textOnTop!==undefined?{textOnTop:input.textOnTop}:{}),objects:input.objects.map(cleanObject)},{options:input.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
  const resolved=resolveProduct(record.document,{options:input.options,designId:source.id});
  const price=commercePrice(config,{objects:design.objects,designId:design.id,mOptions:resolved.resolvedOptions},input.quantity);
  // Hidden layers remain editable; their originals belong to this immutable revision.
  const used=new Set(design.objects.filter(o=>!isGuideObject(o)&&o.uxUploadId).map(o=>o.uxUploadId));
  if(!Array.isArray(input.media)||input.media.length!==used.size||used.size>4)fail('Alle verwendeten Originalbilder müssen mitgesichert werden.');
- const ids=new Set();for(const m of input.media){keys(m,['id','original','edited']);if(typeof m.id!=='string'||!used.has(m.id)||ids.has(m.id))fail('Bildzuordnung ist nicht eindeutig.');ids.add(m.id);}
+ const ids=new Set();for(const m of input.media){
+  keys(m,['id','name','original','edited','vectorLogo']);if(typeof m.id!=='string'||!used.has(m.id)||ids.has(m.id))fail('Bildzuordnung ist nicht eindeutig.');ids.add(m.id);
+  const objects=design.objects.filter(o=>o.uxUploadId===m.id),vector=objects.some(o=>o.uxVectorLogo!==undefined);
+  if(vector||m.vectorLogo!==undefined){
+   const metadata=vectorLogoMetadata(m.vectorLogo);
+   if(objects.some(o=>o.type!=='image'||o.uxUploadKind!=='logo'||JSON.stringify(vectorLogoMetadata(o.uxVectorLogo))!==JSON.stringify(metadata)))fail('Die SVG-Datei gehört nicht zu den bestätigten Logo-Elementen.');
+  }
+ }
  for(const o of design.objects)if(!o.uxHidden&&!isGuideObject(o)&&o.type==='photoSlot'&&o.required&&!o.uxUploadId)fail('Bitte das erforderliche eigene Foto hochladen.');
  return {design,options:resolved.resolvedOptions,geometry:resolved.physical,price,...(ui?{ui}:{})};
 }
@@ -84,6 +92,13 @@ export async function prepareAcrylicReview({record,config,input,assets,preparePh
  add('produkt-und-gestaltung.json',json({schema:config.acrylic?'gravuru-acrylic-review-input/v1':'gravuru-native-review-input/v1',product:record.document,state,profileRevision:config.profile.revision,profileSelections:config.workshopProfiles}),'Gespeichertes natives Produkt, Kundenwerte und serverberechneter Preis.');
  add('konfigurator-quellen.json',json(frozen),'Feste Konfiguratorrevision mit Schriftpfaden und Motivquellen.');
  for(const [i,m] of input.media.entries()){
+  if(m.vectorLogo!==undefined){
+   const object=state.design.objects.find(o=>o.uxUploadId===m.id),logo=await verifyCustomerVectorLogoMedia(config,object,m);
+   const source=add(`logos/${i+1}-original.svg`,logo.original,'Byteidentisches privates Vektorlogo-Original.');
+   const edited={...add(`logos/${i+1}-gravur.svg`,logo.svg,'Vom Kunden bestätigte und serverseitig erneut geprüfte schwarze Vektorgravur.'),width:logo.width,height:logo.height};
+   photos.push({uploadId:m.id,kind:'vector-logo',name:typeof m.name==='string'?m.name:'logo.svg',...source,width:logo.width,height:logo.height,edited,vectorLogo:logo.vectorLogo,detailCheck:'manual-required',minFeatureUnits:null,warnings:logo.warnings});
+   continue;
+  }
   const original=await preparePhoto(m.original),extension=original.original.subarray(0,3).equals(Buffer.from([255,216,255]))?'jpg':original.original.subarray(1,4).toString()==='PNG'?'png':'webp';
   const source=add(`fotos/${i+1}-original.${extension}`,original.original,'Byteidentisches privates Originalbild.');
   let edited=null;if(m.edited){const photo=await preparePhoto(m.edited);const ext=photo.original.subarray(0,3).equals(Buffer.from([255,216,255]))?'jpg':photo.original.subarray(1,4).toString()==='PNG'?'png':'webp';edited={...add(`fotos/${i+1}-bearbeitet.${ext}`,photo.original,'Geprüfte Darstellung der angewendeten Bildbearbeitung.'),width:photo.width,height:photo.height};}
@@ -94,7 +109,7 @@ export async function prepareAcrylicReview({record,config,input,assets,preparePh
  // Verfahrensprofils, sonst 300 dpi. Nie eine Sperre: der Grad wird mitgeführt, damit
  // Summary und Freigabe „Auflösung niedrig“ vermerken.
  const process=processProfile(config.profile),targetDpi=resolutionTargetDpi(productionProfile,process);
- const photoResolution=state.design.objects.filter(o=>!o.uxHidden&&!isGuideObject(o)&&o.uxUploadId).map(o=>acrylicPhotoResolution(o,photos.find(p=>p.uploadId===o.uxUploadId),viewport.scale,{targetDpi})).filter(Boolean);
+ const photoResolution=state.design.objects.filter(o=>!o.uxHidden&&!isGuideObject(o)&&o.uxUploadId).map(o=>{const media=photos.find(p=>p.uploadId===o.uxUploadId);return media.kind==='vector-logo'?null:acrylicPhotoResolution(o,media,viewport.scale,{targetDpi});}).filter(Boolean);
  const photoWarnings=photoResolution.filter(p=>p.grade!=='gruen').map(p=>p.productionNote+': Bild „'+p.label+'“ erreicht in dieser Platzierung etwa '+p.effectiveDpi+' dpi (Soll '+p.targetDpi+' dpi). Foto wurde angenommen; bitte in der Freigabe prüfen. Mehr dpi beim Export ergänzen keine fehlenden Bilddetails.');
  const photoHints=photoResolution.filter(p=>p.hint).map(p=>({objectId:p.objectId,grade:p.grade,text:p.hint}));
  const referenced=new Set();
@@ -107,12 +122,18 @@ export async function prepareAcrylicReview({record,config,input,assets,preparePh
  }
  for(const id of referenced){const a=assets.get(id);add('quellen/'+id+'-original.'+a.format,assets.read(id,true),'Byteidentische importierte Designquelle.');add('quellen/'+id+'-vorschau.svg',assets.read(id),'Geprüfte Designvorschau.');}
  if(typeof input.preview!=='string'||input.preview.length>3*1024*1024)fail('Die Gestaltungsvorschau fehlt oder ist zu groß.');
+ if(input.customerPreview!==undefined){
+  if(typeof input.customerPreview!=='string'||input.customerPreview.length>8*1024*1024)fail('Die Kundenvorschau fehlt oder ist zu groß.');
+  const customer=await preparePhoto(input.customerPreview),png=customer.original;
+  if(!png.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]))||customer.width>4096||customer.height>4096)fail('Die Kundenvorschau muss ein PNG bis 4096 Pixel sein.');
+  add('gestaltung-kundenansicht.png',png,'Verlustfreie Kundenvorschau desselben gesicherten Gestaltungsstands; kein Fertigungsnachweis.');
+ }
  const image=await preparePhoto(input.preview);add('gestaltung-referenz.png',image.preview,'Vom Browser übermittelte Gestaltungsvorschau; kein serverseitiger Fertigungsnachweis.');
  const preview=Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${image.width} ${image.height}"><image width="${image.width}" height="${image.height}" href="data:image/png;base64,${image.preview.toString('base64')}"/></svg>`);
  const method=getProcessingProfile(config.profile).method;
  // Production note (not a blocker): customer kept a text inside a drill-hole protection zone.
  const holeWarnings=config.acrylic?[]:textsNearHoles(state.design,selectedProfile(config,state.options),config.localResources.fonts).map(n=>'Prüfvermerk Bohrloch: Text „'+String(n.text).trim().slice(0,60)+'“ liegt im Schutzbereich des Bohrlochs bei '+n.hole.x+' | '+n.hole.y+' mm. Kunde wurde vor der Bestellung darauf hingewiesen.');
- const id='proof_'+randomUUID(),manifest={schema:config.acrylic?ACRYLIC_REVIEW:NATIVE_REVIEW,id,createdAt:new Date().toISOString(),source:{draftId:'acrylic_'+randomUUID(),draftRevision:1,designId:state.design.id},product:{id:record.id,revision:record.revision,name:record.document.name,basePriceCents:state.price.unitCents,currency:'EUR',material:config.profile.material,method,processingProfileId:process.id,widthMm:state.geometry.widthMm,heightMm:state.geometry.heightMm},selection:{options:choiceOptions(config,state.options),labels:config.profile.optionGroups.filter(g=>state.options[g.id]!==undefined).map(g=>({label:g.name,value:g.values.find(v=>v.id===state.options[g.id]).label})),...(config.profile.optionFields===undefined?{}:{fields:optionFieldEntries(config,state.options)}),geometry:state.geometry,price:state.price},status:'review-only',order:null,payment:null,productionProfile,productionReady:false,photoHints,capabilities:{contour:!config.doorbell||layered,print:!config.doorbell&&method==='print',engraving:(!config.doorbell||layered)&&method==='engraving',...(layered?{layered:true}:{}),cart:false},blockers:[...(config.doorbell&&!layered?['Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.']:[]),method==='print'?'Gemessenes ICC-Profil und Maschinenabnahme fehlen.':'Gravurparameter und Probegravur sind nicht freigegeben.','Shopify-Bestellbindung und echte Maschinenabnahme sind nicht bestätigt.'],photoResolution,warnings:[...photoWarnings,...holeWarnings,'Die PNG-Vorschau stammt aus dem Browser. Geprüft wurden Produktrevision, Elementrechte, Maße, Preis und Bilddateien; die Vorschau ist kein Fertigungsnachweis.'],photos,files:files.map(({path,bytes,purpose})=>({path,bytes:bytes.length,sha256:sha(bytes),purpose}))};
+ const id='proof_'+randomUUID(),manifest={schema:config.acrylic?ACRYLIC_REVIEW:NATIVE_REVIEW,id,createdAt:new Date().toISOString(),source:{draftId:'acrylic_'+randomUUID(),draftRevision:1,designId:state.design.id},product:{id:record.id,revision:record.revision,name:record.document.name,basePriceCents:state.price.unitCents,currency:'EUR',material:config.profile.material,method,processingProfileId:process.id,...(config.profile.material.engravingSide?{engravingSide:config.profile.material.engravingSide}:{}),widthMm:state.geometry.widthMm,heightMm:state.geometry.heightMm},selection:{options:choiceOptions(config,state.options),labels:config.profile.optionGroups.filter(g=>state.options[g.id]!==undefined).map(g=>({label:g.name,value:g.values.find(v=>v.id===state.options[g.id]).label})),...(config.profile.optionFields===undefined?{}:{fields:optionFieldEntries(config,state.options)}),geometry:state.geometry,price:state.price},status:'review-only',order:null,payment:null,productionProfile,productionReady:false,photoHints,capabilities:{contour:!config.doorbell||layered,print:!config.doorbell&&method==='print',engraving:(!config.doorbell||layered)&&method==='engraving',...(layered?{layered:true}:{}),cart:false},blockers:[...(config.doorbell&&!layered?['Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.']:[]),method==='print'?'Gemessenes ICC-Profil und Maschinenabnahme fehlen.':'Gravurparameter und Probegravur sind nicht freigegeben.','Shopify-Bestellbindung und echte Maschinenabnahme sind nicht bestätigt.'],photoResolution,warnings:[...photoWarnings,...holeWarnings,'Die PNG-Vorschau stammt aus dem Browser. Geprüft wurden Produktrevision, Elementrechte, Maße, Preis und Bilddateien; die Vorschau ist kein Fertigungsnachweis.'],photos,files:files.map(({path,bytes,purpose})=>({path,bytes:bytes.length,sha256:sha(bytes),purpose}))};
  add('manifest.json',json(manifest),'Prüfsummen und Geltungsgrenzen.');
- const archive=await zip(files);return {manifest:{...manifest,packageSha256:sha(archive)},preview,contourPdf:Buffer.alloc(0),package:archive,photos:await zip(files.filter(f=>f.path.startsWith('fotos/')&&f.path.includes('-original.')))};
+ const archive=await zip(files);return {manifest:{...manifest,packageSha256:sha(archive)},preview,contourPdf:Buffer.alloc(0),package:archive,photos:await zip(files.filter(f=>(f.path.startsWith('fotos/')||f.path.startsWith('logos/'))&&f.path.includes('-original.')))};
 }

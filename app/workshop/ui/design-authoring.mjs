@@ -2,6 +2,7 @@
 // preview, customer configuration and export. Customer rights are separate.
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {surfaceObjectIssue} from '../../platform/sources/app/shared/models/design-content.mjs';
+import {applyNewMotifRights} from '../../configurator/variant-m/new-motif-rights.mjs';
 const uid=prefix=>prefix+'-'+crypto.randomUUID();
 // geometry is the original product geometry, never the active editor surface.
 export function fitPosition(object,geometry){
@@ -53,7 +54,7 @@ export function authorDesign(input,designId,action,value={}){
   if(action==='motif')setMotif(c,object,value.motif);
   if(p.kind==='layered-doorbell')object.y=g.bell.y/2;
   fitPosition(object,g);design.objects.push(object);
-  rights[id]={content:action==='text',color:false,replace:action==='photo',move:false,scale:false,delete:false};selectedId=id;
+  rights[id]=applyNewMotifRights(object,{content:action==='text',color:false,replace:action==='photo',move:false,scale:false,delete:false},design);selectedId=id;
  }else if(action==='textify'){
   const font=c.localResources.fonts[value.font];
   if(!value.text?.trim()||!font?.regular||[...value.text].some(ch=>!font.regular.glyphs[ch]))throw Error('Bitte den Text prüfen und eine vollständige Schrift mit allen benötigten Zeichen auswählen.');

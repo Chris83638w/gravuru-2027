@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-29",
+  "scope": "local isolated V2 compiler and Function runner only; synthetic inputs; no deployment",
+  "apiVersion": "2026-07",
+  "cliVersion": "4.9.3",
+  "functionLibraryVersion": "2.0.1",
+  "runnerVersion": "9.2.2",
+  "schemaSha256": "4f5024326918113b836e52af66991ca0fd69884e18ca74a07a92fd57e64c2789",
+  "sources": {
+    "cart_transform_run.mjs": "709ec6fc3c744d6faf636213ed517a9020a7934584b0f5bd3e20392c0dd6c2cc",
+    "cart_transform_run.graphql": "68844c7dcd081015f6f2cde5947cf57520e091dda3638d6434f6cc7e9e402233",
+    "cart-image.mjs": "874ddb2e6125df3a524c3db32818cff4a198a2008f55b9c5047a30f4a7a9642f"
+  },
+  "wasmBytes": 7097,
+  "wasmSha256": "7bf6c6a4d9022bff5806a240cbb525734ca914bff077791df49c7cdeb88538b6",
+  "cases": [
+    {
+      "name": "v2-logo",
+      "expected": "35.98 EUR per unit",
+      "passed": true,
+      "functionSuccess": true,
+      "instructions": 544554,
+      "inputSha256": "57640d61a06cbd10299f9877b3debb56e816a487366de20f04929d3c56d3bf15",
+      "amount": "35.98"
+    },
+    {
+      "name": "v2-mixed-tier",
+      "expected": "44.80 EUR per unit",
+      "passed": true,
+      "functionSuccess": true,
+      "instructions": 599653,
+      "inputSha256": "7ea18e05b92a16409f52c927e7efd1835ad691de26049a57921807bc761b06a1",
+      "amount": "44.80"
+    },
+    {
+      "name": "v1-unchanged",
+      "expected": "34.67 EUR per unit",
+      "passed": true,
+      "functionSuccess": true,
+      "instructions": 530593,
+      "inputSha256": "84aa6051693ace8ed3afe48a40e524a09d78878214b16028af3db7a2f7c9d0a8",
+      "amount": "34.67"
+    },
+    {
+      "name": "v1-reject-logo",
+      "expected": "rejected",
+      "passed": true,
+      "functionSuccess": false,
+      "instructions": 475460,
+      "inputSha256": "a1e4def2deb177137e2222a79618b6872684bb349ab8de3c86b99ea0c5fcff63",
+      "reason": "Error: Invalid logo pricing configuration"
+    },
+    {
+      "name": "v2-reject-missing-logo",
+      "expected": "rejected",
+      "passed": true,
+      "functionSuccess": false,
+      "instructions": 489178,
+      "inputSha256": "68838c5f8344dcef1221dafe5ed690e4cca0d683ad8613b26e114a2fdfffdd97",
+      "reason": "Error: Invalid personalization quantity"
+    },
+    {
+      "name": "v2-reject-wrong-price",
+      "expected": "rejected",
+      "passed": true,
+      "functionSuccess": false,
+      "instructions": 489888,
+      "inputSha256": "b78fe0832af379c3c8b56c617b9a005beb2efe8b367c2112473e9cad46c3401f",
+      "reason": "Error: Invalid logo pricing configuration"
+    }
+  ],
+  "activeFunctionVerified": false,
+  "shopifyWrites": false
+}

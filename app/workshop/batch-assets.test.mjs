@@ -124,7 +124,9 @@ test('linked SVG rows retain originals across restart, replace only chosen desig
     assert.equal(document.config.profile.defaultDesignId,first.id);
     const resolved=resolveProduct(document,{designId:target,options:{size:'large',base:'eiche',wall:'wall'}});
     assert.equal(resolved.price.totalCents,3697);assert.equal(resolved.price.additionalMotifs,0);
-    assert.equal(design.objects[0].locked,true);assert.equal(design.objects[0].preserveColors,true);
+    assert.equal(design.objects[0].locked,undefined);assert.equal(design.objects[0].customerEditable,true);
+    assert.equal(design.objects[0].preserveColors,true);
+    assert.deepEqual(document.elementRights[target][design.objects[0].id],{content:false,color:false,replace:true,move:false,scale:false,delete:true});
   }
   assert.equal(products[1].document.config.profile.designs[1].objects[0].w,40);
   assert.equal(products[1].document.config.profile.designs[1].objects[0].h,120);

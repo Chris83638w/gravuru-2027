@@ -56,6 +56,18 @@ async function run(fn,mutate=()=>{}){
 }
 const session=t=>({'X-Gravuru-Shop-Session':t});
 
+test('customer logo conversion stays behind the shop session, same origin and exact product revision',()=>run(async(f,request,{token})=>{
+ const issued=await token(),headers=session(issued.token),input={productId:f.first.localWorkshopRecord,productRevision:3,name:'synthetic.svg',original:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect x="1" y="1" width="18" height="18" fill="red"/></svg>').toString('base64')};
+ const route='/api/shop-entry/customer-vector-logo/preview';
+ assert.equal((await request(route,'POST',input)).status,403);
+ assert.equal((await request(route,'POST',input,{...headers,Origin:'https://foreign.example'})).status,403);
+ assert.equal((await request(route,'POST',{...input,productRevision:2},headers)).status,409);
+ assert.equal((await request(route,'POST',{...input,productId:'cfg_foreign'},headers)).status,409);
+ const response=await request(route,'POST',input,headers);assert.equal(response.status,200,response.body.toString());
+ assert.match(Buffer.from(response.data.svg,'base64').toString(),/fill="#000000"/);assert.match(Buffer.from(response.data.preview,'base64').toString(),/fill="#ff0000"/);
+ assert.equal(response.headers['cache-control'],'private, no-store');assert.equal(response.data.version,'svg-black-v1');
+},f=>{for(const m of f.models.values()){m.universal.logo={enabled:true,vectorUpload:true,extraPriceCents:1299};m.universal.photo={enabled:false,mode:'upload-only'};m.universal.profile.material={kind:'steel',thicknessMm:1.5};m.universal.profile.processing={profileId:'steel-engraving'};}}));
+
 test('signed start resolves the binding through the registry and redirects with a session in the fragment',()=>run(async(f,request,{open,token})=>{
  const r=await open();
  assert.equal(r.status,302);assert.match(r.headers['content-type'],/text\/html/);assert.equal(r.headers['x-robots-tag'],'noindex, nofollow, noarchive');
@@ -116,6 +128,31 @@ test('page and script are served with a strict policy and nothing else leaks',()
  assert.equal((await request('/api/shop-entry/orders')).status,404);
  assert.equal((await request('/api/shop-entry/model',undefined,undefined,{Host:'other.example'})).status,403);
  assert.equal((await request('/api/shop-entry/model',undefined,undefined,{'X-Forwarded-Proto':'http'})).status,403);
+}));
+
+test('complete shop entry module graph is served by the production shop-entry allowlist',()=>run(async(f,request,{entry})=>{
+ // The two-store host dispatches these paths through shopEntry.matches/handle
+ // before acrylRoute and the legacy runtime. Do not use the permissive preview
+ // server or omit imports that leave the page directory: that hid issue #48/12.
+ const queue=['/konfigurator/shop/shop-entry-page.mjs'],visited=new Set();
+ while(queue.length){
+  const pathname=queue.shift();if(visited.has(pathname))continue;visited.add(pathname);
+  assert.ok(entry.matches(pathname),'Production shop-entry route missing: '+pathname);
+  const response=await request(pathname,'GET',undefined,{'Sec-Fetch-Site':'same-origin'});
+  assert.equal(response.status,200,pathname);assert.match(response.headers['content-type'],/javascript/,pathname);
+  const source=response.body.toString();
+  const imports=[...source.matchAll(/(?:\bfrom\s*|\bimport\s*(?:\(\s*)?)['"]([^'"]+)['"]/g)];
+  for(const match of imports){
+   assert.match(match[1],/^(?:\.\.?\/|\/)/,'Browser module specifier in '+pathname);
+   const target=new URL(match[1],origin+pathname);assert.equal(target.origin,origin);
+   queue.push(target.pathname);
+  }
+  assert.doesNotMatch(source,/\bimport\s*\(\s*[^\s'"]/,'Nonliteral imports need an explicit served-path test: '+pathname);
+ }
+ assert.ok(visited.has('/konfigurator/shop/shop-entry-client.mjs'));
+ assert.ok(visited.has('/konfigurator/shop/shop-design-switch.mjs'));
+ // These must not become new public paths just to satisfy the entry page.
+ for(const pathname of ['/workshop/process-profiles.mjs','/workshop/theme-limits.mjs','/platform/sources/app/shared/models/mounting-rules.mjs','/platform/sources/app/shared/models/contour-geometry.mjs'])assert.equal(entry.matches(pathname),false);
 }));
 test('model route serves only the bound product, preselects the shop variant and pins assignment revision',()=>run(async(f,request,{token})=>{
  const b02=f.first.variants.find(v=>v.mountingKey==='B02');

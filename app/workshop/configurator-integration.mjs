@@ -1,3 +1,4 @@
+import {createCrossStoreOrders} from './cross-store-orders.mjs';
 import {createHmac} from 'node:crypto';
 import {createShopifySessionVerifier} from './shopify-session.mjs';
 import {createShopBindingReadAdapter} from './shop-product-binding-adapter.mjs';
@@ -7,6 +8,8 @@ import {createConfiguratorTestGateway} from './configurator-test-gateway.mjs';
 import {createCrossStoreWebhookIntake} from './cross-store-order-intake.mjs';
 import {createOrderWebhookHandler} from './shopify-order-webhook.mjs';
 import {createShopEntry} from './shop-entry.mjs';
+import {createShopifyCheckoutImages} from './shopify-checkout-image.mjs';
+import {createDraftTokenProvider} from './shopify-draft-token.mjs';
 import {createDoorbellStatusWebhookHandler} from './doorbell-status-webhook.mjs';
 import {verifyPaidWebhook} from './order-intake.mjs';
 
@@ -57,8 +60,13 @@ export function createConfiguratorIntegration({settings,legacy,acryl,origin,shop
  const intake=liveEnabled?createDoorbellLiveIntake(stores.map(s=>({storeId:s.storeId,intake:s.workshop.orderIntake}))):testIntake;
  const webhook=webhookConfig?createOrderWebhookHandler({config:webhookConfig,intake}):null;
  // Derselbe Store-Satz (Registry, Modell, bound-test-cart) wie das Gateway; eigene Routen, eigene Kundensitzung.
- const shopEntry=entry?createShopEntry({origin,shopDomain,secret:shopifySessions.secret,stores,proxyPath:entry.proxyPath,...(entry.pagePath===undefined?{}:{pagePath:entry.pagePath}),...(entry.ttlMs===undefined?{}:{ttlMs:entry.ttlMs})}):null;
+ // The existing session verifier uses `test-only` even for the public shop
+ // entry. The explicit shop-entry activation controls this lazy image adapter;
+ // the session label must not silently disable checkout previews.
+ const checkoutImage=entry?createShopifyCheckoutImages({origin,shopDomain,getAccessToken:createDraftTokenProvider({shopDomain,clientId:shopifySessions.clientId,clientSecret:shopifySessions.secret})}):null;
+ const shopEntry=entry?createShopEntry({origin,shopDomain,secret:shopifySessions.secret,stores,checkoutImage,proxyPath:entry.proxyPath,...(entry.pagePath===undefined?{}:{pagePath:entry.pagePath}),...(entry.ttlMs===undefined?{}:{ttlMs:entry.ttlMs})}):null;
  const statusWebhook=liveEnabled?createDoorbellStatusWebhookHandler({config:webhookConfig,intake:acryl.orderIntake}):null;
- return Object.freeze({gateway,webhook,statusWebhook,shopEntry});
+ const orders=createCrossStoreOrders({stores,origin,shopDomain,verifyMerchant:createShopifySessionVerifier(shopifySessions),enabled:Boolean(orderWebhook)});
+ return Object.freeze({gateway,webhook,statusWebhook,shopEntry,orders});
 }
 

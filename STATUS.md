@@ -1,3 +1,78 @@
+## 30.10.2026 – Codex: Warenkorb bereinigt, Master mit main abgeglichen
+
+Nach Chris' „mach das . gedenk d sprechen wir ab“: Im MAIN-Theme 185833718140 nur `main-cart.liquid`/`cart-drawer.liquid` ergänzt, technische native Eigenschaft „Bearbeitbarer Entwurf“ ausgeblendet, Daten/Preisvertrag/Bearbeiten-Link erhalten. Beide Dateien exakt zurückgelesen, **6/6 Liquid-Fälle**; Live-Warenkorb fünf Positionen/fünf Bearbeiten-Links/unverändert **134,00 EUR**. Offizieller lokaler Theme-Validator mangels Paket nicht verfügbar. `main` b544f54d in PR #77 kontrolliert abgeglichen, gesamter Anwendungscode samt Tests exakt wie vorher auf 5db1e56; keine spätere Funkklingel-Oberfläche eingemischt. Unabhängige Offline-Hilfen **4/4** grün. Keine neue Laufzeit, keine Datenmigration, kein neuer Vollauf behauptet. PR bleibt offen; Gedenktafel ausdrücklich bis separater Abstimmung unverändert. [Prüfsummen, Grenzen, Rückweg und nächster Schritt](docs/handoffs/2026-10-30-master-abgleich-warenkorb.md).
+
+## 30.10.2026 – Codex: freigegebener Master live, Warenkorbtests erfolgreich
+
+Nach Chris' ausdrücklicher Freigabe veröffentlicht: unveränderlicher Oberflächen-Tag `konfigurator-master-20261030` (`ce7c866`), Laufzeitquelle `5f69917` auf `dev/konfi-live-20261030-astra`, Shopify `gravuru-2027-master-20261030-v3`. Live-Bundle exakt gegengeprüft; D8-Revision 2 mit fünf Bindungen aktiv. Bestehende Staffel, historische Angebote und freigegebene Oberfläche erhalten. Shopify-Medienbildregistrierung und CRLF-tolerante Gravurtext-Rücklese beheben die letzten Warenkorbfehler. Linux-Vollauf vor Hotfixes **1928/1928**, danach gezielt **58/58** und final **83/83**, Windows-Client **13/13**, kompilierte Function **14/14**, jeweils keine Fehler/Skips in diesen Läufen (nicht addieren). Alle 926 aktiven Produkte einschließlich 126 Funkklingeln validieren. Echter D8-Warenkorb mit Haus/Logo samt Wiederbearbeitung **34,67 EUR**, bestehende vier Positionen erhalten; separater Gedenktafel-Test mit Foto/Haus **34,67 EUR** erfolgreich. Keine Bestellung/Zahlung. Offen: Gedenktafel noch auf älterem separatem Einstieg, technische D8-Eigenschaft im Theme ausblenden, echtes Safari und Bestell-/Fertigungsabnahme. Kein Merge nach `main` behauptet. [Vollständige Übergabe, Belege und Rückweg](docs/handoffs/2026-10-30-konfigurator-master-live.md).
+
+## 30.10.2026 · Codex/Astra · Kopfbereich etwas heller (PR #58)
+
+Chris' Farbsichtung: Kopfbereich von `#252a2e` auf das etwas hellere Blaugrau `#343e46`. Helle Schrift und 4-px-Abstand bleiben erhalten. Build und Browser-Sichtprüfung bestanden; reine CSS-Farbe, kein neuer Funktionstestlauf. [Bild](docs/handoffs/issue48-orientierung-20261030/kopf-blaugrau-heller.png). Weiterhin lokale Vorschau, nichts live.
+
+## 30.10.2026 · Codex/Astra · Vier Pixel Abstand unter dem Kopf (PR #58)
+
+Chris' Feinschliff: 4 px zwischen dunklem Kopf und Vollbild-Werkzeugzeile am Desktop. Browser nachgemessen: Kopfende y=50, Werkzeugzeile y=54. Build bestanden, sichtbare Bemaßung/Preis geprüft; reine CSS-Änderung ohne neuen Testlauf. [Bild](docs/handoffs/issue48-orientierung-20261030/kopf-abstand-4px.png). Lokal im Entwurf, nichts live.
+
+## 30.10.2026 · Codex/Astra · Hinweis schmaler, Schraubenkopf 4,5 mm (PR #58)
+
+Überlagerungshinweis auf eine kompakte Desktopzeile mit „Anzeigen“/„Ignorieren“ reduziert; Kopfmaß der fotorealistischen Schrauben auf Chris' neue Vorgabe **4,5 mm** geändert. Bohrungen und Konflikterkennung unverändert. **21/21 gezielte Tests**, Build und Desktop-/375×548-Bedienprüfung bestanden. [Nachtrag und Bilder](docs/handoffs/2026-10-30-konfi-inline-motive-astra.md). Weiterhin Entwurf und lokale Sichtung, nichts live.
+
+## 30.10.2026 · Codex/Astra · Motivsuche inline und Vorschau bereinigt (PR #58)
+
+Designbeschreibungen ausgeblendet; graue, dauerhaft sichtbare Größenpfeile ohne weißen Untergrund; vorhandene fotorealistische Schrauben mit **3,6 mm** Kopfmaß. Gesamte Motivbibliothek ersetzt die Bestseller inline, behält Suche/Kategorie/Treffer und ergänzt den verständlichen Suchhinweis. **84/84 gezielte Tests**, Build und lokale Desktop-/390×664-/375×548-Prüfung. [Bericht und Bilder](docs/handoffs/2026-10-30-konfi-inline-motive-astra.md). Bestehender Entwurf, nichts live. Weitere Sichtung mit Chris, keine neue Claude-Nachricht; Linux/Safari und die früheren Vollauf-Befunde bleiben offen.
+
+## 30.10.2026 · Codex/Astra · Textleiste und Motivübersicht korrigiert (PR #58)
+
+Rosa Leistenrahmen zur Sichtung; graues Größenfeld mit dauerhaft sichtbaren Pfeilen. Motivübersicht wieder in einer Gruppe, drei Spalten, Startauswahl bis 18 vorhandene erlaubte Motive und nur ein unterer „Mehr anzeigen“-Knopf (zunächst zwölf sichtbar). Explizite Bestsellerlisten/Rankings unverändert. **34/34 gezielte Tests**, Build sowie Desktop/375×548 lokal geprüft. [Bilder und Grenzen](docs/handoffs/2026-10-30-konfi-leiste-motive-astra.md). Bestehender Entwurf, nichts live; weitere Sichtung mit Chris, keine neue Claude-Nachricht.
+
+## 30.10.2026 · Codex/Astra · Orientierung, Übernahme und kompakte Vorschau (PR #58)
+
+Aktives Textfeld/Schildtext/Schriftleiste wechseln gemeinsam, kundenverständlicher flacher Kopf, vollständige Bemaßung und metallische **3,6-mm-Schraubenköpfe**. Motivklick fügt hinzu. Lokale Fragehilfe mit Fotoempfehlungen ohne feste DPI-Grenze. Beim Designwechsel bleiben eigene Texte/Fotos, beim Größenwechsel die vollständige Gestaltung erhalten; inkompatible Ziele brechen ohne Verlust ab. **146/146 gezielte Tests grün**, Build sowie Desktop/390×664/375×548 lokal geprüft. [Bericht, Bilder und offene Abnahme](docs/handoffs/2026-10-30-konfi-orientierung-astra.md). Bestehender Entwurf, nichts live. Linux/Safari, die früheren Vollauf-Befunde und spätere Shop-Abnahme bleiben offen. Aktuell direkte Abstimmung mit Chris, keine neue Claude-Nachricht.
+
+## 30.10.2026 · Codex/Astra · Neun gesammelte Layoutpunkte umgesetzt (PR #58)
+
+Helle Textleiste direkt über der Platte, dunkler Kopf, größere Direkteingabe, getauschte Schriftübernahme-Buttons, sichtbare Designauswahl, weitere zwölf vorhandene Motive und pinke Auswahlrahmen. Neue Kundenstände speichern „Text immer oben“ ausdrücklich für Vorschau und Fertigung; historische Pakete behalten ihre Reihenfolge. **128/128 gezielte Tests plus 23/23 abschließende Nachprüfungen grün**, Desktop/390×664/375×548 lokal geprüft. [Bilder, Belege und offene Abnahme](docs/handoffs/2026-10-30-konfi-layout-nachtrag-astra.md). Chris' zusätzliche Bestseller-Motive stehen noch aus. Entwurfs-PR, nichts live; Linux/Safari und spätere Shop-/Logo-Installation bleiben offen.
+
+## 29.10.2026 · Codex/Astra · Kundenlogos als schwarze Vektoren (PR #58)
+
+Chris bestätigt **12,99 € je Kundenlogo**. Neuer ausdrücklich freizugebender Edelstahl-Produktvertrag erlaubt SVG mit sicherem Original-/Schwarzvergleich, Bestätigung, echter Pfadvereinigung/Aussparungen und durchgängig gesichertem Original. Keine Fotos auf Edelstahl; alte Revisionen bleiben unverändert. **196/196 gezielte Tests grün**, echte Vektor-PDF und **6/6 lokale V2-WASM-Erwartungen** geprüft; Desktop/Handy und lokale Sicherung mit 32,98 € nachgewiesen. [Bericht, Bilder, offene Installation und gesammelte Layoutpunkte](docs/handoffs/2026-10-29-kundenlogos-gravur-astra.md). Entwurfs-PR, nichts live. Offen: Linux/Safari, aktive V2-Preisbindung/Function und echter Shop nach Freigabe sowie manuelle Prüfung feiner Details.
+
+## 29.10.2026 · Codex/Astra · Gewählte Designrichtung 6 (PR #58)
+
+Chris hat aus sieben neutralen Entwürfen **Nummer 6, Werkzeugband** gewählt. Desktop: durchgehendes anthrazitfarbenes Werkzeugband, weiße Vorschau/Bearbeitung, kompakte Unterstrich-Reiter und Textfeld/Schriftwahl nebeneinander. Mobil: dunkle zweizeilige Textleiste unter der Platte, erstes Eingabefeld sichtbar, Schritte und Preis frei. Bestehende Bedienelemente werden verschoben, nicht ersetzt; Gestaltung und Originalgrafiken erhalten. **71/71 gezielte Tests auf dem gemeinsamen Prüfbranch**, Desktop/900 px/390×664/375×548 lokal geprüft; Schriftwahl-Klick und mobiler Papierkorb korrigiert. [Bilder, Prüfnachweis und offene Abnahme](docs/handoffs/2026-10-29-konfi-design-6-astra.md). PR bleibt Entwurf, nichts live; Safari/echter Shop und die bereits dokumentierten Vollauf-Befunde bleiben offen.
+
+## 29.10.2026 · Codex/Astra · Farbkorrektur nach Chris' Sichtung (PR #58)
+
+Neuen Grünton durch neutrales Grau für Textleiste, Schriftwahl, Eingabefokus und Motivpreishinweis ersetzt. Reine CSS-Korrektur, Build und lokale Sichtprüfung erfolgreich; Feldinhalte beim Neuladen erhalten. [Aktuelles Bild und Nachtrag](docs/handoffs/2026-10-29-konfi-sichtpruefung-astra.md). Keine Live-Änderung, kein unnötiger neuer Vollauf.
+
+## 29.10.2026 · Codex/Astra · Gemeinsame Sichtprüfung umgesetzt (PR #58)
+
+Chris' gesammelte Bedienwünsche umgesetzt: 80 Zeichen/Zeilenumbrüche in neuen Revisionen, wachsende Textfelder, D8 „Heimathafen / von“ als ein Feld im Offline-Kandidaten, Papierkorb/Drehgriff am Element, kompakte Leisten, drei Motivkacheln und sichtbarer Hinweis auf 1,69 € für weitere/geänderte Motive. Originalmotiv inklusive; alte Revisionen bleiben unverändert. **96/96 gezielte Abschlussfälle grün.** Vollauf während Umsetzung: **1868 / 1839 bestanden / 24 Fehler / 5 übersprungen**; eine veraltete Import-Erwartung korrigiert (Modul danach 15/15), die übrigen 23 auf unverändertem `5eeea7f` reproduziert. Kein grüner Vollauf behauptet. Build und lokale Bedienbilder Desktop/390×664/375×548 vorhanden. [Bericht, genaue Zähler und offene Abnahme](docs/handoffs/2026-10-29-konfi-sichtpruefung-astra.md). Neue getrennte Vorschau 8153, bisherige Gestaltung auf 8152 unangetastet. PR #58 bleibt Entwurf; nichts live. Offen: Chris' Sichtfreigabe, Safari, Ziehen am Drehgriff, Linux/Baseline-Befunde und späterer Preisbindungs-/Shop-Test.
+
+## 29.10.2026 · Codex/Astra · Zoom ohne Lupe
+
+Chris: mobil nur Zwei-Finger-Zoom, Desktop Mausrad. Lupe und sämtliche Zoomknöpfe/-leiste aus der Kundenansicht entfernt, volle Ansichtsbreite; mm-Hilfen/Bearbeitungsgriffe bleiben. **57/57 gezielte Tests grün**, kein Vollauf. [Regelquelle und Nachweis](docs/handoffs/2026-10-29-issue48-nachrichten12-13.md). Gemeinsame lokale Sichtprüfung mit Chris vor Installation; nichts live.
+
+## 29.10.2026 · Codex/Astra · Issue #48 Nachrichten 12–14
+
+Nachricht 12 zuerst behoben (f4136b0, 73/73 gezielte Tests). Danach Motivrechte an Chris' Regel ausgerichtet und sechs Erzeugungswege geprüft: Einzelmotive unabhängig von Bewegung ersetz-/löschbar; ganze Druck-Designs nur bei ausdrücklicher Kennzeichnung geschützt. **132/132 gezielte Tests**, Kennzeichnungsnachprüfung 1/1; kein weiterer Vollauf. D8-Folgerevision ausschließlich offline vorbereitet: zwei Rechte geändert, fünf Preise/Geometrien und zwei Originalarchive unverändert. Echter lokaler D8-Editor mit Haus, Entfernen/Rückgängig, Texteingabe und Schriftübernahme geprüft; Bilder Desktop/390 × 664/375 × 548 im [Nachtragsbericht](docs/handoffs/2026-10-29-issue48-nachrichten12-13.md). PR #58 bleibt Entwurf. Offen: echter Shop mit Browserumleitung, Safari, Linux für diesen Stand und aktueller D8-Revisionsabgleich. Keine Live-Änderung.
+
+## 29.10.2026 · Codex/Astra · Issue #48 Nachricht 12
+
+Shop-Einstieg vom Editor-Vertrag getrennt, gesamte Importkette gegen die tatsächliche Shop-Entry-Auslieferung geprüft. Neuer Regressionstest vor dem Fix rot, danach **73/73 gezielte Tests grün**, kein Vollauf. Gewählte Ausführung/Menge bleiben erhalten; vollständige Validierung unverändert im Editor/Server. [Regeln, Nachweise und offene Shop-Abnahme](docs/handoffs/2026-10-29-issue48-nachrichten12-13.md). PR #58 bleibt Entwurf, nichts live. Nächster Schritt: Nachricht 13, Motivrechte und neuer D8-Stand nur vorbereiten.
+
+## 29.10.2026 – Codex/Astra: Issue #48 Teil D als Entwurf
+
+D1/D2/D7 zuerst umgesetzt, danach D3–D6 einschließlich endgültiger Bohrlochentscheidung (Nachricht 10). Optionen/Menge beim Designwechsel, stabile Textfelder, bedienbare Schriftoptionen, Motiv-Ersetzen/Entfernen mit gesicherten Rechten, Rand-/Gravurüberlagerungsprüfung, vollständiger Export über zukünftigen Bohrungen, Textzusammenfassung und parallele Warenkorbvorbereitung. 27/27 letzte gezielte UI-/Wechseltests. Abschließender Windows-Vollauf: **1846 / 1840 bestanden / 1 Fehler / 5 übersprungen**; einmaliger Python-Ausgabe-Lesefehler im PDF-Farbtest, unveränderter Einzeltest danach 1/1 grün, Ursache offen. Kein weiterer Vollauf. [Entwurfs-PR #58](https://github.com/Chris83638w/gravuru-2027/pull/58). [Bericht und echte lokale Screenshots](docs/handoffs/2026-10-29-issue48-kundenbedienung-bericht.md). Offen: Safari/WebKit, neue D8-Rechte-Revision, echte Danke-Seite/E-Mail, Live-Zeitmessung unter 3 s, Linux. Basis PR #54; kein Merge und keine Live-Änderung. Danach E nur als Vorschlag.
+
+## 29.10.2026 · Codex/Astra · Issue #48 C: Originalbestellungen und Bildnachweise (Entwurfs-PR #54)
+
+Gemeinsame Bestellansicht mit getrennten Stores; eingefrorene Profilschrift korrekt validiert und statischer Modulpfad repariert. #1027/#1028 aus privaten Originalkopien durch echte lokale UI bis zum Download geprüft: Quellen bytegleich, PDF 120 × 80 mm, Schriften/Motive als Pfade, zwei originale Bohrungen. E-Mail-Vorschau #1028 mit rekonstruiertem PNG; Liquid 4/4. Checkout-Bildzusatz lokal als WASM (API 2026-07) gebaut, drei Function-Runner-Fälle bestanden. Frühere Windows-Vollprüfung 1824 / 1819 bestanden / 0 Fehler / 5 übersprungen; abschließend 52/52 gezielte Tests und Build grün. Offen: aktive Function eindeutig abgleichen, Linux sowie später ausdrücklich freigegebene Live-Checkout-/Mail-Abnahme. **Nichts installiert oder live geändert.** B liegt als Entwurf #55 vor, danach D → E gemäß Nachrichten 6–11. [Bericht, Screenshots und Grenzen](docs/handoffs/2026-10-29-issue48-bestellungen-fertigung-bericht.md).
+
+## 29.10.2026 · Codex/Astra · Issue #48 B: Acryladapter zur Prüfung
+
+AA/AS/S/S aus Katalog 680f1744: 162 Größen / 630 Preis-Halter-Farbkombinationen, Rückplatte +10 mm, Hochformate, Quadrat und Spiegelung angeschlossen. Claudes Optionsgruppen samt Fixture-Korrektur fa7eaae und main 2468bd1 übernommen. 66 gezielte Tests und lokale Desktop-/390×664-/375×548-Bilder; vorheriger Vollauf 1809 bestanden / 2 Fehler / 5 übersprungen; finaler Windows-Vollauf **1829 gesamt / 1824 bestanden / 0 Fehler / 5 übersprungen**, beide Fehler im vollständigen Lauf behoben. Build: 112 Module / 14 Styles. Desktop-S/S-Abschlussbeleg nach Browser-Wiederverbindung und Neuladen ergänzt; altes Bild historisch markiert. Nur Entwurf, keine Freigabe/Live-/Shopify-/Katalogänderung. [Bericht](docs/handoffs/2026-10-29-issue48-acryl-bericht.md). C bleibt separat PR #54; Zusammenführung der zwei Änderungen in acrylic-artwork.mjs gezielt prüfen.
 # 29.10.2026 — Codex/Astra: Funkklingel-Oberfläche und alle 126 Designrevisionen live
 
 Chris: „stell es live“. PR #60 (092303d) + gezielter Warenkorb-Abgleich PR #73 (915c102) bereitgestellt; Katalog-PR #7 gemergt. Linux 28/28 und Warenkorb-Paket 38/38 grün. Echter AOSU-Warenkorb 35×18 / Anthrazit / Seitenrahmen / Silikon / Gegenposition = 74,98 EUR; Bearbeiten und Produktseiten-Einstieg geprüft, Testartikel entfernt. Abschluss: 126 Konfigurationen, 42 Modelle, 15.120 aktive Bindungen auf Revision 2, 126 Freigaben, 126 alte Revisionen bytegleich, Optionen/Geometrie unverändert. Keine Shopify-Produkt-/Publikations-/Theme-/Webhook-/Schalteränderung. Warenkorbbild zeigt noch nur Gestaltungsebene; PR #54/Fertigungsabnahme bleiben separat. Restlauf war nicht atomar; Folge-Releases produktweise aktivieren. [Bericht und Screenshots](docs/handoffs/2026-10-29-funkklingeln-live-abschluss-astra.md).
@@ -2037,5 +2112,3 @@ Schritt 1 des Auftrags vom 22.10. (Warenkorb/Bestellung/Fertigung für die Acryl
 - Windows-Starter nutzt optional eine danebenliegende private `cdr-bridge-token.txt`, sonst verdeckte Eingabe. Das allgemeine Paket enthält keine Zugangsdaten; vorbereiteter Start mit Zugang ausschließlich im privaten Plesk-Bereich.
 - Grenze: 0 echte Firmen-CDRs übertragen; Windows-Starter hier nicht auf Windows ausgeführt. Größenlimit des vorgeschalteten Plesk-Proxys nicht mit großen Dateien geprüft. Keine Shopify-Schreibzugriffe.
 - Nächster Schritt: privates Startpaket auf dem Firmenrechner entpacken, `7x2-pruefen.cmd`, dann `7x2-senden.cmd` starten. Danach Originalbogen über `server_path` lesen, D5/D26/D35, grüne Überschriften und Gravurfassungen gemeinsam prüfen. ChatGPT-App-Werkzeugliste ggf. aktualisieren, da sie noch die früheren fünf Dateischemata zwischenspeichert.
-
-

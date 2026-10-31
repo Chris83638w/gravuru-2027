@@ -1,4 +1,4 @@
-import {applyQuantityTier, quantityTierFor} from '../configurator/variant-m/contract.mjs';
+import {applyQuantityTier, quantityTierFor, vectorLogoAllowed} from '../configurator/variant-m/contract.mjs';
 
 // Internal server contract. Callers must read pricing with the owning Shopify app
 // and verify product/variant ownership before binding; never accept browser prices.
@@ -28,13 +28,15 @@ const sameTier = (actual, expected) => expected === null ? actual === null :
   actual.minQuantity === expected.minQuantity && actual.percentOff === expected.percentOff;
 
 export function capturePersonalization(pricing, {variantId, baseCents, document}) {
-  if (pricing?.schema !== 'gravuru-personalization-pricing/v1' || pricing.enabled !== true ||
+  const vectorLogos=vectorLogoAllowed(document.config),logoContract=pricing?.schema==='gravuru-personalization-pricing/v2';
+  if (!['gravuru-personalization-pricing/v1','gravuru-personalization-pricing/v2'].includes(pricing?.schema) || pricing.enabled !== true ||
       !/^gid:\/\/shopify\/Product\/[1-9][0-9]{0,19}$/.test(pricing.productId) ||
       !/^[1-9][0-9]{0,9}$/.test(String(pricing.revision)) || pricing.currency !== 'EUR' ||
       pricing.variants?.[variantId] !== baseCents || !money(baseCents) ||
       !money(pricing.extraMotifCents) || !money(pricing.extraPhotoCents) ||
       pricing.extraMotifCents !== document.config?.extraMotifCents ||
       pricing.extraPhotoCents !== document.config?.photo?.extraPriceCents) fail();
+  if(vectorLogos!==logoContract||(logoContract?pricing.extraLogoCents!==1299:has(pricing,'extraLogoCents')))fail();
   const withTiers = has(pricing, 'quantityTiers');
   if (withTiers !== has(document.config, 'quantityTiers')) fail();
   if (withTiers ? pricing.quantityTierScope !== 'complete-unit' || document.config.quantityTierScope !== 'complete-unit' :
@@ -43,6 +45,7 @@ export function capturePersonalization(pricing, {variantId, baseCents, document}
   if (withTiers && JSON.stringify(quantityTiers) !== JSON.stringify(checkoutTiers(document.config.quantityTiers))) fail();
   return {productId:pricing.productId, revision:String(pricing.revision), baseCents,
     extraMotifCents:pricing.extraMotifCents, extraPhotoCents:pricing.extraPhotoCents,
+    ...(logoContract?{extraLogoCents:pricing.extraLogoCents}:{}),
     ...(document.config.motifCharge==='all'?{motifCharge:'all'}:{}),
     ...(withTiers ? {quantityTiers, quantityTierScope:'complete-unit'} : {})};
 }
@@ -58,8 +61,11 @@ export function personalizationForSnapshot(contract, manifest) {
   if ((p.fieldCents !== undefined && p.fieldCents !== 0) || (p.backCents !== undefined && p.backCents !== 0)) fail();
   const motifCount=contract.motifCharge==='all'?p.chargedMotifs:p.additionalMotifs;
   if(!count(motifCount,200)||motifCount<p.additionalMotifs||contract.motifCharge!=='all'&&has(p,'chargedMotifs'))fail();
+  const logoContract=has(contract,'extraLogoCents');
+  if(logoContract?(contract.extraLogoCents!==1299||!count(p.chargedLogos,4)||p.chargedLogos+p.chargedUploads>4):has(p,'chargedLogos'))fail();
+  const logoCents=logoContract?p.chargedLogos*contract.extraLogoCents:0;
   const photoCents = p.chargedUploads * contract.extraPhotoCents;
-  const listCents = contract.baseCents + motifCount * contract.extraMotifCents + photoCents;
+  const listCents = contract.baseCents + motifCount * contract.extraMotifCents + photoCents + logoCents;
   if (!money(listCents) || !money(photoCents)) fail();
   let discountedCents = listCents;
   if (has(contract, 'quantityTiers')) {
@@ -75,6 +81,7 @@ export function personalizationForSnapshot(contract, manifest) {
   if (!money(unitCents) || p.unitCents !== unitCents || manifest.product?.basePriceCents !== unitCents ||
       p.totalCents !== unitCents * p.quantity) fail();
   return {unitCents, personalization:{revision:contract.revision, motifs:motifCount, uploads:p.chargedUploads,
+    ...(logoContract?{logos:p.chargedLogos}:{}),
     // An opaque reference to the privately stored editable original; no customer
     // text, media, download capability or draft token goes into cart attributes.
     designReference:`gravuru:${manifest.id}:${manifest.packageSha256}`}};
@@ -94,12 +101,15 @@ export const tierUnitCents = (listCents, manifest) => listCents - tierDiscount(l
 
 export function personalizationAttributes(value) {
   if (value === undefined) return [];
+  const logos=has(value,'logos');
   if (!value || typeof value !== 'object' || Array.isArray(value) ||
-      Object.keys(value).length !== 4 || !Object.keys(value).every(k=>['revision','motifs','uploads','designReference'].includes(k)) ||
+      Object.keys(value).length !== (logos?5:4) || !Object.keys(value).every(k=>['revision','motifs','uploads','logos','designReference'].includes(k)) ||
       typeof value.revision !== 'string' || !/^[1-9][0-9]{0,9}$/.test(value.revision) ||
       !count(value.motifs,200) || !count(value.uploads,4) || typeof value.designReference !== 'string' ||
+      (logos&&(!count(value.logos,4)||value.logos+value.uploads>4)) ||
       !/^gravuru:proof_[a-zA-Z0-9_-]{1,100}:[a-f0-9]{64}$/.test(value.designReference)) fail();
   return [{key:'_gravuru_motifs',value:String(value.motifs)}, {key:'_gravuru_uploads',value:String(value.uploads)},
+    ...(logos?[{key:'_gravuru_logos',value:String(value.logos)}]:[]),
     {key:'_gravuru_revision',value:value.revision}, {key:'Bearbeitbarer Entwurf',value:value.designReference}];
 }
 

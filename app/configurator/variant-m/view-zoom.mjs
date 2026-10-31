@@ -1,15 +1,12 @@
 import {fitView,constrainView,zoomViewAt,fitViewFrame,viewLayerStyle,interpolateView,createViewGesture} from './view-zoom-model.mjs';
-import {installDragLoupe} from './view-loupe.mjs';
 
 // View state belongs only to this UI, never to saved objects, production or undo.
 export async function installViewZoom({el,r,selected}){
  const stage=r.querySelector('.stage'),holder=r.querySelector('.plate-holder');if(!stage||!holder)return null;
  const response=await fetch('/configurator/variant-m/view-zoom.css');if(!response.ok)throw Error('Ansichtszoom konnte nicht geladen werden.');
  const style=document.createElement('style');style.textContent=await response.text();r.append(style);
- const controls=document.createElement('div');controls.className='ux-view-zoom';controls.setAttribute('aria-label','Produktansicht vergrößern');
- controls.innerHTML='<button type="button" data-view-action="plus" aria-label="Ansicht vergrößern">+</button><input type="range" data-view-action="range" min="100" max="400" step="1" value="100" aria-label="Ansichtszoom in Prozent" aria-orientation="vertical"><button type="button" data-view-action="minus" aria-label="Ansicht verkleinern">−</button><output data-view-action="percent" aria-live="off">100 %</output><button type="button" data-view-action="fit" aria-label="Ganzes Schild" title="Ganzes Schild" hidden>⤢</button>';
- const whole=document.createElement('button');whole.type='button';whole.className='ux-view-whole';whole.textContent='⤢ Ganzes Schild';whole.hidden=true;
- stage.append(whole,controls);stage.dataset.viewZoom='1';
+ // Chris, 29.10.2026: touch pinch / desktop wheel only; no loupe or zoom controls.
+ stage.dataset.viewZoom='1';
  let view=fitView(),bounds=null,layers=[],pending=0,suppressUntil=0,refreshing=false;
  let animationFrame=0,animationEpoch=0;
  const mobile=()=>matchMedia('(max-width:767px)').matches;
@@ -27,14 +24,11 @@ export async function installViewZoom({el,r,selected}){
   if(!bounds)return;
   for(const {node,box} of layers){const style=viewLayerStyle(view,bounds,box);node.style.setProperty('transform-origin','0 0','important');node.style.setProperty('transform',style.transform,'important');node.style.setProperty('clip-path',style.clipPath,'important');}
   stage.dataset.viewZoom=String(view.scale);
-  controls.querySelector('[data-view-action=minus]').disabled=view.scale<=1;controls.querySelector('[data-view-action=plus]').disabled=view.scale>=4;
-  whole.hidden=!mobile()||view.scale<=1;
-  controls.querySelector('[data-view-action=range]').value=String(Math.round(view.scale*100));controls.querySelector('[data-view-action=percent]').textContent=Math.round(view.scale*100)+' %';controls.querySelector('[data-view-action=fit]').hidden=view.scale<=1;controls.style.setProperty('--ux-view-progress',((view.scale-1)/3*100)+'%');
   el.uxRefreshSelectionHandles?.();el.uxRefreshTextToolbar?.();
  }
  function change(next){view=constrainView(next,bounds);paint();}
  function manual(next){change(next);}
- function fit(smooth=false){cancelAnimation();resetGestures();el.uxDragLens?.(null);smooth?animate(fitView()):change(fitView());}
+ function fit(smooth=false){cancelAnimation();resetGestures();smooth?animate(fitView()):change(fitView());}
  function refresh(){
   pending=0;if(refreshing)return;refreshing=true;
   try{
@@ -42,13 +36,13 @@ export async function installViewZoom({el,r,selected}){
    for(const node of nodes)node.style.setProperty('transform','none','important');
    const sr=stage.getBoundingClientRect(),box=node=>{const b=node.getBoundingClientRect();return {x:b.left-sr.left,y:b.top-sr.top,width:b.width,height:b.height};};
    const heading=r.querySelector('.ux-heading')?.getBoundingClientRect(),covered=mobile()&&!stage.closest?.('.c-large-preview')&&heading?Math.max(0,Math.min(sr.height,heading.bottom-sr.top)):0;stage.style.setProperty('--ux-view-safe-top',covered+'px');
-   bounds=fitViewFrame(box(holder),{width:sr.width,height:sr.height},mobile());layers=nodes.map(node=>({node,box:box(node)}));
+   bounds=fitViewFrame(box(holder),{width:sr.width,height:sr.height});layers=nodes.map(node=>({node,box:box(node)}));
    if(product!==identity()){cancelAnimation();product=identity();view=fitView();resetGestures();}
    view=constrainView(view,bounds);paint();
   }finally{refreshing=false;}
  }
  const schedule=()=>{if(!pending)pending=requestAnimationFrame(refresh);};
- const cancelObject=()=>{el.uxCancelObjectGesture?.();el.uxCancelPhotoGesture?.();el.uxCancelPhotoTap?.();el.uxDragLens?.(null);};
+ const cancelObject=()=>{el.uxCancelObjectGesture?.();el.uxCancelPhotoGesture?.();el.uxCancelPhotoTap?.();};
  const gesture=createViewGesture({getView:()=>view,setView:manual,getBounds:()=>bounds,photoActive,cancelObject});
  // TouchEvent batches are authoritative for simultaneous contacts (Safari/iOS).
  // Keep their gesture separate so the compatibility PointerEvents cannot also
@@ -58,7 +52,7 @@ export async function installViewZoom({el,r,selected}){
  const resetGestures=()=>{gesture.reset();touchGesture.reset();touchView=false;for(const node of touchTargets){node.removeEventListener('touchmove',touchMove,true);node.removeEventListener('touchend',touchFinished,true);node.removeEventListener('touchcancel',touchCancelled,true);}touchTargets.clear();};
  const path=e=>e.composedPath?.()||[e.target],target=e=>path(e).find(n=>n?.closest)||e.target;
  const onStage=e=>path(e).includes(stage)||stage.contains?.(target(e));
- const control=node=>!!node?.closest?.('button,input,textarea,select,label,a,summary,[data-ux-handle],.ux-direct-edit,.ux-direct-input,.ux-view-zoom');
+ const control=node=>!!node?.closest?.('button,input,textarea,select,label,a,summary,[data-ux-handle],.ux-direct-edit,.ux-direct-input');
  function point(e){const node=target(e),object=node?.closest?.('.scene [data-object]'),handle=node?.closest?.('[data-ux-handle]'),s=stage.getBoundingClientRect();return {id:e.pointerId,x:e.clientX-s.left,y:e.clientY-s.top,button:e.button,pointerType:e.pointerType,kind:handle?'handle':control(node)?'control':object?'object':'blank',objectId:object?.dataset.object};}
  // Wheel zoom belongs to the plate even over SVG artwork links and selection
  // handles. Pointer drag and actual form/toolbar controls keep their own rules.
@@ -101,10 +95,7 @@ export async function installViewZoom({el,r,selected}){
  el.addEventListener('lostpointercapture',e=>{if(path(e)[0]===el)end(e,true);},true);
  el.addEventListener('click',e=>{if(performance.now()<suppressUntil&&onStage(e)&&!control(target(e))){stop(e);suppressUntil=0;}},true);
  el.addEventListener('wheel',e=>{if(mobile()||!bounds||!onStage(e)||wheelControl(target(e))||photoActive())return;cancelAnimation();stop(e);const p=point(e),delta=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?bounds.viewport.height:1);manual(zoomViewAt(view,view.scale*Math.exp(-Math.max(-300,Math.min(300,delta))*.002),p,bounds));},{capture:true,passive:false});
- controls.addEventListener('click',e=>{const action=e.target.closest('[data-view-action]')?.dataset.viewAction;if(!['plus','minus','fit'].includes(action)||!bounds)return;cancelAnimation();e.preventDefault();if(action==='fit'){fit(true);return;}manual(zoomViewAt(view,view.scale+(action==='plus'?.25:-.25),center(),bounds));});
- controls.addEventListener('input',e=>{if(e.target.dataset.viewAction!=='range'||!bounds)return;cancelAnimation();manual(zoomViewAt(view,Number(e.target.value)/100,center(),bounds));});
- whole.addEventListener('click',()=>fit(true));
- // Navigation and an explicit Fit reset the view; selecting or editing never zooms.
+ // Navigation resets the view; selecting or editing never zooms.
  r.addEventListener('click',e=>{const node=e.target.closest?.('[data-ux],[data-ux-tab]');if(node?.dataset.uxTab||['mobile-prev','mobile-next','mobile-step'].includes(node?.dataset.ux))fit(true);},true);
  for(const name of ['render','sync']){const original=el[name];el[name]=function(...args){const result=original.apply(this,args);schedule();return result;};}
  el.uxViewZoom=()=>view.scale;el.uxRefreshViewZoom=schedule;el.uxFitView=()=>fit();el.uxViewViewport=()=>({...bounds.viewport});el.uxSetViewZoom=(value,anchor)=>{cancelAnimation();manual(zoomViewAt(view,value,anchor||center(),bounds));};
@@ -112,5 +103,5 @@ export async function installViewZoom({el,r,selected}){
  window.addEventListener('resize',()=>{cancelAnimation();schedule();});
  window.visualViewport?.addEventListener('resize',schedule);window.visualViewport?.addEventListener('scroll',schedule);
  window.addEventListener('pagehide',()=>{cancelAnimation();resetGestures();if(pending)cancelAnimationFrame(pending);},{once:true});
- installDragLoupe({el,r,stage});refresh();return {fit:el.uxFitView,zoom:el.uxSetViewZoom,refresh:schedule,view:()=>({...view}),gesture};
+ refresh();return {fit:el.uxFitView,zoom:el.uxSetViewZoom,refresh:schedule,view:()=>({...view}),gesture};
 }

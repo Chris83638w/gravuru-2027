@@ -56,7 +56,7 @@ export async function installRefinements(api){
     }
     // Reuse the displayed scene and existing image URLs; no profile loading.
     const scene=$('.scene');if(scene){const copy=scene.cloneNode(true);copy.removeAttribute('tabindex');copy.removeAttribute('role');copy.removeAttribute('data-ux-namespace');copy.setAttribute('aria-hidden','true');copy.querySelectorAll('[data-object]').forEach(n=>n.removeAttribute('data-object'));$('[data-mini-art]').replaceChildren(api.config?.acrylic&&!mini.hidden?completePreviewMini(stage,$('[data-mini-art]')):copy);}
-    for(const row of all('.ux-upload-row')){const id=row.querySelector('[data-ux=replace-upload]')?.dataset.id;if(id&&!row.querySelector('[data-ux=edit-upload]'))row.querySelector('.ux-upload-actions').insertAdjacentHTML('afterbegin',button('edit-upload','Bild bearbeiten',`data-id="${esc(id)}"`));}
+    for(const row of all('.ux-upload-row')){const id=row.querySelector('[data-ux=replace-upload]')?.dataset.id;if(id&&!el.state.objects.find(o=>o.id===id)?.uxVectorLogo&&!row.querySelector('[data-ux=edit-upload]'))row.querySelector('.ux-upload-actions').insertAdjacentHTML('afterbegin',button('edit-upload','Bild bearbeiten',`data-id="${esc(id)}"`));}
   }
   el.uxRefreshSelectionHandles=updateSelection;
   const render=el.render;el.render=function(...args){const result=render.apply(this,args);updateSelection();return result;};
@@ -70,11 +70,12 @@ export async function installRefinements(api){
     // its crop and a newly selected object.
     for(const key of ['x','y','w','h','rotation'])if(Object.hasOwn(prior.object,key))object[key]=prior.object[key];else delete object[key];
   }
-  for(const name of ['render','sync']){const original=el[name];el[name]=function(...args){if(resize?.object.type==='photoSlot'&&!validPhotoGesture(resize)){const prior=resize;resize=null;cancelPhotoGesture(prior);if(prior.target.hasPointerCapture(prior.id))prior.target.releasePointerCapture(prior.id);el.uxGuideGesture?.(false);el.uxDragLens?.(null);}return original.apply(this,args);};}
+  for(const name of ['render','sync']){const original=el[name];el[name]=function(...args){if(resize?.object.type==='photoSlot'&&!validPhotoGesture(resize)){const prior=resize;resize=null;cancelPhotoGesture(prior);if(prior.target.hasPointerCapture(prior.id))prior.target.releasePointerCapture(prior.id);el.uxGuideGesture?.(false);}return original.apply(this,args);};}
   r.addEventListener('pointerdown',e=>{
     const h=e.target.closest('[data-ux-handle]'),item=e.target.closest('.scene [data-object]');if((!h&&!item)||e.button!==0)return;
     const o=item?el.state.objects.find(o=>o.id===item.dataset.object):selected();if(!o||o.uxLocked||o.uxHidden||o.acrylicFixed)return;
     if(o.type==='photoSlot'&&(o.locked||o.technicalLocked||o.customerEditable===false||el.uxCanEdit?.(o,h?.dataset.uxHandle==='scale'?'scale':'move')===false))return;
+    if(h?.dataset.uxHandle==='rotate'&&el.uxCanRotate?.(o)===false)return;
     if(item&&el.uxToggleTextSelection?.(o.id)){e.preventDefault();e.stopImmediatePropagation();return;}
     e.preventDefault();e.stopImmediatePropagation();const old=structuredClone(el.state),point=el.point(e),target=h||holder;
     el.state.selected=o.id;el.uxGuideGesture?.(false);el.state.showHero=false;if(o.type==='text')showTab('text');el.sync();
@@ -87,14 +88,14 @@ export async function installRefinements(api){
     }
     else if(resize.kind==='rotate'){const from=Math.atan2(resize.start.y-start.y,resize.start.x-start.x),to=Math.atan2(p.y-start.y,p.x-start.x);o.rotation=Math.round((start.rotation||0)+(to-from)*180/Math.PI);}
     else{const factor=selectionScaleFactor(start,resize.start,p);Object.assign(o,scaleObject(start,factor,el.uxTextScale?.()||1,el.uxMinTextMm));}
-    el.uxGuideGesture?.(true,{kind:resize.kind,locks:resize.locks});el.normalize();el.render();el.uxDragLens?.({kind:resize.kind,clientX:e.clientX,clientY:e.clientY});
+    el.uxGuideGesture?.(true,{kind:resize.kind,locks:resize.locks});el.normalize();el.render();
   },true);
-  function finish(e,cancel=false){if(!resize||resize.id!==e.pointerId)return;e.stopImmediatePropagation();const prior=resize;resize=null;el.uxDragLens?.(null);if(prior.target.hasPointerCapture(e.pointerId))prior.target.releasePointerCapture(e.pointerId);cancel=cancel||!validPhotoGesture(prior);if(cancel){if(prior.object.type==='photoSlot')cancelPhotoGesture(prior);else el.state=prior.old;}else if(prior.moved)el.record(prior.old);el.uxGuideGesture?.(false);el.sync();if(!cancel&&!prior.moved&&prior.kind==='move')el.uxTextTap?.(selected()?.id);if(!cancel&&prior.moved&&prior.kind==='move')el.uxSuggestCenter?.(selected());}
+  function finish(e,cancel=false){if(!resize||resize.id!==e.pointerId)return;e.stopImmediatePropagation();const prior=resize;resize=null;if(prior.target.hasPointerCapture(e.pointerId))prior.target.releasePointerCapture(e.pointerId);cancel=cancel||!validPhotoGesture(prior);if(cancel){if(prior.object.type==='photoSlot')cancelPhotoGesture(prior);else el.state=prior.old;}else if(prior.moved)el.record(prior.old);el.uxGuideGesture?.(false);el.sync();if(!cancel&&!prior.moved&&prior.kind==='move')el.uxTextTap?.(selected()?.id);if(!cancel&&prior.moved&&prior.kind==='move')el.uxSuggestCenter?.(selected());}
   el.uxCancelObjectGesture=()=>{if(resize)finish({pointerId:resize.id,stopImmediatePropagation(){}},true);};
   r.addEventListener('pointerup',e=>finish(e),true);r.addEventListener('pointercancel',e=>finish(e,true),true);
   r.addEventListener('lostpointercapture',e=>{if(resize?.id===e.pointerId)finish(e,true);},true);
-  r.addEventListener('keydown',e=>{const h=e.target.closest('[data-ux-handle]');if(e.key==='Escape'&&resize?.object.type==='photoSlot'){e.preventDefault();finish({...e,pointerId:resize.id,stopImmediatePropagation:()=>e.stopImmediatePropagation()},true);return;}if(!h||!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();const direction=['ArrowUp','ArrowRight'].includes(e.key)?1:-1;mutate(()=>{const o=selected();if(h.dataset.uxHandle==='rotate')o.rotation=(o.rotation||0)+direction;else Object.assign(o,scaleObject(o,1+direction*.03,el.uxTextScale?.()||1));});},true);
-  function areaResize(field){field.style.height='auto';field.style.height=Math.min(200,Math.max(44,field.scrollHeight))+'px';}
+  r.addEventListener('keydown',e=>{const h=e.target.closest('[data-ux-handle]');if(e.key==='Escape'&&resize?.object.type==='photoSlot'){e.preventDefault();finish({...e,pointerId:resize.id,stopImmediatePropagation:()=>e.stopImmediatePropagation()},true);return;}if(!h||!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();const direction=['ArrowUp','ArrowRight'].includes(e.key)?1:-1;mutate(()=>{const o=selected();if(h.dataset.uxHandle==='rotate'){if(el.uxCanRotate?.(o)===false)return;o.rotation=(o.rotation||0)+direction;}else Object.assign(o,scaleObject(o,1+direction*.03,el.uxTextScale?.()||1));});},true);
+  function areaResize(field){field.style.height='auto';field.style.height=Math.min(200,Math.max(44,field.scrollHeight+4))+'px';}
   r.addEventListener('focusin',e=>{if(e.target.matches('[data-ux-text]'))areaResize(e.target);});
   r.addEventListener('input',e=>{if(e.target.matches('[data-ux-text]'))areaResize(e.target);},true);
   r.addEventListener('focusout',e=>{if(e.target.matches('[data-ux-text]')){e.target.style.height='44px';e.target.scrollTop=0;}});
@@ -105,7 +106,7 @@ export async function installRefinements(api){
       if(key==='object-copy'&&!o.uxUploadId)await el.action('duplicate');
       if(key==='object-delete')await el.action('delete');
       if(key==='object-center')mutate(()=>o.x=el.state.width/2);
-      if(key==='object-turn')mutate(()=>o.rotation=(o.rotation||0)+15);
+      if(key==='object-turn'&&el.uxCanRotate?.(o)!==false)mutate(()=>o.rotation=(o.rotation||0)+15);
       if(key==='object-smaller'||key==='object-bigger')mutate(()=>Object.assign(o,scaleObject(o,key==='object-bigger'?1.1:1/1.1,el.uxTextScale?.()||1,el.uxMinTextMm)));
     }
   });

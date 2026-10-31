@@ -14,13 +14,14 @@ export function decisionHelp(kind,config,geometry=config.profile.geometry){
   mounting:['Befestigung','Wähle die Befestigung passend zum Montageort. Die Kacheln zeigen die verfügbaren Bohrungen und Zubehörteile samt Aufpreis. Nur die gewählte Ausführung wird bestellt.'],
   font:['Schrift','Tippe eine Textzeile an. Darunter kannst du Schrift und Größe ändern. Die Größe wird in Millimetern auf dem Schild angegeben. In der Schriftauswahl siehst du die echten Buchstaben der jeweiligen Schrift.'],
   motif:['Motive',motifPriceDescription(config)],
-  photo:['Foto','Verwende möglichst das Originalfoto mit guter Auflösung. Du kannst den Ausschnitt bearbeiten. Bei Schiefer und Acrylglas mit Gravur wird dein Upload zunächst in Graustufen gezeigt; unter „Bearbeiten“ kannst du das Original wiederherstellen. Vorlagenbilder bleiben unverändert.']
+  photo:config.logo?.vectorUpload===true?['Logo',`Lade ein SVG-Vektorlogo bis 2 MB hoch. Mehrfarbige Flächen werden zu schwarzen Gravurflächen; weiße Aussparungen bleiben frei. Prüfe die Vorschau vor dem Übernehmen. Fotos sind auf Edelstahl nicht möglich. Je Logo ${money(config.logo.extraPriceCents)}.`]:['Foto','Verwende möglichst das Originalfoto mit guter Auflösung. Du kannst den Ausschnitt bearbeiten. Bei Schiefer und Acrylglas mit Gravur wird dein Upload zunächst in Graustufen gezeigt; unter „Bearbeiten“ kannst du das Original wiederherstellen. Vorlagenbilder bleiben unverändert.']
  };
  return {title:descriptions[kind][0],text:descriptions[kind][1]};
 }
 export function installDecisionHelp({el,r,config}){
  if(!config)return;
  const dialog=document.createElement('dialog');dialog.className='ux-info-dialog';dialog.innerHTML='<h2></h2><p></p><button type="button">Verstanden</button>';r.append(dialog);dialog.querySelector('button').addEventListener('click',()=>dialog.close());
+ dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const b=dialog.getBoundingClientRect();if(event.clientX<b.left||event.clientX>b.right||event.clientY<b.top||event.clientY>b.bottom)dialog.close();});
  function info(kind){
   const b=document.createElement('button'),help=decisionHelp(kind,config);b.type='button';b.className='ux-info-button';b.textContent='ⓘ';b.dataset.uxInfo=kind;b.setAttribute('aria-label','Information zu '+help.title);
   b.addEventListener('click',()=>{const current=decisionHelp(kind,config,el.uxProfileGeometry?.()||config.profile.geometry);dialog.querySelector('h2').textContent=current.title;dialog.querySelector('p').textContent=current.text;dialog.showModal();});return b;

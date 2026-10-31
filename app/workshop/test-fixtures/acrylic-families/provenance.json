@@ -1,0 +1,21 @@
+{
+  "repository": "Chris83638w/gravuru-katalog.",
+  "branch": "dev/hausnummern-preise-20261029-astra3",
+  "commit": "680f1744d0488137e5d7d3cf183788308070bef4",
+  "purpose": "Immutable test snapshots, catalogue remains authoritative",
+  "files": [
+    {
+      "path": "familien/acryl/acryl-aa-abstandshalter.json",
+      "sha256": "eaf9557c0667d65b9b25994251fce2f9bbf8d661793576ecfa8d868fb77775ad"
+    },
+    {
+      "path": "familien/acryl/acryl-as-abstandshalter.json",
+      "sha256": "bc6b95cdb0b9b80bc1f3e1652761e8d948d8d88f62892804b53b50f3ece6eb1a"
+    },
+    {
+      "path": "familien/acryl/acryl-ss-abstandshalter.json",
+      "sha256": "b260a504ffb933d89e4879cb0298ac2a434013c5ae08c7693229fb8a228760a4"
+    }
+  ],
+  "hashNormalization": "UTF-8, LF"
+}

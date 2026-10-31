@@ -21,9 +21,9 @@ import {editorUi,validateToolbarConfig} from './toolbar-placement-model.mjs';
 const clone = value => structuredClone(value);
 const fail = message => { throw Error(message); };
 // A printed/engraved element does not obstruct a screw. Mechanical access belongs
-// to the model-bound plate assembly. Contour families explicitly carry hole
-// keepouts for every design object; preserve the existing policy for basic shapes.
-export const customerLayoutIssue=(object,profile,resources)=>profile.doorbellSchema===DOORBELL_SCHEMA?doorbellLayoutIssue(object,profile):surfaceObjectIssue(object,profile.geometry.shape==='contour'?profile:{...profile,geometry:{...profile.geometry,holes:[]}},resources);
+// to the model-bound plate assembly. Customer artwork may cross every drill
+// hole; the finished preview shows hardware, production drills after artwork.
+export const customerLayoutIssue=(object,profile,resources)=>profile.doorbellSchema===DOORBELL_SCHEMA?doorbellLayoutIssue(object,profile):surfaceObjectIssue(object,{...profile,geometry:{...profile.geometry,holes:[]}},resources);
 export const DRAFT_SCHEMA = 'gravuru-universal-customer-draft/v1';
 // Ü6.1: Ebenenrolle. 'guide' ist im Editor sichtbar, erscheint aber nie in der
 // Fertigungsausgabe. Standard ohne Angabe ist 'print'. Die Rolle ist ein
@@ -35,6 +35,8 @@ export const productionObjects=objects=>objects.filter(o=>!o.uxHidden&&!isGuideO
 export const MAX_PHOTO_BYTES = 15 * 1024 * 1024;
 // K10 / Ü1: Verfahrensprofil des Produkts (Werkzeuge, Palette, Mindestschriftgröße, Soll-DPI).
 export const productProcess=config=>processProfile(config.profile);
+// New product revisions opt in explicitly. Existing logo/photo pricing remains unchanged.
+export const vectorLogoAllowed=config=>config?.logo?.enabled===true&&config.logo.vectorUpload===true&&config.logo.extraPriceCents===1299&&config?.photo?.enabled===false&&config?.profile?.material?.kind==='steel'&&productProcess(config).method==='engraving';
 // Physischer Maßstab der Gestaltung (Acryl: gewählte Größe / Designbreite, sonst 1).
 export function physicalScale(config, options={}) {
   return config.acrylic ? acrylicSelection(acrylicOptions(resolvedOptions(config, options)), config.acrylic.pricing).size.width / config.acrylic.designWidth : 1;
@@ -49,7 +51,10 @@ export function prepareConfig(input) {
   const p = config.profile;
   if(config.designSelection!==undefined&&config.designSelection!=='all-approved')fail('Designauswahl ist ungültig.');
   if(config.motifCharge!==undefined&&!['additional','all'].includes(config.motifCharge))fail('Motiv-Preisregel ist ungültig.');
-  if(config.textRules!==undefined&&(!config.textRules||typeof config.textRules!=='object'||Array.isArray(config.textRules)||Object.keys(config.textRules).join(',')!=='maxCharsPerLine'||!Number.isInteger(config.textRules.maxCharsPerLine)||config.textRules.maxCharsPerLine<1||config.textRules.maxCharsPerLine>500))fail('Zeichenregel je Zeile ist ungültig.');
+  if(config.textRules!==undefined){
+    const rules=config.textRules,key=rules&&typeof rules==='object'&&!Array.isArray(rules)?Object.keys(rules).join(','):'';
+    if(!['maxCharsPerLine','maxCharsPerField'].includes(key)||!Number.isInteger(rules[key])||rules[key]<1||rules[key]>500)fail('Zeichenregel ist ungültig.');
+  }
   if(config.sceneBackground!==undefined&&!validSurface(config.sceneBackground))fail('Ungültiges Szenenbild.');
   if(config.steelFormats){if(p.material?.kind!=='steel')fail('Edelstahlgrößen gehören zu einem Edelstahlschild.');validateSteelFormats(config);}
   const extraFontIds=localFontIds(config);
@@ -74,6 +79,8 @@ export function prepareConfig(input) {
       !Number.isSafeInteger(config.extraMotifCents) || config.extraMotifCents < 0)) fail('Verbindliche Centpreise fehlen.');
   if (typeof config.photo?.enabled !== 'boolean' || config.photo.mode !== 'upload-only') fail('Fotofunktion ausdrücklich festlegen.');
   if(config.logo!==undefined&&typeof config.logo.enabled!=='boolean')fail('Logofunktion ausdrücklich festlegen.');
+  if(config.logo?.vectorUpload!==undefined&&typeof config.logo.vectorUpload!=='boolean')fail('Vektorlogo-Funktion ausdrücklich festlegen.');
+  if(config.logo?.vectorUpload===true&&!vectorLogoAllowed(config))fail('Vektorlogos benötigen Edelstahlgravur ohne Fotoupload und einen ausdrücklichen Aufpreis von 12,99 € je Logo.');
   validateCustomerAdditions(config);
   if (!config.photo.enabled){p.designs = p.designs.filter(d => !d.objects.some(o => o.type === 'photoSlot'));if(config.localResources){config.localResources.photoPlaceholders=[];config.localResources.photoExamples=[];}}
   if (!p.designs.length) fail('Für dieses Produkt gibt es keine passende Vorlage ohne Fotobereich.');
@@ -156,11 +163,13 @@ export function variantCombinations(config) {
 export function selectedProfile(config, values = {}) {
   if(isLayeredDoorbell(config))return selectedDoorbellProfile(config,resolvedOptions(config,values));
   const profile = clone(config.profile), options = resolvedOptions(config, values);
-  let holeSelection = false;
+  let holeSelection = false, finish;
   delete profile.mountingPreview;
   for (const group of profile.optionGroups || []) {
     const value = group.values.find(v => v.id === options[group.id]);
     if (!value) continue; // unsichtbare Gruppe (visibleIf)
+    // Farbe der Abstandshalter aus einer eigenen, sichtbaren Gruppe (Familien: je Halterset).
+    if (value.holes === undefined && value.spacerFinish !== undefined) finish = value.spacerFinish;
     if (value.holes !== undefined) {
       if (holeSelection) fail('Mehrere Optionen bestimmen gleichzeitig das Bohrbild.');
       profile.geometry.holes = clone(value.holes); holeSelection = true;
@@ -168,6 +177,7 @@ export function selectedProfile(config, values = {}) {
       profile.mountingPreview={spacers:value.spacers===true||value.mountingRule?.accessory==='standoffs',screws:value.mountingRule?.accessory==='screws',diameter:12,finish:value.spacerFinish||'silver',...(Number.isFinite(value.mountingRule?.keepoutMm)?{keepoutMm:value.mountingRule.keepoutMm}:{})};
     }
   }
+  if (finish !== undefined && profile.mountingPreview?.spacers) profile.mountingPreview.finish = finish;
   return profile;
 }
 
@@ -215,6 +225,7 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
 export function validateDesign(config, design, options, fonts, motifs, {template=false,draft=false}={}) {
   const source = selectedProfile(config,options).designs.find(d => d.id === design?.id);
   if (!source) fail('Die Vorlage gehört nicht zu diesem Produkt.');
+  if(design.textOnTop!==undefined&&typeof design.textOnTop!=='boolean')fail('Ungültige Textebenen-Regel.');
   if(source.importedSource&&!source.objects.some(o=>o.type==='photoSlot')&&design.objects.some(o=>o.type==='photoSlot'))fail('Diese importierte Vorlage hat noch keinen freigegebenen Fotobereich.');
   validateDesignContent(design, {universal:true,extraFontIds:localFontIds(config)});
   // Local logo uploads carry an opaque upload id, like photo slots. They are not
@@ -240,7 +251,8 @@ export function validateDesign(config, design, options, fonts, motifs, {template
     const matches=design.objects.filter(o=>o.id===raw.id),o=matches[0];
     // Removal is judged by the delete right in the element-rights gate below.
     if(!matches.length)continue;
-    if(matches.length!==1||o.uxHidden===true||fixedKeys.some(key=>o[key]!==raw[key]))fail('Ein fester Acrylglas-Vorlagenbereich wurde verändert.');
+    const replaceMotif=raw.type==='motif'&&config.workshopElementRights?.[source.id]?.[raw.id]?.replace===true;
+    if(matches.length!==1||o.uxHidden===true||fixedKeys.some(key=>!(key==='motif'&&replaceMotif)&&o[key]!==raw[key]))fail('Ein fester Acrylglas-Vorlagenbereich wurde verändert.');
   }
   for (const raw of source.objects.filter(o => o.technicalLocked === true)) {
     const o = design.objects.find(o => o.id === raw.id);
@@ -274,6 +286,11 @@ export function validateDesign(config, design, options, fonts, motifs, {template
     if (o.uxPhotoColor!==undefined && (o.type!=='photoSlot'||o.uxUploadKind!=='photo'||!o.uxUploadId||!['original','grayscale','sepia'].includes(o.uxPhotoColor))) fail('Ungültige Fotofarbe.');
     if (o.uxPhotoBackground!==undefined && (o.uxUploadKind!=='photo'||!o.uxUploadId||!['remove','keep'].includes(o.uxPhotoBackground))) fail('Ungültige Foto-Aufbereitung.');
     if (o.uxLogoTint!==undefined && (o.uxUploadKind!=='logo'||o.type!=='image'||typeof o.uxLogoTint!=='boolean')) fail('Einfarbige Vorschau ist nur für hochgeladene Logos möglich.');
+    if(o.uxVectorLogo!==undefined){
+      const v=o.uxVectorLogo;
+      if(!vectorLogoAllowed(config)||o.type!=='image'||o.uxUploadKind!=='logo'||!o.uxUploadId||!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).length!==3||Object.keys(v).some(k=>!['version','sourceSha256','outputSha256'].includes(k))||v.version!=='svg-black-v1'||!['sourceSha256','outputSha256'].every(k=>typeof v[k]==='string'&&/^[a-f0-9]{64}$/.test(v[k]))||o.uxLogoTint!==undefined)fail('Vektorlogo muss als geprüfte schwarze Gravurfassung vorliegen.');
+    }
+    if(config.logo?.vectorUpload===true&&o.uxUploadKind==='logo'&&o.uxVectorLogo===undefined)fail('Für dieses Produkt bitte ein geprüftes SVG-Vektorlogo hochladen.');
     if (o.type === 'photoSlot' && !config.photo.enabled) fail('Fotobereich nicht freigegeben.');
     if (o.type === 'image' && !(o.uxUploadKind==='logo'&&o.uxUploadId&&config.logo?.enabled!==false)) fail('Eigene Bilder ausschließlich über den freigegebenen Upload hochladen.');
     if (o.type === 'motif') {
@@ -313,7 +330,7 @@ export function validateDesign(config, design, options, fonts, motifs, {template
 // Explicit whitelist: no selected objects, embedded photo bytes, arbitrary URLs or credentials.
 const objectKeys = ['id','type','x','y','w','h','rotation','color','text','font','size','bold','italic','motif','fieldKey',
   'letterSpacing','textAnchor','lineHeight','customerEditable','templateOrigin','includedInDesign','slateIncluded','photoShape','photoMaskAssetId','required','shape','filled','strokeWidth','preserveColors','acrylicFixed',
-  'uxHidden','uxLocked','uxUploadId','uxUploadKind','uxLogoTint','uxPhotoBackground','uxPhotoCrop','uxPhotoColor','uxDecoration','uxPersonal','cSourceId','technicalLocked','assetId','opacity','locked','role','surfaceId'];
+  'uxHidden','uxLocked','uxUploadId','uxUploadKind','uxLogoTint','uxVectorLogo','uxPhotoBackground','uxPhotoCrop','uxPhotoColor','uxDecoration','uxPersonal','cSourceId','technicalLocked','assetId','opacity','locked','role','surfaceId'];
 export function cleanObject(o) { return Object.fromEntries(objectKeys.filter(k => o[k] !== undefined).map(k => [k, clone(o[k])])); }
 export function editedDesignTexts(config,state){
  const source=selectedProfile(config,state.mOptions||{}).designs.find(d=>d.id===state.designId);
@@ -324,7 +341,7 @@ export function editedDesignTexts(config,state){
 export function designFromState(config, state, values=state.mOptions||{}) {
   const source = selectedProfile(config,values).designs.find(d => d.id === state.designId);
   if (!source) fail('Unbekanntes Design.');
-  return {...clone(source), objects:state.objects.map(cleanObject)};
+  return {...clone(source), textOnTop:true, objects:state.objects.map(cleanObject)};
 }
 export function saveDraft(config, state, options, fonts, motifs, {draft=false}={}) {
   const design = designFromState(config, state, options);

@@ -1,0 +1,84 @@
+[
+  {
+    "order": "#1027",
+    "sourcePackageSha256": "7ab5758f72b25e8823e24b03404455b1972e56b21810a45f1f48d38dd21cfc1e",
+    "downloadedThroughBrowser": true,
+    "sourceFilesUnchanged": true,
+    "pdfs": [
+      {
+        "file": "technische-gravurpruefung.pdf",
+        "widthMm": 120.0,
+        "heightMm": 80.0,
+        "images": 0,
+        "fonts": 0,
+        "vectorDrawings": 55
+      },
+      {
+        "file": "gravur-kontur-1zu1.pdf",
+        "widthMm": 120.0,
+        "heightMm": 80.0,
+        "images": 0,
+        "fonts": 0,
+        "vectorDrawings": 1
+      }
+    ],
+    "svg": {
+      "pathCount": 59,
+      "textNodes": 0,
+      "imageNodes": 0
+    },
+    "holeCentersMm": [
+      [
+        6,
+        40
+      ],
+      [
+        114,
+        40
+      ]
+    ],
+    "holeDiameterMm": 4,
+    "productionReady": false
+  },
+  {
+    "order": "#1028",
+    "sourcePackageSha256": "b0ad306fa51f264afb7471d15c37bde09b5257134fb593c410f1a6612983accf",
+    "downloadedThroughBrowser": true,
+    "sourceFilesUnchanged": true,
+    "pdfs": [
+      {
+        "file": "technische-gravurpruefung.pdf",
+        "widthMm": 120.0,
+        "heightMm": 80.0,
+        "images": 0,
+        "fonts": 0,
+        "vectorDrawings": 32
+      },
+      {
+        "file": "gravur-kontur-1zu1.pdf",
+        "widthMm": 120.0,
+        "heightMm": 80.0,
+        "images": 0,
+        "fonts": 0,
+        "vectorDrawings": 1
+      }
+    ],
+    "svg": {
+      "pathCount": 35,
+      "textNodes": 0,
+      "imageNodes": 0
+    },
+    "holeCentersMm": [
+      [
+        6,
+        40
+      ],
+      [
+        114,
+        40
+      ]
+    ],
+    "holeDiameterMm": 4,
+    "productionReady": false
+  }
+]

@@ -1,0 +1,56 @@
+{
+  "compiled": true,
+  "passed": 8,
+  "cases": [
+    {
+      "name": "d8-base",
+      "passed": true,
+      "amount": "19.99",
+      "expected": "19.99"
+    },
+    {
+      "name": "d8-motif",
+      "passed": true,
+      "amount": "21.68",
+      "expected": "21.68"
+    },
+    {
+      "name": "d8-logo",
+      "passed": true,
+      "amount": "32.98",
+      "expected": "32.98"
+    },
+    {
+      "name": "d8-logo-motif",
+      "passed": true,
+      "amount": "34.67",
+      "expected": "34.67"
+    },
+    {
+      "name": "d8-quantity3",
+      "passed": true,
+      "amount": "32.94",
+      "expected": "32.94"
+    },
+    {
+      "name": "legacy-photo-tier",
+      "passed": true,
+      "amount": "25.53",
+      "expected": "25.53"
+    },
+    {
+      "name": "legacy-reject-logo",
+      "passed": true,
+      "amount": null,
+      "expected": false
+    },
+    {
+      "name": "v2-reject-count",
+      "passed": true,
+      "amount": null,
+      "expected": false
+    }
+  ],
+  "bytes": 8743,
+  "sha256": "dc6aec8f84d6cfa2196d3b7b8031fb4bdc78a17b07d542f2b203e709fae5917c"
+}

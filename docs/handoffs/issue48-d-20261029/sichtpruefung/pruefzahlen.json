@@ -1,0 +1,116 @@
+{
+  "sourceBranch": "dev/konfi-bedienung-issue48-d-20261029-astra",
+  "sourceCode": "022f41d",
+  "integration": "be9dbd4",
+  "baseline": "5eeea7f",
+  "environment": "Windows; same Python adapter for implementation and baseline",
+  "fullRun": {
+    "tests": 1868,
+    "pass": 1839,
+    "fail": 24,
+    "skipped": 5,
+    "duration_ms": 1270666.8407,
+    "note": "Run during implementation, before the new server-contract case. One outdated import expectation was corrected afterwards; 23 failures reproduced on baseline. Not a green final full run."
+  },
+  "targetedRun": {
+    "tests": 81,
+    "pass": 81,
+    "fail": 0,
+    "skipped": 0,
+    "duration_ms": 783.4975
+  },
+  "importRun": {
+    "tests": 15,
+    "pass": 15,
+    "fail": 0,
+    "skipped": 0,
+    "duration_ms": 25395.2906
+  },
+  "baselineReproduction": [
+    {
+      "log": "before-failures.log",
+      "tests": 10,
+      "pass": 0,
+      "fail": 10,
+      "skipped": 0,
+      "duration_ms": 6365.9192,
+      "failures": [
+        "app/workshop/batch-assets.test.mjs:110:1",
+        "app/workshop/doorbell-artwork.test.mjs:54:1",
+        "app/workshop/doorbell-preparation.test.mjs:9:1",
+        "app/workshop/doorbell-preparation.test.mjs:22:1",
+        "app/workshop/doorbell-preparation.test.mjs:36:1",
+        "app/workshop/doorbell-product.test.mjs:9:1",
+        "app/workshop/doorbell-product.test.mjs:30:1",
+        "app/workshop/doorbell-product.test.mjs:46:1",
+        "app/workshop/doorbell-product.test.mjs:55:1",
+        "app/workshop/doorbell-product.test.mjs:67:1"
+      ]
+    },
+    {
+      "log": "before-webhook.log",
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0,
+      "duration_ms": 399.8607,
+      "failures": [
+        "app/workshop/doorbell-status-webhook.test.mjs:23:1"
+      ]
+    },
+    {
+      "log": "before-additional.log",
+      "tests": 2,
+      "pass": 0,
+      "fail": 2,
+      "skipped": 0,
+      "duration_ms": 450.517,
+      "failures": [
+        "app/workshop/hidden-motif-export.test.mjs:11:1",
+        "app/workshop/shop-design-gallery.load.test.mjs:18:1"
+      ]
+    },
+    {
+      "log": "before-remaining.log",
+      "tests": 10,
+      "pass": 0,
+      "fail": 10,
+      "skipped": 0,
+      "duration_ms": 616.3849,
+      "failures": [
+        "app/workshop/shop-gallery-model.test.mjs:13:2",
+        "app/workshop/shop-gallery-model.test.mjs:32:1",
+        "app/workshop/shop-product-binding-batch.test.mjs:34:1",
+        "app/workshop/shop-product-binding-batch.test.mjs:42:1",
+        "app/workshop/shop-product-binding-batch.test.mjs:47:1",
+        "app/workshop/shop-product-binding-batch.test.mjs:54:1",
+        "app/workshop/shop-product-binding-batch.test.mjs:61:1",
+        "app/workshop/shop-product-binding-batch.test.mjs:82:1",
+        "app/workshop/shop-product-binding-store.doorbell-memory.test.mjs:13:1",
+        "app/workshop/shop-product-binding-store.doorbell-memory.test.mjs:45:1"
+      ]
+    }
+  ],
+  "browser": {
+    "engine": "Chromium",
+    "viewports": [
+      [
+        1280,
+        720
+      ],
+      [
+        390,
+        664
+      ],
+      [
+        375,
+        548
+      ]
+    ],
+    "notVerified": [
+      "Real iPhone Safari/two-finger gesture",
+      "Pointer drag rotation (automation timed out)",
+      "Live Shopify pricing/cart with this revision"
+    ]
+  }
+}

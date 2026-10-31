@@ -126,7 +126,10 @@ export function createDesignAssetStore({filename,converter=convertDesign,tenantI
       for(const item of motifs)if(item.artwork){const expected=resource(item.artwork.assetId);if(!isArtworkResource(item)||JSON.stringify(item.artwork)!==JSON.stringify(expected.artwork))fail(422,'asset_mismatch','Die Originaldatei des importierten Designs fehlt oder wurde verändert.');}
       for(const design of document.config?.profile?.designs||[])if(design.importedSource){
         const item=motifs.find(m=>m.artwork?.assetId===design.importedSource.assetId);
-        if(!item||!design.objects.some(o=>o.motif===item.key&&o.locked===true&&o.customerEditable===false))fail(422,'asset_mismatch','Die Zuordnung zum importierten Design ist unvollständig.');
+        // Asset provenance is independent of customer edit permissions. A new
+        // individual motif may be replaceable; the immutable template still
+        // has to refer to its original, validated artwork resource.
+        if(!item||!design.objects.some(o=>o.type==='motif'&&o.motif===item.key&&o.templateOrigin===true))fail(422,'asset_mismatch','Die Zuordnung zum importierten Design ist unvollständig.');
       }
       for(const design of document.config?.profile?.designs||[])if(design.editableSource)get(design.editableSource.assetId);
       return document;

@@ -36,7 +36,7 @@ export function emptyPixelPosition(alpha,width,height,boxWidth,boxHeight,allowed
 export async function placeNewMotif({el,config,files,say},object,{minScale=1}={}){
  const before=JSON.stringify(el.state.objects),state={...el.state,selected:null,objects:el.state.objects.filter(o=>o.id!==object.id)};
  const facade={state,fontData:el.fontData,objectSVG:o=>el.objectSVG(o),uxObjectSVG:o=>el.uxObjectSVG(o)};
- const art=await printArtwork({el:facade,config,files}),g=physicalGeometry(config,state),scale=2;
+ const art=await printArtwork({el:facade,config,files}),g={...physicalGeometry(config,state),holes:[]},scale=2;
  const canvas=document.createElement('canvas');canvas.width=Math.ceil(g.width*scale);canvas.height=Math.ceil(g.height*scale);
  const ctx=canvas.getContext('2d',{willReadFrequently:true}),url=URL.createObjectURL(new Blob([art.svg],{type:'image/svg+xml'})),img=new Image();
  try{img.src=url;await img.decode();ctx.drawImage(img,0,0,canvas.width,canvas.height);}finally{URL.revokeObjectURL(url);}
@@ -45,7 +45,7 @@ export async function placeNewMotif({el,config,files,say},object,{minScale=1}={}
  const sx=doorbell?1:g.width/config.profile.geometry.width,sy=doorbell?1:g.height/config.profile.geometry.height;
  const insertion=config.acrylic?acrylicSelection(acrylicOptions(state.mOptions),config.acrylic.pricing).base.insertionMm:0;
  const margin=Number.isFinite(g.safeMarginMm)?Math.max(0,g.safeMarginMm):2; // Gestaltungsrand wie objectIssue/designArea (Standard 2 mm)
- const allowed=(x,y)=>(!area||(x/scale>=area.left&&x/scale<=area.right&&y/scale>=area.top&&y/scale<=area.bottom))&&y/scale<g.height-insertion&&(g.shape==='contour'?contourContainsPoint(g,x/scale,y/scale):insideContour(g,x/scale,y/scale,-margin));
+ const allowed=(x,y)=>(!area||(x/scale>=area.left&&x/scale<=area.right&&y/scale>=area.top&&y/scale<=area.bottom))&&y/scale<g.height-insertion&&(g.shape==='contour'?contourContainsPoint(g,x/scale,y/scale,{marginMm:margin,holes:false}):insideContour(g,x/scale,y/scale,-margin));
  const alpha=ctx.getImageData(0,0,canvas.width,canvas.height).data;
  for(const s of placementScales(minScale)){
   const position=emptyPixelPosition(alpha,canvas.width,canvas.height,object.w*s*sx*scale,object.h*s*sy*scale,allowed);

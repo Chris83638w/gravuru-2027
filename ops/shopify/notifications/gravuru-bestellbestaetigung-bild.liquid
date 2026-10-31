@@ -1,0 +1,26 @@
+{% comment %}
+  Inline-Baustein für die Bildzelle innerhalb der bestehenden line-Schleife der
+  Shopify-Bestellbestätigung. Dort das Produktbild ersetzen; nicht zusätzlich
+  eine zweite Bestellschleife einfügen. Keine Render-Anweisung erforderlich.
+  Vorlage zum Prüfen, nicht automatisch installieren oder Benachrichtigungen senden.
+{% endcomment %}
+{%- liquid
+  assign gv_image = line.properties['_gravuru_bild']
+  assign gv_root = 'https://app-2027.gravuru-designwerkstatt.de/gestaltung/'
+  assign gv_prefix = gv_image | slice: 0, gv_root.size
+  assign gv_extension = gv_image | slice: -4, 4
+  assign gv_valid = false
+  if line.properties['_gravuru_config'] != blank and gv_prefix == gv_root and gv_extension == '.png'
+    assign gv_valid = true
+  endif
+-%}
+{%- if gv_valid -%}
+  <a href="{{ gv_image | escape }}" target="_blank" style="text-decoration:none;">
+    <img src="{{ gv_image | escape }}" alt="Ihre Gestaltung: {{ line.title | escape }}"
+         width="160" style="display:block;width:160px;max-width:100%;height:auto;border:0;" />
+  </a>
+  <p style="font-size:14px;line-height:1.4;">Bitte prüfe die Schreibweise.</p>
+{%- elsif line.image -%}
+  <img src="{{ line | img_url: '320x' }}" alt="{{ line.title | escape }}"
+       width="160" style="display:block;width:160px;max-width:100%;height:auto;border:0;" />
+{%- endif -%}

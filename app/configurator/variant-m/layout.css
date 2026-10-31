@@ -129,7 +129,7 @@
 }
 
 :host([data-ux-layout]) .ux-direct-tail [data-ux=delete] svg{stroke:#292d32!important;color:#292d32!important}
-:host([data-ux-layout]) .ux-preview:has(.ux-direct-edit:not([hidden])) .ux-handle-delete,:host([data-ux-layout]) .c-large-preview:has(.ux-direct-edit:not([hidden])) .ux-handle-delete{display:none!important}
+
 
 /* Shared product explanations and stable motif tile labels. */
 .ux-info-links{display:flex;flex-wrap:wrap;gap:2px 8px;margin:-4px 0 8px}.ux-info-links button{background:transparent!important;border:0!important;padding:0 6px!important;min-height:44px!important;color:#444c54!important;font-size:13px!important;text-decoration:underline;text-underline-offset:3px}.ux-info-dialog{max-width:min(460px,calc(100vw - 32px));box-sizing:border-box;border:1px solid #d9dde1;border-radius:14px;padding:24px;color:#252b31}.ux-info-dialog p{line-height:1.6}.ux-info-dialog::backdrop{background:#1e283366}

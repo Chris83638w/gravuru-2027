@@ -4,6 +4,7 @@ import {objectIssue} from '../platform/sources/app/shared/models/design-content.
 import {validateProductDocument,validateProductDesign} from './product-model.mjs';
 import {studioSvg} from '../platform/sources/app/shared/models/studio-svg.mjs';
 import {MAX_FORM_DESIGNS} from './form-designs.mjs';
+import {applyNewMotifRights} from '../configurator/variant-m/new-motif-rights.mjs';
 const fail=(message,status=422)=>{throw Object.assign(Error(message),{status,code:'prepared_design_invalid'});};
 const validId=s=>typeof s==='string'&&/^[A-Za-z0-9][A-Za-z0-9_.:-]{0,119}$/.test(s);
 const rights=type=>({content:type==='text',color:false,replace:type==='photoSlot',move:false,scale:false,delete:false});
@@ -37,6 +38,7 @@ export async function planPreparedDesign(repository,assets,id,input){
  const {scale,ox,oy,fit}=preparedPlacement(config,p);
  const d={id:p.designId,name:p.name,objects:[],marks:[],customerFields:[],preparedTemplate:{schema:p.schema,sourceSha256:p.sourceSha256,packageSha256:sha256(JSON.stringify(p)),scale,fit}};
  const table={},seen=new Set();
+ if(p.wholePrintDesign!==undefined)d.wholePrintDesign=p.wholePrintDesign;
  for(const layer of p.layers){
   if(!layer||!validId(layer.id)||seen.has(layer.id))fail('Ebenenkennungen fehlen oder sind doppelt.');seen.add(layer.id);
   let o={id:layer.id,rotation:0,templateOrigin:true};
@@ -68,7 +70,7 @@ export async function planPreparedDesign(repository,assets,id,input){
    }
    d.customerFields.push({id:o.id,label:layer.label});
   }
-  d.objects.push(o);table[o.id]=rights(layer.type);
+  d.objects.push(o);table[o.id]=applyNewMotifRights(o,rights(layer.type),d);
   if(layer.type==='text'){
    for(const key of ['allowScale','allowDelete'])if(layer[key]!==undefined&&typeof layer[key]!=='boolean')throw Object.assign(Error('Größen-/Löschfreigabe muss ein Wahrheitswert sein.'),{status:422});
       if(layer.allowMove!==undefined&&typeof layer.allowMove!=='boolean')fail('Positionsfreigabe muss ein Wahrheitswert sein.');

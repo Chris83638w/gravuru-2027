@@ -1,0 +1,14 @@
+{
+  "name": "gravuru-thank-you-preview-preparation",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "tsc -p tsconfig.json",
+    "build": "esbuild src/ThankYou.js --bundle --format=esm --outfile=dist/ThankYou.js"
+  },
+  "devDependencies": {
+    "@shopify/ui-extensions": "2025.10.16",
+    "esbuild": "0.28.2",
+    "typescript": "5.8.3"
+  }
+}

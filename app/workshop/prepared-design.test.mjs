@@ -39,10 +39,20 @@ test('prepared import adds reviewed design, retains history, layers, all 28 pric
  const saved=await applyPreparedDesign(ws.repository,ws.assets,ws.defaultId,{...input,token:plan.token});
  assert.deepEqual(saved.document.config.profile.designs[0],before.document.config.profile.designs[0]);
  assert.deepEqual(saved.document.config.profile.designs[1].objects.map(o=>o.id),['customer-photo','decoration','customer-names']);
+ assert.deepEqual(saved.document.elementRights['uv-test'].decoration,{content:false,color:false,replace:true,move:false,scale:false,delete:true});
  assert.equal(saved.document.config.profile.defaultDesignId,'uv-test');assert.equal(saved.revision,2);
  assert.deepEqual(ws.repository.get(ws.defaultId,{revision:1}),before);
  for(const size of ['small','large'])for(const base of ['none','buche','eiche','nussbaum','klar','satiniert','holz-flach'])for(const wall of ['none','wall'])assert.deepEqual(resolveProduct(saved.document,{options:{size,base,wall}}).price,resolveProduct(before.document,{options:{size,base,wall}}).price);
  await assert.rejects(planPreparedDesign(ws.repository,ws.assets,ws.defaultId,{...input,expectedRevision:2}),/bereits vorhanden/);
+});
+
+test('prepared whole print design keeps its explicit exception and rejects applying it to engraving',async t=>{
+ const ws=setup(t),p=pkg();p.wholePrintDesign=true;
+ const result=await planPreparedDesign(ws.repository,ws.assets,ws.defaultId,{expectedRevision:1,package:p});
+ assert.equal(result.document.config.profile.designs.find(d=>d.id===p.designId).wholePrintDesign,true);
+ assert.equal(result.document.elementRights[p.designId].decoration.replace,false);assert.equal(result.document.elementRights[p.designId].decoration.delete,false);
+ const record=ws.repository.create(makeProductDocument(syntheticSlate(ws.repository.get(ws.defaultId).document.config)));
+ await assert.rejects(planPreparedDesign(ws.repository,ws.assets,record.id,{expectedRevision:1,package:p}),/Druck-Design/);
 });
 test('preview token binds package and revision; malformed masks/fonts/active SVG cannot save',async t=>{
  const ws=setup(t),input={expectedRevision:1,package:pkg()},plan=await planPreparedDesign(ws.repository,ws.assets,ws.defaultId,input);

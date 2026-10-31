@@ -80,7 +80,7 @@ export function build({outputDirectory=OUTPUT}={}){
   replaceOnce('const all=[...entries,...original],categories=[...new Set(all.map(e=>e.category))];',
     'const all=window.GravuruProfileChoices.motifChoices([...entries,...original],window.parent.UniversalConfig?.workshopProfiles?.selections?.motifs,window.GravuruTemplateOnlyMotifKeys),categories=[...new Set(all.map(e=>e.category))];el.uxMotifChoiceIds=all.map(e=>e.key);');
   replaceOnce('const popular=ranked.length?ranked:doorSignStarterKeys.filter(key=>motifIndex.has(key)).map(key=>({key}));',
-    'const popular=window.GravuruProfileChoices.bestsellerChoices(all,ranked.length?ranked:doorSignStarterKeys.filter(key=>motifIndex.has(key)).map(key=>({key})),window.parent.UniversalConfig?.workshopProfiles?.selections?.bestsellers);bestsellers.hidden=popular.length===0;');
+    'const popular=window.GravuruProfileChoices.bestsellerChoices(all,ranked.length?ranked:doorSignStarterKeys.filter(key=>motifIndex.has(key)).map(key=>({key})),window.parent.UniversalConfig?.workshopProfiles?.selections?.bestsellers,{fillTo:ranked.length?0:18});bestsellers.hidden=popular.length===0;');
   replaceOnce("ranked.length?'Die meistgenutzten Motive für Türschilder.':'Unsere Startauswahl für Türschilder.'",
     "window.parent.UniversalConfig?.workshopProfiles?.selections?.bestsellers!=null?'Unsere Auswahl für dieses Produkt.':ranked.length?'Die meistgenutzten Motive.':'Unsere Startauswahl.'");
   replaceOnce('await customElements.whenDefined(\'gravuru-configurator\');',

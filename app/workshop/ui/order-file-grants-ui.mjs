@@ -1,14 +1,14 @@
-import {merchantRequest} from './merchant-request.mjs';
+import {orderRequest} from './order-store-context.mjs';
 
 export function createOrderFileGrantsUI() {
   const section = document.createElement('section');
   section.innerHTML = '<h3>Dateien im Kundenkonto</h3><p>Testfreigaben für die bestätigte Bestellposition. PDF ist vorausgewählt; ein ZIP enthält zusätzlich private Originaldaten. Keine Fertigungsfreigabe.</p><p role="status" aria-live="polite"></p><form hidden><label>Gesicherte Ausgabe<select name="job" required></select></label><label>Datei<select name="format"><option value="pdf">Nur PDF</option><option value="white-pdf">Separate Weiß-PDF</option><option value="zip">ZIP mit allen Daten und Fotos</option></select></label><button type="submit">Für dieses Test-Kundenkonto freigeben</button></form><ul></ul>';
   document.querySelector('#order-output-section').after(section);
   const status = section.querySelector('[role=status]'), form = section.querySelector('form'), list = section.querySelector('ul');
-  let row = null, serial = 0, csrf = '', busy = false;
+  let row = null, serial = 0, busy = false;
   const controls = () => {for (const item of section.querySelectorAll('button,select')) item.disabled = busy;};
   async function api(path, data) {
-    const response = await merchantRequest('/api/workshop/' + path, data === undefined ? {} : {method: 'POST', headers: {'Content-Type': 'application/json', 'X-Gravuru-CSRF': csrf}, body: JSON.stringify(data)});
+    const response = await orderRequest(row,path,data);
     const value = await response.json(); if (!response.ok) throw Error(value.error?.message || 'Dateifreigabe nicht möglich.'); return value;
   }
   function render(grants) {
@@ -27,6 +27,7 @@ export function createOrderFileGrantsUI() {
     const ticket = serial, id = row.id; busy = true; controls(); status.textContent = 'Dateiberechtigung wird gespeichert …';
     try {
       await api(path, data);
+      if (ticket !== serial) return;
       const result = await api('orders/' + id + '/file-grants');
       if (ticket !== serial) return;
       render(result.grants); status.textContent = 'Gesichert. Zugriff erfordert weiterhin das passende Kundenkonto und einen gültigen Zahlungsstatus.';
@@ -40,7 +41,6 @@ export function createOrderFileGrantsUI() {
     try {
       const session = await api('session'); if (ticket !== serial) return;
       if (session.scope !== 'shopify-merchant-test') {status.textContent = 'Testfreigaben benötigen die bestätigte Shopify-Händleranmeldung. Die lokale Werkstatt erteilt keine Kundenberechtigung.'; return;}
-      csrf = session.csrfToken;
       const [outputs, grants] = await Promise.all([api('orders/' + id + '/outputs'), api('orders/' + id + '/file-grants')]);
       if (ticket !== serial) return;
       const completed = outputs.jobs.filter(job => job.status === 'completed');

@@ -227,7 +227,7 @@ test('K10 / Ü1.2: engraving products build the text panel without a colour pick
  const render=(freeColor,minTextMm)=>{const env={freeColor,minTextMm,alignmentContent,alignmentLabel,icons:{},button:(k,l,extra='')=>`<button data-ux="${k}" ${extra}>${l}</button>`,config:null,out:''};vm.createContext(env);vm.runInContext(markup.replace("$('#ux-panel-text').innerHTML=",'out='),env);return env.out;};
  assert.doesNotMatch(render(false,4),/data-ux-color/);assert.match(render(true,3),/data-ux-color/);
  assert.match(render(false,4),/id="ux-size" type="number" min="4"/);assert.match(render(true,3),/min="3"/);
- const photoLine=line('ux.mjs','const photoEnabled=config?config.photo.enabled&&process.tools.photo!==false:true');
+ const photoLine=line('ux.mjs','const photoEnabled=config?');
  const photo=(enabled,tool)=>{const env={config:{photo:{enabled},logo:{enabled:true}},process:{tools:{photo:tool}}};vm.createContext(env);vm.runInContext(photoLine,env);return vm.runInContext('photoEnabled',env);};
  assert.equal(photo(true,true),true);assert.equal(photo(true,false),false);assert.equal(photo(false,true),false);
 });
@@ -333,10 +333,12 @@ test('Foto-Reiter: ohne Foto und ohne Foto-/Logo-Ebene weg (auch bei erlaubten L
  const kept=run(withSlot,true,false);assert.equal(kept.tab.hidden,false);assert.equal(kept.guide.hidden,false);assert.deepEqual(kept.shown,[]);
  // Reiter und Hilfe-Knopf werden gar nicht erst erzeugt, wenn kein Upload angeboten wird (uploadOffered).
  const offered=line('ux.mjs','const uploadOffered=');
- const offers=(photoEnabled,logoEnabled,config)=>{const env={photoEnabled,logoEnabled,config,designsHaveUploadLayer};vm.createContext(env);vm.runInContext(offered,env);return vm.runInContext('uploadOffered',env);};
+ const {vectorLogoEnabled}=await import('./logo-upload.mjs');
+ const offers=(photoEnabled,logoEnabled,config)=>{const env={photoEnabled,logoEnabled,config,designsHaveUploadLayer,vectorLogos:vectorLogoEnabled(config)};vm.createContext(env);vm.runInContext(offered,env);return vm.runInContext('uploadOffered',env);};
  assert.equal(offers(false,true,textOnly),false);assert.equal(offers(false,true,withSlot),true);assert.equal(offers(true,false,textOnly),true);assert.equal(offers(false,false,withSlot),false);
+ assert.equal(offers(false,true,{...textOnly,logo:{enabled:true,vectorUpload:true,extraPriceCents:1299}}),true,'expliziter neuer Vektorlogo-Produktstand zeigt den Upload');
  assert.match(source('ux.mjs'),/\.filter\(\(\[id\]\)=>id!=='upload'\|\|uploadOffered\)\.map\(\(\[id,title,icon\]\)/,'Reiterleiste nutzt uploadOffered');
- assert.match(source('ux.mjs'),/\.filter\(\(\[id\]\)=>id!=='upload'\|\|uploadOffered\)\.map\(\(\[id,title\]\)=>button\('guide-'/,'Hilfe-Dialog nutzt uploadOffered');
+ assert.match(source('ux.mjs'),/photo:photoEnabled&&photoAvailableForDesign\(config,el.state.designId\)/,'question help respects current photo capabilities');
 });
 // Chris 22./23.10.2026: Befestigung bei Universal-/Katalogprodukten als Kacheln mit Icon, Bezeichnung und Aufpreis
 // („+2,99 €“ / „ohne Aufpreis“) wie die alte Auswahl [data-fk-mount]; Auswahlhaken einheitlich wie bei Designs.
@@ -422,4 +424,26 @@ test('usability glyph cache distinguishes catalogue spacing and alignment for ed
  vm.createContext(env);vm.runInContext(line('usability.mjs','const boundsCache=new Map();'),env);vm.runInContext(block('usability.mjs','  function textBounds(o){','\n  }'),env);
  const original=vm.runInContext('textBounds(object)',env);assert.equal(original.height,6);
  for(const change of [{lineHeight:20},{textAnchor:'start'},{letterSpacing:2},{w:30}]){env.changed={...object,...change};const before=renders,measured=vm.runInContext('textBounds(changed)',env);assert.equal(renders,before+1);assert.equal(vm.runInContext('textBounds({...changed})',env),measured);assert.equal(renders,before+1);if(change.lineHeight)assert.equal(measured.height,20);}
+});
+
+test('motif UI checks the real allowlist and adds independent objects without replacing the selected template',()=>{
+ const original={id:'m',type:'motif',motif:'old',x:20,y:20,w:10,h:20,uxLocked:true},object={...original},messages=[],placed=[];let added=0;
+ const el={state:{objects:[object],selected:'m'},uxMotifChoiceIds:['allowed'],add(input){this.state.objects.push({...input,id:'new-'+(++added)});},sync(){}};
+ const env={el,say:s=>messages.push(s),place:o=>placed.push(o.id)};vm.createContext(env);
+ vm.runInContext(block('workflow.mjs',' const add=el.add;',' // Gate progression').replace(' // Gate progression',''),env);
+ el.add({type:'motif',motif:'foreign'});assert.deepEqual(object,original);assert.equal(added,0);assert.match(messages.at(-1),/nicht verfügbar/);
+ for(let i=0;i<2;i++)el.add({type:'motif',motif:'allowed'});
+ assert.deepEqual(object,original);assert.equal(el.state.objects.length,3);assert.deepEqual(placed,['new-1','new-2']);
+ assert.deepEqual(el.state.objects.slice(1).map(o=>o.motif),['allowed','allowed']);
+});
+
+test('actual acrylic action guard obeys explicit motif deletion while retaining fixed geometry and old locks',()=>{
+ const o={id:'m',type:'motif',acrylicFixed:true},calls=[],config={workshopElementRights:{d:{m:{delete:false}}}},el={state:{designId:'d'},action:key=>calls.push(key)};
+ const env={config,el,selected:()=>o,isFixed:()=>true};vm.createContext(env);
+ vm.runInContext(line('acrylic-scene.mjs',' const canRemoveFixed='),env);
+ vm.runInContext(line('acrylic-scene.mjs',' const oldAction=el.action;'),env);
+ el.action('delete');assert.deepEqual(calls,[]);
+ config.workshopElementRights.d.m.delete=true;el.action('delete');assert.deepEqual(calls,['delete']);
+ for(const action of ['grow','shrink','center','duplicate'])el.action(action);assert.deepEqual(calls,['delete']);
+ o.type='photoSlot';el.action('delete');assert.deepEqual(calls,['delete']);
 });

@@ -189,13 +189,17 @@ def build(data):
  sheet.table([('Feld',70),('Text',170),('Schrift',100),('Größe mm',54),('x mm',44),('y mm',44),('Drehung',41)],trows,limit_y=H-250,empty='Keine Textfelder')
  sheet.text(MARGIN,sheet.y+8,'Position = Mittelpunkt des Felds in mm vom linken oberen Plattenrand; Größe = Schriftgröße in mm auf der Platte.',6.5);sheet.y+=10
  # Fotos
- sheet.heading('Fotos')
+ sheet.heading('Fotos und Logos' if any(p.get('kind')=='vector-logo' for p in s.get('photos') or []) else 'Fotos')
  prows=[]
  for p in s.get('photos') or []:
+  if p.get('kind')=='vector-logo':
+   prows.append([p.get('label') or 'Kundenlogo',p.get('fileName') or '–','Vektor','Skalierbar','Vektor',p.get('note') or ''])
+   continue
   dpi=f"{p['effectiveDpi']} dpi" if isinstance(p.get('effectiveDpi'),(int,float)) else 'offen'
   if p.get('targetDpi'):dpi+=f" (Soll {p['targetDpi']})"
   prows.append([p.get('label') or p.get('fieldId') or '–',p.get('fileName') or '–',f"{p.get('width')} × {p.get('height')} px",dpi,('ampel',p.get('status','offen')),p.get('note') or ''])
- sheet.table([('Feld',70),('Datei (fotos/)',130),('Pixel',80),('Effektive Auflösung',100),('Ampel',55),('Vermerk',88)],prows,limit_y=H-150,empty='Keine Kundenfotos')
+ has_vector=any(p.get('kind')=='vector-logo' for p in s.get('photos') or [])
+ sheet.table([('Feld',70),('Datei' if has_vector else 'Datei (fotos/)',130),('Art / Pixel' if has_vector else 'Pixel',80),('Effektive Auflösung',100),('Status' if has_vector else 'Ampel',55),('Vermerk',88)],prows,limit_y=H-150,empty='Keine Kundenfotos')
  # Fertigungsprofil
  sheet.heading('Fertigungsprofil')
  mirror=profile.get('mirror');mirror_text='ja' if mirror is True else 'nein' if mirror is False else 'offen'

@@ -1,3 +1,4 @@
+import {designPaintOrder} from '../platform/sources/app/shared/models/design-layer-order.mjs';
 import {doorbellSeparations} from './doorbell-artwork.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
 import {photoColorMode} from '../platform/sources/app/shared/models/photo-color.mjs';
@@ -7,6 +8,7 @@ import {readReviewPackage,digest} from './review-package.mjs';
 import {NATIVE_REVIEW,NATIVE_REVIEW_SCHEMAS} from './native-review-schema.mjs';
 import {validateProductDesign} from './product-model.mjs';
 import {prepareCustomerPhoto} from './customer-photo.mjs';
+import {customerVectorLogoFragment} from './customer-vector-logo-media.mjs';
 import {artworkViewport} from '../configurator/variant-m/print-geometry.mjs';
 import {photoPlacement} from '../configurator/variant-m/photo-position-model.mjs';
 import {photoShape,photoClip,photoMaskURL} from '../platform/sources/app/shared/models/photo-shape.mjs';
@@ -38,8 +40,12 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfac
  const layered=isLayeredDoorbell(config);
  if(config.doorbell&&!layered)fail('Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.');
  const native=manifest.schema===NATIVE_REVIEW;
- if(saved.schema!==(native?'gravuru-native-review-input/v1':'gravuru-acrylic-review-input/v1')||native!==(['slate','steel'].includes(config.profile.material.kind)||layered)||saved.profileRevision!==config.profile.revision||manifest.product.id!==config.profile.id)fail('Die gesicherte Produktrevision ist nicht eindeutig.');
- const design=validateProductDesign(saved.product,state.design,{options:state.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
+ if(saved.schema!==(native?'gravuru-native-review-input/v1':'gravuru-acrylic-review-input/v1')||native!==(['slate','steel'].includes(config.profile.material.kind)||!!config.familyAcrylic||layered)||saved.profileRevision!==config.profile.revision||manifest.product.id!==config.profile.id)fail('Die gesicherte Produktrevision ist nicht eindeutig.');
+ // Profile fonts were frozen at checkout after the original product document.
+ // Validate against those hash-verified paths, just like validateAcrylicReview;
+ // never resolve a missing font from today's library or the browser.
+ const document={...saved.product,config:{...saved.product.config,localResources:{...saved.product.config.localResources,fonts:{...saved.product.config.localResources?.fonts,...config.localResources.fonts}}}};
+ const design=validateProductDesign(document,state.design,{options:state.options,fonts:config.localResources.fonts,motifs:config.localResources.motifs});
  if(surfaceId!=='front'&&!(surfaceId==='back'&&hasBack(config.profile)))fail('Dieses Produkt hat keine solche Seite.');
  const layers=layered?doorbellSeparations(config,state.options):null;
  if(layers){if(surfaceId!=='front')fail('Die Funkklingel wird in einer gemeinsamen Vorderseitenregistrierung gefertigt.');let frozen;try{frozen=JSON.parse(files.get('funkklingel-fertigung.json'));}catch{fail('Die gesicherten Funkklingelkonturen fehlen.');}if(JSON.stringify(frozen)!==JSON.stringify(layers))fail('Die gesicherten Funkklingelkonturen stimmen nicht mit der Produktrevision überein.');}
@@ -47,19 +53,24 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfac
  if(geometry.widthMm!==manifest.product.widthMm||geometry.heightMm!==manifest.product.heightMm)fail('Das gesicherte Druckformat stimmt nicht überein.');
  const maskFor=(o,id)=>{const bytes=o.photoMaskAssetId&&files.get('quellen/'+o.photoMaskAssetId+'-vorschau.svg');if(o.photoShape==='template'&&!bytes)fail('Original-Fotomaske fehlt im gesicherten Stand.');const clip=photoClip(o,id,bytes?dataSvg(bytes):undefined);clip.defs=clip.defs.replace('<mask ',`<mask data-mask-scale="${viewport.scale}" `);return clip;};
  const transform=o=>`translate(${number(viewport.x)} ${number(viewport.y)}) scale(${number(viewport.scale)}) translate(${o.x} ${o.y}) rotate(${o.rotation||0})`;
- for(const [index,o] of design.objects.entries()){
+ for(const [index,o] of designPaintOrder(design).map(o=>[design.objects.indexOf(o),o])){
   if(o.uxHidden||isGuideObject(o))continue; // Ü6.1: Hilfsebenen sind Vorschau, nie Fertigung
   if(objectSurface(o)!==surfaceId)continue; // Ü15.1: je Fläche eine eigene Datei
   const field='native-'+index,color=engraving?'#000000':elementColor(config.profile,o);let body='';
   if(o.type==='text'){body=textPaths(o,config.localResources.fonts);if(!body&&o.text.trim())fail('Gesicherte Schriftpfade fehlen.');textFields.push(field);}
   else if(o.uxUploadId){
    const entry=manifest.photos.find(p=>p.uploadId===o.uxUploadId);if(!entry)fail('Ein Originalbild fehlt im gesicherten Stand.');
+   if(entry.kind==='vector-logo'||o.uxVectorLogo){
+    const logo=customerVectorLogoFragment(entry,o,files);
+    body=`<svg x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" viewBox="0 0 ${logo.width} ${logo.height}" preserveAspectRatio="xMidYMid meet">${logo.fragment}</svg>`;
+   }else{
    const path=entry.edited?.path||entry.path,bytes=files.get(path);if(!bytes)fail('Die gespeicherte Bildfassung fehlt.');
    const photo=await prepareCustomerPhoto(bytes.toString('base64')),p=photoPlacement(o,photo),clip='native-photo-'+index;
    const image=`<g data-photo-pan="${field}"><image href="data:image/png;base64,${photo.preview.toString('base64')}" x="${o.type==='photoSlot'?p.x:-o.w/2}" y="${o.type==='photoSlot'?p.y:-o.h/2}" width="${o.type==='photoSlot'?p.w:o.w}" height="${o.type==='photoSlot'?p.h:o.h}" preserveAspectRatio="xMidYMid meet"${o.type==='photoSlot'?` transform="rotate(${p.angle} ${p.cx} ${p.cy})"`:''}/></g>`;
    const mask=maskFor(o,clip);
    body=o.type==='photoSlot'?`<defs>${mask.defs}</defs><g ${mask.attribute}>${image}</g>`:image;
    photos.push({fieldId:field,bytes:bytes.toString('base64'),width:photo.width,height:photo.height,...nativePhotoTreatment(config.profile,o,{edited:!!entry.edited,engraving}),...(o.uxUploadKind==='logo'&&o.uxLogoTint?{nativeTint:color}:{}),sourcePath:path});photoFields.push(field);
+   }
   }else if(o.type==='photoSlot'){
    const example=config.localResources.photoExamples?.find(e=>e.designId===design.id&&e.slotId===o.id);if(o.required&&!example)fail('Erforderliches eigenes Foto fehlt.');if(!example)continue;
    const bytes=files.get('quellen/'+example.assetId+'-vorschau.svg');if(!bytes)fail('Beispielfoto fehlt im gesicherten Stand.');const clip='native-example-'+index,mask=maskFor(o,clip);
@@ -87,7 +98,7 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfac
   parts.push(`<g data-field="${field}" transform="${transform(o)}" fill="${esc(color)}">${body}</g>`);
  }
  if(design.marks?.length)fail('Diese Vorlage enthält noch nicht übernommene Gestaltungslinien. Bitte vor der Fertigung prüfen.');
- const clip=engraving?`<defs><clipPath id="native-engraving-contour"><path d="${geometry.contours.map(c=>c.d).join(' ')}" clip-rule="evenodd"/></clipPath></defs>`:'';
+ const clip=engraving?`<defs><clipPath id="native-engraving-contour"><path d="${geometry.contours.filter(c=>c.role==='outer').map(c=>c.d).join(' ')}" clip-rule="evenodd"/></clipPath></defs>`:'';
  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${geometry.widthMm}mm" height="${geometry.heightMm}mm" viewBox="0 0 ${geometry.widthMm} ${geometry.heightMm}">${clip}<g data-native-design="true"${engraving?' clip-path="url(#native-engraving-contour)"':''}>${parts.join('')}</g></svg>`;
  return {files,manifest,svg,geometry,...(layers?{doorbellLayers:layers}:{}),geometrySha256:digest(JSON.stringify(geometry)),photos,textFields,photoFields,surfaceId,surfaces:producedSurfaces(config.profile,design.objects),mirrorFor:front=>surfaceMirror(config,surfaceId,front)};
 }

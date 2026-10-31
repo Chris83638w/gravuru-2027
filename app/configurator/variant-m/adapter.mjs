@@ -1,9 +1,10 @@
+import {updateBackingPreviewViewport} from './backing-preview-viewport.mjs';
 import {contourPathWithHoles} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
 import {contourGuides} from './contour-guides.mjs';
 import {spacerPreview,screwPreview,keepoutPreview,optionTileIcon,optionTilePrice} from './option-media.mjs';
 import {designAreaPreview} from './design-area.mjs';
 import {customerMotifs} from './customer-motifs.mjs';
-import {studioSvg} from '../../platform/sources/app/shared/models/studio-svg.mjs';
+import {studioSvg,universalPreviewViewport} from '../../platform/sources/app/shared/models/studio-svg.mjs';
 import {surfacePreview,embedSurface,scenePreview,previewSurfaceUrl,plateClipMarkup} from './material-surface.mjs';
 import {physicalGeometry} from './print-geometry.mjs';
 import {decorateEmptyPhotoSlots} from './photo-placeholder.mjs';
@@ -19,7 +20,6 @@ import {objectSurface, surfaceGeometry} from './surfaces.mjs';
 import {designResourcesReady} from './doorbell-lazy-designs.mjs';
 import {isLayeredDoorbell} from './doorbell-selection.mjs';
 import {doorbellOptionState,updateDoorbellViewport} from './doorbell-ui.mjs';
-import {installDoorbellPresentation} from './doorbell-presentation.mjs';
 
 const clone = value => structuredClone(value);
 const svgDocument = svg => new DOMParser().parseFromString(svg, 'image/svg+xml');
@@ -37,7 +37,7 @@ export function installUniversal(configInput) {
   const profile = (surface = activeSurface()) => { const sp = selectedProfile(config, options); return surface === 'back' ? {...sp, geometry:surfaceGeometry(sp.geometry, 'back')} : sp; };
   const motifs = () => customerMotifs(config, el.motifs, el.catalog);
   const svg = (design, {guides=false, selected='', handles=false, keepout=false, surface='front', screen=false, bare=false} = {}) => {
-    const visible={...design,objects:design.objects.filter(o=>!o.uxHidden&&objectSurface(o)===surface)};
+    const visible={...design,textOnTop:true,objects:design.objects.filter(o=>!o.uxHidden&&objectSurface(o)===surface)};
     let result=surfacePreview(studioSvg(profile(surface), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),bare?'':screen?previewSurfaceUrl(config.materialSurface):config.materialSurface,profile(surface).geometry);
     if(config.reviewOnly){const doc=svgDocument(result);for(const o of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group){for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){rect.setAttribute('fill','none');rect.setAttribute('stroke-dasharray','2 2');}for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);}}result=doc.documentElement.outerHTML;}
     if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
@@ -86,7 +86,7 @@ export function installUniversal(configInput) {
         const image = new Image(); image.src = url; await image.decode();
         const {width,height}=profile().geometry;
         const canvas = document.createElement('canvas'), scale = 1600 / Math.max(width, height);
-        const padding=dynamicDoorbell?16:Math.max(width,height)*.07;
+        const padding=p.backingPreview?-2*universalPreviewViewport(profile())[0]:dynamicDoorbell?16:Math.max(width,height)*.07;
         canvas.width = Math.round((width + padding) * scale);
         canvas.height = Math.round((height + padding) * scale);
         canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
@@ -157,7 +157,6 @@ export function installUniversal(configInput) {
     fieldBox.addEventListener('input',e=>{const key=e.target.dataset.mField;if(!key||e.target.type==='checkbox'||e.target.tagName==='SELECT')return;changeOption(key,fieldInput(e.target),{record:false});});
     fieldBox.addEventListener('change',e=>{const key=e.target.dataset.mField;if(!key)return;changeOption(key,fieldInput(e.target),{record:e.target.type==='checkbox'||e.target.tagName==='SELECT'});});
     options={...Object.fromEntries((p.optionGroups||[]).map(g=>[g.id,g.defaultValueId])),...(dynamicDoorbell?{position:config.doorbell.defaultPosition||'standard'}:{})};
-    const updateDoorbellChoices=installDoorbellPresentation({el,config,picks,pictures});
     for(const select of picks.querySelectorAll('select[data-m-option]')) select.value=options[select.dataset.mOption];
     picks.addEventListener('change',e=>{if(!e.target.dataset.mOption)return;changeOption(e.target.dataset.mOption,e.target.value);});
     // Sichtbarkeit (visibleIf) und Feldwerte aus dem Zustand; unsichtbare Gruppen/Felder werden ausgeblendet.
@@ -294,6 +293,9 @@ export function installUniversal(configInput) {
       const d=current(), visible=new Set(filteredDesigns(p.designs,filters).map(d=>d.id));
       const physical=physicalGeometry(config,{mOptions:options});
       if(dynamicDoorbell)updateDoorbellViewport(el,physical);
+      // The legacy shell keeps only SVG children. Restore the outer viewport so the
+      // backing plate is fully visible; front geometry and pointer coordinates stay in mm.
+      updateBackingPreviewViewport(el,profile());
       $('.stage-top>span').textContent=(config.doorbell?'Edelstahl mit Acrylglasauflage':processing.name.replace('Gravur auf ',''))+' · '+physical.width+' × '+physical.height+' mm';
       if(config.steelFormats){for(const [selector,value] of [['.dimension-x span',physical.width],['.dimension-y span',physical.height]]){const node=$(selector);if(node)node.textContent=new Intl.NumberFormat('de-DE',{maximumFractionDigits:3}).format(value)+' mm';}}
       $('.c-preview-caption>span').textContent='';
@@ -310,7 +312,6 @@ export function installUniversal(configInput) {
       $('[data-setting=guides]').closest('.check-guide').hidden=false;
       for(const select of picks.querySelectorAll('select[data-m-option]'))select.value=options[select.dataset.mOption];
       updateOptionVisibility();
-      updateDoorbellChoices(options);
       for(const button of pictures.querySelectorAll('[data-picture-option]'))button.setAttribute('aria-pressed',String(options[button.dataset.pictureGroup]===button.dataset.pictureOption));
       try{
         const price=config.basePriceCents===null?null:quote(config,el.state.objects,el.state.designId,options,quantity);
@@ -351,5 +352,4 @@ export function hardenDoorbell(el) {
   const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args);update();return result;};
   update();
 }
-
 

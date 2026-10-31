@@ -163,4 +163,3 @@ export function validateDoorbellDefinition(c){
  return c;
 }
 
-

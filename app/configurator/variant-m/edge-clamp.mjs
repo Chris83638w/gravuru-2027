@@ -7,6 +7,7 @@
 import {transformedCorners,fitsSurface} from './usability-model.mjs';
 import {embeddedMotifFits} from '../../platform/sources/app/shared/models/embedded-motif-fit.mjs';
 import {objectSurface} from './surfaces.mjs';
+import {textOutlineFits} from '../../platform/sources/app/shared/models/text-outline-fit.mjs';
 
 export function boundingSize(o){
   const a=(Number(o.rotation)||0)*Math.PI/180,w=Math.max(0,Number(o.w)||0),h=Math.max(0,Number(o.h)||0);
@@ -36,10 +37,10 @@ export function clampToPlate(o,width,height,margin=0,bounds=null){
 
 // A contour move is limited with the same polygon test as fitting and validation.
 // No bounding rectangle or independent offset calculation is used here.
-export function clampToContour(o,geometry,bounds=null,previous=null){
+export function clampToContour(o,geometry,bounds=null,previous=null,fonts){
  if(!o||o.uxHidden||o.locked||o.uxLocked||o.role==='guide'||o.uxDecoration&&o.customerEditable===false)return false;
  const box=bounds||{x:-o.w/2,y:-o.h/2,width:o.w,height:o.h};
- const fits=position=>fitsSurface({...o,...position},box,geometry);
+ const fits=position=>fitsSurface({...o,...position},box,geometry)||textOutlineFits({...o,...position},geometry,fonts)===true;
  if(fits(o))return false;
  const anchor=[previous,{x:geometry.width/2,y:geometry.height/2}].find(p=>p&&fits(p));
  if(!anchor)return false; // Oversized objects remain visibly invalid; never invent a fitting shape.
@@ -92,8 +93,8 @@ export function installEdgeClamp(el,{profile=null,motifs=[]}={}){
       if(cache?.geometryKey!==key){cache={geometryKey:key,positions:new Map()};surfacePositions.set(active,cache);}
       const objects=s.objects.filter(o=>objectSurface(o)===active),validPositions=cache.positions;
       const ids=new Set(objects.map(o=>o.id));for(const id of validPositions.keys())if(!ids.has(id))validPositions.delete(id);
-      for(const o of objects){if(unchangedStart(o,s,geometry))continue;const bounds=glyphs(o);clampToContour(o,geometry,bounds,validPositions.get(o.id));
-        if(fitsSurface(o,bounds||{x:-o.w/2,y:-o.h/2,width:o.w,height:o.h},geometry))validPositions.set(o.id,{x:o.x,y:o.y});}
+      for(const o of objects){if(unchangedStart(o,s,geometry))continue;const bounds=glyphs(o);clampToContour(o,geometry,bounds,validPositions.get(o.id),self.fontData);
+        if(fitsSurface(o,bounds||{x:-o.w/2,y:-o.h/2,width:o.w,height:o.h},geometry)||textOutlineFits(o,geometry,self.fontData)===true)validPositions.set(o.id,{x:o.x,y:o.y});}
     }else for(const o of s.objects)if(!unchangedStart(o,s,geometry))clampToPlate(o,s.width,s.height,0,glyphs(o));
   };
   const render=el.render;

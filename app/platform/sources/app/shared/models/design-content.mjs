@@ -3,6 +3,7 @@ import {setTextSize} from './doorbell-preview.mjs';
 import {PROCESSING_PROFILES} from './processing-profiles.mjs';
 import {contourContainsPoint,contourContainsPolygon,contourObjectCorners,surfaceGeometry,ellipseEdgeDistance} from './contour-geometry.mjs';
 import {embeddedMotifFits} from './embedded-motif-fit.mjs';
+import {textOutlineFits} from './text-outline-fit.mjs';
 import {gunzipSync,strFromU8} from '../vendor/fflate-0.8.3.mjs';
 // These limits match the supported customer text/motif draft format.
 // maxDesigns: Vorlagen je Produkt (Chris 23.10.2026: 60 → 100, wie MAX_FORM_DESIGNS in der Werkstatt).
@@ -66,12 +67,14 @@ export function objectIssue(o,profile){
 }
 // Validate an object against the original product profile. Front is unchanged;
 // back uses the same physical reflection as preview and production.
-export function surfaceObjectIssue(object,profile,{motifs=[]}={}){
+export function surfaceObjectIssue(object,profile,{motifs=[],fonts}={}){
  const oriented=object?.surfaceId==='back'?{...profile,geometry:surfaceGeometry(profile.geometry,'back')}:profile;
  const issue=objectIssue(object,oriented);
  // A passing box remains the cheap prefilter. Only a geometric failure of a
- // known embedded template motif may be replaced by its actual painted paths.
- if(issue&&profile.kind!=='layered-doorbell'&&['Element ragt über die Gestaltungsfläche hinaus.','Element ragt über die ovale Gestaltungsfläche hinaus.','Element ragt über die Kontur-Gestaltungsfläche hinaus.'].includes(issue)){
+ // text or known embedded motif may be replaced by its actual painted paths.
+ if(issue&&profile.kind!=='layered-doorbell'&&profile.doorbellSchema!==DOORBELL_SCHEMA&&['Element ragt über die Gestaltungsfläche hinaus.','Element ragt über die ovale Gestaltungsfläche hinaus.','Element ragt über die Kontur-Gestaltungsfläche hinaus.','Element ragt über die gerundete Gestaltungsfläche hinaus.'].includes(issue)){
+  const geometry={...oriented.geometry,safeMarginMm:artworkMargin(oriented),holes:[]};
+  if(textOutlineFits(object,geometry,fonts)===true)return '';
   const resources=typeof motifs==='function'?motifs():motifs;
   if(embeddedMotifFits(object,{...oriented.geometry,safeMarginMm:artworkMargin(oriented),holes:[]},resources.find(m=>m.key===object?.motif))===true)return '';
  }

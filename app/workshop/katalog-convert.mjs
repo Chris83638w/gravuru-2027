@@ -343,7 +343,7 @@ export function templateFit(template,family,size,fonts,{motifs=[]}={}){
  const process=familyProcess(family),issues=[];
  for(const o of template.objects){
   const measured=o.type==='text'?measureText(structuredClone(o),fonts):o;
-  const issue=customerLayoutIssue(measured,profile,{motifs});if(issue)issues.push((o.fieldKey||o.id)+': '+issue);
+  const issue=customerLayoutIssue(measured,profile,{motifs,fonts});if(issue)issues.push((o.fieldKey||o.id)+': '+issue);
  }
  if(issues.length)return {status:'passt nicht',issues};
  const review=[];

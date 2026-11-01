@@ -1,3 +1,7 @@
+## 01.11.2026 – Codex: Issue 85 Tierbestand als prüfbarer Zwischenstand
+
+16 Bestandslayouts plus zwei neue Designs, sechs getrennte Formstudien; 13 vorhandene Türschild-Varianten zugeordnet. 72 echte Zielvorschauen / 720 Größenprüfungen: 32 passt, 40 prüfen, kein harter Passungsfehler. Schrift-/Formfragen und Acryl-PR 11 offen, Freigaben null. Vorherige Rasse-Designs unverändert; kein Import/Live-Schritt. [Lieferung, Prüfung und nächste Schritte](docs/handoffs/2026-11-01-issue85-tierbestand.md).
+
 ## 31.10.2026 – Codex: Issue 85 Quellenprüfung, Aufteilung offen
 
 Nachrichten 1–4 vollständig gelesen. Rund-Auftrag läuft bereits parallel im Chat „Firmenschilder“; dessen Arbeit unverändert. Hier Quelleninventar für 163 Tier-/Hinweis-/Tür-/Hausnummern-Datensätze vorbereitet, mit festen Katalog-Quellen, IDs und Prüfsummen. TR-Kürzel im vorhandenen Serienabgleich belegt. Keine Designübernahme, keine Freigabe und kein Live-Schritt; Issue 85 nicht abgeschlossen. Aufteilung für ergänzende Hunde-/Katzen-Bearbeitung im Chat angefragt. [Quellenprüfung und nächster Schritt](docs/handoffs/2026-10-31-issue85-bestandspruefung.md).

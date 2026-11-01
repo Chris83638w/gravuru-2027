@@ -29,13 +29,7 @@ export function installDoorbellPresentation({el,config,picks,pictures}){
  el.setAttribute('data-doorbell-presentation','');
  const style=document.createElement('style');
  style.textContent=`
- :host([data-doorbell-presentation]) .doorbell-option-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;border-bottom:1px solid #dce0e4;margin:0 0 14px}
- :host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .doorbell-option-tabs button{min-height:44px!important;padding:8px 5px!important;font-size:13px!important;line-height:1.3!important;border:0!important;border-radius:6px 6px 0 0!important;background:transparent!important;color:#4c5359!important;box-shadow:none!important}
- :host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .doorbell-option-tabs button[aria-selected="true"]{background:#f0f2f3!important;color:#20272c!important;box-shadow:inset 0 -2px #485761!important;font-weight:600!important}
- :host([data-doorbell-presentation]) .doorbell-option-tabs button:focus-visible{outline:2px solid #526573;outline-offset:2px}
- :host([data-doorbell-presentation]) .m-option-pictures[data-option-section="layout"]>[data-choice-group]:not([data-choice-group="format"]):not([data-choice-group="position"]),
- :host([data-doorbell-presentation]) .m-option-pictures[data-option-section="appearance"]>[data-choice-group]:not([data-choice-group="frame"]):not([data-choice-group="color"]),
- :host([data-doorbell-presentation]) .m-option-pictures[data-option-section="mounting"]>[data-choice-group]:not([data-choice-group="mounting"]){display:none!important}
+ :host([data-doorbell-presentation]) .m-option-pictures{display:block}
  :host([data-doorbell-presentation]) .m-options>label,
  :host([data-doorbell-presentation]) .m-option-fields [data-m-field-row="position"]{display:none!important}
  :host([data-doorbell-presentation]) .m-option-pictures>div{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 18px}
@@ -68,21 +62,7 @@ export function installDoorbellPresentation({el,config,picks,pictures}){
  :host([data-doorbell-presentation]) .m-option-pictures button:focus-visible{outline:3px solid #235f48;outline-offset:3px}
  `;
  el.shadowRoot.append(style);let previous='';
- const sections=[['layout','Format & Position'],['appearance','Rahmen & Farbe'],['mounting','Befestigung']];
- const tabs=document.createElement('nav');tabs.className='doorbell-option-tabs';tabs.setAttribute('role','tablist');tabs.setAttribute('aria-label','Ausführung auswählen');
- tabs.innerHTML=sections.map(([key,label])=>'<button type="button" role="tab" id="doorbell-option-'+key+'" data-doorbell-option-tab="'+key+'" aria-controls="doorbell-options-panel">'+esc(label)+'</button>').join('');
- pictures.before(tabs);pictures.id='doorbell-options-panel';pictures.setAttribute('role','tabpanel');
- function showSection(key,focus=false){
-  pictures.dataset.optionSection=key;pictures.setAttribute('aria-labelledby','doorbell-option-'+key);
-  for(const b of tabs.children){const active=b.dataset.doorbellOptionTab===key;b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;if(active&&focus)b.focus();}
- }
- tabs.addEventListener('click',e=>{const b=e.target.closest('[data-doorbell-option-tab]');if(b)showSection(b.dataset.doorbellOptionTab);});
- tabs.addEventListener('keydown',e=>{
-  if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;
-  const i=sections.findIndex(([key])=>key===e.target.dataset.doorbellOptionTab);if(i<0)return;
-  e.preventDefault();e.stopPropagation();const next=e.key==='Home'?0:e.key==='End'?sections.length-1:(i+(e.key==='ArrowRight'?1:-1)+sections.length)%sections.length;showSection(sections[next][0],true);
- });
- showSection('layout');
+ pictures.id='doorbell-options-panel';pictures.setAttribute('role','group');pictures.setAttribute('aria-label','Ausführung auswählen');
  return options=>{
   const signature=JSON.stringify(['format','position','frame','color','mounting'].map(k=>options[k]));
   if(previous===signature)return;previous=signature;

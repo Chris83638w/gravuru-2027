@@ -11,8 +11,8 @@ DEST=ROOT/'docs/handoffs/grabkreuze-hunde-20261101'
 SERIES=CAT/'designs/grabkreuze-hunde-11x20'
 fontfiles={f['name']:CAT/f['file'] for f in json.loads((CAT/'schriften/schriften.json').read_text(encoding='utf-8'))['fonts'] if f.get('file')}
 data=[json.loads(p.read_text(encoding='utf-8')) for p in SERIES.glob('*/design.json')]
-assert len(data)==20
-assert Counter(d['reviewGroup'] for d in data)=={'A':8,'B':4,'C':5,'D':3}
+assert len(data)==25
+assert Counter(d['reviewGroup'] for d in data)=={'A':8,'B':4,'C':5,'D':8}
 assert {d['sourceKey'] for d in data if d['reviewGroup']=='A'}=={f'KZ-A-D{n}' for n in [0,1,41,42,46,48,53,55]}
 assert {d['sourceKey'] for d in data if d['reviewGroup']=='B'}=={f'KZUV-A-D{n}' for n in [26,27,32,33]}
 fonts={};caps=[];checks=[]
@@ -49,12 +49,22 @@ for d in data:
  assert bottom<=145.01,(d['id'],bottom)
  checks.append({'id':d['id'],'minCapHeightMm':round(min(dcaps),3),'artworkBottomMm':round(bottom,3),'groundClearanceMm':round(150-bottom,3),'fonts':d['fonts']})
 native=json.loads((WORK/'native-pruefung.json').read_text(encoding='utf-8'))
-assert len(native)==20 and all(r.get('fit',{}).get('status')=='passt' and r['nativeGround'] for r in native)
+assert len(native)==25 and all(r.get('fit',{}).get('status')=='passt' and r['nativeGround'] for r in native)
 assert all(len(r['reviewFit']['sizes'])==1 for r in native),'No checks of unrequested sizes'
 jpg=DEST/'kontaktbogen-schwarz-11x20.jpg';assert jpg.stat().st_size<=2_000_000
 motifs=Counter(m for d in data for m in d['motifKinds'] if not m.startswith('ohne Motiv'))
 assert len(motifs)>=8 and max(motifs.values())<=3
 assert len({d['layout'] for d in data})>=5
-report={'scope':'Ausschließlich Schwarz 11×20; keine weiteren Varianten','groups':dict(Counter(d['reviewGroup'] for d in data)),'designs':20,'nativeFits':{'passt':20,'prüfen':0,'passt nicht':0},'fontsUsed':sorted(fonts),'minimumCapMm':round(min(caps),3),'motifCompositions':dict(motifs),'motifCountingNote':'Gezählt werden unterscheidbare Original-Motivzeichnungen/-gruppen, nicht Oberbegriffe. Die Pflichtliste selbst enthält sechs Gestaltungen mit Pfoten/Pfotenspuren; diese bleiben erhalten. Hund im Herz und Pfotenherz erscheinen je zweimal.','layoutEvidence':['D301: senkrechter Name, Daten außen','D205/D302: Spruch quer, Name im Stamm','D0/D41: Datum im Querbalken, Motive seitlich/oben','D42: lange Pfotenspur im Stamm','D203: Regenbogen unten','D303: Name links, Hund rechts'],'jpgBytes':jpg.stat().st_size,'browserCheck':'Offen; übernimmt Claude nach Designabnahme. JPG ist gerasterte native Zielvorschau, kein Browser-Screenshot.','fontDecisionPending':next(d['fontDecisionPending'] for d in data if d.get('fontDecisionPending')),'checks':checks}
+margin=json.loads((WORK/'randabstand-pruefung.json').read_text(encoding='utf-8'))
+assert len(margin['designs'])==25 and all(d['passes2mm'] and d['minimumCertifiedMarginMm']>=2 for d in margin['designs'])
+assert not any(d.get('fontDecisionPending') for d in data)
+clarissa=next(d for d in data if d['id'].endswith('-D42'))
+assert any(t['font']=='Montserrat' and 'Für immer' in t['text'] for t in clarissa['texts'])
+bruno=next(d for d in data if d['id'].endswith('-D205'));name=next(t for t in bruno['texts'] if t['text']=='Bruno')
+assert name['anchorMm'][0]==55 and 37<name['anchorMm'][1]<74 and name['sizePt']==max(t['sizePt'] for t in bruno['texts'])
+assert bruno['motifs'][0]['box'][3]>=29.99
+new=[d for d in data if int(d['id'].split('-D')[-1]) in range(304,309)]
+assert len(new)==5 and all(d['source']=='ohne Vorlage' and d['ownMotifId'] for d in new)
+report={'scope':'Ausschließlich Schwarz 11×20; keine weiteren Varianten','groups':dict(Counter(d['reviewGroup'] for d in data)),'designs':25,'nativeFits':{'passt':25,'prüfen':0,'passt nicht':0},'fontsUsed':sorted(fonts),'minimumCapMm':round(min(caps),3),'minimumCertifiedContourMarginMm':min(d['minimumCertifiedMarginMm'] for d in margin['designs']),'requiredContourMarginMm':2,'motifCompositions':dict(motifs),'motifCountingNote':'Gezählt werden unterscheidbare Original-Motivzeichnungen/-gruppen, nicht Oberbegriffe. Die Pflichtliste selbst enthält sechs Gestaltungen mit Pfoten/Pfotenspuren; diese bleiben erhalten. Hund im Herz und Pfotenherz erscheinen je zweimal.','layoutEvidence':['D301: senkrechter Name, Daten außen','D302: Spruch quer, Name im Stamm','D0/D41: Datum im Querbalken, Motive seitlich/oben','D42: lange Pfotenspur im Stamm','D203: Regenbogen unten','D303: Name links, Hund rechts','D307: Feder und Text nebeneinander im Stamm'],'jpgBytes':jpg.stat().st_size,'browserCheck':'Offen; übernimmt Claude nach Designabnahme. JPG ist gerasterte native Zielvorschau ohne Rand-Hilfslinien, kein Browser-Screenshot.','fontDecision':next(d['fontDecision'] for d in data if d.get('fontDecision')),'checks':checks}
 (DEST/'nachauftrag-pruefung.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 print(json.dumps({k:report[k] for k in ['designs','nativeFits','minimumCapMm','jpgBytes']},ensure_ascii=False))

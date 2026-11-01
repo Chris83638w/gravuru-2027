@@ -4,11 +4,11 @@
     "A": 8,
     "B": 4,
     "C": 5,
-    "D": 3
+    "D": 8
   },
-  "designs": 20,
+  "designs": 25,
   "nativeFits": {
-    "passt": 20,
+    "passt": 25,
     "prüfen": 0,
     "passt nicht": 0
   },
@@ -16,23 +16,34 @@
     "Alex Brush",
     "Allura",
     "Ashley",
+    "Bellefair",
+    "Caveat",
     "Cinzel",
     "Cormorant Garamond",
+    "Dancing Script",
     "Dream Orphans",
     "Great Vibes",
     "Homage",
     "Italianno",
     "Josefin Sans",
+    "Kaushan Script",
+    "Lato",
     "Libre Baskerville",
     "Lora",
+    "Montserrat",
     "Montserrat Light",
+    "Oswald",
     "Parisienne",
+    "Playfair Display",
     "Roboto Slab",
+    "Rochester",
     "Rounded Elegance",
     "Sacramento",
     "Tangerine"
   ],
   "minimumCapMm": 3.1,
+  "minimumCertifiedContourMarginMm": 2.114,
+  "requiredContourMarginMm": 2,
   "motifCompositions": {
     "Hund im Herz": 2,
     "Pfotenherz": 2,
@@ -51,6 +62,11 @@
     "Halsband mit Medaillon": 1,
     "Herzleine": 1,
     "Schlafender Hund": 1,
+    "Lieblingsball": 1,
+    "Futternapf": 1,
+    "Spielseil mit Knoten": 1,
+    "Erinnerungsfeder": 1,
+    "Hundehütte": 1,
     "Pfotenspur": 1,
     "Pfotenpaar": 1,
     "Rosenpaar": 1
@@ -58,18 +74,21 @@
   "motifCountingNote": "Gezählt werden unterscheidbare Original-Motivzeichnungen/-gruppen, nicht Oberbegriffe. Die Pflichtliste selbst enthält sechs Gestaltungen mit Pfoten/Pfotenspuren; diese bleiben erhalten. Hund im Herz und Pfotenherz erscheinen je zweimal.",
   "layoutEvidence": [
     "D301: senkrechter Name, Daten außen",
-    "D205/D302: Spruch quer, Name im Stamm",
+    "D302: Spruch quer, Name im Stamm",
     "D0/D41: Datum im Querbalken, Motive seitlich/oben",
     "D42: lange Pfotenspur im Stamm",
     "D203: Regenbogen unten",
-    "D303: Name links, Hund rechts"
+    "D303: Name links, Hund rechts",
+    "D307: Feder und Text nebeneinander im Stamm"
   ],
-  "jpgBytes": 1077218,
-  "browserCheck": "Offen; übernimmt Claude nach Designabnahme. JPG ist gerasterte native Zielvorschau, kein Browser-Screenshot.",
-  "fontDecisionPending": {
+  "jpgBytes": 1259583,
+  "browserCheck": "Offen; übernimmt Claude nach Designabnahme. JPG ist gerasterte native Zielvorschau ohne Rand-Hilfslinien, kein Browser-Screenshot.",
+  "fontDecision": {
     "original": "Vista La Diva",
-    "proposal": "Homage",
-    "issueComment": 6561540397
+    "replacement": "Homage",
+    "decided": "2026-11-01",
+    "by": "Chris",
+    "issueComment": 6562403258
   },
   "checks": [
     {
@@ -85,8 +104,8 @@
     {
       "id": "KZ-A-11x20-D1",
       "minCapHeightMm": 3.2,
-      "artworkBottomMm": 121.18,
-      "groundClearanceMm": 28.82,
+      "artworkBottomMm": 134.45,
+      "groundClearanceMm": 15.55,
       "fonts": [
         "Allura"
       ]
@@ -113,8 +132,8 @@
     {
       "id": "KZ-A-11x20-D132",
       "minCapHeightMm": 4.5,
-      "artworkBottomMm": 136.395,
-      "groundClearanceMm": 13.605,
+      "artworkBottomMm": 133.313,
+      "groundClearanceMm": 16.687,
       "fonts": [
         "Allura",
         "Great Vibes"
@@ -171,9 +190,9 @@
     },
     {
       "id": "KZ-A-11x20-D205",
-      "minCapHeightMm": 3.2,
-      "artworkBottomMm": 138.0,
-      "groundClearanceMm": 12.0,
+      "minCapHeightMm": 3.3,
+      "artworkBottomMm": 143.0,
+      "groundClearanceMm": 7.0,
       "fonts": [
         "Italianno"
       ]
@@ -207,6 +226,56 @@
       ]
     },
     {
+      "id": "KZ-A-11x20-D304",
+      "minCapHeightMm": 3.498,
+      "artworkBottomMm": 144.325,
+      "groundClearanceMm": 5.675,
+      "fonts": [
+        "Cinzel",
+        "Dancing Script"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D305",
+      "minCapHeightMm": 3.3,
+      "artworkBottomMm": 133.692,
+      "groundClearanceMm": 16.308,
+      "fonts": [
+        "Oswald",
+        "Roboto Slab"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D306",
+      "minCapHeightMm": 3.8,
+      "artworkBottomMm": 141.35,
+      "groundClearanceMm": 8.65,
+      "fonts": [
+        "Caveat",
+        "Kaushan Script"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D307",
+      "minCapHeightMm": 3.2,
+      "artworkBottomMm": 139.275,
+      "groundClearanceMm": 10.725,
+      "fonts": [
+        "Lato",
+        "Playfair Display"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D308",
+      "minCapHeightMm": 3.4,
+      "artworkBottomMm": 140.35,
+      "groundClearanceMm": 9.65,
+      "fonts": [
+        "Bellefair",
+        "Rochester"
+      ]
+    },
+    {
       "id": "KZ-A-11x20-D41",
       "minCapHeightMm": 3.1,
       "artworkBottomMm": 70.859,
@@ -218,11 +287,12 @@
     },
     {
       "id": "KZ-A-11x20-D42",
-      "minCapHeightMm": 4.6,
+      "minCapHeightMm": 4.2,
       "artworkBottomMm": 144.0,
       "groundClearanceMm": 6.0,
       "fonts": [
-        "Homage"
+        "Homage",
+        "Montserrat"
       ]
     },
     {

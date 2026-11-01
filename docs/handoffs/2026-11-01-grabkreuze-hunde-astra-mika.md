@@ -1,4 +1,4 @@
-> **Überholt durch den Nachauftrag.** Aktueller Stand: [20 überarbeitete Designs und ein Kontaktbogen](grabkreuze-hunde-20261101/NACHAUFTRAG.md). Frühere Designbögen und Designnummern in diesem historischen Bericht sind ersetzt.
+> **Überholt durch den Nachauftrag.** Aktueller Stand: [25 überarbeitete Designs und ein Kontaktbogen](grabkreuze-hunde-20261101/NACHAUFTRAG.md). Frühere Designbögen und Designnummern in diesem historischen Bericht sind ersetzt.
 
 # Grabkreuz Acryl – Hunde · Erdteilsperre, Browserabnahme offen
 

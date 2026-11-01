@@ -1,0 +1,28 @@
+✔ confirmed targets control line visibility; theme suggestions add real families without granting any release (130.0183ms)
+✔ material target previews use native surfaces and glyph paths without changing files or neutral private prices (293.8661ms)
+✔ review images can hide margin guides without changing checksums or bypassing margin checks (92.9221ms)
+✔ approval and withdrawal only change the addressed target, keep audit actor and preserve historical global approval (240.8585ms)
+✔ server revalidates raw color, missing fonts and all target sizes; client fit cannot bypass approval (98.1663ms)
+✔ changed source or family after fit rejects the atomic release with conflict (72.3819ms)
+✔ embedded target GET and PATCH use the real session, CSRF and tenant envelope and audit the authenticated actor (665.7734ms)
+✔ missing physical family data remains explicitly open and cannot acquire approval (59.507ms)
+✔ different shape remains previewable as contain but requires its own variant, while explicit sizes are binding (120.0404ms)
+✔ a changed font resource invalidates the viewed target both before review and under the write lock (91.9371ms)
+✔ target size options name the actual family groups and default to the first compatible shape (54.7991ms)
+✔ passing-tile approval requires a checksum and rechecks the actual warning status (176.101ms)
+✔ passing-tile approval preserves the individual write path and blocks missing fonts (145.8298ms)
+✔ dashboard target cache revisions match previews and change with design, family and font sources (94.0551ms)
+✔ dashboard exposes actual form groups including zero compatible designs, counting a master once per group (66.4246ms)
+✔ catalogue ground dimensions propagate for all sizes without changing cut contour or prices; sync adds and removes the rule (392.398ms)
+✔ invalid or incomplete earth dimensions are rejected for every family size and native geometry (3.2803ms)
+✔ exact 5 mm gap is allowed; rotation, back face and drag clamp cannot cross it (2.4692ms)
+✔ painted glyph and embedded motif fallbacks never bypass earth restriction, including cached fits (24.2689ms)
+✔ server review and production retain full-size contour and mirror rear engraving once; invalid customer position is rejected (2863.0693ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3490.8047

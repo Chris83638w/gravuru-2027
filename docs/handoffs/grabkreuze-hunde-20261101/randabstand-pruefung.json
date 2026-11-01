@@ -1,0 +1,1123 @@
+{
+  "requiredMm": 2,
+  "source": "Chris #76 comment 6562491600; supersedes 3 mm",
+  "method": "Binary search of native templateFit (glyph contours, motif paths including stroke, concave contour and rounded corners); conservative lower bound at 0.005 mm search resolution. Ground restriction unchanged.",
+  "designs": [
+    {
+      "id": "KZ-A-11x20-D0",
+      "minimumCertifiedMarginMm": 2.114,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.114,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-2",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.31,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-3",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 17.89,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Tapsy",
+          "minimumCertifiedMarginMm": 5.966,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "* 7.1.2004 -   12.10.2019",
+          "minimumCertifiedMarginMm": 3.452,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D1",
+      "minimumCertifiedMarginMm": 2.631,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.994,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-2",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.994,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-3",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 14.038,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Buffy",
+          "minimumCertifiedMarginMm": 2.807,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2016 – 2020",
+          "minimumCertifiedMarginMm": 7.177,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "Ich bin nicht\ntot, ich tausche\nnur die\nRäume, ich\nleb’ in euch\nund geh’\ndurch eure\nTräume.",
+          "minimumCertifiedMarginMm": 2.631,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D41",
+      "minimumCertifiedMarginMm": 2.465,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 5.654,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Paula",
+          "minimumCertifiedMarginMm": 9.902,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "† 05.04.2021",
+          "minimumCertifiedMarginMm": 2.465,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D42",
+      "minimumCertifiedMarginMm": 2.495,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.495,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Clarissa",
+          "minimumCertifiedMarginMm": 7.783,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "Für immer in unseren Herzen",
+          "minimumCertifiedMarginMm": 4.296,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D46",
+      "minimumCertifiedMarginMm": 4.614,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 4.614,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-2",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 4.614,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Balu",
+          "minimumCertifiedMarginMm": 8.085,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D48",
+      "minimumCertifiedMarginMm": 4.458,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 9.633,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Frieda",
+          "minimumCertifiedMarginMm": 11.015,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "Du warst,",
+          "minimumCertifiedMarginMm": 5.517,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "du bist,",
+          "minimumCertifiedMarginMm": 8.579,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-4",
+          "type": "text",
+          "text": "du bleibst",
+          "minimumCertifiedMarginMm": 4.57,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-5",
+          "type": "text",
+          "text": "im Herzen.",
+          "minimumCertifiedMarginMm": 4.458,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D53",
+      "minimumCertifiedMarginMm": 2.143,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.143,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-2",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.143,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Kira",
+          "minimumCertifiedMarginMm": 3.154,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "Ein Hund\nist wie\nein Herz\nauf vier\nBeinen.",
+          "minimumCertifiedMarginMm": 4.169,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D55",
+      "minimumCertifiedMarginMm": 2.182,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.325,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Rocky",
+          "minimumCertifiedMarginMm": 2.207,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "Es gibt kein",
+          "minimumCertifiedMarginMm": 7.807,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "schöneres Privileg",
+          "minimumCertifiedMarginMm": 2.182,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-4",
+          "type": "text",
+          "text": "als von einem",
+          "minimumCertifiedMarginMm": 6.196,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-5",
+          "type": "text",
+          "text": "Hund geliebt",
+          "minimumCertifiedMarginMm": 5.747,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-6",
+          "type": "text",
+          "text": "worden zu sein.",
+          "minimumCertifiedMarginMm": 5.058,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-7",
+          "type": "text",
+          "text": "* 2004",
+          "minimumCertifiedMarginMm": 10.17,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-8",
+          "type": "text",
+          "text": "† 16.07.2020",
+          "minimumCertifiedMarginMm": 3.256,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D126",
+      "minimumCertifiedMarginMm": 2.27,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.212,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-2",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.924,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Cooper",
+          "minimumCertifiedMarginMm": 12.958,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2006 – 2022",
+          "minimumCertifiedMarginMm": 7.558,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "Der Kopf hat",
+          "minimumCertifiedMarginMm": 2.27,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-4",
+          "type": "text",
+          "text": "verstanden,",
+          "minimumCertifiedMarginMm": 6.054,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-5",
+          "type": "text",
+          "text": "aber das Herz",
+          "minimumCertifiedMarginMm": 2.377,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-6",
+          "type": "text",
+          "text": "will nicht",
+          "minimumCertifiedMarginMm": 7.07,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-7",
+          "type": "text",
+          "text": "begreifen.",
+          "minimumCertifiedMarginMm": 7.456,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D127",
+      "minimumCertifiedMarginMm": 2.48,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Bella",
+          "minimumCertifiedMarginMm": 6.689,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2006 – 2022",
+          "minimumCertifiedMarginMm": 7.26,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "Deine\nkleinen\nPfoten\nhaben große\nSpuren in\nmeinem\nHerzen\nhinterlassen.",
+          "minimumCertifiedMarginMm": 2.48,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D132",
+      "minimumCertifiedMarginMm": 2.465,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 5,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-2",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.496,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-3",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.52,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Moritz",
+          "minimumCertifiedMarginMm": 10.942,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "† 26. April 2024",
+          "minimumCertifiedMarginMm": 5.942,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "Du warst mein\nbester Freund\nauf vier Pfoten.\nDein Platz in\nmeinem\nHerzen bleibt\nfür immer.",
+          "minimumCertifiedMarginMm": 2.465,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D133",
+      "minimumCertifiedMarginMm": 4.453,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 4.453,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Flocke",
+          "minimumCertifiedMarginMm": 6.196,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "* 03.12.2009\n† 13.01.2024",
+          "minimumCertifiedMarginMm": 5.932,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "Das Leben\nist begrenzt.\nDoch die\nErinnerung\nist unendlich.",
+          "minimumCertifiedMarginMm": 5.517,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D201",
+      "minimumCertifiedMarginMm": 2.324,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.324,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-2",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 7.329,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Lucky",
+          "minimumCertifiedMarginMm": 5.522,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "† 19.02.2023",
+          "minimumCertifiedMarginMm": 6.274,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "Du warst als\nHund der\nbeste\nMensch, den\nich zum\nFreund\nhaben\nkonnte.",
+          "minimumCertifiedMarginMm": 2.402,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D202",
+      "minimumCertifiedMarginMm": 2.973,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.33,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-2",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 5.019,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Paula",
+          "minimumCertifiedMarginMm": 6.02,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "† 05.03.2023",
+          "minimumCertifiedMarginMm": 6.269,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "Für die\nWelt warst\ndu nur ein\nHund, aber\nfür mich\nwarst du\ndie Welt.",
+          "minimumCertifiedMarginMm": 2.973,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D203",
+      "minimumCertifiedMarginMm": 2.338,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.338,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Robin",
+          "minimumCertifiedMarginMm": 9.326,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "Für die Welt\nwarst du nur\nein Hund.\nFür uns aber\nwarst du die\nWelt!",
+          "minimumCertifiedMarginMm": 2.607,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D204",
+      "minimumCertifiedMarginMm": 2.329,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.329,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Luke",
+          "minimumCertifiedMarginMm": 4.521,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "1997 – 2017",
+          "minimumCertifiedMarginMm": 6.831,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "Hunde sind wie\nSterne. Sie\nkönnen\nleuchten und\nstrahlen, noch\nJahre nach\nihrem\nErlöschen.",
+          "minimumCertifiedMarginMm": 2.758,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D205",
+      "minimumCertifiedMarginMm": 2.485,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 7.749,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Bruno",
+          "minimumCertifiedMarginMm": 5.068,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2010 – 2021",
+          "minimumCertifiedMarginMm": 8.598,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "Für die Welt warst\ndu nur ein Hund,\naber für mich warst\ndu die Welt.",
+          "minimumCertifiedMarginMm": 2.485,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D301",
+      "minimumCertifiedMarginMm": 5.493,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 5.493,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Milo",
+          "minimumCertifiedMarginMm": 9.326,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2010",
+          "minimumCertifiedMarginMm": 11.821,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "2025",
+          "minimumCertifiedMarginMm": 11.923,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-4",
+          "type": "text",
+          "text": "Für immer",
+          "minimumCertifiedMarginMm": 7.788,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D302",
+      "minimumCertifiedMarginMm": 2.329,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.329,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Jeder Weg mit dir",
+          "minimumCertifiedMarginMm": 8.017,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "war ein Stück Zuhause.",
+          "minimumCertifiedMarginMm": 10.234,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "Nala",
+          "minimumCertifiedMarginMm": 3.071,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-4",
+          "type": "text",
+          "text": "2012 – 2026",
+          "minimumCertifiedMarginMm": 6.464,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D303",
+      "minimumCertifiedMarginMm": 3.144,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.144,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Oskar",
+          "minimumCertifiedMarginMm": 8.891,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2009 – 2024",
+          "minimumCertifiedMarginMm": 5.439,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "Du bleibst\nin jedem\nSonnenstrahl,\nin jedem\nschönen Tag.",
+          "minimumCertifiedMarginMm": 3.886,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D304",
+      "minimumCertifiedMarginMm": 2.744,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 5.327,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Luna",
+          "minimumCertifiedMarginMm": 6.831,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011",
+          "minimumCertifiedMarginMm": 4.257,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "2026",
+          "minimumCertifiedMarginMm": 4.252,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-4",
+          "type": "text",
+          "text": "Jeder Tag\nmit dir war\nein kleines\nAbenteuer.",
+          "minimumCertifiedMarginMm": 2.744,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D305",
+      "minimumCertifiedMarginMm": 2.329,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.33,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "BEN",
+          "minimumCertifiedMarginMm": 2.329,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2008 – 2024",
+          "minimumCertifiedMarginMm": 5.317,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "Dein Platz\nbleibt bei uns.",
+          "minimumCertifiedMarginMm": 2.797,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-4",
+          "type": "text",
+          "text": "Für immer\nunser Freund.",
+          "minimumCertifiedMarginMm": 2.958,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D306",
+      "minimumCertifiedMarginMm": 3.33,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.33,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Unser\nSonnenschein",
+          "minimumCertifiedMarginMm": 6.977,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "Pippa",
+          "minimumCertifiedMarginMm": 10.258,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "2014 – 2025",
+          "minimumCertifiedMarginMm": 7.153,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-4",
+          "type": "text",
+          "text": "Du fehlst\nbei jedem Spiel.",
+          "minimumCertifiedMarginMm": 5.322,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D307",
+      "minimumCertifiedMarginMm": 2.329,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.329,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "2010 – 2026",
+          "minimumCertifiedMarginMm": 5.712,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "Fiete",
+          "minimumCertifiedMarginMm": 5.239,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "Für",
+          "minimumCertifiedMarginMm": 6.538,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-4",
+          "type": "text",
+          "text": "immer",
+          "minimumCertifiedMarginMm": 3.657,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-5",
+          "type": "text",
+          "text": "bei",
+          "minimumCertifiedMarginMm": 7.114,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-6",
+          "type": "text",
+          "text": "uns",
+          "minimumCertifiedMarginMm": 6.542,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D308",
+      "minimumCertifiedMarginMm": 3.33,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.33,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Juna",
+          "minimumCertifiedMarginMm": 4.653,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2012 – 2026",
+          "minimumCertifiedMarginMm": 7.802,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "Dein Platz\nbleibt in\nunserem\nHerzen.",
+          "minimumCertifiedMarginMm": 7.143,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    }
+  ]
+}

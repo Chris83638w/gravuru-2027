@@ -1,0 +1,497 @@
+{
+  "branch": "dev/grabkreuze-katzen-20261101-astra-mika",
+  "revision": "katzen-25-eigenstaendige-designs",
+  "jobs": [
+    {
+      "repo": "Chris83638w/gravuru-katalog.",
+      "folder": "grabkreuze-katzen-katalog",
+      "base": "ec1a51ad5279e24394810e6c618f1e9bd671495b",
+      "files": 76,
+      "additions": 76,
+      "deletions": 0,
+      "manifest": [
+        {
+          "path": "STAND.md",
+          "delete": false,
+          "gitBlobSha1": "59d9df03d1306b99446dde203b209bf200019620"
+        },
+        {
+          "path": "motive-eigene/motive-eigene.json",
+          "delete": false,
+          "gitBlobSha1": "9867c476456bdd0648110d7763bd0d10cce4f0ec"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-katzen/README.md",
+          "delete": false,
+          "gitBlobSha1": "a9b0c50335e181557101417752d11c437eec37da"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-katzen/pruefung.json",
+          "delete": false,
+          "gitBlobSha1": "d764f99a9513ada4fc9f27455d6e1c5479679297"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D223/design.json",
+          "delete": false,
+          "gitBlobSha1": "9957d741dc89c0083c0a254f47e148b5f5059bf4"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D223/design.svg",
+          "delete": false,
+          "gitBlobSha1": "2164076ae880aa510b7865ca6c90acc3893db253"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D25/design.json",
+          "delete": false,
+          "gitBlobSha1": "0e99cceb032a909fb0cda13d6fb21925342ec1e8"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D25/design.svg",
+          "delete": false,
+          "gitBlobSha1": "4f9b24c9f2aa1bdb0c0e7c639e25ea2ba667ac09"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D282/design.json",
+          "delete": false,
+          "gitBlobSha1": "ca3abc790bcd8b51e80f85d415519259c945c590"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D282/design.svg",
+          "delete": false,
+          "gitBlobSha1": "bbdd2e17ba4ed2e83cf0209974e2d0ab73781893"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D401/design.json",
+          "delete": false,
+          "gitBlobSha1": "ecab291604228f6fc31ff05868fc9f4dec594799"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D401/design.svg",
+          "delete": false,
+          "gitBlobSha1": "a74a7f7c7c01fdaf1349139943a73f5502efef9e"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D402/design.json",
+          "delete": false,
+          "gitBlobSha1": "3d5f40bb442d0895be3505f67629f4e8b56ede18"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D402/design.svg",
+          "delete": false,
+          "gitBlobSha1": "b0e629cd40ed0c9bb3355f17f163bf02a93bcb9e"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D403/design.json",
+          "delete": false,
+          "gitBlobSha1": "021258195aed725b603795201b53f29bffe7423c"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D403/design.svg",
+          "delete": false,
+          "gitBlobSha1": "d3e0c6a1d27593e7911998f3ee544a65decb759e"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D404/design.json",
+          "delete": false,
+          "gitBlobSha1": "e6f714decf94f0e30cdcb8fdb3f5213ed33ed93d"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D404/design.svg",
+          "delete": false,
+          "gitBlobSha1": "01c411509f143734afe626d8f11628439f59d06c"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D405/design.json",
+          "delete": false,
+          "gitBlobSha1": "ec3eeb98fc3c369a6284486b2c93156a79c16068"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D405/design.svg",
+          "delete": false,
+          "gitBlobSha1": "d684ad71b6b24810a7a65269a25b3c5d7fb88ea8"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D406/design.json",
+          "delete": false,
+          "gitBlobSha1": "b43a6cbcd285fffa9638d78302bfffff5dc72e18"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D406/design.svg",
+          "delete": false,
+          "gitBlobSha1": "071d6e3deafffd3942152c71f164072ea24af5a3"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D407/design.json",
+          "delete": false,
+          "gitBlobSha1": "6b45ef2d7e92af4daa10939cdca619f06aa61289"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D407/design.svg",
+          "delete": false,
+          "gitBlobSha1": "0eb1f4f0201a92b356b76389aa9e22c9574045c9"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D408/design.json",
+          "delete": false,
+          "gitBlobSha1": "af37b47fa97eafe4cdae3e57359c3e7bff43f229"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D408/design.svg",
+          "delete": false,
+          "gitBlobSha1": "6a1fd3cb34b9f362309f7c45455bee6d65e4e672"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D409/design.json",
+          "delete": false,
+          "gitBlobSha1": "93badd166c6a8c613f2f3ce3da0de6e7b0075193"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D409/design.svg",
+          "delete": false,
+          "gitBlobSha1": "6af54386a9d67351eb562051e04df593080ce137"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D410/design.json",
+          "delete": false,
+          "gitBlobSha1": "01e29ee9bfaa435964da8639dfb1150efb10b176"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D410/design.svg",
+          "delete": false,
+          "gitBlobSha1": "5e40fb8e762664e8605ba4b62dbfb11d0ca74deb"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D411/design.json",
+          "delete": false,
+          "gitBlobSha1": "0c3a5de3c3e360f9d25ab4075b6e4b43ca6fb132"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D411/design.svg",
+          "delete": false,
+          "gitBlobSha1": "2a0669e26a425db8d0c70ec294ecd02486691d5c"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D412/design.json",
+          "delete": false,
+          "gitBlobSha1": "4b456535659e06a4ae8babef54397eb89d8098ca"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D412/design.svg",
+          "delete": false,
+          "gitBlobSha1": "ccf73f9b866f0b0096a0f1810224b2522d1f3c47"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D413/design.json",
+          "delete": false,
+          "gitBlobSha1": "32fd345a7c45969b1a5620ac2803f438ab4f9e91"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D413/design.svg",
+          "delete": false,
+          "gitBlobSha1": "b90bb8702844874827c20b854756b68c97733674"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D414/design.json",
+          "delete": false,
+          "gitBlobSha1": "b5fe4f9efc8b9ed637b1662abd8320a7b7e2ed13"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D414/design.svg",
+          "delete": false,
+          "gitBlobSha1": "28fd4dc9d6ebd33f30fa4c77711e9194f5c11a1b"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D415/design.json",
+          "delete": false,
+          "gitBlobSha1": "1437293f12661236289f790a70de658cf61174fc"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D415/design.svg",
+          "delete": false,
+          "gitBlobSha1": "0a3834978bf7f59d59b1140ff5a72d2680b22a1e"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D416/design.json",
+          "delete": false,
+          "gitBlobSha1": "592827cfa4cd3a93d864603a46c569f949d3de16"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D416/design.svg",
+          "delete": false,
+          "gitBlobSha1": "7ad56787a79959cf5c7cb4d7d8999774c8a204ab"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D417/design.json",
+          "delete": false,
+          "gitBlobSha1": "3f2fb834a8bc599497a9d9691745ead65ea18fe0"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D417/design.svg",
+          "delete": false,
+          "gitBlobSha1": "d196b634b17c099ab5c34e5d3219ef8fbb011dfa"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D418/design.json",
+          "delete": false,
+          "gitBlobSha1": "16bcac1c292ce5586d73e9ce3a8bd80b552e77d0"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D418/design.svg",
+          "delete": false,
+          "gitBlobSha1": "d460ac5c9d501f1b4802642313b3762f3df21b41"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D419/design.json",
+          "delete": false,
+          "gitBlobSha1": "3e19d079b3e26f4f87f6be3f19d1a88d6ff3189f"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D419/design.svg",
+          "delete": false,
+          "gitBlobSha1": "f236caa44e47d7d7f92ddd3fa6429015aa8016a3"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D420/design.json",
+          "delete": false,
+          "gitBlobSha1": "02622620303b9325e528ce6a53700fb8999b7e92"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D420/design.svg",
+          "delete": false,
+          "gitBlobSha1": "b4ff42329eb4e23c8bc77dcb9fbdf3fbce99f6fd"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D421/design.json",
+          "delete": false,
+          "gitBlobSha1": "3eba6c7199a714c41f8001df8f118dcd60fe0765"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D421/design.svg",
+          "delete": false,
+          "gitBlobSha1": "c3f5865289501aeda4dc173155992cec87d3f7ed"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D54/design.json",
+          "delete": false,
+          "gitBlobSha1": "f8f86bc00a44eb9ec94b5819f16588bf00cf0c49"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/KZ-A-11x20-D54/design.svg",
+          "delete": false,
+          "gitBlobSha1": "aa112b583bcb5394bc9226629695ed010e8e4b92"
+        },
+        {
+          "path": "designs/grabkreuze-katzen-11x20/index.json",
+          "delete": false,
+          "gitBlobSha1": "4311d12d2bb40fd1b5ee8a0730a9bb097473d20f"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-bluetenkatze-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "3221524b6fcae9c6e0893f7ec35bcd71503eeabc"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-federfang-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "2017711fa88433818c57686e60c7888fcb3e419e"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-fensterplatz-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "341f165c5a39af72e82e64aaa2f47b5007cb41cb"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-kartonplatz-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "d17b758359db3c2a617cf64d3adc0a1961885c46"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-katzenblick-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "3d84ba7495d8ba0807ecfcbae471107b470bd8e5"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-lesekatze-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "0c42ae1c2ae315491aa3495532f63eb44ffe1537"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-pfote-in-hand-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "73f6ac87b5124c41616be68f76fc5b6afe3d477d"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-pfotentanz-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "66f303b0746388f195a7e38ca7772678e695ee87"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-querbalkenkatze-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "210c6226cafafcb95bff703b0af532cdd2742df4"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-schlummer-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "e421f4388cc6ca9b93ba3e832dd771714575fd27"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-schnurrnase-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "c563ddf1c57a51bc8e4ecc9dceba0f79c6c21f95"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-signature-namensschild-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "9b28ac261417455c1e12de8485af7828eb33a03c"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-signature-portrait-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "c4d49d2b8addaf8bbb70f0524037de59b27b3669"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-signature-schwanzbogen-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "e7468f8e35fe78e36c762231eddb5918e1b2e7eb"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-signature-silhouette-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "90bcbdde531c9d3d5689c77da4d5cb7063925ee4"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-signature-sprung-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "8a577c7fe4f27b7bfb11b0ee7d369969a10f9880"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-spaziergang-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "901c02480d6ec64ab34460cdd1c5fd8149e22359"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-sternengucker-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "ef5c4ba3e43fb88fa6cc47489d58c2b6c8158bf9"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-wiesenkind-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "62a73490acd4d2b94d3f274c46b7881c13e743eb"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-wollknaeuel-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "8723ef85b50f00c002042fc803fda4f8478f6bef"
+        },
+        {
+          "path": "motive-eigene/mika-katzen-zweisamkeit-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "1107270f0a3daef61cd4f9c2d7c177aedbe37d52"
+        }
+      ],
+      "commits": [
+        {
+          "oid": "f88310267d2fa107c996f75e4eec7b13c66ff046",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/f88310267d2fa107c996f75e4eec7b13c66ff046",
+          "verified": true,
+          "files": 40
+        },
+        {
+          "oid": "50e9c0231af53c93bd7d4957ca0be002c47aeec6",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/50e9c0231af53c93bd7d4957ca0be002c47aeec6",
+          "verified": true,
+          "files": 36
+        }
+      ],
+      "finalHead": "50e9c0231af53c93bd7d4957ca0be002c47aeec6",
+      "remoteVerified": 76
+    },
+    {
+      "repo": "Chris83638w/gravuru-2027",
+      "folder": "grabkreuze-katzen",
+      "base": "15aef63d1604eacb009c62b14245cb50b0733d9b",
+      "files": 13,
+      "additions": 13,
+      "deletions": 0,
+      "manifest": [
+        {
+          "path": "STATUS.md",
+          "delete": false,
+          "gitBlobSha1": "a31137e03390f755000b1513c7ebd47861c3408c"
+        },
+        {
+          "path": "docs/handoffs/2026-11-01-grabkreuze-katzen-astra-mika.md",
+          "delete": false,
+          "gitBlobSha1": "83457272314465133ab01e1e931fcc4ec8534c89"
+        },
+        {
+          "path": "docs/handoffs/grabkreuze-katzen-20261101/KATZEN.md",
+          "delete": false,
+          "gitBlobSha1": "a9b0c50335e181557101417752d11c437eec37da"
+        },
+        {
+          "path": "docs/handoffs/grabkreuze-katzen-20261101/kontaktbogen-schwarz-11x20.jpg",
+          "delete": false,
+          "gitBlobSha1": "91e8104d1ffa125f8a4d1458167d720fde794be9"
+        },
+        {
+          "path": "docs/handoffs/grabkreuze-katzen-20261101/native-pruefung.json",
+          "delete": false,
+          "gitBlobSha1": "e4b0436601f489195690cd553e52f0b9ca346c49"
+        },
+        {
+          "path": "docs/handoffs/grabkreuze-katzen-20261101/pruefung.json",
+          "delete": false,
+          "gitBlobSha1": "d764f99a9513ada4fc9f27455d6e1c5479679297"
+        },
+        {
+          "path": "docs/handoffs/grabkreuze-katzen-20261101/randabstand-pruefung.json",
+          "delete": false,
+          "gitBlobSha1": "0fdec5ced5affd31f4d6cb86fa63593b4f7e9228"
+        },
+        {
+          "path": "scripts/build-grabkreuze-katzen.py",
+          "delete": false,
+          "gitBlobSha1": "bb34412fc6a101a444d46105b4d8883479c2318c"
+        },
+        {
+          "path": "scripts/check-grabkreuze-katzen-margin.mjs",
+          "delete": false,
+          "gitBlobSha1": "f6ad04db3d679155983aa2622e9c08d936b813df"
+        },
+        {
+          "path": "scripts/check-grabkreuze-katzen.py",
+          "delete": false,
+          "gitBlobSha1": "706eb2787f764729139a86b48a4e17d3d68d2993"
+        },
+        {
+          "path": "scripts/contact-grabkreuze-katzen.py",
+          "delete": false,
+          "gitBlobSha1": "30e7b41fdf27ddc45f85a8c293566916a2cd326f"
+        },
+        {
+          "path": "scripts/grabkreuze-katzen-utils.py",
+          "delete": false,
+          "gitBlobSha1": "85c3cc3d497d2fba490c3614d7acc92d1c962b83"
+        },
+        {
+          "path": "scripts/review-grabkreuze-katzen.mjs",
+          "delete": false,
+          "gitBlobSha1": "0f45cabe1ce96c1053d35c2facc48ee1bb55dd23"
+        }
+      ],
+      "commits": [
+        {
+          "oid": "4d02737c17295c6a6d09ce383c65e1c61ba2ad36",
+          "url": "https://github.com/Chris83638w/gravuru-2027/commit/4d02737c17295c6a6d09ce383c65e1c61ba2ad36",
+          "verified": true,
+          "files": 13
+        }
+      ],
+      "finalHead": "4d02737c17295c6a6d09ce383c65e1c61ba2ad36",
+      "remoteVerified": 13
+    }
+  ]
+}

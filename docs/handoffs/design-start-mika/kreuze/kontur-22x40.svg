@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="221.6mm" height="400.0mm" viewBox="0 0 221.6 400.0">
+<!-- Grabkreuz Acryl 22x40 cm, Kontur aus KZ-A-22x40-D18 (Katalog). Rot gestrichelt = Erdlinie: darunter (ca. 5 cm) steckt das Kreuz in der Erde, nie gravieren; Gestaltung mindestens 5 mm darüber. -->
+<path id="kontur" d="M147.754 332.958 L110.815 399.999 L73.876 332.958 L73.876 148.369 L9.553 148.369 C4.290 148.369 0.000 144.079 0.000 138.816 L0.000 84.044 C0.000 78.783 4.290 74.493 9.553 74.493 L73.876 74.493 L73.876 9.550 C73.876 4.290 78.168 0.000 83.429 0.000 L138.201 0.000 C143.462 0.000 147.754 4.290 147.754 9.550 L147.754 74.493 L212.077 74.493 C217.338 74.493 221.630 78.783 221.630 84.044 L221.630 138.816 C221.630 144.079 217.338 148.369 212.077 148.369 L147.754 148.369 L147.754 332.958 Z" fill="none" stroke="#000" stroke-width="0.2"/>
+<line id="erdlinie" x1="0" y1="350.0" x2="221.6" y2="350.0" stroke="#d00" stroke-width="0.3" stroke-dasharray="2 1.5"/>
+<line id="gestaltungsgrenze" x1="0" y1="345.0" x2="221.6" y2="345.0" stroke="#06c" stroke-width="0.2" stroke-dasharray="1 1"/>
+</svg>

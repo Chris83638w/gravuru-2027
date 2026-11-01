@@ -1,3 +1,6 @@
+## 01.11.2026 – Codex/Astra: schmale Formatzeilen für Funkklingeln
+
+Auf Chris' Wunsch Format und Position als kompakte bebilderte Zeilen untereinander, ohne zusätzliche Gruppenkarte; optisch an Rahmen/Farbe angepasst. Nur produktspezifisches CSS. 5/5 vorhandene Tests, Build und Desktop-/390px-Handy-Bedienprüfung grün; Formatwechsel mit korrekten Preisen bestätigt. Bestehende Live-Freigabe; gezielte Bereitstellung folgt nach erneuerter Anmeldung. [Bericht und Screenshots](docs/handoffs/2026-11-01-funkklingeln-formatzeilen.md).
 # Acryl-3-mm-Ziele · 31.10.2026 · Astra
 
 Nachricht 35: explizit abgeleitete Familien behalten die vorhandenen Quellgrößen bei identischer Geometrie, einschließlich historischer Retro-Bögen. Katalog-PR #11: 737 Master / 1.474 offene Ziele, 737/737 Größenzuordnungen je Acrylfarbe identisch. 105 Tests bestanden, 1 optionaler echter-Export-Test übersprungen, 0 Fehler; Linux-Vollauf offen. Keine UI-, Live- oder Freigabeänderung. [Bericht und Nur-Lese-Abgleich](docs/handoffs/2026-10-31-acryl3-designziele-astra.md).

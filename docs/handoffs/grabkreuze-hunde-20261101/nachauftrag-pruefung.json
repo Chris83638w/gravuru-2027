@@ -1,0 +1,267 @@
+{
+  "scope": "Ausschließlich Schwarz 11×20; keine weiteren Varianten",
+  "groups": {
+    "A": 8,
+    "B": 4,
+    "C": 5,
+    "D": 3
+  },
+  "designs": 20,
+  "nativeFits": {
+    "passt": 20,
+    "prüfen": 0,
+    "passt nicht": 0
+  },
+  "fontsUsed": [
+    "Alex Brush",
+    "Allura",
+    "Ashley",
+    "Cinzel",
+    "Cormorant Garamond",
+    "Dream Orphans",
+    "Great Vibes",
+    "Homage",
+    "Italianno",
+    "Josefin Sans",
+    "Libre Baskerville",
+    "Lora",
+    "Montserrat Light",
+    "Parisienne",
+    "Roboto Slab",
+    "Rounded Elegance",
+    "Sacramento",
+    "Tangerine"
+  ],
+  "minimumCapMm": 3.1,
+  "motifCompositions": {
+    "Hund im Herz": 2,
+    "Pfotenherz": 2,
+    "Flügelpaar": 1,
+    "Pfotenduo": 1,
+    "Pfotenspurenpaar": 1,
+    "Knochen": 1,
+    "Versetztes Pfotenpaar": 1,
+    "Einzelpfote": 1,
+    "Hundekopf": 1,
+    "Hundekopf im Herz": 1,
+    "Pusteblume mit Samen": 1,
+    "Regenbogen mit Blüten": 1,
+    "Sternenschwarm": 1,
+    "Mensch-und-Hund-Spuren": 1,
+    "Halsband mit Medaillon": 1,
+    "Herzleine": 1,
+    "Schlafender Hund": 1,
+    "Betende Hände": 1,
+    "Pfotenspur": 1,
+    "Pfotenpaar": 1,
+    "Rosenpaar": 1
+  },
+  "motifCountingNote": "Gezählt werden unterscheidbare Original-Motivzeichnungen/-gruppen, nicht Oberbegriffe. Die Pflichtliste selbst enthält sechs Gestaltungen mit Pfoten/Pfotenspuren; diese bleiben erhalten. Hund im Herz und Pfotenherz erscheinen je zweimal.",
+  "layoutEvidence": [
+    "D301: senkrechter Name, Daten außen",
+    "D205/D302: Spruch quer, Name im Stamm",
+    "D0/D41: Datum im Querbalken, Motive seitlich/oben",
+    "D42: lange Pfotenspur im Stamm",
+    "D203: Regenbogen unten",
+    "D303: Name links, Hund rechts"
+  ],
+  "jpgBytes": 1077218,
+  "browserCheck": "Offen; übernimmt Claude nach Designabnahme. JPG ist gerasterte native Zielvorschau, kein Browser-Screenshot.",
+  "fontDecisionPending": {
+    "original": "Vista La Diva",
+    "proposal": "Homage",
+    "issueComment": 6561540397
+  },
+  "checks": [
+    {
+      "id": "KZ-A-11x20-D0",
+      "minCapHeightMm": 3.949,
+      "artworkBottomMm": 69.99,
+      "groundClearanceMm": 80.01,
+      "fonts": [
+        "Montserrat Light",
+        "Tangerine"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D1",
+      "minCapHeightMm": 3.2,
+      "artworkBottomMm": 121.18,
+      "groundClearanceMm": 28.82,
+      "fonts": [
+        "Allura"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D126",
+      "minCapHeightMm": 3.2,
+      "artworkBottomMm": 135.552,
+      "groundClearanceMm": 14.448,
+      "fonts": [
+        "Allura"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D127",
+      "minCapHeightMm": 3.3,
+      "artworkBottomMm": 125.504,
+      "groundClearanceMm": 24.496,
+      "fonts": [
+        "Allura",
+        "Libre Baskerville"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D132",
+      "minCapHeightMm": 4.5,
+      "artworkBottomMm": 136.395,
+      "groundClearanceMm": 13.605,
+      "fonts": [
+        "Allura",
+        "Great Vibes"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D133",
+      "minCapHeightMm": 3.1,
+      "artworkBottomMm": 127.914,
+      "groundClearanceMm": 22.086,
+      "fonts": [
+        "Dream Orphans",
+        "Homage",
+        "Montserrat Light"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D201",
+      "minCapHeightMm": 3.1,
+      "artworkBottomMm": 136.953,
+      "groundClearanceMm": 13.047,
+      "fonts": [
+        "Ashley",
+        "Roboto Slab"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D202",
+      "minCapHeightMm": 3.1,
+      "artworkBottomMm": 130.06,
+      "groundClearanceMm": 19.94,
+      "fonts": [
+        "Cinzel",
+        "Homage"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D203",
+      "minCapHeightMm": 3.5,
+      "artworkBottomMm": 138.537,
+      "groundClearanceMm": 11.463,
+      "fonts": [
+        "Montserrat Light"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D204",
+      "minCapHeightMm": 3.1,
+      "artworkBottomMm": 129.846,
+      "groundClearanceMm": 20.154,
+      "fonts": [
+        "Rounded Elegance"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D205",
+      "minCapHeightMm": 3.2,
+      "artworkBottomMm": 138.0,
+      "groundClearanceMm": 12.0,
+      "fonts": [
+        "Italianno"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D301",
+      "minCapHeightMm": 3.2,
+      "artworkBottomMm": 138.061,
+      "groundClearanceMm": 11.939,
+      "fonts": [
+        "Cormorant Garamond"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D302",
+      "minCapHeightMm": 3.1,
+      "artworkBottomMm": 140.375,
+      "groundClearanceMm": 9.625,
+      "fonts": [
+        "Lora",
+        "Sacramento"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D303",
+      "minCapHeightMm": 3.3,
+      "artworkBottomMm": 125.229,
+      "groundClearanceMm": 24.771,
+      "fonts": [
+        "Josefin Sans"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D41",
+      "minCapHeightMm": 3.1,
+      "artworkBottomMm": 70.859,
+      "groundClearanceMm": 79.141,
+      "fonts": [
+        "Alex Brush",
+        "Montserrat Light"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D42",
+      "minCapHeightMm": 4.6,
+      "artworkBottomMm": 144.0,
+      "groundClearanceMm": 6.0,
+      "fonts": [
+        "Homage"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D46",
+      "minCapHeightMm": 24.0,
+      "artworkBottomMm": 65.408,
+      "groundClearanceMm": 84.592,
+      "fonts": [
+        "Alex Brush"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D48",
+      "minCapHeightMm": 6.0,
+      "artworkBottomMm": 136.29,
+      "groundClearanceMm": 13.71,
+      "fonts": [
+        "Ashley"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D53",
+      "minCapHeightMm": 6.399,
+      "artworkBottomMm": 119.265,
+      "groundClearanceMm": 30.735,
+      "fonts": [
+        "Great Vibes"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D55",
+      "minCapHeightMm": 3.949,
+      "artworkBottomMm": 123.907,
+      "groundClearanceMm": 26.093,
+      "fonts": [
+        "Cinzel",
+        "Parisienne"
+      ]
+    }
+  ]
+}

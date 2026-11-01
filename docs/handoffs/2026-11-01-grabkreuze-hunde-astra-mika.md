@@ -1,3 +1,5 @@
+> **Überholt durch den Nachauftrag.** Aktueller Stand: [20 überarbeitete Designs und ein Kontaktbogen](grabkreuze-hunde-20261101/NACHAUFTRAG.md). Frühere Designbögen und Designnummern in diesem historischen Bericht sind ersetzt.
+
 # Grabkreuz Acryl – Hunde · Erdteilsperre, Browserabnahme offen
 
 Stand 01.11.2026, Astra Mika. Auftrag: gravuru-2027 Issue #76. Finale symmetrische Konturen aus Katalog-main 48abf763, schneidvorlagen/kreuze/: 110×200, 140×250 und 220×400 mm. Rote Schnittkontur #FF0000 mit 0,0762 mm. Sämtliche früheren Konturen und Kontaktbögen sind überholt.

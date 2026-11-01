@@ -1,0 +1,265 @@
+{
+  "unchangedSourceFiles": 51,
+  "unchangedExistingDesignGeometry": [
+    "D0",
+    "D53",
+    "D55"
+  ],
+  "sources": [
+    {
+      "file": "designs/bestand/kreuze/Allgemein/Allgemein/KZ-A-D0/design.json",
+      "sha256": "f0e8baa4caee9f2eb517582074db796fbe55672e97716ddcbf6ae0f2e1a9b4ef",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Allgemein/Allgemein/KZ-A-D0/design.svg",
+      "sha256": "c8d76cb64c0e215bd3c901159908547398d97f714e6cc67dbcd16f662f516fda",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Allgemein/Allgemein/KZ-A-D0/preview.png",
+      "sha256": "d5bac1df2e46923f79b6bdbf6f45743198531a5694cbee6903cd2631ef6bed19",
+      "comparison": "bytes"
+    },
+    {
+      "file": "designs/bestand/kreuze/Sprüche/Spruch/KZ-A-D1/design.json",
+      "sha256": "99975e2345625a7fa194181337998e3d570191ea7ea852a2674c0b2c22a76cfb",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Sprüche/Spruch/KZ-A-D1/design.svg",
+      "sha256": "5fe85159596c43f73ab38b674e42e7fb62ea7269db3e972153a74f9c0fe1fbcc",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Sprüche/Spruch/KZ-A-D1/preview.png",
+      "sha256": "af5b1d39f32f05b23bb18604792083b41d6e9f63de4efc56bf2679ab1cf57b0f",
+      "comparison": "bytes"
+    },
+    {
+      "file": "designs/bestand/kreuze/Allgemein/Allgemein/KZ-A-D41/design.json",
+      "sha256": "3ae2f2c4c921b124c860316e7cee158dafe9178688603fee3d5b88b135a28ce9",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Allgemein/Allgemein/KZ-A-D41/design.svg",
+      "sha256": "969f354670f891821c85424f1f9a01f4df753f2aacc2ef84d05a597fff74e2ec",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Allgemein/Allgemein/KZ-A-D41/preview.png",
+      "sha256": "e1904d5634be4c506426beb295ea3cc7eb1ae69dfb6c094d896c8f969f1d7cfa",
+      "comparison": "bytes"
+    },
+    {
+      "file": "designs/bestand/kreuze/Anlass/Liebe/KZ-A-D42/design.json",
+      "sha256": "7745dfaf52d77aea9cafc6232e80fc77fff1022cb91a74289e7abf15f826663d",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Anlass/Liebe/KZ-A-D42/design.svg",
+      "sha256": "bc6ab20e1cbe7ff09eb0936bef25f7b3741313fa5ca7d6ab07ca5e44aa9945fe",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Anlass/Liebe/KZ-A-D42/preview.png",
+      "sha256": "8f049f74ec3fb363d44521baa81ac79c5100b6ca8f5ad546d7036704b4c35bf8",
+      "comparison": "bytes"
+    },
+    {
+      "file": "designs/bestand/kreuze/Allgemein/Allgemein/KZ-A-D46/design.json",
+      "sha256": "87415bfdc65e0055690cc62837c977811d8bb452992a4fafa904526696c1ed8a",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Allgemein/Allgemein/KZ-A-D46/design.svg",
+      "sha256": "7e162aa82beb4e8e01443c26594ad1ba45dbe58caa6b64e4f8bdaef7017258e7",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Allgemein/Allgemein/KZ-A-D46/preview.png",
+      "sha256": "91f3e6ffb456f03dc04ea74b40d09b2ff5fffcea6418f06169b824f191823869",
+      "comparison": "bytes"
+    },
+    {
+      "file": "designs/bestand/kreuze/Allgemein/Allgemein/KZ-A-D48/design.json",
+      "sha256": "d0549dc8264f01fe9749f65f0a99c3886643f958443189658b105dc2e48f85c5",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Allgemein/Allgemein/KZ-A-D48/design.svg",
+      "sha256": "7032c8651e0ddb3139ab9e1ca9b8a99faa4558d3a35b18ded04c35b0949092ad",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Allgemein/Allgemein/KZ-A-D48/preview.png",
+      "sha256": "35e29d8737d208e53762be58280fdea7974c263150dbebf3fe49a4a688d30d65",
+      "comparison": "bytes"
+    },
+    {
+      "file": "designs/bestand/kreuze/Tiere/Hund/KZ-A-D53/design.json",
+      "sha256": "fec37679eabde1847d47d4dfb6a268bddf2e592f435de3d13ed15d67091b4a49",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Tiere/Hund/KZ-A-D53/design.svg",
+      "sha256": "21d86669a34300a0b7825e7d209b0d515e542c3bdbf9d1b70c0eb1f1c3bfb8c4",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Tiere/Hund/KZ-A-D53/preview.png",
+      "sha256": "15b9df81534e8d65bd308a84b49835dce9e5de4589794dd62de00e4644950222",
+      "comparison": "bytes"
+    },
+    {
+      "file": "designs/bestand/kreuze/Tiere/Hund/KZ-A-D55/design.json",
+      "sha256": "cd8304c53c2cdefd80566aaf68770afbc9537b906e5613827f3459f613f6a411",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Tiere/Hund/KZ-A-D55/design.svg",
+      "sha256": "1bf10a18e59337a9c0e652114587a46fb20fb16d327e74853abbf66f5d0984cc",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Tiere/Hund/KZ-A-D55/preview.png",
+      "sha256": "66d6853c56d9d906323da756208b9e9a0c12d3e2586c535723697891fb70f734",
+      "comparison": "bytes"
+    },
+    {
+      "file": "designs/bestand/kreuze/Sprüche/Spruch/KZUV-A-D26/design.json",
+      "sha256": "1042c2b9090facef058a7d1f95ef161cc94735d75b13b0a8501ecdf452a26278",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Sprüche/Spruch/KZUV-A-D26/design.svg",
+      "sha256": "7ccc2cf6215e9299d2685c4a2ef4cdb4094c6c61fec987e60802ec30bdf1be03",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Sprüche/Spruch/KZUV-A-D26/preview.png",
+      "sha256": "9d8495f4c9e91cea6b78cd25525d4a065a5d380a19ecd770d8f269fcb83be128",
+      "comparison": "bytes"
+    },
+    {
+      "file": "designs/bestand/kreuze/Tiere/Tiere allgemein/KZUV-A-D27/design.json",
+      "sha256": "f598c28565188d6fbc934726d4d1ac4e63d6a48edd35fef90acf2a46be0a20c6",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Tiere/Tiere allgemein/KZUV-A-D27/design.svg",
+      "sha256": "22a773ce567e3a26ca5bfdab0c387bb5ea82f0191b94f1da4f9cdb77ec7ed3b9",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Tiere/Tiere allgemein/KZUV-A-D27/preview.png",
+      "sha256": "7c5f347407c97f5199e6672185ce654dbb32f040bbf36c36d458ad3f55207760",
+      "comparison": "bytes"
+    },
+    {
+      "file": "designs/bestand/kreuze/Tiere/Tiere allgemein/KZUV-A-D32/design.json",
+      "sha256": "65e21c3bf8d291e917f968ecc8ee0caec412335d23d3f419dde7caf195cf74c3",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Tiere/Tiere allgemein/KZUV-A-D32/design.svg",
+      "sha256": "8761a1821becc8564263794ee993f30b0b1abc8ab22952c5c41a492741bc9e8d",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Tiere/Tiere allgemein/KZUV-A-D32/preview.png",
+      "sha256": "d1ace915ede0ad09a64e0cf7e10b48186c439bebe90ffed2610e26c483d5f545",
+      "comparison": "bytes"
+    },
+    {
+      "file": "designs/bestand/kreuze/Sprüche/Spruch/KZUV-A-D33/design.json",
+      "sha256": "4e02a4cd9ef75ee65aab3071b42272416164091f40d0029c422c7cc8fa9409b1",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Sprüche/Spruch/KZUV-A-D33/design.svg",
+      "sha256": "6c7e3f00c38da0256464053bc43490e7dc96d7ce85ebc99c3a05185f3c489f0a",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/kreuze/Sprüche/Spruch/KZUV-A-D33/preview.png",
+      "sha256": "a7da4bedfcc70a2ac6bd765f88c22268a87a954ca7d71feb3e2335fab35f512b",
+      "comparison": "bytes"
+    },
+    {
+      "file": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-knochen-D7/design.json",
+      "sha256": "a0bb7814916d0da62d3c31edac7c99798db4ab9ce73f69caa9dffccf180dd9c8",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-knochen-D7/design.svg",
+      "sha256": "cdd156bc902baabcd11b9d681aeee52c0d11f7bee013278e887648a5d1852dbd",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-knochen-D7/preview.png",
+      "sha256": "49a11dcd1357d40638b3c2c2ae4506489a4a0ccb396dedbcdae9713e782c7e07",
+      "comparison": "bytes"
+    },
+    {
+      "file": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-knochen-D2/design.json",
+      "sha256": "4f856947c9f50a2fc88bd3db71563346c48c0d14e44e72b2b99fe79d082e9783",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-knochen-D2/design.svg",
+      "sha256": "5ed3f89e88e4005880e0f705f16eaed2bae7c5b587096840e005d9212b504b78",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-knochen-D2/preview.png",
+      "sha256": "69a0ab55f6dcb4722f6d757593ec332cebd3fc683ee2e3de7a0427a29db2ec04",
+      "comparison": "bytes"
+    },
+    {
+      "file": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-herz-24x19-D7/design.json",
+      "sha256": "0f8284a23a10473a1b27bc9d22cf8d8541ad9dab6fa5795d57307a2215b54625",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-herz-24x19-D7/design.svg",
+      "sha256": "d8fc5b484f55b00881867896a46df6f9a357cd80671293f3850e676b332096e7",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-herz-24x19-D7/preview.png",
+      "sha256": "29d7b4b9f9085e3b2e558d2bc5f147422ecbe15450ce4409ee61f2979578c59e",
+      "comparison": "bytes"
+    },
+    {
+      "file": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-edelstahl-20x20-D8/design.json",
+      "sha256": "cbf7d7ac4da8dfec9667f516d5eef6335e365afa894fe10d5a7d6dac86952917",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-edelstahl-20x20-D8/design.svg",
+      "sha256": "99d19d526aea07ec8a4688e73f8b9e28b9f5667bd6a7ceee4e643ba9a0090ff7",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-edelstahl-20x20-D8/preview.png",
+      "sha256": "a4af3b45800aa25b8a736f5a8f2165d8b0192fefb9280c914dd3f9c299ea0aa5",
+      "comparison": "bytes"
+    },
+    {
+      "file": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-herz-18x13-D24/design.json",
+      "sha256": "ec1c10621893d7783b9b3a32bfc02e5a0be25fe1b372e1f28df66741e3dec36d",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-herz-18x13-D24/design.svg",
+      "sha256": "f1072b6431de1776818821bcbe45bc3f36afc8bdd3cabca5fc7e37edaa537249",
+      "comparison": "LF-normalized Git content"
+    },
+    {
+      "file": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-herz-18x13-D24/preview.png",
+      "sha256": "252dca8832113802b7021aca58c7bfa3a144c6d89a3ac4869d7474cd92b60355",
+      "comparison": "bytes"
+    }
+  ]
+}

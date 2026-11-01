@@ -19,7 +19,7 @@ import {optionFields, FIELD_TEXT_DEFAULT_MAX} from './option-fields.mjs';
 import {objectSurface, surfaceGeometry} from './surfaces.mjs';
 import {designResourcesReady} from './doorbell-lazy-designs.mjs';
 import {isLayeredDoorbell} from './doorbell-selection.mjs';
-import {doorbellOptionState,updateDoorbellViewport} from './doorbell-ui.mjs';
+import {doorbellOptionState,updateDoorbellViewport,doorbellTextSurface} from './doorbell-ui.mjs';
 import {installDoorbellPresentation} from './doorbell-presentation.mjs';
 
 const clone = value => structuredClone(value);
@@ -44,8 +44,10 @@ export function installUniversal(configInput) {
     if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
     // Clip artwork to the real plate for every universal shape; external edit handles remain outside.
     // This is visual containment only. The shared placement and server validation still reject overflow.
-    if(!dynamicDoorbell&&!bare){const doc=svgDocument(result),root=doc.documentElement,clipId='customer-artwork-'+renderId,ns='http://www.w3.org/2000/svg';
-      const defs=doc.createElementNS(ns,'defs');defs.innerHTML='<clipPath id="'+clipId+'">'+plateClipMarkup(profile(surface).geometry)+'</clipPath>';root.prepend(defs);
+    if(!bare){const doc=svgDocument(result),root=doc.documentElement,clipId='customer-artwork-'+renderId,ns='http://www.w3.org/2000/svg';
+      const acrylic=dynamicDoorbell?doorbellTextSurface(profile(surface)):null;
+      const outline=acrylic?'<rect x="'+acrylic.x+'" y="'+acrylic.y+'" width="'+acrylic.width+'" height="'+acrylic.height+'"/>':plateClipMarkup(profile(surface).geometry);
+      const defs=doc.createElementNS(ns,'defs');defs.innerHTML='<clipPath id="'+clipId+'">'+outline+'</clipPath>';root.prepend(defs);
       for(const group of [...root.querySelectorAll('[data-object]')]){const wrapper=doc.createElementNS(ns,'g');wrapper.setAttribute('clip-path','url(#'+clipId+')');group.before(wrapper);wrapper.append(group);}result=root.outerHTML;
     }
     // Design boundary and drill-hole zones are preview layers only (keepout flag = editor preview); el.svg() for the order carries neither.

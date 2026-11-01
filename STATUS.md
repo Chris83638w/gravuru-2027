@@ -1,3 +1,7 @@
+## 01.11.2026 – Codex/Astra: Funkklingel-Bedienfehler und größere Auswahlkacheln
+
+Chris' Live-Auftrag: Gravur auf Acryl begrenzen, springende Vorschau beim Textanklicken beheben, Hausnummer und übrige Gestaltungselemente verschiebbar halten; größere Format-/Positionskacheln nebeneinander. Eigener Branch `dev/funkklingeln-auswahlreihen-20261101`. 119 gezielte Tests lokal erfolgreich (inklusive nachgeführter Foto-Testumgebung), Build und tatsächliche Chrome-Bedienung Desktop/390 px geprüft: „12a“ verschieben, auf 24 mm vergrößern, an Acrylkante ziehen; Vorschaukoordinaten vor/nach Auswahl identisch. Master-Rechte und Gerätegeometrie erhalten. Linux-Test auf gezielter Kopie des aktiven Servers und kontrollierter Rollout laufen. [Bericht](docs/handoffs/2026-11-01-funkklingeln-auswahlreihen.md).
+
 ## 01.11.2026 – Codex/Astra: gemeinsamer Ausführungsblock für Funkklingeln
 
 Chris präzisiert: Format, Position, Rahmen, Farbe und Befestigung direkt untereinander in einem Block. Drei Untertabs entfernt; bestehende Haupttabs, Optionen, Bilder und Farbkreise erhalten. PR #94 gemergt (`b5c83567`) und live. 5/5 gezielte Tests lokal/Linux, Build und Live-Desktop-/390px-Handyprüfung bestanden. Nur das Funkklingel-Darstellungsmodul geändert; 3.274 Dateien verglichen, öffentliche Auslieferung per SHA bestätigt. [Bericht und Live-Bilder](docs/handoffs/2026-11-01-funkklingeln-ausfuehrungsblock.md).

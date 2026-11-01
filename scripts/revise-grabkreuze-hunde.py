@@ -122,7 +122,7 @@ d['fontDecisionPending']={'original':'Vista La Diva','proposal':'Homage','issueC
 d['texts']=[name_text('Flocke','Homage',21,55,61,75),txt('* 03.12.2009\n† 13.01.2024','Montserrat Light',3.1,55,82,32),txt('Das Leben\nist begrenzt.\nDoch die\nErinnerung\nist unendlich.','Dream Orphans',4.2,55,104,33)]
 d['motifs']=[motif('KZUV-A-D33',[5],41,4,28,29)]
 # C: five distinctly different plaque references.
-d=design(201,'Lucky','gravur-knochen-D7','C','Hundekopf links, Name rechts, Herz unten',['Hundekopf','Hundekopf im Herz'],['Standlist → Ashley. Beide Originalmotive erhalten, Knochen-Plattenform entfällt. Spruch in korrekter Lesereihenfolge.'])
+d=design(201,'Lucky','gravur-knochen-D7','C','Betende Hände links, Name rechts, Hundekopf oben',['Betende Hände','Hundekopf'],['Standlist → Ashley. Beide Originalmotive erhalten, Knochen-Plattenform entfällt. Spruch in korrekter Lesereihenfolge.'])
 d['texts']=[name_text('Lucky','Ashley',22,65,61,65),txt('† 19.02.2023','Roboto Slab',3.1,55,80,33),wrapped('Du warst als Hund der beste Mensch, den ich zum Freund haben konnte.','Roboto Slab',3.8,55,92)]
 d['motifs']=[motif(d['sourceKey'],[2],3,39,25,32),motif(d['sourceKey'],[1],44,5,22,21)]
 d=design(202,'Paula','gravur-knochen-D2','C','Pusteblume längs, Name im Balken, Samen rechts',['Pusteblume mit Samen'],['Homage und Cinzel bleiben; Pusteblume und fliegender Samen unverzerrt. Spruch auf Querbalken und Stamm verteilt.'])

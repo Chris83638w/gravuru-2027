@@ -1,3 +1,7 @@
+# N36 Bohrlöcher: automatische Platzierung beim Optionswechsel · 01.11.2026 · Astra
+
+Auf N39/PR #97 (`9327ac7`): einmaliges Ausweichen für Texte/Motive bei Bohrloch-/Schraubenwahl, Rücknahme bei lochloser Auswahl, manuelle Gestaltung frei. Master-Oberfläche, Preise und Katalog unverändert. 132 unterschiedliche gezielte Tests grün, 0 verbleibende Fehler/Skip; zwei lokale HTTP-Verbindungsfehler unverändert mit lokalem Zugriff nachgeprüft. 240/240 Kataloggrößen starten K00, keine Ausnahme. Acht lokale Browser-Bildpaare mit Wiederherstellung geprüft. [Bericht, Grenzen und Nachweise](docs/handoffs/2026-11-01-bohrloch-ausweichen-n36/README.md). Linux-Vollauf/Sichtabnahme bei Claude offen; kein Import, kein Merge, nichts live.
+
 # N39 Form & Größe · lokaler Prüfstand · 01.11.2026
 
 Sieben Formen mit gemeinsamer Ovalanzeige, AB 12×8/K00 als Start, native Größen/Farben/Befestigungen, gleiche D-Nummer und Erhalt eigener Texte. 404/808 Varianten je geplantem Hauptprodukt, strenger Zielfreigabefilter, keine Shop-IDs. 163 unterschiedliche Tests und 16 Browserwechsel mit eigenem Text/Preis/Bohrbild bestanden; Linux-Vollauf offen. [Bericht, Quellen, Variantenpläne und Desktop-/Handybilder](docs/handoffs/2026-11-01-form-groesse-n39/README.md). N36 folgt separat. Kein Import, kein Merge, nichts live. N38-Seriennachtrag: Katalog-PR #17.

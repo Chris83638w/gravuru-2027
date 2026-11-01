@@ -1,0 +1,652 @@
+[
+  {
+    "id": "KZ-A-11x20-D54",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D223",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D282",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D25",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D421",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D401",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D402",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D403",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D404",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D405",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D406",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D407",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D408",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D409",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D410",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D411",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D412",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D413",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D414",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D415",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D416",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D417",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D418",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D419",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  },
+  {
+    "id": "KZ-A-11x20-D420",
+    "fit": {
+      "status": "passt",
+      "issues": [],
+      "details": [],
+      "size": "KZ-A-11x20",
+      "label": "11 × 20 cm"
+    },
+    "reviewFit": {
+      "status": "passt",
+      "issues": [],
+      "sizes": [
+        {
+          "status": "passt",
+          "issues": [],
+          "details": [],
+          "size": "KZ-A-11x20",
+          "label": "11 × 20 cm"
+        }
+      ]
+    },
+    "nativeGround": true,
+    "svg": true,
+    "designAreaGuideVisible": false
+  }
+]

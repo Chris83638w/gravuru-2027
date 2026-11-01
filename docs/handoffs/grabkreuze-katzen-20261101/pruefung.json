@@ -1,0 +1,976 @@
+{
+  "scope": "Katzen: Gravur Schwarz 11×20; 1 Verkaufsoriginal, 3 Motiv-Referenzen, 21 neue Entwürfe (davon 5 Signature).",
+  "designs": 25,
+  "nativeFits": 25,
+  "minimumCapMm": 3.1,
+  "minimumCertifiedContourMarginMm": 2.202,
+  "requiredContourMarginMm": 2,
+  "jpgBytes": 1166330,
+  "fontsUsed": [
+    "Alex Brush",
+    "Allura",
+    "Arvo",
+    "Ashley",
+    "Betsy Bailey",
+    "Cinzel",
+    "Cookie",
+    "Cormorant Garamond",
+    "Courgette",
+    "Dancing Script",
+    "Great Vibes",
+    "Homage",
+    "Italianno",
+    "Kaushan Script",
+    "Libre Baskerville",
+    "Montserrat",
+    "Parisienne",
+    "Rochester",
+    "Sacramento",
+    "Satisfy",
+    "Stylish",
+    "Sweetie",
+    "Tangerine"
+  ],
+  "checks": [
+    {
+      "id": "KZ-A-11x20-D54",
+      "name": "Tiger",
+      "minCapHeightMm": 3.1,
+      "artworkBottomMm": 114.031,
+      "groundClearanceMm": 35.969,
+      "nameInkBoundsMm": [
+        31.642661804922515,
+        44.91066545123063,
+        78.96444849589791,
+        71.91066545123063
+      ],
+      "fonts": [
+        "Homage",
+        "Libre Baskerville"
+      ],
+      "idea": "Original: Katzenherz oben, Name quer, Erinnerung im Stamm",
+      "source": "designs/bestand/kreuze/Tiere/Katze/KZ-A-D54"
+    },
+    {
+      "id": "KZ-A-11x20-D223",
+      "name": "Felix",
+      "minCapHeightMm": 4.2,
+      "artworkBottomMm": 118.747,
+      "groundClearanceMm": 31.253,
+      "nameInkBoundsMm": [
+        37.8563829787234,
+        40.0,
+        72.1436170212766,
+        64.0
+      ],
+      "fonts": [
+        "Cormorant Garamond",
+        "Stylish"
+      ],
+      "idea": "Offenes Pinselherz mit Pfoten",
+      "source": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D223"
+    },
+    {
+      "id": "KZ-A-11x20-D282",
+      "name": "Minka",
+      "minCapHeightMm": 3.1,
+      "artworkBottomMm": 128.815,
+      "groundClearanceMm": 21.185,
+      "nameInkBoundsMm": [
+        14.166208791208778,
+        41.34615384615384,
+        96.3282967032967,
+        59.34615384615385
+      ],
+      "fonts": [
+        "Arvo",
+        "Cinzel"
+      ],
+      "idea": "Engelskatze mit erhobener Pfote und Namensband",
+      "source": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D282"
+    },
+    {
+      "id": "KZ-A-11x20-D25",
+      "name": "Minnie",
+      "minCapHeightMm": 4.2,
+      "artworkBottomMm": 125.994,
+      "groundClearanceMm": 24.006,
+      "nameInkBoundsMm": [
+        19.55102040816327,
+        40.0,
+        90.44897959183673,
+        63.99999999999999
+      ],
+      "fonts": [
+        "Betsy Bailey",
+        "Cinzel"
+      ],
+      "idea": "Vier offene Katzenpfoten aus der Herzvorlage",
+      "source": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-herz-22x22-D25"
+    },
+    {
+      "id": "KZ-A-11x20-D421",
+      "name": "Nori",
+      "minCapHeightMm": 4.2,
+      "artworkBottomMm": 139.09,
+      "groundClearanceMm": 10.91,
+      "nameInkBoundsMm": [
+        25.640479760119938,
+        40.0,
+        84.35952023988007,
+        64.0
+      ],
+      "fonts": [
+        "Montserrat",
+        "Tangerine"
+      ],
+      "idea": "Zwei Katzen sitzen eng aneinandergelehnt",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D401",
+      "name": "Lilly",
+      "minCapHeightMm": 4.2,
+      "artworkBottomMm": 138.325,
+      "groundClearanceMm": 11.675,
+      "nameInkBoundsMm": [
+        35.506122448979596,
+        40.0,
+        74.49387755102042,
+        64.0
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat"
+      ],
+      "idea": "Fensterplatz: Katze auf dem Sims unter einem Rundbogen",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D402",
+      "name": "Simba",
+      "minCapHeightMm": 4.2,
+      "artworkBottomMm": 141.35,
+      "groundClearanceMm": 8.65,
+      "nameInkBoundsMm": [
+        20.96282527881041,
+        40.0,
+        89.0371747211896,
+        64.0
+      ],
+      "fonts": [
+        "Dancing Script",
+        "Montserrat"
+      ],
+      "idea": "Wollknäuel mit Katzenohren und losem Faden",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D403",
+      "name": "Smilla",
+      "minCapHeightMm": 4.2,
+      "artworkBottomMm": 130.636,
+      "groundClearanceMm": 19.364,
+      "nameInkBoundsMm": [
+        13.889705882352942,
+        40.0,
+        96.11029411764707,
+        64.0
+      ],
+      "fonts": [
+        "Montserrat",
+        "Parisienne"
+      ],
+      "idea": "Schlafende Katze, Nase an der Schwanzspitze",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D404",
+      "name": "Leo",
+      "minCapHeightMm": 4.2,
+      "artworkBottomMm": 129.425,
+      "groundClearanceMm": 20.575,
+      "nameInkBoundsMm": [
+        39.79164490861619,
+        40.0,
+        70.20835509138381,
+        64.0
+      ],
+      "fonts": [
+        "Montserrat",
+        "Rochester"
+      ],
+      "idea": "Schreitende Katze mit hoch erhobenem Schwanz",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D405",
+      "name": "Pünktchen",
+      "minCapHeightMm": 4.2,
+      "artworkBottomMm": 135.375,
+      "groundClearanceMm": 14.625,
+      "nameInkBoundsMm": [
+        8.0,
+        40.0,
+        101.99999999999999,
+        59.55369706624187
+      ],
+      "fonts": [
+        "Montserrat",
+        "Sacramento"
+      ],
+      "idea": "Schnurrhaare, Herz-Nase und zwei kleine Herzen",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D406",
+      "name": "Nelly",
+      "minCapHeightMm": 4.2,
+      "artworkBottomMm": 140.506,
+      "groundClearanceMm": 9.494,
+      "nameInkBoundsMm": [
+        31.50628366247755,
+        39.99999999999999,
+        78.49371633752246,
+        64.0
+      ],
+      "fonts": [
+        "Great Vibes",
+        "Montserrat"
+      ],
+      "idea": "Spielende Katze greift nach einer fallenden Feder",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D407",
+      "name": "Fritzi",
+      "minCapHeightMm": 4.2,
+      "artworkBottomMm": 138.35,
+      "groundClearanceMm": 11.65,
+      "nameInkBoundsMm": [
+        31.647079665884853,
+        40.0,
+        78.35292033411514,
+        63.99999999999999
+      ],
+      "fonts": [
+        "Ashley",
+        "Montserrat"
+      ],
+      "idea": "Lesekatze auf einem offenen Buch",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D408",
+      "name": "Suki",
+      "minCapHeightMm": 4.2,
+      "artworkBottomMm": 139.59,
+      "groundClearanceMm": 10.41,
+      "nameInkBoundsMm": [
+        31.346876324090196,
+        40.0,
+        78.6531236759098,
+        64.0
+      ],
+      "fonts": [
+        "Montserrat",
+        "Sweetie"
+      ],
+      "idea": "Katzenkopf in einer einzelnen großen Blüte",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D409",
+      "name": "Merlin",
+      "minCapHeightMm": 4.2,
+      "artworkBottomMm": 129.4,
+      "groundClearanceMm": 20.6,
+      "nameInkBoundsMm": [
+        18.086092715231786,
+        40.0,
+        91.91390728476819,
+        64.0
+      ],
+      "fonts": [
+        "Kaushan Script",
+        "Montserrat"
+      ],
+      "idea": "Wachsame Katzenaugen mit Stirnzeichnung",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D410",
+      "name": "Zora",
+      "minCapHeightMm": 4.2,
+      "artworkBottomMm": 140.375,
+      "groundClearanceMm": 9.625,
+      "nameInkBoundsMm": [
+        34.50741573033707,
+        40.0,
+        75.49258426966293,
+        64.0
+      ],
+      "fonts": [
+        "Italianno",
+        "Montserrat"
+      ],
+      "idea": "Katze hinter hohen Grashalmen",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D411",
+      "name": "Pepper",
+      "minCapHeightMm": 4.2,
+      "artworkBottomMm": 143.487,
+      "groundClearanceMm": 6.513,
+      "nameInkBoundsMm": [
+        25.26206896551724,
+        40.0,
+        84.73793103448276,
+        64.0
+      ],
+      "fonts": [
+        "Betsy Bailey",
+        "Montserrat"
+      ],
+      "idea": "Sechs versetzte Katzenpfoten fallen durch den Stamm",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D412",
+      "name": "Tinka",
+      "minCapHeightMm": 4.2,
+      "artworkBottomMm": 140.35,
+      "groundClearanceMm": 9.65,
+      "nameInkBoundsMm": [
+        21.76279499178007,
+        40.0,
+        88.23720500821992,
+        64.0
+      ],
+      "fonts": [
+        "Courgette",
+        "Montserrat"
+      ],
+      "idea": "Eine Katzenpfote ruht in einer offenen Hand",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D413",
+      "name": "Findus",
+      "minCapHeightMm": 4.2,
+      "artworkBottomMm": 138.063,
+      "groundClearanceMm": 11.937,
+      "nameInkBoundsMm": [
+        17.807570977917987,
+        40.0,
+        92.19242902208202,
+        64.0
+      ],
+      "fonts": [
+        "Cookie",
+        "Montserrat"
+      ],
+      "idea": "Rückenansicht mit langem Schwanz und einem Stern",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D414",
+      "name": "Pia",
+      "minCapHeightMm": 3.5,
+      "artworkBottomMm": 113.047,
+      "groundClearanceMm": 36.953,
+      "nameInkBoundsMm": [
+        10.641592920353986,
+        43.876106194690266,
+        56.225663716814154,
+        63.86725663716814
+      ],
+      "fonts": [
+        "Alex Brush",
+        "Montserrat"
+      ],
+      "idea": "Neugierige Katze hängt mit den Vorderpfoten am Querbalken",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D415",
+      "name": "Mochi",
+      "minCapHeightMm": 4.2,
+      "artworkBottomMm": 139.375,
+      "groundClearanceMm": 10.625,
+      "nameInkBoundsMm": [
+        23.265329855818628,
+        40.0,
+        86.73467014418137,
+        64.0
+      ],
+      "fonts": [
+        "Montserrat",
+        "Satisfy"
+      ],
+      "idea": "Katze schaut aus ihrem Karton",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D416",
+      "name": "Yuki",
+      "minCapHeightMm": 3.3,
+      "artworkBottomMm": 140.425,
+      "groundClearanceMm": 9.575,
+      "nameInkBoundsMm": [
+        13.35318275154004,
+        47.59753593429158,
+        46.16404289299567,
+        67.59753593429159
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat"
+      ],
+      "idea": "SIGNATURE: großes Katzenporträt über rechtem Arm und Stamm",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D417",
+      "name": "Kiki",
+      "minCapHeightMm": 4.0,
+      "artworkBottomMm": 142.395,
+      "groundClearanceMm": 7.605,
+      "nameInkBoundsMm": [
+        47.03965303593556,
+        92.68401486988847,
+        60.03965303593556,
+        117.10532837670385
+      ],
+      "fonts": [
+        "Dancing Script",
+        "Montserrat"
+      ],
+      "idea": "SIGNATURE: senkrechter Name im langen Katzen-Schwanzbogen",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D418",
+      "name": "Cleo",
+      "minCapHeightMm": 4.007,
+      "artworkBottomMm": 87.034,
+      "groundClearanceMm": 62.966,
+      "nameInkBoundsMm": [
+        48.16147974163241,
+        51.0,
+        67.83852025836758,
+        61.0
+      ],
+      "fonts": [
+        "Montserrat",
+        "Parisienne"
+      ],
+      "idea": "SIGNATURE: Schriftzug in einer weit gespannten Katzen-Silhouette",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D419",
+      "name": "Nero",
+      "minCapHeightMm": 3.2,
+      "artworkBottomMm": 112.027,
+      "groundClearanceMm": 37.973,
+      "nameInkBoundsMm": [
+        43.52009184845006,
+        90.39781859931114,
+        66.29047072330654,
+        101.39781859931114
+      ],
+      "fonts": [
+        "Montserrat",
+        "Rochester"
+      ],
+      "idea": "SIGNATURE: springende Katze über dem Querbalken, Name im Stamm",
+      "source": "ohne Vorlage"
+    },
+    {
+      "id": "KZ-A-11x20-D420",
+      "name": "Lotte",
+      "minCapHeightMm": 4.0,
+      "artworkBottomMm": 121.139,
+      "groundClearanceMm": 28.861,
+      "nameInkBoundsMm": [
+        39.176002358490564,
+        46.0,
+        70.82399764150942,
+        65.0
+      ],
+      "fonts": [
+        "Betsy Bailey",
+        "Montserrat"
+      ],
+      "idea": "SIGNATURE: Katzenpfoten tragen den Namen wie ein Namensschild",
+      "source": "ohne Vorlage"
+    }
+  ],
+  "individuality": {
+    "uniqueNames": 25,
+    "distinctMotifGeometryFingerprints": 25,
+    "pawTrailDesigns": 2,
+    "signatureLayoutBreaks": 5,
+    "verticalNames": 1,
+    "limitation": "Fingerprints catch exact repeats only. Visual assessment of the contact sheet is required separately."
+  },
+  "preservedFiles": [
+    {
+      "path": "designs/bestand/kreuze/Tiere/Katze/KZ-A-D40/design.json",
+      "sha256": "abae4b698164dab7f32f61e8f8b38d1fe75e5b5a47ae0e87fc2fdd9fa699a2d4"
+    },
+    {
+      "path": "designs/bestand/kreuze/Tiere/Katze/KZ-A-D40/design.svg",
+      "sha256": "c82aa69d79d0080dd3a9381806823069ab3b77a1950af9656265bee4aa230bff"
+    },
+    {
+      "path": "designs/bestand/kreuze/Tiere/Katze/KZ-A-D40/preview.png",
+      "sha256": "633e5e36c21e95ed2202ba8bdc59c074dfa716d30ac6fbf16587644e30133117"
+    },
+    {
+      "path": "designs/bestand/kreuze/Tiere/Katze/KZ-A-D54/design.json",
+      "sha256": "7502d056969f22945f383beda9314a339c116a18de68fc9c152ffbbca44da871"
+    },
+    {
+      "path": "designs/bestand/kreuze/Tiere/Katze/KZ-A-D54/design.svg",
+      "sha256": "323f06b84982b3b595f65503965f890bf8fdb32f57bbbdb69783cefe2c450abe"
+    },
+    {
+      "path": "designs/bestand/kreuze/Tiere/Katze/KZ-A-D54/preview.png",
+      "sha256": "36b023a645f647d30e2eaaa5aa18fe580433b87e36a378be3889ea4b080dd13f"
+    },
+    {
+      "path": "designs/bestand/kreuze/Tiere/Katze/KZ-A-D58/design.json",
+      "sha256": "3736a7ed24d661771abc28a1ce17ac28c45689545a6b985d0cf2222ee875a284"
+    },
+    {
+      "path": "designs/bestand/kreuze/Tiere/Katze/KZ-A-D58/design.svg",
+      "sha256": "30b23e61df02ca07e874fd232d2881adb67b0e02f0914c5015b0a68c3801f929"
+    },
+    {
+      "path": "designs/bestand/kreuze/Tiere/Katze/KZ-A-D58/preview.png",
+      "sha256": "c9fec466da792ded0459ea8516af06644abacbd0a2d8b3e0dfc56980dc1693bb"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-herz-10x10-D11/design.json",
+      "sha256": "9961c0bb9ce4f2221f8364ae71b7b6771bc26e937e4db06be84e24977e1957da"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-herz-10x10-D11/design.svg",
+      "sha256": "51332b4a747f26f8a6f6a18fd277a68a3180af6a58c73e823af8b31ef6828124"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-herz-10x10-D11/preview.png",
+      "sha256": "b136eedccae83882891df1d1b356bd68656538bcf3ae55ed9f90afb0cf36c303"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-herz-22x22-D11/design.json",
+      "sha256": "04037e818e270f8f817eca9178f0672475fd98fefe690924465061cc800a7e6a"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-herz-22x22-D11/design.svg",
+      "sha256": "3c95301e06afa108b65814ebf6d251880469bb4b3d407f76d8acabfa0f64e660"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-herz-22x22-D11/preview.png",
+      "sha256": "dbcd0ce2a22d15f257e21d97cc2291db4708ad04d472abc73c2259868d73dd0e"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-herz-22x22-D25/design.json",
+      "sha256": "686b3641f693dbd377bb8d0211b2ead0d72eed7c847a792e81215bdc26dfe7da"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-herz-22x22-D25/design.svg",
+      "sha256": "0191f10ac9f22245f959c4253636137b59d67ba41b2d5bfda592aca19c88b231"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-herz-22x22-D25/foto-2.png",
+      "sha256": "f6bccefe2621b5a893ecac8054f0e746dff08c4bd3e7daa102360a80704f25f4"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-herz-22x22-D25/preview.png",
+      "sha256": "2bad4a932e555070befda47c9beed01d6c5136bfc5e8a0fa3fc009d3b585b005"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D205/design.json",
+      "sha256": "f2b74d1ab8dd6545df23d9565b518e4838218ac7a1b20fa40243246de37ee59a"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D205/design.svg",
+      "sha256": "e187ba34d1d2a8395ce0ef004f67a1d94605217c1ace08367097f6a554cb5d97"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D205/foto-1.png",
+      "sha256": "48fb7ce083541b362422970a1aff661c2b1220335f92eab0dee00c55baf540d2"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D205/preview.png",
+      "sha256": "5650a5459f19bf52b7812f55f3330598f7531f2a99fdd77745cff775cc7b2f86"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D223/design.json",
+      "sha256": "d6f87d8fb93fa82bd7cc4806cd333d95df5f8afae35c2367e763ec0466711907"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D223/design.svg",
+      "sha256": "2d2ec1b6b398246a36ee9e60c1bc49eaaa729b168f64aff3458a01e250864e26"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D223/foto-1.jpg",
+      "sha256": "1b9b44bf55862fe5ffd410d705050227d13aae80d15b50842476b20fd2ab2cb2"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D223/preview.png",
+      "sha256": "ede2d70d9c62359b1957f4b35ca3b1defd3e838ec1536edbbf589d7865ae17d9"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D282/design.json",
+      "sha256": "b85fd9a2fc4fe7b1d1bf0ebdc4cd6cf1ee73b8ab928e9ba64c27f9c687c59ff6"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D282/design.svg",
+      "sha256": "77aa327d8a6e1ac7799a2830a48f7c5f4db274cf28f41210c9154f05903c0da8"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D282/preview.png",
+      "sha256": "bd3a7f4c6707632eb0463b76fce94a69a0abdae5828bd8d96de0e4a84ea6cf47"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D289/design.json",
+      "sha256": "9bfef4688ccbc718f584d87011633027cf2a69d5c6ee6b020ecf13c64b7dac1a"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D289/design.svg",
+      "sha256": "e3ab831bbe24ca57ce384ff1535d649723d61a2c003026b42e2d5246539e1e31"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D289/preview.png",
+      "sha256": "cdeb98be022eb679013c6ea2609a1ded4b2869c11e1f12adc046fe17c45ec7c6"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D293/design.json",
+      "sha256": "5f00e0e84220b26b568b0de6a0b7c3cb68df20d61e132bbecbc5c9a95012b3cb"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D293/design.svg",
+      "sha256": "d8e37ac827088720e3fb04c1a8bec8cd9e1cd99114395b297308d4bc9e39a4e3"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D293/preview.png",
+      "sha256": "f6c034b908f0ab20cb829d9d079de6e7a04b4300ebb4228f7386d1cea4a43576"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-acryl-D3/Bild_1.png",
+      "sha256": "b6ffd0a9290c6fd7b6575f3b815b0bb6b44680fc5a14c95fc787427aec306000"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-acryl-D3/Bild_2.png",
+      "sha256": "4e7dca27bf409d694894e08e21136a2c4818139cf510b32756f1db8edfbf57a6"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-acryl-D3/Hauptform_1.svg",
+      "sha256": "67f9ca27e183e313aa56c87c418067835249ca3f2a31ee907caa618c67ee5ccf"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-acryl-D3/Kurve_1.svg",
+      "sha256": "a3ef1c159bcdfcdc128ab070930d861a296bbfe3cbd80200e8bbd53bf58d2f6a"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-acryl-D3/Kurve_2.svg",
+      "sha256": "483a62de696dcf91ade8fc2bd685bc321e49f4323cb0b047a1dfe2276f58b34e"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-acryl-D3/Uploadbox_1.svg",
+      "sha256": "542319cfbdd9bf925fb918d97b1f20bfd2f69bb76d1cefaebf96294bdc536733"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-acryl-D3/Uploadbox_1_View_1.svg",
+      "sha256": "fb5f14e9a5332abe60f5c6d1be63f1ed2162db1eab6415c89f32d65035483a03"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-acryl-D3/design.json",
+      "sha256": "f54d56fac7e06df3c39349e8bba6bd418ba07d016ece7aaa9bfce8c896fa1307"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-acryl-D3/preview.png",
+      "sha256": "59b8c0d320bbe07f56ed5ecddc25ba788bfb8610064bc6bec47cddd7724639d8"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-acryl-D3/product.json",
+      "sha256": "463c6afb66a11f2ea73d355352269f6156ec16ba4c89dd0dc969d4e2546b87bd"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-aludibond-D10/Bild_1.png",
+      "sha256": "0b3c21e714c1600f8027a52dafd4846c600df7b0d23bc354ba9c3f36052aa3f1"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-aludibond-D10/Bild_2.png",
+      "sha256": "37b03e237fed64aee85f4b42ba3e9dffcc9c6e669e20c134955fa642dae1fd8a"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-aludibond-D10/Hauptform_1.svg",
+      "sha256": "0d5b709eab30269765e08e432c9c6e506ba64fd5dc4fa19df9205d75152aecbc"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-aludibond-D10/Kurve_1.svg",
+      "sha256": "cfd7e051e335647133789a7497a14e48b5d28f2830a51fcbc4a542a192fa2247"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-aludibond-D10/Kurve_2.svg",
+      "sha256": "19d0dad4060dd7ff482ed5d4872de62df15190e4c9256549ef5a11b9e8f15b3a"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-aludibond-D10/Uploadbox_1_View_1.svg",
+      "sha256": "0bb6030d31cf2e590f06c525a87939ba1f4b87d6b56c27b38db405d6eba8ae9a"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-aludibond-D10/design.json",
+      "sha256": "fe398dbb604a5acf734ecc6ab3a1a7ac1a9609fdd8e59844db6a6a0c11b28cec"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-aludibond-D10/design.svg",
+      "sha256": "f1b1518e3636aa5a60ef87352cf1e7a57f1a5694f4721f3af100e680116a088c"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-aludibond-D10/foto-1.jpg",
+      "sha256": "7d5046349a53e2b1b5f941b2617fbe160128f3533cf1f276dfcf4cea9e80bdee"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-aludibond-D10/preview.png",
+      "sha256": "02f8ebe962ac22c2ca67eb71c4249d2e875809480599a1dd2220f6b72153234d"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-aludibond-D10/product.json",
+      "sha256": "eaef81dd2176b13489fd3f74cec07593d593c2ec6a9d1f807487b616eb385e91"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-schiefer-rechteck-D8/Hauptform 1.svg",
+      "sha256": "509b5faad0cc8f69c75d6945594b57af14643cba4e689cb24afdf4639869ba8b"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-schiefer-rechteck-D8/Kreuz1_motiv.svg",
+      "sha256": "45c6d052682c90a3ac180d1abda56eb4d378b6e622afa44c78886a24017713fe"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-schiefer-rechteck-D8/design.json",
+      "sha256": "f5ccc243227239e56e761038e69cc616eb9bb834225f9e89251ba1c3ffdbcc06"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-schiefer-rechteck-D8/preview.png",
+      "sha256": "e29154c858cf62843c98699ba4fdd1bc97ec54c52ad34de0614d3fe0927132cf"
+    },
+    {
+      "path": "designs/bestand/gedenktafeln/Tiere/Katze/uv-schiefer-rechteck-D8/product.json",
+      "sha256": "7d50a005d14947a56c7f4502ae0a2c6f07b615a6096cb4aac83c9fb1d9ecc567"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D0/design.json",
+      "sha256": "f7ceb9994b021d1462919f9f7d9ba33e493e42de94c22b0ebad60bf2c9bcdfa4"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D0/design.svg",
+      "sha256": "55811b1a495445c1ccfe7a842e375ea07d0f9f1f9ab9f6ef474141131ec33c99"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D1/design.json",
+      "sha256": "804475d3c3ed127fd362653d706953775c4c14db8b531add9ae9b4193f8ba02d"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D1/design.svg",
+      "sha256": "961cf25dc44643750b2169ae005481b693b7d836de44c2c11efe5dd665af115f"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D126/design.json",
+      "sha256": "8d80342f6445202ec443446c0385456da90bdfa1aa7d858e2eb3e8bb75707926"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D126/design.svg",
+      "sha256": "5fad0994f992c2f7b835865a7667c1ca7dc85f51c657ee4ef81d3c16db3a136c"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D127/design.json",
+      "sha256": "317b457aa2df6d63b1048d29d95bcf4c8d74bd6bb19203f7cce2c469b79a9e13"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D127/design.svg",
+      "sha256": "ebd733f139f12d1bbee019f017cdf93fecb5ee15408877230dbe43ca6eb36a99"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D132/design.json",
+      "sha256": "8ff60d59cf5a689d03edb49b5252b95f995ad1ee7b5f11295b4646b48fe0317a"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D132/design.svg",
+      "sha256": "d6841c22dda24f4b38c1a349d758b1d6275cc190e823f4750c48c029ab82d34a"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D133/design.json",
+      "sha256": "95d59ee8d2ff729725b9a2a5eb1f0db05fd48efa2e51384e1b415fe4507b6cf9"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D133/design.svg",
+      "sha256": "22a7d365fb7376aa61c4bcf57738bef0c35a7d3b72d2eeafd747b586664c05c0"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D201/design.json",
+      "sha256": "57fcede72fa36102bda654cc76da490ccd3b904c01eff652e9c9bd35d52bfb74"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D201/design.svg",
+      "sha256": "42d6a873f747a867db061683b62c1376fc90ce767abf6648a25ccdccfc6f0288"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D202/design.json",
+      "sha256": "8860e49d66a14b7928d79a9f4b61728e916dd918efd0c88f7c1ce2a23aa8a7da"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D202/design.svg",
+      "sha256": "4efe70a9e314ffcc0b6736ec821cf4c0781f2abf4a10d5815024358b88426ac3"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D203/design.json",
+      "sha256": "8f2c6505526c98ab81d4212ac41aeda24260cce1e7d7680ae19f896e650a4815"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D203/design.svg",
+      "sha256": "880b341a56070467633b87b73abbe0eb0e6f4ba0fa9a050defd718a71850db53"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D204/design.json",
+      "sha256": "809aa9468e6f7f6a1a00512e0f3c73716b0d27451257bb1808af42682c1f7e22"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D204/design.svg",
+      "sha256": "10bc163eafb21c18f23ca9d77dd363785c041f3c0a77dbed6b5d57e12902e782"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D205/design.json",
+      "sha256": "a613a1b83ca6791c9750d7d71ce24bd27adfe3a99b2d3a2e99b11191924118ba"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D205/design.svg",
+      "sha256": "486462df82a9f533b3c76af442cdb412560dc1174f1ee765ca25bbb01a1ab4fb"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D301/design.json",
+      "sha256": "0c7f5df34c699fac2a91ab8ed8af406c15c02e1918f99d113b64043f86b59694"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D301/design.svg",
+      "sha256": "f512053564b9fbc9eb5abed8e8dce8d3336a4b2873f987d5d5a7ca05ca7f0001"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D302/design.json",
+      "sha256": "66ac7472fe9a3f7d0c98d3273dbe5ba9ed68e3e996a8e64ebd94345d6bed4a9f"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D302/design.svg",
+      "sha256": "2b604c7eb4c4309b558a2186eb6f603bb49a43bf406aab2eb8f2f31366410f05"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D303/design.json",
+      "sha256": "bf66502c11b93fb053fa56802b9826a0bc9d15067f4081e648cfcb0307e8b5a5"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D303/design.svg",
+      "sha256": "5c1bab9c9490fa6bf9fda50e12300b5684bdac0601e25a779833b85f61c7c067"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D304/design.json",
+      "sha256": "e08002ebcf88d9fc96e31a1a3b495acae0425dce6d2010f36c3e8c52a974aaa5"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D304/design.svg",
+      "sha256": "a081189e6b39e6bcf88ce7da8d1f2d59bff97947a439e1dd75d8c3c62579c7e8"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D305/design.json",
+      "sha256": "221a057509ab6b2e3afd3ce14fdf47c6219fa6de1e410b07016e31e432afc431"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D305/design.svg",
+      "sha256": "8c689d627e24d32d85750cfb19052dae229db30f68d3ed16789fe741c3b5a94b"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D306/design.json",
+      "sha256": "78d0807c10b71d97dfc510c71d0635e6ef970897b16ae855634dfa57da83def8"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D306/design.svg",
+      "sha256": "b36087decbc55a5ea601eba3b331807ba30ea60ebddbd542b5ab156e0d5f8407"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D307/design.json",
+      "sha256": "249ef3d22d4ca1321bc702644610dd0b38b4b875053d673c49546d662574095e"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D307/design.svg",
+      "sha256": "3afd3c93c39ee3371fcc587b78f92f3fdde8aff3252141e45ac5182f54bba23b"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D308/design.json",
+      "sha256": "18ee5fd41ded06194583a83a6cd59285d54ca6e826016a9bb14b1be1b86c057b"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D308/design.svg",
+      "sha256": "d867f1a8599abff31000d2544becc582737a55b7618b7f5eb04695dc3b25b20a"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D41/design.json",
+      "sha256": "318cad5053f90de8b4ba06ffff84b2fc19d97754c624d1a12532e73baa72253e"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D41/design.svg",
+      "sha256": "14a987b52b75c7f08e6160ecb4549bcc6b274b6bef421f296c4dd7e45a9b55f4"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D42/design.json",
+      "sha256": "72bfe49d79af30e36cfe1230a84c4bfaf206e505f612ee84e8010d01e5fbd58e"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D42/design.svg",
+      "sha256": "b459cf19343f74823e05520308a3cdd2be00af5ee8eb862496e41da50cba7e1c"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D46/design.json",
+      "sha256": "76e129e38f04d339734d9e501390681316914b2e6c3f19747f24e8f4860d2733"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D46/design.svg",
+      "sha256": "112989f0c34fdd703bc5aafa93b2630a06b772a39a1d2af6668ae51fa9ec3aca"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D48/design.json",
+      "sha256": "66ffdbe0dcb010e0c13260ad54abbcb6c2f57f2c418e07dd0c953383673fd64b"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D48/design.svg",
+      "sha256": "5e2a070410196a99fcc8e978f0c907c1a030432f21c9e17cf3a992e359e057ca"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D53/design.json",
+      "sha256": "77abc2c51bcba3c33d0fff6edf42ba1a058371f5d09bc714f318edab1236b939"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D53/design.svg",
+      "sha256": "e835cb73d366bdf326fc2ed5f49ac43e1a64d10daa4e747c74f6218d32cf6a34"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D55/design.json",
+      "sha256": "bba5fca288f0398622008ee7482442af75062ae37aa142d7a761bd25cbce4a53"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D55/design.svg",
+      "sha256": "bea5adfa1bbcecee08522f074deebbdaa3ab6e9034aed46d1061e66a7f0da3e4"
+    },
+    {
+      "path": "designs/grabkreuze-hunde-11x20/index.json",
+      "sha256": "d01645c81dbffd5a86303a8a4ef1d64b2f77bccacf19e57e0a0a21193abe454c"
+    }
+  ],
+  "browserCheck": "Offen; native Zielvorschau ist kein Browser-Screenshot. Claude nach Gestaltungsabnahme.",
+  "fontLimits": "Kein genereller Nachweis sämtlicher Schriftstrichstärken. Soulmate fehlt und wurde nicht ersetzt; betreffende Vorlage nicht übernommen.",
+  "productionApproval": null
+}

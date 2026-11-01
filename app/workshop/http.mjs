@@ -1,4 +1,5 @@
 import {shopGalleryModel} from './shop-gallery-model.mjs';
+import {SIGN_PLACEMENT_FAMILIES} from '../configurator/variant-m/mounting-dimensions.mjs';
 import {createAcrylShopService} from './acryl-shop-service.mjs';
 import {createDesignCorrections} from './design-corrections.mjs';
 import {fitFormTextFrames} from './form-text-sizing.mjs';
@@ -244,6 +245,11 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
     universal.workshopProfiles=version!==null&&version!==undefined?(record.metadata.profiles||{selections:{fonts:null,motifs:null,colors:null,bestsellers:null},sources:{},settingsRevision:0}):profiles.resolve(record.document);
     for(const id of universal.workshopProfiles.selections?.fonts||[])if(!Object.hasOwn(universal.localResources.fonts,id)&&Object.hasOwn(formFonts,id))universal.localResources.fonts[id]=structuredClone(formFonts[id]);
     universal.profile.name=record.document.name;
+    // N36: runtime IDs/revisions below replace the catalog provenance. Preserve
+    // the unambiguous family category for the optional customer placement aid.
+    delete universal.mountingPlacementFamily;
+    const signFamilies=SIGN_PLACEMENT_FAMILIES.filter(id=>record.document.categoryIds.includes('familie-'+id));
+    if(signFamilies.length===1)universal.mountingPlacementFamily=signFamilies[0];
     universal.profile.id=record.id;
     universal.profile.binding={kind:'local-review',productId:record.id};
     universal.profile.revision=`${record.id}:${record.revision}`;

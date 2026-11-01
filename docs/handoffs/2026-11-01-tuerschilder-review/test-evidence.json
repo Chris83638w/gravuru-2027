@@ -1,0 +1,90 @@
+{
+  "base": "b4a25fa3df9bc7d3bd85273bcc0373444ce53324",
+  "integratedMain": "bfac22b",
+  "logs": [
+    {
+      "name": "review-full-tests.log",
+      "sha256": "4c70d310ef9affcd06ecaab5bc7ee5324bec9692965e6ab62e3a60014ec4d6b1",
+      "counts": [
+        "ℹ tests 2049",
+        "ℹ pass 2028",
+        "ℹ fail 16",
+        "ℹ cancelled 0",
+        "ℹ skipped 5",
+        "ℹ todo 0",
+        "ℹ duration_ms 1670767.9322"
+      ],
+      "skips": [
+        "  ﹣ workshop.sqlite (2.6718ms) # File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it.",
+        "  ﹣ profiles.sqlite-wal (3.2123ms) # File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it.",
+        "  ﹣ design-assets.sqlite-shm (3.1934ms) # File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it.",
+        "  ﹣ real authenticated server and databases with confirmed private permissions (0.0477ms) # Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it.",
+        "  ﹣ Git ancestor guard after the private-permission check (0.3038ms) # Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it."
+      ]
+    },
+    {
+      "name": "review-logo-retest.log",
+      "sha256": "cccdee3efb75268a164a4c62ded2ca96a60a9b7e41030f4b857755e702f996fe",
+      "counts": [
+        "ℹ tests 18",
+        "ℹ pass 18",
+        "ℹ fail 0",
+        "ℹ cancelled 0",
+        "ℹ skipped 0",
+        "ℹ todo 0",
+        "ℹ duration_ms 38372.7144"
+      ],
+      "skips": []
+    },
+    {
+      "name": "review-shop-entry-retest.log",
+      "sha256": "d3e31dc646a95a36deb8ac0e88bbe072e069302dbeaa1c5b30eed490ffe5a8b8",
+      "counts": [
+        "ℹ tests 35",
+        "ℹ pass 35",
+        "ℹ fail 0",
+        "ℹ cancelled 0",
+        "ℹ skipped 0",
+        "ℹ todo 0",
+        "ℹ duration_ms 941.0793"
+      ],
+      "skips": []
+    },
+    {
+      "name": "review-placement-final.log",
+      "sha256": "3ab01acc4d727f31cc681205a3b7045fdeef0d25cde1ee59117169810e0aa148",
+      "counts": [
+        "ℹ tests 18",
+        "ℹ pass 18",
+        "ℹ fail 0",
+        "ℹ cancelled 0",
+        "ℹ skipped 0",
+        "ℹ todo 0",
+        "ℹ duration_ms 228.6941"
+      ],
+      "skips": []
+    }
+  ],
+  "priceTestUnchangedFromMain": true,
+  "logoDependencySource": "app/workshop/requirements-logo.txt",
+  "localDependencyInstallation": "isolated Python path; no source or global Python modification",
+  "targetedBeforeLastBoundaryFix": {
+    "tests": 64,
+    "pass": 64,
+    "fail": 0,
+    "skip": 0
+  },
+  "lastBoundaryFix": {
+    "tests": 18,
+    "pass": 18,
+    "fail": 0,
+    "skip": 0
+  },
+  "distinctFinalCoverage": {
+    "tests": 2050,
+    "pass": 2045,
+    "fail": 0,
+    "skip": 5,
+    "note": "Union of full run and targeted retries, plus one final boundary regression; not a second all-green single run."
+  }
+}

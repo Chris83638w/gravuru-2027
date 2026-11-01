@@ -1,0 +1,274 @@
+[
+  {
+    "id": "TAE-V2A-8x5-D15",
+    "size": "GR-ES-AB-80X53P3-T15",
+    "mounting": "B02S",
+    "holes": [
+      {
+        "x": 6,
+        "y": 26.65,
+        "diameter": 4
+      },
+      {
+        "x": 74,
+        "y": 26.65,
+        "diameter": 4
+      }
+    ],
+    "before": [
+      "text-1"
+    ],
+    "after": [],
+    "changes": [
+      {
+        "id": "text-1",
+        "dx": 0,
+        "dy": -5.619632720947266,
+        "scale": 0.9700000000000001
+      }
+    ],
+    "unresolved": [],
+    "ms": 105
+  },
+  {
+    "id": "TAE-V2A-8x5-D8",
+    "size": "GR-ES-AB-80X53P3-T15",
+    "mounting": "B02S",
+    "holes": [
+      {
+        "x": 6,
+        "y": 26.65,
+        "diameter": 4
+      },
+      {
+        "x": 74,
+        "y": 26.65,
+        "diameter": 4
+      }
+    ],
+    "before": [
+      "motiv-1"
+    ],
+    "after": [],
+    "changes": [
+      {
+        "id": "motiv-1",
+        "dx": 2.4485015869140625,
+        "dy": 0,
+        "scale": 1
+      }
+    ],
+    "unresolved": [],
+    "ms": 2
+  },
+  {
+    "id": "TR1-V2A-9x6-D65",
+    "size": "GR-ES-RT1-90X60-T15",
+    "mounting": "B02S",
+    "holes": [
+      {
+        "x": 6,
+        "y": 30,
+        "diameter": 4
+      },
+      {
+        "x": 84,
+        "y": 30,
+        "diameter": 4
+      }
+    ],
+    "before": [
+      "text-4"
+    ],
+    "after": [],
+    "changes": [
+      {
+        "id": "text-4",
+        "dx": 0,
+        "dy": 12.2030029296875,
+        "scale": 1
+      }
+    ],
+    "unresolved": [],
+    "ms": 6
+  },
+  {
+    "id": "TRE-V2A-5x2-D5",
+    "size": "GR-ES-RE-50X20-T15",
+    "mounting": "B02S",
+    "holes": [
+      {
+        "x": 4,
+        "y": 10,
+        "diameter": 4
+      },
+      {
+        "x": 46,
+        "y": 10,
+        "diameter": 4
+      }
+    ],
+    "before": [
+      "text-1",
+      "text-2"
+    ],
+    "after": [],
+    "changes": [
+      {
+        "id": "text-1",
+        "dx": -2.0260283928348812,
+        "dy": 1.5546262642338462,
+        "scale": 1
+      },
+      {
+        "id": "text-2",
+        "dx": 1.8954542432573014,
+        "dy": -1.4544331953305658,
+        "scale": 1
+      }
+    ],
+    "unresolved": [],
+    "ms": 2
+  },
+  {
+    "id": "TRE-V2A-5x2-D45",
+    "size": "GR-ES-RE-50X20-T15",
+    "mounting": "B02S",
+    "holes": [
+      {
+        "x": 4,
+        "y": 10,
+        "diameter": 4
+      },
+      {
+        "x": 46,
+        "y": 10,
+        "diameter": 4
+      }
+    ],
+    "before": [
+      "motiv-1"
+    ],
+    "after": [],
+    "changes": [
+      {
+        "id": "motiv-1",
+        "dx": 0,
+        "dy": -1.1930046081542969,
+        "scale": 1
+      }
+    ],
+    "unresolved": [],
+    "ms": 0
+  },
+  {
+    "id": "TRE-V2A-9x3-D73",
+    "size": "GR-ES-RE-90X30-T15",
+    "mounting": "B02S",
+    "holes": [
+      {
+        "x": 6,
+        "y": 15,
+        "diameter": 4
+      },
+      {
+        "x": 84,
+        "y": 15,
+        "diameter": 4
+      }
+    ],
+    "before": [
+      "motiv-1",
+      "text-3"
+    ],
+    "after": [],
+    "changes": [
+      {
+        "id": "text-3",
+        "dx": 1.1799430847167969,
+        "dy": 0,
+        "scale": 1
+      },
+      {
+        "id": "motiv-1",
+        "dx": 3.969501495361328,
+        "dy": 0,
+        "scale": 1
+      }
+    ],
+    "unresolved": [],
+    "ms": 0
+  },
+  {
+    "id": "TRE-V2A-8x5-D13",
+    "size": "GR-ES-RE-90X60-T15",
+    "mounting": "B02S",
+    "holes": [
+      {
+        "x": 6,
+        "y": 30,
+        "diameter": 4
+      },
+      {
+        "x": 84,
+        "y": 30,
+        "diameter": 4
+      }
+    ],
+    "before": [
+      "motiv-1"
+    ],
+    "after": [],
+    "changes": [
+      {
+        "id": "motiv-1",
+        "dx": 2.3560142517089844,
+        "dy": 0,
+        "scale": 0.9099999999999999
+      }
+    ],
+    "unresolved": [],
+    "ms": 449
+  },
+  {
+    "id": "TQ-V2A-8x8-D15",
+    "size": "GR-ES-QU-160X160-T15",
+    "mounting": "B04S",
+    "holes": [
+      {
+        "x": 6,
+        "y": 6,
+        "diameter": 4
+      },
+      {
+        "x": 154,
+        "y": 6,
+        "diameter": 4
+      },
+      {
+        "x": 6,
+        "y": 154,
+        "diameter": 4
+      },
+      {
+        "x": 154,
+        "y": 154,
+        "diameter": 4
+      }
+    ],
+    "before": [
+      "motiv-1"
+    ],
+    "after": [],
+    "changes": [
+      {
+        "id": "motiv-1",
+        "dx": -0.0005337884592222508,
+        "dy": -8.057003003558094,
+        "scale": 1
+      }
+    ],
+    "unresolved": [],
+    "ms": 0
+  }
+]

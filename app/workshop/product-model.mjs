@@ -2,6 +2,7 @@ import {nativeFamilyAcrylicConfig} from './family-acrylic-product.mjs';
 import {nativeDoorbellConfig} from './doorbell-product.mjs';
 import {workshopResources} from './catalog.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
+import {isFamilyFormats} from '../configurator/variant-m/family-formats.mjs';
 import {isFormProduct,validateFormProduct} from './form-product.mjs';
 import {nativeSlateConfig} from './slate-product.mjs';
 import {nativeSpecimenConfig} from './specimen-product.mjs';
@@ -40,7 +41,7 @@ function initialRights(config){
   // originals are separate from the root selection and must not be changed only
   // at the root when creating the immutable document.
   if(isLayeredDoorbell(config))return Object.fromEntries(config.profile.designs.map(design=>[design.id,Object.fromEntries(design.objects.map(object=>[object.id,legacyElementRights(object)]))]));
-  return Object.fromEntries(config.profile.designs.map(design=>[design.id,Object.fromEntries(design.objects.map(object=>[object.id,applyNewMotifRights(object,legacyElementRights(object),design)]))]));
+  return Object.fromEntries((isFamilyFormats(config)?config.familyFormats.designs:config.profile.designs).map(design=>[design.id,Object.fromEntries(design.objects.map(object=>[object.id,applyNewMotifRights(object,legacyElementRights(object),design)]))]));
 }
 
 // This first document model deliberately supports the existing rectangular
@@ -71,7 +72,7 @@ function nativeAcrylicConfig(input){
   return validated;
 }
 
-const nativeConfig = input => input?.familyAcrylic ? nativeFamilyAcrylicConfig(input) : isLayeredDoorbell(input) ? nativeDoorbellConfig(input) : input?.doorbell||input?.profile?.material?.kind==='steel' ? nativeSpecimenConfig(input) : input?.profile?.material?.kind==='slate' ? nativeSlateConfig(input) : nativeAcrylicConfig(input);
+const nativeConfig = input => isFamilyFormats(input) ? prepareConfig(input) : input?.familyAcrylic ? nativeFamilyAcrylicConfig(input) : isLayeredDoorbell(input) ? nativeDoorbellConfig(input) : input?.doorbell||input?.profile?.material?.kind==='steel' ? nativeSpecimenConfig(input) : input?.profile?.material?.kind==='slate' ? nativeSlateConfig(input) : nativeAcrylicConfig(input);
 
 export function makeProductDocument(input,{name,kind='product',masterId=null}={}){
   const config=nativeConfig(input),title=text(name??config.profile.name,1,200,'Produktname');
@@ -98,8 +99,9 @@ export function validateProductDocument(document){
   if(!record(result.config)||!record(result.config.profile))fail('Die native Produktvorlage fehlt.');
   result.config.profile.name=result.name;
   result.config=nativeConfig(result.config);
-  keys(result.elementRights,result.config.profile.designs.map(design=>design.id),'Designrechte');
-  for(const design of result.config.profile.designs){
+  const templates=isFamilyFormats(result.config)?result.config.familyFormats.designs:result.config.profile.designs;
+  keys(result.elementRights,templates.map(design=>design.id),'Designrechte');
+  for(const design of templates){
     checkWholePrintDesign(design,productProcess(result.config).method);
     if(design.customerFields!==undefined){
       if(!design.importedSource||!Array.isArray(design.customerFields)||design.customerFields.length>19)fail('Kundenfelder brauchen eine importierte Vorlage und höchstens 19 Zuordnungen.');

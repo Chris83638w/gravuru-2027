@@ -21,7 +21,7 @@ export function designAreaOutline(config,profile=config.profile){
  if(config.doorbell?.schema==='gravuru-doorbell/v1'&&g.designArea){const a=g.designArea;return `<rect x="${n(a.left)}" y="${n(a.top)}" width="${n(a.right-a.left)}" height="${n(a.bottom-a.top)}"/>`;}
  if(g.shape==='contour'){
   const area=contourSafeAreaSvg(g,'m-design-area-'+(++contourAreaSerial));
-  return '<defs>'+area.defs+'</defs><g '+area.attribute+'><path d="'+g.outlinePath+'" fill="#278a72" fill-opacity=".08" stroke="none"/></g>';
+  return '<defs>'+area.defs+'</defs><g '+area.attribute+'><path d="'+g.outlinePath+'" fill="none" stroke="#a0a8a3" stroke-width="'+(2*(g.safeMarginMm??0)+.15)+'" stroke-dasharray="none"/></g>';
  }
  if(config.acrylic){const a=ACRYLIC_SAFE_AREA;return `<rect x="${a.left}" y="${a.top}" width="${a.right-a.left}" height="${a.bottom-a.top}"/>`;}
  const m=g.safeMarginMm??2,bottom=config.doorbell&&g.bell?g.bell.y-m:g.height-m;

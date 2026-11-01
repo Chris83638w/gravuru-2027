@@ -1,13 +1,17 @@
-import {quote,resolvedOptions,choiceOptions,variantCombinations,applyQuantityTier,quantityTiersOpen} from './contract.mjs';
+import {quote,resolvedOptions,choiceOptions,variantCombinations,applyQuantityTier,quantityTiersOpen,selectedProfile} from './contract.mjs';
+import {quantityTierLabels} from './quantity-tiers.mjs';
+import {isFamilyFormats,familyFormatSelection} from './family-formats.mjs';
 import {uploadQuote} from './ux-model.mjs';
 import {SURCHARGE_UNAVAILABLE_MESSAGE} from './surcharge-availability.mjs';
 // Variant prices exclude customer-added motifs/photos and use the same persisted
 // size/base rules as the configurator, including combination-dependent extras.
 // Zusatzfelder (Ü12.1) sind keine Ausführung: Variantenpreis und -schlüssel nur aus der Gruppenwahl.
-const baseVariantPrice=(config,options)=>quote(config,[],config.profile.defaultDesignId,choiceOptions(config,resolvedOptions(config,options))).unitCents;
+const baseVariantPrice=(config,options)=>quote(config,[],isFamilyFormats(config)?selectedProfile(config,options).defaultDesignId:config.profile.defaultDesignId,choiceOptions(config,resolvedOptions(config,options))).unitCents;
 export const variantKey=options=>JSON.stringify(Object.entries(options).sort());
 export function commercePrice(config,state,quantity=1){
- const q=quote(config,state.objects,state.designId,state.mOptions,quantity),photos=uploadQuote(state.objects,quantity,false,config.photo,config.logo);
+ const q=quote(config,state.objects,state.designId,state.mOptions,quantity);
+ if(isFamilyFormats(config)){const {variant}=familyFormatSelection(config,state.mOptions);q.selectedBasePriceCents=variant.basePriceCents;q.selectedTierLabels=quantityTierLabels({quantityTiers:variant.quantityTiers});}
+ const photos=uploadQuote(state.objects,quantity,false,config.photo,config.logo);
  const uploads={chargedUploads:photos.chargedUploads??(config.photo.extraPriceCents?photos.unitCents/config.photo.extraPriceCents:0),...(photos.chargedLogos===undefined?{}:{chargedLogos:photos.chargedLogos})};
  // Explicit new contract: discount the complete unit once, including all photos.
  // Older saved unscoped revisions remain readable with their original arithmetic.
@@ -22,7 +26,7 @@ export function validateCommerce(config,binding){
  if(binding?.schema!=='gravuru-shopify-commerce/v2'||!/^gid:\/\/shopify\/Product\/\d+$/.test(binding.productId)||binding.profileId!==config.profile.id||String(binding.revision)!==String(config.profile.revision)||binding.currency!=='EUR')throw Error('Shop-Produktzuordnung stimmt nicht mit dem Entwurf überein.');
  if(!['base-only','shopify-cart-transform'].includes(binding.priceMode))throw Error('Preisberechnung nicht zugeordnet.');
  if(binding.priceMode==='shopify-cart-transform'&&!/^gid:\/\/shopify\/CartTransform\//.test(binding.cartTransformId||''))throw Error('Shopify-Aufpreisberechnung nicht aktiviert.');
- if(JSON.stringify(binding.designIds)!==JSON.stringify(config.profile.designs.map(d=>d.id)))throw Error('Designumfang stimmt nicht mit der Shop-Fassung überein.');
+ if(JSON.stringify(binding.designIds)!==JSON.stringify((isFamilyFormats(config)?config.familyFormats.designs:config.profile.designs).map(d=>d.id)))throw Error('Designumfang stimmt nicht mit der Shop-Fassung überein.');
  if(!Array.isArray(binding.variants))throw Error('Shop-Varianten fehlen.');
  const ids=new Set(),keys=new Set();for(const v of binding.variants){if(!/^\d+$/.test(v.id)||ids.has(v.id)||keys.has(v.key)||!Number.isSafeInteger(v.priceCents)||v.priceCents<0)throw Error('Doppelte oder ungültige Shop-Variante.');ids.add(v.id);keys.add(v.key);}
  const combinations=variantCombinations(config);

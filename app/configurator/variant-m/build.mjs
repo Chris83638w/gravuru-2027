@@ -101,7 +101,9 @@ export function build({outputDirectory=OUTPUT}={}){
   // Die Karten hängen nicht von der Lage des gezogenen Elements ab; solange `uxDragging` gesetzt ist (adapter.mjs), überspringen.
   {const loop="for(const card of r.querySelectorAll('[data-c-design]')){\n        const item=designs.find(d=>d.id===card.dataset.cDesign);";
    if(source.split(loop).length!==2)throw Error('Galerie-Schleife für Zieh-Schutz nicht eindeutig gefunden.');
-   source=source.replace(loop,'if(!this.uxDragging)'+loop);}
+   // Family targets may have IDs absent from the frozen legacy design closure.
+   // Their gallery is rendered by adapter.renderThumbnails using the selected form.
+   source=source.replace(loop,'if(!this.uxDragging&&!this.uxFamilyGallery)'+loop);}
   fs.writeFileSync(path.join(outputDirectory,'editor.html'),source);
   return {verifiedResources:inventory.length,models:models.length,editorBytes:Buffer.byteLength(source),lazyResources:{fonts:lazy.fonts,motifs:lazy.motifs},bundle:{url:bundle.url,modules:bundle.modules.length,styles:bundle.styles.length,bytes:bundle.bytes,gzipBytes:bundle.gzipBytes}};
 }

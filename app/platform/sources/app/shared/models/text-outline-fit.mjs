@@ -5,6 +5,7 @@ import {flattenClosedSvgPath,contourContainsPolygon,ellipseEdgeDistance} from '.
 // fits. Use exactly the preview's glyph placement; never change the artwork.
 export const TEXT_PATH_TOLERANCE_MM=.0005;
 const cache=new WeakMap(),MAX_POINTS=100000;
+const boundsCache=new WeakMap();
 const unsupported=()=>{throw Error('Unsupported text outline');};
 function glyphRings(glyph,scale){
  const d=glyph.d;
@@ -32,6 +33,29 @@ function insideRoundedRect([x,y],g,margin){
  const r=Math.max(0,(g.cornerRadiusMm||0)-margin);
  const dx=Math.max(margin+r-x,0,x-(g.width-margin-r)),dy=Math.max(margin+r-y,0,y-(g.height-margin-r));
  return dx*dx+dy*dy<=r*r;
+}
+// Local ink bounds from the identical glyph paths/baselines used on screen.
+// Cached independently of position/rotation so placement never reparses a font
+// for each candidate. Null retains the conservative nominal-box fallback.
+export function textOutlineBounds(object,fonts){
+ if(object?.type!=='text'||!fonts)return null;
+ let entries=boundsCache.get(fonts);if(!entries)boundsCache.set(fonts,entries=new Map());
+ const key=JSON.stringify([object.font,object.bold,object.italic,object.text,object.size,object.w,object.textAnchor,object.letterSpacing,object.lineHeight]);
+ if(entries.has(key))return entries.get(key);
+ let bounds=null;
+ try{
+  const {scale,lines}=textGlyphLayout(object,fonts),skew=object.italic?Math.tan(-Math.PI/15):0;
+  if(!(scale>0))unsupported();
+  let left=Infinity,top=Infinity,right=-Infinity,bottom=-Infinity,count=0;
+  for(const {baseline,glyphs} of lines)for(const {glyph,x:advance} of glyphs)for(const ring of glyphRings(glyph,scale))for(const [gx,gy] of ring){
+   if(++count>MAX_POINTS)unsupported();
+   const y=baseline-gy*scale,x=(advance+gx)*scale+skew*y;
+   left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);
+  }
+  const reserve=TEXT_PATH_TOLERANCE_MM*(1+Math.abs(skew));
+  if([left,top,right,bottom].every(Number.isFinite))bounds={left:left-reserve,top:top-reserve,right:right+reserve,bottom:bottom+reserve};
+ }catch{}
+ if(entries.size>=500)entries.clear();entries.set(key,bounds);return bounds;
 }
 // Geometry must already face the active surface, like fitsSurface/objectIssue.
 // Holes remain separate hints. Null cannot clear a validation error.

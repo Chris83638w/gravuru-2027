@@ -3,9 +3,10 @@
 import {workshopResources} from './catalog.mjs';
 import {SUPPORTED_FONT_IDS} from '../platform/sources/app/shared/models/design-content.mjs';
 import {isLayeredDoorbell,selectedDoorbellProfile} from '../configurator/variant-m/doorbell-selection.mjs';
+import {isFamilyFormats,selectedFamilyProfile} from '../configurator/variant-m/family-formats.mjs';
 const fail=message=>{throw Object.assign(Error(message),{status:422,code:'native_review_resource'});};
 export function nativeReviewConfig(config,input){
- const copy=structuredClone(config),local=copy.localResources,profile=isLayeredDoorbell(copy)?selectedDoorbellProfile(copy,input?.options):copy.profile,source=profile.designs.find(d=>d.id===input?.designId);
+ const copy=structuredClone(config),local=copy.localResources,profile=isFamilyFormats(copy)?selectedFamilyProfile(copy,input?.options):isLayeredDoorbell(copy)?selectedDoorbellProfile(copy,input?.options):copy.profile,source=profile.designs.find(d=>d.id===input?.designId);
  if(!source||!Array.isArray(input?.objects))return copy;
  const known=new Map(source.objects.map(o=>[o.id,o])),usedMotifs=new Set(input.objects.filter(o=>o.type==='motif').map(o=>o.motif));
  const usedFonts=new Set(input.objects.filter(o=>o.type==='text').map(o=>o.font));

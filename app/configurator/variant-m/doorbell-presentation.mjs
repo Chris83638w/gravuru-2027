@@ -62,6 +62,16 @@ export function installDoorbellPresentation({el,config,picks,pictures}){
  :host([data-doorbell-presentation]) .doorbell-direct-slot{box-sizing:border-box;height:64px;min-height:64px;flex:none;padding:4px 12px;overflow:auto;scrollbar-width:thin}
  :host([data-doorbell-presentation][data-ux-layout]) .doorbell-direct-slot>.ux-direct-edit{position:static!important;inset:auto!important;transform:none!important;width:100%!important;max-width:100%!important;margin:0!important;padding:4px!important}
  :host([data-doorbell-presentation][data-ux-layout]) .doorbell-direct-slot .ux-direct-actions{flex-wrap:nowrap!important}
+ @media(min-width:768px){
+  :host([data-doorbell-presentation][data-ux-layout]) .ux-shell{box-sizing:border-box;height:100dvh;min-height:0!important;display:flex;flex-direction:column;overflow:clip}
+  :host([data-doorbell-presentation][data-ux-layout]) .ux-heading{flex:none}
+  :host([data-doorbell-presentation][data-ux-layout]) .ux-layout{flex:1;min-height:0!important;align-items:stretch!important;overflow:clip}
+  :host([data-doorbell-presentation][data-ux-layout]) .ux-shell .ux-preview{position:relative!important;top:0!important;height:100%!important;min-height:0;display:flex;flex-direction:column;overflow:clip}
+  :host([data-doorbell-presentation][data-ux-layout]) .ux-preview>[data-ux-stage]{flex:1;min-height:0}
+  :host([data-doorbell-presentation][data-ux-layout]) .ux-preview :is(.stage-wrap,.stage){height:100%!important;min-height:0!important}
+  :host([data-doorbell-presentation][data-ux-layout]) .ux-editor{height:100%;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+  :host([data-doorbell-presentation][data-ux-layout]) .ux-tabs{position:sticky;top:0;z-index:50;background:#fff}
+ }
  @media(max-width:1199px){:host([data-doorbell-presentation]) .doorbell-direct-slot{height:116px;min-height:116px}:host([data-doorbell-presentation][data-ux-layout]) .doorbell-direct-slot .ux-direct-actions{flex-wrap:wrap!important}}
  @media(max-width:359px){:host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="format"],:host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="frame"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
  `;

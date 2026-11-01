@@ -1,3 +1,7 @@
+# Issue 85 · Native Größenfassungen ergänzt · 01.11.2026 (Codex)
+
+152 zusätzliche LF2-Größenfassungen, zehn belegte Bestandskennungen unverändert dokumentiert. Vollständiger Git-Abgleich über 20.037 JSON-Objekte. 710 native Elemente nach erneutem Einlesen geprüft, maximal 0,004 mm Rundungsabweichung; 15 zusätzliche echte HTTP-Vorschauen und zwei Größen-Kontaktbogenseiten geprüft. 18 Master + 152 Größenfassungen = 170 Paare, sechs getrennte Formstudien. Entwurfs-PRs: Katalog #14 / Code #89. Offen bleiben Schriftentscheidung, Formkennungen, zehn Bestandsfassungen und Acryl-Abhängigkeit. Kein Import/Live-Schritt.
+
 ## 01.11.2026 – Codex: Issue 85 Tierbestand als prüfbarer Zwischenstand
 
 16 Bestandslayouts plus zwei neue Designs, sechs getrennte Formstudien; 13 vorhandene Türschild-Varianten zugeordnet. 72 echte Zielvorschauen / 720 Größenprüfungen: 32 passt, 40 prüfen, kein harter Passungsfehler. Schrift-/Formfragen und Acryl-PR 11 offen, Freigaben null. Vorherige Rasse-Designs unverändert; kein Import/Live-Schritt. [Lieferung, Prüfung und nächste Schritte](docs/handoffs/2026-11-01-issue85-tierbestand.md).

@@ -23,7 +23,7 @@ Die Formstudien liegen ausschließlich unter auftraege/issue85-tierbestand-20261
 
 Katalog-main 2e308ce enthält die beiden Acryl-3-mm-Familien noch nicht. Prüfung mit unveränderten Familien aus Katalog-PR 11, Commit 489fd3292f693a2361a06ab503bb763a92d38ec4, ausschließlich im Prüfstand. Neue Designziele benötigen diesen PR. Code-Commit 37c41e05dc6cfd668d6887552a6649e837f1b931 des runden Auftrags liefert mounting=K00; diese Funktion wird hier nicht erneut implementiert.
 
-Master 80 × 53,3 mm und zehn Rechteckgrößen stammen aus steel-door-signs. Native scaleTemplate-Strecke prüft alle Größen; kein neues Übertragungsskript für Geometrie/Preise. Das im Katalog-README erwähnte transfer-design-series.py fehlt auf Code-main; deshalb noch keine gesonderten Größen-SVG-Dateien erzeugt.
+Master 80 × 53,3 mm und zehn Rechteckgrößen stammen aus steel-door-signs. Native scaleTemplate-Strecke prüft alle Größen; kein neues Übertragungsskript für Geometrie/Preise. Das im Katalog-README erwähnte transfer-design-series.py fehlt auf Code-main; die vorhandene native createDesignVariants-Strecke erzeugt jetzt 152 gesonderte Größenfassungen. Zehn belegte Bestandskennungen werden gemäß Kollisionsregel nicht doppelt angelegt. Vollständige Kennungsinventur: 20.037 JSON-Objekte / 29.096 Kennungen. Erneutes Einlesen: 710 Elemente, maximal 0,004 mm Rundungsabweichung; 15 zusätzliche echte HTTP-Vorschauen und zwei visuell geprüfte Größen-Kontaktbogenseiten. Insgesamt 170 LF2-Paare / 340 geprüfte Dateihashes. Details in groessen.json und groessen-pruefung.json des Katalogpakets.
 
 ## Dateien und Reproduktion
 
@@ -36,4 +36,10 @@ Code: scripts/design-pruefung/tierbestand.py (quellengebundene Komposition), tie
 
 ## Nächster Schritt
 
-Schrift-/Formkennung beantworten, offene Quellen ergänzen, Acryl-Abhängigkeit auflösen, gesonderte Größen-SVGs erzeugen und vollständiges Paket erneut abschließend prüfen. Der aktuelle Stand ist ein Draft zur Einzelprüfung. Kein Merge, kein Import, nichts live; Issue 85 bleibt offen.
+Schrift-/Formkennung beantworten, offene Quellen ergänzen, Acryl-Abhängigkeit auflösen, zehn belegte Bestandsfassungen separat prüfen und vollständiges Paket erneut abschließend prüfen. Der aktuelle Stand ist ein Draft zur Einzelprüfung. Kein Merge, kein Import, nichts live; Issue 85 bleibt offen.
+
+## Gesicherte Entwurfs-PRs
+
+[Katalog PR 14](https://github.com/Chris83638w/gravuru-katalog./pull/14) und [Code PR 89](https://github.com/Chris83638w/gravuru-2027/pull/89).
+
+Größen reproduzieren: `node scripts/design-pruefung/tierbestand-sizes.mjs --katalog=<Katalog> --out=<separater-Prüfkatalog> --runtime-code=<Checkout-von-37c41e0>`; danach `tierbestand-size-check.mjs --katalog=<Prüfkatalog> --runtime-code=<Checkout-von-37c41e0>`. Benötigt alle Git-Objekte der Bestands-JSONs (auch bei Sparse-Checkout). Ausgabe bleibt außerhalb des Quellkatalogs; nur geprüfte neue Reihen übernehmen.

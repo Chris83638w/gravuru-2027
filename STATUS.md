@@ -1,3 +1,7 @@
+# N39 Form & Größe · lokaler Prüfstand · 01.11.2026
+
+Sieben Formen mit gemeinsamer Ovalanzeige, AB 12×8/K00 als Start, native Größen/Farben/Befestigungen, gleiche D-Nummer und Erhalt eigener Texte. 404/808 Varianten je geplantem Hauptprodukt, strenger Zielfreigabefilter, keine Shop-IDs. 163 unterschiedliche Tests und 16 Browserwechsel mit eigenem Text/Preis/Bohrbild bestanden; Linux-Vollauf offen. [Bericht, Quellen, Variantenpläne und Desktop-/Handybilder](docs/handoffs/2026-11-01-form-groesse-n39/README.md). N36 folgt separat. Kein Import, kein Merge, nichts live. N38-Seriennachtrag: Katalog-PR #17.
+
 ## 01.11.2026 – Codex/Astra: schmale Formatzeilen für Funkklingeln
 
 Auf Chris' Wunsch Format und Position als kompakte bebilderte Zeilen untereinander, ohne zusätzliche Gruppenkarte; optisch an Rahmen/Farbe angepasst. PR #91 gemergt (`0f03c8e9`) und live. Nur produktspezifisches CSS in Kopie der aktiven Laufzeit übernommen; 3.274 Dateien verglichen, keine weitere Abweichung außerhalb generierter Build-Dateien. 5/5 vorhandene Tests lokal und unter Linux, Build sowie Live-Bedienprüfung Desktop/390px-Handy erfolgreich. Öffentliches Bundle per SHA bestätigt; Formatwechsel mit korrekten Preisen geprüft. [Bericht, Screenshots und Rückweg](docs/handoffs/2026-11-01-funkklingeln-formatzeilen.md).

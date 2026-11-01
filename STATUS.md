@@ -1,6 +1,6 @@
-# 01.11.2026 — Codex: schlanke Menschen-/Sternenkinderlieferung auf GitHub
+## 01.11.2026 – Codex/Astra: gemeinsamer Ausführungsblock für Funkklingeln
 
-Foto-/Maskenimport aus 16d7e36/ea63726 auf aktuellem main integriert, 89 unterschiedliche gezielte Tests und Build bestanden. Kleine signierte Code-/Masterpakete ohne Vollgrößenexporte; [Übergabe](docs/handoffs/2026-11-01-menschen-schiefer-github.md). Nutzer hat GitHub-PRs und Nachricht an Claude ausdrücklich beauftragt. Nächster Schritt: erstes Herz-Fotopaket nativ prüfen und als PR liefern. Kein Merge oder Live-Import.
+Chris präzisiert: Format, Position, Rahmen, Farbe und Befestigung direkt untereinander in einem Block. Drei Untertabs entfernt; bestehende Haupttabs, Optionen, Bilder und Farbkreise erhalten. PR #94 gemergt (`b5c83567`) und live. 5/5 gezielte Tests lokal/Linux, Build und Live-Desktop-/390px-Handyprüfung bestanden. Nur das Funkklingel-Darstellungsmodul geändert; 3.274 Dateien verglichen, öffentliche Auslieferung per SHA bestätigt. [Bericht und Live-Bilder](docs/handoffs/2026-11-01-funkklingeln-ausfuehrungsblock.md).
 
 ## 01.11.2026 – Codex/Astra: schmale Formatzeilen für Funkklingeln
 

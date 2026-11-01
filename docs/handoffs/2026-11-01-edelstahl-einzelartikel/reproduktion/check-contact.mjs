@@ -1,0 +1,14 @@
+import fs from 'node:fs';import path from 'node:path';import assert from 'node:assert/strict';import {pathToFileURL} from 'node:url';import {createRequire} from 'node:module';
+const require=createRequire(process.env.GRAVURU_REVIEW_DEPENDENCIES||import.meta.url),{chromium}=require('playwright');
+const root=path.resolve(process.argv[2]),r=JSON.parse(fs.readFileSync(root+'/bildpruefung.json'));
+const b=await chromium.launch({headless:true,executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe'});try{
+ const p=await b.newPage({viewport:{width:1600,height:1400}});await p.goto(pathToFileURL(root+'/bildauswahl.html').href);assert.equal(await p.locator('article').count(),80);
+ await p.getByRole('button',{name:'Offene Plätze',exact:true}).click();assert.equal(await p.locator('article:visible').count(),8);await p.getByRole('button',{name:'Alle 80',exact:true}).click();
+ await p.locator('article#n19 summary').filter({hasText:'Originalvorlage vergleichen'}).click();assert(await p.locator('#n19 details[open] img').isVisible());await p.locator('article#n19 summary').filter({hasText:'Originalvorlage vergleichen'}).click();
+ for(let n=0;n<5;n++){
+  const slice=r.rows.slice(n*16,n*16+16),cards=slice.map(x=>{const c=r.captures.results.find(c=>c.sizeKey===x.sizeKey);return '<article><b>'+x.number+' · '+x.form+' · '+x.displaySize+'</b>'+(c?'<img src="'+pathToFileURL(path.join(root,c.target.file)).href+'">':'<div class="empty">Startgestaltung offen</div>')+'<small>'+(x.designId||'Keine Wiederholung eingesetzt')+'</small></article>';}).join('');
+  await p.setContent('<!doctype html><meta charset="utf-8"><style>body{margin:0;padding:20px;background:#f0f2f4;color:#222;font:16px system-ui}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}article{background:white;padding:12px;border:1px solid #d5d8dc;border-radius:9px}b{display:block;height:44px;font-size:15px}img{width:100%;height:230px;object-fit:contain}.empty{height:230px;display:grid;place-items:center;color:#777}small{display:block;font-size:12px;margin-top:5px}h1{font-size:23px}p{font-size:14px}</style><h1>Startdesign-Vorschläge '+(n*16+1)+'–'+(n*16+16)+'</h1><p>Bildauswahl · keine neue Freigabe · Originalvergleich in bildauswahl.html · D4 nur für 8 × 3,5 cm</p><div class="grid">'+cards+'</div>');await p.evaluate(async()=>{await Promise.all([...document.images].map(i=>i.decode()));});await p.screenshot({path:path.join(root,'kontaktbogen-'+(n+1)+'.png'),fullPage:true});
+ }
+ await p.setViewportSize({width:390,height:664});await p.goto(pathToFileURL(root+'/bildauswahl.html').href);assert(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await p.screenshot({path:root+'/bildauswahl-handy.png',fullPage:false});
+ console.log(JSON.stringify({cards:80,openFilter:8,originalToggle:true,mobileOverflow:false,contactSheets:5}));
+}finally{await b.close();}

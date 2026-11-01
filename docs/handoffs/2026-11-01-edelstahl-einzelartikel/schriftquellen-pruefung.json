@@ -1,0 +1,202 @@
+[
+  {
+    "name": "Michroma",
+    "file": "schriften/dateien/Michroma/Michroma-Regular.ttf",
+    "sourceBlob": "e1b13dc9c2c33b93e6358cef1fa30d078a4c6c3f",
+    "currentMainBlob": "e1b13dc9c2c33b93e6358cef1fa30d078a4c6c3f",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Rochester",
+    "file": "schriften/dateien/Rochester/Rochester-Regular.ttf",
+    "sourceBlob": "c295543523d3aa8e88fe0fef54bff8d4250dffdc",
+    "currentMainBlob": "c295543523d3aa8e88fe0fef54bff8d4250dffdc",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Raleway",
+    "file": "schriften/dateien/Raleway/Raleway-Regular.ttf",
+    "sourceBlob": "bbcf1a9aa88bbf2330a2a91540d7c876026c52c9",
+    "currentMainBlob": "bbcf1a9aa88bbf2330a2a91540d7c876026c52c9",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Homage",
+    "file": "schriften/dateien/Homage/Homage.ttf",
+    "sourceBlob": "8d4bb3e9b99abd0aef65ca4e791e227a5b5746e1",
+    "currentMainBlob": "8d4bb3e9b99abd0aef65ca4e791e227a5b5746e1",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Libre Baskerville",
+    "file": "schriften/dateien/Libre Baskerville/LibreBaskerville-Regular.ttf",
+    "sourceBlob": "bba7e40a3006d2f4935c8759c149fc342f39d9ae",
+    "currentMainBlob": "bba7e40a3006d2f4935c8759c149fc342f39d9ae",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Great Vibes",
+    "file": "schriften/dateien/Great Vibes/GreatVibes-Regular.ttf",
+    "sourceBlob": "f68a322da6bbccc9f67d77469e02d05c40f6c4b3",
+    "currentMainBlob": "f68a322da6bbccc9f67d77469e02d05c40f6c4b3",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Allura",
+    "file": "schriften/dateien/Allura/Allura-Regular.ttf",
+    "sourceBlob": "bedbf9489a5cdf200644aa5600663fb2330e9f23",
+    "currentMainBlob": "bedbf9489a5cdf200644aa5600663fb2330e9f23",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Ashley",
+    "file": "schriften/dateien/Ashley/AshleyRegular.ttf",
+    "sourceBlob": "35a551d55fa599ed536b894b7d0d0e0334f8ab10",
+    "currentMainBlob": "35a551d55fa599ed536b894b7d0d0e0334f8ab10",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Minimalist",
+    "file": "schriften/dateien/Minimalist/Minimalist-Regular.ttf",
+    "sourceBlob": "5bbadd0575eeeec39927ffe447f6cdbb6396625a",
+    "currentMainBlob": "5bbadd0575eeeec39927ffe447f6cdbb6396625a",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Cinzel",
+    "file": "schriften/dateien/Cinzel/Cinzel-Regular.ttf",
+    "sourceBlob": "7494e511e2041db800b309c7c6a9075fb580debd",
+    "currentMainBlob": "7494e511e2041db800b309c7c6a9075fb580debd",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Montserrat Light",
+    "file": "schriften/dateien/Montserrat Light/Montserrat-Light.ttf",
+    "sourceBlob": "11fa5f50178d972c8e334af8bb9ef56178788332",
+    "currentMainBlob": "11fa5f50178d972c8e334af8bb9ef56178788332",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Comfortaa",
+    "file": "schriften/dateien/Comfortaa/Comfortaa-Regular.ttf",
+    "sourceBlob": "0bbf709a27848f95d013d5b3a9bcae004e4dc5d9",
+    "currentMainBlob": "0bbf709a27848f95d013d5b3a9bcae004e4dc5d9",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Italianno",
+    "file": "schriften/dateien/Italianno/Italianno-Regular.ttf",
+    "sourceBlob": "7b4182a068009d2ff53053f2b9fc63c353910180",
+    "currentMainBlob": "7b4182a068009d2ff53053f2b9fc63c353910180",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Bellefair",
+    "file": "schriften/dateien/Bellefair/Bellefair-Regular.ttf",
+    "sourceBlob": "7c92786797a7f97fae2e977d5189e8bf9005d652",
+    "currentMainBlob": "7c92786797a7f97fae2e977d5189e8bf9005d652",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Comic Neue",
+    "file": "schriften/dateien/Comic Neue/ComicNeue-Regular.ttf",
+    "sourceBlob": "1c3b2829ad40f280e741a216fedbc863c60817f4",
+    "currentMainBlob": "1c3b2829ad40f280e741a216fedbc863c60817f4",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Daniel",
+    "file": "schriften/dateien/Daniel/Daniel-Regular.ttf",
+    "sourceBlob": "aae50d5035b98612c6c9a4e42efb07ec260c4e5d",
+    "currentMainBlob": "aae50d5035b98612c6c9a4e42efb07ec260c4e5d",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Dancing Script",
+    "file": "schriften/dateien/Dancing Script/DancingScript-Regular.ttf",
+    "sourceBlob": "63d7adc2d80d16d7faaba525639629938eb0eb27",
+    "currentMainBlob": "63d7adc2d80d16d7faaba525639629938eb0eb27",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Sweetie",
+    "file": "schriften/dateien/Sweetie/Sweetie.ttf",
+    "sourceBlob": "3dc94f4f784c0d32f6a3fdd0660e5a23703ecbff",
+    "currentMainBlob": "3dc94f4f784c0d32f6a3fdd0660e5a23703ecbff",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Fineliner Script",
+    "file": "schriften/dateien/Fineliner Script/FinelinerScript-Regular.ttf",
+    "sourceBlob": "c7da16d45b4fc348fdfe2c1dd3fcb13276ac24c7",
+    "currentMainBlob": "c7da16d45b4fc348fdfe2c1dd3fcb13276ac24c7",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Antic Slab",
+    "file": "schriften/dateien/Antic Slab/AnticSlab-Regular.ttf",
+    "sourceBlob": "c7533535ef3e48da84f532063aef48c9e4f29d69",
+    "currentMainBlob": "c7533535ef3e48da84f532063aef48c9e4f29d69",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Magnolia Script",
+    "file": "schriften/dateien/Magnolia Script/MagnoliaScript-Regular.ttf",
+    "sourceBlob": "39d0aeba8c7a454622eeb246af0731b19a8b119c",
+    "currentMainBlob": "39d0aeba8c7a454622eeb246af0731b19a8b119c",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Lato",
+    "file": "schriften/dateien/Lato/Lato-Regular.ttf",
+    "sourceBlob": "10134e3e9d0eba03b6fe6208f88b46aa803807d9",
+    "currentMainBlob": "10134e3e9d0eba03b6fe6208f88b46aa803807d9",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Bad Script",
+    "file": "schriften/dateien/Bad Script/BadScript-Regular.ttf",
+    "sourceBlob": "9ef29e7ca34590e54bff6431461155567fb5a7e4",
+    "currentMainBlob": "9ef29e7ca34590e54bff6431461155567fb5a7e4",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Tangerine",
+    "file": "schriften/dateien/Tangerine/Tangerine-Regular.ttf",
+    "sourceBlob": "678f2520718cc448f1a31930110a6796e6926c0b",
+    "currentMainBlob": "678f2520718cc448f1a31930110a6796e6926c0b",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  },
+  {
+    "name": "Cookie",
+    "file": "schriften/dateien/Cookie/Cookie-Regular.ttf",
+    "sourceBlob": "9c95b853846c60cdf8f77780d7157d597f335f15",
+    "currentMainBlob": "9c95b853846c60cdf8f77780d7157d597f335f15",
+    "matchesMain": true,
+    "glyphsMatchSourceCache": true
+  }
+]

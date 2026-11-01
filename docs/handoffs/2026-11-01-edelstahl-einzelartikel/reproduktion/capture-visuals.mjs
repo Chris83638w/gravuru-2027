@@ -1,0 +1,23 @@
+import fs from 'node:fs';import path from 'node:path';import assert from 'node:assert/strict';import {createHash} from 'node:crypto';import {createRequire} from 'node:module';
+const require=createRequire(process.env.GRAVURU_REVIEW_DEPENDENCIES||import.meta.url),{chromium}=require('playwright'),sharp=require('sharp');
+const out=path.resolve(process.argv[2]),dest=path.join(out,'bilder');fs.mkdirSync(dest,{recursive:true});
+const report=JSON.parse(fs.readFileSync(path.join(out,'visual-proposals.json'))),source=JSON.parse(fs.readFileSync(path.join(out,'visual-source.json')));
+const catalog=path.resolve(process.argv[3]),registry=JSON.parse(fs.readFileSync(path.join(catalog,'schriften/schriften.json')));
+const b=await chromium.launch({headless:true,executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe'}),results=[];
+const prior=fs.existsSync(path.join(out,'browser-captures.json'))?JSON.parse(fs.readFileSync(path.join(out,'browser-captures.json'))).results:[];
+async function lossless(png,file){const webp=await sharp(png).webp({lossless:true,effort:6}).toBuffer();const a=await sharp(png).ensureAlpha().raw().toBuffer(),z=await sharp(webp).ensureAlpha().raw().toBuffer();assert(a.equals(z),'Lossless comparison');fs.writeFileSync(file,webp);return {bytes:webp.length,sha256:createHash('sha256').update(webp).digest('hex'),pixelIdenticalToScreenshot:true};}
+try{const page=await b.newPage({viewport:{width:1600,height:1100}}),original=await b.newPage({viewport:{width:1000,height:1100}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+for(const row of report.rows.filter(r=>r.designId)){
+ const stem=String(row.number).padStart(2,'0')+'-'+row.sizeKey.toLowerCase(),file=path.join(dest,stem+'.webp'),sourceFile=path.join(dest,stem+'-vorlage.webp');
+ const cached=prior.find(r=>r.sizeKey===row.sizeKey&&r.designId===row.designId);if(cached&&fs.existsSync(file)&&fs.existsSync(sourceFile)){results.push(cached);continue;}
+ await page.goto('http://127.0.0.1:8192/?model=acryl&configuration='+encodeURIComponent(row.sizeKey));const host=page.frameLocator('iframe').locator('gravuru-configurator');await host.locator('svg.scene').first().waitFor({timeout:90000});
+ await host.evaluate(async e=>{await document.fonts.ready;const images=[...e.shadowRoot.querySelectorAll('svg.scene image')];await Promise.all(images.map(n=>new Promise(resolve=>{const i=new Image();i.onload=i.onerror=resolve;i.src=n.getAttribute('href')||n.getAttribute('xlink:href')||'';if(i.complete)resolve();})));await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));});
+ const state=await host.evaluate(e=>({id:e.state.designId,geometry:e.uxSelectedProfile().geometry,selected:e.state.selected,objects:e.state.objects.map(o=>({type:o.type,text:o.text,font:o.font,x:o.x,y:o.y,w:o.w,h:o.h})),status:e.shadowRoot.querySelector('.status')?.textContent||''}));
+ assert.equal(state.geometry.width,row.targetDimensions[0]);assert.equal(state.geometry.height,row.targetDimensions[1]);assert(!state.selected);assert.equal(state.objects.filter(o=>o.type==='text').length,row.exampleTexts.length);assert.equal(state.status,'');
+ const scene=host.locator('svg.scene').first();await scene.scrollIntoViewIfNeeded();await page.waitForTimeout(500);const clip=await scene.boundingBox();assert(clip.x>=0&&clip.y>=0&&clip.x+clip.width<=1601&&clip.y+clip.height<=1101);const target=await lossless(await page.screenshot({clip}),file);
+ const src=source.files.find(f=>f.path===row.sourcePath),faces=src.data.fonts.map(name=>{const f=registry.fonts.find(f=>f.name===name);assert(f?.file,'Font '+name);const data=fs.readFileSync(path.join(catalog,f.file)).toString('base64');return `@font-face{font-family:${JSON.stringify(name)};src:url(data:font/ttf;base64,${data})}`;}).join('\n');
+ await original.setContent('<!doctype html><meta charset="utf-8"><style>'+faces+'html,body{margin:0;background:white}svg{display:block;width:960px;height:auto;margin:20px}</style>'+src.svg);await original.evaluate(()=>document.fonts.ready);const before=await lossless(await original.locator('svg').screenshot(),sourceFile);
+ const result={number:row.number,sizeKey:row.sizeKey,designId:row.designId,target:{file:'bilder/'+stem+'.webp',...target},original:{file:'bilder/'+stem+'-vorlage.webp',...before},state};results.push(result);fs.writeFileSync(path.join(out,'browser-captures.json'),JSON.stringify({errors,results},null,2)+'\n');console.log(row.number+' '+row.designId);
+}
+assert.equal(errors.length,0);fs.writeFileSync(path.join(out,'browser-captures.json'),JSON.stringify({errors,results},null,2)+'\n');console.log('Captured '+results.length);
+}finally{await b.close();}

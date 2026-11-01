@@ -1,3 +1,11 @@
+## 01.11.2026 · Codex · Issue 85: 59 Pferde-Vorlagen mit erlaubten Ersatzschriften
+
+59 ergänzt, vorherige 13 Master und sechs unklare Originale bytegleich erhalten. 72 Master, 466 gefüllte Texte, 45 Fotofelder, 216 native Materialvorschauen / 1.782 Größenprüfungen ohne Passungsfehler. 59 neue Namen/Besitzer unterschiedlich, 0 Text-/Fotoüberlagerungen. Native Zielvorschau zeigt vorhandene Musterfotos ohne Persistenz; 16 Tests bestanden. Katalog-Metadatenbau: 13 gültige Familien. [Aktuelle Übergabe](docs/handoffs/2026-11-01-issue85-pferde-59.md). Alle Freigaben null, PR 13/88 bleiben Entwurf; kein Import/Merge/Live.
+
+## 01.11.2026 · Codex · Issue 85 Pferde-Bestand
+
+13 editierbare Master, 98 ausgefüllte Texte, 76 Vorlagen-Motivpfade erhalten. 39 native K00-Zielvorschauen, 306 Größenprüfungen ohne Passungsfehler; 20 Ziele behalten Prüfhinnweise. 15 Zielvorschau-Tests bestanden; Katalogbau validiert 13 Familien. 111 Quellen zugeordnet, 65 eigenständige Quellen noch offen. [Übergabe](docs/handoffs/2026-11-01-issue85-pferde.md). Katalog-PR 11 und Code-PR 86 sind Abhängigkeiten; keine doppelte Rund-/K00-Arbeit. Nächster Schritt: Schriftentscheidung und sechs Originalquellen klären. Alle Freigaben null; kein Import und nichts live.
+
 ## 01.11.2026 – Codex/Astra: Funkklingel-Bedienfehler und größere Auswahlkacheln
 
 Abschluss: PR #103 (`c1a9cb6`) ergänzt die Korrektur aus PR #100 um den eigenen Scrollbereich der Funkklingel-Bedienleiste; beide sind live. Weitere 5/5 Darstellungstests lokal/Linux und Build bestanden. Abschließender echter Chrome-Kundenweg über „Jetzt personalisieren“ erfolgreich: größere Kacheln, 12a auf 24 mm vergrößert und verschoben, Ziehen auf Edelstahl stoppt an Acryl. Wechsel von langer Befestigungsliste zu Text behält Vorschaugröße und -position bis auf 1 px Dokumentrandbewegung; vorher 82 px. Öffentlicher finaler Bundle-SHA identisch zum Linux-Build. [Live-Bilder und Rückweg](docs/handoffs/2026-11-01-funkklingeln-auswahlreihen.md#abschließende-live-abnahme).

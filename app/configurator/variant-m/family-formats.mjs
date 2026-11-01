@@ -28,7 +28,11 @@ export function familyFormatSelection(c,values={}){
 }
 export function familyDesignReviewNote(c,options,id){
  if(!isFamilyFormats(c)||!c.reviewOnly||!c.familyFormats.source?.reviewUnreleased)return '';
- return familyFormatSelection(c,options).variant.unapprovedDesignIds?.includes(id)?'nicht freigegeben':'';
+ const v=familyFormatSelection(c,options).variant,d=v.reviewDiagnostics?.[id],notes=[];
+ if(d?.issues?.length)notes.push('prüfen: '+d.issues.join(' '));
+ if(d?.transferred)notes.push('übertragen, noch nicht geprüft');
+ if(v.unapprovedDesignIds?.includes(id))notes.push('nicht freigegeben');
+ return notes.join(' · ');
 }
 export function familyFormatOptions(c,values={}){
  if(!values||typeof values!=='object'||Array.isArray(values)||Object.keys(values).some(k=>!['size','color','mounting'].includes(k)))fail('Unbekannte Familienoption.');
@@ -122,6 +126,10 @@ export function validateFamilyFormats(c){
    if(!['steel-door-signs','acryl-3mm-tuerschilder-schwarz','acryl-3mm-tuerschilder-anthrazit'].includes(v.familyId)||!v.sizeKey||!cents(v.basePriceCents)||!f.colors.some(a=>a.id===v.color))fail('Familienquelle oder Preis fehlt.');
    if(!Array.isArray(v.designIds)||v.designIds.some(id=>!f.designs.some(d=>d.id===id)))fail('Unbekanntes Designziel.');
    if(v.unapprovedDesignIds!==undefined&&(!Array.isArray(v.unapprovedDesignIds)||v.unapprovedDesignIds.some(id=>!v.designIds.includes(id))))fail('Ungültige Prüffreigaben.');
+   if(v.reviewDiagnostics!==undefined){
+    if(!f.source?.reviewUnreleased||!v.reviewDiagnostics||typeof v.reviewDiagnostics!=='object'||Array.isArray(v.reviewDiagnostics))fail('Prüfhinweise benötigen lokale Prüfvorlagen.');
+    for(const [id,d] of Object.entries(v.reviewDiagnostics))if(!v.designIds.includes(id)||!d||typeof d.transferred!=='boolean'||!Array.isArray(d.issues)||d.issues.some(s=>typeof s!=='string'||!s.trim()))fail('Ungültiger Prüfhinweis.');
+   }
    if(!Array.isArray(v.mounting)||new Set(v.mounting.map(m=>m.id)).size!==v.mounting.length||!v.mounting.some(m=>m.id==='K00'&&m.priceCents===0&&m.holes?.length===0)||v.mounting.some(m=>!cents(m.priceCents)||!Array.isArray(m.holes)))fail('Familienbefestigung fehlt.');
    validateOptionGroups([{id:'mounting',name:'Befestigung',required:true,defaultValueId:'K00',values:v.mounting}]);
    for(const m of v.mounting)validateGeometryHoles({...c.profile,geometry:{...g,holes:m.holes}});

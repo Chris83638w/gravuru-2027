@@ -1,0 +1,815 @@
+{
+  "catalogCommit": "20dc4bef667f96008e3ca4c56e86b475b9fa5cc9",
+  "roundCommit": "62404b12d429b439e0f8738d6bc81b23e15bd25d",
+  "codeBase": "b3b0886ad26f95fe374c2e54651b79b118cb444a",
+  "plans": [
+    {
+      "line": "edelstahl-tuerschilder",
+      "masters": 792,
+      "sizes": 80,
+      "unavailable": 0,
+      "blocked": [],
+      "fontsMissing": [],
+      "transferred": 2776,
+      "flagged": [
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RE-70X23P3-T15",
+          "designId": "TRE-V2A-9x3-D55",
+          "issues": [
+            "spruch: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RE-60X20-T15",
+          "designId": "TRE-V2A-9x3-D55",
+          "issues": [
+            "spruch: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RE-90X30-T15",
+          "designId": "TRE-V2A-9x3-D55",
+          "issues": [
+            "spruch: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RE-120X40-T15",
+          "designId": "TRE-V2A-9x3-D55",
+          "issues": [
+            "spruch: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-EL-120X40-T15",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus.",
+            "motiv-1 · Pfad 1/1: Motivkontur höchstens 0.462 mm breit, unter 0,5 mm – prüfen.",
+            "motiv-2 · Pfad 1/1: Motivkontur höchstens 0.46 mm breit, unter 0,5 mm – prüfen."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RE-150X50-T15",
+          "designId": "TRE-V2A-9x3-D55",
+          "issues": [
+            "spruch: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-EL-150X50-T15",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RE-180X60-T15",
+          "designId": "TRE-V2A-9x3-D55",
+          "issues": [
+            "spruch: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-EL-180X60-T15",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RE-210X70-T15",
+          "designId": "TRE-V2A-9x3-D55",
+          "issues": [
+            "spruch: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-EL-210X70-T15",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RE-240X80-T15",
+          "designId": "TRE-V2A-9x3-D55",
+          "issues": [
+            "spruch: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-EL-240X80-T15",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RE-270X90-T15",
+          "designId": "TRE-V2A-9x3-D55",
+          "issues": [
+            "spruch: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-EL-270X90-T15",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-EL-300X100-T15",
+          "designId": "TO-V2A-12x4-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-OV-300X159P9-T15",
+          "designId": "TO-V2A-15x8-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-OV-300X159P9-T15",
+          "designId": "TO-V2A-15x8-D9",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-OV-150X80-T15",
+          "designId": "TO-V2A-15x8-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-OV-150X80-T15",
+          "designId": "TO-V2A-15x8-D9",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-OV-225X120-T15",
+          "designId": "TO-V2A-15x8-D5",
+          "issues": [
+            "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-OV-225X120-T15",
+          "designId": "TO-V2A-15x8-D9",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-OV-90X60-T15",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus.",
+            "Mit 2 Bohrlöchern: Der Text „Vogel“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt; Teile des Textes können fehlen. Bitte etwas verschieben oder bewusst so bestellen.",
+            "Mit 2 Schrauben: Der Text „Vogel“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt; Teile des Textes können fehlen. Bitte etwas verschieben oder bewusst so bestellen."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-OV-120X80-T15",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-OV-150X100-T15",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-OV-180X120-T15",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-OV-210X140-T15",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-OV-240X160-T15",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-OV-300X200-T15",
+          "designId": "TO-V2A-9x6-D13",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus.",
+            "motiv-1 · Pfad 1/63: Motivkontur höchstens 0.2599 mm breit, unter 0,5 mm – prüfen."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-OV-300X200-T15",
+          "designId": "TO-V2A-9x6-D46",
+          "issues": [
+            "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-AB-420X280-T15",
+          "designId": "TAE-V2A-8x5-D57",
+          "issues": [
+            "Schriftgröße: 1 bis 100 mm."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RE-450X300-T15",
+          "designId": "TRE-V2A-8x5-D57",
+          "issues": [
+            "Schriftgröße: 1 bis 100 mm."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RE-450X300-T15",
+          "designId": "TRE-V2A-8x5-D61",
+          "issues": [
+            "Schriftgröße: 1 bis 100 mm."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-AB-450X300-T15",
+          "designId": "TAE-V2A-8x5-D57",
+          "issues": [
+            "Schriftgröße: 1 bis 100 mm."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-AB-450X300-T15",
+          "designId": "TAE-V2A-8x5-D61",
+          "issues": [
+            "Schriftgröße: 1 bis 100 mm."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-90X60-T15",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-1 · Pfad 1/1: Motivkontur höchstens 0.462 mm breit, unter 0,5 mm – prüfen.",
+            "motiv-2 · Pfad 1/1: Motivkontur höchstens 0.462 mm breit, unter 0,5 mm – prüfen.",
+            "Mit 2 Bohrlöchern: Der Text „Schneider“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt; Teile des Textes können fehlen. Bitte etwas verschieben oder bewusst so bestellen.",
+            "Mit 2 Bohrlöchern: Der Text „Familie“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt; Teile des Textes können fehlen. Bitte etwas verschieben oder bewusst so bestellen.",
+            "Mit 2 Schrauben: Der Text „Schneider“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt; Teile des Textes können fehlen. Bitte etwas verschieben oder bewusst so bestellen.",
+            "Mit 2 Schrauben: Der Text „Familie“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt; Teile des Textes können fehlen. Bitte etwas verschieben oder bewusst so bestellen."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-90X60-T15",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-90X60-T15",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-120X80-T15",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-120X80-T15",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-120X80-T15",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-150X100-T15",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-150X100-T15",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-150X100-T15",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-180X120-T15",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-180X120-T15",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-180X120-T15",
+          "designId": "TR1-V2A-9x6-D15",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-180X120-T15",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-210X140-T15",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-210X140-T15",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-210X140-T15",
+          "designId": "TR1-V2A-9x6-D15",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-210X140-T15",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-240X160-T15",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-240X160-T15",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-240X160-T15",
+          "designId": "TR1-V2A-9x6-D13",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+            "Mit 2 Bohrlöchern: Der Text „Familie“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt; Teile des Textes können fehlen. Bitte etwas verschieben oder bewusst so bestellen.",
+            "Mit 2 Schrauben: Der Text „Familie“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt; Teile des Textes können fehlen. Bitte etwas verschieben oder bewusst so bestellen."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-240X160-T15",
+          "designId": "TR1-V2A-9x6-D15",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-240X160-T15",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-300X200-T15",
+          "designId": "TR1-V2A-9x6-D5",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+            "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-300X200-T15",
+          "designId": "TR1-V2A-9x6-D9",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-300X200-T15",
+          "designId": "TR1-V2A-9x6-D10",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+            "motiv-1 · Pfad 1/94: Motivkontur höchstens 0.1267 mm breit, unter 0,5 mm – prüfen."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-300X200-T15",
+          "designId": "TR1-V2A-9x6-D13",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-300X200-T15",
+          "designId": "TR1-V2A-9x6-D15",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-300X200-T15",
+          "designId": "TR1-V2A-9x6-D19",
+          "issues": [
+            "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT2-90X60-T15",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT2-120X80-T15",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT2-150X100-T15",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT2-180X120-T15",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT2-210X140-T15",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT2-240X160-T15",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT2-300X200-T15",
+          "designId": "TR2-V2A-9x6-D13",
+          "issues": [
+            "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+            "Mit 2 Bohrlöchern: Der Text „Familie“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt; Teile des Textes können fehlen. Bitte etwas verschieben oder bewusst so bestellen.",
+            "Mit 2 Schrauben: Der Text „Familie“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt; Teile des Textes können fehlen. Bitte etwas verschieben oder bewusst so bestellen."
+          ],
+          "shownForReview": true
+        },
+        {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT2-300X200-T15",
+          "designId": "TR2-V2A-9x6-D15",
+          "issues": [
+            "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+          ],
+          "shownForReview": true
+        }
+      ],
+      "configSha256": "b8bb76abc4cc7ed834bd1cfc58c95c28adb81a2ebf67ba9d3a122553dde0dad8"
+    }
+  ],
+  "original15": [
+    {
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-90X30-T15",
+      "designId": "TRE-V2A-9x3-D55",
+      "issues": [
+        "spruch: Element ragt über die Gestaltungsfläche hinaus."
+      ]
+    },
+    {
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-EL-120X40-T15",
+      "designId": "TO-V2A-12x4-D5",
+      "issues": [
+        "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus.",
+        "motiv-1 · Pfad 1/1: Motivkontur höchstens 0.462 mm breit, unter 0,5 mm – prüfen.",
+        "motiv-2 · Pfad 1/1: Motivkontur höchstens 0.46 mm breit, unter 0,5 mm – prüfen."
+      ]
+    },
+    {
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-240X80-T15",
+      "designId": "TRE-V2A-9x3-D55",
+      "issues": [
+        "spruch: Element ragt über die Gestaltungsfläche hinaus."
+      ]
+    },
+    {
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-EL-240X80-T15",
+      "designId": "TO-V2A-12x4-D5",
+      "issues": [
+        "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+      ]
+    },
+    {
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-OV-150X80-T15",
+      "designId": "TO-V2A-15x8-D5",
+      "issues": [
+        "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+      ]
+    },
+    {
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-OV-150X80-T15",
+      "designId": "TO-V2A-15x8-D9",
+      "issues": [
+        "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+      ]
+    },
+    {
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-OV-90X60-T15",
+      "designId": "TO-V2A-9x6-D46",
+      "issues": [
+        "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus.",
+        "Mit 2 Bohrlöchern: Der Text „Vogel“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt; Teile des Textes können fehlen. Bitte etwas verschieben oder bewusst so bestellen.",
+        "Mit 2 Schrauben: Der Text „Vogel“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt; Teile des Textes können fehlen. Bitte etwas verschieben oder bewusst so bestellen."
+      ]
+    },
+    {
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-OV-210X140-T15",
+      "designId": "TO-V2A-9x6-D46",
+      "issues": [
+        "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+      ]
+    },
+    {
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-450X300-T15",
+      "designId": "TRE-V2A-8x5-D57",
+      "issues": [
+        "Schriftgröße: 1 bis 100 mm."
+      ]
+    },
+    {
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-450X300-T15",
+      "designId": "TRE-V2A-8x5-D61",
+      "issues": [
+        "Schriftgröße: 1 bis 100 mm."
+      ]
+    },
+    {
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-RT1-90X60-T15",
+      "designId": "TR1-V2A-9x6-D5",
+      "issues": [
+        "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+        "motiv-2: Element ragt über die Gestaltungsfläche hinaus.",
+        "motiv-1 · Pfad 1/1: Motivkontur höchstens 0.462 mm breit, unter 0,5 mm – prüfen.",
+        "motiv-2 · Pfad 1/1: Motivkontur höchstens 0.462 mm breit, unter 0,5 mm – prüfen.",
+        "Mit 2 Bohrlöchern: Der Text „Schneider“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt; Teile des Textes können fehlen. Bitte etwas verschieben oder bewusst so bestellen.",
+        "Mit 2 Bohrlöchern: Der Text „Familie“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt; Teile des Textes können fehlen. Bitte etwas verschieben oder bewusst so bestellen.",
+        "Mit 2 Schrauben: Der Text „Schneider“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt; Teile des Textes können fehlen. Bitte etwas verschieben oder bewusst so bestellen.",
+        "Mit 2 Schrauben: Der Text „Familie“ liegt im Bereich eines Bohrlochs. Dort wird gebohrt; Teile des Textes können fehlen. Bitte etwas verschieben oder bewusst so bestellen."
+      ]
+    },
+    {
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-RT1-90X60-T15",
+      "designId": "TR1-V2A-9x6-D9",
+      "issues": [
+        "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+      ]
+    },
+    {
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-RT1-90X60-T15",
+      "designId": "TR1-V2A-9x6-D19",
+      "issues": [
+        "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+      ]
+    },
+    {
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-RT2-90X60-T15",
+      "designId": "TR2-V2A-9x6-D15",
+      "issues": [
+        "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+      ]
+    },
+    {
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-RT2-120X80-T15",
+      "designId": "TR2-V2A-9x6-D15",
+      "issues": [
+        "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+      ]
+    }
+  ],
+  "scope": "Edelstahl-Türschilder only, Issue 48 comment 6557485638"
+}

@@ -1,3 +1,7 @@
+# Lokale Familiengalerie: Größenlücken und Prüfhinweise · 01.11.2026 · Codex/Astra
+
+Chris' „ausführen“ zu Issue 48/Quellenantwort: eigener Folgebranch auf #102 (`9ffc27f`), danach Code-main `b3b0886`. Aktueller Fokus aus Issue 48: ausschließlich Edelstahl-Türschilder. 792 Vorlagen lokal sichtbar; 80 Stahlgrößen vollständig belegt. Alle ursprünglichen 15 Prüffälle mit Grund sichtbar, übertragene Größen ausdrücklich ungeprüft. 42/42 Tests, Build, finaler Gesamtplan und Chrome Desktop/390px bestanden. Separater Katalogbranch: nur 2.196 grüne Größen in 513 JSONs, Freigaben unverändert; 13 Familien gebaut, 7.105 Excel-Zellen identisch. Claude prüft/merged; kein Import oder Live-Schritt. [Bericht, 15er-Liste und Bilder](docs/handoffs/2026-11-01-familien-groessenquellen.md).
+
 # Türschilder: Format & Größe · 01.11.2026 · Astra
 
 Chris benennt den Bereich um: Reiter, Überschrift und erster Handy-Schritt heißen jetzt Format & Größe. 42/42 bestehende Tests, Build und lokale Desktop-/375×548-Browserprüfung grün. Nur Text/Umbruch geändert, keine Preis-/Optionslogik. [Nachweis](docs/handoffs/2026-11-01-tuerschilder-review/README.md#beschriftung-nach-chris--01112026). Auf PR #102, kein Merge oder Live-Schritt.

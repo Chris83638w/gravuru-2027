@@ -52,10 +52,14 @@ test('explicit mounting affects only preview and cannot bypass the all-options r
  assert.ok(drilled);family.sizes.forEach(s=>s.mounting.push(drilled.id));write(f.root,file,family);
  const input={reihe:'test',id:'T-D1',familie:'test-schilder'};
  const normal=await targetDesignPreview(f.root,input,options),plain=await targetDesignPreview(f.root,{...input,mounting:'K00'},options),holes=await targetDesignPreview(f.root,{...input,mounting:drilled.skuSuffix},options);
- assert.notEqual(plain.svg,holes.svg);assert.equal(normal.svg,holes.svg);
+ assert.notEqual(plain.svg,holes.svg);assert.equal(normal.svg,plain.svg);
  assert.deepEqual(plain.reviewFit,holes.reviewFit);assert.equal(plain.checksum,holes.checksum);
  assert.equal(f.read().ziele[0].freigabe,null);
  await assert.rejects(targetDesignPreview(f.root,{...input,mounting:'invented'},options),e=>e.status===422);
+ family.withoutMounting=false;write(f.root,file,family);
+ const fallback=await targetDesignPreview(f.root,input,options),explicit=await targetDesignPreview(f.root,{...input,mounting:drilled.skuSuffix},options);
+ assert.equal(fallback.svg,explicit.svg);
+ await assert.rejects(targetDesignPreview(f.root,{...input,mounting:'K00'},options),e=>e.status===422);
 });
 test('server revalidates raw color, missing fonts and all target sizes; client fit cannot bypass approval',async t=>{
  const f=fixture(t),file=path.join(f.root,f.base+'design.svg'),original=fs.readFileSync(file,'utf8');fs.writeFileSync(file,original.replace('font-size="5"','font-size="5" fill="#ff0000"'));await assert.rejects(f.approve('test-schilder'),e=>e.status===422&&/Farbe|farbig/i.test(e.message));assert.equal(f.read().ziele[0].freigabe,null);

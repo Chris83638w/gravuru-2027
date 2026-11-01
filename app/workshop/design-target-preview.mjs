@@ -32,13 +32,14 @@ export async function targetDesignPreview(root,{reihe,id,familie,size:requestedS
  const response={checksum,reviewFit,fit,familie,size:sizeOption(size),sizes,variantRequired};
  let config;try{config=familyProductConfig(view,viewSize,1,{previewOnly:true});}catch(error){if(error.status!==422)throw error;const message=error.message.startsWith('Vorschau offen:')?error.message:'Vorschau offen: '+error.message;return {...response,svg:null,fit:{...fit,status:'passt nicht',issues:[...fit.issues,message]},reviewFit:{...reviewFit,status:'passt nicht',issues:[...reviewFit.issues,message]}};}
  config.localResources={...config.localResources,fonts,motifs};config.profile.designs=[scaled];config.profile.defaultDesignId=scaled.id;config.photo.enabled=scaled.objects.some(o=>o.type==='photoSlot');
- const mounting=config.profile.optionGroups.find(g=>g.id==='mounting'),drilled=mounting?.values.find(v=>v.holes?.length);
+ const mounting=config.profile.optionGroups.find(g=>g.id==='mounting'),drilled=mounting?.values.find(v=>v.holes?.length),withoutMounting=mounting?.values.find(v=>v.id==='K00');
  // Issue 85: the round starting design is inspected without mounting. An explicit
  // selection changes only the rendered preview; reviewFit still checks every option.
  if(requestedMounting!==undefined){
   if(!mounting?.values.some(v=>v.id===requestedMounting))fail(422,'Befestigung gehört nicht zu dieser Zielgröße.');
   mounting.defaultValueId=requestedMounting;
- }else if(drilled)mounting.defaultValueId=drilled.id;
+ }else if(withoutMounting)mounting.defaultValueId=withoutMounting.id;
+ else if(drilled)mounting.defaultValueId=drilled.id;
  config.photo.hints=converted.examples.map(e=>({designId:scaled.id,slotId:e.slotId,text:'Foto hochladen',enabled:e.uploadHint}));
  const examples=converted.examples.map(e=>({...e,designId:scaled.id}));
  let svg=productPreview({universal:config},{keepout:false,designArea:true,examples});

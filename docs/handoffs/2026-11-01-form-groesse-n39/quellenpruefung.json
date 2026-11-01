@@ -1,0 +1,39 @@
+{
+  "oldCatalogue": "85f9146d63b6dc351018d76e181ebaabce127ddc",
+  "catalogue": "c70f40947e0e20b0d91550d8d463880906e13302",
+  "allThreeFamiliesUnchanged": true,
+  "templates": [
+    {
+      "id": "TO-V2A-12x4-D1",
+      "sha256": "c9912c96db17401d494c62bad8418aee23e050e19b5e6719594bc9444ff5aac6"
+    },
+    {
+      "id": "TO-V2A-15x8-D1",
+      "sha256": "b19f7e8c6248fef1cfc37ee6205738b5ef3543b54a0ed1acc20cbbed0faf8045"
+    },
+    {
+      "id": "TRE-V2A-8x5-D1",
+      "sha256": "a3f6deaccb16f8fdaf90f635a98e74af1a3e11c1520005f52b891820f315d302"
+    },
+    {
+      "id": "TAE-V2A-8x5-D1",
+      "sha256": "262765a6e1285dff53b1ad5a450d4049f18816c2346620ef610c913e22b8989c"
+    },
+    {
+      "id": "TO-V2A-9x6-D1",
+      "sha256": "89e0df4c3d681dd9e64e185cd0efbada8c3e72d6d20f12dffe23c5d545c7603e"
+    },
+    {
+      "id": "TQ-V2A-8x8-D1",
+      "sha256": "a17280c0323eaa5f9a6277d681a7d2615879287ad100bc3258f4ec0515baccf3"
+    },
+    {
+      "id": "TR1-V2A-9x6-D1",
+      "sha256": "1165cf7a1eb5d27e78bac4e0b2899218b66cc2389e56774b5947077f587b1232"
+    },
+    {
+      "id": "TR2-V2A-9x6-D1",
+      "sha256": "33ac35b24cefd84ba049cb61038bc383f245f0ccb1795b912611891f50a50a54"
+    }
+  ]
+}

@@ -23,7 +23,9 @@ for i,sl in enumerate(ndimage.find_objects(lab)):
     m=max(3,int(min(h,w)*0.012))
     er=ndimage.binary_erosion(msk,iterations=m)
     L=lum[sl]; base=np.median(L[er])
-    eng=er&(np.abs(L-base)>55)
+    # helle Platte (Edelstahl, Schiefer hell): Gravur = deutlich dunkler; dunkle Platte (Acryl, Schiefer): Gravur = deutlich heller.
+    # Einseitig, damit Bürststruktur, Glanz und Bohrlöcher nicht als Gravur zählen.
+    eng=er&((L<base-70) if base>128 else (L>base+55))
     ys,xs=np.nonzero(eng)
     if len(xs)<40: continue
     bx0,bx1=np.quantile(xs,[0.002,0.998]); by0,by1=np.quantile(ys,[0.002,0.998])

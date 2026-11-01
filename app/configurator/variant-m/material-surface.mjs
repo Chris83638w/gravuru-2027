@@ -18,6 +18,15 @@ export function plateClipMarkup(geometry){
  const {width,height,shape}=geometry;
  return shape==='contour'?'<path d="'+escapeXml(contourPathWithHoles(geometry))+'" clip-rule="evenodd"/>':shape==='ellipse'?'<ellipse cx="'+width/2+'" cy="'+height/2+'" rx="'+width/2+'" ry="'+height/2+'"/>':'<rect width="'+width+'" height="'+height+'" rx="'+(geometry.cornerRadiusMm||0)+'"/>';
 }
+// Separate preview layer: the original surface and artwork stay untouched.
+export function plateDepthPreview(svg,geometry,id='plate-depth'){
+ const {width,height}=geometry,scale=Math.max(width,height)/120;
+ if(![width,height].every(n=>Number.isFinite(n)&&n>0))throw Error('Plattenschatten: Maße fehlen.');
+ const key='depth-'+String(id).replace(/[^a-zA-Z0-9_-]/g,'_');
+ const silhouette=plateClipMarkup({...geometry,holes:[]}).replace('clip-rule=','fill-rule=');
+ const shadow='<g data-plate-shadow="true" data-role="guide" aria-hidden="true" pointer-events="none"><defs><filter id="'+key+'" filterUnits="userSpaceOnUse" x="'+(-6*scale)+'" y="'+(-6*scale)+'" width="'+(width+12*scale)+'" height="'+(height+12*scale)+'"><feGaussianBlur stdDeviation="'+(.65*scale)+'"/></filter></defs><g transform="translate('+(.35*scale)+' '+(.9*scale)+')" fill="#23282c" opacity=".28" filter="url(#'+key+')">'+silhouette+'</g></g>';
+ return svg.replace(/(<svg\b[^>]*>)/,'$1'+shadow);
+}
 export function surfacePreview(svg,url,geometry){
  if(!url||!(trustedBlobs.has(url)||validSurface(url)))return svg;
  const {width,height,shape}=geometry;

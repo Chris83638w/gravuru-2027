@@ -5,7 +5,7 @@ import {spacerPreview,screwPreview,keepoutPreview,optionTileIcon,optionTilePrice
 import {designAreaPreview} from './design-area.mjs';
 import {customerMotifs} from './customer-motifs.mjs';
 import {studioSvg,universalPreviewViewport} from '../../platform/sources/app/shared/models/studio-svg.mjs';
-import {surfacePreview,embedSurface,scenePreview,previewSurfaceUrl,plateClipMarkup} from './material-surface.mjs';
+import {surfacePreview,embedSurface,scenePreview,previewSurfaceUrl,plateClipMarkup,plateDepthPreview} from './material-surface.mjs';
 import {physicalGeometry} from './print-geometry.mjs';
 import {decorateEmptyPhotoSlots} from './photo-placeholder.mjs';
 // Fototipp auf der Platte, bevor die Kundenoberfläche fertig ist (build.mjs ruft es direkt nach mount auf).
@@ -19,9 +19,9 @@ import {optionFields, FIELD_TEXT_DEFAULT_MAX} from './option-fields.mjs';
 import {objectSurface, surfaceGeometry} from './surfaces.mjs';
 import {designResourcesReady} from './doorbell-lazy-designs.mjs';
 import {isLayeredDoorbell} from './doorbell-selection.mjs';
-import {doorbellOptionState,updateDoorbellViewport} from './doorbell-ui.mjs';
+import {doorbellOptionState,updateDoorbellViewport,doorbellTextSurface} from './doorbell-ui.mjs';
 import {installDoorbellPresentation} from './doorbell-presentation.mjs';
-import {isFamilyFormats,familyFormatState} from './family-formats.mjs';
+import {isFamilyFormats,familyFormatState,familyDesignReviewNote} from './family-formats.mjs';
 import {installFamilyFormatsPresentation} from './family-formats-ui.mjs';
 import {mountingPlacementState} from './mounting-placement.mjs';
 
@@ -44,12 +44,15 @@ export function installUniversal(configInput) {
   const svg = (design, {guides=false, selected='', handles=false, keepout=false, surface='front', screen=false, bare=false} = {}) => {
     const visible={...design,textOnTop:true,objects:design.objects.filter(o=>!o.uxHidden&&objectSurface(o)===surface)};
     let result=surfacePreview(studioSvg(profile(surface), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),bare?'':screen?previewSurfaceUrl(config.materialSurface):config.materialSurface,profile(surface).geometry);
+    if(dynamicFamily&&screen&&!bare)result=plateDepthPreview(result,profile(surface).geometry,'customer-'+renderId);
     if(config.reviewOnly){const doc=svgDocument(result);for(const o of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group){for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){rect.setAttribute('fill','none');rect.setAttribute('stroke-dasharray','2 2');}for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);}}result=doc.documentElement.outerHTML;}
     if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
     // Clip artwork to the real plate for every universal shape; external edit handles remain outside.
     // This is visual containment only. The shared placement and server validation still reject overflow.
-    if(!dynamicDoorbell&&!bare){const doc=svgDocument(result),root=doc.documentElement,clipId='customer-artwork-'+renderId,ns='http://www.w3.org/2000/svg';
-      const defs=doc.createElementNS(ns,'defs');defs.innerHTML='<clipPath id="'+clipId+'">'+plateClipMarkup(profile(surface).geometry)+'</clipPath>';root.prepend(defs);
+    if(!bare){const doc=svgDocument(result),root=doc.documentElement,clipId='customer-artwork-'+renderId,ns='http://www.w3.org/2000/svg';
+      const acrylic=dynamicDoorbell?doorbellTextSurface(profile(surface)):null;
+      const outline=acrylic?'<rect x="'+acrylic.x+'" y="'+acrylic.y+'" width="'+acrylic.width+'" height="'+acrylic.height+'"/>':plateClipMarkup(profile(surface).geometry);
+      const defs=doc.createElementNS(ns,'defs');defs.innerHTML='<clipPath id="'+clipId+'">'+outline+'</clipPath>';root.prepend(defs);
       for(const group of [...root.querySelectorAll('[data-object]')]){const wrapper=doc.createElementNS(ns,'g');wrapper.setAttribute('clip-path','url(#'+clipId+')');group.before(wrapper);wrapper.append(group);}result=root.outerHTML;
     }
     // Design boundary and drill-hole zones are preview layers only (keepout flag = editor preview); el.svg() for the order carries neither.
@@ -314,7 +317,7 @@ export function installUniversal(configInput) {
       $('.fk-material-note').textContent=config.doorbell?'Edelstahl 1,5 mm · Gravur auf Acrylglas 3 mm':processing.name+' · '+p.material.thicknessMm+' mm';
       $('.fk-options>[data-fk-mount-note]')?.setAttribute('hidden','');
       for(const card of r.querySelectorAll('[data-c-design]')){
-        card.hidden=!visible.has(card.dataset.cDesign);card.querySelector('small').textContent='Vorlage inklusive';
+        card.hidden=!visible.has(card.dataset.cDesign);const note=card.querySelector('small'),review=familyDesignReviewNote(config,options,card.dataset.cDesign);note.textContent=review||'Vorlage inklusive';note.toggleAttribute('data-family-review',!!review);
       }
       renderThumbnails();
       const name=current().name;$('.guided-review dl').innerHTML='<div><dt>Design</dt><dd>'+esc(name)+'</dd></div><div><dt>Material</dt><dd>'+esc(processing.name)+'</dd></div>';

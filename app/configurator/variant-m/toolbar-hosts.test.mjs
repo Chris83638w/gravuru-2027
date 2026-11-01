@@ -21,6 +21,20 @@ function fixture(){
   return f;
 }
 
+test('doorbell selection uses a persistent slot through deselection, mobile and fullscreen, retaining live controls',()=>{
+ const f=fixture(),stableHost=new Node();f.preview.insertBefore(stableHost,f.preview.canvas);let edits=0;f.panel.addEventListener('click',()=>edits++);
+ const original=[...f.preview.children];
+ for(const mobile of [false,true,false]){
+  for(const hidden of [true,false,true]){
+   f.panel.hidden=hidden;placeDirectToolbar({...f,stableHost,mobile,full:false});
+   assert.deepEqual(f.preview.children,original);assert.equal(f.panel.parentNode,stableHost);assert.equal(f.panel.hidden,hidden);
+  }
+  placeDirectToolbar({...f,stableHost,mobile,full:true});assert.equal(f.panel.parentNode,f.stage);
+  placeDirectToolbar({...f,stableHost,mobile,full:false});assert.equal(f.panel.parentNode,stableHost);
+ }
+ f.panel.dispatchEvent(new Event('click'));assert.equal(edits,1);
+});
+
 test('desktop tools sit above the plate; repeated placement preserves the original controls and listeners',()=>{
   const f=fixture();let undo=0,edit=0;f.toolbar.addEventListener('click',()=>undo++);f.panel.addEventListener('click',()=>edit++);
   for(let i=0;i<3;i++)assert.equal(f.place(false,false),true);

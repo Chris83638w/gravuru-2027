@@ -1,6 +1,7 @@
 // Issue #48 N36 (Chris, 31.10.2026): one-time assistance when choosing holes.
 // This is never a validation constraint; subsequent manual placement stays free.
 import {surfaceObjectIssue} from '../../platform/sources/app/shared/models/design-content.mjs';
+import {textOutlineBounds} from '../../platform/sources/app/shared/models/text-outline-fit.mjs';
 import {surfaceGeometry} from './surfaces.mjs';
 import {corners,overlaps} from './customer-tools-model.mjs';
 import {SIGN_SCREW_HEAD_MM,SIGN_PLACEMENT_FAMILIES} from './mounting-dimensions.mjs';
@@ -15,13 +16,19 @@ export function signPlacementEnabled(config,profile){
  const id=profile.familySelection?.familyId||config.familyAcrylic?.familyId||config.mountingPlacementFamily;
  return SIGN_PLACEMENT_FAMILIES.includes(id)||SIGN_PLACEMENT_FAMILIES.some(f=>profile.id?.startsWith('family-'+f+'-')||new RegExp('^family-'+f+'-r[0-9]+$').test(profile.revision||''));
 }
-export function touchesMounting(o,profile){
- if(!visible(o))return false;
+export function placementBox(o,resources={}){
+ const ink=textOutlineBounds(o,resources.fonts);if(!ink)return o;
+ const x=(ink.left+ink.right)/2,y=(ink.top+ink.bottom)/2,a=(o.rotation||0)*Math.PI/180;
+ return {...o,x:o.x+x*Math.cos(a)-y*Math.sin(a),y:o.y+x*Math.sin(a)+y*Math.cos(a),w:ink.right-ink.left,h:ink.bottom-ink.top};
+}
+function touchesBox(o,profile){
  const holes=surfaceGeometry(profile.geometry,side(o)).holes||[],a=-(o.rotation||0)*Math.PI/180;
+ const margin=profile.mountingPreview?.keepoutMm??profile.geometry.holeKeepoutMm??0;
  return holes.some(h=>{const dx=h.x-o.x,dy=h.y-o.y,x=dx*Math.cos(a)-dy*Math.sin(a),y=dx*Math.sin(a)+dy*Math.cos(a);
-  return Math.hypot(Math.max(Math.abs(x)-o.w/2,0),Math.max(Math.abs(y)-o.h/2,0))<Math.max(h.diameter,SIGN_SCREW_HEAD_MM)/2+epsilon;
+  return Math.hypot(Math.max(Math.abs(x)-o.w/2,0),Math.max(Math.abs(y)-o.h/2,0))<Math.max(h.diameter,SIGN_SCREW_HEAD_MM)/2+margin+epsilon;
  });
 }
+export function touchesMounting(o,profile,resources={}){return visible(o)&&touchesBox(placementBox(o,resources),profile);}
 // Convex intersection area lets existing intentional overlaps remain, without
 // accepting a new overlap or making an existing one larger while moving.
 function overlapArea(a,b){
@@ -52,44 +59,53 @@ function undoPlacement(state,profile){
  });
 }
 export function avoidMounting(objects,profile,resources={}){
- const result=objects.map(clone),original=objects.map(clone),changed=[],unresolved=[];
+ const result=objects.map(clone),changed=[],unresolved=[],originalBoxes=new Map(objects.map(o=>[o.id,placementBox(o,resources)]));
  const freeProfile={...profile,geometry:{...profile.geometry,holes:[]}};
- // Text first: keep the source motif whenever moving text makes room for it.
- const targets=result.filter(movable).sort((a,b)=>(a.type==='text'?0:1)-(b.type==='text'?0:1));
- for(const raw of targets){
-  if(!touchesMounting(raw,profile))continue;
-  const neighbours=result.filter(o=>o.id!==raw.id&&visible(o)&&side(o)===side(raw));
-  const limits=new Map(neighbours.map(o=>[o.id,overlapArea(original.find(v=>v.id===raw.id),original.find(v=>v.id===o.id))]));
-  const orderPreserved=(n,o)=>{
-   const a=original.find(v=>v.id===raw.id),b=original.find(v=>v.id===o.id);
+ // Originally intersecting elements (e.g. STOP inside its octagon) move as one
+ // component. Never detach lettering from an ornament or distort a motif.
+ const pending=result.filter(movable),groups=[];
+ while(pending.length){const group=[pending.shift()];for(let i=0;i<group.length;i++)for(let j=pending.length-1;j>=0;j--)if(overlapArea(originalBoxes.get(group[i].id),originalBoxes.get(pending[j].id))>epsilon)group.push(...pending.splice(j,1));groups.push(group);}
+ groups.sort((a,b)=>(a.some(o=>o.type==='text')?0:1)-(b.some(o=>o.type==='text')?0:1));
+ for(const group of groups){
+  if(!group.some(o=>touchesMounting(o,profile,resources)))continue;
+  const ids=new Set(group.map(o=>o.id)),neighbours=result.filter(o=>!ids.has(o.id)&&visible(o)).map(o=>placementBox(o,resources));
+  const limits=new Map(group.map(o=>[o.id,new Map(neighbours.map(n=>[n.id,overlapArea(originalBoxes.get(o.id),originalBoxes.get(n.id))]))]));
+  const points=group.flatMap(o=>corners(originalBoxes.get(o.id))),cx=(Math.min(...points.map(p=>p.x))+Math.max(...points.map(p=>p.x)))/2,cy=(Math.min(...points.map(p=>p.y))+Math.max(...points.map(p=>p.y)))/2;
+  const orderPreserved=(n,o)=>{if(side(n)!==side(o))return true;const a=originalBoxes.get(n.id),b=originalBoxes.get(o.id);
    return !(a.y+a.h/2<=b.y-b.h/2&&n.y>o.y||a.y-a.h/2>=b.y+b.h/2&&n.y<o.y||a.x+a.w/2<=b.x-b.w/2&&n.x>o.x||a.x-a.w/2>=b.x+b.w/2&&n.x<o.x);
   };
-  const valid=n=>!touchesMounting(n,profile)&&neighbours.every(o=>orderPreserved(n,o)&&overlapArea(n,o)<=(limits.get(o.id)||0)+epsilon)&&!surfaceObjectIssue(n,freeProfile,resources);
-  const dx=profile.geometry.width/2-raw.x,dy=profile.geometry.height/2-raw.y,base=Math.atan2(dy,dx);
+  const dx=profile.geometry.width/2-cx,dy=profile.geometry.height/2-cy,base=Math.atan2(dy,dx);
   const angles=[base,...Array.from({length:48},(_,i)=>i*Math.PI/24)].filter((a,i,list)=>list.indexOf(a)===i);
-  // Prefer inward at equal distance. If the centre is occupied, use the nearest
-  // free direction without jumping across neighbouring elements. A quarter-mm
-  // radial search is followed by binary refinement (no visible snapping).
   const directions=angles.map(a=>[Math.cos(a),Math.sin(a)]).sort((a,b)=>(b[0]*dx+b[1]*dy)-(a[0]*dx+a[1]*dy));
-  const max=Math.hypot(profile.geometry.width,profile.geometry.height);
-  const find=o=>{
-   if(valid(o))return o;
-   for(let d=.25;d<=max;d+=.25){
-    let best;
-    for(const [x,y] of directions){const n={...o,x:o.x+x*d,y:o.y+y*d};if(!valid(n))continue;
-     let lo=Math.max(0,d-.25),hi=d;for(let i=0;i<16;i++){const mid=(lo+hi)/2;if(valid({...o,x:o.x+x*mid,y:o.y+y*mid}))hi=mid;else lo=mid;}
-     if(!best||hi<best.distance)best={object:{...o,x:o.x+x*hi,y:o.y+y*hi},distance:hi};
-    }if(best)return best.object;
+  const find=f=>{
+   const scaledGroup=group.map(o=>({...scaled(o,f),x:cx+(o.x-cx)*f,y:cy+(o.y-cy)*f})),boxes=scaledGroup.map(o=>placementBox(o,resources));
+   const cornersAll=boxes.flatMap(o=>corners(o)),left=Math.min(...cornersAll.map(p=>p.x)),right=Math.max(...cornersAll.map(p=>p.x)),top=Math.min(...cornersAll.map(p=>p.y)),bottom=Math.max(...cornersAll.map(p=>p.y));
+   const minX=-left,maxX=profile.geometry.width-right,minY=-top,maxY=profile.geometry.height-bottom;
+   if(minX>maxX||minY>maxY)return null;
+   const valid=(x,y)=>{
+    if(x<minX||x>maxX||y<minY||y>maxY)return false;
+    for(const box of boxes){const n={...box,x:box.x+x,y:box.y+y};if(touchesBox(n,profile)||!neighbours.every(o=>{
+     if(side(n)!==side(o))return true;
+     const originalArea=limits.get(n.id).get(o.id);
+     return orderPreserved(n,o)&&(originalArea>epsilon?overlapArea(n,o)<=originalArea+epsilon:!overlaps(n,o));
+    }))return false;}
+    return scaledGroup.every(o=>!surfaceObjectIssue({...o,x:o.x+x,y:o.y+y},freeProfile,resources));
+   };
+   const moved=(x,y)=>scaledGroup.map(o=>({...o,x:o.x+x,y:o.y+y}));
+   if(valid(0,0))return moved(0,0);
+   const max=Math.hypot(Math.max(Math.abs(minX),Math.abs(maxX)),Math.max(Math.abs(minY),Math.abs(maxY)));
+   for(let d=.25;d<=max+.25;d+=.25){let best;
+    for(const [x,y] of directions){if(!valid(x*d,y*d))continue;let lo=Math.max(0,d-.25),hi=d;
+     for(let i=0;i<16;i++){const mid=(lo+hi)/2;if(valid(x*mid,y*mid))hi=mid;else lo=mid;}
+     if(!best||hi<best.distance)best={x:x*hi,y:y*hi,distance:hi};
+    }if(best)return moved(best.x,best.y);
    }return null;
   };
-  let candidate=find(raw);
-  // Shrink uniformly only after trying every translation; the family minimum
-  // text height is 3 mm. Existing smaller text is never made smaller here.
-  const minimum=raw.type==='text'?Math.min(1,3/raw.size):.1;
-  for(let f=.99;!candidate&&f>=minimum-epsilon;f=Math.max(minimum,f-.01)){
-   candidate=find(scaled(raw,f));if(f<=minimum+epsilon)break;
-  }
-  if(candidate){const before=clone(raw);Object.assign(raw,candidate);changed.push({id:raw.id,before,after:clone(raw)});}else unresolved.push(raw.id);
+  let candidate=find(1);
+  const minimum=Math.max(...group.map(o=>o.type==='text'?Math.min(1,3/o.size):.1));
+  for(let f=.99;!candidate&&f>=minimum-epsilon;f=Math.max(minimum,f-.01)){candidate=find(f);if(f<=minimum+epsilon)break;}
+  if(candidate)for(let i=0;i<group.length;i++){const raw=group[i],before=clone(raw);Object.assign(raw,candidate[i]);changed.push({id:raw.id,before,after:clone(raw)});}
+  else unresolved.push(...group.map(o=>o.id));
  }
  return {objects:result,changed,unresolved};
 }

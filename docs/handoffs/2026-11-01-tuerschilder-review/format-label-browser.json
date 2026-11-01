@@ -1,0 +1,47 @@
+[
+  {
+    "width": 1440,
+    "height": 1000,
+    "tab": "Format & Größe",
+    "labelBox": null,
+    "stepBox": null,
+    "priceBox": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0
+    },
+    "options": {
+      "size": "GR-ES-AB-120X80-T15",
+      "mounting": "K00"
+    }
+  },
+  {
+    "width": 375,
+    "height": 548,
+    "tab": "Format & Größe",
+    "step": "Format & Größe",
+    "labelBox": {
+      "x": 10,
+      "y": 462.421875,
+      "w": 66.1875,
+      "h": 28.59375
+    },
+    "stepBox": {
+      "x": 8,
+      "y": 433.421875,
+      "w": 70.1875,
+      "h": 60.59375
+    },
+    "priceBox": {
+      "x": 105.28125,
+      "y": 498.015625,
+      "w": 72.03125,
+      "h": 23.390625
+    },
+    "options": {
+      "size": "GR-ES-AB-120X80-T15",
+      "mounting": "K00"
+    }
+  }
+]

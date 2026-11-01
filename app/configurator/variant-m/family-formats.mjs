@@ -26,6 +26,10 @@ export function familyFormatSelection(c,values={}){
  if(!mounting)fail('Diese Befestigung ist für die gewählte Größe nicht erlaubt.');
  return {format,variant,mounting,color};
 }
+export function familyDesignReviewNote(c,options,id){
+ if(!isFamilyFormats(c)||!c.reviewOnly||!c.familyFormats.source?.reviewUnreleased)return '';
+ return familyFormatSelection(c,options).variant.unapprovedDesignIds?.includes(id)?'nicht freigegeben':'';
+}
 export function familyFormatOptions(c,values={}){
  if(!values||typeof values!=='object'||Array.isArray(values)||Object.keys(values).some(k=>!['size','color','mounting'].includes(k)))fail('Unbekannte Familienoption.');
  const s=familyFormatSelection(c,values);
@@ -117,6 +121,7 @@ export function validateFamilyFormats(c){
   for(const v of s.variants){
    if(!['steel-door-signs','acryl-3mm-tuerschilder-schwarz','acryl-3mm-tuerschilder-anthrazit'].includes(v.familyId)||!v.sizeKey||!cents(v.basePriceCents)||!f.colors.some(a=>a.id===v.color))fail('Familienquelle oder Preis fehlt.');
    if(!Array.isArray(v.designIds)||v.designIds.some(id=>!f.designs.some(d=>d.id===id)))fail('Unbekanntes Designziel.');
+   if(v.unapprovedDesignIds!==undefined&&(!Array.isArray(v.unapprovedDesignIds)||v.unapprovedDesignIds.some(id=>!v.designIds.includes(id))))fail('Ungültige Prüffreigaben.');
    if(!Array.isArray(v.mounting)||new Set(v.mounting.map(m=>m.id)).size!==v.mounting.length||!v.mounting.some(m=>m.id==='K00'&&m.priceCents===0&&m.holes?.length===0)||v.mounting.some(m=>!cents(m.priceCents)||!Array.isArray(m.holes)))fail('Familienbefestigung fehlt.');
    validateOptionGroups([{id:'mounting',name:'Befestigung',required:true,defaultValueId:'K00',values:v.mounting}]);
    for(const m of v.mounting)validateGeometryHoles({...c.profile,geometry:{...g,holes:m.holes}});

@@ -1,0 +1,1442 @@
+[
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-80X20-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-70X23P3-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-60X20-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-90X30-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-120X40-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-EL-120X40-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-150X50-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-EL-150X50-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-180X60-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-EL-180X60-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-210X70-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-EL-210X70-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-240X80-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-EL-240X80-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-270X90-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-EL-270X90-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-EL-300X100-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-50X20-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-80X35-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-120X52P5-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-160X70-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-240X105-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-320X140-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-400X175-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-OV-300X159P9-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-OV-150X80-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-OV-225X120-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-80X53P3-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-AB-80X53P3-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-90X60-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-AB-90X60-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-OV-90X60-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-120X80-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-AB-120X80-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-OV-120X80-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-150X100-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-AB-150X100-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-OV-150X100-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-180X120-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-AB-180X120-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-OV-180X120-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-210X140-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-AB-210X140-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-OV-210X140-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-240X160-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-AB-240X160-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-OV-240X160-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-300X200-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-AB-300X200-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-OV-300X200-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-420X280-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-AB-420X280-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RE-450X300-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-AB-450X300-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-QU-80X80-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-QU-100X100-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-QU-120X120-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-QU-160X160-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-QU-200X200-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-QU-260X260-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-QU-300X300-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-R-65X65-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-R-85X85-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-R-120X120-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-R-160X160-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-R-200X200-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RT1-90X60-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RT1-120X80-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RT1-150X100-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RT1-180X120-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RT1-210X140-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RT1-240X160-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RT1-300X200-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RT2-90X60-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RT2-120X80-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RT2-150X100-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RT2-180X120-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RT2-210X140-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RT2-240X160-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "steel-door-signs",
+    "size": "GR-ES-RT2-300X200-T15",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-80X20-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-70X23P3-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-60X20-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-90X30-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-120X40-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-EL-120X40-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-150X50-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-EL-150X50-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-180X60-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-EL-180X60-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-210X70-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-EL-210X70-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-240X80-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-EL-240X80-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-270X90-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-EL-270X90-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-OV-300X100-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-50X20-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-80X35-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-120X52P5-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-160X70-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-240X105-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-320X140-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-400X175-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-OV-300X160-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-OV-150X80-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-OV-225X120-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-80X53P3-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-AB-80X53P3-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-90X60-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-AB-90X60-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-OV-90X60-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-120X80-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-AB-120X80-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-OV-120X80-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-150X100-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-AB-150X100-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-OV-150X100-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-180X120-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-AB-180X120-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-OV-180X120-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-210X140-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-AB-210X140-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-OV-210X140-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-240X160-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-AB-240X160-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-OV-240X160-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-300X200-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-AB-300X200-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-OV-300X200-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-420X280-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-AB-420X280-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RE-450X300-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-AB-450X300-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-QU-80X80-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-QU-100X100-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-QU-120X120-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-QU-160X160-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-QU-200X200-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-QU-260X260-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-QU-300X300-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-R-65X65-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-R-85X85-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-R-120X120-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-R-160X160-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-R-200X200-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RT1-90X60-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RT1-120X80-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RT1-150X100-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RT1-180X120-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RT1-210X140-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RT1-240X160-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RT1-300X200-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RT2-90X60-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RT2-120X80-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RT2-150X100-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RT2-180X120-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RT2-210X140-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RT2-240X160-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-schwarz",
+    "size": "TS-Acryl-RT2-300X200-T30-SW",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-80X20-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-70X23P3-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-60X20-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-90X30-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-120X40-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-EL-120X40-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-150X50-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-EL-150X50-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-180X60-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-EL-180X60-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-210X70-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-EL-210X70-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-240X80-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-EL-240X80-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-270X90-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-EL-270X90-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-OV-300X100-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-50X20-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-80X35-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-120X52P5-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-160X70-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-240X105-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-320X140-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-400X175-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-OV-300X160-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-OV-150X80-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-OV-225X120-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-80X53P3-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-AB-80X53P3-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-90X60-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-AB-90X60-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-OV-90X60-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-120X80-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-AB-120X80-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-OV-120X80-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-150X100-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-AB-150X100-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-OV-150X100-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-180X120-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-AB-180X120-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-OV-180X120-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-210X140-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-AB-210X140-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-OV-210X140-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-240X160-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-AB-240X160-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-OV-240X160-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-300X200-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-AB-300X200-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-OV-300X200-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-420X280-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-AB-420X280-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RE-450X300-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-AB-450X300-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-QU-80X80-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-QU-100X100-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-QU-120X120-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-QU-160X160-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-QU-200X200-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-QU-260X260-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-QU-300X300-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-R-65X65-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-R-85X85-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-R-120X120-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-R-160X160-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-R-200X200-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RT1-90X60-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RT1-120X80-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RT1-150X100-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RT1-180X120-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RT1-210X140-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RT1-240X160-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RT1-300X200-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RT2-90X60-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RT2-120X80-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RT2-150X100-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RT2-180X120-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RT2-210X140-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RT2-240X160-T30-AN",
+    "default": "K00",
+    "holes": 0
+  },
+  {
+    "family": "acryl-3mm-tuerschilder-anthrazit",
+    "size": "TS-Acryl-RT2-300X200-T30-AN",
+    "default": "K00",
+    "holes": 0
+  }
+]

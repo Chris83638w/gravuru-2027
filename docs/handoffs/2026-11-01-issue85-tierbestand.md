@@ -2,9 +2,9 @@
 
 260 bearbeitbare Fassungen im Katalog: 25 Rechteckmaster, zehn echte Schiefer-Knochenmaster, 15 Originalgrößen, 210 native Größenvarianten. Alle 35 Tierschildquellen zugeordnet; zwei Farb-/Namensvarianten zusammengeführt. Schriftwahl durch Chris ausdrücklich erlaubt. Foto nur Acryl 3 mm, größere Namen bei Bronko/Cooper. Quelle: [Review 6555301953](https://github.com/Chris83638w/gravuru-2027/issues/85#issuecomment-6555301953).
 
-68 gezielte Werkstatttests erfolgreich. Alle 260 Fassungen / 580 Ziele nativ geprüft: 544 passt, 26 prüfen, zehn ausschließlich Materialstärke offen. 210 Varianten / 1.000 Elemente erneut eingelesen, maximal 0,004 mm Rundung, genaue Fotomasken erhalten. 99 Master-/Originalgrößen-HTTP-Antworten und zwölf zusätzliche große Materialvorschauen; 15 Kontaktbogenseiten insgesamt und Mobilansichten geprüft. Katalogbau für 14 Familien erfolgreich, 520 Dateihashes dokumentiert.
+68 gezielte Werkstatttests erfolgreich. Alle 260 Fassungen / 580 Ziele nativ geprüft: 554 passt, 26 prüfen, keine harte Ablehnung. 210 Varianten / 1.000 Elemente erneut eingelesen, maximal 0,004 mm Rundung, genaue Fotomasken erhalten. 99 Master-/Originalgrößen-HTTP-Antworten und zwölf zusätzliche große Materialvorschauen; 15 Kontaktbogenseiten insgesamt und Mobilansichten geprüft. Katalogbau für 14 Familien erfolgreich, 520 Dateihashes dokumentiert.
 
-Die zehn TSK-Konturen bestehen geometrisch, aber die genaue Materialstärke fehlt und bleibt null. Die Bilder sind bis dahin als Konturbelege markiert. Knochen-Grundpreis und Foto-Aufpreis bleiben gemäß Issue offen, alle Freigaben null. Die frühere Acryl-PR-11-Abhängigkeit ist durch main aufgelöst. Alte rechteckige TSK-Studien sind historische Belege und keine aktiven Master.
+Chris hat die Materialstärke im Chat mit „5mm“ bestätigt. Die Familie verwendet 5 mm; alle zehn TSK-Ziele bestehen die echte native Materialvorschau. Knochen-Grundpreis und Foto-Aufpreis bleiben gemäß Issue offen, alle Freigaben null. Die frühere Acryl-PR-11-Abhängigkeit ist durch main aufgelöst. Alte rechteckige TSK-Studien sind historische Belege und keine aktiven Master.
 
 ## Änderungen und Prüfung
 
@@ -25,6 +25,6 @@ Katalog: `designs/tierbestand-*/`, neue Familie `familien/schiefer/schiefer-knoc
 5. `node scripts/design-pruefung/tierbestand-preview.mjs --katalog=<Katalog> --designs=<Entwuerfe> --out=<Pruefung> --runtime-code=<Code>`; privater HTTP-Prüfstand, keine Imports.
 6. `node scripts/design-pruefung/tierbestand-screens.mjs <Pruefung>`; `GRAVURU_NODE_MODULES` (Playwright), `GRAVURU_BROWSER` setzen.
 7. `node --test app/workshop/design-targets.test.mjs app/workshop/design-target-preview.test.mjs app/workshop/design-variants.test.mjs app/workshop/katalog-photo-assets.test.mjs app/workshop/design-target-rules.test.mjs`.
-8. `python scripts/build-katalog.py --katalog <Katalog>`; 14 Familien. PDF-Knochen: zwei Seiten, eine Kontur ohne Löcher, Stärke/Preis offen. Visuell mit Poppler geprüft.
+8. `python scripts/build-katalog.py --katalog <Katalog>`; 14 Familien. PDF-Knochen: zwei Seiten, eine Kontur ohne Löcher, Stärke 5 mm, Preis offen. Visuell mit Poppler geprüft.
 
-[Katalog-PR 14](https://github.com/Chris83638w/gravuru-katalog./pull/14) · [Code-PR 89](https://github.com/Chris83638w/gravuru-2027/pull/89). Kein Merge, kein Import, nichts live. Fehlende Schieferstärke ist im Chat angefragt; keine weitere Schrift-/Kennungsentscheidung nötig.
+[Katalog-PR 14](https://github.com/Chris83638w/gravuru-katalog./pull/14) · [Code-PR 89](https://github.com/Chris83638w/gravuru-2027/pull/89). Kein Merge, kein Import, nichts live. Schieferstärke 5 mm ist bestätigt; keine weitere Schrift-/Kennungsentscheidung nötig.

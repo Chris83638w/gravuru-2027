@@ -1,6 +1,6 @@
 ## 01.11.2026 – Issue 85: Schriften und TSK-Bestände ergänzt
 
-260 bearbeitbare Fassungen (35 Master + 15 Originalgrößen + 210 native Größenvarianten). 68 Tests bestanden; 580 Ziele geprüft, nur zehn TSK-Materialvorschauen wegen unbekannter Schieferstärke offen. Foto ausschließlich Acryl 3 mm, Preise und Freigaben offen. Quellen/Prüfbilder: [Übergabe](docs/handoffs/2026-11-01-issue85-tierbestand.md). PRs Katalog #14 / Code #89. Kein Import/Live-Schritt.
+260 bearbeitbare Fassungen (35 Master + 15 Originalgrößen + 210 native Größenvarianten). 68 Tests bestanden; 580 Ziele geprüft, 554 passt und 26 prüfen. Schieferstärke 5 mm durch Chris bestätigt; alle zehn TSK-Materialvorschauen passen. Foto ausschließlich Acryl 3 mm, Preise und Freigaben offen. Quellen/Prüfbilder: [Übergabe](docs/handoffs/2026-11-01-issue85-tierbestand.md). PRs Katalog #14 / Code #89. Kein Import/Live-Schritt.
 
 # Issue 85 · Native Größenfassungen ergänzt · 01.11.2026 (Codex)
 

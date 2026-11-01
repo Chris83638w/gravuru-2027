@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="110.0mm" height="198.5mm" viewBox="0 0 110.0 198.5">
-<!-- Grabkreuz Acryl 11x20 cm, Kontur aus KZ-A-11x20-D0 (Katalog). Rot gestrichelt = Erdlinie: darunter (ca. 5 cm) steckt das Kreuz in der Erde, nie gravieren; Gestaltung mindestens 5 mm darüber. -->
-<path id="kontur" d="M73.332 165.255 L55.001 198.529 L36.667 165.255 C36.667 134.714 36.667 104.176 36.667 73.637 L4.740 73.637 C2.129 73.637 0.000 71.509 0.000 68.898 L0.000 41.712 C0.000 39.101 2.129 36.970 4.740 36.970 L36.667 36.970 L36.667 4.740 C36.667 2.129 38.796 0.000 41.407 0.000 L68.593 0.000 C71.204 0.000 73.332 2.129 73.332 4.740 L73.332 36.970 L105.260 36.970 C107.871 36.970 110.000 39.101 110.000 41.712 L110.000 68.898 C110.000 71.509 107.871 73.637 105.260 73.637 L73.332 73.637 L73.332 165.255 Z" fill="none" stroke="#000" stroke-width="0.2"/>
-<line id="erdlinie" x1="0" y1="148.5" x2="110.0" y2="148.5" stroke="#d00" stroke-width="0.3" stroke-dasharray="2 1.5"/>
-<line id="gestaltungsgrenze" x1="0" y1="143.5" x2="110.0" y2="143.5" stroke="#06c" stroke-width="0.2" stroke-dasharray="1 1"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="110mm" height="200mm" viewBox="0 0 110 200">
+<!-- Grabkreuz Acryl 11x20 cm, 110 x 200 mm (gerade Maße, Chris 01.11.2026). Rot = Erdlinie (5 cm), blau = Gestaltungsgrenze. -->
+<path id="kontur" d="M73.332 166.504 L55.001 200.029 L36.667 166.504 C36.667 135.732 36.667 104.963 36.667 74.193 L4.740 74.193 C2.129 74.193 0.000 72.049 0.000 69.419 L0.000 42.027 C0.000 39.396 2.129 37.249 4.740 37.249 L36.667 37.249 L36.667 4.776 C36.667 2.145 38.796 0.000 41.407 0.000 L68.593 0.000 C71.204 0.000 73.332 2.145 73.332 4.776 L73.332 37.249 L105.260 37.249 C107.871 37.249 110.000 39.396 110.000 42.027 L110.000 69.419 C110.000 72.049 107.871 74.193 105.260 74.193 L73.332 74.193 L73.332 166.504 Z" fill="none" stroke="#000" stroke-width="0.2"/>
+<line id="erdlinie" x1="0" y1="150" x2="110" y2="150" stroke="#d00" stroke-width="0.3" stroke-dasharray="2 1.5"/>
+<line id="gestaltungsgrenze" x1="0" y1="145" x2="110" y2="145" stroke="#06c" stroke-width="0.2" stroke-dasharray="1 1"/>
 </svg>

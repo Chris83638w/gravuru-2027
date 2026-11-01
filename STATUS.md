@@ -1,3 +1,11 @@
+## 01.11.2026 · Signaturhinweis zum Hausnummern-Pilot
+
+API-Commits dieser Sitzung sind laut GitHub unsigned. Nur Entwurfsabgabe; signierte Übernahme beim Operator offen, ebenso Browser-/Designabnahme. Keine Konfigurator-Codeänderung und nichts live.
+
+## 01.11.2026 · Astra Mika · Hausnummern: erstes Designpaket, Abnahme offen
+
+Issue #45 Nachricht 14: 6 Lieferform-2-Designs in 15 × 10 / 18 × 12 cm, 18 offene AA/AS/S/S-Ziele; zwei neue Typografie-Entwürfe und D1 als Bestandsreferenz. 18/18 Passungen, 108 gültige Halter-/Farbkombinationen geprüft. Kontaktbögen aus unverändertem Produkt-Renderer; Browserstart hier spawn EPERM, keine Desktop-/iPhone-Abnahme. Matte Schwarz/Weiß-Halter und die in targetDesignPreview entfernte S/S-Rückplatte als Konfi-Nacharbeit dokumentiert. Alle Freigaben offen, keine Familie/Preise geändert, nichts live. [Bericht](docs/handoffs/2026-11-01-hausnummern-designpilot-bericht.md).
+
 ## 01.11.2026 – Codex/Astra: schmale Formatzeilen für Funkklingeln
 
 Auf Chris' Wunsch Format und Position als kompakte bebilderte Zeilen untereinander, ohne zusätzliche Gruppenkarte; optisch an Rahmen/Farbe angepasst. Nur produktspezifisches CSS. 5/5 vorhandene Tests, Build und Desktop-/390px-Handy-Bedienprüfung grün; Formatwechsel mit korrekten Preisen bestätigt. Bestehende Live-Freigabe; gezielte Bereitstellung folgt nach erneuerter Anmeldung. [Bericht und Screenshots](docs/handoffs/2026-11-01-funkklingeln-formatzeilen.md).

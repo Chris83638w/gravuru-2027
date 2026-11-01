@@ -8,6 +8,11 @@ import {processPalette,processFreeColor} from '../../workshop/process-profiles.m
 // Reuse the editor's state, rights, text-size controls and photo editor at the selection.
 export function installDirectEditing({el,r,config,selected,editPhoto,changeObject}) {
   const stage=r.querySelector('.stage');
+  // Keep the plate's screen coordinates stable when selection opens its tools.
+  // Scoped to native doorbells; the Master toolbar hosts remain unchanged.
+  const stableDoorbell=config?.doorbell?.schema==='gravuru-doorbell/v1';
+  const stableHost=stableDoorbell?document.createElement('div'):null;
+  if(stableHost){stableHost.className='doorbell-direct-slot';r.querySelector('[data-ux-stage]').before(stableHost);}
   // K10 / Ü1.2: Farbwerkzeuge nur nach Verfahrensprofil (el.uxProcess, gesetzt in ux.mjs).
   // Gravur: keine Farbwahl. Druck: die Profilpalette als runde Schnellfarbpunkte und zusätzlich der
   // Farbwähler für eine freie Farbe (processFreeColor, Chris 22./23.10.2026).
@@ -78,14 +83,14 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
   function update(){
     const o=selected();if(editing&&o?.id!==editing.id)close();
     const mobile=matchMedia('(max-width:767px)').matches,full=r.querySelector('.c-large-preview').open;
-    const inWorkbench=placeDirectToolbar({panel,stage,preview:r.querySelector('.ux-preview'),workbench:r.querySelector('.ux-workbench-toolbar'),mobile,full});
+    const inWorkbench=placeDirectToolbar({panel,stage,preview:r.querySelector('.ux-preview'),workbench:r.querySelector('.ux-workbench-toolbar'),mobile,full,stableHost});
     const text=o?.type==='text',photo=!!o?.uxUploadId&&!o.uxVectorLogo,motif=o?.type==='motif';
     selectionName.hidden=!text;selectionName.textContent=text?(el.uxTextLabel?.(o)||'Text'):'';selectionName.title=selectionName.textContent;
     panel.setAttribute('aria-label',text?selectionName.textContent+' bearbeiten':'Ausgewähltes Element bearbeiten');
     const alignHost=mobile?secondary:primary;if(extras.parentNode!==alignHost){if(mobile)secondary.prepend(extras);else primary.append(extras);}
     const deleteButton=panel.querySelector('[data-ux=delete]'),deleteHost=mobile?primary:tail;if(deleteButton.parentNode!==deleteHost)deleteHost.append(deleteButton);
     panel.hidden=!(text&&can(o,'content')||photo&&can(o,'replace')&&!el.uxPhotoPositionActive?.(o)||motif&&(can(o,'color')||can(o,'scale')||can(o,'move')));
-    if(panel.hidden){stage.style.setProperty('--ux-mobile-dock-space','0px');stage.style.setProperty('--ux-toolbar-space','0px');el.style.setProperty('--ux-textbar-h','0px');if(editing)close();return;}
+    if(panel.hidden){stage.style.setProperty('--ux-mobile-dock-space',stableDoorbell&&mobile&&full?'202px':'0px');stage.style.setProperty('--ux-toolbar-space',stableDoorbell&&full?'112px':'0px');el.style.setProperty('--ux-textbar-h',stableDoorbell&&mobile?'116px':'0px');if(editing)close();return;}
     openButton.textContent=text?'Text ändern':'Foto bearbeiten';openButton.hidden=text||!!editing||motif;confirm.hidden=!editing;font.hidden=!text;font.disabled=!can(o,'content');font.textContent=fontDisplayName(o.font||'Schrift');font.title=font.textContent;
     if(text){try{const sample={...o,color:'#292d32',text:fontDisplayName(o.font),size:12,letterSpacing:0,lineHeight:14};measureText(sample,el.fontData);font.innerHTML='<svg data-direct-font-sample viewBox="'+(-sample.w/2-2)+' '+(-sample.h/2-2)+' '+(sample.w+4)+' '+(sample.h+4)+'" aria-hidden="true"><g>'+textPaths(sample,el.fontData)+'</g></svg>'+uiIcon('chevron');const ink=font.querySelector('g').getBBox();if(ink.width>0&&ink.height>0)font.querySelector('svg').setAttribute('viewBox',[ink.x-1,ink.y-1,ink.width+2,ink.height+2].join(' '));}catch{font.textContent=fontDisplayName(o.font);}}
     extras.hidden=!text;for(const b of extras.querySelectorAll('button'))b.disabled=!can(o,'move');
@@ -102,9 +107,9 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     const placement=el.state.ui?.textToolbarPlacement||'plate',scale=!mobile&&!inWorkbench&&placement==='selection'?.78:1;
     panel.dataset.placement=placement;panel.style.transform=scale===1?'':'scale('+scale+')';panel.style.transformOrigin=inWorkbench?'':'top left';
     // Reserve space above the fitted plate; the toolbar never occupies artwork.
-    stage.style.setProperty('--ux-toolbar-space',!mobile&&!inWorkbench?Math.ceil(panel.offsetHeight*scale+16)+'px':'0px');
-    stage.style.setProperty('--ux-mobile-dock-space',mobile&&full?panel.offsetHeight+86+'px':'0px');
-    const barHeight=mobile&&!full&&!panel.hidden?panel.offsetHeight:0;el.style.setProperty('--ux-textbar-h',barHeight+'px');
+    stage.style.setProperty('--ux-toolbar-space',stableDoorbell?(full?'112px':'0px'):!mobile&&!inWorkbench?Math.ceil(panel.offsetHeight*scale+16)+'px':'0px');
+    stage.style.setProperty('--ux-mobile-dock-space',mobile&&full?(stableDoorbell?202:panel.offsetHeight+86)+'px':'0px');
+    const barHeight=stableDoorbell&&mobile?116:mobile&&!full&&!panel.hidden?panel.offsetHeight:0;el.style.setProperty('--ux-textbar-h',barHeight+'px');
     const bounds=scene.getBoundingClientRect(),parent=stage.getBoundingClientRect();
     if(!mobile&&!inWorkbench){
       const target=scene.querySelector('[data-object="'+CSS.escape(o.id)+'"]')?.getBoundingClientRect();
@@ -165,6 +170,11 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     const o=selected();if(o?.type!=='text'||!can(o,'scale')||!Number.isFinite(size.valueAsNumber))return;
     const input=r.querySelector('#ux-size');input.value=Math.max(minTextMm,Math.min(100,Math.round(size.valueAsNumber)));
     input.dispatchEvent(new Event('change',{bubbles:true}));size.value=input.value;update();
+  });
+  if(stableDoorbell)size.addEventListener('input',()=>{
+    const o=selected();if(o?.type!=='text'||!can(o,'scale')||size.value===''||!Number.isFinite(size.valueAsNumber))return;
+    const requested=Math.max(minTextMm,Math.min(100,Math.round(size.valueAsNumber)));
+    if(requested!==Math.round(o.size*(el.uxTextScale?.()||1)))changeObject('size',requested);
   });
   r.addEventListener('dblclick',e=>{
     if(!e.target.closest('.stage,.c-large-preview')||e.target.closest('.ux-direct-edit,.ux-direct-input'))return;

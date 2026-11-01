@@ -29,59 +29,54 @@ export function installDoorbellPresentation({el,config,picks,pictures}){
  el.setAttribute('data-doorbell-presentation','');
  const style=document.createElement('style');
  style.textContent=`
- :host([data-doorbell-presentation]) .doorbell-option-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;border-bottom:1px solid #dce0e4;margin:0 0 14px}
- :host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .doorbell-option-tabs button{min-height:44px!important;padding:8px 5px!important;font-size:13px!important;line-height:1.3!important;border:0!important;border-radius:6px 6px 0 0!important;background:transparent!important;color:#4c5359!important;box-shadow:none!important}
- :host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .doorbell-option-tabs button[aria-selected="true"]{background:#f0f2f3!important;color:#20272c!important;box-shadow:inset 0 -2px #485761!important;font-weight:600!important}
- :host([data-doorbell-presentation]) .doorbell-option-tabs button:focus-visible{outline:2px solid #526573;outline-offset:2px}
- :host([data-doorbell-presentation]) .m-option-pictures[data-option-section="layout"]>[data-choice-group]:not([data-choice-group="format"]):not([data-choice-group="position"]),
- :host([data-doorbell-presentation]) .m-option-pictures[data-option-section="appearance"]>[data-choice-group]:not([data-choice-group="frame"]):not([data-choice-group="color"]),
- :host([data-doorbell-presentation]) .m-option-pictures[data-option-section="mounting"]>[data-choice-group]:not([data-choice-group="mounting"]){display:none!important}
+ :host([data-doorbell-presentation]) .m-option-pictures{display:block}
  :host([data-doorbell-presentation]) .m-options>label,
  :host([data-doorbell-presentation]) .m-option-fields [data-m-field-row="position"]{display:none!important}
  :host([data-doorbell-presentation]) .m-option-pictures>div{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 18px}
- :host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="format"],:host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="position"]{grid-template-columns:minmax(0,1fr)!important;padding:12px;border:1px solid #dce0e4;border-radius:10px;background:#fff}
- :host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .m-option-pictures .m-option-tile[data-picture-group="format"],:host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .m-option-pictures .m-option-tile[data-picture-group="position"]{grid-template-columns:48px minmax(0,1fr) auto!important;grid-template-rows:auto auto;align-items:center;justify-items:start;min-height:56px!important;column-gap:12px!important;padding:7px 12px!important}
- :host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="format"] svg,:host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="position"] svg{grid-column:1;grid-row:1/3;width:48px!important}
- :host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="format"] strong,:host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="position"] strong{grid-column:2;grid-row:1;text-align:left}
- :host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="format"] small{grid-column:2;grid-row:2}
- :host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="format"] small:last-of-type{grid-column:3;grid-row:1/3;white-space:nowrap;padding-right:14px}
+ :host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="format"],:host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="position"]{gap:8px;margin-bottom:18px;padding:0;border:0;background:transparent}
+ :host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="format"]{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+ :host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="position"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ :host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .m-option-pictures .m-option-tile[data-picture-group="format"],:host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .m-option-pictures .m-option-tile[data-picture-group="position"]{grid-template-columns:minmax(0,1fr)!important;justify-items:center;align-content:center;min-height:112px!important;padding:10px 6px!important;gap:5px!important}
+ :host([data-doorbell-presentation]) .m-option-pictures .m-option-tile[data-picture-group="format"] svg,:host([data-doorbell-presentation]) .m-option-pictures .m-option-tile[data-picture-group="position"] svg{width:100%!important;height:60px!important;max-height:60px!important}
+ :host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="format"] small{white-space:nowrap}
  :host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="frame"]{grid-template-columns:repeat(4,minmax(0,1fr))!important}
  :host([data-doorbell-presentation]) .m-option-pictures h3{grid-column:1/-1;margin:0 0 2px;font-size:16px}
- :host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .m-option-pictures .m-option-tile{padding:7px 5px!important;min-height:76px!important;border-radius:8px!important;gap:3px!important}
- :host([data-doorbell-presentation]) .m-option-pictures .m-option-tile svg{width:100%!important;height:36px!important;max-height:36px!important}
+ :host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .m-option-pictures .m-option-tile{padding:9px 6px!important;min-height:90px!important;border-radius:8px!important;gap:5px!important}
+ :host([data-doorbell-presentation]) .m-option-pictures .m-option-tile svg{width:100%!important;height:48px!important;max-height:48px!important}
  :host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .m-option-pictures [data-picture-group="mounting"]{grid-template-columns:44px 1fr;grid-template-rows:auto auto;justify-items:start;align-content:center;column-gap:8px!important;min-height:78px!important;padding:9px!important}
  :host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="mounting"] svg{grid-row:1/3;width:44px!important;height:44px!important;max-height:44px!important}
  :host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="mounting"] strong,:host([data-doorbell-presentation]) .m-option-pictures [data-picture-group="mounting"] small{text-align:left}
- :host([data-doorbell-presentation]) .m-option-pictures .m-option-tile strong{font-size:13px!important;font-weight:500!important}
+ :host([data-doorbell-presentation]) .m-option-pictures .m-option-tile strong{font-size:14px!important;font-weight:500!important}
  :host([data-doorbell-presentation]) .m-option-pictures .m-option-tile small{font-size:12px!important}
  :host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="color"]{display:flex!important;flex-wrap:wrap;gap:18px!important}
  :host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="color"] h3{width:100%;margin-bottom:0}
  :host([data-doorbell-presentation]) .doorbell-color-item{display:grid;justify-items:center;gap:7px;font-size:13px}
- :host([data-doorbell-presentation]) .m-option-pictures .doorbell-color-choice{display:block!important;padding:0!important;width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;border:0!important;border-radius:50%!important;overflow:hidden;box-shadow:inset 0 1px 2px #fff5,0 1px 2px #0003}
- :host([data-doorbell-presentation]) .m-option-pictures .doorbell-color-choice svg{display:block;width:44px!important;height:44px!important}
+ :host([data-doorbell-presentation]) .m-option-pictures .doorbell-color-choice{display:block!important;padding:0!important;width:50px!important;height:50px!important;min-width:50px!important;min-height:50px!important;border:0!important;border-radius:50%!important;overflow:hidden;box-shadow:inset 0 1px 2px #fff5,0 1px 2px #0003}
+ :host([data-doorbell-presentation]) .m-option-pictures .doorbell-color-choice svg{display:block;width:50px!important;height:50px!important}
  :host([data-doorbell-presentation]) .m-option-pictures .doorbell-color-choice[aria-pressed="true"]{outline:2px solid #526573;outline-offset:3px}
  :host([data-doorbell-presentation][data-ux-neutral]) .ux-shell .m-option-pictures .doorbell-color-choice{border-radius:50%!important;border:0!important;background:transparent!important;padding:0!important}
  :host([data-doorbell-presentation]) .doorbell-color-choice .completion-check{display:none!important}
  :host([data-doorbell-presentation]) .m-option-pictures svg svg{width:revert!important;height:revert!important}
  :host([data-doorbell-presentation]) .m-option-pictures button[aria-pressed="true"]{border:2px solid #235f48;background:#f0f6f2}
  :host([data-doorbell-presentation]) .m-option-pictures button:focus-visible{outline:3px solid #235f48;outline-offset:3px}
+ :host([data-doorbell-presentation]) .doorbell-direct-slot{box-sizing:border-box;height:64px;min-height:64px;flex:none;padding:4px 12px;overflow:auto;scrollbar-width:thin}
+ :host([data-doorbell-presentation][data-ux-layout]) .doorbell-direct-slot>.ux-direct-edit{position:static!important;inset:auto!important;transform:none!important;width:100%!important;max-width:100%!important;margin:0!important;padding:4px!important}
+ :host([data-doorbell-presentation][data-ux-layout]) .doorbell-direct-slot .ux-direct-actions{flex-wrap:nowrap!important}
+ @media(min-width:768px){
+  :host([data-doorbell-presentation][data-ux-layout]) .ux-shell{box-sizing:border-box;height:100dvh;min-height:0!important;display:flex;flex-direction:column;overflow:clip}
+  :host([data-doorbell-presentation][data-ux-layout]) .ux-heading{flex:none}
+  :host([data-doorbell-presentation][data-ux-layout]) .ux-layout{flex:1;min-height:0!important;align-items:stretch!important;overflow:clip}
+  :host([data-doorbell-presentation][data-ux-layout]) .ux-shell .ux-preview{position:relative!important;top:0!important;height:100%!important;min-height:0;display:flex;flex-direction:column;overflow:clip}
+  :host([data-doorbell-presentation][data-ux-layout]) .ux-preview>[data-ux-stage]{flex:1;min-height:0}
+  :host([data-doorbell-presentation][data-ux-layout]) .ux-preview :is(.stage-wrap,.stage){height:100%!important;min-height:0!important}
+  :host([data-doorbell-presentation][data-ux-layout]) .ux-editor{height:100%;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+  :host([data-doorbell-presentation][data-ux-layout]) .ux-tabs{position:sticky;top:0;z-index:50;background:#fff}
+ }
+ @media(max-width:1199px){:host([data-doorbell-presentation]) .doorbell-direct-slot{height:116px;min-height:116px}:host([data-doorbell-presentation][data-ux-layout]) .doorbell-direct-slot .ux-direct-actions{flex-wrap:wrap!important}}
+ @media(max-width:359px){:host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="format"],:host([data-doorbell-presentation]) .m-option-pictures>[data-choice-group="frame"]{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
  `;
  el.shadowRoot.append(style);let previous='';
- const sections=[['layout','Format & Position'],['appearance','Rahmen & Farbe'],['mounting','Befestigung']];
- const tabs=document.createElement('nav');tabs.className='doorbell-option-tabs';tabs.setAttribute('role','tablist');tabs.setAttribute('aria-label','Ausführung auswählen');
- tabs.innerHTML=sections.map(([key,label])=>'<button type="button" role="tab" id="doorbell-option-'+key+'" data-doorbell-option-tab="'+key+'" aria-controls="doorbell-options-panel">'+esc(label)+'</button>').join('');
- pictures.before(tabs);pictures.id='doorbell-options-panel';pictures.setAttribute('role','tabpanel');
- function showSection(key,focus=false){
-  pictures.dataset.optionSection=key;pictures.setAttribute('aria-labelledby','doorbell-option-'+key);
-  for(const b of tabs.children){const active=b.dataset.doorbellOptionTab===key;b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;if(active&&focus)b.focus();}
- }
- tabs.addEventListener('click',e=>{const b=e.target.closest('[data-doorbell-option-tab]');if(b)showSection(b.dataset.doorbellOptionTab);});
- tabs.addEventListener('keydown',e=>{
-  if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;
-  const i=sections.findIndex(([key])=>key===e.target.dataset.doorbellOptionTab);if(i<0)return;
-  e.preventDefault();e.stopPropagation();const next=e.key==='Home'?0:e.key==='End'?sections.length-1:(i+(e.key==='ArrowRight'?1:-1)+sections.length)%sections.length;showSection(sections[next][0],true);
- });
- showSection('layout');
+ pictures.id='doorbell-options-panel';pictures.setAttribute('role','group');pictures.setAttribute('aria-label','Ausführung auswählen');
  return options=>{
   const signature=JSON.stringify(['format','position','frame','color','mounting'].map(k=>options[k]));
   if(previous===signature)return;previous=signature;

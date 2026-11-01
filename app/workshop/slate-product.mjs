@@ -11,10 +11,10 @@ const cents = value => Number.isSafeInteger(value) && value >= 0 && value <= 100
 export function nativeSlateConfig(input) {
   const p = input?.profile;
   if (!p || input.acrylic || p.kind !== 'universal-product' || p.material?.kind !== 'slate' ||
-      p.processing?.profileId !== 'slate-engraving' || p.geometry?.shape !== 'rect' ||
+      p.processing?.profileId !== 'slate-engraving' || !['rect','ellipse','contour'].includes(p.geometry?.shape) ||
       input.reviewOnly !== true || p.binding?.kind !== 'local-review' ||
       p.features?.orderEnabled !== false || p.features?.productionConfirmed !== false) {
-    fail('Schiefer benötigt eine rechteckige native Gravurvorlage ohne Bestell- oder Maschinenfreigabe.');
+    fail('Schiefer benötigt eine native Gravurvorlage mit bestätigter Geometrie ohne Bestell- oder Maschinenfreigabe.');
   }
   const groups = p.optionGroups;
   if (!Array.isArray(groups) || groups.length !== 1 || groups[0].id !== 'mounting' ||

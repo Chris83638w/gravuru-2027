@@ -1,7 +1,7 @@
 // Family targets are authoritative once ziele exists, including an explicit [].
 // Legacy freigabe is retained as history, never as a cross-family approval.
 import {assignSeries,sourceContourSizes,SERIES_TOLERANCE} from './katalog-convert.mjs';
-import {FAMILY_MATERIALS,familyProcess} from './product-families.mjs';
+import {FAMILY_MATERIALS,familyProcess,geometryOf} from './product-families.mjs';
 const record=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
 const jsonOf=design=>record(design?.json)?design.json:design;
 const id=v=>typeof v==='string'&&/^[a-z0-9][a-z0-9_.-]{0,79}$/i.test(v);
@@ -111,12 +111,29 @@ function sourceFormOf(master,katalog,family){
  }
  const forms=unique(sources.map(({f,s})=>groupForm(f.groups.find(g=>g.key===s.groupKey))).filter(Boolean));return forms.length===1?forms[0]:null;
 }
+function targetAssignment(family,master,katalog){
+ // A family explicitly derived from another catalogue family keeps that
+ // source's size restrictions. Compare the actual plate geometry as well:
+ // the provenance path alone must never authorize a different plate.
+ const root=String(katalog.root??'').replaceAll('\\','/').replace(/\/$/,''),relative=family.source?.path;
+ const source=typeof relative==='string'&&relative.startsWith('familien/')&&!relative.split('/').some(p=>p==='..'||p==='.')
+  ?values(katalog.families).find(f=>f.id!==family.id&&String(katalog.files?.get('familie:'+f.id)??'').replaceAll('\\','/')===root+'/'+relative):null;
+ if(source){
+  const allowed=new Set(assignSeries(source,[master])[0].sizes);
+  const sizes=family.sizes.filter(target=>source.sizes.some(s=>allowed.has(s.key)&&JSON.stringify(geometryOf(source,s))===JSON.stringify(geometryOf(family,target)))).map(s=>s.key);
+  return {assignment:assignSeries(family,[{...master,json:{...master.json,sizes}}])[0],contourKeys:sizes.filter(key=>family.groups.find(g=>g.key===family.sizes.find(s=>s.key===key).groupKey)?.shape==='contour'),shared:true};
+ }
+ return {assignment:assignSeries(family,[master])[0],contourKeys:sourceContourSizes(family,master)};
+}
 export function designTargetCompatibility(design,family,size,{katalog={}}={}){
- const master=preparedDesign(design),json=master.json,targetForm=groupForm(family.groups.find(g=>g.key===size.groupKey)),sourceForm=sourceFormOf(master,katalog,family),issues=[];
+ const master=preparedDesign(design);return targetCompatibility(master,family,size,katalog,targetAssignment(family,master,katalog));
+}
+function targetCompatibility(master,family,size,katalog,{assignment,contourKeys,shared}){
+ const json=master.json,targetForm=groupForm(family.groups.find(g=>g.key===size.groupKey)),sourceForm=sourceFormOf(master,katalog,family),issues=[];
  if(!sourceForm)issues.push('Die Quellform ist nicht eindeutig. Vor einer Ziel-Freigabe muss sie an der Quelle geklärt werden.');
  else if(sourceForm!==targetForm)issues.push('Andere Form ('+sourceForm+' → '+targetForm+'): Eine eigene Variante mit Vorschau und Freigabe ist erforderlich.');
- const assignment=assignSeries(family,[master])[0],keys=Array.isArray(json.sizes)?json.sizes:[],known=new Set(family.sizes.map(s=>s.key)),ownKeys=keys.filter(k=>known.has(k)),contourKeys=sourceContourSizes(family,master);
- if((Array.isArray(json.sizes)&&!keys.length||ownKeys.length||contourKeys.length)&&!assignment.sizes.includes(size.key))issues.push('Die Zielgröße '+size.key+' ist für diesen Master nicht freigegeben; die explizite Größenliste bleibt bindend.');
+ const keys=Array.isArray(json.sizes)?json.sizes:[],known=new Set(family.sizes.map(s=>s.key)),ownKeys=keys.filter(k=>known.has(k));
+ if((shared||Array.isArray(json.sizes)&&!keys.length||ownKeys.length||contourKeys.length)&&!assignment.sizes.includes(size.key))issues.push('Die Zielgröße '+size.key+' ist für diesen Master nicht freigegeben; die explizite Größenliste bleibt bindend.');
  const all=values(katalog.families);if(keys.length&&!ownKeys.length&&(!all.length||!keys.some(key=>all.some(f=>f.sizes.some(s=>s.key===key)))))issues.push('Die expliziten Quellgrößen sind keiner vorhandenen Familie zugeordnet.');
  const from=master.plateMm,to=[size.widthMm,size.heightMm],valid=Array.isArray(from)&&from.length===2&&from.every(n=>Number.isFinite(n)&&n>0);
  // Historical Retro canvases carry exact, source-authorized contour size mappings.
@@ -128,10 +145,10 @@ export function designTargetCompatibility(design,family,size,{katalog={}}={}){
 }
 export function assignTargetSeries(family,designs,katalog={}){
  return designs.map(design=>{
-  const master=preparedDesign(design),base=assignSeries(family,[master])[0],keys=Array.isArray(master.json.sizes)?master.json.sizes:[],known=new Set(family.sizes.map(s=>s.key));
-  const foreignKeys=keys.length&&!keys.some(k=>known.has(k))&&keys.some(k=>values(katalog.families).some(f=>f.sizes.some(s=>s.key===k)));
+  const master=preparedDesign(design),target=targetAssignment(family,master,katalog),{assignment:base,shared}=target,keys=Array.isArray(master.json.sizes)?master.json.sizes:[],known=new Set(family.sizes.map(s=>s.key));
+  const foreignKeys=!shared&&keys.length&&!keys.some(k=>known.has(k))&&keys.some(k=>values(katalog.families).some(f=>f.sizes.some(s=>s.key===k)));
   const candidate=foreignKeys?assignSeries(family,[{...master,json:{...master.json,sizes:undefined}}])[0]:base;
-  const checks=family.sizes.map(size=>({size:size.key,...designTargetCompatibility(master,family,size,{katalog})}));
+  const checks=family.sizes.map(size=>({size:size.key,...targetCompatibility(master,family,size,katalog,target)}));
   const sizes=candidate.sizes.filter(key=>checks.find(c=>c.size===key)?.status==='passt');
   return {...candidate,design,sizes,excludedTargets:checks.filter(c=>candidate.sizes.includes(c.size)&&c.status!=='passt')};
  });

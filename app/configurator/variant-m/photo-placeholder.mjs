@@ -1,17 +1,19 @@
 import {previewResourceURL} from './preview-resource.mjs';
 import {photoShape,photoClip,photoMaskURL} from '../../platform/sources/app/shared/models/photo-shape.mjs';
 // Editor-only illustration. Never add this markup to a design or export source.
-export function examplePhotoMarkup(slot,assetId,hint,sourceUrl){
+export function examplePhotoMarkup(slot,assetId,hint,sourceUrl,{blendMode,grayscale=false}={}){
   if(!/^[a-f0-9]{64}$/.test(assetId||'')||!(slot.w>0&&slot.h>0))return '';
   const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const words=String(hint?.text||'Hier eigenes Foto hochladen').split(/\s+/),lines=[''];
   for(const word of words){const i=lines.length-1;if(lines[i]&&(lines[i]+' '+word).length>21)lines.push(word);else lines[i]+=(lines[i]?' ':'')+word;}
   const {w,h}=slot,clip='photo-example-'+String(slot.id).replace(/[^a-zA-Z0-9_-]/g,'_');
   const url=typeof sourceUrl==='string'&&/^data:image\/(?:svg\+xml|png|jpeg);base64,[A-Za-z0-9+/=]+$/.test(sourceUrl)?sourceUrl:previewResourceURL('/api/workshop/design-assets/'+assetId+'/preview.svg');
-  const buttonWidth=Math.min(w*.9,98),font=Math.min(4.5,w/12),height=lines.length*font*1.25+4,y=-h*.24;
+  const buttonWidth=Math.min(w*.9,98),font=Math.min(4.5,w/12),height=lines.length*font*1.25+4,y=h*.28;
   const text=lines.map((line,i)=>`<tspan x="0" y="${-height/2+2+font+i*font*1.25}">${escape(line)}${i<lines.length-1?' ':''}</tspan>`).join('');
   const mask=photoClip(slot,clip,previewResourceURL(photoMaskURL(slot)));
-  return `<g data-preview-only="true" data-role="guide" data-ux-placeholder="true"><defs>${mask.defs}</defs><g ${mask.attribute}><image href="${url}" x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice"/>${hint?.enabled===false?'':`<g data-ux-photo-hint="true" transform="translate(0 ${y})"><rect x="${-buttonWidth/2}" y="${-height/2}" width="${buttonWidth}" height="${height}" rx="2" fill="white" fill-opacity=".94"/><text text-anchor="middle" font-family="Arial,sans-serif" font-size="${font}" fill="#244d3c">${text}</text></g>`}</g></g>`;
+  // Material preview only. The source asset, its pixels and aperture stay intact.
+  const filter=grayscale?`<filter id="${clip}-gray" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="0"/></filter>`:'';
+  return `<g data-preview-only="true" data-role="guide" data-ux-placeholder="true"${['screen','lighten'].includes(blendMode)?' style="mix-blend-mode:'+blendMode+'"':''}><defs>${mask.defs}${filter}</defs><g ${mask.attribute}><image href="${url}" x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice"${grayscale?` filter="url(#${clip}-gray)"`:''}/>${hint?.enabled===false?'':`<g data-ux-photo-hint="true" transform="translate(0 ${y})"><rect x="${-buttonWidth/2}" y="${-height/2}" width="${buttonWidth}" height="${height}" rx="2" fill="white" fill-opacity=".94"/><text text-anchor="middle" font-family="Arial,sans-serif" font-size="${font}" fill="#244d3c">${text}</text></g>`}</g></g>`;
 }
 export function emptyPhotoMarkup(slot, ink, surface, asset) {
   const w=Number(slot.w),h=Number(slot.h);
@@ -40,14 +42,30 @@ export function emptyPhotoMarkup(slot, ink, surface, asset) {
   </svg>`;
 }
 
-export function decorateEmptyPhotoSlots(root,objects,ink,surface,assets=[],designId='',examples=[],hints=[]){
+export function emptyMaskedPhotoMarkup(slot,ink,surface,asset){
+  const markup=emptyPhotoMarkup(slot,ink,surface,asset);
+  if(!markup||slot.photoShape!=='template')return markup;
+  const mask=photoClip(slot,'empty-template-'+slot.id,previewResourceURL(photoMaskURL(slot)));
+  const w=Number(slot.w),h=Number(slot.h),unit=Math.min(w,h)*.65,font=Math.min(4.5,w/9,h/10),buttonWidth=Math.min(w*.84,98),buttonHeight=font*2;
+  // Keep the camera proportional inside arbitrary original apertures. A frame
+  // on the temporary rectangular canvas would become cut-off white arcs.
+  const clean=`<rect x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" fill="${ink}" opacity=".14"/><g data-ux-camera="true" transform="translate(${-unit/2} ${-unit/2-h*.10}) scale(${unit/100})" fill="none" stroke="${ink}" stroke-width="3" opacity=".72"><path d="M14 29H34L40 19H60L66 29H86V78H14Z"/><circle cx="50" cy="53" r="15"/></g><g data-ux-photo-hint="true" transform="translate(0 ${h*.25})"><rect x="${-buttonWidth/2}" y="${-buttonHeight/2}" width="${buttonWidth}" height="${buttonHeight}" rx="${font*.5}" fill="${ink}"/><text y="${font*.35}" text-anchor="middle" font-family="Arial,sans-serif" font-size="${font}" fill="${surface}">Foto hochladen</text></g>`;
+  return `<g data-preview-only="true" data-role="guide" data-ux-placeholder="true"><defs>${mask.defs}</defs><g ${mask.attribute}>${asset?markup:clean}</g></g>`;
+}
+export function decorateEmptyPhotoSlots(root,objects,ink,surface,assets=[],designId='',examples=[],hints=[],options={}){
+  // A contour clip isolates its children. Blend the whole clipped preview
+  // against the slate, otherwise black source canvases reappear in that group.
+  if(['screen','lighten'].includes(options.blendMode)&&examples.some(e=>e.designId===designId)){
+    const artwork=root.querySelector('[data-contour-artwork="true"]');if(artwork)artwork.style.mixBlendMode=options.blendMode;
+  }
   for(const slot of objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId&&!o.uxHidden)){
     const group=root.querySelector('[data-object="'+CSS.escape(slot.id)+'"]');
     const hit=group?.querySelector(':scope > rect[fill="transparent"]');
+    if(!hit||group.hasAttribute('data-ux-empty-photo-slot')||group.hasAttribute('data-ux-static-photo'))continue;
     const asset=assets.find(a=>a.designId===designId&&a.slotId===slot.id);
     const example=examples.find(e=>e.designId===designId&&e.slotId===slot.id);
-    const markup=example?examplePhotoMarkup(slot,example.assetId,hints.find(h=>h.designId===designId&&h.slotId===slot.id)):emptyPhotoMarkup(slot,ink,surface,asset);
-    if(!hit||!markup||group.hasAttribute('data-ux-empty-photo-slot')||group.hasAttribute('data-ux-static-photo'))continue;
+    const markup=example?examplePhotoMarkup(slot,example.assetId,hints.find(h=>h.designId===designId&&h.slotId===slot.id),undefined,options):emptyMaskedPhotoMarkup(slot,ink,surface,asset);
+    if(!markup)continue;
     for(const child of [...group.children])if(child!==hit)child.remove();
     const illustration=new DOMParser().parseFromString('<svg xmlns="http://www.w3.org/2000/svg">'+markup+'</svg>','image/svg+xml').documentElement.firstElementChild;
     group.insertBefore(group.ownerDocument.importNode(illustration,true),hit.nextSibling);

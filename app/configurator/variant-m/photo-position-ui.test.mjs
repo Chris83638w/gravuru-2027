@@ -223,7 +223,7 @@ function floatingPhotoToolbar(h){
   h.r.querySelector('.scene').getBoundingClientRect=()=>({width:300,height:200});
   const fullscreen=new Node('dialog');fullscreen.className='c-large-preview';fullscreen.open=false;h.r.append(fullscreen);
   const context={textToolbarPosition,placeDirectToolbar,fontDisplayName,config:{profile:{designs:[]}},extras:new Node('div'),matchMedia:()=>({matches:false}),CSS:{escape:value=>value},el:h.el,r:h.r,selected:h.selected,stage,panel,color,openButton:new Node('button'),confirm:new Node('div'),font:new Node('button'),presets:new Node('div'),size:new Node('input'),freeColor:false,colorTool:false,paletteColors:[],editing:null,close(){},can:(o,right)=>o&&!o.uxLocked&&!o.uxHidden&&h.el.uxCanEdit?.(o,right)!==false};
-  Object.assign(context,{selectionName,primary,secondary,tail});
+  Object.assign(context,{selectionName,primary,secondary,tail,stableDoorbell:false,stableHost:null});
   vm.runInNewContext(source.slice(begin,end)+source.slice(wrap,source.indexOf("  window.addEventListener('resize',update)",wrap))+'update();',context);
   return panel;
 }

@@ -19,7 +19,7 @@ import {optionFields, FIELD_TEXT_DEFAULT_MAX} from './option-fields.mjs';
 import {objectSurface, surfaceGeometry} from './surfaces.mjs';
 import {designResourcesReady} from './doorbell-lazy-designs.mjs';
 import {isLayeredDoorbell} from './doorbell-selection.mjs';
-import {doorbellOptionState,updateDoorbellViewport} from './doorbell-ui.mjs';
+import {doorbellOptionState,updateDoorbellViewport,doorbellTextSurface} from './doorbell-ui.mjs';
 import {installDoorbellPresentation} from './doorbell-presentation.mjs';
 
 const clone = value => structuredClone(value);
@@ -44,8 +44,10 @@ export function installUniversal(configInput) {
     if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
     // Clip artwork to the real plate for every universal shape; external edit handles remain outside.
     // This is visual containment only. The shared placement and server validation still reject overflow.
-    if(!dynamicDoorbell&&!bare){const doc=svgDocument(result),root=doc.documentElement,clipId='customer-artwork-'+renderId,ns='http://www.w3.org/2000/svg';
-      const defs=doc.createElementNS(ns,'defs');defs.innerHTML='<clipPath id="'+clipId+'">'+plateClipMarkup(profile(surface).geometry)+'</clipPath>';root.prepend(defs);
+    if(!bare){const doc=svgDocument(result),root=doc.documentElement,clipId='customer-artwork-'+renderId,ns='http://www.w3.org/2000/svg';
+      const acrylic=dynamicDoorbell?doorbellTextSurface(profile(surface)):null;
+      const outline=acrylic?'<rect x="'+acrylic.x+'" y="'+acrylic.y+'" width="'+acrylic.width+'" height="'+acrylic.height+'"/>':plateClipMarkup(profile(surface).geometry);
+      const defs=doc.createElementNS(ns,'defs');defs.innerHTML='<clipPath id="'+clipId+'">'+outline+'</clipPath>';root.prepend(defs);
       for(const group of [...root.querySelectorAll('[data-object]')]){const wrapper=doc.createElementNS(ns,'g');wrapper.setAttribute('clip-path','url(#'+clipId+')');group.before(wrapper);wrapper.append(group);}result=root.outerHTML;
     }
     // Design boundary and drill-hole zones are preview layers only (keepout flag = editor preview); el.svg() for the order carries neither.
@@ -77,7 +79,7 @@ export function installUniversal(configInput) {
     el.objectSVG = o => svgDocument(svg({...p.designs[0], objects:[o], marks:[]},{surface:objectSurface(o),bare:true})).querySelector('[data-object]')?.outerHTML || '';
     el.svgBody = function(preview=true, guides=false) {
       const doc = svgDocument(svg(current(), {guides:preview && guides && !!this.$('[data-setting=guides]')?.checked,selected:preview?this.state.selected:'',handles:preview,keepout:preview,surface:preview?activeSurface():'front',screen:preview}));
-      if(preview){const design=current();decorateEmptyPhotoSlots(doc,design.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],config.photo.hints||[]);for(const o of design.objects.filter(o=>o.type==='motif'&&o.locked===true&&o.customerEditable===false)){const g=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(g)g.style.pointerEvents='none';}}
+      if(preview){const design=current();decorateEmptyPhotoSlots(doc,design.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],config.photo.hints||[],{blendMode:profile().material.kind==='slate'?'lighten':undefined,grayscale:profile().material.kind==='slate'});for(const o of design.objects.filter(o=>o.type==='motif'&&o.locked===true&&o.customerEditable===false)){const g=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(g)g.style.pointerEvents='none';}}
       return doc.documentElement.innerHTML;
     };
     el.svg = function() { return svg(current()); };
@@ -280,7 +282,7 @@ export function installUniversal(configInput) {
           if(card.hidden||budget<=0||el.uxThumbnailDeferred?.(card)===true){if(!card.hidden&&budget<=0)deferred++;if(!thumbnail)continue;}
           else{budget--;const shown=el.uxThumbnailDesign?.(design)||design;
             // Chris 21.10.2026: Miniaturen zeigen das Musterfoto wie die Vorschau, nicht den Schriftzug „Dein Foto“.
-            let markup=svg(shown,{screen:true});try{if(shown.objects.some(o=>o.type==='photoSlot')){const doc=svgDocument(markup);decorateEmptyPhotoSlots(doc,shown.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],shown.objects.filter(o=>o.type==='photoSlot').map(o=>({designId:design.id,slotId:o.id,enabled:false})));for(const g of doc.querySelectorAll('[data-ux-empty-photo-slot]')){g.removeAttribute('data-ux-empty-photo-slot');g.removeAttribute('role');g.removeAttribute('tabindex');g.removeAttribute('aria-label');g.style.removeProperty('cursor');}markup=doc.documentElement.outerHTML;}}catch{}
+            let markup=svg(shown,{screen:true});try{if(shown.objects.some(o=>o.type==='photoSlot')){const doc=svgDocument(markup);decorateEmptyPhotoSlots(doc,shown.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],shown.objects.filter(o=>o.type==='photoSlot').map(o=>({designId:design.id,slotId:o.id,enabled:false})),{blendMode:profile().material.kind==='slate'?'lighten':undefined,grayscale:profile().material.kind==='slate'});for(const g of doc.querySelectorAll('[data-ux-empty-photo-slot]')){g.removeAttribute('data-ux-empty-photo-slot');g.removeAttribute('role');g.removeAttribute('tabindex');g.removeAttribute('aria-label');g.style.removeProperty('cursor');}markup=doc.documentElement.outerHTML;}}catch{}
             thumbnail={key:thumbnailKey,markup};}
         }
         // The legacy sync replaces the SVG with its portrait doorbell preview.

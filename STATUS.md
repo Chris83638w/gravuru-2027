@@ -1,3 +1,7 @@
+# Grabkreuze Hunde · vorläufige Sichtprüfung · 01.11.2026 · Astra Mika
+
+20 native Master, zwei Prüffamilien, 120 native Zielvorschauen (80 passt / 40 Seitenverhältnis-Hinweise / 0 Passformfehler), 60 Erdteilprüfungen. Originalkontur 14×25 140×250 übernommen. Katalogvollbau: 15 Familien. Sechs Kontaktbögen; drei Originalübernahmen und 17 neue Entwürfe, davon zwei eigene Motive. Vorlagenschriften teilweise offen. **Erdteil nur im Prüf-Viewport ausgeblendet; Kundeneditor-/Fertigungssperre noch nicht implementiert. Nicht importieren.** Keine Freigabe, kein Merge, kein Shop-Upload. Nächster Schritt: Claude-Sichtprüfung, Schriftentscheidung und technische Integration. Bericht: [docs/handoffs/2026-11-01-grabkreuze-hunde-astra-mika.md](docs/handoffs/2026-11-01-grabkreuze-hunde-astra-mika.md).
+
 # Türschilder: Format & Größe · 01.11.2026 · Astra
 
 Chris benennt den Bereich um: Reiter, Überschrift und erster Handy-Schritt heißen jetzt Format & Größe. 42/42 bestehende Tests, Build und lokale Desktop-/375×548-Browserprüfung grün. Nur Text/Umbruch geändert, keine Preis-/Optionslogik. [Nachweis](docs/handoffs/2026-11-01-tuerschilder-review/README.md#beschriftung-nach-chris--01112026). Auf PR #102, kein Merge oder Live-Schritt.

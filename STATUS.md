@@ -1,14 +1,8 @@
-# Türschilder: kompakte Auswahl und Plattenschatten · 01.11.2026 · Astra
+## 01.11.2026 – Codex/Astra: Funkklingel-Bedienfehler und größere Auswahlkacheln
 
-Chris bestätigt Formkacheln mit Größe/Befestigung nebeneinander und dezenten Schatten. Auf eigenem Branch über #98 umgesetzt, bestehende Preis-/Design-/Geometriequelle unverändert. 46/46 Tests, 16 lokale Browserwechsel grün; Desktop/390×664/375×548 dokumentiert. Vollständige Designbestückung nach Chris’ Anweisung bei Claude angefragt, noch offen. [Bericht und Bilder](docs/handoffs/2026-11-01-tuerschilder-kompaktauswahl/README.md). Kein Merge, Import oder Live-Schritt.
+Abschluss: PR #103 (`c1a9cb6`) ergänzt die Korrektur aus PR #100 um den eigenen Scrollbereich der Funkklingel-Bedienleiste; beide sind live. Weitere 5/5 Darstellungstests lokal/Linux und Build bestanden. Abschließender echter Chrome-Kundenweg über „Jetzt personalisieren“ erfolgreich: größere Kacheln, 12a auf 24 mm vergrößert und verschoben, Ziehen auf Edelstahl stoppt an Acryl. Wechsel von langer Befestigungsliste zu Text behält Vorschaugröße und -position bis auf 1 px Dokumentrandbewegung; vorher 82 px. Öffentlicher finaler Bundle-SHA identisch zum Linux-Build. [Live-Bilder und Rückweg](docs/handoffs/2026-11-01-funkklingeln-auswahlreihen.md#abschließende-live-abnahme).
 
-# N36 Bohrlöcher: automatische Platzierung beim Optionswechsel · 01.11.2026 · Astra
-
-Auf N39/PR #97 (`9327ac7`): einmaliges Ausweichen für Texte/Motive bei Bohrloch-/Schraubenwahl, Rücknahme bei lochloser Auswahl, manuelle Gestaltung frei. Master-Oberfläche, Preise und Katalog unverändert. 132 unterschiedliche gezielte Tests grün, 0 verbleibende Fehler/Skip; zwei lokale HTTP-Verbindungsfehler unverändert mit lokalem Zugriff nachgeprüft. 240/240 Kataloggrößen starten K00, keine Ausnahme. Acht lokale Browser-Bildpaare mit Wiederherstellung geprüft. [Bericht, Grenzen und Nachweise](docs/handoffs/2026-11-01-bohrloch-ausweichen-n36/README.md). Linux-Vollauf/Sichtabnahme bei Claude offen; kein Import, kein Merge, nichts live.
-
-# N39 Form & Größe · lokaler Prüfstand · 01.11.2026
-
-Sieben Formen mit gemeinsamer Ovalanzeige, AB 12×8/K00 als Start, native Größen/Farben/Befestigungen, gleiche D-Nummer und Erhalt eigener Texte. 404/808 Varianten je geplantem Hauptprodukt, strenger Zielfreigabefilter, keine Shop-IDs. 163 unterschiedliche Tests und 16 Browserwechsel mit eigenem Text/Preis/Bohrbild bestanden; Linux-Vollauf offen. [Bericht, Quellen, Variantenpläne und Desktop-/Handybilder](docs/handoffs/2026-11-01-form-groesse-n39/README.md). N36 folgt separat. Kein Import, kein Merge, nichts live. N38-Seriennachtrag: Katalog-PR #17.
+Chris' Live-Auftrag: Gravur auf Acryl begrenzen, springende Vorschau beim Textanklicken beheben, Hausnummer und übrige Gestaltungselemente verschiebbar halten; größere Format-/Positionskacheln nebeneinander. PR #100 gemergt (`0af8d81`) und live. 119 gezielte Tests lokal und unter Linux erfolgreich, Build und Chrome-Bedienung Desktop/390 px geprüft. Master-Rechte und Gerätegeometrie erhalten. 3.274 Serverdateien verglichen, exakt sechs Laufzeitdateien und drei Tests geändert; bei der Ergänzung aus PR #103 nur das Darstellungsmodul. Anfängliche Störung beim direkten Editoraufruf dokumentiert, regulärer Shop-Einstieg abschließend geprüft. Kein neuer Warenkorb-/Bestelltest Teil dieser UI-Abnahme. [Bericht und Rückweg](docs/handoffs/2026-11-01-funkklingeln-auswahlreihen.md).
 
 ## 01.11.2026 – Codex/Astra: gemeinsamer Ausführungsblock für Funkklingeln
 

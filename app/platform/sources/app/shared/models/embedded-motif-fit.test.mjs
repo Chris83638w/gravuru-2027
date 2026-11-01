@@ -26,6 +26,14 @@ test('real curve overhangs, barely outside paths and actual margin remain blocke
  assert.equal(embeddedMotifFits(object,{...g,safeMarginMm:.2},resource('M45 .199L89 30L45 59L1 30Z')),false);
  assert.ok(MOTIF_PATH_TOLERANCE_MM<.001);
 });
+
+test('absolute compact commands keep the same geometric checks as expanded catalogue paths',()=>{
+ const g=geometry('contour');
+ assert.equal(embeddedMotifFits(object,g,resource('M35 20H55V40H35Z')),true);
+ assert.equal(embeddedMotifFits(object,g,resource('M5 5H85V55H5Z')),false);
+ assert.equal(embeddedMotifFits(object,g,resource('M35 25Q45 15 55 25L45 35Z')),true);
+ assert.equal(embeddedMotifFits(object,g,resource('M35 25Q45 -100 55 25L45 35Z')),false);
+});
 test('a filled motif surrounding a keepout fails without a vertex in that keepout',()=>{
  const g={...geometry('contour'),holes:[{x:45,y:30,diameter:4}]};
  assert.equal(embeddedMotifFits(object,g,resource()),false);

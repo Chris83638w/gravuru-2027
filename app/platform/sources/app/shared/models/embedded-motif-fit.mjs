@@ -5,7 +5,7 @@ import {flattenClosedSvgPath,contourContainsPolygon,ellipseEdgeDistance} from '.
 // customer drag clamp or physical outline is rewritten.
 export const MOTIF_PATH_TOLERANCE_MM=.0005;
 const cache=new WeakMap(),fitCache=new WeakMap(),MAX_POINTS=100000,MAX_SUBPATHS=2048;
-const pathTag=/<path d="([MLCZ\d.,+eE\s-]+)" fill="currentColor" fill-rule="(evenodd|nonzero)"\/>/g;
+const pathTag=/<path d="([MLHVCSQTAZ\d.,+eE\s-]+)" fill="currentColor" fill-rule="(evenodd|nonzero)"\/>/g;
 const unsupported=()=>{throw Error('Unsupported embedded motif geometry');};
 function pathsOf(resource,scale){
  const fragment=resource.svgFragment,tolerance=MOTIF_PATH_TOLERANCE_MM/scale;

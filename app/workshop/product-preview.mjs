@@ -8,7 +8,7 @@ import {keepoutPreview,spacerPreview} from '../configurator/variant-m/option-med
 import {designAreaPreview} from '../configurator/variant-m/design-area.mjs';
 import {textsNearHoles,holeHintText} from '../platform/sources/app/shared/models/hole-proximity.mjs';
 import {surfacePreview,scenePreview} from '../configurator/variant-m/material-surface.mjs';
-import {examplePhotoMarkup} from '../configurator/variant-m/photo-placeholder.mjs';
+import {examplePhotoMarkup,emptyMaskedPhotoMarkup} from '../configurator/variant-m/photo-placeholder.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
 import {workshopResources} from './catalog.mjs';
 
@@ -50,12 +50,12 @@ export function productPreview(model,{options={},examples=[],designId,layout='po
  for(const e of examples){const slot=d.objects.find(o=>o.id===e.slotId&&o.type==='photoSlot');if(!slot)continue;slot.media={mediaId:e.assetId,revisionId:'1'};slot.crop={x:0,y:0,width:1,height:1};media.push({mediaId:e.assetId,revisionId:'1',url:'blob:workshop-'+e.assetId,width:slot.w,height:slot.h});}
  const photoExampleMarkup=o=>{
   const e=examples.find(e=>e.slotId===o.id),hint=c.photo.hints?.find(h=>h.designId===d.id&&h.slotId===o.id);
-  if(e)return examplePhotoMarkup(o,e.assetId,hint,e.url);
+  if(e)return examplePhotoMarkup(o,e.assetId,hint,e.url,{blendMode:p.material.kind==='slate'?'lighten':undefined});
   if(c.acrylic&&o.id==='photo-main'&&!d.importedSource){
    const photo=defaultPhotoSvg();
    return examplePhotoMarkup(o,'0'.repeat(64),hint,'data:image/svg+xml;base64,'+Buffer.from(photo).toString('base64'));
   }
-  return '';
+  return p.material.kind==='slate'&&o.type==='photoSlot'&&c.photo.enabled?emptyMaskedPhotoMarkup(o,getProcessingProfile(p).ink,p.material.color):'';
  };
  let svg=studioSvg(p,d,previewFonts(c),{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:c.localResources.motifs,media,handles:false,id:'product-card',photoExampleMarkup});
  svg=svg.replace('href="blob:gravuru-workshop-reference"','href="'+example+'"');

@@ -67,6 +67,21 @@ test('saved customer element rights still protect slate original text',()=>{
   assert.throws(()=>validateProductDesign(d,edited),/Recht content/);
 });
 
+test('slate round and drawn cross forms retain exact outlines in native review, invalid geometry still fails',()=>{
+ for(const shape of ['ellipse','contour']){
+  const c=fixture();c.profile.optionGroups[0].values=c.profile.optionGroups[0].values.slice(0,1);
+  Object.assign(c.profile.geometry,{width:220,height:300,shape,holes:[]});
+  if(shape==='contour')c.profile.geometry.outlinePath='M80 0H140V80H220V140H140V300H80V140H0V80H80Z';
+  const text=c.profile.designs[0].objects[0];text.x=110;text.y=110;
+  const d=makeProductDocument(c);assert.equal(d.config.profile.geometry.shape,shape);assert.equal(d.config.profile.features.orderEnabled,false);
+  if(shape==='contour'){
+   assert.equal(d.config.profile.geometry.outlinePath,c.profile.geometry.outlinePath);
+   assert.match(productPreview({universal:d.config}),/data-contour-artwork/);
+   c.profile.geometry.width=250;assert.throws(()=>makeProductDocument(c),/Pfadausdehnung/);
+  }
+ }
+});
+
 test('same repository preserves slate revisions and batch uses its native cent source',t=>{
   const repository=createProductRepository({filename:':memory:',validateDocument:validateProductDocument});
   t.after(()=>repository.close());

@@ -20,6 +20,7 @@ import {applyNewMotifRights,checkWholePrintDesign} from '../configurator/variant
 import {familyProductConfig,familyProcess,geometryOf,validateFamily,sizeQuantityTiers} from './product-families.mjs';
 import {quantityTiersIssue} from '../configurator/variant-m/contract.mjs';
 import fs from 'node:fs';
+import {createHash} from 'node:crypto';
 import {makeProductDocument,validateProductDocument} from './product-model.mjs';
 import {textLimits,textLimitIssue,TEXT_LIMIT_RANGES} from './theme-limits.mjs';
 import {FONT_SET_ALWAYS} from './katalog-source.mjs';
@@ -108,7 +109,7 @@ const shapeBounds=n=>{
 const shapePath=n=>{
  const a=n.attrs,v=k=>num(a[k],k)??0;
  if(n.tag==='path')return a.d||'';
- if(n.tag==='rect'){const x=v('x'),y=v('y'),w=v('width'),h=v('height');return `M${x} ${y} L${x+w} ${y} L${x+w} ${y+h} L${x} ${y+h} Z`;}
+ if(n.tag==='rect'){const x=v('x'),y=v('y'),w=v('width'),h=v('height'),rx=Math.min(w/2,Math.max(0,num(a.rx??a.ry,'rx')??0)),ry=Math.min(h/2,Math.max(0,num(a.ry??a.rx,'ry')??0));if(rx&&ry)return `M${x+rx} ${y}H${x+w-rx}A${rx} ${ry} 0 0 1 ${x+w} ${y+ry}V${y+h-ry}A${rx} ${ry} 0 0 1 ${x+w-rx} ${y+h}H${x+rx}A${rx} ${ry} 0 0 1 ${x} ${y+h-ry}V${y+ry}A${rx} ${ry} 0 0 1 ${x+rx} ${y}Z`;return `M${x} ${y} L${x+w} ${y} L${x+w} ${y+h} L${x} ${y+h} Z`;}
  if(n.tag==='circle'||n.tag==='ellipse'){const cx=v('cx'),cy=v('cy'),rx=n.tag==='circle'?v('r'):v('rx'),ry=n.tag==='circle'?v('r'):v('ry');return `M${cx-rx} ${cy} A${rx} ${ry} 0 1 0 ${cx+rx} ${cy} A${rx} ${ry} 0 1 0 ${cx-rx} ${cy} Z`;}
  if(n.tag==='polygon'||n.tag==='polyline'){const p=(a.points||'').trim().split(/[\s,]+/).map(Number);if(p.length<4)fail('SVG: Polygon ohne Punkte.');return 'M'+p[0]+' '+p[1]+p.slice(2).reduce((s,q,i)=>s+(i%2?' '+q:' L'+q),'')+(n.tag==='polygon'?' Z':'');}
  return '';
@@ -153,13 +154,19 @@ export function parseDesignSvg(svgText){
     layers.push({...first,text:rows.map(row=>row.text).join('\n'),lines:rows.length,lineHeight:step});
    }else layers.push(first);
   }else if(kind==='foto'){
-   const mask=findAll(node,['rect','circle','ellipse','path']).find(n=>n.tag!=='path'||!n.attrs.d?.startsWith('M0'));
+   const mask=findAll(node,['rect','circle','ellipse','path'])[0];
    if(!mask)fail('Ebene „'+id+'“: Fotofeld braucht eine Maske (rect, circle, ellipse oder path).');
-   const bounds=shapeBounds(mask);
-   if(mask.tag==='path')notes.push('Fotofeld „'+id+'“: Maske ist ein Pfad – als Rechteck übernommen, bitte prüfen.');
+   let bounds=shapeBounds(mask);
+   if(node.attrs['data-upload-window']){const values=node.attrs['data-upload-window'].trim().split(/[ ,]+/).map(Number);if(values.length!==4||!values.every(Number.isFinite)||values[2]<=0||values[3]<=0)fail('Ebene „'+id+'“: ungültiges Uploadfenster.');bounds=values;}
    // Platzhalterbild im Fotofeld (Musterfoto samt Upload-Hinweis aus der Vorlage): nur Vorschau, nie Fertigung.
    const image=findAll(node,['image'])[0],href=image?(image.attrs.href||image.attrs['xlink:href']||''):'';
-   layers.push({id,kind,shape:mask.tag==='circle'||mask.tag==='ellipse'&&Math.abs(num(mask.attrs.rx,'rx')-num(mask.attrs.ry,'ry'))<0.01?'circle':'rect',bounds:[bounds[0]+t.dx,bounds[1]+t.dy,bounds[2],bounds[3]].map(round),rotation:t.rotation,...(/^[\w.-]+\.(png|jpe?g)$/i.test(href)?{placeholder:href}:{})});
+   const maskPath=shapePath(mask);if(!/^[MmLlHhVvCcSsQqTtAaZz\d.,+eE\s-]+$/.test(maskPath))fail('Ebene „'+id+'“: ungültiger Maskenpfad.');
+   const needsMask=mask.tag==='path'||mask.tag==='rect'&&(Number(mask.attrs.rx)>0||Number(mask.attrs.ry)>0)||Boolean(node.attrs['data-upload-window']);
+   const shape=needsMask?'template':mask.tag==='circle'?'circle':mask.tag==='ellipse'?'ellipse':'rect';
+   const viewBox=bounds.join(' '),maskSvg=needsMask?`<svg xmlns="http://www.w3.org/2000/svg" width="${bounds[2]}mm" height="${bounds[3]}mm" viewBox="${viewBox}"><path d="${escapeXml(maskPath)}" fill="white" fill-rule="${mask.attrs['fill-rule']==='evenodd'?'evenodd':'nonzero'}"/></svg>`:null;
+   let exampleImage=null;
+   if(image&&(/^[\w.-]+\.(png|jpe?g)$/i.test(href)||/^data:image\/(?:png|jpeg);base64,[A-Za-z0-9+/=]+$/.test(href))){const ib=['x','y','width','height'].map(k=>num(image.attrs[k]??(['x','y'].includes(k)?0:undefined),k));if(!ib.every(Number.isFinite)||ib[2]<=0||ib[3]<=0)fail('Ebene „'+id+'“: ungültige Bildmaße.');exampleImage={href,bounds:ib,preserveAspectRatio:image.attrs.preserveAspectRatio||'xMidYMid meet',maskPath,maskEvenodd:mask.attrs['fill-rule']==='evenodd',viewport:bounds,uploadHint:node.attrs['data-upload-hint']==='separate'};}
+   layers.push({id,kind,shape,maskPath,maskEvenodd:mask.attrs['fill-rule']==='evenodd',maskTranslation:[t.dx,t.dy],bounds:[bounds[0]+t.dx,bounds[1]+t.dy,bounds[2],bounds[3]].map(round),rotation:t.rotation,...(maskSvg?{maskSvg}:{}),...(exampleImage?{exampleImage}:{}),...(/^[\w.-]+\.(png|jpe?g)$/i.test(href)?{placeholder:href}:{})});
   }else{
    const parts=(node.tag==='g'?findAll(node,['path','rect','circle','ellipse','polygon','polyline']):[node]).map(n=>({d:shapePath(n).trim(),fill:n.attrs.fill||node.attrs.fill||null,fillRule:n.attrs['fill-rule']||node.attrs['fill-rule']||'nonzero',stroke:n.attrs.stroke||node.attrs.stroke||null,strokeMm:num(n.attrs['stroke-width']??node.attrs['stroke-width'],'stroke-width')??1,opacity:num(n.attrs.opacity??node.attrs.opacity,'opacity')??1,transform:transformOf(n===node?'':n.attrs.transform)})).filter(p=>p.d);
    if(!parts.length)fail('Ebene „'+id+'“ enthält keine Vektorpfade.');
@@ -199,7 +206,7 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
  if(!samePlate(plate,[parsed.widthMm,parsed.heightMm]))fail(design.id+': SVG-Maß '+parsed.widthMm+' × '+parsed.heightMm+' mm widerspricht dem Plattenmaß '+plate[0]+' × '+plate[1]+' mm.');
  const paint=(value)=>{const v=String(value);if(!/^(?:#[0-9a-f]{3}(?:[0-9a-f]{3})?|[a-z]+|rgba?\([\d\s.,%]+\))$/i.test(v))fail(design.id+': Druckfarbe enthält einen nicht unterstützten Wert: '+v);return escapeXml(v);};
  const print=process.method==='print',ink=process.ink,templateId='katalog-'+slug(design.id),themeId=theme?.id??design.themes?.[0]??null;
- const objects=[],motifs=[],rights={},notes=[...parsed.notes],usedFonts=new Set(),fieldKeys=new Set(),placeholders=[];
+ const objects=[],motifs=[],rights={},notes=[...parsed.notes],usedFonts=new Set(),fieldKeys=new Set(),placeholders=[],photoAssets=[];
  // Namensfeld = Feldschlüssel mit name/familie/hausnummer, sonst der Text mit der größten Schrift.
  const texts=parsed.layers.filter(l=>l.kind==='text');
  const nameLayer=texts.find(l=>/name|familie|hausnummer/i.test(l.fieldKey||''))||texts.reduce((best,l)=>!best||l.size>best.size?l:best,null);
@@ -230,7 +237,8 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
    if(!process.tools.photo)fail(design.id+': Fotofeld „'+layer.id+'“, aber das Verfahren „'+process.id+'“ sieht kein Foto vor.');
    const [bx,by,bw,bh]=layer.bounds,fieldKey='photo-'+id;
    if(fieldKeys.has(fieldKey))fail(design.id+': Fotofeld „'+fieldKey+'“ doppelt.');fieldKeys.add(fieldKey);
-   objects.push({id,type:'photoSlot',fieldKey,photoShape:layer.shape,required:rule.required??true,x:round(bx+bw/2),y:round(by+bh/2),w:round(bw),h:round(bh),rotation:round(layer.rotation),templateOrigin:true,customerEditable:true});
+   objects.push({id,type:'photoSlot',fieldKey,photoShape:layer.shape,...(layer.maskSvg?{photoMaskAssetId:createHash('sha256').update(layer.maskSvg).digest('hex')}:{}),required:rule.required??true,x:round(bx+bw/2),y:round(by+bh/2),w:round(bw),h:round(bh),rotation:round(layer.rotation),templateOrigin:true,customerEditable:true});
+   if(layer.maskSvg||layer.exampleImage)photoAssets.push({slotId:id,maskSvg:layer.maskSvg??null,exampleImage:layer.exampleImage??null});
    rights[id]={content:false,color:false,replace:true,move:movableAll(design),scale:false,delete:false};photo=true;
    if(layer.placeholder)placeholders.push({slotId:id,file:layer.placeholder,widthMm:round(bw),heightMm:round(bh)});
   }else{
@@ -254,7 +262,7 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
  if(objects.length>20)fail(design.id+': höchstens 20 Elemente je Vorlage ('+objects.length+' gefunden).');
  const template={id:templateId,name:design.name,objects,marks:[],themes:design.themes??[],bestseller:design.bestseller===true,katalog:{designId:design.id,source:design.source,plateMm:[plate[0],plate[1]]}};
  if(motifPolicy.wholePrintDesign!==undefined)template.wholePrintDesign=motifPolicy.wholePrintDesign;
- return {template,motifs,rights,photo,placeholders,fonts:[...usedFonts],notes,process:process.id};
+ return {template,motifs,rights,photo,placeholders,photoAssets,fonts:[...usedFonts],notes,process:process.id};
 }
 
 // ---- Formatreihen ----
@@ -450,7 +458,7 @@ export function katalogFamilyToProduct(family,line,subcategory,{size,theme=null,
   const examples=templates.flatMap(t=>(t.examples||[]).map(e=>({designId:t.template.id,slotId:e.slotId,assetId:e.assetId})));
   if(examples.length){
    config.localResources.photoExamples=[...(config.localResources.photoExamples||[]),...examples];
-   config.photo={...config.photo,hints:[...(config.photo.hints||[]),...examples.map(e=>({designId:e.designId,slotId:e.slotId,text:'Foto-Upload hier klicken',enabled:false}))]};
+   config.photo={...config.photo,hints:[...(config.photo.hints||[]),...examples.map(e=>({designId:e.designId,slotId:e.slotId,text:'Foto-Upload hier klicken',enabled:templates.some(t=>(t.examples||[]).some(x=>x.slotId===e.slotId&&x.assetId===e.assetId&&x.uploadHint===true))}))]};
   }
  }
  if(templates.some(t=>t.template.objects.some(o=>o.type==='photoSlot'))){if(!process?.tools.photo)fail('Fotofeld in einer Vorlage, aber das Verfahren sieht kein Foto vor.');config.photo={...config.photo,enabled:true};}

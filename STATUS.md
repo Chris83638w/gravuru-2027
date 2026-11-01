@@ -1,3 +1,7 @@
+# Edelstahl-Einzelartikel und SEO-Entwürfe · 01.11.2026 · Astra
+
+Chris ersetzt den N39-Sammelproduktplan: genau ein Artikel je Form/Größe, unterschiedliche Startdesigns, 8 × 3,5 cm mit Strich-Design (D4 vorgesehen). 80 Offline-Textentwürfe auf Katalog c8356aa; eigene Titel/Handles/Metas, Befestigungs-/Preisquellen und 240 ausdrücklich ungeprüfte Bildplätze. 42 unterschiedliche Designnamen vorgeschlagen, 38 Anschlüsse auf dieser Basis offen; #106/Katalog #99 nicht doppelt gebaut. 80/80 Quellenzeilen, eindeutige SEO-Felder und D4-Reservierung geprüft. [Bericht, Entwürfe und offene Abnahmen](docs/handoffs/2026-11-01-edelstahl-einzelartikel/README.md). Keine App-/Katalogänderung, neue Freigabe, Shopify-Mutation, Import, Merge oder Live-Schritt.
+
 # Türschilder: Format & Größe · 01.11.2026 · Astra
 
 Chris benennt den Bereich um: Reiter, Überschrift und erster Handy-Schritt heißen jetzt Format & Größe. 42/42 bestehende Tests, Build und lokale Desktop-/375×548-Browserprüfung grün. Nur Text/Umbruch geändert, keine Preis-/Optionslogik. [Nachweis](docs/handoffs/2026-11-01-tuerschilder-review/README.md#beschriftung-nach-chris--01112026). Auf PR #102, kein Merge oder Live-Schritt.

@@ -1,70 +1,67 @@
 {
   "branch": "dev/grabkreuze-hunde-20261101-astra-mika",
+  "revision": "finale-symmetrische-konturen",
   "jobs": [
     {
       "repo": "Chris83638w/gravuru-katalog.",
       "base": "ec48c782b0f1cb2a0ee674814bba69d565e9e4d9",
-      "files": 208,
+      "files": 206,
       "commits": [
         {
-          "oid": "96fc48844af108b9f0bd499de038742222150dec",
-          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/96fc48844af108b9f0bd499de038742222150dec",
+          "oid": "9508934251c72ea697ec8c643d1aaf6f695d2d68",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/9508934251c72ea697ec8c643d1aaf6f695d2d68",
           "verified": true,
           "files": 40
         },
         {
-          "oid": "a8c2bb24bfad12932f458f900d8da3e8672c20cc",
-          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/a8c2bb24bfad12932f458f900d8da3e8672c20cc",
+          "oid": "12a0e0bdb8357dd5abd6e49c92000642befadfe3",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/12a0e0bdb8357dd5abd6e49c92000642befadfe3",
           "verified": true,
           "files": 40
         },
         {
-          "oid": "e9898dda5a46643e95f98e3ea3cf4fc70625b865",
-          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/e9898dda5a46643e95f98e3ea3cf4fc70625b865",
-          "verified": true,
-          "files": 36
-        },
-        {
-          "oid": "fc4dc0fd3f6d9c1213f958445ad73222ad2c9a4b",
-          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/fc4dc0fd3f6d9c1213f958445ad73222ad2c9a4b",
+          "oid": "bf74ac0ac26ace754a8ac5c9c6665b942d52c487",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/bf74ac0ac26ace754a8ac5c9c6665b942d52c487",
           "verified": true,
           "files": 40
         },
         {
-          "oid": "109348e9ed3969b7fe67e5de7ef843513284338c",
-          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/109348e9ed3969b7fe67e5de7ef843513284338c",
+          "oid": "a5d8069159e09ed49c83cd0ea54463b856ad31ed",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/a5d8069159e09ed49c83cd0ea54463b856ad31ed",
+          "verified": true,
+          "files": 40
+        },
+        {
+          "oid": "9d00f022db499f8009591ae830bb9ed175357cb8",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/9d00f022db499f8009591ae830bb9ed175357cb8",
           "verified": true,
           "files": 39
         },
         {
-          "oid": "3914954d4729cbd7dae6294b3ad19403c54b4cc7",
-          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/3914954d4729cbd7dae6294b3ad19403c54b4cc7",
+          "oid": "f1e6d5cc969558c9679aa49101582dd72f13bf70",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/f1e6d5cc969558c9679aa49101582dd72f13bf70",
           "verified": true,
-          "files": 13
+          "files": 7
         }
       ],
-      "finalHead": "0a07ceb0d708b3d7bbc94f6528e920cb9430e486",
-      "remoteVerified": 208,
-      "finalNormalizationCommit": {
-        "oid": "0a07ceb0d708b3d7bbc94f6528e920cb9430e486",
-        "url": "https://github.com/Chris83638w/gravuru-katalog./commit/0a07ceb0d708b3d7bbc94f6528e920cb9430e486",
-        "verified": true
-      }
+      "finalHead": "f1e6d5cc969558c9679aa49101582dd72f13bf70",
+      "remoteVerified": 206,
+      "protocolHead": "cecd605a99f6df40edc69fc98d7424e86813cd17"
     },
     {
       "repo": "Chris83638w/gravuru-2027",
       "base": "1746c8d80c561afcd7b5ee5930b67e33101ba80f",
-      "files": 6,
+      "files": 4,
       "commits": [
         {
-          "oid": "7ca34197d3fe0b93fec09bbfb8af28f12c379a6d",
-          "url": "https://github.com/Chris83638w/gravuru-2027/commit/7ca34197d3fe0b93fec09bbfb8af28f12c379a6d",
+          "oid": "5aed33a86a66b39ecba408a54adeabe5a196702e",
+          "url": "https://github.com/Chris83638w/gravuru-2027/commit/5aed33a86a66b39ecba408a54adeabe5a196702e",
           "verified": true,
-          "files": 6
+          "files": 4
         }
       ],
-      "finalHead": "7ca34197d3fe0b93fec09bbfb8af28f12c379a6d",
-      "remoteVerified": 6
+      "finalHead": "5aed33a86a66b39ecba408a54adeabe5a196702e",
+      "remoteVerified": 4
     }
   ]
 }

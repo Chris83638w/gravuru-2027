@@ -41,7 +41,7 @@ def run(data):
  contour=ET.Element(p.S+'svg',{'width':str(w)+'mm','height':str(h)+'mm','viewBox':f'0 0 {w} {h}'})
  group=ET.SubElement(contour,p.S+'g',{'transform':f'translate({w} 0) scale(-1 1)' if s['mirror'] else 'translate(0 0)'})
  ET.SubElement(group,p.S+'path',{'d':' '.join(r['d']+' Z' for r in g['contours']),'fill':'none','stroke':'black','stroke-width':'.05'})
- return {'pdf':base64.b64encode(pdf).decode(),'contour':base64.b64encode(vector_pdf(contour)).decode(),'pixelWidth':width,'pixelHeight':height}
+ return {'pdf':base64.b64encode(pdf).decode(),'contour':base64.b64encode(vector_pdf(contour)).decode(),'svg':ET.tostring(root,encoding='unicode'),'pixelWidth':width,'pixelHeight':height}
 try:print(json.dumps(run(json.load(sys.stdin))))
 except Exception as e:
  print(json.dumps({'error':str(e) if isinstance(e,p.c.Failure) else 'Die Gravurprüfung konnte die gesicherten Daten nicht zuverlässig verarbeiten.'}));sys.exit(1)

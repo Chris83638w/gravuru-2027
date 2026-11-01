@@ -1,0 +1,29 @@
+{
+  "repository": "Chris83638w/gravuru-katalog.",
+  "base": "80fedf744855af0a957c3017c8dc4652cc40a6c6",
+  "decision37": 6554392347,
+  "decision38": 6554514221,
+  "sources": [
+    {
+      "file": "familien/edelstahl/steel-door-signs.json",
+      "base": "80fedf744855af0a957c3017c8dc4652cc40a6c6",
+      "sourceSha256": "88ace4946c615e5a6accb10be4459930dedc4878fb1a0f4786f02d83931d048c",
+      "fixture": "steel.json",
+      "sha256": "14c886e9735704700eac7c7e79a11a4ff05592d1e2497b3b7cd5d6b62f7c4f93"
+    },
+    {
+      "file": "familien/acryl/acryl-3mm-tuerschilder-schwarz.json",
+      "base": "80fedf744855af0a957c3017c8dc4652cc40a6c6",
+      "sourceSha256": "4778c0c7342f91d49f99622a9227172d84fa9b363328e65208b8f982f5ef7b6f",
+      "fixture": "schwarz.json",
+      "sha256": "9c82b605cafb70d9f72f2bf5f7321d2366cd36649641861400e36dbec31f9773"
+    },
+    {
+      "file": "familien/acryl/acryl-3mm-tuerschilder-anthrazit.json",
+      "base": "80fedf744855af0a957c3017c8dc4652cc40a6c6",
+      "sourceSha256": "642968f0e605c3f6bb90e3a2c64c7848df4a7e57192c360402cbcb30f2ca253d",
+      "fixture": "anthrazit.json",
+      "sha256": "ac4e6a5ff475acc5a09344ea001911a2529687f4f63f06c7e5e7caa070509068"
+    }
+  ]
+}

@@ -1,3 +1,11 @@
+# Acryl 3 mm: Rückseitengravur / Preise · 01.11.2026 · Astra
+
+Prüfstände: [Code-PR #90](https://github.com/Chris83638w/gravuru-2027/pull/90), [Katalog-Entwurf #15](https://github.com/Chris83638w/gravuru-katalog./pull/15). Neue Hausnummern-Daten aus Katalog-main `811f2639` erhalten; 7.105 Excel-Zellen gegen diesen Stand geprüft, genau 5 Preise und 2 Gravurseiten abweichend. N38 jetzt nach Claudes Bestätigung vollständig: zwei Seriengrundpreise + zehn Variantenpreise; 30×10 bleibt ohne Shop-IDs als offene Größe dokumentiert.
+
+N37 zur Prüfung: native Glasvorschau für Schwarz/Anthrazit in Konfi und Werkstatt; explizite Rückseitengravur im Katalog, zusätzliche orientierte Fertigungs-SVG, PDF weiterhin genau einmal gespiegelt, Stahl ungespiegelt. 25 neue und 66 bestehende Tests bestanden (5 lokale Servertests nach behobenem Loopback-Zugriff separat nachgeprüft), 0 Skip; Build und 16 Bildpaare plus RT2-SVG/PDF-Stichprobe geprüft. N38: fünf Familienpreise, Excel, zwei Seriengrundpreise und zehn Variantenpreise geprüft; 30×10 für späteren freigegebenen Export dokumentiert. N39/N36 noch nicht umgesetzt. Linux-Vollauf bei Claude offen. Kein Merge, Import oder Live-Schritt. [Quellen, Grenzen, Nachweise und nächste Schritte](docs/handoffs/2026-11-01-acryl3-rueckseite-preise-astra.md).
+
+
+
 ## 01.11.2026 – Codex/Astra: schmale Formatzeilen für Funkklingeln
 
 Auf Chris' Wunsch Format und Position als kompakte bebilderte Zeilen untereinander, ohne zusätzliche Gruppenkarte; optisch an Rahmen/Farbe angepasst. PR #91 gemergt (`0f03c8e9`) und live. Nur produktspezifisches CSS in Kopie der aktiven Laufzeit übernommen; 3.274 Dateien verglichen, keine weitere Abweichung außerhalb generierter Build-Dateien. 5/5 vorhandene Tests lokal und unter Linux, Build sowie Live-Bedienprüfung Desktop/390px-Handy erfolgreich. Öffentliches Bundle per SHA bestätigt; Formatwechsel mit korrekten Preisen geprüft. [Bericht, Screenshots und Rückweg](docs/handoffs/2026-11-01-funkklingeln-formatzeilen.md).

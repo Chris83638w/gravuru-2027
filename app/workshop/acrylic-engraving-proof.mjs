@@ -4,7 +4,7 @@ import {renderEngraving,formEngravingSettings} from './form-engraving-proof.mjs'
 import {digest} from './review-package.mjs';
 import {productionPackage} from './production-summary.mjs';
 import {surfaceFileName} from '../configurator/variant-m/surfaces.mjs';
-export const ACRYLIC_ENGRAVING_RECIPE='gravuru-acrylic-engraving-proof/v4';
+export const ACRYLIC_ENGRAVING_RECIPE='gravuru-acrylic-engraving-proof/v5';
 export const acrylicEngravingKey=settings=>digest(JSON.stringify({recipe:ACRYLIC_ENGRAVING_RECIPE,settings:formEngravingSettings(settings)}));
 export async function createAcrylicEngravingProof(archive,archiveHash,input={},context={}){
  const a=await acrylicArtwork(archive,archiveHash,{engraving:true});
@@ -20,18 +20,19 @@ export async function createAcrylicEngravingProof(archive,archiveHash,input={},c
   photoSources:a.photos.map(p=>({fieldId:p.fieldId,path:p.sourcePath,width:p.width,height:p.height}))};
  // K14 / Ü15.1: gestaltete Rückseite → eigene Gravur-, Kontur- und SVG-Datei; die Dateien der
  // Vorderseite tragen dann „-vorderseite“. Ohne Rückseite bleiben alle Namen wie bisher.
- const sides=[{id:'front',pdf,contour,svg:a.svg,mirror:settings.mirror}];
+ const sides=[{id:'front',pdf,contour,svg:a.svg,productionSvg:raw.svg,mirror:settings.mirror}];
  if(a.surfaces.includes('back')){
   const b=await acrylicArtwork(archive,archiveHash,{engraving:true,surfaceId:'back'}),backSettings={...settings,mirror:b.mirrorFor(settings.mirror)};
   const rb=await renderEngraving({svg:b.svg,geometry:b.geometry,settings:backSettings,photoFields:b.photoFields,photos:b.photos}),bp=Buffer.from(rb.pdf,'base64'),bc=Buffer.from(rb.contour,'base64');
   if(!bp.subarray(0,5).equals(Buffer.from('%PDF-'))||!bc.subarray(0,5).equals(Buffer.from('%PDF-')))throw Error('Ungültige Gravur-PDF der Rückseite.');
-  sides.push({id:'back',pdf:bp,contour:bc,svg:b.svg,mirror:backSettings.mirror,geometrySha256:b.geometrySha256});
+  sides.push({id:'back',pdf:bp,contour:bc,svg:b.svg,productionSvg:rb.svg,mirror:backSettings.mirror,geometrySha256:b.geometrySha256});
   metadata.photoSources.push(...b.photos.map(p=>({fieldId:'back-'+p.fieldId,path:p.sourcePath,width:p.width,height:p.height})));
  }
  const two=sides.length>1,name=(n,id)=>two?surfaceFileName(n,id):n;
  if(two)metadata.surfaces=sides.map(s=>({id:s.id,pdf:name('technische-gravurpruefung.pdf',s.id),pdfSha256:digest(s.pdf),contour:name('gravur-kontur-1zu1.pdf',s.id),contourSha256:digest(s.contour),mirror:s.mirror,...(s.geometrySha256?{geometrySha256:s.geometrySha256}:{})}));
  if(a.doorbellLayers){metadata.layered={schema:a.doorbellLayers.schema,selection:a.doorbellLayers.selection,geometrySha256:a.doorbellLayers.geometrySha256,steelCutSha256:digest(cutPdfs.steel),acrylicCutSha256:digest(cutPdfs.acrylic),cutMirror:false,engravingMirror:settings.mirror};metadata.contour='Getrennte rote Vektorschnitte für Edelstahlträger und Acrylauflage in gemeinsamer Vorderseitenregistrierung. Der blaue äußere Referenzrand und das Gerätebild sind ausgeschlossen. Schnittdateien werden nicht mit der Gravur gespiegelt.';}
- const extra=[...sides.flatMap(s=>[[name('technische-gravurpruefung.pdf',s.id),s.pdf],[name('gravur-kontur-1zu1.pdf',s.id),s.contour]]),['gravurpruefung.json',Buffer.from(JSON.stringify(metadata,null,2))],...sides.map(s=>[name('gesicherte-gravurgestaltung.svg',s.id),Buffer.from(s.svg)])];
+ metadata.productionSvg=sides.map(s=>({surfaceId:s.id,path:name('gravur-fertigung.svg',s.id),sha256:digest(Buffer.from(s.productionSvg)),mirror:s.mirror}));
+ const extra=[...sides.flatMap(s=>[[name('technische-gravurpruefung.pdf',s.id),s.pdf],[name('gravur-kontur-1zu1.pdf',s.id),s.contour],[name('gravur-fertigung.svg',s.id),Buffer.from(s.productionSvg)]]),['gravurpruefung.json',Buffer.from(JSON.stringify(metadata,null,2))],...sides.map(s=>[name('gesicherte-gravurgestaltung.svg',s.id),Buffer.from(s.svg)])];
  if(a.doorbellLayers)extra.push(['edelstahltraeger-schnitt-1zu1.pdf',cutPdfs.steel],['acrylauflage-schnitt-1zu1.pdf',cutPdfs.acrylic],['edelstahltraeger-schnitt.svg',Buffer.from(a.doorbellLayers.steel.svg)],['acrylauflage-schnitt.svg',Buffer.from(a.doorbellLayers.acrylic.svg)]);
  const {archive:output}=await productionPackage({files:a.files,manifest:a.manifest,metadata,pdf,extras:extra,orderLines:context.orderLines});
  return {pdf,archive:output,metadata};

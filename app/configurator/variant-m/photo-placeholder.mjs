@@ -1,7 +1,7 @@
 import {previewResourceURL} from './preview-resource.mjs';
 import {photoShape,photoClip,photoMaskURL} from '../../platform/sources/app/shared/models/photo-shape.mjs';
 // Editor-only illustration. Never add this markup to a design or export source.
-export function examplePhotoMarkup(slot,assetId,hint,sourceUrl,{blendMode}={}){
+export function examplePhotoMarkup(slot,assetId,hint,sourceUrl,{blendMode,grayscale=false}={}){
   if(!/^[a-f0-9]{64}$/.test(assetId||'')||!(slot.w>0&&slot.h>0))return '';
   const escape=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const words=String(hint?.text||'Hier eigenes Foto hochladen').split(/\s+/),lines=[''];
@@ -11,7 +11,9 @@ export function examplePhotoMarkup(slot,assetId,hint,sourceUrl,{blendMode}={}){
   const buttonWidth=Math.min(w*.9,98),font=Math.min(4.5,w/12),height=lines.length*font*1.25+4,y=h*.28;
   const text=lines.map((line,i)=>`<tspan x="0" y="${-height/2+2+font+i*font*1.25}">${escape(line)}${i<lines.length-1?' ':''}</tspan>`).join('');
   const mask=photoClip(slot,clip,previewResourceURL(photoMaskURL(slot)));
-  return `<g data-preview-only="true" data-role="guide" data-ux-placeholder="true"${['screen','lighten'].includes(blendMode)?' style="mix-blend-mode:'+blendMode+'"':''}><defs>${mask.defs}</defs><g ${mask.attribute}><image href="${url}" x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice"/>${hint?.enabled===false?'':`<g data-ux-photo-hint="true" transform="translate(0 ${y})"><rect x="${-buttonWidth/2}" y="${-height/2}" width="${buttonWidth}" height="${height}" rx="2" fill="white" fill-opacity=".94"/><text text-anchor="middle" font-family="Arial,sans-serif" font-size="${font}" fill="#244d3c">${text}</text></g>`}</g></g>`;
+  // Material preview only. The source asset, its pixels and aperture stay intact.
+  const filter=grayscale?`<filter id="${clip}-gray" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="0"/></filter>`:'';
+  return `<g data-preview-only="true" data-role="guide" data-ux-placeholder="true"${['screen','lighten'].includes(blendMode)?' style="mix-blend-mode:'+blendMode+'"':''}><defs>${mask.defs}${filter}</defs><g ${mask.attribute}><image href="${url}" x="${-w/2}" y="${-h/2}" width="${w}" height="${h}" preserveAspectRatio="xMidYMid slice"${grayscale?` filter="url(#${clip}-gray)"`:''}/>${hint?.enabled===false?'':`<g data-ux-photo-hint="true" transform="translate(0 ${y})"><rect x="${-buttonWidth/2}" y="${-height/2}" width="${buttonWidth}" height="${height}" rx="2" fill="white" fill-opacity=".94"/><text text-anchor="middle" font-family="Arial,sans-serif" font-size="${font}" fill="#244d3c">${text}</text></g>`}</g></g>`;
 }
 export function emptyPhotoMarkup(slot, ink, surface, asset) {
   const w=Number(slot.w),h=Number(slot.h);
@@ -59,10 +61,11 @@ export function decorateEmptyPhotoSlots(root,objects,ink,surface,assets=[],desig
   for(const slot of objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId&&!o.uxHidden)){
     const group=root.querySelector('[data-object="'+CSS.escape(slot.id)+'"]');
     const hit=group?.querySelector(':scope > rect[fill="transparent"]');
+    if(!hit||group.hasAttribute('data-ux-empty-photo-slot')||group.hasAttribute('data-ux-static-photo'))continue;
     const asset=assets.find(a=>a.designId===designId&&a.slotId===slot.id);
     const example=examples.find(e=>e.designId===designId&&e.slotId===slot.id);
     const markup=example?examplePhotoMarkup(slot,example.assetId,hints.find(h=>h.designId===designId&&h.slotId===slot.id),undefined,options):emptyMaskedPhotoMarkup(slot,ink,surface,asset);
-    if(!hit||!markup||group.hasAttribute('data-ux-empty-photo-slot')||group.hasAttribute('data-ux-static-photo'))continue;
+    if(!markup)continue;
     for(const child of [...group.children])if(child!==hit)child.remove();
     const illustration=new DOMParser().parseFromString('<svg xmlns="http://www.w3.org/2000/svg">'+markup+'</svg>','image/svg+xml').documentElement.firstElementChild;
     group.insertBefore(group.ownerDocument.importNode(illustration,true),hit.nextSibling);

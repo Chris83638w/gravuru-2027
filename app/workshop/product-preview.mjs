@@ -50,7 +50,7 @@ export function productPreview(model,{options={},examples=[],designId,layout='po
  for(const e of examples){const slot=d.objects.find(o=>o.id===e.slotId&&o.type==='photoSlot');if(!slot)continue;slot.media={mediaId:e.assetId,revisionId:'1'};slot.crop={x:0,y:0,width:1,height:1};media.push({mediaId:e.assetId,revisionId:'1',url:'blob:workshop-'+e.assetId,width:slot.w,height:slot.h});}
  const photoExampleMarkup=o=>{
   const e=examples.find(e=>e.slotId===o.id),hint=c.photo.hints?.find(h=>h.designId===d.id&&h.slotId===o.id);
-  if(e)return examplePhotoMarkup(o,e.assetId,hint,e.url,{blendMode:p.material.kind==='slate'?'lighten':undefined});
+  if(e)return examplePhotoMarkup(o,e.assetId,hint,e.url,{blendMode:p.material.kind==='slate'?'lighten':undefined,grayscale:p.material.kind==='slate'});
   if(c.acrylic&&o.id==='photo-main'&&!d.importedSource){
    const photo=defaultPhotoSvg();
    return examplePhotoMarkup(o,'0'.repeat(64),hint,'data:image/svg+xml;base64,'+Buffer.from(photo).toString('base64'));

@@ -2,7 +2,17 @@
 
 Auftrag Mikail, 01.11.2026: Herzen gemäß Claude ergänzen, Masterdesigns mit Originalfotos und kompakten Kontaktbögen in kleinen PRs liefern. Quelle: gravuru-2027 #76, Kommentare 6554842969, 6554947711 und 6555001768. Verbindlich bleibt der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md).
 
-## Gelieferter Stand
+## Nachprüfung durch Claude, 01.11.2026
+
+Die [neue Sichtprüfung in #76](https://github.com/Chris83638w/gravuru-2027/issues/76#issuecomment-6556230613) ist durch Mikail mit „ergänze es“ bestätigt. Sie ersetzt den früheren Lieferabschluss: Die folgenden Gesamtzahlen beschreiben die Erstlieferung, keine aktuelle gestalterische Freigabe. Andere Pakete werden nach derselben Logik überarbeitet.
+
+Katalog-PR #18 wurde im selben PR auf 28 Master bereinigt: MEM-045/053/054/084 als benannte Dubletten entfernt, MEM-105/122/067/049 behalten, zwei eigene neue Herzgestaltungen ergänzt. Die 28 Originalfoto-Dateien sind bytegleich; problematische Ausschnitte verwenden saubere ovale Masken. MEM-049 enthält genau ein Fotofeld statt einer zusätzlichen gefüllten Foto-Hilfsfläche. MEM-070 korrigiert das tatsächliche Quelldatum 09.14.1956 auf 14.09.1956. Verse neu umbrochen und vergrößert; alle Texte mindestens 3 mm gemessene Versalhöhe. 28 native Importe sowie Kontur-/Abstandsprüfungen bestehen. Sieben Kontaktbögen mit je 640 px breiter Konfiguratoransicht zeigen alle Designs, neue Gestaltungen als „neu / ohne Vorlage“.
+
+Beispielbilder erscheinen auf Schiefer ausschließlich in Graustufen; Originalressourcen bleiben unverändert. Dieselbe Vorschaufunktion wird in Werkstatt, Kundeneditor und Designauswahl verwendet. Die statische Fotovorschau wird vor einer unnötigen Platzhalterberechnung geschützt. Nach Zusammenführung mit main b831ea4: 132 gezielte Tests, 0 Fehler/Skip; Build bestanden (76 Ressourcen, 1 Modell).
+
+Die Kordel-Lochmaße liegen jetzt in Excel main b831ea4 vor: R42 Ø5 bei (19|15)/(181|15), R45 Ø6 bei (20|16)/(230|16), R47 Ø6 bei (21|16)/(179|16), R48 Ø5 bei (51|16,1), R49 Ø5,8 mittig bei y=42,9 mm. Diese fünf Produkte haben feste Kordelbohrungen. Die früher dokumentierte Auslassung von R42/R45/R47/R48 ist damit fachlich aufgehoben; ihre Design- und Variantenprüfung ist der nächste Datenabschnitt.
+
+## Erstlieferung vor der neuen Sichtprüfung
 
 [Gesamtübersicht mit allen 79 Daten-PRs und Kontaktbögen](https://github.com/Chris83638w/gravuru-katalog./blob/cff5f74a12698088e572bdea41ea0ef37ac076fe/auftraege/2026-10-31-menschen-schiefer/README.md).
 

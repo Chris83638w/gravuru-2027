@@ -45,6 +45,18 @@ test('rounded and elliptical apertures retain their actual shape, malformed uplo
  assert.doesNotThrow(()=>validateDesignContent(katalogDesignToTemplate(oval,family(),null).template,{universal:true}));
 });
 
+test('slate examples render in grayscale without changing the immutable image or its mask',async()=>{
+ const prepared=await prepareKatalogPhotoAssets(katalogDesignToTemplate(design,family(),null),design,{previewOnly:true});
+ const slot=prepared.template.objects.find(o=>o.type==='photoSlot'),example=prepared.examples[0],before=example.url;
+ const slate=examplePhotoMarkup(slot,example.assetId,{enabled:true},example.url,{grayscale:true,blendMode:'lighten'});
+ assert.match(slate,/<feColorMatrix type="saturate" values="0"/);
+ assert.match(slate,/<image[^>]*filter="url\(#photo-example-foto-1-gray\)"/);
+ assert.ok(slate.includes(before));assert.equal(example.url,before);
+ assert.ok(Buffer.from(before.split(',')[1],'base64').toString().includes(png));
+ assert.match(slate,/data-template-photo-mask/);assert.match(slate,/data-ux-photo-hint/);
+ assert.doesNotMatch(examplePhotoMarkup(slot,example.assetId,{enabled:true},example.url),/feColorMatrix|filter="url\(#photo-example/);
+});
+
 test('actual immutable resource store preserves embedded original photo bytes and mask paths',async t=>{
  const assets=createDesignAssetStore({filename:':memory:'});t.after(()=>assets.close());
  const result=await prepareKatalogPhotoAssets(katalogDesignToTemplate(design,family(),null),design,{assets});

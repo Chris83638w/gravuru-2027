@@ -1,3 +1,7 @@
+# Acryl 3 mm: Rückseitengravur / Preise · 01.11.2026 · Astra
+
+N37 zur Prüfung: native Glasvorschau für Schwarz/Anthrazit in Konfi und Werkstatt; explizite Rückseitengravur im Katalog, zusätzliche orientierte Fertigungs-SVG, PDF weiterhin genau einmal gespiegelt, Stahl ungespiegelt. 25 neue und 66 bestehende Tests bestanden (5 lokale Servertests nach behobenem Loopback-Zugriff separat nachgeprüft), 0 Skip; Build und 16 Bildpaare plus RT2-SVG/PDF-Stichprobe geprüft. N38: fünf Familienpreise und Excel belegt, Serien bleiben bis zur Klärung abweichender Kennungen offen. N39/N36 noch nicht umgesetzt. Linux-Vollauf bei Claude offen. Kein Merge, Import oder Live-Schritt. [Quellen, Grenzen, Nachweise und nächste Schritte](docs/handoffs/2026-11-01-acryl3-rueckseite-preise-astra.md).
+
 # Acryl-3-mm-Ziele · 31.10.2026 · Astra
 
 Nachricht 35: explizit abgeleitete Familien behalten die vorhandenen Quellgrößen bei identischer Geometrie, einschließlich historischer Retro-Bögen. Katalog-PR #11: 737 Master / 1.474 offene Ziele, 737/737 Größenzuordnungen je Acrylfarbe identisch. 105 Tests bestanden, 1 optionaler echter-Export-Test übersprungen, 0 Fehler; Linux-Vollauf offen. Keine UI-, Live- oder Freigabeänderung. [Bericht und Nur-Lese-Abgleich](docs/handoffs/2026-10-31-acryl3-designziele-astra.md).

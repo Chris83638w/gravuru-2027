@@ -1,5 +1,7 @@
 ## 01.11.2026 – Codex/Astra: Funkklingel-Bedienfehler und größere Auswahlkacheln
 
+Nachtrag: Regulärer Shop-Produktbutton lädt den Live-Konfigurator erfolgreich. Dort zusätzliche 82-px-Scrollbewegung beim Wechsel von langer Optionsliste zum Textpanel erkannt. Ausschließlich Funkklingel-CSS ergänzt: eigener Scrollbereich der Bedienleiste, festes äußeres Layout. 5/5 Darstellungstests, Build und lokaler Chrome-Nachtest erfolgreich. Bereitstellung dieser Ergänzung folgt auf eigener Kopie der aktiven Laufzeit.
+
 Chris' Live-Auftrag: Gravur auf Acryl begrenzen, springende Vorschau beim Textanklicken beheben, Hausnummer und übrige Gestaltungselemente verschiebbar halten; größere Format-/Positionskacheln nebeneinander. PR #100 gemergt (`0af8d81`) und live. 119 gezielte Tests lokal und unter Linux erfolgreich, Build und lokale Chrome-Bedienung Desktop/390 px geprüft: „12a“ verschieben, auf 24 mm vergrößern, an Acrylkante ziehen; Vorschaukoordinaten vor/nach Auswahl identisch, Gestaltungslinie separat verschoben. Master-Rechte und Gerätegeometrie erhalten. 3.274 Serverdateien verglichen, exakt sechs Laufzeitdateien und drei Tests geändert. Öffentlicher Editor und Bundle HTTP 200, Bundle-SHA identisch zum geprüften Build. Abschließender Chrome-Liveaufruf noch offen: Browsersteuerung hält die Editor-Dokumentantwort an, iframe bleibt leer. Kein erfolgreicher Live-Warenkorb-Endtest behauptet. [Bericht und Rückweg](docs/handoffs/2026-11-01-funkklingeln-auswahlreihen.md).
 
 ## 01.11.2026 – Codex/Astra: gemeinsamer Ausführungsblock für Funkklingeln

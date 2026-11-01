@@ -1,3 +1,7 @@
+# Türschilder: Format & Größe · 01.11.2026 · Astra
+
+Chris benennt den Bereich um: Reiter, Überschrift und erster Handy-Schritt heißen jetzt Format & Größe. 42/42 bestehende Tests, Build und lokale Desktop-/375×548-Browserprüfung grün. Nur Text/Umbruch geändert, keine Preis-/Optionslogik. [Nachweis](docs/handoffs/2026-11-01-tuerschilder-review/README.md#beschriftung-nach-chris--01112026). Auf PR #102, kein Merge oder Live-Schritt.
+
 # Türschilder: Review-Korrekturen und vollständige Prüfgalerie · 01.11.2026 · Astra
 
 PR #102 über #98/#97, main bfac22b ohne Force-Push integriert. Retro-Flächentönung entfernt; eine Oberfläche je Material/Farbe. Ausweichen mit echten Glyphen, Katalogrand, Elementgruppen und ohne neue Überlagerungen; sechs ursprüngliche Preis-Tests unverändert grün. Lokale Galerie: 783 darstellbare Master, Rund aus 62404b12, offene Ziele gekennzeichnet. 17.094 Befestigungskombinationen ohne Konflikte. Windows-Vollauf 2.028/2.049, 16 fehlende Logo-Abhängigkeiten danach in 53/53 Tests behoben, 5 Plattformskips; letzte Grenzkorrektur 18/18. Acht aktuelle Bildpaare und Desktop/Handybilder. [Bericht, Zähler und offene Quellenfragen](docs/handoffs/2026-11-01-tuerschilder-review/README.md). Linux-Review bei Claude offen. Keine Freigabe, kein Import, kein Merge nach main, nichts live.

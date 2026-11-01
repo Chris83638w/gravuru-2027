@@ -65,3 +65,7 @@ Analog mit `--linie=acryl-tuerschilder --output=NEU-ACRYL`. Danach:
 Python mit den vorhandenen SVG-/PDF-/Font-Abhängigkeiten plus `app/workshop/requirements-logo.txt`. Prüfdaten enthalten Schriftpfade und bleiben lokal.
 
 **Claude als nächstes:** Linux-Vollauf der aktualisierten Kette #97 → #98 → #102, Sichtabnahme der korrigierten Beispiele und Entscheidung zu den beiden Quellenfragen. Der Import-/Shop-Schritt bleibt getrennt. Zurück vor Veröffentlichung: PR nicht übernehmen; es gibt keine Datenmigration oder Live-Rücknahme.
+
+## Beschriftung nach Chris – 01.11.2026
+
+Auf ausdrücklichen Wunsch heißt der Türschild-Reiter jetzt **Format & Größe**, ebenso die Bereichsüberschrift und der erste Handy-Schritt. Andere Produktlinien bleiben bei ihren bisherigen Bezeichnungen. Auf 375×548 bricht der Schritttext sauber um; Preis und Weiter bleiben sichtbar. Nur Beschriftung und nötiger Textumbruch geändert, keine Optionen oder Preise. 42/42 vorhandene Mobile-/Workflow-/UI-Regressionen grün; lokale Browserprüfung 1440×1000 und 375×548 bestanden. [Messwerte](format-label-browser.json) · [Desktop](format-label-1440.png) · [Handy](format-label-375.png). Neues Bundle editor-e204a14b14d98f53.mjs. Nichts live.

@@ -105,7 +105,7 @@ export async function installUX(el,config,legacy){
   const largeHelp=document.createElement('div');largeHelp.innerHTML=button('help','? Hilfe','class="ux-large-help"');$('.c-large-preview').append(largeHelp.firstElementChild);
   $('[data-ux-stage]').append($('.stage-wrap'));
   $('#ux-panel-options').append($('.fk-options'));
-  $('.fk-options h2').textContent='Material & Befestigung';
+  $('.fk-options h2').textContent=config?.familyFormats?'Format & Größe':'Material & Befestigung';
   $('#ux-panel-design').append($('.c-design-section'));
   $('#ux-panel-motif').append($('#panel-motif'));
   // Ladezeit: Motivbibliothek laden, sobald der Motivbereich sichtbar wird (Reiter oder mobiler Schritt „Foto / Motiv“).

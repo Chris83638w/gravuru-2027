@@ -19,6 +19,7 @@ export function installFamilyFormatsPresentation({el,config,picks,pictures}){
  if(!isFamilyFormats(config))return ()=>{};
  el.setAttribute('data-family-formats','');
  const style=document.createElement('style');style.textContent=`
+ :host([data-family-formats]) .ux-mobile-step-label{white-space:normal;text-align:center}
  :host([data-family-formats]) .ux-shell .c-design-card small[data-family-review]:not([hidden]){display:block!important;font-size:11px!important;line-height:1.3;color:#697079;font-weight:400}
  :host([data-family-formats]) .family-shapes small{font-size:10px;line-height:1.15}
  :host([data-family-formats]) .m-options>label{display:none!important}

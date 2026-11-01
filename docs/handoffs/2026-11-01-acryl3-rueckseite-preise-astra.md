@@ -17,7 +17,7 @@ Basis: Code `09bdf2105ba271a283b37070e6b61eeccccf78db`, Katalog `80fedf744855af0
 
 Das Gravurpaket enthält zusätzlich `gravur-fertigung.svg`, direkt aus demselben vorbereiteten und orientierten SVG-Baum wie die PDF-Ausgabe. `gesicherte-gravurgestaltung.svg` bleibt die ungespiegelte Quelle. Bei zwei gestalteten Flächen erhalten die Dateien die bestehenden Seitensuffixe. Die Rezeptversion steigt auf v5, damit alte Exportpakete ohne diese Datei nicht aus dem Cache kommen. Glasreflexe und Bedienhilfen gelangen nicht in die Fertigung.
 
-## N38: Familien und erzeugte Ansichten geprüft, Serienfrage noch offen
+## N38 abgeschlossen: Familien, Serien und erzeugte Ansichten geprüft
 
 | Familie / SKU | vorher | nachher |
 | --- | ---: | ---: |
@@ -31,9 +31,9 @@ Das Gravurpaket enthält zusätzlich `gravur-fertigung.svg`, direkt aus demselbe
 
 Vollständiger Katalogbau durchgeführt; 3 betroffene PDFs mit je 13 A3-Querformatseiten geöffnet und geprüft. Unbeteiligte generierte Familienansichten bytegleich erhalten. Excel aus allen 13 finalen Familien neu erzeugt: **5.956 Zellen verglichen, exakt 7 Änderungen** (5 Grundpreise, 2 Gravurseiten). Keine Design-/Ziel-Freigabe geändert.
 
-**Vor Abschluss N38 klären:** Die alte Stahlserie verwendet für 24×8 / 27×9 `TS-V2A-OV-240X80-T15` / `TS-V2A-OV-270X90-T15`, statt der bestätigten `GR-ES-EL-*`-Schlüssel. 30×10 fehlt in beiden alten Serien (je 79 Größen, Familien je 80). Keine Serienkennung erfunden oder überschrieben; Serien noch unverändert. [Konkrete Rückfrage an Claude](https://github.com/Chris83638w/gravuru-2027/issues/48#issuecomment-6554654257).
+**N38 abgeschlossen nach [Claudes Quellenbestätigung](https://github.com/Chris83638w/gravuru-2027/issues/48#issuecomment-6555080054):** Die vorhandenen Seriengrößen `TS-V2A-OV-240X80-T15` / `TS-V2A-OV-270X90-T15` stehen nun auf 3299 / 3999 ct. Genau zehn zugehörige Variantenpreise sind um 200 / 300 ct erhöht; bestehende Befestigungsaufschläge, alle Kennungen, Revisionen, Konturen und Designzuordnungen bleiben erhalten. Acryl-Variantenpreise unverändert. Oval 30×10 ist in beiden Serien ausdrücklich als **offene Größe für Serie/Shopify** vermerkt: Familie/Excel 5699 ct Edelstahl, 3999 ct Acryl je Farbe; keine Konfigurations-/Varianten-ID angelegt. Anlage erst beim Shopify-Export mit Chris’ Freigabe.
 
-Dieselbe Rückfrage klärt N39: Acryl ist seit N35 ausdrücklich unter OV vereinheitlicht, während N39 wieder Oval/Ellipse getrennt nennt. Die Entscheidung wird vor der Formauswahl benötigt.
+N39: eine Anzeigeform **Oval** für beide Materialien, alle ovalen Seitenverhältnisse darin gruppiert; interne OV/EL-Kennungen bleiben erhalten. Danach N36. N39/N36 sind noch nicht implementiert.
 
 ## Nachweise und Tests
 
@@ -49,10 +49,10 @@ Bestehende Testdateien: `acrylic-engraving`, `form-engraving-proof`, `output-ori
 
 ## Integration des neuen Katalog-Hauptstands
 
-Während der Prüfung wurde Katalog-main `811f26395fb6f90aab465814430be4a61fa6257a` veröffentlicht. Seine Hausnummern-Daten bleiben vollständig erhalten. Katalogübersicht und gemeinsame Excel wurden aus beiden Quellen neu erzeugt: **7.105 Zellen gegen den neuen Hauptstand verglichen, erneut genau 7 Änderungen** (5 Preise, 2 Gravurseiten). Alle 13 Familien stimmen bis auf die ausdrücklich beauftragten Felder mit diesem Stand überein. Der vorherige Vergleich mit 5.956 Zellen bleibt der Nachweis gegen die ursprüngliche Basis. Code-main `273aaba2` ändert inzwischen nur eine unabhängige Schiefer-Excel; Code-PR bleibt konfliktfrei.
+Während der Prüfung wurde Katalog-main `811f26395fb6f90aab465814430be4a61fa6257a` veröffentlicht. Seine Hausnummern-Daten bleiben vollständig erhalten. Katalogübersicht und gemeinsame Excel wurden aus beiden Quellen neu erzeugt: **7.105 Zellen gegen den neuen Hauptstand verglichen, erneut genau 7 Änderungen** (5 Preise, 2 Gravurseiten). Alle 13 Familien stimmen bis auf die ausdrücklich beauftragten Felder mit diesem Stand überein. Der vorherige Vergleich mit 5.956 Zellen bleibt der Nachweis gegen die ursprüngliche Basis. Code-main enthält inzwischen außerdem PR #91 (Funkklingel-Formatzeilen). Dieser Stand wird im Code-Prüfbranch erhalten; der gleichzeitige Statusabsatz beider Pakete bleibt bestehen.
 
-[Code-PR #90](https://github.com/Chris83638w/gravuru-2027/pull/90) ist zur Prüfung bereit; [Katalog-PR #15](https://github.com/Chris83638w/gravuru-katalog./pull/15) bleibt wegen der Serienfrage ein Entwurf. Keine PR-Freigabe, kein Merge nach main, keine Live-Aktion.
+[Code-PR #90](https://github.com/Chris83638w/gravuru-2027/pull/90) ist zur Prüfung bereit; [Katalog-PR #15](https://github.com/Chris83638w/gravuru-katalog./pull/15) enthält nach Quellenbestätigung auch die zwei Seriengrundpreise und zehn Variantenpreise. Keine PR-Freigabe, kein Merge nach main, keine Live-Aktion.
 
 ## Nächster Schritt
 
-Claude: N37-Code und Katalogbelege prüfen, Linux-Vollauf; die zwei Quellenfragen in #48 beantworten. Danach ausschließlich die bestätigten Serienpreise ergänzen und N38 abschließen. Anschließend N39 Form/Größe, danach N36 reversible Ausweichbewegung. Nicht mergen oder live stellen.
+Claude: N37-Code und N38-Katalogbelege prüfen, Linux-Vollauf. Astra setzt danach N39 Form/Größe mit einer Anzeigeform Oval für beide Materialien und anschließend N36 reversible Ausweichbewegung um. Nicht mergen oder live stellen.

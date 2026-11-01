@@ -21,6 +21,13 @@ N37 zur Prüfung: native Glasvorschau für Schwarz/Anthrazit in Konfi und Werkst
 # Acryl-3-mm-Ziele · 31.10.2026 · Astra
 
 Nachricht 35: explizit abgeleitete Familien behalten die vorhandenen Quellgrößen bei identischer Geometrie, einschließlich historischer Retro-Bögen. Katalog-PR #11: 737 Master / 1.474 offene Ziele, 737/737 Größenzuordnungen je Acrylfarbe identisch. 105 Tests bestanden, 1 optionaler echter-Export-Test übersprungen, 0 Fehler; Linux-Vollauf offen. Keine UI-, Live- oder Freigabeänderung. [Bericht und Nur-Lese-Abgleich](docs/handoffs/2026-10-31-acryl3-designziele-astra.md).
+## 01.11.2026 – Codex: Issue 85, TR bestätigt und Rundserie umgesetzt
+
+72 runde Master (69 Referenzen + Praxis/Zimmer/Hausnummer D74–D76), 288 Größenableitungen und 216 offene Materialziele. 1.080 native Größenprüfungen, kein „passt nicht“. K00 jetzt Standard in Zielvorschau und Katalogeditor, alle Befestigungen weiterhin geprüft; 35/35 Tests. Vollständiger Katalogbau mit 13 Familien erfolgreich. Katalog-PR 12 auf Abhängigkeit PR 11, Code-PR 86; keine Freigabe/Import/Merge/Live. [Nachweis und nächster Schritt](docs/handoffs/2026-11-01-issue85-tr.md).
+
+## 31.10.2026 – Codex/Astra: Issue 85, runde Studien vorbereitet
+
+Nachricht 4 zuerst: 69 individuelle Kreis-Kompositionen aus 70 Quadrat-Originalen, SVG-Texte und Originalmotive erhalten. Nativer Kontaktbogen im Katalog-Auftragsordner `auftraege/2026-10-31-rund-studien`: 23 „passt“, 46 „prüfen“, kein Konturüberstand über alle fünf Größen. D14 fehlt Welcome. Optionales `mounting=K00` für die Zielvorschau; 15/15 gezielte Tests bestanden, sämtliche Befestigungen weiterhin geprüft. Katalog-Metadatenlauf validiert 11 Familien; keine unveranlassten Generatoränderungen übernommen. Kennung TR zur Entscheidung im Chat, Acrylfamilien aus #48 noch nicht in main. Nur Studien, keine neue Katalogreihe, kein Import/Merge/Live. [Stand und offene Schritte](docs/handoffs/2026-10-31-issue85-rund.md).
 
 ## 31.10.2026 – Codex/Astra: Funkklingel-Reparatur #82 live abgenommen
 

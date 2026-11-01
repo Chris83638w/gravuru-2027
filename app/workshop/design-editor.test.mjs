@@ -45,6 +45,8 @@ test('opens catalogue master without product import, all catalogue fonts, real m
  assert.match(opened.document.config.materialSurface,/^data:image\/png;base64,/);assert.equal(opened.document.config.profile.material.kind,'steel');assert.equal(opened.document.config.profile.geometry.cornerRadiusMm,3);
  assert.ok(opened.fonts.some(font=>font.id==='Lato'));assert.equal(opened.fonts.find(font=>font.id==='Michroma').available,true);assert.deepEqual(f.bytes(),before);
  assert.equal(opened.fit.sizes.length,3);assert.deepEqual(opened.document.config.profile.designs[0].katalog.targetMm,[90,60]);
+ assert.equal(selectedProfile(opened.document.config,{}).geometry.holes.length,0,'start without mounting when K00 exists');
+ assert.equal(opened.document.config.profile.optionGroups.find(g=>g.id==='mounting').values.find(v=>v.holes?.length).holes.length,2,'drilled choices remain available');
 });
 for(const shape of ['rect','ellipse','contour'])test(`${shape}: no-op leaves exact JSON/SVG and approval untouched, including proportional-contain rounding`,async t=>{
  const f=fixture(t,{shape,master:shape==='contour'?[90.6,61.3]:[90,60]}),s=service(),opened=await s.open(f.root,f),before=f.bytes();
@@ -54,7 +56,8 @@ for(const shape of ['rect','ellipse','contour'])test(`${shape}: no-op leaves exa
  if(shape==='contour'){assert.deepEqual(opened.source.editorMm,[90,60]);assert.match(opened.source.note,/90.6 × 61.3/);assert.equal(opened.document.config.profile.geometry.outlinePath,f.family.sizes[0].outlinePath);assert.equal(opened.document.config.profile.optionGroups[0].values.find(v=>v.id==='B02').holes.length,2);}
 });
 for(const shape of ['rect','ellipse','contour'])test(`${shape}: preview retains physical holes without visible mechanical keepout rings`,async t=>{
- const f=fixture(t,{shape}),s=service(),opened=await s.open(f.root,f),data=input(f,opened),before=f.bytes();
+ const f=fixture(t,{shape});f.family.withoutMounting=false;write(f.root,'familien/edelstahl/test-schilder.json',f.family);
+ const s=service(),opened=await s.open(f.root,f),data=input(f,opened),before=f.bytes();
  const geometry=selectedProfile(opened.document.config,{}).geometry,fit=await s.fit(f.root,data);
  assert.equal(geometry.holes.length,2);
  const preview=await s.preview(f.root,data);assert.doesNotMatch(preview.svg,/data-m-keepout|#d0453a|#c0392b/);assert.equal(preview.svg.includes('data-m-design-area="true"'),Boolean(designAreaOutline(opened.document.config,selectedProfile(opened.document.config,{}))),'existing design boundary remains independent of mechanical rings');

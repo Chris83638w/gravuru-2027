@@ -16,15 +16,18 @@
     "uniqueMetaDescriptions": 80,
     "sourceDesignFiles": 737,
     "sourceTargetApprovalFlags": 715,
-    "designProposals": 42,
-    "unassigned": 38,
+    "designProposals": 72,
+    "unassigned": 8,
     "imageSlots": 240,
     "verifiedImages": 0,
     "existingMainProductBindings": 104,
     "articlesWithExistingCandidates": 35,
     "pricesOpen": 0,
     "newShopifyIds": 0,
-    "shopifyWrites": 0
+    "shopifyWrites": 0,
+    "renderedReviewPreviews": 72,
+    "renderedOriginalComparisons": 72,
+    "approvedShopImages": 0
   },
   "checks": {
     "everySourceSizeOnce": true,
@@ -34,55 +37,70 @@
     "reserved80x35LineDesign": true,
     "sourcePricesAndMountingCopied": true,
     "noInventedIdentifiers": true,
-    "allImagesMarkedUnverified": true
+    "allImagesMarkedUnverified": false,
+    "uniqueDBaseDesigns": true,
+    "renderedImagesLossless": true,
+    "allShopImagesAwaitApproval": true
   },
   "boundaries": [
-    "Design-name deduplication is a precheck; visual duplicates with different names require contact-sheet review.",
-    "Assignment uses current app shape/size rules only; no font/glyph/production fit or browser acceptance claimed.",
-    "Source target flags are raw metadata, not live workshop, gallery or customer counts.",
-    "Existing catalogue IDs are candidates only; Shopify state and handle conflicts were not refreshed.",
-    "No new approval, catalogue mutation, app change, import, merge or live step."
+    "Sizes from catalogue PR #99 are overlaid only in the private review snapshot; current-main text and approval fields are preserved.",
+    "Round source from open PR #12 remains unapproved.",
+    "Each recurring D base layout is used at most once, including different form-specific names. Visual review is still required.",
+    "Automated glyph/contour checks and native screenshots are not a new design or production approval.",
+    "Shop images, current Shopify bindings and customer/cart acceptance remain open. No app/master, catalogue, shop or live writes."
   ],
   "unassigned": [
-    "GR-ES-EL-150X50-T15",
-    "GR-ES-EL-180X60-T15",
-    "GR-ES-EL-210X70-T15",
-    "GR-ES-EL-270X90-T15",
-    "GR-ES-EL-300X100-T15",
-    "GR-ES-RE-320X140-T15",
-    "GR-ES-RE-400X175-T15",
-    "GR-ES-OV-300X159P9-T15",
-    "GR-ES-OV-225X120-T15",
-    "GR-ES-OV-120X80-T15",
-    "GR-ES-OV-150X100-T15",
-    "GR-ES-OV-180X120-T15",
-    "GR-ES-AB-210X140-T15",
-    "GR-ES-AB-240X160-T15",
-    "GR-ES-OV-240X160-T15",
-    "GR-ES-OV-300X200-T15",
-    "GR-ES-AB-420X280-T15",
-    "GR-ES-AB-450X300-T15",
-    "GR-ES-QU-100X100-T15",
-    "GR-ES-QU-120X120-T15",
-    "GR-ES-QU-260X260-T15",
-    "GR-ES-QU-300X300-T15",
-    "GR-ES-R-65X65-T15",
-    "GR-ES-R-85X85-T15",
-    "GR-ES-R-120X120-T15",
-    "GR-ES-R-160X160-T15",
-    "GR-ES-R-200X200-T15",
-    "GR-ES-RT1-120X80-T15",
-    "GR-ES-RT1-150X100-T15",
-    "GR-ES-RT1-180X120-T15",
-    "GR-ES-RT1-210X140-T15",
-    "GR-ES-RT1-240X160-T15",
-    "GR-ES-RT1-300X200-T15",
-    "GR-ES-RT2-150X100-T15",
-    "GR-ES-RT2-180X120-T15",
-    "GR-ES-RT2-210X140-T15",
-    "GR-ES-RT2-240X160-T15",
-    "GR-ES-RT2-300X200-T15"
+    {
+      "sizeKey": "GR-ES-RE-210X70-T15",
+      "reason": "D-Grundgestaltungen bereits vergeben"
+    },
+    {
+      "sizeKey": "GR-ES-RE-240X80-T15",
+      "reason": "D-Grundgestaltungen bereits vergeben"
+    },
+    {
+      "sizeKey": "GR-ES-RE-270X90-T15",
+      "reason": "D-Grundgestaltungen bereits vergeben"
+    },
+    {
+      "sizeKey": "GR-ES-RT2-150X100-T15",
+      "reason": "Größen-Zuordnung fehlt"
+    },
+    {
+      "sizeKey": "GR-ES-RT2-180X120-T15",
+      "reason": "Größen-Zuordnung fehlt"
+    },
+    {
+      "sizeKey": "GR-ES-RT2-210X140-T15",
+      "reason": "Größen-Zuordnung fehlt"
+    },
+    {
+      "sizeKey": "GR-ES-RT2-240X160-T15",
+      "reason": "Größen-Zuordnung fehlt"
+    },
+    {
+      "sizeKey": "GR-ES-RT2-300X200-T15",
+      "reason": "Größen-Zuordnung fehlt"
+    }
   ],
   "longSeoTitles": [],
-  "longMetaDescriptions": []
+  "longMetaDescriptions": [],
+  "reviewSources": {
+    "base": "c8356aa27de5340b8dcd647e6454bd2852232bdb",
+    "sizeProposal": "021038063546299aff411c843cf7f2abb9d971c1",
+    "roundProposal": "62404b12d429b439e0f8738d6bc81b23e15bd25d",
+    "changedSizeFiles": 513,
+    "addedSizeBindings": 2196,
+    "roundFiles": 72
+  },
+  "automatedFit": {
+    "sizes": 80,
+    "proposals": 72,
+    "open": 8,
+    "checkedPairs": 4680,
+    "excludedPairs": 13,
+    "fitPass": 69,
+    "fitReview": 3,
+    "unapproved": 5
+  }
 }

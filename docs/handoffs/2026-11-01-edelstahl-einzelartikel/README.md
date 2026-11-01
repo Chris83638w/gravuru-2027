@@ -1,5 +1,7 @@
 # Edelstahl-Türschilder: ein Artikel je Form und Größe
 
+> **Aktueller Stand: [Bildauswahl mit 72 verschiedenen D-Grundgestaltungen und acht offenen Plätzen](BILDAUSWAHL-STAND.md).** Chris hat D4 ausdrücklich mit „versetzt“ bestätigt. Die nachfolgende erste Text-/Quellenbestandsaufnahme mit 42 Vorschlägen bleibt als historische Herleitung erhalten; ihre damaligen Zähler und offenen Punkte sind durch den neuen Bildbericht ersetzt. Die verlinkten JSON-/CSV-/HTML-Artefakte enthalten bereits den neuen Stand.
+
 01.11.2026 · Astra · redaktioneller Entwurf, keine Shopify- oder Live-Änderung.
 
 Chris hat den bisherigen N39-Shopify-Zuschnitt ersetzt: **genau ein Artikel je Form und Größe**, keine zusätzlichen Artikel je Unterkategorie. Dazu eigene SEO-Texte und Bildangaben. Anschließend: **„kein design kommt doppelt. 8x3,5 machst du mit dem strich design“**. Die Entscheidungen stehen in [Issue #48](https://github.com/Chris83638w/gravuru-2027/issues/48#issuecomment-6558386752).

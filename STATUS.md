@@ -1,3 +1,7 @@
+## 01.11.2026 · Astra Mika · Katzen-Grabkreuze, Erstprüfung
+
+Chris: „und jetzt für Katzen“. 25 eigenständige Entwürfe: 1 erhaltenes Verkaufsoriginal, 3 Motiv-Referenzen und 21 neue Entwürfe einschließlich 5 Signature. Nur Gravur Schwarz 11×20, ein JPG mit Originalen daneben. 25/25 native Zielprüfungen bestanden, mindestens 2.202 mm Rand und 3.1 mm H-Versalhöhe; Erdteil frei. 113 Original-/Hunde-Dateien unverändert. 15 gültige Familien im Metadatenbau. Browserprüfung offen; keine Freigabe. Gestapelte Aufgabenbranches auf Hunde-PR #109/#125, keine Änderung der Hunde. Nächster Schritt: Claude bewertet den Katzenbogen in Issue #76.
+
 ## 01.11.2026 · Astra Mika · Originale und eigenständige Entwürfe
 
 Chris verlangt unterschiedliche Bildideen statt austauschbarer Varianten. Acht Verkaufsoriginale restauriert; doppelte Pfotenspuren reduziert, Maja statt zweiter Paula, Motive vergrößert, Luna/Ben/Juna neu komponiert. 25 unterschiedliche Namen und vollständige Motivkompositionen; drei klar verschiedene Spuren. 25/25 native Prüfungen, mindestens 2.114 mm Rand und 3.1 mm H-Versalhöhe. Ein JPG Schwarz 11×20, 1297896 Bytes. 51 Originaldateien unverändert; 15 Familien im Metadatenbau. Browserprüfung offen. Nächster Schritt: Chris/Claude bewerten Originaltreue und Eigenständigkeit.

@@ -1,0 +1,765 @@
+{
+  "requiredMm": 2,
+  "source": "Chris #76 comment 6562491600; supersedes 3 mm",
+  "method": "Binary search of native templateFit (glyph contours, motif paths including stroke, concave contour and rounded corners); conservative lower bound at 0.005 mm search resolution. Ground restriction unchanged.",
+  "designs": [
+    {
+      "id": "KZ-A-11x20-D25",
+      "minimumCertifiedMarginMm": 3.325,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.325,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Minnie",
+          "minimumCertifiedMarginMm": 3.325,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2026",
+          "minimumCertifiedMarginMm": 4.75,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D54",
+      "minimumCertifiedMarginMm": 3.393,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.505,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Tiger",
+          "minimumCertifiedMarginMm": 3.847,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "Keine Zeit\nwird jemals\ndie\nErinnerung an\neine gute\nKatze\nauslöschen.",
+          "minimumCertifiedMarginMm": 3.393,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D223",
+      "minimumCertifiedMarginMm": 4.931,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 4.931,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Felix",
+          "minimumCertifiedMarginMm": 5.434,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2026",
+          "minimumCertifiedMarginMm": 5.4,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D282",
+      "minimumCertifiedMarginMm": 3.33,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.33,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Minka",
+          "minimumCertifiedMarginMm": 4.672,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2013–2025",
+          "minimumCertifiedMarginMm": 8.129,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D401",
+      "minimumCertifiedMarginMm": 3.002,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.002,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Lilly",
+          "minimumCertifiedMarginMm": 7.426,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2026",
+          "minimumCertifiedMarginMm": 4.111,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D402",
+      "minimumCertifiedMarginMm": 2.788,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.788,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Simba",
+          "minimumCertifiedMarginMm": 3.325,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2026",
+          "minimumCertifiedMarginMm": 4.111,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D403",
+      "minimumCertifiedMarginMm": 3.032,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.032,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Smilla",
+          "minimumCertifiedMarginMm": 3.33,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2026",
+          "minimumCertifiedMarginMm": 4.111,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D404",
+      "minimumCertifiedMarginMm": 3.906,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.906,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Leo",
+          "minimumCertifiedMarginMm": 10.341,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2026",
+          "minimumCertifiedMarginMm": 4.111,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D405",
+      "minimumCertifiedMarginMm": 2.954,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.954,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Pünktchen",
+          "minimumCertifiedMarginMm": 3.32,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2026",
+          "minimumCertifiedMarginMm": 4.111,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D406",
+      "minimumCertifiedMarginMm": 4.111,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 4.951,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Nelly",
+          "minimumCertifiedMarginMm": 4.736,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2026",
+          "minimumCertifiedMarginMm": 4.111,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D407",
+      "minimumCertifiedMarginMm": 2.978,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.978,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Fritzi",
+          "minimumCertifiedMarginMm": 3.745,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2026",
+          "minimumCertifiedMarginMm": 4.111,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D408",
+      "minimumCertifiedMarginMm": 2.49,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.49,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Suki",
+          "minimumCertifiedMarginMm": 5.502,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2026",
+          "minimumCertifiedMarginMm": 4.111,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D409",
+      "minimumCertifiedMarginMm": 3.33,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.925,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Merlin",
+          "minimumCertifiedMarginMm": 3.33,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2026",
+          "minimumCertifiedMarginMm": 4.111,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D410",
+      "minimumCertifiedMarginMm": 3.911,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.911,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Zora",
+          "minimumCertifiedMarginMm": 5.449,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2026",
+          "minimumCertifiedMarginMm": 4.111,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D411",
+      "minimumCertifiedMarginMm": 3.33,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 5.473,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Pepper",
+          "minimumCertifiedMarginMm": 3.33,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2026",
+          "minimumCertifiedMarginMm": 4.111,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D412",
+      "minimumCertifiedMarginMm": 3.984,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.984,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Tinka",
+          "minimumCertifiedMarginMm": 5.18,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2026",
+          "minimumCertifiedMarginMm": 4.111,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D413",
+      "minimumCertifiedMarginMm": 4.086,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 5.952,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Findus",
+          "minimumCertifiedMarginMm": 4.086,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2026",
+          "minimumCertifiedMarginMm": 4.111,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D414",
+      "minimumCertifiedMarginMm": 2.929,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.929,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Pia",
+          "minimumCertifiedMarginMm": 7.202,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2012 – 2026",
+          "minimumCertifiedMarginMm": 3.295,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D415",
+      "minimumCertifiedMarginMm": 2.451,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.451,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Mochi",
+          "minimumCertifiedMarginMm": 3.325,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2026",
+          "minimumCertifiedMarginMm": 4.111,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D416",
+      "minimumCertifiedMarginMm": 2.9,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.9,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Yuki",
+          "minimumCertifiedMarginMm": 5.732,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2010 – 2026",
+          "minimumCertifiedMarginMm": 3.3,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D417",
+      "minimumCertifiedMarginMm": 3.886,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.886,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Kiki",
+          "minimumCertifiedMarginMm": 10.366,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011",
+          "minimumCertifiedMarginMm": 12.524,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "2026",
+          "minimumCertifiedMarginMm": 11.298,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D418",
+      "minimumCertifiedMarginMm": 2.441,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.33,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Cleo",
+          "minimumCertifiedMarginMm": 15.815,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2012 – 2026",
+          "minimumCertifiedMarginMm": 2.441,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D419",
+      "minimumCertifiedMarginMm": 2.875,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.875,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Nero",
+          "minimumCertifiedMarginMm": 6.85,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2025",
+          "minimumCertifiedMarginMm": 6.206,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D420",
+      "minimumCertifiedMarginMm": 2.202,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.954,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Lotte",
+          "minimumCertifiedMarginMm": 9.267,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2010 – 2026",
+          "minimumCertifiedMarginMm": 2.202,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D421",
+      "minimumCertifiedMarginMm": 3.779,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.779,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Nori",
+          "minimumCertifiedMarginMm": 4.345,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2026",
+          "minimumCertifiedMarginMm": 4.111,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    }
+  ]
+}

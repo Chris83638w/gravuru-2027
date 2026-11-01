@@ -166,3 +166,27 @@ test('dashboard exposes actual form groups including zero compatible designs, co
  assert.equal(groups().find(group=>group.groupKey==='RU').count,1,'a confirmed compatible target counts without granting approval');
  assert.equal(read(f.root,'designs/test/T-D2/design.json').ziele[0].freigabe,null);
 });
+
+test('explicit mounting affects only preview and cannot bypass the all-options review',async t=>{
+ const f=fixture(t),file='familien/edelstahl/test-schilder.json',family=read(f.root,file);
+ family.withoutMounting=true;const drilled=family.mountingRules.find(r=>r.id.startsWith('B'));
+ assert.ok(drilled);family.sizes.forEach(s=>s.mounting.push(drilled.id));write(f.root,file,family);
+ const input={reihe:'test',id:'T-D1',familie:'test-schilder'};
+ const normal=await targetDesignPreview(f.root,input,options),plain=await targetDesignPreview(f.root,{...input,mounting:'K00'},options),holes=await targetDesignPreview(f.root,{...input,mounting:drilled.skuSuffix},options);
+ assert.notEqual(plain.svg,holes.svg);assert.equal(normal.svg,holes.svg);
+ assert.deepEqual(plain.reviewFit,holes.reviewFit);assert.equal(plain.checksum,holes.checksum);
+ assert.equal(f.read().ziele[0].freigabe,null);
+ await assert.rejects(targetDesignPreview(f.root,{...input,mounting:'invented'},options),e=>e.status===422);
+});
+
+test('empty path-shaped photo windows keep their native mask in acrylic and steel previews',async t=>{
+ const f=fixture(t);patchDesign(f.root,{reihe:'test',designId:'T-D1',zieleHinzufuegen:['acrylic-test']});
+ write(f.root,f.base+'design.svg','<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 60"><g id="foto-1"><path d="M25 30 A15 15 0 1 0 55 30 A15 15 0 1 0 25 30 Z"/></g></svg>');
+ for(const id of ['test-schilder','acrylic-test']){
+  const result=await f.preview(id);
+  assert.match(result.svg,/data-template-photo-mask="true"/);
+  assert.match(result.svg,/mask="url\(#empty-template-/);
+  assert.match(result.svg,/data:image\/svg\+xml;base64,/);
+  assert.doesNotMatch(result.svg,/\/api\/workshop\/design-assets\//);
+ }
+});

@@ -74,7 +74,11 @@ function identity(katalog,master,family,size,lineId,inv){
  if(!p)return open('Die Quellkennung folgt keinem vorhandenen Bogenformat.');
  const c=designTargetCompatibility(master,family,size,{katalog});if(!c.sourceForm)return open('Die Quellform ist nicht eindeutig.');
  const candidates=prefixes(katalog,family,size,lineId),lineCode=p=>p.split('-').slice(0,-1).join('-');
- const codes=[...new Set(candidates.map(lineCode))],formChange=c.sourceForm!==c.targetForm,lineChange=codes.length===1&&codes[0]!==lineCode(p[1]);
+ const sameTarget=designTargets(master,katalog).some(t=>t.familie===family.id);
+ // Existing explicit family assignments preserve the source sheet prefix when
+ // only its size changes. Other sheets already generated at that size are not
+ // evidence of a line change (Issue 85 acrylic animal stock).
+ const codes=[...new Set(candidates.map(lineCode))],formChange=c.sourceForm!==c.targetForm,lineChange=(Boolean(lineId)||!sameTarget)&&codes.length===1&&codes[0]!==lineCode(p[1]);
  if((lineId||formChange||lineChange)&&codes.length!==1)return open('Kein eindeutiges vorhandenes Bogenkürzel für die Zielform/-linie.');
  const prefix=formChange||lineChange?lineCode(candidates[0])+'-'+p[1].split('-').at(-1):p[1],dims=[size.widthMm,size.heightMm];
  if(!formChange&&!lineChange&&dims.every((v,i)=>Math.abs(v-master.plateMm[i])<.001))return {id:master.id,reihe:master.seriesFolder,key:master.json.katalog?.key??master.id};

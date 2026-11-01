@@ -98,3 +98,17 @@ test('target compatibility preserves source sizes, separates equal-ratio forms a
  const retro=master({form:'Retro2',plateMm:[90.6,61.3],sizesOpen:['TR2-V2A-9x6']});assert.equal(designTargetCompatibility(retro,contour,contour.sizes[0],{katalog:k}).status,'passt','existing source-authorized Retro contain mapping stays intact');
  const wrong=master({...retro,form:'Retro1'});assert.equal(designTargetCompatibility(wrong,contour,contour.sizes[0],{katalog:k}).variantRequired,true);
 });
+
+test('derived acrylic variants retain own and sibling size restrictions with geometry verification',()=>{
+ const steel=family('steel'),black=family('black',{source:{path:'familien/edelstahl/steel.json'}}),grey=family('grey',{source:{path:'familien/edelstahl/steel.json'}});
+ black.sizes=black.sizes.map(s=>({...s,key:'BLACK-'+s.key}));grey.sizes=grey.sizes.map(s=>({...s,key:'GREY-'+s.key}));
+ const k={...context([steel,black,grey]),root:'/catalog',files:new Map([['familie:steel','/catalog/familien/edelstahl/steel.json']])};
+ const d=master({sizes:[black.sizes[0].key],masterSheet:{familySize:black.sizes[0].key}});
+ assert.deepEqual(assignTargetSeries(black,[d],k)[0].sizes,[black.sizes[0].key]);
+ assert.deepEqual(assignTargetSeries(grey,[d],k)[0].sizes,[grey.sizes[0].key]);
+ assert.equal(designTargetCompatibility(d,grey,grey.sizes[1],{katalog:k}).variantRequired,true);
+ const original=master({sizes:[steel.sizes[0].key]});
+ assert.deepEqual(assignTargetSeries(grey,[original],k)[0].sizes,[grey.sizes[0].key]);
+ grey.sizes[0].widthMm+=1;
+ assert.deepEqual(assignTargetSeries(grey,[d],k)[0].sizes,[],'shared provenance never authorizes changed geometry');
+});

@@ -1,3 +1,19 @@
+## 01.11.2026 – Issue 85: Schriften und TSK-Bestände ergänzt
+
+260 bearbeitbare Fassungen (35 Master + 15 Originalgrößen + 210 native Größenvarianten). 68 Tests bestanden; 580 Ziele geprüft, 554 passt und 26 prüfen. Schieferstärke 5 mm durch Chris bestätigt; alle zehn TSK-Materialvorschauen passen. Foto ausschließlich Acryl 3 mm, Preise und Freigaben offen. Quellen/Prüfbilder: [Übergabe](docs/handoffs/2026-11-01-issue85-tierbestand.md). PRs Katalog #14 / Code #89. Kein Import/Live-Schritt.
+
+# Issue 85 · Native Größenfassungen ergänzt · 01.11.2026 (Codex)
+
+152 zusätzliche LF2-Größenfassungen, zehn belegte Bestandskennungen unverändert dokumentiert. Vollständiger Git-Abgleich über 20.037 JSON-Objekte. 710 native Elemente nach erneutem Einlesen geprüft, maximal 0,004 mm Rundungsabweichung; 15 zusätzliche echte HTTP-Vorschauen und zwei Größen-Kontaktbogenseiten geprüft. 18 Master + 152 Größenfassungen = 170 Paare, sechs getrennte Formstudien. Entwurfs-PRs: Katalog #14 / Code #89. Offen bleiben Schriftentscheidung, Formkennungen, zehn Bestandsfassungen und Acryl-Abhängigkeit. Kein Import/Live-Schritt.
+
+## 01.11.2026 – Codex: Issue 85 Tierbestand als prüfbarer Zwischenstand
+
+16 Bestandslayouts plus zwei neue Designs, sechs getrennte Formstudien; 13 vorhandene Türschild-Varianten zugeordnet. 72 echte Zielvorschauen / 720 Größenprüfungen: 32 passt, 40 prüfen, kein harter Passungsfehler. Schrift-/Formfragen und Acryl-PR 11 offen, Freigaben null. Vorherige Rasse-Designs unverändert; kein Import/Live-Schritt. [Lieferung, Prüfung und nächste Schritte](docs/handoffs/2026-11-01-issue85-tierbestand.md).
+
+## 31.10.2026 – Codex: Issue 85 Quellenprüfung, Aufteilung offen
+
+Nachrichten 1–4 vollständig gelesen. Rund-Auftrag läuft bereits parallel im Chat „Firmenschilder“; dessen Arbeit unverändert. Hier Quelleninventar für 163 Tier-/Hinweis-/Tür-/Hausnummern-Datensätze vorbereitet, mit festen Katalog-Quellen, IDs und Prüfsummen. TR-Kürzel im vorhandenen Serienabgleich belegt. Keine Designübernahme, keine Freigabe und kein Live-Schritt; Issue 85 nicht abgeschlossen. Aufteilung für ergänzende Hunde-/Katzen-Bearbeitung im Chat angefragt. [Quellenprüfung und nächster Schritt](docs/handoffs/2026-10-31-issue85-bestandspruefung.md).
+
 ## 01.11.2026 – Codex/Astra: Funkklingel-Bedienfehler und größere Auswahlkacheln
 
 Abschluss: PR #103 (`c1a9cb6`) ergänzt die Korrektur aus PR #100 um den eigenen Scrollbereich der Funkklingel-Bedienleiste; beide sind live. Weitere 5/5 Darstellungstests lokal/Linux und Build bestanden. Abschließender echter Chrome-Kundenweg über „Jetzt personalisieren“ erfolgreich: größere Kacheln, 12a auf 24 mm vergrößert und verschoben, Ziehen auf Edelstahl stoppt an Acryl. Wechsel von langer Befestigungsliste zu Text behält Vorschaugröße und -position bis auf 1 px Dokumentrandbewegung; vorher 82 px. Öffentlicher finaler Bundle-SHA identisch zum Linux-Build. [Live-Bilder und Rückweg](docs/handoffs/2026-11-01-funkklingeln-auswahlreihen.md#abschließende-live-abnahme).

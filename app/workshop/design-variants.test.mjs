@@ -155,3 +155,15 @@ for(const material of ['S','V2A'])test('explicit same-size target line takes pri
  if(material==='V2A'){assert.equal(p.action,'create-variant');assert.equal(p.identity.id,'GT-V2A-9x6-D9000');assert.equal(p.identity.reihe,'other-90x60');}
  else{assert.equal(p.action,'blocked');assert.match(p.message,/Kennung offen/);}
 });
+
+
+test('explicit target keeps source sheet prefix when another sheet owns the new size',async t=>{
+ const f=fixture(t),family=read(f.root,'familien/edelstahl/test-schilder.json');
+ assert.ok(family.sizes.some(s=>s.key==='TS-RE-120X80'));
+ f.json.ziele=[{familie:'test-schilder',freigabe:null}];write(f.root,f.base+'/design.json',f.json);
+ const foreign={...f.json,id:'OTHER-V2A-12x8-D1',plateMm:[120,80],sizes:['TS-RE-120X80'],masterSheet:{familySize:'TS-RE-120X80'}};
+ write(f.root,'designs/other-120x80/'+foreign.id+'/design.json',foreign);
+ write(f.root,'designs/other-120x80/'+foreign.id+'/design.svg',fs.readFileSync(path.join(f.root,f.base+'/design.svg'),'utf8').replace('0 0 90 60','0 0 120 80'));
+ f.data.target.sizeKey='TS-RE-120X80';const before=snapshots(f.root),p=await service().prepare(f.root,f.data);
+ assert.equal(p.action,'create-variant');assert.equal(p.identity.id,'TRE-V2A-12x8-D9000');assert.equal(p.identity.reihe,'test-120x80');assert.deepEqual(snapshots(f.root),before);
+});

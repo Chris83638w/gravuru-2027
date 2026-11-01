@@ -103,7 +103,7 @@ def apply(c):
             drift={42:.3,46:-.45,126:.5,133:-.3}[no]
             x=48.5+(i%2)*12+(i-(count-1)/2)*drift;y=84.5+i*50/(count-1)
             paths.append(original_paw(x,y,11.4,165 if i%2==0 else 195))
-        by[no]['motifs']=[bundle(paths,sourceMotif={'source':'KZ-A-D46','indices':[1],'composition':'six proportional impressions; no mirrored design'})]
+        by[no]['motifs']=[bundle(paths,sourceMotif={'source':'KZ-A-D46','indices':[1],'composition':f'{count} proportional impressions; no mirrored design'})]
         by[no]['motifKinds']=[f'{count} originale Hundepfoten, diagonal versetzt']
         by[no]['pawCount']=count
         by[no]['reviewNotes'].append(f'Neue Hausstil-Spur mit {count} großen Abdrücken aus Chris’ Originalpfote KZ-A-D46; frühere Pfotenanordnung ersetzt nach #6562929837.')

@@ -1,10 +1,14 @@
 {
-  "scope": "Ausschließlich Schwarz 11×20; keine weiteren Varianten",
+  "scope": "Ausschließlich Schwarz 11×20; 20 Hausstil + 5 Signature nach #6562929837/#6562964893",
   "groups": {
     "A": 8,
     "B": 4,
     "C": 5,
     "D": 8
+  },
+  "tiers": {
+    "standard": 20,
+    "signature": 5
   },
   "designs": 25,
   "nativeFits": {
@@ -16,43 +20,28 @@
     "Alex Brush",
     "Allura",
     "Ashley",
-    "Bellefair",
-    "Caveat",
-    "Cinzel",
-    "Cormorant Garamond",
     "Dancing Script",
-    "Dream Orphans",
     "Great Vibes",
     "Homage",
     "Italianno",
-    "Josefin Sans",
-    "Kaushan Script",
     "Lato",
-    "Libre Baskerville",
-    "Lora",
     "Montserrat",
-    "Montserrat Light",
-    "Oswald",
     "Parisienne",
-    "Playfair Display",
-    "Roboto Slab",
-    "Rochester",
-    "Rounded Elegance",
     "Sacramento",
+    "Satisfy",
     "Tangerine"
   ],
-  "minimumCapMm": 3.1,
-  "minimumCertifiedContourMarginMm": 2.114,
+  "minimumCapMm": 5.253,
+  "minimumCertifiedContourMarginMm": 2.534,
   "requiredContourMarginMm": 2,
   "motifCompositions": {
     "Hund im Herz": 2,
     "Pfotenherz": 2,
     "Flügelpaar": 1,
     "Pfotenduo": 1,
-    "Pfotenspurenpaar": 1,
+    "6 originale Hundepfoten, diagonal versetzt": 2,
     "Knochen": 1,
     "Versetztes Pfotenpaar": 1,
-    "Einzelpfote": 1,
     "Betende Hände": 2,
     "Hundekopf": 1,
     "Pusteblume mit Samen": 1,
@@ -62,26 +51,314 @@
     "Halsband mit Medaillon": 1,
     "Herzleine": 1,
     "Schlafender Hund": 1,
-    "Lieblingsball": 1,
-    "Futternapf": 1,
-    "Spielseil mit Knoten": 1,
-    "Fallende Hundepfötchen": 1,
-    "Hundehütte": 1,
-    "Pfotenspur": 1,
-    "Pfotenpaar": 1,
+    "Hund unter dem Mond": 1,
+    "Hund und Herz als durchgehende Linie": 1,
+    "Innenkontur und Pfoten-Siegel": 1,
+    "Geschwungenes Band mit fünf ausgesparten Hundepfoten": 1,
+    "Regenbogenbrücke mit aufsteigenden Pfoten": 1,
+    "7 originale Hundepfoten, diagonal versetzt": 1,
+    "5 originale Hundepfoten, diagonal versetzt": 1,
     "Rosenpaar": 1
   },
-  "motifCountingNote": "Gezählt werden unterscheidbare Original-Motivzeichnungen/-gruppen, nicht Oberbegriffe. Die Pflichtliste selbst enthält sechs Gestaltungen mit Pfoten/Pfotenspuren; diese bleiben erhalten. Hund im Herz und Pfotenherz erscheinen je zweimal.",
-  "layoutEvidence": [
-    "D301: senkrechter Name, Daten außen",
-    "D302: Spruch quer, Name im Stamm",
-    "D0/D41: Datum im Querbalken, Motive seitlich/oben",
-    "D42: lange Pfotenspur im Stamm",
-    "D203: Regenbogen unten",
-    "D303: Name links, Hund rechts",
-    "D307: fallende Hundepfötchen und Text nebeneinander im Stamm"
+  "houseStyleChecks": {
+    "nameAndDatesInCrossbar": 25,
+    "stemTextCount": 0,
+    "elements2to4": 25,
+    "verticalNames": 0,
+    "signatureTitles": [
+      "Mondwache",
+      "Herzenslinie",
+      "Pfoten-Siegel",
+      "Erinnerungsband",
+      "Regenbogenweg"
+    ],
+    "newSignatureStrokeMm": [
+      0.55,
+      0.6,
+      0.65,
+      0.7
+    ],
+    "negativePawEdgeClearanceMm": 0.325
+  },
+  "proportions": [
+    {
+      "id": "KZ-A-11x20-D0",
+      "nameInkWidthMm": 40.739,
+      "nameCapMm": 17.848,
+      "nameInkBox": [
+        34.63066775743941,
+        39.3,
+        40.73866448512118,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D1",
+      "nameInkWidthMm": 51.351,
+      "nameCapMm": 17.349,
+      "nameInkBox": [
+        29.324407826982494,
+        39.3,
+        51.35118434603501,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D126",
+      "nameInkWidthMm": 56.488,
+      "nameCapMm": 17.94,
+      "nameInkBox": [
+        26.755883919062832,
+        39.3,
+        56.488232161874336,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D127",
+      "nameInkWidthMm": 68.374,
+      "nameCapMm": 25.37,
+      "nameInkBox": [
+        20.813215361445785,
+        39.3,
+        68.37356927710843,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D132",
+      "nameInkWidthMm": 67.674,
+      "nameCapMm": 24.509,
+      "nameInkBox": [
+        21.16289803220036,
+        39.3,
+        67.67420393559928,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D133",
+      "nameInkWidthMm": 54.715,
+      "nameCapMm": 23.316,
+      "nameInkBox": [
+        27.64239785666443,
+        39.3,
+        54.71520428667114,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D201",
+      "nameInkWidthMm": 46.656,
+      "nameCapMm": 18.881,
+      "nameInkBox": [
+        31.67222128346663,
+        39.3,
+        46.65555743306674,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D202",
+      "nameInkWidthMm": 53.305,
+      "nameCapMm": 23.107,
+      "nameInkBox": [
+        28.34767673415201,
+        39.3,
+        53.30464653169598,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D203",
+      "nameInkWidthMm": 56.989,
+      "nameCapMm": 22.358,
+      "nameInkBox": [
+        26.505291319857314,
+        39.3,
+        56.98941736028537,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D204",
+      "nameInkWidthMm": 61.193,
+      "nameCapMm": 24.564,
+      "nameInkBox": [
+        24.403339947089947,
+        39.3,
+        61.193320105820106,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D205",
+      "nameInkWidthMm": 77.241,
+      "nameCapMm": 24.62,
+      "nameInkBox": [
+        16.379734513274336,
+        39.3,
+        77.24053097345133,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D301",
+      "nameInkWidthMm": 64.961,
+      "nameCapMm": 23.641,
+      "nameInkBox": [
+        22.519414385741563,
+        39.3,
+        64.96117122851687,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D302",
+      "nameInkWidthMm": 63.477,
+      "nameCapMm": 23.536,
+      "nameInkBox": [
+        23.261501901140683,
+        39.3,
+        63.476996197718634,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D303",
+      "nameInkWidthMm": 56.386,
+      "nameCapMm": 22.615,
+      "nameInkBox": [
+        26.80682663690476,
+        39.3,
+        56.38634672619048,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D304",
+      "nameInkWidthMm": 67.154,
+      "nameCapMm": 24.795,
+      "nameInkBox": [
+        21.423080213903738,
+        39.3,
+        67.15383957219252,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D305",
+      "nameInkWidthMm": 57.362,
+      "nameCapMm": 23.793,
+      "nameInkBox": [
+        26.319058295964126,
+        39.3,
+        57.36188340807175,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D306",
+      "nameInkWidthMm": 68.92,
+      "nameCapMm": 22.341,
+      "nameInkBox": [
+        20.540244014732963,
+        39.3,
+        68.91951197053407,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D307",
+      "nameInkWidthMm": 61.84,
+      "nameCapMm": 24.894,
+      "nameInkBox": [
+        24.080065146579805,
+        39.3,
+        61.83986970684039,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D308",
+      "nameInkWidthMm": 63.052,
+      "nameCapMm": 23.861,
+      "nameInkBox": [
+        23.474043909348442,
+        39.3,
+        63.051912181303116,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D41",
+      "nameInkWidthMm": 79.554,
+      "nameCapMm": 24.785,
+      "nameInkBox": [
+        15.222908366533865,
+        39.3,
+        79.55418326693227,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D42",
+      "nameInkWidthMm": 70.884,
+      "nameCapMm": 23.145,
+      "nameInkBox": [
+        19.558128324468086,
+        39.3,
+        70.88374335106383,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D46",
+      "nameInkWidthMm": 62.588,
+      "nameCapMm": 26.03,
+      "nameInkBox": [
+        23.705857740585774,
+        39.3,
+        62.58828451882845,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D48",
+      "nameInkWidthMm": 67.79,
+      "nameCapMm": 23.281,
+      "nameInkBox": [
+        21.105144744911748,
+        39.3,
+        67.7897105101765,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D53",
+      "nameInkWidthMm": 45.814,
+      "nameCapMm": 21.998,
+      "nameInkBox": [
+        32.092822736030826,
+        39.3,
+        45.81435452793834,
+        23.3
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D55",
+      "nameInkWidthMm": 51.539,
+      "nameCapMm": 15.758,
+      "nameInkBox": [
+        29.230680412371136,
+        39.300000000000004,
+        51.53863917525773,
+        23.299999999999997
+      ]
+    }
   ],
-  "jpgBytes": 1259370,
+  "proportionNote": "80–90 % Namensbreite und 35–45 % Versalhöhe sind optische Richtwerte. Kurze Namen und Originalschriften bleiben unverzerrt; tatsächliche Breiten/Höhen sind einzeln ausgewiesen. Schriftstriche sind nicht pauschal auf 0,3 mm vermessen; die feinen Bestandsmotive und Schriften brauchen die übliche Fertigungsabnahme. Neue Signature-Linien sind explizit mindestens 0,55 mm.",
+  "jpgBytes": 1298192,
   "browserCheck": "Offen; übernimmt Claude nach Designabnahme. JPG ist gerasterte native Zielvorschau ohne Rand-Hilfslinien, kein Browser-Screenshot.",
   "fontDecision": {
     "original": "Vista La Diva",
@@ -93,242 +370,251 @@
   "checks": [
     {
       "id": "KZ-A-11x20-D0",
-      "minCapHeightMm": 3.949,
-      "artworkBottomMm": 69.99,
-      "groundClearanceMm": 80.01,
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 136.73,
+      "groundClearanceMm": 13.27,
       "fonts": [
-        "Montserrat Light",
+        "Lato",
         "Tangerine"
       ]
     },
     {
       "id": "KZ-A-11x20-D1",
-      "minCapHeightMm": 3.2,
-      "artworkBottomMm": 134.45,
-      "groundClearanceMm": 15.55,
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 134.2,
+      "groundClearanceMm": 15.8,
       "fonts": [
-        "Allura"
+        "Allura",
+        "Montserrat"
       ]
     },
     {
       "id": "KZ-A-11x20-D126",
-      "minCapHeightMm": 3.2,
-      "artworkBottomMm": 135.552,
-      "groundClearanceMm": 14.448,
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 140.48,
+      "groundClearanceMm": 9.52,
       "fonts": [
-        "Allura"
+        "Allura",
+        "Lato"
       ]
     },
     {
       "id": "KZ-A-11x20-D127",
-      "minCapHeightMm": 3.3,
-      "artworkBottomMm": 125.504,
-      "groundClearanceMm": 24.496,
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 70.245,
+      "groundClearanceMm": 79.755,
       "fonts": [
         "Allura",
-        "Libre Baskerville"
+        "Montserrat"
       ]
     },
     {
       "id": "KZ-A-11x20-D132",
-      "minCapHeightMm": 4.5,
-      "artworkBottomMm": 133.313,
-      "groundClearanceMm": 16.687,
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 134.2,
+      "groundClearanceMm": 15.8,
       "fonts": [
-        "Allura",
-        "Great Vibes"
+        "Great Vibes",
+        "Lato"
       ]
     },
     {
       "id": "KZ-A-11x20-D133",
-      "minCapHeightMm": 3.1,
-      "artworkBottomMm": 127.914,
-      "groundClearanceMm": 22.086,
-      "fonts": [
-        "Dream Orphans",
-        "Homage",
-        "Montserrat Light"
-      ]
-    },
-    {
-      "id": "KZ-A-11x20-D201",
-      "minCapHeightMm": 3.1,
-      "artworkBottomMm": 136.953,
-      "groundClearanceMm": 13.047,
-      "fonts": [
-        "Ashley",
-        "Roboto Slab"
-      ]
-    },
-    {
-      "id": "KZ-A-11x20-D202",
-      "minCapHeightMm": 3.1,
-      "artworkBottomMm": 130.06,
-      "groundClearanceMm": 19.94,
-      "fonts": [
-        "Cinzel",
-        "Homage"
-      ]
-    },
-    {
-      "id": "KZ-A-11x20-D203",
-      "minCapHeightMm": 3.5,
-      "artworkBottomMm": 138.537,
-      "groundClearanceMm": 11.463,
-      "fonts": [
-        "Montserrat Light"
-      ]
-    },
-    {
-      "id": "KZ-A-11x20-D204",
-      "minCapHeightMm": 3.1,
-      "artworkBottomMm": 129.846,
-      "groundClearanceMm": 20.154,
-      "fonts": [
-        "Rounded Elegance"
-      ]
-    },
-    {
-      "id": "KZ-A-11x20-D205",
-      "minCapHeightMm": 3.3,
-      "artworkBottomMm": 143.0,
-      "groundClearanceMm": 7.0,
-      "fonts": [
-        "Italianno"
-      ]
-    },
-    {
-      "id": "KZ-A-11x20-D301",
-      "minCapHeightMm": 3.2,
-      "artworkBottomMm": 138.061,
-      "groundClearanceMm": 11.939,
-      "fonts": [
-        "Cormorant Garamond"
-      ]
-    },
-    {
-      "id": "KZ-A-11x20-D302",
-      "minCapHeightMm": 3.1,
-      "artworkBottomMm": 140.375,
-      "groundClearanceMm": 9.625,
-      "fonts": [
-        "Lora",
-        "Sacramento"
-      ]
-    },
-    {
-      "id": "KZ-A-11x20-D303",
-      "minCapHeightMm": 3.3,
-      "artworkBottomMm": 125.229,
-      "groundClearanceMm": 24.771,
-      "fonts": [
-        "Josefin Sans"
-      ]
-    },
-    {
-      "id": "KZ-A-11x20-D304",
-      "minCapHeightMm": 3.498,
-      "artworkBottomMm": 144.325,
-      "groundClearanceMm": 5.675,
-      "fonts": [
-        "Cinzel",
-        "Dancing Script"
-      ]
-    },
-    {
-      "id": "KZ-A-11x20-D305",
-      "minCapHeightMm": 3.3,
-      "artworkBottomMm": 133.692,
-      "groundClearanceMm": 16.308,
-      "fonts": [
-        "Oswald",
-        "Roboto Slab"
-      ]
-    },
-    {
-      "id": "KZ-A-11x20-D306",
-      "minCapHeightMm": 3.8,
-      "artworkBottomMm": 141.35,
-      "groundClearanceMm": 8.65,
-      "fonts": [
-        "Caveat",
-        "Kaushan Script"
-      ]
-    },
-    {
-      "id": "KZ-A-11x20-D307",
-      "minCapHeightMm": 3.2,
-      "artworkBottomMm": 139.22,
-      "groundClearanceMm": 10.78,
-      "fonts": [
-        "Lato",
-        "Playfair Display"
-      ]
-    },
-    {
-      "id": "KZ-A-11x20-D308",
-      "minCapHeightMm": 3.4,
-      "artworkBottomMm": 140.35,
-      "groundClearanceMm": 9.65,
-      "fonts": [
-        "Bellefair",
-        "Rochester"
-      ]
-    },
-    {
-      "id": "KZ-A-11x20-D41",
-      "minCapHeightMm": 3.1,
-      "artworkBottomMm": 70.859,
-      "groundClearanceMm": 79.141,
-      "fonts": [
-        "Alex Brush",
-        "Montserrat Light"
-      ]
-    },
-    {
-      "id": "KZ-A-11x20-D42",
-      "minCapHeightMm": 4.2,
-      "artworkBottomMm": 144.0,
-      "groundClearanceMm": 6.0,
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 140.48,
+      "groundClearanceMm": 9.52,
       "fonts": [
         "Homage",
         "Montserrat"
       ]
     },
     {
-      "id": "KZ-A-11x20-D46",
-      "minCapHeightMm": 24.0,
-      "artworkBottomMm": 65.408,
-      "groundClearanceMm": 84.592,
+      "id": "KZ-A-11x20-D201",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 124.57,
+      "groundClearanceMm": 25.43,
       "fonts": [
-        "Alex Brush"
+        "Ashley",
+        "Montserrat"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D202",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 138.16,
+      "groundClearanceMm": 11.84,
+      "fonts": [
+        "Homage",
+        "Lato"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D203",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 118.62,
+      "groundClearanceMm": 31.38,
+      "fonts": [
+        "Dancing Script",
+        "Montserrat"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D204",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 138.62,
+      "groundClearanceMm": 11.38,
+      "fonts": [
+        "Lato",
+        "Sacramento"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D205",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 130.13,
+      "groundClearanceMm": 19.87,
+      "fonts": [
+        "Italianno",
+        "Montserrat"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D301",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 126.372,
+      "groundClearanceMm": 23.628,
+      "fonts": [
+        "Montserrat",
+        "Sacramento"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D302",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 126.375,
+      "groundClearanceMm": 23.625,
+      "fonts": [
+        "Lato",
+        "Sacramento"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D303",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 121.744,
+      "groundClearanceMm": 28.256,
+      "fonts": [
+        "Montserrat",
+        "Satisfy"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D304",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 139.0,
+      "groundClearanceMm": 11.0,
+      "fonts": [
+        "Italianno",
+        "Lato"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D305",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 141.15,
+      "groundClearanceMm": 8.85,
+      "fonts": [
+        "Montserrat",
+        "Sacramento"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D306",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 143.27,
+      "groundClearanceMm": 6.73,
+      "fonts": [
+        "Alex Brush",
+        "Lato"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D307",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 143.0,
+      "groundClearanceMm": 7.0,
+      "fonts": [
+        "Montserrat",
+        "Parisienne"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D308",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 141.33,
+      "groundClearanceMm": 8.67,
+      "fonts": [
+        "Allura",
+        "Lato"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D41",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 129.68,
+      "groundClearanceMm": 20.32,
+      "fonts": [
+        "Alex Brush",
+        "Montserrat"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D42",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 140.75,
+      "groundClearanceMm": 9.25,
+      "fonts": [
+        "Homage",
+        "Lato"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D46",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 140.75,
+      "groundClearanceMm": 9.25,
+      "fonts": [
+        "Alex Brush",
+        "Lato"
       ]
     },
     {
       "id": "KZ-A-11x20-D48",
-      "minCapHeightMm": 6.0,
-      "artworkBottomMm": 136.29,
-      "groundClearanceMm": 13.71,
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 122.46,
+      "groundClearanceMm": 27.54,
       "fonts": [
-        "Ashley"
+        "Ashley",
+        "Lato"
       ]
     },
     {
       "id": "KZ-A-11x20-D53",
-      "minCapHeightMm": 6.399,
-      "artworkBottomMm": 119.265,
-      "groundClearanceMm": 30.735,
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 118.43,
+      "groundClearanceMm": 31.57,
       "fonts": [
-        "Great Vibes"
+        "Great Vibes",
+        "Montserrat"
       ]
     },
     {
       "id": "KZ-A-11x20-D55",
-      "minCapHeightMm": 3.949,
-      "artworkBottomMm": 123.907,
-      "groundClearanceMm": 26.093,
+      "minCapHeightMm": 5.253,
+      "artworkBottomMm": 122.26,
+      "groundClearanceMm": 27.74,
       "fonts": [
-        "Cinzel",
+        "Montserrat",
         "Parisienne"
       ]
     }

@@ -1,3 +1,7 @@
+## 01.11.2026 · Astra Mika · 20 Hausstil + 5 Signature
+
+Chris: „leg los, sei kreativ“. Neue Vorgaben #6562929837/#6562964893 eingearbeitet: Namen und Jahre im Querbalken, kein Text im Stamm, 20 Standards + fünf eigenständige Signature-Designs. 25/25 native Prüfungen grün, Mindestabstand 2.534 mm, Mindest-H-Versalhöhe 5.253 mm. Ein JPG Schwarz 11×20 (1298192 Bytes), Signature-Reihe markiert. 51 Originaldateien unverändert. Metadatenbau: 15 Familien. Browserprüfung und Produktionsfreigabe offen. Nächster Schritt: Chris/Claude bewerten den Bogen. [Bericht](https://github.com/Chris83638w/gravuru-2027/blob/dev/grabkreuze-hunde-20261101-astra-mika/docs/handoffs/grabkreuze-hunde-20261101/NACHAUFTRAG.md).
+
 ## 01.11.2026 · Astra Mika · Fiete mit fallenden Hundepfötchen
 
 Chris wünscht mehr Bezug zum Hund: Fiete D307 trägt jetzt fünf kleine, versetzt von oben nach unten fallende Hundepfoten statt der großen Feder. Name, Datum und Widmung bleiben. Eigenes Motiv zusätzlich unter motive-eigene, frühere Feder als historischer Entwurf erhalten. 24 übrige Designs unverändert. 25/25 native Prüfungen bestanden; Fiete mindestens 3,657 mm Rand, Serie mindestens 2,114 mm und H-Versalhöhe 3,1 mm. Kontaktbogen Schwarz 11×20 aktualisiert (1.259.370 Bytes). Browserprüfung weiterhin offen; nächster Schritt: Sichtprüfung des aktualisierten Bogens durch Chris/Claude.

@@ -180,6 +180,9 @@ own_entries.append(own(d,'mika-hunde-fallende-pfoten-20261101','Fallende Hundepf
 d=design(308,'Juna',None,'D','Name und Jahre quer, Zuhause-Symbol unten',['Hundehütte'],['Ohne Vorlage. Neues Zuhause-Motiv unter einem warmen Gedenktext; Name und Lebensjahre im Querbalken.'])
 d['texts']=[name_text('Juna','Rochester',23,55,57,78),txt('2012 – 2026','Bellefair',3.4,55,69,32),txt('Dein Platz\nbleibt in\nunserem\nHerzen.','Bellefair',4,55,86,31)]
 own_entries.append(own(d,'mika-hunde-zuhause-20261101','Hundehütte','M40 125 L55 114 L70 125 M43 123 L43 140 L67 140 L67 123 M51 140 L51 132 C51 126 59 126 59 132 L59 140 M48 121 L50 119 M60 119 L62 121',[40,114,30,26],.7))
+house_spec=importlib.util.spec_from_file_location('house',HERE/'grabkreuze-hausstil.py')
+house=importlib.util.module_from_spec(house_spec);house_spec.loader.exec_module(house)
+house.apply(globals())
 order=[0,1,41,42,46,48,53,55,126,127,132,133,201,202,203,204,205,301,302,303,304,305,306,307,308]
 masters.sort(key=lambda d:order.index(int(d['id'].split('-D')[-1])))
 # Archive previous rejected delivery, then remove only its explicitly owned D100-D116 folders.
@@ -204,9 +207,9 @@ for d in masters:
         if t.get('rotation'):
             sz=t['sizePt']*rpd.PT;x,y=t['anchorMm'];cy=y-.35*sz
             svg=re.sub(fr'<text id="text-{i}"(.*?)</text>',lambda m:f'<g id="text-{i}" transform="rotate({t["rotation"]} {x} {cy})"><text'+m.group(1)+'</text></g>',svg,flags=re.S)
-    (folder/'design.svg').write_text(svg,encoding='utf-8')
+    (folder/'design.svg').write_text(svg.replace('\r',''),encoding='utf-8',newline='\n')
 write(OUT/'index.json',{'name':'Grabkreuz Acryl – Hunde · Nachauftrag','designs':[{'id':d['id'],'path':d['id'],'name':d['name']} for d in masters]})
 indexfile=CAT/'motive-eigene/motive-eigene.json';idx=json.loads(indexfile.read_text(encoding='utf-8'));ids={m['id'] for m in own_entries}
 idx['motifs']=[m for m in idx['motifs'] if m['id'] not in ids and m['id'] not in {'mika-grabkreuz-hunde-109-20261101','mika-grabkreuz-hunde-116-20261101'}]+own_entries;idx['count']=len(idx['motifs']);write(indexfile,idx)
-write(WORK/'auswahl.json',[{k:d[k] for k in ['id','name','source','sourceKey','reviewMode','reviewGroup','layout','fonts','motifKinds','reviewNotes']} for d in masters])
+write(WORK/'auswahl.json',[{k:d[k] for k in ['id','name','source','sourceKey','reviewMode','reviewGroup','layout','fonts','motifKinds','reviewNotes','designTier']} for d in masters])
 print('25 Master geschrieben; ausschließlich Schwarz 11×20; Homage ist freigegeben. Randprüfung mit 2 mm folgt.')

@@ -139,10 +139,10 @@ d=design(205,'Bruno','gravur-herz-18x13-D24','C','Großer Name im Querbalken, Sp
 d['texts']=[name_text('Bruno','Italianno',22,55,63,80),txt('2010 – 2021','Italianno',3.6,55,73,31),flow('Für die Welt warst du nur ein Hund, aber für mich warst du die Welt.','Italianno',84,111,31)]
 d['motifs']=[motif(d['sourceKey'],[1],40,113,30,30)]
 # D: new individual vectors, never added to the customer motif library.
-def own(d,key,label,path,box,stroke=.7):
-    m={'box':rbd.path_box(path),'paths':[{'d':path,'fill':None,'stroke':'#000000','strokeMm':stroke,'evenodd':False,'opacity':1}]};d['motifs'].append(m);d['ownMotifId']=key
+def own(d,key,label,path,box,stroke=.7,filled=False):
+    m={'box':rbd.path_box(path),'paths':[{'d':path,'fill':'#000000' if filled else None,'stroke':None if filled else '#000000','strokeMm':0 if filled else stroke,'evenodd':False,'opacity':1}]};d['motifs'].append(m);d['ownMotifId']=key
     folder=CAT/'motive-eigene'/key;folder.mkdir(parents=True,exist_ok=True)
-    (folder/'motiv.svg').write_text(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 150"><path d="{path}" fill="none" stroke="#000" stroke-width="{stroke}" stroke-linecap="round" stroke-linejoin="round"/></svg>',encoding='utf-8')
+    (folder/'motiv.svg').write_text(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 150"><path d="{path}" fill="{"#000" if filled else "none"}" stroke="{"none" if filled else "#000"}" stroke-width="{stroke}" stroke-linecap="round" stroke-linejoin="round"/></svg>',encoding='utf-8')
     return {'id':key,'name':label,'file':f'motive-eigene/{key}/motiv.svg','source':'Originalvektor Astra Mika · Nachauftrag #76 · 01.11.2026','customerLibrary':False}
 own_entries=[]
 d=design(301,'Milo',None,'D','Name senkrecht im Stamm, Daten links und rechts',['Halsband mit Medaillon'],['Ohne Vorlage. Senkrechter Name und seitliche Jahreszahlen; eigenes Halsband mit Anhänger.'])
@@ -164,9 +164,19 @@ own_entries.append(own(d,'mika-hunde-napf-20261101','Futternapf','M42 17 C42 12 
 d=design(306,'Pippa',None,'D','Widmung oben, Name quer, Spielseil im Stamm',['Spielseil mit Knoten'],['Ohne Vorlage. Lockerer Pinselname, kurze Widmung und eigenes geknotetes Spielseil; luftige Kombination aus Schrift und langen Linien.'])
 d['texts']=[txt('Unser\nSonnenschein','Caveat',3.8,55,20,31),name_text('Pippa','Kaushan Script',22,55,61,82),txt('2014 – 2025','Caveat',3.8,55,81,31),txt('Du fehlst\nbei jedem Spiel.','Caveat',4.1,55,97,31)]
 own_entries.append(own(d,'mika-hunde-spielseil-20261101','Spielseil mit Knoten','M43 117 C45 110 52 112 55 119 C58 126 66 128 68 121 C70 114 63 110 59 116 C55 122 50 132 45 127 C40 123 45 117 50 120 C57 124 59 136 66 136 M43 117 L41 113 M45 114 L43 110 M47 114 L46 110 M64 134 L67 140 M66 133 L70 137 M62 135 L64 141',[40,110,30,31],.7))
-d=design(307,'Fiete',None,'D','Name quer, Feder und Widmung nebeneinander im Stamm',['Erinnerungsfeder'],['Ohne Vorlage. Eigene schmale Feder links im Stamm, Widmung rechts; klassischer Namenszug und Datum oben.'])
+d=design(307,'Fiete',None,'D','Name quer, fallende kleine Hundepfoten neben der Widmung',['Fallende Hundepfötchen'],['Ohne Vorlage. Chris 01.11.2026: mehr Hund; fünf kleine, versetzt von oben nach unten fallende Hundepfoten ersetzen die große Feder. Widmung rechts, Name und Datum bleiben.'])
 d['texts']=[txt('2010 – 2026','Lato',3.2,55,26,31),name_text('Fiete','Playfair Display',21,55,61,86)]+[txt(v,'Lato',3.2,63.5,y,15) for v,y in zip(['Für','immer','bei','uns'],[89,101,113,125])]
-own_entries.append(own(d,'mika-hunde-erinnerungsfeder-20261101','Erinnerungsfeder','M44 139 Q50 112 50 86 C39 91 39 105 42 115 L46 111 L43 119 Q45 123 47 125 M50 86 C58 97 54 110 48 118 M50 94 L44 100 M50 101 L43 107 M49 107 L45 113 M50 96 L53 99 M50 103 L52 105',[39,86,19,53],.55))
+from math import sin,cos,radians
+from fontTools.pens.svgPathPen import SVGPathPen
+from fontTools.pens.transformPen import TransformPen
+from fontTools.svgLib.path import parse_path
+paw='M-2.8 1.3 C-2.2 .4 -1.5 -.1 -.9 .1 C-.2 .3 .2 .3 .9 .1 C1.5 -.1 2.2 .4 2.8 1.3 C4 3.4 2.4 4.5 .9 3.7 C.3 3.4 -.3 3.4 -.9 3.7 C-2.4 4.5 -4 3.4 -2.8 1.3 Z M-3.5 -2.8 C-5 -2.4 -4.2 .5 -2.9 .1 C-1.5 -.3 -2 -3.2 -3.5 -2.8 Z M-1.3 -4.7 C-2.8 -4.7 -2.8 -1.1 -1.3 -1.1 C.2 -1.1 .2 -4.7 -1.3 -4.7 Z M1.3 -4.7 C-.2 -4.7 -.2 -1.1 1.3 -1.1 C2.8 -1.1 2.8 -4.7 1.3 -4.7 Z M3.5 -2.8 C2 -3.2 1.5 -.3 2.9 .1 C4.2 .5 5 -2.4 3.5 -2.8 Z'
+fall=[]
+for x,y,angle,scale in [(46,86,165,.8),(49,98,200,.9),(45.5,110,155,.82),(49,122,190,.9),(45.5,135,165,.8)]:
+    a=radians(angle);pen=SVGPathPen(None)
+    parse_path(paw,TransformPen(pen,(scale*cos(a),scale*sin(a),-scale*sin(a),scale*cos(a),x,y)))
+    fall.append(pen.getCommands())
+own_entries.append(own(d,'mika-hunde-fallende-pfoten-20261101','Fallende Hundepfötchen',' '.join(fall),[40,80,14,60],filled=True))
 d=design(308,'Juna',None,'D','Name und Jahre quer, Zuhause-Symbol unten',['Hundehütte'],['Ohne Vorlage. Neues Zuhause-Motiv unter einem warmen Gedenktext; Name und Lebensjahre im Querbalken.'])
 d['texts']=[name_text('Juna','Rochester',23,55,57,78),txt('2012 – 2026','Bellefair',3.4,55,69,32),txt('Dein Platz\nbleibt in\nunserem\nHerzen.','Bellefair',4,55,86,31)]
 own_entries.append(own(d,'mika-hunde-zuhause-20261101','Hundehütte','M40 125 L55 114 L70 125 M43 123 L43 140 L67 140 L67 123 M51 140 L51 132 C51 126 59 126 59 132 L59 140 M48 121 L50 119 M60 119 L62 121',[40,114,30,26],.7))

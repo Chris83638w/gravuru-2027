@@ -1021,13 +1021,13 @@
     },
     {
       "id": "KZ-A-11x20-D307",
-      "minimumCertifiedMarginMm": 2.329,
+      "minimumCertifiedMarginMm": 3.657,
       "passes2mm": true,
       "elements": [
         {
           "id": "motiv-1",
           "type": "motif",
-          "minimumCertifiedMarginMm": 2.329,
+          "minimumCertifiedMarginMm": 5.4,
           "passes2mm": true,
           "issues": []
         },

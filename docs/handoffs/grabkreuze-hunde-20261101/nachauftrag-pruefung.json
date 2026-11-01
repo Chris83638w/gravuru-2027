@@ -65,7 +65,7 @@
     "Lieblingsball": 1,
     "Futternapf": 1,
     "Spielseil mit Knoten": 1,
-    "Erinnerungsfeder": 1,
+    "Fallende Hundepfötchen": 1,
     "Hundehütte": 1,
     "Pfotenspur": 1,
     "Pfotenpaar": 1,
@@ -79,9 +79,9 @@
     "D42: lange Pfotenspur im Stamm",
     "D203: Regenbogen unten",
     "D303: Name links, Hund rechts",
-    "D307: Feder und Text nebeneinander im Stamm"
+    "D307: fallende Hundepfötchen und Text nebeneinander im Stamm"
   ],
-  "jpgBytes": 1259583,
+  "jpgBytes": 1259370,
   "browserCheck": "Offen; übernimmt Claude nach Designabnahme. JPG ist gerasterte native Zielvorschau ohne Rand-Hilfslinien, kein Browser-Screenshot.",
   "fontDecision": {
     "original": "Vista La Diva",
@@ -258,8 +258,8 @@
     {
       "id": "KZ-A-11x20-D307",
       "minCapHeightMm": 3.2,
-      "artworkBottomMm": 139.275,
-      "groundClearanceMm": 10.725,
+      "artworkBottomMm": 139.22,
+      "groundClearanceMm": 10.78,
       "fonts": [
         "Lato",
         "Playfair Display"

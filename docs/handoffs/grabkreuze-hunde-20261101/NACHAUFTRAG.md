@@ -8,10 +8,12 @@
 
 ## Entscheidungen und konkrete Änderungen
 
+- **Chris im Chat, 01.11.2026:** „kleine Federn die von oben nach unten rasseln, oder Hundepfötchen. Mehr auf Hund“. Fiete D307 erhält fünf kleine, versetzt fallende Hundepfoten anstelle der großen Feder; eigener Motivschlüssel `mika-hunde-fallende-pfoten-20261101`. Der frühere Federvektor bleibt als ungenutzter historischer Entwurf erhalten. 24 andere Designs unverändert. Fiete: mindestens 3,657 mm Konturabstand.
+
 - [Claude/Chris #6562403258](https://github.com/Chris83638w/gravuru-2027/issues/76#issuecomment-6562403258): **Vista La Diva → Homage bestätigt.** In `schriften/README.md` und `schriften.json.replacements` mit `decided: 2026-11-01`, `by: Chris` eingetragen. Flockes Ersatz ist entschieden; Designfreigaben bleiben trotzdem null.
 - **04 Clarissa:** Unterzeile „Für immer in unseren Herzen“ jetzt in Montserrat und über die Balkenbreite gesetzt. Name weiter Homage, originale Pfotenspur erhalten.
 - [Präzisierung #6562440730](https://github.com/Chris83638w/gravuru-2027/issues/76#issuecomment-6562440730): **17 Bruno** groß und mittig im Querbalken; Jahre direkt darunter, Spruch im Stamm, Fuß-/Pfotenspur unten. Spur unverzerrt von 27 auf 30 mm Höhe vergrößert (+11,1 %).
-- [Ergänzung #6562417227](https://github.com/Chris83638w/gravuru-2027/issues/76#issuecomment-6562417227): fünf zusätzliche Designs D304–D308: Luna/Ball, Ben/Napf, Pippa/Spielseil, Fiete/Feder, Juna/Hundehütte. Ohne Vorlage, eigene Vektoren zusätzlich in `motive-eigene/`, keine Übernahme in die Kunden-Motivbibliothek.
+- [Ergänzung #6562417227](https://github.com/Chris83638w/gravuru-2027/issues/76#issuecomment-6562417227): fünf zusätzliche Designs D304–D308: Luna/Ball, Ben/Napf, Pippa/Spielseil, Fiete/fallende Hundepfötchen, Juna/Hundehütte. Ohne Vorlage, eigene Vektoren zusätzlich in `motive-eigene/`, keine Übernahme in die Kunden-Motivbibliothek.
 - [Letzte Randentscheidung #6562491600](https://github.com/Chris83638w/gravuru-2027/issues/76#issuecomment-6562491600): **2 mm**, ausdrücklich anstelle der zuvor genannten 3 mm. Beide bestehenden Kreuzfamilien führen diesen Rand als Stammdatum; geprüft und gerendert wurde hier ausschließlich Schwarz 11×20.
 - Schmale Texte bei Buffy, Cooper, Moritz und Nala eingepasst; Pusteblume bei Paula D202 proportional von 33 auf 30 mm Höhe reduziert und um 1 mm nach unten versetzt. Übrige ursprüngliche Kompositionen erhalten, wenn sie die aktuelle 2-mm-Regel bereits erfüllen. Ruhige Stämme von Tapsy, Paula D41 und Balu bleiben wie von Claude bestätigt.
 
@@ -19,7 +21,7 @@
 
 - **25/25 native Zielprüfungen: passt**, keine Warnungen. Alle Texte editierbar, keine Fotofelder, 1–3 freigegebene Schriften je Design. Mindestens **3.1 mm H-Versalhöhe**. Der untere 50-mm-Erdteil plus 5 mm Gestaltungsabstand bleibt frei.
 - Kleinster zertifizierter Konturabstand über alle Text- und Motivelemente: **2.114 mm**, Vorgabe 2 mm. Ermittelt mit der nativen `templateFit`-Prüfung und binärer Suche; echte Glyphenkonturen, Motivpfade inklusive Strichbreite, konkave Kanten und gerundete Ecken. Der ausgewiesene Wert ist eine konservative Untergrenze (Suchauflösung <0,005 mm), keine lediglich gemessene rechteckige Textbox.
-- **Ein JPG, 1,259,583 Bytes**, 4200×3500 Pixel, unter 2 MB. 17 unveränderte Katalog-Originalvorschauen daneben; acht eigene Entwürfe als neu/ohne Vorlage beschriftet. Keine PNG/JPG-Dateien im Katalog ergänzt.
+- **Ein JPG, 1,259,370 Bytes**, 4200×3500 Pixel, unter 2 MB. 17 unveränderte Katalog-Originalvorschauen daneben; acht eigene Entwürfe als neu/ohne Vorlage beschriftet. Keine PNG/JPG-Dateien im Katalog ergänzt.
 - **20/20 gezielte Tests bestanden** (`design-target-preview.test.mjs`, `ground-insertion.test.mjs`). Darunter neuer Nachweis: ausgeblendete Rand-Hilfslinien ändern weder Passformprüfung noch Prüfsumme und lassen randverletzende Gestaltung weiterhin durchfallen. Im ersten Testaufruf fehlte die Windows-Python-Zuordnung; mit dem vorhandenen Python und identischem Code vollständig grün.
 - 51 Dateien der 17 Bestandsquellen gegen den Git-Ausgangsstand geprüft: PNGs bytegleich, JSON/SVG gleicher Git-Inhalt mit normalisierten Zeilenenden. Keine Bestandsoriginale geändert. Katalog-Metadatenlauf: 15 gültige Familien; neue schwarze Familien-Schriftliste übernommen. Frühere technische PDFs/Excel bleiben historisch.
 
@@ -52,7 +54,7 @@
 | 21 / KZ-A-11x20-D304 | Luna · neu | ohne Vorlage | Cinzel, Dancing Script | 2.744 | Lieblingsball. Ohne Vorlage. Persönliche Erinnerung an gemeinsame Spiele; geschwungener Name, seitliche Jahreszahlen und eigener Ball. |
 | 22 / KZ-A-11x20-D305 | Ben · neu | ohne Vorlage | Oswald, Roboto Slab | 2.329 | Futternapf. Ohne Vorlage. Klarer, kräftiger Namenszug mit eigenem Napf als Erinnerung an den vertrauten Alltag. |
 | 23 / KZ-A-11x20-D306 | Pippa · neu | ohne Vorlage | Caveat, Kaushan Script | 3.330 | Spielseil mit Knoten. Ohne Vorlage. Lockerer Pinselname, kurze Widmung und eigenes geknotetes Spielseil; luftige Kombination aus Schrift und langen Linien. |
-| 24 / KZ-A-11x20-D307 | Fiete · neu | ohne Vorlage | Lato, Playfair Display | 2.329 | Erinnerungsfeder. Ohne Vorlage. Eigene schmale Feder links im Stamm, Widmung rechts; klassischer Namenszug und Datum oben. |
+| 24 / KZ-A-11x20-D307 | Fiete · neu | ohne Vorlage | Lato, Playfair Display | 3.657 | Fallende Hundepfötchen. Ohne Vorlage. Chris 01.11.2026: mehr Hund; fünf kleine, versetzt von oben nach unten fallende Hundepfoten ersetzen die große Feder. Widmung rechts, Name und Datum bleiben. |
 | 25 / KZ-A-11x20-D308 | Juna · neu | ohne Vorlage | Bellefair, Rochester | 3.330 | Hundehütte. Ohne Vorlage. Neues Zuhause-Motiv unter einem warmen Gedenktext; Name und Lebensjahre im Querbalken. |
 
 ## Reproduktion / Übergabe

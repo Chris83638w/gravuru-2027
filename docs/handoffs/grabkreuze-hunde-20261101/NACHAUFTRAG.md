@@ -1,74 +1,63 @@
-# Hunde-Kreuze · 20 Hausstil + 5 Signature
+# Hunde-Kreuze · Originale zurück, unterschiedliche Einzelentwürfe
 
-**Aktuell: ausschließlich Schwarz 11×20, 25 Entwürfe.** Die Rückmeldungen #6562929837 und #6562964893 ersetzen die frühere Pflicht, den Stamm mit Text zu füllen. Die Vorlage bleibt daneben; abweichende Anordnungen folgen ausdrücklich dem neuen Hausstil. Alle Namen/Jahre sind Beispieldaten.
+**Aktueller Stand: 8 restaurierte Verkaufsoriginale + 12 individuelle Gravur-Referenz-/Neuentwürfe + 5 Signature-Designs.** Nur Schwarz 11×20.
 
-Verbindliche Grundlage: [Design-Master §8, Stand f6194d158](https://github.com/Chris83638w/gravuru-katalog./blob/f6194d158a85a317b9e7d838d38f4d40766e1f4a/designs/DESIGN-MASTER.md), [Hausstil-Korrektur](https://github.com/Chris83638w/gravuru-2027/issues/76#issuecomment-6562929837), [Signature-/Proportionsauftrag](https://github.com/Chris83638w/gravuru-2027/issues/76#issuecomment-6562964893).
+Grundlage: [Claude #6563417298](https://github.com/Chris83638w/gravuru-2027/issues/76#issuecomment-6563417298), [Priorität Originale #6563434541](https://github.com/Chris83638w/gravuru-2027/issues/76#issuecomment-6563434541) und Chris im Chat: **„Keines darf den anderen gleichen.“** Die Hausstil-Regel gilt für neue Entwürfe; die acht A-Verkaufsoriginale behalten ihre eigene Aufteilung. [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/f6194d158a85a317b9e7d838d38f4d40766e1f4a/designs/DESIGN-MASTER.md).
 
-[Einziger Kontaktbogen](kontaktbogen-schwarz-11x20.jpg) · [Maß-/Schriftprüfung](nachauftrag-pruefung.json) · [Randabstand je Element](randabstand-pruefung.json) · [Native Zielprüfung](nachauftrag-native-pruefung.json)
+[Kontaktbogen JPG](kontaktbogen-schwarz-11x20.jpg) · [Prüfung und Eigenständigkeit](nachauftrag-pruefung.json) · [Randwerte](randabstand-pruefung.json)
 
-![20 Hausstil + 5 Signature, Originale daneben](kontaktbogen-schwarz-11x20.jpg)
+![25 Gravur-Entwürfe, Originale daneben](kontaktbogen-schwarz-11x20.jpg)
 
-## Gestaltung
+## Konkrete Korrekturen
 
-- Alle 25 Namen einzeilig, groß in Schreibschrift und optisch nach tatsächlicher Schriftkontur zentriert. Jahre unmittelbar darunter im Querbalken. Keine Sprüche im Stamm; keine senkrechten Namen.
-- Je Entwurf zwei Textfelder und höchstens ein zusammengesetztes Motiv. Die Motive bleiben löschbar/ersetzbar. Der Stamm trägt die Bildidee; dunkle Freifläche bleibt bewusst stehen.
-- 20 Standardentwürfe aus den 17 dokumentierten Quellen und den drei bisherigen eigenen Entwürfen. Originale proportional umgesetzt, ohne Spiegeln. Die Pfotenspuren variieren mit fünf, sechs und sieben Abdrücken; eine Pfote ist etwa 11,4 mm breit (31 % des Stamms).
-- Clarissas frühere Unterzeile und Brunos früherer Stammspruch sind durch die spätere Hausstil-Anweisung überholt. Die bestätigte Ersatzregel Vista La Diva → Homage bleibt erhalten.
-- Pusteblume/Samen bei Paula D202 und Sternenschwarm bei Luke werden nicht entfernt: feine Bestandsdetails mit 0,32-mm-Kontur verstärkt, Luke längs ausgerichtet. Tapsys ehemaliges Todeskreuz aus der Datumszeile entfällt mit dem neuen Jahresformat; beide Herzmotive bleiben.
-- Die Namen werden nicht verzerrt, um einen Prozentwert zu erzwingen. Die 80–90 % Querbalkenbreite und 35–45 % Versalhöhe sind optische Richtwerte; kurze Namen/Originalschriften weichen davon ab. Tatsächliche Schriftmaße sind vollständig im Prüf-JSON und unten angegeben.
+- Tapsy: beide Herzen wieder im Querbalken, Name und Original-Datumszeile dazwischen. Buffy: originale Blumenzweige links/rechts, Name oben, Pfotenpaar und Spruch darunter; Fotokreis entfernt. Paula: Hände oben und Datum rechts. Clarissa: Widmung quer und Originalspur im Stamm. Balu: Name zwischen zwei seitlichen Pfoten. Frieda: Herz oben, vier Spruchstufen. Kira: Rosen neben dem Namen. Rocky: Hundeherz oben, Daten und Spruch darunter.
+- Die Bezeichnung Originalaufteilung benennt die echte Grenze: Schriftenersatz, mindestens 2 mm Rand und mindestens 3 mm H-Versalhöhe bleiben notwendige Anpassungen; keine Behauptung einer bytegleichen Kopie. Buffy braucht wegen Mindestlesbarkeit andere Zeilenumbrüche. Friedas Pfotenherz wurde auf 24 mm vergrößert.
+- Wiederholte Serien-Pfotenspuren entfernt: Cooper trägt einen eigenen Lebensbaum; Moritz die originale Knochenplakette um den Namen; Flocke eine einzelne Pfote oben; Lucky einen großen Hundekopf. Die zweite Paula heißt **Maja**. Nala bekommt eine größere Herzleine mit langem Schwung; Milo und Oskar größere Motive.
+- **Genau drei Spur-Kompositionen:** Clarissas Originalpfoten, Brunos gemeinsame Mensch-/Hund-Spur und Fietes ausgesparte Pfoten im Band. Seitliche Pfotenpaare und Einzelpfoten sind keine weiteren Spur-Layouts.
+- Pippa und Fiete bleiben als bestätigte Signature-Richtung erhalten. **Luna** hat einen senkrechten Namen, seitliche Jahreszahlen und eine negative Hundesilhouette als Medaillon. **Ben** kombiniert den Namen links mit einem großflächigen Linienhund über rechtem Querbalken und Stamm. **Juna** führt eine geschwungene Brücke aus dem linken Querbalken in den Stamm; der Name steht rechts. Drei unterschiedliche Brüche mit dem Schema Name-oben/Motiv-unten.
+- Frühere UV-Vorlagen bleiben nur als dokumentierte historische Referenzen daneben. Es werden ausschließlich einfarbige Gravurdesigns geliefert; kein UV-Produkt oder UV-Farblauf.
 
-## Fünf eigenständige Signature-Entwürfe
+## Eigenständigkeit und Grenzen
 
-| Nr. | Name | Bildidee |
-|---|---|---|
-| 21 | Luna · Mondwache | Mondwache: sitzender Hund mit Schlappohr schaut zu Sichel und Stern; offene Mondbahn als ruhiger Rahmen. |
-| 22 | Ben · Herzenslinie | Herzenslinie: Hund und Herz in einer fließenden Linienzeichnung, mit eingerolltem Ende. |
-| 23 | Pippa · Pfoten-Siegel | Pfoten-Siegel: feine, bewusst unterbrochene Innenkontur der Kreuzform und eine einzelne Pfote als Siegel. |
-| 24 | Fiete · Erinnerungsband | Erinnerungsband: fünf vollständig ausgesparte Hundepfoten in einem geschwungenen Gravurband; Mindeststeg zu jedem Ausschnitt 0,325 mm. |
-| 25 | Juna · Regenbogenweg | Regenbogenweg: offene Brückenbögen, geschwungener Boden und aufsteigende Pfoten. |
+Jeder Entwurf wurde neben den übrigen auf Motiv, Anordnung und Gesamtwirkung betrachtet. Ein anderer Name oder eine andere Schrift zählt nicht als eigene Bildidee. Die folgende Liste beschreibt den sichtbaren Unterschied je Entwurf. Zusätzlich wurden die Motiv-Geometrien ohne Namen/Schriften verglichen: 25 unterschiedliche Fingerprints, keine identische vollständige Motivkomposition. Diese technische Prüfung ersetzt keine gestalterische Beurteilung und behauptet nicht, Ähnlichkeit mathematisch auszuschließen. Die ausdrücklich verlangten Originale dürfen gemeinsame Motivarten enthalten; ihre Gesamtaufteilung bleibt unterscheidbar.
 
-Die Pfotenform in Pfoten-Siegel, Erinnerungsband und Regenbogenweg stammt aus Chris’ Original KZ-A-D46; Gesamtkomposition und übrige Zeichnung sind neu. Neue Motive zusätzlich unter `motive-eigene/mika-signature-…`, nicht in der Kundenbibliothek. Ältere eigene Motive bleiben als historischer Bestand erhalten. Signature-Linien 0,55–0,7 mm; für die native Konturprüfung in echte gefüllte Pfade umgerechnet (Kurvenauflösung 0,001 mm). Die Prüfung wurde nicht umgangen oder geändert. Bei Fiete wird jede negative Pfote samt 0,325-mm-Steg geometrisch auf vollständigen Einschluss im Band geprüft, bevor sie ausgespart wird.
+| Nr. / Kennung | Name | Eigene Bildidee / Anordnung | Rand mm | Vorlage |
+|---|---|---|---:|---|
+| 01 / KZ-A-11x20-D0 | Tapsy | Herzen links/rechts mit mittigem Originalnamen und Datumszeile | 2.114 | `KZ-A-D0` |
+| 02 / KZ-A-11x20-D1 | Buffy | Name oben, gegenläufige Blumenzweige, Pfotenpaar und Spruch unten | 2.807 | `KZ-A-D1` |
+| 03 / KZ-A-11x20-D41 | Paula | Betende Hände im oberen Arm, Name quer und Datum rechts | 2.465 | `KZ-A-D41` |
+| 04 / KZ-A-11x20-D42 | Clarissa | Widmung im Querbalken, originale lange Pfotenspur im Stamm | 2.495 | `KZ-A-D42` |
+| 05 / KZ-A-11x20-D46 | Balu | Großer Name zwischen zwei seitlichen Einzelpfoten | 4.614 | `KZ-A-D46` |
+| 06 / KZ-A-11x20-D48 | Frieda | Pfotenherz oben und vier originale Spruchstufen im Stamm | 4.458 | `KZ-A-D48` |
+| 07 / KZ-A-11x20-D53 | Kira | Rosenpaar flankiert den Namen, originaler Spruch darunter | 2.143 | `KZ-A-D53` |
+| 08 / KZ-A-11x20-D55 | Rocky | Hundeherz oben, Name und persönliche Daten darunter | 2.182 | `KZ-A-D55` |
+| 09 / KZ-A-11x20-D126 | Cooper | Lebensbaum mit Herz im Stamm | 2.602 | `KZUV-A-D26` |
+| 10 / KZ-A-11x20-D127 | Bella | Reiner Schriftentwurf ohne Motiv | 2.626 | `KZUV-A-D27` |
+| 11 / KZ-A-11x20-D132 | Moritz | Knochen bildet eine breite Namensplakette | 2.329 | `KZUV-A-D32` |
+| 12 / KZ-A-11x20-D133 | Flocke | Eine große Pfote oben, ruhiger Stamm | 2.910 | `KZUV-A-D33` |
+| 13 / KZ-A-11x20-D201 | Lucky | Einzelnes Hundeprofil im Stamm | 2.827 | `gravur-knochen-D7` |
+| 14 / KZ-A-11x20-D202 | Maja | Aufsteigende Pusteblume mit fliegenden Samen | 3.071 | `gravur-knochen-D2` |
+| 15 / KZ-A-11x20-D203 | Robin | Original-Regenbogen mit Blüten | 2.626 | `gravur-herz-24x19-D7` |
+| 16 / KZ-A-11x20-D204 | Luke | Langer Sternenschwarm | 3.129 | `gravur-edelstahl-20x20-D8` |
+| 17 / KZ-A-11x20-D205 | Bruno | Gemeinsame Mensch-und-Hund-Spur | 2.631 | `gravur-herz-18x13-D24` |
+| 18 / KZ-A-11x20-D301 | Milo | Halsband mit hängendem Medaillon | 3.081 | ohne Vorlage |
+| 19 / KZ-A-11x20-D302 | Nala | Offenes Herz mit schwingender Leine | 3.071 | ohne Vorlage |
+| 20 / KZ-A-11x20-D303 | Oskar | Eingerollter schlafender Hund | 2.631 | ohne Vorlage |
+| 21 / KZ-A-11x20-D304 | Luna | Negativ-Hundemedaillon mit senkrechtem Namen | 7.934 | ohne Vorlage |
+| 22 / KZ-A-11x20-D305 | Ben | Großflächiger Linienhund rechts, Name links | 2.373 | ohne Vorlage |
+| 23 / KZ-A-11x20-D306 | Pippa | Kreuz-Innenkontur und Pfotensiegel | 3.071 | ohne Vorlage |
+| 24 / KZ-A-11x20-D307 | Fiete | Fünf ausgesparte Pfoten im geschwungenen Band | 2.534 | ohne Vorlage |
+| 25 / KZ-A-11x20-D308 | Juna | Brückenbogen von links in den Stamm, Name rechts | 2.431 | ohne Vorlage |
 
-## Prüfstand
+## Prüfung
 
-- **25/25 native Zielprüfungen bestanden**, ohne Warnungen. Kleinster zertifizierter Randabstand **2.534 mm** (Vorgabe 2 mm).
-- Mindestens **5.253 mm H-Versalhöhe**. Alle Texte im Querbalken, Erdteil einschließlich 5-mm-Abstand frei. Schriftgrößen aus echten Glyphen, keine nominelle Punktgrößenschätzung.
-- **Ein JPG mit 1,298,192 Bytes**, 4200×3500 Pixel, unter 2 MB. 17 Originale rechts daneben; Signature-Reihe klar markiert. Keine Bilder im Katalog ergänzt.
-- 51 Original-Quelldateien gegen Git geprüft und unverändert. Metadatenbau für 15 gültige Familien. Keine Anwendungslogik geändert; der frühere 20-Test-Nachweis bleibt historisch und wurde nicht als neuer Testlauf ausgegeben.
-- Browser-/Bedienprüfung weiterhin offen, durch Claude nach Designabnahme. Dieser Bogen ist die gerasterte native Zielvorschau, kein Browser-Screenshot. Material-/Laserabnahme einschließlich Schriftstrichstärken bleibt separat; keine Produktionsfreigabe behauptet.
-
-## Einzelzuordnung
-
-| Nr. / Kennung | Name / Stufe | Vorlage | Schriften | Name Breite / H-Höhe mm | Rand mm | Motiv / Änderung |
-|---|---|---|---|---:|---:|---|
-| 01 / KZ-A-11x20-D0 | Tapsy / standard | `designs/bestand/kreuze/Allgemein/Allgemein/KZ-A-D0` | Lato, Tangerine | 40.74 / 17.85 | 3.129 | Hund im Herz, Pfotenherz. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. Das frühere kleine Todeskreuz gehörte zur Datumszeile und wird mit der neuen Jahreszeile ersetzt; beide Herzmotive bleiben. |
-| 02 / KZ-A-11x20-D1 | Buffy / standard | `designs/bestand/kreuze/Sprüche/Spruch/KZ-A-D1` | Allura, Montserrat | 51.35 / 17.35 | 2.915 | Flügelpaar, Pfotenduo. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. |
-| 03 / KZ-A-11x20-D41 | Paula / standard | `designs/bestand/kreuze/Allgemein/Allgemein/KZ-A-D41` | Alex Brush, Montserrat | 79.55 / 24.79 | 3.129 | Betende Hände. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. |
-| 04 / KZ-A-11x20-D42 | Clarissa / standard | `designs/bestand/kreuze/Anlass/Liebe/KZ-A-D42` | Homage, Lato | 70.88 / 23.14 | 2.636 | 7 originale Hundepfoten, diagonal versetzt. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. Neue Hausstil-Spur mit 7 großen Abdrücken aus Chris’ Originalpfote KZ-A-D46; frühere Pfotenanordnung ersetzt nach #6562929837. |
-| 05 / KZ-A-11x20-D46 | Balu / standard | `designs/bestand/kreuze/Allgemein/Allgemein/KZ-A-D46` | Alex Brush, Lato | 62.59 / 26.03 | 3.129 | 5 originale Hundepfoten, diagonal versetzt. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. Neue Hausstil-Spur mit 5 großen Abdrücken aus Chris’ Originalpfote KZ-A-D46; frühere Pfotenanordnung ersetzt nach #6562929837. |
-| 06 / KZ-A-11x20-D48 | Frieda / standard | `designs/bestand/kreuze/Allgemein/Allgemein/KZ-A-D48` | Ashley, Lato | 67.79 / 23.28 | 2.949 | Pfotenherz. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. |
-| 07 / KZ-A-11x20-D53 | Kira / standard | `designs/bestand/kreuze/Tiere/Hund/KZ-A-D53` | Great Vibes, Montserrat | 45.81 / 22.00 | 3.081 | Rosenpaar. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. |
-| 08 / KZ-A-11x20-D55 | Rocky / standard | `designs/bestand/kreuze/Tiere/Hund/KZ-A-D55` | Montserrat, Parisienne | 51.54 / 15.76 | 3.081 | Hund im Herz. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. |
-| 09 / KZ-A-11x20-D126 | Cooper / standard | `designs/bestand/kreuze/Sprüche/Spruch/KZUV-A-D26` | Allura, Lato | 56.49 / 17.94 | 2.739 | 6 originale Hundepfoten, diagonal versetzt. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. Neue Hausstil-Spur mit 6 großen Abdrücken aus Chris’ Originalpfote KZ-A-D46; frühere Pfotenanordnung ersetzt nach #6562929837. |
-| 10 / KZ-A-11x20-D127 | Bella / standard | `designs/bestand/kreuze/Tiere/Tiere allgemein/KZUV-A-D27` | Allura, Montserrat | 68.37 / 25.37 | 2.626 | ohne Motiv – Original. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. |
-| 11 / KZ-A-11x20-D132 | Moritz / standard | `designs/bestand/kreuze/Tiere/Tiere allgemein/KZUV-A-D32` | Great Vibes, Lato | 67.67 / 24.51 | 2.631 | Knochen, Versetztes Pfotenpaar. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. |
-| 12 / KZ-A-11x20-D133 | Flocke / standard | `designs/bestand/kreuze/Sprüche/Spruch/KZUV-A-D33` | Homage, Montserrat | 54.72 / 23.32 | 2.910 | 6 originale Hundepfoten, diagonal versetzt. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. Neue Hausstil-Spur mit 6 großen Abdrücken aus Chris’ Originalpfote KZ-A-D46; frühere Pfotenanordnung ersetzt nach #6562929837. |
-| 13 / KZ-A-11x20-D201 | Lucky / standard | `designs/bestand/gedenktafeln/Tiere/Hund/gravur-knochen-D7` | Ashley, Montserrat | 46.66 / 18.88 | 2.827 | Betende Hände, Hundekopf. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. |
-| 14 / KZ-A-11x20-D202 | Paula / standard | `designs/bestand/gedenktafeln/Tiere/Hund/gravur-knochen-D2` | Homage, Lato | 53.30 / 23.11 | 3.071 | Pusteblume mit Samen. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. Feine Bestandsdetails vollständig erhalten und für 11×20 mit mindestens 0,32 mm Kontur verstärkt; keine Sterne oder Samen entfernt. |
-| 15 / KZ-A-11x20-D203 | Robin / standard | `designs/bestand/gedenktafeln/Tiere/Hund/gravur-herz-24x19-D7` | Dancing Script, Montserrat | 56.99 / 22.36 | 2.626 | Regenbogen mit Blüten. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. Namensschrift nach der neuen Hausstil-Anweisung bewusst auf Schreibschrift umgestellt; frühere Schrift war keine Schreibschrift. |
-| 16 / KZ-A-11x20-D204 | Luke / standard | `designs/bestand/gedenktafeln/Tiere/Hund/gravur-edelstahl-20x20-D8` | Lato, Sacramento | 61.19 / 24.56 | 3.129 | Sternenschwarm. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. Namensschrift nach der neuen Hausstil-Anweisung bewusst auf Schreibschrift umgestellt; frühere Schrift war keine Schreibschrift. Feine Bestandsdetails vollständig erhalten und für 11×20 mit mindestens 0,32 mm Kontur verstärkt; keine Sterne oder Samen entfernt. |
-| 17 / KZ-A-11x20-D205 | Bruno / standard | `designs/bestand/gedenktafeln/Tiere/Hund/gravur-herz-18x13-D24` | Italianno, Montserrat | 77.24 / 24.62 | 2.631 | Mensch-und-Hund-Spuren. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. |
-| 18 / KZ-A-11x20-D301 | Milo / standard | ohne Vorlage | Montserrat, Sacramento | 64.96 / 23.64 | 3.081 | Halsband mit Medaillon. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. Namensschrift nach der neuen Hausstil-Anweisung bewusst auf Schreibschrift umgestellt; frühere Schrift war keine Schreibschrift. |
-| 19 / KZ-A-11x20-D302 | Nala / standard | ohne Vorlage | Lato, Sacramento | 63.48 / 23.54 | 3.071 | Herzleine. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. |
-| 20 / KZ-A-11x20-D303 | Oskar / standard | ohne Vorlage | Montserrat, Satisfy | 56.39 / 22.61 | 2.631 | Schlafender Hund. Hausstil §8 ersetzt die frühere Flächennutzung: großer einzeiliger Schreibschriftname und Jahre im Querbalken, kein Spruch im Stamm. Originalmotiv proportional neu angeordnet. Beispieljahre sind fiktiv. Namensschrift nach der neuen Hausstil-Anweisung bewusst auf Schreibschrift umgestellt; frühere Schrift war keine Schreibschrift. |
-| 21 / KZ-A-11x20-D304 | Luna / signature | ohne Vorlage | Italianno, Lato | 67.15 / 24.80 | 2.685 | Hund unter dem Mond. Ohne Vorlage. Eigenständiger Signature-Entwurf nach #6562964893: Mondwache. Native Texte bleiben editierbar; Motiv einfarbig und normal lesbar, keine gespiegelte Gesamtgestaltung. |
-| 22 / KZ-A-11x20-D305 | Ben / signature | ohne Vorlage | Montserrat, Sacramento | 57.36 / 23.79 | 3.129 | Hund und Herz als durchgehende Linie. Ohne Vorlage. Eigenständiger Signature-Entwurf nach #6562964893: Herzenslinie. Native Texte bleiben editierbar; Motiv einfarbig und normal lesbar, keine gespiegelte Gesamtgestaltung. |
-| 23 / KZ-A-11x20-D306 | Pippa / signature | ohne Vorlage | Alex Brush, Lato | 68.92 / 22.34 | 3.071 | Innenkontur und Pfoten-Siegel. Ohne Vorlage. Eigenständiger Signature-Entwurf nach #6562964893: Pfoten-Siegel. Native Texte bleiben editierbar; Motiv einfarbig und normal lesbar, keine gespiegelte Gesamtgestaltung. |
-| 24 / KZ-A-11x20-D307 | Fiete / signature | ohne Vorlage | Montserrat, Parisienne | 61.84 / 24.89 | 2.534 | Geschwungenes Band mit fünf ausgesparten Hundepfoten. Ohne Vorlage. Eigenständiger Signature-Entwurf nach #6562964893: Erinnerungsband. Native Texte bleiben editierbar; Motiv einfarbig und normal lesbar, keine gespiegelte Gesamtgestaltung. Chris’ Wunsch nach fallenden Pfötchen als eigener Signature-Ansatz: ausgesparte Pfoten in einem geschwungenen Gravurband. |
-| 25 / KZ-A-11x20-D308 | Juna / signature | ohne Vorlage | Allura, Lato | 63.05 / 23.86 | 3.071 | Regenbogenbrücke mit aufsteigenden Pfoten. Ohne Vorlage. Eigenständiger Signature-Entwurf nach #6562964893: Regenbogenweg. Native Texte bleiben editierbar; Motiv einfarbig und normal lesbar, keine gespiegelte Gesamtgestaltung. |
+- **25/25 native Zielprüfungen bestanden**, keine Warnungen. Rand mindestens **2.114 mm**, H-Versalhöhe mindestens **3.1 mm**. Erdteil plus Gestaltungsabstand frei.
+- Ein JPG **1,297,896 Bytes**, 4200×3500, unter 2 MB. Originale daneben, Signature-Reihe markiert. 25 unterschiedliche Namen, drei Spur-Kompositionen, drei vom Standardschema abweichende Signature-Aufbauten.
+- 51 Original-Quelldateien gegen Git unverändert geprüft. Katalog-Metadatenbau: 15 gültige Familien. Keine Anwendungscode-Änderung; aktuelle Nachweise sind Design-/Geometrieprüfungen, keine neu behaupteten App-Testläufe.
+- **Browser-/Bedienprüfung weiterhin offen**, durch Claude nach Designabnahme. Native Zielvorschau, keine Browser-Screenshots. Fertigungs-/Materialabnahme bleibt gesondert; keine Produktionsfreigabe.
 
 ## Reproduktion und nächster Schritt
 
-`revise-grabkreuze-hunde.py` übernimmt die bisherigen Quellen und wendet `grabkreuze-hausstil.py` vor dem Export an. Danach `review-grabkreuze-hunde.mjs`, `contact-grabkreuze-hunde.py`, `check-grabkreuze-margin.mjs`, `check-grabkreuze-nachauftrag.py`. Abhängigkeiten für Schrift-/Vektorpfade sind im vorhandenen Python installiert; `pathops` konturiert Signature-Linien und schneidet negative Pfoten aus.
+`revise-grabkreuze-hunde.py` → `grabkreuze-hausstil.py` → aktuelle Korrektur `grabkreuze-einzelentwuerfe.py`; danach native Vorschau, Kontaktbogen, Rand- und Schriftprüfung. Originalquellen werden nicht überschrieben. Neue Motive liegen zusätzlich unter motive-eigene, außerhalb der Kundenbibliothek.
 
-**Nächster Schritt:** Chris/Claude bewerten diesen einzigen Bogen. Weitere Größen und Anthrazit erst danach. Freigaben null, beide PRs Entwürfe, kein Merge/Import, nichts live. Historische Upload-Protokolle dokumentieren frühere Stände.
+**Nächster Schritt:** Chris/Claude prüfen diesen Bogen insbesondere auf Originaltreue und Unterscheidbarkeit. Weitere Größen/Anthrazit erst danach. Freigaben null, PRs Entwürfe, kein Merge/Import, nichts live.

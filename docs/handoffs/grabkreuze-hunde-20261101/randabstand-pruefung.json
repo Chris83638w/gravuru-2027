@@ -5,13 +5,27 @@
   "designs": [
     {
       "id": "KZ-A-11x20-D0",
-      "minimumCertifiedMarginMm": 3.129,
+      "minimumCertifiedMarginMm": 2.114,
       "passes2mm": true,
       "elements": [
         {
           "id": "motiv-1",
           "type": "motif",
-          "minimumCertifiedMarginMm": 6.323,
+          "minimumCertifiedMarginMm": 2.114,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-2",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.31,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-3",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 17.89,
           "passes2mm": true,
           "issues": []
         },
@@ -19,15 +33,15 @@
           "id": "text-1",
           "type": "text",
           "text": "Tapsy",
-          "minimumCertifiedMarginMm": 5.546,
+          "minimumCertifiedMarginMm": 5.966,
           "passes2mm": true,
           "issues": []
         },
         {
           "id": "text-2",
           "type": "text",
-          "text": "2004 – 2019",
-          "minimumCertifiedMarginMm": 3.129,
+          "text": "* 7.1.2004 -   12.10.2019",
+          "minimumCertifiedMarginMm": 3.452,
           "passes2mm": true,
           "issues": []
         }
@@ -35,13 +49,27 @@
     },
     {
       "id": "KZ-A-11x20-D1",
-      "minimumCertifiedMarginMm": 2.915,
+      "minimumCertifiedMarginMm": 2.807,
       "passes2mm": true,
       "elements": [
         {
           "id": "motiv-1",
           "type": "motif",
-          "minimumCertifiedMarginMm": 4.829,
+          "minimumCertifiedMarginMm": 3.33,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-2",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.994,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-3",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 7.407,
           "passes2mm": true,
           "issues": []
         },
@@ -49,7 +77,7 @@
           "id": "text-1",
           "type": "text",
           "text": "Buffy",
-          "minimumCertifiedMarginMm": 2.915,
+          "minimumCertifiedMarginMm": 2.807,
           "passes2mm": true,
           "issues": []
         },
@@ -57,7 +85,15 @@
           "id": "text-2",
           "type": "text",
           "text": "2016 – 2020",
-          "minimumCertifiedMarginMm": 3.081,
+          "minimumCertifiedMarginMm": 7.177,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "Ich bin nicht tot,\nich tausche nur\ndie Räume, ich\nleb’ in euch und\ngeh’ durch eure\nTräume.",
+          "minimumCertifiedMarginMm": 2.993,
           "passes2mm": true,
           "issues": []
         }
@@ -65,13 +101,13 @@
     },
     {
       "id": "KZ-A-11x20-D41",
-      "minimumCertifiedMarginMm": 3.129,
+      "minimumCertifiedMarginMm": 2.465,
       "passes2mm": true,
       "elements": [
         {
           "id": "motiv-1",
           "type": "motif",
-          "minimumCertifiedMarginMm": 4.838,
+          "minimumCertifiedMarginMm": 5.654,
           "passes2mm": true,
           "issues": []
         },
@@ -79,15 +115,15 @@
           "id": "text-1",
           "type": "text",
           "text": "Paula",
-          "minimumCertifiedMarginMm": 3.217,
+          "minimumCertifiedMarginMm": 9.902,
           "passes2mm": true,
           "issues": []
         },
         {
           "id": "text-2",
           "type": "text",
-          "text": "2009 – 2021",
-          "minimumCertifiedMarginMm": 3.129,
+          "text": "† 05.04.2021",
+          "minimumCertifiedMarginMm": 2.465,
           "passes2mm": true,
           "issues": []
         }
@@ -95,13 +131,13 @@
     },
     {
       "id": "KZ-A-11x20-D42",
-      "minimumCertifiedMarginMm": 2.636,
+      "minimumCertifiedMarginMm": 2.495,
       "passes2mm": true,
       "elements": [
         {
           "id": "motiv-1",
           "type": "motif",
-          "minimumCertifiedMarginMm": 5.224,
+          "minimumCertifiedMarginMm": 2.495,
           "passes2mm": true,
           "issues": []
         },
@@ -109,15 +145,15 @@
           "id": "text-1",
           "type": "text",
           "text": "Clarissa",
-          "minimumCertifiedMarginMm": 2.636,
+          "minimumCertifiedMarginMm": 7.783,
           "passes2mm": true,
           "issues": []
         },
         {
           "id": "text-2",
           "type": "text",
-          "text": "2012 – 2025",
-          "minimumCertifiedMarginMm": 3.071,
+          "text": "Für immer in unseren Herzen",
+          "minimumCertifiedMarginMm": 4.296,
           "passes2mm": true,
           "issues": []
         }
@@ -125,13 +161,20 @@
     },
     {
       "id": "KZ-A-11x20-D46",
-      "minimumCertifiedMarginMm": 3.129,
+      "minimumCertifiedMarginMm": 4.614,
       "passes2mm": true,
       "elements": [
         {
           "id": "motiv-1",
           "type": "motif",
-          "minimumCertifiedMarginMm": 5.224,
+          "minimumCertifiedMarginMm": 4.614,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-2",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 4.614,
           "passes2mm": true,
           "issues": []
         },
@@ -139,15 +182,7 @@
           "id": "text-1",
           "type": "text",
           "text": "Balu",
-          "minimumCertifiedMarginMm": 3.247,
-          "passes2mm": true,
-          "issues": []
-        },
-        {
-          "id": "text-2",
-          "type": "text",
-          "text": "2011 – 2024",
-          "minimumCertifiedMarginMm": 3.129,
+          "minimumCertifiedMarginMm": 8.085,
           "passes2mm": true,
           "issues": []
         }
@@ -155,13 +190,13 @@
     },
     {
       "id": "KZ-A-11x20-D48",
-      "minimumCertifiedMarginMm": 2.949,
+      "minimumCertifiedMarginMm": 4.458,
       "passes2mm": true,
       "elements": [
         {
           "id": "motiv-1",
           "type": "motif",
-          "minimumCertifiedMarginMm": 4.819,
+          "minimumCertifiedMarginMm": 6.318,
           "passes2mm": true,
           "issues": []
         },
@@ -169,15 +204,39 @@
           "id": "text-1",
           "type": "text",
           "text": "Frieda",
-          "minimumCertifiedMarginMm": 2.949,
+          "minimumCertifiedMarginMm": 11.015,
           "passes2mm": true,
           "issues": []
         },
         {
           "id": "text-2",
           "type": "text",
-          "text": "2014 – 2026",
-          "minimumCertifiedMarginMm": 3.071,
+          "text": "Du warst,",
+          "minimumCertifiedMarginMm": 5.517,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "du bist,",
+          "minimumCertifiedMarginMm": 8.579,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-4",
+          "type": "text",
+          "text": "du bleibst",
+          "minimumCertifiedMarginMm": 4.57,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-5",
+          "type": "text",
+          "text": "im Herzen.",
+          "minimumCertifiedMarginMm": 4.458,
           "passes2mm": true,
           "issues": []
         }
@@ -185,13 +244,20 @@
     },
     {
       "id": "KZ-A-11x20-D53",
-      "minimumCertifiedMarginMm": 3.081,
+      "minimumCertifiedMarginMm": 2.143,
       "passes2mm": true,
       "elements": [
         {
           "id": "motiv-1",
           "type": "motif",
-          "minimumCertifiedMarginMm": 4.833,
+          "minimumCertifiedMarginMm": 2.143,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-2",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.143,
           "passes2mm": true,
           "issues": []
         },
@@ -199,15 +265,15 @@
           "id": "text-1",
           "type": "text",
           "text": "Kira",
-          "minimumCertifiedMarginMm": 5.209,
+          "minimumCertifiedMarginMm": 3.154,
           "passes2mm": true,
           "issues": []
         },
         {
           "id": "text-2",
           "type": "text",
-          "text": "2010 – 2023",
-          "minimumCertifiedMarginMm": 3.081,
+          "text": "Ein Hund\nist wie\nein Herz\nauf vier\nBeinen.",
+          "minimumCertifiedMarginMm": 4.169,
           "passes2mm": true,
           "issues": []
         }
@@ -215,13 +281,13 @@
     },
     {
       "id": "KZ-A-11x20-D55",
-      "minimumCertifiedMarginMm": 3.081,
+      "minimumCertifiedMarginMm": 2.182,
       "passes2mm": true,
       "elements": [
         {
           "id": "motiv-1",
           "type": "motif",
-          "minimumCertifiedMarginMm": 4.843,
+          "minimumCertifiedMarginMm": 3.325,
           "passes2mm": true,
           "issues": []
         },
@@ -229,15 +295,63 @@
           "id": "text-1",
           "type": "text",
           "text": "Rocky",
-          "minimumCertifiedMarginMm": 3.579,
+          "minimumCertifiedMarginMm": 2.207,
           "passes2mm": true,
           "issues": []
         },
         {
           "id": "text-2",
           "type": "text",
-          "text": "2004 – 2020",
-          "minimumCertifiedMarginMm": 3.081,
+          "text": "Es gibt kein",
+          "minimumCertifiedMarginMm": 7.807,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "schöneres Privileg",
+          "minimumCertifiedMarginMm": 2.182,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-4",
+          "type": "text",
+          "text": "als von einem",
+          "minimumCertifiedMarginMm": 6.196,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-5",
+          "type": "text",
+          "text": "Hund geliebt",
+          "minimumCertifiedMarginMm": 5.747,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-6",
+          "type": "text",
+          "text": "worden zu sein.",
+          "minimumCertifiedMarginMm": 5.058,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-7",
+          "type": "text",
+          "text": "* 2004",
+          "minimumCertifiedMarginMm": 10.17,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-8",
+          "type": "text",
+          "text": "† 16.07.2020",
+          "minimumCertifiedMarginMm": 3.256,
           "passes2mm": true,
           "issues": []
         }
@@ -245,13 +359,13 @@
     },
     {
       "id": "KZ-A-11x20-D126",
-      "minimumCertifiedMarginMm": 2.739,
+      "minimumCertifiedMarginMm": 2.602,
       "passes2mm": true,
       "elements": [
         {
           "id": "motiv-1",
           "type": "motif",
-          "minimumCertifiedMarginMm": 4.877,
+          "minimumCertifiedMarginMm": 2.602,
           "passes2mm": true,
           "issues": []
         },
@@ -298,13 +412,13 @@
     },
     {
       "id": "KZ-A-11x20-D132",
-      "minimumCertifiedMarginMm": 2.631,
+      "minimumCertifiedMarginMm": 2.329,
       "passes2mm": true,
       "elements": [
         {
           "id": "motiv-1",
           "type": "motif",
-          "minimumCertifiedMarginMm": 5.747,
+          "minimumCertifiedMarginMm": 2.329,
           "passes2mm": true,
           "issues": []
         },
@@ -312,7 +426,7 @@
           "id": "text-1",
           "type": "text",
           "text": "Moritz",
-          "minimumCertifiedMarginMm": 2.631,
+          "minimumCertifiedMarginMm": 9.941,
           "passes2mm": true,
           "issues": []
         },
@@ -320,7 +434,7 @@
           "id": "text-2",
           "type": "text",
           "text": "2011 – 2023",
-          "minimumCertifiedMarginMm": 3.071,
+          "minimumCertifiedMarginMm": 5.131,
           "passes2mm": true,
           "issues": []
         }
@@ -334,7 +448,7 @@
         {
           "id": "motiv-1",
           "type": "motif",
-          "minimumCertifiedMarginMm": 5.678,
+          "minimumCertifiedMarginMm": 6.435,
           "passes2mm": true,
           "issues": []
         },
@@ -364,7 +478,7 @@
         {
           "id": "motiv-1",
           "type": "motif",
-          "minimumCertifiedMarginMm": 5.322,
+          "minimumCertifiedMarginMm": 4.326,
           "passes2mm": true,
           "issues": []
         },
@@ -401,8 +515,8 @@
         {
           "id": "text-1",
           "type": "text",
-          "text": "Paula",
-          "minimumCertifiedMarginMm": 3.696,
+          "text": "Maja",
+          "minimumCertifiedMarginMm": 8.72,
           "passes2mm": true,
           "issues": []
         },
@@ -514,7 +628,7 @@
         {
           "id": "motiv-1",
           "type": "motif",
-          "minimumCertifiedMarginMm": 4.829,
+          "minimumCertifiedMarginMm": 3.33,
           "passes2mm": true,
           "issues": []
         },
@@ -544,7 +658,7 @@
         {
           "id": "motiv-1",
           "type": "motif",
-          "minimumCertifiedMarginMm": 4.829,
+          "minimumCertifiedMarginMm": 5.424,
           "passes2mm": true,
           "issues": []
         },
@@ -574,7 +688,7 @@
         {
           "id": "motiv-1",
           "type": "motif",
-          "minimumCertifiedMarginMm": 4.829,
+          "minimumCertifiedMarginMm": 3.33,
           "passes2mm": true,
           "issues": []
         },
@@ -598,13 +712,13 @@
     },
     {
       "id": "KZ-A-11x20-D304",
-      "minimumCertifiedMarginMm": 2.685,
+      "minimumCertifiedMarginMm": 7.934,
       "passes2mm": true,
       "elements": [
         {
           "id": "motiv-1",
           "type": "motif",
-          "minimumCertifiedMarginMm": 2.685,
+          "minimumCertifiedMarginMm": 7.993,
           "passes2mm": true,
           "issues": []
         },
@@ -612,15 +726,23 @@
           "id": "text-1",
           "type": "text",
           "text": "Luna",
-          "minimumCertifiedMarginMm": 2.998,
+          "minimumCertifiedMarginMm": 7.934,
           "passes2mm": true,
           "issues": []
         },
         {
           "id": "text-2",
           "type": "text",
-          "text": "2011 – 2026",
-          "minimumCertifiedMarginMm": 3.071,
+          "text": "2011",
+          "minimumCertifiedMarginMm": 12.319,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "2026",
+          "minimumCertifiedMarginMm": 12.294,
           "passes2mm": true,
           "issues": []
         }
@@ -628,13 +750,13 @@
     },
     {
       "id": "KZ-A-11x20-D305",
-      "minimumCertifiedMarginMm": 3.129,
+      "minimumCertifiedMarginMm": 2.373,
       "passes2mm": true,
       "elements": [
         {
           "id": "motiv-1",
           "type": "motif",
-          "minimumCertifiedMarginMm": 3.168,
+          "minimumCertifiedMarginMm": 2.373,
           "passes2mm": true,
           "issues": []
         },
@@ -642,7 +764,7 @@
           "id": "text-1",
           "type": "text",
           "text": "Ben",
-          "minimumCertifiedMarginMm": 5.498,
+          "minimumCertifiedMarginMm": 6.079,
           "passes2mm": true,
           "issues": []
         },
@@ -650,7 +772,7 @@
           "id": "text-2",
           "type": "text",
           "text": "2008 – 2024",
-          "minimumCertifiedMarginMm": 3.129,
+          "minimumCertifiedMarginMm": 3.295,
           "passes2mm": true,
           "issues": []
         }
@@ -718,13 +840,13 @@
     },
     {
       "id": "KZ-A-11x20-D308",
-      "minimumCertifiedMarginMm": 3.071,
+      "minimumCertifiedMarginMm": 2.431,
       "passes2mm": true,
       "elements": [
         {
           "id": "motiv-1",
           "type": "motif",
-          "minimumCertifiedMarginMm": 4.003,
+          "minimumCertifiedMarginMm": 2.431,
           "passes2mm": true,
           "issues": []
         },
@@ -732,7 +854,7 @@
           "id": "text-1",
           "type": "text",
           "text": "Juna",
-          "minimumCertifiedMarginMm": 3.354,
+          "minimumCertifiedMarginMm": 5.336,
           "passes2mm": true,
           "issues": []
         },
@@ -740,7 +862,7 @@
           "id": "text-2",
           "type": "text",
           "text": "2012 – 2026",
-          "minimumCertifiedMarginMm": 3.071,
+          "minimumCertifiedMarginMm": 3.291,
           "passes2mm": true,
           "issues": []
         }

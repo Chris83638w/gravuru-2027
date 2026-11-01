@@ -168,10 +168,14 @@ def apply(c):
     own(d,'mika-signature-regenbogenweg-20261101','Regenbogenweg – Brücke und Pfoten',[ink(bridge,.65),original_paw(50,90,11.5,-22),original_paw(62,81.5,10,18)])
     for no in range(304,309):
         d=by[no];d['reviewNotes']=['Ohne Vorlage. Eigenständiger Signature-Entwurf nach #6562964893: '+d['signatureTitle']+'. Native Texte bleiben editierbar; Motiv einfarbig und normal lesbar, keine gespiegelte Gesamtgestaltung.']+([d['reviewNotes'][-1]] if no==307 else [])
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('individual',c['HERE']/'grabkreuze-einzelentwuerfe.py')
+    revision=importlib.util.module_from_spec(spec);spec.loader.exec_module(revision)
+    revision.apply(c,locals())
     # Complete source-derived design grouping; always normal/legible, never mirrored output.
     for d in masters:
         d['normalReadingDirection']=True
         d['elementCount']=len(d['texts'])+len(d['motifs'])
-        assert d['elementCount']<=4
+        assert d['elementCount']<=20 if d['designTier']=='original' else d['elementCount']<=4
         for m in d['motifs']:m['box']=bounds(m['paths'])
 

@@ -39,6 +39,14 @@ test('material target previews use native surfaces and glyph paths without chang
  assert.notEqual(previews[0],previews[1]);assert.notEqual(previews[0],previews[2]);assert.notEqual(previews[1],previews[3]);assert.equal(fs.readFileSync(path.join(f.root,f.base+'design.json'),'utf8'),before);
  assert.ok(f.families.every(family=>family.sizes.every(s=>s.baseCents===null)));await assert.rejects(targetDesignPreview(f.root,{reihe:'test',id:'T-D1',familie:'test-schilder',size:'foreign'},options),e=>e.status===422);
 });
+test('local catalog sample photograph appears only in the native target preview',async t=>{
+ const f=fixture(t),before=f.read();
+ write(f.root,f.base+'design.svg','<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 60"><text id="text-1" x="65" y="30" font-family="Michroma" font-size="5">Test</text><g id="foto-1"><rect x="5" y="5" width="35" height="45"/><image href="sample.png" x="5" y="5" width="35" height="45"/></g></svg>');
+ const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9ZCqQAAAAASUVORK5CYII=','base64');fs.writeFileSync(path.join(f.root,f.base,'sample.png'),png);
+ const photo=await f.preview('test-schilder');const wrappers=[...photo.svg.matchAll(/data:image\/svg\+xml;base64,([A-Za-z0-9+/=]+)/g)].map(m=>Buffer.from(m[1],'base64').toString('utf8'));assert.ok(wrappers.some(s=>s.includes(png.toString('base64'))));assert.ok(photo.svg.includes('data-preview-only="true"'));assert.ok(!photo.svg.includes('Hier eigenes Foto hochladen'));assert.deepEqual(f.read(),before);
+ fs.unlinkSync(path.join(f.root,f.base,'sample.png'));await assert.rejects(f.preview('test-schilder'),e=>e.code==='ENOENT');assert.deepEqual(f.read(),before);
+});
+
 test('approval and withdrawal only change the addressed target, keep audit actor and preserve historical global approval',async t=>{
  const f=fixture(t),source=f.read();source.freigabe={status:'freigegeben',von:'historic',am:'2025-01-01'};write(f.root,f.base+'design.json',source);
  patchDesign(f.root,{reihe:'test',designId:'T-D1',zieleHinzufuegen:['slate-test']});await f.approve('test-schilder');assert.equal(f.read().ziele[0].freigabe.von,'merchant:test');assert.equal(f.read().ziele[1].freigabe,null);assert.deepEqual(f.read().freigabe,source.freigabe);

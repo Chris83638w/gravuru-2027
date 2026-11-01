@@ -145,13 +145,18 @@ def main():
     a = ap.parse_args()
     f = json.loads(Path(a.family).read_text(encoding='utf-8'))
     groups = {g['key']: g for g in f['groups']}; rules = {r['id']: r for r in f['mountingRules']}
+    # A confirmed unmounted plate is still a drawable product. This local
+    # display rule does not create a mounting option or price in family data.
+    if f.get('withoutMounting'):
+        rules['__without'] = {'label': 'Ohne Befestigung', 'layout': 'none', 'count': 0,
+                              'edgeMm': None, 'diameterMm': None, 'priceCents': None, 'skuSuffix': ''}
     backing = f.get('backing', {}).get('offsetMm')
     drawn = drawing_columns(f, a.family)
     # One entry per size × mounting rule, keyed to a column.
     entries = []
     for s in f['sizes']:
         g = groups[s['groupKey']]; radius = s.get('cornerRadiusMm', g['cornerRadiusMm'])
-        for rid in s['mounting']:
+        for rid in s['mounting'] or (['__without'] if f.get('withoutMounting') else []):
             r = rules[rid]; fixed = g['shape'] == 'contour'
             complete = r['layout'] == 'none' or fixed or (r['edgeMm'] is not None and r['diameterMm'] is not None)
             holes = [] if r['layout'] == 'none' or not complete else [(h['x'], h['y'], h['diameterMm']) for h in s['holesMm']] if fixed else holes_for(s['widthMm'], s['heightMm'], r)
@@ -162,7 +167,7 @@ def main():
             item = {'w': s['widthMm'], 'h': s['heightMm'], 'shape': g['shape'], 'radius': radius, 'outlinePath': s.get('outlinePath'), 'holes': holes, 'backing': backing,
                     'backingRadius': s.get('backingCornerRadiusMm', (max(0, radius - backing) if g['shape'] == 'plaque' else radius + backing if radius else 0) if backing else 0),
                     'label': f"{s['label']} · {g['name']}" + (f' R{radius:g}' if radius and not g['cornerRadiusMm'] else ''),
-                    'lines': [r['label'] + (', ohne Löcher' if r['layout'] == 'none' else ', Lochmitten aus Zeichnung' if fixed else f", Rand {r['edgeMm']:g} mm" if complete else ', Bohrbild offen') + (f" · +{r['priceCents'] / 100:.2f} €".replace('.', ',') if r['priceCents'] else ''), f"{s['key']}-{r['skuSuffix']}"],
+                    'lines': [r['label'] + (', ohne Löcher' if r['layout'] == 'none' else ', Lochmitten aus Zeichnung' if fixed else f", Rand {r['edgeMm']:g} mm" if complete else ', Bohrbild offen') + (f" · +{r['priceCents'] / 100:.2f} €".replace('.', ',') if r['priceCents'] else ''), s['key'] + ('-' + r['skuSuffix'] if r['skuSuffix'] else '')],
                     'sort': (col[1] if col else (s['widthMm'] * s['heightMm'], list(rules).index(rid)))}
             entries.append((colkey, g, r, item))
     order = {}
@@ -181,7 +186,8 @@ def main():
     for _, items in cols:
         fixed = sum(LABEL_H + LINE_H * len(it['lines']) + GAP for it in items); plates = sum(it['h'] + 2 * (it['backing'] or 0) for it in items)
         if fixed + plates * scale > avail: scale = max(min(scale, (avail - 1 - fixed) / plates), a.scale / 2.6)
-    intro = [f"# {f['name']}", f"Material: {f['material']['label']}, {f['material']['thicknessMm']} mm, Gravur {'von hinten' if f['material'].get('engravingSide') == 'back' else 'von vorn'}.",
+    thickness = f"{f['material']['thicknessMm']} mm" if f['material'].get('thicknessMm') is not None else 'Materialstärke offen'
+    intro = [f"# {f['name']}", f"Material: {f['material']['label']}, {thickness}, Gravur {'von hinten' if f['material'].get('engravingSide') == 'back' else 'von vorn'}.",
              (f"Rückplatte: {f['backing']['label']}, rundum {backing} mm größer. " if backing else '') + f"Gestaltungsrand {f['designArea']['marginMm']} mm, Schutzzone {f['designArea']['keepoutMm']} mm.",
              f"{len(f['sizes'])} Größen in {len(f['groups'])} Formgruppen, {len(f['mountingRules'])} Bohrbilder, {len(entries)} Zeichnungen. Preise: {'offen' if all(s['baseCents'] is None for s in f['sizes']) else 'hinterlegt'}.",
              ('Aufbau wie die Zeichnung: eine Spalte je Form und Befestigung, Größen von oben nach unten aufsteigend; ergänzte Größen als eigene Spalte am Ende. ' if drawn else 'Eine Spalte je Form und Formatreihe (gleiches Seitenverhältnis = skalierbar), Größen von oben nach unten aufsteigend, je Größe alle Befestigungen. ') +

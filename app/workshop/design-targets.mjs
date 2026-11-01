@@ -112,12 +112,20 @@ function sourceFormOf(master,katalog,family){
  const forms=unique(sources.map(({f,s})=>groupForm(f.groups.find(g=>g.key===s.groupKey))).filter(Boolean));return forms.length===1?forms[0]:null;
 }
 function targetAssignment(family,master,katalog){
+ const keys=Array.isArray(master.json.sizes)?master.json.sizes:[];
+ // A variant generated directly in a derived family owns that family's keys.
+ // Do not reinterpret those keys through its historical geometry source.
+ if(keys.some(key=>family.sizes.some(s=>s.key===key)))return {assignment:assignSeries(family,[master])[0],contourKeys:sourceContourSizes(family,master)};
  // A family explicitly derived from another catalogue family keeps that
  // source's size restrictions. Compare the actual plate geometry as well:
  // the provenance path alone must never authorize a different plate.
  const root=String(katalog.root??'').replaceAll('\\','/').replace(/\/$/,''),relative=family.source?.path;
- const source=typeof relative==='string'&&relative.startsWith('familien/')&&!relative.split('/').some(p=>p==='..'||p==='.')
+ const sourceFamily=typeof relative==='string'&&relative.startsWith('familien/')&&!relative.split('/').some(p=>p==='..'||p==='.')
   ?values(katalog.families).find(f=>f.id!==family.id&&String(katalog.files?.get('familie:'+f.id)??'').replaceAll('\\','/')===root+'/'+relative):null;
+ // Sibling finishes share the verified source geometry but have distinct keys.
+ // Preserve the variant's explicit size restriction when moving between them.
+ const siblings=sourceFamily?values(katalog.families).filter(f=>f.id!==family.id&&f.source?.path===relative&&keys.some(key=>f.sizes.some(s=>s.key===key))):[];
+ const source=siblings.length===1?siblings[0]:sourceFamily;
  if(source){
   const allowed=new Set(assignSeries(source,[master])[0].sizes);
   const sizes=family.sizes.filter(target=>source.sizes.some(s=>allowed.has(s.key)&&JSON.stringify(geometryOf(source,s))===JSON.stringify(geometryOf(family,target)))).map(s=>s.key);

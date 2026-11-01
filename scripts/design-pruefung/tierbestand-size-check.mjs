@@ -4,7 +4,7 @@ const arg=n=>process.argv.find(s=>s.startsWith('--'+n+'='))?.slice(n.length+3);
 const root=path.resolve(arg('katalog')),code=path.resolve(arg('runtime-code'));
 const mod=n=>import(pathToFileURL(path.join(code,'app/workshop/'+n+'.mjs')));
 const {openKatalog}=await mod('katalog-source'),{convertFont}=await mod('font-library');
-const {katalogDesignToTemplate,scaleTemplate}=await mod('katalog-convert');
+const {katalogDesignToTemplate,scaleTemplate,parseDesignSvg,transformEmbeddedPath}=await mod('katalog-convert');
 const report=JSON.parse(fs.readFileSync(path.join(root,'groessen.json'),'utf8')),catalog=openKatalog(root),family=catalog.families.get('steel-door-signs');
 const byId=new Map(catalog.designs.masters.map(m=>[m.id,m])),cache=new Map();let objects=0,maxDelta=0;
 const hash=b=>createHash('sha256').update(b).digest('hex');
@@ -20,7 +20,12 @@ for(const row of report.rows){
  assert.equal(actual.template.objects.length,expected.objects.length,row.id+' element count');
  for(const before of expected.objects){
   const after=actual.template.objects.find(o=>o.id===before.id);assert(after,row.id+' '+before.id);
-  for(const key of ['type','text','font','photoShape','customerEditable','fieldKey'])assert.equal(after[key],before[key],row.id+' '+before.id+' '+key);
+  for(const key of ['type','text','font','customerEditable','fieldKey'])assert.equal(after[key],before[key],row.id+' '+before.id+' '+key);
+  if(before.type==='photoSlot'){
+   const a=parseDesignSvg(master.svg()).layers.find(l=>l.id===before.id),b=parseDesignSvg(variant.svg()).layers.find(l=>l.id===before.id);
+   const [dx,dy]=row.transform.offsetMm,s=row.transform.scale;
+   assert.equal(b.maskPath,transformEmbeddedPath(a.maskPath,s,dx+(a.maskTranslation?.[0]??0)*s,dy+(a.maskTranslation?.[1]??0)*s),row.id+' exact photo mask');
+  }
   for(const key of ['x','y','w','h','size','lineHeight','rotation'])if(typeof before[key]==='number'){
    const delta=Math.abs(after[key]-before[key]);maxDelta=Math.max(maxDelta,delta);
    // Native coordinates round to .001 mm; serialisation and glyph metrics
@@ -32,5 +37,5 @@ for(const row of report.rows){
  assert.equal(actual.motifs.length,source.motifs.length);
  assert.equal(variant.json.freigabe,null);assert(variant.json.ziele.every(t=>t.freigabe===null));
 }
-const result={variants:report.rows.length,retainedSourceIdentifiers:report.blocked.length,objects,maxCoordinateDeltaMm:maxDelta,assertedToleranceMm:.005,checks:['exported-file hashes','native converter reopening','editable text and photo fields','font/text identity','object geometry','motif count','null approvals']};
+const result={variants:report.rows.length,sourceEditions:report.sourceEditions?.length??0,retainedSourceIdentifiers:report.blocked.length,objects,maxCoordinateDeltaMm:maxDelta,assertedToleranceMm:.005,checks:['exported-file hashes','native converter reopening','editable text and exact photo mask paths','font/text identity','object geometry','motif count','null approvals']};
 fs.writeFileSync(path.join(root,'groessen-pruefung.json'),JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));

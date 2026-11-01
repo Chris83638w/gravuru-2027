@@ -55,7 +55,7 @@ export function productPreview(model,{options={},examples=[],designId,layout='po
    const photo=defaultPhotoSvg();
    return examplePhotoMarkup(o,'0'.repeat(64),hint,'data:image/svg+xml;base64,'+Buffer.from(photo).toString('base64'));
   }
-  return p.material.kind==='slate'&&o.type==='photoSlot'&&c.photo.enabled?emptyMaskedPhotoMarkup(o,getProcessingProfile(p).ink,p.material.color):'';
+  return (p.material.kind==='slate'||o.photoShape==='template')&&o.type==='photoSlot'&&c.photo.enabled?emptyMaskedPhotoMarkup(o,getProcessingProfile(p).ink,p.material.color):'';
  };
  let svg=studioSvg(p,d,previewFonts(c),{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:c.localResources.motifs,media,handles:false,id:'product-card',photoExampleMarkup});
  svg=svg.replace('href="blob:gravuru-workshop-reference"','href="'+example+'"');

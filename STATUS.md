@@ -1,3 +1,7 @@
+## 01.11.2026 – Issue 85: Schriften und TSK-Bestände ergänzt
+
+260 bearbeitbare Fassungen (35 Master + 15 Originalgrößen + 210 native Größenvarianten). 68 Tests bestanden; 580 Ziele geprüft, nur zehn TSK-Materialvorschauen wegen unbekannter Schieferstärke offen. Foto ausschließlich Acryl 3 mm, Preise und Freigaben offen. Quellen/Prüfbilder: [Übergabe](docs/handoffs/2026-11-01-issue85-tierbestand.md). PRs Katalog #14 / Code #89. Kein Import/Live-Schritt.
+
 # Issue 85 · Native Größenfassungen ergänzt · 01.11.2026 (Codex)
 
 152 zusätzliche LF2-Größenfassungen, zehn belegte Bestandskennungen unverändert dokumentiert. Vollständiger Git-Abgleich über 20.037 JSON-Objekte. 710 native Elemente nach erneutem Einlesen geprüft, maximal 0,004 mm Rundungsabweichung; 15 zusätzliche echte HTTP-Vorschauen und zwei Größen-Kontaktbogenseiten geprüft. 18 Master + 152 Größenfassungen = 170 Paare, sechs getrennte Formstudien. Entwurfs-PRs: Katalog #14 / Code #89. Offen bleiben Schriftentscheidung, Formkennungen, zehn Bestandsfassungen und Acryl-Abhängigkeit. Kein Import/Live-Schritt.

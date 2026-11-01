@@ -124,8 +124,9 @@ def place_motif(m, slot):
     m['box']=[cx-mw*scale/2,cy-mh*scale/2,mw*scale,mh*scale]
 
 def svg(d):
-    out=['<svg xmlns="http://www.w3.org/2000/svg" width="65mm" height="65mm" viewBox="0 0 65 65">',
-         '<circle id="platte" cx="32.5" cy="32.5" r="32.5" fill="none" stroke="#999" stroke-width="0.2"/>']
+    w,h=d['plateMm']
+    out=[f'<svg xmlns="http://www.w3.org/2000/svg" width="{w:g}mm" height="{h:g}mm" viewBox="0 0 {w:g} {h:g}">',
+         f'<ellipse id="platte" cx="{w/2:g}" cy="{h/2:g}" rx="{w/2:g}" ry="{h/2:g}" fill="none" stroke="#999" stroke-width="0.2"/>']
     for i,m in enumerate(d['motifs'],1):
         out.append(f'<g id="motiv-{i}">')
         for p in m['paths']:

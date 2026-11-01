@@ -1,6 +1,6 @@
 ## 01.11.2026 – Codex/Astra: gemeinsamer Ausführungsblock für Funkklingeln
 
-Chris präzisiert: Format, Position, Rahmen, Farbe und Befestigung direkt untereinander in einem Block. Drei Untertabs entfernt; bestehende Haupttabs, Optionen, Bilder und Farbkreise erhalten. 5/5 gezielte Tests, Build und Desktop-/390px-Handyprüfung bestanden. Nur das Funkklingel-Darstellungsmodul geändert. Bereitstellung mit bestehender Freigabe folgt. [Bericht](docs/handoffs/2026-11-01-funkklingeln-ausfuehrungsblock.md).
+Chris präzisiert: Format, Position, Rahmen, Farbe und Befestigung direkt untereinander in einem Block. Drei Untertabs entfernt; bestehende Haupttabs, Optionen, Bilder und Farbkreise erhalten. PR #94 gemergt (`b5c83567`) und live. 5/5 gezielte Tests lokal/Linux, Build und Live-Desktop-/390px-Handyprüfung bestanden. Nur das Funkklingel-Darstellungsmodul geändert; 3.274 Dateien verglichen, öffentliche Auslieferung per SHA bestätigt. [Bericht und Live-Bilder](docs/handoffs/2026-11-01-funkklingeln-ausfuehrungsblock.md).
 
 ## 01.11.2026 – Codex/Astra: schmale Formatzeilen für Funkklingeln
 

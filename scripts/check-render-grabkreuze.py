@@ -42,7 +42,7 @@ for f in SERIES.glob('*/design.json'):
   assert bottom<=limit+0.01,(d['id'],w,h,bottom,limit)
   variants.append({'sizeMm':[w,h],'artworkBottomMm':round(bottom,3),'maximumMm':limit,'clearanceMm':round(h-50-bottom,3)})
  checks.append({'id':d['id'],'capHeightMinimumMm':3,'variants':variants})
-html=['<!doctype html><meta charset="utf-8"><title>Grabkreuze Hunde · Prüfkontaktbögen</title><style>body{font:16px system-ui;background:#f5f3ee;max-width:1400px;margin:30px auto}img{max-width:100%}a{color:#324a52}nav{display:flex;gap:20px;flex-wrap:wrap}</style><h1>Grabkreuz Acryl – Hunde</h1><p>20 vorläufige Designs · drei Größen · Schwarz und Anthrazit. Native Zielvorschau; untere 50 mm im Prüf-Viewport ausgeblendet. Kundeneditor-Sperre und Shop-Import noch offen. Keine Freigabe.</p><nav>']
+html=['<!doctype html><meta charset="utf-8"><title>Grabkreuze Hunde · Prüfkontaktbögen</title><style>body{font:16px system-ui;background:#f5f3ee;max-width:1400px;margin:30px auto}img{max-width:100%}a{color:#324a52}nav{display:flex;gap:20px;flex-wrap:wrap}</style><h1>Grabkreuz Acryl – Hunde</h1><p>20 vorläufige Designs · drei Größen · Schwarz und Anthrazit. Native Zielvorschau; untere 50 mm im gemeinsamen Renderer ausgeblendet. Browserabnahme und Shop-Import noch offen. Keine Freigabe.</p><nav>']
 dirs=sorted(p for p in OUT.iterdir() if p.is_dir())
 for directory in dirs:html.append(f'<a href="#{directory.name}">{directory.name}</a>')
 html.append('</nav>')
@@ -50,7 +50,7 @@ for directory in dirs:
  files=sorted(f for f in directory.glob('*.svg') if not f.stem.endswith('-voll'))
  board=Image.new('RGB',(1500,1910),'#f5f3ee');draw=ImageDraw.Draw(board)
  draw.text((22,18),f'Grabkreuz Acryl – Hunde · {directory.name}',font=titlefont,fill='#252a2d')
- draw.text((22,51),'Native Konfi-Zielvorschau · Erdteil im Prüf-Viewport ausgeblendet · keine Freigabe',font=labelfont,fill='#555555')
+ draw.text((22,51),'Native Konfi-Zielvorschau · Native Erdteilsperre · Browserabnahme offen · keine Freigabe',font=labelfont,fill='#555555')
  for i,f in enumerate(files):
   png=f.with_suffix('.png');cairosvg.svg2png(url=str(f),write_to=str(png),output_width=280,output_height=360)
   im=Image.open(png).convert('RGBA');x=(i%5)*300;y=90+(i//5)*450

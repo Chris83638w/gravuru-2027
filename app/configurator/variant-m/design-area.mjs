@@ -1,3 +1,4 @@
+import {groundArtworkBottom} from '../../platform/sources/app/shared/models/ground-insertion.mjs';
 import {contourSafeAreaSvg} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
 import {ACRYLIC_SAFE_AREA} from './acrylic-product.mjs';
 import {objectIssue} from '../../platform/sources/app/shared/models/design-content.mjs';
@@ -8,8 +9,8 @@ export function designArea(config,profile=config.profile){
  if(config.acrylic)return {...ACRYLIC_SAFE_AREA};
  const g=profile.geometry,m=g.safeMarginMm??2;
  if(config.doorbell?.schema==='gravuru-doorbell/v1'&&g.designArea)return {...g.designArea};
- if(g.shape==='contour')return contourSafeAreaSvg(g,'design-area-bounds').bounds;
- return {left:m,top:m,right:g.width-m,bottom:config.doorbell?g.bell.y-m:g.height-m};
+ if(g.shape==='contour'){const a=contourSafeAreaSvg(g,'design-area-bounds').bounds;return {...a,bottom:Math.min(a.bottom,groundArtworkBottom(g))};}
+ return {left:m,top:m,right:g.width-m,bottom:Math.min(config.doorbell?g.bell.y-m:g.height-m,groundArtworkBottom(g))};
 }
 const n=v=>Number(v.toFixed(3));
 let contourAreaSerial=0;
@@ -21,10 +22,11 @@ export function designAreaOutline(config,profile=config.profile){
  if(config.doorbell?.schema==='gravuru-doorbell/v1'&&g.designArea){const a=g.designArea;return `<rect x="${n(a.left)}" y="${n(a.top)}" width="${n(a.right-a.left)}" height="${n(a.bottom-a.top)}"/>`;}
  if(g.shape==='contour'){
   const area=contourSafeAreaSvg(g,'m-design-area-'+(++contourAreaSerial));
+  if(g.groundInsertion){const bottom=groundArtworkBottom(g),id='m-ground-area-'+contourAreaSerial;return '<defs>'+area.defs+'<clipPath id="'+id+'"><rect width="'+g.width+'" height="'+bottom+'"/></clipPath><clipPath id="'+id+'-plate"><path d="'+g.outlinePath+'"/></clipPath></defs><g clip-path="url(#'+id+'-plate)"><path d="M0 '+bottom+'H'+g.width+'"/></g><g clip-path="url(#'+id+')"><g '+area.attribute+'><path d="'+g.outlinePath+'" fill="none" stroke="#a0a8a3" stroke-width="'+(2*(g.safeMarginMm??0)+.15)+'" stroke-dasharray="none"/></g></g>'; }
   return '<defs>'+area.defs+'</defs><g '+area.attribute+'><path d="'+g.outlinePath+'" fill="none" stroke="#a0a8a3" stroke-width="'+(2*(g.safeMarginMm??0)+.15)+'" stroke-dasharray="none"/></g>';
  }
  if(config.acrylic){const a=ACRYLIC_SAFE_AREA;return `<rect x="${a.left}" y="${a.top}" width="${a.right-a.left}" height="${a.bottom-a.top}"/>`;}
- const m=g.safeMarginMm??2,bottom=config.doorbell&&g.bell?g.bell.y-m:g.height-m;
+ const m=g.safeMarginMm??2,bottom=Math.min(config.doorbell&&g.bell?g.bell.y-m:g.height-m,groundArtworkBottom(g));
  if(!(m>0)&&bottom>=g.height)return '';
  if(m*2>=Math.min(g.width,g.height)||bottom<=m)return '';
  if(g.shape==='ellipse'){

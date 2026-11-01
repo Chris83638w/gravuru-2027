@@ -1,5 +1,5 @@
-// Review artifacts only: real target renderer, with an explicit viewport crop.
-// Does NOT claim to install ground exclusion in the live customer editor.
+// Native target renderer, including the shared customer ground restriction.
+// Local review artifacts; no live deployment or product approval.
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -19,14 +19,12 @@ for(const color of ['schwarz','anthrazit']){
   for(const id of ids){
    const r=await targetDesignPreview(cat,{reihe,id,familie:fid,size:size.key});
    if(!r.svg||r.fit.status==='passt nicht')throw Error(id+': '+JSON.stringify(r.fit));
-   fs.writeFileSync(path.join(dir,id+'-voll.svg'),r.svg);
-   const pad=4,h=size.heightMm-50,w=size.widthMm;
-   const inner=r.svg.replace(/^<svg\b[^>]*>/,'').replace(/<\/svg>\s*$/,'');
-   const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${-pad} ${-pad} ${w+2*pad} ${h+2*pad}" data-review-viewport="ground-50mm"><defs><clipPath id="ground-review-clip"><rect x="${-pad}" y="${-pad}" width="${w+2*pad}" height="${h+pad}"/></clipPath></defs><g clip-path="url(#ground-review-clip)">${inner}</g></svg>`;
-   fs.writeFileSync(path.join(dir,id+'.svg'),svg);
-   result.push({id,color,size:size.key,status:r.fit.status,issues:r.fit.issues,visibleHeightMm:h,viewportCropOnly:true});
+   const h=size.heightMm-family.groundInsertion.depthMm;
+   if(!r.svg.includes(`data-ground-visible-height="${h}"`))throw Error('Native Erdteilansicht fehlt.');
+   fs.writeFileSync(path.join(dir,id+'.svg'),r.svg);
+   result.push({id,color,size:size.key,status:r.fit.status,issues:r.fit.issues,visibleHeightMm:h,viewportCropOnly:false});
   }
  }
 }
-fs.writeFileSync(path.join(out,'ergebnis.json'),JSON.stringify({renderer:'targetDesignPreview',customerGroundExclusionImplemented:false,previews:result},null,2));
-console.log(`${result.length} native Vorschauen; Erdteil nur im Prüf-Viewport ausgeblendet.`);
+fs.writeFileSync(path.join(out,'ergebnis.json'),JSON.stringify({renderer:'targetDesignPreview',customerGroundExclusionImplemented:true,liveDeployment:false,previews:result},null,2));
+console.log(`${result.length} native Vorschauen mit gemeinsamer Erdteilsperre; keine Live-Veröffentlichung.`);

@@ -1,4 +1,4 @@
-# Grabkreuz Acryl – Hunde · vorläufiger Prüfstand
+# Grabkreuz Acryl – Hunde · Erdteilsperre, Browserabnahme offen
 
 Stand 01.11.2026, Astra Mika. Auftrag: gravuru-2027 Issue #76. Finale symmetrische Konturen aus Katalog-main 48abf763, schneidvorlagen/kreuze/: 110×200, 140×250 und 220×400 mm. Rote Schnittkontur #FF0000 mit 0,0762 mm. Sämtliche früheren Konturen und Kontaktbögen sind überholt.
 
@@ -17,17 +17,20 @@ Zwei getrennte Materialfamilien dienen dem nativen Katalog-Prüfweg. Der Produkt
 - 120 Aufrufe des echten targetDesignPreview-Renderers: 80 passt, 40 prüfen, 0 passt nicht, 0 Fehler. Einziger Hinweis: 14×25 wird proportional mit 1,80 % Seitenverhältnisabweichung eingepasst.
 - 60 Design-/Größenkombinationen gegen den Erdteil geprüft: Gravur vollständig oberhalb der Erdlinie mit mindestens 5 mm Abstand. Schriftprüfung mit echten H-Glyphen: mindestens 3 mm Versalhöhe auf dem kleinsten Master; keine fehlenden verwendeten Glyphen.
 - Die PNG-Kontaktbögen sind Rasterausgaben der nativen SVG-Zielvorschauen, keine Browser-Screenshots eines bedienbaren Kundenkonfigurators. Originale stehen bei den drei übernommenen Designs klein daneben. Für die neuen Designs ist der Modus neu angegeben.
-- **Der Prüf-Viewport blendet die unteren 50 mm aus. Diese Ansicht ist noch KEINE implementierte Erdteil-Sperre im Kundeneditor oder Fertigungsexport.** Der Familienadapter kennt diese Produktregel bisher nicht. Daher NICHT importieren oder veröffentlichen. Technische Integration und Bedienabnahme bleiben offen.
+- Die Familien tragen jetzt groundInsertion mit depthMm 50 und clearanceMm 5. Die gemeinsame Laufzeit blendet die unteren 50 mm in der Vorschau aus und begrenzt Gestaltung, Verschieben und serverseitige Prüfung oberhalb der zusätzlichen 5 mm. Schrift-/Motivpfadprüfungen und deren Cache berücksichtigen die Grenze. Die physische Schnittkontur bleibt vollständig; ungültige Kundengestaltung wird vor dem Fertigungsexport abgewiesen.
+- **72 gezielte Tests bestanden**, einschließlich exakter Grenzlage, Drehung, Rückseite, Verschiebebegrenzung, Schrift-/Motivfallbacks, Familienabgleich, serverseitiger Ablehnung und vollständigem Gravurpaket mit einmaliger Rückseitenspiegelung. Testprotokoll: Code-Repo docs/handoffs/grabkreuze-hunde-20261101/ground-tests.txt.
+- **Die sichtbare Browser-/Bedienprüfung ist offen. Der lokale Prüfserver und Editor-Build wurden erzeugt; der automatisierte Browseraufruf wurde als fremder Seitenaufruf mit HTTP 403 abgefangen. Der anschließende Computer-Use-Versuch wurde automatisch beendet, weil die aktuelle Browseradresse nicht sicher erkannt werden konnte. Es gibt deshalb keinen bestandenen interaktiven Konfiguratornachweis und keine Browser-Screenshots dieser Änderung.** Die 120 SVG-Zielvorschauen und daraus neu erzeugten Kontaktbögen verwenden jetzt den gemeinsamen Renderer ohne zusätzlichen Prüfbeschnitt.
+- Weiterhin NICHT importieren oder veröffentlichen: beide PRs bleiben Entwürfe; Bedienabnahme, Schriftentscheidung und Designfreigabe fehlen.
 - Katalogvollbau erfolgreich: 15 gültige Familien, PDF-/PNG-Ansichten und Excel erzeugt. Unveränderte bestehende Familienansichten gehören nicht zur Lieferung.
 - Keine Freigabe, kein Merge, keine Live-Veröffentlichung. Die übrigen elf Produkte und späteren Kreuzgrößen wurden nicht begonnen.
 
 ## Nächster Schritt
 
-Claude prüft die sechs Sichtbögen und entscheidet über die ausstehenden Vorlagenschriften. Danach Auswahl korrigieren und die echte Erdteil-Begrenzung einschließlich Kundeneditor, Fertigung und Shop-Entwurf fertigstellen. Erst danach ist der Probedurchlauf vollständig abnahmefähig.
+Claude prüft Code-PR #109 zusammen mit Katalog-PR #125, holt die sichtbare Bedienprüfung auf Desktop und Mobil nach (Verschieben, Drehen, Textwechsel, Motiv ersetzen/löschen, drei Größen, beide Farben) und entscheidet über die ausstehenden Vorlagenschriften. Danach Auswahl korrigieren und den Shop-Entwurf nach gesonderter Freigabe anbinden. Erst danach ist der Probedurchlauf vollständig abnahmefähig.
 
 ## Reproduzierbarkeit
 
-Code-Branch dev/grabkreuze-hunde-20261101-astra-mika: scripts/build-grabkreuze-hunde.py, scripts/preview-grabkreuze-hunde.mjs, scripts/check-render-grabkreuze.py, scripts/audit-grabkreuze.py. Die Skripte erwarten den benachbarten isolierten Katalogordner grabkreuze-hunde-katalog. GRAVURU_PYTHON auf den verfügbaren Python-Interpreter setzen; Python-Bibliotheken fontTools, Pillow, CairoSVG, pdfplumber, pikepdf verfügbar machen. Auf Windows für den Katalogbau PYTHONUTF8=1. Quelleninventar quellenpruefung.json stammt aus der ersten Prüfung vor Eingang der ergänzten Kontur; die oben genannte Konturfrage ist inzwischen gelöst.
+Code-Branch dev/grabkreuze-hunde-20261101-astra-mika: scripts/build-grabkreuze-hunde.py, scripts/preview-grabkreuze-hunde.mjs, scripts/check-render-grabkreuze.py, scripts/audit-grabkreuze.py sowie scripts/serve-grabkreuze-review.mjs (lokaler Kundeneditor auf 127.0.0.1:8736, keine Shop-Schreibzugriffe). Die Skripte erwarten den benachbarten isolierten Katalogordner grabkreuze-hunde-katalog. GRAVURU_PYTHON auf den verfügbaren Python-Interpreter setzen; Python-Bibliotheken fontTools, Pillow, CairoSVG, pdfplumber, pikepdf verfügbar machen. Auf Windows für den Katalogbau PYTHONUTF8=1. Quelleninventar quellenpruefung.json stammt aus der ersten Prüfung vor Eingang der ergänzten Kontur; die oben genannte Konturfrage ist inzwischen gelöst.
 
 ## Designnachweis
 

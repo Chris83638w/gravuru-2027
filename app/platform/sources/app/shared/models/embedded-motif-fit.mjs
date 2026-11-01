@@ -1,3 +1,4 @@
+import {aboveGround} from './ground-insertion.mjs';
 import {flattenClosedSvgPath,contourContainsPolygon,ellipseEdgeDistance} from './contour-geometry.mjs';
 
 // Narrow fallback for catalogue vector motifs whose conservative object box
@@ -77,6 +78,7 @@ function calculateFit(object,geometry,resource){
   // approximation (inside contourContainsPolygon) on the unsafe side.
   for(const path of paths)for(const ring of path.rings){
    const reserve=margin+MOTIF_PATH_TOLERANCE_MM;
+   if(!aboveGround(ring,geometry,MOTIF_PATH_TOLERANCE_MM))return false;
    if(!(geometry.shape==='ellipse'?insideEllipse(ring,geometry,reserve):contourContainsPolygon(geometry,ring,{marginMm:reserve,holes:false})))return false;
   }
   const keepout=geometry.holeKeepoutMm??0;
@@ -103,7 +105,7 @@ export function embeddedMotifFits(object,geometry,resource){
  if(!resource||typeof resource!=='object'||resource.artwork||resource.embeddedOnly!==true||object?.type!=='motif'||object.templateOrigin!==true||resource.key!==object.motif)return null;
  let entry=fitCache.get(resource);
  if(!entry||entry.fragment!==resource.svgFragment){entry={fragment:resource.svgFragment,values:new Map()};fitCache.set(resource,entry);}
- const key=JSON.stringify([resource.bounds,object.x,object.y,object.w,object.h,object.rotation,geometry?.shape,geometry?.width,geometry?.height,geometry?.outlinePath,geometry?.safeMarginMm,geometry?.holeKeepoutMm,geometry?.holes]);
+ const key=JSON.stringify([resource.bounds,object.x,object.y,object.w,object.h,object.rotation,geometry?.shape,geometry?.width,geometry?.height,geometry?.outlinePath,geometry?.safeMarginMm,geometry?.holeKeepoutMm,geometry?.holes,geometry?.groundInsertion]);
  if(entry.values.has(key))return entry.values.get(key);
  const result=calculateFit(object,geometry,resource);
  if(entry.values.size>=8)entry.values.delete(entry.values.keys().next().value);

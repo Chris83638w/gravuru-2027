@@ -1,3 +1,4 @@
+import {aboveGround} from './ground-insertion.mjs';
 import {measureText,textGlyphLayout} from './doorbell-preview.mjs';
 import {flattenClosedSvgPath,contourContainsPolygon,ellipseEdgeDistance} from './contour-geometry.mjs';
 
@@ -82,6 +83,7 @@ export function textOutlineFits(object,geometry,fonts){
      const y=baseline-gy*scale,x=(advance+gx)*scale+skew*y;
      return [object.x+x*c-y*s-(geometry.x||0),object.y+x*s+y*c-(geometry.y||0)];
     });
+    if(!aboveGround(transformed,geometry,TEXT_PATH_TOLERANCE_MM*(1+Math.abs(skew))))return false;
     if(geometry.shape==='contour'){
      // Complete segments, including concave bites, not only the vertices.
      if(!contourContainsPolygon(geometry,transformed,{marginMm:reserve,holes:false}))return false;

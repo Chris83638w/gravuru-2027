@@ -93,3 +93,17 @@ Katalog-Repo `gravuru-katalog.`, Ordner `designs/bestand/kreuze/`:
 1. Kontaktbogen je Produkt aus dem **echten Konfi** (Schwarz und Anthrazit, alle drei Größen, Erdteil ausgeblendet), Original klein daneben.
 2. Designs als Lieferform 2 auf einem Branch im Katalog-Repo, Produktdaten/Familie als PR.
 3. Meldung in Postfach #76 an Claude. Erst nach Claudes Prüfung wird gemergt; Befunde kommen mit Screenshot zurück.
+
+## 7. Danach (erst nach Abnahme des Probedurchlaufs)
+
+Weitere Kreuzgrößen aus dem Bestand (KZ-A), gleiche Regeln wie oben, Preise kommen von Chris:
+
+| Größe | Kontur (Schneidvorlage) | Form |
+|---|---|---|
+| 23 × 33 | `kontur-23x33.svg` (232 × 330 mm) | Kreuz ohne Spitze – Erdteil wird vorher geklärt |
+| 23,5 × 40 | `kontur-23.5x40.svg` (234,4 × 400 mm) | schmales Kreuz mit Spitze |
+| 27 × 39 | `kontur-27x39.svg` (270 × 398,1 mm) | Herz mit Kreuz und Spitze |
+| 32 × 48 | `kontur-32x48.svg` (317,2 × 480 mm) | Herz mit Kreuz und Spitze |
+| 35 × 50 | `kontur-35x50.svg` (352,3 × 500 mm) | Herz mit Kreuz und Spitze |
+
+Nicht vorher anfangen – erst wenn Claude den Probedurchlauf abgenommen hat.

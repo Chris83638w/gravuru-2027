@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="234.4mm" height="400.0mm" viewBox="0 0 234.4 400.0">
+<!-- Grabkreuz Acryl 23.5x40 cm, Kontur aus Schneidvorlage Kreuz_22x40_23X40.dxf. Rot = Erdlinie (5 cm), blau = Gestaltungsgrenze. -->
+<path id="kontur" d="M0.006 97.501 L96.755 97.501 L96.755 0.000 L137.654 0.000 L137.654 97.501 L234.400 97.501 L234.400 138.718 L137.654 138.718 L137.654 330.679 L117.203 400.000 L96.755 330.679 L96.755 138.718 L0.006 138.718 L0.006 97.501 Z" fill="none" stroke="#000" stroke-width="0.2"/>
+<line id="erdlinie" x1="0" y1="350.0" x2="234.4" y2="350.0" stroke="#d00" stroke-width="0.3" stroke-dasharray="2 1.5"/>
+<line id="gestaltungsgrenze" x1="0" y1="345.0" x2="234.4" y2="345.0" stroke="#06c" stroke-width="0.2" stroke-dasharray="1 1"/>
+</svg>

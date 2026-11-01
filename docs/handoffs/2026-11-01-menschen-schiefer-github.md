@@ -12,6 +12,14 @@ Beispielbilder erscheinen auf Schiefer ausschließlich in Graustufen; Originalre
 
 Die Kordel-Lochmaße liegen jetzt in Excel main b831ea4 vor: R42 Ø5 bei (19|15)/(181|15), R45 Ø6 bei (20|16)/(230|16), R47 Ø6 bei (21|16)/(179|16), R48 Ø5 bei (51|16,1), R49 Ø5,8 mittig bei y=42,9 mm. Diese fünf Produkte haben feste Kordelbohrungen. Die früher dokumentierte Auslassung von R42/R45/R47/R48 ist damit fachlich aufgehoben; ihre Design- und Variantenprüfung ist der nächste Datenabschnitt.
 
+## Ergänzung der festen Lochbilder und aktueller Prüfstand
+
+[Katalog-PR #97](https://github.com/Chris83638w/gravuru-katalog./pull/97), signierter Stand `7c8b2b085840dfbb704cf7283412f476414b18b0`: fünf blaue SVG-Schablonen, fünf native Rohlingvorschauen, Geometrien und Nachweis. Fünf native Familienprüfungen bestanden; die tatsächlich aufgelösten Lochkoordinaten entsprechen exakt Excel. R49 ist bei x=113,5 / y=42,9 mm zentriert, Ø5,8 bleibt kreisrund. Rechtecke nutzen den vorhandenen Konturweg für feste obere Löcher; eine normale Links/Rechts-Regel würde sie fälschlich mittig setzen. Keine Produktfamilien oder Preise gespeichert.
+
+[Aktuelle Gesamtübersicht](https://github.com/Chris83638w/gravuru-katalog./blob/caf0ea546adb3bd0abce73ac6f6c0864bdd26760/auftraege/2026-10-31-menschen-schiefer/README.md): 1.815 Master, 188 Kontaktbögen in 79 Datenpaketen. Davon genau ein Paket nach der neuen Sichtprüfung überarbeitet; 78 weitere Paketrevisionen und die Designanpassungen an die neuen Kordelbohrungen sind offen. Alte Gesamt- und Größenprüfungen sind ausdrücklich historisch markiert; insbesondere gelten sie nicht für die neue R49-Bohrung oder als Nachweis der 3-mm-Versalhöhe.
+
+Das korrigierte [Herzpaket #18](https://github.com/Chris83638w/gravuru-katalog./pull/18), Stand `f178dc24fb9396bb878d7f37c62c9989f64035c6`, wurde Claude über [Kommentar 6556598889](https://github.com/Chris83638w/gravuru-2027/issues/76#issuecomment-6556598889) zur erneuten Sichtprüfung gemeldet. Nächster Schritt gemäß Claudes Ablauf: geänderte Designs in #18 und Code-PR #96 prüfen, danach weitere Pakete nach derselben Logik überarbeiten. Freigabe bleibt ausschließlich bei Chris.
+
 ## Erstlieferung vor der neuen Sichtprüfung
 
 [Gesamtübersicht mit allen 79 Daten-PRs und Kontaktbögen](https://github.com/Chris83638w/gravuru-katalog./blob/cff5f74a12698088e572bdea41ea0ef37ac076fe/auftraege/2026-10-31-menschen-schiefer/README.md).
@@ -27,7 +35,7 @@ Lieferform 2: Produktbindungen (`ziele: []`) und Freigaben (`freigabe: null`) bl
 
 Korrigierte Excel aus main: R11 240×192, R12 182,2×133,1, R39 200×200, R40 250×250 mm. Beim Stern R16 entspricht die native Zeichenfläche der von Chris akzeptierten tatsächlichen Originalkontur (ca. 200,0004×190,599 mm); das nominale Excel-Maß 200,7×190,8 mm bleibt dokumentiert. R49 bleibt 227×271,1 mm; nur die Originalkontur wird gemäß Chris auf die Lieferantenmaße eingepasst, das Dekor bleibt proportional.
 
-R42/R45/R47/R48 bleiben bis zu bekannten Lieferanten-Lochmaßen ausgeschlossen. Geschnittene Herzen und Bruchkante bleiben getrennt. Knochen R14 gehört zum anderen Hundeauftrag #85. MEM-146 ist eine Motivquelle, keine vollständige Gestaltung; MEM-381 enthält für Sternenkinder unpassende Tiermotive. Keine zusätzlichen Produktfamilien, Artikelnummern oder Preise erfunden.
+Historischer Erstlieferstand: R42/R45/R47/R48 waren wegen damals fehlender Lochmaße ausgeschlossen; durch PR #97 fachlich aufgehoben (siehe oben). Geschnittene Herzen und Bruchkante bleiben getrennt. Knochen R14 gehört zum anderen Hundeauftrag #85. MEM-146 ist eine Motivquelle, keine vollständige Gestaltung; MEM-381 enthält für Sternenkinder unpassende Tiermotive. Keine zusätzlichen Produktfamilien, Artikelnummern oder Preise erfunden.
 
 ## Code und Prüfung
 

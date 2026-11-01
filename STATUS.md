@@ -1,3 +1,7 @@
+## 01.11.2026 – Codex/Astra Mika: Menschen-/Sternenkinder-Schiefer vollständig geliefert
+
+2.097 editierbare SVG-Master, 18 Formatreihen/44 Excel-Zeilen, 103 kleine Katalog-PRs und 567 native Kontaktbögen fertig. 2.097 aktuelle native Masterprüfungen und 13.443 Größen-/Lochvarianten ohne Passformfehler; 1.952 reine Seitenverhältnis-Hinweise transparent im Bericht. 582 Fotoverwendungen byteidentisch, alle 5728 Revisionsdateien remote verifiziert; Filter/Bildladen/Desktop/390 px geprüft. Keine Laufzeitänderung in diesem Abschluss. Freigabe null; Chris prüft, Claude übernimmt/ordnet zu, Live-Import anschließend separat. [Abschluss und Gesamtindex](docs/handoffs/2026-11-01-menschen-schiefer-abschluss.md).
+
 # Türschilder: Format & Größe · 01.11.2026 · Astra
 
 Chris benennt den Bereich um: Reiter, Überschrift und erster Handy-Schritt heißen jetzt Format & Größe. 42/42 bestehende Tests, Build und lokale Desktop-/375×548-Browserprüfung grün. Nur Text/Umbruch geändert, keine Preis-/Optionslogik. [Nachweis](docs/handoffs/2026-11-01-tuerschilder-review/README.md#beschriftung-nach-chris--01112026). Auf PR #102, kein Merge oder Live-Schritt.

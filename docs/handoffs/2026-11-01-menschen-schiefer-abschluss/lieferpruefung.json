@@ -1,0 +1,34 @@
+{
+  "date": "2026-11-01",
+  "masters": 2097,
+  "formatSeries": 18,
+  "productRows": 44,
+  "packets": 103,
+  "contactSheets": 567,
+  "sections": {
+    "Mit Foto": 510,
+    "Ohne Foto": 1207,
+    "Sternenkinder": 380
+  },
+  "nativeMasterErrors": 0,
+  "sizeChecks": 13443,
+  "sizeErrors": 0,
+  "proportionalFitNotices": 1952,
+  "fitNoticeExplanation": "Nur Abweichungen der Seitenverhältnisse um 2,60 %, 3,70 % oder 4,80 %: proportional und mittig eingepasst, keine Konturverletzung. Keine Bohrungs- oder Geometriefehler.",
+  "photoOccurrences": 582,
+  "uniqueOriginalPhotos": 32,
+  "originalPhotoBytesUnchanged": true,
+  "remoteVerifiedRevisionFiles": 5728,
+  "freigabe": null,
+  "live": false,
+  "excludedExcelRows": [
+    14
+  ],
+  "excludedReason": "Knochen R14 gehört zum getrennten Tierauftrag #85.",
+  "codePullRequest": "https://github.com/Chris83638w/gravuru-2027/pull/96",
+  "renderCode": "304420b",
+  "sourceExclusions": {
+    "MEM-146": "Motivquelle, keine vollständige Gestaltung",
+    "MEM-381": "Tiermotive passen nicht zu Sternenkindern"
+  }
+}

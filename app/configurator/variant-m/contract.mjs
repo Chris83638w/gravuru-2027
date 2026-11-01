@@ -1,4 +1,5 @@
 import {isLayeredDoorbell,DOORBELL_SCHEMA,validateDoorbellDefinition,selectedDoorbellProfile,selectedDoorbellDesign,doorbellPriceBase,doorbellLayoutIssue} from './doorbell-selection.mjs';
+import {isFamilyFormats,validateFamilyFormats,familyFormatOptions,familyFormatSelection,familyFormatCombinations,familyFormatPrice,selectedFamilyProfile} from './family-formats.mjs';
 import {QUANTITY_TIER_MAX,quantityTiersIssue,quantityTiersOpen,activeQuantityTiers,quantityTierFor,applyQuantityTier,quantityTierLabels} from './quantity-tiers.mjs';
 export {QUANTITY_TIER_MAX,quantityTiersIssue,quantityTiersOpen,activeQuantityTiers,quantityTierFor,applyQuantityTier,quantityTierLabels} from './quantity-tiers.mjs';
 import {canDeleteTemplateElement,templateRightsIssue,customerAdditionPolicy,validateCustomerAdditions,designElementRights} from './element-rights.mjs';
@@ -48,6 +49,7 @@ export function prepareConfig(input) {
   const config = clone(input);
   validateToolbarConfig(config);
   if(isLayeredDoorbell(config)){validateDoorbellDefinition(config);config.profile=selectedDoorbellProfile(config);}
+  if(config.familyFormats){validateFamilyFormats(config);config.profile=selectedFamilyProfile(config);}
   const p = config.profile;
   if(config.designSelection!==undefined&&config.designSelection!=='all-approved')fail('Designauswahl ist ungültig.');
   if(config.motifCharge!==undefined&&!['additional','all'].includes(config.motifCharge))fail('Motiv-Preisregel ist ungültig.');
@@ -60,7 +62,7 @@ export function prepareConfig(input) {
   const extraFontIds=localFontIds(config);
   const review=config.reviewOnly===true&&p.binding?.kind==='local-review'&&p.features?.orderEnabled===false;
   if(config.reviewOnly&&!review)fail('Prüfprodukt darf keine Shop-Bestellung freigeben.');
-  validateStudio(p, p, {extraFontIds,motifs:config.localResources?.motifs||[],fonts:config.localResources?.fonts});
+  validateStudio(p, p, {extraFontIds,motifs:config.localResources?.motifs||[],fonts:config.localResources?.fonts,catalogSizes:isFamilyFormats(config)});
   // Themenlimits und Pflichtkennzeichen der Vorlage sind Produktregeln: ungültige Werte laden nicht.
   for(const d of p.designs||[])for(const o of d.objects||[])if(o.type==='text'){
     if(o.required!==undefined&&typeof o.required!=='boolean')fail('Pflichtfeld für Text ausdrücklich festlegen.');
@@ -120,6 +122,7 @@ export function prepareConfig(input) {
 // und Felder werden verworfen (auch wenn ein Wert mitkommt); leere Felder fehlen.
 // Pflichtfelder prüft `validateDesign` (nur sichtbare, nicht im Entwurf).
 export function resolvedOptions(config, values = {}) {
+  if(isFamilyFormats(config))return familyFormatOptions(config,values);
   const groups = config.profile.optionGroups || [], fields = optionFields(config.profile), result = {};
   if (!values || typeof values !== 'object' || Array.isArray(values)) fail('Ungültige Optionen.');
   for (const key of Object.keys(values)) if (!groups.some(g => g.id === key) && !fields.some(f => f.id === key)) fail('Unbekannte Optionsgruppe.');
@@ -153,6 +156,7 @@ export function optionFieldEntries(config, values = {}) {
 // Ausführungen für Shop-Varianten: alle Kombinationen der Gruppen, unsichtbare Gruppen
 // verworfen und doppelte Ausführungen zusammengefasst; Zusatzfelder sind keine Varianten.
 export function variantCombinations(config) {
+  if(isFamilyFormats(config))return familyFormatCombinations(config);
   let combinations = [{}];
   for (const g of config.profile.optionGroups || []) combinations = combinations.flatMap(o => g.values.map(v => ({...o, [g.id]:v.id})));
   const seen = new Map();
@@ -161,6 +165,7 @@ export function variantCombinations(config) {
 }
 
 export function selectedProfile(config, values = {}) {
+  if(isFamilyFormats(config))return selectedFamilyProfile(config,values);
   if(isLayeredDoorbell(config))return selectedDoorbellProfile(config,resolvedOptions(config,values));
   const profile = clone(config.profile), options = resolvedOptions(config, values);
   let holeSelection = false, finish;
@@ -185,7 +190,7 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
   if(config.reviewOnly&&config.basePriceCents===null)fail('Preis noch offen.');
   if (!Number.isInteger(quantity) || quantity < 1 || quantity > 99) fail('Menge: 1 bis 99.');
   const options = resolvedOptions(config, values);
-  const design = isLayeredDoorbell(config)?selectedDoorbellDesign(config,designId,options):config.profile.designs.find(d => d.id === designId);
+  const design = isFamilyFormats(config)?selectedFamilyProfile(config,options).designs.find(d=>d.id===designId):isLayeredDoorbell(config)?selectedDoorbellDesign(config,designId,options):config.profile.designs.find(d => d.id === designId);
   if (!design) fail('Unbekanntes Design.');
   // Original template motifs are included once. A duplicate must not inherit this credit.
   const included = new Map(design.objects.filter(o => o.type === 'motif').map(o => [o.id, o.motif]));
@@ -199,8 +204,8 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
     if (included.get(o.id) === o.motif && !seen.has(o.id)) seen.add(o.id);
     else additionalMotifs++;
   }
-  let unitCents = isLayeredDoorbell(config)?doorbellPriceBase(config,options):config.acrylic ? acrylicSelection(acrylicOptions(options),config.acrylic.pricing).totalCents : config.steelFormats ? 0 : config.basePriceCents;
-  if(!config.acrylic)for (const group of config.profile.optionGroups || []) if (options[group.id] !== undefined&&!(isLayeredDoorbell(config)&&group.id==='format')) unitCents += group.values.find(v => v.id === options[group.id]).priceCents;
+  let unitCents = isFamilyFormats(config)?familyFormatPrice(config,options):isLayeredDoorbell(config)?doorbellPriceBase(config,options):config.acrylic ? acrylicSelection(acrylicOptions(options),config.acrylic.pricing).totalCents : config.steelFormats ? 0 : config.basePriceCents;
+  if(!config.acrylic&&!isFamilyFormats(config))for (const group of config.profile.optionGroups || []) if (options[group.id] !== undefined&&!(isLayeredDoorbell(config)&&group.id==='format')) unitCents += group.values.find(v => v.id === options[group.id]).priceCents;
   // Zusatzfelder (Ü12.1): Aufpreis nur sichtbarer, ausgefüllter Felder.
   const fieldCents = optionFieldCents(config, options);
   // Rückseite gestalten (Ü15.1): Aufpreis je Stück, sobald die Rückseite gestaltet ist; offen = nicht buchbar.
@@ -210,10 +215,11 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
   if (!Number.isSafeInteger(unitCents)) fail('Ungültiger Gesamtpreis.');
   // Staffel (Ü11.1) serverseitig auf den Stückpreis; nur Produkte mit Staffelangabe
   // tragen die Zusatzfelder, damit bestehende Preisstände unverändert bleiben.
-  const listUnitCents = unitCents, tier = quantityTierFor(config, quantity);
-  unitCents = applyQuantityTier(listUnitCents, tier, config.basePriceCents);
+  const priceConfig=isFamilyFormats(config)?{...config,basePriceCents:familyFormatSelection(config,options).variant.basePriceCents,quantityTiers:familyFormatSelection(config,options).variant.quantityTiers}:config;
+  const listUnitCents = unitCents, tier = quantityTierFor(priceConfig, quantity);
+  unitCents = applyQuantityTier(listUnitCents, tier, priceConfig.basePriceCents);
   if (!Number.isSafeInteger(unitCents * quantity)) fail('Ungültiger Gesamtpreis.');
-  const tiers = config.quantityTiers === undefined ? {} : {listUnitCents, quantityTier:tier ? {...tier} : null, quantityTierDiscountCents:listUnitCents - unitCents,...(config.quantityTierScope===undefined?{}:{quantityTierScope:config.quantityTierScope})};
+  const tiers = priceConfig.quantityTiers === undefined ? {} : {listUnitCents, quantityTier:tier ? {...tier} : null, quantityTierDiscountCents:listUnitCents - unitCents,...(priceConfig.quantityTierScope===undefined?{}:{quantityTierScope:priceConfig.quantityTierScope})};
   return {currency:'EUR', unitCents, totalCents:unitCents * quantity, quantity, additionalMotifs, ...(config.motifCharge==='all'?{chargedMotifs}:{}), options, ...tiers, ...(config.profile.optionFields === undefined ? {} : {fieldCents}), ...(hasBack(config.profile) ? {backCents} : {})};
 }
 

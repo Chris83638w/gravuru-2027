@@ -31,14 +31,15 @@ export function validateUniversalElements(design){
   }
  }
 }
-export function validateOptionGroups(groups){
+export function validateOptionGroups(groups,{catalogSizes=false}={}){
  if(groups===undefined)return;
  if(!Array.isArray(groups)||groups.length>20)throw Error('Höchstens 20 Gruppen für kaufbare Extras verwenden.');
  const ids=new Set();
  for(const group of groups){
   if(!group||!validContentId(group.id)||ids.has(group.id)||typeof group.name!=='string'||!group.name.trim()||group.name.length>100||typeof group.required!=='boolean')throw Error('Kaufbare Extras brauchen eindeutige Gruppen und Namen.');
   ids.add(group.id);
-  if(!Array.isArray(group.values)||!group.values.length||group.values.length>40)throw Error('Eine Extragruppe braucht 1 bis 40 Auswahlmöglichkeiten.');
+  const limit=catalogSizes&&group.id==='size'?2048:40;
+  if(!Array.isArray(group.values)||!group.values.length||group.values.length>limit)throw Error('Eine Extragruppe braucht 1 bis '+limit+' Auswahlmöglichkeiten.');
   const values=new Set();
   for(const value of group.values){
    if(!value||!validContentId(value.id)||values.has(value.id)||typeof value.label!=='string'||!value.label.trim()||value.label.length>100)throw Error('Extras brauchen eindeutige Kennungen und Bezeichnungen.');

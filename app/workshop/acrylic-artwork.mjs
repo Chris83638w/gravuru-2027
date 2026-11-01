@@ -1,3 +1,4 @@
+import {isFamilyFormats} from '../configurator/variant-m/family-formats.mjs';
 import {designPaintOrder} from '../platform/sources/app/shared/models/design-layer-order.mjs';
 import {doorbellSeparations} from './doorbell-artwork.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
@@ -40,7 +41,7 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfac
  const layered=isLayeredDoorbell(config);
  if(config.doorbell&&!layered)fail('Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.');
  const native=manifest.schema===NATIVE_REVIEW;
- if(saved.schema!==(native?'gravuru-native-review-input/v1':'gravuru-acrylic-review-input/v1')||native!==(['slate','steel'].includes(config.profile.material.kind)||!!config.familyAcrylic||layered)||saved.profileRevision!==config.profile.revision||manifest.product.id!==config.profile.id)fail('Die gesicherte Produktrevision ist nicht eindeutig.');
+ if(saved.schema!==(native?'gravuru-native-review-input/v1':'gravuru-acrylic-review-input/v1')||native!==(['slate','steel'].includes(config.profile.material.kind)||!!config.familyAcrylic||isFamilyFormats(config)||layered)||saved.profileRevision!==config.profile.revision||manifest.product.id!==config.profile.id)fail('Die gesicherte Produktrevision ist nicht eindeutig.');
  // Profile fonts were frozen at checkout after the original product document.
  // Validate against those hash-verified paths, just like validateAcrylicReview;
  // never resolve a missing font from today's library or the browser.

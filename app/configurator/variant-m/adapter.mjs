@@ -21,6 +21,8 @@ import {designResourcesReady} from './doorbell-lazy-designs.mjs';
 import {isLayeredDoorbell} from './doorbell-selection.mjs';
 import {doorbellOptionState,updateDoorbellViewport} from './doorbell-ui.mjs';
 import {installDoorbellPresentation} from './doorbell-presentation.mjs';
+import {isFamilyFormats,familyFormatState} from './family-formats.mjs';
+import {installFamilyFormatsPresentation} from './family-formats-ui.mjs';
 
 const clone = value => structuredClone(value);
 const svgDocument = svg => new DOMParser().parseFromString(svg, 'image/svg+xml');
@@ -28,6 +30,7 @@ const svgDocument = svg => new DOMParser().parseFromString(svg, 'image/svg+xml')
 export function installUniversal(configInput) {
   const config = prepareConfig(configInput), p = config.profile, processing = getProcessingProfile(p);
   const dynamicDoorbell=isLayeredDoorbell(config);
+  const dynamicFamily=isFamilyFormats(config),dynamicFormats=dynamicDoorbell||dynamicFamily;
   const originalPrepare = window.Funkklingel.prepare, originalFinish = window.Funkklingel.finish;
   let options = {}, quantity = 1, el, renderId = 0;
   const photos = new Map(); // File objects stay in this page. Never localStorage, URL, draft or Git.
@@ -59,7 +62,7 @@ export function installUniversal(configInput) {
   // Leistung (Fehler 20.10.2026): Die Altgalerie ruft thumb() bei jedem sync für jede Karte auf –
   // beim Ziehen also je Fingerbewegung. Vorlagen ändern sich dabei nicht: Ergebnis zwischenspeichern.
   const thumbCache=new Map();
-  window.Funkklingel.thumb = (element, d) => { el = element; const design=(dynamicDoorbell?profile().designs:p.designs).find(x => x.id === d.id) || d; if(dynamicDoorbell&&!designResourcesReady(design,el.fontData,el.motifs))return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120"><text x="120" y="65" text-anchor="middle" font-size="12" fill="#526b5d">Design wird geladen …</text></svg>'; const key=JSON.stringify([options,design]); let markup=thumbCache.get(key); if(markup===undefined){markup=svg(design,{screen:true});if(thumbCache.size>64)thumbCache.clear();thumbCache.set(key,markup);} return markup; };
+  window.Funkklingel.thumb = (element, d) => { el = element; const design=(dynamicFormats?profile().designs:p.designs).find(x => x.id === d.id) || d; if(dynamicDoorbell&&!designResourcesReady(design,el.fontData,el.motifs))return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120"><text x="120" y="65" text-anchor="middle" font-size="12" fill="#526b5d">Design wird geladen …</text></svg>'; const key=JSON.stringify([options,design]); let markup=thumbCache.get(key); if(markup===undefined){markup=svg(design,{screen:true});if(thumbCache.size>64)thumbCache.clear();thumbCache.set(key,markup);} return markup; };
   window.Funkklingel.prepare = element => {
     el = element; originalPrepare(el);
     const {width, height, shape, cornerRadiusMm=0} = profile().geometry;
@@ -68,7 +71,7 @@ export function installUniversal(configInput) {
     el.stainlessGroup = {...el.stainlessGroup, name:p.name, formats:[format]};
     el.state.width = width; el.state.height = height;
     el.$('[data-stainless=size]').replaceChildren(new Option(format.label, format.key));
-    el.stainlessFormat = () => dynamicDoorbell?{...format,widthMm:profile().geometry.width,heightMm:profile().geometry.height,label:profile().geometry.width+' × '+profile().geometry.height+' mm'}:format;
+    el.stainlessFormat = () => dynamicFormats?{...format,widthMm:profile().geometry.width,heightMm:profile().geometry.height,label:profile().geometry.width+' × '+profile().geometry.height+' mm'}:format;
     el.geometry = () => {
       const geometry=profile().geometry,{width,height,shape}=geometry;
       const outline = shape === 'contour' ? geometry.outlinePath : shape === 'ellipse' ? `M0 ${height/2}a${width/2} ${height/2} 0 1 0 ${width} 0a${width/2} ${height/2} 0 1 0 -${width} 0` : `M0 0H${width}V${height}H0Z`;
@@ -104,7 +107,7 @@ export function installUniversal(configInput) {
   };
 
   window.Funkklingel.finish = element => {
-    el = element; originalFinish(el);
+    el = element; el.uxFamilyGallery=dynamicFamily; originalFinish(el);
     el.uxProfileGeometry=()=>profile().geometry;
     el.uxSelectedProfile=()=>profile();
     el.style.setProperty('--m-plate-width',String(p.geometry.width));
@@ -125,9 +128,9 @@ export function installUniversal(configInput) {
     const changeOption=(key,value,{record=true}={})=>{
       if(options[key]===value)return;
       const next={...options,[key]:value};
-      const state=dynamicDoorbell?doorbellOptionState(config,el.state,next):{...el.state,mOptions:clone(next)};
+      const state=dynamicFamily?familyFormatState(config,el.state,next,{fonts:el.fontData,motifs:motifs()}):dynamicDoorbell?doorbellOptionState(config,el.state,next):{...el.state,mOptions:clone(next)};
       if(record)el.record();
-      options=next;Object.assign(el.state,state);el.sync();
+      options=state.mOptions;Object.assign(el.state,state);el.sync();
     };
     el.uxChangeOption=changeOption;
     picks.innerHTML=(p.optionGroups||[]).map(g=>'<label>'+esc(g.name)+'<select data-m-option="'+esc(g.id)+'" aria-label="'+esc(g.name)+'">'+g.values.map(v=>'<option value="'+esc(v.id)+'">'+esc(v.label)+(fullOptionPrice(g)?' · '+money(v.priceCents):v.priceCents?' · +'+money(v.priceCents):' · ohne Aufpreis')+'</option>').join('')+'</select></label>').join('');
@@ -159,6 +162,7 @@ export function installUniversal(configInput) {
     fieldBox.addEventListener('change',e=>{const key=e.target.dataset.mField;if(!key)return;changeOption(key,fieldInput(e.target),{record:e.target.type==='checkbox'||e.target.tagName==='SELECT'});});
     options={...Object.fromEntries((p.optionGroups||[]).map(g=>[g.id,g.defaultValueId])),...(dynamicDoorbell?{position:config.doorbell.defaultPosition||'standard'}:{})};
     const updateDoorbellChoices=installDoorbellPresentation({el,config,picks,pictures});
+    const updateFamilyChoices=installFamilyFormatsPresentation({el,config,picks,pictures});
     for(const select of picks.querySelectorAll('select[data-m-option]')) select.value=options[select.dataset.mOption];
     picks.addEventListener('change',e=>{if(!e.target.dataset.mOption)return;changeOption(e.target.dataset.mOption,e.target.value);});
     // Sichtbarkeit (visibleIf) und Feldwerte aus dem Zustand; unsichtbare Gruppen/Felder werden ausgeblendet.
@@ -240,7 +244,7 @@ export function installUniversal(configInput) {
     el.draftPayload=function({draft=false}={}){return saveDraft(config,this.state,options,this.fontData,motifs(),{draft});};
     el.import=async function(file){if(!file)return;try{if(file.size>2_000_000)throw Error('Entwurf ist zu groß.');const input=JSON.parse(await file.text());await this.uxEnsureDraftResources?.(input);this.restoreDraft(input);$('.status').textContent='Entwurf geladen. Bitte dein Foto erneut auswählen.';}catch(error){$('.status').textContent=error.message;}};
     el.chooseDesign=function(id,{carry=true}={}){
-      const templates=dynamicDoorbell?profile().designs:p.designs;
+      const templates=dynamicFormats?profile().designs:p.designs;
       const d=templates.find(d=>d.id===id);if(!d)return;
       // Chris 21.10.2026: nur geänderte Namen/Lebensdaten wandern mit (workflow-model.mjs).
       this.record();const texts=carry?changedCustomerTexts(this.state.objects,templates.find(x=>x.id===this.state.designId)):[];
@@ -273,7 +277,7 @@ export function installUniversal(configInput) {
       const thumbnailKey=JSON.stringify(options)+'|'+(el.uxThumbnailSignature?.()||'');
       let budget=Number.isFinite(el.uxThumbnailBudget)?el.uxThumbnailBudget:Infinity,deferred=0;
       for(const card of r.querySelectorAll('[data-c-design]')){
-        const design=(dynamicDoorbell?profile().designs:p.designs).find(d=>d.id===card.dataset.cDesign);if(!design)continue;
+        const design=(dynamicFormats?profile().designs:p.designs).find(d=>d.id===card.dataset.cDesign);if(!design)continue;
         if(dynamicDoorbell&&!designResourcesReady(design,el.fontData,el.motifs))continue;
         let thumbnail=thumbnails.get(card);
         if(!thumbnail||thumbnail.key!==thumbnailKey){
@@ -292,9 +296,9 @@ export function installUniversal(configInput) {
     }
     el.uxRefreshThumbnails=renderThumbnails;
     function update(){
-      const d=current(), visible=new Set(filteredDesigns(p.designs,filters).map(d=>d.id));
+      const d=current(), visible=new Set(filteredDesigns(dynamicFormats?profile().designs:p.designs,filters).map(d=>d.id));
       const physical=physicalGeometry(config,{mOptions:options});
-      if(dynamicDoorbell)updateDoorbellViewport(el,physical);
+      if(dynamicFormats)updateDoorbellViewport(el,physical);
       // The legacy shell keeps only SVG children. Restore the outer viewport so the
       // backing plate is fully visible; front geometry and pointer coordinates stay in mm.
       updateBackingPreviewViewport(el,profile());
@@ -315,6 +319,7 @@ export function installUniversal(configInput) {
       for(const select of picks.querySelectorAll('select[data-m-option]'))select.value=options[select.dataset.mOption];
       updateOptionVisibility();
       updateDoorbellChoices(options);
+      updateFamilyChoices(options);
       for(const button of pictures.querySelectorAll('[data-picture-option]'))button.setAttribute('aria-pressed',String(options[button.dataset.pictureGroup]===button.dataset.pictureOption));
       try{
         const price=config.basePriceCents===null?null:quote(config,el.state.objects,el.state.designId,options,quantity);
@@ -331,6 +336,7 @@ export function installUniversal(configInput) {
     const sync=el.sync;
     el.sync=function(...args){
       options=clone(this.state.mOptions||options);
+      if(dynamicFamily)this.catalog.designs=profile().designs;
       this.normalize();const result=sync.apply(this,args);update();return result;
     };
     $('[data-setting=guides]').checked=false;

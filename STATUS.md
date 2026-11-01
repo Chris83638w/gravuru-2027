@@ -1,3 +1,7 @@
+# Acryl-3-mm-Ziele · 31.10.2026 · Astra
+
+Nachricht 35: explizit abgeleitete Familien behalten die vorhandenen Quellgrößen bei identischer Geometrie, einschließlich historischer Retro-Bögen. Katalog-PR #11: 737 Master / 1.474 offene Ziele, 737/737 Größenzuordnungen je Acrylfarbe identisch. 105 Tests bestanden, 1 optionaler echter-Export-Test übersprungen, 0 Fehler; Linux-Vollauf offen. Keine UI-, Live- oder Freigabeänderung. [Bericht und Nur-Lese-Abgleich](docs/handoffs/2026-10-31-acryl3-designziele-astra.md).
+
 ## 31.10.2026 – Codex/Astra: Funkklingel-Reparatur #82 live abgenommen
 
 PR #82 gemergt (`1da0c12f`), getrennte geprüfte Laufzeit aktiviert und neu gestartet. Öffentliches Bundle exakt per SHA bestätigt. 143/143 Linux-Tests; aktuelle 126 Produkte / 42 Modelle / 30.240 Kombinationen lesend geprüft. Echte AOSU-Bedienung: bebilderte Untertabs, Materialdarstellung und 12a-Vergrößerung funktionieren. Warenkorb mit 35×18 / Schwarz / Rahmen oben & unten / Silikon / Gegenposition für 74,98 EUR, danach Wiederbearbeitung mit 41-mm-Hausnummer bestätigt; eigenen Testartikel wieder entfernt. Bestehende Master-Funktionen, Katalog, Produktrevisionen und Bindungen erhalten; kein Kauf. [Live-Belege, Screenshots und Rückweg](docs/handoffs/2026-10-31-funkklingeln-master-reparatur.md). Für diese Reparatur kein weiterer Live-Schritt offen; eigenständige Master-Aufträge bleiben separat.

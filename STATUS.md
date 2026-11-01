@@ -1,3 +1,7 @@
+# Türschilder: kompakte Auswahl und Plattenschatten · 01.11.2026 · Astra
+
+Chris bestätigt Formkacheln mit Größe/Befestigung nebeneinander und dezenten Schatten. Auf eigenem Branch über #98 umgesetzt, bestehende Preis-/Design-/Geometriequelle unverändert. 46/46 Tests, 16 lokale Browserwechsel grün; Desktop/390×664/375×548 dokumentiert. Vollständige Designbestückung nach Chris’ Anweisung bei Claude angefragt, noch offen. [Bericht und Bilder](docs/handoffs/2026-11-01-tuerschilder-kompaktauswahl/README.md). Kein Merge, Import oder Live-Schritt.
+
 # N36 Bohrlöcher: automatische Platzierung beim Optionswechsel · 01.11.2026 · Astra
 
 Auf N39/PR #97 (`9327ac7`): einmaliges Ausweichen für Texte/Motive bei Bohrloch-/Schraubenwahl, Rücknahme bei lochloser Auswahl, manuelle Gestaltung frei. Master-Oberfläche, Preise und Katalog unverändert. 132 unterschiedliche gezielte Tests grün, 0 verbleibende Fehler/Skip; zwei lokale HTTP-Verbindungsfehler unverändert mit lokalem Zugriff nachgeprüft. 240/240 Kataloggrößen starten K00, keine Ausnahme. Acht lokale Browser-Bildpaare mit Wiederherstellung geprüft. [Bericht, Grenzen und Nachweise](docs/handoffs/2026-11-01-bohrloch-ausweichen-n36/README.md). Linux-Vollauf/Sichtabnahme bei Claude offen; kein Import, kein Merge, nichts live.

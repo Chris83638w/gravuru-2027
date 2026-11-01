@@ -23,6 +23,7 @@ import {doorbellOptionState,updateDoorbellViewport} from './doorbell-ui.mjs';
 import {installDoorbellPresentation} from './doorbell-presentation.mjs';
 import {isFamilyFormats,familyFormatState} from './family-formats.mjs';
 import {installFamilyFormatsPresentation} from './family-formats-ui.mjs';
+import {mountingPlacementState} from './mounting-placement.mjs';
 
 const clone = value => structuredClone(value);
 const svgDocument = svg => new DOMParser().parseFromString(svg, 'image/svg+xml');
@@ -128,7 +129,9 @@ export function installUniversal(configInput) {
     const changeOption=(key,value,{record=true}={})=>{
       if(options[key]===value)return;
       const next={...options,[key]:value};
-      const state=dynamicFamily?familyFormatState(config,el.state,next,{fonts:el.fontData,motifs:motifs()}):dynamicDoorbell?doorbellOptionState(config,el.state,next):{...el.state,mOptions:clone(next)};
+      let state=dynamicFamily?familyFormatState(config,el.state,next,{fonts:el.fontData,motifs:motifs()}):dynamicDoorbell?doorbellOptionState(config,el.state,next):{...el.state,mOptions:clone(next)};
+      if(key==='mounting')state=mountingPlacementState(config,state,selectedProfile(config,options),selectedProfile(config,state.mOptions),{fonts:el.fontData,motifs:motifs()});
+      else if(key==='size')state={...state,uxHolePlacement:null};
       if(record)el.record();
       options=state.mOptions;Object.assign(el.state,state);el.sync();
     };
@@ -240,7 +243,7 @@ export function installUniversal(configInput) {
       return action.call(this,key,...args);
     };
     // K7: Entwurf im Vertragsformat lesen/schreiben (Sitzungsschutz, Konto-Entwurf). `draft:true` erlaubt unfertige Pflichttexte.
-    el.restoreDraft=function(input,{draft=false}={}){const restored=readDraft(config,input,this.fontData,motifs(),{draft});this.record();options=restored.options;this.state.objects=restored.design.objects;this.state.designId=restored.design.id;this.state.mOptions=clone(options);if(restored.ui)this.state.ui=clone(restored.ui);this.state.selected=null;photos.clear();photoDesign='';this.sync();return restored;};
+    el.restoreDraft=function(input,{draft=false}={}){const restored=readDraft(config,input,this.fontData,motifs(),{draft});this.record();options=restored.options;this.state.objects=restored.design.objects;this.state.uxHolePlacement=null;this.state.designId=restored.design.id;this.state.mOptions=clone(options);if(restored.ui)this.state.ui=clone(restored.ui);this.state.selected=null;photos.clear();photoDesign='';this.sync();return restored;};
     el.draftPayload=function({draft=false}={}){return saveDraft(config,this.state,options,this.fontData,motifs(),{draft});};
     el.import=async function(file){if(!file)return;try{if(file.size>2_000_000)throw Error('Entwurf ist zu groß.');const input=JSON.parse(await file.text());await this.uxEnsureDraftResources?.(input);this.restoreDraft(input);$('.status').textContent='Entwurf geladen. Bitte dein Foto erneut auswählen.';}catch(error){$('.status').textContent=error.message;}};
     el.chooseDesign=function(id,{carry=true}={}){
@@ -248,7 +251,7 @@ export function installUniversal(configInput) {
       const d=templates.find(d=>d.id===id);if(!d)return;
       // Chris 21.10.2026: nur geänderte Namen/Lebensdaten wandern mit (workflow-model.mjs).
       this.record();const texts=carry?changedCustomerTexts(this.state.objects,templates.find(x=>x.id===this.state.designId)):[];
-      this.state.designId=id;this.state.objects=clone(d.objects);this.state.selected=null;
+      this.state.designId=id;this.state.objects=clone(d.objects);this.state.selected=null;this.state.uxHolePlacement=null;
       if(texts.length)transferTexts(texts,this.state.objects);
       this.normalize();this.sync();
     };

@@ -1,5 +1,6 @@
 import {quote,resolvedOptions,choiceOptions,variantCombinations,applyQuantityTier,quantityTiersOpen,selectedProfile} from './contract.mjs';
-import {isFamilyFormats} from './family-formats.mjs';
+import {quantityTierLabels} from './quantity-tiers.mjs';
+import {isFamilyFormats,familyFormatSelection} from './family-formats.mjs';
 import {uploadQuote} from './ux-model.mjs';
 import {SURCHARGE_UNAVAILABLE_MESSAGE} from './surcharge-availability.mjs';
 // Variant prices exclude customer-added motifs/photos and use the same persisted
@@ -8,7 +9,9 @@ import {SURCHARGE_UNAVAILABLE_MESSAGE} from './surcharge-availability.mjs';
 const baseVariantPrice=(config,options)=>quote(config,[],isFamilyFormats(config)?selectedProfile(config,options).defaultDesignId:config.profile.defaultDesignId,choiceOptions(config,resolvedOptions(config,options))).unitCents;
 export const variantKey=options=>JSON.stringify(Object.entries(options).sort());
 export function commercePrice(config,state,quantity=1){
- const q=quote(config,state.objects,state.designId,state.mOptions,quantity),photos=uploadQuote(state.objects,quantity,false,config.photo,config.logo);
+ const q=quote(config,state.objects,state.designId,state.mOptions,quantity);
+ if(isFamilyFormats(config)){const {variant}=familyFormatSelection(config,state.mOptions);q.selectedBasePriceCents=variant.basePriceCents;q.selectedTierLabels=quantityTierLabels({quantityTiers:variant.quantityTiers});}
+ const photos=uploadQuote(state.objects,quantity,false,config.photo,config.logo);
  const uploads={chargedUploads:photos.chargedUploads??(config.photo.extraPriceCents?photos.unitCents/config.photo.extraPriceCents:0),...(photos.chargedLogos===undefined?{}:{chargedLogos:photos.chargedLogos})};
  // Explicit new contract: discount the complete unit once, including all photos.
  // Older saved unscoped revisions remain readable with their original arithmetic.

@@ -98,3 +98,22 @@ test('80 source sizes are supported only by the explicit family format contract'
  c.profile.optionGroups[0].values=c.familyFormats.formats.map(s=>({id:s.key,label:s.label,priceCents:0,currency:'EUR'}));
  assert.doesNotThrow(()=>prepareConfig(c));delete c.familyFormats;assert.throws(()=>prepareConfig(c),/40/);
 });
+
+test('RE, RT1, RT2, OV and QU use the identical neutral steel file without a colored overlay',async()=>{
+ const {studioSvg}=await import('../../platform/sources/app/shared/models/studio-svg.mjs');
+ const {surfacePreview}=await import('./material-surface.mjs');const {designAreaPreview}=await import('./design-area.mjs');
+ const c=fixture(),original=c.materialSurface;let s=state(c);
+ for(const form of ['RE','RT1','RT2','OV','QU']){const format=c.familyFormats.formats.find(f=>f.form===form);s=familyFormatState(c,s,{size:format.key},{fonts:c.localResources.fonts});const p=selectedProfile(c,s.mOptions);
+  const svg=designAreaPreview(surfacePreview(studioSvg(p,p.designs[0],c.localResources.fonts),c.materialSurface,p.geometry),c,p);
+  assert.equal(c.materialSurface,original);assert(svg.includes('href="'+original+'"'));assert.doesNotMatch(svg,/fill-opacity=".08"|fill="#278a72"/);
+ }
+});
+test('detached price renderer reads the selected base and tier from the central quote',async()=>{
+ const {commercePrice}=await import('./commerce-model.mjs');const {money,visibleGroups}=await import('./contract.mjs');const {uploadQuote,additionalMotifCount}=await import('./ux-model.mjs');
+ const config=fixture(),s=state(config),format=config.familyFormats.formats.find(f=>f.form==='RT2');s.mOptions={size:format.key,mounting:'K00'};s.designId=selectedProfile(config,s.mOptions).defaultDesignId;s.objects=selectedProfile(config,s.mOptions).designs[0].objects;
+ const nodes=new Map(),$=key=>{if(!nodes.has(key))nodes.set(key,{value:2});return nodes.get(key);},tierNote={dataset:{}};
+ const source=fs.readFileSync(new URL('./ux.mjs',import.meta.url),'utf8'),start=source.indexOf('  function updatePrice()'),end=source.indexOf('\n  function update(){',start);
+ const args={config,el:{state:s},profile:config.profile,$,uploadQuote,commercePrice,quote,money,visibleGroups,additionalMotifCount,esc:String,tierNote,say:message=>{throw Error(message);}};
+ Function(...Object.keys(args),source.slice(start,end)+'\nupdatePrice();')(...Object.values(args));
+ assert.equal($('[data-fk-total]').textContent,money(commercePrice(config,s,2).totalCents));assert($('[data-ux-price-lines]').innerHTML.includes(money(format.variants[0].basePriceCents)));assert.equal(typeof tierNote.textContent,'string');
+});

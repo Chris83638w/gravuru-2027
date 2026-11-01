@@ -9,16 +9,18 @@ export function familyShapePreview(geometry){
 }
 export function familyChoicesMarkup(c,options){
  const s=familyFormatSelection(c,options),forms=familyFormatChoices(c,options),form=customerForm(s.format.form),active=forms.find(f=>f.id===form);
- const button=(group,id,label,extra='',disabled=false)=>'<button type="button" class="m-option-tile" data-family-group="'+esc(group)+'" data-family-value="'+esc(id)+'" aria-pressed="'+String((group==='form'?form:options[group])===id)+'"'+(disabled?' disabled':'')+'>'+extra+'<strong>'+esc(label)+'</strong></button>';
+ const button=(group,id,label,extra='',disabled=false)=>'<button type="button" class="m-option-tile" data-family-group="'+esc(group)+'" data-family-value="'+esc(id)+'" aria-pressed="'+String((group==='form'?form:options[group])===id)+'"'+(disabled?' disabled':'')+'>'+extra+'<strong>'+esc(label)+'</strong>'+(disabled?'<small>noch keine Vorlage</small>':'')+'</button>';
  const select=(key,label,values,current)=>'<label class="family-'+key+'"><span>'+label+'</span><select data-family-group="'+key+'" aria-label="'+label+'">'+values.map(v=>'<option value="'+esc(v.id)+'"'+(v.id===current?' selected':'')+(v.disabled?' disabled':'')+'>'+esc(v.label)+'</option>').join('')+'</select></label>';
  return '<section class="family-shapes"><h3>Form &amp; Befestigung</h3><div>'+forms.map(f=>button('form',f.id,f.label,f.sizes[0]?familyShapePreview(f.sizes[0].geometry):'',!f.sizes.some(s=>s.available))).join('')+'</div></section>'+
- '<div class="family-selects">'+select('size','Größe',active.sizes.map(f=>({id:f.key,label:f.label,disabled:!f.available})),s.format.key)+select('mounting','Befestigung',s.variant.mounting.map(v=>({id:v.id,label:v.label+(v.priceCents?' · +'+money(v.priceCents):'')})),s.mounting.id)+'</div>'+
+ '<div class="family-selects">'+select('size','Größe',active.sizes.map(f=>({id:f.key,label:f.label+(f.available?'':' · noch keine Vorlage'),disabled:!f.available})),s.format.key)+select('mounting','Befestigung',s.variant.mounting.map(v=>({id:v.id,label:v.label+(v.priceCents?' · +'+money(v.priceCents):'')})),s.mounting.id)+'</div>'+
  (c.familyFormats.colors.length>1?'<section class="family-colors"><h3>Farbe</h3><div>'+c.familyFormats.colors.map(v=>button('color',v.id,v.label)).join('')+'</div></section>':'');
 }
 export function installFamilyFormatsPresentation({el,config,picks,pictures}){
  if(!isFamilyFormats(config))return ()=>{};
  el.setAttribute('data-family-formats','');
  const style=document.createElement('style');style.textContent=`
+ :host([data-family-formats]) .ux-shell .c-design-card small[data-family-review]:not([hidden]){display:block!important;font-size:11px!important;line-height:1.3;color:#697079;font-weight:400}
+ :host([data-family-formats]) .family-shapes small{font-size:10px;line-height:1.15}
  :host([data-family-formats]) .m-options>label{display:none!important}
  :host([data-family-formats]) .m-option-pictures section{margin-bottom:12px}
  :host([data-family-formats]) .m-option-pictures h3{margin:8px 0;font-size:16px}

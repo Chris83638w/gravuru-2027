@@ -26,3 +26,9 @@ test('no default AB target means no invented starter or design ID',async()=>{
  const k=source({approved:true});k.designs.masters[0].json.sizes=[];
  const r=await planFamilyFormats(k,'test','familie');assert.equal(r.config,null);assert(r.report.blocked.some(b=>b.reason.includes('kein Ersatz-Startdesign')));assert.equal(r.report.shopify.variantIdsCreated,0);
 });
+
+test('review shows unapproved targets explicitly and never imports a design without a family target',async()=>{
+ const k=source(),review=await planFamilyFormats(k,'test','familie',{reviewUnreleased:true}),id=review.config.familyFormats.designs[0].id;
+ assert(review.config.familyFormats.formats.find(f=>f.variants[0].designIds.includes(id)).variants[0].unapprovedDesignIds.includes(id));
+ k.designs.masters[0].json.ziele=[];assert.equal((await planFamilyFormats(k,'test','familie',{reviewUnreleased:true})).config,null);
+});

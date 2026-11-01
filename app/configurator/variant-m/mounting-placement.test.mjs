@@ -54,3 +54,27 @@ test('back-surface holes are reflected once, and front neighbours do not block t
 test('impossible minimum-size text is preserved, never silently removed or shrunk below 3 mm',()=>{
  const text={id:'t',type:'text',text:'Name',font:'Montserrat',size:3,x:50,y:30,w:100,h:60,rotation:0};const r=avoidMounting([text],p);assert.deepEqual(r.objects,[text]);assert.deepEqual(r.unresolved,['t']);
 });
+
+test('catalog safety margin is reserved outside the head, not just outside the hole',()=>{
+ const profile={...p,mountingPreview:{keepoutMm:1}},r=avoidMounting([motif()],profile);
+ assert.deepEqual(r.unresolved,[]);assert(r.objects[0].x>13.25);assert(!touchesMounting(r.objects[0],profile));
+});
+test('overlapping emblem and lettering move together without changing relative placement',()=>{
+ const emblem=motif({w:20,h:20}),letter={...motif({id:'word',w:10,h:5}),type:'text',font:'unknown',text:'STOP',size:5};
+ const r=avoidMounting([emblem,letter],p);assert.deepEqual(r.unresolved,[]);assert.equal(r.objects[1].x-r.objects[0].x,0);assert.equal(r.objects[1].y-r.objects[0].y,0);assert.equal(r.objects[1].w/r.objects[0].w,.5);for(const o of r.objects)assert(!touchesMounting(o,p));
+});
+test('painted descenders beyond the nominal text box avoid both screws and dividers',()=>{
+ const fonts={Test:{regular:{units:1000,glyphs:{A:{a:1000,d:'M0 -600H1000V800H0Z'}}}}};
+ const text={id:'descender',type:'text',text:'A',font:'Test',size:10,x:6,y:20,w:10,h:12,rotation:0};
+ const line=motif({id:'divider',x:50,y:37,w:98,h:.2});
+ assert.equal(touchesMounting(text,p),false);assert(touchesMounting(text,p,{fonts}));
+ const r=avoidMounting([text,line],p,{fonts});assert.deepEqual(r.unresolved,[]);assert(!touchesMounting(r.objects[0],p,{fonts}));
+ assert(r.objects[0].y+9.501<36.9);assert.equal(r.objects[0].text,'A');
+});
+
+test('placement cannot introduce even a very small new overlap at a neighbouring edge',()=>{
+ const profile={...p,geometry:{width:80,height:35,shape:'rect',safeMarginMm:0,holes:[{x:6,y:17.5,diameter:4},{x:74,y:17.5,diameter:4}]},mountingPreview:{keepoutMm:1}};
+ const objects=[motif({x:7.836,y:22.44,w:10.541,h:23.716}),motif({id:'name',x:44.69495,y:21.7213,w:46.3476,h:11.447}),motif({id:'greeting',x:44.983,y:9.432,w:56.707,h:4.585})];
+ const r=avoidMounting(objects,profile);assert.deepEqual(r.unresolved,[]);
+ for(let i=0;i<objects.length;i++){assert(!touchesMounting(r.objects[i],profile));for(let j=i+1;j<objects.length;j++)if(!overlaps(objects[i],objects[j]))assert(!overlaps(r.objects[i],r.objects[j]));}
+});

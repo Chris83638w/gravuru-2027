@@ -1,0 +1,419 @@
+[
+  {
+    "kind": "steel",
+    "device": "desktop",
+    "first": {
+      "options": {
+        "size": "GR-ES-AB-120X80-T15",
+        "mounting": "K00"
+      },
+      "profile": {
+        "familyId": "steel-door-signs",
+        "sizeKey": "GR-ES-AB-120X80-T15",
+        "form": "AB",
+        "color": "edelstahl"
+      },
+      "designs": 72,
+      "active": "katalog-TAE-V2A-8x5-D1",
+      "surface": "blob:http://127.0.0.1:8184/f58e96e1-4821-4b81-8000-e6bcb88c6c73",
+      "status": "",
+      "notesCount": 71
+    },
+    "switches": [
+      {
+        "form": "RE",
+        "ms": 5112,
+        "options": {
+          "size": "GR-ES-RE-80X53P3-T15",
+          "mounting": "K00"
+        },
+        "profile": {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RE-80X53P3-T15",
+          "form": "RE",
+          "color": "edelstahl"
+        },
+        "designs": 68,
+        "active": "katalog-TRE-V2A-8x5-D1",
+        "surface": "blob:http://127.0.0.1:8184/f58e96e1-4821-4b81-8000-e6bcb88c6c73",
+        "status": "",
+        "notesCount": 0
+      },
+      {
+        "form": "RT1",
+        "ms": 4275,
+        "options": {
+          "size": "GR-ES-RT1-90X60-T15",
+          "mounting": "K00"
+        },
+        "profile": {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-90X60-T15",
+          "form": "RT1",
+          "color": "edelstahl"
+        },
+        "designs": 63,
+        "active": "katalog-TR1-V2A-9x6-D1",
+        "surface": "blob:http://127.0.0.1:8184/f58e96e1-4821-4b81-8000-e6bcb88c6c73",
+        "status": "",
+        "notesCount": 0
+      },
+      {
+        "form": "RT2",
+        "ms": 4936,
+        "options": {
+          "size": "GR-ES-RT2-90X60-T15",
+          "mounting": "K00"
+        },
+        "profile": {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT2-90X60-T15",
+          "form": "RT2",
+          "color": "edelstahl"
+        },
+        "designs": 60,
+        "active": "katalog-TR2-V2A-9x6-D1",
+        "surface": "blob:http://127.0.0.1:8184/f58e96e1-4821-4b81-8000-e6bcb88c6c73",
+        "status": "",
+        "notesCount": 0
+      },
+      {
+        "form": "OV",
+        "ms": 4043,
+        "options": {
+          "size": "GR-ES-OV-90X60-T15",
+          "mounting": "K00"
+        },
+        "profile": {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-OV-90X60-T15",
+          "form": "OV",
+          "color": "edelstahl"
+        },
+        "designs": 55,
+        "active": "katalog-TO-V2A-9x6-D1",
+        "surface": "blob:http://127.0.0.1:8184/f58e96e1-4821-4b81-8000-e6bcb88c6c73",
+        "status": "",
+        "notesCount": 0
+      },
+      {
+        "form": "QU",
+        "ms": 4057,
+        "options": {
+          "size": "GR-ES-QU-80X80-T15",
+          "mounting": "K00"
+        },
+        "profile": {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-QU-80X80-T15",
+          "form": "QU",
+          "color": "edelstahl"
+        },
+        "designs": 65,
+        "active": "katalog-TQ-V2A-8x8-D1",
+        "surface": "blob:http://127.0.0.1:8184/f58e96e1-4821-4b81-8000-e6bcb88c6c73",
+        "status": "",
+        "notesCount": 0
+      },
+      {
+        "form": "R",
+        "ms": 4559,
+        "options": {
+          "size": "GR-ES-R-65X65-T15",
+          "mounting": "K00"
+        },
+        "profile": {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-R-65X65-T15",
+          "form": "R",
+          "color": "edelstahl"
+        },
+        "designs": 68,
+        "active": "katalog-TR-V2A-6-5x6-5-D1",
+        "surface": "blob:http://127.0.0.1:8184/f58e96e1-4821-4b81-8000-e6bcb88c6c73",
+        "status": "",
+        "notesCount": 0
+      }
+    ],
+    "errors": [],
+    "note": "readyMs im Rohskript misst den kompletten Durchlauf, nicht die Startzeit."
+  },
+  {
+    "kind": "acryl",
+    "device": "iphone13",
+    "first": {
+      "options": {
+        "size": "TS-Acryl-AB-120X80-T30-SW",
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "profile": {
+        "familyId": "acryl-3mm-tuerschilder-schwarz",
+        "sizeKey": "TS-Acryl-AB-120X80-T30-SW",
+        "form": "AB",
+        "color": "schwarz"
+      },
+      "designs": 72,
+      "active": "katalog-TAE-V2A-8x5-D1",
+      "status": "",
+      "notesCount": 72
+    },
+    "switches": [
+      {
+        "form": "RE",
+        "ms": 4898,
+        "options": {
+          "size": "TS-Acryl-RE-80X53P3-T30-SW",
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "profile": {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RE-80X53P3-T30-SW",
+          "form": "RE",
+          "color": "schwarz"
+        },
+        "designs": 68,
+        "active": "katalog-TRE-V2A-8x5-D1",
+        "status": "",
+        "notesCount": 0
+      },
+      {
+        "form": "RT1",
+        "ms": 5049,
+        "options": {
+          "size": "TS-Acryl-RT1-90X60-T30-SW",
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "profile": {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT1-90X60-T30-SW",
+          "form": "RT1",
+          "color": "schwarz"
+        },
+        "designs": 63,
+        "active": "katalog-TR1-V2A-9x6-D1",
+        "status": "",
+        "notesCount": 0
+      },
+      {
+        "form": "RT2",
+        "ms": 4477,
+        "options": {
+          "size": "TS-Acryl-RT2-90X60-T30-SW",
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "profile": {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-RT2-90X60-T30-SW",
+          "form": "RT2",
+          "color": "schwarz"
+        },
+        "designs": 60,
+        "active": "katalog-TR2-V2A-9x6-D1",
+        "status": "",
+        "notesCount": 0
+      },
+      {
+        "form": "OV",
+        "ms": 3805,
+        "options": {
+          "size": "TS-Acryl-OV-90X60-T30-SW",
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "profile": {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-OV-90X60-T30-SW",
+          "form": "OV",
+          "color": "schwarz"
+        },
+        "designs": 55,
+        "active": "katalog-TO-V2A-9x6-D1",
+        "status": "",
+        "notesCount": 0
+      },
+      {
+        "form": "QU",
+        "ms": 4769,
+        "options": {
+          "size": "TS-Acryl-QU-80X80-T30-SW",
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "profile": {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-QU-80X80-T30-SW",
+          "form": "QU",
+          "color": "schwarz"
+        },
+        "designs": 65,
+        "active": "katalog-TQ-V2A-8x8-D1",
+        "status": "",
+        "notesCount": 0
+      },
+      {
+        "form": "R",
+        "ms": 4813,
+        "options": {
+          "size": "TS-Acryl-R-65X65-T30-SW",
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "profile": {
+          "familyId": "acryl-3mm-tuerschilder-schwarz",
+          "sizeKey": "TS-Acryl-R-65X65-T30-SW",
+          "form": "R",
+          "color": "schwarz"
+        },
+        "designs": 68,
+        "active": "katalog-TR-V2A-6-5x6-5-D1",
+        "status": "",
+        "notesCount": 0
+      }
+    ],
+    "errors": [],
+    "note": "readyMs im Rohskript misst den kompletten Durchlauf, nicht die Startzeit."
+  },
+  {
+    "kind": "steel",
+    "device": "iphoneSE",
+    "first": {
+      "options": {
+        "size": "GR-ES-AB-120X80-T15",
+        "mounting": "K00"
+      },
+      "profile": {
+        "familyId": "steel-door-signs",
+        "sizeKey": "GR-ES-AB-120X80-T15",
+        "form": "AB",
+        "color": "edelstahl"
+      },
+      "designs": 72,
+      "active": "katalog-TAE-V2A-8x5-D1",
+      "surface": "blob:http://127.0.0.1:8184/14c76aa2-6e22-4323-8efc-d5204103d778",
+      "status": "",
+      "notesCount": 71
+    },
+    "switches": [
+      {
+        "form": "RE",
+        "ms": 4222,
+        "options": {
+          "size": "GR-ES-RE-80X53P3-T15",
+          "mounting": "K00"
+        },
+        "profile": {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RE-80X53P3-T15",
+          "form": "RE",
+          "color": "edelstahl"
+        },
+        "designs": 68,
+        "active": "katalog-TRE-V2A-8x5-D1",
+        "surface": "blob:http://127.0.0.1:8184/14c76aa2-6e22-4323-8efc-d5204103d778",
+        "status": "",
+        "notesCount": 0
+      },
+      {
+        "form": "RT1",
+        "ms": 4173,
+        "options": {
+          "size": "GR-ES-RT1-90X60-T15",
+          "mounting": "K00"
+        },
+        "profile": {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT1-90X60-T15",
+          "form": "RT1",
+          "color": "edelstahl"
+        },
+        "designs": 63,
+        "active": "katalog-TR1-V2A-9x6-D1",
+        "surface": "blob:http://127.0.0.1:8184/14c76aa2-6e22-4323-8efc-d5204103d778",
+        "status": "",
+        "notesCount": 0
+      },
+      {
+        "form": "RT2",
+        "ms": 4339,
+        "options": {
+          "size": "GR-ES-RT2-90X60-T15",
+          "mounting": "K00"
+        },
+        "profile": {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-RT2-90X60-T15",
+          "form": "RT2",
+          "color": "edelstahl"
+        },
+        "designs": 60,
+        "active": "katalog-TR2-V2A-9x6-D1",
+        "surface": "blob:http://127.0.0.1:8184/14c76aa2-6e22-4323-8efc-d5204103d778",
+        "status": "",
+        "notesCount": 0
+      },
+      {
+        "form": "OV",
+        "ms": 3897,
+        "options": {
+          "size": "GR-ES-OV-90X60-T15",
+          "mounting": "K00"
+        },
+        "profile": {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-OV-90X60-T15",
+          "form": "OV",
+          "color": "edelstahl"
+        },
+        "designs": 55,
+        "active": "katalog-TO-V2A-9x6-D1",
+        "surface": "blob:http://127.0.0.1:8184/14c76aa2-6e22-4323-8efc-d5204103d778",
+        "status": "",
+        "notesCount": 0
+      },
+      {
+        "form": "QU",
+        "ms": 5912,
+        "options": {
+          "size": "GR-ES-QU-80X80-T15",
+          "mounting": "K00"
+        },
+        "profile": {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-QU-80X80-T15",
+          "form": "QU",
+          "color": "edelstahl"
+        },
+        "designs": 65,
+        "active": "katalog-TQ-V2A-8x8-D1",
+        "surface": "blob:http://127.0.0.1:8184/14c76aa2-6e22-4323-8efc-d5204103d778",
+        "status": "",
+        "notesCount": 0
+      },
+      {
+        "form": "R",
+        "ms": 5025,
+        "options": {
+          "size": "GR-ES-R-65X65-T15",
+          "mounting": "K00"
+        },
+        "profile": {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-R-65X65-T15",
+          "form": "R",
+          "color": "edelstahl"
+        },
+        "designs": 68,
+        "active": "katalog-TR-V2A-6-5x6-5-D1",
+        "surface": "blob:http://127.0.0.1:8184/14c76aa2-6e22-4323-8efc-d5204103d778",
+        "status": "",
+        "notesCount": 0
+      }
+    ],
+    "errors": [],
+    "note": "readyMs im Rohskript misst den kompletten Durchlauf, nicht die Startzeit."
+  }
+]

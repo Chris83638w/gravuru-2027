@@ -1,7 +1,7 @@
 // One review product per line/subcategory. No DB, Shopify, release or import writes.
 import {familyProductConfig} from './product-families.mjs';
 import {createHash} from 'node:crypto';
-import {assignTargetSeries,approvedForFamily,designTargetCompatibility} from './design-targets.mjs';
+import {assignTargetSeries,approvedForFamily,designTargetCompatibility,designTargets} from './design-targets.mjs';
 import {katalogDesignToTemplate,scaleTemplate} from './katalog-convert.mjs';
 import {assessDesignTarget} from './design-target-rules.mjs';
 import {customerUxConfig} from './customer-ux-policy.mjs';
@@ -22,7 +22,7 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
  if(!families.length)fail('Keine freigegebene Türschild-Familienart.');
  const allMasters=katalog.designs.masters.filter(d=>!d.hidden&&(!designIds||designIds.includes(d.id))&&d.themes?.includes(sub.themeId));
  const report={schema:'gravuru-family-formats-plan/v1',lineId,subcategoryId,reviewUnreleased,shopifyWrites:false,sourceFamilies:families.map(f=>f.id),excluded:[],blocked:[],sizes:[],shopify:{options:families.length>1?['Form & Größe','Farbe','Befestigung']:['Form & Größe','Befestigung'],maximumVariants:2048,maximumOptions:3,variantIdsCreated:0,sources:['https://help.shopify.com/en/manual/products/variants/add-variants','https://shopify.dev/docs/api/admin-graphql/latest/mutations/productSet']}};
- const assigned=new Map(families.map(f=>[f.id,assignTargetSeries(f,allMasters.filter(d=>reviewUnreleased||approvedForFamily(d,f.id,katalog)),katalog)]));
+ const assigned=new Map(families.map(f=>[f.id,assignTargetSeries(f,allMasters.filter(d=>designTargets(d,katalog).some(t=>t.familie===f.id)&&(reviewUnreleased||approvedForFamily(d,f.id,katalog))),katalog)]));
  const needed=[...new Set([...assigned.values()].flatMap(list=>list.filter(a=>!a.oldSize).flatMap(a=>a.design.fonts||[])))];
  const {fonts,missing}=await katalog.fontResources(needed,{available,converter});report.fontsMissing=missing;
  const bank=new Map(),motifs=new Map(),rights={},formats=new Map(),colors=[],converted=new Map();let base;
@@ -34,7 +34,7 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
    let config;
    try{const view={...family,groups:family.groups.filter(g=>g.key===size.groupKey),sizes:[size],mountingRules:family.mountingRules.filter(r=>size.mounting.includes(r.id))};config=familyProductConfig(view,size,1);}
    catch(error){report.blocked.push({familyId:family.id,sizeKey:size.key,reason:error.message});continue;}
-   const p=config.profile,designs=[];
+   const p=config.profile,designs=[],unapprovedDesignIds=[];
    for(const a of assigned.get(family.id).filter(a=>!a.oldSize&&a.sizes.includes(size.key))){
     const compatibility=designTargetCompatibility(a.design,family,size,{katalog});
     if(compatibility.status==='passt nicht'){report.excluded.push({familyId:family.id,sizeKey:size.key,designId:a.design.id,issues:compatibility.issues});continue;}
@@ -46,13 +46,13 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
      if(fit.status==='passt nicht'){report.excluded.push({familyId:family.id,sizeKey:size.key,designId:a.design.id,issues:fit.issues});continue;}
      const existing=bank.get(t.template.id);
      if(existing&&JSON.stringify(existing)!==JSON.stringify(t.template))fail('Widersprüchliche Vorlage '+t.template.id+'.');
-     bank.set(t.template.id,copy(t.template));designs.push(t.template.id);rights[t.template.id]=copy(t.rights);
+     bank.set(t.template.id,copy(t.template));designs.push(t.template.id);if(!approvedForFamily(a.design,family.id,katalog))unapprovedDesignIds.push(t.template.id);rights[t.template.id]=copy(t.rights);
      for(const m of t.motifs){if(motifs.has(m.key)&&JSON.stringify(motifs.get(m.key))!==JSON.stringify(m))fail('Widersprüchliche Motivressource '+m.key+'.');motifs.set(m.key,copy(m));}
     }catch(error){report.excluded.push({familyId:family.id,sizeKey:size.key,designId:a.design.id,issues:[error.message]});}
    }
    const slot=slotKey(size),format=formats.get(slot)||{key:size.key,form:size.groupKey,label:size.label,geometry:copy(p.geometry),variants:[]};
    if(!sameGeometry(format.geometry,p.geometry))fail('Die Farben haben verschiedene Geometrien: '+slot+'.');
-   format.variants.push({color:colorId,familyId:family.id,sizeKey:size.key,basePriceCents:size.baseCents,material:copy(p.material),mounting:copy(p.optionGroups.find(g=>g.id==='mounting').values),designIds:designs,...(config.quantityTiers?{quantityTiers:copy(config.quantityTiers)}:{})});formats.set(slot,format);
+   format.variants.push({color:colorId,familyId:family.id,sizeKey:size.key,basePriceCents:size.baseCents,material:copy(p.material),mounting:copy(p.optionGroups.find(g=>g.id==='mounting').values),designIds:designs,...(reviewUnreleased?{unapprovedDesignIds}:{}),...(config.quantityTiers?{quantityTiers:copy(config.quantityTiers)}:{})});formats.set(slot,format);
    report.sizes.push({familyId:family.id,sizeKey:size.key,form:customerForm(size.groupKey),basePriceCents:size.baseCents,designs:designs.length,mountings:format.variants.at(-1).mounting.length});
    if(!base&&size.groupKey==='AB'&&size.widthMm===120&&size.heightMm===80&&designs.length)base=config;
   }

@@ -1,3 +1,7 @@
+# Türschilder: Review-Korrekturen und vollständige Prüfgalerie · 01.11.2026 · Astra
+
+PR #102 über #98/#97, main bfac22b ohne Force-Push integriert. Retro-Flächentönung entfernt; eine Oberfläche je Material/Farbe. Ausweichen mit echten Glyphen, Katalogrand, Elementgruppen und ohne neue Überlagerungen; sechs ursprüngliche Preis-Tests unverändert grün. Lokale Galerie: 783 darstellbare Master, Rund aus 62404b12, offene Ziele gekennzeichnet. 17.094 Befestigungskombinationen ohne Konflikte. Windows-Vollauf 2.028/2.049, 16 fehlende Logo-Abhängigkeiten danach in 53/53 Tests behoben, 5 Plattformskips; letzte Grenzkorrektur 18/18. Acht aktuelle Bildpaare und Desktop/Handybilder. [Bericht, Zähler und offene Quellenfragen](docs/handoffs/2026-11-01-tuerschilder-review/README.md). Linux-Review bei Claude offen. Keine Freigabe, kein Import, kein Merge nach main, nichts live.
+
 # Türschilder: kompakte Auswahl und Plattenschatten · 01.11.2026 · Astra
 
 Chris bestätigt Formkacheln mit Größe/Befestigung nebeneinander und dezenten Schatten. Auf eigenem Branch über #98 umgesetzt, bestehende Preis-/Design-/Geometriequelle unverändert. 46/46 Tests, 16 lokale Browserwechsel grün; Desktop/390×664/375×548 dokumentiert. Vollständige Designbestückung nach Chris’ Anweisung bei Claude angefragt, noch offen. [Bericht und Bilder](docs/handoffs/2026-11-01-tuerschilder-kompaktauswahl/README.md). Kein Merge, Import oder Live-Schritt.

@@ -21,7 +21,7 @@ import {designResourcesReady} from './doorbell-lazy-designs.mjs';
 import {isLayeredDoorbell} from './doorbell-selection.mjs';
 import {doorbellOptionState,updateDoorbellViewport,doorbellTextSurface} from './doorbell-ui.mjs';
 import {installDoorbellPresentation} from './doorbell-presentation.mjs';
-import {isFamilyFormats,familyFormatState} from './family-formats.mjs';
+import {isFamilyFormats,familyFormatState,familyDesignReviewNote} from './family-formats.mjs';
 import {installFamilyFormatsPresentation} from './family-formats-ui.mjs';
 import {mountingPlacementState} from './mounting-placement.mjs';
 
@@ -317,7 +317,7 @@ export function installUniversal(configInput) {
       $('.fk-material-note').textContent=config.doorbell?'Edelstahl 1,5 mm · Gravur auf Acrylglas 3 mm':processing.name+' · '+p.material.thicknessMm+' mm';
       $('.fk-options>[data-fk-mount-note]')?.setAttribute('hidden','');
       for(const card of r.querySelectorAll('[data-c-design]')){
-        card.hidden=!visible.has(card.dataset.cDesign);card.querySelector('small').textContent='Vorlage inklusive';
+        card.hidden=!visible.has(card.dataset.cDesign);const note=card.querySelector('small'),review=familyDesignReviewNote(config,options,card.dataset.cDesign);note.textContent=review||'Vorlage inklusive';note.toggleAttribute('data-family-review',!!review);
       }
       renderThumbnails();
       const name=current().name;$('.guided-review dl').innerHTML='<div><dt>Design</dt><dd>'+esc(name)+'</dd></div><div><dt>Material</dt><dd>'+esc(processing.name)+'</dd></div>';

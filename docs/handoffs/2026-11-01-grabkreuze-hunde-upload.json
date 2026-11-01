@@ -1,0 +1,70 @@
+{
+  "branch": "dev/grabkreuze-hunde-20261101-astra-mika",
+  "jobs": [
+    {
+      "repo": "Chris83638w/gravuru-katalog.",
+      "base": "ec48c782b0f1cb2a0ee674814bba69d565e9e4d9",
+      "files": 208,
+      "commits": [
+        {
+          "oid": "96fc48844af108b9f0bd499de038742222150dec",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/96fc48844af108b9f0bd499de038742222150dec",
+          "verified": true,
+          "files": 40
+        },
+        {
+          "oid": "a8c2bb24bfad12932f458f900d8da3e8672c20cc",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/a8c2bb24bfad12932f458f900d8da3e8672c20cc",
+          "verified": true,
+          "files": 40
+        },
+        {
+          "oid": "e9898dda5a46643e95f98e3ea3cf4fc70625b865",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/e9898dda5a46643e95f98e3ea3cf4fc70625b865",
+          "verified": true,
+          "files": 36
+        },
+        {
+          "oid": "fc4dc0fd3f6d9c1213f958445ad73222ad2c9a4b",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/fc4dc0fd3f6d9c1213f958445ad73222ad2c9a4b",
+          "verified": true,
+          "files": 40
+        },
+        {
+          "oid": "109348e9ed3969b7fe67e5de7ef843513284338c",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/109348e9ed3969b7fe67e5de7ef843513284338c",
+          "verified": true,
+          "files": 39
+        },
+        {
+          "oid": "3914954d4729cbd7dae6294b3ad19403c54b4cc7",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/3914954d4729cbd7dae6294b3ad19403c54b4cc7",
+          "verified": true,
+          "files": 13
+        }
+      ],
+      "finalHead": "0a07ceb0d708b3d7bbc94f6528e920cb9430e486",
+      "remoteVerified": 208,
+      "finalNormalizationCommit": {
+        "oid": "0a07ceb0d708b3d7bbc94f6528e920cb9430e486",
+        "url": "https://github.com/Chris83638w/gravuru-katalog./commit/0a07ceb0d708b3d7bbc94f6528e920cb9430e486",
+        "verified": true
+      }
+    },
+    {
+      "repo": "Chris83638w/gravuru-2027",
+      "base": "1746c8d80c561afcd7b5ee5930b67e33101ba80f",
+      "files": 6,
+      "commits": [
+        {
+          "oid": "7ca34197d3fe0b93fec09bbfb8af28f12c379a6d",
+          "url": "https://github.com/Chris83638w/gravuru-2027/commit/7ca34197d3fe0b93fec09bbfb8af28f12c379a6d",
+          "verified": true,
+          "files": 6
+        }
+      ],
+      "finalHead": "7ca34197d3fe0b93fec09bbfb8af28f12c379a6d",
+      "remoteVerified": 6
+    }
+  ]
+}

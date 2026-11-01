@@ -48,7 +48,7 @@ Katalog-Repo `gravuru-katalog.`, Ordner `designs/bestand/kreuze/`:
   - Übersicht: `bestand-gravur.jpg` (in diesem Ordner).
 - **KZUV-A = UV-Druck Acryl** (33 Designs, 11 × 20 / 14 × 25 / 22 × 40) – nur als **Ideenquelle** für fehlende Designs, umgesetzt als einfarbige Gravur. Übersicht: `bestand-uv.jpg`.
 - **Dubletten nur einmal übernehmen:** Gravur D19 = D41, D20 = D42, D52 = D56, D53 = D57, D54 = D58, D55 = D59; UV D10 = D20, D12 = D21, D13 = D22, D14 = D23, D15 = D24, D16 = D28, D17 = D29, D18 = D30, D19 = D31.
-- **Konturen:** `konturen.json` und Schablonen `kontur-11x20.svg`, `kontur-14x25.svg`, `kontur-22x40.svg` (mit Erdlinie 5 cm und Gestaltungsgrenze). 11 × 20 aus KZ-A-11x20-D0, 22 × 40 aus KZ-A-22x40-D18, **14 × 25 aus 22 × 40 abgeleitet** (gleiches Seitenverhältnis, Faktor 0,625 → 13,85 × 25 cm). Kein Zugriff auf V: nötig.
+- **Konturen:** `konturen.json` und Schablonen `kontur-11x20.svg`, `kontur-14x25.svg`, `kontur-22x40.svg` (mit Erdlinie 5 cm und Gestaltungsgrenze). 11 × 20 aus KZ-A-11x20-D0, 22 × 40 aus KZ-A-22x40-D18, **14 × 25 aus der Original-Schneidvorlage** `Kreuz_14x25.dxf` (140 × 250 mm). Kein Zugriff auf V: nötig.
 - Motive: Bibliothek `motive/` im Katalog (Tiere, Engel, Kreuze, Herzen, Federn …). Fehlt ein Tiermotiv (z. B. Schildkröte, Wellensittich), eigenes einfarbiges Vektormotiv nach `motive-eigene/`.
 
 **Fehlende Designs ergänzen:** erst die Bestandsdesigns den Zielgruppen zuordnen (z. B. Tiernamen wie Balu, Tiger, Rocky → Hund/Katze), dann je Produkt bis zur Zielzahl neu gestalten – im Stil der Reihe, nicht kopieren.

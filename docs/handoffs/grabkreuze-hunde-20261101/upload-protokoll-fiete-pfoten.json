@@ -1,0 +1,111 @@
+{
+  "branch": "dev/grabkreuze-hunde-20261101-astra-mika",
+  "revision": "chris-fiete-fallende-hundepfoten",
+  "jobs": [
+    {
+      "repo": "Chris83638w/gravuru-katalog.",
+      "folder": "grabkreuze-hunde-katalog",
+      "base": "b905127c0ff84455c1bcd821febdaa62b245cbc0",
+      "files": 6,
+      "additions": 6,
+      "deletions": 0,
+      "manifest": [
+        {
+          "path": "STAND.md",
+          "delete": false,
+          "gitBlobSha1": "1a0c9f17e35c496cd649b5684015c22f39faa1e7"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/README.md",
+          "delete": false,
+          "gitBlobSha1": "5d6b60802add3ce1ae222c1c023552f2fc55048e"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D307/design.json",
+          "delete": false,
+          "gitBlobSha1": "176e539bf2e83eda864761a9e0f8a7639c3b5595"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D307/design.svg",
+          "delete": false,
+          "gitBlobSha1": "10072d7090093212fd3d3efaf461429627cae27e"
+        },
+        {
+          "path": "motive-eigene/motive-eigene.json",
+          "delete": false,
+          "gitBlobSha1": "87f15a9a4db6d200c06e97958a8c1fc05dca073d"
+        },
+        {
+          "path": "motive-eigene/mika-hunde-fallende-pfoten-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "f65e4fe6bf0b5987ad63fb8f8cefc9ab21f091de"
+        }
+      ],
+      "commits": [
+        {
+          "oid": "0ea38e276570215bd9cb90311e728d9179bedf42",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/0ea38e276570215bd9cb90311e728d9179bedf42",
+          "verified": true,
+          "files": 6
+        }
+      ],
+      "finalHead": "0ea38e276570215bd9cb90311e728d9179bedf42",
+      "remoteVerified": 6
+    },
+    {
+      "repo": "Chris83638w/gravuru-2027",
+      "folder": "grabkreuze-hunde",
+      "base": "ffd937e39f26e777b9983c1f69d79a5b42b54475",
+      "files": 7,
+      "additions": 7,
+      "deletions": 0,
+      "manifest": [
+        {
+          "path": "STATUS.md",
+          "delete": false,
+          "gitBlobSha1": "5521a78d6f5d2d5a5cad223e45194c2217d5a917"
+        },
+        {
+          "path": "docs/handoffs/grabkreuze-hunde-20261101/NACHAUFTRAG.md",
+          "delete": false,
+          "gitBlobSha1": "181619b5d7dc660a47aa48e014dc3d0dd26f3e78"
+        },
+        {
+          "path": "docs/handoffs/grabkreuze-hunde-20261101/kontaktbogen-schwarz-11x20.jpg",
+          "delete": false,
+          "gitBlobSha1": "f0823ac35542937ccae7e6023b7689a8d964f92c"
+        },
+        {
+          "path": "docs/handoffs/grabkreuze-hunde-20261101/nachauftrag-pruefung.json",
+          "delete": false,
+          "gitBlobSha1": "e9f2e92999f2e6f53518be624af473e3c152352b"
+        },
+        {
+          "path": "docs/handoffs/grabkreuze-hunde-20261101/randabstand-pruefung.json",
+          "delete": false,
+          "gitBlobSha1": "7d2cc1e980ba0fa112a6f9ab5a359f00d66dd9fe"
+        },
+        {
+          "path": "scripts/check-grabkreuze-nachauftrag.py",
+          "delete": false,
+          "gitBlobSha1": "2d7880125e87dc840f2e4cdd4c6f4cd930b3231e"
+        },
+        {
+          "path": "scripts/revise-grabkreuze-hunde.py",
+          "delete": false,
+          "gitBlobSha1": "d846f5b53b00e3a9c2bcb101bdf156bed23d5257"
+        }
+      ],
+      "commits": [
+        {
+          "oid": "7e3f4353494d51c3eaca7c0019101e820543c757",
+          "url": "https://github.com/Chris83638w/gravuru-2027/commit/7e3f4353494d51c3eaca7c0019101e820543c757",
+          "verified": true,
+          "files": 7
+        }
+      ],
+      "finalHead": "7e3f4353494d51c3eaca7c0019101e820543c757",
+      "remoteVerified": 7
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import {aboveGround,GROUND_ISSUE} from './ground-insertion.mjs';
 import {DOORBELL_SCHEMA,doorbellLayoutIssue} from '../../../../../configurator/variant-m/doorbell-selection.mjs';
 import {setTextSize} from './doorbell-preview.mjs';
 import {PROCESSING_PROFILES} from './processing-profiles.mjs';
@@ -46,6 +47,7 @@ export function objectIssue(o,profile){
  if(profile.doorbellSchema===DOORBELL_SCHEMA)return doorbellLayoutIssue(o,profile);
  const a=o.rotation*Math.PI/180,w=Math.abs(o.w*Math.cos(a))+Math.abs(o.h*Math.sin(a)),h=Math.abs(o.w*Math.sin(a))+Math.abs(o.h*Math.cos(a)),b=profile.geometry.bell;
  const doorbell=profile.kind==='layered-doorbell',width=doorbell?160:profile.geometry.width,height=doorbell?280:profile.geometry.height,margin=doorbell?10:artworkMargin(profile);
+ if(!aboveGround([[0,o.y+h/2]],profile.geometry))return GROUND_ISSUE;
  // A merchant-fixed template canvas drawn exactly in plate size (prepared 1:1
  // import) is clipped by the plate contour itself: transparent corners of an
  // oval or rounded plate are not ink. Only without margin; never customer content.
@@ -70,9 +72,12 @@ export function objectIssue(o,profile){
 export function surfaceObjectIssue(object,profile,{motifs=[],fonts}={}){
  const oriented=object?.surfaceId==='back'?{...profile,geometry:surfaceGeometry(profile.geometry,'back')}:profile;
  const issue=objectIssue(object,oriented);
+ // On ground-inserted products check painted letters even when their nominal
+ // box passes: italic overhang and rotated glyphs must obey the same boundary.
+ if(oriented.geometry.groundInsertion&&textOutlineFits(object,oriented.geometry,fonts)===false)return issue||GROUND_ISSUE;
  // A passing box remains the cheap prefilter. Only a geometric failure of a
  // text or known embedded motif may be replaced by its actual painted paths.
- if(issue&&profile.kind!=='layered-doorbell'&&profile.doorbellSchema!==DOORBELL_SCHEMA&&['Element ragt über die Gestaltungsfläche hinaus.','Element ragt über die ovale Gestaltungsfläche hinaus.','Element ragt über die Kontur-Gestaltungsfläche hinaus.','Element ragt über die gerundete Gestaltungsfläche hinaus.'].includes(issue)){
+ if(issue&&profile.kind!=='layered-doorbell'&&profile.doorbellSchema!==DOORBELL_SCHEMA&&[GROUND_ISSUE,'Element ragt über die Gestaltungsfläche hinaus.','Element ragt über die ovale Gestaltungsfläche hinaus.','Element ragt über die Kontur-Gestaltungsfläche hinaus.','Element ragt über die gerundete Gestaltungsfläche hinaus.'].includes(issue)){
   const geometry={...oriented.geometry,safeMarginMm:artworkMargin(oriented),holes:[]};
   if(textOutlineFits(object,geometry,fonts)===true)return '';
   const resources=typeof motifs==='function'?motifs():motifs;

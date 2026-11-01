@@ -7,7 +7,7 @@ import {productPreview} from './product-preview.mjs';
 import {assessDesignTarget} from './design-target-rules.mjs';
 import {prepareKatalogPhotoAssets} from './katalog-photo-assets.mjs';
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'design_target_invalid'});};
-export async function targetDesignPreview(root,{reihe,id,familie,size:requestedSize},{available={},converter=convertFont}={}){
+export async function targetDesignPreview(root,{reihe,id,familie,size:requestedSize},{available={},converter=convertFont,showDesignArea=true}={}){
  const katalog=katalogFor(root,{maxAgeMs:0}),master=katalog.designs.masters.find(d=>d.seriesFolder===reihe&&d.id===id),family=katalog.families.get(familie);
  if(!master)fail(404,'Katalogdesign nicht gefunden.');if(!family)fail(422,'Familie fehlt.');
  if(!designTargets(master,katalog).some(t=>t.familie===familie))fail(422,'Dieses Ziel wurde noch nicht bestätigt.');
@@ -35,7 +35,7 @@ export async function targetDesignPreview(root,{reihe,id,familie,size:requestedS
  const mounting=config.profile.optionGroups.find(g=>g.id==='mounting'),drilled=mounting?.values.find(v=>v.holes?.length);if(drilled)mounting.defaultValueId=drilled.id;
  config.photo.hints=converted.examples.map(e=>({designId:scaled.id,slotId:e.slotId,text:'Foto hochladen',enabled:e.uploadHint}));
  const examples=converted.examples.map(e=>({...e,designId:scaled.id}));
- let svg=productPreview({universal:config},{keepout:false,designArea:true,examples});
+ let svg=productPreview({universal:config},{keepout:false,designArea:showDesignArea,examples});
  for(const mask of converted.previewMaskUrls)svg=svg.replaceAll('/api/workshop/design-assets/'+mask.id+'/preview.svg',mask.url);
  return {...response,svg};
 }

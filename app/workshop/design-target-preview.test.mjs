@@ -39,6 +39,17 @@ test('material target previews use native surfaces and glyph paths without chang
  assert.notEqual(previews[0],previews[1]);assert.notEqual(previews[0],previews[2]);assert.notEqual(previews[1],previews[3]);assert.equal(fs.readFileSync(path.join(f.root,f.base+'design.json'),'utf8'),before);
  assert.ok(f.families.every(family=>family.sizes.every(s=>s.baseCents===null)));await assert.rejects(targetDesignPreview(f.root,{reihe:'test',id:'T-D1',familie:'test-schilder',size:'foreign'},options),e=>e.status===422);
 });
+test('review images can hide margin guides without changing checksums or bypassing margin checks',async t=>{
+ const f=fixture(t),file='familien/edelstahl/test-schilder.json',family=read(f.root,file);family.designArea.marginMm=2;write(f.root,file,family);
+ const query={reihe:'test',id:'T-D1',familie:'test-schilder'};
+ const shown=await targetDesignPreview(f.root,query,options),hidden=await targetDesignPreview(f.root,query,{...options,showDesignArea:false});
+ assert.match(shown.svg,/data-m-design-area="true"/);assert.doesNotMatch(hidden.svg,/data-m-design-area/);
+ assert.deepEqual(hidden.fit,shown.fit);assert.deepEqual(hidden.reviewFit,shown.reviewFit);assert.equal(hidden.checksum,shown.checksum);
+ const svgfile=path.join(f.root,f.base+'design.svg');fs.writeFileSync(svgfile,fs.readFileSync(svgfile,'utf8').replaceAll('x="45"','x="1"'));
+ const invalidShown=await targetDesignPreview(f.root,query,options),invalidHidden=await targetDesignPreview(f.root,query,{...options,showDesignArea:false});
+ assert.equal(invalidHidden.fit.status,'passt nicht');assert.deepEqual(invalidHidden.fit,invalidShown.fit);
+});
+
 test('approval and withdrawal only change the addressed target, keep audit actor and preserve historical global approval',async t=>{
  const f=fixture(t),source=f.read();source.freigabe={status:'freigegeben',von:'historic',am:'2025-01-01'};write(f.root,f.base+'design.json',source);
  patchDesign(f.root,{reihe:'test',designId:'T-D1',zieleHinzufuegen:['slate-test']});await f.approve('test-schilder');assert.equal(f.read().ziele[0].freigabe.von,'merchant:test');assert.equal(f.read().ziele[1].freigabe,null);assert.deepEqual(f.read().freigabe,source.freigabe);

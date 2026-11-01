@@ -1,3 +1,4 @@
+import {validateGroundInsertion} from './ground-insertion.mjs';
 import {DOORBELL_SCHEMA,doorbellLayoutIssue} from '../../../../../configurator/variant-m/doorbell-selection.mjs';
 import {validateContourGeometry} from './contour-geometry.mjs';
 import {request} from './motifs.mjs';
@@ -20,6 +21,7 @@ export function validateStudio(p,original,{extraFontIds=[],motifs=[],fonts,catal
  if(p.kind!=='universal-product'||!validContentId(p.id)||p.id!==original.id||JSON.stringify(p.binding)!==JSON.stringify(original.binding))throw Error('Ungültige Produktzuordnung.');
  if(typeof p.name!=='string'||!p.name.trim()||p.name.length>200)throw Error('Bitte einen Produktnamen eingeben.');
  if(!p.geometry||!p.material)throw Error('Produktgeometrie oder Material fehlt.');
+ validateGroundInsertion(p.geometry);
  const {width,height,margin,shape,radius}=dimensions(p);
  if(![width,height,margin,radius].every(Number.isFinite)||width<10||height<10||width>2000||height>2000||margin<0||margin*2>=Math.min(width,height)||!['rect','ellipse','contour'].includes(shape)||radius<0||radius>Math.min(width,height)/2)throw Error('Bitte gültige Produktmaße und eine passende Form eingeben.');
  if(!['steel','acrylic','wood','slate','other','print'].includes(p.material.kind)||!/^#[0-9a-f]{6}$/i.test(p.material.color)||!Number.isFinite(p.material.thicknessMm)||p.material.thicknessMm<=0||p.material.thicknessMm>100)throw Error('Bitte Material, Farbe und Stärke prüfen.');

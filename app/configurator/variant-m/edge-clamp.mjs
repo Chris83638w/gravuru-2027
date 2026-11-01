@@ -1,3 +1,4 @@
+import {groundArtworkBottom} from '../../platform/sources/app/shared/models/ground-insertion.mjs';
 // Elemente bleiben auf der Platte (Chris 20.10.2026): „Die Kunden können alle Elemente bis an den Rand
 // setzen, aber nicht weiter.“ Gilt für Ziehen, Skalieren, Drehen und Pfeiltasten, weil die Lage vor jedem
 // Zeichnen geprüft wird. Maßgeblich ist die Außenbox des (gedrehten) Elements; ist sie größer als die
@@ -55,7 +56,7 @@ export function clampToContour(o,geometry,bounds=null,previous=null,fonts){
  const box=bounds||{x:-o.w/2,y:-o.h/2,width:o.w,height:o.h};
  const fits=position=>fitsSurface({...o,...position},box,geometry)||textOutlineFits({...o,...position},geometry,fonts)===true;
  if(fits(o))return false;
- const anchor=[previous,{x:geometry.width/2,y:geometry.height/2}].find(p=>p&&fits(p));
+ const anchor=[previous,{x:geometry.width/2,y:Math.min(geometry.height,groundArtworkBottom(geometry))/2}].find(p=>p&&fits(p));
  if(!anchor)return false; // Oversized objects remain visibly invalid; never invent a fitting shape.
  const target={x:o.x,y:o.y},at=t=>({x:anchor.x+(target.x-anchor.x)*t,y:anchor.y+(target.y-anchor.y)*t});
  let low=0,high=1;
@@ -104,7 +105,7 @@ export function installEdgeClamp(el,{profile=null,motifs=[]}={}){
       return;
     }
     const geometry=self.uxProfileGeometry?.();
-    if(geometry&&(geometry.shape==='contour'||geometry.shape==='ellipse'||geometry.cornerRadiusMm>0)){
+    if(geometry&&(geometry.groundInsertion||geometry.shape==='contour'||geometry.shape==='ellipse'||geometry.cornerRadiusMm>0)){
       // uxProfileGeometry already faces the active side. Other surfaces must not move.
       const active=s.uxSurface==='back'?'back':'front',key=JSON.stringify(geometry);
       let cache=surfacePositions.get(active);

@@ -1,0 +1,872 @@
+{
+  "requiredMm": 2,
+  "source": "Chris #76 comment 6562491600; supersedes 3 mm",
+  "method": "Binary search of native templateFit (glyph contours, motif paths including stroke, concave contour and rounded corners); conservative lower bound at 0.005 mm search resolution. Ground restriction unchanged.",
+  "designs": [
+    {
+      "id": "KZ-A-11x20-D0",
+      "minimumCertifiedMarginMm": 2.114,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.114,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-2",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.31,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-3",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 17.89,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Tapsy",
+          "minimumCertifiedMarginMm": 5.966,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "* 7.1.2004 -   12.10.2019",
+          "minimumCertifiedMarginMm": 3.452,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D1",
+      "minimumCertifiedMarginMm": 2.807,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.33,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-2",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.994,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-3",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 7.407,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Buffy",
+          "minimumCertifiedMarginMm": 2.807,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2016 – 2020",
+          "minimumCertifiedMarginMm": 7.177,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "Ich bin nicht tot,\nich tausche nur\ndie Räume, ich\nleb’ in euch und\ngeh’ durch eure\nTräume.",
+          "minimumCertifiedMarginMm": 2.993,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D41",
+      "minimumCertifiedMarginMm": 2.465,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 5.654,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Paula",
+          "minimumCertifiedMarginMm": 9.902,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "† 05.04.2021",
+          "minimumCertifiedMarginMm": 2.465,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D42",
+      "minimumCertifiedMarginMm": 2.495,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.495,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Clarissa",
+          "minimumCertifiedMarginMm": 7.783,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "Für immer in unseren Herzen",
+          "minimumCertifiedMarginMm": 4.296,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D46",
+      "minimumCertifiedMarginMm": 4.614,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 4.614,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-2",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 4.614,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Balu",
+          "minimumCertifiedMarginMm": 8.085,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D48",
+      "minimumCertifiedMarginMm": 4.458,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 6.318,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Frieda",
+          "minimumCertifiedMarginMm": 11.015,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "Du warst,",
+          "minimumCertifiedMarginMm": 5.517,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "du bist,",
+          "minimumCertifiedMarginMm": 8.579,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-4",
+          "type": "text",
+          "text": "du bleibst",
+          "minimumCertifiedMarginMm": 4.57,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-5",
+          "type": "text",
+          "text": "im Herzen.",
+          "minimumCertifiedMarginMm": 4.458,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D53",
+      "minimumCertifiedMarginMm": 2.143,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.143,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "motiv-2",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.143,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Kira",
+          "minimumCertifiedMarginMm": 3.154,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "Ein Hund\nist wie\nein Herz\nauf vier\nBeinen.",
+          "minimumCertifiedMarginMm": 4.169,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D55",
+      "minimumCertifiedMarginMm": 2.182,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.325,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Rocky",
+          "minimumCertifiedMarginMm": 2.207,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "Es gibt kein",
+          "minimumCertifiedMarginMm": 7.807,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "schöneres Privileg",
+          "minimumCertifiedMarginMm": 2.182,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-4",
+          "type": "text",
+          "text": "als von einem",
+          "minimumCertifiedMarginMm": 6.196,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-5",
+          "type": "text",
+          "text": "Hund geliebt",
+          "minimumCertifiedMarginMm": 5.747,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-6",
+          "type": "text",
+          "text": "worden zu sein.",
+          "minimumCertifiedMarginMm": 5.058,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-7",
+          "type": "text",
+          "text": "* 2004",
+          "minimumCertifiedMarginMm": 10.17,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-8",
+          "type": "text",
+          "text": "† 16.07.2020",
+          "minimumCertifiedMarginMm": 3.256,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D126",
+      "minimumCertifiedMarginMm": 2.602,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.602,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Cooper",
+          "minimumCertifiedMarginMm": 2.739,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2009 – 2022",
+          "minimumCertifiedMarginMm": 3.129,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D127",
+      "minimumCertifiedMarginMm": 2.626,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Bella",
+          "minimumCertifiedMarginMm": 2.626,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2008 – 2022",
+          "minimumCertifiedMarginMm": 3.129,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D132",
+      "minimumCertifiedMarginMm": 2.329,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.329,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Moritz",
+          "minimumCertifiedMarginMm": 9.941,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2023",
+          "minimumCertifiedMarginMm": 5.131,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D133",
+      "minimumCertifiedMarginMm": 2.91,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 6.435,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Flocke",
+          "minimumCertifiedMarginMm": 2.91,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2008 – 2024",
+          "minimumCertifiedMarginMm": 3.129,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D201",
+      "minimumCertifiedMarginMm": 2.827,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 4.326,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Lucky",
+          "minimumCertifiedMarginMm": 2.827,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011 – 2023",
+          "minimumCertifiedMarginMm": 3.095,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D202",
+      "minimumCertifiedMarginMm": 3.071,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 5.327,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Maja",
+          "minimumCertifiedMarginMm": 8.72,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2010 – 2023",
+          "minimumCertifiedMarginMm": 3.071,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D203",
+      "minimumCertifiedMarginMm": 2.626,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 4.833,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Robin",
+          "minimumCertifiedMarginMm": 2.626,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2009 – 2022",
+          "minimumCertifiedMarginMm": 3.129,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D204",
+      "minimumCertifiedMarginMm": 3.129,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 5.327,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Luke",
+          "minimumCertifiedMarginMm": 4.97,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "1997 – 2017",
+          "minimumCertifiedMarginMm": 3.129,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D205",
+      "minimumCertifiedMarginMm": 2.631,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 4.843,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Bruno",
+          "minimumCertifiedMarginMm": 2.631,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2010 – 2021",
+          "minimumCertifiedMarginMm": 3.129,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D301",
+      "minimumCertifiedMarginMm": 3.081,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.33,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Milo",
+          "minimumCertifiedMarginMm": 3.754,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2010 – 2025",
+          "minimumCertifiedMarginMm": 3.081,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D302",
+      "minimumCertifiedMarginMm": 3.071,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 5.424,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Nala",
+          "minimumCertifiedMarginMm": 4.345,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2012 – 2026",
+          "minimumCertifiedMarginMm": 3.071,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D303",
+      "minimumCertifiedMarginMm": 2.631,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.33,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Oskar",
+          "minimumCertifiedMarginMm": 2.631,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2009 – 2024",
+          "minimumCertifiedMarginMm": 3.129,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D304",
+      "minimumCertifiedMarginMm": 7.934,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 7.993,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Luna",
+          "minimumCertifiedMarginMm": 7.934,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2011",
+          "minimumCertifiedMarginMm": 12.319,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "2026",
+          "minimumCertifiedMarginMm": 12.294,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D305",
+      "minimumCertifiedMarginMm": 2.373,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.373,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Ben",
+          "minimumCertifiedMarginMm": 6.079,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2008 – 2024",
+          "minimumCertifiedMarginMm": 3.295,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D306",
+      "minimumCertifiedMarginMm": 3.071,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 3.852,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Pippa",
+          "minimumCertifiedMarginMm": 3.251,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2014 – 2025",
+          "minimumCertifiedMarginMm": 3.071,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D307",
+      "minimumCertifiedMarginMm": 2.534,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.534,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Fiete",
+          "minimumCertifiedMarginMm": 3.041,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2010 – 2026",
+          "minimumCertifiedMarginMm": 3.081,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D308",
+      "minimumCertifiedMarginMm": 2.431,
+      "passes2mm": true,
+      "elements": [
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "minimumCertifiedMarginMm": 2.431,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Juna",
+          "minimumCertifiedMarginMm": 5.336,
+          "passes2mm": true,
+          "issues": []
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "2012 – 2026",
+          "minimumCertifiedMarginMm": 3.291,
+          "passes2mm": true,
+          "issues": []
+        }
+      ]
+    }
+  ]
+}

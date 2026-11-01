@@ -1,0 +1,202 @@
+[
+  {
+    "id": "KZ-A-11x20-D0",
+    "name": "Tapsy",
+    "tier": "original",
+    "idea": "Herzen links/rechts mit mittigem Originalnamen und Datumszeile",
+    "pawTrail": false,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D1",
+    "name": "Buffy",
+    "tier": "original",
+    "idea": "Name oben, gegenläufige Blumenzweige, Pfotenpaar und Spruch unten",
+    "pawTrail": false,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D41",
+    "name": "Paula",
+    "tier": "original",
+    "idea": "Betende Hände im oberen Arm, Name quer und Datum rechts",
+    "pawTrail": false,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D42",
+    "name": "Clarissa",
+    "tier": "original",
+    "idea": "Widmung im Querbalken, originale lange Pfotenspur im Stamm",
+    "pawTrail": true,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D46",
+    "name": "Balu",
+    "tier": "original",
+    "idea": "Großer Name zwischen zwei seitlichen Einzelpfoten",
+    "pawTrail": false,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D48",
+    "name": "Frieda",
+    "tier": "original",
+    "idea": "Pfotenherz oben und vier originale Spruchstufen im Stamm",
+    "pawTrail": false,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D53",
+    "name": "Kira",
+    "tier": "original",
+    "idea": "Rosenpaar flankiert den Namen, originaler Spruch darunter",
+    "pawTrail": false,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D55",
+    "name": "Rocky",
+    "tier": "original",
+    "idea": "Hundeherz oben, Name und persönliche Daten darunter",
+    "pawTrail": false,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D126",
+    "name": "Cooper",
+    "tier": "standard",
+    "idea": "Lebensbaum mit Herz im Stamm",
+    "pawTrail": false,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D127",
+    "name": "Bella",
+    "tier": "standard",
+    "idea": "Reiner Schriftentwurf ohne Motiv",
+    "pawTrail": false,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D132",
+    "name": "Moritz",
+    "tier": "standard",
+    "idea": "Knochen bildet eine breite Namensplakette",
+    "pawTrail": false,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D133",
+    "name": "Flocke",
+    "tier": "standard",
+    "idea": "Eine große Pfote oben, ruhiger Stamm",
+    "pawTrail": false,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D201",
+    "name": "Lucky",
+    "tier": "standard",
+    "idea": "Einzelnes Hundeprofil im Stamm",
+    "pawTrail": false,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D202",
+    "name": "Maja",
+    "tier": "standard",
+    "idea": "Aufsteigende Pusteblume mit fliegenden Samen",
+    "pawTrail": false,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D203",
+    "name": "Robin",
+    "tier": "standard",
+    "idea": "Original-Regenbogen mit Blüten",
+    "pawTrail": false,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D204",
+    "name": "Luke",
+    "tier": "standard",
+    "idea": "Langer Sternenschwarm",
+    "pawTrail": false,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D205",
+    "name": "Bruno",
+    "tier": "standard",
+    "idea": "Gemeinsame Mensch-und-Hund-Spur",
+    "pawTrail": true,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D301",
+    "name": "Milo",
+    "tier": "standard",
+    "idea": "Halsband mit hängendem Medaillon",
+    "pawTrail": false,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D302",
+    "name": "Nala",
+    "tier": "standard",
+    "idea": "Offenes Herz mit schwingender Leine",
+    "pawTrail": false,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D303",
+    "name": "Oskar",
+    "tier": "standard",
+    "idea": "Eingerollter schlafender Hund",
+    "pawTrail": false,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D304",
+    "name": "Luna",
+    "tier": "signature",
+    "idea": "Negativ-Hundemedaillon mit senkrechtem Namen",
+    "pawTrail": false,
+    "signatureLayoutBreak": true
+  },
+  {
+    "id": "KZ-A-11x20-D305",
+    "name": "Ben",
+    "tier": "signature",
+    "idea": "Großflächiger Linienhund rechts, Name links",
+    "pawTrail": false,
+    "signatureLayoutBreak": true
+  },
+  {
+    "id": "KZ-A-11x20-D306",
+    "name": "Pippa",
+    "tier": "signature",
+    "idea": "Kreuz-Innenkontur und Pfotensiegel",
+    "pawTrail": false,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D307",
+    "name": "Fiete",
+    "tier": "signature",
+    "idea": "Fünf ausgesparte Pfoten im geschwungenen Band",
+    "pawTrail": true,
+    "signatureLayoutBreak": false
+  },
+  {
+    "id": "KZ-A-11x20-D308",
+    "name": "Juna",
+    "tier": "signature",
+    "idea": "Brückenbogen von links in den Stamm, Name rechts",
+    "pawTrail": false,
+    "signatureLayoutBreak": true
+  }
+]

@@ -1,0 +1,461 @@
+{
+  "scope": "Ausschließlich Gravur Schwarz 11×20; acht Originale restauriert, keine austauschbaren Designs",
+  "sourceDecisions": [
+    "#6563417298",
+    "#6563434541",
+    "Chris im Chat: Keines darf den anderen gleichen"
+  ],
+  "groups": {
+    "A": 8,
+    "B": 4,
+    "C": 5,
+    "D": 8
+  },
+  "tiers": {
+    "original": 8,
+    "standard": 12,
+    "signature": 5
+  },
+  "designs": 25,
+  "nativeFits": {
+    "passt": 25,
+    "prüfen": 0,
+    "passt nicht": 0
+  },
+  "fontsUsed": [
+    "Alex Brush",
+    "Allura",
+    "Ashley",
+    "Cinzel",
+    "Dancing Script",
+    "Great Vibes",
+    "Homage",
+    "Italianno",
+    "Lato",
+    "Montserrat",
+    "Montserrat Light",
+    "Parisienne",
+    "Sacramento",
+    "Satisfy",
+    "Tangerine"
+  ],
+  "minimumCapMm": 3.1,
+  "minimumCertifiedContourMarginMm": 2.114,
+  "requiredContourMarginMm": 2,
+  "motifCompositions": {
+    "Hund im Herz": 2,
+    "Pfotenherz": 2,
+    "Original-Blumenzweige und Pfotenpaar": 1,
+    "Lebensbaum mit Herz": 1,
+    "Original-Knochenplakette": 1,
+    "Große einzelne Originalpfote oben": 1,
+    "Original-Hundekopf": 1,
+    "Pusteblume mit Samen": 1,
+    "Regenbogen mit Blüten": 1,
+    "Sternenschwarm": 1,
+    "Mensch-und-Hund-Spuren": 1,
+    "Halsband mit Medaillon": 1,
+    "Herzleine mit langem Schwung": 1,
+    "Schlafender Hund": 1,
+    "Negativ-Hundesilhouette und Mondsichel": 1,
+    "Großflächiger Linienhund mit Herz": 1,
+    "Innenkontur und Pfoten-Siegel": 1,
+    "Geschwungenes Band mit fünf ausgesparten Hundepfoten": 1,
+    "Geschwungene Regenbogenbrücke mit Stufen und Lichtzeichen": 1,
+    "Betende Hände": 1,
+    "Pfotenspur": 1,
+    "Pfotenpaar": 1,
+    "Rosenpaar": 1
+  },
+  "individuality": {
+    "uniqueNames": 25,
+    "distinctMotifGeometryFingerprints": 25,
+    "pawTrailDesigns": 3,
+    "signatureLayoutBreaks": 3,
+    "assessment": "Fingerprints exclude text/name/font and catch exact repeated motif compositions; visual assessment remains necessary and was performed on the contact sheet.",
+    "designs": [
+      {
+        "id": "KZ-A-11x20-D0",
+        "idea": "Herzen links/rechts mit mittigem Originalnamen und Datumszeile",
+        "fingerprint": "6c82c9ee5bb6c2bd96f97589e0f8606ba6388dfdca931b5a2ffb9c2d8353eb32"
+      },
+      {
+        "id": "KZ-A-11x20-D1",
+        "idea": "Name oben, gegenläufige Blumenzweige, Pfotenpaar und Spruch unten",
+        "fingerprint": "101c8721afa25f331081fefc8faa896eb5e1441e252d10b2d5b2da9de829470e"
+      },
+      {
+        "id": "KZ-A-11x20-D126",
+        "idea": "Lebensbaum mit Herz im Stamm",
+        "fingerprint": "83af24fcf496a19213dff920f1832bc9499b4ac5310524aef63a49386fbec4ff"
+      },
+      {
+        "id": "KZ-A-11x20-D127",
+        "idea": "Reiner Schriftentwurf ohne Motiv",
+        "fingerprint": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "id": "KZ-A-11x20-D132",
+        "idea": "Knochen bildet eine breite Namensplakette",
+        "fingerprint": "f67a9620676d01c11e484a1fcb33cef6d671cc0d4ba4c5882b67c2a74c7a8054"
+      },
+      {
+        "id": "KZ-A-11x20-D133",
+        "idea": "Eine große Pfote oben, ruhiger Stamm",
+        "fingerprint": "b5bd392d2e99c0c9d4193d4dc77ddd87ca84df266757548e689820ebff691ba8"
+      },
+      {
+        "id": "KZ-A-11x20-D201",
+        "idea": "Einzelnes Hundeprofil im Stamm",
+        "fingerprint": "27c683969e6531188073cadd2cc1f25f20088143599473d795ba15ae44c1f8b7"
+      },
+      {
+        "id": "KZ-A-11x20-D202",
+        "idea": "Aufsteigende Pusteblume mit fliegenden Samen",
+        "fingerprint": "8b0c7837b929624bda46508c2a854a1b688b35406ae10fb75ad292237ae6e931"
+      },
+      {
+        "id": "KZ-A-11x20-D203",
+        "idea": "Original-Regenbogen mit Blüten",
+        "fingerprint": "f1931e7625d555807fb32f25f034469837ce2f107e779d25ca9744fe543f722d"
+      },
+      {
+        "id": "KZ-A-11x20-D204",
+        "idea": "Langer Sternenschwarm",
+        "fingerprint": "6f72447e2171df82d841f490e290638b8ad716869af495fd5e6f9f32bd53e34a"
+      },
+      {
+        "id": "KZ-A-11x20-D205",
+        "idea": "Gemeinsame Mensch-und-Hund-Spur",
+        "fingerprint": "63ab8ff6184e711ffe5bcc51f8b3c5c0142b75b6fd5191e79b40b7a8ee7ee506"
+      },
+      {
+        "id": "KZ-A-11x20-D301",
+        "idea": "Halsband mit hängendem Medaillon",
+        "fingerprint": "d0a70c6112babebb58762bb000378bf0a27d7c0e8b6e2d222167c42002c8cf0a"
+      },
+      {
+        "id": "KZ-A-11x20-D302",
+        "idea": "Offenes Herz mit schwingender Leine",
+        "fingerprint": "55103a1aba20a0055b847a60286e8bb3990a4dd5bbef354500d114b0eb1131bb"
+      },
+      {
+        "id": "KZ-A-11x20-D303",
+        "idea": "Eingerollter schlafender Hund",
+        "fingerprint": "107dc9fbe4e87fdbeaf80e00d583e79087cd0fa5f691ff7d96d1713085b532fd"
+      },
+      {
+        "id": "KZ-A-11x20-D304",
+        "idea": "Negativ-Hundemedaillon mit senkrechtem Namen",
+        "fingerprint": "0a3f9b98084785549a1163b288c6a9dac9a17a651d163d4654bbf1047bb1b193"
+      },
+      {
+        "id": "KZ-A-11x20-D305",
+        "idea": "Großflächiger Linienhund rechts, Name links",
+        "fingerprint": "a4df793cb95af42e4eb8d173a5e69cf4c9d0176989b862e4c9c5d66f1b393db0"
+      },
+      {
+        "id": "KZ-A-11x20-D306",
+        "idea": "Kreuz-Innenkontur und Pfotensiegel",
+        "fingerprint": "941bc710ac7bba5a00a345e85ed24cebc26da931bc2e9ab1eb72fd89a6632b76"
+      },
+      {
+        "id": "KZ-A-11x20-D307",
+        "idea": "Fünf ausgesparte Pfoten im geschwungenen Band",
+        "fingerprint": "903b2b9eb9ffff41b2624a53f20c399a799426e1b73d88ed0a210d627753b884"
+      },
+      {
+        "id": "KZ-A-11x20-D308",
+        "idea": "Brückenbogen von links in den Stamm, Name rechts",
+        "fingerprint": "a96e221f175c7ef9fe8840c652b1a48dff67d859f23a1ff5a98785cc45955875"
+      },
+      {
+        "id": "KZ-A-11x20-D41",
+        "idea": "Betende Hände im oberen Arm, Name quer und Datum rechts",
+        "fingerprint": "629d64a9bbd4eaca477078252dbbbb3e0b4f2beb1f52cba579041cb2699acdcb"
+      },
+      {
+        "id": "KZ-A-11x20-D42",
+        "idea": "Widmung im Querbalken, originale lange Pfotenspur im Stamm",
+        "fingerprint": "62efa2a55646fdbaa85115e110485f8d0f70c8a4644868bef29588701f0e4d3d"
+      },
+      {
+        "id": "KZ-A-11x20-D46",
+        "idea": "Großer Name zwischen zwei seitlichen Einzelpfoten",
+        "fingerprint": "fb439c28d9c5b0a8ffa2b71018333ac36687b571e93f73319d2911c31437a31a"
+      },
+      {
+        "id": "KZ-A-11x20-D48",
+        "idea": "Pfotenherz oben und vier originale Spruchstufen im Stamm",
+        "fingerprint": "d5edd0ab879372d65580a6579ca6a1d56a1c6151b28b6489c2f930a536f53a82"
+      },
+      {
+        "id": "KZ-A-11x20-D53",
+        "idea": "Rosenpaar flankiert den Namen, originaler Spruch darunter",
+        "fingerprint": "cdcf20d3fc42537ef013a8453b4e6704564d0526c57d902221fad28bbf1bc352"
+      },
+      {
+        "id": "KZ-A-11x20-D55",
+        "idea": "Hundeherz oben, Name und persönliche Daten darunter",
+        "fingerprint": "abe4f183b32e15db4aeac264af061191e9c19bf9d6f1255f4415c089d8ec205d"
+      }
+    ]
+  },
+  "jpgBytes": 1297896,
+  "browserCheck": "Offen; Claude nach Designabnahme. Native Zielvorschau, kein Browser-Screenshot.",
+  "fontDecision": {
+    "original": "Vista La Diva",
+    "replacement": "Homage",
+    "decided": "2026-11-01",
+    "by": "Chris",
+    "issueComment": 6562403258
+  },
+  "checks": [
+    {
+      "id": "KZ-A-11x20-D0",
+      "minCapHeightMm": 3.949,
+      "artworkBottomMm": 69.99,
+      "groundClearanceMm": 80.01,
+      "fonts": [
+        "Montserrat Light",
+        "Tangerine"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D1",
+      "minCapHeightMm": 3.2,
+      "artworkBottomMm": 138.677,
+      "groundClearanceMm": 11.323,
+      "fonts": [
+        "Allura"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D126",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 140.37,
+      "groundClearanceMm": 9.63,
+      "fonts": [
+        "Allura",
+        "Lato"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D127",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 70.245,
+      "groundClearanceMm": 79.755,
+      "fonts": [
+        "Allura",
+        "Montserrat"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D132",
+      "minCapHeightMm": 3.5,
+      "artworkBottomMm": 71.039,
+      "groundClearanceMm": 78.961,
+      "fonts": [
+        "Allura",
+        "Lato"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D133",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 70.245,
+      "groundClearanceMm": 79.755,
+      "fonts": [
+        "Homage",
+        "Montserrat"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D201",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 118.11,
+      "groundClearanceMm": 31.89,
+      "fonts": [
+        "Ashley",
+        "Montserrat"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D202",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 138.16,
+      "groundClearanceMm": 11.84,
+      "fonts": [
+        "Homage",
+        "Lato"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D203",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 118.62,
+      "groundClearanceMm": 31.38,
+      "fonts": [
+        "Dancing Script",
+        "Montserrat"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D204",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 138.62,
+      "groundClearanceMm": 11.38,
+      "fonts": [
+        "Lato",
+        "Sacramento"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D205",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 130.13,
+      "groundClearanceMm": 19.87,
+      "fonts": [
+        "Italianno",
+        "Montserrat"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D301",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 123.576,
+      "groundClearanceMm": 26.424,
+      "fonts": [
+        "Montserrat",
+        "Sacramento"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D302",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 141.5,
+      "groundClearanceMm": 8.5,
+      "fonts": [
+        "Lato",
+        "Sacramento"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D303",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 118.431,
+      "groundClearanceMm": 31.569,
+      "fonts": [
+        "Montserrat",
+        "Satisfy"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D304",
+      "minCapHeightMm": 4.3,
+      "artworkBottomMm": 127.216,
+      "groundClearanceMm": 22.784,
+      "fonts": [
+        "Italianno",
+        "Lato"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D305",
+      "minCapHeightMm": 3.5,
+      "artworkBottomMm": 141.86,
+      "groundClearanceMm": 8.14,
+      "fonts": [
+        "Montserrat",
+        "Sacramento"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D306",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 143.27,
+      "groundClearanceMm": 6.73,
+      "fonts": [
+        "Alex Brush",
+        "Lato"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D307",
+      "minCapHeightMm": 5.3,
+      "artworkBottomMm": 143.0,
+      "groundClearanceMm": 7.0,
+      "fonts": [
+        "Montserrat",
+        "Parisienne"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D308",
+      "minCapHeightMm": 3.5,
+      "artworkBottomMm": 140.33,
+      "groundClearanceMm": 9.67,
+      "fonts": [
+        "Allura",
+        "Lato"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D41",
+      "minCapHeightMm": 3.1,
+      "artworkBottomMm": 70.859,
+      "groundClearanceMm": 79.141,
+      "fonts": [
+        "Alex Brush",
+        "Montserrat Light"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D42",
+      "minCapHeightMm": 4.2,
+      "artworkBottomMm": 144.0,
+      "groundClearanceMm": 6.0,
+      "fonts": [
+        "Homage",
+        "Montserrat"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D46",
+      "minCapHeightMm": 24.0,
+      "artworkBottomMm": 65.408,
+      "groundClearanceMm": 84.592,
+      "fonts": [
+        "Alex Brush"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D48",
+      "minCapHeightMm": 6.0,
+      "artworkBottomMm": 136.29,
+      "groundClearanceMm": 13.71,
+      "fonts": [
+        "Ashley"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D53",
+      "minCapHeightMm": 6.399,
+      "artworkBottomMm": 119.265,
+      "groundClearanceMm": 30.735,
+      "fonts": [
+        "Great Vibes"
+      ]
+    },
+    {
+      "id": "KZ-A-11x20-D55",
+      "minCapHeightMm": 3.949,
+      "artworkBottomMm": 123.907,
+      "groundClearanceMm": 26.093,
+      "fonts": [
+        "Cinzel",
+        "Parisienne"
+      ]
+    }
+  ]
+}

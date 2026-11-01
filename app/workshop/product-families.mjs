@@ -1,3 +1,4 @@
+import {validateGroundInsertion,visiblePlateHeight} from '../platform/sources/app/shared/models/ground-insertion.mjs';
 import {DatabaseSync} from 'node:sqlite';
 import {tenantOption,TENANT_COLUMN} from './tenant.mjs';
 import {createHash} from 'node:crypto';
@@ -80,7 +81,7 @@ export function quantityTierGaps(f){
 // Offene, aber nicht sperrende Angaben (Staffel, Aufpreis Rückseite) – fürs Briefing.
 export const familyOpenNotes=f=>[...quantityTierGaps(f),...(hasBack(f)&&backSurface(f).priceCents===null?['Aufpreis „Rückseite gestalten“ (bis dahin nicht buchbar)']:[])];
 export function validateFamily(f){
- only(f,['schema','id','name','material','designArea','groups','mountingRules','sizes','withoutMounting','fonts','briefingNotes','sizeKeyPrefix','sizeKeySuffix','source','backing','options','quantityTiers','surfaces','photo','outdoorSuitable'],'Produktfamilie');
+ only(f,['schema','id','name','material','designArea','groups','mountingRules','sizes','withoutMounting','fonts','briefingNotes','sizeKeyPrefix','sizeKeySuffix','source','backing','options','quantityTiers','surfaces','photo','outdoorSuitable','groundInsertion'],'Produktfamilie');
  if(f.outdoorSuitable!==undefined&&f.outdoorSuitable!==null&&typeof f.outdoorSuitable!=='boolean')invalid('Für außen geeignet: true, false oder null (unbekannt).');
  // Fotopreis je Familie (Schiefer-Gedenktafel 22 × 14, Chris 20.10.2026: 1. Foto im Grundpreis, jedes
  // weitere 8,99 €). Ohne Angabe bleibt es bei der bisherigen Vorgabe (0 inklusive, 0 Cent). null = offen.
@@ -129,6 +130,7 @@ export function validateFamily(f){
   if(s.cornerRadiusMm!==undefined&&(!mm(s.cornerRadiusMm,0,100)||!CORNERED.includes(groups.get(s.groupKey)?.shape)))invalid('Größe '+(s.key||'')+': eigener Eckenradius nur bei eckiger Form.');
   if(s.backingCornerRadiusMm!==undefined&&(!mm(s.backingCornerRadiusMm,0,100)||!f.backing||!CORNERED.includes(groups.get(s.groupKey)?.shape)))invalid('Größe '+(s.key||'')+': Eckenradius der Rückplatte nur mit Rückplatte und eckiger Form.');
   if(!id(s.key)||!groups.has(s.groupKey)||!text(s.label,60)||!mm(s.widthMm,10,1000)||!mm(s.heightMm,10,1000)||!(open(s.baseCents)||cents(s.baseCents))||!Array.isArray(s.mounting)||s.mounting.length>8||s.mounting.some(m=>!rules.has(m))||new Set(s.mounting).size!==s.mounting.length)invalid('Größe '+(s.key||'')+' unvollständig.');
+  validateGroundInsertion({height:s.heightMm,groundInsertion:f.groundInsertion});
   if(contourSize(f,s)){
    if(groups.get(s.groupKey).cornerRadiusMm!==0)invalid(s.key+': Kontur hat keinen zusätzlichen Eckenradius.');
    try{validateContourGeometry({outlinePath:s.outlinePath,width:s.widthMm,height:s.heightMm});}catch(e){invalid(s.key+': '+e.message);}
@@ -203,7 +205,7 @@ export function familyReady(f){
  if(m.adapter==='steel'&&f.material.thicknessMm!==null&&f.material.thicknessMm!==1.5)return {ready:false,gaps,reason:'Das Edelstahl-Produktmodell ist für 1,5 mm freigegeben.'};
  return gaps.length?{ready:false,gaps,reason:'Stammdaten unvollständig: '+gaps.join(' · ')}:{ready:true,gaps:[]};
 }
-export function geometryOf(f,s){const g=f.groups.find(g=>g.key===s.groupKey);return {width:s.widthMm,height:s.heightMm,shape:g.shape,cornerRadiusMm:s.cornerRadiusMm??g.cornerRadiusMm,...(g.shape==='contour'?{outlinePath:s.outlinePath,holesMm:s.holesMm.map(h=>({...h}))}:{}),...(s.backingCornerRadiusMm!==undefined?{backingCornerRadiusMm:s.backingCornerRadiusMm}:{})};}
+export function geometryOf(f,s){const g=f.groups.find(g=>g.key===s.groupKey);return {width:s.widthMm,height:s.heightMm,...(f.groundInsertion?{groundInsertion:{...f.groundInsertion}}:{}),shape:g.shape,cornerRadiusMm:s.cornerRadiusMm??g.cornerRadiusMm,...(g.shape==='contour'?{outlinePath:s.outlinePath,holesMm:s.holesMm.map(h=>({...h}))}:{}),...(s.backingCornerRadiusMm!==undefined?{backingCornerRadiusMm:s.backingCornerRadiusMm}:{})};}
 // Corner radius of an offset contour: a rounded corner grows outward, a concave corner shrinks.
 const offsetRadius=(g,d)=>g.shape==='plaque'?Math.max(0,g.cornerRadiusMm-d):g.cornerRadiusMm?Math.max(0,g.cornerRadiusMm+d):0;
 const ruleOf=(f,rid)=>f.mountingRules.find(r=>r.id===rid);
@@ -222,7 +224,7 @@ export function familyProductConfig(f,s,revision,{previewOnly=false}={}){
  if(f.withoutMounting)values.push({id:'K00',label:'Ohne Bohrung',priceCents:0,currency:'EUR',holes:[]});
  for(const rid of s.mounting){const r=ruleOf(f,rid);values.push(holeless(r)?{id:r.skuSuffix,label:r.label,priceCents:r.priceCents,currency:'EUR',holes:[]}:{id:r.skuSuffix,label:r.label,priceCents:r.priceCents,currency:'EUR',holes:familyHoles(f,s,r),mountingRule:{id:r.id,layout:r.layout,count:r.count,diameterMm:r.diameterMm,...(g.shape==='contour'?{fixed:true}:{edgeMm:r.edgeMm}),keepoutMm:f.designArea.keepoutMm,...(r.accessory?{accessory:r.accessory}:{})},...(r.accessory==='standoffs'?{spacers:true}:{})});}
  if(new Set(values.map(v=>v.id)).size!==values.length)invalid(s.key+': zwei Befestigungen mit gleicher SKU-Endung.');
- const text={id:'text-1',type:'text',text:'Familie Muster',font,size:Math.min(g.height*.22,14),x:g.width/2,y:g.height/2,w:1,h:1,rotation:0,color:'#000000',bold:false,templateOrigin:true,customerEditable:true};
+ const text={id:'text-1',type:'text',text:'Familie Muster',font,size:Math.min(g.height*.22,14),x:g.width/2,y:visiblePlateHeight(g)/2,w:1,h:1,rotation:0,color:'#000000',bold:false,templateOrigin:true,customerEditable:true};
  measureText(text,resources.fonts);if(text.w>g.width*.6){text.size*=g.width*.6/text.w;measureText(text,resources.fonts);}
  if(text.h>g.height*.3){text.size*=g.height*.3/text.h;measureText(text,resources.fonts);}
  // The neutral starter is only scaffolding. A cross has a narrow stem at its
@@ -363,7 +365,7 @@ export function familySyncTarget(document,f,s,revision){
  const t=familyProductConfig(f,s,revision),doc=structuredClone(document),p=doc.config.profile,mount=t.profile.optionGroups.find(g=>g.id==='mounting');
  doc.name=productName(f,s);doc.config.basePriceCents=t.basePriceCents;p.name=t.profile.name;p.revision=t.profile.revision;
  p.geometry={...p.geometry,width:t.profile.geometry.width,height:t.profile.geometry.height,shape:t.profile.geometry.shape,cornerRadiusMm:t.profile.geometry.cornerRadiusMm,safeMarginMm:t.profile.geometry.safeMarginMm};
- for(const key of ['outlinePath','holeKeepoutMm']){if(t.profile.geometry[key]===undefined)delete p.geometry[key];else p.geometry[key]=t.profile.geometry[key];}
+ for(const key of ['outlinePath','holeKeepoutMm','groundInsertion']){if(t.profile.geometry[key]===undefined)delete p.geometry[key];else p.geometry[key]=t.profile.geometry[key];}
  const old=p.optionGroups.find(g=>g.id==='mounting'),group=structuredClone(mount);if(old&&group.values.some(v=>v.id===old.defaultValueId))group.defaultValueId=old.defaultValueId;
  p.optionGroups=p.optionGroups.map(g=>g.id==='mounting'?group:g);if(!old)p.optionGroups.push(group);
  return doc;

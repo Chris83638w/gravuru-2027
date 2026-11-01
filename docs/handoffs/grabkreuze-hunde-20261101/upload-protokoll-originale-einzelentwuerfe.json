@@ -1,0 +1,382 @@
+{
+  "branch": "dev/grabkreuze-hunde-20261101-astra-mika",
+  "revision": "chris-originale-und-eigenstaendige-designs",
+  "jobs": [
+    {
+      "repo": "Chris83638w/gravuru-katalog.",
+      "folder": "grabkreuze-hunde-katalog",
+      "base": "4c7459c7db365c6401552800d8db3b4d94a024da",
+      "files": 56,
+      "additions": 56,
+      "deletions": 0,
+      "manifest": [
+        {
+          "path": "KATALOG.md",
+          "delete": false,
+          "gitBlobSha1": "28391870914c7541b7e9e653c2d228d2c69b032d"
+        },
+        {
+          "path": "STAND.md",
+          "delete": false,
+          "gitBlobSha1": "d38f0506effc3bdfc435e1d4444074fa4fc546f7"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/README.md",
+          "delete": false,
+          "gitBlobSha1": "fe6ed852fadcf012c11957e25ff318d10b294c0d"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/produktplan.json",
+          "delete": false,
+          "gitBlobSha1": "c050d35c8bc20ff7de97d88a13bed1e426492b70"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D0/design.json",
+          "delete": false,
+          "gitBlobSha1": "6536ee4fe09d01604919c795ae88092548f1269c"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D0/design.svg",
+          "delete": false,
+          "gitBlobSha1": "1b025fc5d90219099db32a5394e3f97e10b6e08e"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D1/design.json",
+          "delete": false,
+          "gitBlobSha1": "3fa5a2de1717b10aefba3d346db7fb585addc426"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D1/design.svg",
+          "delete": false,
+          "gitBlobSha1": "4f74922a6eaeac10c1eca4dfdbb089fc6c4be738"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D126/design.json",
+          "delete": false,
+          "gitBlobSha1": "1a66c7a135dfdc82ca5829538e5646c438f187c9"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D126/design.svg",
+          "delete": false,
+          "gitBlobSha1": "c2241bcde8f6e9c136fd2b7df3346f97f4c7f9ac"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D127/design.json",
+          "delete": false,
+          "gitBlobSha1": "80fe50b74387cf7d11ec38cc8b72aae8d8dcbd86"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D132/design.json",
+          "delete": false,
+          "gitBlobSha1": "277bedf0259e1d4672e4d0e95e87a6db8af142cd"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D132/design.svg",
+          "delete": false,
+          "gitBlobSha1": "f6fb1f3e87ec33cfc907b924e94ec6536fc17535"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D133/design.json",
+          "delete": false,
+          "gitBlobSha1": "f24cef71918edd992129e32d925f5515f594afc9"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D133/design.svg",
+          "delete": false,
+          "gitBlobSha1": "bf50e218407816ba83e48c0d6613c30ded93c4eb"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D201/design.json",
+          "delete": false,
+          "gitBlobSha1": "e8352064f6076fb28b1675cd88080ee67c5d0298"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D201/design.svg",
+          "delete": false,
+          "gitBlobSha1": "aa204687e70784d2925da68a9f2259ec3b26e35f"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D202/design.json",
+          "delete": false,
+          "gitBlobSha1": "84f7b705ee83150fb6302e7f16b12b9b341bf417"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D202/design.svg",
+          "delete": false,
+          "gitBlobSha1": "f421bde98229bc6d639ec01a3298698640c58c28"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D203/design.json",
+          "delete": false,
+          "gitBlobSha1": "49cb6afbf5fc5b62aeb970dcfc3450d0384c85fc"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D204/design.json",
+          "delete": false,
+          "gitBlobSha1": "e74024a006e3ace3e1a128295e8e42489723ec14"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D205/design.json",
+          "delete": false,
+          "gitBlobSha1": "e5777f8a98a4c028ae979b0727b5187dd26fe1d9"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D301/design.json",
+          "delete": false,
+          "gitBlobSha1": "7aded7710644d5a2989a1101ea8d733c2f9e8ec3"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D301/design.svg",
+          "delete": false,
+          "gitBlobSha1": "4f42d82d942bb35f2cc18cb0f6fc4c8eef7c7949"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D302/design.json",
+          "delete": false,
+          "gitBlobSha1": "96fb6e62822007edb7d04b1e45034cf6e048e67b"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D302/design.svg",
+          "delete": false,
+          "gitBlobSha1": "371e581289e5f286cc4adb9cded6b5ace0cab4d0"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D303/design.json",
+          "delete": false,
+          "gitBlobSha1": "9da9541f408960ed892c1c3b5213b1042080013a"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D303/design.svg",
+          "delete": false,
+          "gitBlobSha1": "4c86f21abc7057fd99ecb648c4d2606d13cf3636"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D304/design.json",
+          "delete": false,
+          "gitBlobSha1": "3d1af0903304b591118596bdabe6b9e33cd6377a"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D304/design.svg",
+          "delete": false,
+          "gitBlobSha1": "a2a62b1456601b3b66e046a8ca7d1ed428cc134a"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D305/design.json",
+          "delete": false,
+          "gitBlobSha1": "a2eb14a0680ad931b63f04ca1e60382ba2eb33d6"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D305/design.svg",
+          "delete": false,
+          "gitBlobSha1": "c0ade759370ffa5aaf96b59a0b8274f679a597dd"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D306/design.json",
+          "delete": false,
+          "gitBlobSha1": "871628e4578d03ca30912c1e6f92ab3265d0122a"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D307/design.json",
+          "delete": false,
+          "gitBlobSha1": "02f203aa21d23a334a9711994dad1328911161de"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D308/design.json",
+          "delete": false,
+          "gitBlobSha1": "f94ddbf447541ef06fd3005a40c7ad1a81c6f275"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D308/design.svg",
+          "delete": false,
+          "gitBlobSha1": "d7f5464c000666915109086f7bd941897e065e18"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D41/design.json",
+          "delete": false,
+          "gitBlobSha1": "c383c5c2477c4a7f601f18f70b55a56c46983f31"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D41/design.svg",
+          "delete": false,
+          "gitBlobSha1": "0209ce64b87b45a56ad686a8f2d0c325656c1647"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D42/design.json",
+          "delete": false,
+          "gitBlobSha1": "9480755df91934591c0c45d9f0042c4b16bf4279"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D42/design.svg",
+          "delete": false,
+          "gitBlobSha1": "50d5570b200e200be40f4f67a265c1862e84e0fb"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D46/design.json",
+          "delete": false,
+          "gitBlobSha1": "1b4b12cc73f169cb8b0f3bc27911aaf544318ea6"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D46/design.svg",
+          "delete": false,
+          "gitBlobSha1": "0e6fb1c143d59cb2a26271c04afeb4234d395385"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D48/design.json",
+          "delete": false,
+          "gitBlobSha1": "60d8c8c9f3f61def7c9aca0ea21bba951b3b3a2f"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D48/design.svg",
+          "delete": false,
+          "gitBlobSha1": "627b4872c3ed4130a9cfe68e81d537b1565b3477"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D53/design.json",
+          "delete": false,
+          "gitBlobSha1": "d244ee3e5dd9772c5f445967b3c6b781e3f006b2"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D53/design.svg",
+          "delete": false,
+          "gitBlobSha1": "6d68616ebf9fe02121f378e5a6647a3973ab1584"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D55/design.json",
+          "delete": false,
+          "gitBlobSha1": "e5aa4b278ec44e0a8d4f86524729c3c12441c989"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D55/design.svg",
+          "delete": false,
+          "gitBlobSha1": "8386acd79563eb210e355d128ca4c6267b30b732"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/index.json",
+          "delete": false,
+          "gitBlobSha1": "fd47d4fff3ecb02258e8bf9a01bea13684131704"
+        },
+        {
+          "path": "familien/acryl/grabkreuz-acryl-5mm-schwarz.json",
+          "delete": false,
+          "gitBlobSha1": "00431486fbcbe839a2b1d73740b08d6044e323d8"
+        },
+        {
+          "path": "motive-eigene/motive-eigene.json",
+          "delete": false,
+          "gitBlobSha1": "63bf1f8434f7d4a03871de630096714a45d08b6c"
+        },
+        {
+          "path": "motive-eigene/mika-hunde-herzleine-lang-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "5cfcf8a7318ad5c069a1e5251b7a79a2205aede2"
+        },
+        {
+          "path": "motive-eigene/mika-hunde-lebensbaum-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "14463769c60c62bcb558d7d1344cc2198aacefec"
+        },
+        {
+          "path": "motive-eigene/mika-signature-bruecke-ins-licht-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "9893024adb881f9fc507c6549685b75beb6f6c5e"
+        },
+        {
+          "path": "motive-eigene/mika-signature-herzgefaehrte-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "42d1ee24eb38d5d882069e43079cf3cdc7228157"
+        },
+        {
+          "path": "motive-eigene/mika-signature-mondmedaillon-20261101/motiv.svg",
+          "delete": false,
+          "gitBlobSha1": "146339dad682cc1495bd49b208665a12a019b337"
+        }
+      ],
+      "commits": [
+        {
+          "oid": "fc50c66f5eee52966959271dae595f8179bf82ae",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/fc50c66f5eee52966959271dae595f8179bf82ae",
+          "verified": true,
+          "files": 40
+        },
+        {
+          "oid": "533057b5946e1b9f57f3d650bd509caa60352f91",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/533057b5946e1b9f57f3d650bd509caa60352f91",
+          "verified": true,
+          "files": 16
+        }
+      ],
+      "finalHead": "533057b5946e1b9f57f3d650bd509caa60352f91",
+      "remoteVerified": 56
+    },
+    {
+      "repo": "Chris83638w/gravuru-2027",
+      "folder": "grabkreuze-hunde",
+      "base": "da66dbe5c406bbd55f7b625bdde6f5184a4bfdda",
+      "files": 10,
+      "additions": 10,
+      "deletions": 0,
+      "manifest": [
+        {
+          "path": "STATUS.md",
+          "delete": false,
+          "gitBlobSha1": "b39030b727689695c3fd0e7215e1db2711890298"
+        },
+        {
+          "path": "docs/handoffs/grabkreuze-hunde-20261101/NACHAUFTRAG.md",
+          "delete": false,
+          "gitBlobSha1": "0afba4c69fa121554e3f4aaf30865fe7a6bab688"
+        },
+        {
+          "path": "docs/handoffs/grabkreuze-hunde-20261101/kontaktbogen-schwarz-11x20.jpg",
+          "delete": false,
+          "gitBlobSha1": "6724c3d9427933f1067d716e283b4f7d29970431"
+        },
+        {
+          "path": "docs/handoffs/grabkreuze-hunde-20261101/nachauftrag-pruefung.json",
+          "delete": false,
+          "gitBlobSha1": "ed5914cd5a8f23afd21eb0b950d496a76d341f7d"
+        },
+        {
+          "path": "docs/handoffs/grabkreuze-hunde-20261101/randabstand-pruefung.json",
+          "delete": false,
+          "gitBlobSha1": "d054a5e3c3eaa6531d57acdc6050653d3f0509ca"
+        },
+        {
+          "path": "scripts/check-grabkreuze-nachauftrag.py",
+          "delete": false,
+          "gitBlobSha1": "241f2211788e29d3694ee52f45fe10ddd0267163"
+        },
+        {
+          "path": "scripts/contact-grabkreuze-hunde.py",
+          "delete": false,
+          "gitBlobSha1": "4d41d853948af71007ad7ee2649b3587c48d7ae0"
+        },
+        {
+          "path": "scripts/grabkreuze-hausstil.py",
+          "delete": false,
+          "gitBlobSha1": "ec1afbc767337697d74eabd1660a5581cb059df8"
+        },
+        {
+          "path": "docs/handoffs/grabkreuze-hunde-20261101/einzelentwuerfe-uebersicht.json",
+          "delete": false,
+          "gitBlobSha1": "1334126d5e8c00603207ace5f91ea45e436e37e5"
+        },
+        {
+          "path": "scripts/grabkreuze-einzelentwuerfe.py",
+          "delete": false,
+          "gitBlobSha1": "b8288da8bec79f0ad3005a38c9b0c5789c2d2c01"
+        }
+      ],
+      "commits": [
+        {
+          "oid": "f023bccf12a7f5e55f38a6faca221f32e4d2ce54",
+          "url": "https://github.com/Chris83638w/gravuru-2027/commit/f023bccf12a7f5e55f38a6faca221f32e4d2ce54",
+          "verified": true,
+          "files": 10
+        }
+      ],
+      "finalHead": "f023bccf12a7f5e55f38a6faca221f32e4d2ce54",
+      "remoteVerified": 10
+    }
+  ]
+}

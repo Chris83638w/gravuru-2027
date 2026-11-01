@@ -1,3 +1,4 @@
+import {aboveGround} from '../../platform/sources/app/shared/models/ground-insertion.mjs';
 import {insideContour} from './print-export-model.mjs';
 import {contourContainsPolygon} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
 import {UV_PRINT_PALETTE} from '../../workshop/process-profiles.mjs';
@@ -60,6 +61,7 @@ export function transformedCorners(object, bounds) {
 
 export function fitsSurface(object, bounds, surface) {
     surface={x:0,y:0,...surface};
+  if(!aboveGround(transformedCorners(object,bounds).map(p=>[p.x,p.y-surface.y]),surface.geometry||surface))return false;
   if(surface.shape==='contour'){const geometry=surface.geometry||surface;return contourContainsPolygon(geometry,transformedCorners(object,bounds),{holes:false,marginMm:geometry.safeMarginMm??0});}
   const epsilon = 0.001;
   return transformedCorners(object,bounds).every(({x,y})=>{

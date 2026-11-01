@@ -1,0 +1,766 @@
+{
+  "branch": "dev/grabkreuze-hunde-20261101-astra-mika",
+  "revision": "native-erdteilsperre-browserpruefung-offen",
+  "jobs": [
+    {
+      "repo": "Chris83638w/gravuru-katalog.",
+      "base": "cecd605a99f6df40edc69fc98d7424e86813cd17",
+      "files": 156,
+      "manifest": [
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D0/preview.png",
+          "gitBlobSha1": "726c0f15aadc7c93bef66fbcbf550779ff65ba8d"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D100/preview.png",
+          "gitBlobSha1": "a18060e9d0b6cbf447218fd76dcc41e584c27713"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D101/preview.png",
+          "gitBlobSha1": "038f7e02114e9f7aad719c75f85189e7a1bc1dcd"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D102/preview.png",
+          "gitBlobSha1": "816ae759ba29f4849ee8d5dc63aa6eee2e326d43"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D103/preview.png",
+          "gitBlobSha1": "bc75cf8d4db5264caa1cf0ccf7b7d51e3dc4073a"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D104/preview.png",
+          "gitBlobSha1": "00583a1903d4754128bd1eb551ac1755422ce136"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D105/preview.png",
+          "gitBlobSha1": "06a890e6ce73316d6abe94f3a54b9c61e4bc1e1b"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D106/preview.png",
+          "gitBlobSha1": "ef75404368584d69456826a3c5bdfd534dc316a3"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D107/preview.png",
+          "gitBlobSha1": "2df614abe2a8393ef60de56ed62f1a308170beb3"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D108/preview.png",
+          "gitBlobSha1": "7425db86346fd7f16d764f6a3b57bb6879e93fe3"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D109/preview.png",
+          "gitBlobSha1": "33f0582754c82681c0004b94e8d9831d15519f43"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D110/preview.png",
+          "gitBlobSha1": "7d1fa63d29a8539cbc2cf01c03da2964c5b997d0"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D111/preview.png",
+          "gitBlobSha1": "2fc6706c659ee06d0e737b2290eb68464db37b8f"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D112/preview.png",
+          "gitBlobSha1": "01bda434797a222df9af7f0d74e6836d6d42bc6b"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D113/preview.png",
+          "gitBlobSha1": "2462db4e98781a2fc56c126a69d112614cb55e52"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D114/preview.png",
+          "gitBlobSha1": "dd124c199fb24ee5db582ed11aa468f681ecd502"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D115/preview.png",
+          "gitBlobSha1": "0a32a5a8d5e9ceccce93735a14a9bb62154d15f5"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D116/preview.png",
+          "gitBlobSha1": "6a683df76e672ec5a8e9e33472e87d1878aafec0"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D53/preview.png",
+          "gitBlobSha1": "be2c97b5da482951263b7121866dd009575c32b3"
+        },
+        {
+          "path": "designs/grabkreuze-hunde-11x20/KZ-A-11x20-D55/preview.png",
+          "gitBlobSha1": "06d135f7484fe35ed16dd28723c1553036f2703d"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/produktplan.json",
+          "gitBlobSha1": "e64bfd768a94a9188c60346d50f1cb465fcfe0d3"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/README.md",
+          "gitBlobSha1": "b1f370248ed57c81ce44ba961f6f2a120c2af3ac"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D0.svg",
+          "gitBlobSha1": "51a87d2d33377e73cb283cd2ca5c1cde36ee457c"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D100.svg",
+          "gitBlobSha1": "bbd8454f77c103ef53af1fbece51f8a26f765021"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D101.svg",
+          "gitBlobSha1": "c47c5ab5eec310b0949eeb5c5fd1e2ae4b21552c"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D102.svg",
+          "gitBlobSha1": "95bd0942a4529a72f8a98f5aaa9e36f133dea919"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D103.svg",
+          "gitBlobSha1": "53bf330ec4b2a4bec71bff9bec1f523093ccce03"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D104.svg",
+          "gitBlobSha1": "70b443f9b1fddbb7b58ea7bde22955115b96dd38"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D105.svg",
+          "gitBlobSha1": "cf9a475b577baba8848047444fed01dad2f44249"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D106.svg",
+          "gitBlobSha1": "21b149a64dc8103ba75b6f137ff8a5744e1ce814"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D107.svg",
+          "gitBlobSha1": "97b0756489926c1a4913e265219e2817ff843d6a"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D108.svg",
+          "gitBlobSha1": "20942cf210b898dd9e7380979f324ebc4f5bb559"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D109.svg",
+          "gitBlobSha1": "2c59bb49126a9b12f70c4f2e52f603b99d3585da"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D110.svg",
+          "gitBlobSha1": "6de6cdcf621b609ed666c89d314a710c8ee2d53d"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D111.svg",
+          "gitBlobSha1": "85cb762df06fcec120a24a784d05ce0ae259ce0e"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D112.svg",
+          "gitBlobSha1": "f2611f8f5f2a892e42fd795c7f5d62bc561dd882"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D113.svg",
+          "gitBlobSha1": "59dee27922597dcca5b48631377fd195413e6232"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D114.svg",
+          "gitBlobSha1": "1ed6f07fa6e0cc70505e6dccca36df46f44d1650"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D115.svg",
+          "gitBlobSha1": "95b4b596bae9f584a02f89d8464356c5344e716b"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D116.svg",
+          "gitBlobSha1": "7840d0f7bca611d05a92c70685551fbe3bfd02ae"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D53.svg",
+          "gitBlobSha1": "7a5d2f6da46c4dcde618afefa063103c6840844f"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20/KZ-A-11x20-D55.svg",
+          "gitBlobSha1": "faf90759f475ca9930b536811c64480b7b65fcd4"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-11x20.png",
+          "gitBlobSha1": "e8975d443ab1bcfd840349f3d7d633cf0918371f"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D0.svg",
+          "gitBlobSha1": "26170bb74deb35459108d6f8dc727c6b1486801e"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D100.svg",
+          "gitBlobSha1": "d1b8b38c73dd077c1f6c4a3059afed2b3b1c80c5"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D101.svg",
+          "gitBlobSha1": "fa8881effc82cbc96bd6239fe756f163da77de50"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D102.svg",
+          "gitBlobSha1": "5a29ab26ffa8c39abb9eaf60a3640050b6e38d67"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D103.svg",
+          "gitBlobSha1": "d7b04ea57911e92868e3c3bcac54694ffaf9a4d7"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D104.svg",
+          "gitBlobSha1": "e99a7a17889a85f8116d33d8a1116396455b2d82"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D105.svg",
+          "gitBlobSha1": "c017927e22926a2a55d66805c0830e4e8930014f"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D106.svg",
+          "gitBlobSha1": "3637c41ab69030fc83b1032aab70ca57ce893886"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D107.svg",
+          "gitBlobSha1": "a32db6e71ab2bcf2569e056a9fa4f5089ef8d438"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D108.svg",
+          "gitBlobSha1": "70beadcf12737a7fdf0434b4bf2ba01d035a0bb8"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D109.svg",
+          "gitBlobSha1": "d6cc7dea3eb3a9ea7d67bbd6ff0148a418b05cdf"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D110.svg",
+          "gitBlobSha1": "47b3dbae4537832b295c44fd44c98867f752dd9d"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D111.svg",
+          "gitBlobSha1": "c1ee7caa82ecd2a64b2f6bfde656387a5f6d0e4f"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D112.svg",
+          "gitBlobSha1": "628fac572703766c9a53452ea345439901a34db3"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D113.svg",
+          "gitBlobSha1": "d8cfb2998a55113576078ef967432a19ab2ec94d"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D114.svg",
+          "gitBlobSha1": "ccbc4ddbed475d2c06df5894996ef577d81c91af"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D115.svg",
+          "gitBlobSha1": "3258ee17546012fc84d0286d05138587b36fd9aa"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D116.svg",
+          "gitBlobSha1": "786c6ba78fb289fd3d33e94b3cd1db16f7e74765"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D53.svg",
+          "gitBlobSha1": "3a4b8fa9ad6b7a3ecf2e3ac08bba8964d498ccc8"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25/KZ-A-11x20-D55.svg",
+          "gitBlobSha1": "f48b1dd68d8f491af4ac8f0d94a3f62b47a2537b"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25.png",
+          "gitBlobSha1": "7c5c4d94b240a297136f71fa8e184adb23441df6"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D0.svg",
+          "gitBlobSha1": "aec7aecf59335b4ed2071617d7a5474c5e5ab4f0"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D100.svg",
+          "gitBlobSha1": "bc92c788958eda3970cf54a2e70210cc729034cc"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D101.svg",
+          "gitBlobSha1": "78a7659562dc57c6b129a80dda6fc4f7764426d8"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D102.svg",
+          "gitBlobSha1": "5949b7b29c28cbf43b6b7d82cf698b4ba6ceb030"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D103.svg",
+          "gitBlobSha1": "2c2362774a7f96b09e1e3256d1c16018a361ff90"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D104.svg",
+          "gitBlobSha1": "20d5dd8c68d8b2d715af6f6924325d35b75e4878"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D105.svg",
+          "gitBlobSha1": "5504a7f853f1f010adbb45dd1b411556466d6be6"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D106.svg",
+          "gitBlobSha1": "78e8d90982a77e82ff7531ac02bfd6e58a449dc6"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D107.svg",
+          "gitBlobSha1": "a80fa02f8692c61345c0b7d8d7b15e78bb1fcc8e"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D108.svg",
+          "gitBlobSha1": "b2ddf597841d4608f9818e0e6afaa6c112c2051f"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D109.svg",
+          "gitBlobSha1": "b338c157947cb0c67c7a48e465e1fc477378b088"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D110.svg",
+          "gitBlobSha1": "c43fcae382173ed6915feb92f6e926b12684c274"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D111.svg",
+          "gitBlobSha1": "4416109f5746909c76317532c930aad46634d664"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D112.svg",
+          "gitBlobSha1": "cbff889fbdf4a56a60bc145b0105c2c2e19c323b"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D113.svg",
+          "gitBlobSha1": "09a992e0ea4481a8656f5fa080bfc96dab3f2280"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D114.svg",
+          "gitBlobSha1": "435e66c83237ead5ff4487122bd766d5616996c9"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D115.svg",
+          "gitBlobSha1": "fc024d3717dc2181824d747b4cf53bf62ca9fdd9"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D116.svg",
+          "gitBlobSha1": "c1d3099b2ab9d91b76028e37139b8380491e64ca"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D53.svg",
+          "gitBlobSha1": "1b04adf9c858b94cda8742eddc15f29e71de595f"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40/KZ-A-11x20-D55.svg",
+          "gitBlobSha1": "45c6947dbd9f6c263f0efffc756f55b0cab900ce"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-22x40.png",
+          "gitBlobSha1": "c813c2ae26ae72071c20837bfeea8a4c42c35d95"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/ergebnis.json",
+          "gitBlobSha1": "effddf2938b99ec010bab5794407bb309d9b4e69"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/kontaktbogen.html",
+          "gitBlobSha1": "46ef81fb41d934a0ab24e9b57b40081a0c84356c"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D0.svg",
+          "gitBlobSha1": "4d260caf1a1b1369f9a5816a1b1f79faa123d5f5"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D100.svg",
+          "gitBlobSha1": "2279a4c3f3786bfa382a8cba4d56d3e95ee8c34e"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D101.svg",
+          "gitBlobSha1": "8a52803c8463d93c8c350666df3f7f9b13bb4024"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D102.svg",
+          "gitBlobSha1": "77454cd19dbc9f49d46abdc6ff313ab0263a60c0"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D103.svg",
+          "gitBlobSha1": "f748519ed6787efe7b9c8849650a7c90d382b46f"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D104.svg",
+          "gitBlobSha1": "52a3612293266b804157f596763306c6cb4d9def"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D105.svg",
+          "gitBlobSha1": "d6add2f3b1c1ed49292db94baf9d418a83de29de"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D106.svg",
+          "gitBlobSha1": "bdfd4e33c30b21fe303d1bacceca318817bca4e6"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D107.svg",
+          "gitBlobSha1": "cb944a3bac228e4fb258c14a2658eb8cdb4a8335"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D108.svg",
+          "gitBlobSha1": "030f58ba5c7bc1043d878e77d95b68f9745b668d"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D109.svg",
+          "gitBlobSha1": "cb04a24f982fb3bdc0b4cfdc5b7f4973df541357"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D110.svg",
+          "gitBlobSha1": "69dc82580b7aa52b88723155e1cdd77e11e091d4"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D111.svg",
+          "gitBlobSha1": "db3d747bd1776cf2b6f70773d28069b9719c7987"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D112.svg",
+          "gitBlobSha1": "d393d819c70d5f83bed577da34adfb734fd5db09"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D113.svg",
+          "gitBlobSha1": "b8e3890a087cad65d198cbc3e301331249c1f076"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D114.svg",
+          "gitBlobSha1": "f0a6d780cdd80d0d122065fff208bc3a3f053515"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D115.svg",
+          "gitBlobSha1": "8d25863749a2a9d33262b0edd7e5761ef54ca14e"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D116.svg",
+          "gitBlobSha1": "01e3e544ce5329960ebd1a3c494dfc2a2ad0e403"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D53.svg",
+          "gitBlobSha1": "3fe7982ef885a472b278a0b21caa7de2aa67fbdd"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20/KZ-A-11x20-D55.svg",
+          "gitBlobSha1": "c066a12b2999b8901cc50aec18857e36d16715da"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20.png",
+          "gitBlobSha1": "1115edccbbd7924398a315828d280b3073db8e1a"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D0.svg",
+          "gitBlobSha1": "dab7b1dbae812adc189ca746a5558746ecacf0f0"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D100.svg",
+          "gitBlobSha1": "35d59fe922fca2c0023f9c95cc25bb0527948b8c"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D101.svg",
+          "gitBlobSha1": "c9bc0df638b870eebf426725c7b26d6f6a3c46c6"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D102.svg",
+          "gitBlobSha1": "7a504a54f09968c8c19c1a08371d670cadf079b6"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D103.svg",
+          "gitBlobSha1": "439078ee5292554e9f08e0adf226a621eb8d9a0e"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D104.svg",
+          "gitBlobSha1": "edeb97e3c9624cf4dec6e1a0c9ef62ccccdefe4a"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D105.svg",
+          "gitBlobSha1": "323bd1badc95c8c950382dd913ddb793016a9ae0"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D106.svg",
+          "gitBlobSha1": "50992b85dd3b327e134637d405436386ac951360"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D107.svg",
+          "gitBlobSha1": "00c2f697f43afb840d5a18e62ea1e26b84f838d3"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D108.svg",
+          "gitBlobSha1": "7770d7797fdf7a3d4c55adae71e74497854526ba"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D109.svg",
+          "gitBlobSha1": "9beea40f2c44f749d903164cfaab54406b8361d7"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D110.svg",
+          "gitBlobSha1": "25597a6453c253662c35b507ca7d8535b3974b72"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D111.svg",
+          "gitBlobSha1": "16b95220d7ac39b21f28314032aa758e223672e5"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D112.svg",
+          "gitBlobSha1": "5d2f579f8663e422b5fa8b0387950151fe1e4221"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D113.svg",
+          "gitBlobSha1": "41512ea6938b12c71d35bac15995bb6ce3f3aca7"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D114.svg",
+          "gitBlobSha1": "ad832e8af39b879f892596bdf814a69fb254cc63"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D115.svg",
+          "gitBlobSha1": "38dcf2d027c6bcfed89d80a5897bffbd7918e800"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D116.svg",
+          "gitBlobSha1": "6f21102c937db0e49c95673e521a3ba481a6960c"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D53.svg",
+          "gitBlobSha1": "7eb790778053d2699e348ce4b6145c311c8c7f1c"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25/KZ-A-11x20-D55.svg",
+          "gitBlobSha1": "5dfbfbe462b79ab527b628d575507a58979d0ed0"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-14x25.png",
+          "gitBlobSha1": "58cec2fbf99fb2c42a567cc203e270dbfe29865b"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D0.svg",
+          "gitBlobSha1": "1b3bc55ab4f58c66834ca475ccce990aaca9569d"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D100.svg",
+          "gitBlobSha1": "b7126e199acd986ee447510966da0d8206ab0645"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D101.svg",
+          "gitBlobSha1": "d5e28e55ac950e3ec1796041046d7dcff011b435"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D102.svg",
+          "gitBlobSha1": "276a94a647fd9707c6b9ca58995193e5b9c566ad"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D103.svg",
+          "gitBlobSha1": "985f45f2184985cb9169ed445452aa2ee74fcb69"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D104.svg",
+          "gitBlobSha1": "f9f2a988f01052f904d270b4986df71712270c32"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D105.svg",
+          "gitBlobSha1": "f68c002352a95f2fc524b2939ceaa0c1e3dc7300"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D106.svg",
+          "gitBlobSha1": "aa3c980466e166cc80e0e4e787ebb4837a59d5db"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D107.svg",
+          "gitBlobSha1": "dab49a075060d8f81524a07628a4b5c36ef20e4e"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D108.svg",
+          "gitBlobSha1": "fe96eadd972d1322eb6a46550bf136f13f5f4992"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D109.svg",
+          "gitBlobSha1": "5c44b269e1178cfe2af81507a70d37214f6c01ad"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D110.svg",
+          "gitBlobSha1": "f9a89ad9f098c1470ac9ea4607a6997d581886ae"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D111.svg",
+          "gitBlobSha1": "0bdb3cfa3e6373a5c07f1f3e83ac1f3907388230"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D112.svg",
+          "gitBlobSha1": "371e756addc4d481d8d8a761351eccfd6b83c1d6"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D113.svg",
+          "gitBlobSha1": "e382b9a55c6a102b619d6ad406032b85a1d0de8a"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D114.svg",
+          "gitBlobSha1": "af35875f8564e400b99e9057330e5fed11745b47"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D115.svg",
+          "gitBlobSha1": "beb333a5d1aee923bd36cc030cce7aef0c4eef38"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D116.svg",
+          "gitBlobSha1": "26113accae57f3628ae92f3722da171f58b5f97e"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D53.svg",
+          "gitBlobSha1": "8a512a6bd3dc179437ead895985c8b7f9465f842"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40/KZ-A-11x20-D55.svg",
+          "gitBlobSha1": "02c9ec393ecb5696c44edb3e198ad1061d8ec56f"
+        },
+        {
+          "path": "auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40.png",
+          "gitBlobSha1": "818bdf8717552909ef000ac37bff496c7601de1f"
+        },
+        {
+          "path": "familien/acryl/grabkreuz-acryl-5mm-schwarz.json",
+          "gitBlobSha1": "e9f04f4a1a711e1f67e49578d8c5c955e248e0e9"
+        },
+        {
+          "path": "familien/acryl/grabkreuz-acryl-5mm-anthrazit.json",
+          "gitBlobSha1": "bc56c565de3b022e9378631acd4c6cfef6eca7d7"
+        },
+        {
+          "path": "STAND.md",
+          "gitBlobSha1": "04db8dfc9be8e6ef2c27fca991da25d60e074b3b"
+        },
+        {
+          "path": "kataloge/Stammdaten-Gravuru.xlsx",
+          "gitBlobSha1": "392b88b9ba8c064173ddd3fd23ea090d3fa498d8"
+        },
+        {
+          "path": "kataloge/grabkreuz-acryl-5mm-schwarz.pdf",
+          "gitBlobSha1": "86b65f8c3c8a7881fe493f3c601f2494baaab010"
+        },
+        {
+          "path": "kataloge/grabkreuz-acryl-5mm-anthrazit.pdf",
+          "gitBlobSha1": "8fc2fa8dff1d7bdedfea470ac8dcc39f01eeff16"
+        }
+      ],
+      "commits": [
+        {
+          "oid": "5a06b79da8cc7928911b39766657eda24d7f56f2",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/5a06b79da8cc7928911b39766657eda24d7f56f2",
+          "verified": true,
+          "files": 40
+        },
+        {
+          "oid": "c12e195de8e7ef16f1abf2b74534353e27ea5b22",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/c12e195de8e7ef16f1abf2b74534353e27ea5b22",
+          "verified": true,
+          "files": 40
+        },
+        {
+          "oid": "85ce7a587025e5760b656c74fd1859101439c300",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/85ce7a587025e5760b656c74fd1859101439c300",
+          "verified": true,
+          "files": 40
+        },
+        {
+          "oid": "1a000aca24378cebc29e3d9943d3d26e277d1929",
+          "url": "https://github.com/Chris83638w/gravuru-katalog./commit/1a000aca24378cebc29e3d9943d3d26e277d1929",
+          "verified": true,
+          "files": 36
+        }
+      ],
+      "finalHead": "1a000aca24378cebc29e3d9943d3d26e277d1929",
+      "remoteVerified": 156
+    },
+    {
+      "repo": "Chris83638w/gravuru-2027",
+      "base": "edbbd81bf548e276fb2e1d29cc2249f22f5e829c",
+      "files": 21,
+      "manifest": [
+        {
+          "path": "STATUS.md",
+          "gitBlobSha1": "a6e85c48c3e2369f32f593957013cacb3aa472ac"
+        },
+        {
+          "path": "app/configurator/variant-m/design-area.mjs",
+          "gitBlobSha1": "e9651871b80ad1d7e2a4c21cf9017af47fda5b20"
+        },
+        {
+          "path": "app/configurator/variant-m/edge-clamp.mjs",
+          "gitBlobSha1": "e73bcdf10e3adbbb423088ee6009fc10ddc5cf20"
+        },
+        {
+          "path": "app/configurator/variant-m/usability-model.mjs",
+          "gitBlobSha1": "3a4073e31adfec876204ebe137bc003fd1676766"
+        },
+        {
+          "path": "app/platform/sources/app/shared/models/design-content.mjs",
+          "gitBlobSha1": "90ad165c9f8871f25293c517967f7ea97b886654"
+        },
+        {
+          "path": "app/platform/sources/app/shared/models/embedded-motif-fit.mjs",
+          "gitBlobSha1": "228964f60502f850900290a3f3e642cb00af47b5"
+        },
+        {
+          "path": "app/platform/sources/app/shared/models/studio-products.mjs",
+          "gitBlobSha1": "a4d100965f934c05215653f8311bceac002aec34"
+        },
+        {
+          "path": "app/platform/sources/app/shared/models/studio-svg.mjs",
+          "gitBlobSha1": "9680673f07e28bbb723383c2ede3ede33f2fb84f"
+        },
+        {
+          "path": "app/platform/sources/app/shared/models/text-outline-fit.mjs",
+          "gitBlobSha1": "76de03162dd776bdb2c7fab69527dd558bc7efbb"
+        },
+        {
+          "path": "app/workshop/product-families.mjs",
+          "gitBlobSha1": "0a96976fd9211ee49148b959ef90d4d49f419ef7"
+        },
+        {
+          "path": "docs/handoffs/2026-11-01-grabkreuze-hunde-astra-mika.md",
+          "gitBlobSha1": "1aa17cca473694ceff3d915aa19cb2e85cee4cb8"
+        },
+        {
+          "path": "scripts/build-grabkreuze-hunde.py",
+          "gitBlobSha1": "f8c3667a33ce96513742f759da197a0054f956d8"
+        },
+        {
+          "path": "scripts/check-render-grabkreuze.py",
+          "gitBlobSha1": "74b59fbbb6a828f26e8ac5a5bfe0ad3d2f25ea40"
+        },
+        {
+          "path": "scripts/preview-grabkreuze-hunde.mjs",
+          "gitBlobSha1": "1223081b55a18136abe4e952281480f52a919149"
+        },
+        {
+          "path": "app/platform/sources/app/shared/models/ground-insertion.mjs",
+          "gitBlobSha1": "bf3f07f1e5cce96ea59875870405cd966f94a026"
+        },
+        {
+          "path": "app/workshop/ground-insertion.test.mjs",
+          "gitBlobSha1": "85639ca7ee5871e8e209a88e596eca641fa6b841"
+        },
+        {
+          "path": "app/workshop/test-fixtures/grabkreuz-acryl-schwarz.json",
+          "gitBlobSha1": "e9f04f4a1a711e1f67e49578d8c5c955e248e0e9"
+        },
+        {
+          "path": "scripts/serve-grabkreuze-review.mjs",
+          "gitBlobSha1": "b71f9f62de88ed5843bcc4f624dc0afc0730ef45"
+        },
+        {
+          "path": "docs/handoffs/grabkreuze-hunde-20261101/ground-tests.txt",
+          "gitBlobSha1": "feda81bae40b8197c3decc1a4321493687597468"
+        },
+        {
+          "path": "docs/handoffs/grabkreuze-hunde-20261101/katalogbau.txt",
+          "gitBlobSha1": "da59fd800711049d52d8604a329597beecb61cda"
+        },
+        {
+          "path": "docs/handoffs/grabkreuze-hunde-20261101/pruefstand.json",
+          "gitBlobSha1": "285fe37d9afe6dfe487381b11d62bcf3bd8ce41a"
+        }
+      ],
+      "commits": [
+        {
+          "oid": "212950a4c52391987ff8a74737704c22a4a1ce7e",
+          "url": "https://github.com/Chris83638w/gravuru-2027/commit/212950a4c52391987ff8a74737704c22a4a1ce7e",
+          "verified": true,
+          "files": 21
+        }
+      ],
+      "finalHead": "212950a4c52391987ff8a74737704c22a4a1ce7e",
+      "remoteVerified": 21
+    }
+  ]
+}

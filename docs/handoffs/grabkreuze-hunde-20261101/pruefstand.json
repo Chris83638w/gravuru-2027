@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-01",
+  "sourceIssue": "https://github.com/Chris83638w/gravuru-2027/issues/76",
+  "rules": {
+    "depthMm": 50,
+    "clearanceMm": 5
+  },
+  "automatedTests": {
+    "passed": 72,
+    "failed": 0,
+    "log": "ground-tests.txt"
+  },
+  "targetPreviews": {
+    "total": 120,
+    "passt": 80,
+    "pruefen": 40,
+    "failures": 0,
+    "note": "14x25: 1,80 % Seitenverhältnisabweichung"
+  },
+  "browserAcceptance": {
+    "status": "open",
+    "reason": "Die sichtbare Browser-/Bedienprüfung ist offen. Der lokale Prüfserver und Editor-Build wurden erzeugt; der automatisierte Browseraufruf wurde als fremder Seitenaufruf mit HTTP 403 abgefangen. Der anschließende Computer-Use-Versuch wurde automatisch beendet, weil die aktuelle Browseradresse nicht sicher erkannt werden konnte. Es gibt deshalb keinen bestandenen interaktiven Konfiguratornachweis und keine Browser-Screenshots dieser Änderung."
+  },
+  "liveDeployment": false,
+  "designApproval": null
+}

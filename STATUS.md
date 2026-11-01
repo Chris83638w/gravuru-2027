@@ -1,3 +1,7 @@
+# 01.11.2026 — Codex: schlanke Menschen-/Sternenkinderlieferung auf GitHub
+
+Foto-/Maskenimport aus 16d7e36/ea63726 auf aktuellem main integriert, 89 unterschiedliche gezielte Tests und Build bestanden. Kleine signierte Code-/Masterpakete ohne Vollgrößenexporte; [Übergabe](docs/handoffs/2026-11-01-menschen-schiefer-github.md). Nutzer hat GitHub-PRs und Nachricht an Claude ausdrücklich beauftragt. Nächster Schritt: erstes Herz-Fotopaket nativ prüfen und als PR liefern. Kein Merge oder Live-Import.
+
 ## 01.11.2026 – Codex/Astra: schmale Formatzeilen für Funkklingeln
 
 Auf Chris' Wunsch Format und Position als kompakte bebilderte Zeilen untereinander, ohne zusätzliche Gruppenkarte; optisch an Rahmen/Farbe angepasst. PR #91 gemergt (`0f03c8e9`) und live. Nur produktspezifisches CSS in Kopie der aktiven Laufzeit übernommen; 3.274 Dateien verglichen, keine weitere Abweichung außerhalb generierter Build-Dateien. 5/5 vorhandene Tests lokal und unter Linux, Build sowie Live-Bedienprüfung Desktop/390px-Handy erfolgreich. Öffentliches Bundle per SHA bestätigt; Formatwechsel mit korrekten Preisen geprüft. [Bericht, Screenshots und Rückweg](docs/handoffs/2026-11-01-funkklingeln-formatzeilen.md).

@@ -1,3 +1,7 @@
+## 01.11.2026 · Codex · Issue 85 Hinweisschilder
+
+181 bearbeitbare SVG/JSON-Master, 1.163 Größenableitungen, 543 offene Materialziele. 453 Bestandsquellen zugeordnet; HSHO-KS-D1 beschädigt und offen. Feine Ersatzschriften vom Nutzer genehmigt. 4.032 native Größenprüfungen ohne Passungsfehler, 60 gezielte Tests bestanden; Text-Speichern/Neuladen und Motivskalierung im echten Editor geprüft. Katalogvollbau: 13 Familien. [Übergabe](docs/handoffs/2026-11-01-issue85-hinweise.md). Nächster Schritt: Einzelprüfung markierter Details im Kontaktbogen. Kein Merge, Import oder Live-Deploy.
+
 ## 01.11.2026 – Codex/Astra: Funkklingel-Bedienfehler und größere Auswahlkacheln
 
 Abschluss: PR #103 (`c1a9cb6`) ergänzt die Korrektur aus PR #100 um den eigenen Scrollbereich der Funkklingel-Bedienleiste; beide sind live. Weitere 5/5 Darstellungstests lokal/Linux und Build bestanden. Abschließender echter Chrome-Kundenweg über „Jetzt personalisieren“ erfolgreich: größere Kacheln, 12a auf 24 mm vergrößert und verschoben, Ziehen auf Edelstahl stoppt an Acryl. Wechsel von langer Befestigungsliste zu Text behält Vorschaugröße und -position bis auf 1 px Dokumentrandbewegung; vorher 82 px. Öffentlicher finaler Bundle-SHA identisch zum Linux-Build. [Live-Bilder und Rückweg](docs/handoffs/2026-11-01-funkklingeln-auswahlreihen.md#abschließende-live-abnahme).

@@ -1,3 +1,7 @@
+## 01.11.2026 · Codex · Issue 85 Pferde-Bestand
+
+13 editierbare Master, 98 ausgefüllte Texte, 76 Vorlagen-Motivpfade erhalten. 39 native K00-Zielvorschauen, 306 Größenprüfungen ohne Passungsfehler; 20 Ziele behalten Prüfhinnweise. 15 Zielvorschau-Tests bestanden; Katalogbau validiert 13 Familien. 111 Quellen zugeordnet, 65 eigenständige Quellen noch offen. [Übergabe](docs/handoffs/2026-11-01-issue85-pferde.md). Katalog-PR 11 und Code-PR 86 sind Abhängigkeiten; keine doppelte Rund-/K00-Arbeit. Nächster Schritt: Schriftentscheidung und sechs Originalquellen klären. Alle Freigaben null; kein Import und nichts live.
+
 ## 01.11.2026 – Codex: Issue 85, TR bestätigt und Rundserie umgesetzt
 
 72 runde Master (69 Referenzen + Praxis/Zimmer/Hausnummer D74–D76), 288 Größenableitungen und 216 offene Materialziele. 1.080 native Größenprüfungen, kein „passt nicht“. K00 jetzt Standard der Zielvorschau, alle Befestigungen weiterhin geprüft; 15/15 Tests. Vollständiger Katalogbau mit 13 Familien erfolgreich. Katalog-PR 12 auf Abhängigkeit PR 11, Code-PR 86; keine Freigabe/Import/Merge/Live. [Nachweis und nächster Schritt](docs/handoffs/2026-11-01-issue85-tr.md).

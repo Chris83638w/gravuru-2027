@@ -36,8 +36,8 @@ for f in SERIES.glob('*/design.json'):
  for m in d['motifs']:
   max_y=max(max_y,m['box'][1]+m['box'][3]+max(p.get('strokeMm',0) for p in m['paths'])/2)
  variants=[]
- for w,h in [(110,198.5),(140,250),(221.6,400)]:
-  scale=min(w/110,h/198.5);oy=(h-198.5*scale)/2
+ for w,h in [(110,200),(140,250),(220,400)]:
+  scale=min(w/110,h/200);oy=(h-200*scale)/2
   bottom=max_y*scale+oy;limit=h-55
   assert bottom<=limit+0.01,(d['id'],w,h,bottom,limit)
   variants.append({'sizeMm':[w,h],'artworkBottomMm':round(bottom,3),'maximumMm':limit,'clearanceMm':round(h-50-bottom,3)})

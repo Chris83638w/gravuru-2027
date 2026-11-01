@@ -14,7 +14,7 @@ rbd=importlib.util.module_from_spec(spec); spec.loader.exec_module(rbd)
 rpd=rbd.rpd
 rbd.OUT=OUT
 fonts=rbd.font_files(CAT)
-contours=json.loads((ROOT/'docs/handoffs/design-start-mika/kreuze/konturen.json').read_text(encoding='utf-8'))
+contours=json.loads((CAT/'schneidvorlagen/kreuze/kreuze.json').read_text(encoding='utf-8'))
 sources={}
 for file in (CAT/'designs/bestand/kreuze').rglob('design.json'):
     d=json.loads(file.read_text(encoding='utf-8'))
@@ -25,7 +25,7 @@ def write(p,d):
     p.parent.mkdir(parents=True,exist_ok=True)
     p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 def original(n):
-    return rbd.convert(sources[n],[110,198.5],'KZ-A-11x20',{'Champagne & Limousines':'Montserrat Light'},fonts)
+    return rbd.convert(sources[n],[110,200],'KZ-A-11x20',{'Champagne & Limousines':'Montserrat Light'},fonts)
 def cap_factor(name):
     f=TTFont(fonts[name]); g=f.getGlyphSet(); p=BoundsPen(g); g[f.getBestCmap()[ord('H')]].draw(p)
     v=(p.bounds[3]-p.bounds[1])/f['head'].unitsPerEm; f.close(); return v
@@ -47,8 +47,8 @@ def motif(source,idx,x,y,w,h):
 base={n:original(n) for n in [0,46,53,55]}
 masters=[]
 for n in [0,53,55]:
-    d=copy.deepcopy(base[n]); d['reviewMode']='1:1' if n!=0 else 'Referenz'
-    d['reviewNotes']=[] if n!=0 else ['Bestätigter Schriftersatz Champagne & Limousines → Montserrat Light.']
+    d=copy.deepcopy(base[n]); d['reviewMode']='Referenz'
+    d['reviewNotes']=['Originalelemente unverzerrt; auf finaler 110×200-Kontur um 0,75 mm vertikal versetzt.'] + ([] if n!=0 else ['Bestätigter Schriftersatz Champagne & Limousines → Montserrat Light.'])
     masters.append(d)
 # Missing-font originals remain in the report; no silent replacements.
 new=[
@@ -73,7 +73,7 @@ new=[
 for i,(name,nf,bf,years,quote,src,idx) in enumerate(new):
     no=100+i
     if any(CAT.glob(f'designs/*/*KZ-A-11x20-D{no}*/design.json')) and not (OUT/f'KZ-A-11x20-D{no}').exists(): raise ValueError('ID collision')
-    d=dict(id=f'KZ-A-11x20-D{no}',name=name,plate={'widthMm':110,'heightMm':198.5},plateMm=[110,198.5],photos=[],warnings=[],movable=True,process='Gravur',material='Acryl',form='Kreuz',texts=[],motifs=[])
+    d=dict(id=f'KZ-A-11x20-D{no}',name=name,plate={'widthMm':110,'heightMm':200},plateMm=[110,200],photos=[],warnings=[],movable=True,process='Gravur',material='Acryl',form='Kreuz',texts=[],motifs=[])
     d['texts']=[text(name,nf,22,55,62,86),text(years,bf,3.1,55,82,33),text(quote,bf,3.2,55,101,33)]
     if i%3==0:
         d['motifs']=[motif(base[src],min(idx,len(base[src]['motifs'])-1),43,7,24,25)]
@@ -108,7 +108,7 @@ other=[m for m in own_index['motifs'] if m.get('id') not in {x['id'] for x in ow
 own_index['motifs']=other+own_motifs;own_index['count']=len(own_index['motifs']);write(index_file,own_index)
 for d in masters:
     d['form']='Originalkontur KZ'
-    d['masterSheet']={'familySize':'KZ-A-11x20','plateMm':[110,198.5],'source':'kontur-11x20.svg'}
+    d['masterSheet']={'familySize':'KZ-A-11x20','plateMm':[110,200],'source':'kontur-11x20.svg'}
     d.update(themes=['hundegedenktafeln'],freigabe=None,ziele=[{'familie':fid,'freigabe':None} for fid in family_ids],sizes=sizes,formatreihe='Grabkreuze Acryl 11x20/14x25/22x40')
     d['fonts']=sorted({t['font'] for t in d['texts']})
     for t in d['texts']: t['color']='#000000'
@@ -120,7 +120,7 @@ for d in masters:
     folder=OUT/d['id']; folder.mkdir(exist_ok=True)
     write(folder/'design.json',d)
     svg=rpd.design_svg(d)
-    svg=re.sub(r'<rect id="platte"[^>]*/>',f'<path id="platte" d="{contours["11x20"]["outline"]}" fill="none" stroke="#0000ff" stroke-width="0.1"/>',svg)
+    svg=re.sub(r'<rect id="platte"[^>]*/>',f'<path id="platte" d="{contours["11x20"]["outline"]}" fill="none" stroke="#FF0000" stroke-width="0.0762"/>',svg)
     (folder/'design.svg').write_text(svg,encoding='utf-8')
     if d.get('designNo') in [0,53,55]: shutil.copyfile(sources[d['designNo']]/'preview.png',folder/'original.png')
 write(OUT/'index.json',{'name':'Grabkreuz Acryl – Hunde','designs':[{'id':d['id'],'path':d['id'],'name':d['name']} for d in masters]})
@@ -131,7 +131,7 @@ for color,fid in zip(['schwarz','anthrazit'],family_ids):
       'mountingRules':[],'withoutMounting':True,'sizes':[],
       'fonts':sorted({f for d in masters for f in d['fonts']}),'quantityTiers':[{'minQuantity':2,'percentOff':6},{'minQuantity':3,'percentOff':10}],
       'briefingNotes':'PRÜFSTAND, NICHT IMPORTIEREN: unten 50 mm Erdteil, weitere 5 mm Gestaltungsabstand. Der aktuelle Familienadapter bildet diese Sperre noch nicht ab. Sie wird im separaten Prüflauf kontrolliert. Alle Designs ohne Fotofeld, ohne Zubehör. Motivaufpreis 169 ct im Produktplan; keine Freigabe.',
-      'source':{'repository':'Chris83638w/gravuru-2027','commit':'1746c8d','path':'docs/handoffs/design-start-mika/kreuze/konturen.json','note':'Preise: AUFTRAG.md im selben Ordner, Issue 76. Originalkontur 14x25 aus DXF, kein skalierter Ersatz. Nur lokaler Prüfstand bis nativer Erdteil-Unterstützung.'}}
+      'source':{'repository':'Chris83638w/gravuru-katalog.','commit':'48abf763','path':'schneidvorlagen/kreuze/kreuze.json','note':'Preise: gravuru-2027/docs/handoffs/design-start-mika/kreuze/AUFTRAG.md, Issue 76. Finale symmetrische Konturen laut Kommentar 6560468022. Nur lokaler Prüfstand bis nativer Erdteil-Unterstützung.'}}
     for key,price in zip(['11x20','14x25','22x40'],[1499,2399,2999]):
         c=contours[key]; family['sizes'].append({'key':'KZ-A-'+key,'groupKey':'KZ','label':key.replace('x',' × ')+' cm','widthMm':c['widthMm'],'heightMm':c['heightMm'],'outlinePath':c['outline'],'holesMm':[],'baseCents':price,'mounting':[]})
     write(CAT/f'familien/acryl/{fid}.json',family)

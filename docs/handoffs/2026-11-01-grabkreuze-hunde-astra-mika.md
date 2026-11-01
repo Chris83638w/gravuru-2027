@@ -1,12 +1,12 @@
 # Grabkreuz Acryl – Hunde · vorläufiger Prüfstand
 
-Stand 01.11.2026, Astra Mika. Auftrag: gravuru-2027 Issue #76. Konturen übernommen aus Code-main 1746c8d; insbesondere die korrigierte Originalkontur 14×25 mit 140×250 mm. Die überholte skalierte 14×25-Kontur wird nicht verwendet.
+Stand 01.11.2026, Astra Mika. Auftrag: gravuru-2027 Issue #76. Finale symmetrische Konturen aus Katalog-main 48abf763, schneidvorlagen/kreuze/: 110×200, 140×250 und 220×400 mm. Rote Schnittkontur #FF0000 mit 0,0762 mm. Sämtliche früheren Konturen und Kontaktbögen sind überholt.
 
 [Alle sechs Kontaktbögen](https://github.com/Chris83638w/gravuru-katalog./blob/dev/grabkreuze-hunde-20261101-astra-mika/auftraege/2026-11-01-grabkreuze-hunde/vorschau/kontaktbogen.html) · [Schwarz 11×20](https://github.com/Chris83638w/gravuru-katalog./blob/dev/grabkreuze-hunde-20261101-astra-mika/auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-11x20.png) · [Anthrazit 14×25](https://github.com/Chris83638w/gravuru-katalog./blob/dev/grabkreuze-hunde-20261101-astra-mika/auftraege/2026-11-01-grabkreuze-hunde/vorschau/anthrazit-KZ-A-14x25.png) · [Schwarz 22×40](https://github.com/Chris83638w/gravuru-katalog./blob/dev/grabkreuze-hunde-20261101-astra-mika/auftraege/2026-11-01-grabkreuze-hunde/vorschau/schwarz-KZ-A-22x40.png)
 
 ## Geliefert
 
-20 native, editierbare Hundedesigns: D0, D53, D55 sowie D100–D116. D53/D55 übernehmen die vorhandenen 11×20-Vorlagen; D0 verwendet den bereits bestätigten Ersatz Montserrat Light. 17 neue Kompositionen nutzen Originalmotivpfade, davon zwei neue eigene Vektormotive (D109/D116) zusätzlich unter motive-eigene/. Keine Übernahme in die Kunden-Motivbibliothek. Namen, Jahreszahlen und kurze eigene Gedenktexte sind ausgefüllt. Alle Freigaben bleiben null.
+20 native, editierbare Hundedesigns: D0, D53, D55 sowie D100–D116. D0/D53/D55 verwenden die vorhandenen 11×20-Originalelemente, unverzerrt und um 0,75 mm vertikal auf der finalen 200-mm-Kontur versetzt (Modus Referenz). D0 verwendet den bereits bestätigten Ersatz Montserrat Light. 17 neue Kompositionen nutzen Originalmotivpfade, davon zwei neue eigene Vektormotive (D109/D116) zusätzlich unter motive-eigene/. Keine Übernahme in die Kunden-Motivbibliothek. Namen, Jahreszahlen und kurze eigene Gedenktexte sind ausgefüllt. Alle Freigaben bleiben null.
 
 Die Auswahl ist vorläufig: Balu/Paula, Clarissa und Frieda wurden nicht mit erfundenen Ersatzschriften nachgebaut. Für deren Originale fehlen die bestätigten Schriftzuordnungen Clarissa, Playlist und Standlist (in #76 angefragt). Nach deren Klärung kann die Auswahl zugunsten weiterer Originale geändert werden. Diese 20 Designs erfüllen deshalb noch nicht die abschließende vollständige Bestandsübernahme.
 
@@ -14,7 +14,7 @@ Zwei getrennte Materialfamilien dienen dem nativen Katalog-Prüfweg. Der Produkt
 
 ## Prüfungen und Grenzen
 
-- 120 Aufrufe des echten targetDesignPreview-Renderers: 80 passt, 40 prüfen, 0 passt nicht, 0 Fehler. Einziger Hinweis: 14×25 wird proportional mit 1,10 % Seitenverhältnisabweichung eingepasst.
+- 120 Aufrufe des echten targetDesignPreview-Renderers: 80 passt, 40 prüfen, 0 passt nicht, 0 Fehler. Einziger Hinweis: 14×25 wird proportional mit 1,80 % Seitenverhältnisabweichung eingepasst.
 - 60 Design-/Größenkombinationen gegen den Erdteil geprüft: Gravur vollständig oberhalb der Erdlinie mit mindestens 5 mm Abstand. Schriftprüfung mit echten H-Glyphen: mindestens 3 mm Versalhöhe auf dem kleinsten Master; keine fehlenden verwendeten Glyphen.
 - Die PNG-Kontaktbögen sind Rasterausgaben der nativen SVG-Zielvorschauen, keine Browser-Screenshots eines bedienbaren Kundenkonfigurators. Originale stehen bei den drei übernommenen Designs klein daneben. Für die neuen Designs ist der Modus neu angegeben.
 - **Der Prüf-Viewport blendet die unteren 50 mm aus. Diese Ansicht ist noch KEINE implementierte Erdteil-Sperre im Kundeneditor oder Fertigungsexport.** Der Familienadapter kennt diese Produktregel bisher nicht. Daher NICHT importieren oder veröffentlichen. Technische Integration und Bedienabnahme bleiben offen.
@@ -33,7 +33,7 @@ Code-Branch dev/grabkreuze-hunde-20261101-astra-mika: scripts/build-grabkreuze-h
 
 | ID | Modus | Schriften | Motivherkunft |
 |---|---|---|---|
-| KZ-A-11x20-D0 | Referenz | Montserrat Light, Tangerine | Bestätigter Schriftersatz Champagne & Limousines → Montserrat Light. |
+| KZ-A-11x20-D0 | Referenz | Montserrat Light, Tangerine | Originalelemente unverzerrt; auf finaler 110×200-Kontur um 0,75 mm vertikal versetzt.; Bestätigter Schriftersatz Champagne & Limousines → Montserrat Light. |
 | KZ-A-11x20-D100 | neu | Allura, Cinzel | Motivpfade unverändert proportional aus designs/bestand/kreuze/Allgemein/Allgemein/KZ-A-D0; kein Ersatz einer gesperrten Vorlagenschrift. |
 | KZ-A-11x20-D101 | neu | Lora, Rochester | Motivpfade unverändert proportional aus designs/bestand/kreuze/Allgemein/Allgemein/KZ-A-D46; kein Ersatz einer gesperrten Vorlagenschrift. |
 | KZ-A-11x20-D102 | neu | Bellefair, Great Vibes | Motivpfade unverändert proportional aus designs/bestand/kreuze/Tiere/Hund/KZ-A-D55; kein Ersatz einer gesperrten Vorlagenschrift. |
@@ -51,5 +51,5 @@ Code-Branch dev/grabkreuze-hunde-20261101-astra-mika: scripts/build-grabkreuze-h
 | KZ-A-11x20-D114 | neu | Bellefair, Dancing Script | Motivpfade unverändert proportional aus designs/bestand/kreuze/Allgemein/Allgemein/KZ-A-D46; kein Ersatz einer gesperrten Vorlagenschrift. |
 | KZ-A-11x20-D115 | neu | Cinzel, Rochester | Motivpfade unverändert proportional aus designs/bestand/kreuze/Tiere/Hund/KZ-A-D53; kein Ersatz einer gesperrten Vorlagenschrift. |
 | KZ-A-11x20-D116 | neu | Allura, Lora | mika-grabkreuz-hunde-116-20261101 |
-| KZ-A-11x20-D53 | 1:1 | Great Vibes | KZ-A-11x20-D53 (Bestand, KZ-A-11x20_Designs.cdr) |
-| KZ-A-11x20-D55 | 1:1 | Cinzel, Parisienne | KZ-A-11x20-D55 (Bestand, KZ-A-11x20_Designs.cdr) |
+| KZ-A-11x20-D53 | Referenz | Great Vibes | Originalelemente unverzerrt; auf finaler 110×200-Kontur um 0,75 mm vertikal versetzt. |
+| KZ-A-11x20-D55 | Referenz | Cinzel, Parisienne | Originalelemente unverzerrt; auf finaler 110×200-Kontur um 0,75 mm vertikal versetzt. |

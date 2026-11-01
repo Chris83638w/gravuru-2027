@@ -35,6 +35,19 @@ export function clampToPlate(o,width,height,margin=0,bounds=null){
   return moved;
 }
 
+// Native doorbells engrave only the acrylic overlay (Chris, 01.11.2026).
+// Translate the existing clamp into that rectangle; keep size, rotation and rights.
+export function clampToAcrylic(o,profile,bounds=null){
+ const a=profile?.frames?.find(f=>f.key===profile.doorbellSelection?.frame)?.acrylic;
+ if(profile?.doorbellSchema!=='gravuru-doorbell/v1'||!a||!o)return false;
+ const local={...o,x:o.x-a.x,y:o.y-a.y};
+ // Doorbell production validates the complete object box. Include glyph
+ // overhang as well, so both the visible ink and the saved geometry fit.
+ if(bounds){const left=Math.min(-o.w/2,bounds.x),top=Math.min(-o.h/2,bounds.y);bounds={x:left,y:top,width:Math.max(o.w/2,bounds.x+bounds.width)-left,height:Math.max(o.h/2,bounds.y+bounds.height)-top};}
+ if(!clampToPlate(local,a.width,a.height,0,bounds))return false;
+ o.x=local.x+a.x;o.y=local.y+a.y;return true;
+}
+
 // A contour move is limited with the same polygon test as fitting and validation.
 // No bounding rectangle or independent offset calculation is used here.
 export function clampToContour(o,geometry,bounds=null,previous=null,fonts){
@@ -85,6 +98,11 @@ export function installEdgeClamp(el,{profile=null,motifs=[]}={}){
   };
   const glyphs=o=>{if(o.type!=='text'||o.uxHidden||!String(o.text??'').trim()||!el.uxTextBounds)return null;try{return el.uxTextBounds(o);}catch{return null;}};
   const clampAll=self=>{const s=self.state;if(!s?.objects)return;
+    const doorbell=self.uxSelectedProfile?.();
+    if(doorbell?.doorbellSchema==='gravuru-doorbell/v1'){
+      for(const o of s.objects)clampToAcrylic(o,doorbell,glyphs(o));
+      return;
+    }
     const geometry=self.uxProfileGeometry?.();
     if(geometry&&(geometry.shape==='contour'||geometry.shape==='ellipse'||geometry.cornerRadiusMm>0)){
       // uxProfileGeometry already faces the active side. Other surfaces must not move.

@@ -8,6 +8,27 @@ import {designArea,designAreaPreview} from './design-area.mjs';
 import {studioSvg} from '../../platform/sources/app/shared/models/studio-svg.mjs';
 import {customerRightsTemplate} from './customer-rights.mjs';
 import {restoreElementRights} from './element-rights.mjs';
+import {clampToAcrylic,installEdgeClamp} from './edge-clamp.mjs';
+import {fitsSurface} from './usability-model.mjs';
+
+test('doorbell engraving stays on every acrylic frame before autofit, without shrinking or moving the device',()=>{
+ const c=doorbellFixture();
+ for(const f of c.doorbell.formats)for(const position of ['standard','opposite'])for(const frame of f.profile.frames)for(const rotation of [0,37,180]){
+  const p=selectedDoorbellProfile(c,{format:f.key,position,frame:frame.key}),a=doorbellTextSurface(p),bell=structuredClone(p.geometry.bell);
+  for(const point of [-200,1000]){
+   const o={id:'number',type:'text',text:'12a',x:point,y:point,w:30,h:20,size:17,rotation};
+   const bounds={x:-14,y:-9,width:28,height:18};
+   assert.equal(clampToAcrylic(o,p,bounds),true);
+   assert.equal(fitsSurface(o,bounds,a),true);assert.equal(fitText(o,bounds,a,3),17);
+   assert.equal(clampToAcrylic(o,p,bounds),false);assert.deepEqual(p.geometry.bell,bell);
+  }
+  const motif={id:'line',type:'motif',uxDecoration:true,customerEditable:true,x:-50,y:-50,w:20,h:10,rotation};
+  const el={state:{objects:[motif],width:p.geometry.width,height:p.geometry.height},uxSelectedProfile:()=>p,render(){return 'drawn';}};
+  installEdgeClamp(el);assert.equal(el.render(),'drawn');
+  assert.equal(fitsSurface(motif,{x:-10,y:-5,width:20,height:10},a),true);
+ }
+ const master={x:-20,y:-20,w:10,h:10};assert.equal(clampToAcrylic(master,{geometry:{width:100,height:80}}),false);assert.equal(master.x,-20);
+});
 
 test('12a beside the doorbell grows without the initial-placement box shrinking it; outer edge and device stay enforced',()=>{
  const c=doorbellFixture();

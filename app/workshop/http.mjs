@@ -135,12 +135,12 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   const downloadPrefix=ownsBundled?'Gravuru':(String(tenant?.name||tenantId).replace(/[^A-Za-z0-9-]+/g,'-').replace(/^-+|-+$/g,'')||tenantId);
   const fonts=createFontLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),tenantId});
   const formFonts={...seed.config.localResources.fonts,...workshopResources(seed.config.localResources).fonts,...fonts.resources()};
-  const designEditor=createDesignEditor({available:formFonts});
   const designVariants=createDesignVariants({available:formFonts});
   const profiles=createProfileLibrary({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite'),catalog:workshopCatalog(seedConfig.localResources),tenantId});
   profiles.registerFonts(fonts.list());
   const productionProfiles=createProductionProfiles({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'profiles.sqlite'),tenantId});
   const assets=createDesignAssetStore({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),converter:designConverter,tenantId});
+  const designEditor=createDesignEditor({available:formFonts,assets});
   const contours=createContourStore({filename:filename===':memory:'?':memory:':path.join(path.dirname(filename),'design-assets.sqlite'),converter:contourConverter,tenantId});
   const verifyForm=document=>{const d=verifyFormDesignSources(verifyFormSource(document,contours),assets,formFonts);productionProfiles.resolve(d);return d;};
   const repository=createProductRepository({filename,tenantId,catalogOverview:d=>isFormProduct(d)?formOverview(d):productOverview(d),validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document)){if(document.profileAssignments)profiles.resolve(document);return verifyForm(document);}profiles.resolve(document);assets.validateDocument(document);productionProfiles.resolve(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{...(document.profileAssignments?{profiles:profiles.resolve(document)}:{}),form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)})});

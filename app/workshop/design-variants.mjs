@@ -8,6 +8,7 @@ import {katalogDesignToTemplate,parseDesignSvg,scaleTemplate,scaleEmbeddedMotifs
 import {editorTextToMaster,masterTextLayout} from './katalog-template-writeback.mjs';
 import {familyTemplate,familyProductConfig,FAMILY_MATERIALS,familyProcess} from './product-families.mjs';
 import {productPreview} from './product-preview.mjs';
+import {prepareKatalogPhotoAssets} from './katalog-photo-assets.mjs';
 import {designTargets,designTargetCompatibility} from './design-targets.mjs';
 import {assessDesignTarget} from './design-target-rules.mjs';
 import {safeKatalogPath,withKatalogWriteLock,writeKatalogTransaction,recoverKatalogIfNeeded} from './katalog-transaction.mjs';
@@ -142,12 +143,18 @@ function state(root,data){
 }
 
 function scaleBox(box,s,dx,dy){return Array.isArray(box)&&box.length===4?box.map((v,i)=>round(v*s+(i===0?dx:i===1?dy:0))):box;}
+export function scaledPhotoMarkup(layer,s,dx,dy){
+ const box=scaleBox(layer.bounds,s,dx,dy),[tx,ty]=layer.maskTranslation||[0,0],mask=transformEmbeddedPath(layer.maskPath,s,dx+tx*s,dy+ty*s),clip='variant-mask-'+layer.id;
+ const rule=layer.maskEvenodd?'evenodd':'nonzero';let image='';
+ if(layer.exampleImage){const im=layer.exampleImage,[x,y,w,h]=scaleBox(im.bounds,s,dx+tx*s,dy+ty*s);image=`<image x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="${esc(im.preserveAspectRatio)}" clip-path="url(#${esc(clip)})" href="${esc(im.href)}"/>`;}
+ return `<g id="${esc(layer.id)}" class="foto" data-upload-window="${box.join(' ')}"${layer.exampleImage?.uploadHint?' data-upload-hint="separate"':''}><path d="${esc(mask)}" fill="none" fill-rule="${rule}"/><defs><clipPath id="${esc(clip)}"><path d="${esc(mask)}" clip-rule="${rule}"/></clipPath></defs>${image}</g>`;
+}
 function combineBounds(paths){const b=paths.map(p=>pathBounds(p.d)),l=Math.min(...b.map(b=>b[0])),t=Math.min(...b.map(b=>b[1]));return [l,t,Math.max(...b.map(b=>b[0]+b[2]))-l,Math.max(...b.map(b=>b[1]+b[3]))-t].map(round);}
 function transformed(ctx,converted,scaled){
  const {master,family,size,ident}=ctx,parsed=parseDesignSvg(master.svgText),s=scaled.katalog.scale,[dx,dy]=scaled.katalog.offsetMm,json=structuredClone(master.json),markup=[],assets=new Map();
  const objects=new Map(scaled.objects.map(o=>[o.id,o])),before=new Map(converted.template.objects.map(o=>[o.id,o]));let ti=0,mi=0,pi=0;
  json.texts=[];json.motifs=[];if(master.json.photos)json.photos=[];
- for(const image of master.svgText.matchAll(/<image\b[^>]*>/g)){const href=/(?:\s|:)href=["']([^"']+)["']/.exec(image[0])?.[1];if(!href||!parsed.layers.some(l=>l.placeholder===href))fail(422,'Ein Bildverweis ist nicht als lokale Fotodatei übertragbar.');}
+ for(const image of master.svgText.matchAll(/<image\b[^>]*>/g)){const href=/(?:\s|:)href=["']([^"']+)["']/.exec(image[0])?.[1];if(!href||!parsed.layers.some(l=>l.placeholder===href||l.exampleImage?.href===href))fail(422,'Ein Bildverweis ist nicht als Originalfoto übertragbar.');}
  if(parsed.notes.some(n=>!n.includes('id="nutzflaeche"')))fail(422,'Quell-SVG enthält nicht übertragbare Ebenen: '+parsed.notes.join(' '));
  for(const l of parsed.layers){
   if(l.kind==='text'||l.text){
@@ -161,9 +168,8 @@ function transformed(ctx,converted,scaled){
   }else if(l.kind==='foto'){
    const box=scaleBox(l.bounds,s,dx,dy),[x,y,w,h]=box,prior=(master.json.photos??[]).find(p=>p.layerId===l.id)??master.json.photos?.[pi++]??{};
    if(l.rotation)fail(422,'Gedrehte Fotofelder benötigen eine Quellkorrektur.');
-   const shape=l.shape==='circle'?'<ellipse cx="'+(x+w/2)+'" cy="'+(y+h/2)+'" rx="'+w/2+'" ry="'+h/2+'" fill="none"/>':'<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="none"/>';
-   let image='';if(l.placeholder){const file=safeKatalogPath(ctx.root,master.base+'/'+l.placeholder);assets.set(l.placeholder,fs.readFileSync(file));image='<image x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" preserveAspectRatio="none" href="'+esc(l.placeholder)+'"/>';}
-   markup.push('<g id="'+esc(l.id)+'" class="foto">'+shape+image+'</g>');json.photos??=[];json.photos.push({...prior,layerId:l.id,box});
+   if(l.placeholder){const file=safeKatalogPath(ctx.root,master.base+'/'+l.placeholder);assets.set(l.placeholder,fs.readFileSync(file));}
+   markup.push(scaledPhotoMarkup(l,s,dx,dy));json.photos??=[];json.photos.push({...prior,layerId:l.id,box});
   }else{
    if(l.rotation)fail(422,'Gedrehte Motivquellen benötigen eine Quellkorrektur.');
    const prior=(master.json.motifs??[]).find(m=>m.layerId===l.id)??master.json.motifs?.[mi]??{};if(l.kind!=='guide')mi++;
@@ -181,12 +187,15 @@ function transformed(ctx,converted,scaled){
  json.transfer={from:master.id,fromKey:master.json.katalog?.key??master.id,source:master.base+'/design.json',scale:s,offsetMm:[dx,dy],deviationPercent:round(Math.abs((master.plateMm[1]*(size.widthMm/master.plateMm[0]))/size.heightMm-1)*100)};
  return {json,svgText,assets};
 }
-function preview(family,size,template,motifs,fonts){
+function preview(family,size,template,motifs,fonts,photoAssets){
  // Preview has no quotation; private neutral cents are not persisted.
  const view=structuredClone(family),s=structuredClone(size);view.groups=view.groups.filter(g=>g.key===s.groupKey);view.options=[];delete view.quantityTiers;delete view.backing;view.mountingRules=view.mountingRules.filter(r=>s.mounting.includes(r.id));for(const r of view.mountingRules)r.priceCents=0;s.baseCents=0;delete s.quantityTiers;if(view.photo)view.photo.extraPriceCents=0;view.sizes=[s];
  const config=familyProductConfig(view,s,1,{previewOnly:true});config.localResources={...config.localResources,fonts,motifs};config.profile.designs=[template];config.profile.defaultDesignId=template.id;config.photo.enabled=template.objects.some(o=>o.type==='photoSlot');
  const mounting=config.profile.optionGroups.find(g=>g.id==='mounting'),drilled=mounting?.values.find(v=>v.holes?.length);if(drilled)mounting.defaultValueId=drilled.id;
- return productPreview({universal:config},{keepout:false,designArea:true});
+ config.photo.hints=(photoAssets.examples||[]).map(e=>({designId:template.id,slotId:e.slotId,text:'Foto hochladen',enabled:e.uploadHint}));
+ let svg=productPreview({universal:config},{keepout:false,designArea:true,examples:(photoAssets.examples||[]).map(e=>({...e,designId:template.id}))});
+ for(const mask of photoAssets.previewMaskUrls||[])svg=svg.replaceAll('/api/workshop/design-assets/'+mask.id+'/preview.svg',mask.url);
+ return svg;
 }
 function publicPlan(ctx,details={}){
  const {master,family,size,ident,outcome,checksum}=ctx,identity=ident.id?{reihe:ident.reihe,id:ident.id,key:ident.key}:null;
@@ -197,12 +206,13 @@ export function createDesignVariants({available={},converter=convertFont}={}){
   const {katalog,family,size}=ctx,svgText=master.svgText,names=[...new Set(parseDesignSvg(svgText).layers.filter(l=>l.text).map(l=>l.font))];
   for(const name of names)if(!katalog.fonts.list.has(name))fail(422,'Schrift fehlt im Katalog: '+name);
   const resources=await katalog.fontResources(names,{available,converter});if(resources.missing.length)fail(422,'Schriftdatei fehlt: '+resources.missing.join(', '));
-  const fonts=resources.fonts,converted=katalogDesignToTemplate(master,family,katalog.theme(master.themes?.[0]),{fonts,svgText}),scaled=scaleTemplate(converted.template,master.plateMm,[size.widthMm,size.heightMm],fonts,{contain:true});
+  const fonts=resources.fonts,converted=await prepareKatalogPhotoAssets(katalogDesignToTemplate(master,family,katalog.theme(master.themes?.[0]),{fonts,svgText}),master,{previewOnly:true}),scaled=scaleTemplate(converted.template,master.plateMm,[size.widthMm,size.heightMm],fonts,{contain:true});
   const transfer={scale:scaled.katalog.scale,offsetMm:scaled.katalog.offsetMm,deviationPercent:round(Math.abs((master.plateMm[1]*(size.widthMm/master.plateMm[0]))/size.heightMm-1)*100)};
   let fit=assessDesignTarget({master,template:scaled,family,size,fonts,motifs:scaleEmbeddedMotifs(converted.motifs,scaled.katalog.scale)}),template=scaled,motifs=scaleEmbeddedMotifs(converted.motifs,scaled.katalog.scale);
   const plan=variant?transformed(ctx,converted,scaled):null;
-  if(plan){const revised={...master,id:plan.json.id,json:plan.json,plateMm:plan.json.plateMm,svg:()=>plan.svgText},next=katalogDesignToTemplate(revised,family,katalog.theme(master.themes?.[0]),{fonts,svgText:plan.svgText});template=next.template;motifs=next.motifs;fit=assessDesignTarget({master:revised,template,family,size,fonts,motifs});}
-  return {plan,details:{transform:transfer,fit,svg:preview(family,size,template,motifs,fonts)}};
+  let photos=converted;
+  if(plan){const revised={...master,id:plan.json.id,json:plan.json,plateMm:plan.json.plateMm,svg:()=>plan.svgText},next=await prepareKatalogPhotoAssets(katalogDesignToTemplate(revised,family,katalog.theme(master.themes?.[0]),{fonts,svgText:plan.svgText}),revised,{previewOnly:true});template=next.template;motifs=next.motifs;photos=next;fit=assessDesignTarget({master:revised,template,family,size,fonts,motifs});}
+  return {plan,details:{transform:transfer,fit,svg:preview(family,size,template,motifs,fonts,photos)}};
  }
  async function prepareInternal(root,data){
   recoverKatalogIfNeeded(root);const ctx=state(root,data);

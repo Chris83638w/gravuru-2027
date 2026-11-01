@@ -8,6 +8,7 @@ import {createHash} from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import {katalogDesignToTemplate,formatSeries,scaleTemplate,scaleEmbeddedMotifs,katalogFamilyToProduct,priceGaps} from './katalog-convert.mjs';
+import {prepareKatalogPhotoAssets} from './katalog-photo-assets.mjs';
 import {resolveDesignTargets,approvedForFamily,assignTargetSeries,designTargetCompatibility} from './design-targets.mjs';
 import {customerUxConfig} from './customer-ux-policy.mjs';
 import {assessDesignTarget} from './design-target-rules.mjs';
@@ -102,10 +103,11 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
    const templateFor=async a=>{
     if(converted.has(a.design.id))return converted.get(a.design.id);
     let result;try{result={ok:true,...katalogDesignToTemplate(a.design,doc,theme,{fonts})};}catch(e){result={ok:false,error:e.message};report.designs.failed.push({design:a.design.id,subcategory:sub.id,error:e.message});}
+    if(result.ok&&result.photoAssets?.length){try{result=await prepareKatalogPhotoAssets(result,a.design,{assets});}catch(e){result={ok:false,error:e.message};report.designs.failed.push({design:a.design.id,subcategory:sub.id,error:e.message});}}
     // Platzhalterbilder (Musterfoto mit Upload-Hinweis) als Werkstatt-Designressource; ohne Ablage bleibt das Fotofeld neutral.
     if(result.ok&&result.placeholders?.length&&assets&&a.design.dir){
-     result.examples=[];
-     for(const ph of result.placeholders){
+     result.examples??=[];
+     for(const ph of result.placeholders.filter(p=>!result.photoAssets?.some(a=>a.slotId===p.slotId))){
       const file=path.join(a.design.dir,ph.file);
       if(!fs.existsSync(file)){report.notes.push(a.design.id+': Platzhalterbild '+ph.file+' fehlt.');continue;}
       try{const asset=await assets.importPhotoExample({bytes:fs.readFileSync(file).toString('base64'),widthMm:ph.widthMm,heightMm:ph.heightMm});result.examples.push({slotId:ph.slotId,assetId:asset.assetId});}

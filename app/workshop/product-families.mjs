@@ -192,7 +192,7 @@ export function familyGaps(f){
  if(f.photo&&open(f.photo.extraPriceCents))gaps.push('Aufpreis weiteres Foto');
  const price=f.sizes.filter(s=>open(s.baseCents));if(price.length)gaps.push('Grundpreis: '+price.map(s=>s.label).join(', '));
  for(const g of f.options||[]){if(open(g.priceCents))gaps.push(`Aufpreis Feld „${g.label}“`);for(const c of g.choices||[])if(open(c.priceCents))gaps.push(`Aufpreis Option „${g.label} / ${c.label}“`);}
- if(m.adapter==='slate'&&f.groups.some(g=>g.shape!=='rect'))gaps.push('Schiefer-Produkte sind in der Werkstatt nur rechteckig angeschlossen');
+ if(m.adapter==='slate'&&f.groups.some(g=>!['rect','ellipse','contour'].includes(g.shape)))gaps.push('Diese Schieferform ist in der Werkstatt nicht angeschlossen');
  if(f.backing?.offsetMm>0&&f.groups.some(g=>g.shape==='contour'))gaps.push('Rückplattenversatz der Kontur');
  if(f.material.kind!=='acrylic'&&f.groups.some(g=>g.shape==='plaque'))gaps.push(PLAQUE_GAP);
  return gaps;
@@ -214,7 +214,7 @@ const productKey=(f,s)=>'family:'+f.id+':'+s.key;
 export function familyProductConfig(f,s,revision,{previewOnly=false}={}){
  // Die Lücke „eingezogene Ecken“ betrifft nur Größen dieser Form; Rechteck-Größen derselben Familie bleiben in der Vorschau nutzbar.
  const sizeGroup=f.groups.find(x=>x.key===s.groupKey);
- const previewGaps=previewOnly?familyGaps(f).filter(g=>g!=='Schiefer-Produkte sind in der Werkstatt nur rechteckig angeschlossen'&&!(g===PLAQUE_GAP&&sizeGroup?.shape!=='plaque')):[];
+ const previewGaps=previewOnly?familyGaps(f).filter(g=>!(g===PLAQUE_GAP&&sizeGroup?.shape!=='plaque')):[];
  const ready=previewOnly?{ready:previewGaps.length===0,reason:'Vorschau offen: '+previewGaps.join(' · ')}:familyReady(f);if(!ready.ready)invalid(ready.reason);
  const {holesMm,...sourceGeometry}=geometryOf(f,s),g=f.material.kind==='acrylic'&&sourceGeometry.shape==='plaque'?{...sourceGeometry,shape:'contour',cornerRadiusMm:0,outlinePath:nativeContour({...sourceGeometry,holes:[]}).contours[0].d}:sourceGeometry,group=sizeGroup,resources=workshopResources();
  const font=f.fonts.find(x=>resources.fonts[x])||'Montserrat';
@@ -225,6 +225,13 @@ export function familyProductConfig(f,s,revision,{previewOnly=false}={}){
  const text={id:'text-1',type:'text',text:'Familie Muster',font,size:Math.min(g.height*.22,14),x:g.width/2,y:g.height/2,w:1,h:1,rotation:0,color:'#000000',bold:false,templateOrigin:true,customerEditable:true};
  measureText(text,resources.fonts);if(text.w>g.width*.6){text.size*=g.width*.6/text.w;measureText(text,resources.fonts);}
  if(text.h>g.height*.3){text.size*=g.height*.3/text.h;measureText(text,resources.fonts);}
+ // The neutral starter is only scaffolding. A cross has a narrow stem at its
+ // centre, so its placeholder must fit the actual contour before a catalogue
+ // design replaces it. Never shrink the imported design here.
+ if(g.shape==='contour'){
+  const fits=()=>[-1,1].every(dx=>[-1,1].every(dy=>contourContainsPoint(g,text.x+dx*text.w/2,text.y+dy*text.h/2,{marginMm:f.designArea.marginMm,holes:false})));
+  for(let i=0;i<20&&!fits();i++){text.size*=.8;measureText(text,resources.fonts);}
+ }
  const design={id:'start',name:'Startdesign · '+group.name,objects:[text],marks:[]};
  const profile={id:'family-'+f.id+'-'+s.key.toLowerCase().replace(/[^a-z0-9-]/g,'-'),revision:'family-'+f.id+'-r'+revision,schemaVersion:1,kind:'universal-product',name:productName(f,s),
   binding:{kind:'local-review',productId:'local-'+s.key},geometry:{...g,safeMarginMm:f.designArea.marginMm,...(g.shape==='contour'?{holeKeepoutMm:f.designArea.keepoutMm}:{}),holes:[]},

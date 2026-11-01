@@ -5,6 +5,7 @@ import {katalogDesignToTemplate,parseDesignSvg,scaleTemplate,scaleEmbeddedMotifs
 import {convertFont} from './font-library.mjs';
 import {productPreview} from './product-preview.mjs';
 import {assessDesignTarget} from './design-target-rules.mjs';
+import {prepareKatalogPhotoAssets} from './katalog-photo-assets.mjs';
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'design_target_invalid'});};
 export async function targetDesignPreview(root,{reihe,id,familie,size:requestedSize},{available={},converter=convertFont}={}){
  const katalog=katalogFor(root,{maxAgeMs:0}),master=katalog.designs.masters.find(d=>d.seriesFolder===reihe&&d.id===id),family=katalog.families.get(familie);
@@ -16,7 +17,7 @@ export async function targetDesignPreview(root,{reihe,id,familie,size:requestedS
  const svgText=master.svg(),sourceMaster={...master,svg:()=>svgText},names=[...new Set(parseDesignSvg(svgText).layers.filter(l=>l.kind==='text'||l.text).map(l=>l.font))],resources=await katalog.fontResources(names,{available,converter});
  const checksum=designTargetChecksum(master,family,svgText,resources.versions);
  if(resources.missing.length)fail(422,'Schrift fehlt: '+resources.missing.join(', ')+'.');
- const fonts=resources.fonts,converted=katalogDesignToTemplate(master,family,katalog.theme(master.themes?.[0]),{fonts,svgText});
+ const fonts=resources.fonts,converted=await prepareKatalogPhotoAssets(katalogDesignToTemplate(master,family,katalog.theme(master.themes?.[0]),{fonts,svgText}),master,{previewOnly:true});
  const scaled=scaleTemplate(converted.template,master.plateMm,[size.widthMm,size.heightMm],fonts,{contain:true}),motifs=scaleEmbeddedMotifs(converted.motifs,scaled.katalog.scale);
  const compatibility=designTargetCompatibility(master,family,size,{katalog}),variantRequired=compatibility.variantRequired;
  const evaluate=(candidate)=>{const t=scaleTemplate(converted.template,master.plateMm,[candidate.widthMm,candidate.heightMm],fonts,{contain:true}),m=scaleEmbeddedMotifs(converted.motifs,t.katalog.scale);return {...assessDesignTarget({master:sourceMaster,template:t,family,size:candidate,fonts,motifs:m}),size:candidate.key,label:candidate.label};};
@@ -32,7 +33,11 @@ export async function targetDesignPreview(root,{reihe,id,familie,size:requestedS
  let config;try{config=familyProductConfig(view,viewSize,1,{previewOnly:true});}catch(error){if(error.status!==422)throw error;const message=error.message.startsWith('Vorschau offen:')?error.message:'Vorschau offen: '+error.message;return {...response,svg:null,fit:{...fit,status:'passt nicht',issues:[...fit.issues,message]},reviewFit:{...reviewFit,status:'passt nicht',issues:[...reviewFit.issues,message]}};}
  config.localResources={...config.localResources,fonts,motifs};config.profile.designs=[scaled];config.profile.defaultDesignId=scaled.id;config.photo.enabled=scaled.objects.some(o=>o.type==='photoSlot');
  const mounting=config.profile.optionGroups.find(g=>g.id==='mounting'),drilled=mounting?.values.find(v=>v.holes?.length);if(drilled)mounting.defaultValueId=drilled.id;
- return {...response,svg:productPreview({universal:config},{keepout:false,designArea:true})};
+ config.photo.hints=converted.examples.map(e=>({designId:scaled.id,slotId:e.slotId,text:'Foto hochladen',enabled:e.uploadHint}));
+ const examples=converted.examples.map(e=>({...e,designId:scaled.id}));
+ let svg=productPreview({universal:config},{keepout:false,designArea:true,examples});
+ for(const mask of converted.previewMaskUrls)svg=svg.replaceAll('/api/workshop/design-assets/'+mask.id+'/preview.svg',mask.url);
+ return {...response,svg};
 }
 
 // HTTP only accepts input fields; review/checksum are produced here, never from the browser.

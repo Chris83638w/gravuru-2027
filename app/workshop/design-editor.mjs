@@ -9,6 +9,7 @@ import {convertFont} from './font-library.mjs';
 import {readDesignEditSource,planTemplateWriteback,saveTemplateWriteback} from './katalog-writeback.mjs';
 import {measureText} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {validateDesignContent} from '../platform/sources/app/shared/models/design-content.mjs';
+import {prepareKatalogPhotoAssets} from './katalog-photo-assets.mjs';
 
 const fail=(status,message,code='design_editor_invalid')=>{throw Object.assign(Error(message),{status,code});};
 const record=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
@@ -68,6 +69,8 @@ function compose(ctx,converted,fonts,template){
  document.config.profile.designs=[template];document.config.profile.defaultDesignId=template.id;
  document.config.profile.name=document.name;
  document.config.photo.enabled=template.objects.some(o=>o.type==='photoSlot');
+ document.config.localResources.photoExamples=(converted.examples||[]).map(e=>({designId:template.id,slotId:e.slotId,assetId:e.assetId}));
+ document.config.photo.hints=(converted.examples||[]).map(e=>({designId:template.id,slotId:e.slotId,text:'Foto hochladen',enabled:e.uploadHint}));
  document.elementRights={[template.id]:Object.fromEntries(template.objects.map(o=>[o.id,rights(o)]))};
  // Always show the first real drilling choice, when present, as a protected area.
  const mounting=document.config.profile.optionGroups.find(g=>g.id==='mounting');
@@ -112,13 +115,13 @@ function candidateTemplate(document,original){
  return {...structuredClone(original),objects};
 }
 
-export function createDesignEditor({available={},converter=convertFont}={}){
+export function createDesignEditor({available={},converter=convertFont,assets}={}){
  const fontOptions={available,converter};
  async function load(root,{reihe,id,checksum},extraFonts=[]){
   const loaded=await readDesignEditSource(root,{reihe,designId:id});
   if(checksum!==undefined&&checksum!==loaded.checksum)fail(409,'Das Design wurde inzwischen geändert. Bitte neu laden und die Änderungen vergleichen.','design_editor_conflict');
   const master=loaded.master,katalog=katalogFor(root,{maxAgeMs:0}),ctx={...context(katalog,master),master,katalog,checksum:loaded.checksum,reihe};
-  const fonts=await resources(katalog,[...sourceFonts(master),...extraFonts],fontOptions),converted=katalogDesignToTemplate({...master,svg:()=>master.svgText},ctx.family,katalog.theme(master.themes?.[0]),{fonts,svgText:master.svgText});
+  const fonts=await resources(katalog,[...sourceFonts(master),...extraFonts],fontOptions),converted=await prepareKatalogPhotoAssets(katalogDesignToTemplate({...master,svg:()=>master.svgText},ctx.family,katalog.theme(master.themes?.[0]),{fonts,svgText:master.svgText}),master,{assets});
   const original=editorTemplate(converted,ctx,fonts);return {...ctx,fonts,converted,original};
  }
  function presentation(ctx){
@@ -141,7 +144,7 @@ export function createDesignEditor({available={},converter=convertFont}={}){
   async open(root,query){return presentation(await load(root,query));},
   async font(root,query){const ctx=await load(root,query,[query.font]);return {id:query.font,font:ctx.fonts[query.font]};},
   async fit(root,data){return (await prepare(root,data)).fit;},
-  async preview(root,data){const {document}=await prepare(root,data),config=document.config;return {svg:productPreview({universal:config},{keepout:false,designArea:true}),holeHint:previewHoleHint(config),designId:config.profile.defaultDesignId};},
+  async preview(root,data){const {document}=await prepare(root,data),config=document.config;return {svg:productPreview({universal:config},{keepout:false,designArea:true,examples:config.localResources.photoExamples}),holeHint:previewHoleHint(config),designId:config.profile.defaultDesignId};},
   async save(root,data,{actor}={}){const {ctx,template,fit}=await prepare(root,data);const result=await saveTemplateWriteback(root,{reihe:data.reihe,designId:data.id,checksum:data.checksum,template,originalTemplate:ctx.original,fonts:ctx.fonts,actor});forgetKatalog();return {...presentation(await load(root,{reihe:data.reihe,id:data.id})),changed:result.changed,freigabeReset:result.changed,fit};}
  };
 }

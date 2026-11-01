@@ -47,6 +47,12 @@ Bestehende Testdateien: `acrylic-engraving`, `form-engraving-proof`, `output-ori
 
 [Katalogbelege auf dem Begleitbranch](https://github.com/Chris83638w/gravuru-katalog./tree/dev/acryl3-rueckseite-preise-20261101-astra/auftraege/2026-11-01-acryl3-rueckseite-preise): 16 Vorher-/Nachher-Paare, zwei Kontaktbögen, Preis-/Excel-Vergleich und echtes RT2-D1-Beispiel mit Kundenname „Mustermann“ als gespiegelte SVG/PDF plus lesbarer Vorschau. Rund zeigt mangels bestehendem Master nur die Platte; der Exporttest verwendet dort ausdrücklich ein synthetisches F. Keine Fertigungsfreigabe behauptet.
 
+## Integration des neuen Katalog-Hauptstands
+
+Während der Prüfung wurde Katalog-main `811f26395fb6f90aab465814430be4a61fa6257a` veröffentlicht. Seine Hausnummern-Daten bleiben vollständig erhalten. Katalogübersicht und gemeinsame Excel wurden aus beiden Quellen neu erzeugt: **7.105 Zellen gegen den neuen Hauptstand verglichen, erneut genau 7 Änderungen** (5 Preise, 2 Gravurseiten). Alle 13 Familien stimmen bis auf die ausdrücklich beauftragten Felder mit diesem Stand überein. Der vorherige Vergleich mit 5.956 Zellen bleibt der Nachweis gegen die ursprüngliche Basis. Code-main `273aaba2` ändert inzwischen nur eine unabhängige Schiefer-Excel; Code-PR bleibt konfliktfrei.
+
+[Code-PR #90](https://github.com/Chris83638w/gravuru-2027/pull/90) ist zur Prüfung bereit; [Katalog-PR #15](https://github.com/Chris83638w/gravuru-katalog./pull/15) bleibt wegen der Serienfrage ein Entwurf. Keine PR-Freigabe, kein Merge nach main, keine Live-Aktion.
+
 ## Nächster Schritt
 
 Claude: N37-Code und Katalogbelege prüfen, Linux-Vollauf; die zwei Quellenfragen in #48 beantworten. Danach ausschließlich die bestätigten Serienpreise ergänzen und N38 abschließen. Anschließend N39 Form/Größe, danach N36 reversible Ausweichbewegung. Nicht mergen oder live stellen.

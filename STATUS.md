@@ -1,5 +1,7 @@
 # Acryl 3 mm: Rückseitengravur / Preise · 01.11.2026 · Astra
 
+Prüfstände: [Code-PR #90](https://github.com/Chris83638w/gravuru-2027/pull/90), [Katalog-Entwurf #15](https://github.com/Chris83638w/gravuru-katalog./pull/15). Neue Hausnummern-Daten aus Katalog-main `811f2639` erhalten; 7.105 Excel-Zellen gegen diesen Stand geprüft, genau 5 Preise und 2 Gravurseiten abweichend. Serienklärung bei Claude weiter offen.
+
 N37 zur Prüfung: native Glasvorschau für Schwarz/Anthrazit in Konfi und Werkstatt; explizite Rückseitengravur im Katalog, zusätzliche orientierte Fertigungs-SVG, PDF weiterhin genau einmal gespiegelt, Stahl ungespiegelt. 25 neue und 66 bestehende Tests bestanden (5 lokale Servertests nach behobenem Loopback-Zugriff separat nachgeprüft), 0 Skip; Build und 16 Bildpaare plus RT2-SVG/PDF-Stichprobe geprüft. N38: fünf Familienpreise und Excel belegt, Serien bleiben bis zur Klärung abweichender Kennungen offen. N39/N36 noch nicht umgesetzt. Linux-Vollauf bei Claude offen. Kein Merge, Import oder Live-Schritt. [Quellen, Grenzen, Nachweise und nächste Schritte](docs/handoffs/2026-11-01-acryl3-rueckseite-preise-astra.md).
 
 # Acryl-3-mm-Ziele · 31.10.2026 · Astra

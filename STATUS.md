@@ -1,3 +1,7 @@
+## 02.11.2026 · Codex · Issue 139 Live-Schritte
+
+Main 84ee330 auf app-2027 aktiviert und öffentlich per Bundle-SHA geprüft; 277 Testdateien/2.068 Tests nach korrigierter Testumgebung bestanden. Sechs Datenbanken gesichert, Datenkopie-Preflight grün. DE-Versandstaffel und 90-Euro-Hinweis live; Warenkorb-Schätzung korrigiert und nachgelesen. Produktspezifische Optionen durch zusätzlichen Regressionstest abgesichert. Vorlage product.konfi angelegt, bereinigte Fassung hier vorbereitet; endgültiges Speichern/Zuordnung, neue Verkaufsbindungen, Katalogaktualisierung und Produktwellen noch offen. [Veröffentlichung, Nachweise, Rückweg und Grenzen](docs/handoffs/2026-11-02-issue139-live.md).
+
 # Issue 139 · feste Türschildprodukte, SVG/Grabstecker und Theme-Prüffassung · 02.11.2026 · Codex
 
 Eigener Branch über main 06987af. Türschilder: feste Kataloggröße, Produkt-Thema/Startdesign, vollständige freigegebene textführende Galerie und exakte Variantenbindung; Edelstahl ohne Foto/Logo. Drehpunkt/Strich-SVG einschließlich Speicherrundlauf korrigiert. Grabstecker-Kopf + 10 mm nur in Arbeitsansicht; volle Produktionskontur samt Innenausschnitten. Katalog-Draft-PR #156 (gravuru-katalog.) mit 33/33 Quellprüfungen und Katalogvollbau 16 Familien. Desktop/390×844 mit echten Edelstahl-/Acryl-Katalogprodukten per Shell-Browser geprüft. Theme 90 Euro und product.konfi lokal vorbereitet. [Prüfbericht, Bilder, offene Punkte](docs/handoffs/2026-11-02-issue139/README.md).

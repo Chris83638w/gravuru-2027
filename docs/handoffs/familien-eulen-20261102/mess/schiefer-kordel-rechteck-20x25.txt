@@ -1,8 +1,8 @@
-KS-S-20x25-D970          KV-RECHTECK-20X25 | Breite  90% Höhe  67% Fläche  60% | Versatz x  -0.7% y  +0.0% | ok
-KS-S-20x25-D971          KV-RECHTECK-20X25 | Breite  89% Höhe  68% Fläche  61% | Versatz x  -0.8% y  -0.5% | ok
-KS-S-20x25-D972          KV-RECHTECK-20X25 | Breite  91% Höhe  71% Fläche  64% | Versatz x  -0.5% y  +0.1% | ok
-KS-S-20x25-D973          KV-RECHTECK-20X25 | Breite  90% Höhe  67% Fläche  60% | Versatz x  -0.3% y  +0.3% | ok
-KS-S-20x25-D974          KV-RECHTECK-20X25 | Breite  84% Höhe  70% Fläche  59% | Versatz x  -0.3% y  +0.0% | ok
-KS-S-20x25-D975          KV-RECHTECK-20X25 | Breite  91% Höhe  74% Fläche  67% | Versatz x  -0.5% y  +0.1% | ok
-KS-S-20x25-D976          KV-RECHTECK-20X25 | Breite  91% Höhe  70% Fläche  64% | Versatz x  -0.5% y  +0.1% | ok
-KS-S-20x25-D977          KV-RECHTECK-20X25 | Breite  90% Höhe  70% Fläche  63% | Versatz x  -0.3% y  +0.0% | ok
+KS-S-20x25-D970          KV-RECHTECK-20X25 | Breite  90% Höhe  69% Fläche  62% | Versatz x  -0.8% y  +0.0% | ok
+KS-S-20x25-D971          KV-RECHTECK-20X25 | Breite  89% Höhe  69% Fläche  61% | Versatz x  -1.0% y  -0.4% | ok
+KS-S-20x25-D972          KV-RECHTECK-20X25 | Breite  90% Höhe  70% Fläche  63% | Versatz x  -0.7% y  +0.1% | ok
+KS-S-20x25-D973          KV-RECHTECK-20X25 | Breite  88% Höhe  71% Fläche  62% | Versatz x  -0.5% y  +0.3% | ok
+KS-S-20x25-D974          KV-RECHTECK-20X25 | Breite  88% Höhe  70% Fläche  62% | Versatz x  -0.3% y  +0.0% | ok
+KS-S-20x25-D975          KV-RECHTECK-20X25 | Breite  90% Höhe  71% Fläche  64% | Versatz x  -0.7% y  +0.0% | ok
+KS-S-20x25-D976          KV-RECHTECK-20X25 | Breite  90% Höhe  71% Fläche  64% | Versatz x  -0.7% y  +0.1% | ok
+KS-S-20x25-D977          KV-RECHTECK-20X25 | Breite  90% Höhe  69% Fläche  62% | Versatz x  -0.6% y  +0.0% | ok

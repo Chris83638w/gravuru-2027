@@ -17,11 +17,11 @@ Katalog-Branch `dev/familien-eulen-20261102` (Entwurfs-PR), Issue gravuru-2027 #
 | D976 | 1 Elternteil, 3 Kinder | Vogelsang |
 | D977 | 1 Elternteil, 4 Kinder | Engelhardt |
 
-Modus neu, Schriften Comfortaa („Familie“, 31,5 % der Namensgröße) + Great Vibes (Name), Thema familienschilder, keine Freigabe.
+D973/D977 (4 Kinder, feinste Blattstiele) erst ab 12 × 8 (`hinweisGroessen`). Modus neu, Schriften Comfortaa („Familie“, 31,5 % der Namensgröße) + Great Vibes (Name), Thema familienschilder, keine Freigabe.
 
 ## Aufbau je Form
-- Querformat (Rechteck 3:2, AB, Oval 9×6/15×8, Retro 1/2, AA 15×10/R5/EE 18×12/Oval, Kordel 15×9…30×20): Eulen oben rechtsbündig über dem Namen, „Familie“ beginnt über dem 2. Buchstaben (Abstand wie Simulation), Gruppe mittig (Simulation war ~10 mm nach rechts versetzt → §7).
-- Quadrat/Rund/Hochformat (8×8, Rund, AA 16×16, 10×15, R5 10×15, EE 12×18, 7×21, Kordel 20×20/20×25): Eulen oben in Textbreite, Text darunter, gleiches „Familie“-Prinzip.
+- Querformat (Rechteck 3:2, AB, Oval 9×6/15×8, Retro 1/2, AA 15×10/R5/EE 18×12/Oval, Kordel 15×9…30×20): Eulen oben **rechts** – rechte Astkante bündig mit dem Namensende, Motiv schmaler als der Name (87 % wie Simulation, bei 5–6 Eulen 95 %); „Familie“ versetzt darunter, beginnt über dem 2. Buchstaben (D970 Weidemann exakt wie Simulation v3); Name groß; Gesamtgruppe mittig (Korrektur Claude 02.11.).
+- Quadrat/Rund/Hochformat (8×8, Rund, AA 16×16, 10×15, R5 10×15, EE 12×18, 7×21, Kordel 20×20/20×25): Eulen oben rechts versetzt (85–92 % der Namensbreite, rechtsbündig), Text darunter, gleiches „Familie“-Prinzip.
 - AA 21×7: Eulen links neben dem Text (Langformat).
 - Abstandshalter-Zonen (AA/AS/SS) und Kordel-Löcher + 6 mm Bruchkante frei.
 
@@ -38,5 +38,5 @@ Gesamt 208 neue Designs.
 - Kontaktbögen ohne Bohrlöcher/Abstandshalter; Edelstahl-Bögen mit je einer Acryl-3-mm-Vorschau.
 
 ## Offene Punkte
-- Feine Blattstiele an 9 × 6 (< 0,3 mm) – ggf. Motiv für Kleinformate verstärken oder D973/D977 erst ab 12 × 8 anbieten (Entscheidung Chris).
+- Feine Blattstiele an 9 × 6 (< 0,3 mm) bei D970–D972/D974–D976 (min. ~0,28 mm) – wie im Bestandsmotiv.
 - Startdesign-Vorschlag: D970 (Chris' Wunschentwurf, 2 Eltern + 2 Kinder).

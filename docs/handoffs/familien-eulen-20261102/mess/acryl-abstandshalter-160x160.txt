@@ -1,8 +1,8 @@
-AA-QU-16x16-D970         AA-RE-160X160 | Breite  80% Höhe  60% Fläche  48% | Versatz x  -0.6% y  +0.0% | ok
-AA-QU-16x16-D971         AA-RE-160X160 | Breite  84% Höhe  75% Fläche  62% | Versatz x  -0.6% y  -0.6% | ok
-AA-QU-16x16-D972         AA-RE-160X160 | Breite  89% Höhe  71% Fläche  64% | Versatz x  -0.5% y  +0.3% | ok
-AA-QU-16x16-D973         AA-RE-160X160 | Breite  82% Höhe  66% Fläche  55% | Versatz x  -0.2% y  +0.3% | ok
-AA-QU-16x16-D974         AA-RE-160X160 | Breite  75% Höhe  79% Fläche  60% | Versatz x  -0.2% y  +0.2% | ok
-AA-QU-16x16-D975         AA-RE-160X160 | Breite  75% Höhe  78% Fläche  59% | Versatz x  -0.5% y  +0.2% | ok
-AA-QU-16x16-D976         AA-RE-160X160 | Breite  84% Höhe  77% Fläche  64% | Versatz x  -0.5% y  +0.2% | ok
-AA-QU-16x16-D977         AA-RE-160X160 | Breite  89% Höhe  76% Fläche  68% | Versatz x  -0.5% y  +0.0% | ok
+AA-QU-16x16-D970         AA-RE-160X160 | Breite  89% Höhe  64% Fläche  56% | Versatz x  -0.8% y  +0.0% | ok
+AA-QU-16x16-D971         AA-RE-160X160 | Breite  88% Höhe  75% Fläche  66% | Versatz x  -1.0% y  -0.5% | ok
+AA-QU-16x16-D972         AA-RE-160X160 | Breite  89% Höhe  69% Fläche  62% | Versatz x  -0.6% y  +0.3% | ok
+AA-QU-16x16-D973         AA-RE-160X160 | Breite  84% Höhe  65% Fläche  55% | Versatz x  -0.5% y  +0.3% | ok
+AA-QU-16x16-D974         AA-RE-160X160 | Breite  76% Höhe  75% Fläche  57% | Versatz x  -0.3% y  +0.0% | ok
+AA-QU-16x16-D975         AA-RE-160X160 | Breite  77% Höhe  76% Fläche  58% | Versatz x  -0.5% y  +0.0% | ok
+AA-QU-16x16-D976         AA-RE-160X160 | Breite  88% Höhe  77% Fläche  68% | Versatz x  -0.6% y  +0.2% | ok
+AA-QU-16x16-D977         AA-RE-160X160 | Breite  89% Höhe  75% Fläche  67% | Versatz x  -0.5% y  +0.0% | ok

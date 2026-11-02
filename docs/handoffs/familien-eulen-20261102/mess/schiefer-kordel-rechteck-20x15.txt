@@ -1,8 +1,8 @@
 KS-S-20x15-D970          KV-RECHTECK-20X15 | Breite  71% Höhe  66% Fläche  47% | Versatz x  -0.8% y  +0.2% | ok
 KS-S-20x15-D971          KV-RECHTECK-20X15 | Breite  70% Höhe  79% Fläche  55% | Versatz x  -0.8% y  -0.3% | ok
 KS-S-20x15-D972          KV-RECHTECK-20X15 | Breite  72% Höhe  72% Fläche  51% | Versatz x  -0.6% y  +0.4% | ok
-KS-S-20x15-D973          KV-RECHTECK-20X15 | Breite  71% Höhe  64% Fläche  45% | Versatz x  -0.3% y  +0.4% | ok
-KS-S-20x15-D974          KV-RECHTECK-20X15 | Breite  66% Höhe  88% Fläche  58% | Versatz x  -0.3% y  +0.2% | ok
-KS-S-20x15-D975          KV-RECHTECK-20X15 | Breite  69% Höhe  88% Fläche  61% | Versatz x  -0.5% y  +0.2% | ok
+KS-S-20x15-D973          KV-RECHTECK-20X15 | Breite  71% Höhe  73% Fläche  52% | Versatz x  -0.3% y  +0.4% | ok
+KS-S-20x15-D974          KV-RECHTECK-20X15 | Breite  67% Höhe  87% Fläche  58% | Versatz x  -0.3% y  +0.2% | ok
+KS-S-20x15-D975          KV-RECHTECK-20X15 | Breite  68% Höhe  88% Fläche  60% | Versatz x  -0.5% y  +0.2% | ok
 KS-S-20x15-D976          KV-RECHTECK-20X15 | Breite  71% Höhe  80% Fläche  57% | Versatz x  -0.6% y  +0.2% | ok
 KS-S-20x15-D977          KV-RECHTECK-20X15 | Breite  70% Höhe  78% Fläche  55% | Versatz x  -0.5% y  +0.2% | ok

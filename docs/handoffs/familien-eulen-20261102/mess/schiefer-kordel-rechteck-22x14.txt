@@ -1,8 +1,8 @@
 KS-S-22x14-D970          KV-RECHTECK-22X14 | Breite  75% Höhe  82% Fläche  62% | Versatz x  -0.8% y  +0.1% | ok
 KS-S-22x14-D971          KV-RECHTECK-22X14 | Breite  65% Höhe  85% Fläche  55% | Versatz x  -0.6% y  -0.7% | ok
 KS-S-22x14-D972          KV-RECHTECK-22X14 | Breite  74% Höhe  88% Fläche  65% | Versatz x  -0.5% y  +0.5% | ok
-KS-S-22x14-D973          KV-RECHTECK-22X14 | Breite  75% Höhe  80% Fläche  60% | Versatz x  -0.5% y  +0.5% | ok
-KS-S-22x14-D974          KV-RECHTECK-22X14 | Breite  56% Höhe  88% Fläche  49% | Versatz x  -0.2% y  +0.0% | ok
-KS-S-22x14-D975          KV-RECHTECK-22X14 | Breite  58% Höhe  88% Fläche  51% | Versatz x  -0.4% y  +0.3% | ok
+KS-S-22x14-D973          KV-RECHTECK-22X14 | Breite  70% Höhe  85% Fläche  59% | Versatz x  -0.4% y  +0.3% | ok
+KS-S-22x14-D974          KV-RECHTECK-22X14 | Breite  56% Höhe  87% Fläche  49% | Versatz x  -0.2% y  +0.0% | ok
+KS-S-22x14-D975          KV-RECHTECK-22X14 | Breite  58% Höhe  88% Fläche  51% | Versatz x  -0.5% y  +0.3% | ok
 KS-S-22x14-D976          KV-RECHTECK-22X14 | Breite  66% Höhe  88% Fläche  59% | Versatz x  -0.5% y  +0.3% | ok
 KS-S-22x14-D977          KV-RECHTECK-22X14 | Breite  67% Höhe  88% Fläche  59% | Versatz x  -0.3% y  +0.0% | ok

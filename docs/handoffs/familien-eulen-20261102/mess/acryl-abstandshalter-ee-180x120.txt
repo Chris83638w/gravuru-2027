@@ -1,8 +1,8 @@
 AA-EE-18x12-D970         AA-EE-180X120 | Breite  94% Höhe  88% Fläche  83% | Versatz x  -0.0% y  +0.0% | ok
 AA-EE-18x12-D971         AA-EE-180X120 | Breite  94% Höhe  88% Fläche  83% | Versatz x  +0.0% y  -0.5% | ok
 AA-EE-18x12-D972         AA-EE-180X120 | Breite  93% Höhe  90% Fläche  84% | Versatz x  -0.1% y  +0.5% | ok
-AA-EE-18x12-D973         AA-EE-180X120 | Breite  93% Höhe  86% Fläche  80% | Versatz x  +0.0% y  +0.7% | ok
-AA-EE-18x12-D974         AA-EE-180X120 | Breite  94% Höhe  87% Fläche  82% | Versatz x  +0.0% y  +0.0% | ok
+AA-EE-18x12-D973         AA-EE-180X120 | Breite  94% Höhe  85% Fläche  79% | Versatz x  +0.0% y  +0.4% | ok
+AA-EE-18x12-D974         AA-EE-180X120 | Breite  94% Höhe  87% Fläche  81% | Versatz x  +0.0% y  +0.2% | ok
 AA-EE-18x12-D975         AA-EE-180X120 | Breite  94% Höhe  91% Fläche  85% | Versatz x  +0.0% y  +0.2% | ok
 AA-EE-18x12-D976         AA-EE-180X120 | Breite  94% Höhe  91% Fläche  85% | Versatz x  +0.0% y  +0.2% | ok
 AA-EE-18x12-D977         AA-EE-180X120 | Breite  94% Höhe  91% Fläche  85% | Versatz x  +0.0% y  +0.2% | ok

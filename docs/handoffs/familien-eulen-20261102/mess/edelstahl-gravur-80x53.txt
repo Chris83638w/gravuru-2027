@@ -1,8 +1,8 @@
 TRE-V2A-8x5-D970         GR-ES-RE-90X60-T15 | Breite  76% Höhe  78% Fläche  59% | Versatz x  -0.6% y  -0.0% | ok
 TRE-V2A-8x5-D971         GR-ES-RE-90X60-T15 | Breite  61% Höhe  77% Fläche  47% | Versatz x  -0.8% y  -0.8% | ok
 TRE-V2A-8x5-D972         GR-ES-RE-90X60-T15 | Breite  70% Höhe  79% Fläche  55% | Versatz x  -0.5% y  +0.0% | ok
-TRE-V2A-8x5-D973         GR-ES-RE-90X60-T15 | Breite  79% Höhe  79% Fläche  62% | Versatz x  -0.4% y  +0.2% | ok
-TRE-V2A-8x5-D974         GR-ES-RE-90X60-T15 | Breite  52% Höhe  79% Fläche  41% | Versatz x  +0.0% y  +0.0% | ok
-TRE-V2A-8x5-D975         GR-ES-RE-90X60-T15 | Breite  55% Höhe  79% Fläche  43% | Versatz x  -0.3% y  +0.0% | ok
+TRE-V2A-8x5-D973         GR-ES-RE-120X80-T15 | Breite  68% Höhe  79% Fläche  54% | Versatz x  -0.3% y  +0.2% | ok
+TRE-V2A-8x5-D974         GR-ES-RE-90X60-T15 | Breite  54% Höhe  79% Fläche  42% | Versatz x  -0.2% y  +0.0% | ok
+TRE-V2A-8x5-D975         GR-ES-RE-90X60-T15 | Breite  54% Höhe  79% Fläche  43% | Versatz x  -0.4% y  +0.0% | ok
 TRE-V2A-8x5-D976         GR-ES-RE-90X60-T15 | Breite  62% Höhe  79% Fläche  49% | Versatz x  -0.5% y  +0.2% | ok
-TRE-V2A-8x5-D977         GR-ES-RE-90X60-T15 | Breite  63% Höhe  78% Fläche  49% | Versatz x  -0.3% y  -0.1% | ok
+TRE-V2A-8x5-D977         GR-ES-RE-120X80-T15 | Breite  63% Höhe  78% Fläche  49% | Versatz x  -0.3% y  -0.1% | ok

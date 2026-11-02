@@ -1,8 +1,8 @@
-TR-V2A-6.5x6.5-D970      GR-ES-R-85X85-T15 | Breite  75% Höhe  56% Fläche  42% | Versatz x  -0.5% y  +0.0% | ok
-TR-V2A-6.5x6.5-D971      GR-ES-R-85X85-T15 | Breite  70% Höhe  62% Fläche  43% | Versatz x  -0.6% y  -0.6% | ok
-TR-V2A-6.5x6.5-D972      GR-ES-R-85X85-T15 | Breite  74% Höhe  59% Fläche  44% | Versatz x  -0.3% y  +0.3% | ok
-TR-V2A-6.5x6.5-D973      GR-ES-R-85X85-T15 | Breite  74% Höhe  59% Fläche  44% | Versatz x  -0.2% y  +0.2% | ok
-TR-V2A-6.5x6.5-D974      GR-ES-R-85X85-T15 | Breite  66% Höhe  69% Fläche  46% | Versatz x  -0.2% y  +0.2% | ok
-TR-V2A-6.5x6.5-D975      GR-ES-R-85X85-T15 | Breite  67% Höhe  69% Fläche  47% | Versatz x  -0.3% y  +0.2% | ok
-TR-V2A-6.5x6.5-D976      GR-ES-R-85X85-T15 | Breite  71% Höhe  65% Fläche  46% | Versatz x  -0.5% y  +0.3% | ok
-TR-V2A-6.5x6.5-D977      GR-ES-R-85X85-T15 | Breite  72% Höhe  62% Fläche  45% | Versatz x  -0.3% y  +0.0% | ok
+TR-V2A-6.5x6.5-D970      GR-ES-R-85X85-T15 | Breite  76% Höhe  54% Fläche  41% | Versatz x  -0.6% y  +0.0% | ok
+TR-V2A-6.5x6.5-D971      GR-ES-R-85X85-T15 | Breite  71% Höhe  61% Fläche  43% | Versatz x  -0.8% y  -0.3% | ok
+TR-V2A-6.5x6.5-D972      GR-ES-R-85X85-T15 | Breite  75% Höhe  58% Fläche  43% | Versatz x  -0.5% y  +0.3% | ok
+TR-V2A-6.5x6.5-D973      GR-ES-R-120X120-T15 | Breite  73% Höhe  57% Fläche  42% | Versatz x  -0.3% y  +0.3% | ok
+TR-V2A-6.5x6.5-D974      GR-ES-R-85X85-T15 | Breite  66% Höhe  65% Fläche  43% | Versatz x  -0.2% y  +0.2% | ok
+TR-V2A-6.5x6.5-D975      GR-ES-R-85X85-T15 | Breite  68% Höhe  67% Fläche  46% | Versatz x  -0.4% y  +0.0% | ok
+TR-V2A-6.5x6.5-D976      GR-ES-R-85X85-T15 | Breite  72% Höhe  63% Fläche  45% | Versatz x  -0.5% y  +0.3% | ok
+TR-V2A-6.5x6.5-D977      GR-ES-R-120X120-T15 | Breite  73% Höhe  61% Fläche  45% | Versatz x  -0.5% y  -0.0% | ok

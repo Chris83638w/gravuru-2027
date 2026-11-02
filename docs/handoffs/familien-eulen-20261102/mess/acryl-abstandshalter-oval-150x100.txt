@@ -1,8 +1,8 @@
 AA-OV-15x10-D970         AA-OV-150X100 | Breite  67% Höhe  68% Fläche  46% | Versatz x  -0.6% y  +0.2% | ok
 AA-OV-15x10-D971         AA-OV-150X100 | Breite  60% Höhe  76% Fläche  46% | Versatz x  -0.6% y  -0.4% | ok
 AA-OV-15x10-D972         AA-OV-150X100 | Breite  65% Höhe  73% Fläche  47% | Versatz x  -0.5% y  +0.5% | ok
-AA-OV-15x10-D973         AA-OV-150X100 | Breite  66% Höhe  66% Fläche  44% | Versatz x  -0.3% y  +0.5% | ok
-AA-OV-15x10-D974         AA-OV-150X100 | Breite  51% Höhe  76% Fläche  39% | Versatz x  +0.0% y  +0.2% | ok
-AA-OV-15x10-D975         AA-OV-150X100 | Breite  56% Höhe  80% Fläche  45% | Versatz x  -0.4% y  +0.2% | ok
+AA-OV-15x10-D973         AA-OV-150X100 | Breite  59% Höhe  69% Fläche  41% | Versatz x  -0.3% y  +0.5% | ok
+AA-OV-15x10-D974         AA-OV-150X100 | Breite  51% Höhe  75% Fläche  39% | Versatz x  -0.2% y  +0.2% | ok
+AA-OV-15x10-D975         AA-OV-150X100 | Breite  55% Höhe  80% Fläche  44% | Versatz x  -0.5% y  +0.2% | ok
 AA-OV-15x10-D976         AA-OV-150X100 | Breite  62% Höhe  78% Fläche  48% | Versatz x  -0.5% y  +0.5% | ok
 AA-OV-15x10-D977         AA-OV-150X100 | Breite  61% Höhe  77% Fläche  47% | Versatz x  -0.3% y  +0.0% | ok

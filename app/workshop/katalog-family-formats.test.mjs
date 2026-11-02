@@ -69,3 +69,15 @@ test('139: all 101 approved catalog designs survive validation; a changed bound 
  const altered=structuredClone(config);altered.profile.defaultDesignId='katalog-TEST-AB-D2';
  assert.throws(()=>prepareConfig(altered),/fester Shop-Produktschnitt/);
 });
+
+test('139: fixed door signs keep only their own mounting options; bell and memorial families cannot enter this planner',async()=>{
+ const k=source({approved:true}),master=k.designs.masters[0],shopProduct={sizeKey:master.json.sizes[0],themeId:'familie',defaultDesignId:master.id};
+ const {config:c}=await planFamilyFormats(k,'test','familie',{shopProduct});
+ assert.deepEqual(c.profile.optionGroups.map(g=>g.id),['mounting']);
+ for(const other of [{frame:'flush'},{position:'opposite'},{format:'bell'},{backing:'steel'}])assert.throws(()=>resolvedOptions(c,other),/Unbekannte/);
+ assert.equal(c.doorbell,undefined);assert.equal(c.acrylic,undefined);assert.equal(c.familyAcrylic,undefined);
+ for(const familyId of ['funkklingeln','ae-gedenktafeln','gedenktafel-30x20-schiefer-natur']){
+  k.lines.get('test').families=[familyId];
+  await assert.rejects(planFamilyFormats(k,'test','familie',{shopProduct}),/Keine freigegebene Türschild-Familienart/);
+ }
+});

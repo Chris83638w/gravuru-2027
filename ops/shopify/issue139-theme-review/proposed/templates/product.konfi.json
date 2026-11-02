@@ -84,13 +84,13 @@
           "settings": {
             "unit_label": "Stück",
             "max_quantity": 20,
-            "tier_1_min_quantity": "2",
-            "tier_1_discount": "10",
-            "tier_2_min_quantity": "5",
-            "tier_2_discount": "20",
+            "tier_1_min_quantity": "",
+            "tier_1_discount": "",
+            "tier_2_min_quantity": "",
+            "tier_2_discount": "",
             "tier_3_min_quantity": "",
             "tier_3_discount": "",
-            "show_tip": true,
+            "show_tip": false,
             "tip_label": "Tipp:",
             "tip_template": "kaufe {qty} {unit} oder mehr und spare {discount}"
           }
@@ -223,9 +223,9 @@
       "name": "Support & Kontakt Box",
       "settings": {
         "container": "fixed",
-        "avatar_1": "shopify://shop_images/photo-1500648767791-00dcc994a43e.jpg",
-        "avatar_2": "shopify://shop_images/photo-1494790108377-be9c29b29330.jpg",
-        "avatar_3": "shopify://shop_images/photo-1507003211169-0a1dd7228f2d.jpg",
+        "avatar_1": "",
+        "avatar_2": "",
+        "avatar_3": "",
         "heading": "Fragen zur Gestaltung oder Bestellung?",
         "description": "Wir helfen dir gern und sind noch wirklich persönlich für dich da.",
         "email_label": "E-Mail:",
@@ -234,7 +234,7 @@
         "whatsapp_text": "Nachricht schreiben",
         "whatsapp_link": "",
         "phone_label": "Telefon:",
-        "phone_number": "0521 123 456 7",
+        "phone_number": "",
         "background_color": "#f3eee7",
         "box_background_color": "#ffffff",
         "icon_color": "#2f7d57",
@@ -264,9 +264,9 @@
             "image_overlay_opacity": 0,
             "content_position": "split-bottom-button",
             "content_alignment": "left",
-            "subheading": "Promotion",
+            "subheading": "",
             "subheading_style": "",
-            "heading": "Soft Stools Design",
+            "heading": "Unsere Produkte",
             "highlight_style": "none",
             "highlight_font_style": "italic",
             "highlight_style_color": "",
@@ -276,7 +276,7 @@
             "heading_size_custom": 18,
             "description": "",
             "text_size": "text-base",
-            "button_label": "Shop now",
+            "button_label": "Produkte ansehen",
             "button_style": "btn--primary",
             "button_icon": "none"
           }
@@ -336,7 +336,7 @@
             "highlight_style_color": "",
             "highlight_text_color": "",
             "heading_size": "h4",
-            "text": "<p>Gestalte dein Produkt genau so, wie du es dir vorstellst. Lade dein eigenes Motiv oder Logo hoch oder wähle aus unseren Vorlagen. In der Vorschau siehst du sofort, wie deine individuelle Gravur aussehen wird.</p>",
+            "text": "<p>Wähle ein Design und gestalte dein Produkt mit den dafür angebotenen Optionen. In der Vorschau prüfst du deine Gestaltung vor der Bestellung.</p>",
             "text_size": "text-base",
             "button_label": "",
             "button_link": "",
@@ -347,13 +347,13 @@
         "column_D9AngV": {
           "type": "column",
           "settings": {
-            "title": "Wir prüfen dein Motiv",
+            "title": "Deine Gestaltung für die Fertigung",
             "highlight_style": "none",
             "highlight_font_style": "italic",
             "highlight_style_color": "",
             "highlight_text_color": "",
             "heading_size": "h4",
-            "text": "<p>Unser Team kontrolliert dein Design, optimiert es bei Bedarf für die Gravur und schickt dir einen digitalen Korrekturabzug. Erst wenn du zufrieden bist, geben wir die Produktion frei.</p>",
+            "text": "<p>Deine gewählte Gestaltung und die zum Produkt passenden Optionen bilden die Grundlage für die Fertigung.</p>",
             "text_size": "text-base",
             "button_label": "",
             "button_link": "",
@@ -364,13 +364,13 @@
         "column_eqxwba": {
           "type": "column",
           "settings": {
-            "title": "Dein Motiv wird graviert",
+            "title": "Dein Produkt wird gefertigt",
             "highlight_style": "none",
             "highlight_font_style": "italic",
             "highlight_style_color": "",
             "highlight_text_color": "",
             "heading_size": "h4",
-            "text": "<p>Mit modernster Gravurtechnik bringen wir dein Motiv exakt auf das ausgewählte Produkt. Anschließend prüfen wir jedes Stück sorgfältig, damit es perfekt bei dir ankommt.</p>",
+            "text": "<p>Wir fertigen dein persönliches Produkt mit dem für das Material vorgesehenen Verfahren.</p>",
             "text_size": "text-base",
             "button_label": "",
             "button_link": "",
@@ -387,7 +387,7 @@
             "highlight_style_color": "",
             "highlight_text_color": "",
             "heading_size": "h4",
-            "text": "<p>Nach der Qualitätskontrolle verpacken wir dein Produkt sicher und schicken es auf den Weg. Mit der Sendungsverfolgung weißt du jederzeit, wann dein persönliches Unikat bei dir eintrifft.</p>",
+            "text": "<p>Nach der Fertigung wird dein Produkt sicher verpackt und an dich versendet. Die Versandkosten werden im Checkout angezeigt.</p>",
             "text_size": "text-base",
             "button_label": "",
             "button_link": "",
@@ -409,7 +409,7 @@
         "section_header_alignment": "left",
         "section_header_alignment_mobile": "inherit",
         "subheading": "",
-        "heading": "So erstellen wir dein persöhnliches Unikat",
+        "heading": "So entsteht dein persönliches Unikat",
         "highlight_style": "none",
         "highlight_font_style": "italic",
         "highlight_style_color": "",
@@ -433,59 +433,6 @@
         "divider_width": "fixed",
         "padding_top": 50,
         "padding_bottom": 60
-      }
-    },
-    "image_comparison_atfeK7": {
-      "type": "image-comparison",
-      "blocks": {
-        "image_9x7qzT": {
-          "type": "image",
-          "settings": {
-            "image": "{{ section.settings.product.metafields.custom.bild_vorher.value }}",
-            "heading": "Vorher",
-            "color_scheme": ""
-          }
-        },
-        "image_fGtQkt": {
-          "type": "image",
-          "settings": {
-            "image": "{{ section.settings.product.metafields.custom.bild_nachher.value }}",
-            "heading": "Nachher",
-            "color_scheme": ""
-          }
-        }
-      },
-      "block_order": [
-        "image_9x7qzT",
-        "image_fGtQkt"
-      ],
-      "name": "t:sections.image-comparison.name",
-      "settings": {
-        "container": "fixed",
-        "color_scheme": "",
-        "section_header_alignment": "center",
-        "section_header_alignment_mobile": "left",
-        "subheading": "",
-        "heading": "Vorher/Nachher Vergleich",
-        "highlight_style": "none",
-        "highlight_font_style": "italic",
-        "highlight_style_color": "",
-        "highlight_text_color": "",
-        "heading_size": "h1",
-        "description": "",
-        "description_size": "text-base",
-        "button_label": "",
-        "button_link": "",
-        "button_style": "btn--primary",
-        "button_icon": "none",
-        "direction": "horizontal",
-        "image_height": "small",
-        "image_heading_style": "badge",
-        "product": "",
-        "padding_top": 50,
-        "padding_bottom": 50,
-        "show_section_divider": false,
-        "divider_width": "fixed"
       }
     },
     "image_with_text_Fjf69J": {
@@ -513,7 +460,7 @@
         "text_fVeFW9": {
           "type": "text",
           "settings": {
-            "text": "<p>Unsere Gedenktafeln entstehen in liebevoller Handarbeit in unserer eigenen Manufaktur in Bielefeld. Vom Zuschnitt des hochwertigen <strong>Naturschiefers</strong> über die präzise <strong>Lasergravur</strong> bis hin zur Endkontrolle liegt jeder Schritt in unserer Hand.</p><p>Durch die Herstellung in Deutschland garantieren wir dir <strong>gleichbleibend hohe Qualität</strong>, faire Arbeitsbedingungen und kurze Lieferzeiten. Jedes Produkt wird individuell geprüft und mit großer Sorgfalt verpackt, bevor es unser Haus verlässt.</p>",
+            "text": "<p>Dein persönliches Produkt entsteht in unserer eigenen Fertigung in Bielefeld. Material und Ausführung findest du in den Angaben zu diesem Artikel.</p>",
             "subtext_color": true
           }
         },
@@ -555,7 +502,7 @@
           "type": "badge",
           "settings": {
             "color_scheme": "",
-            "text": "image with text - spinning text -",
+            "text": "Gravuru - Persönlich gefertigt -",
             "position_mobile": "right"
           }
         },
@@ -629,7 +576,7 @@
           "type": "collapsible_item",
           "settings": {
             "icon": "none",
-            "heading": "Frage nicht noch offen?",
+            "heading": "Noch eine Frage offen?",
             "content": "<p>Du konntest keine Antwort auf deine Frage finden? <a href=\"/pages/contact\" title=\"Kontakt\">Kontaktiere uns</a>! Wir helfen gerne weiter.</p>",
             "custom_liquid": "",
             "page": "",
@@ -676,14 +623,6 @@
         "divider_width": "fixed"
       }
     },
-    "1756934659fda0a9da": {
-      "type": "apps",
-      "settings": {
-        "include_margins": true,
-        "padding_top": 0,
-        "padding_bottom": 0
-      }
-    },
     "featured_collection_3yXhKP": {
       "type": "featured-collection",
       "blocks": {
@@ -700,7 +639,7 @@
             "content_alignment": "left",
             "subheading": "",
             "subheading_style": "",
-            "heading": "Collections",
+            "heading": "Unsere Produkte",
             "highlight_style": "none",
             "highlight_font_style": "italic",
             "highlight_style_color": "",
@@ -710,7 +649,7 @@
             "heading_size_custom": 18,
             "description": "",
             "text_size": "text-base",
-            "button_label": "Button label",
+            "button_label": "Produkte ansehen",
             "button_style": "btn--primary",
             "button_icon": "none"
           }
@@ -762,7 +701,7 @@
         "heading_BKBexa": {
           "type": "heading",
           "settings": {
-            "heading": "<strong>Individuelle Gedenktafel aus Schiefer mit Foto-Gravur – 30 × 20 cm</strong>",
+            "heading": "{{ product.title }}",
             "highlight_style": "none",
             "highlight_font_style": "italic",
             "highlight_style_color": "",
@@ -836,11 +775,9 @@
     "support_contact_box_UncK9J",
     "featured_collection_TdgMg8",
     "multicolumn_WhN8xn",
-    "image_comparison_atfeK7",
     "image_with_text_Fjf69J",
     "image_with_text_B9mFzE",
     "collapsible_tabs_c3WWta",
-    "1756934659fda0a9da",
     "featured_collection_3yXhKP",
     "rich_text_KxE7kA",
     "recently_viewed_products_T4pPRy"

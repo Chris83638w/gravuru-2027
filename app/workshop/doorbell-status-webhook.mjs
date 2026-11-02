@@ -6,7 +6,8 @@ const stop=status=>Object.assign(Error('Funkklingel-Statusnachricht nicht übern
 // Separate from the existing paid/test route. Only the explicitly enabled acryl
 // intake is injected. No legacy store or browser session participates.
 export function createDoorbellStatusWebhookHandler({intake,config,bodyTimeoutMs=3000}){
- if(config?.mode!=='doorbell-live-approved'||config.apiVersion!=='2026-07'||typeof intake?.receive!=='function'||typeof intake?.doorbellLiveOrderScope!=='function'||!Number.isInteger(bodyTimeoutMs)||bodyTimeoutMs<1||bodyTimeoutMs>3000)throw Error('Funkklingel-Statuseingang nicht eingerichtet.');
+ const scopeMethod=config?.mode==='catalog-live-approved'?'catalogLiveOrderScope':'doorbellLiveOrderScope';
+ if(!['doorbell-live-approved','catalog-live-approved'].includes(config?.mode)||config.apiVersion!=='2026-07'||typeof intake?.receive!=='function'||typeof intake?.[scopeMethod]!=='function'||!Number.isInteger(bodyTimeoutMs)||bodyTimeoutMs<1||bodyTimeoutMs>3000)throw Error('Live-Statuseingang nicht eingerichtet.');
  const fixed=Object.freeze({...config});
  return async function handle(req,res){
   const reply=(status,value)=>{if(res.destroyed||res.writableEnded)return;res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','Connection':'close'});res.end(JSON.stringify(value));};
@@ -28,7 +29,7 @@ export function createDoorbellStatusWebhookHandler({intake,config,bodyTimeoutMs=
     req.on('data',data);req.once('end',end);req.once('aborted',aborted);req.once('error',aborted);
    });
    const v=verifyDoorbellStatusWebhook(raw,req.headers,fixed);
-   const scope=intake.doorbellLiveOrderScope({shopDomain:v.shopDomain,orderId:v.orderId,lines:v.payload.line_items});
+   const scope=intake[scopeMethod]({shopDomain:v.shopDomain,orderId:v.orderId,lines:v.payload.line_items});
    if(scope==='unrelated')return reply(200,{accepted:true,ignored:true,matchedLines:0});
    if(scope==='pending')throw stop(409);
    if(scope!=='known')throw stop(422);

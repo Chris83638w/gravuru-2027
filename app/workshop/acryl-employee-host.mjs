@@ -44,14 +44,16 @@ export function acrylAssetText(text,pathname=''){if(['/workshop-ui/configurator-
 // alles andere → Fehler vor dem Öffnen von Datenbanken. Live-Funkklingeln benötigen zusätzlich den exakten
 // Freigabewert GRAVURU_DOORBELL_LIVE_ORDERS=approved-20261027 und die gespeicherte Produktfreigabe.
 export function customerIntegrationFromEnv(env=process.env){
- const value=env.GRAVURU_CUSTOMER_INTEGRATION,live=env.GRAVURU_DOORBELL_LIVE_ORDERS;
+ const value=env.GRAVURU_CUSTOMER_INTEGRATION,live=env.GRAVURU_DOORBELL_LIVE_ORDERS,catalog=env.GRAVURU_CATALOG_LIVE_ORDERS;
+ if(catalog!==undefined&&catalog!==''&&catalog!=='approved-issue139-20261102')throw Object.assign(Error('GRAVURU_CATALOG_LIVE_ORDERS kennt nur den Wert approved-issue139-20261102.'),{code:'catalog_live_orders_env'});
  if(live!==undefined&&live!==''&&live!=='approved-20261027')throw Object.assign(Error('GRAVURU_DOORBELL_LIVE_ORDERS kennt nur den Wert approved-20261027.'),{code:'doorbell_live_orders_env'});
  if(value===undefined||value===''){
+  if(catalog==='approved-issue139-20261102')throw Object.assign(Error('Live-Katalogprodukte benötigen die bestehende customerIntegration.'),{code:'catalog_live_orders_env'});
   if(live==='approved-20261027')throw Object.assign(Error('Live-Funkklingeln benötigen die bestehende customerIntegration.'),{code:'doorbell_live_orders_env'});
   return null;
  }
  if(value!=='merchant-test-only')throw Object.assign(Error('GRAVURU_CUSTOMER_INTEGRATION kennt nur den Wert merchant-test-only.'),{code:'customer_integration_env'});
- return {mode:'merchant-test-only',legacyStoreId:'legacy',acrylStoreId:'acryl',shopEntry:{proxyPath:'/apps/konfigurator'},...(live==='approved-20261027'?{doorbellLiveOrders:true}:{})};
+ return {mode:'merchant-test-only',legacyStoreId:'legacy',acrylStoreId:'acryl',shopEntry:{proxyPath:'/apps/konfigurator'},...(live==='approved-20261027'?{doorbellLiveOrders:true}:{}),...(catalog==='approved-issue139-20261102'?{catalogLiveOrders:true}:{})};
 }
 export async function createAcrylEmployeeHost({legacyRelease,dataDirectory,env=process.env,customerIntegration=null}){
  const module=file=>import(pathToFileURL(path.join(legacyRelease,'ops/plesk',file)).href);

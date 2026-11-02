@@ -32,7 +32,9 @@ export function createDoorbellLiveIntake(stores){
 // über den App-Proxy ein: {proxyPath, pagePath?, ttlMs?}. Ohne diesen Schlüssel bleibt alles beim Händlertest.
 export function createConfiguratorIntegration({settings,legacy,acryl,origin,shopifySessions,orderWebhook=null}){
  if(settings===null||settings===undefined)return null;
- if(settings.mode!=='merchant-test-only'||Object.keys(settings).some(k=>!['mode','legacyStoreId','acrylStoreId','shopEntry','doorbellLiveOrders'].includes(k))||!/^[-A-Za-z0-9_]{1,100}$/.test(settings.legacyStoreId||'')||!/^[-A-Za-z0-9_]{1,100}$/.test(settings.acrylStoreId||'')||settings.legacyStoreId===settings.acrylStoreId||!legacy||!acryl||legacy===acryl||legacy.repository===acryl.repository||legacy.customerDrafts===acryl.customerDrafts)throw Error('Eindeutige private Test-Stores fehlen.');
+ if(settings.mode!=='merchant-test-only'||Object.keys(settings).some(k=>!['mode','legacyStoreId','acrylStoreId','shopEntry','doorbellLiveOrders','catalogLiveOrders'].includes(k))||!/^[-A-Za-z0-9_]{1,100}$/.test(settings.legacyStoreId||'')||!/^[-A-Za-z0-9_]{1,100}$/.test(settings.acrylStoreId||'')||settings.legacyStoreId===settings.acrylStoreId||!legacy||!acryl||legacy===acryl||legacy.repository===acryl.repository||legacy.customerDrafts===acryl.customerDrafts)throw Error('Eindeutige private Test-Stores fehlen.');
+ if(settings.catalogLiveOrders!==undefined&&typeof settings.catalogLiveOrders!=='boolean')throw Error('Die Katalog-Livefreigabe muss ausdrücklich ein- oder ausgeschaltet sein.');
+ if(settings.catalogLiveOrders===true&&(!orderWebhook||typeof acryl.orderIntake?.approveCatalogLiveProducts!=='function'))throw Error('Katalog-Livefreigabe benötigt den signierten Eingang und geprüfte Produktfreigaben.');
  if(settings.doorbellLiveOrders!==undefined&&typeof settings.doorbellLiveOrders!=='boolean')throw Error('Die Funkklingel-Livefreigabe muss ausdrücklich ein- oder ausgeschaltet sein.');
  if(settings.doorbellLiveOrders===true&&!orderWebhook)throw Error('Funkklingel-Livefreigabe benötigt den eingerichteten signierten Bestelleingang.');
  if(settings.doorbellLiveOrders===true&&typeof acryl.orderIntake?.approveDoorbellLiveProducts!=='function')throw Error('Der bestehende Acryl-Speicher unterstützt keine geprüften Funkklingel-Livefreigaben.');
@@ -47,7 +49,7 @@ export function createConfiguratorIntegration({settings,legacy,acryl,origin,shop
   // tenant aware. Its dedicated legacy adapter validates that narrower scope.
   const scopedWorkshop=isLegacy?Object.freeze({...workshop,tenantId:'gravuru',legacySingleStore:true}):workshop;
   const cart=createBoundTestCart({workshop:scopedWorkshop,registry,shopDomain});
-  return {...store,workshop:scopedWorkshop,registry,cart,...(!isLegacy&&settings.doorbellLiveOrders===true?{doorbellLiveOrders:true}:{})};
+  return {...store,workshop:scopedWorkshop,registry,cart,...(!isLegacy&&settings.doorbellLiveOrders===true?{doorbellLiveOrders:true}:{}),...(!isLegacy&&settings.catalogLiveOrders===true?{catalogLiveOrders:true}:{})};
  });
  const csrfToken=createHmac('sha256',shopifySessions.secret).update(JSON.stringify(['gravuru-configurator-test-csrf/v1',origin,shopifySessions.clientId])).digest('hex');
  const gateway=createConfiguratorTestGateway({mode:'merchant-test-only',origin,shopDomain,verifyMerchant:createShopifySessionVerifier(shopifySessions),csrfToken,stores});
@@ -55,8 +57,8 @@ export function createConfiguratorIntegration({settings,legacy,acryl,origin,shop
  // exclusively to the new store, whose persisted per-product release ledger is
  // checked again before admitting any line. Legacy never receives a live event.
  const testIntake=orderWebhook?createCrossStoreWebhookIntake({stores:stores.map(s=>({storeId:s.storeId,intake:s.workshop.orderIntake}))}):null;
- const liveEnabled=settings.doorbellLiveOrders===true;
- const webhookConfig=orderWebhook&&liveEnabled?{...orderWebhook,mode:'doorbell-live-approved'}:orderWebhook;
+ const liveEnabled=settings.doorbellLiveOrders===true||settings.catalogLiveOrders===true;
+ const webhookConfig=orderWebhook&&liveEnabled?{...orderWebhook,mode:settings.catalogLiveOrders===true?'catalog-live-approved':'doorbell-live-approved'}:orderWebhook;
  const intake=liveEnabled?createDoorbellLiveIntake(stores.map(s=>({storeId:s.storeId,intake:s.workshop.orderIntake}))):testIntake;
  const webhook=webhookConfig?createOrderWebhookHandler({config:webhookConfig,intake}):null;
  // Derselbe Store-Satz (Registry, Modell, bound-test-cart) wie das Gateway; eigene Routen, eigene Kundensitzung.

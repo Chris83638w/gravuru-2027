@@ -1,3 +1,7 @@
+## 02.11.2026 · Codex · Funkklingeln zurück zu Dropdowns
+
+Chris verlangt die Dropdown-Version für alle 126 Produkte, zuerst online und danach Gesamtprüfung. Vorhandene native Auswahl für Format/Position/Rahmen/Farbe wieder sichtbar; Befestigung als fünf Kacheln. Nur Funkklingel-Darstellungsmodul, Master-Rechte/Geometrie/Preise und 94-%-Vorschau erhalten. 14/14 gezielte Tests, Build und Chrome-Bedienprüfung grün: Länglich/Gegenposition/Anthrazit/Silikon 74,98 EUR. Veröffentlichung auf Kopie der aktuellen Laufzeit issue139-pricing vorbereitet. [Auftrag, Quellen, Nachweise und nächster Schritt](docs/handoffs/2026-11-02-funkklingeln-dropdown.md).
+
 ## 02.11.2026 · Codex · Issue 139 Mengenrabatte und alte Warenkörbe
 
 Feste Türschildprodukte übernehmen nun dieselben Preisübersteuerungen und bestätigten Mengenrabatte wie der Katalogimport. Neue D8-Gestaltungen verwenden V1 ohne Logo; vorherige app-eigene Preisstände bleiben für gespeicherte Warenkörbe gültig. Keine neuen Preise/Rabatte erfunden. 26 gezielte Linux-Tests und zehn kompilierte WASM-Fälle bestanden. Server-Compiler wegen alter glibc nicht verwendbar; identische Funktionsquellen lokal mit vorhandener CLI 4.9.3 gebaut/geprüft. Veröffentlichung dieses Pakets folgt nach main; beide 12×8-Produkte noch nicht neu gebunden. PR 144/main 0112d3d dagegen seit 13:43 UTC live, 90 Linux-Tests/öffentlicher Bundle-SHA bestätigt. [Quellen und nächster Schritt](docs/handoffs/2026-11-02-issue139-live.md#preisergänzung).

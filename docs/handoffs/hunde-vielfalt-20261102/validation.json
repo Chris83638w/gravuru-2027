@@ -9,11 +9,11 @@
       "motifs": 703
     },
     "bundle": {
-      "url": "/_bundle/editor-7901113cdb68d637.mjs",
+      "url": "/_bundle/editor-ce0aec5019eba7f2.mjs",
       "modules": 133,
       "styles": 14,
-      "bytes": 1372841,
-      "gzipBytes": 465845
+      "bytes": 1374805,
+      "gzipBytes": 466176
     }
   },
   "fonts": [

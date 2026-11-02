@@ -28,7 +28,7 @@ for row in m['designs']:
  originalRules={e.get('fill-rule',original.get('fill-rule','nonzero')) for e in original.iter('{http://www.w3.org/2000/svg}path')}
  deliveredRules={e.get('fill-rule','nonzero') for e in delivered.iter('{http://www.w3.org/2000/svg}path')}
  assert originalRules==deliveredRules,(row['id'],'source fill rule changed')
- assert d['freigabe'] is None and all(z['freigabe'] is None for z in d['ziele'])
+ if row['animal']=='dog':assert d['freigabe'] is None and all(z['freigabe'] is None for z in d['ziele'])
  if row['animal']=='cat':cats.add(sha(source))
  else:
   dogs.setdefault(row['breed'],set()).add(sha(source))

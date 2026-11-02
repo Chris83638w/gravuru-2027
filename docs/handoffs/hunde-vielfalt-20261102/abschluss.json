@@ -3,9 +3,11 @@
   "dogDesigns": 660,
   "differentMotifsPerBreed": 12,
   "unchangedCatDesigns": 300,
-  "catFilesByteIdenticalToPreviousCommit": true,
+  "catFilesByteIdenticalToPreviousCommit": false,
   "measuredDogDesigns": 660,
   "allAreaMeasurementsOk": true,
   "maxConnectedFillFraction": 0.06696356028599285,
-  "freigabe": null
+  "freigabe": null,
+  "catFilesMatchCurrentMainIgnoringLineEndings": true,
+  "note": "Katzen-SVG unverändert; zwischenzeitliche Freigaben von Claude aus main erhalten. Neue Hundemotive bleiben ohne Freigabe."
 }

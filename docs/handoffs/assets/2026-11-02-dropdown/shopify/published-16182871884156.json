@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:37:44.652Z",
+  "row": {
+    "id": "gid://shopify/Product/16182871884156",
+    "handle": "klingelschild-reolink-akku-2ayhe-2205b-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-reolink-akku-2ayhe-2205b-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362443132",
+      "value": "cfg_d51c7b68-f97e-4fbb-9068-739fe0733b40",
+      "compareDigest": "4ed6d946a3e8b1043a064429b15c8052246543cac6ed31e99cfa62f294b55187"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:37:42Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjExMjAxMjY2OCwibGFzdF92YWx1ZSI6IjczMTIyMTEyMDEyNjY4In0="
+      }
+    }
+  }
+}

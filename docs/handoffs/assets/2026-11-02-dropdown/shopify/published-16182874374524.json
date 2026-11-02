@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:39:37.060Z",
+  "row": {
+    "id": "gid://shopify/Product/16182874374524",
+    "handle": "klingelschild-tapo-d235-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-tapo-d235-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362934652",
+      "value": "cfg_734d8109-9c46-4712-ac67-148c9e7a4145",
+      "compareDigest": "f187a6e41cdc17a913b12d0353504a8db3f804ff80cd534531f77d2de30e8def"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:39:35Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE1MzcyNjMzMiwibGFzdF92YWx1ZSI6IjczMTIyMTUzNzI2MzMyIn0="
+      }
+    }
+  }
+}

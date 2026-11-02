@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T14:46:46.158Z",
+  "row": {
+    "id": "gid://shopify/Product/16182701621628",
+    "handle": "klingelschild-aosu-pro-v8p1ax11-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-aosu-pro-v8p1ax11-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424359690620",
+      "value": "cfg_d52f96e0-17e4-42b0-b496-74eaa24eaba5",
+      "compareDigest": "328adf2a09511215fec2c4cef86fbadfb5351e0c6ec3c25a0def2de16ea65845"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T14:46:32Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMDk1MDIyMzIyOCwibGFzdF92YWx1ZSI6IjczMTIwOTUwMjIzMjI4In0="
+      }
+    }
+  }
+}

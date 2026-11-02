@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:39:08.707Z",
+  "row": {
+    "id": "gid://shopify/Product/16182873457020",
+    "handle": "klingelschild-ring-plus-2-gen-5dfya3-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-plus-2-gen-5dfya3-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424361951612",
+      "value": "cfg_5afedd9b-aeea-4ca0-8516-ab992b7f8465",
+      "compareDigest": "164b7b1d21b55af3242f5af90b0dbf17efb91bcf785141e7960c8a62fcbf49c9"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:39:06Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE0NDg3ODk3MiwibGFzdF92YWx1ZSI6IjczMTIyMTQ0ODc4OTcyIn0="
+      }
+    }
+  }
+}

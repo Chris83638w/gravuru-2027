@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:34:24.833Z",
+  "row": {
+    "id": "gid://shopify/Product/16182867231100",
+    "handle": "klingelschild-arlo-kabel-avd1001-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-arlo-kabel-avd1001-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424359330172",
+      "value": "cfg_e8e52312-746c-48f9-8efc-d82934fc2dd5",
+      "compareDigest": "5e882e005808f6996fdb0f1dfc8f3c5a504cf3e70b6c6ee27527e19fc519f83d"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:34:22Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAxNDU2MDYzNiwibGFzdF92YWx1ZSI6IjczMTIyMDE0NTYwNjM2In0="
+      }
+    }
+  }
+}

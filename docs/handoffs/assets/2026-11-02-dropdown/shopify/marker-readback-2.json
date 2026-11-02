@@ -1,0 +1,549 @@
+{
+  "at": "2026-11-02T15:33:34.292Z",
+  "products": [
+    {
+      "id": "gid://shopify/Product/16126385488252",
+      "handle": "klingelschild-reolink-poe-d340b-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-reolink-poe-d340b-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130900860",
+        "value": "cfg_80fed3ad-e539-414b-a3d1-bf22f8ff1704",
+        "compareDigest": "17c3cedfbd8c111e986bd3e9c82a921796ef6dbc914ef744231533ca70a0346e"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:16Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0NzI5OTk2NCwibGFzdF92YWx1ZSI6NzIzMTQwNDcyOTk5NjR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126385586556",
+      "handle": "klingelschild-ring-1-5um5e5-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-1-5um5e5-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130868092",
+        "value": "cfg_c7ec992b-55fd-4e56-a3a5-6762b7bf7e73",
+        "compareDigest": "dc94bfd1b8992a2806b6e18376b342b3c9d978d536ee9e22d3a7e24f4462d72d"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:16Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0NzMzMjczMiwibGFzdF92YWx1ZSI6NzIzMTQwNDczMzI3MzJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126386045308",
+      "handle": "klingelschild-ring-2-8vr1s7-0eu0-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-2-8vr1s7-0eu0-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130835324",
+        "value": "cfg_069ac7c3-b5c4-4b80-be0b-4e66bcc6acf5",
+        "compareDigest": "5e791e2ebc6c530a77cd7e2def0f781908d8e6c6b6c07b8a8a7f7aa6f0c0b228"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:17Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0NzM2NTUwMCwibGFzdF92YWx1ZSI6NzIzMTQwNDczNjU1MDB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126386405756",
+      "handle": "klingelschild-ring-3-5at3s9-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-3-5at3s9-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130802556",
+        "value": "cfg_57b32d26-0108-4168-abc4-6b3edd1f30a6",
+        "compareDigest": "8cd73744cdb14e65f080f0235b8bb198d2627c3e17ca962be22ac46116c5be7e"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:17Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0NzM5ODI2OCwibGFzdF92YWx1ZSI6NzIzMTQwNDczOTgyNjh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126386471292",
+      "handle": "klingelschild-ring-akku-pro-5f79e9-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-akku-pro-5f79e9-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130769788",
+        "value": "cfg_7a586b84-f579-4441-a590-53b559064e6d",
+        "compareDigest": "e2811e924205f05500af401ea6eae07156078842d4cc004d5b720facc733bc91"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:18Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0Nzg4OTc4OCwibGFzdF92YWx1ZSI6NzIzMTQwNDc4ODk3ODh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126386569596",
+      "handle": "klingelschild-ring-battery-5f97f2-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-battery-5f97f2-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130737020",
+        "value": "cfg_55aa6675-01c5-417e-95b6-76ff3b2a7580",
+        "compareDigest": "54611e80fbbcf7e2f1b365f6513f1538837b81924063e00b7becb89b266fd226"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:19Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MTc4OTE4MCwibGFzdF92YWx1ZSI6NzIzMTQwNTE3ODkxODB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126386897276",
+      "handle": "klingelschild-ring-plus-1-gen-5f77e9-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-plus-1-gen-5f77e9-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130704252",
+        "value": "cfg_bd33e5c5-1329-4376-a6a7-9313c2725525",
+        "compareDigest": "1f6c9fa069171dc45215c3127a10a96d2c4139d060fa5302e8f8bd6c62265bf6"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:20Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MTgyMTk0OCwibGFzdF92YWx1ZSI6NzIzMTQwNTE4MjE5NDh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126386962812",
+      "handle": "klingelschild-ring-plus-2-gen-5dfya3-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-plus-2-gen-5dfya3-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130671484",
+        "value": "cfg_fd1d49f6-e2cc-41cd-bfb0-d22037961dc1",
+        "compareDigest": "190dbe9a25167c54e104b59bdd77164d73111556ff307024b3085dc8d3266b78"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:20Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MTkyMDI1MiwibGFzdF92YWx1ZSI6NzIzMTQwNTE5MjAyNTJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126387028348",
+      "handle": "klingelschild-ring-pro2-5at2s2-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-pro2-5at2s2-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130638716",
+        "value": "cfg_534fff62-849e-4756-8d67-3e63f214aed4",
+        "compareDigest": "fba8b2a46295d7cf13ce928bb8e8804ac9e1a405dea3406e11a821c125b8086f"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:21Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MTk1MzAyMCwibGFzdF92YWx1ZSI6NzIzMTQwNTE5NTMwMjB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126387126652",
+      "handle": "klingelschild-ring-wired-5at3t5-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-wired-5at3t5-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130605948",
+        "value": "cfg_99a3986f-7b3e-4d7c-8819-42bbdb14f11f",
+        "compareDigest": "2fced6406c733294b6ff3cd85501c669edcc22ed0dce1a1c6e3f22477fa6db82"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:21Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MTk4NTc4OCwibGFzdF92YWx1ZSI6NzIzMTQwNTE5ODU3ODh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126387257724",
+      "handle": "klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130573180",
+        "value": "cfg_d9fb1702-b41e-49f0-9eda-117be91f436a",
+        "compareDigest": "a912b591e1137c488e52ebf022950d83a91226f82914608c924da29957ec1675"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:22Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MjAxODU1NiwibGFzdF92YWx1ZSI6NzIzMTQwNTIwMTg1NTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126387323260",
+      "handle": "klingelschild-tapo-d235-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-tapo-d235-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130540412",
+        "value": "cfg_ffecbae6-5549-4e21-9a11-d484a4bb53cf",
+        "compareDigest": "9f9e92e17e2f307e680b0ffe959111c7df751fed093f7d0aed8690ecdd9b2ea9"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:22Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MjA4NDA5MiwibGFzdF92YWx1ZSI6NzIzMTQwNTIwODQwOTJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126387388796",
+      "handle": "klingelschild-tmezon-intercom-mz-vdp-ne120-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-tmezon-intercom-mz-vdp-ne120-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130507644",
+        "value": "cfg_8474c70e-2867-456f-a893-835f0151fb39",
+        "compareDigest": "5c6b04f29720853ade87ad4da541a04215a5e93ae11707f815b79f63523800fb"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:23Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MjE4MjM5NiwibGFzdF92YWx1ZSI6NzIzMTQwNTIxODIzOTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126387454332",
+      "handle": "klingelschild-tmezon-smart-home-bell-j7-plus-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-tmezon-smart-home-bell-j7-plus-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130474876",
+        "value": "cfg_b9ec63f9-a276-4281-9f83-9fe373031a60",
+        "compareDigest": "9114ccc9c5aff5abd769355113e2b7ff5e99370772108de9030b2e49196fb701"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:23Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MjIxNTE2NCwibGFzdF92YWx1ZSI6NzIzMTQwNTIyMTUxNjR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126387585404",
+      "handle": "klingelschild-winees-m6p20ac-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-winees-m6p20ac-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130442108",
+        "value": "cfg_32729751-aa20-4479-834f-c0aa8e9638fa",
+        "compareDigest": "e595694fa1c65a81b59269a38ede54f24e028ec91a07deb5fc49c5117394abc4"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:24Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MjI0NzkzMiwibGFzdF92YWx1ZSI6NzIzMTQwNTIyNDc5MzJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126387683708",
+      "handle": "klingelschild-wp-cardea-2-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-wp-cardea-2-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130409340",
+        "value": "cfg_890d687d-0a59-4fcd-8100-1106010dc805",
+        "compareDigest": "5d86adae496a873f49ca28ba04bf883c27e7a9fe9d242ea53ffb8b3883211052"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:47Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1Mzc4ODAyOCwibGFzdF92YWx1ZSI6NzIzMTQwNTM3ODgwMjh9"
+        }
+      }
+    }
+  ]
+}

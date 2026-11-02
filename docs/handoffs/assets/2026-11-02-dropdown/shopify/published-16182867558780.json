@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:34:34.297Z",
+  "row": {
+    "id": "gid://shopify/Product/16182867558780",
+    "handle": "klingelschild-blink-2-gen-bdm01300u-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-blink-2-gen-bdm01300u-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424359231868",
+      "value": "cfg_a3806b1b-f013-4b57-9ff9-2269c98f8061",
+      "compareDigest": "88f0b33bf3bb95551701bb868b8fc069e8a5e2ff52c442148e158b99b3c1ea7a"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:34:32Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAxNzIxNDg0NCwibGFzdF92YWx1ZSI6IjczMTIyMDE3MjE0ODQ0In0="
+      }
+    }
+  }
+}

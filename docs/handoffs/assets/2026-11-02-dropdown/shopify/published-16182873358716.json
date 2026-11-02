@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:39:05.614Z",
+  "row": {
+    "id": "gid://shopify/Product/16182873358716",
+    "handle": "klingelschild-ring-plus-1-gen-5f77e9-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-plus-1-gen-5f77e9-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424361984380",
+      "value": "cfg_5b77f065-d0ae-490d-8c77-7c8330c06431",
+      "compareDigest": "9c7b4b35a7e48ba46fdd5817c467b8b24b0be270b7c9a802e686d0855a5a8689"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:39:03Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE0MzgzMDM5NiwibGFzdF92YWx1ZSI6IjczMTIyMTQzODMwMzk2In0="
+      }
+    }
+  }
+}

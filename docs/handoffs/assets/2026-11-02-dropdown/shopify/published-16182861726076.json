@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:33:55.369Z",
+  "row": {
+    "id": "gid://shopify/Product/16182861726076",
+    "handle": "klingelschild-aosu-ultra-v8s1ax15-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-aosu-ultra-v8s1ax15-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424359625084",
+      "value": "cfg_1df891a8-61e8-4b6d-a830-a4431970bd3c",
+      "compareDigest": "ab24218f5cec19974941654ae1aaa9a574589667af8f726a08e5e453bfab479e"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:33:53Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAwNzY0NjU4OCwibGFzdF92YWx1ZSI6IjczMTIyMDA3NjQ2NTg4In0="
+      }
+    }
+  }
+}

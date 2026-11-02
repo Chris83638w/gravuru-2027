@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:40:40.846Z",
+  "row": {
+    "id": "gid://shopify/Product/16182875390332",
+    "handle": "klingelschild-wp-cardea-2-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-wp-cardea-2-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362672508",
+      "value": "cfg_70343415-6c58-49af-881d-02831f5979dc",
+      "compareDigest": "c84758d943e3a231450f1819579c9f3bd0fbc77ff9e315ba69a7be17e88ac8fa"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:40:38Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE3MjY2NjIzNiwibGFzdF92YWx1ZSI6IjczMTIyMTcyNjY2MjM2In0="
+      }
+    }
+  }
+}

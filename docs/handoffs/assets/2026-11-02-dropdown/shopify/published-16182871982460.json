@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:37:49.376Z",
+  "row": {
+    "id": "gid://shopify/Product/16182871982460",
+    "handle": "klingelschild-reolink-poe-d340b-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-reolink-poe-d340b-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362410364",
+      "value": "cfg_d5ab4c00-c9c4-40a5-bf65-3a43d95dc594",
+      "compareDigest": "d919e96057df64ed30e3ec7c2f361e64d2d97856825e539cd316b2511dbe2cfe"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:37:47Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEyMTI4NjAxMiwibGFzdF92YWx1ZSI6IjczMTIyMTIxMjg2MDEyIn0="
+      }
+    }
+  }
+}

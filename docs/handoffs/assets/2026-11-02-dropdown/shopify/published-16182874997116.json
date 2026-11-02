@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:40:30.844Z",
+  "row": {
+    "id": "gid://shopify/Product/16182874997116",
+    "handle": "klingelschild-winees-m6p20ac-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-winees-m6p20ac-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362770812",
+      "value": "cfg_51058636-4f89-430d-9441-0ddc33c03ae2",
+      "compareDigest": "973de175b906d1ba8cda84edefaf314692c999ecc7055ddf8b35ba0212da4598"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:40:28Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE2ODQzOTE2NCwibGFzdF92YWx1ZSI6IjczMTIyMTY4NDM5MTY0In0="
+      }
+    }
+  }
+}

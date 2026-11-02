@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:36:06.582Z",
+  "row": {
+    "id": "gid://shopify/Product/16182870212988",
+    "handle": "klingelschild-eufy-dual-e340-t8214-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-dual-e340-t8214-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424360903036",
+      "value": "cfg_42d4b283-7920-4274-86be-43bf5a9ff6cc",
+      "compareDigest": "bc792fd54c5bc75844c1b62c720eddcf0fb111e03c82490519034eedc35dcf42"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:36:04Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAzODAyMjUyNCwibGFzdF92YWx1ZSI6IjczMTIyMDM4MDIyNTI0In0="
+      }
+    }
+  }
+}

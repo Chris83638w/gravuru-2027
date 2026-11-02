@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:35:13.112Z",
+  "row": {
+    "id": "gid://shopify/Product/16182868246908",
+    "handle": "klingelschild-boifun-bell-j1-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-boifun-bell-j1-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424359068028",
+      "value": "cfg_b7025d97-d444-4ea1-a59e-b3be30a83402",
+      "compareDigest": "f849809b2852f7e91b59fc7e522485bbb6b3c001b333c30648be6bfb51ea1942"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:35:11Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAyNjQ1NTQyMCwibGFzdF92YWx1ZSI6IjczMTIyMDI2NDU1NDIwIn0="
+      }
+    }
+  }
+}

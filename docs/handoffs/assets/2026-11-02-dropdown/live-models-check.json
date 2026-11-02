@@ -1,0 +1,17 @@
+{
+  "proposal": false,
+  "products": 126,
+  "models": 42,
+  "selections": 30240,
+  "uniqueDesignSets": 378,
+  "pictureGroups": 1512,
+  "checkedProposalDesigns": 0,
+  "changedSourceDocuments": 0,
+  "source": "current live SQLite, read-only",
+  "at": "2026-11-02T14:30:27.024Z",
+  "documentsSha256": "b867d3a007c50dea4c25a895ec8b0f9b954e87be7d94f9bf4f7ca361a76937d2",
+  "revisions": [
+    2
+  ],
+  "shopifyWrites": 0
+}

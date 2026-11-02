@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:37:53.040Z",
+  "row": {
+    "id": "gid://shopify/Product/16182872080764",
+    "handle": "klingelschild-reolink-poe-d340b-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-reolink-poe-d340b-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362377596",
+      "value": "cfg_53df7a49-e1ab-4119-a756-7f693dbc70ae",
+      "compareDigest": "5f5d730322ec58ce351e0b25331ebd0981f0efecfbcc9864d230c3549e7b223e"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:37:50Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEyMjQ2NTY2MCwibGFzdF92YWx1ZSI6IjczMTIyMTIyNDY1NjYwIn0="
+      }
+    }
+  }
+}

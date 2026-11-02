@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:37:08.219Z",
+  "row": {
+    "id": "gid://shopify/Product/16182870770044",
+    "handle": "klingelschild-ezviz-ep8-ultra-cs-ep8-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ezviz-ep8-ultra-cs-ep8-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424360739196",
+      "value": "cfg_250136d9-5944-42ac-b31a-26897c3987b2",
+      "compareDigest": "6e7c7ce728af999a822ea637dfa02835461d090d83d1b2bc82176b84ee5907ac"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:37:06Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEwMDE1MDY1MiwibGFzdF92YWx1ZSI6IjczMTIyMTAwMTUwNjUyIn0="
+      }
+    }
+  }
+}

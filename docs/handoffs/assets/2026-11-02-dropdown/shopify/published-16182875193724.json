@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:40:37.452Z",
+  "row": {
+    "id": "gid://shopify/Product/16182875193724",
+    "handle": "klingelschild-wp-cardea-2-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-wp-cardea-2-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362705276",
+      "value": "cfg_7e8b31c1-b95f-49bb-8a3d-fd44a158db98",
+      "compareDigest": "ce8b992fd5db961becab7b11ec129c865fad93e308ae43328a0ee8ca3a507855"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:40:35Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE3MTk0NTM0MCwibGFzdF92YWx1ZSI6IjczMTIyMTcxOTQ1MzQwIn0="
+      }
+    }
+  }
+}

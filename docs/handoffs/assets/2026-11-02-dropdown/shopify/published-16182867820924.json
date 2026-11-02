@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:34:41.726Z",
+  "row": {
+    "id": "gid://shopify/Product/16182867820924",
+    "handle": "klingelschild-blink-kabel-2k-bdm01500u-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-blink-kabel-2k-bdm01500u-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424359166332",
+      "value": "cfg_5eb3cb00-8e51-4fd7-b43f-8f805c31bb54",
+      "compareDigest": "a4cfbd74ef0ae4fe1d13e07634d483bede7c6af2777683709ac66c2acdcf00a1"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:34:38Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAxODg1MzI0NCwibGFzdF92YWx1ZSI6IjczMTIyMDE4ODUzMjQ0In0="
+      }
+    }
+  }
+}

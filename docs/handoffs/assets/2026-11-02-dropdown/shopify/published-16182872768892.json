@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:38:47.915Z",
+  "row": {
+    "id": "gid://shopify/Product/16182872768892",
+    "handle": "klingelschild-ring-akku-pro-5f79e9-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-akku-pro-5f79e9-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362148220",
+      "value": "cfg_9f2f4525-8d6d-4712-9d68-9a16dc35cc1e",
+      "compareDigest": "cfb5141744e6e6797715f35d912dad207b0fa4f826001e2c9a9e0d880755ab12"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:38:45Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEzODE2MTUzMiwibGFzdF92YWx1ZSI6IjczMTIyMTM4MTYxNTMyIn0="
+      }
+    }
+  }
+}

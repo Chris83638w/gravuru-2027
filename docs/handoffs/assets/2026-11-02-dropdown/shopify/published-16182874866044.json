@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:40:27.721Z",
+  "row": {
+    "id": "gid://shopify/Product/16182874866044",
+    "handle": "klingelschild-tmezon-smart-home-bell-j7-plus-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-tmezon-smart-home-bell-j7-plus-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362803580",
+      "value": "cfg_48382dbd-8097-4d43-a8e6-bfdcb7a3949a",
+      "compareDigest": "a97cdae555c31da39fa8ba907bf678013c0fc17218f1d51e2845720b19a6bf7d"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:40:25Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE2NzM1NzgyMCwibGFzdF92YWx1ZSI6IjczMTIyMTY3MzU3ODIwIn0="
+      }
+    }
+  }
+}

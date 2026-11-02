@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:35:26.919Z",
+  "row": {
+    "id": "gid://shopify/Product/16182868836732",
+    "handle": "klingelschild-ctronics-ctsc-j6-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ctronics-ctsc-j6-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424358936956",
+      "value": "cfg_0d41efed-27f6-4e7c-a58a-9a6b8df6c917",
+      "compareDigest": "b9b85d5aa8ca9b9d15a41e85f08ae267276674cc148ec39a49f16d44136f6d28"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:35:24Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAyOTI0MDcwMCwibGFzdF92YWx1ZSI6IjczMTIyMDI5MjQwNzAwIn0="
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:34:31.037Z",
+  "row": {
+    "id": "gid://shopify/Product/16182867427708",
+    "handle": "klingelschild-blink-1-gen-bdm01200u-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-blink-1-gen-bdm01200u-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424359264636",
+      "value": "cfg_f32a701d-59c2-4d16-81b7-5d98c1124624",
+      "compareDigest": "b3fc419149a791c3bfe443a985a22f4f5ce26b557d658782be587ec01742937f"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:34:29Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAxNjEzMzUwMCwibGFzdF92YWx1ZSI6IjczMTIyMDE2MTMzNTAwIn0="
+      }
+    }
+  }
+}

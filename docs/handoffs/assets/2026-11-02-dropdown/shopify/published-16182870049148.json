@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:36:03.459Z",
+  "row": {
+    "id": "gid://shopify/Product/16182870049148",
+    "handle": "klingelschild-eufy-dual-e340-t8214-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-dual-e340-t8214-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424360935804",
+      "value": "cfg_2fb99cc6-3511-4209-849b-f04c242ec0e4",
+      "compareDigest": "0cf8be6e9cca23dde43bb94887880fb88175f462dc4ee9abdfaa14b24755fe90"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:36:01Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAzNzM5OTkzMiwibGFzdF92YWx1ZSI6IjczMTIyMDM3Mzk5OTMyIn0="
+      }
+    }
+  }
+}

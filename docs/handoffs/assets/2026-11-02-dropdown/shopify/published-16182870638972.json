@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:37:05.035Z",
+  "row": {
+    "id": "gid://shopify/Product/16182870638972",
+    "handle": "klingelschild-ezviz-db1-cs-db1c-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ezviz-db1-cs-db1c-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424360771964",
+      "value": "cfg_083c6245-2de4-4679-b339-d7f7af44856e",
+      "compareDigest": "084a0e98e3b236395565d3d4dac9b4eb41f5fda54cfee34cda45622f58fb8b8e"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:37:02Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjA5OTU5MzU5NiwibGFzdF92YWx1ZSI6IjczMTIyMDk5NTkzNTk2In0="
+      }
+    }
+  }
+}

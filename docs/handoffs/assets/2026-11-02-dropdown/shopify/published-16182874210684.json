@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:39:30.861Z",
+  "row": {
+    "id": "gid://shopify/Product/16182874210684",
+    "handle": "klingelschild-ring-wired-pro-3-gen-5dfya2-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-wired-pro-3-gen-5dfya2-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424361722236",
+      "value": "cfg_e24c4147-0416-4e08-9351-94e28f4c205c",
+      "compareDigest": "997a7f940b0d9a5f8f918c1eba0f78dfd54df315772920290e8c88fe4c280fd8"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:39:28Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE1MTE3MDQyOCwibGFzdF92YWx1ZSI6IjczMTIyMTUxMTcwNDI4In0="
+      }
+    }
+  }
+}

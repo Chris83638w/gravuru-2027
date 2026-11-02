@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:38:02.294Z",
+  "row": {
+    "id": "gid://shopify/Product/16182872375676",
+    "handle": "klingelschild-ring-2-8vr1s7-0eu0-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-2-8vr1s7-0eu0-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362279292",
+      "value": "cfg_38afa130-a34a-4c4d-89f5-6202129b4101",
+      "compareDigest": "277353ad140ca12e38737657140512c0cab288f46c7c910e492b9fd6b6c1ff23"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:38:00Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEyNTExOTg2OCwibGFzdF92YWx1ZSI6IjczMTIyMTI1MTE5ODY4In0="
+      }
+    }
+  }
+}

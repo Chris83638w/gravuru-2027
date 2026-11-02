@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:38:51.772Z",
+  "row": {
+    "id": "gid://shopify/Product/16182872899964",
+    "handle": "klingelschild-ring-akku-pro-5f79e9-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-akku-pro-5f79e9-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362115452",
+      "value": "cfg_bb30e76a-0449-452e-872d-5b532c594d44",
+      "compareDigest": "608740f43aae3ed760225712231841bd868b8e007b7676a7cdc90df2752a9aad"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:38:49Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEzOTU3MDU1NiwibGFzdF92YWx1ZSI6IjczMTIyMTM5NTcwNTU2In0="
+      }
+    }
+  }
+}

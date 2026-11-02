@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:34:44.947Z",
+  "row": {
+    "id": "gid://shopify/Product/16182868017532",
+    "handle": "klingelschild-blink-kabel-2k-bdm01500u-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-blink-kabel-2k-bdm01500u-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424359133564",
+      "value": "cfg_0e842ec2-41af-4ac3-9ca1-0265eaa75b71",
+      "compareDigest": "7ea5a0878c3d672f31c9d99b43f5c0f5ccd5eeb0f49915bc77322316811b6425"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:34:42Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAxOTY3MjQ0NCwibGFzdF92YWx1ZSI6IjczMTIyMDE5NjcyNDQ0In0="
+      }
+    }
+  }
+}

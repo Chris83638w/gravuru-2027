@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:39:43.204Z",
+  "row": {
+    "id": "gid://shopify/Product/16182874603900",
+    "handle": "klingelschild-tmezon-intercom-mz-vdp-ne120-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-tmezon-intercom-mz-vdp-ne120-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362869116",
+      "value": "cfg_942f5233-326f-46ea-b129-1a5d1c4ccef5",
+      "compareDigest": "19d893036465aca82c6a8761ad44b5ce0d8e0c8d8bff882175e2e58dc43b28cc"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:39:41Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE1NTM5NzUwMCwibGFzdF92YWx1ZSI6IjczMTIyMTU1Mzk3NTAwIn0="
+      }
+    }
+  }
+}

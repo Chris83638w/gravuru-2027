@@ -1,0 +1,290 @@
+{
+  "at": "2026-11-02T15:33:32.184Z",
+  "request": {
+    "metafields": [
+      {
+        "ownerId": "gid://shopify/Product/16126385488252",
+        "namespace": "custom",
+        "key": "customization_id",
+        "type": "single_line_text_field",
+        "value": "cfg_80fed3ad-e539-414b-a3d1-bf22f8ff1704",
+        "compareDigest": null
+      },
+      {
+        "ownerId": "gid://shopify/Product/16126385586556",
+        "namespace": "custom",
+        "key": "customization_id",
+        "type": "single_line_text_field",
+        "value": "cfg_c7ec992b-55fd-4e56-a3a5-6762b7bf7e73",
+        "compareDigest": null
+      },
+      {
+        "ownerId": "gid://shopify/Product/16126386045308",
+        "namespace": "custom",
+        "key": "customization_id",
+        "type": "single_line_text_field",
+        "value": "cfg_069ac7c3-b5c4-4b80-be0b-4e66bcc6acf5",
+        "compareDigest": null
+      },
+      {
+        "ownerId": "gid://shopify/Product/16126386405756",
+        "namespace": "custom",
+        "key": "customization_id",
+        "type": "single_line_text_field",
+        "value": "cfg_57b32d26-0108-4168-abc4-6b3edd1f30a6",
+        "compareDigest": null
+      },
+      {
+        "ownerId": "gid://shopify/Product/16126386471292",
+        "namespace": "custom",
+        "key": "customization_id",
+        "type": "single_line_text_field",
+        "value": "cfg_7a586b84-f579-4441-a590-53b559064e6d",
+        "compareDigest": null
+      },
+      {
+        "ownerId": "gid://shopify/Product/16126386569596",
+        "namespace": "custom",
+        "key": "customization_id",
+        "type": "single_line_text_field",
+        "value": "cfg_55aa6675-01c5-417e-95b6-76ff3b2a7580",
+        "compareDigest": null
+      },
+      {
+        "ownerId": "gid://shopify/Product/16126386897276",
+        "namespace": "custom",
+        "key": "customization_id",
+        "type": "single_line_text_field",
+        "value": "cfg_bd33e5c5-1329-4376-a6a7-9313c2725525",
+        "compareDigest": null
+      },
+      {
+        "ownerId": "gid://shopify/Product/16126386962812",
+        "namespace": "custom",
+        "key": "customization_id",
+        "type": "single_line_text_field",
+        "value": "cfg_fd1d49f6-e2cc-41cd-bfb0-d22037961dc1",
+        "compareDigest": null
+      },
+      {
+        "ownerId": "gid://shopify/Product/16126387028348",
+        "namespace": "custom",
+        "key": "customization_id",
+        "type": "single_line_text_field",
+        "value": "cfg_534fff62-849e-4756-8d67-3e63f214aed4",
+        "compareDigest": null
+      },
+      {
+        "ownerId": "gid://shopify/Product/16126387126652",
+        "namespace": "custom",
+        "key": "customization_id",
+        "type": "single_line_text_field",
+        "value": "cfg_99a3986f-7b3e-4d7c-8819-42bbdb14f11f",
+        "compareDigest": null
+      },
+      {
+        "ownerId": "gid://shopify/Product/16126387257724",
+        "namespace": "custom",
+        "key": "customization_id",
+        "type": "single_line_text_field",
+        "value": "cfg_d9fb1702-b41e-49f0-9eda-117be91f436a",
+        "compareDigest": null
+      },
+      {
+        "ownerId": "gid://shopify/Product/16126387323260",
+        "namespace": "custom",
+        "key": "customization_id",
+        "type": "single_line_text_field",
+        "value": "cfg_ffecbae6-5549-4e21-9a11-d484a4bb53cf",
+        "compareDigest": null
+      },
+      {
+        "ownerId": "gid://shopify/Product/16126387388796",
+        "namespace": "custom",
+        "key": "customization_id",
+        "type": "single_line_text_field",
+        "value": "cfg_8474c70e-2867-456f-a893-835f0151fb39",
+        "compareDigest": null
+      },
+      {
+        "ownerId": "gid://shopify/Product/16126387454332",
+        "namespace": "custom",
+        "key": "customization_id",
+        "type": "single_line_text_field",
+        "value": "cfg_b9ec63f9-a276-4281-9f83-9fe373031a60",
+        "compareDigest": null
+      },
+      {
+        "ownerId": "gid://shopify/Product/16126387585404",
+        "namespace": "custom",
+        "key": "customization_id",
+        "type": "single_line_text_field",
+        "value": "cfg_32729751-aa20-4479-834f-c0aa8e9638fa",
+        "compareDigest": null
+      },
+      {
+        "ownerId": "gid://shopify/Product/16126387683708",
+        "namespace": "custom",
+        "key": "customization_id",
+        "type": "single_line_text_field",
+        "value": "cfg_890d687d-0a59-4fcd-8100-1106010dc805",
+        "compareDigest": null
+      }
+    ]
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Mutation executed successfully. IMPORTANT: Present the results clearly to the user. Do NOT dump raw JSON — summarize what changed in a helpful, readable way."
+      },
+      {
+        "type": "text",
+        "text": "{\"data\":{\"metafieldsSet\":{\"metafields\":[{\"id\":\"gid://shopify/Metafield/200675130900860\",\"namespace\":\"custom\",\"key\":\"customization_id\",\"type\":\"single_line_text_field\",\"value\":\"cfg_80fed3ad-e539-414b-a3d1-bf22f8ff1704\",\"compareDigest\":\"17c3cedfbd8c111e986bd3e9c82a921796ef6dbc914ef744231533ca70a0346e\"},{\"id\":\"gid://shopify/Metafield/200675130868092\",\"namespace\":\"custom\",\"key\":\"customization_id\",\"type\":\"single_line_text_field\",\"value\":\"cfg_c7ec992b-55fd-4e56-a3a5-6762b7bf7e73\",\"compareDigest\":\"dc94bfd1b8992a2806b6e18376b342b3c9d978d536ee9e22d3a7e24f4462d72d\"},{\"id\":\"gid://shopify/Metafield/200675130835324\",\"namespace\":\"custom\",\"key\":\"customization_id\",\"type\":\"single_line_text_field\",\"value\":\"cfg_069ac7c3-b5c4-4b80-be0b-4e66bcc6acf5\",\"compareDigest\":\"5e791e2ebc6c530a77cd7e2def0f781908d8e6c6b6c07b8a8a7f7aa6f0c0b228\"},{\"id\":\"gid://shopify/Metafield/200675130802556\",\"namespace\":\"custom\",\"key\":\"customization_id\",\"type\":\"single_line_text_field\",\"value\":\"cfg_57b32d26-0108-4168-abc4-6b3edd1f30a6\",\"compareDigest\":\"8cd73744cdb14e65f080f0235b8bb198d2627c3e17ca962be22ac46116c5be7e\"},{\"id\":\"gid://shopify/Metafield/200675130769788\",\"namespace\":\"custom\",\"key\":\"customization_id\",\"type\":\"single_line_text_field\",\"value\":\"cfg_7a586b84-f579-4441-a590-53b559064e6d\",\"compareDigest\":\"e2811e924205f05500af401ea6eae07156078842d4cc004d5b720facc733bc91\"},{\"id\":\"gid://shopify/Metafield/200675130737020\",\"namespace\":\"custom\",\"key\":\"customization_id\",\"type\":\"single_line_text_field\",\"value\":\"cfg_55aa6675-01c5-417e-95b6-76ff3b2a7580\",\"compareDigest\":\"54611e80fbbcf7e2f1b365f6513f1538837b81924063e00b7becb89b266fd226\"},{\"id\":\"gid://shopify/Metafield/200675130704252\",\"namespace\":\"custom\",\"key\":\"customization_id\",\"type\":\"single_line_text_field\",\"value\":\"cfg_bd33e5c5-1329-4376-a6a7-9313c2725525\",\"compareDigest\":\"1f6c9fa069171dc45215c3127a10a96d2c4139d060fa5302e8f8bd6c62265bf6\"},{\"id\":\"gid://shopify/Metafield/200675130671484\",\"namespace\":\"custom\",\"key\":\"customization_id\",\"type\":\"single_line_text_field\",\"value\":\"cfg_fd1d49f6-e2cc-41cd-bfb0-d22037961dc1\",\"compareDigest\":\"190dbe9a25167c54e104b59bdd77164d73111556ff307024b3085dc8d3266b78\"},{\"id\":\"gid://shopify/Metafield/200675130638716\",\"namespace\":\"custom\",\"key\":\"customization_id\",\"type\":\"single_line_text_field\",\"value\":\"cfg_534fff62-849e-4756-8d67-3e63f214aed4\",\"compareDigest\":\"fba8b2a46295d7cf13ce928bb8e8804ac9e1a405dea3406e11a821c125b8086f\"},{\"id\":\"gid://shopify/Metafield/200675130605948\",\"namespace\":\"custom\",\"key\":\"customization_id\",\"type\":\"single_line_text_field\",\"value\":\"cfg_99a3986f-7b3e-4d7c-8819-42bbdb14f11f\",\"compareDigest\":\"2fced6406c733294b6ff3cd85501c669edcc22ed0dce1a1c6e3f22477fa6db82\"},{\"id\":\"gid://shopify/Metafield/200675130573180\",\"namespace\":\"custom\",\"key\":\"customization_id\",\"type\":\"single_line_text_field\",\"value\":\"cfg_d9fb1702-b41e-49f0-9eda-117be91f436a\",\"compareDigest\":\"a912b591e1137c488e52ebf022950d83a91226f82914608c924da29957ec1675\"},{\"id\":\"gid://shopify/Metafield/200675130540412\",\"namespace\":\"custom\",\"key\":\"customization_id\",\"type\":\"single_line_text_field\",\"value\":\"cfg_ffecbae6-5549-4e21-9a11-d484a4bb53cf\",\"compareDigest\":\"9f9e92e17e2f307e680b0ffe959111c7df751fed093f7d0aed8690ecdd9b2ea9\"},{\"id\":\"gid://shopify/Metafield/200675130507644\",\"namespace\":\"custom\",\"key\":\"customization_id\",\"type\":\"single_line_text_field\",\"value\":\"cfg_8474c70e-2867-456f-a893-835f0151fb39\",\"compareDigest\":\"5c6b04f29720853ade87ad4da541a04215a5e93ae11707f815b79f63523800fb\"},{\"id\":\"gid://shopify/Metafield/200675130474876\",\"namespace\":\"custom\",\"key\":\"customization_id\",\"type\":\"single_line_text_field\",\"value\":\"cfg_b9ec63f9-a276-4281-9f83-9fe373031a60\",\"compareDigest\":\"9114ccc9c5aff5abd769355113e2b7ff5e99370772108de9030b2e49196fb701\"},{\"id\":\"gid://shopify/Metafield/200675130442108\",\"namespace\":\"custom\",\"key\":\"customization_id\",\"type\":\"single_line_text_field\",\"value\":\"cfg_32729751-aa20-4479-834f-c0aa8e9638fa\",\"compareDigest\":\"e595694fa1c65a81b59269a38ede54f24e028ec91a07deb5fc49c5117394abc4\"},{\"id\":\"gid://shopify/Metafield/200675130409340\",\"namespace\":\"custom\",\"key\":\"customization_id\",\"type\":\"single_line_text_field\",\"value\":\"cfg_890d687d-0a59-4fcd-8100-1106010dc805\",\"compareDigest\":\"5d86adae496a873f49ca28ba04bf883c27e7a9fe9d242ea53ffb8b3883211052\"}],\"userErrors\":[]}}}",
+        "annotations": {
+          "audience": [
+            "assistant"
+          ]
+        }
+      }
+    ],
+    "structuredContent": {
+      "data": {
+        "metafieldsSet": {
+          "metafields": [
+            {
+              "id": "gid://shopify/Metafield/200675130900860",
+              "namespace": "custom",
+              "key": "customization_id",
+              "type": "single_line_text_field",
+              "value": "cfg_80fed3ad-e539-414b-a3d1-bf22f8ff1704",
+              "compareDigest": "17c3cedfbd8c111e986bd3e9c82a921796ef6dbc914ef744231533ca70a0346e"
+            },
+            {
+              "id": "gid://shopify/Metafield/200675130868092",
+              "namespace": "custom",
+              "key": "customization_id",
+              "type": "single_line_text_field",
+              "value": "cfg_c7ec992b-55fd-4e56-a3a5-6762b7bf7e73",
+              "compareDigest": "dc94bfd1b8992a2806b6e18376b342b3c9d978d536ee9e22d3a7e24f4462d72d"
+            },
+            {
+              "id": "gid://shopify/Metafield/200675130835324",
+              "namespace": "custom",
+              "key": "customization_id",
+              "type": "single_line_text_field",
+              "value": "cfg_069ac7c3-b5c4-4b80-be0b-4e66bcc6acf5",
+              "compareDigest": "5e791e2ebc6c530a77cd7e2def0f781908d8e6c6b6c07b8a8a7f7aa6f0c0b228"
+            },
+            {
+              "id": "gid://shopify/Metafield/200675130802556",
+              "namespace": "custom",
+              "key": "customization_id",
+              "type": "single_line_text_field",
+              "value": "cfg_57b32d26-0108-4168-abc4-6b3edd1f30a6",
+              "compareDigest": "8cd73744cdb14e65f080f0235b8bb198d2627c3e17ca962be22ac46116c5be7e"
+            },
+            {
+              "id": "gid://shopify/Metafield/200675130769788",
+              "namespace": "custom",
+              "key": "customization_id",
+              "type": "single_line_text_field",
+              "value": "cfg_7a586b84-f579-4441-a590-53b559064e6d",
+              "compareDigest": "e2811e924205f05500af401ea6eae07156078842d4cc004d5b720facc733bc91"
+            },
+            {
+              "id": "gid://shopify/Metafield/200675130737020",
+              "namespace": "custom",
+              "key": "customization_id",
+              "type": "single_line_text_field",
+              "value": "cfg_55aa6675-01c5-417e-95b6-76ff3b2a7580",
+              "compareDigest": "54611e80fbbcf7e2f1b365f6513f1538837b81924063e00b7becb89b266fd226"
+            },
+            {
+              "id": "gid://shopify/Metafield/200675130704252",
+              "namespace": "custom",
+              "key": "customization_id",
+              "type": "single_line_text_field",
+              "value": "cfg_bd33e5c5-1329-4376-a6a7-9313c2725525",
+              "compareDigest": "1f6c9fa069171dc45215c3127a10a96d2c4139d060fa5302e8f8bd6c62265bf6"
+            },
+            {
+              "id": "gid://shopify/Metafield/200675130671484",
+              "namespace": "custom",
+              "key": "customization_id",
+              "type": "single_line_text_field",
+              "value": "cfg_fd1d49f6-e2cc-41cd-bfb0-d22037961dc1",
+              "compareDigest": "190dbe9a25167c54e104b59bdd77164d73111556ff307024b3085dc8d3266b78"
+            },
+            {
+              "id": "gid://shopify/Metafield/200675130638716",
+              "namespace": "custom",
+              "key": "customization_id",
+              "type": "single_line_text_field",
+              "value": "cfg_534fff62-849e-4756-8d67-3e63f214aed4",
+              "compareDigest": "fba8b2a46295d7cf13ce928bb8e8804ac9e1a405dea3406e11a821c125b8086f"
+            },
+            {
+              "id": "gid://shopify/Metafield/200675130605948",
+              "namespace": "custom",
+              "key": "customization_id",
+              "type": "single_line_text_field",
+              "value": "cfg_99a3986f-7b3e-4d7c-8819-42bbdb14f11f",
+              "compareDigest": "2fced6406c733294b6ff3cd85501c669edcc22ed0dce1a1c6e3f22477fa6db82"
+            },
+            {
+              "id": "gid://shopify/Metafield/200675130573180",
+              "namespace": "custom",
+              "key": "customization_id",
+              "type": "single_line_text_field",
+              "value": "cfg_d9fb1702-b41e-49f0-9eda-117be91f436a",
+              "compareDigest": "a912b591e1137c488e52ebf022950d83a91226f82914608c924da29957ec1675"
+            },
+            {
+              "id": "gid://shopify/Metafield/200675130540412",
+              "namespace": "custom",
+              "key": "customization_id",
+              "type": "single_line_text_field",
+              "value": "cfg_ffecbae6-5549-4e21-9a11-d484a4bb53cf",
+              "compareDigest": "9f9e92e17e2f307e680b0ffe959111c7df751fed093f7d0aed8690ecdd9b2ea9"
+            },
+            {
+              "id": "gid://shopify/Metafield/200675130507644",
+              "namespace": "custom",
+              "key": "customization_id",
+              "type": "single_line_text_field",
+              "value": "cfg_8474c70e-2867-456f-a893-835f0151fb39",
+              "compareDigest": "5c6b04f29720853ade87ad4da541a04215a5e93ae11707f815b79f63523800fb"
+            },
+            {
+              "id": "gid://shopify/Metafield/200675130474876",
+              "namespace": "custom",
+              "key": "customization_id",
+              "type": "single_line_text_field",
+              "value": "cfg_b9ec63f9-a276-4281-9f83-9fe373031a60",
+              "compareDigest": "9114ccc9c5aff5abd769355113e2b7ff5e99370772108de9030b2e49196fb701"
+            },
+            {
+              "id": "gid://shopify/Metafield/200675130442108",
+              "namespace": "custom",
+              "key": "customization_id",
+              "type": "single_line_text_field",
+              "value": "cfg_32729751-aa20-4479-834f-c0aa8e9638fa",
+              "compareDigest": "e595694fa1c65a81b59269a38ede54f24e028ec91a07deb5fc49c5117394abc4"
+            },
+            {
+              "id": "gid://shopify/Metafield/200675130409340",
+              "namespace": "custom",
+              "key": "customization_id",
+              "type": "single_line_text_field",
+              "value": "cfg_890d687d-0a59-4fcd-8100-1106010dc805",
+              "compareDigest": "5d86adae496a873f49ca28ba04bf883c27e7a9fe9d242ea53ffb8b3883211052"
+            }
+          ],
+          "userErrors": []
+        }
+      }
+    },
+    "isError": false
+  }
+}

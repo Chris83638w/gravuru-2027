@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:37:25.477Z",
+  "row": {
+    "id": "gid://shopify/Product/16182871327100",
+    "handle": "klingelschild-google-nest-akku-22lcur-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-google-nest-akku-22lcur-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424360575356",
+      "value": "cfg_6c979f86-df42-490d-8aec-5d8ab48f5774",
+      "compareDigest": "89a070a386508046fc3a85bfe2c4352261db78f455fe1f09e97d3ae8cd82ad8b"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:37:23Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEwNDgwMzcwOCwibGFzdF92YWx1ZSI6IjczMTIyMTA0ODAzNzA4In0="
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:39:18.695Z",
+  "row": {
+    "id": "gid://shopify/Product/16182873751932",
+    "handle": "klingelschild-ring-pro2-5at2s2-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-pro2-5at2s2-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424361853308",
+      "value": "cfg_a46510c3-2abb-47d7-b488-074fd145d7f9",
+      "compareDigest": "0089dec3dfa121e3e1bee02c6edbd8c9831be2da1b59db3357217601024416fc"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:39:16Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE0NzQ2NzY0NCwibGFzdF92YWx1ZSI6IjczMTIyMTQ3NDY3NjQ0In0="
+      }
+    }
+  }
+}

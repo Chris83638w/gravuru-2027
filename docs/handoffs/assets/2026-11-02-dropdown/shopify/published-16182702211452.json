@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T14:47:19.717Z",
+  "row": {
+    "id": "gid://shopify/Product/16182702211452",
+    "handle": "klingelschild-aosu-pro-v8p1ax11-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-aosu-pro-v8p1ax11-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424359657852",
+      "value": "cfg_4dc5181c-d201-4802-8a4b-9500049ed6e5",
+      "compareDigest": "ae90f1892d2da0b90155a9141c582ba54e749c51d8c52565aee2c80fdba4fa06"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T14:46:47Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMDk1Njk3MzQzNiwibGFzdF92YWx1ZSI6IjczMTIwOTU2OTczNDM2In0="
+      }
+    }
+  }
+}

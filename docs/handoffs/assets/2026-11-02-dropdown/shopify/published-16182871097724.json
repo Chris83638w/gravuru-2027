@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:37:18.107Z",
+  "row": {
+    "id": "gid://shopify/Product/16182871097724",
+    "handle": "klingelschild-google-nest-a0077-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-google-nest-a0077-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424360640892",
+      "value": "cfg_763beaf6-0de4-4425-bcf3-95d868e0c79f",
+      "compareDigest": "92f425c1c34e54bcf9c2e717eddde67c7716711ebff3219d67737b7863c0c527"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:37:15Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEwMjU0MjcxNiwibGFzdF92YWx1ZSI6IjczMTIyMTAyNTQyNzE2In0="
+      }
+    }
+  }
+}

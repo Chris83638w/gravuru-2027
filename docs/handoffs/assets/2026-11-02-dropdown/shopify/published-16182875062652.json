@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:40:34.295Z",
+  "row": {
+    "id": "gid://shopify/Product/16182875062652",
+    "handle": "klingelschild-winees-m6p20ac-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-winees-m6p20ac-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362738044",
+      "value": "cfg_59b524cb-5600-46d8-b181-5be3dd10e23a",
+      "compareDigest": "7e60fd5b3969a240636aff3b66c04cc82ac6e33f928f40e82a1629aefc984119"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:40:32Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE2OTMyMzkwMCwibGFzdF92YWx1ZSI6IjczMTIyMTY5MzIzOTAwIn0="
+      }
+    }
+  }
+}

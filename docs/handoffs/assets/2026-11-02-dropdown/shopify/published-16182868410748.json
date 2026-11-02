@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:35:16.201Z",
+  "row": {
+    "id": "gid://shopify/Product/16182868410748",
+    "handle": "klingelschild-cococam-doorbell-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-cococam-doorbell-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424359035260",
+      "value": "cfg_d96aa280-cbc7-4226-a210-e9df460c4b5f",
+      "compareDigest": "06a73d3072c2d899d42a564d5c21c856e082402c1f0415151f68a06ec2f13891"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:35:14Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAyNzExMDc4MCwibGFzdF92YWx1ZSI6IjczMTIyMDI3MTEwNzgwIn0="
+      }
+    }
+  }
+}

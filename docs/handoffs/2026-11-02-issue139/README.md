@@ -21,7 +21,7 @@ Der Planer liest die freigegebenen Katalogziele, keine synthetischen Designbest�
 ![Edelstahl Galerie](steel-gallery.png)
 ![Handygalerie](steel-mobile.png)
 
-Browserprüfung mit separatem Chrome/Playwright per CLI, ausdrücklich von Chris erlaubt. Die vorherige Browser-Erweiterung scheiterte an der URL-Erkennung; der Shell-Weg lädt erfolgreich. Große Galerien sind langsam; **noch kein bestandener mobiler Ladezeitnachweis**. Keine persönlichen Browserprofile verwendet.
+Browserprüfung mit separatem Chrome/Playwright per CLI, ausdrücklich von Chris erlaubt. Die vorherige Browser-Erweiterung scheiterte an der URL-Erkennung; der Shell-Weg lädt erfolgreich. Große Galerien sind langsam; **noch kein bestandener mobiler Ladezeitnachweis**. Keine persönlichen Browserprofile verwendet. Katalog-Draft: https://github.com/Chris83638w/gravuru-katalog./pull/156 · Code-Draft: https://github.com/Chris83638w/gravuru-2027/pull/142.
 
 ## Prüfungen
 

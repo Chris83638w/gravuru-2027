@@ -1,0 +1,13 @@
+✔ picture groups retain all choices and put color immediately after position (6.078778ms)
+✔ each format, frame, color and position has a different geometry-derived picture (5.138147ms)
+✔ rights repair uses the selected format and position without reverting decorative artwork (3.240614ms)
+✔ format selection plus rights repair retains custom text and the correct price (3.689012ms)
+✔ doorbells use their complete local gallery instead of requesting repeated cross-product cards (0.729233ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1311.492869

@@ -1,0 +1,8 @@
+AA-RE-21x7-D970          AA-RE-210X70 | Breite  82% Höhe  38% Fläche  31% | Versatz x  -0.4% y  -0.6% | PRÜFEN: Höhe nur 38 %
+AA-RE-21x7-D971          AA-RE-210X70 | Breite  81% Höhe  45% Fläche  36% | Versatz x  -0.7% y  -0.9% | PRÜFEN: Höhe nur 45 %
+AA-RE-21x7-D972          AA-RE-210X70 | Breite  82% Höhe  41% Fläche  34% | Versatz x  -0.3% y  -0.3% | PRÜFEN: Höhe nur 41 %
+AA-RE-21x7-D973          AA-RE-210X70 | Breite  82% Höhe  38% Fläche  31% | Versatz x  -0.3% y  +0.0% | PRÜFEN: Höhe nur 38 %
+AA-RE-21x7-D974          AA-RE-210X70 | Breite  82% Höhe  51% Fläche  42% | Versatz x  -0.1% y  -0.3% | ok
+AA-RE-21x7-D975          AA-RE-210X70 | Breite  82% Höhe  50% Fläche  41% | Versatz x  -0.3% y  -0.3% | ok
+AA-RE-21x7-D976          AA-RE-210X70 | Breite  82% Höhe  47% Fläche  39% | Versatz x  -0.4% y  -0.0% | ok
+AA-RE-21x7-D977          AA-RE-210X70 | Breite  82% Höhe  43% Fläche  35% | Versatz x  -0.3% y  -0.4% | PRÜFEN: Höhe nur 43 %

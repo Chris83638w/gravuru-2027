@@ -1,0 +1,8 @@
+AA-RE-15x10-D970         AA-RE-150X100 | Breite  74% Höhe  77% Fläche  57% | Versatz x  -0.6% y  +0.2% | ok
+AA-RE-15x10-D971         AA-RE-150X100 | Breite  70% Höhe  89% Fläche  62% | Versatz x  -0.8% y  -0.3% | ok
+AA-RE-15x10-D972         AA-RE-150X100 | Breite  75% Höhe  84% Fläche  63% | Versatz x  -0.5% y  +0.2% | ok
+AA-RE-15x10-D973         AA-RE-150X100 | Breite  74% Höhe  75% Fläche  56% | Versatz x  -0.3% y  +0.5% | ok
+AA-RE-15x10-D974         AA-RE-150X100 | Breite  58% Höhe  87% Fläche  51% | Versatz x  -0.2% y  +0.2% | ok
+AA-RE-15x10-D975         AA-RE-150X100 | Breite  63% Höhe  91% Fläche  57% | Versatz x  -0.3% y  +0.2% | ok
+AA-RE-15x10-D976         AA-RE-150X100 | Breite  72% Höhe  91% Fläche  65% | Versatz x  -0.5% y  +0.2% | ok
+AA-RE-15x10-D977         AA-RE-150X100 | Breite  72% Höhe  91% Fläche  66% | Versatz x  -0.5% y  +0.2% | ok

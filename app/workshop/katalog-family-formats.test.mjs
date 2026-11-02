@@ -7,6 +7,7 @@ import {resolvedOptions,selectedProfile,variantCombinations,quote,prepareConfig}
 import {galleryOrder} from '../configurator/variant-m/design-gallery-model.mjs';
 import {familyChoicesMarkup} from '../configurator/variant-m/family-formats-ui.mjs';
 import {validateCommerce,variantKey} from '../configurator/variant-m/commerce-model.mjs';
+import {capturePersonalization} from './cart-personalization.mjs';
 
 function source({approved=false,hidden=false}={}){
  const family=JSON.parse(fs.readFileSync(new URL('./test-fixtures/acryl3-rear/steel.json',import.meta.url))),size=family.sizes.find(s=>s.groupKey==='AB'&&s.widthMm===120&&s.heightMm===80);
@@ -80,4 +81,16 @@ test('139: fixed door signs keep only their own mounting options; bell and memor
   k.lines.get('test').families=[familyId];
   await assert.rejects(planFamilyFormats(k,'test','familie',{shopProduct}),/Keine freigegebene Türschild-Familienart/);
  }
+});
+
+test('fixed product preserves the confirmed catalog tier precedence and matching checkout contract',async()=>{
+ const k=source({approved:true}),line=k.lines.get('test'),sub=line.subcategories[0],master=k.designs.masters[0];line.id='edelstahl-tuerschilder';
+ const shopProduct={sizeKey:master.json.sizes[0],themeId:'familie',defaultDesignId:master.id};
+ const {config:c}=await planFamilyFormats(k,'test','familie',{shopProduct}),o=resolvedOptions(c);
+ assert.deepEqual(c.quantityTiers,[{minQuantity:3,percentOff:5},{minQuantity:5,percentOff:10},{minQuantity:10,percentOff:15}]);
+ assert.equal(c.quantityTierScope,'complete-unit');assert.equal(quote(c,[],c.profile.defaultDesignId,o,3).unitCents,1899);
+ const pricing={schema:'gravuru-personalization-pricing/v1',enabled:true,productId:'gid://shopify/Product/1',revision:2,currency:'EUR',variants:{1:1999},extraMotifCents:c.extraMotifCents,extraPhotoCents:0,quantityTiers:c.quantityTiers,quantityTierScope:'complete-unit'};
+ assert.equal(capturePersonalization(pricing,{variantId:'1',baseCents:1999,document:{config:c}}).quantityTiers.length,3);
+ sub.priceOverrides={quantityTiers:[]};const {config:none}=await planFamilyFormats(k,'test','familie',{shopProduct});
+ assert.deepEqual(none.quantityTiers,[]);assert.equal(quote(none,[],none.profile.defaultDesignId,resolvedOptions(none),3).unitCents,1999);
 });

@@ -1,0 +1,70 @@
+{
+  "compiled": true,
+  "passed": 10,
+  "wasm": {
+    "bytes": 12383,
+    "sha256": "7ebe66dea6371c7b5286f5b4a63296abf46908c43605c34e0201631037c46336"
+  },
+  "cases": [
+    {
+      "name": "new-base",
+      "passed": true,
+      "rejected": false,
+      "amount": "19.99"
+    },
+    {
+      "name": "new-motif",
+      "passed": true,
+      "rejected": false,
+      "amount": "21.68"
+    },
+    {
+      "name": "new-tier3",
+      "passed": true,
+      "rejected": false,
+      "amount": "18.99"
+    },
+    {
+      "name": "new-motif-tier10",
+      "passed": true,
+      "rejected": false,
+      "amount": "19.86"
+    },
+    {
+      "name": "old-logo",
+      "passed": true,
+      "rejected": false,
+      "amount": "32.98"
+    },
+    {
+      "name": "old-logo-tier3",
+      "passed": true,
+      "rejected": false,
+      "amount": "31.33"
+    },
+    {
+      "name": "exact-legacy",
+      "passed": true,
+      "rejected": false,
+      "amount": "19.99"
+    },
+    {
+      "name": "new-reject-logo",
+      "passed": true,
+      "rejected": true,
+      "amount": null
+    },
+    {
+      "name": "unknown-revision",
+      "passed": true,
+      "rejected": true,
+      "amount": null
+    },
+    {
+      "name": "tampered-legacy",
+      "passed": true,
+      "rejected": true,
+      "amount": null
+    }
+  ]
+}

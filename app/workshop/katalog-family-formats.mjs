@@ -1,8 +1,8 @@
 // One review product per line/subcategory. No DB, Shopify, release or import writes.
-import {familyProductConfig} from './product-families.mjs';
+import {familyProductConfig,sizeQuantityTiers} from './product-families.mjs';
 import {createHash} from 'node:crypto';
 import {assignTargetSeries,approvedForFamily,designTargetCompatibility,designTargets} from './design-targets.mjs';
-import {katalogDesignToTemplate,scaleTemplate} from './katalog-convert.mjs';
+import {katalogDesignToTemplate,scaleTemplate,applyPriceOverrides,defaultQuantityTiers} from './katalog-convert.mjs';
 import {assessDesignTarget} from './design-target-rules.mjs';
 import {customerUxConfig} from './customer-ux-policy.mjs';
 import {prepareConfig} from '../configurator/variant-m/contract.mjs';
@@ -20,7 +20,7 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
  if(shopProduct)shopProduct=validateShopProductCut(shopProduct);
  const line=katalog.lines.get(lineId),sub=line?.subcategories.find(s=>s.id===subcategoryId);
  if(!sub)fail('Linie oder Unterkategorie fehlt.');
- const families=line.families.filter(id=>SIGN_FAMILIES.includes(id)).map(id=>katalog.families.get(id));
+ const families=line.families.filter(id=>SIGN_FAMILIES.includes(id)).map(id=>applyPriceOverrides(katalog.families.get(id),sub));
  if(!families.length)fail('Keine freigegebene Türschild-Familienart.');
  // Issue #139: the product metafield selects one physical format and one
  // starter. Other approved themes remain available in "Weitere Designs".
@@ -39,7 +39,7 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
    if(selectedSize&&slotKey(size)!==slotKey(selectedSize))continue;
    // No generic family starter is exposed: it supplies geometry/options only.
    let config;
-   try{const view={...family,groups:family.groups.filter(g=>g.key===size.groupKey),sizes:[size],mountingRules:family.mountingRules.filter(r=>size.mounting.includes(r.id))};config=familyProductConfig(view,size,1);}
+   try{const view={...family,groups:family.groups.filter(g=>g.key===size.groupKey),sizes:[size],mountingRules:family.mountingRules.filter(r=>size.mounting.includes(r.id))};const fallback=sizeQuantityTiers(family,size)===undefined?defaultQuantityTiers(line,sub):null;if(fallback)view.quantityTiers=fallback.tiers;config=familyProductConfig(view,size,1);}
    catch(error){report.blocked.push({familyId:family.id,sizeKey:size.key,reason:error.message});continue;}
    const p=config.profile,designs=[],unapprovedDesignIds=[];
    for(const a of assigned.get(family.id).filter(a=>!a.oldSize&&a.sizes.includes(size.key))){
@@ -91,6 +91,14 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
  }
  c.workshopElementRights=rights;c.localResources.fonts=fonts;c.localResources.motifs=[...motifs.values()];
  delete c.familyAcrylic;delete c.steelFormats;delete c.quantityTierScope;delete c.quantityTiers;
+ // The same catalogue precedence as the ordinary importer. Fixed products also
+ // expose their common tier contract to the existing saved-offer price binding.
+ if(list.some(s=>s.variants.some(v=>v.quantityTiers!==undefined)))c.quantityTierScope='complete-unit';
+ if(shopProduct){
+  const tiers=start.variants[0].quantityTiers;
+  if(start.variants.some(v=>JSON.stringify(v.quantityTiers)!==JSON.stringify(tiers)))fail('Die Produktfarben benötigen unterschiedliche Shopify-Staffelverträge.');
+  if(tiers!==undefined)c.quantityTiers=copy(tiers);
+ }
  // Font/resource geometry validation still runs, as for every native product.
  p.revision='family-formats-'+createHash('sha256').update(JSON.stringify(c)).digest('hex').slice(0,24);
  const prepared=prepareConfig(c);report.shopify.availableVariants=familyFormatCombinations(prepared).length;

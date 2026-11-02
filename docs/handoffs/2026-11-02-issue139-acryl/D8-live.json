@@ -1,0 +1,18 @@
+{
+  "at": "2026-11-02T17:24:06.189Z",
+  "results": [
+    {
+      "design": "D8",
+      "ok": true,
+      "readyMs": 28702,
+      "selectedColor": "anthrazit",
+      "mounting": "B02S",
+      "variant": "58100337049980",
+      "quantity": 3,
+      "unitCents": 1708,
+      "totalCents": 5124,
+      "editRestored": true,
+      "errors": []
+    }
+  ]
+}

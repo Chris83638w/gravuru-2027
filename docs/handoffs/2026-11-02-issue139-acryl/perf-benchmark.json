@@ -1,0 +1,48 @@
+{
+  "at": "2026-11-02T17:30:56.565Z",
+  "complete": true,
+  "results": [
+    {
+      "name": "before",
+      "ms": 115631.08154,
+      "eventLoopMaxMs": 47311.749119,
+      "bindings": 20,
+      "cards": 4160,
+      "measurements": [
+        {
+          "event": "shop_gallery_build_measure",
+          "storeId": "acryl",
+          "registryMs": 7.363719000000003,
+          "modelMs": 0.03479199999833327,
+          "profileMs": 159.4566960000182,
+          "selectionMs": 115421.32166400015,
+          "models": 2,
+          "bindings": 20,
+          "cards": 4160,
+          "totalMs": 115630.448381
+        }
+      ]
+    },
+    {
+      "name": "after",
+      "ms": 1061.3477049999929,
+      "eventLoopMaxMs": 60.194815,
+      "bindings": 20,
+      "cards": 4160,
+      "measurements": [
+        {
+          "event": "shop_gallery_build_measure",
+          "storeId": "acryl",
+          "registryMs": 0.05660499999066815,
+          "modelMs": 0.016364999988581985,
+          "profileMs": 185.91338799997175,
+          "selectionMs": 559.455543999662,
+          "models": 2,
+          "bindings": 20,
+          "cards": 4160,
+          "totalMs": 1059.5828069999989
+        }
+      ]
+    }
+  ]
+}

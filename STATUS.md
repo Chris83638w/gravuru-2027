@@ -1,3 +1,7 @@
+# Rasseschilder nur 15×10 cm · 02.11.2026 · Codex
+
+960 Designs (55 Hundetypen + 25 Katzenrassen, je zwölf), Warn-/Wachtexte und liebevolle Katzentexte mit großen bearbeitbaren Namen. 300 unterschiedliche Katzenmotive. 960 native Größenprüfungen und Quellen-/Textprüfungen bestanden; SVG-Füllregeln ausdrücklich gegen Originale geprüft. [Übergabe, Galerie und Messbelege](docs/handoffs/2026-11-02-rasse-15x10.md), Katalog-PR 152 (`788cf0a97`). Freigaben null, keine Preise/Familien oder Live-Systeme geändert. Nächster Schritt: Chris/Operator prüft Varianten und gibt einzelne Designs frei.
+
 # Türschilder: Format & Größe · 01.11.2026 · Astra
 
 Chris benennt den Bereich um: Reiter, Überschrift und erster Handy-Schritt heißen jetzt Format & Größe. 42/42 bestehende Tests, Build und lokale Desktop-/375×548-Browserprüfung grün. Nur Text/Umbruch geändert, keine Preis-/Optionslogik. [Nachweis](docs/handoffs/2026-11-01-tuerschilder-review/README.md#beschriftung-nach-chris--01112026). Auf PR #102, kein Merge oder Live-Schritt.

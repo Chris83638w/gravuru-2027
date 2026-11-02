@@ -9,7 +9,7 @@ import {validateStudio} from '../../platform/sources/app/shared/models/studio-pr
 import {getProcessingProfile} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
 import {validateDesignContent, surfaceObjectIssue} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {validateUniversalElements} from '../../platform/sources/app/shared/models/universal-elements.mjs';
-import {measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {measureText,setTextSize} from '../../platform/sources/app/shared/models/text-paths.mjs';
 import {localFontIds} from './local-pilot.mjs';
 import {acrylicSelection,acrylicOptions} from './acrylic-product.mjs';
 import {validSurface} from './material-surface.mjs';

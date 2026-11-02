@@ -2,7 +2,7 @@ import {textToolbarPosition} from './text-toolbar-position.mjs';
 import {placeDirectToolbar} from './toolbar-hosts.mjs';
 import {alignmentContent,uiIcon} from './ui-icons.mjs';
 import {fontDisplayName} from './font-display.mjs';
-import {measureText,textPaths} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {measureText,textPaths} from '../../platform/sources/app/shared/models/text-paths.mjs';
 import {textLength,textLimitCount,clampText} from '../../workshop/theme-limits.mjs';
 import {processPalette,processFreeColor} from '../../workshop/process-profiles.mjs';
 // Reuse the editor's state, rights, text-size controls and photo editor at the selection.

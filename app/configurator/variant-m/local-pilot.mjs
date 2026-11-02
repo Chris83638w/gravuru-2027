@@ -1,5 +1,5 @@
 // Explicitly local, externally supplied review assets. No Shopify/public release.
-import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {measureText} from '../../platform/sources/app/shared/models/text-paths.mjs';
 import {validateDesignContent} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {isArtworkResource} from './artwork-resource.mjs';
 import {productFontIndex} from './lazy-resources-model.mjs';

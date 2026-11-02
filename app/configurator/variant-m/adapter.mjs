@@ -11,7 +11,7 @@ import {decorateEmptyPhotoSlots} from './photo-placeholder.mjs';
 // Fototipp auf der Platte, bevor die Kundenoberfläche fertig ist (build.mjs ruft es direkt nach mount auf).
 export {installEarlyPhotoTap} from './photo-upload.mjs';
 import {getProcessingProfile, elementColor} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
-import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {measureText} from '../../platform/sources/app/shared/models/text-paths.mjs';
 import {escapeXml as esc, filteredDesigns} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {prepareConfig, selectedProfile, quote, money, saveDraft, readDraft, designFromState, validatePhotoFile, newEditableObject, resolvedOptions} from './contract.mjs';
 import {changedCustomerTexts, transferTexts} from './workflow-model.mjs';

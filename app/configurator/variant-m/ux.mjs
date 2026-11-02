@@ -19,7 +19,7 @@ import {installPrintExport} from './print-export.mjs';
 import {photoPlacement} from './photo-position-model.mjs';
 import {photoShape,photoClip,photoMaskURL} from '../../platform/sources/app/shared/models/photo-shape.mjs';
 import {roundEdit,roundDesign,editorTextSize} from './design-edit.mjs';
-import {textPaths,measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {textPaths,measureText,setTextSize} from '../../platform/sources/app/shared/models/text-paths.mjs';
 import {familyDesignReviewNote} from './family-formats.mjs';
 import {quote,money,productProcess,quantityTierLabels,visibleGroups} from './contract.mjs';
 // Hilfetext „Fotos & Logos“ aus der Fotopreisregel des Produkts (vorher fest 9,99 €).

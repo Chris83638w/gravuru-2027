@@ -2,6 +2,12 @@
 
 Quelle: ENTSCHEIDUNGEN.md auf main 66ad324, insbesondere 1.1–1.13, 2.10 und R1–R9; Claude-Kommentare 6588814817 und 6589023089. Dies ist der konkrete Umbauplan zur Prüfung in PR 153, **noch keine implementierte Modultrennung**.
 
+## Erster umgesetzter Trennungsschritt
+
+Die vier allgemeinen Funktionen `setTextSize`, `measureText`, `textGlyphLayout` und `textPaths` liegen nun unverändert in `platform/sources/app/shared/models/text-paths.mjs`. 19 gemeinsame Browsermodule importieren direkt den neutralen Baustein. `doorbell-preview.mjs` exportiert sie für bestehende Aufrufer weiter, behält aber seine eigene Geräteansicht und den alten CDN-Schriftlader. Der gemeinsame Bündelgraph enthält diesen Geräte-/CDN-Lader nicht mehr; ein Regressionstest sichert die Trennung. 193 betroffene Linux-Tests und 14 lokale Schriftpfad-/Bündeltests bestanden. Mobiler D24-Test mit „Koch“, B04 und Designwechsel bestanden, keine Browserfehler. Das ist ein erster Schritt, keine vollständige R2-Abnahme.
+
+Claude-Ergänzung 6589176539 ebenfalls gelesen: kein Aufblitzen der alten Oberfläche und kein doppelter Kopf; bis zur Bedienbereitschaft neuer Ladebildschirm mit Produkt/Startdesign. Die historische Oberfläche darf nicht bloß überdeckt werden. Dieser DOM-/Mount-Umbau bleibt offen und gehört zur unten beschriebenen Trennung von prepare/finish, mit Bildfolge als Abnahme. Der Text „Motivbibliothek wird geladen“ allein beweist keinen vollständigen Bibliotheksdownload: im isolierten Starttrace wurden Kernkatalog und die zwei Startschriften gemessen, nicht motive-alle.json. Das tatsächliche Live-Verhalten ist separat zu prüfen.
+
 ## Heute tatsächlich gemeinsam geladen/ausgeführt
 
 | Datei | Befund |
@@ -13,7 +19,7 @@ Quelle: ENTSCHEIDUNGEN.md auf main 66ad324, insbesondere 1.1–1.13, 2.10 und R1
 | `contract.mjs`, `design-content.mjs`, `studio-products.mjs`, `print-geometry.mjs`, `customer-rights.mjs`, `lazy-resources-model.mjs`, `product-design-gallery.mjs` | Gemeinsamer Importgraph enthält doorbell-selection; studio-products zieht zusätzlich den Gerätekatalog ein. Preis-/Geometrieprüfung ist typabhängig, Import nicht. |
 | `studio-svg.mjs` | Importiert doorbell-material-preview. |
 | `bundle-build.mjs` | Ein Bündel enthält den ganzen statischen Graphen: aktuell 133 Module. Eine bedingte Installer-Abfrage allein erfüllt die neue Forderung daher nicht. |
-| `doorbell-preview.mjs` | Enthält auch allgemeine Schriftpfad-/Textmessfunktionen, die alle Produkte benötigen. Diese neutralen Funktionen müssen in den Kern extrahiert werden; bloßes Umbenennen oder Weglassen wäre falsch. |
+| `doorbell-preview.mjs` | Ursprünglich auch allgemeine Schriftpfad-/Textmessfunktionen; inzwischen in text-paths.mjs extrahiert, siehe erster Trennungsschritt. Geräteansicht und alter Schriftlader bleiben separat. |
 
 ## Vorgesehenes Register
 

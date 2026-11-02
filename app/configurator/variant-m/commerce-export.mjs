@@ -1,5 +1,5 @@
 import {selectedProfile,designFromState,productionObjects} from './contract.mjs';
-import {textPaths} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {textPaths} from '../../platform/sources/app/shared/models/text-paths.mjs';
 import {escapeXml as esc} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {embedSurface} from './material-surface.mjs';
 import {editorUi} from './toolbar-placement-model.mjs';

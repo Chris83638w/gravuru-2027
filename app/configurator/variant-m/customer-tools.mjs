@@ -1,7 +1,7 @@
 import {alignmentContent} from './ui-icons.mjs';
 import {showOverlapWarnings,editableTexts,centerTexts,mechanicalHints,hintKey,motifScore,templateOverlap} from './customer-tools-model.mjs';
 import {themeDefinition,orderMotifCategories} from './design-gallery-model.mjs';
-import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {measureText} from '../../platform/sources/app/shared/models/text-paths.mjs';
 
 export async function installCustomerTools(api){
  const {el,r,profile,config,button,esc,mutate,selected,say,dialog}=api;

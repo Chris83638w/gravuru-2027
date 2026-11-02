@@ -1,4 +1,4 @@
-import {measureText,textGlyphLayout} from './doorbell-preview.mjs';
+import {measureText,textGlyphLayout} from './text-paths.mjs';
 import {flattenClosedSvgPath,contourContainsPolygon,ellipseEdgeDistance} from './contour-geometry.mjs';
 
 // Issue #48/34: a text box may cross a curved edge while every painted letter

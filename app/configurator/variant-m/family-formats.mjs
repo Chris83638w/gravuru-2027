@@ -1,6 +1,6 @@
 // N39: only catalog-bound formats. Free merchant steelFormats keep their stricter rules.
 import {transferTexts} from './workflow-model.mjs';
-import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {measureText} from '../../platform/sources/app/shared/models/text-paths.mjs';
 import {surfaceObjectIssue,validateDesignContent,validateGeometryHoles} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {validateUniversalElements,validateOptionGroups} from '../../platform/sources/app/shared/models/universal-elements.mjs';
 import {quantityTiersIssue} from './quantity-tiers.mjs';

@@ -1,5 +1,5 @@
 // Deterministic local editing only. Original uploads are retained separately.
-import {setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {setTextSize} from '../../platform/sources/app/shared/models/text-paths.mjs';
 import {designTextSize} from './usability-model.mjs';
 export function removeConnectedBackground(data,width,height,seedX,seedY,tolerance=35){
   if(data.length!==width*height*4)throw Error('Ungültige Bildgröße.');

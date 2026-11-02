@@ -1,4 +1,4 @@
-import {setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {setTextSize} from '../../platform/sources/app/shared/models/text-paths.mjs';
 // Shared by the correction form, suggestions and the embedded M editor.
 export const roundEdit = value => Math.round((Number(value) + Number.EPSILON) * 100) / 100;
 export const editorTextSize = value => Math.max(1,Math.min(100,roundEdit(Number(value)||1)));

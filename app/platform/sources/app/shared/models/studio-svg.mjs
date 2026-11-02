@@ -3,7 +3,7 @@ import {doorbellMaterialPreview} from './doorbell-material-preview.mjs';
 import {designPaintOrder} from './design-layer-order.mjs';
 import {contourPathWithHoles,contourSafeAreaSvg} from './contour-geometry.mjs';
 import {photoShape,photoClip,photoMaskURL} from './photo-shape.mjs';
-import {textPaths} from './doorbell-preview.mjs';
+import {textPaths} from './text-paths.mjs';
 import {escapeXml as esc} from './design-content.mjs';
 import {getProcessingProfile,elementColor} from './processing-profiles.mjs';
 export function motifMarkup(item,w,h){

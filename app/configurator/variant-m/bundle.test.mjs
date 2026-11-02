@@ -59,6 +59,8 @@ test('Editor-Bündel enthält alle statisch erreichbaren Module unverändert (bi
     assert.equal(bundle.hash,result.hash);assert.deepEqual(bundle.urls,result.modules);
     // Unabhängige Prüfung des Abschlusses: jede Modulangabe jedes Quelltextes zeigt auf ein Modul im Bündel.
     const set=new Set(bundle.urls);
+    assert.ok(set.has('/platform/sources/app/shared/models/text-paths.mjs'));
+    assert.equal(set.has('/platform/sources/app/shared/models/doorbell-preview.mjs'),false,'common text rendering must not pull in the device preview or its old CDN font loader');
     for(const entry of BUNDLE_ENTRIES)assert.ok(set.has(entry),entry);
     const specifier=/(?:^|[;{}\n])\s*(?:import|export)\s*(?:[\w$*{}\s,]*?\s*from\s*)?['"]([^'"\n]+)['"]/g;
     const sourceOf=url=>fs.readFileSync(fileForUrl(url),'utf8');

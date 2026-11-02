@@ -2,7 +2,7 @@ import {objectIssue} from '../../platform/sources/app/shared/models/design-conte
 import {fitsSurface,transformedCorners} from './usability-model.mjs';
 import {overlaps} from './customer-tools-model.mjs';
 import {textOutlineFits} from '../../platform/sources/app/shared/models/text-outline-fit.mjs';
-import {measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {measureText,setTextSize} from '../../platform/sources/app/shared/models/text-paths.mjs';
 
 export function fitText(object,bounds,surface,min=4,fonts){
  const scaled=size=>Object.fromEntries(Object.entries(bounds).map(([k,v])=>[k,v*size/object.size]));

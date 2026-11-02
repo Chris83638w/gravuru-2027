@@ -5,10 +5,10 @@ import {convertFont} from '../app/workshop/font-library.mjs';
 import {planFamilyFormats} from '../app/workshop/katalog-family-formats.mjs';
 
 const args=Object.fromEntries(process.argv.slice(2).map(s=>{const at=s.indexOf('=');return at<0?[s,true]:[s.slice(0,at),s.slice(at+1)];}));
-const allowed=['--katalog','--linie','--unterkategorie','--output','--pruefvorlagen','--designs'];
-if(Object.keys(args).some(k=>!allowed.includes(k))||!['--katalog','--linie','--unterkategorie','--output'].every(k=>typeof args[k]==='string'))throw Error('Aufruf: --katalog=<Pfad> --linie=<ID> --unterkategorie=<ID> --output=<neuer Ordner> [--pruefvorlagen] [--designs=<IDs,kommagetrennt>]');
+const allowed=['--katalog','--linie','--unterkategorie','--output','--pruefvorlagen','--groessen-erweitern','--beanstandete-anzeigen','--designs'];
+if(Object.keys(args).some(k=>!allowed.includes(k))||!['--katalog','--linie','--unterkategorie','--output'].every(k=>typeof args[k]==='string'))throw Error('Aufruf: --katalog=<Pfad> --linie=<ID> --unterkategorie=<ID> --output=<neuer Ordner> [--pruefvorlagen [--groessen-erweitern] [--beanstandete-anzeigen]] [--designs=<IDs,kommagetrennt>]');
 const output=path.resolve(args['--output']);if(fs.existsSync(output))throw Error('Ausgabeordner existiert bereits; kein Überschreiben.');
-const result=await planFamilyFormats(openKatalog(args['--katalog']),args['--linie'],args['--unterkategorie'],{reviewUnreleased:args['--pruefvorlagen']===true,designIds:args['--designs']?.split(','),converter:convertFont});
+const result=await planFamilyFormats(openKatalog(args['--katalog']),args['--linie'],args['--unterkategorie'],{reviewUnreleased:args['--pruefvorlagen']===true,reviewExpandedSizes:args['--groessen-erweitern']===true,reviewFlagged:args['--beanstandete-anzeigen']===true,designIds:args['--designs']?.split(','),converter:convertFont});
 fs.mkdirSync(output,{recursive:true});fs.writeFileSync(path.join(output,'plan.json'),JSON.stringify(result.report,null,2)+'\n');
 if(result.config)fs.writeFileSync(path.join(output,'review-config.json'),JSON.stringify(result.config)+'\n');
 console.log(JSON.stringify({output,reviewProduct:!!result.config,availableVariants:result.report.shopify.availableVariants??0,plannedVariants:result.report.shopify.plannedVariants,blocked:result.report.blocked.length,unavailable:result.report.unavailable.length}));

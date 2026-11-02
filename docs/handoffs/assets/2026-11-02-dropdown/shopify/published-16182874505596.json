@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:39:40.213Z",
+  "row": {
+    "id": "gid://shopify/Product/16182874505596",
+    "handle": "klingelschild-tmezon-intercom-mz-vdp-ne120-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-tmezon-intercom-mz-vdp-ne120-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362901884",
+      "value": "cfg_317cb0ca-92d5-4bcb-8653-8e83593509bb",
+      "compareDigest": "560ba5d888e4a408fe9937b4637e609cb921ab094c215b68d29cfeafce5e6e98"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:39:38Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE1NDQxNDQ2MCwibGFzdF92YWx1ZSI6IjczMTIyMTU0NDE0NDYwIn0="
+      }
+    }
+  }
+}

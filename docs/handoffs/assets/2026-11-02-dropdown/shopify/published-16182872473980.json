@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:38:05.417Z",
+  "row": {
+    "id": "gid://shopify/Product/16182872473980",
+    "handle": "klingelschild-ring-2-8vr1s7-0eu0-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-2-8vr1s7-0eu0-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362246524",
+      "value": "cfg_f4666874-e4e5-46ff-b99c-10395b4791c6",
+      "compareDigest": "c6ef701de6a47f538a54f1d5ca2ad236718e79c32890cee7a94274df41dbe274"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:38:03Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEyNTc3NTIyOCwibGFzdF92YWx1ZSI6IjczMTIyMTI1Nzc1MjI4In0="
+      }
+    }
+  }
+}

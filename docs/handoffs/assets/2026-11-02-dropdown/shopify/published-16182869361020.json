@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:35:43.946Z",
+  "row": {
+    "id": "gid://shopify/Product/16182869361020",
+    "handle": "klingelschild-eufy-2k-hd-t8210-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-2k-hd-t8210-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424361132412",
+      "value": "cfg_5867e1f3-b143-4c2c-89ce-8b5294414c9d",
+      "compareDigest": "f7da13c5cb8e61000ebd2c6fe52a870ab0fa315b766e479eb1a28d720d5f3cde"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:35:41Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAzMjYxNTgwNCwibGFzdF92YWx1ZSI6IjczMTIyMDMyNjE1ODA0In0="
+      }
+    }
+  }
+}

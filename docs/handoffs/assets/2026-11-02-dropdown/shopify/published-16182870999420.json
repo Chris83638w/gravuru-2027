@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:37:14.467Z",
+  "row": {
+    "id": "gid://shopify/Product/16182870999420",
+    "handle": "klingelschild-google-nest-a0077-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-google-nest-a0077-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424360673660",
+      "value": "cfg_25606d7b-7bd6-4558-ae3a-0e93807873ae",
+      "compareDigest": "78004c171f0621a58484fdc128bc8a5c896fc7df5f978766e3fe5f27e5e86336"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:37:12Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEwMTg4NzM1NiwibGFzdF92YWx1ZSI6IjczMTIyMTAxODg3MzU2In0="
+      }
+    }
+  }
+}

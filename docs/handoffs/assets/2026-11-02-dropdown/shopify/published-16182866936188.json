@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:34:18.329Z",
+  "row": {
+    "id": "gid://shopify/Product/16182866936188",
+    "handle": "klingelschild-arlo-akku-2-gen-avd4001-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-arlo-akku-2-gen-avd4001-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424359395708",
+      "value": "cfg_a14d19dc-0790-48f4-b7f3-fa6ddf0ab366",
+      "compareDigest": "dda5fe32df48cd468f73bb3742e6970da084ca46a4d11804aa18480f3faaee27"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:34:16Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAxMjQ5NjI1MiwibGFzdF92YWx1ZSI6IjczMTIyMDEyNDk2MjUyIn0="
+      }
+    }
+  }
+}

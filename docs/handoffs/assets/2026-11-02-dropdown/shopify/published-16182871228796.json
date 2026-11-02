@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:37:22.049Z",
+  "row": {
+    "id": "gid://shopify/Product/16182871228796",
+    "handle": "klingelschild-google-nest-akku-22lcur-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-google-nest-akku-22lcur-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424360608124",
+      "value": "cfg_e279567e-c8b8-4727-a225-18cd2a4b141a",
+      "compareDigest": "c11f6d6cb3f57280d6a152fd8d3b87a2809cd23a8f9f6c2fe3050241cca63040"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:37:20Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEwNDE0ODM0OCwibGFzdF92YWx1ZSI6IjczMTIyMTA0MTQ4MzQ4In0="
+      }
+    }
+  }
+}

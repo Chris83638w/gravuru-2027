@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:40:24.272Z",
+  "row": {
+    "id": "gid://shopify/Product/16182874734972",
+    "handle": "klingelschild-tmezon-smart-home-bell-j7-plus-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-tmezon-smart-home-bell-j7-plus-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362836348",
+      "value": "cfg_836eb42b-0c67-403b-8784-6c4ea15f7139",
+      "compareDigest": "3a129d658ce5ce993d0c7a4e0dbd204b995d5ecd10395c6929c2f1907a2cee4b"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:40:22Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE2NjU3MTM4OCwibGFzdF92YWx1ZSI6IjczMTIyMTY2NTcxMzg4In0="
+      }
+    }
+  }
+}

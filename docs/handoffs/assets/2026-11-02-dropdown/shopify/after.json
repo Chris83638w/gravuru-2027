@@ -1,0 +1,4297 @@
+{
+  "at": "2026-11-02T15:40:59.695Z",
+  "products": 126,
+  "active": 126,
+  "published": 126,
+  "correctMarkers": 126,
+  "variants": 15120,
+  "newPublications": 84,
+  "newMarkers": 41,
+  "errors": [],
+  "nodes": [
+    {
+      "id": "gid://shopify/Product/16124413084028",
+      "handle": "klingelschild-aosu-pro-v8p1ax11-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-aosu-pro-v8p1ax11-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200525930004860",
+        "value": "cfg_c3ee3fcf-bf87-42e3-af2a-98b680cdb576",
+        "compareDigest": "fabd6e90538194fca2b543b720e87b42847843c0b97209b5df31d4e2beedf206"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-17T18:33:26Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjI5MTk3MDg0MzAwNCwibGFzdF92YWx1ZSI6NzIyOTE5NzA4NDMwMDR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126380212604",
+      "handle": "klingelschild-aosu-ultra-v8s1ax15-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-aosu-ultra-v8s1ax15-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120710012",
+        "value": "cfg_333fe4ed-1972-402d-82ed-951fe2f2296b",
+        "compareDigest": "9800f803e630e4791f3fa9898ff97b5b900dd2b1a3e160491a8306c69bb169be"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:42:50Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDAyMDY1OTU4MCwibGFzdF92YWx1ZSI6NzIzMTQwMjA2NTk1ODB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126380573052",
+      "handle": "klingelschild-aqara-g4-svd-c03-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-aqara-g4-svd-c03-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120677244",
+        "value": "cfg_dad79b46-de86-4086-8878-fca233f67103",
+        "compareDigest": "e359e653afe316a866403d329ed6f48c36bb419196f5f8ecc1ad9a4333bb3b70"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:09Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MTMzNjE4OCwibGFzdF92YWx1ZSI6NzIzMTQwNDEzMzYxODh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126380704124",
+      "handle": "klingelschild-arlo-akku-1-gen-avd2001-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-arlo-akku-1-gen-avd2001-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120644476",
+        "value": "cfg_38a90aea-09a3-4484-a388-26124e01f771",
+        "compareDigest": "fab239fe9bf13078a9fb6fbecf8422ff32a02fdd00cc6adbc8d0f6112bc3053d"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:09Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MTQwMTcyNCwibGFzdF92YWx1ZSI6NzIzMTQwNDE0MDE3MjR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126380867964",
+      "handle": "klingelschild-arlo-akku-2-gen-avd4001-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-arlo-akku-2-gen-avd4001-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120611708",
+        "value": "cfg_3d9d69a8-e11c-4544-9104-3b9c731e717d",
+        "compareDigest": "0ba99c1d09f1e449c5ac21efbaff39333bfb706f3d8fb291df622bd2d70d1d95"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:10Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MTQzNDQ5MiwibGFzdF92YWx1ZSI6NzIzMTQwNDE0MzQ0OTJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126381031804",
+      "handle": "klingelschild-arlo-kabel-avd1001-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-arlo-kabel-avd1001-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120578940",
+        "value": "cfg_e0b8b1b0-75e2-4e92-b820-0e22aff251ff",
+        "compareDigest": "73014f4960b277929954d1f5c90ccd4998618ef8fc651a37bcf3f45e439b2d08"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:10Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MTUzMjc5NiwibGFzdF92YWx1ZSI6NzIzMTQwNDE1MzI3OTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126381130108",
+      "handle": "klingelschild-blink-1-gen-bdm01200u-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-blink-1-gen-bdm01200u-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120546172",
+        "value": "cfg_0396ce35-64ea-4b9e-86a3-04c91d2be8e2",
+        "compareDigest": "37f8302723c4b68e8c287005649dde212b7c565e47b4be8ab6ea902c8f85d8fe"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:10Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MTU2NTU2NCwibGFzdF92YWx1ZSI6NzIzMTQwNDE1NjU1NjR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126381293948",
+      "handle": "klingelschild-blink-2-gen-bdm01300u-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-blink-2-gen-bdm01300u-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120513404",
+        "value": "cfg_caf2b260-bd21-4a0d-b725-cfc4e02a49f4",
+        "compareDigest": "cc35a46484bd07bee1ff6a4dabd5311ac7db00f63439467a658df587ef7f3b67"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:11Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MTU5ODMzMiwibGFzdF92YWx1ZSI6NzIzMTQwNDE1OTgzMzJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126381490556",
+      "handle": "klingelschild-blink-kabel-2k-bdm01500u-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-blink-kabel-2k-bdm01500u-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120480636",
+        "value": "cfg_344dbb79-6ee5-48b4-b441-b265abb25121",
+        "compareDigest": "50f9078061122474f9631095e8939aa11344f01d361d2dddaf0c4f895f565bf6"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:11Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MTYzMTEwMCwibGFzdF92YWx1ZSI6NzIzMTQwNDE2MzExMDB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126381556092",
+      "handle": "klingelschild-boifun-bell-j1-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-boifun-bell-j1-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120447868",
+        "value": "cfg_39cda12e-7342-4d65-980b-f8e5ae97d330",
+        "compareDigest": "d41b0ae52abb8bec6c1f28d89e921f0f836e95e9384da0bd870d715e1d6b6870"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:12Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MTY2Mzg2OCwibGFzdF92YWx1ZSI6NzIzMTQwNDE2NjM4Njh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126381687164",
+      "handle": "klingelschild-cococam-doorbell-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-cococam-doorbell-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120415100",
+        "value": "cfg_ce7b92a2-4c58-4c60-a5bb-d434e1ea3c5b",
+        "compareDigest": "6cbbca6d1c7716dfd7ec470995f9bcecc5fac86e01d17464744ded6d1e97096f"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:12Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MTcyOTQwNCwibGFzdF92YWx1ZSI6NzIzMTQwNDE3Mjk0MDR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126381818236",
+      "handle": "klingelschild-ctronics-ctsc-j6-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ctronics-ctsc-j6-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120382332",
+        "value": "cfg_3df39db4-0609-4a84-a9a2-f5ff74064be9",
+        "compareDigest": "f11f569d06f2da5f73feb7fa8c52bd96531ea65944c5aaa10654f9eb06cec5b6"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:42Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzEzODQyOCwibGFzdF92YWx1ZSI6NzIzMTQwNDMxMzg0Mjh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126382539132",
+      "handle": "klingelschild-eufy-1080p-t8220-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-1080p-t8220-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120349564",
+        "value": "cfg_ae3b9735-c1be-4092-b827-5be823094a5f",
+        "compareDigest": "b4e941f4e44200088764ec592a36be04c4c9c73df5cb3b5638df68b75e1bc781"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:42Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzE3MTE5NiwibGFzdF92YWx1ZSI6NzIzMTQwNDMxNzExOTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126382702972",
+      "handle": "klingelschild-eufy-1080p-t8222-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-1080p-t8222-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120316796",
+        "value": "cfg_83e1c221-5401-4774-928f-41eebea0163d",
+        "compareDigest": "ba3cb5a4da41e8c86c4de3744df0d3dff348635489273f467bbd25722873ebee"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:43Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzIwMzk2NCwibGFzdF92YWx1ZSI6NzIzMTQwNDMyMDM5NjR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126382866812",
+      "handle": "klingelschild-eufy-2k-hd-t8210-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-2k-hd-t8210-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120284028",
+        "value": "cfg_609ae3b6-7d8a-4053-b41e-9fcde7c2e4aa",
+        "compareDigest": "0b606789abd400c7482b7f942912e3e4b4949f91781e285d3b60807dc4be3ed0"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:43Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzIzNjczMiwibGFzdF92YWx1ZSI6NzIzMTQwNDMyMzY3MzJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126383030652",
+      "handle": "klingelschild-eufy-c30-t8224-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-c30-t8224-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120251260",
+        "value": "cfg_20e15cc9-5db4-4d30-ab87-e3bfa980fd25",
+        "compareDigest": "79a1d61002fa414b806adf9835e07f08a9ec3df261f24a8a32495fa1a3279f68"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:44Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzMwMjI2OCwibGFzdF92YWx1ZSI6NzIzMTQwNDMzMDIyNjh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126383194492",
+      "handle": "klingelschild-eufy-c31-t8223-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-c31-t8223-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120218492",
+        "value": "cfg_af6c8363-224a-4028-8280-b57c973582e1",
+        "compareDigest": "49e8f1008a9199e3b8be5c577588c57547fdac8ec6f41c1c29dd179472784c33"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:44Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzQwMDU3MiwibGFzdF92YWx1ZSI6NzIzMTQwNDM0MDA1NzJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126383260028",
+      "handle": "klingelschild-eufy-dual-e340-t8214-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-dual-e340-t8214-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120185724",
+        "value": "cfg_906de0f3-a26b-4267-b3a8-263bbba084cf",
+        "compareDigest": "ac9c5bb381e8f226cc72e5349a716d9ed5960639651e26602378ae3abf0b159f"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:45Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzQzMzM0MCwibGFzdF92YWx1ZSI6NzIzMTQwNDM0MzMzNDB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126383325564",
+      "handle": "klingelschild-eufy-hdr-2k-t8200-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-hdr-2k-t8200-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120152956",
+        "value": "cfg_fe296882-07f0-4b42-bdc9-4e1557a2b337",
+        "compareDigest": "61f4daef8502e71e422c199df7d11f1c8894aa117c718a2a7c5fb613258b527f"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:45Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzQ2NjEwOCwibGFzdF92YWx1ZSI6NzIzMTQwNDM0NjYxMDh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126383423868",
+      "handle": "klingelschild-ezviz-db1-cs-db1c-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ezviz-db1-cs-db1c-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120120188",
+        "value": "cfg_c9c042c3-f5dd-47fe-9b9a-dde28ec71d54",
+        "compareDigest": "cb131c4efaaa197a3c2b0ae1876ddea11875a515a7e084c726e2ea365e66e643"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:46Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzUzMTY0NCwibGFzdF92YWx1ZSI6NzIzMTQwNDM1MzE2NDR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126383522172",
+      "handle": "klingelschild-ezviz-ep8-ultra-cs-ep8-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ezviz-ep8-ultra-cs-ep8-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120087420",
+        "value": "cfg_26c590ef-1feb-4e20-94a5-0db469e345e3",
+        "compareDigest": "c486483a7cee2aec2b6d6804a28e715e9774c157a95796553a352e235cdac4d5"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:46Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzU2NDQxMiwibGFzdF92YWx1ZSI6NzIzMTQwNDM1NjQ0MTJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126383620476",
+      "handle": "klingelschild-google-nest-a0077-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-google-nest-a0077-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120054652",
+        "value": "cfg_9d688bc6-e395-4ea1-a504-493445b8c48a",
+        "compareDigest": "1a551cc0a4adc2721889b6543e67d1e06c778fbc0a86d351cee52f1a8797efd5"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:13Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0NzAzNzgyMCwibGFzdF92YWx1ZSI6NzIzMTQwNDcwMzc4MjB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126385160572",
+      "handle": "klingelschild-google-nest-akku-22lcur-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-google-nest-akku-22lcur-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120021884",
+        "value": "cfg_534f869a-22e2-4080-a656-8f9a6e756ecb",
+        "compareDigest": "6e4819b5bdb6a5ea4a94d587dc20dfb2458bb882ef38f2e1bf67387e9e31657e"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:14Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0NzA3MDU4OCwibGFzdF92YWx1ZSI6NzIzMTQwNDcwNzA1ODh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126385258876",
+      "handle": "klingelschild-hombli-smart-doorbell-2-hbdb-0200-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-hombli-smart-doorbell-2-hbdb-0200-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675119989116",
+        "value": "cfg_872358f1-f7ae-4a46-9eaf-277441db5bbe",
+        "compareDigest": "c949de5cbc0f9baad67f869184b7a0877459b088d2776d14bdf9e97b019157b1"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:14Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0NzEwMzM1NiwibGFzdF92YWx1ZSI6NzIzMTQwNDcxMDMzNTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126385324412",
+      "handle": "klingelschild-philips-welcome-eye-531034-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-philips-welcome-eye-531034-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675119956348",
+        "value": "cfg_3a605e79-7e0f-423f-96db-0bf5f37f246f",
+        "compareDigest": "4aebb7477138debc241be6906264d89c45693c4aa9f3d0ca403b6d20b641a831"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:15Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0NzEzNjEyNCwibGFzdF92YWx1ZSI6NzIzMTQwNDcxMzYxMjR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126385389948",
+      "handle": "klingelschild-reolink-akku-2ayhe-2205b-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-reolink-akku-2ayhe-2205b-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675119923580",
+        "value": "cfg_4fe0a820-ac06-43a5-a198-89dee1f0a4c4",
+        "compareDigest": "822cfed5090e3de9e655aebc40780b0777e597ecb57bd7fe0ec479bf1191d79d"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:15Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0NzIwMTY2MCwibGFzdF92YWx1ZSI6NzIzMTQwNDcyMDE2NjB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126385488252",
+      "handle": "klingelschild-reolink-poe-d340b-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-reolink-poe-d340b-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130900860",
+        "value": "cfg_80fed3ad-e539-414b-a3d1-bf22f8ff1704",
+        "compareDigest": "17c3cedfbd8c111e986bd3e9c82a921796ef6dbc914ef744231533ca70a0346e"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:16Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0NzI5OTk2NCwibGFzdF92YWx1ZSI6NzIzMTQwNDcyOTk5NjR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126385586556",
+      "handle": "klingelschild-ring-1-5um5e5-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-1-5um5e5-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130868092",
+        "value": "cfg_c7ec992b-55fd-4e56-a3a5-6762b7bf7e73",
+        "compareDigest": "dc94bfd1b8992a2806b6e18376b342b3c9d978d536ee9e22d3a7e24f4462d72d"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:16Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0NzMzMjczMiwibGFzdF92YWx1ZSI6NzIzMTQwNDczMzI3MzJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126386045308",
+      "handle": "klingelschild-ring-2-8vr1s7-0eu0-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-2-8vr1s7-0eu0-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130835324",
+        "value": "cfg_069ac7c3-b5c4-4b80-be0b-4e66bcc6acf5",
+        "compareDigest": "5e791e2ebc6c530a77cd7e2def0f781908d8e6c6b6c07b8a8a7f7aa6f0c0b228"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:17Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0NzM2NTUwMCwibGFzdF92YWx1ZSI6NzIzMTQwNDczNjU1MDB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126386405756",
+      "handle": "klingelschild-ring-3-5at3s9-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-3-5at3s9-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130802556",
+        "value": "cfg_57b32d26-0108-4168-abc4-6b3edd1f30a6",
+        "compareDigest": "8cd73744cdb14e65f080f0235b8bb198d2627c3e17ca962be22ac46116c5be7e"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:17Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0NzM5ODI2OCwibGFzdF92YWx1ZSI6NzIzMTQwNDczOTgyNjh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126386471292",
+      "handle": "klingelschild-ring-akku-pro-5f79e9-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-akku-pro-5f79e9-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130769788",
+        "value": "cfg_7a586b84-f579-4441-a590-53b559064e6d",
+        "compareDigest": "e2811e924205f05500af401ea6eae07156078842d4cc004d5b720facc733bc91"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:18Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0Nzg4OTc4OCwibGFzdF92YWx1ZSI6NzIzMTQwNDc4ODk3ODh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126386569596",
+      "handle": "klingelschild-ring-battery-5f97f2-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-battery-5f97f2-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130737020",
+        "value": "cfg_55aa6675-01c5-417e-95b6-76ff3b2a7580",
+        "compareDigest": "54611e80fbbcf7e2f1b365f6513f1538837b81924063e00b7becb89b266fd226"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:19Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MTc4OTE4MCwibGFzdF92YWx1ZSI6NzIzMTQwNTE3ODkxODB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126386897276",
+      "handle": "klingelschild-ring-plus-1-gen-5f77e9-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-plus-1-gen-5f77e9-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130704252",
+        "value": "cfg_bd33e5c5-1329-4376-a6a7-9313c2725525",
+        "compareDigest": "1f6c9fa069171dc45215c3127a10a96d2c4139d060fa5302e8f8bd6c62265bf6"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:20Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MTgyMTk0OCwibGFzdF92YWx1ZSI6NzIzMTQwNTE4MjE5NDh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126386962812",
+      "handle": "klingelschild-ring-plus-2-gen-5dfya3-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-plus-2-gen-5dfya3-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130671484",
+        "value": "cfg_fd1d49f6-e2cc-41cd-bfb0-d22037961dc1",
+        "compareDigest": "190dbe9a25167c54e104b59bdd77164d73111556ff307024b3085dc8d3266b78"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:20Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MTkyMDI1MiwibGFzdF92YWx1ZSI6NzIzMTQwNTE5MjAyNTJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126387028348",
+      "handle": "klingelschild-ring-pro2-5at2s2-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-pro2-5at2s2-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130638716",
+        "value": "cfg_534fff62-849e-4756-8d67-3e63f214aed4",
+        "compareDigest": "fba8b2a46295d7cf13ce928bb8e8804ac9e1a405dea3406e11a821c125b8086f"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:21Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MTk1MzAyMCwibGFzdF92YWx1ZSI6NzIzMTQwNTE5NTMwMjB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126387126652",
+      "handle": "klingelschild-ring-wired-5at3t5-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-wired-5at3t5-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130605948",
+        "value": "cfg_99a3986f-7b3e-4d7c-8819-42bbdb14f11f",
+        "compareDigest": "2fced6406c733294b6ff3cd85501c669edcc22ed0dce1a1c6e3f22477fa6db82"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:21Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MTk4NTc4OCwibGFzdF92YWx1ZSI6NzIzMTQwNTE5ODU3ODh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126387257724",
+      "handle": "klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-wired-pro-3-gen-5dfya2-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130573180",
+        "value": "cfg_d9fb1702-b41e-49f0-9eda-117be91f436a",
+        "compareDigest": "a912b591e1137c488e52ebf022950d83a91226f82914608c924da29957ec1675"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:22Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MjAxODU1NiwibGFzdF92YWx1ZSI6NzIzMTQwNTIwMTg1NTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126387323260",
+      "handle": "klingelschild-tapo-d235-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-tapo-d235-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130540412",
+        "value": "cfg_ffecbae6-5549-4e21-9a11-d484a4bb53cf",
+        "compareDigest": "9f9e92e17e2f307e680b0ffe959111c7df751fed093f7d0aed8690ecdd9b2ea9"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:22Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MjA4NDA5MiwibGFzdF92YWx1ZSI6NzIzMTQwNTIwODQwOTJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126387388796",
+      "handle": "klingelschild-tmezon-intercom-mz-vdp-ne120-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-tmezon-intercom-mz-vdp-ne120-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130507644",
+        "value": "cfg_8474c70e-2867-456f-a893-835f0151fb39",
+        "compareDigest": "5c6b04f29720853ade87ad4da541a04215a5e93ae11707f815b79f63523800fb"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:23Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MjE4MjM5NiwibGFzdF92YWx1ZSI6NzIzMTQwNTIxODIzOTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126387454332",
+      "handle": "klingelschild-tmezon-smart-home-bell-j7-plus-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-tmezon-smart-home-bell-j7-plus-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130474876",
+        "value": "cfg_b9ec63f9-a276-4281-9f83-9fe373031a60",
+        "compareDigest": "9114ccc9c5aff5abd769355113e2b7ff5e99370772108de9030b2e49196fb701"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:23Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MjIxNTE2NCwibGFzdF92YWx1ZSI6NzIzMTQwNTIyMTUxNjR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126387585404",
+      "handle": "klingelschild-winees-m6p20ac-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-winees-m6p20ac-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130442108",
+        "value": "cfg_32729751-aa20-4479-834f-c0aa8e9638fa",
+        "compareDigest": "e595694fa1c65a81b59269a38ede54f24e028ec91a07deb5fc49c5117394abc4"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:24Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1MjI0NzkzMiwibGFzdF92YWx1ZSI6NzIzMTQwNTIyNDc5MzJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126387683708",
+      "handle": "klingelschild-wp-cardea-2-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-wp-cardea-2-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675130409340",
+        "value": "cfg_890d687d-0a59-4fcd-8100-1106010dc805",
+        "compareDigest": "5d86adae496a873f49ca28ba04bf883c27e7a9fe9d242ea53ffb8b3883211052"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:48:47Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA1Mzc4ODAyOCwibGFzdF92YWx1ZSI6NzIzMTQwNTM3ODgwMjh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182701621628",
+      "handle": "klingelschild-aosu-pro-v8p1ax11-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-aosu-pro-v8p1ax11-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359690620",
+        "value": "cfg_d52f96e0-17e4-42b0-b496-74eaa24eaba5",
+        "compareDigest": "328adf2a09511215fec2c4cef86fbadfb5351e0c6ec3c25a0def2de16ea65845"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T14:46:32Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMDk1MDIyMzIyOCwibGFzdF92YWx1ZSI6NzMxMjA5NTAyMjMyMjh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182702211452",
+      "handle": "klingelschild-aosu-pro-v8p1ax11-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-aosu-pro-v8p1ax11-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359657852",
+        "value": "cfg_4dc5181c-d201-4802-8a4b-9500049ed6e5",
+        "compareDigest": "ae90f1892d2da0b90155a9141c582ba54e749c51d8c52565aee2c80fdba4fa06"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T14:46:47Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMDk1Njk3MzQzNiwibGFzdF92YWx1ZSI6NzMxMjA5NTY5NzM0MzZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182861726076",
+      "handle": "klingelschild-aosu-ultra-v8s1ax15-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-aosu-ultra-v8s1ax15-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359625084",
+        "value": "cfg_1df891a8-61e8-4b6d-a830-a4431970bd3c",
+        "compareDigest": "ab24218f5cec19974941654ae1aaa9a574589667af8f726a08e5e453bfab479e"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:33:53Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAwNzY0NjU4OCwibGFzdF92YWx1ZSI6NzMxMjIwMDc2NDY1ODh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182866346364",
+      "handle": "klingelschild-aosu-ultra-v8s1ax15-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-aosu-ultra-v8s1ax15-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359592316",
+        "value": "cfg_be8a9406-719d-4640-be12-f2ccf8b3653d",
+        "compareDigest": "b18e90f6b4549fe8e03446c265966759f9fbbac0d8c79e4386197098d9752a49"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:33:56Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAwODI2OTE4MCwibGFzdF92YWx1ZSI6NzMxMjIwMDgyNjkxODB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182866444668",
+      "handle": "klingelschild-aqara-g4-svd-c03-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-aqara-g4-svd-c03-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359559548",
+        "value": "cfg_cbb8b552-95b0-4f4d-af71-baf207435bf7",
+        "compareDigest": "d40646c9e782bf1ab1f75bf109ebe2a6158c76c5d94c79ea431dbf7fccb74a3f"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:33:59Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAwODgyNjIzNiwibGFzdF92YWx1ZSI6NzMxMjIwMDg4MjYyMzZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182866542972",
+      "handle": "klingelschild-aqara-g4-svd-c03-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-aqara-g4-svd-c03-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359526780",
+        "value": "cfg_864d49d6-d2de-4c3c-8ba3-2d378da42f90",
+        "compareDigest": "fe8dcb1532ce8bc11d5c1e4ff4e1d5002c9c0825836553a08b53821ce87038a1"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:34:03Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAwOTc0Mzc0MCwibGFzdF92YWx1ZSI6NzMxMjIwMDk3NDM3NDB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182866608508",
+      "handle": "klingelschild-arlo-akku-1-gen-avd2001-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-arlo-akku-1-gen-avd2001-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359494012",
+        "value": "cfg_8ba1fd5f-a22d-4cbc-afbf-02032ca49332",
+        "compareDigest": "fc50ad68647bfad494390768071d45efc893175a9a4f5a7eabea5a00cf8ad666"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:34:06Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAwOTc3NjUwOCwibGFzdF92YWx1ZSI6NzMxMjIwMDk3NzY1MDh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182866674044",
+      "handle": "klingelschild-arlo-akku-1-gen-avd2001-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-arlo-akku-1-gen-avd2001-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359461244",
+        "value": "cfg_8a524ac8-29bb-448d-926e-f96ee723f86f",
+        "compareDigest": "98d9ddc505b4094feda0aa285154f76ad4f136f6a6659f139e7606095805569c"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:34:09Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAxMDk4ODkyNCwibGFzdF92YWx1ZSI6NzMxMjIwMTA5ODg5MjR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182866772348",
+      "handle": "klingelschild-arlo-akku-2-gen-avd4001-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-arlo-akku-2-gen-avd4001-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359428476",
+        "value": "cfg_bb02e8bb-0c15-4a09-841f-0fe5cc02d3f5",
+        "compareDigest": "bfaab00c57b53da66310bea4ed948c4f59a1dc1feb546fce068a0495cf78927f"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:34:12Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAxMTkwNjQyOCwibGFzdF92YWx1ZSI6NzMxMjIwMTE5MDY0Mjh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182866936188",
+      "handle": "klingelschild-arlo-akku-2-gen-avd4001-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-arlo-akku-2-gen-avd4001-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359395708",
+        "value": "cfg_a14d19dc-0790-48f4-b7f3-fa6ddf0ab366",
+        "compareDigest": "dda5fe32df48cd468f73bb3742e6970da084ca46a4d11804aa18480f3faaee27"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:34:16Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAxMjQ5NjI1MiwibGFzdF92YWx1ZSI6NzMxMjIwMTI0OTYyNTJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182867067260",
+      "handle": "klingelschild-arlo-kabel-avd1001-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-arlo-kabel-avd1001-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359362940",
+        "value": "cfg_98afecac-8c6b-41b4-9231-c0963a18df3e",
+        "compareDigest": "2bb18911f1e2d26d9933a8f6ff1b59b49414c1748a4516b9acf4b01bf575f3bf"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:34:19Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAxMzU0NDgyOCwibGFzdF92YWx1ZSI6NzMxMjIwMTM1NDQ4Mjh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182867231100",
+      "handle": "klingelschild-arlo-kabel-avd1001-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-arlo-kabel-avd1001-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359330172",
+        "value": "cfg_e8e52312-746c-48f9-8efc-d82934fc2dd5",
+        "compareDigest": "5e882e005808f6996fdb0f1dfc8f3c5a504cf3e70b6c6ee27527e19fc519f83d"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:34:22Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAxNDU2MDYzNiwibGFzdF92YWx1ZSI6NzMxMjIwMTQ1NjA2MzZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182867329404",
+      "handle": "klingelschild-blink-1-gen-bdm01200u-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-blink-1-gen-bdm01200u-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359297404",
+        "value": "cfg_f0279516-3562-4214-9bb1-6a5d29718b1d",
+        "compareDigest": "cbe1f5d75461233458b477d9321a385d46fc73e05137f9723d487b02009245cb"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:34:25Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAxNTMxNDMwMCwibGFzdF92YWx1ZSI6NzMxMjIwMTUzMTQzMDB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182867427708",
+      "handle": "klingelschild-blink-1-gen-bdm01200u-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-blink-1-gen-bdm01200u-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359264636",
+        "value": "cfg_f32a701d-59c2-4d16-81b7-5d98c1124624",
+        "compareDigest": "b3fc419149a791c3bfe443a985a22f4f5ce26b557d658782be587ec01742937f"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:34:29Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAxNjEzMzUwMCwibGFzdF92YWx1ZSI6NzMxMjIwMTYxMzM1MDB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182867558780",
+      "handle": "klingelschild-blink-2-gen-bdm01300u-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-blink-2-gen-bdm01300u-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359231868",
+        "value": "cfg_a3806b1b-f013-4b57-9ff9-2269c98f8061",
+        "compareDigest": "88f0b33bf3bb95551701bb868b8fc069e8a5e2ff52c442148e158b99b3c1ea7a"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:34:32Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAxNzIxNDg0NCwibGFzdF92YWx1ZSI6NzMxMjIwMTcyMTQ4NDR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182867722620",
+      "handle": "klingelschild-blink-2-gen-bdm01300u-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-blink-2-gen-bdm01300u-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359199100",
+        "value": "cfg_f1312bc4-b8b2-41ec-841a-57e6862c5e7e",
+        "compareDigest": "ad51eaf9fcdb2832b317b5ab9df6d04bbd7a7d4f5588bfebcddd9f17c5e64bbb"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:34:35Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAxNzgwNDY2OCwibGFzdF92YWx1ZSI6NzMxMjIwMTc4MDQ2Njh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182867820924",
+      "handle": "klingelschild-blink-kabel-2k-bdm01500u-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-blink-kabel-2k-bdm01500u-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359166332",
+        "value": "cfg_5eb3cb00-8e51-4fd7-b43f-8f805c31bb54",
+        "compareDigest": "a4cfbd74ef0ae4fe1d13e07634d483bede7c6af2777683709ac66c2acdcf00a1"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:34:38Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAxODg1MzI0NCwibGFzdF92YWx1ZSI6NzMxMjIwMTg4NTMyNDR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182868017532",
+      "handle": "klingelschild-blink-kabel-2k-bdm01500u-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-blink-kabel-2k-bdm01500u-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359133564",
+        "value": "cfg_0e842ec2-41af-4ac3-9ca1-0265eaa75b71",
+        "compareDigest": "7ea5a0878c3d672f31c9d99b43f5c0f5ccd5eeb0f49915bc77322316811b6425"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:34:42Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAxOTY3MjQ0NCwibGFzdF92YWx1ZSI6NzMxMjIwMTk2NzI0NDR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182868115836",
+      "handle": "klingelschild-boifun-bell-j1-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-boifun-bell-j1-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359100796",
+        "value": "cfg_bdf9d375-b42e-41d5-bc02-db0d55254015",
+        "compareDigest": "8a9443d64c6ab0559967114f2c40cc1739d81a030e50b4a9992777b0b871fc90"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:35:07Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAyNTg2NTU5NiwibGFzdF92YWx1ZSI6NzMxMjIwMjU4NjU1OTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182868246908",
+      "handle": "klingelschild-boifun-bell-j1-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-boifun-bell-j1-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359068028",
+        "value": "cfg_b7025d97-d444-4ea1-a59e-b3be30a83402",
+        "compareDigest": "f849809b2852f7e91b59fc7e522485bbb6b3c001b333c30648be6bfb51ea1942"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:35:11Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAyNjQ1NTQyMCwibGFzdF92YWx1ZSI6NzMxMjIwMjY0NTU0MjB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182868410748",
+      "handle": "klingelschild-cococam-doorbell-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-cococam-doorbell-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359035260",
+        "value": "cfg_d96aa280-cbc7-4226-a210-e9df460c4b5f",
+        "compareDigest": "06a73d3072c2d899d42a564d5c21c856e082402c1f0415151f68a06ec2f13891"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:35:14Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAyNzExMDc4MCwibGFzdF92YWx1ZSI6NzMxMjIwMjcxMTA3ODB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182868574588",
+      "handle": "klingelschild-cococam-doorbell-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-cococam-doorbell-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424359002492",
+        "value": "cfg_92968a74-c954-4e12-9cc9-1d208c78a25c",
+        "compareDigest": "0e3ed94374f4109903175049472b5146bb0ddee15e64c7560ad0372199149e82"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:35:17Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAyODE1OTM1NiwibGFzdF92YWx1ZSI6NzMxMjIwMjgxNTkzNTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182868705660",
+      "handle": "klingelschild-ctronics-ctsc-j6-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ctronics-ctsc-j6-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424358969724",
+        "value": "cfg_7243cdea-9f3b-49be-85f0-f0f8dbb727a1",
+        "compareDigest": "88d07402e086bdd0362da3d3515c64df3a7e565b04141526937ecd6593f4b317"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:35:21Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAyODE5MjEyNCwibGFzdF92YWx1ZSI6NzMxMjIwMjgxOTIxMjR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182868836732",
+      "handle": "klingelschild-ctronics-ctsc-j6-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ctronics-ctsc-j6-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424358936956",
+        "value": "cfg_0d41efed-27f6-4e7c-a58a-9a6b8df6c917",
+        "compareDigest": "b9b85d5aa8ca9b9d15a41e85f08ae267276674cc148ec39a49f16d44136f6d28"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:35:24Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAyOTI0MDcwMCwibGFzdF92YWx1ZSI6NzMxMjIwMjkyNDA3MDB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182868902268",
+      "handle": "klingelschild-eufy-1080p-t8220-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-1080p-t8220-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424358904188",
+        "value": "cfg_93b8ce67-3fb1-4cd1-b8b0-5fe048637c0f",
+        "compareDigest": "93bda2791523dbe410aceb2a12e09b6dbf6b8622b53e470e5ad3887eb6447a82"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:35:28Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAyOTkyODgyOCwibGFzdF92YWx1ZSI6NzMxMjIwMjk5Mjg4Mjh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182869033340",
+      "handle": "klingelschild-eufy-1080p-t8220-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-1080p-t8220-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424361230716",
+        "value": "cfg_4a3a804a-db95-4020-9ca4-2cb0572a296f",
+        "compareDigest": "836edb7234fbe06039c7e27483d5703f6b988cef923e1139fcebb84e8f9d8616"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:35:31Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAzMDU4NDE4OCwibGFzdF92YWx1ZSI6NzMxMjIwMzA1ODQxODh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182869131644",
+      "handle": "klingelschild-eufy-1080p-t8222-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-1080p-t8222-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424361197948",
+        "value": "cfg_ea8512b4-04db-4cc9-a16f-7eb7e350d103",
+        "compareDigest": "53717153f970d2afd5bb6a646f430928f29c22109e2364df5ec8911a1edc0ac7"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:35:34Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAzMTM3MDYyMCwibGFzdF92YWx1ZSI6NzMxMjIwMzEzNzA2MjB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182869262716",
+      "handle": "klingelschild-eufy-1080p-t8222-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-1080p-t8222-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424361165180",
+        "value": "cfg_185d3eb2-8016-4c19-87d0-7d2a2829392e",
+        "compareDigest": "b3799fff7941da2b3a403cafbe7eac54f82c0882e60b7d1c3730c953d7bfd8de"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:35:38Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAzMjA1ODc0OCwibGFzdF92YWx1ZSI6NzMxMjIwMzIwNTg3NDh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182869361020",
+      "handle": "klingelschild-eufy-2k-hd-t8210-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-2k-hd-t8210-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424361132412",
+        "value": "cfg_5867e1f3-b143-4c2c-89ce-8b5294414c9d",
+        "compareDigest": "f7da13c5cb8e61000ebd2c6fe52a870ab0fa315b766e479eb1a28d720d5f3cde"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:35:41Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAzMjYxNTgwNCwibGFzdF92YWx1ZSI6NzMxMjIwMzI2MTU4MDR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182869492092",
+      "handle": "klingelschild-eufy-2k-hd-t8210-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-2k-hd-t8210-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424361099644",
+        "value": "cfg_84381729-e448-4b30-a2c5-f3f6e59227d0",
+        "compareDigest": "0e596862ee2f1cc079207ff0d6d2b2dac7d67ecec6d368e9c8e6c88842ee0704"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:35:45Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAzMjgxMjQxMiwibGFzdF92YWx1ZSI6NzMxMjIwMzI4MTI0MTJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182869590396",
+      "handle": "klingelschild-eufy-c30-t8224-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-c30-t8224-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424361066876",
+        "value": "cfg_113ec6e7-9fb5-4d73-b237-16136cbaf1b3",
+        "compareDigest": "13ded25504fe5a548e4c8d19c1cf93f7e2b128a62963e58ff4c9b4cfda9091d5"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:35:48Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAzMzcyOTkxNiwibGFzdF92YWx1ZSI6NzMxMjIwMzM3Mjk5MTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182869688700",
+      "handle": "klingelschild-eufy-c30-t8224-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-c30-t8224-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424361034108",
+        "value": "cfg_aa38b863-7117-4e64-bae5-4eff0b875359",
+        "compareDigest": "92fe41a865ea3526426b5837b32efdc4893189ab8dff6054772b25b0173981d4"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:35:51Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAzNDMxOTc0MCwibGFzdF92YWx1ZSI6NzMxMjIwMzQzMTk3NDB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182869819772",
+      "handle": "klingelschild-eufy-c31-t8223-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-c31-t8223-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424361001340",
+        "value": "cfg_9b40606f-32c0-4934-b60c-a945bfe70482",
+        "compareDigest": "ce8c4d345cd12728d7f1b4fae140ef3cb54272c3152667a7c941cdd8a6aa55f3"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:35:55Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAzNDk3NTEwMCwibGFzdF92YWx1ZSI6NzMxMjIwMzQ5NzUxMDB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182869950844",
+      "handle": "klingelschild-eufy-c31-t8223-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-c31-t8223-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424360968572",
+        "value": "cfg_01ff32d8-f9b5-4a94-a969-55d550e6a060",
+        "compareDigest": "a4edf3e58d188fabdf5432209d3a59b26a564d7c79c3eca811d25a9c3add8b6f"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:35:58Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAzNTg1OTgzNiwibGFzdF92YWx1ZSI6NzMxMjIwMzU4NTk4MzZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182870049148",
+      "handle": "klingelschild-eufy-dual-e340-t8214-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-dual-e340-t8214-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424360935804",
+        "value": "cfg_2fb99cc6-3511-4209-849b-f04c242ec0e4",
+        "compareDigest": "0cf8be6e9cca23dde43bb94887880fb88175f462dc4ee9abdfaa14b24755fe90"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:36:01Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAzNzM5OTkzMiwibGFzdF92YWx1ZSI6NzMxMjIwMzczOTk5MzJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182870212988",
+      "handle": "klingelschild-eufy-dual-e340-t8214-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-dual-e340-t8214-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424360903036",
+        "value": "cfg_42d4b283-7920-4274-86be-43bf5a9ff6cc",
+        "compareDigest": "bc792fd54c5bc75844c1b62c720eddcf0fb111e03c82490519034eedc35dcf42"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:36:04Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAzODAyMjUyNCwibGFzdF92YWx1ZSI6NzMxMjIwMzgwMjI1MjR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182870311292",
+      "handle": "klingelschild-eufy-hdr-2k-t8200-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-hdr-2k-t8200-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424360870268",
+        "value": "cfg_d4fa2e5a-3b4d-485a-aead-a61c1b1375be",
+        "compareDigest": "94806c25c3adcf679b3cebd7bb9fdd46954ed437ba0c4deb3ea5c3124589c327"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:36:07Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAzODg3NDQ5MiwibGFzdF92YWx1ZSI6NzMxMjIwMzg4NzQ0OTJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182870376828",
+      "handle": "klingelschild-eufy-hdr-2k-t8200-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-hdr-2k-t8200-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424360837500",
+        "value": "cfg_3ff9e140-ba67-4530-8521-3ac481fa24db",
+        "compareDigest": "90a34e976a6db34171c1525638f6f233597c40bcbb6708dcd5e3230892308b45"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:36:10Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjA0MDAyMTM3MiwibGFzdF92YWx1ZSI6NzMxMjIwNDAwMjEzNzJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182870442364",
+      "handle": "klingelschild-ezviz-db1-cs-db1c-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ezviz-db1-cs-db1c-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424360804732",
+        "value": "cfg_703bfa31-8fac-4f5f-bc92-968a12692571",
+        "compareDigest": "0ba6a2cf84a395fa5ff5b67b457e69545458855321af8946e26a58ca31986fc4"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:36:59Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjA5OTAwMzc3MiwibGFzdF92YWx1ZSI6NzMxMjIwOTkwMDM3NzJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182870638972",
+      "handle": "klingelschild-ezviz-db1-cs-db1c-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ezviz-db1-cs-db1c-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424360771964",
+        "value": "cfg_083c6245-2de4-4679-b339-d7f7af44856e",
+        "compareDigest": "084a0e98e3b236395565d3d4dac9b4eb41f5fda54cfee34cda45622f58fb8b8e"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:37:02Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjA5OTU5MzU5NiwibGFzdF92YWx1ZSI6NzMxMjIwOTk1OTM1OTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182870770044",
+      "handle": "klingelschild-ezviz-ep8-ultra-cs-ep8-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ezviz-ep8-ultra-cs-ep8-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424360739196",
+        "value": "cfg_250136d9-5944-42ac-b31a-26897c3987b2",
+        "compareDigest": "6e7c7ce728af999a822ea637dfa02835461d090d83d1b2bc82176b84ee5907ac"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:37:06Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEwMDE1MDY1MiwibGFzdF92YWx1ZSI6NzMxMjIxMDAxNTA2NTJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182870901116",
+      "handle": "klingelschild-ezviz-ep8-ultra-cs-ep8-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ezviz-ep8-ultra-cs-ep8-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424360706428",
+        "value": "cfg_43485adb-d770-428b-ab5c-0f16919480ba",
+        "compareDigest": "01207c482df34779fab13eafc4772726d1e75264df3ff7cf8537e306645f160b"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:37:09Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEwMDkzNzA4NCwibGFzdF92YWx1ZSI6NzMxMjIxMDA5MzcwODR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182870999420",
+      "handle": "klingelschild-google-nest-a0077-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-google-nest-a0077-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424360673660",
+        "value": "cfg_25606d7b-7bd6-4558-ae3a-0e93807873ae",
+        "compareDigest": "78004c171f0621a58484fdc128bc8a5c896fc7df5f978766e3fe5f27e5e86336"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:37:12Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEwMTg4NzM1NiwibGFzdF92YWx1ZSI6NzMxMjIxMDE4ODczNTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182871097724",
+      "handle": "klingelschild-google-nest-a0077-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-google-nest-a0077-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424360640892",
+        "value": "cfg_763beaf6-0de4-4425-bcf3-95d868e0c79f",
+        "compareDigest": "92f425c1c34e54bcf9c2e717eddde67c7716711ebff3219d67737b7863c0c527"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:37:15Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEwMjU0MjcxNiwibGFzdF92YWx1ZSI6NzMxMjIxMDI1NDI3MTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182871228796",
+      "handle": "klingelschild-google-nest-akku-22lcur-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-google-nest-akku-22lcur-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424360608124",
+        "value": "cfg_e279567e-c8b8-4727-a225-18cd2a4b141a",
+        "compareDigest": "c11f6d6cb3f57280d6a152fd8d3b87a2809cd23a8f9f6c2fe3050241cca63040"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:37:20Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEwNDE0ODM0OCwibGFzdF92YWx1ZSI6NzMxMjIxMDQxNDgzNDh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182871327100",
+      "handle": "klingelschild-google-nest-akku-22lcur-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-google-nest-akku-22lcur-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424360575356",
+        "value": "cfg_6c979f86-df42-490d-8aec-5d8ab48f5774",
+        "compareDigest": "89a070a386508046fc3a85bfe2c4352261db78f455fe1f09e97d3ae8cd82ad8b"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:37:23Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEwNDgwMzcwOCwibGFzdF92YWx1ZSI6NzMxMjIxMDQ4MDM3MDh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182871425404",
+      "handle": "klingelschild-hombli-smart-doorbell-2-hbdb-0200-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-hombli-smart-doorbell-2-hbdb-0200-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424360542588",
+        "value": "cfg_e1a48474-0363-4286-aeb7-bbbf13b85604",
+        "compareDigest": "e2155a178491e0592b802e3d4a42efb034662c20fa0cc7426297cdfae37ba89a"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:37:26Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEwNTQ5MTgzNiwibGFzdF92YWx1ZSI6NzMxMjIxMDU0OTE4MzZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182871490940",
+      "handle": "klingelschild-hombli-smart-doorbell-2-hbdb-0200-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-hombli-smart-doorbell-2-hbdb-0200-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424360509820",
+        "value": "cfg_9aa5ee6a-6781-4b0f-81a7-06835b5e1dfc",
+        "compareDigest": "2c6c7ef7e4f1262c321d43525b84372b4e4e453906e8ada9725a91d4b5659111"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:37:29Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEwNjE0NzE5NiwibGFzdF92YWx1ZSI6NzMxMjIxMDYxNDcxOTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182871556476",
+      "handle": "klingelschild-philips-welcome-eye-531034-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-philips-welcome-eye-531034-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424360477052",
+        "value": "cfg_79922eb1-693a-4e23-8a61-77c54ab1e81e",
+        "compareDigest": "2b6ee908543e56ee13535d5de748dda2d7a0f219965181ef71eace316831fddc"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:37:33Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEwODE3ODgxMiwibGFzdF92YWx1ZSI6NzMxMjIxMDgxNzg4MTJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182871687548",
+      "handle": "klingelschild-philips-welcome-eye-531034-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-philips-welcome-eye-531034-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424360444284",
+        "value": "cfg_c69729d4-00ca-4b8a-8f78-4a4fbe0125de",
+        "compareDigest": "fcceef7cded4e75471d74c1ca9a8ce91de7f992f8632a3ab469a1d205a823402"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:37:36Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEwOTE5NDYyMCwibGFzdF92YWx1ZSI6NzMxMjIxMDkxOTQ2MjB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182871818620",
+      "handle": "klingelschild-reolink-akku-2ayhe-2205b-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-reolink-akku-2ayhe-2205b-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362475900",
+        "value": "cfg_6f492a9c-21f7-437a-ab94-da6957154e02",
+        "compareDigest": "2e5728127ab877745178dfea8ee28cc792d99af199d22df5d429b6e400d5d1d9"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:37:39Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjExMDg2NTc4OCwibGFzdF92YWx1ZSI6NzMxMjIxMTA4NjU3ODh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182871884156",
+      "handle": "klingelschild-reolink-akku-2ayhe-2205b-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-reolink-akku-2ayhe-2205b-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362443132",
+        "value": "cfg_d51c7b68-f97e-4fbb-9068-739fe0733b40",
+        "compareDigest": "4ed6d946a3e8b1043a064429b15c8052246543cac6ed31e99cfa62f294b55187"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:37:42Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjExMjAxMjY2OCwibGFzdF92YWx1ZSI6NzMxMjIxMTIwMTI2Njh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182871982460",
+      "handle": "klingelschild-reolink-poe-d340b-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-reolink-poe-d340b-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362410364",
+        "value": "cfg_d5ab4c00-c9c4-40a5-bf65-3a43d95dc594",
+        "compareDigest": "d919e96057df64ed30e3ec7c2f361e64d2d97856825e539cd316b2511dbe2cfe"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:37:47Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEyMTI4NjAxMiwibGFzdF92YWx1ZSI6NzMxMjIxMjEyODYwMTJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182872080764",
+      "handle": "klingelschild-reolink-poe-d340b-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-reolink-poe-d340b-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362377596",
+        "value": "cfg_53df7a49-e1ab-4119-a756-7f693dbc70ae",
+        "compareDigest": "5f5d730322ec58ce351e0b25331ebd0981f0efecfbcc9864d230c3549e7b223e"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:37:50Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEyMjQ2NTY2MCwibGFzdF92YWx1ZSI6NzMxMjIxMjI0NjU2NjB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182872179068",
+      "handle": "klingelschild-ring-1-5um5e5-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-1-5um5e5-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362344828",
+        "value": "cfg_b15cd9fe-9fa2-4dac-85d7-fbf5a531cce8",
+        "compareDigest": "59ce86cc275c9f074b94d0bb9b4d9a982114f1867f6e85a15a993d464f2b3a48"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:37:54Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEyMzI4NDg2MCwibGFzdF92YWx1ZSI6NzMxMjIxMjMyODQ4NjB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182872277372",
+      "handle": "klingelschild-ring-1-5um5e5-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-1-5um5e5-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362312060",
+        "value": "cfg_4ff0e799-493f-4371-960d-e8d7ed323282",
+        "compareDigest": "6fd9e561538ddd45b35606c6d7f579d2c68950965ebcaaa37104710b224775da"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:37:56Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEyMzk0MDIyMCwibGFzdF92YWx1ZSI6NzMxMjIxMjM5NDAyMjB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182872375676",
+      "handle": "klingelschild-ring-2-8vr1s7-0eu0-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-2-8vr1s7-0eu0-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362279292",
+        "value": "cfg_38afa130-a34a-4c4d-89f5-6202129b4101",
+        "compareDigest": "277353ad140ca12e38737657140512c0cab288f46c7c910e492b9fd6b6c1ff23"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:38:00Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEyNTExOTg2OCwibGFzdF92YWx1ZSI6NzMxMjIxMjUxMTk4Njh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182872473980",
+      "handle": "klingelschild-ring-2-8vr1s7-0eu0-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-2-8vr1s7-0eu0-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362246524",
+        "value": "cfg_f4666874-e4e5-46ff-b99c-10395b4791c6",
+        "compareDigest": "c6ef701de6a47f538a54f1d5ca2ad236718e79c32890cee7a94274df41dbe274"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:38:03Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEyNTc3NTIyOCwibGFzdF92YWx1ZSI6NzMxMjIxMjU3NzUyMjh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182872605052",
+      "handle": "klingelschild-ring-3-5at3s9-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-3-5at3s9-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362213756",
+        "value": "cfg_ce8de0a1-3b8e-4ac4-8f4f-65e0a2751dad",
+        "compareDigest": "99647f71e4e8cdecc7e608a0eb3f5b9bc5d279ca6335174a43d2469a2ed6239c"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:38:38Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEzNjQ5MDM2NCwibGFzdF92YWx1ZSI6NzMxMjIxMzY0OTAzNjR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182872670588",
+      "handle": "klingelschild-ring-3-5at3s9-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-3-5at3s9-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362180988",
+        "value": "cfg_7e1529e2-2c6d-4d0a-9662-41a553b15a8d",
+        "compareDigest": "5f56df748ad87e0fca017abe0351c3559997abc51b2cb7a3350c99d712f44026"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:38:42Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEzNzU3MTcwOCwibGFzdF92YWx1ZSI6NzMxMjIxMzc1NzE3MDh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182872768892",
+      "handle": "klingelschild-ring-akku-pro-5f79e9-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-akku-pro-5f79e9-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362148220",
+        "value": "cfg_9f2f4525-8d6d-4712-9d68-9a16dc35cc1e",
+        "compareDigest": "cfb5141744e6e6797715f35d912dad207b0fa4f826001e2c9a9e0d880755ab12"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:38:45Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEzODE2MTUzMiwibGFzdF92YWx1ZSI6NzMxMjIxMzgxNjE1MzJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182872899964",
+      "handle": "klingelschild-ring-akku-pro-5f79e9-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-akku-pro-5f79e9-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362115452",
+        "value": "cfg_bb30e76a-0449-452e-872d-5b532c594d44",
+        "compareDigest": "608740f43aae3ed760225712231841bd868b8e007b7676a7cdc90df2752a9aad"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:38:49Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEzOTU3MDU1NiwibGFzdF92YWx1ZSI6NzMxMjIxMzk1NzA1NTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182872998268",
+      "handle": "klingelschild-ring-battery-5f97f2-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-battery-5f97f2-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362082684",
+        "value": "cfg_e08f1eda-f872-43fe-b0bb-be9d371d4fd0",
+        "compareDigest": "9f564334a9f56ee1a838a2cde317d24fe8d8813292212ad8ebe832f5fed5de2d"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:38:53Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE0MTA0NTExNiwibGFzdF92YWx1ZSI6NzMxMjIxNDEwNDUxMTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182873129340",
+      "handle": "klingelschild-ring-battery-5f97f2-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-battery-5f97f2-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362049916",
+        "value": "cfg_9816e793-9545-4ce6-918d-f612522b7c8e",
+        "compareDigest": "2a20f6e86e8bce6349f93fd36fd7214a40eea1c8d403f6a40ed62fee998824d3"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:38:56Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE0MTYzNDk0MCwibGFzdF92YWx1ZSI6NzMxMjIxNDE2MzQ5NDB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182873260412",
+      "handle": "klingelschild-ring-plus-1-gen-5f77e9-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-plus-1-gen-5f77e9-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362017148",
+        "value": "cfg_e6cf12e7-3aa9-45bf-80b3-613cb7883467",
+        "compareDigest": "8c829943469ec872255aeed90e00633a6f96a135d48b6839678a3f7d5f52b026"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:39:00Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE0MjcxNjI4NCwibGFzdF92YWx1ZSI6NzMxMjIxNDI3MTYyODR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182873358716",
+      "handle": "klingelschild-ring-plus-1-gen-5f77e9-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-plus-1-gen-5f77e9-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424361984380",
+        "value": "cfg_5b77f065-d0ae-490d-8c77-7c8330c06431",
+        "compareDigest": "9c7b4b35a7e48ba46fdd5817c467b8b24b0be270b7c9a802e686d0855a5a8689"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:39:03Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE0MzgzMDM5NiwibGFzdF92YWx1ZSI6NzMxMjIxNDM4MzAzOTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182873457020",
+      "handle": "klingelschild-ring-plus-2-gen-5dfya3-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-plus-2-gen-5dfya3-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424361951612",
+        "value": "cfg_5afedd9b-aeea-4ca0-8516-ab992b7f8465",
+        "compareDigest": "164b7b1d21b55af3242f5af90b0dbf17efb91bcf785141e7960c8a62fcbf49c9"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:39:06Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE0NDg3ODk3MiwibGFzdF92YWx1ZSI6NzMxMjIxNDQ4Nzg5NzJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182873522556",
+      "handle": "klingelschild-ring-plus-2-gen-5dfya3-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-plus-2-gen-5dfya3-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424361918844",
+        "value": "cfg_f2d5ed63-c816-445b-92f6-e6ef9599eb07",
+        "compareDigest": "c8bcce6508facdb30f99d458af26405548081c1f6df5318a586262af4de2fd51"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:39:09Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE0NTc5NjQ3NiwibGFzdF92YWx1ZSI6NzMxMjIxNDU3OTY0NzZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182873686396",
+      "handle": "klingelschild-ring-pro2-5at2s2-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-pro2-5at2s2-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424361886076",
+        "value": "cfg_b9b38959-0191-441c-9478-d8d5bb3ab400",
+        "compareDigest": "837a12111e40e46e79f24c1d43f12e310b902d9fd7e25fd9625f036afb40dab2"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:39:12Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE0NjM4NjMwMCwibGFzdF92YWx1ZSI6NzMxMjIxNDYzODYzMDB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182873751932",
+      "handle": "klingelschild-ring-pro2-5at2s2-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-pro2-5at2s2-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424361853308",
+        "value": "cfg_a46510c3-2abb-47d7-b488-074fd145d7f9",
+        "compareDigest": "0089dec3dfa121e3e1bee02c6edbd8c9831be2da1b59db3357217601024416fc"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:39:16Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE0NzQ2NzY0NCwibGFzdF92YWx1ZSI6NzMxMjIxNDc0Njc2NDR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182873850236",
+      "handle": "klingelschild-ring-wired-5at3t5-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-wired-5at3t5-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424361820540",
+        "value": "cfg_1a40ec6c-5f8d-4ab1-84f0-3cd7c64c7a55",
+        "compareDigest": "fd7e71db4fdea9b444d0d31897a9c7bfb04c28b272ed0909b9b81b761cd8e347"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:39:19Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE0ODQxNzkxNiwibGFzdF92YWx1ZSI6NzMxMjIxNDg0MTc5MTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182874014076",
+      "handle": "klingelschild-ring-wired-5at3t5-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-wired-5at3t5-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424361787772",
+        "value": "cfg_4ef12caa-3da8-457f-a697-36a2ebb5668e",
+        "compareDigest": "b068dbdf23f86cbc007421dd27fc63bcb74e7a52ce7a42e26700f9135d1d6385"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:39:22Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE0OTUzMjAyOCwibGFzdF92YWx1ZSI6NzMxMjIxNDk1MzIwMjh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182874079612",
+      "handle": "klingelschild-ring-wired-pro-3-gen-5dfya2-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-wired-pro-3-gen-5dfya2-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424361755004",
+        "value": "cfg_9ee5f874-15e2-4b3f-ab18-6d32e2f7709b",
+        "compareDigest": "fc1ca2c170804fac9f84534ec4bcd4cede73b171552affbebc4562db1b780b95"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:39:25Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE1MDU4MDYwNCwibGFzdF92YWx1ZSI6NzMxMjIxNTA1ODA2MDR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182874210684",
+      "handle": "klingelschild-ring-wired-pro-3-gen-5dfya2-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-wired-pro-3-gen-5dfya2-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424361722236",
+        "value": "cfg_e24c4147-0416-4e08-9351-94e28f4c205c",
+        "compareDigest": "997a7f940b0d9a5f8f918c1eba0f78dfd54df315772920290e8c88fe4c280fd8"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:39:28Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE1MTE3MDQyOCwibGFzdF92YWx1ZSI6NzMxMjIxNTExNzA0Mjh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182874276220",
+      "handle": "klingelschild-tapo-d235-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-tapo-d235-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424361689468",
+        "value": "cfg_d6103580-972c-440c-bb66-58497176bbf6",
+        "compareDigest": "ac8e77de23f43cd7f87ea083a1cf108df977cd7a8eff7b281c821aecd75d669f"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:39:32Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE1MjY3Nzc1NiwibGFzdF92YWx1ZSI6NzMxMjIxNTI2Nzc3NTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182874374524",
+      "handle": "klingelschild-tapo-d235-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-tapo-d235-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362934652",
+        "value": "cfg_734d8109-9c46-4712-ac67-148c9e7a4145",
+        "compareDigest": "f187a6e41cdc17a913b12d0353504a8db3f804ff80cd534531f77d2de30e8def"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:39:35Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE1MzcyNjMzMiwibGFzdF92YWx1ZSI6NzMxMjIxNTM3MjYzMzJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182874505596",
+      "handle": "klingelschild-tmezon-intercom-mz-vdp-ne120-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-tmezon-intercom-mz-vdp-ne120-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362901884",
+        "value": "cfg_317cb0ca-92d5-4bcb-8653-8e83593509bb",
+        "compareDigest": "560ba5d888e4a408fe9937b4637e609cb921ab094c215b68d29cfeafce5e6e98"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:39:38Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE1NDQxNDQ2MCwibGFzdF92YWx1ZSI6NzMxMjIxNTQ0MTQ0NjB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182874603900",
+      "handle": "klingelschild-tmezon-intercom-mz-vdp-ne120-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-tmezon-intercom-mz-vdp-ne120-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362869116",
+        "value": "cfg_942f5233-326f-46ea-b129-1a5d1c4ccef5",
+        "compareDigest": "19d893036465aca82c6a8761ad44b5ce0d8e0c8d8bff882175e2e58dc43b28cc"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:39:41Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE1NTM5NzUwMCwibGFzdF92YWx1ZSI6NzMxMjIxNTUzOTc1MDB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182874734972",
+      "handle": "klingelschild-tmezon-smart-home-bell-j7-plus-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-tmezon-smart-home-bell-j7-plus-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362836348",
+        "value": "cfg_836eb42b-0c67-403b-8784-6c4ea15f7139",
+        "compareDigest": "3a129d658ce5ce993d0c7a4e0dbd204b995d5ecd10395c6929c2f1907a2cee4b"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:40:22Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE2NjU3MTM4OCwibGFzdF92YWx1ZSI6NzMxMjIxNjY1NzEzODh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182874866044",
+      "handle": "klingelschild-tmezon-smart-home-bell-j7-plus-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-tmezon-smart-home-bell-j7-plus-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362803580",
+        "value": "cfg_48382dbd-8097-4d43-a8e6-bfdcb7a3949a",
+        "compareDigest": "a97cdae555c31da39fa8ba907bf678013c0fc17218f1d51e2845720b19a6bf7d"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:40:25Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE2NzM1NzgyMCwibGFzdF92YWx1ZSI6NzMxMjIxNjczNTc4MjB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182874997116",
+      "handle": "klingelschild-winees-m6p20ac-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-winees-m6p20ac-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362770812",
+        "value": "cfg_51058636-4f89-430d-9441-0ddc33c03ae2",
+        "compareDigest": "973de175b906d1ba8cda84edefaf314692c999ecc7055ddf8b35ba0212da4598"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:40:28Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE2ODQzOTE2NCwibGFzdF92YWx1ZSI6NzMxMjIxNjg0MzkxNjR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182875062652",
+      "handle": "klingelschild-winees-m6p20ac-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-winees-m6p20ac-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362738044",
+        "value": "cfg_59b524cb-5600-46d8-b181-5be3dd10e23a",
+        "compareDigest": "7e60fd5b3969a240636aff3b66c04cc82ac6e33f928f40e82a1629aefc984119"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:40:32Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE2OTMyMzkwMCwibGFzdF92YWx1ZSI6NzMxMjIxNjkzMjM5MDB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182875193724",
+      "handle": "klingelschild-wp-cardea-2-querformat-24x20-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-wp-cardea-2-querformat-24x20-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362705276",
+        "value": "cfg_7e8b31c1-b95f-49bb-8a3d-fd44a158db98",
+        "compareDigest": "ce8b992fd5db961becab7b11ec129c865fad93e308ae43328a0ee8ca3a507855"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:40:35Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE3MTk0NTM0MCwibGFzdF92YWx1ZSI6NzMxMjIxNzE5NDUzNDB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16182875390332",
+      "handle": "klingelschild-wp-cardea-2-laenglich-35x18-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": "funkklingeln-2027",
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-wp-cardea-2-laenglich-35x18-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200424362672508",
+        "value": "cfg_70343415-6c58-49af-881d-02831f5979dc",
+        "compareDigest": "c84758d943e3a231450f1819579c9f3bd0fbc77ff9e315ba69a7be17e88ac8fa"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-11-02T15:40:38Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE3MjY2NjIzNiwibGFzdF92YWx1ZSI6NzMxMjIxNzI2NjYyMzZ9"
+        }
+      }
+    }
+  ]
+}

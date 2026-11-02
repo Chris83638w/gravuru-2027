@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:34:21.614Z",
+  "row": {
+    "id": "gid://shopify/Product/16182867067260",
+    "handle": "klingelschild-arlo-kabel-avd1001-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-arlo-kabel-avd1001-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424359362940",
+      "value": "cfg_98afecac-8c6b-41b4-9231-c0963a18df3e",
+      "compareDigest": "2bb18911f1e2d26d9933a8f6ff1b59b49414c1748a4516b9acf4b01bf575f3bf"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:34:19Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAxMzU0NDgyOCwibGFzdF92YWx1ZSI6IjczMTIyMDEzNTQ0ODI4In0="
+      }
+    }
+  }
+}

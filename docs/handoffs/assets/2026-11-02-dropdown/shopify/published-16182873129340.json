@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:38:58.336Z",
+  "row": {
+    "id": "gid://shopify/Product/16182873129340",
+    "handle": "klingelschild-ring-battery-5f97f2-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-battery-5f97f2-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362049916",
+      "value": "cfg_9816e793-9545-4ce6-918d-f612522b7c8e",
+      "compareDigest": "2a20f6e86e8bce6349f93fd36fd7214a40eea1c8d403f6a40ed62fee998824d3"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:38:56Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE0MTYzNDk0MCwibGFzdF92YWx1ZSI6IjczMTIyMTQxNjM0OTQwIn0="
+      }
+    }
+  }
+}

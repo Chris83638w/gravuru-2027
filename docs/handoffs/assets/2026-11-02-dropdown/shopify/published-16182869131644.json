@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:35:36.905Z",
+  "row": {
+    "id": "gid://shopify/Product/16182869131644",
+    "handle": "klingelschild-eufy-1080p-t8222-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-1080p-t8222-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424361197948",
+      "value": "cfg_ea8512b4-04db-4cc9-a16f-7eb7e350d103",
+      "compareDigest": "53717153f970d2afd5bb6a646f430928f29c22109e2364df5ec8911a1edc0ac7"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:35:34Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAzMTM3MDYyMCwibGFzdF92YWx1ZSI6IjczMTIyMDMxMzcwNjIwIn0="
+      }
+    }
+  }
+}

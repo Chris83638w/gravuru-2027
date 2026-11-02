@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:37:59.049Z",
+  "row": {
+    "id": "gid://shopify/Product/16182872277372",
+    "handle": "klingelschild-ring-1-5um5e5-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-1-5um5e5-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362312060",
+      "value": "cfg_4ff0e799-493f-4371-960d-e8d7ed323282",
+      "compareDigest": "6fd9e561538ddd45b35606c6d7f579d2c68950965ebcaaa37104710b224775da"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:37:56Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEyMzk0MDIyMCwibGFzdF92YWx1ZSI6IjczMTIyMTIzOTQwMjIwIn0="
+      }
+    }
+  }
+}

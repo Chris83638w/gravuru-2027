@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:35:53.511Z",
+  "row": {
+    "id": "gid://shopify/Product/16182869688700",
+    "handle": "klingelschild-eufy-c30-t8224-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-c30-t8224-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424361034108",
+      "value": "cfg_aa38b863-7117-4e64-bae5-4eff0b875359",
+      "compareDigest": "92fe41a865ea3526426b5837b32efdc4893189ab8dff6054772b25b0173981d4"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:35:51Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAzNDMxOTc0MCwibGFzdF92YWx1ZSI6IjczMTIyMDM0MzE5NzQwIn0="
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:35:33.253Z",
+  "row": {
+    "id": "gid://shopify/Product/16182869033340",
+    "handle": "klingelschild-eufy-1080p-t8220-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-1080p-t8220-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424361230716",
+      "value": "cfg_4a3a804a-db95-4020-9ca4-2cb0572a296f",
+      "compareDigest": "836edb7234fbe06039c7e27483d5703f6b988cef923e1139fcebb84e8f9d8616"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:35:31Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAzMDU4NDE4OCwibGFzdF92YWx1ZSI6IjczMTIyMDMwNTg0MTg4In0="
+      }
+    }
+  }
+}

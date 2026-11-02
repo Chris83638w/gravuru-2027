@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:37:11.250Z",
+  "row": {
+    "id": "gid://shopify/Product/16182870901116",
+    "handle": "klingelschild-ezviz-ep8-ultra-cs-ep8-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ezviz-ep8-ultra-cs-ep8-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424360706428",
+      "value": "cfg_43485adb-d770-428b-ab5c-0f16919480ba",
+      "compareDigest": "01207c482df34779fab13eafc4772726d1e75264df3ff7cf8537e306645f160b"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:37:09Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEwMDkzNzA4NCwibGFzdF92YWx1ZSI6IjczMTIyMTAwOTM3MDg0In0="
+      }
+    }
+  }
+}

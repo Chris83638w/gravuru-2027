@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:38:44.720Z",
+  "row": {
+    "id": "gid://shopify/Product/16182872670588",
+    "handle": "klingelschild-ring-3-5at3s9-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-3-5at3s9-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362180988",
+      "value": "cfg_7e1529e2-2c6d-4d0a-9662-41a553b15a8d",
+      "compareDigest": "5f56df748ad87e0fca017abe0351c3559997abc51b2cb7a3350c99d712f44026"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:38:42Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEzNzU3MTcwOCwibGFzdF92YWx1ZSI6IjczMTIyMTM3NTcxNzA4In0="
+      }
+    }
+  }
+}

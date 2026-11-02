@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:34:08.120Z",
+  "row": {
+    "id": "gid://shopify/Product/16182866608508",
+    "handle": "klingelschild-arlo-akku-1-gen-avd2001-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-arlo-akku-1-gen-avd2001-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424359494012",
+      "value": "cfg_8ba1fd5f-a22d-4cbc-afbf-02032ca49332",
+      "compareDigest": "fc50ad68647bfad494390768071d45efc893175a9a4f5a7eabea5a00cf8ad666"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:34:06Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAwOTc3NjUwOCwibGFzdF92YWx1ZSI6IjczMTIyMDA5Nzc2NTA4In0="
+      }
+    }
+  }
+}

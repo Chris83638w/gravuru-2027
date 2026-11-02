@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:37:01.466Z",
+  "row": {
+    "id": "gid://shopify/Product/16182870442364",
+    "handle": "klingelschild-ezviz-db1-cs-db1c-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ezviz-db1-cs-db1c-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424360804732",
+      "value": "cfg_703bfa31-8fac-4f5f-bc92-968a12692571",
+      "compareDigest": "0ba6a2cf84a395fa5ff5b67b457e69545458855321af8946e26a58ca31986fc4"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:36:59Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjA5OTAwMzc3MiwibGFzdF92YWx1ZSI6IjczMTIyMDk5MDAzNzcyIn0="
+      }
+    }
+  }
+}

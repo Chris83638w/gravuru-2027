@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:36:12.754Z",
+  "row": {
+    "id": "gid://shopify/Product/16182870376828",
+    "handle": "klingelschild-eufy-hdr-2k-t8200-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-hdr-2k-t8200-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424360837500",
+      "value": "cfg_3ff9e140-ba67-4530-8521-3ac481fa24db",
+      "compareDigest": "90a34e976a6db34171c1525638f6f233597c40bcbb6708dcd5e3230892308b45"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:36:10Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjA0MDAyMTM3MiwibGFzdF92YWx1ZSI6IjczMTIyMDQwMDIxMzcyIn0="
+      }
+    }
+  }
+}

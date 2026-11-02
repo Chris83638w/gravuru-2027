@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:37:32.003Z",
+  "row": {
+    "id": "gid://shopify/Product/16182871490940",
+    "handle": "klingelschild-hombli-smart-doorbell-2-hbdb-0200-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-hombli-smart-doorbell-2-hbdb-0200-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424360509820",
+      "value": "cfg_9aa5ee6a-6781-4b0f-81a7-06835b5e1dfc",
+      "compareDigest": "2c6c7ef7e4f1262c321d43525b84372b4e4e453906e8ada9725a91d4b5659111"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:37:29Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEwNjE0NzE5NiwibGFzdF92YWx1ZSI6IjczMTIyMTA2MTQ3MTk2In0="
+      }
+    }
+  }
+}

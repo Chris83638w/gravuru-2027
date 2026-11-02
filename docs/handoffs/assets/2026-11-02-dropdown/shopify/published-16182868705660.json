@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:35:23.756Z",
+  "row": {
+    "id": "gid://shopify/Product/16182868705660",
+    "handle": "klingelschild-ctronics-ctsc-j6-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ctronics-ctsc-j6-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424358969724",
+      "value": "cfg_7243cdea-9f3b-49be-85f0-f0f8dbb727a1",
+      "compareDigest": "88d07402e086bdd0362da3d3515c64df3a7e565b04141526937ecd6593f4b317"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:35:21Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAyODE5MjEyNCwibGFzdF92YWx1ZSI6IjczMTIyMDI4MTkyMTI0In0="
+      }
+    }
+  }
+}

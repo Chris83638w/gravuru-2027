@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:37:38.613Z",
+  "row": {
+    "id": "gid://shopify/Product/16182871687548",
+    "handle": "klingelschild-philips-welcome-eye-531034-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-philips-welcome-eye-531034-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424360444284",
+      "value": "cfg_c69729d4-00ca-4b8a-8f78-4a4fbe0125de",
+      "compareDigest": "fcceef7cded4e75471d74c1ca9a8ce91de7f992f8632a3ab469a1d205a823402"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:37:36Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEwOTE5NDYyMCwibGFzdF92YWx1ZSI6IjczMTIyMTA5MTk0NjIwIn0="
+      }
+    }
+  }
+}

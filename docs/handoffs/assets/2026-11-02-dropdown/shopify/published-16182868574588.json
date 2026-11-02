@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:35:20.258Z",
+  "row": {
+    "id": "gid://shopify/Product/16182868574588",
+    "handle": "klingelschild-cococam-doorbell-laenglich-35x18-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-cococam-doorbell-laenglich-35x18-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424359002492",
+      "value": "cfg_92968a74-c954-4e12-9cc9-1d208c78a25c",
+      "compareDigest": "0e3ed94374f4109903175049472b5146bb0ddee15e64c7560ad0372199149e82"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:35:17Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAyODE1OTM1NiwibGFzdF92YWx1ZSI6IjczMTIyMDI4MTU5MzU2In0="
+      }
+    }
+  }
+}

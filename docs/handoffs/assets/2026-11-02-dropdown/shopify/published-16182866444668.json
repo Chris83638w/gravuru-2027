@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:34:02.058Z",
+  "row": {
+    "id": "gid://shopify/Product/16182866444668",
+    "handle": "klingelschild-aqara-g4-svd-c03-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-aqara-g4-svd-c03-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424359559548",
+      "value": "cfg_cbb8b552-95b0-4f4d-af71-baf207435bf7",
+      "compareDigest": "d40646c9e782bf1ab1f75bf109ebe2a6158c76c5d94c79ea431dbf7fccb74a3f"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:33:59Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjAwODgyNjIzNiwibGFzdF92YWx1ZSI6IjczMTIyMDA4ODI2MjM2In0="
+      }
+    }
+  }
+}

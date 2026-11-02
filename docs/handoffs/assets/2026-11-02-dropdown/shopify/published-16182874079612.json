@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:39:27.634Z",
+  "row": {
+    "id": "gid://shopify/Product/16182874079612",
+    "handle": "klingelschild-ring-wired-pro-3-gen-5dfya2-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ring-wired-pro-3-gen-5dfya2-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424361755004",
+      "value": "cfg_9ee5f874-15e2-4b3f-ab18-6d32e2f7709b",
+      "compareDigest": "fc1ca2c170804fac9f84534ec4bcd4cede73b171552affbebc4562db1b780b95"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:39:25Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjE1MDU4MDYwNCwibGFzdF92YWx1ZSI6IjczMTIyMTUwNTgwNjA0In0="
+      }
+    }
+  }
+}

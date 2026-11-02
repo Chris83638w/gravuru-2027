@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:37:28.830Z",
+  "row": {
+    "id": "gid://shopify/Product/16182871425404",
+    "handle": "klingelschild-hombli-smart-doorbell-2-hbdb-0200-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-hombli-smart-doorbell-2-hbdb-0200-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424360542588",
+      "value": "cfg_e1a48474-0363-4286-aeb7-bbbf13b85604",
+      "compareDigest": "e2155a178491e0592b802e3d4a42efb034662c20fa0cc7426297cdfae37ba89a"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:37:26Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjEwNTQ5MTgzNiwibGFzdF92YWx1ZSI6IjczMTIyMTA1NDkxODM2In0="
+      }
+    }
+  }
+}

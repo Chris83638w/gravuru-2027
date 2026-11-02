@@ -1,0 +1,855 @@
+{
+  "at": "2026-11-02T15:33:19.407Z",
+  "products": [
+    {
+      "id": "gid://shopify/Product/16126380212604",
+      "handle": "klingelschild-aosu-ultra-v8s1ax15-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-aosu-ultra-v8s1ax15-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120710012",
+        "value": "cfg_333fe4ed-1972-402d-82ed-951fe2f2296b",
+        "compareDigest": "9800f803e630e4791f3fa9898ff97b5b900dd2b1a3e160491a8306c69bb169be"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:42:50Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDAyMDY1OTU4MCwibGFzdF92YWx1ZSI6NzIzMTQwMjA2NTk1ODB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126380573052",
+      "handle": "klingelschild-aqara-g4-svd-c03-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-aqara-g4-svd-c03-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120677244",
+        "value": "cfg_dad79b46-de86-4086-8878-fca233f67103",
+        "compareDigest": "e359e653afe316a866403d329ed6f48c36bb419196f5f8ecc1ad9a4333bb3b70"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:09Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MTMzNjE4OCwibGFzdF92YWx1ZSI6NzIzMTQwNDEzMzYxODh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126380704124",
+      "handle": "klingelschild-arlo-akku-1-gen-avd2001-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-arlo-akku-1-gen-avd2001-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120644476",
+        "value": "cfg_38a90aea-09a3-4484-a388-26124e01f771",
+        "compareDigest": "fab239fe9bf13078a9fb6fbecf8422ff32a02fdd00cc6adbc8d0f6112bc3053d"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:09Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MTQwMTcyNCwibGFzdF92YWx1ZSI6NzIzMTQwNDE0MDE3MjR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126380867964",
+      "handle": "klingelschild-arlo-akku-2-gen-avd4001-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-arlo-akku-2-gen-avd4001-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120611708",
+        "value": "cfg_3d9d69a8-e11c-4544-9104-3b9c731e717d",
+        "compareDigest": "0ba99c1d09f1e449c5ac21efbaff39333bfb706f3d8fb291df622bd2d70d1d95"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:10Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MTQzNDQ5MiwibGFzdF92YWx1ZSI6NzIzMTQwNDE0MzQ0OTJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126381031804",
+      "handle": "klingelschild-arlo-kabel-avd1001-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-arlo-kabel-avd1001-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120578940",
+        "value": "cfg_e0b8b1b0-75e2-4e92-b820-0e22aff251ff",
+        "compareDigest": "73014f4960b277929954d1f5c90ccd4998618ef8fc651a37bcf3f45e439b2d08"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:10Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MTUzMjc5NiwibGFzdF92YWx1ZSI6NzIzMTQwNDE1MzI3OTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126381130108",
+      "handle": "klingelschild-blink-1-gen-bdm01200u-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-blink-1-gen-bdm01200u-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120546172",
+        "value": "cfg_0396ce35-64ea-4b9e-86a3-04c91d2be8e2",
+        "compareDigest": "37f8302723c4b68e8c287005649dde212b7c565e47b4be8ab6ea902c8f85d8fe"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:10Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MTU2NTU2NCwibGFzdF92YWx1ZSI6NzIzMTQwNDE1NjU1NjR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126381293948",
+      "handle": "klingelschild-blink-2-gen-bdm01300u-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-blink-2-gen-bdm01300u-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120513404",
+        "value": "cfg_caf2b260-bd21-4a0d-b725-cfc4e02a49f4",
+        "compareDigest": "cc35a46484bd07bee1ff6a4dabd5311ac7db00f63439467a658df587ef7f3b67"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:11Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MTU5ODMzMiwibGFzdF92YWx1ZSI6NzIzMTQwNDE1OTgzMzJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126381490556",
+      "handle": "klingelschild-blink-kabel-2k-bdm01500u-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-blink-kabel-2k-bdm01500u-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120480636",
+        "value": "cfg_344dbb79-6ee5-48b4-b441-b265abb25121",
+        "compareDigest": "50f9078061122474f9631095e8939aa11344f01d361d2dddaf0c4f895f565bf6"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:11Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MTYzMTEwMCwibGFzdF92YWx1ZSI6NzIzMTQwNDE2MzExMDB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126381556092",
+      "handle": "klingelschild-boifun-bell-j1-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-boifun-bell-j1-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120447868",
+        "value": "cfg_39cda12e-7342-4d65-980b-f8e5ae97d330",
+        "compareDigest": "d41b0ae52abb8bec6c1f28d89e921f0f836e95e9384da0bd870d715e1d6b6870"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:12Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MTY2Mzg2OCwibGFzdF92YWx1ZSI6NzIzMTQwNDE2NjM4Njh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126381687164",
+      "handle": "klingelschild-cococam-doorbell-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-cococam-doorbell-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120415100",
+        "value": "cfg_ce7b92a2-4c58-4c60-a5bb-d434e1ea3c5b",
+        "compareDigest": "6cbbca6d1c7716dfd7ec470995f9bcecc5fac86e01d17464744ded6d1e97096f"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:12Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MTcyOTQwNCwibGFzdF92YWx1ZSI6NzIzMTQwNDE3Mjk0MDR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126381818236",
+      "handle": "klingelschild-ctronics-ctsc-j6-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ctronics-ctsc-j6-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120382332",
+        "value": "cfg_3df39db4-0609-4a84-a9a2-f5ff74064be9",
+        "compareDigest": "f11f569d06f2da5f73feb7fa8c52bd96531ea65944c5aaa10654f9eb06cec5b6"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:42Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzEzODQyOCwibGFzdF92YWx1ZSI6NzIzMTQwNDMxMzg0Mjh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126382539132",
+      "handle": "klingelschild-eufy-1080p-t8220-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-1080p-t8220-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120349564",
+        "value": "cfg_ae3b9735-c1be-4092-b827-5be823094a5f",
+        "compareDigest": "b4e941f4e44200088764ec592a36be04c4c9c73df5cb3b5638df68b75e1bc781"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:42Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzE3MTE5NiwibGFzdF92YWx1ZSI6NzIzMTQwNDMxNzExOTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126382702972",
+      "handle": "klingelschild-eufy-1080p-t8222-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-1080p-t8222-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120316796",
+        "value": "cfg_83e1c221-5401-4774-928f-41eebea0163d",
+        "compareDigest": "ba3cb5a4da41e8c86c4de3744df0d3dff348635489273f467bbd25722873ebee"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:43Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzIwMzk2NCwibGFzdF92YWx1ZSI6NzIzMTQwNDMyMDM5NjR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126382866812",
+      "handle": "klingelschild-eufy-2k-hd-t8210-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-2k-hd-t8210-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120284028",
+        "value": "cfg_609ae3b6-7d8a-4053-b41e-9fcde7c2e4aa",
+        "compareDigest": "0b606789abd400c7482b7f942912e3e4b4949f91781e285d3b60807dc4be3ed0"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:43Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzIzNjczMiwibGFzdF92YWx1ZSI6NzIzMTQwNDMyMzY3MzJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126383030652",
+      "handle": "klingelschild-eufy-c30-t8224-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-c30-t8224-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120251260",
+        "value": "cfg_20e15cc9-5db4-4d30-ab87-e3bfa980fd25",
+        "compareDigest": "79a1d61002fa414b806adf9835e07f08a9ec3df261f24a8a32495fa1a3279f68"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:44Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzMwMjI2OCwibGFzdF92YWx1ZSI6NzIzMTQwNDMzMDIyNjh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126383194492",
+      "handle": "klingelschild-eufy-c31-t8223-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-c31-t8223-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120218492",
+        "value": "cfg_af6c8363-224a-4028-8280-b57c973582e1",
+        "compareDigest": "49e8f1008a9199e3b8be5c577588c57547fdac8ec6f41c1c29dd179472784c33"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:44Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzQwMDU3MiwibGFzdF92YWx1ZSI6NzIzMTQwNDM0MDA1NzJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126383260028",
+      "handle": "klingelschild-eufy-dual-e340-t8214-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-dual-e340-t8214-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120185724",
+        "value": "cfg_906de0f3-a26b-4267-b3a8-263bbba084cf",
+        "compareDigest": "ac9c5bb381e8f226cc72e5349a716d9ed5960639651e26602378ae3abf0b159f"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:45Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzQzMzM0MCwibGFzdF92YWx1ZSI6NzIzMTQwNDM0MzMzNDB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126383325564",
+      "handle": "klingelschild-eufy-hdr-2k-t8200-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-eufy-hdr-2k-t8200-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120152956",
+        "value": "cfg_fe296882-07f0-4b42-bdc9-4e1557a2b337",
+        "compareDigest": "61f4daef8502e71e422c199df7d11f1c8894aa117c718a2a7c5fb613258b527f"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:45Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzQ2NjEwOCwibGFzdF92YWx1ZSI6NzIzMTQwNDM0NjYxMDh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126383423868",
+      "handle": "klingelschild-ezviz-db1-cs-db1c-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ezviz-db1-cs-db1c-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120120188",
+        "value": "cfg_c9c042c3-f5dd-47fe-9b9a-dde28ec71d54",
+        "compareDigest": "cb131c4efaaa197a3c2b0ae1876ddea11875a515a7e084c726e2ea365e66e643"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:46Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzUzMTY0NCwibGFzdF92YWx1ZSI6NzIzMTQwNDM1MzE2NDR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126383522172",
+      "handle": "klingelschild-ezviz-ep8-ultra-cs-ep8-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-ezviz-ep8-ultra-cs-ep8-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120087420",
+        "value": "cfg_26c590ef-1feb-4e20-94a5-0db469e345e3",
+        "compareDigest": "c486483a7cee2aec2b6d6804a28e715e9774c157a95796553a352e235cdac4d5"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:46:46Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0MzU2NDQxMiwibGFzdF92YWx1ZSI6NzIzMTQwNDM1NjQ0MTJ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126383620476",
+      "handle": "klingelschild-google-nest-a0077-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-google-nest-a0077-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120054652",
+        "value": "cfg_9d688bc6-e395-4ea1-a504-493445b8c48a",
+        "compareDigest": "1a551cc0a4adc2721889b6543e67d1e06c778fbc0a86d351cee52f1a8797efd5"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:13Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0NzAzNzgyMCwibGFzdF92YWx1ZSI6NzIzMTQwNDcwMzc4MjB9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126385160572",
+      "handle": "klingelschild-google-nest-akku-22lcur-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-google-nest-akku-22lcur-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675120021884",
+        "value": "cfg_534f869a-22e2-4080-a656-8f9a6e756ecb",
+        "compareDigest": "6e4819b5bdb6a5ea4a94d587dc20dfb2458bb882ef38f2e1bf67387e9e31657e"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:14Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0NzA3MDU4OCwibGFzdF92YWx1ZSI6NzIzMTQwNDcwNzA1ODh9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126385258876",
+      "handle": "klingelschild-hombli-smart-doorbell-2-hbdb-0200-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-hombli-smart-doorbell-2-hbdb-0200-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675119989116",
+        "value": "cfg_872358f1-f7ae-4a46-9eaf-277441db5bbe",
+        "compareDigest": "c949de5cbc0f9baad67f869184b7a0877459b088d2776d14bdf9e97b019157b1"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:14Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0NzEwMzM1NiwibGFzdF92YWx1ZSI6NzIzMTQwNDcxMDMzNTZ9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126385324412",
+      "handle": "klingelschild-philips-welcome-eye-531034-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-philips-welcome-eye-531034-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675119956348",
+        "value": "cfg_3a605e79-7e0f-423f-96db-0bf5f37f246f",
+        "compareDigest": "4aebb7477138debc241be6906264d89c45693c4aa9f3d0ca403b6d20b641a831"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:15Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0NzEzNjEyNCwibGFzdF92YWx1ZSI6NzIzMTQwNDcxMzYxMjR9"
+        }
+      }
+    },
+    {
+      "id": "gid://shopify/Product/16126385389948",
+      "handle": "klingelschild-reolink-akku-2ayhe-2205b-personalisiert",
+      "status": "ACTIVE",
+      "templateSuffix": null,
+      "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-reolink-akku-2ayhe-2205b-personalisiert",
+      "variantsCount": {
+        "count": 120
+      },
+      "metafield": {
+        "id": "gid://shopify/Metafield/200675119923580",
+        "value": "cfg_4fe0a820-ac06-43a5-a198-89dee1f0a4c4",
+        "compareDigest": "822cfed5090e3de9e655aebc40780b0777e597ecb57bd7fe0ec479bf1191d79d"
+      },
+      "publishedOnPublication": true,
+      "resourcePublicationsV2": {
+        "nodes": [
+          {
+            "publication": {
+              "id": "gid://shopify/Publication/291556688252",
+              "catalog": {
+                "title": "Channel Catalog 291556688252 for Online Store"
+              }
+            },
+            "isPublished": true,
+            "publishDate": "2026-09-19T13:47:15Z"
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0X2lkIjo3MjMxNDA0NzIwMTY2MCwibGFzdF92YWx1ZSI6NzIzMTQwNDcyMDE2NjB9"
+        }
+      }
+    }
+  ]
+}

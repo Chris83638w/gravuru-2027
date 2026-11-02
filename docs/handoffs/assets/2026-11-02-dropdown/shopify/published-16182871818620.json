@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-02T15:37:41.700Z",
+  "row": {
+    "id": "gid://shopify/Product/16182871818620",
+    "handle": "klingelschild-reolink-akku-2ayhe-2205b-querformat-24x20-personalisiert",
+    "status": "ACTIVE",
+    "templateSuffix": "funkklingeln-2027",
+    "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/klingelschild-reolink-akku-2ayhe-2205b-querformat-24x20-personalisiert",
+    "variantsCount": {
+      "count": 120
+    },
+    "metafield": {
+      "id": "gid://shopify/Metafield/200424362475900",
+      "value": "cfg_6f492a9c-21f7-437a-ab94-da6957154e02",
+      "compareDigest": "2e5728127ab877745178dfea8ee28cc792d99af199d22df5d429b6e400d5d1d9"
+    },
+    "publishedOnPublication": true,
+    "resourcePublicationsV2": {
+      "nodes": [
+        {
+          "publication": {
+            "id": "gid://shopify/Publication/291556688252",
+            "catalog": {
+              "title": "Channel Catalog 291556688252 for Online Store"
+            }
+          },
+          "isPublished": true,
+          "publishDate": "2026-11-02T15:37:39Z"
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "eyJsYXN0X2lkIjo3MzEyMjExMDg2NTc4OCwibGFzdF92YWx1ZSI6IjczMTIyMTEwODY1Nzg4In0="
+      }
+    }
+  }
+}

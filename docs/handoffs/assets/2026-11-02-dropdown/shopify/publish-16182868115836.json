@@ -1,0 +1,36 @@
+{
+  "at": "2026-11-02T15:35:08.338Z",
+  "request": {
+    "id": "gid://shopify/Product/16182868115836",
+    "input": [
+      {
+        "publicationId": "gid://shopify/Publication/291556688252"
+      }
+    ]
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Mutation executed successfully. IMPORTANT: Present the results clearly to the user. Do NOT dump raw JSON — summarize what changed in a helpful, readable way."
+      },
+      {
+        "type": "text",
+        "text": "{\"data\":{\"publishablePublish\":{\"userErrors\":[]}}}",
+        "annotations": {
+          "audience": [
+            "assistant"
+          ]
+        }
+      }
+    ],
+    "structuredContent": {
+      "data": {
+        "publishablePublish": {
+          "userErrors": []
+        }
+      }
+    },
+    "isError": false
+  }
+}

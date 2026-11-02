@@ -1,0 +1,38 @@
+{
+  "at": "2026-11-02T17:53:06.613Z",
+  "generatedFolder": "C:/Users/Christopher Koch/.codex/generated_images/01a19b93-05b2-7562-a3f0-62bcf05be53f",
+  "images": [
+    {
+      "design": "D32",
+      "prompt": "Create a photorealistic premium ecommerce main product photo, landscape 3:2. Use the provided screenshot as the EXACT artwork and silhouette reference for an engraved brushed stainless steel door sign. Preserve EVERY black text, original font style, motif, line, placement, relative proportions and rounded plate corners precisely; do not redesign, distort or omit any artwork. Black laser engraving, horizontally brushed silver V2A steel, 1.5 mm thick. No screw holes, no screws, no standoffs: this is the plain unperforated base option. Show the plaque mounted flush on a softly textured warm off-white entry wall, nearly frontal with very slight natural perspective and soft daylight. Plaque fills about 80% of image width, full plate visible, realistic slender metal edge and gentle wall shadow. Restrained high quality product photography, no hands, props, dimensions, UI, labels, branding or extra decorative elements. Artwork must remain clearly legible. 18 by 12 cm. Keep the exact text 'Familie', large handwritten 'Berger', and bottom-right 'mit Sammy'. Keep the single paw at top right exactly.",
+      "name": "edelstahl-tuerschild-pfote-familienname-personalisiert",
+      "mode": "edit",
+      "reference": "outputs/live-nachweis-20261102/third-D32-konfi-start.png",
+      "generatedPath": "exec-472d1a2f-952c-47ec-a938-aba889a3f746.png"
+    },
+    {
+      "design": "D62",
+      "prompt": "Create a photorealistic premium ecommerce main product photo, landscape 3:2. Use the provided screenshot as the EXACT artwork and silhouette reference for an engraved brushed stainless steel door sign. Preserve EVERY black text, original font style, motif, line, placement, relative proportions and rounded plate corners precisely; do not redesign, distort or omit any artwork. Black laser engraving, horizontally brushed silver V2A steel, 1.5 mm thick. No screw holes, no screws, no standoffs: this is the plain unperforated base option. Show the plaque mounted flush on a softly textured warm off-white entry wall, nearly frontal with very slight natural perspective and soft daylight. Plaque fills about 80% of image width, full plate visible, realistic slender metal edge and gentle wall shadow. Restrained high quality product photography, no hands, props, dimensions, UI, labels, branding or extra decorative elements. Artwork must remain clearly legible. 18 by 12 cm. Keep 'Familie' above large handwritten 'Schielmann', and the heart-handled key angled below the name between the two thin horizontal divider lines exactly.",
+      "name": "namensschild-edelstahl-schluessel-gravur-individuell",
+      "mode": "edit",
+      "reference": "outputs/live-nachweis-20261102/third-D62-konfi-start.png",
+      "generatedPath": "exec-eec42e70-2ab7-4a33-9ca8-b29e5e12a485.png"
+    },
+    {
+      "design": "D65",
+      "prompt": "Create a photorealistic premium ecommerce main product photo, landscape 3:2. Use the provided screenshot as the EXACT artwork and silhouette reference for an engraved brushed stainless steel door sign. Preserve EVERY black text, original font style, motif, line, placement, relative proportions and rounded plate corners precisely; do not redesign, distort or omit any artwork. Black laser engraving, horizontally brushed silver V2A steel, 1.5 mm thick. No screw holes, no screws, no standoffs: this is the plain unperforated base option. Show the plaque mounted flush on a softly textured warm off-white entry wall, nearly frontal with very slight natural perspective and soft daylight. Plaque fills about 80% of image width, full plate visible, realistic slender metal edge and gentle wall shadow. Restrained high quality product photography, no hands, props, dimensions, UI, labels, branding or extra decorative elements. Artwork must remain clearly legible. 30 by 20 cm. Keep 'Hier wohnt', large handwritten 'Familie Wegner', the thin horizontal separator, and bottom row 'Stefan' black heart 'Anna' black heart 'Sophie' exactly.",
+      "name": "familienschild-edelstahl-herzen-namen-personalisiert",
+      "mode": "edit",
+      "reference": "outputs/live-nachweis-20261102/third-D65-konfi-start.png",
+      "generatedPath": "exec-d6cd6428-81ed-4790-9b6c-1de892790cfa.png"
+    },
+    {
+      "design": "D24",
+      "prompt": "Create a photorealistic premium ecommerce main product photo, landscape 3:2. Use the provided screenshot as the EXACT artwork and silhouette reference for an engraved brushed stainless steel door sign. Preserve EVERY black text, original font style, motif, line, placement, relative proportions and rounded plate corners precisely; do not redesign, distort or omit any artwork. Black laser engraving, horizontally brushed silver V2A steel, 1.5 mm thick. No screw holes, no screws, no standoffs: this is the plain unperforated base option. Show the plaque mounted flush on a softly textured warm off-white entry wall, nearly frontal with very slight natural perspective and soft daylight. Plaque fills about 80% of image width, full plate visible, realistic slender metal edge and gentle wall shadow. Restrained high quality product photography, no hands, props, dimensions, UI, labels, branding or extra decorative elements. Artwork must remain clearly legible. 30 by 20 cm. Keep the black house roof/chimney with solid heart beneath it, 'Zuhause von', and handwritten 'Familie Hellwig' exactly.",
+      "name": "haustuerschild-edelstahl-haus-herz-graviert",
+      "mode": "edit",
+      "reference": "outputs/live-nachweis-20261102/third-D24-konfi-start.png",
+      "generatedPath": "exec-9fd2cc40-1110-47d5-8f2d-dd3909f4b5c0.png"
+    }
+  ]
+}

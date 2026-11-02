@@ -1,0 +1,17 @@
+{
+  "at": "2026-11-02T18:19:06.824Z",
+  "results": [
+    {
+      "design": "D65",
+      "ok": true,
+      "readyMs": 30984,
+      "mounting": "B04S",
+      "variant": "58100822180220",
+      "quantity": 3,
+      "unitCents": 7893,
+      "totalCents": 23679,
+      "editRestored": true,
+      "errors": []
+    }
+  ]
+}

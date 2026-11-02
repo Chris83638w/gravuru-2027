@@ -118,13 +118,41 @@ def plan_layout(D, Wt, Ht, shape, caps, contour=None, edge_margin=None, gmax=G_M
             sx, sy, tx, ty = tr[it.id]
             tr[it.id] = (sx, sy, tx, ty + dy)
         G = (G[0] + dx, G[1] + dy, G[2] + dx, G[3] + dy)
+        if shape != 'rect' and hsp:
+            # Randlinien bei Oval/Kontur: nur bis zur Form (mit Abstand) ziehen
+            m = (edge_margin or 0) + 0.3
+            for it in hsp:
+                sx, sy, tx, ty = tr[it.id]
+                y0, y1 = it.bbox[1] * sy + ty, it.bbox[3] * sy + ty
+                if shape == 'ellipse':
+                    a, b = Wt / 2 - m, Ht / 2 - m
+                    dyv = max(abs(y0 - Ht / 2), abs(y1 - Ht / 2))
+                    half = a * math.sqrt(max(0.0, 1 - (dyv / b) ** 2)) if dyv < b else 0.0
+                    lx, rx = Wt / 2 - half, Wt / 2 + half
+                else:
+                    from shapely.geometry import box as _box
+                    band = contour.buffer(-m).intersection(_box(0, y0, Wt, y1))
+                    if band.is_empty:
+                        continue
+                    lx, rx = band.bounds[0], band.bounds[2]
+                    # schmalste Stelle im Band (Kontur-Ecken)
+                    xs = []
+                    for yy in (y0, (y0 + y1) / 2, y1):
+                        seg = contour.buffer(-m).intersection(_box(0, yy - 1e-3, Wt, yy + 1e-3))
+                        if not seg.is_empty:
+                            xs.append(seg.bounds)
+                    if xs:
+                        lx, rx = max(b[0] for b in xs), min(b[2] for b in xs)
+                x0, x1 = it.bbox[0], it.bbox[2]
+                nsx = (rx - lx) / max(x1 - x0, 1e-6)
+                tr[it.id] = (nsx, sy, lx - nsx * x0, ty)
         return tr, G
 
     def ok(tr):
         # Konfi-Prüfung: Textkasten (Laufweite × 1,2 Schriftgröße) muss bei eckigen Platten ganz auf der Platte liegen
         for it in items:
             kb = getattr(it, 'kbox', None)
-            if kb is not None and shape == 'rect':
+            if kb is not None and shape == 'rect' and getattr(it, 'span', None) is None:
                 sx, sy, tx, ty = tr[it.id]
                 if kb[0] * sx + tx < -1e-3 or kb[2] * sx + tx > Wt + 1e-3 or kb[1] * sy + ty < -1e-3 or kb[3] * sy + ty > Ht + 1e-3:
                     return False

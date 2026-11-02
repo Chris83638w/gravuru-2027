@@ -395,6 +395,18 @@ def read_design(svg_path, fonts):
                 if b:
                     boxes.append((b[0] + t['dx'], b[1] + t['dy'], b[2] + t['dx'], b[3] + t['dy']))
             it.bbox = (min(b[0] for b in boxes), min(b[1] for b in boxes), max(b[2] for b in boxes), max(b[3] for b in boxes)) if boxes else None
+            # Konfi-Kasten eines Motivs: Hülle aller Stütz- und Kontrollpunkte (pathBounds, konservativ)
+            cps = []
+            for e in shapes:
+                d = shape_to_path(e)
+                if d:
+                    for c, a in path_abs(d):
+                        if c in ('M', 'L', 'C', 'Q'):
+                            cps += [(a[k] + t['dx'], a[k + 1] + t['dy']) for k in range(0, len(a), 2)]
+                        elif c == 'A':
+                            cps += [(a[5] + t['dx'], a[6] + t['dy'])]
+            if cps and it.bbox:
+                it.kbox = (min(p[0] for p in cps), min(p[1] for p in cps), max(p[0] for p in cps), max(p[1] for p in cps))
             it.translate = (t['dx'], t['dy'])
             it.shapes = shapes
         if it.bbox:

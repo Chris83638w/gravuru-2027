@@ -1,0 +1,115 @@
+{
+  "at": "2026-11-02T10:13:43.740Z",
+  "route": "Shopify AOSU product → Jetzt personalisieren → Neu laden",
+  "options": {
+    "dimensions": [
+      "350 mm",
+      "180 mm"
+    ],
+    "groups": [
+      {
+        "bottom": 315.1875,
+        "height": 144,
+        "id": "format",
+        "width": 736.390625,
+        "x": 1129.578125,
+        "y": 171.1875
+      },
+      {
+        "bottom": 465.1875,
+        "height": 144,
+        "id": "position",
+        "width": 477.59375,
+        "x": 1129.578125,
+        "y": 321.1875
+      },
+      {
+        "bottom": 437.03125,
+        "height": 115.84375,
+        "id": "color",
+        "width": 238.796875,
+        "x": 1627.171875,
+        "y": 321.1875
+      },
+      {
+        "bottom": 597.078125,
+        "height": 125.890625,
+        "id": "frame",
+        "width": 736.390625,
+        "x": 1129.578125,
+        "y": 471.1875
+      },
+      {
+        "bottom": 783.453125,
+        "height": 180.375,
+        "id": "mounting",
+        "width": 736.390625,
+        "x": 1129.578125,
+        "y": 603.078125
+      }
+    ],
+    "mounts": [
+      {
+        "bottom": 711.453125,
+        "height": 76.375,
+        "label": "Keine Befestigungohne Aufpreis✓",
+        "width": 240.125,
+        "x": 1129.578125,
+        "y": 635.078125
+      },
+      {
+        "bottom": 711.453125,
+        "height": 76.375,
+        "label": "Verdeckte Bolzen+5,99 €✓",
+        "width": 240.125,
+        "x": 1377.703125,
+        "y": 635.078125
+      },
+      {
+        "bottom": 711.453125,
+        "height": 76.375,
+        "label": "Selbstklebend – raue Flächen+4,99 €✓",
+        "width": 240.125,
+        "x": 1625.828125,
+        "y": 635.078125
+      },
+      {
+        "bottom": 783.453125,
+        "height": 64,
+        "label": "SILMit Silikon+4,99 €✓",
+        "width": 240.125,
+        "x": 1129.578125,
+        "y": 719.453125
+      },
+      {
+        "bottom": 783.453125,
+        "height": 64,
+        "label": "Bohrlöcher mit Schrauben+3,69 €✓",
+        "width": 240.125,
+        "x": 1377.703125,
+        "y": 719.453125
+      }
+    ],
+    "plate": {
+      "bottom": 673.375,
+      "height": 493.375,
+      "width": 959.328125,
+      "x": 72.625,
+      "y": 180
+    },
+    "styles": true,
+    "viewport": {
+      "height": 855,
+      "width": 1905
+    }
+  },
+  "textSelectionAfter": {
+    "bottom": 672.375,
+    "height": 493.375,
+    "width": 959.328125,
+    "x": 72.625,
+    "y": 179
+  },
+  "price": "74,98 EUR",
+  "note": "Existing draft restored; no text, design, product options or cart changed."
+}

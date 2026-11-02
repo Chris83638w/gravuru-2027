@@ -1,6 +1,6 @@
 # Gravuru 2027 – Arbeitsregeln
 
-Zuerst `START_HERE.md`, danach das aktive Paket in `UMSETZUNGSPAKETE.md` lesen. Detailanforderungen stehen im `NEUE-WERKSTATT-PLAN.md`; die aktuelle Entscheidung gilt vor historischen Quelltexten und Bildprompts.
+Zuerst `ENTSCHEIDUNGEN.md` (Entscheidungsregister Chris), dann `START_HERE.md`, danach das aktive Paket in `UMSETZUNGSPAKETE.md` lesen. Detailanforderungen stehen im `NEUE-WERKSTATT-PLAN.md`; die aktuelle Entscheidung gilt vor historischen Quelltexten und Bildprompts.
 
 - Eigenständige neue App; vorhandenen Kundeneditor und Ressourcen gezielt wiederverwenden. Die ZIPs enthalten eingefrorene Referenzen, keine fertige neue App. `legacy-reference/` unverändert zum Vergleich halten; aktive Änderungen in klar benannten neuen Modulen.
 - Ein Arbeitspaket mit überprüfbarem Ergebnis nach dem anderen. Keine neue Komplettplanung bei jeder Fortsetzung. Passende Quelldateien gezielt lesen; große Motiv-/Fontsegmente nicht als Text in den Kontext laden.

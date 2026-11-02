@@ -1,0 +1,183 @@
+== boxenschilder-gravur-80x53 620 KB
+ 1 Breite  85% Höhe  59% Fläche  51% | Versatz x  -0.3% y  +0.2% | ok
+ 2 Breite  90% Höhe  53% Fläche  48% | Versatz x  -3.6% y  +0.2% | PRÜFEN: waagerecht -4 %
+ 3 Breite  99% Höhe  75% Fläche  75% | Versatz x  +0.1% y  +0.0% | ok
+ 4 Breite  84% Höhe  69% Fläche  58% | Versatz x  +0.0% y  +1.1% | ok
+ 5 Breite  82% Höhe  94% Fläche  77% | Versatz x  -0.1% y  -0.0% | ok
+ 6 Breite  63% Höhe  77% Fläche  48% | Versatz x  +0.4% y  +0.2% | ok
+ 7 Breite  86% Höhe  47% Fläche  40% | Versatz x  -0.1% y  +0.2% | ok
+ 8 Breite  85% Höhe  98% Fläche  83% | Versatz x  -0.2% y  +0.0% | ok
+ 9 Breite  99% Höhe  53% Fläche  53% | Versatz x  +0.0% y  -0.2% | ok
+10 Breite  92% Höhe  67% Fläche  61% | Versatz x  +3.0% y  -4.6% | PRÜFEN: waagerecht +3 %, senkrecht -5 %
+11 Breite  84% Höhe  66% Fläche  56% | Versatz x  -0.1% y  +0.0% | ok
+12 Breite  99% Höhe  72% Fläche  71% | Versatz x  +0.0% y  +0.2% | ok
+== boxenschilder-gravur-oval-150x80 536 KB
+ 1 Breite  76% Höhe  59% Fläche  45% | Versatz x  -0.2% y  +0.2% | ok
+ 2 Breite  89% Höhe  54% Fläche  49% | Versatz x  -3.4% y  +0.2% | PRÜFEN: waagerecht -3 %
+ 3 Breite  78% Höhe  64% Fläche  50% | Versatz x  +0.0% y  +0.0% | ok
+ 4 Breite  78% Höhe  58% Fläche  45% | Versatz x  +0.1% y  +1.5% | ok
+ 5 Breite  75% Höhe  85% Fläche  64% | Versatz x  -0.1% y  +0.0% | ok
+ 6 Breite  46% Höhe  71% Fläche  32% | Versatz x  -0.1% y  +0.0% | ok
+ 7 Breite  83% Höhe  51% Fläche  43% | Versatz x  -0.5% y  +0.2% | ok
+ 8 Breite  83% Höhe  62% Fläche  51% | Versatz x  -3.1% y  +0.0% | PRÜFEN: waagerecht -3 %
+ 9 Breite  98% Höhe  53% Fläche  52% | Versatz x  +0.0% y  -0.8% | ok
+10 Breite  83% Höhe  56% Fläche  47% | Versatz x  +6.4% y  -5.0% | PRÜFEN: waagerecht +6 %, senkrecht -5 %
+11 Breite  85% Höhe  69% Fläche  59% | Versatz x  +1.3% y  +1.1% | ok
+12 Breite  98% Höhe  73% Fläche  71% | Versatz x  +0.1% y  +0.3% | ok
+== edelstahl-gravur-50x20 364 KB
+ 1 Breite  82% Höhe  71% Fläche  58% | Versatz x  -0.4% y  +0.0% | ok
+ 2 Breite  94% Höhe  67% Fläche  63% | Versatz x  -2.4% y  +0.0% | ok
+ 3 Breite 100% Höhe  85% Fläche  84% | Versatz x  +0.0% y  +0.0% | ok
+ 4 Breite  82% Höhe  94% Fläche  77% | Versatz x  -0.3% y  -0.0% | ok
+ 5 Breite  88% Höhe  61% Fläche  53% | Versatz x  -0.3% y  -0.8% | ok
+ 6 Breite  90% Höhe  60% Fläche  54% | Versatz x  +0.0% y  -0.3% | ok
+ 7 Breite  87% Höhe  97% Fläche  85% | Versatz x  -0.3% y  +0.2% | ok
+ 8 Breite  99% Höhe  70% Fläche  70% | Versatz x  +0.0% y  +0.0% | ok
+ 9 Breite 100% Höhe  53% Fläche  53% | Versatz x  +0.0% y  +0.0% | ok
+== edelstahl-gravur-60x20 336 KB
+ 1 Breite  76% Höhe  72% Fläche  54% | Versatz x  -0.4% y  +0.0% | ok
+ 2 Breite  94% Höhe  71% Fläche  67% | Versatz x  -2.5% y  +0.3% | ok
+ 3 Breite 100% Höhe  85% Fläche  85% | Versatz x  +0.0% y  +0.0% | ok
+ 4 Breite  77% Höhe  92% Fläche  71% | Versatz x  -0.2% y  +0.1% | ok
+ 5 Breite  82% Höhe  62% Fläche  51% | Versatz x  -0.2% y  -0.9% | ok
+ 6 Breite  90% Höhe  67% Fläche  60% | Versatz x  +0.0% y  +0.0% | ok
+ 7 Breite  81% Höhe  98% Fläche  79% | Versatz x  -0.2% y  +0.0% | ok
+ 8 Breite  99% Höhe  74% Fläche  73% | Versatz x  -0.0% y  +0.0% | ok
+ 9 Breite 100% Höhe  58% Fläche  58% | Versatz x  +0.0% y  +0.0% | ok
+== edelstahl-gravur-65x65-rund 768 KB
+ 1 Breite  60% Höhe  72% Fläche  44% | Versatz x  -0.4% y  +0.0% | ok
+ 2 Breite  88% Höhe  61% Fläche  54% | Versatz x  +0.0% y  +0.2% | ok
+ 3 Breite  86% Höhe  50% Fläche  43% | Versatz x  +0.1% y  +0.0% | ok
+ 4 Breite  42% Höhe  73% Fläche  31% | Versatz x  +0.0% y  +2.0% | ok
+ 5 Breite  92% Höhe  49% Fläche  46% | Versatz x  +0.1% y  -0.6% | ok
+ 6 Breite  62% Höhe  67% Fläche  42% | Versatz x  +0.4% y  +0.2% | ok
+ 7 Breite  70% Höhe  56% Fläche  40% | Versatz x  -0.3% y  +0.0% | ok
+ 8 Breite  92% Höhe  50% Fläche  46% | Versatz x  +0.0% y  -0.1% | ok
+ 9 Breite  97% Höhe  41% Fläche  40% | Versatz x  -0.0% y  -0.1% | ok
+10 Breite  70% Höhe  69% Fläche  48% | Versatz x  -0.2% y  +0.5% | ok
+11 Breite  70% Höhe  77% Fläche  54% | Versatz x  +0.0% y  +0.1% | ok
+12 Breite  97% Höhe  58% Fläche  57% | Versatz x  +0.0% y  +0.0% | ok
+== edelstahl-gravur-70x23 344 KB
+ 1 Breite  86% Höhe  72% Fläche  62% | Versatz x  -0.3% y  +0.3% | ok
+ 2 Breite  94% Höhe  69% Fläche  65% | Versatz x  -2.3% y  +0.6% | ok
+ 3 Breite  99% Höhe  84% Fläche  84% | Versatz x  +0.0% y  +0.3% | ok
+ 4 Breite  77% Höhe  92% Fläche  70% | Versatz x  -0.1% y  -0.0% | ok
+ 5 Breite  82% Höhe  60% Fläche  49% | Versatz x  -0.2% y  -0.6% | ok
+ 6 Breite  90% Höhe  65% Fläche  58% | Versatz x  +0.0% y  +0.6% | ok
+ 7 Breite  83% Höhe  97% Fläche  80% | Versatz x  -0.2% y  +0.3% | ok
+ 8 Breite  99% Höhe  72% Fläche  71% | Versatz x  +0.0% y  +0.0% | ok
+ 9 Breite  99% Höhe  58% Fläche  58% | Versatz x  +0.0% y  -0.6% | ok
+== edelstahl-gravur-80x20 308 KB
+ 1 Breite  80% Höhe  72% Fläche  58% | Versatz x  -0.3% y  +0.4% | ok
+ 2 Breite  94% Höhe  72% Fläche  68% | Versatz x  -2.5% y  +0.4% | ok
+ 3 Breite 100% Höhe  86% Fläche  85% | Versatz x  +0.0% y  +0.4% | ok
+ 4 Breite  70% Höhe  93% Fläche  65% | Versatz x  -0.1% y  +0.0% | ok
+ 5 Breite  75% Höhe  63% Fläche  47% | Versatz x  -0.1% y  -0.8% | ok
+ 6 Breite  81% Höhe  70% Fläche  57% | Versatz x  +0.0% y  +0.0% | ok
+ 7 Breite  73% Höhe  97% Fläche  71% | Versatz x  -0.1% y  +0.0% | ok
+ 8 Breite  99% Höhe  74% Fläche  74% | Versatz x  +0.0% y  +0.4% | ok
+ 9 Breite  99% Höhe  70% Fläche  69% | Versatz x  +0.0% y  -0.8% | ok
+== edelstahl-gravur-80x35 524 KB
+ 1 Breite  84% Höhe  63% Fläche  53% | Versatz x  -0.2% y  +0.2% | ok
+ 2 Breite  93% Höhe  55% Fläche  51% | Versatz x  -2.8% y  +0.1% | ok
+ 3 Breite 100% Höhe  82% Fläche  81% | Versatz x  +0.0% y  +0.2% | ok
+ 4 Breite  83% Höhe  71% Fläche  59% | Versatz x  +0.0% y  +1.6% | ok
+ 5 Breite  83% Höhe  87% Fläche  72% | Versatz x  -0.2% y  +0.3% | ok
+ 6 Breite  87% Höhe  53% Fläche  47% | Versatz x  -0.3% y  -0.5% | ok
+ 7 Breite  88% Höhe  51% Fläche  45% | Versatz x  +0.0% y  -0.5% | ok
+ 8 Breite  89% Höhe  96% Fläche  85% | Versatz x  -0.3% y  +0.0% | ok
+ 9 Breite  99% Höhe  72% Fläche  71% | Versatz x  +0.0% y  -0.5% | ok
+10 Breite  93% Höhe  71% Fläche  66% | Versatz x  +2.5% y  -5.1% | PRÜFEN: senkrecht -5 %
+11 Breite  88% Höhe  78% Fläche  68% | Versatz x  -0.1% y  -0.2% | ok
+12 Breite  99% Höhe  73% Fläche  72% | Versatz x  +0.0% y  +0.7% | ok
+== edelstahl-gravur-80x80 808 KB
+ 1 Breite  51% Höhe  71% Fläche  36% | Versatz x  -0.3% y  +0.1% | ok
+ 2 Breite  97% Höhe  60% Fläche  58% | Versatz x  +0.0% y  +0.2% | ok
+ 3 Breite  99% Höhe  51% Fläche  51% | Versatz x  +0.0% y  +0.0% | ok
+ 4 Breite  64% Höhe  74% Fläche  48% | Versatz x  +0.0% y  +2.2% | ok
+ 5 Breite  97% Höhe  49% Fläche  47% | Versatz x  +0.0% y  -0.5% | ok
+ 6 Breite  67% Höhe  69% Fläche  46% | Versatz x  -0.2% y  +0.2% | ok
+ 7 Breite  70% Höhe  55% Fläche  39% | Versatz x  -0.2% y  +0.0% | ok
+ 8 Breite  98% Höhe  49% Fläche  48% | Versatz x  +0.0% y  -0.1% | ok
+ 9 Breite  99% Höhe  41% Fläche  40% | Versatz x  +0.0% y  -0.3% | ok
+10 Breite  70% Höhe  69% Fläche  48% | Versatz x  -0.2% y  +0.5% | ok
+11 Breite  70% Höhe  75% Fläche  53% | Versatz x  +0.1% y  +0.1% | ok
+12 Breite  99% Höhe  57% Fläche  57% | Versatz x  -0.0% y  +0.0% | ok
+== edelstahl-gravur-90x30 452 KB
+ 1 Breite  78% Höhe  63% Fläche  49% | Versatz x  -0.2% y  +0.0% | ok
+ 2 Breite  93% Höhe  56% Fläche  52% | Versatz x  -2.9% y  +0.0% | ok
+ 3 Breite 100% Höhe  83% Fläche  82% | Versatz x  +0.0% y  +0.0% | ok
+ 4 Breite  74% Höhe  72% Fläche  53% | Versatz x  +0.2% y  +2.5% | ok
+ 5 Breite  75% Höhe  93% Fläche  69% | Versatz x  -0.1% y  +0.0% | ok
+ 6 Breite  79% Höhe  57% Fläche  45% | Versatz x  -0.2% y  -0.6% | ok
+ 7 Breite  84% Höhe  57% Fläche  47% | Versatz x  +0.0% y  +0.0% | ok
+ 8 Breite  79% Höhe  97% Fläche  77% | Versatz x  -0.2% y  -0.0% | ok
+ 9 Breite  99% Höhe  75% Fläche  74% | Versatz x  -0.0% y  -1.2% | ok
+10 Breite  89% Höhe  73% Fläche  65% | Versatz x  +4.9% y  -4.0% | PRÜFEN: waagerecht +5 %, senkrecht -4 %
+11 Breite  88% Höhe  81% Fläche  71% | Versatz x  -0.1% y  -0.3% | ok
+12 Breite  99% Höhe  74% Fläche  73% | Versatz x  +0.0% y  +4.3% | PRÜFEN: senkrecht +4 %
+== edelstahl-gravur-ab-80x53 624 KB
+ 1 Breite  85% Höhe  59% Fläche  51% | Versatz x  -0.3% y  +0.2% | ok
+ 2 Breite  93% Höhe  53% Fläche  49% | Versatz x  -1.0% y  +0.2% | ok
+ 3 Breite  98% Höhe  75% Fläche  73% | Versatz x  +0.0% y  +0.0% | ok
+ 4 Breite  84% Höhe  69% Fläche  58% | Versatz x  +0.0% y  +1.1% | ok
+ 5 Breite  82% Höhe  93% Fläche  77% | Versatz x  -0.2% y  +0.1% | ok
+ 6 Breite  63% Höhe  77% Fläche  48% | Versatz x  +0.4% y  +0.2% | ok
+ 7 Breite  92% Höhe  49% Fläche  45% | Versatz x  -0.1% y  +0.2% | ok
+ 8 Breite  89% Höhe  98% Fläche  87% | Versatz x  -0.4% y  +0.0% | ok
+ 9 Breite  97% Höhe  53% Fläche  52% | Versatz x  +0.0% y  -0.2% | ok
+10 Breite  91% Höhe  67% Fläche  61% | Versatz x  +2.6% y  -4.6% | PRÜFEN: senkrecht -5 %
+11 Breite  93% Höhe  69% Fläche  64% | Versatz x  -0.1% y  +0.2% | ok
+12 Breite  97% Höhe  72% Fläche  70% | Versatz x  +0.0% y  +0.2% | ok
+== edelstahl-gravur-oval-120x40 436 KB
+ 1 Breite  66% Höhe  54% Fläche  35% | Versatz x  -0.2% y  +0.0% | ok
+ 2 Breite  87% Höhe  51% Fläche  44% | Versatz x  -4.7% y  +0.0% | PRÜFEN: waagerecht -5 %
+ 3 Breite  75% Höhe  74% Fläche  55% | Versatz x  +0.0% y  +0.0% | ok
+ 4 Breite  66% Höhe  64% Fläche  42% | Versatz x  +0.1% y  +0.6% | ok
+ 5 Breite  67% Höhe  87% Fläche  58% | Versatz x  -0.1% y  +0.0% | ok
+ 6 Breite  70% Höhe  52% Fläche  37% | Versatz x  -0.1% y  -0.6% | ok
+ 7 Breite  78% Höhe  53% Fläche  41% | Versatz x  +0.0% y  +0.3% | ok
+ 8 Breite  74% Höhe  76% Fläche  57% | Versatz x  -0.2% y  +0.0% | ok
+ 9 Breite  97% Höhe  68% Fläche  66% | Versatz x  -0.0% y  -1.0% | ok
+10 Breite  80% Höhe  64% Fläche  51% | Versatz x  +7.2% y  -2.2% | PRÜFEN: waagerecht +7 %
+11 Breite  81% Höhe  68% Fläche  55% | Versatz x  +0.5% y  +1.2% | ok
+12 Breite  98% Höhe  68% Fläche  67% | Versatz x  +0.0% y  +3.9% | PRÜFEN: senkrecht +4 %
+== edelstahl-gravur-oval-90x60 588 KB
+ 1 Breite  78% Höhe  59% Fläche  46% | Versatz x  -0.2% y  +0.0% | ok
+ 2 Breite  89% Höhe  49% Fläche  44% | Versatz x  -3.7% y  +0.0% | PRÜFEN: waagerecht -4 %
+ 3 Breite  78% Höhe  65% Fläche  50% | Versatz x  +0.1% y  +0.0% | ok
+ 4 Breite  79% Höhe  59% Fläche  46% | Versatz x  +0.9% y  +0.9% | ok
+ 5 Breite  77% Höhe  89% Fläche  69% | Versatz x  -0.1% y  -0.1% | ok
+ 6 Breite  58% Höhe  71% Fläche  41% | Versatz x  -0.1% y  +0.0% | ok
+ 7 Breite  83% Höhe  47% Fläche  39% | Versatz x  -0.1% y  +0.0% | ok
+ 8 Breite  84% Höhe  68% Fläche  57% | Versatz x  -1.6% y  -0.0% | ok
+ 9 Breite  97% Höhe  51% Fläche  49% | Versatz x  +0.0% y  -0.5% | ok
+10 Breite  83% Höhe  58% Fläche  48% | Versatz x  +7.0% y  -4.3% | PRÜFEN: waagerecht +7 %, senkrecht -4 %
+11 Breite  84% Höhe  63% Fläche  53% | Versatz x  +0.8% y  +0.5% | ok
+12 Breite  98% Höhe  69% Fläche  67% | Versatz x  +0.0% y  +0.0% | ok
+== edelstahl-gravur-retro1-90x60 612 KB
+ 1 Breite  78% Höhe  60% Fläche  47% | Versatz x  -0.2% y  +0.2% | ok
+ 2 Breite  83% Höhe  48% Fläche  40% | Versatz x  -7.2% y  +0.0% | PRÜFEN: waagerecht -7 %
+ 3 Breite  98% Höhe  74% Fläche  73% | Versatz x  +0.0% y  +0.0% | ok
+ 4 Breite  73% Höhe  63% Fläche  46% | Versatz x  +0.0% y  +1.3% | ok
+ 5 Breite  66% Höhe  95% Fläche  63% | Versatz x  -0.1% y  +0.0% | ok
+ 6 Breite  59% Höhe  73% Fläche  43% | Versatz x  -0.2% y  +0.0% | ok
+ 7 Breite  72% Höhe  43% Fläche  31% | Versatz x  +0.0% y  +0.0% | PRÜFEN: Höhe nur 43 %
+ 8 Breite  71% Höhe  98% Fläche  69% | Versatz x  -0.3% y  -0.0% | ok
+ 9 Breite  98% Höhe  49% Fläche  48% | Versatz x  +0.0% y  -0.2% | ok
+10 Breite  85% Höhe  67% Fläche  57% | Versatz x  +6.1% y  -4.7% | PRÜFEN: waagerecht +6 %, senkrecht -5 %
+11 Breite  69% Höhe  54% Fläche  38% | Versatz x  -0.1% y  +0.0% | ok
+12 Breite  98% Höhe  67% Fläche  66% | Versatz x  -0.0% y  +0.0% | ok
+== edelstahl-gravur-retro2-91x61 668 KB
+ 1 Breite  77% Höhe  60% Fläche  46% | Versatz x  +1.2% y  -0.2% | ok
+ 2 Breite  80% Höhe  48% Fläche  38% | Versatz x  -6.2% y  -0.1% | PRÜFEN: waagerecht -6 %
+ 3 Breite  95% Höhe  74% Fläche  71% | Versatz x  +0.0% y  +0.0% | ok
+ 4 Breite  73% Höhe  59% Fläche  43% | Versatz x  -0.0% y  +1.5% | ok
+ 5 Breite  66% Höhe  86% Fläche  56% | Versatz x  -0.1% y  +0.0% | ok
+ 6 Breite  58% Höhe  72% Fläche  42% | Versatz x  -0.2% y  +0.0% | ok
+ 7 Breite  71% Höhe  43% Fläche  30% | Versatz x  -0.0% y  +0.0% | PRÜFEN: Höhe nur 43 %
+ 8 Breite  70% Höhe  98% Fläche  69% | Versatz x  -0.3% y  -0.0% | ok
+ 9 Breite  91% Höhe  48% Fläche  44% | Versatz x  -0.0% y  -0.7% | ok
+10 Breite  80% Höhe  67% Fläche  54% | Versatz x  +4.4% y  -4.8% | PRÜFEN: waagerecht +4 %, senkrecht -5 %
+11 Breite  68% Höhe  54% Fläche  37% | Versatz x  -0.1% y  +0.0% | ok
+12 Breite  92% Höhe  67% Fläche  62% | Versatz x  -0.0% y  -0.2% | ok

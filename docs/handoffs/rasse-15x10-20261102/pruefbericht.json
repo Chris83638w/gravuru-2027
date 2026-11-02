@@ -1,0 +1,61 @@
+{
+  "catalogCommit": "788cf0a97",
+  "catalogPR": 152,
+  "designs": 960,
+  "breeds": 80,
+  "dogTypes": 55,
+  "catBreeds": 25,
+  "nativeFitPassed": 960,
+  "contactSheets": 80,
+  "beforeAfterSheets": 30,
+  "measurementRows": 960,
+  "measurementFlags": 0,
+  "distinctCatMotifs": 300,
+  "largestConnectedBlackPlateFraction": 0.09684757881052973,
+  "browserChecks": [
+    {
+      "id": "TRE-V2A-15x10-D1061",
+      "svgSha256": "29195e15663c25d1cee411a59d907a8f11bd41e8cd2096159acc977c5863a406",
+      "sha256": "99e8862522d12c5ea05da1ac1a222de1a5d69f966e473a4f21810613573f5899",
+      "browserErrors": [],
+      "textOverlaps": []
+    },
+    {
+      "id": "TRE-V2A-15x10-D1062",
+      "svgSha256": "4546205145c99f88c0f3279b661393d179bf7ab8114843540c314c04b2122eac",
+      "sha256": "fc006937790799c5bb9b63a97c466a7295fa81b167e898b35700c990b73a7606",
+      "browserErrors": [],
+      "textOverlaps": []
+    },
+    {
+      "id": "TRE-V2A-15x10-D1063",
+      "svgSha256": "9e4bcc7a52e8cd29d2faae9e4f5caa710beefcd666dc9450cca07f0af323761d",
+      "sha256": "3b26fd5ae1b8150d0edf3fe8370f3eb2dd58b65c8fa8d6437d27e11bb1573ebc",
+      "browserErrors": [],
+      "textOverlaps": []
+    },
+    {
+      "id": "TRE-V2A-15x10-D1361",
+      "svgSha256": "d8d3b87a6616e8bc03bfdd4e9f4c3db859fe0d207fdaf8de59e62c05eb8a0526",
+      "sha256": "db774ea8346a181267b8aa68a1e0b4785a5a5a7c69135bc8afb8cfcb7e96a204",
+      "browserErrors": [],
+      "textOverlaps": []
+    },
+    {
+      "id": "TRE-V2A-15x10-D1362",
+      "svgSha256": "428cc29388580e361f61fd91dff398ea8f5f792277a70bfa1a96f129c41512b2",
+      "sha256": "5f0e9103c5ba202efeb7b500efc72af9e70315629de31268c44f6d0bb9600da6",
+      "browserErrors": [],
+      "textOverlaps": []
+    },
+    {
+      "id": "TRE-V2A-15x10-D1363",
+      "svgSha256": "f9ed58ff8ab40c3a10cf5445b88fa99e8110f6cdbca41044edeffe26cc3c1802",
+      "sha256": "dace63e2c911e5219f2ca3dbc38d5c97e18773aa2533a8b1656ac46fb0c605fa",
+      "browserErrors": [],
+      "textOverlaps": []
+    }
+  ],
+  "jpgCount": 193,
+  "jpgMaxBytes": 641846
+}

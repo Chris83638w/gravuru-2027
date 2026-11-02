@@ -1,0 +1,246 @@
+{
+  "source": "Native customer configurator via review-rasse-schilder.mjs",
+  "capturedAt": "2026-11-02T10:10:15.443Z",
+  "results": [
+    {
+      "id": "TRE-V2A-15x10-D1001",
+      "breed": "labrador",
+      "animal": "dog",
+      "layout": 1,
+      "folder": "designs/rasse-schilder-re-150x100/TRE-V2A-15x10-D1001",
+      "familySizeKey": "GR-ES-RE-150X100-T15",
+      "svgSha256": "7459e12df6508ce07ae68488a3f93e2ff222ee455df293f6b40246a49c676fcd",
+      "motifSha256": "00307eabcbc30756b38ddb2e0abd47ced3cc444938eb1cc00a530aa063a8ee0d",
+      "form": "RE",
+      "plateMm": [
+        150,
+        100
+      ],
+      "file": "TRE-V2A-15x10-D1001.png",
+      "url": "http://127.0.0.1:8987/?configuration=TRE-V2A-15x10-D1001",
+      "sha256": "d575c6ae421da6629bd8c25c957d6cb10bcd1ae36d39f958d017ee0b506a6f8b",
+      "browserErrors": [],
+      "textOverlaps": []
+    },
+    {
+      "id": "TRE-V2A-15x10-D1002",
+      "breed": "labrador",
+      "animal": "dog",
+      "layout": 2,
+      "folder": "designs/rasse-schilder-re-150x100/TRE-V2A-15x10-D1002",
+      "familySizeKey": "GR-ES-RE-150X100-T15",
+      "svgSha256": "b8d3dca26d4a8b9180429a37cd285ef2f91f0620a88162b5c8a18d3456a81130",
+      "motifSha256": "bfca29595fc54420d4ef3cbdc7b88327858c02bda93764c8eab2e7149fe5e8f4",
+      "form": "RE",
+      "plateMm": [
+        150,
+        100
+      ],
+      "file": "TRE-V2A-15x10-D1002.png",
+      "url": "http://127.0.0.1:8987/?configuration=TRE-V2A-15x10-D1002",
+      "sha256": "7f5236c5e4f762df2e3149ad27188f11cfdf24a251f05cdea997f084695952af",
+      "browserErrors": [],
+      "textOverlaps": []
+    },
+    {
+      "id": "TRE-V2A-15x10-D1003",
+      "breed": "labrador",
+      "animal": "dog",
+      "layout": 3,
+      "folder": "designs/rasse-schilder-re-150x100/TRE-V2A-15x10-D1003",
+      "familySizeKey": "GR-ES-RE-150X100-T15",
+      "svgSha256": "e0e4de150204bd2fb359d9928e8b73ae07ba2c68bee399903f2d7b433a0f509d",
+      "motifSha256": "e92de0157644a41b693887b0a237b90f9a777336de187059f3cc43edb59331e8",
+      "form": "RE",
+      "plateMm": [
+        150,
+        100
+      ],
+      "file": "TRE-V2A-15x10-D1003.png",
+      "url": "http://127.0.0.1:8987/?configuration=TRE-V2A-15x10-D1003",
+      "sha256": "e27c213f4ad193bf91d1e18c347dfc348d005aef25657071a3838169bce5346b",
+      "browserErrors": [],
+      "textOverlaps": []
+    },
+    {
+      "id": "TRE-V2A-15x10-D1004",
+      "breed": "labrador",
+      "animal": "dog",
+      "layout": 4,
+      "folder": "designs/rasse-schilder-re-150x100/TRE-V2A-15x10-D1004",
+      "familySizeKey": "GR-ES-RE-150X100-T15",
+      "svgSha256": "df619c923577413971cf4fa9cb6ae6bc2b4e15945ea966054a98265b96916d12",
+      "motifSha256": "677127e42372a153f323604165772748a86fb83325637eefe5b867052c39c9c8",
+      "form": "RE",
+      "plateMm": [
+        150,
+        100
+      ],
+      "file": "TRE-V2A-15x10-D1004.png",
+      "url": "http://127.0.0.1:8987/?configuration=TRE-V2A-15x10-D1004",
+      "sha256": "788d7c009aa9f62f6cddbb72368f9911e6fc507b6452096acdc5ff5e4bb0c7b0",
+      "browserErrors": [],
+      "textOverlaps": []
+    },
+    {
+      "id": "TRE-V2A-15x10-D1005",
+      "breed": "labrador",
+      "animal": "dog",
+      "layout": 5,
+      "folder": "designs/rasse-schilder-re-150x100/TRE-V2A-15x10-D1005",
+      "familySizeKey": "GR-ES-RE-150X100-T15",
+      "svgSha256": "f1baf367dd665e99436ad3b74a2ab02e745801b583d8fdec2cf9b10a39d2af9b",
+      "motifSha256": "3b26dfdec2533339eba87df3162ab6277b47c819de00afcf4dbde9acdbf20853",
+      "form": "RE",
+      "plateMm": [
+        150,
+        100
+      ],
+      "file": "TRE-V2A-15x10-D1005.png",
+      "url": "http://127.0.0.1:8987/?configuration=TRE-V2A-15x10-D1005",
+      "sha256": "08250955242f20357b07062a98af7a4e6b25d2ebbac4ac5ce6117530bf56b422",
+      "browserErrors": [],
+      "textOverlaps": []
+    },
+    {
+      "id": "TRE-V2A-15x10-D1006",
+      "breed": "labrador",
+      "animal": "dog",
+      "layout": 6,
+      "folder": "designs/rasse-schilder-re-150x100/TRE-V2A-15x10-D1006",
+      "familySizeKey": "GR-ES-RE-150X100-T15",
+      "svgSha256": "55a18a88bf5cee851c0208250cf58f0957fa94e47f433260804d164bf51d8596",
+      "motifSha256": "74a7ac23fc8f3011bb3c6b3940c162ea6c5e55dcf93d39391e37a4abf3de0b0f",
+      "form": "RE",
+      "plateMm": [
+        150,
+        100
+      ],
+      "file": "TRE-V2A-15x10-D1006.png",
+      "url": "http://127.0.0.1:8987/?configuration=TRE-V2A-15x10-D1006",
+      "sha256": "8a801fbb41577efd64b0017385a6d439abb921b6789698902c8a98155b642bd3",
+      "browserErrors": [],
+      "textOverlaps": []
+    },
+    {
+      "id": "TRE-V2A-15x10-D1007",
+      "breed": "labrador",
+      "animal": "dog",
+      "layout": 7,
+      "folder": "designs/rasse-schilder-re-150x100/TRE-V2A-15x10-D1007",
+      "familySizeKey": "GR-ES-RE-150X100-T15",
+      "svgSha256": "34a279e6dc6413e4a666a2087af6f63fed6929583a6f378025cb4281ae6eedca",
+      "motifSha256": "798ce94937a3d7d25e179c9ff425689a96730f9c5090c17e69e466ece3fa70de",
+      "form": "RE",
+      "plateMm": [
+        150,
+        100
+      ],
+      "file": "TRE-V2A-15x10-D1007.png",
+      "url": "http://127.0.0.1:8987/?configuration=TRE-V2A-15x10-D1007",
+      "sha256": "fb1a60528168680eaa5c9cd21d38001fc42b17cc7b1ede5100a465ed4086e05e",
+      "browserErrors": [],
+      "textOverlaps": []
+    },
+    {
+      "id": "TRE-V2A-15x10-D1008",
+      "breed": "labrador",
+      "animal": "dog",
+      "layout": 8,
+      "folder": "designs/rasse-schilder-re-150x100/TRE-V2A-15x10-D1008",
+      "familySizeKey": "GR-ES-RE-150X100-T15",
+      "svgSha256": "01124e492ce593dd68d614e171357badf52d0caf9684489fb5058808840afcc9",
+      "motifSha256": "32bcdc3d0cb3189c64d0eaaa870c4c44cd02518e5a3d34df930a7731eb4da419",
+      "form": "RE",
+      "plateMm": [
+        150,
+        100
+      ],
+      "file": "TRE-V2A-15x10-D1008.png",
+      "url": "http://127.0.0.1:8987/?configuration=TRE-V2A-15x10-D1008",
+      "sha256": "1b0ee3725ddb4ba728fc829fb2c79c11bf493b3685af97d28916e8bdf31add92",
+      "browserErrors": [],
+      "textOverlaps": []
+    },
+    {
+      "id": "TRE-V2A-15x10-D1009",
+      "breed": "labrador",
+      "animal": "dog",
+      "layout": 9,
+      "folder": "designs/rasse-schilder-re-150x100/TRE-V2A-15x10-D1009",
+      "familySizeKey": "GR-ES-RE-150X100-T15",
+      "svgSha256": "bbe8bf8abe80f0883d402826d6e21dab17ecf543d83a7b9b0bb8b4b4265616de",
+      "motifSha256": "b418fd099d7acc3dd7e482ee854729cef9a89a5bfa3397a176b8428fea0adcdf",
+      "form": "RE",
+      "plateMm": [
+        150,
+        100
+      ],
+      "file": "TRE-V2A-15x10-D1009.png",
+      "url": "http://127.0.0.1:8987/?configuration=TRE-V2A-15x10-D1009",
+      "sha256": "e38cb8446f1d0988a97391ed0474f4dbe578424b9d4e27fed85ad30ae502e207",
+      "browserErrors": [],
+      "textOverlaps": []
+    },
+    {
+      "id": "TRE-V2A-15x10-D1010",
+      "breed": "labrador",
+      "animal": "dog",
+      "layout": 10,
+      "folder": "designs/rasse-schilder-re-150x100/TRE-V2A-15x10-D1010",
+      "familySizeKey": "GR-ES-RE-150X100-T15",
+      "svgSha256": "fac04747e82bc5a169a55df37d078f8f19084514eaf1c819653305462e3c407f",
+      "motifSha256": "c0fdc25a55c9854db32e6db5db04a3660b90b5fda41c5e56def0425e99330b03",
+      "form": "RE",
+      "plateMm": [
+        150,
+        100
+      ],
+      "file": "TRE-V2A-15x10-D1010.png",
+      "url": "http://127.0.0.1:8987/?configuration=TRE-V2A-15x10-D1010",
+      "sha256": "3e3414fcbc9b68a3a9a9df85909983da107923431e02f026dfc1e007395fbd2b",
+      "browserErrors": [],
+      "textOverlaps": []
+    },
+    {
+      "id": "TRE-V2A-15x10-D1011",
+      "breed": "labrador",
+      "animal": "dog",
+      "layout": 11,
+      "folder": "designs/rasse-schilder-re-150x100/TRE-V2A-15x10-D1011",
+      "familySizeKey": "GR-ES-RE-150X100-T15",
+      "svgSha256": "02017c55fa9c6b3e2b2cfad5f8e7830e22ff3d9ff4dfabbe67457de5b541327f",
+      "motifSha256": "34e9c8adbc5ec7e8a9841f81e65c24e4b0bbd366042f357ba319d11985a31706",
+      "form": "RE",
+      "plateMm": [
+        150,
+        100
+      ],
+      "file": "TRE-V2A-15x10-D1011.png",
+      "url": "http://127.0.0.1:8987/?configuration=TRE-V2A-15x10-D1011",
+      "sha256": "97abbadb066bfc43e082db75b0f4adda0927294968fcec24642ad4c957a6bb1a",
+      "browserErrors": [],
+      "textOverlaps": []
+    },
+    {
+      "id": "TRE-V2A-15x10-D1012",
+      "breed": "labrador",
+      "animal": "dog",
+      "layout": 12,
+      "folder": "designs/rasse-schilder-re-150x100/TRE-V2A-15x10-D1012",
+      "familySizeKey": "GR-ES-RE-150X100-T15",
+      "svgSha256": "48d9af5a0ae659d16ba27921e64579af9bc8b7193bdd4eb14cdec9e33a1a651e",
+      "motifSha256": "feb57d5936d165939510f2abc0088a20336367c2f8fdee46ec60fe544a5d46fe",
+      "form": "RE",
+      "plateMm": [
+        150,
+        100
+      ],
+      "file": "TRE-V2A-15x10-D1012.png",
+      "url": "http://127.0.0.1:8987/?configuration=TRE-V2A-15x10-D1012",
+      "sha256": "278c8dc5f64adb0ea83e6f9320d5b2d7c5fa31e98b43edb5b9f1d22eaf8da071",
+      "browserErrors": [],
+      "textOverlaps": []
+    }
+  ]
+}

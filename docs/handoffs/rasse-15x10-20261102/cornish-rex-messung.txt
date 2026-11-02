@@ -1,0 +1,12 @@
+ 1 Breite  77% Höhe  59% Fläche  45% | Versatz x  -0.3% y  -0.7% | ok
+ 2 Breite  78% Höhe  59% Fläche  46% | Versatz x  +0.4% y  -0.3% | ok
+ 3 Breite  67% Höhe  86% Fläche  57% | Versatz x  +0.0% y  -0.1% | ok
+ 4 Breite  79% Höhe  59% Fläche  47% | Versatz x  -0.1% y  -0.5% | ok
+ 5 Breite  75% Höhe  59% Fläche  45% | Versatz x  -0.1% y  -0.6% | ok
+ 6 Breite  55% Höhe  86% Fläche  48% | Versatz x  +0.0% y  -0.3% | ok
+ 7 Breite  78% Höhe  59% Fläche  46% | Versatz x  +0.7% y  -0.6% | ok
+ 8 Breite  75% Höhe  60% Fläche  45% | Versatz x  +0.1% y  -0.1% | ok
+ 9 Breite  45% Höhe  86% Fläche  38% | Versatz x  +0.0% y  +0.1% | ok
+10 Breite  83% Höhe  55% Fläche  46% | Versatz x  -0.1% y  +0.5% | ok
+11 Breite  71% Höhe  61% Fläche  43% | Versatz x  +0.0% y  +0.1% | ok
+12 Breite  86% Höhe  86% Fläche  73% | Versatz x  +0.5% y  -0.3% | ok

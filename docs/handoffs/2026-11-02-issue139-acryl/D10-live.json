@@ -1,0 +1,18 @@
+{
+  "at": "2026-11-02T17:31:31.768Z",
+  "results": [
+    {
+      "design": "D10",
+      "ok": true,
+      "readyMs": 32838,
+      "selectedColor": "anthrazit",
+      "mounting": "KGL",
+      "variant": "58100337410428",
+      "quantity": 1,
+      "unitCents": 1798,
+      "totalCents": 1798,
+      "editRestored": true,
+      "errors": []
+    }
+  ]
+}

@@ -6,7 +6,7 @@ import {measureText} from '../../platform/sources/app/shared/models/doorbell-pre
 import {prepareConfig,resolvedOptions,selectedProfile,quote,variantCombinations,saveDraft,readDraft} from './contract.mjs';
 import {artworkViewport} from './print-geometry.mjs';
 import {validateSteelFormats} from './steel-formats.mjs';
-import {FAMILY_FORMATS_SCHEMA,familyFormatState,familyFormatChoices,validateFamilyFormats,designNumber} from './family-formats.mjs';
+import {FAMILY_FORMATS_SCHEMA,familyFormatState,familyFormatChoices,validateFamilyFormats,designNumber,selectedFamilyDesign} from './family-formats.mjs';
 import {familyChoicesMarkup} from './family-formats-ui.mjs';
 import {makeProductDocument} from '../../workshop/product-model.mjs';
 import {prepareAcrylicReview} from '../../workshop/acrylic-review.mjs';
@@ -28,6 +28,26 @@ function fixture(material='steel'){
  delete c.familyAcrylic;return prepareConfig(c);
 }
 const state=c=>({designId:c.profile.designs[0].id,objects:clone(c.profile.designs[0].objects),mOptions:resolvedOptions(c),selected:null});
+test('family quote selects only its allowed design and does not project the unrelated library',()=>{
+ const c=fixture('schwarz'),options=resolvedOptions(c),format=c.familyFormats.formats.find(f=>f.key===options.size),variant=format.variants[0],id=variant.designIds[0];
+ const expected=selectedProfile(c,options).designs.find(d=>d.id===id),baseline=quote(c,expected.objects,id,options);
+ let unrelatedReads=0;
+ for(let i=0;i<250;i++){
+  const extra=clone(c.familyFormats.designs.find(d=>d.id===id));extra.id='unrelated-'+i;
+  const objects=extra.objects;Object.defineProperty(extra,'objects',{enumerable:true,get(){unrelatedReads++;return objects;}});
+  c.familyFormats.designs.push(extra);variant.designIds.push(extra.id);
+ }
+ assert.deepEqual(selectedFamilyDesign(c,id,options),expected);
+ assert.deepEqual(quote(c,expected.objects,id,options),baseline);
+ assert.equal(unrelatedReads,0,'one price must not project 250 other approved designs');
+ const foreign=c.familyFormats.designs.find(d=>!variant.designIds.includes(d.id));assert.ok(foreign);
+ assert.equal(selectedFamilyDesign(c,foreign.id,options),undefined);
+ assert.throws(()=>quote(c,[],foreign.id,options),/Unbekanntes Design/);
+ const mounted={...options,mounting:'B02S'};
+ const mountedDesign=selectedProfile(c,mounted).designs.find(d=>d.id===id);
+ assert.deepEqual(selectedFamilyDesign(c,id,mounted),mountedDesign);
+ assert.equal(quote(c,mountedDesign.objects,id,mounted).unitCents,baseline.unitCents+299);
+});
 for(const material of ['steel','schwarz','anthrazit']){
  test(material+': frozen review and manufacturing SVG use selected RT2, not AB start geometry',async()=>{
   const c=fixture(material),doc=makeProductDocument(c),record={id:c.profile.id,revision:1,document:doc};

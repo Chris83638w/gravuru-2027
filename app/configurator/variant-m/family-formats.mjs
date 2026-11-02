@@ -61,6 +61,12 @@ export function projectFamilyDesign(c,id,format){
  const [width,height]=d.katalog.plateMm;
  return {...clone(d),objects:scaleFamilyObjects(d.objects,{width,height},format.geometry),katalog:{...clone(d.katalog),targetMm:[format.geometry.width,format.geometry.height]}};
 }
+// A single price calculation needs only its selected, allowed template. Building
+// every projected design here makes a gallery quadratic in the design count.
+export function selectedFamilyDesign(c,id,values={}){
+ const s=familyFormatSelection(c,values);
+ return s.variant.designIds.includes(id)?projectFamilyDesign(c,id,s.format):undefined;
+}
 export function selectedFamilyProfile(c,values={}){
  const s=familyFormatSelection(c,values),p={...clone(c.profile),geometry:{...clone(s.format.geometry),holes:clone(s.mounting.holes)},material:clone(s.variant.material)};
  p.designs=s.variant.designIds.map(id=>projectFamilyDesign(c,id,s.format));

@@ -29,12 +29,12 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
  function checkScope(context,binding){
   if(binding.storeId!==context.store.storeId||binding.tenantId!==context.store.workshop.tenantId||binding.shopDomain!==context.binding.shopDomain)unavailable();
  }
- function selection(binding,model,designId){
-  const config=model.universal,profile=selectedProfile(config,binding.options),design=profile.designs.find(d=>d.id===designId);
+ function selection(binding,model,designId,prepared){
+  const config=model.universal,profile=prepared?.profile??selectedProfile(config,binding.options),design=profile.designs.find(d=>d.id===designId);
   if(!design||design.hidden===true||design.released===false||design.katalog?.fit==='passt nicht')unavailable();
   // The fixed Shopify binding owns the base variant price. The displayed
   // design total additionally includes template motifs if its price rule does.
-  const base=quote(config,[],design.id,binding.options),price=quote(config,design.objects,design.id,binding.options),geometry=physicalGeometry(config,{mOptions:binding.options});
+  const base=quote(config,[],design.id,binding.options),price=quote(config,design.objects,design.id,binding.options),geometry=prepared?.geometry??physicalGeometry(config,{mOptions:binding.options});
   if(!Number.isSafeInteger(binding.unitCents)||base.unitCents!==binding.unitCents||![geometry.width,geometry.height].every(v=>Number.isFinite(v)&&v>0))unavailable();
   return {design,geometry,price};
  }
@@ -77,8 +77,14 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
     const profileAt=performance.now(),profile=selectedProfile(model.universal,binding.options),scope=galleryScope(model,binding),process=galleryProcess(profile);timings.profileMs+=performance.now()-profileAt;
     sources.set(binding.bindingId,{scope,process,theme:profile.themeId||null});
     if(!scopes.has(scope.key))scopes.set(scope.key,[]);const cards=scopes.get(scope.key);
-    for(const design of profile.designs){
-     let selected;const at=performance.now();try{selected=selection(binding,model,design.id);}catch{continue;}finally{timings.selectionMs+=performance.now()-at;}
+    // Geometry and the projected profile depend on this immutable binding,
+    // not on the design. Do not clone its full design library for every card.
+    let geometry;try{geometry=physicalGeometry(model.universal,{mOptions:binding.options});}catch{continue;}
+    const prepared={profile,geometry};
+    for(let designIndex=0;designIndex<profile.designs.length;designIndex++){
+     if(designIndex%32===0)await new Promise(resolve=>setImmediate(resolve));
+     const design=profile.designs[designIndex];
+     let selected;const at=performance.now();try{selected=selection(binding,model,design.id,prepared);}catch{continue;}finally{timings.selectionMs+=performance.now()-at;}
      const {geometry,price}=selected,dedupe=JSON.stringify([binding.productId,design.id,geometry.width,geometry.height,geometry.shape]);
      cards.push({binding,scope,process,design:{katalog:{target:design.katalog?.target}},availability:{universal:{doorbell:{schema:model.universal.doorbell?.schema}}},designId:design.id,dedupe,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:model.name,designName:design.name||model.name,themes:design.themes||[],widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:price.unitCents,currency:price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
      timings.cards++;

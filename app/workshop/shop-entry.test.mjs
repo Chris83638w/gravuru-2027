@@ -413,6 +413,33 @@ function nativeDoorbellEntryFixture(f,{enabled=true}={}){
   return f.approvedVariants.has(identity.shopifyVariantId)?{id:'approved-fixture-revision-3',approvedAt:'2026-10-27T00:00:00.000Z'}:null;
  };
 }
+
+test('fixed catalog signs require their own approved revision before entry and selected cart variant',()=>run(async(f,request,{open,token})=>{
+ assert.equal((await open()).status,404);
+ f.approvedVariants.add(f.ids.shopifyVariantId);
+ const {token:t}=await token(),headers={...session(t),'X-Gravuru-Draft':draftToken},input={draftId:f.draft.id,expectedRevision:2,quantity:1};
+ assert.equal((await request('/api/shop-entry/model',undefined,undefined,session(t))).status,200);
+ const selected=f.first.variants.find(v=>v.mountingKey==='B02').shopifyVariantId;
+ assert.equal((await request('/api/shop-entry/cart','POST',input,headers)).status,404);assert.equal(f.cartCalls.length,0);
+ f.approvedVariants.add(selected);
+ const allowed=await request('/api/shop-entry/cart','POST',input,headers);assert.equal(allowed.status,200);assert.equal(f.cartCalls[0].binding.shopifyVariantId,selected);
+ f.approvedVariants.clear();assert.equal((await open()).status,404);
+},f=>{
+ nativeDoorbellEntryFixture(f);const model=f.models.get(f.first.localWorkshopRecord);delete model.universal.doorbell;
+ model.universal.familyFormats={source:{shopProduct:{sizeKey:'synthetic-fixed-size'}}};
+ f.store.catalogLiveOrders=true;
+ f.store.workshop.orderIntake.catalogLiveApproval=f.store.workshop.orderIntake.doorbellLiveApproval;
+ f.store.workshop.orderIntake.doorbellLiveApproval=()=>{throw Error('A sign must never use the bell approval');};
+}));
+
+test('a fixed catalog sign cannot open when catalog intake was disabled at startup',()=>run(async(f,request,{open})=>{
+ assert.equal((await open()).status,404);
+},f=>{
+ const model=f.models.get(f.first.localWorkshopRecord);model.universal.familyFormats={source:{shopProduct:{sizeKey:'synthetic-fixed-size'}}};
+ f.store.workshop.repository.get=id=>({id,revision:3,status:'draft',document:{config:f.models.get(id)?.universal}});
+ f.store.catalogLiveOrders=false;
+ f.store.workshop.orderIntake.catalogLiveApproval=()=>{throw Error('Disabled catalog intake must not consult approvals');};
+}));
 test('new doorbells require the exact live approval at start and on every private session request',()=>run(async(f,request,{open,token})=>{
  assert.equal((await open()).status,404);
  f.approvedVariants.add(f.ids.shopifyVariantId);

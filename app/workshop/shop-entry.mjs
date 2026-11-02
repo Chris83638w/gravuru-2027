@@ -99,6 +99,11 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  }
  function requireDoorbellApproval(store,binding,config){
   const saved=config??store.workshop.repository.get(binding.productId,{revision:binding.productRevision}).document?.config;
+  if(saved?.familyFormats?.source?.shopProduct){
+   const approved=store.catalogLiveOrders===true&&store.workshop.orderIntake.catalogLiveApproval?.({shopDomain,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId,productId:binding.productId,productRevision:binding.productRevision});
+   if(!approved)fail(404,'shop_entry_catalog_release',NOT_BOUND);
+   return;
+  }
   if(!isLayeredDoorbell(saved))return;
   const approved=store.doorbellLiveOrders===true&&typeof store.workshop.orderIntake.doorbellLiveApproval==='function'&&store.workshop.orderIntake.doorbellLiveApproval({shopDomain,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId,productId:binding.productId,productRevision:binding.productRevision});
   if(!approved||typeof approved.id!=='string'||!approved.id)fail(404,'shop_entry_doorbell_unapproved',NOT_BOUND);
@@ -170,6 +175,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    const b=row.binding;if(!paused.has(b.productId))paused.set(b.productId,store.workshop.konfis?.paused(b.productId)===true);
    if(paused.get(b.productId))continue;
    if(isLayeredDoorbell(row.availability.universal)){if(store.doorbellLiveOrders===true)doorbells.push(b);}
+   else if(row.availability.universal?.familyFormats?.source?.shopProduct){try{requireDoorbellApproval(store,b,row.availability.universal);allowed.add(b.bindingId);}catch(error){if(![404,409,422,423].includes(error.status))throw error;}}
    else allowed.add(b.bindingId);
   }
   if(doorbells.length){

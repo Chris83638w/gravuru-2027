@@ -7,7 +7,7 @@ const stop=status=>Object.assign(Error('Bestellnachricht nicht übernommen.'),{s
 // The host enforces TLS and its fixed hostname. This endpoint authenticates the
 // untouched bytes with Shopify HMAC, never a merchant JWT, cookie or query token.
 export function createOrderWebhookHandler({intake,config,bodyTimeoutMs=3000}) {
- if(!['test-only','doorbell-live-approved'].includes(config?.mode)||config.apiVersion!=='2026-07'||typeof intake?.receive!=='function'||
+ if(!['test-only','doorbell-live-approved','catalog-live-approved'].includes(config?.mode)||config.apiVersion!=='2026-07'||typeof intake?.receive!=='function'||
    !Number.isInteger(bodyTimeoutMs)||bodyTimeoutMs<1||bodyTimeoutMs>3000)throw Error('Test-Bestelleingang nicht eingerichtet.');
  const fixed=Object.freeze({...config});
  return async function handle(req,res){

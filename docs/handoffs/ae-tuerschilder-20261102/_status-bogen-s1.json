@@ -1,0 +1,2404 @@
+{
+ "24": [
+  {
+   "id": "TRE-AV2A-9x6-D24",
+   "size": "TS-AE-AS-RE-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-12x8-D24",
+   "size": "TS-AE-AS-RE-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-15x10-D24",
+   "size": "TS-AE-AS-RE-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-16x7-D24",
+   "size": "TS-AE-AS-RE-160X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-18x12-D24",
+   "size": "TS-AE-AS-RE-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-18x6-D24",
+   "size": "TS-AE-AS-RE-180X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-21x14-D24",
+   "size": "TS-AE-AS-RE-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-21x7-D24",
+   "size": "TS-AE-AS-RE-210X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x16-D24",
+   "size": "TS-AE-AS-RE-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x8-D24",
+   "size": "TS-AE-AS-RE-240X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x10.5-D24",
+   "size": "TS-AE-AS-RE-240X105",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-27x9-D24",
+   "size": "TS-AE-AS-RE-270X90",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-30x20-D24",
+   "size": "TS-AE-AS-RE-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-32x14-D24",
+   "size": "TS-AE-AS-RE-320X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-40x17.5-D24",
+   "size": "TS-AE-AS-RE-400X175",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-42x28-D24",
+   "size": "TS-AE-AS-RE-420X280",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-45x30-D24",
+   "size": "TS-AE-AS-RE-450X300",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TQ-AV2A-10x10-D24",
+   "size": "TS-AE-AS-QU-100X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-9x6-D24",
+   "size": "TS-AE-AS-OV-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-12x8-D24",
+   "size": "TS-AE-AS-OV-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x10-D24",
+   "size": "TS-AE-AS-OV-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x8-D24",
+   "size": "TS-AE-AS-OV-150X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-18x12-D24",
+   "size": "TS-AE-AS-OV-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-21x14-D24",
+   "size": "TS-AE-AS-OV-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-22.5x12-D24",
+   "size": "TS-AE-AS-OV-225X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-24x16-D24",
+   "size": "TS-AE-AS-OV-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x20-D24",
+   "size": "TS-AE-AS-OV-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x16-D24",
+   "size": "TS-AE-AS-OV-300X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-18x6-D24",
+   "size": "TS-AE-AS-EL-180X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-21x7-D24",
+   "size": "TS-AE-AS-EL-210X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-24x8-D24",
+   "size": "TS-AE-AS-EL-240X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-27x9-D24",
+   "size": "TS-AE-AS-EL-270X90",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x10-D24",
+   "size": "TS-AE-AS-EL-300X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR-AV2A-12x12-D24",
+   "size": "TS-AE-AS-R-120X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-9x6-D24",
+   "size": "TS-AE-AS-RT1-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-12x8-D24",
+   "size": "TS-AE-AS-RT1-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-15x10-D24",
+   "size": "TS-AE-AS-RT1-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-18x12-D24",
+   "size": "TS-AE-AS-RT1-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-21x14-D24",
+   "size": "TS-AE-AS-RT1-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-24x16-D24",
+   "size": "TS-AE-AS-RT1-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-30x20-D24",
+   "size": "TS-AE-AS-RT1-300X200",
+   "status": "passt",
+   "issues": []
+  }
+ ],
+ "200": [
+  {
+   "id": "TRE-AV2A-9x6-D200",
+   "size": "TS-AE-AS-RE-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-12x8-D200",
+   "size": "TS-AE-AS-RE-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-15x10-D200",
+   "size": "TS-AE-AS-RE-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-16x7-D200",
+   "size": "TS-AE-AS-RE-160X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-18x12-D200",
+   "size": "TS-AE-AS-RE-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-18x6-D200",
+   "size": "TS-AE-AS-RE-180X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-21x14-D200",
+   "size": "TS-AE-AS-RE-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-21x7-D200",
+   "size": "TS-AE-AS-RE-210X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x16-D200",
+   "size": "TS-AE-AS-RE-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x8-D200",
+   "size": "TS-AE-AS-RE-240X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x10.5-D200",
+   "size": "TS-AE-AS-RE-240X105",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-27x9-D200",
+   "size": "TS-AE-AS-RE-270X90",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-30x20-D200",
+   "size": "TS-AE-AS-RE-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-32x14-D200",
+   "size": "TS-AE-AS-RE-320X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-40x17.5-D200",
+   "size": "TS-AE-AS-RE-400X175",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-42x28-D200",
+   "size": "TS-AE-AS-RE-420X280",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-45x30-D200",
+   "size": "TS-AE-AS-RE-450X300",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TQ-AV2A-10x10-D200",
+   "size": "TS-AE-AS-QU-100X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-9x6-D200",
+   "size": "TS-AE-AS-OV-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-12x8-D200",
+   "size": "TS-AE-AS-OV-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x10-D200",
+   "size": "TS-AE-AS-OV-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x8-D200",
+   "size": "TS-AE-AS-OV-150X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-18x12-D200",
+   "size": "TS-AE-AS-OV-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-21x14-D200",
+   "size": "TS-AE-AS-OV-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-22.5x12-D200",
+   "size": "TS-AE-AS-OV-225X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-24x16-D200",
+   "size": "TS-AE-AS-OV-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x20-D200",
+   "size": "TS-AE-AS-OV-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x16-D200",
+   "size": "TS-AE-AS-OV-300X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-18x6-D200",
+   "size": "TS-AE-AS-EL-180X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-21x7-D200",
+   "size": "TS-AE-AS-EL-210X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-24x8-D200",
+   "size": "TS-AE-AS-EL-240X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-27x9-D200",
+   "size": "TS-AE-AS-EL-270X90",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x10-D200",
+   "size": "TS-AE-AS-EL-300X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR-AV2A-12x12-D200",
+   "size": "TS-AE-AS-R-120X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-9x6-D200",
+   "size": "TS-AE-AS-RT1-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-12x8-D200",
+   "size": "TS-AE-AS-RT1-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-15x10-D200",
+   "size": "TS-AE-AS-RT1-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-18x12-D200",
+   "size": "TS-AE-AS-RT1-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-21x14-D200",
+   "size": "TS-AE-AS-RT1-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-24x16-D200",
+   "size": "TS-AE-AS-RT1-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-30x20-D200",
+   "size": "TS-AE-AS-RT1-300X200",
+   "status": "passt",
+   "issues": []
+  }
+ ],
+ "110": [
+  {
+   "id": "TRE-AV2A-9x6-D110",
+   "size": "TS-AE-AS-RE-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-12x8-D110",
+   "size": "TS-AE-AS-RE-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-15x10-D110",
+   "size": "TS-AE-AS-RE-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-16x7-D110",
+   "size": "TS-AE-AS-RE-160X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-18x12-D110",
+   "size": "TS-AE-AS-RE-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-18x6-D110",
+   "size": "TS-AE-AS-RE-180X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-21x14-D110",
+   "size": "TS-AE-AS-RE-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-21x7-D110",
+   "size": "TS-AE-AS-RE-210X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x16-D110",
+   "size": "TS-AE-AS-RE-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x8-D110",
+   "size": "TS-AE-AS-RE-240X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x10.5-D110",
+   "size": "TS-AE-AS-RE-240X105",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-27x9-D110",
+   "size": "TS-AE-AS-RE-270X90",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-30x20-D110",
+   "size": "TS-AE-AS-RE-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-32x14-D110",
+   "size": "TS-AE-AS-RE-320X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-40x17.5-D110",
+   "size": "TS-AE-AS-RE-400X175",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-42x28-D110",
+   "size": "TS-AE-AS-RE-420X280",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-45x30-D110",
+   "size": "TS-AE-AS-RE-450X300",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TQ-AV2A-10x10-D110",
+   "size": "TS-AE-AS-QU-100X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-9x6-D110",
+   "size": "TS-AE-AS-OV-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-12x8-D110",
+   "size": "TS-AE-AS-OV-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x10-D110",
+   "size": "TS-AE-AS-OV-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x8-D110",
+   "size": "TS-AE-AS-OV-150X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-18x12-D110",
+   "size": "TS-AE-AS-OV-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-21x14-D110",
+   "size": "TS-AE-AS-OV-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-22.5x12-D110",
+   "size": "TS-AE-AS-OV-225X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-24x16-D110",
+   "size": "TS-AE-AS-OV-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x20-D110",
+   "size": "TS-AE-AS-OV-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x16-D110",
+   "size": "TS-AE-AS-OV-300X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-18x6-D110",
+   "size": "TS-AE-AS-EL-180X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-21x7-D110",
+   "size": "TS-AE-AS-EL-210X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-24x8-D110",
+   "size": "TS-AE-AS-EL-240X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-27x9-D110",
+   "size": "TS-AE-AS-EL-270X90",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x10-D110",
+   "size": "TS-AE-AS-EL-300X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR-AV2A-12x12-D110",
+   "size": "TS-AE-AS-R-120X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-9x6-D110",
+   "size": "TS-AE-AS-RT1-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-12x8-D110",
+   "size": "TS-AE-AS-RT1-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-15x10-D110",
+   "size": "TS-AE-AS-RT1-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-18x12-D110",
+   "size": "TS-AE-AS-RT1-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-21x14-D110",
+   "size": "TS-AE-AS-RT1-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-24x16-D110",
+   "size": "TS-AE-AS-RT1-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-30x20-D110",
+   "size": "TS-AE-AS-RT1-300X200",
+   "status": "passt",
+   "issues": []
+  }
+ ],
+ "140": [
+  {
+   "id": "TRE-AV2A-9x6-D140",
+   "size": "TS-AE-AS-RE-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-12x8-D140",
+   "size": "TS-AE-AS-RE-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-15x10-D140",
+   "size": "TS-AE-AS-RE-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-16x7-D140",
+   "size": "TS-AE-AS-RE-160X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-18x12-D140",
+   "size": "TS-AE-AS-RE-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-18x6-D140",
+   "size": "TS-AE-AS-RE-180X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-21x14-D140",
+   "size": "TS-AE-AS-RE-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-21x7-D140",
+   "size": "TS-AE-AS-RE-210X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x16-D140",
+   "size": "TS-AE-AS-RE-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x8-D140",
+   "size": "TS-AE-AS-RE-240X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x10.5-D140",
+   "size": "TS-AE-AS-RE-240X105",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-27x9-D140",
+   "size": "TS-AE-AS-RE-270X90",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-30x20-D140",
+   "size": "TS-AE-AS-RE-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-32x14-D140",
+   "size": "TS-AE-AS-RE-320X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-40x17.5-D140",
+   "size": "TS-AE-AS-RE-400X175",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-42x28-D140",
+   "size": "TS-AE-AS-RE-420X280",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-45x30-D140",
+   "size": "TS-AE-AS-RE-450X300",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TQ-AV2A-10x10-D140",
+   "size": "TS-AE-AS-QU-100X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-9x6-D140",
+   "size": "TS-AE-AS-OV-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-12x8-D140",
+   "size": "TS-AE-AS-OV-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x10-D140",
+   "size": "TS-AE-AS-OV-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x8-D140",
+   "size": "TS-AE-AS-OV-150X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-18x12-D140",
+   "size": "TS-AE-AS-OV-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-21x14-D140",
+   "size": "TS-AE-AS-OV-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-22.5x12-D140",
+   "size": "TS-AE-AS-OV-225X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-24x16-D140",
+   "size": "TS-AE-AS-OV-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x20-D140",
+   "size": "TS-AE-AS-OV-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x16-D140",
+   "size": "TS-AE-AS-OV-300X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-18x6-D140",
+   "size": "TS-AE-AS-EL-180X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-21x7-D140",
+   "size": "TS-AE-AS-EL-210X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-24x8-D140",
+   "size": "TS-AE-AS-EL-240X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-27x9-D140",
+   "size": "TS-AE-AS-EL-270X90",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x10-D140",
+   "size": "TS-AE-AS-EL-300X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR-AV2A-12x12-D140",
+   "size": "TS-AE-AS-R-120X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-9x6-D140",
+   "size": "TS-AE-AS-RT1-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-12x8-D140",
+   "size": "TS-AE-AS-RT1-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-15x10-D140",
+   "size": "TS-AE-AS-RT1-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-18x12-D140",
+   "size": "TS-AE-AS-RT1-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-21x14-D140",
+   "size": "TS-AE-AS-RT1-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-24x16-D140",
+   "size": "TS-AE-AS-RT1-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-30x20-D140",
+   "size": "TS-AE-AS-RT1-300X200",
+   "status": "passt",
+   "issues": []
+  }
+ ],
+ "401": [
+  {
+   "id": "TRE-AV2A-9x6-D401",
+   "size": "TS-AE-AS-RE-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-12x8-D401",
+   "size": "TS-AE-AS-RE-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-15x10-D401",
+   "size": "TS-AE-AS-RE-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-16x7-D401",
+   "size": "TS-AE-AS-RE-160X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-18x12-D401",
+   "size": "TS-AE-AS-RE-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-18x6-D401",
+   "size": "TS-AE-AS-RE-180X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-21x14-D401",
+   "size": "TS-AE-AS-RE-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-21x7-D401",
+   "size": "TS-AE-AS-RE-210X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x16-D401",
+   "size": "TS-AE-AS-RE-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x8-D401",
+   "size": "TS-AE-AS-RE-240X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x10.5-D401",
+   "size": "TS-AE-AS-RE-240X105",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-27x9-D401",
+   "size": "TS-AE-AS-RE-270X90",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-30x20-D401",
+   "size": "TS-AE-AS-RE-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-32x14-D401",
+   "size": "TS-AE-AS-RE-320X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-40x17.5-D401",
+   "size": "TS-AE-AS-RE-400X175",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-42x28-D401",
+   "size": "TS-AE-AS-RE-420X280",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-45x30-D401",
+   "size": "TS-AE-AS-RE-450X300",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TQ-AV2A-10x10-D401",
+   "size": "TS-AE-AS-QU-100X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-9x6-D401",
+   "size": "TS-AE-AS-OV-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-12x8-D401",
+   "size": "TS-AE-AS-OV-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x10-D401",
+   "size": "TS-AE-AS-OV-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x8-D401",
+   "size": "TS-AE-AS-OV-150X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-18x12-D401",
+   "size": "TS-AE-AS-OV-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-21x14-D401",
+   "size": "TS-AE-AS-OV-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-22.5x12-D401",
+   "size": "TS-AE-AS-OV-225X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-24x16-D401",
+   "size": "TS-AE-AS-OV-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x20-D401",
+   "size": "TS-AE-AS-OV-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x16-D401",
+   "size": "TS-AE-AS-OV-300X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-18x6-D401",
+   "size": "TS-AE-AS-EL-180X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-21x7-D401",
+   "size": "TS-AE-AS-EL-210X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-24x8-D401",
+   "size": "TS-AE-AS-EL-240X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-27x9-D401",
+   "size": "TS-AE-AS-EL-270X90",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x10-D401",
+   "size": "TS-AE-AS-EL-300X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR-AV2A-12x12-D401",
+   "size": "TS-AE-AS-R-120X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-9x6-D401",
+   "size": "TS-AE-AS-RT1-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-12x8-D401",
+   "size": "TS-AE-AS-RT1-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-15x10-D401",
+   "size": "TS-AE-AS-RT1-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-18x12-D401",
+   "size": "TS-AE-AS-RT1-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-21x14-D401",
+   "size": "TS-AE-AS-RT1-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-24x16-D401",
+   "size": "TS-AE-AS-RT1-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-30x20-D401",
+   "size": "TS-AE-AS-RT1-300X200",
+   "status": "passt",
+   "issues": []
+  }
+ ],
+ "66": [
+  {
+   "id": "TRE-AV2A-9x6-D66",
+   "size": "TS-AE-AS-RE-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-12x8-D66",
+   "size": "TS-AE-AS-RE-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-15x10-D66",
+   "size": "TS-AE-AS-RE-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-16x7-D66",
+   "size": "TS-AE-AS-RE-160X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-18x12-D66",
+   "size": "TS-AE-AS-RE-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-18x6-D66",
+   "size": "TS-AE-AS-RE-180X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-21x14-D66",
+   "size": "TS-AE-AS-RE-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-21x7-D66",
+   "size": "TS-AE-AS-RE-210X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x16-D66",
+   "size": "TS-AE-AS-RE-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x8-D66",
+   "size": "TS-AE-AS-RE-240X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x10.5-D66",
+   "size": "TS-AE-AS-RE-240X105",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-27x9-D66",
+   "size": "TS-AE-AS-RE-270X90",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-30x20-D66",
+   "size": "TS-AE-AS-RE-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-32x14-D66",
+   "size": "TS-AE-AS-RE-320X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-40x17.5-D66",
+   "size": "TS-AE-AS-RE-400X175",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-42x28-D66",
+   "size": "TS-AE-AS-RE-420X280",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-45x30-D66",
+   "size": "TS-AE-AS-RE-450X300",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TQ-AV2A-10x10-D66",
+   "size": "TS-AE-AS-QU-100X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-9x6-D66",
+   "size": "TS-AE-AS-OV-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-12x8-D66",
+   "size": "TS-AE-AS-OV-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x10-D66",
+   "size": "TS-AE-AS-OV-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x8-D66",
+   "size": "TS-AE-AS-OV-150X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-18x12-D66",
+   "size": "TS-AE-AS-OV-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-21x14-D66",
+   "size": "TS-AE-AS-OV-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-22.5x12-D66",
+   "size": "TS-AE-AS-OV-225X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-24x16-D66",
+   "size": "TS-AE-AS-OV-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x20-D66",
+   "size": "TS-AE-AS-OV-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x16-D66",
+   "size": "TS-AE-AS-OV-300X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-18x6-D66",
+   "size": "TS-AE-AS-EL-180X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-21x7-D66",
+   "size": "TS-AE-AS-EL-210X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-24x8-D66",
+   "size": "TS-AE-AS-EL-240X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-27x9-D66",
+   "size": "TS-AE-AS-EL-270X90",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x10-D66",
+   "size": "TS-AE-AS-EL-300X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR-AV2A-12x12-D66",
+   "size": "TS-AE-AS-R-120X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-9x6-D66",
+   "size": "TS-AE-AS-RT1-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-12x8-D66",
+   "size": "TS-AE-AS-RT1-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-15x10-D66",
+   "size": "TS-AE-AS-RT1-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-18x12-D66",
+   "size": "TS-AE-AS-RT1-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-21x14-D66",
+   "size": "TS-AE-AS-RT1-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-24x16-D66",
+   "size": "TS-AE-AS-RT1-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-30x20-D66",
+   "size": "TS-AE-AS-RT1-300X200",
+   "status": "passt",
+   "issues": []
+  }
+ ],
+ "73": [
+  {
+   "id": "TRE-AV2A-9x6-D73",
+   "size": "TS-AE-AS-RE-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-12x8-D73",
+   "size": "TS-AE-AS-RE-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-15x10-D73",
+   "size": "TS-AE-AS-RE-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-16x7-D73",
+   "size": "TS-AE-AS-RE-160X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-18x12-D73",
+   "size": "TS-AE-AS-RE-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-18x6-D73",
+   "size": "TS-AE-AS-RE-180X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-21x14-D73",
+   "size": "TS-AE-AS-RE-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-21x7-D73",
+   "size": "TS-AE-AS-RE-210X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x16-D73",
+   "size": "TS-AE-AS-RE-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x8-D73",
+   "size": "TS-AE-AS-RE-240X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x10.5-D73",
+   "size": "TS-AE-AS-RE-240X105",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-27x9-D73",
+   "size": "TS-AE-AS-RE-270X90",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-30x20-D73",
+   "size": "TS-AE-AS-RE-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-32x14-D73",
+   "size": "TS-AE-AS-RE-320X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-40x17.5-D73",
+   "size": "TS-AE-AS-RE-400X175",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-42x28-D73",
+   "size": "TS-AE-AS-RE-420X280",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-45x30-D73",
+   "size": "TS-AE-AS-RE-450X300",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TQ-AV2A-10x10-D73",
+   "size": "TS-AE-AS-QU-100X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-9x6-D73",
+   "size": "TS-AE-AS-OV-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-12x8-D73",
+   "size": "TS-AE-AS-OV-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x10-D73",
+   "size": "TS-AE-AS-OV-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x8-D73",
+   "size": "TS-AE-AS-OV-150X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-18x12-D73",
+   "size": "TS-AE-AS-OV-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-21x14-D73",
+   "size": "TS-AE-AS-OV-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-22.5x12-D73",
+   "size": "TS-AE-AS-OV-225X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-24x16-D73",
+   "size": "TS-AE-AS-OV-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x20-D73",
+   "size": "TS-AE-AS-OV-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x16-D73",
+   "size": "TS-AE-AS-OV-300X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-18x6-D73",
+   "size": "TS-AE-AS-EL-180X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-21x7-D73",
+   "size": "TS-AE-AS-EL-210X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-24x8-D73",
+   "size": "TS-AE-AS-EL-240X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-27x9-D73",
+   "size": "TS-AE-AS-EL-270X90",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x10-D73",
+   "size": "TS-AE-AS-EL-300X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR-AV2A-12x12-D73",
+   "size": "TS-AE-AS-R-120X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-9x6-D73",
+   "size": "TS-AE-AS-RT1-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-12x8-D73",
+   "size": "TS-AE-AS-RT1-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-15x10-D73",
+   "size": "TS-AE-AS-RT1-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-18x12-D73",
+   "size": "TS-AE-AS-RT1-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-21x14-D73",
+   "size": "TS-AE-AS-RT1-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-24x16-D73",
+   "size": "TS-AE-AS-RT1-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-30x20-D73",
+   "size": "TS-AE-AS-RT1-300X200",
+   "status": "passt",
+   "issues": []
+  }
+ ],
+ "26": [
+  {
+   "id": "TRE-AV2A-9x6-D26",
+   "size": "TS-AE-AS-RE-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-12x8-D26",
+   "size": "TS-AE-AS-RE-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-15x10-D26",
+   "size": "TS-AE-AS-RE-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-16x7-D26",
+   "size": "TS-AE-AS-RE-160X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-18x12-D26",
+   "size": "TS-AE-AS-RE-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-18x6-D26",
+   "size": "TS-AE-AS-RE-180X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-21x14-D26",
+   "size": "TS-AE-AS-RE-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-21x7-D26",
+   "size": "TS-AE-AS-RE-210X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x16-D26",
+   "size": "TS-AE-AS-RE-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x8-D26",
+   "size": "TS-AE-AS-RE-240X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x10.5-D26",
+   "size": "TS-AE-AS-RE-240X105",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-27x9-D26",
+   "size": "TS-AE-AS-RE-270X90",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-30x20-D26",
+   "size": "TS-AE-AS-RE-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-32x14-D26",
+   "size": "TS-AE-AS-RE-320X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-40x17.5-D26",
+   "size": "TS-AE-AS-RE-400X175",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-42x28-D26",
+   "size": "TS-AE-AS-RE-420X280",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-45x30-D26",
+   "size": "TS-AE-AS-RE-450X300",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TQ-AV2A-10x10-D26",
+   "size": "TS-AE-AS-QU-100X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-9x6-D26",
+   "size": "TS-AE-AS-OV-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-12x8-D26",
+   "size": "TS-AE-AS-OV-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x10-D26",
+   "size": "TS-AE-AS-OV-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x8-D26",
+   "size": "TS-AE-AS-OV-150X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-18x12-D26",
+   "size": "TS-AE-AS-OV-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-21x14-D26",
+   "size": "TS-AE-AS-OV-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-22.5x12-D26",
+   "size": "TS-AE-AS-OV-225X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-24x16-D26",
+   "size": "TS-AE-AS-OV-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x20-D26",
+   "size": "TS-AE-AS-OV-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x16-D26",
+   "size": "TS-AE-AS-OV-300X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-18x6-D26",
+   "size": "TS-AE-AS-EL-180X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-21x7-D26",
+   "size": "TS-AE-AS-EL-210X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-24x8-D26",
+   "size": "TS-AE-AS-EL-240X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-27x9-D26",
+   "size": "TS-AE-AS-EL-270X90",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x10-D26",
+   "size": "TS-AE-AS-EL-300X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR-AV2A-12x12-D26",
+   "size": "TS-AE-AS-R-120X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-9x6-D26",
+   "size": "TS-AE-AS-RT1-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-12x8-D26",
+   "size": "TS-AE-AS-RT1-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-15x10-D26",
+   "size": "TS-AE-AS-RT1-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-18x12-D26",
+   "size": "TS-AE-AS-RT1-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-21x14-D26",
+   "size": "TS-AE-AS-RT1-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-24x16-D26",
+   "size": "TS-AE-AS-RT1-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-30x20-D26",
+   "size": "TS-AE-AS-RT1-300X200",
+   "status": "passt",
+   "issues": []
+  }
+ ],
+ "602": [
+  {
+   "id": "TRE-AV2A-9x6-D602",
+   "size": "TS-AE-AS-RE-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-12x8-D602",
+   "size": "TS-AE-AS-RE-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-15x10-D602",
+   "size": "TS-AE-AS-RE-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-16x7-D602",
+   "size": "TS-AE-AS-RE-160X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-18x12-D602",
+   "size": "TS-AE-AS-RE-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-18x6-D602",
+   "size": "TS-AE-AS-RE-180X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-21x14-D602",
+   "size": "TS-AE-AS-RE-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-21x7-D602",
+   "size": "TS-AE-AS-RE-210X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x16-D602",
+   "size": "TS-AE-AS-RE-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x8-D602",
+   "size": "TS-AE-AS-RE-240X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x10.5-D602",
+   "size": "TS-AE-AS-RE-240X105",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-27x9-D602",
+   "size": "TS-AE-AS-RE-270X90",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-30x20-D602",
+   "size": "TS-AE-AS-RE-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-32x14-D602",
+   "size": "TS-AE-AS-RE-320X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-40x17.5-D602",
+   "size": "TS-AE-AS-RE-400X175",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-42x28-D602",
+   "size": "TS-AE-AS-RE-420X280",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-45x30-D602",
+   "size": "TS-AE-AS-RE-450X300",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TQ-AV2A-10x10-D602",
+   "size": "TS-AE-AS-QU-100X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-9x6-D602",
+   "size": "TS-AE-AS-OV-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-12x8-D602",
+   "size": "TS-AE-AS-OV-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x10-D602",
+   "size": "TS-AE-AS-OV-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x8-D602",
+   "size": "TS-AE-AS-OV-150X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-18x12-D602",
+   "size": "TS-AE-AS-OV-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-21x14-D602",
+   "size": "TS-AE-AS-OV-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-22.5x12-D602",
+   "size": "TS-AE-AS-OV-225X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-24x16-D602",
+   "size": "TS-AE-AS-OV-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x20-D602",
+   "size": "TS-AE-AS-OV-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x16-D602",
+   "size": "TS-AE-AS-OV-300X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-18x6-D602",
+   "size": "TS-AE-AS-EL-180X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-21x7-D602",
+   "size": "TS-AE-AS-EL-210X70",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-24x8-D602",
+   "size": "TS-AE-AS-EL-240X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-27x9-D602",
+   "size": "TS-AE-AS-EL-270X90",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x10-D602",
+   "size": "TS-AE-AS-EL-300X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR-AV2A-12x12-D602",
+   "size": "TS-AE-AS-R-120X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-9x6-D602",
+   "size": "TS-AE-AS-RT1-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-12x8-D602",
+   "size": "TS-AE-AS-RT1-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-15x10-D602",
+   "size": "TS-AE-AS-RT1-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-18x12-D602",
+   "size": "TS-AE-AS-RT1-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-21x14-D602",
+   "size": "TS-AE-AS-RT1-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-24x16-D602",
+   "size": "TS-AE-AS-RT1-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-30x20-D602",
+   "size": "TS-AE-AS-RT1-300X200",
+   "status": "passt",
+   "issues": []
+  }
+ ],
+ "74": [
+  {
+   "id": "TRE-AV2A-9x6-D74",
+   "size": "TS-AE-AS-RE-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-12x8-D74",
+   "size": "TS-AE-AS-RE-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-15x10-D74",
+   "size": "TS-AE-AS-RE-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-18x12-D74",
+   "size": "TS-AE-AS-RE-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-21x14-D74",
+   "size": "TS-AE-AS-RE-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-24x16-D74",
+   "size": "TS-AE-AS-RE-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-30x20-D74",
+   "size": "TS-AE-AS-RE-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-42x28-D74",
+   "size": "TS-AE-AS-RE-420X280",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TRE-AV2A-45x30-D74",
+   "size": "TS-AE-AS-RE-450X300",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TQ-AV2A-10x10-D74",
+   "size": "TS-AE-AS-QU-100X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-9x6-D74",
+   "size": "TS-AE-AS-OV-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-12x8-D74",
+   "size": "TS-AE-AS-OV-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x10-D74",
+   "size": "TS-AE-AS-OV-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-15x8-D74",
+   "size": "TS-AE-AS-OV-150X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-18x12-D74",
+   "size": "TS-AE-AS-OV-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-21x14-D74",
+   "size": "TS-AE-AS-OV-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-22.5x12-D74",
+   "size": "TS-AE-AS-OV-225X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-24x16-D74",
+   "size": "TS-AE-AS-OV-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x20-D74",
+   "size": "TS-AE-AS-OV-300X200",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TO-AV2A-30x16-D74",
+   "size": "TS-AE-AS-OV-300X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR-AV2A-12x12-D74",
+   "size": "TS-AE-AS-R-120X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-9x6-D74",
+   "size": "TS-AE-AS-RT1-90X60",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-12x8-D74",
+   "size": "TS-AE-AS-RT1-120X80",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-15x10-D74",
+   "size": "TS-AE-AS-RT1-150X100",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-18x12-D74",
+   "size": "TS-AE-AS-RT1-180X120",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-21x14-D74",
+   "size": "TS-AE-AS-RT1-210X140",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-24x16-D74",
+   "size": "TS-AE-AS-RT1-240X160",
+   "status": "passt",
+   "issues": []
+  },
+  {
+   "id": "TR1-AV2A-30x20-D74",
+   "size": "TS-AE-AS-RT1-300X200",
+   "status": "passt",
+   "issues": []
+  }
+ ]
+}

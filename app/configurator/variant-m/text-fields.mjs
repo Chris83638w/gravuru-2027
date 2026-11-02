@@ -5,12 +5,14 @@ export function customerFieldLabel(object,index,design){
  // Added fields have no immutable sample: their label must never track typed text.
  const source=template||{fieldKey:object.fieldKey},sample=String(source.text||'').trim();
  if(explicit&&!/^Text\s*\d+$/i.test(explicit)&&explicit!=='Name')return explicit;
+ // Imported generic `name` fields can contain the pair of first names itself.
+ // Read that immutable sample before using a separate names field to infer a surname.
+ if(/\s&\s/.test(sample))return 'Vornamen';
  if(source.fieldKey==='name'&&design?.objects?.some(o=>o.type==='text'&&/\s&\s/.test(o.text||'')))return 'Nachname';
  if(explicit==='Name')return explicit;
  const named={heading:'Überschrift',names:'Namen',name:'Name',place:'Ort',date:'Datum',daten:'Lebensdaten',slogan:'Spruch',spruch:'Spruch'}[source.fieldKey];
  if(named)return named;
  if(/^von$/i.test(sample))return 'Zeile „von“';
- if(/\s&\s/.test(sample))return 'Vornamen';
  if(/(?:straße|strasse|str\.|weg|gasse|platz)\s*\d/i.test(sample))return 'Adresse';
  return sample?'Text „'+sample.replace(/\s+/g,' ').slice(0,28)+(sample.length>28?'…':'')+'“':explicit||'Text '+(index+1);
 }

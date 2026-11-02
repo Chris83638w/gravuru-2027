@@ -1,0 +1,8 @@
+TO-V2A-9x6-D970          GR-ES-OV-90X60-T15 | Breite  68% Höhe  70% Fläche  48% | Versatz x  -0.6% y  +0.2% | ok
+TO-V2A-9x6-D971          GR-ES-OV-90X60-T15 | Breite  61% Höhe  76% Fläche  46% | Versatz x  -0.6% y  -0.6% | ok
+TO-V2A-9x6-D972          GR-ES-OV-90X60-T15 | Breite  66% Höhe  74% Fläche  48% | Versatz x  -0.5% y  +0.5% | ok
+TO-V2A-9x6-D973          GR-ES-OV-90X60-T15 | Breite  69% Höhe  70% Fläche  48% | Versatz x  -0.2% y  +0.5% | ok
+TO-V2A-9x6-D974          GR-ES-OV-90X60-T15 | Breite  55% Höhe  83% Fläche  45% | Versatz x  -0.2% y  +0.2% | ok
+TO-V2A-9x6-D975          GR-ES-OV-90X60-T15 | Breite  57% Höhe  83% Fläche  47% | Versatz x  -0.3% y  +0.2% | ok
+TO-V2A-9x6-D976          GR-ES-OV-90X60-T15 | Breite  62% Höhe  79% Fläche  49% | Versatz x  -0.5% y  +0.2% | ok
+TO-V2A-9x6-D977          GR-ES-OV-90X60-T15 | Breite  62% Höhe  78% Fläche  48% | Versatz x  -0.3% y  +0.2% | ok

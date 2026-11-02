@@ -1,0 +1,8 @@
+TO-V2A-15x8-D970         GR-ES-OV-150X80-T15 | Breite  60% Höhe  80% Fläche  48% | Versatz x  -0.5% y  +0.3% | ok
+TO-V2A-15x8-D971         GR-ES-OV-150X80-T15 | Breite  52% Höhe  84% Fläche  44% | Versatz x  -0.6% y  -0.6% | ok
+TO-V2A-15x8-D972         GR-ES-OV-150X80-T15 | Breite  58% Höhe  83% Fläche  48% | Versatz x  -0.5% y  +0.6% | ok
+TO-V2A-15x8-D973         GR-ES-OV-150X80-T15 | Breite  61% Höhe  78% Fläche  48% | Versatz x  -0.3% y  +0.6% | ok
+TO-V2A-15x8-D974         GR-ES-OV-150X80-T15 | Breite  46% Höhe  87% Fläche  40% | Versatz x  +0.0% y  +0.3% | ok
+TO-V2A-15x8-D975         GR-ES-OV-150X80-T15 | Breite  48% Höhe  87% Fläche  42% | Versatz x  -0.3% y  +0.3% | ok
+TO-V2A-15x8-D976         GR-ES-OV-150X80-T15 | Breite  53% Höhe  86% Fläche  46% | Versatz x  -0.5% y  +0.3% | ok
+TO-V2A-15x8-D977         GR-ES-OV-150X80-T15 | Breite  54% Höhe  85% Fläche  46% | Versatz x  -0.2% y  +0.0% | ok

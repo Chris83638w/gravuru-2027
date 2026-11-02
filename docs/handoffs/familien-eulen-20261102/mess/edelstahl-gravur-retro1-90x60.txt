@@ -1,0 +1,8 @@
+TR1-V2A-9x6-D970         GR-ES-RT1-90X60-T15 | Breite  83% Höhe  85% Fläche  71% | Versatz x  -0.7% y  +0.4% | ok
+TR1-V2A-9x6-D971         GR-ES-RT1-90X60-T15 | Breite  67% Höhe  84% Fläche  56% | Versatz x  -0.8% y  -0.7% | ok
+TR1-V2A-9x6-D972         GR-ES-RT1-90X60-T15 | Breite  77% Höhe  86% Fläche  66% | Versatz x  -0.5% y  +0.5% | ok
+TR1-V2A-9x6-D973         GR-ES-RT1-90X60-T15 | Breite  83% Höhe  84% Fläche  70% | Versatz x  -0.3% y  +0.4% | ok
+TR1-V2A-9x6-D974         GR-ES-RT1-90X60-T15 | Breite  58% Höhe  86% Fläche  49% | Versatz x  -0.2% y  +0.2% | ok
+TR1-V2A-9x6-D975         GR-ES-RT1-90X60-T15 | Breite  60% Höhe  87% Fläche  52% | Versatz x  -0.5% y  +0.2% | ok
+TR1-V2A-9x6-D976         GR-ES-RT1-90X60-T15 | Breite  68% Höhe  86% Fläche  59% | Versatz x  -0.5% y  +0.5% | ok
+TR1-V2A-9x6-D977         GR-ES-RT1-90X60-T15 | Breite  69% Höhe  86% Fläche  59% | Versatz x  -0.5% y  +0.1% | ok

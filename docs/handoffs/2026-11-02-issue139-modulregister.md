@@ -47,3 +47,6 @@ R9 im isolierten echten Modell geprüft: Name „Koch“ und B04 (vier Bohrlöch
 R6, R7 und R8: bestehende gezielte Tests vorhanden, geforderte aktuelle Screenshots/Kunden-Warenkorbprüfung noch offen. R3–R5 bleiben verbindliche Regeln; dieses Paket darf weder Randabstand, Bohrlochwarnung noch Motivsperre hinzufügen. Eine vollständige aktuelle Sichtprüfung aller Linien wird nicht als erledigt behauptet.
 
 Kein Deployment dieses Zwischenstands. Claude prüft Register und Trennung vor Merge. Bulk-Pipeline und Navigation folgen nach diesem Paket.
+
+
+Nachtrag 03.11.2026: Der native Start wird außerhalb des Dokuments vorbereitet und erst mit fertiger UX eingesetzt; [Bildfolge und Lifecycle-Audit](2026-11-03-issue139-startansicht.md). Das beseitigt den sichtbaren Alt-UI-Zwischenstand. Die oben benannten historischen prepare/finish- und Importabhängigkeiten sind damit noch nicht entfernt.

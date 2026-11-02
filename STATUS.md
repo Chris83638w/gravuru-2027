@@ -1,3 +1,7 @@
+## 03.11.2026 · Codex · Issue 139 Start ohne sichtbare Altoberfläche
+
+Neu angelegt: 2 · überarbeitet: 8 · gesamt live: 10 (vorherige Wellen). Native Vorbereitung außerhalb des Dokuments; erst fertige UX einsetzen. Einheitliche Ladeansicht mit signierter Startvorschau; Editor-HTML nur einmal laden. Bildfolge und Lifecycle-Audit belegen den Wechsel, 195 Linux-Tests und Edelstahl-/Acryl-Designwechsel bestanden. Funkklingel-Ausführung mit ihren Dropdowns zusätzlich geprüft. Messskript erkennt nun auch den mobilen „Weiter“-Startknopf. [Nachweise und offene Grenzen](docs/handoffs/2026-11-03-issue139-startansicht.md). Keine Veröffentlichung; vollständige Modultrennung und Je-Linie-Zielabnahme weiter offen.
+
 ## 03.11.2026 · Codex · Issue 139 Ausführung als Icon-Kacheln (R16)
 
 Neu angelegt: 2 · überarbeitet: 8 · gesamt live: 10 (bisherige Wellen, in diesem Schritt keine Änderung). Claude 6589326864 / ENTSCHEIDUNGEN 3.37 gelesen. Türschild-Familien: Befestigung und variable Größe wieder Kacheln; K00 zuerst, Farbe mit Materialsymbol, feste Shopgröße unverändert. 41 Linux-Tests und mobile Edelstahl-/Acryl-Prüfung mit Preis, Kundentext, Befestigungs-/Farbübernahme bestanden. [Screenshots und Grenzen](docs/handoffs/2026-11-03-issue139-ausfuehrung-icons.md). Im bestehenden PR 153, noch nicht live; übrige Linien-Screenshots und Master-Umbau offen.

@@ -201,5 +201,12 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   while(previews.size>1&&(previews.size>256||previewBytes>32*1024*1024)){const [key,old]=previews.entries().next().value;previews.delete(key);previewBytes-=old.body.length;if(![...previews.values()].some(p=>p.hash===old.hash))previewFiles.delete(old.hash);}
   return result;
  }
- return {list,target,preview,warm,previewFile:hash=>previewFiles.get(hash)||null};
+ function start(context,model,designId){
+  const scope=galleryScope(cardFor(context.store,context.binding),context.binding);
+  if(!scope)return null;
+  const selected=selection(context.binding,model,designId);
+  const hit=cachedPreview(context.binding,selected.design.id);
+  return {target:issue(context,context.binding,selected.design.id,scope.key),...(previewUrl&&hit?{previewUrl:previewUrl(hit.hash)}:{})};
+ }
+ return {list,target,preview,warm,start,previewFile:hash=>previewFiles.get(hash)||null};
 }

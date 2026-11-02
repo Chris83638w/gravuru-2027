@@ -75,9 +75,9 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  const sessions=createShopEntrySessions({secret,clock,...(ttlMs===undefined?{}:{ttlMs})});
  const startLimiter=createWindowLimiter(limit.startPerMinute,clock),requestLimiter=createWindowLimiter(limit.requestsPerMinute,clock);
  // Seite und Skript sind statische Dateien; nur der konfigurierte Seitenpfad wird eingesetzt.
- // Vorwärmen (Chris 28.10.2026, schneller öffnen): Editor-Seite und Kernkatalog des Datenbereichs lädt die Seite
- // parallel zu den Produktdaten mit niedriger Priorität in den Browser-Zwischenspeicher (`gravuru-warm`, je storeId).
- const warm=Object.fromEntries(fixed.map(s=>[s.storeId,[s.nativeEditorPath,...(WARM_RUNTIME[s.nativeEditorPath]||[])]]));
+ // Nach dem Öffnen nur den Kernkatalog parallel vorwärmen. Das Editor-HTML lädt
+ // ausschließlich die iframe-Navigation, damit der Browser es nicht doppelt abruft.
+ const warm=Object.fromEntries(fixed.map(s=>[s.storeId,WARM_RUNTIME[s.nativeEditorPath]||[]]));
  const pageHtml=Buffer.from(fs.readFileSync(ui('shop-entry.html'),'utf8').replaceAll('/konfigurator/shop/',pagePath).replace('<meta name="robots"','<meta name="gravuru-warm" content="'+esc(JSON.stringify(warm))+'">\n  <meta name="robots"')),pageFiles=new Map(PAGE_FILES.map(name=>[pagePath+name,fs.readFileSync(ui(name))]));
  const cartContexts=new Map(),reviewJobs=new Set(),assetIndex=new Map();
  const startPath=proxyPath+'/start';
@@ -388,7 +388,11 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      checkOrigin(req,{mutating:false});
      const context=active(req),model=modelFor(context.store,context.binding);
      allowedAssets(context.store,context.binding,model);
-     return json(res,200,{model:presentedModel(model,context.binding,context.store,url.searchParams.get('design')),binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false});
+     const presented=presentedModel(model,context.binding,context.store,url.searchParams.get('design'));
+     const designId=presented.universal.profile.defaultDesignId||presented.universal.profile.designs[0]?.id;
+     let startPreview=null;
+     try{startPreview=designGallery.start(context,model,designId);}catch{/* Products without a gallery still open normally. */}
+     return json(res,200,{model:presented,startPreview,binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false});
     }
     if(action==='design-gallery'){
      if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');

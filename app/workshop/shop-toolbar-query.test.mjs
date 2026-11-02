@@ -20,13 +20,19 @@ test('product-page start links forward only one explicit a/b choice from locatio
 });
 
 async function editorPage(hash,{framed=true}={}){
- const nodes=Object.fromEntries(['status','header','back','title','editor'].map(id=>[id,{hidden:false,textContent:'',children:[],addEventListener(){},append(frame){this.children.push(frame);}}]));
- const document={querySelector:selector=>nodes[selector.replace(/^#/,'')],createElement:tag=>({tag,contentWindow:{},addEventListener(){}})},window={addEventListener(){}};window.parent=framed?{postMessage(){}}:window;
+ const nodes=Object.fromEntries(['status','header','back','title','editor','loading-screen','progress','start-preview'].map(id=>[id,{hidden:id==='editor',textContent:'',children:[],addEventListener(){},append(frame){this.children.push(frame);}}]));
+ const listeners=[],document={querySelector:selector=>nodes[selector.replace(/^#/,'')],createElement:tag=>({tag,contentWindow:{dispatchEvent(){}},addEventListener(){}})},window={addEventListener(type,handler){if(type==='message')listeners.push(handler);}};window.parent=framed?{postMessage(){}}:window;
  const client={loadInitialModel:async()=>({model:{name:'Testprodukt',configuration:{id:'cfg_test',revision:1},legacy:{},universal:{}},shopDomain:'test.myshopify.com',editorPath:'/_merchant-editor.html',themeCartPath:'/apps/konfigurator/cart'}),loadResources:async()=>({}),request(){},submitThemeCart(){}};
- const env=vm.createContext({document,window,sessionStorage:{length:0},URLSearchParams,location:{hash,origin:'https://app.example'},createShopEntryClient:()=>client,createDesignSwitch:options=>createDesignSwitch({...options,win:window,doc:document}),shopUrl:()=> 'https://test.myshopify.com/products/test',warmTargets:()=>[],warmEditor:()=>({catalog:Promise.resolve(null)}),startResourceUrls:()=>[],surfaceThumbnail:()=>()=>null,embeddedCart:()=>()=>{},previewJpeg(){}});
+ const env=vm.createContext({document,window,Event,sessionStorage:{length:0},URLSearchParams,location:{hash,origin:'https://app.example'},createShopEntryClient:()=>client,createDesignSwitch:options=>createDesignSwitch({...options,win:window,doc:document}),shopUrl:()=> 'https://test.myshopify.com/products/test',warmTargets:()=>[],warmEditor:()=>({catalog:Promise.resolve(null)}),startResourceUrls:()=>[],surfaceThumbnail:()=>()=>null,embeddedCart:()=>()=>{},previewJpeg(){}});
  const source=fs.readFileSync(new URL('./ui/shop-entry-page.mjs',import.meta.url),'utf8').replace(/^import .*;\r?\n/gm,'');
  await vm.runInContext('(async()=>{'+source+'})()',env);
- assert.equal(nodes.status.hidden,true,nodes.status.textContent);assert.equal(nodes.editor.children.length,1);
+ assert.equal(nodes.status.hidden,false,nodes.status.textContent);assert.equal(nodes.editor.children.length,1);
+ assert.equal(nodes.editor.hidden,true,'wait for the actual editor, not its HTML load');
+ const ready={origin:'https://app.example',source:nodes.editor.children[0].contentWindow,data:{type:'gravuru-ux-ready'}};
+ for(const event of [{...ready,origin:'https://foreign.example'},{...ready,source:{}}])for(const handler of listeners)handler(event);
+ assert.equal(nodes.editor.hidden,true,'foreign messages cannot dismiss the loading screen');
+ for(const handler of listeners)handler(ready);
+ assert.equal(nodes.editor.hidden,false);assert.equal(nodes.header.hidden,true);assert.equal(nodes['loading-screen'].hidden,true);assert.equal(nodes.progress.value,3);
  return {url:new URL(nodes.editor.children[0].src,'https://app.example'),gate:window.GravuruShopEntry};
 }
 

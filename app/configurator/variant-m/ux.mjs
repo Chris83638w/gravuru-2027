@@ -60,7 +60,7 @@ export function rasterMarkup(o,raster,selected=false){
 }
 
 // Presentation adapter. Ordering requires a separately validated parent commerce binding.
-export async function installUX(el,config,legacy){
+export async function installUX(el,config,legacy,{attach}={}){
   const r=el.shadowRoot,$=s=>r.querySelector(s),all=s=>[...r.querySelectorAll(s)];
   const profile=config?.profile||legacy, width=config?.profile.geometry.width||160,height=config?.profile.geometry.height||280;
   const chosenProfile=()=>el.uxSelectedProfile?.()||profile;
@@ -512,6 +512,11 @@ export async function installUX(el,config,legacy){
   if(config)installLegacyCartRestore({el,config,files});
   await installProductDesignGallery({el,r,config,files,say,dialog,esc});
   installReviewLayout({el,r});
+  // All customer UI and its styles are ready before the first DOM insertion.
+  // A connectedCallback replay is harmless: the reference component has a ready guard.
+  attach?.();
+  el.sync();
+  window.dispatchEvent(new Event('resize'));
   window.parent.postMessage({type:'gravuru-ux-ready'},location.origin);
   // Ladefolge nach dem Start: Optionsbilder → Schriften → Motive im Leerlauf (background-loading.mjs).
   if(config)installBackgroundLoading({el,r,config});

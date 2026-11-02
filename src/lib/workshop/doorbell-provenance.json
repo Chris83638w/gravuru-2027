@@ -1,0 +1,1029 @@
+{
+  "repository": "Chris83638w/gravuru-shopify",
+  "commit": "b564422edadaf56a27a09f99e1140a546e5e7145",
+  "sourceDirectory": "platform/sources/doorbell-models",
+  "importedAt": "2026-09-30",
+  "models": [
+    {
+      "id": "aosu-pro-v8p1ax11-16x28",
+      "sourceFile": "Aosu Pro V8P1AX11 16x28.pdf",
+      "pdfSha256": "23feebfd90a02adc98559b1c72da16c77c512d67dc282152ab2a4a9733259420",
+      "imageSha256": "928ba9bbfd22200e2be7b2dd11fa8e57f1a439e3f87a583a8aa04d2c25f2561e",
+      "review": {
+        "status": "prepared",
+        "reasons": [],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "aosu-ultra-v8s1ax15-16x28",
+      "sourceFile": "Aosu Ultra V8S1AX15 16x28.pdf",
+      "pdfSha256": "ca1612780e89f646f7040b2b9b9f6d6598bca0e0bcfd69a66bd2439e418b03ac",
+      "imageSha256": "23c2519ef6ef27e6e9544d1f8d70f8d5dad46c7998f2ef339b8f9a7c1d3771c5",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 126.95730099999999,
+              "y": 255
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "aqara-g4-svd-c03-16x28",
+      "sourceFile": "Aqara G4 SVD-C03 16x28.pdf",
+      "pdfSha256": "7b9cffecbc7ec407fbd4f492642819bb7d8414b9553648c22247d848ee9fb3a2",
+      "imageSha256": "8ee891f25271b7c87eff880f720238b7ecd53f9af419fa78717d7f856e5eab97",
+      "review": {
+        "status": "prepared",
+        "reasons": [],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-RUNDUM",
+            "element": "number",
+            "before": {
+              "x": 125,
+              "y": 256
+            },
+            "after": {
+              "x": 129.950404,
+              "y": 256
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          },
+          {
+            "design": "FK-D10",
+            "element": "number",
+            "before": {
+              "x": 126,
+              "y": 256
+            },
+            "after": {
+              "x": 129.950404,
+              "y": 256
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          },
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 123,
+              "y": 99.330406
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "arlo-akku-1-gen-avd2001-16x28",
+      "sourceFile": "Arlo Akku (1.Gen) AVD2001 16x28.pdf",
+      "pdfSha256": "a70cfc2e8c3c01dbb3d0e9af935fa6472c42b37af1a588a4aa22043da47f99d1",
+      "imageSha256": "709b50e6d38b69e470f4b5a32834e1b5b96b891ba498934df331fb1e15c903c3",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "arlo-akku-2-gen-avd4001-16x28",
+      "sourceFile": "Arlo Akku (2.Gen) AVD4001 16x28.pdf",
+      "pdfSha256": "a0b9558b4987ce0705b8a03985099ab1e754088ee4efcef9a7f7fe41d5a93f9a",
+      "imageSha256": "8b8313b042e53a0b40bbd1107a47d3cf10e8b466872a7e989e43d0d5e6c54ef6",
+      "review": {
+        "status": "prepared",
+        "reasons": [],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "arlo-kabel-avd1001-16x28",
+      "sourceFile": "Arlo Kabel AVD1001 16x28.pdf",
+      "pdfSha256": "a3b765dceb1cfacfbe1c1aeeb248438a79fb6b948e331e8391923a81bd9a5348",
+      "imageSha256": "9ad10f043b236f8abf383907fd00b2eaee0697e08955c1edecff6e2c355f374b",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "blink-1-gen-bdm01200u-16x28",
+      "sourceFile": "Blink (1. Gen) BDM01200U 16x28.pdf",
+      "pdfSha256": "d16946e0d66ad2a244109a40c104f264a1d3c0bfea180c50ab11e5300a917593",
+      "imageSha256": "8d963e3aad09a4d2489e57f8c80fd0cc7efbe052cbd7c77ef2602306e6ad1ec9",
+      "review": {
+        "status": "prepared",
+        "reasons": [],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "blink-2-gen-bdm01300u-16x28",
+      "sourceFile": "Blink (2.Gen) BDM01300U 16x28.pdf",
+      "pdfSha256": "cf26515d1afb2ecee435238f8a1fc0516b3300588d4c6829ec30425a530ec052",
+      "imageSha256": "9f21156237302eb9bc65b981549b9a1598bc7b399f21865d232621b9765afcf2",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "blink-kabel-2k-bdm01500u-16x28",
+      "sourceFile": "Blink Kabel 2K+ BDM01500U 16x28.pdf",
+      "pdfSha256": "93deeddce7a28b1d0357e375cf228bea59508aac409ac150f560c8511b7bb6c0",
+      "imageSha256": "6ed17151391e283efc164a5bab7bce1e8a692a73adcb4c39038e0381ad9e9051",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 126.350985,
+              "y": 255
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "boifun-bell-j1-16x28",
+      "sourceFile": "Boifun Bell J1 16x28.pdf",
+      "pdfSha256": "10587fe43011868c9a8e91f0840467eef3a9a0af89dcaba87e7411ff6f73e122",
+      "imageSha256": "0bb94e3e4625460a0372add18edad70b641c0c062acefdedcba2720fd6d64a61",
+      "review": {
+        "status": "prepared",
+        "reasons": [],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 128.241987,
+              "y": 255
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "cococam-doorbell-16x28",
+      "sourceFile": "Cococam Doorbell 16x28.pdf",
+      "pdfSha256": "69ecb0bcd4717ef265d363b4db921b343f799c8ddff0ed7a744afcd185e7f247",
+      "imageSha256": "4f393f91a842a7dc01260861fc26913c9ad4cb7dff16540c2e5aa581d19cdf39",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 128.662472,
+              "y": 255
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "ctronics-ctsc-j6-16x28",
+      "sourceFile": "Ctronics CTSC-J6 16x28.pdf",
+      "pdfSha256": "d8a0d8730eab0cf9e64581e2a4ee8cc5ea58cb407811b6c66b87e1e7c37a1b96",
+      "imageSha256": "8bf60646a25d081c0cfb934b66db3026fcc071525d13648ae995f249658a3bb7",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 126.463899,
+              "y": 255
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "eufy-1080p-t8220-16x28",
+      "sourceFile": "Eufy 1080P T8220 16x28.pdf",
+      "pdfSha256": "e303a83e88ace0ab886ba50254aaf6ed08ad220da331a1e618214b55fad1f6e2",
+      "imageSha256": "014e3666d0d2d6d78ad5924fcd88a84c937f8b119ef105098b93f681117fdcb3",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "eufy-1080p-t8222-16x28",
+      "sourceFile": "Eufy 1080P T8222 16x28.pdf",
+      "pdfSha256": "8587dd5d3be91db1ac130f9e92b96b0e0a31005fdaf01152927e7847f031d6a3",
+      "imageSha256": "593b24d17da74e4500be6dc331e5cb8c3cdf1fbe18383b4431ac79596a017aba",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "eufy-2k-hd-t8210-16x28",
+      "sourceFile": "Eufy 2K HD T8210 16x28.pdf",
+      "pdfSha256": "bc3e1d36cf9ef2f64277ed085e1a3d1f4f83df1c7e715e61342458e76ba008a8",
+      "imageSha256": "3aeeb28642901aaa2d23329abd1279aec6dcfed54acd63c3e3edeed66b73afa0",
+      "review": {
+        "status": "prepared",
+        "reasons": [],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 127.764088,
+              "y": 255
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "eufy-c30-t8224-16x28",
+      "sourceFile": "Eufy C30 T8224 16x28.pdf",
+      "pdfSha256": "5094dd33e6f17147d4cf3a0782a935ccc0eefb3343a67e189959c466e154e114",
+      "imageSha256": "32db6a21363ef743e4e7459b3f66c2129f981b79ac8acc0f278aca077cb474ec",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "eufy-c31-t8223-16x28",
+      "sourceFile": "Eufy C31 T8223 16x28.pdf",
+      "pdfSha256": "5fb0b0ebdddc8ca1af5ff24f58dfd229221f47a138aeca9670a107d57b91fe96",
+      "imageSha256": "88c26b3f37f2c2fa8e13adc9d5d2771135e6cc2189c7ec9bd0515c468293c992",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 126.760801,
+              "y": 255
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "eufy-dual-e340-t8214-16x28",
+      "sourceFile": "Eufy Dual E340 T8214 16x28.pdf",
+      "pdfSha256": "310927166f35c75d227beae09df5df56dea617204dea52615f34127d1e75b1df",
+      "imageSha256": "f0e7fcf2d3309df0c76684368befe2954a1181bc50a90f6b1a8b753433cd3ad6",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 126.07389199999999,
+              "y": 255
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "eufy-hdr-2k-t8200-16x28",
+      "sourceFile": "Eufy HDR 2K T8200 16x28.pdf",
+      "pdfSha256": "0069bdf344690443e4e9e4f53c68831b4ecd17ba79ed1e2e8ce39c8f003c37f3",
+      "imageSha256": "bf74d4bbfbd74e2163c9152f0544bcf962104cfe633f78c30c190ffb590b765f",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "ezviz-db1-cs-db1c-16x28",
+      "sourceFile": "EZVIZ DB1 CS-DB1C 16x28.pdf",
+      "pdfSha256": "b7e484b0983fde84b8bec23254a3f1a8babbd3d0cf1f8ecba789e23a6550d31d",
+      "imageSha256": "07a7c5e8d6250226404313e81017dfdd657667aa4802e3f328c94571adca66ac",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "ezviz-ep8-ultra-cs-ep8-16x28",
+      "sourceFile": "Ezviz EP8 Ultra CS-EP8 16x28.pdf",
+      "pdfSha256": "2929049c02c171ebe35c289b45653c81e8dbf9621721039a3af28eaf0fa6377c",
+      "imageSha256": "0f5c98b69f0b8def7c5ebe6748aed6f93fe46490afa9736b95494f9361913b17",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 127.87738900000001,
+              "y": 255
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "google-nest-a0077-16x28",
+      "sourceFile": "Google Nest A0077 16x28.pdf",
+      "pdfSha256": "51b49c78969789f0181fbefe6335730fb45541f484b0f8403cc18f4588c6b10e",
+      "imageSha256": "456f0658e76dfce5f035c2259062d2dcc23419c3a315db2cb458ae28a70d493d",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "google-nest-akku-22lcur-16x28",
+      "sourceFile": "Google Nest Akku 22LCUR 16x28.pdf",
+      "pdfSha256": "0b84da38b01f1aada28656c37ab9bbd95f2ead5fc8651e8f08b17a7d439dbf12",
+      "imageSha256": "5a812d6847b53fa01b73d2bb1557537c9c7e488be8e50a27440683ad222cee69",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-SEITLICH",
+            "element": "number",
+            "before": {
+              "x": 80,
+              "y": 94
+            },
+            "after": {
+              "x": 80,
+              "y": 89.830297
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          },
+          {
+            "design": "FK-D08",
+            "element": "number",
+            "before": {
+              "x": 80,
+              "y": 94
+            },
+            "after": {
+              "x": 80,
+              "y": 87.430297
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          },
+          {
+            "design": "FK-D11",
+            "element": "number",
+            "before": {
+              "x": 80,
+              "y": 94
+            },
+            "after": {
+              "x": 80,
+              "y": 88.030297
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          },
+          {
+            "design": "FK-D13",
+            "element": "number",
+            "before": {
+              "x": 80,
+              "y": 98
+            },
+            "after": {
+              "x": 80,
+              "y": 90.430297
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "hombli-smart-doorbell-2-hbdb-0200-16x28",
+      "sourceFile": "Hombli Smart Doorbell 2 HBDB-0200 16x28.pdf",
+      "pdfSha256": "6ad02733dfe0242fa6469b15cd9079227ff83d3d82219a2a3f96316b85c545f9",
+      "imageSha256": "072c781eb9196e70c4f1ef737b347708f2fe7d450918a85d2dbb26d37899efa9",
+      "review": {
+        "status": "prepared",
+        "reasons": [],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "philips-welcome-eye-531034-16x28",
+      "sourceFile": "Philips Welcome Eye 531034 16x28.pdf",
+      "pdfSha256": "8227e8a2a7d4295afa73b5ebc6794d8e5247569564f83e0368159c643301f59b",
+      "imageSha256": "d25e523ce5ae3d0a1946350fdff8d55186c3dcc337df79db1ad1ffe39eb0cd2a",
+      "review": {
+        "status": "prepared",
+        "reasons": [],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 127.09389499999999,
+              "y": 255
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "reolink-akku-2ayhe-2205b-16x28",
+      "sourceFile": "Reolink Akku 2AYHE-2205B 16x28.pdf",
+      "pdfSha256": "d868e7b0f0908d076aeec9ac7648f6ba003556d759cc21d070fc2841ee072368",
+      "imageSha256": "03ea587d175b12cb6722829ee40468b10917e9db048f753ef9e6d08d146be586",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-D08",
+            "element": "number",
+            "before": {
+              "x": 80,
+              "y": 94
+            },
+            "after": {
+              "x": 80,
+              "y": 87.930402
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          },
+          {
+            "design": "FK-D11",
+            "element": "number",
+            "before": {
+              "x": 80,
+              "y": 94
+            },
+            "after": {
+              "x": 80,
+              "y": 88.53040200000001
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          },
+          {
+            "design": "FK-D13",
+            "element": "number",
+            "before": {
+              "x": 80,
+              "y": 98
+            },
+            "after": {
+              "x": 80,
+              "y": 90.930402
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "reolink-poe-d340b-16x28",
+      "sourceFile": "Reolink PoE D340B 16x28.pdf",
+      "pdfSha256": "0c2e9531ef11bc64c0e12bb4d6331ec92cdf475870263fa017cc619d96fe6c2d",
+      "imageSha256": "cfae409841be543adcd8fa2f28b790e5978aad7ca2893e5583787419a61f0172",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "ring-1-5um5e5-16x28",
+      "sourceFile": "Ring 1 5UM5E5 16x28.pdf",
+      "pdfSha256": "53b8f30657909948abd10551bccaabc048c2709cb23d512deb9c4e14e2b67973",
+      "imageSha256": "ede9fe7e71e521f8b9653ad19570127cc950db577ffdd69ba9ae5783ffeea985",
+      "review": {
+        "status": "prepared",
+        "reasons": [],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 130.29508900000002,
+              "y": 255
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "ring-2-8vr1s7-0eu0-16x28",
+      "sourceFile": "Ring 2 8VR1S7-0EU0 16x28.pdf",
+      "pdfSha256": "d8b4188cee7d1c9129f04139a856870159cb0b1aefcc7c9570002f9b5cc107ae",
+      "imageSha256": "fec65cfaea4e314aa79635fe82ffd3daf9169cbaeedc276506b06c258795809a",
+      "review": {
+        "status": "prepared",
+        "reasons": [],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-RUNDUM",
+            "element": "number",
+            "before": {
+              "x": 125,
+              "y": 256
+            },
+            "after": {
+              "x": 128.560004,
+              "y": 256
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          },
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 131.485004,
+              "y": 255
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "ring-3-5at3s9-16x28",
+      "sourceFile": "Ring 3 5AT3S9 16x28.pdf",
+      "pdfSha256": "a60e599cff80a959ce84adf91db75b065bbb65269f4a92a754329a0a51a4b529",
+      "imageSha256": "990013cde04526a6b72da1bce0104221ccd3c53983424484d0f227695000426c",
+      "review": {
+        "status": "prepared",
+        "reasons": [],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 130.71741400000002,
+              "y": 255
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "ring-akku-pro-5f79e9-16x28",
+      "sourceFile": "Ring Akku Pro 5F79E9 16x28.pdf",
+      "pdfSha256": "7ad61b86f79533f7965aaa8b8b459f84a1478409c5879beeb7c54950ffeb2e22",
+      "imageSha256": "e043a8285ec5f1ce1fa3d6d40acd376ad3bdf0326fa450d3b78d6f139a813aa3",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Identisches Bild und Bohrbild in zwei unterschiedlich benannten PDFs"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 130.885094,
+              "y": 255
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "ring-battery-5f97f2-16x28",
+      "sourceFile": "Ring Battery 5F97F2 16x28.pdf",
+      "pdfSha256": "6508d98228a8944d66423c6b583d3f1e0b4b89532a8a6ab0d7c1d3de83f740e7",
+      "imageSha256": "55882788c94372accc19ebc7e480d4dc97106b906dd052f242acdea9d2575776",
+      "review": {
+        "status": "prepared",
+        "reasons": [],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-RUNDUM",
+            "element": "number",
+            "before": {
+              "x": 125,
+              "y": 256
+            },
+            "after": {
+              "x": 128.07399800000002,
+              "y": 256
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          },
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 130.998998,
+              "y": 255
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "ring-plus-1-gen-5f77e9-16x28",
+      "sourceFile": "Ring Plus (1.Gen) 5F77E9 16x28.pdf",
+      "pdfSha256": "8d9d13cb399c8fd200080962dfb74b136b7acbfd6bb9a65bdf7585f56f1701b2",
+      "imageSha256": "e043a8285ec5f1ce1fa3d6d40acd376ad3bdf0326fa450d3b78d6f139a813aa3",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Identisches Bild und Bohrbild in zwei unterschiedlich benannten PDFs"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 130.885094,
+              "y": 255
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "ring-plus-2-gen-5dfya3-16x28",
+      "sourceFile": "Ring Plus (2.Gen) 5DFYA3 16x28.pdf",
+      "pdfSha256": "4a3eb2aadf3885276e5a429f5ccf1a22872c6ed71dee9256931d7e274106530a",
+      "imageSha256": "9f0823424ce75fbfa797321322f6dede33468b36c6d78ede84a893cfab74ee8c",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 126.682595,
+              "y": 255
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "ring-pro2-5at2s2-16x28",
+      "sourceFile": "Ring Pro2 5AT2S2 16x28.pdf",
+      "pdfSha256": "a2910e96cdf72a6b9e7936e2217509c197736a081520797338ba20597a4f3a6b",
+      "imageSha256": "60690c0d6c252f2fec09efccf76eaab92826eb1db9b3b326f79610acc6e557d3",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Inneres Kästchen gewählt; Abweichung zum Klingelbild manuell prüfen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "ring-wired-5at3t5-16x28",
+      "sourceFile": "Ring Wired 5AT3T5 16x28.pdf",
+      "pdfSha256": "5d327f694b772b25e816ee2546cc62ae285e5eb147add94cad5f3a6f06400744",
+      "imageSha256": "bc171f3a16fb95d9eef5a51b3791a02d4c1e307f56ab0345b64117d0f76e3663",
+      "review": {
+        "status": "prepared",
+        "reasons": [],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "ring-wired-pro-3-gen-5dfya2-16x28",
+      "sourceFile": "Ring Wired Pro (3.Gen) 5DFYA2 16x28.pdf",
+      "pdfSha256": "ce2f1b92bb4010bccdbcc8b8621314beda36b7ba681819e7f8d940a1f4b35ec3",
+      "imageSha256": "42fce1062bfebb250afc1cd2f2b2509aec7f30a715377b402e43814bd87b173c",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "tapo-d235-16x28",
+      "sourceFile": "Tapo D235 16x28.pdf",
+      "pdfSha256": "59028960d87834962857ab67599b4b2b5ea831d03120689b3af80ab4fced8666",
+      "imageSha256": "1f31e50f4325c2f9ccfd7ae6ddcecfd4c3dcf04f20d61b5ae23ffda0250fb138",
+      "review": {
+        "status": "prepared",
+        "reasons": [],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 126.072597,
+              "y": 255
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "tmezon-intercom-mz-vdp-ne120-16x28",
+      "sourceFile": "Tmezon Intercom MZ-VDP-NE120 16x28.pdf",
+      "pdfSha256": "f60b8fa2273e5c2414daeb6092193010f6ad9b22360f76edefe449225bcb6d4c",
+      "imageSha256": "03217656607e8fdfa84873e9e3586ec678d90f5ab20dc0ab17d463d531ac85fe",
+      "review": {
+        "status": "manual-check",
+        "reasons": [
+          "Bildgröße und Positionskästchen manuell abgleichen"
+        ],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "tmezon-smart-home-bell-j7-plus-16x28",
+      "sourceFile": "Tmezon Smart Home Bell J7 Plus 16x28.pdf",
+      "pdfSha256": "73551e9d39dd3fb814a3bbd86e4809ca059fb730c429c267e725c149a773910f",
+      "imageSha256": "ceb49e07ec1933bcc3787cd52a645b15c8e8021b3b46abcbce28687e34205ffb",
+      "review": {
+        "status": "prepared",
+        "reasons": [],
+        "sourceImagePlacement": true,
+        "changes": [
+          {
+            "design": "FK-D16",
+            "element": "number",
+            "before": {
+              "x": 123,
+              "y": 255
+            },
+            "after": {
+              "x": 126.810903,
+              "y": 255
+            },
+            "reason": "Abstand zum Klingelbild in Arbeitsvorlage"
+          }
+        ],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "winees-m6p20ac-16x28",
+      "sourceFile": "Winees M6P20AC 16x28.pdf",
+      "pdfSha256": "d88eac8aa1a976de8b4dcb8ffd657e6b3d36e872a00ba821a4993aeec25acb8c",
+      "imageSha256": "59fd47246206285fc746a93a1237efe2d5ce4ce82c0361a8e888241e19320f0c",
+      "review": {
+        "status": "prepared",
+        "reasons": [],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    },
+    {
+      "id": "wp-cardea-2-16x28",
+      "sourceFile": "WP Cardea 2 16x28.pdf",
+      "pdfSha256": "b27aa6e2089a2a31101fcbc4846be1c067ebfd36d1a6b1bca0e18d0efede585e",
+      "imageSha256": "0f2fc4da24ab70bd51c35a820d150c94e622a1d2a61658785dd828ee27acf388",
+      "review": {
+        "status": "prepared",
+        "reasons": [],
+        "sourceImagePlacement": true,
+        "changes": [],
+        "assetNote": "Bild aus PDF extrahiert; Freistellung vor Verwendung auf anderen Hintergründen prüfen."
+      }
+    }
+  ]
+}

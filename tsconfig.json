@@ -1,0 +1,75 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@payload-config": [
+        "./src/payload.config.ts"
+      ]
+    },
+    "allowImportingTsExtensions": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    ".next-performance/types/**/*.ts",
+    ".next-performance/dev/types/**/*.ts",
+    ".next-editor-20261003/types/**/*.ts",
+    ".next-editor-20261003/dev/types/**/*.ts",
+    ".next-editor-final-20261003/types/**/*.ts",
+    ".next-editor-final-20261003/dev/types/**/*.ts",
+    ".next-kundenablauf-20261003/types/**/*.ts",
+    ".next-kundenablauf-20261003/dev/types/**/*.ts",
+    ".next-endkunden-20261014/types/**/*.ts",
+    ".next-endkunden-20261014/dev/types/**/*.ts",
+    ".next-shopflow-20261015/types/**/*.ts",
+    ".next-shopflow-20261015/dev/types/**/*.ts",
+    ".next-acrylic-add-20261016/types/**/*.ts",
+    ".next-acrylic-add-20261016/dev/types/**/*.ts",
+    ".next-bell-add-20261016/types/**/*.ts",
+    ".next-bell-add-20261016/dev/types/**/*.ts",
+    ".next-prepared-orders-20261016/types/**/*.ts",
+    ".next-prepared-orders-20261016/dev/types/**/*.ts",
+    ".next-customer-workspace-20261029/types/**/*.ts",
+    ".next-customer-workspace-20261029/dev/types/**/*.ts",
+    ".next-site-audit-20261029/types/**/*.ts",
+    ".next-site-audit-20261029/dev/types/**/*.ts",
+    ".next-public-refinement-20261029/types/**/*.ts",
+    ".next-public-refinement-20261029/dev/types/**/*.ts",
+    ".next-service-config-20261029/types/**/*.ts",
+    ".next-service-config-20261029/dev/types/**/*.ts",
+    ".next-interaction-fixes-20261030/types/**/*.ts",
+    ".next-interaction-fixes-20261030/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "work",
+    "backups"
+  ]
+}

@@ -1,0 +1,328 @@
+{
+  "version": 1,
+  "requiredImages": [
+    {
+      "id": 2,
+      "filename": "klingelplatte-edelstahl-acryl-gravuru-bielefeld.webp"
+    },
+    {
+      "id": 3,
+      "filename": "edelstahl-klingelplatte-hausnummer-leuchtturm-gravuru-bielefeld.webp"
+    },
+    {
+      "id": 8,
+      "filename": "acryl-hausnummernschild-gravuru-bielefeld.webp"
+    },
+    {
+      "id": 18,
+      "filename": "kommunen-wegweiser-metallschilder-gravuru-bielefeld.webp"
+    },
+    {
+      "id": 25,
+      "filename": "einzelhandel-acryl-preisaufsteller-produktstaender-gravuru-bielefeld.webp"
+    },
+    {
+      "id": 6,
+      "filename": "fotoaufsteller-hochzeitsmotiv-uv-druck-gravuru-bielefeld.webp"
+    }
+  ],
+  "patches": [
+    {
+      "kind": "global",
+      "slug": "website",
+      "before": {
+        "headline": "Serienzuschnitt.\nBauteile kennzeichnen.",
+        "intro": "Lohnfertigung für Unternehmen: Zuschnitte aus Edelstahl und Acryl sowie individuelle Markierungen nach Ihren Vorgaben. Für Serien und wiederkehrende Aufträge – gefertigt in Bielefeld.",
+        "about": "Gravuru in Bielefeld verbindet Zuschnitt und Kennzeichnung für Unternehmen. Im Mittelpunkt stehen Serien und wiederkehrende Aufträge aus Edelstahl und Acryl. Weitere Materialien und Verfahren prüfen wir passend zu Ihrer Anwendung.",
+        "heroImage": 17,
+        "navigation": [
+          {
+            "label": "Leistungen",
+            "href": "/leistungen"
+          },
+          {
+            "label": "Branchen",
+            "href": "/fuer-wen"
+          },
+          {
+            "label": "Konfigurator",
+            "href": "/konfigurator"
+          },
+          {
+            "label": "Über Gravuru",
+            "href": "/ueber-uns"
+          }
+        ]
+      },
+      "after": {
+        "headline": "Ihr Schild.\nGanz nach Ihren Wünschen.",
+        "intro": "Individuelle Schilder, Klingelplatten, Hausnummern und Acrylteile aus Bielefeld. Selbst gestalten oder eine Sonderanfertigung gemeinsam mit uns vorbereiten – vom Einzelstück bis zur Serie.",
+        "about": "Gravuru in Bielefeld fertigt persönliche Schilder, Klingelplatten, Hausnummern und Acrylprodukte. Wir begleiten Ihre Idee vom passenden Material bis zur individuellen Gestaltung. Auch Handwerk, Unternehmen und Vereine unterstützen wir mit Zuschnitt, Gravur und Druck.",
+        "heroImage": 2,
+        "navigation": [
+          {
+            "label": "Produkte",
+            "href": "/produkte"
+          },
+          {
+            "label": "Konfigurator",
+            "href": "/konfigurator"
+          },
+          {
+            "label": "Leistungen",
+            "href": "/leistungen"
+          },
+          {
+            "label": "Für wen",
+            "href": "/fuer-wen"
+          },
+          {
+            "label": "Über Gravuru",
+            "href": "/ueber-uns"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "global",
+      "slug": "layout-content",
+      "before": {
+        "finderItems": [
+          {
+            "title": "Serienzuschnitt",
+            "text": "Kontur, Maße und Stückzahl festlegen.",
+            "href": "/konfigurator?material=edelstahl&bearbeitung=zuschnitt"
+          },
+          {
+            "title": "Zuschnitt mit Gravur",
+            "text": "Platten mit Ihrer Kennzeichnung.",
+            "href": "/konfigurator?material=edelstahl&bearbeitung=gravur"
+          },
+          {
+            "title": "Acrylteile konfigurieren",
+            "text": "Maße und Bohrbild für Ihre Acrylplatten.",
+            "href": "/konfigurator?material=acryl&bearbeitung=zuschnitt"
+          },
+          {
+            "title": "Zeichnung anfragen",
+            "text": "Sonderkonturen und weitere Bearbeitungen.",
+            "href": "/kontakt"
+          }
+        ],
+        "audienceItems": [
+          {
+            "title": "Lohnfertigung & Serien",
+            "text": "Wiederkehrende Teile nach Ihren Vorgaben.",
+            "href": "/leistungen/lohnfertigung"
+          },
+          {
+            "title": "Industrie & Handwerk",
+            "text": "Zuschnitte und eindeutige Bauteilkennzeichnung.",
+            "href": "/fuer-wen/metallbau-geraetehersteller"
+          },
+          {
+            "title": "Weitere Anwendungen",
+            "text": "Kommunen, Gewerbe und private Vorhaben.",
+            "href": "/fuer-wen"
+          }
+        ],
+        "serviceTitle": "Zuschnitt und Kennzeichnung.\nFür Ihre Serie.",
+        "combinationLabel": "Mehrere Schritte. Ein Vorhaben.",
+        "combinationTitle": "Ein Bauteil.\nMehrere Arbeitsschritte.",
+        "combinationText": "Kontur, Befestigung und Kennzeichnung gehören zusammen. Senden Sie Ihre Zeichnung oder konfigurieren Sie eine Platte mit Maßen, Bohrungen und Musterbeschriftung. Wir stimmen Ausführung und Stückzahl vor der Fertigung ab.",
+        "combinationSteps": [
+          {
+            "title": "Zuschneiden",
+            "text": "Material in die benötigte Kontur bringen."
+          },
+          {
+            "title": "Weiterverarbeiten",
+            "text": "Geeignete Acrylteile in die gewünschte Form biegen."
+          },
+          {
+            "title": "Beschriften",
+            "text": "Gravieren oder bedrucken – passend zum Werkstück."
+          }
+        ],
+        "processLabel": "Von der Idee zum Teil",
+        "processTitle": "Ein klarer Weg\nzu Ihrer Fertigung.",
+        "processSteps": [
+          {
+            "title": "Teil definieren",
+            "text": "Zeichnung senden oder Kontur und Kennzeichnung konfigurieren."
+          },
+          {
+            "title": "Anfrage prüfen",
+            "text": "Material, Toleranzen, Stückzahl und Bearbeitung abstimmen."
+          },
+          {
+            "title": "Angebot & Freigabe",
+            "text": "Ausführung, Preis und Termin gemeinsam festlegen."
+          },
+          {
+            "title": "Serie fertigen",
+            "text": "Nach freigegebenen Vorgaben fertigen und Folgeaufträge abstimmen."
+          }
+        ],
+        "ctaLabel": "Der nächste Schritt",
+        "ctaTitle": "Ihre nächste Serie\nbeginnt mit den Vorgaben.",
+        "ctaText": "Material, Zeichnung, Stückzahl und Kennzeichnung: Wir prüfen Ihr Vorhaben und erstellen ein passendes Angebot.",
+        "ctaButton": "Projekt anfragen",
+        "footerText": "Serienzuschnitt. Bauteilkennzeichnung.\nLohnfertigung in Bielefeld.",
+        "audiencesTitle": "So unterschiedlich wie Ihre Projekte.",
+        "audiencesIntro": "Lohnfertigung für Industrie, Handwerk und Wiederverkäufer. Dazu passende Lösungen für öffentliche Einrichtungen und private Projekte.",
+        "contactTitle": "Erzählen Sie uns\nvon Ihrem Projekt.",
+        "contactIntro": "Teilen Sie uns Material, Zeichnung, Stückzahl und die gewünschte Kennzeichnung mit.",
+        "contactText": "Beschreiben Sie das gewünschte Teil und seinen Einsatz. Material, Maße und Stückzahl ergänzen Sie einfach, soweit sie bereits feststehen.",
+        "configuratorIntro": "Beschreiben Sie die gewünschte Kombination aus Platten, Bohrungen und Beschriftung.",
+        "configuratorText": "Der vorhandene Gravuru-Konfigurator wird für diesen Auftritt vorbereitet. Die interaktive Gestaltung ist hier noch nicht freigeschaltet."
+      },
+      "after": {
+        "finderItems": [
+          {
+            "title": "Mein Schild selbst gestalten",
+            "text": "Edelstahl, Acryl, Beschriftung und Funkklingel kombinieren.",
+            "href": "/konfigurator"
+          },
+          {
+            "title": "Eine Sonderanfertigung anfragen",
+            "text": "Wünsche mitteilen und einen vorbereiteten Entwurf erhalten.",
+            "href": "/kontakt?leistung=Sonderanfertigung"
+          },
+          {
+            "title": "Ein persönliches Geschenk",
+            "text": "Fotos, Namen und Motive auf passenden Materialien.",
+            "href": "/produkte/personalisierte-produkte"
+          },
+          {
+            "title": "Ein Teil nach Maß",
+            "text": "Zuschnitte für private Projekte und gewerbliche Serien.",
+            "href": "/konfigurator?material=edelstahl&bearbeitung=zuschnitt"
+          }
+        ],
+        "audienceItems": [
+          {
+            "title": "Für Ihr Zuhause",
+            "text": "Klingelplatten, Hausnummern und persönliche Schilder.",
+            "href": "/fuer-wen/haus-garten"
+          },
+          {
+            "title": "Persönliche Produkte",
+            "text": "Geschenke und Erinnerungen mit eigener Gestaltung.",
+            "href": "/produkte/personalisierte-produkte"
+          },
+          {
+            "title": "Für Firmen & Vereine",
+            "text": "Beschilderung, Serien und individuelle Anfertigungen.",
+            "href": "/fuer-wen"
+          }
+        ],
+        "serviceTitle": "Passend zu Ihrer Idee.\nPersönlich gefertigt.",
+        "combinationLabel": "Mehrere Schritte. Ein Vorhaben.",
+        "combinationTitle": "Wenn Zuschnitt,\nGravur und Druck\nzusammenpassen.",
+        "combinationText": "Ein Schild aus Edelstahl und Acryl. Ein zugeschnittener und gebogener Aufsteller. Ein Bauteil mit eindeutiger Nummer. Wir prüfen die passende Kombination für Ihre Anwendung.",
+        "combinationSteps": [
+          {
+            "title": "Zuschneiden",
+            "text": "Material in die benötigte Kontur bringen."
+          },
+          {
+            "title": "Weiterverarbeiten",
+            "text": "Geeignete Acrylteile in die gewünschte Form biegen."
+          },
+          {
+            "title": "Beschriften",
+            "text": "Gravieren oder bedrucken – passend zum Werkstück."
+          }
+        ],
+        "processLabel": "So geht Ihre Sonderanfertigung",
+        "processTitle": "Von Ihrem Wunsch\nzum persönlichen Entwurf.",
+        "processSteps": [
+          {
+            "title": "Wünsche mitteilen",
+            "text": "Beschreiben Sie Ihre Idee. Maße, Fotos oder eine Skizze helfen, sind für den ersten Kontakt aber nicht nötig."
+          },
+          {
+            "title": "Entwurf erhalten",
+            "text": "Nach der Abstimmung bereitet eine Mitarbeiterin Ihre Sonderanfertigung vor und sendet Ihnen einen persönlichen Gestaltungslink."
+          },
+          {
+            "title": "Gestaltung prüfen",
+            "text": "Öffnen Sie den vorbereiteten Entwurf, ergänzen Sie Texte, Motive oder Bilder und übermitteln Sie Ihre Gestaltung an uns."
+          },
+          {
+            "title": "Fertigung abstimmen",
+            "text": "Wir klären Machbarkeit, Ausführung, Preis und Termin gemeinsam. Gefertigt wird nach der vereinbarten Abstimmung."
+          }
+        ],
+        "ctaLabel": "Ihre Idee. Unsere Manufaktur.",
+        "ctaTitle": "Was dürfen wir\nfür Sie gestalten?",
+        "ctaText": "Teilen Sie uns Ihre Wünsche mit. Für eine Sonderanfertigung können wir einen Entwurf vorbereiten, den Sie über Ihren persönlichen Link weitergestalten.",
+        "ctaButton": "Sonderanfertigung anfragen",
+        "footerText": "Schilder, Klingelplatten und persönliche Produkte.\nIndividuell gefertigt in Bielefeld.",
+        "audiencesTitle": "Für Ihr Zuhause.\nFür Ihre Ideen.",
+        "audiencesIntro": "Für Privatkunden, Vereine, Handwerk und Unternehmen in Bielefeld und OWL. Entdecken Sie passende Schilder, personalisierte Produkte und Fertigungsmöglichkeiten.",
+        "contactTitle": "Was wünschen Sie sich?",
+        "contactIntro": "Ein persönliches Schild, eine passende Klingelplatte oder eine eigene Idee: Beschreiben Sie uns Ihren Wunsch. Wir helfen bei der weiteren Ausarbeitung.",
+        "contactText": "Für eine Sonderanfertigung stimmen wir die Details mit Ihnen ab. Eine Mitarbeiterin kann anschließend einen Entwurf vorbereiten und Ihnen einen persönlichen Link zum Prüfen und Weitergestalten senden.",
+        "configuratorIntro": "Kombinieren Sie Material, Maße, Befestigung und Ihre eigene Gestaltung.",
+        "configuratorText": "Gestalten Sie Ihr Schild selbst oder öffnen Sie den persönlichen Link zu einer vorbereiteten Sonderanfertigung."
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "klingelplatten",
+      "id": 26,
+      "before": {
+        "image": 9
+      },
+      "after": {
+        "image": 3
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "hausnummern",
+      "id": 27,
+      "before": {
+        "image": 11
+      },
+      "after": {
+        "image": 8
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "firmenschilder",
+      "id": 28,
+      "before": {
+        "image": 10
+      },
+      "after": {
+        "image": 18
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "acrylaufsteller",
+      "id": 29,
+      "before": {
+        "image": 12
+      },
+      "after": {
+        "image": 25
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "personalisierte-produkte",
+      "id": 30,
+      "before": {
+        "image": 12
+      },
+      "after": {
+        "image": 6
+      }
+    }
+  ]
+}

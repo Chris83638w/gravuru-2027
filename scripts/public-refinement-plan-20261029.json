@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "requiredImages": [
+    {
+      "id": 5,
+      "filename": "schiefer-hundeportraet-fotogravur-gravuru-bielefeld.webp"
+    },
+    {
+      "id": 4,
+      "filename": "lederanhaenger-kompass-lasergravur-gravuru-bielefeld.webp"
+    },
+    {
+      "id": 24,
+      "filename": "gastronomie-acryl-tischaufsteller-zimmerschilder-gravuru-bielefeld.webp"
+    }
+  ],
+  "patches": [
+    {
+      "kind": "global",
+      "slug": "layout-content",
+      "before": {
+        "productsTitle": "Individuelle Teile. Konkrete Möglichkeiten.",
+        "productsIntro": "Klingelplatten, Schilder, Aufsteller und personalisierte Produkte. Als Ausgangspunkt für Ihre eigene Anfrage."
+      },
+      "after": {
+        "productsTitle": "Schilder und persönliche Produkte.",
+        "productsIntro": "Klingelplatten, Hausnummern, Schilder und Geschenke aus Bielefeld. Gestalten Sie Ihr Schild selbst oder teilen Sie uns Ihre Wünsche für eine Sonderanfertigung mit."
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "klingelplatten",
+      "id": 26,
+      "before": {
+        "faqs": [
+          {
+            "id": "6ab90d433d721a7c5824f513",
+            "question": "Sind Klingeltaster oder eine Sprechanlage enthalten?",
+            "answer": "Die Anfrage bezieht sich auf Platten und deren Bearbeitung. Elektrische Komponenten, Verdrahtung und Installation sind nicht automatisch eingeschlossen."
+          },
+          {
+            "id": "6ab90d433d721a7c5824f514",
+            "question": "Kann eine vorhandene Klingelplatte nachgefertigt werden?",
+            "answer": "Mit Maßen, Fotos und Angaben zu Material und Befestigung kann eine passende Ausführung angefragt werden. Eine identische Nachbildung muss anhand der vorhandenen Vorlage geprüft werden."
+          },
+          {
+            "id": "6ab90d433d721a7c5824f515",
+            "question": "Kann ich die Platte bereits online gestalten?",
+            "answer": "Die Anbindung des vorhandenen Plattenkonfigurators ist vorbereitet, hier aber noch nicht freigeschaltet. Sie können Maße, Skizze und gewünschte Beschriftung über die Projektanfrage senden."
+          }
+        ]
+      },
+      "after": {
+        "faqs": [
+          {
+            "id": "6ab90d433d721a7c5824f513",
+            "question": "Sind Klingeltaster oder eine Sprechanlage enthalten?",
+            "answer": "Die Anfrage bezieht sich auf Platten und deren Bearbeitung. Elektrische Komponenten, Verdrahtung und Installation sind nicht automatisch eingeschlossen."
+          },
+          {
+            "id": "6ab90d433d721a7c5824f514",
+            "question": "Kann eine vorhandene Klingelplatte nachgefertigt werden?",
+            "answer": "Mit Maßen, Fotos und Angaben zu Material und Befestigung kann eine passende Ausführung angefragt werden. Eine identische Nachbildung muss anhand der vorhandenen Vorlage geprüft werden."
+          },
+          {
+            "id": "6ab90d433d721a7c5824f515",
+            "question": "Kann ich die Platte bereits online gestalten?",
+            "answer": "Ja. Im Konfigurator können Sie Maße, Edelstahl, eine Acrylauflage, eine optionale Funkklingel und Ihre Beschriftung zusammenstellen. Über „Klingelplatte gestalten“ starten Sie direkt. Für eine Sonderanfertigung können wir nach der Abstimmung einen Entwurf vorbereiten und Ihnen einen persönlichen Link zum Weitergestalten senden."
+          }
+        ]
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "glas-steingravur",
+      "id": 6,
+      "before": {
+        "image": 12
+      },
+      "after": {
+        "image": 5
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "leder-papier-pappe",
+      "id": 8,
+      "before": {
+        "image": 12
+      },
+      "after": {
+        "image": 4
+      }
+    },
+    {
+      "kind": "page",
+      "slug": "acrylglas-biegen",
+      "id": 3,
+      "before": {
+        "image": 12
+      },
+      "after": {
+        "image": 24
+      }
+    }
+  ]
+}

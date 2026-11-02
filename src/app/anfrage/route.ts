@@ -1,0 +1,31 @@
+import {readConfigurationAddresses,addressSummary} from '@/lib/customer-address'
+import {readPreparedDesignForSubmission} from '@/lib/prepared-design'
+import {validateConfiguration,configurationSummary} from '@/lib/configuration'
+import {randomUUID} from 'node:crypto'
+import {cms,origin,publicSite} from '@/lib/content'
+import {acceptRequest,limitedFormData,MAX_REQUEST_BYTES} from '@/lib/request-limits'
+import {notifyEnquiry} from '@/lib/enquiry-notification'
+export const runtime='nodejs'
+export async function POST(req:Request){
+ if(req.headers.get('origin')!==origin)return Response.json({error:'Bitte verwenden Sie das Formular auf dieser Website.'},{status:403})
+ if(publicSite&&(process.env.MAIL_ENABLED!=='true'||!process.env.ENQUIRY_EMAIL))return Response.json({error:'Der Anfrageversand ist vorübergehend nicht verfügbar. Bitte kontaktieren Sie info@gravuru.de.'},{status:503})
+ if(Number(req.headers.get('content-length')||0)>MAX_REQUEST_BYTES)return Response.json({error:'Die Dateien sind zusammen zu groß.'},{status:413})
+ const created:number[]=[]
+ try{
+ if(!acceptRequest(req))return Response.json({error:'Bitte warten Sie zehn Minuten vor einer weiteren Anfrage.'},{status:429,headers:{'Retry-After':'600'}})
+ const form=await limitedFormData(req);if(form.get('website'))return Response.json({error:'Die Anfrage konnte nicht angenommen werden.'},{status:400})
+ const names=['name','email','company','phone','service','material','dimensions','quantity','date','supply','message'];const data:Record<string,string>={};for(const key of names){const val=form.get(key);if(val!==null&&typeof val!=='string')throw Error('Ungültige Formulardaten.');data[key]=String(val||'').trim();if(data[key].length>(key==='message'?6000:300))throw Error('Ein Textfeld ist zu lang.')}
+ let configuration;const rawConfiguration=form.get('configuration');if(rawConfiguration){if(typeof rawConfiguration!=='string'||rawConfiguration.length>24*1024*1024)throw Error('Bitte die Konfiguration prüfen.');try{configuration=validateConfiguration(JSON.parse(rawConfiguration))}catch{throw Error('Bitte die Konfiguration prüfen: Maße, Bohrungen oder Beschriftung sind ungültig.')}data.message=configurationSummary(configuration)+(data.message?'\n\nErgänzende Angaben:\n'+data.message:'');data.material=configuration.material;data.quantity=String(configuration.quantity);data.dimensions=configuration.geometry.widthMm+' × '+configuration.geometry.heightMm+' mm';if(data.message.length>10000)throw Error('Bitte die Beschreibung kürzen.')}
+ if(configuration?.purpose==='gestaltung'){const order=form.get('orderNumber');if(typeof order!=='string'||!order.trim()||order.trim().length>120)throw Error('Bitte Ihre Bestellnummer angeben (höchstens 120 Zeichen).');configuration={...configuration,orderNumber:order.trim()};data.message='Bestellnummer: '+order.trim()+'\nNachname: '+data.name+'\n\n'+data.message}
+ if(configuration){const first=form.get('firstName');if(configuration.purpose==='gestaltung'&&(typeof first!=='string'||!first.trim()||first.length>160))throw Error('Bitte Ihren Vornamen angeben.');const recipient=configuration.purpose==='gestaltung'?String(first).trim()+' '+data.name:data.name;const addresses=readConfigurationAddresses(form,configuration.purpose,recipient,data.company);if(addresses){configuration={...configuration,...addresses};data.message+='\n\n'+addressSummary(addresses);}}
+ const token=form.get('designLink');if(token){if(typeof token!=='string'||!configuration)throw Error('Bitte den Gestaltungslink prüfen.');const link=await readPreparedDesignForSubmission(token,configuration.purpose);data.message='Zugeordneter Vorgang: '+link.reference+'\n\n'+data.message}
+ if(!data.name||!data.message||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)||form.get('acknowledged')!=='on')throw Error(configuration?.purpose==='gestaltung'?'Bitte Bestellnummer, Nachname, gültige E-Mail und den Datenschutzhinweis prüfen.':'Bitte Name, gültige E-Mail, Beschreibung und den Datenschutzhinweis prüfen.')
+ const files=form.getAll('files').filter((x):x is File=>x instanceof File&&x.size>0);if(files.length>3)throw Error('Bitte höchstens drei Dateien auswählen.')
+ const uploads=[];for(const f of files){if(f.size>8*1024*1024)throw Error('Eine Datei überschreitet 8 MB.');const b=Buffer.from(await f.arrayBuffer());const ext=f.name.split('.').pop()?.toLowerCase();const isPDF=b.subarray(0,5).toString()==='%PDF-';const isPNG=b.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]));const isJPG=b[0]===255&&b[1]===216&&b[2]===255;if(!(isPDF&&ext==='pdf'||isPNG&&ext==='png'||isJPG&&(ext==='jpg'||ext==='jpeg')))throw Error('Bitte ausschließlich echte PDF-, JPG- oder PNG-Dateien auswählen.');uploads.push({name:`${randomUUID()}.${ext}`,data:b,mimetype:isPDF?'application/pdf':isPNG?'image/png':'image/jpeg',size:b.length})}
+ const p=await cms();const reference='GV-'+new Date().toISOString().slice(0,10).replaceAll('-','')+'-'+randomUUID().slice(0,8).toUpperCase();for(const file of uploads){const a=await p.create({collection:'attachments',data:{reference},file,overrideAccess:true});created.push(Number(a.id))}
+ const enquiry=await p.create({collection:'enquiries',data:{...data,configuration,reference,attachments:created,localPreview:!publicSite,notificationState:publicSite?'pending':'preview'},overrideAccess:true});
+ // A failed email never rolls back a saved customer enquiry. A scheduled retry handles pending messages.
+ if(publicSite)await notifyEnquiry(p,{id:enquiry.id,reference,notificationState:'pending'}).catch(()=>{console.error('Anfrage gespeichert; Benachrichtigung wartet auf erneuten Versand.')})
+ return Response.json({reference},{status:201})
+ }catch(e){if(created.length){const p=await cms();for(const id of created)await p.delete({collection:'attachments',id,overrideAccess:true}).catch(()=>{})}const message=e instanceof Error?e.message:'';const safe=message.startsWith('Bitte')||message.startsWith('Eine Datei')||message.startsWith('Ein Textfeld')||message==='Ungültige Formulardaten.';return Response.json({error:safe?message:'Die Anfrage konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.'},{status:safe?400:500})}
+}

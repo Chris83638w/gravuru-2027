@@ -1,0 +1,33 @@
+{
+  "name": "gravuru-manufaktur",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --webpack --hostname 127.0.0.1 --port 3087",
+    "build": "next build --webpack",
+    "start": "next start --hostname 127.0.0.1 --port 3087",
+    "check": "tsc --noEmit",
+    "seed": "node --env-file=.env scripts/seed.ts"
+  },
+  "dependencies": {
+    "@payloadcms/db-sqlite": "3.90.2",
+    "@payloadcms/email-nodemailer": "3.90.2",
+    "@payloadcms/next": "3.90.2",
+    "@payloadcms/translations": "3.90.2",
+    "graphql": "16.11.0",
+    "libsql": "0.4.7",
+    "next": "16.3.6",
+    "payload": "3.90.2",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "sharp": "0.34.5"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "tsx": "4.21.0",
+    "typescript": "5.9.3"
+  }
+}

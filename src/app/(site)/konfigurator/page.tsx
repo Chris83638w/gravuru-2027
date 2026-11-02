@@ -1,0 +1,7 @@
+import {headers} from 'next/headers'
+import {cms,publicSite} from '@/lib/content'
+import {Crumb} from '@/components/Shared'
+import Configurator from '@/components/Configurator'
+import {regionalMetadata} from '@/lib/seo'
+export const metadata=regionalMetadata('Edelstahl & Acryl nach Maß in Bielefeld konfigurieren','Konfigurieren Sie Edelstahl- und Acrylteile mit Maßen und Beschriftung. Gravuru in Bielefeld prüft Ihre Gestaltung und stimmt die Fertigung mit Ihnen ab.','/konfigurator')
+export default async function Page({searchParams}:{searchParams:Promise<{material?:string;bearbeitung?:string;vorlage?:string;ablauf?:string}>}){const q=await searchParams;const p=await cms();const templates=await p.find({collection:'config-templates',where:{enabled:{equals:true}},overrideAccess:false,limit:100,depth:0});const {user}=await p.auth({headers:await headers()});return <><Configurator initial={{chooseService:!q.material&&!q.bearbeitung&&!q.vorlage&&!q.ablauf,material:q.material==='acryl'||(q.bearbeitung==='druck'&&q.material!=='edelstahl')?'acryl':'edelstahl',method:q.bearbeitung==='druck'?'druck':q.bearbeitung==='zuschnitt'?'zuschnitt':'gravur',template:q.vorlage,purpose:q.ablauf}} staff={Boolean(user)} templates={templates.docs.map(t=>({id:t.id,title:t.title,material:t.material,geometry:t.geometry}))} preview={!publicSite}/></>}

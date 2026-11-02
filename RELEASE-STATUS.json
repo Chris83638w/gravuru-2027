@@ -1,0 +1,13 @@
+{
+  "updatedAt": "2026-09-30T12:55:09.118Z",
+  "releaseReady": true,
+  "adminAccounts": 1,
+  "serverOperator": "gravuru GmbH",
+  "emailDelivery": "received-confirmed",
+  "backupRestore": "verified",
+  "open": [
+    "user-login-check"
+  ],
+  "publicFinalCheck": "38 pages and 34 image variants passed",
+  "liveForm": "passed"
+}

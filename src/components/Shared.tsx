@@ -1,0 +1,8 @@
+import ProductImage from './ProductImage'
+import Link from 'next/link'
+import {pagePath,getCopy} from '@/lib/content'
+export function Arrow(){return <span aria-hidden="true">↗</span>}
+export function Crumb({label,parent}:{label:string;parent?:{label:string;href:string}}){return <nav className="breadcrumbs" aria-label="Brotkrümelnavigation"><Link href="/">Start</Link><span>/</span>{parent&&<><Link href={parent.href}>{parent.label}</Link><span>/</span></>}<span aria-current="page">{label}</span></nav>}
+export async function CTA({subject}:{subject?:string}){const c=await getCopy();return <section className="cta"><div className="container cta-inner"><div><p className="eyebrow">{c.ctaLabel}</p><h2>{c.ctaTitle}</h2><p>{c.ctaText}</p></div><Link className="button" href={'/kontakt'+(subject?'?leistung='+encodeURIComponent(subject):'')}>{c.ctaButton} <Arrow/></Link></div></section>}
+export async function Process(){const c=await getCopy();return <section className="section container"><div className="section-heading"><p className="eyebrow">{c.processLabel}</p><h2>{c.processTitle}</h2></div><ol className="process">{c.processSteps.map(({title,text},i)=><li key={title}><span className="step">0{i+1}</span><h3>{title}</h3><p>{text}</p></li>)}</ol></section>}
+export function Card({page,index}:{page:any;index?:number}){return <Link className="content-card" href={pagePath(page)}><ProductImage value={page.image} compact/>{index!==undefined&&<span className="card-number">{String(index+1).padStart(2,'0')}</span>}<h3>{page.label}<Arrow/></h3><p>{page.intro}</p><span className="text-link">Mehr erfahren <span aria-hidden="true">→</span></span></Link>}

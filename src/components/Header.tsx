@@ -1,0 +1,5 @@
+'use client'
+import Link from 'next/link'
+import {useState} from 'react'
+import {usePathname} from 'next/navigation'
+export default function Header({links,logo}:{links:{label:string;href:string}[];logo?:string}){const [open,setOpen]=useState(false);const pathname=usePathname();return <header className="header"><div className="container header-row"><Link href="/" className="brand" aria-label="Gravuru – Startseite" onClick={()=>setOpen(false)}><img src={logo||'/gravuru-logo.svg'} alt="Gravuru" width="168" height="49"/><span>MANUFAKTUR · BIELEFELD</span></Link><button className="menu-toggle" aria-expanded={open} aria-controls="main-nav" onClick={()=>setOpen(!open)}>{open?'Schließen':'Menü'} <span aria-hidden="true">{open?'×':'☰'}</span></button><nav id="main-nav" className={open?'nav open':'nav'} aria-label="Hauptnavigation">{links.map(l=><Link key={l.href} href={l.href} aria-current={pathname.startsWith(l.href)?'page':undefined} onClick={()=>setOpen(false)}>{l.label}</Link>)}<Link href="/kontakt" className="button button-small" onClick={()=>setOpen(false)}>Projekt anfragen <span aria-hidden="true">↗</span></Link></nav></div></header>}

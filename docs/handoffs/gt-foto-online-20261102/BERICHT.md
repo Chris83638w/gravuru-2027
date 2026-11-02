@@ -20,7 +20,7 @@ Je Bogen zusätzlich `…-flaeche.jpg` (Freiflächenmessung markiert).
 - Textbefunde #128 in allen vier Formen: MEM-122 („Jahre in“, „*“ weg, Datum mit *), MEM-374 („1987 – 2017“, „Lebens.“), MEM-117 („Nie vergessen“), MEM-349 („Leben ist“), MEM-092 („gehen.“), MEM-114 (Spruch in einer Schrift/Größe, Komma).
 - Zerrissene Daten („… -“ / „…“, „† 12.“ / „März 2015“) → eine Zeile, wo Platz ist, sonst sauber zweizeilig „* …“ / „† …“.
 - Herz 10 × 10: Versalhöhe auf ≥ 3 mm (049, 068, 099, 100), Name größtes Element (101, 105, 137), MEM-069 wie Herz-Vorlage D23 neu verteilt.
-- MEM-082 (alle Formen außer 10×10 schon in 10×10): Schild-Maske mit Spitze → saubere Ellipse (Hinweis war abgeschnitten, heller Bildrand).
+- MEM-082 (alle vier Formen): Schild-Maske mit Spitze → saubere Ellipse (Hinweis war abgeschnitten, heller Bildrand).
 - MEM-100: Bestands-Musterfoto aufgehellt (Gamma 0,6, Hash in design.json nachgeführt) und Gesicht mittiger.
 - Freiflächen: Gruppen von MEM-049/069/070/094/096/117 (je nach Form) mittiger/tiefer gesetzt bzw. Foto größer.
 

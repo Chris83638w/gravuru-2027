@@ -1,0 +1,2613 @@
+{
+  "date": "2026-11-01",
+  "masters": 2097,
+  "formatSeries": 18,
+  "productRows": 44,
+  "packets": 103,
+  "contactSheets": 567,
+  "sections": {
+    "Mit Foto": 510,
+    "Ohne Foto": 1207,
+    "Sternenkinder": 380
+  },
+  "nativeMasterErrors": 0,
+  "sizeChecks": 13443,
+  "sizeErrors": 0,
+  "proportionalFitNotices": 1952,
+  "fitNoticeExplanation": "Nur Abweichungen der Seitenverhältnisse um 2,60 %, 3,70 % oder 4,80 %: proportional und mittig eingepasst, keine Konturverletzung. Keine Bohrungs- oder Geometriefehler.",
+  "photoOccurrences": 582,
+  "uniqueOriginalPhotos": 32,
+  "originalPhotoBytesUnchanged": true,
+  "remoteVerifiedRevisionFiles": 5728,
+  "freigabe": null,
+  "live": false,
+  "excludedExcelRows": [
+    14
+  ],
+  "excludedReason": "Knochen R14 gehört zum getrennten Tierauftrag #85.",
+  "codePullRequest": "https://github.com/Chris83638w/gravuru-2027/pull/96",
+  "renderCode": "304420b",
+  "sourceExclusions": {
+    "MEM-146": "Motivquelle, keine vollständige Gestaltung",
+    "MEM-381": "Tiermotive passen nicht zu Sternenkindern"
+  },
+  "packages": [
+    {
+      "packet": "herz-geschnitten-24x19-mit-foto-01",
+      "section": "Mit Foto",
+      "group": "herz-geschnitten-24x19",
+      "form": "Herz",
+      "size": "24 × 19",
+      "designs": 28,
+      "targetRows": [
+        11
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/18",
+      "prNumber": 18,
+      "commit": "f178dc24fb9396bb878d7f37c62c9989f64035c6",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-mit-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-geschnitten-24x19-mit-foto-02",
+      "section": "Mit Foto",
+      "group": "herz-geschnitten-24x19",
+      "form": "Herz",
+      "size": "24 × 19",
+      "designs": 2,
+      "targetRows": [
+        11
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/19",
+      "prNumber": 19,
+      "commit": "32b499db0433c3cd9e8785436250196ee2a7a215",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-mit-foto-02/kontaktbogen-01.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-mit-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-geschnitten-24x19-ohne-foto-01",
+      "section": "Ohne Foto",
+      "group": "herz-geschnitten-24x19",
+      "form": "Herz",
+      "size": "24 × 19",
+      "designs": 21,
+      "targetRows": [
+        11
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/20",
+      "prNumber": 20,
+      "commit": "7b10438705ff1524235725e0d41d8ab792509803",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-geschnitten-24x19-ohne-foto-02",
+      "section": "Ohne Foto",
+      "group": "herz-geschnitten-24x19",
+      "form": "Herz",
+      "size": "24 × 19",
+      "designs": 28,
+      "targetRows": [
+        11
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/21",
+      "prNumber": 21,
+      "commit": "41a4ae99f82b950dbef50251a869a054e2cb1df7",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-02/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-02/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-02/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-02/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-02/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-02/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-02/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-geschnitten-24x19-ohne-foto-03",
+      "section": "Ohne Foto",
+      "group": "herz-geschnitten-24x19",
+      "form": "Herz",
+      "size": "24 × 19",
+      "designs": 22,
+      "targetRows": [
+        11
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/22",
+      "prNumber": 22,
+      "commit": "4a5fdb51421f0e7a24e0b4f2caa1c8cbd54c8334",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-03/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-03/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-03/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-03/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-03/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-03/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-ohne-foto-03/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-geschnitten-24x19-sternenkinder-01",
+      "section": "Sternenkinder",
+      "group": "herz-geschnitten-24x19",
+      "form": "Herz",
+      "size": "24 × 19",
+      "designs": 21,
+      "targetRows": [
+        11
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/23",
+      "prNumber": 23,
+      "commit": "e4f436406a790fbb531d71de6e9908eedab399f9",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-sternenkinder-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-sternenkinder-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-sternenkinder-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-sternenkinder-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-sternenkinder-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-sternenkinder-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-geschnitten-24x19-sternenkinder-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-schief-mit-foto-01",
+      "section": "Mit Foto",
+      "group": "herz-schief",
+      "form": "Herz schief",
+      "size": "18 × 13",
+      "designs": 26,
+      "targetRows": [
+        12,
+        13
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/24",
+      "prNumber": 24,
+      "commit": "f6f1931eaf91f5ecb6565e52676b83a6f9535d7f",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-mit-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-mit-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-mit-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-mit-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-mit-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-mit-foto-01/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-mit-foto-01/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-schief-mit-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-schief-mit-foto-02",
+      "section": "Mit Foto",
+      "group": "herz-schief",
+      "form": "Herz schief",
+      "size": "18 × 13",
+      "designs": 4,
+      "targetRows": [
+        12,
+        13
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/25",
+      "prNumber": 25,
+      "commit": "a9787b6e4bbf9321905660c6fb6f68c1a0c0c07a",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-mit-foto-02/kontaktbogen-01.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-schief-mit-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-schief-ohne-foto-01",
+      "section": "Ohne Foto",
+      "group": "herz-schief",
+      "form": "Herz schief",
+      "size": "18 × 13",
+      "designs": 21,
+      "targetRows": [
+        12,
+        13
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/26",
+      "prNumber": 26,
+      "commit": "4681f882d9485ae99332cc367fd2ab08d777c9bc",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-schief-ohne-foto-02",
+      "section": "Ohne Foto",
+      "group": "herz-schief",
+      "form": "Herz schief",
+      "size": "18 × 13",
+      "designs": 28,
+      "targetRows": [
+        12,
+        13
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/27",
+      "prNumber": 27,
+      "commit": "fa427f5752561d8d90cf14ed5cb88e64a1c681d0",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-02/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-02/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-02/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-02/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-02/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-02/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-02/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-schief-ohne-foto-03",
+      "section": "Ohne Foto",
+      "group": "herz-schief",
+      "form": "Herz schief",
+      "size": "18 × 13",
+      "designs": 22,
+      "targetRows": [
+        12,
+        13
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/28",
+      "prNumber": 28,
+      "commit": "e90eb6c7e9d97c7f5c45a0363cb7d85df6393e39",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-03/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-03/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-03/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-03/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-03/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-03/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-schief-ohne-foto-03/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-schief-sternenkinder-01",
+      "section": "Sternenkinder",
+      "group": "herz-schief",
+      "form": "Herz schief",
+      "size": "18 × 13",
+      "designs": 21,
+      "targetRows": [
+        12,
+        13
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/29",
+      "prNumber": 29,
+      "commit": "764d2c13eb4b11fe94d78dae15483fc9f506f149",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-sternenkinder-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-sternenkinder-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-sternenkinder-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-sternenkinder-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-sternenkinder-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-schief-sternenkinder-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-schief-sternenkinder-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-mit-foto-01",
+      "section": "Mit Foto",
+      "group": "herz",
+      "form": "Herz",
+      "size": "10 × 10",
+      "designs": 26,
+      "targetRows": [
+        38,
+        39,
+        40
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/30",
+      "prNumber": 30,
+      "commit": "7fbd8a2c9685bf60cf09166b813a41bb30e0a47e",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-mit-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-mit-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-mit-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-mit-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-mit-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-mit-foto-01/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-mit-foto-01/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-mit-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-mit-foto-02",
+      "section": "Mit Foto",
+      "group": "herz",
+      "form": "Herz",
+      "size": "10 × 10",
+      "designs": 4,
+      "targetRows": [
+        38,
+        39,
+        40
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/31",
+      "prNumber": 31,
+      "commit": "ef4aae1635396c8d31af7cd9f1b975feab83cdca",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-mit-foto-02/kontaktbogen-01.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-mit-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-ohne-foto-01",
+      "section": "Ohne Foto",
+      "group": "herz",
+      "form": "Herz",
+      "size": "10 × 10",
+      "designs": 21,
+      "targetRows": [
+        38,
+        39,
+        40
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/32",
+      "prNumber": 32,
+      "commit": "41be01ee5a82651ce06739a270a93f3756837ace",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-ohne-foto-02",
+      "section": "Ohne Foto",
+      "group": "herz",
+      "form": "Herz",
+      "size": "10 × 10",
+      "designs": 28,
+      "targetRows": [
+        38,
+        39,
+        40
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/33",
+      "prNumber": 33,
+      "commit": "e018fb2f2cc223d7d3323134ff0b86d4b4b90842",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-02/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-02/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-02/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-02/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-02/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-02/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-02/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-ohne-foto-03",
+      "section": "Ohne Foto",
+      "group": "herz",
+      "form": "Herz",
+      "size": "10 × 10",
+      "designs": 22,
+      "targetRows": [
+        38,
+        39,
+        40
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/34",
+      "prNumber": 34,
+      "commit": "761c77053ec07dd0c84497e428941d40e56bc337",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-03/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-03/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-03/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-03/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-03/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-03/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-ohne-foto-03/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-sternenkinder-01",
+      "section": "Sternenkinder",
+      "group": "herz",
+      "form": "Herz",
+      "size": "10 × 10",
+      "designs": 21,
+      "targetRows": [
+        38,
+        39,
+        40
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/35",
+      "prNumber": 35,
+      "commit": "35dfd5f6f8cdc0f52d610c26b925f54a7cbb9b92",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-sternenkinder-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-sternenkinder-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-sternenkinder-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-sternenkinder-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-sternenkinder-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-sternenkinder-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-sternenkinder-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-kordel-225x267-mit-foto-01",
+      "section": "Mit Foto",
+      "group": "herz-kordel-225x267",
+      "form": "Herz",
+      "size": "22,5 × 26,7",
+      "designs": 26,
+      "targetRows": [
+        49
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/36",
+      "prNumber": 36,
+      "commit": "cc73a9e3814af3f3491c4e575fdaaf5aecc0bbd7",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-mit-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-mit-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-mit-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-mit-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-mit-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-mit-foto-01/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-mit-foto-01/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-mit-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-kordel-225x267-mit-foto-02",
+      "section": "Mit Foto",
+      "group": "herz-kordel-225x267",
+      "form": "Herz",
+      "size": "22,5 × 26,7",
+      "designs": 4,
+      "targetRows": [
+        49
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/37",
+      "prNumber": 37,
+      "commit": "e5d0d5659f26dd2857e2277af6023f9d46c89eaa",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-mit-foto-02/kontaktbogen-01.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-mit-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-kordel-225x267-ohne-foto-01",
+      "section": "Ohne Foto",
+      "group": "herz-kordel-225x267",
+      "form": "Herz",
+      "size": "22,5 × 26,7",
+      "designs": 21,
+      "targetRows": [
+        49
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/38",
+      "prNumber": 38,
+      "commit": "71d7be2f95adab9c043557ee1d5b6f957c399673",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-kordel-225x267-ohne-foto-02",
+      "section": "Ohne Foto",
+      "group": "herz-kordel-225x267",
+      "form": "Herz",
+      "size": "22,5 × 26,7",
+      "designs": 28,
+      "targetRows": [
+        49
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/39",
+      "prNumber": 39,
+      "commit": "fa159d6113e6506b53c4f4238f994bad698d6d23",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-02/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-02/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-02/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-02/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-02/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-02/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-02/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-kordel-225x267-ohne-foto-03",
+      "section": "Ohne Foto",
+      "group": "herz-kordel-225x267",
+      "form": "Herz",
+      "size": "22,5 × 26,7",
+      "designs": 22,
+      "targetRows": [
+        49
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/40",
+      "prNumber": 40,
+      "commit": "a26b80602b634264379a98b50eb266169d80f01b",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-03/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-03/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-03/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-03/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-03/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-03/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-ohne-foto-03/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "herz-kordel-225x267-sternenkinder-01",
+      "section": "Sternenkinder",
+      "group": "herz-kordel-225x267",
+      "form": "Herz",
+      "size": "22,5 × 26,7",
+      "designs": 21,
+      "targetRows": [
+        49
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/41",
+      "prNumber": 41,
+      "commit": "be739bd27bccf56eb92e82fa6a6564800ea54670",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-sternenkinder-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-sternenkinder-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-sternenkinder-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-sternenkinder-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-sternenkinder-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-sternenkinder-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/herz-kordel-225x267-sternenkinder-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-3-2-mit-foto-01",
+      "section": "Mit Foto",
+      "group": "rechteck-3-2",
+      "form": "Rechteck",
+      "size": "15 × 10",
+      "designs": 26,
+      "targetRows": [
+        5,
+        22,
+        23,
+        24,
+        43,
+        44
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/42",
+      "prNumber": 42,
+      "commit": "8986dadc02771edb5ee41b40c5ee934349c212fc",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-mit-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-mit-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-mit-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-mit-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-mit-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-mit-foto-01/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-mit-foto-01/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-mit-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-3-2-mit-foto-02",
+      "section": "Mit Foto",
+      "group": "rechteck-3-2",
+      "form": "Rechteck",
+      "size": "15 × 10",
+      "designs": 4,
+      "targetRows": [
+        5,
+        22,
+        23,
+        24,
+        43,
+        44
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/43",
+      "prNumber": 43,
+      "commit": "1fca49ce2ac24a9d247d2f9675605f7350296c02",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-mit-foto-02/kontaktbogen-01.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-mit-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-3-2-ohne-foto-01",
+      "section": "Ohne Foto",
+      "group": "rechteck-3-2",
+      "form": "Rechteck",
+      "size": "15 × 10",
+      "designs": 21,
+      "targetRows": [
+        5,
+        22,
+        23,
+        24,
+        43,
+        44
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/44",
+      "prNumber": 44,
+      "commit": "b02816d173cb6c59b583aa4dc771db5491b06ab5",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-3-2-ohne-foto-02",
+      "section": "Ohne Foto",
+      "group": "rechteck-3-2",
+      "form": "Rechteck",
+      "size": "15 × 10",
+      "designs": 28,
+      "targetRows": [
+        5,
+        22,
+        23,
+        24,
+        43,
+        44
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/45",
+      "prNumber": 45,
+      "commit": "28b4148b268f96e6cdb9c3a7cdeaf62879c4e218",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-02/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-02/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-02/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-02/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-02/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-02/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-02/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-3-2-ohne-foto-03",
+      "section": "Ohne Foto",
+      "group": "rechteck-3-2",
+      "form": "Rechteck",
+      "size": "15 × 10",
+      "designs": 22,
+      "targetRows": [
+        5,
+        22,
+        23,
+        24,
+        43,
+        44
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/46",
+      "prNumber": 46,
+      "commit": "c732a483d0055f0ced768d6c7dfc10bf0fc5067b",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-03/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-03/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-03/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-03/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-03/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-03/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-ohne-foto-03/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-3-2-sternenkinder-01",
+      "section": "Sternenkinder",
+      "group": "rechteck-3-2",
+      "form": "Rechteck",
+      "size": "15 × 10",
+      "designs": 21,
+      "targetRows": [
+        5,
+        22,
+        23,
+        24,
+        43,
+        44
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/47",
+      "prNumber": 47,
+      "commit": "80c2e1d0e5a5f86b98ac4a61b4b558fa65de7b5a",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-sternenkinder-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-sternenkinder-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-sternenkinder-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-sternenkinder-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-sternenkinder-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-sternenkinder-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-3-2-sternenkinder-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-3-1-mit-foto-01",
+      "section": "Mit Foto",
+      "group": "rechteck-3-1",
+      "form": "Rechteck",
+      "size": "30 × 10",
+      "designs": 26,
+      "targetRows": [
+        17,
+        18,
+        19,
+        41
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/48",
+      "prNumber": 48,
+      "commit": "a8f5f2b59873b8bbeffdf2d5c588553892bd6c09",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-mit-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-mit-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-mit-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-mit-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-mit-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-mit-foto-01/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-mit-foto-01/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-mit-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-3-1-mit-foto-02",
+      "section": "Mit Foto",
+      "group": "rechteck-3-1",
+      "form": "Rechteck",
+      "size": "30 × 10",
+      "designs": 4,
+      "targetRows": [
+        17,
+        18,
+        19,
+        41
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/49",
+      "prNumber": 49,
+      "commit": "995fa65a0c6732923c722b343f4fd39e424b5d77",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-mit-foto-02/kontaktbogen-01.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-mit-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-3-1-ohne-foto-01",
+      "section": "Ohne Foto",
+      "group": "rechteck-3-1",
+      "form": "Rechteck",
+      "size": "30 × 10",
+      "designs": 21,
+      "targetRows": [
+        17,
+        18,
+        19,
+        41
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/50",
+      "prNumber": 50,
+      "commit": "a55a2f1f6eee27479786ac0fbb0b72da917c333f",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-3-1-ohne-foto-02",
+      "section": "Ohne Foto",
+      "group": "rechteck-3-1",
+      "form": "Rechteck",
+      "size": "30 × 10",
+      "designs": 28,
+      "targetRows": [
+        17,
+        18,
+        19,
+        41
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/51",
+      "prNumber": 51,
+      "commit": "7c3c01800bf20b3f9a16696ff9b75bd1c390d228",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-02/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-02/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-02/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-02/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-02/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-02/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-02/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-3-1-ohne-foto-03",
+      "section": "Ohne Foto",
+      "group": "rechteck-3-1",
+      "form": "Rechteck",
+      "size": "30 × 10",
+      "designs": 22,
+      "targetRows": [
+        17,
+        18,
+        19,
+        41
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/52",
+      "prNumber": 52,
+      "commit": "0a45223f00e24a51c250f32b49c71342b83c886e",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-03/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-03/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-03/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-03/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-03/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-03/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-ohne-foto-03/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-3-1-sternenkinder-01",
+      "section": "Sternenkinder",
+      "group": "rechteck-3-1",
+      "form": "Rechteck",
+      "size": "30 × 10",
+      "designs": 21,
+      "targetRows": [
+        17,
+        18,
+        19,
+        41
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/53",
+      "prNumber": 53,
+      "commit": "5cfdc0ad83bbdee8f1f78fad534786f2841b6ace",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-sternenkinder-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-sternenkinder-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-sternenkinder-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-sternenkinder-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-sternenkinder-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-sternenkinder-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-3-1-sternenkinder-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-2-1-mit-foto-01",
+      "section": "Mit Foto",
+      "group": "rechteck-2-1",
+      "form": "Rechteck",
+      "size": "40 × 20",
+      "designs": 26,
+      "targetRows": [
+        20,
+        21
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/54",
+      "prNumber": 54,
+      "commit": "1583b589abec4580a19f92406f8d46b2c52a7b40",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-mit-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-mit-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-mit-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-mit-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-mit-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-mit-foto-01/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-mit-foto-01/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-mit-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-2-1-mit-foto-02",
+      "section": "Mit Foto",
+      "group": "rechteck-2-1",
+      "form": "Rechteck",
+      "size": "40 × 20",
+      "designs": 4,
+      "targetRows": [
+        20,
+        21
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/55",
+      "prNumber": 55,
+      "commit": "fc1dd5ac0796d55f6a09969b8ce3cd15c5c083b0",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-mit-foto-02/kontaktbogen-01.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-mit-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-2-1-ohne-foto-01",
+      "section": "Ohne Foto",
+      "group": "rechteck-2-1",
+      "form": "Rechteck",
+      "size": "40 × 20",
+      "designs": 21,
+      "targetRows": [
+        20,
+        21
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/56",
+      "prNumber": 56,
+      "commit": "45c420d797223919f3a1f99bf2ef834bf52ebffe",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-2-1-ohne-foto-02",
+      "section": "Ohne Foto",
+      "group": "rechteck-2-1",
+      "form": "Rechteck",
+      "size": "40 × 20",
+      "designs": 28,
+      "targetRows": [
+        20,
+        21
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/57",
+      "prNumber": 57,
+      "commit": "e72e2de7e60d6e2449246ff31e3df59fd4bf01ca",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-02/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-02/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-02/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-02/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-02/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-02/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-02/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-2-1-ohne-foto-03",
+      "section": "Ohne Foto",
+      "group": "rechteck-2-1",
+      "form": "Rechteck",
+      "size": "40 × 20",
+      "designs": 22,
+      "targetRows": [
+        20,
+        21
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/58",
+      "prNumber": 58,
+      "commit": "42483041b294685a53a62b26be0c1cd1052d026b",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-03/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-03/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-03/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-03/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-03/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-03/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-ohne-foto-03/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-2-1-sternenkinder-01",
+      "section": "Sternenkinder",
+      "group": "rechteck-2-1",
+      "form": "Rechteck",
+      "size": "40 × 20",
+      "designs": 21,
+      "targetRows": [
+        20,
+        21
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/59",
+      "prNumber": 59,
+      "commit": "7475078614f292031c0aa24979e4c8d269ef8d50",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-sternenkinder-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-sternenkinder-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-sternenkinder-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-sternenkinder-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-sternenkinder-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-sternenkinder-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-2-1-sternenkinder-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-2-3-mit-foto-01",
+      "section": "Mit Foto",
+      "group": "rechteck-2-3",
+      "form": "Rechteck",
+      "size": "20 × 30",
+      "designs": 26,
+      "targetRows": [
+        10,
+        33
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/60",
+      "prNumber": 60,
+      "commit": "824857bc14216aebc07a373ebb99aef422ed5026",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-mit-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-mit-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-mit-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-mit-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-mit-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-mit-foto-01/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-mit-foto-01/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-mit-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-2-3-mit-foto-02",
+      "section": "Mit Foto",
+      "group": "rechteck-2-3",
+      "form": "Rechteck",
+      "size": "20 × 30",
+      "designs": 4,
+      "targetRows": [
+        10,
+        33
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/61",
+      "prNumber": 61,
+      "commit": "9422682d178da699903170714bc40fd4ab53d350",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-mit-foto-02/kontaktbogen-01.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-mit-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-2-3-ohne-foto-01",
+      "section": "Ohne Foto",
+      "group": "rechteck-2-3",
+      "form": "Rechteck",
+      "size": "20 × 30",
+      "designs": 21,
+      "targetRows": [
+        10,
+        33
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/62",
+      "prNumber": 62,
+      "commit": "ed5fea20d2c60f203f4fe0a2ec8f277f35828c0c",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-2-3-ohne-foto-02",
+      "section": "Ohne Foto",
+      "group": "rechteck-2-3",
+      "form": "Rechteck",
+      "size": "20 × 30",
+      "designs": 28,
+      "targetRows": [
+        10,
+        33
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/63",
+      "prNumber": 63,
+      "commit": "fa00020117b9c9dd9d9286170d4f217554a0396c",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-02/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-02/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-02/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-02/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-02/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-02/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-02/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-2-3-ohne-foto-03",
+      "section": "Ohne Foto",
+      "group": "rechteck-2-3",
+      "form": "Rechteck",
+      "size": "20 × 30",
+      "designs": 22,
+      "targetRows": [
+        10,
+        33
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/64",
+      "prNumber": 64,
+      "commit": "1a8dea2747fef45cb2dbd7b638878fd892d391ee",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-03/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-03/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-03/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-03/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-03/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-03/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-ohne-foto-03/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-2-3-sternenkinder-01",
+      "section": "Sternenkinder",
+      "group": "rechteck-2-3",
+      "form": "Rechteck",
+      "size": "20 × 30",
+      "designs": 21,
+      "targetRows": [
+        10,
+        33
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/65",
+      "prNumber": 65,
+      "commit": "efb32a949ff4e8ddf48d87deecb7b29ebe8e313c",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-sternenkinder-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-sternenkinder-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-sternenkinder-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-sternenkinder-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-sternenkinder-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-sternenkinder-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-2-3-sternenkinder-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-4-3-mit-foto-01",
+      "section": "Mit Foto",
+      "group": "rechteck-4-3",
+      "form": "Rechteck",
+      "size": "20 × 15",
+      "designs": 26,
+      "targetRows": [
+        6,
+        7,
+        25
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/66",
+      "prNumber": 66,
+      "commit": "2baf4e647c19558ee1d7a6f324e0e3d2e1524e4e",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-mit-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-mit-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-mit-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-mit-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-mit-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-mit-foto-01/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-mit-foto-01/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-mit-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-4-3-mit-foto-02",
+      "section": "Mit Foto",
+      "group": "rechteck-4-3",
+      "form": "Rechteck",
+      "size": "20 × 15",
+      "designs": 4,
+      "targetRows": [
+        6,
+        7,
+        25
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/67",
+      "prNumber": 67,
+      "commit": "077c293e83632489607dd657402d6961a6ffc2e8",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-mit-foto-02/kontaktbogen-01.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-mit-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-4-3-ohne-foto-01",
+      "section": "Ohne Foto",
+      "group": "rechteck-4-3",
+      "form": "Rechteck",
+      "size": "20 × 15",
+      "designs": 21,
+      "targetRows": [
+        6,
+        7,
+        25
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/68",
+      "prNumber": 68,
+      "commit": "97978e6286503a966562366355650f24f0914df3",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-4-3-ohne-foto-02",
+      "section": "Ohne Foto",
+      "group": "rechteck-4-3",
+      "form": "Rechteck",
+      "size": "20 × 15",
+      "designs": 28,
+      "targetRows": [
+        6,
+        7,
+        25
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/69",
+      "prNumber": 69,
+      "commit": "067ef7f28aff8b166a21bb13a4cbba2d7f98951b",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-02/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-02/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-02/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-02/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-02/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-02/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-02/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-4-3-ohne-foto-03",
+      "section": "Ohne Foto",
+      "group": "rechteck-4-3",
+      "form": "Rechteck",
+      "size": "20 × 15",
+      "designs": 22,
+      "targetRows": [
+        6,
+        7,
+        25
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/70",
+      "prNumber": 70,
+      "commit": "96527287d1eb8495a0babf3422239d1b61fc3e0d",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-03/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-03/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-03/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-03/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-03/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-03/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-ohne-foto-03/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-4-3-sternenkinder-01",
+      "section": "Sternenkinder",
+      "group": "rechteck-4-3",
+      "form": "Rechteck",
+      "size": "20 × 15",
+      "designs": 21,
+      "targetRows": [
+        6,
+        7,
+        25
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/71",
+      "prNumber": 71,
+      "commit": "83219922eb840eb02dbb5e5f7613aa51988469b8",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-sternenkinder-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-sternenkinder-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-sternenkinder-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-sternenkinder-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-sternenkinder-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-sternenkinder-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-4-3-sternenkinder-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-3-4-mit-foto-01",
+      "section": "Mit Foto",
+      "group": "rechteck-3-4",
+      "form": "Rechteck",
+      "size": "15 × 20",
+      "designs": 26,
+      "targetRows": [
+        8,
+        9
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/72",
+      "prNumber": 72,
+      "commit": "0a907328658ef22aea887873486c3dc15f29942e",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-mit-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-mit-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-mit-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-mit-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-mit-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-mit-foto-01/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-mit-foto-01/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-mit-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-3-4-mit-foto-02",
+      "section": "Mit Foto",
+      "group": "rechteck-3-4",
+      "form": "Rechteck",
+      "size": "15 × 20",
+      "designs": 4,
+      "targetRows": [
+        8,
+        9
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/73",
+      "prNumber": 73,
+      "commit": "011f1d1332d35737be0d31042b5301fcaf48441f",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-mit-foto-02/kontaktbogen-01.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-mit-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-3-4-ohne-foto-01",
+      "section": "Ohne Foto",
+      "group": "rechteck-3-4",
+      "form": "Rechteck",
+      "size": "15 × 20",
+      "designs": 21,
+      "targetRows": [
+        8,
+        9
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/74",
+      "prNumber": 74,
+      "commit": "e8b0c513f3f10920df1455467a26effb7db290e9",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-3-4-ohne-foto-02",
+      "section": "Ohne Foto",
+      "group": "rechteck-3-4",
+      "form": "Rechteck",
+      "size": "15 × 20",
+      "designs": 28,
+      "targetRows": [
+        8,
+        9
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/75",
+      "prNumber": 75,
+      "commit": "0c0604d650adc2c6eae6ab0b060c18e462129941",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-02/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-02/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-02/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-02/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-02/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-02/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-02/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-3-4-ohne-foto-03",
+      "section": "Ohne Foto",
+      "group": "rechteck-3-4",
+      "form": "Rechteck",
+      "size": "15 × 20",
+      "designs": 22,
+      "targetRows": [
+        8,
+        9
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/76",
+      "prNumber": 76,
+      "commit": "7974b325f3d481c08f691ea7627bde48a690f56f",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-03/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-03/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-03/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-03/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-03/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-03/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-ohne-foto-03/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rechteck-3-4-sternenkinder-01",
+      "section": "Sternenkinder",
+      "group": "rechteck-3-4",
+      "form": "Rechteck",
+      "size": "15 × 20",
+      "designs": 21,
+      "targetRows": [
+        8,
+        9
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/77",
+      "prNumber": 77,
+      "commit": "193163e1b7d22d43e1b918e811cdd757a775c594",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-sternenkinder-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-sternenkinder-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-sternenkinder-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-sternenkinder-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-sternenkinder-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-sternenkinder-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rechteck-3-4-sternenkinder-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "quadrat-mit-foto-01",
+      "section": "Mit Foto",
+      "group": "quadrat",
+      "form": "Quadrat",
+      "size": "10 × 10",
+      "designs": 26,
+      "targetRows": [
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        46
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/78",
+      "prNumber": 78,
+      "commit": "1aba25406bf27ad7a6558a52c90addca2327368b",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-mit-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-mit-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-mit-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-mit-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-mit-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-mit-foto-01/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-mit-foto-01/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/quadrat-mit-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "quadrat-mit-foto-02",
+      "section": "Mit Foto",
+      "group": "quadrat",
+      "form": "Quadrat",
+      "size": "10 × 10",
+      "designs": 4,
+      "targetRows": [
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        46
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/79",
+      "prNumber": 79,
+      "commit": "005956ee591136377f6cc9743bd412c7b6780a71",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-mit-foto-02/kontaktbogen-01.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/quadrat-mit-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "quadrat-ohne-foto-01",
+      "section": "Ohne Foto",
+      "group": "quadrat",
+      "form": "Quadrat",
+      "size": "10 × 10",
+      "designs": 21,
+      "targetRows": [
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        46
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/80",
+      "prNumber": 80,
+      "commit": "99874183f34c31ca8c6bd022ce8a407d789425b4",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "quadrat-ohne-foto-02",
+      "section": "Ohne Foto",
+      "group": "quadrat",
+      "form": "Quadrat",
+      "size": "10 × 10",
+      "designs": 28,
+      "targetRows": [
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        46
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/81",
+      "prNumber": 81,
+      "commit": "a2998aae20d90dea5463186095ae4f49c869dc2f",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-02/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-02/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-02/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-02/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-02/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-02/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-02/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "quadrat-ohne-foto-03",
+      "section": "Ohne Foto",
+      "group": "quadrat",
+      "form": "Quadrat",
+      "size": "10 × 10",
+      "designs": 22,
+      "targetRows": [
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        46
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/82",
+      "prNumber": 82,
+      "commit": "2dd5eea3656fcf1367e83344a2db9352c0b08a86",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-03/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-03/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-03/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-03/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-03/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-03/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/quadrat-ohne-foto-03/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "quadrat-sternenkinder-01",
+      "section": "Sternenkinder",
+      "group": "quadrat",
+      "form": "Quadrat",
+      "size": "10 × 10",
+      "designs": 21,
+      "targetRows": [
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        46
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/83",
+      "prNumber": 83,
+      "commit": "0f66ca706840179cde10c2c0a10981fe85433d27",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-sternenkinder-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-sternenkinder-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-sternenkinder-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-sternenkinder-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-sternenkinder-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/quadrat-sternenkinder-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/quadrat-sternenkinder-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rund-mit-foto-01",
+      "section": "Mit Foto",
+      "group": "rund",
+      "form": "Rund",
+      "size": "Ø 20",
+      "designs": 26,
+      "targetRows": [
+        34,
+        35,
+        36,
+        37
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/84",
+      "prNumber": 84,
+      "commit": "4b81f37dee3d07ed136f6ff8f36b2c70491bdcaa",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rund-mit-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-mit-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-mit-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-mit-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-mit-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-mit-foto-01/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-mit-foto-01/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rund-mit-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rund-mit-foto-02",
+      "section": "Mit Foto",
+      "group": "rund",
+      "form": "Rund",
+      "size": "Ø 20",
+      "designs": 4,
+      "targetRows": [
+        34,
+        35,
+        36,
+        37
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/85",
+      "prNumber": 85,
+      "commit": "126e8f2a2234bf253bb43f0b36a865731757b96b",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rund-mit-foto-02/kontaktbogen-01.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rund-mit-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rund-ohne-foto-01",
+      "section": "Ohne Foto",
+      "group": "rund",
+      "form": "Rund",
+      "size": "Ø 20",
+      "designs": 21,
+      "targetRows": [
+        34,
+        35,
+        36,
+        37
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/86",
+      "prNumber": 86,
+      "commit": "b02fd16800ed5d2f5f9a699dac10f34fea7f88ea",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rund-ohne-foto-02",
+      "section": "Ohne Foto",
+      "group": "rund",
+      "form": "Rund",
+      "size": "Ø 20",
+      "designs": 28,
+      "targetRows": [
+        34,
+        35,
+        36,
+        37
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/87",
+      "prNumber": 87,
+      "commit": "65f5fbf5ef7eff4575643aca68b1c1f6770e2908",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-02/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-02/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-02/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-02/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-02/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-02/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-02/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rund-ohne-foto-03",
+      "section": "Ohne Foto",
+      "group": "rund",
+      "form": "Rund",
+      "size": "Ø 20",
+      "designs": 22,
+      "targetRows": [
+        34,
+        35,
+        36,
+        37
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/88",
+      "prNumber": 88,
+      "commit": "5f66a8266b040a0f341dec12378f74a4295cab72",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-03/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-03/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-03/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-03/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-03/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-03/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rund-ohne-foto-03/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "rund-sternenkinder-01",
+      "section": "Sternenkinder",
+      "group": "rund",
+      "form": "Rund",
+      "size": "Ø 20",
+      "designs": 21,
+      "targetRows": [
+        34,
+        35,
+        36,
+        37
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/89",
+      "prNumber": 89,
+      "commit": "4600c4b3370c90fd20e408a685e1f3a0285f3090",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/rund-sternenkinder-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-sternenkinder-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-sternenkinder-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-sternenkinder-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-sternenkinder-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/rund-sternenkinder-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/rund-sternenkinder-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kreuz-mit-foto-01",
+      "section": "Mit Foto",
+      "group": "kreuz",
+      "form": "Kreuz",
+      "size": "21,5 × 30",
+      "designs": 26,
+      "targetRows": [
+        15
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/90",
+      "prNumber": 90,
+      "commit": "1da691573d4a1847ceb730d01335bcbfe315e676",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-mit-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-mit-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-mit-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-mit-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-mit-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-mit-foto-01/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-mit-foto-01/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kreuz-mit-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kreuz-mit-foto-02",
+      "section": "Mit Foto",
+      "group": "kreuz",
+      "form": "Kreuz",
+      "size": "21,5 × 30",
+      "designs": 4,
+      "targetRows": [
+        15
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/91",
+      "prNumber": 91,
+      "commit": "488283ab57e41ad0214fb04d5e50edf84e6970da",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-mit-foto-02/kontaktbogen-01.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kreuz-mit-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kreuz-ohne-foto-01",
+      "section": "Ohne Foto",
+      "group": "kreuz",
+      "form": "Kreuz",
+      "size": "21,5 × 30",
+      "designs": 21,
+      "targetRows": [
+        15
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/92",
+      "prNumber": 92,
+      "commit": "99cf70fd6db387de4a3e83ab8dfff1dc0515109f",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kreuz-ohne-foto-02",
+      "section": "Ohne Foto",
+      "group": "kreuz",
+      "form": "Kreuz",
+      "size": "21,5 × 30",
+      "designs": 28,
+      "targetRows": [
+        15
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/93",
+      "prNumber": 93,
+      "commit": "07813e6dd5d99e37d3167c46975557199a4af18d",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-02/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-02/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-02/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-02/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-02/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-02/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-02/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kreuz-ohne-foto-03",
+      "section": "Ohne Foto",
+      "group": "kreuz",
+      "form": "Kreuz",
+      "size": "21,5 × 30",
+      "designs": 22,
+      "targetRows": [
+        15
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/94",
+      "prNumber": 94,
+      "commit": "dc0fe74f7fb1cc0ac1f1d416b0e2e01e49ad5a89",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-03/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-03/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-03/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-03/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-03/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-03/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kreuz-ohne-foto-03/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kreuz-sternenkinder-01",
+      "section": "Sternenkinder",
+      "group": "kreuz",
+      "form": "Kreuz",
+      "size": "21,5 × 30",
+      "designs": 21,
+      "targetRows": [
+        15
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/95",
+      "prNumber": 95,
+      "commit": "fa9693af70825e44e9b803886d9a524d8971afd8",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-sternenkinder-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-sternenkinder-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-sternenkinder-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-sternenkinder-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-sternenkinder-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kreuz-sternenkinder-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kreuz-sternenkinder-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "stern-sternenkinder-01",
+      "section": "Sternenkinder",
+      "group": "stern",
+      "form": "Stern",
+      "size": "ca. 20 × 19",
+      "designs": 23,
+      "targetRows": [
+        16
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/96",
+      "prNumber": 96,
+      "commit": "08d207ad5f2d971c8ba6c99ffa43d912947eb1e3",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/stern-sternenkinder-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/stern-sternenkinder-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/stern-sternenkinder-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/stern-sternenkinder-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/stern-sternenkinder-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/stern-sternenkinder-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/stern-sternenkinder-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-rechteck-20x10-mit-foto-01",
+      "section": "Mit Foto",
+      "group": "kordel-rechteck-20x10",
+      "form": "Rechteck",
+      "size": "20 × 10",
+      "designs": 26,
+      "targetRows": [
+        42
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/106",
+      "prNumber": 106,
+      "commit": "465cf7a644f7e31d6e4af8c69131798c4d046e3b",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-mit-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-mit-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-mit-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-mit-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-mit-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-mit-foto-01/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-mit-foto-01/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-mit-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-rechteck-20x10-mit-foto-02",
+      "section": "Mit Foto",
+      "group": "kordel-rechteck-20x10",
+      "form": "Rechteck",
+      "size": "20 × 10",
+      "designs": 4,
+      "targetRows": [
+        42
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/107",
+      "prNumber": 107,
+      "commit": "7f7654b9c69dbf46773b2973fc4e6da92d15c795",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-mit-foto-02/kontaktbogen-01.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-mit-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-rechteck-20x10-ohne-foto-01",
+      "section": "Ohne Foto",
+      "group": "kordel-rechteck-20x10",
+      "form": "Rechteck",
+      "size": "20 × 10",
+      "designs": 21,
+      "targetRows": [
+        42
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/108",
+      "prNumber": 108,
+      "commit": "5ce959678187fa244fb7083362a268eefcaf57df",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-rechteck-20x10-ohne-foto-02",
+      "section": "Ohne Foto",
+      "group": "kordel-rechteck-20x10",
+      "form": "Rechteck",
+      "size": "20 × 10",
+      "designs": 28,
+      "targetRows": [
+        42
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/109",
+      "prNumber": 109,
+      "commit": "d745e78a97b5a1b7f01b1b25788ce167aa3ffb32",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-02/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-02/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-02/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-02/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-02/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-02/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-02/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-rechteck-20x10-ohne-foto-03",
+      "section": "Ohne Foto",
+      "group": "kordel-rechteck-20x10",
+      "form": "Rechteck",
+      "size": "20 × 10",
+      "designs": 22,
+      "targetRows": [
+        42
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/110",
+      "prNumber": 110,
+      "commit": "5b37858fc279562aeff3f5c08cc29e3aa36e7ad4",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-03/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-03/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-03/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-03/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-03/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-03/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-ohne-foto-03/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-rechteck-20x10-sternenkinder-01",
+      "section": "Sternenkinder",
+      "group": "kordel-rechteck-20x10",
+      "form": "Rechteck",
+      "size": "20 × 10",
+      "designs": 21,
+      "targetRows": [
+        42
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/111",
+      "prNumber": 111,
+      "commit": "45a1b56fc3cd1878a827326b0fe77d8bb6c43558",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-sternenkinder-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-sternenkinder-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-sternenkinder-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-sternenkinder-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-sternenkinder-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-sternenkinder-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x10-sternenkinder-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-rechteck-25x20-mit-foto-01",
+      "section": "Mit Foto",
+      "group": "kordel-rechteck-25x20",
+      "form": "Rechteck",
+      "size": "25 × 20",
+      "designs": 26,
+      "targetRows": [
+        45
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/118",
+      "prNumber": 118,
+      "commit": "8d461fc81c8392445cd8ce19a589cca06dec2a69",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-mit-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-mit-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-mit-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-mit-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-mit-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-mit-foto-01/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-mit-foto-01/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-mit-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-rechteck-25x20-mit-foto-02",
+      "section": "Mit Foto",
+      "group": "kordel-rechteck-25x20",
+      "form": "Rechteck",
+      "size": "25 × 20",
+      "designs": 4,
+      "targetRows": [
+        45
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/119",
+      "prNumber": 119,
+      "commit": "ff04a86ed0030e7dc17939a611c58c0168eda542",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-mit-foto-02/kontaktbogen-01.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-mit-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-rechteck-25x20-ohne-foto-01",
+      "section": "Ohne Foto",
+      "group": "kordel-rechteck-25x20",
+      "form": "Rechteck",
+      "size": "25 × 20",
+      "designs": 21,
+      "targetRows": [
+        45
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/120",
+      "prNumber": 120,
+      "commit": "54e6299856351240be8249e71703f182477163e1",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-rechteck-25x20-ohne-foto-02",
+      "section": "Ohne Foto",
+      "group": "kordel-rechteck-25x20",
+      "form": "Rechteck",
+      "size": "25 × 20",
+      "designs": 28,
+      "targetRows": [
+        45
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/121",
+      "prNumber": 121,
+      "commit": "fd46deb13b6cc457d5f878fa17458576c6b90831",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-02/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-02/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-02/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-02/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-02/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-02/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-02/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-rechteck-25x20-ohne-foto-03",
+      "section": "Ohne Foto",
+      "group": "kordel-rechteck-25x20",
+      "form": "Rechteck",
+      "size": "25 × 20",
+      "designs": 22,
+      "targetRows": [
+        45
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/122",
+      "prNumber": 122,
+      "commit": "4f2de3d9bcad1451ff46121267155398d9eb37a8",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-03/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-03/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-03/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-03/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-03/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-03/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-ohne-foto-03/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-rechteck-25x20-sternenkinder-01",
+      "section": "Sternenkinder",
+      "group": "kordel-rechteck-25x20",
+      "form": "Rechteck",
+      "size": "25 × 20",
+      "designs": 21,
+      "targetRows": [
+        45
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/123",
+      "prNumber": 123,
+      "commit": "cd5992ac451d6dc60d9684233ba919db33a71619",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-sternenkinder-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-sternenkinder-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-sternenkinder-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-sternenkinder-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-sternenkinder-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-sternenkinder-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-25x20-sternenkinder-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-rechteck-20x25-mit-foto-01",
+      "section": "Mit Foto",
+      "group": "kordel-rechteck-20x25",
+      "form": "Rechteck",
+      "size": "20 × 25",
+      "designs": 26,
+      "targetRows": [
+        47
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/112",
+      "prNumber": 112,
+      "commit": "01ccf2fdee57dcdd2f918e9be7480160b565842e",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-mit-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-mit-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-mit-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-mit-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-mit-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-mit-foto-01/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-mit-foto-01/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-mit-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-rechteck-20x25-mit-foto-02",
+      "section": "Mit Foto",
+      "group": "kordel-rechteck-20x25",
+      "form": "Rechteck",
+      "size": "20 × 25",
+      "designs": 4,
+      "targetRows": [
+        47
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/113",
+      "prNumber": 113,
+      "commit": "2dff5b268fb984e6d9651d8581c33b12a5e44fd5",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-mit-foto-02/kontaktbogen-01.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-mit-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-rechteck-20x25-ohne-foto-01",
+      "section": "Ohne Foto",
+      "group": "kordel-rechteck-20x25",
+      "form": "Rechteck",
+      "size": "20 × 25",
+      "designs": 21,
+      "targetRows": [
+        47
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/114",
+      "prNumber": 114,
+      "commit": "7d11eb1a4a9df9e1cdb362c8a1889f31129c04f2",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-rechteck-20x25-ohne-foto-02",
+      "section": "Ohne Foto",
+      "group": "kordel-rechteck-20x25",
+      "form": "Rechteck",
+      "size": "20 × 25",
+      "designs": 28,
+      "targetRows": [
+        47
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/115",
+      "prNumber": 115,
+      "commit": "71a40f9893bbfbf48f8bf22293f889ea5f10d646",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-02/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-02/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-02/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-02/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-02/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-02/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-02/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-rechteck-20x25-ohne-foto-03",
+      "section": "Ohne Foto",
+      "group": "kordel-rechteck-20x25",
+      "form": "Rechteck",
+      "size": "20 × 25",
+      "designs": 22,
+      "targetRows": [
+        47
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/116",
+      "prNumber": 116,
+      "commit": "231f0f4cb24b194e41868f7ecf9065911b82734e",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-03/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-03/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-03/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-03/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-03/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-03/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-ohne-foto-03/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-rechteck-20x25-sternenkinder-01",
+      "section": "Sternenkinder",
+      "group": "kordel-rechteck-20x25",
+      "form": "Rechteck",
+      "size": "20 × 25",
+      "designs": 21,
+      "targetRows": [
+        47
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/117",
+      "prNumber": 117,
+      "commit": "adfe47c6719ced4e7f4af8fb6318e23ff83df576",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-sternenkinder-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-sternenkinder-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-sternenkinder-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-sternenkinder-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-sternenkinder-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-sternenkinder-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-rechteck-20x25-sternenkinder-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-herz-10x10-mit-foto-01",
+      "section": "Mit Foto",
+      "group": "kordel-herz-10x10",
+      "form": "Herz",
+      "size": "10 × 10",
+      "designs": 26,
+      "targetRows": [
+        48
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/100",
+      "prNumber": 100,
+      "commit": "d8564b249fc1f19c46a469b9ca6d264b637f1b48",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-mit-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-mit-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-mit-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-mit-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-mit-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-mit-foto-01/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-mit-foto-01/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-mit-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-herz-10x10-mit-foto-02",
+      "section": "Mit Foto",
+      "group": "kordel-herz-10x10",
+      "form": "Herz",
+      "size": "10 × 10",
+      "designs": 4,
+      "targetRows": [
+        48
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/101",
+      "prNumber": 101,
+      "commit": "1353f04ac109a56f7fb4f30a9f552f6f9b09fe10",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-mit-foto-02/kontaktbogen-01.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-mit-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-herz-10x10-ohne-foto-01",
+      "section": "Ohne Foto",
+      "group": "kordel-herz-10x10",
+      "form": "Herz",
+      "size": "10 × 10",
+      "designs": 21,
+      "targetRows": [
+        48
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/102",
+      "prNumber": 102,
+      "commit": "9b26b0c4c6585a369b0d75f5e07e287fd4517210",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-herz-10x10-ohne-foto-02",
+      "section": "Ohne Foto",
+      "group": "kordel-herz-10x10",
+      "form": "Herz",
+      "size": "10 × 10",
+      "designs": 28,
+      "targetRows": [
+        48
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/103",
+      "prNumber": 103,
+      "commit": "8e132ddad7fad83149b5c7f23d4e181940677e9d",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-02/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-02/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-02/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-02/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-02/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-02/kontaktbogen-06.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-02/kontaktbogen-07.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-02/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-herz-10x10-ohne-foto-03",
+      "section": "Ohne Foto",
+      "group": "kordel-herz-10x10",
+      "form": "Herz",
+      "size": "10 × 10",
+      "designs": 22,
+      "targetRows": [
+        48
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/104",
+      "prNumber": 104,
+      "commit": "f4b1459b2787080faecacfcacc5ce3a536c79046",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-03/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-03/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-03/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-03/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-03/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-03/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-ohne-foto-03/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    },
+    {
+      "packet": "kordel-herz-10x10-sternenkinder-01",
+      "section": "Sternenkinder",
+      "group": "kordel-herz-10x10",
+      "form": "Herz",
+      "size": "10 × 10",
+      "designs": 21,
+      "targetRows": [
+        48
+      ],
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/105",
+      "prNumber": 105,
+      "commit": "80fc95e586141ed77cb012c7f32715db580d99c5",
+      "contacts": [
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-sternenkinder-01/kontaktbogen-01.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-sternenkinder-01/kontaktbogen-02.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-sternenkinder-01/kontaktbogen-03.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-sternenkinder-01/kontaktbogen-04.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-sternenkinder-01/kontaktbogen-05.jpg",
+        "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-sternenkinder-01/kontaktbogen-06.jpg"
+      ],
+      "proofPath": "auftraege/2026-10-31-menschen-schiefer/kordel-herz-10x10-sternenkinder-01/README.md",
+      "reviewStatus": "Einzeln geprüft und korrigiert; Chris’ Freigabe offen"
+    }
+  ]
+}

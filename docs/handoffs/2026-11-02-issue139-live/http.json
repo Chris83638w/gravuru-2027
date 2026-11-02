@@ -1,0 +1,28 @@
+{
+  "at": "2026-11-02T12:16:53.792Z",
+  "rows": [
+    {
+      "route": "/_merchant-acryl-editor.html",
+      "status": 200,
+      "bytes": 464102,
+      "newBundle": true
+    },
+    {
+      "route": "/_acryl-bundle/editor-62a549e4a0ece59d.mjs",
+      "status": 200,
+      "bytes": 1380025,
+      "sha256": "333cfd507be3d5418ba54fbae7a02a74ea808d8b2d7d63c91cd10e0d3dddc9f7",
+      "match": true
+    },
+    {
+      "route": "/werkstatt/acryl/",
+      "status": 200,
+      "bytes": 3545
+    },
+    {
+      "route": "/api/workshop/acryl/session",
+      "status": 401,
+      "bytes": 84
+    }
+  ]
+}

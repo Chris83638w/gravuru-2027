@@ -19,7 +19,7 @@ def ink(name,text):
    l,b,r,t=p.bounds;bs.append((l+off,b,r+off,t))
   off+=f['hmtx'].metrics[g][0]
  return [v/u for v in (min(b[0] for b in bs)-off/2,min(b[1] for b in bs),max(b[2] for b in bs)-off/2,max(b[3] for b in bs))]
-errors=[];cats=set();minimum=100
+errors=[];cats=set();minimum=100;dogs={}
 for row in m['designs']:
  d=read(a.catalog/row['folder']/'design.json');path=a.catalog/row['folder']/'design.svg';source=a.catalog/d['source']
  assert row['plateMm']==d['plateMm']==[150,100]
@@ -30,6 +30,10 @@ for row in m['designs']:
  assert originalRules==deliveredRules,(row['id'],'source fill rule changed')
  assert d['freigabe'] is None and all(z['freigabe'] is None for z in d['ziele'])
  if row['animal']=='cat':cats.add(sha(source))
+ else:
+  dogs.setdefault(row['breed'],set()).add(sha(source))
+  if row['layout']==12 and d['source'].startswith('motive-eigene/hunde-vielfalt-20261102/'):
+   assert ' & ' in d['texts'][1]['text'] and d['texts'][0]['text']=='Hier sind wir zuhause',(row['id'],'duo wording')
  assert len(d['texts'])==3
  boxes=[]
  for t in d['texts']:
@@ -39,6 +43,9 @@ for row in m['designs']:
  for i,p in enumerate(boxes):
   for q in boxes[i+1:]:
    if min(p[2],q[2])>max(p[0],q[0]) and min(p[3],q[3])>max(p[1],q[1]):errors.append([row['id'],'text overlap'])
-result={'designs':len(m['designs']),'breeds':len(m['breeds']),'distinctCatMotifHashes':len(cats),'minimumTextSizeMm':minimum,'errors':errors}
+status_path=a.catalog/'auftraege/rasse-15x10-20261102/hunde-vielfalt-status.json'
+if status_path.exists():
+ for breed in read(status_path)['completedBreeds']:assert len(dogs[breed])==12,(breed,'repeated dog motif')
+result={'designs':len(m['designs']),'breeds':len(m['breeds']),'distinctCatMotifHashes':len(cats),'distinctDogMotifsByBreed':{b:len(h) for b,h in dogs.items()},'minimumTextSizeMm':minimum,'errors':errors}
 assert len(cats)==300
 a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(result,indent=2)+'\n',encoding='utf8');print(json.dumps(result));assert not errors

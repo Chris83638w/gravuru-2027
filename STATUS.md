@@ -1,3 +1,7 @@
+# Hundeschilder: zwölf verschiedene Motive je Rasse · 02.11.2026 · Codex
+
+Alle 55 Hundeserien (660 Schilder) mit unterschiedlichen Motiven und gemischten Zeichenstilen innerhalb jeder Rasse erneuert. 220 Schilder mit Pfotenakzenten; nur 15×10 cm, bearbeitbare Namen, passende Duo-Texte. 960 native Größen- und Quellen-/Textprüfungen bestanden; 300 Katzendesigns unverändert. [Galerie, Herkunft und Prüfbelege](docs/handoffs/2026-11-02-hunde-motivvielfalt.md). Code-PR 136, Katalog-PR 152; Freigaben null, Sichtabnahme und Materialprobe offen.
+
 # Rasseschilder nur 15×10 cm · 02.11.2026 · Codex
 
 960 Designs (55 Hundetypen + 25 Katzenrassen, je zwölf), Warn-/Wachtexte und liebevolle Katzentexte mit großen bearbeitbaren Namen. 300 unterschiedliche Katzenmotive. 960 native Größenprüfungen und Quellen-/Textprüfungen bestanden; SVG-Füllregeln ausdrücklich gegen Originale geprüft. [Übergabe, Galerie und Messbelege](docs/handoffs/2026-11-02-rasse-15x10.md), Katalog-PR 152 (`788cf0a97`). Freigaben null, keine Preise/Familien oder Live-Systeme geändert. Nächster Schritt: Chris/Operator prüft Varianten und gibt einzelne Designs frei.

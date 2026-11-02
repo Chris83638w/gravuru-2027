@@ -33,7 +33,7 @@ try{
     // Let the native glyph layout and material image settle before reading pixels.
     await page.waitForTimeout(180);
     const objects=await scene.locator('[data-object]').evaluateAll(nodes=>nodes.map(n=>({id:n.dataset.object,box:n.getBoundingClientRect().toJSON()})));
-    if(objects.length!==4)throw Error('Expected portrait and three text fields; got '+objects.length);
+    if(objects.length<4||objects.length>5)throw Error('Expected dog/cat motif, optional paw accent and three text fields; got '+objects.length);
     const textOverlaps=[];
     for(let i=0;i<objects.length;i++)for(let j=i+1;j<objects.length;j++){
      const a=objects[i],b=objects[j];if(!a.id.startsWith('text-')||!b.id.startsWith('text-'))continue;

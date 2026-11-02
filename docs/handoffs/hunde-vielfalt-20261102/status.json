@@ -1,0 +1,564 @@
+{
+  "instruction": "Zwölf unterschiedliche Hundemotive je Rasse; innerhalb jeder Rasse feine naturgetreue Portraits, süße und verspielte Motive mischen. Gesamtbild hat Vorrang. Katzen unverändert.",
+  "meaning": "completedBreeds bezeichnet die vollständige Motivzuordnung mit Stil-Mischung, keine Produktionsfreigabe.",
+  "completedBreeds": [
+    "labrador",
+    "golden-retriever",
+    "deutscher-schaeferhund",
+    "dackel",
+    "franzoesische-bulldogge",
+    "american-pit-bull-terrier",
+    "australian-shepherd",
+    "australian-cattle-dog",
+    "australian-kelpie",
+    "beagle",
+    "belgian-malinois",
+    "bernadoodle",
+    "berner-sennenhund",
+    "bernhardiner",
+    "bichon-frise",
+    "bloodhound",
+    "border-collie",
+    "boston-terrier",
+    "boxer",
+    "bulldogge",
+    "bullmastiff",
+    "bullterrier",
+    "carne-corso",
+    "chihuahua",
+    "chow-chow",
+    "cocker-spaniel",
+    "collie",
+    "corgi",
+    "dalmatiner",
+    "dobermann",
+    "fox-terrier",
+    "goldendoodle",
+    "havanese",
+    "husky",
+    "jack-russell-terrier",
+    "labradoodle",
+    "maltese-lapdog",
+    "mops",
+    "neapolitan-mastiff",
+    "newfoundland",
+    "old-english-bulldog",
+    "papillon",
+    "pudel",
+    "rhodesian-ridgeback",
+    "rottweiler",
+    "schnauzer",
+    "shar-pei",
+    "sheltie",
+    "shih-tzu",
+    "spitz",
+    "staffordshire-bullterrier",
+    "vizsla",
+    "welsh-terrier",
+    "yorkshire-terrier",
+    "zwergschnauzer"
+  ],
+  "pendingBreeds": [],
+  "uniqueDogMotifsPerBreed": {
+    "labrador": 12,
+    "golden-retriever": 12,
+    "deutscher-schaeferhund": 12,
+    "dackel": 12,
+    "franzoesische-bulldogge": 12,
+    "american-pit-bull-terrier": 12,
+    "australian-shepherd": 12,
+    "australian-cattle-dog": 12,
+    "australian-kelpie": 12,
+    "beagle": 12,
+    "belgian-malinois": 12,
+    "bernadoodle": 12,
+    "berner-sennenhund": 12,
+    "bernhardiner": 12,
+    "bichon-frise": 12,
+    "bloodhound": 12,
+    "border-collie": 12,
+    "boston-terrier": 12,
+    "boxer": 12,
+    "bulldogge": 12,
+    "bullmastiff": 12,
+    "bullterrier": 12,
+    "carne-corso": 12,
+    "chihuahua": 12,
+    "chow-chow": 12,
+    "cocker-spaniel": 12,
+    "collie": 12,
+    "corgi": 12,
+    "dalmatiner": 12,
+    "dobermann": 12,
+    "fox-terrier": 12,
+    "goldendoodle": 12,
+    "havanese": 12,
+    "husky": 12,
+    "jack-russell-terrier": 12,
+    "labradoodle": 12,
+    "maltese-lapdog": 12,
+    "mops": 12,
+    "neapolitan-mastiff": 12,
+    "newfoundland": 12,
+    "old-english-bulldog": 12,
+    "papillon": 12,
+    "pudel": 12,
+    "rhodesian-ridgeback": 12,
+    "rottweiler": 12,
+    "schnauzer": 12,
+    "shar-pei": 12,
+    "sheltie": 12,
+    "shih-tzu": 12,
+    "spitz": 12,
+    "staffordshire-bullterrier": 12,
+    "vizsla": 12,
+    "welsh-terrier": 12,
+    "yorkshire-terrier": 12,
+    "zwergschnauzer": 12
+  },
+  "stylesPerBreed": {
+    "labrador": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "golden-retriever": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "deutscher-schaeferhund": {
+      "suess/verspielt": 6,
+      "fein/naturgetreu": 6
+    },
+    "dackel": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "franzoesische-bulldogge": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "american-pit-bull-terrier": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "australian-shepherd": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "australian-cattle-dog": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "australian-kelpie": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "beagle": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "belgian-malinois": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "bernadoodle": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "berner-sennenhund": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "bernhardiner": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "bichon-frise": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "bloodhound": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "border-collie": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "boston-terrier": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "boxer": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "bulldogge": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "bullmastiff": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "bullterrier": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "carne-corso": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "chihuahua": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "chow-chow": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "cocker-spaniel": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "collie": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "corgi": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "dalmatiner": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "dobermann": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "fox-terrier": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "goldendoodle": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "havanese": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "husky": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "jack-russell-terrier": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "labradoodle": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "maltese-lapdog": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "mops": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "neapolitan-mastiff": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "newfoundland": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "old-english-bulldog": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "papillon": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "pudel": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "rhodesian-ridgeback": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "rottweiler": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "schnauzer": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "shar-pei": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "sheltie": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "shih-tzu": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "spitz": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "staffordshire-bullterrier": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "vizsla": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "welsh-terrier": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "yorkshire-terrier": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    },
+    "zwergschnauzer": {
+      "suess/verspielt": 8,
+      "fein/naturgetreu": 4
+    }
+  },
+  "pawDesigns": [
+    "TRE-V2A-15x10-D1001",
+    "TRE-V2A-15x10-D1004",
+    "TRE-V2A-15x10-D1007",
+    "TRE-V2A-15x10-D1010",
+    "TRE-V2A-15x10-D1013",
+    "TRE-V2A-15x10-D1016",
+    "TRE-V2A-15x10-D1019",
+    "TRE-V2A-15x10-D1022",
+    "TRE-V2A-15x10-D1025",
+    "TRE-V2A-15x10-D1028",
+    "TRE-V2A-15x10-D1031",
+    "TRE-V2A-15x10-D1034",
+    "TRE-V2A-15x10-D1037",
+    "TRE-V2A-15x10-D1040",
+    "TRE-V2A-15x10-D1043",
+    "TRE-V2A-15x10-D1046",
+    "TRE-V2A-15x10-D1049",
+    "TRE-V2A-15x10-D1052",
+    "TRE-V2A-15x10-D1055",
+    "TRE-V2A-15x10-D1058",
+    "TRE-V2A-15x10-D1361",
+    "TRE-V2A-15x10-D1364",
+    "TRE-V2A-15x10-D1367",
+    "TRE-V2A-15x10-D1370",
+    "TRE-V2A-15x10-D1373",
+    "TRE-V2A-15x10-D1376",
+    "TRE-V2A-15x10-D1379",
+    "TRE-V2A-15x10-D1382",
+    "TRE-V2A-15x10-D1385",
+    "TRE-V2A-15x10-D1388",
+    "TRE-V2A-15x10-D1391",
+    "TRE-V2A-15x10-D1394",
+    "TRE-V2A-15x10-D1397",
+    "TRE-V2A-15x10-D1400",
+    "TRE-V2A-15x10-D1403",
+    "TRE-V2A-15x10-D1406",
+    "TRE-V2A-15x10-D1409",
+    "TRE-V2A-15x10-D1412",
+    "TRE-V2A-15x10-D1415",
+    "TRE-V2A-15x10-D1418",
+    "TRE-V2A-15x10-D1421",
+    "TRE-V2A-15x10-D1424",
+    "TRE-V2A-15x10-D1427",
+    "TRE-V2A-15x10-D1430",
+    "TRE-V2A-15x10-D1433",
+    "TRE-V2A-15x10-D1436",
+    "TRE-V2A-15x10-D1439",
+    "TRE-V2A-15x10-D1442",
+    "TRE-V2A-15x10-D1445",
+    "TRE-V2A-15x10-D1448",
+    "TRE-V2A-15x10-D1451",
+    "TRE-V2A-15x10-D1454",
+    "TRE-V2A-15x10-D1457",
+    "TRE-V2A-15x10-D1460",
+    "TRE-V2A-15x10-D1463",
+    "TRE-V2A-15x10-D1466",
+    "TRE-V2A-15x10-D1469",
+    "TRE-V2A-15x10-D1472",
+    "TRE-V2A-15x10-D1475",
+    "TRE-V2A-15x10-D1478",
+    "TRE-V2A-15x10-D1481",
+    "TRE-V2A-15x10-D1484",
+    "TRE-V2A-15x10-D1487",
+    "TRE-V2A-15x10-D1490",
+    "TRE-V2A-15x10-D1493",
+    "TRE-V2A-15x10-D1496",
+    "TRE-V2A-15x10-D1499",
+    "TRE-V2A-15x10-D1502",
+    "TRE-V2A-15x10-D1505",
+    "TRE-V2A-15x10-D1508",
+    "TRE-V2A-15x10-D1511",
+    "TRE-V2A-15x10-D1514",
+    "TRE-V2A-15x10-D1517",
+    "TRE-V2A-15x10-D1520",
+    "TRE-V2A-15x10-D1523",
+    "TRE-V2A-15x10-D1526",
+    "TRE-V2A-15x10-D1529",
+    "TRE-V2A-15x10-D1532",
+    "TRE-V2A-15x10-D1535",
+    "TRE-V2A-15x10-D1538",
+    "TRE-V2A-15x10-D1541",
+    "TRE-V2A-15x10-D1544",
+    "TRE-V2A-15x10-D1547",
+    "TRE-V2A-15x10-D1550",
+    "TRE-V2A-15x10-D1553",
+    "TRE-V2A-15x10-D1556",
+    "TRE-V2A-15x10-D1559",
+    "TRE-V2A-15x10-D1562",
+    "TRE-V2A-15x10-D1565",
+    "TRE-V2A-15x10-D1568",
+    "TRE-V2A-15x10-D1571",
+    "TRE-V2A-15x10-D1574",
+    "TRE-V2A-15x10-D1577",
+    "TRE-V2A-15x10-D1580",
+    "TRE-V2A-15x10-D1583",
+    "TRE-V2A-15x10-D1586",
+    "TRE-V2A-15x10-D1589",
+    "TRE-V2A-15x10-D1592",
+    "TRE-V2A-15x10-D1595",
+    "TRE-V2A-15x10-D1598",
+    "TRE-V2A-15x10-D1601",
+    "TRE-V2A-15x10-D1604",
+    "TRE-V2A-15x10-D1607",
+    "TRE-V2A-15x10-D1610",
+    "TRE-V2A-15x10-D1613",
+    "TRE-V2A-15x10-D1616",
+    "TRE-V2A-15x10-D1619",
+    "TRE-V2A-15x10-D1622",
+    "TRE-V2A-15x10-D1625",
+    "TRE-V2A-15x10-D1628",
+    "TRE-V2A-15x10-D1631",
+    "TRE-V2A-15x10-D1634",
+    "TRE-V2A-15x10-D1637",
+    "TRE-V2A-15x10-D1640",
+    "TRE-V2A-15x10-D1643",
+    "TRE-V2A-15x10-D1646",
+    "TRE-V2A-15x10-D1649",
+    "TRE-V2A-15x10-D1652",
+    "TRE-V2A-15x10-D1655",
+    "TRE-V2A-15x10-D1658",
+    "TRE-V2A-15x10-D1661",
+    "TRE-V2A-15x10-D1664",
+    "TRE-V2A-15x10-D1667",
+    "TRE-V2A-15x10-D1670",
+    "TRE-V2A-15x10-D1673",
+    "TRE-V2A-15x10-D1676",
+    "TRE-V2A-15x10-D1679",
+    "TRE-V2A-15x10-D1682",
+    "TRE-V2A-15x10-D1685",
+    "TRE-V2A-15x10-D1688",
+    "TRE-V2A-15x10-D1691",
+    "TRE-V2A-15x10-D1694",
+    "TRE-V2A-15x10-D1697",
+    "TRE-V2A-15x10-D1700",
+    "TRE-V2A-15x10-D1703",
+    "TRE-V2A-15x10-D1706",
+    "TRE-V2A-15x10-D1709",
+    "TRE-V2A-15x10-D1712",
+    "TRE-V2A-15x10-D1715",
+    "TRE-V2A-15x10-D1718",
+    "TRE-V2A-15x10-D1721",
+    "TRE-V2A-15x10-D1724",
+    "TRE-V2A-15x10-D1727",
+    "TRE-V2A-15x10-D1730",
+    "TRE-V2A-15x10-D1733",
+    "TRE-V2A-15x10-D1736",
+    "TRE-V2A-15x10-D1739",
+    "TRE-V2A-15x10-D1742",
+    "TRE-V2A-15x10-D1745",
+    "TRE-V2A-15x10-D1748",
+    "TRE-V2A-15x10-D1751",
+    "TRE-V2A-15x10-D1754",
+    "TRE-V2A-15x10-D1757",
+    "TRE-V2A-15x10-D1760",
+    "TRE-V2A-15x10-D1763",
+    "TRE-V2A-15x10-D1766",
+    "TRE-V2A-15x10-D1769",
+    "TRE-V2A-15x10-D1772",
+    "TRE-V2A-15x10-D1775",
+    "TRE-V2A-15x10-D1778",
+    "TRE-V2A-15x10-D1781",
+    "TRE-V2A-15x10-D1784",
+    "TRE-V2A-15x10-D1787",
+    "TRE-V2A-15x10-D1790",
+    "TRE-V2A-15x10-D1793",
+    "TRE-V2A-15x10-D1796",
+    "TRE-V2A-15x10-D1799",
+    "TRE-V2A-15x10-D1802",
+    "TRE-V2A-15x10-D1805",
+    "TRE-V2A-15x10-D1808",
+    "TRE-V2A-15x10-D1811",
+    "TRE-V2A-15x10-D1814",
+    "TRE-V2A-15x10-D1817",
+    "TRE-V2A-15x10-D1820",
+    "TRE-V2A-15x10-D1823",
+    "TRE-V2A-15x10-D1826",
+    "TRE-V2A-15x10-D1829",
+    "TRE-V2A-15x10-D1832",
+    "TRE-V2A-15x10-D1835",
+    "TRE-V2A-15x10-D1838",
+    "TRE-V2A-15x10-D1841",
+    "TRE-V2A-15x10-D1844",
+    "TRE-V2A-15x10-D1847",
+    "TRE-V2A-15x10-D1850",
+    "TRE-V2A-15x10-D1853",
+    "TRE-V2A-15x10-D1856",
+    "TRE-V2A-15x10-D1859",
+    "TRE-V2A-15x10-D1862",
+    "TRE-V2A-15x10-D1865",
+    "TRE-V2A-15x10-D1868",
+    "TRE-V2A-15x10-D1871",
+    "TRE-V2A-15x10-D1874",
+    "TRE-V2A-15x10-D1877",
+    "TRE-V2A-15x10-D1880",
+    "TRE-V2A-15x10-D1883",
+    "TRE-V2A-15x10-D1886",
+    "TRE-V2A-15x10-D1889",
+    "TRE-V2A-15x10-D1892",
+    "TRE-V2A-15x10-D1895",
+    "TRE-V2A-15x10-D1898",
+    "TRE-V2A-15x10-D1901",
+    "TRE-V2A-15x10-D1904",
+    "TRE-V2A-15x10-D1907",
+    "TRE-V2A-15x10-D1910",
+    "TRE-V2A-15x10-D1913",
+    "TRE-V2A-15x10-D1916",
+    "TRE-V2A-15x10-D1919",
+    "TRE-V2A-15x10-D1922",
+    "TRE-V2A-15x10-D1925",
+    "TRE-V2A-15x10-D1928",
+    "TRE-V2A-15x10-D1931",
+    "TRE-V2A-15x10-D1934",
+    "TRE-V2A-15x10-D1937",
+    "TRE-V2A-15x10-D1940",
+    "TRE-V2A-15x10-D1943",
+    "TRE-V2A-15x10-D1946",
+    "TRE-V2A-15x10-D1949",
+    "TRE-V2A-15x10-D1952",
+    "TRE-V2A-15x10-D1955",
+    "TRE-V2A-15x10-D1958"
+  ],
+  "freigabe": null
+}

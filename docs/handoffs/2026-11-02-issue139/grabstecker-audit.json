@@ -1,0 +1,269 @@
+{
+  "count": 33,
+  "results": [
+    {
+      "sizeKey": "GS-V2A-HERZ-S",
+      "headHeightMm": 105.56,
+      "workingHeightMm": 115.56,
+      "productionHeightMm": 300.06,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-HERZ-M",
+      "headHeightMm": 140.56,
+      "workingHeightMm": 150.56,
+      "productionHeightMm": 381.809,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-HERZ-XL",
+      "headHeightMm": 174.79,
+      "workingHeightMm": 184.79,
+      "productionHeightMm": 380.045,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-HERZRAHMEN-S",
+      "headHeightMm": 99.75,
+      "workingHeightMm": 109.75,
+      "productionHeightMm": 300,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-HERZRAHMEN-M",
+      "headHeightMm": 125.9,
+      "workingHeightMm": 135.9,
+      "productionHeightMm": 361.649,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-HERZRAHMEN-XL",
+      "headHeightMm": 166.36,
+      "workingHeightMm": 176.36,
+      "productionHeightMm": 360.111,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-HERZDOPPEL-S",
+      "headHeightMm": 98.75,
+      "workingHeightMm": 108.75,
+      "productionHeightMm": 300,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-HERZDOPPEL-M",
+      "headHeightMm": 131.14,
+      "workingHeightMm": 141.14,
+      "productionHeightMm": 357.895,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-HERZDOPPEL-XL",
+      "headHeightMm": 169.55,
+      "workingHeightMm": 179.55,
+      "productionHeightMm": 360.048,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-HERZLIEGEND-S",
+      "headHeightMm": 110.25,
+      "workingHeightMm": 120.25,
+      "productionHeightMm": 300,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-HERZLIEGEND-M",
+      "headHeightMm": 120.55,
+      "workingHeightMm": 130.55,
+      "productionHeightMm": 365.049,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-HERZLIEGEND-L",
+      "headHeightMm": 157.03,
+      "workingHeightMm": 167.03,
+      "productionHeightMm": 365.027,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-HERZPFOTE-S",
+      "headHeightMm": 105.56,
+      "workingHeightMm": 115.56,
+      "productionHeightMm": 300.06,
+      "cutouts": 5,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-HERZPFOTE-M",
+      "headHeightMm": 140.56,
+      "workingHeightMm": 150.56,
+      "productionHeightMm": 381.809,
+      "cutouts": 5,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-HERZPFOTE-L",
+      "headHeightMm": 174.79,
+      "workingHeightMm": 184.79,
+      "productionHeightMm": 380.045,
+      "cutouts": 5,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-KREUZ-M",
+      "headHeightMm": 205.02,
+      "workingHeightMm": 215.02,
+      "productionHeightMm": 460.021,
+      "cutouts": 2,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-KREUZ-L",
+      "headHeightMm": 236.52,
+      "workingHeightMm": 246.52,
+      "productionHeightMm": 460.018,
+      "cutouts": 2,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-KREUZ-XL",
+      "headHeightMm": 284,
+      "workingHeightMm": 294,
+      "productionHeightMm": 459.998,
+      "cutouts": 2,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-KREUZ2-M",
+      "headHeightMm": 107.01,
+      "workingHeightMm": 117.01,
+      "productionHeightMm": 290.507,
+      "cutouts": 2,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-KREUZ2-L",
+      "headHeightMm": 147,
+      "workingHeightMm": 157,
+      "productionHeightMm": 384.999,
+      "cutouts": 2,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-ENGEL-M",
+      "headHeightMm": 130.21,
+      "workingHeightMm": 140.21,
+      "productionHeightMm": 376.462,
+      "cutouts": 1,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-ENGEL-L",
+      "headHeightMm": 189.27,
+      "workingHeightMm": 199.27,
+      "productionHeightMm": 375.021,
+      "cutouts": 1,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-STERN-S",
+      "headHeightMm": 109.75,
+      "workingHeightMm": 119.75,
+      "productionHeightMm": 300,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-STERN-M",
+      "headHeightMm": 134.29,
+      "workingHeightMm": 144.29,
+      "productionHeightMm": 371.791,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-STERN-L",
+      "headHeightMm": 172.91,
+      "workingHeightMm": 182.91,
+      "productionHeightMm": 369.907,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-STERN2-S",
+      "headHeightMm": 109,
+      "workingHeightMm": 119,
+      "productionHeightMm": 300,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-STERN2-L",
+      "headHeightMm": 124.54,
+      "workingHeightMm": 134.54,
+      "productionHeightMm": 365.041,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-INFINITY-S",
+      "headHeightMm": 102.75,
+      "workingHeightMm": 112.75,
+      "productionHeightMm": 300,
+      "cutouts": 3,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-INFINITY-L",
+      "headHeightMm": 129.77,
+      "workingHeightMm": 139.77,
+      "productionHeightMm": 360.019,
+      "cutouts": 3,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-KATZE-S",
+      "headHeightMm": 109.75,
+      "workingHeightMm": 119.75,
+      "productionHeightMm": 299.997,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-KATZE-M",
+      "headHeightMm": 146.95,
+      "workingHeightMm": 156.95,
+      "productionHeightMm": 385.455,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-PFOTE-S",
+      "headHeightMm": 113.5,
+      "workingHeightMm": 123.5,
+      "productionHeightMm": 300,
+      "cutouts": 0,
+      "ok": true
+    },
+    {
+      "sizeKey": "GS-V2A-PFOTE-L",
+      "headHeightMm": 161.03,
+      "workingHeightMm": 171.03,
+      "productionHeightMm": 355.027,
+      "cutouts": 0,
+      "ok": true
+    }
+  ]
+}

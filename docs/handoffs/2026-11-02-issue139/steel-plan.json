@@ -1,0 +1,119 @@
+{
+  "schema": "gravuru-family-formats-plan/v1",
+  "lineId": "edelstahl-tuerschilder",
+  "subcategoryId": "familienschilder",
+  "reviewUnreleased": false,
+  "shopifyWrites": false,
+  "sourceFamilies": [
+    "steel-door-signs"
+  ],
+  "excluded": [],
+  "blocked": [],
+  "sizes": [
+    {
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-AB-120X80-T15",
+      "form": "AB",
+      "basePriceCents": 1999,
+      "designs": 208,
+      "mountings": 5
+    }
+  ],
+  "shopify": {
+    "options": [
+      "Befestigung"
+    ],
+    "maximumVariants": 2048,
+    "maximumOptions": 3,
+    "variantIdsCreated": 0,
+    "sources": [
+      "https://help.shopify.com/en/manual/products/variants/add-variants",
+      "https://shopify.dev/docs/api/admin-graphql/latest/mutations/productSet"
+    ],
+    "plannedVariants": 5,
+    "withinLimits": true,
+    "variants": [
+      {
+        "source": {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-AB-120X80-T15",
+          "mounting": "K00"
+        },
+        "optionValues": [
+          "Ohne Bohrung"
+        ],
+        "priceCents": 1999,
+        "designAvailable": true,
+        "shopifyVariantId": null
+      },
+      {
+        "source": {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-AB-120X80-T15",
+          "mounting": "KGL"
+        },
+        "optionValues": [
+          "Selbstklebend – glatte Flächen"
+        ],
+        "priceCents": 2298,
+        "designAvailable": true,
+        "shopifyVariantId": null
+      },
+      {
+        "source": {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-AB-120X80-T15",
+          "mounting": "KRA"
+        },
+        "optionValues": [
+          "Selbstklebend – raue Flächen"
+        ],
+        "priceCents": 2398,
+        "designAvailable": true,
+        "shopifyVariantId": null
+      },
+      {
+        "source": {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-AB-120X80-T15",
+          "mounting": "B02"
+        },
+        "optionValues": [
+          "Mit 2 Bohrlöchern"
+        ],
+        "priceCents": 2248,
+        "designAvailable": true,
+        "shopifyVariantId": null
+      },
+      {
+        "source": {
+          "familyId": "steel-door-signs",
+          "sizeKey": "GR-ES-AB-120X80-T15",
+          "mounting": "B02S"
+        },
+        "optionValues": [
+          "Mit 2 Schrauben"
+        ],
+        "priceCents": 2268,
+        "designAvailable": true,
+        "shopifyVariantId": null
+      }
+    ],
+    "metafields": [
+      {
+        "namespace": "custom",
+        "key": "gravuru_product_cut",
+        "type": "json",
+        "value": "{\"sizeKey\":\"GR-ES-AB-120X80-T15\",\"themeId\":\"familienschilder\",\"defaultDesignId\":\"TAE-V2A-8x5-D1\"}"
+      }
+    ],
+    "availableVariants": 5
+  },
+  "fontsMissing": [],
+  "unavailable": [],
+  "shopProduct": {
+    "sizeKey": "GR-ES-AB-120X80-T15",
+    "themeId": "familienschilder",
+    "defaultDesignId": "TAE-V2A-8x5-D1"
+  }
+}

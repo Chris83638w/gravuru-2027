@@ -1,0 +1,69 @@
+{
+ "createdAt": "2026-11-02",
+ "purpose": "Texte auf Selbstgestaltung von Sonderanfertigungen umstellen (Issue 135). Nur Felder, die noch exakt dem Live-Stand vom 02.11.2026 entsprechen, werden geändert.",
+ "requiredImages": [],
+ "patches": [
+  {
+   "kind": "global",
+   "slug": "layout-content",
+   "before": {
+    "processTitle": "Von Ihrem Wunsch\nzum persönlichen Entwurf.",
+    "processSteps": [
+     {
+      "title": "Wünsche mitteilen",
+      "text": "Beschreiben Sie Ihre Idee. Maße, Fotos oder eine Skizze helfen, sind für den ersten Kontakt aber nicht nötig."
+     },
+     {
+      "title": "Entwurf erhalten",
+      "text": "Nach der Abstimmung bereitet eine Mitarbeiterin Ihre Sonderanfertigung vor und sendet Ihnen einen persönlichen Gestaltungslink."
+     },
+     {
+      "title": "Gestaltung prüfen",
+      "text": "Öffnen Sie den vorbereiteten Entwurf, ergänzen Sie Texte, Motive oder Bilder und übermitteln Sie Ihre Gestaltung an uns."
+     },
+     {
+      "title": "Fertigung abstimmen",
+      "text": "Wir klären Machbarkeit, Ausführung, Preis und Termin gemeinsam. Gefertigt wird nach der vereinbarten Abstimmung."
+     }
+    ],
+    "ctaText": "Teilen Sie uns Ihre Wünsche mit. Für eine Sonderanfertigung können wir einen Entwurf vorbereiten, den Sie über Ihren persönlichen Link weitergestalten.",
+    "ctaButton": "Sonderanfertigung anfragen",
+    "contactText": "Für eine Sonderanfertigung stimmen wir die Details mit Ihnen ab. Eine Mitarbeiterin kann anschließend einen Entwurf vorbereiten und Ihnen einen persönlichen Link zum Prüfen und Weitergestalten senden."
+   },
+   "after": {
+    "processTitle": "Von Ihrer Idee\nzum fertigen Stück.",
+    "processSteps": [
+     {
+      "title": "Vorhaben wählen",
+      "text": "Gravur, Farbdruck, Zuschnitt oder Sonderanfertigung – auch für anderes Material oder Ihren eigenen Gegenstand."
+     },
+     {
+      "title": "Selbst gestalten",
+      "text": "Form, Maße, Texte, Motive und Fotos direkt im Konfigurator festlegen. Skizzen oder Dateien hängen Sie einfach an."
+     },
+     {
+      "title": "Unverbindlich senden",
+      "text": "Ihr Entwurf kommt mit allen Angaben bei uns an. Eine Vorbereitung durch uns ist dafür nicht nötig."
+     },
+     {
+      "title": "Prüfung & Fertigung",
+      "text": "Wir klären Machbarkeit, Ausführung, Preis und Termin mit Ihnen. Gefertigt wird nach der vereinbarten Abstimmung."
+     }
+    ],
+    "ctaText": "Gestalten Sie Ihr Vorhaben direkt im Konfigurator – auch Sonderanfertigungen. Lieber erst sprechen? Schreiben Sie uns, wir beraten Sie gern.",
+    "ctaButton": "Beratung anfragen",
+    "contactText": "Für eine Sonderanfertigung stimmen wir die Details mit Ihnen ab. Schneller geht es, wenn Sie Ihren Entwurf direkt im Konfigurator gestalten – Fotos und Skizzen hängen Sie dort einfach an."
+   }
+  },
+  {
+   "kind": "global",
+   "slug": "website",
+   "before": {
+    "intro": "Individuelle Schilder, Klingelplatten, Hausnummern und Acrylteile aus Bielefeld. Selbst gestalten oder eine Sonderanfertigung gemeinsam mit uns vorbereiten – vom Einzelstück bis zur Serie."
+   },
+   "after": {
+    "intro": "Individuelle Schilder, Klingelplatten, Hausnummern und Acrylteile aus Bielefeld. Gestalten Sie selbst – auch Sonderanfertigungen –, vom Einzelstück bis zur Serie."
+   }
+  }
+ ]
+}

@@ -26,7 +26,7 @@ window.GravuruNumberInputs=function(root,selector){
 };
 window.GravuruDimensions=function(container,{read,change,material,select}){
  const panel=document.createElement('section');panel.className='object-dimensions';panel.setAttribute('aria-label','Plattenmaße direkt bearbeiten');
- const rows=new Map();for(const [key,title] of [['base',material==='acryl'?'Acrylglas · Grundplatte':'Edelstahl · Grundplatte'],['acrylic','Acrylauflage']]){
+ const rows=new Map();for(const [key,title] of [['base',material==='acryl'?'Acrylglas · Grundplatte':material==='sonder'?'Gestaltungsfläche':'Edelstahl · Grundplatte'],['acrylic','Acrylauflage']]){
   const row=document.createElement('div');row.className='object-dimension-row';const name=document.createElement(select?'button':'strong');name.textContent=title;if(select){name.type='button';name.onclick=()=>select(key)}row.append(name);
   for(const [axis,label] of [['width','Breite'],['height','Höhe']]){const field=document.createElement('input'),wrap=document.createElement('label');field.type='number';field.step='0.01';field.min='1';field.inputMode='decimal';field.setAttribute('aria-label',title+' '+label+' in mm');field.dataset.dimension=key+':'+axis;wrap.append(document.createTextNode(label+' (mm)'),field);row.append(wrap);field.addEventListener('input',()=>{change(key,axis,field.value);refresh()})}panel.append(row);rows.set(key,row);
  }

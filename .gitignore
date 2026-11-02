@@ -18,3 +18,9 @@ public/werkstatt/pdfjs/
 public/werkstatt/klingeln/
 public/illustrationen/
 public/werkstatt/edelstahl-original.png
+
+# Von next dev erzeugt
+AGENTS.md
+CLAUDE.md
+src/payload-types.ts
+tsconfig.tsbuildinfo

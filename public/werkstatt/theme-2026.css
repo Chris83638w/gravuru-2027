@@ -1,0 +1,43 @@
+/* Gravuru Manufaktur – Gestaltung 2026-11 für die eingebetteten Werkstatt-Ansichten (Platte und Gestaltung).
+   Reine Darstellungsschicht: keine Maße, Exporte oder Abläufe werden verändert. */
+@font-face{font-family:'Manrope';font-style:normal;font-weight:200 800;font-display:swap;src:url(/fonts/manrope-latin-wght-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Manrope';font-style:normal;font-weight:200 800;font-display:swap;src:url(/fonts/manrope-latin-ext-wght-normal.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1E00-1E9F,U+1EF2-1EFF,U+20A0-20AB,U+20AD-20C0,U+2C60-2C7F,U+A720-A7FF}
+:root{--g-ink:#15211c;--g-text:#2b3832;--g-muted:#5b6862;--g-paper:#fbfaf7;--g-sand:#f2efe8;--g-line:#e2ddd2;--g-line-strong:#cfc8b9;--g-green:#1f6b50;--g-green-hover:#185841;--g-green-soft:#e3f1ea;--g-mint:#98d1b8;--g-sans:'Manrope',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;--ws-line:var(--g-line)}
+html,body{background:var(--g-paper)!important;color:var(--g-text)!important}
+body{font-family:var(--g-sans)!important;-webkit-font-smoothing:antialiased}
+body :is(button,input,select,textarea,label,summary,p,h2,h3,strong,small,legend){font-family:var(--g-sans)}
+
+/* Karten und Bereiche */
+.customer-mode .card,.customer-mode .construction-preview,.customer-section{background:#fff!important;border:1px solid var(--g-line)!important;border-radius:18px!important;box-shadow:none!important}
+.customer-mode .construction-preview{padding:16px!important}
+.customer-mode .preview,.customer-mode #preview-shell{background:var(--g-sand)!important;border-radius:14px}
+.customer-section>summary,.customer-section h2,.customer-mode h2,.customer-mode h3{color:var(--g-ink)!important;letter-spacing:-.005em}
+.customer-mode h2{font-weight:800!important}
+.customer-mode label{color:var(--g-ink);font-weight:700;font-size:14px}
+.customer-mode .muted,.customer-mode p{color:var(--g-muted)}
+
+/* Felder */
+.customer-mode input:not([type=checkbox]):not([type=radio]):not([type=file]),.customer-mode select,.customer-mode textarea{min-height:48px;border:1px solid var(--g-line-strong)!important;border-radius:10px!important;background:#fff!important;color:var(--g-ink)!important;font-weight:600;box-shadow:none}
+.customer-mode input:focus,.customer-mode select:focus,.customer-mode textarea:focus{outline:0;border-color:var(--g-green)!important;box-shadow:0 0 0 3px var(--g-green-soft)!important}
+.customer-mode input[type=checkbox],.customer-mode input[type=radio]{accent-color:var(--g-green)}
+
+/* Schaltflächen: eine Hauptaktion, ruhige Nebenaktionen */
+.customer-mode button{border-radius:999px!important;font-weight:700!important;font-family:var(--g-sans)!important;min-height:44px;transition:background .15s,border-color .15s,color .15s}
+.customer-mode button:not(.primary):not(.customer-continue):not(#customer-start-design){background:#fff!important;border:1px solid var(--g-line-strong)!important;color:var(--g-ink)!important}
+.customer-mode .customer-layer-action.is-add:not(#customer-start-design){background:var(--g-sand)!important;border-color:var(--g-sand)!important;color:var(--g-ink)!important}
+.customer-mode .primary,.customer-mode #customer-start-design,.customer-mode .customer-continue{background:var(--g-green)!important;border:1px solid var(--g-green)!important;color:#fff!important}
+@media (hover:hover){
+ .customer-mode button:not(.primary):not(.customer-continue):not(#customer-start-design):not(:disabled):hover{border-color:var(--g-ink)!important}
+ .customer-mode .primary:hover,.customer-mode #customer-start-design:hover{background:var(--g-green-hover)!important}
+}
+.customer-mode button[aria-pressed=true],.customer-mode button.is-selected,.customer-mode button[aria-current]{background:var(--g-ink)!important;border-color:var(--g-ink)!important;color:#fff!important}
+.customer-mode button:focus-visible,.customer-mode summary:focus-visible{outline:3px solid var(--g-green)!important;outline-offset:2px}
+.customer-mode .warning,.customer-mode #screw-note{background:#fff4e2!important;color:#5b4410!important;border-radius:10px}
+
+/* Gestaltungsseite (außerhalb des Editors) */
+#notice{font-family:var(--g-sans);color:var(--g-muted);font-size:13px;padding:10px 16px!important}
+.add-tools{background:#fff!important;border-bottom:1px solid var(--g-line)!important}
+.add-buttons button{border-radius:999px!important;border-color:var(--g-line-strong)!important;background:var(--g-sand)!important;color:var(--g-ink)!important;font-family:var(--g-sans)!important;font-weight:700!important}
+.add-buttons .plus{background:var(--g-green)!important}
+#print-upload{background:#fff!important;border-bottom:1px solid var(--g-line)}
+#print-upload #upload-design{border-radius:999px!important;border-color:var(--g-line-strong)!important;background:var(--g-sand)!important;color:var(--g-ink)!important}

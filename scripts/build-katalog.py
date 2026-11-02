@@ -61,9 +61,9 @@ def contour_previews(f, out_dir):
     for s in f['sizes']:
         if s['groupKey'] not in contours: continue
         w, h = s['widthMm'], s['heightMm']
-        path = html.escape(s['outlinePath'], quote=True)
+        path = html.escape(' '.join([s['outlinePath'], *s.get('cutoutPaths', [])]), quote=True)
         circles = ''.join(f'<circle cx="{hole["x"]}" cy="{hole["y"]}" r="{hole["diameterMm"]/2}" fill="white" stroke="#c33" stroke-width="0.3"/>' for hole in s['holesMm'])
-        svg = f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}mm" height="{h}mm" viewBox="-0.5 -0.5 {w+1} {h+1}"><title>{html.escape(s["key"])}</title><path d="{path}" fill="#63686b" stroke="#c33" stroke-width="0.3"/>{circles}</svg>\n'
+        svg = f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}mm" height="{h}mm" viewBox="-0.5 -0.5 {w+1} {h+1}"><title>{html.escape(s["key"])}</title><path d="{path}" fill-rule="evenodd" fill="#63686b" stroke="#c33" stroke-width="0.3"/>{circles}</svg>\n'
         (target / f'{s["key"]}.svg').write_text(svg, encoding='utf-8', newline='\n')
 
 

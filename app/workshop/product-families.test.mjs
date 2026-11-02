@@ -18,6 +18,15 @@ import {makeAcrylicConfig} from '../configurator/variant-m/acrylic-product.mjs';
 
 const family=()=>JSON.parse(fs.readFileSync(new URL('../designs/steel-door-signs/family.json',import.meta.url)));
 const OVAL='GR-ES-OV-90X60-T15',RECT='GR-ES-RE-120X80-T15',R5='GR-ES-AB-90X60-T15';
+
+test('139: stake starter fits the head and the native product retains the full stem',()=>{
+ const f=family();f.groups=[{key:'STAKE',name:'Grabstecker',shape:'contour',cornerRadiusMm:0}];f.mountingRules=[];f.withoutMounting=true;f.designArea={marginMm:0,keepoutMm:0};
+ const s={key:'stake-test',groupKey:'STAKE',label:'Kopf 12 × 10 cm',widthMm:120,heightMm:300,baseCents:1899,mounting:[],holesMm:[],outlinePath:'M0 0H120V100H65V300H55V100H0Z',workingArea:{headHeightMm:100,previewHeightMm:110}};f.sizes=[s];
+ validateFamily(f);const c=familyProductConfig(f,s,1),t=c.profile.designs[0].objects[0];
+ assert.equal(c.profile.geometry.height,300);assert.equal(c.profile.geometry.outlinePath,s.outlinePath);assert.deepEqual(c.profile.workingArea,s.workingArea);
+ assert(t.size>=1&&t.size<=100);assert(t.y+t.h/2<=100);assert.equal(customerLayoutIssue(t,c.profile,c.localResources),'');
+ const bad=structuredClone(f);bad.sizes[0].workingArea.previewHeightMm=300;assert.throws(()=>validateFamily(bad),/Kopfansicht/);
+});
 function stores(t){
  const assets=createDesignAssetStore({filename:':memory:'});t.after(()=>assets.close());
  const repository=createProductRepository({filename:':memory:',validateDocument:d=>assets.validateDocument(validateProductDocument(d))});t.after(()=>repository.close());

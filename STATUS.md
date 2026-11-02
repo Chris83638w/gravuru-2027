@@ -1,3 +1,8 @@
+# Issue 139 · feste Türschildprodukte, SVG/Grabstecker und Theme-Prüffassung · 02.11.2026 · Codex
+
+Eigener Branch über main 06987af. Türschilder: feste Kataloggröße, Produkt-Thema/Startdesign, vollständige freigegebene textführende Galerie und exakte Variantenbindung; Edelstahl ohne Foto/Logo. Drehpunkt/Strich-SVG einschließlich Speicherrundlauf korrigiert. Grabstecker-Kopf + 10 mm nur in Arbeitsansicht; volle Produktionskontur samt Innenausschnitten. Katalog-Draft-PR #156 (gravuru-katalog.) mit 33/33 Quellprüfungen und Katalogvollbau 16 Familien. Desktop/390×844 mit echten Edelstahl-/Acryl-Katalogprodukten per Shell-Browser geprüft. Theme 90 Euro und product.konfi lokal vorbereitet. [Prüfbericht, Bilder, offene Punkte](docs/handoffs/2026-11-02-issue139/README.md).
+
+Zwischenlieferung, keine Gesamt-Erledigung von Astra 1/Astra gravuru. Fehlende Schieferfamilien/Preisadapter, AE-Quellenlücken, weitere Linien, echte Bindung/Warenkorb/Produktionsdateien und Theme-Abnahme bleiben offen. Kein Shopify-Schreibzugriff, kein Merge, keine Veröffentlichung. Linux-Endergebnis wird im Prüfbericht als eigene Datei festgehalten; Vorläufe sind kein grüner Nachweis.
 # Türschilder: Format & Größe · 01.11.2026 · Astra
 
 Chris benennt den Bereich um: Reiter, Überschrift und erster Handy-Schritt heißen jetzt Format & Größe. 42/42 bestehende Tests, Build und lokale Desktop-/375×548-Browserprüfung grün. Nur Text/Umbruch geändert, keine Preis-/Optionslogik. [Nachweis](docs/handoffs/2026-11-01-tuerschilder-review/README.md#beschriftung-nach-chris--01112026). Auf PR #102, kein Merge oder Live-Schritt.

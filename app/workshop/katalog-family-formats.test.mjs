@@ -3,6 +3,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {planFamilyFormats} from './katalog-family-formats.mjs';
 import {workshopResources} from './catalog.mjs';
+import {resolvedOptions,selectedProfile,variantCombinations,quote,prepareConfig} from '../configurator/variant-m/contract.mjs';
+import {galleryOrder} from '../configurator/variant-m/design-gallery-model.mjs';
+import {familyChoicesMarkup} from '../configurator/variant-m/family-formats-ui.mjs';
+import {validateCommerce,variantKey} from '../configurator/variant-m/commerce-model.mjs';
 
 function source({approved=false,hidden=false}={}){
  const family=JSON.parse(fs.readFileSync(new URL('./test-fixtures/acryl3-rear/steel.json',import.meta.url))),size=family.sizes.find(s=>s.groupKey==='AB'&&s.widthMm===120&&s.heightMm===80);
@@ -31,4 +35,37 @@ test('review shows unapproved targets explicitly and never imports a design with
  const k=source(),review=await planFamilyFormats(k,'test','familie',{reviewUnreleased:true}),id=review.config.familyFormats.designs[0].id;
  assert(review.config.familyFormats.formats.find(f=>f.variants[0].designIds.includes(id)).variants[0].unapprovedDesignIds.includes(id));
  k.designs.masters[0].json.ziele=[];assert.equal((await planFamilyFormats(k,'test','familie',{reviewUnreleased:true})).config,null);
+});
+
+test('139: fixed shop product uses its starter, shows other approved themes and refuses a foreign size',async()=>{
+ const k=source({approved:true}),master=k.designs.masters[0],sizeKey=master.json.sizes[0];
+ k.designs.masters.push({...master,id:'TEST-AB-D2',themes:['tiere']},{...master,id:'TEST-AB-D3',json:{...master.json,ziele:[{familie:'steel-door-signs',freigabe:null}]}});
+ const r=await planFamilyFormats(k,'test','familie',{shopProduct:{sizeKey,themeId:'familie',defaultDesignId:master.id}}),c=r.config;
+ assert(c);assert.equal(c.familyFormats.formats.length,1);assert.equal(c.familyFormats.designs.length,2);
+ assert.equal(c.profile.defaultDesignId,'katalog-TEST-AB-D1');assert.equal(c.profile.themeId,'familie');
+ assert.deepEqual(galleryOrder(c.profile.designs,c.profile.themeId),{theme:'familie',primary:['katalog-TEST-AB-D1'],more:['katalog-TEST-AB-D2']});
+ const o=resolvedOptions(c),markup=familyChoicesMarkup(c,o);assert.doesNotMatch(markup,/data-family-group="(?:form|size)"/);assert.match(markup,/data-family-group="mounting"/);
+ assert.throws(()=>resolvedOptions(c,{size:'another'}),/Größe.*fest/);assert.equal(c.photo.enabled,false);assert.equal(c.logo.enabled,false);
+ const combinations=variantCombinations(c);assert.equal(combinations.length,5);
+ assert(combinations.every(o=>!Object.hasOwn(o,'size')&&Object.keys(o).every(key=>c.profile.optionGroups.some(g=>g.id===key))),'binding registry accepts only real variant options');
+ const binding={schema:'gravuru-shopify-commerce/v2',productId:'gid://shopify/Product/1',profileId:c.profile.id,revision:c.profile.revision,currency:'EUR',priceMode:'base-only',designIds:c.familyFormats.designs.map(d=>d.id),variants:combinations.map((o,i)=>({id:String(i+1),key:variantKey(o),priceCents:quote(c,[],selectedProfile(c,o).defaultDesignId,o).unitCents}))};
+ assert.equal(validateCommerce(c,binding),binding);binding.designIds.pop();assert.throws(()=>validateCommerce(c,binding),/Designumfang/);
+});
+
+test('139: missing/unapproved starter cannot silently fall back, motif-only masters stay out',async()=>{
+ const k=source({approved:true}),master=k.designs.masters[0],shopProduct={sizeKey:master.json.sizes[0],themeId:'familie',defaultDesignId:master.id};
+ k.designs.masters.push({...master,id:'motif-only',svg:()=>'<svg viewBox="0 0 120 80"><path id="motiv-1" d="M40 30 L50 30 L50 40 Z"/></svg>'});
+ assert.equal((await planFamilyFormats(k,'test','familie',{shopProduct})).config.familyFormats.designs.length,1);
+ await assert.rejects(planFamilyFormats(k,'test','familie',{shopProduct:{...shopProduct,defaultDesignId:'missing'}}),/Startdesign/);
+ await assert.rejects(planFamilyFormats(k,'test','familie',{shopProduct,reviewUnreleased:true}),/Prüffreigaben/);
+});
+
+test('139: all 101 approved catalog designs survive validation; a changed bound starter is rejected',async()=>{
+ const k=source({approved:true}),master=k.designs.masters[0],shopProduct={sizeKey:master.json.sizes[0],themeId:'familie',defaultDesignId:master.id};
+ for(let i=2;i<=101;i++)k.designs.masters.push({...master,id:'TEST-AB-D'+i});
+ const {config}=await planFamilyFormats(k,'test','familie',{shopProduct});
+ assert.equal(config.profile.designs.length,101);
+ assert.equal(config.familyFormats.designs.length,101);
+ const altered=structuredClone(config);altered.profile.defaultDesignId='katalog-TEST-AB-D2';
+ assert.throws(()=>prepareConfig(altered),/fester Shop-Produktschnitt/);
 });

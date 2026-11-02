@@ -15,6 +15,24 @@ const katalog=()=>openKatalog(FIXTURE);
 const fonts=()=>workshopResources().fonts;// Laufzeitschriften der Werkstatt (Montserrat, Cinzel …)
 const herz=k=>k.designs.masters.find(d=>d.id==='test-herz');
 
+test('139: nested inherited stroke-only paint stays unfilled, including round joins and explicit child override',()=>{
+ const f=katalog().families.get('test-schilder');
+ const r=katalogDesignToTemplate({id:'inherited-stroke',name:'Kranz',themes:[],fields:{}},f,null,{fonts:fonts(),svgText:'<svg viewBox="0 0 90 60"><g id="motiv-wreath"><g fill="none" stroke="#000000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 50 C0 30 10 10 30 5"/><g><path d="M50 50 L70 10 L80 40Z" fill="#000000" stroke="none"/></g></g></g></svg>'});
+ const fragment=r.motifs[0].svgFragment;
+ assert.match(fragment,/fill="none"[^>]*stroke="currentColor"[^>]*stroke-width="2.2"[^>]*stroke-linecap="round"[^>]*stroke-linejoin="round"/);
+ assert.match(fragment,/d="M50 50 L70 10 L80 40Z" fill="currentColor" fill-rule="nonzero"\/>/);
+});
+
+test('139: text rotation is applied once around the SVG pivot, including group translation',()=>{
+ const k=katalog(),family=k.families.get('test-schilder'),convert=body=>katalogDesignToTemplate({id:'rotation',name:'Drehpunkt',themes:[],fields:{}},family,null,{fonts:fonts(),svgText:'<svg viewBox="0 0 90 60">'+body+'</svg>'}).template.objects[0];
+ const text='<text id="text-1" x="25" y="30" text-anchor="middle" font-family="Montserrat" font-size="8"';
+ const plain=convert(text+'>Name</text>'),rotated=convert(text+' transform="rotate(-90 25 30)">Name</text>');
+ assert.equal(rotated.rotation,-90);assert(Math.abs(rotated.x-(25+(plain.y-30)))<.001);assert.equal(rotated.y,30);
+ const nested=convert('<g id="text-1" transform="translate(10 5)"><text x="25" y="30" text-anchor="middle" font-family="Montserrat" font-size="8" transform="rotate(-90 25 30)">Name</text></g>');
+ assert.equal(nested.rotation,-90);assert(Math.abs(nested.x-rotated.x-10)<.001);assert.equal(nested.y,35);
+ const combined=convert(text+' transform="translate(10 5) rotate(-90 25 30)">Name</text>');assert.deepEqual([combined.x,combined.y,combined.rotation],[nested.x,nested.y,nested.rotation]);
+});
+
 test('engraving import retains unfilled full-plate frames, evenodd openings, strokes and opacity',()=>{
  const k=katalog(),f=k.families.get('test-schilder');
  const convert=paths=>katalogDesignToTemplate({id:'stroke-regression',name:'Rahmen',themes:[],fields:{}},f,null,{fonts:fonts(),svgText:`<svg viewBox="0 0 90 60"><g id="motiv-frame">${paths}</g><text id="text-name" x="45" y="30" font-family="Montserrat" font-size="8">Name</text></svg>`});
@@ -336,7 +354,9 @@ test('M: resizing a print motif scales painted stroke widths along with its path
  const source='<svg viewBox="0 0 90 60"><g id="motiv-1"><path d="M10 10 L20 10 L20 20 Z" fill="none" stroke="#0066cc" stroke-width="0.6"/></g></svg>',converted=katalogDesignToTemplate({...herz(k),svg:()=>source},family,k.theme('namensschilder'),{fonts:fonts()}),before=structuredClone(converted.motifs);
  for(const [targetMm,expectedBounds,expectedWidth]of [[[180,120],[20,20,20,20],1.2],[[45,30],[5,5,5,5],.3]]){
   const template=scaleTemplate(converted.template,[90,60],targetMm,fonts()),motif=scaleEmbeddedMotifs(converted.motifs,template.katalog.scale)[0],d=motif.svgFragment.match(/d="([^"]+)"/)[1];
-  assert.deepEqual(pathBounds(d),expectedBounds);assert.deepEqual(motif.bounds,expectedBounds);assert.equal(Number(motif.svgFragment.match(/stroke-width="([^"]+)"/)[1]),expectedWidth);assert.match(motif.svgFragment,/stroke="#0066cc"/);assert.match(motif.svgFragment,/fill="none"/);
+  assert.deepEqual(pathBounds(d),expectedBounds);
+  const pad=expectedWidth/2*4; // SVG's default miter limit: viewport includes the painted stroke.
+  assert.deepEqual(motif.bounds,expectedBounds.map((v,i)=>Math.round((v+(i<2?-pad:2*pad))*1000)/1000));assert.equal(Number(motif.svgFragment.match(/stroke-width="([^"]+)"/)[1]),expectedWidth);assert.match(motif.svgFragment,/stroke="#0066cc"/);assert.match(motif.svgFragment,/fill="none"/);
  }
  assert.deepEqual(converted.motifs,before);assert.equal(scaleEmbeddedMotifs(converted.motifs,1)[0].svgFragment.replace(/d="[^"]*"/,''),before[0].svgFragment.replace(/d="[^"]*"/,''),'identity scaling preserves every paint attribute; existing path whitespace normalization is unchanged');
 });

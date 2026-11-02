@@ -3,7 +3,7 @@ import {designPaintOrder} from '../platform/sources/app/shared/models/design-lay
 import {doorbellSeparations} from './doorbell-artwork.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
 import {photoColorMode} from '../platform/sources/app/shared/models/photo-color.mjs';
-import {validateContourOutline,flattenContourPath} from './contour-path.mjs';
+import {validateContourGeometry,flattenContourPath,reverseContourPath} from './contour-path.mjs';
 import {graphicMarkup} from '../platform/sources/app/shared/models/studio-svg.mjs';
 import {readReviewPackage,digest} from './review-package.mjs';
 import {NATIVE_REVIEW,NATIVE_REVIEW_SCHEMAS} from './native-review-schema.mjs';
@@ -26,13 +26,15 @@ export function nativeContour(g){
  const ellipse=(x,y,rx,ry,sweep=0)=>`M${x-rx} ${y}a${rx} ${ry} 0 1 ${sweep} ${2*rx} 0a${rx} ${ry} 0 1 ${sweep} ${-2*rx} 0Z`;
  // sweep 1 = rounded (convex) corner, sweep 0 = eingezogene Ecke (concave quarter circle centred on the corner)
  const cornered=sw=>`M${r} 0H${w-r}A${r} ${r} 0 0 ${sw} ${w} ${r}V${h-r}A${r} ${r} 0 0 ${sw} ${w-r} ${h}H${r}A${r} ${r} 0 0 ${sw} 0 ${h-r}V${r}A${r} ${r} 0 0 ${sw} ${r} 0Z`;
- if(g.shape==='contour')try{validateContourOutline(g.outlinePath,w,h);}catch(e){fail(e.message);}
+ if(g.shape==='contour')try{validateContourGeometry(g);}catch(e){fail(e.message);}
  const d=g.shape==='contour'?g.outlinePath:g.shape==='ellipse'?ellipse(w/2,h/2,w/2,h/2):r?cornered(g.shape==='plaque'?0:1):`M0 0H${w}V${h}H0Z`;
  // CairoSVG clips with nonzero winding even when clip-rule is evenodd. Keep
  // the authoritative outer path untouched and orient generated holes against it.
  const points=g.shape==='contour'?flattenContourPath(d):null;
  const holeSweep=points&&points.reduce((sum,p,i)=>{const q=points[(i+1)%points.length];return sum+p[0]*q[1]-q[0]*p[1];},0)<0?1:0;
- return {schema:'gravuru-contour/v1',widthMm:w,heightMm:h,holeCount:g.holes.length,contours:[{role:'outer',d},...g.holes.map(h=>({role:'hole',d:ellipse(h.x,h.y,h.diameter/2,h.diameter/2,holeSweep)}))]};
+ const winding=path=>{const p=flattenContourPath(path);return Math.sign(p.reduce((sum,a,i)=>{const b=p[(i+1)%p.length];return sum+a[0]*b[1]-b[0]*a[1];},0));};
+ const cutouts=(g.cutoutPaths||[]).map(path=>({role:'hole',d:winding(path)===winding(d)?reverseContourPath(path):path}));
+ return {schema:'gravuru-contour/v1',widthMm:w,heightMm:h,holeCount:g.holes.length+cutouts.length,contours:[{role:'outer',d},...cutouts,...g.holes.map(h=>({role:'hole',d:ellipse(h.x,h.y,h.diameter/2,h.diameter/2,holeSweep)}))]};
 }
 // K14 / Ü15.1: `surfaceId` wählt die Fläche (Standard vorn, wie bisher). Die Rückseite wird
 // seitenrichtig ausgegeben, ihre Kontur hat die von hinten gespiegelten Bohrlöcher.

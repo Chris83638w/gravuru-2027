@@ -17,6 +17,7 @@ export const designNumber=d=>/-D(\d+)$/.exec(d?.katalog?.designId||'')?.[1]??nul
 const cents=v=>Number.isSafeInteger(v)&&v>=0;
 
 export function familyFormatSelection(c,values={}){
+ if(c.familyFormats.fixedSize&&values.size!==undefined&&values.size!==c.familyFormats.fixedSize)fail('Die Größe dieses Shop-Produkts ist fest.');
  const f=c.familyFormats,format=f.formats.find(s=>s.key===(values.size??f.defaultSize));
  if(!format)fail('Unbekannte Familiengröße.');
  const color=values.color??f.defaultColor,variant=format.variants.find(v=>v.color===color);
@@ -33,10 +34,10 @@ export function familyDesignReviewNote(c,options,id){
 export function familyFormatOptions(c,values={}){
  if(!values||typeof values!=='object'||Array.isArray(values)||Object.keys(values).some(k=>!['size','color','mounting'].includes(k)))fail('Unbekannte Familienoption.');
  const s=familyFormatSelection(c,values);
- return {size:s.format.key,...(c.familyFormats.colors.length>1?{color:s.color}:{}),mounting:s.mounting.id};
+ return {...(c.familyFormats.fixedSize?{}:{size:s.format.key}),...(c.familyFormats.colors.length>1?{color:s.color}:{}),mounting:s.mounting.id};
 }
 export function familyFormatCombinations(c){
- return c.familyFormats.formats.flatMap(f=>f.variants.filter(v=>v.designIds.length).flatMap(v=>v.mounting.map(m=>({size:f.key,...(c.familyFormats.colors.length>1?{color:v.color}:{}),mounting:m.id}))));
+ return c.familyFormats.formats.flatMap(f=>f.variants.filter(v=>v.designIds.length).flatMap(v=>v.mounting.map(m=>({...(!c.familyFormats.fixedSize?{size:f.key}:{}),...(c.familyFormats.colors.length>1?{color:v.color}:{}),mounting:m.id}))));
 }
 export function familyFormatPrice(c,o={}){const s=familyFormatSelection(c,o);return s.variant.basePriceCents+s.mounting.priceCents;}
 export function familyFormatChoices(c,o={}){
@@ -87,7 +88,7 @@ export function familyFormatState(c,state,requested,{fonts={},motifs=[]}={}){
  const old=familyFormatSelection(c,state.mOptions),raw={...state.mOptions,...requested};
  // An explicit format/color choice can invalidate the old fastening. Choose the
  // approved no-fastening default; requests to the server itself remain strict.
- const f=c.familyFormats.formats.find(s=>s.key===raw.size),v=f?.variants.find(v=>v.color===(raw.color??c.familyFormats.defaultColor));
+ const f=c.familyFormats.formats.find(s=>s.key===(raw.size??c.familyFormats.defaultSize)),v=f?.variants.find(v=>v.color===(raw.color??c.familyFormats.defaultColor));
  if(v&&!v.mounting.some(m=>m.id===raw.mounting))raw.mounting='K00';
  const options=familyFormatOptions(c,raw),next=familyFormatSelection(c,options),before=selectedFamilyProfile(c,state.mOptions),after=selectedFamilyProfile(c,options);
  if(old.format.key===next.format.key&&old.color===next.color)return {...state,mOptions:options};
@@ -129,6 +130,10 @@ export function validateFamilyFormats(c){
    if(v.material?.kind!==c.profile.material.kind||!/^#[0-9a-f]{6}$/i.test(v.material.color)||v.material.thicknessMm!==c.profile.material.thicknessMm||v.material.kind==='acrylic'&&(!['schwarz','anthrazit'].includes(v.material.variant)||v.material.engravingSide!=='back'))fail('Widersprüchliches Familienmaterial.');
   }
  }
- const start=familyFormatSelection(c);if(start.format.form!=='AB'||start.format.geometry.width!==120||start.format.geometry.height!==80)fail('Startgröße muss AB 12 × 8 cm sein.');
+ if(f.fixedSize!==undefined){
+  const cut=f.source?.shopProduct,starter=f.designs.find(d=>d.id===c.profile.defaultDesignId);
+  if(f.formats.length!==1||f.fixedSize!==f.defaultSize||f.formats[0].key!==f.fixedSize||f.source?.reviewUnreleased||f.formats.some(s=>s.variants.some(v=>v.unapprovedDesignIds?.length))||!cut||cut.themeId!==c.profile.themeId||starter?.katalog.designId!==cut.defaultDesignId||!starter?.themes?.includes(cut.themeId)||!f.formats[0].variants.some(v=>v.sizeKey===cut.sizeKey)||f.formats[0].variants.some(v=>!v.designIds.includes(starter.id))||c.profile.optionGroups.some(g=>g.id==='size'))fail('Ungültiger fester Shop-Produktschnitt.');
+ }
+ const start=familyFormatSelection(c);if(!f.fixedSize&&(start.format.form!=='AB'||start.format.geometry.width!==120||start.format.geometry.height!==80))fail('Startgröße muss AB 12 × 8 cm sein.');
  if(f.formats.reduce((sum,s)=>sum+s.variants.reduce((n,v)=>n+v.mounting.length,0),0)>2048)fail('Mehr als 2.048 Familienvarianten.');
 }

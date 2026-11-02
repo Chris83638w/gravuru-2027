@@ -1,0 +1,248 @@
+[
+ {
+  "file": "public/fonts/OFL-Fraunces.txt",
+  "status": "A",
+  "before": null,
+  "after": "cd3384cafac6f2bddc3955273958a2e029f97027c8037ac539ef5744a77b579e"
+ },
+ {
+  "file": "public/fonts/OFL-Manrope.txt",
+  "status": "A",
+  "before": null,
+  "after": "d826ab6583b12c26807d8716a545bdbbb672df04f48608a364ba9efdbe501c30"
+ },
+ {
+  "file": "public/fonts/fraunces-latin-ext-standard-normal.woff2",
+  "status": "A",
+  "before": null,
+  "after": "a2930b27d13a228bd9ab6a49269b5f800237892ad560cb9dd7fab01b1620f88e"
+ },
+ {
+  "file": "public/fonts/fraunces-latin-standard-normal.woff2",
+  "status": "A",
+  "before": null,
+  "after": "7234ed860a9cc83045413c4faee63c960a8f2d1917adcf728119307d56e0d783"
+ },
+ {
+  "file": "public/fonts/manrope-latin-ext-wght-normal.woff2",
+  "status": "A",
+  "before": null,
+  "after": "3911b66d9f2e005a4b989223405d0e5032619c668597ba467cc76a23c8fffcfb"
+ },
+ {
+  "file": "public/fonts/manrope-latin-wght-normal.woff2",
+  "status": "A",
+  "before": null,
+  "after": "a30ddcd349703aff7464c34bef3fffdff405ee50c113440d7c8693c02d210972"
+ },
+ {
+  "file": "public/werkstatt/customer-editor.js",
+  "status": "M",
+  "before": "f30c4c58e202bca3191162fd548aad28f23b09faf157dd1b35c56637599714f7",
+  "after": "16855c3f50702f846565a4c8725423d905577e6fbe5fbfe7aaadcd971bab6747"
+ },
+ {
+  "file": "public/werkstatt/design-adapter.js",
+  "status": "M",
+  "before": "de58f6a46be4e9c6f5b48ae4a34d36010ca6ffbba943b8028549d25cacae7af7",
+  "after": "116c3c8aa2501661986e56a1def9cec4e59f90b10457cbbd121a3c011fd45b81"
+ },
+ {
+  "file": "public/werkstatt/gestaltung.html",
+  "status": "M",
+  "before": "37a3c7c9f091a9cb88a660b8bdfe7b63491dacb19b5972ac3872c18a65b110da",
+  "after": "21ffad5e4eafebd435088ca886c3d5a3b721b62dafe5d2acb6becabf66bd9a73"
+ },
+ {
+  "file": "public/werkstatt/materialverwaltung.html",
+  "status": "M",
+  "before": "ab946b915040a869fa03986e625da75325a87bd51296ba158557f17442ff2898",
+  "after": "e7f826edea27bf4cfa7c2fe8e4e4e14632b0c6f348f200eedc4afeb60424dd71"
+ },
+ {
+  "file": "public/werkstatt/object-controls.css",
+  "status": "M",
+  "before": "91725258ce4290b6898610e06d86fbae4dcd6edbdd007260d2d05b4d5ef8559b",
+  "after": "265e2b92df9c19ee9217f2ba38c4f746cdf5f7107695473fc094c8d9c71475bc"
+ },
+ {
+  "file": "public/werkstatt/object-controls.js",
+  "status": "M",
+  "before": "a0ca5ff35146d4ef44fb38b3f5f136aa4bc2a98e76b05c0b6f0411fea0c94f52",
+  "after": "cbb71d2d5eee0344a09f784f0b4558f39b01d85877bdd797b056f995edcebb9b"
+ },
+ {
+  "file": "public/werkstatt/site-adapter.css",
+  "status": "M",
+  "before": "aa3837e240e62b19ca8f262c22a2f7cd79ecd333db02114c6f455225abc9cbe6",
+  "after": "bd3fbe05e314b1560e4152bf3973c707f9744128aa4819dfdfd2140292d5aa68"
+ },
+ {
+  "file": "public/werkstatt/theme-2026.css",
+  "status": "A",
+  "before": null,
+  "after": "b609377de8547a441e523a1e328f36f3b7a927f528f38cf4cf9ee9c81ae7ac3d"
+ },
+ {
+  "file": "scripts/apply-customer-copy-20261102.mjs",
+  "status": "A",
+  "before": null,
+  "after": "e5d74a44a1feed74725d8be1fd164268b3cfbb6bf09cc6a603c9fa9d93cd9f39"
+ },
+ {
+  "file": "scripts/build-production.cjs",
+  "status": "A",
+  "before": null,
+  "after": "35a34cb02c7b6184bd883984e97a2f80f0bb1cc5612a001eae0f97e44efe61c1"
+ },
+ {
+  "file": "scripts/check-custom-production.mjs",
+  "status": "A",
+  "before": null,
+  "after": "5616e8d504edb0cef144e06bbb4c6f168ee5532fe51c7127fb87f0cf629d09e6"
+ },
+ {
+  "file": "scripts/customer-copy-plan-20261102.json",
+  "status": "A",
+  "before": null,
+  "after": "876a6970b720131681bc3f65706da1de32ff2bf6f0311e84084aae0974206d9d"
+ },
+ {
+  "file": "src/app/(site)/[section]/[slug]/page.tsx",
+  "status": "M",
+  "before": "a28f1d21b776b33b6171d3ef659ba33e12bb2b26167f5ad057f537c3fd7794b1",
+  "after": "b404c809e43275f995684144e62b7bdd4f9e6c1de63c06effb12e587b8bc89ff"
+ },
+ {
+  "file": "src/app/(site)/[section]/page.tsx",
+  "status": "M",
+  "before": "41e6c3f02fa2e8375d2728b04f645a23c6062885b2ed6615a7089db430b7ec24",
+  "after": "3a69f9787179e8b20ed1b5b8d86dfea47532003a2688fd703b45a24fc1875978"
+ },
+ {
+  "file": "src/app/(site)/gestalten/page.tsx",
+  "status": "M",
+  "before": "e70c3098949db36e161ed576d2ce46ba8f338059955880fb9e89ea2a2b520e6c",
+  "after": "bb52d9cde0ca6ec34eec4019fdb24d382809835c8fb989dd834a0a1bfff0892f"
+ },
+ {
+  "file": "src/app/(site)/konfigurator/page.tsx",
+  "status": "M",
+  "before": "69c4576f5c0a1d46e6c2ba388c9f13e4f774457280cd79143da0c0ef2ea0fe89",
+  "after": "51c252b9d5994ecf0925fcac6b41542e0831e53e89398917f60e03473df5b201"
+ },
+ {
+  "file": "src/app/(site)/kontakt/page.tsx",
+  "status": "M",
+  "before": "c9ea754b1eaf00de8c8e1656099a3f19d9e428c6c872018606c42722e009c02c",
+  "after": "e3f10cef60116333e72a88b7d9790ca49e114c1088d22a5ccbf72fcd698ec9e2"
+ },
+ {
+  "file": "src/app/(site)/layout.tsx",
+  "status": "M",
+  "before": "56f97ca467944179da05447ce565dae00b949081d21a95b70c7c8cbb3e057b4c",
+  "after": "915661832e7aadc21ae55af977fad3ddda3872bd5d1a4af4546743ee0c0dbe20"
+ },
+ {
+  "file": "src/app/(site)/not-found.tsx",
+  "status": "M",
+  "before": "146fc9905a85938aaea17f33d312b461159f58de9b2835de0cdb3673e8822146",
+  "after": "686f42255bc02d8a753aa0c5dd744a1b932cbe7eda57fea2eece51dc090dde8b"
+ },
+ {
+  "file": "src/app/(site)/page.tsx",
+  "status": "M",
+  "before": "72ff2bc37a273ce67a627daab33c1b5a2ffe55b63bee368272d5187b75642a72",
+  "after": "49648e779fa9c5221a875e02e88766987b89715b81f2127f30b920118f6629c7"
+ },
+ {
+  "file": "src/app/(site)/referenzen/page.tsx",
+  "status": "M",
+  "before": "b7638adbbf412bca59616513ad7071b03bc85effd7b408553ee493d445b838f7",
+  "after": "f8067e997bfdd842f311a376e3d282977cc2c56ef7fd794bf0ecb90592d78158"
+ },
+ {
+  "file": "src/app/(site)/styles.css",
+  "status": "M",
+  "before": "1b1c7e36192bdd94b2cac9c37e7695ec202b9e06f6456726bcd17edd54568d1e",
+  "after": "0b76646be5d0bd90c1ceab30c543d82a7351237d7bb401b30b5cbc8fe1d41233"
+ },
+ {
+  "file": "src/app/(site)/ueber-uns/page.tsx",
+  "status": "M",
+  "before": "1b7bffc427f0752c03cc8d26e66bd95591dbc31bea9f2cc27854d4f750e98b8d",
+  "after": "7e1dcd88e84b973a001632d57f1eee12184bef3558a83c24489e665dcfbdb82d"
+ },
+ {
+  "file": "src/app/anfrage/route.ts",
+  "status": "M",
+  "before": "497bdb6e041ef3c297a35ac59284b52525c68a2e60977b5b5438654f09f4e1f5",
+  "after": "0582e717bbe005e72d3d77869658bc7ea1644e7d8971a0b15a3b8308524e51b4"
+ },
+ {
+  "file": "src/components/Configurator.tsx",
+  "status": "M",
+  "before": "4d2db3c2a4d94abc65756bebdc8195ee183023dadfca277a459ef6b6cdf254c5",
+  "after": "b2ae4abb8442049ad246c214a65ccb460477c56619a204487a0290484a9c265c"
+ },
+ {
+  "file": "src/components/ContactForm.tsx",
+  "status": "M",
+  "before": "ea49cc8234ddb020b2d45cb5c5848d77ecbd0231f85490965a08ab4878022de8",
+  "after": "74bcb88505ee409cea4281cfcd88f4f394ff310c14c1eef0ddd3528690b53920"
+ },
+ {
+  "file": "src/components/CustomProject.tsx",
+  "status": "A",
+  "before": null,
+  "after": "515357badfe01688b9e3ad441bf6543c35761afcf92f22354145d3dc0dee1524"
+ },
+ {
+  "file": "src/components/Directory.tsx",
+  "status": "M",
+  "before": "a42be957da77f8bded1ea57613f498800c866c830ba9f36d69416486291435c7",
+  "after": "25ee6bc929b2e934dc814a2ace8b4aed262b7cdb77e11b474456ecdb133f51b2"
+ },
+ {
+  "file": "src/components/Header.tsx",
+  "status": "M",
+  "before": "a984748b443edcad115f02769b735b5e5cdee87d5ffe017ae75d7e2c0e24d06c",
+  "after": "fe615c7b101cb79f8c983e5a6361303b3d67342c74913cf4778ea025bdc29206"
+ },
+ {
+  "file": "src/components/Icon.tsx",
+  "status": "A",
+  "before": null,
+  "after": "90ff29b94da933bcade5dfb26d13324f4151bdb0222d8b0a6dc2a2e6f50ac536"
+ },
+ {
+  "file": "src/components/PageGuide.tsx",
+  "status": "M",
+  "before": "cb3be8da9483ea5882a6b7283b424e71aa76f9cb1948bca45845e2a227350887",
+  "after": "2d7f6f9de9faeaaec9c497367bdf2be0151b1461c9f19264e15240c5831ac259"
+ },
+ {
+  "file": "src/components/ProductImage.tsx",
+  "status": "M",
+  "before": "1a94753aa2f957279f85e9d323ec074005c4d9b1c029e639f2e303297539e9e3",
+  "after": "efd3a7afd2816665f0c541dacec51d72700e67da8852d9504e596011e8fdb5b6"
+ },
+ {
+  "file": "src/components/Shared.tsx",
+  "status": "M",
+  "before": "36360e46a6e225a1980889da16c7d1182ccba4d0a66719cb97e546f1d4184615",
+  "after": "eeaf46bc50f9852dee959eca18ddd784155068cc380ff1850c2f2ddaa70d7056"
+ },
+ {
+  "file": "src/content/services.ts",
+  "status": "A",
+  "before": null,
+  "after": "e9a94df8b18b95c83ca972d5d3543ec94a46ddf926279088ab1c5b14791c38e3"
+ },
+ {
+  "file": "src/lib/configuration.ts",
+  "status": "M",
+  "before": "7f14173c5863071fd2e9812c21504409fe5bbddd173288cfb6802532457273fe",
+  "after": "94bbcbdff91ce725e7e7921a5de27f570de43361e0b7ff1bc1d6579b11607890"
+ }
+]

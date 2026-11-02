@@ -1,0 +1,17 @@
+{
+  "at": "2026-11-02T18:48:36.536Z",
+  "results": [
+    {
+      "design": "D24",
+      "ok": true,
+      "readyMs": 56079,
+      "mounting": "K00",
+      "variant": "57265914839420",
+      "quantity": 1,
+      "unitCents": 7999,
+      "totalCents": 7999,
+      "editRestored": true,
+      "errors": []
+    }
+  ]
+}

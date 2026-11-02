@@ -1,0 +1,17 @@
+{
+  "at": "2026-11-02T18:14:44.399Z",
+  "results": [
+    {
+      "design": "D62",
+      "ok": true,
+      "readyMs": 48527,
+      "mounting": "K00",
+      "variant": "57265914544508",
+      "quantity": 1,
+      "unitCents": 2999,
+      "totalCents": 2999,
+      "editRestored": true,
+      "errors": []
+    }
+  ]
+}

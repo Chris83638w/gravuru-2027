@@ -1,0 +1,146 @@
+{
+  "at": "2026-11-02T18:20:21.211Z",
+  "rows": [
+    {
+      "design": "D32",
+      "status": 200,
+      "title": "Pfoten-Türschild aus Edelstahl – jetzt Familie gestalten – Gravuru Design",
+      "meta": "Euer Familienname und der Name eures Vierbeiners auf Edelstahl: Pfoten-Türschild 18×12 cm. Jetzt Texte anpassen und die passende Befestigung wählen.",
+      "canonical": "https://gravuru-design.myshopify.com/products/tuerschild-abger-ecken-v2a-personalisiert-pfoten-18x12",
+      "productSchema": true,
+      "offers": [
+        {
+          "price": "29.99",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "32.98",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "33.98",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "32.48",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "32.68",
+          "availability": "http://schema.org/InStock"
+        }
+      ],
+      "aggregateRating": null
+    },
+    {
+      "design": "D62",
+      "status": 200,
+      "title": "Herzschlüssel-Namensschild – jetzt auf Edelstahl gestalten – Gravuru Design",
+      "meta": "Ein Schlüssel für euer Zuhause: Namensschild aus Edelstahl in 18×12 cm mit Herzgriff-Motiv. Jetzt Familiennamen eingeben und Wunschschrift wählen.",
+      "canonical": "https://gravuru-design.myshopify.com/products/tuerschild-abger-ecken-v2a-personalisiert-schluessel-18x12",
+      "productSchema": true,
+      "offers": [
+        {
+          "price": "29.99",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "32.98",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "33.98",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "32.48",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "32.68",
+          "availability": "http://schema.org/InStock"
+        }
+      ],
+      "aggregateRating": null
+    },
+    {
+      "design": "D65",
+      "status": 200,
+      "title": "Großes Familienschild mit Herzen jetzt personalisieren – Gravuru Design",
+      "meta": "Viel Platz für eure Namen: Edelstahl-Familienschild 30×20 cm mit Herzen und persönlichem Schriftzug. Jetzt gestalten und aus sieben Befestigungen wählen.",
+      "canonical": "https://gravuru-design.myshopify.com/products/tuerschild-abger-ecken-v2a-personalisiert-herzen-30x20",
+      "productSchema": true,
+      "offers": [
+        {
+          "price": "79.99",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "82.98",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "83.98",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "82.48",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "82.68",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "82.88",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "83.08",
+          "availability": "http://schema.org/InStock"
+        }
+      ],
+      "aggregateRating": null
+    },
+    {
+      "design": "D24",
+      "status": 200,
+      "title": "Haus-und-Herz-Schild aus Edelstahl jetzt selbst gestalten – Gravuru Design",
+      "meta": "Zuhause mit Namen zeigen: Haustürschild 30×20 cm aus gebürstetem Edelstahl mit Dach und Herz. Jetzt Wunschtext gestalten und Montage festlegen.",
+      "canonical": "https://gravuru-design.myshopify.com/products/tuerschild-abger-ecken-v2a-personalisiert-haus-mit-herz-30x20",
+      "productSchema": true,
+      "offers": [
+        {
+          "price": "79.99",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "82.98",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "83.98",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "82.48",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "82.68",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "82.88",
+          "availability": "http://schema.org/InStock"
+        },
+        {
+          "price": "83.08",
+          "availability": "http://schema.org/InStock"
+        }
+      ],
+      "aggregateRating": null
+    }
+  ],
+  "collectionStatus": 200
+}

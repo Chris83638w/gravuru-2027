@@ -1,0 +1,11 @@
+{
+  "at": "2026-11-02T18:43:50.634Z",
+  "results": [
+    {
+      "design": "D24",
+      "ok": false,
+      "error": "Expected values to be strictly equal:\n\n0 !== 1\n",
+      "errors": []
+    }
+  ]
+}

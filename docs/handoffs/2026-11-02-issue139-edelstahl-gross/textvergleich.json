@@ -1,0 +1,329 @@
+{
+  "products": 10,
+  "pairs": [
+    {
+      "a": "gid://shopify/Product/16077798965628",
+      "b": "gid://shopify/Product/16077799063932",
+      "shared": [],
+      "aGrams": 208,
+      "bGrams": 209
+    },
+    {
+      "a": "gid://shopify/Product/16077798965628",
+      "b": "gid://shopify/Product/16077799096700",
+      "shared": [],
+      "aGrams": 208,
+      "bGrams": 210
+    },
+    {
+      "a": "gid://shopify/Product/16077798965628",
+      "b": "gid://shopify/Product/16077799162236",
+      "shared": [],
+      "aGrams": 208,
+      "bGrams": 218
+    },
+    {
+      "a": "gid://shopify/Product/16077798965628",
+      "b": "gid://shopify/Product/16189689987452",
+      "shared": [
+        "die grundausführung kommt ohne bohrung",
+        "für glatte oder raue flächen",
+        "glatte oder raue flächen zwei",
+        "oder raue flächen zwei bohrlöcher"
+      ],
+      "aGrams": 208,
+      "bGrams": 174
+    },
+    {
+      "a": "gid://shopify/Product/16077798965628",
+      "b": "gid://shopify/Product/16189690118524",
+      "shared": [],
+      "aGrams": 208,
+      "bGrams": 183
+    },
+    {
+      "a": "gid://shopify/Product/16077798965628",
+      "b": "16077799227772",
+      "shared": [],
+      "aGrams": 208,
+      "bGrams": 153
+    },
+    {
+      "a": "gid://shopify/Product/16077798965628",
+      "b": "16077799326076",
+      "shared": [],
+      "aGrams": 208,
+      "bGrams": 152
+    },
+    {
+      "a": "gid://shopify/Product/16077798965628",
+      "b": "16077799457148",
+      "shared": [],
+      "aGrams": 208,
+      "bGrams": 150
+    },
+    {
+      "a": "gid://shopify/Product/16077798965628",
+      "b": "16077799555452",
+      "shared": [],
+      "aGrams": 208,
+      "bGrams": 156
+    },
+    {
+      "a": "gid://shopify/Product/16077799063932",
+      "b": "gid://shopify/Product/16077799096700",
+      "shared": [],
+      "aGrams": 209,
+      "bGrams": 210
+    },
+    {
+      "a": "gid://shopify/Product/16077799063932",
+      "b": "gid://shopify/Product/16077799162236",
+      "shared": [
+        "1 5 mm v2a edelstahl"
+      ],
+      "aGrams": 209,
+      "bGrams": 218
+    },
+    {
+      "a": "gid://shopify/Product/16077799063932",
+      "b": "gid://shopify/Product/16189689987452",
+      "shared": [],
+      "aGrams": 209,
+      "bGrams": 174
+    },
+    {
+      "a": "gid://shopify/Product/16077799063932",
+      "b": "gid://shopify/Product/16189690118524",
+      "shared": [],
+      "aGrams": 209,
+      "bGrams": 183
+    },
+    {
+      "a": "gid://shopify/Product/16077799063932",
+      "b": "16077799227772",
+      "shared": [],
+      "aGrams": 209,
+      "bGrams": 153
+    },
+    {
+      "a": "gid://shopify/Product/16077799063932",
+      "b": "16077799326076",
+      "shared": [],
+      "aGrams": 209,
+      "bGrams": 152
+    },
+    {
+      "a": "gid://shopify/Product/16077799063932",
+      "b": "16077799457148",
+      "shared": [],
+      "aGrams": 209,
+      "bGrams": 150
+    },
+    {
+      "a": "gid://shopify/Product/16077799063932",
+      "b": "16077799555452",
+      "shared": [],
+      "aGrams": 209,
+      "bGrams": 156
+    },
+    {
+      "a": "gid://shopify/Product/16077799096700",
+      "b": "gid://shopify/Product/16077799162236",
+      "shared": [],
+      "aGrams": 210,
+      "bGrams": 218
+    },
+    {
+      "a": "gid://shopify/Product/16077799096700",
+      "b": "gid://shopify/Product/16189689987452",
+      "shared": [],
+      "aGrams": 210,
+      "bGrams": 174
+    },
+    {
+      "a": "gid://shopify/Product/16077799096700",
+      "b": "gid://shopify/Product/16189690118524",
+      "shared": [
+        "probiere die angebotenen schriften aus"
+      ],
+      "aGrams": 210,
+      "bGrams": 183
+    },
+    {
+      "a": "gid://shopify/Product/16077799096700",
+      "b": "16077799227772",
+      "shared": [],
+      "aGrams": 210,
+      "bGrams": 153
+    },
+    {
+      "a": "gid://shopify/Product/16077799096700",
+      "b": "16077799326076",
+      "shared": [],
+      "aGrams": 210,
+      "bGrams": 152
+    },
+    {
+      "a": "gid://shopify/Product/16077799096700",
+      "b": "16077799457148",
+      "shared": [],
+      "aGrams": 210,
+      "bGrams": 150
+    },
+    {
+      "a": "gid://shopify/Product/16077799096700",
+      "b": "16077799555452",
+      "shared": [],
+      "aGrams": 210,
+      "bGrams": 156
+    },
+    {
+      "a": "gid://shopify/Product/16077799162236",
+      "b": "gid://shopify/Product/16189689987452",
+      "shared": [],
+      "aGrams": 218,
+      "bGrams": 174
+    },
+    {
+      "a": "gid://shopify/Product/16077799162236",
+      "b": "gid://shopify/Product/16189690118524",
+      "shared": [],
+      "aGrams": 218,
+      "bGrams": 183
+    },
+    {
+      "a": "gid://shopify/Product/16077799162236",
+      "b": "16077799227772",
+      "shared": [],
+      "aGrams": 218,
+      "bGrams": 153
+    },
+    {
+      "a": "gid://shopify/Product/16077799162236",
+      "b": "16077799326076",
+      "shared": [],
+      "aGrams": 218,
+      "bGrams": 152
+    },
+    {
+      "a": "gid://shopify/Product/16077799162236",
+      "b": "16077799457148",
+      "shared": [],
+      "aGrams": 218,
+      "bGrams": 150
+    },
+    {
+      "a": "gid://shopify/Product/16077799162236",
+      "b": "16077799555452",
+      "shared": [],
+      "aGrams": 218,
+      "bGrams": 156
+    },
+    {
+      "a": "gid://shopify/Product/16189689987452",
+      "b": "gid://shopify/Product/16189690118524",
+      "shared": [],
+      "aGrams": 174,
+      "bGrams": 183
+    },
+    {
+      "a": "gid://shopify/Product/16189689987452",
+      "b": "16077799227772",
+      "shared": [],
+      "aGrams": 174,
+      "bGrams": 153
+    },
+    {
+      "a": "gid://shopify/Product/16189689987452",
+      "b": "16077799326076",
+      "shared": [],
+      "aGrams": 174,
+      "bGrams": 152
+    },
+    {
+      "a": "gid://shopify/Product/16189689987452",
+      "b": "16077799457148",
+      "shared": [],
+      "aGrams": 174,
+      "bGrams": 150
+    },
+    {
+      "a": "gid://shopify/Product/16189689987452",
+      "b": "16077799555452",
+      "shared": [],
+      "aGrams": 174,
+      "bGrams": 156
+    },
+    {
+      "a": "gid://shopify/Product/16189690118524",
+      "b": "16077799227772",
+      "shared": [],
+      "aGrams": 183,
+      "bGrams": 153
+    },
+    {
+      "a": "gid://shopify/Product/16189690118524",
+      "b": "16077799326076",
+      "shared": [],
+      "aGrams": 183,
+      "bGrams": 152
+    },
+    {
+      "a": "gid://shopify/Product/16189690118524",
+      "b": "16077799457148",
+      "shared": [],
+      "aGrams": 183,
+      "bGrams": 150
+    },
+    {
+      "a": "gid://shopify/Product/16189690118524",
+      "b": "16077799555452",
+      "shared": [],
+      "aGrams": 183,
+      "bGrams": 156
+    },
+    {
+      "a": "16077799227772",
+      "b": "16077799326076",
+      "shared": [],
+      "aGrams": 153,
+      "bGrams": 152
+    },
+    {
+      "a": "16077799227772",
+      "b": "16077799457148",
+      "shared": [],
+      "aGrams": 153,
+      "bGrams": 150
+    },
+    {
+      "a": "16077799227772",
+      "b": "16077799555452",
+      "shared": [],
+      "aGrams": 153,
+      "bGrams": 156
+    },
+    {
+      "a": "16077799326076",
+      "b": "16077799457148",
+      "shared": [],
+      "aGrams": 152,
+      "bGrams": 150
+    },
+    {
+      "a": "16077799326076",
+      "b": "16077799555452",
+      "shared": [],
+      "aGrams": 152,
+      "bGrams": 156
+    },
+    {
+      "a": "16077799457148",
+      "b": "16077799555452",
+      "shared": [],
+      "aGrams": 150,
+      "bGrams": 156
+    }
+  ]
+}

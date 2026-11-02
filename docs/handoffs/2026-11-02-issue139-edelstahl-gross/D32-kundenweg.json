@@ -1,0 +1,17 @@
+{
+  "at": "2026-11-02T18:12:24.383Z",
+  "results": [
+    {
+      "design": "D32",
+      "ok": true,
+      "readyMs": 38198,
+      "mounting": "B02S",
+      "variant": "58100820312444",
+      "quantity": 1,
+      "unitCents": 3268,
+      "totalCents": 3268,
+      "editRestored": true,
+      "errors": []
+    }
+  ]
+}

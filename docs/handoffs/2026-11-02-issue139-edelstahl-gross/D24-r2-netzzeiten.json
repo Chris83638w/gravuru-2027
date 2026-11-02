@@ -1,0 +1,72 @@
+[
+  {
+    "method": "GET",
+    "path": "/apps/konfigurator/shop-embed.mjs",
+    "ms": 392
+  },
+  {
+    "method": "GET",
+    "path": "/apps/konfigurator/theme-cart-client.mjs",
+    "ms": 1764
+  },
+  {
+    "method": "GET",
+    "path": "/apps/konfigurator/start",
+    "ms": 1606
+  },
+  {
+    "method": "GET",
+    "path": "/api/shop-entry/model",
+    "ms": 33367
+  },
+  {
+    "method": "GET",
+    "path": "/api/acryl-guides",
+    "ms": 213
+  },
+  {
+    "method": "POST",
+    "path": "/api/shop-entry/acrylic-drafts",
+    "ms": 22268
+  },
+  {
+    "method": "POST",
+    "path": "/api/shop-entry/theme-cart",
+    "ms": 3140
+  },
+  {
+    "method": "GET",
+    "path": "/apps/konfigurator/cart/data",
+    "ms": 14709
+  },
+  {
+    "method": "POST",
+    "path": "/apps/konfigurator/cart/claim",
+    "ms": 3713
+  },
+  {
+    "method": "POST",
+    "path": "/cart/add.js",
+    "ms": 4463
+  },
+  {
+    "method": "GET",
+    "path": "/apps/konfigurator/start",
+    "ms": 1572
+  },
+  {
+    "method": "GET",
+    "path": "/api/shop-entry/model",
+    "ms": 3557
+  },
+  {
+    "method": "GET",
+    "path": "/api/shop-entry/cart-configurations/konfig_REDACTED/1",
+    "ms": 4865
+  },
+  {
+    "method": "GET",
+    "path": "/api/acryl-guides",
+    "ms": 223
+  }
+]

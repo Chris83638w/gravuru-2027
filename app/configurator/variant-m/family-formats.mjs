@@ -7,8 +7,12 @@ import {quantityTiersIssue} from './quantity-tiers.mjs';
 import {validateContourGeometry} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
 
 export const FAMILY_FORMATS_SCHEMA='gravuru-family-formats/v1';
+// Katalogfamilien, die als Familienformat (fester Shop-Produktschnitt) laufen dürfen.
+export const FAMILY_FORMAT_SOURCES=Object.freeze(['steel-door-signs','grabstecker-edelstahl','acryl-3mm-tuerschilder-schwarz','acryl-3mm-tuerschilder-anthrazit']);
 export const FAMILY_FORMS=Object.freeze([
- ['RE','Rechteck'],['AB','Rechteck abgerundet'],['QU','Quadrat'],['OV','Oval'],['R','Rund'],['RT1','Retro 1'],['RT2','Retro 2']
+ ['RE','Rechteck'],['AB','Rechteck abgerundet'],['QU','Quadrat'],['OV','Oval'],['R','Rund'],['RT1','Retro 1'],['RT2','Retro 2'],
+ // Grabstecker (Familie grabstecker-edelstahl, Chris 02.11.2026 #137): nur feste Shop-Produkte, Form = Kopfform.
+ ['GS-HERZ','Herz'],['GS-HERZRAHMEN','Herz mit Rahmen'],['GS-HERZDOPPEL','Herz mit Doppelrahmen'],['GS-HERZLIEGEND','Herz liegend'],['GS-HERZPFOTE','Herz mit Pfote'],['GS-KREUZ','Kreuz'],['GS-KREUZ2','Kreuz 2'],['GS-ENGEL','Engel'],['GS-STERN','Stern'],['GS-STERN2','Stern 2'],['GS-INFINITY','Unendlichkeit'],['GS-KATZE','Katze'],['GS-PFOTE','Pfote']
 ]);
 const clone=v=>structuredClone(v),fail=m=>{throw Error(m);};
 export const isFamilyFormats=c=>c?.familyFormats?.schema===FAMILY_FORMATS_SCHEMA;
@@ -42,7 +46,7 @@ export function familyFormatCombinations(c){
 export function familyFormatPrice(c,o={}){const s=familyFormatSelection(c,o);return s.variant.basePriceCents+s.mounting.priceCents;}
 export function familyFormatChoices(c,o={}){
  const color=o.color??c.familyFormats.defaultColor;
- return FAMILY_FORMS.map(([id,label])=>({id,label,sizes:c.familyFormats.formats.filter(f=>customerForm(f.form)===id).map(f=>{
+ return FAMILY_FORMS.filter(([id])=>!id.startsWith('GS-')||c.familyFormats.formats.some(f=>customerForm(f.form)===id)).map(([id,label])=>({id,label,sizes:c.familyFormats.formats.filter(f=>customerForm(f.form)===id).map(f=>{
   const v=f.variants.find(v=>v.color===color);return {...f,priceCents:v?.basePriceCents,available:!!v?.designIds.length};
  }).sort((a,b)=>{
   const ar=a.geometry.width/a.geometry.height,br=b.geometry.width/b.geometry.height;
@@ -126,7 +130,7 @@ export function validateFamilyFormats(c){
   if(g.shape==='contour')validateContourGeometry(g);
   if(!Array.isArray(s.variants)||!s.variants.length||new Set(s.variants.map(v=>v.color)).size!==s.variants.length)fail('Familienvarianten fehlen.');
   for(const v of s.variants){
-   if(!['steel-door-signs','acryl-3mm-tuerschilder-schwarz','acryl-3mm-tuerschilder-anthrazit'].includes(v.familyId)||!v.sizeKey||!cents(v.basePriceCents)||!f.colors.some(a=>a.id===v.color))fail('Familienquelle oder Preis fehlt.');
+   if(!FAMILY_FORMAT_SOURCES.includes(v.familyId)||!v.sizeKey||!cents(v.basePriceCents)||!f.colors.some(a=>a.id===v.color))fail('Familienquelle oder Preis fehlt.');
    if(!Array.isArray(v.designIds)||v.designIds.some(id=>!f.designs.some(d=>d.id===id)))fail('Unbekanntes Designziel.');
    if(v.unapprovedDesignIds!==undefined&&(!Array.isArray(v.unapprovedDesignIds)||v.unapprovedDesignIds.some(id=>!v.designIds.includes(id))))fail('Ungültige Prüffreigaben.');
    if(!Array.isArray(v.mounting)||new Set(v.mounting.map(m=>m.id)).size!==v.mounting.length||!v.mounting.some(m=>m.id==='K00'&&m.priceCents===0&&m.holes?.length===0)||v.mounting.some(m=>!cents(m.priceCents)||!Array.isArray(m.holes)))fail('Familienbefestigung fehlt.');
@@ -140,6 +144,6 @@ export function validateFamilyFormats(c){
   const cut=f.source?.shopProduct,starter=f.designs.find(d=>d.id===c.profile.defaultDesignId);
   if(f.formats.length!==1||f.fixedSize!==f.defaultSize||f.formats[0].key!==f.fixedSize||f.source?.reviewUnreleased||f.formats.some(s=>s.variants.some(v=>v.unapprovedDesignIds?.length))||!cut||cut.themeId!==c.profile.themeId||starter?.katalog.designId!==cut.defaultDesignId||!starter?.themes?.includes(cut.themeId)||!f.formats[0].variants.some(v=>v.sizeKey===cut.sizeKey)||f.formats[0].variants.some(v=>!v.designIds.includes(starter.id))||c.profile.optionGroups.some(g=>g.id==='size'))fail('Ungültiger fester Shop-Produktschnitt.');
  }
- const start=familyFormatSelection(c);if(!f.fixedSize&&(start.format.form!=='AB'||start.format.geometry.width!==120||start.format.geometry.height!==80))fail('Startgröße muss AB 12 × 8 cm sein.');
+ const start=familyFormatSelection(c);if(!f.fixedSize&&f.source?.shopProduct?.groessenWahl!=='form'&&(start.format.form!=='AB'||start.format.geometry.width!==120||start.format.geometry.height!==80))fail('Startgröße muss AB 12 × 8 cm sein.');
  if(f.formats.reduce((sum,s)=>sum+s.variants.reduce((n,v)=>n+v.mounting.length,0),0)>2048)fail('Mehr als 2.048 Familienvarianten.');
 }

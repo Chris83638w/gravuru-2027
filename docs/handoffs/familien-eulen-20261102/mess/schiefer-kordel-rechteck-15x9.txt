@@ -1,0 +1,8 @@
+KSRE-S-15x9-D970         KV-RECHTECK-15X9 | Breite  65% Höhe  76% Fläche  49% | Versatz x  -0.7% y  +0.3% | ok
+KSRE-S-15x9-D971         KV-RECHTECK-15X9 | Breite  56% Höhe  79% Fläche  44% | Versatz x  -0.8% y  -0.3% | ok
+KSRE-S-15x9-D972         KV-RECHTECK-15X9 | Breite  64% Höhe  81% Fläche  52% | Versatz x  -0.5% y  +0.5% | ok
+KSRE-S-15x9-D973         KV-RECHTECK-15X9 | Breite  66% Höhe  73% Fläche  48% | Versatz x  -0.5% y  +0.5% | ok
+KSRE-S-15x9-D974         KV-RECHTECK-15X9 | Breite  48% Höhe  81% Fläche  39% | Versatz x  -0.2% y  +0.3% | ok
+KSRE-S-15x9-D975         KV-RECHTECK-15X9 | Breite  50% Höhe  81% Fläche  41% | Versatz x  -0.3% y  +0.3% | ok
+KSRE-S-15x9-D976         KV-RECHTECK-15X9 | Breite  58% Höhe  81% Fläche  47% | Versatz x  -0.4% y  +0.3% | ok
+KSRE-S-15x9-D977         KV-RECHTECK-15X9 | Breite  58% Höhe  81% Fläche  47% | Versatz x  -0.3% y  +0.2% | ok

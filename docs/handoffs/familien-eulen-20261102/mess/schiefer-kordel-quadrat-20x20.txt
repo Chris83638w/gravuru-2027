@@ -1,0 +1,8 @@
+KSRE-S-20x20-D970        KV-QUADRAT-20X20 | Breite  75% Höhe  57% Fläche  43% | Versatz x  -0.6% y  +0.1% | ok
+KSRE-S-20x20-D971        KV-QUADRAT-20X20 | Breite  78% Höhe  70% Fläche  55% | Versatz x  -0.6% y  -0.5% | ok
+KSRE-S-20x20-D972        KV-QUADRAT-20X20 | Breite  86% Höhe  68% Fläche  58% | Versatz x  -0.5% y  +0.3% | ok
+KSRE-S-20x20-D973        KV-QUADRAT-20X20 | Breite  77% Höhe  62% Fläche  47% | Versatz x  -0.3% y  +0.3% | ok
+KSRE-S-20x20-D974        KV-QUADRAT-20X20 | Breite  71% Höhe  74% Fläche  52% | Versatz x  -0.3% y  +0.0% | ok
+KSRE-S-20x20-D975        KV-QUADRAT-20X20 | Breite  71% Höhe  73% Fläche  51% | Versatz x  -0.3% y  +0.2% | ok
+KSRE-S-20x20-D976        KV-QUADRAT-20X20 | Breite  79% Höhe  72% Fläche  56% | Versatz x  -0.5% y  +0.3% | ok
+KSRE-S-20x20-D977        KV-QUADRAT-20X20 | Breite  83% Höhe  71% Fläche  59% | Versatz x  -0.5% y  +0.1% | ok

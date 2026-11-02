@@ -1,0 +1,8 @@
+KS-S-20x10-D970          KV-RECHTECK-20X10 | Breite  60% Höhe  82% Fläche  49% | Versatz x  -0.6% y  +0.3% | ok
+KS-S-20x10-D971          KV-RECHTECK-20X10 | Breite  48% Höhe  81% Fläche  39% | Versatz x  -0.6% y  -0.9% | ok
+KS-S-20x10-D972          KV-RECHTECK-20X10 | Breite  55% Höhe  83% Fläche  46% | Versatz x  -0.6% y  +0.7% | ok
+KS-S-20x10-D973          KV-RECHTECK-20X10 | Breite  62% Höhe  84% Fläche  52% | Versatz x  -0.5% y  +0.3% | ok
+KS-S-20x10-D974          KV-RECHTECK-20X10 | Breite  41% Höhe  83% Fläche  34% | Versatz x  -0.2% y  +0.0% | ok
+KS-S-20x10-D975          KV-RECHTECK-20X10 | Breite  43% Höhe  84% Fläche  36% | Versatz x  -0.2% y  +0.3% | ok
+KS-S-20x10-D976          KV-RECHTECK-20X10 | Breite  49% Höhe  84% Fläche  41% | Versatz x  -0.3% y  +0.3% | ok
+KS-S-20x10-D977          KV-RECHTECK-20X10 | Breite  49% Höhe  83% Fläche  41% | Versatz x  -0.2% y  +0.0% | ok

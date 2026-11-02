@@ -1,0 +1,8 @@
+KSH-S-22.5x26.7-D970     KV-HERZ-225X267 | Breite  57% Höhe  39% Fläche  22% | Versatz x  -0.3% y  +0.0% | PRÜFEN: Fläche nur 22 %
+KSH-S-22.5x26.7-D971     KV-HERZ-225X267 | Breite  53% Höhe  42% Fläche  23% | Versatz x  -0.5% y  -0.3% | PRÜFEN: Fläche nur 23 %
+KSH-S-22.5x26.7-D972     KV-HERZ-225X267 | Breite  56% Höhe  40% Fläche  23% | Versatz x  -0.3% y  +0.1% | PRÜFEN: Fläche nur 23 %
+KSH-S-22.5x26.7-D973     KV-HERZ-225X267 | Breite  56% Höhe  40% Fläche  23% | Versatz x  -0.2% y  +0.1% | PRÜFEN: Fläche nur 23 %
+KSH-S-22.5x26.7-D974     KV-HERZ-225X267 | Breite  52% Höhe  46% Fläche  24% | Versatz x  -0.2% y  +0.0% | PRÜFEN: Fläche nur 24 %
+KSH-S-22.5x26.7-D975     KV-HERZ-225X267 | Breite  53% Höhe  46% Fläche  24% | Versatz x  -0.3% y  +0.0% | PRÜFEN: Fläche nur 24 %
+KSH-S-22.5x26.7-D976     KV-HERZ-225X267 | Breite  54% Höhe  44% Fläche  24% | Versatz x  -0.2% y  +0.1% | PRÜFEN: Fläche nur 24 %
+KSH-S-22.5x26.7-D977     KV-HERZ-225X267 | Breite  55% Höhe  42% Fläche  23% | Versatz x  -0.3% y  +0.0% | PRÜFEN: Fläche nur 23 %

@@ -60,3 +60,5 @@ python scripts/build-katalog.py --katalog <Katalog>
 Windows: Python mit FontTools/Pillow/Numpy/Scipy, `PYTHONUTF8=1`; `GRAVURU_PYTHON` auf denselben Interpreter, Poppler im PATH. Die lokale Proof-Cache enthält komplette native Antworten und gehört nicht ins Repo. Bei Rendereränderung frischen Proof-Ausgabeordner verwenden; bei Datenänderung werden betroffene Antworten automatisch neu berechnet. Transfer/Derive sind erstmalige, deterministische Erzeuger dieses Auftrags; nach manueller Editorpflege nicht ungeprüft erneut ausführen.
 
 **Genau nächster Schritt:** Claude/Chris prüft die 48 Entwürfe und die dokumentierten Original-Ausnahmen, danach explizite Freigaben je Materialziel. Dieses Paket wird als zwei Draft-PRs übergeben. Kein Merge, kein Import, nichts live. Hausnummern aus Issue 85 sind ein eigenes Folgepaket; vorherige Hinweis-/Rundpakete werden nicht verändert.
+
+Gesichert: Code/Prüfstand `a16b21c`, Katalogdaten `b4e2ab0be`. [Code-Draft-PR 138](https://github.com/Chris83638w/gravuru-2027/pull/138) · [Katalog-Draft-PR 153](https://github.com/Chris83638w/gravuru-katalog./pull/153). Diese letzte Dokumentation ergänzt nur die Lieferverweise.

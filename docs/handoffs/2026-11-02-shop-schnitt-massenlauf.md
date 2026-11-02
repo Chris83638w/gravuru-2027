@@ -22,9 +22,10 @@ Katalog: neue Linie `linien/grabstecker-edelstahl.json` (Unterkategorie `andenke
 
 1. `git pull` Code + Katalog (main).
 2. Plan bauen:
-   `node scripts/shop-schnitt-plan.mjs --katalog=<katalog> --linie=grabstecker-edelstahl --unterkategorie=andenkenschilder --form --texte=<texte.json> --output=<neuer ordner>`
+   `node scripts/shop-schnitt-plan.mjs --katalog=<katalog> --linie=grabstecker-edelstahl --unterkategorie=andenkenschilder --form --ohne-formen=GS-INFINITY --texte=<texte.json> --output=<neuer ordner>`
+   (Unendlichkeit zurückgestellt: Startdesigns liegen schlecht auf der Form, „Oma“ oben links, Daten winzig – Claude prüft die Designs neu.)
    → `summary.json` prüfen: `blockiert`, `offen`, `doppelteHandles` = 0; Dubletten-Maximum im Bericht.
-3. Hauptbilder: je Produkt `python3 scripts/hauptbild-kontur.py --svg <katalog>/designs/<reihe>/<startDesign>/design.svg --material <Edelstahl-Textur> --out <ordner>/<handle>/<imageFile>`.
+3. Hauptbilder: je Produkt `python3 scripts/hauptbild-kontur.py --svg <katalog>/designs/<reihe>/<startDesign>/design.svg --material <Edelstahl-Textur> --schnitt <katalog>/schneidvorlagen/grabstecker/grabstecker.json --schnitt-key <sizeKey ohne GS-V2A-> --out <ordner>/<handle>/<imageFile>` (Innenausschnitte Pfote/Engel/Kreuz werden ausgestanzt).
 4. Je Produkt in einer Schleife (so wie heute bei D8/D10, aber skriptgesteuert):
    a) `review-config.json` als native Konfiguration importieren (Werkstatt-DB, vorher SQLite-Sicherung),
    b) `productSet` mit `product-set.json → input` (DRAFT), Bild mit `alt` hochladen, Collections `grabstecker` + `grabstecker-<zielgruppe>` (anlegen, falls fehlend, und im Onlineshop veröffentlichen),

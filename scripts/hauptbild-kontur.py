@@ -7,6 +7,8 @@ Gravur exakt aus dem Katalog – keine KI-Erfindung, freigestellt auf hellem Gru
 
 Aufruf: python3 scripts/hauptbild-kontur.py --svg <design.svg> --material <textur.png> --out <datei.webp>
         [--groesse 2000] [--hintergrund F3F2EF] [--gravur 1E1E1E] [--fuellung 0.86]
+        [--schnitt <schneidvorlagen/…/grabstecker.json> --schnitt-key HERZPFOTE-M]   # Innenausschnitte (Pfote, Engel,
+        Kreuz, Unendlichkeit) werden aus der Schneidvorlage ausgestanzt, damit das Bild der echten Kontur entspricht.
 """
 import argparse, io, re
 import cairosvg
@@ -22,6 +24,7 @@ def main():
     ap.add_argument('--svg', required=True); ap.add_argument('--material', required=True); ap.add_argument('--out', required=True)
     ap.add_argument('--groesse', type=int, default=2000); ap.add_argument('--hintergrund', default='F3F2EF')
     ap.add_argument('--gravur', default='1E1E1E'); ap.add_argument('--fuellung', type=float, default=0.86)
+    ap.add_argument('--schnitt'); ap.add_argument('--schnitt-key')
     a = ap.parse_args()
     svg = open(a.svg, encoding='utf-8').read()
     vb = [float(x) for x in re.search(r'viewBox="([^"]+)"', svg).group(1).split()]
@@ -36,6 +39,12 @@ def main():
     d = re.search(r'\sd="([^"]+)"', plate.group(0)).group(1)
     mask_svg = f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{" ".join(map(str, vb))}"><path d="{d}" fill="#000"/></svg>'
     mask = render(mask_svg, pw).split()[3].resize((pw, ph))
+    if a.schnitt:
+        import json
+        cuts = json.load(open(a.schnitt, encoding='utf-8'))['groessen'][a.schnitt_key].get('innenausschnitte', [])
+        if cuts:
+            cut_svg = f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{" ".join(map(str, vb))}">' + ''.join(f'<path d="{c}" fill="#000"/>' for c in cuts) + '</svg>'
+            mask = ImageChops.subtract(mask, render(cut_svg, pw).split()[3].resize((pw, ph)))
     # Gravur: alles außer der Platte, Platte unsichtbar.
     eng_svg = svg.replace(plate.group(0), '')
     eng = render(eng_svg, pw).resize((pw, ph))

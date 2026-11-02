@@ -6,7 +6,7 @@
 //
 // Aufruf:
 //   node scripts/shop-schnitt-plan.mjs --katalog=<pfad> --linie=<id> --unterkategorie=<id> --output=<neuer ordner>
-//     [--je=zielgruppe|anzahl] [--anzahl=2] [--form] [--groessen=K1,K2] [--texte=<texte.json>] [--nur-plan]
+//     [--je=zielgruppe|anzahl] [--anzahl=2] [--form] [--ohne-formen=GS-INFINITY] [--groessen=K1,K2] [--texte=<texte.json>] [--nur-plan]
 // --form: ein Produkt je Form × Zielgruppe, alle Größen derselben Form im Produkt wählbar (Option „Größe“).
 //
 // --je=zielgruppe (Standard, wenn die Designnamen „… · <Zielgruppe> · …“ tragen): je Größe × Zielgruppe ein
@@ -27,10 +27,10 @@ import {shopProductCutMetafield} from '../app/workshop/shop-product-cut.mjs';
 const fail=m=>{throw Error(m);};
 export function parseArgs(argv){
  const a=Object.fromEntries(argv.map(s=>{const i=s.indexOf('=');return i<0?[s,true]:[s.slice(0,i),s.slice(i+1)];}));
- const allowed=['--katalog','--linie','--unterkategorie','--output','--je','--anzahl','--groessen','--texte','--nur-plan','--form'];
+ const allowed=['--katalog','--linie','--unterkategorie','--output','--je','--anzahl','--groessen','--texte','--nur-plan','--form','--ohne-formen'];
  const bad=Object.keys(a).filter(k=>!allowed.includes(k));if(bad.length)fail('Unbekannt: '+bad.join(', '));
  for(const k of ['--katalog','--linie','--unterkategorie','--output'])if(typeof a[k]!=='string')fail('Pflicht: '+k);
- return {katalog:a['--katalog'],line:a['--linie'],sub:a['--unterkategorie'],output:path.resolve(a['--output']),je:a['--je']||'zielgruppe',anzahl:Number(a['--anzahl']||2),groessen:a['--groessen']?String(a['--groessen']).split(','):null,texte:a['--texte']||null,nurPlan:a['--nur-plan']===true,form:a['--form']===true};
+ return {katalog:a['--katalog'],line:a['--linie'],sub:a['--unterkategorie'],output:path.resolve(a['--output']),je:a['--je']||'zielgruppe',anzahl:Number(a['--anzahl']||2),groessen:a['--groessen']?String(a['--groessen']).split(','):null,texte:a['--texte']||null,nurPlan:a['--nur-plan']===true,form:a['--form']===true,ohneFormen:a['--ohne-formen']?String(a['--ohne-formen']).split(','):[]};
 }
 
 const designNo=id=>Number(/-D(\d+)$/.exec(id)?.[1]??1e9);
@@ -104,6 +104,7 @@ export async function run(argv,{stdout=process.stdout}={}){
   const units=args.form?[...new Map(family.sizes.map(s=>[s.groupKey,family.sizes.filter(x=>x.groupKey===s.groupKey)])).values()]:family.sizes.map(s=>[s]);
   for(const sizes of units){
    if(args.groessen&&!sizes.some(s=>args.groessen.includes(s.key)))continue;
+   if(args.ohneFormen.includes(sizes[0].groupKey)){entries.push({sizeKey:sizes[0].key,form:sizes[0].groupKey,state:'zurueckgestellt',reason:'--ohne-formen'});continue;}
    const pool=sizes.flatMap(s=>(bySize.get(s.key)||[]).map(d=>({d,s})));
    if(!pool.length){entries.push({sizeKey:sizes[0].key,state:'offen',reason:'kein freigegebenes Design mit Text'});continue;}
    const groups=[...new Set(pool.map(x=>zielgruppe(x.d)||'allgemein'))];

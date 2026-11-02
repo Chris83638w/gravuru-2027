@@ -21,4 +21,8 @@ test('customer labels use template semantics even after editing the customer tex
  const design={objects:[{id:'family',type:'text',fieldKey:'name',text:'Meyer'},{id:'first',type:'text',text:'Kerstin & Ralf'},{id:'from',type:'text',text:'von'},{id:'street',type:'text',text:'Seeblickstraße 32'}],customerFields:[{id:'family',label:'Name'},{id:'first',label:'Text 2'}]};
  assert.deepEqual(design.objects.map((o,i)=>customerFieldLabel({...o,text:'Geändert'},i,design)),['Nachname','Vornamen','Zeile „von“','Adresse']);
  assert.equal(customerFieldLabel({id:'other',text:'Noch unbekannt'},0,{customerFields:[{id:'other',label:'Eigene Überschrift'}]}),'Eigene Überschrift');
+ const pair={objects:[{id:'text-1',type:'text',fieldKey:'name',text:'Thorsten & Marion'}],customerFields:[{id:'text-1',label:'Name'}]};
+ assert.equal(customerFieldLabel({...pair.objects[0],text:'Neue Eingabe'},0,pair),'Vornamen');
+ pair.customerFields[0].label='Ansprechpartner';
+ assert.equal(customerFieldLabel(pair.objects[0],0,pair),'Ansprechpartner');
 });

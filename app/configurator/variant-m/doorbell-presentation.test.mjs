@@ -22,12 +22,12 @@ function decoratedFixture(){
  c.profile.designs=structuredClone(c.doorbell.formats[0].profile.designs);return c;
 }
 
-test('picture groups retain all choices and put position immediately after format',()=>{
+test('picture groups retain all choices and put color immediately after position',()=>{
  const c=doorbellFixture(),before=structuredClone(c);
  for(const f of c.doorbell.formats){
   const groups=doorbellChoiceGroups(c,{format:f.key});
-  assert.deepEqual(groups.map(g=>g.id),['format','position','frame','color','mounting']);
-  assert.deepEqual(groups.map(g=>g.values.length),[3,2,4,2,5]);
+  assert.deepEqual(groups.map(g=>g.id),['format','position','color','frame','mounting']);
+  assert.deepEqual(groups.map(g=>g.values.length),[3,2,2,4,5]);
   assert.deepEqual(groups[1].values.map(v=>v.label),f.profile.geometry.width>f.profile.geometry.height?['Klingel rechts','Klingel links']:['Klingel unten','Klingel oben']);
  }
  assert.deepEqual(c,before);

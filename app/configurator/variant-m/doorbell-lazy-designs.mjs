@@ -19,7 +19,7 @@ export function installDoorbellDesignLoading(el,config,say=()=>{}){
   }).catch(()=>{if(request===sequence)say('Das Design konnte nicht geladen werden. Bitte erneut wählen.');}).finally(()=>{if(request===sequence){this.uxDesignResourcePending=false;this.sync?.();}});
  };
  return async()=>{
-  await Promise.all(designs().map(d=>el.uxEnsureDesignResources(d)));
+  for(const design of designs())await el.uxEnsureDesignResources(design);
   el.uxRefreshThumbnails?.();el.sync();
  };
 }

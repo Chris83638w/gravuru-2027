@@ -1,0 +1,16 @@
+import {validateDesignContent,DESIGN_LIMITS,validContentId} from './design-content.mjs';
+import {mountingAccessIssues} from './mounting-access.mjs';
+export function validateProfile(p,original,{extraFontIds=[]}={}){
+ if(!p||!original||!validContentId(p.id))throw Error('Ungültige Produktkennung.');
+ for(const key of ['frames','materials','mounting','manufacturing'])if(JSON.stringify(p[key])!==JSON.stringify(original[key]))throw Error('Material, Rahmen und Montagegeometrie dürfen hier nicht verändert werden.');
+ for(const key of Object.keys(original.features))if(key!=='motifsAllowed'&&p.features[key]!==original.features[key])throw Error('Diese Grundfunktion ist fest mit dem Modell verbunden.');
+ if(typeof p.features.motifsAllowed!=='boolean')throw Error('Ungültige Motiveinstellung.');
+ const choices={frameKeys:p.frames.map(f=>f.key),colorKeys:p.materials.acrylic.colors.map(c=>c.key),mountingKeys:p.mounting.options.map(m=>m.key),designIds:p.designs.map(d=>d.id)};
+ for(const [key,list] of Object.entries(p.customerOptions||{})){if(!choices[key]||!Array.isArray(list)||!list.length||new Set(list).size!==list.length||list.some(v=>!choices[key].includes(v)))throw Error('Ungültige Kundenauswahl: '+key);}
+ for(const frameKey of p.customerOptions?.frameKeys||choices.frameKeys)for(const mountingKey of p.customerOptions?.mountingKeys||choices.mountingKeys){const issue=mountingAccessIssues(p,{frameKey,mountingKey})[0];if(issue)throw Error('Rahmen '+frameKey+' / Befestigung '+mountingKey+': '+issue.message);}
+ if(p.id!==original.id||JSON.stringify(p.binding)!==JSON.stringify(original.binding)||JSON.stringify(p.geometry)!==JSON.stringify(original.geometry)||JSON.stringify(p.purchasing)!==JSON.stringify(original.purchasing))throw Error('Produktzuordnung, Preise und Fertigungsgeometrie dürfen hier nicht verändert werden.');
+ if(!p.name?.trim()||p.name.length>200)throw Error('Bitte einen Namen mit höchstens 200 Zeichen vergeben.');
+ if(!p.designs?.length||p.designs.length>DESIGN_LIMITS.maxDesigns||new Set(p.designs.map(d=>d.id)).size!==p.designs.length)throw Error('Bitte 1 bis '+DESIGN_LIMITS.maxDesigns+' eindeutig benannte Designs verwenden.');
+ const ids=new Set();for(const d of p.designs){validateDesignContent(d,{extraFontIds});if(!d.name?.trim()||!d.objects?.length||d.objects.length>DESIGN_LIMITS.maxObjects)throw Error('Jedes Design braucht einen Namen und mindestens ein Element.');ids.clear();for(const o of d.objects){if(!o.id||ids.has(o.id))throw Error('Doppelte Element-ID.');ids.add(o.id);if(o.type==='text'&&(!o.text?.trim()||o.text.length>DESIGN_LIMITS.maxTextLength))throw Error('Text fehlt oder ist zu lang.');if(!['x','y','w','h','rotation'].every(k=>Number.isFinite(o[k]))||o.w<=0||o.h<=0)throw Error('Ungültige Elementmaße.');const a=Math.abs(o.rotation*Math.PI/180),w=Math.abs(o.w*Math.cos(a))+Math.abs(o.h*Math.sin(a)),h=Math.abs(o.w*Math.sin(a))+Math.abs(o.h*Math.cos(a));const b=p.geometry.bell;if(o.x-w/2<10||o.x+w/2>150||o.y-h/2<10||o.y+h/2>270)throw Error(d.name+': Ein Element liegt außerhalb der gemeinsamen Gestaltungsfläche.');if(Math.min(o.x+w/2,b.x+b.width)-Math.max(o.x-w/2,b.x)>.1&&Math.min(o.y+h/2,b.y+b.height)-Math.max(o.y-h/2,b.y)>.1)throw Error(d.name+': Ein Element überlappt die Klingel.');}}
+ return p;
+}

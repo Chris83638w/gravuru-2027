@@ -1,5 +1,5 @@
 import {canEditElement,restoreElementRights,rightForProperty} from './element-rights.mjs';
-import {isLayeredDoorbell,selectedDoorbellProfile} from './doorbell-selection.mjs';
+import {isLayeredDoorbell,selectedDoorbellProfile} from './product-model-module.mjs';
 
 export function customerRightsTemplate(config,state){
  const profile=isLayeredDoorbell(config)?selectedDoorbellProfile(config,state.mOptions):config.profile;

@@ -1,3 +1,7 @@
+## 03.11.2026 · Codex · Issue 139 Gerätepaket getrennt und Kundenaktionen geprüft
+
+Neu 2 / überarbeitet 8 / gesamt live 10 unverändert. Gemeinsamer Browserkern ohne Geräte-/Verwaltungsmodule; Funkklingel-Erweiterung nur im passenden Frame. Galerie vorbereitet ohne Vorschauarbeit im abgetrennten DOM. R6-Frühfehler und leeres Pflichtfeld korrigiert, auch direkter Warenkorbknopf geprüft. R5/R7/R9 mit sichtbaren Nachweisen für echte Modelle. Linux-Gesamtlauf 2.047/2, beide Testanker korrigiert; 94 gezielte Nachprüfungen grün. [Details, Bilder und offene Grenzen](docs/handoffs/2026-11-03-issue139-module-kundenpruefung.md). Kein Deployment; nächster Schritt echter Warenkorb, vollständiges Ausführungsregister und Je-Linie-Messung.
+
 ## 03.11.2026 · Codex · Issue 139 neutraler Start ohne historische Geräteausführung
 
 Neu angelegt: 2 · überarbeitet: 8 · gesamt live: 10 (vorherige Wellen). Native `prepare`/`finish`-Kette durch produktgebundenen Zustand und gemeinsame DOM-Anschlüsse ersetzt. Drei historische Geräte-Skripte aus dem nativen Startdokument ausgelagert; nur der Referenzpfad lädt sie noch. 197 Linux-Tests bestanden. Mobile Browserprüfung Edelstahl/Acryl/AOSU: historische Geräte-Datei weder geladen noch ausgeführt, keine JavaScript-Fehler; Optionen/Kundentext und Vollbild geprüft. [Nachweis](docs/handoffs/2026-11-03-issue139-neutraler-start.md). Aktuelle Live-Vorhermessungen im Startansicht-Bericht ergänzt. Keine Veröffentlichung. Nächster Schritt: moderne Modulabhängigkeiten und Händler-Verwaltungsimporte aus dem gemeinsamen Start lösen.

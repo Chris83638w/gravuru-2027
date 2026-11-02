@@ -1,7 +1,7 @@
 import {captureDesignContent,carryDesignContent,capturePhotoFiles} from './design-content-transfer.mjs';
 import {preserveProductSelection} from './product-design-transfer.mjs';
 import {designGalleryCount} from './product-design-gallery-label.mjs';
-import {isLayeredDoorbell} from './doorbell-selection.mjs';
+import {isLayeredDoorbell} from './product-model-module.mjs';
 import {isFamilyFormats} from './family-formats.mjs';
 
 const money=cents=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100);

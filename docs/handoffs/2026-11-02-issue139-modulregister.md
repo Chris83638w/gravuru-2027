@@ -1,5 +1,10 @@
 # Issue 139 – Master-Konfigurator: Bestandsprüfung und Modulgrenze
 
+## Aktueller Stand 03.11.2026
+
+Die folgenden Bestandsbefunde beschreiben den Ausgangspunkt. Neutrale Vorbereitung und historische Trennung sind inzwischen umgesetzt; jetzt auch die modernen Gerätebausteine und Verwaltungsimporte aus dem Kern entfernt. Stahl/Acryl laden ein gemeinsames Paket, AOSU zusätzlich das Gerätepaket. [Dateizuordnung, Netzwerk-/Browsernachweise und Tests](2026-11-03-issue139-module-kundenpruefung.md). Das vollständige Vier-Modul-Ausführungsregister und die Je-Linie-Live-Abnahme bleiben offen. Kein Deployment.
+
+
 Quelle: ENTSCHEIDUNGEN.md auf main 66ad324, insbesondere 1.1–1.13, 2.10 und R1–R9; Claude-Kommentare 6588814817 und 6589023089. Dies ist der konkrete Umbauplan zur Prüfung in PR 153, **noch keine implementierte Modultrennung**.
 
 ## Erster umgesetzter Trennungsschritt

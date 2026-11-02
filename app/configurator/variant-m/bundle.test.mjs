@@ -7,7 +7,7 @@ import zlib from 'node:zlib';
 import http from 'node:http';
 import {once} from 'node:events';
 import {pathToFileURL} from 'node:url';
-import {BUNDLE_ENTRIES,BUNDLE_NAME,collectModules,transformModule,buildEditorBundle,patchEditorBundle,fileForUrl} from './bundle-build.mjs';
+import {BUNDLE_ENTRIES,BUNDLE_NAME,collectModules,transformModule,buildEditorBundle,buildProductEditorBundles,patchEditorBundle,fileForUrl,DEVICE_ENTRIES} from './bundle-build.mjs';
 import {build,OUTPUT} from './build.mjs';
 import {createPreviewServer} from './server.mjs';
 
@@ -17,7 +17,7 @@ const loadBundle=async file=>(await import(pathToFileURL(file).href+'?t='+Date.n
 async function linkInNode(file,entry){
   const text=fs.readFileSync(file,'utf8');
   const modules=JSON.parse(text.match(/^const MODULES=(.*);$/m)[1]),cache=new Map();
-  const dataUrl=i=>{if(cache.has(i))return cache.get(i);let code=modules[i].code;for(const d of modules[i].deps)code=code.replaceAll('gravuru-bundle:'+d+"'",dataUrl(d)+"'").replaceAll('gravuru-bundle:'+d+'"',dataUrl(d)+'"');const url='data:text/javascript;base64,'+Buffer.from(code).toString('base64');cache.set(i,url);return url;};
+  const dataUrl=i=>{if(cache.has(i))return cache.get(i);let code=modules[i].code;for(const d of modules[i].deps)code=code.replaceAll('gravuru-bundle:'+d+"'",dataUrl(d)+"'").replaceAll('gravuru-bundle:'+d+'"',dataUrl(d)+'"');code=code.replace(/globalThis\.gravuruModules\.import\(['"]([^'"]+)['"]\)/g,(_,url)=>'import('+JSON.stringify(pathToFileURL(fileForUrl(url)).href)+')');const url='data:text/javascript;base64,'+Buffer.from(code).toString('base64');cache.set(i,url);return url;};
   return import(dataUrl(modules.findIndex(m=>m.url===entry)));
 }
 
@@ -61,6 +61,8 @@ test('Editor-Bündel enthält alle statisch erreichbaren Module unverändert (bi
     const set=new Set(bundle.urls);
     assert.ok(set.has('/platform/sources/app/shared/models/text-paths.mjs'));
     assert.equal(set.has('/platform/sources/app/shared/models/doorbell-preview.mjs'),false,'common text rendering must not pull in the device preview or its old CDN font loader');
+    for(const url of DEVICE_ENTRIES)assert.equal(set.has(url),false,'device logic must not be delivered in the common bundle: '+url);
+    for(const name of ['doorbells','doorbell-release','runtime-contract','studio-products'])assert.equal(set.has('/platform/sources/app/shared/models/'+name+'.mjs'),false,'customer core must not include merchant administration: '+name);
     for(const entry of BUNDLE_ENTRIES)assert.ok(set.has(entry),entry);
     const specifier=/(?:^|[;{}\n])\s*(?:import|export)\s*(?:[\w$*{}\s,]*?\s*from\s*)?['"]([^'"\n]+)['"]/g;
     const sourceOf=url=>fs.readFileSync(fileForUrl(url),'utf8');
@@ -71,7 +73,7 @@ test('Editor-Bündel enthält alle statisch erreichbaren Module unverändert (bi
     assert.ok(bundle.urls.length>=70,String(bundle.urls.length));
     // Quelltext unverändert bis auf die Modulangaben.
     const text=fs.readFileSync(result.file,'utf8'),modules=JSON.parse(text.match(/^const MODULES=(.*);$/m)[1]);
-    const neutral=code=>code.replace(/(['"])(?:gravuru-bundle:\d+|\.{1,2}\/[^'"\n]+|\/[^'"\n]+\.mjs)\1/g,'"§"').replace(/globalThis\.gravuruModules\.fetch\(/g,'fetch(').replace(/\n\/\/# sourceURL=.*\n$/,'');
+    const neutral=code=>code.replace(/(['"])(?:gravuru-bundle:\d+|\.{1,2}\/[^'"\n]+|\/[^'"\n]+\.mjs)\1/g,'"§"').replace(/globalThis\.gravuruModules\.fetch\(/g,'fetch(').replace(/globalThis\.gravuruModules\.import\(/g,'import(').replace(/\n\/\/# sourceURL=.*\n$/,'');
     for(const m of modules)assert.equal(neutral(m.code),neutral(sourceOf(m.url).replace(/^﻿/,'')),m.url);
     // Stylesheets: genau die per fetch geladenen, Inhalt identisch.
     assert.deepEqual(bundle.styles,['acrylic-scene','completion','customer-tools','layout','mobile','motif-tile-fit','neutral-theme','product-design-gallery','refinements','usability','ux-details','ux','view-zoom','workflow'].map(n=>'/configurator/variant-m/'+n+'.css'));
@@ -93,6 +95,26 @@ test('Gebündelte Module verknüpfen sich als echte ES-Module und verhalten sich
     assert.deepEqual(Object.keys(bundled).sort(),Object.keys(direct).sort());
     assert.equal(bundled.money(123456),direct.money(123456));
   }finally{fs.rmSync(dir,{recursive:true,force:true});}
+});
+
+test('product chunk retains common module identities and contains only the missing static dependency closure',async()=>{
+ const directory=fs.mkdtempSync(path.join(os.tmpdir(),'gravuru-product-bundle-'));
+ try{
+  const result=buildProductEditorBundles(directory),common=new Set(result.modules);
+  const chunk=JSON.parse(fs.readFileSync(result.device.file,'utf8').match(/^const MODULES=(.*);$/m)[1]);
+  const device=new Set(chunk.map(m=>m.url));
+  for(const entry of DEVICE_ENTRIES)assert.ok(device.has(entry),entry);
+  for(const module of chunk){
+   assert.equal(common.has(module.url),false,'no duplicate common module instance');
+   for(const dependency of module.deps){
+    if(typeof dependency==='number')assert.ok(chunk[dependency]);
+    else assert.ok(common.has(dependency),dependency);
+   }
+   assert.equal(result.chunks[module.url],result.device.url);
+  }
+  assert.ok(chunk.some(m=>m.deps.some(d=>typeof d==='string')),'shared dependencies stay external');
+  assert.ok(fs.existsSync(result.file));assert.ok(fs.existsSync(result.device.file));
+ }finally{fs.rmSync(directory,{recursive:true,force:true});}
 });
 
 test('Editor lädt das Bündel über den Lader; Einzelmodule bleiben als Entwicklungsmodus erreichbar',()=>{

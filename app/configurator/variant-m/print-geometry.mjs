@@ -1,4 +1,4 @@
-import {isLayeredDoorbell} from './doorbell-selection.mjs';
+import {isLayeredDoorbell} from './product-model-module.mjs';
 import {isFamilyFormats} from './family-formats.mjs';
 import {selectedProfile} from './contract.mjs';
 import {acrylicSelection,acrylicOptions} from './acrylic-product.mjs';

@@ -91,7 +91,7 @@ test('Fotohinweis ist als Vorschau-Hilfe markiert und fehlt in Prüfansicht und 
 
 test('Früher Fototipp wird direkt nach dem ersten Zeichnen eingebaut und von der Oberfläche abgelöst',()=>{
   const build=fs.readFileSync(path.join(HERE,'build.mjs'),'utf8'),ux=fs.readFileSync(path.join(HERE,'ux.mjs'),'utf8');
-  assert.match(build,/await mount\(form\.value\);const specimen=host\.querySelector\('gravuru-configurator'\);if\(window\.parent\.UniversalConfig\)adapter\.installEarlyPhotoTap\(specimen,window\.parent\.UniversalConfig\);/);
+  assert.match(build,/const specimen=await mount\(form\.value\);if\(window\.parent\.UniversalConfig\)adapter\.installEarlyPhotoTap\(specimen,window\.parent\.UniversalConfig\);/);
   assert.match(ux,/el\.uxPhotoTapReady=true;/);
   assert.match(ux,/el\.addEventListener\('gravuru-early-photo',takeEarlyPhoto\);takeEarlyPhoto\(\);/);
 });

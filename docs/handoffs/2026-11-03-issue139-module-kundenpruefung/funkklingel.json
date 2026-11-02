@@ -1,0 +1,89 @@
+{
+  "referenceCalls": {
+    "prepare": 0,
+    "finish": 0
+  },
+  "historicalDevice": {
+    "loaded": false,
+    "defined": false
+  },
+  "moduleDelivery": {
+    "core": [],
+    "bundles": [
+      "/_bundle/editor-ad1617939395386c.mjs",
+      "/_bundle/editor-2e3da3b988eb0da4.mjs"
+    ]
+  },
+  "changed": {
+    "options": {
+      "format": "24x20",
+      "frame": "FK-SEITLICH",
+      "color": "anthrazit",
+      "mounting": "B04S",
+      "position": "opposite"
+    },
+    "texts": [
+      "Koch",
+      "Mustermann",
+      "12a"
+    ],
+    "price": "63,68 €"
+  },
+  "transferred": {
+    "design": "FK-SEITLICH",
+    "texts": [
+      "Koch",
+      "Mustermann",
+      "12a"
+    ],
+    "options": {
+      "format": "24x20",
+      "frame": "FK-SEITLICH",
+      "color": "anthrazit",
+      "mounting": "B04S",
+      "position": "opposite"
+    }
+  },
+  "readyMs": 8283.100000023842,
+  "errors": [],
+  "shots": [
+    {
+      "file": "000.jpg",
+      "ms": 304
+    },
+    {
+      "file": "001.jpg",
+      "ms": 368
+    },
+    {
+      "file": "002.jpg",
+      "ms": 1345
+    },
+    {
+      "file": "003.jpg",
+      "ms": 1473
+    },
+    {
+      "file": "004.jpg",
+      "ms": 1477
+    },
+    {
+      "file": "005.jpg",
+      "ms": 1792
+    },
+    {
+      "file": "006.jpg",
+      "ms": 8831
+    },
+    {
+      "file": "007.jpg",
+      "ms": 8841
+    },
+    {
+      "file": "008.jpg",
+      "ms": 9070
+    }
+  ],
+  "options": [],
+  "tiles": []
+}

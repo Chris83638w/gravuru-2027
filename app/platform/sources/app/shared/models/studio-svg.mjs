@@ -1,5 +1,5 @@
 import {acrylicPlatePreview} from './acrylic-plate-preview.mjs';
-import {doorbellMaterialPreview} from './doorbell-material-preview.mjs';
+import {doorbellMaterialPreview} from './product-material-module.mjs';
 import {designPaintOrder} from './design-layer-order.mjs';
 import {contourPathWithHoles,contourSafeAreaSvg} from './contour-geometry.mjs';
 import {photoShape,photoClip,photoMaskURL} from './photo-shape.mjs';

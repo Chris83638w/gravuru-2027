@@ -10,7 +10,7 @@ import {localAssistant,ACRYLIC_GUIDES} from './help.mjs';
 import {makeAcrylicConfig} from './acrylic-product.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {writeLazyResources,patchEditorLoading} from './lazy-resources-build.mjs';
-import {buildEditorBundle,patchEditorBundle} from './bundle-build.mjs';
+import {buildProductEditorBundles,patchEditorBundle} from './bundle-build.mjs';
 import {splitReferenceDevice} from './reference-device-build.mjs';
 export const HERE=path.dirname(fileURLToPath(import.meta.url));
 export const ROOT=path.resolve(HERE,'../..');
@@ -120,8 +120,8 @@ export function build({outputDirectory=OUTPUT}={}){
   for(const item of read('designs/aosu-labrador/image-source-verification.json'))source=source.replaceAll(item.url,'/_runtime/images/'+item.name);
   source=patchEditorLoading(source);
   // Ladezeit: alle Editor-Module als ein Bündel (bundle-build.mjs, Route /_bundle/); `?module=einzeln` lädt Einzelmodule.
-  const bundle=buildEditorBundle(outputDirectory);
-  source=patchEditorBundle(source,bundle.url);
+  const bundle=buildProductEditorBundles(outputDirectory);
+  source=patchEditorBundle(source,bundle.url,bundle.chunks);
   // Design-Karten/Galerie: Größenregeln nur für das äußere Vorschau-SVG, nie für verschachtelte Motiv-SVGs
   // (sonst werden Kreuz, Rose usw. in der Designauswahl aufgeblasen und verschoben; Fehler 20.10.2026).
   source=source.replace(/(\.c-design-card svg|\.c-gallery svg)(?=\s*[,{])/g,'$1:not(svg svg)');

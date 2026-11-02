@@ -39,14 +39,14 @@ import {acrylicSelection,acrylicOptions} from './acrylic-product.mjs';
 import {selectionIds} from './profile-selection.mjs';
 import {rightForProperty,canEditElement,customerAdditionPolicy} from './element-rights.mjs';
 import {beginCustomerRights} from './customer-rights.mjs';
-import {textLimits,textLimitIssue,textLength,textLimitCount,sameSampleText,clampText} from '../../workshop/theme-limits.mjs';
+import {textLimits,textLimitIssue,textLength,textLimitCount,sameSampleText,requiredTextMissing,clampText} from '../../workshop/theme-limits.mjs';
 import {parseDirectLink,applyLinkText,withoutDirectLinkParams} from './design-gallery-model.mjs';
 import {createSessionGuard,uploadReferences} from './session-guard.mjs';
 import {installAccountDrafts} from './account-drafts.mjs';
 import {installSurfaceTabs} from './surface-tabs.mjs';
 import {installBackgroundLoading} from './background-loading.mjs';
 import {installEdgeClamp} from './edge-clamp.mjs';
-import {installDoorbellDesignLoading} from './doorbell-lazy-designs.mjs';
+import {installDoorbellDesignLoading} from './product-view-module.mjs';
 import {fontDisplayName} from './font-display.mjs';
 
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -250,9 +250,9 @@ export async function installUX(el,config,legacy,{attach}={}){
   const touchedText=new Set();let textValidationAttempted=false;
   const textIndex=o=>el.state.objects.filter(v=>v.type==='text').indexOf(o);
   el.uxTextLabel=o=>fieldLabel(o,textIndex(o));
-  function textFieldIssue(o){
+  function textFieldIssue(o,{required=true}={}){
     const t=templateText(o);
-    if(t?.required===true&&sameSampleText(o.text,t.text))return 'Pflichtfeld: Bitte den Beispieltext durch deinen eigenen ersetzen.';
+    if(required&&t?.required===true&&requiredTextMissing(o.text,t.text))return 'Pflichtfeld: Bitte deinen eigenen Text eingeben.';
     const issue=textLimitIssue(o.text,limitsFor(o));if(issue)return issue;
     if(o.uxTextOverflow==='length')return 'Text zu lang: Passt auch in der Mindestgröße nicht auf die Fläche. Bitte kürzen.';
     return '';
@@ -264,6 +264,8 @@ export async function installUX(el,config,legacy,{attach}={}){
     return issues;
   }
   el.uxTextLimits=limitsFor;el.uxTextIssues=textIssues;
+  el.uxTextValidationAttempted=()=>textValidationAttempted;
+  el.uxAttemptTextValidation=()=>{textValidationAttempted=true;};
   el.uxRevealTextIssue=id=>{showTab('text');select(id);const field=all('[data-ux-text]').find(f=>f.dataset.uxText===id);field?.scrollIntoView?.({block:'center',behavior:'smooth'});field?.focus({preventScroll:true});};
   // Abschluss und Warenkorb bleiben gesperrt, solange ein Textfeld einen Hinweis trägt; das Feld wird gezeigt.
   r.addEventListener('click',e=>{if(!e.target.closest('.completion-finish,.fk-buy-button'))return;textValidationAttempted=true;el.sync();const issue=textIssues()[0];if(!issue)return;e.preventDefault();e.stopImmediatePropagation();say(issue.message);el.uxRevealTextIssue(issue.id);},true);
@@ -271,7 +273,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   const textControls=$('.ux-controls');
   function updateFields(){const texts=el.state.objects.filter(o=>o.type==='text');const signature=el.state.designId+'|'+texts.map((o,i)=>o.id+':'+fieldLabel(o,i)).join('|');if(signature!==fieldSignature){if(textControls.closest('.ux-fields'))$('#ux-panel-text').append(textControls);fieldSignature=signature;$('.ux-fields').innerHTML=texts.map((o,i)=>{const required=templateText(o)?.required===true,limits=limitsFor(o);return `<div class="ux-text-row" data-ux-row="${esc(o.id)}"><label for="ux-text-${i}">${esc(fieldLabel(o,i))}${required?' <span class="ux-text-required" title="Pflichtfeld">*</span>':''}</label><textarea id="ux-text-${i}" rows="1" autocorrect="off" spellcheck="false" autocapitalize="${/adresse|spruch/i.test(fieldLabel(o,i))?'sentences':'words'}" data-ux-text="${esc(o.id)}" aria-label="${esc(fieldLabel(o,i))}" ${limits.perLine||limits.wholeField?'':'maxlength="'+limits.maxLength+'"'} ${required?'aria-required="true"':''} aria-describedby="ux-text-count-${i} ux-text-issue-${i}"></textarea><small class="ux-text-meta"><span id="ux-text-count-${i}" data-ux-text-count="${esc(o.id)}" aria-live="polite"></span><span id="ux-text-issue-${i}" class="ux-text-issue" data-ux-text-issue="${esc(o.id)}" role="alert"></span></small></div>`;}).join('');}
     for(const field of all('[data-ux-text]')){const o=texts.find(o=>o.id===field.dataset.uxText),limits=limitsFor(o),row=field.closest('.ux-text-row');if(limits.perLine||limits.wholeField)field.removeAttribute('maxlength');else field.maxLength=limits.maxLength;if(r.activeElement!==field)field.value=o.text;field.disabled=!!o.uxLocked||!!o.uxHidden;row.classList.toggle('is-selected',el.state.selected===o.id);
-      const issue=o.uxHidden||o.customerEditable===false||!textValidationAttempted&&!touchedText.has(o.id)?'':textFieldIssue(o),used=textLimitCount(o.text,limits),count=used>=limits.maxLength*.8?used+'/'+limits.maxLength+(limits.perLine?' je Zeile':''):'';row.classList.toggle('is-invalid',!!issue);field.setAttribute('aria-invalid',String(!!issue));
+      const issue=o.uxHidden||o.customerEditable===false||!textValidationAttempted&&!touchedText.has(o.id)?'':textFieldIssue(o,{required:textValidationAttempted}),used=textLimitCount(o.text,limits),count=used>=limits.maxLength*.8?used+'/'+limits.maxLength+(limits.perLine?' je Zeile':''):'';row.classList.toggle('is-invalid',!!issue);field.setAttribute('aria-invalid',String(!!issue));
       const countNode=row.querySelector('[data-ux-text-count]'),issueNode=row.querySelector('[data-ux-text-issue]');if(countNode&&countNode.textContent!==count)countNode.textContent=count;if(issueNode&&issueNode.textContent!==issue)issueNode.textContent=issue;}
     const o=selected(),isText=o?.type==='text';$('.ux-controls').hidden=!isText;
     if(isText){$('[data-ux-font-name]').textContent=fontDisplayName(o.font);if(r.activeElement!==$('#ux-size'))$('#ux-size').value=(config?.workbench?.embedded?roundEdit(o.size):displayTextSize(o));$('[data-ux=bold]').setAttribute('aria-pressed',!!o.bold);$('[data-ux=italic]')?.setAttribute('aria-pressed',!!o.italic);if($('[data-ux-color]'))$('[data-ux-color]').value=o.color||'#202824';for(const f of all('[data-ux-prop]'))if(r.activeElement!==f)f.value=(config?.workbench?.embedded?roundEdit(o[f.dataset.uxProp]||0):Math.round((o[f.dataset.uxProp]||0)*10)/10);}
@@ -519,8 +521,8 @@ export async function installUX(el,config,legacy,{attach}={}){
   window.dispatchEvent(new Event('resize'));
   window.parent.postMessage({type:'gravuru-ux-ready'},location.origin);
   // Ladefolge nach dem Start: Optionsbilder → Schriften → Motive im Leerlauf (background-loading.mjs).
-  if(config)installBackgroundLoading({el,r,config});
-  if(loadDoorbellGallery)loadDoorbellGallery().catch(()=>say('Einige Designvorschauen werden beim Auswählen nachgeladen.'));
+  const background=config?installBackgroundLoading({el,r,config}):null;
+  if(loadDoorbellGallery)background?.add('designs',{background:loadDoorbellGallery,now:loadDoorbellGallery,saveData:'skip'});
   const assistant=document.createElement('script');assistant.src='/assistant.js';assistant.dataset.api=location.origin;document.body.append(assistant);
   return {showTab,update,isDirty:()=>dirty};
 }

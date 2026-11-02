@@ -1,0 +1,115 @@
+{
+  "at": "2026-11-02T23:46:18.621Z",
+  "scope": "isolated real-model candidate",
+  "networkMbit": 9,
+  "latencyMs": 150,
+  "cpuRate": 4,
+  "readyMs": 4912,
+  "cards": 40,
+  "galleryBytes": 51944,
+  "timing": [
+    {
+      "path": "/_bundle/editor-ad1617939395386c.mjs",
+      "ms": 574,
+      "bytes": 452506,
+      "start": 378
+    },
+    {
+      "path": "/_runtime/lazy/schriften/lora-italic.json",
+      "ms": 345,
+      "bytes": 206665,
+      "start": 3679
+    },
+    {
+      "path": "/_runtime/lazy/schriften/source-code-pro.json",
+      "ms": 284,
+      "bytes": 142717,
+      "start": 4273
+    },
+    {
+      "path": "/_runtime/lazy/katalog-kern.json",
+      "ms": 216,
+      "bytes": 45541,
+      "start": 1210
+    },
+    {
+      "path": "/api/guides",
+      "ms": 188,
+      "bytes": 1376,
+      "start": 3633
+    },
+    {
+      "path": "/assistant.js",
+      "ms": 168,
+      "bytes": 16511,
+      "start": 3215
+    },
+    {
+      "path": "/konfigurator/shop/schriften/9b3e2f8741a92b71d01568deb991538159ce4d849e6d795cc20412259a8199c7.json",
+      "ms": 5,
+      "bytes": 92226,
+      "start": 1210
+    },
+    {
+      "path": "/konfigurator/shop/schriften/77b4abc87ded094d18460011188e82c4db2d76e2b4db8fb0b47010d1c5cf4eae.json",
+      "ms": 3,
+      "bytes": 58255,
+      "start": 1209
+    },
+    {
+      "path": "/konfigurator/shop/schriften/62f89cb6e004b5774d40aeb31591d9e8c79ce83da4544bc8ef81fa4db4ed171c.json",
+      "ms": 2,
+      "bytes": 130884,
+      "start": 1208
+    }
+  ],
+  "errors": [],
+  "referenceCalls": {
+    "prepare": 0,
+    "finish": 0
+  },
+  "historicalDevice": {
+    "loaded": false,
+    "defined": false
+  },
+  "moduleDelivery": {
+    "core": [],
+    "bundles": [
+      "/_bundle/editor-ad1617939395386c.mjs"
+    ]
+  },
+  "mounts": [
+    {
+      "id": "K00",
+      "icon": true,
+      "selected": "true"
+    },
+    {
+      "id": "KGL",
+      "icon": true,
+      "selected": "false"
+    },
+    {
+      "id": "KRA",
+      "icon": true,
+      "selected": "false"
+    },
+    {
+      "id": "B02",
+      "icon": true,
+      "selected": "false"
+    },
+    {
+      "id": "B02S",
+      "icon": true,
+      "selected": "false"
+    }
+  ],
+  "selectedPrice": "17,48 €",
+  "color": "anthrazit",
+  "mounting": "B02",
+  "texts": [
+    "Koch",
+    "Kerstin & Ralf"
+  ]
+}

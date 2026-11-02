@@ -1,6 +1,24 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {shopCartRequest,checkoutTarget,themeCartTarget} from './shop-cart.mjs';
+import {shopCartRequest,checkoutTarget,themeCartTarget,installShopCart} from './shop-cart.mjs';
+
+test('native cart checks required text only on completion and before any image or server work',async()=>{
+ const previous={window:globalThis.window,document:globalThis.document};
+ const binding={productId:'product',productRevision:1};let attempted=false,revealed=null,work=0;
+ const create=()=>({dataset:{},textContent:'',hidden:false,events:{},setAttribute(){},addEventListener(name,handler){this.events[name]=handler;}});
+ try{
+  globalThis.window={parent:{GravuruWorkshopReview:binding}};globalThis.document={createElement:create};
+  const el={sync(){},uxAttemptTextValidation(){attempted=true;},uxTextIssues:()=>[{id:'name',message:'Bitte Name ausfüllen.'}],uxRevealTextIssue:id=>{revealed=id;},uxCheckLayout(){work++;}};
+  const gate={...binding,submitCart(){work++;},request(){work++;}};
+  const result=installShopCart({el,r:{querySelector:()=>null}},{querySelectorAll:()=>[],append(){}},gate);
+  assert.equal(attempted,false);assert.equal(result.status.hidden,true);
+  await result.button.events.click();
+  assert.equal(attempted,true);assert.equal(revealed,'name');assert.equal(work,0);
+  assert.equal(result.status.textContent,'Bitte Name ausfüllen.');assert.equal(result.button.disabled,false);
+ }finally{
+  for(const key of ['window','document'])if(previous[key]===undefined)delete globalThis[key];else globalThis[key]=previous[key];
+ }
+});
 
 const konfig='konfig_'+'1'.repeat(8)+'-1111-1111-1111-'+'1'.repeat(12),line='gid://shopify/CartLine/1?cart=x';
 const saved={draftId:'adraft_a',revision:3,draftToken:'t'.repeat(64)};

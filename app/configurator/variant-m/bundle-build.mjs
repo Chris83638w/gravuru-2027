@@ -41,10 +41,10 @@ const resolve=(specifier,from)=>{
 };
 
 // Liest den Modulgraphen ab den Einstiegspunkten. Ergebnis in Abhängigkeitsreihenfolge (Abhängigkeiten zuerst).
-export function collectModules(entries=BUNDLE_ENTRIES,{read=url=>fs.readFileSync(fileForUrl(url),'utf8')}={}){
+export function collectModules(entries=BUNDLE_ENTRIES,{read=url=>fs.readFileSync(fileForUrl(url),'utf8'),exclude=new Set()}={}){
   const modules=new Map(),order=[],visiting=new Set();
   function visit(url,chain){
-    if(modules.has(url))return;
+    if(modules.has(url)||exclude.has(url))return;
     if(visiting.has(url))throw Error('Zyklischer Import: '+[...chain,url].join(' → '));
     visiting.add(url);
     const source=read(url).replace(/^﻿/,''),deps=[];
@@ -58,9 +58,9 @@ export function collectModules(entries=BUNDLE_ENTRIES,{read=url=>fs.readFileSync
 
 // Platzhalter für Modulangaben; zur Laufzeit durch blob-URLs ersetzt.
 const token=index=>`gravuru-bundle:${index}`;
-export function transformModule(url,source,index){
+export function transformModule(url,source,index,{external=new Set()}={}){
   let statics=0,dynamics=0;
-  let code=source.replace(STATIC,(all,lead,space,keyword,clause,quote,specifier)=>{statics++;return lead+space+keyword+clause+quote+token(index.get(resolve(specifier,url)))+quote;});
+  let code=source.replace(STATIC,(all,lead,space,keyword,clause,quote,specifier)=>{statics++;const dependency=resolve(specifier,url);if(!index.has(dependency)&&!external.has(dependency))throw Error('Modul fehlt im Bündel: '+dependency);return lead+space+keyword+clause+quote+token(index.has(dependency)?index.get(dependency):dependency)+quote;});
   code=code.replace(DYNAMIC,(all,quote,specifier)=>{dynamics++;return `globalThis.gravuruModules.import(${quote}${resolve(specifier,url)}${quote})`;});
   const styles=[];
   code=code.replace(STYLE_FETCH,(all,quote,href)=>{styles.push(href);return `globalThis.gravuruModules.fetch(${quote}${href}${quote})`;});
@@ -76,7 +76,7 @@ const RUNTIME=`const blobs=new Map();
 function blobUrl(i){
   if(blobs.has(i))return blobs.get(i);
   const m=MODULES[i];let code=m.code;
-  for(const d of m.deps)code=code.replaceAll('gravuru-bundle:'+d+"'",blobUrl(d)+"'").replaceAll('gravuru-bundle:'+d+'"',blobUrl(d)+'"');
+  for(const d of m.deps){const target=typeof d==='number'?blobUrl(d):globalThis.gravuruModules.blobUrl(d);if(!target)throw Error('Gemeinsames Modul fehlt: '+d);code=code.replaceAll('gravuru-bundle:'+d+"'",target+"'").replaceAll('gravuru-bundle:'+d+'"',target+'"');}
   const url=URL.createObjectURL(new Blob([code],{type:'text/javascript'}));blobs.set(i,url);return url;
 }
 const INDEX=new Map(MODULES.map((m,i)=>[m.url,i]));
@@ -86,14 +86,14 @@ export default {format:FORMAT,hash:HASH,urls:MODULES.map(m=>m.url),styles:Object
   style:href=>Object.prototype.hasOwnProperty.call(STYLES,href)?STYLES[href]:null};
 `;
 
-export function buildEditorBundle(outputDirectory,{entries=BUNDLE_ENTRIES}={}){
-  const {modules,order}=collectModules(entries);
+export function buildEditorBundle(outputDirectory,{entries=BUNDLE_ENTRIES,external=new Set(),keepExisting=false}={}){
+  const {modules,order}=collectModules(entries,{exclude:external});
   const index=new Map(order.map((url,i)=>[url,i]));
   const styleSet=new Set(),list=[];let statics=0,dynamics=0;
   for(const url of order){
-    const result=transformModule(url,modules.get(url).source,index);
+    const result=transformModule(url,modules.get(url).source,index,{external});
     statics+=result.statics;dynamics+=result.dynamics;result.styles.forEach(s=>styleSet.add(s));
-    list.push({url,deps:modules.get(url).deps.map(d=>index.get(d)),code:result.code});
+    list.push({url,deps:modules.get(url).deps.map(d=>index.has(d)?index.get(d):d),code:result.code});
   }
   const styles={};for(const href of [...styleSet].sort())styles[href]=fs.readFileSync(fileForUrl(href),'utf8');
   const body=`const MODULES=${JSON.stringify(list)};\nconst STYLES=${JSON.stringify(styles)};\n`;
@@ -107,21 +107,34 @@ export function buildEditorBundle(outputDirectory,{entries=BUNDLE_ENTRIES}={}){
   const gz=zlib.gzipSync(source,{level:9});
   if(!fs.existsSync(file+'.gz')||!fs.readFileSync(file+'.gz').equals(gz)){const temp=file+'.gz.'+process.pid+'.tmp';fs.writeFileSync(temp,gz);fs.renameSync(temp,file+'.gz');}
   // Ältere Bündel entfernen (nur erzeugte Dateien dieses Ordners).
-  for(const old of fs.readdirSync(dir))if(/^editor-[a-f0-9]{16}\.mjs(\.gz)?$/.test(old)&&!old.startsWith(name))fs.rmSync(path.join(dir,old),{force:true});
+  if(!keepExisting)for(const old of fs.readdirSync(dir))if(/^editor-[a-f0-9]{16}\.mjs(\.gz)?$/.test(old)&&!old.startsWith(name))fs.rmSync(path.join(dir,old),{force:true});
   return {url:'/_bundle/'+name,file,name,hash,modules:order,styles:Object.keys(styles),statics,dynamics,bytes:Buffer.byteLength(source),gzipBytes:gz.length};
 }
 
 // Lader im Editor (editor.html, vor allen Skripten): gravuruModules.import(url) nutzt das Bündel, sonst
 // das Einzelmodul; gravuruModules.fetch liefert gebündelte Stylesheets ohne Anfrage.
-export function loaderScript(bundleUrl){
-  return `<link rel="modulepreload" href="${bundleUrl}" fetchpriority="high"><script>window.gravuruModules=(()=>{let single=false;try{single=[location,window.parent.location].some(l=>new URLSearchParams(l.search).get('module')==='einzeln');}catch{}const url=single?null:${JSON.stringify(bundleUrl)};let bundle=null;const load=()=>bundle??=(url?import(url).then(m=>m.default).catch(error=>{console.warn('Editor-Bündel nicht geladen, Einzelmodule:',error);return null;}):Promise.resolve(null));return {bundle:url,load,async import(spec){const b=await load();return import(b?.blobUrl(spec)||spec);},async fetch(href,init){const b=await load(),css=b?.style(href);return css==null?fetch(href,init):new Response(css,{status:200,headers:{'Content-Type':'text/css; charset=utf-8'}});}};})();window.gravuruModules.load();</script>`;
+export function loaderScript(bundleUrl,chunks={}){
+  return `<link rel="modulepreload" href="${bundleUrl}" fetchpriority="high"><script>window.gravuruModules=(()=>{let single=false;try{single=[location,window.parent.location].some(l=>new URLSearchParams(l.search).get('module')==='einzeln');}catch{}const url=single?null:${JSON.stringify(bundleUrl)},chunks=${JSON.stringify(chunks)},pending=new Map(),loaded=new Map();let bundle=null,core=null;const load=()=>bundle??=(url?import(url).then(m=>core=m.default).catch(error=>{console.warn('Editor-Bündel nicht geladen, Einzelmodule:',error);return null;}):Promise.resolve(null));const blobUrl=spec=>core?.blobUrl(spec)||[...loaded.values()].find(b=>b.has(spec))?.blobUrl(spec)||null;return {bundle:url,load,blobUrl,async import(spec){const b=await load();if(b&&!b.has(spec)&&chunks[spec]){const chunk=chunks[spec];if(!pending.has(chunk))pending.set(chunk,import(chunk).then(m=>{loaded.set(chunk,m.default);return m.default;}));await pending.get(chunk);}return import(blobUrl(spec)||spec);},async fetch(href,init){const b=await load(),css=b?.style(href);return css==null?fetch(href,init):new Response(css,{status:200,headers:{'Content-Type':'text/css; charset=utf-8'}});}};})();window.gravuruModules.load();</script>`;
+}
+
+export const DEVICE_ENTRIES=[
+ ...['doorbell-selection','doorbell-ui','doorbell-presentation','doorbell-lazy-designs'].map(n=>'/configurator/variant-m/'+n+'.mjs'),
+ ...['doorbell-material-preview','doorbell-profile-validation'].map(n=>'/platform/sources/app/shared/models/'+n+'.mjs')
+];
+export function buildProductEditorBundles(directory){
+ const core=buildEditorBundle(directory,{keepExisting:true});
+ const device=buildEditorBundle(directory,{entries:DEVICE_ENTRIES,external:new Set(core.modules),keepExisting:true});
+ const chunks=Object.fromEntries(device.modules.map(url=>[url,device.url]));
+ const keep=new Set([core.name,core.name+'.gz',device.name,device.name+'.gz']);
+ for(const name of fs.readdirSync(path.join(directory,'bundle')))if(BUNDLE_NAME.test(name.replace(/\.gz$/,''))&&!keep.has(name))fs.rmSync(path.join(directory,'bundle',name),{force:true});
+ return {...core,chunks,device};
 }
 
 // Editorquelltext auf das Bündel umstellen: Lader in den Kopf, dynamische Importe über gravuruModules.
-export function patchEditorBundle(source,bundleUrl){
+export function patchEditorBundle(source,bundleUrl,chunks={}){
   if(!BUNDLE_NAME.test(bundleUrl.split('/').pop()))throw Error('Ungültiger Bündelname: '+bundleUrl);
   const heads=source.match(/<head>/g)||[];if(heads.length!==1)throw Error('Bündel-Anker <head> ist nicht eindeutig');
   const imports=source.match(/(?<![\w$.])import\('\/configurator\/variant-m\/[a-z0-9-]+\.mjs'\)/g)||[];
   if(!imports.length)throw Error('Keine Editor-Importe gefunden');
-  return source.replace('<head>',()=>'<head>'+loaderScript(bundleUrl)).replace(/(?<![\w$.])import\('(\/configurator\/variant-m\/[a-z0-9-]+\.mjs)'\)/g,"window.gravuruModules.import('$1')");
+  return source.replace('<head>',()=>'<head>'+loaderScript(bundleUrl,chunks)).replace(/(?<![\w$.])import\('(\/configurator\/variant-m\/[a-z0-9-]+\.mjs)'\)/g,"window.gravuruModules.import('$1')");
 }

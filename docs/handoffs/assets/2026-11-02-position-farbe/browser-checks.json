@@ -1,0 +1,318 @@
+{
+  "formats": [
+    {
+      "format": "16x28",
+      "dimensions": [
+        "160 mm",
+        "280 mm"
+      ],
+      "expected": {
+        "height": 533.92,
+        "width": 305.09714285714284
+      },
+      "groups": [
+        {
+          "bottom": 315.1875,
+          "height": 144,
+          "id": "format",
+          "width": 736.390625,
+          "x": 1129.578125,
+          "y": 171.1875
+        },
+        {
+          "bottom": 465.1875,
+          "height": 144,
+          "id": "position",
+          "width": 477.59375,
+          "x": 1129.578125,
+          "y": 321.1875
+        },
+        {
+          "bottom": 437.03125,
+          "height": 115.84375,
+          "id": "color",
+          "width": 238.796875,
+          "x": 1627.171875,
+          "y": 321.1875
+        },
+        {
+          "bottom": 597.078125,
+          "height": 125.890625,
+          "id": "frame",
+          "width": 736.390625,
+          "x": 1129.578125,
+          "y": 471.1875
+        },
+        {
+          "bottom": 783.453125,
+          "height": 180.375,
+          "id": "mounting",
+          "width": 736.390625,
+          "x": 1129.578125,
+          "y": 603.078125
+        }
+      ],
+      "plate": {
+        "bottom": 713.90625,
+        "height": 533.90625,
+        "width": 305.09375,
+        "x": 399.75,
+        "y": 180
+      },
+      "scroll": 0
+    },
+    {
+      "format": "24x20",
+      "dimensions": [
+        "240 mm",
+        "200 mm"
+      ],
+      "expected": {
+        "height": 533.92,
+        "width": 640.704
+      },
+      "groups": [
+        {
+          "bottom": 315.1875,
+          "height": 144,
+          "id": "format",
+          "width": 736.390625,
+          "x": 1129.578125,
+          "y": 171.1875
+        },
+        {
+          "bottom": 465.1875,
+          "height": 144,
+          "id": "position",
+          "width": 477.59375,
+          "x": 1129.578125,
+          "y": 321.1875
+        },
+        {
+          "bottom": 437.03125,
+          "height": 115.84375,
+          "id": "color",
+          "width": 238.796875,
+          "x": 1627.171875,
+          "y": 321.1875
+        },
+        {
+          "bottom": 597.078125,
+          "height": 125.890625,
+          "id": "frame",
+          "width": 736.390625,
+          "x": 1129.578125,
+          "y": 471.1875
+        },
+        {
+          "bottom": 783.453125,
+          "height": 180.375,
+          "id": "mounting",
+          "width": 736.390625,
+          "x": 1129.578125,
+          "y": 603.078125
+        }
+      ],
+      "plate": {
+        "bottom": 713.90625,
+        "height": 533.90625,
+        "width": 640.703125,
+        "x": 231.9375,
+        "y": 180
+      },
+      "scroll": 0
+    },
+    {
+      "format": "35x18",
+      "dimensions": [
+        "350 mm",
+        "180 mm"
+      ],
+      "expected": {
+        "height": 493.58057142857143,
+        "width": 959.74
+      },
+      "groups": [
+        {
+          "bottom": 315.1875,
+          "height": 144,
+          "id": "format",
+          "width": 736.390625,
+          "x": 1129.578125,
+          "y": 171.1875
+        },
+        {
+          "bottom": 465.1875,
+          "height": 144,
+          "id": "position",
+          "width": 477.59375,
+          "x": 1129.578125,
+          "y": 321.1875
+        },
+        {
+          "bottom": 437.03125,
+          "height": 115.84375,
+          "id": "color",
+          "width": 238.796875,
+          "x": 1627.171875,
+          "y": 321.1875
+        },
+        {
+          "bottom": 597.078125,
+          "height": 125.890625,
+          "id": "frame",
+          "width": 736.390625,
+          "x": 1129.578125,
+          "y": 471.1875
+        },
+        {
+          "bottom": 783.453125,
+          "height": 180.375,
+          "id": "mounting",
+          "width": 736.390625,
+          "x": 1129.578125,
+          "y": 603.078125
+        }
+      ],
+      "plate": {
+        "bottom": 673.375,
+        "height": 493.375,
+        "width": 959.328125,
+        "x": 72.625,
+        "y": 180
+      },
+      "scroll": 0
+    }
+  ],
+  "textSelection": {
+    "before": {
+      "dimensions": [
+        "350 mm",
+        "180 mm"
+      ],
+      "expected": {
+        "height": 493.58057142857143,
+        "width": 959.74
+      },
+      "groups": [
+        {
+          "bottom": 260.1875,
+          "height": 144,
+          "id": "format",
+          "width": 736.390625,
+          "x": 1129.578125,
+          "y": 116.1875
+        },
+        {
+          "bottom": 410.1875,
+          "height": 144,
+          "id": "position",
+          "width": 477.59375,
+          "x": 1129.578125,
+          "y": 266.1875
+        },
+        {
+          "bottom": 382.03125,
+          "height": 115.84375,
+          "id": "color",
+          "width": 238.796875,
+          "x": 1627.171875,
+          "y": 266.1875
+        },
+        {
+          "bottom": 542.078125,
+          "height": 125.890625,
+          "id": "frame",
+          "width": 736.390625,
+          "x": 1129.578125,
+          "y": 416.1875
+        },
+        {
+          "bottom": 728.453125,
+          "height": 180.375,
+          "id": "mounting",
+          "width": 736.390625,
+          "x": 1129.578125,
+          "y": 548.078125
+        }
+      ],
+      "plate": {
+        "bottom": 672.375,
+        "height": 493.375,
+        "width": 959.328125,
+        "x": 72.625,
+        "y": 179
+      },
+      "scroll": 54
+    },
+    "after": {
+      "dimensions": [
+        "350 mm",
+        "180 mm"
+      ],
+      "expected": {
+        "height": 493.58057142857143,
+        "width": 959.74
+      },
+      "groups": [
+        {
+          "bottom": 0,
+          "height": 0,
+          "id": "format",
+          "width": 0,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "bottom": 0,
+          "height": 0,
+          "id": "position",
+          "width": 0,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "bottom": 0,
+          "height": 0,
+          "id": "color",
+          "width": 0,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "bottom": 0,
+          "height": 0,
+          "id": "frame",
+          "width": 0,
+          "x": 0,
+          "y": 0
+        },
+        {
+          "bottom": 0,
+          "height": 0,
+          "id": "mounting",
+          "width": 0,
+          "x": 0,
+          "y": 0
+        }
+      ],
+      "plate": {
+        "bottom": 672.375,
+        "height": 493.375,
+        "width": 959.328125,
+        "x": 72.625,
+        "y": 179
+      },
+      "scroll": 0
+    }
+  },
+  "mobile": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "documentWidth": 390,
+    "scrollWidth": 390
+  },
+  "consoleErrors": []
+}

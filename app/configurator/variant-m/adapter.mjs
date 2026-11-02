@@ -39,7 +39,15 @@ export function installUniversal(configInput) {
   const current = () => designFromState(config, el.state);
   // K14 / Ü15.1: gewählte Seite (`el.state.uxSurface`, Standard vorn); von hinten sind die Bohrlöcher gespiegelt.
   const activeSurface = () => el?.state?.uxSurface === 'back' ? 'back' : 'front';
-  const profile = (surface = activeSurface()) => { const sp = selectedProfile(config, options); return surface === 'back' ? {...sp, geometry:surfaceGeometry(sp.geometry, 'back')} : sp; };
+  // A family profile projects the whole catalogue. Its immutable templates only
+  // change with the physical options, never while the customer edits text.
+  let familyProfileKey=null,familyProfile=null;
+  const profile = (surface = activeSurface()) => {
+    const key=dynamicFamily?JSON.stringify(options):null;
+    if(dynamicFamily&&key!==familyProfileKey){familyProfile=selectedProfile(config,options);familyProfileKey=key;}
+    const sp=dynamicFamily?familyProfile:selectedProfile(config,options);
+    return surface==='back'?{...sp,geometry:surfaceGeometry(sp.geometry,'back')}:sp;
+  };
   const motifs = () => customerMotifs(config, el.motifs, el.catalog);
   const svg = (design, {guides=false, selected='', handles=false, keepout=false, surface='front', screen=false, bare=false} = {}) => {
     const visible={...design,textOnTop:true,objects:design.objects.filter(o=>!o.uxHidden&&objectSurface(o)===surface)};
@@ -65,8 +73,8 @@ export function installUniversal(configInput) {
 
   // Leistung (Fehler 20.10.2026): Die Altgalerie ruft thumb() bei jedem sync für jede Karte auf –
   // beim Ziehen also je Fingerbewegung. Vorlagen ändern sich dabei nicht: Ergebnis zwischenspeichern.
-  const thumbCache=new Map();
-  window.Funkklingel.thumb = (element, d) => { el = element; const design=(dynamicFormats?profile().designs:p.designs).find(x => x.id === d.id) || d; if(dynamicDoorbell&&!designResourcesReady(design,el.fontData,el.motifs))return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120"><text x="120" y="65" text-anchor="middle" font-size="12" fill="#526b5d">Design wird geladen …</text></svg>'; const key=JSON.stringify([options,design]); let markup=thumbCache.get(key); if(markup===undefined){markup=svg(design,{screen:true});if(thumbCache.size>64)thumbCache.clear();thumbCache.set(key,markup);} return markup; };
+  const thumbCache=new Map();let familyThumbOptions=null;
+  window.Funkklingel.thumb = (element, d) => { el = element; const design=(dynamicFormats?profile().designs:p.designs).find(x => x.id === d.id) || d; if(dynamicDoorbell&&!designResourcesReady(design,el.fontData,el.motifs))return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120"><text x="120" y="65" text-anchor="middle" font-size="12" fill="#526b5d">Design wird geladen …</text></svg>'; const optionKey=JSON.stringify(options);if(dynamicFamily&&familyThumbOptions!==optionKey){thumbCache.clear();familyThumbOptions=optionKey;}const key=JSON.stringify([options,design]); let markup=thumbCache.get(key); if(markup===undefined){markup=svg(design,{screen:true});if(!dynamicFamily&&thumbCache.size>64)thumbCache.clear();thumbCache.set(key,markup);} return markup; };
   window.Funkklingel.prepare = element => {
     el = element; originalPrepare(el);
     const {width, height, shape, cornerRadiusMm=0} = profile().geometry;

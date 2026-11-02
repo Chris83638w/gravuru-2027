@@ -201,8 +201,8 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  window.addEventListener('message',event=>{
   const message=acceptedMessage(event,frame);if(!message)return;
   if(message.type==='close')hide();
-  else if(message.type==='loaded'){frameReady=true;clearTimeout(watchdog);}
-  else if(message.type==='ready'){frameReady=true;clearTimeout(watchdog);bar.hidden=true;}
+  else if(message.type==='loaded'){frameReady=true;clearTimeout(watchdog);if(!busy)status.hidden=true;}
+  else if(message.type==='ready'){frameReady=true;clearTimeout(watchdog);if(!busy)status.hidden=true;bar.hidden=true;}
   else if(message.type==='failed'){frameReady=false;clearTimeout(watchdog);bar.hidden=false;trouble((message.message?message.message+' ':'')+'Bitte neu laden oder den Konfigurator ohne Fenster öffnen.');}
   else handoff(message.token,event.source,message.image);
  });

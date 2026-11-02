@@ -1,0 +1,2626 @@
+{
+ "MG-S-22x14-D1": {
+  "id": "MG-S-22x14-D1",
+  "breite": 79,
+  "hoehe": 77,
+  "flaeche": 61,
+  "vx": -4.4,
+  "vy": -0.6,
+  "befund": "PRÜFEN: waagerecht -4 %",
+  "gegenprobe": {
+   "flaeche": 61,
+   "vx": -4.5,
+   "vy": -0.6,
+   "befund": "PRÜFEN: waagerecht -4 %"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D2": {
+  "id": "MG-S-22x14-D2",
+  "breite": 58,
+  "hoehe": 85,
+  "flaeche": 49,
+  "vx": 2.1,
+  "vy": 3.2,
+  "befund": "PRÜFEN: senkrecht +3 %",
+  "gegenprobe": {
+   "flaeche": 49,
+   "vx": 2.1,
+   "vy": 3.1,
+   "befund": "PRÜFEN: senkrecht +3 %"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D3": {
+  "id": "MG-S-22x14-D3",
+  "breite": 67,
+  "hoehe": 91,
+  "flaeche": 61,
+  "vx": -0.2,
+  "vy": 0.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 61,
+   "vx": -0.2,
+   "vy": 0.8,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D4": {
+  "id": "MG-S-22x14-D4",
+  "breite": 70,
+  "hoehe": 88,
+  "flaeche": 62,
+  "vx": 0.0,
+  "vy": 1.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 62,
+   "vx": -0.0,
+   "vy": 1.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D5": {
+  "id": "MG-S-22x14-D5",
+  "breite": 70,
+  "hoehe": 96,
+  "flaeche": 67,
+  "vx": -1.6,
+  "vy": 0.3,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 67,
+   "vx": -1.6,
+   "vy": 0.3,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D6": {
+  "id": "MG-S-22x14-D6",
+  "breite": 70,
+  "hoehe": 87,
+  "flaeche": 61,
+  "vx": 0.1,
+  "vy": 2.7,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 61,
+   "vx": 0.1,
+   "vy": 2.5,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D7": {
+  "id": "MG-S-22x14-D7",
+  "breite": 74,
+  "hoehe": 93,
+  "flaeche": 68,
+  "vx": -0.4,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": -0.4,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D8": {
+  "id": "MG-S-22x14-D8",
+  "breite": 64,
+  "hoehe": 79,
+  "flaeche": 51,
+  "vx": -2.0,
+  "vy": 1.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 51,
+   "vx": -2.0,
+   "vy": 1.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D9": {
+  "id": "MG-S-22x14-D9",
+  "breite": 60,
+  "hoehe": 86,
+  "flaeche": 52,
+  "vx": 2.7,
+  "vy": -1.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 52,
+   "vx": 2.8,
+   "vy": -1.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D10": {
+  "id": "MG-S-22x14-D10",
+  "breite": 60,
+  "hoehe": 80,
+  "flaeche": 49,
+  "vx": 1.0,
+  "vy": 2.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 49,
+   "vx": 1.0,
+   "vy": 2.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D11": {
+  "id": "MG-S-22x14-D11",
+  "breite": 59,
+  "hoehe": 97,
+  "flaeche": 57,
+  "vx": -1.4,
+  "vy": -0.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 57,
+   "vx": -1.5,
+   "vy": -0.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D12": {
+  "id": "MG-S-22x14-D12",
+  "breite": 59,
+  "hoehe": 96,
+  "flaeche": 57,
+  "vx": 0.1,
+  "vy": -0.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 56,
+   "vx": 0.1,
+   "vy": -0.8,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D13": {
+  "id": "MG-S-22x14-D13",
+  "breite": 80,
+  "hoehe": 81,
+  "flaeche": 65,
+  "vx": -1.1,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 65,
+   "vx": -1.2,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D14": {
+  "id": "MG-S-22x14-D14",
+  "breite": 57,
+  "hoehe": 92,
+  "flaeche": 52,
+  "vx": -0.2,
+  "vy": 1.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 52,
+   "vx": -0.2,
+   "vy": 1.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D15": {
+  "id": "MG-S-22x14-D15",
+  "breite": 59,
+  "hoehe": 79,
+  "flaeche": 47,
+  "vx": 0.0,
+  "vy": 0.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 47,
+   "vx": -0.0,
+   "vy": 0.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D16": {
+  "id": "MG-S-22x14-D16",
+  "breite": 69,
+  "hoehe": 90,
+  "flaeche": 62,
+  "vx": 0.0,
+  "vy": 0.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 62,
+   "vx": 0.0,
+   "vy": 0.3,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D17": {
+  "id": "MG-S-22x14-D17",
+  "breite": 58,
+  "hoehe": 95,
+  "flaeche": 55,
+  "vx": 1.5,
+  "vy": -0.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 55,
+   "vx": 1.5,
+   "vy": -0.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D18": {
+  "id": "MG-S-22x14-D18",
+  "breite": 68,
+  "hoehe": 88,
+  "flaeche": 60,
+  "vx": -1.1,
+  "vy": 1.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 60,
+   "vx": -1.0,
+   "vy": 1.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D19": {
+  "id": "MG-S-22x14-D19",
+  "breite": 66,
+  "hoehe": 88,
+  "flaeche": 58,
+  "vx": 1.6,
+  "vy": -0.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 57,
+   "vx": 1.5,
+   "vy": -0.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D20": {
+  "id": "MG-S-22x14-D20",
+  "breite": 62,
+  "hoehe": 85,
+  "flaeche": 53,
+  "vx": 0.9,
+  "vy": 1.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 53,
+   "vx": 0.9,
+   "vy": 1.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D21": {
+  "id": "MG-S-22x14-D21",
+  "breite": 62,
+  "hoehe": 90,
+  "flaeche": 56,
+  "vx": 0.1,
+  "vy": 0.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 56,
+   "vx": 0.1,
+   "vy": 0.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D22": {
+  "id": "MG-S-22x14-D22",
+  "breite": 63,
+  "hoehe": 90,
+  "flaeche": 56,
+  "vx": -0.9,
+  "vy": 0.3,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 56,
+   "vx": -0.9,
+   "vy": 0.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D23": {
+  "id": "MG-S-22x14-D23",
+  "breite": 62,
+  "hoehe": 86,
+  "flaeche": 54,
+  "vx": 0.0,
+  "vy": 0.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 54,
+   "vx": 0.0,
+   "vy": 0.8,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D24": {
+  "id": "MG-S-22x14-D24",
+  "breite": 56,
+  "hoehe": 94,
+  "flaeche": 52,
+  "vx": -3.8,
+  "vy": 0.0,
+  "befund": "PRÜFEN: waagerecht -4 %",
+  "gegenprobe": {
+   "flaeche": 52,
+   "vx": -3.8,
+   "vy": 0.0,
+   "befund": "PRÜFEN: waagerecht -4 %"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D25": {
+  "id": "MG-S-22x14-D25",
+  "breite": 63,
+  "hoehe": 90,
+  "flaeche": 57,
+  "vx": 0.0,
+  "vy": 0.6,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 57,
+   "vx": 0.0,
+   "vy": 0.6,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG-S-22x14-D26": {
+  "id": "MG-S-22x14-D26",
+  "breite": 63,
+  "hoehe": 97,
+  "flaeche": 61,
+  "vx": -3.3,
+  "vy": 0.0,
+  "befund": "PRÜFEN: waagerecht -3 %",
+  "gegenprobe": {
+   "flaeche": 61,
+   "vx": -3.3,
+   "vy": 0.0,
+   "befund": "PRÜFEN: waagerecht -3 %"
+  },
+  "bogen": "monogramme-az-22x14-kalligrafie.jpg"
+ },
+ "MG2-S-22x14-D1": {
+  "id": "MG2-S-22x14-D1",
+  "breite": 54,
+  "hoehe": 91,
+  "flaeche": 49,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 48,
+   "vx": 0.0,
+   "vy": 0.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D2": {
+  "id": "MG2-S-22x14-D2",
+  "breite": 57,
+  "hoehe": 88,
+  "flaeche": 50,
+  "vx": -0.9,
+  "vy": 1.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 49,
+   "vx": -0.9,
+   "vy": 1.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D3": {
+  "id": "MG2-S-22x14-D3",
+  "breite": 63,
+  "hoehe": 93,
+  "flaeche": 59,
+  "vx": -1.5,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 58,
+   "vx": -1.5,
+   "vy": -0.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D4": {
+  "id": "MG2-S-22x14-D4",
+  "breite": 53,
+  "hoehe": 91,
+  "flaeche": 48,
+  "vx": 1.4,
+  "vy": 0.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 47,
+   "vx": 1.5,
+   "vy": 0.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D5": {
+  "id": "MG2-S-22x14-D5",
+  "breite": 54,
+  "hoehe": 98,
+  "flaeche": 53,
+  "vx": -0.6,
+  "vy": 0.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 52,
+   "vx": -0.6,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D6": {
+  "id": "MG2-S-22x14-D6",
+  "breite": 62,
+  "hoehe": 90,
+  "flaeche": 56,
+  "vx": -0.4,
+  "vy": 2.7,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 55,
+   "vx": -0.4,
+   "vy": 2.7,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D7": {
+  "id": "MG2-S-22x14-D7",
+  "breite": 63,
+  "hoehe": 94,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": -0.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 58,
+   "vx": 0.0,
+   "vy": -0.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D8": {
+  "id": "MG2-S-22x14-D8",
+  "breite": 63,
+  "hoehe": 94,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 2.3,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 57,
+   "vx": 0.0,
+   "vy": 2.3,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D9": {
+  "id": "MG2-S-22x14-D9",
+  "breite": 51,
+  "hoehe": 94,
+  "flaeche": 48,
+  "vx": 0.9,
+  "vy": 1.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 47,
+   "vx": 1.0,
+   "vy": 1.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D10": {
+  "id": "MG2-S-22x14-D10",
+  "breite": 60,
+  "hoehe": 89,
+  "flaeche": 54,
+  "vx": 0.0,
+  "vy": 0.3,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 53,
+   "vx": 0.0,
+   "vy": 0.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D11": {
+  "id": "MG2-S-22x14-D11",
+  "breite": 60,
+  "hoehe": 87,
+  "flaeche": 52,
+  "vx": -0.7,
+  "vy": 1.6,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 51,
+   "vx": -0.6,
+   "vy": 1.6,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D12": {
+  "id": "MG2-S-22x14-D12",
+  "breite": 51,
+  "hoehe": 95,
+  "flaeche": 48,
+  "vx": 0.0,
+  "vy": 0.6,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 47,
+   "vx": 0.0,
+   "vy": 0.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D13": {
+  "id": "MG2-S-22x14-D13",
+  "breite": 70,
+  "hoehe": 93,
+  "flaeche": 65,
+  "vx": 0.9,
+  "vy": 0.6,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 63,
+   "vx": 0.9,
+   "vy": 0.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D14": {
+  "id": "MG2-S-22x14-D14",
+  "breite": 55,
+  "hoehe": 91,
+  "flaeche": 49,
+  "vx": 0.0,
+  "vy": 0.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 48,
+   "vx": 0.0,
+   "vy": 1.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D15": {
+  "id": "MG2-S-22x14-D15",
+  "breite": 60,
+  "hoehe": 95,
+  "flaeche": 57,
+  "vx": 0.0,
+  "vy": 0.5,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 56,
+   "vx": 0.0,
+   "vy": 0.6,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D16": {
+  "id": "MG2-S-22x14-D16",
+  "breite": 60,
+  "hoehe": 93,
+  "flaeche": 56,
+  "vx": 1.9,
+  "vy": 1.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 55,
+   "vx": 1.9,
+   "vy": 1.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D17": {
+  "id": "MG2-S-22x14-D17",
+  "breite": 57,
+  "hoehe": 94,
+  "flaeche": 54,
+  "vx": 0.0,
+  "vy": 0.6,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 53,
+   "vx": 0.0,
+   "vy": 0.6,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D18": {
+  "id": "MG2-S-22x14-D18",
+  "breite": 56,
+  "hoehe": 96,
+  "flaeche": 54,
+  "vx": -0.9,
+  "vy": 0.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 53,
+   "vx": -0.9,
+   "vy": 0.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D19": {
+  "id": "MG2-S-22x14-D19",
+  "breite": 49,
+  "hoehe": 94,
+  "flaeche": 46,
+  "vx": 0.0,
+  "vy": 1.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 45,
+   "vx": -0.1,
+   "vy": 1.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D20": {
+  "id": "MG2-S-22x14-D20",
+  "breite": 60,
+  "hoehe": 89,
+  "flaeche": 54,
+  "vx": 0.0,
+  "vy": 1.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 53,
+   "vx": 0.0,
+   "vy": 1.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D21": {
+  "id": "MG2-S-22x14-D21",
+  "breite": 59,
+  "hoehe": 89,
+  "flaeche": 53,
+  "vx": 0.1,
+  "vy": 2.1,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 51,
+   "vx": 0.0,
+   "vy": 2.1,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D22": {
+  "id": "MG2-S-22x14-D22",
+  "breite": 59,
+  "hoehe": 89,
+  "flaeche": 52,
+  "vx": 0.1,
+  "vy": 1.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 52,
+   "vx": 0.1,
+   "vy": 1.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D23": {
+  "id": "MG2-S-22x14-D23",
+  "breite": 62,
+  "hoehe": 89,
+  "flaeche": 55,
+  "vx": -0.4,
+  "vy": 1.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 54,
+   "vx": -0.4,
+   "vy": 1.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D24": {
+  "id": "MG2-S-22x14-D24",
+  "breite": 60,
+  "hoehe": 95,
+  "flaeche": 57,
+  "vx": 0.0,
+  "vy": 0.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 56,
+   "vx": 0.0,
+   "vy": 0.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D25": {
+  "id": "MG2-S-22x14-D25",
+  "breite": 69,
+  "hoehe": 87,
+  "flaeche": 60,
+  "vx": -1.9,
+  "vy": 1.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": -1.9,
+   "vy": 1.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG2-S-22x14-D26": {
+  "id": "MG2-S-22x14-D26",
+  "breite": 72,
+  "hoehe": 90,
+  "flaeche": 65,
+  "vx": 1.5,
+  "vy": 0.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 64,
+   "vx": 1.5,
+   "vy": 0.6,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-pinselschrift.jpg"
+ },
+ "MG3-S-22x14-D1": {
+  "id": "MG3-S-22x14-D1",
+  "breite": 91,
+  "hoehe": 73,
+  "flaeche": 67,
+  "vx": 0.0,
+  "vy": 2.3,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 67,
+   "vx": 0.0,
+   "vy": 2.3,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D2": {
+  "id": "MG3-S-22x14-D2",
+  "breite": 91,
+  "hoehe": 75,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 1.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 1.8,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D3": {
+  "id": "MG3-S-22x14-D3",
+  "breite": 91,
+  "hoehe": 75,
+  "flaeche": 69,
+  "vx": 0.0,
+  "vy": 1.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 69,
+   "vx": 0.0,
+   "vy": 1.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D4": {
+  "id": "MG3-S-22x14-D4",
+  "breite": 91,
+  "hoehe": 75,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 1.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 1.8,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D5": {
+  "id": "MG3-S-22x14-D5",
+  "breite": 91,
+  "hoehe": 75,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 1.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 1.8,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D6": {
+  "id": "MG3-S-22x14-D6",
+  "breite": 91,
+  "hoehe": 75,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 1.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 1.8,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D7": {
+  "id": "MG3-S-22x14-D7",
+  "breite": 91,
+  "hoehe": 75,
+  "flaeche": 69,
+  "vx": 0.0,
+  "vy": 1.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 1.5,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D8": {
+  "id": "MG3-S-22x14-D8",
+  "breite": 91,
+  "hoehe": 75,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 1.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 1.8,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D9": {
+  "id": "MG3-S-22x14-D9",
+  "breite": 91,
+  "hoehe": 74,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 2.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 2.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D10": {
+  "id": "MG3-S-22x14-D10",
+  "breite": 91,
+  "hoehe": 75,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 1.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 1.8,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D11": {
+  "id": "MG3-S-22x14-D11",
+  "breite": 91,
+  "hoehe": 75,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 1.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 1.8,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D12": {
+  "id": "MG3-S-22x14-D12",
+  "breite": 91,
+  "hoehe": 74,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 2.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 2.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D13": {
+  "id": "MG3-S-22x14-D13",
+  "breite": 91,
+  "hoehe": 74,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 2.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 2.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D14": {
+  "id": "MG3-S-22x14-D14",
+  "breite": 91,
+  "hoehe": 75,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 1.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 1.8,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D15": {
+  "id": "MG3-S-22x14-D15",
+  "breite": 91,
+  "hoehe": 75,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 1.6,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 1.6,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D16": {
+  "id": "MG3-S-22x14-D16",
+  "breite": 91,
+  "hoehe": 74,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 2.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 2.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D17": {
+  "id": "MG3-S-22x14-D17",
+  "breite": 91,
+  "hoehe": 75,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 1.6,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 1.6,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D18": {
+  "id": "MG3-S-22x14-D18",
+  "breite": 91,
+  "hoehe": 74,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 2.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 2.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D19": {
+  "id": "MG3-S-22x14-D19",
+  "breite": 91,
+  "hoehe": 75,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 1.6,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 1.6,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D20": {
+  "id": "MG3-S-22x14-D20",
+  "breite": 91,
+  "hoehe": 75,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 1.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 1.8,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D21": {
+  "id": "MG3-S-22x14-D21",
+  "breite": 91,
+  "hoehe": 75,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 1.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 1.8,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D22": {
+  "id": "MG3-S-22x14-D22",
+  "breite": 91,
+  "hoehe": 75,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 1.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 1.8,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D23": {
+  "id": "MG3-S-22x14-D23",
+  "breite": 91,
+  "hoehe": 75,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 1.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 1.8,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D24": {
+  "id": "MG3-S-22x14-D24",
+  "breite": 91,
+  "hoehe": 75,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 1.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 1.8,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D25": {
+  "id": "MG3-S-22x14-D25",
+  "breite": 91,
+  "hoehe": 75,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 1.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 1.8,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG3-S-22x14-D26": {
+  "id": "MG3-S-22x14-D26",
+  "breite": 91,
+  "hoehe": 74,
+  "flaeche": 68,
+  "vx": 0.0,
+  "vy": 2.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 68,
+   "vx": 0.0,
+   "vy": 2.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-22x14-rahmen.jpg"
+ },
+ "MG-S-30x20-D1": {
+  "id": "MG-S-30x20-D1",
+  "breite": 78,
+  "hoehe": 74,
+  "flaeche": 58,
+  "vx": -4.7,
+  "vy": -0.4,
+  "befund": "PRÜFEN: waagerecht -5 %",
+  "gegenprobe": {
+   "flaeche": 58,
+   "vx": -4.7,
+   "vy": -0.4,
+   "befund": "PRÜFEN: waagerecht -5 %"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D2": {
+  "id": "MG-S-30x20-D2",
+  "breite": 60,
+  "hoehe": 81,
+  "flaeche": 48,
+  "vx": 2.0,
+  "vy": 3.4,
+  "befund": "PRÜFEN: senkrecht +3 %",
+  "gegenprobe": {
+   "flaeche": 48,
+   "vx": 2.1,
+   "vy": 3.4,
+   "befund": "PRÜFEN: senkrecht +3 %"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D3": {
+  "id": "MG-S-30x20-D3",
+  "breite": 67,
+  "hoehe": 87,
+  "flaeche": 59,
+  "vx": -0.1,
+  "vy": 1.1,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": -0.1,
+   "vy": 1.1,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D4": {
+  "id": "MG-S-30x20-D4",
+  "breite": 70,
+  "hoehe": 84,
+  "flaeche": 58,
+  "vx": 0.0,
+  "vy": 1.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 58,
+   "vx": 0.1,
+   "vy": 1.1,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D5": {
+  "id": "MG-S-30x20-D5",
+  "breite": 70,
+  "hoehe": 92,
+  "flaeche": 64,
+  "vx": -1.6,
+  "vy": 0.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 64,
+   "vx": -1.6,
+   "vy": 0.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D6": {
+  "id": "MG-S-30x20-D6",
+  "breite": 70,
+  "hoehe": 83,
+  "flaeche": 58,
+  "vx": 0.0,
+  "vy": 2.6,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 58,
+   "vx": 0.1,
+   "vy": 2.6,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D7": {
+  "id": "MG-S-30x20-D7",
+  "breite": 72,
+  "hoehe": 89,
+  "flaeche": 64,
+  "vx": -0.4,
+  "vy": 0.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 64,
+   "vx": -0.4,
+   "vy": 0.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D8": {
+  "id": "MG-S-30x20-D8",
+  "breite": 64,
+  "hoehe": 76,
+  "flaeche": 48,
+  "vx": -2.1,
+  "vy": 1.3,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 48,
+   "vx": -2.1,
+   "vy": 1.3,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D9": {
+  "id": "MG-S-30x20-D9",
+  "breite": 61,
+  "hoehe": 82,
+  "flaeche": 50,
+  "vx": 2.7,
+  "vy": -0.9,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 50,
+   "vx": 2.7,
+   "vy": -1.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D10": {
+  "id": "MG-S-30x20-D10",
+  "breite": 61,
+  "hoehe": 77,
+  "flaeche": 47,
+  "vx": 1.1,
+  "vy": 2.1,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 47,
+   "vx": 1.1,
+   "vy": 2.1,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D11": {
+  "id": "MG-S-30x20-D11",
+  "breite": 58,
+  "hoehe": 93,
+  "flaeche": 54,
+  "vx": -1.4,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 53,
+   "vx": -1.4,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D12": {
+  "id": "MG-S-30x20-D12",
+  "breite": 58,
+  "hoehe": 92,
+  "flaeche": 53,
+  "vx": -0.1,
+  "vy": -0.6,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 53,
+   "vx": -0.1,
+   "vy": -0.7,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D13": {
+  "id": "MG-S-30x20-D13",
+  "breite": 81,
+  "hoehe": 78,
+  "flaeche": 63,
+  "vx": -0.8,
+  "vy": 0.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 63,
+   "vx": -0.8,
+   "vy": 0.1,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D14": {
+  "id": "MG-S-30x20-D14",
+  "breite": 59,
+  "hoehe": 88,
+  "flaeche": 52,
+  "vx": -0.2,
+  "vy": 1.1,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 52,
+   "vx": -0.2,
+   "vy": 1.1,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D15": {
+  "id": "MG-S-30x20-D15",
+  "breite": 59,
+  "hoehe": 76,
+  "flaeche": 44,
+  "vx": 0.0,
+  "vy": 0.6,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 44,
+   "vx": -0.1,
+   "vy": 0.6,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D16": {
+  "id": "MG-S-30x20-D16",
+  "breite": 67,
+  "hoehe": 86,
+  "flaeche": 57,
+  "vx": -0.0,
+  "vy": 0.7,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 57,
+   "vx": 0.0,
+   "vy": 0.6,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D17": {
+  "id": "MG-S-30x20-D17",
+  "breite": 58,
+  "hoehe": 91,
+  "flaeche": 52,
+  "vx": 1.5,
+  "vy": -0.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 52,
+   "vx": 1.5,
+   "vy": -0.1,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D18": {
+  "id": "MG-S-30x20-D18",
+  "breite": 68,
+  "hoehe": 84,
+  "flaeche": 57,
+  "vx": -0.9,
+  "vy": 1.5,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 57,
+   "vx": -1.0,
+   "vy": 1.5,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D19": {
+  "id": "MG-S-30x20-D19",
+  "breite": 67,
+  "hoehe": 84,
+  "flaeche": 56,
+  "vx": 1.5,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 56,
+   "vx": 1.5,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D20": {
+  "id": "MG-S-30x20-D20",
+  "breite": 64,
+  "hoehe": 81,
+  "flaeche": 52,
+  "vx": 0.9,
+  "vy": 1.3,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 52,
+   "vx": 0.9,
+   "vy": 1.3,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D21": {
+  "id": "MG-S-30x20-D21",
+  "breite": 64,
+  "hoehe": 87,
+  "flaeche": 55,
+  "vx": 0.0,
+  "vy": 0.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 55,
+   "vx": 0.0,
+   "vy": 0.6,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D22": {
+  "id": "MG-S-30x20-D22",
+  "breite": 63,
+  "hoehe": 86,
+  "flaeche": 54,
+  "vx": -0.9,
+  "vy": 0.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 54,
+   "vx": -0.8,
+   "vy": 0.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D23": {
+  "id": "MG-S-30x20-D23",
+  "breite": 62,
+  "hoehe": 82,
+  "flaeche": 51,
+  "vx": 0.0,
+  "vy": 0.9,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 51,
+   "vx": -0.0,
+   "vy": 0.9,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D24": {
+  "id": "MG-S-30x20-D24",
+  "breite": 56,
+  "hoehe": 90,
+  "flaeche": 50,
+  "vx": -3.8,
+  "vy": 0.2,
+  "befund": "PRÜFEN: waagerecht -4 %",
+  "gegenprobe": {
+   "flaeche": 50,
+   "vx": -3.8,
+   "vy": 0.2,
+   "befund": "PRÜFEN: waagerecht -4 %"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D25": {
+  "id": "MG-S-30x20-D25",
+  "breite": 65,
+  "hoehe": 86,
+  "flaeche": 56,
+  "vx": 0.0,
+  "vy": 0.9,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 56,
+   "vx": 0.0,
+   "vy": 0.9,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG-S-30x20-D26": {
+  "id": "MG-S-30x20-D26",
+  "breite": 64,
+  "hoehe": 97,
+  "flaeche": 63,
+  "vx": -3.7,
+  "vy": 0.2,
+  "befund": "PRÜFEN: waagerecht -4 %",
+  "gegenprobe": {
+   "flaeche": 63,
+   "vx": -3.7,
+   "vy": 0.1,
+   "befund": "PRÜFEN: waagerecht -4 %"
+  },
+  "bogen": "monogramme-az-30x20-kalligrafie.jpg"
+ },
+ "MG2-S-30x20-D1": {
+  "id": "MG2-S-30x20-D1",
+  "breite": 53,
+  "hoehe": 86,
+  "flaeche": 46,
+  "vx": 0.1,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 45,
+   "vx": -0.1,
+   "vy": 0.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D2": {
+  "id": "MG2-S-30x20-D2",
+  "breite": 57,
+  "hoehe": 84,
+  "flaeche": 48,
+  "vx": -0.7,
+  "vy": 1.5,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 47,
+   "vx": -0.7,
+   "vy": 1.3,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D3": {
+  "id": "MG2-S-30x20-D3",
+  "breite": 63,
+  "hoehe": 89,
+  "flaeche": 56,
+  "vx": -1.5,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 55,
+   "vx": -1.5,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D4": {
+  "id": "MG2-S-30x20-D4",
+  "breite": 53,
+  "hoehe": 87,
+  "flaeche": 46,
+  "vx": 1.4,
+  "vy": 0.6,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 45,
+   "vx": 1.5,
+   "vy": 0.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D5": {
+  "id": "MG2-S-30x20-D5",
+  "breite": 54,
+  "hoehe": 94,
+  "flaeche": 50,
+  "vx": -0.6,
+  "vy": 0.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 49,
+   "vx": -0.6,
+   "vy": 0.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D6": {
+  "id": "MG2-S-30x20-D6",
+  "breite": 62,
+  "hoehe": 85,
+  "flaeche": 53,
+  "vx": -0.4,
+  "vy": 2.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 53,
+   "vx": -0.5,
+   "vy": 2.8,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D7": {
+  "id": "MG2-S-30x20-D7",
+  "breite": 63,
+  "hoehe": 90,
+  "flaeche": 57,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 56,
+   "vx": 0.0,
+   "vy": -0.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D8": {
+  "id": "MG2-S-30x20-D8",
+  "breite": 63,
+  "hoehe": 89,
+  "flaeche": 57,
+  "vx": 0.0,
+  "vy": 2.3,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 56,
+   "vx": 0.0,
+   "vy": 2.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D9": {
+  "id": "MG2-S-30x20-D9",
+  "breite": 51,
+  "hoehe": 89,
+  "flaeche": 46,
+  "vx": 0.9,
+  "vy": 1.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 45,
+   "vx": 0.9,
+   "vy": 1.3,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D10": {
+  "id": "MG2-S-30x20-D10",
+  "breite": 60,
+  "hoehe": 85,
+  "flaeche": 51,
+  "vx": 0.0,
+  "vy": 0.5,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 51,
+   "vx": 0.0,
+   "vy": 0.6,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D11": {
+  "id": "MG2-S-30x20-D11",
+  "breite": 60,
+  "hoehe": 83,
+  "flaeche": 50,
+  "vx": -0.7,
+  "vy": 1.9,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 48,
+   "vx": -0.7,
+   "vy": 1.7,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D12": {
+  "id": "MG2-S-30x20-D12",
+  "breite": 49,
+  "hoehe": 91,
+  "flaeche": 44,
+  "vx": -0.0,
+  "vy": 0.6,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 44,
+   "vx": 0.0,
+   "vy": 0.6,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D13": {
+  "id": "MG2-S-30x20-D13",
+  "breite": 71,
+  "hoehe": 88,
+  "flaeche": 62,
+  "vx": 0.9,
+  "vy": 0.6,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 60,
+   "vx": 1.0,
+   "vy": 0.6,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D14": {
+  "id": "MG2-S-30x20-D14",
+  "breite": 54,
+  "hoehe": 86,
+  "flaeche": 47,
+  "vx": 0.0,
+  "vy": 0.9,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 46,
+   "vx": 0.0,
+   "vy": 0.9,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D15": {
+  "id": "MG2-S-30x20-D15",
+  "breite": 60,
+  "hoehe": 91,
+  "flaeche": 55,
+  "vx": 0.0,
+  "vy": 0.6,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 54,
+   "vx": 0.0,
+   "vy": 0.7,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D16": {
+  "id": "MG2-S-30x20-D16",
+  "breite": 60,
+  "hoehe": 88,
+  "flaeche": 53,
+  "vx": 1.9,
+  "vy": 1.3,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 52,
+   "vx": 2.0,
+   "vy": 1.1,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D17": {
+  "id": "MG2-S-30x20-D17",
+  "breite": 56,
+  "hoehe": 90,
+  "flaeche": 51,
+  "vx": -0.0,
+  "vy": 0.7,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 50,
+   "vx": 0.0,
+   "vy": 0.7,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D18": {
+  "id": "MG2-S-30x20-D18",
+  "breite": 55,
+  "hoehe": 92,
+  "flaeche": 51,
+  "vx": -0.9,
+  "vy": 0.6,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 50,
+   "vx": -0.9,
+   "vy": 0.6,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D19": {
+  "id": "MG2-S-30x20-D19",
+  "breite": 49,
+  "hoehe": 90,
+  "flaeche": 44,
+  "vx": -0.0,
+  "vy": 1.1,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 43,
+   "vx": -0.1,
+   "vy": 1.3,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D20": {
+  "id": "MG2-S-30x20-D20",
+  "breite": 60,
+  "hoehe": 85,
+  "flaeche": 51,
+  "vx": 0.0,
+  "vy": 1.1,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 50,
+   "vx": 0.0,
+   "vy": 1.1,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D21": {
+  "id": "MG2-S-30x20-D21",
+  "breite": 60,
+  "hoehe": 85,
+  "flaeche": 51,
+  "vx": 0.0,
+  "vy": 2.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 50,
+   "vx": 0.0,
+   "vy": 2.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D22": {
+  "id": "MG2-S-30x20-D22",
+  "breite": 58,
+  "hoehe": 85,
+  "flaeche": 49,
+  "vx": 0.1,
+  "vy": 1.5,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 48,
+   "vx": 0.1,
+   "vy": 1.3,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D23": {
+  "id": "MG2-S-30x20-D23",
+  "breite": 63,
+  "hoehe": 85,
+  "flaeche": 53,
+  "vx": -0.4,
+  "vy": 1.1,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 52,
+   "vx": -0.5,
+   "vy": 1.3,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D24": {
+  "id": "MG2-S-30x20-D24",
+  "breite": 59,
+  "hoehe": 90,
+  "flaeche": 53,
+  "vx": 0.0,
+  "vy": 0.6,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 52,
+   "vx": 0.0,
+   "vy": 0.6,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D25": {
+  "id": "MG2-S-30x20-D25",
+  "breite": 69,
+  "hoehe": 83,
+  "flaeche": 57,
+  "vx": -1.9,
+  "vy": 1.5,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 57,
+   "vx": -2.0,
+   "vy": 1.5,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG2-S-30x20-D26": {
+  "id": "MG2-S-30x20-D26",
+  "breite": 72,
+  "hoehe": 85,
+  "flaeche": 61,
+  "vx": 1.5,
+  "vy": 0.6,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 61,
+   "vx": 1.5,
+   "vy": 0.6,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-pinselschrift.jpg"
+ },
+ "MG3-S-30x20-D1": {
+  "id": "MG3-S-30x20-D1",
+  "breite": 91,
+  "hoehe": 64,
+  "flaeche": 58,
+  "vx": 0.0,
+  "vy": 0.6,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 58,
+   "vx": 0.0,
+   "vy": 0.6,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D2": {
+  "id": "MG3-S-30x20-D2",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D3": {
+  "id": "MG3-S-30x20-D3",
+  "breite": 91,
+  "hoehe": 66,
+  "flaeche": 60,
+  "vx": 0.0,
+  "vy": -0.4,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 60,
+   "vx": 0.0,
+   "vy": -0.4,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D4": {
+  "id": "MG3-S-30x20-D4",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D5": {
+  "id": "MG3-S-30x20-D5",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D6": {
+  "id": "MG3-S-30x20-D6",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D7": {
+  "id": "MG3-S-30x20-D7",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": -0.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": -0.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D8": {
+  "id": "MG3-S-30x20-D8",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D9": {
+  "id": "MG3-S-30x20-D9",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D10": {
+  "id": "MG3-S-30x20-D10",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D11": {
+  "id": "MG3-S-30x20-D11",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D12": {
+  "id": "MG3-S-30x20-D12",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D13": {
+  "id": "MG3-S-30x20-D13",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D14": {
+  "id": "MG3-S-30x20-D14",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D15": {
+  "id": "MG3-S-30x20-D15",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": -0.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": -0.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D16": {
+  "id": "MG3-S-30x20-D16",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D17": {
+  "id": "MG3-S-30x20-D17",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": -0.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": -0.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D18": {
+  "id": "MG3-S-30x20-D18",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D19": {
+  "id": "MG3-S-30x20-D19",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": -0.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": -0.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D20": {
+  "id": "MG3-S-30x20-D20",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D21": {
+  "id": "MG3-S-30x20-D21",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D22": {
+  "id": "MG3-S-30x20-D22",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D23": {
+  "id": "MG3-S-30x20-D23",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D24": {
+  "id": "MG3-S-30x20-D24",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D25": {
+  "id": "MG3-S-30x20-D25",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG3-S-30x20-D26": {
+  "id": "MG3-S-30x20-D26",
+  "breite": 91,
+  "hoehe": 65,
+  "flaeche": 59,
+  "vx": 0.0,
+  "vy": 0.0,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 59,
+   "vx": 0.0,
+   "vy": 0.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-30x20-rahmen.jpg"
+ },
+ "MG-S-22x14-D1600": {
+  "id": "MG-S-22x14-D1600",
+  "breite": 62,
+  "hoehe": 76,
+  "flaeche": 47,
+  "vx": 0.1,
+  "vy": -0.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 47,
+   "vx": 0.1,
+   "vy": -0.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-neu-d1600-d1603.jpg"
+ },
+ "MG-S-22x14-D1601": {
+  "id": "MG-S-22x14-D1601",
+  "breite": 86,
+  "hoehe": 54,
+  "flaeche": 46,
+  "vx": 2.1,
+  "vy": -0.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 43,
+   "vx": 2.0,
+   "vy": 1.0,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-neu-d1600-d1603.jpg"
+ },
+ "MG-S-22x14-D1602": {
+  "id": "MG-S-22x14-D1602",
+  "breite": 99,
+  "hoehe": 88,
+  "flaeche": 86,
+  "vx": 0.0,
+  "vy": 0.8,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 86,
+   "vx": 0.0,
+   "vy": 0.8,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-neu-d1600-d1603.jpg"
+ },
+ "MG-S-22x14-D1603": {
+  "id": "MG-S-22x14-D1603",
+  "breite": 99,
+  "hoehe": 74,
+  "flaeche": 73,
+  "vx": 0.0,
+  "vy": 0.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 73,
+   "vx": 0.0,
+   "vy": 0.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-neu-d1600-d1603.jpg"
+ },
+ "MG-S-30x20-D1600": {
+  "id": "MG-S-30x20-D1600",
+  "breite": 65,
+  "hoehe": 76,
+  "flaeche": 50,
+  "vx": 0.2,
+  "vy": -0.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 50,
+   "vx": 0.2,
+   "vy": -0.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-neu-d1600-d1603.jpg"
+ },
+ "MG-S-30x20-D1601": {
+  "id": "MG-S-30x20-D1601",
+  "breite": 85,
+  "hoehe": 54,
+  "flaeche": 46,
+  "vx": 1.5,
+  "vy": -0.2,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 44,
+   "vx": 1.5,
+   "vy": -0.2,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-neu-d1600-d1603.jpg"
+ },
+ "MG-S-30x20-D1602": {
+  "id": "MG-S-30x20-D1602",
+  "breite": 97,
+  "hoehe": 87,
+  "flaeche": 85,
+  "vx": 0.0,
+  "vy": 0.7,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 85,
+   "vx": 0.0,
+   "vy": 0.7,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-neu-d1600-d1603.jpg"
+ },
+ "MG-S-30x20-D1603": {
+  "id": "MG-S-30x20-D1603",
+  "breite": 97,
+  "hoehe": 74,
+  "flaeche": 72,
+  "vx": -0.0,
+  "vy": 0.1,
+  "befund": "ok",
+  "gegenprobe": {
+   "flaeche": 72,
+   "vx": -0.0,
+   "vy": 0.1,
+   "befund": "ok"
+  },
+  "bogen": "monogramme-az-neu-d1600-d1603.jpg"
+ }
+}

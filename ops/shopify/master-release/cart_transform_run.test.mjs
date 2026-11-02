@@ -78,3 +78,35 @@ test('legacy migration cannot authorize altered offers, designs, variants, quant
  const current=input({v2:true,logos:1});current.cart.lines[0].merchandise.product.pricing.jsonValue.legacyOffers=registerOld(oldD8()).cart.lines[0].merchandise.product.pricing.jsonValue.legacyOffers;
  assert.deepEqual(master(current),master(input({v2:true,logos:1})));
 });
+
+function withHistory(value){
+ const line=value.cart.lines[0],previous=structuredClone(line.merchandise.product.pricing.jsonValue);
+ line.merchandise.product.pricing.jsonValue={...input().cart.lines[0].merchandise.product.pricing.jsonValue,revision:2,history:[previous]};
+ return value;
+}
+test('new no-logo contract preserves saved V2 and exact legacy carts without mutating input',()=>{
+ for(const quantity of [1,3,5,10])for(const logos of [0,1,4]){
+  const old=input({v2:true,quantity,logos,motifs:2}),updated=withHistory(structuredClone(old)),before=structuredClone(updated);
+  assert.deepEqual(master(updated),master(old));assert.deepEqual(updated,before);
+ }
+ const legacy=registerOld(oldD8());assert.deepEqual(master(withHistory(structuredClone(legacy))),master(legacy));
+ const current=withHistory(input({v2:true,motifs:1}));current.cart.lines[0].revision.value='2';
+ const expected=input({motifs:1});expected.cart.lines[0].revision.value='2';expected.cart.lines[0].merchandise.product.pricing.jsonValue.revision=2;
+ assert.deepEqual(master(current),live(expected));
+ current.cart.lines[0].logos.value='1';assert.throws(()=>master(current),/Logo requires V2/);
+});
+test('historical contracts cannot weaken revision, legacy offer or product validation',()=>{
+ const mutations=[
+  l=>l.revision.value='3',
+  l=>l.merchandise.product.pricing.jsonValue.history[0].revision=2,
+  l=>l.merchandise.product.pricing.jsonValue.history[0].enabled=false,
+  l=>l.merchandise.product.pricing.jsonValue.history[0].productId='gid://shopify/Product/9',
+  l=>l.merchandise.product.pricing.jsonValue.history[0].currency='USD',
+  l=>l.merchandise.product.pricing.jsonValue.history[0].history=[],
+  l=>l.merchandise.product.pricing.jsonValue.history.push(l.merchandise.product.pricing.jsonValue.history[0]),
+ ];
+ for(const mutate of mutations){const value=withHistory(input({v2:true,logos:1}));mutate(value.cart.lines[0]);assert.throws(()=>master(value));}
+ for(const mutate of [l=>l.offer.value='e'.repeat(64),l=>l.quantity=2,l=>l.configRevision.value='9']){
+  const value=withHistory(registerOld(oldD8()));mutate(value.cart.lines[0]);assert.throws(()=>master(value));
+ }
+});

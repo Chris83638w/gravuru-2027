@@ -1,6 +1,7 @@
 import {cartTransformRun as currentPriceTransform} from './price-v1.mjs';
 import {withCheckoutDesignImages} from '../checkout-image/cart-image.mjs';
 import {legacyPrice} from './legacy-price.mjs';
+import {pricingForLine} from './pricing-history.mjs';
 
 // Keep the currently released V1 arithmetic and all existing quantity tiers.
 // V2 adds a separately counted logo fee to the complete unit before that same
@@ -8,7 +9,8 @@ import {legacyPrice} from './legacy-price.mjs';
 export function cartTransformRun(input){
  const legacy=[];
  const lines=input.cart.lines.map(line=>{
-  const item=line.merchandise,pricing=item?.__typename==='ProductVariant'?item.product.pricing?.jsonValue:null;
+  let item=line.merchandise;const pricing=pricingForLine(line);
+  if(pricing&&pricing!==item.product.pricing?.jsonValue){item={...item,product:{...item.product,pricing:{...item.product.pricing,jsonValue:pricing}}};line={...line,merchandise:item};}
   if(pricing?.schema!=='gravuru-personalization-pricing/v2'){
    if(pricing?.enabled&&(pricing.extraLogoCents!==undefined||line.logos?.value!==undefined&&line.logos.value!=='0'))throw Error('Logo requires V2 pricing');
    return line;

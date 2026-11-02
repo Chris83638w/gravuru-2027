@@ -1,0 +1,20 @@
+ 1 Breite  81% Höhe  69% Fläche  56% | Versatz x  -1.1% y  +0.5% | ok
+ 2 Breite  86% Höhe  55% Fläche  47% | Versatz x  +3.3% y  +2.1% | PRÜFEN: waagerecht +3 %
+ 3 Breite  78% Höhe  60% Fläche  46% | Versatz x  +1.6% y  -0.4% | ok
+ 4 Breite  93% Höhe  73% Fläche  67% | Versatz x  -0.5% y  +1.7% | ok
+ 5 Breite  83% Höhe  52% Fläche  43% | Versatz x  -0.2% y  -1.2% | ok
+ 6 Breite  94% Höhe  66% Fläche  62% | Versatz x  -0.8% y  +1.6% | ok
+ 7 Breite  94% Höhe  60% Fläche  56% | Versatz x  -0.8% y  +0.4% | ok
+ 8 Breite  93% Höhe  47% Fläche  44% | Versatz x  -0.7% y  -1.6% | ok
+ 9 Breite  94% Höhe  65% Fläche  62% | Versatz x  -0.3% y  +0.1% | ok
+10 Breite  72% Höhe  93% Fläche  66% | Versatz x  -0.3% y  +1.5% | ok
+11 Breite  95% Höhe  49% Fläche  47% | Versatz x  +0.2% y  -0.2% | ok
+12 Breite  93% Höhe  58% Fläche  54% | Versatz x  +0.0% y  +0.0% | ok
+13 Breite  72% Höhe  90% Fläche  65% | Versatz x  +0.1% y  +2.1% | ok
+14 Breite  94% Höhe  48% Fläche  45% | Versatz x  -0.3% y  -0.4% | ok
+15 Breite  93% Höhe  73% Fläche  68% | Versatz x  -0.4% y  +0.4% | ok
+16 Breite  94% Höhe  66% Fläche  62% | Versatz x  -0.0% y  -1.7% | ok
+17 Breite  93% Höhe  69% Fläche  64% | Versatz x  -0.5% y  +0.2% | ok
+18 Breite  94% Höhe  74% Fläche  70% | Versatz x  -0.5% y  -0.8% | ok
+19 Breite  94% Höhe  66% Fläche  62% | Versatz x  -0.3% y  +0.3% | ok
+20 Breite  86% Höhe  82% Fläche  70% | Versatz x  -0.5% y  -2.7% | ok

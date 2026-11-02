@@ -72,9 +72,9 @@ function compose(ctx,converted,fonts,template){
  document.config.localResources.photoExamples=(converted.examples||[]).map(e=>({designId:template.id,slotId:e.slotId,assetId:e.assetId}));
  document.config.photo.hints=(converted.examples||[]).map(e=>({designId:template.id,slotId:e.slotId,text:'Foto hochladen',enabled:e.uploadHint}));
  document.elementRights={[template.id]:Object.fromEntries(template.objects.map(o=>[o.id,rights(o)]))};
- // Always show the first real drilling choice, when present, as a protected area.
+ // Design-Master §7: assess the starting design without mounting when available.
  const mounting=document.config.profile.optionGroups.find(g=>g.id==='mounting');
- const drilled=mounting?.values.find(v=>v.holes?.length);if(drilled)mounting.defaultValueId=drilled.id;
+ const initial=mounting?.values.find(v=>v.id==='K00')||mounting?.values.find(v=>v.holes?.length);if(initial)mounting.defaultValueId=initial.id;
  return document;
 }
 function editorTemplate(converted,ctx,fonts){

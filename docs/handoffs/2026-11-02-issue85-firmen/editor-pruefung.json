@@ -1,0 +1,293 @@
+{
+ "opened": 48,
+ "results": [
+  {
+   "id": "FS-A-15x10-D11",
+   "texts": 3,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-A-15x10-D8",
+   "texts": 7,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-A-15x10-D3",
+   "texts": 7,
+   "motifs": 2,
+   "editable": true
+  },
+  {
+   "id": "FS-A-15x10-D25",
+   "texts": 6,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-A-15x10-D18",
+   "texts": 5,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-A-15x10-D17",
+   "texts": 9,
+   "motifs": 2,
+   "editable": true
+  },
+  {
+   "id": "FS-A-18x12-D10",
+   "texts": 8,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-A-18x12-D9",
+   "texts": 7,
+   "motifs": 4,
+   "editable": true
+  },
+  {
+   "id": "FS-A-18x12-D6",
+   "texts": 13,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-A-18x12-D16",
+   "texts": 11,
+   "motifs": 5,
+   "editable": true
+  },
+  {
+   "id": "FS-A-9x6-D5",
+   "texts": 1,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-A-9x6-D19",
+   "texts": 1,
+   "motifs": 2,
+   "editable": true
+  },
+  {
+   "id": "FS-A-9x6-D29",
+   "texts": 3,
+   "motifs": 0,
+   "editable": true
+  },
+  {
+   "id": "FS-A-12x8-D4",
+   "texts": 4,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-A-12x8-D2",
+   "texts": 7,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-A-12x8-D24",
+   "texts": 11,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-A-12x8-D21",
+   "texts": 5,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-A-12x8-D12",
+   "texts": 6,
+   "motifs": 2,
+   "editable": true
+  },
+  {
+   "id": "FS-A-21x14-D1",
+   "texts": 12,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-A-21x14-D13",
+   "texts": 6,
+   "motifs": 2,
+   "editable": true
+  },
+  {
+   "id": "FS-A-24x16-D14",
+   "texts": 10,
+   "motifs": 2,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-16x16-D26",
+   "texts": 7,
+   "motifs": 6,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-16x16-D25",
+   "texts": 6,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-16x16-D18",
+   "texts": 5,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-16x16-D17",
+   "texts": 9,
+   "motifs": 2,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-16x16-D16",
+   "texts": 11,
+   "motifs": 4,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-16x16-D12",
+   "texts": 6,
+   "motifs": 2,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-16x16-D10",
+   "texts": 8,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-16x16-D9",
+   "texts": 7,
+   "motifs": 4,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-16x16-D8",
+   "texts": 7,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-16x16-D6",
+   "texts": 13,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-16x16-D3",
+   "texts": 7,
+   "motifs": 2,
+   "editable": true
+  },
+  {
+   "id": "FS-AV2A-15x8-D0",
+   "texts": 3,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-10x10-D24",
+   "texts": 11,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-10x10-D4",
+   "texts": 4,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-8x8-D21",
+   "texts": 5,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-8x8-D19",
+   "texts": 1,
+   "motifs": 2,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-8x8-D5",
+   "texts": 1,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-8x8-D1",
+   "texts": 2,
+   "motifs": 0,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-26x26-D14",
+   "texts": 10,
+   "motifs": 2,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-20x20-D13",
+   "texts": 6,
+   "motifs": 2,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-12x12-D11",
+   "texts": 3,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-V2A-12x12-D2",
+   "texts": 7,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-S-16x16-D1",
+   "texts": 12,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-S-12x8-D0",
+   "texts": 5,
+   "motifs": 1,
+   "editable": true
+  },
+  {
+   "id": "FS-A-10x10-D0",
+   "texts": 4,
+   "motifs": 2,
+   "editable": true
+  },
+  {
+   "id": "FS-A-8.5x8.5-D27",
+   "texts": 3,
+   "motifs": 0,
+   "editable": true
+  },
+  {
+   "id": "FS-A-15x8-D28",
+   "texts": 3,
+   "motifs": 0,
+   "editable": true
+  }
+ ]
+}

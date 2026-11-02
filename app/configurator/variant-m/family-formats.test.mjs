@@ -28,6 +28,20 @@ function fixture(material='steel'){
  delete c.familyAcrylic;return prepareConfig(c);
 }
 const state=c=>({designId:c.profile.designs[0].id,objects:clone(c.profile.designs[0].objects),mOptions:resolvedOptions(c),selected:null});
+test('R16: door-sign sizes and mountings use icon tiles; fixed size stays fixed and K00 is first',()=>{
+ for(const material of ['steel','schwarz','anthrazit']){
+  const c=fixture(material),options=resolvedOptions(c),variant=c.familyFormats.formats.find(f=>f.key===options.size).variants[0];
+  variant.mounting.reverse();const before=JSON.stringify(c),markup=familyChoicesMarkup(c,options);
+  assert.doesNotMatch(markup,/<select\b/);
+  assert.match(markup,/data-family-group="size"/);
+  const first=markup.match(/<button[^>]*data-family-group="mounting"[^>]*>[\s\S]*?<\/button>/)?.[0];
+  assert.match(first,/data-family-value="K00" aria-pressed="true"/);assert.match(first,/<svg\b/);assert.match(first,/Ohne Befestigung/);
+  assert.equal(JSON.stringify(c),before,'presentation cannot reorder stored variant data');
+  c.familyFormats.fixedSize=options.size;
+  const fixed=familyChoicesMarkup(c,options);assert.doesNotMatch(fixed,/data-family-group="(?:size|form)"/);
+  assert.match(fixed,/data-family-group="mounting"/);
+ }
+});
 test('family quote selects only its allowed design and does not project the unrelated library',()=>{
  const c=fixture('schwarz'),options=resolvedOptions(c),format=c.familyFormats.formats.find(f=>f.key===options.size),variant=format.variants[0],id=variant.designIds[0];
  const expected=selectedProfile(c,options).designs.find(d=>d.id===id),baseline=quote(c,expected.objects,id,options);

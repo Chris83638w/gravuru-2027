@@ -1,0 +1,81 @@
+{
+  "at": "2026-11-02T22:01:23.453Z",
+  "scope": "isolated real-model candidate",
+  "networkMbit": 9,
+  "latencyMs": 150,
+  "cpuRate": 4,
+  "readyMs": 5858,
+  "cards": 40,
+  "galleryBytes": 52174,
+  "timing": [
+    {
+      "path": "/_bundle/editor-fe9aa46f3fcc981f.mjs",
+      "ms": 626,
+      "bytes": 467010,
+      "start": 207
+    },
+    {
+      "path": "/_runtime/lazy/katalog-kern.json",
+      "ms": 206,
+      "bytes": 45541,
+      "start": 1086
+    },
+    {
+      "path": "/konfigurator/shop/schriften/076933c087e2ec9bd6458f673343650e9d0f3959d2b5f47c30e2240182ccdf8f.json",
+      "ms": 2,
+      "bytes": 89715,
+      "start": 1084
+    },
+    {
+      "path": "/konfigurator/shop/schriften/9b3e2f8741a92b71d01568deb991538159ce4d849e6d795cc20412259a8199c7.json",
+      "ms": 2,
+      "bytes": 92226,
+      "start": 1085
+    }
+  ],
+  "errors": [],
+  "mounts": [
+    {
+      "id": "K00",
+      "icon": true,
+      "selected": "true"
+    },
+    {
+      "id": "KGL",
+      "icon": true,
+      "selected": "false"
+    },
+    {
+      "id": "KRA",
+      "icon": true,
+      "selected": "false"
+    },
+    {
+      "id": "B02",
+      "icon": true,
+      "selected": "false"
+    },
+    {
+      "id": "B02S",
+      "icon": true,
+      "selected": "false"
+    },
+    {
+      "id": "B04",
+      "icon": true,
+      "selected": "false"
+    },
+    {
+      "id": "B04S",
+      "icon": true,
+      "selected": "false"
+    }
+  ],
+  "selectedPrice": "82,48 €",
+  "color": null,
+  "mounting": "B02",
+  "texts": [
+    "Koch",
+    "Familie"
+  ]
+}

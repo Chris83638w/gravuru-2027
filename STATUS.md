@@ -1,3 +1,7 @@
+## 03.11.2026 · Codex · Issue 139 Ausführung als Icon-Kacheln (R16)
+
+Neu angelegt: 2 · überarbeitet: 8 · gesamt live: 10 (bisherige Wellen, in diesem Schritt keine Änderung). Claude 6589326864 / ENTSCHEIDUNGEN 3.37 gelesen. Türschild-Familien: Befestigung und variable Größe wieder Kacheln; K00 zuerst, Farbe mit Materialsymbol, feste Shopgröße unverändert. 41 Linux-Tests und mobile Edelstahl-/Acryl-Prüfung mit Preis, Kundentext, Befestigungs-/Farbübernahme bestanden. [Screenshots und Grenzen](docs/handoffs/2026-11-03-issue139-ausfuehrung-icons.md). Im bestehenden PR 153, noch nicht live; übrige Linien-Screenshots und Master-Umbau offen.
+
 ## 02.11.2026 · Codex · Issue 139 Ladezeit-Paket in Prüfung
 
 Erster R2-Schritt: gemeinsame Schriftmessung/-pfade unverändert aus doorbell-preview nach text-paths extrahiert; 19 Browserimporte umgestellt, Geräte-/CDN-Schriftlader nicht mehr im gemeinsamen Bündel. 193 betroffene Linux-Tests, 14 lokale Schrift-/Bündeltests und mobile Text-/Befestigungsübernahme bestanden. R2 insgesamt und Aufblitz-Befund 6589176539 weiter offen; kein Deployment.

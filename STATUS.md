@@ -1,3 +1,7 @@
+## 03.11.2026 · Codex · Issue 139 neutraler Start ohne historische Geräteausführung
+
+Neu angelegt: 2 · überarbeitet: 8 · gesamt live: 10 (vorherige Wellen). Native `prepare`/`finish`-Kette durch produktgebundenen Zustand und gemeinsame DOM-Anschlüsse ersetzt. Drei historische Geräte-Skripte aus dem nativen Startdokument ausgelagert; nur der Referenzpfad lädt sie noch. 197 Linux-Tests bestanden. Mobile Browserprüfung Edelstahl/Acryl/AOSU: historische Geräte-Datei weder geladen noch ausgeführt, keine JavaScript-Fehler; Optionen/Kundentext und Vollbild geprüft. [Nachweis](docs/handoffs/2026-11-03-issue139-neutraler-start.md). Aktuelle Live-Vorhermessungen im Startansicht-Bericht ergänzt. Keine Veröffentlichung. Nächster Schritt: moderne Modulabhängigkeiten und Händler-Verwaltungsimporte aus dem gemeinsamen Start lösen.
+
 ## 03.11.2026 · Codex · Issue 139 Start ohne sichtbare Altoberfläche
 
 Neu angelegt: 2 · überarbeitet: 8 · gesamt live: 10 (vorherige Wellen). Native Vorbereitung außerhalb des Dokuments; erst fertige UX einsetzen. Einheitliche Ladeansicht mit signierter Startvorschau; Editor-HTML nur einmal laden. Bildfolge und Lifecycle-Audit belegen den Wechsel, 195 Linux-Tests und Edelstahl-/Acryl-Designwechsel bestanden. Funkklingel-Ausführung mit ihren Dropdowns zusätzlich geprüft. Messskript erkennt nun auch den mobilen „Weiter“-Startknopf. [Nachweise und offene Grenzen](docs/handoffs/2026-11-03-issue139-startansicht.md). Keine Veröffentlichung; vollständige Modultrennung und Je-Linie-Zielabnahme weiter offen.

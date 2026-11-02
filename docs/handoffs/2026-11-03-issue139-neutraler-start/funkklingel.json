@@ -1,0 +1,125 @@
+{
+  "referenceCalls": {
+    "prepare": 0,
+    "finish": 0
+  },
+  "historicalDevice": {
+    "loaded": false,
+    "defined": false
+  },
+  "changed": {
+    "options": {
+      "format": "24x20",
+      "frame": "FK-SEITLICH",
+      "color": "anthrazit",
+      "mounting": "B04S",
+      "position": "opposite"
+    },
+    "texts": [
+      "Koch",
+      "Mustermann",
+      "12a"
+    ],
+    "price": "63,68 €"
+  },
+  "readyMs": 7403.299999952316,
+  "errors": [],
+  "shots": [
+    {
+      "file": "000.jpg",
+      "ms": 286
+    },
+    {
+      "file": "001.jpg",
+      "ms": 659
+    },
+    {
+      "file": "002.jpg",
+      "ms": 1612
+    },
+    {
+      "file": "003.jpg",
+      "ms": 1751
+    },
+    {
+      "file": "004.jpg",
+      "ms": 1765
+    },
+    {
+      "file": "005.jpg",
+      "ms": 2165
+    },
+    {
+      "file": "006.jpg",
+      "ms": 7916
+    },
+    {
+      "file": "007.jpg",
+      "ms": 7932
+    },
+    {
+      "file": "008.jpg",
+      "ms": 8131
+    }
+  ],
+  "options": [
+    {
+      "group": "format",
+      "value": "24x20",
+      "options": [
+        "Hochformat · 49,99 €",
+        "Querformat · 59,99 €",
+        "Länglich · 69,99 €"
+      ]
+    },
+    {
+      "group": "position",
+      "value": "opposite",
+      "options": [
+        "Bitte wählen",
+        "Klingel rechts",
+        "Klingel links"
+      ]
+    },
+    {
+      "group": "frame",
+      "value": "FK-SEITLICH",
+      "options": [
+        "Ganzer Rahmen · ohne Aufpreis",
+        "Ohne sichtbaren Rahmen · ohne Aufpreis",
+        "Rahmen links & rechts · ohne Aufpreis",
+        "Rahmen oben & unten · ohne Aufpreis"
+      ]
+    },
+    {
+      "group": "color",
+      "value": "anthrazit",
+      "options": [
+        "Schwarz · ohne Aufpreis",
+        "Anthrazit · ohne Aufpreis"
+      ]
+    }
+  ],
+  "tiles": [
+    {
+      "group": "mounting",
+      "id": "K00"
+    },
+    {
+      "group": "mounting",
+      "id": "GWS"
+    },
+    {
+      "group": "mounting",
+      "id": "KRA"
+    },
+    {
+      "group": "mounting",
+      "id": "SIL"
+    },
+    {
+      "group": "mounting",
+      "id": "B04S"
+    }
+  ]
+}

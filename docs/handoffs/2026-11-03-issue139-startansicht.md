@@ -25,6 +25,17 @@ Das bestehende scripts/konfi-messen.cjs bleibt Messweg einschließlich CPU 4× b
 
 Die geprüften öffentlichen Gedenktafel- und Grabstecker-Produktseiten haben keinen sichtbaren data-gravuru-start-Einstieg: gedenktafel-fuer-hunde-220x140, hunde-gedenktafel-schiefer-fotogravur-personalisiert-30x20, grabstecker-edelstahl-lebensbaum-personalisiert. Sichtbarkeit eines Produktes belegt daher keine native Kundenstrecke. Für diese Linien bleibt die geforderte Live-Ladezeitabnahme offen.
 
+Die abschließenden Live-Messungen liefen nacheinander mit demselben Skriptstand (SHA-256 im [Rohbericht](2026-11-03-issue139-startansicht/live-messung/summary.json)), ohne parallele Browserprüfungen. Keine dieser Messungen prüft den noch unveröffentlichten Kandidaten.
+
+| Live-Produkt | Desktop | Handy (CPU 4×) | Universal-Modell |
+|---|---:|---:|---:|
+| Edelstahl D8 12×8 | 14,1 s | 44,0 s | 30.469 KB |
+| Acryl D8 12×8 | 14,4 s | 46,8 s | 30.349 KB |
+| AOSU-Funkklingel | 4,9 s | 14,8 s | 129 KB |
+| Hunde-Gedenktafel 30×20 | kein Einstieg | kein Einstieg | nicht messbar |
+
+Damit sind die Zielwerte am gegenwärtigen Live-Stand nicht erfüllt. Einzelne frühere Diagnosemessungen sind nicht als Abnahme übernommen.
+
 ## Weiter offen
 
 Vollständige Produktmodultrennung einschließlich neutralem prepare/finish und getrennten Gerätemodulen; Gedenktafel-/Grabstecker-Ausführung; R6–R8 aktuelle Sicht-/Warenkorbnachweise; Zielwerte Desktop ≤4 s / Handy ≤6 s je Linie. Insbesondere die Funkklingel liegt im isolierten gedrosselten Lauf noch über dem Ziel. Keine Performance-Abnahme, kein Merge, kein Deployment, kein neuer Bulk-Lauf. Claude prüft das Modulregister vor Merge; danach folgen Bulk-Pipeline und Navigation gemäß #139.

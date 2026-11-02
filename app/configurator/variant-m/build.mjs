@@ -11,6 +11,7 @@ import {makeAcrylicConfig} from './acrylic-product.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {writeLazyResources,patchEditorLoading} from './lazy-resources-build.mjs';
 import {buildEditorBundle,patchEditorBundle} from './bundle-build.mjs';
+import {splitReferenceDevice} from './reference-device-build.mjs';
 export const HERE=path.dirname(fileURLToPath(import.meta.url));
 export const ROOT=path.resolve(HERE,'../..');
 export const OUTPUT=path.join(HERE,'.preview');
@@ -131,6 +132,7 @@ export function build({outputDirectory=OUTPUT}={}){
    // Family targets may have IDs absent from the frozen legacy design closure.
    // Their gallery is rendered by adapter.renderThumbnails using the selected form.
    source=source.replace(loop,'if(!this.uxDragging&&!this.uxFamilyGallery)'+loop);}
+  source=splitReferenceDevice(source,LAZY).source;
   fs.writeFileSync(path.join(outputDirectory,'editor.html'),source);
   return {verifiedResources:inventory.length,models:models.length,editorBytes:Buffer.byteLength(source),lazyResources:{fonts:lazy.fonts,motifs:lazy.motifs},bundle:{url:bundle.url,modules:bundle.modules.length,styles:bundle.styles.length,bytes:bundle.bytes,gzipBytes:bundle.gzipBytes}};
 }

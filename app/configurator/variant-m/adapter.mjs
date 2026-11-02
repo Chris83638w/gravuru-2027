@@ -24,6 +24,8 @@ import {installDoorbellPresentation} from './doorbell-presentation.mjs';
 import {isFamilyFormats,familyFormatState,familyDesignReviewNote} from './family-formats.mjs';
 import {installFamilyFormatsPresentation} from './family-formats-ui.mjs';
 import {mountingPlacementState} from './mounting-placement.mjs';
+import {prepareNativeShellState} from './native-shell-state.mjs';
+import {finishNativeShell} from './native-shell-ui.mjs';
 
 const clone = value => structuredClone(value);
 const svgDocument = svg => new DOMParser().parseFromString(svg, 'image/svg+xml');
@@ -32,7 +34,6 @@ export function installUniversal(configInput) {
   const config = prepareConfig(configInput), p = config.profile, processing = getProcessingProfile(p);
   const dynamicDoorbell=isLayeredDoorbell(config);
   const dynamicFamily=isFamilyFormats(config),dynamicFormats=dynamicDoorbell||dynamicFamily;
-  const originalPrepare = window.Funkklingel.prepare, originalFinish = window.Funkklingel.finish;
   let options = {}, quantity = 1, el, renderId = 0;
   const photos = new Map(); // File objects stay in this page. Never localStorage, URL, draft or Git.
   const thumbnails=new WeakMap();
@@ -76,7 +77,7 @@ export function installUniversal(configInput) {
   const thumbCache=new Map();let familyThumbOptions=null;
   window.Funkklingel.thumb = (element, d) => { el = element; const design=(dynamicFormats?profile().designs:p.designs).find(x => x.id === d.id) || d; if(dynamicDoorbell&&!designResourcesReady(design,el.fontData,el.motifs))return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120"><text x="120" y="65" text-anchor="middle" font-size="12" fill="#526b5d">Design wird geladen …</text></svg>'; const optionKey=JSON.stringify(options);if(dynamicFamily&&familyThumbOptions!==optionKey){thumbCache.clear();familyThumbOptions=optionKey;}const key=JSON.stringify([options,design]); let markup=thumbCache.get(key); if(markup===undefined){markup=svg(design,{screen:true});if(!dynamicFamily&&thumbCache.size>64)thumbCache.clear();thumbCache.set(key,markup);} return markup; };
   window.Funkklingel.prepare = element => {
-    el = element; originalPrepare(el);
+    el = element; prepareNativeShellState(el,profile());
     const {width, height, shape, cornerRadiusMm=0} = profile().geometry;
     const format = {...el.stainlessFormat(), widthMm:width, heightMm:height, shape, cornerRadiusMm,
       key:p.id, label:width + ' × ' + height + ' mm', allowedMountings:['K00']};
@@ -126,7 +127,7 @@ export function installUniversal(configInput) {
   };
 
   window.Funkklingel.finish = element => {
-    el = element; el.uxFamilyGallery=dynamicFamily; originalFinish(el);
+    el = element; el.uxFamilyGallery=dynamicFamily; finishNativeShell(el);
     el.uxProfileGeometry=()=>profile().geometry;
     el.uxSelectedProfile=()=>profile();
     el.style.setProperty('--m-plate-width',String(p.geometry.width));

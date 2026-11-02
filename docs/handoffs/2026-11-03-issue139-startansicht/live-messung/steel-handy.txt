@@ -1,0 +1,15 @@
+
+Konfigurator-Messung (Handy, CPU 4x gebremst) – 3.11.2026, 00:46:03
+https://gravuru-design.myshopify.com/products/tuerschild-abger-ecken-v2a-personalisiert-leuchtturm-12x8
+
+Produktseite geladen             1,1 s
+Knopf „Jetzt personalisieren“    ja
+Normaler Kaufknopf ausgeblendet  ja
+Produktdaten geladen nach        6,4 s
+Konfigurator bedienbar nach      44,0 s
+Produktdaten (entpackt)          30469 KB
+Mitgeschickte Schriften          57
+Grundplatte                      image/webp
+Zwischenspeicher Editor-Seite    private, max-age=300
+Zwischenspeicher Editor-Paket    public, max-age=31536000, immutable
+Zwischenspeicher Katalog         public, max-age=3600

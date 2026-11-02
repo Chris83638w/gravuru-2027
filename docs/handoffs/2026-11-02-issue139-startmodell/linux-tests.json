@@ -1,0 +1,197 @@
+{
+  "at": "2026-11-02T21:42:20.782Z",
+  "initial": {
+    "files": 279,
+    "totals": {
+      "tests": 2083,
+      "suites": 0,
+      "passed": 2008,
+      "failed": 75,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    }
+  },
+  "retry": {
+    "complete": true,
+    "files": 27,
+    "passed": true,
+    "results": [
+      {
+        "file": "app/workshop/acrylic-engraving.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/acrylic-import-tint.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/acrylic-order-product.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/acrylic-production-profiles.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/batch-report.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/dashboard-print-flow.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/export-recovery.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/form-additions.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/form-batch.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/form-customer.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/form-designs.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/form-engraving-proof.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/form-print-proof.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/form-variants.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/guide-layers.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/option-fields.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/order-product-draft.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/output-orientation.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/photo-frame-coverage.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/print-delivery-vector.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/print-preview.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/product-families.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/production-summary.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/quantity-tiers.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/shop-toolbar-query.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/specimen-product.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      },
+      {
+        "file": "app/workshop/surfaces.test.mjs",
+        "exitCode": 0,
+        "passed": true,
+        "counts": {}
+      }
+    ]
+  },
+  "effective": {
+    "tests": 1940,
+    "pass": 1940,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "integrity": {
+    "protectedChanges": [],
+    "testSourceChanges": []
+  },
+  "scope": "Complete initial suite plus targeted rerun of the 27 failing files with GRAVURU_PYTHON and PATH; toolbar test fixture corrected. Later 192 affected tests and new start-size budget test run separately."
+}

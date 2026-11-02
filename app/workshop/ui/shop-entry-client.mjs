@@ -116,8 +116,11 @@ export function warmEditor(targets,{fetchImpl=globalThis.fetch}={}){
 // Schriften und Bibliotheksmotive, die die Startdesigns aus dem Katalog brauchen – gleiche Adressen wie der Editor
 // (lazy-resources-model: Kerndesigns, ohne Produktressourcen und Grundmotive; Funkklingel nur Startdesign).
 export function startResourceUrls(universal,catalog,catalogPath){
- if(!catalog||typeof catalogPath!=='string'||!/\/katalog-kern\.json$/.test(catalogPath))return [];
- const base=catalogPath.replace(/katalog-kern\.json$/,''),local=universal?.localResources||{};
+ const local=universal?.localResources||{};
+ const own=new Map((local.lazyFonts||[]).filter(f=>typeof f?.name==='string'&&/^\/konfigurator\/shop\/schriften\/[a-f0-9]{64}\.json$/.test(f.url||'')).map(f=>[f.name,f.url]));
+ const validCatalog=!!catalog&&typeof catalogPath==='string'&&/\/katalog-kern\.json$/.test(catalogPath);
+ if(!validCatalog){catalog={};catalogPath='';}
+ const base=catalogPath.replace(/katalog-kern\.json$/,'');
  const localFonts=new Set(Object.keys(local.fonts||{})),skipMotifs=new Set([...(local.motifs||[]).map(m=>m?.key),...Object.keys(catalog.motifs||{})]);
  // Nur Dateien, die der Host zwischenspeichern darf (acrylCacheControl: Slug-Namen); sonst wäre es ein Doppelabruf.
  const files=new Map((catalog.font_index||[]).filter(f=>typeof f?.name==='string'&&f.url===undefined&&/^[a-z0-9-]{1,80}\.json$/.test(f.file||'')).map(f=>[f.name,f.file])),motifKeys=new Set((catalog.motif_index||[]).map(m=>m?.key));
@@ -125,7 +128,7 @@ export function startResourceUrls(universal,catalog,catalogPath){
  const initial=universal?.doorbell?[designs.find(d=>d?.id===universal.profile.defaultDesignId)||designs[0]].filter(Boolean):designs;
  const urls=new Set();
  for(const o of initial.flatMap(d=>Array.isArray(d?.objects)?d.objects:[])){
-  if(o?.type==='text'&&files.has(o.font)&&!localFonts.has(o.font))urls.add(base+'schriften/'+encodeURIComponent(files.get(o.font)));
+  if(o?.type==='text'&&!localFonts.has(o.font)){if(own.has(o.font))urls.add(own.get(o.font));else if(validCatalog&&files.has(o.font))urls.add(base+'schriften/'+encodeURIComponent(files.get(o.font)));}
   if(o?.type==='motif'&&typeof o.motif==='string'&&/^[A-Za-z0-9_-]{1,80}$/.test(o.motif)&&motifKeys.has(o.motif)&&!skipMotifs.has(o.motif))urls.add(base+'motive/'+o.motif+'.json');
  }
  return [...urls].slice(0,24);

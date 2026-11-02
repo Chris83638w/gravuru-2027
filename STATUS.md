@@ -1,5 +1,7 @@
 ## 02.11.2026 · Codex · Issue 139 Ladezeit-Paket in Prüfung
 
+Nachtrag: Claude 6588814817/6589023089 und Entscheidungsregister main 66ad324 gelesen. Neue Abnahme: vorhandenes Messskript je Linie, ≤600 KB / Desktop ≤4 s / Handy ≤6 s. Größenbudget-Test bestanden; 192 betroffene Linux-Tests grün. Vollständiger Lauf 279 Dateien plus gezielte Nachprüfung aller 27 fehlgeschlagenen Dateien bestanden (Python-PATH und ein Teststub korrigiert; Rohzählung im Prüfbericht). Browser: „Koch“ und B04 bleiben erhalten. Die neu verlangte vollständige Modultrennung ist noch offen; [Bestandsprüfung und Modulregister](docs/handoffs/2026-11-02-issue139-modulregister.md). Keine Veröffentlichung dieses Pakets.
+
 Neu angelegt: 2 · überarbeitet: 8 · gesamt live: 10 (bisherige Wellen). Neustart nach Claude-Kommentar 6586013095. Kleines Startmodell, feste Produktgalerie ohne Shop-Gesamtscan, einzelne Designwechsel, Schriften/Vorschauen mit Hash-Cache und vorbereitete Galerie-Beschleunigung. D24: 31,18 MB → 155,7 KB JSON; 153 gezielte Linux-Tests und 1.393 Originalvergleiche bestanden. Mobile Kandidatenstrecke funktioniert; Ziel unter 3 s noch offen (9 Mbit/s, 150 ms, CPU 4×: 6,26 s). Vollständiger Linux-Lauf läuft. Noch kein Deployment; nächste Pakete Bulk-Pipeline und Navigation. [Prüfbericht](docs/handoffs/2026-11-02-issue139-startmodell.md).
 
 ## 02.11.2026 · Codex · Issue 139 vier weitere Edelstahlprodukte live

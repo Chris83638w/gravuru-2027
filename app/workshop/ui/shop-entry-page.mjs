@@ -12,7 +12,8 @@ try{
   const warm=warmEditor(warmTargets(document,fragment.get('s')||''));
   const data=await client.loadInitialModel(fragment,sessionStorage),model=data.model;
   // Startschriften/-motive aus dem Katalog sofort holen (das Fenster liest sie dann aus dem Zwischenspeicher).
-  warm.catalog.then(catalog=>{for(const url of startResourceUrls(model.universal,catalog,warm.catalogPath))fetch(url,{credentials:'same-origin'}).catch(()=>{});});
+  const warmed=new Set(),warmStart=catalog=>{for(const url of startResourceUrls(model.universal,catalog,warm.catalogPath)){if(warmed.has(url))continue;warmed.add(url);fetch(url,{credentials:'same-origin'}).catch(()=>{});}};
+  warmStart(null);warm.catalog.then(warmStart);
   const resources=await client.loadResources(model.universal,toDataUrl);
   const backUrl=shopUrl(data.shopDomain,fragment.get('back'));
   // Fenster über der Produktseite (shop-embed.mjs): Übergabe und Schließen gehen an die Shop-Seite, kein Seitenwechsel.

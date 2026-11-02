@@ -56,6 +56,8 @@ export function build({outputDirectory=OUTPUT}={}){
   for(const [key,value] of Object.entries(urls))urls[key]=Array.isArray(value)?value.map(u=>'/_runtime/'+u.split('/').pop()):'/_runtime/'+value.split('/').pop();
   source=source.replace(/(<script[^>]*id="preview-urls"[^>]*>)[\s\S]*?(<\/script>)/,(_,a,b)=>a+JSON.stringify(urls)+b);
   replaceOnce('<base href="/" target="_top">','');
+  replaceOnce('stainlessMoney=c=>new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"}).format(c/100)',
+    'stainlessEuro=new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"}),stainlessMoney=c=>stainlessEuro.format(c/100)');
   // The shared legacy shell can render once before its optional doorbell image
   // Native products use their validated mm geometry; the legacy steel fitter
   // must not measure and shrink that composition while mounting the shell.

@@ -255,6 +255,10 @@ test('start resources: catalog fonts and library motifs of the start designs at 
  const warm=warmEditor(['/_merchant-acryl-editor.html',path],{fetchImpl:async url=>({ok:true,text:async()=>'',json:async()=>url===path?catalog:null})});
  assert.equal(warm.catalogPath,path);assert.deepEqual(await warm.catalog,catalog);
  assert.equal(await warmEditor([]).catalog,null);
+ const own='/konfigurator/shop/schriften/'+'a'.repeat(64)+'.json';
+ const deferred={...universal,localResources:{...universal.localResources,lazyFonts:[{name:'Cinzel',url:own},{name:'Unbekannt',url:'https://foreign.example/font.json'}]}};
+ assert.deepEqual(startResourceUrls(deferred,null,null),[own],'product font warms before the catalog, never a foreign URL');
+ assert.deepEqual(startResourceUrls(deferred,catalog,path),[own,'/_acryl-runtime/lazy/motive/herz.json','/_acryl-runtime/lazy/schriften/raleway.json'],'own font wins over a same-named catalog font');
 });
 test('start ticket: fetched once per start address through the proxy, only editor-host addresses, dropped before expiry or on failure',async t=>{
  const fs=await import('node:fs'),os=await import('node:os'),path=await import('node:path');

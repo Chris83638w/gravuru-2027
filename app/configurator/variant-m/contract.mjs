@@ -42,7 +42,8 @@ export const vectorLogoAllowed=config=>config?.logo?.enabled===true&&config.logo
 export function physicalScale(config, options={}) {
   return config.acrylic ? acrylicSelection(acrylicOptions(resolvedOptions(config, options)), config.acrylic.pricing).size.width / config.acrylic.designWidth : 1;
 }
-export const money = cents => new Intl.NumberFormat('de-DE', {style:'currency', currency:'EUR'}).format(cents / 100);
+const euroFormat = new Intl.NumberFormat('de-DE', {style:'currency', currency:'EUR'});
+export const money = cents => euroFormat.format(cents / 100);
 
 // This adapter consumes the existing native profile. It never grants a runtime release.
 export function prepareConfig(input) {

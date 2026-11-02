@@ -32,7 +32,7 @@ Kordel Schiefer (ziele leer wie alle Kordel-Designs, keine Familie auf main): 15
 Gesamt 208 neue Designs.
 
 ## Prüfung
-- Native Zielvorschau: Acryl 3 mm, AA/AS/SS (264/264) und Kordel (Scratch-Vorschaufamilie, 56/56) „passt“. Edelstahl „prüfen“ nur wegen feiner Blattstiele/Ränder des Bestandsmotivs (< 0,5 mm; an 9 × 6 min. 0,16–0,29 mm, bei 4 Kindern am dünnsten), Retro 2 zusätzlich Seitenverhältnis 1,5 % (Reihe). Kein Element außerhalb der Gestaltungsfläche.
+- Native Zielvorschau (alle 208 Designs × Ziele geprüft): Acryl 3 mm 112/128 „passt“, Rest = Retro 2 „prüfen“ nur wegen Seitenverhältnis 1,5 % der Reihe; AA/AS/SS 264/264 und Kordel (Scratch-Vorschaufamilie, nie committet) 56/56 „passt“. Edelstahl „prüfen“ nur wegen feiner Blattstiele/Ränder des Bestandsmotivs (< 0,5 mm; an 9 × 6 min. 0,16–0,29 mm, bei 4 Kindern am dünnsten), Retro 2 zusätzlich Seitenverhältnis 1,5 % (Reihe). Kein Element außerhalb der Gestaltungsfläche.
 - Freiflächen (`flaeche-messen.py`, Werte in `mess/*.txt`): 211 von 216 Bögen-Platten ok; Ausnahme AA 21×7 D970–D973/D977 (Höhe 38–45 %, Fläche 31–36 %), Breite durch seitliche Abstandshalter auf 82 % begrenzt – bewusst so.
 - Füllfläche Motiv max. 8,2 % der Platte (AA EE 18×12 D973), Edelstahl max. 7,8 %.
 - Kontaktbögen ohne Bohrlöcher/Abstandshalter; Edelstahl-Bögen mit je einer Acryl-3-mm-Vorschau.

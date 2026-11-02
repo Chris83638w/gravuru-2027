@@ -9,7 +9,8 @@ export function galleryScope(model,binding){
  // Legacy products without a proven line remain within their own fixed product.
  // Doorbell imports predate catalogue categories; their explicit modelKey is
  // authoritative, and never shares a namespace with ordinary product lines.
- const key=doorbell&&modelKey?JSON.stringify(['doorbell',lineId,modelKey]):!doorbell&&lineId?JSON.stringify(['line',lineId]):JSON.stringify(['product',binding.productId,binding.productRevision]);
+ const fixed=model.universal.familyFormats?.fixedSize;
+ const key=fixed?JSON.stringify(['product',binding.productId,binding.productRevision]):doorbell&&modelKey?JSON.stringify(['doorbell',lineId,modelKey]):!doorbell&&lineId?JSON.stringify(['line',lineId]):JSON.stringify(['product',binding.productId,binding.productRevision]);
  return {key,lineId,familyId};
 }
 export const galleryProcess=profile=>JSON.stringify([profile.material?.kind,profile.material?.variant??null,profile.processing?.method??profile.processing?.profileId??null]);

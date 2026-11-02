@@ -10,7 +10,7 @@ const toDataUrl=blob=>new Promise((resolve,reject)=>{const reader=new FileReader
 try{
   const client=createShopEntryClient({token:fragment.get('s')||''});
   const warm=warmEditor(warmTargets(document,fragment.get('s')||''));
-  const data=await client.loadModel(),model=data.model;
+  const data=await client.loadInitialModel(fragment,sessionStorage),model=data.model;
   // Startschriften/-motive aus dem Katalog sofort holen (das Fenster liest sie dann aus dem Zwischenspeicher).
   warm.catalog.then(catalog=>{for(const url of startResourceUrls(model.universal,catalog,warm.catalogPath))fetch(url,{credentials:'same-origin'}).catch(()=>{});});
   const resources=await client.loadResources(model.universal,toDataUrl);

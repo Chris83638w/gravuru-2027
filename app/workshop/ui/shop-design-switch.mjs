@@ -28,7 +28,7 @@ export function createDesignSwitch({initial,fragment,container,activate,toDataUr
  const setFragment=entry=>win.history.replaceState(win.history.state,'','#'+entry.fragment);
  function api(entry){return Object.freeze({
   load:(page,theme)=>{check(entry);return entry.client.loadDesignGallery(page,theme);},
-  preview:target=>{check(entry);return entry.client.loadDesignPreview(target);},
+  preview:(target,url)=>{check(entry);return entry.client.loadDesignPreview(target,url);},
   hasPendingTransfer:()=>!!entry.pending,
   takeTransfer:()=>{const value=entry.pending;entry.pending=null;return value;},
   canGoBack:()=>history.length>0||!!entry.previous,
@@ -37,10 +37,10 @@ export function createDesignSwitch({initial,fragment,container,activate,toDataUr
    check(entry);busy=true;let candidate=null,removeListener=()=>{};
    try{
     const result=await entry.client.switchDesign(target),client=clientFactory({token:result.token});
-    const data=switchedModel(await client.loadModel(),result);
+    const data=switchedModel(await client.loadModel(result.designId),result);
     const selection=copyProductSelection(transfer?.selection,data.model.universal);
     const resources=await client.loadResources(data.model.universal,toDataUrl);
-    const nextFragment=new URLSearchParams(entry.fragment);for(const key of ['config','rev','line'])nextFragment.delete(key);nextFragment.set('s',result.token);
+    const nextFragment=new URLSearchParams(entry.fragment);for(const key of ['config','rev','line'])nextFragment.delete(key);nextFragment.set('s',result.token);nextFragment.set('design',result.designId);
     const frame=doc.createElement('iframe');frame.title=data.model.name+' personalisieren';frame.style.visibility='hidden';frame.style.position='absolute';frame.style.inset='0';
     candidate={client,data,resources,frame,fragment:nextFragment,pending:structuredClone({...transfer||{texts:[]},...(selection?{selection}:{})}),previous:entry};
     const ready=new Promise((resolve,reject)=>{

@@ -90,10 +90,17 @@ export function installUniversal(configInput) {
       return {outline, clip:shape==='contour'?contourPathWithHoles(geometry):outline, holes:(geometry.holes||[]).map(h => ({...h, r:h.diameter/2})), gap:0};
     };
     el.objectSVG = o => svgDocument(svg({...p.designs[0], objects:[o], marks:[]},{surface:objectSurface(o),bare:true})).querySelector('[data-object]')?.outerHTML || '';
+    let bodyCache=null;
     el.svgBody = function(preview=true, guides=false) {
+      const design=current(),cacheable=dynamicFamily&&config.familyFormats.fixedSize&&design.objects.every(o=>o.type==='text'||o.type==='motif');
+      const refs=cacheable?[this.uxObjectSVG,...design.objects.map(o=>o.type==='text'?this.fontData[o.font]:this.motifs[o.motif])]:null;
+      const key=cacheable?JSON.stringify([design,options,preview,guides,!!this.$('[data-setting=guides]')?.checked,this.state.selected,activeSurface()]):null;
+      if(cacheable&&bodyCache?.key===key&&refs.every((r,i)=>r===bodyCache.refs[i]))return bodyCache.body;
       const doc = svgDocument(svg(current(), {guides:preview && guides && !!this.$('[data-setting=guides]')?.checked,selected:preview?this.state.selected:'',handles:preview,keepout:preview,surface:preview?activeSurface():'front',screen:preview}));
       if(preview){const design=current();decorateEmptyPhotoSlots(doc,design.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],config.photo.hints||[],{blendMode:profile().material.kind==='slate'?'lighten':undefined,grayscale:profile().material.kind==='slate'});for(const o of design.objects.filter(o=>o.type==='motif'&&o.locked===true&&o.customerEditable===false)){const g=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(g)g.style.pointerEvents='none';}}
-      return doc.documentElement.innerHTML;
+      const body=doc.documentElement.innerHTML;
+      bodyCache=cacheable?{key,refs,body}:null;
+      return body;
     };
     el.svg = function() { return svg(current()); };
     el.png = async function() {

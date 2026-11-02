@@ -507,15 +507,15 @@ test('customer model passes through the model slimmer with a revision key; the s
  const {token:t}=await token();
  const loaded=await request('/api/shop-entry/model',undefined,undefined,session(t));
  assert.equal(loaded.status,200);assert.equal(loaded.data.model.universal.slimmed,true);
- assert.match(f.slimKeys[0],/:3$|:\d+$/);
+ assert.match(f.slimKeys[0],/:\d+:fonts$/);
  assert.equal(f.models.get(f.first.localWorkshopRecord).universal.slimmed,undefined,'gespeichertes Modell unverändert');
 },f=>{f.slimKeys=[];f.options.modelSlimmer={ready:()=>true,load(){},slim(universal,{key}){f.slimKeys.push(String(key));universal.slimmed=true;return {fonts:[],surface:false};}};}));
 test('own fonts no design uses are served as immutable files from the shop entry and listed for lazy loading',()=>run(async(f,request,{token,entry})=>{
  const {token:t}=await token();
  const loaded=await request('/api/shop-entry/model',undefined,undefined,session(t));
  assert.equal(loaded.status,200);
- const u=loaded.data.model.universal;assert.deepEqual(Object.keys(u.localResources.fonts),['Nutzt']);
- assert.equal(u.localResources.lazyFonts.length,1);const url=u.localResources.lazyFonts[0].url;
+ const u=loaded.data.model.universal;assert.deepEqual(Object.keys(u.localResources.fonts),[]);
+ assert.equal(u.localResources.lazyFonts.length,2);const url=u.localResources.lazyFonts.find(f=>f.name==='Eigen').url;
  assert.match(url,/^\/konfigurator\/shop\/schriften\/[a-f0-9]{64}\.json$/);assert.equal(entry.matches(url),true);
  const file=await request(url);
  assert.equal(file.status,200);assert.equal(file.headers['cache-control'],'public, max-age=31536000, immutable');assert.match(file.headers['content-type'],/application\/json/);

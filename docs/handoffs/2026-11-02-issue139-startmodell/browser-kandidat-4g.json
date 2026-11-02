@@ -1,0 +1,46 @@
+{
+  "at": "2026-11-02T21:10:42.286Z",
+  "scope": "isolated real-model candidate",
+  "networkMbit": 9,
+  "latencyMs": 150,
+  "cpuRate": 4,
+  "readyMs": 7306,
+  "cards": 40,
+  "timing": [
+    {
+      "path": "/_bundle/editor-a199918068ea5414.mjs",
+      "ms": 495,
+      "bytes": 467860,
+      "start": 199
+    },
+    {
+      "path": "/konfigurator/shop/schriften/076933c087e2ec9bd6458f673343650e9d0f3959d2b5f47c30e2240182ccdf8f.json",
+      "ms": 361,
+      "bytes": 89715,
+      "start": 950
+    },
+    {
+      "path": "/konfigurator/shop/schriften/9b3e2f8741a92b71d01568deb991538159ce4d849e6d795cc20412259a8199c7.json",
+      "ms": 361,
+      "bytes": 92226,
+      "start": 951
+    },
+    {
+      "path": "/_runtime/lazy/katalog-kern.json",
+      "ms": 281,
+      "bytes": 45541,
+      "start": 951
+    },
+    {
+      "path": "/assistant.js",
+      "ms": 186,
+      "bytes": 16511,
+      "start": 5621
+    }
+  ],
+  "errors": [],
+  "texts": [
+    "Niedermeier",
+    "Familie"
+  ]
+}

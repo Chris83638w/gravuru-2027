@@ -1,4 +1,5 @@
 import {createCustomerDesignImages} from './customer-design-image.mjs';
+import {shopStartModel} from './shop-start-model.mjs';
 import fs from 'node:fs';
 import {createModelSlimmer,surfaceSwapsFrom,DEFAULT_SURFACE_DIR} from './shop-model-slim.mjs';
 import {createHash,randomBytes} from 'node:crypto';
@@ -148,11 +149,12 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  // Schlankes Kundenmodell (shop-model-slim.mjs): Katalog des ausgelieferten Editors einmal über den eigenen Host laden.
  // Eigene Schriften ohne Designbezug liefert der Shop-Einstieg als inhaltsadressierte Datei (unveränderlich, lange zwischenspeicherbar).
  const fontRoute=new RegExp('^'+pagePath+'schriften/([a-f0-9]{64})\\.json$');
+ const previewRoute=new RegExp('^'+pagePath+'vorschauen/([a-f0-9]{64})\\.svg$');
  const slimmer=modelSlimmer===undefined?createModelSlimmer({fetchJson:async p=>{const r=await fetch(origin+p,{signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('http '+r.status);return r.json();},surfaceSwaps:surfaceSwapsFrom(DEFAULT_SURFACE_DIR),fontUrl:hash=>pagePath+'schriften/'+hash+'.json'}):modelSlimmer;
- function presentedModel(model,binding,store){
-  const copy=structuredClone(model);
+ function presentedModel(model,binding,store,designId=null){
+  const copy=shopStartModel(model,designId,{deferFonts:!!slimmer&&!model.universal.doorbell});
   // `source`: ausgelagerte Schriften lassen sich nach Verdrängung aus dem gespeicherten Modell nachliefern.
-  if(slimmer){if(!slimmer.ready())slimmer.load();slimmer.slim(copy.universal,{key:copy.configuration?.id&&copy.configuration?.revision?copy.configuration.id+':'+copy.configuration.revision:null,source:()=>modelFor(store,binding).universal?.localResources?.fonts});}
+  if(slimmer){if(copy.universal.doorbell&&!slimmer.ready())slimmer.load();slimmer.slim(copy.universal,{deferAll:!copy.universal.doorbell,key:copy.configuration?.id&&copy.configuration?.revision?copy.configuration.id+':'+copy.configuration.revision+':fonts':null,source:()=>modelFor(store,binding).universal?.localResources?.fonts});}
   for(const group of copy.universal.profile?.optionGroups||[]){const chosen=binding.options?.[group.id];if(typeof chosen==='string'&&group.values?.some(v=>v.id===chosen))group.defaultValueId=chosen;}
   return copy;
  }
@@ -187,7 +189,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   }
   return allowed;
  }
- const designGallery=createShopDesignGallery({secret,resolve,modelFor,cardFor,allowedAssets,checkBinding:checkGalleryBinding,checkBindings:checkGalleryBindings,onMeasure:logger});
+ const designGallery=createShopDesignGallery({secret,resolve,modelFor,cardFor,allowedAssets,checkBinding:checkGalleryBinding,checkBindings:checkGalleryBindings,onMeasure:logger,previewUrl:hash=>pagePath+'vorschauen/'+hash+'.svg'});
  // Warm each configured store after startup without creating a customer session.
  // A transient failure is retried on the next gallery request, never unhandled.
  for(const store of fixed)if(typeof store.registry.listActiveForGallery==='function'){
@@ -343,7 +345,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  }
  return Object.freeze({
   pagePath,startPath,
-  matches:pathname=>customerImages.matches(pathname)||fontRoute.test(pathname)||pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pageFiles.has(pathname)||pathname.startsWith(API),
+  matches:pathname=>customerImages.matches(pathname)||fontRoute.test(pathname)||previewRoute.test(pathname)||pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pageFiles.has(pathname)||pathname.startsWith(API),
   async handle(req,res,url){
    try{
     if(req.headers.host!==address.host||req.headers['x-forwarded-proto']!=='https')fail(403,'shop_entry_host','Diese Anfrage ist nicht zulässig.');
@@ -352,6 +354,13 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      const bytes=customerImages.read(url.pathname);res.writeHead(200,headersFor('image/png',{'Content-Length':bytes.length,'Cache-Control':'private, max-age=3600'}));return res.end(req.method==='HEAD'?undefined:bytes);
     }
     const pathname=url.pathname;
+    const templatePreview=pathname.match(previewRoute);
+    if(templatePreview){
+     if(!['GET','HEAD'].includes(req.method)||url.search)fail(404,'shop_entry_route','Diese Vorschau gibt es hier nicht.');
+     checkOrigin(req,{mutating:false});const bytes=designGallery.previewFile(templatePreview[1]);
+     if(!bytes)fail(404,'shop_entry_route','Diese Vorschau gibt es hier nicht.');
+     res.writeHead(200,headersFor('image/svg+xml',{'Content-Length':bytes.length,'Cache-Control':'public, max-age=31536000, immutable','Content-Security-Policy':"default-src 'none'; img-src data:; style-src 'unsafe-inline'; sandbox"}));return res.end(req.method==='HEAD'?undefined:bytes);
+    }
     if(pathname===startPath)return start(req,res,url);
     if(pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname))return await themeProxy(req,res,url);
     const fontFile=pathname.match(fontRoute);
@@ -375,17 +384,17 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     if(url.hash)fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');
     if(action==='model'){
      if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
-     if(url.search)fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');
+     if([...url.searchParams.keys()].some(k=>k!=='design')||url.searchParams.getAll('design').length>1||(url.searchParams.has('design')&&(!url.searchParams.get('design')||url.searchParams.get('design').length>200)))fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');
      checkOrigin(req,{mutating:false});
      const context=active(req),model=modelFor(context.store,context.binding);
      allowedAssets(context.store,context.binding,model);
-     return json(res,200,{model:presentedModel(model,context.binding,context.store),binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false});
+     return json(res,200,{model:presentedModel(model,context.binding,context.store,url.searchParams.get('design')),binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false});
     }
     if(action==='design-gallery'){
      if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
      if([...url.searchParams.keys()].some(k=>!['page','theme'].includes(k))||url.searchParams.getAll('page').length>1||url.searchParams.getAll('theme').length>1||!['preferred','all'].includes(url.searchParams.get('theme')||'preferred')||!/^\d{1,5}$/.test(url.searchParams.get('page')||'0'))fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
-     checkOrigin(req,{mutating:false});const context=active(req);checkGalleryBinding(context.store,context.binding,cardFor(context.store,context.binding));
-     const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0),theme:url.searchParams.get('theme')||'preferred'});active(req);
+     checkOrigin(req,{mutating:false});const context=active(req),sourceModel=cardFor(context.store,context.binding);checkGalleryBinding(context.store,context.binding,sourceModel);
+     const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0),theme:url.searchParams.get('theme')||'preferred',sourceModel});active(req);
      return json(res,200,result);
     }
     if(action==='customer-vector-logo/preview'){

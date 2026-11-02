@@ -1,3 +1,7 @@
+## 02.11.2026 · Codex · Issue 139 Ladezeit-Paket in Prüfung
+
+Neu angelegt: 2 · überarbeitet: 8 · gesamt live: 10 (bisherige Wellen). Neustart nach Claude-Kommentar 6586013095. Kleines Startmodell, feste Produktgalerie ohne Shop-Gesamtscan, einzelne Designwechsel, Schriften/Vorschauen mit Hash-Cache und vorbereitete Galerie-Beschleunigung. D24: 31,18 MB → 155,7 KB JSON; 153 gezielte Linux-Tests und 1.393 Originalvergleiche bestanden. Mobile Kandidatenstrecke funktioniert; Ziel unter 3 s noch offen (9 Mbit/s, 150 ms, CPU 4×: 6,26 s). Vollständiger Linux-Lauf läuft. Noch kein Deployment; nächste Pakete Bulk-Pipeline und Navigation. [Prüfbericht](docs/handoffs/2026-11-02-issue139-startmodell.md).
+
 ## 02.11.2026 · Codex · Issue 139 vier weitere Edelstahlprodukte live
 
 D32/D62 18×12 und D65/D24 30×20 mit 24 richtigen Varianten, eigenen Hauptbildern/Texten/19 Attributen und Edelstahl-Collection veröffentlicht. Vier echte Desktop-/Handywege bis Warenkorb und Bearbeiten bestanden. D24-Feldkennungen im Katalog PR 160/main b5d8f28 korrigiert, Revision 2 neu verbunden; alte Revision unverändert. Damit acht Edelstahl- und zwei Acrylprodukte dieser Wellen live. Ladezeitproblem bleibt offen: D24 erst Timeout, Wiederholung bestanden; keine technische Gesamtfreigabe. Nächster Schritt: lange Modell-/Warenkorbvorbereitung gezielt messen und beheben, dann AA/AS/SS mit eigenen Halterfarben anbinden. [Nachweise und genaue Grenzen](docs/handoffs/2026-11-02-issue139-edelstahl-gross.md).

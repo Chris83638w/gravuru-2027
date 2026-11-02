@@ -57,6 +57,15 @@ export function build({outputDirectory=OUTPUT}={}){
   source=source.replace(/(<script[^>]*id="preview-urls"[^>]*>)[\s\S]*?(<\/script>)/,(_,a,b)=>a+JSON.stringify(urls)+b);
   replaceOnce('<base href="/" target="_top">','');
   // The shared legacy shell can render once before its optional doorbell image
+  // Native products use their validated mm geometry; the legacy steel fitter
+  // must not measure and shrink that composition while mounting the shell.
+  replaceOnce('el.fitComposition=function(){','el.fitComposition=function(){if(window.parent.UniversalConfig)return;');
+  replaceOnce('const galleryScroll=gallery.scrollTop;',
+    'if(window.parent.UniversalConfig?.familyFormats?.fixedSize)return sync.apply(this,args);const galleryScroll=gallery.scrollTop;');
+  replaceOnce('const scroll=gallery.scrollTop,result=sync.apply(this,args);gallery.scrollTop=scroll;',
+    'if(window.parent.UniversalConfig?.familyFormats?.fixedSize)return sync.apply(this,args);const scroll=gallery.scrollTop,result=sync.apply(this,args);gallery.scrollTop=scroll;');
+  replaceOnce('el.updateMobilePreview=function(){oldMobile.call(this);',
+    'el.updateMobilePreview=function(){if(window.parent.UniversalConfig?.familyFormats?.fixedSize)return;oldMobile.call(this);');
   // has loaded. Native products have no such component or image at all.
   replaceOnce('function bell(){const b=geometry.bellImageBounds||geometry.bell;',
     'function bell(){if(!window.FunkklingelImage)return "";const b=geometry.bellImageBounds||geometry.bell;');

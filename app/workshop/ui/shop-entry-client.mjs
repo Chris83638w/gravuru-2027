@@ -134,11 +134,28 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
   if(typeof token!=='string'||!/^gse1\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(token))fail('Bitte öffne den Konfigurator über „Jetzt personalisieren“ auf der Produktseite.');
   const headers=extra=>({...extra,'X-Gravuru-Shop-Session':token});
   const request=async(path,options={})=>fetchImpl(mapWorkshopPath(path),{...options,headers:headers(options.headers||{}),credentials:'omit',cache:'no-store'});
-  async function loadModel(){
-    const data=await json(await fetchImpl(API+'model',{credentials:'omit',cache:'no-store',headers:headers({})}));
+  async function loadModel(designId=null){
+    const data=await json(await fetchImpl(API+'model'+(designId?'?design='+encodeURIComponent(designId):''),{credentials:'omit',cache:'no-store',headers:headers({})}));
     const model=data.model;
     if(model?.key!=='acryl'||!model.universal?.profile||!model.configuration?.id||!EDITORS.test(data.editorPath||'')||typeof data.shopDomain!=='string'||!/^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(data.shopDomain))fail('Das Produkt ist für diesen Konfigurator nicht vorbereitet.');
     return data;
+  }
+  async function loadInitialModel(fragment,storage){
+    const config=fragment.get('config'),rev=fragment.get('rev');
+    if(!/^konfig_[a-f0-9-]{36}$/.test(config||'')||! /^[1-9][0-9]{0,8}$/.test(rev||''))return loadModel(fragment.get('design'));
+    // The same private token gate as cart-edit.mjs. Select the saved template
+    // before mounting; the editor still restores and verifies the full draft.
+    const tokens=new Set();
+    try{for(let i=0;i<storage.length;i++){const key=storage.key(i);if(!['gravuru-acrylic-private:','gravuru-form-draft:'].some(p=>key?.startsWith(p)))continue;const value=JSON.parse(storage.getItem(key)||'null');if(/^[a-f0-9]{64}$/.test(value?.token||''))tokens.add(value.token);}}catch{}
+    for(const token of tokens){
+      const response=await request(WORKSHOP+'cart-configurations/'+config+'/'+rev,{headers:{'X-Gravuru-Draft':token}});
+      if(response.status===404)continue;
+      const loaded=await json(response);
+      const id=loaded.document?.design?.id;
+      if(typeof id!=='string')fail('Die gespeicherte Gestaltung konnte nicht geladen werden.');
+      return loadModel(id);
+    }
+    fail('Diese Gestaltung ist auf diesem Gerät nicht mehr zugänglich. Die Warenkorbzeile bleibt unverändert.');
   }
   // Private Designressourcen einmal laden; der Editor liest sie unter beiden Pfadfassungen (Acryl-Umschreibung).
   async function loadResources(universal,toDataUrl){
@@ -196,8 +213,13 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
     if(typeof target!=='string'||target.length>4096)fail('Bitte ein Design aus der Auswahl wählen.');
     return fetchImpl(API+action,{method:'POST',credentials:'omit',cache:'no-store',headers:headers({'Content-Type':'application/json'}),body:JSON.stringify({target})});
   }
-  async function loadDesignPreview(target){const response=await designRequest('design-gallery-preview',target);if(!response.ok)await json(response);return response.blob();}
+  async function loadDesignPreview(target,previewUrl){
+    if(typeof previewUrl==='string'&&/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/vorschauen\/[a-f0-9]{64}\.svg$/.test(previewUrl)){
+      const cached=await fetchImpl(previewUrl,{credentials:'omit',cache:'force-cache'});if(cached.ok)return cached.blob();
+    }
+    const response=await designRequest('design-gallery-preview',target);if(!response.ok)await json(response);return response.blob();
+  }
   async function switchDesign(target){return json(await designRequest('design-switch',target));}
-  return Object.freeze({request,loadModel,loadResources,submitCart,submitThemeCart,loadDesignGallery,loadDesignPreview,switchDesign});
+  return Object.freeze({request,loadModel,loadInitialModel,loadResources,submitCart,submitThemeCart,loadDesignGallery,loadDesignPreview,switchDesign});
 }
 

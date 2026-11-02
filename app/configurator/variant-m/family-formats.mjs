@@ -5,6 +5,7 @@ import {surfaceObjectIssue,validateDesignContent,validateGeometryHoles} from '..
 import {validateUniversalElements,validateOptionGroups} from '../../platform/sources/app/shared/models/universal-elements.mjs';
 import {quantityTiersIssue} from './quantity-tiers.mjs';
 import {validateContourGeometry} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
+import {productFontIndex} from './lazy-resources-model.mjs';
 
 export const FAMILY_FORMATS_SCHEMA='gravuru-family-formats/v1';
 export const FAMILY_FORMS=Object.freeze([
@@ -120,7 +121,8 @@ export function validateFamilyFormats(c){
  const f=c.familyFormats;
  if(!Array.isArray(f.formats)||!f.formats.length||!Array.isArray(f.designs)||!f.designs.length||new Set(f.formats.map(s=>s.key)).size!==f.formats.length||new Set(f.designs.map(d=>d.id)).size!==f.designs.length)fail('Eindeutige Familiengrößen und Vorlagen fehlen.');
  if(!Array.isArray(f.colors)||!f.colors.length||!f.colors.some(v=>v.id===f.defaultColor))fail('Familienfarben fehlen.');
- for(const d of f.designs){if(!d.katalog?.designId||!Array.isArray(d.katalog.plateMm)||d.katalog.plateMm.length!==2||!d.katalog.plateMm.every(n=>Number.isFinite(n)&&n>0)||d.marks?.length)fail('Native Familienvorlage ohne gültige Quelle.');validateDesignContent(d,{universal:true,extraFontIds:Object.keys(c.localResources?.fonts||{})});validateUniversalElements(d);}
+ const fontIds=[...Object.keys(c.localResources?.fonts||{}),...productFontIndex(c).map(f=>f.name)];
+ for(const d of f.designs){if(!d.katalog?.designId||!Array.isArray(d.katalog.plateMm)||d.katalog.plateMm.length!==2||!d.katalog.plateMm.every(n=>Number.isFinite(n)&&n>0)||d.marks?.length)fail('Native Familienvorlage ohne gültige Quelle.');validateDesignContent(d,{universal:true,extraFontIds:fontIds});validateUniversalElements(d);}
  for(const s of f.formats){
   const g=s.geometry;if(!FAMILY_FORMS.some(([id])=>id===customerForm(s.form))||!g||!['rect','ellipse','contour'].includes(g.shape)||![g.width,g.height].every(n=>Number.isFinite(n)&&n>=10&&n<=2000))fail('Ungültige Familiengeometrie.');
   if(g.shape==='contour')validateContourGeometry(g);

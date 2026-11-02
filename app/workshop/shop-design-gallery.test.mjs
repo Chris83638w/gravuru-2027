@@ -11,7 +11,7 @@ import {createShopDesignGallery} from './shop-design-gallery.mjs';
 
 // Synthetic immutable-model transport only. Real quote, geometry, signing and
 // preview code run here; no Shopify connection or production data is opened.
-function fixture(){
+function fixture({previewUrl=null}={}){
  const bindings=new Map(),models=new Map(),scope={storeId:'test-store',tenantId:'test-tenant',shopDomain:'synthetic.myshopify.com'};
  const store={storeId:scope.storeId,workshop:{tenantId:scope.tenantId,assets:{read(){throw Error('Unexpected asset read');}}},registry:{listActive:()=>structuredClone([...bindings.values()])}};
  const add=(n,{price=1999,options={},designs=[{id:'d1',name:'Design '+n,objects:[]}]}={})=>{
@@ -20,7 +20,7 @@ function fixture(){
  };
  const current=add(1),context={store,binding:structuredClone(current),session:{sid:'source-session'}};
  const resolve=ids=>{const binding=bindings.get(ids.shopifyVariantId);if(!binding||binding.shopifyProductId!==ids.shopifyProductId)throw Object.assign(Error('Inactive'),{status:404});return {store,binding:structuredClone(binding)};};
- const gallery=createShopDesignGallery({secret:'synthetic-only-gallery-secret',resolve,modelFor:(_store,b)=>structuredClone(models.get(b.productId)),allowedAssets:()=>new Set()});
+ const gallery=createShopDesignGallery({secret:'synthetic-only-gallery-secret',previewUrl,resolve,modelFor:(_store,b)=>structuredClone(models.get(b.productId)),allowedAssets:()=>new Set()});
  return {bindings,models,store,context,add,gallery};
 }
 
@@ -294,4 +294,27 @@ test('read-only storage without a cache table leaves the database unchanged',()=
   assert.equal(cache.read('revision'),null);cache.write('revision',{payload:'{}',mac:'a'.repeat(64)});
   assert.deepEqual(db.prepare('SELECT name FROM sqlite_master').all(),[]);
  }finally{db.close();}
+});
+
+test('fixed product gallery avoids the store-wide scan and never offers another size or product',async()=>{
+ const f=fixture();f.add(2);const own=f.models.get(f.context.binding.productId);own.universal.familyFormats={fixedSize:'120x80'};
+ own.universal.profile.designs.push({id:'d2',name:'Second',objects:[]});
+ f.store.registry.listActive=()=>{throw Error('Store-wide scan must not run for a fixed product');};
+ const result=await f.gallery.list(f.context,{sourceModel:own});
+ assert.equal(result.total,2);assert.equal(result.items.length,2);
+ assert.ok(Buffer.byteLength(JSON.stringify(result))<300000);
+ assert.ok(result.items.every(x=>x.productId===f.context.binding.productId));
+ const target=f.gallery.target(f.context,result.items[1].target);assert.equal(target.design.id,'d2');assert.deepEqual(target.binding.options,f.context.binding.options);
+});
+
+test('template previews are content-addressed and reused without accepting stale signed selections',async()=>{
+ const f=fixture({previewUrl:h=>'/konfigurator/shop/vorschauen/'+h+'.svg'}),first=(await f.gallery.list(f.context)).items[0];
+ assert.equal(first.previewUrl,undefined);
+ const svg=f.gallery.preview(f.context,first.target),second=(await f.gallery.list(f.context)).items[0];
+ assert.match(second.previewUrl,/\/vorschauen\/[a-f0-9]{64}\.svg$/);
+ const hash=second.previewUrl.split('/').at(-1).slice(0,-4);assert.equal(f.gallery.previewFile(hash).toString(),svg);
+ assert.equal(f.gallery.preview(f.context,second.target),svg);
+ f.bindings.get(f.context.binding.shopifyVariantId).assignmentRevision++;
+ assert.throws(()=>f.gallery.preview(f.context,second.target),{code:'shop_gallery_changed'});
+ assert.equal(f.gallery.previewFile('0'.repeat(64)),null);
 });

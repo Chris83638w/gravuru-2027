@@ -17,6 +17,17 @@ test('three format sources stay unchanged; 240 price/position choices resolve na
  }
  assert.equal(count,240);assert.deepEqual(c,before);
 });
+
+test('single selected template matches the full profile in every format, position, frame, colour and mounting',()=>{
+ const c=doorbellFixture(),before=structuredClone(c);let checked=0;
+ for(const f of c.doorbell.formats)for(const position of ['standard','opposite'])for(const frame of c.profile.frames)for(const color of ['schwarz','anthrazit'])for(const mounting of c.profile.mounting.options){
+  const options={format:f.key,position,frame:frame.key,color,mounting:mounting.key};
+  for(const expected of selectedDoorbellProfile(c,options).designs){const actual=selectedDoorbellDesign(c,expected.id,options);assert.deepEqual(actual,expected);actual.objects[0].x+=100;assert.deepEqual(selectedDoorbellDesign(c,expected.id,options),expected);checked++;}
+ }
+ assert.equal(checked,240);assert.deepEqual(c,before);
+ for(const options of [{frame:'missing'},{color:'missing'},{mounting:'missing'},{format:'missing'},{position:'missing'}])assert.throws(()=>selectedDoorbellDesign(c,'example',options));
+ assert.throws(()=>selectedDoorbellDesign(c,'missing'),/Design gehört nicht zum Modell/);
+});
 test('opposite translates asymmetric device holes without rotating their local coordinates',()=>{
  const c=doorbellFixture();
  for(const f of c.doorbell.formats){

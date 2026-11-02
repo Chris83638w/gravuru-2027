@@ -322,3 +322,20 @@ test('gallery client aborts a hanging proxy request at five seconds and a retry 
  const first=client.loadDesignGallery();const rejected=assert.rejects(first,/Designauswahl/);t.mock.timers.tick(4999);assert.equal(signal.aborted,false);t.mock.timers.tick(1);await rejected;assert.equal(signal.aborted,true);t.mock.timers.reset();
  assert.deepEqual(await client.loadDesignGallery(),{items:[],total:0,nextPage:null});
 });
+
+test('cart bootstrap chooses the private saved design before loading the small model',async()=>{
+ const calls=[],secret='e'.repeat(64),storage={length:1,key:()=> 'gravuru-acrylic-private:test',getItem:()=>JSON.stringify({token:secret})};
+ const client=createShopEntryClient({token,fetchImpl:async(url,options)=>{calls.push({url,options});if(url.includes('cart-configurations/'))return Response.json({document:{design:{id:'D207'}}});return Response.json({model:{key:'acryl',universal:{profile:{}},configuration:{id:'p'}},editorPath:'/_merchant-acryl-editor.html',shopDomain:'gravuru-design.myshopify.com'});}});
+ await client.loadInitialModel(new URLSearchParams({config:konfig,rev:'2'}),storage);
+ assert.equal(calls[0].options.headers['X-Gravuru-Draft'],secret);assert.equal(calls[1].url,'/api/shop-entry/model?design=D207');
+ assert.ok(calls.every(c=>!c.url.includes(secret)));assert.equal(calls[1].options.headers['X-Gravuru-Draft'],undefined);
+ await assert.rejects(client.loadInitialModel(new URLSearchParams({config:konfig,rev:'2'}),{length:0}),/nicht mehr zugänglich/);
+});
+
+test('hashed gallery previews use browser caching; unavailable cache falls back to the authenticated preview',async()=>{
+ const calls=[],url='/konfigurator/shop/vorschauen/'+'a'.repeat(64)+'.svg';let found=true;
+ const client=createShopEntryClient({token,fetchImpl:async(path,options)=>{calls.push({path,options});return path===url?(found?new Response('<svg/>',{headers:{'Content-Type':'image/svg+xml'}}):new Response('',{status:404})):new Response('<svg/>');}});
+ await client.loadDesignPreview('signed-choice',url);assert.equal(calls[0].options.cache,'force-cache');assert.equal(calls[0].options.headers,undefined);
+ found=false;await client.loadDesignPreview('signed-choice',url);assert.equal(calls.at(-1).options.headers['X-Gravuru-Shop-Session'],token);
+ await client.loadDesignPreview('signed-choice','https://foreign.example/x.svg');assert.ok(calls.every(c=>!c.path.includes('foreign.example')));
+});

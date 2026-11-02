@@ -1,6 +1,6 @@
 import {createHmac,timingSafeEqual} from 'node:crypto';
 
-const schema='gravuru-shop-gallery-cache/v1';
+const schema='gravuru-shop-gallery-cache/v2';
 const bindingFields=['storeId','tenantId','shopDomain','shopifyProductId','shopifyVariantId','productId','productRevision','bindingId','assignmentRevision','options','unitCents'];
 const pick=(value,fields)=>Object.fromEntries(fields.map(k=>[k,value[k]]));
 const contextScope=context=>[context.store.workshop.tenantId,context.store.storeId,context.binding.shopDomain];

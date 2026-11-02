@@ -1,0 +1,19 @@
+{
+  "at": "2026-11-02T10:11:40.685Z",
+  "results": [
+    {
+      "path": "/_merchant-acryl-editor.html",
+      "status": 200,
+      "bytes": 464079,
+      "sha256": "db0a95bf8c4c896b308e3c04ffa1ebaa3865ec9f3a7d66dd3ff038501ec5c879",
+      "correctBundle": true
+    },
+    {
+      "path": "/_acryl-bundle/editor-94c6fa2a6eb4c544.mjs",
+      "status": 200,
+      "bytes": 1331706,
+      "sha256": "4e294fad6fba05b73b6c932b8b7485a78fcc651883b66810e35a46154e4b010f",
+      "exact": true
+    }
+  ]
+}

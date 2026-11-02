@@ -1,6 +1,6 @@
 ## 02.11.2026 – Codex: Funkklingeln, Farbe neben Position und 94-%-Vorschau
 
-Nur Funkklingel-Darstellung: runde Farben neben Position, kompakte Formatkacheln und fünf Befestigungen in zwei Desktop-Reihen; Schildvorschau 6 % kleiner bei unveränderten Millimetermaßen. 14/14 gezielte Tests, Build und Chrome Desktop/390px erfolgreich; Vorschau bei Textauswahl stabil, alle Befestigungen bei 1920×855 sichtbar. Eigener Branch `dev/funkklingeln-position-farbe-20261102-astra`. Linux-Prüfung und kontrollierte Veröffentlichung mit bestehender Freigabe folgen; Plesk wieder angemeldet. [Bericht und Prüfbilder](docs/handoffs/2026-11-02-funkklingeln-position-farbe.md).
+Nur Funkklingel-Darstellung: runde Farben neben Position, kompakte Formatkacheln und fünf Befestigungen in zwei Desktop-Reihen; Schildvorschau 6 % kleiner bei unveränderten Millimetermaßen. 14/14 gezielte Tests, Build und Chrome Desktop/390px erfolgreich; Vorschau bei Textauswahl stabil, alle Befestigungen bei 1920×855 sichtbar. Eigener Branch `dev/funkklingeln-position-farbe-20261102-astra`. PR #140 gemergt und live. Linux 14/14, Build und öffentlicher Paket-SHA bestätigt; 3.274 Dateien verglichen, ausschließlich Darstellungsmodul und Test geändert. Echter Shop-Einstieg nach einmaligem Neu laden erfolgreich; alle Befestigungen sichtbar, Größe bei Textauswahl stabil (bekannter 1-px-Dokumentrand). Rückweg gesichert. [Bericht und Prüfbilder](docs/handoffs/2026-11-02-funkklingeln-position-farbe.md).
 
 # Türschilder: Format & Größe · 01.11.2026 · Astra
 

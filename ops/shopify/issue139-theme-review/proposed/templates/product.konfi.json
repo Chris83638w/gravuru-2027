@@ -1,0 +1,848 @@
+{
+  "sections": {
+    "breadcrumbs": {
+      "type": "breadcrumbs",
+      "custom_css": [],
+      "settings": {
+        "container": "fixed",
+        "text_alignment": "start",
+        "padding_top": 16,
+        "padding_bottom": 20
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "badges": {
+          "type": "badges",
+          "settings": {
+            "show_soldout_badge": true,
+            "show_sale_badge": true,
+            "sale_badge_type": "percentage"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h3"
+          }
+        },
+        "text_AbYXLT": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.metafields.custom.untertitel.value }}",
+            "text_style": "body"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "icon_with_text": {
+          "type": "icon-with-text",
+          "settings": {
+            "layout": "vertical",
+            "title_font": "body-bolder",
+            "title_size": "text-base",
+            "icon_1": "check",
+            "asset_image_1": "",
+            "heading_1": "{{ product.metafields.custom.stichpunkt_1.value }}",
+            "description_1": "",
+            "icon_2": "check",
+            "asset_image_2": "",
+            "heading_2": "{{ product.metafields.custom.stichpunkt_2.value }}",
+            "description_2": "",
+            "icon_3": "check",
+            "asset_image_3": "",
+            "heading_3": "{{ product.metafields.custom.stichpunkt_3.value }}",
+            "description_3": "",
+            "additional_class": ""
+          }
+        },
+        "custom_liquid_mTPWzc": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{%- assign gv_konfi_id = product.metafields.custom.customization_id.value -%}{%- assign gv_variant = product.selected_or_first_available_variant -%}{%- assign gv_back = product.url | split: '?' | first -%}{%- if gv_konfi_id != blank and gv_variant != blank -%}<div class=\"gravuru-personalisieren\" data-gravuru-personalisieren data-start=\"/apps/konfigurator/start\" data-product-id=\"{{ product.id }}\" data-variant-id=\"{{ gv_variant.id }}\" data-back=\"{{ gv_back }}\" style=\"margin:12px 0 16px\"><a class=\"btn btn--primary btn--gravuru-primary\" data-gravuru-start rel=\"nofollow\" href=\"/apps/konfigurator/start?product={{ product.id }}&amp;variant={{ gv_variant.id }}&amp;back={{ gv_back | url_encode }}\">Jetzt personalisieren</a><p style=\"margin:8px 0 0;font-size:.9em;opacity:.8;text-align:center\">Design wählen und persönlich gestalten.</p></div>{%- endif -%}{%- if gv_konfi_id != blank -%}<style>.product__personalisation-card{display:none!important}</style>{%- endif -%}{%- if gv_konfi_id != blank -%}<script>if(/[?&]fenster=1(&|$)/.test(location.search))import('/apps/konfigurator/shop-embed.mjs');</script>{%- endif -%}"
+          }
+        },
+        "custom_liquid_P89AaY": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<div class=\"product__block product__block--price\">\n  <h3 class=\"h4\" style=\"margin:0 0 0.4rem 0\">Preis wie konfiguriert</h3>\n  <div role=\"status\" style=\"display:flex;align-items:baseline;flex-wrap:wrap;gap:0.5rem\">\n    {%- render 'price', product: product, use_variant: true, show_sale_badge: false, price_class: 'f-price--large' -%}\n    <div class=\"product__tax text-sm text-subtext rte\" style=\"margin:0\">\n      {%- if cart.taxes_included -%}{{ 'products.product.include_taxes' | t }}{%- endif -%}\n      {%- if shop.shipping_policy.body != blank -%} {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}{%- endif -%}\n    </div>\n  </div>\n</div>"
+          }
+        },
+        "shipping_FfQnNC": {
+          "type": "shipping",
+          "settings": {
+            "deliver_text": "Voraussichtliche Lieferung:",
+            "deliver_days": "",
+            "date_format": "%d %b"
+          }
+        },
+        "quantity_selector_qYU4Rg": {
+          "type": "quantity_selector",
+          "settings": {
+            "unit_label": "Stück",
+            "max_quantity": 20,
+            "tier_1_min_quantity": "2",
+            "tier_1_discount": "10",
+            "tier_2_min_quantity": "5",
+            "tier_2_discount": "20",
+            "tier_3_min_quantity": "",
+            "tier_3_discount": "",
+            "show_tip": true,
+            "tip_label": "Tipp:",
+            "tip_template": "kaufe {qty} {unit} oder mehr und spare {discount}"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_quantity_selector": false,
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": true,
+            "extra_classes": ""
+          }
+        },
+        "promise_box_qjdKWr": {
+          "type": "promise-box",
+          "settings": {
+            "columns_desktop": "2",
+            "columns_mobile": "1",
+            "asset_image_1": "gravuru-promise-fertigung.png",
+            "heading_1": "Schnelle Fertigung",
+            "description_1": "Meist noch am selben Werktag produziert",
+            "asset_image_2": "gravuru-promise-herstellung.png",
+            "heading_2": "Eigene Herstellung",
+            "description_2": "Direkt aus unserer Produktion in Bielefeld",
+            "asset_image_3": "gravuru-promise-erfahrung.png",
+            "heading_3": "12+ Jahre Erfahrung",
+            "description_3": "Tausendfach bewährte Qualität – mehr als 500.000 Kunden",
+            "asset_image_4": "gravuru-promise-verpackt.png",
+            "heading_4": "Sicher verpackt",
+            "description_4": "Gut gepolstert und zuverlässig versendet"
+          }
+        },
+        "collapsible-row-1": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Beschreibung",
+            "heading_size": "h4",
+            "icon": "none",
+            "content": "{{ product.description }}",
+            "page": "content",
+            "default_open": false,
+            "show_below_product_media": true
+          }
+        },
+        "collapsible-row-2": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Material & Zusammensetzung",
+            "heading_size": "h4",
+            "icon": "none",
+            "content": "{{ product.metafields.custom.material_zusammensetzung | metafield_tag }}",
+            "page": "",
+            "default_open": false,
+            "show_below_product_media": true
+          }
+        },
+        "collapsible-row-3": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Montage",
+            "heading_size": "h4",
+            "icon": "none",
+            "content": "{{ product.metafields.custom.montage | metafield_tag }}",
+            "page": "",
+            "default_open": false,
+            "show_below_product_media": true
+          }
+        },
+        "collapsible_tab_TikNb8": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Sicherheitshinweise",
+            "heading_size": "h4",
+            "icon": "none",
+            "content": "{{ product.metafields.custom.sicherheitshinweise | metafield_tag }}",
+            "page": "",
+            "default_open": false,
+            "show_below_product_media": true
+          }
+        },
+        "sticky_atc_bar_7HgNgP": {
+          "type": "sticky-atc-bar",
+          "settings": {
+            "visibility": "all",
+            "style": "minimalist",
+            "container": "full",
+            "show_atc_button": true,
+            "show_dynamic_checkout_buttons": false,
+            "show_quantity": true
+          }
+        }
+      },
+      "block_order": [
+        "badges",
+        "title",
+        "text_AbYXLT",
+        "price",
+        "icon_with_text",
+        "custom_liquid_mTPWzc",
+        "custom_liquid_P89AaY",
+        "shipping_FfQnNC",
+        "quantity_selector_qYU4Rg",
+        "buy_buttons",
+        "promise_box_qjdKWr",
+        "collapsible-row-1",
+        "collapsible-row-2",
+        "collapsible-row-3",
+        "collapsible_tab_TikNb8",
+        "sticky_atc_bar_7HgNgP"
+      ],
+      "custom_css": [
+        "@media (min-width: 1280px) {.product {padding-inline: 5rem; }}"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "use_color_scheme_in_container": false,
+        "enable_sticky_info": true,
+        "media_size": "large",
+        "gallery_layout": "vertical-carousel",
+        "mobile_thumbnails": "show",
+        "show_image_border": false,
+        "enable_image_zoom": true,
+        "enable_video_looping": true,
+        "padding_top": 0,
+        "padding_bottom": 60
+      }
+    },
+    "support_contact_box_UncK9J": {
+      "type": "support_contact_box",
+      "name": "Support & Kontakt Box",
+      "settings": {
+        "container": "fixed",
+        "avatar_1": "shopify://shop_images/photo-1500648767791-00dcc994a43e.jpg",
+        "avatar_2": "shopify://shop_images/photo-1494790108377-be9c29b29330.jpg",
+        "avatar_3": "shopify://shop_images/photo-1507003211169-0a1dd7228f2d.jpg",
+        "heading": "Fragen zur Gestaltung oder Bestellung?",
+        "description": "Wir helfen dir gern und sind noch wirklich persönlich für dich da.",
+        "email_label": "E-Mail:",
+        "email_address": "info@gravuru.de",
+        "whatsapp_label": "WhatsApp:",
+        "whatsapp_text": "Nachricht schreiben",
+        "whatsapp_link": "",
+        "phone_label": "Telefon:",
+        "phone_number": "0521 123 456 7",
+        "background_color": "#f3eee7",
+        "box_background_color": "#ffffff",
+        "icon_color": "#2f7d57",
+        "heading_color": "#1f2937",
+        "text_color": "#6b7280",
+        "item_value_color": "#1f2937",
+        "heading_size": 19,
+        "text_size": 14,
+        "border_radius": 16,
+        "box_padding_vertical": 18,
+        "box_padding_horizontal": 24,
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    },
+    "featured_collection_TdgMg8": {
+      "type": "featured-collection",
+      "blocks": {
+        "collection_wNxKMU": {
+          "type": "collection",
+          "settings": {
+            "collection": "frontpage",
+            "title": "Derzeit beliebt",
+            "show_banner": false,
+            "color_scheme": "scheme-info",
+            "card_link": "",
+            "image_overlay_opacity": 0,
+            "content_position": "split-bottom-button",
+            "content_alignment": "left",
+            "subheading": "Promotion",
+            "subheading_style": "",
+            "heading": "Soft Stools Design",
+            "highlight_style": "none",
+            "highlight_font_style": "italic",
+            "highlight_style_color": "",
+            "highlight_text_color": "",
+            "heading_size": "h2",
+            "heading_size_mobile": "inherit",
+            "heading_size_custom": 18,
+            "description": "",
+            "text_size": "text-base",
+            "button_label": "Shop now",
+            "button_style": "btn--primary",
+            "button_icon": "none"
+          }
+        }
+      },
+      "block_order": [
+        "collection_wNxKMU"
+      ],
+      "custom_css": [
+        ".block {transform: scale(1); mix-blend-mode: darken;}"
+      ],
+      "settings": {
+        "container": "fixed",
+        "color_scheme": "scheme-1",
+        "section_header_alignment": "left",
+        "section_header_alignment_mobile": "inherit",
+        "subheading": "",
+        "heading": "Das könnte dir auch gefallen",
+        "highlight_style": "none",
+        "highlight_font_style": "italic",
+        "highlight_style_color": "",
+        "highlight_text_color": "",
+        "heading_size": "h2",
+        "heading_tag": "h2",
+        "description": "",
+        "text_size": "text-base",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "btn--underline",
+        "button_icon": "none",
+        "limit": 12,
+        "columns": 4,
+        "column_gap": "extra-large",
+        "row_gap": "large",
+        "enable_slider": true,
+        "content_overflow": true,
+        "navigation_position": "bottom",
+        "pcard_image_ratio": "",
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "show_progress_bar": true,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "show_section_divider": true,
+        "divider_width": "full"
+      }
+    },
+    "multicolumn_WhN8xn": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_YR47rJ": {
+          "type": "column",
+          "settings": {
+            "title": "Du bestellst dein Produkt",
+            "highlight_style": "none",
+            "highlight_font_style": "italic",
+            "highlight_style_color": "",
+            "highlight_text_color": "",
+            "heading_size": "h4",
+            "text": "<p>Gestalte dein Produkt genau so, wie du es dir vorstellst. Lade dein eigenes Motiv oder Logo hoch oder wähle aus unseren Vorlagen. In der Vorschau siehst du sofort, wie deine individuelle Gravur aussehen wird.</p>",
+            "text_size": "text-base",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "btn--underline",
+            "button_icon": "none"
+          }
+        },
+        "column_D9AngV": {
+          "type": "column",
+          "settings": {
+            "title": "Wir prüfen dein Motiv",
+            "highlight_style": "none",
+            "highlight_font_style": "italic",
+            "highlight_style_color": "",
+            "highlight_text_color": "",
+            "heading_size": "h4",
+            "text": "<p>Unser Team kontrolliert dein Design, optimiert es bei Bedarf für die Gravur und schickt dir einen digitalen Korrekturabzug. Erst wenn du zufrieden bist, geben wir die Produktion frei.</p>",
+            "text_size": "text-base",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "btn--underline",
+            "button_icon": "none"
+          }
+        },
+        "column_eqxwba": {
+          "type": "column",
+          "settings": {
+            "title": "Dein Motiv wird graviert",
+            "highlight_style": "none",
+            "highlight_font_style": "italic",
+            "highlight_style_color": "",
+            "highlight_text_color": "",
+            "heading_size": "h4",
+            "text": "<p>Mit modernster Gravurtechnik bringen wir dein Motiv exakt auf das ausgewählte Produkt. Anschließend prüfen wir jedes Stück sorgfältig, damit es perfekt bei dir ankommt.</p>",
+            "text_size": "text-base",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "btn--underline",
+            "button_icon": "none"
+          }
+        },
+        "column_BB6RQp": {
+          "type": "column",
+          "settings": {
+            "title": "Du erhältst deine Lieferung",
+            "highlight_style": "none",
+            "highlight_font_style": "italic",
+            "highlight_style_color": "",
+            "highlight_text_color": "",
+            "heading_size": "h4",
+            "text": "<p>Nach der Qualitätskontrolle verpacken wir dein Produkt sicher und schicken es auf den Weg. Mit der Sendungsverfolgung weißt du jederzeit, wann dein persönliches Unikat bei dir eintrifft.</p>",
+            "text_size": "text-base",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "btn--underline",
+            "button_icon": "none"
+          }
+        }
+      },
+      "block_order": [
+        "column_YR47rJ",
+        "column_D9AngV",
+        "column_eqxwba",
+        "column_BB6RQp"
+      ],
+      "name": "t:sections.multicolumn.name",
+      "settings": {
+        "container": "fixed",
+        "color_scheme": "scheme-info",
+        "section_header_alignment": "left",
+        "section_header_alignment_mobile": "inherit",
+        "subheading": "",
+        "heading": "So erstellen wir dein persöhnliches Unikat",
+        "highlight_style": "none",
+        "highlight_font_style": "italic",
+        "highlight_style_color": "",
+        "highlight_text_color": "",
+        "heading_size": "h1",
+        "description": "",
+        "text_size": "text-base",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "btn--underline",
+        "button_icon": "none",
+        "content_alignment": "left",
+        "show_col_count": true,
+        "show_image": false,
+        "columns_desktop": 4,
+        "column_gap": "large",
+        "row_gap": "inherit",
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "show_section_divider": false,
+        "divider_width": "fixed",
+        "padding_top": 50,
+        "padding_bottom": 60
+      }
+    },
+    "image_comparison_atfeK7": {
+      "type": "image-comparison",
+      "blocks": {
+        "image_9x7qzT": {
+          "type": "image",
+          "settings": {
+            "image": "{{ section.settings.product.metafields.custom.bild_vorher.value }}",
+            "heading": "Vorher",
+            "color_scheme": ""
+          }
+        },
+        "image_fGtQkt": {
+          "type": "image",
+          "settings": {
+            "image": "{{ section.settings.product.metafields.custom.bild_nachher.value }}",
+            "heading": "Nachher",
+            "color_scheme": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_9x7qzT",
+        "image_fGtQkt"
+      ],
+      "name": "t:sections.image-comparison.name",
+      "settings": {
+        "container": "fixed",
+        "color_scheme": "",
+        "section_header_alignment": "center",
+        "section_header_alignment_mobile": "left",
+        "subheading": "",
+        "heading": "Vorher/Nachher Vergleich",
+        "highlight_style": "none",
+        "highlight_font_style": "italic",
+        "highlight_style_color": "",
+        "highlight_text_color": "",
+        "heading_size": "h1",
+        "description": "",
+        "description_size": "text-base",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "btn--primary",
+        "button_icon": "none",
+        "direction": "horizontal",
+        "image_height": "small",
+        "image_heading_style": "badge",
+        "product": "",
+        "padding_top": 50,
+        "padding_bottom": 50,
+        "show_section_divider": false,
+        "divider_width": "fixed"
+      }
+    },
+    "image_with_text_Fjf69J": {
+      "type": "image-with-text",
+      "blocks": {
+        "badge_W8qaz9": {
+          "type": "badge",
+          "settings": {
+            "color_scheme": "scheme-1",
+            "text": "Made in Germany - Made in Germany -",
+            "position_mobile": "right"
+          }
+        },
+        "heading_rMQ6a4": {
+          "type": "heading",
+          "settings": {
+            "heading": "Unser Qualitätsversprechen",
+            "highlight_style": "none",
+            "highlight_font_style": "italic",
+            "highlight_style_color": "",
+            "highlight_text_color": "",
+            "heading_size": "h2"
+          }
+        },
+        "text_fVeFW9": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Unsere Gedenktafeln entstehen in liebevoller Handarbeit in unserer eigenen Manufaktur in Bielefeld. Vom Zuschnitt des hochwertigen <strong>Naturschiefers</strong> über die präzise <strong>Lasergravur</strong> bis hin zur Endkontrolle liegt jeder Schritt in unserer Hand.</p><p>Durch die Herstellung in Deutschland garantieren wir dir <strong>gleichbleibend hohe Qualität</strong>, faire Arbeitsbedingungen und kurze Lieferzeiten. Jedes Produkt wird individuell geprüft und mit großer Sorgfalt verpackt, bevor es unser Haus verlässt.</p>",
+            "subtext_color": true
+          }
+        },
+        "button_VCNpaJ": {
+          "type": "button",
+          "settings": {
+            "button_label": "Mehr über unsere Qualität",
+            "button_link": "#",
+            "button_style": "btn--secondary",
+            "button_icon": "arrow-right"
+          }
+        }
+      },
+      "block_order": [
+        "badge_W8qaz9",
+        "heading_rMQ6a4",
+        "text_fVeFW9",
+        "button_VCNpaJ"
+      ],
+      "custom_css": [],
+      "settings": {
+        "container": "fixed",
+        "color_scheme": "scheme-info",
+        "image_position": "left",
+        "image_width": 60,
+        "desktop_content_position": "center",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "inherit",
+        "show_section_divider": false,
+        "divider_width": "fixed",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "image_with_text_B9mFzE": {
+      "type": "image-with-text",
+      "blocks": {
+        "badge_xDXfbW": {
+          "type": "badge",
+          "settings": {
+            "color_scheme": "",
+            "text": "image with text - spinning text -",
+            "position_mobile": "right"
+          }
+        },
+        "heading_VeDgJd": {
+          "type": "heading",
+          "settings": {
+            "heading": "Über Uns",
+            "highlight_style": "none",
+            "highlight_font_style": "italic",
+            "highlight_style_color": "",
+            "highlight_text_color": "",
+            "heading_size": "h2"
+          }
+        },
+        "text_efC9wt": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Unser Team – das sind kreative Köpfe, technische Tüftler, motivierte Produktionsprofis und herzliche Kollegen, die jeden Artikel liebevoll fertigen, verpacken und versenden. Ob Auszubildende, langjährige Mitarbeiter oder büro-eigene Vierbeiner – bei uns zählt der Mensch (und manchmal auch der Hund) – und jede Idee findet ihren Platz.</p>",
+            "subtext_color": true
+          }
+        },
+        "button_pcrDHf": {
+          "type": "button",
+          "settings": {
+            "button_label": "Mehr über Uns",
+            "button_link": "shopify://pages/uber-uns",
+            "button_style": "btn--secondary",
+            "button_icon": "arrow-right"
+          }
+        }
+      },
+      "block_order": [
+        "badge_xDXfbW",
+        "heading_VeDgJd",
+        "text_efC9wt",
+        "button_pcrDHf"
+      ],
+      "custom_css": [],
+      "name": "t:sections.image-with-text.name",
+      "settings": {
+        "container": "fixed",
+        "color_scheme": "scheme-info",
+        "image_position": "right",
+        "image_width": 60,
+        "desktop_content_position": "center",
+        "desktop_content_alignment": "left",
+        "mobile_content_alignment": "inherit",
+        "show_section_divider": false,
+        "divider_width": "fixed",
+        "padding_top": 0,
+        "padding_bottom": 80
+      }
+    },
+    "collapsible_tabs_c3WWta": {
+      "type": "collapsible-tabs",
+      "blocks": {
+        "collapsible_item_Cx9GdD": {
+          "type": "collapsible_item",
+          "repeater": "{{ product.metafields.custom.faqs.value }}",
+          "settings": {
+            "icon": "none",
+            "heading": "{{ block.repeater.name_intern.value }}",
+            "content": "{{ block.repeater.answer | metafield_tag }}",
+            "custom_liquid": "",
+            "page": "",
+            "open": false,
+            "use_subtext_color": false
+          }
+        },
+        "collapsible_item_x9frzC": {
+          "type": "collapsible_item",
+          "settings": {
+            "icon": "none",
+            "heading": "Frage nicht noch offen?",
+            "content": "<p>Du konntest keine Antwort auf deine Frage finden? <a href=\"/pages/contact\" title=\"Kontakt\">Kontaktiere uns</a>! Wir helfen gerne weiter.</p>",
+            "custom_liquid": "",
+            "page": "",
+            "open": false,
+            "use_subtext_color": false
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_item_Cx9GdD",
+        "collapsible_item_x9frzC"
+      ],
+      "name": "t:sections.collapsible-tabs.name",
+      "settings": {
+        "container": "fixed",
+        "color_scheme": "",
+        "header_layout": "vertical",
+        "section_header_alignment": "left",
+        "section_header_alignment_mobile": "inherit",
+        "subheading": "",
+        "heading": "Häufige Fragen",
+        "highlight_style": "none",
+        "highlight_font_style": "italic",
+        "highlight_style_color": "",
+        "highlight_text_color": "",
+        "heading_size": "h1",
+        "heading_tag": "h2",
+        "description": "",
+        "text_size": "text-base",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "btn--primary",
+        "button_icon": "none",
+        "column_gap": "large",
+        "row_gap": "inherit",
+        "item_style": "standard",
+        "item_color_scheme": "",
+        "item_heading_font": "heading",
+        "item_heading_size": "h4",
+        "item_icon_size": "extra-large",
+        "padding_top": 50,
+        "padding_bottom": 50,
+        "show_section_divider": false,
+        "divider_width": "fixed"
+      }
+    },
+    "1756934659fda0a9da": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "featured_collection_3yXhKP": {
+      "type": "featured-collection",
+      "blocks": {
+        "collection_GQgMNa": {
+          "type": "collection",
+          "settings": {
+            "collection": "frontpage",
+            "title": "",
+            "show_banner": false,
+            "color_scheme": "",
+            "card_link": "",
+            "image_overlay_opacity": 0,
+            "content_position": "top-left",
+            "content_alignment": "left",
+            "subheading": "",
+            "subheading_style": "",
+            "heading": "Collections",
+            "highlight_style": "none",
+            "highlight_font_style": "italic",
+            "highlight_style_color": "",
+            "highlight_text_color": "",
+            "heading_size": "h2",
+            "heading_size_mobile": "inherit",
+            "heading_size_custom": 18,
+            "description": "",
+            "text_size": "text-base",
+            "button_label": "Button label",
+            "button_style": "btn--primary",
+            "button_icon": "none"
+          }
+        }
+      },
+      "block_order": [
+        "collection_GQgMNa"
+      ],
+      "name": "t:sections.featured-collection.presets__2.name",
+      "settings": {
+        "container": "fixed",
+        "color_scheme": "",
+        "section_header_alignment": "left",
+        "section_header_alignment_mobile": "inherit",
+        "subheading": "",
+        "heading": "Derzeit beliebt",
+        "highlight_style": "none",
+        "highlight_font_style": "italic",
+        "highlight_style_color": "",
+        "highlight_text_color": "",
+        "heading_size": "h1",
+        "heading_tag": "h2",
+        "description": "",
+        "text_size": "text-base",
+        "button_label": "",
+        "button_link": "",
+        "button_style": "btn--underline",
+        "button_icon": "none",
+        "limit": 8,
+        "columns": 4,
+        "column_gap": "medium",
+        "row_gap": "inherit",
+        "enable_slider": true,
+        "content_overflow": true,
+        "navigation_position": "bottom",
+        "pcard_image_ratio": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "show_progress_bar": true,
+        "padding_top": 50,
+        "padding_bottom": 50,
+        "show_section_divider": false,
+        "divider_width": "fixed"
+      }
+    },
+    "rich_text_KxE7kA": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_BKBexa": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Individuelle Gedenktafel aus Schiefer mit Foto-Gravur – 30 × 20 cm</strong>",
+            "highlight_style": "none",
+            "highlight_font_style": "italic",
+            "highlight_style_color": "",
+            "highlight_text_color": "",
+            "heading_size": "h3"
+          }
+        },
+        "text_fKgUgi": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.metafields.custom.seo_text | metafield_tag }}",
+            "text_size": "text-base",
+            "text_line_limit": "5-lines",
+            "button_style": "btn--underline",
+            "button_icon": "none"
+          }
+        }
+      },
+      "block_order": [
+        "heading_BKBexa",
+        "text_fKgUgi"
+      ],
+      "settings": {
+        "container": "fixed",
+        "color_scheme": "scheme-info",
+        "use_color_scheme_in_container": true,
+        "content_spacing": "standard",
+        "content_alignment": "left",
+        "padding_top": 0,
+        "padding_bottom": 60,
+        "show_section_divider": false,
+        "divider_width": "fixed"
+      }
+    },
+    "recently_viewed_products_T4pPRy": {
+      "type": "recently-viewed-products",
+      "name": "t:sections.recently-viewed-products.name",
+      "settings": {
+        "container": "fixed",
+        "color_scheme": "",
+        "section_header_alignment": "left",
+        "section_header_alignment_mobile": "inherit",
+        "subheading": "",
+        "heading": "Zuletzt angesehen",
+        "highlight_style": "none",
+        "highlight_font_style": "italic",
+        "highlight_style_color": "",
+        "highlight_text_color": "",
+        "heading_size": "h1",
+        "heading_tag": "h2",
+        "description": "",
+        "limit": 8,
+        "columns": 4,
+        "column_gap": "medium",
+        "row_gap": "inherit",
+        "enable_slider": true,
+        "navigation_position": "bottom",
+        "pcard_image_ratio": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "padding_top": 0,
+        "padding_bottom": 60,
+        "show_section_divider": false,
+        "divider_width": "fixed"
+      }
+    }
+  },
+  "order": [
+    "breadcrumbs",
+    "main",
+    "support_contact_box_UncK9J",
+    "featured_collection_TdgMg8",
+    "multicolumn_WhN8xn",
+    "image_comparison_atfeK7",
+    "image_with_text_Fjf69J",
+    "image_with_text_B9mFzE",
+    "collapsible_tabs_c3WWta",
+    "1756934659fda0a9da",
+    "featured_collection_3yXhKP",
+    "rich_text_KxE7kA",
+    "recently_viewed_products_T4pPRy"
+  ]
+}

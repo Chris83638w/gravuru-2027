@@ -174,6 +174,10 @@ export function flattenClosedSvgPath(path,{toleranceMm=.0001}={}){
 export function validateContourGeometry(g){
  validateContourOutline(g?.outlinePath,g?.width,g?.height);
  flattened(g.outlinePath);
+ if(g.cutoutPaths!==undefined){
+  if(!Array.isArray(g.cutoutPaths)||g.cutoutPaths.length>64)fail('Ungültige Innenausschnitte.');
+  for(const path of g.cutoutPaths){const cut=flattened(path);if(!contourContainsPolygon({...g,cutoutPaths:[]},cut.points,{marginMm:0,holes:false}))fail('Innenausschnitt liegt nicht innerhalb der Außenkontur.');}
+ }
  if(g.holes!==undefined&&(!Array.isArray(g.holes)||g.holes.length>64||g.holes.some(h=>!h||![h.x,h.y,h.diameter].every(Number.isFinite)||h.diameter<=0||h.diameter>100)))fail('Ungültiges Bohrbild.');
  if(g.cornerRadiusMm!==undefined&&g.cornerRadiusMm!==0)fail('Freie Kontur benötigt keinen zusätzlichen Eckenradius.');
  for(const key of ['safeMarginMm','holeKeepoutMm'])if(g[key]!==undefined&&(!Number.isFinite(g[key])||g[key]<0||g[key]>Math.min(100,g.width/2,g.height/2)))fail('Ungültiger Sicherheitsabstand.');
@@ -218,7 +222,7 @@ const xml=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 function circlePath(h,r=h.diameter/2){return `M${h.x-r} ${h.y}a${r} ${r} 0 1 0 ${2*r} 0a${r} ${r} 0 1 0 ${-2*r} 0Z`;}
 export function contourPathWithHoles(g){
  validateContourGeometry(g);
- return g.outlinePath+(g.holes||[]).map(h=>circlePath(h)).join('');
+ return g.outlinePath+(g.cutoutPaths||[]).join('')+(g.holes||[]).map(h=>circlePath(h)).join('');
 }
 // A mask represents the true erosion even when narrow necks disappear or the
 // inset splits into islands. It cannot be represented by scaling the outer path.
@@ -253,6 +257,18 @@ export function mirrorContourPath(path,width){
 export function contourPathCommands(path){
  const commands=[];parseContourPath(path,null,(command,values)=>commands.push({command,values:[...values]}));return commands;
 }
+// Reverse winding without flattening curves. Native SVG backends with nonzero
+// clipping need holes opposite to the outer contour (the source stays intact).
+export function reverseContourPath(path){
+ const commands=contourPathCommands(path),segments=[];let current=commands[0].values,start=current;
+ for(const {command,values:v} of commands.slice(1)){if(command==='Z'){segments.push({command:'L',values:start,from:current});current=start;}else{segments.push({command,values:v,from:current});current=v.slice(-2);}}
+ const out=['M'+start.join(' ')];
+ for(const {command,values:v,from} of segments.reverse()){
+  const values=command==='C'?[...v.slice(2,4),...v.slice(0,2),...from]:command==='Q'?[...v.slice(0,2),...from]:command==='A'?[v[0],v[1],v[2],v[3],1-v[4],...from]:from;
+  out.push(command+values.join(' '));
+ }
+ return out.join('')+'Z';
+}
 // Closest outer-boundary point for preview bleed. Distance/point are based on the
 // same 0.002 mm polyline as containment (holes remain separate physical circles).
 export function contourNearestBoundaryPoint(g,x,y){
@@ -270,7 +286,7 @@ export function contourNearestBoundaryPoint(g,x,y){
 // Callers already holding a surface geometry must keep using it directly.
 export function surfaceGeometry(geometry,surfaceId){
   if(surfaceId!=='back')return geometry;
-  return {...geometry,...(geometry.shape==='contour'?{outlinePath:mirrorContourPath(geometry.outlinePath,geometry.width)}:{}),holes:(geometry.holes||[]).map(h=>({...h,x:Number((geometry.width-h.x).toFixed(6))}))};
+ return {...geometry,...(geometry.shape==='contour'?{outlinePath:mirrorContourPath(geometry.outlinePath,geometry.width),...(geometry.cutoutPaths?{cutoutPaths:geometry.cutoutPaths.map(p=>mirrorContourPath(p,geometry.width))}:{})}:{}),holes:(geometry.holes||[]).map(h=>({...h,x:Number((geometry.width-h.x).toFixed(6))}))};
 }
 
 // Exact closest distance to an ellipse for a point inside it. Bisection solves

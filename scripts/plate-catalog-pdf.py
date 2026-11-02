@@ -57,7 +57,8 @@ def plate_svg(x, y, it, s):
     if b and it['shape'] != 'contour':
         out.append(f'<path d="{contour(x - b, y - b, w + 2 * b, h + 2 * b, it["shape"], it["backingRadius"] * s)}" fill="#1c1c1c" stroke="#06c" stroke-width="0.35"/>')
     if it['shape'] == 'contour':
-        out.append(f'<path d="{html.escape(it["outlinePath"], quote=True)}" transform="translate({x} {y}) scale({s})" fill="#4a4d50" stroke="#d22" stroke-width="{0.35 / s}"/>')
+        full_path = ' '.join([it['outlinePath'], *it.get('cutoutPaths', [])])
+        out.append(f'<path d="{html.escape(full_path, quote=True)}" fill-rule="evenodd" transform="translate({x} {y}) scale({s})" fill="#4a4d50" stroke="#d22" stroke-width="{0.35 / s}"/>')
     else:
         out.append(f'<path d="{contour(x, y, w, h, it["shape"], it["radius"] * s)}" fill="#4a4d50" stroke="#d22" stroke-width="0.35"/>')
     for hx, hy, d in it['holes']:
@@ -159,7 +160,7 @@ def main():
             col = drawn.get(key)
             # Without a drawing: one column per form and format series, mounting options stacked per size.
             colkey = ('drawn', col[0]) if col else ('extra', g['key'], (r['count'], r['layout']) if drawn else '', round(s['widthMm'] / s['heightMm'], 2))
-            item = {'w': s['widthMm'], 'h': s['heightMm'], 'shape': g['shape'], 'radius': radius, 'outlinePath': s.get('outlinePath'), 'holes': holes, 'backing': backing,
+            item = {'w': s['widthMm'], 'h': s['heightMm'], 'shape': g['shape'], 'radius': radius, 'outlinePath': s.get('outlinePath'), 'cutoutPaths': s.get('cutoutPaths', []), 'holes': holes, 'backing': backing,
                     'backingRadius': s.get('backingCornerRadiusMm', (max(0, radius - backing) if g['shape'] == 'plaque' else radius + backing if radius else 0) if backing else 0),
                     'label': f"{s['label']} · {g['name']}" + (f' R{radius:g}' if radius and not g['cornerRadiusMm'] else ''),
                     'lines': [r['label'] + (', ohne Löcher' if r['layout'] == 'none' else ', Lochmitten aus Zeichnung' if fixed else f", Rand {r['edgeMm']:g} mm" if complete else ', Bohrbild offen') + (f" · +{r['priceCents'] / 100:.2f} €".replace('.', ',') if r['priceCents'] else ''), f"{s['key']}-{r['skuSuffix']}"],

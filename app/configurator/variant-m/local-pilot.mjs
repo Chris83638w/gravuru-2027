@@ -22,7 +22,7 @@ export function localFontIds(config) {
   for(const m of resources.motifs){
     if(m.artwork!==undefined){if(!isArtworkResource(m))throw Error('Importierte Designressource ist ungültig.');continue;}
     if(m.embeddedOnly!==undefined&&typeof m.embeddedOnly!=='boolean')throw Error('Vorlagenmotiv-Kennzeichnung ist ungültig.');
-    if(!/^[\w.-]{1,120}$/.test(m.key)||!Array.isArray(m.bounds)||m.bounds.length!==4||!m.bounds.every(Number.isFinite)||m.bounds[2]<=0||m.bounds[3]<=0||typeof m.svgFragment!=='string'||!m.svgFragment.match(/^(?:<path d="[MmLlHhVvCcSsQqTtAaZz\d.,+eE\s-]+" fill="(?:currentColor|none)" fill-rule="(?:evenodd|nonzero)"(?: stroke="currentColor" stroke-width="\d+(?:\.\d+)?")?\/>)+$/))throw Error('Lokales Motiv enthält nicht erlaubte Inhalte.');
+    if(!/^[\w.-]{1,120}$/.test(m.key)||!Array.isArray(m.bounds)||m.bounds.length!==4||!m.bounds.every(Number.isFinite)||m.bounds[2]<=0||m.bounds[3]<=0||typeof m.svgFragment!=='string'||!m.svgFragment.match(/^(?:<path d="[MmLlHhVvCcSsQqTtAaZz\d.,+eE\s-]+" fill="(?:currentColor|none)" fill-rule="(?:evenodd|nonzero)"(?: stroke="currentColor" stroke-width="\d+(?:\.\d+)?")?(?: opacity="(?:0(?:\.\d+)?|1(?:\.0+)?)")?(?: stroke-linecap="(?:butt|round|square)" stroke-linejoin="(?:miter|round|bevel)" stroke-miterlimit="\d+(?:\.\d+)?")?\/>)+$/))throw Error('Lokales Motiv enthält nicht erlaubte Inhalte.');
   }
   return ids;
 }

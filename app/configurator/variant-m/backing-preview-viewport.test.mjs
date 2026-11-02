@@ -1,6 +1,17 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {updateBackingPreviewViewport,productPreviewSize} from './backing-preview-viewport.mjs';
+import {universalPreviewViewport} from '../../platform/sources/app/shared/models/studio-svg.mjs';
 const node=()=>({values:{},style:{setProperty(k,v){this[k]=v;}},setAttribute(k,v){this.values[k]=v;}});
+
+test('139: stake working view ends after the head plus 10mm, full product preview stays full length',()=>{
+ const profile={geometry:{width:120,height:300},workingArea:{headHeightMm:100,previewHeightMm:110}},before=JSON.stringify(profile);
+ const scene=node(),y=node(),host=node(),nodes={'.plate-holder':[node()],'.ux-preview':[node()],'.scene':[scene],'.dimension-x':[node()],'.dimension-y':[y]};host.shadowRoot={querySelectorAll:s=>nodes[s]};
+ updateBackingPreviewViewport(host,profile);
+ assert.equal(scene.values.viewBox,'-4.2 -4.2 128.4 118.4');assert.equal(y.style.display,'none');
+ assert.deepEqual(productPreviewSize({state:{width:120,height:300},uxSelectedProfile:()=>profile}),{width:128.4,height:118.4});
+ assert.deepEqual(universalPreviewViewport(profile),[-10.500000000000002,-10.500000000000002,141,321]);
+ assert.equal(JSON.stringify(profile),before);
+});
 test('legacy viewport keeps SS backing inside and measures the 180 by 120 front, also after sync',()=>{
  const scene=node(),x=node(),y=node(),host=node(),nodes={'.plate-holder':[node()],'.ux-preview':[node()],'.scene':[scene],'.dimension-x':[x],'.dimension-y':[y]};host.shadowRoot={querySelectorAll:s=>nodes[s]};
  const profile={geometry:{width:180,height:120},backingPreview:{offsetMm:10}},before=JSON.stringify(profile);

@@ -105,11 +105,23 @@ test('Vorhandene Motivtranslation, Strich und Füllregel bleiben beim uniformen 
  const f=fixture(t);let svg=f.source.master.svgText.replace('<g id="motiv-1">','<g id="motiv-1" transform="translate(2 3)">').replace('fill-rule="evenodd" d=','fill-rule="evenodd" stroke="#000000" stroke-width="0.4" d=');
  const master={...f.source.master,svgText:svg},original=katalogDesignToTemplate(master,family,null,{fonts,svgText:svg}).template,template=structuredClone(original),o=template.objects.find(o=>o.id==='motiv-1');o.w*=2;o.h*=2;o.x+=1;
  const p=planTemplateWriteback({master,originalTemplate:original,template,fonts}),m=p.json.motifs[0],layer=parseDesignSvg(p.svgText).layers.find(l=>l.id==='motiv-1');
- assert.deepEqual(layer.bounds,[8,10.5,20,10]);assert.equal(m.paths[0].strokeMm,.8);assert.equal(layer.pathAttributes[0].strokeMm,.8);assert.equal(layer.pathAttributes[0].evenodd,true);assert.deepEqual(m.box,layer.bounds);
+ // #139: layer.bounds includes the visible stroke; source path coordinates do not.
+ assert.deepEqual(pathBounds(layer.paths[0]),[8,10.5,20,10]);assert.equal(m.paths[0].strokeMm,.8);assert.equal(layer.pathAttributes[0].strokeMm,.8);assert.equal(layer.pathAttributes[0].evenodd,true);assert.deepEqual(m.box,pathBounds(layer.paths[0]));
+ assert.deepEqual(layer.bounds,[6.4,8.9,23.2,13.2]);
+ const round=katalogDesignToTemplate({...master,json:p.json},family,null,{fonts,svgText:p.svgText}).template.objects.find(v=>v.id===o.id);
+ for(const key of ['x','y','w','h'])assert.ok(Math.abs(round[key]-o[key])<.001,key+' survives stroked roundtrip');
 });
 test('Mehrfach verknüpfte Quelldatei wird vor jedem Schreiben gesperrt',t=>{
  const f=fixture(t),extra=path.join(f.root,'extra.json');try{fs.linkSync(path.join(f.dir,'design.json'),extra);}catch(e){if(['EPERM','EACCES','ENOTSUP'].includes(e.code)){t.skip('Dateisystem erlaubt hier keine Hardlinks.');return;}throw e;}
  assert.throws(()=>f.read(),e=>e.status===422);fs.unlinkSync(extra);
+});
+
+test('139: round caps, joins and opacity survive stroked motif writeback',t=>{
+ const f=fixture(t),svg=f.source.master.svgText.replace('fill-rule="evenodd" d=','fill-rule="evenodd" stroke="#000000" stroke-width="0.4" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" opacity="0.5" d=');
+ const master={...f.source.master,svgText:svg},original=katalogDesignToTemplate(master,family,null,{fonts,svgText:svg}).template,template=structuredClone(original);
+ template.objects.find(o=>o.id==='motiv-1').x+=2;
+ const plan=planTemplateWriteback({master,originalTemplate:original,template,fonts}),paint=parseDesignSvg(plan.svgText).layers.find(l=>l.id==='motiv-1').pathAttributes[0];
+ assert.equal(paint.linecap,'round');assert.equal(paint.linejoin,'round');assert.equal(paint.miterlimit,10);assert.equal(paint.opacity,.5);
 });
 
 test('Quell-Zeilenabstand 6,81 mm bleibt beim Textedit erhalten; leere Zeile und Leerzeichen überleben den Rundlauf',t=>{

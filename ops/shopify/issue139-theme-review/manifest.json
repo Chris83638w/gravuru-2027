@@ -1,0 +1,29 @@
+{
+  "themeId": "185833718140",
+  "name": "gravuru-shopify-theme/production",
+  "readOnlyBackup": true,
+  "published": false,
+  "files": [
+    {
+      "filename": "config/settings_data.json",
+      "sourceFilename": "config/settings_data.json",
+      "sourceMd5": "d69c0431aa9924da6212a62947663baf",
+      "sourceSha256": "bc1958f1c861944d81f2d4bdbe4dad11f438644d96afe6dde791393c064ca23b",
+      "proposedSha256": "9e0f6aeadd2ef22fad2d3ee011ca245f1c7eca12cab33177082a2b845b394bb5"
+    },
+    {
+      "filename": "sections/header-group.json",
+      "sourceFilename": "sections/header-group.json",
+      "sourceMd5": "2d2fdbdbce8d1431df5e744ad41acdbf",
+      "sourceSha256": "b588dd74135c4ed184251d039bd2ff34ed8d9c0e9e720b4247cf32e702824431",
+      "proposedSha256": "1c3c0393e599ba49ded8ae4078703218def133c9f9f4853618d80af5b370f91b"
+    },
+    {
+      "filename": "templates/product.konfi.json",
+      "sourceFilename": "templates/product.test-temp-svenja-grid.json",
+      "sourceMd5": "0184b280e5800d5e3e6f91e5c107eb73",
+      "sourceSha256": "67306f574654899211deae4240c4e9b82ed1b8722592715b37d0c50394977765",
+      "proposedSha256": "206f520910f474052b33c5ffffda6ac913e0bec89479707e67d108299e5ee225"
+    }
+  ]
+}

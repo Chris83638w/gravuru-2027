@@ -86,7 +86,7 @@ export function graphicMarkup(o,ink){
  if(o.shape==='rect')return '<rect x="'+(-w/2)+'" y="'+(-h/2)+'" width="'+w+'" height="'+h+'"'+attrs+'/>';
  return placeholder(o,'Unbekannte Grafik',.3);
 }
-export function universalPreviewViewport(p){const {width:w,height:h}=p.geometry,pad=Math.max(Math.max(w,h)*.035,(p.backingPreview?.offsetMm||0)+Math.max(w,h)*.02);return [-pad,-pad,w+2*pad,h+2*pad];}
+export function universalPreviewViewport(p,{working=false}={}){const w=p.geometry.width,h=working&&p.workingArea?p.workingArea.previewHeightMm:p.geometry.height,pad=Math.max(Math.max(w,h)*.035,(p.backingPreview?.offsetMm||0)+Math.max(w,h)*.02);return [-pad,-pad,w+2*pad,h+2*pad];}
 
 function universalSvg(p,d,fonts,{selected,motifs,media,guides,id,handles,handleUnits,photoExampleMarkup}){
  const {width:w,height:h,shape,cornerRadiusMm:radius=0}=p.geometry,pad=Math.max(Math.max(w,h)*.035,(p.backingPreview?.offsetMm||0)+Math.max(w,h)*.02),stroke=Math.max(w,h)*.002;

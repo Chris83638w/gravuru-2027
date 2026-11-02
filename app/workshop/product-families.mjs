@@ -3,7 +3,7 @@ import {tenantOption,TENANT_COLUMN} from './tenant.mjs';
 import {createHash} from 'node:crypto';
 import {mkdirSync} from 'node:fs';
 import {dirname} from 'node:path';
-import {validateContourGeometry,contourContainsPoint,contourSafeAreaSvg} from './contour-path.mjs';
+import {validateContourGeometry,contourContainsPoint,contourContainsPolygon,contourSafeAreaSvg} from './contour-path.mjs';
 import {holesFor,validateMountingRule,keepoutZones,MOUNTING_LAYOUTS} from '../platform/sources/app/shared/models/mounting-rules.mjs';
 import {measureText} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {escapeXml as esc} from '../platform/sources/app/shared/models/design-content.mjs';
@@ -124,20 +124,21 @@ export function validateFamily(f){
  if(!Array.isArray(f.sizes)||!f.sizes.length||f.sizes.length>500)invalid('1 bis 500 Größen angeben.');
  const groups=new Map(f.groups.map(g=>[g.key,g])),rules=new Map(f.mountingRules.map(r=>[r.id,r]));
  for(const s of f.sizes){
-  only(s,['key','groupKey','label','widthMm','heightMm','baseCents','mounting','netWeightG','cornerRadiusMm','backingCornerRadiusMm','quantityTiers','outlinePath','holesMm'],'Größe');
+  only(s,['key','groupKey','label','widthMm','heightMm','baseCents','mounting','netWeightG','cornerRadiusMm','backingCornerRadiusMm','quantityTiers','outlinePath','holesMm','workingArea','cutoutPaths'],'Größe');
+  if(s.workingArea!==undefined){only(s.workingArea,['headHeightMm','previewHeightMm'],'Kopfansicht');if(!contourSize(f,s)||!mm(s.workingArea.headHeightMm,10,s.heightMm)||!mm(s.workingArea.previewHeightMm,s.workingArea.headHeightMm,s.heightMm)||Math.abs(s.workingArea.previewHeightMm-s.workingArea.headHeightMm-10)>.001)invalid(s.key+': Kopfansicht benötigt die Quellhöhe des Kopfs plus 10 mm Stiel.');}
   tierIssue(s.quantityTiers,'Größe '+(s.key||''));
   if(s.cornerRadiusMm!==undefined&&(!mm(s.cornerRadiusMm,0,100)||!CORNERED.includes(groups.get(s.groupKey)?.shape)))invalid('Größe '+(s.key||'')+': eigener Eckenradius nur bei eckiger Form.');
   if(s.backingCornerRadiusMm!==undefined&&(!mm(s.backingCornerRadiusMm,0,100)||!f.backing||!CORNERED.includes(groups.get(s.groupKey)?.shape)))invalid('Größe '+(s.key||'')+': Eckenradius der Rückplatte nur mit Rückplatte und eckiger Form.');
   if(!id(s.key)||!groups.has(s.groupKey)||!text(s.label,60)||!mm(s.widthMm,10,1000)||!mm(s.heightMm,10,1000)||!(open(s.baseCents)||cents(s.baseCents))||!Array.isArray(s.mounting)||s.mounting.length>8||s.mounting.some(m=>!rules.has(m))||new Set(s.mounting).size!==s.mounting.length)invalid('Größe '+(s.key||'')+' unvollständig.');
   if(contourSize(f,s)){
    if(groups.get(s.groupKey).cornerRadiusMm!==0)invalid(s.key+': Kontur hat keinen zusätzlichen Eckenradius.');
-   try{validateContourGeometry({outlinePath:s.outlinePath,width:s.widthMm,height:s.heightMm});}catch(e){invalid(s.key+': '+e.message);}
+   try{validateContourGeometry({outlinePath:s.outlinePath,width:s.widthMm,height:s.heightMm,cutoutPaths:s.cutoutPaths});}catch(e){invalid(s.key+': '+e.message);}
    if(!Array.isArray(s.holesMm)||s.holesMm.length>64)invalid(s.key+': feste Bohrlöcher als holesMm angeben (höchstens 64).');
    for(const h of s.holesMm){only(h,['x','y','diameterMm'],'Festes Bohrloch');if(!Number.isFinite(h.x)||!Number.isFinite(h.y)||!mm(h.diameterMm,.1,100)||h.x-h.diameterMm/2<0||h.y-h.diameterMm/2<0||h.x+h.diameterMm/2>s.widthMm||h.y+h.diameterMm/2>s.heightMm)invalid(s.key+': festes Bohrloch liegt außerhalb der Plattenmaße oder hat ungültige Maße.');}
    for(const h of s.holesMm)if(!contourContainsPoint({outlinePath:s.outlinePath},h.x,h.y,{marginMm:h.diameterMm/2,holes:false}))invalid(s.key+': festes Bohrloch ragt über die Außenkontur hinaus.');
    if(new Set(s.holesMm.map(h=>h.x+'|'+h.y)).size!==s.holesMm.length)invalid(s.key+': festes Bohrloch doppelt.');
    for(const rid of s.mounting){const r=rules.get(rid);if(!holeless(r)&&(r.count!==s.holesMm.length||r.diameterMm!==null&&s.holesMm.some(h=>Math.abs(h.diameterMm-r.diameterMm)>1e-9)))invalid(s.key+' · '+rid+': feste Bohrlöcher stimmen nicht mit Anzahl/Durchmesser der Befestigung überein.');}
-  }else if(s.outlinePath!==undefined||s.holesMm!==undefined)invalid(s.key+': outlinePath und holesMm sind nur bei Form „Kontur“ zulässig.');
+  }else if(s.outlinePath!==undefined||s.holesMm!==undefined||s.cutoutPaths!==undefined)invalid(s.key+': outlinePath, cutoutPaths und holesMm sind nur bei Form „Kontur“ zulässig.');
   if(s.netWeightG!==undefined&&!mm(s.netWeightG,0,100000))invalid('Gewicht von '+s.key+' prüfen.');
   if(!f.withoutMounting&&!s.mounting.length)invalid(s.key+': mindestens eine Befestigung nötig.');
   for(const m of s.mounting){if(contourSize(f,s)||holeless(rules.get(m))||!ruleComplete(rules.get(m)))continue;try{holesFor(geometryOf(f,s),rules.get(m));}catch(e){invalid(s.key+' · '+m+': '+e.message);}}
@@ -203,7 +204,7 @@ export function familyReady(f){
  if(m.adapter==='steel'&&f.material.thicknessMm!==null&&f.material.thicknessMm!==1.5)return {ready:false,gaps,reason:'Das Edelstahl-Produktmodell ist für 1,5 mm freigegeben.'};
  return gaps.length?{ready:false,gaps,reason:'Stammdaten unvollständig: '+gaps.join(' · ')}:{ready:true,gaps:[]};
 }
-export function geometryOf(f,s){const g=f.groups.find(g=>g.key===s.groupKey);return {width:s.widthMm,height:s.heightMm,shape:g.shape,cornerRadiusMm:s.cornerRadiusMm??g.cornerRadiusMm,...(g.shape==='contour'?{outlinePath:s.outlinePath,holesMm:s.holesMm.map(h=>({...h}))}:{}),...(s.backingCornerRadiusMm!==undefined?{backingCornerRadiusMm:s.backingCornerRadiusMm}:{})};}
+export function geometryOf(f,s){const g=f.groups.find(g=>g.key===s.groupKey);return {width:s.widthMm,height:s.heightMm,shape:g.shape,cornerRadiusMm:s.cornerRadiusMm??g.cornerRadiusMm,...(g.shape==='contour'?{outlinePath:s.outlinePath,holesMm:s.holesMm.map(h=>({...h})),...(s.cutoutPaths?{cutoutPaths:[...s.cutoutPaths]}:{})}:{}),...(s.backingCornerRadiusMm!==undefined?{backingCornerRadiusMm:s.backingCornerRadiusMm}:{})};}
 // Corner radius of an offset contour: a rounded corner grows outward, a concave corner shrinks.
 const offsetRadius=(g,d)=>g.shape==='plaque'?Math.max(0,g.cornerRadiusMm-d):g.cornerRadiusMm?Math.max(0,g.cornerRadiusMm+d):0;
 const ruleOf=(f,rid)=>f.mountingRules.find(r=>r.id===rid);
@@ -222,13 +223,23 @@ export function familyProductConfig(f,s,revision,{previewOnly=false}={}){
  if(f.withoutMounting)values.push({id:'K00',label:'Ohne Bohrung',priceCents:0,currency:'EUR',holes:[]});
  for(const rid of s.mounting){const r=ruleOf(f,rid);values.push(holeless(r)?{id:r.skuSuffix,label:r.label,priceCents:r.priceCents,currency:'EUR',holes:[]}:{id:r.skuSuffix,label:r.label,priceCents:r.priceCents,currency:'EUR',holes:familyHoles(f,s,r),mountingRule:{id:r.id,layout:r.layout,count:r.count,diameterMm:r.diameterMm,...(g.shape==='contour'?{fixed:true}:{edgeMm:r.edgeMm}),keepoutMm:f.designArea.keepoutMm,...(r.accessory?{accessory:r.accessory}:{})},...(r.accessory==='standoffs'?{spacers:true}:{})});}
  if(new Set(values.map(v=>v.id)).size!==values.length)invalid(s.key+': zwei Befestigungen mit gleicher SKU-Endung.');
- const text={id:'text-1',type:'text',text:'Familie Muster',font,size:Math.min(g.height*.22,14),x:g.width/2,y:g.height/2,w:1,h:1,rotation:0,color:'#000000',bold:false,templateOrigin:true,customerEditable:true};
+ const headHeight=s.workingArea?.headHeightMm??g.height;
+ const text={id:'text-1',type:'text',text:'Familie Muster',font,size:Math.min(headHeight*.22,14),x:g.width/2,y:headHeight/2,w:1,h:1,rotation:0,color:'#000000',bold:false,templateOrigin:true,customerEditable:true};
  measureText(text,resources.fonts);if(text.w>g.width*.6){text.size*=g.width*.6/text.w;measureText(text,resources.fonts);}
  if(text.h>g.height*.3){text.size*=g.height*.3/text.h;measureText(text,resources.fonts);}
  // The neutral starter is only scaffolding. A cross has a narrow stem at its
  // centre, so its placeholder must fit the actual contour before a catalogue
  // design replaces it. Never shrink the imported design here.
- if(g.shape==='contour'){
+ if(s.workingArea){
+  const candidates=[];for(let yi=2;yi<=8;yi++)for(let xi=2;xi<=8;xi++)candidates.push([g.width*xi/10,headHeight*yi/10]);
+  candidates.sort((a,b)=>Math.hypot(a[0]/g.width-.5,a[1]/headHeight-.5)-Math.hypot(b[0]/g.width-.5,b[1]/headHeight-.5));
+  let found=false;
+  for(let size=Math.min(14,text.size);size>=1&&!found;size=Math.max(0,size-1)){
+   text.size=size;measureText(text,resources.fonts);
+   for(const [x,y] of candidates){const corners=[[-1,-1],[1,-1],[1,1],[-1,1]].map(([dx,dy])=>[x+dx*text.w/2,y+dy*text.h/2]);if(corners.some(p=>p[1]>headHeight)||!contourContainsPolygon(g,corners,{marginMm:f.designArea.marginMm,holes:false}))continue;text.x=x;text.y=y;found=true;break;}
+  }
+  if(!found)invalid(s.key+': kein neutraler Starttext im Quellkopf möglich.');
+ }else if(g.shape==='contour'){
   const fits=()=>[-1,1].every(dx=>[-1,1].every(dy=>contourContainsPoint(g,text.x+dx*text.w/2,text.y+dy*text.h/2,{marginMm:f.designArea.marginMm,holes:false})));
   for(let i=0;i<20&&!fits();i++){text.size*=.8;measureText(text,resources.fonts);}
  }
@@ -238,6 +249,7 @@ export function familyProductConfig(f,s,revision,{previewOnly=false}={}){
   material:{kind:f.material.kind,color:FAMILY_MATERIALS[f.material.kind].color(f.material.variant),thicknessMm:f.material.thicknessMm,...(f.material.kind==='acrylic'?{variant:f.material.variant,engravingSide:f.material.engravingSide??(familyProcess(f).mirror?'back':'front')}:{})},processing:{profileId:f.material.processingProfileId},
   features:{orderEnabled:false,productionConfirmed:false,motifsAllowed:true},designs:[design],defaultDesignId:design.id,
   optionGroups:[{id:'mounting',name:'Befestigung',required:true,defaultValueId:values[0].id,values},...familyOptionGroups(f,s)]};
+ if(s.workingArea)profile.workingArea=structuredClone(s.workingArea);
  if(f.material.kind==='acrylic'){
   if(f.backing){const o=f.backing.offsetMm,bg={...sourceGeometry,width:g.width+2*o,height:g.height+2*o,cornerRadiusMm:sourceGeometry.backingCornerRadiusMm??offsetRadius(sourceGeometry,o),holes:[]};profile.backingPreview={...structuredClone(f.backing),geometry:{width:bg.width,height:bg.height,shape:'contour',outlinePath:nativeContour(bg).contours[0].d,holes:[]}};}
  }

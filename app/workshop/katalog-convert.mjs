@@ -64,12 +64,14 @@ function svgSize(svg){
  if(!(w>0&&h>0))fail('SVG: Maße fehlen (viewBox in mm).');return [w,h];
 }
 // Nur translate(x y) und rotate(a[ cx cy]) – mehr braucht Lieferform 2 nicht.
+const multiplyTransform=(a,b)=>[a[0]*b[0]+a[2]*b[1],a[1]*b[0]+a[3]*b[1],a[0]*b[2]+a[2]*b[3],a[1]*b[2]+a[3]*b[3],a[0]*b[4]+a[2]*b[5]+a[4],a[1]*b[4]+a[3]*b[5]+a[5]];
+const transformPoint=(m,x,y)=>[m[0]*x+m[2]*y+m[4],m[1]*x+m[3]*y+m[5]];
 function transformOf(value){
- const t={dx:0,dy:0,rotation:0};if(!value)return t;
+ const t={dx:0,dy:0,rotation:0,matrix:[1,0,0,1,0,0]};if(!value)return t;
  for(const [,fn,args] of value.matchAll(/(\w+)\s*\(([^)]*)\)/g)){
   const a=args.trim().split(/[\s,]+/).filter(Boolean).map(Number);
-  if(fn==='translate'&&a.length>=1&&a.every(Number.isFinite)){t.dx+=a[0];t.dy+=a[1]||0;}
-  else if(fn==='rotate'&&(a.length===1||a.length===3)&&a.every(Number.isFinite)){t.rotation+=a[0];if(a.length===3)t.pivot=[a[1],a[2]];}
+  if(fn==='translate'&&a.length>=1&&a.length<=2&&a.every(Number.isFinite)){t.dx+=a[0];t.dy+=a[1]||0;t.matrix=multiplyTransform(t.matrix,[1,0,0,1,a[0],a[1]||0]);}
+  else if(fn==='rotate'&&(a.length===1||a.length===3)&&a.every(Number.isFinite)){t.rotation+=a[0];const r=a[0]*Math.PI/180,c=Math.cos(r),s=Math.sin(r),x=a[1]||0,y=a[2]||0;t.matrix=multiplyTransform(t.matrix,[c,s,-s,c,x-c*x+s*y,y-s*x-c*y]);if(a.length===3)t.pivot=[x,y];}
   else fail('SVG: Transformation „'+fn+'“ wird nicht unterstützt (nur translate und rotate).');
  }
  return t;
@@ -128,6 +130,24 @@ const textContent=node=>{
 };
 const fontFamily=v=>String(v??'').split(',')[0].trim().replace(/^["']|["']$/g,'');
 
+// Resolve paint at every nesting level before flattening a motif. In SVG fill
+// and stroke inherit; opacity is composited. Losing a group's fill="none"
+// turns open wreath/branch strokes into opaque areas.
+function vectorNodes(root){
+ const out=[],paintKeys=['fill','fill-rule','stroke','stroke-width','stroke-linecap','stroke-linejoin','stroke-miterlimit'];
+ function visit(n,inherited={},opacity=1){
+  if(n.tag==='#text')return;
+  const own={...n.attrs};
+  for(const declaration of (own.style||'').split(';')){const at=declaration.indexOf(':');if(at>0){const k=declaration.slice(0,at).trim(),v=declaration.slice(at+1).trim();if(paintKeys.includes(k)||k==='opacity')own[k]=v;}}
+  const paint={...inherited};for(const k of paintKeys)if(own[k]!==undefined)paint[k]=own[k];
+  const alpha=opacity*(num(own.opacity,'opacity')??1);
+  if(n!==root&&own.transform)fail('Verschachtelte Motivtransformation benötigt eine Quellkorrektur.');
+  if(['path','rect','circle','ellipse','polygon','polyline'].includes(n.tag))out.push({...n,attrs:{...own,...paint,opacity:alpha}});
+  else for(const child of n.children||[])visit(child,paint,alpha);
+ }
+ visit(root);return out;
+}
+
 export function parseDesignSvg(svgText){
  const svg=parseXml(svgText),[widthMm,heightMm]=svgSize(svg),layers=[],notes=[];
  for(const node of svg.children){
@@ -141,9 +161,9 @@ export function parseDesignSvg(svgText){
    const textNodes=findAll(node,['text']);if(!textNodes.length)fail('Ebene „'+id+'“ enthält keinen <text>.');
    if(textNodes.length>1&&findAll(node,['g']).some(g=>g!==node&&g.attrs.transform))fail('Ebene „'+id+'“: verschachtelte Texttransformationen benötigen eine Quellkorrektur.');
    const rows=textNodes.map(el=>{
-    const inner=transformOf(el.attrs.transform),content=textContent(el),size=num(el.attrs['font-size'],'font-size von „'+id+'“');
+    const inner=transformOf(el===node?'':el.attrs.transform),content=textContent(el),size=num(el.attrs['font-size'],'font-size von „'+id+'“');
     if(!content.text||!(size>0))fail('Ebene „'+id+'“: Text oder font-size in mm fehlt.');
-    return {id,kind,fieldKey:node.attrs['data-feld']||el.attrs['data-feld']||null,text:content.text,lines:content.lines,lineHeight:content.lineHeight??size*1.2,font:fontFamily(el.attrs['font-family'])||fail('Ebene „'+id+'“: font-family fehlt.'),size,x:(num(el.attrs.x,'x')??0)+t.dx+inner.dx,y:(content.firstY??num(el.attrs.y,'y')??0)+t.dy+inner.dy,anchor:el.attrs['text-anchor']||'start',letterSpacing:num(el.attrs['letter-spacing'],'letter-spacing')??0,fill:el.attrs.fill||node.attrs.fill||null,rotation:t.rotation+inner.rotation};
+    return {id,kind,fieldKey:node.attrs['data-feld']||el.attrs['data-feld']||null,text:content.text,lines:content.lines,lineHeight:content.lineHeight??size*1.2,font:fontFamily(el.attrs['font-family'])||fail('Ebene „'+id+'“: font-family fehlt.'),size,x:(num(el.attrs.x,'x')??0)+t.dx+inner.dx,y:(content.firstY??num(el.attrs.y,'y')??0)+t.dy+inner.dy,sourceX:num(el.attrs.x,'x')??0,sourceY:content.firstY??num(el.attrs.y,'y')??0,textTransform:multiplyTransform(t.matrix,inner.matrix),anchor:el.attrs['text-anchor']||'start',letterSpacing:num(el.attrs['letter-spacing'],'letter-spacing')??0,fill:el.attrs.fill||node.attrs.fill||null,rotation:t.rotation+inner.rotation};
    });
    const first=rows[0];
    if(rows.length>1){
@@ -168,12 +188,13 @@ export function parseDesignSvg(svgText){
    if(image&&(/^[\w.-]+\.(png|jpe?g)$/i.test(href)||/^data:image\/(?:png|jpeg);base64,[A-Za-z0-9+/=]+$/.test(href))){const ib=['x','y','width','height'].map(k=>num(image.attrs[k]??(['x','y'].includes(k)?0:undefined),k));if(!ib.every(Number.isFinite)||ib[2]<=0||ib[3]<=0)fail('Ebene „'+id+'“: ungültige Bildmaße.');exampleImage={href,bounds:ib,preserveAspectRatio:image.attrs.preserveAspectRatio||'xMidYMid meet',maskPath,maskEvenodd:mask.attrs['fill-rule']==='evenodd',viewport:bounds,uploadHint:node.attrs['data-upload-hint']==='separate'};}
    layers.push({id,kind,shape,maskPath,maskEvenodd:mask.attrs['fill-rule']==='evenodd',maskTranslation:[t.dx,t.dy],bounds:[bounds[0]+t.dx,bounds[1]+t.dy,bounds[2],bounds[3]].map(round),rotation:t.rotation,...(maskSvg?{maskSvg}:{}),...(exampleImage?{exampleImage}:{}),...(/^[\w.-]+\.(png|jpe?g)$/i.test(href)?{placeholder:href}:{})});
   }else{
-   const parts=(node.tag==='g'?findAll(node,['path','rect','circle','ellipse','polygon','polyline']):[node]).map(n=>({d:shapePath(n).trim(),fill:n.attrs.fill||node.attrs.fill||null,fillRule:n.attrs['fill-rule']||node.attrs['fill-rule']||'nonzero',stroke:n.attrs.stroke||node.attrs.stroke||null,strokeMm:num(n.attrs['stroke-width']??node.attrs['stroke-width'],'stroke-width')??1,opacity:num(n.attrs.opacity??node.attrs.opacity,'opacity')??1,transform:transformOf(n===node?'':n.attrs.transform)})).filter(p=>p.d);
+   const nodes=vectorNodes(node).filter(n=>shapePath(n).trim());
+   const parts=nodes.map(n=>({d:shapePath(n).trim(),fill:n.attrs.fill??null,fillRule:n.attrs['fill-rule']||'nonzero',stroke:n.attrs.stroke??null,strokeMm:num(n.attrs['stroke-width'],'stroke-width')??1,linecap:n.attrs['stroke-linecap']||'butt',linejoin:n.attrs['stroke-linejoin']||'miter',miterlimit:num(n.attrs['stroke-miterlimit'],'stroke-miterlimit')??4,opacity:num(n.attrs.opacity,'opacity')??1,transform:transformOf('')}));
    if(!parts.length)fail('Ebene „'+id+'“ enthält keine Vektorpfade.');
    for(const p of parts){if(p.transform.rotation)fail('Ebene „'+id+'“: gedrehte Einzelpfade werden nicht unterstützt.');if(p.transform.dx||p.transform.dy)fail('Ebene „'+id+'“: verschobene Einzelpfade werden nicht unterstützt.');if(!/^[MmLlHhVvCcSsQqTtAaZz\d.,+eE\s-]+$/.test(p.d))fail('Ebene „'+id+'“: Pfad enthält nicht erlaubte Zeichen.');if(p.strokeMm<0)fail('Ebene „'+id+'“: stroke-width darf nicht negativ sein.');if(p.opacity<0||p.opacity>1)fail('Ebene „'+id+'“: opacity muss zwischen 0 und 1 liegen.');}
-   const nodes=node.tag==='g'?findAll(node,['path','rect','circle','ellipse','polygon','polyline']):[node];
-   const boxes=nodes.filter(n=>shapePath(n).trim()).map(shapeBounds),x0=Math.min(...boxes.map(b=>b[0])),y0=Math.min(...boxes.map(b=>b[1])),x1=Math.max(...boxes.map(b=>b[0]+b[2])),y1=Math.max(...boxes.map(b=>b[1]+b[3]));
-   layers.push({id,kind,paths:parts.map(p=>p.d),pathAttributes:parts.map(p=>({fill:p.fill,evenodd:p.fillRule==='evenodd',stroke:p.stroke,strokeMm:p.strokeMm,opacity:p.opacity})),translation:[t.dx,t.dy],fill:parts.find(p=>p.fill&&p.fill!=='none')?.fill||null,bounds:[x0+t.dx,y0+t.dy,x1-x0,y1-y0].map(round),rotation:t.rotation});
+   for(const p of parts)if(!['butt','round','square'].includes(p.linecap)||!['miter','round','bevel'].includes(p.linejoin)||!Number.isFinite(p.miterlimit)||p.miterlimit<1)fail('Ungültige Strichenden oder Linienverbindung.');
+   const boxes=nodes.map((n,i)=>{const b=shapeBounds(n),p=parts[i],pad=p.stroke&&p.stroke!=='none'?p.strokeMm/2*(p.linejoin==='miter'?p.miterlimit:1):0;return [b[0]-pad,b[1]-pad,b[2]+2*pad,b[3]+2*pad];}),x0=Math.min(...boxes.map(b=>b[0])),y0=Math.min(...boxes.map(b=>b[1])),x1=Math.max(...boxes.map(b=>b[0]+b[2])),y1=Math.max(...boxes.map(b=>b[1]+b[3]));
+   layers.push({id,kind,paths:parts.map(p=>p.d),pathAttributes:parts.map(p=>({fill:p.fill,evenodd:p.fillRule==='evenodd',stroke:p.stroke,strokeMm:p.strokeMm,linecap:p.linecap,linejoin:p.linejoin,miterlimit:p.miterlimit,opacity:p.opacity})),translation:[t.dx,t.dy],fill:parts.find(p=>p.fill&&p.fill!=='none')?.fill||null,bounds:[x0+t.dx,y0+t.dy,x1-x0,y1-y0].map(round),rotation:t.rotation});
   }
  }
  return {widthMm,heightMm,layers,notes};
@@ -223,6 +244,9 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
    // (Grundlinie liegt bei Mitte + 0,35 · Größe, Zeilenabstand 1,2 · Größe, siehe textPaths).
    o.x=round(layer.anchor==='middle'?layer.x:layer.anchor==='end'?layer.x-o.w/2:layer.x+o.w/2);
    o.y=round(layer.y-0.35*o.size+(layer.lines-1)/2*o.lineHeight);
+   // SVG rotates about its declared pivot, whereas native text rotates about
+   // its own centre. Transform the unrotated centre exactly once.
+   if(layer.textTransform){const x=layer.sourceX+(layer.anchor==='middle'?0:layer.anchor==='end'?-o.w/2:o.w/2),y=layer.sourceY-0.35*o.size+(layer.lines-1)/2*o.lineHeight;[o.x,o.y]=transformPoint(layer.textTransform,x,y).map(round);}
    if(guide){o.role='guide';o.locked=true;rights[id]={content:false,color:false,replace:false,move:false,scale:false,delete:false};}
    else{
     o.fieldKey=fieldKey;o.required=rule.required??(layer===nameLayer);
@@ -248,7 +272,7 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
    motifs.push({key,svgFragment:layer.paths.map((d,i)=>{
     const a=layer.pathAttributes?.[i]||{},fill=print?paint(a.fill??'#000000'):a.fill==='none'?'none':'currentColor',stroke=a.stroke&&a.stroke!=='none'?(print?paint(a.stroke):'currentColor'):null;
     // Gravur ersetzt nur die Farbe durch Profiltinte; Kontur, Aussparungen und Deckkraft bleiben Quelle.
-    return '<path d="'+d+'" fill="'+fill+'" fill-rule="'+(a.evenodd?'evenodd':'nonzero')+'"'+(stroke?' stroke="'+stroke+'" stroke-width="'+a.strokeMm+'"':'')+(a.opacity!==undefined&&(print||a.opacity!==1)?' opacity="'+a.opacity+'"':'')+'/>';
+    return '<path d="'+d+'" fill="'+fill+'" fill-rule="'+(a.evenodd?'evenodd':'nonzero')+'"'+(stroke?' stroke="'+stroke+'" stroke-width="'+a.strokeMm+'"':'')+(a.opacity!==undefined&&(print||a.opacity!==1)?' opacity="'+a.opacity+'"':'')+(stroke?' stroke-linecap="'+a.linecap+'" stroke-linejoin="'+a.linejoin+'" stroke-miterlimit="'+a.miterlimit+'"':'')+'/>';
    }).join(''),bounds:[round(bx),round(by),round(bw),round(bh)],embeddedOnly:true});
    const movable=movableAll(design)&&!guide;
    const o={id,type:'motif',motif:key,x:round(bx+bw/2),y:round(by+bh/2),w:round(bw),h:round(bh),rotation:round(layer.rotation),color:print&&validColor(layer.fill)?layer.fill.toLowerCase():ink,templateOrigin:true,customerEditable:(print||movable)&&!guide};

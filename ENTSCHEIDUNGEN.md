@@ -102,6 +102,7 @@ Stand: 02.11.2026 abends. Gelesen: Code-Repo `origin/main` f78ad5b (STATUS.md, A
 | 3.34 | 27.10. | Warenkorb: Zitat „im warenkorb ist das schild selbst nicht sichtbar“ → Warenkorbbild mit Material. Gedenktafel: „Bearbeiten unter dem Foto, nicht rechts in der Aufzählung“. | S:396; H:2026-10-27-gedenktafel-schrift-warenkorb.md Z.99 |
 | 3.35 | 30.10. | Zitat: „mach das . gedenk d sprechen wir ab“ → Warenkorb-Technikanzeige ausgeblendet; Gedenktafel-Migration vertagt. | H:2026-10-30-master-abgleich-warenkorb.md |
 | 3.36 | 29.10. | Entwurfsbild verschwommen; Produktionsdatei muss scharfer Vektor sein. | [#48·6494952014](https://github.com/Chris83638w/gravuru-2027/issues/48#issuecomment-6494952014) |
+| 3.37 | 02.11. 23:48 | **Ausführung mit Bildkacheln/Icons als Standard; Dropdown nur bei sehr vielen Möglichkeiten (z. B. Funkklingel: Format, Position, Rahmen, Farbe).** Zitat: „Normalerweise haben wir icons bei der Ausführung. Ich habe gesagt, dass nur bei vielen Möglichkeiten wie z. B. Funkklingel Dropdown sein soll.“ Bestätigt 3.4 (Befestigung nur Bildkacheln) und 3.26. | Chat 02.11. 23:48 |
 
 ## 4. Produkt-/Shop-Schnitt, Preise, Versand, SEO, Bilder, Collections, Navigation, Theme
 
@@ -254,3 +255,4 @@ Stand: 02.11.2026 abends. Gelesen: Code-Repo `origin/main` f78ad5b (STATUS.md, A
 | R13 | Live-Schreiben nur über Upload-Account nach Satz von Chris (AGENTS.md, 23.10.). | Von Chris selbst zurückgedreht: Codex setzt „alles selbst live“ (02.11., [#139·6576159295](https://github.com/Chris83638w/gravuru-2027/issues/139#issuecomment-6576159295)). |
 | R14 | Funkklingel-Kacheln/Blöcke (29.10.–01.11., mehrfach geändert). | Von Chris zurückgedreht auf Dropdown-Version für alle 126 (02.11., H:2026-11-02-funkklingeln-dropdown.md; [#146](https://github.com/Chris83638w/gravuru-2027/issues/146)). |
 | R15 | Vorladen nach Seitenaufruf (27.10. auf Chris' Wunsch gebaut). | Am selben Abend wegen Messung (nutzlos, ~15 MB) mit Chris' Satz abgeschaltet; ersetzt durch Vorwärmen bei Absicht (S:379–381, S:340). |
+| R16 | Ausführung als Bildkacheln/Icons (28.10. 3.4, 01.11. 3.26); Dropdown nur bei vielen Möglichkeiten (Funkklingel, 02.11. 3.37). | Türschild-Konfi live (02.11.): „Befestigung“ als Dropdown „Ohne Bohrung“ – Funkklingel-Dropdown-Muster auf alle Produkte übertragen. |

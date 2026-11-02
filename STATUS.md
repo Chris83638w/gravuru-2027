@@ -1,3 +1,7 @@
+# Issue 85 · Firmen- und Praxisschilder · 02.11.2026 · Codex
+
+107 Bestandsdatensätze vollständig zugeordnet; 20 auf vorhandene D554–D558 (25 Formfassungen) verlinkt. 48 zusätzliche Master einschließlich drei neuer Schriftentwürfe, 226 Größenableitungen, 144 offene Materialziele. 16 Regular-/Light-Schriften, echte SVG-Texte und Vektormotive, keine PNG-Designs. 35 gezielte Tests; 48 native Editoröffnungen (308 Texte, 75 Motive); 822 Größenprüfungen ohne „passt nicht“. Vier Vergleichsseiten, Acrylprobe und Flächenmessung; 17 begründete historische Anordnungs-Ausnahmen, alle fünf neuen/neuproportionierten Kompositionen innerhalb der Richtwerte. Vollbau mit 15 Familien bestanden. [Übergabe, JPGs, Messwerte und Reproduktion](docs/handoffs/2026-11-02-issue85-firmen/README.md). Eigener Branch in beiden Repos; minimale K00-Startvorgabe aus PR 86 auf aktuellem main. Nächster Schritt: Claude/Chris prüft Kontaktbögen und offene Materialziele. Kein Merge, Import oder Live-Schritt.
+
 # Türschilder: Format & Größe · 01.11.2026 · Astra
 
 Chris benennt den Bereich um: Reiter, Überschrift und erster Handy-Schritt heißen jetzt Format & Größe. 42/42 bestehende Tests, Build und lokale Desktop-/375×548-Browserprüfung grün. Nur Text/Umbruch geändert, keine Preis-/Optionslogik. [Nachweis](docs/handoffs/2026-11-01-tuerschilder-review/README.md#beschriftung-nach-chris--01112026). Auf PR #102, kein Merge oder Live-Schritt.

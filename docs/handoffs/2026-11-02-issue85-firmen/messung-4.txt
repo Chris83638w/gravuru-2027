@@ -1,0 +1,12 @@
+ 1 Breite  89% Höhe  87% Fläche  78% | Versatz x  -0.2% y  +0.4% | ok
+ 2 Breite  96% Höhe  79% Fläche  76% | Versatz x  -1.1% y +10.3% | PRÜFEN: senkrecht +10 %
+ 3 Breite  70% Höhe  24% Fläche  17% | Versatz x  -0.1% y  -4.2% | PRÜFEN: senkrecht -4 %, Fläche nur 17 %
+ 4 Breite  84% Höhe  53% Fläche  45% | Versatz x  +0.0% y -14.6% | PRÜFEN: senkrecht -15 %
+ 5 Breite  95% Höhe  62% Fläche  58% | Versatz x  +0.0% y  +1.9% | ok
+ 6 Breite  87% Höhe  83% Fläche  72% | Versatz x  +3.0% y  -0.6% | ok
+ 7 Breite  92% Höhe  83% Fläche  76% | Versatz x  -0.6% y  +4.2% | PRÜFEN: senkrecht +4 %
+ 8 Breite  91% Höhe  73% Fläche  66% | Versatz x  +0.6% y  -1.5% | ok
+ 9 Breite  77% Höhe  79% Fläche  60% | Versatz x  -0.6% y  -0.7% | ok
+10 Breite  78% Höhe  82% Fläche  64% | Versatz x  +0.0% y  -1.5% | ok
+11 Breite  80% Höhe  53% Fläche  42% | Versatz x  +0.0% y  -2.6% | ok
+12 Breite  71% Höhe  57% Fläche  40% | Versatz x  -0.2% y  +1.1% | ok

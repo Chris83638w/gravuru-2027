@@ -39,6 +39,13 @@ test('material target previews use native surfaces and glyph paths without chang
  assert.notEqual(previews[0],previews[1]);assert.notEqual(previews[0],previews[2]);assert.notEqual(previews[1],previews[3]);assert.equal(fs.readFileSync(path.join(f.root,f.base+'design.json'),'utf8'),before);
  assert.ok(f.families.every(family=>family.sizes.every(s=>s.baseCents===null)));await assert.rejects(targetDesignPreview(f.root,{reihe:'test',id:'T-D1',familie:'test-schilder',size:'foreign'},options),e=>e.status===422);
 });
+test('target review starts without mounting and retains the drilled-only fallback',async t=>{
+ const f=fixture(t),family=f.families[0];family.sizes.forEach(s=>{s.mounting=['B02-E6-D4'];});
+ family.withoutMounting=true;write(f.root,'familien/edelstahl/test-schilder.json',family);
+ const plain=await f.preview(family.id);assert.doesNotMatch(plain.svg,/<circle[^>]+fill="#f4f5f3"/);
+ family.withoutMounting=false;write(f.root,'familien/edelstahl/test-schilder.json',family);
+ const drilled=await f.preview(family.id);assert.match(drilled.svg,/<circle[^>]+fill="#f4f5f3"/);
+});
 test('approval and withdrawal only change the addressed target, keep audit actor and preserve historical global approval',async t=>{
  const f=fixture(t),source=f.read();source.freigabe={status:'freigegeben',von:'historic',am:'2025-01-01'};write(f.root,f.base+'design.json',source);
  patchDesign(f.root,{reihe:'test',designId:'T-D1',zieleHinzufuegen:['slate-test']});await f.approve('test-schilder');assert.equal(f.read().ziele[0].freigabe.von,'merchant:test');assert.equal(f.read().ziele[1].freigabe,null);assert.deepEqual(f.read().freigabe,source.freigabe);

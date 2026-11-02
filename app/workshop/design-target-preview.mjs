@@ -32,7 +32,8 @@ export async function targetDesignPreview(root,{reihe,id,familie,size:requestedS
  const response={checksum,reviewFit,fit,familie,size:sizeOption(size),sizes,variantRequired};
  let config;try{config=familyProductConfig(view,viewSize,1,{previewOnly:true});}catch(error){if(error.status!==422)throw error;const message=error.message.startsWith('Vorschau offen:')?error.message:'Vorschau offen: '+error.message;return {...response,svg:null,fit:{...fit,status:'passt nicht',issues:[...fit.issues,message]},reviewFit:{...reviewFit,status:'passt nicht',issues:[...reviewFit.issues,message]}};}
  config.localResources={...config.localResources,fonts,motifs};config.profile.designs=[scaled];config.profile.defaultDesignId=scaled.id;config.photo.enabled=scaled.objects.some(o=>o.type==='photoSlot');
- const mounting=config.profile.optionGroups.find(g=>g.id==='mounting'),drilled=mounting?.values.find(v=>v.holes?.length);if(drilled)mounting.defaultValueId=drilled.id;
+ // Design-Master §7: initial review without mounting; retain drilled-only fallback.
+ const mounting=config.profile.optionGroups.find(g=>g.id==='mounting'),initial=mounting?.values.find(v=>v.id==='K00')||mounting?.values.find(v=>v.holes?.length);if(initial)mounting.defaultValueId=initial.id;
  config.photo.hints=converted.examples.map(e=>({designId:scaled.id,slotId:e.slotId,text:'Foto hochladen',enabled:e.uploadHint}));
  const examples=converted.examples.map(e=>({...e,designId:scaled.id}));
  let svg=productPreview({universal:config},{keepout:false,designArea:true,examples});

@@ -2,7 +2,18 @@
 
 Stand: 03.11.2026, Codex/Astra. Basis Code `3eb2ea43c5383571094b8da1017ade9f4884eb72`; eigener Branch `dev/konfi-produktprofile-vorschau-20261103-astra`. Auftrag von Chris: visuelle Vorschau der besprochenen Oberfläche, einfache Anbindung verschiedener Produkte, automatische Foto-Sichtbarkeit und gründlicher Ladezeit-Check. **Keine Änderungen an App-Laufzeit, Katalog, Shopify oder Live-Systemen.**
 
-## Korrektur nach Chris' Rückmeldung (03.11.2026)
+## Ergänzung: Bestseller passend zum Produktthema (03.11.2026)
+
+Chris: „Bestseller-Motive müssen sich ändern. Immer themenorientiert. Andenken, natürlich Kreuze usw., Türschilder andere.“ In der lokalen Vorschau bindet jedes Produkt jetzt ausdrücklich seine Motivempfehlungen. Keine Ableitung aus Material oder Titel und kein globaler Ersatz bei fehlender Zuordnung.
+
+- Gedenktafel: Kreuz, Engel, Kerze, Blätterherz, Rose und Engelsflügel zuerst; 74 vorhandene Motive aus den passenden Themen. Türschild/Funkklingel: Haus, Strich-Haus, Herzlinie, Leuchtturm, Anker, Baum zuerst; 49 passende Motive. Zunächst 18 sichtbar, „Mehr anzeigen“ erweitert jeweils um 18. Beides sind kuratierte lokale Beispiele, keine belegten Verkaufsranglisten oder neuen Katalogfreigaben.
+- Alle 721 Originalmotive und 47 Einzelkategorien bleiben zugänglich. Nur die Vorauswahl „Bestseller“ ist thematisch. Originalnamen, Kennungen und SVGs bleiben erhalten. Ein eigenes Thema lässt sich über `motifRecommendations` im Produktprofil zuweisen, unabhängig von Foto, Zubehör oder Material.
+- 18/18 gezielte Vorschau-/Profil-/Hostingtests und Build grün. Browser: Produktwechsel zeigt die passende Startliste; bei Gedenktafeln 18→36 per „Mehr anzeigen“, freie Auswahl „Leuchttürme“ weiterhin möglich. Kein erneuter Linux-Gesamt- oder realer iPhone-Test für diese reine Filteränderung.
+- Bilder: [Türschild](2026-11-03-produktprofile-vorschau/themen-tuerschild-motive.jpg), [Gedenktafel](2026-11-03-produktprofile-vorschau/themen-gedenktafel-motive.jpg).
+
+Weiterhin ausschließlich lokale Studie / Entwurfs-PR #161. Der separat gezeigte modernere Bildentwurf ist noch keine vollständig umgesetzte Oberfläche. Die Manufaktur-Startseite gehört ausdrücklich in einen anderen Chat. Keine App-/Katalog-/Shopify-/Live-Änderung.
+
+## Korrektur nach Chris' Rückmeldung (03.11.2026, vor der Themen-Ergänzung)
 
 - Eine Werkzeugzeile direkt über dem Canvas: Zum Produkt links, Vollbild/Rückgängig/Wiederholen/Hilfe/Ebenen exakt mittig, Entwurf speichern rechts. Zusätzliche Produktüberschrift und Status mit zwei Häkchen entfernt.
 - Canvas bei 1440×765: Platte jetzt 751,16 statt 562,5 CSS-px breit; 100% nutzt die tatsächlich verfügbare Fläche mit 2% Einpassreserve. Zoom skaliert die gesamte Platte samt Bemaßung: 125% = 938,96 px, Rückstellung wieder 751,16. Vergrößerte Bereiche sind scrollbar; Maßtexte bleiben 120/80 mm. Kein globaler 760-px-/Viewport-Höhencap mehr.

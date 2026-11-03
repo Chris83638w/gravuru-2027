@@ -25,11 +25,11 @@ export function App(){
  useEffect(()=>{if(!modal)return;const previous=document.activeElement;const dialog=document.querySelector('.dialog');dialog?.querySelector('button')?.focus();const handle=e=>{if(e.key==='Escape')setModal(null);if(e.key==='Tab'){const items=[...dialog.querySelectorAll('button,input,select,textarea,a[href]')].filter(n=>!n.disabled);if(!items.length)return;if(e.shiftKey&&document.activeElement===items[0]){e.preventDefault();items.at(-1).focus()}else if(!e.shiftKey&&document.activeElement===items.at(-1)){e.preventDefault();items[0].focus()}}};document.addEventListener('keydown',handle);return()=>{document.removeEventListener('keydown',handle);previous?.focus()}},[modal]);
  const p=profiles[id],d=drafts[id],tabs=tabsFor(p),label=p.fields.find(f=>f[0]===d.selected)?.[1]||'Text';
  const layout=canvasLayout(canvasSize.width,canvasSize.height,p.kind==='doorbell'?160/280:p.kind==='memorial'?22/14:1.5,zoom);
- const filteredMotifs=visibleMotifs(motifExamples,category,query);
+ const filteredMotifs=visibleMotifs(motifExamples,category,query,p.motifRecommendations);
  const change=x=>{setHistory(h=>[...h,d]);setFuture([]);setDrafts(all=>({...all,[id]:{...d,...x}}));};
  const notify=t=>setToast(t);useEffect(()=>{if(!toast)return;const timer=setTimeout(()=>setToast(''),3500);return()=>clearTimeout(timer)},[toast]);
  useEffect(()=>{const f=()=>setGrowth(Math.min(1,window.scrollY/180));window.addEventListener('scroll',f,{passive:true});return()=>window.removeEventListener('scroll',f)},[]);
- const switchProfile=k=>{setId(k);setTab(tabsFor(profiles[k])[0][0]);setHistory([]);setFuture([]);setZoom(100);setBox(null);setQuery('');};
+ const switchProfile=k=>{setId(k);setTab(tabsFor(profiles[k])[0][0]);setHistory([]);setFuture([]);setZoom(100);setBox(null);setQuery('');setShownMotifs(18);};
  const undo=()=>{if(!history.length)return;setFuture(f=>[d,...f]);setDrafts(a=>({...a,[id]:history.at(-1)}));setHistory(h=>h.slice(0,-1));};
  const redo=()=>{if(!future.length)return;setHistory(h=>[...h,d]);setDrafts(a=>({...a,[id]:future[0]}));setFuture(f=>f.slice(1));};
  const save=()=>{localStorage.setItem('gravuru-preview-'+id,JSON.stringify(d));notify('Entwurf in dieser lokalen Vorschau gespeichert.');};

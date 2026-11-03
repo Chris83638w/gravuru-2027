@@ -15,3 +15,11 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 ## Chris' correction, 03.11.2026 (latest)
 
 Center Fullscreen / Undo / Redo / Help / Layers over the canvas itself, not the full viewport. Back to product sits at the left edge of this same row, Save draft at its right edge. Remove the extra product title/details and two-checkmark draft status. Keep a slimmer coloured footer with In den Warenkorb. Canvas should remain nearly as large as the previous Master (only a minimal fit margin); scale dimensions and artwork together and reset to a deterministic 100% fit. Keep every existing motif category, Bestseller only as initial selection. Preserve original descriptive names and artwork, never generate Motif-1 labels. Retain option icon tiles, not plain radio placeholders. Product fixture choices remain illustrative, not authoritative production bindings.
+
+## Visual direction correction, 03.11.2026
+
+Chris considers the current presentation old-fashioned and asks for a more modern configurator. Improve typography, spacing, visual hierarchy and grouping while preserving the toolbar positions, large canvas, original motifs, categories, option icons and slim cart footer above. The Manufaktur homepage feedback was pasted into the wrong chat and is explicitly excluded from this work. Homepage concept images are not references or approvals for the configurator.
+
+## Topic-specific motifs, 03.11.2026
+
+The initially selected Bestseller list must match the product topic: remembrance motifs such as crosses for memorials, home-related motifs for door signs. Bind this explicitly in the product profile; do not infer from its title or material. Retain all individual categories and original names/artwork. Prototype picks are curated examples, not verified sales rankings. Do not fill missing topic assignments with unrelated global motifs.

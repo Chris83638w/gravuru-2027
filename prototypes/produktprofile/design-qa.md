@@ -1,5 +1,7 @@
 # Sichtprüfung 03.11.2026
 
+Neuester Stand: thematische Bestseller statt gleicher globaler Startauswahl. Gedenktafel beginnt mit Kreuz/Engel/Kerze, Türschild mit Haus/Strich-Haus/Herzlinie. 18/18 Tests und Build grün. Im Browser Produktwechsel, 18→36 Motive sowie weiterhin freie Einzelkategorien geprüft; [Bilder und Grenzen](../../docs/handoffs/2026-11-03-produktprofile-vorschau.md). Die modernere Bildstudie ist noch nicht vollständig im Prototyp umgesetzt.
+
 Aktueller Korrekturstand: siehe Bericht, Abschnitt „Korrektur nach Chris’ Rückmeldung“. 14/14 Tests und Desktop/390×664/375×548 geprüft. Werkzeuggruppe mittig über Canvas, 751 px statt 562 px, Footer 58 px. Alle 47 Kategorien und 721 Originalmotive, Bestseller initial. Die nachstehenden Messwerte dokumentieren den überholten Erststand.
 
 Quelle: Chris' Screenshots und seine letzten Änderungen, ergänzt durch lesende Ansichten des bestehenden Masters. [Vorher und Vorschlag gemeinsam](../../docs/handoffs/2026-11-03-produktprofile-vorschau/vergleich.html). Die Studie soll die Quelle bewusst weiterentwickeln; kein Anspruch auf pixelidentische Kopie einer alten Ansicht.

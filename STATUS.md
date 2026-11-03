@@ -1,3 +1,7 @@
+## 2026-11-03 · Codex/Astra · PR #161: Bestseller je Produktthema
+
+Lokale Vorschau: Gedenktafel mit Kreuzen/Trauermotiven, Türschild/Funkklingel mit Haus/Leuchtturm/Anker/Baum. Explizite Themenzuordnung im Produktprofil; alle 721 Originalmotive und 47 Kategorien weiterhin erreichbar. 18/18 gezielte Tests und Build grün; Produktwechsel, Mehr-anzeigen und freie Kategorien im Browser bestätigt. Kein Merge/Live-Zugriff. Kuratierte Beispiele, keine Verkaufsrangliste. Modernere Bildstudie noch nicht vollständig umgesetzt; Manufaktur-Startseite ausdrücklich anderer Chat. [Bericht und Bilder](docs/handoffs/2026-11-03-produktprofile-vorschau.md).
+
 ## 2026-11-03 · Codex/Astra · PR #161: Vorschau nach Rückmeldung korrigiert
 
 Werkzeugzeile über dem Canvas zentriert, zusätzliche Produktüberschrift entfernt, Platte wieder nahezu flächenfüllend, Zoom inklusive Bemaßung, schmalerer Warenkorb-Footer. Vollständige Bibliothek mit 721 Originalmotiven und 47 Kategorien; Bestseller nur vorausgewählt, originale Namen/Startauswahl. Optionskacheln wieder mit Icons. 14/14 gezielte Vorschau-/Profil-/Hostingtests und Build grün; Desktop/390×664/375×548 geprüft. Nur lokale Studie, kein Merge/Live-Zugriff, produktive Optionsbindungen weiterhin im Master. [Bilder, Messwerte und Grenzen](docs/handoffs/2026-11-03-produktprofile-vorschau.md). Nächster Schritt: Chris bewertet die korrigierte Vorschau.

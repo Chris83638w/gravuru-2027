@@ -2,6 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {BESTSELLERS,categoriesFor,visibleMotifs,canvasLayout} from '../src/preview-model.mjs';
+import {profiles} from '../src/profiles.mjs';
 
 // Original local library, prepared with scripts/prepare-local-assets.mjs.
 const motifs=JSON.parse(fs.readFileSync(new URL('../public/assets/motifs.json',import.meta.url),'utf8'));
@@ -18,12 +19,50 @@ test('Bestseller is only the default; all 47 source categories stay individually
  }
  assert.equal(visibleMotifs(motifs,'').length,721);
 });
-test('Master starter order and descriptive motif labels are preserved',()=>{
- const selected=visibleMotifs(motifs);
- assert.equal(selected.length,18);
+test('Door-sign leading originals and descriptive motif labels are preserved',()=>{
+ const selected=visibleMotifs(motifs,BESTSELLERS,'',profiles.sign.motifRecommendations);
+ assert.ok(selected.length>18,'More topic-appropriate motifs remain available below the first page');
  assert.deepEqual(selected.slice(0,3).map(m=>m.name),['Haus','Strich Haus','Herzlinie schlicht']);
  assert.ok(!motifs.some(m=>/^Motiv[ -]*\d/i.test(m.name)));
  assert.ok(visibleMotifs(motifs,'Leuchttürme').every(m=>m.name.startsWith('Leuchtturm')));
+});
+test('Memorials start with crosses and remembrance motifs, door signs with home motifs',()=>{
+ const memorial=visibleMotifs(motifs,BESTSELLERS,'',profiles.memorial.motifRecommendations);
+ const home=visibleMotifs(motifs,BESTSELLERS,'',profiles.sign.motifRecommendations);
+ assert.equal(memorial[0].name,'Kreuz 1');
+ assert.deepEqual(new Set(memorial.slice(0,6).map(m=>m.category)),new Set(['Kreuze','Engel','Kerzen','Herzen','Blumen','Flügel']));
+ assert.ok(!memorial.some(m=>['Haus','Anker','Leuchttürme'].includes(m.category)));
+ assert.ok(home.some(m=>m.name==='Leuchtturm Heimathafen'));
+ assert.ok(home.some(m=>m.name==='Anker 1'));
+ assert.ok(!home.some(m=>['Kreuze','Engel','Kerzen'].includes(m.category)));
+ assert.ok(memorial.length>18);
+ assert.notDeepEqual(memorial.map(m=>m.key),home.map(m=>m.key));
+});
+test('Each local product explicitly binds a topic with valid original keys and categories',()=>{
+ for(const p of Object.values(profiles)){
+  const theme=p.motifRecommendations;
+  assert.ok(theme,p.label);
+  for(const key of theme.featured)assert.equal(motifs.filter(m=>m.key===key).length,1,key);
+  for(const category of theme.categories)assert.ok(motifs.some(m=>m.category===category),category);
+  const selected=visibleMotifs(motifs,BESTSELLERS,'',theme);
+  assert.equal(new Set(selected.map(m=>m.key)).size,selected.length);
+  assert.ok(selected.every(m=>motifs.includes(m)),'Return unchanged original objects');
+ }
+});
+test('Product topic restricts only Bestseller, every normal category remains accessible',()=>{
+ for(const p of Object.values(profiles)){
+  for(const category of categoriesFor(motifs).slice(1)){
+   assert.deepEqual(visibleMotifs(motifs,category.id,'',p.motifRecommendations),visibleMotifs(motifs,category.id));
+  }
+ }
+ const crosses=visibleMotifs(motifs,BESTSELLERS,'Kreuz',profiles.memorial.motifRecommendations);
+ assert.ok(crosses.some(m=>m.name==='Kreuz 1'));
+ assert.ok(crosses.every(m=>m.category==='Kreuze'));
+});
+test('Missing theme or unavailable topic never fills Bestseller with unrelated motifs',()=>{
+ assert.deepEqual(visibleMotifs(motifs),[]);
+ assert.deepEqual(visibleMotifs(motifs,BESTSELLERS,'',{featured:['not-present'],categories:['not-present']}),[]);
+ assert.deepEqual(visibleMotifs(motifs,'','',undefined),motifs);
 });
 test('Semantic search and category selection work together without losing the other categories',()=>{
  const result=visibleMotifs(motifs,'Anker','Meer');

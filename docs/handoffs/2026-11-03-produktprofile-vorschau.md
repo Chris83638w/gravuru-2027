@@ -2,7 +2,15 @@
 
 Stand: 03.11.2026, Codex/Astra. Basis Code `3eb2ea43c5383571094b8da1017ade9f4884eb72`; eigener Branch `dev/konfi-produktprofile-vorschau-20261103-astra`. Auftrag von Chris: visuelle Vorschau der besprochenen Oberfläche, einfache Anbindung verschiedener Produkte, automatische Foto-Sichtbarkeit und gründlicher Ladezeit-Check. **Keine Änderungen an App-Laufzeit, Katalog, Shopify oder Live-Systemen.**
 
-## Ergänzung: Bestseller passend zum Produktthema (03.11.2026)
+## Ergänzung: Andenken für Menschen und Tiere getrennt (03.11.2026)
+
+Quelle: Chris' anschließende Chatentscheidung „Andenken auch in Tiere und Menschen unterscheiden“. Zwei ausdrücklich gebundene Empfehlungen in der lokalen Studie: **Andenken Menschen** mit Kreuz, Engel, Kerze, Herz, Rose und Flügeln (74 passende Originalmotive); **Andenken Tiere** mit Pfotenherz, Pfote in Hand, Regenbogen Tiere, Pusteblume mit Pfoten, Pfotenspur und Flügeln (44 Originalmotive). Die Motive sind kuratierte Vorschläge, keine bestätigte Verkaufsrangliste. Die Trennung betrifft nur „Bestseller“: alle 721 Motive / 47 Kategorien bleiben in beiden Profilen frei wählbar.
+
+Fünf lokale Profilbeispiele statt vier. Das D204-Hundefoto gehört nur zur Tier-Ansicht; die Menschen-Ansicht verwendet eine Textgestaltung ohne erfundenes Portrait. Foto-Fähigkeit, Zubehörgruppen und unabhängige Entwürfe bleiben erhalten. Keine Änderung an produktiven Kennungen oder Katalogdaten.
+
+20/20 gezielte Vorschau-/Profil-/Hostingtests und Build grün. Browser bestätigt beide Themen; Profilumschaltung auf 375×548 sichtbar und ohne seitlichen Überlauf geprüft. Kein realer iPhone-/Warenkorb-/Linux-Volltest. [Menschen](2026-11-03-produktprofile-vorschau/themen-andenken-menschen.jpg), [Tiere](2026-11-03-produktprofile-vorschau/themen-andenken-tiere.jpg), [375×548](2026-11-03-produktprofile-vorschau/themen-andenken-tiere-375.jpg). Entwurfs-PR #161, nichts gemergt oder live gestellt. Nächster Schritt: Chris prüft die zwei Themenvorauswahlen; produktive Katalogbindung bleibt ein eigener Schritt.
+
+## Ergänzung: Bestseller passend zum Produktthema (03.11.2026, erster Stand)
 
 Chris: „Bestseller-Motive müssen sich ändern. Immer themenorientiert. Andenken, natürlich Kreuze usw., Türschilder andere.“ In der lokalen Vorschau bindet jedes Produkt jetzt ausdrücklich seine Motivempfehlungen. Keine Ableitung aus Material oder Titel und kein globaler Ersatz bei fehlender Zuordnung.
 
@@ -31,16 +39,16 @@ Aktuelle Bilder: [Desktop mit Optionen](2026-11-03-produktprofile-vorschau/korre
 
 Den vorhandenen Master weiterverwenden. Jedes Produkt bindet ein versioniertes Optionsprofil und ausdrücklich erlaubte Fähigkeiten. Die Oberfläche entsteht daraus; Produktnamen, Materialbezeichnungen und vermutete Eigenschaften dürfen keine Schalter ersetzen. Neue Produkte mit vorhandenen Optionen sollen nur Katalog-/Excel-Zuordnungen benötigen. Ein wirklich neuer mechanischer Aufbau braucht weiterhin ein eigenes geprüftes Modul.
 
-Die lokale Vorschau läuft bei Chris auf **http://127.0.0.1:8171/**. Oben lassen sich vier Beispiele umschalten. Quellcode: [prototypes/produktprofile](../../prototypes/produktprofile/README.md). Es ist eine isolierte Bedien-/Layoutstudie, kein zweiter produktiver Konfigurator.
+Die lokale Vorschau läuft bei Chris auf **http://127.0.0.1:8171/**. Oben lassen sich fünf Beispiele umschalten. Quellcode: [prototypes/produktprofile](../../prototypes/produktprofile/README.md). Es ist eine isolierte Bedien-/Layoutstudie, kein zweiter produktiver Konfigurator.
 
 | Beispiel | Eigener Optionsbereich | Foto | Logo |
 |---|---|---|---|
 | Türschild | Formatanzeige, Befestigung | ausgeblendet | sichtbar |
-| Gedenktafel mit Fotogestaltung | Befestigung einschließlich Silikon; Ständer; Spray jeweils getrennt | sichtbar | ausgeblendet |
+| Andenken Menschen / Andenken Tiere (zwei Profile) | Befestigung einschließlich Silikon; Ständer; Spray jeweils getrennt | sichtbar | ausgeblendet |
 | Funkklingel | Klingelposition, Acrylfarbe, Rahmen | ausgeblendet | ausgeblendet |
 | Festes Produkt ohne Optionen | kompletter Optionsbereich entfällt | ausgeblendet | ausgeblendet |
 
-Die Tabelle beschreibt **die vier lokalen Muster**, keine neue Freigabe für alle Produkte dieser Art. Insbesondere darf aus „Schiefer“ oder „Gedenktafel“ keine pauschale Fotoerlaubnis folgen. Die tatsächliche Produkt-/Verfahrenszuordnung bleibt maßgeblich, auch bei Schiefer Premium ohne Foto.
+Die Tabelle beschreibt **die fünf lokalen Muster**, keine neue Freigabe für alle Produkte dieser Art. Insbesondere darf aus „Schiefer“ oder „Gedenktafel“ keine pauschale Fotoerlaubnis folgen. Die tatsächliche Produkt-/Verfahrenszuordnung bleibt maßgeblich, auch bei Schiefer Premium ohne Foto.
 
 ## Verbindliche Grundlagen aus Chris' Chat
 

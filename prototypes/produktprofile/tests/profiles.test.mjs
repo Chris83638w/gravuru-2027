@@ -24,3 +24,10 @@ test('Doorbell does not inherit memorial accessories or photo tools',()=>{
  assert.deepEqual(profiles.doorbell.groups.map(g=>g.id),['position','color','frame']);
  assert.ok(!tabsFor(profiles.doorbell).some(([id])=>id==='photo'));
 });
+test('Animal example photography belongs only to animal remembrance; capabilities stay explicit',()=>{
+ assert.equal(profiles.memorial.examplePhoto,undefined);
+ assert.equal(profiles.memorialPet.examplePhoto,'/assets/d204-photo.webp');
+ assert.deepEqual(tabsFor(profiles.memorialPet),tabsFor(profiles.memorial));
+ assert.deepEqual(defaultChoices(profiles.memorialPet),defaultChoices(profiles.memorial));
+ assert.notEqual(profiles.memorialPet.motifRecommendations,profiles.memorial.motifRecommendations);
+});

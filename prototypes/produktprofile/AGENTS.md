@@ -2,7 +2,7 @@
 
 ## Chris' review scope, 03.11.2026
 
-One existing Master, product-specific capabilities and option groups. No production deployment from this study. Neutral UI, no green/beige theme. Remove dark header; product back left, shared tools centered, save right. Image-only designs with magnifier in image. Motif search before category (Bestseller initially), three columns and inline More. No photo tab when disallowed; no options tab when no choices. Memorial mounting includes silicone; stand and spray are independent. All product rules, prices and geometry must come from authoritative sources before production integration. The four fixtures are visual examples, not product approvals.
+One existing Master, product-specific capabilities and option groups. No production deployment from this study. Neutral UI, no green/beige theme. Remove dark header; product back left, shared tools centered, save right. Image-only designs with magnifier in image. Motif search before category (Bestseller initially), three columns and inline More. No photo tab when disallowed; no options tab when no choices. Memorial mounting includes silicone; stand and spray are independent. All product rules, prices and geometry must come from authoritative sources before production integration. The five fixtures are visual examples, not product approvals.
 
 Run the local server yourself and open the preview in the browser available to this environment. Do not give the user server-start instructions when you can run it.
 
@@ -23,3 +23,5 @@ Chris considers the current presentation old-fashioned and asks for a more moder
 ## Topic-specific motifs, 03.11.2026
 
 The initially selected Bestseller list must match the product topic: remembrance motifs such as crosses for memorials, home-related motifs for door signs. Bind this explicitly in the product profile; do not infer from its title or material. Retain all individual categories and original names/artwork. Prototype picks are curated examples, not verified sales rankings. Do not fill missing topic assignments with unrelated global motifs.
+
+Chris additionally requires separate remembrance recommendations for humans and animals. Both use explicit product-profile assignments. Shared motifs remain allowed; neither theme restricts the full category library. Keep the existing dog example with animal remembrance, not the human fixture. Do not invent a human portrait.

@@ -1,5 +1,7 @@
 # Sichtprüfung 03.11.2026
 
+Nachtrag Menschen/Tiere: nun fünf lokale Profile mit getrennten Andenken-Empfehlungen. Beide Startlisten und die Zuordnung des D204-Hundes zur Tier-Ansicht im Browser geprüft; fünf Profilknöpfe passen auf 375×548 in zwei Zeilen. 20/20 gezielte Tests und Build grün. Screenshots im verlinkten Bericht. Keine produktive Katalogbindung oder Live-Änderung.
+
 Neuester Stand: thematische Bestseller statt gleicher globaler Startauswahl. Gedenktafel beginnt mit Kreuz/Engel/Kerze, Türschild mit Haus/Strich-Haus/Herzlinie. 18/18 Tests und Build grün. Im Browser Produktwechsel, 18→36 Motive sowie weiterhin freie Einzelkategorien geprüft; [Bilder und Grenzen](../../docs/handoffs/2026-11-03-produktprofile-vorschau.md). Die modernere Bildstudie ist noch nicht vollständig im Prototyp umgesetzt.
 
 Aktueller Korrekturstand: siehe Bericht, Abschnitt „Korrektur nach Chris’ Rückmeldung“. 14/14 Tests und Desktop/390×664/375×548 geprüft. Werkzeuggruppe mittig über Canvas, 751 px statt 562 px, Footer 58 px. Alle 47 Kategorien und 721 Originalmotive, Bestseller initial. Die nachstehenden Messwerte dokumentieren den überholten Erststand.

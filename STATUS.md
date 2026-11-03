@@ -1,3 +1,7 @@
+## 2026-11-03 · Codex/Astra · PR #161: Andenken Menschen / Tiere
+
+Chris' zusätzliche Trennung lokal umgesetzt: eigene Bestseller für Menschen (Kreuze/Engel/Kerzen) und Tiere (Pfoten/Pfotenherzen/Regenbogen). Alle Motive/Kategorien weiterhin frei erreichbar. Fünf Profilbeispiele; D204-Hund nur in der Tier-Ansicht. 20/20 gezielte Tests und Build grün, Browserbilder Desktop und 375×548 im [Bericht](docs/handoffs/2026-11-03-produktprofile-vorschau.md). Nur Entwurfs-PR und lokale Vorschau, nichts live. Nächster Schritt: Chris prüft die thematischen Startlisten.
+
 ## 2026-11-03 · Codex/Astra · PR #161: Bestseller je Produktthema
 
 Lokale Vorschau: Gedenktafel mit Kreuzen/Trauermotiven, Türschild/Funkklingel mit Haus/Leuchtturm/Anker/Baum. Explizite Themenzuordnung im Produktprofil; alle 721 Originalmotive und 47 Kategorien weiterhin erreichbar. 18/18 gezielte Tests und Build grün; Produktwechsel, Mehr-anzeigen und freie Kategorien im Browser bestätigt. Kein Merge/Live-Zugriff. Kuratierte Beispiele, keine Verkaufsrangliste. Modernere Bildstudie noch nicht vollständig umgesetzt; Manufaktur-Startseite ausdrücklich anderer Chat. [Bericht und Bilder](docs/handoffs/2026-11-03-produktprofile-vorschau.md).

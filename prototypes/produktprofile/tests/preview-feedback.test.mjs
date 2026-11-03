@@ -49,6 +49,19 @@ test('Each local product explicitly binds a topic with valid original keys and c
   assert.ok(selected.every(m=>motifs.includes(m)),'Return unchanged original objects');
  }
 });
+test('Human and animal remembrance have distinct suggestions without restricting free categories',()=>{
+ const people=visibleMotifs(motifs,BESTSELLERS,'',profiles.memorial.motifRecommendations);
+ const pets=visibleMotifs(motifs,BESTSELLERS,'',profiles.memorialPet.motifRecommendations);
+ assert.equal(people[0].name,'Kreuz 1');
+ assert.deepEqual(pets.slice(0,3).map(m=>m.name),['Herz mit Pfote','Pfote in Hand','Regenbogen Tiere']);
+ assert.ok(!people.some(m=>m.category==='Pfoten'));
+ assert.ok(!pets.some(m=>['Kreuze','Engel','Kerzen'].includes(m.category)));
+ assert.ok(pets.length>18);
+ assert.equal(new Set(pets.map(m=>m.key)).size,pets.length);
+ assert.ok(visibleMotifs(motifs,'Kreuze','',profiles.memorialPet.motifRecommendations).length>0);
+ assert.ok(visibleMotifs(motifs,'Pfoten','',profiles.memorial.motifRecommendations).length>0);
+ assert.notDeepEqual(people.map(m=>m.key),pets.map(m=>m.key));
+});
 test('Product topic restricts only Bestseller, every normal category remains accessible',()=>{
  for(const p of Object.values(profiles)){
   for(const category of categoriesFor(motifs).slice(1)){

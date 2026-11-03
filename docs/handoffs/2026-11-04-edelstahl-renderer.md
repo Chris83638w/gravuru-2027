@@ -1,6 +1,6 @@
 # Übergabe: Edelstahl-Schilder und Vorlagen-Renderer (Stand 04.11.2026, 00:20)
 
-Für den nächsten Chat. Zuerst das Entscheidungsregister lesen (`ENTSCHEIDUNGEN.md` im Repo-Stamm dieses Branches; gleicher Inhalt wie das Projekt-Dokument `claude/Entscheidungsregister-Chris.md`); neu sind dort 3.40, 4.49–4.51 und 7.18.
+Für den nächsten Chat. **Nur Edelstahl-Schilder.** Zuerst das Entscheidungsregister lesen (`ENTSCHEIDUNGEN.md` im Repo-Stamm dieses Branches; gleicher Inhalt wie das Projekt-Dokument `claude/Entscheidungsregister-Chris.md`); neu sind dort 3.40, 4.49–4.51 und 7.18.
 
 Arbeitsregeln von Chris:
 - Immer Deutsch, Du-Form, „Chris“ ansprechen.
@@ -70,15 +70,19 @@ Ablage: `zeichnungen/edelstahl-schilder-2027/grundplatten/`.
 Merge-Reihenfolge an Astra (#139, Kommentar 6616693381): Code #159 → #164 → #163 → #158; Katalog #163 → #164.
 
 ## Offen / nächste Schritte
-1. Chris fragen: Sind die „2 Vorlagen für den Konfi“ die Grundplatten (dann mit Punkt 4 erledigt) oder zwei bestimmte Designs?
-2. Offene Frage aus der Preisrunde: Soll der Shop teurer sein als Amazon (8 × 2, 9 × 3)?
-3. Astra 1:
+**Umfang: nur Edelstahl-Schilder (Familie `steel-door-signs`).** Schiefer, Gedenktafeln und Acryl erst nach Chris' Auftrag. Chris (04.11., 00:40): „er soll doch nur edelstahl machen“.
+
+1. Alle Edelstahl-Designs mit dem Renderer prüfen (`--alle --png --bogen`). Jedes auffällige Design („prüfen“ / „passt nicht“) einzeln ansehen und Chris mit Screenshot zeigen; Korrekturen per GitHub an die zuständige KI.
+2. Offene Frage aus der Preisrunde an Chris: Soll der Shop teurer sein als Amazon (8 × 2, 9 × 3)?
+3. Astra 1 (nicht dieser Chat):
    - PRs mergen;
    - pricing v2 (`extraLogoCents 1299`) auf die Entwürfe;
    - Edelstahl-Entwurfspreise abgleichen;
    - betroffene Live-Produkte nur auflisten.
-4. Renderer für die anderen Familien einsetzen (Acryl 3 mm = identisch Edelstahl, Schiefer, Gedenktafeln) und Kontaktbögen für Abnahmen nur noch aus dem Renderer.
-5. In der Prüfung zeigt `assessDesignTarget` weiter „Text im Bereich eines Bohrlochs“ für das unveränderte Katalogdesign, obwohl der Konfi jetzt ausweicht. Das ist eine Katalog-Prüfung, kein Fehler. Gegebenenfalls mit Chris klären, ob der Hinweis bleiben soll.
+4. Katalog-Befund an Chris: Oval 21 × 7 wiegt laut Katalog 182 g, nach Fläche wären es ca. 137 g. Nicht ändern ohne Chris.
+5. In der Prüfung zeigt `assessDesignTarget` weiter „Text im Bereich eines Bohrlochs“ für das unveränderte Katalogdesign, obwohl der Konfi jetzt ausweicht. Das ist eine Katalog-Prüfung, kein Fehler. Gegebenenfalls mit Chris klären.
+
+Erledigt (nicht mehr fragen): Die „2 Vorlagen“ vom 03.11. sind die 80 Grundplatten (Katalog PR #164).
 
 ## Arbeitsorte (Cloud-Sitzung, nur falls noch vorhanden)
 Scratchpad `…/scratchpad/`:

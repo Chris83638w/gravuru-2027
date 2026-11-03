@@ -1,0 +1,2328 @@
+[
+  {
+    "key": "edelstahl",
+    "device": "desktop",
+    "id": "16190784438652",
+    "url": "https://gravuru-design.myshopify.com/apps/konfigurator/start?product=16190784438652&variant=58104606556540",
+    "errors": [],
+    "failedResponses": [],
+    "formats": 80,
+    "surfaceSha256": "50e74d27e1f6f49408396a856082bd92d3d7e5831486b50c7188e7f6a33ee4fb",
+    "loadedBundle": "/_acryl-bundle/editor-c419119a6ef437c6.mjs",
+    "readyMs": 4528,
+    "start": {
+      "options": {
+        "size": "GR-ES-AB-120X80-T15",
+        "mounting": "K00"
+      },
+      "designId": "katalog-LEER-AB-120X80-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 120,
+        "height": 80,
+        "shape": "rect"
+      },
+      "price": "19,99 €",
+      "texts": [
+        "Dein Text"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "GR-ES-AB-80X53P3-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-90X60-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-120X80-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-150X100-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-180X120-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-210X140-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-240X160-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-300X200-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-420X280-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-450X300-T15",
+          "disabled": false
+        }
+      ],
+      "colors": []
+    },
+    "startVariant": "58104606556540",
+    "text": {
+      "options": {
+        "size": "GR-ES-AB-120X80-T15",
+        "mounting": "K00"
+      },
+      "designId": "katalog-LEER-AB-120X80-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 120,
+        "height": 80,
+        "shape": "rect"
+      },
+      "price": "19,99 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "GR-ES-AB-80X53P3-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-90X60-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-120X80-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-150X100-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-180X120-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-210X140-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-240X160-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-300X200-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-420X280-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-450X300-T15",
+          "disabled": false
+        }
+      ],
+      "colors": []
+    },
+    "changedForm": "RT2",
+    "afterForm": {
+      "options": {
+        "size": "GR-ES-RT2-90X60-T15",
+        "mounting": "K00"
+      },
+      "designId": "katalog-LEER-RT2-90X60-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 90,
+        "height": 60,
+        "shape": "contour"
+      },
+      "price": "14,99 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "GR-ES-RT2-90X60-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-120X80-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-150X100-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-180X120-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-210X140-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-240X160-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-300X200-T15",
+          "disabled": false
+        }
+      ],
+      "colors": []
+    },
+    "afterSize": {
+      "options": {
+        "size": "GR-ES-RT2-300X200-T15",
+        "mounting": "K00"
+      },
+      "designId": "katalog-LEER-RT2-300X200-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 300,
+        "height": 200,
+        "shape": "contour"
+      },
+      "price": "79,99 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "GR-ES-RT2-90X60-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-120X80-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-150X100-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-180X120-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-210X140-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-240X160-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-300X200-T15",
+          "disabled": false
+        }
+      ],
+      "colors": []
+    },
+    "afterMounting": {
+      "options": {
+        "size": "GR-ES-RT2-300X200-T15",
+        "mounting": "KGL"
+      },
+      "designId": "katalog-LEER-RT2-300X200-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 300,
+        "height": 200,
+        "shape": "contour"
+      },
+      "price": "82,98 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "GR-ES-RT2-90X60-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-120X80-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-150X100-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-180X120-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-210X140-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-240X160-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-300X200-T15",
+          "disabled": false
+        }
+      ],
+      "colors": []
+    },
+    "changedVariant": "58104614257020",
+    "finish": {
+      "options": {
+        "size": "GR-ES-RT2-300X200-T15",
+        "mounting": "KGL"
+      },
+      "designId": "katalog-LEER-RT2-300X200-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 300,
+        "height": 200,
+        "shape": "contour"
+      },
+      "price": "82,98 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "GR-ES-RT2-90X60-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-120X80-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-150X100-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-180X120-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-210X140-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-240X160-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-300X200-T15",
+          "disabled": false
+        }
+      ],
+      "colors": []
+    },
+    "passed": true
+  },
+  {
+    "key": "edelstahl",
+    "device": "mobile",
+    "id": "16190784438652",
+    "url": "https://gravuru-design.myshopify.com/apps/konfigurator/start?product=16190784438652&variant=58104606556540",
+    "errors": [],
+    "failedResponses": [],
+    "formats": 80,
+    "surfaceSha256": "50e74d27e1f6f49408396a856082bd92d3d7e5831486b50c7188e7f6a33ee4fb",
+    "loadedBundle": "/_acryl-bundle/editor-c419119a6ef437c6.mjs",
+    "readyMs": 6558,
+    "start": {
+      "options": {
+        "size": "GR-ES-AB-120X80-T15",
+        "mounting": "K00"
+      },
+      "designId": "katalog-LEER-AB-120X80-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 120,
+        "height": 80,
+        "shape": "rect"
+      },
+      "price": "19,99 €",
+      "texts": [
+        "Dein Text"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "GR-ES-AB-80X53P3-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-90X60-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-120X80-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-150X100-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-180X120-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-210X140-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-240X160-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-300X200-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-420X280-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-450X300-T15",
+          "disabled": false
+        }
+      ],
+      "colors": []
+    },
+    "startVariant": "58104606556540",
+    "text": {
+      "options": {
+        "size": "GR-ES-AB-120X80-T15",
+        "mounting": "K00"
+      },
+      "designId": "katalog-LEER-AB-120X80-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 120,
+        "height": 80,
+        "shape": "rect"
+      },
+      "price": "19,99 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "GR-ES-AB-80X53P3-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-90X60-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-120X80-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-150X100-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-180X120-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-210X140-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-240X160-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-300X200-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-420X280-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-AB-450X300-T15",
+          "disabled": false
+        }
+      ],
+      "colors": []
+    },
+    "changedForm": "RT2",
+    "afterForm": {
+      "options": {
+        "size": "GR-ES-RT2-90X60-T15",
+        "mounting": "K00"
+      },
+      "designId": "katalog-LEER-RT2-90X60-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 90,
+        "height": 60,
+        "shape": "contour"
+      },
+      "price": "14,99 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "GR-ES-RT2-90X60-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-120X80-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-150X100-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-180X120-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-210X140-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-240X160-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-300X200-T15",
+          "disabled": false
+        }
+      ],
+      "colors": []
+    },
+    "afterSize": {
+      "options": {
+        "size": "GR-ES-RT2-300X200-T15",
+        "mounting": "K00"
+      },
+      "designId": "katalog-LEER-RT2-300X200-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 300,
+        "height": 200,
+        "shape": "contour"
+      },
+      "price": "79,99 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "GR-ES-RT2-90X60-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-120X80-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-150X100-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-180X120-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-210X140-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-240X160-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-300X200-T15",
+          "disabled": false
+        }
+      ],
+      "colors": []
+    },
+    "afterMounting": {
+      "options": {
+        "size": "GR-ES-RT2-300X200-T15",
+        "mounting": "KGL"
+      },
+      "designId": "katalog-LEER-RT2-300X200-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 300,
+        "height": 200,
+        "shape": "contour"
+      },
+      "price": "82,98 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "GR-ES-RT2-90X60-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-120X80-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-150X100-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-180X120-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-210X140-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-240X160-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-300X200-T15",
+          "disabled": false
+        }
+      ],
+      "colors": []
+    },
+    "changedVariant": "58104614257020",
+    "finish": {
+      "options": {
+        "size": "GR-ES-RT2-300X200-T15",
+        "mounting": "KGL"
+      },
+      "designId": "katalog-LEER-RT2-300X200-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 300,
+        "height": 200,
+        "shape": "contour"
+      },
+      "price": "82,98 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "GR-ES-RT2-90X60-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-120X80-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-150X100-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-180X120-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-210X140-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-240X160-T15",
+          "disabled": false
+        },
+        {
+          "value": "GR-ES-RT2-300X200-T15",
+          "disabled": false
+        }
+      ],
+      "colors": []
+    },
+    "passed": true
+  },
+  {
+    "key": "acryl",
+    "device": "desktop",
+    "id": "16190784602492",
+    "url": "https://gravuru-design.myshopify.com/apps/konfigurator/start?product=16190784602492&variant=58104626479484",
+    "errors": [],
+    "failedResponses": [],
+    "formats": 80,
+    "loadedBundle": "/_acryl-bundle/editor-c419119a6ef437c6.mjs",
+    "readyMs": 6890,
+    "start": {
+      "options": {
+        "size": "TS-Acryl-AB-120X80-T30-SW",
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "designId": "katalog-LEER-AB-120X80-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 120,
+        "height": 80,
+        "shape": "rect"
+      },
+      "price": "14,99 €",
+      "texts": [
+        "Dein Text"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "TS-Acryl-AB-80X53P3-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-90X60-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-120X80-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-150X100-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-180X120-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-210X140-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-240X160-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-300X200-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-420X280-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-450X300-T30-SW",
+          "disabled": false
+        }
+      ],
+      "colors": [
+        {
+          "value": "schwarz",
+          "disabled": false
+        },
+        {
+          "value": "anthrazit",
+          "disabled": false
+        }
+      ]
+    },
+    "startVariant": "58104626479484",
+    "text": {
+      "options": {
+        "size": "TS-Acryl-AB-120X80-T30-SW",
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "designId": "katalog-LEER-AB-120X80-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 120,
+        "height": 80,
+        "shape": "rect"
+      },
+      "price": "14,99 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "TS-Acryl-AB-80X53P3-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-90X60-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-120X80-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-150X100-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-180X120-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-210X140-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-240X160-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-300X200-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-420X280-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-450X300-T30-SW",
+          "disabled": false
+        }
+      ],
+      "colors": [
+        {
+          "value": "schwarz",
+          "disabled": false
+        },
+        {
+          "value": "anthrazit",
+          "disabled": false
+        }
+      ]
+    },
+    "changedForm": "RT2",
+    "afterForm": {
+      "options": {
+        "size": "TS-Acryl-RT2-90X60-T30-SW",
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "designId": "katalog-LEER-RT2-90X60-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 90,
+        "height": 60,
+        "shape": "contour"
+      },
+      "price": "11,99 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "TS-Acryl-RT2-90X60-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-120X80-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-150X100-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-180X120-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-210X140-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-240X160-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-300X200-T30-SW",
+          "disabled": false
+        }
+      ],
+      "colors": [
+        {
+          "value": "schwarz",
+          "disabled": false
+        },
+        {
+          "value": "anthrazit",
+          "disabled": false
+        }
+      ]
+    },
+    "afterSize": {
+      "options": {
+        "size": "TS-Acryl-RT2-300X200-T30-SW",
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "designId": "katalog-LEER-RT2-300X200-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 300,
+        "height": 200,
+        "shape": "contour"
+      },
+      "price": "44,99 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "TS-Acryl-RT2-90X60-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-120X80-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-150X100-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-180X120-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-210X140-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-240X160-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-300X200-T30-SW",
+          "disabled": false
+        }
+      ],
+      "colors": [
+        {
+          "value": "schwarz",
+          "disabled": false
+        },
+        {
+          "value": "anthrazit",
+          "disabled": false
+        }
+      ]
+    },
+    "afterMounting": {
+      "options": {
+        "size": "TS-Acryl-RT2-300X200-T30-SW",
+        "color": "schwarz",
+        "mounting": "KGL"
+      },
+      "designId": "katalog-LEER-RT2-300X200-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 300,
+        "height": 200,
+        "shape": "contour"
+      },
+      "price": "47,98 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "TS-Acryl-RT2-90X60-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-120X80-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-150X100-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-180X120-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-210X140-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-240X160-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-300X200-T30-SW",
+          "disabled": false
+        }
+      ],
+      "colors": [
+        {
+          "value": "schwarz",
+          "disabled": false
+        },
+        {
+          "value": "anthrazit",
+          "disabled": false
+        }
+      ]
+    },
+    "afterColor": {
+      "options": {
+        "size": "TS-Acryl-RT2-300X200-T30-SW",
+        "color": "anthrazit",
+        "mounting": "KGL"
+      },
+      "designId": "katalog-LEER-RT2-300X200-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 300,
+        "height": 200,
+        "shape": "contour"
+      },
+      "price": "47,98 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "TS-Acryl-RT2-90X60-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-120X80-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-150X100-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-180X120-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-210X140-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-240X160-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-300X200-T30-SW",
+          "disabled": false
+        }
+      ],
+      "colors": [
+        {
+          "value": "schwarz",
+          "disabled": false
+        },
+        {
+          "value": "anthrazit",
+          "disabled": false
+        }
+      ]
+    },
+    "changedVariant": "58104642011516",
+    "finish": {
+      "options": {
+        "size": "TS-Acryl-RT2-300X200-T30-SW",
+        "color": "anthrazit",
+        "mounting": "KGL"
+      },
+      "designId": "katalog-LEER-RT2-300X200-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 300,
+        "height": 200,
+        "shape": "contour"
+      },
+      "price": "47,98 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "TS-Acryl-RT2-90X60-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-120X80-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-150X100-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-180X120-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-210X140-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-240X160-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-300X200-T30-SW",
+          "disabled": false
+        }
+      ],
+      "colors": [
+        {
+          "value": "schwarz",
+          "disabled": false
+        },
+        {
+          "value": "anthrazit",
+          "disabled": false
+        }
+      ]
+    },
+    "passed": true
+  },
+  {
+    "key": "acryl",
+    "device": "mobile",
+    "id": "16190784602492",
+    "url": "https://gravuru-design.myshopify.com/apps/konfigurator/start?product=16190784602492&variant=58104626479484",
+    "errors": [],
+    "failedResponses": [],
+    "formats": 80,
+    "loadedBundle": "/_acryl-bundle/editor-c419119a6ef437c6.mjs",
+    "readyMs": 3141,
+    "start": {
+      "options": {
+        "size": "TS-Acryl-AB-120X80-T30-SW",
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "designId": "katalog-LEER-AB-120X80-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 120,
+        "height": 80,
+        "shape": "rect"
+      },
+      "price": "14,99 €",
+      "texts": [
+        "Dein Text"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "TS-Acryl-AB-80X53P3-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-90X60-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-120X80-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-150X100-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-180X120-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-210X140-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-240X160-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-300X200-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-420X280-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-450X300-T30-SW",
+          "disabled": false
+        }
+      ],
+      "colors": [
+        {
+          "value": "schwarz",
+          "disabled": false
+        },
+        {
+          "value": "anthrazit",
+          "disabled": false
+        }
+      ]
+    },
+    "startVariant": "58104626479484",
+    "text": {
+      "options": {
+        "size": "TS-Acryl-AB-120X80-T30-SW",
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "designId": "katalog-LEER-AB-120X80-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 120,
+        "height": 80,
+        "shape": "rect"
+      },
+      "price": "14,99 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "TS-Acryl-AB-80X53P3-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-90X60-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-120X80-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-150X100-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-180X120-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-210X140-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-240X160-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-300X200-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-420X280-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-AB-450X300-T30-SW",
+          "disabled": false
+        }
+      ],
+      "colors": [
+        {
+          "value": "schwarz",
+          "disabled": false
+        },
+        {
+          "value": "anthrazit",
+          "disabled": false
+        }
+      ]
+    },
+    "changedForm": "RT2",
+    "afterForm": {
+      "options": {
+        "size": "TS-Acryl-RT2-90X60-T30-SW",
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "designId": "katalog-LEER-RT2-90X60-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 90,
+        "height": 60,
+        "shape": "contour"
+      },
+      "price": "11,99 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "TS-Acryl-RT2-90X60-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-120X80-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-150X100-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-180X120-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-210X140-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-240X160-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-300X200-T30-SW",
+          "disabled": false
+        }
+      ],
+      "colors": [
+        {
+          "value": "schwarz",
+          "disabled": false
+        },
+        {
+          "value": "anthrazit",
+          "disabled": false
+        }
+      ]
+    },
+    "afterSize": {
+      "options": {
+        "size": "TS-Acryl-RT2-300X200-T30-SW",
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "designId": "katalog-LEER-RT2-300X200-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 300,
+        "height": 200,
+        "shape": "contour"
+      },
+      "price": "44,99 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "TS-Acryl-RT2-90X60-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-120X80-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-150X100-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-180X120-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-210X140-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-240X160-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-300X200-T30-SW",
+          "disabled": false
+        }
+      ],
+      "colors": [
+        {
+          "value": "schwarz",
+          "disabled": false
+        },
+        {
+          "value": "anthrazit",
+          "disabled": false
+        }
+      ]
+    },
+    "afterMounting": {
+      "options": {
+        "size": "TS-Acryl-RT2-300X200-T30-SW",
+        "color": "schwarz",
+        "mounting": "KGL"
+      },
+      "designId": "katalog-LEER-RT2-300X200-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 300,
+        "height": 200,
+        "shape": "contour"
+      },
+      "price": "47,98 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "TS-Acryl-RT2-90X60-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-120X80-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-150X100-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-180X120-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-210X140-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-240X160-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-300X200-T30-SW",
+          "disabled": false
+        }
+      ],
+      "colors": [
+        {
+          "value": "schwarz",
+          "disabled": false
+        },
+        {
+          "value": "anthrazit",
+          "disabled": false
+        }
+      ]
+    },
+    "afterColor": {
+      "options": {
+        "size": "TS-Acryl-RT2-300X200-T30-SW",
+        "color": "anthrazit",
+        "mounting": "KGL"
+      },
+      "designId": "katalog-LEER-RT2-300X200-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 300,
+        "height": 200,
+        "shape": "contour"
+      },
+      "price": "47,98 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "TS-Acryl-RT2-90X60-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-120X80-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-150X100-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-180X120-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-210X140-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-240X160-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-300X200-T30-SW",
+          "disabled": false
+        }
+      ],
+      "colors": [
+        {
+          "value": "schwarz",
+          "disabled": false
+        },
+        {
+          "value": "anthrazit",
+          "disabled": false
+        }
+      ]
+    },
+    "changedVariant": "58104642011516",
+    "finish": {
+      "options": {
+        "size": "TS-Acryl-RT2-300X200-T30-SW",
+        "color": "anthrazit",
+        "mounting": "KGL"
+      },
+      "designId": "katalog-LEER-RT2-300X200-D0",
+      "designs": 1,
+      "geometry": {
+        "width": 300,
+        "height": 200,
+        "shape": "contour"
+      },
+      "price": "47,98 €",
+      "texts": [
+        "Familie Koch"
+      ],
+      "forms": [
+        {
+          "value": "RE",
+          "disabled": false
+        },
+        {
+          "value": "AB",
+          "disabled": false
+        },
+        {
+          "value": "QU",
+          "disabled": false
+        },
+        {
+          "value": "OV",
+          "disabled": false
+        },
+        {
+          "value": "R",
+          "disabled": false
+        },
+        {
+          "value": "RT1",
+          "disabled": false
+        },
+        {
+          "value": "RT2",
+          "disabled": false
+        }
+      ],
+      "sizes": [
+        {
+          "value": "TS-Acryl-RT2-90X60-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-120X80-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-150X100-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-180X120-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-210X140-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-240X160-T30-SW",
+          "disabled": false
+        },
+        {
+          "value": "TS-Acryl-RT2-300X200-T30-SW",
+          "disabled": false
+        }
+      ],
+      "colors": [
+        {
+          "value": "schwarz",
+          "disabled": false
+        },
+        {
+          "value": "anthrazit",
+          "disabled": false
+        }
+      ]
+    },
+    "passed": true
+  }
+]

@@ -28,6 +28,7 @@ Codex/Astra 1, 03.11.2026. Dritter Schritt aus [Claudes Auftrag](https://github.
 - Freigaben und passende Größen über vorhandenes assignTargetSeries/approvedForFamily. Katalog kann einmal eingelesen und für alle Unterkategorien verwendet werden. Vergleich zum vollständigen Grabsteckerlauf: alle 91 Handles, Schnitte und Preise exakt gleich.
 - Varianten ohne verfügbares Design nicht exportieren; mindestens eine gültige Shopify-Option erhalten. Variantenbindung folgt derselben gefilterten Reihenfolge.
 - Windows-Aufruf mit pathToFileURL korrigiert; vorher blieb der direkte Skriptaufruf ohne Ergebnis. Keine neue Uploadstrecke.
+- Katalog-Metadatenbau für die additive Liniendatei: vorhandene PDF-/PNG-/Excel-Links bleiben erhalten; --metadata-only schreibt keine Konturansichten neu. 16 Familien validiert, KATALOG.md gegenüber Basis nur um die neue Linie erweitert.
 
 ## Wiederholung
 

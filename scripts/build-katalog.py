@@ -161,23 +161,25 @@ def main():
     sections = []
     for p, f in families:
         gaps = gaps_of(p)
-        if not any(str(p) + ':' in issue for issue in INVALID): contour_previews(f, out_dir)
+        if not a.metadata_only and not any(str(p) + ':' in issue for issue in INVALID): contour_previews(f, out_dir)
         md.append(f"| {MAT.get(f['material']['kind'], f['material']['kind'])} | [{f['name']}](#{f['id']}) | {len(f['sizes'])} | {', '.join(dict.fromkeys(g['name'] for g in f['groups']))} | {len(f['mountingRules'])} | {'hinterlegt' if all(s['baseCents'] is not None for s in f['sizes']) else 'offen'} | {'vollständig' if not gaps else str(len(gaps)) + ' offen'} |")
         pdf = out_dir / f"{f['id']}.pdf"; pdf_ok = False
         try:
-            if a.metadata_only: raise RuntimeError('Metadatenlauf: bestehende PDF bleibt unverändert')
-            subprocess.run([sys.executable, str(ROOT / 'scripts/plate-catalog-pdf.py'), str(p), '--out', str(pdf)], check=True, capture_output=True, timeout=300)
-            import pymupdf
-            d = pymupdf.open(pdf); d[min(1, d.page_count - 1)].get_pixmap(dpi=70).save(out_dir / 'png' / f"{f['id']}.png"); pdf_ok = True
+            if a.metadata_only:
+                pdf_ok = pdf.is_file() and (out_dir / 'png' / f"{f['id']}.png").is_file()
+            else:
+                subprocess.run([sys.executable, str(ROOT / 'scripts/plate-catalog-pdf.py'), str(p), '--out', str(pdf)], check=True, capture_output=True, timeout=300)
+                import pymupdf
+                d = pymupdf.open(pdf); d[min(1, d.page_count - 1)].get_pixmap(dpi=70).save(out_dir / 'png' / f"{f['id']}.png"); pdf_ok = True
         except Exception as e:
             print('Katalog-PDF für', f['id'], 'nicht erzeugt:', str(e)[:100])
         sections.append(f'<a id="{f["id"]}"></a>\n' + family_section(f, p, kat, pdf_ok))
     md += ['', '## Familien im Einzelnen', ''] + sections
     xlsx = out_dir / 'Stammdaten-Gravuru.xlsx'
     try:
-        if a.metadata_only: raise RuntimeError('Metadatenlauf: bestehende Excel bleibt unverändert')
-        subprocess.run([sys.executable, str(ROOT / 'scripts/family-excel.py'), 'export', '--out', str(xlsx)] + [str(p) for p, _ in families], check=True, capture_output=True, timeout=300)
-        md.append(f'\nStammdaten-Excel (alle Familien): [kataloge/Stammdaten-Gravuru.xlsx](kataloge/Stammdaten-Gravuru.xlsx)')
+        if not a.metadata_only:
+            subprocess.run([sys.executable, str(ROOT / 'scripts/family-excel.py'), 'export', '--out', str(xlsx)] + [str(p) for p, _ in families], check=True, capture_output=True, timeout=300)
+        if xlsx.is_file(): md.append(f'\nStammdaten-Excel (alle Familien): [kataloge/Stammdaten-Gravuru.xlsx](kataloge/Stammdaten-Gravuru.xlsx)')
     except Exception as e:
         print('Excel nicht erzeugt:', str(e)[:100])
     (kat / 'KATALOG.md').write_text('\n'.join(md) + '\n', encoding='utf-8', newline='\n')

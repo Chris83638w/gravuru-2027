@@ -1,0 +1,124 @@
+{
+  "tag": "steel",
+  "handle": "tuerschild-abger-ecken-v2a-personalisiert-leuchtturm-12x8",
+  "at": "2026-11-03T07:29:49.624Z",
+  "scope": "live customer click; mobile viewport; CPU x4; film recording separate from konfi-messen",
+  "readyMs": 10192,
+  "shots": [
+    {
+      "file": "000.jpg",
+      "ms": 34
+    },
+    {
+      "file": "001.jpg",
+      "ms": 433
+    },
+    {
+      "file": "002.jpg",
+      "ms": 453
+    },
+    {
+      "file": "003.jpg",
+      "ms": 510
+    },
+    {
+      "file": "004.jpg",
+      "ms": 545
+    },
+    {
+      "file": "005.jpg",
+      "ms": 594
+    },
+    {
+      "file": "006.jpg",
+      "ms": 603
+    },
+    {
+      "file": "007.jpg",
+      "ms": 618
+    },
+    {
+      "file": "008.jpg",
+      "ms": 643
+    },
+    {
+      "file": "009.jpg",
+      "ms": 820
+    },
+    {
+      "file": "010.jpg",
+      "ms": 850
+    },
+    {
+      "file": "011.jpg",
+      "ms": 866
+    },
+    {
+      "file": "012.jpg",
+      "ms": 880
+    },
+    {
+      "file": "013.jpg",
+      "ms": 900
+    },
+    {
+      "file": "014.jpg",
+      "ms": 954
+    },
+    {
+      "file": "015.jpg",
+      "ms": 960
+    },
+    {
+      "file": "016.jpg",
+      "ms": 1320
+    },
+    {
+      "file": "017.jpg",
+      "ms": 3157
+    },
+    {
+      "file": "018.jpg",
+      "ms": 6337
+    },
+    {
+      "file": "019.jpg",
+      "ms": 8721
+    },
+    {
+      "file": "020.jpg",
+      "ms": 8724
+    },
+    {
+      "file": "021.jpg",
+      "ms": 10155
+    },
+    {
+      "file": "022.jpg",
+      "ms": 10253
+    },
+    {
+      "file": "023.jpg",
+      "ms": 10741
+    },
+    {
+      "file": "024.jpg",
+      "ms": 10781
+    },
+    {
+      "file": "025.jpg",
+      "ms": 10798
+    },
+    {
+      "file": "026.jpg",
+      "ms": 10986
+    }
+  ],
+  "errors": [],
+  "moduleDelivery": {
+    "core": [],
+    "bundles": [
+      "/_acryl-bundle/editor-ad1617939395386c.mjs"
+    ]
+  }
+}

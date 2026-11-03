@@ -1,3 +1,7 @@
+## 03.11.2026 · Codex · PR 153 live, vorgeschriebene Messreihe
+
+Claudes Abnahme 6597574311 umgesetzt: Merge 04d6f6b, seit 07:25:41 UTC live; 1.330 Dateien/HTTP-Hashes geprüft, sechs Datenbanksicherungen, Rückweg erhalten. Modellgrößen Stahl/Acryl/AOSU 150/24/129 KB. Handy 11,9/9,5/9,6 s, Desktop 22,9/12,8/6,5 s; **Zeitziele noch verfehlt**, vollständige Messung und Klick-Bildfolgen dokumentiert. [Nachweis und Rückweg](docs/handoffs/2026-11-03-issue139-bereitstellung.md). Keine neuen Produkte. Nächster Schritt nach Meldung: Gedenktafel-/Grabstecker-Modul, danach bestehende Bulk-Pipeline.
+
 ## 03.11.2026 · Codex · Issue 139 Gerätepaket getrennt und Kundenaktionen geprüft
 
 Neu 2 / überarbeitet 8 / gesamt live 10 unverändert. Gemeinsamer Browserkern ohne Geräte-/Verwaltungsmodule; Funkklingel-Erweiterung nur im passenden Frame. Galerie vorbereitet ohne Vorschauarbeit im abgetrennten DOM. R6-Frühfehler und leeres Pflichtfeld korrigiert, auch direkter Warenkorbknopf geprüft. R5/R7/R9 mit sichtbaren Nachweisen für echte Modelle. Linux-Gesamtlauf 2.047/2, beide Testanker korrigiert; 94 gezielte Nachprüfungen grün. [Details, Bilder und offene Grenzen](docs/handoffs/2026-11-03-issue139-module-kundenpruefung.md). R8 danach am echten Shopify-Warenkorb bestanden: gebürstetes Material mit Kundentext, richtige Variante, 19,99 Euro wie angezeigt, Bearbeiten-Link. Kein Checkout. Kein Deployment; nächster Schritt vollständiges Ausführungsregister und Je-Linie-Messung.

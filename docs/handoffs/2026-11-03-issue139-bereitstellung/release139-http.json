@@ -1,0 +1,41 @@
+{
+  "at": "2026-11-03T07:26:03.191Z",
+  "commit": "04d6f6bc0e1242f8b8b37f43fa2c050a3126bcfa",
+  "results": [
+    {
+      "path": "/_merchant-acryl-editor.html",
+      "status": 200,
+      "bytes": 373258,
+      "sha256": "5359d9789d91d7beb824ed42fac9846ff62f5a34f7787c43d32ea8ae89ca861d",
+      "cache": "private, max-age=300"
+    },
+    {
+      "path": "/_acryl-bundle/editor-2e3da3b988eb0da4.mjs",
+      "status": 200,
+      "bytes": 38045,
+      "sha256": "2b380c700ec6c159b299b014fc8918ebf41189bcbc9f7af14884825af7da65e1",
+      "cache": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/_acryl-bundle/editor-ad1617939395386c.mjs",
+      "status": 200,
+      "bytes": 1326361,
+      "sha256": "9bf071ef7f196d555b51b670f822d532b773b0c225b5b74e0f885d977f45639b",
+      "cache": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/werkstatt/acryl/",
+      "status": 200,
+      "bytes": 3545,
+      "sha256": "6cf70376b22c02431e1797b8312a41d778cba7629aa306a21194360605c76807",
+      "cache": "private, no-store"
+    },
+    {
+      "path": "/api/workshop/acryl/session",
+      "status": 401,
+      "bytes": 84,
+      "sha256": "fc27a61e1e6e5471e82b4440d1fe061958dfed2103ee3dc35c03e35d6ffc1123",
+      "cache": "private, no-store"
+    }
+  ]
+}

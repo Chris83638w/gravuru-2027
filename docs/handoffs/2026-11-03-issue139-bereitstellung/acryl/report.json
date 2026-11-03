@@ -1,0 +1,204 @@
+{
+  "tag": "acryl",
+  "handle": "tuerschild-acryl-leuchtturm-12x8-personalisiert",
+  "at": "2026-11-03T07:30:01.254Z",
+  "scope": "live customer click; mobile viewport; CPU x4; film recording separate from konfi-messen",
+  "readyMs": 7819,
+  "shots": [
+    {
+      "file": "000.jpg",
+      "ms": 33
+    },
+    {
+      "file": "001.jpg",
+      "ms": 52
+    },
+    {
+      "file": "002.jpg",
+      "ms": 68
+    },
+    {
+      "file": "003.jpg",
+      "ms": 88
+    },
+    {
+      "file": "004.jpg",
+      "ms": 110
+    },
+    {
+      "file": "005.jpg",
+      "ms": 134
+    },
+    {
+      "file": "006.jpg",
+      "ms": 139
+    },
+    {
+      "file": "007.jpg",
+      "ms": 153
+    },
+    {
+      "file": "008.jpg",
+      "ms": 179
+    },
+    {
+      "file": "009.jpg",
+      "ms": 184
+    },
+    {
+      "file": "010.jpg",
+      "ms": 218
+    },
+    {
+      "file": "011.jpg",
+      "ms": 230
+    },
+    {
+      "file": "012.jpg",
+      "ms": 236
+    },
+    {
+      "file": "013.jpg",
+      "ms": 246
+    },
+    {
+      "file": "014.jpg",
+      "ms": 277
+    },
+    {
+      "file": "015.jpg",
+      "ms": 286
+    },
+    {
+      "file": "016.jpg",
+      "ms": 301
+    },
+    {
+      "file": "017.jpg",
+      "ms": 307
+    },
+    {
+      "file": "018.jpg",
+      "ms": 335
+    },
+    {
+      "file": "019.jpg",
+      "ms": 352
+    },
+    {
+      "file": "020.jpg",
+      "ms": 450
+    },
+    {
+      "file": "021.jpg",
+      "ms": 466
+    },
+    {
+      "file": "022.jpg",
+      "ms": 472
+    },
+    {
+      "file": "023.jpg",
+      "ms": 523
+    },
+    {
+      "file": "024.jpg",
+      "ms": 540
+    },
+    {
+      "file": "025.jpg",
+      "ms": 556
+    },
+    {
+      "file": "026.jpg",
+      "ms": 617
+    },
+    {
+      "file": "027.jpg",
+      "ms": 637
+    },
+    {
+      "file": "028.jpg",
+      "ms": 641
+    },
+    {
+      "file": "029.jpg",
+      "ms": 647
+    },
+    {
+      "file": "030.jpg",
+      "ms": 682
+    },
+    {
+      "file": "031.jpg",
+      "ms": 688
+    },
+    {
+      "file": "032.jpg",
+      "ms": 693
+    },
+    {
+      "file": "033.jpg",
+      "ms": 709
+    },
+    {
+      "file": "034.jpg",
+      "ms": 737
+    },
+    {
+      "file": "035.jpg",
+      "ms": 748
+    },
+    {
+      "file": "036.jpg",
+      "ms": 898
+    },
+    {
+      "file": "037.jpg",
+      "ms": 2249
+    },
+    {
+      "file": "038.jpg",
+      "ms": 4717
+    },
+    {
+      "file": "039.jpg",
+      "ms": 5090
+    },
+    {
+      "file": "040.jpg",
+      "ms": 7758
+    },
+    {
+      "file": "041.jpg",
+      "ms": 7866
+    },
+    {
+      "file": "042.jpg",
+      "ms": 8134
+    },
+    {
+      "file": "043.jpg",
+      "ms": 8138
+    },
+    {
+      "file": "044.jpg",
+      "ms": 8261
+    },
+    {
+      "file": "045.jpg",
+      "ms": 8263
+    },
+    {
+      "file": "046.jpg",
+      "ms": 8567
+    }
+  ],
+  "errors": [],
+  "moduleDelivery": {
+    "core": [],
+    "bundles": [
+      "/_acryl-bundle/editor-ad1617939395386c.mjs"
+    ]
+  }
+}

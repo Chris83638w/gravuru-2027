@@ -241,6 +241,7 @@ Stand: 02.11.2026 abends. Gelesen: Code-Repo `origin/main` f78ad5b (STATUS.md, A
 | 7.17 | 03.11. 19:45 | Zitat: „Wenn etwas ist, stell mir bitte eine Frage.“ → Bei Unklarheit Chris fragen statt deuten; bereits Geklärtes (z. B. Maße) nicht neu auslegen. | Chat 03.11. |
 | 7.18 | 03.11. abends | Vorlagen/Designs nicht mehr im Konfi zusammenklicken: Zitat „Das muss doch viel, viel schneller gehen“ / „Mir geht es um wirkflow“ → Vorlagen-Renderer (`scripts/render-vorlagen.mjs`, gleicher Zeichencode wie der Konfi, Kontaktbogen mit Prüfstatus) – „Ja“. Alle KIs nutzen ihn für Vorlagen, Grundplatten und Kontaktbögen. | Chat 03.11.; gravuru-2027 PR #163 |
 | 7.19 | 04.11. 01:16 | Korrekturen aus der Edelstahl-Designprüfung gehen an **Astra 1** (#139), nicht an Astra gravuru. Zitat: „es wird astra 1 sein“. | Chat 04.11.; [#139·6617945860](https://github.com/Chris83638w/gravuru-2027/issues/139#issuecomment-6617945860) |
+| 7.20 | 04.11. 01:27/01:29 | **Zwei Astra-1-Chats:** Chris gibt Schiefer zusätzlich einem zweiten Astra-1-Chat („nein auch astra 1“; Regeln bestätigt mit „ja“). Regeln: (1) Nur der Astra-1-Chat aus #139 (Edelstahl) mergt nach main; der Schiefer-Chat arbeitet in eigenen Branches mit PR. (2) Schiefer-Konfi startet erst, wenn der Schiefer-Claude-Chat die 48 Tafeln mit Preisen und die Rohlinge in den Katalog übertragen und den Auftrag in #85 geschrieben hat. (3) Nachrichten getrennt: Edelstahl in #139, Schiefer in #85. Ergänzt 7.12 (Schiefer bisher Astra gravuru). | Chat 04.11. |
 
 ## 8. Offene Fragen, die Chris noch beantworten muss
 

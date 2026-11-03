@@ -11,3 +11,7 @@ Before making substantial visual changes, use the Product Design plugin's `get-c
 When implementing from a selected generated mock, treat that image as the source of truth for layout, component anatomy, density, spacing, color, typography, visible content, and hierarchy.
 
 Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts/prepare-sites-build.mjs`, and `tests/sites-worker.test.mjs` intact so the same local prototype can be handed to Sites. Before a Sites handoff, run `npm run build` and `npm run test:sites`; the build must leave `dist/client/index.html`, `dist/server/index.js`, and `dist/.openai/hosting.json`.
+
+## Chris' correction, 03.11.2026 (latest)
+
+Center Fullscreen / Undo / Redo / Help / Layers over the canvas itself, not the full viewport. Back to product sits at the left edge of this same row, Save draft at its right edge. Remove the extra product title/details and two-checkmark draft status. Keep a slimmer coloured footer with In den Warenkorb. Canvas should remain nearly as large as the previous Master (only a minimal fit margin); scale dimensions and artwork together and reset to a deterministic 100% fit. Keep every existing motif category, Bestseller only as initial selection. Preserve original descriptive names and artwork, never generate Motif-1 labels. Retain option icon tiles, not plain radio placeholders. Product fixture choices remain illustrative, not authoritative production bindings.

@@ -10,7 +10,6 @@
 @media(min-width:1600px){.stage{padding:28px 46px 18px}.panel{padding:32px 40px}.workspace{grid-template-columns:1.4fr 1fr}.canvas{padding:40px 50px 55px}.btn{font-size:15px}}
 @media(max-width:1100px) and (min-width:761px){.workspace{grid-template-columns:minmax(0,1.1fr) minmax(340px,1fr)}.panel{padding:20px}.stage{padding:20px}.save-status{display:none}.textbar{gap:1px}.textbar>strong{font-size:10px}.textbar select{width:82px}.align-controls{padding:0;margin:0}.textbar button{min-width:23px}.cartbar span{display:none}}
 @media(max-width:760px){.preview-strip{height:auto;min-height:43px;padding:5px 10px;display:block;text-align:center}.preview-strip>span{display:none}.profile-switch{justify-content:center;gap:1px}.profile-switch button{font-size:11px;padding:8px 7px}.toolbar{height:56px;padding:7px 10px;gap:6px;grid-template-columns:auto 1fr auto}.toolbar>.btn:first-child{font-size:11px;padding:8px;gap:4px;min-height:37px}.toolbar>.btn:first-child svg{width:15px}.center-tools{gap:1px;justify-content:center}.center-tools .btn,.toolbar .save{border:0;background:none;padding:7px;min-height:35px;min-width:28px}.center-tools .btn svg,.toolbar .save svg{width:18px}.hide-small{display:none}.workspace{display:flex;flex-direction:column;min-height:0;max-height:none}.stage{padding:15px 16px 10px;position:relative}.product-heading{margin-bottom:12px}.product-heading h1{font-size:18px}.product-heading p{font-size:11px;margin-top:3px}.save-status{display:none}.canvas{height:calc(245px + var(--mobile-growth)*45px);min-height:245px;padding:22px 15px 38px;transition:height .12s;flex:none}.plate-wrap{max-width:100%;margin:0 7px}.plate-wrap.doorbell{max-width:125px}.vertical{left:-20px;font-size:10px;padding-right:4px}.horizontal{top:calc(100% + 12px);padding-top:5px;font-size:10px}.stage-bottom{font-size:9px;padding-top:6px}.stage-bottom>span{max-width:150px}.stage-bottom label{gap:5px}.stage-bottom input{width:63px}.stage-bottom button{font-size:10px}.inspector{border-left:0;border-top:1px solid var(--line);min-height:400px}.tabs{padding:0 10px;position:sticky;top:0;z-index:25;min-height:64px;background:white;gap:0}.tabs button{font-size:10px;min-width:0;white-space:normal;gap:5px;padding:8px 3px;line-height:1.2}.tabs button svg{width:18px}.panel{padding:22px 18px 35px;overflow:visible}.panel h2{font-size:21px}.choices button{min-height:63px;padding:13px 10px;font-size:12px}.textbar{flex-wrap:wrap;gap:3px;padding:6px;min-height:71px;max-width:100%}.textbar>strong{font-size:11px;flex-basis:55px;max-width:75px}.textbar select{font-size:20px;width:94px}.align-controls{padding-inline:3px;margin-inline:0}.textbar button{min-width:24px;height:27px}.font-size input{font-size:14px;width:40px}.field textarea{font-size:16px}.cartbar{height:72px;padding:10px 14px;position:fixed;bottom:0;left:0;right:0;gap:8px}.cartbar>div:first-child{display:block}.cartbar strong{font-size:19px}.cartbar span{display:block;font-size:9px;max-width:150px;margin-top:3px;line-height:1.3}.cartbar .details{display:none}.cartbar .btn{font-size:12px;padding:10px 12px;gap:7px}.cartbar .btn>svg:first-child{display:none}.app{padding-bottom:72px}.product-heading p{max-width:320px}.memorial-art h2{font-size:14px;margin-bottom:9px}.memorial-art p{font-size:10px}.bell-design h2{font-size:10px}.bell-design strong{font-size:18px;margin-top:30px}.dialog{padding:25px 20px;border-radius:13px;max-height:86dvh}.backdrop{padding:14px}.dialog h2{font-size:21px}.dialog-actions .btn{white-space:normal;font-size:12px}.review-canvas{padding:15px 16px 32px}.toast{bottom:84px;font-size:12px;min-width:260px}.is-full .workspace{max-height:none;min-height:0}.is-full .canvas{height:340px}.motif-grid button{min-height:108px}.price-note{font-size:11px}}
-@media(min-width:761px){.plate-wrap{width:min(100%,calc((100dvh - 390px)*1.5))}.stage:has(.textbar) .plate-wrap{width:min(100%,calc((100dvh - 440px)*1.5))}.plate-wrap.doorbell{width:min(100%,calc((100dvh - 390px)*.57))}}
 .workspace{height:calc(100dvh - 182px);grid-template-rows:minmax(0,1fr)}.stage{min-height:0}.design-card{padding-bottom:11px}.design-card.chosen{padding-bottom:10px}.magnifier{bottom:16px;right:16px}.is-full .workspace{height:calc(100dvh - 144px)}
 @media(max-width:760px){.workspace,.is-full .workspace{height:auto;grid-template-rows:none}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
@@ -18,3 +17,43 @@
 .cartbar{z-index:40}
 @media(max-width:760px){.canvas .plate-wrap:not(.doorbell){width:calc(88% + var(--mobile-growth)*12%)}.textbar{min-height:0}.textbar>strong{flex-basis:auto}}
 @media(max-width:760px){.center-tools .btn,.toolbar .save{min-height:40px;min-width:31px}.toolbar>.btn:first-child{min-height:40px}}
+
+/* Chris' correction: one toolbar over the canvas; no extra product heading. */
+.workspace{grid-template-columns:minmax(0,3fr) minmax(390px,2fr);height:calc(100dvh - 96px);min-height:0;max-height:none}
+.stage{padding:0 12px 6px}
+.toolbar{height:64px;min-height:64px;padding:9px 0;gap:8px;border-bottom:0;grid-template-columns:1fr auto 1fr;background:transparent}
+.toolbar .btn{font-size:13px;padding:9px 10px;gap:6px}
+.center-tools{justify-content:center;gap:4px}
+.toolbar .save{font-size:12px}
+.toolbar svg{display:block}
+.canvas{display:block;overflow:auto;padding:0;min-width:0;min-height:0;flex:1;scrollbar-width:thin}
+.zoom-space{position:relative}
+.canvas .plate-wrap,.canvas .plate-wrap.doorbell{position:absolute;max-width:none;margin:0;transform-origin:top left}
+.canvas .plate{width:100%;transform:none;transition:none}
+.stage-bottom{flex:none;height:26px;padding:2px 12px 0}
+.stage-bottom input{width:100px}
+.cartbar{height:58px;padding:7px 22px}
+.cartbar .btn{min-height:40px}
+.cartbar strong{font-size:22px}
+.choices button{position:relative;flex-direction:column;justify-content:center;align-items:center;min-height:106px;gap:9px;text-align:center;padding:14px 10px;font-weight:650}
+.option-icon{display:block;width:52px;height:40px;flex:none}
+.option-icon svg{display:block;width:100%;height:100%}
+.option-check{position:absolute;right:8px;top:8px}
+.is-full .workspace{height:calc(100dvh - 58px);min-height:0;max-height:none}
+@media(max-width:1280px) and (min-width:761px){.toolbar .hide-small{display:none}.center-tools .btn{min-width:38px}.toolbar .save{min-width:40px}.workspace{grid-template-columns:minmax(0,3fr) minmax(340px,2fr)}}
+@media(max-width:760px){
+ .workspace,.is-full .workspace{height:auto;min-height:0;max-height:none}
+ .stage{padding:0 6px 6px}.toolbar{height:54px;min-height:54px;padding:5px 0;gap:2px;grid-template-columns:1fr auto 1fr}
+ .toolbar>.btn:first-child{font-size:10px;padding:5px;gap:3px}.toolbar>.btn:first-child svg{width:14px}
+ .center-tools{gap:0}.center-tools .btn,.toolbar .save{min-width:29px;min-height:40px;padding:5px;border:0;background:none}
+ .center-tools .btn svg,.toolbar .save svg{width:17px}
+ .canvas{height:calc(250px + var(--mobile-growth)*40px);min-height:250px;flex:none;padding:0}
+ .canvas .plate-wrap:not(.doorbell){max-width:none}
+ .stage-bottom{height:24px;padding:0 8px}
+ .cartbar{height:62px;padding:6px 12px}.cartbar .btn{min-height:42px}.cartbar strong{font-size:18px}.cartbar span{font-size:9px}.app{padding-bottom:62px}
+ .choices button{min-height:99px}.option-icon{width:46px;height:36px}
+}
+
+@media(max-width:760px){.preview-strip{min-height:34px;padding:1px 6px}.profile-switch button{padding:7px 6px}.toolbar{height:50px;min-height:50px}.stage{padding-bottom:2px}.stage-bottom{height:20px}}
+
+@media(max-width:760px){.textbar{padding:2px 4px;gap:2px}.textbar select{height:26px;line-height:26px}.textbar button,.textbar .font-size{height:26px}.stage-bottom{height:18px}}

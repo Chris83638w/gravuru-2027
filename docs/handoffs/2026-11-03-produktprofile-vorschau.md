@@ -2,6 +2,20 @@
 
 Stand: 03.11.2026, Codex/Astra. Basis Code `3eb2ea43c5383571094b8da1017ade9f4884eb72`; eigener Branch `dev/konfi-produktprofile-vorschau-20261103-astra`. Auftrag von Chris: visuelle Vorschau der besprochenen Oberfläche, einfache Anbindung verschiedener Produkte, automatische Foto-Sichtbarkeit und gründlicher Ladezeit-Check. **Keine Änderungen an App-Laufzeit, Katalog, Shopify oder Live-Systemen.**
 
+## Korrektur nach Chris' Rückmeldung (03.11.2026)
+
+- Eine Werkzeugzeile direkt über dem Canvas: Zum Produkt links, Vollbild/Rückgängig/Wiederholen/Hilfe/Ebenen exakt mittig, Entwurf speichern rechts. Zusätzliche Produktüberschrift und Status mit zwei Häkchen entfernt.
+- Canvas bei 1440×765: Platte jetzt 751,16 statt 562,5 CSS-px breit; 100% nutzt die tatsächlich verfügbare Fläche mit 2% Einpassreserve. Zoom skaliert die gesamte Platte samt Bemaßung: 125% = 938,96 px, Rückstellung wieder 751,16. Vergrößerte Bereiche sind scrollbar; Maßtexte bleiben 120/80 mm. Kein globaler 760-px-/Viewport-Höhencap mehr.
+- Footer 58 statt 77 px (Desktop), 62 statt 72 px (Mobil), Button „In den Warenkorb“ führt weiterhin nur zur lokalen Prüfansicht. Kein echter Warenkorbzugriff.
+- Alle **721 Originalmotive / 47 Kategorien**, plus „Alle Kategorien“ und „Bestseller“ (=49 Auswahleinträge). Originalnamen und SVGs aus dem bestehenden Runtime-Bestand. Master-Startauswahl mit 18 Motiven, Haus/Strich Haus/Herzlinie zuerst; keine behauptete Verkaufsrangliste oder neue Bestseller-Freigabe. Semantische Suche und Kategoriegruppen verwenden die vorhandenen Master-Helfer.
+- Metadaten erst beim Öffnen von Motive (156.576 Bytes unkomprimiert), einzelne SVGs bei Bedarf. Kein kompletter Motiv-/Font-Bundle beim Start. Mehr anzeigen erweitert 18→36 direkt im Bereich.
+- Optionskacheln wieder mit Icons. Befestigung verwendet den vorhandenen Master-Renderer; Funkklingel-/Zubehörbilder sind UI-Schemata der lokalen Muster, keine neue geometrische oder preisliche Produktbindung.
+- Browser: Desktop 1440×765, 390×664 und 375×548. Auf SE Textleiste 61 px, zwei Zeilen; Schrittleiste endet bei y=486 genau vor dem Footer. 14/14 gezielte Vorschau-/Profil-/Hostingtests grün, Vite-Build grün. Kein erneut behaupteter Linux-Gesamtlauf oder realer iPhone-Test.
+
+Aktuelle Bilder: [Desktop mit Optionen](2026-11-03-produktprofile-vorschau/korrektur-desktop-optionen.jpg), [Bestseller](2026-11-03-produktprofile-vorschau/korrektur-desktop-motive.jpg), [Leuchttürme](2026-11-03-produktprofile-vorschau/korrektur-desktop-kategorie.jpg), [iPhone SE](2026-11-03-produktprofile-vorschau/korrektur-iphone-se-text.jpg), [iPhone 13](2026-11-03-produktprofile-vorschau/korrektur-iphone-13-text.jpg). Diese Korrektur ersetzt die anfänglichen Angaben zu neun Motivbeispielen und zur kleineren Canvas-Größe.
+
+**Weiterhin Entwurfs-PR #161, lokale Studie, keine Master-/Live-Installation. Visuelle Abnahme durch Chris offen.**
+
 ## Ergebnis zur Entscheidung
 
 Den vorhandenen Master weiterverwenden. Jedes Produkt bindet ein versioniertes Optionsprofil und ausdrücklich erlaubte Fähigkeiten. Die Oberfläche entsteht daraus; Produktnamen, Materialbezeichnungen und vermutete Eigenschaften dürfen keine Schalter ersetzen. Neue Produkte mit vorhandenen Optionen sollen nur Katalog-/Excel-Zuordnungen benötigen. Ein wirklich neuer mechanischer Aufbau braucht weiterhin ein eigenes geprüftes Modul.

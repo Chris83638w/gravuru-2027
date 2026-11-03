@@ -1,5 +1,7 @@
 # Sichtprüfung 03.11.2026
 
+Aktueller Korrekturstand: siehe Bericht, Abschnitt „Korrektur nach Chris’ Rückmeldung“. 14/14 Tests und Desktop/390×664/375×548 geprüft. Werkzeuggruppe mittig über Canvas, 751 px statt 562 px, Footer 58 px. Alle 47 Kategorien und 721 Originalmotive, Bestseller initial. Die nachstehenden Messwerte dokumentieren den überholten Erststand.
+
 Quelle: Chris' Screenshots und seine letzten Änderungen, ergänzt durch lesende Ansichten des bestehenden Masters. [Vorher und Vorschlag gemeinsam](../../docs/handoffs/2026-11-03-produktprofile-vorschau/vergleich.html). Die Studie soll die Quelle bewusst weiterentwickeln; kein Anspruch auf pixelidentische Kopie einer alten Ansicht.
 
 ## Fünf geprüfte Bereiche
@@ -36,6 +38,6 @@ Bei 375×548: Textleiste 73 CSS-px hoch (zwei Zeilen), kein horizontaler Seiten�
 
 ## Grenzen vor Übernahme
 
-Kein neuer vollständiger Editor: freie Platzierung, echte Schriftwahl/-metriken, Preisvertrag, verbindliche Produktvarianten, semantische Vollsuche, Designtransfer und Logo-Konverter werden aus dem Master übernommen. Andere Designs behalten hier die Originaltexte im Bild, Eingaben bleiben nur im lokalen Entwurfszustand. Funkklingelfarben und Rahmen sind Auswahlmuster; Gedenktafel ist ein Optionsbeispiel. Alle Produkt-/Zubehörbilder und Maße benötigen vor produktiver Anbindung ihre vorhandenen autoritativen Bindungen. Kein vollständiger WCAG-, realer iPhone- oder Warenkorbtest dieser Studie. Noch keine visuelle Freigabe durch Chris. Keine Live-Änderung.
+Kein neuer vollständiger Editor: freie Platzierung, echte Schriftwahl/-metriken, Preisvertrag, verbindliche Produktvarianten, Designtransfer und Logo-Konverter werden aus dem Master übernommen. Andere Designs behalten hier die Originaltexte im Bild, Eingaben bleiben nur im lokalen Entwurfszustand. Funkklingelfarben und Rahmen sind Auswahlmuster; Gedenktafel ist ein Optionsbeispiel. Alle Produkt-/Zubehörbilder und Maße benötigen vor produktiver Anbindung ihre vorhandenen autoritativen Bindungen. Kein vollständiger WCAG-, realer iPhone- oder Warenkorbtest dieser Studie. Noch keine visuelle Freigabe durch Chris. Keine Live-Änderung.
 
 Vorher/Nachher-Kontaktansicht am Ende gemeinsam im Browser betrachtet: geringere Kopfzeilenhöhe, sichtbare Bemaßung und reine Designkacheln bestätigt; abweichende Desktop-Aufnahmehöhen ausdrücklich gekennzeichnet.

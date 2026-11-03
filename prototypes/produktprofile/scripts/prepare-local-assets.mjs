@@ -1,19 +1,38 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {gunzipSync} from 'node:zlib';
+import {bestsellerChoices} from '../../../app/configurator/variant-m/profile-selection.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const repo=path.resolve(root,'../..'), workspace=path.resolve(repo,'../..');
 const catalog=path.resolve(repo,'../gravuru-katalog');
 const assets=path.join(root,'public/assets');fs.mkdirSync(assets,{recursive:true});
-// Render only local, existing vector originals for the small UI study.
-const originals=JSON.parse(fs.readFileSync(path.join(repo,'app/designs/aosu-labrador/runtime/acryl-original-motifs.json'),'utf8'));
-const motifExamples=originals.filter(m=>m.bounds[2]>5&&m.bounds[3]>5).slice(0,9).map((m,i)=>{
- const [x,y,w,h]=m.bounds;
- const file=`motif-${i}.svg`;
- fs.writeFileSync(path.join(assets,file),`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${x} ${y} ${w} ${h}">${m.svgFragment}</svg>`);
- return {id:m.key,name:m.name.replace(' · Originalmotiv',' · Motiv'),file};
+// Same source library, German labels and uncurated starter selection as the Master.
+// Only the compact index loads on opening Motive; SVG files load as needed.
+const runtime=path.join(repo,'app/designs/aosu-labrador/runtime');
+const editor=fs.readFileSync(path.join(repo,'app/references/aosu-upgrade-2026-09-21/verification/editor-source.html'),'utf8');
+const urls=JSON.parse(editor.match(/<script[^>]*id="preview-urls"[^>]*>([\s\S]*?)<\/script>/)[1]);
+const readRuntime=file=>fs.readFileSync(path.join(runtime,path.basename(file)),'utf8');
+const manifest=JSON.parse(readRuntime(urls.catalog));
+const catalogData=manifest.format==='gravuru-catalog-parts-v1'?JSON.parse(manifest.parts.map(readRuntime).join('')):manifest;
+const imported=JSON.parse(gunzipSync(Buffer.from(urls.parts.map(readRuntime).join(''),'base64')).toString('utf8'));
+const originals=Object.entries(catalogData.motifs).map(([key,svgFragment])=>{
+ const match=editor.match(new RegExp('(?:^|[,\\{])'+key+':"([^"\\n]+)"'));
+ if(!match)throw Error('German motif name missing: '+key);
+ const name=match[1].replace(/\\x([0-9a-f]{2})/gi,(_,hex)=>String.fromCharCode(parseInt(hex,16)));
+ return {key,name,category:'Grundmotive',bounds:[0,0,100,100],svgFragment};
+});
+const all=[...imported,...originals];
+const starterKeys=[...editor.match(/const doorSignStarterKeys=\[([^\]]+)\]/)[1].matchAll(/'([^']+)'/g)].map(m=>m[1]);
+const bestsellers=new Set(bestsellerChoices(all,starterKeys.map(key=>({key})),null,{fillTo:18}).map(m=>m.key));
+const motifExamples=all.map(m=>{
+ const [x,y,w,h]=m.bounds, file=`motif-${m.key}.svg`;
+ if(!/^[a-zA-Z0-9_-]+$/.test(m.key))throw Error('Invalid motif filename');
+ fs.writeFileSync(path.join(assets,file),`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${x} ${y} ${w} ${h}" fill="#000">${m.svgFragment}</svg>`);
+ return {id:m.key,key:m.key,name:m.name,category:m.category,file,bestseller:bestsellers.has(m.key),bestsellerRank:[...bestsellers].indexOf(m.key)};
 });
 fs.writeFileSync(path.join(assets,'motifs.json'),JSON.stringify(motifExamples)+'\n');
+console.log('Master motifs:',motifExamples.length,'categories:',new Set(motifExamples.map(m=>m.category)).size,'starter selection:',bestsellers.size);
 const provenance=[];
 function copy(source,name){const dest=path.join(assets,name);fs.copyFileSync(source,dest);provenance.push({file:name,source:path.relative(workspace,source).replaceAll('\\','/'),bytes:fs.statSync(dest).size});}
 copy(path.join(repo,'app/designs/aosu-labrador/runtime/images/gravuru-edelstahl-feine-maserung-vorschau.webp'),'steel.webp');

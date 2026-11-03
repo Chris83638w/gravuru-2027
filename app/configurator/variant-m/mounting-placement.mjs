@@ -4,8 +4,8 @@ import {surfaceObjectIssue} from '../../platform/sources/app/shared/models/desig
 import {textOutlineBounds} from '../../platform/sources/app/shared/models/text-outline-fit.mjs';
 import {surfaceGeometry} from './surfaces.mjs';
 import {corners,overlaps} from './customer-tools-model.mjs';
-import {SIGN_SCREW_HEAD_MM,SIGN_PLACEMENT_FAMILIES} from './mounting-dimensions.mjs';
-export {SIGN_SCREW_HEAD_MM,SIGN_PLACEMENT_FAMILIES};
+import {SIGN_SCREW_HEAD_MM,SIGN_PLACEMENT_FAMILIES,SIGN_PLACEMENT_CLEARANCE_MM} from './mounting-dimensions.mjs';
+export {SIGN_SCREW_HEAD_MM,SIGN_PLACEMENT_FAMILIES,SIGN_PLACEMENT_CLEARANCE_MM};
 // Same customer-confirmed diameter as the screw preview (31.10). Reserve the
 // head for both drilled and screwed options, so switching between them is stable.
 const clone=v=>structuredClone(v),epsilon=1e-6;
@@ -23,7 +23,7 @@ export function placementBox(o,resources={}){
 }
 function touchesBox(o,profile){
  const holes=surfaceGeometry(profile.geometry,side(o)).holes||[],a=-(o.rotation||0)*Math.PI/180;
- const margin=profile.mountingPreview?.keepoutMm??profile.geometry.holeKeepoutMm??0;
+ const margin=Math.max(profile.mountingPreview?.keepoutMm??profile.geometry.holeKeepoutMm??0,SIGN_PLACEMENT_CLEARANCE_MM);
  return holes.some(h=>{const dx=h.x-o.x,dy=h.y-o.y,x=dx*Math.cos(a)-dy*Math.sin(a),y=dx*Math.sin(a)+dy*Math.cos(a);
   return Math.hypot(Math.max(Math.abs(x)-o.w/2,0),Math.max(Math.abs(y)-o.h/2,0))<Math.max(h.diameter,SIGN_SCREW_HEAD_MM)/2+margin+epsilon;
  });
@@ -66,8 +66,8 @@ export function avoidMounting(objects,profile,resources={}){
  const pending=result.filter(movable),groups=[];
  while(pending.length){const group=[pending.shift()];for(let i=0;i<group.length;i++)for(let j=pending.length-1;j>=0;j--)if(overlapArea(originalBoxes.get(group[i].id),originalBoxes.get(pending[j].id))>epsilon)group.push(...pending.splice(j,1));groups.push(group);}
  groups.sort((a,b)=>(a.some(o=>o.type==='text')?0:1)-(b.some(o=>o.type==='text')?0:1));
- for(const group of groups){
-  if(!group.some(o=>touchesMounting(o,profile,resources)))continue;
+ const place=(group,allowMove)=>{
+  if(!group.some(o=>touchesMounting(o,profile,resources)))return true;
   const ids=new Set(group.map(o=>o.id)),neighbours=result.filter(o=>!ids.has(o.id)&&visible(o)).map(o=>placementBox(o,resources));
   const limits=new Map(group.map(o=>[o.id,new Map(neighbours.map(n=>[n.id,overlapArea(originalBoxes.get(o.id),originalBoxes.get(n.id))]))]));
   const points=group.flatMap(o=>corners(originalBoxes.get(o.id))),cx=(Math.min(...points.map(p=>p.x))+Math.max(...points.map(p=>p.x)))/2,cy=(Math.min(...points.map(p=>p.y))+Math.max(...points.map(p=>p.y)))/2;
@@ -93,6 +93,7 @@ export function avoidMounting(objects,profile,resources={}){
    };
    const moved=(x,y)=>scaledGroup.map(o=>({...o,x:o.x+x,y:o.y+y}));
    if(valid(0,0))return moved(0,0);
+   if(!allowMove)return null;
    const max=Math.hypot(Math.max(Math.abs(minX),Math.abs(maxX)),Math.max(Math.abs(minY),Math.abs(maxY)));
    for(let d=.25;d<=max+.25;d+=.25){let best;
     for(const [x,y] of directions){if(!valid(x*d,y*d))continue;let lo=Math.max(0,d-.25),hi=d;
@@ -104,9 +105,16 @@ export function avoidMounting(objects,profile,resources={}){
   let candidate=find(1);
   const minimum=Math.max(...group.map(o=>o.type==='text'?Math.min(1,3/o.size):.1));
   for(let f=.99;!candidate&&f>=minimum-epsilon;f=Math.max(minimum,f-.01)){candidate=find(f);if(f<=minimum+epsilon)break;}
-  if(candidate)for(let i=0;i<group.length;i++){const raw=group[i],before=clone(raw);Object.assign(raw,candidate[i]);changed.push({id:raw.id,before,after:clone(raw)});}
-  else unresolved.push(...group.map(o=>o.id));
- }
+  if(candidate){for(let i=0;i<group.length;i++){const raw=group[i],before=clone(raw);Object.assign(raw,candidate[i]);changed.push({id:raw.id,before,after:clone(raw)});}return true;}
+  if(allowMove)unresolved.push(...group.map(o=>o.id));
+  return false;
+ };
+ // Chris, 03.11.2026: zuerst die ganze Gestaltung einer Seite gemeinsam kleiner machen und
+ // einrücken (Mitte bleibt, nichts verschiebt sich gegeneinander). Nur wenn das nicht reicht
+ // (Mindestschrift 3 mm), weichen die Teile wie bisher einzeln aus.
+ const blocked=new Set();
+ for(const s of ['front','back']){const block=result.filter(o=>movable(o)&&side(o)===s);if(block.length&&place(block,false))for(const o of block)blocked.add(o.id);}
+ for(const group of groups)if(!group.some(o=>blocked.has(o.id)))place(group,true);
  return {objects:result,changed,unresolved};
 }
 export function mountingPlacementState(config,state,previousProfile,nextProfile,resources={}){

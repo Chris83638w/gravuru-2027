@@ -254,6 +254,8 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
     // Existing immutable products predate the explicit execution tag. Their
     // stored catalogue category is provenance; runtime IDs/titles are not.
     if(!universal.productExecution){const choices=record.document.categoryIds.filter(id=>id.startsWith('familie-')).map(id=>familyExecution(id.slice(8))).filter(Boolean);if(choices.length===1)universal.productExecution=choices[0];}
+    // Chris/Claude #139, 03.11.: deploy stakes now; memorial UI awaits the price round.
+    if(universal.productExecution?.kind==='memorial')universal.productExecution={...universal.productExecution,enabled:false};
     universal.profile.id=record.id;
     universal.profile.binding={kind:'local-review',productId:record.id};
     universal.profile.revision=`${record.id}:${record.revision}`;

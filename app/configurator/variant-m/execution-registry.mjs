@@ -16,7 +16,7 @@ export function familyExecution(familyId){
 export function executionKind(c){
  if(isLayeredDoorbell(c))return 'doorbell';
  const explicit=c?.productExecution;
- if(explicit?.schema===EXECUTION_SCHEMA&&familyExecution(explicit.sourceFamilyId)?.kind===explicit.kind)return explicit.kind;
+ if(explicit?.schema===EXECUTION_SCHEMA&&familyExecution(explicit.sourceFamilyId)?.kind===explicit.kind)return explicit.kind==='memorial'&&explicit.enabled===false?'generic':explicit.kind;
  const families=c?.familyFormats?.formats?.flatMap(f=>f.variants.map(v=>v.familyId))||[];
  if(families.length){const kinds=new Set(families.map(id=>familyExecution(id)?.kind));if(kinds.size===1&&!kinds.has(undefined))return [...kinds][0];}
  return familyExecution(c?.familyAcrylic?.familyId)?.kind||'generic';

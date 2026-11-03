@@ -16,6 +16,8 @@ test('execution selection uses catalogue/schema identity, never title, material 
  assert.equal(executionKind({doorbell:{schema:'gravuru-doorbell/v1'}}),'doorbell');
  assert.equal(executionKind({profile:{name:'Grabstecker Gedenktafel Funkklingel',material:{kind:'steel'},workingArea:{headHeightMm:100,previewHeightMm:110}}}),'generic');
  assert.equal(executionKind({productExecution:{...familyExecution('steel-door-signs'),kind:'stake'}}),'generic');
+ assert.equal(executionKind({productExecution:{...familyExecution(MEMORIAL_FAMILIES[0]),enabled:false}}),'generic','the deferred memorial UI stays off until the price round');
+ assert.equal(executionKind({productExecution:{...familyExecution('grabstecker-edelstahl'),enabled:false}}),'stake','the memorial-only switch cannot weaken stake validation');
 });
 
 test('stake offers only current-form sizes and follows size-specific head/production geometry without source changes',()=>{

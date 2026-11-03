@@ -103,7 +103,7 @@ export function productSetInput(entry,texts,planReport){
  };
 }
 
-export async function run(argv,{stdout=process.stdout,katalog:providedKatalog=null}={}){
+export async function run(argv,{stdout=process.stdout,katalog:providedKatalog=null,converter=convertFont}={}){
  const args=parseArgs(argv);
  if(fs.existsSync(args.output))fail('Ausgabeordner existiert bereits; kein Überschreiben.');
  const katalog=providedKatalog||openKatalog(args.katalog),line=katalog.lines.get(args.line),sub=line?.subcategories.find(s=>s.id===args.sub);
@@ -154,7 +154,7 @@ export async function run(argv,{stdout=process.stdout,katalog:providedKatalog=nu
   for(const e of selected){
    try{
    const dir=path.join(args.output,e.handle);
-   const res=await planFamilyFormats(katalog,args.line,args.sub,{converter:convertFont,shopProduct:e.cut});
+   const res=await planFamilyFormats(katalog,args.line,args.sub,{converter,shopProduct:e.cut});
    if(!res.config){e.state='blockiert';e.reason=res.report.blocked.map(b=>b.reason).join(' · ');continue;}
    fs.mkdirSync(dir);
    fs.writeFileSync(path.join(dir,'review-config.json'),JSON.stringify(res.config)+'\n');

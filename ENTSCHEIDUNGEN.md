@@ -156,6 +156,7 @@ Stand: 02.11.2026 abends. Gelesen: Code-Repo `origin/main` f78ad5b (STATUS.md, A
 | 4.44 | 03.11. 19:45 | **Abstandshalter sind 12 mm breit** – Zitat: „die abstandshalter sind und bleiben 12mm breit … Das hatten wir jetzt bereits mehrfach geklärt“ (ersetzt Label „Ø 8 mm Edelstahlknopf“). Zubehör-Material aus Chris' Ordner „Produktbilder Zubehör“ ist die Bildgrundlage für die Konfi-Kacheln: „Dieses Material nutzen wir jetzt alles für unsere Konfi und gehen dann auch die anderen produkte so durch“. Schiefer zuerst, Daten im Katalog `materialien/zubehoer/`. | Chat 03.11.; [gravuru-katalog. PR #162](https://github.com/Chris83638w/gravuru-katalog./pull/162) |
 | 4.45 | 03.11. 19:47 | Foto-Aufpreis: **zwei Vorlagen, Mensch und Hund** – Zitat: „Für Foto musst du 2 Vorlagen machen. Einmal ein Mensch und einmal ein Hund“. | Chat 03.11. |
 | 4.46 | 03.11. 19:56 | Schiefer 7 × 2, 8 × 3,5 und 8 × 5 sind **geschnitten** (ohne Bruchkante), nicht Naturschiefer mit Bruchkante – Zitat: „musst du 7x2, 8x3,5 und 8x3 als geschnitten markieren“ (8x3 = 8 × 5, es gibt kein 8 × 3). Grundplatten aller 48 Tafeln macht ChatGPT nach der Liste vom 03.11. | Chat 03.11. |
+| 4.47 | 03.11. 20:30 | Schiefer: Abstandshalter auch in **Bronze und Gold** (Farben Edelstahl, Schwarz matt, Bronze, Gold, Weiß; farbig +1/+2 € laut 4.20) – Antwort „ja“ (gilt für Schiefer; 4.19 Acryl ohne Gold bleibt). **Kordelschilder haben Bruchkante** – Antwort „ja“. | Chat 03.11. |
 
 ## 5. Designs / Gestaltung
 

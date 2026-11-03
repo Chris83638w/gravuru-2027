@@ -1,0 +1,83 @@
+{
+  "at": "2026-11-02T22:22:51.826Z",
+  "scope": "isolated real-model candidate",
+  "networkMbit": 9,
+  "latencyMs": 150,
+  "cpuRate": 4,
+  "readyMs": 4814,
+  "cards": 40,
+  "galleryBytes": 51260,
+  "timing": [
+    {
+      "path": "/_bundle/editor-a792ee02b947d4e7.mjs",
+      "ms": 563,
+      "bytes": 467123,
+      "start": 466
+    },
+    {
+      "path": "/_runtime/lazy/katalog-kern.json",
+      "ms": 207,
+      "bytes": 45541,
+      "start": 1261
+    },
+    {
+      "path": "/assistant.js",
+      "ms": 177,
+      "bytes": 16511,
+      "start": 3107
+    },
+    {
+      "path": "/konfigurator/shop/schriften/9b3e2f8741a92b71d01568deb991538159ce4d849e6d795cc20412259a8199c7.json",
+      "ms": 5,
+      "bytes": 92226,
+      "start": 1261
+    },
+    {
+      "path": "/konfigurator/shop/schriften/77b4abc87ded094d18460011188e82c4db2d76e2b4db8fb0b47010d1c5cf4eae.json",
+      "ms": 4,
+      "bytes": 58255,
+      "start": 1261
+    },
+    {
+      "path": "/konfigurator/shop/schriften/62f89cb6e004b5774d40aeb31591d9e8c79ce83da4544bc8ef81fa4db4ed171c.json",
+      "ms": 2,
+      "bytes": 130884,
+      "start": 1260
+    }
+  ],
+  "errors": [],
+  "mounts": [
+    {
+      "id": "K00",
+      "icon": true,
+      "selected": "true"
+    },
+    {
+      "id": "KGL",
+      "icon": true,
+      "selected": "false"
+    },
+    {
+      "id": "KRA",
+      "icon": true,
+      "selected": "false"
+    },
+    {
+      "id": "B02",
+      "icon": true,
+      "selected": "false"
+    },
+    {
+      "id": "B02S",
+      "icon": true,
+      "selected": "false"
+    }
+  ],
+  "selectedPrice": "17,48 €",
+  "color": "anthrazit",
+  "mounting": "B02",
+  "texts": [
+    "Koch",
+    "Kerstin & Ralf"
+  ]
+}

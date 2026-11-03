@@ -1,6 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {THEME_TEXT_LIMITS,DEFAULT_TEXT_LIMITS,textLimits,themeId,textLimitIssue,textLength,lineCount,sameSampleText,requiredFieldMessage,clampText} from './theme-limits.mjs';
+import {THEME_TEXT_LIMITS,DEFAULT_TEXT_LIMITS,textLimits,themeId,textLimitIssue,textLength,lineCount,sameSampleText,requiredTextMissing,requiredFieldMessage,clampText} from './theme-limits.mjs';
+
+test('required fields distinguish a real customer value from blanks and the template sample',()=>{
+ for(const text of [undefined,null,'',' \n\t ','Mustername',' musterNAME '])assert.equal(requiredTextMissing(text,'Mustername'),true);
+ assert.equal(requiredTextMissing('Koch','Mustername'),false);
+});
 
 test('Themenstandards aus dem Benchmark vom 19.10.2026',()=>{
  for(const theme of ['namensschilder','familienschilder','hausnummern'])assert.deepEqual(THEME_TEXT_LIMITS[theme],{maxLength:32,maxLines:2});

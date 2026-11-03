@@ -14,4 +14,10 @@ test('late asynchronous choice cannot override a newer ready choice',async()=>{
 });
 test('failed resource request keeps customer design and provides retry message',async()=>{const notes=[],el={fontData:{A:{}},motifs:{},selected:'a',chooseDesign(id){this.selected=id;},uxEnsureDesignResources:async()=>{throw Error('offline');}};installDoorbellDesignLoading(el,config,m=>notes.push(m));await el.chooseDesign('b');assert.equal(el.selected,'a');assert.match(notes.at(-1),/erneut/);});
 test('local decoration and customer text both need loaded resources',()=>{const d={objects:[{type:'text',font:'A'},{type:'motif',motif:'decor'}]};assert.equal(designResourcesReady(d,{A:{}},{}),false);assert.equal(designResourcesReady(d,{A:{}},{decor:'<path/>'}),true);});
+test('background design resources load sequentially instead of competing with each other',async()=>{
+ let active=0,peak=0,refreshes=0;const loaded=[];
+ const el={chooseDesign(){},sync(){},uxRefreshThumbnails(){refreshes++;},async uxEnsureDesignResources(design){active++;peak=Math.max(peak,active);await new Promise(resolve=>setImmediate(resolve));loaded.push(design.id);active--;}};
+ await installDoorbellDesignLoading(el,config)();
+ assert.deepEqual(loaded,['a','b']);assert.equal(peak,1);assert.equal(refreshes,1);
+});
 test('all126 true imported products load fewer start fonts without dropping available templates',()=>{const dir=path.resolve('..','import-dryrun','documents');if(!fs.existsSync(dir))return;const files=fs.readdirSync(dir).filter(f=>f.endsWith('.json'));assert.equal(files.length,126);for(const file of files){const c=JSON.parse(fs.readFileSync(path.join(dir,file))).config;const all=startNeeds({...c,doorbell:null}).fonts;const initial=startNeeds(c).fonts;assert.ok(initial.length<all.length,file);assert.ok(initial.length>0);assert.equal(c.profile.designs.length,16);}});

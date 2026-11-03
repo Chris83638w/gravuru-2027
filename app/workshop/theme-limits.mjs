@@ -62,6 +62,7 @@ export function textLimitIssue(text,limits){
 }
 // Pflichtfeld: Mustertext der Vorlage gilt nicht als Eingabe (getrimmt, Groß/Klein egal).
 export const sameSampleText=(text,sample)=>String(text??'').trim().toLocaleLowerCase('de')===String(sample??'').trim().toLocaleLowerCase('de');
+export const requiredTextMissing=(text,sample)=>!String(text??'').trim()||sameSampleText(text,sample);
 // Kundensichtbare Feldnamen statt technischer Schlüssel (Katalog-Designs: name/daten/spruch).
 export const FIELD_LABELS={heading:'Überschrift',names:'Namen',name:'Name',place:'Ort',date:'Datum',daten:'Lebensdaten',slogan:'Spruch',spruch:'Spruch'};
 export const requiredFieldMessage=template=>'Bitte das Feld „'+(FIELD_LABELS[template.fieldKey]||template.fieldKey||template.id)+'“ ausfüllen.';

@@ -1,20 +1,20 @@
-import {isLayeredDoorbell,DOORBELL_SCHEMA,validateDoorbellDefinition,selectedDoorbellProfile,selectedDoorbellDesign,doorbellPriceBase,doorbellLayoutIssue} from './doorbell-selection.mjs';
+import {isLayeredDoorbell,DOORBELL_SCHEMA,validateDoorbellDefinition,selectedDoorbellProfile,selectedDoorbellDesign,doorbellPriceBase,doorbellLayoutIssue} from './product-model-module.mjs';
 import {isFamilyFormats,validateFamilyFormats,familyFormatOptions,familyFormatSelection,familyFormatCombinations,familyFormatPrice,selectedFamilyProfile,selectedFamilyDesign} from './family-formats.mjs';
 import {QUANTITY_TIER_MAX,quantityTiersIssue,quantityTiersOpen,activeQuantityTiers,quantityTierFor,applyQuantityTier,quantityTierLabels} from './quantity-tiers.mjs';
 export {QUANTITY_TIER_MAX,quantityTiersIssue,quantityTiersOpen,activeQuantityTiers,quantityTierFor,applyQuantityTier,quantityTierLabels} from './quantity-tiers.mjs';
 import {canDeleteTemplateElement,templateRightsIssue,customerAdditionPolicy,validateCustomerAdditions,designElementRights} from './element-rights.mjs';
 import {processProfile,processColorIssue} from '../../workshop/process-profiles.mjs';
 import {validateOptionPresentation} from './option-media.mjs';
-import {validateStudio} from '../../platform/sources/app/shared/models/studio-products.mjs';
+import {validateStudio} from '../../platform/sources/app/shared/models/studio-validation.mjs';
 import {getProcessingProfile} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
 import {validateDesignContent, surfaceObjectIssue} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {validateUniversalElements} from '../../platform/sources/app/shared/models/universal-elements.mjs';
-import {measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {measureText,setTextSize} from '../../platform/sources/app/shared/models/text-paths.mjs';
 import {localFontIds} from './local-pilot.mjs';
 import {acrylicSelection,acrylicOptions} from './acrylic-product.mjs';
 import {validSurface} from './material-surface.mjs';
 import {validateSteelFormats} from './steel-formats.mjs';
-import {textLimits,textLimitIssue,sameSampleText,requiredFieldMessage} from '../../workshop/theme-limits.mjs';
+import {textLimits,textLimitIssue,sameSampleText,requiredTextMissing,requiredFieldMessage} from '../../workshop/theme-limits.mjs';
 import {optionFields,visibleBy,validateOptionConditions,fieldValue,fieldPrice,fieldRequiredMessage,fieldDisplay} from './option-fields.mjs';
 import {validateSurfaces,objectSurface,hasBack,backSurcharge,surfaceProcess} from './surfaces.mjs';
 import {editorUi,validateToolbarConfig} from './toolbar-placement-model.mjs';
@@ -42,7 +42,8 @@ export const vectorLogoAllowed=config=>config?.logo?.enabled===true&&config.logo
 export function physicalScale(config, options={}) {
   return config.acrylic ? acrylicSelection(acrylicOptions(resolvedOptions(config, options)), config.acrylic.pricing).size.width / config.acrylic.designWidth : 1;
 }
-export const money = cents => new Intl.NumberFormat('de-DE', {style:'currency', currency:'EUR'}).format(cents / 100);
+const euroFormat = new Intl.NumberFormat('de-DE', {style:'currency', currency:'EUR'});
+export const money = cents => euroFormat.format(cents / 100);
 
 // This adapter consumes the existing native profile. It never grants a runtime release.
 export function prepareConfig(input) {
@@ -277,7 +278,7 @@ export function validateDesign(config, design, options, fonts, motifs, {template
   if(!template&&!draft){const missing=missingRequiredFields(config,options);if(missing.length)fail(fieldRequiredMessage(missing[0]));}
   if(!template&&!draft)for(const raw of source.objects.filter(o=>o.type==='text'&&o.required===true)){
     const o=design.objects.find(o=>o.id===raw.id);
-    if(!o||o.type!=='text'||o.uxHidden===true||sameSampleText(o.text,raw.text))fail(requiredFieldMessage(raw));
+    if(!o||o.type!=='text'||o.uxHidden===true||requiredTextMissing(o.text,raw.text))fail(requiredFieldMessage(raw));
   }
   for (const o of design.objects) {
     // Zeichen-/Zeilenlimit (Ü3.1) aus der Vorlage, nie aus dem Kundenobjekt.

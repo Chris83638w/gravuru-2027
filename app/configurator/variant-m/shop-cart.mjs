@@ -49,6 +49,9 @@ export function installShopCart(api,footer,gate){
  button.addEventListener('click',async()=>{
   if(busy)return;busy=true;label();
   try{
+   api.el.uxAttemptTextValidation?.();api.el.sync();
+   const issue=api.el.uxTextIssues?.()[0];
+   if(issue){api.el.uxRevealTextIssue?.(issue.id);throw Error(issue.message);}
    if(api.el.uxCheckLayout&&!await api.el.uxCheckLayout())return;
    if(api.pending?.())throw Error('Bitte warten, bis das Foto vollständig geladen ist.');
    const fingerprint=JSON.stringify(api.el.state),count=quantity();

@@ -1,7 +1,7 @@
 import {captureDesignContent,carryDesignContent,capturePhotoFiles} from './design-content-transfer.mjs';
 import {preserveProductSelection} from './product-design-transfer.mjs';
 import {designGalleryCount} from './product-design-gallery-label.mjs';
-import {isLayeredDoorbell} from './doorbell-selection.mjs';
+import {isLayeredDoorbell} from './product-model-module.mjs';
 import {isFamilyFormats} from './family-formats.mjs';
 
 const money=cents=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100);
@@ -10,7 +10,7 @@ export const productChoiceInfo=item=>`${item.widthMm/10} × ${item.heightMm/10} 
 export async function installProductDesignGallery({el,r,config,files,say,dialog,esc}){
  // These products already include their complete, format-specific design set.
  // Use the native gallery without repeating it across three main products.
- if(isLayeredDoorbell(config)||isFamilyFormats(config))return;
+ if(isLayeredDoorbell(config)||(isFamilyFormats(config)&&!config.familyFormats.fixedSize))return;
  let api;try{api=window.parent.GravuruShopEntry?.designGallery;}catch{}if(!api)return;
  el.uxHasProductDesignGallery=true;
  const profile=()=>el.uxSelectedProfile?.()||config.profile;
@@ -38,7 +38,7 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
  const themeLabel=gallery.querySelector('.ux-product-themes'),themes=themeLabel.querySelector('select');
  let next=0,loading=false,loaded=false,chosen=null;const urls=[];
  const queue=[];let active=0;
- const pump=()=>{while(active<2&&queue.length){const {item,img}=queue.shift();active++;Promise.resolve().then(()=>api.preview(item.target)).then(blob=>{const url=URL.createObjectURL(blob);urls.push(url);img.src=url;img.alt=item.designName;}).catch(()=>{img.alt='Vorschau nicht verfügbar';}).finally(()=>{active--;pump();});}};
+ const pump=()=>{while(active<2&&queue.length){const {item,img}=queue.shift();active++;Promise.resolve().then(()=>api.preview(item.target,item.previewUrl)).then(blob=>{const url=URL.createObjectURL(blob);urls.push(url);img.src=url;img.alt=item.designName;}).catch(()=>{img.alt='Vorschau nicht verfügbar';}).finally(()=>{active--;pump();});}};
  const observer=typeof IntersectionObserver==='function'?new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){observer.unobserve(entry.target);queue.push(entry.target.previewRequest);pump();}},{root:gallery,rootMargin:'100px'}):null;
  async function load(){
   if(loading||next===null)return;loading=true;more.disabled=true;themes.disabled=true;status.textContent='Designs werden geladen …';
@@ -54,7 +54,7 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
     const img=document.createElement('img');img.alt='Vorschau wird geladen';img.width=240;img.height=160;card.append(img);
     card.setAttribute('aria-label','Design '+item.designName);
     const check=document.createElement('span');check.className='completion-check';check.textContent='✓';check.setAttribute('aria-hidden','true');card.append(check);
-    card.onclick=()=>{if(item.current){gallery.close();if(item.designId!==el.state.designId)el.chooseDesign(item.designId);return;}chosen=item;confirm.querySelector('.ux-product-summary').textContent=item.designName+' – Neue Größe '+productChoiceInfo(item);confirm.showModal();};grid.append(card);
+    card.onclick=()=>{if(item.current&&profile().designs.some(d=>d.id===item.designId)){gallery.close();if(item.designId!==el.state.designId)el.chooseDesign(item.designId);return;}chosen=item;confirm.querySelector('.ux-product-summary').textContent=item.designName+' · '+productChoiceInfo(item);confirm.showModal();};grid.append(card);
     img.previewRequest={item,img};if(observer)observer.observe(img);else queue.push({item,img});
    }
    if(!observer)pump();status.textContent=result.total?designGalleryCount(result.total):'Für dieses Produkt sind noch keine weiteren Designs verfügbar.';more.hidden=next===null;

@@ -12,12 +12,12 @@ import {placeNewMotif,MOTIF_MIN_MM} from './motif-placement.mjs';
 import {installCompletion} from './completion.mjs';
 import {transformedCorners} from './usability-model.mjs';
 import {designArea} from './design-area.mjs';
-import {doorbellTextSurface} from './doorbell-ui.mjs';
+import {doorbellTextSurface} from './product-view-module.mjs';
 import {clampToAcrylic} from './edge-clamp.mjs';
 import {createDragSnap,alignmentLabel} from './drag-assistance-model.mjs';
 import {fitText,freePlacement,transferTexts,changedCustomerTexts,alignGroup,NO_FREE_SPACE_MESSAGE} from './workflow-model.mjs';
 import {galleryOrder,productTheme,customerTexts,thumbnailSignature,thumbnailDesign,designLink} from './design-gallery-model.mjs';
-import {textPaths,measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {textPaths,measureText,setTextSize} from '../../platform/sources/app/shared/models/text-paths.mjs';
 
 export async function installWorkflow(api){
  const {el,r,profile,config,button,esc,mutate,selected,showTab,say,dialog}=api;

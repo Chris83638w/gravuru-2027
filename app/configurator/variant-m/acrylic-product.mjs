@@ -1,4 +1,4 @@
-import {setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {setTextSize} from '../../platform/sources/app/shared/models/text-paths.mjs';
 export const ACRYLIC_BASES = [
   {id:'none',label:'Ohne Sockel',priceCents:0,insertionMm:0,asset:null},
   {id:'buche',label:'Massiver Holzsockel · Buche',priceCents:899,insertionMm:7,asset:'base-buche.png'},

@@ -1,8 +1,9 @@
 import {request} from './motifs.mjs';
-import {validateDesignContent,DESIGN_LIMITS,validContentId} from './design-content.mjs';
+import {validateProfile} from './doorbell-profile-validation.mjs';
+export {validateProfile} from './doorbell-profile-validation.mjs';
 import {publicationSnapshot,assertRuntimeCompatibility} from './runtime-contract.mjs';
 import {uploadConfiguration} from './doorbell-release.mjs';
-import {mountingAccessIssues} from './mounting-access.mjs';
+
 export const TYPE='gravuru_configurator';
 export const LIST=`query Doorbells($after:String){metaobjects(type:"gravuru_configurator",first:50,after:$after){nodes{id handle updatedAt fields{key value}} pageInfo{hasNextPage endCursor}}}`;
 export const ONE=`query Doorbell($handle:MetaobjectHandleInput!){metaobjectByHandle(handle:$handle){id handle updatedAt fields{key value}}}`;
@@ -11,20 +12,6 @@ export const PRODUCT=`query DoorbellProduct($id:ID!){product(id:$id){id handle d
 export const PUBLISH=`mutation PublishDoorbell($product:ProductUpdateInput!){productUpdate(product:$product){product{id descriptionHtml} userErrors{field message}}}`;
 export function decode(n){const f=Object.fromEntries(n.fields.map(x=>[x.key,x.value]));return {...n,profile:JSON.parse(f.configuration),name:f.name};}
 export async function listDoorbells(){const rows=[];let after=null;const seen=new Set();do{const d=(await request(LIST,{after})).metaobjects;rows.push(...d.nodes.map(decode).filter(n=>n.profile.kind==='layered-doorbell'));if(!d.pageInfo.hasNextPage)break;after=d.pageInfo.endCursor;if(!after||seen.has(after))throw Error('Unvollständige Modellliste.');seen.add(after);}while(true);return rows.sort((a,b)=>a.name.localeCompare(b.name,'de'));}
-export function validateProfile(p,original,{extraFontIds=[]}={}){
- if(!p||!original||!validContentId(p.id))throw Error('Ungültige Produktkennung.');
- for(const key of ['frames','materials','mounting','manufacturing'])if(JSON.stringify(p[key])!==JSON.stringify(original[key]))throw Error('Material, Rahmen und Montagegeometrie dürfen hier nicht verändert werden.');
- for(const key of Object.keys(original.features))if(key!=='motifsAllowed'&&p.features[key]!==original.features[key])throw Error('Diese Grundfunktion ist fest mit dem Modell verbunden.');
- if(typeof p.features.motifsAllowed!=='boolean')throw Error('Ungültige Motiveinstellung.');
- const choices={frameKeys:p.frames.map(f=>f.key),colorKeys:p.materials.acrylic.colors.map(c=>c.key),mountingKeys:p.mounting.options.map(m=>m.key),designIds:p.designs.map(d=>d.id)};
- for(const [key,list] of Object.entries(p.customerOptions||{})){if(!choices[key]||!Array.isArray(list)||!list.length||new Set(list).size!==list.length||list.some(v=>!choices[key].includes(v)))throw Error('Ungültige Kundenauswahl: '+key);}
- for(const frameKey of p.customerOptions?.frameKeys||choices.frameKeys)for(const mountingKey of p.customerOptions?.mountingKeys||choices.mountingKeys){const issue=mountingAccessIssues(p,{frameKey,mountingKey})[0];if(issue)throw Error('Rahmen '+frameKey+' / Befestigung '+mountingKey+': '+issue.message);}
- if(p.id!==original.id||JSON.stringify(p.binding)!==JSON.stringify(original.binding)||JSON.stringify(p.geometry)!==JSON.stringify(original.geometry)||JSON.stringify(p.purchasing)!==JSON.stringify(original.purchasing))throw Error('Produktzuordnung, Preise und Fertigungsgeometrie dürfen hier nicht verändert werden.');
- if(!p.name?.trim()||p.name.length>200)throw Error('Bitte einen Namen mit höchstens 200 Zeichen vergeben.');
- if(!p.designs?.length||p.designs.length>DESIGN_LIMITS.maxDesigns||new Set(p.designs.map(d=>d.id)).size!==p.designs.length)throw Error('Bitte 1 bis '+DESIGN_LIMITS.maxDesigns+' eindeutig benannte Designs verwenden.');
- const ids=new Set();for(const d of p.designs){validateDesignContent(d,{extraFontIds});if(!d.name?.trim()||!d.objects?.length||d.objects.length>DESIGN_LIMITS.maxObjects)throw Error('Jedes Design braucht einen Namen und mindestens ein Element.');ids.clear();for(const o of d.objects){if(!o.id||ids.has(o.id))throw Error('Doppelte Element-ID.');ids.add(o.id);if(o.type==='text'&&(!o.text?.trim()||o.text.length>DESIGN_LIMITS.maxTextLength))throw Error('Text fehlt oder ist zu lang.');if(!['x','y','w','h','rotation'].every(k=>Number.isFinite(o[k]))||o.w<=0||o.h<=0)throw Error('Ungültige Elementmaße.');const a=Math.abs(o.rotation*Math.PI/180),w=Math.abs(o.w*Math.cos(a))+Math.abs(o.h*Math.sin(a)),h=Math.abs(o.w*Math.sin(a))+Math.abs(o.h*Math.cos(a));const b=p.geometry.bell;if(o.x-w/2<10||o.x+w/2>150||o.y-h/2<10||o.y+h/2>270)throw Error(d.name+': Ein Element liegt außerhalb der gemeinsamen Gestaltungsfläche.');if(Math.min(o.x+w/2,b.x+b.width)-Math.max(o.x-w/2,b.x)>.1&&Math.min(o.y+h/2,b.y+b.height)-Math.max(o.y-h/2,b.y)>.1)throw Error(d.name+': Ein Element überlappt die Klingel.');}}
- return p;
-}
 export async function saveDoorbell(row,draft){validateProfile(draft,row.profile);const handle={type:TYPE,handle:row.handle};const fresh=decode((await request(ONE,{handle})).metaobjectByHandle);if(fresh.updatedAt!==row.updatedAt)throw Error('Zwischenzeitlich geändert. Bitte neu laden, damit keine Änderung überschrieben wird.');const p=structuredClone(draft);p.admin={...p.admin,draftRevision:crypto.randomUUID(),savedAt:new Date().toISOString()};const fields=[{key:'name',value:p.name},{key:'revision',value:p.admin.draftRevision},{key:'configuration',value:JSON.stringify(p)}];const result=(await request(SAVE,{handle,metaobject:{fields}})).metaobjectUpsert;if(result.userErrors?.length)throw Error(result.userErrors.map(x=>x.message).join(' · '));const saved=decode((await request(ONE,{handle})).metaobjectByHandle);if(saved.profile.admin.draftRevision!==p.admin.draftRevision)throw Error('Speichern konnte nicht bestätigt werden.');return saved;}
 export async function publishDoorbell(row){
  const handle={type:TYPE,handle:row.handle};const fresh=decode((await request(ONE,{handle})).metaobjectByHandle);if(fresh.updatedAt!==row.updatedAt)throw Error('Zwischenzeitlich geändert. Bitte neu laden.');

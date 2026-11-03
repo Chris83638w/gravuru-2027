@@ -8,7 +8,7 @@ import {LAZY_BASE,startNeeds,draftNeeds,lazyUrls,motifLibraryUrl,coreCatalogUrl,
 const fetchJSON=async(url,{priority}={})=>{const response=await fetch(url,{credentials:'same-origin',...(priority?{priority}:{})});if(!response.ok)throw Error('Laden fehlgeschlagen: '+url.split('/').pop());return response.json();};
 const fonts=new Map(),motifs=new Map();let library=null;
 const once=(cache,key,load)=>{if(!cache.has(key))cache.set(key,load().catch(error=>{cache.delete(key);throw error;}));return cache.get(key);};
-const loadFont=(entry,get)=>once(fonts,entry.name,()=>get(entry.url));
+const loadFont=(entry,get)=>once(fonts,entry.name+'|'+entry.url,()=>get(entry.url));
 const loadMotif=(entry,get)=>once(motifs,entry.key,()=>get(entry.url));
 const pause=()=>new Promise(resolve=>setTimeout(resolve,0));
 // Hintergrund: Motivgeometrie nur im Leerlauf aufbereiten, damit Eingaben flüssig bleiben.
@@ -19,11 +19,11 @@ const idlePause=()=>new Promise(resolve=>typeof requestIdleCallback==='function'
 // erst nach dem Kern (er unterscheidet Grundmotive von Bibliotheksmotiven). Der Index prüft danach.
 export async function loadStart(config,{get=fetchJSON,base=LAZY_BASE}={}){
   const guess=startNeeds(config);
-  const early=lazyUrls({fonts:guess.fonts},{fontIndex:guess.fonts.map(name=>({name,file:fontFileName(name)}))},base).fonts.map(f=>loadFont(f,get).catch(()=>null));
+  const product=productFontIndex(config),byName=new Map(product.map(f=>[f.name,f]));
+  const early=lazyUrls({fonts:guess.fonts},{fontIndex:guess.fonts.map(name=>byName.get(name)||({name,file:fontFileName(name)}))},base).fonts.map(f=>loadFont(f,get).catch(()=>null));
   const catalog=await get(coreCatalogUrl(base));await Promise.all(early);
   // Produktschriften gehören in denselben Index: Schriftauswahl, Entwürfe und Warenkorb-Bearbeiten laden sie nach.
-  const product=productFontIndex(config);
-  if(product.length){const known=new Set((catalog.font_index||[]).map(f=>f.name));catalog.font_index=[...(catalog.font_index||[]),...product.filter(f=>!known.has(f.name))];}
+  if(product.length)catalog.font_index=[...(catalog.font_index||[]).filter(f=>!byName.has(f.name)),...product];
   const needs=startNeeds(config,{baseMotifs:Object.keys(catalog.motifs||{})});
   const urls=lazyUrls(needs,{fontIndex:catalog.font_index,motifIndex:catalog.motif_index},base);
   const [fontData,motifData]=await Promise.all([Promise.all(urls.fonts.map(f=>loadFont(f,get))),Promise.all(urls.motifs.map(m=>loadMotif(m,get)))]);

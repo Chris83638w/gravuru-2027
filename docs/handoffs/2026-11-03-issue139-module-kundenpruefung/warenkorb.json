@@ -1,0 +1,66 @@
+{
+  "at": "2026-11-02T23:54:01.775Z",
+  "scope": "candidate frontend in isolated browser; actual live backend and fresh Shopify cart; no checkout",
+  "requests": [
+    {
+      "path": "/api/shop-entry/acrylic-drafts",
+      "status": 201
+    },
+    {
+      "path": "/api/shop-entry/theme-cart",
+      "status": 200
+    }
+  ],
+  "modelBytes": 165261,
+  "options": [
+    "K00",
+    "KGL",
+    "KRA",
+    "B02",
+    "B02S"
+  ],
+  "displayedPrice": "19,99 €",
+  "expectedCents": 1999,
+  "selectedOptions": {
+    "mounting": "K00"
+  },
+  "cart": {
+    "item_count": 1,
+    "total_price": 1999,
+    "items": [
+      {
+        "id": "57265913332092",
+        "quantity": 1,
+        "price": 1999,
+        "propertyKeys": [
+          "_gravuru_offer",
+          "_gravuru_motifs",
+          "_gravuru_uploads",
+          "_gravuru_revision",
+          "Bearbeitbarer Entwurf",
+          "_gravuru_config",
+          "_gravuru_rev",
+          "Design",
+          "Format",
+          "Gravurtext",
+          "_gravuru_bearbeiten",
+          "_gravuru_bild",
+          "_gravuru_checkout_image",
+          "_Entwurf"
+        ]
+      }
+    ]
+  },
+  "cartImages": [
+    {
+      "alt": "Türschild Leuchtturm aus Edelstahl – 12 × 8 cm personalisiert",
+      "width": 1712,
+      "height": 1179,
+      "loaded": true,
+      "sourceKind": "/s/files/1/0920/5550/3228/uploads/38e10d66383049383f2f62854204b77c.png",
+      "personalized": false
+    }
+  ],
+  "editLinks": 1,
+  "errors": []
+}

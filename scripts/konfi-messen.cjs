@@ -34,7 +34,10 @@ const s=ms=>ms==null?'–':(ms/1000).toFixed(1).replace('.',',')+' s';
  await page.goto(href,{waitUntil:'load',timeout:90000});
  let frame;for(let i=0;i<300&&!frame;i++){frame=page.frames().find(f=>/_merchant-acryl-editor/.test(f.url()));if(!frame)await page.waitForTimeout(100);}
  let bereit=null;
- for(let i=0;frame&&i<900;i++){const ok=await frame.evaluate(()=>{const r=document.querySelector('gravuru-configurator')?.shadowRoot;return !!r&&[...r.querySelectorAll('button')].some(b=>/Gestaltung fertig/.test(b.textContent)&&b.offsetParent);}).catch(()=>false);if(ok){bereit=Date.now()-t1;break;}await page.waitForTimeout(100);}
+ // Current layouts show „Weiter“ on mobile and editing tabs on desktop.
+ // Require the completed layout plus a visible, enabled action, instead
+ // of waiting for the obsolete „Gestaltung fertig“ label.
+ for(let i=0;frame&&i<900;i++){const ok=await frame.evaluate(()=>{const el=document.querySelector('gravuru-configurator'),r=el?.shadowRoot;if(!r||!el.uxLayoutReady||window.frameElement&&!window.frameElement.offsetParent)return false;return [...r.querySelectorAll('button')].some(b=>(/Gestaltung fertig/.test(b.textContent)||b.matches('[data-ux=mobile-next],.ux-tabs [data-ux-tab]'))&&b.offsetParent&&!b.disabled);}).catch(()=>false);if(ok){bereit=Date.now()-t1;break;}await page.waitForTimeout(100);}
  const model=await page.evaluate(()=>{const u=window.UniversalConfig;if(!u)return null;return {kb:Math.round(JSON.stringify(u).length/1024),schriften:Object.keys(u.localResources?.fonts||{}).length,grundplatte:String(u.materialSurface||'').slice(5,15)};});
  const cache=p=>{for(const [k,v] of net)if(k.includes(p))return v.cache.replace(/\s*\n\s*/g,', ')||'(keine Angabe)';return '–';};
  rows.push(['Produktseite geladen',s(seite)],['Knopf „Jetzt personalisieren“',check.knopf?'ja':'NEIN'],['Normaler Kaufknopf ausgeblendet',check.kaufknopfSichtbar?'NEIN – sichtbar':'ja'],

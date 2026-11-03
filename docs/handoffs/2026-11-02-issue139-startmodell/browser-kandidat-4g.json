@@ -1,0 +1,47 @@
+{
+  "at": "2026-11-02T21:34:30.776Z",
+  "scope": "isolated real-model candidate",
+  "networkMbit": 9,
+  "latencyMs": 150,
+  "cpuRate": 4,
+  "readyMs": 6390,
+  "cards": 40,
+  "timing": [
+    {
+      "path": "/_bundle/editor-2e9291824a74dc85.mjs",
+      "ms": 656,
+      "bytes": 467650,
+      "start": 197
+    },
+    {
+      "path": "/_runtime/lazy/katalog-kern.json",
+      "ms": 220,
+      "bytes": 45541,
+      "start": 1285
+    },
+    {
+      "path": "/assistant.js",
+      "ms": 191,
+      "bytes": 16511,
+      "start": 4554
+    },
+    {
+      "path": "/konfigurator/shop/schriften/9b3e2f8741a92b71d01568deb991538159ce4d849e6d795cc20412259a8199c7.json",
+      "ms": 5,
+      "bytes": 92226,
+      "start": 1285
+    },
+    {
+      "path": "/konfigurator/shop/schriften/076933c087e2ec9bd6458f673343650e9d0f3959d2b5f47c30e2240182ccdf8f.json",
+      "ms": 3,
+      "bytes": 89715,
+      "start": 1285
+    }
+  ],
+  "errors": [],
+  "mounting": "B04",
+  "texts": [
+    "Koch",
+    "Familie"
+  ]
+}

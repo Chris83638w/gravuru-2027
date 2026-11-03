@@ -1,0 +1,18 @@
+{
+  "at": "2026-11-02T21:08:43.183Z",
+  "product": {
+    "id": "cfg_f813188f-33f2-41e6-bdd8-25a9f069b536",
+    "revision": 2,
+    "publishedRevision": null
+  },
+  "before": {
+    "jsonBytes": 31180883,
+    "gzipBytes": 9528491
+  },
+  "after": {
+    "jsonBytes": 155716,
+    "gzipBytes": 107193
+  },
+  "designsBefore": 199,
+  "designsAfter": 1
+}

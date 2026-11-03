@@ -154,7 +154,7 @@ test('Datensparmodus im Editor: Motive werden nicht vorgeladen, aber beim Öffne
 
 test('Kundenoberfläche startet die Ladefolge erst am Ende von installUX',()=>{
   const ux=fs.readFileSync(path.join(HERE,'ux.mjs'),'utf8');
-  const ready=ux.indexOf("window.parent.postMessage({type:'gravuru-ux-ready'},location.origin);"),install=ux.indexOf('if(config)installBackgroundLoading({el,r,config});');
+  const ready=ux.indexOf("window.parent.postMessage({type:'gravuru-ux-ready'},location.origin);"),install=ux.indexOf('const background=config?installBackgroundLoading({el,r,config}):null;');
   assert.ok(ready>0&&install>ready,'nach der fertigen Oberfläche');
   assert.ok(ux.indexOf("r.host.dataset.uxNeutral=")<install);
 });

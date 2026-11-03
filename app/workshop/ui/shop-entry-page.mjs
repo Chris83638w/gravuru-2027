@@ -5,15 +5,21 @@
 import {createShopEntryClient,shopUrl,embeddedCart,previewJpeg,surfaceThumbnail,warmTargets,warmEditor,startResourceUrls} from './shop-entry-client.mjs';
 import {createDesignSwitch} from './shop-design-switch.mjs';
 const status=document.querySelector('#status'),header=document.querySelector('header'),back=document.querySelector('#back'),title=document.querySelector('#title');
+const loading=document.querySelector('#loading-screen'),progress=document.querySelector('#progress'),preview=document.querySelector('#start-preview'),editor=document.querySelector('#editor');
 const fragment=new URLSearchParams(location.hash.replace(/^#/,''));
 const toDataUrl=blob=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob);});
 try{
   const client=createShopEntryClient({token:fragment.get('s')||''});
   const warm=warmEditor(warmTargets(document,fragment.get('s')||''));
-  const data=await client.loadModel(),model=data.model;
+  const data=await client.loadInitialModel(fragment,sessionStorage),model=data.model;
+  title.textContent=model.name;progress.value=1;status.textContent='Deine Gestaltung wird vorbereitet …';
+  // Same signed design target and renderer as the gallery; no separate artwork logic.
+  if(data.startPreview)client.loadDesignPreview(data.startPreview.target,data.startPreview.previewUrl).then(toDataUrl).then(url=>{preview.src=url;preview.hidden=false;}).catch(()=>{});
   // Startschriften/-motive aus dem Katalog sofort holen (das Fenster liest sie dann aus dem Zwischenspeicher).
-  warm.catalog.then(catalog=>{for(const url of startResourceUrls(model.universal,catalog,warm.catalogPath))fetch(url,{credentials:'same-origin'}).catch(()=>{});});
+  const warmed=new Set(),warmStart=catalog=>{for(const url of startResourceUrls(model.universal,catalog,warm.catalogPath)){if(warmed.has(url))continue;warmed.add(url);fetch(url,{credentials:'same-origin'}).catch(()=>{});}};
+  warmStart(null);warm.catalog.then(warmStart);
   const resources=await client.loadResources(model.universal,toDataUrl);
+  progress.value=2;
   const backUrl=shopUrl(data.shopDomain,fragment.get('back'));
   // Fenster über der Produktseite (shop-embed.mjs): Übergabe und Schließen gehen an die Shop-Seite, kein Seitenwechsel.
   const embedded=fragment.get('embed')==='1'&&window.parent!==window,shopOrigin='https://'+data.shopDomain;
@@ -39,13 +45,14 @@ try{
   createDesignSwitch({initial:{client,data,resources,frame},fragment,container:document.querySelector('#editor'),activate,toDataUrl});header.hidden=false;
   // Fenster-Modus: der Produktseite melden, dass die Seite da ist (sonst zeigt sie nach einer Weile einen Hinweis mit Ausweg).
   if(embedded)frame.addEventListener('load',()=>window.parent.postMessage({type:'gravuru-shop-ready'},shopOrigin),{once:true});
-  document.querySelector('#editor').append(frame);status.hidden=true;
+  editor.append(frame);
   window.addEventListener('message',event=>{
     if(event.origin!==location.origin||event.source!==frame.contentWindow)return;
     if(event.data?.type==='gravuru-fk-close')leave();
-    if(event.data?.type==='gravuru-ux-ready'){header.hidden=true;if(embedded)window.parent.postMessage({type:'gravuru-shop-editor-ready'},shopOrigin);}
+    if(event.data?.type==='gravuru-ux-ready'){progress.value=3;header.hidden=true;loading.hidden=true;status.hidden=true;editor.hidden=false;frame.contentWindow.dispatchEvent(new Event('resize'));if(embedded)window.parent.postMessage({type:'gravuru-shop-editor-ready'},shopOrigin);}
+    if(event.data?.type==='gravuru-ux-failed'){progress.hidden=true;status.textContent=event.data.message||'Die Gestaltung konnte nicht geladen werden. Bitte erneut öffnen.';if(embedded)window.parent.postMessage({type:'gravuru-shop-failed',message:status.textContent},shopOrigin);}
   });
-}catch(error){status.hidden=false;status.textContent=error.message;
+}catch(error){status.hidden=false;progress.hidden=true;status.textContent=error.message;
   // Fenster-Modus: Fehler auch der Produktseite melden (nur Typ und Text, keine Sitzungsdaten); sie bietet den Ausweg an.
   if(fragment.get('embed')==='1'&&window.parent!==window)window.parent.postMessage({type:'gravuru-shop-failed',message:String(error?.message||'').slice(0,300)},'*');
 }

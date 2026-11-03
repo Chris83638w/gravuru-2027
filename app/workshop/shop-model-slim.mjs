@@ -64,12 +64,12 @@ export function createModelSlimmer({fetchJson=null,surfaceSwaps=new Map(),cacheS
   }catch{return null;}
  }
  // Ungenutzte eigene Schriften als Datei ablegen; Ergebnis: Einträge für den Nachlade-Index.
- function defer(key,fonts,universal,source){
+ function defer(key,fonts,universal,source,all=false){
   const cached=key?decisions.get(key)?.defer:null;
   if(cached&&cached.every(e=>fontFiles.has(e.hash))){note(cached,source);return cached;}
   const used=designFontNames(universal),entries=[];
   for(const [name,font] of Object.entries(fonts)){
-   if(used.has(name)||catalog.has(name)||!font||typeof font!=='object')continue;
+   if((!all&&(used.has(name)||catalog.has(name)))||!font||typeof font!=='object')continue;
    const hash=remember(Buffer.from(JSON.stringify(font)));
    entries.push({name,hash,...(typeof font.label==='string'?{label:font.label}:{}),...(typeof font.category==='string'?{category:font.category}:{})});
   }
@@ -97,13 +97,13 @@ export function createModelSlimmer({fetchJson=null,surfaceSwaps=new Map(),cacheS
   return names;
  }
  // Verändert die übergebene (bereits kopierte) Modellstruktur und meldet, was entfiel.
- function slim(universal,{key=null,source=null}={}){
+ function slim(universal,{key=null,source=null,deferAll=false}={}){
   const report={fonts:[],deferred:[],surface:false};
   try{
    const fonts=universal?.localResources?.fonts;
-   if(catalog&&fonts&&typeof fonts==='object')for(const name of removable(key,fonts)){delete fonts[name];report.fonts.push(name);}
-   if(catalog&&typeof fontUrl==='function'&&fonts&&typeof fonts==='object'&&universal.localResources.lazyFonts===undefined){
-    const entries=defer(key,fonts,universal,source);
+   if(!deferAll&&catalog&&fonts&&typeof fonts==='object')for(const name of removable(key,fonts)){delete fonts[name];report.fonts.push(name);}
+   if((catalog||deferAll)&&typeof fontUrl==='function'&&fonts&&typeof fonts==='object'&&universal.localResources.lazyFonts===undefined){
+    const entries=defer(key,fonts,universal,source,deferAll);
     if(entries.length){
      universal.localResources.lazyFonts=entries.map(({name,hash,label,category})=>({name,url:fontUrl(hash),...(label?{label}:{}),...(category?{category}:{})}));
      for(const e of entries){delete fonts[e.name];report.deferred.push(e.name);}

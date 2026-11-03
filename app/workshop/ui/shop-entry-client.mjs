@@ -116,8 +116,11 @@ export function warmEditor(targets,{fetchImpl=globalThis.fetch}={}){
 // Schriften und Bibliotheksmotive, die die Startdesigns aus dem Katalog brauchen – gleiche Adressen wie der Editor
 // (lazy-resources-model: Kerndesigns, ohne Produktressourcen und Grundmotive; Funkklingel nur Startdesign).
 export function startResourceUrls(universal,catalog,catalogPath){
- if(!catalog||typeof catalogPath!=='string'||!/\/katalog-kern\.json$/.test(catalogPath))return [];
- const base=catalogPath.replace(/katalog-kern\.json$/,''),local=universal?.localResources||{};
+ const local=universal?.localResources||{};
+ const own=new Map((local.lazyFonts||[]).filter(f=>typeof f?.name==='string'&&/^\/konfigurator\/shop\/schriften\/[a-f0-9]{64}\.json$/.test(f.url||'')).map(f=>[f.name,f.url]));
+ const validCatalog=!!catalog&&typeof catalogPath==='string'&&/\/katalog-kern\.json$/.test(catalogPath);
+ if(!validCatalog){catalog={};catalogPath='';}
+ const base=catalogPath.replace(/katalog-kern\.json$/,'');
  const localFonts=new Set(Object.keys(local.fonts||{})),skipMotifs=new Set([...(local.motifs||[]).map(m=>m?.key),...Object.keys(catalog.motifs||{})]);
  // Nur Dateien, die der Host zwischenspeichern darf (acrylCacheControl: Slug-Namen); sonst wäre es ein Doppelabruf.
  const files=new Map((catalog.font_index||[]).filter(f=>typeof f?.name==='string'&&f.url===undefined&&/^[a-z0-9-]{1,80}\.json$/.test(f.file||'')).map(f=>[f.name,f.file])),motifKeys=new Set((catalog.motif_index||[]).map(m=>m?.key));
@@ -125,7 +128,7 @@ export function startResourceUrls(universal,catalog,catalogPath){
  const initial=universal?.doorbell?[designs.find(d=>d?.id===universal.profile.defaultDesignId)||designs[0]].filter(Boolean):designs;
  const urls=new Set();
  for(const o of initial.flatMap(d=>Array.isArray(d?.objects)?d.objects:[])){
-  if(o?.type==='text'&&files.has(o.font)&&!localFonts.has(o.font))urls.add(base+'schriften/'+encodeURIComponent(files.get(o.font)));
+  if(o?.type==='text'&&!localFonts.has(o.font)){if(own.has(o.font))urls.add(own.get(o.font));else if(validCatalog&&files.has(o.font))urls.add(base+'schriften/'+encodeURIComponent(files.get(o.font)));}
   if(o?.type==='motif'&&typeof o.motif==='string'&&/^[A-Za-z0-9_-]{1,80}$/.test(o.motif)&&motifKeys.has(o.motif)&&!skipMotifs.has(o.motif))urls.add(base+'motive/'+o.motif+'.json');
  }
  return [...urls].slice(0,24);
@@ -134,11 +137,28 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
   if(typeof token!=='string'||!/^gse1\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(token))fail('Bitte öffne den Konfigurator über „Jetzt personalisieren“ auf der Produktseite.');
   const headers=extra=>({...extra,'X-Gravuru-Shop-Session':token});
   const request=async(path,options={})=>fetchImpl(mapWorkshopPath(path),{...options,headers:headers(options.headers||{}),credentials:'omit',cache:'no-store'});
-  async function loadModel(){
-    const data=await json(await fetchImpl(API+'model',{credentials:'omit',cache:'no-store',headers:headers({})}));
+  async function loadModel(designId=null){
+    const data=await json(await fetchImpl(API+'model'+(designId?'?design='+encodeURIComponent(designId):''),{credentials:'omit',cache:'no-store',headers:headers({})}));
     const model=data.model;
     if(model?.key!=='acryl'||!model.universal?.profile||!model.configuration?.id||!EDITORS.test(data.editorPath||'')||typeof data.shopDomain!=='string'||!/^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(data.shopDomain))fail('Das Produkt ist für diesen Konfigurator nicht vorbereitet.');
     return data;
+  }
+  async function loadInitialModel(fragment,storage){
+    const config=fragment.get('config'),rev=fragment.get('rev');
+    if(!/^konfig_[a-f0-9-]{36}$/.test(config||'')||! /^[1-9][0-9]{0,8}$/.test(rev||''))return loadModel(fragment.get('design'));
+    // The same private token gate as cart-edit.mjs. Select the saved template
+    // before mounting; the editor still restores and verifies the full draft.
+    const tokens=new Set();
+    try{for(let i=0;i<storage.length;i++){const key=storage.key(i);if(!['gravuru-acrylic-private:','gravuru-form-draft:'].some(p=>key?.startsWith(p)))continue;const value=JSON.parse(storage.getItem(key)||'null');if(/^[a-f0-9]{64}$/.test(value?.token||''))tokens.add(value.token);}}catch{}
+    for(const token of tokens){
+      const response=await request(WORKSHOP+'cart-configurations/'+config+'/'+rev,{headers:{'X-Gravuru-Draft':token}});
+      if(response.status===404)continue;
+      const loaded=await json(response);
+      const id=loaded.document?.design?.id;
+      if(typeof id!=='string')fail('Die gespeicherte Gestaltung konnte nicht geladen werden.');
+      return loadModel(id);
+    }
+    fail('Diese Gestaltung ist auf diesem Gerät nicht mehr zugänglich. Die Warenkorbzeile bleibt unverändert.');
   }
   // Private Designressourcen einmal laden; der Editor liest sie unter beiden Pfadfassungen (Acryl-Umschreibung).
   async function loadResources(universal,toDataUrl){
@@ -196,8 +216,13 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
     if(typeof target!=='string'||target.length>4096)fail('Bitte ein Design aus der Auswahl wählen.');
     return fetchImpl(API+action,{method:'POST',credentials:'omit',cache:'no-store',headers:headers({'Content-Type':'application/json'}),body:JSON.stringify({target})});
   }
-  async function loadDesignPreview(target){const response=await designRequest('design-gallery-preview',target);if(!response.ok)await json(response);return response.blob();}
+  async function loadDesignPreview(target,previewUrl){
+    if(typeof previewUrl==='string'&&/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/vorschauen\/[a-f0-9]{64}\.svg$/.test(previewUrl)){
+      const cached=await fetchImpl(previewUrl,{credentials:'omit',cache:'force-cache'});if(cached.ok)return cached.blob();
+    }
+    const response=await designRequest('design-gallery-preview',target);if(!response.ok)await json(response);return response.blob();
+  }
   async function switchDesign(target){return json(await designRequest('design-switch',target));}
-  return Object.freeze({request,loadModel,loadResources,submitCart,submitThemeCart,loadDesignGallery,loadDesignPreview,switchDesign});
+  return Object.freeze({request,loadModel,loadInitialModel,loadResources,submitCart,submitThemeCart,loadDesignGallery,loadDesignPreview,switchDesign});
 }
 

@@ -10,7 +10,8 @@ import {localAssistant,ACRYLIC_GUIDES} from './help.mjs';
 import {makeAcrylicConfig} from './acrylic-product.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {writeLazyResources,patchEditorLoading} from './lazy-resources-build.mjs';
-import {buildEditorBundle,patchEditorBundle} from './bundle-build.mjs';
+import {buildProductEditorBundles,patchEditorBundle} from './bundle-build.mjs';
+import {splitReferenceDevice} from './reference-device-build.mjs';
 export const HERE=path.dirname(fileURLToPath(import.meta.url));
 export const ROOT=path.resolve(HERE,'../..');
 export const OUTPUT=path.join(HERE,'.preview');
@@ -56,7 +57,34 @@ export function build({outputDirectory=OUTPUT}={}){
   for(const [key,value] of Object.entries(urls))urls[key]=Array.isArray(value)?value.map(u=>'/_runtime/'+u.split('/').pop()):'/_runtime/'+value.split('/').pop();
   source=source.replace(/(<script[^>]*id="preview-urls"[^>]*>)[\s\S]*?(<\/script>)/,(_,a,b)=>a+JSON.stringify(urls)+b);
   replaceOnce('<base href="/" target="_top">','');
+  // The old page header/loading copy must never enter the rendered document.
+  // The shop host owns the loading screen; retain only the internal form/status hooks.
+  const oldIntro=source.slice(source.indexOf('<body>'),source.indexOf('<script id="preview-data"'));
+  const formMarkup=oldIntro.match(/<label hidden>[\s\S]*?<\/label>/)?.[0];
+  if(!formMarkup)throw Error('Interne Formularauswahl fehlt');
+  replaceOnce(oldIntro,'<body>\n<main class="c-main">'+formMarkup+'<p id="loading" role="status" hidden></p><main id="editor"></main>\n');
+  replaceOnce("document.querySelector('header').append(close)","document.querySelector('header')?.append(close)");
+  replaceOnce("document.querySelector('.preview-badge').textContent=profile.purchasing.bellModel;",'');
+  // Initialise compatibility controls outside the document. They supply the editor
+  // state/events, but the browser never paints the old green editor during startup.
+  replaceOnce("host.querySelector('gravuru-configurator')?.cCleanup?.();host.replaceChildren(el);",
+    "host.querySelector('gravuru-configurator')?.cCleanup?.();if(window.parent.UniversalConfig){await el.connectedCallback();}else{host.replaceChildren(el);}");
+  replaceOnce("host.removeAttribute('aria-busy');status.textContent='';",
+    "host.removeAttribute('aria-busy');status.textContent='';return el;");
+  replaceOnce("}catch(error){status.textContent='Die Vorschau konnte nicht vollständig geladen werden. Bitte die Seite neu laden. '+error.message;}",
+    "}catch(error){console.error('Editorstart fehlgeschlagen',error);status.hidden=false;status.textContent='Die Gestaltung konnte nicht geladen werden. Bitte erneut öffnen.';window.parent.postMessage({type:'gravuru-ux-failed',message:status.textContent},location.origin);}");
+  replaceOnce('stainlessMoney=c=>new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"}).format(c/100)',
+    'stainlessEuro=new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"}),stainlessMoney=c=>stainlessEuro.format(c/100)');
   // The shared legacy shell can render once before its optional doorbell image
+  // Native products use their validated mm geometry; the legacy steel fitter
+  // must not measure and shrink that composition while mounting the shell.
+  replaceOnce('el.fitComposition=function(){','el.fitComposition=function(){if(window.parent.UniversalConfig)return;');
+  replaceOnce('const galleryScroll=gallery.scrollTop;',
+    'if(window.parent.UniversalConfig?.familyFormats?.fixedSize)return sync.apply(this,args);const galleryScroll=gallery.scrollTop;');
+  replaceOnce('const scroll=gallery.scrollTop,result=sync.apply(this,args);gallery.scrollTop=scroll;',
+    'if(window.parent.UniversalConfig?.familyFormats?.fixedSize)return sync.apply(this,args);const scroll=gallery.scrollTop,result=sync.apply(this,args);gallery.scrollTop=scroll;');
+  replaceOnce('el.updateMobilePreview=function(){oldMobile.call(this);',
+    'el.updateMobilePreview=function(){if(window.parent.UniversalConfig?.familyFormats?.fixedSize)return;oldMobile.call(this);');
   // has loaded. Native products have no such component or image at all.
   replaceOnce('function bell(){const b=geometry.bellImageBounds||geometry.bell;',
     'function bell(){if(!window.FunkklingelImage)return "";const b=geometry.bellImageBounds||geometry.bell;');
@@ -88,12 +116,12 @@ export function build({outputDirectory=OUTPUT}={}){
   replaceOnce('prepareMotifGeometry(entries);',
     'if(!window.parent.UniversalConfig){Object.assign(catalog.fonts,window.parent.LabradorFonts);entries.unshift(window.parent.LabradorMotif);}const localResources=window.parent.UniversalConfig?.localResources;if(localResources)Object.assign(catalog.fonts,localResources.fonts);prepareMotifGeometry(entries.filter(e=>typeof e.svgFragment===\'string\'));if(localResources)entries.unshift(...localResources.motifs.map(m=>({...m,svgFragment:window.GravuruPreviewResource.previewResourceMarkup(m.svgFragment)})));window.GravuruTemplateOnlyMotifKeys=new Set((localResources?.motifs||[]).filter(m=>m.embeddedOnly===true||localResources.motive_in_bibliothek===false).map(m=>m.key));window.GravuruMotifCategories=window.GravuruProfileChoices.motifChoices(entries,window.parent.UniversalConfig?.workshopProfiles?.selections?.motifs,window.GravuruTemplateOnlyMotifKeys).map(({key,name,category})=>({key,name,category}));');
   replaceOnce('await mount(form.value);',
-    "await mount(form.value);const specimen=host.querySelector('gravuru-configurator');if(window.parent.UniversalConfig)adapter.installEarlyPhotoTap(specimen,window.parent.UniversalConfig);if(!window.parent.UniversalConfig){specimen.chooseDesign('FK-LABRADOR-MICHROMA-01');adapter.hardenDoorbell(specimen);}specimen.$('[data-setting=guides]').checked=false;specimen.cfg.orderEnabled=false;specimen.cfg.demo=true;specimen.sync();const ux=await import('/configurator/variant-m/ux.mjs');await ux.installUX(specimen,window.parent.UniversalConfig,window.parent.GravuruModelProfile);");
+    "const specimen=await mount(form.value);if(window.parent.UniversalConfig)adapter.installEarlyPhotoTap(specimen,window.parent.UniversalConfig);if(!window.parent.UniversalConfig){specimen.chooseDesign('FK-LABRADOR-MICHROMA-01');adapter.hardenDoorbell(specimen);}specimen.$('[data-setting=guides]').checked=false;specimen.cfg.orderEnabled=false;specimen.cfg.demo=true;specimen.sync();const ux=await import('/configurator/variant-m/ux.mjs');await ux.installUX(specimen,window.parent.UniversalConfig,window.parent.GravuruModelProfile,{attach:()=>host.replaceChildren(specimen)});");
   for(const item of read('designs/aosu-labrador/image-source-verification.json'))source=source.replaceAll(item.url,'/_runtime/images/'+item.name);
   source=patchEditorLoading(source);
   // Ladezeit: alle Editor-Module als ein Bündel (bundle-build.mjs, Route /_bundle/); `?module=einzeln` lädt Einzelmodule.
-  const bundle=buildEditorBundle(outputDirectory);
-  source=patchEditorBundle(source,bundle.url);
+  const bundle=buildProductEditorBundles(outputDirectory);
+  source=patchEditorBundle(source,bundle.url,bundle.chunks);
   // Design-Karten/Galerie: Größenregeln nur für das äußere Vorschau-SVG, nie für verschachtelte Motiv-SVGs
   // (sonst werden Kreuz, Rose usw. in der Designauswahl aufgeblasen und verschoben; Fehler 20.10.2026).
   source=source.replace(/(\.c-design-card svg|\.c-gallery svg)(?=\s*[,{])/g,'$1:not(svg svg)');
@@ -104,6 +132,7 @@ export function build({outputDirectory=OUTPUT}={}){
    // Family targets may have IDs absent from the frozen legacy design closure.
    // Their gallery is rendered by adapter.renderThumbnails using the selected form.
    source=source.replace(loop,'if(!this.uxDragging&&!this.uxFamilyGallery)'+loop);}
+  source=splitReferenceDevice(source,LAZY).source;
   fs.writeFileSync(path.join(outputDirectory,'editor.html'),source);
   return {verifiedResources:inventory.length,models:models.length,editorBytes:Buffer.byteLength(source),lazyResources:{fonts:lazy.fonts,motifs:lazy.motifs},bundle:{url:bundle.url,modules:bundle.modules.length,styles:bundle.styles.length,bytes:bundle.bytes,gzipBytes:bundle.gzipBytes}};
 }

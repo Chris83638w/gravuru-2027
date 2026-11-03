@@ -154,6 +154,16 @@ test('complete shop entry module graph is served by the production shop-entry al
  // These must not become new public paths just to satisfy the entry page.
  for(const pathname of ['/workshop/process-profiles.mjs','/workshop/theme-limits.mjs','/platform/sources/app/shared/models/mounting-rules.mjs','/platform/sources/app/shared/models/contour-geometry.mjs'])assert.equal(entry.matches(pathname),false);
 }));
+
+test('start image uses the bound design and the existing session-gated gallery preview',()=>run(async(f,request,{token})=>{
+ const {token:t}=await token(),loaded=await request('/api/shop-entry/model','GET',undefined,session(t));
+ const target=loaded.data.startPreview?.target;assert.match(target,/^sgt1\./);
+ const preview=await request('/api/shop-entry/design-gallery-preview','POST',{target},session(t));
+ assert.equal(preview.status,200);assert.match(preview.headers['content-type'],/image\/svg\+xml/);
+ const {token:other}=await token();
+ assert.equal((await request('/api/shop-entry/design-gallery-preview','POST',{target},session(other))).status,409);
+ assert.equal(f.cartCalls.length,0);
+},galleryEntryFixture));
 test('model route serves only the bound product, preselects the shop variant and pins assignment revision',()=>run(async(f,request,{token})=>{
  const b02=f.first.variants.find(v=>v.mountingKey==='B02');
  const {token:t}=await token({variant:b02.shopifyVariantId.split('/').at(-1)});
@@ -484,7 +494,7 @@ test('embed start: window flag in the fragment, page framable only by the own sh
  assert.match(page.headers['content-security-policy'],new RegExp("frame-ancestors https://"+shopDomain.replace(/\./g,'\\.')+"$"));
  // Vorwärmen: Editor-Seite + Kernkatalog je Datenbereich als Hinweis, Client-Modul vorgeladen.
  const html=page.body.toString(),warm=html.match(/<meta name="gravuru-warm" content="([^"]+)">/);
- assert.deepEqual(JSON.parse(warm[1].replaceAll('&quot;','"')),{acryl:['/_merchant-acryl-editor.html','/_acryl-runtime/lazy/katalog-kern.json']});
+ assert.deepEqual(JSON.parse(warm[1].replaceAll('&quot;','"')),{acryl:['/_acryl-runtime/lazy/katalog-kern.json']},'editor HTML is loaded once, by iframe navigation');
  assert.match(html,/<link rel="modulepreload" href="\/konfigurator\/shop\/shop-entry-client\.mjs">/);
  assert.doesNotMatch(page.headers['content-security-policy'],/frame-ancestors[^;]*\*/);
  const module=await request(proxyPath+'/shop-embed.mjs?'+signed(f,{}));
@@ -507,15 +517,15 @@ test('customer model passes through the model slimmer with a revision key; the s
  const {token:t}=await token();
  const loaded=await request('/api/shop-entry/model',undefined,undefined,session(t));
  assert.equal(loaded.status,200);assert.equal(loaded.data.model.universal.slimmed,true);
- assert.match(f.slimKeys[0],/:3$|:\d+$/);
+ assert.match(f.slimKeys[0],/:\d+:fonts$/);
  assert.equal(f.models.get(f.first.localWorkshopRecord).universal.slimmed,undefined,'gespeichertes Modell unverändert');
 },f=>{f.slimKeys=[];f.options.modelSlimmer={ready:()=>true,load(){},slim(universal,{key}){f.slimKeys.push(String(key));universal.slimmed=true;return {fonts:[],surface:false};}};}));
 test('own fonts no design uses are served as immutable files from the shop entry and listed for lazy loading',()=>run(async(f,request,{token,entry})=>{
  const {token:t}=await token();
  const loaded=await request('/api/shop-entry/model',undefined,undefined,session(t));
  assert.equal(loaded.status,200);
- const u=loaded.data.model.universal;assert.deepEqual(Object.keys(u.localResources.fonts),['Nutzt']);
- assert.equal(u.localResources.lazyFonts.length,1);const url=u.localResources.lazyFonts[0].url;
+ const u=loaded.data.model.universal;assert.deepEqual(Object.keys(u.localResources.fonts),[]);
+ assert.equal(u.localResources.lazyFonts.length,2);const url=u.localResources.lazyFonts.find(f=>f.name==='Eigen').url;
  assert.match(url,/^\/konfigurator\/shop\/schriften\/[a-f0-9]{64}\.json$/);assert.equal(entry.matches(url),true);
  const file=await request(url);
  assert.equal(file.status,200);assert.equal(file.headers['cache-control'],'public, max-age=31536000, immutable');assert.match(file.headers['content-type'],/application\/json/);

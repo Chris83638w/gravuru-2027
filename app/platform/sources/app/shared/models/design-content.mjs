@@ -1,5 +1,5 @@
-import {DOORBELL_SCHEMA,doorbellLayoutIssue} from '../../../../../configurator/variant-m/doorbell-selection.mjs';
-import {setTextSize} from './doorbell-preview.mjs';
+import {DOORBELL_SCHEMA,doorbellLayoutIssue} from '../../../../../configurator/variant-m/product-model-module.mjs';
+import {setTextSize} from './text-paths.mjs';
 import {PROCESSING_PROFILES} from './processing-profiles.mjs';
 import {contourContainsPoint,contourContainsPolygon,contourObjectCorners,surfaceGeometry,ellipseEdgeDistance} from './contour-geometry.mjs';
 import {embeddedMotifFits} from './embedded-motif-fit.mjs';

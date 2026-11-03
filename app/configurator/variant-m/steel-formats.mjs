@@ -1,5 +1,5 @@
 import {objectIssue,validateGeometryHoles} from '../../platform/sources/app/shared/models/design-content.mjs';
-import {measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {measureText,setTextSize} from '../../platform/sources/app/shared/models/text-paths.mjs';
 import {holesFor} from '../../platform/sources/app/shared/models/mounting-rules.mjs';
 
 const fail=message=>{throw Error(message);};

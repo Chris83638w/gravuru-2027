@@ -1,0 +1,106 @@
+{
+  "readyMs": 16865.399999976158,
+  "errors": [],
+  "shots": [
+    {
+      "file": "000.jpg",
+      "ms": 242
+    },
+    {
+      "file": "001.jpg",
+      "ms": 292
+    },
+    {
+      "file": "002.jpg",
+      "ms": 1272
+    },
+    {
+      "file": "003.jpg",
+      "ms": 1391
+    },
+    {
+      "file": "004.jpg",
+      "ms": 1396
+    },
+    {
+      "file": "005.jpg",
+      "ms": 1727
+    },
+    {
+      "file": "006.jpg",
+      "ms": 17306
+    },
+    {
+      "file": "007.jpg",
+      "ms": 17321
+    },
+    {
+      "file": "008.jpg",
+      "ms": 19019
+    },
+    {
+      "file": "009.jpg",
+      "ms": 19096
+    }
+  ],
+  "options": [
+    {
+      "group": "format",
+      "value": "16x28",
+      "options": [
+        "Hochformat · 49,99 €",
+        "Querformat · 59,99 €",
+        "Länglich · 69,99 €"
+      ]
+    },
+    {
+      "group": "position",
+      "value": "standard",
+      "options": [
+        "Bitte wählen",
+        "Klingel unten",
+        "Klingel oben"
+      ]
+    },
+    {
+      "group": "frame",
+      "value": "FK-RUNDUM",
+      "options": [
+        "Ganzer Rahmen · ohne Aufpreis",
+        "Ohne sichtbaren Rahmen · ohne Aufpreis",
+        "Rahmen links & rechts · ohne Aufpreis",
+        "Rahmen oben & unten · ohne Aufpreis"
+      ]
+    },
+    {
+      "group": "color",
+      "value": "schwarz",
+      "options": [
+        "Schwarz · ohne Aufpreis",
+        "Anthrazit · ohne Aufpreis"
+      ]
+    }
+  ],
+  "tiles": [
+    {
+      "group": "mounting",
+      "id": "K00"
+    },
+    {
+      "group": "mounting",
+      "id": "GWS"
+    },
+    {
+      "group": "mounting",
+      "id": "KRA"
+    },
+    {
+      "group": "mounting",
+      "id": "SIL"
+    },
+    {
+      "group": "mounting",
+      "id": "B04S"
+    }
+  ]
+}

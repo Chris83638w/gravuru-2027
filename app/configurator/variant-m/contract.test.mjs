@@ -135,6 +135,9 @@ test('required text must differ from the template sample text',()=>{
  const cfg=themed({},{required:true}),s=themedState(cfg),name=s.objects.find(o=>o.fieldKey==='name');
  assert.throws(()=>themedSave(cfg,s),/Bitte das Feld „Name“ ausfüllen\./);
  name.text=' balu ';assert.throws(()=>themedSave(cfg,s),/Bitte das Feld „Name“ ausfüllen\./);
+ // Empty/control-only text is rejected either by content validation or by the
+ // template-bound required-field check; neither path may save a draft.
+ for(const empty of ['','   ','\n\t']){name.text=empty;assert.throws(()=>themedSave(cfg,s),Error);}
  name.uxHidden=true;name.text='Luna';assert.throws(()=>themedSave(cfg,s),/Bitte das Feld „Name“ ausfüllen\./);
  delete name.uxHidden;s.objects=s.objects.filter(o=>o.id!==name.id);assert.throws(()=>themedSave(cfg,s),/Bitte das Feld „Name“ ausfüllen\./);
  // Der Kunde kann das Pflichtkennzeichen nicht selbst abschalten.

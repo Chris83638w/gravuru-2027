@@ -1,6 +1,6 @@
 import {productPreviewSize} from './backing-preview-viewport.mjs';
 import {maskContourGuides} from './contour-guides.mjs';
-import {textPaths,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {textPaths,setTextSize} from '../../platform/sources/app/shared/models/text-paths.mjs';
 import {fitsSurface,fittingTextSize,canColorElement,PRINT_PALETTES,paletteGroups,restoreOriginalColors} from './usability-model.mjs';
 import {processPalette,processFreeColor} from '../../workshop/process-profiles.mjs';
 import {colorPalettes} from './profile-selection.mjs';

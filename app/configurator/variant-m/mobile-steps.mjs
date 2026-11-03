@@ -176,6 +176,7 @@ export async function installMobileSteps(api){
     const rows=summaryRows({profile,legacy,state:el.state,quantity,totalText,designName});
     review.querySelector('[data-ux-mobile-summary]').innerHTML=rows.map(([label,value])=>`<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join('');
     // K1-Hinweise (Pflichtfeld, Limit) und fehlendes Pflichtfoto sichtbar vor dem Warenkorb.
+    el.uxAttemptTextValidation?.();
     let issues=[];try{issues=el.uxTextIssues?.()||[];}catch{}
     const missingPhoto=el.state.objects.filter(o=>!o.uxHidden&&o.type==='photoSlot'&&o.required&&!o.uxUploadId);
     const box=review.querySelector('[data-ux-mobile-issues]');

@@ -1,5 +1,5 @@
 import {galleryScope,galleryProcess,galleryTargetAllowed} from './shop-gallery-scope.mjs';
-import {createHmac,timingSafeEqual} from 'node:crypto';
+import {createHmac,timingSafeEqual,createHash} from 'node:crypto';
 import {selectedProfile,quote} from '../configurator/variant-m/contract.mjs';
 import {physicalGeometry} from '../configurator/variant-m/print-geometry.mjs';
 import {productPreview} from './product-preview.mjs';
@@ -15,8 +15,11 @@ const fields=['sid','storeId','productId','productRevision','bindingId','assignm
 // No catalogue imports or approvals happen here. Customer designs are taken
 // only from the fixed, already activated product model. Catalogue target
 // approval remains the importer's responsibility, just as for normal entry.
-export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFor,allowedAssets,checkBinding=()=>{},checkBindings,waitMs=4000,onMeasure=()=>{}}){
+export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFor,allowedAssets,checkBinding=()=>{},checkBindings,waitMs=4000,onMeasure=()=>{},previewUrl=null}){
  const cache=new Map();
+ const previews=new Map(),previewFiles=new Map();let previewBytes=0;
+ const previewKey=(b,id)=>JSON.stringify([b.storeId,b.tenantId,b.productId,b.productRevision,b.options,id]);
+ const cachedPreview=(b,id)=>previews.get(previewKey(b,id));
  const snapshots=gallerySnapshotCodec(secret);
  const measure=(context,event,values={})=>{try{onMeasure({event,storeId:context.store.storeId,...values});}catch{}};
  const key=createHmac('sha256',secret).update('gravuru-shop-design-target/v1').digest();
@@ -135,7 +138,20 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
  // Startup warming never creates sessions/tokens or changes product data.
  // Catch at the caller; a failed build is discarded and the next call can retry.
  function warm(context){return cachedCards(context);}
- async function availableCards(context){
+ async function availableCards(context,sourceModel=null){
+  // Fixed-size products only offer their own approved templates. They need
+  // neither a store-wide binding scan nor the 250,000-card warm-up.
+  const own=sourceModel;
+  if(own?.universal.familyFormats?.fixedSize){
+   const binding=context.binding,profile=selectedProfile(own.universal,binding.options),scope=galleryScope(own,binding),process=galleryProcess(profile),geometry=physicalGeometry(own.universal,{mOptions:binding.options});
+   checkBinding(context.store,binding,own);
+   const source={scope,process,theme:profile.themeId||null},cards=[];
+   for(const design of profile.designs){
+    let selected;try{selected=selection(binding,own,design.id,{profile,geometry});}catch{continue;}
+    cards.push({binding,scope,process,design,designId:design.id,dedupe:design.id,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:own.name,designName:design.name||own.name,themes:design.themes||[],widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:selected.price.unitCents,currency:selected.price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
+   }
+   return {cards,source};
+  }
   const snapshot=await cachedCards(context),source=snapshot.sources.get(context.binding.bindingId);
   if(!source)return {cards:[],source:null};
   const cards=(snapshot.scopes.get(source.scope.key)||[]).filter(row=>galleryTargetAllowed(source,row,row.design)),unique=[...new Map(cards.map(row=>[row.binding.bindingId,row])).values()];
@@ -148,16 +164,16 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   return {cards:cards.filter(row=>allowed.has(row.binding.bindingId)),source};
  }
  const preparing=Symbol('preparing');
- async function boundedCards(context){
+ async function boundedCards(context,sourceModel){
   let timer;
-  try{return await Promise.race([availableCards(context),new Promise(resolve=>{timer=setTimeout(()=>resolve(preparing),waitMs);})]);}
+  try{return await Promise.race([availableCards(context,sourceModel),new Promise(resolve=>{timer=setTimeout(()=>resolve(preparing),waitMs);})]);}
   finally{clearTimeout(timer);}
  }
- async function list(context,{page=0,theme='preferred'}={}){
+ async function list(context,{page=0,theme='preferred',sourceModel=null}={}){
   if(!['preferred','all'].includes(theme))fail(422,'shop_gallery_theme','Dieses Thema gibt es nicht.');
   if(!Number.isSafeInteger(page)||page<0||page>10000)fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
   if(typeof context.store.registry.listActive!=='function')return {items:[],nextPage:null,total:0};
-  const result=await boundedCards(context);
+  const result=await boundedCards(context,sourceModel);
   if(result===preparing)return {status:'preparing',message:'Designs werden vorbereitet – bitte gleich noch einmal versuchen.',items:[],nextPage:page,total:null};
   const {cards,source}=result;
   const choices=new Map();
@@ -168,15 +184,29 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   }
   const rows=[...choices.values()],start=page*40;
   if(theme==='preferred'&&source?.theme)rows.sort((a,b)=>Number(b.card.themes.includes(source.theme))-Number(a.card.themes.includes(source.theme)));
-  const items=rows.slice(start,start+40).map(({binding,designId,card})=>({...card,target:issue(context,binding,designId,source.scope.key),current:binding.productId===context.binding.productId&&binding.shopifyVariantId===context.binding.shopifyVariantId}));
+  const items=rows.slice(start,start+40).map(({binding,designId,card})=>({...card,...(previewUrl&&cachedPreview(binding,designId)?{previewUrl:previewUrl(cachedPreview(binding,designId).hash)}:{}),target:issue(context,binding,designId,source.scope.key),current:binding.productId===context.binding.productId&&binding.shopifyVariantId===context.binding.shopifyVariantId}));
   return {items,nextPage:start+40<rows.length?page+1:null,total:rows.length,...(source?.theme?{hasTheme:true}:{})};
  }
  function preview(context,token){
-  const t=target(context,token),model=structuredClone(t.model),allowed=allowedAssets(t.store,t.binding,model),assets=t.store.workshop.assets;
+  const t=target(context,token),allowed=allowedAssets(t.store,t.binding,t.model),hit=cachedPreview(t.binding,t.design.id);
+  for(const example of t.model.universal.localResources.photoExamples||[])if(example.designId===t.design.id&&!allowed.has(example.assetId))unavailable();
+  if(hit)return hit.body.toString();
+  const model=structuredClone(t.model),assets=t.store.workshop.assets;
   const data=id=>{if(!allowed.has(id))unavailable();return 'data:image/svg+xml;base64,'+assets.read(id).toString('base64');};
   model.universal.localResources.motifs=model.universal.localResources.motifs.map(m=>m.artwork?assets.resource(m.artwork.assetId):m);
   const examples=(model.universal.localResources.photoExamples||[]).filter(e=>e.designId===t.design.id).map(e=>({...e,url:data(e.assetId)}));
-  return productPreview(model,{options:t.binding.options,designId:t.design.id,examples,layout:'card',keepout:false,designArea:false}).replace(/href="\/api\/workshop\/design-assets\/([a-f0-9]{64})\/preview\.svg"/g,(_,id)=>'href="'+data(id)+'"');
+  const result=productPreview(model,{options:t.binding.options,designId:t.design.id,examples,layout:'card',keepout:false,designArea:false}).replace(/href="\/api\/workshop\/design-assets\/([a-f0-9]{64})\/preview\.svg"/g,(_,id)=>'href="'+data(id)+'"');
+  const body=Buffer.from(result),hash=createHash('sha256').update(body).digest('hex');
+  previews.set(previewKey(t.binding,t.design.id),{body,hash});previewFiles.set(hash,body);previewBytes+=body.length;
+  while(previews.size>1&&(previews.size>256||previewBytes>32*1024*1024)){const [key,old]=previews.entries().next().value;previews.delete(key);previewBytes-=old.body.length;if(![...previews.values()].some(p=>p.hash===old.hash))previewFiles.delete(old.hash);}
+  return result;
  }
- return {list,target,preview,warm};
+ function start(context,model,designId){
+  const scope=galleryScope(cardFor(context.store,context.binding),context.binding);
+  if(!scope)return null;
+  const selected=selection(context.binding,model,designId);
+  const hit=cachedPreview(context.binding,selected.design.id);
+  return {target:issue(context,context.binding,selected.design.id,scope.key),...(previewUrl&&hit?{previewUrl:previewUrl(hit.hash)}:{})};
+ }
+ return {list,target,preview,warm,start,previewFile:hash=>previewFiles.get(hash)||null};
 }

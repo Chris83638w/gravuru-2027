@@ -234,7 +234,7 @@ test('Produktschriften: eigener Nachlade-Index mit inhaltsadressierter URL; Schr
   const loader=await freshLoader('produktschriften');
   const config={localResources:{fonts:{},lazyFonts:[{name:'Lato',url,category:'Schlicht'},{name:'Lora',url}]},profile:{designs:[{objects:[]}]}};
   const {catalog,entries}=await loader.loadStart(config,{get,base:'/l/'});
-  assert.deepEqual(catalog.font_index.map(f=>f.name),['Lora','Lato'],'Katalogschrift gewinnt bei gleichem Namen');
+  assert.deepEqual(catalog.font_index.map(f=>f.name),['Lato','Lora'],'Feste Produktschrift gewinnt bei gleichem Namen');
   assert.deepEqual(requests,['/l/katalog-kern.json']);
   const el={fontData:{},fontList:[],motifs:{},catalog:{motifs:{},motif_bounds:{}},labels:{},dataset:{},shadowRoot:null,dispatchEvent(){}};
   loader.attach(el,{catalog,entries,prepare:()=>{},get,base:'/l/'});
@@ -249,4 +249,13 @@ test('Produktschriften zählen in der Editor-Prüfung als bekannte Schriften (oh
     fonts:{Ashley:{regular:{units:1000,glyphs:{A:{a:500,d:'M0 0L1 1Z'}}}}},lazyFonts:[{name:'Lato',url:'/konfigurator/shop/schriften/'+hash+'.json'},{name:'Ashley',url:'/konfigurator/shop/schriften/'+hash+'.json'}]}};
   assert.deepEqual(localFontIds(config),['Ashley','Lato']);
   assert.throws(()=>localFontIds({...config,localResources:{...config.localResources,lazyFonts:[{name:'X',url:'/fremd'}]}}),/Produktschrift/);
+});
+
+test('fixed product fonts load by hash even when the shared catalogue uses the same name',async()=>{
+ const loader=await freshLoader('fixed-font-collision'),url='/konfigurator/shop/schriften/'+'c'.repeat(64)+'.json',seen=[];
+ const own={regular:{units:1000,glyphs:{A:{d:'own'}}}},wrong={regular:{units:1000,glyphs:{A:{d:'wrong'}}}};
+ const config={profile:{designs:[{objects:[{type:'text',font:'Lora'}]}]},localResources:{fonts:{},lazyFonts:[{name:'Lora',url}]}};
+ const get=async p=>{seen.push(p);if(p.endsWith('katalog-kern.json'))return {fonts:{Lora:wrong},motifs:{},font_index:[{name:'Lora',file:'lora.json'}],motif_index:[]};if(p===url)return own;throw Error('Unexpected '+p);};
+ const {catalog}=await loader.loadStart(config,{get,base:'/l/'});
+ assert.deepEqual(catalog.fonts.Lora,own);assert.equal(seen.filter(p=>p===url).length,1);assert.ok(!seen.includes('/l/schriften/lora.json'));
 });

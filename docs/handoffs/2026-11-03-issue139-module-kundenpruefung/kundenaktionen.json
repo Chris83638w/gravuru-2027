@@ -1,0 +1,176 @@
+{
+  "scope": "isolated real D24 model, customer UI only",
+  "earlyStep": "design",
+  "review": "Prüfen & bestellen\n\nDeine Auswahl im Überblick. Jeder Schritt bleibt frei erreichbar.\n\nBitte noch prüfen\n\nName: Pflichtfeld: Bitte deinen eigenen Text eingeben.\nZum Feld\n\nGröße\n300 × 200 mm\nMaterial\nEdelstahl · 1,5 mm\nOptionen\nOhne Bohrung\nDesign\nZuhause von Familie mit Haus und Herz\nTexte\nSpruch: Zuhause von\nMenge\n1\nPreis\n79,99 €\nMenge\n−\n+",
+  "nativeCartIssue": "Name: Pflichtfeld: Bitte deinen eigenen Text eingeben.",
+  "before": "79,99 €",
+  "after": "81,68 €",
+  "extraMotifCents": 169,
+  "removedMotifs": [
+    "motiv-1",
+    "f7e34a07-0888-4897-bdc7-f92967d9bb56"
+  ],
+  "remainingMotifs": 0,
+  "semanticQuery": "Wasser",
+  "semanticHits": [
+    {
+      "key": "import-781c58cbce0235c2d5418a5c",
+      "name": "Wassermann✓",
+      "category": "Sternzeichen",
+      "score": 8
+    },
+    {
+      "key": "import-59b5854feb26a2bf2754a477",
+      "name": "Anker 1✓",
+      "category": "Anker",
+      "score": 1
+    },
+    {
+      "key": "import-941dd8e1cad6ae6e076e96ac",
+      "name": "Anker 2✓",
+      "category": "Anker",
+      "score": 1
+    },
+    {
+      "key": "import-6f229c9c9921efb4480ddfd2",
+      "name": "Anker 3✓",
+      "category": "Anker",
+      "score": 1
+    },
+    {
+      "key": "import-9c84692e6ce30ecdeac5ef9e",
+      "name": "Anker 4✓",
+      "category": "Anker",
+      "score": 1
+    },
+    {
+      "key": "import-f793e39635f0c776a8819ef0",
+      "name": "Anker mit Seil✓",
+      "category": "Anker",
+      "score": 1
+    }
+  ],
+  "errors": [],
+  "ui": [
+    {
+      "tag": "BUTTON",
+      "text": "Zum Produkt",
+      "title": "Zum Produkt",
+      "ux": "back"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Entwurf speichern",
+      "title": "Entwurf speichern",
+      "ux": "account"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Vollbild",
+      "title": "",
+      "ux": "enlarge"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "",
+      "title": "",
+      "ux": "undo"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "",
+      "title": "",
+      "ux": "redo"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Hilfe",
+      "title": "Hilfe",
+      "ux": "help"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Ebenen (2)",
+      "title": "Ebenen (2)",
+      "ux": "contents"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Rückgängig",
+      "title": "",
+      "ux": "undo"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Bestseller-Motive",
+      "title": "",
+      "ux": "bestsellers"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Alle 721 Motive entdecken",
+      "title": "",
+      "ux": "discover-motifs"
+    },
+    {
+      "tag": "INPUT",
+      "text": "",
+      "title": "",
+      "placeholder": "z. B. Anker, Hund, Herz"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Alle Kategorien",
+      "title": "",
+      "ux": "categories"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "1Format & Größe",
+      "title": "",
+      "ux": "mobile-step"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "2Design",
+      "title": "",
+      "ux": "mobile-step"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "3Text",
+      "title": "",
+      "ux": "mobile-step"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "4Motive",
+      "title": "",
+      "ux": "mobile-step"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "5Prüfen",
+      "title": "",
+      "ux": "mobile-step"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "‹ Zurück",
+      "title": "",
+      "ux": "mobile-prev"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "79,99 €Preisdetails",
+      "title": "",
+      "ux": "price"
+    },
+    {
+      "tag": "BUTTON",
+      "text": "Zur Prüfung ›",
+      "title": "",
+      "ux": "mobile-next"
+    }
+  ]
+}

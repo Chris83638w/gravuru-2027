@@ -3,7 +3,7 @@
 // Produkts verwendet (die Galerie zeichnet alle Designs des Produkts). Weitere Schriften lädt
 // die Schriftauswahl bzw. „Text hinzufügen“, die Motivbibliothek der Reiter „Motive“,
 // Entwürfe (Sitzungsschutz, Kundenkonto, Warenkorb) vor dem Einlesen genau ihre Ressourcen.
-import {isLayeredDoorbell} from './doorbell-selection.mjs';
+import {isLayeredDoorbell} from './product-model-module.mjs';
 export const LAZY_BASE='/_runtime/lazy/';
 export const LAZY_MOTIF_KEY=/^[A-Za-z0-9_-]{1,80}$/;
 

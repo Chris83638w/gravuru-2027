@@ -2,7 +2,7 @@ import {designPaintOrder} from '../../platform/sources/app/shared/models/design-
 import {contourPathWithHoles} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
 import {previewResourceURL} from './preview-resource.mjs';
 import {photoShape,photoClip,photoMaskURL} from '../../platform/sources/app/shared/models/photo-shape.mjs';
-import {textPaths} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {textPaths} from '../../platform/sources/app/shared/models/text-paths.mjs';
 import {selectedProfile,designFromState,isGuideObject} from './contract.mjs';
 import {objectSurface} from './surfaces.mjs';
 import {acrylicSelection} from './acrylic-product.mjs';

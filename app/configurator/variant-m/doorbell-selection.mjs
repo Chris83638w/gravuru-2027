@@ -77,7 +77,14 @@ export function selectedDoorbellProfile(config,values={}){
  g.designArea=freeArea(g,frame);return p;
 }
 export function selectedDoorbellDesign(c,id,o={}){
- const d=selectedDoorbellProfile(c,o).designs.find(d=>d.id===id);if(!d)fail('Design gehört nicht zum Modell.');return d;
+ const {options,format}=doorbellSelection(c,o),p=format.profile;
+ if(!p.frames.some(f=>f.key===options.frame))fail('Unbekannte Rahmenausführung.');
+ const source=p.designs.find(d=>d.id===id);if(!source)fail('Design gehört nicht zum Modell.');
+ // A quote needs one template, not a cloned profile and every other template.
+ // Preserve the same position transform and return an isolated design.
+ const d=clone(source),g=p.geometry;
+ if(options.position==='opposite')d.objects=d.objects.map(obj=>({...obj,x:g.width-obj.x,y:g.height-obj.y,rotation:(obj.rotation||0)+(obj.uxDecoration?180:0)}));
+ return d;
 }
 export function doorbellLayoutIssue(o,p){
  const a=p.frames?.find(f=>f.key===p.doorbellSelection?.frame)?.acrylic;

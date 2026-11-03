@@ -1,30 +1,9 @@
+import {textPaths} from './text-paths.mjs';
+export {setTextSize,measureText,textGlyphLayout,textPaths} from './text-paths.mjs';
 import {gunzipSync,strFromU8} from '../vendor/fflate-0.8.3.mjs';
 const CDN='https://gravuru-design.myshopify.com/cdn/shop/t/40/assets/';
 let fontsJob;
 const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
 async function unpack(parts){const texts=await Promise.all(parts.map(async p=>{const r=await fetch(CDN+p);if(!r.ok)throw Error('Schriften konnten nicht geladen werden.');return r.text();}));const joined=texts.join('');if(joined.startsWith('{'))return JSON.parse(joined);const bytes=Uint8Array.from(atob(joined),c=>c.charCodeAt(0));return JSON.parse(strFromU8(gunzipSync(bytes)));}
 export function loadPreviewFonts(){if(!fontsJob)fontsJob=Promise.all([unpack(Array.from({length:16},(_,i)=>'gravuru-entwurf-fonts-'+String(i).padStart(2,'0')+'.txt')),unpack(Array.from({length:14},(_,i)=>'gravuru-catalog-51fa7e857d52-part-'+String(i).padStart(2,'0')+'.txt'))]).then(([extra,catalog])=>({...catalog.fonts,...extra})).catch(e=>{fontsJob=null;throw e;});return fontsJob;}
-// Explicit source leading follows font size; implicit leading keeps its existing default.
-export function setTextSize(o,size){if(Number.isFinite(o.lineHeight)&&Number.isFinite(o.size)&&o.size>0)o.lineHeight*=size/o.size;o.size=size;return o;}
-// A missing glyph stays visible as an outlined box while the customer corrects
-// the text. Validation still rejects it; measuring must not leave stale bounds.
-function previewGlyph(face, character) {
- const known=face.glyphs[character];if(known)return known;
- const u=face.units;
- return {a:u*.6,d:'M'+u*.05+' 0V'+u*.7+'H'+u*.55+'V0Z M'+u*.1+' '+u*.05+'H'+u*.5+'V'+u*.65+'H'+u*.1+'Z'};
-}
-export function measureText(o,fonts){const f=fonts[o.font]?.[o.bold?'bold':'regular']||fonts[o.font]?.regular;if(!f)throw Error('Bitte eine vorhandene Schriftart auswählen.');if(!Number.isFinite(o.size)||o.size<1||o.size>100)throw Error('Schriftgröße: 1 bis 100 mm.');const lines=o.text.split('\n');if(o.letterSpacing!==undefined&&(!Number.isFinite(o.letterSpacing)||o.letterSpacing< -10||o.letterSpacing>10))throw Error('Ungültiger Zeichenabstand.');const missing=[...o.text.replace(/\n/g,'')].find(c=>!Object.hasOwn(f.glyphs,c));o.w=Math.max(...lines.map(line=>[...line].reduce((s,c)=>s+previewGlyph(f,c).a,0)*o.size/f.units+Math.max(0,[...line].length-1)*(o.letterSpacing||0)));if(o.w<0)throw Error('Zeichenabstand ergibt eine negative Textbreite.');if(o.lineHeight!==undefined&&(!Number.isFinite(o.lineHeight)||o.lineHeight<=0||o.lineHeight>1000))throw Error('Ungültiger Zeilenabstand.');o.h=o.size*1.2+(lines.length-1)*(o.lineHeight??o.size*1.2);if(o.italic)o.w+=o.h*Math.tan(Math.PI/15);if(missing!==undefined)throw Error('Die gewählte Schrift enthält das Zeichen „'+missing+'“ nicht.');return o;}
-// Shared placement for rendering and the outline-based boundary fallback. The
-// returned coordinates are font units; baseline and scale are millimetres.
-export function textGlyphLayout(o,fonts){
- const f=fonts[o.font]?.[o.bold?'bold':'regular']||fonts[o.font]?.regular;if(!f)return null;
- const scale=o.size/f.units,lines=o.text.split('\n');
- return {scale,lines:lines.map((line,i)=>{
-  const spacing=(o.letterSpacing||0)/scale,width=[...line].reduce((s,c)=>s+previewGlyph(f,c).a,0)+Math.max(0,[...line].length-1)*spacing;
-  let x=o.textAnchor==='start'?-o.w/(2*scale):o.textAnchor==='end'?o.w/(2*scale)-width:-width/2;
-  const glyphs=[...line].map(c=>{const glyph=previewGlyph(f,c),placed={glyph,x};x+=glyph.a+spacing;return placed;});
-  return {baseline:(i-(lines.length-1)/2)*(o.lineHeight??o.size*1.2)+o.size*.35,glyphs};
- })};
-}
-export function textPaths(o,fonts){const layout=textGlyphLayout(o,fonts);if(!layout)return '';const {scale}=layout,markup=layout.lines.map(({baseline,glyphs})=>'<g transform="translate(0 '+baseline+') scale('+scale+' '+(-scale)+')">'+glyphs.map(({glyph,x})=>'<path d="'+escape(glyph.d)+'" transform="translate('+x+' 0)"/>').join('')+'</g>').join('');return o.italic?'<g transform="skewX(-12)">'+markup+'</g>':markup;}
 export function previewSvg(profile,design,selected,fonts,frameKey){const a=(profile.frames.find(f=>f.key===frameKey)||profile.frames[0]).acrylic,b=profile.geometry.bell;const objects=design.objects.map(o=>'<g transform="translate('+o.x+' '+o.y+') rotate('+o.rotation+')" fill="white">'+(o.type==='text'?textPaths(o,fonts):'<rect x="'+(-o.w/2)+'" y="'+(-o.h/2)+'" width="'+o.w+'" height="'+o.h+'" fill="none" stroke="white"/>')+(o.id===selected?'<rect x="'+(-o.w/2-1)+'" y="'+(-o.h/2-1)+'" width="'+(o.w+2)+'" height="'+(o.h+2)+'" fill="none" stroke="#8fd6b3" stroke-width=".5"/>':'')+'</g>').join('');const marks=(design.marks||[]).map(m=>'<path d="'+escape(m.d)+'" stroke-width="'+m.width+'"/>').join('');return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 168 288" width="336" height="576"><defs><linearGradient id="steel"><stop stop-color="#b4b9bd"/><stop offset=".4" stop-color="#f1f2f3"/><stop offset="1" stop-color="#a7adb2"/></linearGradient></defs><rect width="160" height="280" fill="url(#steel)"/><rect x="'+a.x+'" y="'+a.y+'" width="'+a.width+'" height="'+a.height+'" fill="#17191b"/><g stroke="white" fill="none">'+marks+'</g>'+objects+'<rect x="'+b.x+'" y="'+b.y+'" width="'+b.width+'" height="'+b.height+'" rx="2" fill="#363c41" stroke="#8a9499" stroke-width=".4"/><text x="'+(b.x+b.width/2)+'" y="'+(b.y+b.height/2)+'" text-anchor="middle" fill="#e2e7e8" font-size="4" font-family="Arial">Klingelposition</text></svg>';}

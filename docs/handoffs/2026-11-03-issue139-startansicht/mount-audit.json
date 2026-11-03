@@ -1,0 +1,51 @@
+{
+  "readyMs": 4716.899999976158,
+  "errors": [],
+  "shots": [
+    {
+      "file": "000.jpg",
+      "ms": 254
+    },
+    {
+      "file": "001.jpg",
+      "ms": 313
+    },
+    {
+      "file": "002.jpg",
+      "ms": 1630
+    },
+    {
+      "file": "003.jpg",
+      "ms": 2042
+    },
+    {
+      "file": "004.jpg",
+      "ms": 2046
+    },
+    {
+      "file": "005.jpg",
+      "ms": 5192
+    },
+    {
+      "file": "006.jpg",
+      "ms": 5194
+    },
+    {
+      "file": "007.jpg",
+      "ms": 5370
+    }
+  ],
+  "mountAudit": [
+    {
+      "connected": false,
+      "layoutReady": false,
+      "newShell": false
+    },
+    {
+      "connected": true,
+      "layoutReady": true,
+      "newShell": true
+    }
+  ],
+  "editorNavigations": 1
+}

@@ -191,6 +191,13 @@
  :host([data-ux-layout]) .ux-preview .stage:not(.acryl-scene),
  :host([data-ux-layout]) .c-large-preview .stage:not(.acryl-scene){padding-bottom:96px!important}
 }
+
+/* Fullscreen tools need their own row on narrow screens, including the labelled
+   design chooser. Do not squeeze that label into an icon-sized button. */
+@media(max-width:767px){
+ :host([data-ux-layout]) .c-large-preview .ux-canvas-toolbar{position:static!important;flex:none;align-self:stretch;height:auto!important;min-height:44px!important;max-height:none!important;margin:0 8px;justify-content:flex-start;flex-wrap:wrap;gap:4px}
+ :host([data-ux-layout]) .c-large-preview .ux-canvas-toolbar .ux-design-entry{width:auto!important;min-width:0!important;padding:8px 12px!important}
+}
 @media(max-width:767px){
  :host([data-ux-layout]) .ux-preview .stage:not(.acryl-scene){padding-bottom:26px!important}
  :host([data-ux-layout]) .c-large-preview .stage:not(.acryl-scene){padding-bottom:max(42px,var(--ux-mobile-dock-space,0px))!important}

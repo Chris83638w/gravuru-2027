@@ -1,5 +1,6 @@
 import {isFamilyFormats,familyFormatSelection,familyFormatChoices,customerForm} from './family-formats.mjs';
 import {escapeXml as esc} from '../../platform/sources/app/shared/models/design-content.mjs';
+import {optionTileIcon,optionTilePrice} from './option-media.mjs';
 
 const money=c=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(c/100);
 export function familyShapePreview(geometry){
@@ -9,11 +10,14 @@ export function familyShapePreview(geometry){
 }
 export function familyChoicesMarkup(c,options){
  const s=familyFormatSelection(c,options),forms=familyFormatChoices(c,options),form=customerForm(s.format.form),active=forms.find(f=>f.id===form);
- const button=(group,id,label,extra='',disabled=false)=>'<button type="button" class="m-option-tile" data-family-group="'+esc(group)+'" data-family-value="'+esc(id)+'" aria-pressed="'+String((group==='form'?form:options[group])===id)+'"'+(disabled?' disabled':'')+'>'+extra+'<strong>'+esc(label)+'</strong>'+(disabled?'<small>noch keine Vorlage</small>':'')+'</button>';
- const select=(key,label,values,current)=>'<label class="family-'+key+'"><span>'+label+'</span><select data-family-group="'+key+'" aria-label="'+label+'">'+values.map(v=>'<option value="'+esc(v.id)+'"'+(v.id===current?' selected':'')+(v.disabled?' disabled':'')+'>'+esc(v.label)+'</option>').join('')+'</select></label>';
+ const selected={...options,size:s.format.key,mounting:s.mounting.id,color:s.variant.color,form};
+ const button=(group,id,label,extra='',disabled=false,note='')=>'<button type="button" class="m-option-tile" data-family-group="'+esc(group)+'" data-family-value="'+esc(id)+'" aria-pressed="'+String(selected[group]===id)+'"'+(disabled?' disabled':'')+'>'+extra+'<strong>'+esc(label)+'</strong>'+(disabled?'<small>noch keine Vorlage</small>':note?'<small>'+esc(note)+'</small>':'')+'</button>';
+ const mounts=[...s.variant.mounting].sort((a,b)=>Number(b.id==='K00')-Number(a.id==='K00'));
+ const colorIcon=color=>{const value=s.format.variants.find(v=>v.color===color.id)?.material?.color;return '<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="4" y="4" width="24" height="24" rx="4" fill="'+(/^#(?:[a-f0-9]{3}|[a-f0-9]{6}|[a-f0-9]{8})$/i.test(value||'')?value:'none')+'" stroke="currentColor"/></svg>';};
  return (c.familyFormats.fixedSize?'<p class="family-fixed-size">'+esc(active.label+' · '+s.format.label)+'</p>':'<section class="family-shapes"><h3>Form &amp; Befestigung</h3><div>'+forms.map(f=>button('form',f.id,f.label,f.sizes[0]?familyShapePreview(f.sizes[0].geometry):'',!f.sizes.some(s=>s.available))).join('')+'</div></section>')+
- '<div class="family-selects">'+(c.familyFormats.fixedSize?'':select('size','Größe',active.sizes.map(f=>({id:f.key,label:f.label+(f.available?'':' · noch keine Vorlage'),disabled:!f.available})),s.format.key))+select('mounting','Befestigung',s.variant.mounting.map(v=>({id:v.id,label:v.label+(v.priceCents?' · +'+money(v.priceCents):'')})),s.mounting.id)+'</div>'+
- (c.familyFormats.colors.length>1?'<section class="family-colors"><h3>Farbe</h3><div>'+c.familyFormats.colors.map(v=>button('color',v.id,v.label)).join('')+'</div></section>':'');
+ (c.familyFormats.fixedSize?'':'<section class="family-sizes"><h3>Größe</h3><div role="group" aria-label="Größe">'+active.sizes.map(f=>button('size',f.key,f.label,familyShapePreview(f.geometry),!f.available)).join('')+'</div></section>')+
+ '<section class="family-mounting"><h3>Befestigung</h3><div role="group" aria-label="Befestigung">'+mounts.map(v=>button('mounting',v.id,v.id==='K00'?'Ohne Befestigung':v.label,optionTileIcon(v,{mounting:true}),false,optionTilePrice(v,money))).join('')+'</div></section>'+
+ (c.familyFormats.colors.length>1?'<section class="family-colors"><h3>Farbe</h3><div role="group" aria-label="Farbe">'+c.familyFormats.colors.map(v=>button('color',v.id,v.label,colorIcon(v))).join('')+'</div></section>':'');
 }
 export function installFamilyFormatsPresentation({el,config,picks,pictures}){
  if(!isFamilyFormats(config))return ()=>{};
@@ -31,10 +35,9 @@ export function installFamilyFormatsPresentation({el,config,picks,pictures}){
  :host([data-family-formats]) .m-option-pictures button:disabled{opacity:.45;cursor:not-allowed}
  :host([data-family-formats]) .m-option-pictures strong{font-size:13px!important;line-height:1.2!important}
  :host([data-family-formats]) .m-option-pictures svg{height:28px;width:48px}
- :host([data-family-formats]) .family-selects{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin:0 0 14px}
- :host([data-family-formats]) .family-selects label{display:grid!important;gap:6px;min-width:0;font-size:14px;color:#59616a}
- :host([data-family-formats]) .family-selects select{box-sizing:border-box;width:100%;min-width:0;min-height:48px;padding:10px 26px 10px 10px!important;font-size:16px!important;font-weight:600!important;color:#30373d!important;background-color:#f4f5f6!important;background-image:none!important;appearance:auto!important;border:1px solid #d2d7dc!important;border-radius:10px;text-overflow:ellipsis}
- :host([data-family-formats]) .family-selects select:focus-visible{outline:2px solid #59636c;outline-offset:2px}
+ :host([data-family-formats]) .m-option-pictures .family-mounting>div,:host([data-family-formats]) .m-option-pictures .family-sizes>div{grid-template-columns:repeat(2,minmax(0,1fr))}
+ :host([data-family-formats]) .m-option-pictures .family-mounting button{min-height:104px!important;padding:10px 8px!important}
+ :host([data-family-formats]) .m-option-pictures button:focus-visible{outline:2px solid #59636c;outline-offset:2px}
  :host([data-family-formats]) .m-option-pictures .family-colors>div{grid-template-columns:repeat(2,minmax(0,1fr))}
  :host([data-family-formats]) .m-option-pictures .family-colors button{min-height:44px!important}
  `;el.shadowRoot.append(style);

@@ -1,0 +1,109 @@
+{
+  "at": "2026-11-02T23:07:12.961Z",
+  "scope": "isolated real-model candidate",
+  "networkMbit": 9,
+  "latencyMs": 150,
+  "cpuRate": 4,
+  "readyMs": 5062,
+  "cards": 40,
+  "galleryBytes": 52058,
+  "timing": [
+    {
+      "path": "/_bundle/editor-0c7c893af97a55ce.mjs",
+      "ms": 575,
+      "bytes": 468821,
+      "start": 390
+    },
+    {
+      "path": "/_runtime/lazy/schriften/lora-italic.json",
+      "ms": 344,
+      "bytes": 206665,
+      "start": 3848
+    },
+    {
+      "path": "/_runtime/lazy/schriften/source-code-pro.json",
+      "ms": 307,
+      "bytes": 142717,
+      "start": 4218
+    },
+    {
+      "path": "/_runtime/lazy/katalog-kern.json",
+      "ms": 216,
+      "bytes": 45541,
+      "start": 1238
+    },
+    {
+      "path": "/assistant.js",
+      "ms": 182,
+      "bytes": 16511,
+      "start": 2942
+    },
+    {
+      "path": "/api/guides",
+      "ms": 178,
+      "bytes": 1376,
+      "start": 3784
+    },
+    {
+      "path": "/konfigurator/shop/schriften/62f89cb6e004b5774d40aeb31591d9e8c79ce83da4544bc8ef81fa4db4ed171c.json",
+      "ms": 2,
+      "bytes": 130884,
+      "start": 1235
+    },
+    {
+      "path": "/konfigurator/shop/schriften/9b3e2f8741a92b71d01568deb991538159ce4d849e6d795cc20412259a8199c7.json",
+      "ms": 2,
+      "bytes": 92226,
+      "start": 1237
+    },
+    {
+      "path": "/konfigurator/shop/schriften/77b4abc87ded094d18460011188e82c4db2d76e2b4db8fb0b47010d1c5cf4eae.json",
+      "ms": 1,
+      "bytes": 58255,
+      "start": 1237
+    }
+  ],
+  "errors": [],
+  "referenceCalls": {
+    "prepare": 0,
+    "finish": 0
+  },
+  "historicalDevice": {
+    "loaded": false,
+    "defined": false
+  },
+  "mounts": [
+    {
+      "id": "K00",
+      "icon": true,
+      "selected": "true"
+    },
+    {
+      "id": "KGL",
+      "icon": true,
+      "selected": "false"
+    },
+    {
+      "id": "KRA",
+      "icon": true,
+      "selected": "false"
+    },
+    {
+      "id": "B02",
+      "icon": true,
+      "selected": "false"
+    },
+    {
+      "id": "B02S",
+      "icon": true,
+      "selected": "false"
+    }
+  ],
+  "selectedPrice": "17,48 €",
+  "color": "anthrazit",
+  "mounting": "B02",
+  "texts": [
+    "Koch",
+    "Kerstin & Ralf"
+  ]
+}

@@ -11,28 +11,31 @@ import {decorateEmptyPhotoSlots} from './photo-placeholder.mjs';
 // Fototipp auf der Platte, bevor die Kundenoberfläche fertig ist (build.mjs ruft es direkt nach mount auf).
 export {installEarlyPhotoTap} from './photo-upload.mjs';
 import {getProcessingProfile, elementColor} from '../../platform/sources/app/shared/models/processing-profiles.mjs';
-import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+import {measureText} from '../../platform/sources/app/shared/models/text-paths.mjs';
 import {escapeXml as esc, filteredDesigns} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {prepareConfig, selectedProfile, quote, money, saveDraft, readDraft, designFromState, validatePhotoFile, newEditableObject, resolvedOptions} from './contract.mjs';
 import {changedCustomerTexts, transferTexts} from './workflow-model.mjs';
 import {optionFields, FIELD_TEXT_DEFAULT_MAX} from './option-fields.mjs';
 import {objectSurface, surfaceGeometry} from './surfaces.mjs';
-import {designResourcesReady} from './doorbell-lazy-designs.mjs';
-import {isLayeredDoorbell} from './doorbell-selection.mjs';
-import {doorbellOptionState,updateDoorbellViewport,doorbellTextSurface} from './doorbell-ui.mjs';
-import {installDoorbellPresentation} from './doorbell-presentation.mjs';
+import {designResourcesReady} from './product-view-module.mjs';
+import {isLayeredDoorbell} from './product-model-module.mjs';
+import {doorbellOptionState,updateDoorbellViewport,doorbellTextSurface} from './product-view-module.mjs';
+import {installDoorbellPresentation} from './product-view-module.mjs';
 import {isFamilyFormats,familyFormatState,familyDesignReviewNote} from './family-formats.mjs';
 import {installFamilyFormatsPresentation} from './family-formats-ui.mjs';
 import {mountingPlacementState} from './mounting-placement.mjs';
+import {prepareNativeShellState} from './native-shell-state.mjs';
+import {finishNativeShell} from './native-shell-ui.mjs';
+import {updateProductViewport} from './product-viewport.mjs';
 
 const clone = value => structuredClone(value);
 const svgDocument = svg => new DOMParser().parseFromString(svg, 'image/svg+xml');
+const pendingThumbnail='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" role="img" aria-label="Designvorschau wird geladen"></svg>';
 
 export function installUniversal(configInput) {
   const config = prepareConfig(configInput), p = config.profile, processing = getProcessingProfile(p);
   const dynamicDoorbell=isLayeredDoorbell(config);
   const dynamicFamily=isFamilyFormats(config),dynamicFormats=dynamicDoorbell||dynamicFamily;
-  const originalPrepare = window.Funkklingel.prepare, originalFinish = window.Funkklingel.finish;
   let options = {}, quantity = 1, el, renderId = 0;
   const photos = new Map(); // File objects stay in this page. Never localStorage, URL, draft or Git.
   const thumbnails=new WeakMap();
@@ -74,9 +77,9 @@ export function installUniversal(configInput) {
   // Leistung (Fehler 20.10.2026): Die Altgalerie ruft thumb() bei jedem sync für jede Karte auf –
   // beim Ziehen also je Fingerbewegung. Vorlagen ändern sich dabei nicht: Ergebnis zwischenspeichern.
   const thumbCache=new Map();let familyThumbOptions=null;
-  window.Funkklingel.thumb = (element, d) => { el = element; const design=(dynamicFormats?profile().designs:p.designs).find(x => x.id === d.id) || d; if(dynamicDoorbell&&!designResourcesReady(design,el.fontData,el.motifs))return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120"><text x="120" y="65" text-anchor="middle" font-size="12" fill="#526b5d">Design wird geladen …</text></svg>'; const optionKey=JSON.stringify(options);if(dynamicFamily&&familyThumbOptions!==optionKey){thumbCache.clear();familyThumbOptions=optionKey;}const key=JSON.stringify([options,design]); let markup=thumbCache.get(key); if(markup===undefined){markup=svg(design,{screen:true});if(!dynamicFamily&&thumbCache.size>64)thumbCache.clear();thumbCache.set(key,markup);} return markup; };
+  window.Funkklingel.thumb = (element, d) => { el = element; if(!el.isConnected||!el.uxLayoutReady)return pendingThumbnail; const design=(dynamicFormats?profile().designs:p.designs).find(x => x.id === d.id) || d; if(dynamicDoorbell&&!designResourcesReady(design,el.fontData,el.motifs))return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120"><text x="120" y="65" text-anchor="middle" font-size="12" fill="#526b5d">Design wird geladen …</text></svg>'; const optionKey=JSON.stringify(options);if(dynamicFamily&&familyThumbOptions!==optionKey){thumbCache.clear();familyThumbOptions=optionKey;}const key=JSON.stringify([options,design]); let markup=thumbCache.get(key); if(markup===undefined){markup=svg(design,{screen:true});if(!dynamicFamily&&thumbCache.size>64)thumbCache.clear();thumbCache.set(key,markup);} return markup; };
   window.Funkklingel.prepare = element => {
-    el = element; originalPrepare(el);
+    el = element; prepareNativeShellState(el,profile());
     const {width, height, shape, cornerRadiusMm=0} = profile().geometry;
     const format = {...el.stainlessFormat(), widthMm:width, heightMm:height, shape, cornerRadiusMm,
       key:p.id, label:width + ' × ' + height + ' mm', allowedMountings:['K00']};
@@ -90,10 +93,17 @@ export function installUniversal(configInput) {
       return {outline, clip:shape==='contour'?contourPathWithHoles(geometry):outline, holes:(geometry.holes||[]).map(h => ({...h, r:h.diameter/2})), gap:0};
     };
     el.objectSVG = o => svgDocument(svg({...p.designs[0], objects:[o], marks:[]},{surface:objectSurface(o),bare:true})).querySelector('[data-object]')?.outerHTML || '';
+    let bodyCache=null;
     el.svgBody = function(preview=true, guides=false) {
+      const design=current(),cacheable=dynamicFamily&&config.familyFormats.fixedSize&&design.objects.every(o=>o.type==='text'||o.type==='motif');
+      const refs=cacheable?[this.uxObjectSVG,...design.objects.map(o=>o.type==='text'?this.fontData[o.font]:this.motifs[o.motif])]:null;
+      const key=cacheable?JSON.stringify([design,options,preview,guides,!!this.$('[data-setting=guides]')?.checked,this.state.selected,activeSurface()]):null;
+      if(cacheable&&bodyCache?.key===key&&refs.every((r,i)=>r===bodyCache.refs[i]))return bodyCache.body;
       const doc = svgDocument(svg(current(), {guides:preview && guides && !!this.$('[data-setting=guides]')?.checked,selected:preview?this.state.selected:'',handles:preview,keepout:preview,surface:preview?activeSurface():'front',screen:preview}));
       if(preview){const design=current();decorateEmptyPhotoSlots(doc,design.objects,processing.ink,profile().material.color,config.localResources?.photoPlaceholders||[],design.id,config.localResources?.photoExamples||[],config.photo.hints||[],{blendMode:profile().material.kind==='slate'?'lighten':undefined,grayscale:profile().material.kind==='slate'});for(const o of design.objects.filter(o=>o.type==='motif'&&o.locked===true&&o.customerEditable===false)){const g=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(g)g.style.pointerEvents='none';}}
-      return doc.documentElement.innerHTML;
+      const body=doc.documentElement.innerHTML;
+      bodyCache=cacheable?{key,refs,body}:null;
+      return body;
     };
     el.svg = function() { return svg(current()); };
     el.png = async function() {
@@ -119,7 +129,7 @@ export function installUniversal(configInput) {
   };
 
   window.Funkklingel.finish = element => {
-    el = element; el.uxFamilyGallery=dynamicFamily; originalFinish(el);
+    el = element; el.uxFamilyGallery=dynamicFamily; finishNativeShell(el);
     el.uxProfileGeometry=()=>profile().geometry;
     el.uxSelectedProfile=()=>profile();
     el.style.setProperty('--m-plate-width',String(p.geometry.width));
@@ -175,7 +185,7 @@ export function installUniversal(configInput) {
     fieldBox.addEventListener('input',e=>{const key=e.target.dataset.mField;if(!key||e.target.type==='checkbox'||e.target.tagName==='SELECT')return;changeOption(key,fieldInput(e.target),{record:false});});
     fieldBox.addEventListener('change',e=>{const key=e.target.dataset.mField;if(!key)return;changeOption(key,fieldInput(e.target),{record:e.target.type==='checkbox'||e.target.tagName==='SELECT'});});
     options={...Object.fromEntries((p.optionGroups||[]).map(g=>[g.id,g.defaultValueId])),...(dynamicDoorbell?{position:config.doorbell.defaultPosition||'standard'}:{})};
-    const updateDoorbellChoices=installDoorbellPresentation({el,config,picks,pictures});
+    const updateDoorbellChoices=dynamicDoorbell?installDoorbellPresentation({el,config,picks,pictures}):()=>{};
     const updateFamilyChoices=installFamilyFormatsPresentation({el,config,picks,pictures});
     for(const select of picks.querySelectorAll('select[data-m-option]')) select.value=options[select.dataset.mOption];
     picks.addEventListener('change',e=>{if(!e.target.dataset.mOption)return;changeOption(e.target.dataset.mOption,e.target.value);});
@@ -287,7 +297,7 @@ export function installUniversal(configInput) {
     r.addEventListener('pointerdown',e=>{if(e.target.closest?.('.scene [data-object]'))dragging=el.uxDragging=true;},true);
     for(const type of ['pointerup','pointercancel'])r.addEventListener(type,()=>{if(!dragging)return;dragging=el.uxDragging=false;setTimeout(()=>renderThumbnails(),0);},true);
     function renderThumbnails(){
-      if(dragging)return 0;
+      if(dragging||!el.isConnected||!el.uxLayoutReady)return 0;
       const thumbnailKey=JSON.stringify(options)+'|'+(el.uxThumbnailSignature?.()||'');
       let budget=Number.isFinite(el.uxThumbnailBudget)?el.uxThumbnailBudget:Infinity,deferred=0;
       for(const card of r.querySelectorAll('[data-c-design]')){
@@ -312,7 +322,8 @@ export function installUniversal(configInput) {
     function update(){
       const d=current(), visible=new Set(filteredDesigns(dynamicFormats?profile().designs:p.designs,filters).map(d=>d.id));
       const physical=physicalGeometry(config,{mOptions:options});
-      if(dynamicFormats)updateDoorbellViewport(el,physical);
+      if(dynamicDoorbell)updateDoorbellViewport(el,physical);
+      else if(dynamicFamily)updateProductViewport(el,physical);
       // The legacy shell keeps only SVG children. Restore the outer viewport so the
       // backing plate is fully visible; front geometry and pointer coordinates stay in mm.
       updateBackingPreviewViewport(el,profile());

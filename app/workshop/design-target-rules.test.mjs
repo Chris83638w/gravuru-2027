@@ -33,15 +33,15 @@ test('photo placeholders follow the process profile: photo engraving is allowed 
   const open=designTargetRules(source,family(profile));assert.equal(open.status,'prüfen',profile);assert.deepEqual(open.details.map(d=>d.code),['photo_family_open'],'ohne Fotoangabe der Familie: prüfen, kein Ausschluss');
  }
 });
-test('V2A strokes under 0.5 mm warn with motif/path/location and follow target scale',()=>{
- const source=master(motif('M10 10L30 20','fill="none" stroke="#000000" stroke-width="0.49"'));
- const result=designTargetRules(source,family());assert.equal(result.status,'prüfen');assert.equal(result.details[0].code,'v2a_thin_stroke');assert.equal(result.details[0].widthMm,.49);assert.equal(result.details[0].element,'motiv-1');assert.equal(result.details[0].pathIndex,0);
+test('V2A strokes under 0.3 mm warn with motif/path/location and follow target scale',()=>{
+ const source=master(motif('M10 10L30 20','fill="none" stroke="#000000" stroke-width="0.29"'));
+ const result=designTargetRules(source,family());assert.equal(result.status,'prüfen');assert.equal(result.details[0].code,'v2a_thin_stroke');assert.equal(result.details[0].widthMm,.29);assert.equal(result.details[0].element,'motiv-1');assert.equal(result.details[0].pathIndex,0);
  assert.equal(designTargetRules(source,family(),{scale:2}).status,'passt');assert.equal(designTargetRules(source,family('color-print')).status,'passt');assert.equal(designTargetRules(source,family('slate-engraving')).status,'passt');
- const edge=master(motif('M10 10L30 20','fill="none" stroke="#000000" stroke-width="0.5"'));assert.equal(designTargetRules(edge,family()).status,'passt');
+ const edge=master(motif('M10 10L30 20','fill="none" stroke="#000000" stroke-width="0.3"'));assert.equal(designTargetRules(edge,family()).status,'passt');
 });
 test('thin filled and diagonal motif contours warn without modifying the source',()=>{
  for(const path of ['M10 10H30V10.2H10Z','M10 10L30 30L30.14 29.86L10.14 9.86Z']){
-  const source=master(motif(path,'fill="#000000"')),before=source.svg();const result=designTargetRules(source,family());assert.equal(result.status,'prüfen');assert.equal(result.details[0].code,'v2a_thin_contour');assert.ok(result.details[0].widthUpperBoundMm<.5);assert.equal(source.svg(),before);
+  const source=master(motif(path,'fill="#000000"')),before=source.svg();const result=designTargetRules(source,family());assert.equal(result.status,'prüfen');assert.equal(result.details[0].code,'v2a_thin_contour');assert.ok(result.details[0].widthUpperBoundMm<.3);assert.equal(source.svg(),before);
  }
 });
 test('existing guide layers are not production artwork',()=>{
@@ -58,4 +58,14 @@ test('real mounting holes warn for text without blocking intentional hole proxim
  const source=master('<text id="text-1" x="6" y="30" font-family="Montserrat" font-size="4">T</text>'),template={objects:[{id:'text-1',type:'text',text:'T',font:'Montserrat',size:4,x:6,y:30,w:2,h:5,rotation:0,color:'#000000',customerEditable:true}],katalog:{scale:1}};
  const before=JSON.stringify(template),fit=assessDesignTarget({master:source,template,family:f,size,fonts});assert.equal(fit.status,'prüfen');assert.equal(fit.details[0].code,'text_near_hole');assert.equal(fit.details[0].mounting,'B02-E6-D4');assert.deepEqual(fit.details[0].location,{xMm:6,yMm:30});assert.match(fit.issues.join(' '),/bewusst so bestellen/);assert.equal(JSON.stringify(template),before);
  const without=assessDesignTarget({master:source,template,family:f,size:{...size,mounting:['KGL']},fonts});assert.equal(without.status,'passt');
+});
+test('Edelstahl-Schilder: kein Bohrloch-Hinweis, wenn der Konfi ausweichen kann; Hinweis bleibt, wenn nicht (Chris 04.11.2026)',()=>{
+ const f={...JSON.parse(fs.readFileSync(new URL('./fixtures/katalog/familien/edelstahl/test-schilder.json',import.meta.url),'utf8')),id:'steel-door-signs'},size=f.sizes[0],fonts=workshopResources().fonts;
+ const source=master('<text id="text-1" x="6" y="30" font-family="Montserrat" font-size="4">T</text>');
+ const small={objects:[{id:'text-1',type:'text',text:'T',font:'Montserrat',size:4,x:6,y:30,w:2,h:5,rotation:0,color:'#000000',customerEditable:true}],katalog:{scale:1}};
+ const before=JSON.stringify(small),fit=assessDesignTarget({master:source,template:small,family:f,size,fonts});
+ assert.ok(!fit.details.some(d=>d.code==='text_near_hole'),fit.issues.join(' | '));assert.equal(JSON.stringify(small),before,'Katalogdesign bleibt unverändert');
+ // Gesperrter Text kann nicht ausweichen: Hinweis bleibt.
+ const locked={...small,objects:[{...small.objects[0],uxLocked:true}]};
+ assert.ok(assessDesignTarget({master:source,template:locked,family:f,size,fonts}).details.some(d=>d.code==='text_near_hole'));
 });

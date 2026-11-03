@@ -67,7 +67,7 @@ Ablage: `zeichnungen/edelstahl-schilder-2027/grundplatten/`.
 - gravuru-2027 #160: Übergabe Schiefer/Edelstahl-Werkzeuge.
 - Katalog #162: Zubehörbilder Schiefer.
 
-Merge-Reihenfolge an Astra (#139, Kommentar 6616693381): Code #159 → #164 → #163 → #158; Katalog #163 → #164.
+Gültiger Gesamtauftrag an Astra: #139, Kommentar 6617870582. Merge-Reihenfolge Code: #159 → #164 → #163 → #158 → #160 → #162. Katalog: #162 → #163 → #164 → #165.
 
 ## Offen / nächste Schritte
 **Umfang: nur Edelstahl-Schilder (Familie `steel-door-signs`).** Schiefer, Gedenktafeln und Acryl erst nach Chris' Auftrag. Chris (04.11., 00:40): „er soll doch nur edelstahl machen“.

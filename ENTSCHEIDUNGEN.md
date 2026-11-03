@@ -170,6 +170,7 @@ Stand: 02.11.2026 abends. Gelesen: Code-Repo `origin/main` f78ad5b (STATUS.md, A
 | 4.55 | 04.11. 00:44 | Shop darf bei Edelstahl 8 × 2 und 9 × 3 **teurer sein als Amazon** (Antwort „Ja, Shop darf teurer sein“). | Chat 04.11. |
 | 4.56 | 04.11. 00:54 | Edelstahl **Oval 21 × 7 cm wiegt 136 g** (statt 182 g; lag über dem Rechteck 21 × 7 mit 174 g). Antwort „136“. | Chat 04.11.; Katalog Branch `dev/gewicht-oval-21x7-20261104-claude` |
 | 4.57 | 04.11. 01:22 | **Schiefer:** Prüfseite „Schiefer-Tafeln“ – Zitat „Preise passen“ (Prüfung abgeschlossen → Übernahme der 48 Tafeln mit Preisen in den Katalog). **Grundplatten V2 (Rohlinge, ChatGPT) freigegeben** – Zitat „freigabe für die rohlinge ok“. | Chat 04.11. |
+| 4.58 | 04.11. 01:21 | Eigene PRs aus dem Edelstahl-Chat hinten an die Merge-Liste von Astra 1: gravuru-2027 #165, Katalog #166 und #167 (Antwort „ja“). (Im Nachtrag als 4.57 geführt; umnummeriert, weil 4.57 = Schiefer.) | Chat 04.11.; [#139·6618026239](https://github.com/Chris83638w/gravuru-2027/issues/139#issuecomment-6618026239) |
 
 ## 5. Designs / Gestaltung
 
@@ -201,6 +202,7 @@ Stand: 02.11.2026 abends. Gelesen: Code-Repo `origin/main` f78ad5b (STATUS.md, A
 | 5.24 | 03.11. 12:44 | Grabstecker Unendlichkeit: Die vorhandene Anordnung (Name klein auf der Schleife, Daten klein) ist **so richtig** – nicht umgestalten. Zitat: „nein, das Infinity ist so richtig.“ Außerdem 12:07: „komplett alle Grabstecker“ hochladen. | Chat 03.11. |
 | 5.25 | 03.11. 15:40 | Hauptbilder Edelstahl (zuerst Grabstecker): die **bisherigen gravuru-Edelstahl-Vorlagen** verwenden, „da passt alles mit der Maserung“; keine neue/fremde Textur. | Chat 03.11.; [#139·6605370240](https://github.com/Chris83638w/gravuru-2027/issues/139#issuecomment-6605370240) |
 | 5.26 | 04.11. 01:18 | **Gestrichene Schriften immer ersetzen, ohne Chris zu fragen:** Nutzt ein Design eine gestrichene Schrift (z. B. Welcome, ParmaPetit, 4.24), tauscht die Design-KI sie selbst gegen eine passende aus unseren 84 Schriften, nah am Original. Keine Abnahme durch Chris nötig, Kontaktbogen aus dem Renderer trotzdem anhängen. Zitat: „schriftarten immer ersetzen“; auf Rückfrage „KI ersetzt, ohne mich zu fragen“. | Chat 04.11.; [#139·6617989733](https://github.com/Chris83638w/gravuru-2027/issues/139#issuecomment-6617989733) |
+| 5.27 | 04.11. 01:24–01:31 | **Kleine Größen nur mit einfachen Designs:** Zitat „bis 8x5 doch nur einfache designs !!!!!“. Grenze auf Rückfrage: „ab 8x5, ab 12x4“, also ausführliche Designs in der 3:2-Reihe erst ab 8 × 5 und in der schmalen 3:1-Reihe erst ab 12 × 4. Designs mit Schrift unter 3 mm bekommen größere Mindestgrößen: Boxenschilder, Goldmann D25 und „Achtung freilaufender Hund“ (17 Designs) „erst ab 18x12 cm rechteckig und mit abgerundeten ecken“; Hinweis HSHF-RE-V2A-6x2-D1/D23 ab 12 × 4. Kein neues Durchgehen aller Motive nötig: „es sollen nur einfache Motive genutzt werden. Das sind wir in den letzten 2 Tagen durchgegangen“ (vgl. 5.5). **Für filigrane Motive gilt 5.5 (bestätigt 01:38): erst ab 9 × 6, also nicht auf 8 × 5.** | Chat 04.11. (Edelstahl-Chat); Katalog PR #167 |
 
 ## 6. Produktion / Export
 

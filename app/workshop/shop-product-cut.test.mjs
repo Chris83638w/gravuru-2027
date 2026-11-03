@@ -16,3 +16,16 @@ test('Produktschnitt: optionale Zielgruppe und Größenwahl je Form (Chris 02.11
  assert.equal(designZielgruppe({name:'Grabstecker Herz M · Hund · Klein: Name + Daten'}),'Hund');
  assert.equal(designZielgruppe({name:'Familie Berger'}),null);
 });
+test('Türschild-Konfi ohne Motive: Zierlinien und Rahmen bleiben, Figuren sind Motive (Chris 03.11.2026)',async()=>{
+ const {isDecorativeMotif,hasFigureMotif}=await import('./shop-product-cut.mjs');
+ const plate=[120,80];
+ assert.equal(isDecorativeMotif({w:90,h:0.6},plate),true,'waagerechte Zierlinie');
+ assert.equal(isDecorativeMotif({w:1,h:40},plate),true,'senkrechte Linie');
+ assert.equal(isDecorativeMotif({w:116,h:76},plate),true,'Rahmen');
+ assert.equal(isDecorativeMotif({w:30,h:28},plate),false,'Figur');
+ assert.equal(hasFigureMotif({objects:[{type:'text'},{type:'motif',w:90,h:1}]},plate),false);
+ assert.equal(hasFigureMotif({objects:[{type:'motif',w:90,h:1},{type:'motif',w:20,h:25}]},plate),true);
+ const base={sizeKey:'GR-ES-AB-120X80-T15',themeId:'familienschilder',defaultDesignId:'X'};
+ assert.deepEqual(validateShopProductCut({...base,groessenWahl:'alle',motive:'ohne'}),{...base,groessenWahl:'alle',motive:'ohne'});
+ assert.throws(()=>validateShopProductCut({...base,motive:'nur'}),/motive/);
+});

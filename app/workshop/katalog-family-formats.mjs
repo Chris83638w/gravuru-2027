@@ -6,7 +6,7 @@ import {katalogDesignToTemplate,scaleTemplate,applyPriceOverrides,defaultQuantit
 import {assessDesignTarget} from './design-target-rules.mjs';
 import {customerUxConfig} from './customer-ux-policy.mjs';
 import {prepareConfig} from '../configurator/variant-m/contract.mjs';
-import {validateShopProductCut,shopProductCutMetafield,designZielgruppe} from './shop-product-cut.mjs';
+import {validateShopProductCut,shopProductCutMetafield,designZielgruppe,hasFigureMotif} from './shop-product-cut.mjs';
 import {FAMILY_FORMATS_SCHEMA,FAMILY_FORMAT_SOURCES,FAMILY_FORMS,customerForm,familyFormatCombinations} from '../configurator/variant-m/family-formats.mjs';
 
 const copy=v=>structuredClone(v),fail=m=>{throw Error(m);};
@@ -51,6 +51,7 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
     try{
      if(!converted.has(key))converted.set(key,katalogDesignToTemplate(a.design,family,theme,{fonts}));
      if(shopProduct&&!converted.get(key).template.objects.some(o=>o.type==='text'&&o.role!=='guide'&&o.text?.trim())){report.excluded.push({familyId:family.id,sizeKey:size.key,designId:a.design.id,issues:['Kein Schild ohne Text (Issue #139).']});continue;}
+     if(shopProduct?.motive==='ohne'&&hasFigureMotif(converted.get(key).template,converted.get(key).template.katalog?.plateMm)){report.excluded.push({familyId:family.id,sizeKey:size.key,designId:a.design.id,issues:['Motiv-Design: im Türschild-Konfi erstmal nicht (Chris 03.11.2026).']});continue;}
      const t=converted.get(key),scaled=scaleTemplate(t.template,t.template.katalog.plateMm,[size.widthMm,size.heightMm],fonts,{contain:true});
      const fit=assessDesignTarget({master:a.design,template:scaled,family,size,fonts,motifs:()=>t.motifs});
      if(fit.status==='passt nicht'){report.excluded.push({familyId:family.id,sizeKey:size.key,designId:a.design.id,issues:fit.issues});continue;}

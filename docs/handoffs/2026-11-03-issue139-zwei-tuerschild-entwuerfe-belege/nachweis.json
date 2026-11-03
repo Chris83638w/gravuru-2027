@@ -1,0 +1,118 @@
+{
+  "verifiedAt": "2026-11-03T14:59:57.828Z",
+  "merge": "3eb2ea43c5383571094b8da1017ade9f4884eb72",
+  "catalog": "84282a7fb60ee54b62db35e06a48f499f0d5aa79",
+  "products": [
+    {
+      "key": "edelstahl",
+      "id": "16190784438652",
+      "variantId": "58104606556540",
+      "title": "Türschild Edelstahl – Form und Größe selbst wählen",
+      "nativeId": "cfg_ac514214-a313-4738-8008-00445ee1befd",
+      "count": 404,
+      "url": "https://gravuru-design.myshopify.com/apps/konfigurator/start?product=16190784438652&variant=58104606556540",
+      "options": {
+        "size": "GR-ES-AB-120X80-T15",
+        "mounting": "K00"
+      },
+      "image": {
+        "filename": "gravuru-tuerschild-edelstahl-leer-pr156-29b239fcd15d.webp",
+        "sha256": "29b239fcd15db97228aab13d42300541abf199ed1a85023706f752368ca066a6",
+        "id": "gid://shopify/MediaImage/70017733165436",
+        "url": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-tuerschild-edelstahl-leer-pr156-29b239fcd15d.webp?v=1793717954",
+        "attached": true
+      },
+      "status": "DRAFT",
+      "published": 0
+    },
+    {
+      "key": "acryl",
+      "id": "16190784602492",
+      "variantId": "58104626479484",
+      "title": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen",
+      "nativeId": "cfg_8e7ebe96-28d2-406f-b31e-036ee61f47e0",
+      "count": 808,
+      "url": "https://gravuru-design.myshopify.com/apps/konfigurator/start?product=16190784602492&variant=58104626479484",
+      "options": {
+        "size": "TS-Acryl-AB-120X80-T30-SW",
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "image": {
+        "filename": "gravuru-tuerschild-acryl-leer-pr156-e5a1504afe98.webp",
+        "sha256": "e5a1504afe98af049f7299288d1855840b08e63083205e02dd8251c2b7fadf5d",
+        "id": "gid://shopify/MediaImage/70017733919100",
+        "url": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-tuerschild-acryl-leer-pr156-e5a1504afe98.webp?v=1793717959",
+        "attached": true
+      },
+      "status": "DRAFT",
+      "published": 0
+    }
+  ],
+  "verification": [
+    {
+      "key": "edelstahl",
+      "id": "gid://shopify/Product/16190784438652",
+      "status": "DRAFT",
+      "variants": 404,
+      "bound": 404,
+      "images": 1,
+      "published": 0
+    },
+    {
+      "key": "acryl",
+      "id": "gid://shopify/Product/16190784602492",
+      "status": "DRAFT",
+      "variants": 808,
+      "bound": 808,
+      "images": 1,
+      "published": 0
+    }
+  ],
+  "runtime": {
+    "at": "2026-11-03T15:02:37.352Z",
+    "commit": "3eb2ea43c5383571094b8da1017ade9f4884eb72",
+    "files": 1345,
+    "bundles": [
+      {
+        "path": "/_acryl-bundle/editor-089c3dff6aa84f5b.mjs",
+        "status": 200,
+        "sha256": "cdfa9ae784908694cd10f70b58715dc007f21393d67b6f92000d9ff32e6e295e"
+      },
+      {
+        "path": "/_acryl-bundle/editor-2e3da3b988eb0da4.mjs",
+        "status": 200,
+        "sha256": "2b380c700ec6c159b299b014fc8918ebf41189bcbc9f7af14884825af7da65e1"
+      },
+      {
+        "path": "/_acryl-bundle/editor-c419119a6ef437c6.mjs",
+        "status": 200,
+        "sha256": "9c37d9810dace1ed32292a800195fe90439d859d28ac74e21abc412ca7044edf"
+      },
+      {
+        "path": "/_acryl-bundle/editor-69eb9880b804359a.mjs",
+        "status": 200,
+        "sha256": "ae30b048f0955960ec763e83c62eb1ae455c6514885f813eadbed49a4d5b4672"
+      },
+      {
+        "path": "/_acryl-bundle/editor-44d7382dc7156a48.mjs",
+        "status": 200,
+        "sha256": "a409da4d1ddeb7645471a99cfa4bc217eb1f26da0fe8059e89e6b5a590455f82"
+      }
+    ]
+  },
+  "backups": [
+    {
+      "name": "design-assets.sqlite",
+      "bytes": 13856768
+    },
+    {
+      "name": "profiles.sqlite",
+      "bytes": 77824
+    },
+    {
+      "name": "workshop.sqlite",
+      "bytes": 3958177792
+    }
+  ]
+}

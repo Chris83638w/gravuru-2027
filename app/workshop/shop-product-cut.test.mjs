@@ -29,3 +29,14 @@ test('Türschild-Konfi ohne Motive: Zierlinien und Rahmen bleiben, Figuren sind 
  assert.deepEqual(validateShopProductCut({...base,groessenWahl:'alle',motive:'ohne'}),{...base,groessenWahl:'alle',motive:'ohne'});
  assert.throws(()=>validateShopProductCut({...base,motive:'nur'}),/motive/);
 });
+test('Konfi ohne Designs: vorlagen "leer" nur mit allen Größen; leere Vorlage je Form und Größe, gleich für alle Farben (4.43)',async()=>{
+ const {blankDesignId,blankSignDesign}=await import('./katalog-family-formats.mjs');
+ const base={sizeKey:'GR-ES-AB-120X80-T15',themeId:'familienschilder',defaultDesignId:'LEER-AB-120X80-D0'};
+ assert.deepEqual(validateShopProductCut({...base,groessenWahl:'alle',vorlagen:'leer'}),{...base,groessenWahl:'alle',vorlagen:'leer'});
+ assert.throws(()=>validateShopProductCut({...base,vorlagen:'leer'}),/vorlagen/);
+ assert.throws(()=>validateShopProductCut({...base,groessenWahl:'alle',vorlagen:'voll'}),/vorlagen/);
+ const sw={key:'TS-Acryl-AB-120X80-T30-SW',groupKey:'AB',widthMm:120,heightMm:80},an={...sw,key:'TS-Acryl-AB-120X80-T30-AN'};
+ assert.equal(blankDesignId(sw),blankDesignId(an));
+ assert.equal(blankDesignId({groupKey:'RE',widthMm:80,heightMm:53.3}),'LEER-RE-80X53P3-D0');
+ const d=blankSignDesign(sw,'familienschilder');assert.match(d.svg(),/Dein Text/);assert.deepEqual(d.plateMm,[120,80]);
+});

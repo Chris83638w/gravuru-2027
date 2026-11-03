@@ -16,6 +16,18 @@ const sameGeometry=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 const slotKey=(s)=>customerForm(s.groupKey)+':'+s.widthMm+'x'+s.heightMm;
 const optionLabel=s=>FAMILY_FORMS.find(([id])=>id===customerForm(s.form))[1]+' · '+s.label;
 
+// Konfi ohne Designs (4.43): je Größe ein leeres Schild mit einer mittigen, frei änderbaren Textzeile.
+// Kein Katalogdesign; Schrift aus dem Türschild-Set. Die Designnummer D0 ist in allen Größen gleich,
+// damit ein Größenwechsel den Kundentext übernimmt.
+const BLANK_FONT='Michroma';
+// Gleiche Kennung für alle Farben derselben Form und Größe (Acryl schwarz/anthrazit sind Varianten eines Produkts).
+export const blankDesignId=size=>'LEER-'+customerForm(size.groupKey)+'-'+String(size.widthMm).replace('.','P')+'X'+String(size.heightMm).replace('.','P')+'-D0';
+export function blankSignDesign(size,themeId){
+ const w=size.widthMm,h=size.heightMm,fs=Math.round(Math.min(h*.18,w/10)*100)/100,id=blankDesignId(size);
+ const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+w+' '+h+'" width="'+w+'mm" height="'+h+'mm"><rect id="platte" width="'+w+'" height="'+h+'" fill="none" stroke="#999" stroke-width="0.2"/><text id="text-1" data-feld="name" x="'+(w/2)+'" y="'+(h/2+fs*.35)+'" font-family="'+BLANK_FONT+'" font-size="'+fs+'" fill="#000000" text-anchor="middle"><tspan x="'+(w/2)+'" dy="0.00">Dein Text</tspan></text></svg>';
+ return {id,name:'Eigene Gestaltung',plateMm:[w,h],themes:[themeId],fonts:[BLANK_FONT],movable:true,svg:()=>svg,json:{movable:true}};
+}
+
 export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnreleased=false,designIds=null,available={},converter=null,shopProduct=null}={}){
  if(shopProduct)shopProduct=validateShopProductCut(shopProduct);
  const line=katalog.lines.get(lineId),sub=line?.subcategories.find(s=>s.id===subcategoryId);
@@ -30,8 +42,10 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
  if(shopProduct&&(!selectedSize||shopProduct.themeId!==sub.themeId||!shopProduct.defaultDesignId||reviewUnreleased||designIds))fail('Shop-Produktschnitt braucht Kataloggröße, passendes Thema und Startdesign; keine Prüffreigaben oder eingeschränkte Galerie.');
  const allMasters=katalog.designs.masters.filter(d=>!d.hidden&&(!designIds||designIds.includes(d.id))&&(shopProduct||d.themes?.includes(sub.themeId))&&(!shopProduct?.zielgruppe||designZielgruppe(d)===shopProduct.zielgruppe));
  const report={schema:'gravuru-family-formats-plan/v1',lineId,subcategoryId,reviewUnreleased,shopifyWrites:false,sourceFamilies:families.map(f=>f.id),excluded:[],blocked:[],sizes:[],shopify:{options:families.length>1?['Form & Größe','Farbe','Befestigung']:['Form & Größe','Befestigung'],maximumVariants:2048,maximumOptions:3,variantIdsCreated:0,sources:['https://help.shopify.com/en/manual/products/variants/add-variants','https://shopify.dev/docs/api/admin-graphql/latest/mutations/productSet']}};
- const assigned=new Map(families.map(f=>[f.id,assignTargetSeries(f,allMasters.filter(d=>designTargets(d,katalog).some(t=>t.familie===f.id)&&(reviewUnreleased||approvedForFamily(d,f.id,katalog))),katalog)]));
+ const blank=shopProduct?.vorlagen==='leer';
+ const assigned=blank?new Map(families.map(f=>[f.id,[]])):new Map(families.map(f=>[f.id,assignTargetSeries(f,allMasters.filter(d=>designTargets(d,katalog).some(t=>t.familie===f.id)&&(reviewUnreleased||approvedForFamily(d,f.id,katalog))),katalog)]));
  const needed=[...new Set([...assigned.entries()].flatMap(([id,list])=>list.filter(a=>!a.oldSize&&a.sizes.some(key=>inCut(katalog.families.get(id).sizes.find(s=>s.key===key)))).flatMap(a=>a.design.fonts||[])))];
+ if(blank&&!needed.includes(BLANK_FONT))needed.push(BLANK_FONT);
  const {fonts,missing}=await katalog.fontResources(needed,{available,converter});report.fontsMissing=missing;
  const bank=new Map(),motifs=new Map(),rights={},formats=new Map(),colors=[],converted=new Map();let base;
  const theme=katalog.theme(sub.themeId);
@@ -60,6 +74,10 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
      bank.set(t.template.id,copy(t.template));designs.push(t.template.id);if(!approvedForFamily(a.design,family.id,katalog))unapprovedDesignIds.push(t.template.id);rights[t.template.id]=copy(t.rights);
      for(const m of t.motifs){if(motifs.has(m.key)&&JSON.stringify(motifs.get(m.key))!==JSON.stringify(m))fail('Widersprüchliche Motivressource '+m.key+'.');motifs.set(m.key,copy(m));}
     }catch(error){report.excluded.push({familyId:family.id,sizeKey:size.key,designId:a.design.id,issues:[error.message]});}
+   }
+   if(blank){
+    const t=katalogDesignToTemplate(blankSignDesign(size,sub.themeId),family,theme,{fonts});
+    bank.set(t.template.id,copy(t.template));designs.push(t.template.id);rights[t.template.id]=copy(t.rights);
    }
    const slot=slotKey(size),format=formats.get(slot)||{key:size.key,form:size.groupKey,label:size.label,geometry:copy(p.geometry),...(p.workingArea?{workingArea:copy(p.workingArea)}:{}),variants:[]};
    if(!sameGeometry(format.geometry,p.geometry))fail('Die Farben haben verschiedene Geometrien: '+slot+'.');

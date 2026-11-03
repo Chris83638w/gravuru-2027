@@ -1,0 +1,60 @@
+{
+  "scope": "Unveränderte lokale Originale; historische Katalogkopie ausschließlich als visuelle Muster, keine neue Produktfreigabe.",
+  "files": [
+    {
+      "file": "steel.webp",
+      "source": "work/konfi-produktprofile-20261103/app/designs/aosu-labrador/runtime/images/gravuru-edelstahl-feine-maserung-vorschau.webp",
+      "bytes": 97754
+    },
+    {
+      "file": "aosu.png",
+      "source": "work/konfi-produktprofile-20261103/app/designs/aosu-labrador/runtime/images/aosu-pro-v8p1ax11.png",
+      "bytes": 292592
+    },
+    {
+      "file": "labrador.svg",
+      "source": "work/konfi-produktprofile-20261103/app/designs/aosu-labrador/assets/labrador-solid.svg",
+      "bytes": 14707
+    },
+    {
+      "file": "slate.webp",
+      "source": "outputs/SCHIEFER-WEBP/Schiefer-Grundplatte-kompakt.webp",
+      "bytes": 1611854
+    },
+    {
+      "file": "d204-photo.webp",
+      "source": "outputs/D204-WEBP/GT-S-22x14-D204-foto-verlustfrei.webp",
+      "bytes": 158410
+    },
+    {
+      "file": "design-1.svg",
+      "source": "work/gravuru-katalog/designs/edelstahl-gravur-ab-80x53/TAE-V2A-8x5-D1/design.svg",
+      "bytes": 597
+    },
+    {
+      "file": "design-8.svg",
+      "source": "work/gravuru-katalog/designs/edelstahl-gravur-ab-80x53/TAE-V2A-8x5-D8/design.svg",
+      "bytes": 8299
+    },
+    {
+      "file": "design-12.svg",
+      "source": "work/gravuru-katalog/designs/edelstahl-gravur-ab-80x53/TAE-V2A-8x5-D12/design.svg",
+      "bytes": 282325
+    },
+    {
+      "file": "design-15.svg",
+      "source": "work/gravuru-katalog/designs/edelstahl-gravur-ab-80x53/TAE-V2A-8x5-D15/design.svg",
+      "bytes": 338993
+    },
+    {
+      "file": "design-18.svg",
+      "source": "work/gravuru-katalog/designs/edelstahl-gravur-ab-80x53/TAE-V2A-8x5-D18/design.svg",
+      "bytes": 69722
+    },
+    {
+      "file": "design-24.svg",
+      "source": "work/gravuru-katalog/designs/edelstahl-gravur-ab-80x53/TAE-V2A-8x5-D24/design.svg",
+      "bytes": 1162
+    }
+  ]
+}

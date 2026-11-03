@@ -1,4 +1,5 @@
 import {DatabaseSync} from 'node:sqlite';
+import {familyExecution} from '../configurator/variant-m/execution-registry.mjs';
 import {tenantOption,TENANT_COLUMN} from './tenant.mjs';
 import {createHash} from 'node:crypto';
 import {mkdirSync} from 'node:fs';
@@ -256,6 +257,7 @@ export function familyProductConfig(f,s,revision,{previewOnly=false}={}){
  const fields=familyOptionFields(f,s);if(fields.length)profile.optionFields=fields;
  if(f.surfaces!==undefined)profile.surfaces=structuredClone(f.surfaces);
  const c={reviewOnly:true,basePriceCents:s.baseCents,extraMotifCents:0,logo:{enabled:false},photo:{enabled:false,mode:'upload-only',includedCount:f.photo?.includedCount??0,extraPriceCents:f.photo?.extraPriceCents??0},localResources:{scope:'local-review-only',fonts:{[font]:resources.fonts[font]},motifs:[]},profile};
+ const execution=familyExecution(f.id);if(execution)c.productExecution=execution;
  if(f.material.kind==='acrylic')c.familyAcrylic={schema:'gravuru-family-acrylic/v1',familyId:f.id,sizeKey:s.key,sourceShape:sourceGeometry.shape};
  const tiers=sizeQuantityTiers(f,s);if(tiers!==undefined)c.quantityTiers=structuredClone(tiers);
  if(previewOnly){if(f.material.kind==='steel')c.materialSurface=steelPreviewSurface();return prepareConfig(c);}

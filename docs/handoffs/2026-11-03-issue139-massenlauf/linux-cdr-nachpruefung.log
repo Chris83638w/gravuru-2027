@@ -1,0 +1,34 @@
+{"python3check":0,"error":""}
+✔ Engine: Platte, Bohrlöcher, Randabstände und Lochabstand (59.633878ms)
+✔ Engine: Rechtecke aus Einzellinien mit gemeinsamer Kante (51.86421ms)
+✔ Engine: Kreis-Platte und Kreis-Bohrloch werden unterschieden (52.138241ms)
+✔ Engine: Texte mit Schrift, Größe und korrigierter Breite (50.136958ms)
+✔ Engine: SVG 1:1 in mm, Text bleibt Text (62.130073ms)
+✔ Engine: Fehler als Meldung, keine Ausnahme (52.003369ms)
+✔ Engine: Zip mit gefälschter Größenangabe wird abgelehnt (keine Speicherbombe) (73.455967ms)
+✔ Sperrliste interner Adressen (0.624307ms)
+✔ Ohne Token: wird einmal in privater Datei erzeugt und danach wiederverwendet (0.931608ms)
+✔ Konfiguration verlangt langes Token (0.491878ms)
+✔ MCP: initialize, tools/list mit Datei-Parametern für ChatGPT (23.925339ms)
+✔ MCP: falsches Token → 404, Benachrichtigung → 202, GET → 405 (3.717348ms)
+✔ MCP: cdr_measure über hochgeladene Datei (64.971687ms)
+✔ MCP: cdr_to_svg liefert Download-Link, der funktioniert (82.697504ms)
+✔ MCP: Fehler kommen als isError zurück (keine Datei, keine CDR, unbekanntes Werkzeug) (10.384101ms)
+✔ MCP: interne Adressen sind ohne Testschalter gesperrt (14.969672ms)
+✔ Quelle: fehlende Einrichtung und fehlender Mount werden klar gemeldet (3.147473ms)
+✔ Quelle: Root und optionale Alias-Konfiguration validieren (1.012379ms)
+✔ Quelle: relative, V:- und UNC-Pfade mit Umlauten und Klammern (15.10828ms)
+✔ Quelle: Traversal, fremde Laufwerke und externe Symlinks werden abgewiesen (2.416476ms)
+✔ Quelle: Liste zeigt nur Ordner/CDR, überspringt Symlinks und paginiert (3.141634ms)
+✔ Quelle: Größenlimit, aktuelle Dateifassung und keine veraltete Lesekopie (5.502235ms)
+{"t":"2026-11-03T08:24:03.868Z","tool":"cdr_texts","ms":64,"cached":false}
+✔ MCP: Serverpfad liefert D-Nummer/Farbe; Quelle bleibt erhalten, Lesekopien werden gelöscht (166.097182ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 699.888612
+

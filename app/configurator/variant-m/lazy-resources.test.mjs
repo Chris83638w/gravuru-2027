@@ -13,6 +13,14 @@ import {createPreviewServer,acceptsGzip} from './server.mjs';
 import {fontFileName,startNeeds,draftNeeds,resourceNeeds,lazyUrls,libraryEntries,LAZY_BASE,productFontIndex} from './lazy-resources-model.mjs';
 import {localFontIds} from './local-pilot.mjs';
 import {readRuntimeBundles,splitRuntimeBundles,patchEditorLoading,BASE_FONT_CATEGORIES} from './lazy-resources-build.mjs';
+test('contour validation hydrates actual outlines for every switchable size and reuses the font cache',async()=>{
+ const loader=await import('./lazy-resources.mjs?contour-validation'),url='/konfigurator/shop/schriften/'+'a'.repeat(64)+'.json',font={regular:{units:1000,glyphs:{A:{a:500,d:'M0 0H500V700H0Z'}}}};
+ const c={profile:{geometry:{shape:'contour'},designs:[]},familyFormats:{designs:[{objects:[{type:'text',font:'ContourFont'}]}]},localResources:{fonts:{},lazyFonts:[{name:'ContourFont',url}]}};
+ let calls=0;const get=async u=>{assert.equal(u,url);calls++;return font;};
+ await loader.hydrateContourFonts(c,{get});assert.deepEqual(c.localResources.fonts.ContourFont,font);
+ c.localResources.fonts={};await loader.hydrateContourFonts(c,{get});assert.equal(calls,1);
+ const rect=structuredClone(c);rect.profile.geometry.shape='rect';rect.localResources.fonts={};await loader.hydrateContourFonts(rect,{get:()=>{throw Error('rect must not preload contour fonts');}});
+});
 // Jeder Test lädt eine eigene Modulinstanz (eigene Zwischenspeicher für Schriften/Bibliothek).
 const freshLoader=name=>import('./lazy-resources.mjs?'+name);
 

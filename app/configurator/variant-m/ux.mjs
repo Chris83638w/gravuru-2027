@@ -1,4 +1,5 @@
 import {installCustomerHelp} from './customer-help.mjs';
+import {executionHeading} from './execution-registry.mjs';
 import {installReviewLayout} from './review-layout.mjs';
 import {installProductDesignGallery} from './product-design-gallery.mjs';
 import {installViewZoom} from './view-zoom.mjs';
@@ -105,7 +106,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   const largeHelp=document.createElement('div');largeHelp.innerHTML=button('help','? Hilfe','class="ux-large-help"');$('.c-large-preview').append(largeHelp.firstElementChild);
   $('[data-ux-stage]').append($('.stage-wrap'));
   $('#ux-panel-options').append($('.fk-options'));
-  $('.fk-options h2').textContent=config?.familyFormats?'Format & Größe':'Material & Befestigung';
+  $('.fk-options h2').textContent=executionHeading(config);
   $('#ux-panel-design').append($('.c-design-section'));
   $('#ux-panel-motif').append($('#panel-motif'));
   // Ladezeit: Motivbibliothek laden, sobald der Motivbereich sichtbar wird (Reiter oder mobiler Schritt „Foto / Motiv“).

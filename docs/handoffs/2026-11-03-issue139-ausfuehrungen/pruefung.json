@@ -1,0 +1,68 @@
+[
+  {
+    "tag": "stake",
+    "scope": "isolated real catalogue model; no Shopify publication",
+    "details": {
+      "kind": "stake",
+      "heading": "Größe",
+      "options": "Herz S · 12,2 × 30,0 cm\n18,99 €\nHerz M · 16,0 × 38,2 cm\n29,99 €\nHerz XL · 20,0 × 38,0 cm\n42,99 €",
+      "state": {
+        "size": "GS-V2A-HERZ-M",
+        "mounting": "K00"
+      },
+      "bundles": [
+        "/_bundle/editor-2aa8b43c8ff5228f.mjs",
+        "/_bundle/editor-69eb9880b804359a.mjs"
+      ],
+      "changed": {
+        "options": {
+          "size": "GS-V2A-HERZ-XL",
+          "mounting": "K00"
+        },
+        "profile": {
+          "workingArea": {
+            "headHeightMm": 174.79,
+            "previewHeightMm": 184.79
+          },
+          "geometryHeight": 380.045
+        },
+        "texts": [
+          {
+            "text": "Balu",
+            "y": 110.301,
+            "h": 42.072
+          },
+          {
+            "text": "2011 – 2025",
+            "y": 140.533,
+            "h": 16.464
+          }
+        ],
+        "price": "42,99 €"
+      }
+    },
+    "errors": []
+  },
+  {
+    "tag": "memorial",
+    "scope": "isolated real catalogue model; no Shopify publication",
+    "details": {
+      "kind": "memorial",
+      "heading": "Befestigung & Zubehör",
+      "options": "Befestigung\nOhne Befestigung\nohne Aufpreis\n✓\n2 Bohrlöcher ohne Schrauben\n+2,99 €\n2 Bohrlöcher mit Schrauben\n+3,39 €\n4 Bohrlöcher ohne Schrauben\n+3,99 €\n4 Bohrlöcher mit Schrauben\n+4,49 €\n2 Abstandshalter Ø 8 mm Edelstahlknopf\n+5,99 €\nZubehör\n\nAlternativ zur Befestigung auswählen.\n\nAcrylständer klar\n+11,99 €\nAcrylständer schwarz\n+13,99 €\nSilikon 40 ml zum Aufkleben\n+5,99 €\nFoto\n\n1 Foto inklusive · weitere je 8,99 €\n\nFoto gestalten",
+      "state": {
+        "mounting": "K00"
+      },
+      "bundles": [
+        "/_bundle/editor-2aa8b43c8ff5228f.mjs",
+        "/_bundle/editor-44d7382dc7156a48.mjs"
+      ],
+      "accessory": {
+        "id": "STKL",
+        "price": "37,98 €",
+        "expectedCents": 3798
+      }
+    },
+    "errors": []
+  }
+]

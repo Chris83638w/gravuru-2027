@@ -1,0 +1,43 @@
+{
+  "at": "2026-11-03T07:28:32.775Z",
+  "method": "scripts/konfi-messen.cjs; consecutive runs; local Chrome executable adapter only",
+  "scriptSha256": "a029d7c27e79b24481027659aeaf2786b2ca98c0e5814b3e7c1ffd10794b9ebe",
+  "results": [
+    {
+      "tag": "steel",
+      "mode": "desktop",
+      "exit": 0,
+      "ready": "Konfigurator bedienbar nach      22,9 s"
+    },
+    {
+      "tag": "steel",
+      "mode": "handy",
+      "exit": 0,
+      "ready": "Konfigurator bedienbar nach      11,9 s"
+    },
+    {
+      "tag": "acryl",
+      "mode": "desktop",
+      "exit": 0,
+      "ready": "Konfigurator bedienbar nach      12,8 s"
+    },
+    {
+      "tag": "acryl",
+      "mode": "handy",
+      "exit": 0,
+      "ready": "Konfigurator bedienbar nach      9,5 s"
+    },
+    {
+      "tag": "doorbell",
+      "mode": "desktop",
+      "exit": 0,
+      "ready": "Konfigurator bedienbar nach      6,5 s"
+    },
+    {
+      "tag": "doorbell",
+      "mode": "handy",
+      "exit": 0,
+      "ready": "Konfigurator bedienbar nach      9,6 s"
+    }
+  ]
+}

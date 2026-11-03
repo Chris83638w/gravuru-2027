@@ -22,7 +22,8 @@ import {isLayeredDoorbell} from './product-model-module.mjs';
 import {doorbellOptionState,updateDoorbellViewport,doorbellTextSurface} from './product-view-module.mjs';
 import {installDoorbellPresentation} from './product-view-module.mjs';
 import {isFamilyFormats,familyFormatState,familyDesignReviewNote} from './family-formats.mjs';
-import {installFamilyFormatsPresentation} from './family-formats-ui.mjs';
+import {installExecutionPresentation} from './product-execution-module.mjs';
+import {executionOptionGroups} from './execution-registry.mjs';
 import {mountingPlacementState} from './mounting-placement.mjs';
 import {prepareNativeShellState} from './native-shell-state.mjs';
 import {finishNativeShell} from './native-shell-ui.mjs';
@@ -157,7 +158,7 @@ export function installUniversal(configInput) {
       options=state.mOptions;Object.assign(el.state,state);el.sync();
     };
     el.uxChangeOption=changeOption;
-    picks.innerHTML=(p.optionGroups||[]).map(g=>'<label>'+esc(g.name)+'<select data-m-option="'+esc(g.id)+'" aria-label="'+esc(g.name)+'">'+g.values.map(v=>'<option value="'+esc(v.id)+'">'+esc(v.label)+(fullOptionPrice(g)?' · '+money(v.priceCents):v.priceCents?' · +'+money(v.priceCents):' · ohne Aufpreis')+'</option>').join('')+'</select></label>').join('');
+    picks.innerHTML=executionOptionGroups(config).map(g=>'<label>'+esc(g.name)+'<select data-m-option="'+esc(g.id)+'" aria-label="'+esc(g.name)+'">'+g.values.map(v=>'<option value="'+esc(v.id)+'">'+esc(v.label)+(fullOptionPrice(g)?' · '+money(v.priceCents):v.priceCents?' · +'+money(v.priceCents):' · ohne Aufpreis')+'</option>').join('')+'</select></label>').join('');
     optionPanel.append(picks);
     // Chris 22./23.10.2026: Befestigung als Kacheln mit Icon, Bezeichnung und Aufpreis („+2,99 €“ oder
     // „ohne Aufpreis“) wie die alte Auswahl [data-fk-mount] in completion.mjs; der Auswahlhaken kommt von
@@ -165,7 +166,7 @@ export function installUniversal(configInput) {
     // Auswahlliste darüber bleibt als barrierefreie Alternative. Preis- und Auswahllogik bleiben unverändert.
     const pictures=document.createElement('div');pictures.className='m-option-pictures';
     const tileValues=g=>g.id==='mounting'?g.values:g.values.filter(v=>v.thumbnail);
-    pictures.innerHTML=(p.optionGroups||[]).map(g=>'<div role="group" aria-label="'+esc(g.name)+'">'+tileValues(g).map(v=>'<button type="button" class="m-option-tile" data-picture-group="'+esc(g.id)+'" data-picture-option="'+esc(v.id)+'" aria-pressed="false">'+optionTileIcon(v,{mounting:g.id==='mounting'})+'<strong>'+esc(v.label)+'</strong><small>'+esc(optionTilePrice(v,money,{fullPrice:!!fullOptionPrice(g)}))+'</small></button>').join('')+'</div>').join('');
+    pictures.innerHTML=executionOptionGroups(config).map(g=>'<div role="group" aria-label="'+esc(g.name)+'">'+tileValues(g).map(v=>'<button type="button" class="m-option-tile" data-picture-group="'+esc(g.id)+'" data-picture-option="'+esc(v.id)+'" aria-pressed="false">'+optionTileIcon(v,{mounting:g.id==='mounting'})+'<strong>'+esc(v.label)+'</strong><small>'+esc(optionTilePrice(v,money,{fullPrice:!!fullOptionPrice(g)}))+'</small></button>').join('')+'</div>').join('');
     picks.append(pictures);
     style.textContent+='.m-option-pictures>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:6px 0 10px}.m-option-pictures>div:empty{display:none}.m-option-pictures button{display:grid;justify-items:center;align-content:center;gap:6px;min-height:110px;padding:12px 18px;border:1px solid #dce5df;border-radius:12px;background:#fff;color:#1c3327;position:relative}.m-option-pictures button[aria-pressed=true]{border-color:#17634d;background:#edf5f0}.m-option-pictures svg{width:32px;height:32px;display:block;flex:none}.m-option-pictures img{width:56px;height:40px;object-fit:contain;display:block;flex:none}.m-option-pictures strong{font-size:14px;font-weight:600;line-height:1.3;text-align:center}.m-option-pictures small{font-size:12px;color:#526b5d}@media(max-width:600px){.m-option-pictures button{min-height:95px}.m-option-pictures svg{width:27px;height:27px}}';
     pictures.addEventListener('click',e=>{const button=e.target.closest('[data-picture-option]');if(!button)return;changeOption(button.dataset.pictureGroup,button.dataset.pictureOption);});
@@ -186,7 +187,7 @@ export function installUniversal(configInput) {
     fieldBox.addEventListener('change',e=>{const key=e.target.dataset.mField;if(!key)return;changeOption(key,fieldInput(e.target),{record:e.target.type==='checkbox'||e.target.tagName==='SELECT'});});
     options={...Object.fromEntries((p.optionGroups||[]).map(g=>[g.id,g.defaultValueId])),...(dynamicDoorbell?{position:config.doorbell.defaultPosition||'standard'}:{})};
     const updateDoorbellChoices=dynamicDoorbell?installDoorbellPresentation({el,config,picks,pictures}):()=>{};
-    const updateFamilyChoices=installFamilyFormatsPresentation({el,config,picks,pictures});
+    const updateFamilyChoices=installExecutionPresentation({el,config,picks,pictures,fieldBox});
     for(const select of picks.querySelectorAll('select[data-m-option]')) select.value=options[select.dataset.mOption];
     picks.addEventListener('change',e=>{if(!e.target.dataset.mOption)return;changeOption(e.target.dataset.mOption,e.target.value);});
     // Sichtbarkeit (visibleIf) und Feldwerte aus dem Zustand; unsichtbare Gruppen/Felder werden ausgeblendet.

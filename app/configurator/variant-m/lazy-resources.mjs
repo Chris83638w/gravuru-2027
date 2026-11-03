@@ -14,6 +14,18 @@ const pause=()=>new Promise(resolve=>setTimeout(resolve,0));
 // Hintergrund: Motivgeometrie nur im Leerlauf aufbereiten, damit Eingaben flüssig bleiben.
 const idlePause=()=>new Promise(resolve=>typeof requestIdleCallback==='function'?requestIdleCallback(()=>resolve(),{timeout:500}):setTimeout(resolve,0));
 
+// Precise contour validation needs the real glyph outlines before prepareConfig.
+// A multi-size product can switch sizes synchronously, so include its source
+// templates as well. Reuse the same font promises as the ordinary start loader.
+export async function hydrateContourFonts(config,{get=fetchJSON}={}){
+ if(config?.profile?.geometry?.shape!=='contour')return;
+ const designs=config.familyFormats?.designs||config.profile.designs||[];
+ const needed=new Set(resourceNeeds(designs.flatMap(d=>d.objects||[]),{localFonts:Object.keys(config.localResources?.fonts||{})}).fonts);
+ const entries=productFontIndex(config).filter(f=>needed.has(f.name));
+ const data=await Promise.all(entries.map(f=>loadFont(f,get)));
+ if(entries.length){config.localResources.fonts??={};entries.forEach((f,i)=>{config.localResources.fonts[f.name]=data[i];});}
+}
+
 // Start: Kernkatalog und – parallel – nur die Schriften/Motive, die Designs des Produkts verwenden.
 // Schriftdateinamen sind aus dem Namen ableitbar und laden parallel zum Kern; Bibliotheksmotive
 // erst nach dem Kern (er unterscheidet Grundmotive von Bibliotheksmotiven). Der Index prüft danach.

@@ -1,0 +1,15 @@
+
+Konfigurator-Messung (Desktop) – 3.11.2026, 09:27:30
+https://gravuru-design.myshopify.com/products/tuerschild-acryl-leuchtturm-12x8-personalisiert
+
+Produktseite geladen             14,7 s
+Knopf „Jetzt personalisieren“    ja
+Normaler Kaufknopf ausgeblendet  ja
+Produktdaten geladen nach        6,4 s
+Konfigurator bedienbar nach      12,8 s
+Produktdaten (entpackt)          24 KB
+Mitgeschickte Schriften          0
+Grundplatte
+Zwischenspeicher Editor-Seite    private, max-age=300
+Zwischenspeicher Editor-Paket    public, max-age=31536000, immutable
+Zwischenspeicher Katalog         public, max-age=3600

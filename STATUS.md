@@ -1,3 +1,15 @@
+## 2026-11-03 · Codex · #139 Schritt 3 / Serienpipeline
+
+Claudes vorhandenes shop-schnitt-plan.mjs für beide Türschildmaterialien erweitert (100er-Läufe, zwei Startdesigns, gemeinsame Acryl-Farben, verfügbare Varianten). 91 Grabstecker + je 5 Türschilder als native Konfigurationen erzeugt, alle 101 Varianten-/Preiszuordnungen geprüft; weitere Türschildplanung 1.760 Stahl/1.120 Acryl. Linux-Erstlauf 2.290/15/2, sämtliche 15 Fehler über UI-Testanker bzw. Python/TMPDIR erklärt und betroffene Dateien nachgeprüft. [Belege und offene Text-/Bild-/Uploadschritte](docs/handoffs/2026-11-03-issue139-massenlauf.md). Neue Module/Pipeline zur Prüfung in PR #154, PR #153 weiterhin live. In diesem Schritt 0 neue Shopartikel.
+
+## 2026-11-03 · Codex · #139 Schritt 2
+
+Grabstecker-/Gedenktafel-Ausführung mit separaten Paketen und echten Katalog-Screenshots umgesetzt. Größenwechsel/Kopfansicht, Kontur-Schriftladen und Foto-Startprojektion korrigiert. [Nachweis](docs/handoffs/2026-11-03-issue139-ausfuehrungen.md). Linux-Gesamtlauf läuft; historische Gedenktafelpreise und Importgrenzen offen. Kein weiterer Upload/Deployment. Nächster Schritt: vorhandene Bulk-Pipeline.
+
+## 03.11.2026 · Codex · PR 153 live, vorgeschriebene Messreihe
+
+Claudes Abnahme 6597574311 umgesetzt: Merge 04d6f6b, seit 07:25:41 UTC live; 1.330 Dateien/HTTP-Hashes geprüft, sechs Datenbanksicherungen, Rückweg erhalten. Modellgrößen Stahl/Acryl/AOSU 150/24/129 KB. Handy 11,9/9,5/9,6 s, Desktop 22,9/12,8/6,5 s; **Zeitziele noch verfehlt**, vollständige Messung und Klick-Bildfolgen dokumentiert. [Nachweis und Rückweg](docs/handoffs/2026-11-03-issue139-bereitstellung.md). Keine neuen Produkte. Nächster Schritt nach Meldung: Gedenktafel-/Grabstecker-Modul, danach bestehende Bulk-Pipeline.
+
 ## 03.11.2026 · Codex · Issue 139 Gerätepaket getrennt und Kundenaktionen geprüft
 
 Neu 2 / überarbeitet 8 / gesamt live 10 unverändert. Gemeinsamer Browserkern ohne Geräte-/Verwaltungsmodule; Funkklingel-Erweiterung nur im passenden Frame. Galerie vorbereitet ohne Vorschauarbeit im abgetrennten DOM. R6-Frühfehler und leeres Pflichtfeld korrigiert, auch direkter Warenkorbknopf geprüft. R5/R7/R9 mit sichtbaren Nachweisen für echte Modelle. Linux-Gesamtlauf 2.047/2, beide Testanker korrigiert; 94 gezielte Nachprüfungen grün. [Details, Bilder und offene Grenzen](docs/handoffs/2026-11-03-issue139-module-kundenpruefung.md). R8 danach am echten Shopify-Warenkorb bestanden: gebürstetes Material mit Kundentext, richtige Variante, 19,99 Euro wie angezeigt, Bearbeiten-Link. Kein Checkout. Kein Deployment; nächster Schritt vollständiges Ausführungsregister und Je-Linie-Messung.

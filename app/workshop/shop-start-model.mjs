@@ -13,11 +13,13 @@ export function shopStartModel(model,designId=null,{deferFonts=false}={}){
  const selected={...profile,defaultDesignId:id,designs:[design]};
  const used=new Set(design.objects.filter(o=>o.type==='motif').map(o=>o.motif));
  const resources=config.localResources?{...config.localResources,motifs:config.localResources.motifs?.filter(m=>!m.embeddedOnly||used.has(m.key)),...(deferFonts?{fonts:{}}:{})}:undefined;
+ if(resources)for(const key of ['photoExamples','photoPlaceholders'])if(resources[key])resources[key]=resources[key].filter(item=>item.designId===id);
  const family=isFamilyFormats(config)?{...config.familyFormats,designs:config.familyFormats.designs.filter(d=>d.id===id)}:undefined;
  const copy=structuredClone({...model,universal:{...config,profile:selected,...(resources?{localResources:resources}:{}),...(family?{familyFormats:family}:{}),...(config.workshopElementRights?{workshopElementRights:{[id]:config.workshopElementRights[id]}}:{})},...(model.legacy?{legacy:{...model.legacy,defaultDesignId:id,designs:[design]}}:{})});
  // The caller immediately serializes these immutable outlines to hash files
  // and removes the shallow keys; no outline is edited or sent in the model.
  if(deferFonts&&resources)copy.universal.localResources.fonts={...config.localResources.fonts};
+ if(copy.universal.photo?.hints)copy.universal.photo.hints=copy.universal.photo.hints.filter(h=>h.designId===id);
  if(isFamilyFormats(config)){
   const family=copy.universal.familyFormats;
   family.designs=family.designs.filter(d=>d.id===id);

@@ -1,0 +1,2347 @@
+{
+  "createdAt": "2026-11-03T08:25:34.037Z",
+  "nativeConfigs": 101,
+  "stakeFastPlanIdentical": true,
+  "totals": {
+    "edelstahl-tuerschilder": {
+      "subcategories": 11,
+      "total": 1760,
+      "planned": 1100,
+      "deferred": 660,
+      "blocked": 0,
+      "sameSeoOrTitleFields": 195
+    },
+    "acryl-tuerschilder": {
+      "subcategories": 7,
+      "total": 1120,
+      "planned": 700,
+      "deferred": 420,
+      "blocked": 0,
+      "sameSeoOrTitleFields": 128
+    }
+  },
+  "sourceLineSha256": "d0e21e11c1ccc33e5744a292bc50dbaca1aa2c50511290c546bd1b9d794654e6",
+  "rows": [
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-fuer-verstorbene",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D1",
+        "zielgruppe": "Mensch allgemein",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2999,
+        4299
+      ],
+      "configBytes": 12048315,
+      "sha256": {
+        "config": "3563fbea6ddbefc494f07ceefbddba27accaa32cf0f3eed4234d1b8e9b412193",
+        "plan": "8fb53cb7186d787b99a19d79b2118daecf3d0b9af1079aeb69fe10918e80abdd",
+        "product": "7220177d0c07846a21616a9c54646b852db839be4ca7ebbb9458f5e612a7b21c"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-fuer-mama",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D11",
+        "zielgruppe": "Mama",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2999,
+        4299
+      ],
+      "configBytes": 11995046,
+      "sha256": {
+        "config": "03bd0182b1a321cf38e215fc3b26fe7d7d51104c20e28be7aa0aa80b58119b86",
+        "plan": "e5288c98e8ec768d49e328d8ecb467ef8c647f55d1c9c89a47141aefe827e6f9",
+        "product": "99cacbba8d5af1587d7808442088f68901292f827e5ef59e41261b5d4183facf"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-fuer-papa",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D21",
+        "zielgruppe": "Papa",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2999,
+        4299
+      ],
+      "configBytes": 11844305,
+      "sha256": {
+        "config": "8f3a6610fd60eb21dcfca695286814120d68f461595c1939f87b416e66154e0f",
+        "plan": "bc4dbcd23b4198fb9a70be834b56820e38e0ca27c2116884d787235b76c58d2a",
+        "product": "139332a8767cbffaadea269b995c512dd5b0a4ef27eb62cef76570872ca7014f"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-fuer-oma-und-opa",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D31",
+        "zielgruppe": "Oma/Opa",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2999,
+        4299
+      ],
+      "configBytes": 12284737,
+      "sha256": {
+        "config": "f5fb38eafbeba2bb46ab4ca7a592a622daebc1aeba33c876f16e18a2eff29191",
+        "plan": "edabda68a7d9899031938fa938af8fec1b64fcd2f097a0db9faf33f3122aca8e",
+        "product": "865a98b8d39f7dc3ba6675b5cc641fea8d866ffabfa6e13ee6e2ff0436d740f5"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-fuer-sternenkinder",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D41",
+        "zielgruppe": "Sternenkind",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2999,
+        4299
+      ],
+      "configBytes": 10915624,
+      "sha256": {
+        "config": "29fcfbb52150a2a3aa2b5c390bcf0d0d2ebea6b8b4408990d39ab8013bd80458",
+        "plan": "27b093c83580ea4605e784eb2a7afff410d9619ec6bf3cae5caa0ab76b1838a8",
+        "product": "fda01450c39ea65857924c5dc186259b9184addf9bb00b7e6de54766b81bfade"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-fuer-hunde",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D51",
+        "zielgruppe": "Hund",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2999,
+        4299
+      ],
+      "configBytes": 11572934,
+      "sha256": {
+        "config": "da0688b115b78bd8b2b65e86dc4602a7e8c67dc8e284d96c2140ba308540b091",
+        "plan": "fe8f9cd85ab95613a0ac051aea717e12501853d50081969ede477f8623535162",
+        "product": "9c3ed3ffd1fd3605b585ccd1393d4fbbf242261aeae16cd069cb1956c31386c6"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-fuer-katzen",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D61",
+        "zielgruppe": "Katze",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2999,
+        4299
+      ],
+      "configBytes": 11441669,
+      "sha256": {
+        "config": "b6851da5d4385b6e1d8078492199ef87c324a4a35fceb32909a19f2aad1de78c",
+        "plan": "55fc73ebe2f4ac6140a801380717f9841673cda3f76ab091f90b56156e1b5385",
+        "product": "7e9c6b292d7838cc3d0de30974b929b356de2cc22e207f2622441b9a511b2246"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-fuer-haustiere",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D71",
+        "zielgruppe": "Tier allgemein",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2999,
+        4299
+      ],
+      "configBytes": 11589958,
+      "sha256": {
+        "config": "233de28dadda1add764993e5683b1fb5fe8a9eac44450b0771ff69c05d44a925",
+        "plan": "081657e9823aecd38999f6beec71691c9d04aef20053773ac1c5d12db6ce48a4",
+        "product": "5390755af3cedcb41ec935d5f5ba08b6be4b1d7a028c5ac6993f1de7e3f6ac25"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-christlichem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D81",
+        "zielgruppe": "Religiös christlich",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2999,
+        4299
+      ],
+      "configBytes": 11420783,
+      "sha256": {
+        "config": "4300cdc9e61e4a52043d419862bc9e2ee6ff11d3f08a26d5fee09c62e0db265a",
+        "plan": "3e7f58e8852467e9dad49f7836e25d7801e56568af635a7c79624f23ffb724b2",
+        "product": "0c93fdec7115d72ccf4d4815a6c1a41ef5b2409287218eb652d1d266b4574d29"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-juedischem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D91",
+        "zielgruppe": "Religiös jüdisch",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2999,
+        4299
+      ],
+      "configBytes": 11478710,
+      "sha256": {
+        "config": "86244b6d1ccd97e9a18a2ce83cb3fbc4887111390c4c36a0d3dfcf4c4fdf81bf",
+        "plan": "75ec4a52ca0f5f501f606cecf7ced7113c85e986c6f36919ce0d152ca7c6de64",
+        "product": "fcb3409372ee7b8676e52b744ee1647885fc1ca338657d61bf1253ee7266dfcb"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-islamischem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D101",
+        "zielgruppe": "Religiös islamisch",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2999,
+        4299
+      ],
+      "configBytes": 11571471,
+      "sha256": {
+        "config": "39b0a7bc3c1ce144daf8f7fc4b44c5f3bc0399ef1e739f12ebe56375975e2cf4",
+        "plan": "482206082755537bf068adeedf5952c0c3dfc6bc467f2632f39e68959335a3b8",
+        "product": "43c002040f5c9364ab98e2b3574f0cb5112a9af99b6d91352474684c43e96769"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-rahmen-fuer-verstorbene",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D1",
+        "zielgruppe": "Mensch allgemein",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 12177864,
+      "sha256": {
+        "config": "ded10ca58e04423074d979faab54971bf631db0ff373a6a202e5a2013ac64b29",
+        "plan": "7b1144692f8437b69ec1896da09544d471d144a49af21394bfab038d10788f46",
+        "product": "a8914fb650c22c37ee2b8abba56b798027322784b5df91294066f1e1df25dcf8"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-rahmen-fuer-mama",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D11",
+        "zielgruppe": "Mama",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 13885264,
+      "sha256": {
+        "config": "1838a28a500c5a26da2a95f3b977c95011a9255484fc1cfe6c51bf9018ca3769",
+        "plan": "79dd8a2baf0065455f1040e704bac47f63c417b69a57f389e9b47f893ca22def",
+        "product": "9062fab37b42e47ec25f577b26a036954850b8816e799f0f5f42b47e46afe03a"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-rahmen-fuer-papa",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D21",
+        "zielgruppe": "Papa",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 12027576,
+      "sha256": {
+        "config": "2d54626badc85171b4ed876e922d682e4c977b37f585a483414010be55cba30c",
+        "plan": "de3adf2d4af4b7cd4773d66b36ed5ec6738a89055ccd627b7ab16d24be2eb93c",
+        "product": "2ad250531f59efb7545f38c916fe2f5e9f0929198f9ee4a538dec10deab891c8"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-rahmen-fuer-oma-und-opa",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D31",
+        "zielgruppe": "Oma/Opa",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 12347029,
+      "sha256": {
+        "config": "86366c8543855ac27e0d37bc0d348a0363d2c4f28a122a245925d89c764a790f",
+        "plan": "7aeb1a94e8d510efb05c543c015045d26e9014ffd73e946bc94c3d842d38b4ea",
+        "product": "09e8fed17abb7814605dd3d220c9f0070d84b5944076b901437453869fe79d30"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-rahmen-fuer-sternenkinder",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D41",
+        "zielgruppe": "Sternenkind",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 11693970,
+      "sha256": {
+        "config": "8350d04b74d10bef3414f4137eb47d1b142361464bc4425b2c291df1ee4ba481",
+        "plan": "4feb735b277f06c0c9236be16ce5af6674be6e2d6f2e72152957c829e1645a79",
+        "product": "d2d48ab7518b934daccda59bac3f9ef95cf05b0f62f143df404a6647526ff65a"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-rahmen-fuer-hunde",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D51",
+        "zielgruppe": "Hund",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 11719480,
+      "sha256": {
+        "config": "11f7a856b11375b9610126474403bca935a52c06a3cda24d741130935c4924b1",
+        "plan": "38857abcfaa009e5ce0679635de5cb3c01f11f825438170116a7fb00d4ed9b56",
+        "product": "031475bc48c2f4b181420e6c844a4eac919952dacdb99f52e6a72d2543af1e94"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-rahmen-fuer-katzen",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D61",
+        "zielgruppe": "Katze",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 11704527,
+      "sha256": {
+        "config": "ffd454ef8c74f53e418f48b51d3f7e90ed9d068c2ece4c2d9a54dbe551097493",
+        "plan": "6e63f217f008814ce2655c3d2d2f65c907b08034541c0bd01cfabbc3872430db",
+        "product": "9ba9e3feab2c022956a6d3296244ce0f0422a6a974a6424cfee777f479ec782e"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-rahmen-fuer-haustiere",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D71",
+        "zielgruppe": "Tier allgemein",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 11815726,
+      "sha256": {
+        "config": "9a12f7d4e14e7835d49474be8e390ba5339909bc3afa122f6fed1c425b20de8c",
+        "plan": "2ed09482f9bb8e6f67db7099b1d2c5fb51106a09937086b1ec2259155700bc2e",
+        "product": "47c718830b3c7791ab5209b80d6cb9d537bdd916cbad700035000678e1868473"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-rahmen-mit-christlichem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D81",
+        "zielgruppe": "Religiös christlich",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 11580287,
+      "sha256": {
+        "config": "de03523be236020081230d7611bc5150367673919853b9607bf8a6633b3a1bbf",
+        "plan": "57d21448e031e2a510c8a718bd9ee8ce5bdbe9114ea810bf33e4464bf8e404c2",
+        "product": "d81ae72adb999c81d2c6353c87c94bcbb4e79d51c297c52c11b6ab56476a3739"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-rahmen-mit-juedischem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D91",
+        "zielgruppe": "Religiös jüdisch",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 11637541,
+      "sha256": {
+        "config": "fe1a64eee543fa3a694d1b6d640484127e2ee341bc4b9a5dab0dd79f763712d9",
+        "plan": "bf1fcca1c08923ed897a446b0fe1fe7c39bb457a9e928d79fb37642d29bb3086",
+        "product": "fd2d63f76c44bef2e1873a1c6006d0294655063ddf1fc543bb90b0558627dc35"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-rahmen-mit-islamischem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D101",
+        "zielgruppe": "Religiös islamisch",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 11703980,
+      "sha256": {
+        "config": "de1f13daf7257411fea95e776f2ad55c594ad86483100f9863c94c2ac553f211",
+        "plan": "49d5d5bd23a4bbf326d4bf6ba565007bfabfc5b4e60df16b74826a269d99e86f",
+        "product": "12a02bebb22e6c379c81c5b907586af41c0128a6ab714fb7316bb7f52c9e2718"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-doppelrahmen-fuer-verstorbene",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D1",
+        "zielgruppe": "Mensch allgemein",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 12169467,
+      "sha256": {
+        "config": "1b9d8324d1c2f6605d7a24b4fe786b0856ee436a54ce5c8724ae2b1e8f995e09",
+        "plan": "c1141b4a38e4a34f9fc85722d75147d499bdbb534db7d296d2ac5b75f6451ccf",
+        "product": "277f40dd0388566361820ae39aa1959dc91ca1953859688e0e01d60bbc17c463"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-doppelrahmen-fuer-mama",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D11",
+        "zielgruppe": "Mama",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 12711110,
+      "sha256": {
+        "config": "d5583f12965a4771315c487e7d5596b7a0874e1fccb25c7c227bfe211b680a23",
+        "plan": "79caac00dfe23bfaf7b7f4a2f199a58beb4c9a5150da96919fcaca59af199fa7",
+        "product": "cd3c4cdd04a989c5f8a21d0fa8e58f465d6bc77741e8e32a958e0379a5d79f2f"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-doppelrahmen-fuer-papa",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D21",
+        "zielgruppe": "Papa",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 11686373,
+      "sha256": {
+        "config": "d828c4dc3d8db9c7f05c1d6be168683e94161035fc611e30068901432077ed53",
+        "plan": "bbe8d1397ef3f0fccc063feb08ca3693423876eb311e2681c6eda50ff330707e",
+        "product": "7301ee0d66b895c2ebef3d9abae6c9c1fad5983848522c24d78bf834a29fbdcc"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-doppelrahmen-fuer-oma-und-opa",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D31",
+        "zielgruppe": "Oma/Opa",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 12356112,
+      "sha256": {
+        "config": "e91786ed577e1ceb00a07c0eb764f30bbf5f73edf053d6952bf4245e4b8e9103",
+        "plan": "96d20135abdc50df879702e2dacbc940337f0249255661b304c8df12dde31045",
+        "product": "199e0179f4ce12d0b122ba2788f93a79788ecc4034a9a0c7e90641690f74790c"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-doppelrahmen-fuer-sternenkinder",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D41",
+        "zielgruppe": "Sternenkind",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 11725591,
+      "sha256": {
+        "config": "0cf7116964cbcb8dcbca82c1f5d5d7c60ed6af7e4d10656cdafd2852b66e5565",
+        "plan": "1d9ad8989f45a8459680831d443e8b266b8c3575d6bb5039a1f9678e54365137",
+        "product": "f0c9d590f12854e6661cd84af7edd98dbc45c7ad4c12d615fa7d2d3257eabcd8"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-doppelrahmen-fuer-hunde",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D51",
+        "zielgruppe": "Hund",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 11641745,
+      "sha256": {
+        "config": "0d4dc275da2f441ae0608c66078866b41795d096aeb942c68b0f18f3826489a2",
+        "plan": "c0491518388645e92f6c9634548924d7e682863713660a7bcc9224cdcd72a125",
+        "product": "5bf90f22b1cb3ce072513dd8b692883bae54f9cba7bbf5844cc8e2cc6616672c"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-doppelrahmen-fuer-katzen",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D61",
+        "zielgruppe": "Katze",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 11708674,
+      "sha256": {
+        "config": "f9ed8188de2e7e40a62e4b4b3a8b4725a21a51126014a31d14acca88a0a8977b",
+        "plan": "03ebe34a44135f1842906a3d5b72aec3c72bc4ed093d5e7d72ae7492f2083ff8",
+        "product": "efd5a7354deec4c5ea0e6bb5c33c8dc9b3dc16d96e73f1a0e06a10d7a2b625f2"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-doppelrahmen-fuer-haustiere",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D71",
+        "zielgruppe": "Tier allgemein",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 11815307,
+      "sha256": {
+        "config": "00b378b762eeae399a90d56ec26768da3384c2649399368678b2d928e0c7151a",
+        "plan": "9569eac483841553e87ad3b1b2228c0593c96d3916b98fd9becb2810b3a239b3",
+        "product": "b8eff75070e5b2fdd3cb02bd2a2214615447e8a59f1e60d1ec6df8eb0d5af856"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-doppelrahmen-mit-christlichem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D81",
+        "zielgruppe": "Religiös christlich",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 11622438,
+      "sha256": {
+        "config": "ea98551995d21619539c0e96299b688087724c978619bd2ba33e5b49d83e5d6e",
+        "plan": "091abf7a9b493985eec8f0053ca5470d183df0b1c35af5c22f674df82706f896",
+        "product": "649ccf593765349cb01d3be76f8f95c8d54be5793406f0e697ce26fbf07c74aa"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-doppelrahmen-mit-juedischem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D91",
+        "zielgruppe": "Religiös jüdisch",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 11603442,
+      "sha256": {
+        "config": "81464c7066d469fa99f0a6d6c84a85482dd39fede768e459aa7d9a3e9a4dc067",
+        "plan": "62132a7a229844bc9351164d2b636c5a198fbb139cfd55071d18f3f1051dd394",
+        "product": "e293d072e39835d871c9c9594f0289717192626004da63b11d3ae874eaba420f"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-doppelrahmen-mit-islamischem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D101",
+        "zielgruppe": "Religiös islamisch",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2899,
+        4199
+      ],
+      "configBytes": 11676425,
+      "sha256": {
+        "config": "0fc50e5be18c02abe7da0e4b696de84d714e1ce4aea60573299f7e68dad13773",
+        "plan": "c443873ee5dd9d514bdf2d1397713f2345b8b41b45a5fae72f2c69ba9cf25530",
+        "product": "76f17deef212f571082c56e2198d487ce8887e0bbee5d8f704686cfc507dc447"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-liegend-fuer-verstorbene",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D1",
+        "zielgruppe": "Mensch allgemein",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 11480072,
+      "sha256": {
+        "config": "eb2908fa80d7ce9d6e412e84486c1447f810c3a959c0d3facafd1d079fd40f9c",
+        "plan": "e5921c01022341cf82d439911bf9f5e01ce79b57e8667530c350b1b75d65621e",
+        "product": "1bf195be55f0ad3776b01d22c17fd4a8e352d6b3c788e6603ec923f54a3f36c7"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-liegend-fuer-mama",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D11",
+        "zielgruppe": "Mama",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 12569289,
+      "sha256": {
+        "config": "c3730356348353f96841c43f873b9df41534b9808038f3f9938ce589e479a431",
+        "plan": "d3e3d11782b1ecb2b7ae8f6a0869bd3044fbbe9c7338059a1d78ef860dc956b7",
+        "product": "dfc6bcf06a673980db7b8197392e47cfb1a13c43c54f25cb643b3ac111b44afa"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-liegend-fuer-papa",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D21",
+        "zielgruppe": "Papa",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 11846170,
+      "sha256": {
+        "config": "af5348e7f5b66ebef930b5cd92c462e59318d74a147d829947226db3b901265d",
+        "plan": "718e18b38df9799a51181d81ad06692c5958fc3a9205e62a3279d1f2d8c4fd0e",
+        "product": "16c75c91e7a533461c5d34876d4f5c416a94744a8d26f8396f9892dd504093ba"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-liegend-fuer-oma-und-opa",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D31",
+        "zielgruppe": "Oma/Opa",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 11715338,
+      "sha256": {
+        "config": "243abd45b60e4a61972246bc655c4f9e98cbb5f0000f46feb8f257e64569c3bd",
+        "plan": "6764b6f31e1997c923b0d45f676316e8720c3310de78b392d63d4460e5b7793f",
+        "product": "9d299154fe4b741586622bc2df6c94d285b31db28c9fb68ab7b65e1eb09cbe5a"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-liegend-fuer-sternenkinder",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D41",
+        "zielgruppe": "Sternenkind",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 11490198,
+      "sha256": {
+        "config": "acfcf82bdc3b9207b0149aa48282bdac4bbbccbfa174f958d32ea89ccaa22a83",
+        "plan": "d0bfe5b2b7393c914c4eae30fe65d47169b8403ebd4d88fc270dd0a5345b511f",
+        "product": "32097156ba3af0fdb55c025ba25b47173648ac3f9b9b229548226d47415acc91"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-liegend-fuer-hunde",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D51",
+        "zielgruppe": "Hund",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 11003101,
+      "sha256": {
+        "config": "3bbcdd225d5a201cda1d84b91b89ea0c4871bbe0b45bea216c7a6a194b089b19",
+        "plan": "16b41f008d4bbcc14dd472d0d0ac6889e1c3403953963c22fb440ffc67fc9f64",
+        "product": "57d1b68d0f111ccc88e80591873552ad4f36af3813b9032f4888bdf19078492b"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-liegend-fuer-katzen",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D61",
+        "zielgruppe": "Katze",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 10871680,
+      "sha256": {
+        "config": "a719b39298b552554987935a8174033fe6e5caef84b3c16b339f046b87d0135b",
+        "plan": "0d98e213daae538380a29ac8a91ea05f9e898ebbd90a626d6b02e56b347d135b",
+        "product": "9f3af8e3193babac9c12219b34899587a02e5e9619a68dee8bfd4aff65798d44"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-liegend-fuer-haustiere",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D71",
+        "zielgruppe": "Tier allgemein",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 11592353,
+      "sha256": {
+        "config": "8965d96a5633fe010085eb0860a07115ec1ffe5234750c752c7083d190d95ab1",
+        "plan": "556570b20f62792ebdff80363d79c4a78e0521933068013b0acb75f97e9dc7ac",
+        "product": "f49fdae98bd735789288bddef3fc00a421bc49a38eeef28db136f54e90ee9843"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-liegend-mit-christlichem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D81",
+        "zielgruppe": "Religiös christlich",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 11422781,
+      "sha256": {
+        "config": "b9bad4bb7504431a3d4c98199fe42460fca52ac90b790fd4963343c2ab260dab",
+        "plan": "3bcb83c4f881b0662473510b69abb836683b697953d9ab8dfec326aee738338b",
+        "product": "7dc40d843b1195faf4a3c778fd1594485af843e3fe124554741c858283e4c18e"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-liegend-mit-juedischem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D91",
+        "zielgruppe": "Religiös jüdisch",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 11485940,
+      "sha256": {
+        "config": "35b33a704377fbfb9d2c9505c7798630db7033b55e562917099e6a58d886ed40",
+        "plan": "ca909ef6ad5b8414589b449090b10d5f587c264b1a9d91a98afaae15ba401f8e",
+        "product": "e50e70ce2bf5bef3f92c0ede5814deb9cfe8dcf307cb764d5368c9551308229a"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-liegend-mit-islamischem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D101",
+        "zielgruppe": "Religiös islamisch",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 10884019,
+      "sha256": {
+        "config": "b84b5deec860972c1c8e060065174f40d6ea6ba90046a57647edc4496168d90f",
+        "plan": "7c76793d9ae17ebf0c623ebe099b0e04e356315e6ebce9064ff347de1a4ea796",
+        "product": "b326861bb18aa4d8fa3997250f5856196af4b16c3d7fd4c5dc28af141d436190"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-pfote-fuer-hunde",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZPFOTE-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZPFOTE-M-D51",
+        "zielgruppe": "Hund",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 11578584,
+      "sha256": {
+        "config": "4d37dfa56665bac5e620a6d3a8864e7a4d625f844161b60b7a2f816c94afd4aa",
+        "plan": "6c89329f971050199fff6cca5f9a162d6748c9fedb6fe84f93c67a42b217d549",
+        "product": "f12437e87cca9fc8714e188f3eb26329261becc5f1739fbcd44dd444730c1626"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-pfote-fuer-katzen",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZPFOTE-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZPFOTE-M-D61",
+        "zielgruppe": "Katze",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 10875187,
+      "sha256": {
+        "config": "70c0e2f7bce4967fe607b1ba466772330f16673fcd192520f92d729f21f362d0",
+        "plan": "3544df8d13cfca6548ae847d14b1ec84582d5f872b3eda67457f8e52bf9595dc",
+        "product": "37133b15b97341c67bd59d81121aae99a1df0206fa07d82aff7e875339a856f2"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-herz-mit-pfote-fuer-haustiere",
+      "cut": {
+        "sizeKey": "GS-V2A-HERZPFOTE-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZPFOTE-M-D71",
+        "zielgruppe": "Tier allgemein",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 11596094,
+      "sha256": {
+        "config": "92b419ea73a21d2b29963a4e085bba8d67aea39af0a62845576069c605d8c281",
+        "plan": "2762b0d015dda3095fb5a267d7b3046ca2ebe459759bb9b1695c6415b057d18e",
+        "product": "8e83c7ed975a6a5031b0c323f01c0228b65e78abf0b40ebc67d7bf7c32d0b5c1"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-kreuz-fuer-verstorbene",
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ-L",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ-L-D1",
+        "zielgruppe": "Mensch allgemein",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 11775731,
+      "sha256": {
+        "config": "38d491f0e8b4682590626bb8cb9ce9b3aec6f969f4268c44e88861164131d8be",
+        "plan": "54c473f41c9409e13ac94bbfc8bb8b257a40922eb655ed62b9934654169740f3",
+        "product": "a209e749badbb5af229efd91e3001802d96e52508dc3f4c242c17b50c2e653d1"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-kreuz-fuer-mama",
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ-L",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ-L-D11",
+        "zielgruppe": "Mama",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 14148782,
+      "sha256": {
+        "config": "78ee00214217964a176a7b85839769a367293868ca626a5d91f6b375e58cfbb7",
+        "plan": "9099a582272813732f8f8b1a66147f209e1c8d4aef1cfe756347d5bf223f057d",
+        "product": "ea8ed6da99cde3bca8e8cf5142cd675290617a0824c259b28973426ab872131c"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-kreuz-fuer-papa",
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ-L",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ-L-D21",
+        "zielgruppe": "Papa",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 12122634,
+      "sha256": {
+        "config": "8923850c6e648df7d09e0d9e8ce31166aa774184f7bbd807b43dda5883b05f76",
+        "plan": "8a14fb307c2dd6ed7480ecfd5f45de35fbddc1f52eba1886ff9be4b4ee66bb21",
+        "product": "bf4e5b02232cee9630cc169f1bfd3e8c54d9cdb99ad8070b8df11bec8bc470ba"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-kreuz-fuer-oma-und-opa",
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ-L",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ-L-D31",
+        "zielgruppe": "Oma/Opa",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 12809492,
+      "sha256": {
+        "config": "f3744d287c3373e82123ed68baf8d20392c382eb082659dc9d52abb478d60aae",
+        "plan": "8afbd647142b34bfc556cd7441140e3c5d4b9b135274ad63e653b9b045bf5285",
+        "product": "b2b9bce426ce0f3cf49164487c8f612b345f30037fa9a710265089efc8810568"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-kreuz-fuer-sternenkinder",
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ-L",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ-L-D41",
+        "zielgruppe": "Sternenkind",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 10986371,
+      "sha256": {
+        "config": "1cccdafe34f7deb59c8ad45d6ed4f9355b280cf9058bdf76af6ef110bb2b7ea6",
+        "plan": "c641782db5020da8266836bbf7321d8d5948df7f43362d4f08572d4bbf21d1b1",
+        "product": "a27a3b2b21d50dce92b40b9e6247227e16bc42c6d7153c1cd587994cbf56639f"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-kreuz-mit-christlichem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ-L",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ-L-D81",
+        "zielgruppe": "Religiös christlich",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1899,
+        2699,
+        4199
+      ],
+      "configBytes": 10827060,
+      "sha256": {
+        "config": "bdd1a80791a5143e86a4578eff44829c78ed48875c7a0d3a170a0b93372b2f4a",
+        "plan": "58664b40e57edfde89ccfd4d039c1ec387690b281c7b566c67d99a9c967eab77",
+        "product": "09bddb1485f064f34c7d340eaa35b1d55de17ef64fafae91cf07449cf56073e9"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-kreuz-geschwungen-fuer-verstorbene",
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ2-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ2-M-D1",
+        "zielgruppe": "Mensch allgemein",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        1899,
+        3399
+      ],
+      "configBytes": 10680221,
+      "sha256": {
+        "config": "8ac48ce98a099e54a534117712c0920c24ce9e1d6e860ae87314c536cf549068",
+        "plan": "647b990948bd4b4636ae2683c6b689d1d0feb49d685edd5a2c11260e9fba68d4",
+        "product": "7acf9a7d37c19d207a9058114d7187d8ae19b19ec95a152e7809250a3f27a499"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-kreuz-geschwungen-fuer-mama",
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ2-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ2-M-D11",
+        "zielgruppe": "Mama",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        1899,
+        3399
+      ],
+      "configBytes": 10679745,
+      "sha256": {
+        "config": "111d66682a15ab1445087b1d709d9e50f77ec5b08fe6afddbb927a4c8c6016a7",
+        "plan": "2ea5927794cb08852aa84fd3bd42391630513b41025570e161fbc245b899f6b2",
+        "product": "aca2a6a75f50687672b46519f21171f85b18d43cbe866b21066bae1a90440474"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-kreuz-geschwungen-fuer-papa",
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ2-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ2-M-D21",
+        "zielgruppe": "Papa",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        1899,
+        3399
+      ],
+      "configBytes": 10679708,
+      "sha256": {
+        "config": "2ece0a9778c7b5fa30afcafb999caf8a0cb679e7fc9a6d6d52b476a78930426e",
+        "plan": "1eb572d1f68b6a786da6803826cae975916b0bd6fa2f809c3e402cac9cf23f14",
+        "product": "fc67a165ca42d59d6d170d6951ba2c4bd35ac5b95c6531296e1292403be5d7d1"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-kreuz-geschwungen-fuer-oma-und-opa",
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ2-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ2-M-D31",
+        "zielgruppe": "Oma/Opa",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        1899,
+        3399
+      ],
+      "configBytes": 10679737,
+      "sha256": {
+        "config": "a42ce0e235eac12c8d2848abb93a3f0ad1bd4800ffe26228c4fdd310f1309083",
+        "plan": "f208aa89792b1abe37917b9e5a941e637b2238edef0cb174b4acd8614592b14c",
+        "product": "41a78b07b968910dcb393544bc12101e125c7dca7be20502738287c2350feb0f"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-kreuz-geschwungen-fuer-sternenkinder",
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ2-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ2-M-D41",
+        "zielgruppe": "Sternenkind",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        1899,
+        3399
+      ],
+      "configBytes": 10679595,
+      "sha256": {
+        "config": "c4dae0baa787b51d822866d8a492366ca3a01255a322ab643a5fc584ef647f29",
+        "plan": "8af6a9e35956f1151126afda6983e18ca0269d52caed8c4159e5773c8d34aa8a",
+        "product": "01db87af3c49399c2b602fc8a0368398d694c4143e9bd5abd510ddb5e080e148"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-kreuz-geschwungen-mit-christlichem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ2-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ2-M-D81",
+        "zielgruppe": "Religiös christlich",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        1899,
+        3399
+      ],
+      "configBytes": 10680400,
+      "sha256": {
+        "config": "373f88d8416b079f052fd38f5e3c95ac19e2dd23b68f982c8c604573bd021526",
+        "plan": "a84a1069a4e3492ca88298699f073c47dafcefeb17d2804d842f264bc372c81c",
+        "product": "84a5ad96d9376770668a39596aa7bc2d4f9715c9d71881412f4fabf2e5a5fbdc"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-engel-fuer-verstorbene",
+      "cut": {
+        "sizeKey": "GS-V2A-ENGEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-ENGEL-M-D1",
+        "zielgruppe": "Mensch allgemein",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        1799,
+        2999
+      ],
+      "configBytes": 12043299,
+      "sha256": {
+        "config": "02a1536f24bda313f52eb8bd31fc5d837fd04a1d0e4e6b503556cf0003bf2f5a",
+        "plan": "d31aacd8abc09aeb5745c0db522e5327a129dbc28cc3c857b3cdfb9cfb43129b",
+        "product": "e8db47ba5603609ff8a4e50665aa3f945de3194a3b2f6168053bd1573b538d45"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-engel-fuer-mama",
+      "cut": {
+        "sizeKey": "GS-V2A-ENGEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-ENGEL-M-D11",
+        "zielgruppe": "Mama",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        1799,
+        2999
+      ],
+      "configBytes": 11981942,
+      "sha256": {
+        "config": "a08cb5a56c801cbbac34fb2fb3035e38d351b0b8ec59bc9a311a83d9811d3f7d",
+        "plan": "7792111a78b8267efa82c59546f5fa512fa8830e4ace0ca693c8aa8f2a9011d1",
+        "product": "121927420bb434f2171aad40d5d365df074f8962b6ab2618ba51bed44538a4a4"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-engel-fuer-papa",
+      "cut": {
+        "sizeKey": "GS-V2A-ENGEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-ENGEL-M-D21",
+        "zielgruppe": "Papa",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        1799,
+        2999
+      ],
+      "configBytes": 11831292,
+      "sha256": {
+        "config": "a6da8dd9cca799dfbf68b1bd4671ed6ca1f784b62bcad7430e20193ae4551bcb",
+        "plan": "918eaa2a303e5fc9841fbe9559ee167f63ebd0563d9e6a70f1d90fd1537e28b8",
+        "product": "80d8da2399da0a52a6c79061b0b5b1027ab881037ef8a9856461b69e2582eae5"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-engel-fuer-oma-und-opa",
+      "cut": {
+        "sizeKey": "GS-V2A-ENGEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-ENGEL-M-D31",
+        "zielgruppe": "Oma/Opa",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        1799,
+        2999
+      ],
+      "configBytes": 11700362,
+      "sha256": {
+        "config": "7d5e812530a07f38ae0e17a59d4010c20b9b2af6fcf8dc26d191b3f0e6d06685",
+        "plan": "bdadc7fac44c7dc3b7b952f52fc6c24273440e9a24b8f99b89d7fd5d78fcfcd0",
+        "product": "3cf217c847b3a0ee99cd73b8feea44bd3a96fae1cf0ac64fdcca40ddc30ac18c"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-engel-fuer-sternenkinder",
+      "cut": {
+        "sizeKey": "GS-V2A-ENGEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-ENGEL-M-D41",
+        "zielgruppe": "Sternenkind",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        1799,
+        2999
+      ],
+      "configBytes": 10908453,
+      "sha256": {
+        "config": "a5171ac46a82212888491344aad7b8af7bac5109439bbcf69bff307a2378c3f4",
+        "plan": "1cbdcbcb60585114e8c3f27f3aa9ffa7b990ad719d7beb71ad82f32801f1b94b",
+        "product": "0efe54351a433d124ef3d1b62f0418903dcdcc5f2595e80ee5fc092626885327"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-engel-mit-christlichem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-ENGEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-ENGEL-M-D81",
+        "zielgruppe": "Religiös christlich",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        1799,
+        2999
+      ],
+      "configBytes": 10820569,
+      "sha256": {
+        "config": "17c5d41646da32583f598789e7fae2f9ce559aad24f52950d8910a2170f01d08",
+        "plan": "b26922e48317c66a409e771af7726a1d745cb3a18f4138c8577267e76247ab04",
+        "product": "187bb69aabd0b9a548e257cbb128d03cb6b06e1d94f9da9e73f2a83286b4c1f4"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-fuer-verstorbene",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D1",
+        "zielgruppe": "Mensch allgemein",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1799,
+        2699,
+        3999
+      ],
+      "configBytes": 12169166,
+      "sha256": {
+        "config": "f8102c4bc2a3ade3c4fde6e8ca9287a77b40f819fc02467173935ad84c913f4d",
+        "plan": "c62d12df824cbcc479bc622bdb2e6ea1350f22c3a4f31bbc959e744ade16d64e",
+        "product": "e08e061e5543574569b868f0d5110912547c141ee438d9e348a0effe8dc0f526"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-fuer-mama",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D11",
+        "zielgruppe": "Mama",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1799,
+        2699,
+        3999
+      ],
+      "configBytes": 12112324,
+      "sha256": {
+        "config": "7200d31a23e96364d02fc241b575bd7f07bf9b755ec626e563986c5760ba64f9",
+        "plan": "56868900f29f880a28a06da0965c7e1eec1b0da1313e58e3d075a9b2dc1939e9",
+        "product": "5dd3c06cb4bc06de39171efd65f72ab0755d7ff1a4f63bb270b156833db9e629"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-fuer-papa",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D21",
+        "zielgruppe": "Papa",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1799,
+        2699,
+        3999
+      ],
+      "configBytes": 11961437,
+      "sha256": {
+        "config": "76f217fec9d54eb3ae60e27fab7bdbd5169e9642447b85c9fff40adfd1c278e9",
+        "plan": "84e2a873122b8b1912ceab9f15d9c0909b196f28b4beeca84e932c2412448132",
+        "product": "cd919037810e1ed2c62d652343697bc1b43115370f3ff625f080344aa5c40476"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-fuer-oma-und-opa",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D31",
+        "zielgruppe": "Oma/Opa",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1799,
+        2699,
+        3999
+      ],
+      "configBytes": 11830162,
+      "sha256": {
+        "config": "c5b2fbc5536d38fc85ec127fa5cc68fe296ac6e000f172a057e294cffdbe8685",
+        "plan": "02af4a1281fcf5bf20497554762857430c7926c4012be746f3fe26a8cd0bbe10",
+        "product": "0984efd2d6257458e98ea416fd744868bd0cdf13600ff206c890a90443264761"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-fuer-sternenkinder",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D41",
+        "zielgruppe": "Sternenkind",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1799,
+        2699,
+        3999
+      ],
+      "configBytes": 11032606,
+      "sha256": {
+        "config": "4c69576500d6e97a489d046f92560c754033a52003b5a2662b1f03ca25fa22fe",
+        "plan": "d8353f7e95db66a738655c896fdf2eca9aa0709d7e8a205b4167b6754d703fc3",
+        "product": "ca7984d866c7b4c98599bc19ca0a8bccc5389b23d4a7066edb4c3ac98d8c8b1c"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-fuer-hunde",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D51",
+        "zielgruppe": "Hund",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1799,
+        2699,
+        3999
+      ],
+      "configBytes": 11690418,
+      "sha256": {
+        "config": "39e5c9cb023fee7a7f5e44180c7d8d4eb573a8af7b0c219418bc6c835aaf45cc",
+        "plan": "53da8814549ecefdfd0d94371db2be78a657bf37d59c648b104ed1fcc83585b8",
+        "product": "2a0fb4f3aa585ef5410af4620c3a793405b1568070aa6a1a75d69fcab375cda5"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-fuer-katzen",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D61",
+        "zielgruppe": "Katze",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1799,
+        2699,
+        3999
+      ],
+      "configBytes": 11559397,
+      "sha256": {
+        "config": "4d0990242f8e134e300c29053e92d77c9acc761aa1e97b7dbb4d5de610141a41",
+        "plan": "8861720087eab5b9b19429d0abd47f5616ffd019a0af1b2f585e311cdab850d8",
+        "product": "e0798fe03ce181c851847b2f1ab592d962551fd6a7ca603ff0feb3e521557e9c"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-fuer-haustiere",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D71",
+        "zielgruppe": "Tier allgemein",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1799,
+        2699,
+        3999
+      ],
+      "configBytes": 11707895,
+      "sha256": {
+        "config": "86ef6c0fa876bcc6be0ce53d83e7cf902ad9fdae9058364af81489eb3d8b8d98",
+        "plan": "fddde9644e94e3e54f2bed466627ef134b41c00bbd4fdaa164263806031e027d",
+        "product": "2c5e263eaf123d9f8a3166caaad9ded152db72f1b9a75cba9eff7d176acdb15f"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-mit-christlichem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D81",
+        "zielgruppe": "Religiös christlich",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1799,
+        2699,
+        3999
+      ],
+      "configBytes": 10971789,
+      "sha256": {
+        "config": "285d53c7665822e8a0e2d37554a61fa98a36737ab95e2c4386594dd350137a32",
+        "plan": "9b3a37a8d8f450bbdf9157c7e95004f7bcb63f6af0709521b7f21715f0271b7f",
+        "product": "9d9d5b23ccd2697059ab9241978d55e33d0ef341b9b8754a8dfd46d70173a64a"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-mit-juedischem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D91",
+        "zielgruppe": "Religiös jüdisch",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1799,
+        2699,
+        3999
+      ],
+      "configBytes": 11604531,
+      "sha256": {
+        "config": "852132461ed5fa4aa6634144e43292058df527070b4257299023abb5e7e3c5e8",
+        "plan": "3f26695b5058f37f67f7895ffa3b231d22ed0f874337f4edd9a983202e5485bb",
+        "product": "3b7548fb9d1f8e6bfb4410d8e5f2f6fc6a0c10ae5b8e461e3931e87fd8bcf729"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-mit-islamischem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D101",
+        "zielgruppe": "Religiös islamisch",
+        "groessenWahl": "form"
+      },
+      "variantCount": 3,
+      "prices": [
+        1799,
+        2699,
+        3999
+      ],
+      "configBytes": 11694433,
+      "sha256": {
+        "config": "23237e76a5a40e65c183e832364a3f350ac585cc81c316f82f4b6d285beac150",
+        "plan": "12575db89a2474278f4c7b2178bc13055c73360f9029721db5f3d797f95b5366",
+        "product": "8315d3e53de5670465da29c7326e524eb69e27fb74b422824a02e6dd98725524"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-mit-innenstern-fuer-verstorbene",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D1",
+        "zielgruppe": "Mensch allgemein",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        3499,
+        4399
+      ],
+      "configBytes": 10681865,
+      "sha256": {
+        "config": "055813024868b4eb90699dc4854988b0f9912e0f302fe19deb983d872b34a612",
+        "plan": "bbe9db4a08d663c98cdb97325cec838ccbf089cd300c80bf7de7023dee32e065",
+        "product": "8c286f090423629f1a14995977c8adf957a4d4792eaa6aaee7727c3c17657c89"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-mit-innenstern-fuer-mama",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D11",
+        "zielgruppe": "Mama",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        3499,
+        4399
+      ],
+      "configBytes": 10693025,
+      "sha256": {
+        "config": "e5cc28a07603634be5a820a36814e40d304c683429ec134b20604c033cbd5536",
+        "plan": "09b33c684c978f5d08ce32ee977b3402df242e3f74c93777c778985542b414ad",
+        "product": "fc96a67300b62fbc1e7c404b88d3ab765f5df137f5dd81882653f68835b36860"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-mit-innenstern-fuer-papa",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D21",
+        "zielgruppe": "Papa",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        3499,
+        4399
+      ],
+      "configBytes": 10692891,
+      "sha256": {
+        "config": "4de175c6e1d602972454820b2b3e0dcfed660677de99351c5fa74cc481c17891",
+        "plan": "d17355559ecee18534dd560229c704f9b9c04dfb0b8e0721bc97926bd615d026",
+        "product": "a00f2f396a958e873d7be37f756adb6db1d3be4bd5aacc8d84c09cf9ea6f5c36"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-mit-innenstern-fuer-oma-und-opa",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D31",
+        "zielgruppe": "Oma/Opa",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        3499,
+        4399
+      ],
+      "configBytes": 10692847,
+      "sha256": {
+        "config": "fc511a2cd820fe6c602b11560d452c33c957119a6f84e6cecbfab04b6e996ceb",
+        "plan": "e1d375f9e2ba32f9b398cf9d7da47832b76cae7af936a419f4e24030e00745d8",
+        "product": "f391da3c32bb670f33708dcf4df6d3082389c650f88aa4b973e90a6f579b33b4"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-mit-innenstern-fuer-sternenkinder",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D41",
+        "zielgruppe": "Sternenkind",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        3499,
+        4399
+      ],
+      "configBytes": 10680831,
+      "sha256": {
+        "config": "0ec61163b105a3af762ebd38efd30033e8e72dd4c9a523054906c7a7b23bbcfd",
+        "plan": "13b77c20e0e13cbc9bc4d0dfbbbc2eb686e2f17708c0fbe6c4724392f5fc4344",
+        "product": "02eaafcd4e01425826c37228def1600a95a71862a137fe7ebf1dc913b1761bbc"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-mit-innenstern-fuer-hunde",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D51",
+        "zielgruppe": "Hund",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        3499,
+        4399
+      ],
+      "configBytes": 10680896,
+      "sha256": {
+        "config": "6c14c0e348afce8cda0ad241be5484de6a7d16bac5c5db30d30f61a3c7a43e52",
+        "plan": "b873d7e67aecfd103c6b7b366878f5debac80f6e4d15b0090dc291ffafb1aec2",
+        "product": "f971ff7f67d1ee7f62e8920c21a97a246e8703fc819e631038f16ac637358d74"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-mit-innenstern-fuer-katzen",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D61",
+        "zielgruppe": "Katze",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        3499,
+        4399
+      ],
+      "configBytes": 10680784,
+      "sha256": {
+        "config": "ce82f5cfb80919c57e408fb39c7c71f2263a0e2f54f469941015e5a7d2631ac2",
+        "plan": "70f2c203b7f14a648cb852f51957cd90c34c775ca8e0acd761f824876132c5b7",
+        "product": "d999e0c8e1012cfc8edbf0ca4cc737a6ed62f9ade79199683764f391cc643428"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-mit-innenstern-fuer-haustiere",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D71",
+        "zielgruppe": "Tier allgemein",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        3499,
+        4399
+      ],
+      "configBytes": 10681250,
+      "sha256": {
+        "config": "afacafa70e3adbd532407da0a31aee92ec35407c8d23a4a96e1e65f23da8ed51",
+        "plan": "ae374b455186b77cba0c8ee09212e007fdcd26942b0f29deab9ea190dfa67fa5",
+        "product": "5a53afe4fd779a6981754f2d3074c18164db4153eef1964ceddc5c745eac5273"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-mit-innenstern-mit-christlichem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D81",
+        "zielgruppe": "Religiös christlich",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        3499,
+        4399
+      ],
+      "configBytes": 10681903,
+      "sha256": {
+        "config": "07007b64353d13e5a8f8e2327683c589d78798a3d3d196cf574ff2b51d713fcb",
+        "plan": "3fa7dbf98657ff038800122e97caa37b4fa761e1afaa31f31fc3aa9cdfc39247",
+        "product": "2f2e9100b5db4f455b71310075fd0fb65280e304af707d1791578dcb780b9c41"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-mit-innenstern-mit-juedischem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D91",
+        "zielgruppe": "Religiös jüdisch",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        3499,
+        4399
+      ],
+      "configBytes": 10681793,
+      "sha256": {
+        "config": "edd02fc36cd971aa36d7108d137345624101accafcc146078659b8d517f40cb4",
+        "plan": "11a0238835c672e587a2119f278da4fcd938c06d3bd18d6b9093c840148a8d22",
+        "product": "56920dcfc6b87af71bbd0acc1cc90a71534e2cb37d1f72a1f997c031e1b8ca06"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-stern-mit-innenstern-mit-islamischem-motiv",
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D101",
+        "zielgruppe": "Religiös islamisch",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        3499,
+        4399
+      ],
+      "configBytes": 10558400,
+      "sha256": {
+        "config": "643b9228b64065613c4816e0ed7f32cc0259d041f4fbe27adb661f2105c1beed",
+        "plan": "8da613bb9a9429c79121ade8b686e160756f64d242557f7a14d9cdd4dd1b86bd",
+        "product": "6b348932a81d39fbe8a8f468b32786798e347a160030678fdc80ca858cfd4891"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-katze-fuer-katzen",
+      "cut": {
+        "sizeKey": "GS-V2A-KATZE-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KATZE-S-D61",
+        "zielgruppe": "Katze",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        1799,
+        2799
+      ],
+      "configBytes": 11345097,
+      "sha256": {
+        "config": "cf06eac7c326d5457793e3606028d64ca1d53e8e77eeed41573a83d6ec33f727",
+        "plan": "183f2ef70fbb2ed80fc2151ab9a087ba1a04342cf0591443ddf5ec3dc9928082",
+        "product": "3ec300122e12abb6551e27a7e78e0c16c447fc98e156b56c3010e0d8ac097b42"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-pfote-fuer-hunde",
+      "cut": {
+        "sizeKey": "GS-V2A-PFOTE-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-PFOTE-S-D51",
+        "zielgruppe": "Hund",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        1799,
+        2799
+      ],
+      "configBytes": 11552502,
+      "sha256": {
+        "config": "359cee47aa7b339eb132311b3a7ab193b03d38baf4d2725a4e316c51777832ca",
+        "plan": "bab725a9172494e928fcb3c620f7a4fb5f8ee51fa087d9dc43b6d6916c4ca7ce",
+        "product": "77bd1a54a8524fc271c429cf56a9ada2bffd56e657cb6b3ae5e7b0f4ecf14a65"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-pfote-fuer-katzen",
+      "cut": {
+        "sizeKey": "GS-V2A-PFOTE-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-PFOTE-S-D61",
+        "zielgruppe": "Katze",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        1799,
+        2799
+      ],
+      "configBytes": 11487551,
+      "sha256": {
+        "config": "a56c4c114e81364f18af4d5f4a82e538a7a290bd4c2f29b3a30c7683e3099ad6",
+        "plan": "01795640152883ee1da34e16e7d33c3aba2d52c12fe387b54fdf9376f6e9e73d",
+        "product": "8a5d833c85269e3137a3de2620b0bd5b057b08090ab831de5683e0cd23bff8cb"
+      }
+    },
+    {
+      "kind": "stake",
+      "handle": "grabstecker-pfote-fuer-haustiere",
+      "cut": {
+        "sizeKey": "GS-V2A-PFOTE-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-PFOTE-S-D71",
+        "zielgruppe": "Tier allgemein",
+        "groessenWahl": "form"
+      },
+      "variantCount": 2,
+      "prices": [
+        1799,
+        2799
+      ],
+      "configBytes": 11561393,
+      "sha256": {
+        "config": "9479f995119d86157be90c576add96eba76281474f0d8e530ad391a2c72018cc",
+        "plan": "c577f7baa99afbc26274670aeadf7cd621da0a56a96c1538a50677ada0f0c907",
+        "product": "33a0d3c45ec60fbf5e82ad7e49c09ff9fb8b97840698f8d565259911da7d5871"
+      }
+    },
+    {
+      "kind": "steel",
+      "handle": "edelstahl-tuerschilder-re-80x20-familienschilder-tre-v2a-8x2-d1",
+      "cut": {
+        "sizeKey": "GR-ES-RE-80X20-T15",
+        "themeId": "familienschilder",
+        "defaultDesignId": "TRE-V2A-8x2-D1"
+      },
+      "variantCount": 5,
+      "prices": [
+        949,
+        1248,
+        1348,
+        1198,
+        1218
+      ],
+      "configBytes": 16987951,
+      "sha256": {
+        "config": "646ec86c65c43d2c37d1b628e4646959cb2ab9cb99260ee4292ad0a23daf919a",
+        "plan": "1782b15b5b9134d7c54daea6fafb72372bb1711e6f0074d2ba87e5c72ff1be11",
+        "product": "ca2537c8dbb027387d05487c99a2332882cef8973d86781d53ce1409337b911b"
+      }
+    },
+    {
+      "kind": "steel",
+      "handle": "edelstahl-tuerschilder-re-80x20-familienschilder-tre-v2a-8x2-d2",
+      "cut": {
+        "sizeKey": "GR-ES-RE-80X20-T15",
+        "themeId": "familienschilder",
+        "defaultDesignId": "TRE-V2A-8x2-D2"
+      },
+      "variantCount": 5,
+      "prices": [
+        949,
+        1248,
+        1348,
+        1198,
+        1218
+      ],
+      "configBytes": 16987951,
+      "sha256": {
+        "config": "2a03794f04e2c62c728814ff53e4f8a316825c7a3fe72e5a8e628e4c83694f9e",
+        "plan": "29285c50f26f54813bfb1f4a431bf523ab5dc67271732bee8d4f032d757e7a18",
+        "product": "7bb0d1c71c1b17a5cb47d0f8e6b1bebf0322400b82c17a92b43f88978a58999e"
+      }
+    },
+    {
+      "kind": "steel",
+      "handle": "edelstahl-tuerschilder-re-70x23-3-familienschilder-tre-v2a-7x2-d1",
+      "cut": {
+        "sizeKey": "GR-ES-RE-70X23P3-T15",
+        "themeId": "familienschilder",
+        "defaultDesignId": "TRE-V2A-7x2-D1"
+      },
+      "variantCount": 5,
+      "prices": [
+        899,
+        1198,
+        1298,
+        1148,
+        1168
+      ],
+      "configBytes": 18434831,
+      "sha256": {
+        "config": "c8ab05bca04afab8f8d00dc5dfd399ebb12c8f0dd294baf1d69b8765eff2ed25",
+        "plan": "b9af0124255717bff10d067f9ce6695ca25acc859a25574180519bc4a0faa3f1",
+        "product": "f2c88616639535f271720ba31d3ead6c7e1ad1756de0890c21545871f2daa2e3"
+      }
+    },
+    {
+      "kind": "steel",
+      "handle": "edelstahl-tuerschilder-re-70x23-3-familienschilder-tre-v2a-7x2-d2",
+      "cut": {
+        "sizeKey": "GR-ES-RE-70X23P3-T15",
+        "themeId": "familienschilder",
+        "defaultDesignId": "TRE-V2A-7x2-D2"
+      },
+      "variantCount": 5,
+      "prices": [
+        899,
+        1198,
+        1298,
+        1148,
+        1168
+      ],
+      "configBytes": 18434831,
+      "sha256": {
+        "config": "cca78c60fde91d1c4bbd85f07a82ac3ad1373d5733bfe579371300d31ffbce1c",
+        "plan": "82591cc8059a41462022f904bb67f589c8c36551b180b3559270851677d255db",
+        "product": "6ff01ee1f525bb3bb09da5ad85054a41defa9d9dafe7ab5a7fd0da6b397bea94"
+      }
+    },
+    {
+      "kind": "steel",
+      "handle": "edelstahl-tuerschilder-re-60x20-familienschilder-tre-v2a-6x2-d1",
+      "cut": {
+        "sizeKey": "GR-ES-RE-60X20-T15",
+        "themeId": "familienschilder",
+        "defaultDesignId": "TRE-V2A-6x2-D1"
+      },
+      "variantCount": 5,
+      "prices": [
+        899,
+        1198,
+        1298,
+        1148,
+        1168
+      ],
+      "configBytes": 18400897,
+      "sha256": {
+        "config": "f6dc73758c065c10c84a5f6757d8167ccdd0acf41e552df4c770843f448a226b",
+        "plan": "1d9a23210732cf297f4df505024591f415c59f74828db833873fd3df102225f1",
+        "product": "72bbbc628651fcbe3de7162f2a47bddd47ee570ba5584c7ae24374e197883d0a"
+      }
+    },
+    {
+      "kind": "acrylic",
+      "handle": "acryl-tuerschilder-re-80x20-familienschilder-tre-v2a-8x2-d1",
+      "cut": {
+        "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+        "themeId": "familienschilder",
+        "defaultDesignId": "TRE-V2A-8x2-D1"
+      },
+      "variantCount": 10,
+      "prices": [
+        849,
+        1148,
+        1248,
+        1098,
+        1148,
+        849,
+        1148,
+        1248,
+        1098,
+        1148
+      ],
+      "configBytes": 15069938,
+      "sha256": {
+        "config": "47ce85073dc4d56bf4a95c887ca2464c735208e862f7343e63cb51fda5a71923",
+        "plan": "de7030cc0948e7d5958ece9a64e36a9a7382cff7ed89f29ee0d964a5790525b8",
+        "product": "4b58a6af7901fa1543def82fff6fe0c794c76596dcd35bba1dc269cbb8e4d44d"
+      }
+    },
+    {
+      "kind": "acrylic",
+      "handle": "acryl-tuerschilder-re-80x20-familienschilder-tre-v2a-8x2-d2",
+      "cut": {
+        "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+        "themeId": "familienschilder",
+        "defaultDesignId": "TRE-V2A-8x2-D2"
+      },
+      "variantCount": 10,
+      "prices": [
+        849,
+        1148,
+        1248,
+        1098,
+        1148,
+        849,
+        1148,
+        1248,
+        1098,
+        1148
+      ],
+      "configBytes": 15069938,
+      "sha256": {
+        "config": "23f628ce823fec2b792cf104c9d3b616ad3e1c6186aa59ac316b9dd6e3a39628",
+        "plan": "68d89519df6dd9bb71d1414edeb900ebc58f5c4212c685dd2e6dad1cda19cba3",
+        "product": "48599d927537c0db35c900f320774dc8e16439ebfcf126a6d184ecabda1e3bfc"
+      }
+    },
+    {
+      "kind": "acrylic",
+      "handle": "acryl-tuerschilder-re-70x23-3-familienschilder-tre-v2a-7x2-d1",
+      "cut": {
+        "sizeKey": "TS-Acryl-RE-70X23P3-T30-SW",
+        "themeId": "familienschilder",
+        "defaultDesignId": "TRE-V2A-7x2-D1"
+      },
+      "variantCount": 10,
+      "prices": [
+        799,
+        1098,
+        1198,
+        1048,
+        1098,
+        799,
+        1098,
+        1198,
+        1048,
+        1098
+      ],
+      "configBytes": 16517986,
+      "sha256": {
+        "config": "aee3ed71fe348a3703f4ad0a541e20a29884f4c5178153d66e7f09dac3470de7",
+        "plan": "a396cae9a761a0debc11701cd540a62a15c585c01304a1fce2c2d3319b9d6161",
+        "product": "ddd4318f782887b1bbbc3bdaaba89eb6b667f103c4ff6409539e9493dcd96f44"
+      }
+    },
+    {
+      "kind": "acrylic",
+      "handle": "acryl-tuerschilder-re-70x23-3-familienschilder-tre-v2a-7x2-d2",
+      "cut": {
+        "sizeKey": "TS-Acryl-RE-70X23P3-T30-SW",
+        "themeId": "familienschilder",
+        "defaultDesignId": "TRE-V2A-7x2-D2"
+      },
+      "variantCount": 10,
+      "prices": [
+        799,
+        1098,
+        1198,
+        1048,
+        1098,
+        799,
+        1098,
+        1198,
+        1048,
+        1098
+      ],
+      "configBytes": 16517986,
+      "sha256": {
+        "config": "e67183ee1a657658c4e17a910944401f3270a96220ae73cddfb039723386bb5e",
+        "plan": "98a2aefa9e719436932a2875d1a15666eb2908242e10d1a4038701c753726502",
+        "product": "8d59b5fef9e3cbb74e471c97e058f736dadc2000612d403b77542f9877f3e23d"
+      }
+    },
+    {
+      "kind": "acrylic",
+      "handle": "acryl-tuerschilder-re-60x20-familienschilder-tre-v2a-6x2-d1",
+      "cut": {
+        "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+        "themeId": "familienschilder",
+        "defaultDesignId": "TRE-V2A-6x2-D1"
+      },
+      "variantCount": 10,
+      "prices": [
+        799,
+        1098,
+        1198,
+        1048,
+        1098,
+        799,
+        1098,
+        1198,
+        1048,
+        1098
+      ],
+      "configBytes": 16484012,
+      "sha256": {
+        "config": "41aadedaaf5722ce0420d342310e4a7d1f72b883536bc4880314f314560423f2",
+        "plan": "56a8a2c287458fc6ed1be7e0792d4d15ffd079befd41c9e846e26cb6816786ac",
+        "product": "8d2d5792f73f41b1344861ce6f6ede455b32c8f6ff26b08beffc241e642942dd"
+      }
+    }
+  ]
+}

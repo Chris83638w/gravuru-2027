@@ -1,0 +1,126 @@
+{
+  "schema": "gravuru-shop-schnitt-product/v1",
+  "input": {
+    "title": "Grabstecker Herz für Verstorbene – Edelstahl mit Gravur",
+    "handle": "grabstecker-herz-fuer-verstorbene",
+    "status": "DRAFT",
+    "templateSuffix": "konfi",
+    "vendor": "gravuru",
+    "productType": "Grabstecker",
+    "descriptionHtml": "<p>Ein persönlicher Gruß am Grab, der Name und Lebensdaten eines geliebten Menschen festhält.</p>\n<p>Die Form zeigt ein klares Herz auf schlankem Stiel. Der lange Stiel wird einfach in die Erde gesteckt, ohne Werkzeug und ohne Fundament.</p>\n<p>30 Vorlagen helfen beim Start, Name, Daten und Spruch trägst du selbst ein. Die schwarze Gravur steht auf Edelstahl, der nicht rostet, und bleibt draußen gut lesbar.</p>\n<p><strong>Größen:</strong> S (12,2 × 30,0 cm, 18,99 €), M (16,0 × 38,2 cm, 29,99 €), XL (20,0 × 38,0 cm, 42,99 €).</p>\n<p>Hergestellt in unserer Werkstatt in Bielefeld. Jetzt Namen eintragen.</p>",
+    "seo": {
+      "title": "Grabstecker Herz für Verstorbene | Jetzt Namen eintragen",
+      "description": "Grabstecker in Herzform für Verstorbene aus Edelstahl, schwarz graviert, ab 18,99 €. Jetzt Namen eintragen – Name und Daten selbst eintragen."
+    },
+    "tags": [
+      "Grabstecker",
+      "Edelstahl",
+      "Gravur",
+      "Andenken",
+      "Herz",
+      "Verstorbene"
+    ],
+    "productOptions": [
+      {
+        "name": "Größe",
+        "position": 1,
+        "values": [
+          {
+            "name": "Herz S · 12,2 × 30,0 cm"
+          },
+          {
+            "name": "Herz M · 16,0 × 38,2 cm"
+          },
+          {
+            "name": "Herz XL · 20,0 × 38,0 cm"
+          }
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "position": 1,
+        "price": "18.99",
+        "sku": "GS-V2A-HERZ-S-MENSCH-ALLGEMEIN",
+        "inventoryItem": {
+          "tracked": false
+        },
+        "optionValues": [
+          {
+            "optionName": "Größe",
+            "name": "Herz S · 12,2 × 30,0 cm"
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "price": "29.99",
+        "sku": "GS-V2A-HERZ-M-MENSCH-ALLGEMEIN",
+        "inventoryItem": {
+          "tracked": false
+        },
+        "optionValues": [
+          {
+            "optionName": "Größe",
+            "name": "Herz M · 16,0 × 38,2 cm"
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "price": "42.99",
+        "sku": "GS-V2A-HERZ-XL-MENSCH-ALLGEMEIN",
+        "inventoryItem": {
+          "tracked": false
+        },
+        "optionValues": [
+          {
+            "optionName": "Größe",
+            "name": "Herz XL · 20,0 × 38,0 cm"
+          }
+        ]
+      }
+    ],
+    "metafields": [
+      {
+        "namespace": "custom",
+        "key": "gravuru_product_cut",
+        "type": "json",
+        "value": "{\"sizeKey\":\"GS-V2A-HERZ-M\",\"themeId\":\"andenkenschilder\",\"defaultDesignId\":\"GS-V2A-HERZ-M-D1\",\"zielgruppe\":\"Mensch allgemein\",\"groessenWahl\":\"form\"}"
+      }
+    ]
+  },
+  "image": {
+    "file": "grabstecker-herz-verstorbene-edelstahl-gravur.webp",
+    "alt": "Grabstecker in Herzform aus Edelstahl mit Stiel, für Verstorbene, schwarz graviert mit Name und Lebensdaten"
+  },
+  "collections": [
+    "grabstecker",
+    "grabstecker-verstorbene"
+  ],
+  "variantSources": [
+    {
+      "sku": "GS-V2A-HERZ-S-MENSCH-ALLGEMEIN",
+      "priceCents": 1899,
+      "familyId": "grabstecker-edelstahl",
+      "sizeKey": "GS-V2A-HERZ-S",
+      "mounting": "K00"
+    },
+    {
+      "sku": "GS-V2A-HERZ-M-MENSCH-ALLGEMEIN",
+      "priceCents": 2999,
+      "familyId": "grabstecker-edelstahl",
+      "sizeKey": "GS-V2A-HERZ-M",
+      "mounting": "K00"
+    },
+    {
+      "sku": "GS-V2A-HERZ-XL-MENSCH-ALLGEMEIN",
+      "priceCents": 4299,
+      "familyId": "grabstecker-edelstahl",
+      "sizeKey": "GS-V2A-HERZ-XL",
+      "mounting": "K00"
+    }
+  ],
+  "configRevision": "family-formats-0f262b7d695a628682d80864",
+  "profileId": "katalog-formate-grabstecker-edelstahl-andenkenschilder-866f279774c33e8f"
+}

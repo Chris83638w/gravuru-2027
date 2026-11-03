@@ -46,7 +46,7 @@ test('139: fixed shop product uses its starter, shows other approved themes and 
  assert.equal(c.profile.defaultDesignId,'katalog-TEST-AB-D1');assert.equal(c.profile.themeId,'familie');
  assert.deepEqual(galleryOrder(c.profile.designs,c.profile.themeId),{theme:'familie',primary:['katalog-TEST-AB-D1'],more:['katalog-TEST-AB-D2']});
  const o=resolvedOptions(c),markup=familyChoicesMarkup(c,o);assert.doesNotMatch(markup,/data-family-group="(?:form|size)"/);assert.match(markup,/data-family-group="mounting"/);
- assert.throws(()=>resolvedOptions(c,{size:'another'}),/Größe.*fest/);assert.equal(c.photo.enabled,false);assert.equal(c.logo.enabled,false);
+ assert.throws(()=>resolvedOptions(c,{size:'another'}),/Größe.*fest/);assert.equal(c.photo.enabled,false);assert.deepEqual(c.logo,{...c.logo,enabled:true,vectorUpload:true,extraPriceCents:1299});
  const combinations=variantCombinations(c);assert.equal(combinations.length,5);
  assert(combinations.every(o=>!Object.hasOwn(o,'size')&&Object.keys(o).every(key=>c.profile.optionGroups.some(g=>g.id===key))),'binding registry accepts only real variant options');
  const binding={schema:'gravuru-shopify-commerce/v2',productId:'gid://shopify/Product/1',profileId:c.profile.id,revision:c.profile.revision,currency:'EUR',priceMode:'base-only',designIds:c.familyFormats.designs.map(d=>d.id),variants:combinations.map((o,i)=>({id:String(i+1),key:variantKey(o),priceCents:quote(c,[],selectedProfile(c,o).defaultDesignId,o).unitCents}))};
@@ -89,7 +89,7 @@ test('fixed product preserves the confirmed catalog tier precedence and matching
  const {config:c}=await planFamilyFormats(k,'test','familie',{shopProduct}),o=resolvedOptions(c);
  assert.deepEqual(c.quantityTiers,[{minQuantity:3,percentOff:5},{minQuantity:5,percentOff:10},{minQuantity:10,percentOff:15}]);
  assert.equal(c.quantityTierScope,'complete-unit');assert.equal(quote(c,[],c.profile.defaultDesignId,o,3).unitCents,1899);
- const pricing={schema:'gravuru-personalization-pricing/v1',enabled:true,productId:'gid://shopify/Product/1',revision:2,currency:'EUR',variants:{1:1999},extraMotifCents:c.extraMotifCents,extraPhotoCents:0,quantityTiers:c.quantityTiers,quantityTierScope:'complete-unit'};
+ const pricing={schema:'gravuru-personalization-pricing/v2',enabled:true,productId:'gid://shopify/Product/1',revision:2,currency:'EUR',variants:{1:1999},extraMotifCents:c.extraMotifCents,extraPhotoCents:0,extraLogoCents:1299,quantityTiers:c.quantityTiers,quantityTierScope:'complete-unit'};
  assert.equal(capturePersonalization(pricing,{variantId:'1',baseCents:1999,document:{config:c}}).quantityTiers.length,3);
  sub.priceOverrides={quantityTiers:[]};const {config:none}=await planFamilyFormats(k,'test','familie',{shopProduct});
  assert.deepEqual(none.quantityTiers,[]);assert.equal(quote(none,[],none.profile.defaultDesignId,resolvedOptions(none),3).unitCents,1999);

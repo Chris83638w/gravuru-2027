@@ -82,6 +82,8 @@ Gültiger Gesamtauftrag an Astra: #139, Kommentar 6617870582. Merge-Reihenfolge 
 4. Katalog-Befund an Chris: Oval 21 × 7 wiegt laut Katalog 182 g, nach Fläche wären es ca. 137 g. Nicht ändern ohne Chris.
 5. In der Prüfung zeigt `assessDesignTarget` weiter „Text im Bereich eines Bohrlochs“ für das unveränderte Katalogdesign, obwohl der Konfi jetzt ausweicht. Das ist eine Katalog-Prüfung, kein Fehler. Gegebenenfalls mit Chris klären.
 
+6. **Filigran-Regel (Register 5.5, bestätigt 04.11.: ab 9 × 6):** Im Katalog über die Ziel-Zuordnung umgesetzt. Ausnahme: TRE-V2A-8x5-D57 und -D61 sind noch für 8 × 5 freigeschaltet und müssen raus (Astra 1, #139). Hinweisschild-Reihen (`hinweise-*`) haben eine eigene D-Nummerierung; ob Chris' D-Liste dort gilt, nicht annehmen, sondern Chris fragen. Beim Renderer mit `--groesse` keine Größe unter 9 × 6 für Designs aus der Liste rendern.
+
 Erledigt (nicht mehr fragen): Die „2 Vorlagen“ vom 03.11. sind die 80 Grundplatten (Katalog PR #164).
 
 ## Arbeitsorte (Cloud-Sitzung, nur falls noch vorhanden)

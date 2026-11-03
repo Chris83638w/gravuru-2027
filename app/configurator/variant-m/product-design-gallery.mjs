@@ -2,7 +2,7 @@ import {captureDesignContent,carryDesignContent,capturePhotoFiles} from './desig
 import {preserveProductSelection} from './product-design-transfer.mjs';
 import {designGalleryCount} from './product-design-gallery-label.mjs';
 import {isLayeredDoorbell} from './product-model-module.mjs';
-import {isFamilyFormats} from './family-formats.mjs';
+import {isFamilyFormats,isAllSizesFamily} from './family-formats.mjs';
 
 const money=cents=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100);
 export const productChoiceInfo=item=>`${item.widthMm/10} × ${item.heightMm/10} cm · ${money(item.unitCents)}`;
@@ -10,7 +10,9 @@ export const productChoiceInfo=item=>`${item.widthMm/10} × ${item.heightMm/10} 
 export async function installProductDesignGallery({el,r,config,files,say,dialog,esc}){
  // These products already include their complete, format-specific design set.
  // Use the native gallery without repeating it across three main products.
- if(isLayeredDoorbell(config)||(isFamilyFormats(config)&&!config.familyFormats.fixedSize))return;
+ // Türschild-Konfi mit allen Größen lädt nur das Startdesign; weitere Designs kommen über diese Auswahl.
+ if(isLayeredDoorbell(config)||(isFamilyFormats(config)&&!config.familyFormats.fixedSize&&!isAllSizesFamily(config)))return;
+ const allSizes=isAllSizesFamily(config),galleryOptions=()=>allSizes?structuredClone(el.state.mOptions||{}):undefined;
  let api;try{api=window.parent.GravuruShopEntry?.designGallery;}catch{}if(!api)return;
  el.uxHasProductDesignGallery=true;
  const profile=()=>el.uxSelectedProfile?.()||config.profile;
@@ -43,7 +45,7 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
  async function load(){
   if(loading||next===null)return;loading=true;more.disabled=true;themes.disabled=true;status.textContent='Designs werden geladen …';
   try{
-   const result=await api.load(next,themes.value);
+   const result=await api.load(next,themes.value,galleryOptions());
    if(result.status==='preparing'){
     status.textContent='Designs werden vorbereitet – bitte gleich noch einmal versuchen.';
     more.textContent='Erneut versuchen';more.hidden=false;return;
@@ -61,7 +63,9 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
   }catch(error){status.textContent=error.message||'Die Designauswahl ist gerade nicht erreichbar. Bitte erneut versuchen.';more.textContent='Erneut versuchen';more.hidden=false;}finally{loading=false;more.disabled=false;themes.disabled=false;}
  }
  themes.onchange=()=>{observer?.disconnect();queue.length=0;grid.replaceChildren();for(const url of urls)URL.revokeObjectURL(url);urls.length=0;next=0;loaded=false;load();};
- section.querySelector('.ux-product-open').onclick=()=>{gallery.showModal();if(!loaded)load();};more.onclick=load;
+ // Nach einem Größen- oder Befestigungswechsel gelten andere Vorlagen und Vorschauen: Auswahl neu laden.
+ let shownFor=JSON.stringify(galleryOptions()??null);
+ section.querySelector('.ux-product-open').onclick=()=>{const now=JSON.stringify(galleryOptions()??null);if(now!==shownFor&&!loading){shownFor=now;observer?.disconnect();queue.length=0;grid.replaceChildren();for(const url of urls)URL.revokeObjectURL(url);urls.length=0;next=0;loaded=false;}gallery.showModal();if(!loaded)load();};more.onclick=load;
  confirm.querySelector('[data-product-confirm]').onclick=async()=>{
   if(!chosen)return;const button=confirm.querySelector('[data-product-confirm]');button.disabled=true;
   try{const content=captureDesignContent(el.state.objects,design());await api.choose(chosen.target,{selection:{options:structuredClone(el.state.mOptions||{}),quantity:Number(r.querySelector('[data-fk-quantity]')?.value||1)},content,photoFiles:capturePhotoFiles(content,files),sizeLabel:productChoiceInfo(chosen)});confirm.close();}

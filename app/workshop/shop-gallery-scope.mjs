@@ -1,3 +1,4 @@
+import {isAllSizesFamily} from '../configurator/variant-m/family-formats.mjs';
 // Only persisted catalogue categories and the native doorbell model identify a
 // gallery. Names, Shopify titles and profile IDs are not catalogue evidence.
 export function galleryScope(model,binding){
@@ -9,7 +10,8 @@ export function galleryScope(model,binding){
  // Legacy products without a proven line remain within their own fixed product.
  // Doorbell imports predate catalogue categories; their explicit modelKey is
  // authoritative, and never shares a namespace with ordinary product lines.
- const fixed=model.universal.familyFormats?.fixedSize;
+ // Türschild-Konfi mit allen Größen: nur die eigenen Vorlagen des Produkts (wie feste Produkte).
+ const fixed=model.universal.familyFormats?.fixedSize||isAllSizesFamily(model.universal);
  const key=fixed?JSON.stringify(['product',binding.productId,binding.productRevision]):doorbell&&modelKey?JSON.stringify(['doorbell',lineId,modelKey]):!doorbell&&lineId?JSON.stringify(['line',lineId]):JSON.stringify(['product',binding.productId,binding.productRevision]);
  return {key,lineId,familyId};
 }

@@ -25,8 +25,8 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
  // Issue #139: the product metafield selects one physical format and one
  // starter. Other approved themes remain available in "Weitere Designs".
  const selectedSize=shopProduct&&families.flatMap(f=>f.sizes).find(s=>s.key===shopProduct.sizeKey);
- const formChoice=shopProduct?.groessenWahl==='form';
- const inCut=size=>!selectedSize||(formChoice?size.groupKey===selectedSize.groupKey:slotKey(size)===slotKey(selectedSize));
+ const formChoice=shopProduct?.groessenWahl==='form',allChoice=shopProduct?.groessenWahl==='alle';
+ const inCut=size=>!selectedSize||allChoice||(formChoice?size.groupKey===selectedSize.groupKey:slotKey(size)===slotKey(selectedSize));
  if(shopProduct&&(!selectedSize||shopProduct.themeId!==sub.themeId||!shopProduct.defaultDesignId||reviewUnreleased||designIds))fail('Shop-Produktschnitt braucht Kataloggröße, passendes Thema und Startdesign; keine Prüffreigaben oder eingeschränkte Galerie.');
  const allMasters=katalog.designs.masters.filter(d=>!d.hidden&&(!designIds||designIds.includes(d.id))&&(shopProduct||d.themes?.includes(sub.themeId))&&(!shopProduct?.zielgruppe||designZielgruppe(d)===shopProduct.zielgruppe));
  const report={schema:'gravuru-family-formats-plan/v1',lineId,subcategoryId,reviewUnreleased,shopifyWrites:false,sourceFamilies:families.map(f=>f.id),excluded:[],blocked:[],sizes:[],shopify:{options:families.length>1?['Form & Größe','Farbe','Befestigung']:['Form & Größe','Befestigung'],maximumVariants:2048,maximumOptions:3,variantIdsCreated:0,sources:['https://help.shopify.com/en/manual/products/variants/add-variants','https://shopify.dev/docs/api/admin-graphql/latest/mutations/productSet']}};
@@ -82,10 +82,11 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
   const starter=c.familyFormats.designs.find(d=>d.katalog.designId===shopProduct.defaultDesignId);
   if(!starter||!starter.themes?.includes(sub.themeId)||start.variants.some(v=>!v.designIds.includes(starter.id)))fail('Startdesign ist nicht in jeder Produktfarbe freigegeben, passend und der Unterkategorie zugeordnet.');
   c.familyFormats.source.shopProduct=copy(shopProduct);p.themeId=shopProduct.themeId;p.defaultDesignId=starter.id;
-  if(formChoice){c.familyFormats.defaultSize=start.key;const sizeGroup=p.optionGroups.find(g=>g.id==='size');if(sizeGroup){sizeGroup.name='Größe';sizeGroup.defaultValueId=start.key;}}
+  if(allChoice){c.familyFormats.defaultSize=start.key;const sizeGroup=p.optionGroups.find(g=>g.id==='size');if(sizeGroup)sizeGroup.defaultValueId=start.key;}
+  else if(formChoice){c.familyFormats.defaultSize=start.key;const sizeGroup=p.optionGroups.find(g=>g.id==='size');if(sizeGroup){sizeGroup.name='Größe';sizeGroup.defaultValueId=start.key;}}
   else{c.familyFormats.fixedSize=start.key;p.optionGroups=p.optionGroups.filter(g=>g.id!=='size');}
-  p.id+='-'+createHash('sha256').update(JSON.stringify(formChoice?[start.form,shopProduct.zielgruppe??null,shopProduct.defaultDesignId]:[start.key,shopProduct.defaultDesignId])).digest('hex').slice(0,16);p.binding.productId='local-'+p.id;
-  p.name+=' · '+(formChoice?(FAMILY_FORMS.find(([id])=>id===customerForm(start.form))?.[1]??start.form)+(shopProduct.zielgruppe?' · '+shopProduct.zielgruppe:''):start.label);
+  p.id+='-'+createHash('sha256').update(JSON.stringify(allChoice?['alle',shopProduct.zielgruppe??null,shopProduct.defaultDesignId]:formChoice?[start.form,shopProduct.zielgruppe??null,shopProduct.defaultDesignId]:[start.key,shopProduct.defaultDesignId])).digest('hex').slice(0,16);p.binding.productId='local-'+p.id;
+  p.name+=' · '+(allChoice?'alle Formen'+(shopProduct.zielgruppe?' · '+shopProduct.zielgruppe:''):formChoice?(FAMILY_FORMS.find(([id])=>id===customerForm(start.form))?.[1]??start.form)+(shopProduct.zielgruppe?' · '+shopProduct.zielgruppe:''):start.label);
   if(p.material.kind==='steel'){c.photo={...c.photo,enabled:false};c.logo={...c.logo,enabled:false,vectorUpload:false};}
   if(formChoice){
    // Nur die Größe benennen („Herz M · 20,9 × 45,0 cm“), die Form steht im Produkt.
@@ -94,7 +95,7 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
    report.shopify.options=report.shopify.options.map(n=>n==='Form & Größe'?'Größe':n);
    for(const v of report.shopify.variants)v.optionValues[0]=plainLabel.get(v.optionValues[0])??v.optionValues[0];
   }
-  else{report.shopify.options=report.shopify.options.filter(n=>n!=='Form & Größe');for(const v of report.shopify.variants)v.optionValues.shift();}
+  else if(!allChoice){report.shopify.options=report.shopify.options.filter(n=>n!=='Form & Größe');for(const v of report.shopify.variants)v.optionValues.shift();}
   report.shopProduct=copy(shopProduct);
   report.shopify.metafields=[shopProductCutMetafield(shopProduct)];
  }

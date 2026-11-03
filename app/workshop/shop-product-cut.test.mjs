@@ -10,7 +10,8 @@ test('Produktschnitt: optionale Zielgruppe und Größenwahl je Form (Chris 02.11
  const base={sizeKey:'GS-V2A-HERZ-M',themeId:'andenkenschilder',defaultDesignId:'GS-V2A-HERZ-M-D51'};
  assert.deepEqual(validateShopProductCut({...base,zielgruppe:'Hund',groessenWahl:'form'}),{...base,zielgruppe:'Hund',groessenWahl:'form'});
  assert.deepEqual(validateShopProductCut(base),base);
- assert.throws(()=>validateShopProductCut({...base,groessenWahl:'alle'}),/groessenWahl/);
+ assert.throws(()=>validateShopProductCut({...base,groessenWahl:'quer'}),/groessenWahl/);
+ assert.deepEqual(validateShopProductCut({...base,groessenWahl:'alle'}),{...base,groessenWahl:'alle'});
  assert.throws(()=>validateShopProductCut({...base,fremd:'x'}),/Produktschnitt/);
  assert.equal(designZielgruppe({name:'Grabstecker Herz M · Hund · Klein: Name + Daten'}),'Hund');
  assert.equal(designZielgruppe({name:'Familie Berger'}),null);

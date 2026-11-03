@@ -177,6 +177,7 @@ Stand: 02.11.2026 abends. Gelesen: Code-Repo `origin/main` f78ad5b (STATUS.md, A
 | 5.21 | 29.10. | Hausnummern-Kennungen `HN-A-<Format>-D<n>`, neue ab D100. | [#45·6496878810](https://github.com/Chris83638w/gravuru-2027/issues/45#issuecomment-6496878810) |
 | 5.22 | 01.11. | Bestseller mit Strich als erste Designs; 8×3,5 nur mit Strichdesign `TRE-V2A-8x3,5-D4` („versetzt“). | [#48·6559050391](https://github.com/Chris83638w/gravuru-2027/issues/48#issuecomment-6559050391); [#107](https://github.com/Chris83638w/gravuru-2027/issues/107) |
 | 5.23 | 01.11. | §8 Hausstil aus Chris' Fotos von ~150 verschickten Bestellungen (*Auswertung durch Claude*; Designs immer lesbar, gespiegelt erst bei Laserausgabe). | KM:DESIGN-MASTER §8 |
+| 5.24 | 03.11. 12:44 | Grabstecker Unendlichkeit: Die vorhandene Anordnung (Name klein auf der Schleife, Daten klein) ist **so richtig** – nicht umgestalten. Zitat: „nein, das Infinity ist so richtig.“ Außerdem 12:07: „komplett alle Grabstecker“ hochladen. | Chat 03.11. |
 
 ## 6. Produktion / Export
 

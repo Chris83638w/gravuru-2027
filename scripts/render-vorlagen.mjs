@@ -10,6 +10,7 @@ import {designTargets} from '../app/workshop/design-targets.mjs';
 import {targetDesignPreview} from '../app/workshop/design-target-preview.mjs';
 import {familyProductConfig} from '../app/workshop/product-families.mjs';
 import {productPreview} from '../app/workshop/product-preview.mjs';
+import {customerForm} from '../app/configurator/variant-m/family-formats.mjs';
 
 const HELP=`node scripts/render-vorlagen.mjs --katalog <Katalogordner> --familie <id> --out <Ordner> [Auswahl] [Ausgabe]
 Auswahl (eine davon):
@@ -63,11 +64,14 @@ if(opt.leer){
 }
 if(jobs.length>limit)jobs.length=limit;
 
-const sizeLabel=key=>{const s=family.sizes.find(s=>s.key===key),g=family.groups.find(g=>g.key===s?.groupKey);return s?(s.label+(g?' · '+g.name:'')):key;};
+// Formname wie im Konfi: „Ellipse“ (EL) heißt für Kunden „Oval“ (ENTSCHEIDUNGEN 3.27, customerForm).
+const sizeLabel=key=>{const s=family.sizes.find(s=>s.key===key),g=family.groups.find(g=>g.key===customerForm(s?.groupKey))||family.groups.find(g=>g.key===s?.groupKey);return s?(s.label+(g?' · '+g.name:'')):key;};
 function blankConfig(key){
  const size=family.sizes.find(s=>s.key===key),v=structuredClone(family);
  v.groups=v.groups.filter(g=>g.key===size.groupKey);v.sizes=[structuredClone(size)];v.options=[];delete v.quantityTiers;delete v.backing;
  v.mountingRules=v.mountingRules.filter(r=>size.mounting.includes(r.id));
+ // Preise sind für das Bild ohne Bedeutung; offene Preise (noch nicht entschieden) dürfen die Vorschau nicht sperren – wie in targetDesignPreview.
+ for(const r of v.mountingRules)r.priceCents=0;v.sizes[0].baseCents=0;delete v.sizes[0].quantityTiers;if(v.photo)v.photo.extraPriceCents=0;
  return familyProductConfig(v,v.sizes[0],1,{previewOnly:true});
 }
 // Gestaltungsvorlage: reine Geometrie aus dem Katalog in mm (Corel-Konvention rot = Platte und Löcher).
@@ -87,7 +91,8 @@ function blankSvg(key){
  return productPreview({universal:config},{options,keepout:false,designArea:false});
 }
 // Konfi-Auswahl heißt B02S, die Katalogregel je Größe z. B. B02S-E6-D4.
-const mountingFor=key=>!mounting||mounting==='K00'?mounting:family.sizes.find(s=>s.key===key)?.mounting.some(id=>id===mounting||id.startsWith(mounting+'-'))?mounting:false;
+// „Ohne Befestigung“ gibt es nur, wo die Familie sie anbietet (Abstandshalter-Familien nicht): dann Familienstandard.
+const mountingFor=key=>!mounting?mounting:mounting==='K00'?(family.withoutMounting?'K00':null):family.sizes.find(s=>s.key===key)?.mounting.some(id=>id===mounting||id.startsWith(mounting+'-'))?mounting:false;
 
 const results=[];
 for(const job of jobs){

@@ -7,12 +7,12 @@ const p={id:'family-steel-door-signs-test',kind:'universal-product',material:{ki
 const none={...p,geometry:{...p.geometry,holes:[]}};
 const motif=(props={})=>({id:'m',type:'motif',motif:'house',x:6,y:30,w:8,h:8,rotation:0,...props});
 const state=objects=>({designId:'D1',objects,mOptions:{mounting:'K00'}});
-test('choosing drilling moves an intersecting motif minimally inward without scaling or mutating the input',()=>{
+test('a motif centred on the hole cannot be inset by shrinking, so it moves minimally inward without scaling or mutating the input',()=>{
  const objects=[motif()],before=structuredClone(objects),r=avoidMounting(objects,p);
- assert.deepEqual(objects,before);assert.equal(r.unresolved.length,0);assert.equal(r.objects[0].y,30);assert.equal(r.objects[0].w,8);assert(r.objects[0].x>12.25&&r.objects[0].x<12.251);assert(!touchesMounting(r.objects[0],p));
+ assert.deepEqual(objects,before);assert.equal(r.unresolved.length,0);assert.equal(r.objects[0].y,30);assert.equal(r.objects[0].w,8);assert(r.objects[0].x>14.25&&r.objects[0].x<14.251);assert(!touchesMounting(r.objects[0],p));
 });
 test('a clear design remains byte-for-byte identical',()=>{const objects=[motif({x:50})];assert.deepEqual(avoidMounting(objects,p).objects,objects);});
-test('circle-to-rotated-box distance includes the 4.5 mm screw head',()=>{assert(touchesMounting(motif({x:10.2,w:4,h:4}),p));assert(touchesMounting(motif({x:10,w:6,h:2,rotation:45}),p));assert(!touchesMounting(motif({x:11,w:6,h:2,rotation:45}),p));assert(!touchesMounting(motif({x:20}),p));});
+test('circle-to-rotated-box distance includes the 4.5 mm screw head and 2 mm clearance',()=>{assert(touchesMounting(motif({x:12.2,w:4,h:4}),p));assert(!touchesMounting(motif({x:12.3,w:4,h:4}),p));assert(touchesMounting(motif({x:12.5,w:6,h:2,rotation:45}),p));assert(!touchesMounting(motif({x:13,w:6,h:2,rotation:45}),p));assert(!touchesMounting(motif({x:20}),p));});
 test('placement avoids neighbouring objects and preserves rotation',()=>{
  const a=motif({rotation:20}),b=motif({id:'b',x:19,w:6,h:16}),r=avoidMounting([a,b],p);
  assert.equal(r.unresolved.length,0);assert(!overlaps(...r.objects));assert.equal(r.objects[0].rotation,20);assert.equal(surfaceObjectIssue(r.objects[0],p),'');
@@ -65,7 +65,7 @@ test('overlapping emblem and lettering move together without changing relative p
 });
 test('painted descenders beyond the nominal text box avoid both screws and dividers',()=>{
  const fonts={Test:{regular:{units:1000,glyphs:{A:{a:1000,d:'M0 -600H1000V800H0Z'}}}}};
- const text={id:'descender',type:'text',text:'A',font:'Test',size:10,x:6,y:20,w:10,h:12,rotation:0};
+ const text={id:'descender',type:'text',text:'A',font:'Test',size:10,x:6,y:19,w:10,h:12,rotation:0};
  const line=motif({id:'divider',x:50,y:37,w:98,h:.2});
  assert.equal(touchesMounting(text,p),false);assert(touchesMounting(text,p,{fonts}));
  const r=avoidMounting([text,line],p,{fonts});assert.deepEqual(r.unresolved,[]);assert(!touchesMounting(r.objects[0],p,{fonts}));
@@ -77,4 +77,15 @@ test('placement cannot introduce even a very small new overlap at a neighbouring
  const objects=[motif({x:7.836,y:22.44,w:10.541,h:23.716}),motif({id:'name',x:44.69495,y:21.7213,w:46.3476,h:11.447}),motif({id:'greeting',x:44.983,y:9.432,w:56.707,h:4.585})];
  const r=avoidMounting(objects,profile);assert.deepEqual(r.unresolved,[]);
  for(let i=0;i<objects.length;i++){assert(!touchesMounting(r.objects[i],profile));for(let j=i+1;j<objects.length;j++)if(!overlaps(objects[i],objects[j]))assert(!overlaps(r.objects[i],r.objects[j]));}
+});
+
+test('Chris 03.11.2026: the whole design shrinks and insets as one block, centre and proportions kept, 2 mm from the screw head',()=>{
+ const top={id:'top',type:'motif',motif:'word',x:50,y:20,w:40,h:8,rotation:0},line={id:'line',type:'motif',motif:'line',x:50,y:30,w:96,h:.4,rotation:0},bottom={id:'bottom',type:'motif',motif:'word',x:50,y:40,w:60,h:10,rotation:0};
+ const r=avoidMounting([top,line,bottom],p);assert.deepEqual(r.unresolved,[]);
+ const [a,b,c]=r.objects,f=b.w/line.w,cy=(top.y-top.h/2+bottom.y+bottom.h/2)/2;assert(f<1&&f>.8,'shrunk only as much as needed: '+f);
+ for(const [o,src] of [[a,top],[b,line],[c,bottom]]){assert(Math.abs(o.w/src.w-f)<1e-9);assert(Math.abs((o.x-50)-(src.x-50)*f)<1e-9);assert(Math.abs((o.y-cy)-(src.y-cy)*f)<1e-9);assert(!touchesMounting(o,p));}
+ assert(b.x-b.w/2>=6+2.25+2-1e-6,'line ends at least 2 mm before the head');
+});
+test('a design that does not touch any hole stays unchanged even with screws chosen',()=>{
+ const objects=[{id:'t',type:'motif',motif:'word',x:50,y:20,w:40,h:8,rotation:0}];assert.deepEqual(avoidMounting(objects,p).objects,objects);
 });

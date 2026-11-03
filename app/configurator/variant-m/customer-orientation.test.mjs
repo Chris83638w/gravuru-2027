@@ -63,9 +63,9 @@ test('actual local design-switch handler retains all texts/photos and aborts bef
  el.state={designId:'old',objects:edited()};const original=structuredClone(el.state);context.config={...config,photo:{enabled:false}};
  assert.equal(el.chooseDesign('next'),false);assert.equal(records,1);assert.deepEqual(el.state,original);assert.match(messages.at(-1),/Fotobereiche/);
 });
-test('screw preview uses 4.5-mm heads without changing drilling or adding engraving objects',()=>{
+test('screw preview uses 5-mm heads without changing drilling or adding engraving objects',()=>{
  const profile={geometry:{holes:[{x:12,y:20,diameter:4}]},mountingPreview:{screws:true}},before=structuredClone(profile);
- const svg=screwPreview('<svg><circle cx="12" cy="20" r="2"/></svg>',profile);assert.match(svg,/data-screw-head-mm="4.5"/);assert.match(svg,/x="-2.25" y="-2.25" width="4.5" height="4.5"/);assert.match(svg,/viewBox="10.5 10 380 380"/);assert.match(svg,/data-role="guide"/);assert.match(svg,/<circle cx="12" cy="20" r="2"/);assert.deepEqual(profile,before);
+ const svg=screwPreview('<svg><circle cx="12" cy="20" r="2"/></svg>',profile);assert.match(svg,/data-screw-head-mm="5"/);assert.match(svg,/x="-2.5" y="-2.5" width="5" height="5"/);assert.match(svg,/viewBox="10.5 10 380 380"/);assert.match(svg,/data-role="guide"/);assert.match(svg,/<circle cx="12" cy="20" r="2"/);assert.deepEqual(profile,before);
 });
 
 test('actual field UI moves its highlight and open font controls with selection and reveals it after resizing',()=>{

@@ -9,10 +9,10 @@ const motif=(props={})=>({id:'m',type:'motif',motif:'house',x:6,y:30,w:8,h:8,rot
 const state=objects=>({designId:'D1',objects,mOptions:{mounting:'K00'}});
 test('choosing drilling moves an intersecting motif minimally inward without scaling or mutating the input',()=>{
  const objects=[motif()],before=structuredClone(objects),r=avoidMounting(objects,p);
- assert.deepEqual(objects,before);assert.equal(r.unresolved.length,0);assert.equal(r.objects[0].y,30);assert.equal(r.objects[0].w,8);assert(r.objects[0].x>12.25&&r.objects[0].x<12.251);assert(!touchesMounting(r.objects[0],p));
+ assert.deepEqual(objects,before);assert.equal(r.unresolved.length,0);assert.equal(r.objects[0].y,30);assert.equal(r.objects[0].w,8);assert(r.objects[0].x>12.5&&r.objects[0].x<12.501);assert(!touchesMounting(r.objects[0],p));
 });
 test('a clear design remains byte-for-byte identical',()=>{const objects=[motif({x:50})];assert.deepEqual(avoidMounting(objects,p).objects,objects);});
-test('circle-to-rotated-box distance includes the 4.5 mm screw head',()=>{assert(touchesMounting(motif({x:10.2,w:4,h:4}),p));assert(touchesMounting(motif({x:10,w:6,h:2,rotation:45}),p));assert(!touchesMounting(motif({x:11,w:6,h:2,rotation:45}),p));assert(!touchesMounting(motif({x:20}),p));});
+test('circle-to-rotated-box distance includes the 5 mm screw head',()=>{assert(touchesMounting(motif({x:10.2,w:4,h:4}),p));assert(touchesMounting(motif({x:10,w:6,h:2,rotation:45}),p));assert(!touchesMounting(motif({x:11,w:6,h:2,rotation:45}),p));assert(!touchesMounting(motif({x:20}),p));});
 test('placement avoids neighbouring objects and preserves rotation',()=>{
  const a=motif({rotation:20}),b=motif({id:'b',x:19,w:6,h:16}),r=avoidMounting([a,b],p);
  assert.equal(r.unresolved.length,0);assert(!overlaps(...r.objects));assert.equal(r.objects[0].rotation,20);assert.equal(surfaceObjectIssue(r.objects[0],p),'');

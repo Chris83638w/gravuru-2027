@@ -1,3 +1,7 @@
+## 2026-11-03 · Codex/Astra · PR #161: moderne lokale Screenshots
+
+Modernen Bildentwurf in der lokalen Studie umgesetzt: weiße Werkzeugzeile mit Canvas-zentrierten Werkzeugen, Speichern ganz rechts, großes Schild, ruhige Motiv-/Design-/Optionskacheln, schlanker farbiger Footer. Menschen/Tiere getrennt. Desktop und 375×548/390×664 aufgenommen; 20/20 gezielte Tests und Build grün. [Bilder und Grenzen](docs/handoffs/2026-11-03-produktprofile-vorschau.md). Chris prüft die Optik; kein neuer vollständiger Produktiveditor, keine Master-/Live-Änderung, kein Merge.
+
 ## 2026-11-03 · Codex/Astra · PR #161: Andenken Menschen / Tiere
 
 Chris' zusätzliche Trennung lokal umgesetzt: eigene Bestseller für Menschen (Kreuze/Engel/Kerzen) und Tiere (Pfoten/Pfotenherzen/Regenbogen). Alle Motive/Kategorien weiterhin frei erreichbar. Fünf Profilbeispiele; D204-Hund nur in der Tier-Ansicht. 20/20 gezielte Tests und Build grün, Browserbilder Desktop und 375×548 im [Bericht](docs/handoffs/2026-11-03-produktprofile-vorschau.md). Nur Entwurfs-PR und lokale Vorschau, nichts live. Nächster Schritt: Chris prüft die thematischen Startlisten.

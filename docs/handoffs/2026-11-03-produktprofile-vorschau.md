@@ -1,5 +1,13 @@
 # Ein Master, unterschiedliche Produktoptionen: Vorschau und Quellenprüfung
 
+## Neuester Stand: moderne Browser-Screenshots
+
+Der modernere Bildentwurf ist jetzt in der lokalen Vorschau umgesetzt; ältere Hinweise zum noch nicht umgesetzten Bildentwurf sind damit überholt. Die Studie bleibt ein Layout-/Bedienbeispiel, kein vollständiger neuer Produktiveditor. Keine Live-Änderung, kein Merge.
+
+[Gesamtansicht / Motive](2026-11-03-produktprofile-vorschau/modern-desktop-motive.jpg) · [Text](2026-11-03-produktprofile-vorschau/modern-desktop-text.jpg) · [Designs](2026-11-03-produktprofile-vorschau/modern-desktop-designs.jpg) · [Optionsicons](2026-11-03-produktprofile-vorschau/modern-desktop-optionen.jpg) · [Andenken Menschen](2026-11-03-produktprofile-vorschau/modern-andenken-menschen.jpg) · [Andenken Tiere](2026-11-03-produktprofile-vorschau/modern-andenken-tiere.jpg) · [375×548](2026-11-03-produktprofile-vorschau/modern-iphone-se-text.jpg) · [390×664](2026-11-03-produktprofile-vorschau/modern-iphone-13-text.jpg) · [Bildentwurf und Umsetzung](2026-11-03-produktprofile-vorschau/modern-vergleich.jpg).
+
+Eine weiße Werkzeugzeile: gemeinsame Werkzeuge mittig über Canvas, Speichern ganz rechts. Ruhigere Kacheln, größere Beschriftungen, alle Kategorien/Originalmotive erhalten; gekoppelte Textauswahl pink, graue Größenpfeile dauerhaft sichtbar. Desktopplatte 939,87 px bei 1662×946, Footer 58 px. Kleine Handyansicht nachgebessert, damit Textleiste, Schritte und Preis lesbar bleiben. 20/20 gezielte Tests und Build grün. Screenshots zur Abnahme durch Chris; produktive Preis-/Formatbindung, vollständige Schrift-/Objektwerkzeuge und Designtransfer weiterhin separat.
+
 Stand: 03.11.2026, Codex/Astra. Basis Code `3eb2ea43c5383571094b8da1017ade9f4884eb72`; eigener Branch `dev/konfi-produktprofile-vorschau-20261103-astra`. Auftrag von Chris: visuelle Vorschau der besprochenen Oberfläche, einfache Anbindung verschiedener Produkte, automatische Foto-Sichtbarkeit und gründlicher Ladezeit-Check. **Keine Änderungen an App-Laufzeit, Katalog, Shopify oder Live-Systemen.**
 
 ## Ergänzung: Andenken für Menschen und Tiere getrennt (03.11.2026)

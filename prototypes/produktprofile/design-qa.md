@@ -1,5 +1,21 @@
 # Sichtprüfung 03.11.2026
 
+## Moderne Browseransicht (neuester Stand)
+
+**final result: passed** für den lokalen visuellen Prüfumfang. Chris' gestalterische Freigabe und produktive Funktionsabnahme bleiben offen. Nachstehende Abschnitte dokumentieren frühere Zwischenstände.
+
+Quelle: ausgewählter Bildentwurf `exec-26e19550-34b5-4574-a8a0-f9d6d1bd3c24.png` plus Chris' Themenentscheidungen. [Quelle und Implementierung gemeinsam im Browser](../../docs/handoffs/2026-11-03-produktprofile-vorschau/modern-vergleich.jpg).
+
+| Prüfbereich | Ergebnis |
+|---|---|
+| Layout | Werkzeugmitte 523,52 px, Canvasmitte 523,53 px bei 1662×946; Speichern rechts. Platte 939,87 px breit, Maße sichtbar, Footer 58 px. |
+| Komponenten | Gruppierte Werkzeuge, Designbilder mit Lupe im Bild, dreispaltige Motivkacheln und Optionsicons. |
+| Typografie | Größere, kräftigere UI-Beschriftungen; echte Katalogschriftzüge im Produkt erhalten. |
+| Farben / Assets | Neutralgrau, heller blaugrauer Footer, pinke Auswahl; Originale statt synthetischer Ersatzbilder. |
+| Inhalt / Verhalten | Suche vor Kategorie, thematische Bestseller, Menschen/Tiere getrennt. Gleichzeitige Feld-/Objektmarkierung; graue Größenpfeile 10→11→10 mm geprüft. |
+
+Korrigiert und erneut geprüft: kleine Beschriftungen, zu blasse Objektgriffe und auf 375×548 verdeckte Schrittleiste. Textleiste jetzt 63 px / zwei Zeilen; Schritte und Warenkorb lesbar. Auch 390×664 aufgenommen. Keine verbleibenden P0/P1/P2-Befunde im visuellen Prüfumfang. Bewusste Abweichungen zum Mock: lokale Profilumschaltung, echte Motive und schmalerer Footer gemäß Chris. 20/20 gezielte Tests und Build grün. Schriftwahl, vollständige Objektbearbeitung, verbindliche Format-/Preisbindung und Designtransfer bleiben Master-Integration; keine echte Safari-/Touch- oder Warenkorbabnahme.
+
 Nachtrag Menschen/Tiere: nun fünf lokale Profile mit getrennten Andenken-Empfehlungen. Beide Startlisten und die Zuordnung des D204-Hundes zur Tier-Ansicht im Browser geprüft; fünf Profilknöpfe passen auf 375×548 in zwei Zeilen. 20/20 gezielte Tests und Build grün. Screenshots im verlinkten Bericht. Keine produktive Katalogbindung oder Live-Änderung.
 
 Neuester Stand: thematische Bestseller statt gleicher globaler Startauswahl. Gedenktafel beginnt mit Kreuz/Engel/Kerze, Türschild mit Haus/Strich-Haus/Herzlinie. 18/18 Tests und Build grün. Im Browser Produktwechsel, 18→36 Motive sowie weiterhin freie Einzelkategorien geprüft; [Bilder und Grenzen](../../docs/handoffs/2026-11-03-produktprofile-vorschau.md). Die modernere Bildstudie ist noch nicht vollständig im Prototyp umgesetzt.

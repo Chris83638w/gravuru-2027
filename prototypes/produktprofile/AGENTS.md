@@ -1,5 +1,9 @@
 # Prototype Instructions
 
+## Modern screenshot review, 03.11.2026
+
+The selected modern configurator mock is now applied locally through src/modern.css. Preserve original product artwork and theme-specific motifs instead of synthetic mock artwork. One white toolbar spans the viewport; shared tools remain centred over the canvas, Save at the far right. Current screenshots: docs/handoffs/2026-11-03-produktprofile-vorschau/modern-*.jpg. Chris requested screenshots and explicitly forbids live publication. This remains a local layout study, not a complete production editor or approved replacement.
+
 ## Chris' review scope, 03.11.2026
 
 One existing Master, product-specific capabilities and option groups. No production deployment from this study. Neutral UI, no green/beige theme. Remove dark header; product back left, shared tools centered, save right. Image-only designs with magnifier in image. Motif search before category (Bestseller initially), three columns and inline More. No photo tab when disallowed; no options tab when no choices. Memorial mounting includes silicone; stand and spray are independent. All product rules, prices and geometry must come from authoritative sources before production integration. The five fixtures are visual examples, not product approvals.

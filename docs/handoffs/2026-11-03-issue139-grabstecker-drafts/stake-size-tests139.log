@@ -1,0 +1,36 @@
+✔ shop preparation chooses the default design belonging to every selected size; explicit foreign designs still fail (1341.8349ms)
+✔ R16: door-sign sizes and mountings use icon tiles; fixed size stays fixed and K00 is first (186.9933ms)
+✔ family quote selects only its allowed design and does not project the unrelated library (49.3446ms)
+✔ steel: frozen review and manufacturing SVG use selected RT2, not AB start geometry (197.7473ms)
+✔ steel: AB 12×8, K00; one Oval and unavailable round, stable source keys (75.8615ms)
+✔ steel: RE → OV → RT2 → QU keeps own text and D number; draft restores selected geometry (115.6257ms)
+✔ steel: exact retro path/holes and mounting-specific price; no double scaling (77.6675ms)
+✔ steel: undo restores exact prior state; repeated fastening choice never transforms objects (75.3425ms)
+✔ schwarz: frozen review and manufacturing SVG use selected RT2, not AB start geometry (101.4629ms)
+✔ schwarz: AB 12×8, K00; one Oval and unavailable round, stable source keys (43.3963ms)
+✔ schwarz: RE → OV → RT2 → QU keeps own text and D number; draft restores selected geometry (72.8565ms)
+✔ schwarz: exact retro path/holes and mounting-specific price; no double scaling (38.4135ms)
+✔ schwarz: undo restores exact prior state; repeated fastening choice never transforms objects (41.3095ms)
+✔ anthrazit: frozen review and manufacturing SVG use selected RT2, not AB start geometry (98.083ms)
+✔ anthrazit: AB 12×8, K00; one Oval and unavailable round, stable source keys (40.4083ms)
+✔ anthrazit: RE → OV → RT2 → QU keeps own text and D number; draft restores selected geometry (70.2232ms)
+✔ anthrazit: exact retro path/holes and mounting-specific price; no double scaling (39.7191ms)
+✔ anthrazit: undo restores exact prior state; repeated fastening choice never transforms objects (42.6468ms)
+✔ reject unknown options, wrong size, round without source, and incompatible fastening on server (75.9594ms)
+✔ variant combinations include only family-allowed, available size/mounting pairs (83.9664ms)
+✔ Shopify binding validates every family variant using its own available design and price, with no writes (124.4455ms)
+✔ catalog contour permission does not remove free steelFormats contour guard (118.746ms)
+✔ definition rejects absent/duplicate sources, invalid prices, and nondefault start (434.2046ms)
+✔ one acrylic configuration switches color, preserving text and using the selected source family (205.4097ms)
+✔ quantity tiers use the selected size base price and preserve its fastening surcharge (114.6629ms)
+✔ 80 source sizes are supported only by the explicit family format contract (134.0996ms)
+✔ RE, RT1, RT2, OV and QU use the identical neutral steel file without a colored overlay (144.9174ms)
+✔ detached price renderer reads the selected base and tier from the central quote (113.9866ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4500.9671

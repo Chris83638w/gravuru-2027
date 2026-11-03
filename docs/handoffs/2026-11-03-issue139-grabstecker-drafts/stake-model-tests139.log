@@ -1,0 +1,21 @@
+✔ native pilot becomes a cloneable document without inventing repository IDs or changing the source (59.9696ms)
+✔ inherit, explicitly empty and override remain distinct and missing assignments are rejected (71.1567ms)
+✔ unknown design, option and rights references fail instead of falling back (346.4363ms)
+✔ persisted authoritative cent prices are required; invalid money cannot enter a revision (152.2833ms)
+✔ compatibility price mirrors are derived from the single persisted pricing source (32.8811ms)
+✔ all 28 pilot variants resolve the same dimensions and prices as the existing configurator (329.516ms)
+✔ fixed elements receive explicit separate rights without losing permitted photo or colour changes (69.9283ms)
+✔ server-side design validator enforces each individually restricted right (501.4417ms)
+✔ new individual motifs replace/delete independently of movement; old revision rights stay authoritative (191.7488ms)
+✔ only an explicit whole print design keeps motif replacement and deletion locked (73.088ms)
+✔ server validation preserves editable text and measures it when scaling is disallowed (35.9475ms)
+✔ repository relationships and metadata are explicit, bounded and not silently invented (36.8664ms)
+✔ explicit backend delete permission removes fixed artwork without mutating source or permitting geometry edits (82.3993ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2404.2425

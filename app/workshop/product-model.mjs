@@ -125,8 +125,8 @@ export function validateProductDocument(document){
 
 export function resolveProduct(document,{options={},designId}={}){
   const product=validateProductDocument(document),config=product.config;
-  const resolved=resolvedOptions(config,options),chosenId=designId===undefined?config.profile.defaultDesignId:designId;
-  const selected=selectedProfile(config,resolved);
+  const resolved=resolvedOptions(config,options),selected=selectedProfile(config,resolved);
+  const chosenId=designId===undefined?selected.defaultDesignId:designId;
   const design=selected.designs.find(item=>item.id===chosenId);
   if(!design)fail('Das gewählte Design gehört nicht zu diesem Produkt.');
   const profile=selected,selection=config.acrylic?acrylicSelection(acrylicOptions(resolved),config.acrylic.pricing):null;

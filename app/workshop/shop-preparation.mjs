@@ -4,22 +4,25 @@ import {isFormProduct,formReadiness} from './form-product.mjs';
 import {validateProductDocument,resolveProduct} from './product-model.mjs';
 import {quote,variantCombinations} from '../configurator/variant-m/contract.mjs';
 import {variantKey} from '../configurator/variant-m/commerce-model.mjs';
+import {isFamilyFormats} from '../configurator/variant-m/family-formats.mjs';
 // Read-only preparation. No Shopify credentials, IDs, writes or publication are fabricated.
 // Cache only an exact previously validated source and return isolated results.
 // Changed documents, metadata or status must pass validation again. Deep equality
 // also distinguishes input changes omitted by JSON serialization.
 const doorbellPreparations=new Map(),DOORBELL_PREPARATION_LIMIT=32;
+const familyPreparations=new Map(),FAMILY_PREPARATION_LIMIT=2;
 export function prepareShopProduct(record){
- if(record.document?.config?.doorbell?.schema!=='gravuru-doorbell/v1')return prepareValidated(record,validateProductDocument(record.document));
+ const family=isFamilyFormats(record.document?.config),cache=family?familyPreparations:doorbellPreparations,limit=family?FAMILY_PREPARATION_LIMIT:DOORBELL_PREPARATION_LIMIT;
+ if(!family&&record.document?.config?.doorbell?.schema!=='gravuru-doorbell/v1')return prepareValidated(record,validateProductDocument(record.document));
  const source={document:record.document,id:record.id,revision:record.revision,status:record.status,productionProfile:record.metadata?.productionProfile??null};
- const cacheKey=createHash('sha256').update(JSON.stringify(source)).digest('hex'),cached=doorbellPreparations.get(cacheKey);
+ const cacheKey=createHash('sha256').update(JSON.stringify(source)).digest('hex'),cached=cache.get(cacheKey);
  if(cached&&isDeepStrictEqual(source,cached.source)){
-  doorbellPreparations.delete(cacheKey);doorbellPreparations.set(cacheKey,cached);
+  cache.delete(cacheKey);cache.set(cacheKey,cached);
   return structuredClone(cached.result);
  }
  const d=validateProductDocument(record.document),result=prepareValidated(record,d);
- doorbellPreparations.set(cacheKey,{source:structuredClone(source),result:structuredClone(result)});
- if(doorbellPreparations.size>DOORBELL_PREPARATION_LIMIT)doorbellPreparations.delete(doorbellPreparations.keys().next().value);
+ cache.set(cacheKey,{source:structuredClone(source),result:structuredClone(result)});
+ if(cache.size>limit)cache.delete(cache.keys().next().value);
  return result;
 }
 function prepareValidated(record,d){

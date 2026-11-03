@@ -1,0 +1,168 @@
+{"python3check":0,"error":""}
+✖ Engine: Platte, Bohrlöcher, Randabstände und Lochabstand (67.930597ms)
+✖ Engine: Rechtecke aus Einzellinien mit gemeinsamer Kante (48.921715ms)
+✖ Engine: Kreis-Platte und Kreis-Bohrloch werden unterschieden (49.785772ms)
+✖ Engine: Texte mit Schrift, Größe und korrigierter Breite (54.628899ms)
+✖ Engine: SVG 1:1 in mm, Text bleibt Text (54.979744ms)
+✖ Engine: Fehler als Meldung, keine Ausnahme (44.963095ms)
+✔ Engine: Zip mit gefälschter Größenangabe wird abgelehnt (keine Speicherbombe) (72.545401ms)
+✔ Sperrliste interner Adressen (0.658698ms)
+✔ Ohne Token: wird einmal in privater Datei erzeugt und danach wiederverwendet (1.123646ms)
+✔ Konfiguration verlangt langes Token (0.623806ms)
+✔ MCP: initialize, tools/list mit Datei-Parametern für ChatGPT (29.970619ms)
+✔ MCP: falsches Token → 404, Benachrichtigung → 202, GET → 405 (3.426992ms)
+✖ MCP: cdr_measure über hochgeladene Datei (55.761748ms)
+✖ MCP: cdr_to_svg liefert Download-Link, der funktioniert (47.982526ms)
+✔ MCP: Fehler kommen als isError zurück (keine Datei, keine CDR, unbekanntes Werkzeug) (10.821037ms)
+✔ MCP: interne Adressen sind ohne Testschalter gesperrt (14.297122ms)
+✔ direct-link UI passes the active text policy through to the real text importer (2.536816ms)
+✔ large text: real input, focusout, field refresh and workflow sync all retain 12 mm (6.553373ms)
+✔ K1: actual text input handler keeps 32 chars / 2 lines and the direct editor clamps alike (3.48533ms)
+✔ large text: actual +/- click handlers operate in physical mm (1.737857ms)
+✔ large text: layer size input uses the same mm conversion and size changes invalidate fit cache (1.789585ms)
+✔ large text: pointer, handle keyboard and toolbar shrink never enlarge a 4-mm text (3.458109ms)
+✔ large text: actual fit action reaches physical 4 mm and reports that value (1.556846ms)
+✔ fixed acrylic photo: actual editor apply keeps shape/geometry and remains contract-valid (16.763422ms)
+✔ non-replaceable photo retains its artwork and is not redecorated as an unnamed upload button (1.669204ms)
+✔ imported acrylic photo: actual upload handler replaces semantic slot twice without appending an object (2.4126ms)
+✔ example photo shows upload hint only in preview markup with the original arch mask (0.548754ms)
+✔ customer size entry rounds mm without changing the plate or other text properties (1.143966ms)
+✔ photo apply rejects an oversized edited PNG before changing the object or media (0.730827ms)
+✔ K10 / Ü1.2: changeObject refuses colour when the process profile has no colour tool and clamps size to the profile minimum (1.542965ms)
+✔ K10 / Ü1.2: engraving products build the text panel without a colour picker, print without a free picker when the palette is fixed; photo tool follows tools.photo (6.008004ms)
+✔ Neues Element: freier Platz in Originalgröße, sonst verkleinert bis zur Mindestgröße, sonst mittig mit Hinweis (25.068074ms)
+✔ Freie Farbe: Farbdruck zeigt Palette + Farbwähler, Gravur keine Farbwahl, Produktauswahl nur Palette (11.416189ms)
+✔ Foto-Reiter: ohne Foto und ohne Foto-/Logo-Ebene weg (auch bei erlaubten Logos), mit Foto wie bisher (4.872261ms)
+✔ Befestigungskacheln: jede Befestigung als Kachel mit Icon, Bezeichnung und Aufpreis; interne Auswahlliste bleibt verborgen, Haken wie Designs (210.068379ms)
+✔ workflow glyph bounds and autofit caches distinguish catalogue typography (1.398609ms)
+✔ LF2 customer size input and normalization preserve the source leading ratio (1.650156ms)
+✔ usability glyph cache distinguishes catalogue spacing and alignment for edge limits (1.033651ms)
+✔ motif UI checks the real allowlist and adds independent objects without replacing the selected template (0.8401ms)
+✔ actual acrylic action guard obeys explicit motif deletion while retaining fixed geometry and old locks (0.96587ms)
+✔ private configuration accepts only explicit separate merchant settings and never prints secrets (5.461265ms)
+✔ preparation only initializes empty private storage and preserves foreign or symlinked data (3605.318201ms)
+{"event":"merchant_session_rejected","reason":"malformed"}
+{"event":"merchant_session_rejected","reason":"signature"}
+{"event":"merchant_session_rejected","reason":"claims"}
+{"event":"merchant_session_rejected","reason":"not_yet_valid"}
+✔ real two-listener merchant runtime enforces host, HTTPS, bearer, CSRF and private-file boundaries (1874.261817ms)
+{"event":"merchant_session_rejected","reason":"signature"}
+✔ concurrent start is refused; persisted data and open-page CSRF survive restart, key rotation invalidates old sessions (1920.102028ms)
+✔ stable merchant CSRF cannot enable unauthenticated operator mode (0.397066ms)
+✔ successful execution alone cannot make an arbitrary executable pass the Python check (7.003378ms)
+{"event":"merchant_session_rejected","reason":"malformed"}
+✔ explicit test-order endpoint authenticates Shopify bytes without weakening merchant access, and persists duplicate detection (1996.908343ms)
+{"event":"merchant_session_rejected","reason":"malformed"}
+✔ merchant test cart is explicitly pinned and needs JWT, origin, CSRF and private draft capability (1601.192048ms)
+✔ private revision pin is strict, requires enabled test cart and cannot be overridden by environment (6.530279ms)
+✔ draft-only connection uses existing app credentials, rejects unknown activation and preserves checkout gate (2.088834ms)
+✔ Startdesigns: je Zielgruppe die kleinste Nummer, --anzahl begrenzt (1.527452ms)
+✔ Duplicate Content: gemeinsame Fünfwortfolgen und gleiche Felder werden gemeldet (0.454982ms)
+✔ Aufruf: Pflichtangaben und keine unbekannten Schalter (0.509024ms)
+✔ door signs without target-group names still receive two different starters (0.190485ms)
+✔ bounded batches are explicit and invalid CLI values fail before planning (0.27331ms)
+✔ only available variants export, a one-value option is retained, inventory stays untracked and product remains draft (0.459389ms)
+✔ door-sign identifiers include physical format, theme and exact starter without guessing source facts (0.578127ms)
+ℹ tests 57
+ℹ suites 0
+ℹ pass 49
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11685.739246
+
+✖ failing tests:
+
+test at app/cdr-mcp/cdr-mcp.test.mjs:61:1
+✖ Engine: Platte, Bohrlöcher, Randabstände und Lochabstand (67.930597ms)
+  SyntaxError [Error]: Unexpected end of JSON input
+      at JSON.parse (<anonymous>)
+      at engine (file:///var/www/vhosts/gravuru-designwerkstatt.de/private/issue139-execution-20261103/app/cdr-mcp/cdr-mcp.test.mjs:58:15)
+      at TestContext.<anonymous> (file:///var/www/vhosts/gravuru-designwerkstatt.de/private/issue139-execution-20261103/app/cdr-mcp/cdr-mcp.test.mjs:62:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at app/cdr-mcp/cdr-mcp.test.mjs:73:1
+✖ Engine: Rechtecke aus Einzellinien mit gemeinsamer Kante (48.921715ms)
+  SyntaxError [Error]: Unexpected end of JSON input
+      at JSON.parse (<anonymous>)
+      at engine (file:///var/www/vhosts/gravuru-designwerkstatt.de/private/issue139-execution-20261103/app/cdr-mcp/cdr-mcp.test.mjs:58:15)
+      at TestContext.<anonymous> (file:///var/www/vhosts/gravuru-designwerkstatt.de/private/issue139-execution-20261103/app/cdr-mcp/cdr-mcp.test.mjs:74:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at app/cdr-mcp/cdr-mcp.test.mjs:82:1
+✖ Engine: Kreis-Platte und Kreis-Bohrloch werden unterschieden (49.785772ms)
+  SyntaxError [Error]: Unexpected end of JSON input
+      at JSON.parse (<anonymous>)
+      at engine (file:///var/www/vhosts/gravuru-designwerkstatt.de/private/issue139-execution-20261103/app/cdr-mcp/cdr-mcp.test.mjs:58:15)
+      at TestContext.<anonymous> (file:///var/www/vhosts/gravuru-designwerkstatt.de/private/issue139-execution-20261103/app/cdr-mcp/cdr-mcp.test.mjs:83:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at app/cdr-mcp/cdr-mcp.test.mjs:89:1
+✖ Engine: Texte mit Schrift, Größe und korrigierter Breite (54.628899ms)
+  SyntaxError [Error]: Unexpected end of JSON input
+      at JSON.parse (<anonymous>)
+      at engine (file:///var/www/vhosts/gravuru-designwerkstatt.de/private/issue139-execution-20261103/app/cdr-mcp/cdr-mcp.test.mjs:58:15)
+      at TestContext.<anonymous> (file:///var/www/vhosts/gravuru-designwerkstatt.de/private/issue139-execution-20261103/app/cdr-mcp/cdr-mcp.test.mjs:90:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at app/cdr-mcp/cdr-mcp.test.mjs:99:1
+✖ Engine: SVG 1:1 in mm, Text bleibt Text (54.979744ms)
+  SyntaxError [Error]: Unexpected end of JSON input
+      at JSON.parse (<anonymous>)
+      at engine (file:///var/www/vhosts/gravuru-designwerkstatt.de/private/issue139-execution-20261103/app/cdr-mcp/cdr-mcp.test.mjs:58:15)
+      at TestContext.<anonymous> (file:///var/www/vhosts/gravuru-designwerkstatt.de/private/issue139-execution-20261103/app/cdr-mcp/cdr-mcp.test.mjs:101:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at app/cdr-mcp/cdr-mcp.test.mjs:108:1
+✖ Engine: Fehler als Meldung, keine Ausnahme (44.963095ms)
+  SyntaxError [Error]: Unexpected end of JSON input
+      at JSON.parse (<anonymous>)
+      at engine (file:///var/www/vhosts/gravuru-designwerkstatt.de/private/issue139-execution-20261103/app/cdr-mcp/cdr-mcp.test.mjs:58:15)
+      at TestContext.<anonymous> (file:///var/www/vhosts/gravuru-designwerkstatt.de/private/issue139-execution-20261103/app/cdr-mcp/cdr-mcp.test.mjs:109:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+
+test at app/cdr-mcp/cdr-mcp.test.mjs:204:1
+✖ MCP: cdr_measure über hochgeladene Datei (55.761748ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///var/www/vhosts/gravuru-designwerkstatt.de/private/issue139-execution-20261103/app/cdr-mcp/cdr-mcp.test.mjs:207:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at app/cdr-mcp/cdr-mcp.test.mjs:213:1
+✖ MCP: cdr_to_svg liefert Download-Link, der funktioniert (47.982526ms)
+  TypeError [Error]: Cannot read properties of undefined (reading 'download')
+      at TestContext.<anonymous> (file:///var/www/vhosts/gravuru-designwerkstatt.de/private/issue139-execution-20261103/app/cdr-mcp/cdr-mcp.test.mjs:216:20)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+

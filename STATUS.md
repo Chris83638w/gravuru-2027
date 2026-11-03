@@ -1,3 +1,7 @@
+## 2026-11-03 · Codex · #139 Schritt 3 / Serienpipeline
+
+Claudes vorhandenes shop-schnitt-plan.mjs für beide Türschildmaterialien erweitert (100er-Läufe, zwei Startdesigns, gemeinsame Acryl-Farben, verfügbare Varianten). 91 Grabstecker + je 5 Türschilder als native Konfigurationen erzeugt, alle 101 Varianten-/Preiszuordnungen geprüft; weitere Türschildplanung 1.760 Stahl/1.120 Acryl. Linux-Erstlauf 2.290/15/2, sämtliche 15 Fehler über UI-Testanker bzw. Python/TMPDIR erklärt und betroffene Dateien nachgeprüft. [Belege und offene Text-/Bild-/Uploadschritte](docs/handoffs/2026-11-03-issue139-massenlauf.md). Neue Module/Pipeline zur Prüfung in PR #154, PR #153 weiterhin live. In diesem Schritt 0 neue Shopartikel.
+
 ## 2026-11-03 · Codex · #139 Schritt 2
 
 Grabstecker-/Gedenktafel-Ausführung mit separaten Paketen und echten Katalog-Screenshots umgesetzt. Größenwechsel/Kopfansicht, Kontur-Schriftladen und Foto-Startprojektion korrigiert. [Nachweis](docs/handoffs/2026-11-03-issue139-ausfuehrungen.md). Linux-Gesamtlauf läuft; historische Gedenktafelpreise und Importgrenzen offen. Kein weiterer Upload/Deployment. Nächster Schritt: vorhandene Bulk-Pipeline.

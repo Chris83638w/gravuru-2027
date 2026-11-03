@@ -1,4 +1,5 @@
 import {customerFieldLabel} from './text-fields.mjs';
+import {executionOptionGroups} from './execution-registry.mjs';
 import {alignmentContent,alignmentLabel} from './ui-icons.mjs';
 import {selectionScaleFactor} from './selection-arrows.mjs';
 import {previewResourceURL} from './preview-resource.mjs';
@@ -368,8 +369,8 @@ test('Befestigungskacheln: jede Befestigung als Kachel mit Icon, Bezeichnung und
  // Preistext wie in der Auswahlliste; Größen mit Komplettpreis zeigen den Preis selbst.
  assert.equal(optionTilePrice({priceCents:0},money),'ohne Aufpreis');assert.equal(optionTilePrice({priceCents:299},money),'+'+money(299));assert.equal(optionTilePrice({priceCents:1990},money,{fullPrice:true}),money(1990));
  // Der echte Kachelaufbau aus adapter.mjs: alle fünf Befestigungen, Kennung/Gruppe für die Auswahl, Bezeichnung + Aufpreis, aria-pressed.
- const env={pictures:{innerHTML:''},p,config,dynamicDoorbell:false,esc:escapeXml,money,optionTileIcon,optionTilePrice};vm.createContext(env);
- vm.runInContext(line('adapter.mjs','const fullOptionPrice=g=>'),env);vm.runInContext(line('adapter.mjs','const tileValues=g=>'),env);vm.runInContext(line('adapter.mjs','pictures.innerHTML=(p.optionGroups||[])'),env);
+ const env={pictures:{innerHTML:''},p,config,executionOptionGroups,dynamicDoorbell:false,esc:escapeXml,money,optionTileIcon,optionTilePrice};vm.createContext(env);
+ vm.runInContext(line('adapter.mjs','const fullOptionPrice=g=>'),env);vm.runInContext(line('adapter.mjs','const tileValues=g=>'),env);vm.runInContext(line('adapter.mjs','pictures.innerHTML=executionOptionGroups(config)'),env);
  const html=env.pictures.innerHTML;
  assert.equal((html.match(/<button type="button" class="m-option-tile" data-picture-group="mounting" data-picture-option="/g)||[]).length,5);
  assert.match(html,/<div role="group" aria-label="Befestigung">/);
@@ -378,10 +379,11 @@ test('Befestigungskacheln: jede Befestigung als Kachel mit Icon, Bezeichnung und
  assert.match(html,new RegExp('data-picture-option="B02S" aria-pressed="false"><svg .*?</svg><strong>Mit 2 Schrauben</strong><small>\\+'+money(269).replace(/\s/g,'\\s')+'</small>'));
  // Andere Gruppen (z. B. ohne Optionsbild) bekommen weiterhin keine Kacheln; Werte mit Bild schon.
  env.p={optionGroups:[{id:'size',name:'Größe',values:[{id:'a',label:'A',priceCents:100},{id:'b',label:'B',priceCents:0,thumbnail:'data:image/png;base64,AAAA'}]}]};
- vm.runInContext(line('adapter.mjs','pictures.innerHTML=(p.optionGroups||[])'),env);
+ env.config={...config,profile:env.p};
+ vm.runInContext(line('adapter.mjs','pictures.innerHTML=executionOptionGroups(config)'),env);
  assert.equal((env.pictures.innerHTML.match(/data-picture-option=/g)||[]).length,1);assert.match(env.pictures.innerHTML,/data-picture-option="b"[^>]*><img src="data:image\/png;base64,AAAA" alt=""><strong>B<\/strong><small>ohne Aufpreis<\/small>/);
  // Auswahlliste (select) bleibt als barrierefreie Alternative; Klick auf die Kachel setzt nur die Option (keine Preislogik hier).
- assert.match(source('adapter.mjs'),/picks\.innerHTML=\(p\.optionGroups\|\|\[\]\)\.map\(g=>'<label>'\+esc\(g\.name\)\+'<select data-m-option=/);
+ assert.match(source('adapter.mjs'),/picks\.innerHTML=executionOptionGroups\(config\)\.map\(g=>'<label>'\+esc\(g\.name\)\+'<select data-m-option=/);
  const choices=[];env.changeOption=(group,value)=>choices.push([group,value]);env.pictures.addEventListener=(event,handler)=>{assert.equal(event,'click');env.selectPicture=handler;};
  vm.runInContext(line('adapter.mjs',"pictures.addEventListener('click'"),env);
  env.selectPicture({target:{closest:()=>({dataset:{pictureGroup:'mounting',pictureOption:'B02S'}})}});

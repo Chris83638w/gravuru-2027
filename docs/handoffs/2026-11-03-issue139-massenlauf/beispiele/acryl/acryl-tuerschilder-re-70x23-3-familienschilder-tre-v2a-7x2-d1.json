@@ -1,0 +1,330 @@
+{
+  "schema": "gravuru-shop-schnitt-product/v1",
+  "input": {
+    "title": "Familienschilder · Acrylglas · Rechteck · 7 × 2,33 cm · Zwei Zeilen, mittig",
+    "handle": "acryl-tuerschilder-re-70x23-3-familienschilder-tre-v2a-7x2-d1",
+    "status": "DRAFT",
+    "templateSuffix": "konfi",
+    "vendor": "gravuru",
+    "productType": "Türschilder",
+    "descriptionHtml": "<p>Zwei Zeilen, mittig ist die Startgestaltung für dieses Rechteck aus Acrylglas im Format 7 × 2,33 cm.</p>\n<p>Personalisiere die Texte für dein Familienschilder. Im Konfigurator siehst du die Gestaltung auf der gewählten Platte und kannst weitere freigegebene Designs auswählen.</p>\n<p>Materialstärke: 3 mm. Befestigungen und deren Aufpreise werden bei der Gestaltung angezeigt.</p>",
+    "seo": {
+      "title": "Familienschilder · Acrylglas · Rechteck · 7 × 2,33 cm · Zwei Zeilen, m",
+      "description": "Zwei Zeilen, mittig · Familienschilder · Acrylglas · Rechteck · 7 × 2,33 cm · mit eigenen Texten gestalten."
+    },
+    "tags": [
+      "Türschild",
+      "Acrylglas",
+      "Rechteck",
+      "Familienschilder",
+      "7 × 2,33 cm"
+    ],
+    "productOptions": [
+      {
+        "name": "Farbe",
+        "position": 1,
+        "values": [
+          {
+            "name": "Schwarz"
+          },
+          {
+            "name": "Anthrazit"
+          }
+        ]
+      },
+      {
+        "name": "Befestigung",
+        "position": 2,
+        "values": [
+          {
+            "name": "Ohne Bohrung"
+          },
+          {
+            "name": "Selbstklebend – glatte Flächen"
+          },
+          {
+            "name": "Selbstklebend – raue Flächen"
+          },
+          {
+            "name": "Mit 2 Bohrlöchern"
+          },
+          {
+            "name": "Mit 2 Schrauben"
+          }
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "position": 1,
+        "price": "7.99",
+        "sku": "TS-Acryl-RE-70X23P3-T30-SW",
+        "inventoryItem": {
+          "tracked": false
+        },
+        "optionValues": [
+          {
+            "optionName": "Farbe",
+            "name": "Schwarz"
+          },
+          {
+            "optionName": "Befestigung",
+            "name": "Ohne Bohrung"
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "price": "10.98",
+        "sku": "TS-Acryl-RE-70X23P3-T30-SW-KGL",
+        "inventoryItem": {
+          "tracked": false
+        },
+        "optionValues": [
+          {
+            "optionName": "Farbe",
+            "name": "Schwarz"
+          },
+          {
+            "optionName": "Befestigung",
+            "name": "Selbstklebend – glatte Flächen"
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "price": "11.98",
+        "sku": "TS-Acryl-RE-70X23P3-T30-SW-KRA",
+        "inventoryItem": {
+          "tracked": false
+        },
+        "optionValues": [
+          {
+            "optionName": "Farbe",
+            "name": "Schwarz"
+          },
+          {
+            "optionName": "Befestigung",
+            "name": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "position": 4,
+        "price": "10.48",
+        "sku": "TS-Acryl-RE-70X23P3-T30-SW-B02",
+        "inventoryItem": {
+          "tracked": false
+        },
+        "optionValues": [
+          {
+            "optionName": "Farbe",
+            "name": "Schwarz"
+          },
+          {
+            "optionName": "Befestigung",
+            "name": "Mit 2 Bohrlöchern"
+          }
+        ]
+      },
+      {
+        "position": 5,
+        "price": "10.98",
+        "sku": "TS-Acryl-RE-70X23P3-T30-SW-B02S",
+        "inventoryItem": {
+          "tracked": false
+        },
+        "optionValues": [
+          {
+            "optionName": "Farbe",
+            "name": "Schwarz"
+          },
+          {
+            "optionName": "Befestigung",
+            "name": "Mit 2 Schrauben"
+          }
+        ]
+      },
+      {
+        "position": 6,
+        "price": "7.99",
+        "sku": "TS-Acryl-RE-70X23P3-T30-AN",
+        "inventoryItem": {
+          "tracked": false
+        },
+        "optionValues": [
+          {
+            "optionName": "Farbe",
+            "name": "Anthrazit"
+          },
+          {
+            "optionName": "Befestigung",
+            "name": "Ohne Bohrung"
+          }
+        ]
+      },
+      {
+        "position": 7,
+        "price": "10.98",
+        "sku": "TS-Acryl-RE-70X23P3-T30-AN-KGL",
+        "inventoryItem": {
+          "tracked": false
+        },
+        "optionValues": [
+          {
+            "optionName": "Farbe",
+            "name": "Anthrazit"
+          },
+          {
+            "optionName": "Befestigung",
+            "name": "Selbstklebend – glatte Flächen"
+          }
+        ]
+      },
+      {
+        "position": 8,
+        "price": "11.98",
+        "sku": "TS-Acryl-RE-70X23P3-T30-AN-KRA",
+        "inventoryItem": {
+          "tracked": false
+        },
+        "optionValues": [
+          {
+            "optionName": "Farbe",
+            "name": "Anthrazit"
+          },
+          {
+            "optionName": "Befestigung",
+            "name": "Selbstklebend – raue Flächen"
+          }
+        ]
+      },
+      {
+        "position": 9,
+        "price": "10.48",
+        "sku": "TS-Acryl-RE-70X23P3-T30-AN-B02",
+        "inventoryItem": {
+          "tracked": false
+        },
+        "optionValues": [
+          {
+            "optionName": "Farbe",
+            "name": "Anthrazit"
+          },
+          {
+            "optionName": "Befestigung",
+            "name": "Mit 2 Bohrlöchern"
+          }
+        ]
+      },
+      {
+        "position": 10,
+        "price": "10.98",
+        "sku": "TS-Acryl-RE-70X23P3-T30-AN-B02S",
+        "inventoryItem": {
+          "tracked": false
+        },
+        "optionValues": [
+          {
+            "optionName": "Farbe",
+            "name": "Anthrazit"
+          },
+          {
+            "optionName": "Befestigung",
+            "name": "Mit 2 Schrauben"
+          }
+        ]
+      }
+    ],
+    "metafields": [
+      {
+        "namespace": "custom",
+        "key": "gravuru_product_cut",
+        "type": "json",
+        "value": "{\"sizeKey\":\"TS-Acryl-RE-70X23P3-T30-SW\",\"themeId\":\"familienschilder\",\"defaultDesignId\":\"TRE-V2A-7x2-D1\"}"
+      }
+    ]
+  },
+  "image": {
+    "file": "acryl-tuerschilder-re-70x23-3-familienschilder-tre-v2a-7x2-d1.webp",
+    "alt": "Familienschilder · Acrylglas · Rechteck · 7 × 2,33 cm · Zwei Zeilen, mittig"
+  },
+  "collections": [
+    "acryl-tuerschilder",
+    "familienschilder-aus-acrylglas"
+  ],
+  "variantSources": [
+    {
+      "sku": "TS-Acryl-RE-70X23P3-T30-SW",
+      "priceCents": 799,
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-RE-70X23P3-T30-SW",
+      "mounting": "K00"
+    },
+    {
+      "sku": "TS-Acryl-RE-70X23P3-T30-SW-KGL",
+      "priceCents": 1098,
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-RE-70X23P3-T30-SW",
+      "mounting": "KGL"
+    },
+    {
+      "sku": "TS-Acryl-RE-70X23P3-T30-SW-KRA",
+      "priceCents": 1198,
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-RE-70X23P3-T30-SW",
+      "mounting": "KRA"
+    },
+    {
+      "sku": "TS-Acryl-RE-70X23P3-T30-SW-B02",
+      "priceCents": 1048,
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-RE-70X23P3-T30-SW",
+      "mounting": "B02"
+    },
+    {
+      "sku": "TS-Acryl-RE-70X23P3-T30-SW-B02S",
+      "priceCents": 1098,
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-RE-70X23P3-T30-SW",
+      "mounting": "B02S"
+    },
+    {
+      "sku": "TS-Acryl-RE-70X23P3-T30-AN",
+      "priceCents": 799,
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-RE-70X23P3-T30-AN",
+      "mounting": "K00"
+    },
+    {
+      "sku": "TS-Acryl-RE-70X23P3-T30-AN-KGL",
+      "priceCents": 1098,
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-RE-70X23P3-T30-AN",
+      "mounting": "KGL"
+    },
+    {
+      "sku": "TS-Acryl-RE-70X23P3-T30-AN-KRA",
+      "priceCents": 1198,
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-RE-70X23P3-T30-AN",
+      "mounting": "KRA"
+    },
+    {
+      "sku": "TS-Acryl-RE-70X23P3-T30-AN-B02",
+      "priceCents": 1048,
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-RE-70X23P3-T30-AN",
+      "mounting": "B02"
+    },
+    {
+      "sku": "TS-Acryl-RE-70X23P3-T30-AN-B02S",
+      "priceCents": 1098,
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-RE-70X23P3-T30-AN",
+      "mounting": "B02S"
+    }
+  ],
+  "configRevision": "family-formats-ea9fdace5bd3ae13a377e238",
+  "profileId": "katalog-formate-acryl-tuerschilder-familienschilder-d9ea59f9b605302b"
+}

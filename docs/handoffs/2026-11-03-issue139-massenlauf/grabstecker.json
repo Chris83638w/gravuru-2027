@@ -1,0 +1,3349 @@
+{
+  "schema": "gravuru-shop-schnitt-plan/v1",
+  "createdAt": "2026-11-03T08:18:24.078Z",
+  "line": "grabstecker-edelstahl",
+  "subcategory": "andenkenschilder",
+  "je": "zielgruppe",
+  "batch": {
+    "offset": 0,
+    "limit": 100,
+    "total": 91,
+    "nextOffset": null
+  },
+  "counts": {
+    "geplant": 91,
+    "vorgemerkt": 0,
+    "blockiert": 0,
+    "offen": 0,
+    "ohneTexte": 0
+  },
+  "duplicateHandles": [],
+  "duplicateContent": {
+    "pairsCount": 4095,
+    "maxShared": 80,
+    "sameFields": []
+  },
+  "entries": [
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZ",
+      "sizeKey": "GS-V2A-HERZ-M",
+      "sizes": [
+        "GS-V2A-HERZ-S",
+        "GS-V2A-HERZ-M",
+        "GS-V2A-HERZ-XL"
+      ],
+      "label": "Herz M · 16,0 × 38,2 cm",
+      "group": "Mensch allgemein",
+      "handle": "grabstecker-herz-fuer-verstorbene",
+      "startDesign": "GS-V2A-HERZ-M-D1",
+      "startDesignName": "Grabstecker Herz M · Mensch allgemein · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2999,
+      "priceRange": [
+        1899,
+        2999,
+        4299
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D1",
+        "zielgruppe": "Mensch allgemein",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZ-M-D1",
+      "groupCode": "MENSCH-ALLGEMEIN",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 12048315,
+      "configRevision": "family-formats-0f262b7d695a628682d80864",
+      "title": "Grabstecker Herz für Verstorbene – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZ",
+      "sizeKey": "GS-V2A-HERZ-M",
+      "sizes": [
+        "GS-V2A-HERZ-S",
+        "GS-V2A-HERZ-M",
+        "GS-V2A-HERZ-XL"
+      ],
+      "label": "Herz M · 16,0 × 38,2 cm",
+      "group": "Mama",
+      "handle": "grabstecker-herz-fuer-mama",
+      "startDesign": "GS-V2A-HERZ-M-D11",
+      "startDesignName": "Grabstecker Herz M · Mama · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2999,
+      "priceRange": [
+        1899,
+        2999,
+        4299
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D11",
+        "zielgruppe": "Mama",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZ-M-D11",
+      "groupCode": "MAMA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11995046,
+      "configRevision": "family-formats-98ee7cb9c93ecdd3335fe5ff",
+      "title": "Grabstecker Herz für Mama – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZ",
+      "sizeKey": "GS-V2A-HERZ-M",
+      "sizes": [
+        "GS-V2A-HERZ-S",
+        "GS-V2A-HERZ-M",
+        "GS-V2A-HERZ-XL"
+      ],
+      "label": "Herz M · 16,0 × 38,2 cm",
+      "group": "Papa",
+      "handle": "grabstecker-herz-fuer-papa",
+      "startDesign": "GS-V2A-HERZ-M-D21",
+      "startDesignName": "Grabstecker Herz M · Papa · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2999,
+      "priceRange": [
+        1899,
+        2999,
+        4299
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D21",
+        "zielgruppe": "Papa",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZ-M-D21",
+      "groupCode": "PAPA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11844305,
+      "configRevision": "family-formats-ecad10b84f72af9b94191094",
+      "title": "Grabstecker Herz für Papa – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZ",
+      "sizeKey": "GS-V2A-HERZ-M",
+      "sizes": [
+        "GS-V2A-HERZ-S",
+        "GS-V2A-HERZ-M",
+        "GS-V2A-HERZ-XL"
+      ],
+      "label": "Herz M · 16,0 × 38,2 cm",
+      "group": "Oma/Opa",
+      "handle": "grabstecker-herz-fuer-oma-und-opa",
+      "startDesign": "GS-V2A-HERZ-M-D31",
+      "startDesignName": "Grabstecker Herz M · Oma/Opa · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2999,
+      "priceRange": [
+        1899,
+        2999,
+        4299
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D31",
+        "zielgruppe": "Oma/Opa",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZ-M-D31",
+      "groupCode": "OMA-OPA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 12284737,
+      "configRevision": "family-formats-2da01854f63247d5404b9c7e",
+      "title": "Grabstecker Herz für Oma und Opa – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZ",
+      "sizeKey": "GS-V2A-HERZ-M",
+      "sizes": [
+        "GS-V2A-HERZ-S",
+        "GS-V2A-HERZ-M",
+        "GS-V2A-HERZ-XL"
+      ],
+      "label": "Herz M · 16,0 × 38,2 cm",
+      "group": "Sternenkind",
+      "handle": "grabstecker-herz-fuer-sternenkinder",
+      "startDesign": "GS-V2A-HERZ-M-D41",
+      "startDesignName": "Grabstecker Herz M · Sternenkind · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2999,
+      "priceRange": [
+        1899,
+        2999,
+        4299
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D41",
+        "zielgruppe": "Sternenkind",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZ-M-D41",
+      "groupCode": "STERNENKIND",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10915624,
+      "configRevision": "family-formats-9ad87006e6263c94ca8cc275",
+      "title": "Grabstecker Herz für Sternenkinder – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZ",
+      "sizeKey": "GS-V2A-HERZ-M",
+      "sizes": [
+        "GS-V2A-HERZ-S",
+        "GS-V2A-HERZ-M",
+        "GS-V2A-HERZ-XL"
+      ],
+      "label": "Herz M · 16,0 × 38,2 cm",
+      "group": "Hund",
+      "handle": "grabstecker-herz-fuer-hunde",
+      "startDesign": "GS-V2A-HERZ-M-D51",
+      "startDesignName": "Grabstecker Herz M · Hund · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2999,
+      "priceRange": [
+        1899,
+        2999,
+        4299
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D51",
+        "zielgruppe": "Hund",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZ-M-D51",
+      "groupCode": "HUND",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11572934,
+      "configRevision": "family-formats-9d9c2c5125c73c67b9dc7f18",
+      "title": "Grabstecker Herz für Hunde – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZ",
+      "sizeKey": "GS-V2A-HERZ-M",
+      "sizes": [
+        "GS-V2A-HERZ-S",
+        "GS-V2A-HERZ-M",
+        "GS-V2A-HERZ-XL"
+      ],
+      "label": "Herz M · 16,0 × 38,2 cm",
+      "group": "Katze",
+      "handle": "grabstecker-herz-fuer-katzen",
+      "startDesign": "GS-V2A-HERZ-M-D61",
+      "startDesignName": "Grabstecker Herz M · Katze · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2999,
+      "priceRange": [
+        1899,
+        2999,
+        4299
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D61",
+        "zielgruppe": "Katze",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZ-M-D61",
+      "groupCode": "KATZE",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11441669,
+      "configRevision": "family-formats-38e284293745123317a26f5b",
+      "title": "Grabstecker Herz für Katzen – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZ",
+      "sizeKey": "GS-V2A-HERZ-M",
+      "sizes": [
+        "GS-V2A-HERZ-S",
+        "GS-V2A-HERZ-M",
+        "GS-V2A-HERZ-XL"
+      ],
+      "label": "Herz M · 16,0 × 38,2 cm",
+      "group": "Tier allgemein",
+      "handle": "grabstecker-herz-fuer-haustiere",
+      "startDesign": "GS-V2A-HERZ-M-D71",
+      "startDesignName": "Grabstecker Herz M · Tier allgemein · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2999,
+      "priceRange": [
+        1899,
+        2999,
+        4299
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D71",
+        "zielgruppe": "Tier allgemein",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZ-M-D71",
+      "groupCode": "TIER-ALLGEMEIN",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11589958,
+      "configRevision": "family-formats-fdd2157f311cceb2bc989a2e",
+      "title": "Grabstecker Herz für Haustiere – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZ",
+      "sizeKey": "GS-V2A-HERZ-M",
+      "sizes": [
+        "GS-V2A-HERZ-S",
+        "GS-V2A-HERZ-M",
+        "GS-V2A-HERZ-XL"
+      ],
+      "label": "Herz M · 16,0 × 38,2 cm",
+      "group": "Religiös christlich",
+      "handle": "grabstecker-herz-mit-christlichem-motiv",
+      "startDesign": "GS-V2A-HERZ-M-D81",
+      "startDesignName": "Grabstecker Herz M · Religiös christlich · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2999,
+      "priceRange": [
+        1899,
+        2999,
+        4299
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D81",
+        "zielgruppe": "Religiös christlich",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZ-M-D81",
+      "groupCode": "RELIGIOES-CHRISTLICH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11420783,
+      "configRevision": "family-formats-6089fad02068b2421252e5df",
+      "title": "Grabstecker Herz mit christlichem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZ",
+      "sizeKey": "GS-V2A-HERZ-M",
+      "sizes": [
+        "GS-V2A-HERZ-S",
+        "GS-V2A-HERZ-M",
+        "GS-V2A-HERZ-XL"
+      ],
+      "label": "Herz M · 16,0 × 38,2 cm",
+      "group": "Religiös jüdisch",
+      "handle": "grabstecker-herz-mit-juedischem-motiv",
+      "startDesign": "GS-V2A-HERZ-M-D91",
+      "startDesignName": "Grabstecker Herz M · Religiös jüdisch · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2999,
+      "priceRange": [
+        1899,
+        2999,
+        4299
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D91",
+        "zielgruppe": "Religiös jüdisch",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZ-M-D91",
+      "groupCode": "RELIGIOES-JUEDISCH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11478710,
+      "configRevision": "family-formats-57ead0181200525dfbea167f",
+      "title": "Grabstecker Herz mit jüdischem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZ",
+      "sizeKey": "GS-V2A-HERZ-M",
+      "sizes": [
+        "GS-V2A-HERZ-S",
+        "GS-V2A-HERZ-M",
+        "GS-V2A-HERZ-XL"
+      ],
+      "label": "Herz M · 16,0 × 38,2 cm",
+      "group": "Religiös islamisch",
+      "handle": "grabstecker-herz-mit-islamischem-motiv",
+      "startDesign": "GS-V2A-HERZ-M-D101",
+      "startDesignName": "Grabstecker Herz M · Religiös islamisch · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2999,
+      "priceRange": [
+        1899,
+        2999,
+        4299
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZ-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZ-M-D101",
+        "zielgruppe": "Religiös islamisch",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZ-M-D101",
+      "groupCode": "RELIGIOES-ISLAMISCH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11571471,
+      "configRevision": "family-formats-1605c235a4227d6e73cbe281",
+      "title": "Grabstecker Herz mit islamischem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZRAHMEN",
+      "sizeKey": "GS-V2A-HERZRAHMEN-M",
+      "sizes": [
+        "GS-V2A-HERZRAHMEN-S",
+        "GS-V2A-HERZRAHMEN-M",
+        "GS-V2A-HERZRAHMEN-XL"
+      ],
+      "label": "Herz-Rahmen M · 15,1 × 36,2 cm",
+      "group": "Mensch allgemein",
+      "handle": "grabstecker-herz-mit-rahmen-fuer-verstorbene",
+      "startDesign": "GS-V2A-HERZRAHMEN-M-D1",
+      "startDesignName": "Grabstecker Herz-Rahmen M · Mensch allgemein · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D1",
+        "zielgruppe": "Mensch allgemein",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZRAHMEN-M-D1",
+      "groupCode": "MENSCH-ALLGEMEIN",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 12177864,
+      "configRevision": "family-formats-0588aae28324b472ecd865c4",
+      "title": "Grabstecker Herz mit Rahmen für Verstorbene – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZRAHMEN",
+      "sizeKey": "GS-V2A-HERZRAHMEN-M",
+      "sizes": [
+        "GS-V2A-HERZRAHMEN-S",
+        "GS-V2A-HERZRAHMEN-M",
+        "GS-V2A-HERZRAHMEN-XL"
+      ],
+      "label": "Herz-Rahmen M · 15,1 × 36,2 cm",
+      "group": "Mama",
+      "handle": "grabstecker-herz-mit-rahmen-fuer-mama",
+      "startDesign": "GS-V2A-HERZRAHMEN-M-D11",
+      "startDesignName": "Grabstecker Herz-Rahmen M · Mama · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D11",
+        "zielgruppe": "Mama",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZRAHMEN-M-D11",
+      "groupCode": "MAMA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 13885264,
+      "configRevision": "family-formats-77970fbb1b35ac489fef94ca",
+      "title": "Grabstecker Herz mit Rahmen für Mama – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZRAHMEN",
+      "sizeKey": "GS-V2A-HERZRAHMEN-M",
+      "sizes": [
+        "GS-V2A-HERZRAHMEN-S",
+        "GS-V2A-HERZRAHMEN-M",
+        "GS-V2A-HERZRAHMEN-XL"
+      ],
+      "label": "Herz-Rahmen M · 15,1 × 36,2 cm",
+      "group": "Papa",
+      "handle": "grabstecker-herz-mit-rahmen-fuer-papa",
+      "startDesign": "GS-V2A-HERZRAHMEN-M-D21",
+      "startDesignName": "Grabstecker Herz-Rahmen M · Papa · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D21",
+        "zielgruppe": "Papa",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZRAHMEN-M-D21",
+      "groupCode": "PAPA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 12027576,
+      "configRevision": "family-formats-77ee290dcf3275b54225e711",
+      "title": "Grabstecker Herz mit Rahmen für Papa – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZRAHMEN",
+      "sizeKey": "GS-V2A-HERZRAHMEN-M",
+      "sizes": [
+        "GS-V2A-HERZRAHMEN-S",
+        "GS-V2A-HERZRAHMEN-M",
+        "GS-V2A-HERZRAHMEN-XL"
+      ],
+      "label": "Herz-Rahmen M · 15,1 × 36,2 cm",
+      "group": "Oma/Opa",
+      "handle": "grabstecker-herz-mit-rahmen-fuer-oma-und-opa",
+      "startDesign": "GS-V2A-HERZRAHMEN-M-D31",
+      "startDesignName": "Grabstecker Herz-Rahmen M · Oma/Opa · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D31",
+        "zielgruppe": "Oma/Opa",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZRAHMEN-M-D31",
+      "groupCode": "OMA-OPA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 12347029,
+      "configRevision": "family-formats-c9a98d3d33433bea28a40799",
+      "title": "Grabstecker Herz mit Rahmen für Oma und Opa – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZRAHMEN",
+      "sizeKey": "GS-V2A-HERZRAHMEN-M",
+      "sizes": [
+        "GS-V2A-HERZRAHMEN-S",
+        "GS-V2A-HERZRAHMEN-M",
+        "GS-V2A-HERZRAHMEN-XL"
+      ],
+      "label": "Herz-Rahmen M · 15,1 × 36,2 cm",
+      "group": "Sternenkind",
+      "handle": "grabstecker-herz-mit-rahmen-fuer-sternenkinder",
+      "startDesign": "GS-V2A-HERZRAHMEN-M-D41",
+      "startDesignName": "Grabstecker Herz-Rahmen M · Sternenkind · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D41",
+        "zielgruppe": "Sternenkind",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZRAHMEN-M-D41",
+      "groupCode": "STERNENKIND",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11693970,
+      "configRevision": "family-formats-33fcdaa9db59c5c422a4aaa7",
+      "title": "Grabstecker Herz mit Rahmen für Sternenkinder – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZRAHMEN",
+      "sizeKey": "GS-V2A-HERZRAHMEN-M",
+      "sizes": [
+        "GS-V2A-HERZRAHMEN-S",
+        "GS-V2A-HERZRAHMEN-M",
+        "GS-V2A-HERZRAHMEN-XL"
+      ],
+      "label": "Herz-Rahmen M · 15,1 × 36,2 cm",
+      "group": "Hund",
+      "handle": "grabstecker-herz-mit-rahmen-fuer-hunde",
+      "startDesign": "GS-V2A-HERZRAHMEN-M-D51",
+      "startDesignName": "Grabstecker Herz-Rahmen M · Hund · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D51",
+        "zielgruppe": "Hund",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZRAHMEN-M-D51",
+      "groupCode": "HUND",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11719480,
+      "configRevision": "family-formats-c314449d7037d2de80634c75",
+      "title": "Grabstecker Herz mit Rahmen für Hunde – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZRAHMEN",
+      "sizeKey": "GS-V2A-HERZRAHMEN-M",
+      "sizes": [
+        "GS-V2A-HERZRAHMEN-S",
+        "GS-V2A-HERZRAHMEN-M",
+        "GS-V2A-HERZRAHMEN-XL"
+      ],
+      "label": "Herz-Rahmen M · 15,1 × 36,2 cm",
+      "group": "Katze",
+      "handle": "grabstecker-herz-mit-rahmen-fuer-katzen",
+      "startDesign": "GS-V2A-HERZRAHMEN-M-D61",
+      "startDesignName": "Grabstecker Herz-Rahmen M · Katze · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D61",
+        "zielgruppe": "Katze",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZRAHMEN-M-D61",
+      "groupCode": "KATZE",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11704527,
+      "configRevision": "family-formats-5fa3b2a5e911cf75b264561c",
+      "title": "Grabstecker Herz mit Rahmen für Katzen – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZRAHMEN",
+      "sizeKey": "GS-V2A-HERZRAHMEN-M",
+      "sizes": [
+        "GS-V2A-HERZRAHMEN-S",
+        "GS-V2A-HERZRAHMEN-M",
+        "GS-V2A-HERZRAHMEN-XL"
+      ],
+      "label": "Herz-Rahmen M · 15,1 × 36,2 cm",
+      "group": "Tier allgemein",
+      "handle": "grabstecker-herz-mit-rahmen-fuer-haustiere",
+      "startDesign": "GS-V2A-HERZRAHMEN-M-D71",
+      "startDesignName": "Grabstecker Herz-Rahmen M · Tier allgemein · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D71",
+        "zielgruppe": "Tier allgemein",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZRAHMEN-M-D71",
+      "groupCode": "TIER-ALLGEMEIN",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11815726,
+      "configRevision": "family-formats-fec261b9243587047176b9f2",
+      "title": "Grabstecker Herz mit Rahmen für Haustiere – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZRAHMEN",
+      "sizeKey": "GS-V2A-HERZRAHMEN-M",
+      "sizes": [
+        "GS-V2A-HERZRAHMEN-S",
+        "GS-V2A-HERZRAHMEN-M",
+        "GS-V2A-HERZRAHMEN-XL"
+      ],
+      "label": "Herz-Rahmen M · 15,1 × 36,2 cm",
+      "group": "Religiös christlich",
+      "handle": "grabstecker-herz-mit-rahmen-mit-christlichem-motiv",
+      "startDesign": "GS-V2A-HERZRAHMEN-M-D81",
+      "startDesignName": "Grabstecker Herz-Rahmen M · Religiös christlich · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D81",
+        "zielgruppe": "Religiös christlich",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZRAHMEN-M-D81",
+      "groupCode": "RELIGIOES-CHRISTLICH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11580287,
+      "configRevision": "family-formats-824f4147be5f066f5e6358f4",
+      "title": "Grabstecker Herz mit Rahmen mit christlichem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZRAHMEN",
+      "sizeKey": "GS-V2A-HERZRAHMEN-M",
+      "sizes": [
+        "GS-V2A-HERZRAHMEN-S",
+        "GS-V2A-HERZRAHMEN-M",
+        "GS-V2A-HERZRAHMEN-XL"
+      ],
+      "label": "Herz-Rahmen M · 15,1 × 36,2 cm",
+      "group": "Religiös jüdisch",
+      "handle": "grabstecker-herz-mit-rahmen-mit-juedischem-motiv",
+      "startDesign": "GS-V2A-HERZRAHMEN-M-D91",
+      "startDesignName": "Grabstecker Herz-Rahmen M · Religiös jüdisch · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D91",
+        "zielgruppe": "Religiös jüdisch",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZRAHMEN-M-D91",
+      "groupCode": "RELIGIOES-JUEDISCH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11637541,
+      "configRevision": "family-formats-b1a2318f0b95595e7798157c",
+      "title": "Grabstecker Herz mit Rahmen mit jüdischem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZRAHMEN",
+      "sizeKey": "GS-V2A-HERZRAHMEN-M",
+      "sizes": [
+        "GS-V2A-HERZRAHMEN-S",
+        "GS-V2A-HERZRAHMEN-M",
+        "GS-V2A-HERZRAHMEN-XL"
+      ],
+      "label": "Herz-Rahmen M · 15,1 × 36,2 cm",
+      "group": "Religiös islamisch",
+      "handle": "grabstecker-herz-mit-rahmen-mit-islamischem-motiv",
+      "startDesign": "GS-V2A-HERZRAHMEN-M-D101",
+      "startDesignName": "Grabstecker Herz-Rahmen M · Religiös islamisch · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZRAHMEN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZRAHMEN-M-D101",
+        "zielgruppe": "Religiös islamisch",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZRAHMEN-M-D101",
+      "groupCode": "RELIGIOES-ISLAMISCH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11703980,
+      "configRevision": "family-formats-28f654cc511fe8553407ce55",
+      "title": "Grabstecker Herz mit Rahmen mit islamischem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZDOPPEL",
+      "sizeKey": "GS-V2A-HERZDOPPEL-M",
+      "sizes": [
+        "GS-V2A-HERZDOPPEL-S",
+        "GS-V2A-HERZDOPPEL-M",
+        "GS-V2A-HERZDOPPEL-XL"
+      ],
+      "label": "Herz-Doppelrahmen M · 15,2 × 35,8 cm",
+      "group": "Mensch allgemein",
+      "handle": "grabstecker-herz-mit-doppelrahmen-fuer-verstorbene",
+      "startDesign": "GS-V2A-HERZDOPPEL-M-D1",
+      "startDesignName": "Grabstecker Herz-Doppelrahmen M · Mensch allgemein · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D1",
+        "zielgruppe": "Mensch allgemein",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZDOPPEL-M-D1",
+      "groupCode": "MENSCH-ALLGEMEIN",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 12169467,
+      "configRevision": "family-formats-2b30290143f01dbd9494aec7",
+      "title": "Grabstecker Herz mit Doppelrahmen für Verstorbene – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZDOPPEL",
+      "sizeKey": "GS-V2A-HERZDOPPEL-M",
+      "sizes": [
+        "GS-V2A-HERZDOPPEL-S",
+        "GS-V2A-HERZDOPPEL-M",
+        "GS-V2A-HERZDOPPEL-XL"
+      ],
+      "label": "Herz-Doppelrahmen M · 15,2 × 35,8 cm",
+      "group": "Mama",
+      "handle": "grabstecker-herz-mit-doppelrahmen-fuer-mama",
+      "startDesign": "GS-V2A-HERZDOPPEL-M-D11",
+      "startDesignName": "Grabstecker Herz-Doppelrahmen M · Mama · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D11",
+        "zielgruppe": "Mama",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZDOPPEL-M-D11",
+      "groupCode": "MAMA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 12711110,
+      "configRevision": "family-formats-34a8057ae2a95fbf312c1638",
+      "title": "Grabstecker Herz mit Doppelrahmen für Mama – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZDOPPEL",
+      "sizeKey": "GS-V2A-HERZDOPPEL-M",
+      "sizes": [
+        "GS-V2A-HERZDOPPEL-S",
+        "GS-V2A-HERZDOPPEL-M",
+        "GS-V2A-HERZDOPPEL-XL"
+      ],
+      "label": "Herz-Doppelrahmen M · 15,2 × 35,8 cm",
+      "group": "Papa",
+      "handle": "grabstecker-herz-mit-doppelrahmen-fuer-papa",
+      "startDesign": "GS-V2A-HERZDOPPEL-M-D21",
+      "startDesignName": "Grabstecker Herz-Doppelrahmen M · Papa · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D21",
+        "zielgruppe": "Papa",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZDOPPEL-M-D21",
+      "groupCode": "PAPA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11686373,
+      "configRevision": "family-formats-f7eab7fc2308365b0bb84935",
+      "title": "Grabstecker Herz mit Doppelrahmen für Papa – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZDOPPEL",
+      "sizeKey": "GS-V2A-HERZDOPPEL-M",
+      "sizes": [
+        "GS-V2A-HERZDOPPEL-S",
+        "GS-V2A-HERZDOPPEL-M",
+        "GS-V2A-HERZDOPPEL-XL"
+      ],
+      "label": "Herz-Doppelrahmen M · 15,2 × 35,8 cm",
+      "group": "Oma/Opa",
+      "handle": "grabstecker-herz-mit-doppelrahmen-fuer-oma-und-opa",
+      "startDesign": "GS-V2A-HERZDOPPEL-M-D31",
+      "startDesignName": "Grabstecker Herz-Doppelrahmen M · Oma/Opa · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D31",
+        "zielgruppe": "Oma/Opa",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZDOPPEL-M-D31",
+      "groupCode": "OMA-OPA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 12356112,
+      "configRevision": "family-formats-c226723274d8cefb4c0b0539",
+      "title": "Grabstecker Herz mit Doppelrahmen für Oma und Opa – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZDOPPEL",
+      "sizeKey": "GS-V2A-HERZDOPPEL-M",
+      "sizes": [
+        "GS-V2A-HERZDOPPEL-S",
+        "GS-V2A-HERZDOPPEL-M",
+        "GS-V2A-HERZDOPPEL-XL"
+      ],
+      "label": "Herz-Doppelrahmen M · 15,2 × 35,8 cm",
+      "group": "Sternenkind",
+      "handle": "grabstecker-herz-mit-doppelrahmen-fuer-sternenkinder",
+      "startDesign": "GS-V2A-HERZDOPPEL-M-D41",
+      "startDesignName": "Grabstecker Herz-Doppelrahmen M · Sternenkind · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D41",
+        "zielgruppe": "Sternenkind",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZDOPPEL-M-D41",
+      "groupCode": "STERNENKIND",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11725591,
+      "configRevision": "family-formats-3e69ac2a0435417f15aa99f1",
+      "title": "Grabstecker Herz mit Doppelrahmen für Sternenkinder – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZDOPPEL",
+      "sizeKey": "GS-V2A-HERZDOPPEL-M",
+      "sizes": [
+        "GS-V2A-HERZDOPPEL-S",
+        "GS-V2A-HERZDOPPEL-M",
+        "GS-V2A-HERZDOPPEL-XL"
+      ],
+      "label": "Herz-Doppelrahmen M · 15,2 × 35,8 cm",
+      "group": "Hund",
+      "handle": "grabstecker-herz-mit-doppelrahmen-fuer-hunde",
+      "startDesign": "GS-V2A-HERZDOPPEL-M-D51",
+      "startDesignName": "Grabstecker Herz-Doppelrahmen M · Hund · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D51",
+        "zielgruppe": "Hund",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZDOPPEL-M-D51",
+      "groupCode": "HUND",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11641745,
+      "configRevision": "family-formats-3c7d7f6299dcae636e54bc5f",
+      "title": "Grabstecker Herz mit Doppelrahmen für Hunde – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZDOPPEL",
+      "sizeKey": "GS-V2A-HERZDOPPEL-M",
+      "sizes": [
+        "GS-V2A-HERZDOPPEL-S",
+        "GS-V2A-HERZDOPPEL-M",
+        "GS-V2A-HERZDOPPEL-XL"
+      ],
+      "label": "Herz-Doppelrahmen M · 15,2 × 35,8 cm",
+      "group": "Katze",
+      "handle": "grabstecker-herz-mit-doppelrahmen-fuer-katzen",
+      "startDesign": "GS-V2A-HERZDOPPEL-M-D61",
+      "startDesignName": "Grabstecker Herz-Doppelrahmen M · Katze · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D61",
+        "zielgruppe": "Katze",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZDOPPEL-M-D61",
+      "groupCode": "KATZE",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11708674,
+      "configRevision": "family-formats-1b244d41689f973fb965b9b0",
+      "title": "Grabstecker Herz mit Doppelrahmen für Katzen – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZDOPPEL",
+      "sizeKey": "GS-V2A-HERZDOPPEL-M",
+      "sizes": [
+        "GS-V2A-HERZDOPPEL-S",
+        "GS-V2A-HERZDOPPEL-M",
+        "GS-V2A-HERZDOPPEL-XL"
+      ],
+      "label": "Herz-Doppelrahmen M · 15,2 × 35,8 cm",
+      "group": "Tier allgemein",
+      "handle": "grabstecker-herz-mit-doppelrahmen-fuer-haustiere",
+      "startDesign": "GS-V2A-HERZDOPPEL-M-D71",
+      "startDesignName": "Grabstecker Herz-Doppelrahmen M · Tier allgemein · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D71",
+        "zielgruppe": "Tier allgemein",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZDOPPEL-M-D71",
+      "groupCode": "TIER-ALLGEMEIN",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11815307,
+      "configRevision": "family-formats-1b91c75684f836e01217e63d",
+      "title": "Grabstecker Herz mit Doppelrahmen für Haustiere – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZDOPPEL",
+      "sizeKey": "GS-V2A-HERZDOPPEL-M",
+      "sizes": [
+        "GS-V2A-HERZDOPPEL-S",
+        "GS-V2A-HERZDOPPEL-M",
+        "GS-V2A-HERZDOPPEL-XL"
+      ],
+      "label": "Herz-Doppelrahmen M · 15,2 × 35,8 cm",
+      "group": "Religiös christlich",
+      "handle": "grabstecker-herz-mit-doppelrahmen-mit-christlichem-motiv",
+      "startDesign": "GS-V2A-HERZDOPPEL-M-D81",
+      "startDesignName": "Grabstecker Herz-Doppelrahmen M · Religiös christlich · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D81",
+        "zielgruppe": "Religiös christlich",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZDOPPEL-M-D81",
+      "groupCode": "RELIGIOES-CHRISTLICH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11622438,
+      "configRevision": "family-formats-594406b6d0bc77d5a7b50bb5",
+      "title": "Grabstecker Herz mit Doppelrahmen mit christlichem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZDOPPEL",
+      "sizeKey": "GS-V2A-HERZDOPPEL-M",
+      "sizes": [
+        "GS-V2A-HERZDOPPEL-S",
+        "GS-V2A-HERZDOPPEL-M",
+        "GS-V2A-HERZDOPPEL-XL"
+      ],
+      "label": "Herz-Doppelrahmen M · 15,2 × 35,8 cm",
+      "group": "Religiös jüdisch",
+      "handle": "grabstecker-herz-mit-doppelrahmen-mit-juedischem-motiv",
+      "startDesign": "GS-V2A-HERZDOPPEL-M-D91",
+      "startDesignName": "Grabstecker Herz-Doppelrahmen M · Religiös jüdisch · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D91",
+        "zielgruppe": "Religiös jüdisch",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZDOPPEL-M-D91",
+      "groupCode": "RELIGIOES-JUEDISCH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11603442,
+      "configRevision": "family-formats-419a3b269beff0fe6c744697",
+      "title": "Grabstecker Herz mit Doppelrahmen mit jüdischem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZDOPPEL",
+      "sizeKey": "GS-V2A-HERZDOPPEL-M",
+      "sizes": [
+        "GS-V2A-HERZDOPPEL-S",
+        "GS-V2A-HERZDOPPEL-M",
+        "GS-V2A-HERZDOPPEL-XL"
+      ],
+      "label": "Herz-Doppelrahmen M · 15,2 × 35,8 cm",
+      "group": "Religiös islamisch",
+      "handle": "grabstecker-herz-mit-doppelrahmen-mit-islamischem-motiv",
+      "startDesign": "GS-V2A-HERZDOPPEL-M-D101",
+      "startDesignName": "Grabstecker Herz-Doppelrahmen M · Religiös islamisch · Motiv unten",
+      "designsInGroup": 30,
+      "priceCents": 2899,
+      "priceRange": [
+        1899,
+        2899,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZDOPPEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZDOPPEL-M-D101",
+        "zielgruppe": "Religiös islamisch",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZDOPPEL-M-D101",
+      "groupCode": "RELIGIOES-ISLAMISCH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11676425,
+      "configRevision": "family-formats-de57a35edf94f0f762df8a27",
+      "title": "Grabstecker Herz mit Doppelrahmen mit islamischem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZLIEGEND",
+      "sizeKey": "GS-V2A-HERZLIEGEND-M",
+      "sizes": [
+        "GS-V2A-HERZLIEGEND-S",
+        "GS-V2A-HERZLIEGEND-M",
+        "GS-V2A-HERZLIEGEND-L"
+      ],
+      "label": "Herz liegend M · 16,0 × 36,5 cm",
+      "group": "Mensch allgemein",
+      "handle": "grabstecker-herz-liegend-fuer-verstorbene",
+      "startDesign": "GS-V2A-HERZLIEGEND-M-D1",
+      "startDesignName": "Grabstecker Herz liegend M · Mensch allgemein · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D1",
+        "zielgruppe": "Mensch allgemein",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZLIEGEND-M-D1",
+      "groupCode": "MENSCH-ALLGEMEIN",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11480072,
+      "configRevision": "family-formats-fe006f29129310cc3d8b53e7",
+      "title": "Grabstecker Herz liegend für Verstorbene – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZLIEGEND",
+      "sizeKey": "GS-V2A-HERZLIEGEND-M",
+      "sizes": [
+        "GS-V2A-HERZLIEGEND-S",
+        "GS-V2A-HERZLIEGEND-M",
+        "GS-V2A-HERZLIEGEND-L"
+      ],
+      "label": "Herz liegend M · 16,0 × 36,5 cm",
+      "group": "Mama",
+      "handle": "grabstecker-herz-liegend-fuer-mama",
+      "startDesign": "GS-V2A-HERZLIEGEND-M-D11",
+      "startDesignName": "Grabstecker Herz liegend M · Mama · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D11",
+        "zielgruppe": "Mama",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZLIEGEND-M-D11",
+      "groupCode": "MAMA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 12569289,
+      "configRevision": "family-formats-2bc2bbfcbe2af68d5a475689",
+      "title": "Grabstecker Herz liegend für Mama – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZLIEGEND",
+      "sizeKey": "GS-V2A-HERZLIEGEND-M",
+      "sizes": [
+        "GS-V2A-HERZLIEGEND-S",
+        "GS-V2A-HERZLIEGEND-M",
+        "GS-V2A-HERZLIEGEND-L"
+      ],
+      "label": "Herz liegend M · 16,0 × 36,5 cm",
+      "group": "Papa",
+      "handle": "grabstecker-herz-liegend-fuer-papa",
+      "startDesign": "GS-V2A-HERZLIEGEND-M-D21",
+      "startDesignName": "Grabstecker Herz liegend M · Papa · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D21",
+        "zielgruppe": "Papa",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZLIEGEND-M-D21",
+      "groupCode": "PAPA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11846170,
+      "configRevision": "family-formats-fefa99a46fbb3c2b49587bbb",
+      "title": "Grabstecker Herz liegend für Papa – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZLIEGEND",
+      "sizeKey": "GS-V2A-HERZLIEGEND-M",
+      "sizes": [
+        "GS-V2A-HERZLIEGEND-S",
+        "GS-V2A-HERZLIEGEND-M",
+        "GS-V2A-HERZLIEGEND-L"
+      ],
+      "label": "Herz liegend M · 16,0 × 36,5 cm",
+      "group": "Oma/Opa",
+      "handle": "grabstecker-herz-liegend-fuer-oma-und-opa",
+      "startDesign": "GS-V2A-HERZLIEGEND-M-D31",
+      "startDesignName": "Grabstecker Herz liegend M · Oma/Opa · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D31",
+        "zielgruppe": "Oma/Opa",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZLIEGEND-M-D31",
+      "groupCode": "OMA-OPA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11715338,
+      "configRevision": "family-formats-1f9fc005e00470137372c63a",
+      "title": "Grabstecker Herz liegend für Oma und Opa – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZLIEGEND",
+      "sizeKey": "GS-V2A-HERZLIEGEND-M",
+      "sizes": [
+        "GS-V2A-HERZLIEGEND-S",
+        "GS-V2A-HERZLIEGEND-M",
+        "GS-V2A-HERZLIEGEND-L"
+      ],
+      "label": "Herz liegend M · 16,0 × 36,5 cm",
+      "group": "Sternenkind",
+      "handle": "grabstecker-herz-liegend-fuer-sternenkinder",
+      "startDesign": "GS-V2A-HERZLIEGEND-M-D41",
+      "startDesignName": "Grabstecker Herz liegend M · Sternenkind · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D41",
+        "zielgruppe": "Sternenkind",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZLIEGEND-M-D41",
+      "groupCode": "STERNENKIND",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11490198,
+      "configRevision": "family-formats-66d46e8e3545ecc7b9bf5567",
+      "title": "Grabstecker Herz liegend für Sternenkinder – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZLIEGEND",
+      "sizeKey": "GS-V2A-HERZLIEGEND-M",
+      "sizes": [
+        "GS-V2A-HERZLIEGEND-S",
+        "GS-V2A-HERZLIEGEND-M",
+        "GS-V2A-HERZLIEGEND-L"
+      ],
+      "label": "Herz liegend M · 16,0 × 36,5 cm",
+      "group": "Hund",
+      "handle": "grabstecker-herz-liegend-fuer-hunde",
+      "startDesign": "GS-V2A-HERZLIEGEND-M-D51",
+      "startDesignName": "Grabstecker Herz liegend M · Hund · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D51",
+        "zielgruppe": "Hund",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZLIEGEND-M-D51",
+      "groupCode": "HUND",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11003101,
+      "configRevision": "family-formats-80bcfdf580b89792ac733546",
+      "title": "Grabstecker Herz liegend für Hunde – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZLIEGEND",
+      "sizeKey": "GS-V2A-HERZLIEGEND-M",
+      "sizes": [
+        "GS-V2A-HERZLIEGEND-S",
+        "GS-V2A-HERZLIEGEND-M",
+        "GS-V2A-HERZLIEGEND-L"
+      ],
+      "label": "Herz liegend M · 16,0 × 36,5 cm",
+      "group": "Katze",
+      "handle": "grabstecker-herz-liegend-fuer-katzen",
+      "startDesign": "GS-V2A-HERZLIEGEND-M-D61",
+      "startDesignName": "Grabstecker Herz liegend M · Katze · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D61",
+        "zielgruppe": "Katze",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZLIEGEND-M-D61",
+      "groupCode": "KATZE",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10871680,
+      "configRevision": "family-formats-0f1b048f32ea38ddbd89f04b",
+      "title": "Grabstecker Herz liegend für Katzen – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZLIEGEND",
+      "sizeKey": "GS-V2A-HERZLIEGEND-M",
+      "sizes": [
+        "GS-V2A-HERZLIEGEND-S",
+        "GS-V2A-HERZLIEGEND-M",
+        "GS-V2A-HERZLIEGEND-L"
+      ],
+      "label": "Herz liegend M · 16,0 × 36,5 cm",
+      "group": "Tier allgemein",
+      "handle": "grabstecker-herz-liegend-fuer-haustiere",
+      "startDesign": "GS-V2A-HERZLIEGEND-M-D71",
+      "startDesignName": "Grabstecker Herz liegend M · Tier allgemein · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D71",
+        "zielgruppe": "Tier allgemein",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZLIEGEND-M-D71",
+      "groupCode": "TIER-ALLGEMEIN",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11592353,
+      "configRevision": "family-formats-c8a10caef0102459d0685292",
+      "title": "Grabstecker Herz liegend für Haustiere – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZLIEGEND",
+      "sizeKey": "GS-V2A-HERZLIEGEND-M",
+      "sizes": [
+        "GS-V2A-HERZLIEGEND-S",
+        "GS-V2A-HERZLIEGEND-M",
+        "GS-V2A-HERZLIEGEND-L"
+      ],
+      "label": "Herz liegend M · 16,0 × 36,5 cm",
+      "group": "Religiös christlich",
+      "handle": "grabstecker-herz-liegend-mit-christlichem-motiv",
+      "startDesign": "GS-V2A-HERZLIEGEND-M-D81",
+      "startDesignName": "Grabstecker Herz liegend M · Religiös christlich · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D81",
+        "zielgruppe": "Religiös christlich",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZLIEGEND-M-D81",
+      "groupCode": "RELIGIOES-CHRISTLICH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11422781,
+      "configRevision": "family-formats-c968f08cc604f7db21e50fa5",
+      "title": "Grabstecker Herz liegend mit christlichem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZLIEGEND",
+      "sizeKey": "GS-V2A-HERZLIEGEND-M",
+      "sizes": [
+        "GS-V2A-HERZLIEGEND-S",
+        "GS-V2A-HERZLIEGEND-M",
+        "GS-V2A-HERZLIEGEND-L"
+      ],
+      "label": "Herz liegend M · 16,0 × 36,5 cm",
+      "group": "Religiös jüdisch",
+      "handle": "grabstecker-herz-liegend-mit-juedischem-motiv",
+      "startDesign": "GS-V2A-HERZLIEGEND-M-D91",
+      "startDesignName": "Grabstecker Herz liegend M · Religiös jüdisch · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D91",
+        "zielgruppe": "Religiös jüdisch",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZLIEGEND-M-D91",
+      "groupCode": "RELIGIOES-JUEDISCH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11485940,
+      "configRevision": "family-formats-61fd658d273f084ddff4b089",
+      "title": "Grabstecker Herz liegend mit jüdischem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZLIEGEND",
+      "sizeKey": "GS-V2A-HERZLIEGEND-M",
+      "sizes": [
+        "GS-V2A-HERZLIEGEND-S",
+        "GS-V2A-HERZLIEGEND-M",
+        "GS-V2A-HERZLIEGEND-L"
+      ],
+      "label": "Herz liegend M · 16,0 × 36,5 cm",
+      "group": "Religiös islamisch",
+      "handle": "grabstecker-herz-liegend-mit-islamischem-motiv",
+      "startDesign": "GS-V2A-HERZLIEGEND-M-D101",
+      "startDesignName": "Grabstecker Herz liegend M · Religiös islamisch · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZLIEGEND-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZLIEGEND-M-D101",
+        "zielgruppe": "Religiös islamisch",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZLIEGEND-M-D101",
+      "groupCode": "RELIGIOES-ISLAMISCH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10884019,
+      "configRevision": "family-formats-a6244e7d77bf3174bb58b4cc",
+      "title": "Grabstecker Herz liegend mit islamischem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZPFOTE",
+      "sizeKey": "GS-V2A-HERZPFOTE-M",
+      "sizes": [
+        "GS-V2A-HERZPFOTE-S",
+        "GS-V2A-HERZPFOTE-M",
+        "GS-V2A-HERZPFOTE-L"
+      ],
+      "label": "Herz mit Pfote M · 16,0 × 38,2 cm",
+      "group": "Hund",
+      "handle": "grabstecker-herz-mit-pfote-fuer-hunde",
+      "startDesign": "GS-V2A-HERZPFOTE-M-D51",
+      "startDesignName": "Grabstecker Herz mit Pfote M · Hund · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZPFOTE-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZPFOTE-M-D51",
+        "zielgruppe": "Hund",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZPFOTE-M-D51",
+      "groupCode": "HUND",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11578584,
+      "configRevision": "family-formats-fec79bc339da8c2249a8d8c5",
+      "title": "Grabstecker Herz mit Pfote für Hunde – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZPFOTE",
+      "sizeKey": "GS-V2A-HERZPFOTE-M",
+      "sizes": [
+        "GS-V2A-HERZPFOTE-S",
+        "GS-V2A-HERZPFOTE-M",
+        "GS-V2A-HERZPFOTE-L"
+      ],
+      "label": "Herz mit Pfote M · 16,0 × 38,2 cm",
+      "group": "Katze",
+      "handle": "grabstecker-herz-mit-pfote-fuer-katzen",
+      "startDesign": "GS-V2A-HERZPFOTE-M-D61",
+      "startDesignName": "Grabstecker Herz mit Pfote M · Katze · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZPFOTE-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZPFOTE-M-D61",
+        "zielgruppe": "Katze",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZPFOTE-M-D61",
+      "groupCode": "KATZE",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10875187,
+      "configRevision": "family-formats-799ea0e2440fa8bbf6c3c0f8",
+      "title": "Grabstecker Herz mit Pfote für Katzen – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-HERZPFOTE",
+      "sizeKey": "GS-V2A-HERZPFOTE-M",
+      "sizes": [
+        "GS-V2A-HERZPFOTE-S",
+        "GS-V2A-HERZPFOTE-M",
+        "GS-V2A-HERZPFOTE-L"
+      ],
+      "label": "Herz mit Pfote M · 16,0 × 38,2 cm",
+      "group": "Tier allgemein",
+      "handle": "grabstecker-herz-mit-pfote-fuer-haustiere",
+      "startDesign": "GS-V2A-HERZPFOTE-M-D71",
+      "startDesignName": "Grabstecker Herz mit Pfote M · Tier allgemein · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-HERZPFOTE-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-HERZPFOTE-M-D71",
+        "zielgruppe": "Tier allgemein",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-HERZPFOTE-M-D71",
+      "groupCode": "TIER-ALLGEMEIN",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11596094,
+      "configRevision": "family-formats-3bc8e8a9f79aed37c6145aa2",
+      "title": "Grabstecker Herz mit Pfote für Haustiere – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-KREUZ",
+      "sizeKey": "GS-V2A-KREUZ-L",
+      "sizes": [
+        "GS-V2A-KREUZ-M",
+        "GS-V2A-KREUZ-L",
+        "GS-V2A-KREUZ-XL"
+      ],
+      "label": "Kreuz L · 15,0 × 46,0 cm",
+      "group": "Mensch allgemein",
+      "handle": "grabstecker-kreuz-fuer-verstorbene",
+      "startDesign": "GS-V2A-KREUZ-L-D1",
+      "startDesignName": "Grabstecker Kreuz L · Mensch allgemein · Kreuz: Name + Daten im Querbalken, Motiv im Stamm",
+      "designsInGroup": 23,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ-L",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ-L-D1",
+        "zielgruppe": "Mensch allgemein",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-KREUZ-L-D1",
+      "groupCode": "MENSCH-ALLGEMEIN",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11775731,
+      "configRevision": "family-formats-2bedc362d3e80e16b4125b8d",
+      "title": "Grabstecker Kreuz für Verstorbene – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-KREUZ",
+      "sizeKey": "GS-V2A-KREUZ-L",
+      "sizes": [
+        "GS-V2A-KREUZ-M",
+        "GS-V2A-KREUZ-L",
+        "GS-V2A-KREUZ-XL"
+      ],
+      "label": "Kreuz L · 15,0 × 46,0 cm",
+      "group": "Mama",
+      "handle": "grabstecker-kreuz-fuer-mama",
+      "startDesign": "GS-V2A-KREUZ-L-D11",
+      "startDesignName": "Grabstecker Kreuz L · Mama · Kreuz: Name + Daten im Querbalken, Motiv im Stamm",
+      "designsInGroup": 28,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ-L",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ-L-D11",
+        "zielgruppe": "Mama",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-KREUZ-L-D11",
+      "groupCode": "MAMA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 14148782,
+      "configRevision": "family-formats-ed2c3f0b8d9101aef219425b",
+      "title": "Grabstecker Kreuz für Mama – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-KREUZ",
+      "sizeKey": "GS-V2A-KREUZ-L",
+      "sizes": [
+        "GS-V2A-KREUZ-M",
+        "GS-V2A-KREUZ-L",
+        "GS-V2A-KREUZ-XL"
+      ],
+      "label": "Kreuz L · 15,0 × 46,0 cm",
+      "group": "Papa",
+      "handle": "grabstecker-kreuz-fuer-papa",
+      "startDesign": "GS-V2A-KREUZ-L-D21",
+      "startDesignName": "Grabstecker Kreuz L · Papa · Kreuz: Name + Daten im Querbalken, Motiv im Stamm",
+      "designsInGroup": 28,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ-L",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ-L-D21",
+        "zielgruppe": "Papa",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-KREUZ-L-D21",
+      "groupCode": "PAPA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 12122634,
+      "configRevision": "family-formats-ba1bb18fc5a2caf37f16b6e5",
+      "title": "Grabstecker Kreuz für Papa – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-KREUZ",
+      "sizeKey": "GS-V2A-KREUZ-L",
+      "sizes": [
+        "GS-V2A-KREUZ-M",
+        "GS-V2A-KREUZ-L",
+        "GS-V2A-KREUZ-XL"
+      ],
+      "label": "Kreuz L · 15,0 × 46,0 cm",
+      "group": "Oma/Opa",
+      "handle": "grabstecker-kreuz-fuer-oma-und-opa",
+      "startDesign": "GS-V2A-KREUZ-L-D31",
+      "startDesignName": "Grabstecker Kreuz L · Oma/Opa · Kreuz: Name + Daten im Querbalken, Motiv im Stamm",
+      "designsInGroup": 29,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ-L",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ-L-D31",
+        "zielgruppe": "Oma/Opa",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-KREUZ-L-D31",
+      "groupCode": "OMA-OPA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 12809492,
+      "configRevision": "family-formats-cabdfeecbc8504f8f1591f9b",
+      "title": "Grabstecker Kreuz für Oma und Opa – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-KREUZ",
+      "sizeKey": "GS-V2A-KREUZ-L",
+      "sizes": [
+        "GS-V2A-KREUZ-M",
+        "GS-V2A-KREUZ-L",
+        "GS-V2A-KREUZ-XL"
+      ],
+      "label": "Kreuz L · 15,0 × 46,0 cm",
+      "group": "Sternenkind",
+      "handle": "grabstecker-kreuz-fuer-sternenkinder",
+      "startDesign": "GS-V2A-KREUZ-L-D41",
+      "startDesignName": "Grabstecker Kreuz L · Sternenkind · Kreuz: Name + Daten im Querbalken, Motiv im Stamm",
+      "designsInGroup": 24,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ-L",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ-L-D41",
+        "zielgruppe": "Sternenkind",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-KREUZ-L-D41",
+      "groupCode": "STERNENKIND",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10986371,
+      "configRevision": "family-formats-47c7f3159c03760839ceb1cd",
+      "title": "Grabstecker Kreuz für Sternenkinder – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-KREUZ",
+      "sizeKey": "GS-V2A-KREUZ-L",
+      "sizes": [
+        "GS-V2A-KREUZ-M",
+        "GS-V2A-KREUZ-L",
+        "GS-V2A-KREUZ-XL"
+      ],
+      "label": "Kreuz L · 15,0 × 46,0 cm",
+      "group": "Religiös christlich",
+      "handle": "grabstecker-kreuz-mit-christlichem-motiv",
+      "startDesign": "GS-V2A-KREUZ-L-D81",
+      "startDesignName": "Grabstecker Kreuz L · Religiös christlich · Kreuz: Name + Daten im Querbalken, Motiv im Stamm",
+      "designsInGroup": 22,
+      "priceCents": 2699,
+      "priceRange": [
+        1899,
+        2699,
+        4199
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ-L",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ-L-D81",
+        "zielgruppe": "Religiös christlich",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-KREUZ-L-D81",
+      "groupCode": "RELIGIOES-CHRISTLICH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10827060,
+      "configRevision": "family-formats-01e3ffed211eeeaa4a21f563",
+      "title": "Grabstecker Kreuz mit christlichem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-KREUZ2",
+      "sizeKey": "GS-V2A-KREUZ2-M",
+      "sizes": [
+        "GS-V2A-KREUZ2-M",
+        "GS-V2A-KREUZ2-L"
+      ],
+      "label": "Kreuz 2 M · 14,0 × 29,1 cm",
+      "group": "Mensch allgemein",
+      "handle": "grabstecker-kreuz-geschwungen-fuer-verstorbene",
+      "startDesign": "GS-V2A-KREUZ2-M-D1",
+      "startDesignName": "Grabstecker Kreuz 2 M · Mensch allgemein · Kreuz 2: Name im Querbalken, Daten senkrecht im Stamm",
+      "designsInGroup": 20,
+      "priceCents": 1899,
+      "priceRange": [
+        1899,
+        3399
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ2-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ2-M-D1",
+        "zielgruppe": "Mensch allgemein",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-KREUZ2-M-D1",
+      "groupCode": "MENSCH-ALLGEMEIN",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10680221,
+      "configRevision": "family-formats-58905e776abc81ae22a1802b",
+      "title": "Grabstecker Kreuz geschwungen für Verstorbene – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-KREUZ2",
+      "sizeKey": "GS-V2A-KREUZ2-M",
+      "sizes": [
+        "GS-V2A-KREUZ2-M",
+        "GS-V2A-KREUZ2-L"
+      ],
+      "label": "Kreuz 2 M · 14,0 × 29,1 cm",
+      "group": "Mama",
+      "handle": "grabstecker-kreuz-geschwungen-fuer-mama",
+      "startDesign": "GS-V2A-KREUZ2-M-D11",
+      "startDesignName": "Grabstecker Kreuz 2 M · Mama · Kreuz 2: Name im Querbalken, Daten senkrecht im Stamm",
+      "designsInGroup": 20,
+      "priceCents": 1899,
+      "priceRange": [
+        1899,
+        3399
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ2-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ2-M-D11",
+        "zielgruppe": "Mama",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-KREUZ2-M-D11",
+      "groupCode": "MAMA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10679745,
+      "configRevision": "family-formats-2bca6c123218451fdbdf94bc",
+      "title": "Grabstecker Kreuz geschwungen für Mama – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-KREUZ2",
+      "sizeKey": "GS-V2A-KREUZ2-M",
+      "sizes": [
+        "GS-V2A-KREUZ2-M",
+        "GS-V2A-KREUZ2-L"
+      ],
+      "label": "Kreuz 2 M · 14,0 × 29,1 cm",
+      "group": "Papa",
+      "handle": "grabstecker-kreuz-geschwungen-fuer-papa",
+      "startDesign": "GS-V2A-KREUZ2-M-D21",
+      "startDesignName": "Grabstecker Kreuz 2 M · Papa · Kreuz 2: Name im Querbalken, Daten senkrecht im Stamm",
+      "designsInGroup": 20,
+      "priceCents": 1899,
+      "priceRange": [
+        1899,
+        3399
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ2-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ2-M-D21",
+        "zielgruppe": "Papa",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-KREUZ2-M-D21",
+      "groupCode": "PAPA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10679708,
+      "configRevision": "family-formats-fdd1beee63e7b9d85c4c378b",
+      "title": "Grabstecker Kreuz geschwungen für Papa – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-KREUZ2",
+      "sizeKey": "GS-V2A-KREUZ2-M",
+      "sizes": [
+        "GS-V2A-KREUZ2-M",
+        "GS-V2A-KREUZ2-L"
+      ],
+      "label": "Kreuz 2 M · 14,0 × 29,1 cm",
+      "group": "Oma/Opa",
+      "handle": "grabstecker-kreuz-geschwungen-fuer-oma-und-opa",
+      "startDesign": "GS-V2A-KREUZ2-M-D31",
+      "startDesignName": "Grabstecker Kreuz 2 M · Oma/Opa · Kreuz 2: Name im Querbalken, Daten senkrecht im Stamm",
+      "designsInGroup": 20,
+      "priceCents": 1899,
+      "priceRange": [
+        1899,
+        3399
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ2-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ2-M-D31",
+        "zielgruppe": "Oma/Opa",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-KREUZ2-M-D31",
+      "groupCode": "OMA-OPA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10679737,
+      "configRevision": "family-formats-9df9c626e0ff0e93501bf58a",
+      "title": "Grabstecker Kreuz geschwungen für Oma und Opa – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-KREUZ2",
+      "sizeKey": "GS-V2A-KREUZ2-M",
+      "sizes": [
+        "GS-V2A-KREUZ2-M",
+        "GS-V2A-KREUZ2-L"
+      ],
+      "label": "Kreuz 2 M · 14,0 × 29,1 cm",
+      "group": "Sternenkind",
+      "handle": "grabstecker-kreuz-geschwungen-fuer-sternenkinder",
+      "startDesign": "GS-V2A-KREUZ2-M-D41",
+      "startDesignName": "Grabstecker Kreuz 2 M · Sternenkind · Kreuz 2: Name im Querbalken, Daten senkrecht im Stamm",
+      "designsInGroup": 20,
+      "priceCents": 1899,
+      "priceRange": [
+        1899,
+        3399
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ2-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ2-M-D41",
+        "zielgruppe": "Sternenkind",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-KREUZ2-M-D41",
+      "groupCode": "STERNENKIND",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10679595,
+      "configRevision": "family-formats-4045ca511780e9697c2d0ffc",
+      "title": "Grabstecker Kreuz geschwungen für Sternenkinder – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-KREUZ2",
+      "sizeKey": "GS-V2A-KREUZ2-M",
+      "sizes": [
+        "GS-V2A-KREUZ2-M",
+        "GS-V2A-KREUZ2-L"
+      ],
+      "label": "Kreuz 2 M · 14,0 × 29,1 cm",
+      "group": "Religiös christlich",
+      "handle": "grabstecker-kreuz-geschwungen-mit-christlichem-motiv",
+      "startDesign": "GS-V2A-KREUZ2-M-D81",
+      "startDesignName": "Grabstecker Kreuz 2 M · Religiös christlich · Kreuz 2: Name im Querbalken, Daten senkrecht im Stamm",
+      "designsInGroup": 20,
+      "priceCents": 1899,
+      "priceRange": [
+        1899,
+        3399
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-KREUZ2-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KREUZ2-M-D81",
+        "zielgruppe": "Religiös christlich",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-KREUZ2-M-D81",
+      "groupCode": "RELIGIOES-CHRISTLICH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10680400,
+      "configRevision": "family-formats-b7b994910ebd61ee33922c4b",
+      "title": "Grabstecker Kreuz geschwungen mit christlichem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-ENGEL",
+      "sizeKey": "GS-V2A-ENGEL-M",
+      "sizes": [
+        "GS-V2A-ENGEL-M",
+        "GS-V2A-ENGEL-L"
+      ],
+      "label": "Engel M · 11,0 × 37,6 cm",
+      "group": "Mensch allgemein",
+      "handle": "grabstecker-engel-fuer-verstorbene",
+      "startDesign": "GS-V2A-ENGEL-M-D1",
+      "startDesignName": "Grabstecker Engel M · Mensch allgemein · Motiv oben",
+      "designsInGroup": 20,
+      "priceCents": 1799,
+      "priceRange": [
+        1799,
+        2999
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-ENGEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-ENGEL-M-D1",
+        "zielgruppe": "Mensch allgemein",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-ENGEL-M-D1",
+      "groupCode": "MENSCH-ALLGEMEIN",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 12043299,
+      "configRevision": "family-formats-8b7cf93d70a4aedbe95164e2",
+      "title": "Grabstecker Engel für Verstorbene – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-ENGEL",
+      "sizeKey": "GS-V2A-ENGEL-M",
+      "sizes": [
+        "GS-V2A-ENGEL-M",
+        "GS-V2A-ENGEL-L"
+      ],
+      "label": "Engel M · 11,0 × 37,6 cm",
+      "group": "Mama",
+      "handle": "grabstecker-engel-fuer-mama",
+      "startDesign": "GS-V2A-ENGEL-M-D11",
+      "startDesignName": "Grabstecker Engel M · Mama · Motiv oben",
+      "designsInGroup": 20,
+      "priceCents": 1799,
+      "priceRange": [
+        1799,
+        2999
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-ENGEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-ENGEL-M-D11",
+        "zielgruppe": "Mama",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-ENGEL-M-D11",
+      "groupCode": "MAMA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11981942,
+      "configRevision": "family-formats-b08995bd032277242e29adbd",
+      "title": "Grabstecker Engel für Mama – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-ENGEL",
+      "sizeKey": "GS-V2A-ENGEL-M",
+      "sizes": [
+        "GS-V2A-ENGEL-M",
+        "GS-V2A-ENGEL-L"
+      ],
+      "label": "Engel M · 11,0 × 37,6 cm",
+      "group": "Papa",
+      "handle": "grabstecker-engel-fuer-papa",
+      "startDesign": "GS-V2A-ENGEL-M-D21",
+      "startDesignName": "Grabstecker Engel M · Papa · Motiv oben",
+      "designsInGroup": 20,
+      "priceCents": 1799,
+      "priceRange": [
+        1799,
+        2999
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-ENGEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-ENGEL-M-D21",
+        "zielgruppe": "Papa",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-ENGEL-M-D21",
+      "groupCode": "PAPA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11831292,
+      "configRevision": "family-formats-28661e50da32d2553337647d",
+      "title": "Grabstecker Engel für Papa – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-ENGEL",
+      "sizeKey": "GS-V2A-ENGEL-M",
+      "sizes": [
+        "GS-V2A-ENGEL-M",
+        "GS-V2A-ENGEL-L"
+      ],
+      "label": "Engel M · 11,0 × 37,6 cm",
+      "group": "Oma/Opa",
+      "handle": "grabstecker-engel-fuer-oma-und-opa",
+      "startDesign": "GS-V2A-ENGEL-M-D31",
+      "startDesignName": "Grabstecker Engel M · Oma/Opa · Motiv oben",
+      "designsInGroup": 20,
+      "priceCents": 1799,
+      "priceRange": [
+        1799,
+        2999
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-ENGEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-ENGEL-M-D31",
+        "zielgruppe": "Oma/Opa",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-ENGEL-M-D31",
+      "groupCode": "OMA-OPA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11700362,
+      "configRevision": "family-formats-9635764171a562be76f9aa93",
+      "title": "Grabstecker Engel für Oma und Opa – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-ENGEL",
+      "sizeKey": "GS-V2A-ENGEL-M",
+      "sizes": [
+        "GS-V2A-ENGEL-M",
+        "GS-V2A-ENGEL-L"
+      ],
+      "label": "Engel M · 11,0 × 37,6 cm",
+      "group": "Sternenkind",
+      "handle": "grabstecker-engel-fuer-sternenkinder",
+      "startDesign": "GS-V2A-ENGEL-M-D41",
+      "startDesignName": "Grabstecker Engel M · Sternenkind · Motiv oben",
+      "designsInGroup": 20,
+      "priceCents": 1799,
+      "priceRange": [
+        1799,
+        2999
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-ENGEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-ENGEL-M-D41",
+        "zielgruppe": "Sternenkind",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-ENGEL-M-D41",
+      "groupCode": "STERNENKIND",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10908453,
+      "configRevision": "family-formats-1172418cb43943b31d627e3e",
+      "title": "Grabstecker Engel für Sternenkinder – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-ENGEL",
+      "sizeKey": "GS-V2A-ENGEL-M",
+      "sizes": [
+        "GS-V2A-ENGEL-M",
+        "GS-V2A-ENGEL-L"
+      ],
+      "label": "Engel M · 11,0 × 37,6 cm",
+      "group": "Religiös christlich",
+      "handle": "grabstecker-engel-mit-christlichem-motiv",
+      "startDesign": "GS-V2A-ENGEL-M-D81",
+      "startDesignName": "Grabstecker Engel M · Religiös christlich · Motiv oben",
+      "designsInGroup": 20,
+      "priceCents": 1799,
+      "priceRange": [
+        1799,
+        2999
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-ENGEL-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-ENGEL-M-D81",
+        "zielgruppe": "Religiös christlich",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-ENGEL-M-D81",
+      "groupCode": "RELIGIOES-CHRISTLICH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10820569,
+      "configRevision": "family-formats-39bb47e15f004322a0534996",
+      "title": "Grabstecker Engel mit christlichem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN",
+      "sizeKey": "GS-V2A-STERN-M",
+      "sizes": [
+        "GS-V2A-STERN-S",
+        "GS-V2A-STERN-M",
+        "GS-V2A-STERN-L"
+      ],
+      "label": "Stern M · 14,0 × 37,2 cm",
+      "group": "Mensch allgemein",
+      "handle": "grabstecker-stern-fuer-verstorbene",
+      "startDesign": "GS-V2A-STERN-M-D1",
+      "startDesignName": "Grabstecker Stern M · Mensch allgemein · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1799,
+        2699,
+        3999
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D1",
+        "zielgruppe": "Mensch allgemein",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN-M-D1",
+      "groupCode": "MENSCH-ALLGEMEIN",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 12169166,
+      "configRevision": "family-formats-3e5ddfa10a98ab5ca9dafbb7",
+      "title": "Grabstecker Stern für Verstorbene – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN",
+      "sizeKey": "GS-V2A-STERN-M",
+      "sizes": [
+        "GS-V2A-STERN-S",
+        "GS-V2A-STERN-M",
+        "GS-V2A-STERN-L"
+      ],
+      "label": "Stern M · 14,0 × 37,2 cm",
+      "group": "Mama",
+      "handle": "grabstecker-stern-fuer-mama",
+      "startDesign": "GS-V2A-STERN-M-D11",
+      "startDesignName": "Grabstecker Stern M · Mama · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1799,
+        2699,
+        3999
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D11",
+        "zielgruppe": "Mama",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN-M-D11",
+      "groupCode": "MAMA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 12112324,
+      "configRevision": "family-formats-e91dfba77a62e0aa3421d272",
+      "title": "Grabstecker Stern für Mama – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN",
+      "sizeKey": "GS-V2A-STERN-M",
+      "sizes": [
+        "GS-V2A-STERN-S",
+        "GS-V2A-STERN-M",
+        "GS-V2A-STERN-L"
+      ],
+      "label": "Stern M · 14,0 × 37,2 cm",
+      "group": "Papa",
+      "handle": "grabstecker-stern-fuer-papa",
+      "startDesign": "GS-V2A-STERN-M-D21",
+      "startDesignName": "Grabstecker Stern M · Papa · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1799,
+        2699,
+        3999
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D21",
+        "zielgruppe": "Papa",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN-M-D21",
+      "groupCode": "PAPA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11961437,
+      "configRevision": "family-formats-42bce9de113c2938c2763f00",
+      "title": "Grabstecker Stern für Papa – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN",
+      "sizeKey": "GS-V2A-STERN-M",
+      "sizes": [
+        "GS-V2A-STERN-S",
+        "GS-V2A-STERN-M",
+        "GS-V2A-STERN-L"
+      ],
+      "label": "Stern M · 14,0 × 37,2 cm",
+      "group": "Oma/Opa",
+      "handle": "grabstecker-stern-fuer-oma-und-opa",
+      "startDesign": "GS-V2A-STERN-M-D31",
+      "startDesignName": "Grabstecker Stern M · Oma/Opa · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1799,
+        2699,
+        3999
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D31",
+        "zielgruppe": "Oma/Opa",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN-M-D31",
+      "groupCode": "OMA-OPA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11830162,
+      "configRevision": "family-formats-83f6321a7cda1b902c2b451a",
+      "title": "Grabstecker Stern für Oma und Opa – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN",
+      "sizeKey": "GS-V2A-STERN-M",
+      "sizes": [
+        "GS-V2A-STERN-S",
+        "GS-V2A-STERN-M",
+        "GS-V2A-STERN-L"
+      ],
+      "label": "Stern M · 14,0 × 37,2 cm",
+      "group": "Sternenkind",
+      "handle": "grabstecker-stern-fuer-sternenkinder",
+      "startDesign": "GS-V2A-STERN-M-D41",
+      "startDesignName": "Grabstecker Stern M · Sternenkind · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1799,
+        2699,
+        3999
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D41",
+        "zielgruppe": "Sternenkind",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN-M-D41",
+      "groupCode": "STERNENKIND",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11032606,
+      "configRevision": "family-formats-44022c7e17d457bda248259c",
+      "title": "Grabstecker Stern für Sternenkinder – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN",
+      "sizeKey": "GS-V2A-STERN-M",
+      "sizes": [
+        "GS-V2A-STERN-S",
+        "GS-V2A-STERN-M",
+        "GS-V2A-STERN-L"
+      ],
+      "label": "Stern M · 14,0 × 37,2 cm",
+      "group": "Hund",
+      "handle": "grabstecker-stern-fuer-hunde",
+      "startDesign": "GS-V2A-STERN-M-D51",
+      "startDesignName": "Grabstecker Stern M · Hund · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1799,
+        2699,
+        3999
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D51",
+        "zielgruppe": "Hund",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN-M-D51",
+      "groupCode": "HUND",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11690418,
+      "configRevision": "family-formats-0daf8051b9606521555c2902",
+      "title": "Grabstecker Stern für Hunde – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN",
+      "sizeKey": "GS-V2A-STERN-M",
+      "sizes": [
+        "GS-V2A-STERN-S",
+        "GS-V2A-STERN-M",
+        "GS-V2A-STERN-L"
+      ],
+      "label": "Stern M · 14,0 × 37,2 cm",
+      "group": "Katze",
+      "handle": "grabstecker-stern-fuer-katzen",
+      "startDesign": "GS-V2A-STERN-M-D61",
+      "startDesignName": "Grabstecker Stern M · Katze · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1799,
+        2699,
+        3999
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D61",
+        "zielgruppe": "Katze",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN-M-D61",
+      "groupCode": "KATZE",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11559397,
+      "configRevision": "family-formats-35944accec9f77df81e8a3b0",
+      "title": "Grabstecker Stern für Katzen – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN",
+      "sizeKey": "GS-V2A-STERN-M",
+      "sizes": [
+        "GS-V2A-STERN-S",
+        "GS-V2A-STERN-M",
+        "GS-V2A-STERN-L"
+      ],
+      "label": "Stern M · 14,0 × 37,2 cm",
+      "group": "Tier allgemein",
+      "handle": "grabstecker-stern-fuer-haustiere",
+      "startDesign": "GS-V2A-STERN-M-D71",
+      "startDesignName": "Grabstecker Stern M · Tier allgemein · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1799,
+        2699,
+        3999
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D71",
+        "zielgruppe": "Tier allgemein",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN-M-D71",
+      "groupCode": "TIER-ALLGEMEIN",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11707895,
+      "configRevision": "family-formats-0c53e0936208481e6ce950a7",
+      "title": "Grabstecker Stern für Haustiere – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN",
+      "sizeKey": "GS-V2A-STERN-M",
+      "sizes": [
+        "GS-V2A-STERN-S",
+        "GS-V2A-STERN-M",
+        "GS-V2A-STERN-L"
+      ],
+      "label": "Stern M · 14,0 × 37,2 cm",
+      "group": "Religiös christlich",
+      "handle": "grabstecker-stern-mit-christlichem-motiv",
+      "startDesign": "GS-V2A-STERN-M-D81",
+      "startDesignName": "Grabstecker Stern M · Religiös christlich · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1799,
+        2699,
+        3999
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D81",
+        "zielgruppe": "Religiös christlich",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN-M-D81",
+      "groupCode": "RELIGIOES-CHRISTLICH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10971789,
+      "configRevision": "family-formats-9b85f62faafa09501177c69d",
+      "title": "Grabstecker Stern mit christlichem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN",
+      "sizeKey": "GS-V2A-STERN-M",
+      "sizes": [
+        "GS-V2A-STERN-S",
+        "GS-V2A-STERN-M",
+        "GS-V2A-STERN-L"
+      ],
+      "label": "Stern M · 14,0 × 37,2 cm",
+      "group": "Religiös jüdisch",
+      "handle": "grabstecker-stern-mit-juedischem-motiv",
+      "startDesign": "GS-V2A-STERN-M-D91",
+      "startDesignName": "Grabstecker Stern M · Religiös jüdisch · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1799,
+        2699,
+        3999
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D91",
+        "zielgruppe": "Religiös jüdisch",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN-M-D91",
+      "groupCode": "RELIGIOES-JUEDISCH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11604531,
+      "configRevision": "family-formats-90940be9d63af016dcf1b9ed",
+      "title": "Grabstecker Stern mit jüdischem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN",
+      "sizeKey": "GS-V2A-STERN-M",
+      "sizes": [
+        "GS-V2A-STERN-S",
+        "GS-V2A-STERN-M",
+        "GS-V2A-STERN-L"
+      ],
+      "label": "Stern M · 14,0 × 37,2 cm",
+      "group": "Religiös islamisch",
+      "handle": "grabstecker-stern-mit-islamischem-motiv",
+      "startDesign": "GS-V2A-STERN-M-D101",
+      "startDesignName": "Grabstecker Stern M · Religiös islamisch · Motiv oben",
+      "designsInGroup": 30,
+      "priceCents": 2699,
+      "priceRange": [
+        1799,
+        2699,
+        3999
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN-M",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN-M-D101",
+        "zielgruppe": "Religiös islamisch",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN-M-D101",
+      "groupCode": "RELIGIOES-ISLAMISCH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11694433,
+      "configRevision": "family-formats-dfa35aa089b549fcec3cfe9d",
+      "title": "Grabstecker Stern mit islamischem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN2",
+      "sizeKey": "GS-V2A-STERN2-S",
+      "sizes": [
+        "GS-V2A-STERN2-S",
+        "GS-V2A-STERN2-L"
+      ],
+      "label": "Stern 2 S · 25,3 × 30,0 cm",
+      "group": "Mensch allgemein",
+      "handle": "grabstecker-stern-mit-innenstern-fuer-verstorbene",
+      "startDesign": "GS-V2A-STERN2-S-D1",
+      "startDesignName": "Grabstecker Stern 2 S · Mensch allgemein · Stern 2: Name + Daten im Schweif",
+      "designsInGroup": 20,
+      "priceCents": 3499,
+      "priceRange": [
+        3499,
+        4399
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D1",
+        "zielgruppe": "Mensch allgemein",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN2-S-D1",
+      "groupCode": "MENSCH-ALLGEMEIN",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10681865,
+      "configRevision": "family-formats-5ceb4bb9bbcc1918c21cab2d",
+      "title": "Grabstecker Stern mit Innenstern für Verstorbene – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN2",
+      "sizeKey": "GS-V2A-STERN2-S",
+      "sizes": [
+        "GS-V2A-STERN2-S",
+        "GS-V2A-STERN2-L"
+      ],
+      "label": "Stern 2 S · 25,3 × 30,0 cm",
+      "group": "Mama",
+      "handle": "grabstecker-stern-mit-innenstern-fuer-mama",
+      "startDesign": "GS-V2A-STERN2-S-D11",
+      "startDesignName": "Grabstecker Stern 2 S · Mama · Stern 2: Name + Daten im Schweif",
+      "designsInGroup": 20,
+      "priceCents": 3499,
+      "priceRange": [
+        3499,
+        4399
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D11",
+        "zielgruppe": "Mama",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN2-S-D11",
+      "groupCode": "MAMA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10693025,
+      "configRevision": "family-formats-32fbaacc1067a1dd5355c2db",
+      "title": "Grabstecker Stern mit Innenstern für Mama – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN2",
+      "sizeKey": "GS-V2A-STERN2-S",
+      "sizes": [
+        "GS-V2A-STERN2-S",
+        "GS-V2A-STERN2-L"
+      ],
+      "label": "Stern 2 S · 25,3 × 30,0 cm",
+      "group": "Papa",
+      "handle": "grabstecker-stern-mit-innenstern-fuer-papa",
+      "startDesign": "GS-V2A-STERN2-S-D21",
+      "startDesignName": "Grabstecker Stern 2 S · Papa · Stern 2: Name + Daten im Schweif",
+      "designsInGroup": 20,
+      "priceCents": 3499,
+      "priceRange": [
+        3499,
+        4399
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D21",
+        "zielgruppe": "Papa",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN2-S-D21",
+      "groupCode": "PAPA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10692891,
+      "configRevision": "family-formats-070c50e653c4fa57efad040a",
+      "title": "Grabstecker Stern mit Innenstern für Papa – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN2",
+      "sizeKey": "GS-V2A-STERN2-S",
+      "sizes": [
+        "GS-V2A-STERN2-S",
+        "GS-V2A-STERN2-L"
+      ],
+      "label": "Stern 2 S · 25,3 × 30,0 cm",
+      "group": "Oma/Opa",
+      "handle": "grabstecker-stern-mit-innenstern-fuer-oma-und-opa",
+      "startDesign": "GS-V2A-STERN2-S-D31",
+      "startDesignName": "Grabstecker Stern 2 S · Oma/Opa · Stern 2: Name + Daten im Schweif",
+      "designsInGroup": 20,
+      "priceCents": 3499,
+      "priceRange": [
+        3499,
+        4399
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D31",
+        "zielgruppe": "Oma/Opa",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN2-S-D31",
+      "groupCode": "OMA-OPA",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10692847,
+      "configRevision": "family-formats-eb8d7c9d89ff589bfb0f5a71",
+      "title": "Grabstecker Stern mit Innenstern für Oma und Opa – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN2",
+      "sizeKey": "GS-V2A-STERN2-S",
+      "sizes": [
+        "GS-V2A-STERN2-S",
+        "GS-V2A-STERN2-L"
+      ],
+      "label": "Stern 2 S · 25,3 × 30,0 cm",
+      "group": "Sternenkind",
+      "handle": "grabstecker-stern-mit-innenstern-fuer-sternenkinder",
+      "startDesign": "GS-V2A-STERN2-S-D41",
+      "startDesignName": "Grabstecker Stern 2 S · Sternenkind · Stern 2: Name + Daten im Schweif",
+      "designsInGroup": 20,
+      "priceCents": 3499,
+      "priceRange": [
+        3499,
+        4399
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D41",
+        "zielgruppe": "Sternenkind",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN2-S-D41",
+      "groupCode": "STERNENKIND",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10680831,
+      "configRevision": "family-formats-60f96a851da0c891ab94b5b9",
+      "title": "Grabstecker Stern mit Innenstern für Sternenkinder – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN2",
+      "sizeKey": "GS-V2A-STERN2-S",
+      "sizes": [
+        "GS-V2A-STERN2-S",
+        "GS-V2A-STERN2-L"
+      ],
+      "label": "Stern 2 S · 25,3 × 30,0 cm",
+      "group": "Hund",
+      "handle": "grabstecker-stern-mit-innenstern-fuer-hunde",
+      "startDesign": "GS-V2A-STERN2-S-D51",
+      "startDesignName": "Grabstecker Stern 2 S · Hund · Stern 2: Name + Daten im Schweif",
+      "designsInGroup": 20,
+      "priceCents": 3499,
+      "priceRange": [
+        3499,
+        4399
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D51",
+        "zielgruppe": "Hund",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN2-S-D51",
+      "groupCode": "HUND",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10680896,
+      "configRevision": "family-formats-340e98a489cdc8139723e346",
+      "title": "Grabstecker Stern mit Innenstern für Hunde – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN2",
+      "sizeKey": "GS-V2A-STERN2-S",
+      "sizes": [
+        "GS-V2A-STERN2-S",
+        "GS-V2A-STERN2-L"
+      ],
+      "label": "Stern 2 S · 25,3 × 30,0 cm",
+      "group": "Katze",
+      "handle": "grabstecker-stern-mit-innenstern-fuer-katzen",
+      "startDesign": "GS-V2A-STERN2-S-D61",
+      "startDesignName": "Grabstecker Stern 2 S · Katze · Stern 2: Name + Daten im Schweif",
+      "designsInGroup": 20,
+      "priceCents": 3499,
+      "priceRange": [
+        3499,
+        4399
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D61",
+        "zielgruppe": "Katze",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN2-S-D61",
+      "groupCode": "KATZE",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10680784,
+      "configRevision": "family-formats-81286342fba625f918b3fa7d",
+      "title": "Grabstecker Stern mit Innenstern für Katzen – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN2",
+      "sizeKey": "GS-V2A-STERN2-S",
+      "sizes": [
+        "GS-V2A-STERN2-S",
+        "GS-V2A-STERN2-L"
+      ],
+      "label": "Stern 2 S · 25,3 × 30,0 cm",
+      "group": "Tier allgemein",
+      "handle": "grabstecker-stern-mit-innenstern-fuer-haustiere",
+      "startDesign": "GS-V2A-STERN2-S-D71",
+      "startDesignName": "Grabstecker Stern 2 S · Tier allgemein · Stern 2: Name + Daten im Schweif",
+      "designsInGroup": 20,
+      "priceCents": 3499,
+      "priceRange": [
+        3499,
+        4399
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D71",
+        "zielgruppe": "Tier allgemein",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN2-S-D71",
+      "groupCode": "TIER-ALLGEMEIN",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10681250,
+      "configRevision": "family-formats-3fc51ab2b1868842fd65a8ac",
+      "title": "Grabstecker Stern mit Innenstern für Haustiere – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN2",
+      "sizeKey": "GS-V2A-STERN2-S",
+      "sizes": [
+        "GS-V2A-STERN2-S",
+        "GS-V2A-STERN2-L"
+      ],
+      "label": "Stern 2 S · 25,3 × 30,0 cm",
+      "group": "Religiös christlich",
+      "handle": "grabstecker-stern-mit-innenstern-mit-christlichem-motiv",
+      "startDesign": "GS-V2A-STERN2-S-D81",
+      "startDesignName": "Grabstecker Stern 2 S · Religiös christlich · Stern 2: Name + Daten im Schweif",
+      "designsInGroup": 20,
+      "priceCents": 3499,
+      "priceRange": [
+        3499,
+        4399
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D81",
+        "zielgruppe": "Religiös christlich",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN2-S-D81",
+      "groupCode": "RELIGIOES-CHRISTLICH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10681903,
+      "configRevision": "family-formats-f78c2e3937c598da7b212d94",
+      "title": "Grabstecker Stern mit Innenstern mit christlichem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN2",
+      "sizeKey": "GS-V2A-STERN2-S",
+      "sizes": [
+        "GS-V2A-STERN2-S",
+        "GS-V2A-STERN2-L"
+      ],
+      "label": "Stern 2 S · 25,3 × 30,0 cm",
+      "group": "Religiös jüdisch",
+      "handle": "grabstecker-stern-mit-innenstern-mit-juedischem-motiv",
+      "startDesign": "GS-V2A-STERN2-S-D91",
+      "startDesignName": "Grabstecker Stern 2 S · Religiös jüdisch · Stern 2: Name + Daten im Schweif",
+      "designsInGroup": 20,
+      "priceCents": 3499,
+      "priceRange": [
+        3499,
+        4399
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D91",
+        "zielgruppe": "Religiös jüdisch",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN2-S-D91",
+      "groupCode": "RELIGIOES-JUEDISCH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10681793,
+      "configRevision": "family-formats-c4edfd83f816db70c77fa418",
+      "title": "Grabstecker Stern mit Innenstern mit jüdischem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-STERN2",
+      "sizeKey": "GS-V2A-STERN2-S",
+      "sizes": [
+        "GS-V2A-STERN2-S",
+        "GS-V2A-STERN2-L"
+      ],
+      "label": "Stern 2 S · 25,3 × 30,0 cm",
+      "group": "Religiös islamisch",
+      "handle": "grabstecker-stern-mit-innenstern-mit-islamischem-motiv",
+      "startDesign": "GS-V2A-STERN2-S-D101",
+      "startDesignName": "Grabstecker Stern 2 S · Religiös islamisch · Stern 2: Name + Daten im Schweif",
+      "designsInGroup": 20,
+      "priceCents": 3499,
+      "priceRange": [
+        3499,
+        4399
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-STERN2-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-STERN2-S-D101",
+        "zielgruppe": "Religiös islamisch",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-STERN2-S-D101",
+      "groupCode": "RELIGIOES-ISLAMISCH",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 10558400,
+      "configRevision": "family-formats-f0005fe94026adbd8d745e05",
+      "title": "Grabstecker Stern mit Innenstern mit islamischem Motiv – Edelstahl mit Gravur"
+    },
+    {
+      "sizeKey": "GS-V2A-INFINITY-S",
+      "form": "GS-INFINITY",
+      "state": "zurueckgestellt",
+      "reason": "--ohne-formen",
+      "title": null
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-KATZE",
+      "sizeKey": "GS-V2A-KATZE-S",
+      "sizes": [
+        "GS-V2A-KATZE-S",
+        "GS-V2A-KATZE-M"
+      ],
+      "label": "Katze S · 10,5 × 30,0 cm",
+      "group": "Katze",
+      "handle": "grabstecker-katze-fuer-katzen",
+      "startDesign": "GS-V2A-KATZE-S-D61",
+      "startDesignName": "Grabstecker Katze S · Katze · Klein: Name + Daten",
+      "designsInGroup": 20,
+      "priceCents": 1799,
+      "priceRange": [
+        1799,
+        2799
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-KATZE-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-KATZE-S-D61",
+        "zielgruppe": "Katze",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-KATZE-S-D61",
+      "groupCode": "KATZE",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11345097,
+      "configRevision": "family-formats-9e250a1357e93ec5e92fec51",
+      "title": "Grabstecker Katze für Katzen – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-PFOTE",
+      "sizeKey": "GS-V2A-PFOTE-S",
+      "sizes": [
+        "GS-V2A-PFOTE-S",
+        "GS-V2A-PFOTE-L"
+      ],
+      "label": "Pfote S · 12,0 × 30,0 cm",
+      "group": "Hund",
+      "handle": "grabstecker-pfote-fuer-hunde",
+      "startDesign": "GS-V2A-PFOTE-S-D51",
+      "startDesignName": "Grabstecker Pfote S · Hund · Klein: Name + Daten",
+      "designsInGroup": 20,
+      "priceCents": 1799,
+      "priceRange": [
+        1799,
+        2799
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-PFOTE-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-PFOTE-S-D51",
+        "zielgruppe": "Hund",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-PFOTE-S-D51",
+      "groupCode": "HUND",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11552502,
+      "configRevision": "family-formats-a4d53ecf6e3bf1fb722fb823",
+      "title": "Grabstecker Pfote für Hunde – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-PFOTE",
+      "sizeKey": "GS-V2A-PFOTE-S",
+      "sizes": [
+        "GS-V2A-PFOTE-S",
+        "GS-V2A-PFOTE-L"
+      ],
+      "label": "Pfote S · 12,0 × 30,0 cm",
+      "group": "Katze",
+      "handle": "grabstecker-pfote-fuer-katzen",
+      "startDesign": "GS-V2A-PFOTE-S-D61",
+      "startDesignName": "Grabstecker Pfote S · Katze · Klein: Name + Daten",
+      "designsInGroup": 20,
+      "priceCents": 1799,
+      "priceRange": [
+        1799,
+        2799
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-PFOTE-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-PFOTE-S-D61",
+        "zielgruppe": "Katze",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-PFOTE-S-D61",
+      "groupCode": "KATZE",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11487551,
+      "configRevision": "family-formats-5a9d05ff714490f5d51f1e43",
+      "title": "Grabstecker Pfote für Katzen – Edelstahl mit Gravur"
+    },
+    {
+      "state": "geplant",
+      "familyId": "grabstecker-edelstahl",
+      "form": "GS-PFOTE",
+      "sizeKey": "GS-V2A-PFOTE-S",
+      "sizes": [
+        "GS-V2A-PFOTE-S",
+        "GS-V2A-PFOTE-L"
+      ],
+      "label": "Pfote S · 12,0 × 30,0 cm",
+      "group": "Tier allgemein",
+      "handle": "grabstecker-pfote-fuer-haustiere",
+      "startDesign": "GS-V2A-PFOTE-S-D71",
+      "startDesignName": "Grabstecker Pfote S · Tier allgemein · Klein: Name + Daten",
+      "designsInGroup": 20,
+      "priceCents": 1799,
+      "priceRange": [
+        1799,
+        2799
+      ],
+      "cut": {
+        "sizeKey": "GS-V2A-PFOTE-S",
+        "themeId": "andenkenschilder",
+        "defaultDesignId": "GS-V2A-PFOTE-S-D71",
+        "zielgruppe": "Tier allgemein",
+        "groessenWahl": "form"
+      },
+      "skuBase": "GS-V2A-PFOTE-S-D71",
+      "groupCode": "TIER-ALLGEMEIN",
+      "productType": "Grabstecker",
+      "textSource": "entwurf",
+      "configBytes": 11561393,
+      "configRevision": "family-formats-c865caa07e57ce4d71b5eefe",
+      "title": "Grabstecker Pfote für Haustiere – Edelstahl mit Gravur"
+    }
+  ],
+  "sourceSha256": "c3a62ca15ff8f257d5af32b5b584440b8e785e9e5286fb05ca60c2a78f82b0ef"
+}

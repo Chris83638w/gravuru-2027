@@ -1,0 +1,126 @@
+{
+  "schema": "gravuru-shop-schnitt-product/v1",
+  "input": {
+    "title": "Grabstecker Herz für Oma und Opa – Edelstahl mit Gravur",
+    "handle": "grabstecker-herz-fuer-oma-und-opa",
+    "status": "DRAFT",
+    "templateSuffix": "konfi",
+    "vendor": "gravuru",
+    "productType": "Grabstecker",
+    "descriptionHtml": "<p>Für Oma oder Opa: ein Gruß der Enkel, der am Grab sichtbar bleibt.</p>\n<p>Die Form zeigt ein klares Herz auf schlankem Stiel. Kein Bohren, kein Kleben: der Stiel hält den Grabstecker sicher im Boden.</p>\n<p>Im Gestalter siehst du sofort, wie dein Text aussieht, 30 passende Designs stehen zur Auswahl. Wir gravieren schwarz auf rostfreiem Edelstahl, damit Name und Daten lange lesbar bleiben.</p>\n<p><strong>Größen:</strong> S (12,2 × 30,0 cm, 18,99 €), M (16,0 × 38,2 cm, 29,99 €), XL (20,0 × 38,0 cm, 42,99 €).</p>\n<p>Hergestellt in unserer Werkstatt in Bielefeld. Jetzt Namen eintragen.</p>",
+    "seo": {
+      "title": "Grabstecker Herz für Oma und Opa | Jetzt Namen eintragen",
+      "description": "Grabstecker in Herzform für Oma und Opa aus Edelstahl, schwarz graviert, ab 18,99 €. Jetzt Namen eintragen – Name und Daten selbst eintragen."
+    },
+    "tags": [
+      "Grabstecker",
+      "Edelstahl",
+      "Gravur",
+      "Andenken",
+      "Herz",
+      "Oma und Opa"
+    ],
+    "productOptions": [
+      {
+        "name": "Größe",
+        "position": 1,
+        "values": [
+          {
+            "name": "Herz S · 12,2 × 30,0 cm"
+          },
+          {
+            "name": "Herz M · 16,0 × 38,2 cm"
+          },
+          {
+            "name": "Herz XL · 20,0 × 38,0 cm"
+          }
+        ]
+      }
+    ],
+    "variants": [
+      {
+        "position": 1,
+        "price": "18.99",
+        "sku": "GS-V2A-HERZ-S-OMA-OPA",
+        "inventoryItem": {
+          "tracked": false
+        },
+        "optionValues": [
+          {
+            "optionName": "Größe",
+            "name": "Herz S · 12,2 × 30,0 cm"
+          }
+        ]
+      },
+      {
+        "position": 2,
+        "price": "29.99",
+        "sku": "GS-V2A-HERZ-M-OMA-OPA",
+        "inventoryItem": {
+          "tracked": false
+        },
+        "optionValues": [
+          {
+            "optionName": "Größe",
+            "name": "Herz M · 16,0 × 38,2 cm"
+          }
+        ]
+      },
+      {
+        "position": 3,
+        "price": "42.99",
+        "sku": "GS-V2A-HERZ-XL-OMA-OPA",
+        "inventoryItem": {
+          "tracked": false
+        },
+        "optionValues": [
+          {
+            "optionName": "Größe",
+            "name": "Herz XL · 20,0 × 38,0 cm"
+          }
+        ]
+      }
+    ],
+    "metafields": [
+      {
+        "namespace": "custom",
+        "key": "gravuru_product_cut",
+        "type": "json",
+        "value": "{\"sizeKey\":\"GS-V2A-HERZ-M\",\"themeId\":\"andenkenschilder\",\"defaultDesignId\":\"GS-V2A-HERZ-M-D31\",\"zielgruppe\":\"Oma/Opa\",\"groessenWahl\":\"form\"}"
+      }
+    ]
+  },
+  "image": {
+    "file": "grabstecker-herz-oma-opa-edelstahl-gravur.webp",
+    "alt": "Grabstecker in Herzform aus Edelstahl mit Stiel, für Oma und Opa, schwarz graviert mit Name und Lebensdaten"
+  },
+  "collections": [
+    "grabstecker",
+    "grabstecker-oma-opa"
+  ],
+  "variantSources": [
+    {
+      "sku": "GS-V2A-HERZ-S-OMA-OPA",
+      "priceCents": 1899,
+      "familyId": "grabstecker-edelstahl",
+      "sizeKey": "GS-V2A-HERZ-S",
+      "mounting": "K00"
+    },
+    {
+      "sku": "GS-V2A-HERZ-M-OMA-OPA",
+      "priceCents": 2999,
+      "familyId": "grabstecker-edelstahl",
+      "sizeKey": "GS-V2A-HERZ-M",
+      "mounting": "K00"
+    },
+    {
+      "sku": "GS-V2A-HERZ-XL-OMA-OPA",
+      "priceCents": 4299,
+      "familyId": "grabstecker-edelstahl",
+      "sizeKey": "GS-V2A-HERZ-XL",
+      "mounting": "K00"
+    }
+  ],
+  "configRevision": "family-formats-2da01854f63247d5404b9c7e",
+  "profileId": "katalog-formate-grabstecker-edelstahl-andenkenschilder-0c0a6e27fa491e8f"
+}

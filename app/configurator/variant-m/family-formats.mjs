@@ -17,6 +17,8 @@ export const FAMILY_FORMS=Object.freeze([
 ]);
 const clone=v=>structuredClone(v),fail=m=>{throw Error(m);};
 export const isFamilyFormats=c=>c?.familyFormats?.schema===FAMILY_FORMATS_SCHEMA;
+// Türschild-Konfi (ENTSCHEIDUNGEN 4.42): ein Shop-Produkt mit allen Formen und Größen der Familie.
+export const isAllSizesFamily=c=>isFamilyFormats(c)&&!c.familyFormats.fixedSize&&c.familyFormats.source?.shopProduct?.groessenWahl==='alle';
 export const customerForm=key=>key==='EL'?'OV':key;
 export const designNumber=d=>/-D(\d+)$/.exec(d?.katalog?.designId||'')?.[1]??null;
 const cents=v=>Number.isSafeInteger(v)&&v>=0;
@@ -148,10 +150,15 @@ export function validateFamilyFormats(c){
   const cut=f.source?.shopProduct,starter=f.designs.find(d=>d.id===c.profile.defaultDesignId);
   if(f.formats.length!==1||f.fixedSize!==f.defaultSize||f.formats[0].key!==f.fixedSize||f.source?.reviewUnreleased||f.formats.some(s=>s.variants.some(v=>v.unapprovedDesignIds?.length))||!cut||cut.themeId!==c.profile.themeId||starter?.katalog.designId!==cut.defaultDesignId||!starter?.themes?.includes(cut.themeId)||!f.formats[0].variants.some(v=>v.sizeKey===cut.sizeKey)||f.formats[0].variants.some(v=>!v.designIds.includes(starter.id))||c.profile.optionGroups.some(g=>g.id==='size'))fail('Ungültiger fester Shop-Produktschnitt.');
  }
- const start=familyFormatSelection(c);if(!f.fixedSize&&f.source?.shopProduct?.groessenWahl!=='form'&&(start.format.form!=='AB'||start.format.geometry.width!==120||start.format.geometry.height!==80))fail('Startgröße muss AB 12 × 8 cm sein.');
+ const start=familyFormatSelection(c);if(!f.fixedSize&&!['form','alle'].includes(f.source?.shopProduct?.groessenWahl)&&(start.format.form!=='AB'||start.format.geometry.width!==120||start.format.geometry.height!==80))fail('Startgröße muss AB 12 × 8 cm sein.');
  if(f.source?.shopProduct?.groessenWahl==='form'){
   const cut=f.source.shopProduct,starter=f.designs.find(d=>d.id===c.profile.defaultDesignId);
   if(f.formats.some(s=>s.form!==start.format.form||!s.workingArea||s.variants.some(v=>v.familyId!=='grabstecker-edelstahl'||v.mounting.length!==1||v.mounting[0].id!=='K00'||v.unapprovedDesignIds?.length))||f.source.reviewUnreleased||starter?.katalog.designId!==cut.defaultDesignId||cut.themeId!==c.profile.themeId||!starter?.themes?.includes(cut.themeId)||!start.variant.designIds.includes(starter.id))fail('Grabstecker benötigen eine Form, freigegebene Vorlage und nur Größenwahl.');
+ }
+ if(f.source?.shopProduct?.groessenWahl==='alle'){
+  // Türschild-Konfi (ENTSCHEIDUNGEN 4.42): alle Formen und Größen, nur freigegebene Vorlagen, Startdesign in der Startgröße.
+  const cut=f.source.shopProduct,starter=f.designs.find(d=>d.id===c.profile.defaultDesignId);
+  if(f.fixedSize!==undefined||f.source.reviewUnreleased||f.formats.some(s=>s.variants.some(v=>v.unapprovedDesignIds?.length))||starter?.katalog.designId!==cut.defaultDesignId||cut.themeId!==c.profile.themeId||!start.variant.designIds.includes(starter.id))fail('Türschild-Konfi benötigt freigegebene Vorlagen und ein Startdesign in der Startgröße.');
  }
  if(f.formats.reduce((sum,s)=>sum+s.variants.reduce((n,v)=>n+v.mounting.length,0),0)>2048)fail('Mehr als 2.048 Familienvarianten.');
 }

@@ -193,8 +193,11 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
     if(result.mode!=='theme'||result.paymentConfirmed!==false||!Number.isSafeInteger(result.totalCents)||typeof result.handoffUrl!=='string')fail('Die Warenkorbübergabe wurde nicht vorbereitet.');
     return result;
   }
-  async function loadDesignGallery(page=0,theme='preferred'){
+  async function loadDesignGallery(page=0,theme='preferred',options=null){
     if(!['preferred','all'].includes(theme))fail('Dieses Thema gibt es nicht.');
+    // Türschild-Konfi: Vorlagen der gerade gewählten Ausführung (Form & Größe, Farbe, Befestigung).
+    const chosen=options&&typeof options==='object'?['size','color','mounting'].filter(k=>typeof options[k]==='string'&&/^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/.test(options[k])):[];
+    const extra=chosen.map(k=>'&'+k+'='+encodeURIComponent(options[k])).join('');
     if(!Number.isSafeInteger(page)||page<0||page>10000)fail('Diese Seite der Designauswahl gibt es nicht.');
     const controller=new AbortController();let timer;
     const retry='Die Designauswahl ist gerade nicht erreichbar. Deine Gestaltung bleibt erhalten. Bitte erneut versuchen.';
@@ -202,7 +205,7 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
       // A proxy can return HTML/502; do not route gallery failures through the
       // configurator's generic model-loading error or leave the modal waiting.
       const response=await Promise.race([
-        fetchImpl(API+'design-gallery?page='+page+(theme==='all'?'&theme=all':''),{credentials:'omit',cache:'no-store',headers:headers({}),signal:controller.signal}),
+        fetchImpl(API+'design-gallery?page='+page+(theme==='all'?'&theme=all':'')+extra,{credentials:'omit',cache:'no-store',headers:headers({}),signal:controller.signal}),
         new Promise((_,reject)=>{timer=setTimeout(()=>{controller.abort();reject(Error(retry));},5000);})
       ]);
       let data;try{data=await response.json();}catch{throw Error(retry);}

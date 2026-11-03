@@ -6,7 +6,7 @@ import {katalogDesignToTemplate,scaleTemplate,applyPriceOverrides,defaultQuantit
 import {assessDesignTarget} from './design-target-rules.mjs';
 import {customerUxConfig} from './customer-ux-policy.mjs';
 import {prepareConfig} from '../configurator/variant-m/contract.mjs';
-import {validateShopProductCut,shopProductCutMetafield,designZielgruppe} from './shop-product-cut.mjs';
+import {validateShopProductCut,shopProductCutMetafield,designZielgruppe,hasFigureMotif} from './shop-product-cut.mjs';
 import {FAMILY_FORMATS_SCHEMA,FAMILY_FORMAT_SOURCES,FAMILY_FORMS,customerForm,familyFormatCombinations} from '../configurator/variant-m/family-formats.mjs';
 
 const copy=v=>structuredClone(v),fail=m=>{throw Error(m);};
@@ -15,6 +15,18 @@ const color=f=>f.material.kind==='steel'?'edelstahl':f.material.variant;
 const sameGeometry=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 const slotKey=(s)=>customerForm(s.groupKey)+':'+s.widthMm+'x'+s.heightMm;
 const optionLabel=s=>FAMILY_FORMS.find(([id])=>id===customerForm(s.form))[1]+' · '+s.label;
+
+// Konfi ohne Designs (4.43): je Größe ein leeres Schild mit einer mittigen, frei änderbaren Textzeile.
+// Kein Katalogdesign; Schrift aus dem Türschild-Set. Die Designnummer D0 ist in allen Größen gleich,
+// damit ein Größenwechsel den Kundentext übernimmt.
+const BLANK_FONT='Michroma';
+// Gleiche Kennung für alle Farben derselben Form und Größe (Acryl schwarz/anthrazit sind Varianten eines Produkts).
+export const blankDesignId=size=>'LEER-'+customerForm(size.groupKey)+'-'+String(size.widthMm).replace('.','P')+'X'+String(size.heightMm).replace('.','P')+'-D0';
+export function blankSignDesign(size,themeId){
+ const w=size.widthMm,h=size.heightMm,fs=Math.round(Math.min(h*.18,w/10)*100)/100,id=blankDesignId(size);
+ const svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+w+' '+h+'" width="'+w+'mm" height="'+h+'mm"><rect id="platte" width="'+w+'" height="'+h+'" fill="none" stroke="#999" stroke-width="0.2"/><text id="text-1" data-feld="name" x="'+(w/2)+'" y="'+(h/2+fs*.35)+'" font-family="'+BLANK_FONT+'" font-size="'+fs+'" fill="#000000" text-anchor="middle"><tspan x="'+(w/2)+'" dy="0.00">Dein Text</tspan></text></svg>';
+ return {id,name:'Eigene Gestaltung',plateMm:[w,h],themes:[themeId],fonts:[BLANK_FONT],movable:true,svg:()=>svg,json:{movable:true}};
+}
 
 export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnreleased=false,designIds=null,available={},converter=null,shopProduct=null}={}){
  if(shopProduct)shopProduct=validateShopProductCut(shopProduct);
@@ -25,13 +37,15 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
  // Issue #139: the product metafield selects one physical format and one
  // starter. Other approved themes remain available in "Weitere Designs".
  const selectedSize=shopProduct&&families.flatMap(f=>f.sizes).find(s=>s.key===shopProduct.sizeKey);
- const formChoice=shopProduct?.groessenWahl==='form';
- const inCut=size=>!selectedSize||(formChoice?size.groupKey===selectedSize.groupKey:slotKey(size)===slotKey(selectedSize));
+ const formChoice=shopProduct?.groessenWahl==='form',allChoice=shopProduct?.groessenWahl==='alle';
+ const inCut=size=>!selectedSize||allChoice||(formChoice?size.groupKey===selectedSize.groupKey:slotKey(size)===slotKey(selectedSize));
  if(shopProduct&&(!selectedSize||shopProduct.themeId!==sub.themeId||!shopProduct.defaultDesignId||reviewUnreleased||designIds))fail('Shop-Produktschnitt braucht Kataloggröße, passendes Thema und Startdesign; keine Prüffreigaben oder eingeschränkte Galerie.');
  const allMasters=katalog.designs.masters.filter(d=>!d.hidden&&(!designIds||designIds.includes(d.id))&&(shopProduct||d.themes?.includes(sub.themeId))&&(!shopProduct?.zielgruppe||designZielgruppe(d)===shopProduct.zielgruppe));
  const report={schema:'gravuru-family-formats-plan/v1',lineId,subcategoryId,reviewUnreleased,shopifyWrites:false,sourceFamilies:families.map(f=>f.id),excluded:[],blocked:[],sizes:[],shopify:{options:families.length>1?['Form & Größe','Farbe','Befestigung']:['Form & Größe','Befestigung'],maximumVariants:2048,maximumOptions:3,variantIdsCreated:0,sources:['https://help.shopify.com/en/manual/products/variants/add-variants','https://shopify.dev/docs/api/admin-graphql/latest/mutations/productSet']}};
- const assigned=new Map(families.map(f=>[f.id,assignTargetSeries(f,allMasters.filter(d=>designTargets(d,katalog).some(t=>t.familie===f.id)&&(reviewUnreleased||approvedForFamily(d,f.id,katalog))),katalog)]));
+ const blank=shopProduct?.vorlagen==='leer';
+ const assigned=blank?new Map(families.map(f=>[f.id,[]])):new Map(families.map(f=>[f.id,assignTargetSeries(f,allMasters.filter(d=>designTargets(d,katalog).some(t=>t.familie===f.id)&&(reviewUnreleased||approvedForFamily(d,f.id,katalog))),katalog)]));
  const needed=[...new Set([...assigned.entries()].flatMap(([id,list])=>list.filter(a=>!a.oldSize&&a.sizes.some(key=>inCut(katalog.families.get(id).sizes.find(s=>s.key===key)))).flatMap(a=>a.design.fonts||[])))];
+ if(blank&&!needed.includes(BLANK_FONT))needed.push(BLANK_FONT);
  const {fonts,missing}=await katalog.fontResources(needed,{available,converter});report.fontsMissing=missing;
  const bank=new Map(),motifs=new Map(),rights={},formats=new Map(),colors=[],converted=new Map();let base;
  const theme=katalog.theme(sub.themeId);
@@ -51,6 +65,7 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
     try{
      if(!converted.has(key))converted.set(key,katalogDesignToTemplate(a.design,family,theme,{fonts}));
      if(shopProduct&&!converted.get(key).template.objects.some(o=>o.type==='text'&&o.role!=='guide'&&o.text?.trim())){report.excluded.push({familyId:family.id,sizeKey:size.key,designId:a.design.id,issues:['Kein Schild ohne Text (Issue #139).']});continue;}
+     if(shopProduct?.motive==='ohne'&&hasFigureMotif(converted.get(key).template,converted.get(key).template.katalog?.plateMm)){report.excluded.push({familyId:family.id,sizeKey:size.key,designId:a.design.id,issues:['Motiv-Design: im Türschild-Konfi erstmal nicht (Chris 03.11.2026).']});continue;}
      const t=converted.get(key),scaled=scaleTemplate(t.template,t.template.katalog.plateMm,[size.widthMm,size.heightMm],fonts,{contain:true});
      const fit=assessDesignTarget({master:a.design,template:scaled,family,size,fonts,motifs:()=>t.motifs});
      if(fit.status==='passt nicht'){report.excluded.push({familyId:family.id,sizeKey:size.key,designId:a.design.id,issues:fit.issues});continue;}
@@ -59,6 +74,11 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
      bank.set(t.template.id,copy(t.template));designs.push(t.template.id);if(!approvedForFamily(a.design,family.id,katalog))unapprovedDesignIds.push(t.template.id);rights[t.template.id]=copy(t.rights);
      for(const m of t.motifs){if(motifs.has(m.key)&&JSON.stringify(motifs.get(m.key))!==JSON.stringify(m))fail('Widersprüchliche Motivressource '+m.key+'.');motifs.set(m.key,copy(m));}
     }catch(error){report.excluded.push({familyId:family.id,sizeKey:size.key,designId:a.design.id,issues:[error.message]});}
+   }
+   if(blank){
+    const t=katalogDesignToTemplate(blankSignDesign(size,sub.themeId),family,theme,{fonts}),existing=bank.get(t.template.id);
+    if(existing&&JSON.stringify(existing)!==JSON.stringify(t.template))fail('Widersprüchliche leere Vorlage '+t.template.id+'.');
+    bank.set(t.template.id,copy(t.template));designs.push(t.template.id);rights[t.template.id]=copy(t.rights);
    }
    const slot=slotKey(size),format=formats.get(slot)||{key:size.key,form:size.groupKey,label:size.label,geometry:copy(p.geometry),...(p.workingArea?{workingArea:copy(p.workingArea)}:{}),variants:[]};
    if(!sameGeometry(format.geometry,p.geometry))fail('Die Farben haben verschiedene Geometrien: '+slot+'.');
@@ -82,10 +102,11 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
   const starter=c.familyFormats.designs.find(d=>d.katalog.designId===shopProduct.defaultDesignId);
   if(!starter||!starter.themes?.includes(sub.themeId)||start.variants.some(v=>!v.designIds.includes(starter.id)))fail('Startdesign ist nicht in jeder Produktfarbe freigegeben, passend und der Unterkategorie zugeordnet.');
   c.familyFormats.source.shopProduct=copy(shopProduct);p.themeId=shopProduct.themeId;p.defaultDesignId=starter.id;
-  if(formChoice){c.familyFormats.defaultSize=start.key;const sizeGroup=p.optionGroups.find(g=>g.id==='size');if(sizeGroup){sizeGroup.name='Größe';sizeGroup.defaultValueId=start.key;}}
+  if(allChoice){c.familyFormats.defaultSize=start.key;const sizeGroup=p.optionGroups.find(g=>g.id==='size');if(sizeGroup)sizeGroup.defaultValueId=start.key;}
+  else if(formChoice){c.familyFormats.defaultSize=start.key;const sizeGroup=p.optionGroups.find(g=>g.id==='size');if(sizeGroup){sizeGroup.name='Größe';sizeGroup.defaultValueId=start.key;}}
   else{c.familyFormats.fixedSize=start.key;p.optionGroups=p.optionGroups.filter(g=>g.id!=='size');}
-  p.id+='-'+createHash('sha256').update(JSON.stringify(formChoice?[start.form,shopProduct.zielgruppe??null,shopProduct.defaultDesignId]:[start.key,shopProduct.defaultDesignId])).digest('hex').slice(0,16);p.binding.productId='local-'+p.id;
-  p.name+=' · '+(formChoice?(FAMILY_FORMS.find(([id])=>id===customerForm(start.form))?.[1]??start.form)+(shopProduct.zielgruppe?' · '+shopProduct.zielgruppe:''):start.label);
+  p.id+='-'+createHash('sha256').update(JSON.stringify(allChoice?['alle',shopProduct.zielgruppe??null,shopProduct.defaultDesignId,shopProduct.motive??null,shopProduct.vorlagen??null]:formChoice?[start.form,shopProduct.zielgruppe??null,shopProduct.defaultDesignId]:[start.key,shopProduct.defaultDesignId])).digest('hex').slice(0,16);p.binding.productId='local-'+p.id;
+  p.name+=' · '+(allChoice?'alle Formen'+(shopProduct.zielgruppe?' · '+shopProduct.zielgruppe:''):formChoice?(FAMILY_FORMS.find(([id])=>id===customerForm(start.form))?.[1]??start.form)+(shopProduct.zielgruppe?' · '+shopProduct.zielgruppe:''):start.label);
   if(p.material.kind==='steel'){c.photo={...c.photo,enabled:false};c.logo={...c.logo,enabled:false,vectorUpload:false};}
   if(formChoice){
    // Nur die Größe benennen („Herz M · 20,9 × 45,0 cm“), die Form steht im Produkt.
@@ -94,7 +115,7 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
    report.shopify.options=report.shopify.options.map(n=>n==='Form & Größe'?'Größe':n);
    for(const v of report.shopify.variants)v.optionValues[0]=plainLabel.get(v.optionValues[0])??v.optionValues[0];
   }
-  else{report.shopify.options=report.shopify.options.filter(n=>n!=='Form & Größe');for(const v of report.shopify.variants)v.optionValues.shift();}
+  else if(!allChoice){report.shopify.options=report.shopify.options.filter(n=>n!=='Form & Größe');for(const v of report.shopify.variants)v.optionValues.shift();}
   report.shopProduct=copy(shopProduct);
   report.shopify.metafields=[shopProductCutMetafield(shopProduct)];
  }

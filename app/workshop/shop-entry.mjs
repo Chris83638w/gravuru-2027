@@ -1,5 +1,5 @@
 import {createCustomerDesignImages} from './customer-design-image.mjs';
-import {shopStartModel} from './shop-start-model.mjs';
+import {shopStartModel,isAllSizesFamily} from './shop-start-model.mjs';
 import fs from 'node:fs';
 import {createModelSlimmer,surfaceSwapsFrom,DEFAULT_SURFACE_DIR} from './shop-model-slim.mjs';
 import {createHash,randomBytes} from 'node:crypto';
@@ -29,6 +29,7 @@ const PAGE_FILES=['shop-entry-page.mjs','shop-entry-client.mjs','shop-design-swi
 const WARM_RUNTIME={'/_merchant-acryl-editor.html':['/_acryl-runtime/lazy/katalog-kern.json']};
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const gid=(value,kind)=>typeof value==='string'&&new RegExp('^gid://shopify/'+kind+'/[1-9][0-9]{0,19}$').test(value);
+const GALLERY_OPTIONS=['size','color','mounting'];
 const optionKey=o=>JSON.stringify(Object.entries(o||{}).sort());
 const NOT_BOUND='Dieses Produkt ist noch nicht für den Konfigurator eingerichtet.';
 const ERROR_STATUSES=[400,401,403,404,405,409,413,415,422,423,429,502,503];
@@ -152,7 +153,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  const previewRoute=new RegExp('^'+pagePath+'vorschauen/([a-f0-9]{64})\\.svg$');
  const slimmer=modelSlimmer===undefined?createModelSlimmer({fetchJson:async p=>{const r=await fetch(origin+p,{signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('http '+r.status);return r.json();},surfaceSwaps:surfaceSwapsFrom(DEFAULT_SURFACE_DIR),fontUrl:hash=>pagePath+'schriften/'+hash+'.json'}):modelSlimmer;
  function presentedModel(model,binding,store,designId=null){
-  const copy=shopStartModel(model,designId,{deferFonts:!!slimmer&&!model.universal.doorbell});
+  const copy=shopStartModel(model,designId,{deferFonts:!!slimmer&&!model.universal.doorbell,options:binding.options});
   // `source`: ausgelagerte Schriften lassen sich nach Verdrängung aus dem gespeicherten Modell nachliefern.
   if(slimmer){if(copy.universal.doorbell&&!slimmer.ready())slimmer.load();slimmer.slim(copy.universal,{deferAll:!copy.universal.doorbell,key:copy.configuration?.id&&copy.configuration?.revision?copy.configuration.id+':'+copy.configuration.revision+':fonts':null,source:()=>modelFor(store,binding).universal?.localResources?.fonts});}
   for(const group of copy.universal.profile?.optionGroups||[]){const chosen=binding.options?.[group.id];if(typeof chosen==='string'&&group.values?.some(v=>v.id===chosen))group.defaultValueId=chosen;}
@@ -396,9 +397,11 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     }
     if(action==='design-gallery'){
      if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
-     if([...url.searchParams.keys()].some(k=>!['page','theme'].includes(k))||url.searchParams.getAll('page').length>1||url.searchParams.getAll('theme').length>1||!['preferred','all'].includes(url.searchParams.get('theme')||'preferred')||!/^\d{1,5}$/.test(url.searchParams.get('page')||'0'))fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
+     if([...url.searchParams.keys()].some(k=>!['page','theme',...GALLERY_OPTIONS].includes(k))||['page','theme',...GALLERY_OPTIONS].some(k=>url.searchParams.getAll(k).length>1)||GALLERY_OPTIONS.some(k=>url.searchParams.has(k)&&!/^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/.test(url.searchParams.get(k)))||!['preferred','all'].includes(url.searchParams.get('theme')||'preferred')||!/^\d{1,5}$/.test(url.searchParams.get('page')||'0'))fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
      checkOrigin(req,{mutating:false});const context=active(req),sourceModel=cardFor(context.store,context.binding);checkGalleryBinding(context.store,context.binding,sourceModel);
-     const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0),theme:url.searchParams.get('theme')||'preferred',sourceModel});active(req);
+     // Türschild-Konfi: aktuelle Ausführung aus dem Konfi (Form & Größe, Farbe, Befestigung); nur dort ausgewertet.
+     const chosen=GALLERY_OPTIONS.filter(k=>url.searchParams.has(k)),options=chosen.length&&isAllSizesFamily(sourceModel.universal)?Object.fromEntries(chosen.map(k=>[k,url.searchParams.get(k)])):null;
+     const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0),theme:url.searchParams.get('theme')||'preferred',sourceModel,options});active(req);
      return json(res,200,result);
     }
     if(action==='customer-vector-logo/preview'){

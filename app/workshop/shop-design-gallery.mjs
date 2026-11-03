@@ -4,11 +4,13 @@ import {selectedProfile,quote} from '../configurator/variant-m/contract.mjs';
 import {physicalGeometry} from '../configurator/variant-m/print-geometry.mjs';
 import {productPreview} from './product-preview.mjs';
 import {gallerySnapshotCodec} from './shop-gallery-snapshot.mjs';
+import {isAllSizesFamily,familyFormatOptions} from '../configurator/variant-m/family-formats.mjs';
 import {performance} from 'node:perf_hooks';
 
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const unavailable=()=>fail(409,'shop_gallery_changed','Dieses Design ist nicht mehr verfügbar. Bitte die Designauswahl neu öffnen.');
 const sameBinding=(a,b)=>['storeId','tenantId','shopDomain','shopifyProductId','shopifyVariantId','productId','productRevision','bindingId','assignmentRevision'].every(k=>a[k]===b[k]);
+const optionKey=o=>JSON.stringify(Object.entries(o||{}).sort());
 const identity=b=>({shopifyProductId:b.shopifyProductId,shopifyVariantId:b.shopifyVariantId});
 const fields=['sid','storeId','productId','productRevision','bindingId','assignmentRevision','shopifyProductId','shopifyVariantId','designId','scope','sourceProductId','sourceProductRevision'];
 
@@ -55,7 +57,10 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   if(input.scope!==source.scope.key||input.sourceProductId!==context.binding.productId||input.sourceProductRevision!==context.binding.productRevision)unavailable();
   const model=modelFor(current.store,current.binding);checkBinding(current.store,current.binding,model);
   const selected=selection(current.binding,model,input.designId);
-  if(!galleryTargetAllowed(source,destination,selected.design))unavailable();
+  // Türschild-Konfi: andere Farbe/Größe desselben Shopify-Produkts und Produktstands ist kein Prozesswechsel
+  // in eine andere Linie (Acryl schwarz ↔ anthrazit); der Scope ist ohnehin das eigene Produkt.
+  const sameAllSizesProduct=isAllSizesFamily(sourceModel.universal)&&current.binding.shopifyProductId===context.binding.shopifyProductId&&current.binding.productId===context.binding.productId&&current.binding.productRevision===context.binding.productRevision&&source.scope.key===destination.scope.key;
+  if(!sameAllSizesProduct&&!galleryTargetAllowed(source,destination,selected.design))unavailable();
   return {...current,model,...selected};
  }
 
@@ -138,12 +143,23 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
  // Startup warming never creates sessions/tokens or changes product data.
  // Catch at the caller; a failed build is discarded and the next call can retry.
  function warm(context){return cachedCards(context);}
- async function availableCards(context,sourceModel=null){
+ // Türschild-Konfi: die Galerie zeigt die Vorlagen der Ausführung, die der Kunde gerade im Konfi gewählt hat
+ // (Form & Größe, Befestigung). Das ist eine andere Shopify-Variante desselben Produktstands.
+ function variantBinding(context,own,options){
+  const b=context.binding;if(!options)return b;
+  // Wie der Konfi selbst normalisieren (Standardfarbe/-befestigung, keine fremden Schlüssel), dann exakt vergleichen.
+  let wanted;try{wanted=familyFormatOptions(own.universal,options);}catch{fail(409,'shop_gallery_variant','Diese Ausführung ist im Shop nicht verfügbar. Bitte eine andere Größe oder Befestigung wählen.');}
+  if(optionKey(wanted)===optionKey(b.options))return b;
+  const found=context.store.registry.listActive().filter(x=>x.storeId===b.storeId&&x.tenantId===b.tenantId&&x.shopDomain===b.shopDomain&&x.shopifyProductId===b.shopifyProductId&&x.productId===b.productId&&x.productRevision===b.productRevision&&optionKey(x.options)===optionKey(wanted));
+  if(found.length!==1)fail(409,'shop_gallery_variant','Diese Ausführung ist im Shop nicht verfügbar. Bitte eine andere Größe oder Befestigung wählen.');
+  return found[0];
+ }
+ async function availableCards(context,sourceModel=null,options=null){
   // Fixed-size products only offer their own approved templates. They need
   // neither a store-wide binding scan nor the 250,000-card warm-up.
-  const own=sourceModel;
-  if(own?.universal.familyFormats?.fixedSize){
-   const binding=context.binding,profile=selectedProfile(own.universal,binding.options),scope=galleryScope(own,binding),process=galleryProcess(profile),geometry=physicalGeometry(own.universal,{mOptions:binding.options});
+  const own=sourceModel,allSizes=own&&isAllSizesFamily(own.universal);
+  if(own?.universal.familyFormats?.fixedSize||allSizes){
+   const binding=allSizes?variantBinding(context,own,options):context.binding,profile=selectedProfile(own.universal,binding.options),scope=galleryScope(own,binding),process=galleryProcess(profile),geometry=physicalGeometry(own.universal,{mOptions:binding.options});
    checkBinding(context.store,binding,own);
    const source={scope,process,theme:profile.themeId||null},cards=[];
    for(const design of profile.designs){
@@ -164,16 +180,16 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   return {cards:cards.filter(row=>allowed.has(row.binding.bindingId)),source};
  }
  const preparing=Symbol('preparing');
- async function boundedCards(context,sourceModel){
+ async function boundedCards(context,sourceModel,options){
   let timer;
-  try{return await Promise.race([availableCards(context,sourceModel),new Promise(resolve=>{timer=setTimeout(()=>resolve(preparing),waitMs);})]);}
+  try{return await Promise.race([availableCards(context,sourceModel,options),new Promise(resolve=>{timer=setTimeout(()=>resolve(preparing),waitMs);})]);}
   finally{clearTimeout(timer);}
  }
- async function list(context,{page=0,theme='preferred',sourceModel=null}={}){
+ async function list(context,{page=0,theme='preferred',sourceModel=null,options=null}={}){
   if(!['preferred','all'].includes(theme))fail(422,'shop_gallery_theme','Dieses Thema gibt es nicht.');
   if(!Number.isSafeInteger(page)||page<0||page>10000)fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
   if(typeof context.store.registry.listActive!=='function')return {items:[],nextPage:null,total:0};
-  const result=await boundedCards(context,sourceModel);
+  const result=await boundedCards(context,sourceModel,options);
   if(result===preparing)return {status:'preparing',message:'Designs werden vorbereitet – bitte gleich noch einmal versuchen.',items:[],nextPage:page,total:null};
   const {cards,source}=result;
   const choices=new Map();
@@ -184,7 +200,7 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   }
   const rows=[...choices.values()],start=page*40;
   if(theme==='preferred'&&source?.theme)rows.sort((a,b)=>Number(b.card.themes.includes(source.theme))-Number(a.card.themes.includes(source.theme)));
-  const items=rows.slice(start,start+40).map(({binding,designId,card})=>({...card,...(previewUrl&&cachedPreview(binding,designId)?{previewUrl:previewUrl(cachedPreview(binding,designId).hash)}:{}),target:issue(context,binding,designId,source.scope.key),current:binding.productId===context.binding.productId&&binding.shopifyVariantId===context.binding.shopifyVariantId}));
+  const items=rows.slice(start,start+40).map(({binding,designId,card})=>({...card,...(previewUrl&&cachedPreview(binding,designId)?{previewUrl:previewUrl(cachedPreview(binding,designId).hash)}:{}),target:issue(context,binding,designId,source.scope.key),current:binding.productId===context.binding.productId&&(binding.shopifyVariantId===context.binding.shopifyVariantId||options!==null&&binding.productRevision===context.binding.productRevision)}));
   return {items,nextPage:start+40<rows.length?page+1:null,total:rows.length,...(source?.theme?{hasTheme:true}:{})};
  }
  function preview(context,token){

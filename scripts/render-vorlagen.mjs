@@ -24,12 +24,13 @@ Optionen:
   --png                       zusätzlich PNG (Chromium, ein Browser für alle Dateien)
   --breite <px>               PNG-Breite, Standard 1200
   --bogen                     Kontaktbogen (HTML, mit --png auch PNG) mit Prüfstatus je Design
+  --kontur                    nur mit --leer: zusätzlich maßgenaue SVG in mm (Kontur und Bohrbilder, rot) zum Gestalten
   --grenze <n>                höchstens n Dateien (zum Testen)`;
 
 const args=process.argv.slice(2),opt={};
 for(let i=0;i<args.length;i++){
  const a=args[i];if(!a.startsWith('--'))throw Error('Unbekanntes Argument: '+a);
- const key=a.slice(2),flag=['leer','alle','png','bogen','help'].includes(key);
+ const key=a.slice(2),flag=['leer','alle','png','bogen','kontur','help'].includes(key);
  if(flag)opt[key]=true;else{if(args[i+1]===undefined)throw Error('Wert fehlt für '+a);opt[key]=args[++i];}
 }
 if(opt.help||!opt.katalog||!opt.familie||!opt.out){console.log(HELP);process.exit(opt.help?0:1);}
@@ -63,11 +64,24 @@ if(opt.leer){
 if(jobs.length>limit)jobs.length=limit;
 
 const sizeLabel=key=>{const s=family.sizes.find(s=>s.key===key),g=family.groups.find(g=>g.key===s?.groupKey);return s?(s.label+(g?' · '+g.name:'')):key;};
-function blankSvg(key){
+function blankConfig(key){
  const size=family.sizes.find(s=>s.key===key),v=structuredClone(family);
  v.groups=v.groups.filter(g=>g.key===size.groupKey);v.sizes=[structuredClone(size)];v.options=[];delete v.quantityTiers;delete v.backing;
  v.mountingRules=v.mountingRules.filter(r=>size.mounting.includes(r.id));
- const config=familyProductConfig(v,v.sizes[0],1,{previewOnly:true});
+ return familyProductConfig(v,v.sizes[0],1,{previewOnly:true});
+}
+// Gestaltungsvorlage: reine Geometrie aus dem Katalog in mm (Corel-Konvention rot = Platte und Löcher).
+// Je unterschiedlichem Bohrbild eine eigene Ebene, damit beim Gestalten alle Lochlagen sichtbar sind.
+function konturSvg(key){
+ const config=blankConfig(key),g=config.profile.geometry,w=g.width,h=g.height,n=v=>+v.toFixed(4);
+ const plate=g.shape==='contour'?'<path d="'+g.outlinePath+'"/>':g.shape==='ellipse'?'<ellipse cx="'+n(w/2)+'" cy="'+n(h/2)+'" rx="'+n(w/2)+'" ry="'+n(h/2)+'"/>':'<rect width="'+n(w)+'" height="'+n(h)+'"'+(g.cornerRadiusMm?' rx="'+n(g.cornerRadiusMm)+'"':'')+'/>';
+ const seen=new Map();
+ for(const v of config.profile.optionGroups.find(x=>x.id==='mounting')?.values||[]){if(!v.holes?.length)continue;const sig=JSON.stringify(v.holes);if(!seen.has(sig))seen.set(sig,{ids:[],holes:v.holes});seen.get(sig).ids.push(v.id);}
+ const layers=[...seen.values()].map(b=>'<g id="bohrbild-'+b.ids.join('-')+'" data-befestigung="'+b.ids.join(' ')+'">'+b.holes.map(o=>'<circle cx="'+n(o.x)+'" cy="'+n(o.y)+'" r="'+n(o.diameter/2)+'"/>').join('')+'</g>').join('');
+ return {svg:'<svg xmlns="http://www.w3.org/2000/svg" width="'+n(w)+'mm" height="'+n(h)+'mm" viewBox="0 0 '+n(w)+' '+n(h)+'"><title>'+sizeLabel(key)+' · '+key+'</title><g fill="none" stroke="#ff0000" stroke-width="0.1"><g id="platte">'+plate+'</g>'+layers+'</g></svg>\n',bohrbilder:[...seen.values()].map(b=>({befestigung:b.ids,loecher:b.holes})),mm:[w,h],form:g.shape};
+}
+function blankSvg(key){
+ const config=blankConfig(key);
  for(const d of config.profile.designs)d.objects=[];
  const m=mountingFor(key),options=m?{mounting:m}:{};
  return productPreview({universal:config},{options,keepout:false,designArea:false});
@@ -82,6 +96,7 @@ for(const job of jobs){
   if(job.kind==='leer'){
    if(mountingFor(job.size)===false)throw Error('Befestigung '+mounting+' gibt es für diese Größe nicht.');
    entry.svg=blankSvg(job.size);entry.status='leer';entry.issues=[];entry.label=sizeLabel(job.size);
+   if(opt.kontur){const k=konturSvg(job.size);entry.kontur=k;}
   }else{
    const preview={designArea:view==='pruefung'};
    const r=await targetDesignPreview(root,{reihe:job.reihe,id:job.id,familie:opt.familie,size:job.size||undefined},{katalog,preview});
@@ -91,9 +106,10 @@ for(const job of jobs){
    entry.svg=r.svg;entry.status=r.svg?r.fit.status:'passt nicht';entry.issues=r.fit.issues;
    if(!r.svg)throw Error(r.fit.issues.at(-1)||'Keine Vorschau');
   }
-  const base=(job.kind==='leer'?'grundplatte':safe(job.reihe)+'/'+safe(job.id))+'__'+safe(entry.size)+(mounting?'__'+mounting:'');
+  const base=(job.kind==='leer'?'grundplatte':safe(job.reihe)+'/'+safe(job.id))+'__'+safe(entry.size)+(opt.befestigung?'__'+mounting:'');
   entry.file=base+'.svg';fs.mkdirSync(path.dirname(path.join(out,entry.file)),{recursive:true});
   fs.writeFileSync(path.join(out,entry.file),entry.svg);
+  if(entry.kontur){const {svg,...meta}=entry.kontur;entry.konturFile=base+'.kontur.svg';fs.writeFileSync(path.join(out,entry.konturFile),svg);entry.geometrie=meta;delete entry.kontur;}
  }catch(error){entry.status='fehler';entry.issues=[...(entry.issues||[]),error.message];}
  delete entry.svg;entry.ms=Date.now()-t;results.push(entry);
 }
@@ -114,7 +130,10 @@ if(opt.png){
    const svg=fs.readFileSync(path.join(out,r.file),'utf8').replace('<svg ','<svg id="vorlage" style="display:block;width:'+width+'px;height:auto" ');
    await page.setContent('<!doctype html><html><body style="margin:0;background:transparent">'+svg+'</body></html>',{waitUntil:'load'});
    r.png=r.file.replace(/\.svg$/,'.png');
-   await (await page.$('#vorlage')).screenshot({path:path.join(out,r.png),omitBackground:true});
+   const shot=await (await page.$('#vorlage')).screenshot({omitBackground:true});
+   // Grundplatten freigestellt: transparenten Rand abschneiden (sharp, falls vorhanden).
+   let bytes=shot;if(r.kind==='leer'){try{bytes=await require('sharp')(shot).trim({threshold:0}).png().toBuffer();}catch{}}
+   fs.writeFileSync(path.join(out,r.png),bytes);
   }}));
  });
  pngMs=Date.now()-t;

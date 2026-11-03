@@ -162,6 +162,7 @@ Stand: 02.11.2026 abends. Gelesen: Code-Repo `origin/main` f78ad5b (STATUS.md, A
 | 4.49 | 03.11. 21:57–22:28 | **Edelstahl-Schilder:** Logo als SVG-Vektor **12,99 €** (Zitat „ergänze Logo für 12,99€“ – ersetzt 1.19 „Logo erstmal raus“; Foto bleibt aus). Befestigung als Konfi-Icons, „raue Flächen“ mit eigenem Icon. **Preisrunde:** Zitat „6x2 auf 8,79€, 21x7 oval auf 28,99, 12x5,25 auf 16,99, sonst kannst du alle Preise übernehmen“ → 22,5×12 38,99 · Oval schmal 30×10 44,99 (ersetzt 56,99 aus 4.22) · 20×20 50,99 · 32×14 60,99 · 30×16 62,99 · 30×20 74,99 · 42×28 138,99 · 4 Schrauben 3,29. Rechteck 21×7: siehe 4.50. | Chat 03.11.; Seite „Preise Edelstahl-Schilder“; Katalog-Branch `dev/preise-edelstahl-20261103-claude` |
 | 4.50 | 03.11. 23:34 | Edelstahl **Rechteck 21 × 7 cm = 28,99 €** wie Oval (Antwort „3. 28,99“). | Chat 03.11.; Katalog PR #163 |
 | 4.51 | 03.11. 23:34/23:35 | **Alle 80 Edelstahl-Grundplatten freigestellt in den Katalog** (Antwort „5. ja“), als Vorlage „für den Konfi“: PNG freigestellt + SVG maßgenau in mm mit allen Bohrbildern, `zeichnungen/edelstahl-schilder-2027/grundplatten/`. | Chat 03.11.; Katalog PR #164 |
+| 4.52 | 04.11. 00:51 | **Schiefer-Stärken:** Premium-Schiefer **12 mm**; geschnittener Schiefer und Naturschiefer **ca. 5 mm**. Zitat: „premium schiefer hat doch 12mm und geschnittener wie naturschiefer ca. 5mm“ (bestätigt 4.32). Im Katalog fehlte die Stärke bei Premium 30 × 20, deshalb ließ es sich nicht rendern. | Chat 04.11. |
 
 ## 5. Designs / Gestaltung
 

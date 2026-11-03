@@ -4,7 +4,7 @@ import {selectedProfile,quote} from '../configurator/variant-m/contract.mjs';
 import {physicalGeometry} from '../configurator/variant-m/print-geometry.mjs';
 import {productPreview} from './product-preview.mjs';
 import {gallerySnapshotCodec} from './shop-gallery-snapshot.mjs';
-import {isAllSizesFamily} from '../configurator/variant-m/family-formats.mjs';
+import {isAllSizesFamily,familyFormatOptions} from '../configurator/variant-m/family-formats.mjs';
 import {performance} from 'node:perf_hooks';
 
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
@@ -57,7 +57,10 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   if(input.scope!==source.scope.key||input.sourceProductId!==context.binding.productId||input.sourceProductRevision!==context.binding.productRevision)unavailable();
   const model=modelFor(current.store,current.binding);checkBinding(current.store,current.binding,model);
   const selected=selection(current.binding,model,input.designId);
-  if(!galleryTargetAllowed(source,destination,selected.design))unavailable();
+  // Türschild-Konfi: andere Farbe/Größe desselben Shopify-Produkts und Produktstands ist kein Prozesswechsel
+  // in eine andere Linie (Acryl schwarz ↔ anthrazit); der Scope ist ohnehin das eigene Produkt.
+  const sameAllSizesProduct=isAllSizesFamily(sourceModel.universal)&&current.binding.shopifyProductId===context.binding.shopifyProductId&&current.binding.productId===context.binding.productId&&current.binding.productRevision===context.binding.productRevision&&source.scope.key===destination.scope.key;
+  if(!sameAllSizesProduct&&!galleryTargetAllowed(source,destination,selected.design))unavailable();
   return {...current,model,...selected};
  }
 
@@ -142,9 +145,12 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
  function warm(context){return cachedCards(context);}
  // Türschild-Konfi: die Galerie zeigt die Vorlagen der Ausführung, die der Kunde gerade im Konfi gewählt hat
  // (Form & Größe, Befestigung). Das ist eine andere Shopify-Variante desselben Produktstands.
- function variantBinding(context,options){
-  const b=context.binding;if(!options||optionKey(options)===optionKey(b.options))return b;
-  const found=context.store.registry.listActive().filter(x=>x.storeId===b.storeId&&x.tenantId===b.tenantId&&x.shopDomain===b.shopDomain&&x.productId===b.productId&&x.productRevision===b.productRevision&&optionKey(x.options)===optionKey(options));
+ function variantBinding(context,own,options){
+  const b=context.binding;if(!options)return b;
+  // Wie der Konfi selbst normalisieren (Standardfarbe/-befestigung, keine fremden Schlüssel), dann exakt vergleichen.
+  let wanted;try{wanted=familyFormatOptions(own.universal,options);}catch{fail(409,'shop_gallery_variant','Diese Ausführung ist im Shop nicht verfügbar. Bitte eine andere Größe oder Befestigung wählen.');}
+  if(optionKey(wanted)===optionKey(b.options))return b;
+  const found=context.store.registry.listActive().filter(x=>x.storeId===b.storeId&&x.tenantId===b.tenantId&&x.shopDomain===b.shopDomain&&x.shopifyProductId===b.shopifyProductId&&x.productId===b.productId&&x.productRevision===b.productRevision&&optionKey(x.options)===optionKey(wanted));
   if(found.length!==1)fail(409,'shop_gallery_variant','Diese Ausführung ist im Shop nicht verfügbar. Bitte eine andere Größe oder Befestigung wählen.');
   return found[0];
  }
@@ -153,7 +159,7 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   // neither a store-wide binding scan nor the 250,000-card warm-up.
   const own=sourceModel,allSizes=own&&isAllSizesFamily(own.universal);
   if(own?.universal.familyFormats?.fixedSize||allSizes){
-   const binding=allSizes?variantBinding(context,options):context.binding,profile=selectedProfile(own.universal,binding.options),scope=galleryScope(own,binding),process=galleryProcess(profile),geometry=physicalGeometry(own.universal,{mOptions:binding.options});
+   const binding=allSizes?variantBinding(context,own,options):context.binding,profile=selectedProfile(own.universal,binding.options),scope=galleryScope(own,binding),process=galleryProcess(profile),geometry=physicalGeometry(own.universal,{mOptions:binding.options});
    checkBinding(context.store,binding,own);
    const source={scope,process,theme:profile.themeId||null},cards=[];
    for(const design of profile.designs){

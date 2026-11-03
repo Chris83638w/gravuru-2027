@@ -76,7 +76,8 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
     }catch(error){report.excluded.push({familyId:family.id,sizeKey:size.key,designId:a.design.id,issues:[error.message]});}
    }
    if(blank){
-    const t=katalogDesignToTemplate(blankSignDesign(size,sub.themeId),family,theme,{fonts});
+    const t=katalogDesignToTemplate(blankSignDesign(size,sub.themeId),family,theme,{fonts}),existing=bank.get(t.template.id);
+    if(existing&&JSON.stringify(existing)!==JSON.stringify(t.template))fail('Widersprüchliche leere Vorlage '+t.template.id+'.');
     bank.set(t.template.id,copy(t.template));designs.push(t.template.id);rights[t.template.id]=copy(t.rights);
    }
    const slot=slotKey(size),format=formats.get(slot)||{key:size.key,form:size.groupKey,label:size.label,geometry:copy(p.geometry),...(p.workingArea?{workingArea:copy(p.workingArea)}:{}),variants:[]};
@@ -104,7 +105,7 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
   if(allChoice){c.familyFormats.defaultSize=start.key;const sizeGroup=p.optionGroups.find(g=>g.id==='size');if(sizeGroup)sizeGroup.defaultValueId=start.key;}
   else if(formChoice){c.familyFormats.defaultSize=start.key;const sizeGroup=p.optionGroups.find(g=>g.id==='size');if(sizeGroup){sizeGroup.name='Größe';sizeGroup.defaultValueId=start.key;}}
   else{c.familyFormats.fixedSize=start.key;p.optionGroups=p.optionGroups.filter(g=>g.id!=='size');}
-  p.id+='-'+createHash('sha256').update(JSON.stringify(allChoice?['alle',shopProduct.zielgruppe??null,shopProduct.defaultDesignId]:formChoice?[start.form,shopProduct.zielgruppe??null,shopProduct.defaultDesignId]:[start.key,shopProduct.defaultDesignId])).digest('hex').slice(0,16);p.binding.productId='local-'+p.id;
+  p.id+='-'+createHash('sha256').update(JSON.stringify(allChoice?['alle',shopProduct.zielgruppe??null,shopProduct.defaultDesignId,shopProduct.motive??null,shopProduct.vorlagen??null]:formChoice?[start.form,shopProduct.zielgruppe??null,shopProduct.defaultDesignId]:[start.key,shopProduct.defaultDesignId])).digest('hex').slice(0,16);p.binding.productId='local-'+p.id;
   p.name+=' · '+(allChoice?'alle Formen'+(shopProduct.zielgruppe?' · '+shopProduct.zielgruppe:''):formChoice?(FAMILY_FORMS.find(([id])=>id===customerForm(start.form))?.[1]??start.form)+(shopProduct.zielgruppe?' · '+shopProduct.zielgruppe:''):start.label);
   if(p.material.kind==='steel'){c.photo={...c.photo,enabled:false};c.logo={...c.logo,enabled:false,vectorUpload:false};}
   if(formChoice){

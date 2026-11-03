@@ -1,0 +1,15 @@
+✔ shop preparation reuses all 28 canonical acrylic prices and retains historical product revisions without inventing a shop binding (1504.419786ms)
+✔ incomplete form product lists only its own valid base price and keeps missing designs/material as open checks (1043.38267ms)
+✔ preparation endpoint is read-only, revision-pinned and covered by host/origin restrictions (720.558537ms)
+✔ bulk mapping binds all canonical variants without customer snapshots and repeats without new rows (1254.635164ms)
+✔ bulk mapping rolls back earlier inserts when a later ID belongs to another execution (1143.637668ms)
+✔ bulk mapping rejects duplicate IDs, unknown combinations, browser prices, missing source and preserves older revision links (2071.120936ms)
+✔ bulk mapping HTTP requires CSRF and current revision; archived products remain read-only (986.507872ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8933.797478

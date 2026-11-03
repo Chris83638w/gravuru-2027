@@ -1,0 +1,21 @@
+{
+  "at": "2026-11-03T11:04:36.586Z",
+  "before": "3306b0832528543da34386c620017e4938db2a9b50ceaa3da0b2e1e904158302",
+  "after": "b26a9fdc165ba1baa9e0ed4479e57bcd3eb2a58f5a1d490bed48ae992a67a43c",
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 373324,
+    "lazyResources": {
+      "fonts": 30,
+      "motifs": 703
+    },
+    "bundle": {
+      "url": "/_bundle/editor-bcd7ac5aafb427ae.mjs",
+      "modules": 133,
+      "styles": 14,
+      "bytes": 1324694,
+      "gzipBytes": 452430
+    }
+  }
+}

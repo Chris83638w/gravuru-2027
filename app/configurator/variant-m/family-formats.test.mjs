@@ -8,7 +8,8 @@ import {artworkViewport} from './print-geometry.mjs';
 import {validateSteelFormats} from './steel-formats.mjs';
 import {FAMILY_FORMATS_SCHEMA,familyFormatState,familyFormatChoices,validateFamilyFormats,designNumber,selectedFamilyDesign} from './family-formats.mjs';
 import {familyChoicesMarkup} from './family-formats-ui.mjs';
-import {makeProductDocument} from '../../workshop/product-model.mjs';
+import {makeProductDocument,resolveProduct} from '../../workshop/product-model.mjs';
+import {prepareShopProduct} from '../../workshop/shop-preparation.mjs';
 import {prepareAcrylicReview} from '../../workshop/acrylic-review.mjs';
 import {acrylicArtwork} from '../../workshop/acrylic-artwork.mjs';
 import {validateCommerce,variantKey} from './commerce-model.mjs';
@@ -28,6 +29,18 @@ function fixture(material='steel'){
  delete c.familyAcrylic;return prepareConfig(c);
 }
 const state=c=>({designId:c.profile.designs[0].id,objects:clone(c.profile.designs[0].objects),mOptions:resolvedOptions(c),selected:null});
+test('shop preparation chooses the default design belonging to every selected size; explicit foreign designs still fail',()=>{
+ const c=fixture(),document=makeProductDocument(c),prepared=prepareShopProduct({id:c.profile.id,revision:1,status:'draft',document});
+ assert.equal(prepared.sourceReady,true);assert.equal(prepared.variants.length,variantCombinations(c).length);
+ const other=prepared.variants.find(v=>v.options.size!==c.familyFormats.defaultSize);assert.ok(other);
+ const resolved=resolveProduct(document,{options:other.options});assert.equal(resolved.designId,selectedProfile(c,other.options).defaultDesignId);
+ assert.throws(()=>resolveProduct(document,{options:other.options,designId:c.profile.defaultDesignId}),/Design/);
+ const record={id:c.profile.id,revision:1,status:'draft',document};
+ const again=prepareShopProduct(record);again.variants[0].priceCents=0;assert.deepEqual(prepareShopProduct(record),prepared);
+ const changed=clone(record);changed.document.config.familyFormats.formats[0].variants[0].basePriceCents+=100;
+ const next=prepareShopProduct(changed);assert.notDeepEqual(next.variants,prepared.variants);
+ const invalid=clone(record);invalid.document.config.familyFormats.formats[0].variants[0].basePriceCents=-1;assert.throws(()=>prepareShopProduct(invalid));
+});
 test('R16: door-sign sizes and mountings use icon tiles; fixed size stays fixed and K00 is first',()=>{
  for(const material of ['steel','schwarz','anthrazit']){
   const c=fixture(material),options=resolvedOptions(c),variant=c.familyFormats.formats.find(f=>f.key===options.size).variants[0];

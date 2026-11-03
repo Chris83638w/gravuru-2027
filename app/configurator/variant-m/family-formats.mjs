@@ -8,8 +8,12 @@ import {validateContourGeometry} from '../../platform/sources/app/shared/models/
 import {productFontIndex} from './lazy-resources-model.mjs';
 
 export const FAMILY_FORMATS_SCHEMA='gravuru-family-formats/v1';
+// Katalogfamilien, die als Familienformat (fester Shop-Produktschnitt) laufen dürfen.
+export const FAMILY_FORMAT_SOURCES=Object.freeze(['steel-door-signs','grabstecker-edelstahl','acryl-3mm-tuerschilder-schwarz','acryl-3mm-tuerschilder-anthrazit']);
 export const FAMILY_FORMS=Object.freeze([
- ['RE','Rechteck'],['AB','Rechteck abgerundet'],['QU','Quadrat'],['OV','Oval'],['R','Rund'],['RT1','Retro 1'],['RT2','Retro 2']
+ ['RE','Rechteck'],['AB','Rechteck abgerundet'],['QU','Quadrat'],['OV','Oval'],['R','Rund'],['RT1','Retro 1'],['RT2','Retro 2'],
+ // Grabstecker (Familie grabstecker-edelstahl, Chris 02.11.2026 #137): nur feste Shop-Produkte, Form = Kopfform.
+ ['GS-HERZ','Herz'],['GS-HERZRAHMEN','Herz mit Rahmen'],['GS-HERZDOPPEL','Herz mit Doppelrahmen'],['GS-HERZLIEGEND','Herz liegend'],['GS-HERZPFOTE','Herz mit Pfote'],['GS-KREUZ','Kreuz'],['GS-KREUZ2','Kreuz 2'],['GS-ENGEL','Engel'],['GS-STERN','Stern'],['GS-STERN2','Stern 2'],['GS-INFINITY','Unendlichkeit'],['GS-KATZE','Katze'],['GS-PFOTE','Pfote']
 ]);
 const clone=v=>structuredClone(v),fail=m=>{throw Error(m);};
 export const isFamilyFormats=c=>c?.familyFormats?.schema===FAMILY_FORMATS_SCHEMA;
@@ -43,7 +47,7 @@ export function familyFormatCombinations(c){
 export function familyFormatPrice(c,o={}){const s=familyFormatSelection(c,o);return s.variant.basePriceCents+s.mounting.priceCents;}
 export function familyFormatChoices(c,o={}){
  const color=o.color??c.familyFormats.defaultColor;
- return FAMILY_FORMS.map(([id,label])=>({id,label,sizes:c.familyFormats.formats.filter(f=>customerForm(f.form)===id).map(f=>{
+ return FAMILY_FORMS.filter(([id])=>!id.startsWith('GS-')||c.familyFormats.formats.some(f=>customerForm(f.form)===id)).map(([id,label])=>({id,label,sizes:c.familyFormats.formats.filter(f=>customerForm(f.form)===id).map(f=>{
   const v=f.variants.find(v=>v.color===color);return {...f,priceCents:v?.basePriceCents,available:!!v?.designIds.length};
  }).sort((a,b)=>{
   const ar=a.geometry.width/a.geometry.height,br=b.geometry.width/b.geometry.height;
@@ -70,6 +74,7 @@ export function selectedFamilyDesign(c,id,values={}){
 }
 export function selectedFamilyProfile(c,values={}){
  const s=familyFormatSelection(c,values),p={...clone(c.profile),geometry:{...clone(s.format.geometry),holes:clone(s.mounting.holes)},material:clone(s.variant.material)};
+ if(s.format.workingArea)p.workingArea=clone(s.format.workingArea);else delete p.workingArea;
  p.designs=s.variant.designIds.map(id=>projectFamilyDesign(c,id,s.format));
  p.defaultDesignId=p.designs.some(d=>d.id===c.profile.defaultDesignId)?c.profile.defaultDesignId:p.designs[0].id;
  p.familySelection={familyId:s.variant.familyId,sizeKey:s.variant.sizeKey,form:s.format.form,color:s.color};
@@ -126,9 +131,10 @@ export function validateFamilyFormats(c){
  for(const s of f.formats){
   const g=s.geometry;if(!FAMILY_FORMS.some(([id])=>id===customerForm(s.form))||!g||!['rect','ellipse','contour'].includes(g.shape)||![g.width,g.height].every(n=>Number.isFinite(n)&&n>=10&&n<=2000))fail('Ungültige Familiengeometrie.');
   if(g.shape==='contour')validateContourGeometry(g);
+  if(s.workingArea){const a=s.workingArea;if(![a.headHeightMm,a.previewHeightMm].every(Number.isFinite)||a.headHeightMm<=0||a.previewHeightMm>g.height||Math.abs(a.previewHeightMm-a.headHeightMm-10)>.001)fail('Ungültige Grabstecker-Kopfansicht.');}
   if(!Array.isArray(s.variants)||!s.variants.length||new Set(s.variants.map(v=>v.color)).size!==s.variants.length)fail('Familienvarianten fehlen.');
   for(const v of s.variants){
-   if(!['steel-door-signs','acryl-3mm-tuerschilder-schwarz','acryl-3mm-tuerschilder-anthrazit'].includes(v.familyId)||!v.sizeKey||!cents(v.basePriceCents)||!f.colors.some(a=>a.id===v.color))fail('Familienquelle oder Preis fehlt.');
+   if(!FAMILY_FORMAT_SOURCES.includes(v.familyId)||!v.sizeKey||!cents(v.basePriceCents)||!f.colors.some(a=>a.id===v.color))fail('Familienquelle oder Preis fehlt.');
    if(!Array.isArray(v.designIds)||v.designIds.some(id=>!f.designs.some(d=>d.id===id)))fail('Unbekanntes Designziel.');
    if(v.unapprovedDesignIds!==undefined&&(!Array.isArray(v.unapprovedDesignIds)||v.unapprovedDesignIds.some(id=>!v.designIds.includes(id))))fail('Ungültige Prüffreigaben.');
    if(!Array.isArray(v.mounting)||new Set(v.mounting.map(m=>m.id)).size!==v.mounting.length||!v.mounting.some(m=>m.id==='K00'&&m.priceCents===0&&m.holes?.length===0)||v.mounting.some(m=>!cents(m.priceCents)||!Array.isArray(m.holes)))fail('Familienbefestigung fehlt.');
@@ -142,6 +148,10 @@ export function validateFamilyFormats(c){
   const cut=f.source?.shopProduct,starter=f.designs.find(d=>d.id===c.profile.defaultDesignId);
   if(f.formats.length!==1||f.fixedSize!==f.defaultSize||f.formats[0].key!==f.fixedSize||f.source?.reviewUnreleased||f.formats.some(s=>s.variants.some(v=>v.unapprovedDesignIds?.length))||!cut||cut.themeId!==c.profile.themeId||starter?.katalog.designId!==cut.defaultDesignId||!starter?.themes?.includes(cut.themeId)||!f.formats[0].variants.some(v=>v.sizeKey===cut.sizeKey)||f.formats[0].variants.some(v=>!v.designIds.includes(starter.id))||c.profile.optionGroups.some(g=>g.id==='size'))fail('Ungültiger fester Shop-Produktschnitt.');
  }
- const start=familyFormatSelection(c);if(!f.fixedSize&&(start.format.form!=='AB'||start.format.geometry.width!==120||start.format.geometry.height!==80))fail('Startgröße muss AB 12 × 8 cm sein.');
+ const start=familyFormatSelection(c);if(!f.fixedSize&&f.source?.shopProduct?.groessenWahl!=='form'&&(start.format.form!=='AB'||start.format.geometry.width!==120||start.format.geometry.height!==80))fail('Startgröße muss AB 12 × 8 cm sein.');
+ if(f.source?.shopProduct?.groessenWahl==='form'){
+  const cut=f.source.shopProduct,starter=f.designs.find(d=>d.id===c.profile.defaultDesignId);
+  if(f.formats.some(s=>s.form!==start.format.form||!s.workingArea||s.variants.some(v=>v.familyId!=='grabstecker-edelstahl'||v.mounting.length!==1||v.mounting[0].id!=='K00'||v.unapprovedDesignIds?.length))||f.source.reviewUnreleased||starter?.katalog.designId!==cut.defaultDesignId||cut.themeId!==c.profile.themeId||!starter?.themes?.includes(cut.themeId)||!start.variant.designIds.includes(starter.id))fail('Grabstecker benötigen eine Form, freigegebene Vorlage und nur Größenwahl.');
+ }
  if(f.formats.reduce((sum,s)=>sum+s.variants.reduce((n,v)=>n+v.mounting.length,0),0)>2048)fail('Mehr als 2.048 Familienvarianten.');
 }

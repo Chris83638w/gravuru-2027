@@ -1,3 +1,4 @@
+import {executionKind} from './execution-registry.mjs';
 import {money} from './contract.mjs';
 export function motifPriceDescription(config){
  const fee=config?.extraMotifCents??169,price=money(fee).replaceAll('\u00a0',' ');
@@ -31,7 +32,7 @@ export function installDecisionHelp({el,r,config}){
  // These terms explain the three product properties even when a product has
  // only one material/size and therefore no corresponding selection control.
  const options=r.querySelector('#ux-panel-options h2');
- if(options){const row=document.createElement('div');row.className='ux-info-links';for(const kind of ['material','size','mounting']){const term=document.createElement('span');term.className='ux-info-term';term.append(document.createTextNode(decisionHelp(kind,config).title),info(kind));row.append(term);}options.after(row);}
+ if(options){const row=document.createElement('div');row.className='ux-info-links';for(const kind of (executionKind(config)==='stake'?['size']:['material','size','mounting'])){const term=document.createElement('span');term.className='ux-info-term';term.append(document.createTextNode(decisionHelp(kind,config).title),info(kind));row.append(term);}options.after(row);}
  // Keep each existing navigation button and its listeners intact. The help is
  // a sibling directly beside its term, never a nested button or a trailing row.
  const nav=r.querySelector('.completion-motif-nav');

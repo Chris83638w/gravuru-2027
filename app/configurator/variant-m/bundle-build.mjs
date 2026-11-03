@@ -121,13 +121,16 @@ export const DEVICE_ENTRIES=[
  ...['doorbell-selection','doorbell-ui','doorbell-presentation','doorbell-lazy-designs'].map(n=>'/configurator/variant-m/'+n+'.mjs'),
  ...['doorbell-material-preview','doorbell-profile-validation'].map(n=>'/platform/sources/app/shared/models/'+n+'.mjs')
 ];
+export const EXECUTION_ENTRIES=Object.freeze(Object.fromEntries(['family-formats-ui','stake-execution','memorial-execution'].map(n=>[n,['/configurator/variant-m/'+n+'.mjs']])));
 export function buildProductEditorBundles(directory){
  const core=buildEditorBundle(directory,{keepExisting:true});
  const device=buildEditorBundle(directory,{entries:DEVICE_ENTRIES,external:new Set(core.modules),keepExisting:true});
- const chunks=Object.fromEntries(device.modules.map(url=>[url,device.url]));
- const keep=new Set([core.name,core.name+'.gz',device.name,device.name+'.gz']);
+ const executions=Object.fromEntries(Object.entries(EXECUTION_ENTRIES).map(([kind,entries])=>[kind,buildEditorBundle(directory,{entries,external:new Set(core.modules),keepExisting:true})]));
+ const products=[device,...Object.values(executions)];
+ const chunks=Object.fromEntries(products.flatMap(chunk=>chunk.modules.map(url=>[url,chunk.url])));
+ const keep=new Set([core,...products].flatMap(chunk=>[chunk.name,chunk.name+'.gz']));
  for(const name of fs.readdirSync(path.join(directory,'bundle')))if(BUNDLE_NAME.test(name.replace(/\.gz$/,''))&&!keep.has(name))fs.rmSync(path.join(directory,'bundle',name),{force:true});
- return {...core,chunks,device};
+ return {...core,chunks,device,executions};
 }
 
 // Editorquelltext auf das Bündel umstellen: Lader in den Kopf, dynamische Importe über gravuruModules.

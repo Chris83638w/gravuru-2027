@@ -1,3 +1,7 @@
+## 2026-11-03 · Codex · #139 Schritt 2
+
+Grabstecker-/Gedenktafel-Ausführung mit separaten Paketen und echten Katalog-Screenshots umgesetzt. Größenwechsel/Kopfansicht, Kontur-Schriftladen und Foto-Startprojektion korrigiert. [Nachweis](docs/handoffs/2026-11-03-issue139-ausfuehrungen.md). Linux-Gesamtlauf läuft; historische Gedenktafelpreise und Importgrenzen offen. Kein weiterer Upload/Deployment. Nächster Schritt: vorhandene Bulk-Pipeline.
+
 ## 03.11.2026 · Codex · PR 153 live, vorgeschriebene Messreihe
 
 Claudes Abnahme 6597574311 umgesetzt: Merge 04d6f6b, seit 07:25:41 UTC live; 1.330 Dateien/HTTP-Hashes geprüft, sechs Datenbanksicherungen, Rückweg erhalten. Modellgrößen Stahl/Acryl/AOSU 150/24/129 KB. Handy 11,9/9,5/9,6 s, Desktop 22,9/12,8/6,5 s; **Zeitziele noch verfehlt**, vollständige Messung und Klick-Bildfolgen dokumentiert. [Nachweis und Rückweg](docs/handoffs/2026-11-03-issue139-bereitstellung.md). Keine neuen Produkte. Nächster Schritt nach Meldung: Gedenktafel-/Grabstecker-Modul, danach bestehende Bulk-Pipeline.

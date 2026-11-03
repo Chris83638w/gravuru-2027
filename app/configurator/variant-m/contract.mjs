@@ -18,6 +18,7 @@ import {textLimits,textLimitIssue,sameSampleText,requiredTextMissing,requiredFie
 import {optionFields,visibleBy,validateOptionConditions,fieldValue,fieldPrice,fieldRequiredMessage,fieldDisplay} from './option-fields.mjs';
 import {validateSurfaces,objectSurface,hasBack,backSurcharge,surfaceProcess} from './surfaces.mjs';
 import {editorUi,validateToolbarConfig} from './toolbar-placement-model.mjs';
+import {validateExecution} from './execution-registry.mjs';
 
 const clone = value => structuredClone(value);
 const fail = message => { throw Error(message); };
@@ -48,6 +49,7 @@ export const money = cents => euroFormat.format(cents / 100);
 // This adapter consumes the existing native profile. It never grants a runtime release.
 export function prepareConfig(input) {
   const config = clone(input);
+  validateExecution(config);
   validateToolbarConfig(config);
   if(isLayeredDoorbell(config)){validateDoorbellDefinition(config);config.profile=selectedDoorbellProfile(config);}
   if(config.familyFormats){validateFamilyFormats(config);config.profile=selectedFamilyProfile(config);}

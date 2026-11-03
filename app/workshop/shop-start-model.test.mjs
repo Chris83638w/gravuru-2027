@@ -4,6 +4,14 @@ import {shopStartModel} from './shop-start-model.mjs';
 import {createModelSlimmer} from './shop-model-slim.mjs';
 import {FAMILY_FORMATS_SCHEMA} from '../configurator/variant-m/family-formats.mjs';
 const fixture=()=>{const designs=Array.from({length:208},(_,i)=>({id:'D'+i,name:'Design '+i,objects:[{id:'text',type:'text',text:'Familie',font:'Lora'},{id:'motif',type:'motif',svg:'x'.repeat(5000)}]}));return {key:'acryl',configuration:{id:'p',revision:3},legacy:{designs},universal:{profile:{defaultDesignId:'D4',designs,optionGroups:[{id:'mount',values:[{id:'K00'},{id:'B02'}]}]},name:'Schild'}};};
+test('memorial projection retains only its selected photo examples, placeholders and hints',()=>{
+ const m=fixture(),items=['D4','D6'].map(designId=>({designId,slotId:'photo',assetId:'a'.repeat(64)}));
+ m.universal.localResources={fonts:{},motifs:[],photoExamples:structuredClone(items),photoPlaceholders:structuredClone(items)};
+ m.universal.photo={enabled:true,hints:items.map(({designId,slotId})=>({designId,slotId,text:'Foto hochladen',enabled:true}))};
+ const before=structuredClone(m),start=shopStartModel(m),next=shopStartModel(m,'D6');
+ for(const key of ['photoExamples','photoPlaceholders']){assert.deepEqual(start.universal.localResources[key].map(x=>x.designId),['D4']);assert.deepEqual(next.universal.localResources[key].map(x=>x.designId),['D6']);}
+ assert.deepEqual(start.universal.photo.hints.map(x=>x.designId),['D4']);assert.deepEqual(m,before);
+});
 test('only the requested template is sent in both model copies; source, options and revision stay intact',()=>{
  const model=fixture(),before=structuredClone(model),start=shopStartModel(model);
  assert.deepEqual(start.universal.profile.designs,[model.universal.profile.designs[4]]);

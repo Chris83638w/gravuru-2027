@@ -4,6 +4,7 @@
 // bildet die vorhandenen Reiter nur auf Schritte ab und verschiebt keine Logik.
 
 import {customerTextLine} from './text-summary.mjs';
+import {executionTabLabel} from './execution-registry.mjs';
 import {visibleBy,optionFields,fieldValue,fieldDisplay} from './option-fields.mjs';
 
 export const MOBILE_MAX_WIDTH=767;
@@ -151,7 +152,7 @@ export async function installMobileSteps(api){
   function restoreAll(){for(const [node,place] of moved){node.hidden=place.hidden;if(place.parent)place.parent.insertBefore(node,place.next&&place.next.parentNode===place.parent?place.next:null);}moved.clear();}
   function renderSteps(){
     const list=availableSteps(tabState(),{upload:tabLabel('upload')||'Foto'});
-    if(config?.familyFormats)for(const step of list)if(step.id==='options')step.label='Format & Größe';
+    if(config?.familyFormats)for(const step of list)if(step.id==='options')step.label=executionTabLabel(config);
     const key=JSON.stringify(list);
     if(key!==signature){signature=key;steps=list;stepsList.innerHTML=steps.map((step,i)=>`<li>${button('mobile-step',`<span class="ux-mobile-step-no" aria-hidden="true">${i+1}</span><span class="ux-mobile-step-label">${esc(step.label)}</span>`,`data-step="${esc(step.id)}"`)}</li>`).join('');}
     if(stepIndex(steps,current)<0)current=stepForTab(steps,selectedTab())||steps[0]?.id||'options';

@@ -18,6 +18,7 @@ import {ACRYLIC_PRINT_RECIPE,acrylicPrintKey,createAcrylicPrintProof,acrylicCont
 import {prepareAcrylicReview} from './acrylic-review.mjs';
 import {customerVectorLogoPreview,VECTOR_LOGO_REQUEST_BYTES,verifyCustomerVectorLogoMedia,verifiedAccountVectorLogo} from './customer-vector-logo-media.mjs';
 import {isNativeReviewSchema} from './native-review-schema.mjs';
+import {familyExecution} from '../configurator/variant-m/execution-registry.mjs';
 import {createHash} from 'node:crypto';
 import {designExportData,designWorkbook} from './design-export.mjs';
 import {batchReportData,batchReportWorkbook} from './batch-report.mjs';
@@ -250,6 +251,9 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
     delete universal.mountingPlacementFamily;
     const signFamilies=SIGN_PLACEMENT_FAMILIES.filter(id=>record.document.categoryIds.includes('familie-'+id));
     if(signFamilies.length===1)universal.mountingPlacementFamily=signFamilies[0];
+    // Existing immutable products predate the explicit execution tag. Their
+    // stored catalogue category is provenance; runtime IDs/titles are not.
+    if(!universal.productExecution){const choices=record.document.categoryIds.filter(id=>id.startsWith('familie-')).map(id=>familyExecution(id.slice(8))).filter(Boolean);if(choices.length===1)universal.productExecution=choices[0];}
     universal.profile.id=record.id;
     universal.profile.binding={kind:'local-review',productId:record.id};
     universal.profile.revision=`${record.id}:${record.revision}`;

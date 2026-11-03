@@ -8,6 +8,7 @@ test('139: stake working view ends after the head plus 10mm, full product previe
  const scene=node(),y=node(),host=node(),nodes={'.plate-holder':[node()],'.ux-preview':[node()],'.scene':[scene],'.dimension-x':[node()],'.dimension-y':[y]};host.shadowRoot={querySelectorAll:s=>nodes[s]};
  updateBackingPreviewViewport(host,profile);
  assert.equal(scene.values.viewBox,'-4.2 -4.2 128.4 118.4');assert.equal(y.style.display,'none');
+ assert.equal(scene.style.overflow,'hidden','legacy overflow:visible must not expose the complete stem beyond the working view');
  assert.deepEqual(productPreviewSize({state:{width:120,height:300},uxSelectedProfile:()=>profile}),{width:128.4,height:118.4});
  assert.deepEqual(universalPreviewViewport(profile),[-10.500000000000002,-10.500000000000002,141,321]);
  assert.equal(JSON.stringify(profile),before);

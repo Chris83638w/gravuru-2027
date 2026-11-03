@@ -7,7 +7,7 @@ export function updateBackingPreviewViewport(el,profile){
  el.style.setProperty('--m-plate-width',String(w));el.style.setProperty('--m-plate-height',String(h));el.style.setProperty('--ux-ratio',w+'/'+h);
  for(const node of r.querySelectorAll('.ux-preview'))node.style.setProperty('--ux-ratio',w+'/'+h);
  for(const node of r.querySelectorAll('.plate-holder'))node.style.setProperty('aspect-ratio',w+'/'+h,'important');
- for(const scene of r.querySelectorAll('.scene'))scene.setAttribute('viewBox',[x,y,w,h].join(' '));
+ for(const scene of r.querySelectorAll('.scene')){scene.setAttribute('viewBox',[x,y,w,h].join(' '));if(profile.workingArea)scene.style.setProperty('overflow','hidden','important');}
  for(const node of r.querySelectorAll('.dimension-x')){node.style.setProperty('left',(-x/w*100)+'%','important');node.style.setProperty('right','auto','important');node.style.setProperty('width',(g.width/w*100)+'%','important');}
  for(const node of r.querySelectorAll('.dimension-y')){node.style.setProperty('display',profile.workingArea?'none':'','important');node.style.setProperty('top',(-y/h*100)+'%','important');node.style.setProperty('bottom','auto','important');node.style.setProperty('height',(g.height/h*100)+'%','important');}
 }

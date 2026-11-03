@@ -6,11 +6,11 @@ import {katalogDesignToTemplate,scaleTemplate,applyPriceOverrides,defaultQuantit
 import {assessDesignTarget} from './design-target-rules.mjs';
 import {customerUxConfig} from './customer-ux-policy.mjs';
 import {prepareConfig} from '../configurator/variant-m/contract.mjs';
-import {validateShopProductCut,shopProductCutMetafield} from './shop-product-cut.mjs';
-import {FAMILY_FORMATS_SCHEMA,FAMILY_FORMS,customerForm,familyFormatCombinations} from '../configurator/variant-m/family-formats.mjs';
+import {validateShopProductCut,shopProductCutMetafield,designZielgruppe} from './shop-product-cut.mjs';
+import {FAMILY_FORMATS_SCHEMA,FAMILY_FORMAT_SOURCES,FAMILY_FORMS,customerForm,familyFormatCombinations} from '../configurator/variant-m/family-formats.mjs';
 
 const copy=v=>structuredClone(v),fail=m=>{throw Error(m);};
-export const SIGN_FAMILIES=['steel-door-signs','acryl-3mm-tuerschilder-schwarz','acryl-3mm-tuerschilder-anthrazit'];
+export const SIGN_FAMILIES=FAMILY_FORMAT_SOURCES;
 const color=f=>f.material.kind==='steel'?'edelstahl':f.material.variant;
 const sameGeometry=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 const slotKey=(s)=>customerForm(s.groupKey)+':'+s.widthMm+'x'+s.heightMm;
@@ -25,18 +25,20 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
  // Issue #139: the product metafield selects one physical format and one
  // starter. Other approved themes remain available in "Weitere Designs".
  const selectedSize=shopProduct&&families.flatMap(f=>f.sizes).find(s=>s.key===shopProduct.sizeKey);
+ const formChoice=shopProduct?.groessenWahl==='form';
+ const inCut=size=>!selectedSize||(formChoice?size.groupKey===selectedSize.groupKey:slotKey(size)===slotKey(selectedSize));
  if(shopProduct&&(!selectedSize||shopProduct.themeId!==sub.themeId||!shopProduct.defaultDesignId||reviewUnreleased||designIds))fail('Shop-Produktschnitt braucht Kataloggröße, passendes Thema und Startdesign; keine Prüffreigaben oder eingeschränkte Galerie.');
- const allMasters=katalog.designs.masters.filter(d=>!d.hidden&&(!designIds||designIds.includes(d.id))&&(shopProduct||d.themes?.includes(sub.themeId)));
+ const allMasters=katalog.designs.masters.filter(d=>!d.hidden&&(!designIds||designIds.includes(d.id))&&(shopProduct||d.themes?.includes(sub.themeId))&&(!shopProduct?.zielgruppe||designZielgruppe(d)===shopProduct.zielgruppe));
  const report={schema:'gravuru-family-formats-plan/v1',lineId,subcategoryId,reviewUnreleased,shopifyWrites:false,sourceFamilies:families.map(f=>f.id),excluded:[],blocked:[],sizes:[],shopify:{options:families.length>1?['Form & Größe','Farbe','Befestigung']:['Form & Größe','Befestigung'],maximumVariants:2048,maximumOptions:3,variantIdsCreated:0,sources:['https://help.shopify.com/en/manual/products/variants/add-variants','https://shopify.dev/docs/api/admin-graphql/latest/mutations/productSet']}};
  const assigned=new Map(families.map(f=>[f.id,assignTargetSeries(f,allMasters.filter(d=>designTargets(d,katalog).some(t=>t.familie===f.id)&&(reviewUnreleased||approvedForFamily(d,f.id,katalog))),katalog)]));
- const needed=[...new Set([...assigned.entries()].flatMap(([id,list])=>list.filter(a=>!a.oldSize&&(!selectedSize||a.sizes.some(key=>slotKey(katalog.families.get(id).sizes.find(s=>s.key===key))===slotKey(selectedSize)))).flatMap(a=>a.design.fonts||[])))];
+ const needed=[...new Set([...assigned.entries()].flatMap(([id,list])=>list.filter(a=>!a.oldSize&&a.sizes.some(key=>inCut(katalog.families.get(id).sizes.find(s=>s.key===key)))).flatMap(a=>a.design.fonts||[])))];
  const {fonts,missing}=await katalog.fontResources(needed,{available,converter});report.fontsMissing=missing;
  const bank=new Map(),motifs=new Map(),rights={},formats=new Map(),colors=[],converted=new Map();let base;
  const theme=katalog.theme(sub.themeId);
  for(const family of families){
   const colorId=color(family);colors.push({id:colorId,label:colorId==='edelstahl'?'Edelstahl':colorId==='schwarz'?'Schwarz':'Anthrazit'});
   for(const size of family.sizes){
-   if(selectedSize&&slotKey(size)!==slotKey(selectedSize))continue;
+   if(!inCut(size))continue;
    // No generic family starter is exposed: it supplies geometry/options only.
    let config;
    try{const view={...family,groups:family.groups.filter(g=>g.key===size.groupKey),sizes:[size],mountingRules:family.mountingRules.filter(r=>size.mounting.includes(r.id))};const fallback=sizeQuantityTiers(family,size)===undefined?defaultQuantityTiers(line,sub):null;if(fallback)view.quantityTiers=fallback.tiers;config=familyProductConfig(view,size,1);}
@@ -58,14 +60,14 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
      for(const m of t.motifs){if(motifs.has(m.key)&&JSON.stringify(motifs.get(m.key))!==JSON.stringify(m))fail('Widersprüchliche Motivressource '+m.key+'.');motifs.set(m.key,copy(m));}
     }catch(error){report.excluded.push({familyId:family.id,sizeKey:size.key,designId:a.design.id,issues:[error.message]});}
    }
-   const slot=slotKey(size),format=formats.get(slot)||{key:size.key,form:size.groupKey,label:size.label,geometry:copy(p.geometry),variants:[]};
+   const slot=slotKey(size),format=formats.get(slot)||{key:size.key,form:size.groupKey,label:size.label,geometry:copy(p.geometry),...(p.workingArea?{workingArea:copy(p.workingArea)}:{}),variants:[]};
    if(!sameGeometry(format.geometry,p.geometry))fail('Die Farben haben verschiedene Geometrien: '+slot+'.');
    format.variants.push({color:colorId,familyId:family.id,sizeKey:size.key,basePriceCents:size.baseCents,material:copy(p.material),mounting:copy(p.optionGroups.find(g=>g.id==='mounting').values),designIds:designs,...(reviewUnreleased?{unapprovedDesignIds}:{}),...(config.quantityTiers?{quantityTiers:copy(config.quantityTiers)}:{})});formats.set(slot,format);
    report.sizes.push({familyId:family.id,sizeKey:size.key,form:customerForm(size.groupKey),basePriceCents:size.baseCents,designs:designs.length,mountings:format.variants.at(-1).mounting.length});
    if(!base&&(selectedSize||size.groupKey==='AB'&&size.widthMm===120&&size.heightMm===80)&&designs.length)base=config;
   }
  }
- const list=[...formats.values()],start=selectedSize?list[0]:list.find(s=>s.form==='AB'&&s.geometry.width===120&&s.geometry.height===80);
+ const list=[...formats.values()],start=selectedSize?(list.find(s=>s.key===selectedSize.key)||list[0]):list.find(s=>s.form==='AB'&&s.geometry.width===120&&s.geometry.height===80);
  report.shopify.plannedVariants=list.reduce((sum,s)=>sum+s.variants.reduce((n,v)=>n+v.mounting.length,0),0);
  report.shopify.withinLimits=report.shopify.plannedVariants<=2048&&report.shopify.options.length<=3;
  report.shopify.variants=list.flatMap(s=>s.variants.flatMap(v=>v.mounting.map(m=>({source:{familyId:v.familyId,sizeKey:v.sizeKey,mounting:m.id},optionValues:[optionLabel(s),...(colors.length>1?[colors.find(c=>c.id===v.color).label]:[]),m.label],priceCents:v.basePriceCents+m.priceCents,designAvailable:!!v.designIds.length,shopifyVariantId:null}))));
@@ -79,13 +81,20 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
  if(shopProduct){
   const starter=c.familyFormats.designs.find(d=>d.katalog.designId===shopProduct.defaultDesignId);
   if(!starter||!starter.themes?.includes(sub.themeId)||start.variants.some(v=>!v.designIds.includes(starter.id)))fail('Startdesign ist nicht in jeder Produktfarbe freigegeben, passend und der Unterkategorie zugeordnet.');
-  c.familyFormats.fixedSize=start.key;c.familyFormats.source.shopProduct=copy(shopProduct);
-  p.optionGroups=p.optionGroups.filter(g=>g.id!=='size');p.themeId=shopProduct.themeId;p.defaultDesignId=starter.id;
-  p.id+='-'+createHash('sha256').update(JSON.stringify([start.key,shopProduct.defaultDesignId])).digest('hex').slice(0,16);p.binding.productId='local-'+p.id;
-  p.name+=' · '+start.label;
+  c.familyFormats.source.shopProduct=copy(shopProduct);p.themeId=shopProduct.themeId;p.defaultDesignId=starter.id;
+  if(formChoice){c.familyFormats.defaultSize=start.key;const sizeGroup=p.optionGroups.find(g=>g.id==='size');if(sizeGroup){sizeGroup.name='Größe';sizeGroup.defaultValueId=start.key;}}
+  else{c.familyFormats.fixedSize=start.key;p.optionGroups=p.optionGroups.filter(g=>g.id!=='size');}
+  p.id+='-'+createHash('sha256').update(JSON.stringify(formChoice?[start.form,shopProduct.zielgruppe??null,shopProduct.defaultDesignId]:[start.key,shopProduct.defaultDesignId])).digest('hex').slice(0,16);p.binding.productId='local-'+p.id;
+  p.name+=' · '+(formChoice?(FAMILY_FORMS.find(([id])=>id===customerForm(start.form))?.[1]??start.form)+(shopProduct.zielgruppe?' · '+shopProduct.zielgruppe:''):start.label);
   if(p.material.kind==='steel'){c.photo={...c.photo,enabled:false};c.logo={...c.logo,enabled:false,vectorUpload:false};}
-  report.shopify.options=report.shopify.options.filter(n=>n!=='Form & Größe');
-  for(const v of report.shopify.variants)v.optionValues.shift();
+  if(formChoice){
+   // Nur die Größe benennen („Herz M · 20,9 × 45,0 cm“), die Form steht im Produkt.
+   const plainLabel=new Map(list.map(s=>[optionLabel(s),s.label]));
+   const sizeGroup=p.optionGroups.find(g=>g.id==='size');if(sizeGroup)for(const v of sizeGroup.values)v.label=list.find(s=>s.key===v.id)?.label??v.label;
+   report.shopify.options=report.shopify.options.map(n=>n==='Form & Größe'?'Größe':n);
+   for(const v of report.shopify.variants)v.optionValues[0]=plainLabel.get(v.optionValues[0])??v.optionValues[0];
+  }
+  else{report.shopify.options=report.shopify.options.filter(n=>n!=='Form & Größe');for(const v of report.shopify.variants)v.optionValues.shift();}
   report.shopProduct=copy(shopProduct);
   report.shopify.metafields=[shopProductCutMetafield(shopProduct)];
  }

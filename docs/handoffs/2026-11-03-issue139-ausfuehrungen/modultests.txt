@@ -1,0 +1,12 @@
+✔ execution selection uses catalogue/schema identity, never title, material or geometry (2.3642ms)
+✔ stake offers only current-form sizes and follows size-specific head/production geometry without source changes (31.2588ms)
+✔ memorial shows bound accessory alternatives, K00 first, catalogue surcharges and no unrelated controls (3.118ms)
+✔ each execution UI is a separate chunk with no other execution or duplicate common dependency (244.7453ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 553.1027

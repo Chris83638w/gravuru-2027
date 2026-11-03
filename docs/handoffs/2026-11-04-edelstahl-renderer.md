@@ -49,8 +49,10 @@ Chris: „ne kleiner machen und einrücken“, Abstand „2 mm“.
 - Preisrunde 03.11. (Register 4.49) und Rechteck 21 × 7 = 28,99 € (4.50).
 - Wo es eingetragen ist:
   - Katalog-PR #163 (`dev/preise-edelstahl-20261103-claude`);
-  - Seite „Edelstahl-Schilder“ (Artifact RqZq43dFDorCgn3qQKHk8f, DB `tafeln`);
-  - Seite „Preise Edelstahl-Schilder“ (BTQ5qhtZegAeDLUsFMXMDc).
+  - Tabelle „Edelstahl-Schilder“ (alle 80 Größen, Preise, Befestigung, Icons): https://claude.ai/artifact/RqZq43dFDorCgn3qQKHk8f (DB `tafeln`, `optionen`);
+  - Tabelle „Preise Edelstahl-Schilder“ (alt/empfohlen/beschlossen): https://claude.ai/artifact/BTQ5qhtZegAeDLUsFMXMDc;
+  - Schiefer-Tabelle zum Vergleich: https://claude.ai/artifact/8PRwPmwGX2g5h5P4fkGe7w.
+  - Die Tabellen sind private claude.ai-Seiten: Ein Claude-Chat in Chris' Konto liest sie mit dem Artifact-Tool (`action: read`). Astra kann sie nicht öffnen. Für ihn ist die Quelle der Katalog (`familien/edelstahl/steel-door-signs.json`, `KATALOG.md`, `kataloge/Stammdaten-Gravuru.xlsx` nach PR #163), dort steht derselbe Stand.
 - Logo 12,99 € und KRA-Icon: gravuru-2027 PR #162.
 
 ### 4. 80 Edelstahl-Grundplatten (Katalog PR #164, Register 4.51)

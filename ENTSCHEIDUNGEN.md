@@ -163,6 +163,7 @@ Stand: 02.11.2026 abends. Gelesen: Code-Repo `origin/main` f78ad5b (STATUS.md, A
 | 4.50 | 03.11. 23:34 | Edelstahl **Rechteck 21 × 7 cm = 28,99 €** wie Oval (Antwort „3. 28,99“). | Chat 03.11.; Katalog PR #163 |
 | 4.51 | 03.11. 23:34/23:35 | **Alle 80 Edelstahl-Grundplatten freigestellt in den Katalog** (Antwort „5. ja“), als Vorlage „für den Konfi“: PNG freigestellt + SVG maßgenau in mm mit allen Bohrbildern, `zeichnungen/edelstahl-schilder-2027/grundplatten/`. | Chat 03.11.; Katalog PR #164 |
 | 4.52 | 04.11. 00:51 | **Schiefer-Stärken:** Premium-Schiefer **12 mm**; geschnittener Schiefer und Naturschiefer **ca. 5 mm**. Zitat: „premium schiefer hat doch 12mm und geschnittener wie naturschiefer ca. 5mm“ (bestätigt 4.32). Im Katalog fehlte die Stärke bei Premium 30 × 20, deshalb ließ es sich nicht rendern. | Chat 04.11. |
+| 4.53 | 04.11. 01:03 | Acrylglas-Gedenktafeln: Zitat „bei acrylglas wird es mehr größen geben, das machen wir extra“ → Acryl (Größen, Stärke, Preise) als eigener Schritt mit Chris; bis dahin im Katalog nichts selbst ergänzen. | Chat 04.11. |
 
 ## 5. Designs / Gestaltung
 

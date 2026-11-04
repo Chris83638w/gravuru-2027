@@ -15,14 +15,14 @@ export function bindSlateAccessories(config,{catalogue,source,bindings,resolveIm
   return selected.map(image=>{
    if(!/^bilder\/[A-Za-z0-9_.-]+\.(?:png|jpg|webp)$/.test(image.datei)||!image.name)fail('Ungültiger Konfi-Bildpfad.');
    const src=resolveImage(image.datei);
-   if(typeof src!=='string'||!(/^(?:\/(?!\/)|https:\/\/)/.test(src))||/^https:\/\/[^/]*@/.test(src))fail('Konfi-Bild braucht eine lokale oder HTTPS-Ressourcenadresse.');
+   if(typeof src!=='string'||!(/^(?:\/(?!\/)|https:\/\/)/.test(src)||/^data:image\/(?:png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(src))||/^https:\/\/[^/]*@/.test(src))fail('Konfi-Bild braucht eine lokale oder HTTPS-Ressourcenadresse.');
    return {src,name:image.name,file:image.datei};
   });
  };
  const seen=new Set();
- const choices=bindings.map(({groupId,valueId,optionId,imageName})=>{
+ const choices=bindings.map(({groupId,valueId,optionId,imageName,fieldId,finishOnly=false})=>{
   const key=JSON.stringify([groupId,valueId]);if(seen.has(key))fail('Doppelte Zubehörzuordnung.');seen.add(key);
-  const row=get(optionId),value=config.profile?.optionGroups?.find(group=>group.id===groupId)?.values.find(value=>value.id===valueId);
+  const row=get(optionId),group=config.profile?.optionGroups?.find(group=>group.id===groupId),value=fieldId?config.profile?.optionFields?.find(f=>f.id===fieldId&&f.kind==='checkbox'):group?.values.find(value=>value.id===valueId);
   if(!value)fail('Gebundene Produktoption fehlt: '+groupId+'/'+valueId);
   if(row.art==='aufpreis')fail('Foto-Aufpreis gehört zum bestehenden Fotovertrag.');
   let priceCents=row.preisCents;
@@ -30,10 +30,14 @@ export function bindSlateAccessories(config,{catalogue,source,bindings,resolveIm
    if(!row.farben.includes(imageName)||!row.preisJeFarbe)fail('Abstandshalter brauchen eine ausdrücklich zugeordnete Farbe.');
    const extra=row.preisJeFarbe[imageName]??row.preisJeFarbe.farbig;
    if(!Number.isSafeInteger(extra)||extra<0)fail('Farbaufpreis fehlt.');
-   priceCents+=extra;
+   if(finishOnly){
+    const mounts=config.profile.optionGroups.find(g=>g.id==='mounting').values.filter(v=>group.visibleIf?.groupId==='mounting'&&group.visibleIf.valueIds.includes(v.id));
+    if(!mounts.length||mounts.some(v=>v.priceCents!==row.preisCents||v.mountingRule?.accessory!=='standoffs'||v.mountingRule?.count!==(optionId==='ah2'?2:4)))fail('Farbgruppe ist nicht dem bestätigten Halterset zugeordnet.');
+    priceCents=extra;
+   }else priceCents+=extra;
   }
   if(!Number.isSafeInteger(priceCents)||priceCents<0||value.priceCents!==priceCents)fail('Zubehörpreis passt nicht zum Produktvertrag: '+optionId);
-  return {groupId,valueId,optionId,label:row.name,art:row.art,priceCents,images:images(row,imageName)};
+  return {groupId,valueId,optionId,...(fieldId?{fieldId}:{}),label:finishOnly?value.label:row.name,art:row.art,priceCents,images:images(row,imageName)};
  });
  let photo;
  if(includePhoto){

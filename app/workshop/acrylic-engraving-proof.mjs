@@ -4,12 +4,12 @@ import {renderEngraving,formEngravingSettings} from './form-engraving-proof.mjs'
 import {digest} from './review-package.mjs';
 import {productionPackage} from './production-summary.mjs';
 import {surfaceFileName} from '../configurator/variant-m/surfaces.mjs';
-export const ACRYLIC_ENGRAVING_RECIPE='gravuru-acrylic-engraving-proof/v5';
+export const ACRYLIC_ENGRAVING_RECIPE='gravuru-acrylic-engraving-proof/v6';
 export const acrylicEngravingKey=settings=>digest(JSON.stringify({recipe:ACRYLIC_ENGRAVING_RECIPE,settings:formEngravingSettings(settings)}));
 export async function createAcrylicEngravingProof(archive,archiveHash,input={},context={}){
  const a=await acrylicArtwork(archive,archiveHash,{engraving:true});
  if(a.manifest.product.method!=='engraving')throw Object.assign(Error('Diese Ausgabe benötigt ein gespeichertes natives Gravurprodukt.'),{status:422});
- const settings=formEngravingSettings({...a.manifest.productionProfile?.document.output,...input}),raw=await renderEngraving({svg:a.svg,geometry:a.geometry,settings,photoFields:a.photoFields,photos:a.photos});
+ const settings=formEngravingSettings({...a.manifest.productionProfile?.document.output,...input}),raw=await renderEngraving({svg:a.svg,geometry:a.geometry,settings,photoFields:a.photoFields,photos:a.photos,materialKind:a.manifest.product.material.kind});
  const cutPdfs=a.doorbellLayers?await renderDoorbellCutPdfs(a.doorbellLayers):null;
  const pdf=Buffer.from(raw.pdf,'base64'),contour=cutPdfs?.acrylic??Buffer.from(raw.contour,'base64');
  if(!pdf.subarray(0,5).equals(Buffer.from('%PDF-'))||!contour.subarray(0,5).equals(Buffer.from('%PDF-')))throw Error('Ungültige Gravur-PDF.');

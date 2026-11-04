@@ -1,56 +1,45 @@
-# Schiefer-Zubehör vorbereiten · Astra 1, zweiter Chat · 04.11.2026
+# Schiefer: 48 Tafeln, Fotopreise und Entwürfe · Astra 1, zweiter Chat · 04.11.2026
 
-Basis `main` **3eb2ea43c5383571094b8da1017ade9f4884eb72**, eigener Branch `dev/astra1-schiefer-zubehoer-20261104`.
-Nur Vorbereitung. Keine Schieferfamilie, kein Produkt und keine Variante angelegt; kein Merge, Import, Shopify-Schreibzugriff oder Live-Schritt.
+## Ergebnis und Quellen
 
-## Auftrag und fachliche Quellen
+Fortsetzung ausschließlich nach Claudes zwei Aufträgen in #85: [Anschluss](https://github.com/Chris83638w/gravuru-2027/issues/85#issuecomment-6618926268) und [Entscheidungen 4.59/4.60](https://github.com/Chris83638w/gravuru-2027/issues/85#issuecomment-6618993147). Die frühere reine Zubehör-Vorbereitung dieses PR ist damit ersetzt.
 
-- Maßgeblich: [Claude in #85, 6618153743](https://github.com/Chris83638w/gravuru-2027/issues/85#issuecomment-6618153743). Die 48 Tafeln, bestätigten Preise und freigegebenen Rohlinge V2 kommen erst mit der vollständigen Katalogübergabe. **Keine Daten aus alten 22×14-/30×20-Familien verwenden.**
-- `AGENTS.md` auf main und `ENTSCHEIDUNGEN.md` aus [PR #158](https://github.com/Chris83638w/gravuru-2027/pull/158) gelesen. Master mit Ausführungsmodul (1.13), keine neue Konfigurator-App.
-- [Katalog-PR #162](https://github.com/Chris83638w/gravuru-katalog./pull/162), Branch `dev/zubehoer-bilder-20261103-claude`, Commit **86aa4bcec5c62e0c46cfc61ed30a42418841d1ff**: `materialien/zubehoer/schiefer-zubehoer.json`, ausschließlich `konfiBilder` mit Bildnamen, `preisCents`, `preisJeFarbe`. Keine Gruppen-/Seitenbilder in den Abstandshalter-Kacheln.
-- Regeln 3.38/3.39, 4.44–4.48: Draufsichten, Abstandshalter 12 mm, fünf Farben (Edelstahl, Schwarz matt, Bronze, Gold, Weiß), Foto-Beispiele Mensch/Hund. 2er/4er Edelstahl 599/899 Cent, farbig zusätzlich 100/200 Cent. Schwarzbild bleibt die als simuliert dokumentierte Originalquelle.
-- Für spätere Produktanbindung verbindlich: Schraubenkopf 5 mm, Premium 12 mm, Natur/geschnitten ca. 5 mm, blaue Haarlinien, Gravur/Graustufen. Dieses Medienpaket erzeugt keine Geometrie oder Produktionsprofile. **main hat noch `SIGN_SCREW_HEAD_MM=4.5`; die spätere Schiefer-Abnahme muss 5 mm verifizieren**, abgestimmt mit dem zuständigen #139-Chat. Hier keine globale Änderung an anderen Linien.
-- Vorschauen/Kontaktbögen ausschließlich über [Renderer-PR #163](https://github.com/Chris83638w/gravuru-2027/pull/163). In diesem Paket keine Tafeln/Vorlagen gerendert.
+Quelle ist Katalog-PR #169, Commit `ff1ea99ef92f3cce7069e7c9d41cdaa3e781e546`, Zubehör aus PR #162, Commit `86aa4bcec5c62e0c46cfc61ed30a42418841d1ff`. [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) gilt; keine neuen Designgrafiken oder Freigaben erfunden.
 
-## Implementiert
+- Vier neue Katalogfamilien, exakt 48 Tafeln: Premium 6, geschnitten 9, Natur 24, Kordel 9. Maße, Konturen, Löcher, Rohlinge V2 und Preise aus der bestätigten Quelle. Keine alten Familienpreise übernommen.
+- 186 Design-Metadatensätze und drei Linien auf identische Größen umgezogen; Freigaben und Originalgrafiken unverändert. 268 freigegebene Zuordnungen in drei passenden Produkten (104 Natur 22×14, 82 Natur 30×20, 82 Premium 30×20). Andere Tafeln starten als eigene Gestaltung. Hunde erscheinen als Filter in Naturschiefer.
+- 48 neue Shopify-DRAFTs, 278 Varianten, 48 READY-Bilder. Alle IDs, Preise, Status und null Veröffentlichungen erneut gelesen. **0 bestehende Produkte überarbeitet, 0 veröffentlicht.**
+- Alle 48 Leer-Kontaktbögen mit dem Renderer aus PR #163 erzeugt; Kordel zeigt die verbindliche Kordelbefestigung. Katalog-PDF/PNG-Übersicht neu gebaut.
 
-`app/workshop/slate-accessories.mjs` bietet `bindSlateAccessories(config, {catalogue, source, bindings, resolveImage, includePhoto})`:
+## Code und fachlicher Vertrag
 
-- Die spätere Kataloganbindung liefert JSON, Quellpfad/Revision, erreichbare Bildadressen und ausdrückliche Zuordnungen `{groupId,valueId,optionId,imageName?}`. Es werden keine IDs aus Namen oder Lochzahlen geraten.
-- Vorhandene Produktoptionen und Fotovertrag müssen exakt zu den Katalogpreisen passen. Veraltete Preise werden gemeldet, niemals still geändert. Farben benötigen eine eindeutige Zuordnung.
-- Die Funktion liefert eine Kopie mit `slateAccessories`; Preisvertrag, Optionen, Geometrie und Original bleiben unverändert. Sie wird noch von keinem produktiven Import aufgerufen.
-- Familienformate sind in diesem ersten Adapter ausdrücklich noch nicht unterstützt: ihre Preise/Optionen wechseln je Größe und müssen nach der vollständigen Katalogübergabe an den gemeinsamen Formatresolver angeschlossen werden. Diese technische Grenze ist keine neue Sortimentsregel.
+`scripts/build-slate-families.mjs` baut validierte Familien; `migrate-slate-targets.mjs` migriert nur Ziel-/Größenmetadaten; `audit-slate-migration.mjs` vergleicht Originale und Freigaben mit dem Quellcommit. `prepare-slate-products.mjs` erzeugt die vier lokalen Werkstattfamilien und 48 native Konfigurationen. Vorlagen werden nur für ihre identische Quellgröße übernommen. Wiederholung mit geändertem Inhalt wird über den Import-Fingerprint abgewiesen, nicht still überschrieben.
 
-`slate-accessory-media.mjs` und das bestehende `memorial-execution.mjs` stellen ausdrücklich gebundene Bilder samt Bildnamen und Katalogbezeichnungen dar. Befestigung bleibt im vorhandenen Auswahlvertrag, K00 zuerst. Separate gebundene Zubehörgruppen bleiben separat; es wird keine neue gegenseitige Ausschlussregel eingeführt. Foto Mensch/Hund ergänzt den bestehenden Einstieg „Foto gestalten“.
+`photoDesignCents` ist optional je Größe. Ausschlaggebend ist die gewählte Originalvorlage: Fotofeld = Fotogrundpreis inklusive erstem Foto; ohne Fotofeld = Grundpreis und kein Inklusivfoto. Weitere Fotos je 999 Cent. Premium und die drei kleinen geschnittenen Größen bleiben ohne Foto. Dieselbe Preisfunktion gilt für Konfi und Warenkorbprüfung; eine reine Grundpreisbindung lehnt abweichende Fotopreise ab. Andere Materialfamilien behalten ihren Vertrag.
 
-Das Modul bleibt im separaten Gedenktafel-Bündel. Ungebundene Produkte behalten ihre Darstellung; die bestehenden deaktivierten Gedenktafelprofile werden nicht aktiviert. Kein neuer Produktfamilienname erfunden.
+Das bestehende Master-Modul erhält Rohling-WebP, tatsächliche 5-mm-Schraubenköpfe/12-mm-Abstandshalter-Draufsichten, bedingte AH-Farben und drei unabhängige Zubehör-Checkboxen. Kundenfotos werden grau dargestellt. Nur die vier neuen Familien aktivieren den zuvor gesperrten Gedenktafel-Einstieg. Die separate Schiefer-Kontur-PDF enthält blaue echte Haarlinien (PDF-Breite 0); Gravur bleibt grau. Cache-Rezept v6 verhindert Wiederverwendung alter Konturdateien.
 
-## Prüfungen
+`scripts/slate-draft-plan.mjs` reproduziert die tatsächlich verwendeten 48 Shopify-Payloads aus der gemeinsamen Preislogik. Die beiden GraphQL-Dateien wurden gegen Shopify 2026-07 validiert. API-Aufrufe erfolgten gesammelt über den Shopify-Connector. Fotos/Zubehör sind Konfi-Aufpreise; Shop-Entwürfe besitzen die bestätigten Befestigungsvarianten.
 
-22 unterschiedliche Tests erfolgreich, keine Skips:
+## Reproduktion und Nachweise
 
-```powershell
-node --test app/workshop/slate-accessories.test.mjs app/configurator/variant-m/execution-registry.test.mjs app/configurator/variant-m/option-fields.test.mjs app/configurator/variant-m/bundle.test.mjs
+```text
+node scripts/build-slate-families.mjs --katalog <Katalogcheckout>
+node scripts/migrate-slate-targets.mjs --katalog <Katalogcheckout>
+node scripts/audit-slate-migration.mjs --katalog <Katalogcheckout>
+node scripts/prepare-slate-products.mjs --katalog <Katalogcheckout> --out <neues-lokales-Datenverzeichnis>
+node scripts/slate-draft-plan.mjs --plan <Datenverzeichnis>/shopify-plan.json --out <Payload-Datei>
+node scripts/serve-slate-review.mjs --data <Datenverzeichnis> --port 8978
 ```
 
-Erstlauf 21/22: ein HTTP-Server-Test scheiterte an `connect EACCES 127.0.0.1`, außerhalb der eingeschränkten Testumgebung gezielt bestanden (`--test-name-pattern='Server: Bündel'`). Die neun direkt betroffenen Adapter-/Darstellungs-/Bündeltests nach der letzten Bezeichnungsänderung erneut erfolgreich. Windows TEMP/TMP auf eigenen Arbeitsordner gesetzt, nachdem der erste Bündellauf beim Umbenennen im System-Testordner scheiterte.
+Browserprüfung: `SLATE_PLAN` auf die lokale `shopify-plan.json` setzen, dann `node scripts/check-slate-browser.cjs` mit Playwright. Prüft Zubehör, AH-Sichtbarkeit, Hunde-Filter, Designwechsel, Foto-Upload, Bildfehler und Konsolenfehler. Testfoto ist ein synthetischer Funktionsnachweis, kein freigegebenes Katalogdesign.
 
-Testfälle umfassen alle fünf Farben in beiden Setgrößen, korrekte Aufpreise, Zurückweisung der alten Schrauben-/Silikon-/Ständer-/Fotopreise, fehlende Quellen/Bindungen/Farben, HTML-Escaping, unveränderte Produktdaten und getrennte Module. Der JSON-Testfixture entspricht dem oben festgehaltenen Katalogcommit; er wird ausschließlich vom Test gelesen, nicht als Produktdatenquelle. 11 Optionen / 23 unterschiedliche `konfiBilder` vorhanden und nicht leer. `git diff --check` und Syntaxprüfung des lokalen Prüfscripts erfolgreich.
+Katalogbranch `dev/astra1-schiefer-familien-20261104`, Ordner `auftraege/2026-11-04-schiefer-anschluss/`: Kontaktbögen aller Tafeln, Migrationsaudit, native Vorbereitungsdaten ohne Datenbanken, Shopify-Leseprüfung, Altbestand und Browserbilder. Testprotokolle und genaue Laufzahlen stehen dort unter `pruefungen/`.
 
-## Sichtbare Bedienprüfung: offen
+## Grenzen und nächster Schritt
 
-Reproduzierbarer lokaler Komponentenprüfer:
+Eigene Branches, kein Merge nach main. Katalog-PR baut auf dem noch offenen PR #169 auf und enthält die benötigten Zubehördaten aus PR #162; beim gemeinsamen Merge diese Abhängigkeiten beachten. Ausschließlich Astra 1 in #139 übernimmt den Merge nach Chris' OK.
 
-```powershell
-node scripts/check-slate-accessories-ui.mjs <Pfad-zum-Katalogcheckout-PR162>
-```
+Die lokalen Konfigurationen wurden nicht auf den Live-Server importiert und nicht als bestellbare Shop-Konfigurationen gebunden. Kein realer Checkout-/Bestell-/Produktionsabnahmenachweis wird behauptet. Die Entwürfe bleiben unveröffentlicht. Für die spätere Aktivierung sind die vorhandene native Konfi-/Variantenbindung und anschließend Warenkorb, Re-Edit und Produktionsausgabe am freigegebenen Serverstand zu prüfen. Live nur nach Chris' ausdrücklichem Satz.
 
-Er lauscht ausschließlich auf `127.0.0.1:8976`. Zeigt das echte Darstellungsmodul mit den Original-Katalogbildern in einer **synthetischen Komponentenprüfung**, keine Platte und keinen vollständigen Konfi. Die Test-Auswahl ist kein freigegebenes Sortiment. Knopf für 390 px Prüfbreite und Auswahlstatus vorhanden.
-
-Der Serverstart wurde bestätigt. Der integrierte Browser erreichte localhost nicht (`ERR_CONNECTION_TIMED_OUT`). Die native Chrome-Steuerung brach danach ab, weil sie die aktuelle Browseradresse nicht sicher feststellen konnte. **Keine erfolgreiche Desktop-/Mobil-Bedienprüfung, kein Screenshot- oder vollständiger Warenkorbnachweis behauptet.** Keine weiteren Browseraktionen nach diesem Abbruch.
-
-## Genau nächster Schritt
-
-Nach Claudes vollständigem Auftrag in #85 die neuen Katalogfamilien/48 Tafeln/Rohlinge an den bestehenden Familienformat- und Gedenktafelvertrag anbinden. Erst dann erlaubte Befestigungen/Zubehör, gemeinsame Preisauflösung, Form-/Größenwechsel, graue Kundenfotos, 5-mm-Schraubenköpfe, blaue Exportkonturen und Erhalt der Medien in Startmodell/Speicherung prüfen. Bildadressen über die vorhandene Ressourcenverteilung bereitstellen; dieses Paket veröffentlicht keine Bilder. Renderer aus PR #163 für Plattenvorschauen verwenden. Sichtbare Bedienprüfung nachholen.
-
-Merge ausschließlich durch Astra 1 in #139. Live ausschließlich nach Chris' Satz im selben Chat. Die Produktaufteilung bleibt ungeändert, bis Claude die Katalogübergabe liefert.
+Die fünf im Altbestandsbericht erfassten ACTIVE-Produkte wurden nicht verändert. Vier sind Schiefer-Treffer; ein fünfter hat Schiefer-Titel, aber Edelstahl-URL/abweichende Größe und bleibt ausdrücklich ungeklärt. Eine direkte alte Familien-ID ist nicht bei allen hinterlegt. Alte Familien-Dateien bleiben erhalten, weil Live-Produkte noch nicht umgezogen sind.

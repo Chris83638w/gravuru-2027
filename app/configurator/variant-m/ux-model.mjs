@@ -4,6 +4,7 @@ export {carryPersonalObjects,mapPersonalObjects} from './field-mapping.mjs';
 export const uploadAllowed=(config,kind)=>kind==='photo'?config?.logo?.vectorUpload!==true&&config?.photo?.enabled!==false:kind==='logo'?config?.logo?.enabled!==false:false;
 export function photoAvailableForDesign(config,designId){
   if(config?.logo?.vectorUpload===true||config?.photo?.enabled===false)return false;
+  if(config?.photoDesignPricing===true)return true;
   const design=config?.profile?.designs?.find(d=>d.id===designId);
   return !design?.importedSource||design.objects.some(o=>o.type==='photoSlot');
 }

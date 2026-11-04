@@ -9,6 +9,7 @@ import {katalogFor} from '../app/workshop/design-dashboard.mjs';
 import {designTargets,designTargetCompatibility} from '../app/workshop/design-targets.mjs';
 import {targetDesignPreview} from '../app/workshop/design-target-preview.mjs';
 import {familyProductConfig} from '../app/workshop/product-families.mjs';
+import {withFamilyPreview} from '../app/workshop/slate-catalog-product.mjs';
 import {productPreview} from '../app/workshop/product-preview.mjs';
 import {customerForm} from '../app/configurator/variant-m/family-formats.mjs';
 
@@ -41,7 +42,7 @@ const view=opt.ansicht||'kunde';if(!['kunde','pruefung'].includes(view))throw Er
 const started=Date.now(),katalog=katalogFor(root,{maxAgeMs:0}),family=katalog.families.get(opt.familie);
 if(!family)throw Error('Familie nicht im Katalog: '+opt.familie);
 // Kundenansicht startet wie der Konfi ohne Befestigung; die Prüfansicht zeigt wie die Werkstatt die Bohrung.
-const mounting=opt.befestigung?String(opt.befestigung).toUpperCase():view==='kunde'?'K00':null;
+const mounting=opt.befestigung?String(opt.befestigung).toUpperCase():view==='kunde'?(family.id==='schiefer-tafeln-kordel'?'KORDEL':'K00'):null;
 const safe=s=>String(s).replace(/[^\w.-]+/g,'_');
 fs.mkdirSync(out,{recursive:true});
 
@@ -72,7 +73,7 @@ function blankConfig(key){
  v.mountingRules=v.mountingRules.filter(r=>size.mounting.includes(r.id));
  // Preise sind für das Bild ohne Bedeutung; offene Preise (noch nicht entschieden) dürfen die Vorschau nicht sperren – wie in targetDesignPreview.
  for(const r of v.mountingRules)r.priceCents=0;v.sizes[0].baseCents=0;delete v.sizes[0].quantityTiers;if(v.photo)v.photo.extraPriceCents=0;
- return familyProductConfig(v,v.sizes[0],1,{previewOnly:true});
+ return withFamilyPreview(familyProductConfig(v,v.sizes[0],1,{previewOnly:true}),root,size);
 }
 // Gestaltungsvorlage: reine Geometrie aus dem Katalog in mm (Corel-Konvention rot = Platte und Löcher).
 // Je unterschiedlichem Bohrbild eine eigene Ebene, damit beim Gestalten alle Lochlagen sichtbar sind.

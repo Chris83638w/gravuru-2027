@@ -125,7 +125,9 @@ export function validateFamily(f){
  if(!Array.isArray(f.sizes)||!f.sizes.length||f.sizes.length>500)invalid('1 bis 500 Größen angeben.');
  const groups=new Map(f.groups.map(g=>[g.key,g])),rules=new Map(f.mountingRules.map(r=>[r.id,r]));
  for(const s of f.sizes){
-  only(s,['key','groupKey','label','widthMm','heightMm','baseCents','mounting','netWeightG','cornerRadiusMm','backingCornerRadiusMm','quantityTiers','outlinePath','holesMm','workingArea','cutoutPaths'],'Größe');
+  only(s,['key','groupKey','label','widthMm','heightMm','baseCents','photoDesignCents','previewImage','mounting','netWeightG','cornerRadiusMm','backingCornerRadiusMm','quantityTiers','outlinePath','holesMm','workingArea','cutoutPaths'],'Größe');
+  if(s.photoDesignCents!==undefined&&!cents(s.photoDesignCents))invalid(s.key+': Fotodesignpreis muss ein ganzer Cent-Wert sein.');
+  if(s.previewImage!==undefined&&(typeof s.previewImage!=='string'||!/^zeichnungen\/[A-Za-z0-9_./-]+\.webp$/.test(s.previewImage)||s.previewImage.split('/').some(p=>p==='..'||p==='')))invalid(s.key+': ungültiger Rohlingpfad.');
   if(s.workingArea!==undefined){only(s.workingArea,['headHeightMm','previewHeightMm'],'Kopfansicht');if(!contourSize(f,s)||!mm(s.workingArea.headHeightMm,10,s.heightMm)||!mm(s.workingArea.previewHeightMm,s.workingArea.headHeightMm,s.heightMm)||Math.abs(s.workingArea.previewHeightMm-s.workingArea.headHeightMm-10)>.001)invalid(s.key+': Kopfansicht benötigt die Quellhöhe des Kopfs plus 10 mm Stiel.');}
   tierIssue(s.quantityTiers,'Größe '+(s.key||''));
   if(s.cornerRadiusMm!==undefined&&(!mm(s.cornerRadiusMm,0,100)||!CORNERED.includes(groups.get(s.groupKey)?.shape)))invalid('Größe '+(s.key||'')+': eigener Eckenradius nur bei eckiger Form.');
@@ -257,6 +259,8 @@ export function familyProductConfig(f,s,revision,{previewOnly=false}={}){
  const fields=familyOptionFields(f,s);if(fields.length)profile.optionFields=fields;
  if(f.surfaces!==undefined)profile.surfaces=structuredClone(f.surfaces);
  const c={reviewOnly:true,basePriceCents:s.baseCents,extraMotifCents:0,logo:{enabled:false},photo:{enabled:false,mode:'upload-only',includedCount:f.photo?.includedCount??0,extraPriceCents:f.photo?.extraPriceCents??0},localResources:{scope:'local-review-only',fonts:{[font]:resources.fonts[font]},motifs:[]},profile};
+ if(f.id.startsWith('schiefer-tafeln-')){c.photoDesignPricing=true;c.photo.enabled=s.photoDesignCents!==undefined;}
+ if(s.photoDesignCents!==undefined)c.photoDesignCents=s.photoDesignCents;
  const execution=familyExecution(f.id);if(execution)c.productExecution=execution;
  if(f.material.kind==='acrylic')c.familyAcrylic={schema:'gravuru-family-acrylic/v1',familyId:f.id,sizeKey:s.key,sourceShape:sourceGeometry.shape};
  const tiers=sizeQuantityTiers(f,s);if(tiers!==undefined)c.quantityTiers=structuredClone(tiers);
@@ -273,7 +277,7 @@ export function familyProductConfig(f,s,revision,{previewOnly=false}={}){
 // verdeckte Gruppe wird im Vertrag weder angezeigt noch berechnet (resolvedOptions/quote).
 // Farben der Abstandshalter steuern die Vorschau (spacerFinish). Mehrfachauswahl ist noch nicht
 // angeschlossen und bleibt wie bisher außen vor.
-const FINISH_OF_CHOICE=Object.freeze({edelstahl:'silver',silber:'silver',schwarz:'black',weiss:'white',rose:'rose-gold',rosegold:'rose-gold',bronze:'bronze'});
+const FINISH_OF_CHOICE=Object.freeze({edelstahl:'silver',silber:'silver',schwarz:'black',weiss:'white',rose:'rose-gold',rosegold:'rose-gold',bronze:'bronze',gold:'gold'});
 export function familyOptionGroups(f,s){
  const standoffs=s.mounting.some(rid=>ruleOf(f,rid)?.accessory==='standoffs');
  const result=[];
@@ -299,6 +303,12 @@ export function familyOptionGroups(f,s){
 // eintreten kann, entfällt (samt Feldern, die auf es verweisen).
 export function familyOptionFields(f,s){
  const result=[],present=new Map();
+ // Independent optional extras use the existing checkbox/price contract.
+ for(const group of (f.options||[]).filter(g=>g.kind==='accessory'&&g.selection==='multiple')){
+  let visibleIf;
+  if(group.visibleIf){const c=group.visibleIf;if(c.groupId!=='mounting')invalid('Mehrfachzubehör benötigt eine Befestigungsbedingung.');const valueIds=c.valueIds.filter(id=>s.mounting.includes(id)).map(id=>ruleOf(f,id).skuSuffix);if(!valueIds.length)continue;visibleIf={groupId:'mounting',valueIds};}
+  for(const choice of group.choices)result.push({id:choice.id,kind:'checkbox',label:choice.label,priceCents:choice.priceCents,...(visibleIf?{visibleIf}:{})});
+ }
  for(const g of (f.options||[]).filter(g=>FIELD_KINDS.includes(g.kind))){
   const field={id:g.id,kind:g.kind,label:g.label,...(g.required!==undefined?{required:g.required}:{}),...(g.maxLength!==undefined?{maxLength:g.maxLength}:{}),...(g.priceCents!==undefined?{priceCents:g.priceCents}:{}),...(g.note!==undefined?{note:g.note}:{})};
   if(g.kind==='select')field.choices=g.choices.map(c=>({id:c.id,label:c.label,...(c.priceCents!==undefined?{priceCents:c.priceCents}:{})}));
@@ -376,6 +386,7 @@ const productName=(f,s)=>{const name=f.groups.find(g=>g.key===s.groupKey).name;r
 export function familySyncTarget(document,f,s,revision){
  const t=familyProductConfig(f,s,revision),doc=structuredClone(document),p=doc.config.profile,mount=t.profile.optionGroups.find(g=>g.id==='mounting');
  doc.name=productName(f,s);doc.config.basePriceCents=t.basePriceCents;p.name=t.profile.name;p.revision=t.profile.revision;
+ if(t.photoDesignPricing){doc.config.photoDesignPricing=true;doc.config.photo=t.photo;if(t.photoDesignCents===undefined)delete doc.config.photoDesignCents;else doc.config.photoDesignCents=t.photoDesignCents;}
  p.geometry={...p.geometry,width:t.profile.geometry.width,height:t.profile.geometry.height,shape:t.profile.geometry.shape,cornerRadiusMm:t.profile.geometry.cornerRadiusMm,safeMarginMm:t.profile.geometry.safeMarginMm};
  for(const key of ['outlinePath','holeKeepoutMm']){if(t.profile.geometry[key]===undefined)delete p.geometry[key];else p.geometry[key]=t.profile.geometry[key];}
  const old=p.optionGroups.find(g=>g.id==='mounting'),group=structuredClone(mount);if(old&&group.values.some(v=>v.id===old.defaultValueId))group.defaultValueId=old.defaultValueId;
@@ -387,6 +398,7 @@ export function familyChanges(before,after){
  const add=(field,label,x,y)=>{if(JSON.stringify(x)!==JSON.stringify(y))changes.push({field,label,before:x,after:y});};
  add('name','Name',before.name,after.name);
  add('price','Grundpreis',euroText(a.basePriceCents),euroText(b.basePriceCents));
+ add('photoDesignPrice','Preis mit Fotodesign',a.photoDesignCents,b.photoDesignCents);
  add('size','Maße',ga.width+' × '+ga.height+' mm',gb.width+' × '+gb.height+' mm');
  const shapeName=g=>(g.shape==='ellipse'?'oval':g.shape==='plaque'?'eingezogene Ecken':g.shape==='contour'?'Kontur':'eckig')+(g.cornerRadiusMm?' R'+g.cornerRadiusMm:'');add('shape','Form',shapeName(ga),shapeName(gb));
  if(ga.outlinePath!==gb.outlinePath)add('outline','Außenkontur',ga.outlinePath?'bisherige Zeichnung':'Grundform',gb.outlinePath?'neue Zeichnung':'Grundform');

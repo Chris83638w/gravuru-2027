@@ -17,7 +17,7 @@ export function nativeSlateConfig(input) {
     fail('Schiefer benötigt eine native Gravurvorlage mit bestätigter Geometrie ohne Bestell- oder Maschinenfreigabe.');
   }
   const groups = p.optionGroups;
-  if (!Array.isArray(groups) || groups.length !== 1 || groups[0].id !== 'mounting' ||
+  if (!Array.isArray(groups) || groups[0]?.id !== 'mounting' ||
       !Array.isArray(groups[0].values) || !groups[0].values.length ||
       !groups[0].values.some(value => value.id === groups[0].defaultValueId) ||
       groups[0].values.some(value => !Array.isArray(value.holes))) {

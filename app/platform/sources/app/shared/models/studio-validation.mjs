@@ -5,7 +5,7 @@ import {validateProcessingProfile} from './processing-profiles.mjs';
 import {validateUniversalElements,validateOptionGroups} from './universal-elements.mjs';
 import {validateProfile} from './product-legacy-validation-module.mjs';
 export function dimensions(p){return p.kind==='layered-doorbell'&&p.doorbellSchema!==DOORBELL_SCHEMA?{width:160,height:280,margin:10,shape:'rect'}:{width:p.geometry.width,height:p.geometry.height,margin:p.geometry.safeMarginMm??2,shape:p.geometry.shape||'rect',radius:p.geometry.cornerRadiusMm||0};}
-export function validateStudio(p,original,{extraFontIds=[],motifs=[],fonts,catalogSizes=false}={}){
+export function validateStudio(p,original,{extraFontIds=[],motifs=[],fonts,catalogSizes=false,catalogDesigns=false}={}){
  if(!p||!original)throw Error('Ungültige Produktvorlage.');
  if(p.kind==='layered-doorbell'&&p.doorbellSchema===DOORBELL_SCHEMA){
   if(!validContentId(p.id)||p.id!==original.id||JSON.stringify(p.binding)!==JSON.stringify(original.binding)||!p.binding?.productId)throw Error('Ungültige native Funkklingelzuordnung.');
@@ -28,7 +28,7 @@ export function validateStudio(p,original,{extraFontIds=[],motifs=[],fonts,catal
  validateGeometryHoles(p);
  // A validated catalog family includes all approved themes (#139). The
  // merchant's manual-template cap must not truncate that source-bound gallery.
- if(!Array.isArray(p.designs)||!p.designs.length||!catalogSizes&&p.designs.length>DESIGN_LIMITS.maxDesigns||p.designs.some(d=>!d)||new Set(p.designs.map(d=>d.id)).size!==p.designs.length)throw Error(catalogSizes?'Katalogdesigns mit eindeutigen Kennungen fehlen.':'Bitte 1 bis '+DESIGN_LIMITS.maxDesigns+' Designs mit eindeutigen Kennungen verwenden.');
+ if(!Array.isArray(p.designs)||!p.designs.length||!catalogSizes&&!catalogDesigns&&p.designs.length>DESIGN_LIMITS.maxDesigns||p.designs.some(d=>!d)||new Set(p.designs.map(d=>d.id)).size!==p.designs.length)throw Error(catalogSizes||catalogDesigns?'Katalogdesigns mit eindeutigen Kennungen fehlen.':'Bitte 1 bis '+DESIGN_LIMITS.maxDesigns+' Designs mit eindeutigen Kennungen verwenden.');
  for(const d of p.designs){if(typeof d.name!=='string'||!d.name.trim()||d.name.length>200)throw Error('Jedes Design braucht einen Namen mit höchstens 200 Zeichen.');validateDesignContent(d,{universal:true,extraFontIds});validateUniversalElements(d);for(const o of d.objects){const issue=surfaceObjectIssue(o,p,{motifs,fonts});if(issue)throw Error(d.name+': '+issue);}}
  return p;
 }

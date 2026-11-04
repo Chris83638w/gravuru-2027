@@ -1,0 +1,17 @@
+  type: 'test'
+  ...
+# Subtest: mixed design metadata edits and explicit graphic replacement preserve only the untouched source fields
+ok 40 - mixed design metadata edits and explicit graphic replacement preserve only the untouched source fields
+  ---
+  duration_ms: 1917.654995
+  type: 'test'
+  ...
+1..40
+# tests 40
+# suites 0
+# pass 40
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 114600.173433

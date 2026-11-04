@@ -1,0 +1,110 @@
+{
+  "pr": 168,
+  "head": "5831f0b25a40b3f627ce02d35266d8f67b0da581",
+  "designs": 287,
+  "blockedDesignSizePairs": 3157,
+  "exactBelowMinimum": [],
+  "legacySkuCandidates": [
+    {
+      "productId": "gid://shopify/Product/16077794541948",
+      "title": "Türschild Abger. Ecken V2A personalisiert – Pusteblume 8×5 cm",
+      "status": "ACTIVE",
+      "variantId": "gid://shopify/ProductVariant/57265877811580",
+      "sku": "TAE-V2A-8x5-D14",
+      "areaCm2": 40,
+      "possibleDesignIds": [
+        "TAE-V2A-8x5-D14"
+      ]
+    },
+    {
+      "productId": "gid://shopify/Product/16077794705788",
+      "title": "Türschild Abger. Ecken V2A personalisiert – Pfoten 8×5 cm",
+      "status": "ACTIVE",
+      "variantId": "gid://shopify/ProductVariant/57265878860156",
+      "sku": "TAE-V2A-8x5-D33",
+      "areaCm2": 40,
+      "possibleDesignIds": [
+        "TAE-V2A-8x5-D33"
+      ]
+    },
+    {
+      "productId": "gid://shopify/Product/16077800112508",
+      "title": "Türschild Oval Edelstahl V2A personalisiert – Vögel 12×4 cm",
+      "status": "ACTIVE",
+      "variantId": "gid://shopify/ProductVariant/57265916084604",
+      "sku": "TO-V2A-12x4-D48",
+      "areaCm2": 48,
+      "possibleDesignIds": [
+        "TO-V2A-12x4-D48",
+        "TO-V2A-15x8-D48",
+        "TO-V2A-9x6-D48"
+      ]
+    },
+    {
+      "productId": "gid://shopify/Product/16077800210812",
+      "title": "Türschild Oval Edelstahl V2A personalisiert – Herzranke 12×4 cm",
+      "status": "ACTIVE",
+      "variantId": "gid://shopify/ProductVariant/57265916182908",
+      "sku": "TO-V2A-12x4-D58",
+      "areaCm2": 48,
+      "possibleDesignIds": [
+        "TO-V2A-12x4-D58",
+        "TO-V2A-15x8-D58",
+        "TO-V2A-9x6-D58"
+      ]
+    },
+    {
+      "productId": "gid://shopify/Product/16077800407420",
+      "title": "Türschild Oval Edelstahl V2A personalisiert – Pusteblume 12×4 cm",
+      "status": "ACTIVE",
+      "variantId": "gid://shopify/ProductVariant/57265916641660",
+      "sku": "TO-V2A-12x4-D12",
+      "areaCm2": 48,
+      "possibleDesignIds": [
+        "TO-V2A-12x4-D12",
+        "TO-V2A-15x8-D12",
+        "TO-V2A-9x6-D12"
+      ]
+    },
+    {
+      "productId": "gid://shopify/Product/16077800440188",
+      "title": "Türschild Oval Edelstahl V2A personalisiert – Ornament 12×4 cm",
+      "status": "ACTIVE",
+      "variantId": "gid://shopify/ProductVariant/57265916674428",
+      "sku": "TO-V2A-12x4-D60",
+      "areaCm2": 48,
+      "possibleDesignIds": [
+        "TO-V2A-12x4-D60",
+        "TO-V2A-15x8-D60",
+        "TO-V2A-9x6-D60"
+      ]
+    },
+    {
+      "productId": "gid://shopify/Product/16077802242428",
+      "title": "Türschild Edelstahl V2A personalisiert – Schlüssel 8×3,5 cm",
+      "status": "ACTIVE",
+      "variantId": "gid://shopify/ProductVariant/57265924800892",
+      "sku": "TRE-V2A-8x3,5-D62",
+      "areaCm2": 28,
+      "possibleDesignIds": [
+        "TRE-V2A-8x3,5-D62",
+        "TRE-V2A-8x5-D62",
+        "TRE-V2A-9x3-D62"
+      ]
+    },
+    {
+      "productId": "gid://shopify/Product/16077803291004",
+      "title": "Türschild Edelstahl V2A personalisiert – Pfoten 9×3 cm",
+      "status": "ACTIVE",
+      "variantId": "gid://shopify/ProductVariant/57265928470908",
+      "sku": "TRE-V2A-9x3-D33",
+      "areaCm2": 27,
+      "possibleDesignIds": [
+        "TRE-V2A-8x3,5-D33",
+        "TRE-V2A-8x5-D33",
+        "TRE-V2A-9x3-D33"
+      ]
+    }
+  ],
+  "limit": "SKU matches are candidates, not confirmed current image/configurator bindings; unassigned products cannot be certified."
+}

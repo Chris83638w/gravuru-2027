@@ -52,7 +52,7 @@ export async function placeNewMotif({el,config,files,say},object,{minScale=1}={}
   if(!position)continue;
   object.x=position.x/scale/sx;object.y=position.y/scale/sy;
   if(s<1){object.w*=s;object.h*=s;}
-  el.sync();say(s<1?'Motiv in einer freien Fläche platziert – dafür verkleinert.':'Motiv in einer freien Fläche platziert.');return;
+  el.sync();say('');return;
  }
  object.x=area?(area.left+area.right)/2:config.profile.geometry.width/2;object.y=area?(area.top+area.bottom)/2:config.profile.geometry.height/2;el.state.selected=object.id;el.sync();say(NO_FREE_SPACE_MESSAGE);
 }

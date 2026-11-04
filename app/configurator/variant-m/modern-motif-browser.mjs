@@ -1,3 +1,4 @@
+import {installCategoryPicker} from './category-picker.mjs';
 // Reuse the native library controls and listeners; no second motif or price state.
 export function installModernMotifBrowser({r,el}){
  const entry=r.querySelector('.workflow-motif-entry'),panel=r.querySelector('#panel-motif');
@@ -15,4 +16,6 @@ export function installModernMotifBrowser({r,el}){
  const price=entry.querySelector('.ux-motif-pricing');if(price)category.closest('label').after(price);
  const less=panel.querySelector('[data-library-less]');if(less)less.hidden=true;
  entry.classList.add('ux-modern-motifs');
+ const refreshCategory=installCategoryPicker(category);
+ const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args);refreshCategory();return result;};
 }

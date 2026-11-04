@@ -1,3 +1,5 @@
+import {createGalleryPager} from './gallery-pager.mjs';
+import {uiIcon} from './ui-icons.mjs';
 import {captureDesignContent,carryDesignContent,capturePhotoFiles} from './design-content-transfer.mjs';
 import {preserveProductSelection} from './product-design-transfer.mjs';
 import {designGalleryCount} from './product-design-gallery-label.mjs';
@@ -36,44 +38,57 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
  }catch(error){window.parent.postMessage({type:'gravuru-design-transfer-failed',message:error.message},location.origin);throw error;}}
  const gallery=section;
  const status=gallery.querySelector('.ux-product-status'),grid=gallery.querySelector('.ux-product-grid'),more=gallery.querySelector('.ux-product-more');
- const confirm=dialog('product-design-confirm','Design wechseln','<p class="ux-product-summary"></p><p>Deine eigenen Texte und Fotos werden übernommen. Anordnung und Motive kommen von der neuen Vorlage. Zur vorherigen Gestaltung kannst du jederzeit zurück.</p><div class="ux-product-actions"><button type="button" data-product-cancel>Abbrechen</button><button type="button" data-product-confirm>Dieses Design wählen</button></div>');
- confirm.querySelector('[data-product-cancel]').onclick=()=>confirm.close();
+ const preview=dialog('product-design-preview','Designvorschau','<p data-preview-status role="status"></p><img data-product-preview alt="" hidden>');
+ const previewImage=preview.querySelector('[data-product-preview]'),previewStatus=preview.querySelector('[data-preview-status]');
  const themeLabel=gallery.querySelector('.ux-product-themes'),themes=themeLabel.querySelector('select');
- let next=0,loading=false,loaded=false,chosen=null;const urls=[];
- const queue=[];let active=0;
- const pump=()=>{while(active<2&&queue.length){const {item,img}=queue.shift();active++;Promise.resolve().then(()=>api.preview(item.target,item.previewUrl)).then(blob=>{const url=URL.createObjectURL(blob);urls.push(url);img.src=url;img.alt=item.designName;}).catch(()=>{img.alt='Vorschau nicht verfügbar';}).finally(()=>{active--;pump();});}};
+ const pager=createGalleryPager((page,theme,options)=>api.load(page,theme,options));
+ let epoch=0,switching=false,previewSource=null,retryTimer,prepareRetries=0;const urls=[],queue=[];let active=0;
+ const pump=()=>{while(active<2&&queue.length){const request=queue.shift(),{item,img,version}=request;
+  if(version!==epoch||img.previewStarted)continue;img.previewStarted=true;active++;
+  Promise.resolve().then(()=>api.preview(item.target,item.previewUrl)).then(blob=>{
+   if(version!==epoch)return;const url=URL.createObjectURL(blob);urls.push(url);img.src=url;img.alt=item.designName;
+   if(previewSource===img){previewImage.src=url;previewImage.hidden=false;previewStatus.textContent='';}
+  }).catch(()=>{img.alt='Vorschau nicht verfügbar';if(previewSource===img)previewStatus.textContent='Die Vorschau ist gerade nicht erreichbar. Bitte erneut versuchen.';img.previewStarted=false;
+  }).finally(()=>{active--;pump();});}};
  const observer=typeof IntersectionObserver==='function'?new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){observer.unobserve(entry.target);queue.push(entry.target.previewRequest);pump();}},{rootMargin:'150px'}):null;
- async function load(){
-  if(loading||next===null)return;loading=true;more.disabled=true;themes.disabled=true;status.textContent='Designs werden geladen …';
-  try{
-   const result=await api.load(next,themes.value,galleryOptions());
-   if(result.status==='preparing'){
-    status.textContent='Designs werden vorbereitet – bitte gleich noch einmal versuchen.';
-    more.textContent='Erneut versuchen';more.hidden=false;return;
-   }
-   themeLabel.hidden=!result.hasTheme;next=result.nextPage;loaded=true;more.textContent='Weitere Designs';
-   for(const item of result.items){
-    const card=document.createElement('button');card.type='button';card.className='ux-product-card ux-choice-tile';card.setAttribute('aria-pressed',String(item.current&&item.designId===el.state.designId));
-    const img=document.createElement('img');img.alt='Vorschau wird geladen';img.width=240;img.height=160;card.append(img);
-    card.setAttribute('aria-label','Design '+item.designName);
-    const check=document.createElement('span');check.className='completion-check';check.textContent='✓';check.setAttribute('aria-hidden','true');card.append(check);
-    if(item.current)card.dataset.productDesignId=item.designId;
-    card.onclick=()=>{if(item.current&&profile().designs.some(d=>d.id===item.designId)){if(item.designId!==el.state.designId)el.chooseDesign(item.designId);return;}chosen=item;confirm.querySelector('.ux-product-summary').textContent=item.designName+' · '+productChoiceInfo(item);confirm.showModal();};grid.append(card);
-    img.previewRequest={item,img};if(observer)observer.observe(img);else queue.push({item,img});
-   }
-   if(!observer)pump();status.textContent=result.total?designGalleryCount(result.total):'Für dieses Produkt sind noch keine weiteren Designs verfügbar.';more.hidden=next===null;
-  }catch(error){status.textContent=error.message||'Die Designauswahl ist gerade nicht erreichbar. Bitte erneut versuchen.';more.textContent='Erneut versuchen';more.hidden=false;}finally{loading=false;more.disabled=false;themes.disabled=false;}
+ async function choose(item){
+  if(switching)return;
+  if(item.current&&profile().designs.some(d=>d.id===item.designId)){if(item.designId!==el.state.designId)el.chooseDesign(item.designId);return;}
+  switching=true;grid.inert=true;back.disabled=true;status.textContent='Design wird übernommen …';
+  try{const content=captureDesignContent(el.state.objects,design());await api.choose(item.target,{selection:{options:structuredClone(el.state.mOptions||{}),quantity:Number(r.querySelector('[data-fk-quantity]')?.value||1)},content,photoFiles:capturePhotoFiles(content,files),sizeLabel:productChoiceInfo(item)});status.textContent='';}
+  catch(error){status.textContent=error.message;}
+  finally{switching=false;grid.inert=false;back.disabled=false;}
  }
- themes.onchange=()=>{observer?.disconnect();queue.length=0;grid.replaceChildren();for(const url of urls)URL.revokeObjectURL(url);urls.length=0;next=0;loaded=false;load();};
- // Nach einem Größen- oder Befestigungswechsel gelten andere Vorlagen und Vorschauen: Auswahl neu laden.
+ async function load(){
+  if(pager.loading||pager.next===null)return;const version=epoch;more.disabled=true;themes.disabled=true;status.textContent='Designs werden geladen …';
+  try{
+   const result=await pager.load(themes.value,galleryOptions());if(!result)return;
+   if(result.status==='preparing'){
+    status.textContent='Designs werden vorbereitet …';more.textContent='Erneut versuchen';more.hidden=false;
+    if(prepareRetries++<4)retryTimer=setTimeout(load,1200);return;
+   }
+   prepareRetries=0;themeLabel.hidden=!result.hasTheme;more.textContent='Weitere Designs';
+   for(const item of result.items){
+    const card=document.createElement('div');card.className='ux-product-card ux-choice-tile';
+    const select=document.createElement('button');select.type='button';select.className='ux-product-choose';select.setAttribute('aria-pressed',String(item.current&&item.designId===el.state.designId));select.setAttribute('aria-label','Design '+item.designName);
+    if(item.current)select.dataset.productDesignId=item.designId;
+    const img=document.createElement('img');img.alt='Vorschau wird geladen';img.width=240;img.height=160;select.append(img);
+    const check=document.createElement('span');check.className='completion-check';check.textContent='✓';check.setAttribute('aria-hidden','true');select.append(check);select.onclick=()=>choose(item);
+    const zoom=document.createElement('button');zoom.type='button';zoom.className='ux-product-enlarge';zoom.innerHTML=uiIcon('zoom');zoom.setAttribute('aria-label','Designvorschau vergrößern: '+item.designName);zoom.title='Design vergrößern';
+    zoom.onclick=()=>{previewSource=img;previewImage.alt=item.designName;previewImage.hidden=!img.getAttribute('src');previewStatus.textContent=previewImage.hidden?'Vorschau wird geladen …':'';if(!previewImage.hidden)previewImage.src=img.src;else{queue.unshift(img.previewRequest);pump();}preview.showModal();};
+    card.append(select,zoom);grid.append(card);
+    img.previewRequest={item,img,version};if(observer)observer.observe(img);else queue.push(img.previewRequest);
+   }
+   if(!observer)pump();status.textContent=result.total?designGalleryCount(result.total):'Für dieses Produkt sind noch keine weiteren Designs verfügbar.';more.hidden=pager.next===null;
+  }catch(error){status.textContent=error.message||'Die Designauswahl ist gerade nicht erreichbar. Bitte erneut versuchen.';more.textContent='Erneut versuchen';more.hidden=false;}
+  finally{if(version===epoch){more.disabled=false;themes.disabled=false;}}
+ }
+ function reset(){epoch++;pager.reset();clearTimeout(retryTimer);prepareRetries=0;observer?.disconnect();queue.length=0;previewSource=null;if(preview.open)preview.close();grid.replaceChildren();for(const url of urls)URL.revokeObjectURL(url);urls.length=0;load();}
+ themes.onchange=reset;
+ // Invalidate stale pages even if size/mounting changes during a pending request.
  let shownFor=JSON.stringify(galleryOptions()??null);
- const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args);const now=JSON.stringify(galleryOptions()??null);if(now!==shownFor&&!loading){shownFor=now;observer?.disconnect();queue.length=0;grid.replaceChildren();for(const url of urls)URL.revokeObjectURL(url);urls.length=0;next=0;loaded=false;load();}for(const card of grid.querySelectorAll('.ux-product-card'))card.setAttribute('aria-pressed',String(card.dataset.productDesignId===el.state.designId));return result;};more.onclick=load;
- confirm.querySelector('[data-product-confirm]').onclick=async()=>{
-  if(!chosen)return;const button=confirm.querySelector('[data-product-confirm]');button.disabled=true;
-  try{const content=captureDesignContent(el.state.objects,design());await api.choose(chosen.target,{selection:{options:structuredClone(el.state.mOptions||{}),quantity:Number(r.querySelector('[data-fk-quantity]')?.value||1)},content,photoFiles:capturePhotoFiles(content,files),sizeLabel:productChoiceInfo(chosen)});confirm.close();}
-  catch(error){confirm.querySelector('.ux-product-summary').textContent=error.message;}finally{button.disabled=false;}
- };
- window.addEventListener('pagehide',()=>{observer?.disconnect();for(const url of urls)URL.revokeObjectURL(url);},{once:true});
+ const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args),now=JSON.stringify(galleryOptions()??null);if(now!==shownFor){shownFor=now;reset();}for(const card of grid.querySelectorAll('.ux-product-choose'))card.setAttribute('aria-pressed',String(card.dataset.productDesignId===el.state.designId));return result;};more.onclick=()=>{clearTimeout(retryTimer);load();};
+ window.addEventListener('pagehide',()=>{epoch++;pager.reset();clearTimeout(retryTimer);observer?.disconnect();for(const url of urls)URL.revokeObjectURL(url);},{once:true});
  el.sync();
  // Begin loading immediately; the editor itself does not wait for thumbnails.
  load();

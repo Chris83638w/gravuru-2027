@@ -1,3 +1,7 @@
+## 2026-11-04 · Astra Schiefer · Vorhandene Designs, Ziele und Kontaktbögen
+
+Auftrag #85/6626324410, eingegrenzt durch 6626733037: 2.695 Designs per Skript zugeordnet, 249 bestehende Dateien und 120 an Claude übergebene Menschen-Designs unverändert, 102 unklare Kordel-Designs offen. Keine Designfreigaben. Formatreihe → echte Schiefer-Konturgruppe einschließlich Kreuz; Gruppenfilter; Renderer mit explizitem Plan, Originalvergleich und Flächenprüfung. Gezielte Tests 78/78 + ergänzend 20/20, Schiefer-Produktprüfung 9/9; erneute native Vorbereitung 48 Produkte / 268 bestehende Vorlagen / 0 Ausschlüsse. Katalogbau 20 Familien. [Übergabe und Reproduktion](docs/handoffs/2026-11-04-schiefer-designziele-astra.md). Nächster Schritt: Claude prüft Code/Bögen, Chris erteilt Designfreigaben. Veröffentlichungspaket separat; Excel-Konflikt darf gemäß 6626528187 durch Katalog-Neubau gelöst werden.
+
 ## 2026-11-04 · Astra 1, Schiefer · Abgleich mit #139
 
 [Claude in #139 / 6625848734](https://github.com/Chris83638w/gravuru-2027/issues/139#issuecomment-6625848734) gibt Edelstahl frei und hält Schiefer ausdrücklich getrennt in #85. [Claudes Linux-Vollauf](https://github.com/Chris83638w/gravuru-2027/issues/85#issuecomment-6625636961): 2125/2125 grün auf `6171505`, 0 Fehler/Skips. Spätere Nacharbeit `c79882f`: 48/48 gezielte Tests und Browser grün, erneute fachliche Abnahme noch offen. Kein Merge/Live durch diesen Schiefer-Chat, keine Edelstahl-Aktion. Nächster Schritt: Claudes Abnahme der Nacharbeit; Merge bleibt ausschließlich beim Astra-1-Chat in #139.

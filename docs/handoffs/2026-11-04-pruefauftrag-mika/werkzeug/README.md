@@ -11,3 +11,10 @@ python3 scan.py      # main.json: Designs je Serie, mit Zielen, freigegeben (Fre
 python3 scan2.py     # open-designs.json: neue/geänderte Designs je offenem PR
 python3 build.py     # Alle-Designs-<Datum>.xlsx
 ```
+
+## Kategorien und Prüfrunden-Plan
+```
+python3 kategorien.py   # kategorien.json: jedes Design einmal (main + offene PRs) mit Linie, Unterkategorie, Zielgruppe, Foto, Form, Reihe, Status
+python3 kat-xlsx.py     # Designs-Kategorien-<Datum>.xlsx + pruefrunden-plan.json (Runden à höchstens 200 Designs für den Design Prüfung Skill)
+```
+Kategorien kommen aus `design.json` (themes, targetGroup, withPhoto, form, formatreihe, ziele), sonst aus dem Ordnernamen. Bestand (Corel-Rohdaten), Testbeispiele und „nicht angeboten“ sind nicht im Prüfplan.

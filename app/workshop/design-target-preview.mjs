@@ -20,7 +20,9 @@ export async function targetDesignPreview(root,{reihe,id,familie,size:requestedS
  const fonts=resources.fonts,converted=await prepareKatalogPhotoAssets(katalogDesignToTemplate(master,family,katalog.theme(master.themes?.[0]),{fonts,svgText}),master,{previewOnly:true});
  const scaled=scaleTemplate(converted.template,master.plateMm,[size.widthMm,size.heightMm],fonts,{contain:true}),motifs=scaleEmbeddedMotifs(converted.motifs,scaled.katalog.scale);
  const compatibility=designTargetCompatibility(master,family,size,{katalog}),variantRequired=compatibility.variantRequired;
- const evaluate=(candidate)=>{const t=scaleTemplate(converted.template,master.plateMm,[candidate.widthMm,candidate.heightMm],fonts,{contain:true}),m=scaleEmbeddedMotifs(converted.motifs,t.katalog.scale);return {...assessDesignTarget({master:sourceMaster,template:t,family,size:candidate,fonts,motifs:m}),size:candidate.key,label:candidate.label};};
+ // Eine einzelne zu kleine Zielgröße (z. B. Schrift < 1 mm) darf die ganze Vorschau nicht leeren: nur diese Größe passt nicht.
+ const evaluate=(candidate)=>{try{return evaluateSize(candidate);}catch(error){if(candidate===size)throw error;return {status:'passt nicht',issues:[error.message],details:[],size:candidate.key,label:candidate.label};}};
+ const evaluateSize=(candidate)=>{const t=scaleTemplate(converted.template,master.plateMm,[candidate.widthMm,candidate.heightMm],fonts,{contain:true}),m=scaleEmbeddedMotifs(converted.motifs,t.katalog.scale);return {...assessDesignTarget({master:sourceMaster,template:t,family,size:candidate,fonts,motifs:m}),size:candidate.key,label:candidate.label};};
  const fit=evaluate(size),checks=applicable.map(evaluate);
  if(variantRequired){fit.status='passt nicht';fit.issues=[...fit.issues,...compatibility.issues];}
  const rank={'passt':0,'prüfen':1,'passt nicht':2},reviewFit={status:variantRequired||!checks.length?'passt nicht':checks.reduce((status,item)=>rank[item.status]>rank[status]?item.status:status,'passt'),issues:checks.flatMap(item=>item.issues.map(issue=>item.label+': '+issue)),sizes:checks};

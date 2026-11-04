@@ -129,6 +129,9 @@ export function slateGroupMainImage(document,{examples=[]}={}){
  for(const slot of design.objects.filter(o=>o.type==='photoSlot')){
   if(!examples.some(e=>e.designId===designId&&e.slotId===slot.id&&e.url))throw Error('Musterfoto für Hauptbild fehlt: '+slot.id);
  }
- const svg=productPreview({universal:document.config},{designId,options:resolvedOptions,examples});
+ const preview=structuredClone(document.config);
+ // The main image contains the same artwork, without a non-clickable UI button.
+ preview.photo.hints=design.objects.filter(o=>o.type==='photoSlot').map(o=>({designId,slotId:o.id,enabled:false}));
+ const svg=productPreview({universal:preview},{designId,options:resolvedOptions,examples});
  return {designId,sourceDesignId:design.katalog.designId,options:resolvedOptions,sha256:createHash('sha256').update(svg).digest('hex'),svg};
 }

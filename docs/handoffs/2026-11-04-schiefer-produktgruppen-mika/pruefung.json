@@ -27,49 +27,49 @@
         "designId": "katalog-GT-S-22x14-D220",
         "designs": 17,
         "photoDesigns": "mit",
-        "mainImageHash": "132724691fb8241c77c923aac6f2a8c163fdf4e333fd94d7b76dc6b71fbc09ce"
+        "mainImageHash": "82ce0082d2aaebf3cc7f255d609ca6ec1a742e0ee5360f2b3ebac1d31e395718"
       },
       {
         "handle": "schiefer-gt-sn-re-220x140-hundegedenktafeln-tiere-mit-foto-0ab0c406-hund-rosen-a9232797",
         "designId": "katalog-GT-S-22x14-D207",
         "designs": 17,
         "photoDesigns": "mit",
-        "mainImageHash": "44a2dcdf20866031acbb1466dcf9e6e8236c5756844afb0bfa805b6efc3bc5eb"
+        "mainImageHash": "0fc4122bc6a8fdeace06c25609b47af26db0799502f81895f197a8e5d5227af3"
       },
       {
         "handle": "schiefer-gt-sn-re-220x140-hundegedenktafeln-tiere-mit-foto-0ab0c406-hund-klassisch-6f99378b",
         "designId": "katalog-GT-S-22x14-D215",
         "designs": 17,
         "photoDesigns": "mit",
-        "mainImageHash": "4d0adb235c9334a7db75fce8abe603db4c3e368ef19c1c06cd9ddca1b76209d2"
+        "mainImageHash": "45cc7fea8eb3740625aeab13a410bfde8a1ba9e71ee8e19bf7bd211c34b732a1"
       },
       {
         "handle": "schiefer-gt-sn-re-220x140-hundegedenktafeln-tiere-mit-foto-0ab0c406-hund-sternschnuppe-abe89bd9",
         "designId": "katalog-GT-S-22x14-D212",
         "designs": 17,
         "photoDesigns": "mit",
-        "mainImageHash": "7c4c2f67763871671f78810cb1d01a508a0edfd001261a89062fdf71b27625d7"
+        "mainImageHash": "7be85f686dad7b1a36efa6d1426eab436473e258791469f32fee817c5395d3b9"
       },
       {
         "handle": "schiefer-gt-sn-re-220x140-katzengedenktafeln-tiere-mit-foto-9f230b50-katze-pfotenherz-0d126968",
         "designId": "katalog-GT-S-22x14-D223",
         "designs": 5,
         "photoDesigns": "mit",
-        "mainImageHash": "ebbde230d8327081860e67269441e8adc66c64ecf17868832492d9078d9646b0"
+        "mainImageHash": "0e21f71d3bc92accda93a6dd26682979cf7572527d6baee9ba0dfde1d7359b48"
       },
       {
         "handle": "schiefer-gt-sn-re-220x140-katzengedenktafeln-tiere-mit-foto-9f230b50-katze-blaetterzweig-064d1c94",
         "designId": "katalog-GT-S-22x14-D227",
         "designs": 5,
         "photoDesigns": "mit",
-        "mainImageHash": "b89e9b6301fc4ecaa65751eb165db324f534e9c123c4f7f2eb458c1d8ed95093"
+        "mainImageHash": "c808a6dd07f5167119d058fb37bc143b576b67d72fcb7af7160d69972d6e342c"
       },
       {
         "handle": "schiefer-gt-sn-re-220x140-tiergedenktafeln-tiere-mit-foto-022a5dc6",
         "designId": "katalog-GT-S-22x14-D200",
         "designs": 22,
         "photoDesigns": "mit",
-        "mainImageHash": "d9fcdf5fec11836166bcee9f37bb9ff7278122e6aa231c63b49af84f9405b076"
+        "mainImageHash": "6c8b4707bf678a0e229d080d29ab43ea18df246a86bab418b8940fe12b2d8664"
       },
       {
         "handle": "schiefer-gt-sn-re-220x140-monogramme-allgemein-ohne-foto-8343afea",
@@ -495,7 +495,7 @@
       "designCount": 17,
       "variantCount": 15,
       "revision": 1,
-      "mainImageSha256": "132724691fb8241c77c923aac6f2a8c163fdf4e333fd94d7b76dc6b71fbc09ce",
+      "mainImageSha256": "82ce0082d2aaebf3cc7f255d609ca6ec1a742e0ee5360f2b3ebac1d31e395718",
       "catalogueMainProduct": {
         "group": "schiefer-gruppe:0ab0c4069d9588b658c8f44c72b7adf7",
         "line": "gedenktafeln-22x14-tiere",
@@ -516,7 +516,7 @@
       "designCount": 17,
       "variantCount": 15,
       "revision": 1,
-      "mainImageSha256": "44a2dcdf20866031acbb1466dcf9e6e8236c5756844afb0bfa805b6efc3bc5eb",
+      "mainImageSha256": "0fc4122bc6a8fdeace06c25609b47af26db0799502f81895f197a8e5d5227af3",
       "catalogueMainProduct": {
         "group": "schiefer-gruppe:0ab0c4069d9588b658c8f44c72b7adf7",
         "line": "gedenktafeln-22x14-tiere",
@@ -537,7 +537,7 @@
       "designCount": 17,
       "variantCount": 15,
       "revision": 1,
-      "mainImageSha256": "4d0adb235c9334a7db75fce8abe603db4c3e368ef19c1c06cd9ddca1b76209d2",
+      "mainImageSha256": "45cc7fea8eb3740625aeab13a410bfde8a1ba9e71ee8e19bf7bd211c34b732a1",
       "catalogueMainProduct": {
         "group": "schiefer-gruppe:0ab0c4069d9588b658c8f44c72b7adf7",
         "line": "gedenktafeln-22x14-tiere",
@@ -558,7 +558,7 @@
       "designCount": 17,
       "variantCount": 15,
       "revision": 1,
-      "mainImageSha256": "7c4c2f67763871671f78810cb1d01a508a0edfd001261a89062fdf71b27625d7",
+      "mainImageSha256": "7be85f686dad7b1a36efa6d1426eab436473e258791469f32fee817c5395d3b9",
       "catalogueMainProduct": {
         "group": "schiefer-gruppe:0ab0c4069d9588b658c8f44c72b7adf7",
         "line": "gedenktafeln-22x14-tiere",
@@ -579,7 +579,7 @@
       "designCount": 5,
       "variantCount": 15,
       "revision": 1,
-      "mainImageSha256": "ebbde230d8327081860e67269441e8adc66c64ecf17868832492d9078d9646b0",
+      "mainImageSha256": "0e21f71d3bc92accda93a6dd26682979cf7572527d6baee9ba0dfde1d7359b48",
       "catalogueMainProduct": {
         "group": "schiefer-gruppe:9f230b5048a2b9cc7ae2d43b73b614b9",
         "line": "gedenktafeln-22x14-tiere",
@@ -600,7 +600,7 @@
       "designCount": 5,
       "variantCount": 15,
       "revision": 1,
-      "mainImageSha256": "b89e9b6301fc4ecaa65751eb165db324f534e9c123c4f7f2eb458c1d8ed95093",
+      "mainImageSha256": "c808a6dd07f5167119d058fb37bc143b576b67d72fcb7af7160d69972d6e342c",
       "catalogueMainProduct": {
         "group": "schiefer-gruppe:9f230b5048a2b9cc7ae2d43b73b614b9",
         "line": "gedenktafeln-22x14-tiere",
@@ -621,7 +621,7 @@
       "designCount": 22,
       "variantCount": 15,
       "revision": 1,
-      "mainImageSha256": "d9fcdf5fec11836166bcee9f37bb9ff7278122e6aa231c63b49af84f9405b076",
+      "mainImageSha256": "6c8b4707bf678a0e229d080d29ab43ea18df246a86bab418b8940fe12b2d8664",
       "catalogueMainProduct": null
     },
     {

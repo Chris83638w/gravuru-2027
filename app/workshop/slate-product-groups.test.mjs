@@ -61,6 +61,9 @@ test('photo main image requires the original example for its selected slot',()=>
  const {document,groups}=fixture(),photo=slateGroupDocument(document,groups.find(g=>g.photoDesigns==='mit'));
  assert.throws(()=>slateGroupMainImage(photo),/Musterfoto/);
  assert.throws(()=>slateGroupMainImage(photo,{examples:[{designId:'wrong',slotId:'photo',url:'data:image/svg+xml;base64,PHN2Zy8+'}]}),/Musterfoto/);
+ const image=slateGroupMainImage(photo,{examples:[{designId:'katalog-F1',slotId:'photo',assetId:'a'.repeat(64),url:'data:image/svg+xml;base64,PHN2Zy8+'}]});
+ assert.doesNotMatch(image.svg,/data-ux-photo-hint|Hier eigenes Foto/);
+ assert.equal(image.designId,photo.config.profile.defaultDesignId);
 });
 test('unreleased targets and absent catalogue themes are reported, never broadened',()=>{
  const {document,context}=fixture();document.config.profile.designs.find(d=>d.id==='katalog-M1').katalog.target.released=false;

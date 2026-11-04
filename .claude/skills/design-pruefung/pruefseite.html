@@ -1,0 +1,261 @@
+<title>Designprüfung Edelstahl</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: Prüfplatz links (ein Design groß, Ja/Nein, Kommentar), Übersicht rechts; auf dem Handy untereinander. */
+:root{
+ --bg:#f2f4f6;--panel:#ffffff;--ink:#1a1f25;--muted:#5b6570;--line:#d7dce1;--bench:#e2e6ea;
+ --accent:#24527a;--accent-ink:#ffffff;
+ --ja:#2c7a4c;--ja-soft:#e2f1e8;--nein:#b0372f;--nein-soft:#f7e3e1;--offen:#9aa4ae;
+ --f-ui:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+ --f-head:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+ --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ --bg:#111418;--panel:#191d22;--ink:#e5e8eb;--muted:#9ba4ad;--line:#2a3037;--bench:#22272d;
+ --accent:#86b6de;--accent-ink:#0d1620;
+ --ja:#62c08a;--ja-soft:#173226;--nein:#ee7d72;--nein-soft:#3a1d1a;--offen:#5f6872;color-scheme:dark}}
+:root[data-theme="dark"]{
+ --bg:#111418;--panel:#191d22;--ink:#e5e8eb;--muted:#9ba4ad;--line:#2a3037;--bench:#22272d;
+ --accent:#86b6de;--accent-ink:#0d1620;
+ --ja:#62c08a;--ja-soft:#173226;--nein:#ee7d72;--nein-soft:#3a1d1a;--offen:#5f6872;color-scheme:dark}
+html,body{background:var(--bg);color:var(--ink)}
+body{font-family:var(--f-ui);font-size:15px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 32px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:14px 12px;border-bottom:1px solid var(--line);display:grid;gap:10px;max-width:1280px;margin-inline:auto}
+.kopf{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;justify-content:space-between}
+h1{font-family:var(--f-head);font-weight:700;font-size:1.6rem;letter-spacing:.01em;margin:0;text-wrap:balance}
+.runde{color:var(--muted);font-size:.95rem;margin:0}
+.speicher{font-size:.82rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.speicher i{width:8px;height:8px;border-radius:50%;background:var(--offen)}
+.speicher[data-s="ok"] i{background:var(--ja)}
+.speicher[data-s="laeuft"] i{background:var(--accent)}
+.speicher[data-s="fehler"] i{background:var(--nein)}
+.fortschritt{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.balken{flex:1 1 220px;height:8px;border-radius:4px;background:var(--line);display:flex;overflow:hidden;min-width:0}
+.balken b{display:block;height:100%}
+.balken .j{background:var(--ja)}.balken .n{background:var(--nein)}
+.zahlen{font-family:var(--f-mono);font-size:.82rem;font-variant-numeric:tabular-nums;color:var(--muted);min-width:0}
+.filter{display:flex;flex-wrap:wrap;gap:6px}
+.filter button{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:3px 12px;font-size:.85rem;cursor:pointer}
+.filter button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+main{max-width:1280px;margin:16px auto 0;display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:start}
+@media (max-width:900px){main{grid-template-columns:minmax(0,1fr)}}
+
+.platz{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;min-width:0}
+.buehne{background:var(--bench);display:flex;align-items:center;justify-content:center;padding:28px 20px;min-height:260px;position:relative}
+.buehne img{max-height:44vh;width:auto;max-width:100%;filter:drop-shadow(0 2px 6px rgba(0,0,0,.18))}
+.zaehler{position:absolute;left:12px;top:10px;font-family:var(--f-mono);font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.marke{position:absolute;right:12px;top:10px;font-family:var(--f-head);font-weight:600;font-size:.9rem;letter-spacing:.04em;text-transform:uppercase;padding:2px 10px;border-radius:4px}
+.marke[data-a="ja"]{background:var(--ja-soft);color:var(--ja)}
+.marke[data-a="nein"]{background:var(--nein-soft);color:var(--nein)}
+.info{padding:16px 18px 4px;display:grid;gap:6px}
+.groesse{font-family:var(--f-head);font-weight:700;font-size:1.5rem;line-height:1.1}
+.kennung{font-family:var(--f-mono);font-size:.86rem;color:var(--muted);overflow-wrap:anywhere}
+.folge{font-size:.9rem;color:var(--muted);display:grid;gap:2px}
+.folge b{color:var(--ink);font-weight:600}
+.notiz{font-size:.88rem;background:var(--bench);border-radius:6px;padding:6px 10px}
+.frage{padding:12px 18px 0;font-weight:600}
+.wahl{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 18px 0}
+.wahl button{border:2px solid var(--line);background:var(--panel);border-radius:8px;padding:12px 10px;cursor:pointer;display:grid;gap:2px;text-align:left}
+.wahl button span{font-family:var(--f-head);font-weight:700;font-size:1.25rem;letter-spacing:.02em}
+.wahl button small{color:var(--muted);font-size:.82rem}
+.wahl kbd{font-family:var(--f-mono);font-size:.72rem;border:1px solid var(--line);border-radius:3px;padding:0 4px;margin-left:6px;color:var(--muted);font-weight:400}
+.wahl .ja:hover,.wahl .ja[aria-pressed="true"]{border-color:var(--ja)}
+.wahl .ja[aria-pressed="true"]{background:var(--ja-soft)}
+.wahl .ja span{color:var(--ja)}
+.wahl .nein:hover,.wahl .nein[aria-pressed="true"]{border-color:var(--nein)}
+.wahl .nein[aria-pressed="true"]{background:var(--nein-soft)}
+.wahl .nein span{color:var(--nein)}
+.wahl button:disabled{opacity:.5;cursor:default}
+.kommentar{padding:14px 18px 0;display:grid;gap:6px}
+.kommentar label{font-size:.85rem;color:var(--muted)}
+.kommentar textarea{width:100%;min-height:68px;resize:vertical;border:1px solid var(--line);border-radius:6px;padding:8px 10px;background:var(--bg)}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 18px 18px;flex-wrap:wrap}
+.nav button{border:1px solid var(--line);background:var(--panel);border-radius:6px;padding:7px 14px;cursor:pointer}
+.nav button:disabled{opacity:.45;cursor:default}
+.nav .hilfe{font-size:.8rem;color:var(--muted)}
+
+.uebersicht{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;min-width:0}
+@media (min-width:901px){.uebersicht{position:sticky;top:calc(env(safe-area-inset-top,0px) + 150px);max-height:calc(100vh - 170px);overflow:auto}}
+.uebersicht h2{font-family:var(--f-head);font-size:1.05rem;font-weight:600;margin:0 0 8px;letter-spacing:.02em}
+.gruppe{margin-bottom:12px}
+.gruppe h3{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;margin:0 0 6px}
+.kacheln{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:6px}
+.kachel{border:1px solid var(--line);border-radius:6px;background:var(--bench);padding:6px 6px 4px;cursor:pointer;display:grid;gap:3px;position:relative;text-align:left}
+.kachel img{width:100%;height:46px;object-fit:contain}
+.kachel small{font-family:var(--f-mono);font-size:.66rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kachel::after{content:"";position:absolute;right:5px;top:5px;width:9px;height:9px;border-radius:50%;background:var(--offen);box-shadow:0 0 0 2px var(--bench)}
+.kachel[data-a="ja"]::after{background:var(--ja)}
+.kachel[data-a="nein"]::after{background:var(--nein)}
+.kachel[data-k="1"] small::before{content:"✎ ";color:var(--accent)}
+.kachel[aria-current="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.leer{color:var(--muted);font-size:.9rem;padding:20px 4px}
+.hinweisbox{max-width:1280px;margin:12px auto 0;background:var(--nein-soft);color:var(--ink);border-radius:8px;padding:10px 14px;font-size:.9rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header>
+ <div class="kopf">
+  <h1>Designprüfung Edelstahl</h1>
+  <div class="speicher" id="speicher" data-s="laeuft"><i></i><span id="speicherText">Verbinde…</span></div>
+ </div>
+ <p class="runde" id="runde">Lade Prüfliste…</p>
+ <div class="fortschritt">
+  <div class="balken" aria-hidden="true"><b class="j" id="bj"></b><b class="n" id="bn"></b></div>
+  <span class="zahlen" id="zahlen"></span>
+  <div class="filter" role="group" aria-label="Anzeigen">
+   <button type="button" data-f="alle" aria-pressed="true">Alle</button>
+   <button type="button" data-f="offen" aria-pressed="false">Offen</button>
+   <button type="button" data-f="ja" aria-pressed="false">Ja</button>
+   <button type="button" data-f="nein" aria-pressed="false">Nein</button>
+   <button type="button" data-f="kommentar" aria-pressed="false">Mit Kommentar</button>
+  </div>
+ </div>
+</header>
+<div class="hinweisbox" id="warnung" hidden></div>
+
+<main>
+ <section class="platz" aria-live="polite">
+  <div class="buehne">
+   <span class="zaehler" id="pos"></span>
+   <span class="marke" id="marke" hidden></span>
+   <img id="bild" alt="" width="700" height="460">
+  </div>
+  <div class="info">
+   <div class="groesse" id="groesse"></div>
+   <div class="kennung" id="kennung"></div>
+   <div class="folge" id="folge"></div>
+   <div class="notiz" id="notiz" hidden></div>
+  </div>
+  <div class="frage" id="frage"></div>
+  <div class="wahl">
+   <button type="button" class="ja" id="btnJa" aria-pressed="false" disabled><span id="jaL">Ja</span><small id="jaT"></small></button>
+   <button type="button" class="nein" id="btnNein" aria-pressed="false" disabled><span id="neinL">Nein</span><small id="neinT"></small></button>
+  </div>
+  <div class="kommentar">
+   <label for="kom">Kommentar zu diesem Design (optional)</label>
+   <textarea id="kom" placeholder="z. B. Hund erst ab 12 × 4, Text ist ok" disabled></textarea>
+  </div>
+  <div class="nav">
+   <button type="button" id="zurueck">← Zurück</button>
+   <span class="hilfe">Tasten: J = Ja · N = Nein · ← →</span>
+   <button type="button" id="weiter">Weiter →</button>
+  </div>
+ </section>
+ <aside class="uebersicht">
+  <h2>Übersicht · zum Anklicken</h2>
+  <div id="kacheln"></div>
+ </aside>
+</main>
+
+<script>
+(()=>{
+ const $=id=>document.getElementById(id);
+ let runde=null,items=[],antworten={},filter='alle',idx=0,db=null,schreiben=false;
+ const ketten={},komTimer={};
+ const docId=it=>runde.id+'~'+it.key;
+ const zustand=it=>antworten[it.key]||{};
+ const passt=it=>{const a=zustand(it);return filter==='alle'||(filter==='offen'&&!a.antwort)||(filter==='ja'&&a.antwort==='ja')||(filter==='nein'&&a.antwort==='nein')||(filter==='kommentar'&&a.kommentar);};
+ const sichtbar=()=>items.filter(passt);
+
+ function speicher(s,t){$('speicher').dataset.s=s;$('speicherText').textContent=t;}
+
+ function zeigeZahlen(){
+  const j=items.filter(i=>zustand(i).antwort==='ja').length,n=items.filter(i=>zustand(i).antwort==='nein').length,o=items.length-j-n,k=items.filter(i=>zustand(i).kommentar).length;
+  $('bj').style.width=(items.length?j/items.length*100:0)+'%';$('bn').style.width=(items.length?n/items.length*100:0)+'%';
+  $('zahlen').textContent=`${j+n} von ${items.length} entschieden · ${j} Ja · ${n} Nein · ${o} offen`+(k?` · ${k} Kommentare`:'');
+ }
+
+ function zeige(){
+  const list=sichtbar();zeigeZahlen();zeigeKacheln(list);
+  if(!list.length){$('pos').textContent='';$('bild').hidden=true;$('groesse').textContent='Keine Designs in dieser Ansicht';$('kennung').textContent='';$('folge').textContent='';$('notiz').hidden=true;$('marke').hidden=true;['btnJa','btnNein','kom','zurueck','weiter'].forEach(b=>$(b).disabled=true);return;}
+  idx=Math.max(0,Math.min(idx,list.length-1));const it=list[idx],a=zustand(it);
+  $('bild').hidden=false;$('bild').src=it.bild;$('bild').width=it.w;$('bild').height=it.h;$('bild').alt=`${it.id}, ${it.groesse}`;
+  $('pos').textContent=`${idx+1} / ${list.length}`;
+  $('groesse').textContent=it.groesse;
+  $('kennung').textContent=`${it.id} · ${it.reiheName}`;
+  const f=$('folge');f.replaceChildren();
+  for(const [label,wert] of (it.zeilen||[])){const z=document.createElement('div');z.append(label+': ');const b=document.createElement('b');b.textContent=wert;z.append(b);f.append(z);}
+  f.hidden=!(it.zeilen||[]).length;
+  $('notiz').hidden=!it.hinweis;$('notiz').textContent=it.hinweis||'';
+  $('marke').hidden=!a.antwort;$('marke').dataset.a=a.antwort||'';$('marke').textContent=a.antwort==='ja'?runde.ja:a.antwort==='nein'?runde.nein:'';
+  $('btnJa').setAttribute('aria-pressed',a.antwort==='ja');$('btnNein').setAttribute('aria-pressed',a.antwort==='nein');
+  $('btnJa').disabled=$('btnNein').disabled=$('kom').disabled=!schreiben;
+  if(document.activeElement!==$('kom')||$('kom').dataset.key!==it.key){$('kom').value=a.kommentar||'';$('kom').dataset.key=it.key;}
+  $('zurueck').disabled=idx===0;$('weiter').disabled=idx>=list.length-1;
+ }
+
+ function zeigeKacheln(list){
+  const box=$('kacheln');box.replaceChildren();
+  if(!list.length){const p=document.createElement('p');p.className='leer';p.textContent='Nichts in dieser Ansicht.';box.append(p);return;}
+  const cur=list[idx];const gruppen=new Map();
+  for(const it of list){if(!gruppen.has(it.reiheName))gruppen.set(it.reiheName,[]);gruppen.get(it.reiheName).push(it);}
+  for(const [name,arr] of gruppen){
+   const g=document.createElement('div');g.className='gruppe';const h=document.createElement('h3');h.textContent=`${name} (${arr.length})`;const k=document.createElement('div');k.className='kacheln';
+   for(const it of arr){const b=document.createElement('button');b.type='button';b.className='kachel';const a=zustand(it);b.dataset.a=a.antwort||'';b.dataset.k=a.kommentar?'1':'';if(it===cur)b.setAttribute('aria-current','true');
+    const im=document.createElement('img');im.src=it.bild;im.alt='';im.loading='lazy';const s=document.createElement('small');s.textContent=it.id.replace(/^.*-(D\d+)$/,'$1')+' · '+it.groesse.replace(/ · .*/,'');
+    b.title=`${it.id} · ${it.groesse}`;b.append(im,s);b.onclick=()=>{idx=list.indexOf(it);zeige();if(innerWidth<=900)scrollTo({top:0,behavior:'smooth'});};k.append(b);}
+   g.append(h,k);box.append(g);
+  }
+ }
+
+ function schreibe(it,patch){
+  const key=it.key,neu={...zustand(it),...patch};antworten[key]=neu;zeige();
+  if(!db||!schreiben)return;
+  const body={runde:runde.id,design:it.id,reihe:it.reihe,groesse:it.groesse,antwort:neu.antwort||null,kommentar:neu.kommentar||'',geaendert:new Date().toISOString()};
+  speicher('laeuft','Speichert…');
+  ketten[key]=(ketten[key]||Promise.resolve()).then(()=>db.collection('antworten').doc(docId(it)).set(body)).then(()=>speicher('ok','Gespeichert'),e=>{
+   if(e&&e.code==='invalid_argument'){schreiben=false;speicher('fehler','Nur lesen: keine Schreibrechte');zeige();}
+   else speicher('fehler','Nicht gespeichert – bitte noch einmal klicken');
+  });
+ }
+
+ function waehle(w){
+  const list=sichtbar(),it=list[idx];if(!it||!schreiben)return;
+  const vorher=zustand(it).antwort;schreibe(it,{antwort:vorher===w?null:w});
+  if(vorher!==w){setTimeout(()=>{const l=sichtbar();const i=l.indexOf(it);
+   if(i<0){idx=Math.min(idx,l.length-1);zeige();return;}
+   let n=l.findIndex((x,j)=>j>i&&!zustand(x).antwort);if(n<0)n=Math.min(i+1,l.length-1);idx=n;zeige();},260);}
+ }
+
+ $('btnJa').onclick=()=>waehle('ja');$('btnNein').onclick=()=>waehle('nein');
+ $('zurueck').onclick=()=>{idx--;zeige();};$('weiter').onclick=()=>{idx++;zeige();};
+ $('kom').addEventListener('input',()=>{const it=items.find(i=>i.key===$('kom').dataset.key);if(!it)return;clearTimeout(komTimer[it.key]);const v=$('kom').value;komTimer[it.key]=setTimeout(()=>{if((zustand(it).kommentar||'')!==v)schreibe(it,{kommentar:v});},900);});
+ $('kom').addEventListener('blur',()=>{const it=items.find(i=>i.key===$('kom').dataset.key);if(!it)return;clearTimeout(komTimer[it.key]);const v=$('kom').value;if((zustand(it).kommentar||'')!==v)schreibe(it,{kommentar:v});});
+ document.querySelectorAll('.filter button').forEach(b=>b.onclick=()=>{filter=b.dataset.f;document.querySelectorAll('.filter button').forEach(x=>x.setAttribute('aria-pressed',x===b));idx=0;zeige();});
+ addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('textarea,input'))return;if(e.metaKey||e.ctrlKey||e.altKey)return;
+  const k=e.key.toLowerCase();if(k==='j'){waehle('ja');e.preventDefault();}else if(k==='n'){waehle('nein');e.preventDefault();}
+  else if(e.key==='ArrowRight'&&!$('weiter').disabled){idx++;zeige();}else if(e.key==='ArrowLeft'&&!$('zurueck').disabled){idx--;zeige();}});
+
+ async function start(){
+  let alle=[];
+  try{const r=await fetch('liste.json');const d=await r.json();alle=d.runden;
+   // Neueste Runde zuerst; ältere über die Auswahl (#runde-<id> merkt sich die Runde im Link).
+   const gewuenscht=location.hash.startsWith('#runde-')?location.hash.slice(7):'';runde=alle.find(x=>x.id===gewuenscht)||alle[alle.length-1];items=runde.items;}
+  catch(e){$('runde').textContent='Die Prüfliste konnte nicht geladen werden. Seite bitte neu öffnen.';speicher('fehler','Fehler');return;}
+  $('runde').textContent=`${runde.titel} · Stand ${runde.stand}`;$('frage').textContent=runde.frage;
+  if(alle.length>1){const sel=document.createElement('select');sel.id='rundenwahl';sel.setAttribute('aria-label','Prüfrunde');sel.style.cssText='margin-left:8px;font:inherit;padding:2px 6px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink)';
+   for(const x of [...alle].reverse()){const o=document.createElement('option');o.value=x.id;o.textContent=`${x.titel} (${x.stand})`;if(x===runde)o.selected=true;sel.append(o);}
+   sel.onchange=()=>{location.hash='runde-'+sel.value;location.reload();};$('runde').append(sel);}
+  $('jaL').textContent=runde.ja;$('jaT').textContent=runde.jaText;$('neinL').textContent=runde.nein;$('neinT').textContent=runde.neinText;
+  $('jaL').insertAdjacentHTML('beforeend','<kbd>J</kbd>');$('neinL').insertAdjacentHTML('beforeend','<kbd>N</kbd>');
+  zeige();
+  const cap=window.claude&&window.claude.use?await window.claude.use('db'):null;
+  if(!cap){speicher('fehler','Speichern nicht möglich');$('warnung').hidden=false;$('warnung').textContent='Antworten können in dieser Ansicht nicht gespeichert werden. Bitte die Seite angemeldet in Claude öffnen.';return;}
+  db=cap;schreiben=true;zeige();
+  const timer=setTimeout(()=>speicher('fehler','Gespeicherte Antworten noch nicht erreichbar'),10000);
+  db.collection('antworten').where('runde','==',runde.id).onSnapshot(snap=>{
+   const neu={};for(const d of snap.docs){const v=d.data();const it=items.find(i=>i.id===v.design);if(it)neu[it.key]={antwort:v.antwort||null,kommentar:v.kommentar||''};}
+   antworten=neu;if(!snap.metadata.fromCache){clearTimeout(timer);if($('speicher').dataset.s!=='laeuft')speicher('ok','Verbunden · Antworten werden gespeichert');}zeige();
+  },e=>{clearTimeout(timer);speicher('fehler','Verbindung zu den Antworten verloren');});
+ }
+ start();
+})();
+</script>

@@ -25,7 +25,7 @@ Mikail, 04.11.2026: „Ja, setz das so um. Die 48 Tafeln mit allen passenden Zie
 
 ## Nachgewiesener Stand
 
-Codebasis: #170, `bb4680b1e2f73a5fae2e9dffa8aa095e72afa74a`.
+Codebasis: #170, ursprünglich `bb4680b1e2f73a5fae2e9dffa8aa095e72afa74a`; aktueller Nachtrag `863b78035d49bd6b0516bd1e3bbcd5e4898d796f` im eigenen Branch konfliktfrei integriert und gezielt nachgeprüft.
 Katalogbasis: #171, `43fe1f23d17fa54b94f5ab4c5f9754dab8b18323`.
 
 - Grundvorbereitung: 48 Tafeln, 268 freigegebene native Vorlagenzuordnungen, 0 Ausschlüsse.
@@ -55,6 +55,8 @@ Browserprüfung benötigt Playwright und Chromium; alternativ `PLAYWRIGHT_CHANNE
 ## Genau nächster Schritt und Grenze
 
 Astra/Claude liefern ihre Katalog-Zuordnungen, korrigierten Designs und freigegebenen Stände in #85. Darauf die native Grundvorbereitung in einem neuen Quellordner ausführen, anschließend die Gruppenvorbereitung erneut laufen lassen. Neue freigegebene Kombinationen entstehen automatisch, ohne weitere Einzelfall-Programmierung.
+
+Inzwischen vorhanden: [Katalog-PR #176](https://github.com/Chris83638w/gravuru-katalog./pull/176), bei Abgabe noch Entwurf mit laufendem Bogen-Upload; sämtliche neuen Ziele bleiben unfreigegeben. Dieser unfertige Datenstand wurde nicht als fertiger Freigabestand ausgegeben. Die obigen Zähler und Nachweise bleiben reproduzierbar an `43fe1f2` gebunden.
 
 Vor dem Shopimport vorhandene 48 allgemeine DRAFTs und die bereits früher angelegten Hunde-/Katzen-Hauptprodukte anhand der bestehenden IDs abgleichen. Die neuen Handles sind keine Erlaubnis, vorhandene Hauptprodukte doppelt anzulegen. Die lokalen Konfi-IDs müssen über den bestehenden Serverimport gebunden werden; Hauptbild, Standarddesign und dieselbe Revision gemeinsam übernehmen. Danach direkter Produktseiten-Einstieg und tatsächlicher Warenkorb-Ende-zu-Ende-Test auf dem gemeinsamen Zielstand. Die native Schieferbasis ist weiterhin `reviewOnly`; dieses Paket hebt keine Bestell-/Maschinenfreigabe auf.
 

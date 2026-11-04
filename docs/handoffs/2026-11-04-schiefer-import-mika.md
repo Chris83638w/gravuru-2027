@@ -1,5 +1,30 @@
 # Schiefer-Gruppen: Import in den vorhandenen Händlerstore
 
+## Jetzt erledigt: Monogramm in Shopify angelegt
+
+Mikail hat die vorhandene Tabelle mit Grundplatte, Designs, Befestigungen und Preisen nochmals bestätigt. Diese Produktdaten sind vollständig. Eine ausstehende Server-ID ist **keine fehlende Produktinformation** und darf die Anlage eines Shopify-Entwurfs nicht blockieren. Der Ablauf trennt deshalb Entwurfsanlage und spätere Konfi-Verknüpfung.
+
+Am 04.11.2026 um 12:48 UTC tatsächlich angelegt: [Monogramme · Naturschiefer · Rechteck 22 × 14 cm · ohne Foto](https://admin.shopify.com/store/gravuru-design/products/16192353829244), Produkt-ID `16192353829244`, **DRAFT**, 15 Varianten, Grundpreis 21,99 €. Alle Befestigungs-/Farbpreise stammen unverändert aus dem validierten nativen Paket. Das Hauptbild zeigt dessen Startdesign `katalog-MG-S-22x14-D1`; hochgeladenes Medium `70025726984572`, 1200×1200, nach Zuordnung `READY`. Die 82 passenden Designs bleiben im vorbereiteten Konfi-Paket; sie werden nicht als 82 neue Shopprodukte angelegt.
+
+Vorher vollständiger lesender Abgleich über alle Produktstatus: **1.478 Produkte / 28.465 Varianten**, einschließlich aller Folgeseiten. Keine passende Monogramm-SKU bzw. kein Gruppenhandle vorhanden. Unmittelbar vor der Anlage nochmals auf SKU/Handle geprüft. Anschließend alle 15 gespeicherten Varianten erneut gelesen und gegen das Paket verglichen: **unverändert, 0 Abweichungen, gleiche IDs**. `onlineStoreUrl` und `publishedAt` sind leer. [Tatsächlicher Nachweis einschließlich IDs, Optionsauswahl, Preisen und Bild](2026-11-04-schiefer-import-mika/monogram-shopify-check.json).
+
+**Ergebnis dieses Schritts: 1 neuer Shopify-Entwurf, 15 Varianten, 1 zugeordnetes Hauptbild; 0 bestehende Produkte geändert, 0 Veröffentlichungen, weiterhin 0 aktive Konfi-Importe.** Ältere Abschnitte mit „0 Shopify-Schreibzugriffen“ beschreiben den Stand vor dieser Anlage. Der Serveranschluss ist in [#48 konkret benannt](https://github.com/Chris83638w/gravuru-2027/issues/48#issuecomment-6630901318). Kein neuer Datenauftrag an Mikail.
+
+### Wiederholbarer Shopabgleich
+
+`scripts/slate-group-shop-plan.mjs` liest das validierte native Paket, einen Shopify-Bestand und eine explizite SKU-Zuordnung. Es plant ausschließlich; `--apply` ist absichtlich nicht vorhanden. Der Plan bewahrt bedingte Farbauswahlen, native Centpreise und bestehende Produkt-/Varianten-IDs. Fehlende Treffer in einem Teilexport führen nicht zu Neuanlagen. Mehrdeutige Kennungen, aktive Bestandsprodukte und das Löschen alter Varianten werden als Konflikt ausgewiesen. Die bestehende SKU-Endungsregel ist unverändert in `slateVariantSku` gemeinsam genutzt; die Basis-SKU wird pro Gruppe mit Quelle übergeben, nie aus einem fremden Format geraten.
+
+Ein Shopify-DRAFT kann vor dem Serverimport angelegt werden. Erst die spätere **Verknüpfung** braucht die tatsächliche native ID aus dem Zielstore. `--db` liest sie ausschließlich aus dessen Importjournal und unverändertem Produktdokument. Lokale Vorbereitungs-IDs sind dafür unzulässig. Die Bindungsauswahl behält sämtliche nativen Optionen, einschließlich Abstandshalterfarbe.
+
+Die geprüfte `productSet`-Operation verwendet `identifier.id` bei Bestandsprodukten. Sie setzt neue Produkte auf DRAFT und lässt fremde Metafelder, Medien und Kollektionen aus. Der bisherige Hundeartikel mit 48 Altvarianten wird als Konflikt erkannt; kein Ersatzartikel entsteht. Hintergrund: [Shopify productSet, API 2026-07](https://shopify.dev/docs/api/admin-graphql/2026-07/mutations/productSet) ersetzt übergebene Listen vollständig. Bilddateien werden einmal hochgeladen und über `fileUpdate.referencesToAdd` zugeordnet.
+
+```sh
+node --test scripts/slate-group-shop-plan.test.mjs scripts/slate-group-import.test.mjs
+node scripts/slate-group-shop-plan.mjs --bundle ../slate-monogram-pilot-import.json.gz --export ../slate-full-inventory.json --mapping ../slate-pilot-sku-map.json --out ../slate-monogram-shop-plan.json
+```
+
+Aktueller Testlauf: **11/11 bestanden**. Inventarabfrage, Varianten-Folgeseite, `productSet`, Bildzuordnung und abschließende Bildprüfung gegen Shopify-Schema 2026-07 validiert. Der tatsächliche Schreibschritt lief über den Shopify-Connector mit der erzeugten Operation; das Planungsskript selbst schreibt nicht nach Shopify. Shopbestand, Paket, SKU-Karte und Datenbanken bleiben außerhalb von Git. Die oben genannte feste Produkt-ID und der Gruppenhandle verhindern eine zweite Monogramm-Anlage bei der Fortsetzung.
+
 ## Aktuelle Abstimmung: Astra 1 und der veröffentlichte Konfi-Stand
 
 Mikail hat klargestellt: **Astra 1 ist für den Konfigurator zuständig; Bezugspunkt ist Issue #48.** Die bisherige pauschale Weiterleitung des Konfi-Anschlusses an #139 war falsch. Die Schiefer-Katalog-/Designabstimmung bleibt in #85, dieses Importpaket bei Mika.

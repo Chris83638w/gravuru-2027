@@ -53,7 +53,7 @@ def inside_polygon(pts, poly, margin):
     return all(P.contains(Point(x, y)) for x, y in pts)
 
 
-def plan_layout(D, Wt, Ht, shape, caps, contour=None, edge_margin=None, gmax=G_MAX):
+def plan_layout(D, Wt, Ht, shape, caps, contour=None, edge_margin=None, gmax=G_MAX, center=None):
     """Liefert {item_id: (sx, sy, tx, ty)} und Messwerte."""
     W, H = D['W'], D['H']
     classify_spans(D)
@@ -110,7 +110,8 @@ def plan_layout(D, Wt, Ht, shape, caps, contour=None, edge_margin=None, gmax=G_M
             sx, sy, tx, ty = tr[it.id]
             bb.append((it.bbox[0] * sx + tx, Ht / 2, it.bbox[2] * sx + tx, Ht / 2))
         G = union(bb)
-        dx, dy = Wt / 2 - (G[0] + G[2]) / 2, Ht / 2 - (G[1] + G[3]) / 2
+        ccx, ccy = center if center else (Wt / 2, Ht / 2)
+        dx, dy = ccx - (G[0] + G[2]) / 2, ccy - (G[1] + G[3]) / 2
         for it in grp + vsp:
             sx, sy, tx, ty = tr[it.id]
             tr[it.id] = (sx, sy, tx + dx, ty + (dy if it.span != 'v' else 0))

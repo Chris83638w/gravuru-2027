@@ -15,3 +15,17 @@ Nichts neu erfunden, wo es schon etwas gab:
 | `svgedit.py` | Text/Motiv/Foto im vorhandenen Lieferform-2-SVG verschieben und neu setzen (IDs und `data-feld` bleiben). |
 
 Prüfung: `scripts/render-vorlagen.mjs` (Kontaktbögen mit Prüfstatus). Bögen liegen in `docs/handoffs/2026-11-04-schiefer-designs/`.
+
+## Alle Größen × alle Zielgruppen (Chris 04.11.2026, 13:01 / 13:10 / 15:00)
+
+| Skript | Zweck |
+|---|---|
+| `umsetzen.py` | Ein Lieferform-2-Master auf eine andere Schiefer-Formatreihe: Rechteck, Oval oder Kontur aus `outlinePath`, Kordellöcher als Sperrfläche, Fotofenster/Masken mit; Hochformat neu gestapelt. |
+| `auffuellen.py` | Aufträge: leere Reihen (22×14 Natur, Kordel 30×10/22×14/30×20/Quadrat), Türschild-Themen auf Hochformat/Herz/Kordel, Rasse-Hunde/-Katzen, Tier-/Sternenkinder-Kreuz (dann `kreuz.py`), Stern ohne Foto, neue Konzepte. |
+| `ohnefoto.py` + `kompakt.py` | Katze/Hund ohne Foto aus Mit-Foto-Mastern: Fenster und Rahmen entfernen, Zeilen ohne Lücke neu setzen, kleine Motive vergrößern. |
+| `komponieren.py`, `konzepte.py`, `neu_master.py` | Neue Konzepte ohne Vorlage (Design-Master §5): 7 Sternenkinder, 16 Hausnummern, 18 Willkommen, 22 Andenken, 15 Hochzeit; Master quer 30×20 und Quadrat 20×20. |
+| `nachziehen.py` | Einzelne Ebene verkleinern/zur Mitte, bis der Renderer „passt“ meldet. |
+| `matrix_bild.py` | Abdeckung Größe × Zielgruppe (`abdeckung-vorher.png`, `abdeckung-nachher.png`). |
+
+Nicht gemacht (Entscheidung Chris): Sternenkinder-Fotofassungen („Einmal Foto reicht“), Premium mit Foto (kein Fotopreis); offen: Stern mit Foto.
+Prüfung: jedes neue Design in jeder Größe mit dem Renderer aus #170 – 0 × „passt nicht“. Stichproben-Bögen in `docs/handoffs/2026-11-04-schiefer-designs/stichproben/`.

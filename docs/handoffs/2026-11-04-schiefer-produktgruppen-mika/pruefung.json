@@ -1,0 +1,679 @@
+{
+  "catalogueCommit": "43fe1f23d17fa54b94f5ab4c5f9754dab8b18323",
+  "counts": {
+    "plates": 48,
+    "platesWithGroups": 3,
+    "groups": 10,
+    "templates": 346,
+    "excluded": 0
+  },
+  "variants": 136,
+  "repeat": {
+    "created": 0,
+    "revisions": [
+      1
+    ]
+  },
+  "tests": {
+    "groupTests": 11,
+    "photoPricingAndTargetTests": 11,
+    "nativeSlateTests": 9
+  },
+  "browser": {
+    "products": 10,
+    "checks": [
+      {
+        "handle": "schiefer-gt-sn-re-220x140-hundegedenktafeln-tiere-mit-foto-0ab0c406-hund-knochenherz-10f39bea",
+        "designId": "katalog-GT-S-22x14-D220",
+        "designs": 17,
+        "photoDesigns": "mit",
+        "mainImageHash": "82ce0082d2aaebf3cc7f255d609ca6ec1a742e0ee5360f2b3ebac1d31e395718"
+      },
+      {
+        "handle": "schiefer-gt-sn-re-220x140-hundegedenktafeln-tiere-mit-foto-0ab0c406-hund-rosen-a9232797",
+        "designId": "katalog-GT-S-22x14-D207",
+        "designs": 17,
+        "photoDesigns": "mit",
+        "mainImageHash": "0fc4122bc6a8fdeace06c25609b47af26db0799502f81895f197a8e5d5227af3"
+      },
+      {
+        "handle": "schiefer-gt-sn-re-220x140-hundegedenktafeln-tiere-mit-foto-0ab0c406-hund-klassisch-6f99378b",
+        "designId": "katalog-GT-S-22x14-D215",
+        "designs": 17,
+        "photoDesigns": "mit",
+        "mainImageHash": "45cc7fea8eb3740625aeab13a410bfde8a1ba9e71ee8e19bf7bd211c34b732a1"
+      },
+      {
+        "handle": "schiefer-gt-sn-re-220x140-hundegedenktafeln-tiere-mit-foto-0ab0c406-hund-sternschnuppe-abe89bd9",
+        "designId": "katalog-GT-S-22x14-D212",
+        "designs": 17,
+        "photoDesigns": "mit",
+        "mainImageHash": "7be85f686dad7b1a36efa6d1426eab436473e258791469f32fee817c5395d3b9"
+      },
+      {
+        "handle": "schiefer-gt-sn-re-220x140-katzengedenktafeln-tiere-mit-foto-9f230b50-katze-pfotenherz-0d126968",
+        "designId": "katalog-GT-S-22x14-D223",
+        "designs": 5,
+        "photoDesigns": "mit",
+        "mainImageHash": "0e21f71d3bc92accda93a6dd26682979cf7572527d6baee9ba0dfde1d7359b48"
+      },
+      {
+        "handle": "schiefer-gt-sn-re-220x140-katzengedenktafeln-tiere-mit-foto-9f230b50-katze-blaetterzweig-064d1c94",
+        "designId": "katalog-GT-S-22x14-D227",
+        "designs": 5,
+        "photoDesigns": "mit",
+        "mainImageHash": "c808a6dd07f5167119d058fb37bc143b576b67d72fcb7af7160d69972d6e342c"
+      },
+      {
+        "handle": "schiefer-gt-sn-re-220x140-tiergedenktafeln-tiere-mit-foto-022a5dc6",
+        "designId": "katalog-GT-S-22x14-D200",
+        "designs": 22,
+        "photoDesigns": "mit",
+        "mainImageHash": "6c8b4707bf678a0e229d080d29ab43ea18df246a86bab418b8940fe12b2d8664"
+      },
+      {
+        "handle": "schiefer-gt-sn-re-220x140-monogramme-allgemein-ohne-foto-8343afea",
+        "designId": "katalog-MG-S-22x14-D1",
+        "designs": 82,
+        "photoDesigns": "ohne",
+        "mainImageHash": "0c27f1662c0a081f32a2daf2fceadfb7e72b555c009afc37b243be1cd3601cf8"
+      },
+      {
+        "handle": "schiefer-gt-sn-re-300x200-monogramme-allgemein-ohne-foto-a540fd08",
+        "designId": "katalog-MG-S-30x20-D1",
+        "designs": 82,
+        "photoDesigns": "ohne",
+        "mainImageHash": "421815131c145e6c9d3e2d6df60a31dc474d7c035e09d32a5ccab71c08d0acc6"
+      },
+      {
+        "handle": "schiefer-gt-sp-re-300x200-monogramme-allgemein-ohne-foto-466d2a05",
+        "designId": "katalog-MG-S-30x20-D1",
+        "designs": 82,
+        "photoDesigns": "ohne",
+        "mainImageHash": "6d4431b72e622df84b4ed1b012e533f275225aa78afc4e9c23605a3311083be4"
+      }
+    ],
+    "errors": []
+  },
+  "plates": [
+    {
+      "family": "schiefer-tafeln-geschnitten",
+      "sizeKey": "GT-SG-RE-70X20",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-geschnitten",
+      "sizeKey": "GT-SG-RE-80X35",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-geschnitten",
+      "sizeKey": "GT-SG-RE-80X50",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-geschnitten",
+      "sizeKey": "GT-SG-HR-240X192",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-geschnitten",
+      "sizeKey": "GT-SG-HS-182P2X133P1",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-geschnitten",
+      "sizeKey": "GT-SG-HS-259P4X189P6",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-geschnitten",
+      "sizeKey": "GT-SG-KR-215X300",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-geschnitten",
+      "sizeKey": "GT-SG-ST-200X190P6",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-geschnitten",
+      "sizeKey": "GT-SG-KN-230X105",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-kordel",
+      "sizeKey": "GT-SK-RE-200X100",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-kordel",
+      "sizeKey": "GT-SK-RE-300X100",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-kordel",
+      "sizeKey": "GT-SK-RE-220X140",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-kordel",
+      "sizeKey": "GT-SK-RE-200X250",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-kordel",
+      "sizeKey": "GT-SK-RE-250X200",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-kordel",
+      "sizeKey": "GT-SK-RE-300X200",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-kordel",
+      "sizeKey": "GT-SK-QU-200X200",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-kordel",
+      "sizeKey": "GT-SK-HR-102X102",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-kordel",
+      "sizeKey": "GT-SK-HR-227X271P1",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-RE-150X100",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-RE-300X100",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-RE-220X140",
+      "prepared": 8,
+      "status": "vorbereitet",
+      "waitingForApproval": 2,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-RE-380X130",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-RE-200X300",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-RE-300X200",
+      "prepared": 1,
+      "status": "vorbereitet",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-RE-400X200",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-RE-560X180",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-RE-400X300",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-RE-600X300",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-QU-100X100",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-QU-130X130",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-QU-160X160",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-QU-200X200",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-QU-220X220",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-QU-250X250",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-QU-300X300",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-R-200X200",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-R-220X220",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-R-280X280",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-R-355X355",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-HR-102X102",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-HR-200X200",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-HR-250X250",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-premium",
+      "sizeKey": "GT-SP-RE-150X200",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-premium",
+      "sizeKey": "GT-SP-RE-200X150",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-premium",
+      "sizeKey": "GT-SP-RE-200X300",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-premium",
+      "sizeKey": "GT-SP-RE-300X200",
+      "prepared": 1,
+      "status": "vorbereitet",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-premium",
+      "sizeKey": "GT-SP-RE-300X400",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    },
+    {
+      "family": "schiefer-tafeln-premium",
+      "sizeKey": "GT-SP-RE-400X300",
+      "prepared": 0,
+      "status": "passende freigegebene Designs fehlen",
+      "waitingForApproval": 0,
+      "missingFromPreparation": 0
+    }
+  ],
+  "products": [
+    {
+      "key": "schiefer-gruppe:10f39beaa1d117bc760d06bbb4421cf4",
+      "handle": "schiefer-gt-sn-re-220x140-hundegedenktafeln-tiere-mit-foto-0ab0c406-hund-knochenherz-10f39bea",
+      "title": "Hund · Knochenherz · Naturschiefer · Rechteck 22 × 14 cm · mit Foto",
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-RE-220X140",
+      "themeId": "hundegedenktafeln",
+      "audience": "Tiere",
+      "photoDesigns": "mit",
+      "sourceDesignId": "GT-S-22x14-D220",
+      "designCount": 17,
+      "variantCount": 15,
+      "revision": 1,
+      "mainImageSha256": "82ce0082d2aaebf3cc7f255d609ca6ec1a742e0ee5360f2b3ebac1d31e395718",
+      "catalogueMainProduct": {
+        "group": "schiefer-gruppe:0ab0c4069d9588b658c8f44c72b7adf7",
+        "line": "gedenktafeln-22x14-tiere",
+        "subcategory": "hund-knochenherz",
+        "main": "hund-knochenherz"
+      }
+    },
+    {
+      "key": "schiefer-gruppe:a92327976858c799d0fa1c29cc8d216a",
+      "handle": "schiefer-gt-sn-re-220x140-hundegedenktafeln-tiere-mit-foto-0ab0c406-hund-rosen-a9232797",
+      "title": "Hund · Rosen · Naturschiefer · Rechteck 22 × 14 cm · mit Foto",
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-RE-220X140",
+      "themeId": "hundegedenktafeln",
+      "audience": "Tiere",
+      "photoDesigns": "mit",
+      "sourceDesignId": "GT-S-22x14-D207",
+      "designCount": 17,
+      "variantCount": 15,
+      "revision": 1,
+      "mainImageSha256": "0fc4122bc6a8fdeace06c25609b47af26db0799502f81895f197a8e5d5227af3",
+      "catalogueMainProduct": {
+        "group": "schiefer-gruppe:0ab0c4069d9588b658c8f44c72b7adf7",
+        "line": "gedenktafeln-22x14-tiere",
+        "subcategory": "hund-rosen",
+        "main": "hund-rosen"
+      }
+    },
+    {
+      "key": "schiefer-gruppe:6f99378b6ee1844a11c40693fd0fbcb7",
+      "handle": "schiefer-gt-sn-re-220x140-hundegedenktafeln-tiere-mit-foto-0ab0c406-hund-klassisch-6f99378b",
+      "title": "Hund · Blüten · Naturschiefer · Rechteck 22 × 14 cm · mit Foto",
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-RE-220X140",
+      "themeId": "hundegedenktafeln",
+      "audience": "Tiere",
+      "photoDesigns": "mit",
+      "sourceDesignId": "GT-S-22x14-D215",
+      "designCount": 17,
+      "variantCount": 15,
+      "revision": 1,
+      "mainImageSha256": "45cc7fea8eb3740625aeab13a410bfde8a1ba9e71ee8e19bf7bd211c34b732a1",
+      "catalogueMainProduct": {
+        "group": "schiefer-gruppe:0ab0c4069d9588b658c8f44c72b7adf7",
+        "line": "gedenktafeln-22x14-tiere",
+        "subcategory": "hund-klassisch",
+        "main": "hund-klassisch"
+      }
+    },
+    {
+      "key": "schiefer-gruppe:abe89bd991dafe5f18736be4640443d2",
+      "handle": "schiefer-gt-sn-re-220x140-hundegedenktafeln-tiere-mit-foto-0ab0c406-hund-sternschnuppe-abe89bd9",
+      "title": "Hund · Sternschnuppe · Naturschiefer · Rechteck 22 × 14 cm · mit Foto",
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-RE-220X140",
+      "themeId": "hundegedenktafeln",
+      "audience": "Tiere",
+      "photoDesigns": "mit",
+      "sourceDesignId": "GT-S-22x14-D212",
+      "designCount": 17,
+      "variantCount": 15,
+      "revision": 1,
+      "mainImageSha256": "7be85f686dad7b1a36efa6d1426eab436473e258791469f32fee817c5395d3b9",
+      "catalogueMainProduct": {
+        "group": "schiefer-gruppe:0ab0c4069d9588b658c8f44c72b7adf7",
+        "line": "gedenktafeln-22x14-tiere",
+        "subcategory": "hund-sternschnuppe",
+        "main": "hund-sternschnuppe"
+      }
+    },
+    {
+      "key": "schiefer-gruppe:0d126968ff8654f51d889da32d5b9cd2",
+      "handle": "schiefer-gt-sn-re-220x140-katzengedenktafeln-tiere-mit-foto-9f230b50-katze-pfotenherz-0d126968",
+      "title": "Katze · Pfotenherz · Naturschiefer · Rechteck 22 × 14 cm · mit Foto",
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-RE-220X140",
+      "themeId": "katzengedenktafeln",
+      "audience": "Tiere",
+      "photoDesigns": "mit",
+      "sourceDesignId": "GT-S-22x14-D223",
+      "designCount": 5,
+      "variantCount": 15,
+      "revision": 1,
+      "mainImageSha256": "0e21f71d3bc92accda93a6dd26682979cf7572527d6baee9ba0dfde1d7359b48",
+      "catalogueMainProduct": {
+        "group": "schiefer-gruppe:9f230b5048a2b9cc7ae2d43b73b614b9",
+        "line": "gedenktafeln-22x14-tiere",
+        "subcategory": "katze-pfotenherz",
+        "main": "katze-pfotenherz"
+      }
+    },
+    {
+      "key": "schiefer-gruppe:064d1c9403c31085d39714851e706009",
+      "handle": "schiefer-gt-sn-re-220x140-katzengedenktafeln-tiere-mit-foto-9f230b50-katze-blaetterzweig-064d1c94",
+      "title": "Katze · Blätterzweig · Naturschiefer · Rechteck 22 × 14 cm · mit Foto",
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-RE-220X140",
+      "themeId": "katzengedenktafeln",
+      "audience": "Tiere",
+      "photoDesigns": "mit",
+      "sourceDesignId": "GT-S-22x14-D227",
+      "designCount": 5,
+      "variantCount": 15,
+      "revision": 1,
+      "mainImageSha256": "c808a6dd07f5167119d058fb37bc143b576b67d72fcb7af7160d69972d6e342c",
+      "catalogueMainProduct": {
+        "group": "schiefer-gruppe:9f230b5048a2b9cc7ae2d43b73b614b9",
+        "line": "gedenktafeln-22x14-tiere",
+        "subcategory": "katze-blaetterzweig",
+        "main": "katze-blaetterzweig"
+      }
+    },
+    {
+      "key": "schiefer-gruppe:022a5dc60b2b1c119c0afc0a59c9dc1e",
+      "handle": "schiefer-gt-sn-re-220x140-tiergedenktafeln-tiere-mit-foto-022a5dc6",
+      "title": "Tiergedenktafeln · Tiere · Naturschiefer · Rechteck 22 × 14 cm · mit Foto",
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-RE-220X140",
+      "themeId": "tiergedenktafeln",
+      "audience": "Tiere",
+      "photoDesigns": "mit",
+      "sourceDesignId": "GT-S-22x14-D200",
+      "designCount": 22,
+      "variantCount": 15,
+      "revision": 1,
+      "mainImageSha256": "6c8b4707bf678a0e229d080d29ab43ea18df246a86bab418b8940fe12b2d8664",
+      "catalogueMainProduct": null
+    },
+    {
+      "key": "schiefer-gruppe:8343afea148fd8783508d26b4abe8b33",
+      "handle": "schiefer-gt-sn-re-220x140-monogramme-allgemein-ohne-foto-8343afea",
+      "title": "Monogramme · Naturschiefer · Rechteck 22 × 14 cm · ohne Foto",
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-RE-220X140",
+      "themeId": "monogramme",
+      "audience": "Allgemein",
+      "photoDesigns": "ohne",
+      "sourceDesignId": "MG-S-22x14-D1",
+      "designCount": 82,
+      "variantCount": 15,
+      "revision": 1,
+      "mainImageSha256": "0c27f1662c0a081f32a2daf2fceadfb7e72b555c009afc37b243be1cd3601cf8",
+      "catalogueMainProduct": null
+    },
+    {
+      "key": "schiefer-gruppe:a540fd08e2ed5ad7fc626a65d622440a",
+      "handle": "schiefer-gt-sn-re-300x200-monogramme-allgemein-ohne-foto-a540fd08",
+      "title": "Monogramme · Naturschiefer · Rechteck 30 × 20 cm · ohne Foto",
+      "family": "schiefer-tafeln-natur",
+      "sizeKey": "GT-SN-RE-300X200",
+      "themeId": "monogramme",
+      "audience": "Allgemein",
+      "photoDesigns": "ohne",
+      "sourceDesignId": "MG-S-30x20-D1",
+      "designCount": 82,
+      "variantCount": 15,
+      "revision": 1,
+      "mainImageSha256": "421815131c145e6c9d3e2d6df60a31dc474d7c035e09d32a5ccab71c08d0acc6",
+      "catalogueMainProduct": null
+    },
+    {
+      "key": "schiefer-gruppe:466d2a058cdfd5b3602a08624c87b44e",
+      "handle": "schiefer-gt-sp-re-300x200-monogramme-allgemein-ohne-foto-466d2a05",
+      "title": "Monogramme · Premium-Schiefer · Rechteck 30 × 20 cm · ohne Foto",
+      "family": "schiefer-tafeln-premium",
+      "sizeKey": "GT-SP-RE-300X200",
+      "themeId": "monogramme",
+      "audience": "Allgemein",
+      "photoDesigns": "ohne",
+      "sourceDesignId": "MG-S-30x20-D1",
+      "designCount": 82,
+      "variantCount": 1,
+      "revision": 1,
+      "mainImageSha256": "6d4431b72e622df84b4ed1b012e533f275225aa78afc4e9c23605a3311083be4",
+      "catalogueMainProduct": null
+    }
+  ],
+  "excluded": [],
+  "shopifyWrites": 0,
+  "published": 0
+}

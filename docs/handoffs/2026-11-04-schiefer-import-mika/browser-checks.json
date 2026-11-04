@@ -1,0 +1,20 @@
+{
+  "products": 2,
+  "checks": [
+    {
+      "handle": "schiefer-gt-sn-re-220x140-hundegedenktafeln-tiere-mit-foto-0ab0c406-hund-knochenherz-10f39bea",
+      "designId": "katalog-GT-S-22x14-D220",
+      "designs": 17,
+      "photoDesigns": "mit",
+      "mainImageHash": "82ce0082d2aaebf3cc7f255d609ca6ec1a742e0ee5360f2b3ebac1d31e395718"
+    },
+    {
+      "handle": "schiefer-gt-sn-re-220x140-monogramme-allgemein-ohne-foto-8343afea",
+      "designId": "katalog-MG-S-22x14-D1",
+      "designs": 82,
+      "photoDesigns": "ohne",
+      "mainImageHash": "0c27f1662c0a081f32a2daf2fceadfb7e72b555c009afc37b243be1cd3601cf8"
+    }
+  ],
+  "errors": []
+}

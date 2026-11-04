@@ -36,4 +36,5 @@ test('requested design groups preserve animals as one group and leave unknown gr
  for(const s of ['Hunde','Katzen','Tiere'])assert.equal(slateDesignGroup({katalog:{zielgruppe:s}}),'Tiere');
  for(const s of ['Menschen','Sternenkinder','Familie','Monogramme'])assert.equal(slateDesignGroup({targetGroup:s}),s);
  assert.equal(slateDesignGroup({targetGroup:'unbekannt'}),null);
+ assert.equal(slateDesignGroup({katalog:{zielgruppe:'Allgemein',unterkategorie:'Monogramme'},themes:['monogramme']}),'Monogramme');
 });

@@ -20,6 +20,8 @@ node scripts/plan-slate-review.mjs --katalog <Katalog> --out <Plan.json>
 node scripts/render-vorlagen.mjs --katalog <Katalog> --familie schiefer-tafeln-<natur|premium|geschnitten|kordel> --plan <Plan.json> --out <Arbeitsordner>/slate-design-render-<Art> --png --bogen --breite 700
 python scripts/measure-slate-review.py --index <Renderordner>/index.json --out <Katalog>/auftraege/2026-11-04-schiefer-designziele/<Art>/flaechenpruefung.json
 node scripts/finalize-slate-review.mjs --katalog <Katalog> --work <Arbeitsordner> --family <Art>
+python scripts/compress-slate-sheets.py --katalog <Katalog>
+node scripts/summarize-slate-review.mjs --katalog <Katalog>
 python scripts/build-katalog.py --katalog <Katalog>
 ```
 
@@ -32,5 +34,7 @@ Gezielte Tests: 78/78 für Zielauflösung, Konturen, Vorschau, Konvertierung und
 Lokale erneute Produktvorbereitung: **48 Produkte, 268 bestehende Design-Zuordnungen, 0 ausgeschlossene freigegebene Designs**. Unfreigegebene neue Ziele erscheinen nicht im Kundenprodukt. Nach einer späteren Freigabe kann die Vorbereitung die ausdrücklich erlaubten Größen proportional einpassen; Geometrie, Fotoverfügbarkeit und Designprüfung bleiben maßgeblich. Katalogbau: 20 gültige Familien.
 
 Kontaktbögen zeigen Original und echte Zielvorschau je Format/Gruppe/Größe. Bildmessung nutzt `flaeche-messen.py` unverändert. Schiefertextur kann dabei als Gravur erkannt werden; unauffällige Werte sind kein Qualitätsnachweis. Vorhandene Quellmesswerte und Auffälligkeiten werden ergänzend ausgewiesen. Nur Chris gibt die Bögen frei. Grenzfälle werden nicht umgestaltet.
+
+Endstand: 5.926 Zielprüfungen für 2.881 Designs auf 296 Kontaktbögen. 1.745 technisch passend, 2.823 zur Sichtprüfung, 722 nicht passend und 636 ohne gültige Zielvorschau (522 Premium-Fotoausschlüsse; 114 Fälle der vorhandenen Schriftgrößengrenze 1–100 mm). Zusätzliche Lücke: Kordel 30×10. Monogramme werden aus dem vorhandenen Thema/der Unterkategorie erkannt, da ihre Quell-Zielgruppe „Allgemein“ lautet; dazu gezielter Test 6/6. WebP-Kontaktbögen sind gegenüber den Renderer-PNGs pixelidentisch geprüft.
 
 Dieses Paket enthält keine Live-Änderung. Es baut auf Code-PR #166 / Katalog-PR #171 auf und ersetzt deren Abnahme nicht. Die separate Veröffentlichungskette folgt 6626148423; der Excel-Konflikt #162 darf seit 6626528187 durch Neubau auf dem zusammengeführten Stand gelöst werden und wird separat dokumentiert.

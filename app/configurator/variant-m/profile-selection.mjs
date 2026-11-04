@@ -1,3 +1,4 @@
+export {themedMotifSelection} from './motif-themes.mjs';
 // Profiles limit customer choices, never the rendering resources of existing designs.
 // Missing/null keeps the native catalog; an explicit empty array offers no new choices.
 export function selectionIds(available, selection = null) {

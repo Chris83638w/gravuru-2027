@@ -154,6 +154,11 @@ test('shop embed accepts messages only from the editor host and this frame, and 
  assert.equal(startUrl({href:'/apps/konfigurator/start?product=1&variant=2&back=%2Fproducts%2Fx'}),'https://gravuru-design.myshopify.com/apps/konfigurator/start?product=1&variant=2&back=%2Fproducts%2Fx&embed=1');
  assert.equal(startUrl({href:'https://evil.example/apps/konfigurator/start?product=1'}),null);
  assert.equal(startUrl({href:'/apps/other/start?product=1'}),null);
+ const preview='https://test-92055503228.shopifypreview.com';
+ globalThis.location={href:preview+'/products_preview?preview_key=test',origin:preview};
+ assert.equal(startUrl({href:'/apps/konfigurator/start?product=1&variant=2'}),null,'Entwurf öffnet den normalen Seitenlink, kein gesperrtes iframe');
+ globalThis.location={href:'https://gravuru-design.myshopify.com/products/x',origin:'https://gravuru-design.myshopify.com'};
+ assert.match(startUrl({href:'/apps/konfigurator/start?product=1&variant=2'}),/&embed=1$/,'Der normale Shop behält die Einbettung');
 });
 
 test('global shop embed: product data from the theme block, own start link, buy buttons of exactly this product hidden',async t=>{

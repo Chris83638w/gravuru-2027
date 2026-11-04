@@ -4,6 +4,7 @@ import {createHash} from 'node:crypto';
 import {validateProductDocument,resolveProduct} from './product-model.mjs';
 import {quote,variantCombinations} from '../configurator/variant-m/contract.mjs';
 import {productPreview} from './product-preview.mjs';
+import {applySlateCustomerRules} from './slate-customer-rules.mjs';
 
 const hash=value=>createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const compare=new Intl.Collator('de',{numeric:true,sensitivity:'variant'}).compare;
@@ -56,6 +57,10 @@ export function slateGroupDocument(source,group,{startDesign}={}){
  c.profile.id='slate-group-'+hash(group.key).slice(0,32);
  c.profile.binding={...c.profile.binding,productId:'local-'+c.profile.id};
  c.profile.themeId=group.themeId;
+ if(group.themeId==='gedenken'){
+  if(['mensch','menschen'].includes(group.audience))c.motifTheme='remembranceHuman';
+  if(['tier','tiere'].includes(group.audience))c.motifTheme='remembranceAnimal';
+ }
  const audience=group.audienceLabel&&normalized(group.audienceLabel)!=='allgemein'?' · '+group.audienceLabel:'';
  result.name=[group.mainProductName??group.themeName+audience,source.name,group.photoDesigns==='mit'?'mit Foto':'ohne Foto'].join(' · ');
  c.profile.name=result.name;
@@ -67,6 +72,7 @@ export function slateGroupDocument(source,group,{startDesign}={}){
  const usedMotifs=new Set(c.profile.designs.flatMap(d=>d.objects.filter(o=>o.type==='motif').map(o=>o.motif)));
  c.localResources.motifs=c.localResources.motifs.filter(m=>!m.embeddedOnly||usedMotifs.has(m.key));
  // Preserve the separately priced customer upload feature even for "ohne Foto".
+ result.config=applySlateCustomerRules(c);
  return validateProductDocument(result);
 }
 

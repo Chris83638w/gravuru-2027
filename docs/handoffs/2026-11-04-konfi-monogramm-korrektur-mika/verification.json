@@ -1,0 +1,169 @@
+{
+  "schema": "gravuru-monogram-correction-verification/v1",
+  "at": "2026-11-04T15:10:05.965Z",
+  "source": "#48/#161 db4f4a4 and Mikail chat 2026-11-04",
+  "runtime": {
+    "path": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-konfi-korrektur-20261104",
+    "startupSha": "fecfd7b0e663be3cd2c9b0270970a0b21b1f6169cd501976810784fafd70825a",
+    "bundle": "editor-8efba92051cf4870.mjs",
+    "restartObservedInPlesk": true
+  },
+  "tests": [
+    {
+      "name": "tests",
+      "status": 0,
+      "summary": [
+        "# tests 64",
+        "# pass 64",
+        "# fail 0",
+        "# skipped 0"
+      ]
+    },
+    {
+      "name": "build",
+      "status": 0,
+      "summary": []
+    }
+  ],
+  "product": {
+    "id": "cfg_65b85f16-c796-4476-9bdf-611e7c11997b",
+    "revision": 3,
+    "shopifyId": "gid://shopify/Product/16192353829244",
+    "status": "DRAFT",
+    "designs": 82,
+    "variants": 15,
+    "unchangedOtherProducts": 1039,
+    "options": [
+      "silikon"
+    ],
+    "fingerprint": "0cc5605a5b17b3b730ce761250ec219b7a1741245e4610674d2746d3a992c9ef",
+    "mainImageSha": "0c27f1662c0a081f32a2daf2fceadfb7e72b555c009afc37b243be1cd3601cf8"
+  },
+  "pricing": {
+    "at": "2026-11-04T14:59:57.305Z",
+    "productId": "cfg_65b85f16-c796-4476-9bdf-611e7c11997b",
+    "productRevision": 3,
+    "shopifyProductId": "gid://shopify/Product/16192353829244",
+    "variants": 15,
+    "extraMotifCents": 169,
+    "shopifyPricingRevision": 1,
+    "pricingNamespace": "owning-app/personalization",
+    "functionId": "01a0e45d-c47f-70b9-9d5a-a2c72120ae01",
+    "cartTransformId": "gid://shopify/CartTransform/172523900",
+    "shopifyReadback": true,
+    "createdBindings": 15,
+    "changedAssignments": 15,
+    "productStatus": "DRAFT",
+    "productionReady": false,
+    "realCheckoutTested": false
+  },
+  "files": [
+    {
+      "path": "app/configurator/variant-m/build.mjs",
+      "before": "aad5d4a8b37a0d883c9a17995ee37d562a2dc49a039619b8be40dca62baed7bf",
+      "after": "7c8eab1614e443f5c61d8af3ab11815ba04553292f08dd9b6a44477277ab2be9"
+    },
+    {
+      "path": "app/configurator/variant-m/completion.mjs",
+      "before": "5713cddece4b97c4d1853495563440138d8754e1132dd123060eaa8e6656933a",
+      "after": "3a06379805bb09ea292370723ceb80075d0be3b6ccf2bd844bd13c24369535ca"
+    },
+    {
+      "path": "app/configurator/variant-m/memorial-execution.mjs",
+      "before": "1b91cf37785c712dcc45f216c5284ec8e8c3a5c8cb639a92bb5fe174d0e89090",
+      "after": "70541efaa4803875eb34d92bf84ad980dae07cf1ffcab862299ba5b5ac8d3284"
+    },
+    {
+      "path": "app/configurator/variant-m/product-design-gallery.mjs",
+      "before": "294e976dbe98c5db9e9451adaac6b5f86b79c3b0161533201dc91087bb0bb19a",
+      "after": "bf5d30190af6592c8d3301563c3800aadb73493d4a5ec757f1322095f245aeff"
+    },
+    {
+      "path": "app/configurator/variant-m/profile-selection.mjs",
+      "before": "4208c0209cd5944edede6d8ac8863ade2c09c8376e90c42e4ed92e168cd1296d",
+      "after": "0326962e2118acc5e3445031e923f58f34b353c7648abc413e802d9bffff56d8"
+    },
+    {
+      "path": "app/configurator/variant-m/slate-accessory-media.mjs",
+      "before": "92063bd08525665aa53882caef01861dd933996551653bbd21f28d17fe265329",
+      "after": "f1df04d6f0bf69a01b17b48ff82a83bf9a1bfe8f01cb6652d8f922840745b784"
+    },
+    {
+      "path": "app/configurator/variant-m/toolbar-hosts.mjs",
+      "before": "e8efd4990974e262aad55c3662c451dad3439f0cbed27542bfb5578fb4d37ca4",
+      "after": "d8aafd5a4de74b53c38edb184090a4bf3676c70a4de9791af9c87b9975b8c115"
+    },
+    {
+      "path": "app/configurator/variant-m/toolbar-hosts.test.mjs",
+      "before": "4cb9f53526ddb58bded6c936362a75ca7e5249756b723c18bc620f92244613f8",
+      "after": "96ff982076d96e7bd8e9bba351d2d61600c333a6e38cc46b071c0cda845cf3ae"
+    },
+    {
+      "path": "app/configurator/variant-m/ux.mjs",
+      "before": "3fb5f7c19c6616e02a2aeef4b595ff9fec26d176da2f6ee65c5c4999fa1939e7",
+      "after": "518c62bf952a688af538c1da49e83fd1d837e35c8d9083e6da7323ce179edf09"
+    },
+    {
+      "path": "app/workshop/slate-accessories.test.mjs",
+      "before": "8d558b94387d50b30251cfcecde2150f754a75fea8f4281ca6196ba5d4fbc677",
+      "after": "cdae27766f3463dccf175deaeb40a079dcdde8172aa2350325f590e1585c64cb"
+    },
+    {
+      "path": "app/workshop/slate-catalog-product.mjs",
+      "before": "6a241ea9e5fc2fcc5b34a159314783492959db7de8b19c554a07222b6e7cc5b1",
+      "after": "0a213f7d00aa15db9b8a7af0ec7f7510f3f3a173b624a980804270f50220949a"
+    },
+    {
+      "path": "app/workshop/slate-product-groups.mjs",
+      "before": "5abd9b977d4d34299bc73f57a75771a3eac592fb71d591587a555ec53320e2ba",
+      "after": "7dc31920c7cb0f8682412c99594f87dcaf1deb344d3930fd6c13a6c95a3faecc"
+    },
+    {
+      "path": "app/configurator/variant-m/modern-layout.css",
+      "before": null,
+      "after": "ec960f57a40a6d58b2722455d30e4fd40d9d189022b01134d7b739c1ce5bbbbc"
+    },
+    {
+      "path": "app/configurator/variant-m/motif-themes.mjs",
+      "before": null,
+      "after": "c0fc9ee0a9aab6589c9d8aa37e36a53870be4e724e44a62941577ab0461f3a02"
+    },
+    {
+      "path": "app/configurator/variant-m/motif-themes.test.mjs",
+      "before": null,
+      "after": "61b34598d0273845cb5e9bcb70099e218c7a6cae4d488549e34c8a8ee88d7656"
+    },
+    {
+      "path": "app/workshop/slate-customer-rules.mjs",
+      "before": null,
+      "after": "166f4d662d748921ac62f91cefff537cf3348462772a1bd2c7d503a7bf780669"
+    },
+    {
+      "path": "app/workshop/slate-customer-rules.test.mjs",
+      "before": null,
+      "after": "327c927873a912c6db679d52b1e27ca01be89456d9197866bc99e88d56fb4608"
+    }
+  ],
+  "uiAcceptance": "pending-browser-paused-iframe-response",
+  "realCheckoutTested": false,
+  "http": [
+    {
+      "url": "/_merchant-acryl-editor.html",
+      "status": 200,
+      "bytes": 373926,
+      "sha256": "63c62d7901899ec83c24cfe8fd1695fbd6f7ee238c234ff1b2d9bc6d03800c67"
+    },
+    {
+      "url": "/_acryl-bundle/editor-8efba92051cf4870.mjs",
+      "status": 200,
+      "bytes": 1344059,
+      "sha256": "597f062de83389eb5b2b8094374c9341852402e1afb3a3ebd6ff2256eb921d64"
+    },
+    {
+      "url": "/acryl-configurator/variant-m/modern-layout.css",
+      "status": 200,
+      "bytes": 8771,
+      "sha256": "ec960f57a40a6d58b2722455d30e4fd40d9d189022b01134d7b739c1ce5bbbbc"
+    }
+  ]
+}

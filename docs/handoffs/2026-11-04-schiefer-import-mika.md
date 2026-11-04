@@ -1,5 +1,7 @@
 # Schiefer-Gruppen: Import in den vorhandenen Händlerstore
 
+**Aktualisierung vom 04.11., nach 15:00 UTC:** Monogramm ist inzwischen nativ importiert und mit allen 15 vorhandenen Shopify-Varianten verbunden; aktuelle Revision 3 enthält die Zubehör-/Motivkorrekturen und den 169-Cent-Preisvertrag. Die neue native Oberfläche ist auf dem Händlerhost aktiviert. Aktueller Stand, offene Sichtabnahme, Nachweise und Abstimmung stehen ausschließlich in der [neuen Korrekturübergabe](2026-11-04-konfi-monogramm-korrektur-mika.md). Die folgenden Abschnitte dokumentieren frühere Schritte; Aussagen „0 aktive Importe“ oder „kein Startdateiwechsel“ sind kein aktueller Status mehr.
+
 ## Jetzt erledigt: Monogramm in Shopify angelegt
 
 Mikail hat die vorhandene Tabelle mit Grundplatte, Designs, Befestigungen und Preisen nochmals bestätigt. Diese Produktdaten sind vollständig. Eine ausstehende Server-ID ist **keine fehlende Produktinformation** und darf die Anlage eines Shopify-Entwurfs nicht blockieren. Der Ablauf trennt deshalb Entwurfsanlage und spätere Konfi-Verknüpfung.

@@ -1,0 +1,61 @@
+/* Astra 1 / #161 db4f4a4, approved by Mikail 04.11.2026.
+   Shared native editor implementation of the reviewed modern.css shell. */
+:host([data-ux-modern]){--ux-green:#4d6b8b;--ux-border:#e1e5ea;--ux-soft:#f3f4f6;--ux-muted:#66717f;font-family:'Segoe UI',Arial,sans-serif!important;color:#293440!important}
+:host([data-ux-modern]) .ux-shell{max-width:none!important;padding:0 0 68px!important;margin:0!important;background:#fff!important}
+:host([data-ux-modern]) .ux-shell .ux-heading{position:relative!important;display:flex!important;min-height:68px!important;box-sizing:border-box!important;padding:10px 24px!important;margin:0!important;background:#fff!important;color:#293440!important;border-bottom:1px solid #e1e5ea!important;border-radius:0!important;box-shadow:none!important}
+:host([data-ux-modern]) .ux-heading :is(.ux-brand,h1,.ux-product-title){display:none!important}
+:host([data-ux-modern]) .ux-heading>[data-ux=account]{margin-left:auto!important;background:#fff!important;border:1px solid #d9dfe5!important;border-radius:10px!important;color:#293440!important}
+:host([data-ux-modern]) .ux-shell .ux-heading>[data-ux=back]{color:#293440!important;border:0!important;background:transparent!important}
+:host([data-ux-modern]) .ux-shell .ux-heading>.ux-canvas-toolbar{position:absolute!important;left:31.5%!important;top:10px!important;transform:translateX(-50%)!important;display:flex!important;gap:3px!important;padding:3px 5px!important;border:0!important;border-radius:12px!important;background:#f1f3f6!important;min-width:0!important}
+:host([data-ux-modern]) .ux-heading .ux-canvas-toolbar :is(button,.ux-canvas-help){height:40px!important;min-height:40px!important;padding:7px 9px!important;background:transparent!important;border:0!important;border-radius:8px!important;color:#435365!important}
+:host([data-ux-modern]) .ux-heading .ux-canvas-toolbar .ux-preview-tools{gap:2px!important}
+:host([data-ux-modern]) .ux-canvas-toolbar .ux-design-entry{display:none!important}
+:host([data-ux-modern]) .ux-shell .ux-layout{display:grid!important;grid-template-columns:minmax(0,63fr) minmax(340px,37fr)!important;gap:0!important;align-items:stretch!important;min-height:calc(100dvh - 136px)!important}
+:host([data-ux-modern]) .ux-shell .ux-layout>.ux-preview{position:sticky!important;top:0!important;align-self:start!important;border:0!important;border-radius:0!important;background:#f8f9fb!important;padding:16px 14px 12px!important;box-sizing:border-box!important;height:calc(100dvh - 136px)!important;overflow:hidden!important}
+:host([data-ux-modern]) .ux-shell .ux-preview .stage:not(.acryl-scene){height:calc(100dvh - 220px - var(--ux-textbar-h,0px))!important;min-height:250px!important;border:0!important;background:#f8f9fb!important;padding:32px 40px 42px!important}
+:host([data-ux-modern]) .ux-shell .ux-layout>.ux-editor{padding:0!important;border:0!important;border-left:1px solid #e1e5ea!important;border-radius:0!important;background:#fff!important;min-width:0!important}
+:host([data-ux-modern]) .ux-tabs{gap:0!important;padding:0 15px!important;margin:0!important;border-bottom:1px solid #e1e5ea!important;background:#fff!important}
+:host([data-ux-modern]) .ux-shell .ux-tabs button{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:8px!important;min-height:78px!important;padding:12px 4px!important;border:0!important;border-bottom:2px solid transparent!important;border-radius:0!important;background:#fff!important;color:#66717f!important;font-size:13px!important}
+:host([data-ux-modern]) .ux-shell .ux-tabs button[aria-selected=true]{background:#fff!important;border-bottom-color:#4d6b8b!important;color:#334f6d!important}
+:host([data-ux-modern]) .ux-shell .ux-tabs .ux-tab-icon{width:23px!important;height:23px!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;color:inherit!important}
+:host([data-ux-modern]) .ux-shell .ux-panel{padding:23px 26px!important;margin:0!important;border:0!important;background:#fff!important}
+:host([data-ux-modern]) .ux-panel h2{font-size:26px!important;font-weight:650!important;letter-spacing:-.5px!important;margin:0 0 18px!important;color:#293440!important}
+:host([data-ux-modern]) .ux-panel h3{font-size:16px!important;color:#435365!important}
+:host([data-ux-modern]) .ux-panel :is(.m-option-tile,.c-design-card,.ux-product-card,.workflow-motif-grid button,[data-bestseller-grid] button){border:1px solid transparent!important;border-radius:12px!important;background:#f2f4f6!important;color:#293440!important;box-shadow:none!important}
+:host([data-ux-modern]) .ux-panel :is(.m-option-tile,.c-design-card,.ux-product-card)[aria-pressed=true]{border:2px solid #4d6b8b!important;background:#edf2f7!important}
+:host([data-ux-modern]) .ux-panel .m-option-tile{min-height:115px!important;padding:12px 8px!important}
+:host([data-ux-modern]) .ux-product-designs{border:0!important;background:transparent!important;margin:0!important;padding:0!important}
+:host([data-ux-modern]) #ux-panel-design[data-inline-product-designs]>.c-design-section,:host([data-ux-modern]) #ux-panel-design[data-inline-product-designs]>.ux-design-reveal{display:none!important}
+:host([data-ux-modern]) .ux-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
+:host([data-ux-modern]) .ux-product-card img{height:150px!important;background:transparent!important}
+:host([data-ux-modern]) .workflow-motif-grid{gap:10px!important}
+:host([data-ux-modern]) .workflow-motif-grid button{min-height:117px!important}
+:host([data-ux-modern]) .ux-motif-pricing{background:#f3f5f8!important;border:0!important;border-radius:9px!important;padding:10px 12px!important;color:#526274!important}
+:host([data-ux-modern]) .fk-buy-dock{background:#e3ebf4!important;border-top:1px solid #d6e0ec!important;padding:7px 24px!important;box-shadow:none!important}
+:host([data-ux-modern]) .fk-buy-inner{max-width:none!important;min-height:48px!important}
+:host([data-ux-modern]) .fk-price-area strong{font-size:25px!important;color:#243344!important}
+:host([data-ux-modern]) .fk-buy-dock button:is(.fk-buy-button,.completion-finish){min-height:42px!important;background:#2e4258!important;border-color:#2e4258!important;color:#fff!important;border-radius:10px!important}
+:host([data-ux-modern]) :is(.ux-direct-edit,.ux-text-row){border-color:#e1e5ea!important;border-radius:10px!important}
+:host([data-ux-modern]) .ux-text-row.is-selected{background:#eef3f8!important;border-color:#93a7bd!important}
+:host([data-ux-modern]) .dimension-x,:host([data-ux-modern]) .dimension-y{color:#7b8795!important;border-color:#a5afbb!important}
+@media(min-width:768px) and (max-width:1100px){
+ :host([data-ux-modern]) .ux-heading .ux-tool-label{display:none!important}
+ :host([data-ux-modern]) .ux-shell .ux-panel{padding:21px 18px!important}
+}
+@media(max-width:767px){
+ :host([data-ux-modern]) .ux-shell .ux-heading{min-height:54px!important;padding:5px 7px!important}
+ :host([data-ux-modern]) .ux-shell .ux-heading>.ux-canvas-toolbar{position:static!important;transform:none!important;margin:0 auto!important;padding:1px 2px!important;order:1!important}
+ :host([data-ux-modern]) .ux-heading>[data-ux=account]{order:3!important;margin:0!important}
+ :host([data-ux-modern]) .ux-shell .ux-heading :is(button,.ux-canvas-help){height:40px!important;min-height:40px!important;min-width:32px!important;width:32px!important;padding:6px!important}
+ :host([data-ux-modern]) .ux-shell .ux-heading :is(.ux-tool-label,.ux-enlarge span,[data-ux-count]){display:none!important}
+ :host([data-ux-modern]) .ux-shell .ux-layout{display:flex!important;flex-direction:column!important;min-height:0!important;overflow:auto!important}
+ :host([data-ux-modern]) .ux-shell .ux-layout>.ux-preview{position:relative!important;top:auto!important;width:100%!important;height:calc(280px + var(--ux-textbar-h,0px))!important;padding:12px 6px 6px!important;flex:none!important}
+ :host([data-ux-modern]) .ux-shell .ux-preview .stage:not(.acryl-scene){height:250px!important;min-height:250px!important;padding:22px 24px 36px!important}
+ :host([data-ux-modern]) .ux-shell .ux-layout>.ux-editor{border:0!important;overflow:visible!important;flex:none!important}
+ :host([data-ux-modern]) .ux-tabs{display:flex!important;padding:0 10px!important}
+ :host([data-ux-modern]) .ux-shell .ux-tabs button{min-height:65px!important;font-size:11px!important;flex:1!important}
+ :host([data-ux-modern]) .ux-shell .ux-panel{padding:22px 17px 30px!important}
+ :host([data-ux-modern]) .ux-panel h2{font-size:23px!important}
+ :host([data-ux-modern]) .fk-buy-dock{padding:7px 12px!important}
+ :host([data-ux-modern]) .fk-price-area strong{font-size:19px!important}
+}

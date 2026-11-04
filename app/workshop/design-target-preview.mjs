@@ -7,8 +7,8 @@ import {productPreview} from './product-preview.mjs';
 import {assessDesignTarget} from './design-target-rules.mjs';
 import {prepareKatalogPhotoAssets} from './katalog-photo-assets.mjs';
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'design_target_invalid'});};
-export async function targetDesignPreview(root,{reihe,id,familie,size:requestedSize},{available={},converter=convertFont}={}){
- const katalog=katalogFor(root,{maxAgeMs:0}),master=katalog.designs.masters.find(d=>d.seriesFolder===reihe&&d.id===id),family=katalog.families.get(familie);
+export async function targetDesignPreview(root,{reihe,id,familie,size:requestedSize},{available={},converter=convertFont,katalog:injected=null,preview={}}={}){
+ const katalog=injected||katalogFor(root,{maxAgeMs:0}),master=katalog.designs.masters.find(d=>d.seriesFolder===reihe&&d.id===id),family=katalog.families.get(familie);
  if(!master)fail(404,'Katalogdesign nicht gefunden.');if(!family)fail(422,'Familie fehlt.');
  if(!designTargets(master,katalog).some(t=>t.familie===familie))fail(422,'Dieses Ziel wurde noch nicht bestätigt.');
  const assigned=assignTargetSeries(family,[master],katalog)[0],applicable=family.sizes.filter(s=>assigned.sizes.includes(s.key));
@@ -20,7 +20,9 @@ export async function targetDesignPreview(root,{reihe,id,familie,size:requestedS
  const fonts=resources.fonts,converted=await prepareKatalogPhotoAssets(katalogDesignToTemplate(master,family,katalog.theme(master.themes?.[0]),{fonts,svgText}),master,{previewOnly:true});
  const scaled=scaleTemplate(converted.template,master.plateMm,[size.widthMm,size.heightMm],fonts,{contain:true}),motifs=scaleEmbeddedMotifs(converted.motifs,scaled.katalog.scale);
  const compatibility=designTargetCompatibility(master,family,size,{katalog}),variantRequired=compatibility.variantRequired;
- const evaluate=(candidate)=>{const t=scaleTemplate(converted.template,master.plateMm,[candidate.widthMm,candidate.heightMm],fonts,{contain:true}),m=scaleEmbeddedMotifs(converted.motifs,t.katalog.scale);return {...assessDesignTarget({master:sourceMaster,template:t,family,size:candidate,fonts,motifs:m}),size:candidate.key,label:candidate.label};};
+ // Eine einzelne zu kleine Zielgröße (z. B. Schrift < 1 mm) darf die ganze Vorschau nicht leeren: nur diese Größe passt nicht.
+ const evaluate=(candidate)=>{try{return evaluateSize(candidate);}catch(error){if(candidate===size)throw error;return {status:'passt nicht',issues:[error.message],details:[],size:candidate.key,label:candidate.label};}};
+ const evaluateSize=(candidate)=>{const t=scaleTemplate(converted.template,master.plateMm,[candidate.widthMm,candidate.heightMm],fonts,{contain:true}),m=scaleEmbeddedMotifs(converted.motifs,t.katalog.scale);return {...assessDesignTarget({master:sourceMaster,template:t,family,size:candidate,fonts,motifs:m}),size:candidate.key,label:candidate.label};};
  const fit=evaluate(size),checks=applicable.map(evaluate);
  if(variantRequired){fit.status='passt nicht';fit.issues=[...fit.issues,...compatibility.issues];}
  const rank={'passt':0,'prüfen':1,'passt nicht':2},reviewFit={status:variantRequired||!checks.length?'passt nicht':checks.reduce((status,item)=>rank[item.status]>rank[status]?item.status:status,'passt'),issues:checks.flatMap(item=>item.issues.map(issue=>item.label+': '+issue)),sizes:checks};
@@ -35,7 +37,7 @@ export async function targetDesignPreview(root,{reihe,id,familie,size:requestedS
  const mounting=config.profile.optionGroups.find(g=>g.id==='mounting'),drilled=mounting?.values.find(v=>v.holes?.length);if(drilled)mounting.defaultValueId=drilled.id;
  config.photo.hints=converted.examples.map(e=>({designId:scaled.id,slotId:e.slotId,text:'Foto hochladen',enabled:e.uploadHint}));
  const examples=converted.examples.map(e=>({...e,designId:scaled.id}));
- let svg=productPreview({universal:config},{keepout:false,designArea:true,examples});
+ let svg=productPreview({universal:config},{keepout:false,designArea:true,examples,...preview});
  for(const mask of converted.previewMaskUrls)svg=svg.replaceAll('/api/workshop/design-assets/'+mask.id+'/preview.svg',mask.url);
  return {...response,svg};
 }

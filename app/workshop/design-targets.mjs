@@ -134,6 +134,9 @@ function targetCompatibility(master,family,size,katalog,{assignment,contourKeys,
  else if(sourceForm!==targetForm)issues.push('Andere Form ('+sourceForm+' → '+targetForm+'): Eine eigene Variante mit Vorschau und Freigabe ist erforderlich.');
  const keys=Array.isArray(json.sizes)?json.sizes:[],known=new Set(family.sizes.map(s=>s.key)),ownKeys=keys.filter(k=>known.has(k));
  if((shared||Array.isArray(json.sizes)&&!keys.length||ownKeys.length||contourKeys.length)&&!assignment.sizes.includes(size.key))issues.push('Die Zielgröße '+size.key+' ist für diesen Master nicht freigegeben; die explizite Größenliste bleibt bindend.');
+ // Chris 01./04.11.2026: Designs mit Mindestgröße (Katalogfeld mindestFlaecheCm2, z. B. filigrane Motive „nicht unter 9 × 6“)
+ // gibt es auf kleineren Schildern nie – auch nicht über eine explizite Größenliste oder den Renderer.
+ if(Number.isFinite(json.mindestFlaecheCm2)&&size.widthMm*size.heightMm/100<json.mindestFlaecheCm2-1e-9)issues.push('Dieses Design gibt es erst ab '+(json.mindestGroesse||json.mindestFlaecheCm2+' cm²')+'; '+size.label+' ist zu klein.');
  const all=values(katalog.families);if(keys.length&&!ownKeys.length&&(!all.length||!keys.some(key=>all.some(f=>f.sizes.some(s=>s.key===key)))))issues.push('Die expliziten Quellgrößen sind keiner vorhandenen Familie zugeordnet.');
  const from=master.plateMm,to=[size.widthMm,size.heightMm],valid=Array.isArray(from)&&from.length===2&&from.every(n=>Number.isFinite(n)&&n>0);
  // Historical Retro canvases carry exact, source-authorized contour size mappings.

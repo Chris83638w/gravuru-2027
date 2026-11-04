@@ -360,11 +360,11 @@ test('Befestigungskacheln: jede Befestigung als Kachel mit Icon, Bezeichnung und
  const config=familyProductConfig(family,family.sizes.find(s=>s.key==='GR-ES-OV-90X60-T15'),1),p=config.profile;
  const mounting=p.optionGroups.find(g=>g.id==='mounting');
  assert.deepEqual(mounting.values.map(v=>v.id),['K00','KGL','KRA','B02','B02S']);
- // Icon: Standardbild (Bohrbild) als <img>, sonst Strichsymbol; KGL teilt das Klebesymbol mit KRA, Unbekanntes → „ohne Bohrung“.
+ // Icon: Standardbild (Bohrbild) als <img>, sonst Strichsymbol; KGL und KRA haben eigene Klebesymbole, Unbekanntes → „ohne Bohrung“.
  assert.match(optionTileIcon(mounting.values.find(v=>v.id==='B02')),/^<img src="data:image\/png;base64,[A-Za-z0-9+/=]+" alt="">$/);
  assert.equal(optionTileIcon({id:'B02',holes:[{},{}],thumbnailDisabled:true}),optionTileIcon({id:'FREMD'}),'Bild abgeschaltet → Symbol „ohne Bohrung“');
  assert.ok(optionTileIcon({id:'K00'}).includes(MOUNT_ICONS.K00)&&optionTileIcon({id:'K00'}).startsWith('<svg viewBox="0 0 32 32"'));
- assert.equal(optionTileIcon({id:'KGL'}),optionTileIcon({id:'KRA'}));assert.ok(optionTileIcon({id:'KRA'}).includes(MOUNT_ICONS.KRA));
+ assert.notEqual(optionTileIcon({id:'KGL'}),optionTileIcon({id:'KRA'}));assert.ok(optionTileIcon({id:'KGL'}).includes(MOUNT_ICONS.KGL));assert.ok(optionTileIcon({id:'KRA'}).includes(MOUNT_ICONS.KRA));
  assert.equal(optionThumbnail({id:'K00'}),'','K00 hat kein Standardbild – daher das Symbol');
  // Preistext wie in der Auswahlliste; Größen mit Komplettpreis zeigen den Preis selbst.
  assert.equal(optionTilePrice({priceCents:0},money),'ohne Aufpreis');assert.equal(optionTilePrice({priceCents:299},money),'+'+money(299));assert.equal(optionTilePrice({priceCents:1990},money,{fullPrice:true}),money(1990));

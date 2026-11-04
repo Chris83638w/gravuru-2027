@@ -6,6 +6,7 @@ import {installViewZoom} from './view-zoom.mjs';
 import {installMotifTileFit} from './motif-tile-fit.mjs';
 import {installUxDetails} from './ux-details.mjs';
 import {installDecisionHelp} from './decision-help.mjs';
+import {installModernMotifBrowser} from './modern-motif-browser.mjs';
 import {customerFieldLabel,installTextFields} from './text-fields.mjs';
 import {installLayout} from './layout.mjs';
 import {alignmentContent,alignmentLabel} from './ui-icons.mjs';
@@ -521,6 +522,9 @@ export async function installUX(el,config,legacy,{attach}={}){
   const modernResponse=await fetch('/configurator/variant-m/modern-layout.css');
   if(!modernResponse.ok)throw Error('Aktuelles Konfigurator-Layout fehlt.');
   modern.textContent=await modernResponse.text();r.append(modern);el.dataset.uxModern='true';
+  installModernMotifBrowser({r,el});
+  const navigation=document.createElement('style');const navigationResponse=await fetch('/configurator/variant-m/modern-navigation.css');
+  if(!navigationResponse.ok)throw Error('Aktuelle Konfigurator-Navigation fehlt.');navigation.textContent=await navigationResponse.text();r.append(navigation);
   // All customer UI and its styles are ready before the first DOM insertion.
   // A connectedCallback replay is harmless: the reference component has a ready guard.
   attach?.();

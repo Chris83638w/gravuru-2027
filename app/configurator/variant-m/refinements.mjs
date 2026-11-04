@@ -8,7 +8,7 @@ import {createPhotoEditor} from './photo-editor.mjs';
 import {installUsability} from './usability.mjs';
 import {installWorkflow} from './workflow.mjs';
 import {installCustomerTools} from './customer-tools.mjs';
-import {installMobileSteps} from './mobile-steps.mjs';
+import {installModernMobileNavigation} from './modern-mobile-navigation.mjs';
 
 export async function installRefinements(api){
   const {el,r,files,selected,select,mutate,showTab,say,dialog,button,esc,dialogs}=api;
@@ -116,30 +116,11 @@ export async function installRefinements(api){
   $('.c-large-preview').addEventListener('click',e=>{const d=e.currentTarget;if(e.target.closest('button,input,select,textarea,a,.fk-buy-dock,.stage'))return;const b=stage.getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right)d.close();});
   // Keep the same exact option values and native change handlers.
   for(const s of all('.fk-options select'))s.classList.add('ux-readable-select');
-  const category=$('[data-library-category]');
-  if(category){
-    const choices=()=>[...category.options],keys=()=>el.uxMotifChoiceIds??Object.keys(el.motifs).filter(k=>!k.startsWith('ux-line-'));
-    const imageFor=name=>{const entry=window.GravuruMotifCategories?.find(m=>m.category===name),key=entry?.key||(name==='Grundmotive'&&keys().includes('branch')?'branch':keys().find(k=>(el.labels?.[k]||el.catalog.motif_labels?.[k]||k).toLocaleLowerCase('de').includes(name.toLocaleLowerCase('de').replace(/e[nr]?$/,''))));return key?el.motifs[key]:'';};
-    const categoryDialog=dialog('categories','Motivkategorie wählen','<div class="ux-category-list"></div>');
-    const selector=document.createElement('div');selector.className='ux-category-control';selector.innerHTML=button('categories','Kategorie wählen');category.after(selector);category.hidden=true;
-    function setCategory(index){const options=choices(),i=(index+options.length)%options.length;category.value=options[i].value;category.dispatchEvent(new Event('change',{bubbles:true}));refreshCategory();}
-    function refreshCategory(){const chosen=choices().find(o=>o.selected);$('[data-ux=categories]').innerHTML=`<span aria-hidden="true"><svg viewBox="0 0 100 100">${imageFor(chosen.textContent)||'<path d="M20 15h60v70H20Z" fill="none" stroke="currentColor" stroke-width="4"/>'}</svg></span>${esc(chosen.textContent)}${uiIcon('chevron')}`;}
-    r.addEventListener('click',e=>{const b=e.target.closest('[data-ux]');if(!b)return;const key=b.dataset.ux;if(key==='category-prev'||key==='category-next')setCategory(category.selectedIndex+(key==='category-next'?1:-1));
-      if(key==='categories'){$('.ux-category-list').innerHTML=choices().map((o,i)=>button('category-pick',`<svg viewBox="0 0 100 100" aria-hidden="true">${imageFor(o.textContent)||'<path d="M20 15h60v70H20Z" fill="none" stroke="currentColor" stroke-width="4"/>'}</svg><span>${esc(o.textContent)}</span>`,`data-index="${i}" aria-pressed="${o.selected}"`)).join('');categoryDialog.showModal();}
-      if(key==='category-pick'){setCategory(Number(b.dataset.index));categoryDialog.close();}
-    });
-    for(const surface of [selector,$('[data-library-grid]')].filter(Boolean)){
-      let swipe,suppress=false;surface.style.touchAction='pan-y';
-      surface.addEventListener('pointerdown',e=>{suppress=false;swipe={x:e.clientX,y:e.clientY};});
-      surface.addEventListener('pointerup',e=>{if(!swipe)return;const dx=e.clientX-swipe.x,dy=e.clientY-swipe.y;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.5){suppress=true;setCategory(category.selectedIndex+(dx<0?1:-1));}swipe=null;});
-      surface.addEventListener('pointercancel',()=>{swipe=null;suppress=false;});surface.addEventListener('click',e=>{if(suppress){suppress=false;e.preventDefault();e.stopImmediatePropagation();}},true);
-    }refreshCategory();
-  }
   await installUsability(api);
   await installCustomerTools(api);
   await installWorkflow(api);
   installDirectEditing({...api,editPhoto});
-  // K11: geführte Schritte unter 768 px (eigenes Modul, Desktop-Reiter bleiben unverändert).
-  await installMobileSteps(api);
+  // Mikail 04.11.2026 / Astra #161: same tabs and guarded cart on mobile.
+  await installModernMobileNavigation(api);
   updateSelection();
 }

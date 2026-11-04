@@ -93,12 +93,6 @@ export async function installUsability(api) {
   // Remove that duplicate node; the native document supplies the single price note below.
   for(const p of all('#ux-panel-motif p'))if(/je Motiv|einzeln berechnet/.test(p.textContent))p.remove();
   const priceNote=document.createElement('p');priceNote.className='ux-motif-pricing';priceNote.textContent=priceText;$('[data-bestsellers]').after(priceNote);
-  const categoryIcon='<path d="M4 4h6v6H4Zm10 0h6v6h-6ZM4 14h6v6H4Zm10 0h6v6h-6Z" fill="none" stroke="currentColor" stroke-width="1.5"/>';
-  function improveCategories(){for(const svg of all('.ux-category-control svg,.ux-category-list svg')){
-    if(svg.innerHTML.includes('M20 15h60v70H20Z')){svg.setAttribute('viewBox','0 0 24 24');svg.innerHTML=categoryIcon;}
-  }}
-  new MutationObserver(improveCategories).observe($('.ux-category-control'),{childList:true,subtree:true});
-  new MutationObserver(improveCategories).observe($('.ux-category-list'),{childList:true});improveCategories();
   function refreshLibrary(){const has=!!grid?.querySelector('[data-motif]');empty.hidden=has;if(libraryToggle)libraryToggle.hidden=!has;if(grid)grid.hidden=!has;namespaceAll();if(has&&grid.clientHeight>0&&grid.classList.contains('ux-list-expanded')&&grid.scrollHeight<=grid.clientHeight+1&&!more.hidden)more.click();}
   if(grid)new MutationObserver(refreshLibrary).observe(grid,{childList:true});
   r.addEventListener('click',e=>{const b=e.target.closest('[data-ux]');if(!b)return;

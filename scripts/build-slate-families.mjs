@@ -20,7 +20,8 @@ export function closedSlatePath(path){
  if(!/^M\s/.test(path)||/[^MLC,\s]/.test(path.replace(/[-+]?(?:\d*\.\d+|\d+\.?\d*)(?:[eE][-+]?\d+)?/g,''))||!n||Math.hypot(n[0]-n.at(-2),n[1]-n.at(-1))>1e-8)throw Error('Quellkontur ist nicht geschlossen.');
  return path+' Z';
 }
-export const slateSizeKey=t=>`${prefixes[t.familie]}-${forms[t.form]}-${dim(t.widthMm)}X${dim(t.heightMm)}`;
+// #85/6625312189: readable star SKU; exact source geometry stays untouched.
+export const slateSizeKey=t=>{const value=n=>dim(t.familie==='geschnitten'&&t.form==='Stern'?Math.round(n*10)/10:n);return `${prefixes[t.familie]}-${forms[t.form]}-${value(t.widthMm)}X${value(t.heightMm)}`;};
 export function buildSlateFamilies(source,fonts,{sha256}={}){
  if(source.schema!=='gravuru-schiefer-tafeln/v1'||source.tafeln.length!==48)throw Error('Bestätigte Quelle mit 48 Tafeln erforderlich.');
  return Object.keys(prefixes).map(kind=>{

@@ -26,11 +26,20 @@ export function installMemorialExecution({el,config,picks,pictures,fieldBox}){
  const other=[...pictures.querySelectorAll('[role=group]')].filter(g=>!replaced.has(g.querySelector('[data-picture-group]')?.dataset.pictureGroup));
  pictures.innerHTML=memorialChoicesMarkup(config);pictures.append(...other);
  if(media){const style=document.createElement('style');style.textContent=SLATE_ACCESSORY_CSS;el.shadowRoot.append(style);}
+ const accessoryTiles=[];
  if(fieldBox&&media){
+  const heading=document.createElement('h3'),group=document.createElement('div');heading.textContent='Zubehör';group.setAttribute('role','group');group.setAttribute('aria-label','Zubehör · Mehrfachauswahl');
   for(const choice of media.choices.filter(c=>c.fieldId)){
    const row=fieldBox.querySelector('[data-m-field-row="'+CSS.escape(choice.fieldId)+'"]');
-   if(row){row.classList.add('m-slate-accessory-check');const picture=document.createElement('span');picture.innerHTML=slateImagesMarkup(choice.images);row.append(picture);}
+   const input=row?.querySelector('input[type="checkbox"]');
+   if(input){
+    row.style.setProperty('display','none','important');
+    const tile=document.createElement('button');tile.type='button';tile.className='m-option-tile';tile.dataset.slateAccessory=choice.fieldId;
+    tile.innerHTML=slateImagesMarkup(choice.images,{captions:false})+'<strong>'+esc(choice.label)+'</strong><small>+'+esc(money(choice.priceCents))+'</small>';
+    tile.addEventListener('click',()=>{input.checked=!input.checked;input.dispatchEvent(new Event('change',{bubbles:true}));});group.append(tile);accessoryTiles.push({tile,input});
+   }
   }
+  if(accessoryTiles.length)pictures.append(heading,group);
  }
  let updatePhoto=()=>{};
  if(config.photo?.enabled){
@@ -42,6 +51,7 @@ export function installMemorialExecution({el,config,picks,pictures,fieldBox}){
  }
  return ()=>{
   updatePhoto();
+  for(const {tile,input} of accessoryTiles)tile.setAttribute('aria-pressed',String(input.checked));
   for(const heading of pictures.querySelectorAll('[data-slate-group-heading]')){
    const group=heading.nextElementSibling;
    heading.hidden=group.hidden;

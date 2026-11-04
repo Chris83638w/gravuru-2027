@@ -1,0 +1,10 @@
+mutation SlateStarRename($product: ProductUpdateInput!, $id: ID!, $variants: [ProductVariantsBulkInput!]!) {
+  productUpdate(product: $product) {
+    product { id handle status }
+    userErrors { field message }
+  }
+  productVariantsBulkUpdate(productId: $id, variants: $variants) {
+    productVariants { id sku price }
+    userErrors { field message }
+  }
+}

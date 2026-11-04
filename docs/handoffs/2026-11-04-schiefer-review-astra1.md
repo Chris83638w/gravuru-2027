@@ -1,0 +1,12 @@
+# Schiefer: Nacharbeit nach Claudes Abnahme 6625312189
+
+[Auftrag in #85](https://github.com/Chris83638w/gravuru-2027/issues/85#issuecomment-6625312189), [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md). Eigene PRs #166 / Katalog #171, kein Merge oder Live-Schritt.
+
+- `slateSizeKey` rundet nur die lesbare Stern-Kennung auf 0,1 mm. Exakte Kontur und Preise bleiben unverändert. `migrate-slate-star-key.mjs` korrigiert lokale Nachweise und optional die lokale Werkstattkonfiguration; Shopify wird separat mit validierter `slate-star-correction.graphql` geändert und zurückgelesen. 0 neue Produkte, 1 DRAFT überarbeitet, 0 ACTIVE geändert, 0 veröffentlicht.
+- `memorial-execution` ersetzt die sichtbaren Zubehör-Ankreuzfelder durch Bildkacheln, verwendet aber denselben Änderungs-/Preisvertrag. Drei unabhängige Optionen, sichtbare Auswahlhaken. `slate-accessory-media` lässt in AH-Farbgruppen nur einen sichtbaren Namen stehen.
+- `check-slate-review.cjs` prüft im echten Konfi drei Zubehörkacheln, Mehrfachauswahl 49,96 €, Farbbeschriftung, originale Vorlage D200, Hund-/Mensch-Fotos, beide Hintergrundoptionen und Fotopreise 28,99/38,98 €. Keine Konsolenfehler. 48/48 gezielte Auswahl-/Preis-/Vorschautests bestanden. Katalog und geschnittene Kontaktbögen erneut gebaut.
+- Foto-Nachweis verwendet die echte Gravurvorschau mit Originalmaske; keine Acryl-Testkarte mehr. **Hintergrund entfernen bleibt der bestehende Werkstattauftrag vor Fertigung (Register 1.26), keine automatische Vorschau-Freistellung.** Beide Screenshots zeigen daher dasselbe Originalfoto mit unterschiedlicher Auftragswahl. Diese Grenze steht ausdrücklich im Nachweis.
+
+[Alle Bilder, Shopify-Vorher/nachher und Prüfprotokolle](https://github.com/Chris83638w/gravuru-katalog./tree/dev/astra1-schiefer-familien-20261104/auftraege/2026-11-04-schiefer-anschluss/review-6625312189).
+
+Reproduktion: lokaler Server wie in der vorherigen Übergabe, danach `node scripts/check-slate-review.cjs` (Playwright; optional `SLATE_PLAN` für die lokale Plan-Datei). Breiter Linux-Vollauf liegt laut Claude bei ihm; bisher kein neues Ergebnis in #85. Nächster Schritt: erneute Abnahme, danach ausschließlich #139 für den Merge. Alte Familien und ACTIVE-Produkte bleiben erhalten.

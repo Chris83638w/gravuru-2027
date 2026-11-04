@@ -8,6 +8,11 @@ import {photoAvailableForDesign} from '../configurator/variant-m/ux-model.mjs';
 const family=()=>{const f=JSON.parse(fs.readFileSync(new URL('../designs/steel-door-signs/family.json',import.meta.url)));f.id='schiefer-tafeln-natur';f.material={kind:'slate',label:'Schiefer',thicknessMm:5,processingProfileId:'slate-engraving'};f.photo={includedCount:1,extraPriceCents:999};f.sizes=f.sizes.slice(0,1);f.sizes[0].baseCents=1999;f.sizes[0].photoDesignCents=2999;return f;};
 const fixture=()=>{const f=family(),c=familyProductConfig(f,f.sizes[0],1);c.profile.designs.push({id:'foto',name:'Testfoto',objects:[{id:'photo',type:'photoSlot',x:45,y:30,w:20,h:20,rotation:0}]});return c;};
 const uploads=n=>Array.from({length:n},(_,i)=>({id:'upload'+i,type:'photoSlot',uxUploadId:'f'+i,uxUploadKind:'photo'}));
+
+test('85 review: Natur 22×14 photo template costs 28.99 with one photo and 38.98 with two',()=>{
+ const c=fixture();c.basePriceCents=2199;c.photoDesignCents=2899;
+ for(const [count,total] of [[0,2899],[1,2899],[2,3898]])assert.equal(commercePrice(c,{designId:'foto',objects:uploads(count),mOptions:{mounting:'K00'}},1).unitCents,total);
+});
 test('85: selected original template controls base and photo credit, independent of customer objects',()=>{
  const c=fixture(),plain=c.profile.defaultDesignId;
  assert.equal(quote(c,[],'foto').selectedBasePriceCents,2999);

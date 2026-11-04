@@ -1,3 +1,7 @@
+## 2026-11-04 · Astra 1, zweiter Chat · #85 Abnahme-Nacharbeit
+
+Stern-SKU/Handle korrigiert (1 DRAFT, 0 neu/ACTIVE/live), Zubehör-Bildkacheln mit Mehrfachauswahl, einmalige AH-Farbnamen. Reale Katalogfotos und Fotopreise 28,99/38,98 € im Browser geprüft; 48/48 gezielte Tests bestanden. Freistellung bleibt Werkstattauftrag nach Register 1.26. [Übergabe mit Nachweisen und Grenze](docs/handoffs/2026-11-04-schiefer-review-astra1.md). Eigene PRs #166/#171, kein Merge/Live. Nächster Schritt: Claudes erneute Abnahme und sein Linux-Vollauf.
+
 ## 2026-11-04 · Codex/Astra 1, zweiter Chat · #85: 48 Schiefertafeln angeschlossen
 
 Claudes Aufträge 6618926268/6618993147 umgesetzt: vier Familien aus Katalog-PR #169, exakte Größen/Preise/Rohlinge, Fotogrundpreis je Vorlage, Zubehör-Checkboxen/AH-Farben und Hunde-Filter. 186 Designziel-Metadaten migriert, 268 originale Vorlagenzuordnungen, alte Familien erhalten. 48 neue Shopify-DRAFTs/278 Varianten/48 Bilder geprüft; 0 bestehende Produkte geändert, 0 veröffentlicht. Alle 48 Leer-Kontaktbögen und Katalog neu erzeugt. [Übergabe, Reproduktion, Prüfungen und offene Live-Bindung](docs/handoffs/2026-11-04-schiefer-zubehoer-astra1.md). Eigene PRs; Merge nur über #139, Live nur nach Chris' Satz.

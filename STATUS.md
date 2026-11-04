@@ -1,3 +1,7 @@
+## 2026-11-04 · Codex/Mika · Monogramm-Anschluss fortgesetzt
+
+Nutzerauftrag „los“: gemeinsame Integration #175 gelesen und Pilotübernahme in #85/6631307765 abgestimmt. Neuer Schiefer-Bindungsbefehl verwendet den bestehenden Registry-Prüfer und frische Shopify-Belege für ID, SKU, Optionsbezeichnung, Variantenanzahl und Preis; bedingte Farben bleiben vollständig erhalten. 14/14 gezielte Tests bestanden, Shopify-Evidenzabfrage tatsächlich ausgeführt. Noch keine aktive Laufzeitänderung oder native Bindung in diesem Zwischenstand. Vorbereitung erfolgt in einem separaten Serverordner unter Erhalt vorhandener Anpassungen.
+
 ## 2026-11-04 · Codex/Mika · Monogramm-Shopify-Entwurf tatsächlich angelegt
 
 Vorhandene Produktdaten sind vollständig; Shopify-Entwurfsanlage von der späteren Konfi-Bindung getrennt. Vollständiger Bestandsabgleich: 1.478 Produkte / 28.465 Varianten, alle Status/Folgeseiten. Monogramm 22×14 jetzt als DRAFT `16192353829244` angelegt: 15 Befestigungs-/Farbvarianten ab 21,99 €, Hauptbild mit Startdesign D1, Medium `70025726984572` READY. Alle Preise/Optionen/IDs erneut gelesen: unverändert, keine Abweichung. 82 passende Designs sind im Konfi-Paket vorbereitet. Neuer lesender Shopplaner schützt bestehende IDs/Altvarianten und bewahrt bedingte Farben. 11/11 Tests; fünf API-Operationen validiert. 0 bestehende Produkte geändert, 0 Veröffentlichungen, 0 aktive Konfi-Importe. Serveranbindung in #48/6630901318 konkret adressiert; keine fehlende Zuarbeit von Mikail. [Übergabe und Shopify-Nachweis](docs/handoffs/2026-11-04-schiefer-import-mika.md).

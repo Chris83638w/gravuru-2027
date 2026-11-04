@@ -2,7 +2,7 @@
 
 Isolierte React/Vite-Studie vom 03.11.2026, **keine Produktionsimplementierung** und keine Shopify-Verbindung. [Prüfbericht, Architektur, Quellen und offene Grenzen](../../docs/handoffs/2026-11-03-produktprofile-vorschau.md).
 
-Läuft auf Chris' Rechner unter http://127.0.0.1:8171/. Fünf Beispiele: Türschild, Andenken Menschen, Andenken Tiere, Funkklingel, ohne Optionen. Die Umschaltung oben ist ein Prüfwerkzeug, kein geplanter Kundenschalter.
+Läuft auf Chris' Rechner unter http://127.0.0.1:8171/. Auf Chris' Wunsch vom 04.11.2026 gibt es keine obere Vorschau-/Produktumschaltleiste mehr. Die fünf Beispiele sind über direkte Links erreichbar: `/` (Türschild), `/?profile=memorial` (Menschen), `/?profile=memorialPet` (Tiere), `/?profile=doorbell` (Funkklingel), `/?profile=simple` (ohne Optionen). Das optionslose Beispiel startet direkt mit Designs. Unbekannte Profilwerte öffnen das Türschild.
 
 ## Lokal reproduzieren
 

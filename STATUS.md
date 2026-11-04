@@ -1,3 +1,7 @@
+## 2026-11-04 · Codex/Astra · PR #161: obere Vorschauleiste entfernt
+
+Chris' Korrektur lokal umgesetzt: keine Profil-/Vorschauleiste, eigentliche Werkzeugzeile bleibt. Produktbeispiele über direkte Profil-Links; ohne Optionen direkt Designs. Desktop und 375×548 geprüft, alle fünf Profile erreichbar, 20/20 gezielte Tests und Build grün. [Übergabe für Claude und alle Projekt-KIs](docs/handoffs/2026-11-04-konfi-ohne-vorschauleiste.md). Kein Merge, keine Live-Änderung; produktive Integration bleibt separat.
+
 ## 2026-11-03 · Codex/Astra · PR #161: moderne lokale Screenshots
 
 Modernen Bildentwurf in der lokalen Studie umgesetzt: weiße Werkzeugzeile mit Canvas-zentrierten Werkzeugen, Speichern ganz rechts, großes Schild, ruhige Motiv-/Design-/Optionskacheln, schlanker farbiger Footer. Menschen/Tiere getrennt. Desktop und 375×548/390×664 aufgenommen; 20/20 gezielte Tests und Build grün. [Bilder und Grenzen](docs/handoffs/2026-11-03-produktprofile-vorschau.md). Chris prüft die Optik; kein neuer vollständiger Produktiveditor, keine Master-/Live-Änderung, kein Merge.

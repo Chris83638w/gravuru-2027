@@ -1,5 +1,9 @@
 # Entscheidungsregister Chris (gravuru 2027)
 
+## Nachtrag 04.11.2026 · Konfigurator-Vorschauleiste
+
+Chris im Konfigurator-Chat: „lass die oberste leiste weg und setze es um und informiere alle Kis insbesondere Claude“. Gemeint im gezeigten Stand: oberste lokale Profil-/Vorschauleiste. Die Werkzeugzeile mit Zurück zum Produkt, Vollbild, Rückgängig/Wiederholen, Hilfe, Ebenen und Speichern bleibt. Lokal umgesetzt in Entwurfs-PR #161; vorheriges „Noch nichts live stellen“ bleibt bestehen. [Übergabe und Bilder](docs/handoffs/2026-11-04-konfi-ohne-vorschauleiste.md).
+
 Stand 02.11.2026, 23:40 – von Claude (Operator) aus STATUS.md, Übergaben, Katalog und allen Issues zusammengestellt. **Pflichtlektüre für jede KI vor jedem Auftrag.** Bei Widerspruch gilt der neueste Eintrag. Einträge „Agent-Annahme“ sind keine Entscheidung von Chris.
 
 

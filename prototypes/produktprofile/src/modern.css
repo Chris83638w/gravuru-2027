@@ -1,9 +1,6 @@
 /* Local visual study: selected modern mock plus Chris' topic/profile refinements. */
 :root{font-family:"Segoe UI",Arial,sans-serif;--ink:#293440;--line:#e1e5ea;--muted:#66717f;--pale:#f3f4f6;--blue:#4d6b8b}
-.app{--canvas-share:63%;--preview-height:38px;--toolbar-height:68px;--footer-height:58px}
-.preview-strip{height:var(--preview-height);background:#f7f8fa;font-size:11px;color:#657180}
-.profile-switch button{font-family:inherit;font-size:11px;padding:5px 11px}
-.profile-switch button[aria-pressed=true]{color:#263e58;box-shadow:0 1px 4px #172d4520}
+.app{--canvas-share:63%;--preview-height:0px;--toolbar-height:68px;--footer-height:58px}
 .toolbar{position:relative;display:flex;justify-content:space-between;align-items:center;height:var(--toolbar-height);min-height:var(--toolbar-height);padding:10px 24px;gap:8px;border-bottom:1px solid var(--line);background:#fff;box-shadow:0 3px 10px #19283c05;z-index:1}
 .toolbar .btn{border:0;background:transparent;min-height:44px;padding:10px 12px;gap:9px;font-family:inherit;font-size:17px;font-weight:650}
 .toolbar .btn:hover:not(:disabled){background:#e9edf2}
@@ -91,7 +88,6 @@ legend{font-family:inherit;font-size:16px;font-weight:650;margin-bottom:12px}
 }
 @media(max-width:760px){
  .app{--canvas-share:100%;--toolbar-height:54px;--footer-height:62px;padding-bottom:62px}
- .preview-strip{height:auto;padding:3px 6px}.profile-switch button{font-size:10px;padding:5px 6px}
  .toolbar{padding:5px 7px;box-shadow:none;gap:2px}.toolbar .btn{min-height:40px;font-size:10px;padding:6px 3px;gap:3px}
  .toolbar .btn svg{width:17px;height:17px}.toolbar>.btn:first-child svg{width:14px}
  .center-tools{gap:0;border-radius:9px;padding:1px 2px}.center-tools .btn{min-width:29px;min-height:36px;padding:5px;border:0}
@@ -99,7 +95,7 @@ legend{font-family:inherit;font-size:16px;font-weight:650;margin-bottom:12px}
  .toolbar .save{min-width:31px;padding:5px}
  .workspace,.is-full .workspace{height:auto;max-height:none;min-height:0}
  .stage{padding:12px 6px 6px}.canvas{height:calc(250px + var(--mobile-growth)*40px);min-height:250px}
- .stage:has(.textbar){height:calc(min(364px,100svh - 239px) + var(--mobile-growth)*40px)}
+ .stage:has(.textbar){height:calc(min(364px,100svh - 184px) + var(--mobile-growth)*40px)}
  .stage:has(.textbar) .canvas{height:auto;min-height:0;flex:1}
  .stage-bottom{height:25px;font-size:10px;padding:0 8px}.stage-bottom label{gap:7px}.stage-bottom input{width:82px}.stage-bottom button{font-size:10px}
  .tabs{min-height:65px;padding:0 10px;gap:0}.tabs button{font-size:10px;gap:5px;padding:8px 3px}.tabs button svg{width:19px;height:19px}

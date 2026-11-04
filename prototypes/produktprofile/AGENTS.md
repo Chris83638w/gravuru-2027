@@ -1,5 +1,9 @@
 # Prototype Instructions
 
+## Remove preview strip, 04.11.2026 (latest)
+
+Chris: remove the topmost strip and implement, inform all project AIs especially Claude. Remove only the local profile/demo strip; retain the shared product-back / canvas-centred tools / save toolbar. Reach local product examples via `?profile=sign|memorial|memorialPet|doorbell|simple`, never reintroduce a customer-facing product switcher. The prior no-live instruction remains in force. Handoff: `docs/handoffs/2026-11-04-konfi-ohne-vorschauleiste.md`.
+
 ## Modern screenshot review, 03.11.2026
 
 The selected modern configurator mock is now applied locally through src/modern.css. Preserve original product artwork and theme-specific motifs instead of synthetic mock artwork. One white toolbar spans the viewport; shared tools remain centred over the canvas, Save at the far right. Current screenshots: docs/handoffs/2026-11-03-produktprofile-vorschau/modern-*.jpg. Chris requested screenshots and explicitly forbids live publication. This remains a local layout study, not a complete production editor or approved replacement.

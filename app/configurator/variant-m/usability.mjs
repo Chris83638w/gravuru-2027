@@ -89,7 +89,9 @@ export async function installUsability(api) {
   const libraryHeading=$('#ux-panel-motif h3');if(libraryHeading)libraryHeading.textContent=`Alle ${total} Motive durchsuchen`;
   const motifFee=config?.extraMotifCents??profile.purchasing?.motifPriceCents??169;
   const priceText=motifPriceDescription({...config,extraMotifCents:motifFee});
-  for(const p of all('#ux-panel-motif p'))if(/je Motiv|einzeln berechnet/.test(p.textContent))p.textContent=priceText;
+  // The legacy sync rewrites its own note using the old purchasing profile.
+  // Remove that duplicate node; the native document supplies the single price note below.
+  for(const p of all('#ux-panel-motif p'))if(/je Motiv|einzeln berechnet/.test(p.textContent))p.remove();
   const priceNote=document.createElement('p');priceNote.className='ux-motif-pricing';priceNote.textContent=priceText;$('[data-bestsellers]').after(priceNote);
   const categoryIcon='<path d="M4 4h6v6H4Zm10 0h6v6h-6ZM4 14h6v6H4Zm10 0h6v6h-6Z" fill="none" stroke="currentColor" stroke-width="1.5"/>';
   function improveCategories(){for(const svg of all('.ux-category-control svg,.ux-category-list svg')){

@@ -2,6 +2,20 @@
 
 Stand 04.11.2026, Codex/Mika, eigener Branch `dev/mika-schiefer-upload-20261104`, PR #174. Dieser Stand ersetzt die offenen Import-/Bindungsangaben in der älteren Importübergabe; deren Abschnitte bleiben historische Nachweise.
 
+## Nachkorrektur und sichtbarer Nachweis, 15:24 UTC
+
+Die lokale echte Browserprüfung mit dem nativen Editor und den bestehenden Monogrammdaten funktioniert unabhängig vom online angehaltenen iframe: Desktop und Handy 390×844, 82 Designs sofort sichtbar, A/ALTMANN als Start, einzelne Rechteck-Bohrbilder, keine Acrylständer oder Breitenzusätze, kein zweiter Fotoabschnitt. Ein/zwei hinzugefügte Motive erhöhen den Preis von 21,99 auf 23,68/25,37 €, Entfernen eines Motivs wieder auf 23,68 €. Keine JavaScript-Fehler bei dieser Prüfung. Die lokale Prüfung verwendet die native Galerie; sie ersetzt nicht die Abnahme der signierten Online-Galerie oder des Warenkorbs.
+
+Dabei zwei Darstellungsfehler gefunden und behoben: Der Legacy-Sync schrieb seinen alten „0,00 €“-Hinweis bei jeder Änderung zurück. `usability.mjs` entfernt nun den doppelten Hinweis und zeigt ausschließlich die Preisangabe aus dem nativen Dokument. `modern-layout.css` korrigiert die CSS-Priorität für Speichern, mobile Werkzeuge und die ausgeblendete Produktüberschrift. Keine zusätzliche Änderung an Produktdaten, Bindungen oder Designs.
+
+Diese Nachkorrektur ist aktiv in **`private/mika-konfi-korrektur-r2-20261104`**, Bundle **`editor-b28dfac637a5c2a7.mjs`**, Startup-SHA **`d1994393ac740f3acee602edc45f01e267d0daa5b39768bb06ec1559200a83fd`**. Vor dem Wechsel beide Quelldateien und Startdatei frisch geprüft, alten Stand erhalten, vier gezielte Servertests und Build erfolgreich, Plesk-Neustart ausgeführt, HTML/Bundle/CSS mit HTTP 200 und neuen Hashes bestätigt. [Abschließender Nachweis](2026-11-04-konfi-monogramm-korrektur-mika/final-verification.json). Die unten dokumentierte erste Bereitstellung bleibt historische Ausgangsbasis.
+
+Lokale Sichtnachweise: [Desktop und Designstart](2026-11-04-konfi-monogramm-korrektur-mika/desktop-local.png), [Handy](2026-11-04-konfi-monogramm-korrektur-mika/mobile-local.png), [zwei Motivzuschläge](2026-11-04-konfi-monogramm-korrektur-mika/motifs-local.png), [Ausführung](2026-11-04-konfi-monogramm-korrektur-mika/execution-local.png).
+
+[Astra bestätigt in #48/6634347062](https://github.com/Chris83638w/gravuru-2027/issues/48#issuecomment-6634347062) den neuen nativen Rahmen im tatsächlichen Shopify-Produkt `16077798965628` mit 208 Inline-Designs und erhaltenem Kundenentwurf. Das ist ein zusätzlicher Shopnachweis, kein selbst durchgeführter Monogramm-Warenkorbtest. Seine separat begonnene UI-Neufassung wurde nicht veröffentlicht und wird nicht übernommen. Diese zwei Anzeigekorrekturen sind in [#48/6634487827](https://github.com/Chris83638w/gravuru-2027/issues/48#issuecomment-6634487827) abgestimmt. Ein vollständiger 1:1-Abgleich mit #161 wird nicht behauptet: Motiv-Modusknöpfe statt Kategorie-Dropdown sowie die bestehende mobile Schrittführung bleiben Unterschiede. Die ausdrücklich von Mikail genannten Schiefer-/Preisbereinigungen sind davon getrennt umgesetzt.
+
+Der nächste Schritt bleibt die frische Monogramm-Sitzung über Shopify samt Warenkorbübergabe, nicht eine weitere Produktanlage. Produkt weiterhin DRAFT, Produktionszuordnung und Silikon-Zusatzvertrag unverändert offen. Rückweg für die letzte Korrektur: vorherige Laufzeit `private/mika-konfi-korrektur-20261104`, private Startdateisicherung `correction-final-app.cjs.before`; niemals einen neueren fremden Startstand ohne Abgleich überschreiben.
+
 ## Auftrag und Quellen
 
 Mikail hat in diesem Chat die Umsetzung ausdrücklich beauftragt: „kontrolliere den neuesten stand vom Konfi, übernehme alles …“. Seine vorherigen konkreten Korrekturen gelten:

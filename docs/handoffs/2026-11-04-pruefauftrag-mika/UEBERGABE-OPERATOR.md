@@ -383,3 +383,20 @@ Die Datei `Alle-Designs-2026-11-04.xlsx` hat Chris im Chat bekommen. Eine Kopie 
   - Sein Index (`auftraege/2026-10-31-menschen-schiefer/master-index.json`, Katalog #124) nennt 2.097 Menschen/Sternenkinder = 1.977 offen + 120 schon auf main (9 gemergte Herz-mit-Foto-PRs). Das stimmt überein.
 - **Astra gravuru 799:** Firmen #153 (274), Tierbestand #14 (260), Boxenschilder #9 (200), Pferde #13 (59), Hausnummern-Pilot #16 (6).
 - Schiefer-Kreuze: siehe Abschnitt 10.
+
+## 14. Alle Designs kategorisiert + Prüfrunden-Plan (Operator-Chat 1, 12:00)
+Chris (04.11., 11:44): „ich möchte, dass du alle Designs jetzt kategorisierst“, und um 11:45: „es gibt jetzt eine Design Prüfung MD, damit können wir alle kontrollieren“.
+
+- **Datei:** `Designs-Kategorien-2026-11-04.xlsx`; Chris hat sie im Chat bekommen, außerdem liegt sie in diesem Ordner.
+  - Blätter: Übersicht, Kategorien-Baum, Prüfrunden-Plan, Alle Designs.
+  - Dazu `pruefrunden-plan.json` und die Skripte `werkzeug/kategorien.py` und `werkzeug/kat-xlsx.py`.
+- **41.752 Designs**, jedes einmal: 30.272 auf main und 11.480 in offenen PRs. Doppelte Pfade sind nur einmal gezählt.
+- **Kategorien:** Linie → Unterkategorie → Zielgruppe → Foto → Form/Reihe, dazu der Status (Quelle, Ziele, Familien, freigegeben, nicht angeboten). Grundlage sind die Felder in `design.json` (`themes`, `targetGroup`, `withPhoto`, `form`, `formatreihe`, `ziele`), sonst der Ordnername.
+- **Prüfrunden-Plan für den Design Prüfung Skill** (gravuru-2027 PR #169, `.claude/skills/design-pruefung/`):
+  - **149 Runden** mit höchstens 200 Designs, gruppiert nach Linie, Unterkategorie, Zielgruppe und Foto.
+  - Bestand, Testbeispiele und „nicht angeboten“ sind nicht im Plan.
+  - Edelstahl-Schilder ohne PR #8: 33 Runden mit 5.391 Designs (Arbeitsliste Nr. 1, „jetzt“).
+  - Rasse #8: 39 Runden, erst nach Chris' Antwort.
+  - Grabstecker 15, Schiefer 42, AE-Türschilder 9, Sonstige 11 Runden; alle erst auf Chris' Auftrag.
+- Jede Runde wird nach dem Skill gebaut: Renderer → `scripts/design-pruefung.mjs` → feste Prüfseite 41X3tZ1QMHyqEZNum3WPQo.
+- **Abstimmen mit dem Edelstahl-Chat:** Er führt die Arbeitsliste und Runde 1 (die auffälligen Designs). Der Plan hier ist die Grundlage für die übrigen Runden und kein zweiter Prüfstrang.

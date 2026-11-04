@@ -43,6 +43,10 @@ def move_foto_full(D, f, s, tx, ty):
     move_foto(f, s, tx, ty)
 
 
+# Stammmotive, die nach Prüfung 04.11. nicht in den Stamm gehören (Hausstil §8: ein Motiv im Stamm)
+KREUZ_WEG = {'122': ('motiv-1', 'leerer Ring ohne Inhalt'), '111': ('motiv-1', 'Schriftzug „In loving memory“ als Grafik, Mini-Schrift (A7)')}
+
+
 def build(path, fonts, log):
     D = read_design(path, fonts)
     items = D['items']
@@ -134,7 +138,18 @@ def build(path, fonts, log):
         lines = balanced_wrap(ttext, 3, fonts, t, ts, STEM_W - 2 * M - 6) or [ttext]
         w, h = ink(fonts, t, lines, ts)
         set_text(fonts, t, lines, ts, CX, (BAL_T - h) / 2 + 4)
-    # --- Stamm
+    # --- Stamm: Trennlinien (Haarlinien) und aussortierte Motive entfernen
+    for m in list(motive):
+        b = m.bbox
+        w_, h_ = b[2] - b[0], b[3] - b[1]
+        key = re.search(r'mem-(\d+)', did)
+        weg = KREUZ_WEG.get(key.group(1)) if key else None
+        if min(w_, h_) < 1.5 and max(w_, h_) > 10 * max(min(w_, h_), 0.01):
+            remove(m); motive.remove(m)
+            log.append((did, 'Trennlinie im Stamm entfernt'))
+        elif weg and m.id == weg[0]:
+            remove(m); motive.remove(m)
+            log.append((did, 'Motiv entfernt: ' + weg[1]))
     stem_top, stem_bot = BAL_B + M + 4, H - M - 6
     if motive:
         for s in spruch:
@@ -170,7 +185,7 @@ def build(path, fonts, log):
         ssize = min(sp.size, 5.0 / scap)
         lines = None
         while ssize * scap >= 3.0:
-            lines = balanced_wrap(stext, 5, fonts, sp, ssize, STEM_W - 2 * M - 6)
+            lines = balanced_wrap(stext, 9, fonts, sp, ssize, STEM_W - 2 * M - 6)
             if lines:
                 break
             ssize *= .95

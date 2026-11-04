@@ -43,15 +43,18 @@
  :host([data-ux-modern]) .ux-shell .ux-panel{padding:21px 18px!important}
 }
 @media(max-width:767px){
+ /* Keep the existing mobile viewport shell: only the option list scrolls.
+    Desktop checkout spacing must not reserve an empty strip on phones. */
+ :host([data-ux-modern]) .ux-shell{padding:0!important}
  :host([data-ux-modern]) .ux-shell .ux-heading{min-height:54px!important;padding:5px 7px!important}
  :host([data-ux-modern]) .ux-shell .ux-heading>.ux-canvas-toolbar{position:static!important;transform:none!important;margin:0 auto!important;padding:1px 2px!important;order:1!important}
  :host([data-ux-modern]) .ux-heading>[data-ux=account]{order:3!important;margin:0!important}
  :host([data-ux-modern]) .ux-shell .ux-heading :is(button,.ux-canvas-help){height:40px!important;min-height:40px!important;min-width:32px!important;width:32px!important;padding:6px!important}
  :host([data-ux-modern]) .ux-shell .ux-heading :is(.ux-tool-label,.ux-enlarge span,[data-ux-count]){display:none!important}
- :host([data-ux-modern]) .ux-shell .ux-layout{display:flex!important;flex-direction:column!important;min-height:0!important;overflow:auto!important}
- :host([data-ux-modern]) .ux-shell .ux-layout>.ux-preview{position:relative!important;top:auto!important;width:100%!important;height:calc(280px + var(--ux-textbar-h,0px))!important;padding:12px 6px 6px!important;flex:none!important}
- :host([data-ux-modern]) .ux-shell .ux-preview .stage:not(.acryl-scene){height:250px!important;min-height:250px!important;padding:22px 24px 36px!important}
- :host([data-ux-modern]) .ux-shell .ux-layout>.ux-editor{border:0!important;overflow:visible!important;flex:none!important}
+ :host([data-ux-modern]) .ux-shell .ux-layout{display:flex!important;flex-direction:column!important;flex:1!important;min-height:0!important;overflow:hidden!important}
+ :host([data-ux-modern]) .ux-shell .ux-layout>.ux-preview{position:relative!important;top:auto!important;width:100%!important;height:var(--ux-mobile-preview-h,40dvh)!important;padding:12px 6px 6px!important;flex:none!important}
+ :host([data-ux-modern]) .ux-shell .ux-preview .stage:not(.acryl-scene){height:100%!important;min-height:0!important;padding:22px 24px 36px!important}
+ :host([data-ux-modern]) .ux-shell .ux-layout>.ux-editor{border:0!important;overflow:auto!important;flex:1!important;min-height:0!important}
  :host([data-ux-modern]) .ux-tabs{display:flex!important;padding:0 10px!important}
  :host([data-ux-modern]) .ux-shell .ux-tabs button{min-height:65px!important;font-size:11px!important;flex:1!important}
  :host([data-ux-modern]) .ux-shell .ux-panel{padding:22px 17px 30px!important}

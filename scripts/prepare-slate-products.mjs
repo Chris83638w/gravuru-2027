@@ -5,7 +5,8 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {katalogFor} from '../app/workshop/design-dashboard.mjs';
 import {approvedForFamily,assignTargetSeries} from '../app/workshop/design-targets.mjs';
-import {katalogDesignToTemplate,parseDesignSvg} from '../app/workshop/katalog-convert.mjs';
+import {katalogDesignToTemplate,parseDesignSvg,scaleTemplate,scaleEmbeddedMotifs} from '../app/workshop/katalog-convert.mjs';
+import {assignedSlateSizes} from '../app/workshop/slate-design-targets.mjs';
 import {assessDesignTarget} from '../app/workshop/design-target-rules.mjs';
 import {prepareKatalogPhotoAssets} from '../app/workshop/katalog-photo-assets.mjs';
 import {createDesignAssetStore} from '../app/workshop/design-assets.mjs';
@@ -37,7 +38,8 @@ try{
    let config=slateCatalogueProduct(root,family,size);config.designSelection='all-approved';const templates=[];
    for(const a of assigned.filter(a=>a.sizes.includes(size.key))){
     try{
-     if(a.design.plateMm.some((n,i)=>Math.abs(n-[size.widthMm,size.heightMm][i])>.001))throw Error('Migration übernimmt ausschließlich die identische Quellgröße.');
+     const scaleRequired=a.design.plateMm.some((n,i)=>Math.abs(n-[size.widthMm,size.heightMm][i])>.001);
+     if(scaleRequired&&!assignedSlateSizes(a.design.json,family).some(s=>s.key===size.key))throw Error('Migration übernimmt ausschließlich identische oder ausdrücklich zugeordnete Schiefergrößen.');
      let entry=cache.get(a.design.id);
      if(!entry){
       const svgText=a.design.svg(),names=[...new Set(parseDesignSvg(svgText).layers.filter(l=>l.kind==='text'||l.text).map(l=>l.font))];
@@ -47,13 +49,15 @@ try{
       entry={...converted,fonts:resources.fonts};cache.set(a.design.id,entry);
      }
      if(entry.template.objects.some(o=>o.type==='photoSlot')&&size.photoDesignCents===undefined)throw Error('Diese Größe ist ohne Foto freigegeben.');
-     const fit=assessDesignTarget({master:a.design,template:entry.template,family,size,fonts:entry.fonts,motifs:entry.motifs});
+     const template=scaleRequired?scaleTemplate(entry.template,a.design.plateMm,[size.widthMm,size.heightMm],entry.fonts,{contain:true}):structuredClone(entry.template);
+     const motifs=scaleRequired?scaleEmbeddedMotifs(entry.motifs,template.katalog.scale):entry.motifs;
+     const fit=assessDesignTarget({master:a.design,template,family,size,fonts:entry.fonts,motifs});
      if(fit.status==='passt nicht')throw Error(fit.issues.join(' · '));
-     const template=structuredClone(entry.template);template.katalog.target={familyId:family.id,explicit:true,released:true};template.katalog.fit=fit.status;
+     template.katalog.target={familyId:family.id,explicit:true,released:true};template.katalog.fit=fit.status;
      // #85/4.60: retain the source theme as a filter, never a separate dog family.
      if(family.id==='schiefer-tafeln-natur'&&template.themes?.includes('hundegedenktafeln'))template.collections=[...new Set([...(template.collections??[]),'Hunde'])];
      if(fit.issues.length)template.katalog.review=fit.issues;
-     templates.push({...entry,template});
+     templates.push({...entry,template,motifs});
     }catch(e){report.excluded.push({family:family.id,size:size.key,design:a.design.id,reason:e.message});}
    }
    for(const t of templates){
@@ -61,7 +65,7 @@ try{
     config.localResources.motifs.push(...t.motifs);
     for(const e of t.examples??[])(config.localResources.photoExamples??=[]).push({designId:t.template.id,slotId:e.slotId,assetId:e.assetId});
    }
-   if(config.profile.designs.some(d=>d.collections?.includes('Hunde')))config.customerUI={...config.customerUI,designFilters:{...config.customerUI?.designFilters,collection:true}};
+   if(config.profile.designs.some(d=>d.collections?.length))config.customerUI={...config.customerUI,designFilters:{...config.customerUI?.designFilters,collection:true}};
    const document=makeProductDocument(config);document.categoryIds=['familie-'+family.id,'form-'+size.groupKey.toLowerCase()];
    for(const t of templates)document.elementRights[t.template.id]=t.rights;
    const key='schiefer-2027:'+size.key;

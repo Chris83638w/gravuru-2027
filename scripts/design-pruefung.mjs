@@ -17,7 +17,8 @@ const HELP=`node scripts/design-pruefung.mjs --aus <Renderer-Ordner> --out <Seit
   --zeilen <json>    optional: {"<Design-ID>": [["Bei Ja fällt weg","8 × 5"], …]} – Infozeilen je Design
   --hinweise <json>  optional: {"<Design-ID>": "Hinweistext"}
   --reihennamen <json> optional: {"<Reihenordner>": "Anzeigename"}
-  --qualitaet <n>    WebP-Qualität, Standard 86`;
+  --qualitaet <n>    WebP-Qualität, Standard 86
+  --max-breite <px>  Bilder höchstens so breit (Standard 1800)`;
 
 const args=process.argv.slice(2),opt={};
 for(let i=0;i<args.length;i++){const a=args[i];if(!a.startsWith('--'))throw Error('Unbekanntes Argument: '+a);const k=a.slice(2);if(k==='help'){opt.help=true;continue;}if(args[i+1]===undefined)throw Error('Wert fehlt für '+a);opt[k]=args[++i];}
@@ -36,7 +37,7 @@ for(const e of index.ergebnisse){
  if(!e.png){fehlt.push((e.id||'Grundplatte')+' '+(e.label||e.size||'')+': '+(e.issues||[]).slice(-1)[0]);continue;}
  // Gleiches Design in mehreren Größen: Schlüssel aus Design und gerenderter Größe.
  const key=safe(e.id||'grundplatte')+'__'+safe(e.size),rel='bilder/'+opt.runde+'/'+key+'.webp';
- const info=await sharp(path.join(aus,e.png)).webp({quality:Number(opt.qualitaet||86)}).toFile(path.join(out,rel));
+ const info=await sharp(path.join(aus,e.png)).resize({width:Number(opt['max-breite']||1800),withoutEnlargement:true}).webp({quality:Number(opt.qualitaet||86)}).toFile(path.join(out,rel));
  items.push({id:e.id||'Grundplatte',key,reihe:e.reihe||'',reiheName:reihennamen[e.reihe]||e.reihe||'',groesse:e.label||e.size,size:e.size,status:e.status,bild:rel,w:info.width,h:info.height,zeilen:zeilen[e.id]||[],hinweis:hinweise[e.id]||''});
  neueDateien.push(rel);
 }

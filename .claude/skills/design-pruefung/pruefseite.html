@@ -50,7 +50,10 @@ main{max-width:1280px;margin:16px auto 0;display:grid;grid-template-columns:minm
 
 .platz{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;min-width:0}
 .buehne{background:var(--bench);display:flex;align-items:center;justify-content:center;padding:28px 20px;min-height:260px;position:relative}
-.buehne img{max-height:44vh;width:auto;max-width:100%;filter:drop-shadow(0 2px 6px rgba(0,0,0,.18))}
+.buehne img{max-height:44vh;width:auto;max-width:100%;filter:drop-shadow(0 2px 6px rgba(0,0,0,.18));cursor:zoom-in}
+.buehne.gross{overflow:auto;justify-content:flex-start;align-items:flex-start}
+.buehne.gross img{max-height:none;max-width:none;cursor:zoom-out}
+.lupe{position:absolute;left:12px;bottom:10px;font-size:.78rem;color:var(--muted)}
 .zaehler{position:absolute;left:12px;top:10px;font-family:var(--f-mono);font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums}
 .marke{position:absolute;right:12px;top:10px;font-family:var(--f-head);font-weight:600;font-size:.9rem;letter-spacing:.04em;text-transform:uppercase;padding:2px 10px;border-radius:4px}
 .marke[data-a="ja"]{background:var(--ja-soft);color:var(--ja)}
@@ -127,6 +130,7 @@ main{max-width:1280px;margin:16px auto 0;display:grid;grid-template-columns:minm
    <span class="zaehler" id="pos"></span>
    <span class="marke" id="marke" hidden></span>
    <img id="bild" alt="" width="700" height="460">
+   <span class="lupe">Bild anklicken = volle Größe</span>
   </div>
   <div class="info">
    <div class="groesse" id="groesse"></div>
@@ -177,6 +181,7 @@ main{max-width:1280px;margin:16px auto 0;display:grid;grid-template-columns:minm
   const list=sichtbar();zeigeZahlen();zeigeKacheln(list);
   if(!list.length){$('pos').textContent='';$('bild').hidden=true;$('groesse').textContent='Keine Designs in dieser Ansicht';$('kennung').textContent='';$('folge').textContent='';$('notiz').hidden=true;$('marke').hidden=true;['btnJa','btnNein','kom','zurueck','weiter'].forEach(b=>$(b).disabled=true);return;}
   idx=Math.max(0,Math.min(idx,list.length-1));const it=list[idx],a=zustand(it);
+  if($('bild').dataset.key!==it.key){$('bild').parentElement.classList.remove('gross');$('bild').dataset.key=it.key;}
   $('bild').hidden=false;$('bild').src=it.bild;$('bild').width=it.w;$('bild').height=it.h;$('bild').alt=`${it.id}, ${it.groesse}`;
   $('pos').textContent=`${idx+1} / ${list.length}`;
   $('groesse').textContent=it.groesse;
@@ -225,6 +230,7 @@ main{max-width:1280px;margin:16px auto 0;display:grid;grid-template-columns:minm
    let n=l.findIndex((x,j)=>j>i&&!zustand(x).antwort);if(n<0)n=Math.min(i+1,l.length-1);idx=n;zeige();},260);}
  }
 
+ $('bild').onclick=()=>$('bild').parentElement.classList.toggle('gross');
  $('btnJa').onclick=()=>waehle('ja');$('btnNein').onclick=()=>waehle('nein');
  $('zurueck').onclick=()=>{idx--;zeige();};$('weiter').onclick=()=>{idx++;zeige();};
  $('kom').addEventListener('input',()=>{const it=items.find(i=>i.key===$('kom').dataset.key);if(!it)return;clearTimeout(komTimer[it.key]);const v=$('kom').value;komTimer[it.key]=setTimeout(()=>{if((zustand(it).kommentar||'')!==v)schreibe(it,{kommentar:v});},900);});

@@ -48,4 +48,41 @@ Archivierte echte Türschildvorlagen (72 Stück), lokale Bindungen ohne Shopify-
 
 Claude prüft den PR inklusive Linux-Vollauf und anschließend die Integration mit #174. Vor einer separaten Veröffentlichung: echter Shopify-Designwechsel mit Galerie-Nachladen und Warenkorbübergabe sowie echtes iOS prüfen. Dieses Paket stellt nichts live.
 
-Bereits separat in #48 gemeldete Punkte sind dadurch nicht erledigt: Homage-Zeichenlücke bei ß/Hinweis am Feld, Zusammenführung „Heimathafen von“ in den Katalogvorlagen, thematische Bestseller statt alphabetischen Auffüllens, präzises Gestalten bei kleinem SE nach Textauswahl und der Browser-Zurück-Zustand nach Warenkorbübergabe. Kein pauschaler Abschluss aller Produktlinien/Foto-/Logo-/Bestellpfade.
+Bereits separat in #48 gemeldete Punkte sind dadurch nicht erledigt: Homage-Zeichenlücke bei ß/Hinweis am Feld, Zusammenführung „Heimathafen von“ in den Katalogvorlagen, thematische Bestseller statt alphabetischen Auffüllens und der Browser-Zurück-Zustand nach Warenkorbübergabe. Präzises Gestalten nach Textauswahl wird im folgenden Handy-Nachtrag behandelt; die tatsächliche Handy-Abnahme bleibt offen. Kein pauschaler Abschluss aller Produktlinien/Foto-/Logo-/Bestellpfade.
+
+## Handy-Nachtrag nach Chris-Prüfung
+
+Chris hat die geschützte Vorschau auf seinem Handy geprüft und mit „Los gehts“ die gesammelten Änderungen beauftragt. Der Nachtrag liegt im selben Entwurfs-PR #177. Keine Veröffentlichung im Live-Shop, kein Merge, keine Katalog-, Preis- oder Geometrieänderung.
+
+- Die Vorschau bleibt oberhalb der scrollbaren Optionen stehen. Bewusstes Herunterscrollen verkleinert sie stufenlos, Zurückscrollen vergrößert sie. Ein Ausgleich am Listenende verhindert Springen durch die veränderte verfügbare Listenhöhe. Beim Öffnen von „Motive“ startet sie kompakt, damit Bilder sofort sichtbar werden.
+- Ein permanenter 48-px-Platz hält die Textleiste oben. Die Leiste selbst ist 44 px hoch und genau einzeilig; weitere Werkzeuge sind seitlich erreichbar. Bestehende Werkzeuge und Berechtigungen bleiben erhalten. Die Desktop-Leiste bleibt an ihrem bisherigen Ort.
+- Auswählen, Abwählen und automatisches Sichtbarmachen eines Eingabefelds verändern nicht die Vorschauhöhe. Die verkleinerte Höhe bei geöffneter Bildschirmtastatur bleibt separat berücksichtigt.
+- Linke Maßlinie und Maßzahl bleiben auch im Vollbild innerhalb des Bildschirms. Der Abstand unter der waagerechten Bemaßung ist reduziert.
+- Motivansicht mit kompakter Suche und Kategorieauswahl, kurzem Preistext und drei Bildspalten. Überflüssige Überschrift, Sucherklärung und Zähler belegen mobil keinen sichtbaren Platz; Sucherklärung/Zähler bleiben für Hilfstechnologien vorhanden. Alle Kategorien und Originalnamen bleiben erhalten. Eine leere Statuszeile wird ausgeblendet, tatsächliche Fehler bleiben sichtbar.
+
+### Nachtragsprüfungen
+
+50/50 Tests grün: 37 mobile Layout-/Toolbar-/Platzierungsprüfungen, 6 Motivprüfungen und 7 Bundleprüfungen. Der erste eingeschränkte Bundlelauf hatte vier Umgebungsfehler (Datei-Rename EPERM und lokale Verbindung EACCES); derselbe Bundlelauf außerhalb dieser Einschränkung besteht vollständig. Keine Assertion entfernt oder abgeschwächt. Der oben dokumentierte Windows-Vollauf gehört zum vorherigen Paketstand und wurde nach diesem Nachtrag nicht erneut ausgeführt.
+
+Build: 76 Ressourcen, 142 Module, 16 Styles; `editor-589bddfcecfee489.mjs`, 1.377.632 Bytes / 464.801 Bytes gzip. Browserprüfung mit dem echten gebündelten Editor und archivierten Türschildvorlagen, kein statischer Nachbau:
+
+| Kontrolle | Ergebnis |
+|---|---|
+| 390×664: vor/nach Auswahl „Nachname“ | Platte unverändert x30/y120, 330×220 px |
+| 390×664: Textleiste | Einzeilig, 44 px hoch, seitlich scrollbar |
+| 390×664: Scrollen abwärts/aufwärts | Vorschauhöhe 312→199→312 px |
+| Vollbild ausgewählt/abgewählt | Halterrahmen unverändert x30/y220, 330×260 px |
+| Linke Vollbild-Maßzahl | „80 mm“, vollständig sichtbar bei x6…18 px |
+| 375×548 und 390×664: Motive | Erste Motivbilder unmittelbar unter zwei kompakten Filtern und Preisnotiz; Warenkorb erreichbar |
+| Desktop 1440×900 | Bestehende Werkzeugpositionen und Motivansicht sichtbar geprüft |
+| Geschützter Handy-Link | Aktualisierte Vorschau erfolgreich geladen; Zugangsschlüssel bleibt außerhalb GitHub |
+
+[Gemessene Rechtecke](konfi-dialoge-20261104/mobile-geometry-verification.json) · [Nachtragszähler](konfi-dialoge-20261104/mobile-verification.json)
+
+![Handy 390×664: einzeilige Textleiste](konfi-dialoge-20261104/mobile-13-text-einzeilig.png)
+![Handy 390×664: Vollbild mit linker Bemaßung](konfi-dialoge-20261104/mobile-13-vollbild-masse.png)
+![Handy 390×664: kompakte Motive](konfi-dialoge-20261104/mobile-13-motive-kompakt.png)
+![Handy 375×548: kompakte Motive](konfi-dialoge-20261104/mobile-se-motive-kompakt.png)
+![Desktop: Kontrollansicht](konfi-dialoge-20261104/desktop-motive-nachtrag.png)
+
+Nächster Schritt: Chris prüft den aktualisierten geschützten Handy-Link, insbesondere echtes Wischen und Bildschirmtastatur. Die Browsergrößen sind eine lokale responsive Prüfung, kein tatsächlicher iPhone-/Safari-Nachweis. Claude prüft Diff und Linux-Vollauf auf dem finalen Stand samt Abhängigkeit #174. Kein neuer Live-Warenkorb- oder Checkout-Nachweis in diesem UI-Nachtrag.

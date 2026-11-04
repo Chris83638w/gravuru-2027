@@ -53,3 +53,23 @@
 .ux-motif-category-menu .ux-ui-icon{fill:none!important;stroke:currentColor!important}
 
 @media(max-width:767px){:host([data-ux-modern]) .ux-shell .c-gallery [data-c-design] [data-design-enlarge]{display:none!important}}
+
+/* On phones, images follow the two compact filters immediately. Explanations
+   remain in the existing info dialog and in accessible search descriptions. */
+@media(max-width:767px){
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell #ux-panel-motif{padding:8px 10px 16px!important;display:flow-root}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-tabbar{margin-bottom:0!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-editor>[data-m-invalid]:empty{display:none!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motifs .guided-extra{margin:0!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-tabs,:host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-tabs button[aria-selected]{min-height:54px!important;height:54px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-tabs button[aria-selected]{padding:5px 3px!important;gap:4px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motifs>.ux-info-heading{display:none!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motifs .ux-motif-search-hint{position:absolute!important;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motif-search,:host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motif-category{display:block!important;font-size:0!important;line-height:0!important;margin:0 0 6px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motifs [data-library-search]{height:40px!important;min-height:40px!important;margin:0!important;padding:7px 10px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-category-picker{margin-top:0!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-category-trigger{min-height:40px!important;padding:6px 10px!important;font-size:15px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-motif-pricing{margin:4px 0 8px!important;padding:5px 7px!important;font-size:11px!important;line-height:1.35!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motifs [data-library-count]{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motifs .workflow-motif-grid button{min-height:104px!important;padding:6px 4px!important}
+}

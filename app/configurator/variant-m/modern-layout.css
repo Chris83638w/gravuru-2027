@@ -38,9 +38,32 @@
 :host([data-ux-modern]) :is(.ux-direct-edit,.ux-text-row){border-color:#e1e5ea!important;border-radius:10px!important}
 :host([data-ux-modern]) .ux-text-row.is-selected{background:#eef3f8!important;border-color:#93a7bd!important}
 :host([data-ux-modern]) .dimension-x,:host([data-ux-modern]) .dimension-y{color:#7b8795!important;border-color:#a5afbb!important}
+.ux-direct-slot:not(.doorbell-direct-slot),.ux-mobile-scroll-spacer{display:none}
 @media(min-width:768px) and (max-width:1100px){
  :host([data-ux-modern]) .ux-heading .ux-tool-label{display:none!important}
  :host([data-ux-modern]) .ux-shell .ux-panel{padding:21px 18px!important}
+}
+
+/* Fixed single-row toolbar slot: selection never borrows space from the plate.
+   The same mobile gutters apply in fullscreen, keeping both dimension labels in view. */
+@media(max-width:767px){
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-layout>.ux-preview{padding:0!important;justify-content:flex-start!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-slot{display:block!important;box-sizing:border-box!important;height:48px!important;min-height:48px!important;flex:0 0 48px!important;width:100%!important;padding:2px 6px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-preview>[data-ux-stage]{flex:1!important;min-height:0!important;height:calc(100% - 48px)!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-preview .stage:not(.acryl-scene){box-sizing:border-box!important;padding:18px 30px 26px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-preview .stage:not(.acryl-scene) .plate-holder{margin:auto auto 0!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) :is(.ux-preview,.c-large-preview) .dimension-y{left:-10px!important;width:6px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) :is(.ux-preview,.c-large-preview) .dimension-y span{left:-9px!important;font-size:11px!important;line-height:12px!important;padding:0!important;margin:0!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .c-large-preview .stage:not(.acryl-scene){box-sizing:border-box!important;padding:60px 30px 32px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-edit.is-docked{box-sizing:border-box!important;height:44px!important;min-height:44px!important;max-height:44px!important;padding:2px 4px!important;border:1px solid #d7dde5!important;border-radius:9px!important;background:#f2f4f7!important;overflow:hidden!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-edit.is-docked.is-fullscreen-dock{position:absolute!important;top:4px!important;left:6px!important;width:calc(100% - 12px)!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-edit.is-docked .ux-direct-actions{display:flex!important;flex-direction:row!important;justify-content:flex-start!important;align-items:center!important;flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:hidden!important;height:38px!important;gap:2px!important;scrollbar-width:thin;scrollbar-color:#aab5c2 transparent}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-edit.is-docked :is(.ux-direct-primary,.ux-direct-secondary){display:contents!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-actions>*,:host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-actions :is(.ux-direct-primary,.ux-direct-secondary)>*{flex:none!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-edit.is-docked .ux-direct-selection{width:auto!important;max-width:75px!important;white-space:nowrap!important;text-overflow:ellipsis;overflow:hidden}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-edit.is-docked button{height:36px!important;min-height:36px!important;padding:4px 7px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-edit.is-docked .ux-direct-size-arrows button[data-size-arrow]{height:17px!important;min-height:17px!important;padding:0!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-mobile-scroll-spacer{display:block;flex:none;order:99;pointer-events:none}
 }
 @media(max-width:767px){
  /* Keep the existing mobile viewport shell: only the option list scrolls.

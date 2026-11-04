@@ -22,7 +22,7 @@ for(const dir of dirs)for(const name of fs.readdirSync(path.join(root,'designs',
  if(dir==='gedenktafeln-22x14'&&d.plateMm?.[0]===220&&d.plateMm?.[1]===140)matches=[{family:'schiefer-tafeln-natur',size:'GT-SN-RE-220X140',label:'22 × 14 cm'}];
  if(!matches.length){rows.push({...row,status:'unassigned',reason:'Keine eindeutige Zieltafel für diese Quellformatreihe.'});continue;}
  const after={...d,ziele:[...new Set(matches.map(m=>m.family))].map(familie=>({familie,freigabe:null})),sizes:[...new Set([...(d.sizes??[]),...matches.map(m=>m.size)])]};
- if(apply)fs.writeFileSync(file,JSON.stringify(after,null,2)+'\n');
+ if(apply){const indent=fs.readFileSync(file,'utf8').match(/\n([ \t]+)"/)?.[1]??' ';fs.writeFileSync(file,JSON.stringify(after,null,indent)+'\n');}
  rows.push({...row,status:'mapped-unapproved',targets:after.ziele,sizes:matches,afterHash:apply?hash(file):null,sourceMode:d.provenance?.mode??d.mode??'1:1',fonts:d.fonts??[],source:d.provenance?.source??d.source??rel});
 }
 const counts={total:rows.length,existingUnchanged:rows.filter(r=>r.status==='existing-unchanged').length,delegatedUnchanged:rows.filter(r=>r.status==='delegated-unchanged').length,mapped:rows.filter(r=>r.status==='mapped-unapproved').length,unassigned:rows.filter(r=>r.status==='unassigned').length,newFamilyTargets:rows.filter(r=>r.status==='mapped-unapproved').reduce((n,r)=>n+r.targets.length,0),newSizeAssignments:rows.reduce((n,r)=>n+(r.sizes?.length??0),0)};

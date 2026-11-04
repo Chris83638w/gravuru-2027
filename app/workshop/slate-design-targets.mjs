@@ -33,6 +33,7 @@ export function assignedSlateSizes(json,family){
  return all.filter(s=>json.sizes.includes(s.key));
 }
 export function slateDesignGroup(json){
+ if(json.themes?.includes('monogramme')||json.katalog?.unterkategorie==='Monogramme')return 'Monogramme';
  const v=String(json.katalog?.zielgruppe??json.targetGroup??'').toLowerCase();
  if(['tiere','hund','hunde','katze','katzen'].includes(v))return 'Tiere';
  return ({menschen:'Menschen',sternenkinder:'Sternenkinder',familie:'Familie',monogramme:'Monogramme'})[v]??null;

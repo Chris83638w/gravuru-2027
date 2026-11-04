@@ -4,6 +4,7 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {katalogFor} from '../app/workshop/design-dashboard.mjs';
 import {renderReviewSheets} from './slate-review-sheets.mjs';
+import {slateDesignGroup} from '../app/workshop/slate-design-targets.mjs';
 const require=createRequire(import.meta.url),args=process.argv.slice(2),value=k=>args[args.indexOf(k)+1];
 const root=path.resolve(value('--katalog')),work=path.resolve(value('--work')),kind=value('--family');
 if(!['premium','natur','geschnitten','kordel'].includes(kind))throw Error('--family fehlt');
@@ -13,6 +14,7 @@ const key=r=>r.reihe+'|'+r.id+'|'+r.size;
 const measurements=new Map(area.rows.map(r=>[key(r),r]));
 const results=index.ergebnisse.filter(r=>!r.reihe.startsWith('schiefer-menschen-')).map(row=>{
  const r={...row,issues:[...row.issues],rendererStatus:row.status},master=katalog.designs.masters.find(d=>d.seriesFolder===r.reihe&&d.id===r.id),sourceArea=master.json.gestaltungsflaeche??master.json.flaeche;
+ r.group=slateDesignGroup(master.json)??r.group;
  if(sourceArea){
   r.sourceArea=sourceArea;const a=sourceArea.fa??sourceArea.flaeche,x=sourceArea.cx??sourceArea.versatzX,y=sourceArea.cy??sourceArea.versatzY,h=sourceArea.fh??sourceArea.hoehe;
   const flags=[];if(a<.30)flags.push('Fläche '+Math.round(a*100)+' %');if(Math.abs(x)>.03)flags.push('Versatz x '+Math.round(x*100)+' %');if(Math.abs(y)>.03)flags.push('Versatz y '+Math.round(y*100)+' %');if(master.plateMm[0]>master.plateMm[1]*1.15&&h<.45)flags.push('Höhe '+Math.round(h*100)+' %');
@@ -25,6 +27,7 @@ const results=index.ergebnisse.filter(r=>!r.reihe.startsWith('schiefer-menschen-
 async function withPages(n,viewport,fn){const browser=await require('playwright').chromium.launch();try{return await fn(await Promise.all(Array.from({length:n},()=>browser.newPage({viewport}))));}finally{await browser.close();}}
 await renderReviewSheets({results,out:source,root,family,katalog,png:true,withPages,reuseSources:true});
 const sheets=read(path.join(source,'boegen.json'));fs.mkdirSync(out,{recursive:true});
+ const previous=path.join(out,'pruefungen.json');if(fs.existsSync(previous)){const keep=new Set(sheets.map(s=>s.file));for(const old of read(previous).sheets??[])if(!keep.has(old.file)){const target=path.resolve(out,old.file);if(path.dirname(target)!==out||!path.basename(target).startsWith('bogen-'))throw Error('Ungültiger alter Bogenpfad');if(fs.existsSync(target))fs.unlinkSync(target);}}
 for(const sheet of sheets)fs.copyFileSync(path.join(source,sheet.file),path.join(out,sheet.file));
 const status=results.reduce((a,r)=>(a[r.status]=(a[r.status]??0)+1,a),{}),rendererStatus=results.reduce((a,r)=>(a[r.rendererStatus]=(a[r.rendererStatus]??0)+1,a),{});
 const clean=results.map(({file,png,ms,...r})=>r);

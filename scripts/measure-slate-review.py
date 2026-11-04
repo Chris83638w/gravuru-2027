@@ -15,13 +15,14 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--index', required=True)
     parser.add_argument('--out', required=True)
+    parser.add_argument('--workers', type=int, default=2)
     args = parser.parse_args()
     source = pathlib.Path(args.index).resolve()
     index = json.loads(source.read_text(encoding='utf-8'))
     script = str(pathlib.Path(__file__).with_name('flaeche-messen.py').resolve())
     jobs = [(script, str(source.parent / r['png']), {k: r.get(k) for k in ('id', 'reihe', 'size', 'format', 'group', 'status')})
             for r in index['ergebnisse'] if r.get('png')]
-    with ProcessPoolExecutor(max_workers=2) as pool:
+    with ProcessPoolExecutor(max_workers=max(1, min(args.workers, 8))) as pool:
         rows = []
         for row in pool.map(measure, jobs, chunksize=8):
             rows.append(row)

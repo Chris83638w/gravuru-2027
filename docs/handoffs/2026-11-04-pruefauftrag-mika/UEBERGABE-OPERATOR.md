@@ -1,4 +1,4 @@
-# Übergabe Claude Operator – Stand 04.11.2026, 11:50
+# Übergabe Claude Operator – Stand 04.11.2026, 12:20 (Nachtrag 10a)
 
 Für den neuen Operator-Chat. Alles hier ist an der Quelle geprüft (GitHub, Katalog, Projekt-Doks), Stand 11:50.
 
@@ -271,6 +271,15 @@ node scripts/render-vorlagen.mjs --katalog <Katalog> --familie steel-door-signs 
 - 11:32 Mika teilt in #76 erneut Katzen-Grabkreuze (25, Katalog #126) und den Gesamtindex Menschen/Sternenkinder (2.097, Katalog #124).
 - 11:32 Unterlagen für Mika auf GitHub (Branch `docs/pruefauftrag-mika-20261104`), Nachricht #168·6627495550.
 - 11:45 Schiefer-Kreuze an den Schiefer-Chat gemeldet (#85·6627599925).
+
+## 10a. Nachtrag 12:20 (Operator-Chat 2)
+- **Register ergänzt** bis 4.64 / 5.32 / 7.24 (1.28, 4.59–4.64, 5.28–5.32, 7.21–7.24): im Projekt und als Code-PR **#171** (offen, mergen braucht Chris' Freigabe). Nachtrag-Dateien c/d geleert; `-04-` und `-04b-` sind leer, Löschen nur nach Chris' Ja.
+- **19 Hinweis-Ja:** Katalog-PR **#174** (genau die 19 Dateien, `clean`). Merge durch Astra 1 nach „weiter“.
+- **Katalog #170** geprüft: D38, D57, D61 passen; **D14** offen (Name in Allura schwach, Motivlinien 0,139 mm) → Chris.
+- **DESIGN-MASTER:** Katalog-PR **#175** ersetzt #172 (Inhalt plus 4.63/4.64/5.28/5.30/5.31/7.23/7.24). #172 noch offen, bitte schließen.
+- **Mergeable 12:15:** sauber Code #160/#166/#170/#161/#167/#169, Katalog #169/#171/#173/#170/#174/#175; Konflikt Katalog #162/#165. #161 ist inzwischen konfliktfrei.
+- Nachrichten: #139·6627843142 (Astra 1), #85·6627843448 (Schiefer: #173 prüfen, #165 neu bauen).
+- Keine Antwort von Mika in #168, nichts Neues in #76 seit 11:33.
 
 ## 10. Stand jetzt (11:50)
 **Edelstahl (#139)**

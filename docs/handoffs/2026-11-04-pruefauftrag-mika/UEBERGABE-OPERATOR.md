@@ -1,6 +1,11 @@
-# Übergabe Claude Operator – Stand 04.11.2026, 11:30
+# Übergabe Claude Operator – Stand 04.11.2026, 11:50
 
-Für den neuen Operator-Chat. Alles hier ist an der Quelle geprüft (GitHub, Katalog, Projekt-Doks), Stand 11:30.
+Für den neuen Operator-Chat. Alles hier ist an der Quelle geprüft (GitHub, Katalog, Projekt-Doks), Stand 11:50.
+
+**Startsatz für den neuen Chat:**
+> Lies `docs/handoffs/2026-11-04-pruefauftrag-mika/UEBERGABE-OPERATOR.md` (bzw. im Projekt `claude/Uebergabe-Operator.md`), dann `claude/Entscheidungsregister-Chris.md`, und mach bei „Nächste Schritte“ weiter. Frag mich, wenn etwas unklar ist.
+
+**Kopie für die anderen KIs (die claude.ai nicht öffnen können):** gravuru-2027, Branch `docs/pruefauftrag-mika-20261104`, Ordner `docs/handoffs/2026-11-04-pruefauftrag-mika/`. Dort liegen diese Übergabe, der Entscheidungs-Nachtrag (4.59–4.64, 5.28–5.32, 1.28, 7.21–7.24), der Prüfauftrag an Mika und die Liste aller Designs (xlsx/csv). Wenn diese Übergabe geändert wird, die Kopie dort mitziehen.
 
 ---
 
@@ -10,7 +15,8 @@ Chris, 04.11.: „Du bringst vieles durcheinander und machst viele Fehler. Die A
 **Was schiefging (nicht wiederholen):**
 1. Ich habe gemeldet, bevor ich vollständig an der Quelle geprüft hatte:
    - „nur 3 Schiefer-Größen haben Designs“ – falsch;
-   - „Kreuz ohne Designs / Menschen nur Herz“ – geprüft war nur main, nicht die offenen PRs;
+   - „Kreuz ohne Designs / Menschen nur Herz“ – geprüft war nur main, nicht die offenen PRs und nicht der Bestand. Tatsächlich gibt es 33 Schiefer-Kreuz-Originale im Bestand und 122 Kreuze in Mikas PRs;
+   - Mika-Zahl erst falsch gezählt (2.052 statt 2.027, weil die Hunde-Grabkreuze doppelt in #125 und #126 stecken);
    - „Linie nicht verschoben“ – falsch.
 2. Feste Absprachen fehlten in Aufträgen:
    - Filigran-Regel „ab 9 × 6“;
@@ -71,7 +77,8 @@ Chris, 04.11.: „Du bringst vieles durcheinander und machst viele Fehler. Die A
 | Astra 1 Edelstahl | Edelstahl-Konfi, Edelstahl-Merges, Edelstahl live | #139 |
 | Astra Schiefer (zweiter Astra-1-Chat) | Schiefer-Konfi, Schiefer-Merges, Schiefer live (7.21) | #85 |
 | Astra (Konfi-Optik) | Konfi-Studie PR #161 | #48 |
-| Astra Mika | Prüfauftrag zu meiner Arbeit; 98 offene Katalog-PRs | **#168** (neu) |
+| Astra Mika | Prüfauftrag zu meiner Arbeit; 98 offene Katalog-PRs. Neu seit 11:23: baut im Auftrag seines Chats („Mikail“) Code für Schiefer-Produktgruppen und Startdesigns je Tafel (Branch `dev/mika-schiefer-produktgruppen-20261104`, #85·6627330257), abgegrenzt gegen Astra Schiefer #170 | **#168** (Prüfauftrag), #76 (Postfach), #85 (Schiefer) |
+| Astra gravuru | ältere Bestands-PRs im Katalog: #9 Boxenschilder 200, #13 Pferde 59, #14 Tierbestand 260, #16 Hausnummern-Pilot 6, #153 Firmen 274 (alle offen) | #85 |
 
 Regel 7.21 (Chris: „EINER MACHT EDELSTAHL UND EINER SCHIEFER“): Jeder Astra-Chat mergt nur seine eigenen PRs.
 
@@ -259,8 +266,13 @@ node scripts/render-vorlagen.mjs --katalog <Katalog> --familie steel-door-signs 
 - 10:51 Konfi #161 finalisiert.
 - 10:58 Prüfrunde Hinweis- und Boxenschilder: 19 Ja / 52 Nein.
 - 11:04 Prüfauftrag an Mika als Issue #168.
+- 11:26 Astra Schiefer löst den Excel-Konflikt von #162 in neuem Katalog-PR **#173** (auf Basis von #162, Stammdaten neu gebaut), zur Prüfung durch den Schiefer-Chat.
+- 11:23 Mika startet Code für Schiefer-Produktgruppen und Startdesigns (#85·6627330257).
+- 11:32 Mika teilt in #76 erneut Katzen-Grabkreuze (25, Katalog #126) und den Gesamtindex Menschen/Sternenkinder (2.097, Katalog #124).
+- 11:32 Unterlagen für Mika auf GitHub (Branch `docs/pruefauftrag-mika-20261104`), Nachricht #168·6627495550.
+- 11:45 Schiefer-Kreuze an den Schiefer-Chat gemeldet (#85·6627599925).
 
-## 10. Stand jetzt (11:30)
+## 10. Stand jetzt (11:50)
 **Edelstahl (#139)**
 - Astra 1 **pausiert auf Chris' „warte“** (6626749551).
 - Der Sammelentwurf 16190784438652 (Revision 2) öffnet im Shop nicht: „Noch nicht eingerichtet“. In `catalog_live_order_approvals` steht nur Revision 1.
@@ -270,8 +282,15 @@ node scripts/render-vorlagen.mjs --katalog <Katalog> --familie steel-door-signs 
 
 **Schiefer (#85)**
 - Nichts gemergt, nichts live.
-- **Katalog #162 und #165 haben Konflikte** in `kataloge/Stammdaten-Gravuru.xlsx` (erzeugte Datei: Branch auf main bringen und neu bauen, nicht mischen). Beide sind PRs des Schiefer-Chats; der Stopp ist **unbeantwortet**.
-- Sauber mergebar: Code #160/#166, Katalog #169/#171/#172.
+- **Katalog #162 und #165 haben Konflikte** in `kataloge/Stammdaten-Gravuru.xlsx` (erzeugte Datei: neu bauen, nicht mischen). Beide sind PRs des Schiefer-Chats.
+  - Für #162 hat Astra Schiefer die Lösung **Katalog #173** gebaut (sauber mergebar). Sie wartet auf die Prüfung durch den Schiefer-Chat.
+  - #165 (Stärke Premium) ist weiter im Konflikt.
+- Sauber mergebar: Code #160/#166/#170, Katalog #169/#171/#172/#173.
+- **Schiefer-Kreuze 21,5 × 30 (Tafel SL-13):**
+  - 33 Corel-Originale `KZ-S-21,5x30-D…` in `designs/bestand/kreuze/`, ohne Ziele;
+  - 122 Kreuze von Mika in den PRs #90–#95 (71 ohne Foto, 30 mit Foto, 21 Sternenkinder);
+  - **Tier-Kreuze gibt es auf Schiefer nicht** (4.33 „Kreuz auch bei Tieren“). Issue #134 „Mit Foto – Kreuz und Kordel“ wurde nie bearbeitet.
+  - An den Schiefer-Chat gemeldet (#85·6627599925).
 - Astra Schiefer:
   - hat in Code-PR **#170** (neu) und einem Katalog-Branch `dev/astra1-schiefer-designboegen-20261104` 2.815 Designs Ziele gegeben (3.238 Familienziele, 5.868 Größen);
   - Quelle: 3.166 Designs, 249 mit Ziel, 2.917 ohne;
@@ -305,8 +324,11 @@ node scripts/render-vorlagen.mjs --katalog <Katalog> --familie steel-door-signs 
   - Mikas 98 PRs.
 
 **Mika (#168)**
-- Prüfauftrag mit allem gestellt (Hergang, Konfi, Tabellen, Designaufbau, Stand, Ziel, 9 Prüfpunkte, meine Fehler).
-- Noch keine Antwort.
+- Prüfauftrag mit allem gestellt (Hergang, Konfi, Tabellen, Designaufbau, Stand, Ziel, 9 Prüfpunkte, meine Fehler). Alle Unterlagen liegen auf GitHub (Branch `docs/pruefauftrag-mika-20261104`).
+- Noch keine Antwort in #168. Seine erneut geteilten Lieferungen stehen in #76.
+
+**Offene Frage an Chris**
+- Ist Rasse-Schilder #8 (8.100 Designs, Oktober) überholt durch „nur 15 × 10“ (4.37, gemergt #152 mit 960 Designs)? Darf der PR als überholt markiert werden?
 
 ## 11. Ziel
 - **Edelstahl-Schilder live:**
@@ -323,14 +345,17 @@ node scripts/render-vorlagen.mjs --katalog <Katalog> --familie steel-door-signs 
 
 ## 12. Nächste Schritte (Vorschlag, mit Chris abstimmen)
 1. Register ergänzen: Nachtrag c/d, blaue Haarlinien, „nur per Skripte“, Konfi #161. Danach die Nachtrag-Dateien leeren.
-2. Schiefer-Blocker lösen: Den Schiefer-Chat (#85) bitten, #162/#165 auf main zu bringen und die Stammdaten neu zu bauen. Danach `mergeable` aller Schiefer-PRs prüfen, dann Astra Schiefer weiter.
+2. Schiefer-Blocker lösen: Der Schiefer-Chat prüft Katalog #173 (Lösung für #162) und bringt #165 auf main, mit neu gebauten Stammdaten. Danach `mergeable` aller Schiefer-PRs prüfen, dann geht Astra Schiefer weiter (Merge-Reihenfolge laut #85, dann Test bis Warenkorb, dann live laut 4.61).
 3. Edelstahl: Chris fragen, ob Astra 1 die Revision-2-Testfreigabe schreiben und den Warenkorbtest machen darf („warte“ aufheben?).
 4. 19 Hinweis-Designs: Den Edelstahl-Chat um einen neuen PR bitten. Katalog #170 und #172 prüfen und in die Merge-Liste aufnehmen.
 5. Antwort von Mika in #168 prüfen und umsetzen.
 6. Stern-Widerspruch Schiefer mit Chris klären.
+7. Schiefer-Kreuze überwachen: 33 Originale 1:1, Mikas 122 korrigiert, Tier-Kreuze neu (Schiefer-Chat). Klären, ob #134 geschlossen oder neu vergeben wird.
+8. Überschneidungen beobachten: Mikas Produktgruppen-Code, Astra Schiefer #170 und Schiefer-Chat arbeiten im selben Bereich.
+9. Rasse #8: Chris' Antwort abwarten (überholt?).
 
 ## 13. Liste aller Designs (gebaut 04.11., 11:45)
-Die Datei `Alle-Designs-2026-11-04.xlsx` hat Chris im Chat bekommen. Die Zählung kommt direkt aus dem Katalog: jeder Ordner mit `design.json`, auf main und in allen offenen Katalog-PRs. Neu bauen mit den Skripten `scan.py`, `scan2.py` und `build.py`; Ablauf: alle PR-Köpfe mit `git fetch origin '+refs/pull/*/head:refs/remotes/pr/*'` holen, dann `git cat-file --batch`.
+Die Datei `Alle-Designs-2026-11-04.xlsx` hat Chris im Chat bekommen. Eine Kopie mit CSV liegt im Branch `docs/pruefauftrag-mika-20261104`. Blatt „Offene PRs“ hat die Spalte „von“ (Mika, Astra gravuru, Astra 1, Claude). Die Zählung kommt direkt aus dem Katalog: jeder Ordner mit `design.json`, auf main und in allen offenen Katalog-PRs. Neu bauen mit den Skripten in `docs/handoffs/2026-11-04-pruefauftrag-mika/werkzeug/` (Branch `docs/pruefauftrag-mika-20261104`): `scan.py`, `scan2.py`, `build.py`; Ablauf: alle PR-Köpfe mit `git fetch origin '+refs/pull/*/head:refs/remotes/pr/*'` holen, dann `git cat-file --batch`.
 
 **Auf main: 30.272 Designs**
 - Davon **10.722 am 01./02.11. fertiggestellt**: Unterkategorie-Chats, Sonntagnacht gemergt.
@@ -340,7 +365,12 @@ Die Datei `Alle-Designs-2026-11-04.xlsx` hat Chris im Chat bekommen. Die Zählun
 - Bestand (Corel-Rohdaten) 19.059, ohne Ziele.
 
 **Nicht gemergt: 11.865 neue Designs in 104 offenen Katalog-PRs**
-- Rasse-Schilder #8 (8.100, aus dem Oktober)
-- AE-Türschilder #139 (914)
-- Mika 2.052 (Schiefer Menschen/Sternenkinder, Grabkreuze)
-- Firmen #153 (274), Tierbestand #14 (260), Boxenschilder #9 (200)
+- Rasse-Schilder #8: 8.100, aus dem Oktober, vermutlich überholt (siehe offene Frage).
+- AE-Türschilder #139: 914.
+- **Mika 2.027:**
+  - 1.977 Menschen/Sternenkinder in 95 PRs;
+  - 25 Hunde-Grabkreuze (#125);
+  - 25 Katzen-Grabkreuze (#126, enthält die Hunde ein zweites Mal).
+  - Sein Index (`auftraege/2026-10-31-menschen-schiefer/master-index.json`, Katalog #124) nennt 2.097 Menschen/Sternenkinder = 1.977 offen + 120 schon auf main (9 gemergte Herz-mit-Foto-PRs). Das stimmt überein.
+- **Astra gravuru 799:** Firmen #153 (274), Tierbestand #14 (260), Boxenschilder #9 (200), Pferde #13 (59), Hausnummern-Pilot #16 (6).
+- Schiefer-Kreuze: siehe Abschnitt 10.

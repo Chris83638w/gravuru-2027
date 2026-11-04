@@ -1,0 +1,84 @@
+{
+  "catalogueCommit": "c0cffc85e0f703fa06e5e6cae61745aec47d5a24",
+  "counts": {
+    "plates": 48,
+    "platesWithGroups": 3,
+    "groups": 10,
+    "templates": 346,
+    "excluded": 0
+  },
+  "variants": 136,
+  "products": [
+    {
+      "size": "GT-SN-RE-220X140",
+      "title": "Hund · Knochenherz · Naturschiefer · Rechteck 22 × 14 cm · mit Foto",
+      "sourceDesignId": "GT-S-22x14-D220",
+      "designs": 17,
+      "variants": 15
+    },
+    {
+      "size": "GT-SN-RE-220X140",
+      "title": "Hund · Rosen · Naturschiefer · Rechteck 22 × 14 cm · mit Foto",
+      "sourceDesignId": "GT-S-22x14-D207",
+      "designs": 17,
+      "variants": 15
+    },
+    {
+      "size": "GT-SN-RE-220X140",
+      "title": "Hund · Blüten · Naturschiefer · Rechteck 22 × 14 cm · mit Foto",
+      "sourceDesignId": "GT-S-22x14-D215",
+      "designs": 17,
+      "variants": 15
+    },
+    {
+      "size": "GT-SN-RE-220X140",
+      "title": "Hund · Sternschnuppe · Naturschiefer · Rechteck 22 × 14 cm · mit Foto",
+      "sourceDesignId": "GT-S-22x14-D212",
+      "designs": 17,
+      "variants": 15
+    },
+    {
+      "size": "GT-SN-RE-220X140",
+      "title": "Katze · Pfotenherz · Naturschiefer · Rechteck 22 × 14 cm · mit Foto",
+      "sourceDesignId": "GT-S-22x14-D223",
+      "designs": 5,
+      "variants": 15
+    },
+    {
+      "size": "GT-SN-RE-220X140",
+      "title": "Katze · Blätterzweig · Naturschiefer · Rechteck 22 × 14 cm · mit Foto",
+      "sourceDesignId": "GT-S-22x14-D227",
+      "designs": 5,
+      "variants": 15
+    },
+    {
+      "size": "GT-SN-RE-220X140",
+      "title": "Tiergedenktafeln · Tiere · Naturschiefer · Rechteck 22 × 14 cm · mit Foto",
+      "sourceDesignId": "GT-S-22x14-D200",
+      "designs": 22,
+      "variants": 15
+    },
+    {
+      "size": "GT-SN-RE-220X140",
+      "title": "Monogramme · Naturschiefer · Rechteck 22 × 14 cm · ohne Foto",
+      "sourceDesignId": "MG-S-22x14-D1",
+      "designs": 82,
+      "variants": 15
+    },
+    {
+      "size": "GT-SN-RE-300X200",
+      "title": "Monogramme · Naturschiefer · Rechteck 30 × 20 cm · ohne Foto",
+      "sourceDesignId": "MG-S-30x20-D1",
+      "designs": 82,
+      "variants": 15
+    },
+    {
+      "size": "GT-SP-RE-300X200",
+      "title": "Monogramme · Premium-Schiefer · Rechteck 30 × 20 cm · ohne Foto",
+      "sourceDesignId": "MG-S-30x20-D1",
+      "designs": 82,
+      "variants": 1
+    }
+  ],
+  "shopifyWrites": 0
+}

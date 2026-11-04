@@ -6,7 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {katalogFor} from '../app/workshop/design-dashboard.mjs';
-import {designTargets} from '../app/workshop/design-targets.mjs';
+import {designTargets,designTargetCompatibility} from '../app/workshop/design-targets.mjs';
 import {targetDesignPreview} from '../app/workshop/design-target-preview.mjs';
 import {familyProductConfig} from '../app/workshop/product-families.mjs';
 import {productPreview} from '../app/workshop/product-preview.mjs';
@@ -103,6 +103,9 @@ for(const job of jobs){
    entry.svg=blankSvg(job.size);entry.status='leer';entry.issues=[];entry.label=sizeLabel(job.size);
    if(opt.kontur){const k=konturSvg(job.size);entry.kontur=k;}
   }else{
+   // Chris 04.11.2026: Eine Größe, die für das Design nicht erlaubt ist (z. B. „nicht unter 9 × 6“), wird auch mit --groesse nie gerendert.
+   if(job.size){const d=katalog.designs.masters.find(m=>m.id===job.id&&m.seriesFolder===job.reihe),s=family.sizes.find(x=>x.key===job.size),c=designTargetCompatibility(d,family,s,{katalog});
+    if(c.status!=='passt'){entry.size=job.size;entry.label=sizeLabel(job.size);throw Error('Größe für dieses Design nicht erlaubt: '+c.issues.join(' '));}}
    const preview={designArea:view==='pruefung'};
    const r=await targetDesignPreview(root,{reihe:job.reihe,id:job.id,familie:opt.familie,size:job.size||undefined},{katalog,preview});
    entry.size=r.size.key;entry.label=r.size.label;
@@ -111,7 +114,9 @@ for(const job of jobs){
    entry.svg=r.svg;entry.status=r.svg?r.fit.status:'passt nicht';entry.issues=r.fit.issues;
    if(!r.svg)throw Error(r.fit.issues.at(-1)||'Keine Vorschau');
   }
-  const base=(job.kind==='leer'?'grundplatte':safe(job.reihe)+'/'+safe(job.id))+'__'+safe(entry.size)+(opt.befestigung?'__'+mounting:'');
+  // Chris 04.11.2026: Dateien nach der wirklich gerenderten Größe (entry.size) ablegen und beschriften, nicht nach dem Reihennamen.
+  const base=(job.kind==='leer'?'grundplatte__'+safe(entry.size):safe(entry.size)+'/'+safe(job.id))+(opt.befestigung?'__'+mounting:'');
+  entry.label=sizeLabel(entry.size);
   entry.file=base+'.svg';fs.mkdirSync(path.dirname(path.join(out,entry.file)),{recursive:true});
   fs.writeFileSync(path.join(out,entry.file),entry.svg);
   if(entry.kontur){const {svg,...meta}=entry.kontur;entry.konturFile=base+'.kontur.svg';fs.writeFileSync(path.join(out,entry.konturFile),svg);entry.geometrie=meta;delete entry.kontur;}
@@ -151,7 +156,7 @@ fs.writeFileSync(path.join(out,'index.json'),JSON.stringify(summary,null,1)+'\n'
 if(opt.bogen){
  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
  const color={passt:'#2e7d32','prüfen':'#e08a00','passt nicht':'#c62828',fehler:'#c62828',leer:'#607d8b'};
- const cards=results.map(r=>'<figure><div class="bild">'+(r.file?'<img src="'+esc(r.png||r.file)+'">':'')+'</div><figcaption><b>'+esc(r.id||'Grundplatte')+'</b> <span>'+esc(r.label||r.size||'')+'</span><i style="background:'+(color[r.status]||'#555')+'">'+esc(r.status)+'</i>'+(r.issues?.length?'<ul>'+r.issues.slice(0,4).map(i=>'<li>'+esc(i)+'</li>').join('')+(r.issues.length>4?'<li>… '+(r.issues.length-4)+' weitere</li>':'')+'</ul>':'')+'</figcaption></figure>').join('');
+ const cards=results.map(r=>'<figure><div class="bild">'+(r.file?'<img src="'+esc(r.png||r.file)+'">':'')+'</div><figcaption><b>'+esc(r.label||r.size||'Größe offen')+'</b> <span>'+esc(r.id||'Grundplatte')+'</span><i style="background:'+(color[r.status]||'#555')+'">'+esc(r.status)+'</i>'+(r.issues?.length?'<ul>'+r.issues.slice(0,4).map(i=>'<li>'+esc(i)+'</li>').join('')+(r.issues.length>4?'<li>… '+(r.issues.length-4)+' weitere</li>':'')+'</ul>':'')+'</figcaption></figure>').join('');
  const html='<!doctype html><meta charset="utf-8"><title>Kontaktbogen '+esc(opt.familie)+'</title><style>body{font:13px system-ui,sans-serif;margin:24px;background:#fff;color:#222}h1{font-size:18px;margin:0 0 4px}p{margin:0 0 16px;color:#555}main{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}figure{margin:0;border:1px solid #ddd;border-radius:6px;padding:10px}.bild{background:#f3f3f1;display:flex;align-items:center;justify-content:center;aspect-ratio:4/3;padding:8px}.bild img{max-width:100%;max-height:100%}figcaption{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}figcaption span{color:#666}i{font-style:normal;color:#fff;border-radius:3px;padding:1px 6px;margin-left:auto}ul{margin:4px 0 0;padding-left:16px;width:100%;color:#a33;font-size:12px}</style><h1>Kontaktbogen · '+esc(family.name)+'</h1><p>'+results.length+' Dateien · '+Object.entries(count).map(([k,v])=>v+' '+k).join(' · ')+(mounting?' · Befestigung '+esc(mounting):'')+'</p><main>'+cards+'</main>';
  fs.writeFileSync(path.join(out,'kontaktbogen.html'),html);
  if(opt.png)await withPages(1,{width:1400,height:900},async ([page])=>{await page.goto('file://'+path.join(out,'kontaktbogen.html'),{waitUntil:'load'});await page.screenshot({path:path.join(out,'kontaktbogen.png'),fullPage:true});});

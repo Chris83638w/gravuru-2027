@@ -1,0 +1,17 @@
+  type: 'test'
+  ...
+# Subtest: Editor-Eingabe: kein weiteres Zeichen, zusätzliche Zeilen werden abgewiesen
+ok 2072 - Editor-Eingabe: kein weiteres Zeichen, zusätzliche Zeilen werden abgewiesen
+  ---
+  duration_ms: 0.617189
+  type: 'test'
+  ...
+1..2072
+# tests 2115
+# suites 0
+# pass 2115
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1809596.325237

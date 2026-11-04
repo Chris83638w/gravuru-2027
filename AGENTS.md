@@ -1,5 +1,7 @@
 # Gravuru 2027 – Arbeitsregeln
 
+**Konfigurator-Hinweis für alle Projekt-KIs, 04.11.2026:** Chris lässt die oberste Vorschau-/Produktumschaltleiste entfernen; die eigentliche Werkzeugzeile bleibt. Aktuelle lokale Umsetzung und klare Live-Grenze: [Übergabe an Claude und alle KIs](docs/handoffs/2026-11-04-konfi-ohne-vorschauleiste.md), Entwurfs-PR #161. Keine Freigabe zur Live-Installation daraus ableiten.
+
 Zuerst `ENTSCHEIDUNGEN.md` (Entscheidungsregister Chris), dann `START_HERE.md`, danach das aktive Paket in `UMSETZUNGSPAKETE.md` lesen. Detailanforderungen stehen im `NEUE-WERKSTATT-PLAN.md`; die aktuelle Entscheidung gilt vor historischen Quelltexten und Bildprompts.
 
 - Eigenständige neue App; vorhandenen Kundeneditor und Ressourcen gezielt wiederverwenden. Die ZIPs enthalten eingefrorene Referenzen, keine fertige neue App. `legacy-reference/` unverändert zum Vergleich halten; aktive Änderungen in klar benannten neuen Modulen.

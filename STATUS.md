@@ -1,3 +1,27 @@
+## 2026-11-04 · Codex/Astra · PR #161: obere Vorschauleiste entfernt
+
+Chris' Korrektur lokal umgesetzt: keine Profil-/Vorschauleiste, eigentliche Werkzeugzeile bleibt. Produktbeispiele über direkte Profil-Links; ohne Optionen direkt Designs. Desktop und 375×548 geprüft, alle fünf Profile erreichbar, 20/20 gezielte Tests und Build grün. [Übergabe für Claude und alle Projekt-KIs](docs/handoffs/2026-11-04-konfi-ohne-vorschauleiste.md). Kein Merge, keine Live-Änderung; produktive Integration bleibt separat.
+
+## 2026-11-03 · Codex/Astra · PR #161: moderne lokale Screenshots
+
+Modernen Bildentwurf in der lokalen Studie umgesetzt: weiße Werkzeugzeile mit Canvas-zentrierten Werkzeugen, Speichern ganz rechts, großes Schild, ruhige Motiv-/Design-/Optionskacheln, schlanker farbiger Footer. Menschen/Tiere getrennt. Desktop und 375×548/390×664 aufgenommen; 20/20 gezielte Tests und Build grün. [Bilder und Grenzen](docs/handoffs/2026-11-03-produktprofile-vorschau.md). Chris prüft die Optik; kein neuer vollständiger Produktiveditor, keine Master-/Live-Änderung, kein Merge.
+
+## 2026-11-03 · Codex/Astra · PR #161: Andenken Menschen / Tiere
+
+Chris' zusätzliche Trennung lokal umgesetzt: eigene Bestseller für Menschen (Kreuze/Engel/Kerzen) und Tiere (Pfoten/Pfotenherzen/Regenbogen). Alle Motive/Kategorien weiterhin frei erreichbar. Fünf Profilbeispiele; D204-Hund nur in der Tier-Ansicht. 20/20 gezielte Tests und Build grün, Browserbilder Desktop und 375×548 im [Bericht](docs/handoffs/2026-11-03-produktprofile-vorschau.md). Nur Entwurfs-PR und lokale Vorschau, nichts live. Nächster Schritt: Chris prüft die thematischen Startlisten.
+
+## 2026-11-03 · Codex/Astra · PR #161: Bestseller je Produktthema
+
+Lokale Vorschau: Gedenktafel mit Kreuzen/Trauermotiven, Türschild/Funkklingel mit Haus/Leuchtturm/Anker/Baum. Explizite Themenzuordnung im Produktprofil; alle 721 Originalmotive und 47 Kategorien weiterhin erreichbar. 18/18 gezielte Tests und Build grün; Produktwechsel, Mehr-anzeigen und freie Kategorien im Browser bestätigt. Kein Merge/Live-Zugriff. Kuratierte Beispiele, keine Verkaufsrangliste. Modernere Bildstudie noch nicht vollständig umgesetzt; Manufaktur-Startseite ausdrücklich anderer Chat. [Bericht und Bilder](docs/handoffs/2026-11-03-produktprofile-vorschau.md).
+
+## 2026-11-03 · Codex/Astra · PR #161: Vorschau nach Rückmeldung korrigiert
+
+Werkzeugzeile über dem Canvas zentriert, zusätzliche Produktüberschrift entfernt, Platte wieder nahezu flächenfüllend, Zoom inklusive Bemaßung, schmalerer Warenkorb-Footer. Vollständige Bibliothek mit 721 Originalmotiven und 47 Kategorien; Bestseller nur vorausgewählt, originale Namen/Startauswahl. Optionskacheln wieder mit Icons. 14/14 gezielte Vorschau-/Profil-/Hostingtests und Build grün; Desktop/390×664/375×548 geprüft. Nur lokale Studie, kein Merge/Live-Zugriff, produktive Optionsbindungen weiterhin im Master. [Bilder, Messwerte und Grenzen](docs/handoffs/2026-11-03-produktprofile-vorschau.md). Nächster Schritt: Chris bewertet die korrigierte Vorschau.
+
+## 2026-11-03 · Codex/Astra · Produktprofile: lokale Vorschau und Audit
+
+Isolierte React-Vorschau für Türschild, Foto-Gedenktafel, Funkklingel und Produkt ohne Optionen. Bestehenden Master nur gelesen; Foto-/Optionsgrenzen und unabhängige Zubehörgruppen demonstriert. 5 Profiltests sowie 22 gezielte bestehende Tests grün (erster Lauf 21/22 wegen Windows-TEMP-EPERM, Wiederholung mit eigenem TEMP 22/22). Build und Desktop/390×664/375×548 geprüft. Feste Familienlisten und Zubehörableitung aus Löchern als nächste Integrationspunkte benannt; vorhandene Live-Zeitmessung weiter über Ziel, Startzeit muss aufgeteilt werden. Keine App-/Katalog-/Live-Änderung. [Vorschau, Belege, Datenmodell und Grenzen](docs/handoffs/2026-11-03-produktprofile-vorschau.md). Nächster Schritt: Chris bewertet die Optik, dann getrennte Profil- und Ladezeitpakete.
+
 ## 2026-11-03 · Codex/Astra 1 · #139 102 Grabstecker-Entwürfe vollständig angelegt
 
 102 neue DRAFTs, 268 native Variantenbindungen, 102 korrekte READY-Bilder und zwölf Collections (elf neu). 0 neu veröffentlicht, bestehende zehn #139-Liveartikel unverändert. Alle Formen einschließlich Kreuz/Innenausschnitten; keine Türschild-Massenanlage, neues Gedenktafel-Modul im Kundenstart deaktiviert. Größenabhängiges Standarddesign auf Server/Browser und Abschlussbezeichnung korrigiert; unveränderte Vorbereitungen sicher zwischengespeichert. 48 gezielte Tests und fünf echte Browser-Konfiguratoren geprüft. Shopify-Warenkorb bei allen fünf unveröffentlichten Varianten tatsächlich HTTP 422; kein Warenkorberfolg behauptet. Vorschau-Overlay-Klickweg noch offen. [Produktliste, Bilder, Quellen, Rückweg und Grenzen](docs/handoffs/2026-11-03-issue139-grabstecker-drafts.md). Nächster Schritt: Claudes Stichprobe und Chris' Preisrunde; danach ACTIVE/Navigation und vollständige Warenkorbprüfung.

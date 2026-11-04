@@ -1,0 +1,6 @@
+mutation PrepareSlateDraft($identifier:ProductSetIdentifiers!,$input:ProductSetInput!){
+  productSet(identifier:$identifier,input:$input,synchronous:true){
+    product{id title handle status onlineStoreUrl variants(first:100){nodes{id sku price} pageInfo{hasNextPage endCursor}}}
+    userErrors{field message}
+  }
+}

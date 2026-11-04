@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import {execFileSync} from 'node:child_process';
+import {importEnvironment} from './design-assets.mjs';
 import {makeAcrylicConfig} from '../configurator/variant-m/acrylic-product.mjs';
 import {makeProductDocument, validateProductDocument, resolveProduct, validateProductDesign} from './product-model.mjs';
 import {createProductRepository} from './repository.mjs';
@@ -111,6 +113,8 @@ test('slate customer snapshot preserves private ownership and produces original-
  assert.equal(proof.pdf.subarray(0,5).toString(),'%PDF-');assert.equal(proof.metadata.productionReady,false);
  const files=readReviewPackage(proof.archive,digest(proof.archive),NATIVE_REVIEW).files;
  assert.ok(files.has('gravur-kontur-1zu1.pdf'));
+ const cut=JSON.parse(execFileSync(process.env.GRAVURU_PYTHON||'python3',['-c','import pymupdf,json,sys,base64; d=pymupdf.open(stream=base64.b64decode(sys.stdin.read()),filetype="pdf"); print(json.dumps([{ "color":p["color"],"width":p["width"]} for p in d[0].get_drawings()]))'],{input:files.get('gravur-kontur-1zu1.pdf').toString('base64'),env:importEnvironment(),encoding:'utf8'}));
+ assert.ok(cut.length);for(const path of cut){assert.deepEqual(path.color,[0,0,1]);assert.equal(path.width,0);}
  const changed=structuredClone(record.document);changed.config.basePriceCents=3000;repository.save(record.id,changed,1);
  assert.equal(drafts.review(bundle.manifest.id).manifest.product.basePriceCents,2598);
  assert.deepEqual(drafts.downloadSnapshot(bundle.manifest.id,'package'),bundle.package);

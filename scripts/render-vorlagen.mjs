@@ -9,8 +9,10 @@ import {katalogFor} from '../app/workshop/design-dashboard.mjs';
 import {designTargets,designTargetCompatibility} from '../app/workshop/design-targets.mjs';
 import {targetDesignPreview} from '../app/workshop/design-target-preview.mjs';
 import {familyProductConfig} from '../app/workshop/product-families.mjs';
+import {withFamilyPreview} from '../app/workshop/slate-catalog-product.mjs';
 import {productPreview} from '../app/workshop/product-preview.mjs';
 import {customerForm} from '../app/configurator/variant-m/family-formats.mjs';
+import {renderReviewSheets} from './slate-review-sheets.mjs';
 
 const HELP=`node scripts/render-vorlagen.mjs --katalog <Katalogordner> --familie <id> --out <Ordner> [Auswahl] [Ausgabe]
 Auswahl (eine davon):
@@ -18,6 +20,7 @@ Auswahl (eine davon):
   --reihe a,b                 alle Designs dieser Katalogreihen, die die Familie als Ziel haben
   --design "ID1;ID2"          einzelne Designs, mit Semikolon getrennt (IDs enthalten Kommas)
   --alle                      alle Designs mit dieser Familie als Ziel
+  --plan <JSON>               explizite Prüfaufträge, mit Formatreihe und Zielgruppe
 Optionen:
   --groesse <key,key|alle|familie>  Standard: erste passende Größe; alle = alle passenden Größen; familie = jede Größe
   --befestigung <id>          K00 (ohne), KGL/KRA (Kleben), B02/B04 (Löcher), B02S/B04S (Schrauben); Standard: K00, bei --ansicht pruefung Bohrung
@@ -41,13 +44,20 @@ const view=opt.ansicht||'kunde';if(!['kunde','pruefung'].includes(view))throw Er
 const started=Date.now(),katalog=katalogFor(root,{maxAgeMs:0}),family=katalog.families.get(opt.familie);
 if(!family)throw Error('Familie nicht im Katalog: '+opt.familie);
 // Kundenansicht startet wie der Konfi ohne Befestigung; die Prüfansicht zeigt wie die Werkstatt die Bohrung.
-const mounting=opt.befestigung?String(opt.befestigung).toUpperCase():view==='kunde'?'K00':null;
+const mounting=opt.befestigung?String(opt.befestigung).toUpperCase():view==='kunde'?(family.id==='schiefer-tafeln-kordel'?'KORDEL':'K00'):null;
 const safe=s=>String(s).replace(/[^\w.-]+/g,'_');
 fs.mkdirSync(out,{recursive:true});
 
 // Auftragsliste: {kind,reihe,id,size}
 const jobs=[],sizesFor=(wanted,fallback)=>wanted==='alle'?fallback:list(wanted);
-if(opt.leer){
+if(opt.plan){
+ const plan=JSON.parse(fs.readFileSync(path.resolve(opt.plan),'utf8'));
+ for(const job of plan.filter(j=>j.family===family.id)){
+  if(!katalog.designs.masters.some(d=>d.seriesFolder===job.reihe&&d.id===job.id&&designTargets(d,katalog).some(t=>t.familie===family.id)))throw Error('Plan enthält Design ohne bestätigtes Familienziel: '+job.id);
+  if(!family.sizes.some(s=>s.key===job.size))throw Error('Plangröße fehlt: '+job.size);
+  jobs.push({...job,kind:'design'});
+ }
+}else if(opt.leer){
  const keys=opt.groesse?sizesFor(opt.groesse,family.sizes.map(s=>s.key)):family.sizes.map(s=>s.key);
  for(const key of keys){if(!family.sizes.some(s=>s.key===key))throw Error('Größe nicht in Familie: '+key);jobs.push({kind:'leer',size:key});}
 }else{
@@ -72,7 +82,7 @@ function blankConfig(key){
  v.mountingRules=v.mountingRules.filter(r=>size.mounting.includes(r.id));
  // Preise sind für das Bild ohne Bedeutung; offene Preise (noch nicht entschieden) dürfen die Vorschau nicht sperren – wie in targetDesignPreview.
  for(const r of v.mountingRules)r.priceCents=0;v.sizes[0].baseCents=0;delete v.sizes[0].quantityTiers;if(v.photo)v.photo.extraPriceCents=0;
- return familyProductConfig(v,v.sizes[0],1,{previewOnly:true});
+ return withFamilyPreview(familyProductConfig(v,v.sizes[0],1,{previewOnly:true}),root,size);
 }
 // Gestaltungsvorlage: reine Geometrie aus dem Katalog in mm (Corel-Konvention rot = Platte und Löcher).
 // Je unterschiedlichem Bohrbild eine eigene Ebene, damit beim Gestalten alle Lochlagen sichtbar sind.
@@ -94,7 +104,7 @@ function blankSvg(key){
 // „Ohne Befestigung“ gibt es nur, wo die Familie sie anbietet (Abstandshalter-Familien nicht): dann Familienstandard.
 const mountingFor=key=>!mounting?mounting:mounting==='K00'?(family.withoutMounting?'K00':null):family.sizes.find(s=>s.key===key)?.mounting.some(id=>id===mounting||id.startsWith(mounting+'-'))?mounting:false;
 
-const results=[];
+const results=[],batchCache=new Map();
 for(const job of jobs){
  const t=Date.now(),entry={...job};
  try{
@@ -106,11 +116,12 @@ for(const job of jobs){
    // Chris 04.11.2026: Eine Größe, die für das Design nicht erlaubt ist (z. B. „nicht unter 9 × 6“), wird auch mit --groesse nie gerendert.
    if(job.size){const d=katalog.designs.masters.find(m=>m.id===job.id&&m.seriesFolder===job.reihe),s=family.sizes.find(x=>x.key===job.size),c=designTargetCompatibility(d,family,s,{katalog});
     if(c.status!=='passt'){entry.size=job.size;entry.label=sizeLabel(job.size);throw Error('Größe für dieses Design nicht erlaubt: '+c.issues.join(' '));}}
-   const preview={designArea:view==='pruefung'};
-   const r=await targetDesignPreview(root,{reihe:job.reihe,id:job.id,familie:opt.familie,size:job.size||undefined},{katalog,preview});
+   const initialMounting=job.size?mountingFor(job.size):null;
+   const preview={designArea:view==='pruefung',...(initialMounting?{options:{mounting:initialMounting},mountingPlacement:true}:{})};
+   const r=await targetDesignPreview(root,{reihe:job.reihe,id:job.id,familie:opt.familie,size:job.size||undefined},{katalog,preview,batchCache,singleSizeReview:!!opt.plan});
    entry.size=r.size.key;entry.label=r.size.label;
    const m=mountingFor(entry.size);if(m===false)throw Error('Befestigung '+mounting+' gibt es für diese Größe nicht.');
-   if(m){const again=await targetDesignPreview(root,{reihe:job.reihe,id:job.id,familie:opt.familie,size:entry.size},{katalog,preview:{...preview,options:{mounting:m},mountingPlacement:true}});r.svg=again.svg;}
+   if(m&&!initialMounting){const again=await targetDesignPreview(root,{reihe:job.reihe,id:job.id,familie:opt.familie,size:entry.size},{katalog,preview:{...preview,options:{mounting:m},mountingPlacement:true},batchCache});r.svg=again.svg;}
    entry.svg=r.svg;entry.status=r.svg?r.fit.status:'passt nicht';entry.issues=r.fit.issues;
    if(!r.svg)throw Error(r.fit.issues.at(-1)||'Keine Vorschau');
   }
@@ -122,6 +133,7 @@ for(const job of jobs){
   if(entry.kontur){const {svg,...meta}=entry.kontur;entry.konturFile=base+'.kontur.svg';fs.writeFileSync(path.join(out,entry.konturFile),svg);entry.geometrie=meta;delete entry.kontur;}
  }catch(error){entry.status='fehler';entry.issues=[...(entry.issues||[]),error.message];}
  delete entry.svg;entry.ms=Date.now()-t;results.push(entry);
+ if(opt.plan&&results.length%50===0){fs.writeFileSync(path.join(out,'progress.json'),JSON.stringify({done:results.length,total:jobs.length,last:entry.id}));console.log(JSON.stringify({done:results.length,total:jobs.length}));}
 }
 const svgMs=Date.now()-started;
 
@@ -153,7 +165,9 @@ const count=results.reduce((a,r)=>(a[r.status]=(a[r.status]||0)+1,a),{});
 const summary={katalog:root,familie:opt.familie,befestigung:mounting,ansicht:view,anzahl:results.length,status:count,ms:{svg:svgMs,png:pngMs,gesamt:Date.now()-started},ergebnisse:results};
 fs.writeFileSync(path.join(out,'index.json'),JSON.stringify(summary,null,1)+'\n');
 
-if(opt.bogen){
+if(opt.bogen&&opt.plan){
+ await renderReviewSheets({results,out,root,family,katalog,png:opt.png,withPages});
+}else if(opt.bogen){
  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
  const color={passt:'#2e7d32','prüfen':'#e08a00','passt nicht':'#c62828',fehler:'#c62828',leer:'#607d8b'};
  const cards=results.map(r=>'<figure><div class="bild">'+(r.file?'<img src="'+esc(r.png||r.file)+'">':'')+'</div><figcaption><b>'+esc(r.label||r.size||'Größe offen')+'</b> <span>'+esc(r.id||'Grundplatte')+'</span><i style="background:'+(color[r.status]||'#555')+'">'+esc(r.status)+'</i>'+(r.issues?.length?'<ul>'+r.issues.slice(0,4).map(i=>'<li>'+esc(i)+'</li>').join('')+(r.issues.length>4?'<li>… '+(r.issues.length-4)+' weitere</li>':'')+'</ul>':'')+'</figcaption></figure>').join('');

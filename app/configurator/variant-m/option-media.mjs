@@ -2,6 +2,7 @@
 export const MAX_THUMBNAIL_LENGTH=350000;
 import {SPACER_FINISHES,spacerCap,screwHead} from './spacer-cap.mjs';
 import {OPTION_STANDARD_IMAGES} from './option-standard-images.mjs';
+import {escapeXml as esc} from '../../platform/sources/app/shared/models/design-content.mjs';
 export {SPACER_FINISHES};
 export function validateThumbnail(value){
   if(value===undefined||value==='')return;
@@ -72,14 +73,15 @@ export function optionTilePrice(value,money,{fullPrice=false}={}){
 export function validateOptionPresentation(option){
   if(option.thumbnailDisabled!==undefined&&typeof option.thumbnailDisabled!=='boolean')throw Error('Optionsbild-Anzeige prüfen.');
   if(option.spacers!==undefined&&typeof option.spacers!=='boolean')throw Error('Abstandshalter bitte ein- oder ausschalten.');
-  if(option.spacerFinish!==undefined&&!SPACER_FINISHES.some(f=>f.id===option.spacerFinish))throw Error('Farbe der Abstandshalter prüfen.');
+  if(option.spacerFinish!==undefined&&option.spacerFinish!=='gold'&&!SPACER_FINISHES.some(f=>f.id===option.spacerFinish))throw Error('Farbe der Abstandshalter prüfen.');
   validateThumbnail(option.thumbnail);
 }
 // Decorative hardware belongs only to the preview, never engraving geometry.
 export function spacerPreview(svg,profile){
   if(!profile.mountingPreview?.spacers)return svg;
   const finish=profile.mountingPreview.finish||'silver';
-  const cap=spacerCap(finish);
+  const image=profile.mountingPreview.image;
+  const cap=image?'<image href="'+esc(image)+'" x="-6" y="-6" width="12" height="12"/>':spacerCap(finish);
   const caps=(profile.geometry.holes||[]).map(({x,y})=>'<g transform="translate('+Number(x)+' '+Number(y)+')">'+cap+'</g>').join('');
   const end=svg.lastIndexOf('</svg>');
   return end<0?svg:svg.slice(0,end)+`<g data-m-spacers="true" data-role="guide" aria-label="Abstandshalter" pointer-events="none">${caps}</g>`+svg.slice(end);

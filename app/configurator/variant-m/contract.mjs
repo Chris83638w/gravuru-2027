@@ -19,6 +19,7 @@ import {optionFields,visibleBy,validateOptionConditions,fieldValue,fieldPrice,fi
 import {validateSurfaces,objectSurface,hasBack,backSurcharge,surfaceProcess} from './surfaces.mjs';
 import {editorUi,validateToolbarConfig} from './toolbar-placement-model.mjs';
 import {validateExecution} from './execution-registry.mjs';
+import {templatePhotoPrice} from './photo-design-pricing.mjs';
 
 const clone = value => structuredClone(value);
 const fail = message => { throw Error(message); };
@@ -49,6 +50,8 @@ export const money = cents => euroFormat.format(cents / 100);
 // This adapter consumes the existing native profile. It never grants a runtime release.
 export function prepareConfig(input) {
   const config = clone(input);
+  if(config.photoDesignPricing!==undefined&&(config.photoDesignPricing!==true||config.profile?.material?.kind!=='slate'))fail('Ungültige Fotodesign-Preisregel.');
+  if(config.photoDesignCents!==undefined&&(!Number.isSafeInteger(config.photoDesignCents)||config.photoDesignCents<0||config.photoDesignCents>100000000))fail('Ungültiger Fotodesignpreis.');
   validateExecution(config);
   validateToolbarConfig(config);
   if(isLayeredDoorbell(config)){validateDoorbellDefinition(config);config.profile=selectedDoorbellProfile(config);}
@@ -65,7 +68,8 @@ export function prepareConfig(input) {
   const extraFontIds=localFontIds(config);
   const review=config.reviewOnly===true&&p.binding?.kind==='local-review'&&p.features?.orderEnabled===false;
   if(config.reviewOnly&&!review)fail('Prüfprodukt darf keine Shop-Bestellung freigeben.');
-  validateStudio(p, p, {extraFontIds,motifs:config.localResources?.motifs||[],fonts:config.localResources?.fonts,catalogSizes:isFamilyFormats(config)});
+  const catalogDesigns=config.photoDesignPricing===true&&config.designSelection==='all-approved'&&p.designs.every(d=>d.id===p.defaultDesignId||d.katalog?.target?.released===true);
+  validateStudio(p, p, {extraFontIds,motifs:config.localResources?.motifs||[],fonts:config.localResources?.fonts,catalogSizes:isFamilyFormats(config),catalogDesigns});
   // Themenlimits und Pflichtkennzeichen der Vorlage sind Produktregeln: ungültige Werte laden nicht.
   for(const d of p.designs||[])for(const o of d.objects||[])if(o.type==='text'){
     if(o.required!==undefined&&typeof o.required!=='boolean')fail('Pflichtfeld für Text ausdrücklich festlegen.');
@@ -186,15 +190,28 @@ export function selectedProfile(config, values = {}) {
     }
   }
   if (finish !== undefined && profile.mountingPreview?.spacers) profile.mountingPreview.finish = finish;
+  if(profile.mountingPreview?.spacers&&config.slateAccessories){
+    const selected=config.slateAccessories.choices.filter(c=>c.groupId==='mounting'||options[c.groupId]!==undefined).find(c=>c.groupId!=='mounting'&&c.valueId===options[c.groupId]&&c.images?.length===1)
+      ??config.slateAccessories.choices.find(c=>c.groupId==='mounting'&&c.valueId===options.mounting);
+    if(selected?.images?.[0])profile.mountingPreview.image=selected.images[0].src;
+  }
   return profile;
 }
 
+export function photoPolicyForDesign(config,designId,options={}){
+ if(!config?.photoDesignPricing)return config?.photo;
+ const variant=isFamilyFormats(config)?familyFormatSelection(config,options).variant:undefined;
+ const design=isFamilyFormats(config)?selectedFamilyDesign(config,designId,options):config.profile.designs.find(d=>d.id===designId);
+ if(!design)fail('Unbekanntes Design.');
+ return templatePhotoPrice(config,design,variant).policy;
+}
 export function quote(config, objects, designId, values = {}, quantity = 1) {
   if(config.reviewOnly&&config.basePriceCents===null)fail('Preis noch offen.');
   if (!Number.isInteger(quantity) || quantity < 1 || quantity > 99) fail('Menge: 1 bis 99.');
   const options = resolvedOptions(config, values);
   const design = isFamilyFormats(config)?selectedFamilyDesign(config,designId,options):isLayeredDoorbell(config)?selectedDoorbellDesign(config,designId,options):config.profile.designs.find(d => d.id === designId);
   if (!design) fail('Unbekanntes Design.');
+  const selectedBase=templatePhotoPrice(config,design,isFamilyFormats(config)?familyFormatSelection(config,options).variant:undefined).baseCents;
   // Original template motifs are included once. A duplicate must not inherit this credit.
   const included = new Map(design.objects.filter(o => o.type === 'motif').map(o => [o.id, o.motif]));
   const embeddedOnly=new Set((config.localResources?.motifs||[]).filter(m=>m.embeddedOnly===true).map(m=>m.key));
@@ -207,7 +224,7 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
     if (included.get(o.id) === o.motif && !seen.has(o.id)) seen.add(o.id);
     else additionalMotifs++;
   }
-  let unitCents = isFamilyFormats(config)?familyFormatPrice(config,options):isLayeredDoorbell(config)?doorbellPriceBase(config,options):config.acrylic ? acrylicSelection(acrylicOptions(options),config.acrylic.pricing).totalCents : config.steelFormats ? 0 : config.basePriceCents;
+  let unitCents = isFamilyFormats(config)?familyFormatPrice(config,options)+selectedBase-familyFormatSelection(config,options).variant.basePriceCents:isLayeredDoorbell(config)?doorbellPriceBase(config,options):config.acrylic ? acrylicSelection(acrylicOptions(options),config.acrylic.pricing).totalCents : config.steelFormats ? 0 : selectedBase;
   if(!config.acrylic&&!isFamilyFormats(config))for (const group of config.profile.optionGroups || []) if (options[group.id] !== undefined&&!(isLayeredDoorbell(config)&&group.id==='format')) unitCents += group.values.find(v => v.id === options[group.id]).priceCents;
   // Zusatzfelder (Ü12.1): Aufpreis nur sichtbarer, ausgefüllter Felder.
   const fieldCents = optionFieldCents(config, options);
@@ -218,12 +235,12 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
   if (!Number.isSafeInteger(unitCents)) fail('Ungültiger Gesamtpreis.');
   // Staffel (Ü11.1) serverseitig auf den Stückpreis; nur Produkte mit Staffelangabe
   // tragen die Zusatzfelder, damit bestehende Preisstände unverändert bleiben.
-  const priceConfig=isFamilyFormats(config)?{...config,basePriceCents:familyFormatSelection(config,options).variant.basePriceCents,quantityTiers:familyFormatSelection(config,options).variant.quantityTiers}:config;
+  const priceConfig=isFamilyFormats(config)?{...config,basePriceCents:selectedBase,quantityTiers:familyFormatSelection(config,options).variant.quantityTiers}:config.photoDesignPricing?{...config,basePriceCents:selectedBase}:config;
   const listUnitCents = unitCents, tier = quantityTierFor(priceConfig, quantity);
   unitCents = applyQuantityTier(listUnitCents, tier, priceConfig.basePriceCents);
   if (!Number.isSafeInteger(unitCents * quantity)) fail('Ungültiger Gesamtpreis.');
   const tiers = priceConfig.quantityTiers === undefined ? {} : {listUnitCents, quantityTier:tier ? {...tier} : null, quantityTierDiscountCents:listUnitCents - unitCents,...(priceConfig.quantityTierScope===undefined?{}:{quantityTierScope:priceConfig.quantityTierScope})};
-  return {currency:'EUR', unitCents, totalCents:unitCents * quantity, quantity, additionalMotifs, ...(config.motifCharge==='all'?{chargedMotifs}:{}), options, ...tiers, ...(config.profile.optionFields === undefined ? {} : {fieldCents}), ...(hasBack(config.profile) ? {backCents} : {})};
+  return {currency:'EUR', unitCents, totalCents:unitCents * quantity, quantity, additionalMotifs, ...(config.photoDesignPricing?{selectedBasePriceCents:selectedBase}:{}), ...(config.motifCharge==='all'?{chargedMotifs}:{}), options, ...tiers, ...(config.profile.optionFields === undefined ? {} : {fieldCents}), ...(hasBack(config.profile) ? {backCents} : {})};
 }
 
 // `template:true` prüft eine Vorlage gegen sich selbst (Händler-Werkstatt):

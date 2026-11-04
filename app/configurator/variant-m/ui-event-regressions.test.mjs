@@ -389,7 +389,7 @@ test('Befestigungskacheln: jede Befestigung als Kachel mit Icon, Bezeichnung und
  env.selectPicture({target:{closest:()=>({dataset:{pictureGroup:'mounting',pictureOption:'B02S'}})}});
  assert.deepEqual(choices,[['mounting','B02S']],'Kachel nutzt denselben Änderungsweg wie die Auswahlliste');
  // Einheitlicher Auswahlhaken: completion.mjs markiert die Kacheln wie Designs und nutzt dieselben Symbole.
- assert.match(line('completion.mjs',"const choices='"),/\[data-ux=mount-choice\],\[data-picture-option\]'/);
+ for(const selector of ['[data-ux=mount-choice]','[data-picture-option]','[data-slate-accessory]'])assert.ok(line('completion.mjs',"const choices='").includes(selector));
  assert.match(source('completion.mjs'),/import \{MOUNT_ICONS,mountIconSvg\} from '\.\/option-media\.mjs'/);
 });
 

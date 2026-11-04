@@ -24,6 +24,6 @@ Alles, was du für Issue #168 brauchst, liegt hier auf GitHub. Die Projekt-Doks 
   - 10.722 davon kamen am 01./02.11. dazu.
   - 7.846 sind freigegeben.
   - Schiefer: 2.915 ohne Ziele, sie erscheinen in keinem Produkt.
-- Offene Katalog-PRs: 11.865 neue Designs in 104 PRs, davon 2.052 von dir.
+- Offene Katalog-PRs: 11.865 neue Designs in 104 PRs, davon 2.027 von dir (dazu 120 schon auf main; zusammen deine 2.097 laut master-index plus Grabkreuze).
 
 Antwort bitte in #168. Nur prüfen: nichts mergen, nichts live.

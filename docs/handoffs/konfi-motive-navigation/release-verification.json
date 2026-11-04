@@ -1,89 +1,18 @@
 {
-  "at": "2026-11-04T15:59:43.337Z",
-  "source": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-konfi-korrektur-r2-20261104",
-  "target": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-konfi-motive-navigation-20261104",
-  "startupSha": "d1994393ac740f3acee602edc45f01e267d0daa5b39768bb06ec1559200a83fd",
-  "layoutSha": "656c3acef495dc29fce441f55b8fb9933d478409d9580e33dfdbba6bf04f506f",
+  "at": "2026-11-04T16:46:49.089Z",
+  "commit": "2206775a8ca2a60a691b029080b3cc2dfb2d5b27",
+  "source": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-konfi-motive-navigation-20261104",
+  "target": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-konfi-motive-navigation-r2-20261104",
   "files": [
     {
-      "path": "app/configurator/variant-m/build.mjs",
-      "before": "7c8eab1614e443f5c61d8af3ab11815ba04553292f08dd9b6a44477277ab2be9",
-      "after": "65b157eec10339e50757446ca975a818ee76ea26a3a023ec688f2d98544990bf"
-    },
-    {
-      "path": "app/configurator/variant-m/completion.mjs",
-      "before": "3a06379805bb09ea292370723ceb80075d0be3b6ccf2bd844bd13c24369535ca",
-      "after": "7359464ebf18081e091efb6e6292fc82d743cd5a41962ad6b43c92a636b0ad3f"
-    },
-    {
-      "path": "app/configurator/variant-m/profile-selection.mjs",
-      "before": "0326962e2118acc5e3445031e923f58f34b353c7648abc413e802d9bffff56d8",
-      "after": "a2b690708f1a45d06581d0bae3685451fede7cb1d331af0e112de57b94253afe"
-    },
-    {
-      "path": "app/configurator/variant-m/refinements.mjs",
-      "before": "e52538fbfffe7c59d32b99f197a9af4dc0dda08c07fdab9ed8c49072661e04d7",
-      "after": "98132ea7cf99bbe2dad8123e0663e02e07187660d08973c83df207309b21a138"
-    },
-    {
-      "path": "app/configurator/variant-m/usability.mjs",
-      "before": "a07a7edf410e5e7b393ae552cbf972de7dc52ac92691b0ea8fbab3ff4e038044",
-      "after": "896c540ee07c85ae3ff31b043f21a76a19fc151dd0574e5278c112f2cbf0a0ce"
-    },
-    {
-      "path": "app/configurator/variant-m/ux.mjs",
-      "before": "518c62bf952a688af538c1da49e83fd1d837e35c8d9083e6da7323ce179edf09",
-      "after": "7d7fd85a4e4af467d0b7d0c7102619948930eaab7e1956214b432769b56bf466"
-    },
-    {
-      "path": "app/configurator/variant-m/modern-mobile-navigation.mjs",
-      "before": null,
-      "after": "c08ee767d9f84345df4bc66d75f1cf1fc3e3c02e73f05f3552aa3fa873cfd965"
-    },
-    {
-      "path": "app/configurator/variant-m/modern-motif-browser.mjs",
-      "before": null,
-      "after": "66968ded5f1135a5c4bc9501d5b8d3a75b84c8c90fb2f27caa929ee46c8d3e46"
-    },
-    {
-      "path": "app/configurator/variant-m/modern-navigation.css",
-      "before": null,
-      "after": "13c5828d17e7a2b20560fcdbc98c99e806ccf6932c52abbb796d5f0d879d2e90"
-    },
-    {
-      "path": "app/configurator/variant-m/motif-browser-model.mjs",
-      "before": null,
-      "after": "a0eb385fb91460901b903c76f6a4dbb71836080a1eaa8a75b2c8a771a1434101"
-    },
-    {
-      "path": "app/configurator/variant-m/motif-browser-model.test.mjs",
-      "before": null,
-      "after": "c2847aa499f3bc647268a0d2037edf3b6d0660382c982023e63bda3dd85c4010"
-    },
-    {
-      "path": "app/configurator/variant-m/modern-layout.css",
-      "before": "d29234f8a50358873fed48073e4161468cc21576258042acfddda1e87391a69b",
-      "after": "656c3acef495dc29fce441f55b8fb9933d478409d9580e33dfdbba6bf04f506f"
+      "path": "app/configurator/variant-m/ux-details.css",
+      "before": "7749935a0526e73fd012905b642cc50ffc4f19c66797904214249c1da1a54fad",
+      "after": "94445e53e323b2e7b39c2f591939d68f3db2417640394d0c0d7484da86901c59"
     }
   ],
   "steps": [
     {
-      "name": "tests",
-      "status": 0,
-      "summary": [
-        "# tests 45",
-        "# pass 45",
-        "# fail 0",
-        "# skipped 0"
-      ]
-    },
-    {
-      "name": "build",
-      "status": 0,
-      "summary": []
-    },
-    {
-      "name": "combined-mobile-tests",
+      "name": "mobile-tests",
       "status": 0,
       "summary": [
         "# tests 41",
@@ -93,30 +22,34 @@
       ]
     },
     {
-      "name": "combined-build",
+      "name": "build",
       "status": 0,
       "summary": []
     }
   ],
-  "bundle": "editor-b93acc5ae85f90c3.mjs",
+  "startupSha": "b9cf0241494f7799c1f5a1718ea50137387f35393089550210a98c295333c558",
+  "bundle": "editor-e8a5b0efbda2f2a6.mjs",
   "activated": true,
-  "beforeLayoutSha": "d29234f8a50358873fed48073e4161468cc21576258042acfddda1e87391a69b",
-  "commit": "def626c",
-  "astraCommit": "87ba78e",
-  "verifiedAt": "2026-11-04T16:11:42.084Z",
-  "newStartupSha": "b9cf0241494f7799c1f5a1718ea50137387f35393089550210a98c295333c558",
+  "activation": {
+    "runtime": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-konfi-motive-navigation-r2-20261104",
+    "commit": "2206775a8ca2a60a691b029080b3cc2dfb2d5b27",
+    "bundle": "editor-e8a5b0efbda2f2a6.mjs",
+    "startupSha": "17e18c046f7f9aeafe22917bd982065f00acf87a4e1742c2f1ea38eb3ff9fdcc",
+    "restartPending": true
+  },
+  "verifiedAt": "2026-11-04T16:48:09.044Z",
   "http": [
     {
       "path": "/_merchant-acryl-editor.html",
       "status": 200,
       "bytes": 373866,
-      "sha256": "d170187766b28e955ef7580001a34b32bd0ea920d2616e9185f0c89c019fe0e9"
+      "sha256": "8e0858042bb176f14bad6702743af30455dc5df54f59d3f07b82cf5bcaaa6add"
     },
     {
-      "path": "/_acryl-bundle/editor-b93acc5ae85f90c3.mjs",
+      "path": "/_acryl-bundle/editor-e8a5b0efbda2f2a6.mjs",
       "status": 200,
-      "bytes": 1352692,
-      "sha256": "d226f28241608db8e89533b8fc1694465362e1b128b5aa5b92f8e5ab796c5eec"
+      "bytes": 1352861,
+      "sha256": "aedd1d1b4cd18ddd3cdba1fb08df39469271715b4363b15c4d32974e7b4c9a40"
     },
     {
       "path": "/acryl-configurator/variant-m/modern-layout.css",
@@ -129,20 +62,203 @@
       "status": 200,
       "bytes": 4581,
       "sha256": "13c5828d17e7a2b20560fcdbc98c99e806ccf6932c52abbb796d5f0d879d2e90"
+    },
+    {
+      "path": "/acryl-configurator/variant-m/ux-details.css",
+      "status": 200,
+      "bytes": 35768,
+      "sha256": "94445e53e323b2e7b39c2f591939d68f3db2417640394d0c0d7484da86901c59"
     }
   ],
-  "cart": {
-    "at": "2026-11-04T15:51:17.678Z",
-    "url": "https://gravuru-design.myshopify.com/cart/add.js",
-    "status": 422,
-    "variantId": "58117933433212",
-    "quantity": 1,
-    "isolatedCart": true,
-    "body": {
+  "previousRelease": {
+    "at": "2026-11-04T15:59:43.337Z",
+    "source": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-konfi-korrektur-r2-20261104",
+    "target": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-konfi-motive-navigation-20261104",
+    "startupSha": "d1994393ac740f3acee602edc45f01e267d0daa5b39768bb06ec1559200a83fd",
+    "layoutSha": "656c3acef495dc29fce441f55b8fb9933d478409d9580e33dfdbba6bf04f506f",
+    "files": [
+      {
+        "path": "app/configurator/variant-m/build.mjs",
+        "before": "7c8eab1614e443f5c61d8af3ab11815ba04553292f08dd9b6a44477277ab2be9",
+        "after": "65b157eec10339e50757446ca975a818ee76ea26a3a023ec688f2d98544990bf"
+      },
+      {
+        "path": "app/configurator/variant-m/completion.mjs",
+        "before": "3a06379805bb09ea292370723ceb80075d0be3b6ccf2bd844bd13c24369535ca",
+        "after": "7359464ebf18081e091efb6e6292fc82d743cd5a41962ad6b43c92a636b0ad3f"
+      },
+      {
+        "path": "app/configurator/variant-m/profile-selection.mjs",
+        "before": "0326962e2118acc5e3445031e923f58f34b353c7648abc413e802d9bffff56d8",
+        "after": "a2b690708f1a45d06581d0bae3685451fede7cb1d331af0e112de57b94253afe"
+      },
+      {
+        "path": "app/configurator/variant-m/refinements.mjs",
+        "before": "e52538fbfffe7c59d32b99f197a9af4dc0dda08c07fdab9ed8c49072661e04d7",
+        "after": "98132ea7cf99bbe2dad8123e0663e02e07187660d08973c83df207309b21a138"
+      },
+      {
+        "path": "app/configurator/variant-m/usability.mjs",
+        "before": "a07a7edf410e5e7b393ae552cbf972de7dc52ac92691b0ea8fbab3ff4e038044",
+        "after": "896c540ee07c85ae3ff31b043f21a76a19fc151dd0574e5278c112f2cbf0a0ce"
+      },
+      {
+        "path": "app/configurator/variant-m/ux.mjs",
+        "before": "518c62bf952a688af538c1da49e83fd1d837e35c8d9083e6da7323ce179edf09",
+        "after": "7d7fd85a4e4af467d0b7d0c7102619948930eaab7e1956214b432769b56bf466"
+      },
+      {
+        "path": "app/configurator/variant-m/modern-mobile-navigation.mjs",
+        "before": null,
+        "after": "c08ee767d9f84345df4bc66d75f1cf1fc3e3c02e73f05f3552aa3fa873cfd965"
+      },
+      {
+        "path": "app/configurator/variant-m/modern-motif-browser.mjs",
+        "before": null,
+        "after": "66968ded5f1135a5c4bc9501d5b8d3a75b84c8c90fb2f27caa929ee46c8d3e46"
+      },
+      {
+        "path": "app/configurator/variant-m/modern-navigation.css",
+        "before": null,
+        "after": "13c5828d17e7a2b20560fcdbc98c99e806ccf6932c52abbb796d5f0d879d2e90"
+      },
+      {
+        "path": "app/configurator/variant-m/motif-browser-model.mjs",
+        "before": null,
+        "after": "a0eb385fb91460901b903c76f6a4dbb71836080a1eaa8a75b2c8a771a1434101"
+      },
+      {
+        "path": "app/configurator/variant-m/motif-browser-model.test.mjs",
+        "before": null,
+        "after": "c2847aa499f3bc647268a0d2037edf3b6d0660382c982023e63bda3dd85c4010"
+      },
+      {
+        "path": "app/configurator/variant-m/modern-layout.css",
+        "before": "d29234f8a50358873fed48073e4161468cc21576258042acfddda1e87391a69b",
+        "after": "656c3acef495dc29fce441f55b8fb9933d478409d9580e33dfdbba6bf04f506f"
+      }
+    ],
+    "steps": [
+      {
+        "name": "tests",
+        "status": 0,
+        "summary": [
+          "# tests 45",
+          "# pass 45",
+          "# fail 0",
+          "# skipped 0"
+        ]
+      },
+      {
+        "name": "build",
+        "status": 0,
+        "summary": []
+      },
+      {
+        "name": "combined-mobile-tests",
+        "status": 0,
+        "summary": [
+          "# tests 41",
+          "# pass 41",
+          "# fail 0",
+          "# skipped 0"
+        ]
+      },
+      {
+        "name": "combined-build",
+        "status": 0,
+        "summary": []
+      }
+    ],
+    "bundle": "editor-b93acc5ae85f90c3.mjs",
+    "activated": true,
+    "beforeLayoutSha": "d29234f8a50358873fed48073e4161468cc21576258042acfddda1e87391a69b",
+    "commit": "def626c",
+    "astraCommit": "87ba78e",
+    "verifiedAt": "2026-11-04T16:11:42.084Z",
+    "newStartupSha": "b9cf0241494f7799c1f5a1718ea50137387f35393089550210a98c295333c558",
+    "http": [
+      {
+        "path": "/_merchant-acryl-editor.html",
+        "status": 200,
+        "bytes": 373866,
+        "sha256": "d170187766b28e955ef7580001a34b32bd0ea920d2616e9185f0c89c019fe0e9"
+      },
+      {
+        "path": "/_acryl-bundle/editor-b93acc5ae85f90c3.mjs",
+        "status": 200,
+        "bytes": 1352692,
+        "sha256": "d226f28241608db8e89533b8fc1694465362e1b128b5aa5b92f8e5ab796c5eec"
+      },
+      {
+        "path": "/acryl-configurator/variant-m/modern-layout.css",
+        "status": 200,
+        "bytes": 9033,
+        "sha256": "656c3acef495dc29fce441f55b8fb9933d478409d9580e33dfdbba6bf04f506f"
+      },
+      {
+        "path": "/acryl-configurator/variant-m/modern-navigation.css",
+        "status": 200,
+        "bytes": 4581,
+        "sha256": "13c5828d17e7a2b20560fcdbc98c99e806ccf6932c52abbb796d5f0d879d2e90"
+      }
+    ],
+    "cart": {
+      "at": "2026-11-04T15:51:17.678Z",
+      "url": "https://gravuru-design.myshopify.com/cart/add.js",
       "status": 422,
-      "message": "Warenkorb-Fehler",
-      "description": "Kann Variante nicht finden"
-    }
+      "variantId": "58117933433212",
+      "quantity": 1,
+      "isolatedCart": true,
+      "body": {
+        "status": 422,
+        "message": "Warenkorb-Fehler",
+        "description": "Kann Variante nicht finden"
+      }
+    },
+    "localBrowser": {
+      "scope": "native local Monogramm fixture, not Shopify end-to-end",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "libraryCount": 721,
+      "bestsellers": 49,
+      "visibleInitially": 18,
+      "visibleAfterMore": 36,
+      "motifColumns": 3,
+      "preview": {
+        "yBefore": 54,
+        "yAfter": 54,
+        "height": 338,
+        "editorScrollAfter": 1246
+      },
+      "baseCents": 2199,
+      "oneAddedMotifCents": 2368,
+      "twoUnitsWithOneMotifCents": 4736,
+      "validReviewOpens": true,
+      "hiddenMountColorsOmitted": true,
+      "requiredTextGuard": true,
+      "overlapGuard": true,
+      "smallViewport": {
+        "width": 375,
+        "height": 548,
+        "previewY": 54,
+        "previewHeight": 274,
+        "dimensionBottom": 296,
+        "cartButtonTop": 496,
+        "cartButtonBottom": 538
+      },
+      "viewportReset": true
+    },
+    "shopifyEndToEndPassed": false
+  },
+  "astra": {
+    "layoutCommit": "87ba78ef763d0b8258ba1f25a458611c80143c3b",
+    "layoutUnchanged": true,
+    "independentShopReadbackBeforeFinalCss": "https://github.com/Chris83638w/gravuru-2027/issues/48#issuecomment-6635741978",
+    "finalHandoff": "https://github.com/Chris83638w/gravuru-2027/issues/48#issuecomment-6636487720",
+    "fullCartReadback": "pending"
   },
   "localBrowser": {
     "scope": "native local Monogramm fixture, not Shopify end-to-end",
@@ -177,7 +293,106 @@
       "cartButtonTop": 496,
       "cartButtonBottom": 538
     },
-    "viewportReset": true
+    "viewportReset": true,
+    "additionalMotifAddRemove": {
+      "scope": "local native Monogramm fixture; not Shopify end-to-end",
+      "quantity": 1,
+      "baseCents": 2199,
+      "addedMotifs": [
+        {
+          "name": "Haus",
+          "totalCents": 2368,
+          "layers": 3
+        },
+        {
+          "name": "Baum 1",
+          "totalCents": 2537,
+          "layers": 4
+        }
+      ],
+      "removedMotif": {
+        "name": "Baum 1",
+        "totalCents": 2368,
+        "layers": 3
+      },
+      "extraMotifCents": 169,
+      "passed": true
+    },
+    "smallHeightRegression": {
+      "viewport": {
+        "width": 375,
+        "height": 548
+      },
+      "sequence": [
+        "select text",
+        "Motive",
+        "Alle Kategorien",
+        "Mehr anzeigen"
+      ],
+      "visibleMotifs": 36,
+      "libraryCount": 721,
+      "previewBefore": {
+        "y": 54,
+        "height": 183
+      },
+      "previewAfter": {
+        "y": 54,
+        "height": 274,
+        "maxHeight": "none"
+      },
+      "editorScrollTop": 1150.5,
+      "cartButton": {
+        "top": 496,
+        "bottom": 538
+      },
+      "fullscreenReturnsToSameHeight": true
+    },
+    "reducedHeight": {
+      "viewport": {
+        "width": 375,
+        "height": 400
+      },
+      "previewBefore": 163,
+      "previewAfter": 200
+    },
+    "temporaryViewportReset": true
   },
-  "shopifyEndToEndPassed": false
+  "cart": {
+    "at": "2026-11-04T15:51:17.678Z",
+    "url": "https://gravuru-design.myshopify.com/cart/add.js",
+    "status": 422,
+    "variantId": "58117933433212",
+    "quantity": 1,
+    "isolatedCart": true,
+    "body": {
+      "status": 422,
+      "message": "Warenkorb-Fehler",
+      "description": "Kann Variante nicht finden"
+    }
+  },
+  "publishedCartWithoutPersonalization": {
+    "at": "2026-11-04T16:40:40.638Z",
+    "scope": "isolated public Shopify cart baseline; no configurator personalization, no checkout",
+    "variantId": 57265913332092,
+    "quantity": 1,
+    "before": {
+      "status": 200,
+      "itemCount": 0
+    },
+    "add": {
+      "status": 422,
+      "error": {
+        "message": "Warenkorb-Fehler",
+        "description": "In deinem Warenkorb ist ein Fehler aufgetreten."
+      }
+    },
+    "interpretation": "The direct request omitted the required completed personalization. The repository transform rejects enabled pricing lines without the current revision/design reference; this negative baseline is not a failed full configurator test or a positive checkout proof."
+  },
+  "shopifyEndToEndPassed": false,
+  "limitations": [
+    "Monogramm product is DRAFT; actual Ajax test returned 422, variant not found.",
+    "Published product without completed personalization returns 422; full UI cart readback from Astra is pending.",
+    "Silikon surcharge and production readiness remain outside this UI completion."
+  ],
+  "restartObservation": "The first request during restart returned 503; subsequent full public HTML, bundle and CSS verification passed."
 }

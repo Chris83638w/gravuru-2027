@@ -1,0 +1,18 @@
+{
+  "at": "2026-11-04T16:40:40.638Z",
+  "scope": "isolated public Shopify cart baseline; no configurator personalization, no checkout",
+  "variantId": 57265913332092,
+  "quantity": 1,
+  "before": {
+    "status": 200,
+    "itemCount": 0
+  },
+  "add": {
+    "status": 422,
+    "error": {
+      "message": "Warenkorb-Fehler",
+      "description": "In deinem Warenkorb ist ein Fehler aufgetreten."
+    }
+  },
+  "interpretation": "The direct request omitted the required completed personalization. The repository transform rejects enabled pricing lines without the current revision/design reference; this negative baseline is not a failed full configurator test or a positive checkout proof."
+}

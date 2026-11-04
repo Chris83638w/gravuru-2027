@@ -98,3 +98,10 @@ test('target compatibility preserves source sizes, separates equal-ratio forms a
  const retro=master({form:'Retro2',plateMm:[90.6,61.3],sizesOpen:['TR2-V2A-9x6']});assert.equal(designTargetCompatibility(retro,contour,contour.sizes[0],{katalog:k}).status,'passt','existing source-authorized Retro contain mapping stays intact');
  const wrong=master({...retro,form:'Retro1'});assert.equal(designTargetCompatibility(wrong,contour,contour.sizes[0],{katalog:k}).variantRequired,true);
 });
+test('Mindestgröße je Design (mindestFlaecheCm2): kleinere Schilder passen nie, größere bleiben (Chris 04.11.2026)',()=>{
+ const f=family(),k=context([f]),small={...f.sizes[0],key:'KLEIN',label:'8 × 5 cm',widthMm:80,heightMm:53.3},d=master({plateMm:[80,53.3],mindestFlaecheCm2:54,mindestGroesse:'9 × 6 cm'});
+ const ok=designTargetCompatibility(d,f,{...f.sizes[0],widthMm:90,heightMm:60},{katalog:k}),no=designTargetCompatibility(d,f,small,{katalog:k});
+ assert.ok(!ok.issues.some(i=>/erst ab/.test(i)),ok.issues.join(' | '));
+ assert.equal(no.status,'passt nicht');assert.match(no.issues.join(' '),/erst ab 9 × 6 cm; 8 × 5 cm ist zu klein/);
+ assert.ok(!designTargetCompatibility(master({plateMm:[80,53.3]}),f,small,{katalog:k}).issues.some(i=>/erst ab/.test(i)),'ohne Feld keine neue Sperre');
+});

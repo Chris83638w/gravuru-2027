@@ -38,7 +38,7 @@ test('doorbell selection uses a persistent slot through deselection, mobile and 
 test('desktop tools sit above the plate; repeated placement preserves the original controls and listeners',()=>{
   const f=fixture();let undo=0,edit=0;f.toolbar.addEventListener('click',()=>undo++);f.panel.addEventListener('click',()=>edit++);
   for(let i=0;i<3;i++)assert.equal(f.place(false,false),true);
-  assert.deepEqual(f.preview.children,[f.toolbar,f.panel,f.preview.canvas]);assert.deepEqual(f.workbench.children,[]);assert.equal(f.workbench.hidden,true);assert.equal(f.panel.classes.has('is-workbench'),true);
+  assert.deepEqual(f.heading.children,[f.toolbar]);assert.deepEqual(f.preview.children,[f.panel,f.preview.canvas]);assert.deepEqual(f.workbench.children,[]);assert.equal(f.workbench.hidden,true);assert.equal(f.panel.classes.has('is-workbench'),true);
   f.toolbar.dispatchEvent(new Event('click'));f.panel.dispatchEvent(new Event('click'));assert.equal(undo,1);assert.equal(edit,1);
 });
 
@@ -55,9 +55,9 @@ test('fullscreen and viewport changes return both original bars to the correct h
     assert.deepEqual(f.full.children,[f.full.close,f.toolbar]);assert.equal(f.panel.parentNode,f.stage);assert.equal(f.workbench.hidden,true);
     assert.equal(f.panel.classes.has('is-workbench'),false);assert.equal(f.panel.classes.has('is-fullscreen-dock'),mobile);
     f.place(!mobile,true);assert.equal(f.panel.parentNode,f.stage);assert.equal(f.panel.classes.has('is-fullscreen-dock'),!mobile);
-    f.place(!mobile,false);assert.equal(f.toolbar.parentNode,!mobile?f.heading:f.preview);assert.equal(f.panel.parentNode,f.preview);
+    f.place(!mobile,false);assert.equal(f.toolbar.parentNode,f.heading);assert.equal(f.panel.parentNode,f.preview);
   }
-  f.place(false,false);assert.deepEqual(f.preview.children,[f.toolbar,f.panel,f.preview.canvas]);assert.equal(f.full.children.length,1);
+  f.place(false,false);assert.deepEqual(f.heading.children,[f.toolbar]);assert.deepEqual(f.preview.children,[f.panel,f.preview.canvas]);assert.equal(f.full.children.length,1);
 });
 
 test('returning from canvas placement removes absolute offsets and scale; hidden state stays hidden',()=>{

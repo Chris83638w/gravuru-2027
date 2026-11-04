@@ -1,7 +1,6 @@
 import {escapeXml as esc} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {optionTileIcon,optionTilePrice} from './option-media.mjs';
-import {slateAccessoryMedia,slateAccessoryChoice,slateImagesMarkup,slateAccessoryGroupsMarkup,SLATE_ACCESSORY_CSS} from './slate-accessory-media.mjs';
-import {photoPolicyForDesign} from './contract.mjs';
+import {slateAccessoryMedia,slateAccessoryChoice,slateImagesMarkup,slateChoiceImages,slateChoiceLabel,slateAccessoryGroupsMarkup,SLATE_ACCESSORY_CSS} from './slate-accessory-media.mjs';
 
 const money=c=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(c/100);
 export function memorialSections(config){
@@ -14,8 +13,8 @@ export function memorialSections(config){
  ].filter(s=>s.values.length);
 }
 export function memorialChoicesMarkup(config){
- const icon=value=>{const choice=slateAccessoryChoice(config,'mounting',value.id);return choice?slateImagesMarkup(choice.images):optionTileIcon(value,{mounting:true});};
- const label=value=>value.id==='K00'?'Ohne Befestigung':slateAccessoryChoice(config,'mounting',value.id)?.label||value.label;
+ const icon=value=>{const choice=slateAccessoryChoice(config,'mounting',value.id);return choice?slateImagesMarkup(slateChoiceImages(choice),{captions:false}):optionTileIcon(value,{mounting:true});};
+ const label=value=>value.id==='K00'?'Ohne Befestigung':slateChoiceLabel(slateAccessoryChoice(config,'mounting',value.id)?.label||value.label);
  return memorialSections(config).map(s=>'<h3>'+esc(s.label)+'</h3>'+(s.id==='accessories'?'<p>Alternativ zur Befestigung auswählen.</p>':'')+'<div role="group" aria-label="'+esc(s.label)+'">'+s.values.map(v=>'<button type="button" class="m-option-tile" data-picture-group="mounting" data-picture-option="'+esc(v.id)+'" aria-pressed="false">'+icon(v)+'<strong>'+esc(label(v))+'</strong><small>'+esc(optionTilePrice(v,money))+'</small></button>').join('')+'</div>').join('')+slateAccessoryGroupsMarkup(config,money);
 }
 export function installMemorialExecution({el,config,picks,pictures,fieldBox}){
@@ -41,16 +40,8 @@ export function installMemorialExecution({el,config,picks,pictures,fieldBox}){
   }
   if(accessoryTiles.length)pictures.append(heading,group);
  }
- let updatePhoto=()=>{};
- if(config.photo?.enabled){
-  const section=document.createElement('section');section.className='m-memorial-photo';
-  const included=config.photo.includedCount??0;
-  section.innerHTML='<h3>Foto</h3><p data-photo-policy>'+esc(included?included+' Foto'+(included>1?'s':'')+' inklusive · weitere je '+money(config.photo.extraPriceCents):'Je Foto '+money(config.photo.extraPriceCents))+'</p>'+(media?.photo?slateImagesMarkup(media.photo.images):'')+'<button type="button" class="ux-primary" data-memorial-photo>Foto gestalten</button>';
-  section.querySelector('button').addEventListener('click',()=>{el.uxShowSection?.('upload');el.uxMobileSteps?.show('upload',{scroll:false});});picks.append(section);
-  if(config.photoDesignPricing)updatePhoto=()=>{const policy=photoPolicyForDesign(config,el.state.designId,el.state.mOptions);section.querySelector('[data-photo-policy]').textContent=policy.includedCount?'1 Foto im Fotodesign enthalten · weitere je '+money(policy.extraPriceCents):'Je zusätzliches Foto '+money(policy.extraPriceCents);};
- }
+ // Photos have one home: the final Foto tab. No duplicate offer in Ausführung.
  return ()=>{
-  updatePhoto();
   for(const {tile,input} of accessoryTiles)tile.setAttribute('aria-pressed',String(input.checked));
   for(const heading of pictures.querySelectorAll('[data-slate-group-heading]')){
    const group=heading.nextElementSibling;

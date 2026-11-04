@@ -25,6 +25,9 @@ html.gv-embed-open,html.gv-embed-open body{overflow:hidden}`;
 export function startUrl(link){
  const url=new URL(link.href,location.href);
  if(url.origin!==location.origin||url.pathname!==PROXY+'/start')return null;
+ // Entwurfsvorschauen laufen auf einer temporären Shopify-Domain. Die bestehende
+ // Einbettung erlaubt nur den eigenen Shop; dort den normalen Seitenlink nutzen.
+ if(/(^|\.)shopifypreview\.com$/.test(url.hostname))return null;
  url.searchParams.set('embed','1');
  return url.href;
 }

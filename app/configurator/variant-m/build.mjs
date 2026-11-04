@@ -101,14 +101,17 @@ export function build({outputDirectory=OUTPUT}={}){
   replaceOnce("shown=6;renderGallery();","shown=Number.MAX_SAFE_INTEGER;renderGallery();");
   replaceOnce("render();grid.children[firstNew]?.focus({preventScroll:true});","render();");
   replaceOnce("const filtered=all.filter(e=>(!category.value||e.category===category.value)&&(!needle||(e.name+' '+e.category).toLocaleLowerCase('de').includes(needle)));",
-    "const score=e=>el.uxMotifScore?el.uxMotifScore(e,needle):(!needle||(e.name+' '+e.category).toLocaleLowerCase('de').includes(needle)?1:0);const filtered=all.filter(e=>(!category.value||e.category===category.value)&&score(e)>0).sort((a,b)=>score(b)-score(a));");
+    "const filtered=window.GravuruProfileChoices.filterMotifBrowser(all,popular,category.value,needle,el.uxMotifScore?.bind(el));");
+  replaceOnce('let visibleCount=6;','let visibleCount=18;');
+  replaceOnce("search.addEventListener('input',()=>{visibleCount=6;render()});category.addEventListener('change',()=>{visibleCount=6;render()});","search.addEventListener('input',()=>{visibleCount=18;render()});category.addEventListener('change',()=>{visibleCount=18;render()});");
+  replaceOnce('visibleCount+=6;render();','visibleCount+=18;render();');
   // Embedded PDF fonts may contain only the source glyphs. Keep the font picker usable.
   replaceOnce("const family=el.fontData[object.font],face=family[object.bold?'bold':'regular'];","const family=el.fontData[object.font],face=family[object.bold?'bold':'regular']||family.regular;");
   replaceOnce("const glyph=face.glyphs[ch]||face.glyphs['?'];","const glyph=face.glyphs[ch]||face.glyphs['?']||{d:'',a:face.units*.5};");
   replaceOnce('const all=[...entries,...original],categories=[...new Set(all.map(e=>e.category))];',
     'const all=window.GravuruProfileChoices.motifChoices([...entries,...original],window.parent.UniversalConfig?.workshopProfiles?.selections?.motifs,window.GravuruTemplateOnlyMotifKeys),categories=[...new Set(all.map(e=>e.category))];el.uxMotifChoiceIds=all.map(e=>e.key);');
   replaceOnce('const popular=ranked.length?ranked:doorSignStarterKeys.filter(key=>motifIndex.has(key)).map(key=>({key}));',
-    'const popular=window.GravuruProfileChoices.bestsellerChoices(all,ranked.length?ranked:doorSignStarterKeys.filter(key=>motifIndex.has(key)).map(key=>({key})),window.parent.UniversalConfig?.workshopProfiles?.selections?.bestsellers,{fillTo:ranked.length?0:18});bestsellers.hidden=popular.length===0;');
+    'const popular=window.GravuruProfileChoices.bestsellerChoices(all,ranked.length?ranked:doorSignStarterKeys.filter(key=>motifIndex.has(key)).map(key=>({key})),window.GravuruProfileChoices.themedMotifSelection(all,window.parent.UniversalConfig?.motifTheme,window.parent.UniversalConfig?.workshopProfiles?.selections?.bestsellers),{fillTo:ranked.length?0:18});bestsellers.hidden=popular.length===0;category.prepend(new Option("Bestseller","__bestsellers",true,true));');
   replaceOnce("ranked.length?'Die meistgenutzten Motive für Türschilder.':'Unsere Startauswahl für Türschilder.'",
     "window.parent.UniversalConfig?.workshopProfiles?.selections?.bestsellers!=null?'Unsere Auswahl für dieses Produkt.':ranked.length?'Die meistgenutzten Motive.':'Unsere Startauswahl.'");
   replaceOnce('await customElements.whenDefined(\'gravuru-configurator\');',

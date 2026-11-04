@@ -1,0 +1,13 @@
+{
+  "at": "2026-11-04T15:51:17.678Z",
+  "url": "https://gravuru-design.myshopify.com/cart/add.js",
+  "status": 422,
+  "variantId": "58117933433212",
+  "quantity": 1,
+  "isolatedCart": true,
+  "body": {
+    "status": 422,
+    "message": "Warenkorb-Fehler",
+    "description": "Kann Variante nicht finden"
+  }
+}

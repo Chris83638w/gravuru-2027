@@ -22,6 +22,8 @@ export function slateCatalogueProduct(root,family,size,{revision=1,accessories=t
  if(!family.id.startsWith('schiefer-tafeln-'))throw Error('Nur die vier neuen Schieferfamilien sind Quelle.');
  const view={...family,sizes:[size],groups:family.groups.filter(g=>g.key===size.groupKey),mountingRules:family.mountingRules.filter(r=>size.mounting.includes(r.id))};
  let c=withFamilyPreview(familyProductConfig(view,size,revision),root,size);
+ // Mikail, 04.11.2026: each added customer motif costs 1.69 EUR.
+ c.extraMotifCents=169;c.motifCharge='additional';
  c.profile.designs[0].name='Eigene Gestaltung';
  // Scaffolding is editable native text, not an approved catalogue design.
  c.profile.designs[0].objects[0].text='Dein Text';

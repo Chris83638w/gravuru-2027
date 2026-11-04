@@ -27,12 +27,15 @@ async function editorPage(hash,{framed=true}={}){
  const source=fs.readFileSync(new URL('./ui/shop-entry-page.mjs',import.meta.url),'utf8').replace(/^import .*;\r?\n/gm,'');
  await vm.runInContext('(async()=>{'+source+'})()',env);
  assert.equal(nodes.status.hidden,false,nodes.status.textContent);assert.equal(nodes.editor.children.length,1);
- assert.equal(nodes.editor.hidden,true,'wait for the actual editor, not its HTML load');
+ assert.equal(nodes.editor.hidden,false,'Editor erhält beim Laden seine echte Größe');
+ assert.equal(nodes.editor.inert,true,'Editor bleibt bis zur Fertigmeldung unbedienbar');
+ assert.equal(nodes['loading-screen'].hidden,false);
  const ready={origin:'https://app.example',source:nodes.editor.children[0].contentWindow,data:{type:'gravuru-ux-ready'}};
  for(const event of [{...ready,origin:'https://foreign.example'},{...ready,source:{}}])for(const handler of listeners)handler(event);
- assert.equal(nodes.editor.hidden,true,'foreign messages cannot dismiss the loading screen');
+ assert.equal(nodes['loading-screen'].hidden,false,'foreign messages cannot dismiss the loading screen');
+ assert.equal(nodes.editor.inert,true);
  for(const handler of listeners)handler(ready);
- assert.equal(nodes.editor.hidden,false);assert.equal(nodes.header.hidden,true);assert.equal(nodes['loading-screen'].hidden,true);assert.equal(nodes.progress.value,3);
+ assert.equal(nodes.editor.hidden,false);assert.equal(nodes.editor.inert,false);assert.equal(nodes.header.hidden,true);assert.equal(nodes['loading-screen'].hidden,true);assert.equal(nodes.progress.value,3);
  return {url:new URL(nodes.editor.children[0].src,'https://app.example'),gate:window.GravuruShopEntry};
 }
 

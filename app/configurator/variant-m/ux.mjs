@@ -6,6 +6,7 @@ import {installViewZoom} from './view-zoom.mjs';
 import {installMotifTileFit} from './motif-tile-fit.mjs';
 import {installUxDetails} from './ux-details.mjs';
 import {installDecisionHelp} from './decision-help.mjs';
+import {installModernMotifBrowser} from './modern-motif-browser.mjs';
 import {customerFieldLabel,installTextFields} from './text-fields.mjs';
 import {installLayout} from './layout.mjs';
 import {alignmentContent,alignmentLabel} from './ui-icons.mjs';
@@ -457,7 +458,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   finishCustomerRights();
   finishTemplateDeletion();
   installFirstTextFocus({el,r});
-  function startUnselected(){r.activeElement?.blur();el.multiSelecting=false;el.state.selected=null;el.centerSuggestion=null;showTab(config?.productPreview?'design':'options');el.sync();}
+  function startUnselected(){r.activeElement?.blur();el.multiSelecting=false;el.state.selected=null;el.centerSuggestion=null;showTab(profile.designs.length?'design':'options');el.uxMobileSteps?.show(profile.designs.length?'design':'options',{scroll:false});el.sync();}
   window.addEventListener('message',e=>{if(e.origin===location.origin&&e.source===window.parent&&e.data?.type==='gravuru-ux-open')startUnselected();});
   addDecoration();el.normalize();startUnselected();
   // Ladezeit: Schriften/Motive des gesicherten Stands vor dem (synchronen) Wiederherstellen laden.
@@ -515,6 +516,15 @@ export async function installUX(el,config,legacy,{attach}={}){
   if(config)installLegacyCartRestore({el,config,files});
   await installProductDesignGallery({el,r,config,files,say,dialog,esc});
   installReviewLayout({el,r});
+  // Astra 1, #48 / #161 db4f4a4: adopt the reviewed visual shell around the
+  // existing editor, preserving real artwork, controls and commerce handlers.
+  const modern=document.createElement('style');
+  const modernResponse=await fetch('/configurator/variant-m/modern-layout.css');
+  if(!modernResponse.ok)throw Error('Aktuelles Konfigurator-Layout fehlt.');
+  modern.textContent=await modernResponse.text();r.append(modern);el.dataset.uxModern='true';
+  installModernMotifBrowser({r,el});
+  const navigation=document.createElement('style');const navigationResponse=await fetch('/configurator/variant-m/modern-navigation.css');
+  if(!navigationResponse.ok)throw Error('Aktuelle Konfigurator-Navigation fehlt.');navigation.textContent=await navigationResponse.text();r.append(navigation);
   // All customer UI and its styles are ready before the first DOM insertion.
   // A connectedCallback replay is harmless: the reference component has a ready guard.
   attach?.();

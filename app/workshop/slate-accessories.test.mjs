@@ -27,8 +27,8 @@ test('explicit catalogue media binding preserves product prices, geometry, group
  assert.match(html,/data-picture-group="stand" data-picture-option="clear"/);
  assert.match(html,/data-picture-option="none"/);assert.match(html,/10,99/);assert.match(html,/13,99/);
  assert.ok(html.indexOf('data-picture-option="K00"')<html.indexOf('data-picture-option="two"'));
- assert.match(html,/alt="Gold"/);assert.match(html,/>Quadrat<\/small>/);assert.match(html,/>Rechteck<\/small>/);
- assert.match(html,/4 Abstandshalter \(12 mm breit\)/);
+ assert.match(html,/alt="Gold"/);assert.match(html,/alt="Rechteck"/);assert.doesNotMatch(html,/alt="Quadrat"|>Rechteck<\/small>/);
+ assert.match(html,/4 Abstandshalter/);assert.doesNotMatch(html,/12 mm breit/);
  assert.doesNotMatch(html,/abstandshalter-seite|abstandshalter-gruppe/);
 });
 test('all five spacer colours use the exact top views and 2/4-pack surcharges from PR 162',()=>{

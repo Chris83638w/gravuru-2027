@@ -1,6 +1,6 @@
-## 2026-11-04 · Claude Operator · Entscheidungsregister bis 4.64 / 5.32 / 7.24
+## 2026-11-04 · Claude Operator · Entscheidungsregister bis 4.66 / 5.33 / 7.25
 
-`ENTSCHEIDUNGEN.md` um 16 Einträge ergänzt: 1.28 (Konfi-Optik #161), 4.59–4.64 (Schiefer Foto-Preis, alte Familien, Live-Freigaben inkl. „warte“ bei Edelstahl, blaue Haarlinien, Löcher), 5.28–5.32 (Filigran hart, Bildbeschriftung, Hinweis 19 Ja / 52 Nein, Design Prüfung Skill, Prüfung Material für Material), 7.21–7.24 (Astra Edelstahl/Schiefer getrennt, Schiefer-Chat, Bestand zuerst, „nur per Skripte“). Nur Doku, kein Code.
+`ENTSCHEIDUNGEN.md` um 16 Einträge ergänzt: 1.28 (Konfi-Optik #161), 4.59–4.64 (Schiefer Foto-Preis, alte Familien, Live-Freigaben inkl. „warte“ bei Edelstahl, blaue Haarlinien, Löcher), 5.28–5.32 (Filigran hart, Bildbeschriftung, Hinweis 19 Ja / 52 Nein, Design Prüfung Skill, Prüfung Material für Material), 7.21–7.24 (Astra Edelstahl/Schiefer getrennt, Schiefer-Chat, Bestand zuerst, „nur per Skripte“). Dazu 12:25: 4.65 Stern auch für Tiere (Schiefer), 4.66 Rasse ab 15 × 10 skalierbar und abgerundet, 5.33 D14 so lassen, 7.25 Edelstahl „weiter“. Nur Doku, kein Code.
 
 ## 2026-11-03 · Codex/Astra 1 · #139 102 Grabstecker-Entwürfe vollständig angelegt
 

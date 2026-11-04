@@ -1,6 +1,6 @@
 # Entscheidungsregister Chris (gravuru 2027)
 
-Stand 04.11.2026, 12:25 – von Claude (Operator) aus STATUS.md, Übergaben, Katalog und allen Issues zusammengestellt. **Pflichtlektüre für jede KI vor jedem Auftrag.** Bei Widerspruch gilt der neueste Eintrag. Einträge „Agent-Annahme“ sind keine Entscheidung von Chris.
+Stand 04.11.2026, 11:58 – von Claude (Operator) aus STATUS.md, Übergaben, Katalog und allen Issues zusammengestellt. **Pflichtlektüre für jede KI vor jedem Auftrag.** Bei Widerspruch gilt der neueste Eintrag. Einträge „Agent-Annahme“ sind keine Entscheidung von Chris.
 
 
 Stand: 02.11.2026 abends. Gelesen: Code-Repo `origin/main` f78ad5b (STATUS.md, AGENTS.md, START_HERE.md, UMSETZUNGSPAKETE.md, NEUE-WERKSTATT-PLAN.md, docs/handoffs, docs/plans), Katalog-Repo 5171686f6 (DESIGN-MASTER, KATALOG, STATUS, STAND, linien/README, auftraege), alle 153 Issues/PRs mit 601 Kommentaren (REST).
@@ -178,8 +178,8 @@ Stand: 02.11.2026 abends. Gelesen: Code-Repo `origin/main` f78ad5b (STATUS.md, A
 | 4.62 | 04.11. 10:08 | **LIVE-Freigabe Edelstahl:** Antwort **„Ja, live (Empfohlen)“** auf „Sollen die neuen Preise und der neue Konfi live gehen? … Vorher macht Astra eine Testbestellung bis zum Warenkorb, ohne echte Fertigung.“ → Test bis Warenkorb, dann Konfi Revision 2 + neue Preise auf 164 Live-Produkte; offene Zuordnungen und Mindestgrößen-Fälle nicht anfassen. **Danach sagte Chris zu Astra 1 „warte“:** Arbeit pausiert, die Revision-2-Freigabe ist nicht geschrieben ([#139·6626749551](https://github.com/Chris83638w/gravuru-2027/issues/139#issuecomment-6626749551)). Weiter erst auf Chris' „weiter“. | Chat 04.11.; [#139·6625848734](https://github.com/Chris83638w/gravuru-2027/issues/139#issuecomment-6625848734) |
 | 4.63 | 03.11. 17:56 | **Schiefer: alles als blaue Haarlinie.** Zitat: „Haarlinien!!! Bei Schiefer alles blau“. Alle Schiefer-Konturen und -Löcher in Vorlagen, Zeichnungen und Produktionsdateien als blaue Haarlinie `#0000FF`, 0,076 mm. Keine roten oder schwarzen Schnittlinien. | #85·6608679753 |
 | 4.64 | 03.11. 16:52–17:47 | **Schiefer-Löcher:** Zitate: „Premium hat keine Löcher!!“, „Bei 7x2, 8x3,5 und 8x5 gibt es keine Löcher“, „rund ist ok“.<br>• Lochbild aus der Excel `Schiefer-Gedenktafeln-Groessen-2026-10-29.xlsx`, Spalte M, Ø 4 mm.<br>• Ohne Löcher: Premium, alle geschnittenen Formen, Herz-Reihe, 7 × 2 / 8 × 3,5 / 8 × 5.<br>• Rund nur mit 2 Löchern.<br>• 10 × 10 / 13 × 13 / 15 × 10 nur „ohne“ oder „2 Bohrlöcher“.<br>• Kordelschilder: feste Kordellöcher, keine Befestigungsauswahl. | #85·6607023826, ·6607233022, ·6608406976 |
-| 4.65 | 04.11. 12:25 | **Schiefer: Stern auch für Tiere.** Frage: 46 Designs `schiefer-tiere-stern` gegen 4.33 „Stern nur Sternenkinder“ → Antwort „Tiere dürfen auch Stern“. Gilt für Schiefer; macht 4.33 (Stern) für Schiefer **ÜBERHOLT**. Knochen bleibt nur Hunde. | Chat 04.11. |
-| 4.66 | 04.11. 12:25 | **Rasse-Schilder: ab 15 × 10 und alle skalierbaren Größen, auch abgerundete Ecken.** Frage, ob Katalog #8 (8.100 Designs, 22 Größen/Formen, Oktober) durch „nur 15 × 10“ überholt ist → Antwort: „ab 15x10, skalierbaren Größen können die Designs auch bekommen, genauso wie abgerundete Ecken“. Erweitert 4.37: Rasse-Designs gibt es ab 15 × 10 in allen Größen gleichen Seitenverhältnisses (3:2) und als Rechteck mit abgerundeten Ecken. #8 ist damit **nicht** überholt; seine Größen ab 15 × 10 sind verwendbar, kleinere nicht. | Chat 04.11. |
+| 4.65 | 04.11. 11:56 | **Schiefer: Stern auch für Tiere.** Frage: 46 Designs `schiefer-tiere-stern` gegen 4.33 „Stern nur Sternenkinder“ → Antwort „Tiere dürfen auch Stern“. Gilt für Schiefer; macht 4.33 (Stern) für Schiefer **ÜBERHOLT**. Knochen bleibt nur Hunde. | Chat 04.11. |
+| 4.66 | 04.11. 11:56 | **Rasse-Schilder: ab 15 × 10 und alle skalierbaren Größen, auch abgerundete Ecken.** Frage, ob Katalog #8 (8.100 Designs, 22 Größen/Formen, Oktober) durch „nur 15 × 10“ überholt ist → Antwort: „ab 15x10, skalierbaren Größen können die Designs auch bekommen, genauso wie abgerundete Ecken“. Erweitert 4.37: Rasse-Designs gibt es ab 15 × 10 in allen Größen gleichen Seitenverhältnisses (3:2) und als Rechteck mit abgerundeten Ecken. #8 ist damit **nicht** überholt; seine Größen ab 15 × 10 sind verwendbar, kleinere nicht. | Chat 04.11. |
 
 ## 5. Designs / Gestaltung
 
@@ -217,7 +217,7 @@ Stand: 02.11.2026 abends. Gelesen: Code-Repo `origin/main` f78ad5b (STATUS.md, A
 | 5.30 | 04.11. 02:46 / 10:58 | **Hinweis- und Boxenschilder** (eigene D-Nummern): Zitat „Prinzipiell für alle“. Chris hat 71 Designs einzeln geprüft: **19 Ja** (erst ab 9 × 6), **52 Nein**.<br>Die 19 Ja: BS-A-8x5-D9/D10/D13, HSH-V2A-8x5.33-D8, HSHF-RE-V2A-6x2-D9/D10/D19/D20/D24, HSHF-S-8x5.33-D8–D15/D18, HSW-A-6x2-D8.<br>**Achtung:** Diese Änderung (Commit `8d2ac3aab`) liegt auf dem Branch des schon gemergten Katalog-PR #168 und ist **nicht auf main**. Sie braucht einen neuen PR. | Prüfseite „Designprüfung Edelstahl“ |
 | 5.31 | 04.11. 10:44 / 11:00 | **Design Prüfung Skill.** Zitat: „Einfacher wäre wenn alle nacheinander durchgehen und ich ja oder nein sage“. Viele Einzelentscheidungen über Designs laufen als Prüfrunde auf der festen Prüfseite (Ja/Nein und Kommentar je Design). | Code PR #169 |
 | 5.32 | 04.11. 11:09–11:14 | **Designprüfung des ganzen Katalogs, Material für Material.**<br>• Jedes Design einmal je Form in der kleinsten erlaubten Größe.<br>• Edelstahl und Acryl 3 mm nebeneinander in einem Bild.<br>• Auffällige Designs zuerst.<br>• Zuerst Edelstahl-Schilder; Grabstecker, AA/AS, AE und Schiefer erst auf Chris' Auftrag. | Projekt „Arbeitsliste-Designpruefung“ |
-| 5.33 | 04.11. 12:25 | Edelstahl **TQ-V2A-8x8-D14** „Familie Wagner“ (Allura statt Welcome, Motivlinien 0,139 mm): Antwort „So lassen“ → Katalog #170 unverändert mergen. | Chat 04.11. |
+| 5.33 | 04.11. 11:56 | Edelstahl **TQ-V2A-8x8-D14** „Familie Wagner“ (Allura statt Welcome, Motivlinien 0,139 mm): Antwort „So lassen“ → Katalog #170 unverändert mergen. | Chat 04.11. |
 
 ## 6. Produktion / Export
 
@@ -263,7 +263,7 @@ Stand: 02.11.2026 abends. Gelesen: Code-Repo `origin/main` f78ad5b (STATUS.md, A
 | 7.22 | 04.11. 10:40 | **Schiefer-Claude-Chat.** Zitat: „du kümmerst dich jetzt um das Hochladen von allen Schieferprodukten und kommunizierst nur noch mit … Astra Schiefer … für alle Größen … Designs anzufertigen … Hausnummern, Andenken, Familienschilder.“ | #85·6626528187 |
 | 7.23 | 04.11. 10:42 | Zitat: „prüfe aber, da in dieser Woche bereits sehr viele Designs gemacht wurden. Kontrolliere auch die Chats hier.“ Vor neuen Designs immer Bestand, offene PRs und Chats prüfen. Vorhandenes korrigieren statt neu gestalten. | Chat 04.11. |
 | 7.24 | 04.11. | Zitat: „es wird nichts händisch angelegt, nur per Skripte oder andere schnelle Wege“. | #85·6618404511 |
-| 7.25 | 04.11. 12:25 | **Edelstahl „weiter“:** Antwort „Ja, weiter (Empfohlen)“ auf: Astra 1 mergt Katalog #174 und #170, schreibt die Revision-2-Testfreigabe, testet bis Warenkorb und geht laut 4.62 live. Hebt das „warte“ aus 4.62 auf. | Chat 04.11.; #139 |
+| 7.25 | 04.11. 11:56 | **Edelstahl „weiter“:** Antwort „Ja, weiter (Empfohlen)“ auf: Astra 1 mergt Katalog #174 und #170, schreibt die Revision-2-Testfreigabe, testet bis Warenkorb und geht laut 4.62 live. Hebt das „warte“ aus 4.62 auf. | Chat 04.11.; #139 |
 
 ## 8. Offene Fragen, die Chris noch beantworten muss
 

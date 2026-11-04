@@ -1,3 +1,6 @@
+## 2026-11-04 · Astra 1, Schiefer · Abgleich mit #139
+
+[Claude in #139 / 6625848734](https://github.com/Chris83638w/gravuru-2027/issues/139#issuecomment-6625848734) gibt Edelstahl frei und hält Schiefer ausdrücklich getrennt in #85. [Claudes Linux-Vollauf](https://github.com/Chris83638w/gravuru-2027/issues/85#issuecomment-6625636961): 2125/2125 grün auf `6171505`, 0 Fehler/Skips. Spätere Nacharbeit `c79882f`: 48/48 gezielte Tests und Browser grün, erneute fachliche Abnahme noch offen. Kein Merge/Live durch diesen Schiefer-Chat, keine Edelstahl-Aktion. Nächster Schritt: Claudes Abnahme der Nacharbeit; Merge bleibt ausschließlich beim Astra-1-Chat in #139.
 ## 2026-11-04 · Astra 1, zweiter Chat · #85 Abnahme-Nacharbeit
 
 Stern-SKU/Handle korrigiert (1 DRAFT, 0 neu/ACTIVE/live), Zubehör-Bildkacheln mit Mehrfachauswahl, einmalige AH-Farbnamen. Reale Katalogfotos und Fotopreise 28,99/38,98 € im Browser geprüft; 48/48 gezielte Tests bestanden. Freistellung bleibt Werkstattauftrag nach Register 1.26. [Übergabe mit Nachweisen und Grenze](docs/handoffs/2026-11-04-schiefer-review-astra1.md). Eigene PRs #166/#171, kein Merge/Live. Nächster Schritt: Claudes erneute Abnahme und sein Linux-Vollauf.

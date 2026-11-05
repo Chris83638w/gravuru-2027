@@ -206,7 +206,6 @@ export async function installWorkflow(api){
  });
  const render=el.render;el.render=function(...args){const v=render.apply(this,args);guides();return v;};
  const sync=el.sync;el.sync=function(...args){if(!changing)for(const o of this.state.objects)if(!known.has(o.id)&&o.uxUploadId)place(o);known=new Set(this.state.objects.map(o=>o.id));const v=sync.apply(this,args);rename();arrangeGallery();if($('#ux-size')){$('#ux-size').step=config?.workbench?.embedded?'.01':'1';if(r.activeElement!==$('#ux-size')&&selected()?.type==='text')$('#ux-size').value=el.uxDisplayTextSize(selected());}guides();return v;};
- for(const d of [designPreview])d.addEventListener('click',e=>{if(e.target!==d)return;const b=d.getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)d.close();});
  await installCompletion(api);
  installInlineMotifBrowser({root:r,panel,bestsellers});
  el.sync();

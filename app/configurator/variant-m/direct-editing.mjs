@@ -9,10 +9,10 @@ import {processPalette,processFreeColor} from '../../workshop/process-profiles.m
 export function installDirectEditing({el,r,config,selected,editPhoto,changeObject}) {
   const stage=r.querySelector('.stage');
   // Keep the plate's screen coordinates stable when selection opens its tools.
-  // Scoped to native doorbells; the Master toolbar hosts remain unchanged.
+  // Doorbells retain their desktop slot; all phones share a fixed-height slot.
   const stableDoorbell=config?.doorbell?.schema==='gravuru-doorbell/v1';
-  const stableHost=stableDoorbell?document.createElement('div'):null;
-  if(stableHost){stableHost.className='doorbell-direct-slot';r.querySelector('[data-ux-stage]').before(stableHost);}
+  const stableHost=document.createElement('div');
+  stableHost.className='ux-direct-slot'+(stableDoorbell?' doorbell-direct-slot':'');r.querySelector('[data-ux-stage]').before(stableHost);
   // K10 / Ü1.2: Farbwerkzeuge nur nach Verfahrensprofil (el.uxProcess, gesetzt in ux.mjs).
   // Gravur: keine Farbwahl. Druck: die Profilpalette als runde Schnellfarbpunkte und zusätzlich der
   // Farbwähler für eine freie Farbe (processFreeColor, Chris 22./23.10.2026).
@@ -34,8 +34,8 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
   sizeArrows.innerHTML=[['bigger','Schriftgröße um einen Schritt erhöhen','M2 7L6 2L10 7Z'],['smaller','Schriftgröße um einen Schritt verringern','M2 2L6 7L10 2Z']].map(([step,label,path])=>'<button type="button" data-direct-step="'+step+'" data-size-arrow aria-label="'+label+'"><svg viewBox="0 0 12 9" aria-hidden="true"><path d="'+path+'" fill="currentColor"/></svg></button>').join('');
   panel.querySelector('[data-direct-size]').after(sizeArrows);
   const tail=document.createElement('span');tail.className='ux-direct-tail';tail.innerHTML='<button type="button" data-direct-turn aria-label="Element um 15 Grad drehen">↻</button><button type="button" data-ux="delete" aria-label="Element löschen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 6h16M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7m4-7v7"/></svg></button>';panel.querySelector('.ux-direct-actions').append(tail);
-  // Two stable rows on narrow screens. Keep the same controls and rights; the
-  // optional print palette scrolls horizontally inside row two, never into row three.
+  // Keep semantic control groups. The modern mobile layout presents both groups
+  // in one horizontally scrollable row without changing controls or edit rights.
   const actions=panel.querySelector('.ux-direct-actions'),primary=document.createElement('div'),secondary=document.createElement('div');
   primary.className='ux-direct-primary';secondary.className='ux-direct-secondary';
   for(const node of [...actions.children])(node.matches('[data-direct-font],[data-direct-style]')||node===extras?primary:secondary).append(node);
@@ -83,7 +83,7 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
   function update(){
     const o=selected();if(editing&&o?.id!==editing.id)close();
     const mobile=matchMedia('(max-width:767px)').matches,full=r.querySelector('.c-large-preview').open;
-    const inWorkbench=placeDirectToolbar({panel,stage,preview:r.querySelector('.ux-preview'),workbench:r.querySelector('.ux-workbench-toolbar'),mobile,full,stableHost});
+    const inWorkbench=placeDirectToolbar({panel,stage,preview:r.querySelector('.ux-preview'),workbench:r.querySelector('.ux-workbench-toolbar'),mobile,full,stableHost:mobile||stableDoorbell?stableHost:null});
     const text=o?.type==='text',photo=!!o?.uxUploadId&&!o.uxVectorLogo,motif=o?.type==='motif';
     selectionName.hidden=!text;selectionName.textContent=text?(el.uxTextLabel?.(o)||'Text'):'';selectionName.title=selectionName.textContent;
     panel.setAttribute('aria-label',text?selectionName.textContent+' bearbeiten':'Ausgewähltes Element bearbeiten');

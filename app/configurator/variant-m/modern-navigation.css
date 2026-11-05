@@ -26,3 +26,50 @@
  :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-dock-help{display:none!important}
  :host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motifs .workflow-motif-grid{gap:8px!important}
 }
+
+
+:host([data-ux-modern]) .ux-category-source{display:none!important}
+.ux-category-picker{position:relative;margin-top:7px}
+:host([data-ux-modern]) .ux-category-trigger{display:flex!important;align-items:center!important;gap:12px!important;width:100%!important;min-height:48px!important;padding:10px 13px!important;border:1px solid #bfc8d3!important;border-radius:10px!important;background:#f4f5f7!important;color:#283748!important;font:600 16px/1.35 system-ui!important;text-align:left!important}
+.ux-category-chevron{margin-left:auto;display:flex}
+.ux-motif-category-menu{position:fixed;inset:auto;margin:0;padding:6px;box-sizing:border-box;border:1px solid #bdc6d1;border-radius:12px;box-shadow:0 8px 30px #17233233;background:#fff;color:#283748;overflow:auto;overscroll-behavior:contain;font:16px/1.35 system-ui;z-index:100}
+.ux-motif-category-menu:not(:popover-open){display:none}
+.ux-motif-category-menu [role=option]{display:flex;gap:12px;align-items:center;min-height:44px;box-sizing:border-box;padding:9px 12px;border-radius:8px;cursor:pointer;outline-offset:-2px}
+.ux-motif-category-menu [role=option]:is(:hover,:focus){background:#edf1f6;outline:2px solid #60758b}
+.ux-motif-category-menu [aria-selected=true]{background:#e4eaf2;font-weight:650}
+.ux-motif-category-menu [aria-disabled=true]{opacity:.45;cursor:default}
+:host([data-ux-modern]) :is(.ux-category-picker,.ux-motif-category-menu,.ux-info-button,.ux-product-enlarge) .ux-ui-icon{display:block!important;flex:none!important;width:22px!important;height:22px!important;stroke-width:1.9!important}
+:host([data-ux-modern]) .ux-shell .ux-info-button{display:inline-flex!important;align-items:center!important;justify-content:center!important;vertical-align:middle!important;min-width:32px!important;min-height:32px!important;padding:4px!important;line-height:1!important;color:#435365!important}
+:host([data-ux-modern]) .ux-canvas-toolbar button{font-weight:600!important;line-height:1.2!important}
+:host([data-ux-modern]) .ux-canvas-toolbar button svg{stroke-width:1.9!important}
+:host([data-ux-modern]) .ux-conflict-copy strong{display:flex;align-items:center;gap:6px}
+:host([data-ux-modern]) .ux-conflict-copy strong .ux-ui-icon{width:20px!important;height:20px!important;color:#93601b}
+:host([data-ux-modern]) .ux-shell .c-gallery [data-c-design]{position:relative!important}
+:host([data-ux-modern]) .ux-shell .c-gallery [data-c-design] [data-design-enlarge]{position:absolute!important;right:8px!important;bottom:8px!important;width:30px!important;height:30px!important;min-height:30px!important;padding:6px!important;border:1px solid #c4cbd3!important;border-radius:50%!important;background:#fff!important;color:#293d55!important;box-sizing:border-box!important}
+:host([data-ux-modern]) .ux-shell .c-gallery [data-c-design] [data-design-enlarge]>span{display:none!important}
+:host([data-ux-modern]) .ux-shell .c-gallery [data-c-design] [data-design-enlarge] svg{width:16px!important;height:16px!important;max-height:16px!important;flex-basis:16px!important}
+
+.ux-motif-category-menu:popover-open{display:block!important}
+.ux-motif-category-menu .ux-ui-icon{fill:none!important;stroke:currentColor!important}
+
+@media(max-width:767px){:host([data-ux-modern]) .ux-shell .c-gallery [data-c-design] [data-design-enlarge]{display:none!important}}
+
+/* On phones, images follow the two compact filters immediately. Explanations
+   remain in the existing info dialog and in accessible search descriptions. */
+@media(max-width:767px){
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell #ux-panel-motif{padding:8px 10px 16px!important;display:flow-root}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-tabbar{margin-bottom:0!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-editor>[data-m-invalid]:empty{display:none!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motifs .guided-extra{margin:0!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-tabs,:host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-tabs button[aria-selected]{min-height:54px!important;height:54px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-tabs button[aria-selected]{padding:5px 3px!important;gap:4px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motifs>.ux-info-heading{display:none!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motifs .ux-motif-search-hint{position:absolute!important;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motif-search,:host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motif-category{display:block!important;font-size:0!important;line-height:0!important;margin:0 0 6px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motifs [data-library-search]{height:40px!important;min-height:40px!important;margin:0!important;padding:7px 10px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-category-picker{margin-top:0!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-category-trigger{min-height:40px!important;padding:6px 10px!important;font-size:15px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-motif-pricing{margin:4px 0 8px!important;padding:5px 7px!important;font-size:11px!important;line-height:1.35!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motifs [data-library-count]{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motifs .workflow-motif-grid button{min-height:104px!important;padding:6px 4px!important}
+}

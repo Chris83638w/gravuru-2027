@@ -1,4 +1,4 @@
-import {alignmentContent} from './ui-icons.mjs';
+import {alignmentContent,uiIcon} from './ui-icons.mjs';
 import {showOverlapWarnings,editableTexts,centerTexts,mechanicalHints,hintKey,motifScore,templateOverlap} from './customer-tools-model.mjs';
 import {themeDefinition,orderMotifCategories} from './design-gallery-model.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/text-paths.mjs';
@@ -52,7 +52,6 @@ export async function installCustomerTools(api){
   proposedId=null;proposal.hidden=true;
  }
  r.addEventListener('pointerdown',blank);
- for(const d of all('.ux-dialog')){let outside=false;const isOutside=e=>{const b=d.getBoundingClientRect();return e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom;};d.addEventListener('pointerdown',e=>{outside=e.target===d&&isOutside(e);});d.addEventListener('click',e=>{if(outside&&e.target===d&&isOutside(e))d.close();outside=false;});}
 
  const search=$('[data-library-search]'),category=$('[data-library-category]');
  category?.addEventListener('change',()=>{search.value='';search.dispatchEvent(new Event('input',{bubbles:true}));},true);
@@ -88,7 +87,7 @@ export async function installCustomerTools(api){
  }
  function updateHints(){hints=currentHints();const valid=new Set(hints.map(h=>h.key));const checked=el.uxOverlapResult?.key===JSON.stringify([el.state.width,el.state.height,el.state.objects]);for(const key of ignored)if(!valid.has(key)&&checked)ignored.delete(key);if(shown&&!valid.has(shown.key))shown=null;
   const active=hints.filter(h=>h.code==='mounting-access'||!ignored.has(h.key));hintsPanel.hidden=!hints.length&&!checkError;
-  hintsPanel.innerHTML=(checkError?`<p role="status">${esc(checkError)}</p>`:'')+active.map(h=>{const i=hints.indexOf(h);if(h.code==='overlap')return `<div class="ux-conflict-compact"><div class="ux-conflict-copy"><strong>Überlagerung</strong><span title="${esc(h.ids.map(id=>name(el.state.objects.find(o=>o.id===id))).join(' und '))}">${esc(h.ids.map(id=>name(el.state.objects.find(o=>o.id===id))).join(' und '))}</span></div><div class="ux-conflict-actions">${button('show-conflict','Anzeigen',`data-hint="${i}" aria-label="Betroffene Stellen anzeigen"`)}${button('ignore-conflict','Ignorieren',`data-hint="${i}" aria-label="Warnung ignorieren" title="Ist die Überlagerung beabsichtigt, kannst du sie ignorieren."`)}</div></div>`;return `<div class="ux-conflict"><strong>${h.code==='overlap'?'Überlagerung':'Befestigung prüfen'}</strong><p>${esc(h.ids.map(id=>name(el.state.objects.find(o=>o.id===id))).join(' und '))}</p><p>${esc(h.message)}</p><div>${button('show-conflict','Betroffene Stellen anzeigen',`data-hint="${i}"`)}${h.code==='mounting-access'?'':button('ignore-conflict','Warnung ignorieren',`data-hint="${i}"`)}</div></div>`;}).join('')+(ignored.size?button('restore-conflicts',`${ignored.size} ignorierte Hinweise wieder anzeigen`):'');draw();
+  hintsPanel.innerHTML=(checkError?`<p role="status">${esc(checkError)}</p>`:'')+active.map(h=>{const i=hints.indexOf(h);if(h.code==='overlap')return `<div class="ux-conflict-compact"><div class="ux-conflict-copy"><strong>${uiIcon('warning')}Überlagerung</strong><span title="${esc(h.ids.map(id=>name(el.state.objects.find(o=>o.id===id))).join(' und '))}">${esc(h.ids.map(id=>name(el.state.objects.find(o=>o.id===id))).join(' und '))}</span></div><div class="ux-conflict-actions">${button('show-conflict','Anzeigen',`data-hint="${i}" aria-label="Betroffene Stellen anzeigen"`)}${button('ignore-conflict','Ignorieren',`data-hint="${i}" aria-label="Warnung ignorieren" title="Ist die Überlagerung beabsichtigt, kannst du sie ignorieren."`)}</div></div>`;return `<div class="ux-conflict"><strong>${h.code==='overlap'?'Überlagerung':'Befestigung prüfen'}</strong><p>${esc(h.ids.map(id=>name(el.state.objects.find(o=>o.id===id))).join(' und '))}</p><p>${esc(h.message)}</p><div>${button('show-conflict','Betroffene Stellen anzeigen',`data-hint="${i}"`)}${h.code==='mounting-access'?'':button('ignore-conflict','Warnung ignorieren',`data-hint="${i}"`)}</div></div>`;}).join('')+(ignored.size?button('restore-conflicts',`${ignored.size} ignorierte Hinweise wieder anzeigen`):'');draw();
  }
  r.addEventListener('click',e=>{const b=e.target.closest('[data-ux]');if(!b)return;
   if(b.dataset.ux==='show-conflict'){shown=hints[Number(b.dataset.hint)];draw();}

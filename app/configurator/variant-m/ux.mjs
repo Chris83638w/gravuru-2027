@@ -1,3 +1,4 @@
+import {canDeleteTemplateElement} from './element-rights.mjs';
 import {installDialogDismissal} from './dialog-dismiss.mjs';
 import {installCustomerHelp} from './customer-help.mjs';
 import {executionHeading} from './execution-registry.mjs';
@@ -225,16 +226,10 @@ export async function installUX(el,config,legacy,{attach}={}){
     event.preventDefault();event.stopImmediatePropagation();
     replacing=slot.id;uploadKind='photo';say('');$('[data-ux-file]').click();
   }
-  // Tipp (ohne Ziehen) auf ein schon hochgeladenes Foto öffnet ebenfalls die Dateiauswahl zum Wechseln
-  // (Chris 20.10.2026: „Wenn ich auf das Foto klicke passiert nichts“); Ziehen verschiebt es weiter.
-  function uploadedSlotFromEvent(event){
-    if(!photoEnabled||event.button!==0)return null;
-    const node=event.target?.closest?.('.scene [data-object]'),slot=node&&el.state.objects.find(o=>o.id===node.dataset.object);
-    return slot?.type==='photoSlot'&&slot.uxUploadId&&!slot.uxHidden&&!slot.uxLocked&&el.uxCanEdit?.(slot,'replace')!==false?{slot,through:false}:null;
-  }
+  // Only an empty placeholder opens upload. An existing photo is selected/moved.
   const photoTap=tapTracker();el.uxCancelPhotoTap=()=>photoTap.cancel();
   r.addEventListener('pointerdown',event=>{
-    const hit=event.button===0?(emptySlotFromEvent(event)||uploadedSlotFromEvent(event)):null;
+    const hit=event.button===0?emptySlotFromEvent(event):null;
     photoTap.down(event,hit);
     // Tipp durch den festen Rahmen: Rahmen weder wählen noch ziehen, der Tipp gilt dem Foto.
     if(hit?.through){event.preventDefault();event.stopImmediatePropagation();}
@@ -243,7 +238,6 @@ export async function installUX(el,config,legacy,{attach}={}){
     const id=photoTap.up(event);if(!id)return;
     const slot=el.state.objects.find(o=>o.id===id);
     if(replaceablePhotoSlot(slot,o=>el.uxCanEdit?.(o,'replace')))uploadFromEmptySlot(event,slot);
-    else if(slot?.type==='photoSlot'&&slot.uxUploadId&&el.uxCanEdit?.(slot,'replace')!==false){replacing=slot.id;uploadKind=slot.uxUploadKind||'photo';say('');$('[data-ux-file]').click();}
   },true);
   r.addEventListener('pointercancel',()=>photoTap.cancel(),true);
   r.addEventListener('keydown',event=>{
@@ -268,7 +262,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   }
   function textIssues(){
     const issues=[];
-    for(const t of (design()?.objects||[]).filter(t=>t.type==='text'&&t.required===true)){const o=el.state.objects.find(o=>o.id===t.id);if(!o||o.uxHidden)issues.push({id:t.id,message:'Pflichtfeld „'+fieldLabel(t,0)+'“ fehlt. Bitte einblenden und ausfüllen.'});}
+    for(const t of (design()?.objects||[]).filter(t=>t.type==='text'&&t.required===true)){const o=el.state.objects.find(o=>o.id===t.id);if((!o||o.uxHidden)&&!canDeleteTemplateElement(config,el.state.designId,t))issues.push({id:t.id,message:'Pflichtfeld „'+fieldLabel(t,0)+'“ fehlt. Bitte einblenden und ausfüllen.'});}
     for(const o of el.state.objects.filter(o=>o.type==='text'&&!o.uxHidden&&o.customerEditable!==false)){const message=textFieldIssue(o);if(message)issues.push({id:o.id,message:fieldLabel(o,textIndex(o))+': '+message});}
     return issues;
   }

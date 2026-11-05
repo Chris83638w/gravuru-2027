@@ -27,7 +27,7 @@ export async function installViewZoom({el,r,selected}){
   if(!bounds)return;
   for(const {node,box} of layers){const style=viewLayerStyle(view,bounds,box);node.style.setProperty('transform-origin','0 0','important');node.style.setProperty('transform',style.transform,'important');node.style.setProperty('clip-path',style.clipPath,'important');}
   stage.dataset.viewZoom=String(view.scale);zoomSlider.value=String(view.scale);zoomValue.textContent=Math.round(view.scale*100)+' %';
-  el.uxRefreshSelectionHandles?.();el.uxRefreshTextToolbar?.();
+  el.uxRefreshSelectionHandles?.();el.uxRefreshTextToolbar?.();el.uxRefreshOverlapNote?.();
  }
  function change(next){view=constrainView(next,bounds);paint();}
  function manual(next){change(next);}

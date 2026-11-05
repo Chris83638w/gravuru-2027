@@ -53,7 +53,7 @@ export async function installRefinements(api){
       positionSelectionArrows(handles,o,point,margin);
       for(const h of handles.querySelectorAll('[data-ux-handle=scale]'))h.hidden=o.uxUploadKind==='photo';
       const gap=36*el.state.width/Math.max(1,scene.width),p=point(0,-o.h/2-gap);const h=handles.querySelector('[data-ux-handle=rotate]');h.style.left=p.x+'px';h.style.top=p.y+'px';
-      const d=point(o.w/2+gap,0),remove=handles.querySelector('.ux-handle-delete');remove.style.left=d.x+'px';remove.style.top=d.y+'px';
+      const d=point(o.w/2+gap,0),remove=handles.querySelector('.ux-handle-delete');remove.style.left=Math.max(22,Math.min(ph.width-22,d.x))+'px';remove.style.top=Math.max(22,Math.min(ph.height-22,d.y))+'px';
     }
     // Reuse the displayed scene and existing image URLs; no profile loading.
     const scene=$('.scene');if(scene){const copy=scene.cloneNode(true);copy.removeAttribute('tabindex');copy.removeAttribute('role');copy.removeAttribute('data-ux-namespace');copy.setAttribute('aria-hidden','true');copy.querySelectorAll('[data-object]').forEach(n=>n.removeAttribute('data-object'));$('[data-mini-art]').replaceChildren(api.config?.acrylic&&!mini.hidden?completePreviewMini(stage,$('[data-mini-art]')):copy);}

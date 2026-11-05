@@ -109,7 +109,7 @@ test('uploaded photo has no corner resizing on mouse or touch; only its size sli
  const h=setup(t,{rights:{move:true,replace:true,scale:true,delete:true},slot:{uxUploadKind:'photo'}}),before=structuredClone(h.object());
  assert.equal(h.handle('scale').hidden,true);
  for(const pointerType of ['mouse','touch']){drag(h,h.handle('scale'),{pointerType,dx:30,dy:20});assert.deepEqual(h.object(),before);}
- const slider=h.panel.querySelector('[data-photo-object-size]');slider.value='40';emit(slider,'input');emit(slider,'change');assert.equal(h.object().w,40);assert.ok(Math.abs(h.object().h-40*before.h/before.w)<1e-9);assert.deepEqual(h.object().uxPhotoCrop,before.uxPhotoCrop);
+ const slider=h.r.querySelector('[data-photo-object-size]');slider.value='40';emit(slider,'input');emit(slider,'change');assert.equal(h.object().w,40);assert.ok(Math.abs(h.object().h-40*before.h/before.w)<1e-9);assert.deepEqual(h.object().uxPhotoCrop,before.uxPhotoCrop);
  h.click('photo-position-crop');const crop=structuredClone(h.object());drag(h,h.handle('scale'),{pointerType:'touch',dx:20,dy:20});assert.deepEqual(h.object(),crop);
 });
 function drag(h,target,{dx=10,dy=5,pointerType='mouse',end='pointerup'}={}){
@@ -195,10 +195,10 @@ test('removing an added customer photo removes its field too; undo restores the 
  h.undoOne();assert.deepEqual(h.object(),before);
 });
 
-test('small shared drag cancels the earlier real upload tap listener, while a stationary default tap still offers replacement',t=>{
+test('small drags and stationary clicks on uploaded photos never open replacement upload',t=>{
   const h=setup(t,{legacyTap:true});drag(h,h.node('photo'),{dx:1,dy:0});
   assert.equal(h.object().x,51);assert.equal(h.uploadRequests(),0,'a movement below the legacy 6px tap threshold must not open a file picker');
-  drag(h,h.node('photo'),{dx:0,dy:0});assert.equal(h.uploadRequests(),1);
+  drag(h,h.node('photo'),{dx:0,dy:0});assert.equal(h.uploadRequests(),0);
 });
 test('explicit crop mode cancels the earlier real upload tap listener even without movement',t=>{
   const h=setup(t,{legacyTap:true});h.click('photo-position-crop');drag(h,h.node('photo'),{dx:0,dy:0});assert.equal(h.uploadRequests(),0);

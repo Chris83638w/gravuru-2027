@@ -314,6 +314,7 @@ export function validateDesign(config, design, options, fonts, motifs, {template
   if(!template&&!draft){const missing=missingRequiredFields(config,options);if(missing.length)fail(fieldRequiredMessage(missing[0]));}
   if(!template&&!draft)for(const raw of source.objects.filter(o=>o.type==='text'&&o.required===true)){
     const o=design.objects.find(o=>o.id===raw.id);
+    if((!o||o.uxHidden===true)&&canDeleteTemplateElement(config,source.id,raw))continue;
     if(!o||o.type!=='text'||o.uxHidden===true||requiredTextMissing(o.text,raw.text))fail(requiredFieldMessage(raw));
   }
   for (const o of design.objects) {

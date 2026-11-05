@@ -100,7 +100,7 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     extras.hidden=!text;for(const b of extras.querySelectorAll('button'))b.disabled=!can(o,'move');
     for(const b of panel.querySelectorAll('[data-direct-step]')){b.hidden=!text;b.disabled=!can(o,'scale');}
     panel.querySelector('[data-direct-turn]').disabled=!can(o,'move');
-    const original=config?.profile.designs.find(d=>d.id===el.state.designId)?.objects.find(v=>v.id===o.id);panel.querySelector('[data-ux=delete]').disabled=!!original?.required||!can(o,'delete');color.parentElement.hidden=!(text||motif)||!freeColor;color.parentElement.title=motif?'Motivfarbe':'Textfarbe';color.setAttribute('aria-label',motif?'Motivfarbe direkt ändern':'Textfarbe direkt ändern');color.disabled=!can(o,'color');if((text||motif)&&r.activeElement!==color)color.value=o.color||'#202824';
+    panel.querySelector('[data-ux=delete]').disabled=!can(o,'delete');color.parentElement.hidden=!(text||motif)||!freeColor;color.parentElement.title=motif?'Motivfarbe':'Textfarbe';color.setAttribute('aria-label',motif?'Motivfarbe direkt ändern':'Textfarbe direkt ändern');color.disabled=!can(o,'color');if((text||motif)&&r.activeElement!==color)color.value=o.color||'#202824';
     for(const b of panel.querySelectorAll('[data-direct-style]')){b.hidden=!text;b.disabled=!can(o,'content')||(b.dataset.directStyle==='bold'&&!el.fontData?.[o.font]?.bold&&!o.bold);b.title=b.dataset.directStyle==='bold'?(b.disabled?'Für diese Schrift ist kein Fettschnitt verfügbar':'Fett'):'Kursiv – Schrift neigen';b.setAttribute('aria-pressed',!!o[b.dataset.directStyle]);}
     for(const b of panel.querySelectorAll('[data-direct-motif]')){b.hidden=!motif||b.dataset.directMotif==='rotate'&&el.uxCanRotate?.(o)===false;b.disabled=!can(o,b.dataset.directMotif==='rotate'?'move':'scale');}
     presets.hidden=!colorTool||!(text||motif)||(paletteColors===null&&!motif);for(const b of presets.children){b.disabled=!can(o,'color');b.setAttribute('aria-pressed',String((o.color||'').toLowerCase()===b.dataset.directPreset));}
@@ -147,9 +147,9 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     field.value=o.text;box.hidden=false;update();field.focus({preventScroll:true});field.select();
   }
   el.uxEditText=openText;
-  let photoTap=null,openingPhoto=false;
+  let openingPhoto=false;
   async function openPhoto(o){if(openingPhoto||r.querySelector('.ux-photo-edit-dialog')?.open)return;openingPhoto=true;try{await editPhoto(o);}finally{openingPhoto=false;}}
-  el.uxPhotoTap=id=>{const now=performance.now();if(photoTap?.id===id&&now-photoTap.time<500){photoTap=null;const o=selected();if(o?.id===id&&can(o,'replace'))openPhoto(o);}else photoTap={id,time:now};};
+  // Opening the editor is an explicit button action, never a tap on the photo.
   // Do not let the stage's drag/shortcut handlers consume editing gestures.
   for(const host of [panel,box])for(const type of ['pointerdown','pointerup','click','dblclick','keydown'])host.addEventListener(type,e=>e.stopPropagation());
   field.addEventListener('input',()=>{
@@ -184,7 +184,7 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     if(!e.target.closest('.stage,.c-large-preview')||e.target.closest('.ux-direct-edit,.ux-direct-input'))return;
     const id=e.target.closest('[data-object]')?.dataset.object;
     const o=id?el.state.objects.find(o=>o.id===id):selected();
-    if(o?.uxUploadId&&can(o,'replace')){e.preventDefault();el.state.selected=o.id;el.sync();openPhoto(o);}
+    if(o?.uxUploadId){e.preventDefault();e.stopImmediatePropagation();}
   },true);
   for(const name of ['render','sync']){const original=el[name];el[name]=function(...args){const result=original.apply(this,args);update();return result;};}
   el.uxRefreshTextToolbar=update;

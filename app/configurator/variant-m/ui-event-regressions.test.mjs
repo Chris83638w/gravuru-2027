@@ -15,7 +15,7 @@ import {scaleObject} from './image-processing.mjs';
 import {makeAcrylicConfig} from './acrylic-product.mjs';
 import {prepareConfig,validateDesign} from './contract.mjs';
 import {measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
-import {rightForProperty} from './element-rights.mjs';
+import {rightForProperty,canDeleteTemplateElement} from './element-rights.mjs';
 import {emptyPhotoMarkup,decorateEmptyPhotoSlots,examplePhotoMarkup} from './photo-placeholder.mjs';
 import {textLimits,textLimitIssue,textLength,textLimitCount,sameSampleText,requiredTextMissing,clampText} from '../../workshop/theme-limits.mjs';
 import {applyLinkText} from './design-gallery-model.mjs';
@@ -63,7 +63,7 @@ test('large text: real input, focusout, field refresh and workflow sync all reta
   vm.runInContext(line('ux.mjs','const esc=value=>'),env);
   vm.runInContext(line('ux.mjs','const fieldLabel='),env);
   // K1: Limits und Feldhinweise aus dem echten Modul, Vorlage mit Pflichtfeld und Thema.
-  Object.assign(env,{textLimits,textLimitIssue,textLength,textLimitCount,sameSampleText,requiredTextMissing,fontDisplayName,customerFieldLabel,touchedText:new Set(),textValidationAttempted:false,textControls:{closest:()=>null},design:()=>env.profile.designs[0]});
+  Object.assign(env,{textLimits,textLimitIssue,textLength,textLimitCount,sameSampleText,requiredTextMissing,fontDisplayName,customerFieldLabel,canDeleteTemplateElement,touchedText:new Set(),textValidationAttempted:false,textControls:{closest:()=>null},design:()=>env.profile.designs[0]});
   env.profile.designs[0].themes=['namensschilder'];env.profile.designs[0].objects=[{id:'name',type:'text',text:'Anna',required:true}];
   for(const marker of ['const templateText=','const limitsFor=','const textIndex='])vm.runInContext(line('ux.mjs',marker),env);
   vm.runInContext(block('ux.mjs','  function textFieldIssue(o,{required=true}={}){','\n  }'),env);
@@ -78,7 +78,8 @@ test('large text: real input, focusout, field refresh and workflow sync all reta
   object.text='L'.repeat(33);assert.deepEqual(issues(),[{id:'name',message:'Namen: Text zu lang: höchstens 32 Zeichen.'}]);
   object.text='Lena\nMax\nTom';assert.deepEqual(issues(),[{id:'name',message:'Namen: Höchstens 2 Zeilen.'}]);
   object.text='Lena';object.uxTextOverflow='length';assert.match(issues()[0].message,/Text zu lang: Passt auch in der Mindestgröße/);delete object.uxTextOverflow;
-  object.uxHidden=true;assert.deepEqual(issues(),[{id:'name',message:'Pflichtfeld „Namen“ fehlt. Bitte einblenden und ausfüllen.'}]);delete object.uxHidden;
+  object.uxHidden=true;assert.deepEqual(issues(),[]);
+  env.config.workshopElementRights={'test-design':{name:{delete:false}}};assert.deepEqual(issues(),[{id:'name',message:'Pflichtfeld „Namen“ fehlt. Bitte einblenden und ausfüllen.'}]);delete object.uxHidden;
  Object.assign(env,{changing:false,known:new Set(['name']),rename(){},guides(){},arrangeGallery(){}});
  vm.runInContext(line('workflow.mjs','const sync=el.sync;el.sync=function'),env);
  input.value='stale';env.el.sync();assert.equal(Number(input.value),12);

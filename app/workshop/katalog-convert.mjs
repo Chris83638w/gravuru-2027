@@ -255,7 +255,7 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
     const issue=textLimitIssue(o.text,textLimits(o,{themes:design.themes||[]},{themeId}));if(issue)fail(design.id+': Mustertext „'+fieldKey+'“ – '+issue);
     if(o.size<process.minTextMm-0.005)notes.push('Text „'+fieldKey+'“ ist mit '+o.size+' mm kleiner als die Mindestgröße '+process.minTextMm+' mm des Verfahrens.');
     const locked=rule.locked===true;
-    rights[id]={content:true,color:print,replace:false,move:!locked,scale:!locked,delete:!locked&&!o.required};
+    rights[id]={content:true,color:print,replace:false,move:!locked,scale:!locked,delete:!locked};
    }
    usedFonts.add(font);objects.push(o);
   }else if(layer.kind==='foto'){

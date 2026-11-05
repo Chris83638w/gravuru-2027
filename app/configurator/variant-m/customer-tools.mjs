@@ -70,6 +70,18 @@ export async function installCustomerTools(api){
  }
 
  const hintsPanel=document.createElement('section');hintsPanel.className='ux-conflict-hints';hintsPanel.setAttribute('aria-label','Hinweise zur Gestaltung');$('.ux-editor').append(hintsPanel);
+ // One quiet line in the canvas; pair counts and dismiss buttons never compete
+ // with the product. Mechanical fastening issues keep their separate actions.
+ const overlapNote=document.createElement('p');overlapNote.className='ux-overlap-note';overlapNote.hidden=true;overlapNote.setAttribute('role','status');overlapNote.textContent='Elemente überlagern sich.';$('.stage').append(overlapNote);
+ function placeOverlapNote(){
+  const stage=$('.stage').getBoundingClientRect(),scene=$('.scene')?.getBoundingClientRect();if(!scene)return;
+  const size=$('.ux-photo-size'),zoom=$('.ux-view-zoom'),controls=[size,zoom].filter(n=>n&&!n.hidden).map(n=>n.getBoundingClientRect().top-stage.top),limit=(controls.length?Math.min(...controls):stage.height)-21;
+  const dimension=$('.stage .dimension-x span')?.getBoundingClientRect();
+  overlapNote.style.top=Math.max(0,Math.min((dimension?.height?dimension.bottom:scene.bottom+37)-stage.top+4,limit))+'px';
+ }
+ el.uxRefreshOverlapNote=placeOverlapNote;
+ const overlapResize=new ResizeObserver(placeOverlapNote);overlapResize.observe($('.stage'));overlapResize.observe($('.plate-holder'));
+ window.addEventListener('pagehide',()=>overlapResize.disconnect(),{once:true});
  const ignored=new Set();let hints=[],shown=null;
  r.addEventListener('click',e=>{if(!e.target.closest('.completion-finish,.fk-buy-button'))return;const issue=mechanicalHints(profile,el.state)[0];if(!issue)return;e.preventDefault();e.stopImmediatePropagation();say(issue.message);},true);
  let requested='',timer,serial=0,checkError='';
@@ -88,7 +100,8 @@ export async function installCustomerTools(api){
   if(shown?.hole){const circle=document.createElementNS(ns,'circle');for(const [key,v]of Object.entries({cx:shown.hole.x,cy:shown.hole.y,r:shown.hole.radius+1,fill:'none',stroke:'#c47a13','stroke-width':2,'vector-effect':'non-scaling-stroke'}))circle.setAttribute(key,v);group.append(circle);}scene.append(group);
  }
  function updateHints(){hints=currentHints();const valid=new Set(hints.map(h=>h.key));const checked=el.uxOverlapResult?.key===JSON.stringify([el.state.width,el.state.height,el.state.objects]);for(const key of ignored)if(!valid.has(key)&&checked)ignored.delete(key);if(shown&&!valid.has(shown.key))shown=null;
-  const active=hints.filter(h=>h.code==='mounting-access'||!ignored.has(h.key));hintsPanel.hidden=!hints.length&&!checkError;
+  overlapNote.hidden=!hints.some(h=>h.code==='overlap');placeOverlapNote();
+  const active=hints.filter(h=>h.code!=='overlap'&&(h.code==='mounting-access'||!ignored.has(h.key)));hintsPanel.hidden=!active.length&&!checkError;
   const expanded=hintsPanel.querySelector('details')?.open===true;
   const content=(checkError?`<p role="status">${esc(checkError)}</p>`:'')+active.map(h=>{const i=hints.indexOf(h);if(h.code==='overlap')return `<div class="ux-conflict-compact"><div class="ux-conflict-copy"><strong>${uiIcon('warning')}Überlagerung</strong><span title="${esc(h.ids.map(id=>name(el.state.objects.find(o=>o.id===id))).join(' und '))}">${esc(h.ids.map(id=>name(el.state.objects.find(o=>o.id===id))).join(' und '))}</span></div><div class="ux-conflict-actions">${button('show-conflict','Anzeigen',`data-hint="${i}" aria-label="Betroffene Stellen anzeigen"`)}${button('ignore-conflict','Ignorieren',`data-hint="${i}" aria-label="Warnung ignorieren" title="Ist die Überlagerung beabsichtigt, kannst du sie ignorieren."`)}</div></div>`;return `<div class="ux-conflict"><strong>${h.code==='overlap'?'Überlagerung':'Befestigung prüfen'}</strong><p>${esc(h.ids.map(id=>name(el.state.objects.find(o=>o.id===id))).join(' und '))}</p><p>${esc(h.message)}</p><div>${button('show-conflict','Betroffene Stellen anzeigen',`data-hint="${i}"`)}${h.code==='mounting-access'?'':button('ignore-conflict','Warnung ignorieren',`data-hint="${i}"`)}</div></div>`;}).join('')+(ignored.size?button('restore-conflicts',`${ignored.size} ignorierte Hinweise wieder anzeigen`):'');
   const summary=active.length?active.length+' '+(active.length===1?'Hinweis':'Hinweise')+' zur Gestaltung':checkError?'Vorschau prüfen':ignored.size+' Hinweise ausgeblendet';
@@ -100,7 +113,7 @@ export async function installCustomerTools(api){
   if(b.dataset.ux==='restore-conflicts'){ignored.clear();updateHints();}
  });
  const sync=el.sync;el.sync=function(...args){const value=sync.apply(this,args);updateAlignment();updateHints();scheduleCheck();return value;};
- const render=el.render;el.render=function(...args){const value=render.apply(this,args);draw();return value;};
+ const render=el.render;el.render=function(...args){const value=render.apply(this,args);draw();placeOverlapNote();return value;};
  updateAlignment();updateHints();scheduleCheck();
 }
 

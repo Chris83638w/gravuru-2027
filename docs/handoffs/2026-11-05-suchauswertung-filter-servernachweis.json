@@ -1,0 +1,19 @@
+{
+  "recordedAt": "2026-11-05T18:46:34.239Z",
+  "runtime": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-konfi-hundetest-r5c-20261105",
+  "backup": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-konfi-hundetest-r5c-20261105/before-search-filter-persistence-SQgJuI",
+  "startupSha256": "6f7fba51be1c216a9f9fc995a9e4e14b50e2fb4b1af849b904e510c43a28d5bf",
+  "previousUiSha256": "ce76deb3f75de2348c4491b94c60f5f03db3c5ed7de42af2041c582426575e98",
+  "serverSourceHashes": {
+    "app/workshop/ui/motif-searches.mjs": "72ded0486f552151df4c11306642969ba8740f6cb2602fa10c79ca3b22603e11",
+    "app/workshop/motif-search-ui.test.mjs": "9062b1326232873ecaff02755311ac8e1272703df24c11f92b3d7eac783760f2"
+  },
+  "tests": [
+    "ℹ tests 6",
+    "ℹ pass 6",
+    "ℹ fail 0",
+    "ℹ skipped 0"
+  ],
+  "serverRestart": false,
+  "scope": "Report filter persistence only; no database, auth, configurator bundle or product changes"
+}

@@ -35,7 +35,7 @@ Der Konfi zählt nach 1,2 Sekunden Eingabepause einen normalisierten Suchbegriff
 
 Die zwei bestehenden statischen Prüfprodukte sind ausdrücklich in der privaten `motif-search-previews.json` registriert. Die Produktgruppe wird serverseitig bestimmt, nicht vom Browser übernommen. Unbekannte Produkte werden abgelehnt. Das erzeugt weder Katalogprodukte noch eine Verkaufsfreigabe.
 
-Tatsächlicher Browser- und Datenbanknachweis: „kreuz“ einmal mit Treffern, „giraffe mit hut“ einmal ohne Treffer, jeweils Herkunft `preview`. **Die Darstellung innerhalb von Shopify ist noch nicht visuell abgenommen:** In der gesteuerten Chrome-Sitzung bleibt sowohl die bestehende App-Startseite als auch die neue Seite im iframe leer; die Browsersteuerung meldet eine angehaltene Dokumentantwort. Die Serverroute selbst liefert HTTP 200 mit Shopify-Einbettungsrichtlinie. Ursache nicht als App-Fehler bewiesen. Mikail wurde gefragt, ob die App bei ihm normal öffnet. Keine Authentifizierung, CSP oder Browser-Schutzfunktion abgeschwächt.
+Tatsächlicher Browser- und Datenbanknachweis: „kreuz“ einmal mit Treffern, „giraffe mit hut“ einmal ohne Treffer, jeweils Herkunft `preview`. **Mikail bestätigt am 05.11.2026: „Die App öffnet sich normal“.** Damit ist die normale App-Anzeige aus Nutzersicht bestätigt; die weiße Ansicht trat in der gesteuerten Chrome-Prüfung auf, deren Browsersteuerung eine angehaltene Dokumentantwort meldet. Die Serverroute selbst liefert HTTP 200 mit Shopify-Einbettungsrichtlinie. **Die neue Suchauswertungsseite ist dadurch noch nicht visuell abgenommen** – die Rückmeldung bezog sich auf das Öffnen der App. Keine Authentifizierung, CSP oder Browser-Schutzfunktion abgeschwächt.
 
 ### Prüfungen und Grenzen
 
@@ -48,7 +48,7 @@ Tatsächlicher Browser- und Datenbanknachweis: „kreuz“ einmal mit Treffern, 
 
 Während der ersten Aktivierung hatten die fünf statischen Prüfdateien durch die restriktive Dateierstellung falsche Leserechte. Das wurde ausschließlich für diese Dateien korrigiert und im Aktivierungsskript behoben; anschließend HTTP 200 und reale Browserprüfung. Die Startdatei und Quelldateien wurden vor jedem Nachtrag auf unveränderte Hashes geprüft. Sicherungen liegen in der aktiven Stage unter `before-round5`, `before-preview-search-registration`, `before-photo-removal` und `before-search-nav`. Bestehende Datenbanken wurden nicht ersetzt oder zurückgesetzt.
 
-**Weiterhin Prüfvorschau ohne echten Warenkorb-Erfolgsnachweis.** Kein neuer Produktlaunch, keine Aktivierung des V3-Shopify-Preiskandidaten. Die 43 Originalvorlagen benötigen weiter Mikails Sichtfreigabe. Nächste fachliche Schritte bleiben Shopify-App-Sichtprüfung, Designfreigabe, konkrete Produkt-/Preisbindung und echter Warenkorbtest.
+**Weiterhin Prüfvorschau ohne echten Warenkorb-Erfolgsnachweis.** Kein neuer Produktlaunch, keine Aktivierung des V3-Shopify-Preiskandidaten. Die 43 Originalvorlagen benötigen weiter Mikails Sichtfreigabe. Nächste fachliche Schritte bleiben Sichtprüfung der neuen Suchauswertungsseite, Designfreigabe, konkrete Produkt-/Preisbindung und echter Warenkorbtest. Das normale Öffnen der Shopify-App ist inzwischen von Mikail bestätigt.
 
 - [Prüfvorschau mit beiden Größen](https://app-2027.gravuru-designwerkstatt.de/produktvorschau/21afd5dc8edad301caace78b04c7973c6a2e6f7b3133dd24/22x14.html)
 - [Suchauswertung in Shopify](https://admin.shopify.com/store/gravuru-design/apps/gravuru-konfigurator/werkstatt/motivsuche/)

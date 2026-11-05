@@ -1,8 +1,9 @@
 import {canEditElement,restoreElementRights,rightForProperty} from './element-rights.mjs';
 import {isLayeredDoorbell,selectedDoorbellProfile} from './product-model-module.mjs';
+import {sizeConfiguration,isScalableSizes} from './scalable-sizes.mjs';
 
 export function customerRightsTemplate(config,state){
- const profile=isLayeredDoorbell(config)?selectedDoorbellProfile(config,state.mOptions):config.profile;
+ const profile=isLayeredDoorbell(config)?selectedDoorbellProfile(config,state.mOptions):sizeConfiguration(config,state.mOptions).profile;
  return profile.designs.find(item=>item.id===state.designId);
 }
 
@@ -74,7 +75,7 @@ export function beginCustomerRights({el,r,config,selected,select,say}){
     if(repairing)return;repairing=true;
     try{
       const design=customerRightsTemplate(config,el.state);if(!design)return;
-      const historyKey=isLayeredDoorbell(config)?JSON.stringify([design.id,el.state.mOptions?.format,el.state.mOptions?.position]):design.id;
+      const historyKey=isLayeredDoorbell(config)?JSON.stringify([design.id,el.state.mOptions?.format,el.state.mOptions?.position]):isScalableSizes(config)?JSON.stringify([design.id,el.state.mOptions?.size]):design.id;
       const result=restoreElementRights(design.objects,el.state.objects,config.workshopElementRights[design.id]||{},previous.get(historyKey));
       if(result.blockedIds.length){
         const current=new Map(el.state.objects.map(object=>[object.id,object]));

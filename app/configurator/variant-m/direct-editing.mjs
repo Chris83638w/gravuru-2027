@@ -9,7 +9,7 @@ import {processPalette,processFreeColor} from '../../workshop/process-profiles.m
 export function installDirectEditing({el,r,config,selected,editPhoto,changeObject}) {
   const stage=r.querySelector('.stage');
   // Keep the plate's screen coordinates stable when selection opens its tools.
-  // Doorbells retain their desktop slot; all phones share a fixed-height slot.
+  // Reserve phone space only while the selected text is being edited.
   const stableDoorbell=config?.doorbell?.schema==='gravuru-doorbell/v1';
   const stableHost=document.createElement('div');
   stableHost.className='ux-direct-slot'+(stableDoorbell?' doorbell-direct-slot':'');r.querySelector('[data-ux-stage]').before(stableHost);
@@ -90,6 +90,10 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     const alignHost=mobile?secondary:primary;if(extras.parentNode!==alignHost){if(mobile)secondary.prepend(extras);else primary.append(extras);}
     const deleteButton=panel.querySelector('[data-ux=delete]'),deleteHost=mobile?primary:tail;if(deleteButton.parentNode!==deleteHost)deleteHost.append(deleteButton);
     panel.hidden=!(text&&can(o,'content')||photo&&can(o,'replace')&&!el.uxPhotoPositionActive?.(o)||motif&&(can(o,'color')||can(o,'scale')||can(o,'move')));
+    const textEditing=text&&!panel.hidden&&(full||r.querySelector('[data-ux-tab="text"]')?.getAttribute('aria-selected')==='true');
+    if(el.dataset.uxTextEditing!==String(!!textEditing))el.dataset.uxTextEditing=String(!!textEditing);
+    stableHost.hidden=mobile&&!textEditing;
+    if(mobile&&!full&&!textEditing)panel.hidden=true;
     if(panel.hidden){stage.style.setProperty('--ux-mobile-dock-space',stableDoorbell&&mobile&&full?'202px':'0px');stage.style.setProperty('--ux-toolbar-space',stableDoorbell&&full?'112px':'0px');el.style.setProperty('--ux-textbar-h',stableDoorbell&&mobile?'116px':'0px');if(editing)close();return;}
     openButton.textContent=text?'Text ändern':'Foto bearbeiten';openButton.hidden=text||!!editing||motif;confirm.hidden=!editing;font.hidden=!text;font.disabled=!can(o,'content');font.textContent=fontDisplayName(o.font||'Schrift');font.title=font.textContent;
     if(text){try{const sample={...o,color:'#292d32',text:fontDisplayName(o.font),size:12,letterSpacing:0,lineHeight:14};measureText(sample,el.fontData);font.innerHTML='<svg data-direct-font-sample viewBox="'+(-sample.w/2-2)+' '+(-sample.h/2-2)+' '+(sample.w+4)+' '+(sample.h+4)+'" aria-hidden="true"><g>'+textPaths(sample,el.fontData)+'</g></svg>'+uiIcon('chevron');const ink=font.querySelector('g').getBBox();if(ink.width>0&&ink.height>0)font.querySelector('svg').setAttribute('viewBox',[ink.x-1,ink.y-1,ink.width+2,ink.height+2].join(' '));}catch{font.textContent=fontDisplayName(o.font);}}
@@ -109,7 +113,7 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     // Reserve space above the fitted plate; the toolbar never occupies artwork.
     stage.style.setProperty('--ux-toolbar-space',stableDoorbell?(full?'112px':'0px'):!mobile&&!inWorkbench?Math.ceil(panel.offsetHeight*scale+16)+'px':'0px');
     stage.style.setProperty('--ux-mobile-dock-space',mobile&&full?(stableDoorbell?202:panel.offsetHeight+86)+'px':'0px');
-    const barHeight=stableDoorbell&&mobile?116:mobile&&!full&&!panel.hidden?panel.offsetHeight:0;el.style.setProperty('--ux-textbar-h',barHeight+'px');
+    const barHeight=mobile&&!full&&textEditing?panel.offsetHeight:0;el.style.setProperty('--ux-textbar-h',barHeight+'px');
     const bounds=scene.getBoundingClientRect(),parent=stage.getBoundingClientRect();
     if(!mobile&&!inWorkbench){
       const target=scene.querySelector('[data-object="'+CSS.escape(o.id)+'"]')?.getBoundingClientRect();

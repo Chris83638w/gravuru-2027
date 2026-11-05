@@ -1,0 +1,22 @@
+{
+  "source": "work/katalog-preise-20261105/familien/schiefer/schiefer-tafeln-natur.json",
+  "sourceSha256": "2df30188682e180946552baf4ef090859ba46f9d5ea68cee7f2b241959f0db73",
+  "authority": "Mikail, Chat 05.11.2026: 22x14 19,99 EUR; 30x20 24,99 EUR",
+  "changes": [
+    {
+      "size": "GT-SN-RE-220X140",
+      "beforeCents": 2199,
+      "baseCents": 1999,
+      "revision": 2,
+      "publishedRevision": null
+    },
+    {
+      "size": "GT-SN-RE-300X200",
+      "beforeCents": 2399,
+      "baseCents": 2499,
+      "revision": 2,
+      "publishedRevision": null
+    }
+  ],
+  "shopifyWrites": 0
+}

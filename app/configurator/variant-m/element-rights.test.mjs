@@ -9,6 +9,14 @@ const text={id:'name',type:'text',fieldKey:'name',text:'Anna',font:'Source',bold
 const photo={id:'photo',type:'photoSlot',fieldKey:'photo',w:100,h:90,x:75,y:60,rotation:0,acrylicFixed:true};
 const none={content:false,color:false,replace:false,move:false,scale:false,delete:false};
 
+test('uploaded additional photos use photo permission, not free motif/text permission',()=>{
+ const source={id:'plain',objects:[]},uploaded={...photo,id:'own-photo',uxUploadKind:'photo',uxUploadId:'opaque-id',acrylicFixed:false};
+ const config={profile:{designs:[source]},photo:{enabled:true},customerAdditions:{text:false,motifs:false,maxElements:0}};
+ assert.equal(templateRightsIssue(config,source,source,[uploaded]),null);
+ for(const invalid of [{...uploaded,uxUploadId:undefined},{...uploaded,uxUploadKind:undefined},{...uploaded,type:'image'}])assert.ok(templateRightsIssue(config,source,source,[invalid]));
+ assert.ok(templateRightsIssue({...config,photo:{enabled:false}},source,source,[uploaded]));
+});
+
 test('independent content/color rights preserve permitted changes but restore font size and position',()=>{
   const current={...text,text:'Daria',font:'Other',bold:true,w:48,color:'#abcdef',x:3,size:24};
   const result=restoreElementRights([text],[current],{name:{...none,content:true,color:true}});

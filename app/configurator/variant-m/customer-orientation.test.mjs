@@ -98,12 +98,13 @@ test('actual field UI moves its highlight and open font controls with selection 
  const rows=['a','b'].map(id=>{const row=new Element(id);row.disclosure=new Element();row.disclosure.dataset={textOptions:id};return row;}),controls=new Element(),fieldNodes=rows.map((row,i)=>({dataset:{uxText:row.dataset.uxRow},getBoundingClientRect:()=>({top:100+i*120,bottom:140+i*120})}));
  const fields={querySelectorAll:s=>s==='.ux-text-row'?rows:fieldNodes},editor={scrollTop:0,getBoundingClientRect:()=>({top:100,bottom:200}),scrollTo(value){this.scrollTop=value.top;}},panel={hidden:false};
  const r={querySelector:s=>({'.ux-fields':fields,'.ux-controls':controls,'.ux-editor':editor,'#ux-panel-text':panel})[s],addEventListener:(type,fn)=>callbacks[type]=fn};
- const el={},env={el,r,object:{id:'a',type:'text'},requestAnimationFrame:fn=>fn(),ResizeObserver:class{constructor(fn){resizers.push(fn);}observe(){}disconnect(){}},window:{addEventListener(){}},document:{createElement:()=>new Element()}};
+ const el={dataset:{}},env={el,r,object:{id:'a',type:'text'},requestAnimationFrame:fn=>fn(),ResizeObserver:class{constructor(fn){resizers.push(fn);}observe(){}disconnect(){}},window:{addEventListener(){}},document:{createElement:()=>new Element()}};
  env.selected=()=>env.object;env.select=id=>{env.object={id,type:'text'};el.uxUpdateTextUI();};vm.createContext(env);vm.runInContext(code.slice(code.indexOf('export function installTextFields')).replace('export ',''),env);vm.runInContext('installTextFields({el,r,selected,select})',env);
  assert.equal(rows[0].attrs['aria-current'],'true');assert.equal(rows[1].attrs['aria-current'],undefined);
  callbacks.click({target:{closest:()=>rows[0].disclosure}});assert.equal(controls.parentNode,rows[0]);assert.equal(controls.hidden,false);
  env.select('b');assert.equal(rows[0].attrs['aria-current'],undefined);assert.equal(rows[1].attrs['aria-current'],'true');assert.equal(controls.parentNode,rows[1]);assert.equal(rows[1].disclosure.attrs['aria-expanded'],'true');assert.ok(editor.scrollTop>0);
  editor.scrollTop=0;resizers[0]();assert.ok(editor.scrollTop>0,'same selected text is still revealed after a viewport resize');
+ el.dataset.uxMobileTabs='true';editor.scrollTop=12;resizers[0]();assert.equal(editor.scrollTop,12,'mobile preview resize must not pull the list back to the selected field');
  env.object={id:'motif',type:'motif'};el.uxUpdateTextUI();assert.equal(controls.hidden,true);assert.ok(rows.every(row=>!row.classes.has('is-selected')));
 });
 

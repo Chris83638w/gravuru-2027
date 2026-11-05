@@ -1,3 +1,4 @@
+import {isScalableSizes} from './scalable-sizes.mjs';
 import {updateBackingPreviewViewport} from './backing-preview-viewport.mjs';
 import {contourPathWithHoles} from '../../platform/sources/app/shared/models/contour-geometry.mjs';
 import {contourGuides} from './contour-guides.mjs';
@@ -28,6 +29,7 @@ import {mountingPlacementState} from './mounting-placement.mjs';
 import {prepareNativeShellState} from './native-shell-state.mjs';
 import {finishNativeShell} from './native-shell-ui.mjs';
 import {updateProductViewport} from './product-viewport.mjs';
+import {scalableSizeState} from './scalable-size-state.mjs';
 
 const clone = value => structuredClone(value);
 const svgDocument = svg => new DOMParser().parseFromString(svg, 'image/svg+xml');
@@ -36,7 +38,7 @@ const pendingThumbnail='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240
 export function installUniversal(configInput) {
   const config = prepareConfig(configInput), p = config.profile, processing = getProcessingProfile(p);
   const dynamicDoorbell=isLayeredDoorbell(config);
-  const dynamicFamily=isFamilyFormats(config),dynamicFormats=dynamicDoorbell||dynamicFamily;
+  const dynamicFamily=isFamilyFormats(config),dynamicSizes=isScalableSizes(config),dynamicProfiles=dynamicFamily||dynamicSizes,dynamicFormats=dynamicDoorbell||dynamicProfiles;
   let options = {}, quantity = 1, el, renderId = 0;
   const photos = new Map(); // File objects stay in this page. Never localStorage, URL, draft or Git.
   const thumbnails=new WeakMap();
@@ -47,9 +49,9 @@ export function installUniversal(configInput) {
   // change with the physical options, never while the customer edits text.
   let familyProfileKey=null,familyProfile=null;
   const profile = (surface = activeSurface()) => {
-    const key=dynamicFamily?JSON.stringify(options):null;
-    if(dynamicFamily&&key!==familyProfileKey){familyProfile=selectedProfile(config,options);familyProfileKey=key;}
-    const sp=dynamicFamily?familyProfile:selectedProfile(config,options);
+    const key=dynamicProfiles?JSON.stringify(options):null;
+    if(dynamicProfiles&&key!==familyProfileKey){familyProfile=selectedProfile(config,options);familyProfileKey=key;}
+    const sp=dynamicProfiles?familyProfile:selectedProfile(config,options);
     return surface==='back'?{...sp,geometry:surfaceGeometry(sp.geometry,'back')}:sp;
   };
   const motifs = () => customerMotifs(config, el.motifs, el.catalog);
@@ -78,7 +80,7 @@ export function installUniversal(configInput) {
   // Leistung (Fehler 20.10.2026): Die Altgalerie ruft thumb() bei jedem sync für jede Karte auf –
   // beim Ziehen also je Fingerbewegung. Vorlagen ändern sich dabei nicht: Ergebnis zwischenspeichern.
   const thumbCache=new Map();let familyThumbOptions=null;
-  window.Funkklingel.thumb = (element, d) => { el = element; if(!el.isConnected||!el.uxLayoutReady)return pendingThumbnail; const design=(dynamicFormats?profile().designs:p.designs).find(x => x.id === d.id) || d; if(dynamicDoorbell&&!designResourcesReady(design,el.fontData,el.motifs))return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120"><text x="120" y="65" text-anchor="middle" font-size="12" fill="#526b5d">Design wird geladen …</text></svg>'; const optionKey=JSON.stringify(options);if(dynamicFamily&&familyThumbOptions!==optionKey){thumbCache.clear();familyThumbOptions=optionKey;}const key=JSON.stringify([options,design]); let markup=thumbCache.get(key); if(markup===undefined){markup=svg(design,{screen:true});if(!dynamicFamily&&thumbCache.size>64)thumbCache.clear();thumbCache.set(key,markup);} return markup; };
+  window.Funkklingel.thumb = (element, d) => { el = element; if(!el.isConnected||!el.uxLayoutReady)return pendingThumbnail; const design=(dynamicFormats?profile().designs:p.designs).find(x => x.id === d.id) || d; if(dynamicDoorbell&&!designResourcesReady(design,el.fontData,el.motifs))return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 120"><text x="120" y="65" text-anchor="middle" font-size="12" fill="#526b5d">Design wird geladen …</text></svg>'; const optionKey=JSON.stringify(options);if(dynamicProfiles&&familyThumbOptions!==optionKey){thumbCache.clear();familyThumbOptions=optionKey;}const key=JSON.stringify([options,design]); let markup=thumbCache.get(key); if(markup===undefined){markup=svg(design,{screen:true});if(!dynamicFamily&&thumbCache.size>64)thumbCache.clear();thumbCache.set(key,markup);} return markup; };
   window.Funkklingel.prepare = element => {
     el = element; prepareNativeShellState(el,profile());
     const {width, height, shape, cornerRadiusMm=0} = profile().geometry;
@@ -151,9 +153,9 @@ export function installUniversal(configInput) {
     const changeOption=(key,value,{record=true}={})=>{
       if(options[key]===value)return;
       const next={...options,[key]:value};
-      let state=dynamicFamily?familyFormatState(config,el.state,next,{fonts:el.fontData,motifs:motifs()}):dynamicDoorbell?doorbellOptionState(config,el.state,next):{...el.state,mOptions:clone(next)};
+      let state=dynamicSizes?scalableSizeState(config,el.state,next,{fonts:el.fontData,motifs:motifs()}):dynamicFamily?familyFormatState(config,el.state,next,{fonts:el.fontData,motifs:motifs()}):dynamicDoorbell?doorbellOptionState(config,el.state,next):{...el.state,mOptions:clone(next)};
       if(key==='mounting')state=mountingPlacementState(config,state,selectedProfile(config,options),selectedProfile(config,state.mOptions),{fonts:el.fontData,motifs:motifs()});
-      else if(key==='size')state={...state,uxHolePlacement:null};
+      else if(key==='size'&&!dynamicSizes)state={...state,uxHolePlacement:null};
       if(record)el.record();
       options=state.mOptions;Object.assign(el.state,state);el.sync();
     };
@@ -193,7 +195,7 @@ export function installUniversal(configInput) {
     // Sichtbarkeit (visibleIf) und Feldwerte aus dem Zustand; unsichtbare Gruppen/Felder werden ausgeblendet.
     function updateOptionVisibility(){
       let shown;try{shown=resolvedOptions(config,options);}catch{shown=null;}
-      for(const select of picks.querySelectorAll('select[data-m-option]')){const g=(p.optionGroups||[]).find(x=>x.id===select.dataset.mOption),visible=!g?.visibleIf||(shown?shown[g.id]!==undefined:true);select.closest('label').hidden=!visible||g?.id==='mounting';}
+      for(const select of picks.querySelectorAll('select[data-m-option]')){const g=(p.optionGroups||[]).find(x=>x.id===select.dataset.mOption),visible=!g?.visibleIf||(shown?shown[g.id]!==undefined:true);select.closest('label').hidden=!visible||g?.id==='mounting'||select.closest('label').dataset.visualOnly==='true';}
       for(const group of pictures.querySelectorAll('[role=group]')){const id=group.querySelector('[data-picture-group]')?.dataset.pictureGroup;if(id)group.hidden=shown?shown[id]===undefined:false;}
       for(const f of optionFields(p)){
         const row=fieldBox.querySelector('[data-m-field-row="'+CSS.escape(f.id)+'"]'),input=row?.querySelector('[data-m-field]');if(!row)continue;
@@ -326,7 +328,7 @@ export function installUniversal(configInput) {
       const d=current(), visible=new Set(filteredDesigns(dynamicFormats?profile().designs:p.designs,filters).map(d=>d.id));
       const physical=physicalGeometry(config,{mOptions:options});
       if(dynamicDoorbell)updateDoorbellViewport(el,physical);
-      else if(dynamicFamily)updateProductViewport(el,physical);
+      else if(dynamicProfiles)updateProductViewport(el,physical);
       // The legacy shell keeps only SVG children. Restore the outer viewport so the
       // backing plate is fully visible; front geometry and pointer coordinates stay in mm.
       updateBackingPreviewViewport(el,profile());
@@ -364,7 +366,7 @@ export function installUniversal(configInput) {
     const sync=el.sync;
     el.sync=function(...args){
       options=clone(this.state.mOptions||options);
-      if(dynamicFamily)this.catalog.designs=profile().designs;
+      if(dynamicProfiles)this.catalog.designs=profile().designs;
       this.normalize();const result=sync.apply(this,args);update();return result;
     };
     $('[data-setting=guides]').checked=false;

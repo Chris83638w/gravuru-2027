@@ -1,3 +1,4 @@
+import {isScalableSizes,sizeConfiguration,validateScalableSizes} from './scalable-sizes.mjs';
 import {isLayeredDoorbell,DOORBELL_SCHEMA,validateDoorbellDefinition,selectedDoorbellProfile,selectedDoorbellDesign,doorbellPriceBase,doorbellLayoutIssue} from './product-model-module.mjs';
 import {isFamilyFormats,validateFamilyFormats,familyFormatOptions,familyFormatSelection,familyFormatCombinations,familyFormatPrice,selectedFamilyProfile,selectedFamilyDesign} from './family-formats.mjs';
 import {QUANTITY_TIER_MAX,quantityTiersIssue,quantityTiersOpen,activeQuantityTiers,quantityTierFor,applyQuantityTier,quantityTierLabels} from './quantity-tiers.mjs';
@@ -50,6 +51,11 @@ export const money = cents => euroFormat.format(cents / 100);
 // This adapter consumes the existing native profile. It never grants a runtime release.
 export function prepareConfig(input) {
   const config = clone(input);
+  if(config.scalableSizes){
+    validateScalableSizes(config);
+    for(const size of config.scalableSizes.sizes)prepareConfig(sizeConfiguration(config,{size:size.id}));
+    Object.assign(config,sizeConfiguration(config));
+  }
   if(config.photoDesignPricing!==undefined&&(config.photoDesignPricing!==true||config.profile?.material?.kind!=='slate'))fail('Ungültige Fotodesign-Preisregel.');
   if(config.photoDesignCents!==undefined&&(!Number.isSafeInteger(config.photoDesignCents)||config.photoDesignCents<0||config.photoDesignCents>100000000))fail('Ungültiger Fotodesignpreis.');
   validateExecution(config);
@@ -129,6 +135,7 @@ export function prepareConfig(input) {
 // und Felder werden verworfen (auch wenn ein Wert mitkommt); leere Felder fehlen.
 // Pflichtfelder prüft `validateDesign` (nur sichtbare, nicht im Entwurf).
 export function resolvedOptions(config, values = {}) {
+  config=sizeConfiguration(config,values);
   if(isFamilyFormats(config))return familyFormatOptions(config,values);
   const groups = config.profile.optionGroups || [], fields = optionFields(config.profile), result = {};
   if (!values || typeof values !== 'object' || Array.isArray(values)) fail('Ungültige Optionen.');
@@ -151,18 +158,25 @@ export const choiceOptions = (config, options) => Object.fromEntries(Object.entr
 export const fieldOptions = (config, options) => Object.fromEntries(Object.entries(options).filter(([key]) => optionFields(config.profile).some(f => f.id === key)));
 export const visibleGroups = (config, values = {}) => { const options = resolvedOptions(config, values); return (config.profile.optionGroups || []).filter(g => options[g.id] !== undefined); };
 export function missingRequiredFields(config, values = {}) {
+  config=sizeConfiguration(config,values);
   const options = resolvedOptions(config, values);
   return visibleFields(config, options).filter(f => f.required === true && options[f.id] === undefined);
 }
 export const optionFieldCents = (config, options) => visibleFields(config, options).reduce((sum, f) => sum + fieldPrice(f, options[f.id]), 0);
 // Sichtbare, ausgefüllte Zusatzfelder für Warenkorb, Bestellung und Fertigungszusammenfassung.
 export function optionFieldEntries(config, values = {}) {
+  config=sizeConfiguration(config,values);
   const options = resolvedOptions(config, values);
   return visibleFields(config, options).filter(f => options[f.id] !== undefined).map(f => ({id:f.id, kind:f.kind, label:f.label, value:options[f.id], display:fieldDisplay(f, options[f.id]), priceCents:fieldPrice(f, options[f.id])}));
 }
 // Ausführungen für Shop-Varianten: alle Kombinationen der Gruppen, unsichtbare Gruppen
 // verworfen und doppelte Ausführungen zusammengefasst; Zusatzfelder sind keine Varianten.
 export function variantCombinations(config) {
+  if(isScalableSizes(config))return config.scalableSizes.sizes.flatMap(size=>{
+    const selected=sizeConfiguration(config,{size:size.id});
+    selected.profile.optionGroups[0].values=selected.profile.optionGroups[0].values.filter(v=>v.id===size.id);
+    return variantCombinations(selected);
+  });
   if(isFamilyFormats(config))return familyFormatCombinations(config);
   let combinations = [{}];
   for (const g of config.profile.optionGroups || []) combinations = combinations.flatMap(o => g.values.map(v => ({...o, [g.id]:v.id})));
@@ -172,6 +186,7 @@ export function variantCombinations(config) {
 }
 
 export function selectedProfile(config, values = {}) {
+  config=sizeConfiguration(config,values);
   if(isFamilyFormats(config))return selectedFamilyProfile(config,values);
   if(isLayeredDoorbell(config))return selectedDoorbellProfile(config,resolvedOptions(config,values));
   const profile = clone(config.profile), options = resolvedOptions(config, values);
@@ -199,6 +214,7 @@ export function selectedProfile(config, values = {}) {
 }
 
 export function photoPolicyForDesign(config,designId,options={}){
+ config=sizeConfiguration(config,options);
  if(!config?.photoDesignPricing)return config?.photo;
  const variant=isFamilyFormats(config)?familyFormatSelection(config,options).variant:undefined;
  const design=isFamilyFormats(config)?selectedFamilyDesign(config,designId,options):config.profile.designs.find(d=>d.id===designId);
@@ -206,6 +222,7 @@ export function photoPolicyForDesign(config,designId,options={}){
  return templatePhotoPrice(config,design,variant).policy;
 }
 export function quote(config, objects, designId, values = {}, quantity = 1) {
+  config=sizeConfiguration(config,values);
   if(config.reviewOnly&&config.basePriceCents===null)fail('Preis noch offen.');
   if (!Number.isInteger(quantity) || quantity < 1 || quantity > 99) fail('Menge: 1 bis 99.');
   const options = resolvedOptions(config, values);

@@ -38,5 +38,8 @@ export function installTextFields({el,r,selected,select}){
  // Disclosure state changes explicitly, never on blur. iOS does not always focus
  // a tapped button; closing on textarea blur can remove it before its click fires.
  el.uxUpdateTextUI=update;update();
- const observer=new ResizeObserver(revealSelected);observer.observe(r.querySelector('.ux-editor'));window.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
+ // Mobile preview animation resizes the editor on every frame. Re-revealing the
+ // selected field then fights the user's scroll and repeatedly jumps the list.
+ // The mobile navigation reveals fields once on selection/keyboard opening.
+ const observer=new ResizeObserver(()=>{if(el.dataset.uxMobileTabs!=='true')revealSelected();});observer.observe(r.querySelector('.ux-editor'));window.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
 }

@@ -1,3 +1,4 @@
+import {isScalableSizes} from './scalable-sizes.mjs';
 import {isLayeredDoorbell} from './product-model-module.mjs';
 import {isFamilyFormats} from './family-formats.mjs';
 import {selectedProfile} from './contract.mjs';
@@ -12,7 +13,7 @@ export function physicalGeometry(config,state){
 // SVG's default xMidYMid meet, shared with the editor's print viewBox.
 export function artworkViewport(config,state){
  const g=physicalGeometry(config,state);
- if(isLayeredDoorbell(config)||isFamilyFormats(config))return {geometry:g,scale:1,x:0,y:0}; // Saved elements already use the selected format's millimetres.
+ if(isLayeredDoorbell(config)||isFamilyFormats(config)||isScalableSizes(config))return {geometry:g,scale:1,x:0,y:0}; // Saved elements already use the selected format's millimetres.
  const b=config.profile.geometry,scale=Math.min(g.width/b.width,g.height/b.height);
  return {geometry:g,scale,x:(g.width-b.width*scale)/2,y:(g.height-b.height*scale)/2};
 }

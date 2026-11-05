@@ -218,7 +218,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   }
   function uploadFromEmptySlot(event,slot){
     event.preventDefault();event.stopImmediatePropagation();
-    replacing=slot.id;uploadKind='photo';say('Wähle jetzt ein Foto für diesen Platzhalter aus.');$('[data-ux-file]').click();
+    replacing=slot.id;uploadKind='photo';say('');$('[data-ux-file]').click();
   }
   // Tipp (ohne Ziehen) auf ein schon hochgeladenes Foto öffnet ebenfalls die Dateiauswahl zum Wechseln
   // (Chris 20.10.2026: „Wenn ich auf das Foto klicke passiert nichts“); Ziehen verschiebt es weiter.
@@ -238,7 +238,7 @@ export async function installUX(el,config,legacy,{attach}={}){
     const id=photoTap.up(event);if(!id)return;
     const slot=el.state.objects.find(o=>o.id===id);
     if(replaceablePhotoSlot(slot,o=>el.uxCanEdit?.(o,'replace')))uploadFromEmptySlot(event,slot);
-    else if(slot?.type==='photoSlot'&&slot.uxUploadId&&el.uxCanEdit?.(slot,'replace')!==false){replacing=slot.id;uploadKind=slot.uxUploadKind||'photo';say('Wähle ein neues Foto für diesen Bereich aus.');$('[data-ux-file]').click();}
+    else if(slot?.type==='photoSlot'&&slot.uxUploadId&&el.uxCanEdit?.(slot,'replace')!==false){replacing=slot.id;uploadKind=slot.uxUploadKind||'photo';say('');$('[data-ux-file]').click();}
   },true);
   r.addEventListener('pointercancel',()=>photoTap.cancel(),true);
   r.addEventListener('keydown',event=>{
@@ -426,7 +426,7 @@ export async function installUX(el,config,legacy,{attach}={}){
         if(prior?.uxLocked)throw Error('Bitte den Fotobereich zuerst entsperren.');
         validateUpload(file,el.state.objects,prior?.uxUploadId);
         const id=crypto.randomUUID();files.set(id,{file,url,width:image.naturalWidth,height:image.naturalHeight});url=null;
-        mutate(()=>{let o=prior;if(!o&&kind==='photo')o=el.state.objects.find(o=>o.type==='photoSlot'&&!o.uxUploadId);if(!o){const {width,height}=currentSize();o={id:el.id(),type:kind==='logo'?'image':'photoSlot',x:width/2,y:height*.35,w:Math.min(width*.3,50),h:Math.min(height*.25,50),rotation:0,customerEditable:true,uxPersonal:true};if(kind==='photo')Object.assign(o,{photoShape:'rect',fieldKey:'photo-'+crypto.randomUUID(),required:false});el.state.objects.push(o);}o.uxUploadId=id;delete o.uxPhotoCrop;delete o.uxPhotoColor;o.uxUploadKind=kind;if(kind==='photo')o.uxPhotoBackground=o.uxPhotoBackground==='keep'?'keep':'remove';else delete o.uxPhotoBackground;o.uxHidden=false;delete o.preserveColors;el.state.selected=o.id;revealedId=o.id;});say('Bild übernommen.');
+        mutate(()=>{let o=prior;if(!o&&kind==='photo')o=el.state.objects.find(o=>o.type==='photoSlot'&&!o.uxUploadId);if(!o){const {width,height}=currentSize();o={id:el.id(),type:kind==='logo'?'image':'photoSlot',x:width/2,y:height*.35,w:Math.min(width*.3,50),h:Math.min(height*.25,50),rotation:0,customerEditable:true,uxPersonal:true};if(kind==='photo')Object.assign(o,{photoShape:'rect',fieldKey:'photo-'+crypto.randomUUID(),required:false});el.state.objects.push(o);}o.uxUploadId=id;delete o.uxPhotoCrop;delete o.uxPhotoColor;o.uxUploadKind=kind;if(kind==='photo')o.uxPhotoBackground=o.uxPhotoBackground==='keep'?'keep':'remove';else delete o.uxPhotoBackground;o.uxHidden=false;delete o.preserveColors;el.state.selected=o.id;revealedId=o.id;});say('');
       }catch(error){if(url)URL.revokeObjectURL(url);say(error.message);break;}
     }}finally{uploadPending=false;replacing=null;
       if(revealedId){showTab('upload');requestAnimationFrame(()=>{const target=all('[data-ux=select-upload]').find(b=>b.dataset.id===revealedId);if(!target)return;target.focus({preventScroll:true});});}

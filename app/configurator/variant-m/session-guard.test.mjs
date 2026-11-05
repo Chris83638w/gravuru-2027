@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-import {createSessionGuard,uploadReferences,sessionGuardKey,SESSION_GUARD_SCHEMA,SESSION_GUARD_TTL_MS} from './session-guard.mjs';
+import {createSessionGuard,uploadReferences,sessionGuardKey,SESSION_GUARD_SCHEMA,SESSION_GUARD_TTL_MS,freshPreviewRequested} from './session-guard.mjs';
 import {makeAcrylicConfig} from './acrylic-product.mjs';
 import {prepareConfig,saveDraft,readDraft,DRAFT_SCHEMA} from './contract.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
@@ -31,13 +31,14 @@ function editor(config,resources){
   return el;
 }
 // Lädt die K7-Blöcke aus ux.mjs in einen Kontext: Guard anlegen, Sync-Hook, Wiederherstellung beim Start, „Neu beginnen“.
-function mountUx({config,resources,storage,timers,pendingDesignTransfer=false}){
+function mountUx({config,resources,storage,timers,pendingDesignTransfer=false,search=''}){
   const el=editor(config,resources),said=[],banner={hidden:true},files=new Map();
   const env={sessionUploads:null,persistUpload(){},missingUploads:[],el,config,profile:config.profile,files,uploadReferences,say:m=>said.push(m),said,banner,$:s=>s==='[data-ux-session]'?banner:{hidden:true},update(){},notifyCorrection(){},
-    installAccountDrafts:()=>null,dialogs:{account:{}},button(){},esc:v=>v,uploadPending:false,URL:{revokeObjectURL(){}},location:{reload(){env.reloaded=true;}},
+    freshPreviewRequested,installAccountDrafts:()=>null,dialogs:{account:{}},button(){},esc:v=>v,uploadPending:false,URL:{revokeObjectURL(){}},location:{search,reload(){env.reloaded=true;}},
     window:{parent:{GravuruShopEntry:{designGallery:{hasPendingTransfer:()=>pendingDesignTransfer}}},localStorage:storage,addEventListener(type,fn){(env.listeners[type]||=[]).push(fn);}},listeners:{},
     createSessionGuard:options=>createSessionGuard({...options,schedule:fn=>{timers.queued=fn;return 1;},cancel:()=>{timers.queued=null;}})};
   vm.createContext(env);
+  vm.runInContext(line('ux.mjs','const freshPreview='),env);
   vm.runInContext(line('ux.mjs','const chosenProfile='),env);
   vm.runInContext(line('ux.mjs',"const oldSync=el.sync;el.sync=function(...args){"),env);
   vm.runInContext(block('ux.mjs','  function restoreDraft(draft){','\n  }'),env);
@@ -51,6 +52,24 @@ function mountUx({config,resources,storage,timers,pendingDesignTransfer=false}){
   return env;
 }
 const text=el=>el.state.objects.find(o=>o.id==='names').text;
+
+test('fresh test link applies only to an explicit product preview or review model',()=>{
+ assert.equal(freshPreviewRequested({productPreview:true},'?fresh=1'),true);
+ assert.equal(freshPreviewRequested({reviewOnly:true},'?fresh=1'),true);
+ for(const config of [null,{}, {productPreview:false},{reviewOnly:false}])assert.equal(freshPreviewRequested(config,'?fresh=1'),false);
+ for(const query of ['', '?fresh=0','?fresh=true'])assert.equal(freshPreviewRequested({productPreview:true},query),false);
+});
+test('fresh preview ignores the last test and never saves text or photos; ordinary recovery stays available',()=>{
+ const {config,resources}=acrylicConfig(),storage=fakeStorage(),timers={queued:null};config.reviewOnly=true;
+ const normal=mountUx({config,resources,storage,timers}),original=text(normal.el);
+ normal.el.state.objects.find(o=>o.id==='names').text='Alter Test';normal.el.sync();timers.queued();timers.queued=null;
+ const stored=[...storage.data];
+ const fresh=mountUx({config,resources,storage,timers,search:'?fresh=1'});assert.equal(fresh.guard(),null);assert.equal(text(fresh.el),original);
+ fresh.el.state.objects.find(o=>o.id==='names').text='Neuer Test';fresh.el.sync();assert.equal(timers.queued,null);assert.deepEqual([...storage.data],stored);
+ const uploads={...fresh,createSessionUploads(){throw Error('Fresh uploads must remain in memory');}};vm.runInNewContext(line('ux.mjs','const freshPreview=')+'\n'+line('ux.mjs','const sessionUploads='),uploads);
+ assert.equal(text(mountUx({config,resources,storage,timers,search:'?fresh=1'}).el),original);
+ assert.equal(text(mountUx({config,resources,storage,timers}).el),'Alter Test');
+});
 
 test('Sitzungsschutz: Änderung wird entprellt gespeichert, Neuladen stellt den Stand wieder her, „Neu beginnen“ setzt zurück',()=>{
   const {config,resources}=acrylicConfig(),storage=fakeStorage(),timers={queued:null};

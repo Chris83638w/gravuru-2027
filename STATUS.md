@@ -1,3 +1,7 @@
+## 2026-11-06 · Codex/Mika · Testlink beginnt bei jedem Neuladen frisch
+
+Mikails Präzisierung „nein, ich möchte immer von vorne testen“ umgesetzt: `?fresh=1` überspringt ausschließlich in Produktvorschauen/Prüfmodellen die lokale Sitzungs- und Uploadspeicherung. Normale Kundenwiederherstellung und vorhandene Entwürfe bleiben erhalten. Geändert: `session-guard.mjs`, `ux.mjs` und zugehöriger Sitzungstest. **255/255 lokal und Linux**, Serverbuild erfolgreich; aktive R8b-Version **editor-a82b6d7db96395ec.mjs**. Live im Browser geprüft: Name ändern + synthetisches Foto hochladen → Neuladen → Bruno, vier Originalelemente, null Fotos, 19,99 EUR. Beide Modelle bytegleich, Seiten/Modelle/fünf Bundles HTTP 200. Kein Produktlaunch oder neuer Warenkorbnachweis. Nächster Schritt: Mikails Sichtprüfung mit dem frischen Link. [Auftrag, Link und Nachweis](docs/handoffs/2026-11-06-konfi-frisch-testen-mika.md).
+
 ## 2026-11-05 · Codex/Mika · Text-Autosteuerung, sichtbare Kategorien und Foto-Eckgriffe live
 
 Mikails „Setze jetzt alle besprochenen Änderungen … wirklich nur diese Punkte“ umgesetzt: Textfeld öffnet Schrift/Größe darunter, vier sichtbare Motivkategorien plus sofort übernehmende Kategoriebox, Foto-Eckgriffe zusätzlich zum Regler, neue freie Fotos größer/mittig ohne nachträgliche Freiplatzverkleinerung, kompakte Foto-/Motiv-/Logoaktionen und besser erkennbare Oberflächensymbole. Die spätere ausdrückliche Eckgriff-Anforderung ersetzt die alte Foto-Reglerbeschränkung; Ansicht weiterhin ohne Rad-/Pinch-Zoom.

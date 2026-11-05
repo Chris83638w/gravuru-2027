@@ -45,7 +45,7 @@ import {rightForProperty,canEditElement,customerAdditionPolicy} from './element-
 import {beginCustomerRights} from './customer-rights.mjs';
 import {textLimits,textLimitIssue,textLength,textLimitCount,sameSampleText,requiredTextMissing,clampText} from '../../workshop/theme-limits.mjs';
 import {parseDirectLink,applyLinkText,withoutDirectLinkParams} from './design-gallery-model.mjs';
-import {createSessionGuard,uploadReferences} from './session-guard.mjs';
+import {createSessionGuard,uploadReferences,freshPreviewRequested} from './session-guard.mjs';
 import {createSessionUploads} from './session-uploads.mjs';
 import {fitUploadedPhoto,newPhotoBounds} from './photo-upload-geometry.mjs';
 import {installAccountDrafts} from './account-drafts.mjs';
@@ -94,7 +94,8 @@ export async function installUX(el,config,legacy,{attach}={}){
   const vectorLogos=vectorLogoEnabled(config);
   const uploadOffered=(photoEnabled||logoEnabled)&&(photoEnabled||designsHaveUploadLayer(config)||vectorLogos);
   const files=new Map(), icons={};
-  const sessionUploads=config&&!config.workbench?createSessionUploads({key:profile.binding.productId+':'+profile.revision,files}):null;
+  const freshPreview=freshPreviewRequested(config,location.search);
+  const sessionUploads=config&&!config.workbench&&!freshPreview?createSessionUploads({key:profile.binding.productId+':'+profile.revision,files}):null;
   let uploadStorageWarning=false;
   async function persistUpload(id){try{await sessionUploads?.persist(id);}catch{if(!uploadStorageWarning){uploadStorageWarning=true;say('Dein Browser konnte das Foto nicht auf diesem Gerät sichern. Bitte den Entwurf im Kundenkonto speichern.');}}}
   for(const key of ['templates','text','motif','image'])icons[key]=$(`[data-tab="${key}"] svg`)?.outerHTML||'';
@@ -331,7 +332,7 @@ export async function installUX(el,config,legacy,{attach}={}){
     try{el.restoreDraft(draft,{draft:true});}catch(error){if(target.id!==before)el.chooseDesign(before);throw error;}
   }
   let sessionGuard=null,initialDraft=null,accountDrafts=null;
-  if(config&&profile.binding?.productId&&typeof profile.revision==='string'&&typeof el.draftPayload==='function'){
+  if(config&&!freshPreview&&profile.binding?.productId&&typeof profile.revision==='string'&&typeof el.draftPayload==='function'){
     let storage=null;try{storage=window.localStorage;}catch{}
     if(storage)sessionGuard=createSessionGuard({storage,productId:profile.binding.productId,profileRevision:profile.revision,
       payload:()=>({draft:el.draftPayload({draft:true}),uploads:uploadReferences(el.state.objects,files)}),restore:restoreDraft});

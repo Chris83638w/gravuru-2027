@@ -15,5 +15,35 @@
     "ℹ skipped 0"
   ],
   "serverRestart": false,
-  "scope": "Report filter persistence only; no database, auth, configurator bundle or product changes"
+  "scope": "Report filter persistence only; no database, auth, configurator bundle or product changes",
+  "browserVerification": {
+    "recordedAt": "2026-11-05T19:36:56.332Z",
+    "page": "https://admin.shopify.com/store/gravuru-design/apps/gravuru-konfigurator/werkstatt/motivsuche/",
+    "initialSource": "shop",
+    "initialSearches": 0,
+    "selectedSource": "preview",
+    "periodDays": 30,
+    "productGroup": "all",
+    "reopenedViaReportNavigation": true,
+    "newReportDocumentObserved": true,
+    "sourceAfterReopen": "preview",
+    "searchesAfterReopen": 2,
+    "withoutResultsAfterReopen": 1,
+    "terms": [
+      {
+        "term": "giraffe mit hut",
+        "searches": 1,
+        "withoutResults": 1
+      },
+      {
+        "term": "kreuz",
+        "searches": 1,
+        "withoutResults": 0
+      }
+    ],
+    "screenshot": "shopify-suchauswertung-nach-neuoeffnen-20261105.png",
+    "screenshotSha256": "b397b1a0707146a9397bbf0ec83e0f91f529ff6ffccb20801879ce85f153a0ce",
+    "fullAdminReloadVerified": false,
+    "limitation": "Automated outer Shopify Admin reload was paused by browser automation; report navigation created and loaded a new report document successfully."
+  }
 }

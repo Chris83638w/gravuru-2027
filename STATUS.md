@@ -1,3 +1,7 @@
+## 06.11.2026 · Astra Schiefer · Einzelabnahme im Chat gestartet
+
+Chris wuenscht alle Originale nacheinander mit jeweils ausdruecklichem OK. Skriptgeneriertes Register unter `docs/reviews/2026-11-06-schiefer-einzelabnahme/`: 180 eindeutige IDs, 135 vorbereitete Paare, 45 unvollstaendige Originale; 0 Freigaben. Start D250, Templatehashes und Paketstand gebunden. Queuezaehler und erste ID geprueft; keine Anwendung geaendert, keine erneuten Anwendungstests erforderlich. Naechster Schritt: Chris beurteilt D250 in beiden Groessen, danach Entscheidung protokollieren und naechstes Original zeigen. Keine Live-/Bestellfreigabe.
+
 ## 2026-11-05 · Astra Schiefer · Neue-Struktur-Gedenktafeln 22×14 / 30×20
 
 180 Originale bytegleich gesichert. 135 Gravurdesigns für beide Größen technisch vorbereitet, 271 Größenfassungen, 28 lokale Prüfgruppen; 21 Gravur- und 24 UV-Originale mit konkreten Quellenlücken offen. Chris erlaubt dokumentierten Schriftersatz. Neue-Struktur-Priorität in Galerie/Werkstatt; Rechteckkonturprüfung berücksichtigt echte Buchstabenpfade. 44 + 66 Node-Prüfungen und 3 Adapterprüfungen grün, 617 Quellenhashes/135 Designpaare/28 Rücklesevergleiche geprüft, 6 Browserprüfungen, Importwiederholung ohne neue Gruppen. [Übergabe und Reproduktion](docs/handoffs/2026-11-05-schiefer-originale-22x14-30x20-astra.md). Eigener Branch auf #175; kein main-Merge, Hostimport, Shopify-Schreibzugriff oder Livegang. Design-/Sichtfreigabe bleibt offen.

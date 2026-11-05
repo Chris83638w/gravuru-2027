@@ -75,7 +75,7 @@ function emit(target,type,extra={}){
 const sharedSource=fs.readFileSync(new URL('./refinements.mjs',import.meta.url),'utf8').replaceAll('\r\n','\n');
 const sharedGestures=sharedSource.slice(sharedSource.indexOf('  let resize=null;'),sharedSource.indexOf('  function areaResize(field)'));
 assert(sharedGestures.includes("r.addEventListener('pointerdown'"),'shared gesture source must be present');
-function setup(t,{rights={move:true,replace:true,scale:false,delete:false},slot={},uploaded=true,legacyTap=false}={}){
+function setup(t,{rights={move:true,replace:true,scale:false,delete:false},slot={},uploaded=true,legacyTap=false,freePhoto=false}={}){
   const prior={document:globalThis.document,CSS:globalThis.CSS};
   globalThis.document={createElement:tag=>new Node(tag),createTextNode:text=>Object.assign(new Node('span'),{textContent:text})};
   document.body=new Node('body');document.activeElement=document.body;globalThis.CSS={escape:value=>value};
@@ -84,9 +84,9 @@ function setup(t,{rights={move:true,replace:true,scale:false,delete:false},slot=
   r.innerHTML='<div class="stage"><div class="plate-holder"><svg class="scene"></svg></div><div class="ux-selection-handles"><button data-ux-handle="scale"></button><button data-ux-handle="rotate"></button><span class="ux-rotate-stem"></span><button data-ux="delete" class="ux-handle-delete"></button></div></div><div class="ux-controls"><div class="ux-uploads"></div></div>';
   const object={id:'photo',type:'photoSlot',fieldKey:'photo',photoShape:'template',photoMaskAssetId:'heart-mask',x:50,y:40,w:30,h:40,rotation:0,...(uploaded?{uxUploadId:'upload',uxPhotoCrop:{zoom:1.3,x:.2,y:-.1,angle:5}}:{}),...slot};
   const other={...object,id:'other',x:80,fieldKey:'other'};
-  const config={profile:{designs:[{id:'design',objects:structuredClone([object,other])}]},workshopElementRights:{design:{photo:rights,other:rights}}};
+  const config={profile:{designs:[{id:'design',objects:structuredClone(freePhoto?[other]:[object,other])}]},workshopElementRights:{design:{photo:rights,other:rights}}};
   const undo=[],tabs=[],said=[],files=new Map([['upload',{width:600,height:900}],['new-upload',{width:800,height:600}]]);
-  const el={state:{designId:'design',width:120,height:80,objects:[object,other],selected:'photo'},point:e=>({x:e.clientX,y:e.clientY}),normalize(){},record(old){undo.push(structuredClone(old||this.state));},render(){r.querySelector('.scene').innerHTML=this.state.objects.map(o=>'<g data-object="'+o.id+'"></g>').join('');},sync(){this.render();}};
+  const el={dataset:{},state:{designId:'design',width:120,height:80,objects:[object,other],selected:'photo'},point:e=>({x:e.clientX,y:e.clientY}),normalize(){},record(old){undo.push(structuredClone(old||this.state));},render(){r.querySelector('.scene').innerHTML=this.state.objects.map(o=>'<g data-object="'+o.id+'"></g>').join('');},sync(){this.render();}};
   const selected=()=>el.state.objects.find(o=>o.id===el.state.selected),select=id=>{el.state.selected=id;el.sync();},mutate=fn=>{el.record();fn();el.normalize();el.sync();},showTab=tab=>tabs.push(tab);
   const api={el,r,config,files,selected,select,mutate,showTab,say:m=>said.push(m),button:(key,label)=>'<button data-ux="'+key+'">'+label+'</button>'};
   const finishRights=beginCustomerRights(api);el.render();
@@ -105,6 +105,13 @@ function setup(t,{rights={move:true,replace:true,scale:false,delete:false},slot=
   return {el,r,files,undo,tabs,said,panel,uploadRequests:()=>uploadRequests,button,handle,node,object:current,select,selected,click:key=>emit(button(key),'click'),undoOne(){el.state=undo.pop();el.sync();}};
 }
 const geometry=o=>Object.fromEntries(['x','y','w','h','rotation','photoShape','photoMaskAssetId'].map(key=>[key,o[key]]));
+test('uploaded photo has no corner resizing on mouse or touch; only its size slider changes dimensions',t=>{
+ const h=setup(t,{rights:{move:true,replace:true,scale:true,delete:true},slot:{uxUploadKind:'photo'}}),before=structuredClone(h.object());
+ assert.equal(h.handle('scale').hidden,true);
+ for(const pointerType of ['mouse','touch']){drag(h,h.handle('scale'),{pointerType,dx:30,dy:20});assert.deepEqual(h.object(),before);}
+ const slider=h.panel.querySelector('[data-photo-object-size]');slider.value='40';emit(slider,'input');emit(slider,'change');assert.equal(h.object().w,40);assert.ok(Math.abs(h.object().h-40*before.h/before.w)<1e-9);assert.deepEqual(h.object().uxPhotoCrop,before.uxPhotoCrop);
+ h.click('photo-position-crop');const crop=structuredClone(h.object());drag(h,h.handle('scale'),{pointerType:'touch',dx:20,dy:20});assert.deepEqual(h.object(),crop);
+});
 function drag(h,target,{dx=10,dy=5,pointerType='mouse',end='pointerup'}={}){
   const start={clientX:50,clientY:40,pointerType};emit(target,'pointerdown',start);emit(h.r,'pointermove',{...start,clientX:50+dx,clientY:40+dy});if(end)emit(h.r,end,{...start,clientX:50+dx,clientY:40+dy});
 }
@@ -175,11 +182,17 @@ test('upload during field movement cancels geometry only and retains replacement
 test('fresh upload preserves moved slot and starts in field mode; hidden crop controls cannot change image',t=>{
   const h=setup(t,{uploaded:false});drag(h,h.node('photo'));const before=geometry(h.object());h.object().uxUploadId='upload';h.el.sync();
   assert.equal(h.el.uxPhotoPositionActive(h.object()),false);assert.deepEqual(geometry(h.object()),before);
-  const range=h.panel.querySelector('input');range.value='3';emit(range,'input');h.click('photo-position-reset');assert.equal(h.object().uxPhotoCrop,undefined);
+  const range=h.panel.querySelector('[data-photo-position=zoom]');range.value='3';emit(range,'input');h.click('photo-position-reset');assert.equal(h.object().uxPhotoCrop,undefined);
 });
 test('crop slider Escape restores prior crop without changing field and remove preserves the field',t=>{
-  const h=setup(t),before=structuredClone(h.object());h.click('photo-position-crop');const range=h.panel.querySelector('input');range.value='3';emit(range,'input');assert.equal(h.object().uxPhotoCrop.zoom,3);emit(range,'keydown',{key:'Escape'});
+  const h=setup(t),before=structuredClone(h.object());h.click('photo-position-crop');const range=h.panel.querySelector('[data-photo-position=zoom]');range.value='3';emit(range,'input');assert.equal(h.object().uxPhotoCrop.zoom,3);emit(range,'keydown',{key:'Escape'});
   assert.deepEqual(h.object(),before);h.click('photo-position-remove');assert.equal(h.object().uxUploadId,undefined);assert.deepEqual(geometry(h.object()),geometry(before));
+});
+test('removing an added customer photo removes its field too; undo restores the photo exactly',t=>{
+ const h=setup(t,{freePhoto:true,slot:{uxUploadKind:'photo'}}),before=structuredClone(h.object());
+ const remove=new Node('button');remove.dataset.ux='remove-content';remove.dataset.id='photo';h.r.append(remove);emit(remove,'click');
+ assert.equal(h.object(),undefined);assert.equal(h.el.state.selected,null);assert.equal(h.files.has('upload'),true);
+ h.undoOne();assert.deepEqual(h.object(),before);
 });
 
 test('small shared drag cancels the earlier real upload tap listener, while a stationary default tap still offers replacement',t=>{
@@ -203,7 +216,7 @@ test('photo keyboard focus survives shadow-root SVG replacement and never jumps 
   Object.defineProperty(h.r,'activeElement',{get:()=>inside(focused)?focused:null});
   h.node('photo').focus();assert.equal(document.activeElement,host);assert.equal(h.r.activeElement,h.node('photo'));
   emit(h.r.activeElement,'keydown',{key:'ArrowRight'});emit(h.r.activeElement,'keydown',{key:'ArrowRight'});assert.equal(h.object().x,52);assert.equal(h.r.activeElement,h.node('photo'));
-  const input=h.panel.querySelector('input');input.focus();h.el.render();assert.equal(document.activeElement,host);assert.equal(h.r.activeElement,input);
+  const input=h.panel.querySelector('[data-photo-position=zoom]');input.focus();h.el.render();assert.equal(document.activeElement,host);assert.equal(h.r.activeElement,input);
 });
 
 // Execute the actual floating toolbar update through its real render/sync wrappers.
@@ -223,7 +236,7 @@ function floatingPhotoToolbar(h){
   h.r.querySelector('.scene').getBoundingClientRect=()=>({width:300,height:200});
   const fullscreen=new Node('dialog');fullscreen.className='c-large-preview';fullscreen.open=false;h.r.append(fullscreen);
   const context={textToolbarPosition,placeDirectToolbar,fontDisplayName,config:{profile:{designs:[]}},extras:new Node('div'),matchMedia:()=>({matches:false}),CSS:{escape:value=>value},el:h.el,r:h.r,selected:h.selected,stage,panel,color,openButton:new Node('button'),confirm:new Node('div'),font:new Node('button'),presets:new Node('div'),size:new Node('input'),freeColor:false,colorTool:false,paletteColors:[],editing:null,close(){},can:(o,right)=>o&&!o.uxLocked&&!o.uxHidden&&h.el.uxCanEdit?.(o,right)!==false};
-  Object.assign(context,{selectionName,primary,secondary,tail,stableDoorbell:false,stableHost:null});
+  Object.assign(context,{selectionName,primary,secondary,tail,stableDoorbell:false,stableHost:new Node('div')});
   vm.runInNewContext(source.slice(begin,end)+source.slice(wrap,source.indexOf("  window.addEventListener('resize',update)",wrap))+'update();',context);
   return panel;
 }

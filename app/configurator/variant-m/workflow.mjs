@@ -127,6 +127,9 @@ export async function installWorkflow(api){
  // New uploads use the same free-space search; replacements keep their position.
  let known=new Set(el.state.objects.map(o=>o.id));
  let changing=false;
+ // Restored photos already have the customer's placement. They are not new uploads.
+ const restore=el.restoreDraft;
+ if(restore)el.restoreDraft=function(...args){const previous=changing;changing=true;try{return restore.apply(this,args);}finally{known=new Set(this.state.objects.map(o=>o.id));changing=previous;}};
  const choose=el.chooseDesign;
  el.chooseDesign=function(id){
   if(id===this.state.designId)return;

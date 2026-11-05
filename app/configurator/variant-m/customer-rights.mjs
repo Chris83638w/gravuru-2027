@@ -101,7 +101,7 @@ export function beginCustomerRights({el,r,config,selected,select,say}){
       const available=labels.filter(([right])=>can(object,right)).map(([,label])=>label);
       notice.textContent=available.length?'Für dieses Element änderbar: '+available.join(', ')+'.':'Dieses Element gehört fest zum Design.';
     }
-    for(const handle of all('[data-ux-handle]'))handle.hidden=handle.dataset.uxHandle==='rotate'&&el.uxCanRotate?.(object)===false||!!object&&!el.uxPhotoPositionActive?.(object)&&!can(object,handle.dataset.uxHandle==='scale'?'scale':'move');
+    for(const handle of all('[data-ux-handle]'))handle.hidden=object?.uxUploadKind==='photo'&&handle.dataset.uxHandle==='scale'||handle.dataset.uxHandle==='rotate'&&el.uxCanRotate?.(object)===false||!!object&&!el.uxPhotoPositionActive?.(object)&&!can(object,handle.dataset.uxHandle==='scale'?'scale':'move');
     for(const handle of all('.ux-handle-delete'))handle.hidden=!!object&&!el.uxCanPositionPhoto?.(object)&&!can(object,'delete');
     for(const handle of all('.ux-rotate-stem'))handle.hidden=!!object&&!el.uxPhotoPositionActive?.(object)&&!can(object,'move');
     for(const handle of all('.scene [data-resize]'))handle.setAttribute('visibility',can(objectById(handle.dataset.resize),'scale')?'visible':'hidden');

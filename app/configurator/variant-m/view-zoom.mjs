@@ -5,8 +5,11 @@ export async function installViewZoom({el,r,selected}){
  const stage=r.querySelector('.stage'),holder=r.querySelector('.plate-holder');if(!stage||!holder)return null;
  const response=await fetch('/configurator/variant-m/view-zoom.css');if(!response.ok)throw Error('Ansichtszoom konnte nicht geladen werden.');
  const style=document.createElement('style');style.textContent=await response.text();r.append(style);
- // Chris, 29.10.2026: touch pinch / desktop wheel only; no loupe or zoom controls.
+ // Mikail 05.11.2026: zoom only through this slider, on every device.
  stage.dataset.viewZoom='1';
+ const controlBar=document.createElement('label');controlBar.className='ux-view-zoom';controlBar.innerHTML='<span>Ansicht</span><input type="range" min="1" max="4" step=".01" value="1" aria-label="Ansicht vergrößern"><output>100 %</output>';stage.append(controlBar);
+ const zoomSlider=controlBar.querySelector('input'),zoomValue=controlBar.querySelector('output');
+ zoomSlider.addEventListener('input',()=>{cancelAnimation();manual(zoomViewAt(view,Number(zoomSlider.value),center(),bounds));});
  let view=fitView(),bounds=null,layers=[],pending=0,suppressUntil=0,refreshing=false;
  let animationFrame=0,animationEpoch=0;
  const mobile=()=>matchMedia('(max-width:767px)').matches;
@@ -23,7 +26,7 @@ export async function installViewZoom({el,r,selected}){
  function paint(){
   if(!bounds)return;
   for(const {node,box} of layers){const style=viewLayerStyle(view,bounds,box);node.style.setProperty('transform-origin','0 0','important');node.style.setProperty('transform',style.transform,'important');node.style.setProperty('clip-path',style.clipPath,'important');}
-  stage.dataset.viewZoom=String(view.scale);
+  stage.dataset.viewZoom=String(view.scale);zoomSlider.value=String(view.scale);zoomValue.textContent=Math.round(view.scale*100)+' %';
   el.uxRefreshSelectionHandles?.();el.uxRefreshTextToolbar?.();
  }
  function change(next){view=constrainView(next,bounds);paint();}
@@ -43,11 +46,11 @@ export async function installViewZoom({el,r,selected}){
  }
  const schedule=()=>{if(!pending)pending=requestAnimationFrame(refresh);};
  const cancelObject=()=>{el.uxCancelObjectGesture?.();el.uxCancelPhotoGesture?.();el.uxCancelPhotoTap?.();};
- const gesture=createViewGesture({getView:()=>view,setView:manual,getBounds:()=>bounds,photoActive,cancelObject});
+ const gesture=createViewGesture({getView:()=>view,setView:manual,getBounds:()=>bounds,photoActive,cancelObject,allowZoom:false});
  // TouchEvent batches are authoritative for simultaneous contacts (Safari/iOS).
  // Keep their gesture separate so the compatibility PointerEvents cannot also
  // resize an object or apply the same zoom twice.
- const touchGesture=createViewGesture({getView:()=>view,setView:manual,getBounds:()=>bounds,cancelObject});
+ const touchGesture=createViewGesture({getView:()=>view,setView:manual,getBounds:()=>bounds,cancelObject,allowZoom:false});
  let touchView=false;const touchTargets=new Set();
  const resetGestures=()=>{gesture.reset();touchGesture.reset();touchView=false;for(const node of touchTargets){node.removeEventListener('touchmove',touchMove,true);node.removeEventListener('touchend',touchFinished,true);node.removeEventListener('touchcancel',touchCancelled,true);}touchTargets.clear();};
  const path=e=>e.composedPath?.()||[e.target],target=e=>path(e).find(n=>n?.closest)||e.target;
@@ -94,7 +97,6 @@ export async function installViewZoom({el,r,selected}){
  el.addEventListener('pointerup',e=>end(e,false),true);el.addEventListener('pointercancel',e=>end(e,true),true);
  el.addEventListener('lostpointercapture',e=>{if(path(e)[0]===el)end(e,true);},true);
  el.addEventListener('click',e=>{if(performance.now()<suppressUntil&&onStage(e)&&!control(target(e))){stop(e);suppressUntil=0;}},true);
- el.addEventListener('wheel',e=>{if(mobile()||!bounds||!onStage(e)||wheelControl(target(e))||photoActive())return;cancelAnimation();stop(e);const p=point(e),delta=e.deltaY*(e.deltaMode===1?16:e.deltaMode===2?bounds.viewport.height:1);manual(zoomViewAt(view,view.scale*Math.exp(-Math.max(-300,Math.min(300,delta))*.002),p,bounds));},{capture:true,passive:false});
  // Navigation resets the view; selecting or editing never zooms.
  r.addEventListener('click',e=>{const node=e.target.closest?.('[data-ux],[data-ux-tab]');if(node?.dataset.uxTab||['mobile-prev','mobile-next','mobile-step'].includes(node?.dataset.ux))fit(true);},true);
  for(const name of ['render','sync']){const original=el[name];el[name]=function(...args){const result=original.apply(this,args);schedule();return result;};}

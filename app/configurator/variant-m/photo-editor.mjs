@@ -1,7 +1,7 @@
 import {photoColorMode} from '../../platform/sources/app/shared/models/photo-color.mjs';
 import {fittedSize,editedPhotoSize,retainedPhotoUrls} from './image-processing.mjs';
 
-export function createPhotoEditor({el,r,config,dialog,button,files,selected,mutate,say}){
+export function createPhotoEditor({el,r,config,dialog,button,files,selected,mutate,say,persistUpload=async()=>{}}){
   const d=dialog('photo-edit','Foto / Logo bearbeiten',`
     <p>Ziehe das Foto im Zuschnittfenster und vergrößere es mit Zoom. Nur der sichtbare Ausschnitt wird übernommen. Das Original bleibt erhalten.</p>
     <canvas class="ux-photo-canvas" aria-label="Bild bearbeiten: Ausschnitt verschieben"></canvas>
@@ -60,6 +60,7 @@ export function createPhotoEditor({el,r,config,dialog,button,files,selected,muta
       try{const output=productionImage();const blob=await new Promise((resolve,reject)=>output.canvas.toBlob(v=>v?resolve(v):reject(Error('Bild konnte nicht erstellt werden.')),'image/png'));
         if(blob.size>15*1024*1024)throw Error('Die bearbeitete Bilddatei überschreitet 15 MB. Bitte einen kleineren Ausschnitt wählen; das Original bleibt erhalten.');
         const id=crypto.randomUUID(),url=URL.createObjectURL(blob);files.set(id,{file:source.file,url,originalUrl:source.originalUrl||source.url,blob,edited:true,editSourceUrl:source.editSourceUrl||source.url,editSourceColor:inputColor,photoEdit:{angle,flip,...options()},width:output.canvas.width,height:output.canvas.height});
+        await persistUpload(id);
         mutate(()=>{o.uxUploadId=id;if(o.uxUploadKind==='photo')o.uxPhotoColor=options().color;delete o.uxPhotoCrop;if(!o.acrylicFixed&&o.photoShape!=='template'){o.h=o.w*canvas.height/canvas.width;if(o.type==='photoSlot')o.photoShape=options().shape==='circle'?'circle':'rect';}});d.close();say('Bild mit '+output.canvas.width+' × '+output.canvas.height+' Pixeln übernommen.'+(output.limited?' Sehr große Bildausgabe auf höchstens 20 Megapixel / 8192 Pixel Kantenlänge begrenzt.':'')+' Das Original bleibt erhalten; Rückgängig stellt die vorige Version wieder her.');
       }catch(error){$('[data-photo-status]').textContent=error.message;}finally{b.disabled=false;}
     }

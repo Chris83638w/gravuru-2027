@@ -33,7 +33,7 @@ function editor(config,resources){
 // Lädt die K7-Blöcke aus ux.mjs in einen Kontext: Guard anlegen, Sync-Hook, Wiederherstellung beim Start, „Neu beginnen“.
 function mountUx({config,resources,storage,timers,pendingDesignTransfer=false}){
   const el=editor(config,resources),said=[],banner={hidden:true},files=new Map();
-  const env={el,config,profile:config.profile,files,uploadReferences,say:m=>said.push(m),said,banner,$:s=>s==='[data-ux-session]'?banner:{hidden:true},update(){},notifyCorrection(){},
+  const env={sessionUploads:null,persistUpload(){},missingUploads:[],el,config,profile:config.profile,files,uploadReferences,say:m=>said.push(m),said,banner,$:s=>s==='[data-ux-session]'?banner:{hidden:true},update(){},notifyCorrection(){},
     installAccountDrafts:()=>null,dialogs:{account:{}},button(){},esc:v=>v,uploadPending:false,URL:{revokeObjectURL(){}},location:{reload(){env.reloaded=true;}},
     window:{parent:{GravuruShopEntry:{designGallery:{hasPendingTransfer:()=>pendingDesignTransfer}}},localStorage:storage,addEventListener(type,fn){(env.listeners[type]||=[]).push(fn);}},listeners:{},
     createSessionGuard:options=>createSessionGuard({...options,schedule:fn=>{timers.queued=fn;return 1;},cancel:()=>{timers.queued=null;}})};
@@ -43,6 +43,7 @@ function mountUx({config,resources,storage,timers,pendingDesignTransfer=false}){
   vm.runInContext(block('ux.mjs','  function restoreDraft(draft){','\n  }'),env);
   vm.runInContext(block('ux.mjs','  let sessionGuard=null,initialDraft=null,accountDrafts=null;','\n  }'),env);
   vm.runInContext(line('ux.mjs','const pendingDesignTransfer='),env);
+  env.missingUploads=vm.runInContext('sessionGuard?.read()?.uploads||[]',env);
   vm.runInContext(block('ux.mjs','  if(sessionGuard&&!config?.workbench){','  }else sessionGuard=null;'),env);
   vm.runInContext(line('ux.mjs',"if(config&&!config.workbench&&typeof el.draftPayload==='function')accountDrafts=installAccountDrafts("),env);
   env.restart=()=>{env.action='session-restart';vm.runInContext('(function(){'+line('ux.mjs',"if(action==='session-restart')")+'})()',env);};
@@ -88,7 +89,7 @@ test('Sitzungsschutz: Foto-Referenzen bleiben, Bilder nicht – Hinweis zum erne
   assert.deepEqual(stored.uploads,[{objectId:slot.id,uploadId:'upload-1',kind:'photo',name:'oma.jpg'}]);
   const second=mountUx({config,resources,storage,timers});
   assert.equal(second.el.state.objects.find(o=>o.type==='photoSlot').uxUploadId,'upload-1');
-  assert.equal(second.files.size,0);assert.match(second.said.at(-1),/Bitte fehlende Dateien erneut auswählen oder deinen gespeicherten Entwurf laden/);
+  assert.equal(second.files.size,0);assert.match(second.said.at(-1),/ältere Bilddatei/);
 });
 
 test('Sitzungsschutz: laufende Designübernahme hat Vorrang; alte Sitzung bleibt bis zur nächsten gültigen Änderung erhalten',()=>{

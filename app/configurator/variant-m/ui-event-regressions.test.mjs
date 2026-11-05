@@ -4,6 +4,7 @@ import {alignmentContent,alignmentLabel} from './ui-icons.mjs';
 import {selectionScaleFactor} from './selection-arrows.mjs';
 import {previewResourceURL} from './preview-resource.mjs';
 import test from 'node:test';
+import {fitUploadedPhoto} from './photo-upload-geometry.mjs';
 import {fontDisplayName} from './font-display.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -147,7 +148,7 @@ test('fixed acrylic photo: actual editor apply keeps shape/geometry and remains 
  prepareConfig(config);
  const design=structuredClone(config.profile.designs[0]),object=design.objects.find(o=>o.id==='photo-main'),before=structuredClone(object),d=eventTarget(),files=new Map();
  let closed=false;d.close=()=>{closed=true;};
- const env={productionImage:()=>({canvas:env.canvas,limited:false}),d,inputColor:'original',angle:0,flip:1,el:{uxCanEdit:()=>true},objectId:object.id,selected:()=>object,files,source:{file:{name:'test.png'},url:'blob:original'},canvas:{width:1200,height:1200,toBlob:callback=>callback({})},options:()=>({shape:'circle'}),mutate:fn=>fn(),say(){},crypto:{randomUUID:()=> 'new-image'},URL:{createObjectURL:()=> 'blob:edited'},$:()=>({textContent:''})};
+ const env={persistUpload:async()=>{},productionImage:()=>({canvas:env.canvas,limited:false}),d,inputColor:'original',angle:0,flip:1,el:{uxCanEdit:()=>true},objectId:object.id,selected:()=>object,files,source:{file:{name:'test.png'},url:'blob:original'},canvas:{width:1200,height:1200,toBlob:callback=>callback({})},options:()=>({shape:'circle'}),mutate:fn=>fn(),say(){},crypto:{randomUUID:()=> 'new-image'},URL:{createObjectURL:()=> 'blob:edited'},$:()=>({textContent:''})};
  vm.runInNewContext(block('photo-editor.mjs',"  d.addEventListener('click',async e=>{","\n  });"),env);
  const button={dataset:{ux:'photo-apply'},disabled:false};
  await dispatch(d,'click',inertEvent({closest:()=>button}));
@@ -181,7 +182,7 @@ test('imported acrylic photo: actual upload handler replaces semantic slot twice
  const {uploadTarget}=await import('./ux-model.mjs');
  const slot={id:'customer-photo-main',fieldKey:'photo-main',type:'photoSlot',photoShape:'arch',w:120,h:140,acrylicFixed:true};
  const objects=[slot],files=new Map();let count=0;
- const env={config:{acrylic:{},photo:{enabled:true}},el:{state:{objects,selected:null},uxCanEdit:()=>true,normalize(){},sync(){}},uploadTarget,
+ const env={persistUpload:async()=>{},fitUploadedPhoto,config:{acrylic:{},photo:{enabled:true}},el:{state:{objects,selected:null},uxCanEdit:()=>true,normalize(){},sync(){}},uploadTarget,
  uploadAllowed:()=>true,photoAvailableForDesign:()=>true,validateUpload(){},files,mutate:fn=>fn(),say(){},showTab(){},requestAnimationFrame(){},uploadKind:'photo',replacing:null,uploadPending:false,
  URL:{createObjectURL:()=> 'blob:test',revokeObjectURL(){}},crypto:{randomUUID:()=>String(++count)},Image:class{naturalWidth=900;naturalHeight=1200;async decode(){}},all:()=>[]};
  vm.createContext(env);vm.runInContext(block('ux.mjs','  async function acceptFiles(','\n  }\n  r.addEventListener').replace('\n  r.addEventListener',''),env);

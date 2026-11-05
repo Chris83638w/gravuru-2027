@@ -1,3 +1,4 @@
+import {installMotifSearchAnalytics} from './motif-search-analytics.mjs';
 import {alignmentContent,uiIcon} from './ui-icons.mjs';
 import {showOverlapWarnings,editableTexts,centerTexts,mechanicalHints,hintKey,motifScore,templateOverlap} from './customer-tools-model.mjs';
 import {themeDefinition,orderMotifCategories} from './design-gallery-model.mjs';
@@ -53,8 +54,9 @@ export async function installCustomerTools(api){
  }
  r.addEventListener('pointerdown',blank);
 
+ installMotifSearchAnalytics({el,config});
  const search=$('[data-library-search]'),category=$('[data-library-category]');
- category?.addEventListener('change',()=>{search.value='';search.dispatchEvent(new Event('input',{bubbles:true}));},true);
+ // Search remains authoritative while a query is present; category is remembered.
  // Renderer supplies semantic matching through this callback; no upload or paid API.
  // K9/V4: Motivkategorien des Produktthemas (`config.themes` aus themen.json) zuerst.
  const theme=themeDefinition(config,profile);

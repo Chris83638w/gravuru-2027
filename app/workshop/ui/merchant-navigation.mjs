@@ -12,6 +12,7 @@ export function merchantNavigation(href, current, {newTab=false, apiKey='', shop
   return url.href;
 }
 if(globalThis.document?.querySelector('meta[name=gravuru-merchant-auth]')){
+ const nav=document.querySelector('.ws-nav,nav[aria-label="Hauptnavigation"]');if(nav&&!nav.querySelector('a[href="/werkstatt/motivsuche/"]')){const link=document.createElement('a');link.href='/werkstatt/motivsuche/';link.className=nav.classList.contains('ws-nav')?'ws-nav-item':'nav-item';link.dataset.motifAnalytics='';link.textContent='Suchauswertung';nav.append(link);}
  const apiKey=document.querySelector('meta[name=shopify-api-key]')?.content,shop=document.querySelector('meta[name=shopify-shop]')?.content;
  const follow=event=>{
   const link=event.target.closest('a[href]');if(!link||link.hasAttribute('download'))return;

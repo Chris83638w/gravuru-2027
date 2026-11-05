@@ -11,6 +11,7 @@ query CartTransformRunInput {
       motifs: attribute(key: "_gravuru_motifs") { value }
       uploads: attribute(key: "_gravuru_uploads") { value }
       logos: attribute(key: "_gravuru_logos") { value }
+      options: attribute(key: "_gravuru_options") { value }
       revision: attribute(key: "_gravuru_revision") { value }
       designFile: attribute(key: "Bearbeitbarer Entwurf") { value }
       merchandise { __typename ... on ProductVariant { id product { id pricing: metafield(namespace: "$app", key: "personalization") { jsonValue } } } }

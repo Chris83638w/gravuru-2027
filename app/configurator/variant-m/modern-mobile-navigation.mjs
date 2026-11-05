@@ -18,7 +18,7 @@ export async function installModernMobileNavigation({el,r,showTab}){
   r.host.style.setProperty('--ux-vv-height',Math.round(height)+'px');r.host.style.setProperty('--ux-vv-top',Math.round(top)+'px');
   const width=viewportOverride?.width??vv?.width??innerWidth;
   const ratio=Number(el.state?.width)/Number(el.state?.height);
-  const args={height,width,ratio,keyboardOpen:keyboard},expanded=mobilePreviewHeight(args);
+  const args={height,width,ratio,keyboardOpen:keyboard,galleryOpen:selected()==='design'},expanded=mobilePreviewHeight(args);
   const preview=mobilePreviewHeight({...args,scrollTop:scrollPosition});
   r.host.style.setProperty('--ux-mobile-preview-h',preview+'px');
   // Compensate the newly gained editor space so reaching its end cannot bounce

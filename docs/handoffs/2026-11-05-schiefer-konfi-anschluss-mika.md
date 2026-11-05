@@ -1,5 +1,30 @@
 # Schiefer: Konfi-Anschluss und Datenaufbau, 05.11.2026
 
+## Aktueller Nachtrag: Hundetest und Preisvertrag
+
+Dieser Nachtrag ersetzt die Live-/Scope-Angaben des darunter erhaltenen Erstbefunds. Mikail hat den Test auf **22×14 und 30×20 cm, Hund ohne Foto** begrenzt und anschließend **alle 43 Vorlagen nach seiner Sichtprüfung** gewählt. Keine Katalogfreigabe wurde vorweggenommen. Das gemeinsame optionale Foto-Modul bleibt erhalten; die 43 ausgewählten Vorlagen enthalten keine Fotofelder.
+
+- [22×14 cm prüfen](https://app-2027.gravuru-designwerkstatt.de/produktvorschau/21afd5dc8edad301caace78b04c7973c6a2e6f7b3133dd24/22x14.html)
+- [30×20 cm prüfen](https://app-2027.gravuru-designwerkstatt.de/produktvorschau/21afd5dc8edad301caace78b04c7973c6a2e6f7b3133dd24/30x20.html)
+
+Beide Seiten sind **Bedienprüfungen ohne Shop-Warenkorb**. 46 passende Hunde-Master im Originalkatalog, je Größe 43 nach geometrischer Passprüfung; D1060, D1083 und D1086 wegen Überständen ausgeschlossen. Die 22×14-Zuordnung stammt aus dem ursprünglichen `sizeTransfer.targetLabels` und Mikails Testauftrag; die bisherige Produktionshilfe `assignedSlateSizes` enthält 22×14 noch nicht. Keine gefälschten `freigabe`-/`ziele`-Einträge. Startdesign Bruno/D1000, Originalschriften und Originalmotive, Grundpreise 2.199/2.399 Cent. Der Testimport verwendet stabile Import-IDs und erzeugt zwei interne Produkte, keine Shopify-Produkte.
+
+Aktive Serverlaufzeit: `private/mika-konfi-hundetest-20261105`, aus vollständiger vorhandener Laufzeit kopiert; bestehende Host-Anpassungen erhalten. Startup-SHA `8b1de55dc177f79cf35a47cbd4d75bca98ea75ea7532b12d89e8cb1c144d4d9d`, Bundle `editor-59e7c06a4e1ad9ed.mjs`. Astra-Integration plus Schieferregeln: Linux 64/64; abschließende Galerie-/Host-/Regeltests 21/21. Kopie der bisherigen Einstiegdatei als Rückweg; keine alte Datenbank über neue Kundendaten zurückkopieren.
+
+Öffentliche Testseiten laden denselben nativen Editor. Designgalerie startet mobil kompakt: erste Designkarten sind bei 390×664 ohne Herunterscrollen sichtbar. Gemeinsame Originalbilder und Schriften werden über gehashte Ressourcen geladen. UTF-8 steht vor den eingebetteten Testdaten, damit das Sterbezeichen korrekt bleibt. Real geprüft: Bruno, 30×20 23,99 EUR, zusätzliches Motiv +1,69 EUR, Rückgängig zurück zum Grundpreis, klarer Ständer +13,99 EUR. Bohrbilder unverändert aus Katalog: 22×14 vier Millimeter / Randabstand 17 mm; 30×20 vier Millimeter / Randabstand 19 mm.
+
+**Offener Befund:** Bruno kann bei zwei Bohrungen die linke Datumszeile mit dem Loch überlagern. Die vorhandene automatische Montage-Einpassung ist bislang ausdrücklich auf drei Metall-/Acrylfamilien begrenzt. Die Sichtprüfung ist deshalb noch keine Fertigungsfreigabe. Keine neuen Lochabstände oder Schraubenkopfmaße geraten.
+
+### Vorbereiteter V3-Aufpreisvertrag
+
+`gravuru-personalization-pricing/v3` ergänzt eine app-eigene Preistabelle `optionPrices`. Der Warenkorb übermittelt ausschließlich sortierte eindeutige Options-IDs in `_gravuru_options`; `-` bezeichnet ausdrücklich keine ausgewählten Zusätze. Checkbox-Preise müssen beim Binden exakt den gespeicherten Produktdaten entsprechen. Snapshot und Warenkorbangebot prüfen ausgewählte IDs, Werte, Beträge und Summe. Shopify errechnet den Zuschlag aus der app-eigenen Tabelle. V1/V2, historische Verträge, Logos, Rabattstaffeln, Cent-Rundung und geprüfte Checkout-Bilder bleiben erhalten.
+
+174/174 lokale Tests bestanden: Cart-Personalisierung, acht Zubehörkombinationen bei beiden Grundpreisen, zusätzliche Motive, Mengen, hypothetische vorhandene Staffelverträge, Manipulationsfälle, Bestellannahme, gespeicherter Entwurf, Wiederöffnen und bisherige Verträge. Keine neuen Rabattstaffeln für Schiefer eingeführt. Bezahlte andere Eingabearten und Rückseitenzuschläge bleiben gesperrt, bis sie gesondert angebunden sind. Die neue gemeinsame Datei `ops/shopify/master-release/priced-options.mjs` muss mit der Serverlaufzeit ausgeliefert werden.
+
+V3 ist zum Zeitpunkt dieses Eintrags **nicht auf Shopify veröffentlicht**. Frischer Readback am 05.11. bestätigt `gravuru-2027-issue139-pricing-20261102-v1`, Version `1191284113409`, als aktiv. Das ältere Projekt `konfigurator-master-20261030/shopify-project` ist daher keine ungeprüfte Releasegrundlage. Erst vollständiges aktives App-Projekt sichern/vergleichen, isoliert kompilieren, Kandidat ohne Release, danach gezielte Auslieferung und echter Shop-Warenkorbtest. Sichtfreigabe aller 43 durch Mikail weiterhin offen. Abstimmung über #168; kein paralleler Neuaufbau der Designs.
+
+## Historischer Erstbefund vor der heutigen Integration
+
 ## Auftrag und Quelle
 
 Mikail beauftragt im eigenen Chat die Übernahme des neuesten Astra-Konfis, eine genaue Prüfung am Desktop/Handy und eine erste kaufbare Produktgruppe **Schiefer-Gedenktafeln einschließlich geprüftem Warenkorb**. Zunächst eigener Shopify-Shop; der Anschluss soll später erweiterbar sein. Abstimmung über [Postfach #168](https://github.com/Chris83638w/gravuru-2027/issues/168), keine parallele Designproduktion.

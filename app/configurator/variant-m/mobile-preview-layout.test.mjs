@@ -21,3 +21,11 @@ test('short and tall products fit the available width and preserve room for edit
 test('keyboard height is stable regardless of the previous scroll position',()=>{
  for(const scrollTop of [0,48,10000])assert.equal(mobilePreviewHeight({width:375,height:300,scrollTop,keyboardOpen:true}),156);
 });
+test('design gallery leaves room for the first row immediately on small phones',()=>{
+ for(const [width,height] of [[390,664],[375,548],[430,932]]){
+  const args={width,height,ratio:1.5,galleryOpen:true};
+  assert.ok(mobilePreviewHeight(args)<=200);
+  assert.equal(mobilePreviewHeight(args),mobilePreviewHeight({...args,scrollTop:200}));
+  assert.equal(mobilePreviewHeight(args),mobilePreviewHeight({...args,galleryOpen:false,scrollTop:96}));
+ }
+});

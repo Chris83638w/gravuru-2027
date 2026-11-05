@@ -11,3 +11,7 @@ Chris hat die gemeinsam geprüfte Oberfläche als verbindlichen Master für alle
 - Rückweg: vorherige App-Version wieder freigeben. Keine alte Datenbank über neue Kundenstände kopieren.
 
 Prüfung: `node --test ops/shopify/master-release/cart_transform_run.test.mjs`. Der Compilerbeleg steht in `compiled-function-proof.json`; er ist ein Beleg synthetischer WASM-Tests und ersetzt keinen Live-Warenkorbtest.
+
+## Vorbereiteter V3-Vertrag vom 05.11.2026
+
+V3 ergänzt bestätigte Checkbox-Zusätze über die app-eigene Tabelle `optionPrices`. `_gravuru_options` enthält sortierte, eindeutige IDs oder den ausdrücklichen Leerwert `-`, niemals Preise. `priced-options.mjs` wird von Backend und Preisfunktion gemeinsam verwendet und muss in beiden Auslieferungen vorhanden sein. V1-/V2-Arithmetik und historische Verträge bleiben erhalten. Die Änderung ist noch nicht veröffentlicht; der oben genannte Compilerbeleg belegt V3 nicht. Aktiver Shopify-Readback: `gravuru-2027-issue139-pricing-20261102-v1` (1191284113409). Aktuelles vollständiges App-Projekt vor einem Release neu zuordnen.

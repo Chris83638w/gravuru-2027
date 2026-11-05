@@ -61,7 +61,7 @@ export function textOutlineBounds(object,fonts){
 // Holes remain separate hints. Null cannot clear a validation error.
 export function textOutlineFits(object,geometry,fonts){
  if(object?.type!=='text'||!fonts||!geometry||geometry.bell||geometry.designArea||
-    !(geometry.shape==='ellipse'||geometry.shape==='contour'||geometry.cornerRadiusMm>0))return null;
+    !(['rect','ellipse','contour'].includes(geometry.shape)||geometry.cornerRadiusMm>0))return null;
  try{
   if(!['x','y','w','h','rotation'].every(k=>Number.isFinite(object[k]))||object.w<=0||object.h<=0||Math.abs(object.rotation)>360)unsupported();
   const checked=measureText({...object},fonts); // reject missing faces/glyphs and invalid spacing

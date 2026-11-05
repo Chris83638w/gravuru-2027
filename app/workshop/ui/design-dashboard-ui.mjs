@@ -76,7 +76,7 @@ async function load(){
 function visibleRows(){
  const d=state.data;if(!d)return [];
  const q=state.query.trim().toLocaleLowerCase('de');
- return d.rows.filter(r=>(!state.reihe||r.reihe===state.reihe||r.formatreihe===state.reihe)&&(!state.material||r.material===state.material)&&(!state.status||r.status===state.status)&&(!state.freigabe||r.released===(state.freigabe==='ja'))&&(state.duplicates||!r.duplicate)&&(!state.selectable||r.selectable)&&(!state.startDesigns||r.isStartDesign)&&(!state.theme||r.themes.some(t=>t.id===state.theme))&&(!q||[r.id,r.name,r.nameSheet||'',...(r.mainProducts??[]).flatMap(p=>[p.id,p.customizationId,p.name,p.sizeLabel]),...r.fonts.map(f=>f.name),...r.themes.map(t=>t.name),...(r.texts.sample||[])].some(v=>String(v).toLocaleLowerCase('de').includes(q)))).sort((a,b)=>natural.compare(a.id,b.id));
+ return d.rows.filter(r=>(!state.reihe||r.reihe===state.reihe||r.formatreihe===state.reihe)&&(!state.material||r.material===state.material)&&(!state.status||r.status===state.status)&&(!state.freigabe||r.released===(state.freigabe==='ja'))&&(state.duplicates||!r.duplicate)&&(!state.selectable||r.selectable)&&(!state.startDesigns||r.isStartDesign)&&(!state.theme||r.themes.some(t=>t.id===state.theme))&&(!q||[r.id,r.name,r.nameSheet||'',...(r.mainProducts??[]).flatMap(p=>[p.id,p.customizationId,p.name,p.sizeLabel]),...r.fonts.map(f=>f.name),...r.themes.map(t=>t.name),...(r.texts.sample||[])].some(v=>String(v).toLocaleLowerCase('de').includes(q)))).sort((a,b)=>(b.katalogPrio===1)-(a.katalogPrio===1)||natural.compare(a.id,b.id));
 }
 function renderPicker(host,items,current,onPick,{all=null}={}){
  host.replaceChildren();

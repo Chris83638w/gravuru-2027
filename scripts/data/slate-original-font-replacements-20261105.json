@@ -1,0 +1,174 @@
+{
+  "Arial": {
+    "to": "Lato",
+    "source": "schriften/schriften.json#replacements"
+  },
+  "Arial Italic": {
+    "to": "Lato",
+    "source": "schriften/ersatz-gedenktafeln-22x14.json"
+  },
+  "Times New Roman": {
+    "to": "Libre Baskerville",
+    "source": "schriften/schriften.json#replacements"
+  },
+  "Champagne & Limousines": {
+    "to": "Montserrat Light",
+    "source": "schriften/schriften.json#replacements"
+  },
+  "Poppins ExtraLight": {
+    "to": "Poppins ExtraLight",
+    "source": "schriften/ersatz-gedenktafeln-22x14.json"
+  },
+  "Tangerine Bold": {
+    "to": "Tangerine",
+    "source": "schriften/ersatz-gedenktafeln-22x14.json"
+  },
+  "Mondevilla": {
+    "to": "Great Vibes",
+    "source": "schriften/ersatz-gedenktafeln-22x14.json"
+  },
+  "Anthoni Signature": {
+    "to": "Great Vibes",
+    "source": "schriften/ersatz-gedenktafeln-22x14.json"
+  },
+  "Centaur": {
+    "to": "Cormorant Garamond",
+    "source": "schriften/ersatz-gedenktafeln-22x14.json"
+  },
+  "Georgia": {
+    "to": "Libre Baskerville",
+    "source": "schriften/ersatz-gedenktafeln-22x14.json"
+  },
+  "Amarillo": {
+    "to": "Kaushan Script",
+    "source": "schriften/ersatz-gedenktafeln-22x14.json"
+  },
+  "Ampera": {
+    "to": "Dancing Script",
+    "source": "schriften/ersatz-gedenktafeln-22x14.json"
+  },
+  "Comic Sans MS": {
+    "to": "Comic Neue",
+    "source": "schriften/schriften.json#replacements"
+  },
+  "Clarissa": {
+    "to": "Alex Brush",
+    "source": "schriften/schriften.json#replacements"
+  },
+  "Playlist": {
+    "to": "Homage",
+    "source": "schriften/schriften.json#replacements"
+  },
+  "Standlist": {
+    "to": "Ashley",
+    "source": "schriften/schriften.json#replacements"
+  },
+  "Sophie Robinson": {
+    "to": "Allura",
+    "source": "schriften/schriften.json#replacements"
+  },
+  "Century Gothic": {
+    "to": "Montserrat",
+    "source": "schriften/schriften.json#replacements"
+  },
+  "Constantia": {
+    "to": "Lora",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D1/design.json"
+  },
+  "Amalfi Coast": {
+    "to": "Sacramento",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D10/design.json"
+  },
+  "Copperplate Gothic Light": {
+    "to": "Cinzel",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D17/design.json"
+  },
+  "Copperplate Gothic": {
+    "to": "Cinzel",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D17/design.json"
+  },
+  "Maddison": {
+    "to": "Allura",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D205/design.json"
+  },
+  "BOLICA": {
+    "to": "Satisfy",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D226/design.json"
+  },
+  "The BraggestDemo": {
+    "to": "Allura",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D226/design.json"
+  },
+  "Handlee": {
+    "to": "Patrick Hand",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D25/design.json"
+  },
+  "Morning Glory": {
+    "to": "Dancing Script",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D253/design.json"
+  },
+  "Atlanta": {
+    "to": "Allura",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D256/design.json"
+  },
+  "Magnolia": {
+    "to": "Magnolia Script",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D256/design.json"
+  },
+  "Chicken": {
+    "to": "Chewy",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D256/design.json"
+  },
+  "EB Garamond": {
+    "to": "Cormorant Garamond",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D290/design.json"
+  },
+  "josephsophia": {
+    "to": "Alex Brush",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D293/design.json"
+  },
+  "MINIMALIST": {
+    "to": "Minimalist",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D4/design.json"
+  },
+  "Vista La Diva": {
+    "to": "Parisienne",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D5/design.json"
+  },
+  "Rainbow Starmoon": {
+    "to": "Satisfy",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D54/design.json"
+  },
+  "Ashley Marie": {
+    "to": "Ashley",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D55/design.json"
+  },
+  "Sunny Coast": {
+    "to": "Sacramento",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D69/design.json"
+  },
+  "Soulmate": {
+    "to": "Alex Brush",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D71/design.json"
+  },
+  "Challista": {
+    "to": "Great Vibes",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D76/design.json"
+  },
+  "The Feeling": {
+    "to": "Sacramento",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D83/design.json"
+  },
+  "Brown Pen": {
+    "to": "Caveat",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D89/design.json"
+  },
+  "Century751 BT": {
+    "to": "Libre Baskerville",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D92/design.json"
+  },
+  "Edwardian Script ITC": {
+    "to": "Italianno",
+    "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D94/design.json"
+  }
+}

@@ -101,7 +101,9 @@ test('actual field UI moves its highlight and open font controls with selection 
  const el={dataset:{}},env={el,r,object:{id:'a',type:'text'},requestAnimationFrame:fn=>fn(),ResizeObserver:class{constructor(fn){resizers.push(fn);}observe(){}disconnect(){}},window:{addEventListener(){}},document:{createElement:()=>new Element()}};
  env.selected=()=>env.object;env.select=id=>{env.object={id,type:'text'};el.uxUpdateTextUI();};vm.createContext(env);vm.runInContext(code.slice(code.indexOf('export function installTextFields')).replace('export ',''),env);vm.runInContext('installTextFields({el,r,selected,select})',env);
  assert.equal(rows[0].attrs['aria-current'],'true');assert.equal(rows[1].attrs['aria-current'],undefined);
- callbacks.click({target:{closest:()=>rows[0].disclosure}});assert.equal(controls.parentNode,rows[0]);assert.equal(controls.hidden,false);
+ callbacks.focusin({target:{closest:s=>s==='[data-ux-text]'?fieldNodes[0]:null}});assert.equal(controls.parentNode,rows[0]);assert.equal(controls.hidden,false);
+ callbacks.click({target:{closest:s=>s==='[data-text-options]'?rows[0].disclosure:null}});assert.equal(controls.hidden,true,'manual collapse remains available');
+ callbacks.click({target:{closest:s=>s==='[data-ux-text]'?fieldNodes[0]:null}});assert.equal(controls.hidden,false,'clicking the already focused field reopens its controls');
  env.select('b');assert.equal(rows[0].attrs['aria-current'],undefined);assert.equal(rows[1].attrs['aria-current'],'true');assert.equal(controls.parentNode,rows[1]);assert.equal(rows[1].disclosure.attrs['aria-expanded'],'true');assert.ok(editor.scrollTop>0);
  editor.scrollTop=0;resizers[0]();assert.ok(editor.scrollTop>0,'same selected text is still revealed after a viewport resize');
  el.dataset.uxMobileTabs='true';editor.scrollTop=12;resizers[0]();assert.equal(editor.scrollTop,12,'mobile preview resize must not pull the list back to the selected field');

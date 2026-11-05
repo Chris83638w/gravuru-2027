@@ -39,29 +39,44 @@ export function categorySymbol(label){
  return 'grid';
 }
 
+export function quickCategoryOptions(options,value){
+ const available=[...options].filter(o=>!o.disabled),quick=[];
+ for(const key of ['__bestsellers','Tiere','Blumen','Herzen']){const option=available.find(o=>o.value===key);if(option)quick.push(option);}
+ for(const option of available)if(option.value&&quick.length<4&&!quick.includes(option))quick.push(option);
+ const selected=available.find(o=>o.value===value);
+ if(selected&&!quick.includes(selected)){if(quick.length===4)quick.pop();quick.push(selected);}
+ return quick;
+}
+
 // Native select remains the single source of values and change events.
 export function installCategoryPicker(select,{doc=document}={}){
  const host=doc.createElement('div');host.className='ux-category-picker';
+ const quick=doc.createElement('div');quick.className='ux-category-quick';quick.setAttribute('role','group');quick.setAttribute('aria-label','Motivkategorien entdecken');
  const trigger=doc.createElement('button');trigger.type='button';trigger.className='ux-category-trigger';trigger.setAttribute('aria-haspopup','listbox');trigger.setAttribute('aria-expanded','false');
  const list=doc.createElement('div');list.className='ux-motif-category-menu';list.id='ux-motif-category-list';list.setAttribute('popover','auto');list.setAttribute('role','listbox');list.setAttribute('aria-label','Motivkategorie');
- trigger.setAttribute('aria-controls',list.id);host.append(trigger,list);select.after(host);select.classList.add('ux-category-source');select.setAttribute('aria-hidden','true');select.tabIndex=-1;
- let signature='',rows=[];
+ trigger.setAttribute('aria-controls',list.id);host.append(quick,trigger,list);select.after(host);select.classList.add('ux-category-source');select.setAttribute('aria-hidden','true');select.tabIndex=-1;
+ let signature='',quickSignature='',rows=[];
+ function pick(value){select.value=value;select.dispatchEvent(new Event('change',{bubbles:true}));refresh();}
+ function optionContent(node,option){const symbol=doc.createElement('span');symbol.innerHTML=uiIcon(categorySymbol(option.textContent));const name=doc.createElement('span');name.textContent=option.textContent;const check=doc.createElement('span');check.className='ux-category-check';check.textContent='✓';check.setAttribute('aria-hidden','true');node.append(symbol,name,check);}
  function refresh(){
   const options=[...select.options],selected=options.find(o=>o.value===select.value)||options[0];
   trigger.disabled=select.disabled;trigger.replaceChildren();
-  const icon=doc.createElement('span');icon.innerHTML=uiIcon(categorySymbol(selected?.textContent||''));
-  const label=doc.createElement('span');label.textContent=selected?.textContent||'Kategorie';
-  const arrow=doc.createElement('span');arrow.className='ux-category-chevron';arrow.innerHTML=uiIcon('chevron');trigger.append(icon,label,arrow);trigger.setAttribute('aria-label','Motivkategorie: '+label.textContent);
+  const icon=doc.createElement('span');icon.innerHTML=uiIcon('grid');
+  const label=doc.createElement('span');label.textContent='Alle Kategorien anzeigen';
+  const arrow=doc.createElement('span');arrow.className='ux-category-chevron';arrow.innerHTML=uiIcon('chevron');trigger.append(icon,label,arrow);trigger.setAttribute('aria-label',label.textContent);
+  const shortcuts=quickCategoryOptions(options,selected?.value),quickNext=JSON.stringify(shortcuts.map(o=>[o.value,o.textContent]));
+  if(quickNext!==quickSignature){quickSignature=quickNext;quick.replaceChildren();for(const option of shortcuts){const b=doc.createElement('button');b.type='button';b.dataset.categoryValue=option.value;optionContent(b,option);b.onclick=()=>pick(option.value);quick.append(b);}}
+  for(const b of quick.children){b.disabled=select.disabled;b.setAttribute('aria-pressed',String(b.dataset.categoryValue===select.value));}
   const next=JSON.stringify(options.map(o=>[o.value,o.textContent,o.disabled]));
   if(next!==signature){signature=next;list.replaceChildren();rows=options.map(option=>{
    const row=doc.createElement('div');row.setAttribute('role','option');row.tabIndex=-1;row.dataset.value=option.value;row.setAttribute('aria-disabled',String(option.disabled));
-   const symbol=doc.createElement('span');symbol.innerHTML=uiIcon(categorySymbol(option.textContent));const name=doc.createElement('span');name.textContent=option.textContent;row.append(symbol,name);list.append(row);
-   row.onclick=()=>{if(option.disabled)return;select.value=option.value;select.dispatchEvent(new Event('change',{bubbles:true}));refresh();list.hidePopover();trigger.focus();};return row;
+   optionContent(row,option);list.append(row);
+   row.onclick=()=>{if(option.disabled)return;pick(option.value);list.hidePopover();trigger.focus();};return row;
   });}
   for(const row of rows)row.setAttribute('aria-selected',String(row.dataset.value===select.value));
  }
  function open(){refresh();const b=trigger.getBoundingClientRect(),view=doc.defaultView;
-  list.style.width=Math.min(b.width,view.innerWidth-24)+'px';list.style.left=Math.min(b.left,view.innerWidth-Math.min(b.width,view.innerWidth-24)-12)+'px';
+  const width=Math.min(Math.max(320,b.width),view.innerWidth-24);list.style.width=width+'px';list.style.left=Math.max(12,Math.min(b.left,view.innerWidth-width-12))+'px';
   const below=view.innerHeight-b.bottom-12,above=b.top-12,under=below>=Math.min(240,above);
   list.style.top=under?b.bottom+4+'px':'auto';list.style.bottom=under?'auto':view.innerHeight-b.top+4+'px';list.style.maxHeight=Math.max(80,Math.min(360,under?below:above))+'px';
   list.showPopover();(rows.find(row=>row.dataset.value===select.value)||rows[0])?.focus();

@@ -124,7 +124,8 @@ export async function installWorkflow(api){
   mutate(()=>{for(const o of el.state.objects)if(changed.has(o.id))Object.assign(o,copies.find(c=>c.id===o.id));});
   if(!reviewIssues().length){layoutDialog.close();say('Gestaltung eingepasst. Bitte noch einmal prüfen.');}else say('Bitte die übrigen markierten Elemente prüfen.');
  }});
- // New uploads use the same free-space search; replacements keep their position.
+ // New free photos retain their larger, centered upload bounds (Mika 05.11.2026).
+ // Other new uploads still use free-space search; replacements keep their position.
  let known=new Set(el.state.objects.map(o=>o.id));
  let changing=false;
  // Restored photos already have the customer's placement. They are not new uploads.
@@ -218,7 +219,7 @@ export async function installWorkflow(api){
   if(key==='copy-design-link'){const field=$('[data-design-link]');try{await navigator.clipboard.writeText(field.value);$('[data-design-link-status]').textContent='Link kopiert.';}catch{field.select();$('[data-design-link-status]').textContent='Bitte den Link markieren und kopieren.';}}
  });
  const render=el.render;el.render=function(...args){const v=render.apply(this,args);guides();return v;};
- const sync=el.sync;el.sync=function(...args){if(!changing)for(const o of this.state.objects)if(!known.has(o.id)&&o.uxUploadId)place(o);known=new Set(this.state.objects.map(o=>o.id));const v=sync.apply(this,args);rename();arrangeGallery();if($('#ux-size')){$('#ux-size').step=config?.workbench?.embedded?'.01':'1';if(r.activeElement!==$('#ux-size')&&selected()?.type==='text')$('#ux-size').value=el.uxDisplayTextSize(selected());}guides();return v;};
+ const sync=el.sync;el.sync=function(...args){if(!changing)for(const o of this.state.objects)if(!known.has(o.id)&&o.uxUploadId&&!(o.uxUploadKind==='photo'&&o.uxPersonal))place(o);known=new Set(this.state.objects.map(o=>o.id));const v=sync.apply(this,args);rename();arrangeGallery();if($('#ux-size')){$('#ux-size').step=config?.workbench?.embedded?'.01':'1';if(r.activeElement!==$('#ux-size')&&selected()?.type==='text')$('#ux-size').value=el.uxDisplayTextSize(selected());}guides();return v;};
  await installCompletion(api);
  installInlineMotifBrowser({root:r,panel,bestsellers});
  el.sync();

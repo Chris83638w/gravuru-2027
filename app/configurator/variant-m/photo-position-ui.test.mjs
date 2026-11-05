@@ -105,12 +105,12 @@ function setup(t,{rights={move:true,replace:true,scale:false,delete:false},slot=
   return {el,r,files,undo,tabs,said,panel,uploadRequests:()=>uploadRequests,button,handle,node,object:current,select,selected,click:key=>emit(button(key),'click'),undoOne(){el.state=undo.pop();el.sync();}};
 }
 const geometry=o=>Object.fromEntries(['x','y','w','h','rotation','photoShape','photoMaskAssetId'].map(key=>[key,o[key]]));
-test('uploaded photo has no corner resizing on mouse or touch; only its size slider changes dimensions',t=>{
+test('uploaded photo corners resize proportionally with mouse and touch, preserving the crop and undo',t=>{
  const h=setup(t,{rights:{move:true,replace:true,scale:true,delete:true},slot:{uxUploadKind:'photo'}}),before=structuredClone(h.object());
- assert.equal(h.handle('scale').hidden,true);
- for(const pointerType of ['mouse','touch']){drag(h,h.handle('scale'),{pointerType,dx:30,dy:20});assert.deepEqual(h.object(),before);}
+ assert.equal(h.handle('scale').hidden,false);
+ for(const pointerType of ['mouse','touch']){const start={clientX:65,clientY:60,pointerType};emit(h.handle('scale'),'pointerdown',start);emit(h.r,'pointermove',{...start,clientX:72.5,clientY:70});emit(h.r,'pointerup',{...start,clientX:72.5,clientY:70});assert.ok(h.object().w>before.w);assert.ok(Math.abs(h.object().h/h.object().w-before.h/before.w)<1e-9);assert.deepEqual(h.object().uxPhotoCrop,before.uxPhotoCrop);h.undoOne();assert.deepEqual(h.object(),before);}
  const slider=h.r.querySelector('[data-photo-object-size]');slider.value='40';emit(slider,'input');emit(slider,'change');assert.equal(h.object().w,40);assert.ok(Math.abs(h.object().h-40*before.h/before.w)<1e-9);assert.deepEqual(h.object().uxPhotoCrop,before.uxPhotoCrop);
- h.click('photo-position-crop');const crop=structuredClone(h.object());drag(h,h.handle('scale'),{pointerType:'touch',dx:20,dy:20});assert.deepEqual(h.object(),crop);
+ h.click('photo-position-crop');const crop=structuredClone(h.object());drag(h,h.handle('scale'),{pointerType:'touch',dx:20,dy:20});assert.deepEqual(geometry(h.object()),geometry(crop));assert.notDeepEqual(h.object().uxPhotoCrop,crop.uxPhotoCrop);
 });
 function drag(h,target,{dx=10,dy=5,pointerType='mouse',end='pointerup'}={}){
   const start={clientX:50,clientY:40,pointerType};emit(target,'pointerdown',start);emit(h.r,'pointermove',{...start,clientX:50+dx,clientY:40+dy});if(end)emit(h.r,end,{...start,clientX:50+dx,clientY:40+dy});

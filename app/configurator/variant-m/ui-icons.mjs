@@ -16,8 +16,8 @@ const paths=Object.freeze({
  message:'<path d="M3 3h18v14H9l-6 5ZM7 7h10M7 12h6"/>',
  flourish:'<path d="M2 14c14 0 0-14 0-4 0 5 9 4 10 1 1 3 10 4 10-1 0-10-14 4 0 4M12 11V5"/>',
  sign:'<path d="M3 5h18v14H3ZM7 10h10M7 14h7"/>',
- info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.5" r=".9" fill="currentColor" stroke="none"/>',
- warning:'<path d="M12 3 2 21h20ZM12 9v5"/><circle cx="12" cy="17.5" r=".9" fill="currentColor" stroke="none"/>',
+ info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.5" r="1.15" fill="currentColor" stroke="none"/>',
+ warning:'<path d="M12 3 2 21h20ZM12 9v5"/><circle cx="12" cy="17.5" r="1.15" fill="currentColor" stroke="none"/>',
  zoom:'<circle cx="10" cy="10" r="6.5"/><path d="m15 15 6 6M7 10h6M10 7v6"/>',
  grid:'<path d="M3 3h7v7H3ZM14 3h7v7h-7ZM3 14h7v7H3ZM14 14h7v7h-7Z"/>',
  star:'<path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9Z"/>',
@@ -34,7 +34,7 @@ const paths=Object.freeze({
  feather:'<path d="M4 21 17 8M7 17C-3 8 19-4 21 4c2 9-7 14-14 13ZM10 14h5M13 11h6"/>',
  back:'<path d="m12 5-7 7 7 7M5 12h15"/>',
  save:'<path d="M5 3h12l4 4v14H3V3h2ZM7 3v6h10V3M7 21v-8h10v8"/>',
- help:'<circle cx="12" cy="12" r="9"/><path d="M9 8.5a3 3 0 0 1 6 0c0 2-3 2.5-3 4"/><circle cx="12" cy="16.5" r=".8" fill="currentColor" stroke="none"/>',
+ help:'<circle cx="12" cy="12" r="9"/><path d="M9 8.5a3 3 0 0 1 6 0c0 2-3 2.5-3 4"/><circle cx="12" cy="16.5" r="1.15" fill="currentColor" stroke="none"/>',
  layers:'<path d="m12 3 10 5-10 5L2 8ZM2 12l10 5 10-5M2 16l10 5 10-5"/>',
  sliders:'<path d="M3 7h5m6 0h7M3 17h11m6 0h1"/><circle cx="11" cy="7" r="3"/><circle cx="17" cy="17" r="3"/>',
  chevron:'<path d="m6 9 6 6 6-6"/>',
@@ -44,7 +44,7 @@ const paths=Object.freeze({
 });
 export function uiIcon(name){
  if(!Object.hasOwn(paths,name))throw Error('Unbekanntes Oberflächensymbol: '+name);
- return '<svg class="ux-ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+paths[name]+'</svg>';
+ return '<svg class="ux-ui-icon" data-ui-icon="'+name+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+paths[name]+'</svg>';
 }
 export const alignmentLabel=mode=>({left:'Links',center:'Mitte',right:'Rechts'})[mode];
 export const alignmentContent=mode=>uiIcon(mode)+'<span>'+alignmentLabel(mode)+'</span>';

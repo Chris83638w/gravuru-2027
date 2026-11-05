@@ -1,3 +1,9 @@
+## 2026-11-05 · Codex/Mika · Text-Autosteuerung, sichtbare Kategorien und Foto-Eckgriffe live
+
+Mikails „Setze jetzt alle besprochenen Änderungen … wirklich nur diese Punkte“ umgesetzt: Textfeld öffnet Schrift/Größe darunter, vier sichtbare Motivkategorien plus sofort übernehmende Kategoriebox, Foto-Eckgriffe zusätzlich zum Regler, neue freie Fotos größer/mittig ohne nachträgliche Freiplatzverkleinerung, kompakte Foto-/Motiv-/Logoaktionen und besser erkennbare Oberflächensymbole. Die spätere ausdrückliche Eckgriff-Anforderung ersetzt die alte Foto-Reglerbeschränkung; Ansicht weiterhin ohne Rad-/Pinch-Zoom.
+
+**253/253 lokal und 253/253 Linux**, Builds bestanden. Desktop sowie 390×844/375×740 einschließlich Touch-Eckziehen, vollständigem Upload, Regler, Löschen/Rückgängig und Suchvorrang geprüft. R7 seit 22:20:42 UTC aktiv, **editor-958a103c84550164.mjs**. Live-Desktop/Handyansicht bestätigt, Nutzer-Tab erfolgreich neu geladen: **7 Elemente / 4 Fotos geometrisch unverändert**. Beide Produktmodelle bytegleich, 43 Designs, 19,99/24,99 EUR und 1,69 EUR je Zusatzmotiv erhalten. Beide Seiten/Modelle und alle fünf Bundles HTTP 200. Kein physisches Smartphone, Produktlaunch oder neuer Cart-Nachweis. Nächster Schritt: Mikails Sichtprüfung. [Übergabe mit Quellen und Nachweisen](docs/handoffs/2026-11-05-konfi-text-kategorien-foto-mika.md).
+
 ## 2026-11-05 · Codex/Mika · Foto/Löschen korrigiert, einzelner Canvas-Hinweis live
 
 Mikails ausdrückliche Nachträge umgesetzt: funktionierender Mülleimer auch bei hinzugefügten Motiven und Namen, vollständige Fotos ohne automatischen Beschnitt, Auswahl ohne versehentlichen Upload, erreichbarer Fotogrößenregler, Herz/Oval hochkant/Stern/Wolke als bewusste Zuschnittformate und genau eine schmale Überlagerungszeile direkt unter der Tafel. Beide 43-Design-Prüfmodelle erhalten die freigegebenen Namens-Löschrechte, künftige Importe dieselbe Konverterregel. Kategoriegestaltung bleibt zur Vorbesprechung offen.

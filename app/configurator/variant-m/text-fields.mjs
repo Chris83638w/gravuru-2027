@@ -34,7 +34,9 @@ export function installTextFields({el,r,selected,select}){
   if(object?.type==='text'&&object.id!==lastSelected)requestAnimationFrame(revealSelected);
   lastSelected=object?.id||null;
  }
- r.addEventListener('click',event=>{const disclosure=event.target.closest('[data-text-options]');if(disclosure)toggle(disclosure.dataset.textOptions);});
+ const openField=event=>{const field=event.target.closest('[data-ux-text]');if(!field)return;expanded=field.dataset.uxText;if(selected()?.id!==expanded)select(expanded);else update();};
+ r.addEventListener('focusin',openField);
+ r.addEventListener('click',event=>{const disclosure=event.target.closest('[data-text-options]');if(disclosure)toggle(disclosure.dataset.textOptions);else openField(event);});
  // Disclosure state changes explicitly, never on blur. iOS does not always focus
  // a tapped button; closing on textarea blur can remove it before its click fires.
  el.uxUpdateTextUI=update;update();

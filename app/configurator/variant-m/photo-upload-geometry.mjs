@@ -1,5 +1,8 @@
 // Free rectangular uploads keep the complete source image, in physical mm.
 // Existing shaped/fixed template slots retain their product geometry.
+export function newPhotoBounds(width,height){
+ return {x:width/2,y:height/2,w:width*.6,h:height*.65};
+}
 export function fitUploadedPhoto(object, asset) {
  if(object.type!=='photoSlot'||object.acrylicFixed||object.photoMaskAssetId||!['rect',undefined].includes(object.photoShape))return;
  if(!(asset.width>0&&asset.height>0))return;

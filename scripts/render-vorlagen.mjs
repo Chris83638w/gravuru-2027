@@ -125,6 +125,7 @@ for(const job of jobs){
 }
 const svgMs=Date.now()-started;
 
+fs.writeFileSync(path.join(out,'index.json'),JSON.stringify({katalog:root,familie:opt.familie,anzahl:results.length,ergebnisse:results,unvollstaendig:'PNG-Schritt läuft'},null,1)+'\n');
 // PNG: ein Chromium, eine Seite, nur Laden + Screenshot je Datei.
 let pngMs=0;
 const require=createRequire(import.meta.url);
@@ -136,14 +137,16 @@ if(opt.png){
  const t=Date.now();
  await withPages(4,{width,height:width},async pages=>{
   const queue=results.filter(r=>r.file);
+  // Ein fehlerhaftes Bild bricht den Lauf nicht ab (04.11.: Lauf über 3.463 Designs endete nach 801 PNG ohne index.json).
   await Promise.all(pages.map(async page=>{for(let r;(r=queue.shift());){
-   const svg=fs.readFileSync(path.join(out,r.file),'utf8').replace('<svg ','<svg id="vorlage" style="display:block;width:'+width+'px;height:auto" ');
-   await page.setContent('<!doctype html><html><body style="margin:0;background:transparent">'+svg+'</body></html>',{waitUntil:'load'});
-   r.png=r.file.replace(/\.svg$/,'.png');
-   const shot=await (await page.$('#vorlage')).screenshot({omitBackground:true});
-   // Grundplatten freigestellt: transparenten Rand abschneiden (sharp, falls vorhanden).
-   let bytes=shot;if(r.kind==='leer'){try{bytes=await require('sharp')(shot).trim({threshold:0}).png().toBuffer();}catch{}}
-   fs.writeFileSync(path.join(out,r.png),bytes);
+   try{
+    const svg=fs.readFileSync(path.join(out,r.file),'utf8').replace('<svg ','<svg id="vorlage" style="display:block;width:'+width+'px;height:auto" ');
+    await page.setContent('<!doctype html><html><body style="margin:0;background:transparent">'+svg+'</body></html>',{waitUntil:'load',timeout:60000});
+    const shot=await (await page.$('#vorlage')).screenshot({omitBackground:true,timeout:60000});
+    // Grundplatten freigestellt: transparenten Rand abschneiden (sharp, falls vorhanden).
+    let bytes=shot;if(r.kind==='leer'){try{bytes=await require('sharp')(shot).trim({threshold:0}).png().toBuffer();}catch{}}
+    const png=r.file.replace(/\.svg$/,'.png');fs.writeFileSync(path.join(out,png),bytes);r.png=png;
+   }catch(error){r.issues=[...(r.issues||[]),'PNG nicht erzeugt: '+String(error.message).split('\n')[0]];}
   }}));
  });
  pngMs=Date.now()-t;

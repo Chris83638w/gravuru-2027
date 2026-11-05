@@ -138,7 +138,7 @@ if(opt.png){
  await withPages(4,{width,height:width},async pages=>{
   const queue=results.filter(r=>r.file);
   // Ein fehlerhaftes Bild bricht den Lauf nicht ab (04.11.: Lauf über 3.463 Designs endete nach 801 PNG ohne index.json).
-  await Promise.all(pages.map(async page=>{for(let r;(r=queue.shift());){
+  await Promise.all(pages.map(async start=>{let page=start;for(let r;(r=queue.shift());){for(let versuch=0;versuch<2;versuch++){
    try{
     const svg=fs.readFileSync(path.join(out,r.file),'utf8').replace('<svg ','<svg id="vorlage" style="display:block;width:'+width+'px;height:auto" ');
     await page.setContent('<!doctype html><html><body style="margin:0;background:transparent">'+svg+'</body></html>',{waitUntil:'load',timeout:60000});
@@ -146,8 +146,13 @@ if(opt.png){
     // Grundplatten freigestellt: transparenten Rand abschneiden (sharp, falls vorhanden).
     let bytes=shot;if(r.kind==='leer'){try{bytes=await require('sharp')(shot).trim({threshold:0}).png().toBuffer();}catch{}}
     const png=r.file.replace(/\.svg$/,'.png');fs.writeFileSync(path.join(out,png),bytes);r.png=png;
-   }catch(error){r.issues=[...(r.issues||[]),'PNG nicht erzeugt: '+String(error.message).split('\n')[0]];}
-  }}));
+    break;
+   }catch(error){
+    // Abgestürzte Seite (z. B. sehr große Rasterbilder) ersetzen und einmal neu versuchen; die übrigen Bilder laufen weiter.
+    const ctx=page.context();try{await page.close();}catch{}page=await ctx.newPage();await page.setViewportSize({width,height:width});
+    if(versuch===1)r.issues=[...(r.issues||[]),'PNG nicht erzeugt: '+String(error.message).split('\n')[0]];
+   }
+  }}}));
  });
  pngMs=Date.now()-t;
 }

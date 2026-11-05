@@ -1,0 +1,9 @@
+<!doctype html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lokale Konfigurator-Prüfung</title><style>body{margin:0}#editor{height:100dvh}iframe{border:0;width:100%;height:100%;display:block}#error:empty{display:none}#error{color:#900;font:18px system-ui}</style><div id="editor"></div><p id="error"></p><script type="module">
+import {createDesignSwitch} from '/review-ui/shop-design-switch.mjs';
+const clientFor=id=>({loadModel:async()=>fetch('/review-model.json?design='+encodeURIComponent(id||'')).then(r=>r.json()),loadResources:async()=>({}),loadDesignGallery:async page=>fetch('/review-gallery.json?page='+page).then(r=>r.json()),loadDesignPreview:async target=>fetch('/review-preview.svg?design='+encodeURIComponent(target)).then(r=>{if(!r.ok)throw Error('preview');return r.blob();}),switchDesign:async target=>({token:target,designId:target,binding:data.binding})});
+const client=clientFor(''),data=await client.loadModel();const frame=document.createElement('iframe');frame.title='Konfigurator Bedienprüfung';
+function activate(entry,designGallery){window.GravuruModelProfile=entry.data.model.legacy;window.UniversalConfig=entry.data.model.universal;window.GravuruPreviewResources={};window.GravuruShopEntry={designGallery};}
+createDesignSwitch({initial:{client,data,resources:{},frame},fragment:new URLSearchParams(),container:{append(frame){console.log('Review new frame',frame.src);frame.addEventListener('load',()=>console.log('Review frame loaded'));document.getElementById('editor').append(frame);}},activate,toDataUrl:async()=>'',clientFactory:({token})=>clientFor(token)});
+window.addEventListener('message',e=>{if(e.data?.type==='gravuru-ux-failed')document.getElementById('error').textContent=e.data.message;});
+frame.src='/editor.html';document.getElementById('editor').append(frame);
+</script></html>

@@ -1,0 +1,304 @@
+{
+  "date": "2026-11-05",
+  "sourceCommit": "8b26efdb3d9a4b9d14a5e67070736cce25313939",
+  "packageBase": "85553eb354a8de4f1472ba127bf5adeae77a8f8e",
+  "scope": "Changed package files plus handoff; unchanged source is preserved by Git commit",
+  "fileCount": 59,
+  "files": [
+    {
+      "file": "STATUS.md",
+      "bytes": 491899,
+      "sha256": "808e3702772888e5fa8e39ccffae2bf55e58066312d7cb00ecf2de3e59c02bab"
+    },
+    {
+      "file": "app/configurator/variant-m/bundle.test.mjs",
+      "bytes": 12492,
+      "sha256": "249f75a67c78082b5c10d9ca11af8d6cf19cab239d42090c48eca2452e02953f"
+    },
+    {
+      "file": "app/configurator/variant-m/category-picker.mjs",
+      "bytes": 5757,
+      "sha256": "36c21c6b6b6ffc9d7ef10d6766084b56e9a80c11e977818c85ba21a74c283afe"
+    },
+    {
+      "file": "app/configurator/variant-m/customer-tools.mjs",
+      "bytes": 14133,
+      "sha256": "1264da1a231d6df354ca9afabe451291ce4cee42cc2d5cce48407f3eb8307fcf"
+    },
+    {
+      "file": "app/configurator/variant-m/decision-help-ui.test.mjs",
+      "bytes": 3226,
+      "sha256": "5693fd1493719f5fcd929c5d59c72cbcd063b3f03ecc93f58b3f69b6b62b4241"
+    },
+    {
+      "file": "app/configurator/variant-m/decision-help.mjs",
+      "bytes": 4806,
+      "sha256": "1ec6b3b419bd9e3a290ed07014955104601c112ec487c27712b188f031680d13"
+    },
+    {
+      "file": "app/configurator/variant-m/dialog-dismiss.mjs",
+      "bytes": 901,
+      "sha256": "931fb8e68a04fe3d933959906177c99ddc7e7d941e79275b1484d559b3dc04a6"
+    },
+    {
+      "file": "app/configurator/variant-m/dialog-dismiss.test.mjs",
+      "bytes": 1321,
+      "sha256": "751615291d58b5ef577e5185773090d48421d5c2ff81c558378365904834ec72"
+    },
+    {
+      "file": "app/configurator/variant-m/direct-editing.mjs",
+      "bytes": 26099,
+      "sha256": "8bae0649a02f1d61488b22eee554c0c5c9598ade12b35c0a5f5eee7ee85f8ace"
+    },
+    {
+      "file": "app/configurator/variant-m/gallery-pager.mjs",
+      "bytes": 776,
+      "sha256": "03b1e189a3fa0cfeec3eac91c72bc987ab8e3547f464eeb848a9a1553642ca75"
+    },
+    {
+      "file": "app/configurator/variant-m/gallery-pager.test.mjs",
+      "bytes": 1959,
+      "sha256": "4b8f48b9c6ee22fd7fe9c233688f7aa3fb1785b96791f907c13bf69ce3aee8f4"
+    },
+    {
+      "file": "app/configurator/variant-m/mobile-preview-layout.mjs",
+      "bytes": 665,
+      "sha256": "68ae4c95113adfd10d7ba3a8a70224a923df8a894cbd319c7b1af068b5631505"
+    },
+    {
+      "file": "app/configurator/variant-m/mobile-preview-layout.test.mjs",
+      "bytes": 1270,
+      "sha256": "157d0038578a863b9b45d5408ad65a38be0daab1bc124582f62a10703a308463"
+    },
+    {
+      "file": "app/configurator/variant-m/modern-layout.css",
+      "bytes": 12544,
+      "sha256": "4176efe86b0b74fb87b3b692c74e6448f328017fb70e1839bcfe3a2f42199c48"
+    },
+    {
+      "file": "app/configurator/variant-m/modern-mobile-navigation.mjs",
+      "bytes": 4937,
+      "sha256": "8c043ff8368242463c85ab0f1f19146672efee13bc6fa1ac3ca07d96bb22bd1f"
+    },
+    {
+      "file": "app/configurator/variant-m/modern-motif-browser.mjs",
+      "bytes": 2009,
+      "sha256": "0c77cb04cfa5b9d836cf66a4750a0502ccdf1f3230137ecee9992c75b3faaa37"
+    },
+    {
+      "file": "app/configurator/variant-m/modern-navigation.css",
+      "bytes": 10270,
+      "sha256": "1fa9293d810579767ae180ff2b20081bd29b187615eee50748e4114db87cab78"
+    },
+    {
+      "file": "app/configurator/variant-m/motif-placement.mjs",
+      "bytes": 4980,
+      "sha256": "05a752f7d94302a851adf7789b610db269a18940bf89dc09c6d4e2eabc1749e4"
+    },
+    {
+      "file": "app/configurator/variant-m/product-design-gallery.css",
+      "bytes": 4298,
+      "sha256": "680a886ac1262a563c84833bccdb02b781a80f39d792f5d2a73718220b8c2362"
+    },
+    {
+      "file": "app/configurator/variant-m/product-design-gallery.mjs",
+      "bytes": 10094,
+      "sha256": "4c4489da5ea80d85b785da1dfd408f8928b2aadb5a31f586bc505711ccf2356f"
+    },
+    {
+      "file": "app/configurator/variant-m/toolbar-hosts.test.mjs",
+      "bytes": 6525,
+      "sha256": "aa4315e055eb060fa6172ff4f1fcaa45692a8ec26934aee3ddad5554606b39a0"
+    },
+    {
+      "file": "app/configurator/variant-m/ui-icons.mjs",
+      "bytes": 4109,
+      "sha256": "ffe083709eb38a72360c0005c42e61e68c846b745f78ac04f8ebfab57fd1a1df"
+    },
+    {
+      "file": "app/configurator/variant-m/ux.mjs",
+      "bytes": 77703,
+      "sha256": "2bb27659bf8664ba2bf459814cc98c85ebeb243cefc10af726b2a27a539cd8bf"
+    },
+    {
+      "file": "app/configurator/variant-m/workflow.mjs",
+      "bytes": 27036,
+      "sha256": "1985d846a88de41e285ab9b3f3cf542d5e805ee4c931cba0cd3bd6f3abc6683f"
+    },
+    {
+      "file": "app/workshop/shop-design-gallery.test.mjs",
+      "bytes": 29866,
+      "sha256": "c141364a13a0f2a558b77044b807b71630601f5dec83cd455a1fe07d68d56d8c"
+    },
+    {
+      "file": "app/workshop/shop-design-switch.test.mjs",
+      "bytes": 8739,
+      "sha256": "7c6c38fadb69397e35af340680b1092020c395e1a68b97a7248d10be713f2fc4"
+    },
+    {
+      "file": "app/workshop/ui/shop-design-switch.mjs",
+      "bytes": 5126,
+      "sha256": "1971c7c2cc9e01ec0c452350664ef1f9988dea353d84f6e7f1d26d78bba5410e"
+    },
+    {
+      "file": "docs/handoffs/2026-11-04-konfi-dialoge-designs-astra.md",
+      "bytes": 10357,
+      "sha256": "34ea08713f2229ba80a77bba963fe97a013825677a26c619ef508f43b78b8392"
+    },
+    {
+      "file": "docs/handoffs/2026-11-05-konfi-gesamtuebergabe-astra-mika/README.md",
+      "bytes": 23066,
+      "sha256": "97b9ba9feb8fcb5badc2b33e3d4c93a4774476874f8dc462d6cd6bcbcb870109"
+    },
+    {
+      "file": "docs/handoffs/2026-11-05-konfi-gesamtuebergabe-astra-mika/handoff-verification.json",
+      "bytes": 1710,
+      "sha256": "2d003fac01751e57e282a100bfe982e17b441ec5205703f6b3a2ad9f97b91719"
+    },
+    {
+      "file": "docs/handoffs/2026-11-05-konfi-gesamtuebergabe-astra-mika/historische-pruefungen/bedienung-designwechsel-getrennte-textfelder.jpg",
+      "bytes": 106199,
+      "sha256": "7c3716a9c0f7565d05fa3cdce12686b221d94f4f50078a98e79840490222f2dd"
+    },
+    {
+      "file": "docs/handoffs/2026-11-05-konfi-gesamtuebergabe-astra-mika/historische-pruefungen/bedienung-galerie-nach-designwechsel.jpg",
+      "bytes": 98826,
+      "sha256": "ae6b14481db3907ccd057e04087004560306771ce9da648e2ed4470d3bc8c55d"
+    },
+    {
+      "file": "docs/handoffs/2026-11-05-konfi-gesamtuebergabe-astra-mika/historische-pruefungen/bedienung-handy-375-textauswahl.jpg",
+      "bytes": 25038,
+      "sha256": "dd3d70e58a9cee738a2545819e08f44e48c7b765be90e9f0857b2210aaf11648"
+    },
+    {
+      "file": "docs/handoffs/2026-11-05-konfi-gesamtuebergabe-astra-mika/historische-pruefungen/bedienung-handy-390-motive-mit-textleiste.jpg",
+      "bytes": 29326,
+      "sha256": "db8686a234b435480df3d02186a541739d0a937b64aa26505602eea7782f1e6f"
+    },
+    {
+      "file": "docs/handoffs/2026-11-05-konfi-gesamtuebergabe-astra-mika/historische-pruefungen/bedienung-pruefbericht.json",
+      "bytes": 5852,
+      "sha256": "69ca193aa645abfa539368e816ad7e25cac1af9847fce2b443b28125cd7fd114"
+    },
+    {
+      "file": "docs/handoffs/2026-11-05-konfi-gesamtuebergabe-astra-mika/historische-pruefungen/bedienung-text-fehlendes-eszett.jpg",
+      "bytes": 118554,
+      "sha256": "db30c40128cd8d8417998a0fb602a79ee55c8fd9a010ee8f745ac5af2698e629"
+    },
+    {
+      "file": "docs/handoffs/2026-11-05-konfi-gesamtuebergabe-astra-mika/historische-pruefungen/shop-desktop-designs.jpg",
+      "bytes": 117589,
+      "sha256": "7e3134dc7a3e47921daabf5254ca48addbf07da6afa23eb49d2bc31426d5067a"
+    },
+    {
+      "file": "docs/handoffs/2026-11-05-konfi-gesamtuebergabe-astra-mika/historische-pruefungen/shop-handy-375x548.jpg",
+      "bytes": 24594,
+      "sha256": "24492584b78f8548beea1aa9806bb60b887e0cad682f3b015744038de3f85ada"
+    },
+    {
+      "file": "docs/handoffs/2026-11-05-konfi-gesamtuebergabe-astra-mika/historische-pruefungen/shop-handy-390x664.jpg",
+      "bytes": 31379,
+      "sha256": "68390be8a2af01677803aaef345f3e1a2eefdf53bafee9ce9ff2c2158abdce60"
+    },
+    {
+      "file": "docs/handoffs/2026-11-05-konfi-gesamtuebergabe-astra-mika/historische-pruefungen/shop-pruefbericht.json",
+      "bytes": 1843,
+      "sha256": "6d35b5c714927a99494d390028b4ab760985f812f5ac94cd4c6337e8b8c60552"
+    },
+    {
+      "file": "docs/handoffs/2026-11-05-konfi-gesamtuebergabe-astra-mika/review-server.mjs",
+      "bytes": 5468,
+      "sha256": "d262d518f47a4faa3d2552225fa0f1c89d1efa5906cd0dade79717d2612357e2"
+    },
+    {
+      "file": "docs/handoffs/2026-11-05-konfi-gesamtuebergabe-astra-mika/review-snapshot.json",
+      "bytes": 4551927,
+      "sha256": "ba43347c266f8f73ce2a1e8f28bea38cf4c9b3bbf4e4760a1d06b845f1a45e1e"
+    },
+    {
+      "file": "docs/handoffs/2026-11-05-konfi-gesamtuebergabe-astra-mika/review.html",
+      "bytes": 1891,
+      "sha256": "21746b7c4f6437a22033e45ae456d4916ba69948206d5cffcfa0482d30d34515"
+    },
+    {
+      "file": "docs/handoffs/2026-11-05-konfi-gesamtuebergabe-astra-mika/source-manifest.json",
+      "bytes": 2569,
+      "sha256": "ffd9a14e42db72130c8a714229a9eb3a7505bf861b44b1c0c12bab482d991b13"
+    },
+    {
+      "file": "docs/handoffs/konfi-dialoge-20261104/desktop-designlupe.jpg",
+      "bytes": 69832,
+      "sha256": "0be2b4db99d65d9e5624f8b15dcb0da2517a52a8c9ee88d6cf0b405ea62458ad"
+    },
+    {
+      "file": "docs/handoffs/konfi-dialoge-20261104/desktop-designs.jpg",
+      "bytes": 116636,
+      "sha256": "81dcef97cb727bb5e7874ab9e21e3a61d37a99b67464d119e737835bd48d3b46"
+    },
+    {
+      "file": "docs/handoffs/konfi-dialoge-20261104/desktop-designwechsel.jpg",
+      "bytes": 96562,
+      "sha256": "bf3f368374b33ba1718091e61fe5cc6a6f8f28453b678ff522171c3519e4c3ff"
+    },
+    {
+      "file": "docs/handoffs/konfi-dialoge-20261104/desktop-kategorien.jpg",
+      "bytes": 115801,
+      "sha256": "f564aa7d28b542032dc7e52cd0c8d41fff8fe81738add20bbeb958a64dec2e37"
+    },
+    {
+      "file": "docs/handoffs/konfi-dialoge-20261104/desktop-motive-nachtrag.png",
+      "bytes": 126423,
+      "sha256": "775566735680a36be7b3bbef772b65f68fa79dcd3b45c6407edf58a413d127cf"
+    },
+    {
+      "file": "docs/handoffs/konfi-dialoge-20261104/iphone-13-designs.jpg",
+      "bytes": 31344,
+      "sha256": "2d456531b1a4db9d8b46fa3dfa58705df062d90f7f628b10f005dabaf5c219f0"
+    },
+    {
+      "file": "docs/handoffs/konfi-dialoge-20261104/iphone-13-kategorien.jpg",
+      "bytes": 29153,
+      "sha256": "0e78272cabd0a5ae78ae36c814dbd05b8a1afe042fb81b7dacba50c9d1457be8"
+    },
+    {
+      "file": "docs/handoffs/konfi-dialoge-20261104/iphone-se-designs.jpg",
+      "bytes": 27909,
+      "sha256": "8bf60e7fbe63f3932cd532e2692bcbec37023d8f710340b6b88cf54074d79e5e"
+    },
+    {
+      "file": "docs/handoffs/konfi-dialoge-20261104/mobile-13-motive-kompakt.png",
+      "bytes": 30792,
+      "sha256": "4babe47f49cf0e048476556805da4bded6aed53d0d3cd6ce06418d4355ba96b1"
+    },
+    {
+      "file": "docs/handoffs/konfi-dialoge-20261104/mobile-13-text-einzeilig.png",
+      "bytes": 38356,
+      "sha256": "c2243049a47cae7d065692b2cbdd38a713842167bd4dd7c03617dceb07047681"
+    },
+    {
+      "file": "docs/handoffs/konfi-dialoge-20261104/mobile-13-vollbild-masse.png",
+      "bytes": 21425,
+      "sha256": "026ac4e4751bbe8233a1e13cf01560e0f3d926416588985ef62db575a95854e7"
+    },
+    {
+      "file": "docs/handoffs/konfi-dialoge-20261104/mobile-geometry-verification.json",
+      "bytes": 1336,
+      "sha256": "5c83c9c7f363cf0f94a6c302b1aea8851ade2879134074aeb0e49257c555d7e0"
+    },
+    {
+      "file": "docs/handoffs/konfi-dialoge-20261104/mobile-se-motive-kompakt.png",
+      "bytes": 23427,
+      "sha256": "11c939feb87da78356439009d30188fd905b78c51544e43d57de1cb4235d1359"
+    },
+    {
+      "file": "docs/handoffs/konfi-dialoge-20261104/mobile-verification.json",
+      "bytes": 1152,
+      "sha256": "012da9f874a0e920053296268f72f44e617b218d2f38ab7cc173e10229b9acf5"
+    },
+    {
+      "file": "docs/handoffs/konfi-dialoge-20261104/verification.json",
+      "bytes": 24387,
+      "sha256": "b0636378c08b754382b71b88bf03af63a1a87e113794b5f924392b2af070dd70"
+    }
+  ]
+}

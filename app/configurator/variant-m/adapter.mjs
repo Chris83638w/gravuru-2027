@@ -275,7 +275,9 @@ export function installUniversal(configInput) {
       this.record();const texts=carry?changedCustomerTexts(this.state.objects,templates.find(x=>x.id===this.state.designId)):[];
       this.state.designId=id;this.state.objects=clone(d.objects);this.state.selected=null;this.state.uxHolePlacement=null;
       if(texts.length)transferTexts(texts,this.state.objects);
-      this.normalize();this.sync();
+      this.normalize();
+      const selected=profile();Object.assign(this.state,mountingPlacementState(config,this.state,selected,selected,{fonts:this.fontData,motifs:motifs()}));
+      this.sync();
     };
     el.add=function(input){
       try {

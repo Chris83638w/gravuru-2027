@@ -1,0 +1,94 @@
+{
+  "url": "https://app-2027.gravuru-designwerkstatt.de/produktvorschau/21afd5dc8edad301caace78b04c7973c6a2e6f7b3133dd24/30x20.html",
+  "bundle": "editor-7354952fa49e7cab.mjs",
+  "viewport": {
+    "width": 390,
+    "height": 664
+  },
+  "designCount": 43,
+  "firstCard": {
+    "height": 108.5859375,
+    "width": 161.5,
+    "x": 21,
+    "y": 447.9453125
+  },
+  "original": [
+    {
+      "id": "motiv-1",
+      "transform": "translate(231.898 99.982) rotate(0)"
+    },
+    {
+      "id": "text-1",
+      "transform": "translate(79.482 60.508) rotate(0)"
+    },
+    {
+      "id": "text-2",
+      "transform": "translate(79.482 97.726) rotate(0)"
+    },
+    {
+      "id": "text-3",
+      "transform": "translate(79.482 138.78) rotate(0)"
+    }
+  ],
+  "spacers": [
+    {
+      "id": "motiv-1",
+      "transform": "translate(223.721925 99.9838535) rotate(0)"
+    },
+    {
+      "id": "text-1",
+      "transform": "translate(86.54752500000001 64.45725350000001) rotate(0)"
+    },
+    {
+      "id": "text-2",
+      "transform": "translate(86.54752500000001 97.9534535) rotate(0)"
+    },
+    {
+      "id": "text-3",
+      "transform": "translate(86.54752500000001 134.9020535) rotate(0)"
+    }
+  ],
+  "afterDesignSwitch": [
+    {
+      "id": "motiv-1",
+      "transform": "translate(223.721925 99.9838535) rotate(0)"
+    },
+    {
+      "id": "text-1",
+      "transform": "translate(86.54752500000001 64.45725350000001) rotate(0)"
+    },
+    {
+      "id": "text-2",
+      "transform": "translate(86.54752500000001 97.9534535) rotate(0)"
+    },
+    {
+      "id": "text-3",
+      "transform": "translate(86.54752500000001 134.9020535) rotate(0)"
+    }
+  ],
+  "restored": [
+    {
+      "id": "motiv-1",
+      "transform": "translate(231.898 99.982) rotate(0)"
+    },
+    {
+      "id": "text-1",
+      "transform": "translate(79.482 60.508) rotate(0)"
+    },
+    {
+      "id": "text-2",
+      "transform": "translate(79.482 97.726) rotate(0)"
+    },
+    {
+      "id": "text-3",
+      "transform": "translate(79.482 138.78) rotate(0)"
+    }
+  ],
+  "consistentFit": true,
+  "exactRestoration": true,
+  "prices": {
+    "none": 2399,
+    "twoSpacers": 2998
+  },
+  "liveCartTested": false
+}

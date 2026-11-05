@@ -15,3 +15,7 @@ Prüfung: `node --test ops/shopify/master-release/cart_transform_run.test.mjs`. 
 ## Vorbereiteter V3-Vertrag vom 05.11.2026
 
 V3 ergänzt bestätigte Checkbox-Zusätze über die app-eigene Tabelle `optionPrices`. `_gravuru_options` enthält sortierte, eindeutige IDs oder den ausdrücklichen Leerwert `-`, niemals Preise. `priced-options.mjs` wird von Backend und Preisfunktion gemeinsam verwendet und muss in beiden Auslieferungen vorhanden sein. V1-/V2-Arithmetik und historische Verträge bleiben erhalten. Die Änderung ist noch nicht veröffentlicht; der oben genannte Compilerbeleg belegt V3 nicht. Aktiver Shopify-Readback: `gravuru-2027-issue139-pricing-20261102-v1` (1191284113409). Aktuelles vollständiges App-Projekt vor einem Release neu zuordnen.
+
+Der neue Beleg `dog-options-compiled-proof.json` prüft V3 als kompilierte WASM-Datei: 18 gemischte Positionen mit V1/V2/V3 sowie drei abgewiesene Manipulationsfälle. Kein Live-Warenkorb-/Veröffentlichungsnachweis. Wegen alter glibc-Bibliotheken ist auf dem Plesk-Host kein Compilerlauf möglich; das geprüfte Artefakt wurde mit offizieller CLI 4.9.0 in einem getrennten lokalen Arbeitsordner gebaut.
+
+`dog-options-candidate-proof.json` bestätigt den inaktiven Shopify-Kandidaten `gravuru-2027-slate-options-20261105-v1` (1195873796097). Der aktive Stand bleibt 1191284113409. Theme-/Konfigurationsdateien stimmen mit dem kopierten aktiven Projekt überein; vollständiger Versionsmanifestvergleich und echter Warenkorb bleiben offen. Noch kein V3-Release.

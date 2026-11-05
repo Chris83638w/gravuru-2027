@@ -13,6 +13,10 @@ const visible=o=>!o.uxHidden&&o.w>0&&o.h>0&&!(o.type==='text'&&!o.text?.trim());
 const side=o=>o.surfaceId==='back'?'back':'front';
 const movable=o=>visible(o)&&['text','motif','motif-raster'].includes(o.type)&&!o.uxLocked&&!o.technicalLocked&&o.customerEditable!==false;
 export function signPlacementEnabled(config,profile){
+ // Mikail, 05.11.2026: fit the complete natural-slate memorial design when
+ // holes or spacers are selected. Use the registered source, never a title.
+ const source=config.productExecution;
+ if(source?.schema==='gravuru-product-execution/v1'&&source.kind==='memorial'&&source.sourceFamilyId==='schiefer-tafeln-natur'&&source.enabled!==false&&profile.material?.kind==='slate')return true;
  const id=profile.familySelection?.familyId||config.familyAcrylic?.familyId||config.mountingPlacementFamily;
  return SIGN_PLACEMENT_FAMILIES.includes(id)||SIGN_PLACEMENT_FAMILIES.some(f=>profile.id?.startsWith('family-'+f+'-')||new RegExp('^family-'+f+'-r[0-9]+$').test(profile.revision||''));
 }
@@ -23,9 +27,13 @@ export function placementBox(o,resources={}){
 }
 function touchesBox(o,profile){
  const holes=surfaceGeometry(profile.geometry,side(o)).holes||[],a=-(o.rotation||0)*Math.PI/180;
- const margin=Math.max(profile.mountingPreview?.keepoutMm??profile.geometry.holeKeepoutMm??0,SIGN_PLACEMENT_CLEARANCE_MM);
+ const slate=profile.material?.kind==='slate',preview=profile.mountingPreview;
+ const margin=Math.max(preview?.keepoutMm??profile.geometry.holeKeepoutMm??0,slate?0:SIGN_PLACEMENT_CLEARANCE_MM);
+ // Slate reserves the actual visible hardware: bare hole, screw or spacer.
+ // Catalog hole geometry and the existing sign-family clearance stay intact.
+ const hardware=slate?(preview?.spacers?preview.diameter:preview?.screws?SIGN_SCREW_HEAD_MM:0):SIGN_SCREW_HEAD_MM;
  return holes.some(h=>{const dx=h.x-o.x,dy=h.y-o.y,x=dx*Math.cos(a)-dy*Math.sin(a),y=dx*Math.sin(a)+dy*Math.cos(a);
-  return Math.hypot(Math.max(Math.abs(x)-o.w/2,0),Math.max(Math.abs(y)-o.h/2,0))<Math.max(h.diameter,SIGN_SCREW_HEAD_MM)/2+margin+epsilon;
+  return Math.hypot(Math.max(Math.abs(x)-o.w/2,0),Math.max(Math.abs(y)-o.h/2,0))<Math.max(h.diameter,hardware)/2+margin+epsilon;
  });
 }
 export function touchesMounting(o,profile,resources={}){return visible(o)&&touchesBox(placementBox(o,resources),profile);}

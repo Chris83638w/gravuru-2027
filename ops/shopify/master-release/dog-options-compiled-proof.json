@@ -1,0 +1,31 @@
+{
+  "compiled": true,
+  "scope": "Synthetic WASM tests; no live Shopify cart and no release",
+  "wasm": {
+    "bytes": 15132,
+    "sha256": "bc52b1be4cbcfd2aa8077a19f1711f05b418405438e85e9639d887e9b79e4809"
+  },
+  "cases": [
+    {
+      "name": "18 mixed V1/V2/V3 lines: both bases, eight option combinations, added motif",
+      "passed": true,
+      "lines": 18,
+      "instructions": 9710010
+    },
+    {
+      "name": "reject-foreign",
+      "passed": true,
+      "rejected": true
+    },
+    {
+      "name": "reject-silikon,silikon",
+      "passed": true,
+      "rejected": true
+    },
+    {
+      "name": "reject-missing",
+      "passed": true,
+      "rejected": true
+    }
+  ]
+}

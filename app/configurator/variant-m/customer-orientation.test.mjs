@@ -7,6 +7,7 @@ import {answerCustomerQuestion} from './customer-help.mjs';
 import {captureDesignContent,carryDesignContent,capturePhotoFiles} from './design-content-transfer.mjs';
 import {templateRightsIssue} from './element-rights.mjs';
 import {screwPreview} from './option-media.mjs';
+import {mountingPlacementState,touchesMounting} from './mounting-placement.mjs';
 const text=(id,key,value)=>({id,type:'text',fieldKey:key,text:value,font:'catalogue-font',size:5,x:20,y:15,w:30,h:10,rotation:0,customerEditable:true});
 const photo={id:'photo-old',type:'photoSlot',fieldKey:'portrait',x:10,y:20,w:12,h:15,rotation:0,photoShape:'rect',customerEditable:true};
 const old={id:'old',objects:[text('name','name','Vorname'),text('motto','spruch','Vorlage'),photo,{id:'art',type:'motif',motif:'house'}]};
@@ -58,10 +59,28 @@ test('photo transfer carries original bytes and editing data, never ephemeral UR
 test('actual local design-switch handler retains all texts/photos and aborts before mutations on incompatibility',()=>{
  const code=fs.readFileSync(new URL('./workflow.mjs',import.meta.url),'utf8'),a=code.indexOf(' let changing=false;'),z=code.indexOf(' // The existing library',a);assert(a>=0&&z>a);
  let records=0;const messages=[],el={state:{designId:'old',objects:edited()},id:()=> 'personal-new',chooseDesign(id){records++;this.state.designId=id;this.state.objects=structuredClone(next.objects);},normalize(){},sync(){}};
- const context={el,config,chosenProfile:()=>config.profile,captureDesignContent,carryDesignContent,place(){},say:s=>messages.push(s),known:new Set()};vm.createContext(context);vm.runInContext(code.slice(a,z),context);
+ const context={el,config,chosenProfile:()=>config.profile,captureDesignContent,carryDesignContent,mountingPlacementState,place(){},say:s=>messages.push(s),known:new Set()};vm.createContext(context);vm.runInContext(code.slice(a,z),context);
  assert.equal(el.chooseDesign('next'),true);assert.equal(records,1);assert.equal(el.state.objects.find(o=>o.id==='new-photo').uxUploadId,'upload-1');assert.equal(el.state.objects.find(o=>o.id==='new-name').text,'Anna Müller');
  el.state={designId:'old',objects:edited()};const original=structuredClone(el.state);context.config={...config,photo:{enabled:false}};
  assert.equal(el.chooseDesign('next'),false);assert.equal(records,1);assert.deepEqual(el.state,original);assert.match(messages.at(-1),/Fotobereiche/);
+});
+test('actual design-switch handler fits the transferred slate design and restores it without cumulative enlargement',()=>{
+ const code=fs.readFileSync(new URL('./workflow.mjs',import.meta.url),'utf8'),a=code.indexOf(' let changing=false;'),z=code.indexOf(' // The existing library',a);
+ const line=(id,w)=>({id,type:'motif',motif:'line',x:110,y:70,w,h:.5,rotation:0,customerEditable:true});
+ const designs=[{id:'a',objects:[{...text('a-name','name','Bruno'),x:110,y:35},line('a-line',198)]},{id:'b',objects:[{...text('b-name','name','Emma'),x:110,y:40},line('b-line',200)]}];
+ const config={productExecution:{schema:'gravuru-product-execution/v1',kind:'memorial',sourceFamilyId:'schiefer-tafeln-natur'},profile:{id:'slate',material:{kind:'slate'},geometry:{width:220,height:140,shape:'rect',safeMarginMm:0,holes:[{x:17,y:70,diameter:4},{x:203,y:70,diameter:4}]},mountingPreview:{spacers:true,diameter:12,keepoutMm:0},designs}};
+ const profile=config.profile,none={...profile,geometry:{...profile.geometry,holes:[]}},before=structuredClone(designs);
+ const el={state:{designId:'a',objects:structuredClone(designs[0].objects)},id:()=> 'added',normalize(){},sync(){},chooseDesign(id){this.state.designId=id;this.state.objects=structuredClone(designs.find(d=>d.id===id).objects);this.state.uxHolePlacement=null;Object.assign(this.state,mountingPlacementState(config,this.state,profile,profile));}};
+ el.state.objects[0].text='Buddy';Object.assign(el.state,mountingPlacementState(config,el.state,none,profile));
+ const context={el,config,chosenProfile:()=>profile,captureDesignContent,carryDesignContent,mountingPlacementState,place(){},say(message){throw Error(message);},known:new Set()};vm.createContext(context);vm.runInContext(code.slice(a,z),context);
+ for(const id of ['b','a','b','a']){
+  assert.equal(el.chooseDesign(id),true);
+  assert(el.state.objects.every(o=>!touchesMounting(o,profile)),'selected template stays clear of spacers');
+  assert.equal(el.state.objects.find(o=>o.type==='text').text,'Buddy');
+  const restored=mountingPlacementState(config,el.state,profile,none),expected=structuredClone(designs.find(d=>d.id===id).objects);Object.assign(expected[0],{text:'Buddy',uxCustomerText:true});
+  assert.deepEqual(restored.objects,expected,'no stale inverse transform after a design switch');
+ }
+ assert.deepEqual(designs,before,'catalogue masters are unchanged');
 });
 test('screw preview uses 5-mm heads without changing drilling or adding engraving objects',()=>{
  const profile={geometry:{holes:[{x:12,y:20,diameter:4}]},mountingPreview:{screws:true}},before=structuredClone(profile);

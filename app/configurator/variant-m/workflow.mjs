@@ -7,6 +7,7 @@ import {canEditElement,legacyElementRights} from './element-rights.mjs';
 import {layoutReviewIssues} from './layout-review.mjs';
 import {objectSurface} from './surfaces.mjs';
 import {captureDesignContent,carryDesignContent} from './design-content-transfer.mjs';
+import {mountingPlacementState} from './mounting-placement.mjs';
 import {alignmentContent,uiIcon} from './ui-icons.mjs';
 import {maskContourGuides} from './contour-guides.mjs';
 import {placeNewMotif,MOTIF_MIN_MM} from './motif-placement.mjs';
@@ -134,7 +135,16 @@ export async function installWorkflow(api){
   try{next=carryDesignContent(captureDesignContent(this.state.objects,chosenProfile().designs.find(d=>d.id===this.state.designId)),template,config,{id:()=>this.id()});}
   catch(error){say(error.message);return false;}
   changing=true;
-  try{choose.call(this,id,{carry:false});this.state.objects=next.objects;for(const key of next.added)place(this.state.objects.find(o=>o.id===key));known=new Set(this.state.objects.map(o=>o.id));this.normalize();this.sync();return true;}
+  try{
+   choose.call(this,id,{carry:false});this.state.objects=next.objects;
+   // Content transfer replaces the adapter's fitted objects. Fit this final
+   // layout with a fresh cache, so removing holes restores this design exactly.
+   this.state.uxHolePlacement=null;
+   for(const key of next.added)place(this.state.objects.find(o=>o.id===key));
+   known=new Set(this.state.objects.map(o=>o.id));this.normalize();
+   if(config){const current=chosenProfile();Object.assign(this.state,mountingPlacementState(config,this.state,current,current,{fonts:this.fontData,motifs:config.localResources?.motifs||[]}));}
+   this.sync();return true;
+  }
   finally{changing=false;}
  };
  // The existing library replaces the Bestseller grid in the same panel.

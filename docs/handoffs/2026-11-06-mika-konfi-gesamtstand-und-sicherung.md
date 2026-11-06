@@ -1,6 +1,6 @@
 # Mika · Konfi, Galerie, Shop-Anschluss und Sicherung
 
-Stand: **06.11.2026, Sicherung 12:13:51 UTC / 13:13:51 Berlin**. Verfasser: Codex / Mika. Dies ist der nachvollziehbare Übergabestand vor der weiteren Entwicklung; kein Releaseprotokoll und keine Verkaufsfreigabe.
+Stand: **06.11.2026, Sicherung 12:13:51 UTC / 13:13:51 Berlin**, spätere Abnahme-Ergänzung in Abschnitt 11. Verfasser: Codex / Mika. Die Abschnitte 1–10 dokumentieren den Sicherungszeitpunkt; Abschnitt 11 aktualisiert die offenen Punkte. Kein Releaseprotokoll und keine Verkaufsfreigabe.
 
 ## 1. Aktueller Nutzerauftrag und Grenzen
 
@@ -121,16 +121,22 @@ Die schreibenden Tests/Agenten wurden für den Snapshot angehalten. Lokaler unve
 
 Enthalten:
 
-- Vollständiger aktueller versionierter Quellbestand beider Arbeitskopien als ZIP, einschließlich noch uncommittierter bekannter App-/Testdateien; Git-Status, binärer Patch und SHA-256-Dateiinventar.
+- Alle lokal vorhandenen versionierten Dateien beider Arbeitskopien als ZIP, einschließlich noch uncommittierter bekannter App-/Testdateien; Git-Status, binärer Patch und SHA-256-Dateiinventar. Weil beide Arbeitskopien Sparse-Checkouts sind, ergänzen die unten beschriebenen Git-Zusatzarchive die ausgeblendeten versionierten Dateien zum vollständigen Quellbestand.
 - UI: 1.530 Dateien, ZIP 39.183.641 Byte; SHA-256 `0f117a5f847c055f51caeb6b2f588eab9460773798b53d0e6a5c3fe8ee9439cc`.
 - Galerie: 3.786 Dateien, ZIP 271.287.184 Byte; SHA-256 `c800db74d09f0491011a9b18e52bd8dc706408dd42d0f487f7c8c6796643a868`.
 - **10 SQLite-Sicherungen** der beiden isolierten Testablagen mit SQLite-Backup-API, einschließlich WAL-Inhalt. Jede Kopie: `PRAGMA integrity_check = ok`. Keine einfache Kopie nur der geöffneten Hauptdatei.
 - Die zugehörigen Import-Zuordnungen, Testmedien, Pilotpaket, vorhandenen Screenshots/Ergebnisdateien und Root-Prüfskript/-ergebnis.
 - `CHECKPOINT.json` SHA-256: `8548107bdff4b54ad2d2b8079f5a1bd6823114fa05184d281d4a20948c7c6029`. ZIP-Inhalt vollständig gegen Dateihashes geprüft.
 
+Zusätzliche, getrennte Git-Vervollständigung: `work/checkpoints/konfi-20261106T121351Z-git-complete/`. Die ersten Archive und ihr Manifest wurden dabei nicht überschrieben. Exakte Git-Blobs der festgehaltenen Snapshot-Commits wurden zusätzlich gesichert:
+
+- UI: weitere **2.282** ausgeblendete Dateien, zusammen **3.812**. `konfi-ui-sparse-files.zip` SHA-256 `6e752912f8429619d01d054be85672bd7b0ee67c1cd4fe324770b94b97638473`.
+- Galerie: weitere **220** ausgeblendete Dateien, zusammen **4.006**. `gallery-saveback-sparse-files.zip` SHA-256 `d34c0916fa197dcdf0bc9f1b5b5d829fee3c3c43895d36831d80958447633e1e`.
+- Alle zusätzlichen ZIP-Einträge ebenfalls vollständig gelesen und gegen SHA-256 geprüft. `GIT-COMPLETION.json` SHA-256 `de12d77f4d702e932853c6f01a34caec347c91518385d9f2e545055d5f40298e`.
+
 **Diese Markdown-Datei sichert Wissen, Entscheidungen und Referenzen. Sie ersetzt keine Datenbanksicherung.** Private Datenbanken/Medien bleiben lokal; sie werden nicht auf GitHub hochgeladen. Der Snapshot schützt diesen Arbeitsstand, ist aber **keine neue Komplettsicherung von Shopify/Plesk/Produktionsdaten** und kein Schutz gegen Ausfall des einzigen lokalen Datenträgers.
 
-Wiederaufnahme: erst diese Datei und jüngste Ergänzung lesen, Arbeitsbranch/HEAD abgleichen. Quellarchive in einen **neuen** Ordner entpacken, nicht über laufende Arbeit. Testdaten nur als zusammengehörigen Satz einschließlich Importzuordnung/Assets wiederherstellen. Erst Integrität, Quellhashes und Ziele prüfen, dann lokalen Server starten. Alte Testdaten nie über echte Hostdaten schreiben. Vor jeder späteren Hostaktivierung frischen konsistenten Hostsnapshot einschließlich Produkt-, Ressourcen-, Kommentar- und Freigabeablagen erstellen.
+Wiederaufnahme: erst diese Datei und jüngste Ergänzung lesen, Arbeitsbranch/HEAD abgleichen. Quellarchiv und zugehöriges Sparse-Zusatzarchiv in einen **neuen** Ordner entpacken, nicht über laufende Arbeit. Testdaten nur als zusammengehörigen Satz einschließlich Importzuordnung/Assets wiederherstellen. Erst Integrität, Quellhashes und Ziele prüfen, dann lokalen Server starten. Alte Testdaten nie über echte Hostdaten schreiben. Vor jeder späteren Hostaktivierung frischen konsistenten Hostsnapshot einschließlich Produkt-, Ressourcen-, Kommentar- und Freigabeablagen erstellen.
 
 ## 9. Shop-Spiegel: Ist-Stand und empfohlener nächster Anschluss
 
@@ -158,3 +164,23 @@ Ein Chatgedächtnis allein ist keine zuverlässige Projektablage. Fester Einstie
 Optimierungsvorschlag: vor Releases zusätzlich versionierte externe Datensicherung mit Wiederherstellungsprobe und eine automatisch erzeugte Übersicht „Code / privater Testhost / Kundenhost / Produktrevisionen“. Nicht ohne Besprechung als neue Automation aktivieren.
 
 **Unmittelbar nächster Schritt:** nach gesicherter GitHub-Übergabe Galerie-Saveback-Abnahme fortsetzen, private Kaufleiste korrigieren, Foto-/Masken-Rückweg und Handy-Rückkehr belegen, eigenen PR samt ehrlichem Nachweis in #168 liefern. Parallel Shop-Anschluss nur analysieren und mit Mikail besprechen. Kein Main-Merge/Kunden-Live.
+
+## 11. Nachtrag nach Fortsetzung der gesicherten Arbeit
+
+**Die zuvor offenen Kernprüfungen sind inzwischen bestanden:** 150/150 betroffene Regressionen, private Kaufleiste entfernt, Foto-/Masken-Rückweg geprüft. Finaler Funktionscommit **`f8e55358272fe9fabdb29de7db15c6592f2cfecc`**, [Draft-PR #184](https://github.com/Chris83638w/gravuru-2027/pull/184) auf Astras Pilotbranch. GitHub-Kopf zurückgelesen: ungemergt, mergebar. Der PR enthält zusätzlich die benötigte bestehende R12-Integration, deshalb ist sein Gesamtdiff größer als nur der neue Speicheradapter. [Funktionsübergabe mit sechs Screenshots](https://github.com/Chris83638w/gravuru-2027/blob/dev/mika-galerie-saveback-20261106/docs/handoffs/2026-11-06-mika-galerie-rueckspeicherung.md) und [Abschlussmeldung in #168](https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6685068758) gehören zur Abnahme. Kein Main-Merge, keine private Hostaktivierung, kein Kunden-/Shopify-Live.
+
+Root-Browsernachweise in Chrome:
+
+- Kleine Ovale D1 und D3, 150 × 80 mm: unverändertes Speichern ohne neue Revision; D1-Textänderung zur richtigen Karte, Filter/Format erhalten.
+- D3: Michroma → Cinzel gespeichert (Produktrevision 3), Bibliotheksmotiv Haus ergänzt → Revision 4, nach erneutem Öffnen über den Papierkorb gelöscht → Revision 5. Originale Linie und Texte blieben erhalten.
+- Die erste Hausübertragung scheiterte an einem nicht kanonischen Bibliotheksfragment. Korrigiert durch vorhandenen passiven Assetimport, ohne den Validator zu lockern. Beide tatsächlichen Haus-IDs durch Tests abgedeckt.
+- Kontrolliert blockierte Editorressource: sichtbare Fehlermeldung, Speichern und Speichern/zurück gesperrt. Nach Aufheben der Testblockade wieder normale Bearbeitung. Netzwerkblockade und mobile Größenüberschreibung anschließend entfernt.
+- `outputs/galerie-rueckspeichern-handy.jpg`, `outputs/galerie-motiv-schrift-handy.jpg`, `outputs/galerie-ladefehler-handy.jpg` ergänzen die PC-Belege. Mobile Ansicht ist weiterhin kein physischer Handytest.
+
+Unteragent-Fotonachweis, ausdrücklich **synthetischer isolierter Schieferfall**: vorhandene Originalmaske, Herz-Zuschnitt/Spiegelung → Revision 2; nach Neuladen Rezept erneut geöffnet; Sternzuschnitt → Revision 3; zusätzlicher unbehandelter Upload ohne Farbänderung → Revision 4. Originalbytes beider Fotos nach Rücklesen unverändert. Original, verarbeitete Fassung und Bearbeitungsquelle getrennt erhalten; der bestehende Originalquellenindex ist ebenfalls angebunden. Unabhängiger Code-Review entdeckte und verifizierte die Korrektur eines zuvor abweichenden Standardfarbvergleichs. Keine neuen unabhängigen Blocker in Identität, Maske, Konfliktschutz oder Rückkehr gefunden.
+
+**Logo-Umfang präzisiert:** alle 73 echten Stahlpilotprodukte haben `logo.enabled=false` und `photo.enabled=false`; das geprüfte vorhandene Hundemodell hat ebenfalls `logo.enabled=false` bei aktiviertem Foto. Es fehlt deshalb keine aktivierte Logo-Funktion in diesen geprüften Profilen. Künftige Logo-Uploads benötigen getrennte Original-/Vektorprüfungs-/Ersetzen-Provenienz; Umwandeln in ein normales Motiv würde diese verlieren. Keine ungefragte Logo-Aktivierung.
+
+Weitere Optimierungsvorschläge, nicht umgesetzt: eindeutige Ebenennamen („Haus“, „Trennlinie“ statt zweimal „Motiv“), präzisere Renderer-Fingerprintgrenze und kontrollierter Entwurf-/Shop-Abgleich. Der Nutzer bat beim Begriff „Shop-Spiegel“ um eine einfachere Erklärung; der gewünschte Umfang wurde anhand „Produkt öffnen → ändern → prüfen → im Shop übernehmen“ erläutert. Daraus folgt noch keine automatische Shopveröffentlichung oder pauschale Freigabe neuer Shopfunktionen.
+
+**Aktueller nächster Schritt:** Astra kann PR #184 gemeinsam mit #181 prüfen und die getrennte private Hostübernahme vorbereiten. Vor dieser Aktivierung frischen Hostsnapshot erstellen; keine bearbeitete lokale Testdatenbank hochladen. Mit Mikail zuerst Umfang und Bedienung der zentralen Shopverwaltung klären. Physische Handyabnahme, echte Shop-/Bestellstrecke und künftige Logoaktivierung bleiben getrennte Aufgaben.

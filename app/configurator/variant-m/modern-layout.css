@@ -48,8 +48,9 @@
    The same mobile gutters apply in fullscreen, keeping both dimension labels in view. */
 @media(max-width:767px){
  :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-layout>.ux-preview{padding:0!important;justify-content:flex-start!important}
- :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-slot{display:block!important;box-sizing:border-box!important;height:48px!important;min-height:48px!important;flex:0 0 48px!important;width:100%!important;padding:2px 6px!important}
- :host([data-ux-modern][data-ux-mobile-tabs]) .ux-preview>[data-ux-stage]{flex:1!important;min-height:0!important;height:calc(100% - 48px)!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-slot{display:none!important}
+ :host([data-ux-modern][data-ux-mobile-tabs][data-ux-text-editing="true"]) .ux-direct-slot:not([hidden]){display:block!important;box-sizing:border-box!important;height:48px!important;min-height:48px!important;flex:0 0 48px!important;width:100%!important;padding:2px 6px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-preview>[data-ux-stage]{flex:1!important;min-height:0!important;height:100%!important}
  :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-preview .stage:not(.acryl-scene){box-sizing:border-box!important;padding:18px 30px 26px!important}
  :host([data-ux-modern][data-ux-mobile-tabs]) .ux-preview .stage:not(.acryl-scene) .plate-holder{margin:auto auto 0!important}
  :host([data-ux-modern][data-ux-mobile-tabs]) :is(.ux-preview,.c-large-preview) .dimension-y{left:-10px!important;width:6px!important}
@@ -85,3 +86,54 @@
  :host([data-ux-modern]) .fk-buy-dock{padding:7px 12px!important}
  :host([data-ux-modern]) .fk-price-area strong{font-size:19px!important}
 }
+
+/* Mikail's visual corrections, 05.11.2026: keep artwork and navigation clear. */
+:host([data-ux-modern]) [data-c-search]{display:none!important}
+:host([data-ux-modern]) .ux-editor>.ux-conflict-hints{position:static!important;display:block;max-height:none!important;width:auto!important;margin:0 18px 16px!important;padding:0!important;box-shadow:none!important;background:none!important;border:0!important}
+:host([data-ux-modern]) .ux-conflict-hints[hidden]{display:none!important}
+:host([data-ux-modern]) .ux-conflict-hints summary{padding:10px 0;color:#735b35;font-size:12px;cursor:pointer}
+:host([data-ux-modern]) .ux-conflict-list{display:grid;gap:8px}
+:host([data-ux-modern]) .ux-conflict-hints .ux-conflict-compact{padding:9px!important;font-size:12px!important}
+:host([data-ux-modern]) .ux-conflict-hints button{min-height:36px!important;font-size:12px!important;padding:6px 10px!important}
+:host([data-ux-modern]) .ux-conflict-hints [data-ux=restore-conflicts]{width:auto!important;background:transparent!important;border:0!important;text-decoration:underline;text-underline-offset:3px}
+:host([data-ux-modern]) .ux-status:empty{display:none}
+:host([data-ux-modern]) .ux-fullscreen-hint{margin:0 0 10px!important;color:#556273;font-size:13px;line-height:1.45;max-width:560px}
+:host([data-ux-modern]) .c-large-preview .ux-preview-back{background:#37596a!important;color:#fff!important;border:0!important;border-radius:12px!important;padding:12px 18px!important;min-height:44px!important;font-weight:650!important;box-shadow:0 3px 9px #213a4a20}
+:host([data-ux-modern]) .c-large-preview .ux-fullscreen-hint{padding:0 8px;flex:none}
+:host([data-ux-modern]) .c-large-preview .ux-canvas-toolbar{position:static!important;flex:none;align-self:stretch;height:auto!important;min-height:44px!important;max-height:none!important;justify-content:flex-start;margin:0 8px}
+:host([data-ux-modern]) .c-large-preview .stage:not(.acryl-scene){box-sizing:border-box!important;container-type:size!important;display:flex!important;align-items:center!important;justify-content:center!important;min-height:0!important}
+:host([data-ux-modern]) .c-large-preview .stage:not(.acryl-scene) .plate-holder{flex:none!important;position:relative!important;height:auto!important;width:min(100cqw,calc(100cqh * var(--ux-ratio)))!important;max-height:100%!important;max-width:100%!important;aspect-ratio:var(--ux-ratio)!important;margin:0!important}
+:host([data-ux-modern]) .c-large-preview .stage:not(.acryl-scene) .scene{display:block!important;width:100%!important;height:100%!important}
+:host([data-ux-modern][data-ux-text-editing="true"]) .ux-direct-edit:not([hidden]){background:#fceaf1!important;border-color:#d9799e!important;box-shadow:0 2px 7px #ad37681a!important}
+:host([data-ux-modern]) .ux-spacer-colours{box-sizing:border-box;width:min(480px,calc(100vw - 28px));max-height:80dvh;padding:20px;border:1px solid #e3e7eb;border-radius:20px;background:#fff;box-shadow:0 18px 80px #1b2b3d38;color:#293440}
+:host([data-ux-modern]) .ux-spacer-colours::backdrop{background:#17233059}
+:host([data-ux-modern]) .ux-spacer-colours header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+:host([data-ux-modern]) .ux-spacer-colours h2{font-size:19px;margin:0}
+:host([data-ux-modern]) .ux-spacer-colours [data-colours-close]{min-height:40px!important;min-width:40px!important;padding:4px!important;font-size:25px;background:#f1f3f6!important}
+:host([data-ux-modern]) .ux-spacer-colours [role=group]:not([hidden]){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+:host([data-ux-modern]) .ux-spacer-colours img{width:64px;height:64px;object-fit:contain}
+:host([data-ux-modern]) .fk-buy-dock{background:#fff!important;border-top:1px solid #e4e8ed!important;box-shadow:0 -5px 24px #233b4b0a!important;padding:12px 22px!important}
+:host([data-ux-modern]) .fk-buy-dock .fk-buy-inner{gap:18px!important;align-items:center!important}
+:host([data-ux-modern]) .fk-buy-dock .fk-price-area{min-width:0!important;gap:3px!important}
+:host([data-ux-modern]) .fk-buy-dock .fk-price-area strong{font-size:25px!important;letter-spacing:-.6px;color:#202b35!important;line-height:1.1!important}
+:host([data-ux-modern]) .fk-buy-dock .fk-price-area small{font-size:11px!important;color:#647180!important;line-height:1.25!important}
+:host([data-ux-modern]) .fk-buy-dock .fk-price-area a{color:inherit!important;text-decoration-thickness:1px;text-underline-offset:2px}
+:host([data-ux-modern]) .fk-buy-dock .ux-quantity-stepper{height:44px!important;border:1px solid #dfe4e9!important;border-radius:12px!important;background:#f7f8fa!important;box-shadow:none!important;gap:0!important;overflow:hidden}
+:host([data-ux-modern]) .fk-buy-dock .ux-quantity-stepper button{height:42px!important;min-height:42px!important;min-width:28px!important;width:28px!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;font-size:20px!important;color:#344555!important}
+:host([data-ux-modern]) .fk-buy-dock .ux-quantity-stepper input{height:42px!important;min-height:42px!important;min-width:28px!important;width:30px!important;padding:0!important;border:0!important;background:transparent!important;font-size:15px!important;color:#233342!important}
+:host([data-ux-modern]) .fk-buy-dock :is(.completion-finish,.fk-buy-button){min-height:46px!important;padding:12px 22px!important;border:0!important;border-radius:12px!important;background:#263b48!important;color:#fff!important;font-weight:650!important;font-size:15px!important;box-shadow:0 3px 8px #17314318!important;white-space:nowrap}
+:host([data-ux-modern]) .fk-buy-dock :is(.completion-finish,.fk-buy-button):hover{background:#345466!important}
+@media(max-width:767px){
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-layout>.ux-preview{transition:height 280ms cubic-bezier(.2,.65,.3,1);will-change:height}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-editor,:host([data-ux-modern][data-ux-mobile-tabs]) .ux-mobile-scroll-spacer{overflow-anchor:none}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-mobile-scroll-spacer{transition:height 280ms cubic-bezier(.2,.65,.3,1)}
+ :host([data-ux-modern]) .fk-buy-dock{padding:10px 12px max(10px,env(safe-area-inset-bottom))!important}
+ :host([data-ux-modern]) .fk-buy-dock .fk-buy-inner{gap:10px!important}
+ :host([data-ux-modern]) .fk-buy-dock .fk-price-area strong{font-size:21px!important}
+ :host([data-ux-modern]) .fk-buy-dock .fk-price-area small{font-size:10px!important;max-width:110px}
+ :host([data-ux-modern]) .fk-buy-dock :is(.completion-finish,.fk-buy-button){font-size:13px!important;padding:12px!important}
+ :host([data-ux-modern]) .fk-buy-dock .ux-quantity-stepper{height:40px!important}
+ :host([data-ux-modern]) .fk-buy-dock .ux-quantity-stepper :is(button,input){height:38px!important;min-height:38px!important;min-width:23px!important;width:23px!important}
+}
+@media(prefers-reduced-motion:reduce){:host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-layout>.ux-preview,:host([data-ux-modern][data-ux-mobile-tabs]) .ux-mobile-scroll-spacer{transition:none!important}}
+:host([data-ux-modern][data-ux-mobile-tabs][data-ux-text-editing="true"][data-ux-keyboard="true"]) .ux-direct-slot{display:none!important}

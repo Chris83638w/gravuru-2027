@@ -1,5 +1,4 @@
 import {createGalleryPager} from './gallery-pager.mjs';
-import {uiIcon} from './ui-icons.mjs';
 import {captureDesignContent,carryDesignContent,capturePhotoFiles} from './design-content-transfer.mjs';
 import {preserveProductSelection} from './product-design-transfer.mjs';
 import {designGalleryCount} from './product-design-gallery-label.mjs';
@@ -38,17 +37,14 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
  }catch(error){window.parent.postMessage({type:'gravuru-design-transfer-failed',message:error.message},location.origin);throw error;}}
  const gallery=section;
  const status=gallery.querySelector('.ux-product-status'),grid=gallery.querySelector('.ux-product-grid'),more=gallery.querySelector('.ux-product-more');
- const preview=dialog('product-design-preview','Designvorschau','<p data-preview-status role="status"></p><img data-product-preview alt="" hidden>');
- const previewImage=preview.querySelector('[data-product-preview]'),previewStatus=preview.querySelector('[data-preview-status]');
  const themeLabel=gallery.querySelector('.ux-product-themes'),themes=themeLabel.querySelector('select');
  const pager=createGalleryPager((page,theme,options)=>api.load(page,theme,options));
- let epoch=0,switching=false,previewSource=null,retryTimer,prepareRetries=0;const urls=[],queue=[];let active=0;
+ let epoch=0,switching=false,retryTimer,prepareRetries=0;const urls=[],queue=[];let active=0;
  const pump=()=>{while(active<2&&queue.length){const request=queue.shift(),{item,img,version}=request;
   if(version!==epoch||img.previewStarted)continue;img.previewStarted=true;active++;
   Promise.resolve().then(()=>api.preview(item.target,item.previewUrl)).then(blob=>{
    if(version!==epoch)return;const url=URL.createObjectURL(blob);urls.push(url);img.src=url;img.alt=item.designName;
-   if(previewSource===img){previewImage.src=url;previewImage.hidden=false;previewStatus.textContent='';}
-  }).catch(()=>{img.alt='Vorschau nicht verfügbar';if(previewSource===img)previewStatus.textContent='Die Vorschau ist gerade nicht erreichbar. Bitte erneut versuchen.';img.previewStarted=false;
+  }).catch(()=>{img.alt='Vorschau nicht verfügbar';img.previewStarted=false;
   }).finally(()=>{active--;pump();});}};
  const observer=typeof IntersectionObserver==='function'?new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){observer.unobserve(entry.target);queue.push(entry.target.previewRequest);pump();}},{rootMargin:'150px'}):null;
  async function choose(item){
@@ -74,16 +70,14 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
     if(item.current)select.dataset.productDesignId=item.designId;
     const img=document.createElement('img');img.alt='Vorschau wird geladen';img.width=240;img.height=160;select.append(img);
     const check=document.createElement('span');check.className='completion-check';check.textContent='✓';check.setAttribute('aria-hidden','true');select.append(check);select.onclick=()=>choose(item);
-    const zoom=document.createElement('button');zoom.type='button';zoom.className='ux-product-enlarge';zoom.innerHTML=uiIcon('zoom');zoom.setAttribute('aria-label','Designvorschau vergrößern: '+item.designName);zoom.title='Design vergrößern';
-    zoom.onclick=()=>{previewSource=img;previewImage.alt=item.designName;previewImage.hidden=!img.getAttribute('src');previewStatus.textContent=previewImage.hidden?'Vorschau wird geladen …':'';if(!previewImage.hidden)previewImage.src=img.src;else{queue.unshift(img.previewRequest);pump();}preview.showModal();};
-    card.append(select,zoom);grid.append(card);
+    card.append(select);grid.append(card);
     img.previewRequest={item,img,version};if(observer)observer.observe(img);else queue.push(img.previewRequest);
    }
    if(!observer)pump();status.textContent=result.total?designGalleryCount(result.total):'Für dieses Produkt sind noch keine weiteren Designs verfügbar.';more.hidden=pager.next===null;
   }catch(error){status.textContent=error.message||'Die Designauswahl ist gerade nicht erreichbar. Bitte erneut versuchen.';more.textContent='Erneut versuchen';more.hidden=false;}
   finally{if(version===epoch){more.disabled=false;themes.disabled=false;}}
  }
- function reset(){epoch++;pager.reset();clearTimeout(retryTimer);prepareRetries=0;observer?.disconnect();queue.length=0;previewSource=null;if(preview.open)preview.close();grid.replaceChildren();for(const url of urls)URL.revokeObjectURL(url);urls.length=0;load();}
+ function reset(){epoch++;pager.reset();clearTimeout(retryTimer);prepareRetries=0;observer?.disconnect();queue.length=0;grid.replaceChildren();for(const url of urls)URL.revokeObjectURL(url);urls.length=0;load();}
  themes.onchange=reset;
  // Invalidate stale pages even if size/mounting changes during a pending request.
  let shownFor=JSON.stringify(galleryOptions()??null);

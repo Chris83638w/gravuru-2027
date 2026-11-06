@@ -7,6 +7,7 @@ import {canEditElement,legacyElementRights} from './element-rights.mjs';
 import {layoutReviewIssues} from './layout-review.mjs';
 import {objectSurface} from './surfaces.mjs';
 import {captureDesignContent,carryDesignContent} from './design-content-transfer.mjs';
+import {mountingPlacementState} from './mounting-placement.mjs';
 import {alignmentContent,uiIcon} from './ui-icons.mjs';
 import {maskContourGuides} from './contour-guides.mjs';
 import {placeNewMotif,MOTIF_MIN_MM} from './motif-placement.mjs';
@@ -123,9 +124,13 @@ export async function installWorkflow(api){
   mutate(()=>{for(const o of el.state.objects)if(changed.has(o.id))Object.assign(o,copies.find(c=>c.id===o.id));});
   if(!reviewIssues().length){layoutDialog.close();say('Gestaltung eingepasst. Bitte noch einmal prüfen.');}else say('Bitte die übrigen markierten Elemente prüfen.');
  }});
- // New uploads use the same free-space search; replacements keep their position.
+ // New free photos retain their larger, centered upload bounds (Mika 05.11.2026).
+ // Other new uploads still use free-space search; replacements keep their position.
  let known=new Set(el.state.objects.map(o=>o.id));
  let changing=false;
+ // Restored photos already have the customer's placement. They are not new uploads.
+ const restore=el.restoreDraft;
+ if(restore)el.restoreDraft=function(...args){const previous=changing;changing=true;try{return restore.apply(this,args);}finally{known=new Set(this.state.objects.map(o=>o.id));changing=previous;}};
  const choose=el.chooseDesign;
  el.chooseDesign=function(id){
   if(id===this.state.designId)return;
@@ -134,7 +139,16 @@ export async function installWorkflow(api){
   try{next=carryDesignContent(captureDesignContent(this.state.objects,chosenProfile().designs.find(d=>d.id===this.state.designId)),template,config,{id:()=>this.id()});}
   catch(error){say(error.message);return false;}
   changing=true;
-  try{choose.call(this,id,{carry:false});this.state.objects=next.objects;for(const key of next.added)place(this.state.objects.find(o=>o.id===key));known=new Set(this.state.objects.map(o=>o.id));this.normalize();this.sync();return true;}
+  try{
+   choose.call(this,id,{carry:false});this.state.objects=next.objects;
+   // Content transfer replaces the adapter's fitted objects. Fit this final
+   // layout with a fresh cache, so removing holes restores this design exactly.
+   this.state.uxHolePlacement=null;
+   for(const key of next.added)place(this.state.objects.find(o=>o.id===key));
+   known=new Set(this.state.objects.map(o=>o.id));this.normalize();
+   if(config){const current=chosenProfile();Object.assign(this.state,mountingPlacementState(config,this.state,current,current,{fonts:this.fontData,motifs:config.localResources?.motifs||[]}));}
+   this.sync();return true;
+  }
   finally{changing=false;}
  };
  // The existing library replaces the Bestseller grid in the same panel.
@@ -146,17 +160,6 @@ export async function installWorkflow(api){
  const grid=$('[data-library-grid]');grid.classList.remove('ux-scroll-list');grid.classList.add('workflow-motif-grid');grid.removeAttribute('tabindex');
  panel.querySelector('.ux-list-edge')?.remove();const more=$('[data-library-more]');if(more)more.parentElement.hidden=false;
  const search=$('[data-library-search]'),searchHint=document.createElement('p');searchHint.id='ux-motif-search-hint';searchHint.className='ux-motif-search-hint';searchHint.textContent='Beschreibe einfach, was du suchst – du musst den genauen Motivnamen nicht kennen.';search.after(searchHint);search.setAttribute('aria-describedby',searchHint.id);
- // Previews use existing rendered vectors, never newly generated design artwork.
- const designPreview=dialog('design-preview','Designvorschau','<div data-design-preview-art></div>'+button('preview-use','Dieses Design verwenden','class="ux-primary"'));
- let previewId=null,hoverTimer;const hover=document.createElement('div');hover.className='workflow-hover-preview';hover.hidden=true;r.append(hover);
- function previewCard(card){previewId=card.dataset.cDesign;$('[data-design-preview-art]').innerHTML=card.querySelector('svg')?.outerHTML||'';designPreview.showModal();}
- function decorate(){for(const card of all('[data-c-design]'))if(!card.querySelector('[data-design-enlarge]')){const span=document.createElement('span');span.dataset.designEnlarge='';span.setAttribute('role','button');span.tabIndex=0;span.setAttribute('aria-label','Design vergrößern: '+(card.querySelector('span')?.textContent||''));span.textContent='↗ Vorschau';card.append(span);}}
- r.addEventListener('click',e=>{const trigger=e.target.closest('[data-design-enlarge]');if(trigger){e.preventDefault();e.stopImmediatePropagation();previewCard(trigger.closest('[data-c-design]'));}},true);
- r.addEventListener('keydown',e=>{if(e.target.matches('[data-design-enlarge]')&&['Enter',' '].includes(e.key)){e.preventDefault();e.stopImmediatePropagation();previewCard(e.target.closest('[data-c-design]'));}},true);
- r.addEventListener('pointerover',e=>{const card=e.target.closest('[data-c-design]');if(!card||!matchMedia('(hover:hover)').matches)return;clearTimeout(hoverTimer);hoverTimer=setTimeout(()=>{hover.innerHTML=card.querySelector('svg')?.outerHTML||'';hover.hidden=false;const b=card.getBoundingClientRect();hover.style.left=Math.max(8,Math.min(innerWidth-260,b.left-270))+'px';hover.style.top=Math.max(8,Math.min(innerHeight-330,b.top))+'px';},400);});
- r.addEventListener('pointerout',e=>{const card=e.target.closest('[data-c-design]');if(card&&!card.contains(e.relatedTarget)){clearTimeout(hoverTimer);hover.hidden=true;}});
- r.addEventListener('click',e=>{hover.hidden=true;if(e.target.closest('[data-ux=preview-use]')){designPreview.close();el.chooseDesign(previewId);}});
- new MutationObserver(decorate).observe($('.c-gallery'),{childList:true});decorate();
  // K9/Ü10.1: Designs des Produktthemas zuerst (Bestseller vorn, sonst Reihenfolge im Profil),
  // Designs anderer Themen eingeklappt unter „Weitere Designs“; Designs ohne Thema bleiben sichtbar.
  const gallery=$('.c-gallery');let moreExpanded=false,arranging=false;
@@ -205,7 +208,7 @@ export async function installWorkflow(api){
   if(key==='copy-design-link'){const field=$('[data-design-link]');try{await navigator.clipboard.writeText(field.value);$('[data-design-link-status]').textContent='Link kopiert.';}catch{field.select();$('[data-design-link-status]').textContent='Bitte den Link markieren und kopieren.';}}
  });
  const render=el.render;el.render=function(...args){const v=render.apply(this,args);guides();return v;};
- const sync=el.sync;el.sync=function(...args){if(!changing)for(const o of this.state.objects)if(!known.has(o.id)&&o.uxUploadId)place(o);known=new Set(this.state.objects.map(o=>o.id));const v=sync.apply(this,args);rename();arrangeGallery();if($('#ux-size')){$('#ux-size').step=config?.workbench?.embedded?'.01':'1';if(r.activeElement!==$('#ux-size')&&selected()?.type==='text')$('#ux-size').value=el.uxDisplayTextSize(selected());}guides();return v;};
+ const sync=el.sync;el.sync=function(...args){if(!changing)for(const o of this.state.objects)if(!known.has(o.id)&&o.uxUploadId&&!(o.uxUploadKind==='photo'&&o.uxPersonal))place(o);known=new Set(this.state.objects.map(o=>o.id));const v=sync.apply(this,args);rename();arrangeGallery();if($('#ux-size')){$('#ux-size').step=config?.workbench?.embedded?'.01':'1';if(r.activeElement!==$('#ux-size')&&selected()?.type==='text')$('#ux-size').value=el.uxDisplayTextSize(selected());}guides();return v;};
  await installCompletion(api);
  installInlineMotifBrowser({root:r,panel,bestsellers});
  el.sync();

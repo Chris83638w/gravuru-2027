@@ -1,0 +1,16 @@
+import {merchantRequest} from './merchant-request.mjs';
+const form=document.querySelector('#filters'),status=document.querySelector('#status');let serial=0;
+// Keep only report preferences, scoped to this shop. Never store Shopify tokens.
+const filterKey='gravuru:motif-search-filters:v1:'+(document.querySelector('meta[name=shopify-shop]')?.content||location.host);
+let savedFilters;try{savedFilters=JSON.parse(localStorage.getItem(filterKey)||'null');}catch{}
+if(['7','30','90','365'].includes(savedFilters?.days))form.elements.days.value=savedFilters.days;
+if(['shop','preview','all'].includes(savedFilters?.source))form.elements.source.value=savedFilters.source;
+let selectedGroup=typeof savedFilters?.group==='string'&&savedFilters.group.length<=160?savedFilters.group:'';
+function rememberFilters(){try{localStorage.setItem(filterKey,JSON.stringify({days:form.elements.days.value,source:form.elements.source.value,group:selectedGroup}));}catch{/* A blocked preference store must not prevent loading the report. */}}
+function table(host,rows,missing=false){
+ host.replaceChildren();if(!rows.length){const p=document.createElement('p');p.className='empty';p.textContent='Für diese Auswahl gibt es noch keine Suchanfragen.';host.append(p);return;}
+ const table=document.createElement('table'),head=document.createElement('thead'),tr=document.createElement('tr');for(const label of ['Suchbegriff',missing?'Ohne Treffer':'Anzahl']){const th=document.createElement('th');th.scope='col';th.textContent=label;tr.append(th);}head.append(tr);table.append(head);const body=document.createElement('tbody');for(const row of rows){const tr=document.createElement('tr');for(const value of [row.term,missing?row.withoutResults:row.searches]){const td=document.createElement('td');td.textContent=String(value);tr.append(td);}body.append(tr);}table.append(body);host.append(table);
+}
+async function load(){const own=++serial;rememberFilters();status.textContent='Auswertung wird geladen …';form.querySelector('button').disabled=true;try{const query=new URLSearchParams(new FormData(form));query.set('group',selectedGroup);const response=await merchantRequest('/api/workshop/motif-search-stats?'+query);const data=await response.json();if(!response.ok)throw Error(data.error?.message||'Auswertung konnte nicht geladen werden.');if(own!==serial)return;const group=form.elements.group;group.replaceChildren(new Option('Alle Produktgruppen',''),...data.groups.map(name=>new Option(name,name)));if(selectedGroup&&!data.groups.includes(selectedGroup)){selectedGroup='';return load();}group.value=selectedGroup;document.querySelector('#searches').textContent=data.totals.searches.toLocaleString('de');document.querySelector('#missing').textContent=data.totals.withoutResults.toLocaleString('de');table(document.querySelector('#top-terms'),data.rows);table(document.querySelector('#missing-terms'),data.missing,true);status.textContent=data.from+' bis '+data.to;}catch(error){if(own===serial)status.textContent=error.message;}finally{if(own===serial)form.querySelector('button').disabled=false;}}
+function filtersChanged(){selectedGroup=form.elements.group.value;return load();}
+form.addEventListener('submit',e=>{e.preventDefault();filtersChanged();});form.addEventListener('change',filtersChanged);load();

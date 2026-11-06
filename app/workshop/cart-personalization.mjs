@@ -1,4 +1,5 @@
 import {applyQuantityTier, quantityTierFor, vectorLogoAllowed} from '../configurator/variant-m/contract.mjs';
+import {readOptionPrices,readSelectedOptions,priceSelectedOptions} from '../../ops/shopify/master-release/priced-options.mjs';
 
 // Internal server contract. Callers must read pricing with the owning Shopify app
 // and verify product/variant ownership before binding; never accept browser prices.
@@ -28,8 +29,9 @@ const sameTier = (actual, expected) => expected === null ? actual === null :
   actual.minQuantity === expected.minQuantity && actual.percentOff === expected.percentOff;
 
 export function capturePersonalization(pricing, {variantId, baseCents, document}) {
-  const vectorLogos=vectorLogoAllowed(document.config),logoContract=pricing?.schema==='gravuru-personalization-pricing/v2';
-  if (!['gravuru-personalization-pricing/v1','gravuru-personalization-pricing/v2'].includes(pricing?.schema) || pricing.enabled !== true ||
+  const optionsContract=pricing?.schema==='gravuru-personalization-pricing/v3';
+  const vectorLogos=vectorLogoAllowed(document.config),logoContract=pricing?.schema==='gravuru-personalization-pricing/v2'||optionsContract&&has(pricing,'extraLogoCents');
+  if (!['gravuru-personalization-pricing/v1','gravuru-personalization-pricing/v2','gravuru-personalization-pricing/v3'].includes(pricing?.schema) || pricing.enabled !== true ||
       !/^gid:\/\/shopify\/Product\/[1-9][0-9]{0,19}$/.test(pricing.productId) ||
       !/^[1-9][0-9]{0,9}$/.test(String(pricing.revision)) || pricing.currency !== 'EUR' ||
       pricing.variants?.[variantId] !== baseCents || !money(baseCents) ||
@@ -37,6 +39,12 @@ export function capturePersonalization(pricing, {variantId, baseCents, document}
       pricing.extraMotifCents !== document.config?.extraMotifCents ||
       pricing.extraPhotoCents !== document.config?.photo?.extraPriceCents) fail();
   if(vectorLogos!==logoContract||(logoContract?pricing.extraLogoCents!==1299:has(pricing,'extraLogoCents')))fail();
+  let optionPrices;
+  if(optionsContract){
+    const fields=document.config?.profile?.optionFields||[];
+    if(fields.some(f=>f.kind!=='checkbox'&&((f.priceCents||0)!==0||f.choices?.some(v=>(v.priceCents||0)!==0))))fail();
+    try{optionPrices=readOptionPrices(pricing.optionPrices);const expected=readOptionPrices(Object.fromEntries(fields.filter(f=>f.kind==='checkbox'&&(f.priceCents||0)>0).map(f=>[f.id,f.priceCents])));if(JSON.stringify(optionPrices)!==JSON.stringify(expected))fail();}catch{fail();}
+  }else if(has(pricing,'optionPrices'))fail();
   const withTiers = has(pricing, 'quantityTiers');
   if (withTiers !== has(document.config, 'quantityTiers')) fail();
   if (withTiers ? pricing.quantityTierScope !== 'complete-unit' || document.config.quantityTierScope !== 'complete-unit' :
@@ -46,6 +54,7 @@ export function capturePersonalization(pricing, {variantId, baseCents, document}
   return {productId:pricing.productId, revision:String(pricing.revision), baseCents,
     extraMotifCents:pricing.extraMotifCents, extraPhotoCents:pricing.extraPhotoCents,
     ...(logoContract?{extraLogoCents:pricing.extraLogoCents}:{}),
+    ...(optionsContract?{optionPrices}:{}),
     ...(document.config.motifCharge==='all'?{motifCharge:'all'}:{}),
     ...(withTiers ? {quantityTiers, quantityTierScope:'complete-unit'} : {})};
 }
@@ -58,14 +67,28 @@ export function personalizationForSnapshot(contract, manifest) {
       !/^proof_[a-zA-Z0-9_-]{1,100}$/.test(manifest.id) || !/^[a-f0-9]{64}$/.test(manifest.packageSha256)) fail();
   // The deployed v1 transform cannot price dynamic fields or a back surcharge.
   // Preserve their editor behavior, but never silently charge only the base price.
-  if ((p.fieldCents !== undefined && p.fieldCents !== 0) || (p.backCents !== undefined && p.backCents !== 0)) fail();
+  if (p.backCents !== undefined && p.backCents !== 0) fail();
+  let optionCents=0,selectedOptions;
+  if(has(contract,'optionPrices')){
+    const fields=manifest.selection?.fields;
+    if(!Array.isArray(fields)||new Set(fields.map(f=>f.id)).size!==fields.length)fail();
+    selectedOptions=[];
+    for(const field of fields){
+      if(has(contract.optionPrices,field.id)){
+        if(field.kind!=='checkbox'||field.value!==true||field.priceCents!==contract.optionPrices[field.id])fail();
+        selectedOptions.push(field.id);
+      }else if(field.priceCents!==0)fail();
+    }
+    selectedOptions.sort();try{optionCents=priceSelectedOptions(contract.optionPrices,selectedOptions);}catch{fail();}
+    if(p.fieldCents!==optionCents)fail();
+  }else if(p.fieldCents!==undefined&&p.fieldCents!==0)fail();
   const motifCount=contract.motifCharge==='all'?p.chargedMotifs:p.additionalMotifs;
   if(!count(motifCount,200)||motifCount<p.additionalMotifs||contract.motifCharge!=='all'&&has(p,'chargedMotifs'))fail();
   const logoContract=has(contract,'extraLogoCents');
   if(logoContract?(contract.extraLogoCents!==1299||!count(p.chargedLogos,4)||p.chargedLogos+p.chargedUploads>4):has(p,'chargedLogos'))fail();
   const logoCents=logoContract?p.chargedLogos*contract.extraLogoCents:0;
   const photoCents = p.chargedUploads * contract.extraPhotoCents;
-  const listCents = contract.baseCents + motifCount * contract.extraMotifCents + photoCents + logoCents;
+  const listCents = contract.baseCents + motifCount * contract.extraMotifCents + photoCents + logoCents + optionCents;
   if (!money(listCents) || !money(photoCents)) fail();
   let discountedCents = listCents;
   if (has(contract, 'quantityTiers')) {
@@ -82,6 +105,7 @@ export function personalizationForSnapshot(contract, manifest) {
       p.totalCents !== unitCents * p.quantity) fail();
   return {unitCents, personalization:{revision:contract.revision, motifs:motifCount, uploads:p.chargedUploads,
     ...(logoContract?{logos:p.chargedLogos}:{}),
+    ...(selectedOptions?{options:selectedOptions.join(',')||'-'}:{}),
     // An opaque reference to the privately stored editable original; no customer
     // text, media, download capability or draft token goes into cart attributes.
     designReference:`gravuru:${manifest.id}:${manifest.packageSha256}`}};
@@ -101,15 +125,17 @@ export const tierUnitCents = (listCents, manifest) => listCents - tierDiscount(l
 
 export function personalizationAttributes(value) {
   if (value === undefined) return [];
-  const logos=has(value,'logos');
+  const logos=has(value,'logos'),options=has(value,'options');
   if (!value || typeof value !== 'object' || Array.isArray(value) ||
-      Object.keys(value).length !== (logos?5:4) || !Object.keys(value).every(k=>['revision','motifs','uploads','logos','designReference'].includes(k)) ||
+      Object.keys(value).length !== 4+Number(logos)+Number(options) || !Object.keys(value).every(k=>['revision','motifs','uploads','logos','options','designReference'].includes(k)) ||
       typeof value.revision !== 'string' || !/^[1-9][0-9]{0,9}$/.test(value.revision) ||
       !count(value.motifs,200) || !count(value.uploads,4) || typeof value.designReference !== 'string' ||
       (logos&&(!count(value.logos,4)||value.logos+value.uploads>4)) ||
       !/^gravuru:proof_[a-zA-Z0-9_-]{1,100}:[a-f0-9]{64}$/.test(value.designReference)) fail();
+  if(options)try{readSelectedOptions(value.options);}catch{fail();}
   return [{key:'_gravuru_motifs',value:String(value.motifs)}, {key:'_gravuru_uploads',value:String(value.uploads)},
     ...(logos?[{key:'_gravuru_logos',value:String(value.logos)}]:[]),
+    ...(options?[{key:'_gravuru_options',value:value.options}]:[]),
     {key:'_gravuru_revision',value:value.revision}, {key:'Bearbeitbarer Entwurf',value:value.designReference}];
 }
 

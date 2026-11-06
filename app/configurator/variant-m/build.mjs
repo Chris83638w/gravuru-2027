@@ -101,7 +101,7 @@ export function build({outputDirectory=OUTPUT}={}){
   replaceOnce("shown=6;renderGallery();","shown=Number.MAX_SAFE_INTEGER;renderGallery();");
   replaceOnce("render();grid.children[firstNew]?.focus({preventScroll:true});","render();");
   replaceOnce("const filtered=all.filter(e=>(!category.value||e.category===category.value)&&(!needle||(e.name+' '+e.category).toLocaleLowerCase('de').includes(needle)));",
-    "const filtered=window.GravuruProfileChoices.filterMotifBrowser(all,popular,category.value,needle,el.uxMotifScore?.bind(el));");
+    "const filtered=window.GravuruProfileChoices.filterMotifBrowser(all,popular,category.value,needle,el.uxMotifScore?.bind(el));el.uxReportMotifSearch?.(needle,filtered.length);");
   replaceOnce('let visibleCount=6;','let visibleCount=18;');
   replaceOnce("search.addEventListener('input',()=>{visibleCount=6;render()});category.addEventListener('change',()=>{visibleCount=6;render()});","search.addEventListener('input',()=>{visibleCount=18;render()});category.addEventListener('change',()=>{visibleCount=18;render()});");
   replaceOnce('visibleCount+=6;render();','visibleCount+=18;render();');

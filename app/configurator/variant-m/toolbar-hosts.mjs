@@ -8,12 +8,12 @@ export function placePreviewToolbar({toolbar,workbench,heading,preview,full,mobi
   }
 }
 
-export function placeDirectToolbar({panel,stage,preview,workbench,mobile,full,stableHost}){
-  const inWorkbench=!!workbench&&!mobile&&!full;
-  const home=stableHost&&!full?stableHost:inWorkbench||mobile&&!full?preview:stage;
+export function placeDirectToolbar({panel,stage,preview,workbench,mobile,full,stableHost,fixedHost}){
+  const inWorkbench=!!fixedHost||!!workbench&&!mobile&&!full;
+  const home=fixedHost||(stableHost&&!full?stableHost:inWorkbench||mobile&&!full?preview:stage);
   if(panel.parentNode!==home){
     const canvas=!full&&preview.querySelector('[data-ux-stage]');
-    if(stableHost&&!full)home.append(panel);else if(canvas)preview.insertBefore(panel,canvas);else home.append(panel);
+    if(fixedHost||stableHost&&!full)home.append(panel);else if(canvas)preview.insertBefore(panel,canvas);else home.append(panel);
   }
   panel.classList.toggle('is-workbench',inWorkbench);
   panel.classList.toggle('is-docked',mobile);

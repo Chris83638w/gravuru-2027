@@ -22,9 +22,35 @@ export function installMemorialExecution({el,config,picks,pictures,fieldBox}){
  // Other catalogue groups/conditional accessory fields retain the common change,
  // visibility, price and saved-draft contracts. Only the mounting presentation changes.
  const media=slateAccessoryMedia(config),replaced=new Set(['mounting',...(media?.choices.map(choice=>choice.groupId)||[])]);
- const other=[...pictures.querySelectorAll('[role=group]')].filter(g=>!replaced.has(g.querySelector('[data-picture-group]')?.dataset.pictureGroup));
+ const other=[...pictures.querySelectorAll('[role=group]')].filter(g=>g.querySelector('[data-picture-group]')&&!replaced.has(g.querySelector('[data-picture-group]').dataset.pictureGroup));
  pictures.innerHTML=memorialChoicesMarkup(config);pictures.append(...other);
+ const sizeGroup=config.scalableSizes&&config.profile.optionGroups.find(g=>g.id==='size');
+ if(sizeGroup){
+  const sizeHeading=document.createElement('h3'),sizes=document.createElement('div');sizeHeading.textContent='Größe';sizes.setAttribute('role','group');sizes.setAttribute('aria-label','Größe');
+  sizes.innerHTML=sizeGroup.values.map(v=>'<button type="button" class="m-option-tile m-size-tile" data-picture-group="size" data-picture-option="'+esc(v.id)+'" aria-pressed="false"><strong>'+esc(v.label)+'</strong><small>'+esc(v.priceCents?'+'+money(v.priceCents):'ohne Aufpreis')+'</small></button>').join('');
+  pictures.prepend(sizeHeading,sizes);
+  const sizeSelect=picks.querySelector('[data-m-option="size"]');if(sizeSelect)sizeSelect.closest('label').dataset.visualOnly='true';
+ }
  if(media){const style=document.createElement('style');style.textContent=SLATE_ACCESSORY_CSS;el.shadowRoot.append(style);}
+ // The same option buttons and change handlers now live in a single colour box.
+ const colourGroups=(config.profile.optionGroups||[]).filter(g=>g.values.some(v=>v.spacerFinish!==undefined));
+ if(colourGroups.length){
+  const colours=document.createElement('dialog');colours.className='ux-spacer-colours';colours.setAttribute('aria-label','Abstandshalter-Farbe wählen');
+  colours.innerHTML='<header><h2>Abstandshalter-Farbe</h2><button type="button" data-colours-close aria-label="Farbauswahl schließen">×</button></header>';
+  for(const group of colourGroups){
+   const select=picks.querySelector('[data-m-option="'+CSS.escape(group.id)+'"]');if(select)select.closest('label').dataset.visualOnly='true';
+   const tile=pictures.querySelector('[data-picture-group="'+CSS.escape(group.id)+'"]'),row=tile?.closest('[role=group]');
+   if(row){if(row.previousElementSibling?.matches('[data-slate-group-heading]'))row.previousElementSibling.remove();colours.append(row);}
+  }
+  pictures.append(colours);
+  colours.querySelector('[data-colours-close]').addEventListener('click',()=>colours.close());
+  colours.addEventListener('click',e=>{if(e.target===colours){const b=colours.getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right||e.clientY<b.top||e.clientY>b.bottom)colours.close();}});
+  pictures.addEventListener('click',e=>{
+   const tile=e.target.closest('[data-picture-option]');if(!tile)return;
+   if(colourGroups.some(g=>g.id===tile.dataset.pictureGroup)){colours.close();return;}
+   if(tile.dataset.pictureGroup==='mounting'&&colourGroups.some(g=>g.visibleIf?.valueIds.includes(tile.dataset.pictureOption)))colours.showModal();
+  });
+ }
  const accessoryTiles=[];
  if(fieldBox&&media){
   const heading=document.createElement('h3'),group=document.createElement('div');heading.textContent='Zubehör';group.setAttribute('role','group');group.setAttribute('aria-label','Zubehör · Mehrfachauswahl');

@@ -18,6 +18,24 @@ test('memorial stands remain available except 600 x 300 mm, including portrait o
  }
  const other=seed();other.profile.material.kind='steel';assert.deepEqual(applySlateCustomerRules(other),other);
 });
+test('real catalogue memorial themes retain stands and select the matching motif audience',()=>{
+ for(const [themeId,motifTheme] of [['gedenktafeln','remembranceHuman'],['tiergedenktafeln','remembranceAnimal'],['hundegedenktafeln','remembranceAnimal'],['katzengedenktafeln','remembranceAnimal']]){
+  const source=seed();source.profile.themeId=themeId;source.motifTheme='home';
+  const c=applySlateCustomerRules(source);
+  assert.deepEqual(c.profile.optionFields.map(f=>f.id),['silikon','staender-klar','staender-schwarz'],themeId);
+  assert.equal(c.slateAccessories.choices.length,3,themeId);assert.equal(c.motifTheme,motifTheme);
+  for(const [width,height] of [[600,300],[300,600]]){
+   source.profile.geometry={width,height};const large=applySlateCustomerRules(source);
+   assert.deepEqual(large.profile.optionFields.map(f=>f.id),['silikon']);
+   assert.deepEqual(large.slateAccessories.choices.map(f=>f.fieldId),['silikon']);
+  }
+ }
+ const generic=seed();generic.profile.themeId='gedenken';generic.motifTheme='remembranceAnimal';
+ assert.equal(applySlateCustomerRules(generic).motifTheme,'remembranceAnimal');
+ const house=seed();house.profile.themeId='hundeschilder';house.motifTheme='remembranceAnimal';
+ assert.equal(applySlateCustomerRules(house).motifTheme,'home');
+ assert.deepEqual(applySlateCustomerRules(house).profile.optionFields.map(f=>f.id),['silikon']);
+});
 test('native quote and Shopify snapshot contract agree on 0, 1 and 2 added motifs',()=>{
  const f=JSON.parse(fs.readFileSync(new URL('../designs/steel-door-signs/family.json',import.meta.url)));
  f.material={kind:'slate',label:'Schiefer',thicknessMm:5,processingProfileId:'slate-engraving'};

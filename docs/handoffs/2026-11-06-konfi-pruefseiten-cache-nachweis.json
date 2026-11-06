@@ -1,0 +1,160 @@
+{
+  "schema": "gravuru-preview-cache-r11a/v1",
+  "date": "2026-11-06",
+  "baseCommit": "42b99f3a",
+  "userTabBefore": {
+    "bundle": "/_acryl-bundle/editor-5478bb63b8153f24.mjs",
+    "viewport": {
+      "width": 1440,
+      "height": 709
+    },
+    "reset": {
+      "y": 577,
+      "height": 44,
+      "parent": "ux-preview"
+    },
+    "view": {
+      "y": 524,
+      "height": 44
+    },
+    "plate": {
+      "width": 535.8515625,
+      "height": 341
+    },
+    "httpCacheControl": null
+  },
+  "installation": {
+    "at": "2026-11-06T09:52:37.063Z",
+    "scope": "Two dog review HTML pages and their JSON models",
+    "previousFile": null,
+    "sha256": "b826360f978f09eed6e47a801a8ff25a0c63d985efbdb8f385bb0fb5d2e09ab8",
+    "bytes": 405,
+    "unchangedHtml": {
+      "22x14.html": "6ff78e13bbbd28ae7fbff7bb2b39dfd45b9a0ecd9c7319648584d3e50b98afb7",
+      "30x20.html": "e6b8fbbe6a3ad462c945b69b99e826ca08b1c58b843d652531166b12c0d865f2"
+    }
+  },
+  "http": {
+    "at": "2026-11-06T09:53:10.624Z",
+    "checks": [
+      {
+        "file": "22x14.json",
+        "status": 200,
+        "cacheControl": "no-store, no-cache, must-revalidate, max-age=0",
+        "sha256": "8222984b2ff7877719c50aa4fcc67f613eb008b11a9543d6eddfafae2158b2c5",
+        "unchanged": true
+      },
+      {
+        "file": "30x20.json",
+        "status": 200,
+        "cacheControl": "no-store, no-cache, must-revalidate, max-age=0",
+        "sha256": "637d19fcc6f02859a08d4c3853a51b13c1cfd1003aedff69a81a2de5682ae054",
+        "unchanged": true
+      },
+      {
+        "file": "22x14.html",
+        "status": 200,
+        "cacheControl": "no-store, no-cache, must-revalidate, max-age=0",
+        "sha256": "6ff78e13bbbd28ae7fbff7bb2b39dfd45b9a0ecd9c7319648584d3e50b98afb7",
+        "unchanged": true
+      },
+      {
+        "file": "30x20.html",
+        "status": 200,
+        "cacheControl": "no-store, no-cache, must-revalidate, max-age=0",
+        "sha256": "e6b8fbbe6a3ad462c945b69b99e826ca08b1c58b843d652531166b12c0d865f2",
+        "unchanged": true
+      }
+    ],
+    "bundle": {
+      "url": "/_bundle/editor-3ce792e6e3efd39f.mjs",
+      "status": 200,
+      "cacheControl": "public, max-age=31536000, immutable"
+    }
+  },
+  "live": {
+    "bundle": "/_acryl-bundle/editor-3ce792e6e3efd39f.mjs",
+    "items": [
+      {
+        "hidden": false,
+        "rect": {
+          "height": 573,
+          "width": 897.75,
+          "x": 0,
+          "y": 68
+        },
+        "selector": ".ux-preview"
+      },
+      {
+        "hidden": false,
+        "rect": {
+          "height": 545,
+          "width": 869.75,
+          "x": 14,
+          "y": 84
+        },
+        "selector": ".stage"
+      },
+      {
+        "hidden": false,
+        "rect": {
+          "height": 417,
+          "width": 655.28125,
+          "x": 121.234375,
+          "y": 100
+        },
+        "selector": ".plate-holder"
+      },
+      {
+        "hidden": true,
+        "rect": {
+          "height": 0,
+          "width": 0,
+          "x": 0,
+          "y": 0
+        },
+        "selector": ".ux-direct-edit"
+      },
+      {
+        "hidden": true,
+        "rect": {
+          "height": 0,
+          "width": 0,
+          "x": 0,
+          "y": 0
+        },
+        "selector": ".ux-photo-size"
+      },
+      {
+        "hidden": false,
+        "rect": {
+          "height": 44,
+          "width": 122.3125,
+          "x": 387.71875,
+          "y": 580
+        },
+        "selector": ".ux-design-reset button"
+      },
+      {
+        "hidden": false,
+        "rect": {
+          "height": 44,
+          "width": 215,
+          "x": 656.75,
+          "y": 580
+        },
+        "selector": ".ux-view-zoom"
+      }
+    ],
+    "viewport": {
+      "height": 709,
+      "width": 1440
+    }
+  },
+  "screenshot": "konfi-zuruecksetzen-buendig-aktuell-r11a.jpg",
+  "unitTestsRerun": false,
+  "applicationCodeChanged": false,
+  "userDraftsDeleted": false,
+  "userTabsReloaded": false,
+  "link": "https://app-2027.gravuru-designwerkstatt.de/produktvorschau/21afd5dc8edad301caace78b04c7973c6a2e6f7b3133dd24/22x14.html?fresh=1&v=r11a"
+}

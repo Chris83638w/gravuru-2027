@@ -36,5 +36,7 @@
 .ux-dialog::backdrop{background:#16362755;backdrop-filter:blur(3px)}
 .ux-dialog button:focus-visible,.ux-shell button:focus-visible{outline:3px solid #78b49b;outline-offset:3px}
 .ux-conflict-hints[hidden],[data-multi-body][hidden]{display:none!important}
+.ux-overlap-note{position:absolute;left:12px;right:12px;z-index:34;height:18px;margin:0!important;padding:0!important;font:12px/18px system-ui!important;text-align:center;color:#77623c;white-space:nowrap;pointer-events:none;overflow:hidden;text-overflow:ellipsis}
+.ux-overlap-note[hidden]{display:none!important}
 .ux-center-proposal{margin:12px 16px;padding:14px;background:#eaf5ee;border-radius:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}.ux-center-proposal[hidden]{display:none}.ux-center-proposal button{border:1px solid #b7d4c2;background:white;border-radius:9px;padding:9px}
 @media(max-width:600px){.ux-conflict-hints{margin:10px 4px}.ux-upload-drop{padding:20px 14px!important}.ux-editor{border-radius:16px!important}.ux-conflict>div button{flex:1}}

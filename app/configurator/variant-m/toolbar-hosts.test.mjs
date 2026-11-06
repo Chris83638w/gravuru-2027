@@ -21,6 +21,18 @@ function fixture(){
   return f;
 }
 
+test('opt-in tools reuse live controls through selection, responsive and fullscreen changes and return to default placement',()=>{
+ const f=fixture(),fixedHost=new Node();let edits=0;f.panel.addEventListener('click',()=>edits++);
+ for(const mobile of [false,true,false])for(const full of [false,true,false])for(const hidden of [false,true]){
+  f.panel.hidden=hidden;
+  assert.equal(placeDirectToolbar({...f,fixedHost,mobile,full}),true);
+  assert.equal(f.panel.parentNode,fixedHost);assert.equal(f.panel.hidden,hidden);assert.deepEqual(fixedHost.children,[f.panel]);
+ }
+ f.panel.dispatchEvent(new Event('click'));assert.equal(edits,1);
+ placeDirectToolbar({...f,mobile:false,full:false});assert.equal(f.panel.parentNode,f.preview);
+ f.panel.dispatchEvent(new Event('click'));assert.equal(edits,2);
+});
+
 test('doorbell selection uses a persistent slot through deselection, mobile and fullscreen, retaining live controls',()=>{
  const f=fixture(),stableHost=new Node();f.preview.insertBefore(stableHost,f.preview.canvas);let edits=0;f.panel.addEventListener('click',()=>edits++);
  const original=[...f.preview.children];

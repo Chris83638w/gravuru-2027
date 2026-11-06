@@ -1,0 +1,103 @@
+{
+  "schema": "gravuru-navigation-code-stage/v1",
+  "stagedAtUtc": "2026-11-06T21:24:55.683738+00:00",
+  "ready": true,
+  "sourceCommit": "e166741ccfea9f487fdd578ddfff22ab7875e1a8",
+  "archiveSha256": "5346cddd05b1412c4ddae5680378db03c261ad09578335da25f52715093fe04e",
+  "archiveBytes": 31670281,
+  "entries": 811,
+  "newApplicationRoot": "gravuru-2027-navigation-e166741c",
+  "documentRoot": "gravuru-2027-navigation-e166741c/public",
+  "existingConfigPath": "private/gesamtbestand-stage-0bb50565-20261106-v1/config.json",
+  "sameExistingData": true,
+  "sameExistingGallery": true,
+  "privateBackup": {
+    "directory": "private/galerie-navigation-e166741c-backup-20261106-v1",
+    "databases": [
+      {
+        "file": "databases/design-assets.sqlite",
+        "bytes": 8052736,
+        "sha256": "5b024033d868f98c9a0ce3688fa77b5a37d5dbfa20a228199f04addaa3317f2c"
+      },
+      {
+        "file": "databases/profiles.sqlite",
+        "bytes": 77824,
+        "sha256": "38e6ecf7a069ad75d9d4aed2e1e15a848bb9008317bd827efd0fa0760943417b"
+      },
+      {
+        "file": "databases/workshop.sqlite",
+        "bytes": 2429505536,
+        "sha256": "389620077748d05f0f0dd17bb91451d5dbb2d1b262627f052ecb751dfa69447f"
+      },
+      {
+        "file": "databases/review-comments.sqlite",
+        "bytes": 12288,
+        "sha256": "fb2d918730b724d1d7720a574618e3cc9387787aae777f715bbc20333da3741d"
+      },
+      {
+        "file": "databases/review-approvals.sqlite",
+        "bytes": 12288,
+        "sha256": "db8efc3b95b536a5481d51fab9588f3bc1139cbf43b81cb1ad602651e02e2ae6"
+      }
+    ],
+    "products": 348,
+    "revisionRows": 357,
+    "workshopHeadsSha256": "15460f65f43875f584981b65266e253b75dde58ae98e435dabe3c363982f131e",
+    "metadataSha256": {
+      "data/local-review-import.json": "4b7f1d40c9599d3e031efd4eed3bb1497e9da1c0950412d259c6b29984f71b75",
+      "data/.gravuru-private-test.json": "b95fd45e98e429e1bae26aa20eb39a2056a37649e33b0f56c314dbe143507d53",
+      "gallery/manifest.json": "adf73fee5050692402fe8f34e1e89f30c648c1cc11f18dc1dafd4a05c37cd78e",
+      "gallery/files-sha256.json": "a669965491865522d417acf60f2f3db9ebcd33353c3fd93a109da4ad64f40587",
+      "gallery/.gravuru-slate-review.json": "19343f0f6ec1f93f8b0faab878accac9d7431bc73d878500f6dd1e8e0e11563a"
+    },
+    "sqliteQuickCheck": "ok",
+    "allFiveSourceLocksHeldDuringCapture": true
+  },
+  "runtimeOverlaySha256": "2c7bf58d7fe54b1db5fdd9c71e9b29bb609c1b4bde824c26e2b5af88a6c611d7",
+  "wrapperSha256": "c8b4d25ce0992bb0aec4b8a4456899ac5aa02272ddd1a69ce656bc16488bc222",
+  "beforeUiSha256": {
+    "app/configurator/variant-m/gallery-workbench.mjs": "503e7f642c75fd3c06c56e01f32c9f4d658abc68b19f6bc8f56db2c146009644",
+    "app/workshop/ui/gallery-editor.css": "5618c7eb7a3dfa45049a468c8384e1ee2dff81dc89ee9749122599e94a87f2bd",
+    "app/workshop/ui/gallery-editor.html": "ea0bca06c5fd6a889137e4fa27eff011e78d7b017ba3aa16b4db75c64318a7e2",
+    "app/workshop/ui/gallery-editor.mjs": "469b7fe8592af54e4fa5668b4599a7d3811e8bee79efb6c5cd84c6b12ad83cec",
+    "scripts/lib/slate-review-gallery-page.mjs": "72160aa793064d6789e9712a674b4dc9ce1eaa8a7090d27556017cd155df0a48",
+    "scripts/lib/slate-review-gallery-ui.js": "359b43c8a4d79040b58a3fa5850fbffaa6b7f4beb3f4b06766f252d3314115b0",
+    "scripts/lib/slate-review-gallery.css": "34bfe077ddde5c8f2c2381a5c2d5a1449b8ad0b071ff9a1a4d73d1bf01b351a6",
+    "scripts/lib/slate-review-inline-ui.js": "eaa1403838230bb9b72d6287b65424a21db027dc8f22bdafac07a6c826266a88"
+  },
+  "newUiSha256": {
+    "app/configurator/variant-m/gallery-workbench.mjs": "84b56582c0fa2cb30a894ff59dad8f8dba10810c8a8afda0451422bfe33dabeb",
+    "app/workshop/ui/gallery-editor.css": "58b639d6a8c511bd200b97d059093f4513d4dc65f6fd7a502d57db5f5f0b7d71",
+    "app/workshop/ui/gallery-editor.html": "d3f32b576037d469ab01abd6f8957f296e9e150090aaa5a18fe022e7d0ad9ba1",
+    "app/workshop/ui/gallery-editor.mjs": "219591272b3df56cd6f84d6dfda4fe079ca589ee32f1f5e3f68ef41fa8965933",
+    "scripts/lib/slate-review-gallery-page.mjs": "9b05866f4bd610973a4f34abb6ed4ee2aa47b2004b6387790a32bfcc3630d0a2",
+    "scripts/lib/slate-review-gallery-ui.js": "858aef1acd929f25cd68f5ec0ba3c25e03ac5c134a8971a13ddb3a0cc4af49c3",
+    "scripts/lib/slate-review-gallery.css": "ec4cfae6124c5dc1bf81d4bb607218fd51a778008f43de5346d1e6037090cb16",
+    "scripts/lib/slate-review-inline-ui.js": "20313cbaf2109ab4a85fd17319755ce5dc27ce8a1607eadae3b9991d7afe535a"
+  },
+  "fullRuntimeModuleImportsVerified": true,
+  "isolatedBuildPassed": true,
+  "privateDependencyCheckPassed": true,
+  "existingCodeAndConfigUnchanged": true,
+  "sourceDatabaseModifyingSqlIssued": false,
+  "dataImportedOrRestored": false,
+  "activated": false,
+  "servicesRestarted": false,
+  "rollbackApplicationRoot": "gravuru-2027-gesamtbestand-review-267d46e4",
+  "rollbackKeepsCurrentData": true,
+  "browserAcceptancePending": true,
+  "relativeNewRootRequireVerified": true,
+  "helperSha256": "020adaeba8b969485f4384484a552234b04639a6602b2586b630c5210a6e8597",
+  "generatedFileCount": 751,
+  "generatedInventorySha256": "85a137d7e6073d38d39ecfc6979b931abe771a43770662f57eb81791cc01262c",
+  "generatedEditor": {
+    "path": "app/configurator/variant-m/.preview/editor.html",
+    "bytes": 373501,
+    "sha256": "071fbf40240b8f8fd218152c8554fa882db40bf5694ef7a3ae2469f3e912e596"
+  },
+  "isolatedHelperTests": {
+    "unsafeArchivePathsRejected": 7,
+    "sqliteBackupReadbacks": 5,
+    "sourceDatabaseBytesUnchanged": true
+  }
+}

@@ -31,3 +31,9 @@ Jetzt: ein Rahmen mit **Zur Übersicht**, eindeutiger Design-ID/Material/Format/
 - Lokale Browser: integrierter Browser und Chrome; Desktopansicht und 390 × 844 geprüft. Mobile Seite ohne horizontalen Überlauf, Richtungstasten je 57 px breit. Kein physisches Touchgerät geprüft, keine vollständige WCAG-Zertifizierung.
 - Bekannte zeitweise leere iframe-Navigation im gesteuerten Chrome bleibt offen; auch lokal reproduziert. Integrierter Browser öffnet vollständigen Konfi und führt Speichern & zurück aus. Diese Navigationserleichterung behauptet keine Behebung der separaten Frame-Störung.
 - Diese Aufnahmen und die Positionsfolge stammen aus der lokalen Testkopie, nicht aus der privaten Online-Datenbank. Online-Aktivierung wird separat dokumentiert. Keine Designfreigaben gesetzt.
+
+## Onlineabnahme nach Aktivierung
+
+Private Site19 nutzt Codee166741c nach frischer Sicherung und geprüftem separatem Release. [Staging](private-staging-proof.json), [91/91 GET-/Datenprüfungen](private-online-get-proof.json). Browser bestätigt neue Übersicht, direkte Schnellbearbeitung samt Verschieben/Zurücksetzen und vollenKonfi mit eindeutigem Kopf. No-op „Speichern & zurück“ kehrt zur passenden AcrylkarteR4 zurück; [anschließender Vergleich](private-online-after-ui-proof.json) bestätigt unveränderte fünfDatenbanken,348Produktköpfe und357Revisionen. Kein Online-Positions-PATCH und keine Freigabe gesetzt. Die tatsächliche Positionsspeicherung wurde oben an der lokalen Testkopie abgenommen.
+
+Aufnahmen: [private Aktivierung](09-private-site19-aktiv.png), [Onlineübersicht](10-online-galerie.png), [Schnellbearbeitung](11-online-schnellbearbeitung.png), [vollerKonfi](12-online-konfi.png), [drei Karten mit direkter Bearbeitung](13-online-schnellbearbeitung-detail.png). Zusätzliche [mobileKonfi-Aufnahme](08-konfi-mobil.png) stammt aus dem lokalenPrüfstand; kein horizontalerÜberlauf bei390px.

@@ -1,0 +1,53 @@
+{
+  "schema": "gravuru-navigation-after-ui-preservation/v1",
+  "checkedAtUtc": "2026-11-06T21:30:49.968114+00:00",
+  "sourceCommit": "e166741ccfea9f487fdd578ddfff22ab7875e1a8",
+  "scope": "Read-only database comparison after root-reported UI no-op save; no HTTP or mutation requests.",
+  "passed": true,
+  "databases": [
+    {
+      "database": "design-assets.sqlite",
+      "tables": 7,
+      "rowsCompared": 240,
+      "allRowsUnchanged": true
+    },
+    {
+      "database": "profiles.sqlite",
+      "tables": 6,
+      "rowsCompared": 2,
+      "allRowsUnchanged": true
+    },
+    {
+      "database": "workshop.sqlite",
+      "tables": 61,
+      "rowsCompared": 1402,
+      "allRowsUnchanged": true
+    },
+    {
+      "database": "review-comments.sqlite",
+      "tables": 1,
+      "rowsCompared": 4,
+      "allRowsUnchanged": true
+    },
+    {
+      "database": "review-approvals.sqlite",
+      "tables": 1,
+      "rowsCompared": 0,
+      "allRowsUnchanged": true
+    }
+  ],
+  "metadataFilesCompared": 5,
+  "metadataUnchanged": true,
+  "productsBefore": 348,
+  "productsAfter": 348,
+  "productHeadsUnchanged": true,
+  "changedProductHeads": 0,
+  "revisionRowsBefore": 357,
+  "revisionRowsAfter": 357,
+  "newRevisionRows": 0,
+  "operatorRevision4Retained": true,
+  "httpRequests": 0,
+  "mutationRequests": 0,
+  "sourceDatabaseWrites": false,
+  "browserVerifiedByThisProbe": false
+}

@@ -10,8 +10,8 @@
   "status": {
     "localPreparation": "Alle zehn Stapel vollständig erzeugt und geprüft. Offen markierte Originale/Ziele wurden nicht als native fertige Vorlagen ausgegeben.",
     "online": {
-      "statusSource": "Host-Staging, Start und echter Prozessneustart durch Root geprüft; Umschaltung wartet auf ausdrückliche Bestätigung.",
-      "scope": "Pilot und Andenkenstapel liegen geprüft in einer neuen privaten Serverablage. Die bisherige Online-Galerie ist noch unverändert aktiv.",
+      "statusSource": "Root hat nach ausdrücklicher Nutzerfreigabe die private Plesk-Site 19 auf 267d46e4 umgeschaltet und die App neu gestartet; 53 lesende HTTPS-Prüfungen bestanden. Online-Voll-Konfi-Browserabnahme wegen leerem iframe offen.",
+      "scope": "Pilot und Andenken sind auf der privaten Galerie aktiv: 137 neue Originale. Die übrigen neun Türschild-Stapel sind weiter nur lokal vorbereitet.",
       "pilot": {
         "originals": 28,
         "targets": 146,
@@ -27,7 +27,81 @@
         ]
       },
       "remainingNineBatches": "Neue Ziele der übrigen neun Stapel sind lokal vorbereitet; nicht als online übernommen ausgewiesen.",
-      "activated": false
+      "activated": true,
+      "activeCounts": {
+        "originals": 462,
+        "editableOriginals": 370,
+        "preparedTargets": 2449,
+        "unavailableTargets": 101,
+        "products": 348,
+        "blanks": 240,
+        "newOriginals": 137
+      },
+      "activationEvidence": {
+        "userAuthorization": "Ja, private Galerie jetzt umschalten",
+        "siteId": 19,
+        "runtimeCommit": "267d46e497ba73d5ce7cc5b2c09349cd3323aee5",
+        "switchAndAppRestart": "Durch Root in Plesk tatsächlich ausgeführt; kein Stagingbeleg als alleiniger Aktivierungsnachweis.",
+        "customerShopChanged": false,
+        "site20Changed": false,
+        "historicalStagingEvidence": {
+          "file": "docs/reviews/2026-11-06-gesamtbestand/host-stage-proof.json",
+          "meaning": "Unveränderter Nachweis der Vorbereitung vor der Umschaltung."
+        },
+        "onlineGet": {
+          "file": "work/gesamtbestand-host-proof-20261106/online-get-proof-v2.json",
+          "sha256": "e8965a657d01bbfa7975ede13c845919d0cf09923cad2991bd1a3b2d5bc536d2",
+          "checkedAt": "2026-11-06T18:12:18.159478+00:00",
+          "passed": true,
+          "checks": 53,
+          "mutationRequests": 0,
+          "browserVerified": false,
+          "casVerified": false,
+          "csrfWriteVerified": false
+        },
+        "oldSourceComparisons": [
+          {
+            "phase": "precompare",
+            "file": "work/gesamtbestand-host-source-precompare.json",
+            "sha256": "7802a0599671b6b49617015816f47113faf09a3a0269b9dd0958fa0de9bf36d3",
+            "equal": true,
+            "stableDuringRead": true,
+            "databaseCount": 5,
+            "galleryFiles": 2755,
+            "mappingSha256": "d45465a9e4eaf89a88825df7e9a3a0c7276a41cf67ad669b231aba7d8eeb9ac8",
+            "snapshotReceiptSha256": "a16bbac86a108dbbec91d7c48aab63899b3b001a99fdce5e21e51e9a6041263a"
+          },
+          {
+            "phase": "finalcompare",
+            "file": "work/gesamtbestand-host-source-finalcompare.json",
+            "sha256": "7802a0599671b6b49617015816f47113faf09a3a0269b9dd0958fa0de9bf36d3",
+            "equal": true,
+            "stableDuringRead": true,
+            "databaseCount": 5,
+            "galleryFiles": 2755,
+            "mappingSha256": "d45465a9e4eaf89a88825df7e9a3a0c7276a41cf67ad669b231aba7d8eeb9ac8",
+            "snapshotReceiptSha256": "a16bbac86a108dbbec91d7c48aab63899b3b001a99fdce5e21e51e9a6041263a"
+          },
+          {
+            "phase": "postcompare",
+            "file": "work/gesamtbestand-host-source-postcompare.json",
+            "sha256": "7802a0599671b6b49617015816f47113faf09a3a0269b9dd0958fa0de9bf36d3",
+            "equal": true,
+            "stableDuringRead": true,
+            "databaseCount": 5,
+            "galleryFiles": 2755,
+            "mappingSha256": "d45465a9e4eaf89a88825df7e9a3a0c7276a41cf67ad669b231aba7d8eeb9ac8",
+            "snapshotReceiptSha256": "a16bbac86a108dbbec91d7c48aab63899b3b001a99fdce5e21e51e9a6041263a"
+          }
+        ]
+      },
+      "openBrowserIssue": {
+        "component": "Voll-Konfi iframe",
+        "status": "open",
+        "observation": "Im tatsächlichen Online-Browser leer; Ursache und Korrektur in Arbeit.",
+        "fullOnlineEditSavebackVerified": false,
+        "handling": "HTTP-200-Editorantworten und frühere lokale Bedienprüfung gelten nicht als abgeschlossene Online-Browserabnahme."
+      }
     },
     "approval": "Technische Vorbereitung und Katalogfreigaben sind keine neue Nutzerfreigabe und keine Shop-/Fertigungsveröffentlichung."
   },
@@ -86,7 +160,16 @@
     "nonBlockingReviewTargets": 4793,
     "originalsWithExplicitUncertainReplacementWarning": 15,
     "handling": "Originale unverändert erhalten; keine automatische Größenkorrektur, Motivänderung oder Freigabe. Nicht blockierende Prüfhilfen bleiben sichtbar.",
-    "acrylicCategoryCarrier": "Für Hausnummern, Pferde, Katzen und Willkommen enthält die Acryl-Linie keine eigene Unterkategorie. Galerie-Unterkategorien und Design-Themen bleiben erhalten; private Produktträger verwenden die vorhandene neutrale Kategorie namensschilder. Spätere Shopzuordnung bleibt gesondert."
+    "acrylicCategoryCarrier": "Für Hausnummern, Pferde, Katzen und Willkommen enthält die Acryl-Linie keine eigene Unterkategorie. Galerie-Unterkategorien und Design-Themen bleiben erhalten; private Produktträger verwenden die vorhandene neutrale Kategorie namensschilder. Spätere Shopzuordnung bleibt gesondert.",
+    "d412Clarification": {
+      "originalId": "TRE-V2A-8x3,5-D412",
+      "issue": "Hauchdünne Kontur, kein Motivüberstand.",
+      "maximumObservedContourMm": 0.0393,
+      "minimumContourMm": 0.3,
+      "previousIncorrectComment": "https://github.com/Chris83638w/gravuru-2027/issues/85#issuecomment-6691208088",
+      "codeAndUiAlreadyCorrect": true,
+      "originalModified": false
+    }
   },
   "nativeStorage": {
     "products": 2639,

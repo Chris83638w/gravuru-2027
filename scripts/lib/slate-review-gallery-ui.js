@@ -58,6 +58,13 @@ function filter() {
   try {
   approvalEditor?.syncControls();
   const filters = {search: search.value, view: view.value, material: material.value, theme: theme.value, category: category.value, form: blankForm.value, process: process.value, approval: approvalFilter.value};
+  if (document.body) document.body.dataset.reviewView = view.value;
+  for (const button of document.querySelectorAll('[data-view-nav]')) button.setAttribute('aria-pressed', String(button.dataset.viewNav === view.value));
+  const filterCount = document.querySelector('[data-filter-count]');
+  const extraCount = view.value === 'blanks' ? 0 : [category.value, process.value].filter(Boolean).length;
+  if (filterCount) filterCount.textContent = extraCount ? ' (' + extraCount + ')' : '';
+  const hasFilters = [search.value, material.value, ...(view.value === 'blanks' ? [blankForm.value] : [theme.value, category.value, process.value, approvalFilter.value, ...(view.value === 'all' ? [blankForm.value] : [])])].some(Boolean);
+  for (const button of document.querySelectorAll('[data-reset-filters]')) button.disabled = !hasFilters;
   for (const control of [theme, category, process, approvalFilter]) control.disabled = view.value === 'blanks';
   document.querySelector('#blank-form-filter').hidden = view.value === 'designs';
   let count = 0, blankCount = 0;
@@ -110,6 +117,7 @@ function updateFormat(card, notify = true) {
   if (badge && option.dataset.materialLabel) badge.textContent = option.dataset.materialLabel + ' · ' + card.dataset.process;
   previousFormats.set(card, select.value);
   for (const link of card.querySelectorAll('[data-edit-link]')) {link.hidden = unavailable; if (!unavailable) link.href = option.dataset.edit; else link.removeAttribute('href');}
+  for (const button of card.querySelectorAll('[data-inline-start]')) button.hidden = unavailable;
   if (notify) approvalEditor.formatChanged(card);
 }
 search.value = saved.search || '';
@@ -152,6 +160,24 @@ function restoreSavedReturn() {
   filter();remember();void approvalEditor.refresh();return true;
 }
 restoreSavedReturn();
+for (const button of document.querySelectorAll('[data-view-nav]')) button.addEventListener('click', () => {
+  if (![...view.options].some(option => option.value === button.dataset.viewNav)) return;
+  view.value = button.dataset.viewNav; savedReturnCard = null; filter(); remember();
+});
+for (const button of document.querySelectorAll('[data-reset-filters]')) button.addEventListener('click', () => {
+  for (const control of [search, material, theme, category, blankForm, process, approvalFilter]) control.value = '';
+  savedReturnCard = null; filter(); remember();
+});
+document.querySelector('[data-overview-link]')?.addEventListener('click', event => {
+  const overview = document.querySelector('#review-overview'), details = overview?.querySelector('details');
+  if (!details) return;
+  event.preventDefault(); details.open = true; overview.scrollIntoView({block:'start',behavior:'auto'}); details.querySelector('summary')?.focus();
+});
+for (const link of document.querySelectorAll('[data-gallery-leave]')) link.addEventListener('click', event => {
+  if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && !inlineEditor.beforeNavigation()) {event.preventDefault();return;}
+  remember();
+});
+if (category.value || process.value) {const more = document.querySelector('#more-filters'); if (more) more.open = true;}
 for (const control of [search, view, material, theme, category, blankForm, process, approvalFilter]) control.addEventListener('input', () => { savedReturnCard=null;filter(); remember(); });
 filter();
 let returnCard;

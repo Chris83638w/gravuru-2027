@@ -13,7 +13,10 @@ const source = fs.readFileSync(new URL('./lib/slate-review-gallery-ui.js', impor
 async function openGallery({hash = '', material = 'steel', scroll = 987, targetIsCard = true, savedReturn=null, withTargets=false, dirty=false, formats={}, openAcrylic=false, cardCount=1} = {}) {
   const calls = [], nodes = new Map();
   let approvalPasses = 0;
-  const control = (id, values, value = '') => nodes.set('#' + id, {value, options: values.map(value => ({value})), addEventListener() {}});
+  const interactive = extra => {const listeners=new Map();return {...extra,addEventListener(type,fn){listeners.set(type,fn);},emit(type,event={}){return listeners.get(type)?.(event);},setAttribute(key,value){this[key]=value;}};};
+  const control = (id, values, value = '') => nodes.set('#' + id, interactive({value, options: values.map(value => ({value}))}));
+  const navigation = ['designs','blanks','all'].map(viewNav=>interactive({dataset:{viewNav}}));
+  const resets = [interactive({}),interactive({})], body={dataset:{}};
   control('search', []);control('view', ['designs', 'blanks', 'all'], 'designs');
   control('material', ['', 'steel', 'slate', 'acrylic-schwarz-3mm']);control('theme', ['', 'family']);
   control('category', ['', 'door']);control('blank-form', ['', 'round']);
@@ -30,7 +33,7 @@ async function openGallery({hash = '', material = 'steel', scroll = 987, targetI
   const context = {
     URLSearchParams, location: {hash}, requestAnimationFrame(callback) { callback(); },
     sessionStorage: {getItem(key) { return JSON.stringify(key==='gravuru-gallery-return'?savedReturn:stored); }, setItem() {},removeItem(){calls.push({removed:true});}},
-    document: {createElement(){return {dataset:{}};},querySelector(selector) { return nodes.get(selector) || null; }, querySelectorAll(selector) { return selector === '[data-design-card]' ? Array(cardCount).fill(card) : []; },
+    document: {body,createElement(){return {dataset:{}};},querySelector(selector) { return nodes.get(selector) || null; }, querySelectorAll(selector) { return selector === '[data-design-card]' ? Array(cardCount).fill(card) : selector==='[data-view-nav]'?navigation:selector==='[data-reset-filters]'?resets:[]; },
       getElementById(id) { return id === card.id ? card : null; }},
     window: {scrollY: 0, addEventListener() {}, scrollTo(x, y) { calls.push({x, y}); }},
     fakeInlineModule: {installInlineReview() { return {keepVisible() { return dirty; }, beforeFormatChange() { return !dirty; }, beforeNavigation() { return true; }}; }},
@@ -38,7 +41,7 @@ async function openGallery({hash = '', material = 'steel', scroll = 987, targetI
   };
   vm.runInNewContext(source, context);
   await context.initialized;
-  return {calls, card, image, badge, select, nativePreview, openPreview, openReason, approvalPasses, material: nodes.get('#material').value};
+  return {calls, card, image, badge, select, nativePreview, openPreview, openReason, approvalPasses, material: nodes.get('#material').value,nodes,navigation,resets,body,setDirty:value=>{dirty=value;}};
 }
 
 test('an explicit visible gallery target wins over the previous scroll position', async () => {
@@ -111,4 +114,27 @@ test('filtering an open material shows its reason instead of another material pr
   assert.equal(page.openPreview.hidden, false);
   assert.equal(page.openReason.textContent, 'Schriftdatei fehlt');
   assert.equal(page.image.src, undefined);
+});
+
+test('visible view and reset buttons preserve a dirty native target while updating actual filters',async()=>{
+  const page=await openGallery({withTargets:true,dirty:true}),before={...page.card.dataset};
+  const material=page.nodes.get('#material'),search=page.nodes.get('#search');
+  material.value='acrylic-schwarz-3mm';material.emit('input');
+  search.value='does not match';search.emit('input');
+  page.navigation.find(button=>button.dataset.viewNav==='blanks').emit('click');
+  assert.equal(page.body.dataset.reviewView,'blanks');
+  assert.equal(page.navigation.find(button=>button.dataset.viewNav==='blanks')['aria-pressed'],'true');
+  assert.equal(page.card.hidden,false,'unsaved card stays visible in the blank view');
+  assert.equal(page.nodes.get('#theme').disabled,true);
+  assert.equal(page.resets[0].disabled,false);
+  page.resets[1].emit('click');
+  assert.equal(material.value,'');assert.equal(search.value,'');
+  assert.equal(page.nodes.get('#view').value,'blanks','reset filters does not silently switch views');
+  assert.equal(page.card.dataset.productId,before.productId);
+  assert.equal(page.card.dataset.designId,before.designId);
+  assert.equal(page.card.dataset.material,before.material);
+  assert.equal(page.select.value,'0');assert.equal(page.card.hidden,false);
+  page.setDirty(false);page.navigation.find(button=>button.dataset.viewNav==='designs').emit('click');
+  assert.equal(page.body.dataset.reviewView,'designs');assert.equal(page.nodes.get('#theme').disabled,false);
+  assert.equal(page.card.hidden,false);assert.equal(page.resets[0].disabled,true);
 });

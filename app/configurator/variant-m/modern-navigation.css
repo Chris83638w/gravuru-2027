@@ -7,6 +7,7 @@
 :host([data-ux-modern]) .ux-modern-motifs [data-library-less]{display:none!important}
 :host([data-ux-modern]) .ux-modern-motifs [data-library-more]{width:100%!important;background:#e4eaf2!important;color:#293d55!important;border:0!important;min-height:42px!important;border-radius:10px!important}
 :host([data-ux-modern]) .ux-modern-motifs #panel-motif .workflow-motif-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+:host([data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-modern-motifs .ux-motif-pricing{margin:6px 0 10px!important;padding:0!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;color:#000!important;font-size:12px!important;line-height:1.4!important;font-weight:400!important;cursor:default}
 @media(max-width:767px){
  :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell{padding-bottom:0!important}
  :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-tabbar{display:block!important;flex:none!important;order:-1!important;position:sticky!important;top:0!important;z-index:10!important;background:#fff!important}
@@ -69,7 +70,7 @@
  :host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motifs [data-library-search]{height:40px!important;min-height:40px!important;margin:0!important;padding:7px 10px!important}
  :host([data-ux-modern][data-ux-mobile-tabs]) .ux-category-picker{margin-top:0!important}
  :host([data-ux-modern][data-ux-mobile-tabs]) .ux-category-trigger{min-height:40px!important;padding:6px 10px!important;font-size:15px!important}
- :host([data-ux-modern][data-ux-mobile-tabs]) .ux-motif-pricing{margin:4px 0 8px!important;padding:5px 7px!important;font-size:11px!important;line-height:1.35!important}
+ :host([data-ux-layout][data-ux-neutral][data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motifs .ux-motif-pricing{margin:4px 0 8px!important;font-size:11px!important;line-height:1.35!important}
  :host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motifs [data-library-count]{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
  :host([data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motifs .workflow-motif-grid button{min-height:104px!important;padding:6px 4px!important}
 }

@@ -93,12 +93,12 @@ test('actual field UI moves its highlight and open font controls with selection 
   constructor(id){this.dataset={uxRow:id};this.attrs={};this.classes=new Set();this.classList={toggle:(key,on)=>on?this.classes.add(key):this.classes.delete(key)};}
   append(node){node.parentNode=this;this.child=node;}
   setAttribute(key,value){this.attrs[key]=value;}removeAttribute(key){delete this.attrs[key];}
-  querySelector(){return this.disclosure||null;}
+  querySelector(){return this.disclosure||null;}closest(){return null;}
  }
  const rows=['a','b'].map(id=>{const row=new Element(id);row.disclosure=new Element();row.disclosure.dataset={textOptions:id};return row;}),controls=new Element(),fieldNodes=rows.map((row,i)=>({dataset:{uxText:row.dataset.uxRow},getBoundingClientRect:()=>({top:100+i*120,bottom:140+i*120})}));
  const fields={querySelectorAll:s=>s==='.ux-text-row'?rows:fieldNodes},editor={scrollTop:0,getBoundingClientRect:()=>({top:100,bottom:200}),scrollTo(value){this.scrollTop=value.top;}},panel={hidden:false};
  const r={querySelector:s=>({'.ux-fields':fields,'.ux-controls':controls,'.ux-editor':editor,'#ux-panel-text':panel})[s],addEventListener:(type,fn)=>callbacks[type]=fn};
- const el={dataset:{}},env={el,r,object:{id:'a',type:'text'},requestAnimationFrame:fn=>fn(),ResizeObserver:class{constructor(fn){resizers.push(fn);}observe(){}disconnect(){}},window:{addEventListener(){}},document:{createElement:()=>new Element()}};
+ const el={dataset:{}},env={el,r,object:{id:'a',type:'text'},requestAnimationFrame:fn=>fn(),cancelAnimationFrame(){},ResizeObserver:class{constructor(fn){resizers.push(fn);}observe(){}disconnect(){}},window:{addEventListener(){}},document:{createElement:()=>new Element()}};
  env.selected=()=>env.object;env.select=id=>{env.object={id,type:'text'};el.uxUpdateTextUI();};vm.createContext(env);vm.runInContext(code.slice(code.indexOf('export function installTextFields')).replace('export ',''),env);vm.runInContext('installTextFields({el,r,selected,select})',env);
  assert.equal(rows[0].attrs['aria-current'],'true');assert.equal(rows[1].attrs['aria-current'],undefined);
  callbacks.focusin({target:{closest:s=>s==='[data-ux-text]'?fieldNodes[0]:null}});assert.equal(controls.parentNode,rows[0]);assert.equal(controls.hidden,false);

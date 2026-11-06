@@ -160,17 +160,6 @@ export async function installWorkflow(api){
  const grid=$('[data-library-grid]');grid.classList.remove('ux-scroll-list');grid.classList.add('workflow-motif-grid');grid.removeAttribute('tabindex');
  panel.querySelector('.ux-list-edge')?.remove();const more=$('[data-library-more]');if(more)more.parentElement.hidden=false;
  const search=$('[data-library-search]'),searchHint=document.createElement('p');searchHint.id='ux-motif-search-hint';searchHint.className='ux-motif-search-hint';searchHint.textContent='Beschreibe einfach, was du suchst – du musst den genauen Motivnamen nicht kennen.';search.after(searchHint);search.setAttribute('aria-describedby',searchHint.id);
- // Previews use existing rendered vectors, never newly generated design artwork.
- const designPreview=dialog('design-preview','Designvorschau','<div data-design-preview-art></div>'+button('preview-use','Dieses Design verwenden','class="ux-primary"'));
- let previewId=null,hoverTimer;const hover=document.createElement('div');hover.className='workflow-hover-preview';hover.hidden=true;r.append(hover);
- function previewCard(card){previewId=card.dataset.cDesign;$('[data-design-preview-art]').innerHTML=card.querySelector('svg')?.outerHTML||'';designPreview.showModal();}
- function decorate(){for(const card of all('[data-c-design]'))if(!card.querySelector('[data-design-enlarge]')){const span=document.createElement('span');span.dataset.designEnlarge='';span.setAttribute('role','button');span.tabIndex=0;span.setAttribute('aria-label','Design vergrößern: '+(card.querySelector('span')?.textContent||''));span.textContent='↗ Vorschau';card.append(span);}}
- r.addEventListener('click',e=>{const trigger=e.target.closest('[data-design-enlarge]');if(trigger){e.preventDefault();e.stopImmediatePropagation();previewCard(trigger.closest('[data-c-design]'));}},true);
- r.addEventListener('keydown',e=>{if(e.target.matches('[data-design-enlarge]')&&['Enter',' '].includes(e.key)){e.preventDefault();e.stopImmediatePropagation();previewCard(e.target.closest('[data-c-design]'));}},true);
- r.addEventListener('pointerover',e=>{const card=e.target.closest('[data-c-design]');if(!card||!matchMedia('(hover:hover)').matches)return;clearTimeout(hoverTimer);hoverTimer=setTimeout(()=>{hover.innerHTML=card.querySelector('svg')?.outerHTML||'';hover.hidden=false;const b=card.getBoundingClientRect();hover.style.left=Math.max(8,Math.min(innerWidth-260,b.left-270))+'px';hover.style.top=Math.max(8,Math.min(innerHeight-330,b.top))+'px';},400);});
- r.addEventListener('pointerout',e=>{const card=e.target.closest('[data-c-design]');if(card&&!card.contains(e.relatedTarget)){clearTimeout(hoverTimer);hover.hidden=true;}});
- r.addEventListener('click',e=>{hover.hidden=true;if(e.target.closest('[data-ux=preview-use]')){designPreview.close();el.chooseDesign(previewId);}});
- new MutationObserver(decorate).observe($('.c-gallery'),{childList:true});decorate();
  // K9/Ü10.1: Designs des Produktthemas zuerst (Bestseller vorn, sonst Reihenfolge im Profil),
  // Designs anderer Themen eingeklappt unter „Weitere Designs“; Designs ohne Thema bleiben sichtbar.
  const gallery=$('.c-gallery');let moreExpanded=false,arranging=false;

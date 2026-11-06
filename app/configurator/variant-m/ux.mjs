@@ -10,6 +10,7 @@ import {installUxDetails} from './ux-details.mjs';
 import {installDecisionHelp} from './decision-help.mjs';
 import {installModernMotifBrowser} from './modern-motif-browser.mjs';
 import {customerFieldLabel,installTextFields} from './text-fields.mjs';
+import {installDesignReset,resetOriginalDesign} from './design-reset.mjs';
 import {installLayout} from './layout.mjs';
 import {alignmentContent,alignmentLabel} from './ui-icons.mjs';
 import {installLegacyCartRestore} from './legacy-cart-restore.mjs';
@@ -153,7 +154,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   const finishCustomerRights=beginCustomerRights({el,r,config,selected,select,say});
   const finishTemplateDeletion=installTemplateDeletion({el,r,config,selected,mutate,say});
   const selectable=()=>selected()&&!selected().uxLocked&&!selected().uxHidden;
-  function showTab(key,focus=false){if(!$('#ux-tab-'+key)||$('#ux-tab-'+key).hidden)key='text';activeTab=key;for(const b of all('[data-ux-tab]')){const is=b.dataset.uxTab===key;b.setAttribute('aria-selected',is);b.tabIndex=is?0:-1;}for(const p of all('.ux-panel'))p.hidden=p.id!=='ux-panel-'+key;if(focus)$('#ux-tab-'+key).focus();}
+  function showTab(key,focus=false){if(!$('#ux-tab-'+key)||$('#ux-tab-'+key).hidden)key='text';activeTab=key;for(const b of all('[data-ux-tab]')){const is=b.dataset.uxTab===key;b.setAttribute('aria-selected',is);b.tabIndex=is?0:-1;}for(const p of all('.ux-panel'))p.hidden=p.id!=='ux-panel-'+key;if(key==='text')el.uxUpdateTextUI?.();if(focus)$('#ux-tab-'+key).focus();}
   $('.ux-tabs').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const tabs=all('[data-ux-tab]').filter(b=>!b.hidden&&!b.disabled),i=tabs.indexOf(e.target);const next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;showTab(tabs[next].dataset.uxTab,true);});
   el.uxShowSection=section=>showTab(({font:'text',arrangement:'text',form:'options',start:'design',logo:'upload'})[section]||section);
   el.revealEditor=function(o){if(o?.type==='text')showTab('text');else if(o?.type==='photoSlot'||o?.uxUploadId)showTab('upload');};
@@ -512,6 +513,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   await installMotifTileFit(el);
   await installViewZoom({el,r,selected});
   installTextFields({el,r,selected,select});
+  installDesignReset({el,r,config,dialog,button,design,say,reset:()=>{resetOriginalDesign({el,choose:oldChoose,decorate:addDecoration});dirty=true;}});
   installDecisionHelp({el,r,config});
   // Vor der fertigen Oberfläche auf der Platte gewähltes Foto (photo-upload.mjs installEarlyPhotoTap) übernehmen.
   const takeEarlyPhoto=()=>{const early=el.uxEarlyPhoto;if(!early)return;el.uxEarlyPhoto=null;acceptCustomerFiles(early.files,'photo',early.slotId).catch(error=>say(error.message));};

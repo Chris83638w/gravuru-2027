@@ -15,7 +15,7 @@ export function installModernMotifBrowser({r,el}){
  search.placeholder='Motiv suchen: z. B. Herz oder Anker';search.setAttribute('aria-label','Motiv suchen');search.closest('label')?.classList.add('ux-modern-motif-search');
  const hint=panel.querySelector('.ux-motif-search-hint');if(hint)hint.textContent='Beschreibe einfach, was du suchst.';
  category.closest('label').classList.add('ux-modern-motif-category');
- const price=entry.querySelector('.ux-motif-pricing');if(price){price.textContent='Vorlagenmotiv inklusive · Weitere oder geänderte Motive: +1,69 € je Motiv';category.closest('label').after(price);}
+ const price=entry.querySelector('.ux-motif-pricing');if(price){price.textContent='Je Motiv 1,69 €.';category.closest('label').after(price);}
  const less=panel.querySelector('[data-library-less]');if(less)less.hidden=true;
  entry.classList.add('ux-modern-motifs');
  const refreshCategory=installCategoryPicker(category);

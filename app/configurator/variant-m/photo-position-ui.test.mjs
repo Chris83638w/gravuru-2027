@@ -73,7 +73,7 @@ function emit(target,type,extra={}){
   return e;
 }
 const sharedSource=fs.readFileSync(new URL('./refinements.mjs',import.meta.url),'utf8').replaceAll('\r\n','\n');
-const sharedGestures=sharedSource.slice(sharedSource.indexOf('  let resize=null;'),sharedSource.indexOf('  function areaResize(field)'));
+const sharedGestures=sharedSource.slice(sharedSource.indexOf('  let resize=null;'),sharedSource.indexOf("  r.addEventListener('click',async e=>{"));
 assert(sharedGestures.includes("r.addEventListener('pointerdown'"),'shared gesture source must be present');
 function setup(t,{rights={move:true,replace:true,scale:false,delete:false},slot={},uploaded=true,legacyTap=false,freePhoto=false}={}){
   const prior={document:globalThis.document,CSS:globalThis.CSS};

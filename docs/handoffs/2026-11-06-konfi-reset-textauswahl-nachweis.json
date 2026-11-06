@@ -1,0 +1,186 @@
+{
+  "at": "2026-11-06T00:27:09.598Z",
+  "baseCommit": "9c454dd7",
+  "bundle": "/_bundle/editor-fac05aefb251603e.mjs",
+  "activation": {
+    "at": "2026-11-06T00:22:25.091Z",
+    "stage": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-konfi-hundetest-r9-20261106",
+    "packageSha256": "73562ff99063d492ea25b4162a937d67eede1cd700bf5b36e5611202d7fb5892",
+    "sourceHashes": {
+      "app/configurator/variant-m/customer-orientation.test.mjs": "5e555874391c0a48e60fbb289bea7457301369bad1c582ea6532614e9dc4c417",
+      "app/configurator/variant-m/direct-editing.mjs": "c7f2f4d8e308aca81bce7d36dd9ef6b557e64eeb8d323b143da5749a7eca1858",
+      "app/configurator/variant-m/modern-mobile-navigation.mjs": "f6e4f6f5121729e4d77859e3d22320bc8854f53767c7b4ae120fa8c40ec73011",
+      "app/configurator/variant-m/modern-motif-browser.mjs": "83aef7aff60bb7993193e2627a8fdeaf9e7f6abad0671f0aa3e73dce6b68836e",
+      "app/configurator/variant-m/modern-navigation.css": "6b8457738d8054d62962f40f564a8487325079454a2fdd208bdceed7ee75690f",
+      "app/configurator/variant-m/photo-position-ui.test.mjs": "03df018fe6aa3db93eed916a342b37e02d33711551f17dcb0cd866b2358665a2",
+      "app/configurator/variant-m/photo-position.mjs": "7805ca197f3b66335f321a2545ed3990449990672263e2307626d02d52e0e5f1",
+      "app/configurator/variant-m/product-design-gallery.mjs": "c87189ba200e3033dc579354f7e50d7f1f79a4fc963b10602fd95ef62a01de77",
+      "app/configurator/variant-m/profile-selection.mjs": "e785f28b5e0bbb4387674c2f788412deca37df1d939b6b04068bfd3757675d66",
+      "app/configurator/variant-m/profile-selection.test.mjs": "467824066433acd037b5d010d2ea37121bbe4fa9b23f80102c6aa25c02f886a2",
+      "app/configurator/variant-m/refinements.mjs": "4added85a3e4e9065915b24a0cd2e26a478db58ed3ad84934bce1d21df2b9539",
+      "app/configurator/variant-m/text-fields.mjs": "6fe351e802db2cf2d42233c1f664df180bcf12b85728cfb22b59cedc6d574e9e",
+      "app/configurator/variant-m/ux.mjs": "055fd51752b074dc2414388ffbeec208602e42f7886ae9ec6011e589d0d3eede",
+      "app/configurator/variant-m/workflow.mjs": "a35d3d6b170d58a3accf74093abb406f65d012661d0eccf323ce7e95a39cd559",
+      "app/configurator/variant-m/design-reset.mjs": "a1c667f692613ff9355cda78063af9f854ca0f89fa8f05d44d058a9b9487c397",
+      "app/configurator/variant-m/design-reset.test.mjs": "df7fdb2678240661c8bb1f6ff70e325a3a38543dc4dbefb243e1590f7d7447c3"
+    },
+    "unchangedProductModels": {
+      "22x14.json": "8222984b2ff7877719c50aa4fcc67f613eb008b11a9543d6eddfafae2158b2c5",
+      "30x20.json": "637d19fcc6f02859a08d4c3853a51b13c1cfd1003aedff69a81a2de5682ae054"
+    }
+  },
+  "tests": {
+    "local": {
+      "tests": 263,
+      "pass": 263,
+      "fail": 0,
+      "skipped": 0
+    },
+    "linux": [
+      "tests 263",
+      "pass 263",
+      "fail 0",
+      "skipped 0"
+    ]
+  },
+  "http": {
+    "at": "2026-11-06T00:22:43.584Z",
+    "pages": [
+      {
+        "size": "22x14",
+        "status": 200,
+        "bundle": "/_acryl-bundle/editor-fac05aefb251603e.mjs"
+      },
+      {
+        "size": "30x20",
+        "status": 200,
+        "bundle": "/_acryl-bundle/editor-fac05aefb251603e.mjs"
+      }
+    ],
+    "models": [
+      {
+        "size": "22x14",
+        "status": 200,
+        "sha256": "8222984b2ff7877719c50aa4fcc67f613eb008b11a9543d6eddfafae2158b2c5",
+        "unchanged": true,
+        "designs": 43,
+        "prices": [
+          1999,
+          2499
+        ],
+        "extraMotif": 169
+      },
+      {
+        "size": "30x20",
+        "status": 200,
+        "sha256": "637d19fcc6f02859a08d4c3853a51b13c1cfd1003aedff69a81a2de5682ae054",
+        "unchanged": true,
+        "designs": 43,
+        "prices": [
+          1999,
+          2499
+        ],
+        "extraMotif": 169
+      }
+    ],
+    "bundles": [
+      {
+        "url": "/_acryl-bundle/editor-fac05aefb251603e.mjs",
+        "status": 200,
+        "bytes": 1424138,
+        "sha256": "3c108bd7a3975698d9fa546b55cf405deb044da7681a6e7d6d0253d5eeaa3f47"
+      },
+      {
+        "url": "/_acryl-bundle/editor-2e3da3b988eb0da4.mjs",
+        "status": 200,
+        "bytes": 38045,
+        "sha256": "2b380c700ec6c159b299b014fc8918ebf41189bcbc9f7af14884825af7da65e1"
+      },
+      {
+        "url": "/_acryl-bundle/editor-c419119a6ef437c6.mjs",
+        "status": 200,
+        "bytes": 7963,
+        "sha256": "9c37d9810dace1ed32292a800195fe90439d859d28ac74e21abc412ca7044edf"
+      },
+      {
+        "url": "/_acryl-bundle/editor-69eb9880b804359a.mjs",
+        "status": 200,
+        "bytes": 3378,
+        "sha256": "ae30b048f0955960ec763e83c62eb1ae455c6514885f813eadbed49a4d5b4672"
+      },
+      {
+        "url": "/_acryl-bundle/editor-e1e24f0ee6b66daf.mjs",
+        "status": 200,
+        "bytes": 10974,
+        "sha256": "24a2611031b0e6a37efddec5a3ec332d92802345a323c49521b350b37dbb9c67"
+      }
+    ]
+  },
+  "browser": {
+    "local": {
+      "desktop": {
+        "resetCancelRetainsEdit": true,
+        "selectedOriginal": "Kalle",
+        "retainedOptions": [
+          "30x20",
+          "two-gold-standoffs"
+        ],
+        "resetPriceCents": 3198,
+        "withPhotoAndExtraMotifPriceCents": 4366,
+        "resetObjects": 4,
+        "undoObjects": 6,
+        "textSwitchTopBefore": 320.5859375,
+        "textSwitchTopAfter": 320.7890625,
+        "textareaClientAndScrollHeightEqual": true
+      },
+      "mobile": {
+        "width": 390,
+        "height": 844,
+        "touchScroll": true,
+        "textSelection": true,
+        "photoToolbarVisible": true,
+        "photoSizeUnitRemoved": true,
+        "resetVisible": true
+      }
+    },
+    "live": {
+      "resetConfirmToBruno": true,
+      "originalObjects": 4,
+      "originalPriceCents": 1999,
+      "categoryGrundmotiveCount": 0,
+      "categoryOptions": 48,
+      "extraDesignPreviewButtons": 0,
+      "motifToolbarCenter": 448.875,
+      "previewColumnCenter": 448.875,
+      "mobile": {
+        "width": 375,
+        "height": 740,
+        "reset": {
+          "x": 126.34375,
+          "y": 302.453125,
+          "width": 122.3125,
+          "height": 44
+        },
+        "textareaClientHeights": [
+          44,
+          44,
+          70
+        ],
+        "textareaScrollHeights": [
+          44,
+          44,
+          70
+        ]
+      }
+    }
+  },
+  "limitations": [
+    "Handyansicht im Browser, kein physisches Smartphone.",
+    "Am oberen mobilen Scrollanschlag kann der Wechsel offener Textfelder eine begrenzte natürliche Neuanordnung erzeugen.",
+    "Kein neuer Warenkorb-/Launch-/Bestellnachweis."
+  ],
+  "screenshots": [
+    "outputs/konfi-zuruecksetzen-20261106.png",
+    "outputs/konfi-handy-20261106.png"
+  ]
+}

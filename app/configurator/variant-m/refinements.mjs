@@ -96,10 +96,6 @@ export async function installRefinements(api){
   r.addEventListener('pointerup',e=>finish(e),true);r.addEventListener('pointercancel',e=>finish(e,true),true);
   r.addEventListener('lostpointercapture',e=>{if(resize?.id===e.pointerId)finish(e,true);},true);
   r.addEventListener('keydown',e=>{const h=e.target.closest('[data-ux-handle]');if(e.key==='Escape'&&resize?.object.type==='photoSlot'){e.preventDefault();finish({...e,pointerId:resize.id,stopImmediatePropagation:()=>e.stopImmediatePropagation()},true);return;}if(!h||!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();const direction=['ArrowUp','ArrowRight'].includes(e.key)?1:-1;mutate(()=>{const o=selected();if(h.dataset.uxHandle==='rotate'){if(el.uxCanRotate?.(o)===false)return;o.rotation=(o.rotation||0)+direction;}else Object.assign(o,scaleObject(o,1+direction*.03,el.uxTextScale?.()||1));});},true);
-  function areaResize(field){field.style.height='auto';field.style.height=Math.min(200,Math.max(44,field.scrollHeight+4))+'px';}
-  r.addEventListener('focusin',e=>{if(e.target.matches('[data-ux-text]'))areaResize(e.target);});
-  r.addEventListener('input',e=>{if(e.target.matches('[data-ux-text]'))areaResize(e.target);},true);
-  r.addEventListener('focusout',e=>{if(e.target.matches('[data-ux-text]')){e.target.style.height='44px';e.target.scrollTop=0;}});
   r.addEventListener('click',async e=>{const key=e.target.closest('[data-ux]')?.dataset.ux;
     if(key==='edit-upload'){select(e.target.closest('[data-id]').dataset.id);await editPhoto(selected());}
     if(key==='edit-photo')await editPhoto(selected());

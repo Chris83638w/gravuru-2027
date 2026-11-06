@@ -93,8 +93,10 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     panel.hidden=!(text&&can(o,'content')||photo&&can(o,'replace')&&!el.uxPhotoPositionActive?.(o)||motif&&(can(o,'color')||can(o,'scale')||can(o,'move')));
     const textEditing=text&&!panel.hidden&&(full||r.querySelector('[data-ux-tab="text"]')?.getAttribute('aria-selected')==='true');
     if(el.dataset.uxTextEditing!==String(!!textEditing))el.dataset.uxTextEditing=String(!!textEditing);
-    stableHost.hidden=mobile&&!textEditing;
-    if(mobile&&!full&&!textEditing)panel.hidden=true;
+    const compactEditing=!text&&!panel.hidden;
+    if(el.dataset.uxCompactEditing!==String(!!compactEditing))el.dataset.uxCompactEditing=String(!!compactEditing);
+    stableHost.hidden=mobile&&!textEditing&&!compactEditing;
+    if(mobile&&!full&&!textEditing&&!compactEditing)panel.hidden=true;
     if(panel.hidden){stage.style.setProperty('--ux-mobile-dock-space',stableDoorbell&&mobile&&full?'202px':'0px');stage.style.setProperty('--ux-toolbar-space',stableDoorbell&&full?'112px':'0px');el.style.setProperty('--ux-textbar-h',stableDoorbell&&mobile?'116px':'0px');if(editing)close();return;}
     openButton.textContent=text?'Text ändern':'Foto bearbeiten';openButton.hidden=text||!!editing||motif;confirm.hidden=!editing;font.hidden=!text;font.disabled=!can(o,'content');font.textContent=fontDisplayName(o.font||'Schrift');font.title=font.textContent;
     if(text){try{const sample={...o,color:'#292d32',text:fontDisplayName(o.font),size:12,letterSpacing:0,lineHeight:14};measureText(sample,el.fontData);font.innerHTML='<svg data-direct-font-sample viewBox="'+(-sample.w/2-2)+' '+(-sample.h/2-2)+' '+(sample.w+4)+' '+(sample.h+4)+'" aria-hidden="true"><g>'+textPaths(sample,el.fontData)+'</g></svg>'+uiIcon('chevron');const ink=font.querySelector('g').getBBox();if(ink.width>0&&ink.height>0)font.querySelector('svg').setAttribute('viewBox',[ink.x-1,ink.y-1,ink.width+2,ink.height+2].join(' '));}catch{font.textContent=fontDisplayName(o.font);}}
@@ -118,7 +120,7 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     const bounds=scene.getBoundingClientRect(),parent=stage.getBoundingClientRect();
     if(!mobile&&!inWorkbench){
       const target=scene.querySelector('[data-object="'+CSS.escape(o.id)+'"]')?.getBoundingClientRect();
-      const pos=textToolbarPosition({stage:parent,plate:bounds,selection:target,width:panel.offsetWidth*scale,height:panel.offsetHeight*scale,placement,zoomed:(el.uxViewZoom?.()||1)>1});
+      const pos=textToolbarPosition({stage:parent,plate:bounds,selection:text?target:null,width:panel.offsetWidth*scale,height:panel.offsetHeight*scale,placement:text?placement:'plate',zoomed:(el.uxViewZoom?.()||1)>1});
       panel.style.left=pos.left+'px';panel.style.top=pos.top+'px';
     }else if(full){panel.style.left='0px';panel.style.setProperty('--ux-full-dock-top',Math.max(8,Math.min(parent.height-panel.offsetHeight-60,bounds.bottom-parent.top+34))+'px');}
     if(editing){

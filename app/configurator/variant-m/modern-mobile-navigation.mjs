@@ -10,7 +10,7 @@ export async function installModernMobileNavigation({el,r,showTab}){
  let active=false,viewportOverride=null,scrollPosition=0,scrollFrame=0,userScrollUntil=0,lastScrollTop=editor.scrollTop;
  const spacer=document.createElement('div');spacer.className='ux-mobile-scroll-spacer';spacer.setAttribute('aria-hidden','true');editor.append(spacer);
  // Text toolbar changes are layout inputs, never inferred from scroll clamping.
- new MutationObserver(()=>viewport()).observe(r.host,{attributes:true,attributeFilter:['data-ux-text-editing']});
+ new MutationObserver(()=>viewport()).observe(r.host,{attributes:true,attributeFilter:['data-ux-text-editing','data-ux-compact-editing']});
  const selected=()=>r.querySelector('[data-ux-tab][aria-selected=true]')?.dataset.uxTab||'design';
  const step=()=>selected()==='upload'?'media':selected();
  const fieldFocused=()=>!!r.activeElement?.matches('textarea,input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]):not([type=color])');
@@ -20,7 +20,7 @@ export async function installModernMobileNavigation({el,r,showTab}){
   r.host.style.setProperty('--ux-vv-height',Math.round(height)+'px');r.host.style.setProperty('--ux-vv-top',Math.round(top)+'px');
   const width=viewportOverride?.width??vv?.width??innerWidth;
   const ratio=Number(el.state?.width)/Number(el.state?.height);
-  const args={height,width,ratio,keyboardOpen:keyboard,galleryOpen:selected()==='design',textEditing:!keyboard&&r.host.dataset.uxTextEditing==='true'},expanded=mobilePreviewHeight(args);
+  const args={height,width,ratio,keyboardOpen:keyboard,galleryOpen:selected()==='design',textEditing:!keyboard&&(r.host.dataset.uxTextEditing==='true'||r.host.dataset.uxCompactEditing==='true')},expanded=mobilePreviewHeight(args);
   const preview=mobilePreviewHeight({...args,scrollTop:scrollPosition});
   r.host.style.setProperty('--ux-mobile-preview-h',preview+'px');
   // Compensate the newly gained editor space so reaching its end cannot bounce

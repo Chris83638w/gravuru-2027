@@ -108,7 +108,10 @@ function applyRecord(record){
  steelOptions?.reset();const switched=state.record?.id!==record.id;state.record=record;state.draft=clone(record.document);state.dirty=false;state.history=[];state.historyError=null;++state.historyRequest;state.historyLoading=false;if(switched)state.tab='designs';document.body.classList.add('editing-product');
  $('#conflict-banner').hidden=true;$('#editor-section').hidden=false;$('.overview').hidden=true;$('.page-heading').hidden=true;
  renderEditor();renderList();syncControls();
- history.replaceState(null,'',merchantNavigation('/werkstatt/?configuration='+encodeURIComponent(record.id),location.href));
+ const selection=new URLSearchParams({configuration:record.id});
+ if(state.editorDesignId)selection.set('design',state.editorDesignId);
+ if(new URLSearchParams(location.search).get('reviewGallery')==='1')selection.set('reviewGallery','1');
+ history.replaceState(null,'',merchantNavigation('/werkstatt/?'+selection,location.href));
 }
 async function loadRecord(id,{checkDirty=true}={}){
  if(state.katalogEditor)return;

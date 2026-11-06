@@ -61,10 +61,16 @@ def source_clip(el, plate, changes, *, mask=False):
     result.set('data-painted-bounds',json.dumps(list(svg.bounding_box())))
     return result
 
-def adapt(folder, destination, metadata, replacements=None, font_files=None):
+def adapt(folder, destination, metadata, replacements=None, font_files=None, photo_rule=None):
     tree = ET.parse(folder / 'design.svg')
     root = tree.getroot()
     changes = []
+    photo_rule = photo_rule or {}
+    sample = Path(photo_rule['samplePath']) if photo_rule.get('samplePath') else None
+    sample_name = 'beispiel-20261106'+sample.suffix if sample else None
+    if sample and not sample.is_file(): raise ValueError('Documented thematic sample missing: '+str(sample))
+    if photo_rule.get('maskId') and not any(n.get('id')==photo_rule['maskId'] for n in root):
+        raise ValueError('Documented original photo mask missing')
     plate=[metadata['plate']['widthMm'],metadata['plate']['heightMm']]
     clips = {n.get('id'): n for n in root.iter() if tag(n) == 'clipPath'}
     defs = ET.Element(f'{{{NS}}}defs')
@@ -73,6 +79,23 @@ def adapt(folder, destination, metadata, replacements=None, font_files=None):
     text_nodes = []
     for el in list(root):
         t, ident = tag(el), el.get('id', '')
+        if ident == photo_rule.get('removeEmptyOverlay'):
+            changes.append({'id':ident,'action':'empty white sample overlay removed to reveal existing original photo','reason':photo_rule['reason']})
+            continue
+        if ident == photo_rule.get('maskId'):
+            if t!='path' or el.get('fill','none')!='none' or el.get('stroke','none')!='none':
+                raise ValueError('Recovery requires the exact invisible original mask path')
+            mask=copy.deepcopy(el);mask.attrib.pop('id',None)
+            mask=source_clip(mask,plate,changes,mask=True)
+            bounds=json.loads(mask.get('data-painted-bounds'));x,y,w,h=bounds
+            clip_id='original-photo-'+ident
+            clip=ET.Element(f'{{{NS}}}clipPath',{'id':clip_id});clip.append(copy.deepcopy(mask));defs.append(clip)
+            group=ET.Element(f'{{{NS}}}g',{'id':'foto-ergaenzt','data-upload-hint':'separate'})
+            mask.set('fill','none');mask.set('stroke','none');group.append(mask)
+            group.append(ET.Element(f'{{{NS}}}image',{'class':'foto','x':str(x),'y':str(y),'width':str(w),'height':str(h),'preserveAspectRatio':'xMidYMid slice','clip-path':'url(#'+clip_id+')',f'{{{XL}}}href':sample_name}))
+            children.append(group)
+            changes.append({'id':ident,'action':'original invisible photo mask restored with thematic catalogue example','sampleId':photo_rule['sampleId'],'sampleFile':photo_rule['sampleFile'],'sampleSha256':sha(sample),'theme':photo_rule['theme'],'maskPathSha256':hashlib.sha256(el.get('d','').encode()).hexdigest(),'boundsMm':bounds})
+            continue
         if t == 'clipPath':
             defs.append(copy.deepcopy(el)); continue
         if t in ('defs', 'title', 'desc', 'metadata', 'style'):
@@ -138,7 +161,15 @@ def adapt(folder, destination, metadata, replacements=None, font_files=None):
             mask = source_clip(mask,plate,changes,mask=True)
             mask.set('fill','none'); mask.set('stroke','none')
             group.append(mask)
-            im = copy.deepcopy(el); im.attrib.pop('id', None); group.append(im)
+            im = copy.deepcopy(el); im.attrib.pop('id', None)
+            if ident == photo_rule.get('replaceImageId'):
+                im.attrib.pop('href',None);im.set(f'{{{XL}}}href',sample_name)
+                # Fill the original mask; do not inherit a crop tuned for another animal.
+                x,y,w,h=json.loads(mask.get('data-painted-bounds'))
+                for k,v in zip(('x','y','width','height'),(x,y,w,h)):im.set(k,str(v))
+                im.set('preserveAspectRatio','xMidYMid slice')
+                changes.append({'id':ident,'action':'thematic catalogue example replaced; original mask unchanged','sampleId':photo_rule['sampleId'],'sampleFile':photo_rule['sampleFile'],'sampleSha256':sha(sample),'theme':photo_rule['theme']})
+            group.append(im)
             children.append(group)
             changes.append({'id':ident,'action':'source image and unchanged clip wrapped as native photo field'})
             continue
@@ -185,6 +216,7 @@ def adapt(folder, destination, metadata, replacements=None, font_files=None):
     destination.mkdir(parents=True,exist_ok=True)
     for p in folder.iterdir():
         if p.is_file() and p.name not in ('design.svg','design.json'): shutil.copyfile(p,destination/p.name)
+    if sample: shutil.copyfile(sample,destination/sample_name)
     tree.write(destination/'design.svg',encoding='utf-8',xml_declaration=False)
     j=copy.deepcopy(metadata)
     source_path=folder.as_posix().split('/designs/bestand/',1)[1]
@@ -211,10 +243,12 @@ def adapt(folder, destination, metadata, replacements=None, font_files=None):
     return changes
 
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument('--katalog',required=True);ap.add_argument('--out',required=True);ap.add_argument('--replacements');a=ap.parse_args()
+    ap=argparse.ArgumentParser();ap.add_argument('--katalog',required=True);ap.add_argument('--out',required=True);ap.add_argument('--replacements');ap.add_argument('--photo-plan');a=ap.parse_args()
     root=Path(a.katalog).resolve();out=Path(a.out).resolve();out.mkdir(parents=True,exist_ok=True)
     rows=[]
     replacements=json.loads(Path(a.replacements).read_text(encoding='utf-8')) if a.replacements else {}
+    photo_plan=json.loads(Path(a.photo_plan).read_text(encoding='utf-8'))['designs'] if a.photo_plan else {}
+    source_by_id={json.loads(p.read_text(encoding='utf-8'))['id']:p.parent for p in (root/'designs/bestand/gedenktafeln').rglob('design.json')}
     font_files={f['name']:root/f['file'] for f in json.loads((root/'schriften/schriften.json').read_text(encoding='utf-8'))['fonts'] if f.get('file')}
     for p in sorted((root/'designs/bestand/gedenktafeln').rglob('design.json')):
         j=json.loads(p.read_text(encoding='utf-8'));plate=j.get('plateMm') or [j.get('plate',{}).get('widthMm'),j.get('plate',{}).get('heightMm')]
@@ -227,7 +261,9 @@ def main():
         row={'id':j['id'],'source':p.relative_to(root).as_posix(),'sourcePlateMm':plate,'process':j.get('process'),'group':p.parts[-4],'subcategory':p.parts[-3],'files':source_files}
         if j.get('process')=='Gravur':
             try:
-                row['technicalChanges']=adapt(folder,out/'native-source'/j['id'],j,replacements,font_files);row['normalized']=True
+                rule=copy.deepcopy(photo_plan.get(j['id'],{}))
+                if rule.get('sampleId'):rule['samplePath']=str(source_by_id[rule['sampleId']]/rule['sampleFile'])
+                row['technicalChanges']=adapt(folder,out/'native-source'/j['id'],j,replacements,font_files,rule);row['normalized']=True
             except Exception as e: row['error']=str(e)
         else: row['status']='UV original preserved; separate print configuration required'
         rows.append(row)

@@ -29,6 +29,11 @@ const assets=createDesignAssetStore({filename:path.join(out,'design-assets.sqlit
 const repository=createProductRepository({filename:path.join(out,'workshop.sqlite'),validateDocument:validateProductDocument});
 const fontResources={},groups=new Map();
 const report={schema:'gravuru-slate-original-preparation/v1',catalogueCommit:execFileSync('git',['-C',root,'rev-parse','HEAD'],{encoding:'utf8'}).trim(),source:'designs/bestand/gedenktafeln',scopeMm:[[220,140],[300,200]],fontReplacementApproval:'Chris, this chat, 2026-11-05: Dokumentierte Ersatzschriften verwenden',originals:[],products:[],shopifyWrites:0,published:false};
+if(args.includes('--reuse-fonts-from')){
+ const previous=path.resolve(get('--reuse-fonts-from'));
+ if(read(path.join(previous,'preparation-report.json')).catalogueCommit!==report.catalogueCommit)throw Error('Font cache belongs to another catalogue commit');
+ for(const f of fs.readdirSync(path.join(previous,'fonts')).filter(f=>f.endsWith('.json')))fontResources[f.slice(0,-5)]=read(path.join(previous,'fonts',f));
+}
 try{
  for(const row of sourceRows){
   const r={...row,targets:[]};report.originals.push(r);

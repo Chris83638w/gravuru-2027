@@ -2,13 +2,22 @@
   "schema": "gravuru-slate-chat-review/v1",
   "startedOn": "2026-11-06",
   "catalogueCommit": "dc0a0f6c2d59a93cbe2727709e0657e5d1697b06",
-  "preparedCodeCommit": "df873930b315b47c6f23a84d12ced7d25debe396",
-  "packageManifestSha256": "f90eb60b053eee8d390a4bdcae44a54d0df2436f9eacb3978ed44f851067f4e5",
+  "packageManifestSha256": "8dd3466f7aeba8f083ca0cd250ea72d10286573f53f9af4b7cfb485a0f53f216",
   "scope": "Bildfreigabe der angezeigten Vorlage in beiden Groessen; keine Live- oder Bestellfreigabe.",
   "ordering": "Vorbereitete Tiergedenkdesigns ohne Foto zuerst, danach weitere vorbereitete Originale und die unvollstaendigen Originale. Alle 180 bleiben im Stapel.",
   "currentId": "GT-S-30x20-D250",
   "approvedCount": 0,
-  "events": [],
+  "events": [
+    {
+      "date": "2026-11-06",
+      "type": "package-updated",
+      "reason": "Vorhandene Fotomasken mit thematischen Katalogfotos befuellt; 14 Foto-Korrekturen, bearbeitbare Galerie. Keine Bildfreigabe.",
+      "previousManifestSha256": "f90eb60b053eee8d390a4bdcae44a54d0df2436f9eacb3978ed44f851067f4e5",
+      "manifestSha256": "8dd3466f7aeba8f083ca0cd250ea72d10286573f53f9af4b7cfb485a0f53f216",
+      "preparedBothSizes": 144,
+      "openOriginals": 36
+    }
+  ],
   "entries": [
     {
       "position": 1,
@@ -2988,12 +2997,12 @@
         {
           "sizeKey": "GT-SN-RE-220X140",
           "status": "prepared",
-          "templateHash": "0769be9c3f81e530c84500910f2ae7891eaf71dc20e74095b784ee25d2210551"
+          "templateHash": "23128cd688b77f9705d86c46a07106c67a4e522c16e2eea6f508da75691adcc6"
         },
         {
           "sizeKey": "GT-SN-RE-300X200",
           "status": "prepared",
-          "templateHash": "c8c69bc78977b20c896432652fd99c93b20842a6d9194cf8681320bea2358f10"
+          "templateHash": "ab028a7a18f7ad1ffd747fea6313867b9eb778aaad5ad88d0b94ee3284c35b3f"
         }
       ],
       "notes": [
@@ -3037,12 +3046,12 @@
         {
           "sizeKey": "GT-SN-RE-220X140",
           "status": "open",
-          "templateHash": null
+          "reason": "GT-S-30x20-D264 · Malmo: Element ragt über die Gestaltungsfläche hinaus."
         },
         {
           "sizeKey": "GT-SN-RE-300X200",
           "status": "open",
-          "templateHash": null
+          "reason": "GT-S-30x20-D264 · Malmo: Element ragt über die Gestaltungsfläche hinaus."
         }
       ],
       "notes": []
@@ -3059,12 +3068,12 @@
         {
           "sizeKey": "GT-SN-RE-220X140",
           "status": "open",
-          "templateHash": null
+          "reason": "GT-S-30x20-D271 · Mogli: Element ragt über die Gestaltungsfläche hinaus."
         },
         {
           "sizeKey": "GT-SN-RE-300X200",
           "status": "open",
-          "templateHash": null
+          "reason": "GT-S-30x20-D271 · Mogli: Element ragt über die Gestaltungsfläche hinaus."
         }
       ],
       "notes": []
@@ -3092,12 +3101,12 @@
         {
           "sizeKey": "GT-SN-RE-220X140",
           "status": "open",
-          "templateHash": null
+          "reason": "GT-S-30x20-D203 · Simba: Element ragt über die Gestaltungsfläche hinaus."
         },
         {
           "sizeKey": "GT-SN-RE-300X200",
           "status": "open",
-          "templateHash": null
+          "reason": "GT-S-30x20-D203 · Simba: Element ragt über die Gestaltungsfläche hinaus."
         }
       ],
       "notes": []
@@ -3114,12 +3123,12 @@
         {
           "sizeKey": "GT-SN-RE-220X140",
           "status": "open",
-          "templateHash": null
+          "reason": "GT-S-30x20-D227 · Mogli: Element ragt über die Gestaltungsfläche hinaus."
         },
         {
           "sizeKey": "GT-SN-RE-300X200",
           "status": "open",
-          "templateHash": null
+          "reason": "GT-S-30x20-D227 · Mogli: Element ragt über die Gestaltungsfläche hinaus."
         }
       ],
       "notes": []
@@ -3163,18 +3172,18 @@
       "group": "Menschen",
       "subcategory": "Allgemein",
       "process": "Gravur",
-      "preparedBothSizes": false,
+      "preparedBothSizes": true,
       "decision": "pending",
       "targets": [
         {
           "sizeKey": "GT-SN-RE-220X140",
-          "status": "open",
-          "templateHash": "026df895c727e18d84b83d347176678763a22351f3cbda0458756fd6566ab96f"
+          "status": "prepared",
+          "templateHash": "6384a4bbad3013f8ffd628181ff35a14a99d4251455834ead6c4b89591bc2e3a"
         },
         {
           "sizeKey": "GT-SN-RE-300X200",
-          "status": "open",
-          "templateHash": "40aef97d93cf85e698fc38ce5cda2aef08db0f7d76ae2941596b9a64afd32346"
+          "status": "prepared",
+          "templateHash": "45031f2a0eacb35a5abe69a405a35f9902c0e7eb031a75df1a444c70e6256e7e"
         }
       ],
       "notes": [
@@ -3190,18 +3199,18 @@
       "group": "Menschen",
       "subcategory": "Allgemein",
       "process": "Gravur",
-      "preparedBothSizes": false,
+      "preparedBothSizes": true,
       "decision": "pending",
       "targets": [
         {
           "sizeKey": "GT-SN-RE-220X140",
-          "status": "open",
-          "templateHash": "2252296c9e6ea2164ab82f5de311e8462cbfd82b2b007d032ccb358d80274c32"
+          "status": "prepared",
+          "templateHash": "edaaf886536a8b6c7d60b32319506f7c9ea9bf6db5a297c6144bf381181cabf7"
         },
         {
           "sizeKey": "GT-SN-RE-300X200",
-          "status": "open",
-          "templateHash": "e173da3243f5cc5d2f9fd4d4774bad100c7c9818ff0da3e12d7e6a19124916eb"
+          "status": "prepared",
+          "templateHash": "b55c0e353740d1b902fc7d0856d6675e416ba790832e04f663dae591a8c0ff89"
         }
       ],
       "notes": [
@@ -3217,18 +3226,18 @@
       "group": "Menschen",
       "subcategory": "Allgemein",
       "process": "Gravur",
-      "preparedBothSizes": false,
+      "preparedBothSizes": true,
       "decision": "pending",
       "targets": [
         {
           "sizeKey": "GT-SN-RE-220X140",
-          "status": "open",
-          "templateHash": "3d8f477b31277b3deac1572788a238f12633354bfb5dc61f3f7f8857d3aadebc"
+          "status": "prepared",
+          "templateHash": "857da401990f7e1a7fded2a40b3cc89c4019f9e9843d076c8a034ff7ea26d928"
         },
         {
           "sizeKey": "GT-SN-RE-300X200",
-          "status": "open",
-          "templateHash": "d713d4f5f339592a7faf4c22d8b5f250685ad5d3acf1730d40c5eac359a856e1"
+          "status": "prepared",
+          "templateHash": "0a108aba3039fe6a5131fa597b17518f04bdb37dc3fbb08f830c9cc73773222f"
         }
       ],
       "notes": []
@@ -3239,18 +3248,18 @@
       "group": "Menschen",
       "subcategory": "Allgemein",
       "process": "Gravur",
-      "preparedBothSizes": false,
+      "preparedBothSizes": true,
       "decision": "pending",
       "targets": [
         {
           "sizeKey": "GT-SN-RE-220X140",
-          "status": "open",
-          "templateHash": "fe9ce79f2c6e90117fbdd5cd3aa955ed1591f7960be3523b6e7607533f557f4b"
+          "status": "prepared",
+          "templateHash": "ea963c63387dfba3fd947dfc000bb02d6b1108775cefe11ddbffe9a1c4cb1a9b"
         },
         {
           "sizeKey": "GT-SN-RE-300X200",
-          "status": "open",
-          "templateHash": "ff7c978bc22f8dd52e29e860703a6c170cba1e25643693d0851917ce1f499c35"
+          "status": "prepared",
+          "templateHash": "de8f3490bb66a551efda3be0883fdfaa4ebae8de16f5adf94c561ccfbf1aa29d"
         }
       ],
       "notes": []
@@ -3261,18 +3270,18 @@
       "group": "Menschen",
       "subcategory": "Allgemein",
       "process": "Gravur",
-      "preparedBothSizes": false,
+      "preparedBothSizes": true,
       "decision": "pending",
       "targets": [
         {
           "sizeKey": "GT-SN-RE-220X140",
-          "status": "open",
-          "templateHash": "743cb5bccf3e7a6a089646a85c6bdd7b43188353f6f5c861efbde5d1aea334c1"
+          "status": "prepared",
+          "templateHash": "69b139795577a17a420d87964497d5acfe635afadf174029f9f2f4d244201508"
         },
         {
           "sizeKey": "GT-SN-RE-300X200",
-          "status": "open",
-          "templateHash": "5059500209b3532d9ebfe03b3a9e3bc1a09cb3a12d89f86a73a2f8ec9de276ad"
+          "status": "prepared",
+          "templateHash": "5e14596e384138010a7c30752df5ac9a6cdebf4c973b614d40152f5da58d4299"
         }
       ],
       "notes": [
@@ -3288,18 +3297,18 @@
       "group": "Menschen",
       "subcategory": "Allgemein",
       "process": "Gravur",
-      "preparedBothSizes": false,
+      "preparedBothSizes": true,
       "decision": "pending",
       "targets": [
         {
           "sizeKey": "GT-SN-RE-220X140",
-          "status": "open",
-          "templateHash": "dc83a28eb0e9552105e46e399cec39f98cfa5df530832fe79cc14e3163debfbd"
+          "status": "prepared",
+          "templateHash": "1f5a30f4ee0417ff3cf9a583ed1542a4d300ba4319332c99913362ac122318c1"
         },
         {
           "sizeKey": "GT-SN-RE-300X200",
-          "status": "open",
-          "templateHash": "9304a720dfe53ebdfda83456371e87530a8ab96f6b55e784be235d3ec3d33d3c"
+          "status": "prepared",
+          "templateHash": "316888e385764d719410292e87619de76a384fd1282f5bdabcdd1e2c9ece01eb"
         }
       ],
       "notes": [
@@ -3315,18 +3324,18 @@
       "group": "Menschen",
       "subcategory": "Allgemein",
       "process": "Gravur",
-      "preparedBothSizes": false,
+      "preparedBothSizes": true,
       "decision": "pending",
       "targets": [
         {
           "sizeKey": "GT-SN-RE-220X140",
-          "status": "open",
-          "templateHash": "2bb6aa02c733561c2982885d8dc9671a1eaddc7ba13c94c6a87346740882cad4"
+          "status": "prepared",
+          "templateHash": "decaea7ff315064d0ed264a87e3025fd35063de54da6f887340905562daa5691"
         },
         {
           "sizeKey": "GT-SN-RE-300X200",
-          "status": "open",
-          "templateHash": "9465d92cd6e69a915d07e5483a2db349519ee3d5478a0faa470fd4b7ebf523a8"
+          "status": "prepared",
+          "templateHash": "fe39690d8d86952ef9503f97737497a106efbac118837b558845fc77f631d1ac"
         }
       ],
       "notes": [
@@ -3342,18 +3351,18 @@
       "group": "Menschen",
       "subcategory": "Allgemein",
       "process": "Gravur",
-      "preparedBothSizes": false,
+      "preparedBothSizes": true,
       "decision": "pending",
       "targets": [
         {
           "sizeKey": "GT-SN-RE-220X140",
-          "status": "open",
-          "templateHash": "a963e75ef3e757009c2e03e2afa3c2bddefc1be8cb9b86b455bcac24e8753896"
+          "status": "prepared",
+          "templateHash": "5f82d67f46a273fcf07b776e48d9455af06175eb2cbc62ccf3d96b221b058569"
         },
         {
           "sizeKey": "GT-SN-RE-300X200",
-          "status": "open",
-          "templateHash": "ac9a5335d69f79e3c45f4293bb4572090626fdac42a5d0c012caf0ed3cdfb0b9"
+          "status": "prepared",
+          "templateHash": "8e4185805248098c977e63fdb9158640a73545a547a401b10d483acdef3ed325"
         }
       ],
       "notes": [
@@ -3375,12 +3384,12 @@
         {
           "sizeKey": "GT-SN-RE-220X140",
           "status": "open",
-          "templateHash": null
+          "reason": "GT-S-30x20-D80 · Isabell: Element ragt über die Gestaltungsfläche hinaus."
         },
         {
           "sizeKey": "GT-SN-RE-300X200",
           "status": "open",
-          "templateHash": null
+          "reason": "GT-S-30x20-D80 · Isabell: Element ragt über die Gestaltungsfläche hinaus."
         }
       ],
       "notes": []
@@ -3397,12 +3406,12 @@
         {
           "sizeKey": "GT-SN-RE-220X140",
           "status": "open",
-          "templateHash": null
+          "reason": "GT-S-30x20-D83 · Anja Große: Element ragt über die Gestaltungsfläche hinaus."
         },
         {
           "sizeKey": "GT-SN-RE-300X200",
           "status": "open",
-          "templateHash": null
+          "reason": "GT-S-30x20-D83 · Anja Große: Element ragt über die Gestaltungsfläche hinaus."
         }
       ],
       "notes": []
@@ -3419,12 +3428,12 @@
         {
           "sizeKey": "GT-SN-RE-220X140",
           "status": "open",
-          "templateHash": null
+          "reason": "GT-S-30x20-D84 · Peter Friedrich: Element ragt über die Gestaltungsfläche hinaus."
         },
         {
           "sizeKey": "GT-SN-RE-300X200",
           "status": "open",
-          "templateHash": null
+          "reason": "GT-S-30x20-D84 · Peter Friedrich: Element ragt über die Gestaltungsfläche hinaus."
         }
       ],
       "notes": [
@@ -3677,12 +3686,12 @@
         {
           "sizeKey": "GT-SN-RE-220X140",
           "status": "open",
-          "templateHash": null
+          "reason": "GT-S-30x20-D79 · In Gedenken an: Element ragt über die Gestaltungsfläche hinaus."
         },
         {
           "sizeKey": "GT-SN-RE-300X200",
           "status": "open",
-          "templateHash": null
+          "reason": "GT-S-30x20-D79 · In Gedenken an: Element ragt über die Gestaltungsfläche hinaus."
         }
       ],
       "notes": [
@@ -3698,18 +3707,18 @@
       "group": "Sternenkinder",
       "subcategory": "Sternenkind",
       "process": "Gravur",
-      "preparedBothSizes": false,
+      "preparedBothSizes": true,
       "decision": "pending",
       "targets": [
         {
           "sizeKey": "GT-SN-RE-220X140",
-          "status": "open",
-          "templateHash": "176868977f123ecb190a54c99c6979a21e69a66e81eb9d7ee6cf2bad7738bebc"
+          "status": "prepared",
+          "templateHash": "89ff47bd91c34d67de1788ae9c7410655b24703231fb5a699f505efdde088242"
         },
         {
           "sizeKey": "GT-SN-RE-300X200",
-          "status": "open",
-          "templateHash": "e2d16de0371bd51e0dad5c8865373cfd87f90373bb782ca54035c99e4f7bde01"
+          "status": "prepared",
+          "templateHash": "f09bf59e0613871e0967ca326dde5e3696a8ab79ff9362cfa3ab5a46f46dbc3d"
         }
       ],
       "notes": [
@@ -3747,7 +3756,7 @@
         {
           "sizeKey": "GT-SN-RE-300X200",
           "status": "open",
-          "templateHash": null
+          "reason": "GTSK-S-30x20-D3 · Kira Kunze: Element ragt über die Gestaltungsfläche hinaus."
         }
       ],
       "notes": []
@@ -3763,5 +3772,8 @@
       "targets": [],
       "notes": []
     }
-  ]
+  ],
+  "preparedCodeBranch": "dev/astra-schiefer-originale-20261105",
+  "codeReviewPR": 180,
+  "updatedOn": "2026-11-06"
 }

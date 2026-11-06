@@ -6,6 +6,8 @@ import {artworkFragment} from '../../configurator/variant-m/artwork-resource.mjs
 import {merchantImageAttribute} from './merchant-media.mjs';
 import {drawSelection,replaceEditorPreview} from './editor-selection.mjs';
 import {alignedPosition,drawGuides,clearGuides} from './editor-guides.mjs';
+import {linkedEditorDesign,editorDesignPath} from './editor-design-link.mjs';
+import {merchantNavigation} from './merchant-navigation.mjs';
 // M02 view adapter. The existing draft, revision API and rights remain authoritative.
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=s=>document.querySelector(s);
@@ -13,6 +15,9 @@ const presets=['#202824','#731c19','#17614f','#ffffff','#c49a50'];
 export function installProductEditor({state,api,markDirty,syncControls,showTab,objectLabel,availableRights}){
  let workspace='designs',productId=null,recordRevision=null,designId=null,objectId=null,timer,serial=0,options={},libraryFonts=[],libraryMotifs=null,undo=[],redo=[],editControl=null,drag=null,previewController,previewPending=false,wasBusy=false;
  const icon=name=>`<img class="editor-icon" src="/workshop-ui/editor-icons/${name}.svg" alt="" aria-hidden="true">`;
+ if(new URLSearchParams(location.search).get('reviewGallery')==='1'){
+  const back=document.createElement('a');back.className='button';back.href='/originale/';back.textContent='Zur Vorlagengalerie';$('#customer-view')?.before(back);
+ }
  const icons={details:'cube',designs:'photo',prices:'tag',profiles:'typography',scene:'photo',production:'settings',shopify:'link'};
  for(const tab of document.querySelectorAll('.editor-tabs [data-tab]'))tab.insertAdjacentHTML('afterbegin',icon(icons[tab.dataset.tab]));
  // Navigationssymbole kommen aus der gemeinsamen Kopfzeile (workshop-shell-markup.mjs).
@@ -138,13 +143,15 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
  }
  function render(){
   if(!state.record)return;
-  if(productId!==state.record.id){productId=state.record.id;designId=state.draft.config.profile.defaultDesignId;objectId=null;options={};resetHistory();}
+  if(productId!==state.record.id){productId=state.record.id;designId=linkedEditorDesign(location.search,productId,designs(),state.draft.config.profile.defaultDesignId);objectId=null;options={};resetHistory();}
   if(recordRevision!==state.record.revision){recordRevision=state.record.revision;resetHistory();}
   if(!design())designId=state.draft.config.profile.defaultDesignId;
   if(!selected())objectId=design()?.objects.find(o=>o.type==='photoSlot')?.id||design()?.objects[0]?.id;
   if(state.katalogEditor){
    libraryFonts=state.katalogEditor.fonts||[];options={};$('#editor-designs').replaceChildren();$('#editor-design-actions').replaceChildren();properties();clearTimeout(timer);preview();return;
   }
+  state.editorDesignId=designId;
+  history.replaceState(null,'',merchantNavigation(editorDesignPath(location.search,productId,designId),location.href)+location.hash);
   refreshOptions();
   $('#editor-designs').innerHTML=designs().map(d=>`<button type="button" data-editor-design="${escape(d.id)}" aria-pressed="${d.id===designId}"><img loading="lazy" ${merchantImageAttribute(`/api/workshop/products/${encodeURIComponent(state.record.id)}/preview.svg?revision=${state.record.revision}&designId=${encodeURIComponent(d.id)}`)} alt=""><span>${escape(d.name)}</span><small>${d.id===state.draft.config.profile.defaultDesignId?'Standarddesign':'Design'}</small></button>`).join('');
   $('#editor-design-actions').innerHTML=`<button type="button" class="import-design-tile" data-design-action="import" data-design-id="${escape(designId)}">PDF / SVG importieren</button><button type="button" data-new-design>Eigenes Design anlegen</button><button type="button" data-ai-design="${escape(designId)}">Mit KI gestalten</button>`;

@@ -1,0 +1,19 @@
+{
+  "schema": "gravuru-private-code-recovery-archive/v1",
+  "archivedAtUtc": "2026-11-06T20:27:27.024003+00:00",
+  "path": "/var/www/vhosts/gravuru-designwerkstatt.de/private/gesamtbestand-runtime-b70924c8-recovery-20261106-v1.zip",
+  "bytes": 31666764,
+  "sha256": "d16397d7eac4afe6c3a2280f600038780b19b2a40d0b377b4446931a798a1ef8",
+  "entries": 811,
+  "sourceCommit": "b70924c8254d9875cb7c70c1c6741e4697063686",
+  "allManifestEntriesVerified": true,
+  "mode": "0600",
+  "existingFilesOverwritten": false,
+  "extracted": false,
+  "activated": false,
+  "servicesRestarted": false,
+  "databaseWrites": false,
+  "configurationWrites": false,
+  "localArchive": "gesamtbestand-runtime-b70924c8.zip",
+  "scope": "Private recovery archive only; no extraction, activation, service, database or configuration changes."
+}

@@ -12,12 +12,13 @@ const escape = value => String(value ?? '').replace(/[&<>"']/g, character => ({'
 
 export function materialOverviewHtml({expanded = false, activeMaterials = null} = {}) {
   const connected = activeMaterials === null ? null : new Map(activeMaterials.map(row => [row.key, row]));
-  const materials = REVIEW_MATERIAL_OVERVIEW.materials.map(row => {
+  const materials = REVIEW_MATERIAL_OVERVIEW.materials.flatMap(row => {
     if (!connected) return row;
     const actual = connected.get(row.id);
-    if (!actual) return {...row, galleryStatus: 'not-connected', statusLabel: 'Noch nicht verbunden', detail: row.galleryStatus === 'active' ? 'Katalog-Zuordnung vorhanden. Vorlagen und Rohlinge sind in dieser Galerie noch nicht verbunden.' : row.detail};
-    const detail = `${actual.originals} Vorlagen · ${actual.editable} bearbeitbar${actual.blanks ? ` · ${actual.blanks} Rohlinge` : ''}. Offene Aufbereitung und Freigaben sind getrennt gekennzeichnet.`;
-    return {...row, galleryStatus: 'active', statusLabel: 'In dieser Galerie', detail};
+    const variants = actual ? [actual] : [...connected.values()].filter(item => item.kind === row.id);
+    if (!variants.length) return {...row, galleryStatus: 'not-connected', statusLabel: 'Noch nicht verbunden', detail: row.galleryStatus === 'active' ? 'Katalog-Zuordnung vorhanden. Vorlagen und Rohlinge sind in dieser Galerie noch nicht verbunden.' : row.detail};
+    return variants.map(item => ({...row, id: item.key, label: item.label || row.label, galleryStatus: 'active', statusLabel: 'In dieser Galerie',
+      detail: `${item.originals} Vorlagen · ${item.editable} bearbeitbar${item.blanks ? ` · ${item.blanks} Rohlinge` : ''}. Offene Aufbereitung und Freigaben sind getrennt gekennzeichnet.`}));
   });
   const activeLabels = materials.filter(row => row.galleryStatus === 'active').map(row => row.label);
   const title = connected ? activeLabels.length ? 'Materialien · ' + activeLabels.join(' und ') : 'Materialien' : 'Materialien · Schiefer aktiv';

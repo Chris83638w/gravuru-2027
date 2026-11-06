@@ -86,6 +86,35 @@ class SnapshotTest(unittest.TestCase):
             self.capture()
         self.assertFalse(self.output.exists())
 
+    def test_derived_cache_and_atomic_leftover_are_omitted_without_changing_sources(self):
+        names = ['review-fingerprint-cache.json',
+                 'review-fingerprint-cache.json.12345678-1234-4abc-8abc-123456789abc.tmp']
+        for name in names:
+            (self.data / name).write_bytes(b'private derived cache only')
+        self.approval_database()
+        self.capture()
+        receipt = snapshot.verify(self.output)
+        self.assertIn('review-approvals.sqlite', receipt['databases'])
+        self.assertFalse(any('fingerprint-cache' in row['file'] for row in receipt['files']))
+        target, gallery = self.root / 'restored-data', self.root / 'restored-gallery'
+        snapshot.install(self.output, target, gallery, 'https://slate.example')
+        for name in names:
+            self.assertEqual((self.data / name).read_bytes(), b'private derived cache only')
+            self.assertFalse((target / name).exists())
+        with closing(sqlite3.connect(target / 'review-approvals.sqlite')) as db:
+            self.assertEqual(db.execute('SELECT COUNT(*) FROM approvals').fetchone()[0], 2)
+
+    def test_similar_cache_names_are_not_silently_omitted(self):
+        for name in ['review-fingerprint-cache.json.tmp', 'review-fingerprint-cache.json.backup',
+                     'review-fingerprint-cache.json.12345678-1234-1abc-8abc-123456789abc.tmp']:
+            with self.subTest(name=name):
+                source = self.data / name
+                source.write_bytes(b'unknown source data')
+                with self.assertRaisesRegex(ValueError, 'Unexpected files'):
+                    self.capture()
+                self.assertFalse(self.output.exists())
+                source.unlink()
+
     def test_paths_and_repeated_capture_cannot_overwrite(self):
         self.capture()
         with self.assertRaisesRegex(ValueError, 'already exists'):

@@ -1,0 +1,321 @@
+{
+  "schema": "gravuru-design-batch-delivery-audit-summary/v1",
+  "auditedAt": "2026-11-06T16:41:45.353Z",
+  "deliveryCommit": "86c1ff5f431acfe60d4cff388958112187005550",
+  "catalogueCommit": "3c6051fbbc7904969948950fae12cae2ae663f30",
+  "scope": {
+    "readOnly": true,
+    "imports": 0,
+    "approvals": 0,
+    "nativeRenderingChecked": false,
+    "sourceTypographyVisuallyApproved": false,
+    "expectedCategoryCoverageKnown": false
+  },
+  "passed": true,
+  "filesSha256Index": "5f050d4994913ef1ef3e2d0393e7881476a727548b376a866bc101e424882311",
+  "sourceFilesUnchanged": true,
+  "counts": {
+    "hashes": 55293,
+    "hashResults": {
+      "verified": 55293
+    },
+    "batches": 219,
+    "masterBatches": 27,
+    "stockBatches": 192,
+    "registeredIds": 20598,
+    "actualDesigns": 19533,
+    "masterDesigns": 9743,
+    "stockDesigns": 9790,
+    "masterReferences": 1065,
+    "blanks": 1147,
+    "designVersionsVerified": 19450,
+    "states": {
+      "vorbereitet": 6491,
+      "geliefert": 28,
+      "offen": 230,
+      "vorbereitet als Gravurfassung, Verfahren klären": 60,
+      "Design vorbereitet, Produkt/Rohling fehlt": 3019,
+      "vorbereitet (Lieferform-2-Prüfung: lieferbar)": 5413,
+      "vorbereitet (Lieferform-2-Prüfung: umbau)": 1563,
+      "vorbereitet (Lieferform-2-Prüfung: umbenennung)": 2729,
+      "Verweis auf Master (nicht doppelt geliefert)": 1065
+    },
+    "holdCounts": {
+      "declared-blocker": 3249,
+      "process-unclear": 60,
+      "excluded-font": 21,
+      "uncertain-font": 1433,
+      "photo-decision": 2630,
+      "no-target-family": 12811,
+      "rebuild": 1565,
+      "print-review": 3028,
+      "rename": 2729
+    }
+  },
+  "dryRuns": {
+    "batchRuns": 219,
+    "centralBlankRuns": 1,
+    "provesExistingGalleryCompatibility": false,
+    "uniqueDesignStates": {
+      "neu": 19450,
+      "unvollstaendig": 83
+    },
+    "uniqueBlankStates": {
+      "neu": 950,
+      "unvollstaendig": 197
+    },
+    "incompleteBlankOccurrences": 583,
+    "blanksOnlyInCentralManifest": 30
+  },
+  "additionalAdapterSources": [
+    {
+      "file": "auftraege/2026-11-06-gesamtbestand/files-sha256.json",
+      "sha256": "5f050d4994913ef1ef3e2d0393e7881476a727548b376a866bc101e424882311",
+      "gitBlob": "8f4566e66398c885e378957d53a8067a8945fc73",
+      "verified": true
+    },
+    {
+      "file": "familien/acryl/acryl-3mm-tuerschilder-anthrazit.json",
+      "sha256": "ac4e6a5ff475acc5a09344ea001911a2529687f4f63f06c7e5e7caa070509068",
+      "gitBlob": "491e1abc6acd87dc96d952324f384bd741057731",
+      "verified": true
+    },
+    {
+      "file": "familien/acryl/acryl-3mm-tuerschilder-schwarz.json",
+      "sha256": "9c82b605cafb70d9f72f2bf5f7321d2366cd36649641861400e36dbec31f9773",
+      "gitBlob": "e340d77521ccf85a690acceebab153389c1971e0",
+      "verified": true
+    },
+    {
+      "file": "familien/acryl/acryl-aa-abstandshalter.json",
+      "sha256": "4bbc974d0f74d83d83c93d0c6ac91f177b17aa388613e1657ffb1470e8691496",
+      "gitBlob": "aab1452493c16a5cb056968d3752bdce635f0e07",
+      "verified": true
+    },
+    {
+      "file": "familien/acryl/acryl-as-abstandshalter.json",
+      "sha256": "638a5e2cdc3e803a08a916afbb743ddcb0fe2c898e9b3b2f7556f6dbb532aa2c",
+      "gitBlob": "7b3ae06db1f6125ef7c3907f56a475e41da25e09",
+      "verified": true
+    },
+    {
+      "file": "familien/acryl/acryl-ss-abstandshalter.json",
+      "sha256": "d732148647d913b8ddd2dd819cedb3747b8b7f5baa233503101c35bfdf4047f0",
+      "gitBlob": "639c1a905977ed1e46ea474492998cd565ea4808",
+      "verified": true
+    },
+    {
+      "file": "familien/acryl/gedenktafel-30x20-acryl-anthrazit.json",
+      "sha256": "96a3be62576cd82ce042807f2e593b5655243aed4ec25a6460b300b47383b7ac",
+      "gitBlob": "afdb02629cac1796f7469ff373eb17da15319610",
+      "verified": true
+    },
+    {
+      "file": "familien/acryl/gedenktafel-30x20-acryl-schwarz.json",
+      "sha256": "b58e6906bf9cea5c131b4ff4eec3f3cf6de2a282cb716a1416713b547697c4cb",
+      "gitBlob": "8df3f5f9fd2f2129682ec7cbbebc5f89b6aecc53",
+      "verified": true
+    },
+    {
+      "file": "familien/acryl/gedenktafel-ae-acryl-anthrazit.json",
+      "sha256": "a344990f5239172edd84a947eab8ebd3480f6d754f730ebd86e1819c159e74fb",
+      "gitBlob": "0b59220f9a1ccde61d0dcd5dc8e061d3457b115f",
+      "verified": true
+    },
+    {
+      "file": "familien/acryl/gedenktafel-ae-acryl-schwarz.json",
+      "sha256": "211789365782bccec89c23f3e48563df19c098cbbcc29f159ec1e29ad329613c",
+      "gitBlob": "efea43ce15051f86ce54d5b5d3f58d57c5b33cf2",
+      "verified": true
+    },
+    {
+      "file": "familien/edelstahl/gedenktafel-30x20-edelstahl.json",
+      "sha256": "bf853d42a324fad603dd60f684eeceec731c589722f10d2fa7e79e09c959a36a",
+      "gitBlob": "45a788bd31f9be206b097d580642a40468142429",
+      "verified": true
+    },
+    {
+      "file": "familien/edelstahl/grabstecker-edelstahl.json",
+      "sha256": "061697ac0007cc3225945c519e54adabd5b8d899c1597d5b74b9b02b9d3ba1e6",
+      "gitBlob": "f0e71090214836d31df53bf64c18f6756d2adcf1",
+      "verified": true
+    },
+    {
+      "file": "familien/edelstahl/quellen/shopify-variante-c-20261016.json",
+      "sha256": "4d1fbdea8010ecc210e258e4382a52e4776749e69d7e4551d7b00cd737ca16e8",
+      "gitBlob": "12e868d035ef1de75b2d61fa6b2b9fe7f4c0a85d",
+      "verified": true
+    },
+    {
+      "file": "familien/edelstahl/steel-door-signs.json",
+      "sha256": "0c1cfeb0a185c9f58f1ca9c70d9d733da1297df52d3227866fc47d4671771e42",
+      "gitBlob": "2e046d4a26bb524cfb15efad1b281ba316a7f0ea",
+      "verified": true
+    },
+    {
+      "file": "familien/schiefer/gedenktafel-22x14-schiefer-hunde-2027.json",
+      "sha256": "6061810825bbdcc432bad078c400aa078c8447fa020963b19b70bf8be0f2e5b6",
+      "gitBlob": "c85dff03bb1cc951adb3de3a5bcbbef965bc56cb",
+      "verified": true
+    },
+    {
+      "file": "familien/schiefer/gedenktafel-22x14-schiefer-natur.json",
+      "sha256": "b5e3a526eb732babae1ca42bb0517fea00b3d359047a5e4657d8e85b46cc2e42",
+      "gitBlob": "1fa49171a304b2f7763ff2685a8370f0046bbc2d",
+      "verified": true
+    },
+    {
+      "file": "familien/schiefer/gedenktafel-30x20-schiefer-natur.json",
+      "sha256": "e2b0b648cbcb36486480d72089c3b07e4e76abfdedbee36743a0286d6126faaa",
+      "gitBlob": "4d87db6d0b296ad42ce8efda5e0afc79f9b96c51",
+      "verified": true
+    },
+    {
+      "file": "familien/schiefer/gedenktafel-30x20-schiefer-premium.json",
+      "sha256": "0e5485e2e3b42e35a48400f014733522b4832320a55b32e8521c09ecd9e29164",
+      "gitBlob": "fb85ee69b74bb50c6941863f6c4bfd9d504a3a34",
+      "verified": true
+    },
+    {
+      "file": "linien/_inventar/inventar.json",
+      "sha256": "cb01ec885fc226f367c1a592028baa8101a883a787e4bf11f46075e1f144877d",
+      "gitBlob": "193f776e35ee912717817187435adb6a8c0c1e98",
+      "verified": true
+    },
+    {
+      "file": "linien/acryl-schilder-abstandshalter.json",
+      "sha256": "8f0bc41af3d2158db508bfeef95deae8c90f968153211628e98f3bf498640516",
+      "gitBlob": "76f84f305a69a47e1c560609305297a44972c3fc",
+      "verified": true
+    },
+    {
+      "file": "linien/acryl-tuerschilder.json",
+      "sha256": "89a6f5366b2ec147640d10aef98327a526fc9cf347ebde15e381670dcfb5d0f2",
+      "gitBlob": "2ab507e8973f62d37af7cc899fac208afc739a6d",
+      "verified": true
+    },
+    {
+      "file": "linien/alu-dibond-30x20.json",
+      "sha256": "ef04ffcc276e1eb23926f39bd4b1deb4dc1491380b71e2ffaad37dc2856005d8",
+      "gitBlob": "517cccba1733ca7cfaa6ae1071c8ea4325ba80df",
+      "verified": true
+    },
+    {
+      "file": "linien/brettchen.json",
+      "sha256": "7c59b4a9752297f643a21896c04b0309652305a0ff924835a4f77055851bc23a",
+      "gitBlob": "7d1d3cc1d3eb6b8f6338f0c83a15d37f2b84b3a2",
+      "verified": true
+    },
+    {
+      "file": "linien/edelstahl-tuerschilder.json",
+      "sha256": "dd15b3cf0e7c58e17644926fa91ac39a77162a020213522c7f6c8aacf842dd32",
+      "gitBlob": "ee10585d90b52508361c64cf58645d5f3a9a2c9e",
+      "verified": true
+    },
+    {
+      "file": "linien/gedenktafeln-22x14-tiere.json",
+      "sha256": "8d54bd447667c394c79f0b461a4e70f01a9a29f81b45dc0752b8fb06bb2c1e61",
+      "gitBlob": "750d26b325425cfe0bfa19299cac9d3da8f1a29f",
+      "verified": true
+    },
+    {
+      "file": "linien/gedenktafeln-30x20.json",
+      "sha256": "53baea91321d06609488b250480a2627f51304ab700268177fae16e4ca6ee020",
+      "gitBlob": "0bbd042342bab764a084fc0561848d3caff60763",
+      "verified": true
+    },
+    {
+      "file": "linien/grabstecker-edelstahl.json",
+      "sha256": "d0e21e11c1ccc33e5744a292bc50dbaca1aa2c50511290c546bd1b9d794654e6",
+      "gitBlob": "af2bff407b4c5dca20c6df5383576ae412ebffb7",
+      "verified": true
+    },
+    {
+      "file": "linien/lineale.json",
+      "sha256": "faa21858d357108bce1ec2b0a37649dfc6b96acfb510a479ef4e09b8ae56001d",
+      "gitBlob": "75e2ba46f2b5c9715c2e9ce7230a65893777d912",
+      "verified": true
+    },
+    {
+      "file": "linien/monogramme-schiefer.json",
+      "sha256": "cf03a3c23b4eadb0b66b260d83b1011e7529b473f1373b568e367866c39b6873",
+      "gitBlob": "275abda6756cc5d93c9276e993fb9f5976191f20",
+      "verified": true
+    },
+    {
+      "file": "linien/pferdeschilder.json",
+      "sha256": "f051c0c39cd3a6d66097bae5d2c31791af92842304e3119354ac7b3336f2b31e",
+      "gitBlob": "8350c5e67b539adfc0f4766d03a308d9d8866237",
+      "verified": true
+    },
+    {
+      "file": "linien/schluesselanhaenger.json",
+      "sha256": "52512bb61b360aa58236745a8fa36eb9cadd0e2ca25c803eb9777301248edc09",
+      "gitBlob": "5f0d8790020ab3a0bba7974ae33d416b9c19912b",
+      "verified": true
+    },
+    {
+      "file": "linien/stifthalter.json",
+      "sha256": "0ed94fde39cf92ca5d6e88e88d07aaf7f1c9bb1058adfb65d236f1b3cd6340ff",
+      "gitBlob": "c85876f00b253b925060cc80368f5bf4ab4736a7",
+      "verified": true
+    },
+    {
+      "file": "linien/tuerklingeln.json",
+      "sha256": "f24d70a613f0d83510688fe8022fa5eb9ebcd6ef7ccfa0f537cf8608443ee2da",
+      "gitBlob": "5010043841ed1722224c019743bebfa2c3dd0740",
+      "verified": true
+    }
+  ],
+  "fonts": {
+    "replacementNames": 281,
+    "security": {
+      "h": 149,
+      "m": 32,
+      "n": 100
+    },
+    "uncertainNamesInFindings": 126,
+    "uncertainDesigns": 1433,
+    "classificationTableDelivered": false
+  },
+  "findings": [
+    {
+      "code": "FONT_STATUS_TABLE_NOT_DELIVERED",
+      "severity": "warning",
+      "file": "auftraege/2026-11-06-gesamtbestand/schriften-ersatz/ersatz-alle.json",
+      "missingInput": "F-schriften-ersatz/ergebnis.json",
+      "effect": "The exact 151 safe / 129 uncertain / 1 open classification cannot be reconstructed from the delivered table alone. Preserve all per-design uncertainty findings; do not infer approval.",
+      "examples": [
+        "TQ-V2A-8x8-D14",
+        "TO-V2A-9x6-D38"
+      ]
+    },
+    {
+      "code": "APPLIED_FONT_RATIO_UNRECORDED",
+      "severity": "warning",
+      "texts": 462,
+      "designs": 182,
+      "effect": "Source explicitly records these replacements as already applied but omits the historical ratio. Keep delivered text geometry; do not apply a replacement factor a second time.",
+      "examples": [
+        "TRE-V2A-8x3,5-D21",
+        "TRE-V2A-8x3,5-D34",
+        "TRE-V2A-8x5-D14"
+      ]
+    }
+  ],
+  "tests": {
+    "command": "node --test scripts/audit-design-batch-delivery.test.mjs",
+    "passed": 7,
+    "failed": 0
+  },
+  "evidence": {
+    "audit.json": {
+      "relativeWorkspacePath": "work/gesamtbestand-delivery-audit-20261106-v2/audit.json",
+      "sha256": "d6206f00607629eaffd9b43c477677ef3bec66c2567920c72cfe4566e1496dfb"
+    },
+    "file-verification.json": {
+      "relativeWorkspacePath": "work/gesamtbestand-delivery-audit-20261106-v2/file-verification.json",
+      "sha256": "ce366bd2ab8b2588bc058373871d6af90820054381f3fe26055dd51426903638"
+    }
+  }
+}

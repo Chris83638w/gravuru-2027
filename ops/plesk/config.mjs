@@ -63,7 +63,10 @@ export function verifyStorage(config){
   for(const entry of fs.readdirSync(config.data,{withFileTypes:true})){
     if(entry.name===DATA_MARKER)continue;
     const standard=/^(?:(workshop|profiles|design-assets)\.sqlite(?:-(?:wal|shm|journal))?|\.runtime\.lock)$/.test(entry.name);
-    const review=config.slateReviewPackage&&/^(?:review-(?:comments|approvals)\.sqlite(?:-(?:wal|shm|journal))?|local-review-import\.json)$/.test(entry.name);
+    // Only the disposable derived cache and this writer's UUID-v4 crash
+    // leftovers are additional review files. The private regular-file checks
+    // below still apply; neither is a database or an approval record.
+    const review=config.slateReviewPackage&&!/[\r\n]/.test(entry.name)&&/^(?:review-(?:comments|approvals)\.sqlite(?:-(?:wal|shm|journal))?|local-review-import\.json|review-fingerprint-cache\.json(?:\.[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}\.tmp)?)$/.test(entry.name);
     if(!(standard||review)||!entry.isFile()||entry.isSymbolicLink()||fs.statSync(path.join(config.data,entry.name)).mode&0o077)fail('Unerwarteter Inhalt oder nicht private Datei in der Testablage. Keine Bestandsdaten übernehmen.');
   }
 }

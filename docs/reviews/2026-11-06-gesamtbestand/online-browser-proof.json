@@ -1,0 +1,42 @@
+{
+  "schema": "gravuru-online-gallery-browser-proof/v1",
+  "date": "2026-11-06",
+  "origin": "https://test-2027.gravuru-designwerkstatt.de",
+  "scope": "private-site-19",
+  "originalId": "TRE-V2A-5x2-D401",
+  "productId": "cfg_e0e6ec7e-c731-4abd-aa8f-072b61bc3e1f",
+  "material": "Acryl Schwarz 3 mm",
+  "mm": [50, 20],
+  "verified": {
+    "fullEditorOpened": true,
+    "textChangedInFullEditor": true,
+    "saveAcknowledgedRevision2": true,
+    "concurrentRevision3Detected": true,
+    "originalTextRestoredInFullEditorRevision4": true,
+    "userRevision3PositionAndSizePreserved": true,
+    "saveAndReturnReachedCorrectMaterialCard": true,
+    "reopenReachedFullEditorRevision4": true,
+    "reopenedNameWasOriginal": true
+  },
+  "independentBrowser": {
+    "browser": "in-app browser",
+    "fullEditorOpenedRevision4": true,
+    "saveNoOpAcknowledged": true,
+    "explicitReloadOpenedRevision4": true,
+    "originalNamePreserved": true,
+    "saveEnabledAfterReload": true,
+    "screenshot": "online-D401-konfi-iab-neu-geoeffnet.png"
+  },
+  "repeatedStartupReliabilityPassed": false,
+  "remainingIssue": "A later explicit reload again showed a disabled save button and a startup timeout after 35 seconds; intermittent about:blank iframe navigation remains unexplained.",
+  "databaseComparison": "online-ui-saveback-proof.json",
+  "screenshots": [
+    "online-D401-konfi-gespeichert.png",
+    "online-D401-konfi-originalname.png",
+    "online-D401-galerie-rueckkehr.png",
+    "online-D401-konfi-neu-geoeffnet.png"
+  ],
+  "realDesignApprovalsAdded": false,
+  "shopifyWrites": false,
+  "mainMerged": false
+}

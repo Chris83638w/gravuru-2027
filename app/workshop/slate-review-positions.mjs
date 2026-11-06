@@ -1,5 +1,5 @@
 import {surfaceObjectIssue} from '../platform/sources/app/shared/models/design-content.mjs';
-import {validatedDesignReviewTargets} from '../../scripts/lib/design-review-targets.mjs';
+import {validatedDesignReviewTargets,designReviewMaterialMatches} from '../../scripts/lib/design-review-targets.mjs';
 
 const fail=(status,code,message,extra={})=>{throw Object.assign(Error(message),{status,code,...extra});};
 const plain=value=>value!==null&&typeof value==='object'&&!Array.isArray(value);
@@ -22,7 +22,7 @@ export function createSlateReviewPositions({workshop,pack,imported}){
     if(!target)fail(404,'review_target_missing','Diese vorbereitete Vorlage gehört nicht zu diesem Format.');
     const {mm,material}=target;
     const record=workshop.repository.get(productId),document=record.document,profile=document.config?.profile,design=profile?.designs?.find(row=>row.id===designId);
-    if(!design||profile.material?.kind!==material.kind||document.config.reviewOnly!==true||Math.abs(profile.geometry.width-mm[0])>1e-6||Math.abs(profile.geometry.height-mm[1])>1e-6||material.key!=='slate'&&design.katalog?.designId!==target.originalId)fail(409,'review_target_changed','Die Vorlage oder ihr Format wurde geändert. Bitte die Übersicht neu laden.');
+    if(!design||!designReviewMaterialMatches(profile.material,material)||document.config.reviewOnly!==true||Math.abs(profile.geometry.width-mm[0])>1e-6||Math.abs(profile.geometry.height-mm[1])>1e-6||material.key!=='slate'&&design.katalog?.designId!==target.originalId||target.familyId&&design.katalog?.target?.familyId!==target.familyId)fail(409,'review_target_changed','Die Vorlage oder ihr Format wurde geändert. Bitte die Übersicht neu laden.');
     return {record,design};
   };
   const response=(record,designId,rendered)=>{

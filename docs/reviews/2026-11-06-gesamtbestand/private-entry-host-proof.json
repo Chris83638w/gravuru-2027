@@ -1,0 +1,263 @@
+{
+  "schema": "gravuru-private-entry-host-proof/v1",
+  "date": "2026-11-06",
+  "scope": "Protected gallery entry navigation and correlated browser request diagnostics. This is not a successful full-editor browser acceptance.",
+  "sourceCommit": "60ece3e4604918d75052cc59251001ff8e91bb8b",
+  "runtime": {
+    "origin": "https://test-2027.gravuru-designwerkstatt.de",
+    "applicationDirectory": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-gesamtbestand-review-267d46e4",
+    "patchedFile": "ops/plesk/runtime.mjs",
+    "patchedFileSha256": "8603b707d85cf24bb73fc9c1752c27abdf3ff31b6204982bbb927eb054f458d7",
+    "identityVerifiedBy": "Read-back SHA-256 of the actual installed runtime file; the retained application directory name is not its current source version.",
+    "deploymentScope": "The runtime file was patched in the existing application directory. This proof does not claim that every installed file matches sourceCommit. Temporary browser diagnostics were present separately."
+  },
+  "collection": {
+    "method": "Read-only SSH log inspection followed by HTTPS GET requests to the exact configured origin. Authentication was loaded internally from the existing private configuration and was not output.",
+    "browserDiagnosticsReadBeforeProbeRequests": true,
+    "httpGetRequests": 12,
+    "editorHtmlProbeRequests": 0,
+    "mutationRequests": 0,
+    "redirectsFollowed": 0,
+    "hostFilesWrittenByThisProbe": false,
+    "additionalHostChecksWhenWritingThisReport": false,
+    "sanitization": "No credentials, authentication headers, cookies, IP addresses, request query strings, configuration contents, or response bodies are included."
+  },
+  "browserRequestDiagnostics": {
+    "source": "Existing application stderr.log; the following three events were captured before the subsequent entry matrix.",
+    "eventCount": 3,
+    "events": [
+      {
+        "method": "GET",
+        "route": "/originale/editor",
+        "secFetchSite": "same-origin",
+        "secFetchMode": "navigate",
+        "secFetchDest": "document",
+        "secFetchUser": "?1",
+        "hostMatches": true,
+        "httpsMatches": true,
+        "originPresent": false,
+        "originMatches": false,
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "route": "/editor.html",
+        "secFetchSite": "same-origin",
+        "secFetchMode": "cors",
+        "secFetchDest": "empty",
+        "secFetchUser": null,
+        "hostMatches": true,
+        "httpsMatches": true,
+        "originPresent": false,
+        "originMatches": false,
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "route": "/editor.html",
+        "secFetchSite": "same-origin",
+        "secFetchMode": "navigate",
+        "secFetchDest": "iframe",
+        "secFetchUser": null,
+        "hostMatches": true,
+        "httpsMatches": true,
+        "originPresent": false,
+        "originMatches": false,
+        "status": 200
+      }
+    ],
+    "interpretation": "The successful actual iframe navigation is separately identified from the preceding GET fetch. HTTP 200 is not evidence that the browser committed or initialized the iframe document."
+  },
+  "hostEntryMatrix": {
+    "passed": true,
+    "passedChecks": 12,
+    "failedChecks": 0,
+    "commonRequest": {
+      "method": "GET",
+      "secFetchSite": "cross-site",
+      "secFetchMode": "navigate",
+      "secFetchDest": "document",
+      "secFetchUser": "?1",
+      "originHeader": "absent",
+      "authenticated": true
+    },
+    "commonResponse": {
+      "cacheControl": "private, no-store"
+    },
+    "checks": [
+      {
+        "name": "gallery_cross_site_entry",
+        "route": "/originale/",
+        "requestOverrides": {},
+        "expectedStatus": 200,
+        "status": 200,
+        "bodyBytes": 6474360,
+        "contentType": "text/html; charset=utf-8",
+        "basicChallenge": false,
+        "passed": true
+      },
+      {
+        "name": "gallery_same_site_entry",
+        "route": "/originale/",
+        "requestOverrides": {"secFetchSite": "same-site"},
+        "expectedStatus": 200,
+        "status": 200,
+        "bodyBytes": 6474360,
+        "contentType": "text/html; charset=utf-8",
+        "basicChallenge": false,
+        "passed": true
+      },
+      {
+        "name": "gallery_anonymous_denied",
+        "route": "/originale/",
+        "requestOverrides": {"authenticated": false},
+        "expectedStatus": 401,
+        "status": 401,
+        "bodyBytes": 0,
+        "contentType": null,
+        "basicChallenge": true,
+        "passed": true
+      },
+      {
+        "name": "editor_cross_site_entry",
+        "route": "/originale/editor",
+        "requestOverrides": {},
+        "expectedStatus": 200,
+        "status": 200,
+        "bodyBytes": 910,
+        "contentType": "text/html; charset=utf-8",
+        "basicChallenge": false,
+        "passed": true
+      },
+      {
+        "name": "editor_same_site_entry",
+        "route": "/originale/editor",
+        "requestOverrides": {"secFetchSite": "same-site"},
+        "expectedStatus": 200,
+        "status": 200,
+        "bodyBytes": 910,
+        "contentType": "text/html; charset=utf-8",
+        "basicChallenge": false,
+        "passed": true
+      },
+      {
+        "name": "editor_anonymous_denied",
+        "route": "/originale/editor",
+        "requestOverrides": {"authenticated": false},
+        "expectedStatus": 401,
+        "status": 401,
+        "bodyBytes": 0,
+        "contentType": null,
+        "basicChallenge": true,
+        "passed": true
+      },
+      {
+        "name": "foreign_origin_denied",
+        "route": "/originale/",
+        "requestOverrides": {"originHeader": "https://foreign.example"},
+        "expectedStatus": 403,
+        "status": 403,
+        "bodyBytes": 0,
+        "contentType": null,
+        "basicChallenge": false,
+        "passed": true
+      },
+      {
+        "name": "cross_site_iframe_denied",
+        "route": "/originale/",
+        "requestOverrides": {"secFetchDest": "iframe"},
+        "expectedStatus": 403,
+        "status": 403,
+        "bodyBytes": 0,
+        "contentType": null,
+        "basicChallenge": false,
+        "passed": true
+      },
+      {
+        "name": "cross_site_subresource_denied",
+        "route": "/originale/",
+        "requestOverrides": {"secFetchMode": "cors", "secFetchDest": "empty"},
+        "expectedStatus": 403,
+        "status": 403,
+        "bodyBytes": 0,
+        "contentType": null,
+        "basicChallenge": false,
+        "passed": true
+      },
+      {
+        "name": "navigation_without_activation_denied",
+        "route": "/originale/",
+        "requestOverrides": {"secFetchUser": "?0"},
+        "expectedStatus": 403,
+        "status": 403,
+        "bodyBytes": 0,
+        "contentType": null,
+        "basicChallenge": false,
+        "passed": true
+      },
+      {
+        "name": "cross_site_api_denied",
+        "route": "/originale/approvals",
+        "requestOverrides": {},
+        "expectedStatus": 403,
+        "status": 403,
+        "bodyBytes": 0,
+        "contentType": null,
+        "basicChallenge": false,
+        "passed": true
+      },
+      {
+        "name": "cross_site_unknown_route_denied",
+        "route": "/unknown",
+        "requestOverrides": {},
+        "expectedStatus": 403,
+        "status": 403,
+        "bodyBytes": 0,
+        "contentType": null,
+        "basicChallenge": false,
+        "passed": true
+      }
+    ]
+  },
+  "localTargetedTests": {
+    "command": "node --test ops/plesk/private-entry-navigation.test.mjs ops/plesk/slate-review-runtime.test.mjs",
+    "platform": "Windows, Node 24.20.0",
+    "passed": 14,
+    "failed": 0,
+    "skipped": 0,
+    "exitCode": 0,
+    "coverage": [
+      "Activated cross-site and same-site entry GETs reach a strict inner handler.",
+      "Basic authentication, exact Host, HTTPS and Origin checks remain mandatory.",
+      "Cross-site iframes, subresources, nonactivated navigation, writes, HEAD, APIs and nonexact routes stay blocked.",
+      "Ordinary same-origin iframe requests retain existing behavior.",
+      "Diagnostics omit queries and sensitive headers and are capped at twenty events per process.",
+      "Existing gallery comment and approval authentication, Origin and CSRF contracts remain valid."
+    ]
+  },
+  "additionalWindowsConfigurationTestLimitations": {
+    "file": "ops/plesk/config.test.mjs",
+    "passed": 5,
+    "failed": 4,
+    "skipped": 0,
+    "configurationCodeChangedByThisFix": false,
+    "failedTests": [
+      {"name": "private file supplies npm runner and app without exposing values", "cause": "POSIX private file/directory mode expectations were not satisfied on Windows."},
+      {"name": "symlink and absent explicitly configured file are rejected", "cause": "Windows denied creation of the synthetic test symlink with EPERM."},
+      {"name": "optional Schiefer gallery key is accepted without expanding other configuration keys", "cause": "POSIX private file/directory mode expectations were not satisfied on Windows."},
+      {"name": "review comments, approvals, journals and mapping are allowed only in explicit review mode", "cause": "The Windows directory-mode check failed before the expected inventory rejection."}
+    ],
+    "status": "These four checks did not pass in this Windows run; this report does not claim a fresh Linux rerun."
+  },
+  "remainingBrowserAcceptance": {
+    "actualIframeNavigationHttp200": true,
+    "iframeDocumentCommitted": false,
+    "observedFrameLocation": "about:blank",
+    "observedScriptElementCount": 0,
+    "editorReady": false,
+    "openChangeSaveVerifiedOnline": false,
+    "browserAcceptancePassed": false,
+    "stateSource": "Root browser diagnostics at the time of this report; a separate browser login awaited user action.",
+    "conclusion": "The entry policy and actual iframe HTTP 200 are proven. The browser's empty iframe remains unresolved and must not be reported as successful editor initialization or save acceptance."
+  }
+}

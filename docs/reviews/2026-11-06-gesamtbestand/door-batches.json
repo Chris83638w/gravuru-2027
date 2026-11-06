@@ -1,0 +1,1095 @@
+{
+  "schema": "gravuru-design-batch-handoff/v1",
+  "date": "2026-11-06",
+  "pullRequest": 186,
+  "scope": "Erste Edelstahl-/Acryl-Türschildgruppe: zehn Stapel 1-tuerschilder-edelstahl-acryl--*; keine Aussage über weitere Materialgruppen.",
+  "catalogueSourceCommit": "3c6051fbbc7904969948950fae12cae2ae663f30",
+  "deliveryCommit": "86c1ff5f431acfe60d4cff388958112187005550",
+  "reviewOnly": true,
+  "released": false,
+  "status": {
+    "localPreparation": "Alle zehn Stapel vollständig erzeugt und geprüft. Offen markierte Originale/Ziele wurden nicht als native fertige Vorlagen ausgegeben.",
+    "online": {
+      "statusSource": "Root hat nach ausdrücklicher Nutzerfreigabe die private Plesk-Site 19 auf 267d46e4 umgeschaltet und die App neu gestartet; 53 lesende HTTPS-Prüfungen bestanden. Online-Voll-Konfi-Browserabnahme wegen leerem iframe offen.",
+      "scope": "Pilot und Andenken sind auf der privaten Galerie aktiv: 137 neue Originale. Die übrigen neun Türschild-Stapel sind weiter nur lokal vorbereitet.",
+      "pilot": {
+        "originals": 28,
+        "targets": 146,
+        "material": "Edelstahl"
+      },
+      "andenkenschilder": {
+        "originals": 109,
+        "newNativeTargets": 1926,
+        "materials": [
+          "Edelstahl",
+          "Acrylglas Schwarz · 3 mm",
+          "Acrylglas Anthrazit · 3 mm"
+        ]
+      },
+      "remainingNineBatches": "Neue Ziele der übrigen neun Stapel sind lokal vorbereitet; nicht als online übernommen ausgewiesen.",
+      "activated": true,
+      "activeCounts": {
+        "originals": 462,
+        "editableOriginals": 370,
+        "preparedTargets": 2449,
+        "unavailableTargets": 101,
+        "products": 348,
+        "blanks": 240,
+        "newOriginals": 137
+      },
+      "activationEvidence": {
+        "userAuthorization": "Ja, private Galerie jetzt umschalten",
+        "siteId": 19,
+        "runtimeCommit": "267d46e497ba73d5ce7cc5b2c09349cd3323aee5",
+        "switchAndAppRestart": "Durch Root in Plesk tatsächlich ausgeführt; kein Stagingbeleg als alleiniger Aktivierungsnachweis.",
+        "customerShopChanged": false,
+        "site20Changed": false,
+        "historicalStagingEvidence": {
+          "file": "docs/reviews/2026-11-06-gesamtbestand/host-stage-proof.json",
+          "meaning": "Unveränderter Nachweis der Vorbereitung vor der Umschaltung."
+        },
+        "onlineGet": {
+          "file": "work/gesamtbestand-host-proof-20261106/online-get-proof-v2.json",
+          "sha256": "e8965a657d01bbfa7975ede13c845919d0cf09923cad2991bd1a3b2d5bc536d2",
+          "checkedAt": "2026-11-06T18:12:18.159478+00:00",
+          "passed": true,
+          "checks": 53,
+          "mutationRequests": 0,
+          "browserVerified": false,
+          "casVerified": false,
+          "csrfWriteVerified": false
+        },
+        "oldSourceComparisons": [
+          {
+            "phase": "precompare",
+            "file": "work/gesamtbestand-host-source-precompare.json",
+            "sha256": "7802a0599671b6b49617015816f47113faf09a3a0269b9dd0958fa0de9bf36d3",
+            "equal": true,
+            "stableDuringRead": true,
+            "databaseCount": 5,
+            "galleryFiles": 2755,
+            "mappingSha256": "d45465a9e4eaf89a88825df7e9a3a0c7276a41cf67ad669b231aba7d8eeb9ac8",
+            "snapshotReceiptSha256": "a16bbac86a108dbbec91d7c48aab63899b3b001a99fdce5e21e51e9a6041263a"
+          },
+          {
+            "phase": "finalcompare",
+            "file": "work/gesamtbestand-host-source-finalcompare.json",
+            "sha256": "7802a0599671b6b49617015816f47113faf09a3a0269b9dd0958fa0de9bf36d3",
+            "equal": true,
+            "stableDuringRead": true,
+            "databaseCount": 5,
+            "galleryFiles": 2755,
+            "mappingSha256": "d45465a9e4eaf89a88825df7e9a3a0c7276a41cf67ad669b231aba7d8eeb9ac8",
+            "snapshotReceiptSha256": "a16bbac86a108dbbec91d7c48aab63899b3b001a99fdce5e21e51e9a6041263a"
+          },
+          {
+            "phase": "postcompare",
+            "file": "work/gesamtbestand-host-source-postcompare.json",
+            "sha256": "7802a0599671b6b49617015816f47113faf09a3a0269b9dd0958fa0de9bf36d3",
+            "equal": true,
+            "stableDuringRead": true,
+            "databaseCount": 5,
+            "galleryFiles": 2755,
+            "mappingSha256": "d45465a9e4eaf89a88825df7e9a3a0c7276a41cf67ad669b231aba7d8eeb9ac8",
+            "snapshotReceiptSha256": "a16bbac86a108dbbec91d7c48aab63899b3b001a99fdce5e21e51e9a6041263a"
+          }
+        ]
+      },
+      "openBrowserIssue": {
+        "component": "Voll-Konfi iframe",
+        "status": "open",
+        "observation": "Im tatsächlichen Online-Browser leer; Ursache und Korrektur in Arbeit.",
+        "fullOnlineEditSavebackVerified": false,
+        "handling": "HTTP-200-Editorantworten und frühere lokale Bedienprüfung gelten nicht als abgeschlossene Online-Browserabnahme."
+      }
+    },
+    "approval": "Technische Vorbereitung und Katalogfreigaben sind keine neue Nutzerfreigabe und keine Shop-/Fertigungsveröffentlichung."
+  },
+  "totals": {
+    "originals": 2503,
+    "preparedDesigns": 2382,
+    "openDesigns": 121,
+    "preparedTargets": 42832,
+    "openTargets": 2385,
+    "reusedTargets": 146,
+    "reviewProducts": 2639,
+    "packages": 32,
+    "reviewTargets": 4793,
+    "uncertainReplacementOriginals": 15
+  },
+  "textVerification": {
+    "passed": true,
+    "targets": 42832,
+    "textObjects": 118890,
+    "anchorBaselinePositions": 118890,
+    "rotatedAnchorBaselinePositions": 693,
+    "tolerancesMm": {
+      "textSize": 0.01,
+      "lineSpacing": 0.01,
+      "anchorBaseline": 0.03
+    },
+    "checks": [
+      "Unveränderte Original-SVG/JSON-Bytes anhand Paket-SHA256",
+      "Original-ID, Familie, Material und Zielmaß",
+      "Texte, Schriftname, Schriftgröße, Zeilenabstand und Anker-/Grundlinienposition",
+      "Keine gesamte Vorlage als Artworkobjekt",
+      "reviewOnly=true; Bestellung und Produktionsbestätigung deaktiviert"
+    ],
+    "focusedTests": {
+      "andenken": {
+        "passed": 9,
+        "failed": 0,
+        "skipped": 0
+      },
+      "familie": {
+        "passed": 9,
+        "failed": 0,
+        "skipped": 0
+      }
+    }
+  },
+  "openItems": {
+    "supplierOpenOriginals": 121,
+    "totalOpenTargets": 2385,
+    "additionalNativeTargetBlockers": 45,
+    "additionalNativeBlockerKinds": {
+      "nativeFontSizeLimit": 15,
+      "objectOutsideOvalOrContour": 30
+    },
+    "additionalNativeBlockersAffectOnly": "1-tuerschilder-edelstahl-acryl--familienschilder",
+    "nonBlockingReviewTargets": 4793,
+    "originalsWithExplicitUncertainReplacementWarning": 15,
+    "handling": "Originale unverändert erhalten; keine automatische Größenkorrektur, Motivänderung oder Freigabe. Nicht blockierende Prüfhilfen bleiben sichtbar.",
+    "acrylicCategoryCarrier": "Für Hausnummern, Pferde, Katzen und Willkommen enthält die Acryl-Linie keine eigene Unterkategorie. Galerie-Unterkategorien und Design-Themen bleiben erhalten; private Produktträger verwenden die vorhandene neutrale Kategorie namensschilder. Spätere Shopzuordnung bleibt gesondert.",
+    "d412Clarification": {
+      "originalId": "TRE-V2A-8x3,5-D412",
+      "issue": "Hauchdünne Kontur, kein Motivüberstand.",
+      "maximumObservedContourMm": 0.0393,
+      "minimumContourMm": 0.3,
+      "previousIncorrectComment": "https://github.com/Chris83638w/gravuru-2027/issues/85#issuecomment-6691208088",
+      "codeAndUiAlreadyCorrect": true,
+      "originalModified": false
+    }
+  },
+  "nativeStorage": {
+    "products": 2639,
+    "nativeJsonBytes": 20468558785,
+    "nativeJsonMiB": 19520.34,
+    "uniqueUsedFonts": 58,
+    "largestDocumentBytes": 22391725,
+    "method": "UTF-8-Bytes von minifiziertem nativem Dokument-JSON mit exakt wieder eingesetzten Schriftressourcen; unkomprimiert.",
+    "notMeasured": [
+      "Tatsächlicher RAM-/Heap-/RSS-Verbrauch",
+      "SQLite-Dateigröße, Mehrfachhaltung und WAL"
+    ],
+    "implication": "Die gemessene Datenmenge ist keine RAM-Messung. Streaming-Import und begrenzte Dokumentauflösung sind separat durch Root/onlinezugang implementiert und geprüft; diese Übergabe wiederholt keinen Runtimecheck. Datenbank-Fontduplikation und die vollständige HTML-Galerie bleiben Skalierungspunkte; vor dem gesamten Onlineausbau Pagination bzw. gezieltes Nachladen berücksichtigen."
+  },
+  "batches": [
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "output": "work/design-batch-familie-test-v1",
+      "counts": {
+        "originals": 1298,
+        "preparedDesigns": 1256,
+        "openDesigns": 42,
+        "preparedTargets": 22954,
+        "openTargets": 837,
+        "reusedTargets": 146,
+        "reviewProducts": 479,
+        "packages": 5,
+        "reviewTargets": 2642,
+        "uncertainReplacementOriginals": 2
+      },
+      "packages": [
+        {
+          "manifest": "work/design-batch-familie-test-v1/part-001/manifest.json",
+          "sha256": "ea001463547c3d8aca9154114df17903c00f81422403bd33abc08d7481b6a30f",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-familie-test-v1/part-002/manifest.json",
+          "sha256": "2834187696707a91323f894ce29ac5d1d46e27c5d519ec04879d6e6350d18ce4",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-familie-test-v1/part-003/manifest.json",
+          "sha256": "2c4fdb6d4c3e308b5c757ad656cdffc42486c0b7be4b10531909bb45681fc367",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-familie-test-v1/part-004/manifest.json",
+          "sha256": "1c9db27dd23d3272da692e78bba59daf5726aacc62f85de3b008856415020b69",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-familie-test-v1/part-005/manifest.json",
+          "sha256": "7139f13a4eb7d0c98dd1cdb8168733d4d6cf95f53d508c7d6e9e965b36c2cd3a",
+          "productGroups": 79
+        }
+      ],
+      "nativeBlockerCount": 45,
+      "fontErrors": {},
+      "textAudit": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+        "targets": 22954,
+        "texts": 63783,
+        "baselines": 63783,
+        "rotatedBaselines": 264,
+        "originals": 1256
+      },
+      "nativeJsonSize": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+        "products": 479,
+        "nativeJsonBytes": 6156943388,
+        "largestDocumentBytes": 22391725,
+        "largestProductKey": "batch:eaae9b41d48f:eba3e17849b767a3:2",
+        "nativeJsonMiB": 5871.72
+      }
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--hinweisschilder",
+      "output": "work/design-batch-hinweisschilder-v1",
+      "counts": {
+        "originals": 243,
+        "preparedDesigns": 211,
+        "openDesigns": 32,
+        "preparedTargets": 4470,
+        "openTargets": 636,
+        "reusedTargets": 0,
+        "reviewProducts": 240,
+        "packages": 3,
+        "reviewTargets": 396,
+        "uncertainReplacementOriginals": 13
+      },
+      "packages": [
+        {
+          "manifest": "work/design-batch-hinweisschilder-v1/part-001/manifest.json",
+          "sha256": "c5497f18be5775db7187a3e398af2d4f7949df70a627b499638b8f8dccdc22f9",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-hinweisschilder-v1/part-002/manifest.json",
+          "sha256": "746591b1009cb4949d678ff9e2e6f285a3a6f77c7b9f95ee60680eab87cd1ec2",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-hinweisschilder-v1/part-003/manifest.json",
+          "sha256": "ea6086c5104b6e65fdbef3816a138855ae23e4e296c4f99e45f0edda9b02570d",
+          "productGroups": 40
+        }
+      ],
+      "nativeBlockerCount": 0,
+      "fontErrors": {},
+      "textAudit": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--hinweisschilder",
+        "targets": 4470,
+        "texts": 12753,
+        "baselines": 12753,
+        "rotatedBaselines": 0,
+        "originals": 211
+      },
+      "nativeJsonSize": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--hinweisschilder",
+        "products": 240,
+        "nativeJsonBytes": 1392975810,
+        "largestDocumentBytes": 11915227,
+        "largestProductKey": "batch:0a01dff27758:62572598aa23154c:1",
+        "nativeJsonMiB": 1328.45
+      }
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--hausnummern",
+      "output": "work/design-batch-hausnummern-v1",
+      "counts": {
+        "originals": 182,
+        "preparedDesigns": 182,
+        "openDesigns": 0,
+        "preparedTargets": 2793,
+        "openTargets": 0,
+        "reusedTargets": 0,
+        "reviewProducts": 240,
+        "packages": 3,
+        "reviewTargets": 285,
+        "uncertainReplacementOriginals": 0
+      },
+      "packages": [
+        {
+          "manifest": "work/design-batch-hausnummern-v1/part-001/manifest.json",
+          "sha256": "835094a45965a99689e03468f550ad64cac45c0bc3aa66cf454ce322355c536f",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-hausnummern-v1/part-002/manifest.json",
+          "sha256": "c7bb346bc0d94a3ed258bc6826d81a06a33b49ed9ee585e31ab7e2ffd2d7ebb6",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-hausnummern-v1/part-003/manifest.json",
+          "sha256": "92aca7905f8bb32b4e3154c24078ba877585b570d3296ec5e2ffa6a60fb3d1e0",
+          "productGroups": 40
+        }
+      ],
+      "nativeBlockerCount": 0,
+      "fontErrors": {},
+      "textAudit": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--hausnummern",
+        "targets": 2793,
+        "texts": 6678,
+        "baselines": 6678,
+        "rotatedBaselines": 0,
+        "originals": 182
+      },
+      "nativeJsonSize": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--hausnummern",
+        "products": 240,
+        "nativeJsonBytes": 1458905038,
+        "largestDocumentBytes": 9382969,
+        "largestProductKey": "batch:bd35af247800:8ef43c0f8b2b31ff:1",
+        "nativeJsonMiB": 1391.32
+      }
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--pferdeschilder",
+      "output": "work/design-batch-pferdeschilder-v1",
+      "counts": {
+        "originals": 181,
+        "preparedDesigns": 168,
+        "openDesigns": 13,
+        "preparedTargets": 2802,
+        "openTargets": 246,
+        "reusedTargets": 0,
+        "reviewProducts": 240,
+        "packages": 3,
+        "reviewTargets": 252,
+        "uncertainReplacementOriginals": 0
+      },
+      "packages": [
+        {
+          "manifest": "work/design-batch-pferdeschilder-v1/part-001/manifest.json",
+          "sha256": "6a418494a727a0c468c25951d7cbde9620b8496e514558ccd89c451d178d1aa2",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-pferdeschilder-v1/part-002/manifest.json",
+          "sha256": "ec27cf479db75819a2e423c29a4f53a1c4820fd33fb39487aee182a8cc539f94",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-pferdeschilder-v1/part-003/manifest.json",
+          "sha256": "9a5a4e4aa8eee0c96a909bdee649cc17a9fb6a01abcbb8cd4c95e33a89e10628",
+          "productGroups": 40
+        }
+      ],
+      "nativeBlockerCount": 0,
+      "fontErrors": {},
+      "textAudit": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--pferdeschilder",
+        "targets": 2802,
+        "texts": 7257,
+        "baselines": 7257,
+        "rotatedBaselines": 204,
+        "originals": 168
+      },
+      "nativeJsonSize": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--pferdeschilder",
+        "products": 240,
+        "nativeJsonBytes": 2897193152,
+        "largestDocumentBytes": 13599401,
+        "largestProductKey": "batch:c024b0a4066a:75894b24cd6ac430:1",
+        "nativeJsonMiB": 2762.98
+      }
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--hochzeitsschilder",
+      "output": "work/design-batch-hochzeitsschilder-v1",
+      "counts": {
+        "originals": 148,
+        "preparedDesigns": 148,
+        "openDesigns": 0,
+        "preparedTargets": 2616,
+        "openTargets": 0,
+        "reusedTargets": 0,
+        "reviewProducts": 240,
+        "packages": 3,
+        "reviewTargets": 387,
+        "uncertainReplacementOriginals": 0
+      },
+      "packages": [
+        {
+          "manifest": "work/design-batch-hochzeitsschilder-v1/part-001/manifest.json",
+          "sha256": "e004dfd3bb3280676f6a2ef35a72b51401a363ee66a58e19919e92099f0cc5be",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-hochzeitsschilder-v1/part-002/manifest.json",
+          "sha256": "1c75045bf5faba05264dce706899200b4c11c5bdc62b1873a1076cb4ad7a4953",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-hochzeitsschilder-v1/part-003/manifest.json",
+          "sha256": "89ba89e976e2412d47ec88a5a83eb882cf4fabf03b1299a6a5c9ba51d842aad9",
+          "productGroups": 40
+        }
+      ],
+      "nativeBlockerCount": 0,
+      "fontErrors": {},
+      "textAudit": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--hochzeitsschilder",
+        "targets": 2616,
+        "texts": 6060,
+        "baselines": 6060,
+        "rotatedBaselines": 0,
+        "originals": 148
+      },
+      "nativeJsonSize": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--hochzeitsschilder",
+        "products": 240,
+        "nativeJsonBytes": 1524326252,
+        "largestDocumentBytes": 8008455,
+        "largestProductKey": "batch:238dac065bf0:75894b24cd6ac430:1",
+        "nativeJsonMiB": 1453.71
+      }
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--andenkenschilder",
+      "output": "work/design-batch-andenken-test-v1",
+      "counts": {
+        "originals": 109,
+        "preparedDesigns": 109,
+        "openDesigns": 0,
+        "preparedTargets": 1926,
+        "openTargets": 0,
+        "reusedTargets": 0,
+        "reviewProducts": 240,
+        "packages": 3,
+        "reviewTargets": 216,
+        "uncertainReplacementOriginals": 0
+      },
+      "packages": [
+        {
+          "manifest": "work/design-batch-andenken-test-v1/part-001/manifest.json",
+          "sha256": "b5d93ce7b7ff22557ae8fe65efd18ec9dbec0a6865041caa5eafac57b9789d83",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-andenken-test-v1/part-002/manifest.json",
+          "sha256": "e7084158776dc7e573d858f798a329047ec9747ca8e2fc12241b3ef56f45b744",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-andenken-test-v1/part-003/manifest.json",
+          "sha256": "ad61d692002a2bf1ab8cb1614d8b7d8cab75341e4f8d805295a85007a98c44e1",
+          "productGroups": 40
+        }
+      ],
+      "nativeBlockerCount": 0,
+      "fontErrors": {},
+      "textAudit": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--andenkenschilder",
+        "targets": 1926,
+        "texts": 5949,
+        "baselines": 5949,
+        "rotatedBaselines": 0,
+        "originals": 109
+      },
+      "nativeJsonSize": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--andenkenschilder",
+        "products": 240,
+        "nativeJsonBytes": 1827412917,
+        "largestDocumentBytes": 9873848,
+        "largestProductKey": "batch:ef85b5203e61:eba3e17849b767a3:1",
+        "nativeJsonMiB": 1742.76
+      }
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--firmenschilder",
+      "output": "work/design-batch-firmenschilder-v1",
+      "counts": {
+        "originals": 107,
+        "preparedDesigns": 94,
+        "openDesigns": 13,
+        "preparedTargets": 1584,
+        "openTargets": 258,
+        "reusedTargets": 0,
+        "reviewProducts": 240,
+        "packages": 3,
+        "reviewTargets": 195,
+        "uncertainReplacementOriginals": 0
+      },
+      "packages": [
+        {
+          "manifest": "work/design-batch-firmenschilder-v1/part-001/manifest.json",
+          "sha256": "b2d0c6dd83d0d74add94281a0b85d44e770bdb4715bffa21f16a2164e27bd273",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-firmenschilder-v1/part-002/manifest.json",
+          "sha256": "d6460b383ce1ce0f0bf51335b13ec6207b570a6822671c852e4feebe433cdaf7",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-firmenschilder-v1/part-003/manifest.json",
+          "sha256": "e1ae0c5add65c1aa458763a2e850097dcd1a47925548063172810ab31585b93a",
+          "productGroups": 40
+        }
+      ],
+      "nativeBlockerCount": 0,
+      "fontErrors": {},
+      "textAudit": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--firmenschilder",
+        "targets": 1584,
+        "texts": 6084,
+        "baselines": 6084,
+        "rotatedBaselines": 132,
+        "originals": 94
+      },
+      "nativeJsonSize": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--firmenschilder",
+        "products": 240,
+        "nativeJsonBytes": 1230965231,
+        "largestDocumentBytes": 6686300,
+        "largestProductKey": "batch:09a003a4b132:75894b24cd6ac430:1",
+        "nativeJsonMiB": 1173.94
+      }
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--willkommensschilder",
+      "output": "work/design-batch-willkommensschilder-v1",
+      "counts": {
+        "originals": 99,
+        "preparedDesigns": 96,
+        "openDesigns": 3,
+        "preparedTargets": 1650,
+        "openTargets": 63,
+        "reusedTargets": 0,
+        "reviewProducts": 240,
+        "packages": 3,
+        "reviewTargets": 168,
+        "uncertainReplacementOriginals": 0
+      },
+      "packages": [
+        {
+          "manifest": "work/design-batch-willkommensschilder-v1/part-001/manifest.json",
+          "sha256": "73594153e70c8dd5af8c8d013fd7a0e4a23e6764b2e77d022191af4254c5aa92",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-willkommensschilder-v1/part-002/manifest.json",
+          "sha256": "da6999e9db57fda10f257cce7b5a2b740050ce7d4bb5bd64bb50b1ecee838620",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-willkommensschilder-v1/part-003/manifest.json",
+          "sha256": "676d7f7bb119faa576d12c27a4c4aaf3ed03f339d225d69cfd97530667589586",
+          "productGroups": 40
+        }
+      ],
+      "nativeBlockerCount": 0,
+      "fontErrors": {},
+      "textAudit": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--willkommensschilder",
+        "targets": 1650,
+        "texts": 4446,
+        "baselines": 4446,
+        "rotatedBaselines": 0,
+        "originals": 96
+      },
+      "nativeJsonSize": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--willkommensschilder",
+        "products": 240,
+        "nativeJsonBytes": 1662775931,
+        "largestDocumentBytes": 9464715,
+        "largestProductKey": "batch:722e5c40506c:75894b24cd6ac430:1",
+        "nativeJsonMiB": 1585.75
+      }
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--hundeschilder",
+      "output": "work/design-batch-hundeschilder-v1",
+      "counts": {
+        "originals": 68,
+        "preparedDesigns": 50,
+        "openDesigns": 18,
+        "preparedTargets": 897,
+        "openTargets": 345,
+        "reusedTargets": 0,
+        "reviewProducts": 240,
+        "packages": 3,
+        "reviewTargets": 63,
+        "uncertainReplacementOriginals": 0
+      },
+      "packages": [
+        {
+          "manifest": "work/design-batch-hundeschilder-v1/part-001/manifest.json",
+          "sha256": "30593c40e24118959f3c2a6cc326eeade6dae7174155dcc199c44d457874ff3f",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-hundeschilder-v1/part-002/manifest.json",
+          "sha256": "c1ae5a70f0463c8f349356d9b058a99907a1fe3cb57240f0ce75b42d1a46ba96",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-hundeschilder-v1/part-003/manifest.json",
+          "sha256": "900ced665f87221331e3078e6f09d967e640bd786c9ff17c217be1d7c4ba2c96",
+          "productGroups": 40
+        }
+      ],
+      "nativeBlockerCount": 0,
+      "fontErrors": {},
+      "textAudit": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--hundeschilder",
+        "targets": 897,
+        "texts": 2649,
+        "baselines": 2649,
+        "rotatedBaselines": 0,
+        "originals": 50
+      },
+      "nativeJsonSize": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--hundeschilder",
+        "products": 240,
+        "nativeJsonBytes": 1212923193,
+        "largestDocumentBytes": 7541156,
+        "largestProductKey": "batch:8c9ff0050837:339209a317c0a779:1",
+        "nativeJsonMiB": 1156.73
+      }
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--katzenschilder",
+      "output": "work/design-batch-katzenschilder-v1",
+      "counts": {
+        "originals": 68,
+        "preparedDesigns": 68,
+        "openDesigns": 0,
+        "preparedTargets": 1140,
+        "openTargets": 0,
+        "reusedTargets": 0,
+        "reviewProducts": 240,
+        "packages": 3,
+        "reviewTargets": 189,
+        "uncertainReplacementOriginals": 0
+      },
+      "packages": [
+        {
+          "manifest": "work/design-batch-katzenschilder-v1/part-001/manifest.json",
+          "sha256": "2b8c5c1f35131047aae89efc424c873f2eb033b0a0abe126b1c44cd21fd7defc",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-katzenschilder-v1/part-002/manifest.json",
+          "sha256": "20cc0563c03b6ca4015c33c4dfe4e73bd3c0921e5c9b54464a9feffa440b847c",
+          "productGroups": 100
+        },
+        {
+          "manifest": "work/design-batch-katzenschilder-v1/part-003/manifest.json",
+          "sha256": "93f1c5a81122f773f3f8ae8d7e1965f935d4b3cd861da218218bbd7d88d7c4c9",
+          "productGroups": 40
+        }
+      ],
+      "nativeBlockerCount": 0,
+      "fontErrors": {},
+      "textAudit": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--katzenschilder",
+        "targets": 1140,
+        "texts": 3231,
+        "baselines": 3231,
+        "rotatedBaselines": 93,
+        "originals": 68
+      },
+      "nativeJsonSize": {
+        "batchId": "1-tuerschilder-edelstahl-acryl--katzenschilder",
+        "products": 240,
+        "nativeJsonBytes": 1104137873,
+        "largestDocumentBytes": 9033423,
+        "largestProductKey": "batch:2c8537ba4cc6:75894b24cd6ac430:1",
+        "nativeJsonMiB": 1052.99
+      }
+    }
+  ],
+  "nativeBlockers": [
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TRE-V2A-8x5-D57",
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-450X300-T15",
+      "reason": "Schriftgröße: 1 bis 100 mm.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TRE-V2A-8x5-D57",
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-RE-450X300-T30-SW",
+      "reason": "Schriftgröße: 1 bis 100 mm.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TRE-V2A-8x5-D57",
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-RE-450X300-T30-AN",
+      "reason": "Schriftgröße: 1 bis 100 mm.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TRE-V2A-8x5-D61",
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-RE-450X300-T15",
+      "reason": "Schriftgröße: 1 bis 100 mm.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TRE-V2A-8x5-D61",
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-RE-450X300-T30-SW",
+      "reason": "Schriftgröße: 1 bis 100 mm.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TRE-V2A-8x5-D61",
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-RE-450X300-T30-AN",
+      "reason": "Schriftgröße: 1 bis 100 mm.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TAE-V2A-8x5-D57",
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-AB-420X280-T15",
+      "reason": "Schriftgröße: 1 bis 100 mm.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TAE-V2A-8x5-D57",
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-AB-450X300-T15",
+      "reason": "Schriftgröße: 1 bis 100 mm.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TAE-V2A-8x5-D57",
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-AB-420X280-T30-SW",
+      "reason": "Schriftgröße: 1 bis 100 mm.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TAE-V2A-8x5-D57",
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-AB-450X300-T30-SW",
+      "reason": "Schriftgröße: 1 bis 100 mm.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TAE-V2A-8x5-D57",
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-AB-420X280-T30-AN",
+      "reason": "Schriftgröße: 1 bis 100 mm.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TAE-V2A-8x5-D57",
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-AB-450X300-T30-AN",
+      "reason": "Schriftgröße: 1 bis 100 mm.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TAE-V2A-8x5-D61",
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-AB-450X300-T15",
+      "reason": "Schriftgröße: 1 bis 100 mm.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TAE-V2A-8x5-D61",
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-AB-450X300-T30-SW",
+      "reason": "Schriftgröße: 1 bis 100 mm.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TAE-V2A-8x5-D61",
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-AB-450X300-T30-AN",
+      "reason": "Schriftgröße: 1 bis 100 mm.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TO-V2A-9x6-D5",
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-OV-150X100-T15",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TO-V2A-9x6-D5",
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-OV-150X100-T30-SW",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TO-V2A-9x6-D5",
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-OV-150X100-T30-AN",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TO-V2A-9x6-D13",
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-OV-300X200-T15",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus. · motiv-1 · Pfad 1/63: Motivkontur höchstens 0.2599 mm breit, unter 0,3 mm – prüfen.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TO-V2A-9x6-D13",
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-OV-300X200-T30-SW",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TO-V2A-9x6-D13",
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-OV-300X200-T30-AN",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D10",
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-RT1-300X200-T15",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus. · motiv-1 · Pfad 1/94: Motivkontur höchstens 0.1267 mm breit, unter 0,3 mm – prüfen.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D10",
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-RT1-300X200-T30-SW",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D10",
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-RT1-300X200-T30-AN",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D13",
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-RT1-240X160-T15",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D13",
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-RT1-300X200-T15",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D13",
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-RT1-240X160-T30-SW",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D13",
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-RT1-300X200-T30-SW",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D13",
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-RT1-240X160-T30-AN",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D13",
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-RT1-300X200-T30-AN",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D15",
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-RT1-180X120-T15",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D15",
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-RT1-210X140-T15",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D15",
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-RT1-240X160-T15",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D15",
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-RT1-300X200-T15",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D15",
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-RT1-180X120-T30-SW",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D15",
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-RT1-210X140-T30-SW",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D15",
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-RT1-240X160-T30-SW",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D15",
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-RT1-300X200-T30-SW",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D15",
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-RT1-180X120-T30-AN",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D15",
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-RT1-210X140-T30-AN",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D15",
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-RT1-240X160-T30-AN",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR1-V2A-9x6-D15",
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-RT1-300X200-T30-AN",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR2-V2A-9x6-D13",
+      "familyId": "steel-door-signs",
+      "sizeKey": "GR-ES-RT2-300X200-T15",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR2-V2A-9x6-D13",
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "sizeKey": "TS-Acryl-RT2-300X200-T30-SW",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    },
+    {
+      "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "originalId": "TR2-V2A-9x6-D13",
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "sizeKey": "TS-Acryl-RT2-300X200-T30-AN",
+      "reason": "Native Einpassung: motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus.",
+      "sourceManifest": "work/design-batch-familie-test-v1/part-001/manifest.json"
+    }
+  ],
+  "sources": [
+    {
+      "file": "work/design-door-batches-20261106-summary.json",
+      "sha256": "faddeec3e1388c1b348b0cd7f9751895d0b7db682327812dc315069eae1d98c8"
+    },
+    {
+      "file": "work/design-door-batches-20261106-text-audit.json",
+      "sha256": "9132f5a8870c6bae506b3c666b5d485bde4cf420038f53677a567eacdbf5761d"
+    },
+    {
+      "file": "work/design-door-batches-20261106-native-json-size.json",
+      "sha256": "c6930e306044733147a59c61449662d3f7039d1c5b2781ae5e8e399d72867603"
+    }
+  ],
+  "codeReferences": [
+    "scripts/prepare-design-batch-review.mjs",
+    "scripts/lib/design-batch-plan.mjs",
+    "scripts/prepare-design-batch-review.test.mjs"
+  ],
+  "localAuditTools": [
+    "work/run-design-door-batches-20261106.mjs",
+    "work/audit-prepared-door-batch-texts-20261106.mjs",
+    "work/measure-prepared-native-storage-20261106.mjs"
+  ]
+}

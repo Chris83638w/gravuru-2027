@@ -9,6 +9,7 @@ import {createDesignAssetStore} from '../app/workshop/design-assets.mjs';
 import {createProductRepository} from '../app/workshop/repository.mjs';
 import {validateProductDocument} from '../app/workshop/product-model.mjs';
 import {validateSlateReviewMapping} from '../ops/plesk/slate-review-runtime.mjs';
+import {designReviewMaterial,designReviewTargetKey} from './lib/design-review-targets.mjs';
 
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 const read=file=>JSON.parse(fs.readFileSync(file,'utf8'));
@@ -49,8 +50,46 @@ function disjoint(base,addon,{materialExtension=false}={}){
     ['package product IDs',base.pack.products,addon.pack.products,'productId'],
   ]){
     const old=new Set(oldRows.map(row=>row[key])),fresh=new Set();
-    for(const row of newRows){if(old.has(row[key])||fresh.has(row[key]))fail('Extension overlaps '+label);fresh.add(row[key]);}
+    for(const row of newRows){if((old.has(row[key])&&!(materialExtension&&label==='original IDs'))||fresh.has(row[key]))fail('Extension overlaps '+label);fresh.add(row[key]);}
   }
+}
+
+// One source original can gain new material/format targets. Existing targets
+// and original metadata stay authoritative; native products are append-only.
+export function mergeDesignReviewOriginals(baseRows,addonRows){
+  const result=structuredClone(baseRows),byId=new Map(result.map(row=>[row.id,row]));
+  if(byId.size!==baseRows.length||new Set(addonRows.map(row=>row.id)).size!==addonRows.length)fail('Duplicate original IDs');
+  for(const incoming of addonRows){
+    const old=byId.get(incoming.id);
+    if(!old){
+      if(incoming.reusedTargetRefs?.length)fail('Reused target original is missing from the base');
+      const added=structuredClone(incoming);result.push(added);byId.set(added.id,added);continue;
+    }
+    const targets=new Map((old.targets||[]).map(target=>[designReviewTargetKey(old,target),target]));
+    const comparable=(row,target)=>({...target,reviewMaterial:designReviewMaterial(row,target)});
+    for(const ref of incoming.reusedTargetRefs||[]){
+      const existing=targets.get(designReviewTargetKey(incoming,ref));
+      if(!existing)fail('Reused target is missing from the base');
+      assert.deepEqual(comparable(incoming,ref),comparable(old,existing),'Reused target differs from the existing baseline');
+    }
+    for(const target of incoming.targets||[]){
+      const key=designReviewTargetKey(incoming,target),existing=targets.get(key);
+      if(existing){
+        assert.deepEqual(comparable(incoming,target),comparable(old,existing),'Extension conflicts with an existing material/format target');
+        continue;
+      }
+      // Material inheritance must not change when this target joins an older
+      // row whose default material can legitimately differ.
+      const added={...structuredClone(target),reviewMaterial:designReviewMaterial(incoming,target)};
+      (old.targets||=[]).push(added);targets.set(key,added);
+    }
+    const themes=new Map((old.reviewThemes||[]).map(theme=>[theme.key,theme]));
+    for(const theme of incoming.reviewThemes||[]){
+      if(themes.has(theme.key))assert.deepEqual(themes.get(theme.key),theme,'Conflicting theme metadata');
+      else{const added=structuredClone(theme);(old.reviewThemes||=[]).push(added);themes.set(theme.key,added);}
+    }
+  }
+  return result;
 }
 
 export function mergeSlatePackages({baseRoot,addonRoot,out,materialExtension=false}){
@@ -58,6 +97,14 @@ export function mergeSlatePackages({baseRoot,addonRoot,out,materialExtension=fal
   out=privatePath(out);if(fs.existsSync(out))fail('Combined package output must be new');
   for(const source of [base,addon])if(within(source.root,out)||within(out,source.root))fail('Combined output must be separate');
   const planned=new Map();
+  if(materialExtension){
+    const oldIds=new Set(base.pack.originals.map(row=>row.id));
+    for(const row of addon.pack.originals.filter(row=>oldIds.has(row.id))){
+      const name='originals/'+row.id+'/design.json';
+      const old=base.checksums.find(file=>file.file===name),fresh=addon.checksums.find(file=>file.file===name);
+      if(!old||!fresh||old.sha256!==fresh.sha256||old.bytes!==fresh.bytes)fail('Overlapping original source differs: '+row.id);
+    }
+  }
   const add=(name,source,expected)=>{
     const old=planned.get(name);
     if(old&&(old.expected.sha256!==expected.sha256||old.expected.bytes!==expected.bytes))fail('Different bytes collide at '+name);
@@ -80,15 +127,25 @@ export function mergeSlatePackages({baseRoot,addonRoot,out,materialExtension=fal
     if(assets.has(asset.id))assert.deepEqual(assets.get(asset.id),asset,'Conflicting content-addressed asset metadata');else assets.set(asset.id,asset);
   }
   const fontFiles={...base.pack.fontFiles};
-  for(const [name,file] of Object.entries(addon.pack.fontFiles)){if(fontFiles[name]&&fontFiles[name]!==file)fail('Font file mapping conflict: '+name);fontFiles[name]=file;}
-  const pack={...base.pack,products:[...base.pack.products,...addon.pack.products],originals:[...base.pack.originals,...addon.pack.originals],assets:[...assets.values()],fontFiles,
+  for(const [name,file] of Object.entries(addon.pack.fontFiles)){
+    if(fontFiles[name]&&fontFiles[name]!==file){
+      if(!materialExtension||!fs.readFileSync(child(base.root,fontFiles[name])).equals(fs.readFileSync(child(addon.root,file))))fail('Font file mapping conflict: '+name);
+      continue;
+    }
+    fontFiles[name]=file;
+  }
+  const pack={...base.pack,products:[...base.pack.products,...addon.pack.products],originals:materialExtension?mergeDesignReviewOriginals(base.pack.originals,addon.pack.originals):[...base.pack.originals,...addon.pack.originals],assets:[...assets.values()],fontFiles,
     sourcePackages:[{manifestSha256:base.hash,counts:base.pack.counts},{manifestSha256:addon.hash,counts:addon.pack.counts}]};
   if(materialExtension){
     pack.schema='gravuru-design-original-review/v1';
     pack.sourcePackages=[...(base.pack.sourcePackages||[]),{manifestSha256:base.hash,catalogueCommit:base.pack.catalogueCommit,counts:base.pack.counts},{manifestSha256:addon.hash,catalogueCommit:addon.pack.catalogueCommit,deliveryCommit:addon.pack.deliveryCommit,counts:addon.pack.counts}];
-    pack.blanks=[...(base.pack.blanks||[]),...(addon.pack.blanks||[])];
-    const blankKeys=pack.blanks.map(row=>JSON.stringify([row.materialKey,row.key]));
-    if(new Set(blankKeys).size!==blankKeys.length)fail('Extension overlaps blank keys');
+    const blanks=new Map();
+    for(const blank of [...(base.pack.blanks||[]),...(addon.pack.blanks||[])]){
+      const key=JSON.stringify([blank.materialKey,blank.key]);
+      if(blanks.has(key))assert.deepEqual(blanks.get(key),blank,'Extension conflicts with an existing blank');
+      else blanks.set(key,blank);
+    }
+    pack.blanks=[...blanks.values()];
   }
   const editable=pack.originals.filter(row=>row.targets?.some(target=>target.status==='prepared'));
   const complete=editable.filter(row=>row.targets.every(target=>target.status==='prepared'));

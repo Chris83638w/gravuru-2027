@@ -144,3 +144,26 @@ test('explicit steel targets render and save native positions while material, so
   const wrongSource=structuredClone(pack);wrongSource.originals[0].targets[0].nativeDesignId='katalog-other';
   assert.throws(()=>createSlateReviewPositions({workshop,pack:wrongSource,imported}).open(record.id,'katalog-other'),e=>e.status===409);
 });
+
+test('target-level acrylic binding distinguishes colour and thickness during native position editing',t=>{
+  const family=JSON.parse(fs.readFileSync(new URL('../designs/steel-door-signs/family.json',import.meta.url)));
+  family.id='acryl-3mm-tuerschilder-schwarz';family.material={kind:'acrylic',variant:'schwarz',label:'Acrylglas schwarz',thicknessMm:3,processingProfileId:'acrylic-engraving',engravingSide:'back'};
+  family.sizes=[structuredClone(family.sizes[0])];
+  const config=familyProductConfig(family,family.sizes[0],1),design=config.profile.designs[0];
+  design.katalog={designId:'SAME',target:{familyId:family.id,released:false}};
+  const workshop=createWorkshop({filename:':memory:',seedConfig:config,legacy:{}});t.after(()=>workshop.close());
+  const record=workshop.repository.create(makeProductDocument(config));
+  const product={key:'acrylic:small',productId:record.id,reviewOnly:true,designIds:['SAME']};
+  const target={status:'prepared',familyId:family.id,productKey:product.key,nativeDesignId:design.id,sizeKey:'ACRYLIC-SMALL',mm:[family.sizes[0].widthMm,family.sizes[0].heightMm],reviewMaterial:{key:'acrylic-schwarz-3mm',label:'Acrylglas Schwarz · 3 mm',kind:'acrylic'}};
+  const pack={schema:'gravuru-design-original-review/v1',reviewOnly:true,released:false,products:[product],originals:[{id:'SAME',reviewMaterial:{key:'steel',label:'Edelstahl',kind:'steel'},targets:[target]}]};
+  const imported={localOnly:true,published:false,shopifyWrites:0,products:[product]};
+  const opened=createSlateReviewPositions({workshop,pack,imported}).open(record.id,design.id);
+  assert.equal(opened.revision,1);assert.match(opened.svg,/data-object=/);
+  for(const material of [{key:'acrylic-anthrazit-3mm',label:'Acrylglas Anthrazit · 3 mm',kind:'acrylic'},{key:'acrylic-as-5mm',label:'Acrylglas Schwarz · 5 mm',kind:'acrylic'}]){
+    const wrong=structuredClone(pack);wrong.originals[0].targets[0].reviewMaterial=material;
+    assert.throws(()=>createSlateReviewPositions({workshop,pack:wrong,imported}).open(record.id,design.id),e=>e.status===409);
+  }
+  const wrongFamily=structuredClone(pack);wrongFamily.originals[0].targets[0].familyId='foreign-family';
+  assert.throws(()=>createSlateReviewPositions({workshop,pack:wrongFamily,imported}).open(record.id,design.id),e=>e.status===409);
+  assert.deepEqual(workshop.repository.get(record.id),record);
+});

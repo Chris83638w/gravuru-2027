@@ -14,7 +14,7 @@ import {createGalleryManagementHandler} from './gallery-management-http.mjs';
 import {galleryProductGroupSources} from './gallery-management-targets.mjs';
 import {createGalleryManagementCreationGate} from './gallery-management-creation-gate.mjs';
 export {slateGalleryHtml};
-export function createSlateGalleryHandler(root, importsFile, {csrfToken: suppliedToken,workshop,management={}} = {}) {
+export function createSlateGalleryHandler(root, importsFile, {csrfToken: suppliedToken,workshop,management={},fingerprintCacheFile} = {}) {
  const pack=JSON.parse(fs.readFileSync(path.join(root,'manifest.json'))),imported=JSON.parse(fs.readFileSync(importsFile));
  pack.originals=pack.originals.map(row=>{
   const file=path.resolve(root,'originals',row.id,'design.json');
@@ -23,11 +23,12 @@ export function createSlateGalleryHandler(root, importsFile, {csrfToken: supplie
  });
  const positions=workshop?createSlateReviewPositions({workshop,pack,imported}):null;
  const comments=createSlateReviewComments(path.join(path.dirname(importsFile),'review-comments.sqlite'),pack.originals.map(r=>r.id));
- const approvalTargets=createSlateApprovalTargetSource({pack,imported,workshop});
+ const approvalTargets=createSlateApprovalTargetSource({pack,imported,workshop,cacheFile:fingerprintCacheFile===undefined?path.join(path.dirname(importsFile),'review-fingerprint-cache.json'):fingerprintCacheFile});
  const approvals=createDesignReviewApprovals(path.join(path.dirname(importsFile),'review-approvals.sqlite'),approvalTargets);
  const approvalBundle=()=>{
   approvalTargets.beginRead();
   const states=approvals.all();
+  approvalTargets.flushCache();
   const overview=buildDesignReviewOverview(Object.values(states).map(state=>({...state.metadata,key:state.key,status:state.status})),{expectedCategories:null});
   return {approvals:states,overview,overviewHtml:designReviewOverviewHtml(overview)};
  };
@@ -142,6 +143,6 @@ export function createSlateGalleryHandler(root, importsFile, {csrfToken: supplie
   }
   res.writeHead(200,{'Content-Type':type,'Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(req.method==='HEAD'?undefined:bytes);return true;
  };
- handler.close=()=>{comments.close();approvals.close();productGroups?.close();synchronizer?.close?.();};
+ handler.close=()=>{approvalTargets.flushCache();comments.close();approvals.close();productGroups?.close();synchronizer?.close?.();};
  return handler;
 }

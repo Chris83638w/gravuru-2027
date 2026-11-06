@@ -1,7 +1,6 @@
 import {createHash} from 'node:crypto';
 import {prepareCustomerPhoto} from './customer-photo.mjs';
 import {photoPlacement} from '../configurator/variant-m/photo-position-model.mjs';
-import {photoColorFilter} from '../platform/sources/app/shared/models/photo-color.mjs';
 
 const fail=message=>{throw Object.assign(Error(message),{status:422,code:'review_photo_invalid'});};
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
@@ -36,18 +35,20 @@ export function createGalleryPhotoMedia({db,tenant,assets}){
    if(!finite(input.widthMm,.01,2000)||!finite(input.heightMm,.01,2000)||typeof input.edited!=='boolean'||!['original','grayscale','sepia'].includes(input.color)||!['original','grayscale','sepia'].includes(input.editSourceColor))fail('Ungültige Fotogröße oder Farbe.');
    const photoEdit=validatePhotoRecipe(input.photoEdit),crop=validatePhotoCrop(input.crop);
    const validated=[];
-   for(const bytes of [original,processed,editSource])validated.push(await prepareCustomerPhoto(bytes));
+   for(const [index,bytes] of [original,processed,editSource].entries())validated.push(await prepareCustomerPhoto(bytes,{previewColor:index===1&&!input.edited?input.color:'original'}));
    const [source,picture,editing]=validated;
    const metadata={schema:'gravuru-gallery-photo/v1',width:picture.width,height:picture.height,widthMm:input.widthMm,heightMm:input.heightMm,
     edited:input.edited,color:input.color,editSourceColor:input.editSourceColor,photoEdit,crop,
     originalSha256:hash(source.original),processedSha256:hash(picture.original),editSourceSha256:hash(editing.original)};
    const p=photoPlacement({w:input.widthMm,h:input.heightMm,photoShape:input.photoShape,photoMaskAssetId:input.photoMaskAssetId},metadata,crop||undefined);
-   const filter=!input.edited?photoColorFilter(input.color):'';
-   const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${input.widthMm}mm" height="${input.heightMm}mm" viewBox="0 0 ${input.widthMm} ${input.heightMm}"><desc>gravuru-gallery-photo:${hash(JSON.stringify(metadata))}</desc>${filter?'<defs><filter id="photo-color" color-interpolation-filters="sRGB">'+filter+'</filter></defs>':''}<g transform="translate(${input.widthMm/2} ${input.heightMm/2})"><image href="data:image/png;base64,${picture.preview.toString('base64')}" x="${p.x}" y="${p.y}" width="${p.w}" height="${p.h}" transform="rotate(${p.angle} ${p.cx} ${p.cy})" preserveAspectRatio="xMidYMid meet"${filter?' filter="url(#photo-color)"':''}/></g></svg>`;
+   const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${input.widthMm}mm" height="${input.heightMm}mm" viewBox="0 0 ${input.widthMm} ${input.heightMm}"><desc>gravuru-gallery-photo:${hash(JSON.stringify(metadata))}</desc><g transform="translate(${input.widthMm/2} ${input.heightMm/2})"><image href="data:image/png;base64,${picture.preview.toString('base64')}" x="${p.x}" y="${p.y}" width="${p.w}" height="${p.h}" transform="rotate(${p.angle} ${p.cx} ${p.cy})" preserveAspectRatio="xMidYMid meet"/></g></svg>`;
    const asset=await assets.import({name:'Galeriefoto.svg',bytes:Buffer.from(svg).toString('base64')});
    db.exec('BEGIN IMMEDIATE');
    try{
     for(const photo of validated)db.prepare('INSERT OR IGNORE INTO design_sources(sha256,bytes) VALUES(?,?)').run(hash(photo.original),photo.original);
+    // Existing AI/photo-source consumers must still receive the untouched
+    // original, never the processed image embedded in the native SVG.
+    db.prepare('INSERT OR IGNORE INTO photo_example_sources(asset_id,source_sha256,tenant_id) VALUES(?,?,?)').run(asset.assetId,metadata.originalSha256,tenant);
     db.prepare('INSERT OR IGNORE INTO review_photo_edits(asset_id,tenant_id,original_sha256,processed_sha256,edit_source_sha256,metadata) VALUES(?,?,?,?,?,?)').run(asset.assetId,tenant,metadata.originalSha256,metadata.processedSha256,metadata.editSourceSha256,JSON.stringify(metadata));
     db.exec('COMMIT');
    }catch(error){db.exec('ROLLBACK');throw error;}

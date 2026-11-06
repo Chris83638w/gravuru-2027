@@ -73,6 +73,17 @@ try:
             image = image.convert('RGBA')
         image.thumbnail((1600, 1600), Image.Resampling.LANCZOS)
         image = ImageOps.exif_transpose(image).convert('RGBA')
+        color = data.get('previewColor', 'original')
+        if color not in ('original', 'grayscale', 'sepia'):
+            raise ValueError('preview color')
+        if color != 'original':
+            # Same sRGB matrices as photo-color.mjs, baked into this private
+            # preview so the passive SVG importer needs no filter exception.
+            matrix = ((.213, .715, .072, 0) * 3 if color == 'grayscale'
+                      else (.393, .769, .189, 0, .349, .686, .168, 0, .272, .534, .131, 0))
+            alpha = image.getchannel('A')
+            image = image.convert('RGB').convert('RGB', matrix).convert('RGBA')
+            image.putalpha(alpha)
         if data.get('monochrome') is True:
             # A newly generated engraving motif uses its alpha as the ink mask.
             # Keep original PNG bytes separately; print and photo edits stay RGB.

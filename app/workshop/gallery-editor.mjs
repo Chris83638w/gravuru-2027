@@ -3,6 +3,8 @@ import {legacyElementRights} from '../configurator/variant-m/element-rights.mjs'
 import {surfaceObjectIssue} from '../platform/sources/app/shared/models/design-content.mjs';
 import {measureText} from '../platform/sources/app/shared/models/text-paths.mjs';
 import {workshopResources} from './catalog.mjs';
+import {formMotif} from './form-additions.mjs';
+import {photoColorMode} from '../platform/sources/app/shared/models/photo-color.mjs';
 import {isDeepStrictEqual} from 'node:util';
 
 const fail=(status,code,message,extra={})=>{throw Object.assign(Error(message),{status,code,...extra});};
@@ -21,7 +23,7 @@ export const galleryReturnPath=originalId=>'/originale/#design-'+encodeURICompon
  * the browser, and the repository's whole-product CAS is retained. */
 export function createGalleryEditor({workshop,targets}){
  if(!workshop?.repository||!workshop?.assets?.galleryPhotos||!workshop.editorPreview||workshop.sessionContext)throw Error('Private native workshop required');
- const registry=new Map();
+ const registry=new Map(),motifAssets=new Map();
  for(const input of targets||[]){
   if(!input.productId)continue;
   const target={originalId:input.originalId??input.id,material:input.material,materialKind:input.materialKind??kinds[input.material]??input.material,
@@ -85,7 +87,7 @@ export function createGalleryEditor({workshop,targets}){
    if(!photoRefs(record,target).some(e=>e.assetId===assetId))fail(404,'review_photo_missing','Dieses Foto gehört nicht zur geöffneten Vorlage.');
    return workshop.assets.galleryPhotos.read(assetId,part);
   },
-  save(input){
+  async save(input){
    if(!exact(input,['productId','designId','originalId','expectedRevision','objects','photos'])||!Array.isArray(input.objects)||input.objects.length>200||!Array.isArray(input.photos)||input.photos.length>20)fail(422,'review_payload_invalid','Ungültige Vorlagenbearbeitung.');
    const {record,design:source,target}=select(input);checkRevision(record,input.expectedRevision);
    const document=clone(record.document),config=document.config,design=config.profile.designs.find(d=>d.id===target.designId),ids=new Set(),sourceMap=new Map(source.objects.map(o=>[o.id,o]));
@@ -117,7 +119,7 @@ export function createGalleryEditor({workshop,targets}){
      if(photos.has(object.id)){
       const assetId=photos.get(object.id),metadata=workshop.assets.galleryPhotos.metadata(assetId);
       if(metadata){
-       if(Math.abs(metadata.widthMm-object.w)>1e-5||Math.abs(metadata.heightMm-object.h)>1e-5||!same(metadata.crop,raw.uxPhotoCrop||null)||metadata.color!==(raw.uxPhotoColor||'original'))fail(422,'review_photo_invalid','Foto und Bearbeitungsstand stimmen nicht überein. Bitte erneut speichern.');
+       if(Math.abs(metadata.widthMm-object.w)>1e-5||Math.abs(metadata.heightMm-object.h)>1e-5||!same(metadata.crop,raw.uxPhotoCrop||null)||metadata.color!==photoColorMode(config.profile,raw))fail(422,'review_photo_invalid','Foto und Bearbeitungsstand stimmen nicht überein. Bitte erneut speichern.');
       }else if(!originalPhotos.some(p=>p.slotId===object.id&&p.assetId===assetId)||!original||original.w!==object.w||original.h!==object.h||raw.uxPhotoCrop&&!same(raw.uxPhotoCrop,{zoom:1,x:0,y:0,angle:0}))fail(422,'review_photo_invalid','Das ursprüngliche Foto muss für diesen Zuschnitt neu gesichert werden.');
      }
      if(!object.fieldKey)object.fieldKey='photo-'+object.id;
@@ -130,8 +132,19 @@ export function createGalleryEditor({workshop,targets}){
      resources.fonts[object.font]=clone(font);measureText(object,resources.fonts);
     }
     if(object.type==='motif'){
-     const motif=resourceLibrary.motifs.find(m=>m.key===object.motif);if(!motif)fail(422,'review_motif_missing','Das gewählte Motiv ist nicht dauerhaft verfügbar.');
-     if(!resources.motifs.some(m=>m.key===motif.key))resources.motifs.push(clone(motif));
+     const local=resources.motifs.find(m=>m.key===object.motif);
+     if(!local){
+      const motif=formMotif(object.motif); // Server-owned passive library, including inherited legacy paint.
+      let resource=motifAssets.get(motif.key);
+      if(!resource){
+       const scale=Math.min(1,1000/Math.max(motif.bounds[2],motif.bounds[3]));
+       const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${motif.bounds[2]*scale}mm" height="${motif.bounds[3]*scale}mm" viewBox="${motif.bounds.join(' ')}">${motif.svgFragment}</svg>`;
+       const imported=await workshop.assets.import({name:'Bibliotheksmotiv.svg',bytes:Buffer.from(svg).toString('base64')});
+       resource={...workshop.assets.resource(imported.assetId),name:motif.name};motifAssets.set(motif.key,resource);
+      }
+      object.motif=resource.key;
+      if(!resources.motifs.some(m=>m.key===resource.key))resources.motifs.push(clone(resource));
+     }
     }
     const issue=surfaceObjectIssue(object,config.profile,resources);if(issue)fail(422,'review_object_outside',issue);
     objects.push(object);
@@ -146,6 +159,7 @@ export function createGalleryEditor({workshop,targets}){
    if(resources.photoPlaceholders)resources.photoPlaceholders=resources.photoPlaceholders.filter(p=>p.designId!==design.id||hasPhoto(p.slotId));
    if(config.photo.hints)config.photo.hints=config.photo.hints.filter(p=>p.designId!==design.id||hasPhoto(p.slotId));
    const rendered=workshop.editorPreview(document,design.id);
+   checkRevision(select(input).record,input.expectedRevision);
    const saved=same(document,record.document)?record:workshop.repository.save(record.id,document,input.expectedRevision);
    return {context:context(saved,target),photos:photoRefs(saved,target),changed:saved.revision!==record.revision,svg:rendered.svg};
   }

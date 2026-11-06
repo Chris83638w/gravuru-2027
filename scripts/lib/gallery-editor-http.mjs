@@ -35,7 +35,7 @@ export function createGalleryEditorHandler({workshop,targets,csrfToken,onSaved=(
    for await(const chunk of req.iterator({destroyOnReturn:false})){size+=chunk.length;if(size<=limit)chunks.push(chunk);}
    if(size>limit){res.setHeader('Connection','close');fail(413,'Die Übertragung ist zu groß. Pro Bildfassung sind höchstens 15 MB möglich.');}
    let input;try{input=JSON.parse(Buffer.concat(chunks));}catch{fail(400,'Die Bearbeitung konnte nicht gelesen werden.');}
-   const result=url.pathname.endsWith('/media')?await service.upload(input):service.save(input);
+   const result=await (url.pathname.endsWith('/media')?service.upload(input):service.save(input));
    if(url.pathname.endsWith('/save'))onSaved(result);
    json(res,200,result);
   }catch(error){json(res,error.status||422,{error:{code:error.code||'review_editor_error',message:error.status===500?'Speichern ist momentan nicht möglich. Deine Bearbeitung bleibt geöffnet.':error.message,actualRevision:error.actualRevision}});}

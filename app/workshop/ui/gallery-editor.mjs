@@ -1,6 +1,6 @@
 const $=id=>document.getElementById(id),params=new URL(location.href).searchParams;
 const target={productId:params.get('configuration'),designId:params.get('design'),originalId:params.get('originalId')};
-let context,csrf,frame,ready=false,dirty=false,busy=false,pendingRequest=null,returnAfterSave=false,snapshotTimer;
+let context,csrf,frame,ready=false,dirty=false,busy=false,pendingRequest=null,returnAfterSave=false,snapshotTimer,startTimer;
 const status=(text,error=false)=>{$('status').textContent=text;$('status').dataset.error=String(error);};
 function controls(){for(const id of ['save','save-return'])$(id).disabled=!ready||busy;frame?.toggleAttribute('inert',busy);$('back').disabled=busy;}
 async function request(path,data){const response=await fetch(path,{method:data?'POST':'GET',credentials:'same-origin',cache:'no-store',headers:data?{'Content-Type':'application/json','X-Slate-Review-CSRF':csrf}:{},...(data?{body:JSON.stringify(data)}:{})});const value=await response.json();if(!response.ok)throw Object.assign(Error(value.error?.message||value.error||'Die Galerieverbindung ist momentan nicht verfügbar.'),{status:response.status});return value;}
@@ -29,11 +29,11 @@ window.addEventListener('beforeunload',event=>{if(dirty||busy){event.preventDefa
 window.addEventListener('message',event=>{
  if(event.origin!==location.origin||event.source!==frame?.contentWindow)return;
  const d=event.data;
- if(d?.type==='gravuru-gallery-ready'&&d.designId===context.designId){ready=true;controls();status('Du bearbeitest die Originalvorlage. Gespeichert wird nur dieses Design und Format.');}
+ if(d?.type==='gravuru-gallery-ready'&&d.designId===context.designId){clearTimeout(startTimer);ready=true;controls();status('Du bearbeitest die Originalvorlage. Gespeichert wird nur dieses Design und Format.');}
  if(d?.type==='gravuru-workbench-change')dirty=true;
  if(d?.type==='gravuru-gallery-save-request')save();
  if(d?.type==='gravuru-fk-close')goBack();
- if(d?.type==='gravuru-gallery-start-error'){status('Die Vorlage ist unvollständig geladen: '+d.message,true);ready=false;controls();}
+ if(d?.type==='gravuru-gallery-start-error'){clearTimeout(startTimer);status('Die Vorlage ist unvollständig geladen: '+d.message,true);ready=false;controls();}
  if(d?.type==='gravuru-gallery-snapshot'&&d.requestId===pendingRequest){clearTimeout(snapshotTimer);void commit(d);}
  if(d?.type==='gravuru-gallery-error'&&d.requestId===pendingRequest){clearTimeout(snapshotTimer);status(d.message,true);busy=false;pendingRequest=null;controls();}
 });
@@ -43,4 +43,5 @@ try{
  window.GravuruModelProfile=opened.model.legacy;window.UniversalConfig=opened.model.universal;
  window.GravuruGalleryEditor={context,photos:opened.photos};
  frame=document.createElement('iframe');frame.title='Vollständiger Konfigurator für '+context.originalId;frame.src='/editor.html';$('editor').append(frame);
+ startTimer=setTimeout(()=>{if(ready)return;status('Der Konfigurator konnte nicht vollständig geladen werden. Bitte die Galerie neu öffnen. Speichern bleibt bis zum vollständigen Laden gesperrt.',true);},20000);
 }catch(error){status(error.message,true);}

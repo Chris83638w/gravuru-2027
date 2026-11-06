@@ -1,6 +1,6 @@
 # Mika · Konfi, Galerie, Shop-Anschluss und Sicherung
 
-Stand: **06.11.2026, Sicherung 12:13:51 UTC / 13:13:51 Berlin**, spätere Abnahme-Ergänzung in Abschnitt 11 und bestätigter Synchronisierungsumfang in Abschnitt 12. Verfasser: Codex / Mika. Die Abschnitte 1–10 dokumentieren den Sicherungszeitpunkt; die Nachträge aktualisieren die offenen Punkte. Kein Releaseprotokoll und keine Verkaufsfreigabe.
+Stand: **06.11.2026, Sicherung 12:13:51 UTC / 13:13:51 Berlin**, spätere Abnahme-Ergänzung in Abschnitt 11, bestätigter Synchronisierungsumfang in Abschnitt 12 und vorgeschaltete Optionsabfrage in Abschnitt 13. Verfasser: Codex / Mika. Die Abschnitte 1–10 dokumentieren den Sicherungszeitpunkt; die Nachträge aktualisieren die offenen Punkte. Kein Releaseprotokoll und keine Verkaufsfreigabe.
 
 ## 1. Aktueller Nutzerauftrag und Grenzen
 
@@ -268,3 +268,25 @@ Validierung, Katalogoberfläche, Import-/Formatplaner und Shopplaner müssen die
 Offizielle API-Prüfung vom 06.11.2026: [productSet 2026-07](https://shopify.dev/docs/api/admin-graphql/2026-07/mutations/productSet) ersetzt fehlende Einträge übergebener Listen; für den gezielten Anschluss sind vollständige Fremdlisten daher ungeeignet. [metafieldsSet](https://shopify.dev/docs/api/admin-graphql/2026-10/mutations/metafieldsSet) unterstützt bedingte Updates per `compareDigest`; atomar ist dabei nur dieser einzelne Metafeld-Aufruf, nicht der gesamte Shop-/Datenbankabgleich. Die aktuell laufende API-Version wird dadurch nicht ungefragt geändert.
 
 **Stand dieses Nachtrags:** bestätigten Funktionsumfang und geprüften Anschlussvertrag dokumentiert. Noch kein neuer Synchronisierungsbutton, kein Materialhäkchen gesetzt, kein Shopprodukt verändert, keine Live-Freigabe. Die Sicherungen aus Abschnitt 8 bleiben unverändert; der neue Wissensstand wird zusätzlich versioniert auf GitHub gesichert.
+
+## 13. Vor jeder Produktneuanlage: tatsächliche Optionen abfragen
+
+### Nutzerentscheidung und unmittelbare Klarstellung vom 06.11.2026
+
+Mikail verlangt vor dem Neuanlegen von Produkten eine Abfrage, welche Befestigungen, Zubehörteile und sonstigen Ausführungen angeboten werden sollen. Die von ihm genannten Beispiele (Bohrungen, selbstklebend, Klebeband für bestimmte Untergründe usw.) hat er unmittelbar danach ausdrücklich als **bloße Beispiele** klargestellt.
+
+**Verbindlich ist der Abfrageablauf, nicht eine aus diesen Beispielen abgeleitete Optionsliste.** Daraus entstehen weder neue Standardwerte noch bestätigte Produkteigenschaften, Aufpreise oder erlaubte Kombinationen. Auch die frühere Bestätigung bestimmter Schiefer-Gedenktafeloptionen gilt nicht automatisch für andere Produktgruppen.
+
+Für den vorgesehenen Anlageablauf gilt:
+
+1. Vor dem Erstellen neuer Produkte die gewünschten Befestigungen, Zubehörteile und weiteren Ausführungen für genau die bezeichneten Produkte abfragen und konkret anzeigen.
+2. Nur die dafür bestätigte Auswahl anlegen. Wenn Material oder Größe unterschiedliche Möglichkeiten erfordern, diese Unterschiede vorab sichtbar machen und klären.
+3. Bereits gespeicherte Regeln dürfen eine vorbereitete Auswahl liefern, ersetzen aber nicht die vom Nutzer ausdrücklich gewünschte Bestätigung vor der Neuanlage.
+4. Preise, Geometrie, technische Eignung und zulässige Kombinationen aus den vorhandenen maßgeblichen Daten übernehmen; fehlende oder widersprüchliche Angaben gezielt klären. Keine Werte aus einer beispielhaften Formulierung erfinden.
+5. Bestätigte Auswahl mit dem betroffenen Produkt-/Anlageumfang festhalten, damit Galerie, Konfi und Shop denselben Stand verwenden. Eine Freigabe für benannte Produkte ist keine pauschale Freigabe aller künftigen Produkte.
+
+Die neue Abfrage betrifft **Produktneuanlagen**. Ein reiner Designabgleich bestehender Produkte soll deren Befestigungen, Zubehör und Preise weiterhin nicht als Nebenwirkung ändern. Soweit ein Abgleich zusätzliche neue Produkte erfordern würde, greift für diese Neuanlagen zuerst die Optionsabfrage.
+
+Optimierungsvorschlag, noch nicht umgesetzt: gespeicherte Produktgruppen-Einstellungen beim nächsten Anlegen als prüfbaren Vorschlag zeigen, sodass Mikail sie bestätigen oder gezielt ändern kann, statt bekannte Optionen jedes Mal neu einzutippen. Keine ungefragte Übernahme.
+
+**Stand:** Anforderung und Klarstellung dokumentiert; keine Klebeband-/Befestigungsoption aktiviert, keine Produktdaten geändert und noch keine neue Abfrageoberfläche implementiert. Diese Ergänzung gehört in den gemeinsamen Anlage-/Synchronisierungsvertrag von Mika und Astra.

@@ -1,0 +1,236 @@
+{
+  "schema": "gravuru-private-host-staging-proof/v1",
+  "generatedAt": "2026-11-06T18:01:31.764Z",
+  "ready": true,
+  "activated": false,
+  "published": false,
+  "shopifyWrites": 0,
+  "runtime": {
+    "sourceCommit": "267d46e497ba73d5ce7cc5b2c09349cd3323aee5",
+    "packageSha256": "533a64dbf9ad7192a2978d12c620a72e22dae05a4b97471642aa789c372359fa",
+    "packageBytes": 31665654,
+    "entries": 811,
+    "fullExtractedRuntimeImportsVerified": true,
+    "wrapperSha256": "c8b4d25ce0992bb0aec4b8a4456899ac5aa02272ddd1a69ce656bc16488bc222"
+  },
+  "import": {
+    "sourceCommit": "0bb50565f137b89009ef7ea11fbd2cd2a40a49c7",
+    "snapshotReceiptSha256": "a16bbac86a108dbbec91d7c48aab63899b3b001a99fdce5e21e51e9a6041263a",
+    "snapshotCapturedAt": "2026-11-06T17:18:37.418203+00:00",
+    "stages": [
+      {
+        "stage": 1,
+        "newProducts": 73,
+        "newOriginals": 28,
+        "extendedOriginals": 0,
+        "importBatches": 11
+      },
+      {
+        "stage": 2,
+        "newProducts": 100,
+        "newOriginals": 59,
+        "extendedOriginals": 0,
+        "importBatches": 61
+      },
+      {
+        "stage": 3,
+        "newProducts": 100,
+        "newOriginals": 42,
+        "extendedOriginals": 8,
+        "importBatches": 59
+      },
+      {
+        "stage": 4,
+        "newProducts": 40,
+        "newOriginals": 8,
+        "extendedOriginals": 8,
+        "importBatches": 25
+      }
+    ],
+    "counts": {
+      "originals": 462,
+      "products": 348,
+      "preparedTargets": 2449
+    },
+    "preserved": {
+      "heads": 35,
+      "histories": 35,
+      "revisions": 41,
+      "mappingRows": 35,
+      "protectedFiles": {
+        "profiles.sqlite": "38e6ecf7a069ad75d9d4aed2e1e15a848bb9008317bd827efd0fa0760943417b",
+        "review-comments.sqlite": "fb2d918730b724d1d7720a574618e3cc9387787aae777f715bbc20333da3741d",
+        "review-approvals.sqlite": "db8efc3b95b536a5481d51fab9588f3bc1139cbf43b81cb1ad602651e02e2ae6"
+      }
+    },
+    "noopDeliveries": 4
+  },
+  "sourcePrecompare": {
+    "equal": true,
+    "stableDuringRead": true,
+    "snapshotReceipt": {
+      "bytes": 518723,
+      "sha256": "a16bbac86a108dbbec91d7c48aab63899b3b001a99fdce5e21e51e9a6041263a"
+    },
+    "snapshotCounts": {
+      "originals": 325,
+      "products": 35
+    },
+    "databases": {
+      "design-assets.sqlite": {
+        "equal": true,
+        "tables": 6,
+        "rows": 240,
+        "sha256": "705b20d9537cfebefcf4ff44f9b7454e6597d3c7406879d36c8cb42b930526d0"
+      },
+      "profiles.sqlite": {
+        "equal": true,
+        "tables": 6,
+        "rows": 2,
+        "sha256": "06356513df6675282bddeb096fa2339d8662f8a18d9d123cc6b6a59b0f83f7eb"
+      },
+      "review-approvals.sqlite": {
+        "equal": true,
+        "tables": 1,
+        "rows": 0,
+        "sha256": "bf8b3a951ed4e00d4374a288da3fed9911a296d32114d0ff41bffc3e17a4d852"
+      },
+      "review-comments.sqlite": {
+        "equal": true,
+        "tables": 1,
+        "rows": 4,
+        "sha256": "5049db6a52c0d8343877bdf7cc4caa4a20c8b4491dbc1bff653e2b8609d6d816"
+      },
+      "workshop.sqlite": {
+        "equal": true,
+        "tables": 55,
+        "rows": 147,
+        "sha256": "2e29392fdfbde6553086e5392850386d1f7cf117273e33fc4c52c346a6aff920"
+      }
+    },
+    "mapping": {
+      "active": {
+        "bytes": 28881,
+        "sha256": "d45465a9e4eaf89a88825df7e9a3a0c7276a41cf67ad669b231aba7d8eeb9ac8"
+      },
+      "equal": true,
+      "snapshot": {
+        "bytes": 28881,
+        "sha256": "d45465a9e4eaf89a88825df7e9a3a0c7276a41cf67ad669b231aba7d8eeb9ac8"
+      }
+    },
+    "gallery": {
+      "activeSha256": "ff4d080978e83b00208da6741c124e1ef8f297ca684e47d1d0c7a1f4ae85a854",
+      "equal": true,
+      "files": 2755,
+      "snapshotSha256": "ff4d080978e83b00208da6741c124e1ef8f297ca684e47d1d0c7a1f4ae85a854"
+    }
+  },
+  "firstStart": {
+    "passed": true,
+    "scope": "isolated-host-runtime-get-only",
+    "commit": "267d46e497ba73d5ce7cc5b2c09349cd3323aee5",
+    "checkedAt": "2026-11-06T17:58:49.162Z",
+    "checks": [
+      {
+        "route": "/__test/health",
+        "status": 200,
+        "milliseconds": 8,
+        "bytes": 71,
+        "sha256": "f7c81abef69eaefcc931f221092e5ba2e485e13c6491f1d14a74e2f2bf07032f"
+      },
+      {
+        "route": "/originale/",
+        "status": 200,
+        "milliseconds": 51763,
+        "bytes": 6474360,
+        "sha256": "c61ec395d9f65cace73bf7f9a74e759a9b87abd77969f2ecd067b463f69b5c49",
+        "originals": 462
+      },
+      {
+        "route": "/originale/approvals",
+        "status": 200,
+        "milliseconds": 179,
+        "bytes": 2957454,
+        "sha256": "d897621e15d3c3ddf9ae6a1d08c3a7bb40f29c46bff0e8fe424f68749a1d8231",
+        "targets": 2550,
+        "available": 2449
+      },
+      {
+        "route": "/originale/",
+        "status": 200,
+        "milliseconds": 296,
+        "bytes": 6474360,
+        "sha256": "c61ec395d9f65cace73bf7f9a74e759a9b87abd77969f2ecd067b463f69b5c49",
+        "originals": 462
+      }
+    ],
+    "memory": {
+      "rss": 646639616,
+      "heapTotal": 361091072,
+      "heapUsed": 74363224,
+      "external": 122855446,
+      "arrayBuffers": 87084303
+    },
+    "mutationRequests": 0
+  },
+  "restart": {
+    "passed": true,
+    "scope": "isolated-host-runtime-get-only",
+    "commit": "267d46e497ba73d5ce7cc5b2c09349cd3323aee5",
+    "checkedAt": "2026-11-06T17:59:24.046Z",
+    "checks": [
+      {
+        "route": "/__test/health",
+        "status": 200,
+        "milliseconds": 7,
+        "bytes": 71,
+        "sha256": "f7c81abef69eaefcc931f221092e5ba2e485e13c6491f1d14a74e2f2bf07032f"
+      },
+      {
+        "route": "/originale/",
+        "status": 200,
+        "milliseconds": 338,
+        "bytes": 6474360,
+        "sha256": "c61ec395d9f65cace73bf7f9a74e759a9b87abd77969f2ecd067b463f69b5c49",
+        "originals": 462
+      },
+      {
+        "route": "/originale/approvals",
+        "status": 200,
+        "milliseconds": 203,
+        "bytes": 2957454,
+        "sha256": "d897621e15d3c3ddf9ae6a1d08c3a7bb40f29c46bff0e8fe424f68749a1d8231",
+        "targets": 2550,
+        "available": 2449
+      },
+      {
+        "route": "/originale/",
+        "status": 200,
+        "milliseconds": 318,
+        "bytes": 6474360,
+        "sha256": "c61ec395d9f65cace73bf7f9a74e759a9b87abd77969f2ecd067b463f69b5c49",
+        "originals": 462
+      }
+    ],
+    "memory": {
+      "rss": 479744000,
+      "heapTotal": 246239232,
+      "heapUsed": 159158360,
+      "external": 115600624,
+      "arrayBuffers": 48583424
+    },
+    "mutationRequests": 0
+  },
+  "pending": [
+    "Explicit private-gallery switch confirmation",
+    "Final old-source comparison while writes are prevented",
+    "Protected HTTPS and actual online browser verification"
+  ],
+  "notes": [
+    "Existing private gallery remains on runtime 76053a2f with325originals.",
+    "Import and full runtime used a fresh actual host snapshot; isolated UI test database was not uploaded.",
+    "The initial package lacked the pure transitive priced-options module;267d46e4 fixes its selection and requires actual extracted runtime imports at package build.",
+    "Restart timing is local host HTTP delivery, not end-user browser render time."
+  ]
+}

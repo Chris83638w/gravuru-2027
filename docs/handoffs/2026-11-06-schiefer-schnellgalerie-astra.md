@@ -36,7 +36,32 @@ Die Benutzer-Datenbanken wurden durch diese Bedienprüfungen nicht verändert. B
 
 Der geschützte Laufzeitanschluss, sichere Sicherung und Erstinstallation in neue Datenordner sind implementiert. Nur mit explizitem `GRAVURU_SLATE_REVIEW_PACKAGE` wird die Galerie in der vorhandenen privaten Laufzeit aktiviert. HTTPS-Herkunft, Basic-Anmeldung und Schreibschutz gegen fremde Herkunft bleiben bestehen; keine Shopify-Verbindung. Anleitung: [private Schiefer-Galerie](../../ops/plesk/SLATE-REVIEW-README.md).
 
-Eine tatsächliche Installation und externe Bedienprüfung sind noch offen. Chris hat sich inzwischen selbst angemeldet; Plesk-Zugang und getrennte Site 19 `test-2027.gravuru-designwerkstatt.de` mit Node 24.22.2 sind bestätigt. Zuvor hatte die automatische Prüfung den Zugriff auf gespeicherte Plesk-Zugangsdaten abgelehnt. Keine Zugangsdaten gesucht oder ausgegeben. Die Online-Freigabe liegt bereits vor; Zielinstanz/DNS/Zertifikat prüfen, dann das geprüfte Paket separat installieren. Kein bestehendes Kundensystem überschreiben.
+Die geschützte Galerie ist auf **Site 19** installiert: **https://test-2027.gravuru-designwerkstatt.de/originale/**. Chris hat die Plesk-Anmeldung selbst abgeschlossen. Code aus Commit `f0df298b8e4d9d0f4e238a176623e5bcbab09e96` und ein frisches Snapshot des tatsächlichen Benutzerstands wurden in neue, getrennte Ordner installiert. Die vorhandene Test-Anmeldung wurde unverändert übernommen; keine Zugangsdaten ausgegeben oder neu erzeugt. Site 20, Shopify und Kunden-Konfigurator bleiben unberührt.
+
+Serverprüfung erfolgreich: Node 24.22.2, SQLite, Python 3.11.18, benötigte Python-Pakete und Cairo; 325 Originale und 35 Produktgruppen zurückgelesen. Über die tatsächliche HTTPS-Adresse: ohne Anmeldung `401`, mit bestehender Anmeldung `/__test/health` → `200`, `ready:true`, `shopifyConnected:false`. Die zusätzliche Anmeldung der Galerie im Benutzerbrowser ist getrennt von Plesk und noch offen; daraus wird keine bestandene externe Browser-Bedienprüfung abgeleitet.
+
+**34/34 Prüfungen über die tatsächliche HTTPS-Adresse bestanden** ([Bericht](../reviews/2026-11-06-schiefer-schnellgalerie/online-http-audit.json), [Prüfskript](../reviews/2026-11-06-schiefer-schnellgalerie/probe-online.py)): Galerie mit 325 Karten, 233 nativen Vorschauen und 17 Themen-/Fotogruppen; CSS/JS; native SVGs und passende Editorlinks für GT-S-30x20-D5, TRE-S-10x10-D12 und TQ-S-20x20-D15; vorhandener D5-Kommentar mit identischem Hash und Revision; gültiger Galerietoken erreicht die Inhaltsprüfung, fehlender Token/fremde Herkunft werden abgewiesen; neun private Datenpfade liefern keine Bytes. Keine gültige Schreibanfrage und keine Testkommentare an Benutzer-IDs; alle Kommentare vorher/nachher identisch. Lokale Browserprüfung von tatsächlichem Speichern steht oben, Online-Browserprüfung bleibt ausdrücklich offen. Ein erster Prüflauf enthielt die falsche Test-ID `TRE-S-20x20-D15`; nur das Prüfszenario wurde auf die im Manifest vorhandene ID `TQ-S-20x20-D15` korrigiert, keine Vorlage geändert.
+
+Nach der Plesk-Pfadänderung musste Site 19 ausdrücklich neu gestartet werden: vorher antwortete der alte Prozess für `/originale/` mit `404`, danach die neue Galerie mit `200` und 550.265 HTML-Bytes. Health allein wurde deshalb nicht als Galerienachweis gewertet.
+
+Serverbasis `/var/www/vhosts/gravuru-designwerkstatt.de`:
+
+- Anwendung: `gravuru-2027-schiefer-review-20261106`, Dokumentenstamm darin `public`, Startdatei `app.cjs`.
+- Daten: `private/slate-review-data-20261106`; Galerie: `private/slate-review-gallery-20261106` (private Rechte, Herkunftsmarker erst nach vollständiger Hashprüfung).
+- Konfiguration: `private/gravuru-2027-schiefer-review-20261106-config.json`; bestehende private Python-Umgebung `private/gravuru-2027-test-python311` wiederverwendet.
+- Übertragene Pakete: `private/slate-review-upload-20261106`; überprüftes Snapshot: `private/slate-review-snapshot-20261106`.
+- Rückwechsel: Site 19 auf bisherigen Anwendungsstamm `/gravuru-2027-test` und Dokumentenstamm `/gravuru-2027-test/public` stellen, App neu starten. Bisheriger Code, private Konfiguration und Daten wurden nicht überschrieben oder gelöscht. Rückwechsel ist dokumentiert, nicht ausgeführt.
+
+Dateiprüfung lokal und auf dem Server identisch:
+
+| Paket | Bytes | SHA-256 |
+| --- | ---: | --- |
+| `slate-online-code-20261106-1.zip` | 31.502.875 | `af70a4d3c2e37b95b5a66d548053ab52650c642832e5c43f2b8af9fc21ed72cb` |
+| `slate-online-deploy-20261106-1.zip` | 516.972.557 | `246edd033b26678ceafa753bb52c5d933ad51013bea434bbf318fdc5bc54aef3` |
+
+Das Daten-Snapshot enthält 2.760 Nutzdateien (949.997.252 Bytes), vier SQLite-Sicherungen mit `quick_check=ok`, Zuordnungen und unveränderliche Katalogbelege. Das Archiv enthält zusätzlich das Prüfrezept `ONLINE-SNAPSHOT.json`; sämtliche Mitgliedsdateien wurden auf Größe und Hash geprüft. Keine isolierten UI-Teständerungen übernommen. [Plesk-Einstellungen](../reviews/2026-11-06-schiefer-schnellgalerie/online-plesk.png).
+
+Ab diesem Stand ist die Online-Datenbank die Arbeitsablage für Online-Kommentare und Änderungen. Lokale Sicherungen und der lokale Editor werden nicht automatisch mit ihr synchronisiert; ein erneuter Vollimport darf Online-Änderungen nicht überschreiben.
 
 ## Katalogerweiterung und Prüfungen
 
@@ -51,3 +76,5 @@ Katalogartefakte: `work/slate-catalog-inventory-v1/inventory.json`, `work/slate-
 Galerie/Kommentare: 14 gezielte Tests bestanden. Editor: 35 gezielte Tests sowie nach Korrektur der falschen Designmeldung 6 Auswahl-/Kontexttests bestanden. Private Laufzeit und Ergänzung: 14 Linux-Tests, 5 Snapshot-/Archivtests bestanden. Keine daraus abgeleitete Behauptung eines neuen vollständigen Projekttestlaufs.
 
 Der echte Ergänzungsimport wurde zuerst an `work/slate-review-expanded-source-20261106-1/data` und `work/slate-original-package-v5-all-slate-test` geprüft: alle 28 bisherigen Produktstände vollständig gehasht und unverändert, Mapping unverändert, Kommentare/Profile bytegleich; 7 neue Gruppen hinzugefügt. Die Testsicherung enthält danach einen anderen Stand als ihr ursprüngliches Snapshot-Receipt und darf nicht direkt als geprüftes Online-Snapshot verwendet werden.
+
+Danach wurde dieselbe Ergänzung in den tatsächlichen Benutzerstand `work/slate-original-review-v3` übernommen und unter `work/slate-original-package-v5-all-slate` zusammengestellt: alle 28 alten Produktstände vollständig unverändert, alte Zuordnungen und Kommentare erhalten, nur sieben neue Gruppen ergänzt. Sicherung davor: `work/slate-before-gallery-extension-20261106-1`; Audit: `work/slate-gallery-extension-final-audit.json`. Das finale Online-Snapshot `work/slate-online-deploy-20261106-1` wurde erst danach erzeugt. Lokale Übersicht: `http://127.0.0.1:8998/originale/`.

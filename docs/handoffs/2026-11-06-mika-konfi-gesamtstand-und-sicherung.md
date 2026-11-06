@@ -1,6 +1,6 @@
 # Mika · Konfi, Galerie, Shop-Anschluss und Sicherung
 
-Stand: **06.11.2026, Sicherung 12:13:51 UTC / 13:13:51 Berlin**, spätere Abnahme-Ergänzung in Abschnitt 11. Verfasser: Codex / Mika. Die Abschnitte 1–10 dokumentieren den Sicherungszeitpunkt; Abschnitt 11 aktualisiert die offenen Punkte. Kein Releaseprotokoll und keine Verkaufsfreigabe.
+Stand: **06.11.2026, Sicherung 12:13:51 UTC / 13:13:51 Berlin**, spätere Abnahme-Ergänzung in Abschnitt 11 und bestätigter Synchronisierungsumfang in Abschnitt 12. Verfasser: Codex / Mika. Die Abschnitte 1–10 dokumentieren den Sicherungszeitpunkt; die Nachträge aktualisieren die offenen Punkte. Kein Releaseprotokoll und keine Verkaufsfreigabe.
 
 ## 1. Aktueller Nutzerauftrag und Grenzen
 
@@ -184,3 +184,87 @@ Unteragent-Fotonachweis, ausdrücklich **synthetischer isolierter Schieferfall**
 Weitere Optimierungsvorschläge, nicht umgesetzt: eindeutige Ebenennamen („Haus“, „Trennlinie“ statt zweimal „Motiv“), präzisere Renderer-Fingerprintgrenze und kontrollierter Entwurf-/Shop-Abgleich. Der Nutzer bat beim Begriff „Shop-Spiegel“ um eine einfachere Erklärung; der gewünschte Umfang wurde anhand „Produkt öffnen → ändern → prüfen → im Shop übernehmen“ erläutert. Daraus folgt noch keine automatische Shopveröffentlichung oder pauschale Freigabe neuer Shopfunktionen.
 
 **Aktueller nächster Schritt:** Astra kann PR #184 gemeinsam mit #181 prüfen und die getrennte private Hostübernahme vorbereiten. Vor dieser Aktivierung frischen Hostsnapshot erstellen; keine bearbeitete lokale Testdatenbank hochladen. Mit Mikail zuerst Umfang und Bedienung der zentralen Shopverwaltung klären. Physische Handyabnahme, echte Shop-/Bestellstrecke und künftige Logoaktivierung bleiben getrennte Aufgaben.
+
+## 12. Bestätigte Synchronisierung und Materialauswahl je Unterkategorie
+
+### Nutzerentscheidung vom 06.11.2026
+
+Mikail hat die zuvor offene Bedeutung der Synchronisierung ausdrücklich konkretisiert: Türschild-Designs in der Galerie bearbeiten, dann **„Synchronisieren“** drücken; anschließend sollen die zugehörigen Shop-Produkte den neuen Stand übernehmen. Zusätzlich soll bei einer Unterkategorie gewählt werden können, in welchen Materialien ihre Produkte angeboten werden, beispielsweise Edelstahl, Acrylglas, AA und AS.
+
+Dies ist das bestätigte Ziel der Funktion, **kein bereits vorhandener Synchronisierungsnachweis und keine Aufhebung von „eigener Branch/PR, kein Main-Merge, kein Kunden-Live“**. Speichern in der Galerie und Übernahme in den Shop bleiben zwei bewusst getrennte Schritte. Eine ungefragte Veröffentlichung bei jeder Textänderung ist nicht beauftragt. Auch ein automatischer Zweiwege-Abgleich beliebiger Shopify-Felder ist damit nicht beschlossen.
+
+Gewünschte Bedienung:
+
+1. Unterkategorie öffnen und angebotene Materialien auswählen.
+2. Gemeinsame Designvorlage in der Galerie bearbeiten und den neuen Stand prüfen.
+3. Mit **„Synchronisieren“** die eindeutig zugehörigen Produkte aktualisieren; kein erneutes manuelles Hochladen derselben Designs.
+4. Ergebnis pro Produkt sichtbar machen: übernommen, unverändert oder mit konkretem Problem offen. Erfolg erst nach Rücklesen melden.
+
+Als Bedienvorschlag vor der Umsetzung: Materialauswahl als verständliche Häkchen statt technischer Familienkennungen; vor der Ausführung eine kurze Übersicht der betroffenen Produkte und noch fehlenden Voraussetzungen. Dieser Vorschlag wurde dokumentiert, noch nicht als neue Oberfläche gebaut.
+
+### Verifizierte Grundlage und Materialbegriffe
+
+Die beiden Unteragenten haben den Funktionsstand `f8e55358` und die vorhandenen Katalog-/Galerieverträge unabhängig gelesen. Neue Shopify-Schreibzugriffe oder Anwendungstests waren für diese reine Anschlussprüfung nicht erforderlich und wurden nicht ausgeführt.
+
+- `repository.mjs` kann bereits unter derselben `cfg_*` einen neuen Entwurf neben der unveränderten `publishedRevision` speichern. Der vorhandene Test „published document is immutable while subsequent drafts evolve“ belegt diesen Vertrag. Diese Fähigkeit muss nicht neu gebaut werden.
+- `shop-entry.mjs` lädt die ausdrücklich gebundene Revision. Der `shop-product-binding-store` kann eine Bindung unter Beibehaltung der cfg-ID kontrolliert weiterstellen; erwartete Bindungsrevisionen schützen vor parallelem Überschreiben.
+- Die private Galerie in PR #184 speichert heute **eine bestimmte Material-/Größenfassung**. Ihre Produktrevision ist noch keine gemeinsame Masterrevision für alle Materialien. `sourceVersion` und ursprüngliche Katalog-SVG ändern sich dabei nicht automatisch.
+- Der Katalog kennt bereits Master mit expliziten Zielen je Familie. Gleichlautende Namen, gleiche D-Nummern oder das Entfernen von ID-Präfixen sind keine sichere Zuordnung.
+- **AA = Acrylglas anthrazit 5 mm; AS = Acrylglas schwarz 5 mm**, anhand der vorhandenen Familien [acryl-aa-abstandshalter](https://github.com/Chris83638w/gravuru-2027/blob/f8e55358272fe9fabdb29de7db15c6592f2cfecc/app/designs/acrylic-standoff-signs/aa.json) / [acryl-as-abstandshalter](https://github.com/Chris83638w/gravuru-2027/blob/f8e55358272fe9fabdb29de7db15c6592f2cfecc/app/designs/acrylic-standoff-signs/as.json). Beide verwenden rückseitige Acrylgravur. Sie sind von den bereits unterstützten 3-mm-Acryl-Türschildfamilien zu unterscheiden und dürfen nicht über den gemeinsamen Oberbegriff `acrylic` zusammenfallen. Diese Bestandsangaben sind kein neuer Preis-/Stärkenbeschluss.
+- `line.families` gilt bisher für die ganze Linie. Eine ausdrückliche Materialauswahl je Unterkategorie fehlt. `planFamilyFormats()` übernimmt derzeit die Linienfamilien; die vorhandene Türschild-Aggregation unterstützt nur ihre ausdrücklich registrierten Familien. Eine auswählbare neue Familie ist deshalb noch kein Beweis für einen fertigen Kundenanschluss.
+- Der materialfähige Galerieadapter ist momentan für Schiefer und Edelstahl ausgelegt. Das Material liegt an der Original-Zeile; gleiche Original-ID ein zweites Mal als anderer Materialeintrag wird beim additiven Zusammenführen abgewiesen. Belege: [Zielvertrag](https://github.com/Chris83638w/gravuru-2027/blob/f8e55358272fe9fabdb29de7db15c6592f2cfecc/scripts/lib/design-review-targets.mjs) und [Überschneidungsprüfung](https://github.com/Chris83638w/gravuru-2027/blob/f8e55358272fe9fabdb29de7db15c6592f2cfecc/scripts/extend-slate-original-review.mjs). Für eine gemeinsame Vorlage mit mehreren Materialien muss **Material/Familie am jeweiligen Ziel** aufgelöst werden. Nicht für AA/AS einfach neue künstliche Originale duplizieren. Diese Weiterentwicklung bleibt mit Astras Import-/Zieladapter zu koordinieren.
+
+### Kleinster passender Anschluss
+
+Der vorgeschlagene Weg verwendet den bearbeiteten nativen Stand: **Galerieversion → explizite Format-/Materialziele → geprüfter Änderungsplan → neue Revisionen der vorhandenen Shop-Konfigurationen → Shopdarstellung und Bindungen gezielt aktualisieren**. Der alte Katalog-Sync darf nicht stattdessen die ursprünglichen SVGs erneut importieren.
+
+Für den ersten Anschluss genügt eine unveränderliche Quellreferenz; eine zusätzliche globale Masterdatenbank ist nicht zwingend erforderlich:
+
+```text
+Quelle:
+  originalId
+  sourceStoreId + sourceCfgId + sourceDesignId + sourceRevision
+  designFingerprint + Ressourcen-Prüfsummen
+
+Ziele:
+  lineId + subcategoryId + familyId + sizeKey
+  targetCfgId + targetDesignId + erwartete Zielrevision
+  Shopify-Produkt-/Varianten-IDs + erwartete Bindungsrevisionen
+
+Auftrag:
+  operationId + planSha256
+  bisherige/neue cfg-Revisionen und Bildzuordnungen
+  Ergebnis der Rückleseprüfung + Aktivierungsstand
+```
+
+Der neue Planer soll vorhandene Geometrie-, Skalierungs- und Preisregeln wiederverwenden. Ein materialbezogener Rohling wird referenziert; das Design benötigt keine eigene duplizierte Grundplattendatei. Verschiedene Proportionen, Bohrungen und Druck-/Gravurprofile müssen weiterhin zum jeweiligen Ziel passen. Ein separat bearbeiteter Zielstand darf nicht unbemerkt durch die neue gemeinsame Vorlage überschrieben werden; der Plan muss diesen Unterschied ausweisen.
+
+| Auslöser | Geplanter gezielter Abgleich |
+| --- | --- |
+| Text, Schrift, Motiv, Foto/Masken oder Anordnung geändert | Bearbeiteten nativen Stand und benötigte Ressourcen in die zugehörigen bestehenden Konfigurationen übernehmen; neue Revision erstellen. |
+| Haupt-/Galeriebild zeigt dieses Design | Nur die zugeordneten Bilder aus genau diesem neuen Stand neu erzeugen und aktualisieren. |
+| Bestehendes Startdesign bearbeitet | Startdesign-ID beibehalten, Inhalt aktualisieren. |
+| Anderes Startdesign ausdrücklich gewählt | Konfi-Standard und Produktschnitt gemeinsam prüfen und aktualisieren. |
+| Nur Gestaltung geändert | Keine Preis-, Bestands-, Varianten-ID-, Titel- oder SEO-Änderung daraus ableiten. |
+| Materialangebot geändert | Eigenen Angebotsplan mit betroffenen Produkten/Varianten, Rohlingen, Größen, Optionen und Preisen anzeigen; bestehende Shopartikel nicht als Nebenwirkung löschen. |
+
+Die revisionsgebundene Bestellfreigabe muss zum aktivierten Konfi-Stand passen. Lokaler Bindungswechsel und Freigabe brauchen eine gemeinsame konsistente Übernahme; Shopify und lokale Datenbank sind keine gemeinsame Transaktion. Externe Teilschritte daher protokollieren, zurücklesen und bei Unterbrechung gezielt fortsetzen. Historische Bestellungen behalten ihren ursprünglichen Stand. Rücknahme erfolgt als kontrollierte neue Übertragung eines alten Inhalts, nicht durch Umschreiben historischer Revisionen.
+
+### Materialauswahl: Schema-Vorschlag, noch nicht implementiert
+
+Die bestehende Katalog-Liniendatei und ihr Änderungsprotokoll können um `subcategories[].familyIdsOffered` ergänzt werden. Vorschlag: fehlend/null übernimmt die bisherige Linienauswahl; eine explizite Liste benennt die angebotenen Familien; eine leere Liste bedeutet keine neuen Angebote. Die Bedeutung einer Abwahl für bereits veröffentlichte Produkte gehört in den sichtbaren Angebotsplan, nicht in eine automatische Löschung.
+
+Validierung, Katalogoberfläche, Import-/Formatplaner und Shopplaner müssen dieselbe aufgelöste Auswahl lesen. Nur Häkchen in der Oberfläche zu ergänzen wäre unvollständig. Bisher materialgebundene Linien brauchen für andere Materialien eine ausdrückliche Zuordnung; `themeId` allein ersetzt weder Zielgruppe noch Mit-/Ohne-Foto-Unterteilung. Die konkreten Materialhäkchen pro Unterkategorie legt Mikail fest; sie wurden hier nicht pauschal gesetzt. Keine Preise, Größen oder Befestigungen werden dabei erfunden.
+
+### Offene Arbeit und Verantwortung
+
+- **Mika:** nativen Design-Sync-Planer, geprüfte Quell-/Zielreferenzen, Änderungsübersicht, Journal und gezielten Shopify-Anschluss vorbereiten; bestehende Bindungen und Ressourcenablage verwenden.
+- **Astra:** gemeinsame Original-/Material-/Formatziele und Unterkategorie-Materialauswahl mit dem bestehenden Katalog-/Importweg abstimmen. Kein konkurrierender zweiter Importadapter von Mika.
+- **Claude:** Originalquellen/Rohlinge und deren Herkunft weiter nach dem vereinbarten Liefervertrag bereitstellen.
+- `shop-draft-transfer` bleibt ein Weg für Neuanlagen; `acrylShop.update` aktualisiert nur ein Release-Metafeld. Keines davon ist bereits der vollständige Galerie-Synchronisieren-Knopf.
+- Aktuelle Kundensitzungen bekommen bei einem Bindungswechsel eine Neuladeaufforderung. Vor Live-Abnahme muss bewusst geprüft werden, wie laufende Gestaltungen erhalten und fertiggestellt werden; in dieser Analyse keine Sitzungslogik geändert.
+- Vor der ersten echten Aktivierung: frischer Host-/betroffener Shopdaten-Snapshot, konkrete Zielvorschau, Konflikt-/Wiederholungs-/Unterbrechungstest und Warenkorbprüfung mit exakt derselben aktivierten Revision. Die frühere private Galerieabnahme ersetzt diesen Nachweis nicht.
+
+Offizielle API-Prüfung vom 06.11.2026: [productSet 2026-07](https://shopify.dev/docs/api/admin-graphql/2026-07/mutations/productSet) ersetzt fehlende Einträge übergebener Listen; für den gezielten Anschluss sind vollständige Fremdlisten daher ungeeignet. [metafieldsSet](https://shopify.dev/docs/api/admin-graphql/2026-10/mutations/metafieldsSet) unterstützt bedingte Updates per `compareDigest`; atomar ist dabei nur dieser einzelne Metafeld-Aufruf, nicht der gesamte Shop-/Datenbankabgleich. Die aktuell laufende API-Version wird dadurch nicht ungefragt geändert.
+
+**Stand dieses Nachtrags:** bestätigten Funktionsumfang und geprüften Anschlussvertrag dokumentiert. Noch kein neuer Synchronisierungsbutton, kein Materialhäkchen gesetzt, kein Shopprodukt verändert, keine Live-Freigabe. Die Sicherungen aus Abschnitt 8 bleiben unverändert; der neue Wissensstand wird zusätzlich versioniert auf GitHub gesichert.

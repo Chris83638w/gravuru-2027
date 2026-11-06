@@ -83,3 +83,51 @@ test('protected gallery saves and reads comments through its own CSRF contract',
   assert.equal(read.status,200);assert.equal(read.data.comments.D1.text,'Text bitte weiter nach links');
   assert.equal((await request('POST','stable-review-token')).status,409);
 });
+
+test('approval endpoint and script retain private proxy authentication, origin and CSRF protection',async t=>{
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'slate-private-approvals-'));
+  fs.writeFileSync(path.join(root,'manifest.json'),JSON.stringify({originals:[{id:'D1',group:'Hunde',subcategory:'Allgemein',process:'Gravur',targets:[]}]}));
+  fs.writeFileSync(path.join(root,'local-review-import.json'),JSON.stringify({products:[]}));
+  const token='stable-approval-test-token';
+  const gallery=createSlateGalleryHandler(root,path.join(root,'local-review-import.json'),{csrfToken:token});
+  const inner=http.createServer((req,res)=>{if(!gallery(req,res))res.writeHead(404).end();});
+  inner.listen(0,'127.0.0.1');await once(inner,'listening');
+  const config={origin:'https://slate.example',host:'slate.example',username:'synthetic',password:'synthetic-password-for-test'};
+  const proxy=createPrivateTestProxy(config,inner);proxy.listen(0,'127.0.0.1');await once(proxy,'listening');
+  t.after(async()=>{
+    proxy.closeAllConnections();inner.closeAllConnections();
+    await Promise.all([new Promise(resolve=>proxy.close(resolve)),new Promise(resolve=>inner.close(resolve))]);
+    gallery.close();fs.rmSync(root,{recursive:true,force:true});
+  });
+  const authorization='Basic '+Buffer.from(config.username+':'+config.password).toString('base64');
+  const request=(route,{method='GET',body,headers={}}={})=>new Promise((resolve,reject)=>{
+    const req=http.request({host:'127.0.0.1',port:proxy.address().port,path:route,method,agent:false,
+      headers:{host:config.host,'x-forwarded-proto':'https',origin:config.origin,authorization,'x-slate-review-csrf':token,'content-type':'application/json',...headers}},res=>{
+        let text='';res.on('data',chunk=>text+=chunk);res.once('end',()=>resolve({status:res.statusCode,text,type:res.headers['content-type']||'',data:res.headers['content-type']?.includes('application/json')?JSON.parse(text):null}));
+      });
+    req.on('error',reject);req.end(body===undefined?undefined:JSON.stringify(body));
+  });
+  for(const route of ['/originale/approvals','/originale/approvals.js'])assert.equal((await request(route,{headers:{authorization:''}})).status,401);
+  const initial=await request('/originale/approvals');assert.equal(initial.status,200);assert.equal(typeof initial.data.overviewHtml,'string');
+  const [key]=Object.keys(initial.data.approvals),state=initial.data.approvals[key];
+  assert.equal(state.status,'unavailable');assert.equal(state.revision,0);
+  const script=await request('/originale/approvals.js');assert.equal(script.status,200);assert.match(script.type,/javascript/);assert.ok(script.text.length>0);
+  const body={key,approved:false,expectedRevision:0,expectedFingerprint:null};
+  assert.equal((await request('/originale/approvals',{method:'POST',body,headers:{authorization:''}})).status,401);
+  assert.equal((await request('/originale/approvals',{method:'POST',body,headers:{'x-slate-review-csrf':''}})).status,403);
+  assert.equal((await request('/originale/approvals',{method:'POST',body,headers:{origin:'https://foreign.example'}})).status,403);
+  assert.equal((await request('/originale/approvals',{method:'POST',body,headers:{host:'foreign.example'}})).status,403);
+  assert.equal((await request('/originale/approvals',{method:'POST',body,headers:{'x-forwarded-proto':'http'}})).status,403);
+  assert.equal((await request('/originale/approvals',{method:'POST',body,headers:{'sec-fetch-site':'cross-site'}})).status,403);
+  assert.equal((await request('/originale/approvals',{headers:{origin:'https://foreign.example'}})).status,403);
+  assert.equal((await request('/originale/approvals',{method:'POST',body:{...body,key:'unknown-target'}})).status,404);
+  assert.equal((await request('/originale/approvals',{method:'POST',body:{...body,approved:true}})).status,422);
+  assert.equal((await request('/originale/approvals',{method:'POST',body:{...body,expectedRevision:1}})).status,409);
+  assert.equal((await request('/originale/approvals',{method:'POST',body:{...body,unexpected:true}})).status,422);
+  assert.equal((await request('/originale/approvals',{method:'POST',body:{...body,padding:'x'.repeat(18000)}})).status,413);
+  const unchanged=await request('/originale/approvals',{method:'POST',body});assert.equal(unchanged.status,200);
+  assert.deepEqual(unchanged.data.approvals,initial.data.approvals,'protected invalid requests and false/no-op do not create approval events');
+  for(const route of ['/review-approvals.sqlite','/originale/files/review-approvals.sqlite']){
+    const denied=await request(route);assert.equal(denied.status,404);assert.equal(denied.text,'');
+  }
+});

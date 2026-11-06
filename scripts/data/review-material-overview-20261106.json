@@ -1,0 +1,104 @@
+{
+  "schema": "gravuru-review-material-overview/v1",
+  "verifiedOn": "2026-11-06",
+  "catalogueCommit": "dc0a0f6c2d59a93cbe2727709e0657e5d1697b06",
+  "codeCommit": "582194bac99cae307fc3352db782ec0740b5a6eb",
+  "scope": "Material inventory and verified catalogue/profile assignment; only the slate review gallery is connected. No product availability or live release is implied.",
+  "architectureEvidence": [
+    "ENTSCHEIDUNGEN.md §1.1–1.4: gemeinsamer Konfigurator, Produktprofile und Module",
+    "ENTSCHEIDUNGEN.md §1.7–1.8: gemeinsamer Design-Pool, produktbezogene Materialzuordnung",
+    "linien/README.md: Material/Bauart je Linie; Themen wiederverwendbar; Gravur und Druck getrennt"
+  ],
+  "materials": [
+    {
+      "id": "slate",
+      "label": "Schiefer",
+      "galleryStatus": "active",
+      "configurationStatus": "family-assigned",
+      "statusLabel": "Hier aktiv",
+      "detail": "Schiefer-Vorlagen ansehen, bearbeiten und kommentieren. Offene Vorlagen sind gekennzeichnet.",
+      "profileIds": ["slate-engraving"],
+      "cataloguePaths": ["familien/schiefer/schiefer-tafeln-natur.json", "familien/schiefer/schiefer-tafeln-premium.json", "familien/schiefer/schiefer-tafeln-geschnitten.json", "familien/schiefer/schiefer-tafeln-kordel.json"]
+    },
+    {
+      "id": "steel",
+      "label": "Edelstahl",
+      "galleryStatus": "not-connected",
+      "configurationStatus": "family-assigned",
+      "statusLabel": "Noch nicht verbunden",
+      "detail": "Konfi-Zuordnung im Katalog vorhanden. Edelstahl-Vorlagen sind in dieser Galerie noch nicht verbunden.",
+      "profileIds": ["steel-engraving"],
+      "cataloguePaths": ["familien/edelstahl/steel-door-signs.json", "familien/edelstahl/grabstecker-edelstahl.json", "linien/edelstahl-tuerschilder.json"]
+    },
+    {
+      "id": "acrylic",
+      "label": "Acrylglas",
+      "galleryStatus": "not-connected",
+      "configurationStatus": "family-assigned",
+      "statusLabel": "Noch nicht verbunden",
+      "detail": "Konfi-Zuordnungen für Acrylglas im Katalog vorhanden. Vorlagen sind hier noch nicht verbunden.",
+      "profileIds": ["acrylic-engraving"],
+      "cataloguePaths": ["familien/acryl/acryl-3mm-tuerschilder-schwarz.json", "familien/acryl/acryl-3mm-tuerschilder-anthrazit.json", "linien/acryl-tuerschilder.json"]
+    },
+    {
+      "id": "acrylic-steel",
+      "label": "Acrylglas + Edelstahl",
+      "galleryStatus": "not-connected",
+      "configurationStatus": "family-assigned",
+      "statusLabel": "Noch nicht verbunden",
+      "detail": "Kombinierte Produktaufbauten im Katalog vorhanden. Vorlagen sind hier noch nicht verbunden.",
+      "profileIds": ["acrylic-engraving"],
+      "cataloguePaths": ["designs/bestand/tuerschilder/designs.json", "familien/acryl/gedenktafel-ae-acryl-schwarz.json", "familien/acryl/gedenktafel-ae-acryl-anthrazit.json"]
+    },
+    {
+      "id": "wood",
+      "label": "Holz",
+      "galleryStatus": "not-connected",
+      "configurationStatus": "profile-only",
+      "statusLabel": "Noch nicht verbunden",
+      "detail": "Katalogvorlagen und Holzgravur-Profil vorhanden. Die Produktzuordnung für diese Galerie ist noch offen.",
+      "profileIds": ["wood-engraving"],
+      "cataloguePaths": ["designs/bestand/tuerschilder/designs.json", "designs/bestand/fruehstuecksbrettchen/designs.json", "linien/brettchen.json"]
+    },
+    {
+      "id": "plastic",
+      "label": "Kunststoff",
+      "galleryStatus": "not-connected",
+      "configurationStatus": "assignment-open",
+      "statusLabel": "Noch nicht verbunden",
+      "detail": "Originalvorlagen im Katalog vorhanden. Eine passende Konfi-Zuordnung ist hier noch nicht bestätigt.",
+      "profileIds": [],
+      "cataloguePaths": ["designs/bestand/tuerschilder/designs.json"]
+    },
+    {
+      "id": "alu-dibond",
+      "label": "Alu-Dibond",
+      "galleryStatus": "not-connected",
+      "configurationStatus": "family-open",
+      "statusLabel": "Noch nicht verbunden",
+      "detail": "Als Druck-Produktlinie im Katalog geführt. Die Konfi-Produktfamilie ist dort noch offen.",
+      "profileIds": [],
+      "cataloguePaths": ["designs/bestand/gedenktafeln/designs.json", "linien/alu-dibond-30x20.json"]
+    },
+    {
+      "id": "granite",
+      "label": "Granit",
+      "galleryStatus": "not-connected",
+      "configurationStatus": "assignment-open",
+      "statusLabel": "Noch nicht verbunden",
+      "detail": "Gedenktafel-Originale im Katalog vorhanden. Eine passende Konfi-Zuordnung ist hier noch nicht bestätigt.",
+      "profileIds": [],
+      "cataloguePaths": ["designs/bestand/gedenktafeln/designs.json"]
+    },
+    {
+      "id": "marble",
+      "label": "Marmor",
+      "galleryStatus": "not-connected",
+      "configurationStatus": "assignment-open",
+      "statusLabel": "Noch nicht verbunden",
+      "detail": "Gedenktafel-Originale im Katalog vorhanden. Eine passende Konfi-Zuordnung ist hier noch nicht bestätigt.",
+      "profileIds": [],
+      "cataloguePaths": ["designs/bestand/gedenktafeln/designs.json"]
+    }
+  ]
+}

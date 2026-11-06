@@ -28,12 +28,12 @@ export function verifySlateReviewDirectory(config){
   return validateSlateReviewMapping(pack,imported);
 }
 
-export function attachSlateReviewGallery(server,config,{csrfToken}){
+export function attachSlateReviewGallery(server,config,{csrfToken,workshop}){
   verifySlateReviewDirectory(config);
   const importsFile=path.join(config.data,'local-review-import.json');
   // Native products and their revision history are already in the copied
   // database. Never re-import catalogue baselines over the user's edits.
-  const gallery=createSlateGalleryHandler(config.slateReviewPackage,importsFile,{csrfToken});
+  const gallery=createSlateGalleryHandler(config.slateReviewPackage,importsFile,{csrfToken,workshop});
   const handlers=server.listeners('request');server.removeAllListeners('request');
   server.on('request',(req,res)=>{if(!gallery(req,res))for(const handler of handlers)handler.call(server,req,res);});
   return gallery;

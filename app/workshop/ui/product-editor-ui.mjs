@@ -8,6 +8,7 @@ import {drawSelection,replaceEditorPreview} from './editor-selection.mjs';
 import {alignedPosition,drawGuides,clearGuides} from './editor-guides.mjs';
 import {linkedEditorDesign,editorDesignPath,quickReviewRequested,reviewGalleryPath} from './editor-design-link.mjs';
 import {merchantNavigation} from './merchant-navigation.mjs';
+import {customerPreviewLink} from './customer-preview-link.mjs';
 // M02 view adapter. The existing draft, revision API and rights remain authoritative.
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=s=>document.querySelector(s);
@@ -161,6 +162,8 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
    libraryFonts=state.katalogEditor.fonts||[];options={};$('#editor-designs').replaceChildren();$('#editor-design-actions').replaceChildren();properties();clearTimeout(timer);preview();return;
   }
   state.editorDesignId=designId;
+  const customerPreview=customerPreviewLink(state.record.id,state.record.revision,{designId});
+  for(const id of ['preview-link','customer-view']){const link=$('#'+id);if(link){link.href=customerPreview.href;link.target=customerPreview.target;}}
   history.replaceState(null,'',merchantNavigation(editorDesignPath(location.search,productId,designId),location.href)+location.hash);
   refreshOptions();
   $('#editor-designs').innerHTML=quick?'':designs().map(d=>`<button type="button" data-editor-design="${escape(d.id)}" aria-pressed="${d.id===designId}"><img loading="lazy" ${merchantImageAttribute(`/api/workshop/products/${encodeURIComponent(state.record.id)}/preview.svg?revision=${state.record.revision}&designId=${encodeURIComponent(d.id)}`)} alt=""><span>${escape(d.name)}</span><small>${d.id===state.draft.config.profile.defaultDesignId?'Standarddesign':'Design'}</small></button>`).join('');

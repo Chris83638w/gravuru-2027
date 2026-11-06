@@ -31,7 +31,7 @@ export async function createPrivateTestRuntime(env){
     if(config.slateReviewPackage){
       const {attachSlateReviewGallery}=await import('./slate-review-runtime.mjs');
       const csrfToken=createHmac('sha256',config.password).update(JSON.stringify(['gravuru-private-slate-review-csrf/v1',config.origin,config.username])).digest('hex');
-      gallery=attachSlateReviewGallery(inner,config,{csrfToken});
+      gallery=attachSlateReviewGallery(inner,config,{csrfToken,workshop});
     }
     inner.once('close',()=>{gallery?.close();workshop.close();lock.stdin.end();});
     // LiteSpeed replaces HTTP listen/address to capture the public app socket.

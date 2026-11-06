@@ -63,7 +63,7 @@ export function verifyStorage(config){
   for(const entry of fs.readdirSync(config.data,{withFileTypes:true})){
     if(entry.name===DATA_MARKER)continue;
     const standard=/^(?:(workshop|profiles|design-assets)\.sqlite(?:-(?:wal|shm|journal))?|\.runtime\.lock)$/.test(entry.name);
-    const review=config.slateReviewPackage&&/^(?:review-comments\.sqlite(?:-(?:wal|shm|journal))?|local-review-import\.json)$/.test(entry.name);
+    const review=config.slateReviewPackage&&/^(?:review-(?:comments|approvals)\.sqlite(?:-(?:wal|shm|journal))?|local-review-import\.json)$/.test(entry.name);
     if(!(standard||review)||!entry.isFile()||entry.isSymbolicLink()||fs.statSync(path.join(config.data,entry.name)).mode&0o077)fail('Unerwarteter Inhalt oder nicht private Datei in der Testablage. Keine Bestandsdaten übernehmen.');
   }
 }

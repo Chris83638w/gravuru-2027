@@ -3,10 +3,14 @@ import assert from 'node:assert/strict';
 import {slateGalleryHtml} from './lib/slate-review-gallery.mjs';
 const row={id:'GT-S-30x20-D1',group:'Menschen',subcategory:'Allgemein',process:'Gravur',photoSlots:1,files:[{name:'preview.png'}],targets:[{mm:[300,200],sizeKey:'large',status:'prepared'},{mm:[220,140],sizeKey:'small',status:'prepared'}]};
 const imported={products:[{key:'large:Menschen',productId:'cfg_a',designIds:[row.id]},{key:'small:Menschen',productId:'cfg_b',designIds:[row.id]}]};
-test('one configurator preview per card with both actual sizes available and quick editing',()=>{
+test('one configurator preview per card with inline movement and the full workshop link',()=>{
  const html=slateGalleryHtml({originals:[row]},imported);
- assert.match(html,/configuration=cfg_a&amp;design=katalog-GT-S-30x20-D1&amp;reviewGallery=1&amp;reviewQuick=1/);
- assert.match(html,/configuration=cfg_b&amp;design=katalog-GT-S-30x20-D1&amp;reviewGallery=1&amp;reviewQuick=1/);
+ assert.match(html,/configuration=cfg_a&amp;design=katalog-GT-S-30x20-D1&amp;reviewGallery=1/);
+ assert.match(html,/configuration=cfg_b&amp;design=katalog-GT-S-30x20-D1&amp;reviewGallery=1/);
+ assert.doesNotMatch(html,/reviewQuick/);
+ assert.match(html,/data-inline-open/);assert.match(html,/data-inline-save disabled>Speichern/);
+ assert.match(html,/data-product-id="cfg_a" data-design-id="katalog-GT-S-30x20-D1"/);
+ assert.match(html,/>Bearbeiten<\/a>/);
  assert.match(html,/\/api\/workshop\/products\/cfg_a\/preview.svg\?designId=/);
  assert.equal((html.match(/<img /g)||[]).length,1);
  assert.match(html,/<select data-format/);

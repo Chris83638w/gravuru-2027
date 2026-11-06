@@ -16,6 +16,7 @@ import sqlite3
 import zipfile
 
 DATABASES = ('design-assets.sqlite', 'profiles.sqlite', 'workshop.sqlite', 'review-comments.sqlite')
+OPTIONAL_DATABASES = ('review-approvals.sqlite',)
 MAPPING = 'local-review-import.json'
 RECEIPT = 'ONLINE-SNAPSHOT.json'
 SCHEMA = 'gravuru-slate-online-snapshot/v1'
@@ -101,6 +102,19 @@ def db_check(file):
             raise ValueError('SQLite consistency check failed')
 
 
+def source_databases(data):
+    present = list(DATABASES)
+    for name in OPTIONAL_DATABASES:
+        no_links(data / name)
+        if (data / name).exists() and not (data / name).is_file():
+            raise ValueError('Optional review database is not a regular file: ' + name)
+        if (data / name).is_file():
+            present.append(name)
+        elif any((data / (name + suffix)).exists() for suffix in ('-wal', '-shm', '-journal')):
+            raise ValueError('Optional database journal exists without its database: ' + name)
+    return tuple(present)
+
+
 def validate_mapping(gallery, data):
     pack = json.loads((gallery / 'manifest.json').read_text(encoding='utf-8'))
     mapping = json.loads((data / MAPPING).read_text(encoding='utf-8'))
@@ -125,12 +139,13 @@ def capture(data, gallery, output):
     if output.exists():
         raise ValueError('Snapshot output already exists; use a new directory')
     expected = {MAPPING, '.gravuru-private-test.json', '.runtime.lock'}
-    expected.update(name + suffix for name in DATABASES for suffix in ('', '-wal', '-shm', '-journal'))
+    expected.update(name + suffix for name in (*DATABASES, *OPTIONAL_DATABASES) for suffix in ('', '-wal', '-shm', '-journal'))
     if regular_files(data) - expected:
         raise ValueError('Unexpected files in source data; do not omit them silently')
     for name in (*DATABASES, MAPPING):
         if not (data / name).is_file():
             raise ValueError('Required source file missing: ' + name)
+    source_databases(data)  # Never silently omit orphaned approval journals.
     baseline_file = gallery / 'files-sha256.json'
     baseline = json.loads(baseline_file.read_text(encoding='utf-8'))
     names = {row['file'] for row in baseline}
@@ -151,13 +166,18 @@ def capture(data, gallery, output):
         check_record(output / 'gallery', row)
     if digest(baseline_file) != digest(output / 'gallery' / 'files-sha256.json'):
         raise ValueError('Gallery changed during snapshot')
+    # Discover optional review tables again after copying the immutable package;
+    # the app may have enabled approvals during that longer read-only phase.
+    databases = source_databases(data)
     with ExitStack() as stack:
-        for name in DATABASES:
+        for name in databases:
             lock = sqlite3.connect((data / name).as_uri() + '?mode=rw', uri=True, timeout=5)
             stack.callback(lock.close)
             lock.execute('BEGIN IMMEDIATE')
+        if source_databases(data) != databases:
+            raise ValueError('Review database inventory changed during snapshot; retry with a new output')
         mapping_bytes = (data / MAPPING).read_bytes()
-        for name in DATABASES:
+        for name in databases:
             source = sqlite3.connect((data / name).as_uri() + '?mode=ro', uri=True, timeout=5)
             destination = sqlite3.connect(output / 'data' / name)
             try:
@@ -170,18 +190,21 @@ def capture(data, gallery, output):
             (output / 'data' / name).chmod(0o600)
         if (data / MAPPING).read_bytes() != mapping_bytes:
             raise ValueError('Product mapping changed during snapshot; retry with a new output')
+        if source_databases(data) != databases:
+            raise ValueError('Review database inventory changed during snapshot; retry with a new output')
         with (output / 'data' / MAPPING).open('xb') as stream:
             stream.write(mapping_bytes)
         (output / 'data' / MAPPING).chmod(0o600)
-    for name in DATABASES:
+    for name in databases:
         db_check(output / 'data' / name)
     validate_mapping(output / 'gallery', output / 'data')
     files = [record(child(output, name), name) for name in sorted(regular_files(output))]
     receipt = {'schema': SCHEMA, 'createdAt': datetime.now(timezone.utc).isoformat(),
                'reviewOnly': True, 'published': False, 'counts': counts,
+               'databases': list(databases),
                'capture': 'sqlite-backup-with-all-database-write-locks', 'files': files}
     write_json(output / RECEIPT, receipt)
-    return {'snapshot': str(output), 'files': len(files), 'bytes': sum(row['bytes'] for row in files), **counts}
+    return {'snapshot': str(output), 'files': len(files), 'bytes': sum(row['bytes'] for row in files), 'databases': list(databases), **counts}
 
 
 def verify(snapshot):
@@ -193,13 +216,16 @@ def verify(snapshot):
     names = {row['file'] for row in rows}
     if len(rows) != len(names) or regular_files(snapshot) != names | {RECEIPT}:
         raise ValueError('Unexpected, duplicated or missing snapshot files')
-    if {name for name in names if name.startswith('data/')} != {'data/' + n for n in (*DATABASES, MAPPING)}:
+    databases = tuple(receipt.get('databases', DATABASES))
+    if databases != DATABASES + tuple(name for name in OPTIONAL_DATABASES if name in databases):
+        raise ValueError('Unexpected snapshot database inventory')
+    if {name for name in names if name.startswith('data/')} != {'data/' + n for n in (*databases, MAPPING)}:
         raise ValueError('Unexpected snapshot database inventory')
     if any(not name.startswith(('data/', 'gallery/')) for name in names):
         raise ValueError('Snapshot contains an unrelated file')
     for row in rows:
         check_record(snapshot, row)
-    for name in DATABASES:
+    for name in databases:
         db_check(snapshot / 'data' / name)
     validate_mapping(snapshot / 'gallery', snapshot / 'data')
     return receipt

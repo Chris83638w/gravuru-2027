@@ -51,14 +51,17 @@ test('optional Schiefer gallery key is accepted without expanding other configur
   assert.throws(()=>privateTestEnvironment(f.env),/Private Testkonfiguration/);
 });
 
-test('review comments and mapping are allowed only in explicit review mode',t=>{
+test('review comments, approvals, journals and mapping are allowed only in explicit review mode',t=>{
   const f=fixture(t),config=testConfig(f.values);
   fs.mkdirSync(config.data,{mode:0o700});
   fs.writeFileSync(path.join(config.data,DATA_MARKER),JSON.stringify(markerValue(config,'private-test-data')),{mode:0o600});
-  for(const file of ['workshop.sqlite','review-comments.sqlite','local-review-import.json'])fs.writeFileSync(path.join(config.data,file),'synthetic',{mode:0o600});
+  for(const file of ['workshop.sqlite','review-comments.sqlite','review-approvals.sqlite','review-approvals.sqlite-wal','review-approvals.sqlite-shm','review-approvals.sqlite-journal','local-review-import.json'])fs.writeFileSync(path.join(config.data,file),'synthetic',{mode:0o600});
   assert.throws(()=>verifyStorage(config),/Unerwarteter Inhalt/);
   const review={...config,slateReviewPackage:path.join(f.root,'gallery')};
   assert.doesNotThrow(()=>verifyStorage(review));
+  fs.chmodSync(path.join(config.data,'review-approvals.sqlite'),0o644);
+  assert.throws(()=>verifyStorage(review),/Unerwarteter Inhalt/);
+  fs.chmodSync(path.join(config.data,'review-approvals.sqlite'),0o600);
   fs.writeFileSync(path.join(config.data,'other.sqlite'),'synthetic',{mode:0o600});
   assert.throws(()=>verifyStorage(review),/Unerwarteter Inhalt/);
 });

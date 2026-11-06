@@ -13,7 +13,7 @@ build();const seed=JSON.parse(fs.readFileSync(path.join(OUTPUT,'models.json')))[
 const workshop=createWorkshop({filename:path.join(data,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy});
 const server=createPreviewServer({workshop});server.on('close',()=>workshop.close());
 if(args.includes('--gallery')){
- const gallery=createSlateGalleryHandler(path.resolve(value('--gallery')),path.join(data,'local-review-import.json'));
+ const gallery=createSlateGalleryHandler(path.resolve(value('--gallery')),path.join(data,'local-review-import.json'),{workshop});
  server.on('close',()=>gallery.close());
  const handlers=server.listeners('request');server.removeAllListeners('request');
  server.on('request',(req,res)=>{if(!gallery(req,res))for(const handle of handlers)handle.call(server,req,res);});

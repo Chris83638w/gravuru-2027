@@ -13,9 +13,16 @@ SLATE_RUNTIME_FILES = [
     'scripts/lib/slate-review-gallery-page.mjs',
     'scripts/lib/slate-review-catalog.mjs',
     'scripts/lib/slate-review-gallery-ui.js',
+    'scripts/lib/slate-review-inline-ui.js',
+    'scripts/lib/review-material-overview.mjs',
+    'scripts/data/review-material-overview-20261106.json',
     'scripts/lib/slate-review-gallery.css',
     'scripts/lib/slate-review-comments.mjs',
     'scripts/lib/slate-review-comments-ui.js',
+    'scripts/lib/design-review-approvals.mjs',
+    'scripts/lib/design-review-overview.mjs',
+    'scripts/lib/slate-review-approval-targets.mjs',
+    'scripts/lib/slate-review-approvals-ui.js',
 ]
 
 

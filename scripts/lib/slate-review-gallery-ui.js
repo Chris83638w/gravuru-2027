@@ -12,6 +12,11 @@ export function reviewBlankMatches(data, filters) {
     (!filters.material || data.material === filters.material) && (!filters.form || data.form === filters.form);
 }
 
+// Persist stable native identities, never the ordinal position of a format.
+export function savedReturnOption(options, target) {
+  return [...options].find(option => option.dataset.productId === target.productId && option.dataset.designId === target.designId && (!option.dataset.sizeKey || option.dataset.sizeKey === target.sizeKey));
+}
+
 export async function installGalleryPage() {
 const [{installInlineReview}, {installApprovalReview}] = await Promise.all([import('./inline.js'), import('./approvals.js')]);
 
@@ -29,6 +34,7 @@ const blanks = [...document.querySelectorAll('[data-blank-card]')];
 let saved = {};
 try { saved = JSON.parse(sessionStorage.getItem(storageKey) || '{}'); } catch {}
 let approvalEditor;
+let savedReturnCard=null;
 const inlineEditor = installInlineReview({cards, onSaved: () => {remember();void approvalEditor?.refresh();}, onVisibilityChange: filter});
 approvalEditor = installApprovalReview({cards,onChanged:filter});
 function remember() {
@@ -43,10 +49,11 @@ function filter() {
   let count = 0, blankCount = 0;
   for (const card of cards) {
     const matches = reviewDesignMatches(card.dataset, filters);
-    const pinned = inlineEditor.keepVisible(card);
+    const pinned = inlineEditor.keepVisible(card)||card===savedReturnCard;
     card.hidden = !matches && !pinned;
     let note = card.querySelector('[data-inline-filter-note]');
     if (!matches && pinned && !note) { note = document.createElement('p'); note.dataset.inlineFilterNote = ''; note.className = 'inline-filter-note'; note.textContent = 'Deine offene Vorlage bleibt trotz Filter sichtbar. Bitte zuerst speichern oder zurücksetzen.'; card.querySelector('.card-heading').after(note); }
+    if(note&&card===savedReturnCard)note.textContent='Die soeben gespeicherte Vorlage bleibt hier sichtbar. Deine Filter sind erhalten.';
     if (note) note.hidden = matches || !pinned;
     if (!card.hidden) count++;
   }
@@ -96,13 +103,25 @@ for (const card of cards) {
     remember();
   });
 }
-for (const control of [search, view, material, theme, category, blankForm, process, approvalFilter]) control.addEventListener('input', () => { filter(); remember(); });
+function restoreSavedReturn() {
+  let target;try { target=JSON.parse(sessionStorage.getItem('gravuru-gallery-return')||'null'); } catch {}
+  if(!target||!Number.isSafeInteger(target.revision)||typeof target.originalId!=='string'||location.hash!=='#design-'+encodeURIComponent(target.originalId))return false;
+  const card=cards.find(c=>c.dataset.originalId===target.originalId);if(!card)return false;
+  const select=card.querySelector('[data-format]');
+  if(select){const option=savedReturnOption(select.options,target);if(!option)return false;select.value=option.value;updateFormat(card);}
+  else if(card.dataset.productId!==target.productId||card.dataset.designId!==target.designId)return false;
+  savedReturnCard=card;
+  try{sessionStorage.removeItem('gravuru-gallery-return');}catch{}
+  filter();remember();void approvalEditor.refresh();return true;
+}
+restoreSavedReturn();
+for (const control of [search, view, material, theme, category, blankForm, process, approvalFilter]) control.addEventListener('input', () => { savedReturnCard=null;filter(); remember(); });
 filter();
 let returnCard;
 try { returnCard = document.getElementById(decodeURIComponent(location.hash.slice(1))); } catch {}
 const hasReturnCard = returnCard?.matches('[data-design-card]');
 const revealReturnCard = hasReturnCard && returnCard.hidden;
-if (revealReturnCard) {
+if (revealReturnCard&&!savedReturnCard) {
   search.value = '';
   view.value = 'designs';
   material.value = returnCard.dataset.material;
@@ -115,7 +134,7 @@ if (revealReturnCard) {
 window.addEventListener('pagehide', remember);
 window.addEventListener('pageshow', event => {
   // Returning through history must also refresh previews that were edited.
-  if (event.persisted) for (const image of document.querySelectorAll('img[data-preview]')) image.src = image.src;
+  if (event.persisted) {restoreSavedReturn();void approvalEditor.refresh();if(savedReturnCard)requestAnimationFrame(()=>savedReturnCard.scrollIntoView({block:'start'}));}
 });
 if (hasReturnCard) requestAnimationFrame(() => { returnCard.scrollIntoView({block: 'start'}); remember(); });
 else if (Number.isFinite(saved.scroll)) requestAnimationFrame(() => window.scrollTo(0, saved.scroll));

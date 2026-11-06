@@ -50,7 +50,7 @@ export const isDecorationLine=(object,design)=>object.uxDecoration===true&&objec
 
 export function canEditElement(config,designId,object,right){
   if(!object)return false;
-  if(config?.workbench?.embedded)return true;
+  if(config?.workbench?.embedded)return !config.workbench.gallery||!(object.technicalLocked||object.role==='guide'||object.type==='motif-raster');
   const source=config?.profile?.designs?.find(d=>d.id===designId)?.objects.find(o=>o.id===object.id);
   // Layer order of template elements is fixed; only added elements may be reordered above them.
   if(right==='order')return !source;

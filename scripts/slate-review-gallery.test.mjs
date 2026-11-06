@@ -5,8 +5,8 @@ const row={id:'GT-S-30x20-D1',group:'Menschen',subcategory:'Allgemein',process:'
 const imported={products:[{key:'large:Menschen',productId:'cfg_a',designIds:[row.id]},{key:'small:Menschen',productId:'cfg_b',designIds:[row.id]}]};
 test('one configurator preview per card with inline movement and the full workshop link',()=>{
  const html=slateGalleryHtml({originals:[row]},imported);
- assert.match(html,/configuration=cfg_a&amp;design=katalog-GT-S-30x20-D1&amp;reviewGallery=1/);
- assert.match(html,/configuration=cfg_b&amp;design=katalog-GT-S-30x20-D1&amp;reviewGallery=1/);
+ assert.match(html,/configuration=cfg_a&amp;design=katalog-GT-S-30x20-D1&amp;originalId=GT-S-30x20-D1/);
+ assert.match(html,/configuration=cfg_b&amp;design=katalog-GT-S-30x20-D1&amp;originalId=GT-S-30x20-D1/);
  assert.doesNotMatch(html,/reviewQuick/);
  assert.match(html,/data-inline-open/);assert.match(html,/data-inline-save disabled>Speichern/);
  assert.match(html,/data-product-id="cfg_a" data-design-id="katalog-GT-S-30x20-D1"/);

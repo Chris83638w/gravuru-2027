@@ -176,13 +176,14 @@ export async function installUX(el,config,legacy,{attach}={}){
     const file=files.get(o.uxUploadId),label=o.uxUploadKind==='logo'?'Dein Logo':'Dein Foto';
     const ink=isPrint?(o.color||'#202824'):config?getProcessingProfile(profile).ink:'#ffffff',rgb=ink.slice(1).match(/../g).map(h=>parseInt(h,16)/255),filterId='ux-logo-'+o.id;
     const tint=o.uxUploadKind==='logo'&&!o.uxVectorLogo&&(!isPrint||o.uxLogoTint===true);
-    const photoColor=photoColorMode(profile,o),photoFilter=o.uxUploadKind==='photo'&&!file?.edited?photoColorFilter(photoColor):'',light=o.uxUploadKind==='photo'?photoEngravingPreviewFilter(profile,photoColor):'';
+    const gallerySlatePhoto=config?.workbench?.gallery&&profile.material.kind==='slate'&&o.uxUploadKind==='photo';
+    const photoColor=photoColorMode(profile,o),photoFilter=o.uxUploadKind==='photo'&&!file?.edited?photoColorFilter(photoColor):'',light=o.uxUploadKind==='photo'&&!gallerySlatePhoto?photoEngravingPreviewFilter(profile,photoColor):'';
     const filter=photoFilter?`<defs><filter id="${esc(filterId)}" color-interpolation-filters="sRGB">${photoFilter}</filter></defs>`:tint?`<defs><filter id="${esc(filterId)}" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="${rgb.map(n=>'0 0 0 0 '+n).join(' ')} -0.2126 -0.7152 -0.0722 0 1"/><feComposite in2="SourceAlpha" operator="in"/></filter></defs>`:'';
     const placement=photoPlacement(o,file);
     const body=file?.url?`${filter}<image data-ux-photo="${o.uxUploadKind}" href="${esc(file.url)}" x="${o.type==='photoSlot'?placement.x:-o.w/2}" y="${o.type==='photoSlot'?placement.y:-o.h/2}" width="${o.type==='photoSlot'?placement.w:o.w}" height="${o.type==='photoSlot'?placement.h:o.h}" preserveAspectRatio="xMidYMid meet" ${o.type==='photoSlot'?`transform="rotate(${placement.angle} ${placement.cx} ${placement.cy})"`:''} ${tint||photoFilter?`filter="url(#${esc(filterId)})"`:''}/>`:`<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" rx="2" fill="#dce8df" stroke="#5a8c70" stroke-width=".5"/><text text-anchor="middle" dominant-baseline="central" font-family="Arial" fill="#294e3c" font-size="${Math.min(5,o.w/8)}">${label}</text>`;
     const maskId='ux-mask-'+o.id,masked=o.type==='photoSlot';
     const mask=masked?photoClip(o,esc(maskId),previewResourceURL(photoMaskURL(o))):null;
-    const illuminated=light?`<defs><filter id="${esc(filterId)}-light" color-interpolation-filters="sRGB">${light}</filter></defs><g data-photo-preview-treatment="engraving" filter="url(#${esc(filterId)}-light)">${body}</g>`:body;
+    const illuminated=gallerySlatePhoto?`<g style="mix-blend-mode:lighten;filter:grayscale(1)">${body}</g>`:light?`<defs><filter id="${esc(filterId)}-light" color-interpolation-filters="sRGB">${light}</filter></defs><g data-photo-preview-treatment="engraving" filter="url(#${esc(filterId)}-light)">${body}</g>`:body;
     const picture=masked?`<defs>${mask.defs}</defs><g ${mask.attribute}>${illuminated}</g>`:illuminated;
     return `<g data-object="${esc(o.id)}" transform="translate(${o.x} ${o.y}) rotate(${o.rotation||0})"><rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" fill="transparent"/>${picture}${o.type!=='photoSlot'&&o.id===el.state.selected?`<rect x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" fill="none" stroke="#64ae87" stroke-width=".7"/>`:''}</g>`;
   };

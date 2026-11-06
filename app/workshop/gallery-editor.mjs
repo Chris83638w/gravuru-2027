@@ -3,11 +3,12 @@ import {legacyElementRights} from '../configurator/variant-m/element-rights.mjs'
 import {surfaceObjectIssue} from '../platform/sources/app/shared/models/design-content.mjs';
 import {measureText} from '../platform/sources/app/shared/models/text-paths.mjs';
 import {workshopResources} from './catalog.mjs';
+import {isDeepStrictEqual} from 'node:util';
 
 const fail=(status,code,message,extra={})=>{throw Object.assign(Error(message),{status,code,...extra});};
 const plain=v=>v&&typeof v==='object'&&!Array.isArray(v);
 const exact=(v,keys)=>plain(v)&&Object.keys(v).length===keys.length&&keys.every(k=>Object.hasOwn(v,k));
-const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
+const same=isDeepStrictEqual;
 const clone=v=>structuredClone(v);
 const protectedObject=o=>o.technicalLocked===true||o.role==='guide'||o.type==='motif-raster';
 const identityKeys=['type','fieldKey','cSourceId','assetId','customerEditable','templateOrigin','includedInDesign','slateIncluded','locked','technicalLocked','acrylicFixed','required','role','surfaceId'];
@@ -35,7 +36,7 @@ export function createGalleryEditor({workshop,targets}){
   if(!target||input.originalId!==target.originalId)fail(404,'review_target_missing','Diese Originalvorlage gehört nicht zu diesem Galerieformat.');
   const record=workshop.repository.get(target.productId,version?{revision:version}:undefined),profile=record.document.config?.profile;
   const design=profile?.designs?.find(d=>d.id===target.designId);
-  if(!design||record.status==='archived'||record.publishedRevision||record.document.config.reviewOnly!==true||profile.material.kind!==target.materialKind||Math.abs(profile.geometry.width-target.mm[0])>1e-6||Math.abs(profile.geometry.height-target.mm[1])>1e-6)fail(409,'review_target_changed','Vorlage, Material oder Größe haben sich geändert. Bitte die Galerie neu öffnen.');
+  if(!design||design.katalog?.designId&&design.katalog.designId!==target.originalId||record.status==='archived'||record.publishedRevision||record.document.config.reviewOnly!==true||profile.material.kind!==target.materialKind||Math.abs(profile.geometry.width-target.mm[0])>1e-6||Math.abs(profile.geometry.height-target.mm[1])>1e-6)fail(409,'review_target_changed','Vorlage, Material oder Größe haben sich geändert. Bitte die Galerie neu öffnen.');
   return {record,design,target};
  }
  function checkRevision(record,expectedRevision){
@@ -56,6 +57,7 @@ export function createGalleryEditor({workshop,targets}){
     object.customerEditable=true;object.locked=false;object.uxLocked=false;object.acrylicFixed=false;
    }
    model.universal.profile.designs=[operator];model.universal.profile.defaultDesignId=design.id;
+   model.universal.workshopElementRights={[design.id]:Object.fromEntries(operator.objects.map(object=>[object.id,legacyElementRights(object)]))};
    model.universal.profile.features={...model.universal.profile.features,orderEnabled:false,productionConfirmed:false};
    model.universal.localResources.photoExamples=(model.universal.localResources.photoExamples||[]).filter(e=>e.designId===design.id);
    model.universal.localResources.photoPlaceholders=(model.universal.localResources.photoPlaceholders||[]).filter(e=>e.designId===design.id);
@@ -116,9 +118,10 @@ export function createGalleryEditor({workshop,targets}){
       const assetId=photos.get(object.id),metadata=workshop.assets.galleryPhotos.metadata(assetId);
       if(metadata){
        if(Math.abs(metadata.widthMm-object.w)>1e-5||Math.abs(metadata.heightMm-object.h)>1e-5||!same(metadata.crop,raw.uxPhotoCrop||null)||metadata.color!==(raw.uxPhotoColor||'original'))fail(422,'review_photo_invalid','Foto und Bearbeitungsstand stimmen nicht überein. Bitte erneut speichern.');
-      }else if(!originalPhotos.some(p=>p.slotId===object.id&&p.assetId===assetId)||!original||original.w!==object.w||original.h!==object.h||raw.uxPhotoCrop)fail(422,'review_photo_invalid','Das ursprüngliche Foto muss für diesen Zuschnitt neu gesichert werden.');
+      }else if(!originalPhotos.some(p=>p.slotId===object.id&&p.assetId===assetId)||!original||original.w!==object.w||original.h!==object.h||raw.uxPhotoCrop&&!same(raw.uxPhotoCrop,{zoom:1,x:0,y:0,angle:0}))fail(422,'review_photo_invalid','Das ursprüngliche Foto muss für diesen Zuschnitt neu gesichert werden.');
      }
      if(!object.fieldKey)object.fieldKey='photo-'+object.id;
+     if(object.required===undefined)object.required=false;
     }
     for(const key of transientKeys)delete object[key];
     if(original?.uxLocked!==undefined)object.uxLocked=original.uxLocked;
@@ -139,7 +142,7 @@ export function createGalleryEditor({workshop,targets}){
    document.elementRights[design.id]=Object.fromEntries(objects.map(o=>[o.id,clone(record.document.elementRights[design.id][o.id]||legacyElementRights(o))]));
    for(const key of ['customerFields','sourceElements'])if(Array.isArray(design[key]))design[key]=design[key].filter(f=>ids.has(f.id));
    const hasPhoto=id=>objects.some(o=>o.id===id&&o.type==='photoSlot');
-   resources.photoExamples=[...(resources.photoExamples||[]).filter(p=>p.designId!==design.id),...[...photos].map(([slotId,assetId])=>({designId:design.id,slotId,assetId}))];
+   if(resources.photoExamples||photos.size)resources.photoExamples=[...(resources.photoExamples||[]).filter(p=>p.designId!==design.id),...[...photos].map(([slotId,assetId])=>({designId:design.id,slotId,assetId}))];
    if(resources.photoPlaceholders)resources.photoPlaceholders=resources.photoPlaceholders.filter(p=>p.designId!==design.id||hasPhoto(p.slotId));
    if(config.photo.hints)config.photo.hints=config.photo.hints.filter(p=>p.designId!==design.id||hasPhoto(p.slotId));
    const rendered=workshop.editorPreview(document,design.id);

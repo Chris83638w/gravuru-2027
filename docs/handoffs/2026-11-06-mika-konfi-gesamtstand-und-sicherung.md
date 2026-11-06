@@ -277,9 +277,13 @@ Mikail verlangt vor dem Neuanlegen von Produkten eine Abfrage, welche Befestigun
 
 **Verbindlich ist der Abfrageablauf, nicht eine aus diesen Beispielen abgeleitete Optionsliste.** Daraus entstehen weder neue Standardwerte noch bestätigte Produkteigenschaften, Aufpreise oder erlaubte Kombinationen. Auch die frühere Bestätigung bestimmter Schiefer-Gedenktafeloptionen gilt nicht automatisch für andere Produktgruppen.
 
+Weitere Klarstellung im selben Austausch: **Je nach Produktgruppe gibt es wesentlich mehr Möglichkeiten.** Die Abfrage und Datenstruktur dürfen deshalb weder auf die genannten Beispiele noch auf feste Bereiche „Befestigung/Zubehör“ begrenzt werden. Jede Produktgruppe braucht eine vollständige, erweiterbare Zusammenstellung ihrer eigenen Optionsbereiche. Bereichsnamen, Auswahlmöglichkeiten, erforderliche oder optionale Angaben, zulässige Kombinationen, Material-/Größenabhängigkeiten und Aufpreise müssen aus ihren bestätigten Regeln kommen. Unbekannte Möglichkeiten bleiben offen, bis Mikail sie konkret benannt bzw. vorhandene passende Daten bestätigt hat.
+
+Architekturfolge für die Vorbereitung: gemeinsamen Konfi weiterverwenden und produktspezifische Optionen über Produktgruppen-Einstellungen beschreiben. Zusätzliche gewöhnliche Auswahlbereiche sollen keine Kopie des Konfis erfordern. Eine völlig neue Bearbeitungsfunktion kann eine Erweiterung des gemeinsamen Konfis brauchen; die Aussage „jede denkbare Funktion geht allein durch neue Daten“ wäre nicht belegt. Der konkrete unterstützte Umfang ist je neuer Produktgruppe zu prüfen.
+
 Für den vorgesehenen Anlageablauf gilt:
 
-1. Vor dem Erstellen neuer Produkte die gewünschten Befestigungen, Zubehörteile und weiteren Ausführungen für genau die bezeichneten Produkte abfragen und konkret anzeigen.
+1. Vor dem Erstellen neuer Produkte **alle** gewünschten Optionsbereiche und Möglichkeiten für genau die bezeichneten Produkte abfragen und vollständig anzeigen, nicht nur Befestigung und Zubehör.
 2. Nur die dafür bestätigte Auswahl anlegen. Wenn Material oder Größe unterschiedliche Möglichkeiten erfordern, diese Unterschiede vorab sichtbar machen und klären.
 3. Bereits gespeicherte Regeln dürfen eine vorbereitete Auswahl liefern, ersetzen aber nicht die vom Nutzer ausdrücklich gewünschte Bestätigung vor der Neuanlage.
 4. Preise, Geometrie, technische Eignung und zulässige Kombinationen aus den vorhandenen maßgeblichen Daten übernehmen; fehlende oder widersprüchliche Angaben gezielt klären. Keine Werte aus einer beispielhaften Formulierung erfinden.

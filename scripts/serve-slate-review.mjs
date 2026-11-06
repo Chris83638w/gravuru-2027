@@ -14,6 +14,7 @@ const workshop=createWorkshop({filename:path.join(data,'workshop.sqlite'),seedCo
 const server=createPreviewServer({workshop});server.on('close',()=>workshop.close());
 if(args.includes('--gallery')){
  const gallery=createSlateGalleryHandler(path.resolve(value('--gallery')),path.join(data,'local-review-import.json'));
+ server.on('close',()=>gallery.close());
  const handlers=server.listeners('request');server.removeAllListeners('request');
  server.on('request',(req,res)=>{if(!gallery(req,res))for(const handle of handlers)handle.call(server,req,res);});
 }

@@ -8,7 +8,7 @@ test('both sizes open their actual imported product and the original design',()=
  assert.match(html,/configuration=cfg_a&amp;design=katalog-GT-S-30x20-D1&amp;reviewGallery=1/);
  assert.match(html,/configuration=cfg_b&amp;design=katalog-GT-S-30x20-D1&amp;reviewGallery=1/);
  assert.match(html,/\/api\/workshop\/products\/cfg_a\/preview.svg\?designId=/);
- assert.doesNotMatch(html,/revision=/); // The gallery must show subsequent saved changes.
+ assert.doesNotMatch(html,/(?:\?|&(?:amp;)?)revision=/); // The gallery must show subsequent saved changes.
 });
 test('incomplete print sources stay visible as print without an invented editor',()=>{
  const html=slateGalleryHtml({originals:[{...row,process:'UV',targets:[],reason:'Bilddatei fehlt'}]},imported);

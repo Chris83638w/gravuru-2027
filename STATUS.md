@@ -1,3 +1,7 @@
+## 06.11.2026 · Astra Schiefer · Kommentare je Vorlage
+
+Chris wünscht ein Kommentarfeld. Alle 180 Originalkarten haben jetzt ein mehrzeiliges Feld und „Kommentar speichern“, auch offene Druckvorlagen. Kommentare bleiben lokal je Original-ID erhalten; Änderungen werden versioniert, paralleles Überschreiben wird abgefangen. Keine Bildfreigabe durch einen Kommentar. 7 gezielte Tests bestanden; im echten Browser gespeichert/neu geladen, 180 Felder gezählt, Testtext anschließend wieder geleert. [Bedienung und Speicherort](docs/handoffs/2026-11-06-schiefer-kommentare-astra.md). Eigener PR #180, kein Merge/Live. Nächster Schritt: Chris trägt Hinweise ein; danach die betroffenen IDs anhand dieser Kommentare bearbeiten.
+
 ## 06.11.2026 · Astra Schiefer · Gelbe Sterne als Druck korrigiert
 
 Chris konkretisiert: „mit gelben sternen“. GTSK-S-30x20-D2 (Tabea) und D4 (Lara) visuell bestätigt und von Gravur zu UV-Druck korrigiert. Der vorige Farbscan hatte die kleinen Farbflächen übersehen; Aussage ausdrücklich berichtigt. Aktuell 154 Gravur/26 Druck; 144 Paare und 289 Größenfassungen unverändert; offen 10 Gravur/26 Druck. Die beiden Sternenvorlagen bleiben bis zur farbtreuen Druckaufbereitung offen. Bestehende Bearbeitungen und IDs erhalten, 0 Freigaben. 5 gezielte Tests, 617 Quellhashes, 1.879 Paketdateihashes, 144 Paare und 28 Rücklesevergleiche geprüft. [Nachtrag, Paket und Belege](docs/handoffs/2026-11-06-schiefer-gelbe-sterne-astra.md). Eigener PR #180; kein Merge/Live.

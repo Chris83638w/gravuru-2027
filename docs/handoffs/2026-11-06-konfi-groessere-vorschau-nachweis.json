@@ -1,0 +1,534 @@
+{
+  "schema": "gravuru-konfi-compact-preview-r11/v1",
+  "date": "2026-11-06",
+  "baseCommit": "4c4d4f3a",
+  "source": "Mikail: alles auf eine Höhe; Tafel ist zu klein; umsetzen.",
+  "tests": {
+    "local": {
+      "tests": 66,
+      "pass": 66,
+      "fail": 0,
+      "skipped": 0
+    },
+    "linux": {
+      "tests": 66,
+      "pass": 66,
+      "fail": 0,
+      "skipped": 0
+    },
+    "builds": [
+      "local passed",
+      "linux passed"
+    ]
+  },
+  "active": {
+    "at": "2026-11-06T09:31:22.906Z",
+    "bundle": "/_bundle/editor-3ce792e6e3efd39f.mjs",
+    "sourceHashes": {
+      "app/configurator/variant-m/design-reset.mjs": "a3a4d09c22205fa2f2ba824b6788757774512743e75f8617146e78f8bd9a8f06",
+      "app/configurator/variant-m/design-reset.test.mjs": "0bc13996e94e7e62341050e5504ca6bdd3bd2f2a353c3dfd05c5f046d456dab0",
+      "app/configurator/variant-m/modern-navigation.css": "d28aa95313635ceaaa17e857b122e676a2d79cf912c2a6df945a1e5de63447ad",
+      "app/configurator/variant-m/view-zoom.css": "ce31226dbc655204b04f5a90926f6d280db974e62d40252b20d828967232ea14"
+    },
+    "unchangedProductModels": {
+      "22x14.json": "8222984b2ff7877719c50aa4fcc67f613eb008b11a9543d6eddfafae2158b2c5",
+      "30x20.json": "637d19fcc6f02859a08d4c3853a51b13c1cfd1003aedff69a81a2de5682ae054"
+    }
+  },
+  "browser": {
+    "beforeDesktop": {
+      "viewport": {
+        "width": 1440,
+        "height": 709
+      },
+      "plate": {
+        "width": 535.8515625,
+        "height": 341
+      },
+      "preview": {
+        "width": 897.75,
+        "height": 573
+      }
+    },
+    "localPhoto": {
+      "items": [
+        {
+          "hidden": false,
+          "rect": {
+            "height": 573,
+            "width": 897.75,
+            "x": 0,
+            "y": 68
+          },
+          "selector": ".ux-preview"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 485,
+            "width": 869.75,
+            "x": 14,
+            "y": 144
+          },
+          "selector": ".stage"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 357,
+            "width": 561,
+            "x": 168.375,
+            "y": 160
+          },
+          "selector": ".plate-holder"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 52,
+            "width": 133.5078125,
+            "x": 382.1171875,
+            "y": 84
+          },
+          "selector": ".ux-direct-edit"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 44,
+            "width": 344.875,
+            "x": 26,
+            "y": 580
+          },
+          "selector": ".ux-photo-size"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 44,
+            "width": 122.3125,
+            "x": 387.71875,
+            "y": 580
+          },
+          "selector": ".ux-design-reset button"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 44,
+            "width": 215,
+            "x": 656.75,
+            "y": 580
+          },
+          "selector": ".ux-view-zoom"
+        }
+      ],
+      "viewport": {
+        "height": 709,
+        "width": 1440
+      }
+    },
+    "localMobile375": {
+      "items": [
+        {
+          "hidden": false,
+          "rect": {
+            "height": 440,
+            "width": 375,
+            "x": 0,
+            "y": 54
+          },
+          "selector": ".ux-preview"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 386,
+            "width": 375,
+            "x": 0,
+            "y": 108
+          },
+          "selector": ".stage"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 200.453125,
+            "width": 315,
+            "x": 30,
+            "y": 149.546875
+          },
+          "selector": ".plate-holder"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 44,
+            "width": 215.5078125,
+            "x": 79.75,
+            "y": 55
+          },
+          "selector": ".ux-direct-edit"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 44,
+            "width": 359,
+            "x": 8,
+            "y": 395
+          },
+          "selector": ".ux-photo-size"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 44,
+            "width": 122.3125,
+            "x": 8,
+            "y": 445
+          },
+          "selector": ".ux-design-reset button"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 44,
+            "width": 215,
+            "x": 152,
+            "y": 445
+          },
+          "selector": ".ux-view-zoom"
+        }
+      ],
+      "viewport": {
+        "height": 740,
+        "width": 375
+      }
+    },
+    "liveDesktop": {
+      "items": [
+        {
+          "hidden": false,
+          "rect": {
+            "height": 573,
+            "width": 897.75,
+            "x": 0,
+            "y": 68
+          },
+          "selector": ".ux-preview"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 545,
+            "width": 869.75,
+            "x": 14,
+            "y": 84
+          },
+          "selector": ".stage"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 417,
+            "width": 655.28125,
+            "x": 121.234375,
+            "y": 100
+          },
+          "selector": ".plate-holder"
+        },
+        {
+          "hidden": true,
+          "rect": {
+            "height": 0,
+            "width": 0,
+            "x": 0,
+            "y": 0
+          },
+          "selector": ".ux-direct-edit"
+        },
+        {
+          "hidden": true,
+          "rect": {
+            "height": 0,
+            "width": 0,
+            "x": 0,
+            "y": 0
+          },
+          "selector": ".ux-photo-size"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 44,
+            "width": 122.3125,
+            "x": 387.71875,
+            "y": 580
+          },
+          "selector": ".ux-design-reset button"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 44,
+            "width": 215,
+            "x": 656.75,
+            "y": 580
+          },
+          "selector": ".ux-view-zoom"
+        }
+      ],
+      "viewport": {
+        "height": 709,
+        "width": 1440
+      }
+    },
+    "livePhoto": {
+      "items": [
+        {
+          "hidden": false,
+          "rect": {
+            "height": 573,
+            "width": 897.75,
+            "x": 0,
+            "y": 68
+          },
+          "selector": ".ux-preview"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 485,
+            "width": 869.75,
+            "x": 14,
+            "y": 144
+          },
+          "selector": ".stage"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 357,
+            "width": 561,
+            "x": 168.375,
+            "y": 160
+          },
+          "selector": ".plate-holder"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 52,
+            "width": 133.5078125,
+            "x": 382.1171875,
+            "y": 84
+          },
+          "selector": ".ux-direct-edit"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 44,
+            "width": 344.875,
+            "x": 26,
+            "y": 580
+          },
+          "selector": ".ux-photo-size"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 44,
+            "width": 122.3125,
+            "x": 387.71875,
+            "y": 580
+          },
+          "selector": ".ux-design-reset button"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 44,
+            "width": 215,
+            "x": 656.75,
+            "y": 580
+          },
+          "selector": ".ux-view-zoom"
+        }
+      ],
+      "viewport": {
+        "height": 709,
+        "width": 1440
+      }
+    },
+    "liveMobile": {
+      "items": [
+        {
+          "hidden": false,
+          "rect": {
+            "height": 458,
+            "width": 390,
+            "x": 0,
+            "y": 54
+          },
+          "selector": ".ux-preview"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 404,
+            "width": 390,
+            "x": 0,
+            "y": 108
+          },
+          "selector": ".stage"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 210,
+            "width": 330,
+            "x": 30,
+            "y": 158
+          },
+          "selector": ".plate-holder"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 44,
+            "width": 215.5078125,
+            "x": 87.25,
+            "y": 55
+          },
+          "selector": ".ux-direct-edit"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 44,
+            "width": 374,
+            "x": 8,
+            "y": 413
+          },
+          "selector": ".ux-photo-size"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 44,
+            "width": 122.3125,
+            "x": 8,
+            "y": 463
+          },
+          "selector": ".ux-design-reset button"
+        },
+        {
+          "hidden": false,
+          "rect": {
+            "height": 44,
+            "width": 215,
+            "x": 167,
+            "y": 463
+          },
+          "selector": ".ux-view-zoom"
+        }
+      ],
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    "checks": [
+      "Photo slider responds",
+      "View slider 100 to 101 to 100 percent",
+      "Reset confirmation and cancel",
+      "Size 30x20 and fullscreen return"
+    ],
+    "physicalPhone": false,
+    "screenshots": [
+      "konfi-mehr-gestaltungsflaeche-live-r11.jpg",
+      "konfi-groessere-tafel-ausgerichtet-r11.jpg",
+      "konfi-kompakte-bedienung-handy-r11.jpg"
+    ]
+  },
+  "publicProbe": {
+    "at": "2026-11-06T09:31:39.338Z",
+    "pages": [
+      {
+        "size": "22x14",
+        "status": 200,
+        "bundle": "/_acryl-bundle/editor-3ce792e6e3efd39f.mjs"
+      },
+      {
+        "size": "30x20",
+        "status": 200,
+        "bundle": "/_acryl-bundle/editor-3ce792e6e3efd39f.mjs"
+      }
+    ],
+    "models": [
+      {
+        "size": "22x14",
+        "status": 200,
+        "sha256": "8222984b2ff7877719c50aa4fcc67f613eb008b11a9543d6eddfafae2158b2c5",
+        "unchanged": true,
+        "designs": 43,
+        "prices": [
+          1999,
+          2499
+        ],
+        "extraMotif": 169
+      },
+      {
+        "size": "30x20",
+        "status": 200,
+        "sha256": "637d19fcc6f02859a08d4c3853a51b13c1cfd1003aedff69a81a2de5682ae054",
+        "unchanged": true,
+        "designs": 43,
+        "prices": [
+          1999,
+          2499
+        ],
+        "extraMotif": 169
+      }
+    ],
+    "bundles": [
+      {
+        "url": "/_acryl-bundle/editor-3ce792e6e3efd39f.mjs",
+        "status": 200,
+        "bytes": 1425699,
+        "sha256": "70604e74a929447c3f508eb0464670b55ef65b13ee5dde23115e87b1d19b7d33"
+      },
+      {
+        "url": "/_acryl-bundle/editor-2e3da3b988eb0da4.mjs",
+        "status": 200,
+        "bytes": 38045,
+        "sha256": "2b380c700ec6c159b299b014fc8918ebf41189bcbc9f7af14884825af7da65e1"
+      },
+      {
+        "url": "/_acryl-bundle/editor-c419119a6ef437c6.mjs",
+        "status": 200,
+        "bytes": 7963,
+        "sha256": "9c37d9810dace1ed32292a800195fe90439d859d28ac74e21abc412ca7044edf"
+      },
+      {
+        "url": "/_acryl-bundle/editor-69eb9880b804359a.mjs",
+        "status": 200,
+        "bytes": 3378,
+        "sha256": "ae30b048f0955960ec763e83c62eb1ae455c6514885f813eadbed49a4d5b4672"
+      },
+      {
+        "url": "/_acryl-bundle/editor-e1e24f0ee6b66daf.mjs",
+        "status": 200,
+        "bytes": 10974,
+        "sha256": "24a2611031b0e6a37efddec5a3ec332d92802345a323c49521b350b37dbb9c67"
+      }
+    ]
+  },
+  "limits": [
+    "The measured percentage applies to the specified viewport and state.",
+    "No physical phone test.",
+    "No new cart, product launch or merge."
+  ]
+}

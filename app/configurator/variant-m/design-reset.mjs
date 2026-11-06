@@ -10,7 +10,7 @@ export function installDesignReset({el,r,config,dialog,button,design,reset,say})
  if(config?.workbench)return;
  const bar=document.createElement('div');bar.className='ux-design-reset';
  bar.innerHTML=button('reset-design','Zurücksetzen');
- r.querySelector('[data-ux-stage]').after(bar);
+ r.querySelector('.stage').append(bar);
  const confirmation=dialog('reset-design','Gestaltung zurücksetzen?',
   '<p>Das gewählte Design <strong data-reset-design-name></strong> wird auf die Originalvorlage zurückgesetzt. Deine Textänderungen, Fotos und hinzugefügten Motive werden entfernt. Größe und Ausführung bleiben erhalten.</p><div class="ux-actions">'+button('reset-design-cancel','Abbrechen')+button('reset-design-confirm','Ja, zurücksetzen','class="ux-primary"')+'</div>');
  let pending=null;

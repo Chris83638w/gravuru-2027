@@ -20,7 +20,7 @@ export function slateGalleryHtml(pack, imported, {comments = {}, csrfToken = '',
       return [{label: sizeLabel(target.mm), preferred: target.mm[0] === 300 && target.mm[1] === 200,
         approvalKey, preview: approvals[approvalKey]?.metadata?.previewUrl || '/api/workshop/products/' + encodeURIComponent(product.productId) + '/preview.svg?' + new URLSearchParams({designId: design}),
         productId: product.productId, designId: design,
-        edit: '/werkstatt/?' + new URLSearchParams({configuration: product.productId, design, reviewGallery: '1'})}];
+        edit: '/originale/editor?' + new URLSearchParams({configuration: product.productId, design, originalId:row.id})}];
     }).sort((a, b) => Number(b.preferred) - Number(a.preferred));
     if (targets.length) editable++;
     const selected = targets[0];

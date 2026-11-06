@@ -8,6 +8,7 @@ import {createSlateReviewPositions} from '../../app/workshop/slate-review-positi
 import {createDesignReviewApprovals} from './design-review-approvals.mjs';
 import {createSlateApprovalTargetSource} from './slate-review-approval-targets.mjs';
 import {buildDesignReviewOverview, designReviewOverviewHtml} from './design-review-overview.mjs';
+import {createGalleryEditorHandler} from './gallery-editor-http.mjs';
 export {slateGalleryHtml};
 export function createSlateGalleryHandler(root, importsFile, {csrfToken: suppliedToken,workshop} = {}) {
  const pack=JSON.parse(fs.readFileSync(path.join(root,'manifest.json'))),imported=JSON.parse(fs.readFileSync(importsFile));
@@ -27,6 +28,7 @@ export function createSlateGalleryHandler(root, importsFile, {csrfToken: supplie
   return {approvals:states,overview,overviewHtml:designReviewOverviewHtml(overview)};
  };
  const csrfToken=suppliedToken||randomBytes(32).toString('hex');
+ const fullEditor=workshop?createGalleryEditorHandler({workshop,targets:approvalTargets.targets,csrfToken,onSaved:()=>approvalTargets.beginRead()}):null;
  const json=(res,status,data)=>res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(JSON.stringify(data));
  const fail=(status,message)=>{throw Object.assign(Error(message),{status});};
  const withReviewFingerprint=record=>{
@@ -94,6 +96,7 @@ export function createSlateGalleryHandler(root, importsFile, {csrfToken: supplie
   const url=new URL(req.url,'http://127.0.0.1');
   if(!url.pathname.startsWith('/originale'))return false;
   if(!/^(127\.0\.0\.1|localhost|\[::1\]):[0-9]+$/.test(req.headers.host||'')){json(res,403,{error:'Nur in der lokalen Galerie verfügbar.'});return true;}
+  if(fullEditor?.(req,res,url))return true;
   if(url.pathname==='/originale/design'){void editPositions(req,res,url);return true;}
   if(url.pathname==='/originale/approvals'){void reviewApprovals(req,res);return true;}
   if(url.pathname==='/originale/comments'){

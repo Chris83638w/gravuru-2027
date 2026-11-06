@@ -1,4 +1,5 @@
 import {canDeleteTemplateElement} from './element-rights.mjs';
+import {installGalleryWorkbench} from './gallery-workbench.mjs';
 import {installDialogDismissal} from './dialog-dismiss.mjs';
 import {installCustomerHelp} from './customer-help.mjs';
 import {executionHeading} from './execution-registry.mjs';
@@ -187,7 +188,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   };
   el.objectSVG=function(o,...args){const custom=this.uxObjectSVG(o);if(custom!==undefined)return custom;let markup=originalObjectSVG.call(this,o,...args);if(!config&&o.type==='motif')markup=markup.replace(/(fill|stroke)="(?:#000000|#000|black|currentColor)"/gi,'$1="#ffffff"');return markup;};
   // Promote trusted template lines to editable design objects, without touching the source profile.
-  function addDecoration(){const d=design();if(!d)return;for(const [i,mark] of (d.marks||[]).entries()){
+  function addDecoration(){if(config?.workbench?.gallery)return;const d=design();if(!d)return;for(const [i,mark] of (d.marks||[]).entries()){
     const key='ux-line-'+d.id+'-'+i,id=key;if(el.state.objects.some(o=>o.id===id))continue;
     if(el.state.uxDecorationsFor===d.id)continue;
     const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('style','position:absolute;visibility:hidden;width:1px;height:1px');svg.innerHTML='<path d="'+esc(mark.d)+'"/>';r.append(svg);const b=svg.firstElementChild.getBBox();svg.remove();const pad=(Number(mark.width)||.4)/2;
@@ -195,7 +196,7 @@ export async function installUX(el,config,legacy,{attach}={}){
     el.motifs[key]=`<path d="${esc(mark.d)}" fill="none" stroke="currentColor" stroke-width="${Number(mark.width)||.4}"/>`;el.catalog.motif_bounds[key]=bounds;
     el.state.objects.push({id,type:'motif',motif:key,x:b.x+b.width/2,y:b.y+b.height/2,w:bounds[2],h:bounds[3],rotation:0,color:'#ffffff',uxDecoration:true,customerEditable:true,templateOrigin:true});
   }el.state.uxDecorationsFor=d.id;}
-  const originalBody=el.svgBody;el.svgBody=function(...args){const markup=originalBody.apply(this,args);const doc=svgDoc('<svg xmlns="http://www.w3.org/2000/svg">'+markup+'</svg>');doc.querySelectorAll('[data-design-lines]').forEach(n=>n.remove());const paths=new Set((design()?.marks||[]).map(m=>m.d));for(const p of doc.querySelectorAll('path'))if(paths.has(p.getAttribute('d'))&&!p.closest('[data-object]'))p.remove();return doc.documentElement.innerHTML;};
+  const originalBody=el.svgBody;el.svgBody=function(...args){const markup=originalBody.apply(this,args);if(config?.workbench?.gallery)return markup;const doc=svgDoc('<svg xmlns="http://www.w3.org/2000/svg">'+markup+'</svg>');doc.querySelectorAll('[data-design-lines]').forEach(n=>n.remove());const paths=new Set((design()?.marks||[]).map(m=>m.d));for(const p of doc.querySelectorAll('path'))if(paths.has(p.getAttribute('d'))&&!p.closest('[data-object]'))p.remove();return doc.documentElement.innerHTML;};
   if(!config){
     const originalRender=el.render;
     el.render=function(...args){
@@ -324,6 +325,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   }catch(error){say(error.message);}}
   function update(){updateFields();updateGallery();updateUploads();updatePrice();$('[data-ux-guides]').checked=$('[data-setting=guides]').checked;$('[data-ux-count]').textContent=`(${el.state.objects.length})`;$('[data-ux=undo]').disabled=!el.history.length;$('[data-ux=redo]').disabled=!el.future.length;$('.fk-buy-button').disabled=true;$('.fk-order-status').textContent=config?.productPreview?'Produktvorschau · Bestellung noch nicht verbunden':'Lokaler Prüfstand · Bestellung noch nicht verbunden';renderContents();if(dialogs.contents.open&&freeColor&&selected()&&!$('[data-ux-content-color]'))$('[data-ux-object-tools]').insertAdjacentHTML('beforeend','<label class="ux-print-color">Druckfarbe <input type="color" data-ux-content-color aria-label="Druckfarbe des ausgewählten Elements" value="'+esc(selected().color||'#202824')+'"></label>');}
   let previousCorrection='',correctionReady=false;
+  let galleryWorkbench=null;
   function notifyCorrection(){if(!config?.workbench?.embedded||!correctionReady)return;const design=roundDesign({id:el.state.designId,objects:el.state.objects}),value=JSON.stringify(design);if(value!==previousCorrection){previousCorrection=value;window.parent.postMessage({type:'gravuru-workbench-change',...design},location.origin);}}
   const oldSync=el.sync;el.sync=function(...args){const result=oldSync.apply(this,args);update();notifyCorrection();sessionGuard?.touch();for(const o of el.state.objects)if(o.uxUploadId)persistUpload(o.uxUploadId);return result;};
   // K7: Entwurf im Vertragsformat in den Editor übernehmen. Ein anderes Design wird zuerst gewählt, damit seine Gestaltungslinien registriert sind.
@@ -352,6 +354,7 @@ export async function installUX(el,config,legacy,{attach}={}){
     const font=e.target.closest('[data-ux-font]');if(font){const object=el.state.objects.find(o=>o.id===fontObject);if(font.disabled||!object||!availableFonts().includes(font.dataset.uxFont)||!fontFits({...object,bold:false},font.dataset.uxFont))return;fontChoice=font.dataset.uxFont;select(fontObject);changeObject('font',fontChoice);dialogs.font.close();return;}
     const b=e.target.closest('[data-ux]');if(!b||b.disabled)return;const action=b.dataset.ux;
     if(action==='back'){window.parent.postMessage({type:'gravuru-fk-close'},location.origin);return;}
+    if(action==='account'&&galleryWorkbench){galleryWorkbench.save();return;}
     if(action==='account'&&window.parent.GravuruWorkshopReview){$('.completion-finish')?.click();return;}
     if(action==='account'&&config?.workbench){
       if(el.state.objects.some(o=>o.uxUploadId))return say('Testfotos zuerst entfernen. Die Vorlage speichert Fotofelder; Kundenfotos gehören zur Bestellung.');
@@ -479,6 +482,7 @@ export async function installUX(el,config,legacy,{attach}={}){
     window.addEventListener('pagehide',()=>sessionGuard.flush(),{once:true});
   }else sessionGuard=null;
   if(config&&!config.workbench&&typeof el.draftPayload==='function')accountDrafts=installAccountDrafts({el,config,files,dialog:dialogs.account,button,esc,say,restoreDraft,pending:()=>uploadPending});
+  galleryWorkbench=await installGalleryWorkbench({el,config,files,say,pending:()=>uploadPending||el.uxDesignResourcePending===true});
   if(config?.workbench?.embedded){showTab('text');for(const field of all('input[type=number]'))field.step='.01';if($('#ux-size'))$('#ux-size').min='1';r.addEventListener('focusout',e=>{if(e.target.type==='number'&&e.target.value!==''&&Number.isFinite(e.target.valueAsNumber))e.target.value=roundEdit(e.target.valueAsNumber);});previousCorrection=JSON.stringify(roundDesign({id:el.state.designId,objects:el.state.objects}));correctionReady=true;const s=document.createElement('style');s.textContent='.ux-cart-bar,.ux-bottom-bar,.ux-price-bar,.fk-buy-row{display:none!important}';r.append(s);}
   // K9/Ü10.2: Direktlink `?design=<id>&size=<sku-oder-größen-id>&text=<Name>` von der Host-Seite
   // (gleiche Herkunft, z. B. index.html) oder der eigenen URL. Ungültiges wird ignoriert und gemeldet;

@@ -1,0 +1,107 @@
+✔ review link selects exactly the requested design without changing the default (2.1625ms)
+✔ unknown design and different product use the actual default (0.6947ms)
+✔ save/reload link retains explicit selection and the local gallery context (0.468ms)
+✖ M02 draft preview resolves chosen design and base without saving; protects CSRF and revisions (1512.7348ms)
+✔ catalogue selection uses the exact configurator arrow shape and no blue frame or square handles (2.7179ms)
+✔ catalogue arrows keep their screen offset while scaling and disappear for protected or absent selection (0.5574ms)
+✔ shared Konfi arrows retain the final CSS cascade, four directions and radial resizing (3.9139ms)
+✔ catalogue Konfi arrow keyboard commands retain focus across rerender and preview without stealing focus (3.1882ms)
+✔ catalogue entry and request keep exact identity and checksum without a product id (3.847ms)
+✔ content/font/size changes use shared glyph measurements and retain the SVG anchor (0.9782ms)
+✔ left/middle/right alignment and tracking keep explicit anchor position (0.37ms)
+✔ missing glyphs reject edits, and motif resizing preserves aspect ratio without clamping (2.8387ms)
+✔ new editor text becomes a Lieferform 2 text layer with matching field and rights identity (0.8493ms)
+✔ fit lists every target size, escapes source text and identifies explicit extra confirmation (1.6943ms)
+✔ loading and successful saving use only catalogue routes, review all sizes and advance checksum (25.5355ms)
+✔ out-of-fit save requires both explicit checkbox and confirmation, cancel retains edits (10.251ms)
+✔ conflict retains draft and old checksum and never retries a write (6.1824ms)
+✔ discard and dashboard return preserve the existing explicit decision and embedding context (11.4119ms)
+✔ cancelled discard keeps the draft and current editor location (3.8935ms)
+✔ font and content retain source line spacing while size changes scale it proportionally (0.4521ms)
+✔ a failed initial catalogue request keeps product creation hidden and offers a safe retry (6.0211ms)
+✔ retry after a failed reload cannot discard a newly edited draft without confirmation (2.7151ms)
+✔ catalogue mode keeps existing editor, token helper and narrow controls instead of product writes (5.734ms)
+✔ existing workshop size input and pointer resize preserve explicit source line spacing (2.9509ms)
+✔ embedded catalogue save reports its exact identity and return closes the overlay without navigation (1.9309ms)
+✔ embedded catalogue cancelled discard leaves the edited draft and its overlay open (0.7802ms)
+✔ path mask beginning at M0, inline image, original placement and engraving strokes survive conversion (40.5447ms)
+✔ preview preparation embeds the same mask and bytes without writing, real import binds immutable assets (89.6643ms)
+✔ slate photo preview blends black canvas only in preview and keeps an independent upload hint (1.6819ms)
+✔ rounded and elliptical apertures retain their actual shape, malformed upload windows fail (41.5788ms)
+✔ slate examples render in grayscale without changing the immutable image or its mask (63.762ms)
+✔ actual immutable resource store preserves embedded original photo bytes and mask paths (745.2004ms)
+✔ size variants transform aperture and image together without replacing the aperture or resampling (1.2937ms)
+✔ slate print server output matches grayscale default and explicit original with alpha retained (10680.5781ms)
+✔ already applied pixels, acrylic print and engraving production are never transformed twice (2146.8359ms)
+✔ native photo colour output uses a new recipe cache key (0.8273ms)
+✔ template photo references keep original PNG colour; customer defaults do not spill into templates (2189.8031ms)
+✔ photo coverage detects pan, shrink and rotation without changing free placement (1.6661ms)
+✔ circle, ellipse and arch coverage use their masks instead of rectangular corners (0.5998ms)
+✖ coverage agrees with independently rasterized real mask and photo transforms (177.2972ms)
+✔ moving a native masked photo survives server validation and draft roundtrip without changing crop or mask (110.9581ms)
+✔ crop permission cannot move the masked field and move permission cannot change its crop (131.7291ms)
+✔ moving rights never allow replacing or removing the original photo mask (110.5999ms)
+✔ review and production move the native heart mask with its photo while preserving original mask bytes (8042.5814ms)
+✔ both sizes open their actual imported product and the original design (12.9129ms)
+✔ incomplete print sources stay visible as print without an invented editor (0.2811ms)
+✔ partial preparation offers editing only for the available size (1.6475ms)
+ℹ tests 47
+ℹ suites 0
+ℹ pass 45
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 15676.9512
+
+✖ failing tests:
+
+test at app\workshop\editor-preview.test.mjs:11:1
+✖ M02 draft preview resolves chosen design and base without saving; protects CSRF and revisions (1512.7348ms)
+  [TypeError: fetch failed] {
+    [cause]: Error: connect EACCES 127.0.0.1:53530
+        at TCPConnectWrap.afterConnect [as oncomplete] (node:net:2017:16) {
+      errno: -4092,
+      code: 'EACCES',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 53530
+    }
+  }
+
+test at app\workshop\photo-frame-coverage.test.mjs:26:1
+✖ coverage agrees with independently rasterized real mask and photo transforms (177.2972ms)
+  Error: spawnSync python3 EACCES
+      at Object.spawnSync (node:internal/child_process:1160:20)
+      at spawnSync (node:child_process:928:24)
+      at execFileSync (node:child_process:971:15)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/ChatGPT/Shopify%20Import/work/gravuru-schiefer-originale/app/workshop/photo-frame-coverage.test.mjs:30:21)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -4092,
+    code: 'EACCES',
+    syscall: 'spawnSync python3',
+    path: 'python3',
+    spawnargs: [ '-c', "import sys,io,cairosvg;from PIL import Image;im=Image.open(io.BytesIO(cairosvg.svg2png(bytestring=sys.stdin.buffer.read()))).convert('RGBA');print(sum(1 for r,g,b,a in im.getdata() if a==255 and r<10 and g<10 and b<10))" ],
+    error: Error: spawnSync python3 EACCES
+        at Object.spawnSync (node:internal/child_process:1160:20)
+        at spawnSync (node:child_process:928:24)
+        at execFileSync (node:child_process:971:15)
+        at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/ChatGPT/Shopify%20Import/work/gravuru-schiefer-originale/app/workshop/photo-frame-coverage.test.mjs:30:21)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1397:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+        at Test.postRun (node:internal/test_runner/test:1537:19)
+        at Test.run (node:internal/test_runner/test:1462:12)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:969:7),
+    status: null,
+    signal: null,
+    output: null,
+    pid: 0,
+    stdout: undefined,
+    stderr: undefined
+  }

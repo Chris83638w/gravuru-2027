@@ -33,5 +33,5 @@ test('M02 draft preview resolves chosen design and base without saving; protects
  const bad=structuredClone(draft);bad.elementRights[copy.id]['photo-main'].move=true;
  assert.equal((await send({...data,document:bad})).status,422);
  assert.deepEqual(workshop.repository.get(initial.id),initial);
- for(const name of ['editor.css','product-editor-ui.mjs'])assert.equal((await fetch(base+'/workshop-ui/'+name)).status,200);
+ for(const name of ['editor.css','product-editor-ui.mjs','editor-design-link.mjs'])assert.equal((await fetch(base+'/workshop-ui/'+name)).status,200);
 });

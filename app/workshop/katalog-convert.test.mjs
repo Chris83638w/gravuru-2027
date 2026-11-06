@@ -15,6 +15,14 @@ const katalog=()=>openKatalog(FIXTURE);
 const fonts=()=>workshopResources().fonts;// Laufzeitschriften der Werkstatt (Montserrat, Cinzel …)
 const herz=k=>k.designs.masters.find(d=>d.id==='test-herz');
 
+test('Neue-Struktur priority survives native conversion and proportional size adaptation',()=>{
+ const k=katalog(),d=herz(k),font=fonts();
+ const source={...d,json:{...d.json,katalog:{prio:1}}};
+ const t=katalogDesignToTemplate(source,k.families.get('test-schilder'),k.theme('namensschilder'),{fonts:font}).template;
+ assert.equal(t.katalog.prio,1);
+ assert.equal(scaleTemplate(t,[90,60],[220,140],font,{contain:true}).katalog.prio,1);
+});
+
 test('139: nested inherited stroke-only paint stays unfilled, including round joins and explicit child override',()=>{
  const f=katalog().families.get('test-schilder');
  const r=katalogDesignToTemplate({id:'inherited-stroke',name:'Kranz',themes:[],fields:{}},f,null,{fonts:fonts(),svgText:'<svg viewBox="0 0 90 60"><g id="motiv-wreath"><g fill="none" stroke="#000000" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 50 C0 30 10 10 30 5"/><g><path d="M50 50 L70 10 L80 40Z" fill="#000000" stroke="none"/></g></g></g></svg>'});

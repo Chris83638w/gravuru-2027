@@ -6,6 +6,9 @@ import {artworkFragment} from '../../configurator/variant-m/artwork-resource.mjs
 import {merchantImageAttribute} from './merchant-media.mjs';
 import {drawSelection,replaceEditorPreview} from './editor-selection.mjs';
 import {alignedPosition,drawGuides,clearGuides} from './editor-guides.mjs';
+import {linkedEditorDesign,editorDesignPath,quickReviewRequested,reviewGalleryPath} from './editor-design-link.mjs';
+import {merchantNavigation} from './merchant-navigation.mjs';
+import {customerPreviewLink} from './customer-preview-link.mjs';
 // M02 view adapter. The existing draft, revision API and rights remain authoritative.
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const $=s=>document.querySelector(s);
@@ -13,6 +16,13 @@ const presets=['#202824','#731c19','#17614f','#ffffff','#c49a50'];
 export function installProductEditor({state,api,markDirty,syncControls,showTab,objectLabel,availableRights}){
  let workspace='designs',productId=null,recordRevision=null,designId=null,objectId=null,timer,serial=0,options={},libraryFonts=[],libraryMotifs=null,undo=[],redo=[],editControl=null,drag=null,previewController,previewPending=false,wasBusy=false;
  const icon=name=>`<img class="editor-icon" src="/workshop-ui/editor-icons/${name}.svg" alt="" aria-hidden="true">`;
+ if(new URLSearchParams(location.search).get('reviewGallery')==='1'){
+  const back=document.createElement('a');back.id='review-gallery-back';back.className='button';back.href='/originale/';back.textContent='← Zur Übersicht';$('#customer-view')?.before(back);
+  if(quickReviewRequested(location.search)){
+   const finish=document.createElement('button');finish.id='review-save-return';finish.type='button';finish.dataset.action='review-save-return';finish.className='review-quick-only';finish.textContent='Speichern & zurück';$('#save-product').after(finish);
+   const help=document.createElement('p');help.className='review-quick-help review-quick-only';help.textContent='Element anklicken und an die richtige Stelle ziehen. Links kannst du jedes Element auswählen. Danach speichern.';$('.stage-toolbar').before(help);
+  }
+ }
  const icons={details:'cube',designs:'photo',prices:'tag',profiles:'typography',scene:'photo',production:'settings',shopify:'link'};
  for(const tab of document.querySelectorAll('.editor-tabs [data-tab]'))tab.insertAdjacentHTML('afterbegin',icon(icons[tab.dataset.tab]));
  // Navigationssymbole kommen aus der gemeinsamen Kopfzeile (workshop-shell-markup.mjs).
@@ -39,6 +49,8 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
   if(!state.busy&&wasBusy&&previewPending)timer=setTimeout(preview,0);
   wasBusy=state.busy;
   const disabled=state.busy||!state.record||state.record.status==='archived';
+  const finish=$('#review-save-return');if(finish)finish.disabled=disabled;
+  const back=$('#review-gallery-back');if(back)back.setAttribute('aria-disabled',String(state.busy));
   for(const n of document.querySelectorAll('[data-editor-prop],[data-editor-color],[data-editor-photo],[data-editor-hint],[data-editor-action],[data-authoring-undo],[data-new-design],[data-ai-design],[data-editor-name],[data-element-label],[data-prepare-editable],[data-edit-pdf-text]'))n.disabled=disabled||(n.matches('[data-editor-prop],[data-editor-photo],[data-editor-color]')&&selected()?.technicalLocked===true);
   const undoButton=$('[data-authoring-undo]');if(undoButton)undoButton.disabled=disabled||!undo.length;
   const redoButton=$('[data-authoring-redo]');if(redoButton)redoButton.disabled=disabled||!redo.length;
@@ -69,8 +81,8 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
   if(state.katalogEditor){katalogProperties(o,d,geometry);return;}
   const rights=state.draft.elementRights[d.id][o.id],allowed=availableRights(o);
   const check=(key,text)=>`<label class="element-check"><input type="checkbox" data-element-right="${key}" data-design-id="${escape(d.id)}" data-object-id="${escape(o.id)}" data-right-allowed="${allowed[key]}" ${rights[key]?'checked':''} ${!allowed[key]?'disabled':''}>${text}</label>`;
-  let body=`<label>Designname<input data-editor-name value="${escape(d.name)}" maxlength="200" required></label>${d.importedSource?'<button type="button" data-prepare-editable>PDF / SVG in Elemente aufbereiten</button><p class="field-help">Texte, Bilder und Vektormotive getrennt bearbeiten. Das Original bleibt erhalten; die Aufbereitung wird zuerst als Entwurf angezeigt.</p>':''}<h3>${escape(label(o,d.objects.indexOf(o)))}</h3>`;
-  body+=`<label>Elementname<input data-element-label maxlength="80" value="${escape(label(o,d.objects.indexOf(o)))}" required></label>`;
+  let body=`<label class="editor-name-field">Designname<input data-editor-name value="${escape(d.name)}" maxlength="200" required></label>${d.importedSource?'<button type="button" data-prepare-editable>PDF / SVG in Elemente aufbereiten</button><p class="field-help">Texte, Bilder und Vektormotive getrennt bearbeiten. Das Original bleibt erhalten; die Aufbereitung wird zuerst als Entwurf angezeigt.</p>':''}<h3>${escape(label(o,d.objects.indexOf(o)))}</h3>`;
+  body+=`<label class="editor-name-field">Elementname<input data-element-label maxlength="80" value="${escape(label(o,d.objects.indexOf(o)))}" required></label>`;
   if(o.type==='motif'&&d.sourceElements?.find(e=>e.id===o.id)?.kind==='text')body+='<button type="button" data-edit-pdf-text>Text bearbeiten</button><p class="field-help">Die Originalschrift liegt als Kontur vor. Zum Ändern eine vollständige Werkstatt-Schrift wählen.</p>';
   if(o.type==='text'){
    const fonts=[...new Set([...Object.keys(state.draft.config.localResources.fonts),...libraryFonts.map(f=>f.id)])];
@@ -138,16 +150,24 @@ export function installProductEditor({state,api,markDirty,syncControls,showTab,o
  }
  function render(){
   if(!state.record)return;
-  if(productId!==state.record.id){productId=state.record.id;designId=state.draft.config.profile.defaultDesignId;objectId=null;options={};resetHistory();}
+  if(productId!==state.record.id){productId=state.record.id;designId=linkedEditorDesign(location.search,productId,designs(),state.draft.config.profile.defaultDesignId);objectId=null;options={};resetHistory();}
   if(recordRevision!==state.record.revision){recordRevision=state.record.revision;resetHistory();}
   if(!design())designId=state.draft.config.profile.defaultDesignId;
+  const quick=quickReviewRequested(location.search)&&!state.katalogEditor&&state.draft.config.profile.material.kind==='slate'&&designId.startsWith('katalog-');
+  document.body.classList.toggle('editing-review',quick);
+  const back=$('#review-gallery-back');if(back)back.href=reviewGalleryPath(designId);
+  if(quick){state.tab='designs';$('#record-title').textContent=design().name;$('#record-eyebrow').textContent='SCHNELL BEARBEITEN · '+designId.slice(8);}
   if(!selected())objectId=design()?.objects.find(o=>o.type==='photoSlot')?.id||design()?.objects[0]?.id;
   if(state.katalogEditor){
    libraryFonts=state.katalogEditor.fonts||[];options={};$('#editor-designs').replaceChildren();$('#editor-design-actions').replaceChildren();properties();clearTimeout(timer);preview();return;
   }
+  state.editorDesignId=designId;
+  const customerPreview=customerPreviewLink(state.record.id,state.record.revision,{designId});
+  for(const id of ['preview-link','customer-view']){const link=$('#'+id);if(link){link.href=customerPreview.href;link.target=customerPreview.target;}}
+  history.replaceState(null,'',merchantNavigation(editorDesignPath(location.search,productId,designId),location.href)+location.hash);
   refreshOptions();
-  $('#editor-designs').innerHTML=designs().map(d=>`<button type="button" data-editor-design="${escape(d.id)}" aria-pressed="${d.id===designId}"><img loading="lazy" ${merchantImageAttribute(`/api/workshop/products/${encodeURIComponent(state.record.id)}/preview.svg?revision=${state.record.revision}&designId=${encodeURIComponent(d.id)}`)} alt=""><span>${escape(d.name)}</span><small>${d.id===state.draft.config.profile.defaultDesignId?'Standarddesign':'Design'}</small></button>`).join('');
-  $('#editor-design-actions').innerHTML=`<button type="button" class="import-design-tile" data-design-action="import" data-design-id="${escape(designId)}">PDF / SVG importieren</button><button type="button" data-new-design>Eigenes Design anlegen</button><button type="button" data-ai-design="${escape(designId)}">Mit KI gestalten</button>`;
+  $('#editor-designs').innerHTML=quick?'':designs().map(d=>`<button type="button" data-editor-design="${escape(d.id)}" aria-pressed="${d.id===designId}"><img loading="lazy" ${merchantImageAttribute(`/api/workshop/products/${encodeURIComponent(state.record.id)}/preview.svg?revision=${state.record.revision}&designId=${encodeURIComponent(d.id)}`)} alt=""><span>${escape(d.name)}</span><small>${d.id===state.draft.config.profile.defaultDesignId?'Standarddesign':'Design'}</small></button>`).join('');
+  $('#editor-design-actions').innerHTML=quick?'':`<button type="button" class="import-design-tile" data-design-action="import" data-design-id="${escape(designId)}">PDF / SVG importieren</button><button type="button" data-new-design>Eigenes Design anlegen</button><button type="button" data-ai-design="${escape(designId)}">Mit KI gestalten</button>`;
   $('#workspace-design-count').textContent='('+designs().length+')';filterDesigns();
   const gSummary=state.draft.config.profile.geometry;
   $('#workspace-product').innerHTML=`<h3>${escape(state.draft.name)}</h3><p>Gemeinsames Hauptprodukt für ${designs().length} Designs · ${escape(gSummary.width)} × ${escape(gSummary.height)} mm</p><div class="design-gallery-actions"><button type="button" data-product-area="details">Schildgröße & Form</button><button type="button" data-product-area="prices">Optionen & Preise</button><button type="button" data-product-area="scene">Rohling & Hintergrund</button><button type="button" data-product-area="shopify">Shopify</button></div><p class="field-help">Die Vorschau zeigt das ausgewählte Design auf diesem Produkt. Alle Designs verwenden dieselbe Produktbasis.</p>`;

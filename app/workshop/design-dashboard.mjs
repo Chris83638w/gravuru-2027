@@ -269,6 +269,7 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
   const row={id:d.id,name:d.name,nameSheet:typeof j.nameSheet==='string'?j.nameSheet:null,source:'lieferform2',reihe:d.seriesFolder,formatreihe:series?.key??null,familyId:series?.familyId??null,series:series?{key:series.key,sizes:series.sizes}:null,
    material:typeof j.material==='string'?j.material:(ctx.materials.length===1?ctx.materials[0]:null),process:typeof j.process==='string'?j.process:(ctx.processes.length===1?ctx.processes[0]:null),form:typeof j.form==='string'&&j.form?j.form:null,
    plate:[d.plateMm[0],d.plateMm[1]],labelColor:null,selectable:true,hidden:j.hidden===true,released:d.released===true,freigabe:d.freigabe??null,bestseller:d.bestseller,
+   katalogPrio:j.katalog?.prio===1?1:null,
    production:{isProduction:false,hasVersion:exists(path.join(d.dir,'design-produktion.svg')),of:null},duplicate:null,
    texts:{count:texts.length,fonts:fonts.map(f=>f.name),sample:texts.map(t=>typeof t.text==='string'?t.text:'').filter(Boolean).slice(0,4)},fonts,fontsOriginal:Array.isArray(j.fontsOriginal)?j.fontsOriginal.filter(f=>typeof f==='string'):[],
    motifs:motifs.length,photos:Array.isArray(j.photos)?j.photos.length:0,themes:(d.themes||[]).map(id=>({id,name:themeName(id)})),
@@ -330,7 +331,7 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
  }
  const startDesignSummary=attachMainProducts(katalog,line,rows,{fonts});
  for(const row of rows)row.status=row.lieferform2?(row.reasons.length?'prüfen':'ok'):'fehlt';
- rows.sort((a,b)=>natural.compare(a.id,b.id));
+ rows.sort((a,b)=>(b.katalogPrio===1)-(a.katalogPrio===1)||natural.compare(a.id,b.id));
  const count=list=>{const c={total:list.length,ok:0,'prüfen':0,fehlt:0,selectable:0,lieferform2:0,bestandOnly:0,hidden:0,freigegeben:0};for(const r of list){c[r.status]++;if(r.released)c.freigegeben++;if(r.selectable)c.selectable++;if(r.lieferform2)c.lieferform2++;else if(r.source==='bestand')c.bestandOnly++;if(r.hidden)c.hidden++;}return c;};
  const groups=(key)=>{const m=new Map();for(const r of rows){const k=r[key]??'offen';if(!m.has(k))m.set(k,[]);m.get(k).push(r);}return [...m].sort((a,b)=>natural.compare(a[0],b[0])).map(([k,list])=>({key:k,counts:count(list)}));};
  const reihen=groups('reihe'),formatreihen=groups('formatreihe'),materials=groups('material');

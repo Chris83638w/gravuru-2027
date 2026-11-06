@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {privateTestEnvironment,testConfig} from './config.mjs';
+import {privateTestEnvironment,testConfig,verifyStorage,DATA_MARKER,markerValue} from './config.mjs';
 
 function fixture(t){
   const root=fs.mkdtempSync(path.join(os.tmpdir(),'g27-private-config-'));
@@ -40,4 +40,28 @@ test('invalid, oversized and unexpected content fails without logging content',t
 test('conflicting Plesk and file configuration fails closed',t=>{
   const f=fixture(t);
   assert.throws(()=>privateTestEnvironment({...f.env,GRAVURU_TEST_ORIGIN:'https://different.example'}),/Private Testkonfiguration/);
+});
+
+test('optional Schiefer gallery key is accepted without expanding other configuration keys',t=>{
+  const f=fixture(t);
+  const values={...f.values,GRAVURU_SLATE_REVIEW_PACKAGE:path.join(f.root,'gallery')};
+  f.write({...f.record,values});
+  assert.equal(testConfig(privateTestEnvironment(f.env)).slateReviewPackage,values.GRAVURU_SLATE_REVIEW_PACKAGE);
+  f.write({...f.record,values:{...values,GRAVURU_UNRELATED_PATH:'/unexpected'}});
+  assert.throws(()=>privateTestEnvironment(f.env),/Private Testkonfiguration/);
+});
+
+test('review comments, approvals, journals and mapping are allowed only in explicit review mode',t=>{
+  const f=fixture(t),config=testConfig(f.values);
+  fs.mkdirSync(config.data,{mode:0o700});
+  fs.writeFileSync(path.join(config.data,DATA_MARKER),JSON.stringify(markerValue(config,'private-test-data')),{mode:0o600});
+  for(const file of ['workshop.sqlite','review-comments.sqlite','review-approvals.sqlite','review-approvals.sqlite-wal','review-approvals.sqlite-shm','review-approvals.sqlite-journal','local-review-import.json'])fs.writeFileSync(path.join(config.data,file),'synthetic',{mode:0o600});
+  assert.throws(()=>verifyStorage(config),/Unerwarteter Inhalt/);
+  const review={...config,slateReviewPackage:path.join(f.root,'gallery')};
+  assert.doesNotThrow(()=>verifyStorage(review));
+  fs.chmodSync(path.join(config.data,'review-approvals.sqlite'),0o644);
+  assert.throws(()=>verifyStorage(review),/Unerwarteter Inhalt/);
+  fs.chmodSync(path.join(config.data,'review-approvals.sqlite'),0o600);
+  fs.writeFileSync(path.join(config.data,'other.sqlite'),'synthetic',{mode:0o600});
+  assert.throws(()=>verifyStorage(review),/Unerwarteter Inhalt/);
 });

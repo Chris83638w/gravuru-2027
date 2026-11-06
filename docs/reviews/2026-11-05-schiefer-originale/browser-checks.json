@@ -1,0 +1,62 @@
+{
+  "localOnly": true,
+  "shopifyWrites": 0,
+  "checks": [
+    {
+      "size": "GT-SN-RE-300X200",
+      "device": "desktop",
+      "designCount": 38,
+      "designSwitch": true,
+      "textEdit": true,
+      "templatePreserved": true,
+      "textFields": 3,
+      "errors": []
+    },
+    {
+      "size": "GT-SN-RE-300X200",
+      "device": "mobile",
+      "designCount": 38,
+      "designSwitch": true,
+      "textEdit": true,
+      "templatePreserved": true,
+      "textFields": 3,
+      "errors": []
+    },
+    {
+      "size": "GT-SN-RE-220X140",
+      "device": "desktop",
+      "designCount": 38,
+      "designSwitch": true,
+      "textEdit": true,
+      "templatePreserved": true,
+      "textFields": 3,
+      "errors": []
+    },
+    {
+      "size": "GT-SN-RE-220X140",
+      "device": "mobile",
+      "designCount": 38,
+      "designSwitch": true,
+      "textEdit": true,
+      "templatePreserved": true,
+      "textFields": 3,
+      "errors": []
+    },
+    {
+      "size": "GT-SN-RE-300X200",
+      "design": "GT-S-30x20-D220",
+      "originalPhotoAndMask": true,
+      "photoSlots": 1,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "size": "GT-SN-RE-220X140",
+      "design": "GT-S-30x20-D220",
+      "originalPhotoAndMask": true,
+      "photoSlots": 1,
+      "errors": [],
+      "failed": []
+    }
+  ]
+}

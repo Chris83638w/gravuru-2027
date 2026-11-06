@@ -7,7 +7,7 @@ document.addEventListener('securitypolicyviolation',event=>{
  if(['frame-src','frame-ancestors','child-src'].includes(event.effectiveDirective))startDiagnostics.policy.push(event.effectiveDirective);
 });
 function reportStartFailure(){
- const details={...startDiagnostics};
+ const details={...startDiagnostics,topFrame:window.top===window,ancestors:location.ancestorOrigins?.length||0,serviceWorker:!!navigator.serviceWorker?.controller};
  try{const doc=frame.contentWindow.document;details.document=doc.URL==='about:blank'?'about:blank':new URL(doc.URL).pathname;details.scripts=doc.scripts.length;details.readyState=doc.readyState;}
  catch(error){details.documentError=error.name;}
  const resource=performance.getEntriesByName(new URL('/editor.html',location.origin).href).at(-1);
@@ -55,6 +55,10 @@ try{
  $('title').textContent=context.originalId+' bearbeiten';$('target').textContent=context.material+' · '+context.mm.map(n=>n/10).join(' × ')+' cm · Stand '+context.revision;
  window.GravuruModelProfile=opened.model.legacy;window.UniversalConfig=opened.model.universal;
  window.GravuruGalleryEditor={context,photos:opened.photos};
+ const editorResponse=await fetch('/editor.html',{credentials:'same-origin',cache:'no-store'});
+ if(!editorResponse.ok)throw Error('Der Konfiguratorstart wurde abgewiesen (HTTP '+editorResponse.status+'). Bitte die Galerie erneut öffnen.');
+ await editorResponse.arrayBuffer();
+ console.info('Galerie-Konfi-Dokument geprüft',editorResponse.status);
  frame=document.createElement('iframe');frame.title='Vollständiger Konfigurator für '+context.originalId;frame.addEventListener('load',()=>{startDiagnostics.frameLoaded=true;});frame.src='/editor.html';$('editor').append(frame);
  startTimer=setTimeout(()=>{if(ready)return;reportStartFailure();status('Der Konfigurator konnte nicht vollständig geladen werden. Bitte die Galerie neu öffnen. Speichern bleibt bis zum vollständigen Laden gesperrt.',true);},20000);
 }catch(error){status(error.message,true);}

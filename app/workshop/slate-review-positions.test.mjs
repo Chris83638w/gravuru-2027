@@ -13,6 +13,7 @@ import {createSlateGalleryHandler} from '../../scripts/lib/slate-review-gallery.
 import {createPrivateTestProxy} from '../../ops/plesk/runtime.mjs';
 import {createSlateReviewComments} from '../../scripts/lib/slate-review-comments.mjs';
 import http from 'node:http';
+import {createSlateReviewPositions} from './slate-review-positions.mjs';
 
 function document(ids,width=300,height=200){
   const family=JSON.parse(fs.readFileSync(new URL('../designs/steel-door-signs/family.json',import.meta.url)));
@@ -104,4 +105,42 @@ test('inline positions use native renderer/CAS through authenticated HTTPS proxy
   assert.equal((await approve({...approveBody,expectedRevision:1})).status,409,'old preview cannot approve the edited design');
   const afterComments=await request('/originale/comments');assert.deepEqual(afterComments.data.comments,beforeComments);
   assert.deepEqual(JSON.parse(fs.readFileSync(mapping)).products,products,'import mapping is not rewritten');
+});
+
+test('explicit steel targets render and save native positions while material, source, format and revision gates remain closed', t => {
+  const originalId='TRE-V2A-8x3,5-D1',nativeDesignId='katalog-TRE-V2A-8x3-5-D1';
+  const family=JSON.parse(fs.readFileSync(new URL('../designs/steel-door-signs/family.json',import.meta.url)));
+  family.sizes=[structuredClone(family.sizes[0])];
+  Object.assign(family.sizes[0],{key:'GR-ES-RE-80X35-T15',widthMm:80,heightMm:35});
+  const config=familyProductConfig(family,family.sizes[0],1),seed=config.profile.designs[0];
+  seed.id=nativeDesignId;seed.katalog={designId:originalId};
+  Object.assign(seed.objects[0],{text:'Hallo',rotation:5,locked:true});
+  const other=structuredClone(seed);other.id='katalog-other';other.katalog.designId='OTHER';
+  config.profile.designs.push(other);config.profile.defaultDesignId=nativeDesignId;
+  const workshop=createWorkshop({filename:':memory:',seedConfig:config,legacy:{}});t.after(()=>workshop.close());
+  const record=workshop.repository.create(makeProductDocument(config));
+  const product={key:'steel:'+family.sizes[0].key,productId:record.id,reviewOnly:true,designIds:[originalId]};
+  const row={id:originalId,reviewMaterial:{key:'steel',label:'Edelstahl',kind:'steel'},targets:[{productKey:product.key,nativeDesignId,sizeKey:family.sizes[0].key,mm:[80,35],status:'prepared'}]};
+  const pack={schema:'gravuru-design-original-review/v1',reviewOnly:true,released:false,products:[product],originals:[row]};
+  const imported={localOnly:true,published:false,shopifyWrites:0,products:[product]};
+  const positions=createSlateReviewPositions({workshop,pack,imported});
+  const opened=positions.open(record.id,nativeDesignId);
+  assert.match(opened.svg,/data-object="text-1"/);assert.equal(opened.objects[0].movable,true);
+  assert.deepEqual(opened.geometry,{width:80,height:35});assert.match(opened.svg,/data:image\//);
+  assert.throws(()=>positions.open(record.id,'katalog-'+originalId),e=>e.status===404);
+  assert.throws(()=>positions.open(record.id,'katalog-other'),e=>e.status===404);
+  const expected=structuredClone(record.document),object=expected.config.profile.designs[0].objects[0];object.x+=0.5;
+  const input={productId:record.id,designId:nativeDesignId,expectedRevision:1,positions:[{objectId:object.id,x:object.x,y:object.y}]};
+  assert.throws(()=>positions.save({...input,positions:[{...input.positions[0],rotation:0}]}),e=>e.status===422);
+  assert.throws(()=>positions.save({...input,positions:[{...input.positions[0],x:1000}]}),e=>e.status===422);
+  const saved=positions.save(input);assert.equal(saved.revision,2);assert.match(saved.svg,/data-object="text-1"/);
+  assert.deepEqual(workshop.repository.get(record.id).document,expected,'only the requested x/y may change, including rotated locked source text');
+  assert.throws(()=>positions.save(input),e=>e.status===409);
+  assert.equal(positions.save({...input,expectedRevision:2}).revision,2);
+  for(const change of [r=>{r.reviewMaterial={key:'slate',label:'Schiefer',kind:'slate'};},r=>{r.targets[0].mm=[90,35];}]){
+    const changed=structuredClone(pack);change(changed.originals[0]);
+    assert.throws(()=>createSlateReviewPositions({workshop,pack:changed,imported}).open(record.id,nativeDesignId),e=>e.status===409);
+  }
+  const wrongSource=structuredClone(pack);wrongSource.originals[0].targets[0].nativeDesignId='katalog-other';
+  assert.throws(()=>createSlateReviewPositions({workshop,pack:wrongSource,imported}).open(record.id,'katalog-other'),e=>e.status===409);
 });

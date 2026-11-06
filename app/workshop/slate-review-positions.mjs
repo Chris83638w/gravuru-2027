@@ -1,4 +1,5 @@
 import {surfaceObjectIssue} from '../platform/sources/app/shared/models/design-content.mjs';
+import {validatedDesignReviewTargets} from '../../scripts/lib/design-review-targets.mjs';
 
 const fail=(status,code,message,extra={})=>{throw Object.assign(Error(message),{status,code,...extra});};
 const plain=value=>value!==null&&typeof value==='object'&&!Array.isArray(value);
@@ -11,25 +12,17 @@ const movable=object=>['text','motif','photoSlot','graphic'].includes(object.typ
 // mutable; no full document, text, resource, price or comment comes from the UI.
 export function createSlateReviewPositions({workshop,pack,imported}){
   if(!workshop?.repository||typeof workshop.editorPreview!=='function'||workshop.sessionContext)throw Error('Private native workshop required');
-  if(pack?.schema!=='gravuru-slate-original-review/v1'||pack.reviewOnly!==true||pack.released!==false||imported?.localOnly!==true||imported.published!==false||imported.shopifyWrites!==0)throw Error('Unpublished local review mapping required');
-  const allowed=new Map(),originals=new Map(pack.originals.map(row=>[row.id,row]));
-  for(const product of imported.products){
-    const baseline=pack.products.find(row=>row.key===product.key);
-    if(!baseline||product.reviewOnly!==true||!Array.isArray(product.designIds)||allowed.has(product.productId))throw Error('Invalid review product mapping');
-    const designs=new Map();
-    for(const originalId of product.designIds){
-      const original=originals.get(originalId);
-      if(!original||!baseline.designIds.includes(originalId))throw Error('Unknown imported review design');
-      const target=(original.targets||[]).find(row=>row.status==='prepared'&&product.key.startsWith(row.sizeKey+':'));
-      if(target&&Array.isArray(target.mm)&&target.mm.length===2&&target.mm.every(value=>Number.isFinite(value)&&value>0))designs.set('katalog-'+originalId,target.mm);
-    }
-    allowed.set(product.productId,designs);
+  const allowed=new Map();
+  for(const target of validatedDesignReviewTargets(pack,imported)){
+    if(!allowed.has(target.productId))allowed.set(target.productId,new Map());
+    allowed.get(target.productId).set(target.designId,target);
   }
   const select=(productId,designId)=>{
-    const mm=allowed.get(productId)?.get(designId);
-    if(!mm)fail(404,'review_target_missing','Diese vorbereitete Vorlage gehört nicht zu diesem Format.');
+    const target=allowed.get(productId)?.get(designId);
+    if(!target)fail(404,'review_target_missing','Diese vorbereitete Vorlage gehört nicht zu diesem Format.');
+    const {mm,material}=target;
     const record=workshop.repository.get(productId),document=record.document,profile=document.config?.profile,design=profile?.designs?.find(row=>row.id===designId);
-    if(!design||profile.material?.kind!=='slate'||document.config.reviewOnly!==true||Math.abs(profile.geometry.width-mm[0])>1e-6||Math.abs(profile.geometry.height-mm[1])>1e-6)fail(409,'review_target_changed','Die Vorlage oder ihr Format wurde geändert. Bitte die Übersicht neu laden.');
+    if(!design||profile.material?.kind!==material.kind||document.config.reviewOnly!==true||Math.abs(profile.geometry.width-mm[0])>1e-6||Math.abs(profile.geometry.height-mm[1])>1e-6||material.key!=='slate'&&design.katalog?.designId!==target.originalId)fail(409,'review_target_changed','Die Vorlage oder ihr Format wurde geändert. Bitte die Übersicht neu laden.');
     return {record,design};
   };
   const response=(record,designId,rendered)=>{

@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
-import {slateReviewCategory} from './slate-review-catalog.mjs';
+import {designReviewMaterial, designReviewCategory, designReviewApprovalKey, resolveDesignReviewTarget, validatedDesignReviewTargets} from './design-review-targets.mjs';
 import {nativeDesignReviewFingerprint} from './design-review-approvals.mjs';
 
 // Catalogue size keys include the material/family. They survive a repeat import
@@ -12,12 +12,12 @@ export const reviewSizeLabel = mm => Array.isArray(mm) ? mm.map(n => Number((n /
 
 export function slateReviewApprovalTargets(pack, imported) {
   return pack.originals.flatMap(row => {
-    const category = slateReviewCategory(row);
+    const category = designReviewCategory(row), material = designReviewMaterial(row);
     return (row.targets?.length ? row.targets : [{mm: row.sourcePlateMm}]).map(target => {
-      const product = target.status === 'prepared' && imported.products.find(p => p.key.startsWith(target.sizeKey + ':') && p.designIds.includes(row.id));
-      return {key: slateReviewApprovalKey(row.id, target.sizeKey), id: row.id, categoryKey: category.key, categoryLabel: category.label,
-        material: 'Schiefer', format: reviewSizeLabel(target.mm), sizeKey: target.sizeKey || null, mm: target.mm,
-        productId: product?.productId || null, designId: 'katalog-' + row.id,
+      const resolved = resolveDesignReviewTarget(row, target, imported);
+      return {key: designReviewApprovalKey(row, target.sizeKey), id: row.id, categoryKey: category.key, categoryLabel: category.label,
+        material: material.label, materialKey: material.key, materialKind: material.kind, format: reviewSizeLabel(target.mm), sizeKey: target.sizeKey || null, mm: target.mm,
+        productId: resolved?.productId || null, productKey: resolved?.productKey || null, designId: resolved?.designId || target.nativeDesignId || 'katalog-' + row.id,
         reason: target.reason || row.reason || row.error || 'Konfi-Aufbereitung noch offen.'};
     });
   });
@@ -48,6 +48,7 @@ function rendererSignature() {
 }
 
 export function createSlateApprovalTargetSource({pack, imported, workshop}) {
+  if (workshop) validatedDesignReviewTargets(pack, imported);
   const targets = slateReviewApprovalTargets(pack, imported), byKey = new Map(targets.map(t => [t.key, t]));
   if (byKey.size !== targets.length) throw Error('Duplicate review target');
   const records = new Map(), fingerprints = new Map(), rendererVersion = rendererSignature();
@@ -69,13 +70,14 @@ export function createSlateApprovalTargetSource({pack, imported, workshop}) {
       try {
         if (!records.has(target.productId)) records.set(target.productId, workshop.repository.get(target.productId));
         const record = records.get(target.productId), profile = record.document.config?.profile;
-        if (record.status === 'archived' || record.document.config.reviewOnly !== true || profile?.material?.kind !== 'slate' ||
+        if (record.status === 'archived' || record.document.config.reviewOnly !== true || profile?.material?.kind !== target.materialKind ||
             !target.mm || Math.abs(profile.geometry.width - target.mm[0]) > 1e-6 || Math.abs(profile.geometry.height - target.mm[1]) > 1e-6)
           throw Error('Vorlage oder Format ist nicht mehr mit diesem Prüfstand verbunden.');
         metadata.productRevision = record.revision;
         // Native revisions and SHA-addressed assets are immutable. Reuse their
         // proven fingerprint; a save gets a new revision and is hashed again.
         const design = profile.designs.find(d => d.id === target.designId);
+        if (!design || target.materialKey !== 'slate' && design.katalog?.designId !== target.id) throw Error('Native source identity changed');
         const localFonts = design?.objects.filter(o => o.type === 'text').every(o => Object.hasOwn(record.document.config.localResources.fonts, o.font));
         let cached = localFonts && fingerprints.get(key);
         if (!cached || cached.revision !== record.revision) {

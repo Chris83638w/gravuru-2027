@@ -2,7 +2,7 @@
   "schema": "gravuru-slate-chat-review/v1",
   "startedOn": "2026-11-06",
   "catalogueCommit": "dc0a0f6c2d59a93cbe2727709e0657e5d1697b06",
-  "packageManifestSha256": "8dd3466f7aeba8f083ca0cd250ea72d10286573f53f9af4b7cfb485a0f53f216",
+  "packageManifestSha256": "8914ccc84c9b0adb6749ca150834453721df9d7bb00cb813a98ce9e57f09e24e",
   "scope": "Bildfreigabe der angezeigten Vorlage in beiden Groessen; keine Live- oder Bestellfreigabe.",
   "ordering": "Vorbereitete Tiergedenkdesigns ohne Foto zuerst, danach weitere vorbereitete Originale und die unvollstaendigen Originale. Alle 180 bleiben im Stapel.",
   "currentId": "GT-S-30x20-D250",
@@ -16,6 +16,19 @@
       "manifestSha256": "8dd3466f7aeba8f083ca0cd250ea72d10286573f53f9af4b7cfb485a0f53f216",
       "preparedBothSizes": 144,
       "openOriginals": 36
+    },
+    {
+      "date": "2026-11-06",
+      "type": "process-correction",
+      "ids": [
+        "GTSK-S-30x20-D2",
+        "GTSK-S-30x20-D4"
+      ],
+      "from": "Gravur",
+      "to": "UV",
+      "userStatement": "mit gelben sternen",
+      "previousManifestSha256": "8dd3466f7aeba8f083ca0cd250ea72d10286573f53f9af4b7cfb485a0f53f216",
+      "manifestSha256": "8914ccc84c9b0adb6749ca150834453721df9d7bb00cb813a98ce9e57f09e24e"
     }
   ],
   "entries": [
@@ -3733,11 +3746,13 @@
       "id": "GTSK-S-30x20-D2",
       "group": "Sternenkinder",
       "subcategory": "Sternenkind",
-      "process": "Gravur",
+      "process": "UV",
       "preparedBothSizes": false,
       "decision": "pending",
       "targets": [],
-      "notes": []
+      "notes": [
+        "Chris: gelbe Sterne sind Druck. Originalvorschau visuell bestätigt; Druckaufbereitung bleibt offen."
+      ]
     },
     {
       "position": 179,
@@ -3766,11 +3781,13 @@
       "id": "GTSK-S-30x20-D4",
       "group": "Sternenkinder",
       "subcategory": "Sternenkind",
-      "process": "Gravur",
+      "process": "UV",
       "preparedBothSizes": false,
       "decision": "pending",
       "targets": [],
-      "notes": []
+      "notes": [
+        "Chris: gelbe Sterne sind Druck. Originalvorschau visuell bestätigt; Druckaufbereitung bleibt offen."
+      ]
     }
   ],
   "preparedCodeBranch": "dev/astra-schiefer-originale-20261105",

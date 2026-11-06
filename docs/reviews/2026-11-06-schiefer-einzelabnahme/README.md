@@ -13,3 +13,5 @@ Bild: [D250 im Vergleich](../2026-11-05-schiefer-originale/beispiel-D250.png). P
 Kein main-Merge, kein Hostimport und keine Shopify-/Live-Aenderung. Die spaetere Shop-Produktbindung und Freigabe bleiben separat.
 
 Aktualisiert am 06.11.: Fotokorrekturen nach Chris' Auftrag und bearbeitbare Galerie unter http://127.0.0.1:8996/originale/. Beide Groessen werden einzeln bearbeitet. Bei spaeteren Aenderungen im Editor vor dem Bild-OK die aktuellen gespeicherten Designs samt Fotoressourcen neu exportieren und deren Hashes an die Entscheidung binden; das Paketmanifest beschreibt nur den Ausgangsstand. Keine Freigabe durch Speichern. [Aktuelle Uebergabe](../../handoffs/2026-11-06-schiefer-fotos-bearbeitung-astra.md).
+
+Nachtrag gelbe Sterne: GTSK-D2 und GTSK-D4 sind UV-Druck; keine Bildfreigabe. Aktuelles Ausgangspaket v4-drucksterne, 154 Gravur/26 UV. [Korrektur und neue Paketadresse](../../handoffs/2026-11-06-schiefer-gelbe-sterne-astra.md).

@@ -16,6 +16,7 @@ import {originalPreview} from './lib/slate-original-preview.mjs';
 import {assessDesignTarget} from '../app/workshop/design-target-rules.mjs';
 import {galleryOrder} from '../app/configurator/variant-m/design-gallery-model.mjs';
 import {customerLayoutIssue} from '../app/configurator/variant-m/contract.mjs';
+import {correctSlateProcesses} from './lib/slate-process-corrections.mjs';
 const args=process.argv.slice(2),get=k=>args[args.indexOf(k)+1];
 for(const k of ['--katalog','--out'])if(!args.includes(k))throw Error(k+' required');
 const root=path.resolve(get('--katalog')),out=path.resolve(get('--out'));
@@ -24,7 +25,7 @@ const hash=x=>createHash('sha256').update(typeof x==='string'||Buffer.isBuffer(x
 const write=(p,x)=>{fs.mkdirSync(path.dirname(p),{recursive:true});fs.writeFileSync(p,JSON.stringify(x,null,2)+'\n');};
 const katalog=openKatalog(root),family=katalog.families.get('schiefer-tafeln-natur');
 if(!family)throw Error('Natural slate family missing');
-const sourceRows=read(path.join(out,'source-inventory.json'));
+const sourceRows=correctSlateProcesses(read(path.join(out,'source-inventory.json')),read(new URL('./data/slate-process-corrections-20261106.json',import.meta.url)));
 const assets=createDesignAssetStore({filename:path.join(out,'design-assets.sqlite')});
 const repository=createProductRepository({filename:path.join(out,'workshop.sqlite'),validateDocument:validateProductDocument});
 const fontResources={},groups=new Map();

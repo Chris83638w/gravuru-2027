@@ -42,8 +42,8 @@ try{
   if(r.process==='UV'){
    const product=path.join(data,'originals',r.id,'product.json');
    const references=fs.existsSync(product)?read(product).views.flatMap(v=>v.elements.filter(e=>e.type==='image').map(e=>e.source)):[];
-   row.missingFiles=fs.existsSync(product)?[...new Set(references.filter(s=>!s.startsWith('data:')&&!fs.existsSync(path.join(data,'originals',r.id,s))))]:['product.json (only flattened original available)'];
-   row.status='open';row.reason='UV source is incomplete; editable original print layers cannot be reconstructed exactly.';
+   row.missingFiles=fs.existsSync(product)?[...new Set(references.filter(s=>!s.startsWith('data:')&&!fs.existsSync(path.join(data,'originals',r.id,s))))]:r.files.some(f=>f.name==='design.svg')?[]:['product.json (only flattened original available)'];
+   row.status='open';row.reason=row.reason||'UV source is incomplete; editable original print layers cannot be reconstructed exactly.';
   }
   pack.originals.push(row);
  }

@@ -1,5 +1,7 @@
 # Schiefer: thematische Fotos und bearbeitbare Galerie
 
+**Nachtrag:** Zwei kleine gelbe Sternmotive wurden beim ersten Farbscan übersehen. D2/Tabea und D4/Lara sind jetzt Druck. Aktuell 154 Gravur/26 Druck, davon 10/26 offen; neues Paket v4. [Verbindlicher Korrekturstand](2026-11-06-schiefer-gelbe-sterne-astra.md). Die folgenden Verfahrenszahlen beschreiben den vorherigen Stand.
+
 Chris am 06.11.2026: Vorhandene Masken mit thematisch passenden Fotos füllen, farbige Vorlagen als Druck behandeln und Vorlagen bearbeiten können. Schiefer-only, Neue-Struktur-Originale, weiterhin eigene PR #180; kein Merge, Hostimport, Shopify-Schreibzugriff oder Livegang.
 
 ## Ergebnis

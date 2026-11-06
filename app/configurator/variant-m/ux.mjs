@@ -5,6 +5,7 @@ import {executionHeading} from './execution-registry.mjs';
 import {installReviewLayout} from './review-layout.mjs';
 import {installProductDesignGallery} from './product-design-gallery.mjs';
 import {installViewZoom} from './view-zoom.mjs';
+import {installFixedToolsPreview} from './fixed-tools-preview.mjs';
 import {installMotifTileFit} from './motif-tile-fit.mjs';
 import {installUxDetails} from './ux-details.mjs';
 import {installDecisionHelp} from './decision-help.mjs';
@@ -530,6 +531,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   installModernMotifBrowser({r,el});
   const navigation=document.createElement('style');const navigationResponse=await fetch('/configurator/variant-m/modern-navigation.css');
   if(!navigationResponse.ok)throw Error('Aktuelle Konfigurator-Navigation fehlt.');navigation.textContent=await navigationResponse.text();r.append(navigation);
+  await installFixedToolsPreview({el,r,config});
   // All customer UI and its styles are ready before the first DOM insertion.
   // A connectedCallback replay is harmless: the reference component has a ready guard.
   attach?.();

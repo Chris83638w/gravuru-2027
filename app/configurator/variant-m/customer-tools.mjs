@@ -75,7 +75,7 @@ export async function installCustomerTools(api){
  const overlapNote=document.createElement('p');overlapNote.className='ux-overlap-note';overlapNote.hidden=true;overlapNote.setAttribute('role','status');overlapNote.textContent='Elemente überlagern sich.';$('.stage').append(overlapNote);
  function placeOverlapNote(){
   const stage=$('.stage').getBoundingClientRect(),scene=$('.scene')?.getBoundingClientRect();if(!scene)return;
-  const size=$('.ux-photo-size'),zoom=$('.ux-view-zoom'),controls=[size,zoom].filter(n=>n&&!n.hidden).map(n=>n.getBoundingClientRect().top-stage.top),limit=(controls.length?Math.min(...controls):stage.height)-21;
+  const size=$('.ux-photo-size'),zoom=$('.ux-view-zoom'),controls=[size,zoom].filter(n=>n&&!n.hidden&&!el.uxFixedToolsHost).map(n=>n.getBoundingClientRect().top-stage.top),rail=$('.ux-fixed-tools'),limit=(el.uxFixedToolsHost&&matchMedia('(max-width:767px)').matches?rail.getBoundingClientRect().top-stage.top:controls.length?Math.min(...controls):stage.height)-21;
   const dimension=$('.stage .dimension-x span')?.getBoundingClientRect();
   overlapNote.style.top=Math.max(0,Math.min((dimension?.height?dimension.bottom:scene.bottom+37)-stage.top+4,limit))+'px';
  }

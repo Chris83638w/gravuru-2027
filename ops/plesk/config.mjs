@@ -8,6 +8,7 @@ export const PYTHON_MARKER='.gravuru-test-python.json';
 export const fail=message=>{throw Error(message);};
 const within=(root,file)=>file===root||file.startsWith(root+path.sep);
 const PRIVATE_ENV_KEYS=['GRAVURU_TEST_ORIGIN','GRAVURU_PRIVATE_DATA_DIR','GRAVURU_TEST_PYTHON_DIR','GRAVURU_BOOTSTRAP_PYTHON','GRAVURU_TEST_USERNAME','GRAVURU_TEST_PASSWORD'];
+const OPTIONAL_PRIVATE_ENV_KEYS=['GRAVURU_SLATE_REVIEW_PACKAGE'];
 // Plesk's npm runner does not inherit application variables. A separately
 // uploaded private file lets that runner and the app use the same configuration.
 export function privateTestEnvironment(env){
@@ -24,7 +25,7 @@ export function privateTestEnvironment(env){
     const record=JSON.parse(fs.readFileSync(fd,'utf8'));
     if(record.schema!==1||record.purpose!=='private-test-runtime'||!record.values||Array.isArray(record.values))throw Error();
     const keys=Object.keys(record.values);
-    if(keys.length!==PRIVATE_ENV_KEYS.length||keys.some(key=>!PRIVATE_ENV_KEYS.includes(key)||typeof record.values[key]!=='string'||record.values[key].length>512))throw Error();
+    if(PRIVATE_ENV_KEYS.some(key=>!keys.includes(key))||keys.some(key=>![...PRIVATE_ENV_KEYS,...OPTIONAL_PRIVATE_ENV_KEYS].includes(key)||typeof record.values[key]!=='string'||record.values[key].length>512))throw Error();
     if(keys.some(key=>env[key]!==undefined&&env[key]!==record.values[key]))throw Error();
     return {...env,...record.values};
   }catch{fail('Private Testkonfiguration fehlt oder ist ungültig: eigener Ordner 0700, Datei 0600, keine Symlinks; keine Werte protokollieren.');}
@@ -44,8 +45,10 @@ export function testConfig(env,{credentials=true}={}){
   if(origin.protocol!=='https:'||origin.origin!==env.GRAVURU_TEST_ORIGIN||origin.username||origin.password||!origin.hostname.includes('.')||!/^[a-z0-9.-]+$/.test(origin.hostname)||/^[0-9.]+$/.test(origin.hostname)||['gravuru-designwerkstatt.de','www.gravuru-designwerkstatt.de','gravuru.highspeed.cloud'].includes(origin.hostname))fail('GRAVURU_TEST_ORIGIN: eigene HTTPS-Testadresse ohne Pfad verwenden; Live-Adressen sind gesperrt.');
   const data=externalPath(env.GRAVURU_PRIVATE_DATA_DIR,'GRAVURU_PRIVATE_DATA_DIR'),pythonDir=externalPath(env.GRAVURU_TEST_PYTHON_DIR,'GRAVURU_TEST_PYTHON_DIR');
   if(within(data,pythonDir)||within(pythonDir,data))fail('Daten und Python benötigen getrennte Verzeichnisse.');
+  const slateReviewPackage=env.GRAVURU_SLATE_REVIEW_PACKAGE===undefined?undefined:externalPath(env.GRAVURU_SLATE_REVIEW_PACKAGE,'GRAVURU_SLATE_REVIEW_PACKAGE');
+  if(slateReviewPackage&&[data,pythonDir].some(folder=>within(folder,slateReviewPackage)||within(slateReviewPackage,folder)))fail('Schiefer-Galerie, Daten und Python benötigen getrennte Verzeichnisse.');
   if(credentials&&(!/^[A-Za-z0-9._-]{1,64}$/.test(env.GRAVURU_TEST_USERNAME||'')||! /^[\x20-\x7e]{24,200}$/.test(env.GRAVURU_TEST_PASSWORD||'')))fail('GRAVURU_TEST_USERNAME und eigenes GRAVURU_TEST_PASSWORD (24–200 Zeichen) sicher in Plesk hinterlegen.');
-  return {origin:origin.origin,host:origin.host,data,pythonDir,python:path.join(pythonDir,'bin/python'),username:env.GRAVURU_TEST_USERNAME,password:env.GRAVURU_TEST_PASSWORD};
+  return {origin:origin.origin,host:origin.host,data,pythonDir,python:path.join(pythonDir,'bin/python'),username:env.GRAVURU_TEST_USERNAME,password:env.GRAVURU_TEST_PASSWORD,slateReviewPackage};
 }
 export const markerValue=(config,purpose)=>({schema:1,purpose,origin:config.origin});
 export function verifyDirectory(directory,marker,expected){
@@ -59,6 +62,8 @@ export function verifyStorage(config){
   verifyDirectory(config.data,DATA_MARKER,markerValue(config,'private-test-data'));
   for(const entry of fs.readdirSync(config.data,{withFileTypes:true})){
     if(entry.name===DATA_MARKER)continue;
-    if(!/^(?:(workshop|profiles|design-assets)\.sqlite(?:-(?:wal|shm|journal))?|\.runtime\.lock)$/.test(entry.name)||!entry.isFile()||entry.isSymbolicLink()||fs.statSync(path.join(config.data,entry.name)).mode&0o077)fail('Unerwarteter Inhalt oder nicht private Datei in der Testablage. Keine Bestandsdaten übernehmen.');
+    const standard=/^(?:(workshop|profiles|design-assets)\.sqlite(?:-(?:wal|shm|journal))?|\.runtime\.lock)$/.test(entry.name);
+    const review=config.slateReviewPackage&&/^(?:review-comments\.sqlite(?:-(?:wal|shm|journal))?|local-review-import\.json)$/.test(entry.name);
+    if(!(standard||review)||!entry.isFile()||entry.isSymbolicLink()||fs.statSync(path.join(config.data,entry.name)).mode&0o077)fail('Unerwarteter Inhalt oder nicht private Datei in der Testablage. Keine Bestandsdaten übernehmen.');
   }
 }

@@ -10,6 +10,7 @@ import {installNativeProduction} from './native-production-ui.mjs';
 import {installProductOptions} from './product-options-ui.mjs';
 import {productCards,installOverview} from './product-overview-ui.mjs';
 import {installProductEditor} from './product-editor-ui.mjs';
+import {linkedEditorDesign,editorDesignPath,reviewGalleryPath} from './editor-design-link.mjs';
 import {katalogEditorRequest,installKatalogEditor} from './katalog-editor-ui.mjs';
 import {installCustomerFields} from './customer-fields-ui.mjs';
 import {installDesignImport,importedDesignInfo} from './design-import-ui.mjs';
@@ -108,10 +109,7 @@ function applyRecord(record){
  steelOptions?.reset();const switched=state.record?.id!==record.id;state.record=record;state.draft=clone(record.document);state.dirty=false;state.history=[];state.historyError=null;++state.historyRequest;state.historyLoading=false;if(switched)state.tab='designs';document.body.classList.add('editing-product');
  $('#conflict-banner').hidden=true;$('#editor-section').hidden=false;$('.overview').hidden=true;$('.page-heading').hidden=true;
  renderEditor();renderList();syncControls();
- const selection=new URLSearchParams({configuration:record.id});
- if(state.editorDesignId)selection.set('design',state.editorDesignId);
- if(new URLSearchParams(location.search).get('reviewGallery')==='1')selection.set('reviewGallery','1');
- history.replaceState(null,'',merchantNavigation('/werkstatt/?'+selection,location.href));
+ history.replaceState(null,'',merchantNavigation(editorDesignPath(location.search,record.id,state.editorDesignId),location.href));
 }
 async function loadRecord(id,{checkDirty=true}={}){
  if(state.katalogEditor)return;
@@ -271,8 +269,8 @@ async function mutateRecord(action,body){
 }
 async function save(){
  if(state.katalogEditor)return katalogEditor.save();
- if(!state.record||state.busy||!state.dirty)return;setBusy(true);
- try{await steelOptions?.applyPending();if(!validateEditor())return;const record=recordFrom(await api('/api/workshop/products/'+encodeURIComponent(state.record.id),{method:'PATCH',body:{expectedRevision:state.record.revision,document:state.draft}}));applyRecord(record);await Promise.all([loadList(),loadHistory()]);notify('Gespeichert. Stand '+record.revision+' ist jetzt in der Vorschau verfügbar.');}
+ if(!state.record||state.busy)return false;if(!state.dirty)return true;setBusy(true);
+ try{await steelOptions?.applyPending();if(!validateEditor())return false;const record=recordFrom(await api('/api/workshop/products/'+encodeURIComponent(state.record.id),{method:'PATCH',body:{expectedRevision:state.record.revision,document:state.draft}}));applyRecord(record);await Promise.all([loadList(),loadHistory()]);notify('Gespeichert. Stand '+record.revision+' ist jetzt in der Vorschau verfügbar.');return true;}
  catch(error){mutationError(error);}finally{setBusy(false);}
 }
 function openCreate(mode='seed'){
@@ -324,6 +322,11 @@ $('#product-form').addEventListener('change',event=>{
  if(input.dataset.profileMode){const key=input.dataset.profileMode;state.draft.profileAssignments??={};state.draft.profileAssignments[key]={mode:input.value,profileId:input.value==='override'?state.draft.profileAssignments[key]?.profileId||null:null};const field=$('[data-profile-id="'+key+'"]');field.required=input.value==='override';field.value=state.draft.profileAssignments[key].profileId||'';markDirty();}
 });
 document.addEventListener('click',async event=>{
+ const reviewBack=event.target.closest('#review-gallery-back');
+ if(reviewBack){
+  if(state.busy){event.preventDefault();return;}
+  if(!event.ctrlKey&&!event.metaKey&&!event.shiftKey&&!event.altKey){event.preventDefault();if(await canDiscard()){state.dirty=false;location.assign(reviewBack.href);}return;}
+ }
  if(state.katalogEditor){
   const action=event.target.closest('[data-action]')?.dataset.action;
   if(action&&!['overview','save','reload-record','close-dialog'].includes(action)||event.target.closest('[data-design-action],[data-product-id],[data-restore],[data-compare-revision],[data-filter]')){event.preventDefault();return;}
@@ -346,6 +349,7 @@ document.addEventListener('click',async event=>{
   if(action==='save-separate')openCreate('separate');
   if(action==='close-dialog')button.closest('dialog')?.close();
   if(action==='save')await save();
+  if(action==='review-save-return'&&document.body.classList.contains('editing-review')){if(await save())location.assign(reviewGalleryPath(state.editorDesignId));return;}
   if(action==='refresh')await loadList();
   if(action==='reload-history'){if(state.busy||state.historyLoading)return;await loadHistory();}
   if(action==='refresh-profiles'){await loadProfiles();notify('Profilbibliothek aktualisiert. Deine Produktänderungen bleiben erhalten.');}
@@ -383,5 +387,5 @@ document.addEventListener('workshop-session-restored',async event=>{
  try{await Promise.all([loadList(),loadProfiles()]);notify('Verbindung wiederhergestellt. Produkte und Profile sind geladen.');}catch(error){notify(errorMessage(error),'error');}
 });
 (async()=>{try{if(state.katalogEditor){const session=await api('/api/workshop/session');state.csrf=session.csrfToken;state.session=session;await katalogEditor.load();return;}const [session]=await Promise.all([api('/api/workshop/session'),loadList(),loadProfiles().catch(error=>notify('Profilbibliothek noch nicht geladen: '+errorMessage(error),'info'))]);state.csrf=session.csrfToken;state.session=session;renderList();const search=new URL(location.href).searchParams,id=search.get('configuration');if(id)await loadRecord(id,{checkDirty:false});
-// Design-Dashboard (/werkstatt/designs/): `&design=<Vorlagen-ID>` springt zur Designkarte des geladenen Produkts.
-const focusDesign=search.get('design');if(id&&focusDesign&&state.record){const pick=$$('[data-editor-design]').find(node=>node.dataset.editorDesign===focusDesign);if(pick){pick.click();pick.scrollIntoView({block:'nearest'});}else notify('Design „'+focusDesign+'“ ist in diesem Produktstand nicht enthalten.','info');}}catch(error){notify(errorMessage(error),'error');$('#product-list').innerHTML='<p class="empty-state">Die Werkstatt konnte noch nicht geladen werden. Über „Aktualisieren“ kannst du es erneut versuchen.</p>';}})();
+// Selection is already resolved from product data; quick review intentionally has no design tiles.
+const focusDesign=search.get('design');if(id&&focusDesign&&state.record){if(linkedEditorDesign(search,state.record.id,state.draft.config.profile.designs,null)){$$('[data-editor-design]').find(node=>node.dataset.editorDesign===focusDesign)?.scrollIntoView({block:'nearest'});}else notify('Design „'+focusDesign+'“ ist in diesem Produktstand nicht enthalten.','info');}}catch(error){notify(errorMessage(error),'error');$('#product-list').innerHTML='<p class="empty-state">Die Werkstatt konnte noch nicht geladen werden. Über „Aktualisieren“ kannst du es erneut versuchen.</p>';}})();

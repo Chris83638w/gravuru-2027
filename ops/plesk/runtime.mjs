@@ -19,7 +19,7 @@ export async function createPrivateTestRuntime(env){
   process.umask(0o077);process.env.GRAVURU_PYTHON=config.python;
   // Server-owned Python environment only; never inherit packages from the development checkout.
   delete process.env.PYTHONPATH;
-  const lock=await lockTestData(config);let workshop,inner;
+  const lock=await lockTestData(config);let workshop,inner,gallery;
   try{
     build();const seed=JSON.parse(fs.readFileSync(path.join(OUTPUT,'models.json')))[0];
     // LiteSpeed may recycle an idle process while a protected editor stays open.
@@ -27,12 +27,27 @@ export async function createPrivateTestRuntime(env){
     // Password/user/origin changes rotate it; Basic auth remains mandatory.
     const operatorCsrfToken=createHmac('sha256',config.password).update(JSON.stringify(['gravuru-private-test-csrf/v1',config.origin,config.username])).digest('hex');
     workshop=createWorkshop({filename:path.join(config.data,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy,operatorCsrfToken});
-    inner=createPreviewServer({workshop});inner.once('close',()=>{workshop.close();lock.stdin.end();});
+    inner=createPreviewServer({workshop});
+    if(config.slateReviewPackage){
+      const {attachSlateReviewGallery}=await import('./slate-review-runtime.mjs');
+      const csrfToken=createHmac('sha256',config.password).update(JSON.stringify(['gravuru-private-slate-review-csrf/v1',config.origin,config.username])).digest('hex');
+      gallery=attachSlateReviewGallery(inner,config,{csrfToken});
+    }
+    inner.once('close',()=>{gallery?.close();workshop.close();lock.stdin.end();});
     // LiteSpeed replaces HTTP listen/address to capture the public app socket.
     // This private server must keep a real loopback socket and its own address.
     inner.address=net.Server.prototype.address;
     net.Server.prototype.listen.call(inner,0,'127.0.0.1');await once(inner,'listening');
-  }catch(error){workshop?.close();lock.stdin.end();throw error;}
+  }catch(error){gallery?.close();workshop?.close();lock.stdin.end();throw error;}
+  const server=createPrivateTestProxy(config,inner);
+  server.once('close',()=>{inner.close();inner.closeAllConnections();});
+  lock.once('exit',()=>{server.close();server.closeAllConnections();inner.close();inner.closeAllConnections();});
+  return server;
+}
+
+// Exported separately so the external authentication boundary can be tested
+// without starting or locking a real workshop database.
+export function createPrivateTestProxy(config,inner){
   const port=inner.address().port,expected=digest(config.username+':'+config.password);
   const server=http.createServer((req,res)=>{
     res.setHeader('Cache-Control','private, no-store');res.setHeader('X-Robots-Tag','noindex, nofollow, noarchive');res.setHeader('Referrer-Policy','no-referrer');
@@ -46,7 +61,7 @@ export async function createPrivateTestRuntime(env){
       res.setHeader('Content-Type','application/json');return res.end(req.method==='HEAD'?undefined:JSON.stringify({ready:true,scope:'private-operator-test',shopifyConnected:false}));
     }
     const headers={host:'127.0.0.1:'+port};
-    for(const name of ['accept','accept-language','content-type','content-length','cookie','x-gravuru-csrf','x-gravuru-draft','sec-fetch-site','sec-fetch-mode','sec-fetch-dest'])if(req.headers[name]!==undefined)headers[name]=req.headers[name];
+    for(const name of ['accept','accept-language','content-type','content-length','cookie','x-gravuru-csrf','x-gravuru-draft','x-slate-review-csrf','sec-fetch-site','sec-fetch-mode','sec-fetch-dest'])if(req.headers[name]!==undefined)headers[name]=req.headers[name];
     if(req.headers.origin)headers.origin='http://127.0.0.1:'+port;
     // Only after authentication and exact external Host/Origin checks use the existing loopback contract.
     const upstream=http.request({hostname:'127.0.0.1',port,path:req.url,method:req.method,headers},response=>{
@@ -56,7 +71,5 @@ export async function createPrivateTestRuntime(env){
     upstream.on('error',()=>{if(!res.headersSent)reject(502);else res.destroy();});
     req.on('aborted',()=>upstream.destroy());res.on('close',()=>{if(!res.writableFinished)upstream.destroy();});req.pipe(upstream);
   });
-  server.once('close',()=>{inner.close();inner.closeAllConnections();});
-  lock.once('exit',()=>{server.close();server.closeAllConnections();inner.close();inner.closeAllConnections();});
   return server;
 }

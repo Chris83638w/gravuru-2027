@@ -8,6 +8,15 @@ import subprocess
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
+SLATE_RUNTIME_FILES = [
+    'scripts/lib/slate-review-gallery.mjs',
+    'scripts/lib/slate-review-gallery-page.mjs',
+    'scripts/lib/slate-review-catalog.mjs',
+    'scripts/lib/slate-review-gallery-ui.js',
+    'scripts/lib/slate-review-gallery.css',
+    'scripts/lib/slate-review-comments.mjs',
+    'scripts/lib/slate-review-comments-ui.js',
+]
 
 
 def git(*args):
@@ -20,7 +29,7 @@ def package(commit, destination, runtime='private-operator-test'):
     commit = git('rev-parse', '--verify', commit + '^{commit}').decode().strip()
     version = '0.1.0-recovery.20261010+' + commit[:12]
     files = {}
-    tree = git('ls-tree', '-rz', '--full-tree', commit, 'app', 'ops/plesk')
+    tree = git('ls-tree', '-rz', '--full-tree', commit, 'app', 'ops/plesk', *SLATE_RUNTIME_FILES)
     for item in tree.split(b'\0'):
         if not item:
             continue
@@ -29,7 +38,7 @@ def package(commit, destination, runtime='private-operator-test'):
         name = raw_path.decode()
         if mode != '100644' and mode != '100755' or kind != 'blob':
             raise ValueError('Only regular committed files may enter the package: ' + name)
-        if name.endswith('.test.mjs'):
+        if name.endswith(('.test.mjs', '.test.py')):
             continue
         parts = PurePosixPath(name).parts
         if any(p in ['.git', '.local-data', 'node_modules', '__pycache__', '.preview'] or p.startswith('.env') for p in parts) or any(name.endswith(s) for s in ['.sqlite', '.sqlite-wal', '.sqlite-shm', '.log', '.pem', '.key']):
@@ -41,6 +50,10 @@ def package(commit, destination, runtime='private-operator-test'):
     for required in ['ops/plesk/app.cjs', 'ops/plesk/README.md', 'app/workshop/design-zip.mjs', 'app/workshop/design-source-path.mjs']:
         if required not in files:
             raise ValueError('Required committed runtime file missing: ' + required)
+    if 'ops/plesk/slate-review-runtime.mjs' in files:
+        for required in SLATE_RUNTIME_FILES:
+            if required not in files:
+                raise ValueError('Required committed gallery file missing: ' + required)
     entry = 'merchant-app.cjs' if runtime == 'shopify-merchant-test' else 'app.cjs'
     installation = 'ops/plesk/MERCHANT-README.md' if runtime == 'shopify-merchant-test' else 'ops/plesk/README.md'
     if 'ops/plesk/' + entry not in files or installation not in files:

@@ -10,5 +10,16 @@ export function editorDesignPath(search, productId, designId) {
   const p = new URLSearchParams({configuration: productId});
   if (designId) p.set('design', designId);
   if (old.get('reviewGallery') === '1') p.set('reviewGallery', '1');
+  if (quickReviewRequested(search)) p.set('reviewQuick', '1');
   return '/werkstatt/?' + p;
+}
+
+export function quickReviewRequested(search) {
+  const p = new URLSearchParams(search);
+  return p.get('reviewGallery') === '1' && p.get('reviewQuick') === '1';
+}
+
+export function reviewGalleryPath(designId) {
+  const originalId = typeof designId === 'string' && designId.startsWith('katalog-') ? designId.slice(8) : '';
+  return '/originale/' + (originalId ? '#design-' + encodeURIComponent(originalId) : '');
 }

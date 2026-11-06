@@ -57,14 +57,17 @@ test('even incomplete print originals have a note field; stored HTML stays text'
 test('local HTTP save/readback rejects cross-origin writes and stale revisions',async t=>{
  const dir=temporaryDirectory(t),importsFile=path.join(dir,'local-review-import.json');
  fs.writeFileSync(path.join(dir,'manifest.json'),JSON.stringify(pack));fs.writeFileSync(importsFile,JSON.stringify(imported));
- const handler=createSlateGalleryHandler(dir,importsFile);
+ const stableToken='a'.repeat(64);
+ const handler=createSlateGalleryHandler(dir,importsFile,{csrfToken:stableToken});
  const server=http.createServer((req,res)=>{if(!handler(req,res))res.writeHead(404).end();});
  server.listen(0,'127.0.0.1');await once(server,'listening');
  try{
   const base='http://127.0.0.1:'+server.address().port;
   const html=await fetch(base+'/originale/').then(r=>r.text());
   const token=html.match(/name="slate-review-csrf" content="([a-f0-9]+)"/)[1];
+  assert.equal(token,stableToken);
   assert.equal((await fetch(base+'/originale/comments.js')).status,200);
+  for(const asset of ['gallery.js','gallery.css'])assert.equal((await fetch(base+'/originale/'+asset)).status,200);
   const send=(data,headers={})=>fetch(base+'/originale/comments',{method:'POST',headers:{Origin:base,'Content-Type':'application/json','X-Slate-Review-CSRF':token,...headers},body:JSON.stringify(data)});
   const data={designId:row.id,text:'22 × 14: Sterne gelb lassen',expectedRevision:0};
   assert.equal((await send(data,{'X-Slate-Review-CSRF':'wrong'})).status,403);

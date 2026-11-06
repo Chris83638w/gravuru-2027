@@ -55,12 +55,6 @@ try{
  $('title').textContent=context.originalId+' bearbeiten';$('target').textContent=context.material+' · '+context.mm.map(n=>n/10).join(' × ')+' cm · Stand '+context.revision;
  window.GravuruModelProfile=opened.model.legacy;window.UniversalConfig=opened.model.universal;
  window.GravuruGalleryEditor={context,photos:opened.photos};
- const editorResponse=await fetch('/editor.html',{credentials:'same-origin',cache:'no-store'});
- if(!editorResponse.ok)throw Error('Der Konfiguratorstart wurde abgewiesen (HTTP '+editorResponse.status+'). Bitte die Galerie erneut öffnen.');
- await editorResponse.arrayBuffer();
- console.info('Galerie-Konfi-Dokument geprüft',editorResponse.status);
- const probe=document.createElement('iframe');probe.hidden=true;probe.title='Verbindungsprüfung';probe.addEventListener('load',()=>{console.info('Galerie-Rahmenprüfung geladen');probe.remove();});probe.src='/__test/health';document.body.append(probe);
- frame=document.createElement('iframe');frame.title='Vollständiger Konfigurator für '+context.originalId;frame.addEventListener('load',()=>{startDiagnostics.frameLoaded=true;});$('editor').append(frame);
- await new Promise(resolve=>requestAnimationFrame(resolve));frame.src='/editor.html';
+ frame=document.createElement('iframe');frame.title='Vollständiger Konfigurator für '+context.originalId;frame.addEventListener('load',()=>{startDiagnostics.frameLoaded=true;});frame.src='/editor.html';$('editor').append(frame);
  startTimer=setTimeout(()=>{if(ready)return;reportStartFailure();status('Der Konfigurator konnte nicht vollständig geladen werden. Bitte die Galerie neu öffnen. Speichern bleibt bis zum vollständigen Laden gesperrt.',true);},20000);
 }catch(error){status(error.message,true);}

@@ -97,7 +97,7 @@ test('Design → Vorlage: Kundenfelder, separat ersetzbare Motive, Rechte und Gu
  const motif=t.objects[0];
  assert.equal(motif.motif,'katalog-test-herz-motiv-1');assert.equal(motif.locked,undefined);assert.equal(motif.customerEditable,true);assert.deepEqual([motif.x,motif.y,motif.w,motif.h],[14,28,20,16],'Hüllbox aus Stütz- und Kontrollpunkten');
  assert.equal(t.objects[4].role,'guide');assert.equal(t.objects[4].locked,true);
- assert.deepEqual(r.rights['text-1'],{content:true,color:false,replace:false,move:true,scale:true,delete:false});
+ assert.deepEqual(r.rights['text-1'],{content:true,color:false,replace:false,move:true,scale:true,delete:true},'Auch der Name darf bewusst entfernt werden');
  assert.deepEqual(r.rights['text-2'],{content:true,color:false,replace:false,move:true,scale:true,delete:true});
  assert.deepEqual(r.rights['motiv-1'],{content:false,color:false,replace:true,move:false,scale:false,delete:true},'Gravur: Motiv austauschbar, Farbe und Position unverändert');
  assert.deepEqual(r.rights['guide-1'],{content:false,color:false,replace:false,move:false,scale:false,delete:false});

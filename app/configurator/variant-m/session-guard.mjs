@@ -1,13 +1,16 @@
 // Ü8.1 Sitzungsschutz ohne Konto (K7): Der Stand des Kundeneditors wird
 // entprellt im Browser (localStorage) gehalten und beim Neuladen desselben
 // Produkts auf demselben Gerät wiederhergestellt. Das ist kein Entwurf: nichts
-// davon liegt auf dem Server, Foto-Bytes werden nie gespeichert, nur die
-// Upload-Referenzen der Objekte. Jeder Speicherzugriff ist abgesichert; ein
+// davon liegt auf dem Server. localStorage enthält nur Upload-Referenzen;
+// session-uploads.mjs hält die zugehörigen Bilddateien separat in IndexedDB.
+// Jeder Speicherzugriff ist abgesichert; ein
 // ungültiger, fremder oder abgelaufener Stand wird still verworfen.
 export const SESSION_GUARD_SCHEMA='gravuru-session-guard/v1';
 export const SESSION_GUARD_TTL_MS=7*24*60*60*1000;
 export const SESSION_GUARD_DELAY_MS=1500;
 export const sessionGuardKey=(productId,profileRevision)=>'gravuru-session:'+productId+':'+profileRevision;
+// Mikails Testlink starts from the original preview on every reload. Shop sessions stay protected.
+export const freshPreviewRequested=(config,search='')=>(config?.productPreview===true||config?.reviewOnly===true)&&new URLSearchParams(search).get('fresh')==='1';
 // Upload-Referenzen ohne Bilddaten: Objekt, Upload-ID, Art und Dateiname.
 export const uploadReferences=(objects,files)=>objects.filter(o=>o.uxUploadId).map(o=>({objectId:o.id,uploadId:o.uxUploadId,kind:o.uxUploadKind==='logo'?'logo':'photo',name:files?.get?.(o.uxUploadId)?.file?.name||''}));
 

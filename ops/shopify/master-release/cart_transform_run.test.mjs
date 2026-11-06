@@ -21,6 +21,14 @@ test('V2 applies 12.99 per logo and discounts complete unit once with the releas
  }
  assert.equal(master(input({v2:true,logos:1,motifs:1})).operations[0].lineUpdate.price.adjustment.fixedPricePerUnit.amount,'34.67');
 });
+test('V3 checkout rejects tampered selections directly and keeps earlier carts in a mixed cart unchanged',()=>{
+ const v3=()=>{const v=input({withTiers:false}),l=v.cart.lines[0];l.merchandise.product.pricing.jsonValue.schema='gravuru-personalization-pricing/v3';l.merchandise.product.pricing.jsonValue.optionPrices={silikon:699,'staender-klar':1399};l.options={value:'silikon,staender-klar'};return v;};
+ assert.equal(master(v3()).operations[0].lineUpdate.price.adjustment.fixedPricePerUnit.amount,'40.97');
+ for(const value of [undefined,'','constructor','silikon,silikon','silikon:1','staender-klar,silikon']){const v=v3();v.cart.lines[0].options.value=value;assert.throws(()=>master(v));}
+ const old=input({motifs:1}),logo=input({v2:true,logos:1}),newOptions=v3();logo.cart.lines[0].id='logo';newOptions.cart.lines[0].id='options';
+ assert.deepEqual(master({...old,cart:{lines:[...old.cart.lines,...logo.cart.lines,...newOptions.cart.lines]}}).operations,[...live(old).operations,...master(logo).operations,...master(newOptions).operations]);
+ const historical=v3(),line=historical.cart.lines[0],prior=structuredClone(line.merchandise.product.pricing.jsonValue);line.merchandise.product.pricing.jsonValue={...prior,revision:2,history:[prior]};assert.deepEqual(master(historical),master(v3()));
+});
 test('invalid or unpriced logos, invalid scopes and stale pricing fail closed',()=>{
  for(const change of [
   v=>v.cart.lines[0].logos.value='5',v=>v.cart.lines[0].logos.value='-1',v=>v.cart.lines[0].uploads.value='4',

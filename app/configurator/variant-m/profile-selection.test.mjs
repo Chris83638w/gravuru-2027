@@ -31,6 +31,15 @@ test('bestsellers respect configured order, empty and allowed motif intersection
   assert.deepEqual(bestsellerChoices([], fallback, ['heart']), []);
 });
 
+test('Grundmotive disappear from selection and bestsellers while template resources remain intact',()=>{
+ const entries=Object.freeze([{key:'base-heart',category:'Grundmotive'},{key:'flower',category:'Blumen'}].map(Object.freeze));
+ const template=Object.freeze({objects:Object.freeze([{type:'motif',motif:'base-heart'}])}),before=JSON.stringify({entries,template});
+ const choices=motifChoices(entries,['base-heart','flower']);
+ assert.deepEqual(choices.map(m=>m.key),['flower']);
+ assert.deepEqual(bestsellerChoices(choices,[{key:'base-heart'},{key:'flower'}]),[{key:'flower'}]);
+ assert.equal(JSON.stringify({entries,template}),before);
+});
+
 test('preset colors normalize/dedupe while null inherits and empty has no presets', () => {
   const fallback = [['Standardfarben', [['Rot','#ff0000'], ['Schwarz','#000000']]]];
   const before = structuredClone(fallback);

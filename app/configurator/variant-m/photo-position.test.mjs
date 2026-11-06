@@ -4,6 +4,17 @@ import {photoCrop,photoPlacement,panPhoto} from './photo-position-model.mjs';
 import {restoreElementRights} from './element-rights.mjs';
 import {mapPersonalObjects} from './field-mapping.mjs';
 
+test('plain uploads keep all four image edges visible, including mismatched restored frames',()=>{
+ for(const asset of [{width:600,height:900},{width:1600,height:900}]){
+  const slot={w:50,h:35,photoShape:'rect'},p=photoPlacement(slot,asset);
+  assert(p.x>=-slot.w/2-1e-8&&p.y>=-slot.h/2-1e-8);
+  assert(p.x+p.w<=slot.w/2+1e-8&&p.y+p.h<=slot.h/2+1e-8);
+  assert(Math.abs(p.w/p.h-asset.width/asset.height)<1e-8);
+ }
+ const slot={w:50,h:35,photoShape:'rect',uxPhotoCrop:{zoom:2,x:.2,y:0}};
+ assert(photoPlacement(slot,{width:600,height:900}).h>slot.h,'intentional crop remains active');
+});
+
 test('portrait and landscape uploads start covered and preserve aspect ratio during free resizing',()=>{
   const slot={w:100,h:140,photoShape:'arch'};
   for(const asset of [{width:1600,height:900},{width:900,height:1600}])for(const zoom of [1,2,4])for(const x of [0])for(const y of [0]){

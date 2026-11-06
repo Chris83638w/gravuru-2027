@@ -10,7 +10,10 @@ export async function installLayout({el,r,config}){
  const css=await fetch('/configurator/variant-m/layout.css');if(!css.ok)throw Error('Konfigurator-Layout fehlt.');
  const style=document.createElement('style');style.textContent=await css.text();r.append(style);r.host.dataset.uxLayout='compact';
  const preview=$('.ux-preview'),stage=$('.stage'),full=$('.c-large-preview'),tools=$('.ux-preview-tools'),enlarge=$('.ux-enlarge');
- const close=full.querySelector('.ux-preview-back');close.title='Vollbild verlassen';close.textContent='Vollbild verlassen';close.setAttribute('aria-label','Vollbild verlassen');
+ const close=full.querySelector('.ux-preview-back');close.title='Zurück zur Konfiguration';close.textContent='Zurück zur Konfiguration';close.setAttribute('aria-label','Zurück zur Konfiguration');
+ const moveHint=document.createElement('p');moveHint.className='ux-fullscreen-hint';moveHint.textContent='Wähle einen Text oder ein Element aus und ziehe es an die gewünschte Stelle.';close.before(moveHint);
+ // Retain the legacy filter hook, which its gallery synchronisation still reads.
+ const designSearch=$('[data-c-search]');if(designSearch){designSearch.value='';designSearch.hidden=true;}
  const toolbar=document.createElement('div');toolbar.className='ux-canvas-toolbar';toolbar.setAttribute('role','toolbar');toolbar.setAttribute('aria-label','Vorschauwerkzeuge');
  if(enlarge){enlarge.setAttribute('aria-label','Vollbild öffnen');toolbar.append(enlarge);}
  if(tools)toolbar.append(tools);preview.prepend(toolbar);

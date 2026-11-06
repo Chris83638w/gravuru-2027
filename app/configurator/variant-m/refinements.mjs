@@ -8,7 +8,7 @@ import {createPhotoEditor} from './photo-editor.mjs';
 import {installUsability} from './usability.mjs';
 import {installWorkflow} from './workflow.mjs';
 import {installCustomerTools} from './customer-tools.mjs';
-import {installMobileSteps} from './mobile-steps.mjs';
+import {installModernMobileNavigation} from './modern-mobile-navigation.mjs';
 
 export async function installRefinements(api){
   const {el,r,files,selected,select,mutate,showTab,say,dialog,button,esc,dialogs}=api;
@@ -51,8 +51,9 @@ export async function installRefinements(api){
       // Ecke des sichtbaren 19-px-Knopfs berührt die Rahmenecke, so verdeckt der Pfeil den Text nicht.
       const margin=9.5*el.state.width/Math.max(1,scene.width);
       positionSelectionArrows(handles,o,point,margin);
+      for(const h of handles.querySelectorAll('[data-ux-handle=scale]'))h.hidden=!el.uxPhotoPositionActive?.(o)&&el.uxCanEdit?.(o,'scale')===false;
       const gap=36*el.state.width/Math.max(1,scene.width),p=point(0,-o.h/2-gap);const h=handles.querySelector('[data-ux-handle=rotate]');h.style.left=p.x+'px';h.style.top=p.y+'px';
-      const d=point(o.w/2+gap,0),remove=handles.querySelector('.ux-handle-delete');remove.style.left=d.x+'px';remove.style.top=d.y+'px';
+      const d=point(o.w/2+gap,0),remove=handles.querySelector('.ux-handle-delete');remove.style.left=Math.max(22,Math.min(ph.width-22,d.x))+'px';remove.style.top=Math.max(22,Math.min(ph.height-22,d.y))+'px';
     }
     // Reuse the displayed scene and existing image URLs; no profile loading.
     const scene=$('.scene');if(scene){const copy=scene.cloneNode(true);copy.removeAttribute('tabindex');copy.removeAttribute('role');copy.removeAttribute('data-ux-namespace');copy.setAttribute('aria-hidden','true');copy.querySelectorAll('[data-object]').forEach(n=>n.removeAttribute('data-object'));$('[data-mini-art]').replaceChildren(api.config?.acrylic&&!mini.hidden?completePreviewMini(stage,$('[data-mini-art]')):copy);}
@@ -95,10 +96,6 @@ export async function installRefinements(api){
   r.addEventListener('pointerup',e=>finish(e),true);r.addEventListener('pointercancel',e=>finish(e,true),true);
   r.addEventListener('lostpointercapture',e=>{if(resize?.id===e.pointerId)finish(e,true);},true);
   r.addEventListener('keydown',e=>{const h=e.target.closest('[data-ux-handle]');if(e.key==='Escape'&&resize?.object.type==='photoSlot'){e.preventDefault();finish({...e,pointerId:resize.id,stopImmediatePropagation:()=>e.stopImmediatePropagation()},true);return;}if(!h||!['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key))return;e.preventDefault();e.stopImmediatePropagation();const direction=['ArrowUp','ArrowRight'].includes(e.key)?1:-1;mutate(()=>{const o=selected();if(h.dataset.uxHandle==='rotate'){if(el.uxCanRotate?.(o)===false)return;o.rotation=(o.rotation||0)+direction;}else Object.assign(o,scaleObject(o,1+direction*.03,el.uxTextScale?.()||1));});},true);
-  function areaResize(field){field.style.height='auto';field.style.height=Math.min(200,Math.max(44,field.scrollHeight+4))+'px';}
-  r.addEventListener('focusin',e=>{if(e.target.matches('[data-ux-text]'))areaResize(e.target);});
-  r.addEventListener('input',e=>{if(e.target.matches('[data-ux-text]'))areaResize(e.target);},true);
-  r.addEventListener('focusout',e=>{if(e.target.matches('[data-ux-text]')){e.target.style.height='44px';e.target.scrollTop=0;}});
   r.addEventListener('click',async e=>{const key=e.target.closest('[data-ux]')?.dataset.ux;
     if(key==='edit-upload'){select(e.target.closest('[data-id]').dataset.id);await editPhoto(selected());}
     if(key==='edit-photo')await editPhoto(selected());
@@ -107,7 +104,7 @@ export async function installRefinements(api){
       if(key==='object-delete')await el.action('delete');
       if(key==='object-center')mutate(()=>o.x=el.state.width/2);
       if(key==='object-turn'&&el.uxCanRotate?.(o)!==false)mutate(()=>o.rotation=(o.rotation||0)+15);
-      if(key==='object-smaller'||key==='object-bigger')mutate(()=>Object.assign(o,scaleObject(o,key==='object-bigger'?1.1:1/1.1,el.uxTextScale?.()||1,el.uxMinTextMm)));
+      if((key==='object-smaller'||key==='object-bigger')&&o.uxUploadKind!=='photo')mutate(()=>Object.assign(o,scaleObject(o,key==='object-bigger'?1.1:1/1.1,el.uxTextScale?.()||1,el.uxMinTextMm)));
     }
   });
   function checkMini(){const before=mini.hidden;mini.hidden=!matchMedia('(max-width:900px)').matches||stage.getBoundingClientRect().bottom>72||$('.c-large-preview').open;$('.ux-shell').dataset.miniVisible=String(!mini.hidden);if(before&&!mini.hidden)updateSelection();}
@@ -116,30 +113,11 @@ export async function installRefinements(api){
   $('.c-large-preview').addEventListener('click',e=>{const d=e.currentTarget;if(e.target.closest('button,input,select,textarea,a,.fk-buy-dock,.stage'))return;const b=stage.getBoundingClientRect();if(e.clientX<b.left||e.clientX>b.right)d.close();});
   // Keep the same exact option values and native change handlers.
   for(const s of all('.fk-options select'))s.classList.add('ux-readable-select');
-  const category=$('[data-library-category]');
-  if(category){
-    const choices=()=>[...category.options],keys=()=>el.uxMotifChoiceIds??Object.keys(el.motifs).filter(k=>!k.startsWith('ux-line-'));
-    const imageFor=name=>{const entry=window.GravuruMotifCategories?.find(m=>m.category===name),key=entry?.key||(name==='Grundmotive'&&keys().includes('branch')?'branch':keys().find(k=>(el.labels?.[k]||el.catalog.motif_labels?.[k]||k).toLocaleLowerCase('de').includes(name.toLocaleLowerCase('de').replace(/e[nr]?$/,''))));return key?el.motifs[key]:'';};
-    const categoryDialog=dialog('categories','Motivkategorie wählen','<div class="ux-category-list"></div>');
-    const selector=document.createElement('div');selector.className='ux-category-control';selector.innerHTML=button('categories','Kategorie wählen');category.after(selector);category.hidden=true;
-    function setCategory(index){const options=choices(),i=(index+options.length)%options.length;category.value=options[i].value;category.dispatchEvent(new Event('change',{bubbles:true}));refreshCategory();}
-    function refreshCategory(){const chosen=choices().find(o=>o.selected);$('[data-ux=categories]').innerHTML=`<span aria-hidden="true"><svg viewBox="0 0 100 100">${imageFor(chosen.textContent)||'<path d="M20 15h60v70H20Z" fill="none" stroke="currentColor" stroke-width="4"/>'}</svg></span>${esc(chosen.textContent)}${uiIcon('chevron')}`;}
-    r.addEventListener('click',e=>{const b=e.target.closest('[data-ux]');if(!b)return;const key=b.dataset.ux;if(key==='category-prev'||key==='category-next')setCategory(category.selectedIndex+(key==='category-next'?1:-1));
-      if(key==='categories'){$('.ux-category-list').innerHTML=choices().map((o,i)=>button('category-pick',`<svg viewBox="0 0 100 100" aria-hidden="true">${imageFor(o.textContent)||'<path d="M20 15h60v70H20Z" fill="none" stroke="currentColor" stroke-width="4"/>'}</svg><span>${esc(o.textContent)}</span>`,`data-index="${i}" aria-pressed="${o.selected}"`)).join('');categoryDialog.showModal();}
-      if(key==='category-pick'){setCategory(Number(b.dataset.index));categoryDialog.close();}
-    });
-    for(const surface of [selector,$('[data-library-grid]')].filter(Boolean)){
-      let swipe,suppress=false;surface.style.touchAction='pan-y';
-      surface.addEventListener('pointerdown',e=>{suppress=false;swipe={x:e.clientX,y:e.clientY};});
-      surface.addEventListener('pointerup',e=>{if(!swipe)return;const dx=e.clientX-swipe.x,dy=e.clientY-swipe.y;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.5){suppress=true;setCategory(category.selectedIndex+(dx<0?1:-1));}swipe=null;});
-      surface.addEventListener('pointercancel',()=>{swipe=null;suppress=false;});surface.addEventListener('click',e=>{if(suppress){suppress=false;e.preventDefault();e.stopImmediatePropagation();}},true);
-    }refreshCategory();
-  }
   await installUsability(api);
   await installCustomerTools(api);
   await installWorkflow(api);
   installDirectEditing({...api,editPhoto});
-  // K11: geführte Schritte unter 768 px (eigenes Modul, Desktop-Reiter bleiben unverändert).
-  await installMobileSteps(api);
+  // Mikail 04.11.2026 / Astra #161: same tabs and guarded cart on mobile.
+  await installModernMobileNavigation(api);
   updateSelection();
 }

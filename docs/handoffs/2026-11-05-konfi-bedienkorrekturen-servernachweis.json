@@ -1,0 +1,112 @@
+{
+  "recordedAt": "2026-11-05T16:30:38.398Z",
+  "activation": {
+    "runtime": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-konfi-hundetest-r5c-20261105",
+    "startupSha256": "6f7fba51be1c216a9f9fc995a9e4e14b50e2fb4b1af849b904e510c43a28d5bf",
+    "bundle": "/_bundle/editor-e1a26ccc8a1ad1de.mjs",
+    "tests": [
+      "ℹ tests 222",
+      "ℹ pass 222",
+      "ℹ fail 0",
+      "ℹ skipped 0"
+    ],
+    "sourceFiles": 36,
+    "sharedAssets": 50,
+    "publicFiles": [
+      {
+        "name": "22x14.html",
+        "sha256": "a9f8ae9b75288bfcd260ed83d057992e97c473d9b5b0c23db57df69a21690fc6"
+      },
+      {
+        "name": "30x20.html",
+        "sha256": "c5f121c7f566cb926fffec24b9fed59f32d62b13618338ab030192e465eef30d"
+      },
+      {
+        "name": "22x14.json",
+        "sha256": "205d75a56828fbe5e975cff88c08445a0fa99a6788357f2ce4bd7cc542d65c37"
+      },
+      {
+        "name": "30x20.json",
+        "sha256": "76e6293e84298e0c22273c0efa6f0f82f3ca1f269246e833a9d51312a07e3599"
+      },
+      {
+        "name": "index.html",
+        "sha256": "6cf6d5cb84f5db6b9b68e2f6e0d13f43e3ab4947bcf38dbac09b232e4979754a"
+      }
+    ],
+    "basePrices": {
+      "22x14": 1999,
+      "30x20": 2499
+    },
+    "activated": true,
+    "cart": false
+  },
+  "tests": [
+    "ℹ tests 222",
+    "ℹ pass 222",
+    "ℹ fail 0",
+    "ℹ skipped 0"
+  ],
+  "navigationTests": [
+    "ℹ tests 5",
+    "ℹ pass 5",
+    "ℹ fail 0",
+    "ℹ skipped 0"
+  ],
+  "serverSourceHashes": {
+    "app/configurator/variant-m/build.mjs": "e0c226052cde58cb2875cc49be77bdb77129b0b0d0d7ac8b298abb94b2909432",
+    "app/configurator/variant-m/customer-rights.mjs": "edb0eeb962f023c02550fa804b6c64a4d7160636f6e173f0b1c646efb4efdddd",
+    "app/configurator/variant-m/customer-tools.mjs": "3ae62a2c6d27c80fd6e851d565c7b91c819698e699072501abc2b0be71962ff3",
+    "app/configurator/variant-m/motif-browser-model.mjs": "79a750ed158528e4a68c030640d40f3a73d3d7969d0a9da92e62a9b422ca5970",
+    "app/configurator/variant-m/motif-browser-model.test.mjs": "5fb3ff2fa73cb66c76bc02f36eeff696d30fe9106d0a4f6671767d310e8fcfe2",
+    "app/configurator/variant-m/motif-search-analytics.mjs": "6a8dbf7ef703224c93b013414aaf428525334202b515b80716f077adf534ef49",
+    "app/configurator/variant-m/motif-search-analytics.test.mjs": "e601952d4d67dc599d7c876268bbf2ac2e7aa4dce1c4d404d70fc540a823ba8c",
+    "app/configurator/variant-m/neutral-theme.css": "664c3df6c34036d12704e0b0efca4bd82f9be9d2aaf6a28cc663bc92fdd74ade",
+    "app/configurator/variant-m/photo-editor.mjs": "23123b23b667a91ffd4c97d6a6a3674f8880006ed41a89e1abbb1d570bc2450f",
+    "app/configurator/variant-m/photo-position-ui.test.mjs": "21d613f004ac9da67d4c1ded9c725c7b9be2f8027645961f07bbea13022ce405",
+    "app/configurator/variant-m/photo-position.mjs": "d42fbc6cd6ddab7772cab3c0ebd6f399970f19e22d8749a189e14e4db6933f23",
+    "app/configurator/variant-m/photo-upload-geometry.mjs": "98b78e8becd6050b8c72b8c42ce7ed2bd0c251703fca4d597437c4be1e764af0",
+    "app/configurator/variant-m/photo-upload-geometry.test.mjs": "1b71d745bfdec0de50667b241eddd868c1b3faa59331bc8dd937b48126e08fa5",
+    "app/configurator/variant-m/refinements.mjs": "6a5ada992d1ab6899ec50031123843d80df901efac2c2d779ae87208886e7fd3",
+    "app/configurator/variant-m/server.mjs": "6322b31590867dc67f8e84ba255fc3d7a92e5ebcea3d339de3edc4a5972bdf98",
+    "app/configurator/variant-m/session-guard.mjs": "15eea5103cc22b8f7730d16bbad5634f0385823dd0fd8d3ba9070958fc642301",
+    "app/configurator/variant-m/session-guard.test.mjs": "b85fac85cc9b041bc865d621203f67b9b2d957c05c26d61fc599bbb218e1472b",
+    "app/configurator/variant-m/session-uploads.mjs": "7ac41eaa4c7a857eab666ec1d9914e9dfd87d0489b0b07c725941cc22d89f4c7",
+    "app/configurator/variant-m/ui-event-regressions.test.mjs": "4bd1cc8c99ad5f0f3b03a5d08fc410cdc659589341fa00a76df82553f5b69ac6",
+    "app/configurator/variant-m/ux-details.css": "14236ee67279be7a92fd6c8c99f50a5ad0f8284b52c00708d5ac2a36e682efd1",
+    "app/configurator/variant-m/ux.mjs": "40fffb51dd94a3e2f10c5ddcabaf2245a834bb0cf1628e90e8283fe2615ccf7d",
+    "app/configurator/variant-m/view-zoom-model.mjs": "9d6efa5acce48a1d1d908e4861b08a29a6d4ce400a055581f02cb9a1de16fcf4",
+    "app/configurator/variant-m/view-zoom.css": "32fbfae227cf079d7b623e19998e4395bddca5417fa8e3dc6d713092c302b19a",
+    "app/configurator/variant-m/view-zoom.mjs": "f817c0964455380925a3e5ebef3807377c8317ba9de102b988070c043c926bca",
+    "app/configurator/variant-m/view-zoom.test.mjs": "435d167d56e93bb6c37ae74fd1d6383b3931a549b5e94da8b7d37da38e16a3b2",
+    "app/configurator/variant-m/workflow.mjs": "e24431f4bdc227b8aab805f52b23fe72ea5b009bb0e1f202e8fe22c44ce36e5b",
+    "app/workshop/acryl-employee-host.mjs": "4f55b2463cf2c09fe21c5203e5ca715a6c04917875871e5cbd70fa3577220d8f",
+    "app/workshop/http.mjs": "718d7df4ad1dd4f05c3fe4e0ecfc6f5ae8a68e77855fa90c7c7df83159559ee9",
+    "app/workshop/motif-search-http.test.mjs": "f8510e9d8baa979713f8e7ca4eb28f318263af8e8f13998d0efa5bb3d392e796",
+    "app/workshop/motif-search-stats.mjs": "e06ad0226735e21cf5b0fffaacbc1a19f27bad718464e1b7a4a9cc5356a809d5",
+    "app/workshop/motif-search-stats.test.mjs": "94082047c0cd48d9783685e72d1b084415663796fccdb42e3e1fa0576a7ef909",
+    "app/workshop/ui/merchant-navigation.mjs": "183acc032c759c4199d627872a38d0819dd609a6375a21a68d3d3f6b986e1727",
+    "app/workshop/ui/motif-searches.css": "3e569e2247253b38d550925ef6e38fb31d2309eda55470d842f56a87b8d147d7",
+    "app/workshop/ui/motif-searches.html": "899d986f6a00bb8f9fdb16637053ac189bb230f343676177255f0b0cc3787222",
+    "app/workshop/ui/motif-searches.mjs": "ce76deb3f75de2348c4491b94c60f5f03db3c5ed7de42af2041c582426575e98",
+    "app/workshop/motif-search-preview-products.mjs": "467001fb6398f9640a33e2c53c608c92fca799df3e655b3fcd8a5555b51283ca"
+  },
+  "preservedHostChanges": [
+    "app/configurator/variant-m/ui-event-regressions.test.mjs"
+  ],
+  "startupSha256": "6f7fba51be1c216a9f9fc995a9e4e14b50e2fb4b1af849b904e510c43a28d5bf",
+  "analyticsTestSample": [
+    {
+      "term": "giraffe mit hut",
+      "source": "preview",
+      "searches": 1,
+      "withoutResults": 1
+    },
+    {
+      "term": "kreuz",
+      "source": "preview",
+      "searches": 1,
+      "withoutResults": 0
+    }
+  ]
+}

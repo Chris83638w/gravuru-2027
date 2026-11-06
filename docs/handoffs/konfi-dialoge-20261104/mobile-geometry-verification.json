@@ -1,0 +1,85 @@
+{
+  "before": {
+    "bottom": 340,
+    "height": 220,
+    "left": 30,
+    "right": 360,
+    "top": 120,
+    "width": 330,
+    "x": 30,
+    "y": 120
+  },
+  "after": {
+    "bottom": 340,
+    "height": 220,
+    "left": 30,
+    "right": 360,
+    "top": 120,
+    "width": 330,
+    "x": 30,
+    "y": 120
+  },
+  "toolbar": {
+    "bottom": 104,
+    "height": 44,
+    "left": 14,
+    "right": 376,
+    "top": 60,
+    "width": 362,
+    "x": 14,
+    "y": 60
+  },
+  "fullscreenSelected": {
+    "bottom": 480,
+    "height": 260,
+    "left": 30,
+    "right": 360,
+    "top": 220,
+    "width": 330,
+    "x": 30,
+    "y": 220
+  },
+  "fullscreenDimension": {
+    "rect": {
+      "bottom": 367.36328125,
+      "height": 34.7265625,
+      "left": 6,
+      "right": 18,
+      "top": 332.63671875,
+      "width": 12,
+      "x": 6,
+      "y": 332.63671875
+    },
+    "text": "80 mm"
+  },
+  "fullscreenDeselected": {
+    "bottom": 480,
+    "height": 260,
+    "left": 30,
+    "right": 360,
+    "top": 220,
+    "width": 330,
+    "x": 30,
+    "y": 220
+  },
+  "scrolledDown": {
+    "bottom": 253,
+    "height": 199,
+    "left": 0,
+    "right": 390,
+    "top": 54,
+    "width": 390,
+    "x": 0,
+    "y": 54
+  },
+  "scrolledUp": {
+    "bottom": 366,
+    "height": 312,
+    "left": 0,
+    "right": 390,
+    "top": 54,
+    "width": 390,
+    "x": 0,
+    "y": 54
+  }
+}

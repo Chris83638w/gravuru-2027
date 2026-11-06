@@ -54,6 +54,8 @@ import {initialFormCustomerState,resolveFormCustomer,customerPhotoMarkup} from '
 import {prepareCustomerPhoto,MAX_CUSTOMER_PHOTO} from './customer-photo.mjs';
 import {photoResolutionNote,resolutionTargetDpi} from './acrylic-photo-resolution.mjs';
 import {clientOutputSettings,productionMirror} from './output-orientation.mjs';
+import {createMotifSearchStats} from './motif-search-stats.mjs';
+import {motifSearchPreviewGroup} from './motif-search-preview-products.mjs';
 import {photoPlacement} from '../configurator/variant-m/photo-position-model.mjs';
 import {prepareFormReview} from './form-review-snapshot.mjs';
 import {createFormPrintProof,formPrintSettings,formPrintKey,FORM_PRINT_RECIPE} from './form-print-proof.mjs';
@@ -153,6 +155,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   // B1: Klarnamen für Kategorie-Kennungen (nur Anzeige) und Kundenstatus je Konfi.
   const labelCategories=ids=>categoryLabels(ids,families.labelSources());
   const konfis=createKonfiStatus({filename,tenantId});
+  const motifSearchStats=createMotifSearchStats({filename,tenantId});
   const assertKonfiAvailable=id=>{if(konfis.paused(id))fail(423,'konfi_paused',PAUSED_MESSAGE);};
   const aiJobs=createAiDesignJobs({filename,repository,config:aiDesign?.config,provider:aiDesign?.provider,imageProvider:aiDesign?.imageProvider,assets,tenantId});
   const aiBatches=createAiBatchJobs({filename,repository,aiJobs,tenantId});
@@ -379,8 +382,26 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
         const file=customerDrafts.customerDownloads.download(customerFile[1],principal);
         return res.writeHead(200,{'Content-Type':file.mime,'Content-Length':file.bytes.length,'Content-Disposition':'attachment; filename="'+customerFile[1]+(file.mime==='application/zip'?'.zip':'.pdf')+'"','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(file.bytes);
       }
+      if(pathname==='/api/workshop/motif-search-events'){
+        if(method!=='POST')fail(405,'method_not_allowed','Suchereignisse benötigen POST.');
+        const input=await body(req,1024);
+        if(Object.keys(input).some(k=>!['productId','query','resultCount'].includes(k)))fail(422,'motif_search_invalid','Ungültige Suchanfrage.');
+        let product;try{product=repository.get(input.productId);}catch(error){
+          const group=error.code==='not_found'?motifSearchPreviewGroup(filename,tenantId,input.productId):null;
+          if(!group)throw error;
+          return json(res,200,{accepted:motifSearchStats.record({query:input.query,resultCount:input.resultCount,group,source:'preview'})});
+        }
+        if(product.status==='archived'||product.document.kind!=='product')fail(404,'product_missing','Produkt nicht verfügbar.');
+        assertKonfiAvailable(product.id);
+        const categories=product.document.categoryIds||[],family=categories.find(id=>id.startsWith('familie-'));
+        const group=(family?labelCategories([family])[family]?.label:null)||product.document.name.replace(/\s*[·–-]\s*\d+\s*[×x]\s*\d+\s*cm.*$/u,'');
+        const source=konfis.get(product.id).status==='released'?'shop':'preview';
+        motifSearchStats.record({query:input.query,resultCount:input.resultCount,group,source});
+        return json(res,200,{accepted:true});
+      }
       const merchantSession=verifySession?verifySession(req.headers.authorization,'merchant'):null;
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
+      if(pathname==='/api/workshop/motif-search-stats'){if(method!=='GET')fail(405,'method_not_allowed','Auswertungen werden nur gelesen.');return json(res,200,motifSearchStats.report(Object.fromEntries(url.searchParams)));}
       if(pathname==='/api/workshop/customer-vector-logo/preview'){
         if(method!=='POST'||url.search)fail(405,'method_not_allowed','Die Logo-Vorschau benötigt POST.');
         const input=await body(req,VECTOR_LOGO_REQUEST_BYTES);
@@ -1106,7 +1127,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {tenantId,catalogStructure,acrylShop,corrections,families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model:customerModelFor,galleryModel:(id,version)=>shopGalleryModel(repository.get(id,{revision:revision(version)})),internalModel:model,editorPreview,pausedPage,labelCategories,konfis,defaultId,close:()=>{catalogStructure.close();acrylShop.close();corrections.close();konfis.close();families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
+  return {tenantId,catalogStructure,acrylShop,corrections,families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model:customerModelFor,galleryModel:(id,version)=>shopGalleryModel(repository.get(id,{revision:revision(version)})),internalModel:model,editorPreview,pausedPage,labelCategories,konfis,defaultId,close:()=>{motifSearchStats.close();catalogStructure.close();acrylShop.close();corrections.close();konfis.close();families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
 }
 
 /** Loopback preview; optional test session gate is not a public deployment.

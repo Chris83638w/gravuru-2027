@@ -1,0 +1,139 @@
+/* Astra 1 / #161 db4f4a4, approved by Mikail 04.11.2026.
+   Shared native editor implementation of the reviewed modern.css shell. */
+:host([data-ux-modern]){--ux-green:#4d6b8b;--ux-border:#e1e5ea;--ux-soft:#f3f4f6;--ux-muted:#66717f;font-family:'Segoe UI',Arial,sans-serif!important;color:#293440!important}
+:host([data-ux-modern]) .ux-shell{max-width:none!important;padding:0 0 68px!important;margin:0!important;background:#fff!important}
+:host([data-ux-modern]) .ux-shell .ux-heading{position:relative!important;display:flex!important;min-height:68px!important;box-sizing:border-box!important;padding:10px 24px!important;margin:0!important;background:#fff!important;color:#293440!important;border-bottom:1px solid #e1e5ea!important;border-radius:0!important;box-shadow:none!important}
+:host([data-ux-modern]) .ux-shell .ux-heading :is(.ux-brand,h1,.ux-product-title){display:none!important}
+:host([data-ux-modern]) .ux-shell .ux-heading>[data-ux=account]{margin-left:auto!important;background:#fff!important;border:1px solid #d9dfe5!important;border-radius:10px!important;color:#293440!important}
+:host([data-ux-modern]) .ux-shell .ux-heading>[data-ux=back]{color:#293440!important;border:0!important;background:transparent!important}
+:host([data-ux-modern]) .ux-shell .ux-heading>.ux-canvas-toolbar{position:absolute!important;left:31.5%!important;top:10px!important;transform:translateX(-50%)!important;display:flex!important;gap:3px!important;padding:3px 5px!important;border:0!important;border-radius:12px!important;background:#f1f3f6!important;min-width:0!important}
+:host([data-ux-modern]) .ux-shell .ux-heading .ux-canvas-toolbar :is(button,.ux-canvas-help){height:40px!important;min-height:40px!important;padding:7px 9px!important;background:transparent!important;border:0!important;border-radius:8px!important;color:#435365!important}
+:host([data-ux-modern]) .ux-heading .ux-canvas-toolbar .ux-preview-tools{gap:2px!important}
+:host([data-ux-modern]) .ux-canvas-toolbar .ux-design-entry{display:none!important}
+:host([data-ux-modern]) .ux-shell .ux-layout{display:grid!important;grid-template-columns:minmax(0,63fr) minmax(340px,37fr)!important;gap:0!important;align-items:stretch!important;min-height:calc(100dvh - 136px)!important}
+:host([data-ux-modern]) .ux-shell .ux-layout>.ux-preview{position:sticky!important;top:0!important;align-self:start!important;border:0!important;border-radius:0!important;background:#f8f9fb!important;padding:16px 14px 12px!important;box-sizing:border-box!important;height:calc(100dvh - 136px)!important;overflow:hidden!important}
+:host([data-ux-modern]) .ux-shell .ux-preview .stage:not(.acryl-scene){height:calc(100dvh - 220px - var(--ux-textbar-h,0px))!important;min-height:250px!important;border:0!important;background:#f8f9fb!important;padding:32px 40px 42px!important}
+:host([data-ux-modern]) .ux-shell .ux-layout>.ux-editor{padding:0!important;border:0!important;border-left:1px solid #e1e5ea!important;border-radius:0!important;background:#fff!important;min-width:0!important}
+:host([data-ux-modern]) .ux-tabs{gap:0!important;padding:0 15px!important;margin:0!important;border-bottom:1px solid #e1e5ea!important;background:#fff!important}
+:host([data-ux-modern]) .ux-shell .ux-tabs button{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:8px!important;min-height:78px!important;padding:12px 4px!important;border:0!important;border-bottom:2px solid transparent!important;border-radius:0!important;background:#fff!important;color:#66717f!important;font-size:13px!important}
+:host([data-ux-modern]) .ux-shell .ux-tabs button[aria-selected=true]{background:#fff!important;border-bottom-color:#4d6b8b!important;color:#334f6d!important}
+:host([data-ux-modern]) .ux-shell .ux-tabs .ux-tab-icon{width:23px!important;height:23px!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;color:inherit!important}
+:host([data-ux-modern]) .ux-shell .ux-panel{padding:23px 26px!important;margin:0!important;border:0!important;background:#fff!important}
+:host([data-ux-modern]) .ux-panel h2{font-size:26px!important;font-weight:650!important;letter-spacing:-.5px!important;margin:0 0 18px!important;color:#293440!important}
+:host([data-ux-modern]) .ux-panel h3{font-size:16px!important;color:#435365!important}
+:host([data-ux-modern]) .ux-panel :is(.m-option-tile,.c-design-card,.ux-product-card,.workflow-motif-grid button,[data-bestseller-grid] button){border:1px solid transparent!important;border-radius:12px!important;background:#f2f4f6!important;color:#293440!important;box-shadow:none!important}
+:host([data-ux-modern]) .ux-panel :is(.m-option-tile,.c-design-card,.ux-product-card)[aria-pressed=true]{border:2px solid #4d6b8b!important;background:#edf2f7!important}
+:host([data-ux-modern]) .ux-panel .m-option-tile{min-height:115px!important;padding:12px 8px!important}
+:host([data-ux-modern]) .ux-product-designs{border:0!important;background:transparent!important;margin:0!important;padding:0!important}
+:host([data-ux-modern]) #ux-panel-design[data-inline-product-designs]>.c-design-section,:host([data-ux-modern]) #ux-panel-design[data-inline-product-designs]>.ux-design-reveal{display:none!important}
+:host([data-ux-modern]) .ux-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
+:host([data-ux-modern]) .ux-product-card img{height:150px!important;background:transparent!important}
+:host([data-ux-modern]) .workflow-motif-grid{gap:10px!important}
+:host([data-ux-modern]) .workflow-motif-grid button{min-height:117px!important}
+:host([data-ux-modern]) .ux-motif-pricing{background:#f3f5f8!important;border:0!important;border-radius:9px!important;padding:10px 12px!important;color:#526274!important}
+:host([data-ux-modern]) .fk-buy-dock{background:#e3ebf4!important;border-top:1px solid #d6e0ec!important;padding:7px 24px!important;box-shadow:none!important}
+:host([data-ux-modern]) .fk-buy-inner{max-width:none!important;min-height:48px!important}
+:host([data-ux-modern]) .fk-price-area strong{font-size:25px!important;color:#243344!important}
+:host([data-ux-modern]) .fk-buy-dock button:is(.fk-buy-button,.completion-finish){min-height:42px!important;background:#2e4258!important;border-color:#2e4258!important;color:#fff!important;border-radius:10px!important}
+:host([data-ux-modern]) :is(.ux-direct-edit,.ux-text-row){border-color:#e1e5ea!important;border-radius:10px!important}
+:host([data-ux-modern]) .ux-text-row.is-selected{background:#eef3f8!important;border-color:#93a7bd!important}
+:host([data-ux-modern]) .dimension-x,:host([data-ux-modern]) .dimension-y{color:#7b8795!important;border-color:#a5afbb!important}
+.ux-direct-slot:not(.doorbell-direct-slot),.ux-mobile-scroll-spacer{display:none}
+@media(min-width:768px) and (max-width:1100px){
+ :host([data-ux-modern]) .ux-heading .ux-tool-label{display:none!important}
+ :host([data-ux-modern]) .ux-shell .ux-panel{padding:21px 18px!important}
+}
+
+/* Fixed single-row toolbar slot: selection never borrows space from the plate.
+   The same mobile gutters apply in fullscreen, keeping both dimension labels in view. */
+@media(max-width:767px){
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-layout>.ux-preview{padding:0!important;justify-content:flex-start!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-slot{display:none!important}
+ :host([data-ux-modern][data-ux-mobile-tabs][data-ux-text-editing="true"]) .ux-direct-slot:not([hidden]){display:block!important;box-sizing:border-box!important;height:48px!important;min-height:48px!important;flex:0 0 48px!important;width:100%!important;padding:2px 6px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-preview>[data-ux-stage]{flex:1!important;min-height:0!important;height:100%!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-preview .stage:not(.acryl-scene){box-sizing:border-box!important;padding:18px 30px 26px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-preview .stage:not(.acryl-scene) .plate-holder{margin:auto auto 0!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) :is(.ux-preview,.c-large-preview) .dimension-y{left:-10px!important;width:6px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) :is(.ux-preview,.c-large-preview) .dimension-y span{left:-9px!important;font-size:11px!important;line-height:12px!important;padding:0!important;margin:0!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .c-large-preview .stage:not(.acryl-scene){box-sizing:border-box!important;padding:60px 30px 32px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-edit.is-docked{box-sizing:border-box!important;height:44px!important;min-height:44px!important;max-height:44px!important;padding:2px 4px!important;border:1px solid #d7dde5!important;border-radius:9px!important;background:#f2f4f7!important;overflow:hidden!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-edit.is-docked.is-fullscreen-dock{position:absolute!important;top:4px!important;left:6px!important;width:calc(100% - 12px)!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-edit.is-docked .ux-direct-actions{display:flex!important;flex-direction:row!important;justify-content:flex-start!important;align-items:center!important;flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:hidden!important;height:38px!important;gap:2px!important;scrollbar-width:thin;scrollbar-color:#aab5c2 transparent}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-edit.is-docked :is(.ux-direct-primary,.ux-direct-secondary){display:contents!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-actions>*,:host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-actions :is(.ux-direct-primary,.ux-direct-secondary)>*{flex:none!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-edit.is-docked .ux-direct-selection{width:auto!important;max-width:75px!important;white-space:nowrap!important;text-overflow:ellipsis;overflow:hidden}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-edit.is-docked button{height:36px!important;min-height:36px!important;padding:4px 7px!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-direct-edit.is-docked .ux-direct-size-arrows button[data-size-arrow]{height:17px!important;min-height:17px!important;padding:0!important}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-mobile-scroll-spacer{display:block;flex:none;order:99;pointer-events:none}
+}
+@media(max-width:767px){
+ /* Keep the existing mobile viewport shell: only the option list scrolls.
+    Desktop checkout spacing must not reserve an empty strip on phones. */
+ :host([data-ux-modern]) .ux-shell{padding:0!important}
+ :host([data-ux-modern]) .ux-shell .ux-heading{min-height:54px!important;padding:5px 7px!important}
+ :host([data-ux-modern]) .ux-shell .ux-heading>.ux-canvas-toolbar{position:static!important;transform:none!important;margin:0 auto!important;padding:1px 2px!important;order:1!important}
+ :host([data-ux-modern]) .ux-heading>[data-ux=account]{order:3!important;margin:0!important}
+ :host([data-ux-modern]) .ux-shell .ux-heading :is(button,.ux-canvas-help){height:40px!important;min-height:40px!important;min-width:32px!important;width:32px!important;padding:6px!important}
+ :host([data-ux-modern]) .ux-shell .ux-heading :is(.ux-tool-label,.ux-enlarge span,[data-ux-count]){display:none!important}
+ :host([data-ux-modern]) .ux-shell .ux-layout{display:flex!important;flex-direction:column!important;flex:1!important;min-height:0!important;overflow:hidden!important}
+ :host([data-ux-modern]) .ux-shell .ux-layout>.ux-preview{position:relative!important;top:auto!important;width:100%!important;height:var(--ux-mobile-preview-h,40dvh)!important;padding:12px 6px 6px!important;flex:none!important}
+ :host([data-ux-modern]) .ux-shell .ux-preview .stage:not(.acryl-scene){height:100%!important;min-height:0!important;padding:22px 24px 36px!important}
+ :host([data-ux-modern]) .ux-shell .ux-layout>.ux-editor{border:0!important;overflow:auto!important;flex:1!important;min-height:0!important}
+ :host([data-ux-modern]) .ux-tabs{display:flex!important;padding:0 10px!important}
+ :host([data-ux-modern]) .ux-shell .ux-tabs button{min-height:65px!important;font-size:11px!important;flex:1!important}
+ :host([data-ux-modern]) .ux-shell .ux-panel{padding:22px 17px 30px!important}
+ :host([data-ux-modern]) .ux-panel h2{font-size:23px!important}
+ :host([data-ux-modern]) .fk-buy-dock{padding:7px 12px!important}
+ :host([data-ux-modern]) .fk-price-area strong{font-size:19px!important}
+}
+
+/* Mikail's visual corrections, 05.11.2026: keep artwork and navigation clear. */
+:host([data-ux-modern]) [data-c-search]{display:none!important}
+:host([data-ux-modern]) .ux-editor>.ux-conflict-hints{position:static!important;display:block;max-height:none!important;width:auto!important;margin:0 18px 16px!important;padding:0!important;box-shadow:none!important;background:none!important;border:0!important}
+:host([data-ux-modern]) .ux-conflict-hints[hidden]{display:none!important}
+:host([data-ux-modern]) .ux-conflict-hints summary{padding:10px 0;color:#735b35;font-size:12px;cursor:pointer}
+:host([data-ux-modern]) .ux-conflict-list{display:grid;gap:8px}
+:host([data-ux-modern]) .ux-conflict-hints .ux-conflict-compact{padding:9px!important;font-size:12px!important}
+:host([data-ux-modern]) .ux-conflict-hints button{min-height:36px!important;font-size:12px!important;padding:6px 10px!important}
+:host([data-ux-modern]) .ux-conflict-hints [data-ux=restore-conflicts]{width:auto!important;background:transparent!important;border:0!important;text-decoration:underline;text-underline-offset:3px}
+:host([data-ux-modern]) .ux-status:empty{display:none}
+:host([data-ux-modern]) .ux-fullscreen-hint{margin:0 0 10px!important;color:#556273;font-size:13px;line-height:1.45;max-width:560px}
+:host([data-ux-modern]) .c-large-preview .ux-preview-back{background:#37596a!important;color:#fff!important;border:0!important;border-radius:12px!important;padding:12px 18px!important;min-height:44px!important;font-weight:650!important;box-shadow:0 3px 9px #213a4a20}
+:host([data-ux-modern]) .c-large-preview .ux-fullscreen-hint{padding:0 8px;flex:none}
+:host([data-ux-modern]) .c-large-preview .ux-canvas-toolbar{position:static!important;flex:none;align-self:stretch;height:auto!important;min-height:44px!important;max-height:none!important;justify-content:flex-start;margin:0 8px}
+:host([data-ux-modern]) .c-large-preview .stage:not(.acryl-scene){box-sizing:border-box!important;container-type:size!important;display:flex!important;align-items:center!important;justify-content:center!important;min-height:0!important}
+:host([data-ux-modern]) .c-large-preview .stage:not(.acryl-scene) .plate-holder{flex:none!important;position:relative!important;height:auto!important;width:min(100cqw,calc(100cqh * var(--ux-ratio)))!important;max-height:100%!important;max-width:100%!important;aspect-ratio:var(--ux-ratio)!important;margin:0!important}
+:host([data-ux-modern]) .c-large-preview .stage:not(.acryl-scene) .scene{display:block!important;width:100%!important;height:100%!important}
+:host([data-ux-modern][data-ux-text-editing="true"]) .ux-direct-edit:not([hidden]){background:#fceaf1!important;border-color:#d9799e!important;box-shadow:0 2px 7px #ad37681a!important}
+:host([data-ux-modern]) .ux-spacer-colours{box-sizing:border-box;width:min(480px,calc(100vw - 28px));max-height:80dvh;padding:20px;border:1px solid #e3e7eb;border-radius:20px;background:#fff;box-shadow:0 18px 80px #1b2b3d38;color:#293440}
+:host([data-ux-modern]) .ux-spacer-colours::backdrop{background:#17233059}
+:host([data-ux-modern]) .ux-spacer-colours header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+:host([data-ux-modern]) .ux-spacer-colours h2{font-size:19px;margin:0}
+:host([data-ux-modern]) .ux-spacer-colours [data-colours-close]{min-height:40px!important;min-width:40px!important;padding:4px!important;font-size:25px;background:#f1f3f6!important}
+:host([data-ux-modern]) .ux-spacer-colours [role=group]:not([hidden]){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+:host([data-ux-modern]) .ux-spacer-colours img{width:64px;height:64px;object-fit:contain}
+:host([data-ux-modern]) .fk-buy-dock{background:#fff!important;border-top:1px solid #e4e8ed!important;box-shadow:0 -5px 24px #233b4b0a!important;padding:12px 22px!important}
+:host([data-ux-modern]) .fk-buy-dock .fk-buy-inner{gap:18px!important;align-items:center!important}
+:host([data-ux-modern]) .fk-buy-dock .fk-price-area{min-width:0!important;gap:3px!important}
+:host([data-ux-modern]) .fk-buy-dock .fk-price-area strong{font-size:25px!important;letter-spacing:-.6px;color:#202b35!important;line-height:1.1!important}
+:host([data-ux-modern]) .fk-buy-dock .fk-price-area small{font-size:11px!important;color:#647180!important;line-height:1.25!important}
+:host([data-ux-modern]) .fk-buy-dock .fk-price-area a{color:inherit!important;text-decoration-thickness:1px;text-underline-offset:2px}
+:host([data-ux-modern]) .fk-buy-dock .ux-quantity-stepper{height:44px!important;border:1px solid #dfe4e9!important;border-radius:12px!important;background:#f7f8fa!important;box-shadow:none!important;gap:0!important;overflow:hidden}
+:host([data-ux-modern]) .fk-buy-dock .ux-quantity-stepper button{height:42px!important;min-height:42px!important;min-width:28px!important;width:28px!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;font-size:20px!important;color:#344555!important}
+:host([data-ux-modern]) .fk-buy-dock .ux-quantity-stepper input{height:42px!important;min-height:42px!important;min-width:28px!important;width:30px!important;padding:0!important;border:0!important;background:transparent!important;font-size:15px!important;color:#233342!important}
+:host([data-ux-modern]) .fk-buy-dock :is(.completion-finish,.fk-buy-button){min-height:46px!important;padding:12px 22px!important;border:0!important;border-radius:12px!important;background:#263b48!important;color:#fff!important;font-weight:650!important;font-size:15px!important;box-shadow:0 3px 8px #17314318!important;white-space:nowrap}
+:host([data-ux-modern]) .fk-buy-dock :is(.completion-finish,.fk-buy-button):hover{background:#345466!important}
+@media(max-width:767px){
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-layout>.ux-preview{transition:height 280ms cubic-bezier(.2,.65,.3,1);will-change:height}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-editor,:host([data-ux-modern][data-ux-mobile-tabs]) .ux-mobile-scroll-spacer{overflow-anchor:none}
+ :host([data-ux-modern][data-ux-mobile-tabs]) .ux-mobile-scroll-spacer{transition:height 280ms cubic-bezier(.2,.65,.3,1)}
+ :host([data-ux-modern]) .fk-buy-dock{padding:10px 12px max(10px,env(safe-area-inset-bottom))!important}
+ :host([data-ux-modern]) .fk-buy-dock .fk-buy-inner{gap:10px!important}
+ :host([data-ux-modern]) .fk-buy-dock .fk-price-area strong{font-size:21px!important}
+ :host([data-ux-modern]) .fk-buy-dock .fk-price-area small{font-size:10px!important;max-width:110px}
+ :host([data-ux-modern]) .fk-buy-dock :is(.completion-finish,.fk-buy-button){font-size:13px!important;padding:12px!important}
+ :host([data-ux-modern]) .fk-buy-dock .ux-quantity-stepper{height:40px!important}
+ :host([data-ux-modern]) .fk-buy-dock .ux-quantity-stepper :is(button,input){height:38px!important;min-height:38px!important;min-width:23px!important;width:23px!important}
+}
+@media(prefers-reduced-motion:reduce){:host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-layout>.ux-preview,:host([data-ux-modern][data-ux-mobile-tabs]) .ux-mobile-scroll-spacer{transition:none!important}}
+:host([data-ux-modern][data-ux-mobile-tabs][data-ux-text-editing="true"][data-ux-keyboard="true"]) .ux-direct-slot{display:none!important}

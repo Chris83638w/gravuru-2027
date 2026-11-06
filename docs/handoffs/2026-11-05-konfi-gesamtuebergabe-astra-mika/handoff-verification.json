@@ -1,0 +1,67 @@
+{
+  "date": "2026-11-05",
+  "scope": "Handoff packaging and portable local preview; no product UI change",
+  "codeCommit": "8b26efdb3d9a4b9d14a5e67070736cce25313939",
+  "syntaxCheckPassed": true,
+  "checks": [
+    {
+      "name": "/review",
+      "passed": true,
+      "detail": "text/html; charset=utf-8"
+    },
+    {
+      "name": "/editor.html",
+      "passed": true,
+      "detail": "text/html; charset=utf-8"
+    },
+    {
+      "name": "/review-ui/shop-design-switch.mjs",
+      "passed": true,
+      "detail": "text/javascript"
+    },
+    {
+      "name": "pagination",
+      "passed": true,
+      "detail": "40+32 distinct archived designs"
+    },
+    {
+      "name": "model",
+      "passed": true,
+      "detail": "local binding, ordering disabled, original fonts loaded"
+    },
+    {
+      "name": "preview",
+      "passed": true,
+      "detail": "1962382 bytes rendered SVG"
+    },
+    {
+      "name": "invalid-page",
+      "passed": true,
+      "detail": "400"
+    },
+    {
+      "name": "read-only",
+      "passed": true,
+      "detail": "POST rejected 405"
+    },
+    {
+      "name": "host-boundary",
+      "passed": true,
+      "detail": "Foreign Host rejected 403"
+    },
+    {
+      "name": "snapshot",
+      "passed": true,
+      "detail": "No embedded fonts, no customer photo/logo resources"
+    },
+    {
+      "name": "snapshot-checksum",
+      "passed": true,
+      "detail": "SHA-256 matches"
+    }
+  ],
+  "initialRestrictedAttempt": "Initial local attempts blocked EACCES/ETIMEDOUT; server and same checks rerun with local network access. Host-header check uses node:http because fetch replaces Host.",
+  "fullProductTestsRerun": false,
+  "productionDeployed": false,
+  "merged": false
+}

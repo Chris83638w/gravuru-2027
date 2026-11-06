@@ -12,3 +12,19 @@
 @media(max-width:650px){.ux-product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.ux-product-card img{height:125px}.ux-product-card{padding:6px}.ux-product-designs-dialog{padding:14px}}
 
 .ux-product-themes{display:flex;align-items:center;gap:8px;font-size:14px}.ux-product-themes[hidden]{display:none!important}.ux-product-themes select{font:inherit;min-height:44px;max-width:100%;border:1px solid #bfc4c6;border-radius:8px;padding:8px;background:#fff;color:#2f3437}
+
+
+/* Selection and enlargement are separate buttons: preview never changes the design. */
+:host([data-ux-modern]) .ux-product-grid .ux-product-card{padding:0!important;overflow:hidden!important}
+:host([data-ux-modern]) .ux-product-card .ux-product-choose{display:block!important;position:relative;width:100%!important;padding:8px!important;border:0!important;border-radius:12px!important;background:transparent!important;line-height:0!important}
+:host([data-ux-modern]) .ux-product-card:has(.ux-product-choose[aria-pressed=true]){border:2px solid #435365!important}
+:host([data-ux-modern]) .ux-product-card .completion-check{display:none!important}
+:host([data-ux-modern]) .ux-product-card .ux-product-choose[aria-pressed=true] .completion-check{display:flex!important;line-height:1;align-items:center;justify-content:center}
+:host([data-ux-modern]) #ux-panel-design .ux-product-card .ux-product-enlarge{position:absolute!important;right:8px!important;bottom:8px!important;box-sizing:border-box!important;min-width:30px!important;width:30px!important;height:30px!important;min-height:30px!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:6px!important;border:1px solid #c4cbd3!important;border-radius:50%!important;background:#fff!important;color:#293d55!important;box-shadow:0 2px 5px #0002}
+.ux-product-design-preview-dialog{width:min(880px,calc(100vw - 32px));box-sizing:border-box;max-height:90dvh}
+.ux-product-design-preview-dialog [data-product-preview]{display:block;object-fit:contain;width:100%;max-height:72dvh}
+.ux-product-design-preview-dialog [data-product-preview][hidden]{display:none}
+.ux-product-themes select{appearance:auto!important;padding-right:32px!important}
+
+:host([data-ux-modern]) #ux-panel-design .ux-product-card .ux-product-enlarge .ux-ui-icon{width:16px!important;height:16px!important}
+@media(max-width:767px){:host([data-ux-modern]) #ux-panel-design .ux-product-card .ux-product-enlarge{display:none!important}}

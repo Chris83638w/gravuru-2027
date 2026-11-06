@@ -138,8 +138,11 @@ test('required text must differ from the template sample text',()=>{
  // Empty/control-only text is rejected either by content validation or by the
  // template-bound required-field check; neither path may save a draft.
  for(const empty of ['','   ','\n\t']){name.text=empty;assert.throws(()=>themedSave(cfg,s),Error);}
- name.uxHidden=true;name.text='Luna';assert.throws(()=>themedSave(cfg,s),/Bitte das Feld „Name“ ausfüllen\./);
- delete name.uxHidden;s.objects=s.objects.filter(o=>o.id!==name.id);assert.throws(()=>themedSave(cfg,s),/Bitte das Feld „Name“ ausfüllen\./);
+ // A permitted deliberate removal is distinct from leaving a required field empty.
+ name.uxHidden=true;name.text='Luna';assert.doesNotThrow(()=>themedSave(cfg,s));
+ delete name.uxHidden;s.objects=s.objects.filter(o=>o.id!==name.id);assert.doesNotThrow(()=>themedSave(cfg,s));
+ cfg.workshopElementRights={[s.designId]:Object.fromEntries(cfg.profile.designs[0].objects.map(o=>[o.id,{content:true,move:true,scale:true,color:true,replace:true,delete:false}]))};
+ assert.throws(()=>themedSave(cfg,s),/Bitte das Feld „Name“ ausfüllen\./);
  // Der Kunde kann das Pflichtkennzeichen nicht selbst abschalten.
  const t=themedState(cfg);Object.assign(t.objects.find(o=>o.fieldKey==='name'),{required:false});assert.throws(()=>themedSave(cfg,t),/ausfüllen/);
  assert.throws(()=>themed({},{required:'ja'}),/Pflichtfeld/);assert.throws(()=>themed({},{required:true,customerEditable:false}),/bearbeitbar/);

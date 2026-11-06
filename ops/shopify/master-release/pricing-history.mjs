@@ -7,7 +7,7 @@ export function pricingForLine(line){
  if(pricing.enabled!==true||!Array.isArray(pricing.history))throw Error('Invalid pricing history');
  const revisions=new Set([String(pricing.revision)]);
  for(const old of pricing.history){
-  if(!old||old.enabled!==true||!['gravuru-personalization-pricing/v1','gravuru-personalization-pricing/v2'].includes(old.schema)||old.productId!==pricing.productId||old.currency!==pricing.currency||!Number.isSafeInteger(old.revision)||old.revision<1||revisions.has(String(old.revision))||old.history!==undefined)throw Error('Invalid historical price contract');
+  if(!old||old.enabled!==true||!['gravuru-personalization-pricing/v1','gravuru-personalization-pricing/v2','gravuru-personalization-pricing/v3'].includes(old.schema)||old.productId!==pricing.productId||old.currency!==pricing.currency||!Number.isSafeInteger(old.revision)||old.revision<1||revisions.has(String(old.revision))||old.history!==undefined)throw Error('Invalid historical price contract');
   revisions.add(String(old.revision));
  }
  const revision=line.revision?.value;

@@ -1,0 +1,90 @@
+{
+  "at": "2026-11-04T15:24:17.454Z",
+  "runtime": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-konfi-korrektur-r2-20261104",
+  "files": [
+    {
+      "path": "app/configurator/variant-m/modern-layout.css",
+      "before": "ec960f57a40a6d58b2722455d30e4fd40d9d189022b01134d7b739c1ce5bbbbc",
+      "after": "d29234f8a50358873fed48073e4161468cc21576258042acfddda1e87391a69b"
+    },
+    {
+      "path": "app/configurator/variant-m/usability.mjs",
+      "before": "fb56416d4b45e10bddbf2c705c05a79afdd2a4a10be029adfa2ce7d43e16ce8c",
+      "after": "a07a7edf410e5e7b393ae552cbf972de7dc52ac92691b0ea8fbab3ff4e038044"
+    }
+  ],
+  "steps": [
+    {
+      "name": "tests",
+      "status": 0,
+      "summary": [
+        "# tests 4",
+        "# pass 4",
+        "# fail 0",
+        "# skipped 0"
+      ]
+    },
+    {
+      "name": "build",
+      "status": 0,
+      "summary": []
+    }
+  ],
+  "bundle": "editor-b28dfac637a5c2a7.mjs",
+  "startupSha": "d1994393ac740f3acee602edc45f01e267d0daa5b39768bb06ec1559200a83fd",
+  "restartPending": false,
+  "restartObservedInPlesk": true,
+  "http": [
+    {
+      "url": "/_merchant-acryl-editor.html",
+      "status": 200,
+      "bytes": 373926,
+      "sha256": "57b9d305d27e5880949c31a3f14635e17f889c52b9090164bc86f083c8c2d2fd"
+    },
+    {
+      "url": "/_acryl-bundle/editor-b28dfac637a5c2a7.mjs",
+      "status": 200,
+      "bytes": 1344246,
+      "sha256": "71b9cafe7afb86d499177c43cc529bf2e4290a0701c035ad97906d126cf89764"
+    },
+    {
+      "url": "/acryl-configurator/variant-m/modern-layout.css",
+      "status": 200,
+      "bytes": 8801,
+      "sha256": "d29234f8a50358873fed48073e4161468cc21576258042acfddda1e87391a69b"
+    }
+  ],
+  "localUi": {
+    "type": "real-browser-native-editor-with-local-monogram-fixture",
+    "live": false,
+    "dimensions": [
+      {
+        "width": 1425,
+        "height": 703
+      },
+      {
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "designs": 82,
+    "startDesign": "katalog-MG-S-22x14-D1",
+    "pricesCents": {
+      "base": 2199,
+      "oneAddedMotif": 2368,
+      "twoAddedMotifs": 2537,
+      "afterRemovingOne": 2368
+    },
+    "singleRectangleHoleImage": true,
+    "noAcrylicStand": true,
+    "noDuplicatePhotoSection": true,
+    "noWidthSuffix": true,
+    "noContradictoryZeroMotifPrice": true,
+    "saveAndMobileHeaderContrast": true,
+    "notes": "Local page uses native gallery; signed online gallery, Shopify cart and checkout not accepted by this check."
+  },
+  "peerLiveEvidence": {
+    "source": "https://github.com/Chris83638w/gravuru-2027/issues/48#issuecomment-6634347062",
+    "scope": "Astra confirms prior modern shell in actual Shopify product 16077798965628; 208 inline designs; existing draft retained; no cart test. Not a Monogram end-to-end acceptance."
+  }
+}

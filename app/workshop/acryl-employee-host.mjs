@@ -19,6 +19,8 @@ export function acrylRoute(pathname){
  const orderPage=pathname.match(/^\/werkstatt\/acryl\/(bestellungen|pruefstaende|ausgaben|formprodukt)\/?$/);
  if(orderPage)return '/werkstatt/'+orderPage[1]+'/';
  if(/^\/doorbell-assets\/[a-f0-9]{64}\.webp$/.test(pathname))return pathname;
+ if(/^\/werkstatt\/motivsuche\/?$/.test(pathname))return '/werkstatt/motivsuche/';
+ if(pathname==='/workshop-ui/merchant-navigation.mjs')return pathname;
  if(/^\/werkstatt\/katalog\/?$/.test(pathname))return '/werkstatt/katalog/';
  if(/^\/werkstatt\/designs\/?$/.test(pathname))return '/werkstatt/designs/';
  // Katalogeditor (Paket L) ist die neue Werkstatt-App; /werkstatt/ selbst gehört auf dem Händlerhost noch der alten Laufzeit.

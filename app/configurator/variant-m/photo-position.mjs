@@ -1,6 +1,7 @@
 import {photoCrop,panPhoto} from './photo-position-model.mjs';
+import {photoSizeLimit,resizePhoto} from './photo-upload-geometry.mjs';
 
-export function installPhotoPosition({el,r,files,selected,select,mutate,showTab,button}){
+export function installPhotoPosition({el,r,config,files,selected,select,mutate,showTab,button}){
   const editable=o=>o?.type==='photoSlot'&&!o.uxHidden&&!o.uxLocked&&!o.locked&&!o.technicalLocked&&o.customerEditable!==false;
   const movable=o=>editable(o)&&!o.acrylicFixed&&el.uxCanEdit?.(o,'move')!==false;
   const usable=o=>editable(o)&&files.has(o.uxUploadId)&&el.uxCanEdit?.(o,'replace')!==false;
@@ -8,12 +9,17 @@ export function installPhotoPosition({el,r,files,selected,select,mutate,showTab,
   let modeKey=null,selectionKey=null,drag=null,sliderStart=null,updating=false;
   const positioning=o=>usable(o)&&(!movable(o)||modeKey===identity(o));
   const panel=document.createElement('section');panel.className='ux-photo-position';panel.hidden=true;
-  panel.innerHTML='<h3 data-photo-position-title>Fotofeld bewegen</h3><p data-photo-position-help></p>'+button('photo-position-crop','Foto im Ausschnitt ausrichten')+button('photo-position-move','Fotofeld bewegen')+'<div data-photo-crop-controls><label>Zoom <input data-photo-position="zoom" type="range" min=".25" max="4" step=".01"><output data-photo-percent></output></label><label>Links / rechts <input data-photo-position="x" type="range" min="-1" max="1" step=".01"></label><label>Oben / unten <input data-photo-position="y" type="range" min="-1" max="1" step=".01"></label><div class="ux-actions">'+button('photo-position-smaller','− Kleiner')+button('photo-position-bigger','+ Größer')+button('photo-position-turn','↻ Drehen')+button('photo-position-remove','Foto entfernen')+'</div>'+button('photo-position-reset','Ausschnitt zurücksetzen')+'</div>';
+  panel.innerHTML='<label class="ux-photo-size">Fotogröße <input type="range" data-photo-object-size min="5" max="220" step=".1"></label><h3 data-photo-position-title>Fotofeld bewegen</h3><p data-photo-position-help></p>'+button('photo-position-crop','Foto im Ausschnitt ausrichten')+button('photo-position-move','Fotofeld bewegen')+'<div data-photo-crop-controls><label>Zoom <input data-photo-position="zoom" type="range" min=".25" max="4" step=".01"><output data-photo-percent></output></label><label>Links / rechts <input data-photo-position="x" type="range" min="-1" max="1" step=".01"></label><label>Oben / unten <input data-photo-position="y" type="range" min="-1" max="1" step=".01"></label><div class="ux-actions">'+button('photo-position-turn','↻ Drehen')+button('photo-position-remove','Foto entfernen')+'</div>'+button('photo-position-reset','Ausschnitt zurücksetzen')+'</div>';
   r.querySelector('.ux-uploads').after(panel);
-  const stage=r.querySelector('.stage');
+  const stage=r.querySelector('.stage'),sizeLabel=panel.querySelector('.ux-photo-size'),sizeInput=sizeLabel.querySelector('input');
+  sizeLabel.hidden=true;sizeInput.setAttribute('aria-label','Fotogröße');stage.append(sizeLabel);
   el.uxCanPositionPhoto=usable;
   el.uxPhotoPositionActive=positioning;
-  function removePhoto(o=selected()){if(!usable(o))return;mutate(()=>{delete o.uxUploadId;delete o.uxUploadKind;delete o.uxPhotoCrop;delete o.uxPhotoBackground;delete o.uxPhotoColor;});}
+  function removePhoto(o=selected()){if(!usable(o))return;mutate(()=>{
+    const templateSlot=config?.profile?.designs?.find(d=>d.id===el.state.designId)?.objects?.some(source=>source.id===o.id&&source.type==='photoSlot');
+    if((!templateSlot&&!o.acrylicFixed)||el.uxCanEdit?.(o,'delete')===true){el.state.objects=el.state.objects.filter(item=>item.id!==o.id);if(el.state.selected===o.id)el.state.selected=null;return;}
+    delete o.uxUploadId;delete o.uxUploadKind;delete o.uxPhotoCrop;delete o.uxPhotoBackground;delete o.uxPhotoColor;
+  });}
   const handle=e=>e.target.closest('[data-ux-handle]');
   const find=e=>el.state.objects.find(o=>o.id===e.target.closest('.scene [data-object]')?.dataset.object);
   const snapshot=o=>({old:structuredClone(el.state),objectId:o.id,uploadId:o.uxUploadId,designId:el.state.designId,crop:photoCrop(o.uxPhotoCrop)});
@@ -21,6 +27,7 @@ export function installPhotoPosition({el,r,files,selected,select,mutate,showTab,
     if(!prior||prior.designId!==el.state.designId)return;
     const o=el.state.objects.find(o=>o.id===prior.objectId),old=prior.old.objects.find(o=>o.id===prior.objectId);
     if(!o||o.uxUploadId!==prior.uploadId)return;
+    for(const key of ['x','y','w','h'])o[key]=old[key];
     if(old.uxPhotoCrop===undefined)delete o.uxPhotoCrop;else o.uxPhotoCrop=structuredClone(old.uxPhotoCrop);
   }
   function cancel(){const prior=drag;drag=null;if(prior){restoreCrop(prior);if(stage.hasPointerCapture(prior.id))stage.releasePointerCapture(prior.id);}if(sliderStart)restoreCrop(sliderStart);sliderStart=null;}
@@ -30,8 +37,8 @@ export function installPhotoPosition({el,r,files,selected,select,mutate,showTab,
     if(updating)return;updating=true;
     try{
       const o=selected(),key=identity(o);if(key!==selectionKey){cancel();modeKey=null;selectionKey=key;}
-      panel.hidden=!usable(o);
-      if(!panel.hidden){const active=positioning(o),v=photoCrop(o.uxPhotoCrop);panel.querySelector('[data-photo-position-title]').textContent=active?'Foto im Ausschnitt ausrichten':'Fotofeld bewegen';panel.querySelector('[data-photo-position-help]').textContent=active?'Ziehe das Foto innerhalb seiner festen Form. Zoom und Drehung ändern nur den Bildausschnitt. Außerhalb des Fotos bleibt die Fläche transparent.':'Ziehe Foto und Form gemeinsam auf der Tafel. Die Pfeiltasten verschieben das gesamte Fotofeld. Der Bildausschnitt bleibt dabei erhalten.';panel.querySelector('[data-ux="photo-position-crop"]').hidden=active;panel.querySelector('[data-ux="photo-position-move"]').hidden=!active||!movable(o);panel.querySelector('[data-photo-crop-controls]').hidden=!active;for(const input of panel.querySelectorAll('input')){input.value=v[input.dataset.photoPosition];input.disabled=!active;}panel.querySelector('output').textContent=Math.round(v.zoom*100)+' %';}
+      panel.hidden=!usable(o);sizeLabel.hidden=panel.hidden||!movable(o)||el.uxCanEdit?.(o,'scale')===false;el.dataset.uxPhotoSizing=String(!sizeLabel.hidden);
+      if(!panel.hidden){const active=positioning(o),v=photoCrop(o.uxPhotoCrop);panel.querySelector('[data-photo-position-title]').textContent=active?'Foto im Ausschnitt ausrichten':'Fotofeld bewegen';panel.querySelector('[data-photo-position-help]').textContent=active?'Ziehe das Foto innerhalb seiner festen Form. Zoom und Drehung ändern nur den Bildausschnitt. Außerhalb des Fotos bleibt die Fläche transparent.':'Ziehe Foto und Form gemeinsam auf der Tafel. Die Pfeiltasten verschieben das gesamte Fotofeld. Der Bildausschnitt bleibt dabei erhalten.';panel.querySelector('[data-ux="photo-position-crop"]').hidden=active;panel.querySelector('[data-ux="photo-position-move"]').hidden=!active||!movable(o);panel.querySelector('[data-photo-crop-controls]').hidden=!active;for(const input of panel.querySelectorAll('[data-photo-position]')){input.value=v[input.dataset.photoPosition];input.disabled=!active;}panel.querySelector('[data-photo-percent]').textContent=Math.round(v.zoom*100)+' %';const size=sizeInput,canSize=movable(o)&&el.uxCanEdit?.(o,'scale')!==false;size.closest('label').hidden=!canSize;if(canSize){const max=photoSizeLimit(o,el.state.width,el.state.height);size.min=String(Math.min(5,max));size.max=String(max);size.value=String(o.w);}}
       for(const object of el.state.objects.filter(o=>movable(o)||usable(o))){const g=r.querySelector('.scene [data-object="'+CSS.escape(object.id)+'"]');if(g){g.style.cursor=drag?'grabbing':'grab';g.style.touchAction='none';g.setAttribute('tabindex','0');g.setAttribute('role','group');g.setAttribute('aria-label',positioning(object)?'Foto im Ausschnitt ausrichten: ziehen oder Pfeiltasten nutzen':'Fotofeld mit Foto bewegen: ziehen oder Pfeiltasten nutzen');}}
     }finally{updating=false;}
   }
@@ -43,7 +50,9 @@ export function installPhotoPosition({el,r,files,selected,select,mutate,showTab,
     if(objectId&&((r.activeElement||document.activeElement)===focused||!focused.isConnected&&!r.activeElement&&(document.activeElement===document.body||document.activeElement===r.host)))r.querySelector('.scene [data-object="'+CSS.escape(objectId)+'"]')?.focus({preventScroll:true});
     return result;
   };}
-  panel.addEventListener('input',e=>{const key=e.target.dataset.photoPosition,o=selected();if(!['zoom','x','y'].includes(key)||!positioning(o))return;if(!sliderStart){sliderStart=snapshot(o);el.record(sliderStart.old);}o.uxPhotoCrop=photoCrop({...photoCrop(o.uxPhotoCrop),[key]:Number(e.target.value)});el.render();});
+  const inputChanged=e=>{const key=e.target.dataset.photoPosition,o=selected();if(e.target.matches('[data-photo-object-size]')&&usable(o)&&movable(o)&&el.uxCanEdit?.(o,'scale')!==false){if(!sliderStart){sliderStart=snapshot(o);el.record(sliderStart.old);}resizePhoto(o,Number(e.target.value),el.state.width,el.state.height);el.render();return;}if(!['zoom','x','y'].includes(key)||!positioning(o))return;if(!sliderStart){sliderStart=snapshot(o);el.record(sliderStart.old);}o.uxPhotoCrop=photoCrop({...photoCrop(o.uxPhotoCrop),[key]:Number(e.target.value)});el.render();};
+  panel.addEventListener('input',inputChanged);sizeInput.addEventListener('input',inputChanged);
+  sizeInput.addEventListener('change',()=>{sliderStart=null;el.sync();});
   panel.addEventListener('change',()=>{sliderStart=null;el.sync();});
   panel.addEventListener('click',e=>{const key=e.target.closest('[data-ux]')?.dataset.ux;if(key==='photo-position-crop')return el.uxSetPhotoPositionMode('crop');if(key==='photo-position-move')return el.uxSetPhotoPositionMode('move');if(!positioning(selected())||!key?.startsWith('photo-position-'))return;if(key==='photo-position-remove')return removePhoto();mutate(()=>{const o=selected(),v=photoCrop(o.uxPhotoCrop);if(key==='photo-position-reset')delete o.uxPhotoCrop;else o.uxPhotoCrop=photoCrop({...v,zoom:v.zoom*(key==='photo-position-bigger'?1.1:key==='photo-position-smaller'?1/1.1:1),angle:v.angle+(key==='photo-position-turn'?15:0)});});});
   r.addEventListener('pointerdown',e=>{
@@ -63,7 +72,7 @@ export function installPhotoPosition({el,r,files,selected,select,mutate,showTab,
   },true);
   function finish(e,cancelled=false){if(!drag||drag.id!==e.pointerId)return;e.preventDefault();e.stopImmediatePropagation();const prior=drag;drag=null;if(stage.hasPointerCapture(e.pointerId))stage.releasePointerCapture(e.pointerId);if(cancelled)restoreCrop(prior);else if(prior.moved)el.record(prior.old);el.sync();if(!cancelled&&!prior.moved&&prior.kind==='move')el.uxPhotoTap?.(prior.objectId);}
   r.addEventListener('pointerup',e=>finish(e),true);r.addEventListener('pointercancel',e=>finish(e,true),true);stage.addEventListener('lostpointercapture',e=>finish(e,true));
-  r.addEventListener('click',e=>{const b=e.target.closest('[data-ux]'),key=b?.dataset.ux,target=b?.dataset.id?el.state.objects.find(o=>o.id===b.dataset.id):selected();if(usable(target)&&['delete','remove-content','object-delete'].includes(key)){e.preventDefault();e.stopImmediatePropagation();removePhoto(target);return;}const o=find(e);if(o&&(usable(o)||movable(o))){e.preventDefault();e.stopImmediatePropagation();select(o.id);showTab('upload');}},true);
+  r.addEventListener('click',e=>{const b=e.target.closest('[data-ux]'),key=b?.dataset.ux,target=b?.dataset.id?el.state.objects.find(o=>o.id===b.dataset.id):selected();if(usable(target)&&['delete','remove-content','object-delete'].includes(key)){e.preventDefault();e.stopImmediatePropagation();removePhoto(target);return;}const o=find(e);if(o&&(usable(o)||movable(o))){e.preventDefault();e.stopImmediatePropagation();select(o.id);}},true);
   r.addEventListener('keydown',e=>{
     if(e.key==='Escape'&&(drag||sliderStart)){e.preventDefault();e.stopImmediatePropagation();cancel();el.sync();return;}
     const h=handle(e),o=h?selected():find(e);if(!o)return;

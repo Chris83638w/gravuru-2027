@@ -1,6 +1,19 @@
 const $=id=>document.getElementById(id),params=new URL(location.href).searchParams;
 const target={productId:params.get('configuration'),designId:params.get('design'),originalId:params.get('originalId')};
 let context,csrf,frame,ready=false,dirty=false,busy=false,pendingRequest=null,returnAfterSave=false,snapshotTimer,startTimer;
+// Private gallery startup diagnostics contain no model, credentials or query values.
+const startDiagnostics={frameLoaded:false,policy:[]};
+document.addEventListener('securitypolicyviolation',event=>{
+ if(['frame-src','frame-ancestors','child-src'].includes(event.effectiveDirective))startDiagnostics.policy.push(event.effectiveDirective);
+});
+function reportStartFailure(){
+ const details={...startDiagnostics};
+ try{const doc=frame.contentWindow.document;details.document=doc.URL==='about:blank'?'about:blank':new URL(doc.URL).pathname;details.scripts=doc.scripts.length;details.readyState=doc.readyState;}
+ catch(error){details.documentError=error.name;}
+ const resource=performance.getEntriesByName(new URL('/editor.html',location.origin).href).at(-1);
+ if(resource)for(const key of ['initiatorType','duration','responseStatus','transferSize','encodedBodySize','decodedBodySize'])details[key]=resource[key];
+ console.error('Galerie-Konfi-Startdiagnose',JSON.stringify(details));
+}
 const status=(text,error=false)=>{$('status').textContent=text;$('status').dataset.error=String(error);};
 function controls(){for(const id of ['save','save-return'])$(id).disabled=!ready||busy;frame?.toggleAttribute('inert',busy);$('back').disabled=busy;}
 async function request(path,data){const response=await fetch(path,{method:data?'POST':'GET',credentials:'same-origin',cache:'no-store',headers:data?{'Content-Type':'application/json','X-Slate-Review-CSRF':csrf}:{},...(data?{body:JSON.stringify(data)}:{})});const value=await response.json();if(!response.ok)throw Object.assign(Error(value.error?.message||value.error||'Die Galerieverbindung ist momentan nicht verfügbar.'),{status:response.status});return value;}
@@ -42,6 +55,6 @@ try{
  $('title').textContent=context.originalId+' bearbeiten';$('target').textContent=context.material+' · '+context.mm.map(n=>n/10).join(' × ')+' cm · Stand '+context.revision;
  window.GravuruModelProfile=opened.model.legacy;window.UniversalConfig=opened.model.universal;
  window.GravuruGalleryEditor={context,photos:opened.photos};
- frame=document.createElement('iframe');frame.title='Vollständiger Konfigurator für '+context.originalId;frame.src='/editor.html';$('editor').append(frame);
- startTimer=setTimeout(()=>{if(ready)return;status('Der Konfigurator konnte nicht vollständig geladen werden. Bitte die Galerie neu öffnen. Speichern bleibt bis zum vollständigen Laden gesperrt.',true);},20000);
+ frame=document.createElement('iframe');frame.title='Vollständiger Konfigurator für '+context.originalId;frame.addEventListener('load',()=>{startDiagnostics.frameLoaded=true;});frame.src='/editor.html';$('editor').append(frame);
+ startTimer=setTimeout(()=>{if(ready)return;reportStartFailure();status('Der Konfigurator konnte nicht vollständig geladen werden. Bitte die Galerie neu öffnen. Speichern bleibt bis zum vollständigen Laden gesperrt.',true);},20000);
 }catch(error){status(error.message,true);}

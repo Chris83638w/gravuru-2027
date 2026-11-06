@@ -1,0 +1,76 @@
+{
+  "schema": "gravuru-gallery-backup-proof/v1",
+  "createdAt": "2026-11-06T12:17:13.918801+00:00",
+  "codeCommitBeforeDocumentation": "b2e6857517fa0694887bba3f20c8b2a6099cf5a6",
+  "online": {
+    "createdAt": "2026-11-06T12:07:23.737275+00:00",
+    "snapshotDirectory": "/var/www/vhosts/gravuru-designwerkstatt.de/private/galerie-gesamtsicherung-20261106T120700Z",
+    "archive": "/var/www/vhosts/gravuru-designwerkstatt.de/private/galerie-gesamtsicherung-20261106T120700Z.tar.gz",
+    "sha256": "5590c28bfd74f90231739df9eeea9ba4b376b7288e1634eabeee3200012a4283",
+    "bytes": 594453964,
+    "files": 4281,
+    "snapshotFiles": 2761,
+    "databases": [
+      "design-assets.sqlite",
+      "profiles.sqlite",
+      "workshop.sqlite",
+      "review-comments.sqlite",
+      "review-approvals.sqlite"
+    ],
+    "counts": {
+      "originals": 325,
+      "products": 35
+    },
+    "sqliteQuickCheck": "ok",
+    "archiveAllFilesVerified": true,
+    "privateConfigurationBackedUp": true,
+    "shopifyBackup": false,
+    "runtimeChanged": false,
+    "localCopyVerified": true,
+    "localFile": "galerie-gesamtsicherung-20261106T120700Z.tar.gz"
+  },
+  "localReview": {
+    "archive": "local-steel-review-20261106.zip",
+    "bytes": 765017561,
+    "sha256": "759020c4b39d6ea9831eea9a140dc5ce9145a572b51ec2cdd74187e7ca8a59e3",
+    "files": 2977,
+    "snapshotFiles": 2976,
+    "counts": {
+      "originals": 353,
+      "products": 108
+    },
+    "databases": [
+      "design-assets.sqlite",
+      "profiles.sqlite",
+      "workshop.sqlite",
+      "review-comments.sqlite",
+      "review-approvals.sqlite"
+    ],
+    "sqliteQuickCheck": "ok",
+    "archiveAllFilesVerified": true,
+    "containsSyntheticTestEdits": true,
+    "mustNotInstallAsUserData": true
+  },
+  "codeBundle": {
+    "file": "gravuru-2027-b2e68575.bundle",
+    "bytes": 248489608,
+    "sha256": "d4e605663f60d594fd0e7aa2a570b22452a168e616c676164aee61c4fac5b1d6",
+    "verified": true,
+    "completeHistory": true
+  },
+  "cataloguePilotSources": {
+    "archive": "katalog-pilot-visible-sources.zip",
+    "bytes": 45484070,
+    "sha256": "9959d407c91f9e4a2dd21fe8997585ea7084e17b11f9757b0656c39f99593b57",
+    "files": 743,
+    "allFilesVerified": true,
+    "fullCatalogueHistory": false
+  },
+  "limits": [
+    "Not a complete Shopify, order, theme, CDN or Plesk-system backup.",
+    "Catalogue ZIP contains 743 materialized pilot checkout files, not the full catalogue Git history.",
+    "No restored Plesk instance was started.",
+    "No application, publication or Shopify data changed.",
+    "Incomplete local-steel-snapshot attempt and aborted catalogue bundle are not valid backups."
+  ]
+}

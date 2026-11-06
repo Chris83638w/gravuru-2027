@@ -43,6 +43,15 @@ class SnapshotTest(unittest.TestCase):
     def capture(self):
         return snapshot.capture(self.data, self.gallery, self.output)
 
+    def test_material_review_schema_survives_capture_and_verification(self):
+        manifest = self.gallery / 'manifest.json'
+        pack = json.loads(manifest.read_text(encoding='utf-8'))
+        pack['schema'] = 'gravuru-design-original-review/v1'
+        manifest.write_text(json.dumps(pack), encoding='utf-8')
+        (self.gallery / 'files-sha256.json').write_text(json.dumps([snapshot.record(manifest, 'manifest.json')]))
+        self.capture()
+        self.assertEqual(snapshot.verify(self.output)['counts']['products'], 1)
+
     def test_wal_edits_comments_revisions_and_ids_survive_install(self):
         self.assertTrue((self.data / 'workshop.sqlite-wal').stat().st_size > 0)
         result = self.capture()

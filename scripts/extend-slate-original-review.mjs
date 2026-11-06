@@ -39,8 +39,10 @@ export function readSlatePackage(value){
   validateSlateReviewMapping(pack,{localOnly:true,published:false,shopifyWrites:0,products:pack.products});
   return {root,pack,checksums,hash:sha(fs.readFileSync(child(root,'manifest.json')))};
 }
-function disjoint(base,addon){
-  if(base.pack.catalogueCommit!==addon.pack.catalogueCommit)fail('Catalogue commits must agree');
+function disjoint(base,addon,{materialExtension=false}={}){
+  if(materialExtension){
+    if(addon.pack.schema!=='gravuru-design-original-review/v1')fail('Material extension requires a versioned design review package');
+  }else if(base.pack.catalogueCommit!==addon.pack.catalogueCommit)fail('Catalogue commits must agree');
   for(const [label,oldRows,newRows,key] of [
     ['original IDs',base.pack.originals,addon.pack.originals,'id'],
     ['product keys',base.pack.products,addon.pack.products,'key'],
@@ -51,8 +53,8 @@ function disjoint(base,addon){
   }
 }
 
-export function mergeSlatePackages({baseRoot,addonRoot,out}){
-  const base=readSlatePackage(baseRoot),addon=readSlatePackage(addonRoot);disjoint(base,addon);
+export function mergeSlatePackages({baseRoot,addonRoot,out,materialExtension=false}){
+  const base=readSlatePackage(baseRoot),addon=readSlatePackage(addonRoot);disjoint(base,addon,{materialExtension});
   out=privatePath(out);if(fs.existsSync(out))fail('Combined package output must be new');
   for(const source of [base,addon])if(within(source.root,out)||within(out,source.root))fail('Combined output must be separate');
   const planned=new Map();
@@ -81,6 +83,13 @@ export function mergeSlatePackages({baseRoot,addonRoot,out}){
   for(const [name,file] of Object.entries(addon.pack.fontFiles)){if(fontFiles[name]&&fontFiles[name]!==file)fail('Font file mapping conflict: '+name);fontFiles[name]=file;}
   const pack={...base.pack,products:[...base.pack.products,...addon.pack.products],originals:[...base.pack.originals,...addon.pack.originals],assets:[...assets.values()],fontFiles,
     sourcePackages:[{manifestSha256:base.hash,counts:base.pack.counts},{manifestSha256:addon.hash,counts:addon.pack.counts}]};
+  if(materialExtension){
+    pack.schema='gravuru-design-original-review/v1';
+    pack.sourcePackages=[...(base.pack.sourcePackages||[]),{manifestSha256:base.hash,catalogueCommit:base.pack.catalogueCommit,counts:base.pack.counts},{manifestSha256:addon.hash,catalogueCommit:addon.pack.catalogueCommit,deliveryCommit:addon.pack.deliveryCommit,counts:addon.pack.counts}];
+    pack.blanks=[...(base.pack.blanks||[]),...(addon.pack.blanks||[])];
+    const blankKeys=pack.blanks.map(row=>JSON.stringify([row.materialKey,row.key]));
+    if(new Set(blankKeys).size!==blankKeys.length)fail('Extension overlaps blank keys');
+  }
   const editable=pack.originals.filter(row=>row.targets?.some(target=>target.status==='prepared'));
   const complete=editable.filter(row=>row.targets.every(target=>target.status==='prepared'));
   // Source preparedDesigns used different meanings (both memorial sizes versus
@@ -93,11 +102,13 @@ export function mergeSlatePackages({baseRoot,addonRoot,out}){
   fs.mkdirSync(out,{recursive:true,mode:0o700});
   for(const [relative,row] of planned){const bytes=fs.readFileSync(row.source);if(bytes.length!==row.expected.bytes||sha(bytes)!==row.expected.sha256)fail('Source changed during merge');write(child(out,relative),bytes);}
   write(child(out,'manifest.json'),json(pack));
-  write(child(out,'START-HIER.md'),'# Gemeinsame private Schiefer-Prüfgalerie\n\nOriginale und Nachweise bleiben unverändert; Quellberichte stehen unter source-packages/.\nBenutzeränderungen liegen ausschließlich in den zugehörigen Review-Datenbanken.\nKeine Veröffentlichung oder Designfreigabe.\n');
+  write(child(out,'START-HIER.md'),'# Gemeinsame private '+(materialExtension?'Design':'Schiefer')+'-Prüfgalerie\n\nOriginale und Nachweise bleiben unverändert; Quellberichte stehen unter source-packages/.\nBenutzeränderungen liegen ausschließlich in den zugehörigen Review-Datenbanken.\nKeine Veröffentlichung oder Designfreigabe.\n');
   const checksums=walk(out).map(file=>{const bytes=fs.readFileSync(child(out,file));return {file,bytes:bytes.length,sha256:sha(bytes)};});
   write(child(out,'files-sha256.json'),json(checksums));
   return {out,counts:pack.counts,files:checksums.length+1};
 }
+
+export {privatePath as privateReviewPath,child as reviewPackageFile};
 
 export async function extendSlateReview({baseRoot,addonRoot,data,galleryOut}){
   const base=readSlatePackage(baseRoot),addon=readSlatePackage(addonRoot);disjoint(base,addon);

@@ -22,6 +22,7 @@ SLATE_RUNTIME_FILES = [
     'scripts/lib/design-review-approvals.mjs',
     'scripts/lib/design-review-overview.mjs',
     'scripts/lib/slate-review-approval-targets.mjs',
+    'scripts/lib/design-review-targets.mjs',
     'scripts/lib/slate-review-approvals-ui.js',
 ]
 

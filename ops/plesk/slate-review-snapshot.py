@@ -118,8 +118,8 @@ def source_databases(data):
 def validate_mapping(gallery, data):
     pack = json.loads((gallery / 'manifest.json').read_text(encoding='utf-8'))
     mapping = json.loads((data / MAPPING).read_text(encoding='utf-8'))
-    if pack.get('schema') != 'gravuru-slate-original-review/v1' or pack.get('reviewOnly') is not True or pack.get('released') is not False:
-        raise ValueError('Expected an unpublished Schiefer review package')
+    if pack.get('schema') not in ('gravuru-slate-original-review/v1', 'gravuru-design-original-review/v1') or pack.get('reviewOnly') is not True or pack.get('released') is not False:
+        raise ValueError('Expected an unpublished design review package')
     if mapping.get('localOnly') is not True or mapping.get('published') is not False or mapping.get('shopifyWrites') != 0:
         raise ValueError('Expected a local unpublished review mapping')
     ids = {row['id'] for row in pack['originals']}

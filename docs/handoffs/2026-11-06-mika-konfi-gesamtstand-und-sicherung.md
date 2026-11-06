@@ -1,6 +1,6 @@
 # Mika · Konfi, Galerie, Shop-Anschluss und Sicherung
 
-Stand: **06.11.2026, Sicherung 12:13:51 UTC / 13:13:51 Berlin**, spätere Abnahme-Ergänzung in Abschnitt 11, bestätigter Synchronisierungsumfang in Abschnitt 12 und vorgeschaltete Optionsabfrage in Abschnitt 13. Verfasser: Codex / Mika. Die Abschnitte 1–10 dokumentieren den Sicherungszeitpunkt; die Nachträge aktualisieren die offenen Punkte. Kein Releaseprotokoll und keine Verkaufsfreigabe.
+Stand: **06.11.2026, Sicherung 12:13:51 UTC / 13:13:51 Berlin**, spätere Abnahme-Ergänzung in Abschnitt 11, bestätigter Synchronisierungsumfang in Abschnitt 12, Optionsabfrage in Abschnitt 13 und **umgesetzte private Synchronisierung/Produktgruppen in Abschnitt 14**. Verfasser: Codex / Mika. Die Abschnitte 1–10 dokumentieren den Sicherungszeitpunkt; die Nachträge aktualisieren die offenen Punkte. Kein Releaseprotokoll und keine Verkaufsfreigabe.
 
 ## 1. Aktueller Nutzerauftrag und Grenzen
 
@@ -294,3 +294,46 @@ Die neue Abfrage betrifft **Produktneuanlagen**. Ein reiner Designabgleich beste
 Optimierungsvorschlag, noch nicht umgesetzt: gespeicherte Produktgruppen-Einstellungen beim nächsten Anlegen als prüfbaren Vorschlag zeigen, sodass Mikail sie bestätigen oder gezielt ändern kann, statt bekannte Optionen jedes Mal neu einzutippen. Keine ungefragte Übernahme.
 
 **Stand:** Anforderung und Klarstellung dokumentiert; keine Klebeband-/Befestigungsoption aktiviert, keine Produktdaten geändert und noch keine neue Abfrageoberfläche implementiert. Diese Ergänzung gehört in den gemeinsamen Anlage-/Synchronisierungsvertrag von Mika und Astra.
+
+## 14. Synchronisierung und bestätigte Produktgruppen umgesetzt
+
+### Auftrag, Stand und Zuständigkeit
+
+Mikail hat die Umsetzung ausdrücklich beauftragt: **„Ja, setze die Synchronisierung und die Produktgruppen-Vorlagen so um. Die Optionen müssen vor dem Anlegen bestätigt werden. Stimm dich mit Astra ab und ändere noch nichts am Live-Shop.“** Damit ist die in Abschnitten 12/13 noch als Vorschlag beschriebene private Verwaltung gebaut. Die früheren Abschnitte bleiben als historische Entscheidungen erhalten.
+
+- **Code:** `fa48154232816c8a31768107208231d5c190e574`, Branch `dev/mika-galerie-sync-vorlagen-20261106`, [Draft-PR #185](https://github.com/Chris83638w/gravuru-2027/pull/185), gestapelt auf #184 / `f8e55358`.
+- **Vollständige technische Übergabe mit zwei Screenshots:** [2026-11-06-mika-galerie-synchronisierung-und-produktgruppen.md](https://github.com/Chris83638w/gravuru-2027/blob/fa48154232816c8a31768107208231d5c190e574/docs/handoffs/2026-11-06-mika-galerie-synchronisierung-und-produktgruppen.md).
+- Drei Unteragenten teilten Produktgruppen/Bestätigung, Sync/Medien sowie Materialauswahl/Review auf. Mika integrierte die private Oberfläche, HTTP-Anbindung und Browserprüfung. [Abstimmung mit Astra in #168](https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6686949586); bis Abschluss keine neue Antwort darauf. Astras Import-/Zieladapter wurde nicht parallel ersetzt.
+- Keine Kundendesign-/Editoränderungen, kein Main-Merge, keine Hostübernahme, keine echten Shopify-Schreibzugriffe oder echten Designfreigaben. Die umfassenden Sicherungen aus Abschnitt 8 bleiben unverändert. Der neue Code liegt in einem eigenen Worktree/Commit; private Datenbanken, Bildoriginale und Zugangsdaten wurden nicht auf GitHub geladen.
+
+### Jetzt vorhandene Bedienung
+
+Die private Galerie hat unter `/originale/verwaltung` drei Bereiche:
+
+1. **Produktgruppen:** vorhandene Quellen nach Linie, Unterkategorie, Familie und Größe auswählen; alle tatsächlichen Optionsbereiche und Zusatzfelder bearbeiten. Preise und technische Möglichkeiten bleiben aus den bestehenden nativen Quellen. Zusätzliche ungeklärte Angaben verhindern die Anlage; Beispiele aus dem Chat werden nicht als freigegebene Stammdaten ausgegeben.
+2. **Produkte anlegen:** konkrete Produkte und vollständigen angebotenen Optionsumfang einschließlich Aufpreisen, Standards, Pflichtfeldern, Abhängigkeiten und nativer Vorschau prüfen. Erst ein ausdrücklich gesetztes Bestätigungshäkchen erlaubt **Bestätigen & Entwürfe anlegen**. Bestätigung bindet genau diese Produkte, Vorlage, Quellrevisionen und den Materialstand. Änderungen entwerten sie; der letzte Vergleich läuft innerhalb der Anlage-Transaktion. Wiederholungen erzeugen keine Duplikate.
+3. **Synchronisieren:** bestehende eindeutig zugeordnete Produkte auswählen; vorherigen/neuen Stand ansehen und bewusst abgleichen. Gespeicherte Vorgänge lassen sich nach Neuladen wieder öffnen. Unklare Antworten werden nur erneut geprüft, niemals ungeprüft nochmals geschrieben.
+
+Die Materialauswahl je Unterkategorie ist im vorhandenen Katalogeditor ergänzt. Ein gemeinsamer Resolver versorgt UI und Angebotsplaner: `familyIdsOffered` fehlend/null übernimmt die Linie, `[]` bietet keine neuen Materialien an, echte Familien-IDs wählen ausdrücklich. AA/AS bleiben eigenständige 5-mm-Familien. Abwahl löscht keine bestehenden Produkte. Keine echten Liniendateien oder Angebote wurden in dieser Abnahme verändert.
+
+### Anschluss und Grenzen
+
+Der neue Anschluss verwendet bearbeitete native Galerieversionen, Original-ID und tatsächliches Startdesign; nicht alte Katalog-SVGs. Quellen müssen aktuell sichtgeprüft, Zielbindungen und Katalogfreigaben vorhanden sein. Geometrie, Material, Verfahren und Ressourcen werden geprüft. Fotos einschließlich Original, Bearbeitungsquelle und Masken bleiben erhalten. Ein eigenes dauerhaftes Journal und Produktsperren halten Teilschritte und konkurrierende Pläne auseinander.
+
+Der echte serverseitige Adapter ist implementiert: gezielte Produktbild-Updates und `gravuru.gallery_release` mit bedingtem Metafeld-Update, erneuter Nachweis der tatsächlichen Bildbytes und danach gemeinsamer Wechsel bestehender Bindungen/Freigaben. Die bestehenden Bestellstände bleiben erhalten. Beide Shopify-Schreibschalter sind standardmäßig aus. Die Tests ersetzen GraphQL/Downloads durch ein isoliertes Shopmodell; es wurde nichts im echten Shop geändert.
+
+Neue Produkte entstehen hier als **interne native Entwürfe**, noch nicht als neue Shopify-Angebote. Die erste Shopverbindung und Verkaufsfreigabe bleiben getrennte Schritte. Der aktuelle Designabgleich bedient exakt zugeordnete bestehende Haupt-/Startdesigns bei passender Geometrie und Material. Mehrformat-/Mehrmaterialziele brauchen Astras ausdrücklich geprüfte Zieladapter; Materialhäkchen allein erzeugen diese nicht. Bestehende native Validatoren werden nicht umgangen. Neue technische Optionstypen benötigen entsprechende Stammdaten und einen nativen Anschluss.
+
+Es gibt keinen automatischen verteilten Rollback zwischen Shopify und SQLite. Ein ungeklärtes Teilergebnis bleibt gesperrt und sichtbar offen. Die Produktbildanbindung benötigt echte dedizierte MediaImage-Zuordnungen, eine kontrollierte HTTPS-Bildroute, serverseitige Schlüssel und Browserkonfiguration. Die private Standardgalerie rät keine Live-IDs. Der private HTTP-Einstieg ist an den vorhandenen Loopback-/Proxy-Vertrag gebunden; eine reale Hostanbindung muss separat geprüft werden.
+
+### Nachweise und genau nächster Schritt
+
+**203 unterschiedliche gezielte Tests erfolgreich.** Im gemeinsamen Lauf zunächst 202 erfolgreich, ein Alt-Test fand eine unnötige CSRF-Tokenbeschränkung. Kompatibilität korrigiert; betroffenen Alt-Test plus zwei neue HTTP-Integrationen anschließend 3/3 erfolgreich. Syntax- und Diffprüfung bestanden. Die technische Übergabe benennt alle 24 Testdateien und die Reproduktion.
+
+Reale native Datenbanken, Repository-/Bindungstransaktionen, Foto-/Maskenressourcen, alte synthetische Bestellarchive, konkurrierende Vorgänge, Unterbrechungen, eindeutige Original-/Startdesignzuordnung, Medienpaginierung und Datei-SHA geprüft. Der gemeinsame Adaptertest nutzt den tatsächlichen Medien-/Shopanschluss mit simuliertem GraphQL/Download; separate echte Offline-Chromium-Rasterisierung bestanden.
+
+Sichtbare Bedienprüfung am PC und bei **390 × 844 CSS-Pixeln**: Vorlage/Optionen speichern, Anlage ohne Häkchen gesperrt, bestätigte Entwürfe, Materialauswahl speichern/zurücklesen, Vorher/Nachher, Test-Sync und denselben Vorgang nach Neuladen wieder öffnen. Das ist eine mobile Browseransicht, keine physische Handy- oder echte Warenkorbabnahme. Screenshots zeigen ausdrücklich Testprodukte.
+
+**Nächster Schritt:** Astra prüft #185 gemeinsam mit seinem Import-/Materialvertrag. Danach eine echte Produktgruppe mit vollständiger Quell-/Shop-/Medienzuordnung in einer privaten Kopie abnehmen. Vor späterem Liveanschluss frische Host-/Datenbanksicherung, reale Sitzungs-/Warenkorbprüfung und ausdrückliche Freigabe. Der aktuelle Auftrag erlaubt weiterhin keinen Live-Shopabgleich.
+
+Optimierungsvorschlag, nicht zusätzlich umgesetzt: die konservative Prüfung exklusiver Produktbilder später über eine belastbare verwaltete Dateizuordnung beschleunigen, ohne gemeinsame Nutzung oder parallele Änderungen zu übersehen. Erinnerungspflege: `MIKA-START-HIER.md` auf den jüngsten überprüften Code-PR zeigen lassen und diese Gesamtakte nach jedem Paket mit Ergebnis, Grenzen und genau nächstem Schritt fortschreiben.

@@ -219,6 +219,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
   }
 
   return {
+    transactionalImportGuards: true,
     tenantId:tenant,
     firstId:()=>db.prepare('SELECT id FROM products WHERE tenant_id = ? ORDER BY created_at,id LIMIT 1').get(tenant)?.id||null,
     catalog:options=>catalog.list(options),
@@ -229,9 +230,14 @@ export function createProductRepository({ filename, validateDocument = (value) =
       const row=db.prepare('SELECT * FROM import_items WHERE import_key = ? AND tenant_id = ?').get(key, tenant);
       return row ? {key:row.import_key,fingerprint:row.fingerprint,id:row.product_id} : null;
     },
-    importBatch(entries) {
+    importBatch(entries, { beforeWrite } = {}) {
       if(!Array.isArray(entries)||entries.length<1||entries.length>100)throw failure(422,'invalid_batch','Eine Serie umfasst 1 bis 100 Produkte.');
+      if(beforeWrite!==undefined&&typeof beforeWrite!=='function')throw failure(422,'invalid_import_guard','Die Anlageprüfung ist ungültig.');
       return transact(()=>{
+        // A reviewed creation plan is rechecked under the same write lock as
+        // the actual product import. Callbacks are server-owned and synchronous.
+        const guarded=beforeWrite?.();
+        if(guarded&&typeof guarded.then==='function')throw failure(422,'async_import_guard','Die Anlageprüfung muss vor dem Schreiben abgeschlossen sein.');
         const keys=new Set(),targets=new Set();
         const validated=entries.map(entry=>{
           if(!/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(entry.key)||keys.has(entry.key))throw failure(422,'invalid_import_key','Jede Zeile benötigt einen eindeutigen Importschlüssel.');

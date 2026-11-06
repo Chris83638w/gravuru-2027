@@ -142,6 +142,23 @@ test('Ausgeblendete Master (hidden, Design-Dashboard) bleiben im Katalog, kommen
  assert.throws(()=>openKatalog(dir),/hidden ist true oder false/);
 });
 
+test('material offers govern only the selected subcategory; none means no new plan or deletion',async t=>{
+ const ws=workshop(t),dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-material-offers-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));fs.cpSync(FIXTURE,dir,{recursive:true});
+ const file=path.join(dir,'linien/test-linie.json'),line=JSON.parse(fs.readFileSync(file,'utf8'));
+ const inherited=await planKatalogImport(openKatalog(dir),'test-linie',options(ws));
+ line.subcategories[0].familyIdsOffered=[];fs.writeFileSync(file,JSON.stringify(line));
+ const restricted=await planKatalogImport(openKatalog(dir),'test-linie',options(ws));
+ assert.deepEqual(restricted.report.subcategories.map(s=>s.id),['hundeschilder']);
+ assert.deepEqual(restricted.report.subcategories[0].products,inherited.report.subcategories.find(s=>s.id==='hundeschilder').products);
+ assert.equal(ws.repository.list().length,1,'planning changes no existing product');
+ const empty=await planKatalogImport(openKatalog(dir),'test-linie',{...options(ws),only:{subcategories:['namensschilder']}});
+ assert.deepEqual(empty.items,[]);assert.deepEqual(empty.families,[]);assert.deepEqual(empty.report.subcategories,[]);assert.equal(empty.report.counts.products,0);
+ assert.match(empty.report.notes.join(' '),/keine Materialfamilien angeboten/);
+ line.subcategories[0].familyIdsOffered=null;fs.writeFileSync(file,JSON.stringify(line));
+ const restored=await planKatalogImport(openKatalog(dir),'test-linie',options(ws));
+ assert.deepEqual(restored.report.counts,inherited.report.counts);assert.deepEqual(restored.report.subcategories.map(s=>s.products),inherited.report.subcategories.map(s=>s.products));
+});
+
 test('Freigabe: ohne allDesigns kommen nur freigegebene Master ins Produkt; Größen ohne freigegebenes Design sind gesperrt',async t=>{
  const ws=workshop(t),dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-katalog-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
  fs.cpSync(FIXTURE,dir,{recursive:true});

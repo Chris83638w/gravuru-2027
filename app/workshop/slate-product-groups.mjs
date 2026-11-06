@@ -5,6 +5,7 @@ import {validateProductDocument,resolveProduct} from './product-model.mjs';
 import {quote,variantCombinations} from '../configurator/variant-m/contract.mjs';
 import {productPreview} from './product-preview.mjs';
 import {applySlateCustomerRules} from './slate-customer-rules.mjs';
+import {offeredFamilyIds} from './subcategory-materials.mjs';
 
 const hash=value=>createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const compare=new Intl.Collator('de',{numeric:true,sensitivity:'variant'}).compare;
@@ -81,11 +82,17 @@ export function slateGroupDocument(source,group,{startDesign}={}){
 export function slateMainProducts(groups,{lines=[],excluded=[]}={}){
  const result=[];
  for(const group of groups){
-  const choices=[];let missingDeclaredStarter=false;
+  const choices=[];let missingDeclaredStarter=false,excludedMaterialOffer=false,hasMaterialOffer=false;
   for(const line of lines instanceof Map?lines.values():lines){
-   if(!line.families.includes(group.familyId))continue;
    for(const sub of line.subcategories){
-    if(sub.themeId!==group.themeId||sub.sizesOffered&&!sub.sizesOffered.includes(group.sizeKey)||sub.photoDesigns&&sub.photoDesigns!==group.photoDesigns)continue;
+    if(sub.themeId!==group.themeId||sub.photoDesigns&&sub.photoDesigns!==group.photoDesigns)continue;
+    const offered=offeredFamilyIds(line,sub);
+    if(!offered.includes(group.familyId)){
+     if(sub.familyIdsOffered!=null&&line.families.includes(group.familyId)){excludedMaterialOffer=true;excluded.push({groupKey:group.key,reason:'Katalog-Unterkategorie '+line.id+'/'+sub.id+': Materialfamilie nicht angeboten.'});}
+     continue;
+    }
+    hasMaterialOffer=true;
+    if(sub.sizesOffered&&!sub.sizesOffered.includes(group.sizeKey))continue;
     const mains=sub.mainProducts?.length?sub.mainProducts:sub.startDesign?[{id:sub.id,name:sub.name,startDesign:sub.startDesign}]:[];
     for(const main of mains){
      if(main.sizesOffered&&!main.sizesOffered.includes(group.sizeKey))continue;
@@ -103,7 +110,7 @@ export function slateMainProducts(groups,{lines=[],excluded=[]}={}){
     }
    }
   }
-  result.push(...(choices.length?choices:missingDeclaredStarter?[]:[group]));
+  result.push(...(choices.length?choices:missingDeclaredStarter||excludedMaterialOffer&&!hasMaterialOffer?[]:[group]));
  }
  return result;
 }

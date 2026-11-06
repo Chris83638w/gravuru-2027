@@ -14,7 +14,7 @@ test('private external entry links retain authentication and isolate every other
   });
   inner.listen(0,'127.0.0.1');await once(inner,'listening');
   const config={origin:'https://private.example',host:'private.example',username:'synthetic',password:'synthetic-private-password'};
-  const proxy=createPrivateTestProxy(config,inner,{onRequestFinished:event=>events.push(event)});
+  const proxy=createPrivateTestProxy(config,inner,{onDiagnostic:event=>events.push(event)});
   proxy.listen(0,'127.0.0.1');await once(proxy,'listening');
   t.after(()=>{proxy.closeAllConnections();inner.closeAllConnections();proxy.close();inner.close();});
   const authorization='Basic '+Buffer.from(config.username+':'+config.password).toString('base64');
@@ -39,9 +39,9 @@ test('private external entry links retain authentication and isolate every other
   });
   await t.test('diagnostics contain only bounded metadata, never queries or sensitive headers',async()=>{
     await request('/originale/editor?token=never-log-query',{headers:{cookie:'never-log-cookie',origin:config.origin,'sec-fetch-mode':'x'.repeat(80)}});
-    const event=events.at(-1);
-    assert.deepEqual(Object.keys(event).sort(),['method','route','secFetchSite','secFetchMode','secFetchDest','secFetchUser','hostMatches','httpsMatches','originPresent','originMatches','status'].sort());
-    assert.equal(event.status,403);assert.equal(event.route,'/originale/editor');assert.equal(event.secFetchMode.length,20);
+    const event=events.findLast(e=>e.phase==='request-begin'),finished=events.find(e=>e.sequence===event.sequence&&e.phase==='outer-finish');
+    assert.deepEqual(Object.keys(event).sort(),['runId','sequence','phase','timestamp','elapsedMs','method','route','secFetchSite','secFetchMode','secFetchDest','secFetchUser','hostMatches','httpsMatches','originPresent','originMatches'].sort());
+    assert.equal(finished.status,403);assert.equal(event.route,'/originale/editor');assert.equal(event.secFetchMode,'other');
     assert.equal(event.hostMatches,true);assert.equal(event.httpsMatches,true);assert.equal(event.originPresent,true);assert.equal(event.originMatches,true);
     const logged=JSON.stringify(events);for(const privateValue of ['never-log-query','never-log-cookie',config.password,authorization,config.host])assert.ok(!logged.includes(privateValue));
   });
@@ -79,8 +79,8 @@ test('private external entry links retain authentication and isolate every other
       assert.equal(forwarded.at(-1).headers['sec-fetch-site'],site);
     }
   });
-  await t.test('diagnostic output is capped at twenty events for the process',async()=>{
+  await t.test('diagnostic traces are capped separately for each eligible route',async()=>{
     for(let i=0;i<25;i++)assert.equal((await request('/editor.html',{headers:{'sec-fetch-site':'same-origin'}})).status,200);
-    assert.equal(events.length,20);
+    for(const route of ['/originale/editor','/editor.html'])assert.equal(events.filter(e=>e.route===route&&e.phase==='request-begin').length,20);
   });
 });

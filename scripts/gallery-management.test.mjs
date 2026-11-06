@@ -1,0 +1,65 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {createGalleryManagementFixture} from './fixtures/gallery-management.mjs';
+import {createGallerySyncTestFixture} from '../app/workshop/gallery-shop-sync-test-fixture.mjs';
+import {createGalleryShopSync} from '../app/workshop/gallery-shop-sync.mjs';
+
+test('mounted private gallery requires exact options confirmation and retains real native drafts',async t=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'gallery-management-')),f=await createGalleryManagementFixture(root),base=await f.listen();
+ t.after(async()=>{await f.close();assert.ok(root.startsWith(path.join(os.tmpdir(),'gallery-management-')));fs.rmSync(root,{recursive:true,force:true});});
+ const page=await fetch(base+'/originale/');assert.match(await page.text(),/Produktgruppen &amp; Synchronisierung/);
+ assert.equal((await fetch(base+'/originale/verwaltung',{headers:{'Sec-Fetch-Site':'cross-site'}})).status,200,'navigation to public shell is allowed');
+ assert.equal((await fetch(base+'/originale/verwaltung/api/context',{headers:{'Sec-Fetch-Site':'cross-site'}})).status,403,'private context remains same-origin');
+ const context=await(await fetch(base+'/originale/verwaltung/api/context')).json();
+ assert.equal(context.sources.length,2);assert.equal(context.sync.executionEnabled,false);assert.deepEqual(context.targets,[]);
+ assert.equal(context.catalogue.lines[0].subcategories[0].materialSelection,'inherited');
+ assert.equal((await fetch(base+'/api/workshop/products',{method:'POST',headers:{Origin:base,'Content-Type':'application/json'},body:'{}'})).status,428);
+ const post=async(action,data,headers={})=>{const response=await fetch(base+'/originale/verwaltung/api/'+action,{method:'POST',headers:{Origin:base,'Content-Type':'application/json','X-Slate-Review-CSRF':context.csrfToken,...headers},body:JSON.stringify(data)});return {status:response.status,body:await response.json()};};
+ assert.equal((await post('template-draft',{}, {'X-Slate-Review-CSRF':'wrong'})).status,403);
+ assert.equal((await post('template-draft',{}, {Origin:'https://foreign.example'})).status,403);
+ const input={name:'Bestätigte Testgruppe',scope:{lineId:'test-linie',subcategoryId:'namensschilder'},sourceKeys:context.sources.map(s=>s.key)};
+ const draft=await post('template-draft',input);assert.equal(draft.status,200);
+ const saved=(await post('template-create',draft.body)).body;
+ const products=context.sources.map((s,i)=>({key:'test-'+i,targetKey:s.key,name:'Prüfprodukt '+i}));
+ const before=f.workshop.repository.list().length;
+ const planned=await post('creation-plan',{templateId:saved.id,templateRevision:saved.revision,creationKey:'test-batch',products});
+ assert.equal(planned.status,200);assert.equal(planned.body.valid,true);assert.equal(planned.body.products.length,2);
+ assert.equal(planned.body.products[0].document,undefined,'native documents stay on server');
+ assert.equal(planned.body.products[0].optionGroups.length,2);assert.equal(planned.body.products[0].optionFields.length,1);
+ const plan=planned.body,ids={planId:plan.id,planHash:plan.planHash};
+ const preview=await fetch(base+'/originale/verwaltung/api/creation-preview?'+new URLSearchParams({planId:plan.id,key:products[0].key}));assert.equal(preview.status,200);assert.match(await preview.text(),/<svg/);
+ assert.equal((await post('creation-execute',{...ids,confirmationId:'missing'})).status,409);
+ assert.equal((await post('creation-confirm',{...ids,accepted:false})).status,422);assert.equal(f.workshop.repository.list().length,before);
+ const confirmation=(await post('creation-confirm',{...ids,accepted:true})).body;
+ const created=await post('creation-execute',{...ids,confirmationId:confirmation.confirmationId});assert.equal(created.status,200);assert.equal(created.body.created,2);
+ assert.equal(f.workshop.repository.list().length,before+2);
+ for(const p of created.body.products){const r=f.workshop.repository.get(p.productId);assert.equal(r.status,'draft');assert.equal(r.publishedRevision,null);assert.deepEqual(r.document.config.profile.optionFields,draft.body.targets[0].optionFields);}
+ const again=await post('creation-execute',{...ids,confirmationId:confirmation.confirmationId});assert.equal(again.body.replayed,true);assert.equal(f.workshop.repository.list().length,before+2);
+ const other=await post('creation-plan',{templateId:saved.id,templateRevision:1,creationKey:'test-next-batch',products});
+ const catalogue=f.workshop.catalogStructure.read();f.workshop.catalogStructure.save({action:'materials',lineId:'test-linie',subcategoryId:'namensschilder',familyIdsOffered:[],sourceSha256:catalogue.sourceSha256});
+ assert.equal((await post('creation-confirm',{planId:other.body.id,planHash:other.body.planHash,accepted:true})).status,409);
+ assert.equal(f.workshop.repository.list().length,before+2);
+});
+
+test('private UI endpoints synchronize only the approved current source and the exact native/shop mapping',async t=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'gallery-management-sync-')),s=await createGallerySyncTestFixture({directory:path.join(root,'isolated-shop')});
+ const f=await createGalleryManagementFixture(path.join(root,'gallery'),{extraDocument:s.source.document,syncFactory:({workshop,extraSource})=>({service:sourceApproval=>createGalleryShopSync({...s.args,sourceWorkshop:workshop,targets:[{...s.mapping,source:{...s.mapping.source,productId:extraSource.id}}],sourceApproval})})}),base=await f.listen();
+ t.after(async()=>{await f.close();s.close();assert.ok(root.startsWith(path.join(os.tmpdir(),'gallery-management-sync-')));fs.rmSync(root,{recursive:true,force:true});});
+ const context=await(await fetch(base+'/originale/verwaltung/api/context')).json();
+ const post=async(action,data,path='/originale/verwaltung/api/')=>{const response=await fetch(base+path+action,{method:'POST',headers:{Origin:base,'Content-Type':'application/json','X-Slate-Review-CSRF':context.csrfToken},body:JSON.stringify(data)});return {status:response.status,body:await response.json()};};
+ const unapproved=await post('sync-plan',{targetIds:[s.mapping.id]});assert.equal(unapproved.body.ready,false);assert.equal(s.transport.writes.length,0);
+ const approvals=await(await fetch(base+'/originale/approvals')).json(),state=Object.values(approvals.approvals).find(a=>a.metadata.id===s.mapping.source.originalId);
+ assert.equal(state.status,'unreviewed',JSON.stringify(state));assert.match(state.fingerprint,/^[a-f0-9]{64}$/);
+ const approved=await post('approvals',{key:state.key,approved:true,expectedRevision:state.revision,expectedFingerprint:state.fingerprint},'/originale/');assert.equal(approved.status,200);
+ const plan=await post('sync-plan',{targetIds:[s.mapping.id]});assert.equal(plan.body.ready,true,JSON.stringify(plan.body.entries.map(e=>e.issues)));
+ assert.match(plan.body.entries[0].beforeSvg,/<svg/);assert.match(plan.body.entries[0].afterSvg,/<svg/);
+ const identity={planId:plan.body.planId,planSha256:plan.body.planSha256};
+ const done=await post('sync-execute',identity);assert.equal(done.status,200);assert.equal(done.body.operations[0].state,'completed');assert.equal(s.transport.writes.length,1);
+ assert.deepEqual((await post('sync-open',{planId:identity.planId})).body,plan.body,'stored plan reopens through real mounted HTTP after completion');
+ assert.equal(s.activation.capture(s.mapping).boundRevision,2);
+ assert.equal((await post('sync-execute',identity)).body.operations[0].state,'completed');assert.equal(s.transport.writes.length,1);
+ assert.equal(s.targetWorkshop.repository.get(s.target.id,{revision:1}).document.config.profile.designs[0].objects[0].text,'Alter Name');
+});

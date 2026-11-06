@@ -5,6 +5,7 @@ import {assignTargetSeries,approvedForFamily,designTargetCompatibility,designTar
 import {katalogDesignToTemplate,scaleTemplate,applyPriceOverrides,defaultQuantityTiers} from './katalog-convert.mjs';
 import {assessDesignTarget} from './design-target-rules.mjs';
 import {customerUxConfig} from './customer-ux-policy.mjs';
+import {offeredFamilyIds} from './subcategory-materials.mjs';
 import {prepareConfig} from '../configurator/variant-m/contract.mjs';
 import {validateShopProductCut,shopProductCutMetafield,designZielgruppe,hasFigureMotif} from './shop-product-cut.mjs';
 import {FAMILY_FORMATS_SCHEMA,FAMILY_FORMAT_SOURCES,FAMILY_FORMS,customerForm,familyFormatCombinations} from '../configurator/variant-m/family-formats.mjs';
@@ -32,7 +33,9 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
  if(shopProduct)shopProduct=validateShopProductCut(shopProduct);
  const line=katalog.lines.get(lineId),sub=line?.subcategories.find(s=>s.id===subcategoryId);
  if(!sub)fail('Linie oder Unterkategorie fehlt.');
- const families=line.families.filter(id=>SIGN_FAMILIES.includes(id)).map(id=>applyPriceOverrides(katalog.families.get(id),sub));
+ const offered=offeredFamilyIds(line,sub,{families:katalog.families}),unsupported=offered.filter(id=>!SIGN_FAMILIES.includes(id));
+ if(sub.familyIdsOffered!=null&&unsupported.length)fail('Diese gewählten Materialfamilien sind noch nicht an die gemeinsame Türschild-Formatauswahl angeschlossen: '+unsupported.join(', ')+'. Für sie den passenden Produktgruppen-Anschluss prüfen.');
+ const families=offered.filter(id=>SIGN_FAMILIES.includes(id)).map(id=>applyPriceOverrides(katalog.families.get(id),sub));
  if(!families.length)fail('Keine freigegebene Türschild-Familienart.');
  // Issue #139: the product metafield selects one physical format and one
  // starter. Other approved themes remain available in "Weitere Designs".

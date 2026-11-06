@@ -5,9 +5,12 @@
 // vorher validateLine gegen Familien/Themen/Schrift-Sets, atomar geschrieben, Protokoll `linien/_aenderungen.jsonl`.
 // Es wird nichts gelöscht und nichts zu Shopify geschickt (das macht shop-sync nach Freigabe).
 import fs from 'node:fs';import path from 'node:path';import {createHash} from 'node:crypto';
-import {validateLine} from './katalog-source.mjs';
+import {validateLine,openKatalog} from './katalog-source.mjs';
 import {katalogFor,forgetKatalog} from './design-dashboard.mjs';
 import {familyGaps} from './product-families.mjs';
+import {offeredFamilyIds,subcategoryMaterialOffering,familyOfferingIssue} from './subcategory-materials.mjs';
+import {FAMILY_FORMAT_SOURCES} from '../configurator/variant-m/family-formats.mjs';
+import {safeKatalogPath,withKatalogWriteLock,writeKatalogTransaction} from './katalog-transaction.mjs';
 
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const record=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
@@ -30,7 +33,7 @@ export function readKatalogStructure(root,{statics=null}={}){
  for(const line of [...katalog.lines.values()].sort((a,b)=>(order.get(a.id)??99)-(order.get(b.id)??99)||a.id.localeCompare(b.id))){
   const deferred=line.structureStatus==='zurueckgestellt'||/zurückgestellt/i.test(line.name);
   lines.push({id:line.id,name:line.name,enabled:!deferred,order:lines.length+1,status:line.status??'',structureStatus:line.structureStatus??null,note:line.note??null,sourcePath:'linien/'+line.id+'.json',familyIds:[...line.families],seriesRefs:Array.isArray(line.seriesRefs)?[...line.seriesRefs]:[],
-   subcategories:line.subcategories.map(s=>({id:s.id,name:s.name,themeId:s.themeId??null,fontSet:s.fontSet??null,status:s.status??null,mainProductCount:Array.isArray(s.mainProducts)?s.mainProducts.length:0})),editable:true});
+   subcategories:line.subcategories.map(s=>({id:s.id,name:s.name,themeId:s.themeId??null,fontSet:s.fontSet??null,status:s.status??null,mainProductCount:Array.isArray(s.mainProducts)?s.mainProducts.length:0,...subcategoryMaterialOffering(line,s,{families:katalog.families,supportedFamilyIds:FAMILY_FORMAT_SOURCES})})),editable:true});
   for(const sub of line.subcategories)for(const m of (Array.isArray(sub.mainProducts)?sub.mainProducts:[])){
    const ext=record(m.externalIds)?m.externalIds:{},design=masters.get(m.startDesign)||null,shopifyId=gid(ext.shopifyProductId);
    mainProducts.push({key:'katalog:'+line.id+'/'+sub.id+'/'+m.id,katalogId:m.id,id:shopifyId,title:m.name||m.startDesign,handle:null,status:null,variantCount:Array.isArray(m.sizesOffered)?m.sizesOffered.length:null,
@@ -42,11 +45,35 @@ export function readKatalogStructure(root,{statics=null}={}){
  const known=new Set(lines.map(l=>l.id));
  // Shopify-Parallelbestand aus der eingebauten Datei bleibt sichtbar; Hauptprodukte kommen nur aus dem Katalog.
  for(const p of (statics?.mainProducts||[]))if(p.role!=='hauptprodukt'&&known.has(p.lineId))mainProducts.push({...structuredClone(p),subcategoryIds:p.subcategoryId?[p.subcategoryId]:[],source:'shopify-bestand',editable:false});
- const families=[...katalog.families.values()].map(f=>{let gaps=[];try{gaps=familyGaps(f);}catch(e){gaps=['Familie prüfen: '+e.message];}return {id:f.id,name:f.name,material:f.material?.name??f.material?.kind??null,sizeCount:Array.isArray(f.sizes)?f.sizes.length:0,sourcePath:path.relative(katalog.root,katalog.files.get('familie:'+f.id)||'').split(path.sep).join('/'),gaps};});
+ const families=[...katalog.families.values()].map(f=>{let gaps=[];try{gaps=familyGaps(f);}catch(e){gaps=['Familie prüfen: '+e.message];}return {id:f.id,name:f.name,material:f.material?.name??f.material?.kind??null,materialKind:f.material?.kind??null,materialVariant:f.material?.variant??null,thicknessMm:f.material?.thicknessMm??null,familyFormatsSupported:FAMILY_FORMAT_SOURCES.includes(f.id),sizeCount:Array.isArray(f.sizes)?f.sizes.length:0,sourcePath:path.relative(katalog.root,katalog.files.get('familie:'+f.id)||'').split(path.sep).join('/'),gaps};});
  const sizes={};for(const f of katalog.families.values())sizes[f.id]=(f.sizes||[]).map(s=>({key:s.key,label:s.label??s.key,widthMm:s.widthMm??null,heightMm:s.heightMm??null}));
  const designs={};for(const d of katalog.designs.masters)(designs[d.seriesFolder]??=[]).push({id:d.id,name:d.name,released:d.released===true,hidden:d.hidden===true,themes:Array.isArray(d.themes)?d.themes:[]});
  return {schema:'gravuru-workshop-structure/v2',source:{repository:'gravuru-katalog',root:katalog.root,files:lines.map(l=>l.sourcePath)},updatedAt:new Date().toISOString(),lines,mainProducts,families,sizes,designs,
   series:(statics?.series||[]).filter(s=>known.has(s.lineId)),checks:statics?.checks||[],customerBinding:statics?.customerBinding??null,automaticPublication:false,sourceSha256:lineDigest(katalog)};
+}
+
+// Explicit offer change only. The complete catalog-source digest is mandatory:
+// concurrent changes must be re-read before a new material choice is saved.
+export function patchSubcategoryMaterials(root,input,{actor='werkstatt',now=new Date()}={}){
+ if(!record(input)||Object.keys(input).some(k=>!['action','lineId','subcategoryId','familyIdsOffered','sourceSha256','expectedRevision'].includes(k))||!Object.hasOwn(input,'familyIdsOffered'))fail(422,'katalog_materials','Materialauswahl und Unterkategorie angeben.');
+ return withKatalogWriteLock(root,()=>{
+ const katalog=openKatalog(root);
+ if(typeof input.sourceSha256!=='string'||input.sourceSha256!==lineDigest(katalog))fail(409,'katalog_changed','Der Katalog wurde inzwischen geändert. Bitte neu laden.');
+ const line=katalog.lines.get(input.lineId),file=line&&lineFile(katalog,line.id);
+ if(!file)fail(422,'katalog_materials','Produktlinie unbekannt.');
+ const next=JSON.parse(fs.readFileSync(file,'utf8').replace(/^﻿/,'')),sub=next.subcategories.find(s=>s.id===input.subcategoryId);
+ if(!sub)fail(422,'katalog_materials','Unterkategorie unbekannt.');
+ const issue=familyOfferingIssue(input.familyIdsOffered,{families:katalog.families});if(issue)fail(422,'katalog_materials',issue);
+ if(input.familyIdsOffered===undefined)fail(422,'katalog_materials','Materialauswahl fehlt.');
+ const from=sub.familyIdsOffered??null,to=input.familyIdsOffered===null?null:[...input.familyIdsOffered];
+ if(JSON.stringify(from)===JSON.stringify(to))return {changed:false,line:line.id,subcategoryId:sub.id,action:'materials',changes:{},files:[],warning:null,uncommitted:false};
+ sub.familyIdsOffered=to;
+ try{validateLine(next,{families:katalog.families,themes:katalog.themes,fontSets:katalog.fonts.sets,file:path.basename(file)});}catch(e){fail(422,'katalog_materials','Linie bleibt ungültig: '+e.message);}
+ const changes={familyIdsOffered:{from,to}},auditRelative='linien/_aenderungen.jsonl',auditFile=safeKatalogPath(root,auditRelative,{missing:true});
+ const audit=(fs.existsSync(auditFile)?fs.readFileSync(auditFile,'utf8'):'')+JSON.stringify({at:now.toISOString(),actor:String(actor).slice(0,160),line:line.id,subcategoryId:sub.id,action:'materials',changes})+'\n';
+ const files=writeKatalogTransaction(root,[{relative:'linien/'+path.basename(file),text:JSON.stringify(next,null,2)+'\n'},{relative:auditRelative,text:audit}]);forgetKatalog();
+ return {changed:true,line:line.id,subcategoryId:sub.id,action:'materials',changes,files,warning:null,uncommitted:true};
+ });
 }
 
 // Änderung eines Hauptprodukts im Katalog. input: {action:'edit'|'assign'|'add', lineId, productKey|katalogId, …}.
@@ -60,11 +87,11 @@ export function patchMainProduct(root,input,{actor='werkstatt',now=new Date()}={
  const subs=next.subcategories;
  const locate=(katalogId,subId=null)=>{for(const s of subs){if(subId&&s.id!==subId)continue;const i=(s.mainProducts||[]).findIndex(m=>m.id===katalogId);if(i>=0)return {sub:s,index:i,entry:s.mainProducts[i]};}return null;};
  const clean=v=>typeof v==='string'?(v.trim()===''?null:v.trim()):v;
- const checkFields=(m,{partial=false}={})=>{
+ const checkFields=(m,{partial=false,subcategory=null}={})=>{
   if(m.name!==undefined&&m.name!==null&&!line1(m.name,160))fail(422,'katalog_patch','Name: 1 bis 160 Zeichen, eine Zeile.');
   if((!partial||m.startDesign!==undefined)&&!(typeof m.startDesign==='string'&&DESIGN_ID.test(m.startDesign)))fail(422,'katalog_patch','Startdesign (Design-Kennung) prüfen.');
   if(m.startDesign!==undefined&&!katalog.designs.masters.some(d=>d.id===m.startDesign))fail(422,'katalog_patch','Startdesign „'+m.startDesign+'“ liegt nicht als Lieferform 2 im Katalog (designs/<reihe>/<id>/).');
-  if(m.sizesOffered!==undefined&&m.sizesOffered!==null){if(!Array.isArray(m.sizesOffered)||!m.sizesOffered.length||m.sizesOffered.some(k=>!ID.test(String(k))))fail(422,'katalog_patch','sizesOffered: Liste von Größen-Schlüsseln.');const keys=new Set(line.families.flatMap(f=>(katalog.families.get(f)?.sizes||[]).map(s=>s.key)));const bad=m.sizesOffered.filter(k=>!keys.has(k));if(bad.length)fail(422,'katalog_patch','Größen nicht in den Familien der Linie: '+bad.join(', '));}
+  if(m.sizesOffered!==undefined&&m.sizesOffered!==null){if(!Array.isArray(m.sizesOffered)||!m.sizesOffered.length||m.sizesOffered.some(k=>!ID.test(String(k))))fail(422,'katalog_patch','sizesOffered: Liste von Größen-Schlüsseln.');const ids=subcategory?offeredFamilyIds(line,subcategory,{families:katalog.families}):line.families,keys=new Set(ids.flatMap(f=>(katalog.families.get(f)?.sizes||[]).map(s=>s.key)));const bad=m.sizesOffered.filter(k=>!keys.has(k));if(bad.length)fail(422,'katalog_patch','Größen nicht in den angebotenen Materialfamilien: '+bad.join(', '));}
   if(m.status!==undefined&&m.status!==null&&(typeof m.status!=='string'||m.status.length>2000))fail(422,'katalog_patch','Notiz (status): bis 2000 Zeichen.');
  };
  const changes={};let katalogId,action=input.action;
@@ -74,7 +101,7 @@ export function patchMainProduct(root,input,{actor='werkstatt',now=new Date()}={
   if(locate(katalogId))fail(409,'katalog_patch','Hauptprodukt „'+katalogId+'“ gibt es in dieser Linie schon.');
   const note=clean(input.status);if(note!==null&&note!==undefined&&(typeof note!=='string'||note.length>1800))fail(422,'katalog_patch','Notiz (status): bis 1800 Zeichen beim Anlegen.');
   const entry={id:katalogId,name:clean(input.name)??null,startDesign:clean(input.startDesign),sizesOffered:input.sizesOffered??null,externalIds:{},status:(note?note+' ':'')+'(angelegt '+now.toISOString().slice(0,10)+' Katalogseite, '+String(actor).slice(0,80)+')'};
-  checkFields(entry);if(entry.name===null)delete entry.name;
+  checkFields(entry,{subcategory:sub});if(entry.name===null)delete entry.name;
   (sub.mainProducts??=[]).push(entry);changes.added={subcategoryId:sub.id,entry};
  }else if(action==='edit'||action==='assign'){
   // productKey „katalog:<linie>/<unterkategorie>/<id>“ nennt die Unterkategorie – damit treffen wir den richtigen Eintrag, falls eine Kennung in zwei Unterkategorien vorkommt.
@@ -89,7 +116,10 @@ export function patchMainProduct(root,input,{actor='werkstatt',now=new Date()}={
   }else{
    const patch={};for(const k of ['name','startDesign','sizesOffered','status'])if(input[k]!==undefined)patch[k]=clean(input[k]);
    if(patch.startDesign===null)fail(422,'katalog_patch','Startdesign (Design-Kennung) prüfen.');
-   checkFields(patch,{partial:true});
+   // Existing products stay editable after an offer is withdrawn. Only a newly
+   // selected size list must satisfy the current material offer.
+   const toValidate={...patch};if(JSON.stringify(patch.sizesOffered)===JSON.stringify(entry.sizesOffered??null))delete toValidate.sizesOffered;
+   checkFields(toValidate,{partial:true,subcategory:sub});
    for(const [k,v] of Object.entries(patch)){const from=entry[k]??null,to=v;if(JSON.stringify(from)!==JSON.stringify(to)){changes[k]={from,to};if(to===null&&k!=='sizesOffered')delete entry[k];else entry[k]=to;}}
   }
  }else fail(422,'katalog_patch','Unbekannte Aktion (edit, assign, add).');

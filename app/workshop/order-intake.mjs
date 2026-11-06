@@ -192,6 +192,14 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
   idBindings({storeId,shopDomain,adapter,personalizationPricingFor}={}){
    return createShopProductBindingStore({database:db,orderIntake:this,tenantId:tenant,storeId,shopDomain,adapter,clock,personalizationPricingFor});
   },
+  // Server-only composition of binding CAS and immutable catalog approval on
+  // this exact connection. No network work or asynchronous callback is allowed.
+  withBindingTransaction(write){
+   if(typeof write!=='function'||write.constructor?.name==='AsyncFunction'||db.isTransaction)fail(422,'Die Bindungsfreigabe benötigt eine eigene synchrone Transaktion.');
+   db.exec('BEGIN IMMEDIATE');
+   try{const value=write();if(value?.then instanceof Function)fail(422,'Die Bindungsfreigabe darf keine asynchronen Schritte enthalten.');db.exec('COMMIT');return value;}
+   catch(error){db.exec('ROLLBACK');throw error;}
+  },
   // Internal routing probe only; never return tokens, offers or customer data.
   ownsOfferToken(token,{shopDomain}={}){
    if(typeof token!=='string'||!/^[a-f0-9]{64}$/.test(token)||(shopDomain!==undefined&&!domain(shopDomain)))return false;

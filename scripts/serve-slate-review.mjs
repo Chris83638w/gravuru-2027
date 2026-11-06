@@ -10,7 +10,7 @@ if(!args.includes('--data'))throw Error('--data fehlt.');
 const data=path.resolve(value('--data')),port=Number(args.includes('--port')?value('--port'):8978);
 if(!Number.isInteger(port)||port<1024||port>65535)throw Error('Ungültiger Port.');
 build();const seed=JSON.parse(fs.readFileSync(path.join(OUTPUT,'models.json')))[0];
-const workshop=createWorkshop({filename:path.join(data,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy});
+const workshop=createWorkshop({filename:path.join(data,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy,...(args.includes('--katalog')?{katalogDir:path.resolve(value('--katalog'))}:{})});
 const server=createPreviewServer({workshop});server.on('close',()=>workshop.close());
 if(args.includes('--gallery')){
  const gallery=createSlateGalleryHandler(path.resolve(value('--gallery')),path.join(data,'local-review-import.json'),{workshop});

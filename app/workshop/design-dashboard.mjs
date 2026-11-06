@@ -15,6 +15,7 @@ import {parseDesignSvg,formatSeries,seriesOf,assignSeries,applyPriceOverrides,pr
 import {convertFont} from './font-library.mjs';
 import {FAMILY_MATERIALS,familyProcess} from './product-families.mjs';
 import {importKey} from './katalog-import.mjs';
+import {offeredFamilyIds} from './subcategory-materials.mjs';
 
 export const MIN_TEXT_MM=3;// Chris 23.10.2026 („3 mm Text“): kleinere Mustertexte sind zu prüfen
 export const SELECTABLE_LABEL='#00ff00';// Bogenetikett grün = im Konfigurator wählbar
@@ -193,9 +194,9 @@ function attachMainProducts(katalog,line,rows,{fonts=null}={}){
   }
   const {row,alias,ambiguous}=resolved.get(main.startDesign);
   row.isStartDesign=true;
-  const master=row.lieferform2?masters.get(row.id):null,offered=main.sizesOffered??sub.sizesOffered;
-  const keys=Array.isArray(offered)?[...new Set(offered)]:[...new Set(line.families.flatMap(id=>katalog.families.get(id).sizes.map(size=>size.key)))];
-  const targets=keys.flatMap(sizeKey=>{const found=line.families.map(id=>katalog.families.get(id)).filter(family=>family.sizes.some(size=>size.key===sizeKey));return found.length?found.map(family=>({family,sizeKey})):[{family:null,sizeKey}];});
+  const master=row.lieferform2?masters.get(row.id):null,offered=main.sizesOffered??sub.sizesOffered,offeredFamilies=offeredFamilyIds(line,sub,{families:katalog.families});
+  const keys=Array.isArray(offered)?[...new Set(offered)]:[...new Set(offeredFamilies.flatMap(id=>katalog.families.get(id).sizes.map(size=>size.key)))];
+  const targets=keys.flatMap(sizeKey=>{const found=offeredFamilies.map(id=>katalog.families.get(id)).filter(family=>family.sizes.some(size=>size.key===sizeKey));return found.length?found.map(family=>({family,sizeKey})):[{family:null,sizeKey}];});
   if(!targets.length)targets.push({family:null,sizeKey:null});
   for(const {family,sizeKey} of targets){
    const baseSize=family?.sizes.find(size=>size.key===sizeKey),entry={id:main.id,customizationId:main.externalIds?.customizationId??null,name:main.name??null,
@@ -204,7 +205,7 @@ function attachMainProducts(katalog,line,rows,{fonts=null}={}){
    if(ambiguous)entry.blockers.push(blocker('design_ambiguous','Startdesign „'+main.startDesign+'“ ist über mehrere Herkunftsangaben verknüpft.'));
    else if(!master)entry.blockers.push(blocker('design_missing','Startdesign „'+main.startDesign+'“ fehlt als Lieferform 2.'));
    else if(alias)entry.blockers.push(blocker('design_alias','„'+main.startDesign+'“ ist die Herkunft von „'+master.id+'“. Der Import benötigt die eindeutige Lieferform-2-Kennung als startDesign.'));
-   if(!family){entry.blockers.push(blocker(sizeKey?'size_unknown':'size_missing',sizeKey?'Größe „'+sizeKey+'“ gehört zu keiner Familie der Linie.':'Keine angebotene Größe mit Familie vorhanden.'));row.mainProducts.push(entry);continue;}
+   if(!family){entry.blockers.push(!offeredFamilies.length?blocker('material_not_offered','Für diese Unterkategorie wird derzeit kein Material angeboten.'):blocker(sizeKey?'size_unknown':'size_missing',sizeKey?'Größe „'+sizeKey+'“ gehört zu keiner angebotenen Materialfamilie der Unterkategorie.':'Keine angebotene Größe mit Familie vorhanden.'));row.mainProducts.push(entry);continue;}
    const pricedKey=family.id+'\0'+sub.id;
    if(!pricedCache.has(pricedKey)){try{pricedCache.set(pricedKey,{family:applyPriceOverrides(family,sub)});}catch(error){pricedCache.set(pricedKey,{error:error.message});}}
    const priced=pricedCache.get(pricedKey);

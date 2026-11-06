@@ -1,5 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import os from 'node:os';import path from 'node:path';import {fileURLToPath} from 'node:url';
-import {createCatalogStructure} from './catalog-structure.mjs';import {readKatalogStructure,patchMainProduct} from './katalog-linien.mjs';import {forgetKatalog} from './design-dashboard.mjs';
+import {createCatalogStructure} from './catalog-structure.mjs';import {readKatalogStructure,patchMainProduct,patchSubcategoryMaterials} from './katalog-linien.mjs';import {forgetKatalog} from './design-dashboard.mjs';
+import {withKatalogWriteLock} from './katalog-transaction.mjs';
 const FIXTURE=fileURLToPath(new URL('./fixtures/katalog/',import.meta.url));
 const temp=t=>{const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-linien-'));fs.cpSync(FIXTURE,dir,{recursive:true});t.after(()=>{fs.rmSync(dir,{recursive:true,force:true});forgetKatalog();});forgetKatalog();return dir;};
 const lineJson=dir=>JSON.parse(fs.readFileSync(path.join(dir,'linien','test-linie.json'),'utf8'));
@@ -49,3 +50,54 @@ test('Katalogseite liest Linien und Hauptprodukte aus linien/*.json; Änderungen
 
 test('ohne verbundenen Katalog bleibt der eingebaute Stand (v1) unverändert',()=>{const s=createCatalogStructure({tenantId:'gravuru'});try{assert.equal(s.read().schema,'gravuru-workshop-structure/v1');assert.equal(s.read().saveEffect,'organization-only');}finally{s.close();}});
 test('readKatalogStructure übernimmt Parallelbestand und Serien aus der eingebauten Datei nur für bekannte Linien',t=>{const dir=temp(t);const d=readKatalogStructure(dir,{statics:{lines:[],mainProducts:[{key:'x',id:'gid://shopify/Product/1',role:'parallelbestand',lineId:'fremd'}],series:[{lineId:'fremd'}],checks:[{id:'c'}]}});assert.equal(d.mainProducts.length,0);assert.equal(d.series.length,0);assert.equal(d.checks.length,1);});
+
+test('subcategory material change requires fresh catalog version, journals the exact choice and never changes products',t=>{
+ const dir=temp(t),before=lineJson(dir);before.subcategories[0].mainProducts=[{id:'existing',startDesign:'test-herz',externalIds:{shopifyProductId:'123'},sizesOffered:['TS-RE-90X60']}];
+ fs.writeFileSync(path.join(dir,'linien/test-linie.json'),JSON.stringify(before));forgetKatalog();
+ const s=createCatalogStructure({tenantId:'gravuru',katalogDir:dir});t.after(()=>s.close());
+ const first=s.read(),change={action:'materials',lineId:'test-linie',subcategoryId:'namensschilder',familyIdsOffered:[]};
+ assert.deepEqual(first.lines[0].subcategories.map(x=>x.effectiveFamilyIds),[['test-schilder'],['test-schilder']]);
+ assert.throws(()=>s.save(change),e=>e.status===409);
+ for(const familyIdsOffered of [['missing'],['test-schilder','test-schilder'],{}])assert.throws(()=>s.save({...change,familyIdsOffered,sourceSha256:first.sourceSha256}),e=>e.status===422);
+ const next=s.save({...change,sourceSha256:first.sourceSha256});
+ assert.notEqual(next.sourceSha256,first.sourceSha256);
+ assert.deepEqual(next.lines[0].subcategories.map(x=>x.effectiveFamilyIds),[[],['test-schilder']]);
+ assert.equal(next.lines[0].subcategories[0].materialSelection,'explicit');
+ assert.deepEqual(next.mainProducts,first.mainProducts);assert.deepEqual(lineJson(dir).families,before.families);
+ const protocol=path.join(dir,'linien/_aenderungen.jsonl'),journal=fs.readFileSync(protocol,'utf8');
+ assert.deepEqual(JSON.parse(journal).changes,{familyIdsOffered:{from:null,to:[]}});
+ assert.throws(()=>s.save({...change,familyIdsOffered:null,sourceSha256:first.sourceSha256}),e=>e.status===409);
+ assert.equal(patchSubcategoryMaterials(dir,{...change,sourceSha256:next.sourceSha256}).changed,false);assert.equal(fs.readFileSync(protocol,'utf8'),journal);
+ const restored=s.save({...change,familyIdsOffered:null,sourceSha256:next.sourceSha256});
+ assert.deepEqual(restored.lines[0].subcategories[0].effectiveFamilyIds,['test-schilder']);assert.equal(restored.lines[0].subcategories[0].materialSelection,'inherited');
+ assert.deepEqual(restored.mainProducts,first.mainProducts);
+});
+
+test('catalog offers actual AA/AS 5 mm identities, separately from supported 3 mm door signs',t=>{
+ const dir=temp(t),target=path.join(dir,'familien/acryl');fs.mkdirSync(target);
+ for(const id of ['aa','as'])fs.copyFileSync(new URL('../designs/acrylic-standoff-signs/'+id+'.json',import.meta.url),path.join(target,id+'.json'));
+ forgetKatalog();const first=readKatalogStructure(dir),ids=['acryl-aa-abstandshalter','acryl-as-abstandshalter'];
+ for(const id of ids){const f=first.families.find(f=>f.id===id);assert.equal(f.thicknessMm,5);assert.equal(f.familyFormatsSupported,false);}
+ assert.notEqual(first.families.find(f=>f.id===ids[0]).materialVariant,first.families.find(f=>f.id===ids[1]).materialVariant);
+ patchSubcategoryMaterials(dir,{lineId:'test-linie',subcategoryId:'namensschilder',familyIdsOffered:ids,sourceSha256:first.sourceSha256});
+ const sub=readKatalogStructure(dir).lines[0].subcategories[0];assert.deepEqual(sub.effectiveFamilyIds,ids);assert.deepEqual(sub.unsupportedFamilyFormatIds,ids);
+ assert.deepEqual(lineJson(dir).families,['test-schilder']);assert.deepEqual(lineJson(dir).subcategories[1].familyIdsOffered,undefined);
+});
+
+test('material choice shares the catalog lock and cannot persist without its audit entry',t=>{
+ const dir=temp(t),first=readKatalogStructure(dir),file=path.join(dir,'linien/test-linie.json'),before=fs.readFileSync(file,'utf8');
+ const change={lineId:'test-linie',subcategoryId:'namensschilder',familyIdsOffered:[],sourceSha256:first.sourceSha256};
+ withKatalogWriteLock(dir,()=>assert.throws(()=>patchSubcategoryMaterials(dir,change),e=>e.status===409));
+ assert.equal(fs.readFileSync(file,'utf8'),before);
+ fs.mkdirSync(path.join(dir,'linien/_aenderungen.jsonl'));
+ assert.throws(()=>patchSubcategoryMaterials(dir,change),/keine reguläre Datei/);
+ assert.equal(fs.readFileSync(file,'utf8'),before,'an invalid audit target cannot leave an unjournaled material change');
+ assert.equal(fs.existsSync(path.join(dir,'designs/.werkstatt-write.lock')),false);
+});
+
+test('withdrawing a material preserves existing sizes and still permits editing the existing product name',t=>{
+ const dir=temp(t),line=lineJson(dir);line.subcategories[0].familyIdsOffered=[];line.subcategories[0].mainProducts=[{id:'existing',name:'Before',startDesign:'test-herz',sizesOffered:['TS-RE-90X60']}];fs.writeFileSync(path.join(dir,'linien/test-linie.json'),JSON.stringify(line));forgetKatalog();
+ patchMainProduct(dir,{action:'edit',lineId:'test-linie',katalogId:'existing',name:'After',sizesOffered:['TS-RE-90X60']});
+ const saved=lineJson(dir).subcategories[0].mainProducts[0];assert.equal(saved.name,'After');assert.deepEqual(saved.sizesOffered,['TS-RE-90X60']);
+ assert.throws(()=>patchMainProduct(dir,{action:'edit',lineId:'test-linie',katalogId:'existing',sizesOffered:['TS-RE-120X80']}),e=>e.status===422);
+});

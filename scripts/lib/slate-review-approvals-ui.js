@@ -6,6 +6,19 @@ export function approvalCanBeChanged(state, {dirty=false,busy=false,previewReady
 
 export function installApprovalReview({cards,onChanged=()=>{}}) {
   let states = JSON.parse(document.querySelector('#review-approval-data')?.textContent || '{}');
+  function progressIndex(bundle) {
+    const byOriginal = new Map();
+    for (const state of Object.values(bundle)) {
+      const id = state.metadata?.id;
+      if (!id) continue;
+      const progress = byOriginal.get(id) || {total:0,approved:0};
+      progress.total++;
+      if (state.status === 'approved') progress.approved++;
+      byOriginal.set(id,progress);
+    }
+    return byOriginal;
+  }
+  let progressByOriginal = progressIndex(states);
   let mutating = false, sequence = 0;
   const csrf = () => document.querySelector('meta[name="slate-review-csrf"]').content;
   const message = (card,text) => { card.querySelector('[data-approval-message]').textContent = text; };
@@ -23,14 +36,15 @@ export function installApprovalReview({cards,onChanged=()=>{}}) {
     checkbox.disabled = !approvalCanBeChanged(state,{dirty,busy:mutating||card.getAttribute('aria-busy')==='true',previewReady:ready(card,state)});
     card.dataset.approvalStatus = state?.status || 'unavailable';
     card.querySelector('[data-approval-status-label]').textContent = dirty ? 'Ungespeichert · noch nicht bestätigt' : labels[card.dataset.approvalStatus];
-    const targets = Object.values(states).filter(s => s.metadata?.id === card.dataset.originalId);
-    card.querySelector('[data-approval-progress]').textContent = targets.length > 1 ? targets.filter(s=>s.status==='approved').length + ' von ' + targets.length + ' Formaten bestätigt' : '';
+    const progress = progressByOriginal.get(card.dataset.originalId);
+    card.querySelector('[data-approval-progress]').textContent = progress?.total > 1 ? progress.approved + ' von ' + progress.total + ' Formaten bestätigt' : '';
     checkbox.title = card.classList.contains('inline-dirty') ? 'Bitte zuerst die Verschiebung speichern.' : state?.status === 'unavailable' ? 'Die bearbeitbare Konfi-Version muss zuerst vollständig vorliegen.' : 'Freigabe für den angezeigten gespeicherten Stand';
   }
   const syncControls = () => cards.forEach(syncCard);
   function apply(bundle) {
     if (!bundle?.approvals) throw Error('Die Freigaben konnten nicht gelesen werden.');
     states = bundle.approvals;
+    progressByOriginal = progressIndex(states);
     if (typeof bundle.overviewHtml === 'string') {
       const host = document.querySelector('#review-overview'), expanded = host.querySelector('details')?.open;
       host.innerHTML = bundle.overviewHtml;

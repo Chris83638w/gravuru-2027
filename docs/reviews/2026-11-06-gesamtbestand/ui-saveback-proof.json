@@ -1,0 +1,102 @@
+{
+  "passed": true,
+  "readOnly": true,
+  "originalId": "TRE-V2A-5x2-D401",
+  "materials": [
+    {
+      "material": "steel",
+      "productId": "cfg_80b2ff30-f71c-48b0-8c70-14e1ddd0997c",
+      "designId": "katalog-TRE-V2A-5x2-D401",
+      "history": [
+        {
+          "revision": 1,
+          "selectedDesignEqualsRevision1": true,
+          "otherDocumentFieldsEqualRevision1": true,
+          "changes": []
+        }
+      ]
+    },
+    {
+      "material": "acrylic-schwarz-3mm",
+      "productId": "cfg_36f1e741-2c4d-4ca8-8a80-3395444e8af8",
+      "designId": "katalog-TRE-V2A-5x2-D401",
+      "history": [
+        {
+          "revision": 1,
+          "selectedDesignEqualsRevision1": true,
+          "otherDocumentFieldsEqualRevision1": true,
+          "changes": []
+        },
+        {
+          "revision": 2,
+          "selectedDesignEqualsRevision1": false,
+          "otherDocumentFieldsEqualRevision1": true,
+          "changes": [
+            {
+              "objectId": "text-1",
+              "field": "x",
+              "before": 28.87,
+              "after": 29.87
+            }
+          ]
+        },
+        {
+          "revision": 3,
+          "selectedDesignEqualsRevision1": false,
+          "otherDocumentFieldsEqualRevision1": true,
+          "changes": [
+            {
+              "objectId": "text-1",
+              "field": "text",
+              "before": "Helga Brandt",
+              "after": "Helga Brandt Test"
+            },
+            {
+              "objectId": "text-1",
+              "field": "x",
+              "before": 28.87,
+              "after": 29.87
+            },
+            {
+              "objectId": "text-1",
+              "field": "w",
+              "changed": true
+            }
+          ]
+        },
+        {
+          "revision": 4,
+          "selectedDesignEqualsRevision1": false,
+          "otherDocumentFieldsEqualRevision1": true,
+          "changes": [
+            {
+              "objectId": "text-1",
+              "field": "x",
+              "before": 28.87,
+              "after": 29.87
+            }
+          ]
+        },
+        {
+          "revision": 5,
+          "selectedDesignEqualsRevision1": true,
+          "otherDocumentFieldsEqualRevision1": true,
+          "changes": []
+        }
+      ]
+    },
+    {
+      "material": "acrylic-anthrazit-3mm",
+      "productId": "cfg_bfa5a94d-7d1a-4b91-a974-064cf86cf271",
+      "designId": "katalog-TRE-V2A-5x2-D401",
+      "history": [
+        {
+          "revision": 1,
+          "selectedDesignEqualsRevision1": true,
+          "otherDocumentFieldsEqualRevision1": true,
+          "changes": []
+        }
+      ]
+    }
+  ]
+}

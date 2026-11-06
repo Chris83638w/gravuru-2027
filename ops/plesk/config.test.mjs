@@ -65,3 +65,38 @@ test('review comments, approvals, journals and mapping are allowed only in expli
   fs.writeFileSync(path.join(config.data,'other.sqlite'),'synthetic',{mode:0o600});
   assert.throws(()=>verifyStorage(review),/Unerwarteter Inhalt/);
 });
+
+// A synthetic POSIX storage view lets the allowlist/type/mode boundary run on
+// Windows too. Existing filesystem tests above retain the actual Linux checks.
+function derivedStorageView(t){
+  const config={data:path.join(os.tmpdir(),'synthetic-private-data'),origin:'https://private.example',slateReviewPackage:'/synthetic/gallery'};
+  const entry={name:'review-fingerprint-cache.json',mode:0o600,file:true,link:false};
+  t.mock.method(fs,'existsSync',()=>true);
+  t.mock.method(fs,'statSync',file=>({mode:file===config.data?0o700:entry.mode,isDirectory:()=>file===config.data,isFile:()=>file!==config.data}));
+  t.mock.method(fs,'lstatSync',()=>({isSymbolicLink:()=>false}));
+  t.mock.method(fs,'readFileSync',()=>JSON.stringify(markerValue(config,'private-test-data')));
+  t.mock.method(fs,'readdirSync',()=>[{name:entry.name,isFile:()=>entry.file,isSymbolicLink:()=>entry.link}]);
+  return {config,entry};
+}
+
+test('derived review cache allows only its exact private filename and UUID-v4 temporary names in review mode',t=>{
+  const {config,entry}=derivedStorageView(t);
+  for(const name of ['review-fingerprint-cache.json','review-fingerprint-cache.json.12345678-1234-4abc-8abc-123456789abc.tmp']){
+    entry.name=name;assert.doesNotThrow(()=>verifyStorage(config));
+    assert.throws(()=>verifyStorage({...config,slateReviewPackage:undefined}),/Unerwarteter Inhalt/);
+  }
+  for(const name of ['other-cache.json','review-fingerprint-cache.json.tmp','review-fingerprint-cache.json.backup','review-fingerprint-cache.json\n','review-fingerprint-cache.json\r','review-fingerprint-cache.json.12345678-1234-1abc-8abc-123456789abc.tmp','review-fingerprint-cache.json.12345678-1234-4abc-1abc-123456789abc.tmp','nested/review-fingerprint-cache.json']){
+    entry.name=name;assert.throws(()=>verifyStorage(config),/Unerwarteter Inhalt/);
+  }
+});
+
+test('derived review cache keeps private file modes and rejects directories and links',t=>{
+  const {config,entry}=derivedStorageView(t);
+  for(const name of ['review-fingerprint-cache.json','review-fingerprint-cache.json.12345678-1234-4abc-8abc-123456789abc.tmp']){
+    entry.name=name;
+    for(const mode of [0o644,0o640,0o604]){entry.mode=mode;assert.throws(()=>verifyStorage(config),/Unerwarteter Inhalt/);}
+    entry.mode=0o600;entry.file=false;assert.throws(()=>verifyStorage(config),/Unerwarteter Inhalt/);
+    entry.file=true;entry.link=true;assert.throws(()=>verifyStorage(config),/Unerwarteter Inhalt/);
+    entry.link=false;assert.doesNotThrow(()=>verifyStorage(config));
+  }
+});

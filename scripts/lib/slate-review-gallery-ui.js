@@ -90,7 +90,7 @@ function filter() {
   document.querySelector('#no-results').hidden = count + blankCount > 0;
   } finally { filtering = false; }
 }
-function updateFormat(card) {
+function updateFormat(card, notify = true) {
   const select = card.querySelector('[data-format]');
   const option = select.selectedOptions[0];
   const image = card.querySelector('[data-preview]');
@@ -110,7 +110,7 @@ function updateFormat(card) {
   if (badge && option.dataset.materialLabel) badge.textContent = option.dataset.materialLabel + ' · ' + card.dataset.process;
   previousFormats.set(card, select.value);
   for (const link of card.querySelectorAll('[data-edit-link]')) {link.hidden = unavailable; if (!unavailable) link.href = option.dataset.edit; else link.removeAttribute('href');}
-  approvalEditor.formatChanged(card);
+  if (notify) approvalEditor.formatChanged(card);
 }
 search.value = saved.search || '';
 for (const [control, key] of [[view, 'view'], [material, 'material'], [theme, 'theme'], [blankForm, 'form']]) {
@@ -124,7 +124,9 @@ for (const card of cards) {
   if (select) {
     const value = saved.formats?.[card.id];
     const restored = value && typeof value === 'object' ? savedReturnOption(select.options, value) : [...select.options].find(option => option.value === value);
-    if (restored) { select.value = restored.value; updateFormat(card); }
+    // Restore every card first, then run the shared filter once. Running a full
+    // approval/filter pass for each saved format freezes large gallery returns.
+    if (restored) { select.value = restored.value; updateFormat(card, false); }
     previousFormats.set(card, select.value);
     select.addEventListener('change', () => {
       if (!inlineEditor.beforeFormatChange(card)) { select.value = previousFormats.get(card); return; }

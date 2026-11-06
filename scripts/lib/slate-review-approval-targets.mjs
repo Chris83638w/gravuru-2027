@@ -4,6 +4,7 @@ import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {designReviewMaterial, designReviewMaterialMatches, designReviewCategory, designReviewApprovalKey, resolveDesignReviewTarget, validatedDesignReviewTargets} from './design-review-targets.mjs';
 import {nativeDesignReviewFingerprint} from './design-review-approvals.mjs';
+import {createDesignReviewFingerprintCache} from './design-review-fingerprint-cache.mjs';
 
 // Catalogue size keys include the material/family. They survive a repeat import
 // even if a private installation assigns a different product database ID.
@@ -48,11 +49,38 @@ export function rendererSignature() {
   return hash.digest('hex');
 }
 
-export function createSlateApprovalTargetSource({pack, imported, workshop}) {
+// This version is only a derived-cache namespace. It never enters or changes
+// fingerprint-v1. A cache/validator/fingerprint implementation change is a miss.
+export function reviewCacheImplementationSignature() {
+  const seen=new Set(), hash=createHash('sha256');
+  function visit(file){
+    if(seen.has(file))return;seen.add(file);
+    const bytes=fs.readFileSync(file);hash.update(path.relative(fileURLToPath(new URL('../../',import.meta.url)),file).replaceAll('\\','/')).update('\0').update(bytes).update('\0');
+    if(!/\.(?:mjs|js)$/.test(file))return;
+    for(const match of bytes.toString('utf8').matchAll(/(?:from\s*|import\s*)['"](\.[^'"]+)['"]/g)){
+      const next=path.resolve(path.dirname(file),match[1]);if(fs.existsSync(next)&&fs.statSync(next).isFile())visit(next);
+    }
+  }
+  visit(fileURLToPath(import.meta.url));
+  for(const relative of ['../../app/workshop/repository.mjs','../../app/workshop/design-assets.mjs','../../app/workshop/font-library.mjs'])visit(fileURLToPath(new URL(relative,import.meta.url)));
+  return hash.digest('hex');
+}
+export function reviewFingerprintCacheScope({tenant,storeIdentity,rendererVersion,implementationVersion}){
+  if(!/^[a-z0-9][a-z0-9-]{0,39}$/.test(tenant||'')||![storeIdentity,rendererVersion,implementationVersion].every(v=>/^[a-f0-9]{64}$/.test(v||'')))return null;
+  return createHash('sha256').update(JSON.stringify(['private-native-review-cache/v1',tenant,storeIdentity,rendererVersion,implementationVersion])).digest('hex');
+}
+
+export function createSlateApprovalTargetSource({pack, imported, workshop, cacheFile=null}) {
   if (workshop) validatedDesignReviewTargets(pack, imported);
   const targets = slateReviewApprovalTargets(pack, imported), byKey = new Map(targets.map(t => [t.key, t]));
   if (byKey.size !== targets.length) throw Error('Duplicate review target');
   const heads = new Map(), records = new Map(), fingerprints = new Map(), rendererVersion = rendererSignature();
+  const tenant=workshop?.tenantId??workshop?.repository?.tenantId;
+  const storeIdentity=workshop?.repository?.cacheIdentity?.();
+  const scope=workshop?.tenantId&&workshop?.repository?.tenantId&&workshop.tenantId!==workshop.repository.tenantId?null:
+    reviewFingerprintCacheScope({tenant,storeIdentity,rendererVersion,implementationVersion:reviewCacheImplementationSignature()});
+  const persistent=createDesignReviewFingerprintCache({filename:cacheFile,scope});
+  const resourceHashes=new Map();
   const remember = record => {
     records.delete(record.id); records.set(record.id, record);
     while (records.size > 2) records.delete(records.keys().next().value);
@@ -64,7 +92,7 @@ export function createSlateApprovalTargetSource({pack, imported, workshop}) {
       // real tenant-filtered head API enables document-free warm requests.
       const head = typeof workshop.repository.head === 'function' ? workshop.repository.head(id)
         : (({id, revision, status}) => ({id, revision, status}))(remember(workshop.repository.get(id)));
-      if (head?.id !== id || !Number.isSafeInteger(head.revision) || head.revision < 1) throw Error('Ungültiger Produktkopf.');
+      if (head?.id !== id || !Number.isSafeInteger(head.revision) || head.revision < 1 || !['draft','active','archived'].includes(head.status)) throw Error('Ungültiger Produktkopf.');
       heads.set(id, head);
     }
     return heads.get(id);
@@ -85,9 +113,21 @@ export function createSlateApprovalTargetSource({pack, imported, workshop}) {
     if (match) return workshop.assets.materialSurface(match[1]);
     throw Error('Die Bildquelle ist noch nicht mit der Freigabeprüfung verbunden.');
   };
+  const resourceDigest=value=>value instanceof Uint8Array?createHash('sha256').update('bytes\0').update(value).digest('hex'):
+    typeof value==='string'?createHash('sha256').update('string\0').update(value).digest('hex'):null;
+  const immutableResource=(kind,key)=>kind==='asset'?/^[a-f0-9]{64}$/.test(key):/^\/api\/workshop\/material-surfaces\/[a-f0-9]{64}\.png$/.test(key);
+  const resourceValue=(kind,key)=>kind==='asset'?asset(key):resourceUrl(key);
+  const resourcesMatch=proofs=>(proofs||[]).every(proof=>{
+    if(!immutableResource(proof.kind,proof.key))return false;
+    const key=proof.kind+'\0'+proof.key;
+    if(!resourceHashes.has(key))resourceHashes.set(key,resourceDigest(resourceValue(proof.kind,proof.key)));
+    return resourceHashes.get(key)===proof.sha256;
+  });
   return {
     targets,
-    beginRead() { heads.clear(); },
+    beginRead() { heads.clear(); resourceHashes.clear(); },
+    flushCache:()=>persistent.flush(),
+    cacheStatus:()=>persistent.status(),
     listTargets: () => [...targetKeys],
     resolveTarget(key) {
       const target = byKey.get(key);
@@ -98,9 +138,13 @@ export function createSlateApprovalTargetSource({pack, imported, workshop}) {
         const head = headFor(target.productId), targetIdentity = identity(target);
         if (head.status === 'archived') throw Error('Archivierte Vorlage.');
         metadata.productRevision = head.revision;
+        const diskKey=createHash('sha256').update(JSON.stringify([head.id,head.revision,targetIdentity])).digest('hex');
         let cached = fingerprints.get(key);
         if (cached?.revision !== head.revision || cached?.targetIdentity !== targetIdentity) cached = null;
+        if(!cached){const saved=persistent.get(diskKey);if(saved)cached={...saved,revision:head.revision,targetIdentity};}
+        if(cached&&!resourcesMatch(cached.resources)){cached=null;fingerprints.delete(key);}
         if (cached) {
+          fingerprints.set(key,cached);
           metadata.previewUrl = '/api/workshop/products/' + encodeURIComponent(head.id) + '/preview.svg?' + new URLSearchParams({designId: target.designId, revision: String(head.revision), reviewFingerprint:cached.fingerprint});
           return {available:true, fingerprint:cached.fingerprint, metadata};
         }
@@ -114,9 +158,19 @@ export function createSlateApprovalTargetSource({pack, imported, workshop}) {
         const design = profile.designs.find(d => d.id === target.designId);
         if (!design || target.materialKey !== 'slate' && design.katalog?.designId !== target.id || target.familyId && design.katalog?.target?.familyId !== target.familyId) throw Error('Native source identity or family changed');
         const localFonts = design?.objects.filter(o => o.type === 'text').every(o => Object.hasOwn(record.document.config.localResources.fonts, o.font));
+        const resourceInputs=new Map();let immutableResources=true;
+        const resolveResource=(kind,key)=>{
+          const value=resourceValue(kind,key),sha256=resourceDigest(value);
+          if(!sha256||!immutableResource(kind,key))immutableResources=false;
+          else{resourceInputs.set(kind+'\0'+key,{kind,key,sha256});resourceHashes.set(kind+'\0'+key,sha256);}
+          return value;
+        };
         cached = {revision:record.revision, targetIdentity, fingerprint:nativeDesignReviewFingerprint({document: record.document, designId: target.designId, rendererVersion,
-          resourceResolvers: {asset, url: resourceUrl, font: id => workshop.fonts.resources()[id]}})};
-        if (localFonts) fingerprints.set(key,cached);
+          resourceResolvers: {asset:id=>resolveResource('asset',id), url:url=>resolveResource('url',url), font: id => workshop.fonts.resources()[id]}}),resources:[...resourceInputs.values()]};
+        if (localFonts&&immutableResources) {
+          fingerprints.set(key,cached);
+          persistent.put(diskKey,{fingerprint:cached.fingerprint,resources:cached.resources});
+        }
         const fingerprint = cached.fingerprint;
         metadata.previewUrl = '/api/workshop/products/' + encodeURIComponent(record.id) + '/preview.svg?' + new URLSearchParams({designId: target.designId, revision: String(record.revision), reviewFingerprint:fingerprint});
         return {available: true, fingerprint, metadata};

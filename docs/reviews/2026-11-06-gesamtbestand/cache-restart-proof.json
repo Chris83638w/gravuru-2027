@@ -1,0 +1,56 @@
+{
+  "phase": "restart",
+  "readOnlyDatabases": true,
+  "cacheFileOnlyWrite": true,
+  "initialCacheStatus": {
+    "enabled": true,
+    "entries": 2449,
+    "dirty": false,
+    "error": null
+  },
+  "cacheStatus": {
+    "enabled": true,
+    "entries": 2449,
+    "dirty": false,
+    "error": null
+  },
+  "counts": {
+    "heads": 348,
+    "documents": 0,
+    "assets": 118,
+    "surfaces": 0,
+    "fontLists": 0
+  },
+  "targets": 2550,
+  "available": 2449,
+  "fingerprintSetSha256": "dabc0e3aab4633a6014f78193065cc34186dca282359353e93db32b1fd82eb45",
+  "elapsedMs": 158,
+  "memory": {
+    "rss": 91697152,
+    "heapTotal": 23719936,
+    "heapUsed": 16911568,
+    "external": 4611102,
+    "arrayBuffers": 543735
+  },
+  "samples": [
+    {
+      "key": "[\"acrylic-schwarz-3mm\",\"TRE-V2A-5x2-D401\",\"TS-Acryl-RE-50X20-T30-SW\"]",
+      "material": "acrylic-schwarz-3mm",
+      "revision": 5,
+      "fingerprint": "a3b393612a6ea57d95d17731fd214824e8bd2f8ab53b9345a41750f6e018b1f9"
+    },
+    {
+      "key": "[\"steel\",\"TRE-V2A-5x2-D401\",\"GR-ES-RE-50X20-T15\"]",
+      "material": "steel",
+      "revision": 1,
+      "fingerprint": "d1a6acbfa22740792a43d11400dfb4fdfc92cd927a991dfd435fc0ab30f99f6d"
+    },
+    {
+      "key": "[\"acrylic-anthrazit-3mm\",\"TRE-V2A-5x2-D401\",\"TS-Acryl-RE-50X20-T30-AN\"]",
+      "material": "acrylic-anthrazit-3mm",
+      "revision": 1,
+      "fingerprint": "17ad946867f9571c214f5c163c4a5f481f04aa91cdaf5c039a4f7dc90877de39"
+    }
+  ],
+  "restartFingerprintsEqual": true
+}

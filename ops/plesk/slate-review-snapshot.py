@@ -11,6 +11,7 @@ import hashlib
 import json
 import os
 from pathlib import Path, PurePosixPath
+import re
 import shutil
 import sqlite3
 import zipfile
@@ -20,6 +21,7 @@ OPTIONAL_DATABASES = ('review-approvals.sqlite',)
 MAPPING = 'local-review-import.json'
 RECEIPT = 'ONLINE-SNAPSHOT.json'
 SCHEMA = 'gravuru-slate-online-snapshot/v1'
+DERIVED_CACHE = re.compile(r'review-fingerprint-cache\.json(?:\.[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}\.tmp)?')
 
 
 def digest(file):
@@ -140,7 +142,12 @@ def capture(data, gallery, output):
         raise ValueError('Snapshot output already exists; use a new directory')
     expected = {MAPPING, '.gravuru-private-test.json', '.runtime.lock'}
     expected.update(name + suffix for name in (*DATABASES, *OPTIONAL_DATABASES) for suffix in ('', '-wal', '-shm', '-journal'))
-    if regular_files(data) - expected:
+    source_files = regular_files(data)
+    # The derived cache has no approval events or editable data and is tied to
+    # this physical database. Rebuild after restore; never ship stale entries.
+    # Only the writer's exact filenames are omitted, not arbitrary cache files.
+    disposable = {name for name in source_files if DERIVED_CACHE.fullmatch(name)}
+    if source_files - expected - disposable:
         raise ValueError('Unexpected files in source data; do not omit them silently')
     for name in (*DATABASES, MAPPING):
         if not (data / name).is_file():

@@ -9,7 +9,7 @@ import {familyProductConfig} from '../app/workshop/product-families.mjs';
 import {makeProductDocument,validateProductDocument} from '../app/workshop/product-model.mjs';
 import {createProductRepository} from '../app/workshop/repository.mjs';
 import {createDesignAssetStore} from '../app/workshop/design-assets.mjs';
-import {extendDesignReview} from './extend-design-review.mjs';
+import {extendDesignReview,planDesignImportBatches,DEFAULT_DESIGN_IMPORT_BATCH_BYTES} from './extend-design-review.mjs';
 import {readSlatePackage,mergeDesignReviewOriginals,mergeSlatePackages} from './extend-slate-original-review.mjs';
 
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
@@ -46,6 +46,24 @@ function fixture(t){
   const saved=repo.create(base.document),edited=repo.save(saved.id,{...base.document,name:'User slate edit'},saved.revision);repo.close();
   write(path.join(data,'local-review-import.json'),{localOnly:true,published:false,shopifyWrites:0,products:[{...base.product,productId:saved.id,revision:1}]});
   return {root,baseRoot,addonRoot,data,galleryOut,base,addon,edited};
+}
+
+function expandAddon(f,count){
+  const manifest=read(path.join(f.addonRoot,'manifest.json'));
+  const original=manifest.originals[0],product=manifest.products[0],payload=read(path.join(f.addonRoot,product.file));
+  manifest.originals=[];manifest.products=[];
+  for(let index=0;index<count;index++){
+    const id='BATCH-'+index,native='katalog-'+id,copy=structuredClone(payload),key='batch:'+index;
+    copy.document.config.profile.designs[0].id=native;
+    copy.document.config.profile.designs[0].katalog.designId=id;
+    copy.document.config.profile.defaultDesignId=native;
+    copy.document.elementRights={[native]:copy.document.elementRights[payload.document.config.profile.designs[0].id]};
+    const next={...product,key,productId:'cfg_package-'+index,designIds:[id],file:'products/batch-'+index+'.json',documentHash:sha(JSON.stringify(copy.document))};
+    manifest.products.push(next);manifest.originals.push({...original,id,targets:[{...original.targets[0],nativeDesignId:native,productKey:key}]});
+    write(path.join(f.addonRoot,next.file),copy);write(path.join(f.addonRoot,'originals',id,'design.json'),{id});
+  }
+  write(path.join(f.addonRoot,'manifest.json'),manifest);checksum(f.addonRoot);
+  return manifest;
 }
 
 test('new material import preserves slate edits, comments and approvals; repeated delivery preserves steel edits too',async t=>{
@@ -138,26 +156,57 @@ test('different font paths may share only byte-identical resources and retain th
 });
 
 test('more than 100 new product groups import in journalled batches and repeat without new revisions',async t=>{
-  const f=fixture(t),manifest=read(path.join(f.addonRoot,'manifest.json'));
-  const original=manifest.originals[0],product=manifest.products[0],payload=read(path.join(f.addonRoot,product.file));
-  manifest.originals=[];manifest.products=[];
-  for(let index=0;index<101;index++){
-    const id='BATCH-'+index,native='katalog-'+id,copy=structuredClone(payload),key='batch:'+index;
-    copy.document.config.profile.designs[0].id=native;
-    copy.document.config.profile.designs[0].katalog.designId=id;
-    copy.document.config.profile.defaultDesignId=native;
-    copy.document.elementRights={[native]:copy.document.elementRights[payload.document.config.profile.designs[0].id]};
-    const next={...product,key,productId:'cfg_package-'+index,designIds:[id],file:'products/batch-'+index+'.json',documentHash:sha(JSON.stringify(copy.document))};
-    manifest.products.push(next);manifest.originals.push({...original,id,targets:[{...original.targets[0],nativeDesignId:native,productKey:key}]});
-    write(path.join(f.addonRoot,next.file),copy);write(path.join(f.addonRoot,'originals',id,'design.json'),{id});
-  }
-  write(path.join(f.addonRoot,'manifest.json'),manifest);checksum(f.addonRoot);
-  const result=await extendDesignReview(f);assert.equal(result.newProducts,101);assert.equal(result.newOriginals,101);
+  const f=fixture(t);expandAddon(f,101);
+  const progress=[],result=await extendDesignReview({...f,onProgress:event=>progress.push(event)});assert.equal(result.newProducts,101);assert.equal(result.newOriginals,101);
+  const batches=progress.filter(event=>event.phase==='batch-committed');assert.equal(batches.length,result.importBatches);assert.ok(batches.length>2,'hydrated bytes, not only group count, bound the real transactions');
+  assert.ok(batches.every(batch=>batch.products<=100&&(batch.hydratedBytes<=DEFAULT_DESIGN_IMPORT_BATCH_BYTES||batch.products===1)));
   const mapping=fs.readFileSync(path.join(f.data,'local-review-import.json'));
   const repeated=await extendDesignReview({...f,baseRoot:f.galleryOut,galleryOut:path.join(f.root,'unused')});
   assert.equal(repeated.alreadyPresent,true);assert.deepEqual(fs.readFileSync(path.join(f.data,'local-review-import.json')),mapping);
   const repo=createProductRepository({filename:path.join(f.data,'workshop.sqlite'),validateDocument:validateProductDocument});
   try{assert.equal(repo.list().length,102);assert.deepEqual(repo.get(f.edited.id),f.edited);}finally{repo.close();}
+});
+
+test('batch planner bounds hydrated bytes and count, with one intact oversized document at a time',()=>{
+  assert.deepEqual(planDesignImportBatches([6,6,25,3,4].map(bytes=>({bytes})),10).map(batch=>batch.map(row=>row.bytes)),[[6],[6],[25],[3,4]]);
+  assert.deepEqual(planDesignImportBatches(Array.from({length:201},()=>({bytes:1})),1000).map(batch=>batch.length),[100,100,1]);
+  for(const value of [0,-1,Infinity,1.2])assert.throws(()=>planDesignImportBatches([],value),/byte budget/);
+});
+
+test('an invalid last group fails complete streaming prevalidation before any database or mapping write',async t=>{
+  const f=fixture(t),manifest=expandAddon(f,3),last=manifest.products.at(-1),file=path.join(f.addonRoot,last.file),payload=read(file);
+  payload.document.config.profile.designs[0].katalog.target.released=true;
+  last.documentHash=sha(JSON.stringify(payload.document));write(file,payload);write(path.join(f.addonRoot,'manifest.json'),manifest);checksum(f.addonRoot);
+  const names=['workshop.sqlite','design-assets.sqlite','profiles.sqlite','review-comments.sqlite','review-approvals.sqlite','local-review-import.json'];
+  const before=names.map(name=>sha(fs.readFileSync(path.join(f.data,name)))),progress=[];
+  await assert.rejects(extendDesignReview({...f,maxBatchBytes:1,onProgress:event=>progress.push(event)}),/release state/);
+  assert.deepEqual(names.map(name=>sha(fs.readFileSync(path.join(f.data,name)))),before);
+  assert.equal(progress.length,0);assert.equal(fs.existsSync(f.galleryOut),false);
+});
+
+test('interrupted bounded import reuses the committed ID and publishes the mapping only after a complete retry',async t=>{
+  const f=fixture(t);expandAddon(f,3);
+  const mapping=fs.readFileSync(path.join(f.data,'local-review-import.json'));
+  await assert.rejects(extendDesignReview({...f,maxBatchBytes:1,onProgress:event=>{if(event.phase==='batch-committed')throw Error('simulated interruption');}}),/simulated interruption/);
+  assert.deepEqual(fs.readFileSync(path.join(f.data,'local-review-import.json')),mapping);
+  let repo=createProductRepository({filename:path.join(f.data,'workshop.sqlite'),validateDocument:validateProductDocument}),partial;
+  try{assert.equal(repo.list().length,2);partial=repo.get(repo.list().find(row=>row.id!==f.edited.id).id);assert.deepEqual(repo.get(f.edited.id),f.edited);}finally{repo.close();}
+  const result=await extendDesignReview({...f,maxBatchBytes:1,galleryOut:path.join(f.root,'retry')});assert.equal(result.newProducts,3);assert.equal(result.importBatches,3);
+  repo=createProductRepository({filename:path.join(f.data,'workshop.sqlite'),validateDocument:validateProductDocument});
+  try{assert.equal(repo.list().length,4);assert.deepEqual(repo.get(partial.id),partial);assert.equal(repo.history(partial.id).length,1);}finally{repo.close();}
+  assert.ok(read(path.join(f.data,'local-review-import.json')).products.some(product=>product.productId===partial.id));
+});
+
+test('a partial journal entry with edited document metadata rejects retry before importing later groups',async t=>{
+  const f=fixture(t);expandAddon(f,3);
+  await assert.rejects(extendDesignReview({...f,maxBatchBytes:1,onProgress:event=>{if(event.phase==='batch-committed')throw Error('simulated interruption');}}),/simulated interruption/);
+  const mapping=fs.readFileSync(path.join(f.data,'local-review-import.json'));
+  let repo=createProductRepository({filename:path.join(f.data,'workshop.sqlite'),validateDocument:validateProductDocument}),edited;
+  try{const partial=repo.get(repo.list().find(row=>row.id!==f.edited.id).id),document=structuredClone(partial.document);document.seo.description='Changed after interrupted import';edited=repo.save(partial.id,document,partial.revision);}finally{repo.close();}
+  await assert.rejects(extendDesignReview({...f,maxBatchBytes:1,galleryOut:path.join(f.root,'retry')}),/earlier import was edited/);
+  assert.deepEqual(fs.readFileSync(path.join(f.data,'local-review-import.json')),mapping);
+  repo=createProductRepository({filename:path.join(f.data,'workshop.sqlite'),validateDocument:validateProductDocument});
+  try{assert.equal(repo.list().length,2);assert.deepEqual(repo.get(edited.id),edited);}finally{repo.close();}
 });
 
 test('wrong material, dimensions or missing native source mapping fail before DB mutation',async t=>{

@@ -36,12 +36,16 @@ export function installInlineReview({cards, onSaved = () => {}, onVisibilityChan
   }
   function sync(session) {
     const changed = dirty(session), card = session.card;
+    const starter = query(card, '[data-inline-start]');
+    if (starter) starter.disabled = session.busy;
     query(card, '[data-inline-save]').disabled = session.busy || !changed;
     query(card, '[data-inline-reset]').disabled = session.busy || !changed;
     query(card, '[data-inline-close]').disabled = session.busy;
     query(card, '[data-inline-reload]').disabled = session.busy;
     query(card, '[data-inline-reload]').hidden = !session.conflict;
     query(card, '[data-inline-element]').disabled = session.busy || !session.record;
+    const selected = session.objects.find(object => object.id === session.selected && object.movable);
+    for (const button of card.querySelectorAll('[data-inline-nudge]')) button.disabled = session.busy || !selected;
     card.classList.toggle('inline-dirty', changed);
     card.setAttribute('aria-busy', String(session.busy));
     const pinned = session.busy || changed;
@@ -85,6 +89,7 @@ export function installInlineReview({cards, onSaved = () => {}, onVisibilityChan
     for (const object of session.objects.filter(object => object.movable)) {
       const node = nodeFor(session, object.id);
       if (!node) continue;
+      node.dataset.inlineMovable = 'true';
       const matrix = node.transform.baseVal.consolidate()?.matrix;
       session.transforms.set(object.id, matrix ? {a: matrix.a, b: matrix.b, c: matrix.c, d: matrix.d, e: matrix.e, f: matrix.f} : {a: 1, b: 0, c: 0, d: 1, e: 0, f: 0});
       const option = document.createElement('option'); option.value = object.id;
@@ -110,10 +115,20 @@ export function installInlineReview({cards, onSaved = () => {}, onVisibilityChan
     select(session, object.id); sync(session);
     status(session, dirty(session) ? 'Verschoben · noch nicht gespeichert' : 'Gespeicherte Position');
   }
+  function nudge(session, direction, step = 1) {
+    if (session.busy || session.drag || !session.record) return false;
+    const delta = {left: [-1, 0], right: [1, 0], up: [0, -1], down: [0, 1]}[direction];
+    const object = session.objects.find(object => object.id === session.selected && object.movable);
+    if (!delta || !object) return false;
+    move(session, object, object.x + delta[0] * step, object.y + delta[1] * step);
+    return true;
+  }
   function close(session) {
     session.stage.replaceChildren(); session.stage.hidden = true;
     query(session.card, '[data-inline-open]').hidden = false;
     query(session.card, '[data-inline-open]').disabled = false;
+    const starter = query(session.card, '[data-inline-start]');
+    if (starter) starter.disabled = false;
     query(session.card, '[data-inline-controls]').hidden = true;
     session.card.classList.remove('inline-active', 'inline-dirty');
     session.card.removeAttribute('aria-busy');
@@ -168,7 +183,14 @@ export function installInlineReview({cards, onSaved = () => {}, onVisibilityChan
     const opener = query(card, '[data-inline-open]'); if (!opener) continue;
     const stage = query(card, '[data-inline-stage]');
     opener.addEventListener('click', () => void open(card));
-    query(card, '[data-inline-element]').addEventListener('change', event => { if (active?.card === card && !active.busy) select(active, event.target.value); });
+    query(card, '[data-inline-start]')?.addEventListener('click', () => void open(card));
+    query(card, '[data-inline-element]').addEventListener('change', event => {
+      if (active?.card !== card || active.busy) return;
+      select(active, event.target.value); sync(active); stage.focus({preventScroll: true});
+    });
+    for (const button of card.querySelectorAll('[data-inline-nudge]')) button.addEventListener('click', () => {
+      if (active?.card === card && nudge(active, button.dataset.inlineNudge)) stage.focus({preventScroll: true});
+    });
     query(card, '[data-inline-save]').addEventListener('click', () => { if (active?.card === card) void save(active); });
     query(card, '[data-inline-reset]').addEventListener('click', () => { if (active?.card === card && !active.busy) { const conflict = active.conflict; draw(active, active.record); active.conflict = conflict; sync(active); } });
     query(card, '[data-inline-close]').addEventListener('click', () => { if (active?.card === card && canClose(active)) close(active); });
@@ -204,11 +226,8 @@ export function installInlineReview({cards, onSaved = () => {}, onVisibilityChan
     for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) stage.addEventListener(type, finish);
     stage.addEventListener('keydown', event => {
       const session = active; if (session?.card !== card || session.busy || !session.record) return;
-      const delta = {ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1]}[event.key];
-      const object = session.objects.find(object => object.id === session.selected && object.movable);
-      if (!delta || !object) return;
-      event.preventDefault(); const step = event.shiftKey ? 10 : 1;
-      move(session, object, object.x + delta[0] * step, object.y + delta[1] * step);
+      const direction = {ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down'}[event.key];
+      if (direction && nudge(session, direction, event.shiftKey ? 10 : 1)) event.preventDefault();
     });
     new ResizeObserver(() => { if (active?.card === card && active.selected) select(active, active.selected); }).observe(stage);
   }

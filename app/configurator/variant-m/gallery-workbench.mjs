@@ -15,7 +15,7 @@ export async function installGalleryWorkbench({el,config,files,say,pending}){
  if(parent===window||!bootstrap||parent.location.origin!==origin)throw Error('Die private Galerieverbindung fehlt.');
  // Only this operator host: the customer checkout and session messaging do
  // not belong to a native template edit. Keep the customer editor unchanged.
- const style=document.createElement('style');style.textContent='.fk-buy-dock,[data-ux-save-state],.ux-session-note{display:none!important}';el.shadowRoot.append(style);
+ const style=document.createElement('style');style.textContent='.fk-buy-dock,[data-ux-save-state],.ux-session-note{display:none!important}:host([data-ux-layout][data-ux-neutral]) .ux-shell .ux-heading>[data-ux=back],:host([data-ux-layout][data-ux-neutral]) .ux-shell .ux-heading>[data-ux=account]{display:none!important}:host([data-ux-layout][data-ux-neutral]) .ux-heading{justify-content:center!important}';el.shadowRoot.append(style);
  for(const node of el.shadowRoot.querySelectorAll('.fk-buy-dock'))node.style.setProperty('display','none','important');
  const protectedIds=new Set(config.profile.designs[0].objects.filter(o=>o.technicalLocked||o.role==='guide'||o.type==='motif-raster').map(o=>o.id));
  const sync=el.sync;el.sync=function(...args){for(const object of this.state.objects)if(protectedIds.has(object.id))object.uxLocked=true;return sync.apply(this,args);};

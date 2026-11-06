@@ -42,8 +42,8 @@ window.addEventListener('beforeunload',event=>{if(dirty||busy){event.preventDefa
 window.addEventListener('message',event=>{
  if(event.origin!==location.origin||event.source!==frame?.contentWindow)return;
  const d=event.data;
- if(d?.type==='gravuru-gallery-ready'&&d.designId===context.designId){clearTimeout(startTimer);ready=true;controls();status('Du bearbeitest die Originalvorlage. Gespeichert wird nur dieses Design und Format.');}
- if(d?.type==='gravuru-workbench-change')dirty=true;
+ if(d?.type==='gravuru-gallery-ready'&&d.designId===context.designId){clearTimeout(startTimer);ready=true;controls();status('Du bearbeitest diese Vorlage und dieses Format. Änderungen mit „Speichern“ sichern.');}
+ if(d?.type==='gravuru-workbench-change'){dirty=true;if(ready&&!busy)status('Ungespeicherte Änderungen · Bitte speichern, bevor du weitergehst.');}
  if(d?.type==='gravuru-gallery-save-request')save();
  if(d?.type==='gravuru-fk-close')goBack();
  if(d?.type==='gravuru-gallery-start-error'){clearTimeout(startTimer);status('Die Vorlage ist unvollständig geladen: '+d.message,true);ready=false;controls();}
@@ -52,7 +52,7 @@ window.addEventListener('message',event=>{
 });
 try{
  const opened=await request('/originale/editor/context?'+new URLSearchParams(target));context=opened.context;csrf=opened.csrfToken;
- $('title').textContent=context.originalId+' bearbeiten';$('target').textContent=context.material+' · '+context.mm.map(n=>n/10).join(' × ')+' cm · Stand '+context.revision;
+ $('title').textContent=context.originalId;$('target').textContent=context.material+' · '+context.mm.map(n=>n/10).join(' × ')+' cm · Stand '+context.revision;
  window.GravuruModelProfile=opened.model.legacy;window.UniversalConfig=opened.model.universal;
  window.GravuruGalleryEditor={context,photos:opened.photos};
  frame=document.createElement('iframe');frame.title='Vollständiger Konfigurator für '+context.originalId;frame.addEventListener('load',()=>{startDiagnostics.frameLoaded=true;});frame.src='/editor.html';$('editor').append(frame);

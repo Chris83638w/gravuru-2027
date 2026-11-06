@@ -271,6 +271,13 @@ export function createProductRepository({ filename, validateDocument = (value) =
       if (revision !== undefined) positiveRevision(revision);
       return record(row, revision ?? row.revision);
     },
+    // Current identity/state only: polling a large gallery must not read or
+    // JSON-parse its immutable glyph/image payloads just to compare revisions.
+    head(id) {
+      const row = typeof id === 'string' ? db.prepare('SELECT id,revision,archived,published_revision FROM products WHERE id=? AND tenant_id=?').get(id,tenant) : null;
+      if (!row) throw failure(404, 'not_found', 'Konfiguration nicht gefunden.');
+      return {id:row.id, revision:row.revision, status:state(row)};
+    },
     list({ query = '', includeArchived = false } = {}) {
       if (typeof query !== 'string' || typeof includeArchived !== 'boolean') {
         throw failure(422, 'invalid_query', 'Ungültige Suchparameter.');

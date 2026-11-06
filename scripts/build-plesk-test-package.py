@@ -9,6 +9,10 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 SLATE_RUNTIME_FILES = [
+    # Private offline batch tools are shipped from the same reviewed commit.
+    # They are never exposed as HTTP routes or automatically run at startup.
+    'scripts/extend-design-review.mjs',
+    'scripts/extend-slate-original-review.mjs',
     'scripts/lib/slate-review-gallery.mjs',
     'scripts/lib/slate-review-gallery-page.mjs',
     'scripts/lib/slate-review-catalog.mjs',
@@ -24,6 +28,10 @@ SLATE_RUNTIME_FILES = [
     'scripts/lib/slate-review-approval-targets.mjs',
     'scripts/lib/design-review-targets.mjs',
     'scripts/lib/slate-review-approvals-ui.js',
+    'scripts/lib/gallery-editor-http.mjs',
+    'scripts/lib/gallery-management-http.mjs',
+    'scripts/lib/gallery-management-targets.mjs',
+    'scripts/lib/gallery-management-creation-gate.mjs',
 ]
 
 

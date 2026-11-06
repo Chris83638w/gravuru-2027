@@ -1,5 +1,5 @@
 import {materialOverviewHtml} from './review-material-overview.mjs';
-import {designReviewMaterial, designReviewCategory, designReviewApprovalKey, resolveDesignReviewTarget} from './design-review-targets.mjs';
+import {designReviewMaterial, designReviewMaterials, designReviewCategory, designReviewApprovalKey, resolveDesignReviewTarget} from './design-review-targets.mjs';
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const sizeLabel = mm => mm.map(value => Number((value / 10).toFixed(2))).join(' × ') + ' cm';
@@ -9,13 +9,14 @@ export function reviewThemes(row, category = designReviewCategory(row)) {
   return [...new Map((declared.length ? declared : [{key: category.topic || category.key, label: category.label.replace(/ (?:ohne Foto|mit Foto|Fotozuordnung offen)$/, '')}]).map(theme => [theme.key, {key: theme.key, label: theme.label}])).values()];
 }
 export function orderedReviewTargets(row, imported) {
-  const steel = designReviewMaterial(row).key === 'steel';
+  const primary = designReviewMaterial(row).key;
   return (row.targets || []).flatMap(target => {
     const resolved = resolveDesignReviewTarget(row, target, imported);
-    return resolved ? [{...resolved, approvalKey: designReviewApprovalKey(row, target.sizeKey)}] : [];
-  }).sort((a, b) => steel
-    ? a.mm[0] * a.mm[1] - b.mm[0] * b.mm[1] || a.mm[0] - b.mm[0] || a.mm[1] - b.mm[1] || compareText(a.sizeKey, b.sizeKey)
-    : Number(b.mm[0] === 300 && b.mm[1] === 200) - Number(a.mm[0] === 300 && a.mm[1] === 200));
+    return resolved ? [{...resolved, approvalKey: designReviewApprovalKey(row, target.sizeKey, target)}] : [];
+  }).sort((a, b) => Number(b.material.key === primary) - Number(a.material.key === primary) || compareText(a.material.label, b.material.label) ||
+    (a.material.key === 'slate'
+      ? Number(b.mm[0] === 300 && b.mm[1] === 200) - Number(a.mm[0] === 300 && a.mm[1] === 200)
+      : a.mm[0] * a.mm[1] - b.mm[0] * b.mm[1] || a.mm[0] - b.mm[0] || a.mm[1] - b.mm[1] || compareText(a.sizeKey, b.sizeKey)));
 }
 export function blankPreviewUrl(preview) {
   const parts = typeof preview === 'string' ? preview.split('/') : [];
@@ -26,7 +27,9 @@ export function blankPreviewUrl(preview) {
 export function slateGalleryHtml(pack, imported, {comments = {}, csrfToken = '', approvals = {}, overviewHtml = '', managementEnabled = false} = {}) {
   const rows = [...pack.originals].sort((a, b) => {
     const am = designReviewMaterial(a), bm = designReviewMaterial(b), ac = designReviewCategory(a), bc = designReviewCategory(b);
-    return Number(bm.key === 'slate') - Number(am.key === 'slate') || compareText(am.label, bm.label) || ac.rank - bc.rank || compareText(ac.key, bc.key) || compareText(a.id, b.id);
+    return Number(bm.key === 'slate') - Number(am.key === 'slate') ||
+      (Number.isFinite(a.reviewOrder) && Number.isFinite(b.reviewOrder) ? a.reviewOrder - b.reviewOrder : 0) ||
+      compareText(am.label, bm.label) || ac.rank - bc.rank || compareText(ac.key, bc.key) || compareText(a.id, b.id);
   });
   const sections = new Map(), materials = new Map(), categories = new Map(), themes = new Map();
   const blanks = pack.blanks || [];
@@ -36,37 +39,48 @@ export function slateGalleryHtml(pack, imported, {comments = {}, csrfToken = '',
   };
   let editable = 0;
   for (const row of rows) {
-    const category = designReviewCategory(row), material = designReviewMaterial(row), rowThemes = reviewThemes(row, category);
+    const category = designReviewCategory(row), material = designReviewMaterial(row), rowMaterials = designReviewMaterials(row), rowThemes = reviewThemes(row, category);
+    const multipleMaterials = rowMaterials.length > 1;
     const sectionKey = JSON.stringify([material.key, category.key]);
-    if (!sections.has(sectionKey)) sections.set(sectionKey, {category, material, cards: []});
+    if (!sections.has(sectionKey)) sections.set(sectionKey, {category, material, materials: new Map(), cards: []});
+    for (const item of rowMaterials) sections.get(sectionKey).materials.set(item.key, item);
     categories.set(category.key, category);
     for (const theme of rowThemes) if (!themes.has(theme.key)) themes.set(theme.key, theme);
-    const materialCounts = materialEntry(material);materialCounts.originals++;
-    const targets = orderedReviewTargets(row, imported).map(target => ({...target, label: sizeLabel(target.mm),
+    for (const item of rowMaterials) materialEntry(item).originals++;
+    const targets = orderedReviewTargets(row, imported).map(target => ({...target, label: (multipleMaterials ? (target.familyLabel || target.material.label) + ' · ' : '') + sizeLabel(target.mm),
       preview: approvals[target.approvalKey]?.metadata?.previewUrl || '/api/workshop/products/' + encodeURIComponent(target.productId) + '/preview.svg?' + new URLSearchParams({designId: target.designId}),
       edit: '/originale/editor?' + new URLSearchParams({configuration: target.productId, design: target.designId, originalId:row.id})}));
-    if (targets.length) {editable++;materialCounts.editable++;}
+    if (targets.length) editable++;
+    for (const key of new Set(targets.map(target => target.material.key))) materials.get(key).editable++;
+    const openTargets = multipleMaterials ? (row.targets || []).filter(target => target.status !== 'prepared').map(target => ({...target,
+      material: designReviewMaterial(row, target), approvalKey: designReviewApprovalKey(row, target.sizeKey, target),
+      label: (target.familyLabel || designReviewMaterial(row, target).label) + ' · ' + sizeLabel(target.mm) + ' · Aufbereitung offen'})) : [];
+    const choices = [...targets, ...openTargets];
     const selected = targets[0];
-    const approvalKey = selected?.approvalKey || designReviewApprovalKey(row, row.targets?.[0]?.sizeKey);
+    const selectedMaterial = selected?.material || material;
+    const approvalKey = selected?.approvalKey || designReviewApprovalKey(row, row.targets?.[0]?.sizeKey, row.targets?.[0]);
     const approval = approvals[approvalKey];
     const approvalStatus = approval?.status || (selected ? 'unreviewed' : 'unavailable');
     const approvalLabel = {approved:'Bestätigt',unreviewed:'Noch nicht freigegeben',changed:'Geändert · erneut prüfen',unavailable:'Aufbereitung offen'}[approvalStatus];
     const process = row.process === 'UV' ? 'UV-Druck' : 'Gravur';
     const comment = comments[row.id] || {text: '', revision: 0};
-    const openReasons = [...new Set((row.targets || []).filter(target => target.status !== 'prepared').map(target => sizeLabel(target.mm) + ': ' + (target.reason || 'Aufbereitung offen')))];
-    const visualNotes = [...new Set((row.visualReviewIssues || []).map(issue => typeof issue === 'string' ? issue : issue?.message).filter(message => typeof message === 'string' && message))];
+    const openReasons = [...new Set((row.targets || []).filter(target => target.status !== 'prepared').map(target => (multipleMaterials ? designReviewMaterial(row, target).label + ' · ' : '') + sizeLabel(target.mm) + ': ' + (target.reason || 'Aufbereitung offen')))];
+    const visualNotes = [...new Set([...(row.visualReviewIssues || []), ...(row.targets || []).flatMap(target => target.visualReviewIssues || [])].map(issue => typeof issue === 'string' ? issue : issue?.message).filter(message => typeof message === 'string' && message))];
+    const fitNotes = [...new Set((row.targets || []).filter(target => target.fit?.status === 'prüfen').map(target =>
+      designReviewMaterial(row, target).label + ' · ' + sizeLabel(target.mm) + ': ' + (target.fit.issues?.join(' · ') || 'Darstellung bitte prüfen.')))];
     const reason = row.reason || row.error || openReasons.join(' · ') || 'Konfi-Aufbereitung noch offen.';
     const preview = selected
       ? `<div class="preview-link" data-preview-host><button class="inline-open" type="button" data-inline-open aria-label="${esc(row.id)} direkt in der Übersicht verschieben"><img data-preview loading="lazy" src="${esc(selected.preview)}" alt="${esc(row.id)} · Konfi-Vorlage · ${esc(selected.label)}"><span>Direkt verschieben</span></button><div class="inline-stage" data-inline-stage hidden tabindex="0" aria-label="Element auswählen und verschieben; Pfeiltasten bewegen um einen Millimeter"></div></div><div class="inline-controls" data-inline-controls hidden><label>Element<select data-inline-element></select></label><div class="inline-actions"><button class="inline-save" type="button" data-inline-save disabled>Speichern</button><button type="button" data-inline-reset disabled>Zurücksetzen</button><button type="button" data-inline-close>Schließen</button><button type="button" data-inline-reload hidden>Aktuellen Stand laden</button></div></div><p class="inline-status" data-inline-status role="status" aria-live="polite"></p>`
       : `<div class="open"><strong>Konfi-Version noch offen</strong><span>${esc(reason.replace('UV source is incomplete; editable original print layers cannot be reconstructed exactly.', 'Diese Druckvorlage muss noch farbgetreu für den Konfi aufbereitet werden.'))}</span></div>`;
-    const formats = targets.length > 1
-      ? `<label class="format">Format <select data-format aria-label="Format für ${esc(row.id)}">${targets.map((target, index) => `<option value="${index}" data-approval-key="${esc(target.approvalKey)}" data-preview="${esc(target.preview)}" data-edit="${esc(target.edit)}" data-product-id="${esc(target.productId)}" data-design-id="${esc(target.designId)}" data-size-key="${esc(target.sizeKey)}">${esc(target.label)}</option>`).join('')}</select></label>`
+    const formats = choices.length > 1
+      ? `<label class="format">${multipleMaterials ? 'Material / Format' : 'Format'} <select data-format aria-label="${multipleMaterials ? 'Material und Format' : 'Format'} für ${esc(row.id)}">${choices.map((target, index) => `<option value="${index}" data-approval-key="${esc(target.approvalKey)}" data-preview="${esc(target.preview)}" data-edit="${esc(target.edit)}" data-product-id="${esc(target.productId)}" data-design-id="${esc(target.designId)}" data-size-key="${esc(target.sizeKey)}" data-material="${esc(target.material.key)}" data-material-label="${esc(target.material.label)}" data-mm="${esc(target.mm.join('x'))}"${!target.productId ? ` data-open-reason="${esc(target.reason || 'Konfi-Aufbereitung noch offen.')}"` : ''}>${esc(target.label)}</option>`).join('')}</select></label>`
       : `<span class="format">${selected ? esc(selected.label) : 'Noch nicht bearbeitbar'}</span>`;
-    sections.get(sectionKey).cards.push(`<article id="design-${esc(row.id)}" data-design-card ${selected ? `data-product-id="${esc(selected.productId)}" data-design-id="${esc(selected.designId)}"` : ''} data-original-id="${esc(row.id)}" data-material="${esc(material.key)}" data-themes="${esc(JSON.stringify(rowThemes.map(theme => theme.key)))}" data-approval-key="${esc(approvalKey)}" data-approval-status="${esc(approvalStatus)}" data-search="${esc([row.id, row.group, row.subcategory, material.label, category.label, ...rowThemes.map(theme => theme.label), process].join(' ').toLowerCase())}" data-category="${esc(category.key)}" data-process="${process}">
-      <div class="card-heading"><h3>${esc(row.id)}</h3><span class="badge${row.process === 'UV' ? ' print' : ''}">${esc(material.label)} · ${process}</span></div>
-      ${preview}<div class="card-tools">${formats}${selected ? `<a class="edit" data-edit-link href="${esc(selected.edit)}">Bearbeiten</a>` : ''}</div>
+    sections.get(sectionKey).cards.push(`<article id="design-${esc(row.id)}" data-design-card ${selected ? `data-product-id="${esc(selected.productId)}" data-design-id="${esc(selected.designId)}"` : ''} data-original-id="${esc(row.id)}" data-material="${esc(selectedMaterial.key)}" data-materials="${esc(JSON.stringify(rowMaterials.map(item => item.key)))}" data-themes="${esc(JSON.stringify(rowThemes.map(theme => theme.key)))}" data-approval-key="${esc(approvalKey)}" data-approval-status="${esc(approvalStatus)}" data-search="${esc([row.id, row.group, row.subcategory, ...rowMaterials.map(item => item.label), category.label, ...rowThemes.map(theme => theme.label), process].join(' ').toLowerCase())}" data-category="${esc(category.key)}" data-process="${process}">
+      <div class="card-heading"><h3>${esc(row.id)}</h3><span data-material-badge class="badge${row.process === 'UV' ? ' print' : ''}">${esc(selectedMaterial.label)} · ${process}</span></div>
+      <div data-native-preview>${preview}</div>${openTargets.length ? '<div class="open" data-open-preview hidden><strong>Konfi-Version noch offen</strong><span data-open-reason></span></div>' : ''}<div class="card-tools">${formats}${selected ? `<a class="edit" data-edit-link href="${esc(selected.edit)}">Bearbeiten</a>` : ''}</div>
       ${selected && openReasons.length ? `<p class="note">${esc(openReasons.join(' · '))}</p>` : ''}
       ${visualNotes.length ? `<p class="note review-source-note">${esc(visualNotes.join(' · '))}</p>` : ''}
+      ${fitNotes.length ? `<details class="note review-fit-notes"><summary>Darstellung prüfen · ${fitNotes.length} Material-/Format-Hinweise</summary><ul>${fitNotes.map(note => `<li>${esc(note)}</li>`).join('')}</ul></details>` : ''}
       <div class="design-approval"><label><input type="checkbox" data-approval-check ${approvalStatus === 'approved' ? 'checked ' : ''}disabled>Für dieses Format freigeben</label><span data-approval-status-label>${esc(approvalLabel)}</span><small data-approval-progress></small><p data-approval-message role="status" aria-live="polite"></p></div>
       <form class="comment-form" data-comment-form data-design-id="${esc(row.id)}" data-revision="${comment.revision}">
         <label for="comment-${esc(row.id)}">Kommentar zu ${esc(row.id)}</label>
@@ -86,7 +100,7 @@ export function slateGalleryHtml(pack, imported, {comments = {}, csrfToken = '',
     ${materialOverviewHtml({activeMaterials: [...materials.values()]})}
     <div id="review-overview">${overviewHtml}</div>
     <div class="filters"><label class="search">Suchen<input id="search" type="search" placeholder="Designnummer, Thema oder Rohling …"></label><label>Ansicht<select id="view"><option value="designs">Vorlagen</option>${blanks.length ? '<option value="blanks">Rohlinge</option><option value="all">Vorlagen und Rohlinge</option>' : ''}</select></label><label>Material<select id="material"><option value="">Alle Materialien</option>${[...materials.values()].map(material => `<option value="${esc(material.key)}">${esc(material.label)}</option>`).join('')}</select></label><label>Thema<select id="theme"><option value="">Alle Themen</option>${[...themes.values()].sort((a, b) => compareText(a.label, b.label)).map(theme => `<option value="${esc(theme.key)}">${esc(theme.label)}</option>`).join('')}</select></label><label>Vorlagengruppe<select id="category"><option value="">Alle Gruppen</option>${[...categories.values()].map(category => `<option value="${esc(category.key)}">${esc(category.label)}</option>`).join('')}</select></label><label id="blank-form-filter" hidden>Form<select id="blank-form"><option value="">Alle Formen</option>${blankForms.map(form => `<option value="${esc(form)}">${esc(form)}</option>`).join('')}</select></label><label>Verfahren<select id="process"><option value="">Gravur und Druck</option><option>Gravur</option><option>UV-Druck</option></select></label><label>Freigabe · gewähltes Format<select id="approval-filter"><option value="">Alle</option><option value="unreviewed">Noch nicht freigegeben</option><option value="approved">Bestätigt</option><option value="changed">Erneut prüfen</option><option value="unavailable">Aufbereitung offen</option></select></label><span id="count" role="status" aria-live="polite">${rows.length} Vorlagen</span></div>
-    <main>${[...sections.values()].map(({category, material, cards}) => `<section data-category-section="${esc(category.key)}" data-material-section="${esc(material.key)}"><h2>${esc(category.label)} <span>${esc(material.label)}</span><span data-section-count>${cards.length}</span></h2><div class="card-grid">${cards.join('')}</div></section>`).join('')}${blanks.length ? `<section id="blank-gallery" hidden><h2>Rohlinge <span data-blank-count>${blanks.length}</span></h2><p class="help">Originale Grundplatten ohne Gestaltung. Wähle Material und Form für die Übersicht.</p><div class="card-grid">${blankCards}</div></section>` : ''}<p id="no-results" hidden>Keine Vorlage oder kein Rohling passt zu dieser Auswahl.</p></main>
+    <main>${[...sections.values()].map(({category, material, materials, cards}) => `<section data-category-section="${esc(category.key)}" data-material-section="${esc(material.key)}"><h2>${esc(category.label)} <span>${esc([...materials.values()].map(item => item.label).join(' / '))}</span><span data-section-count>${cards.length}</span></h2><div class="card-grid">${cards.join('')}</div></section>`).join('')}${blanks.length ? `<section id="blank-gallery" hidden><h2>Rohlinge <span data-blank-count>${blanks.length}</span></h2><p class="help">Originale Grundplatten ohne Gestaltung. Wähle Material und Form für die Übersicht.</p><div class="card-grid">${blankCards}</div></section>` : ''}<p id="no-results" hidden>Keine Vorlage oder kein Rohling passt zu dieser Auswahl.</p></main>
     <footer>Die Freigabe bestätigt deine Gestaltung. Sie veröffentlicht keine Shop-Produkte. Kommentare bleiben unabhängig davon gespeichert.</footer>
     <script id="review-approval-data" type="application/json">${JSON.stringify(approvals).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026')}</script>
     <script type="module" src="/originale/gallery.js"></script><script type="module" src="/originale/comments.js"></script></body></html>`;

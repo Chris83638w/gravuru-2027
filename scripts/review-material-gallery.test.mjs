@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {slateGalleryHtml, orderedReviewTargets, reviewThemes, blankPreviewUrl} from './lib/slate-review-gallery-page.mjs';
-import {reviewDesignMatches, reviewBlankMatches} from './lib/slate-review-gallery-ui.js';
+import {reviewDesignMatches, reviewBlankMatches, materialOption} from './lib/slate-review-gallery-ui.js';
 import {materialOverviewHtml, REVIEW_MATERIAL_OVERVIEW} from './lib/review-material-overview.mjs';
 
 const steel = {
@@ -108,4 +108,57 @@ test('material overview uses actual connected pack counts without altering the h
   assert.doesNotMatch(html, /Edelstahl-Vorlagen sind in dieser Galerie noch nicht verbunden/);
   assert.equal(REVIEW_MATERIAL_OVERVIEW.materials.find(row => row.id === 'steel').galleryStatus, 'not-connected');
   assert.doesNotMatch(html, /<(?:a|button|article)\b|\shref=/i);
+});
+
+test('one original exposes three real material targets, separate approvals and the unchanged font warning', () => {
+  const acrylic = {key: 'acrylic-schwarz-3mm', label: 'Acrylglas Schwarz · 3 mm', kind: 'acrylic'};
+  const anthracite = {key: 'acrylic-anthrazit-3mm', label: 'Acrylglas Anthrazit · 3 mm', kind: 'acrylic'};
+  const row = {...steel, targets: [steel.targets[1], ...[acrylic, anthracite].map(material => ({
+    sizeKey: material.key + '-100', mm: [100, 100], status: 'prepared', productKey: material.key,
+    nativeDesignId: 'steel-ed-42-1', reviewMaterial: material, familyId: material.key, familyLabel: material.label,
+  }))], visualReviewIssues: [{message: 'Ersatz unsicher, bitte ansehen: Schrift <A>'}]};
+  const importedVariants = {products: [...imported.products, ...row.targets.slice(1).map(target => ({key: target.productKey, productId: 'cfg_' + target.productKey, designIds: [row.id]}))]};
+  const targets = orderedReviewTargets(row, importedVariants);
+  assert.equal(new Set(targets.map(target => target.approvalKey)).size, 3);
+  assert.equal(targets.find(target => target.material.key === acrylic.key).approvalKey, JSON.stringify([acrylic.key, row.id, acrylic.key + '-100']));
+  const html = slateGalleryHtml({originals: [row]}, importedVariants);
+  assert.equal((html.match(/ data-design-card /g) || []).length, 1);
+  assert.equal((html.match(/data-comment-form/g) || []).length, 1);
+  assert.match(html, /Material \/ Format/);
+  assert.match(html, /data-material="acrylic-schwarz-3mm" data-material-label="Acrylglas Schwarz · 3 mm"/);
+  assert.match(html, /Ersatz unsicher, bitte ansehen: Schrift &lt;A&gt;/);
+  assert.equal((html.match(/review-material-item is-active/g) || []).length, 3);
+  assert.doesNotMatch(html, /data-approval-check checked/);
+});
+
+test('material switch prefers the same actual dimensions and never invents a missing target', () => {
+  const options = [
+    {dataset: {material: 'steel', mm: '100x100'}},
+    {dataset: {material: 'acrylic-schwarz-3mm', mm: '50x20'}},
+    {dataset: {material: 'acrylic-schwarz-3mm', mm: '100x100'}},
+  ];
+  assert.equal(materialOption(options, 'acrylic-schwarz-3mm', options[0]), options[2]);
+  assert.equal(materialOption(options, 'acrylic-schwarz-3mm', {dataset: {mm: '200x200'}}), options[1]);
+  assert.equal(materialOption(options, 'slate', options[0]), undefined);
+});
+
+test('an open material target remains selectable and added target font warnings remain visible', () => {
+  const material = {key: 'acrylic-schwarz-3mm', label: 'Acrylglas Schwarz · 3 mm', kind: 'acrylic'};
+  const row = {...steel, targets: [steel.targets[1], {sizeKey: 'acryl-100', mm: [100, 100], status: 'open', reason: 'Schriftdatei fehlt', reviewMaterial: material,
+    visualReviewIssues: [{message: 'Ersatz unsicher, bitte ansehen: neue Materialfassung'}]}]};
+  const html = slateGalleryHtml({originals: [row]}, imported);
+  assert.match(html, /data-open-reason="Schriftdatei fehlt"/);
+  assert.match(html, /data-material="acrylic-schwarz-3mm"/);
+  assert.match(html, /data-open-preview hidden/);
+  assert.match(html, /review-source-note">Ersatz unsicher, bitte ansehen: neue Materialfassung/);
+  assert.equal((html.match(/ data-design-card /g) || []).length, 1);
+});
+
+test('native fit warnings stay visible for the exact material and dimensions without declaring a blocker', () => {
+  const row = {...steel, targets: [{...steel.targets[1], fit: {status: 'prüfen', issues: ['Motivkontur unter 0,04 mm <prüfen>']}}]};
+  const html = slateGalleryHtml({originals: [row]}, imported);
+  assert.match(html, /Darstellung prüfen · 1 Material-\/Format-Hinweise/);
+  assert.match(html, /Edelstahl · 10 × 10 cm: Motivkontur unter 0,04 mm &lt;prüfen&gt;/);
+  assert.match(html, /data-inline-open/);
+  assert.doesNotMatch(html, /data-approval-check checked/);
 });

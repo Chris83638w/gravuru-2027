@@ -10,7 +10,7 @@ import {makeProductDocument,validateProductDocument} from '../app/workshop/produ
 import {createProductRepository} from '../app/workshop/repository.mjs';
 import {createDesignAssetStore} from '../app/workshop/design-assets.mjs';
 import {extendDesignReview} from './extend-design-review.mjs';
-import {readSlatePackage} from './extend-slate-original-review.mjs';
+import {readSlatePackage,mergeDesignReviewOriginals,mergeSlatePackages} from './extend-slate-original-review.mjs';
 
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 const write=(file,data)=>{fs.mkdirSync(path.dirname(file),{recursive:true});fs.writeFileSync(file,JSON.stringify(data,null,2)+'\n');};
@@ -72,9 +72,92 @@ test('changed package with overlapping IDs is a conflict, never a replacement of
   const f=fixture(t);await extendDesignReview(f);
   const mapping=fs.readFileSync(path.join(f.data,'local-review-import.json'));
   const manifest=read(path.join(f.addonRoot,'manifest.json'));manifest.deliveryCommit='another-delivery';write(path.join(f.addonRoot,'manifest.json'),manifest);checksum(f.addonRoot);
-  await assert.rejects(extendDesignReview({...f,baseRoot:f.galleryOut,galleryOut:path.join(f.root,'conflict')}),/overlaps original IDs/);
+  await assert.rejects(extendDesignReview({...f,baseRoot:f.galleryOut,galleryOut:path.join(f.root,'conflict')}),/overlaps product keys/);
   assert.deepEqual(fs.readFileSync(path.join(f.data,'local-review-import.json')),mapping);
   assert.equal(fs.existsSync(path.join(f.root,'conflict')),false);
+});
+
+test('additive target merge keeps one original, preserves old metadata and rejects changed reused targets',()=>{
+  const steel={key:'steel',label:'Edelstahl',kind:'steel'},acrylic={key:'acrylic-schwarz-3mm',label:'Acrylglas Schwarz · 3 mm',kind:'acrylic'};
+  const old={id:'SAME',reviewMaterial:steel,note:'keep',reviewThemes:[{key:'a',label:'A'}],targets:[{sizeKey:'steel-small',mm:[80,35],status:'prepared',productKey:'pilot',nativeDesignId:'native'}]};
+  const fresh={id:'SAME',reviewMaterial:acrylic,note:'different metadata',reviewThemes:[{key:'b',label:'B'}],reusedTargetRefs:[{...old.targets[0],reviewMaterial:steel}],targets:[{sizeKey:'acrylic-small',mm:[80,35],status:'prepared',productKey:'new',nativeDesignId:'native'}]};
+  const result=mergeDesignReviewOriginals([old],[fresh]);
+  assert.equal(result.length,1);assert.equal(result[0].note,'keep');assert.deepEqual(result[0].targets[0],old.targets[0]);
+  assert.deepEqual(result[0].targets[1].reviewMaterial,acrylic);assert.equal(result[0].reviewThemes.length,2);
+  assert.equal(old.targets.length,1);
+  const wrong=structuredClone(fresh);wrong.reusedTargetRefs[0].nativeDesignId='foreign';
+  assert.throws(()=>mergeDesignReviewOriginals([old],[wrong]),/Reused target differs/);
+  const collision={...fresh,targets:[{...old.targets[0],reviewMaterial:steel,productKey:'replacement'}]};
+  assert.throws(()=>mergeDesignReviewOriginals([old],[collision]),/conflicts with an existing/);
+});
+
+test('same original gains another material without touching existing product heads or review state',async t=>{
+  const f=fixture(t),id=f.base.manifest.originals[0].id;
+  const addon=read(path.join(f.addonRoot,'manifest.json')),product=addon.products[0],oldId=addon.originals[0].id;
+  addon.originals[0].id=id;product.designIds=[id];
+  const productFile=path.join(f.addonRoot,product.file),payload=read(productFile);
+  payload.document.config.profile.designs[0].katalog.designId=id;
+  product.documentHash=sha(JSON.stringify(payload.document));write(productFile,payload);
+  fs.renameSync(path.join(f.addonRoot,'originals',oldId),path.join(f.addonRoot,'originals',id));
+  write(path.join(f.addonRoot,'originals',id,'design.json'),{id});
+  write(path.join(f.addonRoot,'manifest.json'),addon);checksum(f.addonRoot);
+  const protectedNames=['profiles.sqlite','review-comments.sqlite','review-approvals.sqlite'];
+  const before=protectedNames.map(name=>fs.readFileSync(path.join(f.data,name)));
+  const result=await extendDesignReview(f);
+  assert.equal(result.newOriginals,0);assert.equal(result.extendedOriginals,1);assert.equal(result.newProducts,1);
+  const merged=readSlatePackage(f.galleryOut).pack;
+  assert.equal(merged.originals.length,1);assert.equal(merged.originals[0].targets.length,2);
+  assert.deepEqual(merged.originals[0].targets[0],f.base.manifest.originals[0].targets[0]);
+  assert.equal(merged.originals[0].targets[1].reviewMaterial.key,'steel');
+  const repo=createProductRepository({filename:path.join(f.data,'workshop.sqlite'),validateDocument:validateProductDocument});
+  try{assert.deepEqual(repo.get(f.edited.id),f.edited);assert.equal(repo.list().length,2);}finally{repo.close();}
+  protectedNames.forEach((name,index)=>assert.deepEqual(fs.readFileSync(path.join(f.data,name)),before[index]));
+  const repeated=await extendDesignReview({...f,baseRoot:f.galleryOut,galleryOut:path.join(f.root,'unused')});
+  assert.equal(repeated.alreadyPresent,true);
+});
+
+test('overlapping originals require identical source bytes before creating a merged gallery',t=>{
+  const f=fixture(t),manifest=read(path.join(f.addonRoot,'manifest.json'));
+  manifest.originals[0].id=f.base.manifest.originals[0].id;manifest.products[0].designIds=[manifest.originals[0].id];
+  write(path.join(f.addonRoot,'manifest.json'),manifest);
+  write(path.join(f.addonRoot,'originals',manifest.originals[0].id,'design.json'),{id:manifest.originals[0].id,changed:true});checksum(f.addonRoot);
+  assert.throws(()=>mergeSlatePackages({...f,out:f.galleryOut,materialExtension:true}),/Overlapping original source differs/);
+  assert.equal(fs.existsSync(f.galleryOut),false);
+});
+
+test('different font paths may share only byte-identical resources and retain the base font mapping',t=>{
+  const f=fixture(t),manifest=read(path.join(f.addonRoot,'manifest.json'));
+  const [name,oldPath]=Object.entries(manifest.fontFiles)[0],newPath='fonts/content-addressed.json';
+  const bytes=fs.readFileSync(path.join(f.addonRoot,oldPath));
+  fs.writeFileSync(path.join(f.addonRoot,newPath),bytes);manifest.fontFiles[name]=newPath;
+  write(path.join(f.addonRoot,'manifest.json'),manifest);checksum(f.addonRoot);
+  const result=mergeSlatePackages({...f,out:f.galleryOut,materialExtension:true});
+  assert.equal(readSlatePackage(result.out).pack.fontFiles[name],f.base.manifest.fontFiles[name]);
+  fs.writeFileSync(path.join(f.addonRoot,newPath),Buffer.concat([bytes,Buffer.from(' ')]));checksum(f.addonRoot);
+  assert.throws(()=>mergeSlatePackages({...f,out:path.join(f.root,'font-conflict'),materialExtension:true}),/Font file mapping conflict/);
+});
+
+test('more than 100 new product groups import in journalled batches and repeat without new revisions',async t=>{
+  const f=fixture(t),manifest=read(path.join(f.addonRoot,'manifest.json'));
+  const original=manifest.originals[0],product=manifest.products[0],payload=read(path.join(f.addonRoot,product.file));
+  manifest.originals=[];manifest.products=[];
+  for(let index=0;index<101;index++){
+    const id='BATCH-'+index,native='katalog-'+id,copy=structuredClone(payload),key='batch:'+index;
+    copy.document.config.profile.designs[0].id=native;
+    copy.document.config.profile.designs[0].katalog.designId=id;
+    copy.document.config.profile.defaultDesignId=native;
+    copy.document.elementRights={[native]:copy.document.elementRights[payload.document.config.profile.designs[0].id]};
+    const next={...product,key,productId:'cfg_package-'+index,designIds:[id],file:'products/batch-'+index+'.json',documentHash:sha(JSON.stringify(copy.document))};
+    manifest.products.push(next);manifest.originals.push({...original,id,targets:[{...original.targets[0],nativeDesignId:native,productKey:key}]});
+    write(path.join(f.addonRoot,next.file),copy);write(path.join(f.addonRoot,'originals',id,'design.json'),{id});
+  }
+  write(path.join(f.addonRoot,'manifest.json'),manifest);checksum(f.addonRoot);
+  const result=await extendDesignReview(f);assert.equal(result.newProducts,101);assert.equal(result.newOriginals,101);
+  const mapping=fs.readFileSync(path.join(f.data,'local-review-import.json'));
+  const repeated=await extendDesignReview({...f,baseRoot:f.galleryOut,galleryOut:path.join(f.root,'unused')});
+  assert.equal(repeated.alreadyPresent,true);assert.deepEqual(fs.readFileSync(path.join(f.data,'local-review-import.json')),mapping);
+  const repo=createProductRepository({filename:path.join(f.data,'workshop.sqlite'),validateDocument:validateProductDocument});
+  try{assert.equal(repo.list().length,102);assert.deepEqual(repo.get(f.edited.id),f.edited);}finally{repo.close();}
 });
 
 test('wrong material, dimensions or missing native source mapping fail before DB mutation',async t=>{

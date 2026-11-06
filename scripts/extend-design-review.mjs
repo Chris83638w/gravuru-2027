@@ -7,7 +7,7 @@ import {fileURLToPath} from 'node:url';
 import assert from 'node:assert/strict';
 import {readSlatePackage,mergeSlatePackages,privateReviewPath,reviewPackageFile} from './extend-slate-original-review.mjs';
 import {validateSlateReviewMapping} from '../ops/plesk/slate-review-runtime.mjs';
-import {validatedDesignReviewTargets,designReviewMaterial} from './lib/design-review-targets.mjs';
+import {validatedDesignReviewTargets,designReviewMaterialMatches} from './lib/design-review-targets.mjs';
 import {createDesignAssetStore} from '../app/workshop/design-assets.mjs';
 import {createProductRepository} from '../app/workshop/repository.mjs';
 import {validateProductDocument} from '../app/workshop/product-model.mjs';
@@ -41,7 +41,6 @@ export async function extendDesignReview({baseRoot,addonRoot,data,galleryOut}){
     try{for(const product of prior.products)repository.get(product.productId);}finally{repository.close();}
     return {localOnly:true,published:false,shopifyWrites:0,alreadyPresent:true,newProducts:0,newOriginals:0,gallery:base.root,counts:base.pack.counts};
   }
-  if(addon.pack.products.length>100)fail('Extension exceeds one atomic import batch (100 products)');
   const targets=validatedDesignReviewTargets(addon.pack,{localOnly:true,published:false,shopifyWrites:0,products:addon.pack.products});
   const originals=new Map(addon.pack.originals.map(row=>[row.id,row]));
   const documents=addon.pack.products.map(product=>{
@@ -52,17 +51,18 @@ export async function extendDesignReview({baseRoot,addonRoot,data,galleryOut}){
     if(expected.length!==product.designIds.length)fail('Every original requires one explicit native target');
     assert.deepEqual(document.config.profile.designs.map(d=>d.id).sort(),expected.map(t=>t.designId).sort());
     for(const target of expected){
-      const original=originals.get(target.originalId),material=designReviewMaterial(original),design=document.config.profile.designs.find(d=>d.id===target.designId);
-      if(document.config.reviewOnly!==true||document.config.profile.material?.kind!==material.kind||design.katalog?.designId!==original.id||design.katalog?.target?.released!==false)fail('Invalid material, source identity or release state');
+      const original=originals.get(target.originalId),design=document.config.profile.designs.find(d=>d.id===target.designId);
+      if(document.config.reviewOnly!==true||!designReviewMaterialMatches(document.config.profile.material,target.material)||design.katalog?.designId!==original.id||design.katalog?.target?.released!==false||target.familyId&&design.katalog?.target?.familyId!==target.familyId)fail('Invalid material, source identity, family or release state');
       const geometry=document.config.profile.geometry;
       if(geometry.width!==target.mm[0]||geometry.height!==target.mm[1])fail('Target dimensions differ from the native product');
     }
-    validateProductDocument(document);
+    assert.deepEqual(validateProductDocument(document),document,'Prepared document must already be in its canonical native form');
     return {product,document};
   });
   const lockFile=data+'.design-extension.lock';let lock,repo,assets,temp;
   try{
     lock=fs.openSync(lockFile,'wx',0o600);fs.writeSync(lock,'Offline private gallery extension\n');
+    if(!fs.readFileSync(mappingFile).equals(mappingBytes))fail('Review mapping changed concurrently; inspect before retrying');
     // Checks all ID/path/font/asset collisions before any database writes.
     const merged=mergeSlatePackages({baseRoot,addonRoot,out:galleryOut,materialExtension:true});
     assets=createDesignAssetStore({filename:reviewPackageFile(data,'design-assets.sqlite')});
@@ -83,7 +83,11 @@ export async function extendDesignReview({baseRoot,addonRoot,data,galleryOut}){
       }
       return {key,fingerprint,document};
     });
-    const saved=entries.length?repo.importBatch(entries):[];
+    // Larger deliveries consist only of new product groups. Each native batch
+    // is atomic; its journal allows a checked retry after interruption. Publish
+    // the combined mapping only after every batch and readback succeeded.
+    const saved=[];
+    for(let offset=0;offset<entries.length;offset+=100)saved.push(...repo.importBatch(entries.slice(offset,offset+100)));
     const added=saved.map((item,index)=>{
       const readback=repo.get(item.id);assert.deepEqual(readback.document.config,documents[index].document.config);assets.validateDocument(readback.document);
       return {...documents[index].product,productId:item.id,revision:readback.revision,created:item.created};
@@ -94,7 +98,9 @@ export async function extendDesignReview({baseRoot,addonRoot,data,galleryOut}){
     const fd=fs.openSync(temp,'wx',0o600);try{fs.writeFileSync(fd,JSON.stringify(result,null,2)+'\n');fs.fsyncSync(fd);}finally{fs.closeSync(fd);}
     if(!fs.readFileSync(mappingFile).equals(mappingBytes))fail('Review mapping changed concurrently; inspect before retrying');
     fs.renameSync(temp,mappingFile);temp=null;
-    return {localOnly:true,published:false,shopifyWrites:0,alreadyPresent:false,oldProducts:prior.products.length,newProducts:added.length,newOriginals:addon.pack.originals.length,gallery:merged.out,counts:merged.counts};
+    const priorIds=new Set(base.pack.originals.map(row=>row.id));
+    return {localOnly:true,published:false,shopifyWrites:0,alreadyPresent:false,oldProducts:prior.products.length,newProducts:added.length,newOriginals:addon.pack.originals.filter(row=>!priorIds.has(row.id)).length,
+      extendedOriginals:addon.pack.originals.filter(row=>priorIds.has(row.id)).length,gallery:merged.out,counts:merged.counts};
   }finally{
     repo?.close();assets?.close();
     if(temp&&fs.existsSync(temp))fs.unlinkSync(temp);

@@ -1,0 +1,148 @@
+{
+  "schema": "gravuru-isolated-catalogue-import-proof/v1",
+  "localOnly": true,
+  "published": false,
+  "shopifyWrites": 0,
+  "passed": true,
+  "before": {
+    "records": 35,
+    "mappedProducts": 35
+  },
+  "after": {
+    "originals": 462,
+    "products": 348,
+    "targets": 2449,
+    "materials": {
+      "slate": 377,
+      "steel": 788,
+      "acrylic-schwarz-3mm": 642,
+      "acrylic-anthrazit-3mm": 642
+    }
+  },
+  "preserved": {
+    "heads": 35,
+    "histories": 35,
+    "oldMapping": true,
+    "protectedFiles": true
+  },
+  "noopDeliveries": 4,
+  "stages": [
+    {
+      "package": "steel-review-pilot-package-v1",
+      "newProducts": 73,
+      "newOriginals": 28,
+      "extendedOriginals": 0,
+      "counts": {
+        "originals": 353,
+        "engraving": 320,
+        "uv": 33,
+        "editableOriginals": 261,
+        "fullyPreparedOriginals": 260,
+        "partiallyPreparedOriginals": 1,
+        "unpreparedOriginals": 92,
+        "preparedTargets": 523,
+        "reviewProducts": 108
+      }
+    },
+    {
+      "package": "design-batch-andenken-test-v1/part-001",
+      "newProducts": 100,
+      "newOriginals": 59,
+      "extendedOriginals": 0,
+      "counts": {
+        "originals": 412,
+        "engraving": 379,
+        "uv": 33,
+        "editableOriginals": 320,
+        "fullyPreparedOriginals": 319,
+        "partiallyPreparedOriginals": 1,
+        "unpreparedOriginals": 92,
+        "preparedTargets": 1315,
+        "reviewProducts": 208
+      }
+    },
+    {
+      "package": "design-batch-andenken-test-v1/part-002",
+      "newProducts": 100,
+      "newOriginals": 42,
+      "extendedOriginals": 8,
+      "counts": {
+        "originals": 454,
+        "engraving": 421,
+        "uv": 33,
+        "editableOriginals": 362,
+        "fullyPreparedOriginals": 361,
+        "partiallyPreparedOriginals": 1,
+        "unpreparedOriginals": 92,
+        "preparedTargets": 2129,
+        "reviewProducts": 308
+      }
+    },
+    {
+      "package": "design-batch-andenken-test-v1/part-003",
+      "newProducts": 40,
+      "newOriginals": 8,
+      "extendedOriginals": 8,
+      "counts": {
+        "originals": 462,
+        "engraving": 429,
+        "uv": 33,
+        "editableOriginals": 370,
+        "fullyPreparedOriginals": 369,
+        "partiallyPreparedOriginals": 1,
+        "unpreparedOriginals": 92,
+        "preparedTargets": 2449,
+        "reviewProducts": 348
+      }
+    }
+  ],
+  "nativeSamples": {
+    "passed": true,
+    "localOnly": true,
+    "realApprovalsChanged": false,
+    "samples": [
+      {
+        "material": "steel",
+        "originalId": "TRE-V2A-5x2-D401",
+        "sizeKey": "GR-ES-RE-50X20-T15",
+        "mm": [
+          50,
+          20
+        ],
+        "revision": 1,
+        "svgBytes": 1942429,
+        "svgSha256": "cebd9e1dc751b8012be53fbf17a6b156984e858f3f067fa90473ae38de4662b9",
+        "fingerprint": "d1a6acbfa22740792a43d11400dfb4fdfc92cd927a991dfd435fc0ab30f99f6d",
+        "noOpPreserved": true
+      },
+      {
+        "material": "acrylic-schwarz-3mm",
+        "originalId": "TRE-V2A-5x2-D401",
+        "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+        "mm": [
+          50,
+          20
+        ],
+        "revision": 1,
+        "svgBytes": 22917,
+        "svgSha256": "c2fc43baf81d55be5787db238f2561947919c8c3715d4fac6044845f828c4fb0",
+        "fingerprint": "a3b393612a6ea57d95d17731fd214824e8bd2f8ab53b9345a41750f6e018b1f9",
+        "noOpPreserved": true
+      },
+      {
+        "material": "acrylic-anthrazit-3mm",
+        "originalId": "TRE-V2A-5x2-D401",
+        "sizeKey": "TS-Acryl-RE-50X20-T30-AN",
+        "mm": [
+          50,
+          20
+        ],
+        "revision": 1,
+        "svgBytes": 22919,
+        "svgSha256": "3fee8ccc958c6143ff4a5099b3016cdd1d9a17ed16140c72031037e5c72e9501",
+        "fingerprint": "17ad946867f9571c214f5c163c4a5f481f04aa91cdaf5c039a4f7dc90877de39",
+        "noOpPreserved": true
+      }
+    ]
+  }
+}

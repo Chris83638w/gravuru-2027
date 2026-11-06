@@ -1,11 +1,10 @@
 // Move the original controls between layout hosts; never clone their state or listeners.
 export function placePreviewToolbar({toolbar,workbench,heading,preview,full,mobile}){
   workbench.hidden=true;
-  const home=full.open?full:mobile?heading:preview;
+  const home=full.open?full:heading;
   if(toolbar.parentNode!==home){
     if(full.open)full.querySelector('.ux-preview-back').after(toolbar);
-    else if(mobile)heading.append(toolbar);
-    else preview.prepend(toolbar);
+    else heading.append(toolbar);
   }
 }
 

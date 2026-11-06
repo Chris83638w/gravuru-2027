@@ -10,7 +10,10 @@ export async function installLayout({el,r,config}){
  const css=await fetch('/configurator/variant-m/layout.css');if(!css.ok)throw Error('Konfigurator-Layout fehlt.');
  const style=document.createElement('style');style.textContent=await css.text();r.append(style);r.host.dataset.uxLayout='compact';
  const preview=$('.ux-preview'),stage=$('.stage'),full=$('.c-large-preview'),tools=$('.ux-preview-tools'),enlarge=$('.ux-enlarge');
- const close=full.querySelector('.ux-preview-back');close.title='Vollbild verlassen';close.textContent='Vollbild verlassen';close.setAttribute('aria-label','Vollbild verlassen');
+ const close=full.querySelector('.ux-preview-back');close.title='Zurück zur Konfiguration';close.textContent='Zurück zur Konfiguration';close.setAttribute('aria-label','Zurück zur Konfiguration');
+ const moveHint=document.createElement('p');moveHint.className='ux-fullscreen-hint';moveHint.textContent='Wähle einen Text oder ein Element aus und ziehe es an die gewünschte Stelle.';close.before(moveHint);
+ // Retain the legacy filter hook, which its gallery synchronisation still reads.
+ const designSearch=$('[data-c-search]');if(designSearch){designSearch.value='';designSearch.hidden=true;}
  const toolbar=document.createElement('div');toolbar.className='ux-canvas-toolbar';toolbar.setAttribute('role','toolbar');toolbar.setAttribute('aria-label','Vorschauwerkzeuge');
  if(enlarge){enlarge.setAttribute('aria-label','Vollbild öffnen');toolbar.append(enlarge);}
  if(tools)toolbar.append(tools);preview.prepend(toolbar);
@@ -27,7 +30,7 @@ export async function installLayout({el,r,config}){
  const headingSync=el.sync;el.sync=function(...args){const result=headingSync.apply(this,args);updateHeading();return result;};updateHeading();
  heading.querySelector('[data-ux=back]').after(name);heading.append($('.ux-session-note'));
  const contents=$('[data-ux=contents]');if(contents){contents.classList.remove('ux-contents-bottom');toolbar.append(contents);}
- for(const [node,label,symbol] of [[$('[data-ux=back]'),'Zum Produkt','back'],[$('[data-ux=account]'),'Entwurf speichern','save'],[$('.ux-canvas-help'),'Hilfe','help']])if(node){node.setAttribute('aria-label',label);node.title=label;node.innerHTML=uiIcon(symbol)+'<span class="ux-tool-label">'+label+'</span>';}
+ for(const [node,label,symbol] of [[$('[data-ux=back]'),config?.workbench?.gallery?'Zur Galerie':'Zum Produkt','back'],[$('[data-ux=account]'),config?.workbench?.gallery?'Vorlage speichern':'Entwurf speichern','save'],[$('.ux-canvas-help'),'Hilfe','help']])if(node){node.setAttribute('aria-label',label);node.title=label;node.innerHTML=uiIcon(symbol)+'<span class="ux-tool-label">'+label+'</span>';}
  const note=$('.ux-session-note'),restored=document.createElement('details'),summary=document.createElement('summary'),actions=document.createElement('div');
  restored.className='ux-restored';summary.setAttribute('aria-label','Stand wiederhergestellt – Optionen');summary.title='Dein letzter Stand wurde wiederhergestellt';summary.innerHTML='<span aria-hidden="true">✓</span><span class="ux-restored-label">Stand wiederhergestellt</span>';
  actions.className='ux-restored-actions';actions.append(...note.children);restored.append(summary,actions);note.append(restored);

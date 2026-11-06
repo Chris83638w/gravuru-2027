@@ -13,7 +13,7 @@ class Node{
  addEventListener(k,fn){this.events[k]=fn;}
  querySelectorAll(selector){return this.children.filter(n=>selector==='button[data-ux]'&&n.tagName==='button'&&n.dataset.ux);}
  querySelector(selector){return this.children.find(n=>n.tagName===selector)||null;}
- set innerHTML(_){for(const tag of ['h2','p','button'])this.append(new Node(tag));}
+ set innerHTML(value){this.markup=value;for(const tag of ['h2','p','button'])this.append(new Node(tag));}
  showModal(){this.open=true;}
  close(){this.open=false;}
 }
@@ -26,7 +26,7 @@ test('info controls sit beside headings and motif terms without replacing naviga
  const targets=new Map([['#ux-panel-text h2',text],['#ux-panel-upload h2',photo],['#ux-panel-options h2',options],['.completion-motif-nav',nav],['.ux-motif-browser-dialog h2',browser]]),r={querySelector:s=>targets.get(s),append:n=>{r.dialog=n;}};
  const config={profile:{geometry:{width:120,height:80},material:{kind:'steel'}},extraMotifCents:169};
  installDecisionHelp({el:{uxProfileGeometry:()=>({width:150,height:100})},r,config});
- assert.equal(text.children.length,1);assert.equal(text.children[0].textContent,'ⓘ');assert.equal(text.children[0].attrs['aria-label'],'Information zu Schrift');
+ assert.equal(text.children.length,1);assert.match(text.children[0].markup,/<svg[^>]+aria-hidden="true">/);assert.match(text.children[0].markup,/<circle/);assert.equal(text.children[0].attrs['aria-label'],'Information zu Schrift');
  assert.equal(photo.children[0].dataset.uxInfo,'photo');assert.equal(browser.children[0].dataset.uxInfo,'motif');
  assert.equal(nav.children.length,2);assert.equal(nav.children[0].children[0],best);assert.equal(nav.children[1].children[0],all);
  assert.equal(all.children.length,0,'the existing button contains no help button');all.events.click();assert.equal(navigated,true);

@@ -1,0 +1,185 @@
+{
+  "activation": {
+    "stage": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-konfi-hundetest-r7-20261105",
+    "old": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-konfi-hundetest-r6-20261105",
+    "entry": "2ebfb7570f28eb871e3887b588c2239ec83f75cd7da0656dbc8e819b367e56b0",
+    "packageSha256": "0a1b6c838230e306e491ada85fc23fffae742a85f9262b0b55240eea479ce9af",
+    "sourceHashes": {
+      "app/configurator/variant-m/category-picker.mjs": "1bc76791ac65a91d850d9cad873be861e05f83aab952edbcf4e9f9718d7c9c32",
+      "app/configurator/variant-m/customer-orientation.test.mjs": "883a797ce79b10996f5eccf77b640171489e81a1b4c65430aea114a323da0f1d",
+      "app/configurator/variant-m/customer-rights.mjs": "2742434efcc4976ce49fbe64ff319a257cb0d58ea9bdb28a6c92d43059d30dcd",
+      "app/configurator/variant-m/direct-editing.mjs": "e59c06a6cc1504967feb5ced43041ca3b3379b2917bc633350ef6185f4450cfd",
+      "app/configurator/variant-m/modern-navigation.css": "1dcd2349593263a5a277308c99557ea18de6fd219a452e10428bb04e3933f5e6",
+      "app/configurator/variant-m/photo-position-ui.test.mjs": "aede25859721eea8a0ac0816cec9edcff3b2debc4b679146b180d9fd640d7d4d",
+      "app/configurator/variant-m/photo-position.mjs": "2f32e3f33181bb24b9d425fba89c7b9aeedc23cd52f9b4bb019c5a3d4ae65bfb",
+      "app/configurator/variant-m/photo-upload-geometry.mjs": "a1dfde95166e43c067e4f360a678017e58eb415bef51f4330f3a3a504bf631dd",
+      "app/configurator/variant-m/photo-upload-geometry.test.mjs": "bf9b4f4394aa010a80f4bb8157be2f50738debabcb9ae5e9fcb0fb9422f73879",
+      "app/configurator/variant-m/refinements.mjs": "3bc89b35ab492fc77cf0ec4b9557596484e03882d5c6917c485bde39f49e2854",
+      "app/configurator/variant-m/text-fields.mjs": "596e0bfb11e3156a9e52de40a7668df1bde9663b831aecd1e421a3ed059bbd38",
+      "app/configurator/variant-m/ui-icons.mjs": "e9fd0f2758b7eb3f3890fa2f9c4d6ae58feb450166bb0c954faff3899b571090",
+      "app/configurator/variant-m/ux.mjs": "7096c426aa1e528da5c13ba927abe3edf6a36802e3f59ed9e0318f085378ddbe",
+      "app/configurator/variant-m/workflow.mjs": "a40a152cf94656a212c5d6491e73ce73e697a5e1fdfff7cde94f51955f26a9c3",
+      "app/configurator/variant-m/category-picker.test.mjs": "f842c650d1d706f5f086bfefdbc55d8b80c0433052aa2dbc214b5aa8290cd037"
+    },
+    "preserved": [],
+    "bundle": "/_bundle/editor-958a103c84550164.mjs",
+    "tests": [
+      "tests 253",
+      "pass 253",
+      "fail 0",
+      "skipped 0"
+    ],
+    "publicHashes": {
+      "22x14.html": "a538334cfb0aa9e3f371c5477171bb369250423fa5e9e3a2b2b858e332a9b03f",
+      "30x20.html": "851ed4705fc394709ec569a313bc68325b077a99650055342560a64be36ffb09",
+      "22x14.json": "8222984b2ff7877719c50aa4fcc67f613eb008b11a9543d6eddfafae2158b2c5",
+      "30x20.json": "637d19fcc6f02859a08d4c3853a51b13c1cfd1003aedff69a81a2de5682ae054"
+    },
+    "activated": true,
+    "at": "2026-11-05T22:20:42.819Z",
+    "startupSha256": "021adfbf036bac1905f5804276e7723988ac1d01137988fae0ba39afe805bee3",
+    "unchangedProductModels": {
+      "22x14.json": "8222984b2ff7877719c50aa4fcc67f613eb008b11a9543d6eddfafae2158b2c5",
+      "30x20.json": "637d19fcc6f02859a08d4c3853a51b13c1cfd1003aedff69a81a2de5682ae054"
+    },
+    "publicFiles": [
+      {
+        "name": "22x14.html",
+        "sha256": "5521bf1f75212a3980776a1262e31cc690f684fa375c8a4d9ac070c5f90be291"
+      },
+      {
+        "name": "30x20.html",
+        "sha256": "16e7fc246a4edf03e6f1fdaa862cfd1cb40ec2a4d5a53d953cf261e41f3b489e"
+      }
+    ],
+    "cart": false
+  },
+  "public": {
+    "at": "2026-11-05T22:20:48.784Z",
+    "pages": [
+      {
+        "size": "22x14",
+        "status": 200,
+        "bundle": "/_acryl-bundle/editor-958a103c84550164.mjs"
+      },
+      {
+        "size": "30x20",
+        "status": 200,
+        "bundle": "/_acryl-bundle/editor-958a103c84550164.mjs"
+      }
+    ],
+    "models": [
+      {
+        "size": "22x14",
+        "status": 200,
+        "sha256": "8222984b2ff7877719c50aa4fcc67f613eb008b11a9543d6eddfafae2158b2c5",
+        "unchanged": true,
+        "designs": 43,
+        "prices": [
+          1999,
+          2499
+        ],
+        "extraMotif": 169
+      },
+      {
+        "size": "30x20",
+        "status": 200,
+        "sha256": "637d19fcc6f02859a08d4c3853a51b13c1cfd1003aedff69a81a2de5682ae054",
+        "unchanged": true,
+        "designs": 43,
+        "prices": [
+          1999,
+          2499
+        ],
+        "extraMotif": 169
+      }
+    ],
+    "bundles": [
+      {
+        "url": "/_acryl-bundle/editor-958a103c84550164.mjs",
+        "status": 200,
+        "bytes": 1421963,
+        "sha256": "c9c31ce8fff27b65fc85939ae890751a4edb0bc6221615a57aa2cde64925b77f"
+      },
+      {
+        "url": "/_acryl-bundle/editor-2e3da3b988eb0da4.mjs",
+        "status": 200,
+        "bytes": 38045,
+        "sha256": "2b380c700ec6c159b299b014fc8918ebf41189bcbc9f7af14884825af7da65e1"
+      },
+      {
+        "url": "/_acryl-bundle/editor-c419119a6ef437c6.mjs",
+        "status": 200,
+        "bytes": 7963,
+        "sha256": "9c37d9810dace1ed32292a800195fe90439d859d28ac74e21abc412ca7044edf"
+      },
+      {
+        "url": "/_acryl-bundle/editor-69eb9880b804359a.mjs",
+        "status": 200,
+        "bytes": 3378,
+        "sha256": "ae30b048f0955960ec763e83c62eb1ae455c6514885f813eadbed49a4d5b4672"
+      },
+      {
+        "url": "/_acryl-bundle/editor-e1e24f0ee6b66daf.mjs",
+        "status": 200,
+        "bytes": 10974,
+        "sha256": "24a2611031b0e6a37efddec5a3ec332d92802345a323c49521b350b37dbb9c67"
+      }
+    ]
+  },
+  "browser": {
+    "at": "2026-11-05T22:22:52.275Z",
+    "local": {
+      "desktop": [
+        1440,
+        709
+      ],
+      "mobile": [
+        [
+          390,
+          844
+        ],
+        [
+          375,
+          740
+        ]
+      ],
+      "textAutoOpen": true,
+      "categoryQuickChoices": 4,
+      "categoryInstantSelection": true,
+      "searchOverridesCategory": true,
+      "newPhoto": {
+        "x": 110,
+        "y": 70,
+        "width": 60.66666666666667,
+        "height": 91,
+        "source": [
+          400,
+          600
+        ],
+        "complete": true
+      },
+      "desktopCornerResize": true,
+      "touchCornerResize": true,
+      "photoSlider": true,
+      "photoDeletionUndo": true,
+      "compactPhotoToolbarWidth": 133.5078125,
+      "compactMotifToolbarWidth": 182.828125
+    },
+    "live": {
+      "bundle": "/_acryl-bundle/editor-958a103c84550164.mjs",
+      "desktop": true,
+      "mobile": [
+        390,
+        844
+      ],
+      "textAutoOpen": true,
+      "categories": true,
+      "unchangedGeometry": true,
+      "objectCount": 7,
+      "photos": 4,
+      "physicalPhoneTest": false
+    },
+    "cart": false
+  }
+}

@@ -318,3 +318,13 @@ test('template previews are content-addressed and reused without accepting stale
  assert.throws(()=>f.gallery.preview(f.context,second.target),{code:'shop_gallery_changed'});
  assert.equal(f.gallery.previewFile('0'.repeat(64)),null);
 });
+
+
+test('all door-sign pages stay inside their line, excluding memorials and doorbells',async()=>{
+ const f=fixture();f.models.get('cfg_1').universal.profile.designs=Array.from({length:85},(_,i)=>({id:'door-'+i,objects:[]}));
+ for(const [n,line] of [[2,'linie-gedenktafeln'],[3,'linie-funkklingeln']]){f.add(n);f.models.get('cfg_'+n).galleryCategoryIds=[line];}
+ f.add(4,{designs:[{id:'door-other-format',objects:[]}]});
+ f.models.get('cfg_4').universal.profile.geometry.width=180;
+ const cards=[];let page=0;do{const result=await f.gallery.list(f.context,{page,theme:'all'});assert.equal(result.total,86);cards.push(...result.items);page=result.nextPage;}while(page!==null);
+ assert.equal(cards.length,86);assert.equal(new Set(cards.map(c=>c.designId)).size,86);assert.deepEqual([...new Set(cards.map(c=>c.productId))].sort(),['cfg_1','cfg_4']);
+});

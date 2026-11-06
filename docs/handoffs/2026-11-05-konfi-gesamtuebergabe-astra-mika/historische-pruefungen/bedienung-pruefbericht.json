@@ -1,0 +1,147 @@
+{
+  "date": "2026-11-04",
+  "scope": "Live-Konfigurator als Kunde, Desktop und Browser-Viewports 375x548 / 390x664; keine Code- oder Live-Änderung",
+  "product": "https://gravuru-design.myshopify.com/products/tuerschild-abger-ecken-v2a-personalisiert-pfoten-18x12",
+  "passed": [
+    "Alle 5 Befestigungen schalten und liefern 29,99 / 32,98 / 33,98 / 32,48 / 32,68 EUR.",
+    "Zwei Bohrungen an (8,60) und (172,60), r=2 auf 180x120.",
+    "Textfeld und Werkzeugleiste wechseln gemeinsam; direkte Auswahl auf dem Schild funktioniert.",
+    "Mehrzeilige Texte, Umlaute und Schriftwechsel möglich; Homage-Einschränkung siehe Befunde.",
+    "Minus/Plus 24 -> 23 -> 24 mm; Pfeilgriff bei Sammy 11 -> 14 mm.",
+    "Neuen Text hinzufügen, löschen, rückgängig und wiederholen erfolgreich.",
+    "Haus zusätzlich zum Vorlagenmotiv: 5 -> 6 Objekte, 29,99 -> 31,68 EUR.",
+    "Motiv um 15 Grad drehen, vergrößern, verschieben und entfernen erfolgreich.",
+    "Text direkt verschoben; Undo stellt die Position wieder her.",
+    "Designwechsel übernimmt eigenen Namen Testprüfung in Nachname; Rückkehr stellt vorige Gestaltung wieder her.",
+    "Hilfe beantwortet natürliche Frage zur Schriftgröße und erklärt korrekt: keine Fotos bei Edelstahl.",
+    "375x548: Vorschau bleibt beim Scrollen top54 / height274; 390x664 top54 / height332. Footer sichtbar.",
+    "Mausrad über Text verändert nur Ansichtszoom 1 -> 1.82212 -> 1; Objekttransform unverändert."
+  ],
+  "findings": [
+    {
+      "priority": "P2",
+      "title": "Galerie nach Designwechsel wartet dauerhaft bis manuell erneut versucht wird",
+      "repro": "Pfote18x12 -> Designs -> Leuchtturm -> Dieses Design wählen. Schild geladen, Galerie zeigt Bitte warten bis Design vollständig geladen ist. Dreimal reproduziert. Erneut versuchen lädt 209 Designs. Rückkehr zur vorherigen Gestaltung funktioniert.",
+      "evidence": "galerie-nach-designwechsel.jpg"
+    },
+    {
+      "priority": "P2",
+      "title": "Vorschau auf kleinem Handy bei Textauswahl sehr klein",
+      "detail": "375x548: Textleiste zwei Zeilen; Stage143px hoch, tatsächliche Platte127.5x85px. Bei Wechsel zu Motive bleibt Textleiste stehen. 390x664 Platte214.5x143px.",
+      "evidence": "handy-375-textauswahl.jpg"
+    },
+    {
+      "priority": "P2",
+      "title": "Vorlagenschrift Homage kann ß nicht darstellen",
+      "detail": "Name Testprüfung\nÄÖÜ ß & 123 zeigt Kästchen für ß. Warnung vorhanden, aber im Status unten statt direkt am Feld. Schriftpicker markiert eingeschränkte Schriften deaktiviert; Wechsel auf Montserrat hebt Zeichenwarnung auf.",
+      "evidence": "text-fehlendes-eszett.jpg"
+    },
+    {
+      "priority": "Anforderung offen",
+      "title": "Heimathafen und von sind weiterhin separate Textfelder",
+      "evidence": "designwechsel-getrennte-textfelder.jpg"
+    },
+    {
+      "priority": "Inhalt prüfen",
+      "title": "Bestseller auf Türschild wirkt nach Kernmotiven mit alphabetischen Motiven aufgefüllt",
+      "detail": "Haus, Strich Haus, Herzlinie, Florale Zierlinie, Zarte Blumenranke, Pusteblume, Kleeblatt, Zweig; danach 6 Anker und 4 Babymotive. Themenabhängige Bestseller für Mensch/Tier nicht in diesem Produkttest verifiziert."
+    }
+  ],
+  "observations": [
+    "Format & Größe zeigt beim konkreten18x12Artikel nur feste Form/Größe und Befestigung; kein Größenwechsel testbar.",
+    "Keine Foto- oder Logo-Register beim getesteten Edelstahlartikel.",
+    "Speichern wurde bis zur Pflichtfeld-/Überlagerungsvalidierung geprüft; kein neuer gespeicherter Serverentwurf angelegt.",
+    "Der vorher nachgewiesene Browser-Zurück-Fehler mit Im-Warenkorb-Overlay bleibt separat offen, in dieser Bedienprüfung kein neuer Warenkorbeintrag."
+  ],
+  "notTested": [
+    "Echte iOS/Android-Zwei-Finger-Geste und eingeblendete Bildschirmtastatur",
+    "Foto-/Logo-Upload, Übernahme von Fotos und Ausführungen weiterer Produktlinien",
+    "Gesamte209Designs und721Motive einzeln",
+    "Größenwechsel mangels angebotener Auswahl"
+  ],
+  "restored": true,
+  "original": {
+    "objects": [
+      {
+        "id": "motiv-1",
+        "transform": "translate(153.86849999999998 28.851) rotate(0)"
+      },
+      {
+        "id": "text-1",
+        "transform": "translate(89.82675 40.686) rotate(0)"
+      },
+      {
+        "id": "text-2",
+        "transform": "translate(148.08825 98.799) rotate(0)"
+      },
+      {
+        "id": "text-3",
+        "transform": "translate(86.59349999999999 53.65725) rotate(0)"
+      },
+      {
+        "id": "text-4",
+        "transform": "translate(114.51825 103.67699999999999) rotate(0)"
+      }
+    ],
+    "texts": [
+      {
+        "label": "Spruch",
+        "value": "Familie"
+      },
+      {
+        "label": "Text „Sammy“",
+        "value": "Sammy"
+      },
+      {
+        "label": "Name",
+        "value": "Berger"
+      },
+      {
+        "label": "Text „mit“",
+        "value": "mit"
+      }
+    ]
+  },
+  "final": {
+    "objects": [
+      {
+        "id": "motiv-1",
+        "transform": "translate(153.86849999999998 28.851) rotate(0)"
+      },
+      {
+        "id": "text-1",
+        "transform": "translate(89.82675 40.686) rotate(0)"
+      },
+      {
+        "id": "text-2",
+        "transform": "translate(148.08825 98.799) rotate(0)"
+      },
+      {
+        "id": "text-3",
+        "transform": "translate(86.59349999999999 53.65725) rotate(0)"
+      },
+      {
+        "id": "text-4",
+        "transform": "translate(114.51825 103.67699999999999) rotate(0)"
+      }
+    ],
+    "texts": [
+      {
+        "label": "Spruch",
+        "value": "Familie"
+      },
+      {
+        "label": "Text „Sammy“",
+        "value": "Sammy"
+      },
+      {
+        "label": "Name",
+        "value": "Berger"
+      },
+      {
+        "label": "Text „mit“",
+        "value": "mit"
+      }
+    ]
+  }
+}

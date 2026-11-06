@@ -4,6 +4,7 @@ import {alignmentContent,alignmentLabel} from './ui-icons.mjs';
 import {selectionScaleFactor} from './selection-arrows.mjs';
 import {previewResourceURL} from './preview-resource.mjs';
 import test from 'node:test';
+import {fitUploadedPhoto} from './photo-upload-geometry.mjs';
 import {fontDisplayName} from './font-display.mjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -14,7 +15,7 @@ import {scaleObject} from './image-processing.mjs';
 import {makeAcrylicConfig} from './acrylic-product.mjs';
 import {prepareConfig,validateDesign} from './contract.mjs';
 import {measureText,setTextSize} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
-import {rightForProperty} from './element-rights.mjs';
+import {rightForProperty,canDeleteTemplateElement} from './element-rights.mjs';
 import {emptyPhotoMarkup,decorateEmptyPhotoSlots,examplePhotoMarkup} from './photo-placeholder.mjs';
 import {textLimits,textLimitIssue,textLength,textLimitCount,sameSampleText,requiredTextMissing,clampText} from '../../workshop/theme-limits.mjs';
 import {applyLinkText} from './design-gallery-model.mjs';
@@ -62,7 +63,7 @@ test('large text: real input, focusout, field refresh and workflow sync all reta
   vm.runInContext(line('ux.mjs','const esc=value=>'),env);
   vm.runInContext(line('ux.mjs','const fieldLabel='),env);
   // K1: Limits und Feldhinweise aus dem echten Modul, Vorlage mit Pflichtfeld und Thema.
-  Object.assign(env,{textLimits,textLimitIssue,textLength,textLimitCount,sameSampleText,requiredTextMissing,fontDisplayName,customerFieldLabel,touchedText:new Set(),textValidationAttempted:false,textControls:{closest:()=>null},design:()=>env.profile.designs[0]});
+  Object.assign(env,{textLimits,textLimitIssue,textLength,textLimitCount,sameSampleText,requiredTextMissing,fontDisplayName,customerFieldLabel,canDeleteTemplateElement,touchedText:new Set(),textValidationAttempted:false,textControls:{closest:()=>null},design:()=>env.profile.designs[0]});
   env.profile.designs[0].themes=['namensschilder'];env.profile.designs[0].objects=[{id:'name',type:'text',text:'Anna',required:true}];
   for(const marker of ['const templateText=','const limitsFor=','const textIndex='])vm.runInContext(line('ux.mjs',marker),env);
   vm.runInContext(block('ux.mjs','  function textFieldIssue(o,{required=true}={}){','\n  }'),env);
@@ -77,7 +78,8 @@ test('large text: real input, focusout, field refresh and workflow sync all reta
   object.text='L'.repeat(33);assert.deepEqual(issues(),[{id:'name',message:'Namen: Text zu lang: höchstens 32 Zeichen.'}]);
   object.text='Lena\nMax\nTom';assert.deepEqual(issues(),[{id:'name',message:'Namen: Höchstens 2 Zeilen.'}]);
   object.text='Lena';object.uxTextOverflow='length';assert.match(issues()[0].message,/Text zu lang: Passt auch in der Mindestgröße/);delete object.uxTextOverflow;
-  object.uxHidden=true;assert.deepEqual(issues(),[{id:'name',message:'Pflichtfeld „Namen“ fehlt. Bitte einblenden und ausfüllen.'}]);delete object.uxHidden;
+  object.uxHidden=true;assert.deepEqual(issues(),[]);
+  env.config.workshopElementRights={'test-design':{name:{delete:false}}};assert.deepEqual(issues(),[{id:'name',message:'Pflichtfeld „Namen“ fehlt. Bitte einblenden und ausfüllen.'}]);delete object.uxHidden;
  Object.assign(env,{changing:false,known:new Set(['name']),rename(){},guides(){},arrangeGallery(){}});
  vm.runInContext(line('workflow.mjs','const sync=el.sync;el.sync=function'),env);
  input.value='stale';env.el.sync();assert.equal(Number(input.value),12);
@@ -147,7 +149,7 @@ test('fixed acrylic photo: actual editor apply keeps shape/geometry and remains 
  prepareConfig(config);
  const design=structuredClone(config.profile.designs[0]),object=design.objects.find(o=>o.id==='photo-main'),before=structuredClone(object),d=eventTarget(),files=new Map();
  let closed=false;d.close=()=>{closed=true;};
- const env={productionImage:()=>({canvas:env.canvas,limited:false}),d,inputColor:'original',angle:0,flip:1,el:{uxCanEdit:()=>true},objectId:object.id,selected:()=>object,files,source:{file:{name:'test.png'},url:'blob:original'},canvas:{width:1200,height:1200,toBlob:callback=>callback({})},options:()=>({shape:'circle'}),mutate:fn=>fn(),say(){},crypto:{randomUUID:()=> 'new-image'},URL:{createObjectURL:()=> 'blob:edited'},$:()=>({textContent:''})};
+ const env={persistUpload:async()=>{},productionImage:()=>({canvas:env.canvas,limited:false}),d,inputColor:'original',angle:0,flip:1,el:{uxCanEdit:()=>true},objectId:object.id,selected:()=>object,files,source:{file:{name:'test.png'},url:'blob:original'},canvas:{width:1200,height:1200,toBlob:callback=>callback({})},options:()=>({shape:'circle'}),mutate:fn=>fn(),say(){},crypto:{randomUUID:()=> 'new-image'},URL:{createObjectURL:()=> 'blob:edited'},$:()=>({textContent:''})};
  vm.runInNewContext(block('photo-editor.mjs',"  d.addEventListener('click',async e=>{","\n  });"),env);
  const button={dataset:{ux:'photo-apply'},disabled:false};
  await dispatch(d,'click',inertEvent({closest:()=>button}));
@@ -181,7 +183,7 @@ test('imported acrylic photo: actual upload handler replaces semantic slot twice
  const {uploadTarget}=await import('./ux-model.mjs');
  const slot={id:'customer-photo-main',fieldKey:'photo-main',type:'photoSlot',photoShape:'arch',w:120,h:140,acrylicFixed:true};
  const objects=[slot],files=new Map();let count=0;
- const env={config:{acrylic:{},photo:{enabled:true}},el:{state:{objects,selected:null},uxCanEdit:()=>true,normalize(){},sync(){}},uploadTarget,
+ const env={persistUpload:async()=>{},fitUploadedPhoto,config:{acrylic:{},photo:{enabled:true}},el:{state:{objects,selected:null},uxCanEdit:()=>true,normalize(){},sync(){}},uploadTarget,
  uploadAllowed:()=>true,photoAvailableForDesign:()=>true,validateUpload(){},files,mutate:fn=>fn(),say(){},showTab(){},requestAnimationFrame(){},uploadKind:'photo',replacing:null,uploadPending:false,
  URL:{createObjectURL:()=> 'blob:test',revokeObjectURL(){}},crypto:{randomUUID:()=>String(++count)},Image:class{naturalWidth=900;naturalHeight=1200;async decode(){}},all:()=>[]};
  vm.createContext(env);vm.runInContext(block('ux.mjs','  async function acceptFiles(','\n  }\n  r.addEventListener').replace('\n  r.addEventListener',''),env);

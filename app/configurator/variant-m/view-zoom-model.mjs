@@ -42,7 +42,7 @@ export function visibleViewRect(view,bounds){
 
 // Gesture arbitration is shared by mouse/touch tests and the real event adapter.
 // A second touch cancels an unfinished object drag before changing the view.
-export function createViewGesture({getView,setView,getBounds,cancelObject=()=>{},onTap=()=>{},onBlankTap=()=>{},photoActive=()=>false}){
+export function createViewGesture({getView,setView,getBounds,cancelObject=()=>{},onTap=()=>{},onBlankTap=()=>{},photoActive=()=>false,allowZoom=true}){
  const pointers=new Map();let gesture=null;
  const handled=()=>gesture?.kind==='pan'||gesture?.kind==='pinch'||gesture?.kind==='wait';
  return {
@@ -52,7 +52,7 @@ export function createViewGesture({getView,setView,getBounds,cancelObject=()=>{}
    if(point.pointerType!=='touch'&&point.button!==0)return false;
    pointers.set(point.id,{...point,start:{x:point.x,y:point.y},moved:false});
    const touches=[...pointers.values()].filter(p=>p.pointerType==='touch');
-   if(touches.length===2){cancelObject();gesture={kind:'pinch',ids:touches.map(p=>p.id),start:touches.map(p=>({x:p.x,y:p.y})),view:{...getView()}};return true;}
+   if(touches.length===2){cancelObject();gesture=allowZoom?{kind:'pinch',ids:touches.map(p=>p.id),start:touches.map(p=>({x:p.x,y:p.y})),view:{...getView()}}:{kind:'wait'};return true;}
    if(handled())return true;
    if(point.kind==='blank'&&getView().scale>1){gesture={kind:'pan',id:point.id,start:{x:point.x,y:point.y},view:{...getView()}};return true;}
    return false;

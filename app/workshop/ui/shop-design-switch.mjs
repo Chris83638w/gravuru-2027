@@ -23,12 +23,13 @@ export function switchedModel(data,result){
 export function createDesignSwitch({initial,fragment,container,activate,toDataUrl,win=window,doc=document,clientFactory=createShopEntryClient,timeoutMs=60000}){
  let current={...initial,fragment:new URLSearchParams(fragment),pending:null},busy=false;
  const history=[];
+ const checkRead=entry=>{if(current!==entry)throw Error('Diese Gestaltung ist nicht mehr aktiv.');};
  const check=entry=>{if(current!==entry||busy)throw Error('Bitte warten, bis das Design vollständig geladen ist.');};
  const show=entry=>{entry.frame.hidden=false;entry.frame.inert=false;entry.frame.style.display='';entry.frame.style.visibility='';entry.frame.style.position='';entry.frame.style.inset='';};
  const setFragment=entry=>win.history.replaceState(win.history.state,'','#'+entry.fragment);
  function api(entry){return Object.freeze({
-  load:(page,theme,options)=>{check(entry);return entry.client.loadDesignGallery(page,theme,options);},
-  preview:(target,url)=>{check(entry);return entry.client.loadDesignPreview(target,url);},
+  load:(page,theme,options)=>{checkRead(entry);return entry.client.loadDesignGallery(page,theme,options);},
+  preview:(target,url)=>{checkRead(entry);return entry.client.loadDesignPreview(target,url);},
   hasPendingTransfer:()=>!!entry.pending,
   takeTransfer:()=>{const value=entry.pending;entry.pending=null;return value;},
   canGoBack:()=>history.length>0||!!entry.previous,

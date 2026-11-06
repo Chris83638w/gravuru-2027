@@ -1,0 +1,31 @@
+{
+  "observedAt": "2026-11-05T10:12:43Z",
+  "source": "Authenticated Plesk console, Shopify CLI app deploy/version readback",
+  "tag": "gravuru-2027-slate-options-20261105-v1",
+  "status": 0,
+  "themeUnchanged": true,
+  "configurationUnchanged": true,
+  "wasmSha256": "bc52b1be4cbcfd2aa8077a19f1711f05b418405438e85e9639d887e9b79e4809",
+  "activeBefore": {
+    "versionId": "gid://shopify/Version/1191284113409",
+    "versionTag": "gravuru-2027-issue139-pricing-20261102-v1",
+    "status": "active"
+  },
+  "activeAfter": {
+    "versionId": "gid://shopify/Version/1191284113409",
+    "versionTag": "gravuru-2027-issue139-pricing-20261102-v1",
+    "status": "active"
+  },
+  "candidate": {
+    "versionId": "gid://shopify/Version/1195873796097",
+    "versionTag": "gravuru-2027-slate-options-20261105-v1",
+    "status": "inactive"
+  },
+  "released": false,
+  "liveCartTested": false,
+  "limitations": [
+    "No dog products published or bound to V3 yet",
+    "Full active/candidate version manifest comparison remains open",
+    "Local compiled function tests do not prove a live storefront cart"
+  ]
+}

@@ -10,7 +10,7 @@ const source = fs.readFileSync(new URL('./lib/slate-review-gallery-ui.js', impor
   .replace("await Promise.all([import('./inline.js'), import('./approvals.js')])", '[fakeInlineModule, fakeApprovalModule]')
   .replace("if (typeof document !== 'undefined') void installGalleryPage();", 'globalThis.initialized = installGalleryPage();');
 
-async function openGallery({hash = '', material = 'steel', scroll = 987, targetIsCard = true} = {}) {
+async function openGallery({hash = '', material = 'steel', scroll = 987, targetIsCard = true, savedReturn=null} = {}) {
   const calls = [], nodes = new Map();
   const control = (id, values, value = '') => nodes.set('#' + id, {value, options: values.map(value => ({value})), addEventListener() {}});
   control('search', []);control('view', ['designs', 'blanks', 'all'], 'designs');
@@ -18,14 +18,14 @@ async function openGallery({hash = '', material = 'steel', scroll = 987, targetI
   control('category', ['', 'door']);control('blank-form', ['', 'round']);
   control('process', ['', 'Gravur']);control('approval-filter', ['', 'approved', 'unreviewed']);
   nodes.set('#blank-form-filter', {hidden: true});nodes.set('#count', {textContent: ''});nodes.set('#no-results', {hidden: true});
-  const card = {id: 'design-target', hidden: false, dataset: {search: 'target steel family', material: 'steel', themes: '["family"]', category: 'door', process: 'Gravur', approvalStatus: 'unreviewed'},
-    querySelector() { return null; }, querySelectorAll() { return []; }, matches() { return targetIsCard; },
+  const heading={after(){}},card = {id: 'design-target', hidden: false, dataset: {originalId:'target',productId:'cfg_test',designId:'native',search: 'target steel family', material: 'steel', themes: '["family"]', category: 'door', process: 'Gravur', approvalStatus: 'unreviewed'},
+    querySelector(selector) { return selector==='.card-heading'?heading:null; }, querySelectorAll() { return []; }, matches() { return targetIsCard; },
     scrollIntoView(options) { calls.push({target: this.id, block: options.block}); }};
   const stored = {material, scroll};
   const context = {
     URLSearchParams, location: {hash}, requestAnimationFrame(callback) { callback(); },
-    sessionStorage: {getItem() { return JSON.stringify(stored); }, setItem() {}},
-    document: {querySelector(selector) { return nodes.get(selector) || null; }, querySelectorAll(selector) { return selector === '[data-design-card]' ? [card] : []; },
+    sessionStorage: {getItem(key) { return JSON.stringify(key==='gravuru-gallery-return'?savedReturn:stored); }, setItem() {},removeItem(){calls.push({removed:true});}},
+    document: {createElement(){return {dataset:{}};},querySelector(selector) { return nodes.get(selector) || null; }, querySelectorAll(selector) { return selector === '[data-design-card]' ? [card] : []; },
       getElementById(id) { return id === card.id ? card : null; }},
     window: {scrollY: 0, addEventListener() {}, scrollTo(x, y) { calls.push({x, y}); }},
     fakeInlineModule: {installInlineReview() { return {keepVisible() { return false; }, beforeFormatChange() { return true; }, beforeNavigation() { return true; }}; }},
@@ -61,4 +61,9 @@ test('unknown, malformed or non-card fragments never become a gallery target', a
   for (const options of [{hash: '#missing'}, {hash: '#%E0%A4%A'}, {hash: '#design-target', targetIsCard: false}]) {
     assert.deepEqual((await openGallery(options)).calls, [{x: 0, y: 987}]);
   }
+});
+
+test('saved return pins the exact original without clearing a now-conflicting filter',async()=>{
+ const page=await openGallery({hash:'#design-target',material:'slate',savedReturn:{originalId:'target',productId:'cfg_test',designId:'native',sizeKey:'SIZE',revision:2}});
+ assert.equal(page.card.hidden,false);assert.equal(page.material,'slate');assert.deepEqual(page.calls,[{removed:true},{target:'design-target',block:'start'}]);
 });

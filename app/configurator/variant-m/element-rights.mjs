@@ -50,7 +50,7 @@ export const isDecorationLine=(object,design)=>object.uxDecoration===true&&objec
 
 export function canEditElement(config,designId,object,right){
   if(!object)return false;
-  if(config?.workbench?.embedded)return true;
+  if(config?.workbench?.embedded)return !config.workbench.gallery||!(object.technicalLocked||object.role==='guide'||object.type==='motif-raster');
   const source=config?.profile?.designs?.find(d=>d.id===designId)?.objects.find(o=>o.id===object.id);
   // Layer order of template elements is fixed; only added elements may be reordered above them.
   if(right==='order')return !source;
@@ -125,6 +125,9 @@ export function templateRightsIssue(config,design,source,objects){
   let added=0;
   for(const object of objects.filter(object=>!originals.has(object.id)&&!isDecorationLine(object,design))){
     if(object.type==='image'&&object.uxUploadKind==='logo'&&object.uxUploadId)continue;
+    // Photo uploads have their own enabled/count/file validation in the contract.
+    // A valid additional photo is not a free text/motif addition.
+    if(config.photo?.enabled&&object.type==='photoSlot'&&object.uxUploadKind==='photo'&&object.uxUploadId)continue;
     if(!['text','motif'].includes(object.type))return 'Dieses Element wird nicht zum freien Hinzufügen angeboten.';
     if(!(object.type==='text'?policy.text:policy.motifs))return object.type==='text'?'Eigener Text ist bei diesem Produkt nicht vorgesehen.':'Eigene Motive sind bei diesem Produkt nicht vorgesehen.';
     if(++added>policy.maxElements)return 'Für dieses Produkt sind höchstens '+policy.maxElements+' zusätzliche Elemente möglich.';

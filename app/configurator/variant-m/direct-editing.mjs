@@ -9,10 +9,10 @@ import {processPalette,processFreeColor} from '../../workshop/process-profiles.m
 export function installDirectEditing({el,r,config,selected,editPhoto,changeObject}) {
   const stage=r.querySelector('.stage');
   // Keep the plate's screen coordinates stable when selection opens its tools.
-  // Scoped to native doorbells; the Master toolbar hosts remain unchanged.
+  // Reserve phone space only while the selected text is being edited.
   const stableDoorbell=config?.doorbell?.schema==='gravuru-doorbell/v1';
-  const stableHost=stableDoorbell?document.createElement('div'):null;
-  if(stableHost){stableHost.className='doorbell-direct-slot';r.querySelector('[data-ux-stage]').before(stableHost);}
+  const stableHost=document.createElement('div');
+  stableHost.className='ux-direct-slot'+(stableDoorbell?' doorbell-direct-slot':'');r.querySelector('[data-ux-stage]').before(stableHost);
   // K10 / Ü1.2: Farbwerkzeuge nur nach Verfahrensprofil (el.uxProcess, gesetzt in ux.mjs).
   // Gravur: keine Farbwahl. Druck: die Profilpalette als runde Schnellfarbpunkte und zusätzlich der
   // Farbwähler für eine freie Farbe (processFreeColor, Chris 22./23.10.2026).
@@ -34,8 +34,8 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
   sizeArrows.innerHTML=[['bigger','Schriftgröße um einen Schritt erhöhen','M2 7L6 2L10 7Z'],['smaller','Schriftgröße um einen Schritt verringern','M2 2L6 7L10 2Z']].map(([step,label,path])=>'<button type="button" data-direct-step="'+step+'" data-size-arrow aria-label="'+label+'"><svg viewBox="0 0 12 9" aria-hidden="true"><path d="'+path+'" fill="currentColor"/></svg></button>').join('');
   panel.querySelector('[data-direct-size]').after(sizeArrows);
   const tail=document.createElement('span');tail.className='ux-direct-tail';tail.innerHTML='<button type="button" data-direct-turn aria-label="Element um 15 Grad drehen">↻</button><button type="button" data-ux="delete" aria-label="Element löschen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 6h16M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7m4-7v7"/></svg></button>';panel.querySelector('.ux-direct-actions').append(tail);
-  // Two stable rows on narrow screens. Keep the same controls and rights; the
-  // optional print palette scrolls horizontally inside row two, never into row three.
+  // Keep semantic control groups. The modern mobile layout presents both groups
+  // in one horizontally scrollable row without changing controls or edit rights.
   const actions=panel.querySelector('.ux-direct-actions'),primary=document.createElement('div'),secondary=document.createElement('div');
   primary.className='ux-direct-primary';secondary.className='ux-direct-secondary';
   for(const node of [...actions.children])(node.matches('[data-direct-font],[data-direct-style]')||node===extras?primary:secondary).append(node);
@@ -83,20 +83,27 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
   function update(){
     const o=selected();if(editing&&o?.id!==editing.id)close();
     const mobile=matchMedia('(max-width:767px)').matches,full=r.querySelector('.c-large-preview').open;
-    const inWorkbench=placeDirectToolbar({panel,stage,preview:r.querySelector('.ux-preview'),workbench:r.querySelector('.ux-workbench-toolbar'),mobile,full,stableHost});
+    const inWorkbench=placeDirectToolbar({panel,stage,preview:r.querySelector('.ux-preview'),workbench:r.querySelector('.ux-workbench-toolbar'),mobile,full,stableHost:mobile||stableDoorbell?stableHost:null});
     const text=o?.type==='text',photo=!!o?.uxUploadId&&!o.uxVectorLogo,motif=o?.type==='motif';
+    panel.dataset.objectKind=text?'text':o?.uxUploadKind==='logo'||o?.uxVectorLogo?'logo':photo?'photo':'motif';
     selectionName.hidden=!text;selectionName.textContent=text?(el.uxTextLabel?.(o)||'Text'):'';selectionName.title=selectionName.textContent;
     panel.setAttribute('aria-label',text?selectionName.textContent+' bearbeiten':'Ausgewähltes Element bearbeiten');
     const alignHost=mobile?secondary:primary;if(extras.parentNode!==alignHost){if(mobile)secondary.prepend(extras);else primary.append(extras);}
     const deleteButton=panel.querySelector('[data-ux=delete]'),deleteHost=mobile?primary:tail;if(deleteButton.parentNode!==deleteHost)deleteHost.append(deleteButton);
     panel.hidden=!(text&&can(o,'content')||photo&&can(o,'replace')&&!el.uxPhotoPositionActive?.(o)||motif&&(can(o,'color')||can(o,'scale')||can(o,'move')));
+    const textEditing=text&&!panel.hidden&&(full||r.querySelector('[data-ux-tab="text"]')?.getAttribute('aria-selected')==='true');
+    if(el.dataset.uxTextEditing!==String(!!textEditing))el.dataset.uxTextEditing=String(!!textEditing);
+    const compactEditing=!text&&!panel.hidden;
+    if(el.dataset.uxCompactEditing!==String(!!compactEditing))el.dataset.uxCompactEditing=String(!!compactEditing);
+    stableHost.hidden=mobile&&!textEditing&&!compactEditing;
+    if(mobile&&!full&&!textEditing&&!compactEditing)panel.hidden=true;
     if(panel.hidden){stage.style.setProperty('--ux-mobile-dock-space',stableDoorbell&&mobile&&full?'202px':'0px');stage.style.setProperty('--ux-toolbar-space',stableDoorbell&&full?'112px':'0px');el.style.setProperty('--ux-textbar-h',stableDoorbell&&mobile?'116px':'0px');if(editing)close();return;}
     openButton.textContent=text?'Text ändern':'Foto bearbeiten';openButton.hidden=text||!!editing||motif;confirm.hidden=!editing;font.hidden=!text;font.disabled=!can(o,'content');font.textContent=fontDisplayName(o.font||'Schrift');font.title=font.textContent;
     if(text){try{const sample={...o,color:'#292d32',text:fontDisplayName(o.font),size:12,letterSpacing:0,lineHeight:14};measureText(sample,el.fontData);font.innerHTML='<svg data-direct-font-sample viewBox="'+(-sample.w/2-2)+' '+(-sample.h/2-2)+' '+(sample.w+4)+' '+(sample.h+4)+'" aria-hidden="true"><g>'+textPaths(sample,el.fontData)+'</g></svg>'+uiIcon('chevron');const ink=font.querySelector('g').getBBox();if(ink.width>0&&ink.height>0)font.querySelector('svg').setAttribute('viewBox',[ink.x-1,ink.y-1,ink.width+2,ink.height+2].join(' '));}catch{font.textContent=fontDisplayName(o.font);}}
     extras.hidden=!text;for(const b of extras.querySelectorAll('button'))b.disabled=!can(o,'move');
     for(const b of panel.querySelectorAll('[data-direct-step]')){b.hidden=!text;b.disabled=!can(o,'scale');}
     panel.querySelector('[data-direct-turn]').disabled=!can(o,'move');
-    const original=config?.profile.designs.find(d=>d.id===el.state.designId)?.objects.find(v=>v.id===o.id);panel.querySelector('[data-ux=delete]').disabled=!!original?.required||!can(o,'delete');color.parentElement.hidden=!(text||motif)||!freeColor;color.parentElement.title=motif?'Motivfarbe':'Textfarbe';color.setAttribute('aria-label',motif?'Motivfarbe direkt ändern':'Textfarbe direkt ändern');color.disabled=!can(o,'color');if((text||motif)&&r.activeElement!==color)color.value=o.color||'#202824';
+    panel.querySelector('[data-ux=delete]').disabled=!can(o,'delete');color.parentElement.hidden=!(text||motif)||!freeColor;color.parentElement.title=motif?'Motivfarbe':'Textfarbe';color.setAttribute('aria-label',motif?'Motivfarbe direkt ändern':'Textfarbe direkt ändern');color.disabled=!can(o,'color');if((text||motif)&&r.activeElement!==color)color.value=o.color||'#202824';
     for(const b of panel.querySelectorAll('[data-direct-style]')){b.hidden=!text;b.disabled=!can(o,'content')||(b.dataset.directStyle==='bold'&&!el.fontData?.[o.font]?.bold&&!o.bold);b.title=b.dataset.directStyle==='bold'?(b.disabled?'Für diese Schrift ist kein Fettschnitt verfügbar':'Fett'):'Kursiv – Schrift neigen';b.setAttribute('aria-pressed',!!o[b.dataset.directStyle]);}
     for(const b of panel.querySelectorAll('[data-direct-motif]')){b.hidden=!motif||b.dataset.directMotif==='rotate'&&el.uxCanRotate?.(o)===false;b.disabled=!can(o,b.dataset.directMotif==='rotate'?'move':'scale');}
     presets.hidden=!colorTool||!(text||motif)||(paletteColors===null&&!motif);for(const b of presets.children){b.disabled=!can(o,'color');b.setAttribute('aria-pressed',String((o.color||'').toLowerCase()===b.dataset.directPreset));}
@@ -109,11 +116,11 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     // Reserve space above the fitted plate; the toolbar never occupies artwork.
     stage.style.setProperty('--ux-toolbar-space',stableDoorbell?(full?'112px':'0px'):!mobile&&!inWorkbench?Math.ceil(panel.offsetHeight*scale+16)+'px':'0px');
     stage.style.setProperty('--ux-mobile-dock-space',mobile&&full?(stableDoorbell?202:panel.offsetHeight+86)+'px':'0px');
-    const barHeight=stableDoorbell&&mobile?116:mobile&&!full&&!panel.hidden?panel.offsetHeight:0;el.style.setProperty('--ux-textbar-h',barHeight+'px');
+    const barHeight=mobile&&!full&&textEditing?panel.offsetHeight:0;el.style.setProperty('--ux-textbar-h',barHeight+'px');
     const bounds=scene.getBoundingClientRect(),parent=stage.getBoundingClientRect();
     if(!mobile&&!inWorkbench){
       const target=scene.querySelector('[data-object="'+CSS.escape(o.id)+'"]')?.getBoundingClientRect();
-      const pos=textToolbarPosition({stage:parent,plate:bounds,selection:target,width:panel.offsetWidth*scale,height:panel.offsetHeight*scale,placement,zoomed:(el.uxViewZoom?.()||1)>1});
+      const pos=textToolbarPosition({stage:parent,plate:bounds,selection:text?target:null,width:panel.offsetWidth*scale,height:panel.offsetHeight*scale,placement:text?placement:'plate',zoomed:(el.uxViewZoom?.()||1)>1});
       panel.style.left=pos.left+'px';panel.style.top=pos.top+'px';
     }else if(full){panel.style.left='0px';panel.style.setProperty('--ux-full-dock-top',Math.max(8,Math.min(parent.height-panel.offsetHeight-60,bounds.bottom-parent.top+34))+'px');}
     if(editing){
@@ -143,9 +150,9 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     field.value=o.text;box.hidden=false;update();field.focus({preventScroll:true});field.select();
   }
   el.uxEditText=openText;
-  let photoTap=null,openingPhoto=false;
+  let openingPhoto=false;
   async function openPhoto(o){if(openingPhoto||r.querySelector('.ux-photo-edit-dialog')?.open)return;openingPhoto=true;try{await editPhoto(o);}finally{openingPhoto=false;}}
-  el.uxPhotoTap=id=>{const now=performance.now();if(photoTap?.id===id&&now-photoTap.time<500){photoTap=null;const o=selected();if(o?.id===id&&can(o,'replace'))openPhoto(o);}else photoTap={id,time:now};};
+  // Opening the editor is an explicit button action, never a tap on the photo.
   // Do not let the stage's drag/shortcut handlers consume editing gestures.
   for(const host of [panel,box])for(const type of ['pointerdown','pointerup','click','dblclick','keydown'])host.addEventListener(type,e=>e.stopPropagation());
   field.addEventListener('input',()=>{
@@ -180,7 +187,7 @@ export function installDirectEditing({el,r,config,selected,editPhoto,changeObjec
     if(!e.target.closest('.stage,.c-large-preview')||e.target.closest('.ux-direct-edit,.ux-direct-input'))return;
     const id=e.target.closest('[data-object]')?.dataset.object;
     const o=id?el.state.objects.find(o=>o.id===id):selected();
-    if(o?.uxUploadId&&can(o,'replace')){e.preventDefault();el.state.selected=o.id;el.sync();openPhoto(o);}
+    if(o?.uxUploadId){e.preventDefault();e.stopImmediatePropagation();}
   },true);
   for(const name of ['render','sync']){const original=el[name];el[name]=function(...args){const result=original.apply(this,args);update();return result;};}
   el.uxRefreshTextToolbar=update;

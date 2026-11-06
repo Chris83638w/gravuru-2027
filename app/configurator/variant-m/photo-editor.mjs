@@ -1,12 +1,13 @@
 import {photoColorMode} from '../../platform/sources/app/shared/models/photo-color.mjs';
 import {fittedSize,editedPhotoSize,retainedPhotoUrls} from './image-processing.mjs';
+import {PHOTO_CROP_ASPECTS,clipPhotoShape} from './photo-crop-shapes.mjs';
 
-export function createPhotoEditor({el,r,config,dialog,button,files,selected,mutate,say}){
+export function createPhotoEditor({el,r,config,dialog,button,files,selected,mutate,say,persistUpload=async()=>{}}){
   const d=dialog('photo-edit','Foto / Logo bearbeiten',`
     <p>Ziehe das Foto im Zuschnittfenster und vergrößere es mit Zoom. Nur der sichtbare Ausschnitt wird übernommen. Das Original bleibt erhalten.</p>
     <canvas class="ux-photo-canvas" aria-label="Bild bearbeiten: Ausschnitt verschieben"></canvas>
     <div class="ux-photo-controls">
-      <label>Zuschnittformat <select data-photo-shape><option value="original">Originalformat</option><option value="square">Quadratisch</option><option value="portrait">Hochformat 3:4</option><option value="landscape">Querformat 4:3</option><option value="circle">Rund</option></select></label>
+      <label>Zuschnittformat <select data-photo-shape><option value="original">Originalformat</option><option value="square">Quadratisch</option><option value="portrait">Hochformat 3:4</option><option value="landscape">Querformat 4:3</option><option value="circle">Rund</option><option value="heart">Herz</option><option value="oval">Oval hochkant</option><option value="star">Stern</option><option value="cloud">Wolke</option></select></label>
       <label>Zoom <input type="range" data-photo-zoom min="1" max="4" step=".05" value="1"></label>
       <label>Horizontal <input type="range" data-photo-x min="-1" max="1" step=".02" value="0"></label>
       <label>Vertikal <input type="range" data-photo-y min="-1" max="1" step=".02" value="0"></label>
@@ -28,19 +29,19 @@ export function createPhotoEditor({el,r,config,dialog,button,files,selected,muta
   function paint(target,image,v,turn,reflection){
     const c=target.getContext('2d'),iw=image.naturalWidth||image.width,ih=image.naturalHeight||image.height,rotated=Math.abs(turn%180)===90,sw=rotated?ih:iw,sh=rotated?iw:ih;
     c.clearRect(0,0,target.width,target.height);c.save();
-    if(!fixedAspect&&v.shape==='circle'){c.beginPath();c.ellipse(target.width/2,target.height/2,target.width/2,target.height/2,0,0,Math.PI*2);c.clip();}
+    if(!fixedAspect)clipPhotoShape(c,v.shape,target.width,target.height);
     const scale=Math.max(target.width/sw,target.height/sh)*v.zoom,dx=Math.max(0,(sw*scale-target.width)/2),dy=Math.max(0,(sh*scale-target.height)/2);
     c.translate(target.width/2+v.x*dx,target.height/2+v.y*dy);c.rotate(turn*Math.PI/180);c.scale(scale*reflection,scale);c.translate(-iw/2,-ih/2);c.filter=v.color===inputColor?'none':v.color==='grayscale'?'grayscale(1)':v.color==='sepia'?'sepia(1)':'none';c.drawImage(image,0,0);c.restore();
   }
   function productionImage(){
     const v=options(),rotated=Math.abs(angle%180)===90,iw=fullSource.naturalWidth,ih=fullSource.naturalHeight;
-    const aspect=fixedAspect||({square:1,circle:1,portrait:3/4,landscape:4/3})[v.shape]||(rotated?ih/iw:iw/ih);
+    const aspect=fixedAspect||PHOTO_CROP_ASPECTS[v.shape]||(rotated?ih/iw:iw/ih);
     const size=editedPhotoSize(iw,ih,{aspect,zoom:v.zoom,angle}),output=document.createElement('canvas');output.width=size.width;output.height=size.height;paint(output,fullSource,v,angle,flip);
     return {canvas:output,limited:size.limited};
   }
   function draw(){
     const v=options(),rotated=Math.abs(angle%180)===90,sw=rotated?working.height:working.width,sh=rotated?working.width:working.height;
-    const aspect=fixedAspect||({square:1,circle:1,portrait:3/4,landscape:4/3})[v.shape]||sw/sh;
+    const aspect=fixedAspect||PHOTO_CROP_ASPECTS[v.shape]||sw/sh;
     canvas.width=Math.round(aspect>=1?1200:1200*aspect);canvas.height=Math.round(aspect>=1?1200/aspect:1200);
     paint(canvas,working,v,angle,flip);
     lastOptions=v;canvas.style.aspectRatio=String(aspect);$('[data-ux=photo-undo]').disabled=!history.length;
@@ -60,6 +61,7 @@ export function createPhotoEditor({el,r,config,dialog,button,files,selected,muta
       try{const output=productionImage();const blob=await new Promise((resolve,reject)=>output.canvas.toBlob(v=>v?resolve(v):reject(Error('Bild konnte nicht erstellt werden.')),'image/png'));
         if(blob.size>15*1024*1024)throw Error('Die bearbeitete Bilddatei überschreitet 15 MB. Bitte einen kleineren Ausschnitt wählen; das Original bleibt erhalten.');
         const id=crypto.randomUUID(),url=URL.createObjectURL(blob);files.set(id,{file:source.file,url,originalUrl:source.originalUrl||source.url,blob,edited:true,editSourceUrl:source.editSourceUrl||source.url,editSourceColor:inputColor,photoEdit:{angle,flip,...options()},width:output.canvas.width,height:output.canvas.height});
+        await persistUpload(id);
         mutate(()=>{o.uxUploadId=id;if(o.uxUploadKind==='photo')o.uxPhotoColor=options().color;delete o.uxPhotoCrop;if(!o.acrylicFixed&&o.photoShape!=='template'){o.h=o.w*canvas.height/canvas.width;if(o.type==='photoSlot')o.photoShape=options().shape==='circle'?'circle':'rect';}});d.close();say('Bild mit '+output.canvas.width+' × '+output.canvas.height+' Pixeln übernommen.'+(output.limited?' Sehr große Bildausgabe auf höchstens 20 Megapixel / 8192 Pixel Kantenlänge begrenzt.':'')+' Das Original bleibt erhalten; Rückgängig stellt die vorige Version wieder her.');
       }catch(error){$('[data-photo-status]').textContent=error.message;}finally{b.disabled=false;}
     }

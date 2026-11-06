@@ -4,6 +4,12 @@ import {escapeXml as esc} from '../../platform/sources/app/shared/models/design-
 // memorials and all other materials keep their current presentation.
 export const slateAccessoryMedia=config=>config.slateAccessories?.schema==='gravuru-slate-accessories/v1'?config.slateAccessories:null;
 export const slateAccessoryChoice=(config,groupId,valueId)=>slateAccessoryMedia(config)?.choices.find(choice=>choice.groupId===groupId&&choice.valueId===valueId);
+// Mikail, 04.11.2026: a single rectangular hole illustration and concise labels.
+export const slateChoiceLabel=label=>String(label).replace(/\s*\(12\s*mm breit\)/g,'');
+export function slateChoiceImages(choice){
+ const rectangle=choice.images.find(image=>image.name==='Rechteck');
+ return /^b[24]s?$/.test(choice.optionId)&&rectangle?[rectangle]:choice.images;
+}
 export function slateImagesMarkup(images=[],{captions=true}={}){
  return '<span class="m-slate-images">'+images.map(image=>'<span><img loading="lazy" src="'+esc(image.src)+'" alt="'+esc(image.name)+'">'+(captions?'<small>'+esc(image.name)+'</small>':'')+'</span>').join('')+'</span>';
 }

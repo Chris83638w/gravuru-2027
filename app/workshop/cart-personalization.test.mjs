@@ -61,6 +61,16 @@ test('native shop path keeps an included design orderable and explains unbound e
  const o=f.intake.offer({bindingId:binding.id,snapshotId:f.m.id,quantity:2});assert.equal(o.unitCents,2299);assert.equal(o.personalization,undefined);
  assert.equal(f.db.prepare('SELECT count(*) AS n FROM form_order_offers').get().n,1);
 });
+test('V3 accessory price survives the real order-intake offer, persisted reopen and storefront verification',t=>{
+ const f=fixture(t);f.record.document.config.profile.optionFields=[{id:'silikon',kind:'checkbox',label:'Silikon',priceCents:699}];
+ f.pricing.schema='gravuru-personalization-pricing/v3';f.pricing.optionPrices={silikon:699};
+ f.m.selection.fields=[{id:'silikon',kind:'checkbox',label:'Silikon',value:true,display:'ja',priceCents:699}];
+ f.m.selection.price.fieldCents=699;f.m.selection.price.unitCents+=699;f.m.selection.price.totalCents+=1398;f.m.product.basePriceCents+=699;
+ const binding=f.intake.bind(f.args),o=f.intake.offer({bindingId:binding.id,snapshotId:f.m.id,quantity:2});assert.equal(o.unitCents,4335);assert.equal(o.personalization.options,'silikon');
+ const line=prepareCartRequest(o).variables.input.lines[0];assert(line.attributes.some(a=>a.key==='_gravuru_options'&&a.value==='silikon'));
+ verifyCartResponse(response(o),o,shop);
+ const again=f.reopen().offer({bindingId:binding.id,snapshotId:f.m.id,quantity:2});assert.equal(again.unitCents,4335);assert.equal(again.personalization.options,'silikon');
+});
 
 test('complete-unit tiers use actual catalog prices, include photo, motif and mounting once, and round half a cent upwards',t=>{
  const f=fixture(t),config=f.record.document.config,tiers=[{minQuantity:2,percentOff:6},{minQuantity:3,percentOff:10}];

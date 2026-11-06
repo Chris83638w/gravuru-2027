@@ -55,7 +55,7 @@ test('multiple themes do not duplicate a design, its comments or its approval id
   assert.match(html, /src="\/preview-exact-existing.svg"/);
   assert.match(html, /<title>Katalog · Vorlagen prüfen und bearbeiten<\/title>/);
   assert.match(html, /<select id="material">/);assert.match(html, /<select id="theme">/);
-  assert.match(html, /design=steel-ed-42-1&amp;reviewGallery=1/);
+  assert.match(html, /design=steel-ed-42-1&amp;originalId=ED-42%2C1/);
   assert.doesNotMatch(html, /design=katalog-ED-42/);
   assert.deepEqual(reviewThemes(slate), [{key: 'hunde', label: 'Hunde'}]);
 });

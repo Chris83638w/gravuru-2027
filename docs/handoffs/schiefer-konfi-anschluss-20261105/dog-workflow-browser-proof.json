@@ -1,0 +1,96 @@
+{
+  "url": "https://app-2027.gravuru-designwerkstatt.de/produktvorschau/21afd5dc8edad301caace78b04c7973c6a2e6f7b3133dd24/22x14.html",
+  "bundle": "editor-7354952fa49e7cab.mjs",
+  "original": [
+    {
+      "id": "motiv-1",
+      "transform": "translate(167.329 69.987) rotate(0)"
+    },
+    {
+      "id": "text-1",
+      "transform": "translate(60.637 42.356) rotate(0)"
+    },
+    {
+      "id": "text-2",
+      "transform": "translate(60.637 68.408) rotate(0)"
+    },
+    {
+      "id": "text-3",
+      "transform": "translate(60.637 97.146) rotate(0)"
+    }
+  ],
+  "spacers": [
+    {
+      "id": "motiv-1",
+      "transform": "translate(161.607194 69.988298) rotate(0)"
+    },
+    {
+      "id": "text-1",
+      "transform": "translate(65.584394 45.120398) rotate(0)"
+    },
+    {
+      "id": "text-2",
+      "transform": "translate(65.584394 68.567198) rotate(0)"
+    },
+    {
+      "id": "text-3",
+      "transform": "translate(65.584394 94.431398) rotate(0)"
+    }
+  ],
+  "afterDesignSwitch": [
+    {
+      "id": "motiv-1",
+      "transform": "translate(161.607194 69.988298) rotate(0)"
+    },
+    {
+      "id": "text-1",
+      "transform": "translate(65.584394 45.120398) rotate(0)"
+    },
+    {
+      "id": "text-2",
+      "transform": "translate(65.584394 68.567198) rotate(0)"
+    },
+    {
+      "id": "text-3",
+      "transform": "translate(65.584394 94.431398) rotate(0)"
+    }
+  ],
+  "restored": [
+    {
+      "id": "motiv-1",
+      "transform": "translate(167.329 69.987) rotate(0)"
+    },
+    {
+      "id": "text-1",
+      "transform": "translate(60.637 42.356) rotate(0)"
+    },
+    {
+      "id": "text-2",
+      "transform": "translate(60.637 68.408) rotate(0)"
+    },
+    {
+      "id": "text-3",
+      "transform": "translate(60.637 97.146) rotate(0)"
+    }
+  ],
+  "consistentFit": true,
+  "exactRestoration": true,
+  "holes": [
+    {
+      "cx": "17",
+      "cy": "70",
+      "r": "2"
+    },
+    {
+      "cx": "203",
+      "cy": "70",
+      "r": "2"
+    }
+  ],
+  "prices": {
+    "none": 2199,
+    "twoSpacers": 2798,
+    "twoHoles": 2498
+  },
+  "liveCartTested": false
+}

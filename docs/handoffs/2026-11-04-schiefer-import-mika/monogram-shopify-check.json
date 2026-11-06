@@ -1,0 +1,211 @@
+{
+  "checkedAt": "2026-11-04T12:50:13.984Z",
+  "source": "Monogramm-Paket aus freigegebenem Katalog 43fe1f23d17fa54b94f5ab4c5f9754dab8b18323",
+  "key": "schiefer-gruppe:8343afea148fd8783508d26b4abe8b33",
+  "sourceDesignId": "MG-S-22x14-D1",
+  "sourceFingerprint": "15fc1a0d2001e2ef9ce7aaf5b6d3060338949ba5a3597733b8a270d46a8c6f41",
+  "defaultDesignId": "katalog-MG-S-22x14-D1",
+  "designCount": 82,
+  "inventory": {
+    "products": 1478,
+    "variants": 28465,
+    "coverage": {
+      "kind": "full-shop",
+      "statuses": [
+        "ACTIVE",
+        "ARCHIVED",
+        "DRAFT",
+        "UNLISTED"
+      ],
+      "query": "status:active,draft,archived,unlisted",
+      "pages": 30,
+      "productsComplete": true,
+      "variantsComplete": true
+    },
+    "exportedAt": "2026-11-04T12:47:10.935Z",
+    "sha256": "1784241e0787af01abd408742a90677b3a898fce30a83eb8a202a4285ff9c642"
+  },
+  "shopify": {
+    "id": "gid://shopify/Product/16192353829244",
+    "status": "DRAFT",
+    "onlineStoreUrl": null,
+    "publishedAt": null,
+    "featuredMedia": {
+      "id": "gid://shopify/MediaImage/70025726984572",
+      "status": "READY",
+      "alt": "Monogrammschild aus Naturschiefer, 22 × 14 cm, Startdesign A mit dem Beispielnamen Altmann",
+      "image": {
+        "url": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/monogrammschild-schiefer-22x14-mg-d1.png?v=1793796460",
+        "width": 1200,
+        "height": 1200
+      }
+    },
+    "adminUrl": "https://admin.shopify.com/store/gravuru-design/products/16192353829244"
+  },
+  "image": {
+    "sourceSvgSha256": "0c27f1662c0a081f32a2daf2fceadfb7e72b555c009afc37b243be1cd3601cf8",
+    "pngSha256": "8213abe3e05f03332095eb917f61a1592b83115166e61fa6d1ded61115310bf4"
+  },
+  "variants": [
+    {
+      "options": {
+        "mounting": "K00"
+      },
+      "label": "Ohne Bohrung",
+      "sku": "MG-S-22x14-D1",
+      "priceCents": 2199,
+      "shopifyVariantId": "gid://shopify/ProductVariant/58117933433212"
+    },
+    {
+      "options": {
+        "mounting": "B02"
+      },
+      "label": "2 Bohrlöcher Ø 4 mm",
+      "sku": "MG-S-22x14-D1-B02",
+      "priceCents": 2498,
+      "shopifyVariantId": "gid://shopify/ProductVariant/58117933465980"
+    },
+    {
+      "options": {
+        "mounting": "B02S"
+      },
+      "label": "2 Bohrlöcher mit Schrauben",
+      "sku": "MG-S-22x14-D1-B02S",
+      "priceCents": 2528,
+      "shopifyVariantId": "gid://shopify/ProductVariant/58117933498748"
+    },
+    {
+      "options": {
+        "mounting": "B04"
+      },
+      "label": "4 Bohrlöcher Ø 4 mm",
+      "sku": "MG-S-22x14-D1-B04",
+      "priceCents": 2598,
+      "shopifyVariantId": "gid://shopify/ProductVariant/58117933531516"
+    },
+    {
+      "options": {
+        "mounting": "B04S"
+      },
+      "label": "4 Bohrlöcher mit Schrauben",
+      "sku": "MG-S-22x14-D1-B04S",
+      "priceCents": 2648,
+      "shopifyVariantId": "gid://shopify/ProductVariant/58117933564284"
+    },
+    {
+      "options": {
+        "mounting": "AH02",
+        "ah-farbe-2": "edelstahl"
+      },
+      "label": "2 Abstandshalter (12 mm breit) · Edelstahl",
+      "sku": "MG-S-22x14-D1-AH02-EDELSTAHL",
+      "priceCents": 2798,
+      "shopifyVariantId": "gid://shopify/ProductVariant/58117933597052"
+    },
+    {
+      "options": {
+        "mounting": "AH02",
+        "ah-farbe-2": "schwarz"
+      },
+      "label": "2 Abstandshalter (12 mm breit) · Schwarz matt",
+      "sku": "MG-S-22x14-D1-AH02-SCHWARZ",
+      "priceCents": 2898,
+      "shopifyVariantId": "gid://shopify/ProductVariant/58117933629820"
+    },
+    {
+      "options": {
+        "mounting": "AH02",
+        "ah-farbe-2": "bronze"
+      },
+      "label": "2 Abstandshalter (12 mm breit) · Bronze",
+      "sku": "MG-S-22x14-D1-AH02-BRONZE",
+      "priceCents": 2898,
+      "shopifyVariantId": "gid://shopify/ProductVariant/58117933662588"
+    },
+    {
+      "options": {
+        "mounting": "AH02",
+        "ah-farbe-2": "gold"
+      },
+      "label": "2 Abstandshalter (12 mm breit) · Gold",
+      "sku": "MG-S-22x14-D1-AH02-GOLD",
+      "priceCents": 2898,
+      "shopifyVariantId": "gid://shopify/ProductVariant/58117933695356"
+    },
+    {
+      "options": {
+        "mounting": "AH02",
+        "ah-farbe-2": "weiss"
+      },
+      "label": "2 Abstandshalter (12 mm breit) · Weiß",
+      "sku": "MG-S-22x14-D1-AH02-WEISS",
+      "priceCents": 2898,
+      "shopifyVariantId": "gid://shopify/ProductVariant/58117933728124"
+    },
+    {
+      "options": {
+        "mounting": "AH04",
+        "ah-farbe-4": "edelstahl"
+      },
+      "label": "4 Abstandshalter (12 mm breit) · Edelstahl",
+      "sku": "MG-S-22x14-D1-AH04-EDELSTAHL",
+      "priceCents": 3098,
+      "shopifyVariantId": "gid://shopify/ProductVariant/58117933760892"
+    },
+    {
+      "options": {
+        "mounting": "AH04",
+        "ah-farbe-4": "schwarz"
+      },
+      "label": "4 Abstandshalter (12 mm breit) · Schwarz matt",
+      "sku": "MG-S-22x14-D1-AH04-SCHWARZ",
+      "priceCents": 3298,
+      "shopifyVariantId": "gid://shopify/ProductVariant/58117933793660"
+    },
+    {
+      "options": {
+        "mounting": "AH04",
+        "ah-farbe-4": "bronze"
+      },
+      "label": "4 Abstandshalter (12 mm breit) · Bronze",
+      "sku": "MG-S-22x14-D1-AH04-BRONZE",
+      "priceCents": 3298,
+      "shopifyVariantId": "gid://shopify/ProductVariant/58117933826428"
+    },
+    {
+      "options": {
+        "mounting": "AH04",
+        "ah-farbe-4": "gold"
+      },
+      "label": "4 Abstandshalter (12 mm breit) · Gold",
+      "sku": "MG-S-22x14-D1-AH04-GOLD",
+      "priceCents": 3298,
+      "shopifyVariantId": "gid://shopify/ProductVariant/58117933859196"
+    },
+    {
+      "options": {
+        "mounting": "AH04",
+        "ah-farbe-4": "weiss"
+      },
+      "label": "4 Abstandshalter (12 mm breit) · Weiß",
+      "sku": "MG-S-22x14-D1-AH04-WEISS",
+      "priceCents": 3298,
+      "shopifyVariantId": "gid://shopify/ProductVariant/58117933891964"
+    }
+  ],
+  "reread": {
+    "action": "unchanged",
+    "changes": [],
+    "conflicts": [],
+    "bindingSelections": []
+  },
+  "result": {
+    "newDraftProducts": 1,
+    "newProductVariants": 15,
+    "mainImagesAdded": 1,
+    "existingProductsChanged": 0,
+    "publishedProducts": 0,
+    "activeKonfiImports": 0
+  },
+  "remaining": "Astra-1-Masterintegration und nativer Serverimport; danach tatsächliche Produkt-ID binden und Hauptbild→Konfi→Warenkorb prüfen. Keine fehlenden Monogramm-Produktdaten."
+}

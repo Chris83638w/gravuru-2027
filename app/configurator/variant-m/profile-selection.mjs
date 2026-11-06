@@ -1,3 +1,5 @@
+export {themedMotifSelection} from './motif-themes.mjs';
+export {filterMotifBrowser} from './motif-browser-model.mjs';
 // Profiles limit customer choices, never the rendering resources of existing designs.
 // Missing/null keeps the native catalog; an explicit empty array offers no new choices.
 export function selectionIds(available, selection = null) {
@@ -10,7 +12,7 @@ export function selectionIds(available, selection = null) {
 
 export function motifChoices(entries, selection = null, excludedKeys = new Set()) {
   const index = new Map();
-  for (const entry of entries) if (!excludedKeys.has(entry.key) && !index.has(entry.key)) index.set(entry.key, entry);
+  for (const entry of entries) if (entry.category !== 'Grundmotive' && !excludedKeys.has(entry.key) && !index.has(entry.key)) index.set(entry.key, entry);
   return selectionIds([...index.keys()], selection).map(id => index.get(id));
 }
 

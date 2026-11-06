@@ -11,9 +11,11 @@ import {isFamilyFormats} from '../configurator/variant-m/family-formats.mjs';
 // also distinguishes input changes omitted by JSON serialization.
 const doorbellPreparations=new Map(),DOORBELL_PREPARATION_LIMIT=32;
 const familyPreparations=new Map(),FAMILY_PREPARATION_LIMIT=2;
+const slatePreparations=new Map(),SLATE_PREPARATION_LIMIT=2;
 export function prepareShopProduct(record){
- const family=isFamilyFormats(record.document?.config),cache=family?familyPreparations:doorbellPreparations,limit=family?FAMILY_PREPARATION_LIMIT:DOORBELL_PREPARATION_LIMIT;
- if(!family&&record.document?.config?.doorbell?.schema!=='gravuru-doorbell/v1')return prepareValidated(record,validateProductDocument(record.document));
+ const family=isFamilyFormats(record.document?.config),slate=record.document?.config?.profile?.material?.kind==='slate';
+ const cache=slate?slatePreparations:family?familyPreparations:doorbellPreparations,limit=slate?SLATE_PREPARATION_LIMIT:family?FAMILY_PREPARATION_LIMIT:DOORBELL_PREPARATION_LIMIT;
+ if(!family&&!slate&&record.document?.config?.doorbell?.schema!=='gravuru-doorbell/v1')return prepareValidated(record,validateProductDocument(record.document));
  const source={document:record.document,id:record.id,revision:record.revision,status:record.status,productionProfile:record.metadata?.productionProfile??null};
  const cacheKey=createHash('sha256').update(JSON.stringify(source)).digest('hex'),cached=cache.get(cacheKey);
  if(cached&&isDeepStrictEqual(source,cached.source)){

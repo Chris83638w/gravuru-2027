@@ -1,0 +1,142 @@
+{
+  "server": {
+    "stage": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-konfi-hundetest-r8b-20261106",
+    "old": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-konfi-hundetest-r8-20261106",
+    "entry": "07c214d489d21c4f92f6b8bca2df1f6db4999943be97a1b952729d04916e240a",
+    "packageSha256": "6ca9f17a03306a5ef94de03544ca58b436c3313ac6cdca1955374d5b08f9428d",
+    "sourceHashes": {
+      "app/configurator/variant-m/session-guard.mjs": "5c098a37695d98c1141bf65467d1428dc4202b76ccf32d709dd696686dbfc872",
+      "app/configurator/variant-m/session-guard.test.mjs": "dd223ae269b03540199203853f1b0274ec463931e0d12499600e1f5f2aab2868"
+    },
+    "preserved": [],
+    "bundle": "/_bundle/editor-a82b6d7db96395ec.mjs",
+    "tests": [
+      "tests 255",
+      "pass 255",
+      "fail 0",
+      "skipped 0"
+    ],
+    "publicHashes": {
+      "22x14.json": "8222984b2ff7877719c50aa4fcc67f613eb008b11a9543d6eddfafae2158b2c5",
+      "30x20.json": "637d19fcc6f02859a08d4c3853a51b13c1cfd1003aedff69a81a2de5682ae054",
+      "22x14.html": "a116ff4b869b254f06719bde6d87e36484afb492aaaf5696526bcb4ec71823c7",
+      "30x20.html": "053f02b3dc7886e5db1ba5941fa3509319499f86ac33192e2154bb61671b2731"
+    },
+    "activated": true,
+    "at": "2026-11-05T23:07:26.623Z",
+    "startupSha256": "f1e1bcdbe10a6739e54c45ad1d838f00357b4df6b7915de1382f5db3d6c5594f",
+    "unchangedProductModels": {
+      "22x14.json": "8222984b2ff7877719c50aa4fcc67f613eb008b11a9543d6eddfafae2158b2c5",
+      "30x20.json": "637d19fcc6f02859a08d4c3853a51b13c1cfd1003aedff69a81a2de5682ae054"
+    },
+    "publicFiles": [
+      {
+        "name": "22x14.html",
+        "sha256": "bbc8fc3e85a393ee097f3e1ef125af97ded002b833d4b25a24924f530c2f8469"
+      },
+      {
+        "name": "30x20.html",
+        "sha256": "d028bcfbbc94c7c75dbb1b67fceafb7fbe3c1dbc88d6ea6b20fa35d0c92f0456"
+      }
+    ],
+    "cart": false
+  },
+  "browser": {
+    "at": "2026-11-05T23:09:24.256Z",
+    "url": "https://app-2027.gravuru-designwerkstatt.de/produktvorschau/21afd5dc8edad301caace78b04c7973c6a2e6f7b3133dd24/22x14.html?fresh=1",
+    "beforeReload": {
+      "elements": "(5)",
+      "name": "Neustart-Test",
+      "photoPreviews": 1,
+      "priceCents": 2998
+    },
+    "afterReload": {
+      "bundle": "/_acryl-bundle/editor-a82b6d7db96395ec.mjs",
+      "elements": "(4)",
+      "name": "Bruno",
+      "photoPreviews": 0,
+      "priceCents": 1999
+    },
+    "testPhoto": "synthetic 400x600 test pattern",
+    "normalSessionProtection": "covered by integration tests"
+  },
+  "public": {
+    "at": "2026-11-05T23:07:49.127Z",
+    "pages": [
+      {
+        "size": "22x14",
+        "status": 200,
+        "bundle": "/_acryl-bundle/editor-a82b6d7db96395ec.mjs"
+      },
+      {
+        "size": "30x20",
+        "status": 200,
+        "bundle": "/_acryl-bundle/editor-a82b6d7db96395ec.mjs"
+      }
+    ],
+    "models": [
+      {
+        "size": "22x14",
+        "status": 200,
+        "sha256": "8222984b2ff7877719c50aa4fcc67f613eb008b11a9543d6eddfafae2158b2c5",
+        "unchanged": true,
+        "designs": 43,
+        "prices": [
+          1999,
+          2499
+        ],
+        "extraMotif": 169
+      },
+      {
+        "size": "30x20",
+        "status": 200,
+        "sha256": "637d19fcc6f02859a08d4c3853a51b13c1cfd1003aedff69a81a2de5682ae054",
+        "unchanged": true,
+        "designs": 43,
+        "prices": [
+          1999,
+          2499
+        ],
+        "extraMotif": 169
+      }
+    ],
+    "bundles": [
+      {
+        "url": "/_acryl-bundle/editor-a82b6d7db96395ec.mjs",
+        "status": 200,
+        "bytes": 1422349,
+        "sha256": "321333fb002e984fd696a5ded734b69236379cf6ca41562fcef8e5dab65b2db6"
+      },
+      {
+        "url": "/_acryl-bundle/editor-2e3da3b988eb0da4.mjs",
+        "status": 200,
+        "bytes": 38045,
+        "sha256": "2b380c700ec6c159b299b014fc8918ebf41189bcbc9f7af14884825af7da65e1"
+      },
+      {
+        "url": "/_acryl-bundle/editor-c419119a6ef437c6.mjs",
+        "status": 200,
+        "bytes": 7963,
+        "sha256": "9c37d9810dace1ed32292a800195fe90439d859d28ac74e21abc412ca7044edf"
+      },
+      {
+        "url": "/_acryl-bundle/editor-69eb9880b804359a.mjs",
+        "status": 200,
+        "bytes": 3378,
+        "sha256": "ae30b048f0955960ec763e83c62eb1ae455c6514885f813eadbed49a4d5b4672"
+      },
+      {
+        "url": "/_acryl-bundle/editor-e1e24f0ee6b66daf.mjs",
+        "status": 200,
+        "bytes": 10974,
+        "sha256": "24a2611031b0e6a37efddec5a3ec332d92802345a323c49521b350b37dbb9c67"
+      }
+    ]
+  },
+  "localTests": {
+    "tests": 255,
+    "skipped": 0,
+    "pass": 255,
+    "fail": 0
+  }
+}

@@ -18,10 +18,21 @@ export function customerFieldLabel(object,index,design){
 }
 
 export function installTextFields({el,r,selected,select}){
- const fields=r.querySelector('.ux-fields'),controls=r.querySelector('.ux-controls');let expanded=null,lastSelected=null;
+ const fields=r.querySelector('.ux-fields'),controls=r.querySelector('.ux-controls'),editor=r.querySelector('.ux-editor'),sizes=new WeakMap();let expanded=null,lastSelected=null;
+ const activeField=()=>r.activeElement?.closest?.('.ux-text-row')?.querySelector('[data-ux-text]');
+ let pointerAnchor=null,anchorFrame=0,pointerGesture=null;
+ const remember=field=>field?{field,top:field.getBoundingClientRect().top}:null;
+ function restoreAnchor(anchor){if(!anchor||!editor)return;const adjust=()=>{editor.scrollTop+=anchor.field.getBoundingClientRect().top-anchor.top;const remaining=anchor.field.getBoundingClientRect().top-anchor.top;if(Math.abs(remaining)>.5)window.scrollBy({top:remaining,behavior:'instant'});};adjust();cancelAnimationFrame(anchorFrame);anchorFrame=requestAnimationFrame(adjust);}
+ r.addEventListener('pointerdown',event=>{pointerAnchor=remember(event.target.closest('.ux-text-row')?.querySelector('[data-ux-text]'));pointerGesture={id:event.pointerId,x:event.clientX,y:event.clientY,moved:false};},true);
+ r.addEventListener('pointermove',event=>{if(pointerGesture?.id===event.pointerId&&Math.hypot(event.clientX-pointerGesture.x,event.clientY-pointerGesture.y)>8)pointerGesture.moved=true;},true);
+ const cancelPointerClick=()=>{if(pointerGesture)pointerGesture.moved=true;};
+ r.addEventListener('pointercancel',cancelPointerClick,true);
+ r.addEventListener('touchmove',cancelPointerClick,{capture:true,passive:true});
+ function sizeFields(){for(const field of fields.querySelectorAll('[data-ux-text]')){const width=field.clientWidth;if(!width)continue;const prior=sizes.get(field);if(prior?.width===width&&prior.value===field.value)continue;field.style.height='auto';field.style.height=Math.max(44,field.scrollHeight+4)+'px';sizes.set(field,{width:field.clientWidth,value:field.value});}}
  const toggle=id=>{expanded=expanded===id?null:id;if(expanded)select(id);else update();};
- function revealSelected(){const object=selected();if(object?.type!=='text')return;const field=[...fields.querySelectorAll('[data-ux-text]')].find(n=>n.dataset.uxText===object.id),editor=r.querySelector('.ux-editor');if(field&&editor&&!r.querySelector('#ux-panel-text')?.hidden){const f=field.getBoundingClientRect(),e=editor.getBoundingClientRect();if(f.top<e.top||f.bottom>e.bottom)editor.scrollTo({top:Math.max(0,editor.scrollTop+f.top-e.top-24),behavior:'auto'});}}
+ function revealSelected(){const object=selected();if(object?.type!=='text'||activeField()?.dataset.uxText===object.id)return;const field=[...fields.querySelectorAll('[data-ux-text]')].find(n=>n.dataset.uxText===object.id);if(field&&editor&&!r.querySelector('#ux-panel-text')?.hidden){const f=field.getBoundingClientRect(),e=editor.getBoundingClientRect();if(f.top<e.top||f.bottom>e.bottom)editor.scrollTo({top:Math.max(0,editor.scrollTop+f.top-e.top-24),behavior:'auto'});}}
  function update(){
+  sizeFields();
   const object=selected();if(!object||object.type!=='text')expanded=null;else if(expanded)expanded=object.id;
   for(const row of fields.querySelectorAll('.ux-text-row')){
    let disclosure=row.querySelector('[data-text-options]');
@@ -34,9 +45,25 @@ export function installTextFields({el,r,selected,select}){
   if(object?.type==='text'&&object.id!==lastSelected)requestAnimationFrame(revealSelected);
   lastSelected=object?.id||null;
  }
- r.addEventListener('click',event=>{const disclosure=event.target.closest('[data-text-options]');if(disclosure)toggle(disclosure.dataset.textOptions);});
- // Disclosure state changes explicitly, never on blur. iOS does not always focus
- // a tapped button; closing on textarea blur can remove it before its click fires.
+ const openField=event=>{const field=event.target.closest('[data-ux-text]');if(!field)return;const anchor=pointerAnchor?.field===field?pointerAnchor:remember(field);expanded=field.dataset.uxText;if(selected()?.id!==expanded)select(expanded);else update();restoreAnchor(anchor);};
+ r.addEventListener('focusin',openField);
+ const closeOptions=()=>{if(expanded){expanded=null;update();}};
+ r.addEventListener('click',event=>{
+  const deliberate=event.detail===0||!pointerGesture?.moved,disclosure=event.target.closest('[data-text-options]');
+  if(deliberate){
+   if(disclosure){const anchor=pointerAnchor||remember(disclosure.closest('.ux-text-row')?.querySelector('[data-ux-text]'));toggle(disclosure.dataset.textOptions);restoreAnchor(anchor);}
+   else if(event.target.closest('[data-ux-text]'))openField(event);
+   else if(!event.target.closest('.ux-text-row,.ux-direct-edit,.ux-direct-input,dialog,[role="dialog"]'))closeOptions();
+  }
+  pointerAnchor=null;pointerGesture=null;
+ },true);
+ // Deliberate outside clicks dismiss the box; blur, scrolling and touch drags
+ // do not. Font dialogs and the text toolbar remain part of the same edit.
+ const outsideClick=event=>{if(!event.composedPath().includes(r.host))closeOptions();};
+ document.addEventListener?.('click',outsideClick);
  el.uxUpdateTextUI=update;update();
- const observer=new ResizeObserver(revealSelected);observer.observe(r.querySelector('.ux-editor'));window.addEventListener('pagehide',()=>observer.disconnect(),{once:true});
+ // Mobile preview animation resizes the editor on every frame. Re-revealing the
+ // selected field then fights the user's scroll and repeatedly jumps the list.
+ // The mobile navigation reveals fields once on selection/keyboard opening.
+ const observer=new ResizeObserver(()=>{update();if(el.dataset.uxMobileTabs!=='true')revealSelected();});observer.observe(editor);window.addEventListener('pagehide',()=>{observer.disconnect();document.removeEventListener?.('click',outsideClick);},{once:true});
 }

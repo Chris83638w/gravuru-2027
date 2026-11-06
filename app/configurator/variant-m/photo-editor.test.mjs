@@ -13,7 +13,7 @@ function fixture(t,{material='slate',processing='slate-engraving',assetExtra={}}
   showModal(){this.open=true;} close(){this.open=false;}
  }
  class Canvas extends Node{
-  constructor(){super();this.width=0;this.height=0;this.ctx={filter:'none',clearRect(){},save(){},restore(){},beginPath(){},ellipse(){},clip(){},translate(){},rotate(){},scale(){},drawImage:(image)=>draws.push({src:image.src,filter:this.ctx.filter,width:this.width,height:this.height}),getImageData:()=>({width:this.width,height:this.height}),putImageData(){}};}
+  constructor(){super();this.width=0;this.height=0;this.ctx={filter:'none',clearRect(){},save(){},restore(){},beginPath(){},ellipse(){},moveTo(){},lineTo(){},bezierCurveTo(){},closePath(){},clip:()=>draws.push({clip:true}),translate(){},rotate(){},scale(){},drawImage:(image)=>draws.push({src:image.src,filter:this.ctx.filter,width:this.width,height:this.height}),getImageData:()=>({width:this.width,height:this.height}),putImageData(){}};}
   getContext(){return this.ctx;} toBlob(fn){fn(new Blob(['edited'],{type:'image/png'}));}
  }
  const d=new Node();nodes.set('canvas',new Canvas());
@@ -43,6 +43,16 @@ test('slate editor opens in grayscale; Original restore is committed and survive
 test('acrylic print editor keeps original colour',async t=>{
  const f=fixture(t,{material:'acrylic',processing:'color-print'});await f.open(f.object);
  assert.equal(f.nodes.get('[data-photo-color]').value,'original');
+});
+
+for(const [shape,aspect] of [['heart',1],['oval',.75],['star',1],['cloud',4/3]])test(shape+' crop is deliberate, persists and restores the complete original',async t=>{
+ const f=fixture(t);await f.open(f.object);assert.equal(f.nodes.get('[data-photo-shape]').value,'original');assert(!f.draws.some(d=>d.clip));
+ f.nodes.get('[data-photo-shape]').value=shape;await f.click('photo-apply');
+ const saved=f.files.get(f.object.uxUploadId);assert.equal(saved.photoEdit.shape,shape);assert.equal(saved.originalUrl,'blob:original');assert.equal(saved.file,f.file);
+ assert(Math.abs(saved.width/saved.height-aspect)<.01);assert(f.draws.some(d=>d.clip));
+ await f.open(f.object);assert.equal(f.nodes.get('[data-photo-shape]').value,shape);
+ await f.click('photo-reset');await f.click('photo-apply');const reset=f.files.get(f.object.uxUploadId);
+ assert.equal(reset.photoEdit.shape,'original');assert.equal(reset.width/reset.height,4/3);assert.equal(f.object.photoShape,'rect');
 });
 test('restored edited draft obtains its real original from retained File before reset',async t=>{
  const f=fixture(t,{assetExtra:{edited:true,url:'blob:edited',blob:new Blob(['edited'])}});

@@ -1,0 +1,423 @@
+{
+  "initial": {
+    "body": {
+      "bottom": 734,
+      "height": 296.5625,
+      "left": 13,
+      "right": 377,
+      "top": 437.4375,
+      "width": 364,
+      "x": 13,
+      "y": 437.4375
+    },
+    "cards": [
+      {
+        "fullyVisible": true,
+        "rect": {
+          "bottom": 581.4375,
+          "height": 112,
+          "left": 13,
+          "right": 191,
+          "top": 469.4375,
+          "width": 178,
+          "x": 13,
+          "y": 469.4375
+        },
+        "text": "Ohne Befestigungohne Aufpreis✓"
+      },
+      {
+        "fullyVisible": true,
+        "rect": {
+          "bottom": 581.4375,
+          "height": 112,
+          "left": 199,
+          "right": 377,
+          "top": 469.4375,
+          "width": 178,
+          "x": 199,
+          "y": 469.4375
+        },
+        "text": "2 Bohrlöcher Ø 4 mm+2,99 €✓"
+      },
+      {
+        "fullyVisible": true,
+        "rect": {
+          "bottom": 707.4375,
+          "height": 118,
+          "left": 13,
+          "right": 191,
+          "top": 589.4375,
+          "width": 178,
+          "x": 13,
+          "y": 589.4375
+        },
+        "text": "2 Bohrlöcher mit Schrauben+3,29 €✓"
+      },
+      {
+        "fullyVisible": true,
+        "rect": {
+          "bottom": 707.4375,
+          "height": 118,
+          "left": 199,
+          "right": 377,
+          "top": 589.4375,
+          "width": 178,
+          "x": 199,
+          "y": 589.4375
+        },
+        "text": "4 Bohrlöcher Ø 4 mm+3,99 €✓"
+      },
+      {
+        "fullyVisible": false,
+        "rect": {
+          "bottom": 833.4375,
+          "height": 118,
+          "left": 13,
+          "right": 191,
+          "top": 715.4375,
+          "width": 178,
+          "x": 13,
+          "y": 715.4375
+        },
+        "text": "4 Bohrlöcher mit Schrauben+4,49 €✓"
+      },
+      {
+        "fullyVisible": false,
+        "rect": {
+          "bottom": 833.4375,
+          "height": 118,
+          "left": 199,
+          "right": 377,
+          "top": 715.4375,
+          "width": 178,
+          "x": 199,
+          "y": 715.4375
+        },
+        "text": "2 Abstandshalter+5,99 €✓"
+      },
+      {
+        "fullyVisible": false,
+        "rect": {
+          "bottom": 953.4375,
+          "height": 112,
+          "left": 13,
+          "right": 191,
+          "top": 841.4375,
+          "width": 178,
+          "x": 13,
+          "y": 841.4375
+        },
+        "text": "4 Abstandshalter+8,99 €✓"
+      }
+    ],
+    "preview": {
+      "bottom": 313.4375,
+      "height": 219.4375,
+      "left": 0,
+      "right": 390,
+      "top": 94,
+      "width": 390,
+      "x": 0,
+      "y": 94
+    },
+    "price": "19,99 €",
+    "scrollHeight": 810,
+    "scrollTop": 0,
+    "scrollbar": "rgb(82, 103, 115) rgb(237, 241, 243)",
+    "tabs": {
+      "bottom": 425.4375,
+      "height": 50,
+      "left": 13,
+      "right": 377,
+      "top": 375.4375,
+      "width": 364,
+      "x": 13,
+      "y": 375.4375
+    },
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  "selected": {
+    "body": {
+      "bottom": 734,
+      "height": 296.5625,
+      "left": 13,
+      "right": 377,
+      "top": 437.4375,
+      "width": 364,
+      "x": 13,
+      "y": 437.4375
+    },
+    "cards": [
+      {
+        "fullyVisible": true,
+        "rect": {
+          "bottom": 581.4375,
+          "height": 112,
+          "left": 13,
+          "right": 191,
+          "top": 469.4375,
+          "width": 178,
+          "x": 13,
+          "y": 469.4375
+        },
+        "text": "Ohne Befestigungohne Aufpreis✓"
+      },
+      {
+        "fullyVisible": true,
+        "rect": {
+          "bottom": 581.4375,
+          "height": 112,
+          "left": 199,
+          "right": 377,
+          "top": 469.4375,
+          "width": 178,
+          "x": 199,
+          "y": 469.4375
+        },
+        "text": "2 Bohrlöcher Ø 4 mm+2,99 €✓"
+      },
+      {
+        "fullyVisible": true,
+        "rect": {
+          "bottom": 707.4375,
+          "height": 118,
+          "left": 13,
+          "right": 191,
+          "top": 589.4375,
+          "width": 178,
+          "x": 13,
+          "y": 589.4375
+        },
+        "text": "2 Bohrlöcher mit Schrauben+3,29 €✓"
+      },
+      {
+        "fullyVisible": true,
+        "rect": {
+          "bottom": 707.4375,
+          "height": 118,
+          "left": 199,
+          "right": 377,
+          "top": 589.4375,
+          "width": 178,
+          "x": 199,
+          "y": 589.4375
+        },
+        "text": "4 Bohrlöcher Ø 4 mm+3,99 €✓"
+      },
+      {
+        "fullyVisible": false,
+        "rect": {
+          "bottom": 833.4375,
+          "height": 118,
+          "left": 13,
+          "right": 191,
+          "top": 715.4375,
+          "width": 178,
+          "x": 13,
+          "y": 715.4375
+        },
+        "text": "4 Bohrlöcher mit Schrauben+4,49 €✓"
+      },
+      {
+        "fullyVisible": false,
+        "rect": {
+          "bottom": 833.4375,
+          "height": 118,
+          "left": 199,
+          "right": 377,
+          "top": 715.4375,
+          "width": 178,
+          "x": 199,
+          "y": 715.4375
+        },
+        "text": "2 Abstandshalter+5,99 €✓"
+      },
+      {
+        "fullyVisible": false,
+        "rect": {
+          "bottom": 953.4375,
+          "height": 112,
+          "left": 13,
+          "right": 191,
+          "top": 841.4375,
+          "width": 178,
+          "x": 13,
+          "y": 841.4375
+        },
+        "text": "4 Abstandshalter+8,99 €✓"
+      }
+    ],
+    "preview": {
+      "bottom": 313.4375,
+      "height": 219.4375,
+      "left": 0,
+      "right": 390,
+      "top": 94,
+      "width": 390,
+      "x": 0,
+      "y": 94
+    },
+    "price": "22,98 €",
+    "scrollHeight": 810,
+    "scrollTop": 0,
+    "scrollbar": "rgb(82, 103, 115) rgb(237, 241, 243)",
+    "tabs": {
+      "bottom": 425.4375,
+      "height": 50,
+      "left": 13,
+      "right": 377,
+      "top": 375.4375,
+      "width": 364,
+      "x": 13,
+      "y": 375.4375
+    },
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  "scrolled": {
+    "body": {
+      "bottom": 734,
+      "height": 296.5625,
+      "left": 13,
+      "right": 377,
+      "top": 437.4375,
+      "width": 364,
+      "x": 13,
+      "y": 437.4375
+    },
+    "cards": [
+      {
+        "fullyVisible": false,
+        "rect": {
+          "bottom": 211.4375,
+          "height": 112,
+          "left": 13,
+          "right": 191,
+          "top": 99.4375,
+          "width": 178,
+          "x": 13,
+          "y": 99.4375
+        },
+        "text": "Ohne Befestigungohne Aufpreis✓"
+      },
+      {
+        "fullyVisible": false,
+        "rect": {
+          "bottom": 211.4375,
+          "height": 112,
+          "left": 199,
+          "right": 377,
+          "top": 99.4375,
+          "width": 178,
+          "x": 199,
+          "y": 99.4375
+        },
+        "text": "2 Bohrlöcher Ø 4 mm+2,99 €✓"
+      },
+      {
+        "fullyVisible": false,
+        "rect": {
+          "bottom": 337.4375,
+          "height": 118,
+          "left": 13,
+          "right": 191,
+          "top": 219.4375,
+          "width": 178,
+          "x": 13,
+          "y": 219.4375
+        },
+        "text": "2 Bohrlöcher mit Schrauben+3,29 €✓"
+      },
+      {
+        "fullyVisible": false,
+        "rect": {
+          "bottom": 337.4375,
+          "height": 118,
+          "left": 199,
+          "right": 377,
+          "top": 219.4375,
+          "width": 178,
+          "x": 199,
+          "y": 219.4375
+        },
+        "text": "4 Bohrlöcher Ø 4 mm+3,99 €✓"
+      },
+      {
+        "fullyVisible": false,
+        "rect": {
+          "bottom": 463.4375,
+          "height": 118,
+          "left": 13,
+          "right": 191,
+          "top": 345.4375,
+          "width": 178,
+          "x": 13,
+          "y": 345.4375
+        },
+        "text": "4 Bohrlöcher mit Schrauben+4,49 €✓"
+      },
+      {
+        "fullyVisible": false,
+        "rect": {
+          "bottom": 463.4375,
+          "height": 118,
+          "left": 199,
+          "right": 377,
+          "top": 345.4375,
+          "width": 178,
+          "x": 199,
+          "y": 345.4375
+        },
+        "text": "2 Abstandshalter+5,99 €✓"
+      },
+      {
+        "fullyVisible": true,
+        "rect": {
+          "bottom": 583.4375,
+          "height": 112,
+          "left": 13,
+          "right": 191,
+          "top": 471.4375,
+          "width": 178,
+          "x": 13,
+          "y": 471.4375
+        },
+        "text": "4 Abstandshalter+8,99 €✓"
+      }
+    ],
+    "preview": {
+      "bottom": 313.4375,
+      "height": 219.4375,
+      "left": 0,
+      "right": 390,
+      "top": 94,
+      "width": 390,
+      "x": 0,
+      "y": 94
+    },
+    "price": "22,98 €",
+    "scrollHeight": 810,
+    "scrollTop": 370,
+    "scrollbar": "rgb(82, 103, 115) rgb(237, 241, 243)",
+    "tabs": {
+      "bottom": 425.4375,
+      "height": 50,
+      "left": 13,
+      "right": 377,
+      "top": 375.4375,
+      "width": 364,
+      "x": 13,
+      "y": 375.4375
+    },
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  "physicalDevice": false
+}

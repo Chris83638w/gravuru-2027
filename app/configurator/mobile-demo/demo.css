@@ -156,7 +156,7 @@
 :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-preview > .ux-direct-slot:not([hidden]),
 :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-preview > .ux-direct-edit:not([hidden]) {
   position: absolute !important;
-  inset: 0 64px auto 12px !important;
+  inset: 0 12px auto 12px !important;
   display: block !important;
   width: auto !important;
   height: 44px !important;
@@ -185,7 +185,7 @@
   display: flex !important;
   flex-wrap: nowrap !important;
   align-items: center !important;
-  justify-content: flex-start !important;
+  justify-content: safe center !important;
   height: 40px !important;
   overflow-x: auto !important;
   overflow-y: hidden !important;

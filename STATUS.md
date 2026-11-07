@@ -1,3 +1,7 @@
+## 07.11.2026 · Codex/Mika · Demo R11: Werkzeugleiste mittig
+
+Nur zwei CSS-Regeln: alte Fotobutton-Reserve rechts entfernt, Aktionsgruppe mittig. Chrome bei 320/390/1440 px geprüft, Drehen und Rückgängig unverändert. Vorab gesichert. [Übergabe](docs/handoffs/2026-11-07-mobile-demo-r11-werkzeugleiste.md).
+
 ## 07.11.2026 · Codex/Mika · Demo R10 veröffentlicht: echte Reiter, Kopfzeile und PC-Preis
 
 Material/Größe/Befestigung wechseln Inhalte ohne Canvas-Sprung; gleich große Prüfdialogaktionen; nativer Produkt-Rückbutton und eingerücktes Logo. PC-Hauptreiter nur über der Produktfläche, Preis sauber im Fußbereich. 220/220 gezielte Tests, lokale Handybreiten und PC geprüft. Vorab gesichert; kein Live-Shop-Eingriff. Angekündigter Livegang benötigt echte Produktbindung und Warenkorbabnahme, statische Demo bleibt gesperrt. [R10 frisch testen](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r10/22x14.html?fresh=1). Quellcommit 10bc14d6, 12.119 alte Public-Dateien hashgleich, private Hostsicherung, zwölf HTTP-Stichproben und öffentliche Handy-/PC-Prüfung bestanden. [Übergabe und Sicherung](docs/handoffs/2026-11-07-mobile-demo-r10-optionen-reiter.md).

@@ -1,3 +1,9 @@
+# Mobile Demo R5 – veröffentlichte Bedienkorrektur am 07.11.2026
+
+38 gezielte Tests bestanden; separater R5-Ordner auf Quellcommit `07d5d8a4`. Die [R5-Übergabe](docs/handoffs/2026-11-07-mobile-demo-r5-bedienung.md) dokumentiert die lokalen C3/C4/Final-Bedienfälle und die genaue Abgrenzung. Öffentlich geprüft: frischer 22×14-Start mit Bruno/19,99 €, Textpanel mit nativen Feldern und Schrifthöhenregler, mehrzeilige Eingabe, lesbares Textfeld bei simulierter Tastaturhöhe, PC-Anordnung bei 1440×900; im geprüften öffentlichen Ablauf keine Konsolenwarnungen/-fehler.
+
+[PC-Screenshot](docs/reviews/2026-11-07-mobile-demo/demo-r5-desktop-online-1440.jpg), [Handy-Screenshot](docs/reviews/2026-11-07-mobile-demo/demo-r5-text-online-390.jpg), [simulierte Tastaturhöhe](docs/reviews/2026-11-07-mobile-demo/demo-r5-tastatur-online-390x430.jpg), [Server-/HTTP-Belege](docs/reviews/2026-11-07-mobile-demo/). Vorherige 2061 öffentliche Dateien und Originale unverändert. Keine Live-Shop-Änderung oder tatsächliche Bestellung. Physischer Android-/iOS-Tastaturtest und Touchabnahme weiter offen. Historischer R4-Bericht folgt unverändert.
+
 # Mobile Demo R4 – veröffentlicht und geprüft am 07.11.2026
 
 **Ergebnis: lokale Funktions- und Sichtprüfung für die nachfolgend tatsächlich bedienten Fälle bestanden; getrennte Demo veröffentlicht und öffentlich zurückgelesen.** Physische Touch-/iOS-Tastaturprüfung bleibt offen. Der folgende frühere Abschnitt „Abnahme noch laufend“ bleibt als anfängliches Prüfprotokoll erhalten; für die unten benannten Fälle gilt dieser neuere Nachtrag.

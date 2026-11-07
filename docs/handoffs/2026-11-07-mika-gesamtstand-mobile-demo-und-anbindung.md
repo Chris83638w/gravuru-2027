@@ -325,3 +325,12 @@ Visuell geprüfte CSS-Viewports: **360×740, 390×844, 430×932, 844×390** (rec
 - GitHub: [Draft-PR #193](https://github.com/Chris83638w/gravuru-2027/pull/193), Implementierung `3afb5923`, Prüfbelege `78a30547`; kein Main-Merge.
 
 Genau nächster Schritt: Mikails Sichtprüfung der getrennten Demo und verfügbare physische Touch-/iOS-Tastaturfälle. Code und Nachweise sind in Draft-PR #193 gesichert. Eine spätere Übernahme in den Kundenkonfi bleibt ein eigener abgestimmter Schritt. Bestehenden Kundenkonfi, Live-Shop und Astras Arbeit weiterhin unangetastet lassen.
+
+
+## 14. Nachtrag: Demo R5 mit Textbearbeitung und PC-Ansicht
+
+Die von Mikail gesammelten Bedienwünsche sind ausschließlich in der Demo umgesetzt. Die aktuelle [R5-Übergabe](2026-11-07-mobile-demo-r5-bedienung.md) enthält Umfang, Codesicherung, Paket- und Servernachweise sowie Grenzen. [Neue Demo](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r5/22x14.html?fresh=1); [PC-Screenshot](../reviews/2026-11-07-mobile-demo/demo-r5-desktop-online-1440.jpg).
+
+38 gezielte Tests bestanden. Native Eingabefelder/Schrift-/Fotofunktionen und fachliche Daten bleiben erhalten. 2061 bisherige öffentliche Dateien und vier Originale nach separater R5-Bereitstellung unverändert; private Sicherung vorab. Keine Änderung an den in dieser Akte beschriebenen Galerie-/Sync-Verträgen, Produktgruppen-Bestätigungen oder ursprünglichen Kundenwegen. Konto, Galerie-Rückspeicherung und tatsächlicher Kauf bleiben in der statischen Demo unverbunden. Kein Main-Merge, kein Astra-Eingriff.
+
+Nächster Schritt: Mikails physischer Handy-Tastaturtest und Sichtprüfung, danach gesonderte Entscheidung über die spätere Integration. Physische Android-/iOS-Tastatur und Touchgesten sind durch den simulierten 390×430-Test nicht abgenommen.

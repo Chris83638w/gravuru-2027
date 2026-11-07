@@ -502,6 +502,35 @@
   }
 }
 
+/* R15: execution choices, rather than repeated headings, get the phone's
+   vertical space. Only the open options panel changes the preview budget.
+   Keep its existing fixed tabs and native .m-options scroll container. */
+@media (max-width: 599px) and (min-height: 551px) {
+  :host([data-mobile-demo][data-demo-sheet="panel"]:not([data-demo-keyboard])) .ux-shell:has(#ux-panel-options:not([hidden])) {
+    --md-canvas-h: max(130px, min(220px, calc(var(--md-vh) * .26), calc(var(--md-vh) - 480px)));
+    --md-sheet-top: calc(var(--md-preview-top) + var(--md-canvas-h));
+  }
+  :host([data-mobile-demo][data-demo-sheet="panel"][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell:has(#ux-panel-options:not([hidden])) .ux-layout > .ux-preview .stage:not(.acryl-scene) { padding: 48px 28px 30px !important; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-editor #ux-panel-options[data-demo-options-layout="stack"] { padding: 8px 12px !important; }
+  :host([data-mobile-demo]) #ux-panel-options[data-demo-options-layout="stack"] > .fk-options > h2 { display: none !important; }
+  :host([data-mobile-demo]) #ux-panel-options .ux-info-links[data-demo-options-tabs] { margin: 0 0 6px !important; padding: 0 0 4px !important; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) #ux-panel-options .md-options-tab { padding-inline: 4px !important; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) #ux-panel-options [data-demo-option-tab] > .ux-info-button { min-width: 26px !important; width: 26px !important; margin-right: 1px !important; }
+  :host([data-mobile-demo]) #ux-panel-options .m-option-pictures > h3 { margin: 6px 0 !important; font-size: 15px !important; line-height: 20px !important; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) #ux-panel-options .m-option-pictures > div[data-demo-option-section] { margin: 6px 0 !important; gap: 8px !important; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) #ux-panel-options .m-option-pictures > div > .m-option-tile {
+    min-height: 112px !important; padding: 7px 6px !important; gap: 5px !important;
+  }
+  :host([data-mobile-demo]) #ux-panel-options .m-option-pictures > div > .m-option-tile > :is(svg, .m-slate-images) { width: 56px !important; height: 44px !important; min-height: 44px !important; }
+  :host([data-mobile-demo]) #ux-panel-options .m-option-pictures > div > .m-option-tile .m-slate-images :is(span, img) { width: 100% !important; height: 44px !important; object-fit: contain !important; }
+  :host([data-mobile-demo]) #ux-panel-options .m-option-pictures > div > .m-option-tile > strong { font-size: 13px !important; line-height: 16px !important; }
+  :host([data-mobile-demo]) #ux-panel-options .m-option-pictures > div > .m-option-tile > small { font-size: 12px !important; line-height: 16px !important; }
+  :host([data-mobile-demo]) #ux-panel-options .m-options { scrollbar-color: #526773 #edf1f3; scrollbar-width: thin; scrollbar-gutter: stable; }
+  :host([data-mobile-demo]) #ux-panel-options .m-options::-webkit-scrollbar { width: 7px; }
+  :host([data-mobile-demo]) #ux-panel-options .m-options::-webkit-scrollbar-track { background: #edf1f3; }
+  :host([data-mobile-demo]) #ux-panel-options .m-options::-webkit-scrollbar-thumb { background: #526773; border: 1px solid #edf1f3; border-radius: 8px; }
+}
+
 /* Wide desktop workbench, not an enlarged phone: stable canvas + inspector. */
 @media (min-width: 1000px) {
   :host([data-mobile-demo][data-demo-sheet]) {

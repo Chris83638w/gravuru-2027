@@ -70,7 +70,7 @@ export function buildMobileDemo({outputDirectory,modelFiles,namespace='/konfi-de
  }
  const editor=fs.readFileSync(path.join(preview,'editor.html'),'utf8');
  if((editor.match(/<head>/g)||[]).length!==1||!editor.includes('gravuruModules'))throw Error('Vollständiger Editor-Build fehlt.');
- for(const name of ['demo.mjs','demo.css','text-editor.mjs','text-selection-dismiss.mjs','desktop-selection.mjs','options-navigation.mjs','product-return.mjs','overlap-review.mjs','overlap-consent.mjs','contour-placement.mjs','edge-resize.mjs','shopping-cart.svg'])if(!fs.statSync(path.join(source,'app/configurator/mobile-demo',name)).isFile())throw Error('Demo-Oberfläche fehlt: '+name);
+ for(const name of ['demo.mjs','demo.css','text-editor.mjs','text-selection-dismiss.mjs','desktop-selection.mjs','options-navigation.mjs','product-return.mjs','overlap-review.mjs','overlap-consent.mjs','contour-placement.mjs','edge-resize.mjs','motif-size-limit.mjs','small-motif-controls.mjs','shopping-cart.svg'])if(!fs.statSync(path.join(source,'app/configurator/mobile-demo',name)).isFile())throw Error('Demo-Oberfläche fehlt: '+name);
  fs.mkdirSync(output,{recursive:true,mode:0o700});
  const manifest={schema:'gravuru-mobile-demo/v1',namespace,sourceCommit,checkout:false,storagePrefix:'gravuru-mobile-demo:'+id+':',inputs:inputHashes,models:{},files:{}};
  const put=(relative,bytes,{origin=null,transform=false}={})=>{
@@ -94,8 +94,9 @@ export function buildMobileDemo({outputDirectory,modelFiles,namespace='/konfi-de
  for(const name of ['theme-limits.mjs','process-profiles.mjs'])put('workshop/'+name,fs.readFileSync(path.join(source,'app/workshop',name)),{origin:name,transform:true});
  copyTree(path.join(source,'app/designs/acrylic-unser-anfang'),'acrylic-assets',name=>!name.includes('/')&&/\.(?:png|webp)$/.test(name));
  for(const [target,original] of [['assistant.js','assistant.js'],['api/guides','guides.json']])put(target,fs.readFileSync(path.join(preview,original)),{origin:original,transform:true});
- for(const name of ['demo.mjs','demo.css','text-editor.mjs','text-selection-dismiss.mjs','desktop-selection.mjs','options-navigation.mjs','product-return.mjs','overlap-review.mjs','overlap-consent.mjs','contour-placement.mjs','shopping-cart.svg'])put(name,fs.readFileSync(path.join(source,'app/configurator/mobile-demo',name)),{origin:name,transform:name==='demo.mjs'?text=>text.replace("'./edge-resize.mjs'","'./configurator/mobile-demo/edge-resize.mjs'"):false});
+ for(const name of ['demo.mjs','demo.css','text-editor.mjs','text-selection-dismiss.mjs','desktop-selection.mjs','options-navigation.mjs','product-return.mjs','overlap-review.mjs','overlap-consent.mjs','contour-placement.mjs','small-motif-controls.mjs','shopping-cart.svg'])put(name,fs.readFileSync(path.join(source,'app/configurator/mobile-demo',name)),{origin:name,transform:name==='demo.mjs'?text=>text.replace("'./edge-resize.mjs'","'./configurator/mobile-demo/edge-resize.mjs'").replace("'./motif-size-limit.mjs'","'./configurator/mobile-demo/motif-size-limit.mjs'"):false});
  // Preserve the native relative import paths of the isolated geometry adapter.
+ put('configurator/mobile-demo/motif-size-limit.mjs',fs.readFileSync(path.join(source,'app/configurator/mobile-demo/motif-size-limit.mjs')),{origin:'motif-size-limit.mjs'});
  put('configurator/mobile-demo/edge-resize.mjs',fs.readFileSync(path.join(source,'app/configurator/mobile-demo/edge-resize.mjs')),{origin:'edge-resize.mjs'});
  for(const [size,original] of Object.entries(models)){
   const model=structuredClone(original),config=model.universal,resource=config.localResources;

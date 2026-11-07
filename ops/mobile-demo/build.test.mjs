@@ -27,7 +27,9 @@ function fixture(t){
  write('app/platform/sources/app/shared/models/geometry.mjs','export const width=220;');
  write('app/workshop/theme-limits.mjs','export const limits={};');write('app/workshop/process-profiles.mjs','export const profiles=[];');
  write('app/designs/acrylic-unser-anfang/base.webp','base');
- write('app/configurator/mobile-demo/demo.mjs',"import {installDemoEdgeResize} from './edge-resize.mjs';if(window.GravuruMobileDemo)window.demoLoaded=true;");write('app/configurator/mobile-demo/demo.css',':host{color:#111}');write('app/configurator/mobile-demo/text-editor.mjs','export const installDemoTextEditor=()=>null;');write('app/configurator/mobile-demo/shopping-cart.svg','<svg/>');
+ write('app/configurator/mobile-demo/demo.mjs',"import {installDemoEdgeResize} from './edge-resize.mjs';import {installDemoMotifSizeLimit} from './motif-size-limit.mjs';if(window.GravuruMobileDemo)window.demoLoaded=true;");write('app/configurator/mobile-demo/demo.css',':host{color:#111}');write('app/configurator/mobile-demo/text-editor.mjs','export const installDemoTextEditor=()=>null;');write('app/configurator/mobile-demo/shopping-cart.svg','<svg/>');
+ write('app/configurator/mobile-demo/motif-size-limit.mjs',"import {data} from '../variant-m/module.mjs';export const installDemoMotifSizeLimit=()=>data;");
+ write('app/configurator/mobile-demo/small-motif-controls.mjs','export const installDemoSmallMotifControls=()=>null;');
  write('app/configurator/mobile-demo/edge-resize.mjs',"import {data} from '../variant-m/module.mjs';export const installDemoEdgeResize=()=>data;");
  write('app/configurator/mobile-demo/text-selection-dismiss.mjs','export const installDemoTextSelectionDismiss=()=>null;');
  write('app/configurator/mobile-demo/desktop-selection.mjs','export const installDemoDesktopSelection=()=>null;');
@@ -68,6 +70,7 @@ test('full models retain every design, glyph and groundplate; only demo identiti
  }
  assert.equal(fs.existsSync(path.join(root,'configurator/variant-m/module.test.mjs')),false);
  assert.match(fs.readFileSync(path.join(root,'demo.mjs'),'utf8'),/from '\.\/configurator\/mobile-demo\/edge-resize\.mjs'/);
+ assert.match(fs.readFileSync(path.join(root,'demo.mjs'),'utf8'),/from '\.\/configurator\/mobile-demo\/motif-size-limit\.mjs'/);
  assert.match(fs.readFileSync(path.join(root,'configurator/mobile-demo/edge-resize.mjs'),'utf8'),/from '\.\.\/variant-m\/module\.mjs'/);
  assert.equal(fs.readFileSync(path.join(root,'text-selection-dismiss.mjs'),'utf8'),'export const installDemoTextSelectionDismiss=()=>null;');
  assert.equal(fs.readFileSync(path.join(root,'desktop-selection.mjs'),'utf8'),'export const installDemoDesktopSelection=()=>null;');

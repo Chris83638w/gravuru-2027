@@ -1,6 +1,8 @@
 // Opt-in presentation adapter. The existing editor owns geometry, prices and actions.
 import {installDemoTextEditor} from './text-editor.mjs';
 import {installDemoEdgeResize} from './edge-resize.mjs';
+import {installDemoMotifSizeLimit} from './motif-size-limit.mjs';
+import {installDemoSmallMotifControls} from './small-motif-controls.mjs';
 import {installDemoTextSelectionDismiss} from './text-selection-dismiss.mjs';
 import {installDemoDesktopSelection} from './desktop-selection.mjs';
 import {installDemoOptionsNavigation} from './options-navigation.mjs';
@@ -260,6 +262,8 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   const desktopSelection = installDemoDesktopSelection(el,{enabled:desktop,onSelect:key=>open(key,false)});
   const optionsNavigation = installDemoOptionsNavigation(el);
   const edgeResize = installDemoEdgeResize(el);
+  const motifSizeLimit = installDemoMotifSizeLimit(el);
+  const smallMotifControls = installDemoSmallMotifControls(el);
   const overlapReview = installDemoOverlapReview(el);
   const productReturn = installDemoProductReturn(el,{button:returnButton});
   shut(false);
@@ -270,6 +274,8 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
     textSelection?.dispose();
     desktopSelection?.dispose();
     optionsNavigation?.dispose();
+    smallMotifControls?.dispose();
+    motifSizeLimit?.dispose();
     edgeResize?.dispose();
     overlapReview?.dispose();
     productReturn?.dispose();

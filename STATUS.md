@@ -1,6 +1,6 @@
 ## 07.11.2026 · Codex/Mika · Demo R13: kleine Motive greifen und begrenzen
 
-Größere unsichtbare Greiffläche nur für kleine ausgewählte Motive; Eckgriffe weiter außen. Native Touch-/Mausgesten, Undo und Randplatzierung geprüft. Motivskalierung/Drehung maximal bis zur rechteckigen Produktfläche. Vorher gesichert; Originale und Shop bleiben unverändert. [Übergabe](docs/handoffs/2026-11-07-mobile-demo-r13-kleine-motive.md). Separate Veröffentlichung vorbereitet; Ausführungs-Layout aus Screenshot 199 ausdrücklich nicht enthalten.
+Größere unsichtbare Greiffläche nur für kleine ausgewählte Motive; Eckgriffe weiter außen. Native Touch-/Mausgesten, Undo und Randplatzierung geprüft. Motivskalierung/Drehung maximal bis zur rechteckigen Produktfläche. Vorher gesichert; Originale und Shop bleiben unverändert. [Übergabe](docs/handoffs/2026-11-07-mobile-demo-r13-kleine-motive.md). 214 Tests bestanden. [R13 frisch testen](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r13/22x14.html?fresh=1): separat veröffentlicht, 18.187 alte Public-Dateien unverändert, 17 HTTP-Stichproben und öffentlicher Touch-/Undo-Test bestanden. Ausführungs-Layout aus Screenshot 199 ausdrücklich nicht enthalten.
 
 ## 07.11.2026 · Codex/Mika · Demo R12: Textbegrenzung nach sichtbarer Schrift
 

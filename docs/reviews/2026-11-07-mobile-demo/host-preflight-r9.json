@@ -1,0 +1,36 @@
+{
+  "schema": "gravuru-mobile-demo-publication-check/v1",
+  "action": "verify-only",
+  "namespace": "/konfi-demo/mobil-20261107-r9/",
+  "archive": {
+    "schema": "gravuru-mobile-demo/v1",
+    "namespace": "/konfi-demo/mobil-20261107-r9/",
+    "files": 2019,
+    "zipSha256": "5a53b43480f4f6495d30d29b0b6bf559c1c368ed07f5664e066625086a54d257",
+    "manifestSha256": "fdbeaf71845679fbc197eb219af3598a439abb8a74169a3a49fbfa8ec2a315eb",
+    "extracted": false
+  },
+  "sourceFiles": {
+    "start-r5.cjs": {
+      "bytes": 22,
+      "sha256": "42cd0a64f2e8e2a48761aefac2c0323990dbfe667517c88497eb03ca243852dd"
+    },
+    "app.cjs": {
+      "bytes": 1035,
+      "sha256": "e7aba8400e511dfee0a8ebb229d6a8239fd6f6945d577d323c7eff6837e6dadb"
+    },
+    "22x14.html": {
+      "bytes": 3602251,
+      "sha256": "7ae7872b409b2e1e63c85f03f57822a8835ebf4da64872b1a565e4e594949087"
+    },
+    "30x20.html": {
+      "bytes": 3684082,
+      "sha256": "521d42fe10b0fb586ccf9e811b22603d9d9a924dcc2f1148bec7074c2f19f7b8"
+    }
+  },
+  "publicFiles": 10099,
+  "publicInventorySha256": "559e6fc9091cd4c3e536c703295b5928ec43523664c1260aafc3f09bfc66c955",
+  "plannedPrivateBackup": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mobil-20261107-r9-before-publication",
+  "plannedNewTarget": "/var/www/vhosts/gravuru-designwerkstatt.de/gravuru-2027-merchant/public/konfi-demo/mobil-20261107-r9",
+  "changesPerformed": 0
+}

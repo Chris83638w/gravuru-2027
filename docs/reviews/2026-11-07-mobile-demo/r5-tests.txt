@@ -1,0 +1,46 @@
+✔ opt-in and native readiness are required; installation does not touch another editor (11.0845ms)
+✔ the actual native controls and callbacks move; crop tools stay in the photo panel (4.3532ms)
+✔ native validation reveals the text sheet before focusing its field (4.2757ms)
+✔ native hidden and disabled capabilities remain authoritative across design changes (4.0496ms)
+✔ undo and redo stay enabled from native history even when a feedback control becomes first (3.7038ms)
+✔ native fullscreen receives its real controls, and closing restores their demo homes (3.2606ms)
+✔ a rejected native fullscreen call is not swallowed and leaves demo controls reachable (4.7507ms)
+✔ Escape leaves a native dialog alone; validation can return safely from fullscreen (5.167ms)
+✔ dispose restores original nodes, ordering, labels, attributes and hooks without queued work (2.4367ms)
+✔ the disconnected demo is labelled without replacing the native account content or callback (3.2441ms)
+✔ keyboard detection keeps Android pre-keyboard height and ignores rotation (0.1587ms)
+✔ footer opens native sections; a canvas tap closes but drag and buttons do not (2.8039ms)
+✔ direct upload calls the original upload button synchronously and respects its rights (3.4456ms)
+✔ opening and switching uses native selection without focusing a text field (11.5189ms)
+✔ typing preserves the actual textarea, multiline value, cursor and native undo grouping (6.1687ms)
+✔ the height slider forwards both native events and uses proportional text geometry (4.7301ms)
+✔ original font and plus/minus controls remain native; numeric changes update the slider (5.3026ms)
+✔ native locked/read-only rights cannot be bypassed and a read-only text can still be selected (5.0595ms)
+✔ validation reveals the correct native field before focus and reports actual keyboard focus (2.8327ms)
+✔ empty text and a later design rebuild stay reachable without stale DOM or new text state (5.6659ms)
+✔ an empty design does not invent a text or record history (1.4515ms)
+✔ a later canvas selection is not overwritten by refresh and does not focus the old text (3.0088ms)
+✔ explicit sheet re-entry restores controls after reset even if the native text panel stayed visible (6.3465ms)
+✔ the existing double-tap hook opens the lower text panel without its upper input or keyboard (3.1257ms)
+✔ the lower text entry preserves native content-rights, hidden and locked gates (1.322ms)
+✔ dispose restores native inline behaviour and leaves text edits intact (5.5773ms)
+✔ full models retain every design, glyph and groundplate; only demo identities/transport differ (189.3997ms)
+✔ namespace and output guards reject original paths, nesting and bad models before any output (58.7598ms)
+✔ output through a parent symlink cannot write into the source tree (39.2281ms)
+✔ static server serves only inventoried demo files, handles gzip, rejects every write and live path (214.2794ms)
+✔ bootstrap allows demo and local blob reads, blocks shop/API writes before network, marks ready only for self (1.3927ms)
+✔ generated URL and storage rewrites are scoped; text data and designs are not rewritten (0.1369ms)
+✔ default is verification only: exact ZIP checked and no backup/public files created (375.3401ms)
+✔ additive publication makes a private backup and preserves every old public/startup byte (430.9266ms)
+✔ changed live guards, helper, ZIP or pre-existing target fail before any backup/write (284.3992ms)
+✔ archive creation and extraction refuse overwrites and reconstruct exactly the manifest (443.3876ms)
+✔ native ZIP inspection rejects traversal, duplicate, unlisted and symlink entries before extraction (962.6161ms)
+✔ checked helper fingerprint matches the prepared host recipe (0.3507ms)
+ℹ tests 38
+ℹ suites 0
+ℹ pass 38
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2619.3961

@@ -1,5 +1,11 @@
 # Gravuru 2027 – Arbeitsregeln
 
+## Verbindliche Prio-Konfi-Regel (Mikail, 08.11.2026)
+
+**Zuerst [PRIO-KONFI.md](PRIO-KONFI.md) lesen.** R15 ist die freigegebene gemeinsame Konfi-Basis. Gemeinsame Oberfläche, Werkzeuge, Kernlogik, Preis-/Checkout-Verhalten und Ressourcenänderungen ausschließlich durch Mika in Abstimmung mit Mikail. Andere KIs dürfen beim Anlegen von Produkten nur zuvor von Mikail bestätigte produktspezifische Options-/Ausführungsdaten bearbeiten. Keine eigenständige Optimierung, Ersetzung oder Veröffentlichung des gemeinsamen Konfis. Vorschläge zuerst vorlegen. Bestehende parallele Arbeiten getrennt halten.
+
+Neuer Pilot: Edelstahl-Türschilder mit Form, Größe und Befestigung; alle acht Katalogformen berücksichtigen, konkrete Größen/Preise/Befestigungen und Fähigkeiten vor Anlage bestätigen lassen. Neue Gruppen nutzen denselben Konfi mit bestätigten Produktprofilen. Foto-/Logo-Verfügbarkeit passend zum Profil und serverseitig prüfen. Der gesicherte R15-Tag ist noch keine echte Galerie-/Shopify-Anbindung. Main-Referenzfreigabe, Runtimeintegration und Live-Aktivierung ausdrücklich unterscheiden. Diese aktuelle Nutzerentscheidung geht älteren anderslautenden Zuständigkeits-/UI-Plänen vor.
+
 Zuerst `ENTSCHEIDUNGEN.md` (Entscheidungsregister Chris), dann `START_HERE.md`, danach das aktive Paket in `UMSETZUNGSPAKETE.md` lesen. Detailanforderungen stehen im `NEUE-WERKSTATT-PLAN.md`; die aktuelle Entscheidung gilt vor historischen Quelltexten und Bildprompts.
 
 - Eigenständige neue App; vorhandenen Kundeneditor und Ressourcen gezielt wiederverwenden. Die ZIPs enthalten eingefrorene Referenzen, keine fertige neue App. `legacy-reference/` unverändert zum Vergleich halten; aktive Änderungen in klar benannten neuen Modulen.

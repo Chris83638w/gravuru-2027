@@ -1,3 +1,5 @@
+> **Aktuell, 08.11.2026:** Zuerst [PRIO-KONFI.md](PRIO-KONFI.md) und den jüngsten Abschnitt in [STATUS.md](STATUS.md) lesen. R15 ist die freigegebene Prio-Konfi-Basis; gemeinsame Änderungen nur Mika + Mikail, andere KIs nur zuvor bestätigte Produktoptionsdaten. Neuer Pilot: Edelstahl-Türschilder mit allen acht Katalogformen. Quellen sind gesichert; echte Galerie-/Shopify-Anbindung bleibt ein getrennt abzunehmender Schritt. Die folgenden datierten Veröffentlichungsangaben sind historisch.
+
 > **Für jede KI, die Designs anfasst (seit 29.10.2026):** [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) im Katalog-Repo lesen und befolgen – Vorlage 1:1 oder starke Referenz, 1–3 Schriften aus allen 84 und variieren, Motiv bleibt (Text weicht), nicht automatisch mittig, je Serie 2–3 ganz neue Designs (neue Motive nach `motive-eigene/`, nicht in den Kundenkonfi), Abnahme per Kontaktbogen 1:1 aus dem Konfi. Entscheidung #50.
 
 ## Projektüberblick und Claude-Prüfauftrag · 12.10.2026

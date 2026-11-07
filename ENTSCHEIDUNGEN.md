@@ -1,5 +1,9 @@
 # Entscheidungsregister Chris (gravuru 2027)
 
+## Neueste Nutzerentscheidung · Mikail, 08.11.2026 · Prio Konfi
+
+R15 ist der offizielle Prio Konfi; Sicherung und Übernahme nach main erlaubt. Gemeinsame Oberfläche/Kern/Funktionen/Preis-/Checkout-Verhalten/Ressourcenänderungen nur Mika in Abstimmung mit Mikail. Andere KIs bearbeiten bei Produktanlage ausschließlich vorher bestätigte produktbezogene Optionsdaten. Universelle Profile statt neuer Konfi-Kopien; Fotooption nur bei geeigneten Produkten, Logo getrennt prüfen. Neuer Pilot **Edelstahl-Türschilder: Form, Größe, Befestigung, alle vorhandenen Formen**; konkrete Größen/Preise/Befestigungen vor Anlage bestätigen. Galerieänderungen sollen bewusst zu den zugeordneten Shopify-Angeboten synchronisiert werden, historische Bestellstände bleiben erhalten. [Freigabe, Sicherung, bestehende Bedienregeln und Anschlussplan](PRIO-KONFI.md), [Mitteilung im ausdrücklichen Nutzerauftrag](https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6714512510). Main-Referenz ist keine schon erfolgte technische Integration oder Live-Freischaltung. Der folgende Stand vom 02.11. ist historisch.
+
 Stand 02.11.2026, 23:40 – von Claude (Operator) aus STATUS.md, Übergaben, Katalog und allen Issues zusammengestellt. **Pflichtlektüre für jede KI vor jedem Auftrag.** Bei Widerspruch gilt der neueste Eintrag. Einträge „Agent-Annahme“ sind keine Entscheidung von Chris.
 
 

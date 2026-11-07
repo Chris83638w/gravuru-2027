@@ -83,8 +83,46 @@ export async function ensureNativeAssets(sourceWorkshop,targetWorkshop,source){
 function mergeNamed(target,source,key){
  for(const item of source){const old=target.find(x=>x[key]===item[key]);if(old&&!same(old,item))syncFail('gallery_sync_resource_conflict','Eine gleich benannte Zielressource hat einen anderen Inhalt. Andere Designs bleiben geschützt.');if(!old)target.push(clone(item));}
 }
-export function composeNativeTarget(source,targetRecord,identity){
- const document=clone(targetRecord.document),config=document.config,p=config?.profile;
+// Family/native schemas store physical identity separately from labels and
+// preview colours. An absent optional steel/slate variant is not an invented
+// default; acrylic catalogue variants and a real thickness must be explicit.
+function materialIdentity(material,where){
+ if(typeof material?.kind!=='string'||!material.kind||!Number.isFinite(material.thicknessMm)||material.thicknessMm<=0)
+  syncFail('gallery_sync_material_identity',where+': Materialart oder tatsächliche Materialstärke fehlt. Zuerst die Materialvorlage vervollständigen.',422);
+ const value={kind:material.kind,thicknessMm:material.thicknessMm};
+ for(const key of ['variant','engravingSide']){
+  if(material[key]===undefined){
+   if(key==='variant'&&material.kind==='acrylic')syncFail('gallery_sync_material_identity',where+': Die Acrylglasvariante fehlt. Sie wird nicht aus Bezeichnungen oder Dateinamen abgeleitet.',422);
+   continue;
+  }
+  if(typeof material[key]!=='string'||!material[key].trim())syncFail('gallery_sync_material_identity',where+': Die Materialvariante oder Gravurseite ist nicht eindeutig angegeben.',422);
+  value[key]=material[key];
+ }
+ return value;
+}
+function nativeFamily(config,design,where){
+ const families=[];
+ const add=(value,required=false)=>{
+  if(value===undefined&&!required)return;
+  if(typeof value!=='string'||!value.trim())syncFail('gallery_sync_family_identity',where+': Eine gespeicherte Katalogfamilie ist unvollständig. Die Zuordnung muss zuerst geklärt werden.',422);
+  families.push(value);
+ };
+ add(design.katalog?.target?.familyId);
+ if(config.profile.familySelection)add(config.profile.familySelection.familyId,true);
+ if(config.familyAcrylic)add(config.familyAcrylic.familyId,true);
+ if(config.familyFormats){
+  const f=config.familyFormats,format=f.formats.find(row=>row.key===f.defaultSize),variant=format?.variants.find(row=>row.color===f.defaultColor),bank=f.designs.find(row=>row.id===design.id);
+  if(!variant?.designIds.includes(design.id)||!bank)syncFail('gallery_sync_family_identity',where+': Die native Familienvorlage gehört nicht zum ausgewählten Material-/Formatstand.',422);
+  add(variant.familyId,true);add(bank.katalog?.target?.familyId);
+  if(!same(materialIdentity(variant.material,where+' / Formatvorlage'),materialIdentity(config.profile.material,where)))
+   syncFail('gallery_sync_material_identity',where+': Material, Variante, Stärke oder Gravurseite der Formatvorlage widersprechen dem angezeigten Produkt.',422);
+ }
+ if(!families.length)syncFail('gallery_sync_family_identity',where+': Die ausdrückliche Katalogfamilie fehlt. Ältere Vorlagen müssen zuerst zugeordnet werden; Namen oder Dateipfade reichen nicht aus.',422);
+ if(families.some(value=>value!==families[0]))syncFail('gallery_sync_family_identity',where+': Die Katalogfamilien von Design und Material-/Formatvorlage widersprechen sich.',422);
+ return families[0];
+}
+export function assertNativeTargetIdentity(source,targetRecord,identity){
+ const document=targetRecord.document,config=document.config,p=config?.profile;
  const target=p?.designs.find(d=>d.id===identity.designId);
  if(!target||targetRecord.status==='archived'||document.kind!=='product')
   syncFail('gallery_sync_target','Das Ziel muss eine bestehende Shopkonfiguration mit genau diesem Design sein.',422);
@@ -96,6 +134,8 @@ export function composeNativeTarget(source,targetRecord,identity){
  if(!matchesOriginal(target))syncFail('gallery_sync_original_identity','Die Original-ID des Zieldesigns stimmt nicht mit der Galeriequelle überein. Eine unbekannte Alias-Zuordnung wird nicht übernommen.',422);
  if(!same(source.payload.geometry,p.geometry))syncFail('gallery_sync_geometry','Form oder Maße unterscheiden sich. Dafür ist zuerst eine ausdrücklich geprüfte Formatvorlage erforderlich.',422);
  if(source.payload.material.kind!==p.material.kind)syncFail('gallery_sync_material','Das Material unterscheidet sich. Dafür ist zuerst die bestätigte Materialvorlage erforderlich.',422);
+ if(!same(materialIdentity(source.payload.material,'Galeriequelle'),materialIdentity(p.material,'Shopziel')))
+  syncFail('gallery_sync_material','Materialvariante, Stärke oder Gravurseite unterscheiden sich. Dafür ist zuerst eine ausdrücklich passende Materialvorlage erforderlich.',422);
  if(!same(source.payload.processing,getProcessingProfile(p)))syncFail('gallery_sync_processing','Das Fertigungsverfahren unterscheidet sich. Dafür ist zuerst eine passende freigegebene Materialvorlage erforderlich.',422);
  if(config.familyFormats&&(config.familyFormats.formats.length!==1||config.familyFormats.formats[0].variants.length!==1))
   syncFail('gallery_sync_formats','Dieses Shopprodukt enthält mehrere Format-/Materialfassungen. Diese müssen zuerst einzeln mit geprüften Galerievorlagen zugeordnet werden.',422);
@@ -103,11 +143,18 @@ export function composeNativeTarget(source,targetRecord,identity){
   const family=config.familyFormats,cut=family.source?.shopProduct,format=family.formats.find(f=>f.key===family.defaultSize),variant=format?.variants.find(v=>v.color===family.defaultColor);
   if(cut?.defaultDesignId!==source.evidence.originalId||!variant?.designIds.includes(identity.designId))syncFail('gallery_sync_start_design','Das gespeicherte Startdesign der Format-/Shopzuordnung passt nicht zur Galeriequelle.',422);
  }
+ if(config.familyFormats){const bank=config.familyFormats.designs.find(d=>d.id===identity.designId);if(!bank)syncFail('gallery_sync_design','Die gemeinsame Formatvorlage fehlt.');if(!matchesOriginal(bank))syncFail('gallery_sync_original_identity','Die Original-ID der Formatvorlage stimmt nicht mit der Galeriequelle überein.',422);const mm=bank.katalog?.plateMm;if(mm&&(mm[0]!==p.geometry.width||mm[1]!==p.geometry.height))syncFail('gallery_sync_geometry','Die Formatvorlage benötigt eine eigene geprüfte Größenanpassung.',422);}
+ if(nativeFamily(source.record.document.config,source.payload.design,'Galeriequelle')!==nativeFamily(config,target,'Shopziel'))
+  syncFail('gallery_sync_family_identity','Galeriequelle und Shopziel gehören zu verschiedenen Katalogfamilien. Zuerst die ausdrücklich passende Material-/Familienvorlage zuordnen.',422);
  if(source.payload.design.objects.some(o=>o.type==='photoSlot')&&config.photo?.enabled!==true)
   syncFail('gallery_sync_photo_disabled','Für dieses Zielprodukt sind Fotos nicht bestätigt.',422);
+}
+export function composeNativeTarget(source,targetRecord,identity){
+ assertNativeTargetIdentity(source,targetRecord,identity);
+ const document=clone(targetRecord.document),config=document.config,target=config.profile.designs.find(d=>d.id===identity.designId);
  const replace=design=>{for(const key of changedDesignKeys){if(source.payload.design[key]===undefined)delete design[key];else design[key]=clone(source.payload.design[key]);}};
  replace(target);
- if(config.familyFormats){const bank=config.familyFormats.designs.find(d=>d.id===identity.designId);if(!bank)syncFail('gallery_sync_design','Die gemeinsame Formatvorlage fehlt.');if(!matchesOriginal(bank))syncFail('gallery_sync_original_identity','Die Original-ID der Formatvorlage stimmt nicht mit der Galeriequelle überein.',422);const mm=bank.katalog?.plateMm;if(mm&&(mm[0]!==p.geometry.width||mm[1]!==p.geometry.height))syncFail('gallery_sync_geometry','Die Formatvorlage benötigt eine eigene geprüfte Größenanpassung.',422);replace(bank);}
+ if(config.familyFormats)replace(config.familyFormats.designs.find(d=>d.id===identity.designId));
  document.elementRights[target.id]=clone(source.payload.rights);
  const resources=config.localResources;
  for(const [id,font]of Object.entries(source.payload.fonts)){

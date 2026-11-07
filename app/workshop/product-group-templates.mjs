@@ -66,21 +66,40 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
   }
   return map;
  }
- function source(key,revision){
-  const target=registry().get(key);if(!target)fail(404,'group_source_missing','Die Produktquelle ist nicht mehr zugeordnet.');
-  const current=repository.get(target.productId),record=revision===undefined?current:repository.get(target.productId,{revision:version(revision)}),document=record.document,p=document.config?.profile;
-  if(current.status==='archived'||current.document.kind!=='product'||!p||!Array.isArray(p.optionGroups))fail(422,'group_source_unsupported','Für diese Quelle fehlt ein aktiver nativer Produktstand mit Optionsbereichen.');
-  return {target,current,record,document};
+ function sourceLookup(){
+  // One operation owns its compact registry and at most TWO native records in
+  // total (current + historical share the limit). Fonts/images can be large:
+  // source listings must never retain a full document for every gallery product.
+  // Confirm and both execute checks create fresh lookups, never a service cache.
+  let targets;const records=new Map(),recordLimit=2;
+  const read=(key,load)=>{
+   let entry=records.get(key);
+   if(entry){records.delete(key);records.set(key,entry);}
+   else{
+    // Evict before loading so a third full native document is not accumulated.
+    if(records.size>=recordLimit)records.delete(records.keys().next().value);
+    try{entry={value:load()};}catch(error){entry={error};}records.set(key,entry);
+   }
+   if(Object.hasOwn(entry,'error'))throw entry.error;return entry.value;
+  };
+  return {get targets(){return targets??=registry();},source(key,revision){
+   const target=(targets??=registry()).get(key);if(!target)fail(404,'group_source_missing','Die Produktquelle ist nicht mehr zugeordnet.');
+   const current=read('head:'+target.productId,()=>repository.get(target.productId));
+   const requested=revision===undefined?current.revision:version(revision);
+   const record=requested===current.revision?current:read('revision:'+target.productId+':'+requested,()=>repository.get(target.productId,{revision:requested})),document=record.document,p=document.config?.profile;
+   if(current.status==='archived'||current.document.kind!=='product'||!p||!Array.isArray(p.optionGroups))fail(422,'group_source_unsupported','Für diese Quelle fehlt ein aktiver nativer Produktstand mit Optionsbereichen.');
+   return {target,current,record,document};
+  }};
  }
- function sourceView(key){
-  const {target,record,document}=source(key),p=document.config.profile;
+ function sourceView(key,lookup){
+  const {target,record,document}=lookup.source(key),p=document.config.profile;
   let currentOptions=null,currentPrice=null,issue=null;
   try{currentOptions=resolvedOptions(document.config,{});currentPrice=quote(document.config,[],p.defaultDesignId,currentOptions);}catch(error){issue=error.message;}
   return {...target,name:document.name,label:document.name,source:{productId:record.id,revision:record.revision},material:copy(p.material),geometry:copy(p.geometry),
    optionGroups:copy(p.optionGroups),optionFields:copy(p.optionFields||[]),currentOptions,currentPrice,
    issues:[...(!target.familyId?['Familienzuordnung offen.']:[]),...(!target.sizeKey?['Größenzuordnung offen.']:[]),...(issue?[issue]:[])]};
  }
- function validate(input){
+ function validateWithSources(input,lookup){
   keys(input,['schema','name','scope','targets','openQuestions']);
   if(input.schema!==PRODUCT_GROUP_TEMPLATE_SCHEMA)fail(422,'group_schema','Unbekanntes Vorlagenformat.');
   const d=copy(input);d.name=label(d.name);keys(d.scope,['lineId','subcategoryId']);identifier(d.scope.lineId);identifier(d.scope.subcategoryId);
@@ -90,7 +109,7 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
   for(const t of d.targets){
    keys(t,['key','source','familyId','sizeKey','material','optionGroups','optionFields']);identifier(t.key);keys(t.source,['productId','revision']);version(t.source.revision);
    if(seen.has(t.key))fail(422,'group_targets','Eine Material-/Größenzuordnung ist doppelt.');seen.add(t.key);
-   const {target,document}=source(t.key,t.source.revision),p=document.config.profile;
+   const {target,document}=lookup.source(t.key,t.source.revision),p=document.config.profile;
    if(t.source.productId!==target.productId||t.familyId!==target.familyId||t.sizeKey!==target.sizeKey||!same(t.material,p.material))fail(409,'group_source_changed','Material, Familie oder Größe widersprechen der gespeicherten Produktquelle.');
    subset(t.optionGroups,p.optionGroups,['name','required','defaultValueId','values'],'Optionsbereiche');
    for(const g of t.optionGroups){const base=p.optionGroups.find(v=>v.id===g.id);label(g.name,100);subset(g.values,base.values,['label'],'Auswahlmöglichkeiten');if(typeof g.required!=='boolean'||!g.values.length||!g.values.some(v=>v.id===g.defaultValueId))fail(422,'group_option_selection','Jeder Bereich braucht eine ausdrückliche Standardauswahl aus seinen angebotenen Werten.');for(const v of g.values)label(v.label,100);}
@@ -99,8 +118,9 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
   }
   return d;
  }
- function compile(t,name){
-  const {record,document}=source(t.key,t.source.revision),d=copy(document);
+ function validate(input){return validateWithSources(input,sourceLookup());}
+ function compile(t,name,lookup){
+  const {record,document}=lookup.source(t.key,t.source.revision),d=copy(document);
   // Older format selectors keep additional option definitions inside their
   // format records. A profile-only edit must never appear saved while those
   // records still offer the removed values. Their existing adapters remain
@@ -136,14 +156,14 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
   const template=get(plan.templateId);
   if(template.revision!==plan.templateRevision||template.sha256!==plan.templateHash)fail(409,'group_confirmation_stale','Die Vorlage wurde geändert. Den neuen konkreten Anlageplan erneut bestätigen.');
   if(!plan.offering||!same(offering(plan.scope),plan.offering))fail(409,'group_offering_changed','Die Materialauswahl der Unterkategorie wurde geändert oder ist noch offen. Den Anlageplan neu prüfen und bestätigen.');
-  validate(template.document);
-  for(const s of plan.sources){const {current,record}=source(s.key,s.revision);if(current.revision!==s.revision||hash(record.document)!==s.sha256)fail(409,'group_source_changed','Eine Produktquelle wurde geändert. Den Anlageplan neu erstellen und bestätigen.');}
+  const lookup=sourceLookup();validateWithSources(template.document,lookup);
+  for(const s of plan.sources){const {current,record}=lookup.source(s.key,s.revision);if(current.revision!==s.revision||hash(record.document)!==s.sha256)fail(409,'group_source_changed','Eine Produktquelle wurde geändert. Den Anlageplan neu erstellen und bestätigen.');}
   if(!plan.valid)fail(422,'group_plan_open','Offene Angaben oder ungültige Kombinationen zuerst klären.');
  }
  const resultRow=id=>db.prepare('SELECT document FROM product_group_creation_results WHERE tenant_id=? AND plan_id=?').get(tenant,id);
  const service={tenantId:tenant,
-  sources:()=>[...registry().keys()].map(key=>{try{return sourceView(key);}catch(e){return {...registry().get(key),label:key,issues:[e.message],unsupported:true};}}),
-  draft(input){keys(input,['name','scope','sourceKeys']);if(!Array.isArray(input.sourceKeys))fail(422,'group_targets','Produktquellen auswählen.');return validate({schema:PRODUCT_GROUP_TEMPLATE_SCHEMA,name:input.name,scope:input.scope,targets:input.sourceKeys.map(key=>{const s=sourceView(key);return {key:s.key,source:s.source,familyId:s.familyId,sizeKey:s.sizeKey,material:s.material,optionGroups:s.optionGroups,optionFields:s.optionFields};}),openQuestions:[]});},
+  sources(){const lookup=sourceLookup();return [...lookup.targets.keys()].map(key=>{try{return sourceView(key,lookup);}catch(e){return {...lookup.targets.get(key),label:key,issues:[e.message],unsupported:true};}});},
+  draft(input){keys(input,['name','scope','sourceKeys']);if(!Array.isArray(input.sourceKeys))fail(422,'group_targets','Produktquellen auswählen.');const lookup=sourceLookup();return validateWithSources({schema:PRODUCT_GROUP_TEMPLATE_SCHEMA,name:input.name,scope:input.scope,targets:input.sourceKeys.map(key=>{const s=sourceView(key,lookup);return {key:s.key,source:s.source,familyId:s.familyId,sizeKey:s.sizeKey,material:s.material,optionGroups:s.optionGroups,optionFields:s.optionFields};}),openQuestions:[]},lookup);},
   validate,get,
   list:()=>db.prepare('SELECT id FROM product_group_templates WHERE tenant_id=? ORDER BY rowid DESC').all(tenant).map(r=>get(r.id)),
   history:id=>{get(id);return db.prepare('SELECT revision FROM product_group_template_revisions WHERE tenant_id=? AND id=? ORDER BY revision DESC').all(tenant,id).map(r=>get(id,{revision:r.revision}));},
@@ -153,19 +173,19 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
    keys(input,['templateId','templateRevision','creationKey','products']);version(input.templateRevision);identifier(input.creationKey);
    if(!Array.isArray(input.products)||!input.products.length||input.products.length>100)fail(422,'group_creation_scope','Der konkrete Anlageumfang muss 1 bis 100 Produkte enthalten.');
    return transaction(()=>{
-    const template=get(input.templateId);if(template.revision!==input.templateRevision)fail(409,'group_revision_conflict','Die Vorlage wurde geändert. Bitte den aktuellen Stand prüfen.');validate(template.document);
+    const template=get(input.templateId);if(template.revision!==input.templateRevision)fail(409,'group_revision_conflict','Die Vorlage wurde geändert. Bitte den aktuellen Stand prüfen.');const lookup=sourceLookup();validateWithSources(template.document,lookup);
     const selectedOffering=offering(template.document.scope),issues=template.document.openQuestions.map(message=>({code:'open_question',message})),products=[],sources=new Map(),ids=new Set();
     if(!selectedOffering)issues.push({code:'offering_open',message:'Angebotene Materialien der Unterkategorie zuerst festlegen.'});
     for(const item of input.products){
      keys(item,['key','targetKey','name']);identifier(item.key);identifier(item.targetKey);label(item.name,200);
      if(ids.has(item.key))fail(422,'group_creation_scope','Ein Produkt ist im Anlageumfang doppelt.');ids.add(item.key);
      const t=template.document.targets.find(t=>t.key===item.targetKey);if(!t)fail(422,'group_creation_scope','Der Material-/Größenstand gehört nicht zur Vorlage.');
-     const {record,current}=source(t.key,t.source.revision);sources.set(t.key,{key:t.key,productId:record.id,revision:record.revision,sha256:hash(record.document)});
+     const {record,current}=lookup.source(t.key,t.source.revision);sources.set(t.key,{key:t.key,productId:record.id,revision:record.revision,sha256:hash(record.document)});
      if(current.revision!==record.revision)issues.push({key:item.key,code:'source_changed',message:'Die Quelle hat einen neueren Stand. Vorlage aktualisieren.'});
      if(!t.familyId||!t.sizeKey)issues.push({key:item.key,code:'target_open',message:'Familien- oder Größenzuordnung noch offen.'});
      if(selectedOffering&&t.familyId&&!selectedOffering.familyIds.includes(t.familyId))issues.push({key:item.key,code:'family_not_offered',message:'Diese Familie wird in der Unterkategorie nicht angeboten.'});
      try{
-      const compiled=compile(t,item.name),importKey='product-group:'+hash([input.creationKey,item.key]),fingerprint=hash(compiled.document),prior=repository.importItem(importKey);
+      const compiled=compile(t,item.name,lookup),importKey='product-group:'+hash([input.creationKey,item.key]),fingerprint=hash(compiled.document),prior=repository.importItem(importKey);
       if(prior&&prior.fingerprint!==fingerprint)issues.push({key:item.key,code:'creation_conflict',message:'Dieser Anlageumfang wurde bereits mit anderen Produktdaten verwendet.'});
       products.push({...copy(item),familyId:t.familyId,sizeKey:t.sizeKey,material:copy(t.material),geometry:copy(compiled.document.config.profile.geometry),optionGroups:copy(t.optionGroups),optionFields:copy(t.optionFields),...compiled,importKey,fingerprint,existingProductId:prior?.id||null});
      }catch(error){issues.push({key:item.key,code:error.code||'native_validation',message:error.message});}

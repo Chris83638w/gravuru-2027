@@ -9,6 +9,7 @@ import {makeProductDocument,validateProductDocument} from './product-model.mjs';
 import {createProductGroupTemplates} from './product-group-templates.mjs';
 import {galleryEditorDocument} from '../../scripts/fixtures/gallery-editor.mjs';
 import {doorbellFixture} from './test-fixtures/doorbell-config.mjs';
+import {galleryProductGroupSources} from '../../scripts/lib/gallery-management-targets.mjs';
 
 const isCode=code=>e=>e.code===code;
 function fixture(t){
@@ -138,4 +139,91 @@ test('transaction guard rechecks confirmation dependencies immediately before re
  const f=fixture(t),template=f.create(),p=f.plan(template),c=f.confirm(p),real=f.repository.importBatch;
  f.repository.importBatch=function(entries,options){f.setOffering({familyIds:['test-slate'],fingerprint:'changed-between-check-and-write'});return real.call(this,entries,options);};
  assert.throws(()=>f.execute(p,c),isCode('group_offering_changed'));assert.equal(f.repository.list().length,2);
+});
+
+test('348-product / 2449-target source listing reads independent large native documents linearly',t=>{
+ const native=galleryEditorDocument(),seed=native.config.profile.designs[0],targets=[],reads=new Map(),fontObjects=new WeakSet();let registryReads=0;
+ const designs=Array.from({length:8},(_,i)=>({...seed,id:i?'design-'+i:seed.id}));
+ const sourceJson=JSON.stringify({...native,config:{...native.config,profile:{...native.config.profile,designs}}});assert.ok(sourceJson.length>500000,'real native glyph payload, not a shared tiny-document fixture');
+ for(let d=0;d<8;d++)for(let p=0;p<(d===7?13:348);p++)targets.push({productId:'cfg-'+p,productKey:'product-'+p,sizeKey:'format-'+p,designId:designs[d].id});
+ assert.equal(targets.length,2449);
+ const repository={tenantId:'gravuru',validate:validateProductDocument,importBatch(){throw Error('Listing must never create products');},get(id){
+  reads.set(id,(reads.get(id)||0)+1);const document=JSON.parse(sourceJson);document.name='Synthetische Lastprüfung '+id;
+  assert.ok(!fontObjects.has(document.config.localResources.fonts));fontObjects.add(document.config.localResources.fonts);
+  // Like repository.get, every read parses an independent native document.
+  // The fixture does not itself hold all 348 full records in a reference map.
+  return {id,revision:1,status:'draft',document};
+ }};
+ const service=createProductGroupTemplates({filename:':memory:',repository,targets:()=>{registryReads++;return galleryProductGroupSources({repository},targets);}});t.after(()=>service.close());
+ const sources=service.sources();assert.equal(sources.length,348);assert.equal(registryReads,1);
+ assert.equal([...reads.values()].reduce((n,v)=>n+v,0),696,'one adapter read and one source-view read per unique product, independent of design-target count');
+ assert.ok([...reads.values()].every(n=>n===2));assert.ok(sources.every(s=>!s.unsupported&&s.source.revision===1));
+ assert.deepEqual(sources[0].optionGroups,native.config.profile.optionGroups);assert.deepEqual(sources[0].material,native.config.profile.material);
+ assert.ok(!JSON.stringify(sources).includes('svgFragment'));
+});
+
+test('native document cache holds two records total, including historical revisions',t=>{
+ const f=fixture(t),get=f.repository.get,reads=[],fontObjects=new WeakSet();let registryReads=0;
+ const newer=structuredClone(f.a.document);newer.name='Große native Quelle Stand 2';f.repository.save(f.a.id,newer,1);
+ const targets=[{key:'small',productId:f.a.id,familyId:'test-slate',sizeKey:'TEST-220X140'},{key:'large',productId:f.b.id,familyId:'test-slate',sizeKey:'TEST-300X200'},{key:'small-again',productId:f.a.id,familyId:'test-slate',sizeKey:'TEST-220X140'}];
+ const service=f.open({targets:()=>{registryReads++;return targets;}}),draft=service.draft({name:'Begrenzter Dokumentcache',scope:{lineId:'test-line',subcategoryId:'test-sub'},sourceKeys:targets.map(t=>t.key)});
+ for(const target of draft.targets)target.source.revision=1;
+ f.repository.get=function(id,options){
+  const record=get.call(this,id,options);assert.ok(JSON.stringify(record.document).length>500000);
+  assert.ok(!fontObjects.has(record.document.config.localResources.fonts));fontObjects.add(record.document.config.localResources.fonts);
+  reads.push([id,options?.revision??'head']);return record;
+ };
+ registryReads=0;service.validate(draft);assert.equal(registryReads,1);
+ // A-head + A-old occupy both slots. B-head must evict A-head; reusing A-old
+ // then requires both reads again. Separate unlimited head/revision maps fail.
+ assert.deepEqual(reads,[[f.a.id,'head'],[f.a.id,1],[f.b.id,'head'],[f.a.id,'head'],[f.a.id,1]]);
+ reads.length=0;service.validate(draft);assert.equal(registryReads,2);assert.equal(reads.length,5,'a new operation never reuses a previous native record');
+});
+
+test('source listing evicts old heads while retaining the two most recently used documents',t=>{
+ const f=fixture(t),third=f.repository.create(galleryEditorDocument({width:250,height:150})),get=f.repository.get,reads=[];
+ const sequence=[f.a.id,f.b.id,f.a.id,third.id,f.b.id,f.a.id];
+ const service=f.open({targets:()=>sequence.map((productId,i)=>({key:'alias-'+i,productId,familyId:'test-slate',sizeKey:'TEST-'+i}))});
+ f.repository.get=function(id,options){reads.push(id);return get.call(this,id,options);};
+ const views=service.sources();assert.equal(views.length,6);assert.ok(views.every(v=>!v.unsupported));
+ assert.deepEqual(reads,[f.a.id,f.b.id,third.id,f.b.id,f.a.id],'two slots reuse A after B, then evict old heads instead of retaining every product');
+});
+
+test('draft, validation, planning and confirmation reuse source heads only within each operation',t=>{
+ const f=fixture(t),get=f.repository.get;let registryReads=0;const reads=new Map();
+ f.repository.get=function(id,options){const key=id+':'+(options?.revision??'head');reads.set(key,(reads.get(key)||0)+1);return get.call(this,id,options);};
+ const service=f.open({targets:()=>{registryReads++;return [{key:'small',productId:f.a.id,familyId:'test-slate',sizeKey:'TEST-220X140'},{key:'large',productId:f.b.id,familyId:'test-slate',sizeKey:'TEST-300X200'}];}});
+ function measured(work,expectedIds=[f.a.id,f.b.id],expectedRegistry=1){reads.clear();registryReads=0;const result=work();assert.equal(registryReads,expectedRegistry);for(const id of expectedIds)assert.equal(reads.get(id+':head'),expectedRegistry);assert.ok([...reads.values()].every(n=>n<=expectedRegistry));return result;}
+ const draft=measured(()=>service.draft({name:'Testgruppe',scope:{lineId:'test-line',subcategoryId:'test-sub'},sourceKeys:['small','large']}));
+ measured(()=>service.validate(draft));const template=measured(()=>service.create(draft));
+ const changed=structuredClone(draft);changed.name='Neue Bezeichnung';const saved=measured(()=>service.save(template.id,changed,1));
+ const plan=measured(()=>service.plan({templateId:saved.id,templateRevision:saved.revision,creationKey:'bounded-source-reads',products:[{key:'one',targetKey:'small',name:'Erstes Produkt'},{key:'two',targetKey:'small',name:'Zweites Produkt aus derselben Quelle'},{key:'three',targetKey:'large',name:'Großes Produkt'}]}));assert.equal(plan.valid,true);
+ const confirmation=measured(()=>service.confirm({planId:plan.id,planHash:plan.planHash,accepted:true}));
+ const result=measured(()=>service.execute({planId:plan.id,planHash:plan.planHash,confirmationId:confirmation.confirmationId}),[f.a.id,f.b.id],2);
+ assert.equal(result.created,3);assert.equal(result.shopifyWrites,0);
+});
+
+test('historical revisions and failed aliases are each read once per operation and reread on the next',t=>{
+ const f=fixture(t),get=f.repository.get,reads=new Map();let registryReads=0,missing=true;
+ f.repository.get=function(id,options){const key=id+':'+(options?.revision??'head');reads.set(key,(reads.get(key)||0)+1);if(id==='missing'&&missing)throw Object.assign(Error('Quelle fehlt.'),{status:404});return get.call(this,id,options);};
+ const targets=[{key:'small',productId:f.a.id,familyId:'test-slate',sizeKey:'TEST-220X140'},{key:'alias',productId:f.a.id,familyId:'test-slate',sizeKey:'TEST-220X140'}];
+ const service=f.open({targets:()=>{registryReads++;return targets;}}),draft=service.draft({name:'Alias-Testgruppe',scope:{lineId:'test-line',subcategoryId:'test-sub'},sourceKeys:['small','alias']});
+ const newer=structuredClone(f.a.document);newer.name='Quelle Revision 2';f.repository.save(f.a.id,newer,1);reads.clear();registryReads=0;
+ service.validate(draft);assert.equal(registryReads,1);assert.deepEqual([...reads.entries()],[[f.a.id+':head',1],[f.a.id+':1',1]]);
+ reads.clear();service.validate(draft);assert.equal(reads.get(f.a.id+':head'),1);assert.equal(reads.get(f.a.id+':1'),1);assert.equal(registryReads,2);
+ targets.splice(0,targets.length,...['missing-one','missing-two'].map(key=>({key,productId:'missing',familyId:null,sizeKey:null})));reads.clear();registryReads=0;
+ const errors=service.sources();assert.equal(errors.length,2);assert.ok(errors.every(s=>s.unsupported&&s.issues.includes('Quelle fehlt.')));assert.equal(reads.get('missing:head'),1);assert.equal(registryReads,1);
+ service.sources();assert.equal(reads.get('missing:head'),2);assert.equal(registryReads,2);
+});
+
+test('fresh transaction guard detects source and target-material changes after the earlier execute preflight',t=>{
+ for(const change of ['source','target']){
+  const f=fixture(t),template=f.create(),plan=f.plan(template),confirmation=f.confirm(plan),real=f.repository.importBatch;
+  f.repository.importBatch=function(entries,options){
+   if(change==='source'){const newer=structuredClone(f.a.document);newer.name='Änderung direkt vor Schreibsperre';f.repository.save(f.a.id,newer,1);}
+   else f.setTargets([{key:'small',productId:f.a.id,familyId:'different-material-family',sizeKey:'TEST-220X140'},{key:'large',productId:f.b.id,familyId:'test-slate',sizeKey:'TEST-300X200'}]);
+   return real.call(this,entries,options);
+  };
+  assert.throws(()=>f.execute(plan,confirmation),isCode('group_source_changed'));assert.equal(f.repository.list().length,2,'no source snapshot from the preflight may bypass the guarded recheck');
+ }
 });

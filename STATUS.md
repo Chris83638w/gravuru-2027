@@ -1,3 +1,9 @@
+## 07.11.2026 · Codex/Mika · Demo R6: Ausführung, Fotoauswahl und Randgröße
+
+Nur vier angefragte Demo-Korrekturen: Ausführung als sechster Footerpunkt; beide Fotosymbole öffnen den vorhandenen Dateidialog; Schriftwahl auf kleinen Handyansichten sofort sichtbar; Vergrößern am Rand wird nicht mehr durch Text-Autofit aufgehoben. Grundaufbau und native Engine unverändert. **50/50 gezielte Tests bestanden**, lokale Touch-Simulation, kleine Ansichten und Desktop geprüft. Öffentlich: Footer-Ausführung, Schriftwahl, Fotoauswahl/Einfügen/Löschen bestätigt. Physischer Handytest bleibt offen.
+
+[R6 – frisch testen](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r6/22x14.html?fresh=1). Eigener Branch / Draft #193, Paket-Quellcommit `cb7edceb`. Quellarchiv vorab und private Hostsicherung vorhanden; alle 4067 vorherigen öffentlichen Dateien und geschützten Originale unverändert. Nur R6-Verzeichnis hinzugefügt, kein Main-Merge, Neustart, Kundenkonfi-, Galerie- oder Shopify-Schreiben. Neun öffentliche HTTP-Stichproben hashgleich. [Sicherung und genaue Prüfgrenzen](docs/handoffs/2026-11-07-mobile-demo-r6-sicherung.md), [Nachweise](docs/reviews/2026-11-07-mobile-demo/).
+
 ## 07.11.2026 · Codex/Mika · Demo R5: lesbare Textbearbeitung und PC-Ansicht
 
 Mikails gesammelte Demo-Bedienkorrekturen umgesetzt, ausschließlich auf `dev/mika-mobile-demo-20261107` / Draft #193. Großer nativer Textbereich unten, Schrift und Schrifthöhenregler darunter; obere Textleiste ausgeblendet. Foto-Shortcut rechts, eigener Gestalten-Einstieg, Ansicht/Reset oben, hervorgehobenes Fertig, fünf Footeraktionen mit Warenkorb rechts. Produkt-Tap schließt das Panel, Ziehen/Skalieren nicht. PC: große Tafel links, Bearbeitung rechts. Kein neuer Text-/Foto-/Preiszustand neben der nativen Engine. Nach Reset bleibt die Schriftgrößenbedienung erreichbar.

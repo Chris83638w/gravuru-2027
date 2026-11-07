@@ -1,3 +1,9 @@
+# Mobile Demo R6 – gezielte Korrekturen am 07.11.2026
+
+50/50 Tests bestanden. Lokale Browserprüfung: sechs Footeraktionen einschließlich Ausführung; Foto-Dateidialog, Import und Löschen; Text-Eckdrag links oben 36→59, ein Undo zurück auf 36; Schriftwahl bei 360×640 sichtbar; Tastaturhöhe 390×430 simuliert; Desktop 1440×900. Alle C3-Nutzdateien entsprechen dem Release. Öffentlich nach Veröffentlichung bei 390×708 bestätigt: Ausführung, sofort sichtbare Schriftwahl, Dateiauswahl über Foto unten, vollständiges Testbild und korrekter Preis nach Einfügen/Löschen. Physische Smartphone-Tastatur-/Touchabnahme und echte Bestellung nicht behauptet.
+
+[R6-Sicherung und Prüfumfang](docs/handoffs/2026-11-07-mobile-demo-r6-sicherung.md), [Textansicht](docs/reviews/2026-11-07-mobile-demo/r6-public-text-mobile.png), [Ausführung](docs/reviews/2026-11-07-mobile-demo/r6-public-options-mobile.png). 4067 vorherige öffentliche Dateien unverändert, nur getrennte Demo ergänzt.
+
 # Mobile Demo R5 – veröffentlichte Bedienkorrektur am 07.11.2026
 
 38 gezielte Tests bestanden; separater R5-Ordner auf Quellcommit `07d5d8a4`. Die [R5-Übergabe](docs/handoffs/2026-11-07-mobile-demo-r5-bedienung.md) dokumentiert die lokalen C3/C4/Final-Bedienfälle und die genaue Abgrenzung. Öffentlich geprüft: frischer 22×14-Start mit Bruno/19,99 €, Textpanel mit nativen Feldern und Schrifthöhenregler, mehrzeilige Eingabe, lesbares Textfeld bei simulierter Tastaturhöhe, PC-Anordnung bei 1440×900; im geprüften öffentlichen Ablauf keine Konsolenwarnungen/-fehler.

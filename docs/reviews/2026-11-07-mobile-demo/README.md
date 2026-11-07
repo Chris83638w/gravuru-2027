@@ -1,3 +1,19 @@
+# Demo R6 – Ausführung und Fotoauswahl
+
+[Aktuelle Demo frisch starten](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r6/22x14.html?fresh=1). Paket-Quellcommit `cb7edcebd672744ede652aa697e2ba3e4e65e7ed`. [Sicherung und Prüftrennung](../../handoffs/2026-11-07-mobile-demo-r6-sicherung.md).
+
+- `r6-tests.txt`: 50/50 gezielte Tests bestanden.
+- `browser-r6.json`: lokale Browsermessungen, Touch-/Tastatursimulation, C3/Release-Hashgleichheit.
+- `host-preflight-r6.json`, `host-publication-r6.json`: Hostsicherung, 4067 alte öffentliche Dateien und geschützte Originale unverändert; ausschließlich neuer R6-Ordner.
+- `http-public-r6.json`: neun HTTP-Stichproben, 200/gzip/no-store/noindex, hashgleich. Keine mobile Geschwindigkeitsmessung.
+- `r6-public-text-mobile.png`: öffentliche 390×708-Ansicht, Schriftwahl vollständig sichtbar, Ausführung im Footer.
+- `r6-public-photo-mobile.png`: im öffentlichen R6 über Footer-Foto gewählte Testdatei eingefügt. Danach gelöscht, Preis wieder 19,99 €.
+- `r6-public-options-mobile.png`: Ausführung öffnet die vorhandenen Produktoptionen.
+
+Physischer Android-/iOS-Test weiterhin offen. Keine echte Bestellung; Kundenkonfi, Shop, Galerie und Datenbanken unverändert.
+
+---
+
 # Demo R5 – Textbedienung und PC-Ansicht
 
 [22×14 frisch starten](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r5/22x14.html?fresh=1) · [30×20 frisch starten](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r5/30x20.html?fresh=1)

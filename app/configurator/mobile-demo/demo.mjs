@@ -1,6 +1,7 @@
 // Opt-in presentation adapter. The existing editor owns geometry, prices and actions.
 import {installDemoTextEditor} from './text-editor.mjs';
 import {installDemoEdgeResize} from './edge-resize.mjs';
+import {installDemoTextSelectionDismiss} from './text-selection-dismiss.mjs';
 
 // Keep the pre-keyboard height even on Android where innerHeight also shrinks.
 export function keyboardViewport(previous, {width, height, innerHeight, focused}) {
@@ -56,6 +57,8 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   // The object-size slider is separate from .ux-photo-position's crop controls.
   const photoSize = $('[data-photo-object-size]')?.closest('label');
   for (const node of [$('.ux-view-zoom'), photoSize, $('.ux-design-reset')]) move(node, controls);
+  const resetButton = controls.querySelector('.ux-design-reset button');
+  const priorReset = resetButton ? {nodes:[...resetButton.childNodes],text:resetButton.textContent} : null;
   const summary = make('div', 'md-summary'), title = make('span', 'md-product', 'Schiefer-Gedenktafel');
   const productButton = button('', 'md-product-button', () => open('options'));
   const optionsIcon=toolButtons.get('options')?.native.querySelector('svg'); if(optionsIcon)productButton.append(optionsIcon.cloneNode(true));
@@ -65,14 +68,14 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   const navButtons = new Map();
   for (const [key,label] of [['options','Ausführung'],['design','Designs'],['text','Text'],['motif','Motive'],['upload','Foto']]) {
     if (!toolButtons.has(key)) continue;
-    const b = button('', 'md-nav', () => key === 'upload' ? choosePhoto() : open(key)); b.dataset.demoSection = key;
+    const b = button('', 'md-nav', () => key === 'upload' && desktop() ? choosePhoto() : open(key)); b.dataset.demoSection = key;
     b.setAttribute('aria-label',label); const icon = toolButtons.get(key)?.native.querySelector('svg');
     if (icon) b.append(icon.cloneNode(true)); b.append(make('span','',label)); bar.append(b); navButtons.set(key,b);
   }
   const nativeUpload = $('#ux-panel-upload [data-ux=photo-upload]');
   function choosePhoto() {
-    // Both visible photo icons must reach the real chooser in this same user
-    // gesture. The original importer still owns file checks, prices and rights.
+    // The unchanged desktop shortcut reaches the original chooser directly.
+    // Mobile opens the photo panel first; its explicit upload uses native code.
     if (!open('upload',false)) return;
     if (!nativeUpload || nativeUpload.hidden || nativeUpload.disabled) return;
     nativeUpload.click();
@@ -96,10 +99,18 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   document.documentElement.dataset.mobileDemo = 'sheet';
   const pageStyle = make('style', ''); pageStyle.textContent = 'html[data-mobile-demo],html[data-mobile-demo] body{margin:0!important;padding:0!important;overflow:hidden!important;height:100%;background:#eef0f2}html[data-mobile-demo] main,html[data-mobile-demo] .c-main{margin:0!important;padding:0!important;max-width:none!important}html[data-mobile-demo] body>header,html[data-mobile-demo] body>footer{display:none!important}'; document.head.append(pageStyle);
   let current = 'closed', priorFocus = plus, resizeFrame = 0, disposed = false, viewportState, suppressPanel = false;
-  let textEditor;
+  let textEditor, textSelection;
   const desktop = () => window.innerWidth >= 1000;
   function resize() {
     if (disposed) return;
+    if (resetButton) {
+      const label = desktop() ? priorReset.text : 'Gestaltung zurücksetzen';
+      if (resetButton.textContent !== label) {
+        resetButton.textContent = '';
+        if (desktop() && priorReset.nodes.length) resetButton.append(...priorReset.nodes);
+        else resetButton.textContent = label;
+      }
+    }
     const viewport = window.visualViewport;
     const focused = !!r.activeElement?.matches?.('[data-ux-text]') || r.activeElement?.id === 'ux-size';
     viewportState = keyboardViewport(viewportState,{width:window.innerWidth || 390,height:viewport?.height || window.innerHeight,innerHeight:window.innerHeight,focused});
@@ -127,6 +138,7 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   }
   function shut(focus = true) {
     if (disposed) return;
+    if (!desktop()) textSelection?.dismiss();
     if (editor.contains(r.activeElement)) r.activeElement?.blur?.();
     if (desktop()) { open('menu',false); return; }
     current = 'closed'; el.dataset.demoSheet = 'closed';
@@ -238,12 +250,14 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   observer.observe($('[data-fk-total]'), { childList:true, subtree:true, characterData:true });
   if (photoSize) observer.observe(photoSize, { attributes:true, attributeFilter:['hidden'] });
   textEditor = installDemoTextEditor(el,{onFocusChange:resize});
+  textSelection = installDemoTextSelectionDismiss(el,{enabled:()=>!desktop()});
   const edgeResize = installDemoEdgeResize(el);
   shut(false);
   const api = { open, close:shut, dispose() {
     if (disposed) return;
     disposed = true;
     textEditor?.dispose();
+    textSelection?.dispose();
     edgeResize?.dispose();
     if (resizeFrame) cancelAnimationFrame(resizeFrame);
     observer.disconnect(); tabObserver.disconnect(); cleanups.forEach(fn => fn()); el.uxShowSection = oldShow;
@@ -257,6 +271,7 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
     restoreAttribute(document.documentElement, 'data-mobile-demo', priorPageDemo);
     if (finish) { finish.textContent = ''; if(priorFinish.nodes.length)finish.append(...priorFinish.nodes);else finish.textContent=priorFinish.text; restoreAttribute(finish, 'aria-label', priorFinish.label); }
     if (help) { help.textContent=''; if(priorHelp.nodes.length)help.append(...priorHelp.nodes);else help.textContent=priorHelp.text; restoreAttribute(help,'aria-label',priorHelp.label); }
+    if (resetButton) { resetButton.textContent=''; if(priorReset.nodes.length)resetButton.append(...priorReset.nodes);else resetButton.textContent=priorReset.text; }
     for (const [key,value] of priorViewport) value ? el.style.setProperty(key,value) : el.style.removeProperty(key);
     editor.inert = priorEditor.inert; delete el.dataset.mobileDemo; delete el.dataset.demoSheet; delete el.dataset.demoFullscreen; delete el.dataset.demoKeyboard; delete el.dataset.demoSelectedType; delete el.mobileDemo;
   }};

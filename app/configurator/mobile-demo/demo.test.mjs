@@ -317,8 +317,9 @@ test('footer opens native sections; a canvas tap closes but drag and buttons do 
   f.finish.click(); assert.ok(f.calls.some(c=>c[0]==='native-review'));
 });
 
-test('both photo icons open the original chooser synchronously and respect upload limits',async t => {
+test('desktop photo shortcuts retain the original chooser and upload limits',async t => {
   const env=runtime(t),f=editorFixture(env),upload=env.doc.createElement('button');
+  env.win.innerWidth=1440;
   upload.dataset.ux='photo-upload'; f.panels.get('upload').append(upload);
   let called=0; upload.addEventListener('click',()=>called++);
   const api=await installMobileDemo(f.el); const shortcut=f.r.querySelector('.md-photo-shortcut'),footer=f.r.querySelector('[data-demo-section=upload]');
@@ -328,4 +329,28 @@ test('both photo icons open the original chooser synchronously and respect uploa
   api.close();footer.click();assert.equal(called,2);assert.equal(f.panels.get('upload').hidden,false,'existing photos remain reachable at upload limit');
   upload.disabled=false;upload.hidden=true;env.flush();assert.equal(shortcut.hidden,true);shortcut.click();assert.equal(called,2);
   f.nativeTabs.get('upload').hidden=true;env.flush();footer.click();assert.equal(called,2);
+});
+
+test('mobile photo navigation opens the panel without a chooser; explicit upload remains native',async t => {
+  const env=runtime(t),f=editorFixture(env),upload=env.doc.createElement('button');
+  env.win.innerWidth=390;
+  upload.dataset.ux='photo-upload';f.panels.get('upload').append(upload);
+  let called=0;upload.addEventListener('click',()=>called++);
+  const api=await installMobileDemo(f.el),footer=f.r.querySelector('[data-demo-section=upload]');
+  footer.click();assert.equal(called,0);assert.equal(f.panels.get('upload').hidden,false);
+  upload.click();assert.equal(called,1);
+  api.close();upload.disabled=true;env.flush();footer.click();
+  assert.equal(called,1);assert.equal(footer.disabled,false);assert.equal(f.panels.get('upload').hidden,false);
+  upload.click();assert.equal(called,1);
+  f.nativeTabs.get('upload').hidden=true;env.flush();
+  assert.equal(footer.hidden,true);assert.deepEqual(f.el.state,f.original);
+});
+
+test('mobile reset is clearly named and still delegates confirmation; disposal restores its content',async t => {
+  const env=runtime(t),f=editorFixture(env),reset=f.reset.querySelector('button');
+  env.win.innerWidth=390;reset.textContent='Zurücksetzen';
+  const api=await installMobileDemo(f.el);
+  assert.equal(reset.textContent,'Gestaltung zurücksetzen');reset.click();
+  assert.ok(f.calls.some(c=>c[0]==='reset-confirmation'));assert.deepEqual(f.el.state,f.original);
+  api.dispose();assert.equal(reset.textContent,'Zurücksetzen');
 });

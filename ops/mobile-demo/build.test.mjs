@@ -29,6 +29,7 @@ function fixture(t){
  write('app/designs/acrylic-unser-anfang/base.webp','base');
  write('app/configurator/mobile-demo/demo.mjs',"import {installDemoEdgeResize} from './edge-resize.mjs';if(window.GravuruMobileDemo)window.demoLoaded=true;");write('app/configurator/mobile-demo/demo.css',':host{color:#111}');write('app/configurator/mobile-demo/text-editor.mjs','export const installDemoTextEditor=()=>null;');write('app/configurator/mobile-demo/shopping-cart.svg','<svg/>');
  write('app/configurator/mobile-demo/edge-resize.mjs',"import {data} from '../variant-m/module.mjs';export const installDemoEdgeResize=()=>data;");
+ write('app/configurator/mobile-demo/text-selection-dismiss.mjs','export const installDemoTextSelectionDismiss=()=>null;');
  const font={label:'Real Font',regular:{units:1000,glyphs:{A:{d:'M0 0L500 1000',a:500},'ä':{d:'M3 4L5 6',a:510}}},bold:{units:1000,glyphs:{A:{d:'M1 0L501 1000',a:510}}}};
  const designs=Array.from({length:43},(_,i)=>({id:'original-'+i,objects:[{id:'text-1',type:'text',text:'Bruno '+i,font:'Real Font',x:10+i,y:22}]}));
  const profile={id:'original-product',revision:'original-product:2',binding:{kind:'local-review',productId:'original-product'},material:{kind:'slate'},designs,geometry:{width:220,height:140},features:{orderEnabled:false}};
@@ -65,6 +66,7 @@ test('full models retain every design, glyph and groundplate; only demo identiti
  assert.equal(fs.existsSync(path.join(root,'configurator/variant-m/module.test.mjs')),false);
  assert.match(fs.readFileSync(path.join(root,'demo.mjs'),'utf8'),/from '\.\/configurator\/mobile-demo\/edge-resize\.mjs'/);
  assert.match(fs.readFileSync(path.join(root,'configurator/mobile-demo/edge-resize.mjs'),'utf8'),/from '\.\.\/variant-m\/module\.mjs'/);
+ assert.equal(fs.readFileSync(path.join(root,'text-selection-dismiss.mjs'),'utf8'),'export const installDemoTextSelectionDismiss=()=>null;');
  assert.equal(manifest.files['demo.mjs'].sourceSha256,hash(fs.readFileSync(path.join(f.source,'app/configurator/mobile-demo/demo.mjs'))));
  assert.equal(fs.readFileSync(path.join(root,'_runtime/images/blank.webp'),'utf8'),'unchanged image');
  const bundle=fs.readFileSync(path.join(root,'_bundle/editor-0000000000000000.mjs'),'utf8');

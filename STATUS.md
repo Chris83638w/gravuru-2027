@@ -1,6 +1,6 @@
 ## 07.11.2026 · Codex/Mika · Demo R14: PC-Textbereich und Texthinweis
 
-Nur getrennte Demo: Text-hinzufügen auf üblicher Laptop-Höhe sichtbar; PC-Werkzeugeübersicht erhält native Warenkorbaktion, einzelne Bereiche behalten Fertig. Veralteter Einpasshinweis wird nach erfolgreicher erneuter Prüfung bereinigt, echte Fehler bleiben. Vorab vollständig gesichert; [Übergabe](docs/handoffs/2026-11-07-mobile-demo-r14-pc-und-texthinweis.md). Zoom-/Ausführungsmenü-Vorschläge bleiben offen. Veröffentlichung und endgültige Belege folgen.
+Nur getrennte Demo: Text-hinzufügen auf üblicher Laptop-Höhe sichtbar; PC-Werkzeugeübersicht erhält native Warenkorbaktion, einzelne Bereiche behalten Fertig. Veralteter Einpasshinweis wird nach erfolgreicher erneuter Prüfung bereinigt, echte Fehler bleiben. Vorab vollständig gesichert; [Übergabe und Nachweise](docs/handoffs/2026-11-07-mobile-demo-r14-pc-und-texthinweis.md). [R14 frisch testen](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r14/22x14.html?fresh=1): 249 Tests, 17 HTTP-Stichproben und öffentliche PC-/Mobil-Viewportprüfung bestanden. 20.215 alte Public-Dateien unverändert. Zoom-/Ausführungsmenü-Vorschläge bleiben offen. Kein echter Checkout in der statischen Demo, kein Shop-Schreiben oder Main-Merge.
 
 ## 07.11.2026 · Codex/Mika · Demo R13: kleine Motive greifen und begrenzen
 

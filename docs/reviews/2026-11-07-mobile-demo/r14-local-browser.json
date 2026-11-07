@@ -1,0 +1,79 @@
+{
+  "mobile": {
+    "close": "Fertig",
+    "font": {
+      "bottom": 625.7578125,
+      "height": 44,
+      "left": 9,
+      "right": 381,
+      "top": 581.7578125,
+      "width": 372,
+      "x": 9,
+      "y": 581.7578125
+    },
+    "status": "",
+    "textarea": {
+      "bottom": 560.7578125,
+      "height": 91,
+      "left": 9,
+      "right": 381,
+      "top": 469.7578125,
+      "width": 372,
+      "x": 9,
+      "y": 469.7578125
+    },
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  "desktop": {
+    "button": {
+      "bottom": 639.6875,
+      "height": 44,
+      "left": 986.8671875,
+      "right": 1335,
+      "top": 595.6875,
+      "width": 348.1328125,
+      "x": 986.8671875,
+      "y": 595.6875
+    },
+    "editor": {
+      "bottom": 692,
+      "height": 572,
+      "left": 969.8671875,
+      "right": 1366,
+      "top": 120,
+      "width": 396.1328125,
+      "x": 969.8671875,
+      "y": 120
+    },
+    "status": "",
+    "textarea": {
+      "bottom": 319,
+      "height": 61,
+      "left": 986.8671875,
+      "right": 1335,
+      "top": 258,
+      "width": 348.1328125,
+      "x": 986.8671875,
+      "y": 258
+    },
+    "viewport": [
+      1366,
+      768
+    ]
+  },
+  "fit": {
+    "failed": "Text konnte noch nicht automatisch eingepasst werden. Bitte Position prüfen.",
+    "font": "Allura",
+    "objectsUnchanged": true,
+    "recovered": ""
+  },
+  "validation": {
+    "alert": "Pflichtfeld: Bitte deinen eigenen Text eingeben.",
+    "close": "Fertig",
+    "panel": "Text",
+    "status": "Name: Pflichtfeld: Bitte deinen eigenen Text eingeben."
+  }
+}

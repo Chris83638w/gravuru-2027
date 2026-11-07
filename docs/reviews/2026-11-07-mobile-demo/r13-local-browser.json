@@ -1,0 +1,981 @@
+{
+  "touchGrip": {
+    "before": {
+      "object": {
+        "id": "motiv-1",
+        "x": 110,
+        "y": 105,
+        "w": 9,
+        "h": 7.728832325803372,
+        "rotation": 0
+      },
+      "selected": "motiv-1",
+      "center": {
+        "x": 195,
+        "y": 489.130859375
+      },
+      "scene": {
+        "x": 28,
+        "y": 329.7265625,
+        "width": 334,
+        "height": 212.5390625
+      },
+      "grab": {
+        "box": {
+          "x": 173.0006561279297,
+          "y": 467.13153076171875,
+          "width": 43.998687744140625,
+          "height": 43.9986572265625,
+          "top": 467.13153076171875,
+          "right": 216.9993438720703,
+          "bottom": 511.13018798828125,
+          "left": 173.0006561279297
+        },
+        "dataObject": null
+      },
+      "handles": [
+        {
+          "corner": "-1,-1",
+          "kind": "scale",
+          "box": {
+            "x": 129.5,
+            "y": 423.625,
+            "width": 19,
+            "height": 19,
+            "top": 423.625,
+            "right": 148.5,
+            "bottom": 442.625,
+            "left": 129.5
+          },
+          "hidden": false
+        },
+        {
+          "corner": "1,-1",
+          "kind": "scale",
+          "box": {
+            "x": 241.5,
+            "y": 423.625,
+            "width": 19,
+            "height": 19,
+            "top": 423.625,
+            "right": 260.5,
+            "bottom": 442.625,
+            "left": 241.5
+          },
+          "hidden": false
+        },
+        {
+          "corner": "-1,1",
+          "kind": "scale",
+          "box": {
+            "x": 129.5,
+            "y": 535.625,
+            "width": 19,
+            "height": 19,
+            "top": 535.625,
+            "right": 148.5,
+            "bottom": 554.625,
+            "left": 129.5
+          },
+          "hidden": false
+        },
+        {
+          "corner": "1,1",
+          "kind": "scale",
+          "box": {
+            "x": 241.5,
+            "y": 535.625,
+            "width": 19,
+            "height": 19,
+            "top": 535.625,
+            "right": 260.5,
+            "bottom": 554.625,
+            "left": 241.5
+          },
+          "hidden": false
+        },
+        {
+          "kind": "rotate",
+          "box": {
+            "x": 185.5,
+            "y": 419.625,
+            "width": 19,
+            "height": 19,
+            "top": 419.625,
+            "right": 204.5,
+            "bottom": 438.625,
+            "left": 185.5
+          },
+          "hidden": false
+        },
+        {
+          "box": {
+            "x": 240,
+            "y": 474.125,
+            "width": 30,
+            "height": 30,
+            "top": 474.125,
+            "right": 270,
+            "bottom": 504.125,
+            "left": 240
+          },
+          "hidden": false
+        }
+      ],
+      "history": 0,
+      "others": "[{\"id\":\"text-1\",\"type\":\"text\",\"text\":\"Bruno\",\"font\":\"Allura\",\"size\":35.77,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":42.924240020130284,\"x\":60.637,\"y\":42.356,\"w\":77.33474000000001,\"h\":42.924,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"name\",\"required\":true},{\"id\":\"text-2\",\"type\":\"text\",\"text\":\"* 14.03.2011   † 22.08.2024\",\"font\":\"Montserrat Light\",\"size\":7.87,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.443520243840487,\"x\":60.637,\"y\":68.408,\"w\":94.44,\"h\":9.443999999999999,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"daten\",\"required\":false},{\"id\":\"text-3\",\"type\":\"text\",\"text\":\"Treu bis zum\\nletzten Atemzug.\",\"font\":\"Bellefair\",\"size\":8,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.600000000000007,\"x\":60.637,\"y\":97.146,\"w\":50.816,\"h\":19.200000000000006,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"spruch\",\"required\":false}]"
+    },
+    "after": {
+      "object": {
+        "id": "motiv-1",
+        "x": 139.64161682128906,
+        "y": 91.41041616290168,
+        "w": 9,
+        "h": 7.728832325803372,
+        "rotation": 0
+      },
+      "selected": "motiv-1",
+      "center": {
+        "x": 240.0013637195934,
+        "y": 468.50002074284265
+      },
+      "scene": {
+        "x": 28,
+        "y": 329.7265625,
+        "width": 334,
+        "height": 212.5390625
+      },
+      "grab": {
+        "box": {
+          "x": 218.00067138671875,
+          "y": 446.50067138671875,
+          "width": 43.9986572265625,
+          "height": 43.998687744140625,
+          "top": 446.50067138671875,
+          "right": 261.99932861328125,
+          "bottom": 490.4993591308594,
+          "left": 218.00067138671875
+        },
+        "dataObject": null
+      },
+      "handles": [
+        {
+          "corner": "-1,-1",
+          "kind": "scale",
+          "box": {
+            "x": 174.5,
+            "y": 403,
+            "width": 19,
+            "height": 19,
+            "top": 403,
+            "right": 193.5,
+            "bottom": 422,
+            "left": 174.5
+          },
+          "hidden": false
+        },
+        {
+          "corner": "1,-1",
+          "kind": "scale",
+          "box": {
+            "x": 286.5,
+            "y": 403,
+            "width": 19,
+            "height": 19,
+            "top": 403,
+            "right": 305.5,
+            "bottom": 422,
+            "left": 286.5
+          },
+          "hidden": false
+        },
+        {
+          "corner": "-1,1",
+          "kind": "scale",
+          "box": {
+            "x": 174.5,
+            "y": 514.9921875,
+            "width": 19,
+            "height": 19,
+            "top": 514.9921875,
+            "right": 193.5,
+            "bottom": 533.9921875,
+            "left": 174.5
+          },
+          "hidden": false
+        },
+        {
+          "corner": "1,1",
+          "kind": "scale",
+          "box": {
+            "x": 286.5,
+            "y": 514.9921875,
+            "width": 19,
+            "height": 19,
+            "top": 514.9921875,
+            "right": 305.5,
+            "bottom": 533.9921875,
+            "left": 286.5
+          },
+          "hidden": false
+        },
+        {
+          "kind": "rotate",
+          "box": {
+            "x": 230.5,
+            "y": 399,
+            "width": 19,
+            "height": 19,
+            "top": 399,
+            "right": 249.5,
+            "bottom": 418,
+            "left": 230.5
+          },
+          "hidden": false
+        },
+        {
+          "box": {
+            "x": 285,
+            "y": 453.5,
+            "width": 30,
+            "height": 30,
+            "top": 453.5,
+            "right": 315,
+            "bottom": 483.5,
+            "left": 285
+          },
+          "hidden": false
+        }
+      ],
+      "history": 1,
+      "others": "[{\"id\":\"text-1\",\"type\":\"text\",\"text\":\"Bruno\",\"font\":\"Allura\",\"size\":35.77,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":42.924240020130284,\"x\":60.637,\"y\":42.356,\"w\":77.33474000000001,\"h\":42.924,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"name\",\"required\":true},{\"id\":\"text-2\",\"type\":\"text\",\"text\":\"* 14.03.2011   † 22.08.2024\",\"font\":\"Montserrat Light\",\"size\":7.87,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.443520243840487,\"x\":60.637,\"y\":68.408,\"w\":94.44,\"h\":9.443999999999999,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"daten\",\"required\":false},{\"id\":\"text-3\",\"type\":\"text\",\"text\":\"Treu bis zum\\nletzten Atemzug.\",\"font\":\"Bellefair\",\"size\":8,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.600000000000007,\"x\":60.637,\"y\":97.146,\"w\":50.816,\"h\":19.200000000000006,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"spruch\",\"required\":false}]"
+    }
+  },
+  "checks": [],
+  "undo": {
+    "object": {
+      "id": "motiv-1",
+      "x": 110,
+      "y": 105,
+      "w": 9,
+      "h": 7.728832325803372,
+      "rotation": 0
+    },
+    "selected": "motiv-1",
+    "center": {
+      "x": 195,
+      "y": 489.130859375
+    },
+    "scene": {
+      "x": 28,
+      "y": 329.7265625,
+      "width": 334,
+      "height": 212.5390625
+    },
+    "grab": {
+      "box": {
+        "x": 173.0006561279297,
+        "y": 467.13153076171875,
+        "width": 43.998687744140625,
+        "height": 43.9986572265625,
+        "top": 467.13153076171875,
+        "right": 216.9993438720703,
+        "bottom": 511.13018798828125,
+        "left": 173.0006561279297
+      },
+      "dataObject": null
+    },
+    "handles": [
+      {
+        "corner": "-1,-1",
+        "kind": "scale",
+        "box": {
+          "x": 129.5,
+          "y": 423.625,
+          "width": 19,
+          "height": 19,
+          "top": 423.625,
+          "right": 148.5,
+          "bottom": 442.625,
+          "left": 129.5
+        },
+        "hidden": false
+      },
+      {
+        "corner": "1,-1",
+        "kind": "scale",
+        "box": {
+          "x": 241.5,
+          "y": 423.625,
+          "width": 19,
+          "height": 19,
+          "top": 423.625,
+          "right": 260.5,
+          "bottom": 442.625,
+          "left": 241.5
+        },
+        "hidden": false
+      },
+      {
+        "corner": "-1,1",
+        "kind": "scale",
+        "box": {
+          "x": 129.5,
+          "y": 535.625,
+          "width": 19,
+          "height": 19,
+          "top": 535.625,
+          "right": 148.5,
+          "bottom": 554.625,
+          "left": 129.5
+        },
+        "hidden": false
+      },
+      {
+        "corner": "1,1",
+        "kind": "scale",
+        "box": {
+          "x": 241.5,
+          "y": 535.625,
+          "width": 19,
+          "height": 19,
+          "top": 535.625,
+          "right": 260.5,
+          "bottom": 554.625,
+          "left": 241.5
+        },
+        "hidden": false
+      },
+      {
+        "kind": "rotate",
+        "box": {
+          "x": 185.5,
+          "y": 419.625,
+          "width": 19,
+          "height": 19,
+          "top": 419.625,
+          "right": 204.5,
+          "bottom": 438.625,
+          "left": 185.5
+        },
+        "hidden": false
+      },
+      {
+        "box": {
+          "x": 240,
+          "y": 474.125,
+          "width": 30,
+          "height": 30,
+          "top": 474.125,
+          "right": 270,
+          "bottom": 504.125,
+          "left": 240
+        },
+        "hidden": false
+      }
+    ],
+    "history": 0,
+    "others": "[{\"id\":\"text-1\",\"type\":\"text\",\"text\":\"Bruno\",\"font\":\"Allura\",\"size\":35.77,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":42.924240020130284,\"x\":60.637,\"y\":42.356,\"w\":77.33474000000001,\"h\":42.924,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"name\",\"required\":true},{\"id\":\"text-2\",\"type\":\"text\",\"text\":\"* 14.03.2011   † 22.08.2024\",\"font\":\"Montserrat Light\",\"size\":7.87,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.443520243840487,\"x\":60.637,\"y\":68.408,\"w\":94.44,\"h\":9.443999999999999,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"daten\",\"required\":false},{\"id\":\"text-3\",\"type\":\"text\",\"text\":\"Treu bis zum\\nletzten Atemzug.\",\"font\":\"Bellefair\",\"size\":8,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.600000000000007,\"x\":60.637,\"y\":97.146,\"w\":50.816,\"h\":19.200000000000006,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"spruch\",\"required\":false}]"
+  },
+  "corner": {
+    "object": {
+      "id": "motiv-1",
+      "x": 110,
+      "y": 105,
+      "w": 14.625292020375031,
+      "h": 12.55960330459874,
+      "rotation": 0
+    },
+    "selected": "motiv-1",
+    "center": {
+      "x": 195,
+      "y": 489.130859375
+    },
+    "scene": {
+      "x": 28,
+      "y": 329.7265625,
+      "width": 334,
+      "height": 212.5390625
+    },
+    "grab": {
+      "box": {
+        "x": 173.0006561279297,
+        "y": 467.13153076171875,
+        "width": 43.998687744140625,
+        "height": 43.9986572265625,
+        "top": 467.13153076171875,
+        "right": 216.9993438720703,
+        "bottom": 511.13018798828125,
+        "left": 173.0006561279297
+      },
+      "dataObject": null
+    },
+    "handles": [
+      {
+        "corner": "-1,-1",
+        "kind": "scale",
+        "box": {
+          "x": 129.5,
+          "y": 423.625,
+          "width": 19,
+          "height": 19,
+          "top": 423.625,
+          "right": 148.5,
+          "bottom": 442.625,
+          "left": 129.5
+        },
+        "hidden": false
+      },
+      {
+        "corner": "1,-1",
+        "kind": "scale",
+        "box": {
+          "x": 241.5,
+          "y": 423.625,
+          "width": 19,
+          "height": 19,
+          "top": 423.625,
+          "right": 260.5,
+          "bottom": 442.625,
+          "left": 241.5
+        },
+        "hidden": false
+      },
+      {
+        "corner": "-1,1",
+        "kind": "scale",
+        "box": {
+          "x": 129.5,
+          "y": 535.625,
+          "width": 19,
+          "height": 19,
+          "top": 535.625,
+          "right": 148.5,
+          "bottom": 554.625,
+          "left": 129.5
+        },
+        "hidden": false
+      },
+      {
+        "corner": "1,1",
+        "kind": "scale",
+        "box": {
+          "x": 241.5,
+          "y": 535.625,
+          "width": 19,
+          "height": 19,
+          "top": 535.625,
+          "right": 260.5,
+          "bottom": 554.625,
+          "left": 241.5
+        },
+        "hidden": false
+      },
+      {
+        "kind": "rotate",
+        "box": {
+          "x": 185.5,
+          "y": 419.625,
+          "width": 19,
+          "height": 19,
+          "top": 419.625,
+          "right": 204.5,
+          "bottom": 438.625,
+          "left": 185.5
+        },
+        "hidden": false
+      },
+      {
+        "box": {
+          "x": 240,
+          "y": 474.125,
+          "width": 30,
+          "height": 30,
+          "top": 474.125,
+          "right": 270,
+          "bottom": 504.125,
+          "left": 240
+        },
+        "hidden": false
+      }
+    ],
+    "history": 1,
+    "others": "[{\"id\":\"text-1\",\"type\":\"text\",\"text\":\"Bruno\",\"font\":\"Allura\",\"size\":35.77,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":42.924240020130284,\"x\":60.637,\"y\":42.356,\"w\":77.33474000000001,\"h\":42.924,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"name\",\"required\":true},{\"id\":\"text-2\",\"type\":\"text\",\"text\":\"* 14.03.2011   † 22.08.2024\",\"font\":\"Montserrat Light\",\"size\":7.87,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.443520243840487,\"x\":60.637,\"y\":68.408,\"w\":94.44,\"h\":9.443999999999999,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"daten\",\"required\":false},{\"id\":\"text-3\",\"type\":\"text\",\"text\":\"Treu bis zum\\nletzten Atemzug.\",\"font\":\"Bellefair\",\"size\":8,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.600000000000007,\"x\":60.637,\"y\":97.146,\"w\":50.816,\"h\":19.200000000000006,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"spruch\",\"required\":false}]"
+  },
+  "edge": {
+    "object": {
+      "id": "motiv-1",
+      "x": 4.5,
+      "y": 105,
+      "w": 9,
+      "h": 7.728832325803372,
+      "rotation": 0
+    },
+    "selected": "motiv-1",
+    "center": {
+      "x": 34.83181818181818,
+      "y": 489.130859375
+    },
+    "scene": {
+      "x": 28,
+      "y": 329.7265625,
+      "width": 334,
+      "height": 212.5390625
+    },
+    "grab": {
+      "box": {
+        "x": 12.837296485900879,
+        "y": 467.13153076171875,
+        "width": 43.998680114746094,
+        "height": 43.9986572265625,
+        "top": 467.13153076171875,
+        "right": 56.83597660064697,
+        "bottom": 511.13018798828125,
+        "left": 12.837296485900879
+      },
+      "dataObject": null
+    },
+    "handles": [
+      {
+        "corner": "-1,-1",
+        "kind": "scale",
+        "box": {
+          "x": -30.6640625,
+          "y": 423.625,
+          "width": 19,
+          "height": 19,
+          "top": 423.625,
+          "right": -11.6640625,
+          "bottom": 442.625,
+          "left": -30.6640625
+        },
+        "hidden": false
+      },
+      {
+        "corner": "1,-1",
+        "kind": "scale",
+        "box": {
+          "x": 81.328125,
+          "y": 423.625,
+          "width": 19,
+          "height": 19,
+          "top": 423.625,
+          "right": 100.328125,
+          "bottom": 442.625,
+          "left": 81.328125
+        },
+        "hidden": false
+      },
+      {
+        "corner": "-1,1",
+        "kind": "scale",
+        "box": {
+          "x": -30.6640625,
+          "y": 535.625,
+          "width": 19,
+          "height": 19,
+          "top": 535.625,
+          "right": -11.6640625,
+          "bottom": 554.625,
+          "left": -30.6640625
+        },
+        "hidden": false
+      },
+      {
+        "corner": "1,1",
+        "kind": "scale",
+        "box": {
+          "x": 81.328125,
+          "y": 535.625,
+          "width": 19,
+          "height": 19,
+          "top": 535.625,
+          "right": 100.328125,
+          "bottom": 554.625,
+          "left": 81.328125
+        },
+        "hidden": false
+      },
+      {
+        "kind": "rotate",
+        "box": {
+          "x": 25.328125,
+          "y": 419.625,
+          "width": 19,
+          "height": 19,
+          "top": 419.625,
+          "right": 44.328125,
+          "bottom": 438.625,
+          "left": 25.328125
+        },
+        "hidden": false
+      },
+      {
+        "box": {
+          "x": 79.828125,
+          "y": 474.125,
+          "width": 30,
+          "height": 30,
+          "top": 474.125,
+          "right": 109.828125,
+          "bottom": 504.125,
+          "left": 79.828125
+        },
+        "hidden": false
+      }
+    ],
+    "history": 1,
+    "others": "[{\"id\":\"text-1\",\"type\":\"text\",\"text\":\"Bruno\",\"font\":\"Allura\",\"size\":35.77,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":42.924240020130284,\"x\":60.637,\"y\":42.356,\"w\":77.33474000000001,\"h\":42.924,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"name\",\"required\":true},{\"id\":\"text-2\",\"type\":\"text\",\"text\":\"* 14.03.2011   † 22.08.2024\",\"font\":\"Montserrat Light\",\"size\":7.87,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.443520243840487,\"x\":60.637,\"y\":68.408,\"w\":94.44,\"h\":9.443999999999999,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"daten\",\"required\":false},{\"id\":\"text-3\",\"type\":\"text\",\"text\":\"Treu bis zum\\nletzten Atemzug.\",\"font\":\"Bellefair\",\"size\":8,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.600000000000007,\"x\":60.637,\"y\":97.146,\"w\":50.816,\"h\":19.200000000000006,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"spruch\",\"required\":false}]"
+  },
+  "neighborSelected": "text-2",
+  "maxCorner": {
+    "object": {
+      "id": "motiv-1",
+      "x": 110,
+      "y": 70,
+      "w": 163.02591994309168,
+      "h": 140,
+      "rotation": 0
+    },
+    "selected": "motiv-1",
+    "center": {
+      "x": 195,
+      "y": 435.99609375
+    },
+    "scene": {
+      "x": 28,
+      "y": 329.7265625,
+      "width": 334,
+      "height": 212.5390625
+    },
+    "grab": null,
+    "handles": [
+      {
+        "corner": "-1,-1",
+        "kind": "scale",
+        "box": {
+          "x": 52.2421875,
+          "y": 310.7265625,
+          "width": 19,
+          "height": 19,
+          "top": 310.7265625,
+          "right": 71.2421875,
+          "bottom": 329.7265625,
+          "left": 52.2421875
+        },
+        "hidden": false
+      },
+      {
+        "corner": "1,-1",
+        "kind": "scale",
+        "box": {
+          "x": 318.75,
+          "y": 310.7265625,
+          "width": 19,
+          "height": 19,
+          "top": 310.7265625,
+          "right": 337.75,
+          "bottom": 329.7265625,
+          "left": 318.75
+        },
+        "hidden": false
+      },
+      {
+        "corner": "-1,1",
+        "kind": "scale",
+        "box": {
+          "x": 52.2421875,
+          "y": 542.2578125,
+          "width": 19,
+          "height": 19,
+          "top": 542.2578125,
+          "right": 71.2421875,
+          "bottom": 561.2578125,
+          "left": 52.2421875
+        },
+        "hidden": false
+      },
+      {
+        "corner": "1,1",
+        "kind": "scale",
+        "box": {
+          "x": 318.75,
+          "y": 542.2578125,
+          "width": 19,
+          "height": 19,
+          "top": 542.2578125,
+          "right": 337.75,
+          "bottom": 561.2578125,
+          "left": 318.75
+        },
+        "hidden": false
+      },
+      {
+        "kind": "rotate",
+        "box": {
+          "x": 185.5,
+          "y": 284.2265625,
+          "width": 19,
+          "height": 19,
+          "top": 284.2265625,
+          "right": 204.5,
+          "bottom": 303.2265625,
+          "left": 185.5
+        },
+        "hidden": false
+      },
+      {
+        "box": {
+          "x": 339.75,
+          "y": 420.9921875,
+          "width": 30,
+          "height": 30,
+          "top": 420.9921875,
+          "right": 369.75,
+          "bottom": 450.9921875,
+          "left": 339.75
+        },
+        "hidden": false
+      }
+    ],
+    "history": 1,
+    "others": "[{\"id\":\"text-1\",\"type\":\"text\",\"text\":\"Bruno\",\"font\":\"Allura\",\"size\":35.77,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":42.924240020130284,\"x\":60.637,\"y\":42.356,\"w\":77.33474000000001,\"h\":42.924,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"name\",\"required\":true},{\"id\":\"text-2\",\"type\":\"text\",\"text\":\"* 14.03.2011   † 22.08.2024\",\"font\":\"Montserrat Light\",\"size\":7.87,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.443520243840487,\"x\":60.637,\"y\":68.408,\"w\":94.44,\"h\":9.443999999999999,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"daten\",\"required\":false},{\"id\":\"text-3\",\"type\":\"text\",\"text\":\"Treu bis zum\\nletzten Atemzug.\",\"font\":\"Bellefair\",\"size\":8,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.600000000000007,\"x\":60.637,\"y\":97.146,\"w\":50.816,\"h\":19.200000000000006,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"spruch\",\"required\":false}]"
+  },
+  "maxPlus": {
+    "before": {
+      "id": "motiv-1",
+      "x": 110,
+      "y": 70,
+      "w": 163.02591994309168,
+      "h": 140,
+      "rotation": 0
+    },
+    "after": {
+      "id": "motiv-1",
+      "x": 110,
+      "y": 70,
+      "w": 163.02591994309168,
+      "h": 140,
+      "rotation": 0
+    }
+  },
+  "rotatedLimit": {
+    "object": {
+      "id": "motiv-1",
+      "x": 110,
+      "y": 70,
+      "w": 128.63902763915124,
+      "h": 110.4699416863762,
+      "rotation": 15
+    },
+    "outerWidth": 152.8474838851685,
+    "outerHeight": 140.00000000000003
+  },
+  "narrow320": {
+    "before": {
+      "id": "motiv-1",
+      "x": 140,
+      "y": 100,
+      "w": 7,
+      "h": 6,
+      "rotation": 45
+    },
+    "after": {
+      "id": "motiv-1",
+      "x": 115,
+      "y": 79.16666412353516,
+      "w": 7,
+      "h": 6,
+      "rotation": 45
+    },
+    "grab": {
+      "box": {
+        "x": 164.88729858398438,
+        "y": 388.8872985839844,
+        "width": 62.22540283203125,
+        "height": 62.22540283203125,
+        "top": 388.8872985839844,
+        "right": 227.11270141601562,
+        "bottom": 451.1127014160156,
+        "left": 164.88729858398438
+      },
+      "dataObject": null
+    }
+  },
+  "desktop1440": {
+    "before": {
+      "id": "motiv-1",
+      "x": 140,
+      "y": 100,
+      "w": 5,
+      "h": 4,
+      "rotation": 0
+    },
+    "after": {
+      "id": "motiv-1",
+      "x": 149.29833984375,
+      "y": 97.146,
+      "w": 5,
+      "h": 4,
+      "rotation": 0
+    },
+    "grab": {
+      "box": {
+        "x": 618.2583618164062,
+        "y": 636.0513916015625,
+        "width": 44,
+        "height": 43.9998779296875,
+        "top": 636.0513916015625,
+        "right": 662.2583618164062,
+        "bottom": 680.05126953125,
+        "left": 618.2583618164062
+      },
+      "dataObject": null
+    }
+  },
+  "rightEdge": {
+    "before": {
+      "object": {
+        "id": "motiv-1",
+        "x": 215.5,
+        "y": 70,
+        "w": 9,
+        "h": 7.728832325803372,
+        "rotation": 0
+      },
+      "selected": "motiv-1",
+      "center": {
+        "x": 286.6,
+        "y": 384
+      },
+      "scene": {
+        "x": 28,
+        "y": 300,
+        "width": 264,
+        "height": 168
+      },
+      "grab": {
+        "box": {
+          "x": 264.6000061035156,
+          "y": 362,
+          "width": 44,
+          "height": 44,
+          "top": 362,
+          "right": 308.6000061035156,
+          "bottom": 406,
+          "left": 264.6000061035156
+        },
+        "dataObject": null
+      },
+      "handles": [
+        {
+          "corner": "-1,-1",
+          "kind": "scale",
+          "box": {
+            "x": 221.09375,
+            "y": 318.5,
+            "width": 19,
+            "height": 19,
+            "top": 318.5,
+            "right": 240.09375,
+            "bottom": 337.5,
+            "left": 221.09375
+          },
+          "hidden": false
+        },
+        {
+          "corner": "1,-1",
+          "kind": "scale",
+          "box": {
+            "x": 333.09375,
+            "y": 318.5,
+            "width": 19,
+            "height": 19,
+            "top": 318.5,
+            "right": 352.09375,
+            "bottom": 337.5,
+            "left": 333.09375
+          },
+          "hidden": false
+        },
+        {
+          "corner": "-1,1",
+          "kind": "scale",
+          "box": {
+            "x": 221.09375,
+            "y": 430.5,
+            "width": 19,
+            "height": 19,
+            "top": 430.5,
+            "right": 240.09375,
+            "bottom": 449.5,
+            "left": 221.09375
+          },
+          "hidden": false
+        },
+        {
+          "corner": "1,1",
+          "kind": "scale",
+          "box": {
+            "x": 333.09375,
+            "y": 430.5,
+            "width": 19,
+            "height": 19,
+            "top": 430.5,
+            "right": 352.09375,
+            "bottom": 449.5,
+            "left": 333.09375
+          },
+          "hidden": false
+        },
+        {
+          "kind": "rotate",
+          "box": {
+            "x": 277.09375,
+            "y": 314.5,
+            "width": 19,
+            "height": 19,
+            "top": 314.5,
+            "right": 296.09375,
+            "bottom": 333.5,
+            "left": 277.09375
+          },
+          "hidden": false
+        },
+        {
+          "box": {
+            "x": 211.59375,
+            "y": 369,
+            "width": 30,
+            "height": 30,
+            "top": 369,
+            "right": 241.59375,
+            "bottom": 399,
+            "left": 211.59375
+          },
+          "hidden": false
+        }
+      ],
+      "history": 0,
+      "others": "[{\"id\":\"text-1\",\"type\":\"text\",\"text\":\"Bruno\",\"font\":\"Allura\",\"size\":35.77,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":42.924240020130284,\"x\":60.637,\"y\":42.356,\"w\":77.33474000000001,\"h\":42.924,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"name\",\"required\":true},{\"id\":\"text-2\",\"type\":\"text\",\"text\":\"* 14.03.2011   † 22.08.2024\",\"font\":\"Montserrat Light\",\"size\":7.87,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.443520243840487,\"x\":60.637,\"y\":68.408,\"w\":94.44,\"h\":9.443999999999999,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"daten\",\"required\":false},{\"id\":\"text-3\",\"type\":\"text\",\"text\":\"Treu bis zum\\nletzten Atemzug.\",\"font\":\"Bellefair\",\"size\":8,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.600000000000007,\"x\":60.637,\"y\":97.146,\"w\":50.816,\"h\":19.200000000000006,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"spruch\",\"required\":false}]"
+    },
+    "deleteVisible": true,
+    "after": {
+      "id": "motiv-1",
+      "x": 213.49106042010726,
+      "y": 70,
+      "w": 13.017879159785496,
+      "h": 11.179222807061354,
+      "rotation": 0
+    },
+    "deleted": true,
+    "undo": {
+      "id": "motiv-1",
+      "x": 213.49106042010726,
+      "y": 70,
+      "w": 13.017879159785496,
+      "h": 11.179222807061354,
+      "rotation": 0
+    }
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "scope": "Public R13, 390×844 native touch after ordinary motif add and ten shrink clicks",
+  "before": {
+    "selected": "39deb6de-ad71-4117-bbe3-f43774388797",
+    "object": {
+      "id": "39deb6de-ad71-4117-bbe3-f43774388797",
+      "x": 110,
+      "y": 90.5,
+      "w": 12.136963315941433,
+      "h": 13.494015130033604,
+      "rotation": 0
+    },
+    "scene": {
+      "x": 28,
+      "y": 329.7265625,
+      "width": 334,
+      "height": 212.5390625,
+      "top": 329.7265625,
+      "right": 362,
+      "bottom": 542.265625,
+      "left": 28
+    },
+    "center": {
+      "x": 195,
+      "y": 467.1178850446429
+    },
+    "history": 11,
+    "others": "[{\"id\":\"text-1\",\"type\":\"text\",\"text\":\"Bruno\",\"font\":\"Allura\",\"size\":35.77,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":42.924240020130284,\"x\":60.637,\"y\":42.356,\"w\":77.33474000000001,\"h\":42.924,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"name\",\"required\":true},{\"id\":\"text-2\",\"type\":\"text\",\"text\":\"* 14.03.2011   † 22.08.2024\",\"font\":\"Montserrat Light\",\"size\":7.87,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.443520243840487,\"x\":60.637,\"y\":68.408,\"w\":94.44,\"h\":9.443999999999999,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"daten\",\"required\":false},{\"id\":\"text-3\",\"type\":\"text\",\"text\":\"Treu bis zum\\nletzten Atemzug.\",\"font\":\"Bellefair\",\"size\":8,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.600000000000007,\"x\":60.637,\"y\":97.146,\"w\":50.816,\"h\":19.200000000000006,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"spruch\",\"required\":false},{\"id\":\"motiv-1\",\"type\":\"motif\",\"motif\":\"katalog-tiere-d1000-rechteck-3-2-ohne-motiv-1\",\"x\":167.329,\"y\":69.987,\"w\":78.575,\"h\":67.477,\"rotation\":0,\"color\":\"#e8e9e5\",\"templateOrigin\":true,\"customerEditable\":true}]",
+    "grab": {
+      "x": 173.0006561279297,
+      "y": 445.1185302734375,
+      "width": 43.998687744140625,
+      "height": 43.99871826171875,
+      "top": 445.1185302734375,
+      "right": 216.9993438720703,
+      "bottom": 489.11724853515625,
+      "left": 173.0006561279297
+    }
+  },
+  "after": {
+    "selected": "39deb6de-ad71-4117-bbe3-f43774388797",
+    "object": {
+      "id": "39deb6de-ad71-4117-bbe3-f43774388797",
+      "x": 110,
+      "y": 115.53069305419922,
+      "w": 12.136963315941433,
+      "h": 13.494015130033604,
+      "rotation": 0
+    },
+    "scene": {
+      "x": 28,
+      "y": 329.7265625,
+      "width": 334,
+      "height": 212.5390625,
+      "top": 329.7265625,
+      "right": 362,
+      "bottom": 542.265625,
+      "left": 28
+    },
+    "center": {
+      "x": 195,
+      "y": 505.11788529796263
+    },
+    "history": 12,
+    "others": "[{\"id\":\"text-1\",\"type\":\"text\",\"text\":\"Bruno\",\"font\":\"Allura\",\"size\":35.77,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":42.924240020130284,\"x\":60.637,\"y\":42.356,\"w\":77.33474000000001,\"h\":42.924,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"name\",\"required\":true},{\"id\":\"text-2\",\"type\":\"text\",\"text\":\"* 14.03.2011   † 22.08.2024\",\"font\":\"Montserrat Light\",\"size\":7.87,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.443520243840487,\"x\":60.637,\"y\":68.408,\"w\":94.44,\"h\":9.443999999999999,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"daten\",\"required\":false},{\"id\":\"text-3\",\"type\":\"text\",\"text\":\"Treu bis zum\\nletzten Atemzug.\",\"font\":\"Bellefair\",\"size\":8,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.600000000000007,\"x\":60.637,\"y\":97.146,\"w\":50.816,\"h\":19.200000000000006,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"spruch\",\"required\":false},{\"id\":\"motiv-1\",\"type\":\"motif\",\"motif\":\"katalog-tiere-d1000-rechteck-3-2-ohne-motiv-1\",\"x\":167.329,\"y\":69.987,\"w\":78.575,\"h\":67.477,\"rotation\":0,\"color\":\"#e8e9e5\",\"templateOrigin\":true,\"customerEditable\":true}]",
+    "grab": {
+      "x": 173.0006561279297,
+      "y": 483.1185302734375,
+      "width": 43.998687744140625,
+      "height": 43.99871826171875,
+      "top": 483.1185302734375,
+      "right": 216.9993438720703,
+      "bottom": 527.1172485351562,
+      "left": 173.0006561279297
+    }
+  },
+  "sizeUnchanged": true,
+  "othersUnchanged": true,
+  "oneUndoEntry": true,
+  "positionChanged": true,
+  "undoRestored": true
+}

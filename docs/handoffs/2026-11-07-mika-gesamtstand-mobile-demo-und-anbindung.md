@@ -334,3 +334,7 @@ Die von Mikail gesammelten Bedienwünsche sind ausschließlich in der Demo umges
 38 gezielte Tests bestanden. Native Eingabefelder/Schrift-/Fotofunktionen und fachliche Daten bleiben erhalten. 2061 bisherige öffentliche Dateien und vier Originale nach separater R5-Bereitstellung unverändert; private Sicherung vorab. Keine Änderung an den in dieser Akte beschriebenen Galerie-/Sync-Verträgen, Produktgruppen-Bestätigungen oder ursprünglichen Kundenwegen. Konto, Galerie-Rückspeicherung und tatsächlicher Kauf bleiben in der statischen Demo unverbunden. Kein Main-Merge, kein Astra-Eingriff.
 
 Nächster Schritt: Mikails physischer Handy-Tastaturtest und Sichtprüfung, danach gesonderte Entscheidung über die spätere Integration. Physische Android-/iOS-Tastatur und Touchgesten sind durch den simulierten 390×430-Test nicht abgenommen.
+
+## Nachtrag: Demo R8, 07.11.2026
+
+Desktop-Werkzeuge oben, Ansicht/Fotogröße/Reset unten, Foto-Panel vor Upload und Canvas-Auswahl öffnet zugehöriges Werkzeug. Material/Größe/Befestigung scrollen im Auswahlpanel, i-Informationen bleiben erhalten. 93/93 Tests, getrennt veröffentlicht mit privater Hostsicherung. [R8-Übergabe mit Nachweisen und zusätzlichem Vollbild-Befund](2026-11-07-mobile-demo-r8-desktop-und-sprunglinks.md). R7 und Kunden-Konfi unverändert. Designgruppen-/Shop-Synchronisierungsregeln bleiben unverändert; Backend ist der nachgelagerte Arbeitsschritt.

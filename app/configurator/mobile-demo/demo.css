@@ -602,3 +602,5 @@
 @media (prefers-reduced-motion: reduce) {
   :host([data-mobile-demo]) .ux-shell .ux-layout > :is(.ux-preview, .ux-editor) { transition: none !important; }
 }
+/* R9: explicit decision for intentional overlaps, only in the opt-in demo. */
+:host([data-mobile-demo]) .ux-layout-check-dialog .md-overlap-accept:not([hidden]){display:block;width:100%;margin-top:12px;background:#14764d!important;color:#fff!important;border-color:#14764d!important;font-weight:700}

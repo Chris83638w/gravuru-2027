@@ -1,5 +1,7 @@
 # Mika · Gesamtstand, mobile Demo, Galerie und Shopanbindung
 
+**Neuester Nachtrag:** [R9 – Überlagerung bewusst übernehmen und mit kleinem Abstand einpassen](2026-11-07-mobile-demo-r9-ueberlagerung.md). Der ausführliche Stand unten enthält historische Zwischenstände; für die aktuell geprüfte Oberfläche zuerst R9 und R8 lesen. Backend-/Synchronisierungsentscheidungen dieser Gesamtakte bleiben bestehen.
+
 Stand: **07.11.2026, getrennte mobile Demo R4 veröffentlicht und geprüft**. Verfasser: Codex / Mika. Wissenssicherung auf dem neuen Aufgabenbranch `dev/mika-mobile-demo-20261107`, Ausgangscommit **`8ffeed8d90191cb89f1188a336751de2b2a4e0c0`** aus Draft-PR #192. Diese Datei beschreibt Entscheidungen, belegte Ergebnisse, Sicherungen und offene Anschlüsse. Die Demo-Veröffentlichung und ihre Prüfgrenzen stehen in Abschnitt 13; sie ist keine Verkaufsfreigabe oder Übernahme in den Kundenkonfi.
 
 ## 1. Zuerst lesen und Stände auseinanderhalten

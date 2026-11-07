@@ -110,8 +110,13 @@ export async function installWorkflow(api){
  // Gate progression on the completed placement and the current geometry.
  const layoutDialog=dialog('layout-check','Bitte Gestaltung prüfen','<div data-layout-problems></div>'+button('layout-fit','Automatisch einpassen')+button('close','Weiter bearbeiten'));
  const reviewIssues=()=>layoutReviewIssues({config,profile:chosenProfile(),objects:el.state.objects,design:chosenProfile().designs.find(d=>d.id===el.state.designId),resources:{motifs:config?.localResources?.motifs||[],fonts:el.fontData}});
- el.uxCheckLayout=async()=>{await placementJob;const issues=config?reviewIssues():[];if(!issues.length)return true;$('[data-layout-problems]').innerHTML=issues.map(i=>'<p>'+esc(i.message)+'</p>').join('');if(!layoutDialog.open)layoutDialog.showModal();return false;};
- r.addEventListener('click',event=>{if(event.target.closest('[data-ux=layout-fit]')){
+ // Optional presentation adapter; the existing progression/other validators
+ // still await this gate. Without an adapter the original policy is unchanged.
+ const layoutContext=()=>({dialog:layoutDialog,inspect:async()=>{await placementJob;return config?reviewIssues():[];},mutate,say,
+  canMove:o=>may(o,'move'),boundaryIssue:o=>customerLayoutIssue(o,chosenProfile(),{motifs:config?.localResources?.motifs||[],fonts:el.fontData}),
+  fitOriginal:fitLayout});
+ el.uxCheckLayout=async()=>{await placementJob;if(el.uxResolveLayoutReview)return el.uxResolveLayoutReview(layoutContext());const issues=config?reviewIssues():[];if(!issues.length)return true;$('[data-layout-problems]').innerHTML=issues.map(i=>'<p>'+esc(i.message)+'</p>').join('');if(!layoutDialog.open)layoutDialog.showModal();return false;};
+ function fitLayout(){
   const issues=reviewIssues(),copies=el.state.objects.map(o=>({...o})),changed=new Set();
   // Keep motifs in place where possible: move text first; never rewrite the master.
   const ids=[...new Set(issues.flatMap(i=>i.code==='overlap'?[i.ids.find(id=>copies.find(o=>o.id===id)?.type==='text')||i.ids.at(-1)]:i.ids))];
@@ -123,7 +128,8 @@ export async function installWorkflow(api){
   if(failed)return say('Nicht alles passt automatisch. Bitte den Text kürzen oder einzelne Elemente verschieben.');
   mutate(()=>{for(const o of el.state.objects)if(changed.has(o.id))Object.assign(o,copies.find(c=>c.id===o.id));});
   if(!reviewIssues().length){layoutDialog.close();say('Gestaltung eingepasst. Bitte noch einmal prüfen.');}else say('Bitte die übrigen markierten Elemente prüfen.');
- }});
+ }
+ r.addEventListener('click',event=>{if(event.target.closest('[data-ux=layout-fit]')){if(el.uxFitLayoutReview)void el.uxFitLayoutReview(layoutContext());else fitLayout();}});
  // New free photos retain their larger, centered upload bounds (Mika 05.11.2026).
  // Other new uploads still use free-space search; replacements keep their position.
  let known=new Set(el.state.objects.map(o=>o.id));

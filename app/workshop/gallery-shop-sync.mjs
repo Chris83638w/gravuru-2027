@@ -1,6 +1,6 @@
 import {randomUUID} from 'node:crypto';
 import {validateProductDocument} from './product-model.mjs';
-import {nativeSource,composeNativeTarget,ensureNativeAssets,syncFail,syncHash,canonical} from './gallery-shop-sync-native.mjs';
+import {nativeSource,composeNativeTarget,assertNativeTargetIdentity,ensureNativeAssets,syncFail,syncHash,canonical} from './gallery-shop-sync-native.mjs';
 import {remoteCommerceHash,remoteBaselineMatches,remoteReleaseMatches} from './gallery-shop-sync-transport.mjs';
 
 const clone=v=>structuredClone(v),issue=e=>({code:e.code||'gallery_sync_invalid',message:e.message});
@@ -64,8 +64,9 @@ export function createGalleryShopSync({database,tenantId,shopDomain,sourceWorksh
     sourceCheck(source,mapping);
     if(!binding.approved)syncFail('gallery_sync_binding_approval','Für dieses bestehende Ziel fehlt die Katalogfreigabe.',422);
     if(binding.boundRevision!==record.revision)syncFail('gallery_sync_pending_draft','Ein vorhandener Zielentwurf muss zuerst geklärt werden.');
+    const proposed=composeNativeTarget(source,record,mapping.target);
     await ensureNativeAssets(sourceWorkshop,targetWorkshop,source);
-    entry.document=validateProductDocument(composeNativeTarget(source,record,mapping.target));entry.documentSha256=syncHash(entry.document);
+    entry.document=validateProductDocument(proposed);entry.documentSha256=syncHash(entry.document);
     entry.newRevision=record.revision+(entry.documentSha256===entry.expectedDocumentSha256?0:1);
     entry.beforeSvg=targetWorkshop.editorPreview(record.document,mapping.target.designId).svg;entry.afterSvg=targetWorkshop.editorPreview(entry.document,mapping.target.designId).svg;
     entry.baseline=await transport.inspect(mapping);validateRemote(entry,entry.baseline);
@@ -94,7 +95,7 @@ export function createGalleryShopSync({database,tenantId,shopDomain,sourceWorksh
   const values=operationId?[operation(operationId)]:db.prepare('SELECT document FROM gallery_shop_sync_operations WHERE scope=? ORDER BY rowid DESC LIMIT 30').all(scope).map(r=>JSON.parse(r.document));
   return {schema:SCHEMA,...environment(),operations:values.map(o=>({id:o.id,planId:o.planId,state:o.state,createdAt:o.createdAt,updatedAt:o.updatedAt,entries:o.entries,error:o.error??null}))};
  }
- function checkSource(entry){const source=nativeSource(sourceWorkshop,entry.mapping.source);if(syncHash(source.evidence)!==syncHash(entry.source))syncFail('gallery_sync_source_changed','Die Galerievorlage oder eine Ressource wurde seit der Vorschau geändert.');sourceCheck(source,entry.mapping);}
+ function checkSource(entry){const source=nativeSource(sourceWorkshop,entry.mapping.source);if(syncHash(source.evidence)!==syncHash(entry.source))syncFail('gallery_sync_source_changed','Die Galerievorlage oder eine Ressource wurde seit der Vorschau geändert.');sourceCheck(source,entry.mapping);return source;}
  function checkRegistry(entry){const current=registry().find(m=>m.id===entry.id);if(!current||syncHash(current)!==syncHash(entry.mapping))syncFail('gallery_sync_mapping_changed','Die ausdrückliche Zielzuordnung hat sich seit der Vorschau geändert.');}
  async function run(planId,planSha256,reconcileOnly=false){
   const prepared=readPlan(planId,planSha256);
@@ -131,11 +132,14 @@ export function createGalleryShopSync({database,tenantId,shopDomain,sourceWorksh
    op=operation(op.id);op.error=null;op.state='running';persist();
    // All targets are checked before any new draft or outbound write.
    for(const entry of prepared.entries){
-    checkRegistry(entry);checkSource(entry);
+    checkRegistry(entry);const source=checkSource(entry);
     const record=targetWorkshop.repository.get(entry.mapping.target.productId),hash=syncHash(record.document),progress=op.entries.find(e=>e.id===entry.id);
     if(record.revision===entry.newRevision&&hash===entry.documentSha256){if(['planned','draft-intent'].includes(progress.stage))progress.stage='draft';}
     else if(record.revision!==entry.expectedRevision||hash!==entry.expectedDocumentSha256||!['planned','draft-intent'].includes(progress.stage))syncFail('gallery_sync_target_changed','Der Zielstand wurde parallel geändert. Es wird nichts überschrieben.');
     else progress.stage='planned';
+    // Stored plans may predate a stricter identity check. Recheck before any
+    // target revision or outbound request, including a resumed operation.
+    assertNativeTargetIdentity(source,record,entry.mapping.target);
     const current=activation.capture(entry.mapping);
     if(syncHash(current)!==syncHash(entry.binding)&&!(current.boundRevision===entry.newRevision&&current.approved&&hash===entry.documentSha256))syncFail('gallery_sync_binding_changed','Die aktive Bindung wurde parallel geändert.');
    }

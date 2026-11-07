@@ -10,7 +10,7 @@ import {createGalleryShopSync} from '../app/workshop/gallery-shop-sync.mjs';
 test('mounted private gallery requires exact options confirmation and retains real native drafts',async t=>{
  const root=fs.mkdtempSync(path.join(os.tmpdir(),'gallery-management-')),f=await createGalleryManagementFixture(root),base=await f.listen();
  t.after(async()=>{await f.close();assert.ok(root.startsWith(path.join(os.tmpdir(),'gallery-management-')));fs.rmSync(root,{recursive:true,force:true});});
- const page=await fetch(base+'/originale/');assert.match(await page.text(),/Produktgruppen &amp; Synchronisierung/);
+ const page=await fetch(base+'/originale/');assert.match(await page.text(),/<a\b[^>]*href="\/originale\/verwaltung"[^>]*>Verwaltung<\/a>/);
  assert.equal((await fetch(base+'/originale/verwaltung',{headers:{'Sec-Fetch-Site':'cross-site'}})).status,200,'navigation to public shell is allowed');
  assert.equal((await fetch(base+'/originale/verwaltung/api/context',{headers:{'Sec-Fetch-Site':'cross-site'}})).status,403,'private context remains same-origin');
  const context=await(await fetch(base+'/originale/verwaltung/api/context')).json();

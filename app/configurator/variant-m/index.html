@@ -34,7 +34,7 @@
         }
         if(params.has('configuration'))query.set('configuration',params.get('configuration'));
         if(params.has('revision'))query.set('revision',params.get('revision'));
-        const response=await fetch('/models.json'+(query.size?'?'+query:''));
+        const response=await fetch('/models.json'+(query.size?'?'+query:''),{headers:{'X-Gravuru-Resources':'lazy-v1'}});
         if(!response.ok)throw Error('Produktauswahl nicht verfügbar.');
         const models=await response.json(),model=models.find(m=>['acryl','form'].includes(m.key));
         if(!model)throw Error('Produktvorlage fehlt.');

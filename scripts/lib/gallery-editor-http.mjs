@@ -1,15 +1,19 @@
 import fs from 'node:fs';
 import {createGalleryEditor} from '../../app/workshop/gallery-editor.mjs';
+import {createBrowserModelResources} from '../../app/workshop/browser-model-resources.mjs';
+import {serveBrowserResource} from '../../app/workshop/browser-resource-http.mjs';
 
 const json=(res,status,value)=>res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(JSON.stringify(value));
 const fail=(status,message)=>{throw Object.assign(Error(message),{status});};
 const files=new Map([['/originale/editor',['gallery-editor.html','text/html; charset=utf-8']],['/originale/editor.js',['gallery-editor.mjs','text/javascript; charset=utf-8']],['/originale/editor.css',['gallery-editor.css','text/css; charset=utf-8']]]);
 export function createGalleryEditorHandler({workshop,targets,csrfToken,onSaved=()=>{}}){
  const service=createGalleryEditor({workshop,targets});
+ const resources=createBrowserModelResources({prefix:'/originale/editor/ressourcen'});
  async function route(req,res,url){
   try{
    const origin='http://'+req.headers.host;
    if(req.headers.origin&&req.headers.origin!==origin||req.headers['sec-fetch-site']==='cross-site')fail(403,'Bitte die private Galerie neu öffnen.');
+   if(serveBrowserResource(req,res,url,resources))return;
    if(files.has(url.pathname)){
     if(!['GET','HEAD'].includes(req.method))fail(405,'Diese Seite wird nur gelesen.');
     const [name,type]=files.get(url.pathname),bytes=fs.readFileSync(new URL('../../app/workshop/ui/'+name,import.meta.url));
@@ -19,7 +23,14 @@ export function createGalleryEditorHandler({workshop,targets,csrfToken,onSaved=(
     const allowed=url.pathname==='/originale/editor/context'?['productId','designId','originalId']:['productId','designId','originalId','revision','assetId','part'];
     if(allowed.some(k=>url.searchParams.getAll(k).length!==1)||[...url.searchParams.keys()].some(k=>!allowed.includes(k)))fail(422,'Bitte genau eine Galerievorlage wählen.');
     const target=Object.fromEntries(['productId','designId','originalId'].map(k=>[k,url.searchParams.get(k)]));
-    if(url.pathname==='/originale/editor/context')return json(res,200,{...service.open(target),csrfToken});
+    if(url.pathname==='/originale/editor/context'){
+     const opened=service.open(target);
+     if(req.headers['x-gravuru-resources']==='lazy-v1'){
+      const {productId,revision}=opened.context;
+      opened.model=resources.prepare(opened.model,{source:()=>workshop.internalModel(productId,revision)});
+     }
+     return json(res,200,{...opened,csrfToken});
+    }
     if(url.pathname==='/originale/editor/media'){
      const bytes=service.media(target,url.searchParams.get('assetId'),url.searchParams.get('part'),Number(url.searchParams.get('revision')));
      const mime=bytes[0]===0xff&&bytes[1]===0xd8?'image/jpeg':bytes.subarray(8,12).toString()==='WEBP'?'image/webp':'image/png';

@@ -1,0 +1,755 @@
+{
+  "schema": "gravuru-browser-resource-parity/v1",
+  "shopifyWrites": 0,
+  "models": 74,
+  "designs": 147,
+  "originalModelBytes": 162659576,
+  "transportModelBytes": 1434641,
+  "uniqueResourceBytes": 3735280,
+  "fonts": 6,
+  "plates": 1,
+  "examples": [
+    {
+      "productId": "cfg_0184ce9d-0920-4284-8b77-f02f2a34b0da",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145283,
+      "transportBytes": 18324,
+      "productFonts": 1,
+      "startFonts": 1,
+      "roundTripSha256": "f23742fd4c4bb7b2cc1b3962dbd6bd3e33b47fc44d0945e72677646641e8f703"
+    },
+    {
+      "productId": "cfg_1050c7b3-7097-4457-908b-36725d2006bd",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145318,
+      "transportBytes": 18359,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "88cc75f192eaf4243f6b62cb34a826f66cef908d97bdd171a962f4c9304f8ca7"
+    },
+    {
+      "productId": "cfg_121a7e25-2287-4774-bb80-8e26bad831c6",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145955,
+      "transportBytes": 18996,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "be76f3efb35a9ffc09057b1d500b27a13c9cf1d8f845e9024bf70800e3ba2514"
+    },
+    {
+      "productId": "cfg_15d5edb9-702b-4e92-9c7f-3626ec7db787",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145434,
+      "transportBytes": 18475,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "f0ecd1b762c8a119d0e8ff5fc8a48bdba9a50355c6f9cbe90acfcbe520a8e730"
+    },
+    {
+      "productId": "cfg_1664d6ed-bccc-4081-8961-56183d1071b9",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145249,
+      "transportBytes": 18290,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "dee9a870eb5718b1d0815c14210bff64157a21dd9177bb0747c34d64ffa09d90"
+    },
+    {
+      "productId": "cfg_16bfb59f-db08-4b77-8141-6da786ec0b57",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2606179,
+      "transportBytes": 25392,
+      "productFonts": 2,
+      "startFonts": 1,
+      "roundTripSha256": "71a9c524e363a66c5433249d88bc6884d05c993e1f0ebcd37fab92215d33b275"
+    },
+    {
+      "productId": "cfg_1b092ccb-55e1-4927-9bbc-aee2182df046",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145254,
+      "transportBytes": 18295,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "f4a17f0763ae3aebb3072a4c06ae91a1d1d1d294658cdb5ba64b96764a63c89b"
+    },
+    {
+      "productId": "cfg_25700b9a-6971-4899-bc60-e817826e0977",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145321,
+      "transportBytes": 18362,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "c3fa16169c295151a840333e7322566a8e84d5aa45840af89b7eb48083efebb5"
+    },
+    {
+      "productId": "cfg_2a966ca9-610c-4ac9-8cfe-1154ab2abe61",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145794,
+      "transportBytes": 18835,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "9386ffccbecf5b49a18c8aae73a51a72a0c99ab6af49fb556d0fd2baf7789756"
+    },
+    {
+      "productId": "cfg_2cd1e477-c48d-41a0-9b95-81ef25b3d8b3",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145247,
+      "transportBytes": 18288,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "2693aad5fe48960b2536ed39e7bcd325bcdbea5588ebe0a4616712e70e7ac6fc"
+    },
+    {
+      "productId": "cfg_2e1e8914-624a-4e94-9cca-32db154e734f",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145297,
+      "transportBytes": 18338,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "63f060b99ebe5b2364c9ffbf3b38e0d8ce91e95631558be53ff734232dd18e31"
+    },
+    {
+      "productId": "cfg_2f6f1abd-d7e9-4f3e-8ded-bdb44681651f",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2146037,
+      "transportBytes": 19078,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "2688a94ad4d2e77ad90cfba1bf8feca3071270bd909f18fde9405508b43e1ac0"
+    },
+    {
+      "productId": "cfg_3026fcdb-571a-4a43-be28-a289c2375d38",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145384,
+      "transportBytes": 18425,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "a470888651e1d579b217dfae4466f437b27d52c02be173e6bd3752ee51182625"
+    },
+    {
+      "productId": "cfg_322ecbaa-aa72-4717-a5a8-6f5b30104822",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145594,
+      "transportBytes": 18635,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "90a56d5ab3ee2d30856b5a94c2b4e85a24a806d5dae92247f009be817f9327f6"
+    },
+    {
+      "productId": "cfg_33a1eb8b-0f4d-4265-8627-21ddbc682548",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2605728,
+      "transportBytes": 24941,
+      "productFonts": 2,
+      "startFonts": 0,
+      "roundTripSha256": "6539a3d8cd5106d9043eaf626ac14aa31a2a496a65eb97f7b679bca3a201dda5"
+    },
+    {
+      "productId": "cfg_365861ef-e824-4df1-b78c-fda133eab468",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145977,
+      "transportBytes": 19018,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "20e5fa76088c94ca3b97b4d6481ae7d620491465ca7a70047da6edec3216f20c"
+    },
+    {
+      "productId": "cfg_3b612e32-e49e-4104-bc08-4e435e6ec162",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145198,
+      "transportBytes": 18239,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "44c41e346379b25b286864eae0885d0a5474b8f4d7bd6b8e66a3bc814145c450"
+    },
+    {
+      "productId": "cfg_3c62de19-bc0d-4d76-b6c8-712e3e5ac4a5",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145324,
+      "transportBytes": 18365,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "63d9a4443cb43036acb51a3f4ecab13c2191794e963adef1864415aa89bcfa8a"
+    },
+    {
+      "productId": "cfg_41637922-c10e-4460-819e-f2ba0e2b1474",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145209,
+      "transportBytes": 18250,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "1ce84617007340ee5679c4856ce8e4a62d52ea24ecc45db6e74406d591539792"
+    },
+    {
+      "productId": "cfg_4446432a-6d87-4774-b651-cadd930554a5",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2493531,
+      "transportBytes": 19807,
+      "productFonts": 2,
+      "startFonts": 1,
+      "roundTripSha256": "5f7461f906fe4a133ad308462336cefe0d270471a057929907ec8759ad5a8a37"
+    },
+    {
+      "productId": "cfg_450077de-614b-483d-bd3c-ddf05922bdca",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2497570,
+      "transportBytes": 23846,
+      "productFonts": 2,
+      "startFonts": 0,
+      "roundTripSha256": "8846ad5b9e8204feb2f0f9c17ff4c71018d2e83171c6ab00bda0ce977cb2b46b"
+    },
+    {
+      "productId": "cfg_493fb42c-6b76-4f6a-b49d-d0b2647fb96b",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145290,
+      "transportBytes": 18331,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "4230e9f7cc2352c561b499c43f35f96cd2b7af45b563d0699cc3d4054158efa4"
+    },
+    {
+      "productId": "cfg_4ca8531e-7987-421d-888f-bcf96777dc66",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145551,
+      "transportBytes": 18592,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "42c1f6a61f72332d80ccb534682eb5f97dc2aaf6f60ea748ae83ff53e7aeb104"
+    },
+    {
+      "productId": "cfg_5176875c-761a-40d3-ba65-39654fda2c6a",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145257,
+      "transportBytes": 18298,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "d81159cef8d7108f0c81d4ca400001372c01d20d38e880d49c0bcf3cfdaa13c4"
+    },
+    {
+      "productId": "cfg_5589346f-9852-4f65-944e-d50ba30a036a",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2605731,
+      "transportBytes": 24944,
+      "productFonts": 2,
+      "startFonts": 0,
+      "roundTripSha256": "76b16db10891e1f255fb7f06bdb9bc09053fd2966f8d960f50d2a34a2dd6b46f"
+    },
+    {
+      "productId": "cfg_57a839a6-fd08-4cc8-a199-568654b73ce9",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145289,
+      "transportBytes": 18330,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "62fee40866afa964d5e0be3afa09fd1d124c535eb04bf4d5040c9dbfcb7a8f0f"
+    },
+    {
+      "productId": "cfg_594caa31-7184-41b3-a2a2-8e4d93c41e03",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145350,
+      "transportBytes": 18391,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "232d2305d153ab15fd3b8d5078a1087f40cbe29714500f44bf323cee04ebe8f7"
+    },
+    {
+      "productId": "cfg_5e0841e3-b6f4-46fc-a345-cbaa2d2b44c8",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145146,
+      "transportBytes": 18187,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "db12ee06c338975b8830891a47a39c3ff4262d48fe08ca8ed839a24df3e73419"
+    },
+    {
+      "productId": "cfg_64df222c-fd3f-40fe-8a38-0c5a3146a095",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145166,
+      "transportBytes": 18207,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "4407828a6319331901752d24483403c18f57567ab53a8ed752804bbc17b7f171"
+    },
+    {
+      "productId": "cfg_67f78ec3-319b-478e-bf31-1c377863dd29",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145201,
+      "transportBytes": 18242,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "fa362193f8e06770a3a54ef363820e388ed2541311212d0d6c715311b6de2783"
+    },
+    {
+      "productId": "cfg_68e83b8e-7c09-44e5-a44a-5254bf2627cd",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2606092,
+      "transportBytes": 25305,
+      "productFonts": 2,
+      "startFonts": 0,
+      "roundTripSha256": "29431c15f128d848da3bbf0968c83596d3294b57e5de91ba40df1599081e8f2d"
+    },
+    {
+      "productId": "cfg_6af2f303-e9a2-46d5-89c1-51449918f6aa",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2497259,
+      "transportBytes": 23535,
+      "productFonts": 2,
+      "startFonts": 0,
+      "roundTripSha256": "eeaacafea7c17633688b6544735b336fad4bcfce68d5e35a8db43c905a4d0346"
+    },
+    {
+      "productId": "cfg_6cc9ffa5-eab0-4cab-b336-a941361a6893",
+      "revision": 5,
+      "designs": 2,
+      "originalBytes": 2566163,
+      "transportBytes": 19377,
+      "productFonts": 2,
+      "startFonts": 1,
+      "roundTripSha256": "f2234986199d6eef0cb10d71ad33cc83b48440df9d67fa2654bda86e66465875"
+    },
+    {
+      "productId": "cfg_6f413a9e-8cad-4885-abdc-801f008a55ad",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145304,
+      "transportBytes": 18345,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "f780d362e19c811d1ac2cdef3dd811814e967ed1ab088bf1f084f1a1a97f6439"
+    },
+    {
+      "productId": "cfg_71949654-5542-4989-aebc-7d12e648daec",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145357,
+      "transportBytes": 18398,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "4a272a8600cc4d14d21a4dc4ab4deac2c068d939ccd56c27efc6be3a33c37023"
+    },
+    {
+      "productId": "cfg_724d709f-ebc5-4163-a13f-96cda57da489",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145192,
+      "transportBytes": 18233,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "1436c3d5a6bf37caa995b35c3d7ca3c501df56df135b21d9975918ad0acff18e"
+    },
+    {
+      "productId": "cfg_758fe6b1-a13f-4289-905e-fceaced0a36d",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2497716,
+      "transportBytes": 23992,
+      "productFonts": 2,
+      "startFonts": 0,
+      "roundTripSha256": "6a06505a32edd979b63822c46be7d5e6aef9b1d3c858ed2b6738e6aef6e8c5a7"
+    },
+    {
+      "productId": "cfg_78266bd7-b4f2-453a-bb60-989df4adb1c4",
+      "revision": 1,
+      "designs": 1,
+      "originalBytes": 405096,
+      "transportBytes": 18318,
+      "productFonts": 2,
+      "startFonts": 2,
+      "roundTripSha256": "7da380f5b8ee03e14e6aba20d717aea388e72bd42d32306dbcdeea3938cf7841"
+    },
+    {
+      "productId": "cfg_78408b9c-fa38-4446-aa01-5ae186225464",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145283,
+      "transportBytes": 18324,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "e2708e27dd64b4c69fae6875ed4395adaef66a40da4026e5a5d9871c37b55516"
+    },
+    {
+      "productId": "cfg_7a0db7d8-564d-44fa-896a-49e5af420fb3",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145339,
+      "transportBytes": 18380,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "a4ba3786ff80a158c869b5a674dab380f129ae9ea7942c4ef450bc53334a6855"
+    },
+    {
+      "productId": "cfg_7d472348-7830-43fb-97c7-bffa124cc379",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145597,
+      "transportBytes": 18638,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "ed1bc556fa3275413bb2559f8688e601d9668c94f65f2e7582852ac64477d72c"
+    },
+    {
+      "productId": "cfg_8388b54a-2638-47f3-ab52-4a4ddb6c4b83",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145245,
+      "transportBytes": 18286,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "7573a779fa13962f8df69ee831e345197b4a86581006dd1f15061096ad2966d9"
+    },
+    {
+      "productId": "cfg_8747c7cd-ff00-4748-b194-b3130c1f4230",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145132,
+      "transportBytes": 18173,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "994dd4f0395b3a6dcaa4ada2f1be32ba6910a37f78d623c3166c28c09571e767"
+    },
+    {
+      "productId": "cfg_88672326-7ef2-4962-b0e8-2f1929465034",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145496,
+      "transportBytes": 18537,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "d565dee4fb9726c24e65b4b4874dbfe59c1b710564bb5cece85529bea0977fba"
+    },
+    {
+      "productId": "cfg_8a98cf94-8fa0-43fb-97b3-d782d962e088",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2605545,
+      "transportBytes": 24758,
+      "productFonts": 2,
+      "startFonts": 0,
+      "roundTripSha256": "d76a1ea90c4fc8697d73ddc5acdf4cf99c203852b9a57b43aa300654d63d8abe"
+    },
+    {
+      "productId": "cfg_8d17a17f-a538-497e-8b0c-ee2bc5134721",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145482,
+      "transportBytes": 18523,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "2b534bf99ff8338ff6a6f476b483a0dadd99083f4bf5b91354f3a12cc87bca1d"
+    },
+    {
+      "productId": "cfg_8eb92651-f49d-4977-83f1-11a6ac7919af",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145312,
+      "transportBytes": 18353,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "6f5b164bc90658597bf3a61b91184142ed11b610e19b9ffde019e2cdddcf0156"
+    },
+    {
+      "productId": "cfg_906f7ff4-8adb-4760-b0d2-0916d8eb80a6",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2497214,
+      "transportBytes": 23490,
+      "productFonts": 2,
+      "startFonts": 0,
+      "roundTripSha256": "b0864d9e06ad31bf88678ef9bd78d6d1167dd7b9837ef257e380e987a9206fe1"
+    },
+    {
+      "productId": "cfg_957b9a41-9d5c-4b50-8e40-a2c71f132b3b",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145294,
+      "transportBytes": 18335,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "2437e39c23dd7913ce15d4a8201341590885136b8567feee4d18699d29ff3b87"
+    },
+    {
+      "productId": "cfg_95a07aeb-0895-4cdd-99c6-4306d4518285",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145297,
+      "transportBytes": 18338,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "8f47add1378cc27e592259adbefad073afb74da878ecc077a1f2d2cd53e19ba7"
+    },
+    {
+      "productId": "cfg_9ba0064d-6438-4f8a-84a2-78bd070f2408",
+      "revision": 4,
+      "designs": 2,
+      "originalBytes": 2497407,
+      "transportBytes": 23683,
+      "productFonts": 2,
+      "startFonts": 0,
+      "roundTripSha256": "29e18f02437911e69ff23cb424975bfc0a165cf111450202fd7d6b10ea0687c8"
+    },
+    {
+      "productId": "cfg_9fe0ca97-5061-464f-a394-f0b36f500b1f",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145328,
+      "transportBytes": 18369,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "0371a4958e596f18c89e2d7a42dca24da1a45d1365c40c60276a4fe85f39f39d"
+    },
+    {
+      "productId": "cfg_aa31a268-293a-4687-bae0-23dbd62105f1",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145334,
+      "transportBytes": 18375,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "7138de56f3aef7ef8cc87c2b1aec6da092e3d4a70296d7d311db9c469e1211c9"
+    },
+    {
+      "productId": "cfg_aedc21de-7186-48de-b0ad-43465137a12e",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145265,
+      "transportBytes": 18306,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "5fe4037dae272eb1c4a108cc65b057104fdc4a7fbfa54144e1965343378084e6"
+    },
+    {
+      "productId": "cfg_b2576dd3-f004-4e2b-a8a3-8d63469fc6c5",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145868,
+      "transportBytes": 18909,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "3229642e4889f6fa32df3f06036af5d3f4494ab3a78de6721463bdd730bf9e38"
+    },
+    {
+      "productId": "cfg_b3e47952-9556-482a-b389-76ba1ef5e239",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145271,
+      "transportBytes": 18312,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "acbd574ec73ce28bd8221ac5fb48297275af3e844c499ac44ab5ef83feb1e6ec"
+    },
+    {
+      "productId": "cfg_baefb12a-cba3-48d9-8d52-8db542b43fd4",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145297,
+      "transportBytes": 18338,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "3682a0b9fd466983b08932421b5f27d41947f5f08eeebeeae1e2ddb7ee781e81"
+    },
+    {
+      "productId": "cfg_bf53e83e-4f45-41f6-bf1a-c99101cea034",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145324,
+      "transportBytes": 18365,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "dfdda177ffbb3284a20cebe2305da8a61282198ed96492474c09b98afd9220cf"
+    },
+    {
+      "productId": "cfg_c246228e-1a8c-4611-bf71-08db09e96524",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145350,
+      "transportBytes": 18391,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "ca85220947ae108289589e5759e03addb2d59a7098a947294206221e5d35f52b"
+    },
+    {
+      "productId": "cfg_c45df8e4-9075-449a-87da-c1930d26c056",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2602137,
+      "transportBytes": 21350,
+      "productFonts": 2,
+      "startFonts": 0,
+      "roundTripSha256": "a73366507152e19f951ddf60f91b7ea18489a227f76002d43280b54d8654139c"
+    },
+    {
+      "productId": "cfg_c750b436-3ee3-466e-a9f9-165ea5f3cb02",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2497318,
+      "transportBytes": 23594,
+      "productFonts": 2,
+      "startFonts": 0,
+      "roundTripSha256": "77beaafca0963a0f9eee99a27aa5f7eca19d268feb313497daa51d007d931cfc"
+    },
+    {
+      "productId": "cfg_ce80d817-c718-4178-a786-52291f7cccc5",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145850,
+      "transportBytes": 18891,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "bcec38edf71223a36dd53bbcebde1b719adafe7e37adcc6f3ad317a3eea7f379"
+    },
+    {
+      "productId": "cfg_df1bbd1b-cd64-409f-bebf-30a748a545c0",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145292,
+      "transportBytes": 18333,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "38a15d0b7de5d7a6c2708c0e32e1fbc0c3d8b3f8ece1d35ae95f8142effd68ff"
+    },
+    {
+      "productId": "cfg_e0ba8c6c-5472-402c-84bf-1605fa2ab9d2",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145206,
+      "transportBytes": 18247,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "291f7cb2735ccb6ccb6995ac37da0d0103fc278242672df0751a4fa425c73ad1"
+    },
+    {
+      "productId": "cfg_e2f8cce8-06ef-4ab2-b2e5-d1a4c736f7cb",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145402,
+      "transportBytes": 18443,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "3e1b8f191813403b4265f53bd81096348cefe7c427b8bb4cec6044e9e6133a5b"
+    },
+    {
+      "productId": "cfg_e4790bb1-754e-4bc9-9010-21462f6a8019",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145356,
+      "transportBytes": 18397,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "3ae5ff41fc211d7f4f320bedf2c6c1e669c70c2a1b75f8f60ae02c15449463f6"
+    },
+    {
+      "productId": "cfg_e4976c63-c63a-4a52-bd9f-2510c197d48d",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2146000,
+      "transportBytes": 19041,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "8b1eea6645f729a2b420dc75112dd87e698d785d625a5e3107b06903a752c4ce"
+    },
+    {
+      "productId": "cfg_eba68973-3566-42d1-9033-ccd76ea2a9a6",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145342,
+      "transportBytes": 18383,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "82d607f0186d7d6645afa182bce0bf93d64199777c9fc05b660e3b24d9954229"
+    },
+    {
+      "productId": "cfg_f00f3024-f07a-488c-bbbc-5e2f055b2b30",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145328,
+      "transportBytes": 18369,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "bce94eb18731b6e4255085544bd50a149f0dbf82ac072d725229d657fbccee34"
+    },
+    {
+      "productId": "cfg_f036e428-df12-424e-bd0f-b7675a49b1ca",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145915,
+      "transportBytes": 18956,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "0c644c90f56aee0fb97920ae9fced8657ae2afcc6fb6ffab47a15e5ed3a228af"
+    },
+    {
+      "productId": "cfg_f5e06dea-5a5f-42c5-8344-8659b7f8c043",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145305,
+      "transportBytes": 18346,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "a089f389357c13438f8f7fb6070d001ec06134343577bfd24c60fcfd09dcdea5"
+    },
+    {
+      "productId": "cfg_fc88cfb7-6883-4628-a39a-fbc5a5f4ff23",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145269,
+      "transportBytes": 18310,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "55a81d8b529cf352995d04d913aa513c07bc1d9cf634902c2d0b89e42900d328"
+    },
+    {
+      "productId": "cfg_fd053804-fd76-4b82-8616-9b6ba7543d09",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145296,
+      "transportBytes": 18337,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "b05176354f7539438b5f2b8f4fb0a3ba34839664acf580df02c22d5a812e59ae"
+    },
+    {
+      "productId": "cfg_fd929d93-329e-4f07-abcd-22b3b49dc7f1",
+      "revision": 1,
+      "designs": 2,
+      "originalBytes": 2145837,
+      "transportBytes": 18878,
+      "productFonts": 1,
+      "startFonts": 0,
+      "roundTripSha256": "e4608284f75590a73ce0d8f353e2eef9e76dd496477623f9f219d694f61cea5e"
+    }
+  ],
+  "result": "PASS",
+  "finishedAt": "2026-11-07T10:19:03.188Z"
+}

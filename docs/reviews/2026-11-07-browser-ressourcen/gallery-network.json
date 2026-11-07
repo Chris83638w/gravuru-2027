@@ -1,0 +1,13 @@
+{
+  "kind": "actual private gallery context",
+  "designId": "tiere-d1000-rechteck-3-2-ohne",
+  "format": "30x20",
+  "originalContextBytes": 21379825,
+  "transportContextBytes": 8159002,
+  "availableProductFonts": 30,
+  "initialProductFonts": 3,
+  "initialResourceBytes": 1509184,
+  "totalFirstLoadDataBytes": 9668186,
+  "notIncludingEditorOrLibraryAssets": true,
+  "repeatLoadResourcesCacheable": true
+}

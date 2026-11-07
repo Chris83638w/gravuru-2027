@@ -2,10 +2,12 @@
 // lazy-resources-model.mjs, Dateien aus lazy-resources-build.mjs unter /_runtime/lazy/).
 // Ein Objekt erhält nur eine bereits geladene Schrift bzw. ein geladenes Motiv; Vorschau,
 // Entwurfsprüfung und Export rechnen deshalb immer mit vorhandenen Konturen.
-import {LAZY_BASE,startNeeds,draftNeeds,lazyUrls,motifLibraryUrl,coreCatalogUrl,libraryEntries,fontFileName,resourceNeeds,productFontIndex} from './lazy-resources-model.mjs';
+import {LAZY_BASE,startNeeds,draftNeeds,lazyUrls,motifLibraryUrl,coreCatalogUrl,libraryEntries,fontFileName,resourceNeeds,productFontIndex,prefetchFontNames} from './lazy-resources-model.mjs';
+import {isBrowserResourceUrl,fetchResourceJSON} from './browser-model-resources.mjs';
+export {hydrateMaterialSurface} from './browser-model-resources.mjs';
 
 // `priority` (fetch-Priorität, Chromium): 'low' beim Vorladen im Hintergrund (preload-queue.mjs).
-const fetchJSON=async(url,{priority}={})=>{const response=await fetch(url,{credentials:'same-origin',...(priority?{priority}:{})});if(!response.ok)throw Error('Laden fehlgeschlagen: '+url.split('/').pop());return response.json();};
+const fetchJSON=async(url,{priority}={})=>{if(isBrowserResourceUrl(url))return fetchResourceJSON(url,{priority});const response=await fetch(url,{credentials:'same-origin',...(priority?{priority}:{})});if(!response.ok)throw Error('Laden fehlgeschlagen: '+url.split('/').pop());return response.json();};
 const fonts=new Map(),motifs=new Map();let library=null;
 const once=(cache,key,load)=>{if(!cache.has(key))cache.set(key,load().catch(error=>{cache.delete(key);throw error;}));return cache.get(key);};
 const loadFont=(entry,get)=>once(fonts,entry.name+'|'+entry.url,()=>get(entry.url));
@@ -63,7 +65,7 @@ export function attach(el,{catalog,entries,prepare,get=fetchJSON,base=LAZY_BASE}
   // Schrift teilt sich die Anfrage mit uxEnsureFonts (Merker `fonts`), nichts wird doppelt geladen.
   el.uxPrefetchFonts=async({priority='low',names=null}={})=>{
     let added=0;
-    const wanted=names?fontIndex.map(f=>f.name).filter(n=>names.includes(n)):fontIndex.map(f=>f.name);
+    const wanted=prefetchFontNames(fontIndex,{names});
     for(const font of lazyUrls({fonts:wanted},{fontIndex},base).fonts){
       if(el.fontData[font.name])continue;
       const data=await loadFont(font,url=>get(url,{priority}));

@@ -1,6 +1,6 @@
 ## 07.11.2026 · Codex/Mika · Demo R11: Werkzeugleiste mittig
 
-Nur zwei CSS-Regeln: alte Fotobutton-Reserve rechts entfernt, Aktionsgruppe mittig. Chrome bei 320/390/1440 px geprüft, Drehen und Rückgängig unverändert. Vorab gesichert. [Übergabe](docs/handoffs/2026-11-07-mobile-demo-r11-werkzeugleiste.md).
+Nur zwei CSS-Regeln: alte Fotobutton-Reserve rechts entfernt, Aktionsgruppe mittig. Chrome bei 320/390/1440 px geprüft, Drehen und Rückgängig unverändert. Vorab gesichert. [R11 frisch testen](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r11/22x14.html?fresh=1). Separat veröffentlicht, 14.141 alte Public-Dateien unverändert; öffentliche Handyprüfung und zwölf HTTP-Stichproben bestanden. [Übergabe](docs/handoffs/2026-11-07-mobile-demo-r11-werkzeugleiste.md).
 
 ## 07.11.2026 · Codex/Mika · Demo R10 veröffentlicht: echte Reiter, Kopfzeile und PC-Preis
 

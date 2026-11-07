@@ -1,0 +1,93 @@
+{
+  "actions": [
+    {
+      "label": "Element löschen",
+      "rect": {
+        "bottom": 138,
+        "height": 44,
+        "left": 71.5859375,
+        "right": 111.5859375,
+        "top": 94,
+        "width": 40,
+        "x": 71.5859375,
+        "y": 94
+      }
+    },
+    {
+      "label": "Motiv verkleinern",
+      "rect": {
+        "bottom": 138,
+        "height": 44,
+        "left": 113.5859375,
+        "right": 153.5859375,
+        "top": 94,
+        "width": 40,
+        "x": 113.5859375,
+        "y": 94
+      }
+    },
+    {
+      "label": "Motiv vergrößern",
+      "rect": {
+        "bottom": 138,
+        "height": 44,
+        "left": 155.5859375,
+        "right": 195.5859375,
+        "top": 94,
+        "width": 40,
+        "x": 155.5859375,
+        "y": 94
+      }
+    },
+    {
+      "label": "Motiv um 15 Grad drehen",
+      "rect": {
+        "bottom": 138,
+        "height": 44,
+        "left": 197.5859375,
+        "right": 276.4140625,
+        "top": 94,
+        "width": 78.828125,
+        "x": 197.5859375,
+        "y": 94
+      }
+    },
+    {
+      "label": "Element um 15 Grad drehen",
+      "rect": {
+        "bottom": 138,
+        "height": 44,
+        "left": 278.4140625,
+        "right": 318.4140625,
+        "top": 94,
+        "width": 40,
+        "x": 278.4140625,
+        "y": 94
+      }
+    }
+  ],
+  "preview": {
+    "bottom": 754,
+    "height": 660,
+    "left": 0,
+    "right": 390,
+    "top": 94,
+    "width": 390,
+    "x": 0,
+    "y": 94
+  },
+  "toolbar": {
+    "bottom": 138,
+    "height": 44,
+    "left": 12,
+    "right": 378,
+    "top": 94,
+    "width": 366,
+    "x": 12,
+    "y": 94
+  },
+  "viewport": [
+    390,
+    844
+  ]
+}

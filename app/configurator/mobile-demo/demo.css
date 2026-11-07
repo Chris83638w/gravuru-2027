@@ -542,6 +542,20 @@
   :host([data-mobile-demo]) .ux-shell .ux-preview :is(.dimension-x, .dimension-y) span { font-size: 12px !important; line-height: 16px !important; }
   :host([data-mobile-demo]) .md-sheet-header { min-height: 58px; padding: 7px 12px; }
   :host([data-mobile-demo]) .md-sheet-header h2 { font-size: 16px !important; }
+  :host([data-mobile-demo]) .md-sheet-header:has([data-demo-cart-action]) { grid-template-columns: minmax(0,1fr) 150px; }
+  :host([data-mobile-demo]) .md-sheet-header:has([data-demo-cart-action]) h2 { grid-column: 1; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .md-sheet-header > [data-demo-cart-action] {
+    grid-column: 2; background: var(--md-green) !important; border-color: var(--md-green) !important;
+  }
+  /* Desktop only: keep adding text reachable without squeezing the canvas or
+     changing the mobile editor. The textarea remains multiline/resizable. */
+  :host([data-mobile-demo]) .ux-editor:has(#ux-panel-text:not([hidden])) .md-sheet-header { min-height: 52px; padding-block: 4px; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-editor #ux-panel-text[data-md-text-editor] { padding: 10px 16px 12px !important; }
+  :host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .md-text-picker { margin-bottom: 6px; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) #ux-panel-text[data-md-text-editor] .ux-text-row > textarea[data-ux-text] { min-height: 60px !important; height: 60px; padding: 8px 10px !important; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) #ux-panel-text[data-md-text-editor] .ux-controls:not([hidden]) { gap: 8px !important; margin-top: 6px !important; padding-top: 8px !important; }
+  :host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-size-align { gap: 8px !important; }
+  :host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-add { margin-top: 8px !important; }
   :host([data-mobile-demo]) .md-tools { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   :host([data-mobile-demo]) .md-tools .md-tool { min-height: 100px !important; font-size: 14px !important; }
   :host([data-mobile-demo]) .md-summary { left: auto; right: 206px; bottom: 0; width: calc(var(--md-inspector-w) - 206px); height: var(--md-footer-h); padding: 8px 12px; flex-direction: column; align-items: flex-end; justify-content: center; gap: 3px; }

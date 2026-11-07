@@ -387,6 +387,26 @@ test('desktop photo tab opens the panel first and preserves native upload limits
   assert.deepEqual(f.el.state,f.original);
 });
 
+test('desktop overview cart uses native validation once and follows availability; editing and mobile keep Fertig',async t => {
+  const env=runtime(t),f=editorFixture(env);env.win.innerWidth=1440;
+  const api=await installMobileDemo(f.el),close=f.r.querySelector('.md-sheet-close');
+  const reviews=()=>f.calls.filter(call=>call[0]==='native-review').length;
+  assert.equal(close.textContent,'In den Warenkorb');close.click();assert.equal(reviews(),1);
+  f.finish.disabled=true;env.flush();assert.equal(close.disabled,true);close.click();assert.equal(reviews(),1);
+  api.open('text');assert.equal(close.textContent,'Fertig');assert.equal(close.disabled,false);
+  close.click();assert.equal(f.el.dataset.demoSheet,'menu');assert.equal(reviews(),1);assert.equal(close.disabled,true);
+  f.finish.disabled=false;f.finish.setAttribute('aria-disabled','true');env.flush();assert.equal(close.disabled,true);
+  f.finish.removeAttribute('aria-disabled');f.finish.hidden=true;env.flush();assert.equal(close.disabled,true);
+  f.finish.hidden=false;env.flush();assert.equal(close.disabled,false);
+  // Native review can redirect to invalid text. The adapter must not close it
+  // afterwards or use a second review implementation.
+  f.finish.addEventListener('click',()=>f.el.uxRevealTextIssue({}));
+  close.click();assert.equal(reviews(),2);assert.equal(f.el.dataset.demoSheet,'panel');assert.equal(close.textContent,'Fertig');
+  env.win.innerWidth=390;env.win.dispatchEvent({type:'resize'});api.open('menu');
+  assert.equal(close.textContent,'Fertig');close.click();assert.equal(reviews(),2);assert.equal(f.el.dataset.demoSheet,'closed');
+  assert.deepEqual(f.el.state,f.original);api.dispose();assert.equal(f.r.querySelector('.md-sheet-close'),null);
+});
+
 test('desktop uses the same five top buttons and restores the mobile footer at the breakpoint',async t => {
   const env=runtime(t),f=editorFixture(env);env.win.innerWidth=1440;
   const api=await installMobileDemo(f.el),tabs=f.r.querySelector('.md-desktop-tabs'),bar=f.r.querySelector('.md-bar');

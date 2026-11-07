@@ -51,7 +51,13 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   const plus = button('Gestalten +', 'md-plus', () => open('menu')); plus.setAttribute('aria-label', 'Werkzeuge öffnen'); plus.setAttribute('aria-controls', 'md-tool-sheet');
   const header = make('div', 'md-sheet-header'), heading = make('h2', '', 'Werkzeuge'); heading.id = 'md-sheet-title';
   const back = button('Zurück', 'md-sheet-back', () => open('menu'));
-  const close = button('Fertig', 'md-sheet-close', () => shut());
+  const close = button('Fertig', 'md-sheet-close', () => {
+    if (desktop() && current === 'menu') {
+      // Forward to the one native review/checkout action; never bypass its
+      // validation, demo restriction or pending-request guard.
+      if (finish && !finish.hidden && !finish.disabled && finish.getAttribute('aria-disabled') !== 'true') finish.click();
+    } else shut();
+  });
   header.append(back, heading, close);
   editor.id = 'md-tool-sheet'; editor.setAttribute('aria-labelledby', heading.id);
   editor.prepend(header);
@@ -103,8 +109,17 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   let current = 'closed', priorFocus = plus, resizeFrame = 0, disposed = false, viewportState, suppressPanel = false;
   let textEditor, textSelection;
   const desktop = () => window.innerWidth >= 1000;
+  function refreshCloseAction() {
+    const cart = desktop() && current === 'menu';
+    const label = cart ? 'In den Warenkorb' : 'Fertig';
+    if (close.textContent !== label) close.textContent = label;
+    close.setAttribute('aria-label',label);
+    close.toggleAttribute('data-demo-cart-action',cart);
+    close.disabled = cart && (!finish || finish.hidden || finish.disabled || finish.getAttribute('aria-disabled') === 'true');
+  }
   function resize() {
     if (disposed) return;
+    refreshCloseAction();
     // Reuse the same navigation buttons at the breakpoint, including their
     // native availability and active state. No duplicate mobile/desktop actions.
     const destination = desktop() ? desktopTabs : bar;
@@ -189,7 +204,8 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   on(r, 'click', event => {
     const action = event.target.closest?.('[data-ux]')?.dataset.ux;
     if (['edit-upload','photo-upload','logo-upload'].includes(action) && current === 'closed') open('upload', false);
-    if (event.target.closest?.('.md-bar .completion-finish')) shut(false);
+    // Desktop keeps the inspector available for any native validation redirect.
+    if (!desktop() && event.target.closest?.('.md-bar .completion-finish')) shut(false);
   });
   on(editor, 'focusin', event => { if (!suppressPanel && current === 'closed' && event.target.closest?.('.ux-panel')) { const key = event.target.closest('.ux-panel').id.replace('ux-panel-', ''); open(key, false); } resize(); });
   on(editor,'focusout',() => queueMicrotask(resize));
@@ -237,6 +253,7 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   if (typeof oldSync === 'function') el.sync = function(...args) { const result = oldSync.apply(this,args); refreshHistory(); return result; };
   refreshHistory();
   const syncTools = () => {
+    refreshCloseAction();
     for (const [key,{native,button}] of toolButtons) {
       button.hidden = native.hidden; button.disabled = native.disabled;
       const nav=navButtons.get(key); if(nav){nav.hidden=native.hidden;nav.disabled=native.disabled;}
@@ -248,6 +265,7 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   const tabObserver = new MutationObserver(syncTools);
   for (const {native} of toolButtons.values()) tabObserver.observe(native, {attributes:true,attributeFilter:['hidden','disabled']});
   if(nativeUpload) tabObserver.observe(nativeUpload,{attributes:true,attributeFilter:['hidden','disabled']});
+  if(finish) tabObserver.observe(finish,{attributes:true,attributeFilter:['hidden','disabled','aria-disabled']});
   syncTools();
   const observer = new MutationObserver(() => {
     el.toggleAttribute('data-demo-fullscreen', !!full.open);

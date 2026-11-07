@@ -1,10 +1,18 @@
 const labels = {approved:'Bestätigt', unreviewed:'Noch nicht freigegeben', changed:'Geändert · erneut prüfen', unavailable:'Aufbereitung offen'};
 
+export function approvalScopeUrl(ids) {
+  if(ids===null)return '/originale/approvals';
+  if(!Array.isArray(ids)||ids.length>60||ids.some(id=>typeof id!=='string'||!id)||new Set(ids).size!==ids.length)throw Error('Ungültiger Galerie-Seitenumfang.');
+  return '/originale/approvals?originalIds='+encodeURIComponent(JSON.stringify(ids));
+}
+
 export function approvalCanBeChanged(state, {dirty=false,busy=false,previewReady=false}={}) {
   return !!state?.fingerprint && state.status !== 'unavailable' && !dirty && !busy && previewReady;
 }
 
 export function installApprovalReview({cards,onChanged=()=>{}}) {
+  const scopeElement=document.querySelector('#review-original-ids');
+  const approvalUrl=approvalScopeUrl(scopeElement?JSON.parse(scopeElement.textContent):null);
   let states = JSON.parse(document.querySelector('#review-approval-data')?.textContent || '{}');
   function progressIndex(bundle) {
     const byOriginal = new Map();
@@ -43,6 +51,7 @@ export function installApprovalReview({cards,onChanged=()=>{}}) {
     checkbox.checked = !dirty && state?.status === 'approved';
     checkbox.disabled = !approvalCanBeChanged(state,{dirty,busy:mutating||!!pendingBatch||card.getAttribute('aria-busy')==='true',previewReady:ready(card,state)});
     card.dataset.approvalStatus = state?.status || 'unavailable';
+    if(state?.metadata?.productRevision)card.dataset.sourceRevision=String(state.metadata.productRevision);
     card.querySelector('[data-approval-status-label]').textContent = dirty ? 'Ungespeichert · noch nicht bestätigt' : labels[card.dataset.approvalStatus];
     const progress = progressByOriginal.get(card.dataset.originalId);
     card.querySelector('[data-approval-progress]').textContent = progress?.total > 1 ? progress.approved + ' von ' + progress.total + ' Formaten bestätigt' : '';
@@ -112,7 +121,7 @@ export function installApprovalReview({cards,onChanged=()=>{}}) {
     syncControls(); onChanged();
   }
   async function request(options) {
-    const response = await fetch('/originale/approvals',{credentials:'same-origin',cache:'no-store',...options});
+    const response = await fetch(approvalUrl,{credentials:'same-origin',cache:'no-store',...options});
     let result; try { result = await response.json(); } catch { throw Error('Die Freigabe konnte nicht gelesen werden. Bitte erneut versuchen.'); }
     if (!response.ok) throw Object.assign(Error(result.error || 'Die Freigabe konnte nicht gespeichert werden.'),{status:response.status});
     return result;

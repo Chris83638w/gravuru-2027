@@ -105,7 +105,7 @@ export function nativeDesignReviewFingerprint({document, designId, options = {},
 }
 
 /** Private review only: append-only events, no catalogue or shop writes. */
-export function createDesignReviewApprovals(filename, {resolveTarget, listTargets, actor = 'private-review-session', now = () => new Date()} = {}) {
+export function createDesignReviewApprovals(filename, {resolveTarget, listTargets, describeTarget, actor = 'private-review-session', now = () => new Date()} = {}) {
   if (typeof resolveTarget !== 'function' || typeof listTargets !== 'function') throw Error('Freigaben benötigen eine serverseitige Zielauflösung.');
   if (typeof actor !== 'string' || !actor.trim() || actor.length > 160 || /[\r\n\0]/.test(actor)) throw Error('Der private Prüfakteur ist ungültig.');
   const db = new DatabaseSync(filename);
@@ -139,10 +139,23 @@ export function createDesignReviewApprovals(filename, {resolveTarget, listTarget
   const get = key => state(key, target(key), latest(key));
   return {
     get,
-    all() {
-      const keys = listTargets();
+    all(selectedKeys) {
+      const allowed = listTargets(), keys = selectedKeys ?? allowed;
       if (!Array.isArray(keys) || new Set(keys).size !== keys.length || keys.some(key => !validKey(key))) fail(422, 'review_targets_invalid', 'Die Prüfziele sind nicht eindeutig.');
+      if(selectedKeys){const known=new Set(allowed);if(keys.some(key=>!known.has(key)))fail(404,'review_target_missing','Dieses Prüfziel wurde nicht gefunden.');}
       return Object.fromEntries(keys.map(key => [key, get(key)]));
+    },
+    // Navigation counts do not need glyph/image payloads for never-approved
+    // targets. Actual checks and visible cards always use get()/all() above.
+    summary() {
+      if(typeof describeTarget!=='function')return this.all();
+      const events=new Map(db.prepare('SELECT e.* FROM design_review_approval_events e JOIN (SELECT target_key,MAX(revision) revision FROM design_review_approval_events GROUP BY target_key) h ON h.target_key=e.target_key AND h.revision=e.revision').all().map(e=>[e.target_key,e]));
+      return Object.fromEntries(listTargets().map(key=>{
+        const event=events.get(key);
+        if(event?.approved)return [key,get(key)];
+        const metadata=describeTarget(key);if(!metadata)fail(404,'review_target_missing','Dieses Prüfziel wurde nicht gefunden.');
+        return [key,state(key,{available:!!metadata.productId,fingerprint:null,metadata},event)];
+      }));
     },
     save(input) {
       const fields = ['key', 'approved', 'expectedRevision', 'expectedFingerprint'];

@@ -20,7 +20,7 @@ export function createSlateReviewComments(filename, designIds) {
   };
   return {
     get,
-    all: () => Object.fromEntries([...ids].map(id => [id, get(id)])),
+    all: (selectedIds = [...ids]) => Object.fromEntries(selectedIds.map(id => [id, get(id)])),
     save(id, text, expectedRevision) {
       known(id);
       if (typeof text !== 'string' || text.length > 10000) fail(422, 'Bitte einen Kommentar mit höchstens 10.000 Zeichen eingeben.');

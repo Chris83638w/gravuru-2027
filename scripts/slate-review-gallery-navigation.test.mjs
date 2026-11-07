@@ -10,7 +10,7 @@ const source = fs.readFileSync(new URL('./lib/slate-review-gallery-ui.js', impor
   .replace("await Promise.all([import('./inline.js'), import('./approvals.js')])", '[fakeInlineModule, fakeApprovalModule]')
   .replace("if (typeof document !== 'undefined') void installGalleryPage();", 'globalThis.initialized = installGalleryPage();');
 
-async function openGallery({hash = '', material = 'steel', scroll = 987, targetIsCard = true, savedReturn=null, withTargets=false, dirty=false, formats={}, openAcrylic=false, cardCount=1} = {}) {
+async function openGallery({hash = '', material = 'steel', scroll = 987, targetIsCard = true, savedReturn=null, withTargets=false, dirty=false, formats={}, openAcrylic=false, cardCount=1,paging=null,query='',allowNavigation=true} = {}) {
   const calls = [], nodes = new Map();
   let approvalPasses = 0;
   const interactive = extra => {const listeners=new Map();return {...extra,addEventListener(type,fn){listeners.set(type,fn);},emit(type,event={}){return listeners.get(type)?.(event);},setAttribute(key,value){this[key]=value;}};};
@@ -22,6 +22,8 @@ async function openGallery({hash = '', material = 'steel', scroll = 987, targetI
   control('category', ['', 'door']);control('blank-form', ['', 'round']);
   control('process', ['', 'Gravur']);control('approval-filter', ['', 'approved', 'unreviewed']);
   nodes.set('#blank-form-filter', {hidden: true});nodes.set('#count', {textContent: ''});nodes.set('#no-results', {hidden: true});
+  const apply=interactive({}),pending={hidden:true},pageLink=interactive({getAttribute(){return '/originale/?page=3&material=steel';}});
+  if(paging){nodes.set('#review-page-data',{textContent:JSON.stringify(paging)});nodes.set('[data-apply-filters]',apply);nodes.set('[data-filter-pending]',pending);}
   const options = ['steel', 'acrylic-schwarz-3mm'].map((key, index) => ({value: String(index), textContent: key, dataset: {material: key, materialLabel: key, mm: '100x100', productId: 'cfg_' + key, designId: 'native', sizeKey: key + '-100', approvalKey: key + '-approval', preview: '/' + key + '.svg', edit: '/' + key + '-editor'}}));
   if (openAcrylic) Object.assign(options[1].dataset, {productId: '', designId: '', preview: '', edit: '', openReason: 'Schriftdatei fehlt'});
   const nativePreview = {}, openReason = {}, openPreview = {querySelector() {return openReason;}};
@@ -31,18 +33,39 @@ async function openGallery({hash = '', material = 'steel', scroll = 987, targetI
     scrollIntoView(options) { calls.push({target: this.id, block: options.block}); }};
   const stored = {material, scroll, formats};
   const context = {
-    URLSearchParams, location: {hash}, requestAnimationFrame(callback) { callback(); },
+    URLSearchParams, location: {hash,search:query,assign:url=>calls.push({navigate:url}),replace:url=>calls.push({replace:url})}, requestAnimationFrame(callback) { callback(); },
     sessionStorage: {getItem(key) { return JSON.stringify(key==='gravuru-gallery-return'?savedReturn:stored); }, setItem() {},removeItem(){calls.push({removed:true});}},
-    document: {body,createElement(){return {dataset:{}};},querySelector(selector) { return nodes.get(selector) || null; }, querySelectorAll(selector) { return selector === '[data-design-card]' ? Array(cardCount).fill(card) : selector==='[data-view-nav]'?navigation:selector==='[data-reset-filters]'?resets:[]; },
+    document: {body,createElement(){return {dataset:{}};},querySelector(selector) { return nodes.get(selector) || null; }, querySelectorAll(selector) { return selector === '[data-design-card]' ? Array(cardCount).fill(card) : selector==='[data-view-nav]'?navigation:selector==='[data-reset-filters]'?resets:selector==='[data-gallery-page]'?[pageLink]:[]; },
       getElementById(id) { return id === card.id ? card : null; }},
     window: {scrollY: 0, addEventListener() {}, scrollTo(x, y) { calls.push({x, y}); }},
-    fakeInlineModule: {installInlineReview() { return {keepVisible() { return dirty; }, beforeFormatChange() { return !dirty; }, beforeNavigation() { return true; }}; }},
+    fakeInlineModule: {installInlineReview() { return {keepVisible() { return dirty; }, beforeFormatChange() { return !dirty; }, beforeNavigation() { return allowNavigation; }}; }},
     fakeApprovalModule: {installApprovalReview({onChanged}) { return {syncControls() {approvalPasses++;}, formatChanged() {onChanged();}, refresh() {}}; }},
   };
   vm.runInNewContext(source, context);
   await context.initialized;
-  return {calls, card, image, badge, select, nativePreview, openPreview, openReason, approvalPasses, material: nodes.get('#material').value,nodes,navigation,resets,body,setDirty:value=>{dirty=value;}};
+  return {calls, card, image, badge, select, nativePreview, openPreview, openReason, approvalPasses, material: nodes.get('#material').value,nodes,navigation,resets,body,apply,pending,pageLink,setDirty:value=>{dirty=value;}};
 }
+
+const paged={page:2,pageSize:60,totalMatches:20000,totalOriginals:20000,totalBlanks:73,filters:{view:'designs',material:'steel'}};
+test('paged filters apply to the complete server list only after explicit submission',async()=>{
+  const page=await openGallery({paging:paged,query:'?page=2&material=steel',material:'slate'});
+  assert.equal(page.material,'steel');assert.equal(page.card.hidden,false);assert.deepEqual(page.calls,[],'another page does not reuse old scroll');
+  page.nodes.get('#search').value='D79';page.nodes.get('#search').emit('input');
+  assert.equal(page.pending.hidden,false);assert.equal(page.card.hidden,false);assert.deepEqual(page.calls,[]);
+  page.apply.emit('click');assert.match(page.calls.at(-1).navigate,/search=D79/);assert.match(page.calls.at(-1).navigate,/page=1/);
+  assert.match(page.nodes.get('#count').textContent,/20000 Treffer insgesamt/);
+});
+test('paged navigation and filter apply stop when unsaved inline changes are not discarded',async()=>{
+  const page=await openGallery({paging:paged,dirty:true,withTargets:true,allowNavigation:false});
+  page.pageLink.emit('click',{preventDefault(){}});page.apply.emit('click');page.navigation[1].emit('click');
+  assert.equal(page.calls.some(call=>call.navigate),false);assert.equal(page.select.value,'0');assert.equal(page.card.hidden,false);
+});
+test('an unloaded editor return requests its exact original with preserved filters and no pagination loop',async()=>{
+  const page=await openGallery({paging:paged,hash:'#design-ED-42%2C1',material:'steel'});
+  assert.equal(page.calls.length,1);assert.match(page.calls[0].replace,/originalId=ED-42%2C1/);assert.match(page.calls[0].replace,/#design-ED-42%2C1$/);
+  const missing=await openGallery({paging:paged,hash:'#design-ED-42%2C1',query:'?originalId=ED-42%2C1'});
+  assert.equal(missing.calls.some(call=>call.replace),false);
+});
 
 test('an explicit visible gallery target wins over the previous scroll position', async () => {
   const page = await openGallery({hash: '#design-target', material: 'steel'});

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {installApprovalReview} from './lib/slate-review-approvals-ui.js';
+import {installApprovalReview,approvalScopeUrl} from './lib/slate-review-approvals-ui.js';
 
 const base = 'http://localhost:8976';
 const hashA = 'a'.repeat(64), hashB = 'b'.repeat(64);
@@ -15,7 +15,7 @@ function eventNode(extra = {}) {
 }
 // Small DOM harness exercises installed listeners and actual request payloads.
 // Image assignment deliberately stays pending until the test delivers load/error.
-function harness(t, initial = state(), {inline = false, loaded = true} = {}) {
+function harness(t, initial = state(), {inline = false, loaded = true,originalIds=null} = {}) {
   const previous = new Map(['location','document','window','fetch'].map(key=>[key,Object.getOwnPropertyDescriptor(globalThis,key)]));
   t.after(()=>{for(const [key,descriptor] of previous)if(descriptor)Object.defineProperty(globalThis,key,descriptor);else delete globalThis[key];});
   const checkbox=eventNode({checked:false,disabled:false}), image=eventNode({complete:loaded,naturalWidth:loaded?500:0});
@@ -30,6 +30,7 @@ function harness(t, initial = state(), {inline = false, loaded = true} = {}) {
   globalThis.location={href:base+'/originale/'};
   globalThis.document={hidden:false,addEventListener(){},querySelector(key){
     if(key==='#review-approval-data')return{textContent:JSON.stringify({[initial.key]:initial})};
+    if(key==='#review-original-ids'&&originalIds!==null)return{textContent:JSON.stringify(originalIds)};
     if(key==='#review-overview')return host;
     if(key==='meta[name="slate-review-csrf"]')return{content:'private-token'};
   }};
@@ -48,6 +49,13 @@ function harness(t, initial = state(), {inline = false, loaded = true} = {}) {
     async click(checked=true){checkbox.checked=checked;await checkbox.emit('change',{target:checkbox});},
     posts:()=>requests.filter(r=>r.method==='POST')};
 }
+
+test('paged approval reads and writes carry only the explicit loaded-original scope',async t=>{
+  const h=harness(t,state(),{originalIds:['D1']});await h.api.refresh();await h.click();
+  assert(h.requests.length>=2);assert(h.requests.every(request=>request.url===approvalScopeUrl(['D1'])));
+  assert.equal(new URL(h.requests[0].url,base).searchParams.get('originalIds'),'["D1"]');
+  assert.equal(approvalScopeUrl(null),'/originale/approvals');assert.throws(()=>approvalScopeUrl(['D1','D1']));assert.throws(()=>approvalScopeUrl(Array.from({length:61},(_,i)=>'D'+i)));
+});
 
 test('a pending or failed preview cannot submit approval',async t=>{
   const h=harness(t,state(),{loaded:false});

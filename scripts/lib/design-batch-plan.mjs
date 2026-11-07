@@ -6,26 +6,59 @@ export const BATCH_MATERIALS=Object.freeze({
  'acryl-3mm-tuerschilder-schwarz':{key:'acrylic-schwarz-3mm',label:'Acrylglas Schwarz · 3 mm',kind:'acrylic'},
  'acryl-3mm-tuerschilder-anthrazit':{key:'acrylic-anthrazit-3mm',label:'Acrylglas Anthrazit · 3 mm',kind:'acrylic'}
 });
+/** Explicit family data determines material. Display-only stock labels never create
+ * a native material profile or imply an available product family. */
+export function batchFamilyMaterial(family){
+ const m=family.material;
+ if(BATCH_MATERIALS[family.id]){
+  const material=BATCH_MATERIALS[family.id];
+  if(m?.kind!==material.kind||material.kind==='acrylic'&&(m.thicknessMm!==3||m.variant!==(family.id.endsWith('schwarz')?'schwarz':'anthrazit')))throw Error('Explicit family material differs: '+family.id);
+  return {...material};
+ }
+ if(m?.kind==='steel')return {key:'steel',label:'Edelstahl',kind:'steel'};
+ if(m?.kind==='slate')return {key:'slate',label:'Schiefer',kind:'slate'};
+ if(m?.kind==='acrylic'&&m.thicknessMm===3&&m.variant==='satiniert')return {key:'acrylic-ss-3mm',label:'Acrylglas Satiniert · 3 mm',kind:'acrylic'};
+ if(m?.kind==='acrylic'&&m.thicknessMm===5){
+  const v={schwarz:['as','Schwarz'],anthrazit:['aa','Anthrazit']}[m.variant];
+  if(v)return {key:'acrylic-'+v[0]+'-5mm',label:'Acrylglas '+v[1]+' · 5 mm',kind:'acrylic'};
+ }
+ throw Error('Unsupported explicit family material: '+family.id);
+}
+export function batchSourceMaterial(source){
+ const label=String(source.material||'').trim();
+ if(/^(Edelstahl|Edelstahl gebürstet)$/.test(label))return {key:'steel',label:'Edelstahl',kind:'steel'};
+ if(/Schiefer/i.test(label))return {key:'slate',label:'Schiefer',kind:'slate'};
+ if(/^Acryl(?:glas)?$/.test(label))return {key:'acrylic-unspecified',label:'Acrylglas · Ausführung offen',kind:'acrylic'};
+ const labels={Holz:['wood','Holz'],Leder:['leather','Leder'],Kunststoff:['plastic','Kunststoff'],'Alu-Dibond':['aluminium-composite','Alu-Dibond'],Aludibond:['aluminium-composite','Alu-Dibond'],Granit:['granite','Granit'],Marmor:['marble','Marmor'],Leinwand:['canvas','Leinwand'],Stein:['stone','Stein']};
+ const entry=labels[label];
+ return entry?{key:entry[0],label:entry[1],kind:entry[0]}:{key:'unknown',label:'Material offen',kind:'unknown'};
+}
+export function safeBatchOriginalId(id){
+ return typeof id==='string'&&id.length>0&&id.length<=500&&!/[\\\x00-\x1f<>:"|?*]/.test(id)&&id.split('/').every(p=>p&&p!=='.'&&p!=='..'&&!/[. ]$/.test(p));
+}
 const equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 export const batchHash=value=>createHash('sha256').update(value).digest('hex');
 export const nativeBatchProductKey=(batch,family,size,chunk)=>'batch:'+batchHash(batch).slice(0,12)+':'+batchHash(family+'|'+size).slice(0,16)+':'+chunk;
 export function supplierDesignBlockers(source){
  const reasons=[...(source.blocker||[])];
- if(!['vorbereitet','geliefert'].includes(source.zustand))reasons.push(...(source.zustandGrund||[]),'Lieferstatus: '+source.zustand);
+ if(!['vorbereitet','geliefert','vorbereitet (Lieferform-2-Prüfung: lieferbar)','vorbereitet (Lieferform-2-Prüfung: umbenennung)'].includes(source.zustand))reasons.push(...(source.zustandGrund||[]),'Lieferstatus: '+source.zustand);
  if(source.mitFoto)reasons.push('Fotovorlage benötigt einen gesondert geprüften Fotoressourcenadapter.');
+ if(source.lieferart==='bestand'&&source.lieferformPruefung?.klasse==='umbau')reasons.push('Umbau gemeinsam mit Chris erforderlich.');
+ if(source.lieferart==='bestand'&&!source.ziele?.length)reasons.push('Keine ausdrückliche Zielfamilie im gelieferten Bestand; Produkt-/Familienzuordnung offen.');
+ if(source.lieferart==='bestand'&&!source.verfahren)reasons.push('Verfahren im Original nicht festgelegt.');
  return [...new Set(reasons)];
 }
-export function assertBatchManifest(manifest,batchId){
- if(manifest.schema!=='gravuru-gesamtuebergabe/v1'||manifest.art!=='stapel'||manifest.stapel?.id!==batchId||!/^1-tuerschilder-edelstahl-acryl--[a-z0-9-]+$/.test(batchId))throw Error('Unsupported or mismatched delivery batch.');
+export function assertBatchManifest(manifest,batchId,{familyIds=Object.keys(BATCH_MATERIALS)}={}){
+ if(manifest.schema!=='gravuru-gesamtuebergabe/v1'||!['stapel','stapel-bestand'].includes(manifest.art)||manifest.stapel?.id!==batchId||!/^(?:[1-9]|B)-[a-z0-9-]+--[a-z0-9-]+$/.test(batchId))throw Error('Unsupported or mismatched delivery batch.');
  if(!Array.isArray(manifest.designs)||!Array.isArray(manifest.rohlinge)||!Array.isArray(manifest.verweiseAufMaster))throw Error('Invalid batch arrays.');
  const ids=new Set();
  for(const source of manifest.designs){
-  if(typeof source.id!=='string'||!source.id||/[\\/\x00-\x1f]/.test(source.id)||ids.has(source.id))throw Error('Invalid or duplicate source ID: '+source.id);
+  if(!safeBatchOriginalId(source.id)||ids.has(source.id))throw Error('Invalid or duplicate source ID: '+source.id);
   ids.add(source.id);
-  if(!Array.isArray(source.ziele))throw Error('Explicit targets missing: '+source.id);
+  if(!Array.isArray(source.ziele)&&!(manifest.art==='stapel-bestand'&&source.zustand==='offen'&&!source.dateien?.length))throw Error('Explicit targets missing: '+source.id);
   const targets=new Set();
-  for(const goal of source.ziele){
-   if(!BATCH_MATERIALS[goal.familie]||!Array.isArray(goal.groessen))throw Error('Unsupported explicit family: '+goal.familie);
+  for(const goal of source.ziele||[]){
+   if(!familyIds.includes(goal.familie)||!Array.isArray(goal.groessen))throw Error('Unsupported explicit family: '+goal.familie);
    for(const size of goal.groessen){
     const mm=goal.groessenMm?.[size],identity=goal.familie+'|'+size;
     if(targets.has(identity)||!Array.isArray(mm)||mm.length!==2||!mm.every(n=>Number.isFinite(n)&&n>0))throw Error('Invalid or duplicate explicit target: '+identity);
@@ -36,10 +69,10 @@ export function assertBatchManifest(manifest,batchId){
  return manifest;
 }
 /** Existing native targets retain their original group, IDs, edits and revisions. */
-export function reusedBatchTarget(source,goal,sizeKey,existingPack){
+export function reusedBatchTarget(source,goal,sizeKey,existingPack,materials=BATCH_MATERIALS){
  const old=existingPack?.originals?.find(row=>row.id===source.id);if(!old)return null;
  if(old.sourceVersion!==source.version)throw Error('Existing original has conflicting source bytes: '+source.id);
- const material=BATCH_MATERIALS[goal.familie];
+ const material=materials[goal.familie];
  const matches=(old.targets||[]).filter(t=>t.sizeKey===sizeKey&&(t.reviewMaterial||old.reviewMaterial)?.key===material.key);
  if(matches.length>1)throw Error('Ambiguous existing native target: '+source.id+'/'+sizeKey);
  const target=matches[0];if(!target)return null;

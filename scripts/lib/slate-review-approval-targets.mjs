@@ -129,6 +129,7 @@ export function createSlateApprovalTargetSource({pack, imported, workshop, cache
     flushCache:()=>persistent.flush(),
     cacheStatus:()=>persistent.status(),
     listTargets: () => [...targetKeys],
+    describeTarget: key => byKey.has(key) ? {...byKey.get(key)} : null,
     resolveTarget(key) {
       const target = byKey.get(key);
       if (!target) return null;

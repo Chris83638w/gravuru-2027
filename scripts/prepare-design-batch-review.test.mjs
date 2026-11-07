@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {verifyDesignBatchFiles,prepareDesignBatchReview} from './prepare-design-batch-review.mjs';
-import {assertBatchManifest,supplierDesignBlockers,reusedBatchTarget,chunkNativeEntries,verifyDeliveredTextFit,batchVisualIssues,nativeBatchProductKey} from './lib/design-batch-plan.mjs';
+import {assertBatchManifest,supplierDesignBlockers,reusedBatchTarget,chunkNativeEntries,verifyDeliveredTextFit,batchVisualIssues,nativeBatchProductKey,batchFamilyMaterial,batchSourceMaterial,safeBatchOriginalId} from './lib/design-batch-plan.mjs';
 import {parseDesignSvg} from '../app/workshop/katalog-convert.mjs';
 import {validateProductDocument} from '../app/workshop/product-model.mjs';
 
@@ -13,6 +13,27 @@ const sha=b=>createHash('sha256').update(b).digest('hex');
 const goal={familie:'steel-door-signs',groessen:['GR-ES-RE-50X20-T15'],groessenMm:{'GR-ES-RE-50X20-T15':[50,20]}};
 const source={id:'TRE-V2A-8x3,5-D66',version:'a'.repeat(64),zustand:'vorbereitet',blocker:[],mitFoto:false,ziele:[goal]};
 const batch='1-tuerschilder-edelstahl-acryl--andenkenschilder';
+test('stock path identities stay exact; traversal and filesystem aliases are rejected',()=>{
+ assert.equal(safeBatchOriginalId('adventskalender/Anlass/Weihnachten/AK-H-D1'),true);
+ for(const id of ['../x','a/../x','a//x','/x','C:/x','a\\x','a./x','a /x'])assert.equal(safeBatchOriginalId(id),false,id);
+ const stock={schema:'gravuru-gesamtuebergabe/v1',art:'stapel-bestand',stapel:{id:'B-adventskalender--anlass'},designs:[{id:'adventskalender/Anlass/Weihnachten/AK-H-D1',zustand:'offen',dateien:[]}],rohlinge:[],verweiseAufMaster:[]};
+ assert.equal(assertBatchManifest(stock,stock.stapel.id),stock);assert.equal(stock.designs[0].id,'adventskalender/Anlass/Weihnachten/AK-H-D1');
+});
+test('source family variant and thickness determine new material identities',()=>{
+ const material={kind:'acrylic',variant:'schwarz',thicknessMm:5};
+ assert.equal(batchFamilyMaterial({id:'gedenktafel-ae-acryl-schwarz',material}).key,'acrylic-as-5mm');
+ assert.equal(batchFamilyMaterial({id:'acryl-ss-abstandshalter',material:{...material,thicknessMm:3,variant:'satiniert'}}).key,'acrylic-ss-3mm');
+ assert.throws(()=>batchFamilyMaterial({id:'acryl-ss-abstandshalter',material:{...material,variant:'satiniert'}}),/Unsupported/);
+ assert.throws(()=>batchFamilyMaterial({id:'guessed',material:{...material,thicknessMm:7}}),/Unsupported/);
+ assert.equal(batchSourceMaterial({material:'Acryl'}).key,'acrylic-unspecified');assert.equal(batchSourceMaterial({material:''}).key,'unknown');
+});
+test('lieferbar stock still requires an explicit product and keeps rebuild/process holds',()=>{
+ const d={lieferart:'bestand',zustand:'vorbereitet (Lieferform-2-Prüfung: lieferbar)',ziele:[],verfahren:'Gravur'};
+ assert.deepEqual(supplierDesignBlockers(d),['Keine ausdrückliche Zielfamilie im gelieferten Bestand; Produkt-/Familienzuordnung offen.']);
+ assert.ok(supplierDesignBlockers({...d,lieferformPruefung:{klasse:'umbau'},verfahren:''}).some(s=>s.includes('Umbau gemeinsam')));
+ const goal2={...goal,familie:'grabstecker-edelstahl'};const m={schema:'gravuru-gesamtuebergabe/v1',art:'stapel',stapel:{id:'3-grabstecker-edelstahl--andenkenschilder'},designs:[{...source,ziele:[goal2]}],rohlinge:[],verweiseAufMaster:[]};
+ assert.equal(assertBatchManifest(m,m.stapel.id,{familyIds:['grabstecker-edelstahl']}),m);
+});
 test('supplier targets are per-family; unknown families, duplicate identities and missing mm fail',()=>{
  const m={schema:'gravuru-gesamtuebergabe/v1',art:'stapel',stapel:{id:batch},designs:[source],rohlinge:[],verweiseAufMaster:[]};
  assert.equal(assertBatchManifest(m,batch),m);

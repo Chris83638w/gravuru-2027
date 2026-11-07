@@ -23,6 +23,13 @@ export function materialOption(options, materialKey, current) {
   return candidates.find(option => current?.dataset.mm && option.dataset.mm === current.dataset.mm) || candidates[0];
 }
 
+export function galleryNavigationUrl(filters, page=1, originalId='') {
+  const query=new URLSearchParams();
+  for(const key of ['search','view','material','theme','category','form','process','approval'])if(filters[key])query.set(key,filters[key]);
+  if(originalId)query.set('originalId',originalId);else query.set('page',String(Math.max(1,Number(page)||1)));
+  return '/originale/?'+query+(originalId?'#design-'+encodeURIComponent(originalId):'');
+}
+
 export async function installGalleryPage() {
 const [{installInlineReview}, {installApprovalReview}] = await Promise.all([import('./inline.js'), import('./approvals.js')]);
 
@@ -39,27 +46,47 @@ const cards = [...document.querySelectorAll('[data-design-card]')];
 const blanks = [...document.querySelectorAll('[data-blank-card]')];
 let saved = {};
 try { saved = JSON.parse(sessionStorage.getItem(storageKey) || '{}'); } catch {}
+let paging=null;try{paging=JSON.parse(document.querySelector('#review-page-data')?.textContent||'null');}catch{}
+let initialApprovals={};try{initialApprovals=JSON.parse(document.querySelector('#review-approval-data')?.textContent||'{}');}catch{}
+if(paging){
+  let originalId='';try{if(location.hash.startsWith('#design-'))originalId=decodeURIComponent(location.hash.slice(8));}catch{}
+  if(originalId&&!cards.some(card=>card.dataset.originalId===originalId)&&new URLSearchParams(location.search||'').get('originalId')!==originalId){
+    location.replace(galleryNavigationUrl(saved,1,originalId));return;
+  }
+  saved={...saved,...{search:'',view:'designs',material:'',theme:'',category:'',form:'',process:'',approval:''},...paging.filters};
+}
 let approvalEditor;
+let assignmentEditor;
 let savedReturnCard=null;
+let navigating=false;
 const previousFormats = new WeakMap();
 let filtering = false;
-const inlineEditor = installInlineReview({cards, onSaved: () => {remember();void approvalEditor?.refresh();}, onVisibilityChange: filter});
+let materialFilterInitialized=false;
+const inlineEditor = installInlineReview({cards, onSaved: () => {remember();assignmentEditor?.sync();void approvalEditor?.refresh();}, onVisibilityChange: filter});
 approvalEditor = installApprovalReview({cards,onChanged:filter});
+function currentFilters(){return {search: search.value, view: view.value, material: material.value, theme: theme.value, category: category.value, form: blankForm.value, process: process.value, approval: approvalFilter.value};}
 function remember() {
   const formats = Object.fromEntries(cards.filter(card => card.querySelector('[data-format]')).map(card => {
     const option = card.querySelector('[data-format]').selectedOptions[0];
     return [card.id, {productId: option.dataset.productId, designId: option.dataset.designId, sizeKey: option.dataset.sizeKey, approvalKey: option.dataset.approvalKey}];
   }));
-  try { sessionStorage.setItem(storageKey, JSON.stringify({search: search.value, view: view.value, material: material.value, theme: theme.value, category: category.value, form: blankForm.value, process: process.value, approval: approvalFilter.value, scroll: window.scrollY, formats})); } catch {}
+  try { sessionStorage.setItem(storageKey, JSON.stringify({...currentFilters(),scroll:navigating?0:window.scrollY,pageQuery:location.search||'',formats:{...saved.formats,...formats}})); } catch {}
 }
+function goToPage(url){
+  if(assignmentEditor&&!assignmentEditor.beforeNavigation())return false;
+  if(!inlineEditor.beforeNavigation())return false;
+  navigating=true;remember();location.assign(url);return true;
+}
+function pendingFilters(){const notice=document.querySelector('[data-filter-pending]');if(notice)notice.hidden=Object.entries(currentFilters()).every(([key,value])=>value===(paging.filters?.[key]||(key==='view'?'designs':'')));}
 function filter() {
   if (filtering) return;
   filtering = true;
   try {
   approvalEditor?.syncControls();
-  const filters = {search: search.value, view: view.value, material: material.value, theme: theme.value, category: category.value, form: blankForm.value, process: process.value, approval: approvalFilter.value};
-  if (document.body) document.body.dataset.reviewView = view.value;
-  for (const button of document.querySelectorAll('[data-view-nav]')) button.setAttribute('aria-pressed', String(button.dataset.viewNav === view.value));
+  const filters = paging ? {...{view:'designs'},...paging.filters} : currentFilters();
+  const visibleView=filters.view;
+  if (document.body) document.body.dataset.reviewView = visibleView;
+  for (const button of document.querySelectorAll('[data-view-nav]')) button.setAttribute('aria-pressed', String(button.dataset.viewNav === visibleView));
   const filterCount = document.querySelector('[data-filter-count]');
   const extraCount = view.value === 'blanks' ? 0 : [category.value, process.value].filter(Boolean).length;
   if (filterCount) filterCount.textContent = extraCount ? ' (' + extraCount + ')' : '';
@@ -72,12 +99,12 @@ function filter() {
     const pinned = inlineEditor.keepVisible(card)||card===savedReturnCard;
     // The material filter selects the real native target, never recolours a
     // preview. An unsaved edit or editor return keeps its exact target pinned.
-    if (filters.material && card.dataset.material !== filters.material && !pinned) {
+    if (filters.material && card.dataset.material !== filters.material && !pinned && (!paging||!materialFilterInitialized)) {
       const select = card.querySelector('[data-format]');
       const option = select && materialOption(select.options, filters.material, select.selectedOptions[0]);
       if (option && inlineEditor.beforeFormatChange(card)) {select.value = option.value; updateFormat(card);}
     }
-    const matches = reviewDesignMatches(card.dataset, filters);
+    const matches = paging ? true : reviewDesignMatches(card.dataset, filters);
     card.hidden = !matches && !pinned;
     let note = card.querySelector('[data-inline-filter-note]');
     if (!matches && pinned && !note) { note = document.createElement('p'); note.dataset.inlineFilterNote = ''; note.className = 'inline-filter-note'; note.textContent = 'Deine offene Vorlage bleibt trotz Filter sichtbar. Bitte zuerst speichern oder zurücksetzen.'; card.querySelector('.card-heading').after(note); }
@@ -85,7 +112,7 @@ function filter() {
     if (note) note.hidden = matches || !pinned;
     if (!card.hidden) count++;
   }
-  for (const blank of blanks) { blank.hidden = !reviewBlankMatches(blank.dataset, filters); if (!blank.hidden) blankCount++; }
+  for (const blank of blanks) { blank.hidden = paging ? false : !reviewBlankMatches(blank.dataset, filters); if (!blank.hidden) blankCount++; }
   for (const section of document.querySelectorAll('[data-category-section]')) {
     const count = section.querySelectorAll('[data-design-card]:not([hidden])').length;
     section.hidden = !count;
@@ -93,8 +120,10 @@ function filter() {
   }
   const blankGallery = document.querySelector('#blank-gallery');
   if (blankGallery) { blankGallery.hidden = !blankCount; blankGallery.querySelector('[data-blank-count]').textContent = blankCount; }
-  document.querySelector('#count').textContent = view.value === 'blanks' && !count ? blankCount + ' Rohlinge' : count + ' Vorlagen' + (view.value === 'designs' ? '' : ' · ' + blankCount + ' Rohlinge');
+  document.querySelector('#count').textContent = paging ? `${count} Vorlagen · ${blankCount} Rohlinge auf dieser Seite · ${Number(paging.totalMatches)||0} Treffer insgesamt` : view.value === 'blanks' && !count ? blankCount + ' Rohlinge' : count + ' Vorlagen' + (view.value === 'designs' ? '' : ' · ' + blankCount + ' Rohlinge');
   document.querySelector('#no-results').hidden = count + blankCount > 0;
+  materialFilterInitialized=true;
+  assignmentEditor?.sync();
   } finally { filtering = false; }
 }
 function updateFormat(card, notify = true) {
@@ -112,6 +141,7 @@ function updateFormat(card, notify = true) {
   card.dataset.productId = option.dataset.productId;
   card.dataset.designId = option.dataset.designId;
   card.dataset.approvalKey = option.dataset.approvalKey;
+  if(option.dataset.sourceRevision)card.dataset.sourceRevision=option.dataset.sourceRevision;
   if (option.dataset.material) card.dataset.material = option.dataset.material;
   const badge = card.querySelector('[data-material-badge]');
   if (badge && option.dataset.materialLabel) badge.textContent = option.dataset.materialLabel + ' · ' + card.dataset.process;
@@ -131,10 +161,13 @@ for (const card of cards) {
   const select = card.querySelector('[data-format]');
   if (select) {
     const value = saved.formats?.[card.id];
-    const restored = value && typeof value === 'object' ? savedReturnOption(select.options, value) : [...select.options].find(option => option.value === value);
+    let restored = value && typeof value === 'object' ? savedReturnOption(select.options, value) : [...select.options].find(option => option.value === value);
+    if(paging&&restored&&paging.focusOriginalId!==card.dataset.originalId&&
+      (paging.filters.material&&restored.dataset.material!==paging.filters.material||paging.filters.approval&&initialApprovals[restored.dataset.approvalKey]?.status!==paging.filters.approval))restored=null;
     // Restore every card first, then run the shared filter once. Running a full
     // approval/filter pass for each saved format freezes large gallery returns.
     if (restored) { select.value = restored.value; updateFormat(card, false); }
+    else if(paging)updateFormat(card,false);
     previousFormats.set(card, select.value);
     select.addEventListener('change', () => {
       if (!inlineEditor.beforeFormatChange(card)) { select.value = previousFormats.get(card); return; }
@@ -162,10 +195,12 @@ function restoreSavedReturn() {
 restoreSavedReturn();
 for (const button of document.querySelectorAll('[data-view-nav]')) button.addEventListener('click', () => {
   if (![...view.options].some(option => option.value === button.dataset.viewNav)) return;
+  if(paging){goToPage(galleryNavigationUrl({...currentFilters(),view:button.dataset.viewNav}));return;}
   view.value = button.dataset.viewNav; savedReturnCard = null; filter(); remember();
 });
 for (const button of document.querySelectorAll('[data-reset-filters]')) button.addEventListener('click', () => {
   for (const control of [search, material, theme, category, blankForm, process, approvalFilter]) control.value = '';
+  if(paging){pendingFilters();return;}
   savedReturnCard = null; filter(); remember();
 });
 document.querySelector('[data-overview-link]')?.addEventListener('click', event => {
@@ -178,7 +213,16 @@ for (const link of document.querySelectorAll('[data-gallery-leave]')) link.addEv
   remember();
 });
 if (category.value || process.value) {const more = document.querySelector('#more-filters'); if (more) more.open = true;}
-for (const control of [search, view, material, theme, category, blankForm, process, approvalFilter]) control.addEventListener('input', () => { savedReturnCard=null;filter(); remember(); });
+for (const control of [search, view, material, theme, category, blankForm, process, approvalFilter]) control.addEventListener('input', () => { if(paging){pendingFilters();return;}savedReturnCard=null;filter(); remember(); });
+if(paging){
+  document.querySelector('[data-apply-filters]')?.addEventListener('click',()=>goToPage(galleryNavigationUrl(currentFilters())));
+  search.addEventListener('keydown',event=>{if(event.key==='Enter'&&!event.isComposing){event.preventDefault();goToPage(galleryNavigationUrl(currentFilters()));}});
+  for(const link of document.querySelectorAll('[data-gallery-page]'))link.addEventListener('click',event=>{if(event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;event.preventDefault();goToPage(link.getAttribute('href'));});
+}
+if(document.querySelector('[data-assignment-panel]')){
+  const {installAssignmentReview}=await import('./assignments.js');
+  assignmentEditor=installAssignmentReview({cards,remember,onApplied:({originalId})=>{remember();goToPage(galleryNavigationUrl(paging?.filters||currentFilters(),paging?.page||1,originalId));}});
+}
 filter();
 let returnCard;
 try { returnCard = document.getElementById(decodeURIComponent(location.hash.slice(1))); } catch {}
@@ -200,7 +244,7 @@ window.addEventListener('pageshow', event => {
   if (event.persisted) {restoreSavedReturn();void approvalEditor.refresh();if(savedReturnCard)requestAnimationFrame(()=>savedReturnCard.scrollIntoView({block:'start'}));}
 });
 if (hasReturnCard) requestAnimationFrame(() => { returnCard.scrollIntoView({block: 'start'}); remember(); });
-else if (Number.isFinite(saved.scroll)) requestAnimationFrame(() => window.scrollTo(0, saved.scroll));
+else if (Number.isFinite(saved.scroll)&&(!paging||saved.pageQuery===(location.search||''))) requestAnimationFrame(() => window.scrollTo(0, saved.scroll));
 }
 
 if (typeof document !== 'undefined') void installGalleryPage();

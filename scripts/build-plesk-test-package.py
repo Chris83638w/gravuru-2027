@@ -20,6 +20,11 @@ SLATE_RUNTIME_FILES = [
     # They are never exposed as HTTP routes or automatically run at startup.
     'scripts/extend-design-review.mjs',
     'scripts/extend-slate-original-review.mjs',
+    'scripts/combine-complete-design-review.mjs',
+    'scripts/lib/gallery-assignment-catalogue.mjs',
+    'scripts/lib/gallery-review-pagination.mjs',
+    'scripts/lib/gallery-review-registry.mjs',
+    'scripts/lib/slate-review-assignment-ui.js',
     'scripts/lib/slate-review-gallery.mjs',
     'scripts/lib/slate-review-gallery-page.mjs',
     'scripts/lib/slate-review-catalog.mjs',

@@ -37,6 +37,11 @@ export function readSlatePackage(value){
   }
   assert.deepEqual(walk(root),[...names,'files-sha256.json'].sort(),'Package inventory must match all files');
   const pack=read(child(root,'manifest.json'));
+  for(const blank of pack.blanks||[]){
+    if(!blank.preview)continue;
+    const indexed=checksums.find(row=>row.file===blank.preview);
+    if(!indexed||!/^[a-f0-9]{64}$/.test(blank.sha256||'')||indexed.sha256!==blank.sha256)fail('Blank preview differs from its verified resource: '+blank.key);
+  }
   validateSlateReviewMapping(pack,{localOnly:true,published:false,shopifyWrites:0,products:pack.products});
   return {root,pack,checksums,hash:sha(fs.readFileSync(child(root,'manifest.json')))};
 }
@@ -88,6 +93,30 @@ export function mergeDesignReviewOriginals(baseRows,addonRows){
       if(themes.has(theme.key))assert.deepEqual(themes.get(theme.key),theme,'Conflicting theme metadata');
       else{const added=structuredClone(theme);(old.reviewThemes||=[]).push(added);themes.set(theme.key,added);}
     }
+    if(!old.reviewSourcePreview&&incoming.reviewSourcePreview)old.reviewSourcePreview=incoming.reviewSourcePreview;
+  }
+  return result;
+}
+
+// Keep established blank metadata and paths. Additional delivery descriptions
+// are safe only when physical identity and immutable source/image bytes agree.
+// readSlatePackage binds every nonempty preview to its indexed content hash.
+export function mergeDesignReviewBlanks(baseRows,addonRows){
+  const identity=b=>JSON.stringify([b.materialKey,b.familyId??null,b.key]);
+  const result=structuredClone(baseRows),known=new Map(result.map(b=>[identity(b),b]));
+  if(known.size!==baseRows.length)fail('Duplicate baseline blank');
+  for(const incoming of addonRows){
+    const key=identity(incoming),old=known.get(key);
+    if(!old){const added=structuredClone(incoming);known.set(key,added);result.push(added);continue;}
+    if(JSON.stringify(old)===JSON.stringify(incoming))continue;
+    for(const field of ['key','materialKey','familyId','sizeKey','mm','source','sourceVersion','sha256'])assert.deepEqual(old[field],incoming[field],'Blank identity differs: '+key+' / '+field);
+    if(!old.sourceVersion)fail('Blank source identity is not proven: '+key);
+    for(const [field,value]of Object.entries(incoming)){
+      if(old[field]===undefined){old[field]=structuredClone(value);continue;}
+      if(['label','form','materialLabel'].includes(field))continue;// established display wording stays authoritative
+      if(field==='preview'&&old.preview!==value){if(!/^[a-f0-9]{64}$/.test(old.sha256||''))fail('Blank image identity is not proven: '+key);continue;}
+      assert.deepEqual(old[field],value,'Blank metadata conflicts: '+key+' / '+field);
+    }
   }
   return result;
 }
@@ -138,14 +167,19 @@ export function mergeSlatePackages({baseRoot,addonRoot,out,materialExtension=fal
     sourcePackages:[{manifestSha256:base.hash,counts:base.pack.counts},{manifestSha256:addon.hash,counts:addon.pack.counts}]};
   if(materialExtension){
     pack.schema='gravuru-design-original-review/v1';
-    pack.sourcePackages=[...(base.pack.sourcePackages||[]),{manifestSha256:base.hash,catalogueCommit:base.pack.catalogueCommit,counts:base.pack.counts},{manifestSha256:addon.hash,catalogueCommit:addon.pack.catalogueCommit,deliveryCommit:addon.pack.deliveryCommit,counts:addon.pack.counts}];
-    const blanks=new Map();
-    for(const blank of [...(base.pack.blanks||[]),...(addon.pack.blanks||[])]){
-      const key=JSON.stringify([blank.materialKey,blank.key]);
-      if(blanks.has(key))assert.deepEqual(blanks.get(key),blank,'Extension conflicts with an existing blank');
-      else blanks.set(key,blank);
+    if(addon.pack.deliveryCoverage)pack.deliveryCoverage=structuredClone(addon.pack.deliveryCoverage);
+    if(addon.pack.sourceReviewUpdates?.length){
+      if(addon.pack.correspondenceBaseSha256!==base.hash)fail('Source correspondence baseline changed');
+      const rows=new Map(pack.originals.map(row=>[row.id,row]));
+      for(const update of addon.pack.sourceReviewUpdates){
+        const row=rows.get(update.id);if(!row||typeof update.sourceOriginalId!=='string'||typeof update.source!=='string'||typeof update.sourceStandConflict!=='boolean')fail('Invalid source correspondence update');
+        if(update.preview&&!planned.has(update.preview))fail('Source update preview is not verified');
+        (row.catalogueSourceUpdates||=[]).push(structuredClone(update));
+        if(!row.reviewSourcePreview&&!update.sourceStandConflict&&update.preview)row.reviewSourcePreview=update.preview;
+      }
     }
-    pack.blanks=[...blanks.values()];
+    pack.sourcePackages=[...(base.pack.sourcePackages||[]),...(addon.pack.sourcePackages||[]),{manifestSha256:base.hash,catalogueCommit:base.pack.catalogueCommit,counts:base.pack.counts},{manifestSha256:addon.hash,catalogueCommit:addon.pack.catalogueCommit,deliveryCommit:addon.pack.deliveryCommit,counts:addon.pack.counts}];
+    pack.blanks=mergeDesignReviewBlanks(base.pack.blanks||[],addon.pack.blanks||[]);
   }
   const editable=pack.originals.filter(row=>row.targets?.some(target=>target.status==='prepared'));
   const complete=editable.filter(row=>row.targets.every(target=>target.status==='prepared'));
@@ -159,6 +193,8 @@ export function mergeSlatePackages({baseRoot,addonRoot,out,materialExtension=fal
   fs.mkdirSync(out,{recursive:true,mode:0o700});
   for(const [relative,row] of planned){const bytes=fs.readFileSync(row.source);if(bytes.length!==row.expected.bytes||sha(bytes)!==row.expected.sha256)fail('Source changed during merge');write(child(out,relative),bytes);}
   write(child(out,'manifest.json'),json(pack));
+  const assignmentFile=fs.existsSync(child(addon.root,'assignment-catalogue.json'))?child(addon.root,'assignment-catalogue.json'):fs.existsSync(child(base.root,'assignment-catalogue.json'))?child(base.root,'assignment-catalogue.json'):null;
+  if(assignmentFile){const bytes=fs.readFileSync(assignmentFile),owner=assignmentFile===child(addon.root,'assignment-catalogue.json')?addon:base,expected=owner.checksums.find(r=>r.file==='assignment-catalogue.json');if(!expected||bytes.length!==expected.bytes||sha(bytes)!==expected.sha256)fail('Assignment catalogue changed during merge');const catalogue=JSON.parse(bytes);if(catalogue.schema!=='gravuru-gallery-assignment-catalogue/v1'||!/^[a-f0-9]{40}$/.test(catalogue.sourceCommit))fail('Pinned assignment catalogue required');write(child(out,'assignment-catalogue.json'),bytes);}
   write(child(out,'START-HIER.md'),'# Gemeinsame private '+(materialExtension?'Design':'Schiefer')+'-Prüfgalerie\n\nOriginale und Nachweise bleiben unverändert; Quellberichte stehen unter source-packages/.\nBenutzeränderungen liegen ausschließlich in den zugehörigen Review-Datenbanken.\nKeine Veröffentlichung oder Designfreigabe.\n');
   const checksums=walk(out).map(file=>{const bytes=fs.readFileSync(child(out,file));return {file,bytes:bytes.length,sha256:sha(bytes)};});
   write(child(out,'files-sha256.json'),json(checksums));

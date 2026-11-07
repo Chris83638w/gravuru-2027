@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {slateGalleryHtml, orderedReviewTargets, reviewThemes, blankPreviewUrl} from './lib/slate-review-gallery-page.mjs';
 import {reviewDesignMatches, reviewBlankMatches, materialOption} from './lib/slate-review-gallery-ui.js';
 import {materialOverviewHtml, REVIEW_MATERIAL_OVERVIEW} from './lib/review-material-overview.mjs';
+import {galleryReviewPage} from './lib/gallery-review-pagination.mjs';
 
 const steel = {
   id: 'ED-42,1', process: 'Gravur', kleinsteGroesse: 'large',
@@ -25,6 +26,27 @@ const imported = {products: [
   {key: 'small:Hunde', productId: 'cfg_slate_small', designIds: [slate.id]},
 ]};
 const blanks = [{key: 'steel-round-100', materialKey: 'steel', materialLabel: 'Edelstahl', form: 'Rund', label: 'Rund Ø 10 cm', mm: [100, 100], preview: 'originals/_blanks/steel-round-100.webp'}];
+
+test('paged approval filtering selects the actual matching native format before JavaScript runs',()=>{
+  const key=JSON.stringify(['steel',steel.id,'large']),approvals={[key]:{status:'approved',metadata:{productRevision:4,previewUrl:'/exact-large.svg'}}};
+  const page=galleryReviewPage({originals:[steel]},new URLSearchParams({approval:'approved'}),approvals);
+  const html=slateGalleryHtml(page.pack,imported,{paging:page.paging,approvals});
+  assert.match(html,/data-product-id="cfg_large" data-design-id="steel-ed-42-1"/);assert.match(html,/data-approval-status="approved"/);assert.match(html,/src="\/exact-large.svg"/);assert.match(html,/<option value="2" selected data-approval-key/);
+});
+
+test('an open same-material format has no foreign editor link or enabled assignment action',()=>{
+  const row={...steel,targets:[...steel.targets,{status:'open',sizeKey:'missing',mm:[150,80],reason:'Exakte Vorlage fehlt'}]};
+  const page=galleryReviewPage({originals:[row]},new URLSearchParams({approval:'unavailable'}));
+  const html=slateGalleryHtml(page.pack,imported,{paging:page.paging,assignmentEnabled:true});
+  assert.match(html,/data-approval-status="unavailable"/);assert.match(html,/data-native-preview hidden/);assert.match(html,/data-open-preview><strong/);assert.match(html,/data-inline-start hidden/);assert.match(html,/data-edit-link hidden/);assert.match(html,/data-assignment-single disabled/);assert.doesNotMatch(html,/data-edit-link href=/);
+});
+
+test('new catalogue stands and exact source hierarchy stay separate from saved native state',()=>{
+  const row={...steel,sourceProduct:'Gedenktafeln',sourceTargetGroup:'Menschen',sourceSubcategory:'Allgemein',catalogueSourceUpdates:[{sourceStandConflict:true,sourceOriginalId:'new',preview:'originals/new/preview.png'},{sourceStandConflict:true,sourceOriginalId:'bad',preview:'https://outside.invalid/new.png'}]};
+  const page=galleryReviewPage({originals:[row]},new URLSearchParams({search:'Gedenktafeln / Menschen / Allgemein'}));
+  assert.equal(page.pack.originals.length,1);
+  const html=slateGalleryHtml(page.pack,imported,{paging:page.paging});assert.match(html,/catalogue-source-hierarchy">Gedenktafeln \/ Menschen \/ Allgemein/);assert.match(html,/Neuer Katalogstand vorhanden – bestehende Bearbeitung bleibt erhalten/);assert.equal((html.match(/Neue Katalogvorschau ansehen/g)||[]).length,1);assert.match(html,/href="\/originale\/files\/originals\/new\/preview.png" target="_blank" rel="noopener noreferrer"/);assert.doesNotMatch(html,/outside.invalid/);assert.match(html,/data-product-id="cfg_narrow" data-design-id="steel-ed-42-1"/);assert.equal((html.match(/ data-design-card /g)||[]).length,1);
+});
 
 test('steel default follows the smallest physical area, explicit native ID and exact product key', () => {
   const targets = orderedReviewTargets(steel, imported);
@@ -96,7 +118,7 @@ test('documented visual-review gaps stay visible without inventing missing nativ
   const html = slateGalleryHtml({originals: [{...steel, visualReviewIssues: [{message: 'Prüfansicht für TO15x8 noch offen <Quelle>'}]}]}, imported);
   assert.match(html, /review-source-note">Prüfansicht für TO15x8 noch offen &lt;Quelle&gt;/);
   assert.equal((html.match(/ data-design-card /g) || []).length, 1);
-  assert.equal((html.match(/<option value="\d+" data-approval-key/g) || []).length, 3);
+  assert.equal((html.match(/<option value="\d+"(?: selected)? data-approval-key/g) || []).length, 3);
   assert.match(html, /data-product-id="cfg_narrow" data-design-id="steel-ed-42-1"/);
 });
 

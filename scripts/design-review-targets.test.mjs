@@ -37,7 +37,7 @@ test('only explicit steel targets, known material pairs and manifest-allowlisted
   for (const changes of [{productKey: undefined}, {nativeDesignId: undefined}, {productKey: 'foreign'}, {status: 'open'}, {mm: [NaN,35]}]) {
     assert.equal(resolveDesignReviewTarget(f.row, {...target, ...changes}, f.imported), null);
   }
-  for (const reviewMaterial of [{key: 'wood', label: 'Holz', kind: 'wood'}, {...steel, kind: 'slate'}, {key: '__proto__'}]) {
+  for (const reviewMaterial of [{key: 'invented', label: 'Holz', kind: 'wood'}, {...steel, kind: 'slate'}, {key: '__proto__'}]) {
     assert.throws(() => designReviewMaterial({...f.row, reviewMaterial}), /Unsupported review material/);
   }
   const foreign = structuredClone(f.imported); foreign.products[0].designIds.push('foreign');
@@ -48,6 +48,15 @@ test('only explicit steel targets, known material pairs and manifest-allowlisted
   assert.throws(() => validatedDesignReviewTargets(f.pack, duplicate), /Invalid review product/);
   assert.throws(() => resolveDesignReviewTarget(f.row, target, duplicate), /Ambiguous/);
   assert.throws(() => validatedDesignReviewTargets({...f.pack, schema: 'arbitrary'}, f.imported), /Unpublished local/);
+});
+
+test('source-only materials remain visible without becoming native supported families',()=>{
+  const wood={key:'wood',label:'Holz',kind:'wood'};
+  assert.deepEqual(designReviewMaterial({reviewMaterial:wood}),wood);
+  assert.equal(designReviewMaterialMatches({kind:'wood'},wood),false);
+  const unknown={key:'unknown',label:'Material offen',kind:'unknown'};
+  assert.deepEqual(designReviewMaterial({reviewMaterial:unknown}),unknown);
+  assert.equal(designReviewMaterialMatches({kind:'unknown'},unknown),false);
 });
 
 test('steel approval fingerprints use native content and reject changed material, source identity or geometry', () => {

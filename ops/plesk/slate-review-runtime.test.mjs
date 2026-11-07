@@ -58,6 +58,16 @@ test('mapping preserves local IDs while rejecting mismatched, duplicate or publi
   assert.throws(()=>validateSlateReviewMapping({...pack,products:[row,row]},{...imported,products:[row,row]}));
 });
 
+test('only explicitly typed and source-backed blank-only packages may omit originals',()=>{
+ const blank={key:'Holz|Rechteck|180x120',familyId:'bestand:brettchen',sizeKey:'Holz|Rechteck|180x120',mm:[180,120],sourceVersion:'a'.repeat(64),reviewOnly:true,released:false};
+ const pack={schema:'gravuru-design-original-review/v1',reviewOnly:true,released:false,blankOnly:true,contentKind:'catalogue-blanks-only',sourceManifestSha256:'b'.repeat(64),originals:[],products:[],blanks:[blank]};
+ const imported={localOnly:true,published:false,shopifyWrites:0,products:[]};
+ assert.deepEqual(validateSlateReviewMapping(pack,imported),{originals:0,products:0});
+ for(const patch of [{blankOnly:false},{contentKind:'other'},{sourceManifestSha256:null},{blanks:[]},{schema:'gravuru-slate-original-review/v1'},{blanks:[{...blank,mm:[0,120]}]},{blanks:[{...blank,sourceVersion:null}]},{products:[{key:'fake'}]}])assert.throws(()=>validateSlateReviewMapping({...pack,...patch},imported));
+ assert.throws(()=>validateSlateReviewMapping(pack,{...imported,published:true}));
+ assert.throws(()=>validateSlateReviewMapping(pack,{...imported,shopifyWrites:1}));
+});
+
 test('protected gallery saves and reads comments through its own CSRF contract',async t=>{
   const root=fs.mkdtempSync(path.join(os.tmpdir(),'slate-private-comments-'));
   const config={origin:'https://slate.example',host:'slate.example',username:'synthetic',password:'synthetic-password-for-test'};

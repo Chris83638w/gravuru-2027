@@ -1,0 +1,413 @@
+{
+  "schema": "gravuru-existing-photo-selection/v1",
+  "date": "2026-11-07",
+  "catalogueRepository": "Chris83638w/gravuru-katalog.",
+  "catalogueCommit": "dc0a0f6c2d59a93cbe2727709e0657e5d1697b06",
+  "sourceScope": "designs/bestand/gedenktafeln/",
+  "scopeNote": "Gezielte Auswahl vorhandener Originaldateien; kein vollständiger Fotobestand, kein neuer Import, keine Qualitäts- oder Nutzungsfreigabe.",
+  "rights": {
+    "status": "not-established-by-this-audit",
+    "note": "Dateien sind im vorhandenen Katalog nachgewiesen. Urheber und eigenständige Nutzungsfreigaben wurden aus diesen Dateien nicht ermittelt."
+  },
+  "counts": {
+    "candidates": 15,
+    "groups": 6
+  },
+  "candidates": [
+    {
+      "key": "H01",
+      "targetGroup": "Hunde",
+      "label": "Hundekopf vor schwarzem Hintergrund",
+      "selectionStatus": "candidate-awaiting-user-choice",
+      "visuallyChecked": true,
+      "notes": [
+        "Bereits für D217 eingesetzt; schwarzer Hintergrund gehört zur Quelle."
+      ],
+      "catalogueDesignId": "GT-S-30x20-D220",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D220/foto-1.jpg",
+      "absolutePath": "C:/Users/Christopher Koch/Documents/ChatGPT/Shopify Import/work/gravuru-schiefer-originalquellen/designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D220/foto-1.jpg",
+      "sha256": "3dbe6894a896712c528190f3b9554c653886dbedbfa0552df0a98b505fa34ec5",
+      "gitBlobVerified": true,
+      "bytes": 63051,
+      "width": 800,
+      "height": 800,
+      "format": "jpeg",
+      "designMetadata": {
+        "path": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D220/design.json",
+        "material": "Schiefer",
+        "process": "Gravur",
+        "sheet": "D200-D249 Tier mit Foto.cdr"
+      }
+    },
+    {
+      "key": "H02",
+      "targetGroup": "Hunde",
+      "label": "Sitzender Hund mit hellem Brustfell",
+      "selectionStatus": "candidate-awaiting-user-choice",
+      "visuallyChecked": true,
+      "notes": [
+        "Schwarzer Hintergrund gehört zur Quelle; dunkle Fellzeichnung vorhanden."
+      ],
+      "catalogueDesignId": "GT-S-30x20-D230",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-rechteck-D230/foto-1.jpg",
+      "absolutePath": "C:/Users/Christopher Koch/Documents/ChatGPT/Shopify Import/work/gravuru-schiefer-originalquellen/designs/bestand/gedenktafeln/Tiere/Hund/gravur-rechteck-D230/foto-1.jpg",
+      "sha256": "1b9b44bf55862fe5ffd410d705050227d13aae80d15b50842476b20fd2ab2cb2",
+      "gitBlobVerified": true,
+      "bytes": 18362,
+      "width": 700,
+      "height": 700,
+      "format": "jpeg",
+      "designMetadata": {
+        "path": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-rechteck-D230/design.json",
+        "material": "Schiefer",
+        "process": "Gravur",
+        "sheet": "D200-D249 Tier mit Foto.cdr"
+      }
+    },
+    {
+      "key": "H03",
+      "targetGroup": "Hunde",
+      "label": "Sitzender dunkler Hund im Freien",
+      "selectionStatus": "candidate-awaiting-user-choice",
+      "visuallyChecked": true,
+      "notes": [
+        "Foto besitzt Hintergrund und schwarze Außenränder; kein freigestelltes Original."
+      ],
+      "catalogueDesignId": "GT-S-30x20-D232",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-rechteck-D232/foto-1.jpg",
+      "absolutePath": "C:/Users/Christopher Koch/Documents/ChatGPT/Shopify Import/work/gravuru-schiefer-originalquellen/designs/bestand/gedenktafeln/Tiere/Hund/gravur-rechteck-D232/foto-1.jpg",
+      "sha256": "91700fff7a9432a9aa3008318444bb68598c25d8843722744afaf37a485cad55",
+      "gitBlobVerified": true,
+      "bytes": 35955,
+      "width": 800,
+      "height": 800,
+      "format": "jpeg",
+      "designMetadata": {
+        "path": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-rechteck-D232/design.json",
+        "material": "Schiefer",
+        "process": "Gravur",
+        "sheet": "D200-D249 Tier mit Foto.cdr"
+      }
+    },
+    {
+      "key": "H04",
+      "targetGroup": "Hunde",
+      "label": "Hundekopf vor hellem Fotohintergrund",
+      "selectionStatus": "candidate-awaiting-user-choice",
+      "visuallyChecked": true,
+      "notes": [
+        "Ähnliches Motiv wie H01 mit erhaltenem Fotohintergrund; nicht still austauschen."
+      ],
+      "catalogueDesignId": "GT-S-30x20-D236",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D236/foto-1.jpg",
+      "absolutePath": "C:/Users/Christopher Koch/Documents/ChatGPT/Shopify Import/work/gravuru-schiefer-originalquellen/designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D236/foto-1.jpg",
+      "sha256": "612f0260bb6cf6040751b54b8df0eb9182cf362004feadb7206c82101aa4e913",
+      "gitBlobVerified": true,
+      "bytes": 53199,
+      "width": 800,
+      "height": 800,
+      "format": "jpeg",
+      "designMetadata": {
+        "path": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D236/design.json",
+        "material": "Schiefer",
+        "process": "Gravur",
+        "sheet": "D200-D249 Tier mit Foto.cdr"
+      }
+    },
+    {
+      "key": "M01",
+      "targetGroup": "Menschen",
+      "label": "Mann im Porträt",
+      "selectionStatus": "candidate-awaiting-user-choice",
+      "visuallyChecked": true,
+      "notes": [
+        "Schwarzer Hintergrund gehört zur Quelle."
+      ],
+      "catalogueDesignId": "GT-S-30x20-D9",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D9/foto-1.jpg",
+      "absolutePath": "C:/Users/Christopher Koch/Documents/ChatGPT/Shopify Import/work/gravuru-schiefer-originalquellen/designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D9/foto-1.jpg",
+      "sha256": "efaab34b06759adcbc2eb6e2580d4c0edce99bc0d29e12da5d5c2e11c00866b0",
+      "gitBlobVerified": true,
+      "bytes": 36649,
+      "width": 800,
+      "height": 533,
+      "format": "jpeg",
+      "designMetadata": {
+        "path": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D9/design.json",
+        "material": "Schiefer",
+        "process": "Gravur",
+        "sheet": "D1-D49 Mensch mit Foto.cdr"
+      }
+    },
+    {
+      "key": "M02",
+      "targetGroup": "Menschen",
+      "label": "Frau im Porträt",
+      "selectionStatus": "candidate-awaiting-user-choice",
+      "visuallyChecked": true,
+      "notes": [
+        "Dunkelgrauer Hintergrund gehört zur Quelle."
+      ],
+      "catalogueDesignId": "GT-S-30x20-D19",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D19/foto-1.jpg",
+      "absolutePath": "C:/Users/Christopher Koch/Documents/ChatGPT/Shopify Import/work/gravuru-schiefer-originalquellen/designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D19/foto-1.jpg",
+      "sha256": "9caf980e2f399ece336e325fee60018d6dbb730434ac6366a1c8c2f15ab78b18",
+      "gitBlobVerified": true,
+      "bytes": 35062,
+      "width": 800,
+      "height": 533,
+      "format": "jpeg",
+      "designMetadata": {
+        "path": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D19/design.json",
+        "material": "Schiefer",
+        "process": "Gravur",
+        "sheet": "D1-D49 Mensch mit Foto.cdr"
+      }
+    },
+    {
+      "key": "M03",
+      "targetGroup": "Menschen",
+      "label": "Mann am Tisch",
+      "selectionStatus": "candidate-awaiting-user-choice",
+      "visuallyChecked": true,
+      "notes": [
+        "PNG enthält sichtbare Tonwertstufen; Qualität vor Wiederverwendung gemeinsam wählen."
+      ],
+      "catalogueDesignId": "GT-S-30x20-D8",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D8/foto-1.png",
+      "absolutePath": "C:/Users/Christopher Koch/Documents/ChatGPT/Shopify Import/work/gravuru-schiefer-originalquellen/designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D8/foto-1.png",
+      "sha256": "4c6611158c503c8177053099484aaa4e3ad21682800e8bd9f91571f0d6942ee7",
+      "gitBlobVerified": true,
+      "bytes": 71223,
+      "width": 640,
+      "height": 488,
+      "format": "png",
+      "designMetadata": {
+        "path": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D8/design.json",
+        "material": "Schiefer",
+        "process": "Gravur",
+        "sheet": "D1-D49 Mensch mit Foto.cdr"
+      }
+    },
+    {
+      "key": "M04",
+      "targetGroup": "Menschen",
+      "label": "Sitzende Frau",
+      "selectionStatus": "candidate-awaiting-user-choice",
+      "visuallyChecked": true,
+      "notes": [
+        "Großer schwarzer Rand gehört zur Quelle; eine neue Ausschnittwahl wäre eine gesonderte Bearbeitung."
+      ],
+      "catalogueDesignId": "GT-S-30x20-D17",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D17/foto-1.jpg",
+      "absolutePath": "C:/Users/Christopher Koch/Documents/ChatGPT/Shopify Import/work/gravuru-schiefer-originalquellen/designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D17/foto-1.jpg",
+      "sha256": "f9a45fc11f79ddf32d27920ecb6c7eebe6df24ab0fff9b118cf50b586c9e46d9",
+      "gitBlobVerified": true,
+      "bytes": 23779,
+      "width": 800,
+      "height": 533,
+      "format": "jpeg",
+      "designMetadata": {
+        "path": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D17/design.json",
+        "material": "Schiefer",
+        "process": "Gravur",
+        "sheet": "D1-D49 Mensch mit Foto.cdr"
+      }
+    },
+    {
+      "key": "K01",
+      "targetGroup": "Katzen",
+      "label": "Liegende Katze",
+      "selectionStatus": "candidate-awaiting-user-choice",
+      "visuallyChecked": true,
+      "notes": [
+        "PNG hat sichtbare helle Randreste; zur Auswahl, nicht als neuer freigegebener Master."
+      ],
+      "catalogueDesignId": "GT-S-30x20-D200",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D200/foto-1.png",
+      "absolutePath": "C:/Users/Christopher Koch/Documents/ChatGPT/Shopify Import/work/gravuru-schiefer-originalquellen/designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D200/foto-1.png",
+      "sha256": "f3e40af1a2ebca69033d1896bb419416c4b87491410d92ccf96a4a6a775e8735",
+      "gitBlobVerified": true,
+      "bytes": 56790,
+      "width": 640,
+      "height": 467,
+      "format": "png",
+      "designMetadata": {
+        "path": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D200/design.json",
+        "material": "Schiefer",
+        "process": "Gravur",
+        "sheet": "D200-D249 Tier mit Foto.cdr"
+      }
+    },
+    {
+      "key": "K02",
+      "targetGroup": "Katzen",
+      "label": "Sitzende Katze",
+      "selectionStatus": "candidate-awaiting-user-choice",
+      "visuallyChecked": true,
+      "notes": [
+        "PNG enthält sichtbare Tonwertstufen."
+      ],
+      "catalogueDesignId": "GT-S-30x20-D219",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D219/foto-1.png",
+      "absolutePath": "C:/Users/Christopher Koch/Documents/ChatGPT/Shopify Import/work/gravuru-schiefer-originalquellen/designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D219/foto-1.png",
+      "sha256": "a827c53dfc41dbbb3531263f92958277ef863550f478c1e9a7f603cc4e6fd390",
+      "gitBlobVerified": true,
+      "bytes": 40095,
+      "width": 426,
+      "height": 640,
+      "format": "png",
+      "designMetadata": {
+        "path": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D219/design.json",
+        "material": "Schiefer",
+        "process": "Gravur",
+        "sheet": "D200-D249 Tier mit Foto.cdr"
+      }
+    },
+    {
+      "key": "K03",
+      "targetGroup": "Katzen",
+      "label": "Katzenkopf",
+      "selectionStatus": "candidate-awaiting-user-choice",
+      "visuallyChecked": true,
+      "notes": [
+        "Ordnerbeschriftung Hund ist sachlich falsch; die Bildsichtprüfung zeigt eine Katze. Nur als Katzenkandidat."
+      ],
+      "catalogueDesignId": "GT-S-30x20-D217",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-rechteck-D217/foto-1.jpg",
+      "absolutePath": "C:/Users/Christopher Koch/Documents/ChatGPT/Shopify Import/work/gravuru-schiefer-originalquellen/designs/bestand/gedenktafeln/Tiere/Hund/gravur-rechteck-D217/foto-1.jpg",
+      "sha256": "f70481a24a2e150b2b93a7b66aa961aa4b661fafc257408f68b6bc6143f680d8",
+      "gitBlobVerified": true,
+      "bytes": 65472,
+      "width": 800,
+      "height": 800,
+      "format": "jpeg",
+      "designMetadata": {
+        "path": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-rechteck-D217/design.json",
+        "material": "Schiefer",
+        "process": "Gravur",
+        "sheet": "D200-D249 Tier mit Foto.cdr"
+      }
+    },
+    {
+      "key": "T01",
+      "targetGroup": "Kleintiere",
+      "label": "Kaninchen im Gras",
+      "selectionStatus": "candidate-awaiting-user-choice",
+      "visuallyChecked": true,
+      "notes": [
+        "Foto mit Hintergrund und schwarzen Rändern."
+      ],
+      "catalogueDesignId": "GT-S-30x20-D234",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D234/foto-1.jpg",
+      "absolutePath": "C:/Users/Christopher Koch/Documents/ChatGPT/Shopify Import/work/gravuru-schiefer-originalquellen/designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D234/foto-1.jpg",
+      "sha256": "1997ed88dd5e18214ac39d59769780ad0654f0d3917e9ebd549b8c9ea354c0a6",
+      "gitBlobVerified": true,
+      "bytes": 72178,
+      "width": 800,
+      "height": 800,
+      "format": "jpeg",
+      "designMetadata": {
+        "path": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D234/design.json",
+        "material": "Schiefer",
+        "process": "Gravur",
+        "sheet": "D200-D249 Tier mit Foto.cdr"
+      }
+    },
+    {
+      "key": "P01",
+      "targetGroup": "Pferde",
+      "label": "Pferdekopf im Freien",
+      "selectionStatus": "candidate-awaiting-user-choice",
+      "visuallyChecked": true,
+      "notes": [
+        "Foto mit Hintergrund und schwarzen Rändern."
+      ],
+      "catalogueDesignId": "GT-S-30x20-D235",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Pferd/gravur-rechteck-D235/foto-1.jpg",
+      "absolutePath": "C:/Users/Christopher Koch/Documents/ChatGPT/Shopify Import/work/gravuru-schiefer-originalquellen/designs/bestand/gedenktafeln/Tiere/Pferd/gravur-rechteck-D235/foto-1.jpg",
+      "sha256": "71631d7bb0f9864a01731e58f8faf685e675b604dd48c1653c44f0c654818901",
+      "gitBlobVerified": true,
+      "bytes": 55272,
+      "width": 800,
+      "height": 800,
+      "format": "jpeg",
+      "designMetadata": {
+        "path": "designs/bestand/gedenktafeln/Tiere/Pferd/gravur-rechteck-D235/design.json",
+        "material": "Schiefer",
+        "process": "Gravur",
+        "sheet": "D200-D249 Tier mit Foto.cdr"
+      }
+    },
+    {
+      "key": "S01",
+      "targetGroup": "Sternenkinder",
+      "label": "Baby auf Decke",
+      "selectionStatus": "candidate-awaiting-user-choice",
+      "visuallyChecked": true,
+      "notes": [
+        "PNG zeigt starke Tonwertstufen und Randreste; vor erneuter Nutzung gemeinsam beurteilen."
+      ],
+      "catalogueDesignId": "GT-S-30x20-D12",
+      "sourcePath": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-rechteck-D12/foto-1.png",
+      "absolutePath": "C:/Users/Christopher Koch/Documents/ChatGPT/Shopify Import/work/gravuru-schiefer-originalquellen/designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-rechteck-D12/foto-1.png",
+      "sha256": "c3b65e227bd711630a3fb5c0465b936707cc9adc97b84eb98196f457ea77e2b8",
+      "gitBlobVerified": true,
+      "bytes": 30254,
+      "width": 430,
+      "height": 640,
+      "format": "png",
+      "designMetadata": {
+        "path": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-rechteck-D12/design.json",
+        "material": "Schiefer",
+        "process": "Gravur",
+        "sheet": "D1-D49 Mensch mit Foto.cdr"
+      }
+    },
+    {
+      "key": "S02",
+      "targetGroup": "Sternenkinder",
+      "label": "Babyhand auf Erwachsenenhand",
+      "selectionStatus": "candidate-awaiting-user-choice",
+      "visuallyChecked": true,
+      "notes": [
+        "Fotografische Nahaufnahme; keine neue Deutung oder Freigabe abgeleitet."
+      ],
+      "catalogueDesignId": "GTSK-S-30x20-D4",
+      "sourcePath": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-sternenkinder-D4/foto-1.jpg",
+      "absolutePath": "C:/Users/Christopher Koch/Documents/ChatGPT/Shopify Import/work/gravuru-schiefer-originalquellen/designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-sternenkinder-D4/foto-1.jpg",
+      "sha256": "d1ae883a222a14990af2131da84f566dd0b2e7bd99b61663fb552cdf28c4071d",
+      "gitBlobVerified": true,
+      "bytes": 26134,
+      "width": 800,
+      "height": 595,
+      "format": "jpeg",
+      "designMetadata": {
+        "path": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-sternenkinder-D4/design.json",
+        "material": "Schiefer",
+        "process": "Gravur",
+        "sheet": "GTSK-S-30x20_Designs.cdr"
+      }
+    }
+  ],
+  "excluded": [
+    {
+      "catalogueDesignId": "GT-S-30x20-D13",
+      "sourcePath": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-rechteck-D13/foto-1.jpg",
+      "absolutePath": "C:/Users/Christopher Koch/Documents/ChatGPT/Shopify Import/work/gravuru-schiefer-originalquellen/designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-rechteck-D13/foto-1.jpg",
+      "sha256": "f9a45fc11f79ddf32d27920ecb6c7eebe6df24ab0fff9b118cf50b586c9e46d9",
+      "gitBlobVerified": true,
+      "bytes": 23779,
+      "width": 800,
+      "height": 533,
+      "format": "jpeg",
+      "designMetadata": {
+        "path": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-rechteck-D13/design.json",
+        "material": "Schiefer",
+        "process": "Gravur",
+        "sheet": "D1-D49 Mensch mit Foto.cdr"
+      },
+      "reason": "Visuell nahezu vollständig schwarz, kein nutzbares Fotomotiv erkennbar; keine Ersatzzuordnung vorgenommen."
+    }
+  ]
+}

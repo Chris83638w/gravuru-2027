@@ -121,3 +121,31 @@ test('new and replaced unedited slate photos use the same effective default gray
  media=await f.service.upload({...f.target,expectedRevision:2,photo:{...photo,widthMm:40,heightMm:60}});
  const replaced=await f.service.save(f.request(reopened,{photos:[{objectId:object.id,assetId:media.assetId}]}));assert.equal(replaced.context.revision,3);
 });
+
+test('full editor keeps a proportionally resized native photo without changing its immutable image or crop',async t=>{
+ const f=fixture(t),objects=f.service.open(f.target).model.universal.profile.designs[0].objects;
+ const slot={id:'resize-photo',type:'photoSlot',fieldKey:'photo-resize',required:false,x:55,y:80,w:30,h:45,rotation:7,photoShape:'rect',uxUploadId:'source',uxUploadKind:'photo'};
+ objects.push(slot);
+ const photo={objectId:slot.id,original:galleryTestPng,processed:galleryTestPng,editSource:galleryTestPng,widthMm:30,heightMm:45,edited:false,color:'grayscale',editSourceColor:'original',photoEdit:null,crop:{zoom:1.2,x:.1,y:0,angle:5},photoShape:'rect',photoMaskAssetId:null};
+ slot.uxPhotoCrop=photo.crop;
+ const media=await f.service.upload({...f.target,expectedRevision:1,photo});
+ const photos=[{objectId:slot.id,assetId:media.assetId}];
+ await f.service.save(f.request(objects,{photos}));
+ const current=f.workshop.repository.get(f.record.id),document=structuredClone(current.document);
+ const otherSlot={...document.config.profile.designs[0].objects.find(o=>o.id===slot.id),id:'other-photo'};
+ document.config.profile.designs[1].objects.push(otherSlot);
+ document.elementRights['source-b'][otherSlot.id]={content:false,color:false,replace:true,move:true,scale:true,delete:true};
+ document.config.localResources.photoExamples.push({designId:'source-b',slotId:otherSlot.id,assetId:media.assetId});
+ const resized=document.config.profile.designs[0].objects.find(o=>o.id===slot.id);
+ resized.w*=.8;resized.h*=.8;
+ const stored=f.workshop.repository.save(f.record.id,document,current.revision);
+ const reopened=f.service.open(f.target).model.universal.profile.designs[0].objects,edited=reopened.find(o=>o.id===slot.id);
+ Object.assign(edited,{uxUploadId:'reopened',uxUploadKind:'photo',uxPhotoColor:'grayscale',uxPhotoCrop:photo.crop});
+ const result=await f.service.save(f.request(reopened,{photos}));
+ assert.equal(result.changed,false);assert.deepEqual(f.workshop.repository.get(f.record.id),stored);
+ assert.equal(result.photos[0].assetId,media.assetId);assert.deepEqual(result.photos[0].crop,photo.crop);
+ edited.w+=1;
+ await assert.rejects(()=>f.service.save(f.request(reopened,{photos})),e=>e.code==='review_photo_invalid');
+ edited.w=resized.w;edited.uxPhotoCrop={...photo.crop,zoom:1.3};
+ await assert.rejects(()=>f.service.save(f.request(reopened,{photos})),e=>e.code==='review_photo_invalid');
+});

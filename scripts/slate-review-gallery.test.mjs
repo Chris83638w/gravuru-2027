@@ -8,7 +8,10 @@ test('one configurator preview per card with inline movement and the full worksh
  assert.match(html,/configuration=cfg_a&amp;design=katalog-GT-S-30x20-D1&amp;originalId=GT-S-30x20-D1/);
  assert.match(html,/configuration=cfg_b&amp;design=katalog-GT-S-30x20-D1&amp;originalId=GT-S-30x20-D1/);
  assert.doesNotMatch(html,/reviewQuick/);
- assert.match(html,/data-inline-open/);assert.match(html,/data-inline-save disabled>Position speichern/);
+ assert.match(html,/data-inline-open/);assert.match(html,/data-inline-save disabled>Änderungen speichern/);
+ assert.match(html,/data-inline-resize="smaller"/);assert.match(html,/data-inline-resize="larger"/);assert.match(html,/data-inline-scale/);assert.match(html,/data-inline-dimensions/);
+ assert.match(html,/data-approval-bulk disabled>Gefilterte Vorlagen freigeben/);assert.match(html,/data-approval-bulk-status role="status"/);
+ assert.match(html,/data-approval-bulk-panel hidden/);assert.match(html,/data-approval-bulk-confirm disabled/);assert.match(html,/data-approval-bulk-cancel>Abbrechen/);
  assert.match(html,/data-product-id="cfg_a" data-design-id="katalog-GT-S-30x20-D1"/);
  assert.match(html,/>Im Konfi bearbeiten<\/a>/);
  assert.match(html,/\/api\/workshop\/products\/cfg_a\/preview.svg\?designId=/);

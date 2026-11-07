@@ -1,0 +1,2812 @@
+{
+  "schema": "gravuru-slate-blocked-original-audit/v1",
+  "packageCatalogueCommit": "dc0a0f6c2d59a93cbe2727709e0657e5d1697b06",
+  "sourceManifestSha256": "faa4f7679fb2236a466fa6f9f62291af71f5d63de000380fb3fbafe4ea146a06",
+  "familySourceSha256": "5ab46f53081b27efaf11c96a611ebf027b6f680b0170098d2beef043a7ef1703",
+  "additionalFontEvidence": {
+    "Kaushan Script": {
+      "sha256": "f8886198a9aebfe21d611b8b323398837d8bdf591a069471108a155dc6a65e1a",
+      "bytes": 388803,
+      "source": "same-catalogue preparation cache; not imported or substituted"
+    }
+  },
+  "categoryCounts": {
+    "menschen-with": 27,
+    "menschen-without": 44,
+    "menschen-unknown": 14,
+    "sternenkinder-with": 3,
+    "sternenkinder-without": 7,
+    "sternenkinder-unknown": 2,
+    "weitere-tiere-with": 30,
+    "weitere-tiere-without": 40,
+    "hunde-with": 5,
+    "katzen-with": 2,
+    "katzen-without": 3,
+    "katzen-unknown": 1,
+    "kleintiere-with": 1,
+    "pferde-with": 1,
+    "hausnummern-unknown": 16,
+    "tuerschilder-without": 88,
+    "tuerschilder-unknown": 41
+  },
+  "unresolvedAnimalSpecies": [
+    "GT-S-30x20-D200",
+    "GT-S-30x20-D201",
+    "GT-S-30x20-D202",
+    "GT-S-30x20-D203",
+    "GT-S-30x20-D204",
+    "GT-S-30x20-D207",
+    "GT-S-30x20-D208",
+    "GT-S-30x20-D209",
+    "GT-S-30x20-D210",
+    "GT-S-30x20-D211",
+    "GT-S-30x20-D212",
+    "GT-S-30x20-D213",
+    "GT-S-30x20-D214",
+    "GT-S-30x20-D215",
+    "GT-S-30x20-D216",
+    "GT-S-30x20-D218",
+    "GT-S-30x20-D219",
+    "GT-S-30x20-D220",
+    "GT-S-30x20-D221",
+    "GT-S-30x20-D222",
+    "GT-S-30x20-D224",
+    "GT-S-30x20-D225",
+    "GT-S-30x20-D226",
+    "GT-S-30x20-D227",
+    "GT-S-30x20-D228",
+    "GT-S-30x20-D229",
+    "GT-S-30x20-D231",
+    "GT-S-30x20-D234",
+    "GT-S-30x20-D236",
+    "GT-S-30x20-D250",
+    "GT-S-30x20-D251",
+    "GT-S-30x20-D252",
+    "GT-S-30x20-D253",
+    "GT-S-30x20-D254",
+    "GT-S-30x20-D255",
+    "GT-S-30x20-D256",
+    "GT-S-30x20-D257",
+    "GT-S-30x20-D258",
+    "GT-S-30x20-D259",
+    "GT-S-30x20-D260",
+    "GT-S-30x20-D261",
+    "GT-S-30x20-D262",
+    "GT-S-30x20-D263",
+    "GT-S-30x20-D264",
+    "GT-S-30x20-D265",
+    "GT-S-30x20-D266",
+    "GT-S-30x20-D267",
+    "GT-S-30x20-D268",
+    "GT-S-30x20-D269",
+    "GT-S-30x20-D270",
+    "GT-S-30x20-D271",
+    "GT-S-30x20-D272",
+    "GT-S-30x20-D273",
+    "GT-S-30x20-D275",
+    "GT-S-30x20-D276",
+    "GT-S-30x20-D277",
+    "GT-S-30x20-D278",
+    "GT-S-30x20-D279",
+    "GT-S-30x20-D280",
+    "GT-S-30x20-D281",
+    "GT-S-30x20-D283",
+    "GT-S-30x20-D284",
+    "GT-S-30x20-D285",
+    "GT-S-30x20-D286",
+    "GT-S-30x20-D287",
+    "GT-S-30x20-D288",
+    "GT-S-30x20-D290",
+    "GT-S-30x20-D291",
+    "GT-S-30x20-D292",
+    "GTUV-S-30x20-D17"
+  ],
+  "openOriginals": 93,
+  "originals": [
+    {
+      "id": "GT-S-30x20-D80",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D80/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "menschen-without",
+        "label": "Menschen ohne Foto",
+        "rank": 30,
+        "photo": "without",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": null,
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "mm": [
+            220,
+            140
+          ],
+          "reason": "GT-S-30x20-D80 · Isabell: Element ragt über die Gestaltungsfläche hinaus.",
+          "currentTextIssues": [
+            {
+              "id": "text-1",
+              "text": "Während andere Kinder \nlaufen lernen, \nlernt unseres \nmit den Engeln \nzu fliegen.",
+              "font": "Allura",
+              "fontSizeMm": 12.103,
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "paintedBoundsMm": {
+                "left": 23.9208955,
+                "top": 48.59702899999999,
+                "right": 122.736839,
+                "bottom": 143.99055700000002
+              },
+              "sourceTextBoxMm": [
+                26.87,
+                69.43,
+                143.87,
+                136.27
+              ],
+              "sourceAnchor": {
+                "x": 98.81,
+                "firstBaseline": 79.92,
+                "anchor": "middle",
+                "lineHeight": 29.85000000000001,
+                "lines": 5
+              }
+            }
+          ]
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "mm": [
+            300,
+            200
+          ],
+          "reason": "GT-S-30x20-D80 · Isabell: Element ragt über die Gestaltungsfläche hinaus.",
+          "currentTextIssues": [
+            {
+              "id": "text-1",
+              "text": "Während andere Kinder \nlaufen lernen, \nlernt unseres \nmit den Engeln \nzu fliegen.",
+              "font": "Allura",
+              "fontSizeMm": 17.29,
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "paintedBoundsMm": {
+                "left": 27.030065000000008,
+                "top": 69.42496999999996,
+                "right": 168.19527,
+                "bottom": 205.70101
+              },
+              "sourceTextBoxMm": [
+                26.87,
+                69.43,
+                143.87,
+                136.27
+              ],
+              "sourceAnchor": {
+                "x": 98.81,
+                "firstBaseline": 79.92,
+                "anchor": "middle",
+                "lineHeight": 29.85000000000001,
+                "lines": 5
+              }
+            }
+          ]
+        }
+      ],
+      "sourceSvgSha256": "65c03edc4e9b5c92ccad99d1a640970972333f10947ba46f99fa74028e37a132",
+      "normalizedSvgSha256": "019a64987abbdff15c03ab9d40772acc5d84f732929ba27347fe3e4679cca973",
+      "fontSubstitutions": [],
+      "diagnosis": "painted-text-outside-plate"
+    },
+    {
+      "id": "GT-S-30x20-D83",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D83/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "menschen-without",
+        "label": "Menschen ohne Foto",
+        "rank": 30,
+        "photo": "without",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": null,
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "mm": [
+            220,
+            140
+          ],
+          "reason": "GT-S-30x20-D83 · Anja Große: Element ragt über die Gestaltungsfläche hinaus.",
+          "currentTextIssues": [
+            {
+              "id": "text-1",
+              "text": "Anja Große",
+              "font": "Sacramento",
+              "fontSizeMm": 35.799,
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "paintedBoundsMm": {
+                "left": 33.807228027343754,
+                "top": -2.2215008789062534,
+                "right": 191.54757177734376,
+                "bottom": 41.1473306640625
+              },
+              "sourceTextBoxMm": [
+                43.65,
+                13.74,
+                220.1,
+                80.92
+              ],
+              "sourceAnchor": {
+                "x": 43.65,
+                "firstBaseline": 34.06,
+                "anchor": "start",
+                "lineHeight": 61.37029271613342,
+                "lines": 1
+              }
+            }
+          ]
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "mm": [
+            300,
+            200
+          ],
+          "reason": "GT-S-30x20-D83 · Anja Große: Element ragt über die Gestaltungsfläche hinaus.",
+          "currentTextIssues": [
+            {
+              "id": "text-1",
+              "text": "Anja Große",
+              "font": "Sacramento",
+              "fontSizeMm": 51.142,
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "paintedBoundsMm": {
+                "left": 41.15213964843748,
+                "top": -3.1735744140625037,
+                "right": 266.4975771484375,
+                "bottom": 58.782162890625
+              },
+              "sourceTextBoxMm": [
+                43.65,
+                13.74,
+                220.1,
+                80.92
+              ],
+              "sourceAnchor": {
+                "x": 43.65,
+                "firstBaseline": 34.06,
+                "anchor": "start",
+                "lineHeight": 61.37029271613342,
+                "lines": 1
+              }
+            }
+          ]
+        }
+      ],
+      "sourceSvgSha256": "7564003fe4494f895f3660145159ea09b5591888ee31c808766a9be074d56eee",
+      "normalizedSvgSha256": "53535284a742b317888df2e92abaf6e1acd72b4e8c0e001dd688bdb08d9d275f",
+      "fontSubstitutions": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "The Feeling",
+          "to": "Sacramento",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D83/design.json"
+        },
+        {
+          "id": "text-1",
+          "action": "replacement font size matched to original Corel text width; anchor and baselines unchanged",
+          "beforeSizeMm": 28.22,
+          "afterSizeMm": 51.141910596777855,
+          "sourceWidthMm": 220.1
+        }
+      ],
+      "diagnosis": "painted-text-outside-plate"
+    },
+    {
+      "id": "GT-S-30x20-D84",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D84/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "menschen-without",
+        "label": "Menschen ohne Foto",
+        "rank": 30,
+        "photo": "without",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": null,
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "mm": [
+            220,
+            140
+          ],
+          "reason": "GT-S-30x20-D84 · Peter Friedrich: Element ragt über die Gestaltungsfläche hinaus.",
+          "currentTextIssues": [
+            {
+              "id": "text-1",
+              "text": "* 10.02.1960 † 17.08.2020",
+              "font": "Comfortaa",
+              "fontSizeMm": 9.877,
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "paintedBoundsMm": {
+                "left": -34.302515500000005,
+                "top": 58.288128,
+                "right": 76.3011305,
+                "bottom": 68.363668
+              },
+              "sourceTextBoxMm": [
+                -56.78,
+                83.27,
+                155.65,
+                14.48
+              ],
+              "sourceAnchor": {
+                "x": -56.78,
+                "firstBaseline": 94.36,
+                "anchor": "start",
+                "lineHeight": 16.932,
+                "lines": 1
+              }
+            }
+          ]
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "mm": [
+            300,
+            200
+          ],
+          "reason": "GT-S-30x20-D84 · Peter Friedrich: Element ragt über die Gestaltungsfläche hinaus.",
+          "currentTextIssues": [
+            {
+              "id": "text-1",
+              "text": "* 10.02.1960 † 17.08.2020",
+              "font": "Comfortaa",
+              "fontSizeMm": 14.11,
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "paintedBoundsMm": {
+                "left": -56.14566500000001,
+                "top": 83.26953999999999,
+                "right": 101.85911499999999,
+                "bottom": 97.66274
+              },
+              "sourceTextBoxMm": [
+                -56.78,
+                83.27,
+                155.65,
+                14.48
+              ],
+              "sourceAnchor": {
+                "x": -56.78,
+                "firstBaseline": 94.36,
+                "anchor": "start",
+                "lineHeight": 16.932,
+                "lines": 1
+              }
+            }
+          ]
+        }
+      ],
+      "sourceSvgSha256": "dd788743c861c4062e734cb54216a7acd1d389e2289a6c77d1468ec03f1cb4b1",
+      "normalizedSvgSha256": "850b05e6b978509c29c9b488711fd19b83db94a4164cb326ef10a0640cd99bb9",
+      "fontSubstitutions": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Amalfi Coast",
+          "to": "Sacramento",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D10/design.json"
+        },
+        {
+          "id": "text-2",
+          "action": "replacement font size matched to original Corel text width; anchor and baselines unchanged",
+          "beforeSizeMm": 19.58,
+          "afterSizeMm": 34.17148445686343,
+          "sourceWidthMm": 191.08
+        }
+      ],
+      "diagnosis": "painted-text-outside-plate"
+    },
+    {
+      "id": "GT-S-30x20-D97",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D97/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "menschen-without",
+        "label": "Menschen ohne Foto",
+        "rank": 30,
+        "photo": "without",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "GT-S-30x20-D97: Ebene „text-1“ – Die gewählte Schrift enthält das Zeichen „†“ nicht.",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "GT-S-30x20-D97: Ebene „text-1“ – Die gewählte Schrift enthält das Zeichen „†“ nicht."
+    },
+    {
+      "id": "GTUV-S-30x20-D1",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D1/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-with",
+        "label": "Menschen mit Foto",
+        "rank": 31,
+        "photo": "with",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D10",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D10/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-with",
+        "label": "Menschen mit Foto",
+        "rank": 31,
+        "photo": "with",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D11",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D11/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-unknown",
+        "label": "Menschen Fotozuordnung offen",
+        "rank": 32,
+        "photo": "unknown",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D12",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D12/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-without",
+        "label": "Menschen ohne Foto",
+        "rank": 30,
+        "photo": "without",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D15",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D15/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-unknown",
+        "label": "Menschen Fotozuordnung offen",
+        "rank": 32,
+        "photo": "unknown",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D16",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D16/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-with",
+        "label": "Menschen mit Foto",
+        "rank": 31,
+        "photo": "with",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D18",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D18/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-unknown",
+        "label": "Menschen Fotozuordnung offen",
+        "rank": 32,
+        "photo": "unknown",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D19",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D19/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-unknown",
+        "label": "Menschen Fotozuordnung offen",
+        "rank": 32,
+        "photo": "unknown",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D2",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D2/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-unknown",
+        "label": "Menschen Fotozuordnung offen",
+        "rank": 32,
+        "photo": "unknown",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D20",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D20/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-unknown",
+        "label": "Menschen Fotozuordnung offen",
+        "rank": 32,
+        "photo": "unknown",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D21",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D21/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-unknown",
+        "label": "Menschen Fotozuordnung offen",
+        "rank": 32,
+        "photo": "unknown",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D22",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D22/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-unknown",
+        "label": "Menschen Fotozuordnung offen",
+        "rank": 32,
+        "photo": "unknown",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D23",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D23/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-unknown",
+        "label": "Menschen Fotozuordnung offen",
+        "rank": 32,
+        "photo": "unknown",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D24",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D24/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-unknown",
+        "label": "Menschen Fotozuordnung offen",
+        "rank": 32,
+        "photo": "unknown",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D3",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D3/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-unknown",
+        "label": "Menschen Fotozuordnung offen",
+        "rank": 32,
+        "photo": "unknown",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D4",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D4/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-unknown",
+        "label": "Menschen Fotozuordnung offen",
+        "rank": 32,
+        "photo": "unknown",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D5",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D5/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-with",
+        "label": "Menschen mit Foto",
+        "rank": 31,
+        "photo": "with",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D6",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D6/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-unknown",
+        "label": "Menschen Fotozuordnung offen",
+        "rank": 32,
+        "photo": "unknown",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D7",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D7/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-unknown",
+        "label": "Menschen Fotozuordnung offen",
+        "rank": 32,
+        "photo": "unknown",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D9",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D9/design.json",
+      "process": "UV",
+      "category": {
+        "key": "menschen-with",
+        "label": "Menschen mit Foto",
+        "rank": 31,
+        "photo": "with",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GT-S-30x20-D79",
+      "source": "designs/bestand/gedenktafeln/Menschen/Mama/gravur-rechteck-D79/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "menschen-without",
+        "label": "Menschen ohne Foto",
+        "rank": 30,
+        "photo": "without",
+        "topic": "menschen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": null,
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "mm": [
+            220,
+            140
+          ],
+          "reason": "GT-S-30x20-D79 · In Gedenken an: Element ragt über die Gestaltungsfläche hinaus.",
+          "currentTextIssues": [
+            {
+              "id": "text-3",
+              "text": "* 10.02.1960\n† 17.08.2020",
+              "font": "Comfortaa",
+              "fontSizeMm": 5.929,
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "paintedBoundsMm": {
+                "left": -11.212415999999997,
+                "top": 109.492243,
+                "right": 21.973197,
+                "bottom": 124.777036
+              },
+              "sourceTextBoxMm": [
+                -23.49,
+                156.42,
+                45.9,
+                21.83
+              ],
+              "sourceAnchor": {
+                "x": -23.49,
+                "firstBaseline": 163.05,
+                "anchor": "start",
+                "lineHeight": 13.219999999999999,
+                "lines": 2
+              }
+            }
+          ]
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "mm": [
+            300,
+            200
+          ],
+          "reason": "GT-S-30x20-D79 · In Gedenken an: Element ragt über die Gestaltungsfläche hinaus.",
+          "currentTextIssues": [
+            {
+              "id": "text-3",
+              "text": "* 10.02.1960\n† 17.08.2020",
+              "font": "Comfortaa",
+              "fontSizeMm": 8.47,
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "paintedBoundsMm": {
+                "left": -23.16038,
+                "top": 156.41799,
+                "right": 24.24721,
+                "bottom": 178.25298
+              },
+              "sourceTextBoxMm": [
+                -23.49,
+                156.42,
+                45.9,
+                21.83
+              ],
+              "sourceAnchor": {
+                "x": -23.49,
+                "firstBaseline": 163.05,
+                "anchor": "start",
+                "lineHeight": 13.219999999999999,
+                "lines": 2
+              }
+            }
+          ]
+        }
+      ],
+      "sourceSvgSha256": "26591552173d09661ab036dc00db3120da5e84df688796f16d7fe26796b0aadd",
+      "normalizedSvgSha256": "f65dc3ebe619bfdcc4af4be703b51902df3b145be5eab9513feb95b9a31fdd0d",
+      "fontSubstitutions": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Amalfi Coast",
+          "to": "Sacramento",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D10/design.json"
+        },
+        {
+          "id": "text-1",
+          "action": "replacement font size matched to original Corel text width; anchor and baselines unchanged",
+          "beforeSizeMm": 19.05,
+          "afterSizeMm": 32.69044473800088,
+          "sourceWidthMm": 181.25
+        }
+      ],
+      "diagnosis": "painted-text-outside-plate"
+    },
+    {
+      "id": "GTSK-S-30x20-D2",
+      "source": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-sternenkinder-D2/design.json",
+      "process": "UV",
+      "category": {
+        "key": "sternenkinder-unknown",
+        "label": "Sternenkinder Fotozuordnung offen",
+        "rank": 152,
+        "photo": "unknown",
+        "topic": "sternenkinder"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "Gelbe Sterne: Druckvorlage. Die farbigen Sterne und benötigten Schriften müssen noch originalgetreu für den Editor vorbereitet werden.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTSK-S-30x20-D3",
+      "source": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-sternenkinder-D3/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "sternenkinder-without",
+        "label": "Sternenkinder ohne Foto",
+        "rank": 150,
+        "photo": "without",
+        "topic": "sternenkinder"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": null,
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "mm": [
+            300,
+            200
+          ],
+          "reason": "GTSK-S-30x20-D3 · Kira Kunze: Element ragt über die Gestaltungsfläche hinaus.",
+          "currentTextIssues": [
+            {
+              "id": "text-1",
+              "text": "Du bist nicht mehr da,\n                 wo du warst, aber du bist \n                        überall, wo wir sind.",
+              "font": "Allura",
+              "fontSizeMm": 20.11,
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "paintedBoundsMm": {
+                "left": 105.67925500000001,
+                "top": 94.64356,
+                "right": 303.321335,
+                "bottom": 186.82431
+              },
+              "sourceTextBoxMm": [
+                81.74,
+                94.64,
+                197.88,
+                92.17
+              ],
+              "sourceAnchor": {
+                "x": 180.68,
+                "firstBaseline": 106.79,
+                "anchor": "middle",
+                "lineHeight": 38.8,
+                "lines": 3
+              }
+            }
+          ]
+        }
+      ],
+      "sourceSvgSha256": "24938c12090d49183c8e8927622a1abf85dde23a0871fd948626e6a06f4736f5",
+      "normalizedSvgSha256": "6785e15d8dbca3f3482f43a238baa39c775283848d420457f9cf538257ddba52",
+      "fontSubstitutions": [],
+      "diagnosis": "painted-text-outside-plate"
+    },
+    {
+      "id": "GTSK-S-30x20-D4",
+      "source": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-sternenkinder-D4/design.json",
+      "process": "UV",
+      "category": {
+        "key": "sternenkinder-unknown",
+        "label": "Sternenkinder Fotozuordnung offen",
+        "rank": 152,
+        "photo": "unknown",
+        "topic": "sternenkinder"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "Gelbe Sterne: Druckvorlage. Die farbigen Sterne und benötigten Schriften müssen noch originalgetreu für den Editor vorbereitet werden.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GT-S-30x20-D203",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D203/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "weitere-tiere-with",
+        "label": "Weitere Tiere mit Foto",
+        "rank": 181,
+        "photo": "with",
+        "topic": "weitere-tiere"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": null,
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "mm": [
+            220,
+            140
+          ],
+          "reason": "GT-S-30x20-D203 · Simba: Element ragt über die Gestaltungsfläche hinaus.",
+          "currentTextIssues": [
+            {
+              "id": "text-2",
+              "text": "Simba",
+              "font": "Kaushan Script",
+              "fontSizeMm": 33.587,
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "paintedBoundsMm": {
+                "left": 115.7439795,
+                "top": -4.045021000000002,
+                "right": 202.7353095,
+                "bottom": 26.486562
+              },
+              "sourceTextBoxMm": [
+                153.36,
+                11.96,
+                126.91,
+                57
+              ],
+              "sourceAnchor": {
+                "x": 153.36,
+                "firstBaseline": 34.19,
+                "anchor": "start",
+                "lineHeight": 57.577315689981084,
+                "lines": 1
+              }
+            }
+          ]
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "mm": [
+            300,
+            200
+          ],
+          "reason": "GT-S-30x20-D203 · Simba: Element ragt über die Gestaltungsfläche hinaus.",
+          "currentTextIssues": [
+            {
+              "id": "text-2",
+              "text": "Simba",
+              "font": "Kaushan Script",
+              "fontSizeMm": 47.981,
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "paintedBoundsMm": {
+                "left": 158.2057085,
+                "top": -5.778323,
+                "right": 282.4774985,
+                "bottom": 37.837406
+              },
+              "sourceTextBoxMm": [
+                153.36,
+                11.96,
+                126.91,
+                57
+              ],
+              "sourceAnchor": {
+                "x": 153.36,
+                "firstBaseline": 34.19,
+                "anchor": "start",
+                "lineHeight": 57.577315689981084,
+                "lines": 1
+              }
+            }
+          ]
+        }
+      ],
+      "sourceSvgSha256": "2b75f4f88f3780f1c5e7be57e5d6fc3204c33026172bda186f534bcc6cf3a87c",
+      "normalizedSvgSha256": "f68be00328f2ab0ff34615d6766041952f26597dcafdb4fe2a90dcaec94410e8",
+      "fontSubstitutions": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Amarillo",
+          "to": "Kaushan Script",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-2",
+          "action": "replacement font size matched to original Corel text width; anchor and baselines unchanged",
+          "beforeSizeMm": 30.87,
+          "afterSizeMm": 47.98109640831757,
+          "sourceWidthMm": 126.91
+        }
+      ],
+      "diagnosis": "painted-text-outside-plate"
+    },
+    {
+      "id": "GT-S-30x20-D227",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D227/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "weitere-tiere-with",
+        "label": "Weitere Tiere mit Foto",
+        "rank": 181,
+        "photo": "with",
+        "topic": "weitere-tiere"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": null,
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "mm": [
+            220,
+            140
+          ],
+          "reason": "GT-S-30x20-D227 · Mogli: Element ragt über die Gestaltungsfläche hinaus.",
+          "currentTextIssues": [
+            {
+              "id": "text-3",
+              "text": "Mogli",
+              "font": "Kaushan Script",
+              "fontSizeMm": 40.363,
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "paintedBoundsMm": {
+                "left": 16.44520349999999,
+                "top": -6.4817399999999985,
+                "right": 115.49700549999999,
+                "bottom": 41.833771
+              },
+              "sourceTextBoxMm": [
+                13.64,
+                16.75,
+                132.91,
+                61.36
+              ],
+              "sourceAnchor": {
+                "x": 13.64,
+                "firstBaseline": 38.6,
+                "anchor": "start",
+                "lineHeight": 69.1939262472885,
+                "lines": 1
+              }
+            }
+          ]
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "mm": [
+            300,
+            200
+          ],
+          "reason": "GT-S-30x20-D227 · Mogli: Element ragt über die Gestaltungsfläche hinaus.",
+          "currentTextIssues": [
+            {
+              "id": "text-3",
+              "text": "Mogli",
+              "font": "Kaushan Script",
+              "fontSizeMm": 57.662,
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "paintedBoundsMm": {
+                "left": 16.349159,
+                "top": -9.260259999999999,
+                "right": 157.852707,
+                "bottom": 59.762154
+              },
+              "sourceTextBoxMm": [
+                13.64,
+                16.75,
+                132.91,
+                61.36
+              ],
+              "sourceAnchor": {
+                "x": 13.64,
+                "firstBaseline": 38.6,
+                "anchor": "start",
+                "lineHeight": 69.1939262472885,
+                "lines": 1
+              }
+            }
+          ]
+        }
+      ],
+      "sourceSvgSha256": "4be167875c83a6405376afe8e23d0069762bc03e8e712f45eb13b5223fabf274",
+      "normalizedSvgSha256": "27fe1b4fe9813241ce25c7a4dd6462859bc2bfbfe42b46fbb7013967f25110ad",
+      "fontSubstitutions": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Ampera",
+          "to": "Dancing Script",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-2",
+          "action": "replacement font size matched to original Corel text width; anchor and baselines unchanged",
+          "beforeSizeMm": 8.47,
+          "afterSizeMm": 10.188786777801525,
+          "sourceWidthMm": 143.02
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Amarillo",
+          "to": "Kaushan Script",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-3",
+          "action": "replacement font size matched to original Corel text width; anchor and baselines unchanged",
+          "beforeSizeMm": 30.34,
+          "afterSizeMm": 57.66160520607375,
+          "sourceWidthMm": 132.91
+        }
+      ],
+      "diagnosis": "painted-text-outside-plate"
+    },
+    {
+      "id": "GT-S-30x20-D264",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D264/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "weitere-tiere-without",
+        "label": "Weitere Tiere ohne Foto",
+        "rank": 180,
+        "photo": "without",
+        "topic": "weitere-tiere"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": null,
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "mm": [
+            220,
+            140
+          ],
+          "reason": "GT-S-30x20-D264 · Malmo: Element ragt über die Gestaltungsfläche hinaus.",
+          "currentTextIssues": [
+            {
+              "id": "text-1",
+              "text": "*Oktober 2008 -   April 2019\n \n \n \nDanke für deine Liebe,\ndein Vertrauen und deine Treue.\nDanke für die schöne Gemeinsame Zeit.\nWir vermissen dich so sehr...",
+              "font": "Allura",
+              "fontSizeMm": 7.532,
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "paintedBoundsMm": {
+                "left": 58.823130000000006,
+                "top": 45.849872000000005,
+                "right": 158.60435884375,
+                "bottom": 142.52325199999999
+              },
+              "sourceTextBoxMm": null,
+              "sourceAnchor": {
+                "x": 147.88,
+                "firstBaseline": 72,
+                "anchor": "middle",
+                "lineHeight": 18.629999999999995,
+                "lines": 8
+              }
+            }
+          ]
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "mm": [
+            300,
+            200
+          ],
+          "reason": "GT-S-30x20-D264 · Malmo: Element ragt über die Gestaltungsfläche hinaus.",
+          "currentTextIssues": [
+            {
+              "id": "text-1",
+              "text": "*Oktober 2008 -   April 2019\n \n \n \nDanke für deine Liebe,\ndein Vertrauen und deine Treue.\nDanke für die schöne Gemeinsame Zeit.\nWir vermissen dich so sehr...",
+              "font": "Allura",
+              "fontSizeMm": 10.76,
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "paintedBoundsMm": {
+                "left": 76.89039999999999,
+                "top": 65.50046,
+                "right": 219.434857265625,
+                "bottom": 203.60485999999997
+              },
+              "sourceTextBoxMm": null,
+              "sourceAnchor": {
+                "x": 147.88,
+                "firstBaseline": 72,
+                "anchor": "middle",
+                "lineHeight": 18.629999999999995,
+                "lines": 8
+              }
+            }
+          ]
+        }
+      ],
+      "sourceSvgSha256": "b4bdc1cab3be251fa3aa256ea50f1ca4a3ade1a481d8e4cde21ee69b8f94b4fa",
+      "normalizedSvgSha256": "794fdb54bf9d0601c02f4b40f605d942960d32081e4b871198e2631e03f265ae",
+      "fontSubstitutions": [],
+      "diagnosis": "painted-text-outside-plate"
+    },
+    {
+      "id": "GT-S-30x20-D271",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D271/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "weitere-tiere-without",
+        "label": "Weitere Tiere ohne Foto",
+        "rank": 180,
+        "photo": "without",
+        "topic": "weitere-tiere"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": null,
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "mm": [
+            220,
+            140
+          ],
+          "reason": "GT-S-30x20-D271 · Mogli: Element ragt über die Gestaltungsfläche hinaus.",
+          "currentTextIssues": [
+            {
+              "id": "text-3",
+              "text": "Mogli",
+              "font": "Kaushan Script",
+              "fontSizeMm": 40.363,
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "paintedBoundsMm": {
+                "left": 16.44520349999999,
+                "top": -6.4817399999999985,
+                "right": 115.49700549999999,
+                "bottom": 41.833771
+              },
+              "sourceTextBoxMm": [
+                13.64,
+                16.75,
+                132.91,
+                61.36
+              ],
+              "sourceAnchor": {
+                "x": 13.64,
+                "firstBaseline": 38.6,
+                "anchor": "start",
+                "lineHeight": 69.1939262472885,
+                "lines": 1
+              }
+            }
+          ]
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "mm": [
+            300,
+            200
+          ],
+          "reason": "GT-S-30x20-D271 · Mogli: Element ragt über die Gestaltungsfläche hinaus.",
+          "currentTextIssues": [
+            {
+              "id": "text-3",
+              "text": "Mogli",
+              "font": "Kaushan Script",
+              "fontSizeMm": 57.662,
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "paintedBoundsMm": {
+                "left": 16.349159,
+                "top": -9.260259999999999,
+                "right": 157.852707,
+                "bottom": 59.762154
+              },
+              "sourceTextBoxMm": [
+                13.64,
+                16.75,
+                132.91,
+                61.36
+              ],
+              "sourceAnchor": {
+                "x": 13.64,
+                "firstBaseline": 38.6,
+                "anchor": "start",
+                "lineHeight": 69.1939262472885,
+                "lines": 1
+              }
+            }
+          ]
+        }
+      ],
+      "sourceSvgSha256": "c9d3233df343bb424a4bd988b61d976ac1d833300f0237f3b223dccead1e3e44",
+      "normalizedSvgSha256": "ab6d6ca4409d4c5761c527e6fc5781f513be8e4c4c6179c81daf12e05372e19c",
+      "fontSubstitutions": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Ampera",
+          "to": "Dancing Script",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-2",
+          "action": "replacement font size matched to original Corel text width; anchor and baselines unchanged",
+          "beforeSizeMm": 9,
+          "afterSizeMm": 10.98810287098383,
+          "sourceWidthMm": 154.24
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Amarillo",
+          "to": "Kaushan Script",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-3",
+          "action": "replacement font size matched to original Corel text width; anchor and baselines unchanged",
+          "beforeSizeMm": 30.34,
+          "afterSizeMm": 57.66160520607375,
+          "sourceWidthMm": 132.91
+        }
+      ],
+      "diagnosis": "painted-text-outside-plate"
+    },
+    {
+      "id": "GTUV-S-30x20-D17",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-rechteck-D17/design.json",
+      "process": "UV",
+      "category": {
+        "key": "weitere-tiere-with",
+        "label": "Weitere Tiere mit Foto",
+        "rank": 181,
+        "photo": "with",
+        "topic": "weitere-tiere"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D13",
+      "source": "designs/bestand/gedenktafeln/Tiere/Hund/uv-schiefer-rechteck-D13/design.json",
+      "process": "UV",
+      "category": {
+        "key": "hunde-with",
+        "label": "Hunde mit Foto",
+        "rank": 1,
+        "photo": "with",
+        "topic": "hunde"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D14",
+      "source": "designs/bestand/gedenktafeln/Tiere/Hund/uv-schiefer-rechteck-D14/design.json",
+      "process": "UV",
+      "category": {
+        "key": "hunde-with",
+        "label": "Hunde mit Foto",
+        "rank": 1,
+        "photo": "with",
+        "topic": "hunde"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "GTUV-S-30x20-D8",
+      "source": "designs/bestand/gedenktafeln/Tiere/Katze/uv-schiefer-rechteck-D8/design.json",
+      "process": "UV",
+      "category": {
+        "key": "katzen-unknown",
+        "label": "Katzen Fotozuordnung offen",
+        "rank": 62,
+        "photo": "unknown",
+        "topic": "katzen"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "HN-S-14x22-D1",
+      "source": "designs/bestand/hausnummern/Allgemein/Allgemein/HN-S-D1/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "hausnummern-unknown",
+        "label": "Hausnummern Fotozuordnung offen",
+        "rank": 332,
+        "photo": "unknown",
+        "topic": "hausnummern"
+      },
+      "sourcePlateMm": [
+        140,
+        220
+      ],
+      "sourceReason": "Originalmaß 140.0 × 220.0 mm fehlt als exaktes Format in der gepinnten Naturschiefer-Familie. Keine Drehung, Skalierung oder Geometrie erfunden.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "HN-S-14x22-D2",
+      "source": "designs/bestand/hausnummern/Allgemein/Allgemein/HN-S-D2/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "hausnummern-unknown",
+        "label": "Hausnummern Fotozuordnung offen",
+        "rank": 332,
+        "photo": "unknown",
+        "topic": "hausnummern"
+      },
+      "sourcePlateMm": [
+        140,
+        220
+      ],
+      "sourceReason": "Originalmaß 140.0 × 220.0 mm fehlt als exaktes Format in der gepinnten Naturschiefer-Familie. Keine Drehung, Skalierung oder Geometrie erfunden.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "HN-S-14x22-D3",
+      "source": "designs/bestand/hausnummern/Familie/Familie/HN-S-D3/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "hausnummern-unknown",
+        "label": "Hausnummern Fotozuordnung offen",
+        "rank": 332,
+        "photo": "unknown",
+        "topic": "hausnummern"
+      },
+      "sourcePlateMm": [
+        140,
+        220
+      ],
+      "sourceReason": "Originalmaß 140.0 × 220.0 mm fehlt als exaktes Format in der gepinnten Naturschiefer-Familie. Keine Drehung, Skalierung oder Geometrie erfunden.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "HN-S-14x22-D4",
+      "source": "designs/bestand/hausnummern/Familie/Familie/HN-S-D4/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "hausnummern-unknown",
+        "label": "Hausnummern Fotozuordnung offen",
+        "rank": 332,
+        "photo": "unknown",
+        "topic": "hausnummern"
+      },
+      "sourcePlateMm": [
+        140,
+        220
+      ],
+      "sourceReason": "Originalmaß 140.0 × 220.0 mm fehlt als exaktes Format in der gepinnten Naturschiefer-Familie. Keine Drehung, Skalierung oder Geometrie erfunden.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "HN-S-14x22-D5",
+      "source": "designs/bestand/hausnummern/Tiere/Hund/HN-S-D5/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "hausnummern-unknown",
+        "label": "Hausnummern Fotozuordnung offen",
+        "rank": 332,
+        "photo": "unknown",
+        "topic": "hausnummern"
+      },
+      "sourcePlateMm": [
+        140,
+        220
+      ],
+      "sourceReason": "Originalmaß 140.0 × 220.0 mm fehlt als exaktes Format in der gepinnten Naturschiefer-Familie. Keine Drehung, Skalierung oder Geometrie erfunden.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "HN-S-14x22-D6",
+      "source": "designs/bestand/hausnummern/Allgemein/Allgemein/HN-S-D6/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "hausnummern-unknown",
+        "label": "Hausnummern Fotozuordnung offen",
+        "rank": 332,
+        "photo": "unknown",
+        "topic": "hausnummern"
+      },
+      "sourcePlateMm": [
+        140,
+        220
+      ],
+      "sourceReason": "Originalmaß 140.0 × 220.0 mm fehlt als exaktes Format in der gepinnten Naturschiefer-Familie. Keine Drehung, Skalierung oder Geometrie erfunden.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "HN-S-14x22-D7",
+      "source": "designs/bestand/hausnummern/Familie/Familie/HN-S-D7/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "hausnummern-unknown",
+        "label": "Hausnummern Fotozuordnung offen",
+        "rank": 332,
+        "photo": "unknown",
+        "topic": "hausnummern"
+      },
+      "sourcePlateMm": [
+        140,
+        220
+      ],
+      "sourceReason": "Originalmaß 140.0 × 220.0 mm fehlt als exaktes Format in der gepinnten Naturschiefer-Familie. Keine Drehung, Skalierung oder Geometrie erfunden.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "HN-S-14x22-D8",
+      "source": "designs/bestand/hausnummern/Allgemein/Allgemein/HN-S-D8/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "hausnummern-unknown",
+        "label": "Hausnummern Fotozuordnung offen",
+        "rank": 332,
+        "photo": "unknown",
+        "topic": "hausnummern"
+      },
+      "sourcePlateMm": [
+        140,
+        220
+      ],
+      "sourceReason": "Originalmaß 140.0 × 220.0 mm fehlt als exaktes Format in der gepinnten Naturschiefer-Familie. Keine Drehung, Skalierung oder Geometrie erfunden.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "HN-S-14x22-D9",
+      "source": "designs/bestand/hausnummern/Familie/Familie/HN-S-D9/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "hausnummern-unknown",
+        "label": "Hausnummern Fotozuordnung offen",
+        "rank": 332,
+        "photo": "unknown",
+        "topic": "hausnummern"
+      },
+      "sourcePlateMm": [
+        140,
+        220
+      ],
+      "sourceReason": "Originalmaß 140.0 × 220.0 mm fehlt als exaktes Format in der gepinnten Naturschiefer-Familie. Keine Drehung, Skalierung oder Geometrie erfunden.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "HN-S-14x22-D10",
+      "source": "designs/bestand/hausnummern/Allgemein/Allgemein/HN-S-D10/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "hausnummern-unknown",
+        "label": "Hausnummern Fotozuordnung offen",
+        "rank": 332,
+        "photo": "unknown",
+        "topic": "hausnummern"
+      },
+      "sourcePlateMm": [
+        140,
+        220
+      ],
+      "sourceReason": "Originalmaß 140.0 × 220.0 mm fehlt als exaktes Format in der gepinnten Naturschiefer-Familie. Keine Drehung, Skalierung oder Geometrie erfunden.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "HN-S-14x22-D11",
+      "source": "designs/bestand/hausnummern/Familie/Familie/HN-S-D11/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "hausnummern-unknown",
+        "label": "Hausnummern Fotozuordnung offen",
+        "rank": 332,
+        "photo": "unknown",
+        "topic": "hausnummern"
+      },
+      "sourcePlateMm": [
+        140,
+        220
+      ],
+      "sourceReason": "Originalmaß 140.0 × 220.0 mm fehlt als exaktes Format in der gepinnten Naturschiefer-Familie. Keine Drehung, Skalierung oder Geometrie erfunden.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "HN-S-14x22-D12",
+      "source": "designs/bestand/hausnummern/Allgemein/Allgemein/HN-S-D12/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "hausnummern-unknown",
+        "label": "Hausnummern Fotozuordnung offen",
+        "rank": 332,
+        "photo": "unknown",
+        "topic": "hausnummern"
+      },
+      "sourcePlateMm": [
+        140,
+        220
+      ],
+      "sourceReason": "Originalmaß 140.0 × 220.0 mm fehlt als exaktes Format in der gepinnten Naturschiefer-Familie. Keine Drehung, Skalierung oder Geometrie erfunden.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "HN-S-14x22-D13",
+      "source": "designs/bestand/hausnummern/Familie/Familie/HN-S-D13/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "hausnummern-unknown",
+        "label": "Hausnummern Fotozuordnung offen",
+        "rank": 332,
+        "photo": "unknown",
+        "topic": "hausnummern"
+      },
+      "sourcePlateMm": [
+        140,
+        220
+      ],
+      "sourceReason": "Originalmaß 140.0 × 220.0 mm fehlt als exaktes Format in der gepinnten Naturschiefer-Familie. Keine Drehung, Skalierung oder Geometrie erfunden.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "HN-S-14x22-D14",
+      "source": "designs/bestand/hausnummern/Familie/Familie/HN-S-D14/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "hausnummern-unknown",
+        "label": "Hausnummern Fotozuordnung offen",
+        "rank": 332,
+        "photo": "unknown",
+        "topic": "hausnummern"
+      },
+      "sourcePlateMm": [
+        140,
+        220
+      ],
+      "sourceReason": "Originalmaß 140.0 × 220.0 mm fehlt als exaktes Format in der gepinnten Naturschiefer-Familie. Keine Drehung, Skalierung oder Geometrie erfunden.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "HN-S-14x22-D15",
+      "source": "designs/bestand/hausnummern/Familie/Familie/HN-S-D15/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "hausnummern-unknown",
+        "label": "Hausnummern Fotozuordnung offen",
+        "rank": 332,
+        "photo": "unknown",
+        "topic": "hausnummern"
+      },
+      "sourcePlateMm": [
+        140,
+        220
+      ],
+      "sourceReason": "Originalmaß 140.0 × 220.0 mm fehlt als exaktes Format in der gepinnten Naturschiefer-Familie. Keine Drehung, Skalierung oder Geometrie erfunden.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "HN-S-14x22-D16",
+      "source": "designs/bestand/hausnummern/Familie/Familie/HN-S-D16/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "hausnummern-unknown",
+        "label": "Hausnummern Fotozuordnung offen",
+        "rank": 332,
+        "photo": "unknown",
+        "topic": "hausnummern"
+      },
+      "sourcePlateMm": [
+        140,
+        220
+      ],
+      "sourceReason": "Originalmaß 140.0 × 220.0 mm fehlt als exaktes Format in der gepinnten Naturschiefer-Familie. Keine Drehung, Skalierung oder Geometrie erfunden.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "TQ-S-20x20-D8",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TQ-S-D8/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        200,
+        200
+      ],
+      "sourceReason": "Original or documented replacement font missing: Great Wishes",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Great Wishes"
+    },
+    {
+      "id": "TQ-S-20x20-D9",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TQ-S-D9/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        200,
+        200
+      ],
+      "sourceReason": "Original or documented replacement font missing: Existence Light",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Existence Light"
+    },
+    {
+      "id": "TQ-S-20x20-D14",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TQ-S-D14/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        200,
+        200
+      ],
+      "sourceReason": "Original or documented replacement font missing: Great Wishes",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Great Wishes"
+    },
+    {
+      "id": "TQ-S-20x20-D16",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TQ-S-D16/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        200,
+        200
+      ],
+      "sourceReason": "Original or documented replacement font missing: Marlena",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Marlena"
+    },
+    {
+      "id": "TQ-S-20x20-D18",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TQ-S-D18/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        200,
+        200
+      ],
+      "sourceReason": "Original or documented replacement font missing: Felix Titling",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Felix Titling"
+    },
+    {
+      "id": "TQ-S-20x20-D21",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TQ-S-D21/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        200,
+        200
+      ],
+      "sourceReason": "Original or documented replacement font missing: Oranienbaum",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Oranienbaum"
+    },
+    {
+      "id": "TQ-S-20x20-D25",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TQ-S-D25/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        200,
+        200
+      ],
+      "sourceReason": "Original or documented replacement font missing: Shinelight",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Shinelight"
+    },
+    {
+      "id": "TQ-S-20x20-D30",
+      "source": "designs/bestand/tuerschilder/Sprüche/Spruch/TQ-S-D30/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        200,
+        200
+      ],
+      "sourceReason": "Original or documented replacement font missing: Great Wishes",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Great Wishes"
+    },
+    {
+      "id": "TQ-S-20x20-D36",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TQ-S-D36/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        200,
+        200
+      ],
+      "sourceReason": "Original or documented replacement font missing: Courier New",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Courier New"
+    },
+    {
+      "id": "TQ-S-20x20-D38",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TQ-S-D38/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        200,
+        200
+      ],
+      "sourceReason": "Original or documented replacement font missing: Humanst521 Lt BT",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Humanst521 Lt BT"
+    },
+    {
+      "id": "TQ-S-20x20-D44",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TQ-S-D44/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        200,
+        200
+      ],
+      "sourceReason": "Original or documented replacement font missing: Humanst521 Lt BT",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Humanst521 Lt BT"
+    },
+    {
+      "id": "TQ-S-20x20-D49",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TQ-S-D49/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        200,
+        200
+      ],
+      "sourceReason": "Original or documented replacement font missing: Great Wishes",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Great Wishes"
+    },
+    {
+      "id": "TQ-S-20x20-D57",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TQ-S-D57/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        200,
+        200
+      ],
+      "sourceReason": "Original or documented replacement font missing: Abuget",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Abuget"
+    },
+    {
+      "id": "TQ-S-20x20-D59",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TQ-S-D59/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        200,
+        200
+      ],
+      "sourceReason": "Original or documented replacement font missing: Constantine",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Constantine"
+    },
+    {
+      "id": "TQ-S-20x20-D60",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TQ-S-D60/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        200,
+        200
+      ],
+      "sourceReason": "Original or documented replacement font missing: Baskerville Old Face",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Baskerville Old Face"
+    },
+    {
+      "id": "TQ-S-20x20-D61",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TQ-S-D61/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        200,
+        200
+      ],
+      "sourceReason": "Original or documented replacement font missing: Constantine",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Constantine"
+    },
+    {
+      "id": "TRE-S-10x10-D8",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TRE-S-D8/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        100,
+        100
+      ],
+      "sourceReason": "Original or documented replacement font missing: Great Wishes",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Great Wishes"
+    },
+    {
+      "id": "TRE-S-10x10-D9",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TRE-S-D9/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        100,
+        100
+      ],
+      "sourceReason": "Original or documented replacement font missing: Existence Light",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Existence Light"
+    },
+    {
+      "id": "TRE-S-10x10-D14",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TRE-S-D14/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        100,
+        100
+      ],
+      "sourceReason": "Original or documented replacement font missing: Great Wishes",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Great Wishes"
+    },
+    {
+      "id": "TRE-S-10x10-D16",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TRE-S-D16/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        100,
+        100
+      ],
+      "sourceReason": "Original or documented replacement font missing: Marlena",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Marlena"
+    },
+    {
+      "id": "TRE-S-10x10-D18",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TRE-S-D18/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        100,
+        100
+      ],
+      "sourceReason": "Original or documented replacement font missing: Felix Titling",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Felix Titling"
+    },
+    {
+      "id": "TRE-S-10x10-D21",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TRE-S-D21/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        100,
+        100
+      ],
+      "sourceReason": "Original or documented replacement font missing: Oranienbaum",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Oranienbaum"
+    },
+    {
+      "id": "TRE-S-10x10-D25",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TRE-S-D25/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        100,
+        100
+      ],
+      "sourceReason": "Original or documented replacement font missing: Shinelight",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Shinelight"
+    },
+    {
+      "id": "TRE-S-10x10-D30",
+      "source": "designs/bestand/tuerschilder/Sprüche/Spruch/TRE-S-D30/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        100,
+        100
+      ],
+      "sourceReason": "Original or documented replacement font missing: Great Wishes",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Great Wishes"
+    },
+    {
+      "id": "TRE-S-10x10-D35",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TRE-S-D35/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        100,
+        100
+      ],
+      "sourceReason": null,
+      "targets": [
+        {
+          "sizeKey": "GT-SN-QU-100X100",
+          "mm": [
+            100,
+            100
+          ],
+          "reason": "TRE-S-10x10-D35 · und Musterhund: Element ragt über die Gestaltungsfläche hinaus.",
+          "currentTextIssues": [
+            {
+              "id": "text-3",
+              "text": "und Musterhund",
+              "font": "Cinzel",
+              "fontSizeMm": 10.76,
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "paintedBoundsMm": {
+                "left": 25.360060000000004,
+                "top": 72.99686,
+                "right": 124.65434000000002,
+                "bottom": 80.83114
+              },
+              "sourceTextBoxMm": [
+                24.93,
+                73,
+                98.44,
+                7.78
+              ],
+              "sourceAnchor": {
+                "x": 24.93,
+                "firstBaseline": 80.68,
+                "anchor": "start",
+                "lineHeight": 12.911999999999999,
+                "lines": 1
+              }
+            }
+          ]
+        }
+      ],
+      "sourceSvgSha256": "cd6f5bf5f129dab9f8656ef0157b63dbc826f4f339e76013652d59f14091b56d",
+      "normalizedSvgSha256": "ef375eccc2416e2e9b3c99e2355509da5be0ec1bdd75f246da13324bacab539d",
+      "fontSubstitutions": [
+        {
+          "id": "text-4",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Arial",
+          "to": "Lato",
+          "source": "schriften/ersatz-tuerschilder.json"
+        },
+        {
+          "id": "text-4",
+          "action": "replacement font size matched to original Corel text width; anchor and baselines unchanged",
+          "beforeSizeMm": 6.88,
+          "afterSizeMm": 6.342672413793102,
+          "sourceWidthMm": 29.43
+        },
+        {
+          "id": "text-5",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Arial",
+          "to": "Lato",
+          "source": "schriften/ersatz-tuerschilder.json"
+        },
+        {
+          "id": "text-5",
+          "action": "replacement font size matched to original Corel text width; anchor and baselines unchanged",
+          "beforeSizeMm": 6.88,
+          "afterSizeMm": 6.3405172413793105,
+          "sourceWidthMm": 29.42
+        }
+      ],
+      "diagnosis": "painted-text-outside-plate"
+    },
+    {
+      "id": "TRE-S-10x10-D36",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TRE-S-D36/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        100,
+        100
+      ],
+      "sourceReason": "Original or documented replacement font missing: Courier New",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Courier New"
+    },
+    {
+      "id": "TRE-S-10x10-D38",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TRE-S-D38/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        100,
+        100
+      ],
+      "sourceReason": "Original or documented replacement font missing: Humanst521 Lt BT",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Humanst521 Lt BT"
+    },
+    {
+      "id": "TRE-S-10x10-D44",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TRE-S-D44/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        100,
+        100
+      ],
+      "sourceReason": "Original or documented replacement font missing: Humanst521 Lt BT",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Humanst521 Lt BT"
+    },
+    {
+      "id": "TRE-S-10x10-D49",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TRE-S-D49/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        100,
+        100
+      ],
+      "sourceReason": "Original or documented replacement font missing: Great Wishes",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Great Wishes"
+    },
+    {
+      "id": "TRE-S-10x10-D56",
+      "source": "designs/bestand/tuerschilder/Hinweis/Bitte und Verbot/TRE-S-D56/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        100,
+        100
+      ],
+      "sourceReason": null,
+      "targets": [
+        {
+          "sizeKey": "GT-SN-QU-100X100",
+          "mm": [
+            100,
+            100
+          ],
+          "reason": "TRE-S-10x10-D56 · Videoüberwachung: Element ragt über die Gestaltungsfläche hinaus.",
+          "currentTextIssues": [
+            {
+              "id": "text-2",
+              "text": "Videoüberwachung",
+              "font": "Antic Slab",
+              "fontSizeMm": 10.23,
+              "issue": "Element ragt über die Gestaltungsfläche hinaus.",
+              "paintedBoundsMm": {
+                "left": 7.023800000000001,
+                "top": 73.9175,
+                "right": 100.73160000000001,
+                "bottom": 84.1485
+              },
+              "sourceTextBoxMm": [
+                6.82,
+                73.92,
+                86.36,
+                10.14
+              ],
+              "sourceAnchor": {
+                "x": 6.82,
+                "firstBaseline": 81.59,
+                "anchor": "start",
+                "lineHeight": 12.276,
+                "lines": 1
+              }
+            }
+          ]
+        }
+      ],
+      "sourceSvgSha256": "768827097c8c8211d003aff3a8610e1f7bfdd525b63ee02ffd0e641004610aa5",
+      "normalizedSvgSha256": "e92be5ca96f2cf6709720a33259be35e3649ce5f88d358aa363f43623761ff84",
+      "fontSubstitutions": [
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Arial",
+          "to": "Lato",
+          "source": "schriften/ersatz-tuerschilder.json"
+        },
+        {
+          "id": "text-3",
+          "action": "replacement font size matched to original Corel text width; anchor and baselines unchanged",
+          "beforeSizeMm": 5.47,
+          "afterSizeMm": 5.140086206896552,
+          "sourceWidthMm": 23.85
+        },
+        {
+          "id": "text-4",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Arial",
+          "to": "Lato",
+          "source": "schriften/ersatz-tuerschilder.json"
+        },
+        {
+          "id": "text-4",
+          "action": "replacement font size matched to original Corel text width; anchor and baselines unchanged",
+          "beforeSizeMm": 5.47,
+          "afterSizeMm": 5.140086206896552,
+          "sourceWidthMm": 23.85
+        }
+      ],
+      "diagnosis": "painted-text-outside-plate"
+    },
+    {
+      "id": "TRE-S-10x10-D57",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TRE-S-D57/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        100,
+        100
+      ],
+      "sourceReason": "Original or documented replacement font missing: Abuget",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Abuget"
+    },
+    {
+      "id": "TRE-S-10x10-D59",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TRE-S-D59/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        100,
+        100
+      ],
+      "sourceReason": "Original or documented replacement font missing: Constantine",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Constantine"
+    },
+    {
+      "id": "TRE-S-10x10-D60",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TRE-S-D60/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        100,
+        100
+      ],
+      "sourceReason": "Original or documented replacement font missing: Baskerville Old Face",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Baskerville Old Face"
+    },
+    {
+      "id": "TRE-S-10x10-D61",
+      "source": "designs/bestand/tuerschilder/Familie/Familie/TRE-S-D61/design.json",
+      "process": "Gravur",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        100,
+        100
+      ],
+      "sourceReason": "Original or documented replacement font missing: Constantine",
+      "targets": [],
+      "diagnosis": "source-or-font-conversion-open",
+      "currentReason": "Prepared font resource unavailable: Constantine"
+    },
+    {
+      "id": "TSUV-S-30x20-D1",
+      "source": "designs/bestand/tuerschilder/offen/offen/TSUV-S-D1/design.json",
+      "process": "UV",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "Druckoriginal erhalten; bearbeitbare Druckebenen und Druckprofil noch nicht vorbereitet.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "TSUV-S-30x20-D2",
+      "source": "designs/bestand/tuerschilder/offen/offen/TSUV-S-D2/design.json",
+      "process": "UV",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "Druckoriginal erhalten; bearbeitbare Druckebenen und Druckprofil noch nicht vorbereitet.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "TSUV-S-30x20-D3",
+      "source": "designs/bestand/tuerschilder/offen/offen/TSUV-S-D3/design.json",
+      "process": "UV",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "Druckoriginal erhalten; bearbeitbare Druckebenen und Druckprofil noch nicht vorbereitet.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "TSUV-S-30x20-D4",
+      "source": "designs/bestand/tuerschilder/offen/offen/TSUV-S-D4/design.json",
+      "process": "UV",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "Druckoriginal erhalten; bearbeitbare Druckebenen und Druckprofil noch nicht vorbereitet.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "TSUV-S-30x20-D5",
+      "source": "designs/bestand/tuerschilder/offen/offen/TSUV-S-D5/design.json",
+      "process": "UV",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "Druckoriginal erhalten; bearbeitbare Druckebenen und Druckprofil noch nicht vorbereitet.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "TSUV-S-30x20-D6",
+      "source": "designs/bestand/tuerschilder/offen/offen/TSUV-S-D6/design.json",
+      "process": "UV",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "Druckoriginal erhalten; bearbeitbare Druckebenen und Druckprofil noch nicht vorbereitet.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    },
+    {
+      "id": "TSUV-S-30x20-D7",
+      "source": "designs/bestand/tuerschilder/offen/offen/TSUV-S-D7/design.json",
+      "process": "UV",
+      "category": {
+        "key": "tuerschilder-unknown",
+        "label": "Türschilder Fotozuordnung offen",
+        "rank": 302,
+        "photo": "unknown",
+        "topic": "tuerschilder"
+      },
+      "sourcePlateMm": [
+        300,
+        200
+      ],
+      "sourceReason": "Druckoriginal erhalten; bearbeitbare Druckebenen und Druckprofil noch nicht vorbereitet.",
+      "targets": [],
+      "diagnosis": "source-or-print-preparation-open"
+    }
+  ],
+  "originalsChanged": false,
+  "layoutsChanged": false,
+  "validationChanged": false,
+  "databaseWrites": 0,
+  "productionReadyClaimed": false,
+  "tests": {
+    "targetedPassed": 11,
+    "realPackageOriginals": 325,
+    "visibleUnresolvedAnimalSpeciesNotes": 70,
+    "sourceFilesUsedInAuditVerifiedAgainstPackageInventory": true
+  }
+}

@@ -14,6 +14,9 @@ import {createPrivateTestProxy} from '../../ops/plesk/runtime.mjs';
 import {createSlateReviewComments} from '../../scripts/lib/slate-review-comments.mjs';
 import http from 'node:http';
 import {createSlateReviewPositions} from './slate-review-positions.mjs';
+import {measureText,setTextSize} from '../platform/sources/app/shared/models/text-paths.mjs';
+import {createGalleryEditor} from './gallery-editor.mjs';
+import {galleryEditorTargets,galleryTestPng} from '../../scripts/fixtures/gallery-editor.mjs';
 
 function document(ids,width=300,height=200){
   const family=JSON.parse(fs.readFileSync(new URL('../designs/steel-door-signs/family.json',import.meta.url)));
@@ -166,4 +169,71 @@ test('target-level acrylic binding distinguishes colour and thickness during nat
   const wrongFamily=structuredClone(pack);wrongFamily.originals[0].targets[0].familyId='foreign-family';
   assert.throws(()=>createSlateReviewPositions({workshop,pack:wrongFamily,imported}).open(record.id,design.id),e=>e.status===409);
   assert.deepEqual(workshop.repository.get(record.id),record);
+});
+
+test('proportional inline sizes persist native text, motif, graphic strokes and masked photo dimensions and reopen in the full configurator',async t=>{
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'slate-inline-size-')),filename=path.join(root,'workshop.sqlite');
+  const seed=document(['A','B']),config=seed.config;
+  let workshop=createWorkshop({filename,seedConfig:config,legacy:{purchasing:{}}});
+  t.after(()=>{workshop.close();fs.rmSync(root,{recursive:true,force:true});});
+  const mask=await workshop.assets.import({name:'Maske.svg',bytes:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="20mm" height="30mm" viewBox="0 0 20 30"><ellipse cx="10" cy="15" rx="10" ry="15" fill="white"/></svg>').toString('base64')});
+  const recipe={original:galleryTestPng,processed:galleryTestPng,editSource:galleryTestPng,widthMm:20,heightMm:30,edited:true,color:'grayscale',editSourceColor:'original',
+    photoEdit:{angle:90,flip:-1,zoom:1.2,x:.2,y:-.3,shape:'heart',color:'grayscale'},crop:{zoom:1.3,x:.1,y:.2,angle:7},photoShape:'template',photoMaskAssetId:mask.assetId};
+  const photo=await workshop.assets.galleryPhotos.import(recipe);
+  const text=config.profile.designs[0].objects[0];
+  Object.assign(text,{text:'Hallo\nWelt',size:10,x:150,y:60,rotation:17,lineHeight:14,letterSpacing:.3,textAnchor:'start',italic:true});
+  measureText(text,config.localResources.fonts);
+  const motif={id:'motif',type:'motif',motif:'inline-test',x:75,y:110,w:40,h:20,rotation:31,color:'#000000',locked:true,templateOrigin:true};
+  const slot={id:'photo',type:'photoSlot',fieldKey:'photo-main',required:false,x:210,y:100,w:20,h:30,rotation:12,photoShape:'template',photoMaskAssetId:mask.assetId,customerEditable:false,templateOrigin:true};
+  const line={id:'line',type:'graphic',shape:'line',filled:false,strokeWidth:1,x:120,y:110,w:20,h:2,rotation:9,color:'#000000',templateOrigin:true};
+  const outline={id:'outline',type:'graphic',shape:'rect',filled:false,strokeWidth:.5,x:180,y:150,w:20,h:12,rotation:0,color:'#000000',templateOrigin:true};
+  config.profile.designs[0].objects.push(motif,slot,line,outline);
+  config.localResources.motifs=[{key:'inline-test',name:'Testmotiv',bounds:[0,0,40,20],svgFragment:'<path d="M0 0H40V20H0Z" fill="currentColor" fill-rule="nonzero"/>'}];
+  config.localResources.photoExamples=[{designId:'katalog-A',slotId:'photo',assetId:photo.assetId}];
+  const record=workshop.repository.create(makeProductDocument(config,{name:seed.name})),product={key:'TEST-300X200:Hunde',productId:record.id,reviewOnly:true,designIds:['A','B']};
+  const pack={schema:'gravuru-slate-original-review/v1',reviewOnly:true,released:false,products:[product],originals:['A','B'].map(id=>({id,group:'Hunde',targets:[{sizeKey:'TEST-300X200',mm:[300,200],status:'prepared'}]}))};
+  const imported={localOnly:true,published:false,shopifyWrites:0,products:[product]};
+  let positions=createSlateReviewPositions({workshop,pack,imported});
+  const opened=positions.open(record.id,'katalog-A'),input={productId:record.id,designId:'katalog-A',expectedRevision:1,positions:[]};
+  assert.equal(opened.objects.find(o=>o.id===text.id).size,10);
+  for(const id of [text.id,'motif','photo','line','outline'])assert.equal(opened.objects.find(o=>o.id===id).resizable,true,'operator resizing is independent of customer locks');
+  assert.equal(opened.objects.find(o=>o.id==='technical').resizable,false);
+  const item={objectId:slot.id,x:slot.x,y:slot.y,scale:1};
+  assert.equal(positions.save({...input,positions:[item]}).revision,1,'scale one is a true no-op');
+  for(const invalid of [0,-1,NaN,Infinity,'1.1',null])assert.throws(()=>positions.save({...input,positions:[{...item,scale:invalid}]}),e=>e.status===422);
+  for(const extra of [{w:22},{h:33},{photoShape:'rect'},{photoMaskAssetId:'b'.repeat(64)},{size:12},{rotation:0},{strokeWidth:2}])assert.throws(()=>positions.save({...input,positions:[{...item,...extra}]}),e=>e.status===422);
+  assert.throws(()=>positions.save({...input,positions:[{...item,scale:100}]}),e=>e.status===422);
+  assert.throws(()=>positions.save({...input,positions:[{objectId:text.id,x:text.x,y:text.y,scale:11}]}),e=>e.status===422&&e.code==='review_size_invalid');
+  assert.throws(()=>positions.save({...input,positions:[{...item,objectId:'technical',scale:1.1}]}),e=>e.status===422);
+  assert.deepEqual(workshop.repository.get(record.id),record,'invalid changes never alter the loaded head');
+  const saved=positions.save({...input,positions:[{objectId:text.id,x:text.x+1,y:text.y,scale:1.25},{objectId:motif.id,x:motif.x,y:motif.y,scale:.75},{...item,scale:1.5},...[line,outline].map(o=>({objectId:o.id,x:o.x,y:o.y,scale:2}))]});
+  assert.equal(saved.revision,2);assert.match(saved.svg,/data-template-photo-mask/);
+  const expected=structuredClone(record.document),objects=expected.config.profile.designs[0].objects;
+  const resizedText=objects.find(o=>o.id===text.id);resizedText.x+=1;setTextSize(resizedText,12.5);resizedText.letterSpacing*=1.25;measureText(resizedText,expected.config.localResources.fonts);
+  for(const [id,scale] of [['motif',.75],['photo',1.5]]){const o=objects.find(o=>o.id===id);o.w*=scale;o.h*=scale;}
+  for(const id of ['line','outline']){const o=objects.find(o=>o.id===id);o.w*=2;o.h*=2;o.strokeWidth*=2;}
+  const graphicSvg=id=>saved.svg.match(new RegExp('<g data-object="'+id+'"[^>]*>(.*?)</g>'))?.[1]||'';
+  assert.match(graphicSvg('line'),/<line[^>]*stroke-width="2"/);
+  assert.match(graphicSvg('outline'),/<rect[^>]*stroke-width="1"/);
+  assert.deepEqual(workshop.repository.get(record.id).document,expected,'only permitted geometry and native text metrics change; other designs, masks, resources, rights and prices stay exact');
+  assert.equal(saved.objects.find(o=>o.id===text.id).h,resizedText.h);assert.equal(resizedText.lineHeight,17.5);assert.equal(resizedText.letterSpacing,.375);
+  assert.equal(saved.objects.find(o=>o.id==='photo').w,30);assert.equal(saved.objects.find(o=>o.id==='photo').h,45);
+  assert.throws(()=>positions.save({...input,positions:[{...item,scale:1.1}]}),e=>e.status===409);
+  workshop.close();workshop=createWorkshop({filename,seedConfig:config,legacy:{purchasing:{}}});
+  positions=createSlateReviewPositions({workshop,pack,imported});
+  const reopened=positions.open(record.id,'katalog-A');assert.deepEqual(reopened.objects,saved.objects);assert.equal(reopened.svg,saved.svg);
+  const full=createGalleryEditor({workshop,targets:galleryEditorTargets(workshop.repository.get(record.id),{sizeKey:'TEST-300X200'})});
+  const fullOpened=full.open({productId:record.id,designId:'katalog-A',originalId:'A'});
+  for(const id of [text.id,'motif','photo','line','outline']){
+    const fullObject=fullOpened.model.universal.profile.designs[0].objects.find(o=>o.id===id),expectedObject=objects.find(o=>o.id===id);
+    for(const key of ['x','y','w','h','size','rotation','lineHeight','letterSpacing','textAnchor','photoShape','photoMaskAssetId','strokeWidth'])assert.equal(fullObject[key],expectedObject[key],id+' '+key);
+  }
+  assert.equal(fullOpened.photos[0].assetId,photo.assetId);assert.deepEqual(fullOpened.photos[0].crop,recipe.crop);assert.deepEqual(fullOpened.photos[0].photoEdit,recipe.photoEdit);
+  assert.deepEqual(workshop.assets.photoExampleImage(photo.assetId),Buffer.from(galleryTestPng,'base64'),'original photo remains available for reset');
+  const fullObjects=fullOpened.model.universal.profile.designs[0].objects;
+  Object.assign(fullObjects.find(o=>o.id==='photo'),{uxUploadKind:'photo',uxUploadId:'restored-browser-photo',uxPhotoCrop:recipe.crop,uxPhotoColor:'grayscale'});
+  const fullSaved=await full.save({productId:record.id,designId:'katalog-A',originalId:'A',expectedRevision:2,objects:fullObjects,photos:[{objectId:'photo',assetId:photo.assetId}]});
+  assert.equal(fullSaved.changed,false);assert.equal(fullSaved.context.revision,2,'unchanged full-configurator save keeps the resized native photo');
+  assert.deepEqual(workshop.repository.get(record.id).document,expected);
+  assert.equal(positions.save({...input,expectedRevision:2,positions:[{objectId:'photo',x:slot.x,y:slot.y,scale:1}]}).revision,2);
 });

@@ -119,7 +119,14 @@ export function createGalleryEditor({workshop,targets}){
      if(photos.has(object.id)){
       const assetId=photos.get(object.id),metadata=workshop.assets.galleryPhotos.metadata(assetId);
       if(metadata){
-       if(Math.abs(metadata.widthMm-object.w)>1e-5||Math.abs(metadata.heightMm-object.h)>1e-5||!same(metadata.crop,raw.uxPhotoCrop||null)||metadata.color!==photoColorMode(config.profile,raw))fail(422,'review_photo_invalid','Foto und Bearbeitungsstand stimmen nicht überein. Bitte erneut speichern.');
+       // The card may have proportionally resized this exact persisted slot.
+       // Its immutable photo asset still describes the original physical size.
+       // Reusing the current native size is safe; a new edit must still supply
+       // a matching photo rendition, crop and colour.
+       const retainedSize=original&&originalPhotos.some(p=>p.slotId===object.id&&p.assetId===assetId)&&
+        object.w===original.w&&object.h===original.h&&
+        Math.abs(object.w/metadata.widthMm-object.h/metadata.heightMm)<1e-8;
+       if((!retainedSize&&(Math.abs(metadata.widthMm-object.w)>1e-5||Math.abs(metadata.heightMm-object.h)>1e-5))||!same(metadata.crop,raw.uxPhotoCrop||null)||metadata.color!==photoColorMode(config.profile,raw))fail(422,'review_photo_invalid','Foto und Bearbeitungsstand stimmen nicht überein. Bitte erneut speichern.');
       }else if(!originalPhotos.some(p=>p.slotId===object.id&&p.assetId===assetId)||!original||original.w!==object.w||original.h!==object.h||raw.uxPhotoCrop&&!same(raw.uxPhotoCrop,{zoom:1,x:0,y:0,angle:0}))fail(422,'review_photo_invalid','Das ursprüngliche Foto muss für diesen Zuschnitt neu gesichert werden.');
      }
      if(!object.fieldKey)object.fieldKey='photo-'+object.id;
@@ -155,7 +162,16 @@ export function createGalleryEditor({workshop,targets}){
    document.elementRights[design.id]=Object.fromEntries(objects.map(o=>[o.id,clone(record.document.elementRights[design.id][o.id]||legacyElementRights(o))]));
    for(const key of ['customerFields','sourceElements'])if(Array.isArray(design[key]))design[key]=design[key].filter(f=>ids.has(f.id));
    const hasPhoto=id=>objects.some(o=>o.id===id&&o.type==='photoSlot');
-   if(resources.photoExamples||photos.size)resources.photoExamples=[...(resources.photoExamples||[]).filter(p=>p.designId!==design.id),...[...photos].map(([slotId,assetId])=>({designId:design.id,slotId,assetId}))];
+   if(resources.photoExamples||photos.size){
+    // Keep the resource order on a no-op save, including neighbouring designs.
+    const remaining=new Map(photos);
+    resources.photoExamples=(resources.photoExamples||[]).flatMap(p=>{
+     if(p.designId!==design.id)return [p];
+     const assetId=remaining.get(p.slotId);remaining.delete(p.slotId);
+     return assetId?[{...p,assetId}]:[];
+    });
+    resources.photoExamples.push(...[...remaining].map(([slotId,assetId])=>({designId:design.id,slotId,assetId})));
+   }
    if(resources.photoPlaceholders)resources.photoPlaceholders=resources.photoPlaceholders.filter(p=>p.designId!==design.id||hasPhoto(p.slotId));
    if(config.photo.hints)config.photo.hints=config.photo.hints.filter(p=>p.designId!==design.id||hasPhoto(p.slotId));
    const rendered=workshop.editorPreview(document,design.id);

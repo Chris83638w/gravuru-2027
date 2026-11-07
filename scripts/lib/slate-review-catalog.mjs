@@ -4,22 +4,35 @@ const fold = value => String(value ?? '').normalize('NFKD').replace(/[\u0300-\u0
 
 export function withSlateReviewMetadata(row, original = {}) {
   const category = original.katalog?.kategorie || {};
-  return {
+  const enriched = {
     ...row,
     catalogueCategory: {
       ...row.catalogueCategory,
-      group: category.ziel ?? row.catalogueCategory?.group ?? row.group,
-      subcategory: category.unter ?? row.catalogueCategory?.subcategory ?? row.subcategory,
+      group: category.ziel || original.katalog?.zielgruppe || row.catalogueCategory?.group || row.group,
+      subcategory: category.unter || original.katalog?.unterkategorie || row.catalogueCategory?.subcategory || row.subcategory,
       photo: category.foto ?? row.catalogueCategory?.photo,
       sheetLabel: original.sheetLabel ?? original.katalog?.sheetLabel ?? row.catalogueCategory?.sheetLabel,
       sourceKind: original.katalog?.sourceKind ?? row.catalogueCategory?.sourceKind,
+      themes: original.themes ?? row.catalogueCategory?.themes,
+      confidence: category.sicherheit ?? row.catalogueCategory?.confidence,
     },
   };
+  // The source catalogue labels many animal originals only as "Allgemein".
+  // Keep them discoverable and explicitly unresolved; a pet name or sample
+  // photograph is not proof that the whole design belongs to dogs or cats.
+  if ((!row.reviewMaterial || row.reviewMaterial.kind === 'slate') && slateReviewCategory(enriched).topic === 'weitere-tiere') {
+    const message = 'Tierart im Katalog nicht genauer zugeordnet. Bitte Hund, Katze oder weitere Tierart bei der Sichtprüfung bestätigen.';
+    enriched.reviewClassification = {status: 'open', reason: 'animal-species-unspecified'};
+    enriched.visualReviewIssues = [...(row.visualReviewIssues || []).filter(issue => (typeof issue === 'string' ? issue : issue?.message) !== message), {code: 'animal-species-unspecified', message}];
+  }
+  return enriched;
 }
 
 function photoState(row) {
   if (Number(row.photoSlots) > 0) return 'with';
-  const stated = fold(row.catalogueCategory?.photo ?? row.katalog?.kategorie?.foto);
+  const raw = row.catalogueCategory?.photo ?? row.katalog?.kategorie?.foto;
+  if (typeof raw === 'boolean') return raw ? 'with' : 'without';
+  const stated = fold(raw);
   if (['ja', 'yes', 'with', 'mit foto'].includes(stated)) return 'with';
   if (['nein', 'no', 'without', 'ohne foto'].includes(stated)) return 'without';
   // An unprepared original with no photoSlots property is not evidence of no photo.
@@ -44,11 +57,17 @@ function topicState(row) {
   if (source.includes('/tierschilder/')) return ['tierschilder', 'Tierschilder', 160];
   if (/\bhund(?:e)?\b/.test(words)) return ['hunde', 'Hunde', 0];
   if (/sternenkind/.test(words)) return ['sternenkinder', 'Sternenkinder', 50];
-  if (/\bmenschen?\b/.test(group)) return ['menschen', 'Menschen', 10];
+  if (/\bmensch(?:en)?\b/.test(group)) return ['menschen', 'Menschen', 10];
   if (/\bkatz(?:e|en)\b/.test(words)) return ['katzen', 'Katzen', 20];
   if (/kleintier/.test(words)) return ['kleintiere', 'Kleintiere', 30];
   if (/\bpferd(?:e)?\b/.test(words)) return ['pferde', 'Pferde', 40];
-  if (/\btier(?:e)?\b/.test(group)) return ['weitere-tiere', 'Weitere Tiere', 60];
+  const themes = Array.isArray(row.catalogueCategory?.themes) ? row.catalogueCategory.themes.map(fold) : [];
+  if (themes.includes('hundegedenktafeln') && !themes.includes('katzengedenktafeln')) return ['hunde', 'Hunde', 0];
+  if (themes.includes('katzengedenktafeln') && !themes.includes('hundegedenktafeln')) return ['katzen', 'Katzen', 20];
+  if (themes.includes('sternenkinder')) return ['sternenkinder', 'Sternenkinder', 50];
+  const sheet = fold(row.catalogueCategory?.sheetLabel);
+  if (/\bmensch(?:en)?\b/.test(sheet) || themes.includes('gedenktafeln')) return ['menschen', 'Menschen', 10];
+  if (/\btier(?:e)?\b/.test(group) || /\btier(?:e)?\b/.test(sheet) || themes.includes('tiergedenktafeln')) return ['weitere-tiere', 'Weitere Tiere', 60];
   return ['weitere-schiefer', 'Weitere Schiefer-Vorlagen', 200];
 }
 

@@ -17,6 +17,30 @@ test('restored photo masks are stronger evidence than old missing-photo metadata
   assert.equal(slateReviewCategory({photoSlots: 0, targets: [{status: 'prepared'}]}).photo, 'without');
 });
 
+test('singular Mensch, source sheets and explicit themes preserve coarse topic/photo separation', () => {
+  assert.equal(slateReviewCategory({group: 'Mensch'}).topic, 'menschen');
+  assert.equal(slateReviewCategory(withSlateReviewMetadata({}, {sheetLabel: 'Mensch ohne Foto'})).key, 'menschen-without');
+  assert.equal(slateReviewCategory(withSlateReviewMetadata({}, {sheetLabel: 'Tier mit Foto'})).key, 'weitere-tiere-with');
+  assert.equal(slateReviewCategory(withSlateReviewMetadata({group: 'Tiere', subcategory: 'Allgemein'}, {themes: ['hundegedenktafeln'], katalog: {kategorie: {foto: false}}})).key, 'hunde-without');
+  assert.equal(slateReviewCategory(withSlateReviewMetadata({group: 'Tiere'}, {themes: ['katzengedenktafeln'], katalog: {kategorie: {foto: true}}})).key, 'katzen-with');
+  assert.equal(slateReviewCategory(withSlateReviewMetadata({group: 'Menschen'}, {themes: ['hundegedenktafeln']})).topic, 'menschen');
+});
+
+test('unspecified animal species is visible without guessing from a sample pet name or changing IDs/targets', () => {
+  const row = {id: 'original', group: 'Tiere', subcategory: 'Allgemein', targets: [{sizeKey: 'large', status: 'prepared'}], visualReviewIssues: ['Vorhandener Hinweis']};
+  const saved = structuredClone(row);
+  const original = {name: 'Bello', images: [{filename: 'hund.jpg'}], katalog: {kategorie: {ziel: 'Tiere', unter: 'Allgemein', foto: 'nein'}}};
+  const enriched = withSlateReviewMetadata(row, original);
+  assert.equal(slateReviewCategory(enriched).key, 'weitere-tiere-without');
+  assert.equal(enriched.reviewClassification.status, 'open');
+  assert.equal(enriched.visualReviewIssues[1].code, 'animal-species-unspecified');
+  assert.match(enriched.visualReviewIssues[1].message, /Tierart.*bestätigen/);
+  assert.deepEqual(withSlateReviewMetadata(enriched, original).visualReviewIssues, enriched.visualReviewIssues);
+  assert.equal(enriched.id, row.id); assert.deepEqual(enriched.targets, row.targets); assert.deepEqual(row, saved);
+  assert.equal(withSlateReviewMetadata({group: 'Tiere', subcategory: 'Hund'}, original).reviewClassification?.status, 'open');
+  assert.equal(withSlateReviewMetadata({group: 'Tiere', subcategory: 'Hund'}, {}).reviewClassification, undefined);
+});
+
 test('general animals remain general; door and house signs retain their main theme', () => {
   assert.equal(slateReviewCategory({group: 'Tiere', subcategory: 'Allgemein'}).topic, 'weitere-tiere');
   assert.equal(slateReviewCategory({source: 'designs/bestand/tuerschilder/Tiere/Hund/TS-S-D1/design.json', group: 'Tiere', subcategory: 'Hund'}).topic, 'tuerschilder');

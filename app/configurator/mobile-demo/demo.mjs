@@ -2,6 +2,8 @@
 import {installDemoTextEditor} from './text-editor.mjs';
 import {installDemoEdgeResize} from './edge-resize.mjs';
 import {installDemoTextSelectionDismiss} from './text-selection-dismiss.mjs';
+import {installDemoDesktopSelection} from './desktop-selection.mjs';
+import {installDemoOptionsNavigation} from './options-navigation.mjs';
 
 // Keep the pre-keyboard height even on Android where innerHeight also shrinks.
 export function keyboardViewport(previous, {width, height, innerHeight, focused}) {
@@ -65,25 +67,15 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   productButton.setAttribute('aria-label','Ausführung und Größe auswählen'); productButton.append(title);
   summary.append(productButton); move($('[data-fk-total]'), summary);
   const bar = make('nav', 'md-bar'); bar.setAttribute('aria-label', 'Gestaltung verwalten');
+  const desktopTabs = make('nav', 'md-desktop-tabs'); desktopTabs.setAttribute('aria-label', 'Gestaltungsbereiche');
   const navButtons = new Map();
   for (const [key,label] of [['options','Ausführung'],['design','Designs'],['text','Text'],['motif','Motive'],['upload','Foto']]) {
     if (!toolButtons.has(key)) continue;
-    const b = button('', 'md-nav', () => key === 'upload' && desktop() ? choosePhoto() : open(key)); b.dataset.demoSection = key;
+    const b = button('', 'md-nav', () => open(key)); b.dataset.demoSection = key;
     b.setAttribute('aria-label',label); const icon = toolButtons.get(key)?.native.querySelector('svg');
     if (icon) b.append(icon.cloneNode(true)); b.append(make('span','',label)); bar.append(b); navButtons.set(key,b);
   }
   const nativeUpload = $('#ux-panel-upload [data-ux=photo-upload]');
-  function choosePhoto() {
-    // The unchanged desktop shortcut reaches the original chooser directly.
-    // Mobile opens the photo panel first; its explicit upload uses native code.
-    if (!open('upload',false)) return;
-    if (!nativeUpload || nativeUpload.hidden || nativeUpload.disabled) return;
-    nativeUpload.click();
-  }
-  const photoShortcut = button('', 'md-photo-shortcut', choosePhoto);
-  const photoIcon = toolButtons.get('upload')?.native.querySelector('svg');
-  if (photoIcon) photoShortcut.append(photoIcon.cloneNode(true)); photoShortcut.append(make('span','','Foto +'));
-  photoShortcut.setAttribute('aria-label','Foto hochladen');
   const finish = $('.completion-finish'); move(finish, bar);
   const priorFinish = finish ? {nodes:[...finish.childNodes],text:finish.textContent,label:finish.getAttribute('aria-label')} : null;
   if (finish) {
@@ -94,7 +86,7 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   // Keep the real quantity control and full-screen action reachable in the tools menu.
   move($('.ux-quantity-stepper'), extra); move($('[data-ux=enlarge]'), extra);
   move($('[data-ux=price]'), extra); menu.append(extra);
-  shell.append(top, plus, controls, summary, bar, photoShortcut);
+  shell.append(top, plus, controls, summary, bar, desktopTabs);
   el.dataset.mobileDemo = 'sheet'; el.dataset.demoSheet = 'closed';
   document.documentElement.dataset.mobileDemo = 'sheet';
   const pageStyle = make('style', ''); pageStyle.textContent = 'html[data-mobile-demo],html[data-mobile-demo] body{margin:0!important;padding:0!important;overflow:hidden!important;height:100%;background:#eef0f2}html[data-mobile-demo] main,html[data-mobile-demo] .c-main{margin:0!important;padding:0!important;max-width:none!important}html[data-mobile-demo] body>header,html[data-mobile-demo] body>footer{display:none!important}'; document.head.append(pageStyle);
@@ -103,6 +95,14 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   const desktop = () => window.innerWidth >= 1000;
   function resize() {
     if (disposed) return;
+    // Reuse the same navigation buttons at the breakpoint, including their
+    // native availability and active state. No duplicate mobile/desktop actions.
+    const destination = desktop() ? desktopTabs : bar;
+    for (const nav of navButtons.values()) if (nav.parentNode !== destination) destination.append(nav);
+    // The native fullscreen dialog owns checkout until its close handler restores it.
+    if (!nativeFullscreen && !desktop() && finish && bar.children[bar.children.length - 1] !== finish) bar.append(finish);
+    desktopTabs.hidden = !desktop();
+    bar.setAttribute('aria-label',desktop() ? 'Warenkorb' : 'Gestaltung verwalten');
     if (resetButton) {
       const label = desktop() ? priorReset.text : 'Gestaltung zurücksetzen';
       if (resetButton.textContent !== label) {
@@ -189,7 +189,7 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   const innerTarget = e => e.composedPath?.()[0] || e.target;
   on(el,'pointerdown',e => {
     const target=innerTarget(e), surface = target.closest?.('.ux-preview');
-    tap = current !== 'closed' && surface && !target.closest?.('button') && !target.closest?.('input') && !target.closest?.('[data-ux-handle]')
+    tap = !desktop() && current !== 'closed' && surface && !target.closest?.('button') && !target.closest?.('input') && !target.closest?.('[data-ux-handle]')
       ? {x:e.clientX,y:e.clientY,moved:false} : null;
   },true);
   on(el,'pointermove',e => { if (tap && Math.hypot(e.clientX-tap.x,e.clientY-tap.y)>8) tap.moved=true; },true);
@@ -232,8 +232,6 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
       const nav=navButtons.get(key); if(nav){nav.hidden=native.hidden;nav.disabled=native.disabled;}
     }
     productButton.hidden = !!toolButtons.get('options')?.native.hidden;
-    photoShortcut.hidden = !nativeUpload || nativeUpload.hidden || !!toolButtons.get('upload')?.native.hidden;
-    photoShortcut.disabled = !!nativeUpload?.disabled || !!toolButtons.get('upload')?.native.disabled;
     const active = toolButtons.get(current)?.native;
     if (active && (active.hidden || active.disabled)) open('menu', false);
   };
@@ -251,6 +249,8 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   if (photoSize) observer.observe(photoSize, { attributes:true, attributeFilter:['hidden'] });
   textEditor = installDemoTextEditor(el,{onFocusChange:resize});
   textSelection = installDemoTextSelectionDismiss(el,{enabled:()=>!desktop()});
+  const desktopSelection = installDemoDesktopSelection(el,{enabled:desktop,onSelect:key=>open(key,false)});
+  const optionsNavigation = installDemoOptionsNavigation(el);
   const edgeResize = installDemoEdgeResize(el);
   shut(false);
   const api = { open, close:shut, dispose() {
@@ -258,6 +258,8 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
     disposed = true;
     textEditor?.dispose();
     textSelection?.dispose();
+    desktopSelection?.dispose();
+    optionsNavigation?.dispose();
     edgeResize?.dispose();
     if (resizeFrame) cancelAnimationFrame(resizeFrame);
     observer.disconnect(); tabObserver.disconnect(); cleanups.forEach(fn => fn()); el.uxShowSection = oldShow;
@@ -265,7 +267,7 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
     full.showModal = oldFullscreenShow;
     if (typeof oldRevealTextIssue === 'function') el.uxRevealTextIssue = oldRevealTextIssue;
     for (const [node, anchor] of moved.reverse()) { anchor.replaceWith(node); }
-    for (const node of [top,plus,controls,summary,bar,header,menu,style,pageStyle,accountNote,photoShortcut]) node.remove();
+    for (const node of [top,plus,controls,summary,bar,desktopTabs,header,menu,style,pageStyle,accountNote]) node.remove();
     const restoreAttribute = (node, name, value) => value === null ? node.removeAttribute(name) : node.setAttribute(name, value);
     restoreAttribute(editor, 'id', priorEditor.id); restoreAttribute(editor, 'aria-labelledby', priorEditor.labelledBy);
     restoreAttribute(document.documentElement, 'data-mobile-demo', priorPageDemo);

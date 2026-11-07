@@ -243,6 +243,50 @@ test('native fullscreen receives its real controls, and closing restores their d
   assert.deepEqual(f.el.state,f.original);
 });
 
+for (const [startWidth,widths] of [[390,[390,844,390]],[844,[844,390,844]],[1440,[1440,390,844,1440,390]]]) {
+  test(`native fullscreen retains checkout across viewport changes from ${startWidth}px`,async t => {
+    const env=runtime(t),f=editorFixture(env);env.win.innerWidth=startWidth;
+    const api=await installMobileDemo(f.el),bar=f.r.querySelector('.md-bar'),tabs=f.r.querySelector('.md-desktop-tabs');
+    const nav=[...f.r.querySelectorAll('[data-demo-section]')];
+    f.full.showModal();env.flush();
+    for (const width of widths) {
+      env.win.innerWidth=width;env.win.innerHeight=width===844?390:width===390?844:900;
+      env.win.visualViewport.height=env.win.innerHeight;
+      env.win.dispatchEvent({type:'resize'});
+      env.win.visualViewport.dispatchEvent({type:'resize'});
+      env.win.visualViewport.dispatchEvent({type:'scroll'});env.flush();
+      assert.equal(f.full.open,true);
+      assert.ok(f.finish.parentNode===f.dock,`checkout remains in its native dock at ${width}px`);
+      for (const node of [f.finish,f.zoom,f.photoSize,f.reset,f.price]) assert.equal(f.full.contains(node),true,'fullscreen retains each native control');
+      assert.equal(bar.contains(f.finish),false);
+      assert.equal(f.r.querySelectorAll('.completion-finish').length,1);
+      for (const button of nav) assert.equal(button.parentNode,width>=1000?tabs:bar);
+    }
+    f.finish.click();assert.ok(f.calls.some(c=>c[0]==='native-review'));
+    f.full.close();env.flush();
+    assert.equal(f.finish.parentNode,bar);assert.equal(bar.children.at(-1),f.finish);
+    assert.equal(f.zoom.parentNode.className,'md-controls');
+    assert.deepEqual(f.el.state,f.original);
+    api.dispose();env.flush();
+    for (const [node,parent] of f.originalParents) assert.equal(node.parentNode,parent);
+    for (const [parent,children] of f.originalChildren) assert.deepEqual(parent.childNodes,children);
+    assert.equal(f.r.querySelector('.md-desktop-tabs'),null);
+  });
+}
+
+test('disposing during fullscreen leaves native checkout in the dialog through later resizes',async t => {
+  const env=runtime(t),f=editorFixture(env);env.win.innerWidth=1440;
+  const api=await installMobileDemo(f.el);f.full.showModal();env.flush();api.dispose();
+  env.win.innerWidth=390;env.win.dispatchEvent({type:'resize'});
+  env.win.visualViewport.dispatchEvent({type:'resize'});env.flush();
+  assert.equal(f.full.contains(f.finish),true);assert.equal(f.finish.parentNode,f.dock);
+  assert.equal(f.full.showModal,f.fullShow);assert.equal(f.r.querySelector('.md-bar'),null);
+  f.full.close();
+  for (const [node,parent] of f.originalParents) assert.equal(node.parentNode,parent);
+  for (const [parent,children] of f.originalChildren) assert.deepEqual(parent.childNodes,children);
+  assert.deepEqual(f.el.state,f.original);
+});
+
 test('a rejected native fullscreen call is not swallowed and leaves demo controls reachable',async t => {
   const env = runtime(t), f = editorFixture(env); await installMobileDemo(f.el); f.full.fail = true;
   assert.throws(() => f.full.showModal(),/native fullscreen failed/);
@@ -317,18 +361,35 @@ test('footer opens native sections; a canvas tap closes but drag and buttons do 
   f.finish.click(); assert.ok(f.calls.some(c=>c[0]==='native-review'));
 });
 
-test('desktop photo shortcuts retain the original chooser and upload limits',async t => {
+test('desktop photo tab opens the panel first and preserves native upload limits',async t => {
   const env=runtime(t),f=editorFixture(env),upload=env.doc.createElement('button');
   env.win.innerWidth=1440;
   upload.dataset.ux='photo-upload'; f.panels.get('upload').append(upload);
   let called=0; upload.addEventListener('click',()=>called++);
-  const api=await installMobileDemo(f.el); const shortcut=f.r.querySelector('.md-photo-shortcut'),footer=f.r.querySelector('[data-demo-section=upload]');
-  shortcut.click(); assert.equal(called,1); assert.equal(f.panels.get('upload').hidden,false);
-  api.close(); footer.click(); assert.equal(called,2); assert.equal(f.panels.get('upload').hidden,false);
-  upload.disabled=true;env.flush();assert.equal(shortcut.disabled,true);shortcut.click();assert.equal(called,2);
-  api.close();footer.click();assert.equal(called,2);assert.equal(f.panels.get('upload').hidden,false,'existing photos remain reachable at upload limit');
-  upload.disabled=false;upload.hidden=true;env.flush();assert.equal(shortcut.hidden,true);shortcut.click();assert.equal(called,2);
-  f.nativeTabs.get('upload').hidden=true;env.flush();footer.click();assert.equal(called,2);
+  const api=await installMobileDemo(f.el),tab=f.r.querySelector('[data-demo-section=upload]');
+  assert.equal(f.r.querySelector('.md-photo-shortcut'),null);
+  tab.click();assert.equal(called,0);assert.equal(f.panels.get('upload').hidden,false);
+  upload.click();assert.equal(called,1);
+  upload.disabled=true;env.flush();api.close();tab.click();upload.click();
+  assert.equal(called,1);assert.equal(f.panels.get('upload').hidden,false,'existing photos remain reachable at upload limit');
+  f.nativeTabs.get('upload').hidden=true;env.flush();assert.equal(tab.hidden,true);
+  assert.deepEqual(f.el.state,f.original);
+});
+
+test('desktop uses the same five top buttons and restores the mobile footer at the breakpoint',async t => {
+  const env=runtime(t),f=editorFixture(env);env.win.innerWidth=1440;
+  const api=await installMobileDemo(f.el),tabs=f.r.querySelector('.md-desktop-tabs'),bar=f.r.querySelector('.md-bar');
+  const nav=[...tabs.children];assert.deepEqual(nav.map(b=>b.dataset.demoSection),['options','design','text','motif','upload']);
+  assert.deepEqual(bar.children,[f.finish]);nav[2].click();assert.equal(f.panels.get('text').hidden,false);
+  f.el.dispatchEvent({type:'pointerdown',target:f.stage,clientX:10,clientY:10});
+  f.el.dispatchEvent({type:'pointerup',target:f.stage,clientX:10,clientY:10});await Promise.resolve();
+  assert.equal(nav[2].getAttribute('aria-pressed'),'true','desktop canvas tap must not close its inspector');
+  env.win.innerWidth=390;env.win.dispatchEvent({type:'resize'});
+  assert.equal(tabs.hidden,true);assert.deepEqual(bar.children,[...nav,f.finish]);
+  env.win.innerWidth=1440;env.win.dispatchEvent({type:'resize'});
+  assert.equal(tabs.hidden,false);assert.deepEqual(tabs.children,nav);assert.deepEqual(bar.children,[f.finish]);
+  assert.equal(nav[2].getAttribute('aria-pressed'),'true');api.dispose();
+  assert.equal(f.r.querySelector('.md-desktop-tabs'),null);assert.deepEqual(f.el.state,f.original);
 });
 
 test('mobile photo navigation opens the panel without a chooser; explicit upload remains native',async t => {

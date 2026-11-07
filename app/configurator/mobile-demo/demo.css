@@ -327,21 +327,19 @@
 :host([data-mobile-demo]) .md-controls .ux-view-zoom output { grid-row: 1; grid-column: 2; width: auto; font-size: 10px; }
 :host([data-mobile-demo]) .md-controls .ux-design-reset { position: static !important; inset: auto !important; transform: none !important; flex: 0 0 auto; width: auto !important; margin: 0 !important; }
 :host([data-mobile-demo]) .md-controls .ux-design-reset button { height: 44px !important; min-height: 44px !important; padding: 7px 10px !important; margin: 0 !important; border: 1px solid #d3e2e5 !important; border-radius: 8px !important; background: #fff !important; color: var(--md-petrol) !important; font-size: 11px !important; font-weight: 600 !important; }
-:host([data-mobile-demo]) .ux-shell .md-photo-shortcut {
-  position: absolute !important; top: calc(var(--md-preview-top) + 1px) !important; right: calc(var(--md-inspector-w) + 10px) !important;
-  z-index: 60; display: flex !important; align-items: center; justify-content: center;
-  box-sizing: border-box; width: 44px !important; min-width: 44px !important; height: 44px !important; min-height: 44px !important;
-  margin: 0 !important; padding: 10px !important; border: 1px solid #bfd7dc !important; border-radius: 10px !important;
-  background: #fff !important; color: var(--md-petrol) !important; font-size: 0 !important; box-shadow: 0 2px 8px #16353c0a !important;
-}
-:host([data-mobile-demo]) .md-photo-shortcut svg { width: 22px; height: 22px; flex: none; }
-:host([data-mobile-demo]) .md-photo-shortcut span { display: none; }
-/* Upload is directly reachable at the product. Keep logo actions and the native
-   photo input/handler intact; remove only its duplicated large presentation. */
+/* Both sizes open the photo panel first. Only its native upload control opens
+   a chooser. Preserve the input, availability limits and logo actions. */
 :host([data-mobile-demo]) #ux-panel-upload > h2 { display: none !important; }
 :host([data-mobile-demo]) #ux-panel-upload .ux-upload-buttons { padding: 0 !important; margin: 0 !important; border: 0 !important; background: transparent !important; min-height: 0 !important; }
 :host([data-mobile-demo]) #ux-panel-upload [data-ux="photo-upload"] { display: none !important; }
-:host([data-mobile-demo]) .ux-shell:has(.md-photo-shortcut:not([hidden])) #ux-panel-upload .ux-upload-drop { display: none !important; }
+:host([data-mobile-demo]) #ux-panel-upload .ux-upload-drop:not([hidden]) {
+  display: block !important; padding: 0 !important; border: 0 !important; background: transparent !important;
+}
+:host([data-mobile-demo]) #ux-panel-upload [data-ux="choose-upload"]:not([hidden]) {
+  display: inline-flex !important; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px !important; padding: 10px 16px !important; color: #fff !important;
+  background: var(--md-petrol) !important; border: 1px solid var(--md-petrol) !important; border-radius: 10px !important;
+}
 :host([data-mobile-demo]) #ux-panel-upload [data-upload-price] { margin: 0 0 12px !important; font-size: 13px !important; line-height: 1.5 !important; }
 
 /* Native non-text tools are compact; only the upper text editor is removed. */
@@ -390,6 +388,7 @@
 :host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-add { width: 100% !important; max-width: none !important; min-height: 44px !important; margin: 12px 0 0 !important; color: var(--md-petrol) !important; }
 
 /* Price above six persistent actions. Native cart remains on the far right. */
+:host([data-mobile-demo]) .md-desktop-tabs { display: none; }
 :host([data-mobile-demo]) .md-summary {
   position: absolute; left: 0; right: 0; bottom: calc(var(--md-bar-h) + var(--md-safe)); z-index: 80;
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
@@ -452,18 +451,6 @@
 
 /* R7: mobile feedback only; the desktop presentation is reviewed separately. */
 @media (max-width: 999px) {
-  :host([data-mobile-demo]) .ux-shell .md-photo-shortcut { display: none !important; }
-  :host([data-mobile-demo]) .ux-shell:has(.md-photo-shortcut) #ux-panel-upload .ux-upload-drop:not([hidden]) {
-    display: block !important; padding: 0 !important; border: 0 !important;
-    background: transparent !important;
-  }
-  :host([data-mobile-demo]) #ux-panel-upload [data-ux="choose-upload"]:not([hidden]) {
-    display: inline-flex !important;
-    align-items: center; justify-content: center; gap: 8px;
-    min-height: 44px !important; padding: 10px 16px !important;
-    color: #fff !important; background: var(--md-petrol) !important;
-    border: 1px solid var(--md-petrol) !important; border-radius: 10px !important;
-  }
   :host([data-mobile-demo]) .md-controls .ux-design-reset button {
     box-sizing: border-box; width: 104px !important; padding: 4px 8px !important;
     white-space: normal !important; line-height: 1.25 !important;
@@ -517,7 +504,8 @@
 /* Wide desktop workbench, not an enlarged phone: stable canvas + inspector. */
 @media (min-width: 1000px) {
   :host([data-mobile-demo][data-demo-sheet]) {
-    --md-header-h: 56px; --md-controls-h: 56px; --md-bar-h: 64px; --md-summary-h: 36px;
+    --md-header-h: 56px; --md-controls-h: 64px; --md-bar-h: 76px; --md-summary-h: 0px;
+    --md-footer-h: 76px;
     --md-inspector-w: clamp(360px, 29vw, 420px);
     --md-canvas-h: calc(var(--md-vh) - var(--md-preview-top) - var(--md-footer-h));
     --md-sheet-top: var(--md-preview-top);
@@ -526,7 +514,28 @@
   :host([data-mobile-demo]) .md-brand { font-size: 23px; }
   :host([data-mobile-demo]) .md-badge { max-width: none; padding: 5px 8px; font-size: 11px; }
   :host([data-mobile-demo]) .md-history { gap: 4px; }
-  :host([data-mobile-demo]) .md-controls { padding: 6px 24px; gap: 10px; }
+  :host([data-mobile-demo]) .md-desktop-tabs:not([hidden]) {
+    position: absolute; top: var(--md-header-h); left: 0; right: 0; z-index: 80;
+    display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); align-items: center; gap: 8px;
+    box-sizing: border-box; height: var(--md-controls-h); padding: 8px 22px;
+    background: var(--md-petrol-soft); border-bottom: 1px solid #adcbd0;
+  }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-desktop-tabs > .md-nav {
+    display: flex !important; align-items: center; justify-content: center; gap: 10px;
+    box-sizing: border-box; width: 100% !important; min-width: 0 !important; min-height: 46px !important; height: 46px !important;
+    margin: 0 !important; padding: 8px 14px !important; border: 1px solid #b6cfd3 !important;
+    border-radius: 9px !important; background: #fff !important; color: var(--md-petrol-dark) !important;
+    font-size: 15px !important; line-height: 1.2 !important; font-weight: 650 !important; box-shadow: none !important;
+  }
+  :host([data-mobile-demo]) .md-desktop-tabs > .md-nav > svg { width: 23px; height: 23px; flex: none; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-desktop-tabs > .md-nav[aria-pressed="true"] {
+    background: var(--md-petrol) !important; color: #fff !important; border-color: var(--md-petrol) !important;
+    box-shadow: inset 0 -3px 0 #073e48 !important;
+  }
+  :host([data-mobile-demo]) .md-desktop-tabs > .md-nav:focus-visible { outline: 2px solid var(--md-petrol); outline-offset: 2px; }
+  :host([data-mobile-demo]) .md-desktop-tabs > .md-nav:disabled { opacity: .38; cursor: default; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-desktop-tabs > .md-nav[hidden] { display: none !important; }
+  :host([data-mobile-demo]) .md-controls { top: auto; bottom: 0; height: var(--md-footer-h); padding: 8px 22px; gap: 10px; border-top: 1px solid var(--md-border); border-bottom: 0; }
   :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-editor { inset: var(--md-sheet-top) 0 var(--md-footer-h) auto !important; width: var(--md-inspector-w) !important; border-radius: 0 !important; border-right: 0 !important; box-shadow: -4px 0 20px #18313c08; }
   :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-preview .stage:not(.acryl-scene) { padding: 50px 38px 36px !important; }
   :host([data-mobile-demo]) .ux-shell .ux-preview :is(.dimension-x, .dimension-y) span { font-size: 12px !important; line-height: 16px !important; }
@@ -534,9 +543,10 @@
   :host([data-mobile-demo]) .md-sheet-header h2 { font-size: 16px !important; }
   :host([data-mobile-demo]) .md-tools { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   :host([data-mobile-demo]) .md-tools .md-tool { min-height: 100px !important; font-size: 14px !important; }
-  :host([data-mobile-demo]) .md-summary { padding: 0 24px; }
-  :host([data-mobile-demo]) .md-summary .md-product-button { font-size: 14px !important; }
-  :host([data-mobile-demo]) .md-bar { gap: 8px; padding: 6px 20px calc(6px + var(--md-safe)); }
+  :host([data-mobile-demo]) .md-summary { left: auto; right: 206px; bottom: 0; width: calc(var(--md-inspector-w) - 206px); height: var(--md-footer-h); padding: 8px 12px; flex-direction: column; align-items: flex-end; justify-content: center; gap: 3px; }
+  :host([data-mobile-demo]) .md-summary .md-product-button { max-width: 100%; min-height: 22px !important; padding: 0 !important; font-size: 12px !important; }
+  :host([data-mobile-demo]) .md-summary [data-fk-total] { font-size: 22px !important; }
+  :host([data-mobile-demo]) .md-bar { left: auto; width: 206px; display: flex; height: var(--md-footer-h); padding: 12px 18px 12px 0; border-top-color: var(--md-border); }
   :host([data-mobile-demo][data-ux-layout][data-ux-neutral]) .md-bar > button { flex-direction: row; gap: 10px; height: 52px !important; font-size: 14px !important; }
   :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .md-bar > .completion-finish { font-size: 14px !important; }
   :host([data-mobile-demo]) .md-bar > button > svg { width: 24px; height: 24px; }

@@ -177,10 +177,12 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   },true);
   on(el,'pointermove',e => { if (tap && Math.hypot(e.clientX-tap.x,e.clientY-tap.y)>8) tap.moved=true; },true);
   on(el,'pointercancel',() => {tap=null;},true);
-  on(el,'click',e => {
-    const closeSheet = tap && !tap.moved && innerTarget(e).closest?.('.ux-preview'); tap=null;
+  on(el,'pointerup',e => {
+    const closeSheet = tap && !tap.moved; tap=null;
     if (!closeSheet) return;
-    suppressPanel=true; shut(false); queueMicrotask(() => {suppressPanel=false;});
+    // Native pointerdown prevents a synthetic click on touch. Finish the native
+    // pointerup first, then close without moving geometry during the gesture.
+    suppressPanel=true; queueMicrotask(() => {shut(false);suppressPanel=false;});
   },true);
   let pullStart = null;
   on(header, 'pointerdown', e => { if (e.target.closest('button')) return; pullStart = e.clientY; header.setPointerCapture?.(e.pointerId); });

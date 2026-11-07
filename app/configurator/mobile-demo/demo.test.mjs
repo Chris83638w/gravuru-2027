@@ -304,13 +304,13 @@ test('footer opens native sections; a canvas tap closes but drag and buttons do 
   const text=f.r.querySelector('[data-demo-section=text]'); text.click();
   assert.equal(f.panels.get('text').hidden,false); assert.equal(text.getAttribute('aria-pressed'),'true');
   f.el.dispatchEvent({type:'pointerdown',target:f.stage,clientX:10,clientY:10});
-  f.el.dispatchEvent({type:'pointermove',target:f.stage,clientX:55,clientY:10}); f.el.dispatchEvent({type:'click',target:f.stage});
+  f.el.dispatchEvent({type:'pointermove',target:f.stage,clientX:55,clientY:10}); f.el.dispatchEvent({type:'pointerup',target:f.stage}); await Promise.resolve();
   assert.equal(f.el.dataset.demoSheet,'panel');
-  f.el.dispatchEvent({type:'pointerdown',target:f.stage,clientX:10,clientY:10}); f.el.dispatchEvent({type:'click',target:f.stage});
+  f.el.dispatchEvent({type:'pointerdown',target:f.stage,clientX:10,clientY:10}); f.el.dispatchEvent({type:'pointerup',target:f.stage}); await Promise.resolve();
   assert.equal(f.el.dataset.demoSheet,'closed');
   await Promise.resolve(); api.open('text');
   const control=env.doc.createElement('button'); f.stage.append(control);
-  f.el.dispatchEvent({type:'pointerdown',target:control,clientX:10,clientY:10});f.el.dispatchEvent({type:'click',target:control});
+  f.el.dispatchEvent({type:'pointerdown',target:control,clientX:10,clientY:10});f.el.dispatchEvent({type:'pointerup',target:control}); await Promise.resolve();
   assert.equal(f.el.dataset.demoSheet,'panel'); assert.equal(f.finish.getAttribute('aria-label'),'Warenkorb');
   f.finish.click(); assert.ok(f.calls.some(c=>c[0]==='native-review'));
 });

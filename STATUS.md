@@ -1,6 +1,6 @@
 ## 07.11.2026 · Codex/Mika · Demo R12: Textbegrenzung nach sichtbarer Schrift
 
-Nullmessung vor dem Schriftladen als Ursache des Randproblems nachgewiesen. Gemeinsame Messhilfe speichert nur gültige Grenzen und berücksichtigt nachgeladene Schriftinstanzen. 200 Tests, Touch- und Mausdrag bis an die sichtbare Kante, Undo und unveränderte Originale geprüft. Vorher gesichert; separate Demoveröffentlichung folgt. [Übergabe](docs/handoffs/2026-11-07-mobile-demo-r12-textkante.md).
+Nullmessung vor dem Schriftladen als Ursache des Randproblems nachgewiesen. Gemeinsame Messhilfe speichert nur gültige Grenzen und berücksichtigt nachgeladene Schriftinstanzen. 200 Tests, Touch- und Mausdrag bis an die sichtbare Kante, Undo und unveränderte Originale geprüft. Vorher gesichert; [R12 separat veröffentlicht](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r12/22x14.html?fresh=1). 16.163 alte Public-Dateien unverändert, 15 HTTP-Stichproben und öffentlicher Touchdrag bestanden. [Übergabe](docs/handoffs/2026-11-07-mobile-demo-r12-textkante.md).
 
 ## 07.11.2026 · Codex/Mika · Demo R11: Werkzeugleiste mittig
 

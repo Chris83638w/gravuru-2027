@@ -48,6 +48,17 @@ test('new catalogue stands and exact source hierarchy stay separate from saved n
   const html=slateGalleryHtml(page.pack,imported,{paging:page.paging});assert.match(html,/catalogue-source-hierarchy">Gedenktafeln \/ Menschen \/ Allgemein/);assert.match(html,/Neuer Katalogstand vorhanden – bestehende Bearbeitung bleibt erhalten/);assert.equal((html.match(/Neue Katalogvorschau ansehen/g)||[]).length,1);assert.match(html,/href="\/originale\/files\/originals\/new\/preview.png" target="_blank" rel="noopener noreferrer"/);assert.doesNotMatch(html,/outside.invalid/);assert.match(html,/data-product-id="cfg_narrow" data-design-id="steel-ed-42-1"/);assert.equal((html.match(/ data-design-card /g)||[]).length,1);
 });
 
+test('missing replacement originals are identified without claiming a new stand or inventing a preview',()=>{
+  for(const missingField of ['originalFilesMissing','sourceFilesMissing']){
+  const row={...steel,process:'UV',catalogueSourceUpdates:[{sourceStandConflict:true,[missingField]:true,sourceOriginalId:'missing-original',preview:null}]};
+  const key=JSON.stringify(['steel',steel.id,'narrow']);
+  const html=slateGalleryHtml({originals:[row]},imported,{approvals:{[key]:{status:'approved',metadata:{productRevision:4,previewUrl:'/existing-saved-preview.svg'}}}});
+  assert.match(html,/Originaldateien fehlen in der neuen Lieferung – bestehende Bearbeitung bleibt erhalten/);
+  assert.doesNotMatch(html,/Neuer Katalogstand vorhanden|Neue Katalogvorschau ansehen/);
+  assert.match(html,/src="\/existing-saved-preview.svg"/);assert.match(html,/data-product-id="cfg_narrow" data-design-id="steel-ed-42-1"/);assert.match(html,/data-approval-status="approved"/);assert.equal((html.match(/ data-design-card /g)||[]).length,1);
+  }
+});
+
 test('steel default follows the smallest physical area, explicit native ID and exact product key', () => {
   const targets = orderedReviewTargets(steel, imported);
   assert.deepEqual(targets.map(target => target.sizeKey), ['narrow', 'square', 'large']);

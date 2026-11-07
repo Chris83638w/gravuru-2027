@@ -152,4 +152,3 @@ test('native photo originals, edited pixels, recipe and mask survive assignment 
  assert.deepEqual(f.workshop.assets.galleryPhotos.metadata(photo.assetId),before);for(const part of ['original','processed','editSource'])assert.deepEqual(f.workshop.assets.galleryPhotos.read(photo.assetId,part),Buffer.from(galleryTestPng,'base64'));
  assert.deepEqual(f.workshop.repository.get(f.record.id).document,doc);
 });
-

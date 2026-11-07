@@ -12,7 +12,35 @@ const sha=b=>createHash('sha256').update(b).digest('hex');
 const json=v=>Buffer.from(JSON.stringify(v,null,2)+'\n');
 const canonicalIndex=rows=>rows.map(({file,bytes,sha256})=>({file,bytes,sha256})).sort((a,b)=>a.file.localeCompare(b.file));
 const inside=(root,file)=>{const rel=path.relative(root,file);return !rel||(!rel.startsWith('..'+path.sep)&&rel!=='..'&&!path.isAbsolute(rel));};
-export function combineCompleteDesignReview({baseRoot,partRoots,out,catalogueFile,correspondenceFile,deliveryCoverage=null,onProgress=()=>{}}){
+function checkedSourcePlan(plan){
+ if(plan?.schema!=='gravuru-complete-review-plan/v1'||plan.reviewOnly!==true||plan.released!==false||!/^[a-f0-9]{40}$/.test(plan.deliveryCommit||'')||!/^[a-f0-9]{40}$/.test(plan.catalogueCommit||'')||!Array.isArray(plan.batches)||new Set(plan.batches.map(b=>b.id)).size!==plan.batches.length)throw Error('Pinned complete source plan required');
+ return plan;
+}
+export function orderedReviewBatches(progress,sourcePlan){
+ const plan=checkedSourcePlan(sourcePlan);
+ if(progress?.complete!==true||!Array.isArray(progress.failures)||progress.failures.length||!Array.isArray(progress.completed))throw Error('All batches must be verified first');
+ const done=new Map(progress.completed.map(b=>[b.batchId,b]));
+ if(done.size!==progress.completed.length||done.size!==plan.batches.length||plan.batches.some(b=>!done.has(b.id)))throw Error('Completed batches differ from the pinned source plan');
+ return plan.batches.map(b=>done.get(b.id));
+}
+function missingOriginalEvidence(source,row,match,sourcePlan,descriptors){
+ if(match.action!=='alias-incoming-id-to-existing-id'||match.sourceStandConflict!==true||match.sameSvgAndJson===true||row.status!=='open'||row.source!==match.incomingSource||row.targets?.some(t=>t.status==='prepared')||row.reusedTargetRefs?.length)throw Error('Missing-original alias is not an explicit open source conflict');
+ if(!Array.isArray(row.files)||row.files.some(f=>/\.(?:json|svg)$/i.test(f.name||''))||[...descriptors.keys()].some(name=>name.startsWith('originals/'+row.id+'/')&&/\.(?:json|svg)$/i.test(name)))throw Error('Original files exist despite missing-source claim: '+row.id);
+ const plan=checkedSourcePlan(sourcePlan),batch=plan.batches.find(b=>b.id===source.pack.batchId);
+ const file='auftraege/2026-11-06-gesamtbestand/stapel/'+source.pack.batchId+'/manifest.json',evidence='evidence/'+file;
+ if(source.pack.deliveryCommit!==plan.deliveryCommit||source.pack.catalogueCommit!==plan.catalogueCommit||source.pack.sources?.deliveryManifest!==evidence||source.pack.sources?.provenance!=='preparation-report.json'||!batch||descriptors.get(evidence)?.sha256!==batch.manifestSha256)throw Error('Missing-source batch is not pinned to the reviewed plan');
+ const bytes=fs.readFileSync(reviewPackageFile(source.root,evidence)),reportBytes=fs.readFileSync(reviewPackageFile(source.root,'preparation-report.json'));
+ if(sha(bytes)!==batch.manifestSha256||sha(reportBytes)!==descriptors.get('preparation-report.json')?.sha256)throw Error('Missing-source evidence changed');
+ const report=JSON.parse(reportBytes),pin=report.pinnedFiles?.find(p=>p.file===file);
+ const blob=createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
+ if(report.schema!=='gravuru-design-batch-preparation/v1'||report.batchId!==source.pack.batchId||report.deliveryCommit!==plan.deliveryCommit||report.catalogueCommit!==plan.catalogueCommit||pin?.sha256!==batch.manifestSha256||pin?.bytes!==bytes.length||pin?.blob!==blob)throw Error('Missing-source Git evidence differs');
+ const manifest=JSON.parse(bytes),entries=manifest.designs?.filter(d=>d.id===row.id);
+ if(manifest.schema!=='gravuru-gesamtuebergabe/v1'||manifest.art!=='stapel'||manifest.stapel?.id!==source.pack.batchId||entries?.length!==1)throw Error('Missing-source original is absent or ambiguous in pinned batch');
+ const original=entries[0];
+ if(original.pfad!==match.incomingSource||original.stapel!==source.pack.batchId||original.zustand!=='offen'||!Array.isArray(original.dateien)||original.dateien.some(f=>/\.(?:json|svg)$/i.test(f.pfad||'')||/design-(?:json|svg)/i.test(f.rolle||'')))throw Error('Pinned batch does not confirm missing original files');
+ return {originalFilesMissing:true,missingOriginalFiles:['design.json','design.svg'],sourceManifestSha256:batch.manifestSha256,sourceIssue:'Originaldateien design.json und design.svg fehlen in der Kataloglieferung. Bestehende Vorlage bleibt unverändert; neuer Quellstand offen.'};
+}
+export function combineCompleteDesignReview({baseRoot,partRoots,out,catalogueFile,correspondenceFile,sourcePlan=null,deliveryCoverage=null,onProgress=()=>{}}){
  const base=readSlatePackage(baseRoot),known=new Set((base.pack.sourcePackages||[]).map(p=>p.manifestSha256));known.add(base.hash);
  out=privateReviewPath(out);if(fs.existsSync(out))throw Error('Combined output must be new');
  const sourceRoots=partRoots.map(privateReviewPath);
@@ -38,8 +66,10 @@ export function combineCompleteDesignReview({baseRoot,partRoots,out,catalogueFil
   const incoming=[],pathAliases=new Map();
   for(const row of source.pack.originals){
    const match=matches.get(JSON.stringify([source.pack.batchId,row.id]));
+   let missingEvidence=null;
    if(match&&['alias-incoming-id-to-existing-id','register-separate-source-original'].includes(match.action)){
-    if(!Array.isArray(match.incomingFiles)||!match.incomingFiles.some(f=>f.name==='design.json'))throw Error('Source correspondence lacks immutable original evidence');
+    if(Array.isArray(match.incomingFiles)&&match.incomingFiles.length===0)missingEvidence=missingOriginalEvidence(source,row,match,sourcePlan,descriptors);
+    else if(!Array.isArray(match.incomingFiles)||!match.incomingFiles.some(f=>f.name==='design.json'))throw Error('Source correspondence lacks immutable original evidence');
     for(const f of match.incomingFiles){if(!['design.json','design.svg'].includes(f.name)||descriptors.get('originals/'+row.id+'/'+f.name)?.sha256!==f.sha256)throw Error('Source correspondence differs from incoming original: '+row.id);}
     if(!base.pack.originals.some(r=>r.id===match.legacyId))throw Error('Source correspondence refers to a missing baseline original');
     if(!Array.isArray(match.legacyFiles)||!match.legacyFiles.some(f=>f.name==='design.json'))throw Error('Source correspondence lacks immutable baseline evidence');
@@ -47,7 +77,7 @@ export function combineCompleteDesignReview({baseRoot,partRoots,out,catalogueFil
    }
    if(match?.action==='alias-incoming-id-to-existing-id'){
     if(row.targets?.some(t=>t.status==='prepared'))throw Error('Prepared aliases require explicit native identity migration');
-    sourceReviewUpdates.push({id:match.legacyId,sourceOriginalId:row.id,source:match.incomingSource,sourceStandConflict:match.sourceStandConflict,preview:row.reviewSourcePreview||null});continue;
+    sourceReviewUpdates.push({id:match.legacyId,sourceOriginalId:row.id,source:match.incomingSource,sourceStandConflict:match.sourceStandConflict,preview:missingEvidence?null:row.reviewSourcePreview||null,...(missingEvidence||{})});continue;
    }
    if(match?.action==='register-separate-source-original'){
     if(row.targets?.some(t=>t.status==='prepared'))throw Error('Prepared source collisions require explicit native identity migration');
@@ -92,8 +122,8 @@ export function combineCompleteDesignReview({baseRoot,partRoots,out,catalogueFil
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
  const args=process.argv.slice(2),get=n=>args[args.indexOf(n)+1];
- const progress=JSON.parse(fs.readFileSync(get('--progress')));if(progress.complete!==true||progress.failures.length)throw Error('All batches must be verified first');
- const referenceOnly=progress.completed.filter(b=>b.parts.every(p=>p.counts.originals===0&&p.counts.reviewProducts===0&&p.counts.blanks===0));
- const parts=progress.completed.filter(b=>!referenceOnly.includes(b)).flatMap(b=>b.parts.map(p=>p.root));if(args.includes('--extra'))parts.push(get('--extra'));
- console.log(JSON.stringify(combineCompleteDesignReview({baseRoot:get('--base'),partRoots:parts,out:get('--out'),catalogueFile:get('--catalogue'),correspondenceFile:args.includes('--correspondence')?get('--correspondence'):null,deliveryCoverage:{verifiedBatches:progress.completed.length,referenceOnlyBatches:referenceOnly.map(b=>b.batchId),sourceOriginals:progress.completed.reduce((n,b)=>n+b.counts.originals,0)},onProgress:e=>console.log(JSON.stringify(e))})));
+ const progress=JSON.parse(fs.readFileSync(get('--progress'))),sourcePlan=JSON.parse(fs.readFileSync(args.includes('--plan')?get('--plan'):path.join(path.dirname(get('--progress')),'plan.json'))),ordered=orderedReviewBatches(progress,sourcePlan);
+ const referenceOnly=ordered.filter(b=>b.parts.every(p=>p.counts.originals===0&&p.counts.reviewProducts===0&&p.counts.blanks===0));
+ const parts=ordered.filter(b=>!referenceOnly.includes(b)).flatMap(b=>b.parts.map(p=>p.root));if(args.includes('--extra'))parts.push(get('--extra'));
+ console.log(JSON.stringify(combineCompleteDesignReview({baseRoot:get('--base'),partRoots:parts,out:get('--out'),catalogueFile:get('--catalogue'),correspondenceFile:args.includes('--correspondence')?get('--correspondence'):null,sourcePlan,deliveryCoverage:{verifiedBatches:ordered.length,referenceOnlyBatches:referenceOnly.map(b=>b.batchId),sourceOriginals:ordered.reduce((n,b)=>n+b.counts.originals,0)},onProgress:e=>console.log(JSON.stringify(e))})));
 }

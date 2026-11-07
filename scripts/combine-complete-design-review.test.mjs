@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
-import {combineCompleteDesignReview} from './combine-complete-design-review.mjs';
+import {combineCompleteDesignReview,orderedReviewBatches} from './combine-complete-design-review.mjs';
 import {readSlatePackage,mergeSlatePackages,mergeDesignReviewBlanks} from './extend-slate-original-review.mjs';
 
 const sha=v=>createHash('sha256').update(v).digest('hex'),json=v=>JSON.stringify(v,null,2)+'\n';
@@ -89,6 +89,50 @@ test('baseline resource drift cannot reuse a correspondence with the same manife
  const f=correspondenceFixture(t);write(f.baseRoot,'originals/OLD/design.json',{id:'OLD',changed:true});index(f.baseRoot);
  assert.equal(readSlatePackage(f.baseRoot).hash,f.correspondence.baseManifestSha256);
  assert.throws(()=>combineCompleteDesignReview(f.options),/correspondence differs from baseline original/);assert.equal(fs.existsSync(f.options.out),false);
+});
+
+function missingSourceFixture(t,{supplierListsOriginal=false}={}){
+ const f=correspondenceFixture(t),manifest=read(path.join(f.partRoot,'manifest.json')),row=manifest.originals[0],match=f.correspondence.rows[0];
+ for(const name of ['design.json','design.svg','preview.svg'])fs.unlinkSync(path.join(f.partRoot,'originals/'+row.id+'/'+name));
+ delete row.reviewSourcePreview;Object.assign(row,{status:'open',source:match.incomingSource,files:[],reusedTargetRefs:[]});
+ Object.assign(match,{incomingFiles:[],sourceStandConflict:true,sameSvgAndJson:false});write(f.root,'correspondence.json',f.correspondence);
+ const file='auftraege/2026-11-06-gesamtbestand/stapel/fresh/manifest.json',evidence='evidence/'+file;
+ const supplier={schema:'gravuru-gesamtuebergabe/v1',art:'stapel',stapel:{id:'fresh'},designs:[{id:row.id,pfad:match.incomingSource,stapel:'fresh',zustand:'offen',dateien:supplierListsOriginal?[{pfad:match.incomingSource+'/design.json',rolle:'design-json'}]:[]}]};
+ write(f.partRoot,evidence,supplier);const bytes=fs.readFileSync(path.join(f.partRoot,evidence)),manifestSha256=sha(bytes);
+ const sourcePlan={schema:'gravuru-complete-review-plan/v1',reviewOnly:true,released:false,deliveryCommit:'b'.repeat(40),catalogueCommit:'a'.repeat(40),batches:[{id:'fresh',manifestSha256}]};
+ const pin={file,bytes:bytes.length,sha256:manifestSha256,blob:createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex')};
+ write(f.partRoot,'preparation-report.json',{schema:'gravuru-design-batch-preparation/v1',batchId:'fresh',deliveryCommit:sourcePlan.deliveryCommit,catalogueCommit:sourcePlan.catalogueCommit,pinnedFiles:[pin]});
+ Object.assign(manifest,{deliveryCommit:sourcePlan.deliveryCommit,sources:{provenance:'preparation-report.json',deliveryManifest:evidence}});write(f.partRoot,'manifest.json',manifest);index(f.partRoot);
+ return {...f,row,sourcePlan,options:{...f.options,sourcePlan}};
+}
+
+test('pinned missing-source aliases preserve legacy templates and explicitly record the missing originals',t=>{
+ const f=missingSourceFixture(t);combineCompleteDesignReview(f.options);
+ const addon=readSlatePackage(f.options.out),update=addon.pack.sourceReviewUpdates.find(r=>r.id==='OLD');
+ assert.equal(update.originalFilesMissing,true);assert.deepEqual(update.missingOriginalFiles,['design.json','design.svg']);assert.equal(update.sourceStandConflict,true);assert.equal(update.preview,null);assert.match(update.sourceIssue,/Originaldateien.*fehlen/);assert.equal(update.sourceManifestSha256,f.sourcePlan.batches[0].manifestSha256);
+ const out=path.join(f.root,'merged');mergeSlatePackages({baseRoot:f.baseRoot,addonRoot:f.options.out,out,materialExtension:true});
+ const old=readSlatePackage(out).pack.originals.find(r=>r.id==='OLD'),before=f.base.pack.originals.find(r=>r.id==='OLD');
+ assert.deepEqual(old.targets,before.targets);assert.equal(old.reviewSourcePreview,before.reviewSourcePreview);assert.equal(old.catalogueSourceUpdates[0].originalFilesMissing,true);
+ assert.deepEqual(fs.readFileSync(path.join(out,'originals/OLD/design.json')),fs.readFileSync(path.join(f.baseRoot,'originals/OLD/design.json')));
+});
+
+test('false missing-original claims and unpinned supplier evidence are rejected',t=>{
+ const f=missingSourceFixture(t);write(f.partRoot,'originals/'+f.row.id+'/design.json',{exists:true});index(f.partRoot);
+ assert.throws(()=>combineCompleteDesignReview(f.options),/Original files exist despite missing-source claim/);assert.equal(fs.existsSync(f.options.out),false);
+ fs.unlinkSync(path.join(f.partRoot,'originals/'+f.row.id+'/design.json'));index(f.partRoot);
+ f.sourcePlan.batches[0].manifestSha256='f'.repeat(64);
+ assert.throws(()=>combineCompleteDesignReview(f.options),/not pinned to the reviewed plan/);
+});
+
+test('a supplier listing an original file cannot be treated as proven missing even when its prepared copy is absent',t=>{
+ const f=missingSourceFixture(t,{supplierListsOriginal:true});assert.throws(()=>combineCompleteDesignReview(f.options),/does not confirm missing original files/);assert.equal(fs.existsSync(f.options.out),false);
+});
+
+test('late retried batches return to the source plan order, with exact batch coverage',()=>{
+ const batch=id=>({batchId:id,parts:[{root:id+'/part-001'}]}),sourcePlan={schema:'gravuru-complete-review-plan/v1',reviewOnly:true,released:false,deliveryCommit:'b'.repeat(40),catalogueCommit:'a'.repeat(40),batches:[{id:'steel'},{id:'satin'},{id:'slate'}]},progress={complete:true,failures:[],completed:[batch('steel'),batch('slate'),batch('satin')]};
+ assert.deepEqual(orderedReviewBatches(progress,sourcePlan).map(b=>b.batchId),['steel','satin','slate']);
+ assert.deepEqual(progress.completed.map(b=>b.batchId),['steel','slate','satin']);
+ assert.throws(()=>orderedReviewBatches({...progress,completed:[batch('steel'),batch('slate'),batch('unknown')]},sourcePlan),/differ from the pinned source plan/);
 });
 
 const blank=(preview='originals/_blanks/old.webp')=>({key:'SIZE',materialKey:'steel',materialLabel:'Edelstahl',familyId:'steel-door-signs',sizeKey:'SIZE',form:'Rechteck',label:'5 × 2 cm',mm:[50,20],preview,sha256:sha('verified blank image'),source:'original-contour.svg',sourceVersion:'c'.repeat(64),reviewOnly:true,released:false});

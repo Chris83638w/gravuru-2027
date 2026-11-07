@@ -124,7 +124,7 @@ function editorFixture(env, {uploadHidden = false} = {}) {
   const zoom = make('label','ux-view-zoom',stage), zoomSlider = make('input','',zoom); zoomSlider.addEventListener('input',() => calls.push(['view-zoom',zoomSlider.value]));
   const reset = make('div','ux-design-reset',stage); make('button','',reset).addEventListener('click',() => calls.push(['reset-confirmation']));
   const action = (key,parent,cls = '') => { const b = make('button',cls,parent,{'data-ux':key}); b.addEventListener('click',() => calls.push([key])); nodes[key] = b; return b; };
-  action('help',heading,'ux-large-help'); action('account',heading);
+  action('help',heading,'ux-large-help'); action('account',heading); action('back',heading).textContent='Zum Produkt';
   for (const key of ['undo','redo','contents','enlarge']) action(key,toolbar);
   nodes.undo.disabled = true; nodes.redo.disabled = true;
   const feedback = make('div','ux-delete-feedback',editor); feedback.hidden = true;
@@ -156,7 +156,7 @@ function editorFixture(env, {uploadHidden = false} = {}) {
   const reveal = el.uxRevealTextIssue = function(id) { calls.push(['reveal',id,editor.inert]); show('text'); field.focus(); return 'native-reveal-result'; };
   const sync = el.sync = function(value) { calls.push(['sync',value]); r.querySelector('[data-ux=undo]').disabled = !el.history.length; r.querySelector('[data-ux=redo]').disabled = !el.future.length; return value; };
   for (const key of ['uxRefreshViewZoom','uxRefreshSelectionHandles','uxRefreshTextToolbar','uxRefreshOverlapNote']) el[key] = () => calls.push([key]);
-  const original = structuredClone(el.state), originalParents = new Map([nodes.help,nodes.account,nodes.undo,nodes.redo,nodes.contents,nodes.enlarge,nodes.price,zoom,photoSize,reset,price,quantity,finish].map(n => [n,n.parentNode]));
+  const original = structuredClone(el.state), originalParents = new Map([nodes.back,nodes.help,nodes.account,nodes.undo,nodes.redo,nodes.contents,nodes.enlarge,nodes.price,zoom,photoSize,reset,price,quantity,finish].map(n => [n,n.parentNode]));
   const originalChildren = new Map([...new Set(originalParents.values())].map(n => [n,[...n.childNodes]]));
   env.cleanups.push(() => el.mobileDemo?.dispose());
   return {el,r,shell,editor,stage,toolbar,heading,panels,nativeTabs,field,photoPosition,photoSize,photoSlider,zoom,zoomSlider,reset,dock,price,finish,quantity,full,accountDialog,accountBody,fullShow,show,reveal,sync,feedbackUndo,originalParents,originalChildren,original,calls,nodes};
@@ -172,6 +172,17 @@ test('opt-in and native readiness are required; installation does not touch anot
   assert.equal(await installMobileDemo(f.el),api); assert.equal(env.requests,1);
   assert.equal(other.el.mobileDemo,undefined); assert.equal(other.nodes.undo.parentNode,other.toolbar);
   assert.deepEqual(other.el.state,other.original); assert.deepEqual(f.el.state,f.original);
+});
+
+test('header reuses the native product return and restores its position and label on removal',async t => {
+  const env=runtime(t),f=editorFixture(env),originalText=f.nodes.back.textContent;
+  const api=await installMobileDemo(f.el);
+  assert.equal(f.r.querySelector('.md-top [data-demo-product-return]'),f.nodes.back);
+  assert.equal(f.nodes.back.textContent,'Zurück zum Produkt');
+  assert.equal(f.r.querySelector('.md-identity .md-brand').textContent,'gravuru');
+  f.nodes.back.click();assert.ok(f.calls.some(([key])=>key==='back'));
+  api.dispose();assert.equal(f.nodes.back.parentNode,f.heading);
+  assert.equal(f.nodes.back.textContent,originalText);assert.equal(f.nodes.back.getAttribute('data-demo-product-return'),null);
 });
 
 test('the actual native controls and callbacks move; crop tools stay in the photo panel',async t => {

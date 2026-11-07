@@ -293,6 +293,7 @@
   background: #fff; border-bottom: 1px solid var(--md-border);
 }
 :host([data-mobile-demo]) .md-brand { flex: none; color: var(--md-petrol-dark); font-size: 16px; font-weight: 750; letter-spacing: -.5px; }
+:host([data-mobile-demo]) .md-identity { display:flex; flex-direction:column; align-items:flex-start; flex:none; gap:2px; margin-left:5px; }
 :host([data-mobile-demo]) .md-badge { max-width: 44px; padding: 3px 5px; border-radius: 5px; background: var(--md-petrol-soft); color: #48636a; font-size: 9px; line-height: 1.2; font-weight: 600; text-align: center; }
 :host([data-mobile-demo]) .md-history { display: flex; align-items: center; min-width: 0; margin-left: auto; }
 :host([data-mobile-demo][data-ux-layout][data-ux-neutral]) .md-top button {
@@ -515,7 +516,7 @@
   :host([data-mobile-demo]) .md-badge { max-width: none; padding: 5px 8px; font-size: 11px; }
   :host([data-mobile-demo]) .md-history { gap: 4px; }
   :host([data-mobile-demo]) .md-desktop-tabs:not([hidden]) {
-    position: absolute; top: var(--md-header-h); left: 0; right: 0; z-index: 80;
+    position: absolute; top: var(--md-header-h); left: 0; right: var(--md-inspector-w); z-index: 80;
     display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); align-items: center; gap: 8px;
     box-sizing: border-box; height: var(--md-controls-h); padding: 8px 22px;
     background: var(--md-petrol-soft); border-bottom: 1px solid #adcbd0;
@@ -523,9 +524,9 @@
   :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-desktop-tabs > .md-nav {
     display: flex !important; align-items: center; justify-content: center; gap: 10px;
     box-sizing: border-box; width: 100% !important; min-width: 0 !important; min-height: 46px !important; height: 46px !important;
-    margin: 0 !important; padding: 8px 14px !important; border: 1px solid #b6cfd3 !important;
+    margin: 0 !important; padding: 8px 5px !important; border: 1px solid #b6cfd3 !important;
     border-radius: 9px !important; background: #fff !important; color: var(--md-petrol-dark) !important;
-    font-size: 15px !important; line-height: 1.2 !important; font-weight: 650 !important; box-shadow: none !important;
+    font-size: clamp(12px,1.05vw,15px) !important; line-height: 1.2 !important; font-weight: 650 !important; box-shadow: none !important;
   }
   :host([data-mobile-demo]) .md-desktop-tabs > .md-nav > svg { width: 23px; height: 23px; flex: none; }
   :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-desktop-tabs > .md-nav[aria-pressed="true"] {
@@ -604,3 +605,41 @@
 }
 /* R9: explicit decision for intentional overlaps, only in the opt-in demo. */
 :host([data-mobile-demo]) .ux-layout-check-dialog .md-overlap-accept:not([hidden]){display:block;width:100%;margin-top:12px;background:#14764d!important;color:#fff!important;border-color:#14764d!important;font-weight:700}
+
+/* R10: matching review actions; retain the native close button in the heading. */
+:host([data-mobile-demo]) .ux-layout-check-dialog > button:is([data-ux="layout-fit"],[data-ux="close"]) {
+  display:block; box-sizing:border-box; width:100%; min-height:46px;
+  margin:8px 0 0; padding:10px 14px; line-height:1.3;
+}
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-top [data-demo-product-return] {
+  flex:0 0 75px; width:75px!important; min-width:75px!important;
+  padding:4px!important; white-space:normal; font-size:11px!important;
+  line-height:1.15!important; font-weight:650; color:var(--md-petrol)!important;
+}
+:host([data-mobile-demo]) .md-identity .md-badge { max-width:none; padding:2px 4px; font-size:8px; }
+@media (max-width:380px) {
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral]) .md-top button:not([data-demo-product-return]) {
+    flex-basis:36px; width:36px!important; min-width:36px!important; padding:6px!important;
+  }
+  :host([data-mobile-demo]) .md-top { gap:2px; padding:0 5px; }
+  :host([data-mobile-demo]) .md-identity { margin-left:2px; }
+  :host([data-mobile-demo]) .md-brand { font-size:14px; }
+}
+@media (min-width:1000px) {
+  :host([data-mobile-demo]) .md-identity { flex-direction:row; align-items:center; gap:12px; margin-left:12px; }
+  :host([data-mobile-demo]) .md-identity .md-badge { padding:5px 8px; font-size:11px; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-top [data-demo-product-return] {
+    flex:0 0 auto; width:auto!important; min-width:140px!important;
+    padding:8px 12px!important; font-size:13px!important;
+  }
+  :host([data-mobile-demo]) .md-desktop-tabs > .md-nav { gap:6px!important; }
+  :host([data-mobile-demo]) .md-summary { box-sizing:border-box; gap:4px; overflow:hidden; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-summary [data-fk-total] {
+    position:static!important; display:block!important; margin:0!important; padding:0!important;
+    line-height:1.15!important; white-space:nowrap;
+  }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .md-summary .md-product-button {
+    min-height:24px!important; height:24px!important; margin:0!important; padding:0!important;
+    font-size:12px!important; line-height:1.2!important;
+  }
+}

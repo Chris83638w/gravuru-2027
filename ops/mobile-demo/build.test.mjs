@@ -32,7 +32,7 @@ function fixture(t){
  write('app/configurator/mobile-demo/text-selection-dismiss.mjs','export const installDemoTextSelectionDismiss=()=>null;');
  write('app/configurator/mobile-demo/desktop-selection.mjs','export const installDemoDesktopSelection=()=>null;');
  write('app/configurator/mobile-demo/options-navigation.mjs','export const installDemoOptionsNavigation=()=>null;');
- for(const name of ['overlap-review','overlap-consent','contour-placement'])write('app/configurator/mobile-demo/'+name+'.mjs','export const test=true;');
+ for(const name of ['product-return','overlap-review','overlap-consent','contour-placement'])write('app/configurator/mobile-demo/'+name+'.mjs','export const test=true;');
  const font={label:'Real Font',regular:{units:1000,glyphs:{A:{d:'M0 0L500 1000',a:500},'ä':{d:'M3 4L5 6',a:510}}},bold:{units:1000,glyphs:{A:{d:'M1 0L501 1000',a:510}}}};
  const designs=Array.from({length:43},(_,i)=>({id:'original-'+i,objects:[{id:'text-1',type:'text',text:'Bruno '+i,font:'Real Font',x:10+i,y:22}]}));
  const profile={id:'original-product',revision:'original-product:2',binding:{kind:'local-review',productId:'original-product'},material:{kind:'slate'},designs,geometry:{width:220,height:140},features:{orderEnabled:false}};
@@ -72,7 +72,7 @@ test('full models retain every design, glyph and groundplate; only demo identiti
  assert.equal(fs.readFileSync(path.join(root,'text-selection-dismiss.mjs'),'utf8'),'export const installDemoTextSelectionDismiss=()=>null;');
  assert.equal(fs.readFileSync(path.join(root,'desktop-selection.mjs'),'utf8'),'export const installDemoDesktopSelection=()=>null;');
  assert.equal(fs.readFileSync(path.join(root,'options-navigation.mjs'),'utf8'),'export const installDemoOptionsNavigation=()=>null;');
- for(const name of ['overlap-review','overlap-consent','contour-placement'])assert.equal(fs.readFileSync(path.join(root,name+'.mjs'),'utf8'),'export const test=true;');
+ for(const name of ['product-return','overlap-review','overlap-consent','contour-placement'])assert.equal(fs.readFileSync(path.join(root,name+'.mjs'),'utf8'),'export const test=true;');
  assert.equal(manifest.files['demo.mjs'].sourceSha256,hash(fs.readFileSync(path.join(f.source,'app/configurator/mobile-demo/demo.mjs'))));
  assert.equal(fs.readFileSync(path.join(root,'_runtime/images/blank.webp'),'utf8'),'unchanged image');
  const bundle=fs.readFileSync(path.join(root,'_bundle/editor-0000000000000000.mjs'),'utf8');

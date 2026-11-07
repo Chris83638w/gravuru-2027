@@ -1,3 +1,5 @@
+Aktueller Zusatz R10: [Ausführungsreiter, PC-Anordnung, Sicherung und offene Live-Abnahme](2026-11-07-mobile-demo-r10-optionen-reiter.md). Alle bisherigen Anbindungs-/Designgruppenentscheidungen unten bleiben gültig.
+
 # Mika · Gesamtstand, mobile Demo, Galerie und Shopanbindung
 
 **Neuester Nachtrag, veröffentlicht:** [R9 – Überlagerung bewusst übernehmen und mit kleinem Abstand einpassen](2026-11-07-mobile-demo-r9-ueberlagerung.md), [frischer Testlink](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r9/22x14.html?fresh=1). 203 gezielte Tests und öffentliche Mobil-/Desktop-Bedienprüfung; statische Demo, keine echte Bestellverbindung. Der ausführliche Stand unten enthält historische Zwischenstände; für die aktuell geprüfte Oberfläche zuerst R9 und R8 lesen. Backend-/Synchronisierungsentscheidungen dieser Gesamtakte bleiben bestehen.

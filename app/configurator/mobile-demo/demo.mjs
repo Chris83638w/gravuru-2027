@@ -5,6 +5,7 @@ import {installDemoTextSelectionDismiss} from './text-selection-dismiss.mjs';
 import {installDemoDesktopSelection} from './desktop-selection.mjs';
 import {installDemoOptionsNavigation} from './options-navigation.mjs';
 import {installDemoOverlapReview} from './overlap-review.mjs';
+import {installDemoProductReturn} from './product-return.mjs';
 
 // Keep the pre-keyboard height even on Android where innerHeight also shrinks.
 export function keyboardViewport(previous, {width, height, innerHeight, focused}) {
@@ -29,7 +30,13 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   const make = (tag, cls, text) => { const node = document.createElement(tag); node.className = cls; if (text) node.textContent = text; return node; };
   const button = (label, cls, action) => { const b = make('button', cls, label); b.type = 'button'; b.setAttribute('aria-label', label); b.addEventListener('click', action); return b; };
   const on = (node, event, fn, options) => { node.addEventListener(event, fn, options); cleanups.push(() => node.removeEventListener(event, fn, options)); };
-  const top = make('div', 'md-top'); top.append(make('span', 'md-brand', 'gravuru'), make('span', 'md-badge', 'Mobile Demo'));
+  const top = make('div', 'md-top');
+  const returnButton = $('.ux-heading [data-ux=back]');
+  const priorReturn = returnButton ? {nodes:[...returnButton.childNodes],text:returnButton.textContent,label:returnButton.getAttribute('aria-label'),marker:returnButton.getAttribute('data-demo-product-return')} : null;
+  move(returnButton,top);
+  if(returnButton){returnButton.textContent='Zurück zum Produkt';returnButton.setAttribute('aria-label','Zurück zum Produkt');returnButton.setAttribute('data-demo-product-return','');}
+  const identity = make('div','md-identity');
+  identity.append(make('span', 'md-brand', 'gravuru'), make('span', 'md-badge', 'Mobile Demo')); top.append(identity);
   top.querySelector('.md-badge').title = 'Getrennte Testversion. Kundenkonto und Bestellung sind nicht verbunden.';
   const history = make('div','md-history'); top.append(history);
   for (const selector of ['[data-ux=undo]', '[data-ux=redo]', '[data-ux=contents]', '[data-ux=account]']) move($(selector), history);
@@ -254,6 +261,7 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   const optionsNavigation = installDemoOptionsNavigation(el);
   const edgeResize = installDemoEdgeResize(el);
   const overlapReview = installDemoOverlapReview(el);
+  const productReturn = installDemoProductReturn(el,{button:returnButton});
   shut(false);
   const api = { open, close:shut, dispose() {
     if (disposed) return;
@@ -264,6 +272,7 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
     optionsNavigation?.dispose();
     edgeResize?.dispose();
     overlapReview?.dispose();
+    productReturn?.dispose();
     if (resizeFrame) cancelAnimationFrame(resizeFrame);
     observer.disconnect(); tabObserver.disconnect(); cleanups.forEach(fn => fn()); el.uxShowSection = oldShow;
     if (typeof oldSync === 'function') el.sync = oldSync;
@@ -276,6 +285,7 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
     restoreAttribute(document.documentElement, 'data-mobile-demo', priorPageDemo);
     if (finish) { finish.textContent = ''; if(priorFinish.nodes.length)finish.append(...priorFinish.nodes);else finish.textContent=priorFinish.text; restoreAttribute(finish, 'aria-label', priorFinish.label); }
     if (help) { help.textContent=''; if(priorHelp.nodes.length)help.append(...priorHelp.nodes);else help.textContent=priorHelp.text; restoreAttribute(help,'aria-label',priorHelp.label); }
+    if (returnButton) { returnButton.textContent=''; if(priorReturn.nodes.length)returnButton.append(...priorReturn.nodes);else returnButton.textContent=priorReturn.text; restoreAttribute(returnButton,'aria-label',priorReturn.label); restoreAttribute(returnButton,'data-demo-product-return',priorReturn.marker); }
     if (resetButton) { resetButton.textContent=''; if(priorReset.nodes.length)resetButton.append(...priorReset.nodes);else resetButton.textContent=priorReset.text; }
     for (const [key,value] of priorViewport) value ? el.style.setProperty(key,value) : el.style.removeProperty(key);
     editor.inert = priorEditor.inert; delete el.dataset.mobileDemo; delete el.dataset.demoSheet; delete el.dataset.demoFullscreen; delete el.dataset.demoKeyboard; delete el.dataset.demoSelectedType; delete el.mobileDemo;

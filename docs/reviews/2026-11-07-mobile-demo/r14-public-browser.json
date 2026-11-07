@@ -1,0 +1,67 @@
+{
+  "sourceCommit": "b329903d516673dd739997b12190bd5570b0a996",
+  "desktop": {
+    "button": {
+      "bottom": 639.6875,
+      "height": 44,
+      "left": 986.8671875,
+      "right": 1335,
+      "top": 595.6875,
+      "width": 348.1328125,
+      "x": 986.8671875,
+      "y": 595.6875
+    },
+    "editor": {
+      "bottom": 692,
+      "height": 572,
+      "left": 969.8671875,
+      "right": 1366,
+      "top": 120,
+      "width": 396.1328125,
+      "x": 969.8671875,
+      "y": 120
+    },
+    "fullyVisible": true,
+    "status": "",
+    "viewport": [
+      1366,
+      768
+    ]
+  },
+  "addedText": true,
+  "afterUndo": 0,
+  "validation": {
+    "close": "Fertig",
+    "panel": "Text",
+    "status": "Name: Pflichtfeld: Bitte deinen eigenen Text eingeben."
+  },
+  "mobile": {
+    "close": "Fertig",
+    "font": {
+      "bottom": 625.7578125,
+      "height": 44,
+      "left": 9,
+      "right": 381,
+      "top": 581.7578125,
+      "width": 372,
+      "x": 9,
+      "y": 581.7578125
+    },
+    "status": "",
+    "textarea": {
+      "bottom": 560.7578125,
+      "height": 91,
+      "left": 9,
+      "right": 381,
+      "top": 469.7578125,
+      "width": 372,
+      "x": 9,
+      "y": 469.7578125
+    },
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  "physicalMobileTest": false
+}

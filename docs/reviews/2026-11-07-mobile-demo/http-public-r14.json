@@ -1,0 +1,176 @@
+{
+  "scope": "R14 public HTTP samples; not a physical mobile or performance measurement",
+  "sourceCommit": "b329903d516673dd739997b12190bd5570b0a996",
+  "results": [
+    {
+      "path": "MANIFEST.json",
+      "status": 200,
+      "contentType": "application/json",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "af30a0b79aec95708eaf9008caa5748e078c9ecc9dc3a2721db2d35f10c45251",
+      "matches": true
+    },
+    {
+      "path": "22x14.html",
+      "status": 200,
+      "contentType": "text/html",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "aee9bd43793a2011a02d580cdad58a4fdd7eb72050e7d923807f9d1693836ffe",
+      "matches": true
+    },
+    {
+      "path": "30x20.html",
+      "status": 200,
+      "contentType": "text/html",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "63cdde9c791da12e883c58047208e218bbc2a2ee5718f79c314d33ca55e84e59",
+      "matches": true
+    },
+    {
+      "path": "demo.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "ad864ab745cbf6f04c7dfcbb1cf06867aa1b1ca59ffb2713f395c5bbf6c7e7b7",
+      "matches": true
+    },
+    {
+      "path": "demo.css",
+      "status": 200,
+      "contentType": "text/css",
+      "encoding": "br",
+      "cache": "no-store              ",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "6192dfd023cf656f3d55ae0cdc205b484921ebda7e53f8e54d83de229a05b5c7",
+      "matches": true
+    },
+    {
+      "path": "small-motif-controls.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "50172712c21652437c740797d476f4629881c7f7776a99cecd8d53e9e6c2e9d8",
+      "matches": true
+    },
+    {
+      "path": "configurator/mobile-demo/motif-size-limit.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "ce88b4d59d61ea78d02421ffa5119652ea67ef2eb2850915bd854138c020ec98",
+      "matches": true
+    },
+    {
+      "path": "text-selection-dismiss.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "a63edb616fa2d439e82e0cf51d212479cc3fc32fb5a68e96aef0732176ba2c61",
+      "matches": true
+    },
+    {
+      "path": "desktop-selection.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "6fe2f0c16bb033007c11f48e2dd42edf85186a0d13839a9e836d5ad8ab24f189",
+      "matches": true
+    },
+    {
+      "path": "options-navigation.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "fddb8654791d8e98cfab29fa6fd66f753908751d35c949f08db5f86a880fc68b",
+      "matches": true
+    },
+    {
+      "path": "product-return.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "9501984a9f2518a17945dd5eb3e891111d4277bcb4cd9791575ff17342977c66",
+      "matches": true
+    },
+    {
+      "path": "overlap-review.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "8f11e0c6bca40ce0a94bee94b0a82ff1e691db1ea8b09b1235ac98ca6bbea749",
+      "matches": true
+    },
+    {
+      "path": "overlap-consent.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "78bea28a6261408080646f8320f0798e73a89656c4501cf95500935b98d64de3",
+      "matches": true
+    },
+    {
+      "path": "contour-placement.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "78741e914e4d84ba7c6f38e8edf55159bedc5df32ff0b3189daae956539424ac",
+      "matches": true
+    },
+    {
+      "path": "configurator/variant-m/text-bounds.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "3b50d36889cf4c215939fde717483d4f7a07891646409939852c5a38647c2b55",
+      "matches": true
+    },
+    {
+      "path": "configurator/variant-m/usability.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "0fe40def8378882ae39bd6cdeb4a3655f6c26f90cbca55345a754bb555e9bda9",
+      "matches": true
+    },
+    {
+      "path": "configurator/variant-m/workflow.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "0483010171b2b9bd944da426e2bc25ef00a8d73fbd036a82bb1afac0d757ef66",
+      "matches": true
+    }
+  ]
+}

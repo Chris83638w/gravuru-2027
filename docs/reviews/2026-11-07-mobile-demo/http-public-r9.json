@@ -1,0 +1,116 @@
+{
+  "scope": "R9 public HTTP samples; not a physical mobile or performance measurement",
+  "sourceCommit": "04bfb9c032bebea1bf528c3b2ac935601123de72",
+  "results": [
+    {
+      "path": "MANIFEST.json",
+      "status": 200,
+      "contentType": "application/json",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "fdbeaf71845679fbc197eb219af3598a439abb8a74169a3a49fbfa8ec2a315eb",
+      "matches": true
+    },
+    {
+      "path": "22x14.html",
+      "status": 200,
+      "contentType": "text/html",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "e82f464b6ef1cc20bfd10cde1885667fecbdb84a811d90c87b49132020f9f746",
+      "matches": true
+    },
+    {
+      "path": "30x20.html",
+      "status": 200,
+      "contentType": "text/html",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "e2d08850562b24f4e533a8b455ba7cee3b3293f4e326956219d55a3f58168a56",
+      "matches": true
+    },
+    {
+      "path": "demo.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "b2577a8b5ac1177f6a5a71a79162167c111a6019be143d2b54971fb04c59a62c",
+      "matches": true
+    },
+    {
+      "path": "demo.css",
+      "status": 200,
+      "contentType": "text/css",
+      "encoding": "br",
+      "cache": "no-store              ",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "ae79686fe22e001cf094546525b7400b7217148ff5b2662c64a47ecf08971afc",
+      "matches": true
+    },
+    {
+      "path": "text-selection-dismiss.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "a63edb616fa2d439e82e0cf51d212479cc3fc32fb5a68e96aef0732176ba2c61",
+      "matches": true
+    },
+    {
+      "path": "desktop-selection.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "6fe2f0c16bb033007c11f48e2dd42edf85186a0d13839a9e836d5ad8ab24f189",
+      "matches": true
+    },
+    {
+      "path": "options-navigation.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "5433b4fdf37b1ef30483993e23c18f0db64e50eb3834d5f156f45bdfab7a9804",
+      "matches": true
+    },
+    {
+      "path": "overlap-review.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "8f11e0c6bca40ce0a94bee94b0a82ff1e691db1ea8b09b1235ac98ca6bbea749",
+      "matches": true
+    },
+    {
+      "path": "overlap-consent.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "78bea28a6261408080646f8320f0798e73a89656c4501cf95500935b98d64de3",
+      "matches": true
+    },
+    {
+      "path": "contour-placement.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "78741e914e4d84ba7c6f38e8edf55159bedc5df32ff0b3189daae956539424ac",
+      "matches": true
+    }
+  ]
+}

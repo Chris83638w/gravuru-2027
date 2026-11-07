@@ -1,0 +1,15 @@
+# Demo R11 – Werkzeugleiste mittig
+
+Nutzerauftrag: Screenshot 197, „Das Werkzeug mit Drehen sollte mittig sein.“ Nur zwei Darstellungsregeln in `app/configurator/mobile-demo/demo.css` geändert: gleiche 12-px-Seitenabstände statt ehemaliger 64-px-Fotobutton-Reserve rechts; Aktionsgruppe sicher mittig ausgerichtet, bei Überbreite weiter scrollbar. Höhe, Position nach oben/unten, Aktionen, Designs, Preise und native Funktionen unverändert. Eigener Branch / Draft #193, kein Kunden-Shop-Eingriff.
+
+Vorher gesichert: Commit `5e170ea4a13bac7084e9afe275d14d20a584f65e`, Archiv `checkpoints/mobile-demo-r11-toolbar-20261107/before-r11-5e170ea4.zip`, SHA256 `4ab01a5e68ab1776ea0da6b7285d398a6138f1bf4eb42a40f9c99738d675dc57`. Designs weiterhin unverändert nach [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md).
+
+Gezielte lokale Chrome-Prüfung: 390 px Werkzeugleiste x=12 bis 378, 320 px x=12 bis 308; Mittelpunkt jeweils exakt wie Produktfläche. Alle fünf sichtbaren Motivaktionen bleiben innerhalb der Leiste. Bei 1440 px PC Vorschau 0 bis 1022,40625 und Leiste 12 bis 1010,40625, ebenfalls gleicher Mittelpunkt. Nativer Klick „Motiv um 15 Grad drehen“ ergibt rotate(15), Rückgängig stellt rotate(0) wieder her. Keine zusätzliche Verhaltensänderung, deshalb keine neuen Implementierungstests für die beiden CSS-Regeln. Physische Handyabnahme durch Mikail bleibt separat.
+
+Veröffentlicht ausschließlich als [Demo R11, frisch starten](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r11/22x14.html?fresh=1), Quellcommit `beaa751de6e49c5dbb713c2de9ef2f3b27ca37c8`. ZIP 83.377.086 Bytes, SHA256 `5395fe879cc814257266ab42977ba9db510f4f1666548e43de7a06cd5d765051`; Manifest `5e5214e0d20be58bba1b5db6e90251821b719206017d48feb8c9e91b173713b6`. Modelle und Quellhashes sind mit R10 identisch.
+
+Vorprüfung ohne Änderungen, danach private Originalsicherung unter `/var/www/vhosts/gravuru-designwerkstatt.de/private/mobil-20261107-r11-before-publication`. Alle 14.141 bisherigen Public-Dateien und geschützten Originale hashgleich erhalten. Kein Neustart, Routerwechsel, Datenbank- oder Shop-Schreiben. Zwölf öffentliche HTTP-Stichproben 200 und bytegleich zum Paket. Öffentliche Handyansicht 390×844 bestätigt Werkzeugleiste x12–378, Produktfläche x0–390 und sichtbare Aktionsgruppe x71,586–318,414: alle drei Mittelpunkte x195. Anschließend Ansichtsemulation entfernt und frisch geladen.
+
+Nachweise: [Vorprüfung](../reviews/2026-11-07-mobile-demo/host-preflight-r11.json), [Publikation](../reviews/2026-11-07-mobile-demo/host-publication-r11.json), [HTTP](../reviews/2026-11-07-mobile-demo/http-public-r11.json), [lokale Prüfung](../reviews/2026-11-07-mobile-demo/r11-local-browser.json), [öffentliche Messung](../reviews/2026-11-07-mobile-demo/r11-public-browser.json), [Screenshot](../reviews/2026-11-07-mobile-demo/r11-public-mobile.png).
+
+Nächster Schritt: Mikails Sichtprüfung. R10 und die dortige vollständige Sicherung/Anbindung bleiben gültig; echter Produkt-/Warenkorb-Livegang ist weiterhin separat abzunehmen.

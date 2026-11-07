@@ -1,0 +1,77 @@
+{
+  "result": {
+    "type": "object",
+    "value": {
+      "after": [
+        {
+          "h": 42.924,
+          "id": "text-1",
+          "w": 63.92099,
+          "x": 138,
+          "y": 22.872273849607183
+        },
+        {
+          "h": 9.444,
+          "id": "text-2",
+          "w": 94.44,
+          "x": 60.637,
+          "y": 68.408
+        },
+        {
+          "h": 19.200000000000006,
+          "id": "text-3",
+          "w": 50.816,
+          "x": 60.637,
+          "y": 97.146
+        },
+        {
+          "h": 67.477,
+          "id": "motiv-1",
+          "w": 78.575,
+          "x": 167.329,
+          "y": 69.987
+        }
+      ],
+      "before": [
+        {
+          "h": 42.924,
+          "id": "text-1",
+          "w": 63.92099,
+          "x": 138,
+          "y": 42.356
+        },
+        {
+          "h": 9.444,
+          "id": "text-2",
+          "w": 94.44,
+          "x": 60.637,
+          "y": 68.408
+        },
+        {
+          "h": 19.200000000000006,
+          "id": "text-3",
+          "w": 50.816,
+          "x": 60.637,
+          "y": 97.146
+        },
+        {
+          "h": 67.477,
+          "id": "motiv-1",
+          "w": 78.575,
+          "x": 167.329,
+          "y": 69.987
+        }
+      ],
+      "open": [],
+      "status": [
+        "✓ Stand wiederhergestelltDein letzter Stand wurde wiederhergestellt.Neu beginnen✕",
+        "Elemente überlagern sich.",
+        "Möchtest du dieses Element genau mittig ausrichten?Ja, mittig ausrichtenPosition beibehalten",
+        "EntferntRückgängig",
+        "Überlagerung angepasst. Größe und Inhalt bleiben erhalten. Bitte noch einmal prüfen.",
+        "Produktvorschau · Bestellung noch nicht verbunden"
+      ],
+      "undoDelta": 1
+    }
+  }
+}

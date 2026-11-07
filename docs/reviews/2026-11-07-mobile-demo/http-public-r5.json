@@ -1,0 +1,111 @@
+{
+  "scope": "R5 public HTTP samples; desktop network, not mobile performance measurement",
+  "sourceCommit": "07d5d8a435b756046549024f254402cfdcdcc354",
+  "results": [
+    {
+      "path": "MANIFEST.json",
+      "status": 200,
+      "contentType": "application/json",
+      "contentEncoding": "gzip",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "bytes": 446414,
+      "wireBytes": 109197,
+      "seconds": 1.453,
+      "sha256": "d8c63b0ca0e6d81fa661c3c9cc272e159c6f963722728b8706521bd9ecc5fcd0",
+      "matches": true
+    },
+    {
+      "path": "22x14.html",
+      "status": 200,
+      "contentType": "text/html",
+      "contentEncoding": "gzip",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "bytes": 3848383,
+      "wireBytes": 1480371,
+      "seconds": 7.063,
+      "sha256": "b002cf62da7cc747500c4014ea91964b6c582d503f13d393452738b13e717b73",
+      "matches": true
+    },
+    {
+      "path": "30x20.html",
+      "status": 200,
+      "contentType": "text/html",
+      "contentEncoding": "gzip",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "bytes": 3933158,
+      "wireBytes": 1520707,
+      "seconds": 6.844,
+      "sha256": "73772fce69a98ce21a58b5e1aecf2c80c51ba70b5dcecf858a805beaf05f424d",
+      "matches": true
+    },
+    {
+      "path": "demo.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "contentEncoding": "gzip",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "bytes": 19741,
+      "wireBytes": 6397,
+      "seconds": 0.891,
+      "sha256": "d01cddc9c0fd4a3a88ed9935b7d833b7feb4d4e5a29a8423a2a20cec08a347d4",
+      "matches": true
+    },
+    {
+      "path": "demo.css",
+      "status": 200,
+      "contentType": "text/css",
+      "contentEncoding": "gzip",
+      "cache": "no-store              ",
+      "robots": "noindex, nofollow, noarchive",
+      "bytes": 39895,
+      "wireBytes": 6712,
+      "seconds": 0.547,
+      "sha256": "82000d1dea67d8cf43c1190ff270985d6aef99971f42e581b7b0bc258296a205",
+      "matches": true
+    },
+    {
+      "path": "text-editor.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "contentEncoding": "gzip",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "bytes": 9331,
+      "wireBytes": 3195,
+      "seconds": 0.64,
+      "sha256": "b2a17b79c9fbe1e1660925359880d071133a344f59abdcf118d87532cfdf4dee",
+      "matches": true
+    },
+    {
+      "path": "shopping-cart.svg",
+      "status": 200,
+      "contentType": "image/svg+xml",
+      "contentEncoding": "gzip",
+      "cache": "no-store              ",
+      "robots": "noindex, nofollow, noarchive",
+      "bytes": 530,
+      "wireBytes": 278,
+      "seconds": 0.656,
+      "sha256": "932c1ac5856496f9aa7067dd0a9036b72016baaec1653a3a7c57c179725a21b4",
+      "matches": true
+    },
+    {
+      "path": "_runtime/gravuru-catalog-51fa7e857d52-part-00.txt",
+      "status": 200,
+      "contentType": "text/plain",
+      "contentEncoding": "gzip",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "bytes": 400357,
+      "wireBytes": 109128,
+      "seconds": 2.047,
+      "sha256": "41ca6aa7e3c716b286bde5d3a2e5e37ca20aa78633d54b79d761c519df33c7d1",
+      "matches": true
+    }
+  ],
+  "verified": true
+}

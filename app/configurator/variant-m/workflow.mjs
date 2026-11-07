@@ -1,3 +1,4 @@
+import {createTextBounds} from './text-bounds.mjs';
 import {executionTabLabel} from './execution-registry.mjs';
 import {installInlineMotifBrowser} from './inline-motif-browser.mjs';
 import {installEditorOutsidePointer} from './editor-document-listener.mjs';
@@ -19,7 +20,7 @@ import {clampToAcrylic} from './edge-clamp.mjs';
 import {createDragSnap,alignmentLabel} from './drag-assistance-model.mjs';
 import {fitText,freePlacement,transferTexts,changedCustomerTexts,alignGroup,NO_FREE_SPACE_MESSAGE} from './workflow-model.mjs';
 import {galleryOrder,productTheme,customerTexts,thumbnailSignature,thumbnailDesign,designLink} from './design-gallery-model.mjs';
-import {textPaths,measureText,setTextSize} from '../../platform/sources/app/shared/models/text-paths.mjs';
+import {measureText,setTextSize} from '../../platform/sources/app/shared/models/text-paths.mjs';
 
 export async function installWorkflow(api){
  const {el,r,profile,config,button,esc,mutate,selected,showTab,say,dialog}=api;
@@ -71,15 +72,16 @@ export async function installWorkflow(api){
  $('[data-ux=multi-center]').insertAdjacentHTML('beforebegin',button('multi-left',alignmentContent('left'),'aria-label="Ausgewählte Texte links bündig ausrichten" disabled'));
  $('[data-ux=multi-center]').insertAdjacentHTML('afterend',button('multi-right',alignmentContent('right'),'aria-label="Ausgewählte Texte rechts bündig ausrichten" disabled'));
  r.addEventListener('click',e=>{const key=e.target.closest('[data-ux]')?.dataset.ux;if(!['multi-left','multi-right'].includes(key))return;const ids=all('[data-align-id]:checked').map(n=>n.dataset.alignId);if(ids.length<2)return;mutate(()=>alignGroup(el.state.objects,ids,key==='multi-left'?'left':'right',surface()));});
- const boundsCache=new Map();
- function bounds(o){const key=JSON.stringify([o.text,o.font,o.size,o.bold,o.italic,o.letterSpacing,o.textAnchor,o.lineHeight,o.w]);if(boundsCache.has(key))return boundsCache.get(key);const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.style.cssText='position:absolute;visibility:hidden;width:1px;height:1px';svg.innerHTML='<g>'+textPaths(o,el.fontData)+'</g>';r.append(svg);const b=svg.firstElementChild.getBBox(),value={x:b.x,y:b.y,width:b.width,height:b.height};svg.remove();if(boundsCache.size>100)boundsCache.clear();boundsCache.set(key,value);return value;}
+ const bounds=createTextBounds(el);
  el.uxAlign=mode=>{const o=selected();if(!o||o.uxLocked)return;mutate(()=>{const xs=transformedCorners(o,bounds(o)).map(p=>p.x),a=surface();o.x+=(mode==='left'?a.x-Math.min(...xs):mode==='right'?a.x+a.width-Math.max(...xs):a.x+a.width/2-(Math.min(...xs)+Math.max(...xs))/2);});};
  const fitted=new Map(),signature=o=>JSON.stringify([o.text,o.font,o.bold,o.italic,o.size,o.letterSpacing,o.textAnchor,o.lineHeight,o.w,el.state.fkFrame,el.state.mOptions,el.uxTextScale?.()||1]);
+ const pendingTextFits=new Set(),fitRetryMessage='Text konnte noch nicht automatisch eingepasst werden. Bitte Position prüfen.';
+ let ownsFitRetryNotice=false;
  const normalize=el.normalize;
  // Ü3.2: Autofit verkleinert bis zur Mindestgröße (K10: minTextMm des Verfahrensprofils, sonst 4 mm;
  // im Werkstatt-Editor 1 mm). Reicht das nicht, bleibt die Mindestgröße stehen und das Feld meldet
  // „Text zu lang“ (uxTextOverflow='length').
- el.normalize=function(...args){const result=normalize.apply(this,args);for(const o of this.state.objects.filter(o=>o.type==='text'&&el.uxCanEdit?.(o,'scale')!==false&&!o.uxLocked&&!o.technicalLocked&&!o.uxHidden&&o.text.trim())){try{if(config?.doorbell?.schema==='gravuru-doorbell/v1')clampToAcrylic(o,chosenProfile(),bounds(o));if(fitted.get(o.id)===signature(o))continue;const min=config?.workbench?.embedded?1:(el.uxMinTextMm||4)/(el.uxTextScale?.()||1),size=fitText(o,bounds(o),textSurface(),min,this.fontData);if(size!==null&&size<o.size){setTextSize(o,size);measureText(o,this.fontData);say('Text automatisch auf '+(size*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm eingepasst.');}else if(size===null){if(o.size>min){setTextSize(o,min);measureText(o,this.fontData);}say('Text zu lang: Passt auch in der Mindestgröße von '+(min*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm nicht auf die Fläche. Bitte kürzen.');}if(size===null)o.uxTextOverflow='length';else delete o.uxTextOverflow;}catch{say('Text konnte noch nicht automatisch eingepasst werden. Bitte Position prüfen.');}fitted.set(o.id,signature(o));}return result;};
+ el.normalize=function(...args){const result=normalize.apply(this,args),texts=this.state.objects.filter(o=>o.type==='text'&&el.uxCanEdit?.(o,'scale')!==false&&!o.uxLocked&&!o.technicalLocked&&!o.uxHidden&&o.text.trim());for(const id of pendingTextFits)if(!texts.some(o=>o.id===id))pendingTextFits.delete(id);for(const o of texts){try{if(config?.doorbell?.schema==='gravuru-doorbell/v1')clampToAcrylic(o,chosenProfile(),bounds(o));const face=this.fontData?.[o.font]?.[o.bold?'bold':'regular']||this.fontData?.[o.font]?.regular;if(fitted.get(o.id)?.signature===signature(o)&&fitted.get(o.id)?.face===face){pendingTextFits.delete(o.id);continue;}const min=config?.workbench?.embedded?1:(el.uxMinTextMm||4)/(el.uxTextScale?.()||1),size=fitText(o,bounds(o),textSurface(),min,this.fontData);if(size!==null&&size<o.size){setTextSize(o,size);measureText(o,this.fontData);say('Text automatisch auf '+(size*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm eingepasst.');}else if(size===null){if(o.size>min){setTextSize(o,min);measureText(o,this.fontData);}say('Text zu lang: Passt auch in der Mindestgröße von '+(min*(el.uxTextScale?.()||1)).toLocaleString('de-DE',{maximumFractionDigits:2})+' mm nicht auf die Fläche. Bitte kürzen.');}if(size===null)o.uxTextOverflow='length';else delete o.uxTextOverflow;}catch{pendingTextFits.add(o.id);ownsFitRetryNotice=true;say(fitRetryMessage);continue;}pendingTextFits.delete(o.id);fitted.set(o.id,{signature:signature(o),face:this.fontData?.[o.font]?.[o.bold?'bold':'regular']||this.fontData?.[o.font]?.regular});}if(ownsFitRetryNotice&&!pendingTextFits.size&&!texts.some(o=>o.uxTextOverflow)){if($('[data-ux-status]')?.textContent===fitRetryMessage)say('');ownsFitRetryNotice=false;}return result;};
  r.addEventListener('input',e=>{if(e.target.dataset.uxText){const o=el.state.objects.find(o=>o.id===e.target.dataset.uxText);if(o)o.uxCustomerText=true;}},true);
  let placementJob=Promise.resolve();
  // Chris 22./23.10.2026: Ein neues Element bekommt immer einen freien Platz – Suche über die ganze
@@ -110,8 +112,13 @@ export async function installWorkflow(api){
  // Gate progression on the completed placement and the current geometry.
  const layoutDialog=dialog('layout-check','Bitte Gestaltung prüfen','<div data-layout-problems></div>'+button('layout-fit','Automatisch einpassen')+button('close','Weiter bearbeiten'));
  const reviewIssues=()=>layoutReviewIssues({config,profile:chosenProfile(),objects:el.state.objects,design:chosenProfile().designs.find(d=>d.id===el.state.designId),resources:{motifs:config?.localResources?.motifs||[],fonts:el.fontData}});
- el.uxCheckLayout=async()=>{await placementJob;const issues=config?reviewIssues():[];if(!issues.length)return true;$('[data-layout-problems]').innerHTML=issues.map(i=>'<p>'+esc(i.message)+'</p>').join('');if(!layoutDialog.open)layoutDialog.showModal();return false;};
- r.addEventListener('click',event=>{if(event.target.closest('[data-ux=layout-fit]')){
+ // Optional presentation adapter; the existing progression/other validators
+ // still await this gate. Without an adapter the original policy is unchanged.
+ const layoutContext=()=>({dialog:layoutDialog,inspect:async()=>{await placementJob;return config?reviewIssues():[];},mutate,say,
+  canMove:o=>may(o,'move'),boundaryIssue:o=>customerLayoutIssue(o,chosenProfile(),{motifs:config?.localResources?.motifs||[],fonts:el.fontData}),
+  fitOriginal:fitLayout});
+ el.uxCheckLayout=async()=>{await placementJob;if(el.uxResolveLayoutReview)return el.uxResolveLayoutReview(layoutContext());const issues=config?reviewIssues():[];if(!issues.length)return true;$('[data-layout-problems]').innerHTML=issues.map(i=>'<p>'+esc(i.message)+'</p>').join('');if(!layoutDialog.open)layoutDialog.showModal();return false;};
+ function fitLayout(){
   const issues=reviewIssues(),copies=el.state.objects.map(o=>({...o})),changed=new Set();
   // Keep motifs in place where possible: move text first; never rewrite the master.
   const ids=[...new Set(issues.flatMap(i=>i.code==='overlap'?[i.ids.find(id=>copies.find(o=>o.id===id)?.type==='text')||i.ids.at(-1)]:i.ids))];
@@ -123,7 +130,8 @@ export async function installWorkflow(api){
   if(failed)return say('Nicht alles passt automatisch. Bitte den Text kürzen oder einzelne Elemente verschieben.');
   mutate(()=>{for(const o of el.state.objects)if(changed.has(o.id))Object.assign(o,copies.find(c=>c.id===o.id));});
   if(!reviewIssues().length){layoutDialog.close();say('Gestaltung eingepasst. Bitte noch einmal prüfen.');}else say('Bitte die übrigen markierten Elemente prüfen.');
- }});
+ }
+ r.addEventListener('click',event=>{if(event.target.closest('[data-ux=layout-fit]')){if(el.uxFitLayoutReview)void el.uxFitLayoutReview(layoutContext());else fitLayout();}});
  // New free photos retain their larger, centered upload bounds (Mika 05.11.2026).
  // Other new uploads still use free-space search; replacements keep their position.
  let known=new Set(el.state.objects.map(o=>o.id));

@@ -1,0 +1,284 @@
+{
+  "before": {
+    "o": {
+      "id": "text-1",
+      "type": "text",
+      "text": "Bruno",
+      "font": "Allura",
+      "size": 35.77,
+      "textAnchor": "middle",
+      "letterSpacing": 0,
+      "lineHeight": 42.924240020130284,
+      "x": 60.637,
+      "y": 42.356,
+      "w": 77.33474000000001,
+      "h": 42.924,
+      "rotation": 0,
+      "color": "#e8e9e5",
+      "bold": false,
+      "templateOrigin": true,
+      "customerEditable": true,
+      "fieldKey": "name",
+      "required": true
+    },
+    "bounds": {
+      "x": -38.13081741333008,
+      "y": -9.014039993286133,
+      "width": 79.48094177246094,
+      "height": 23.71550941467285
+    },
+    "rect": {
+      "x": 28,
+      "y": 329.7265625,
+      "width": 334,
+      "height": 212.5390625,
+      "top": 329.7265625,
+      "right": 362,
+      "bottom": 542.265625,
+      "left": 28
+    },
+    "ink": {
+      "left": 22.506182586669922,
+      "top": 33.34196000671387,
+      "right": 101.98712435913086,
+      "bottom": 57.05746942138672
+    },
+    "undo": 0,
+    "other": "[{\"id\":\"text-2\",\"type\":\"text\",\"text\":\"* 14.03.2011   † 22.08.2024\",\"font\":\"Montserrat Light\",\"size\":7.87,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.443520243840487,\"x\":60.637,\"y\":68.408,\"w\":94.44,\"h\":9.443999999999999,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"daten\",\"required\":false},{\"id\":\"text-3\",\"type\":\"text\",\"text\":\"Treu bis zum\\nletzten Atemzug.\",\"font\":\"Bellefair\",\"size\":8,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.600000000000007,\"x\":60.637,\"y\":97.146,\"w\":50.816,\"h\":19.200000000000006,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"spruch\",\"required\":false},{\"id\":\"motiv-1\",\"type\":\"motif\",\"motif\":\"katalog-tiere-d1000-rechteck-3-2-ohne-motiv-1\",\"x\":167.329,\"y\":69.987,\"w\":78.575,\"h\":67.477,\"rotation\":0,\"color\":\"#e8e9e5\",\"templateOrigin\":true,\"customerEditable\":true}]"
+  },
+  "topLeft": {
+    "o": {
+      "id": "text-1",
+      "type": "text",
+      "text": "Bruno",
+      "font": "Allura",
+      "size": 35.77,
+      "textAnchor": "middle",
+      "letterSpacing": 0,
+      "lineHeight": 42.924240020130284,
+      "x": 38.13081741333008,
+      "y": 9.014039993286133,
+      "w": 77.33474000000001,
+      "h": 42.924,
+      "rotation": 0,
+      "color": "#e8e9e5",
+      "bold": false,
+      "templateOrigin": true,
+      "customerEditable": true,
+      "fieldKey": "name",
+      "required": true
+    },
+    "bounds": {
+      "x": -38.13081741333008,
+      "y": -9.014039993286133,
+      "width": 79.48094177246094,
+      "height": 23.71550941467285
+    },
+    "rect": {
+      "x": 28,
+      "y": 329.7265625,
+      "width": 334,
+      "height": 212.5390625,
+      "top": 329.7265625,
+      "right": 362,
+      "bottom": 542.265625,
+      "left": 28
+    },
+    "ink": {
+      "left": 0,
+      "top": 0,
+      "right": 79.48094177246094,
+      "bottom": 23.71550941467285
+    },
+    "undo": 1,
+    "other": "[{\"id\":\"text-2\",\"type\":\"text\",\"text\":\"* 14.03.2011   † 22.08.2024\",\"font\":\"Montserrat Light\",\"size\":7.87,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.443520243840487,\"x\":60.637,\"y\":68.408,\"w\":94.44,\"h\":9.443999999999999,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"daten\",\"required\":false},{\"id\":\"text-3\",\"type\":\"text\",\"text\":\"Treu bis zum\\nletzten Atemzug.\",\"font\":\"Bellefair\",\"size\":8,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.600000000000007,\"x\":60.637,\"y\":97.146,\"w\":50.816,\"h\":19.200000000000006,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"spruch\",\"required\":false},{\"id\":\"motiv-1\",\"type\":\"motif\",\"motif\":\"katalog-tiere-d1000-rechteck-3-2-ohne-motiv-1\",\"x\":167.329,\"y\":69.987,\"w\":78.575,\"h\":67.477,\"rotation\":0,\"color\":\"#e8e9e5\",\"templateOrigin\":true,\"customerEditable\":true}]"
+  },
+  "undo": {
+    "o": {
+      "id": "text-1",
+      "type": "text",
+      "text": "Bruno",
+      "font": "Allura",
+      "size": 35.77,
+      "textAnchor": "middle",
+      "letterSpacing": 0,
+      "lineHeight": 42.924240020130284,
+      "x": 60.637,
+      "y": 42.356,
+      "w": 77.33474000000001,
+      "h": 42.924,
+      "rotation": 0,
+      "color": "#e8e9e5",
+      "bold": false,
+      "templateOrigin": true,
+      "customerEditable": true,
+      "fieldKey": "name",
+      "required": true
+    },
+    "bounds": {
+      "x": -38.13081741333008,
+      "y": -9.014039993286133,
+      "width": 79.48094177246094,
+      "height": 23.71550941467285
+    },
+    "rect": {
+      "x": 28,
+      "y": 329.7265625,
+      "width": 334,
+      "height": 212.5390625,
+      "top": 329.7265625,
+      "right": 362,
+      "bottom": 542.265625,
+      "left": 28
+    },
+    "ink": {
+      "left": 22.506182586669922,
+      "top": 33.34196000671387,
+      "right": 101.98712435913086,
+      "bottom": 57.05746942138672
+    },
+    "undo": 0,
+    "other": "[{\"id\":\"text-2\",\"type\":\"text\",\"text\":\"* 14.03.2011   † 22.08.2024\",\"font\":\"Montserrat Light\",\"size\":7.87,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.443520243840487,\"x\":60.637,\"y\":68.408,\"w\":94.44,\"h\":9.443999999999999,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"daten\",\"required\":false},{\"id\":\"text-3\",\"type\":\"text\",\"text\":\"Treu bis zum\\nletzten Atemzug.\",\"font\":\"Bellefair\",\"size\":8,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.600000000000007,\"x\":60.637,\"y\":97.146,\"w\":50.816,\"h\":19.200000000000006,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"spruch\",\"required\":false},{\"id\":\"motiv-1\",\"type\":\"motif\",\"motif\":\"katalog-tiere-d1000-rechteck-3-2-ohne-motiv-1\",\"x\":167.329,\"y\":69.987,\"w\":78.575,\"h\":67.477,\"rotation\":0,\"color\":\"#e8e9e5\",\"templateOrigin\":true,\"customerEditable\":true}]"
+  },
+  "bottomRight": {
+    "o": {
+      "id": "text-1",
+      "type": "text",
+      "text": "Bruno",
+      "font": "Allura",
+      "size": 35.77,
+      "textAnchor": "middle",
+      "letterSpacing": 0,
+      "lineHeight": 42.924240020130284,
+      "x": 178.64987564086914,
+      "y": 125.29853057861328,
+      "w": 77.33474000000001,
+      "h": 42.924,
+      "rotation": 0,
+      "color": "#e8e9e5",
+      "bold": false,
+      "templateOrigin": true,
+      "customerEditable": true,
+      "fieldKey": "name",
+      "required": true
+    },
+    "bounds": {
+      "x": -38.13081741333008,
+      "y": -9.014039993286133,
+      "width": 79.48094177246094,
+      "height": 23.71550941467285
+    },
+    "rect": {
+      "x": 28,
+      "y": 329.7265625,
+      "width": 334,
+      "height": 212.5390625,
+      "top": 329.7265625,
+      "right": 362,
+      "bottom": 542.265625,
+      "left": 28
+    },
+    "ink": {
+      "left": 140.51905822753906,
+      "top": 116.28449058532715,
+      "right": 220,
+      "bottom": 140
+    },
+    "undo": 1,
+    "other": "[{\"id\":\"text-2\",\"type\":\"text\",\"text\":\"* 14.03.2011   † 22.08.2024\",\"font\":\"Montserrat Light\",\"size\":7.87,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.443520243840487,\"x\":60.637,\"y\":68.408,\"w\":94.44,\"h\":9.443999999999999,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"daten\",\"required\":false},{\"id\":\"text-3\",\"type\":\"text\",\"text\":\"Treu bis zum\\nletzten Atemzug.\",\"font\":\"Bellefair\",\"size\":8,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.600000000000007,\"x\":60.637,\"y\":97.146,\"w\":50.816,\"h\":19.200000000000006,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"spruch\",\"required\":false},{\"id\":\"motiv-1\",\"type\":\"motif\",\"motif\":\"katalog-tiere-d1000-rechteck-3-2-ohne-motiv-1\",\"x\":167.329,\"y\":69.987,\"w\":78.575,\"h\":67.477,\"rotation\":0,\"color\":\"#e8e9e5\",\"templateOrigin\":true,\"customerEditable\":true}]"
+  },
+  "desktopTopLeft": {
+    "o": {
+      "id": "text-1",
+      "type": "text",
+      "text": "Bruno",
+      "font": "Allura",
+      "size": 35.77,
+      "textAnchor": "middle",
+      "letterSpacing": 0,
+      "lineHeight": 42.924240020130284,
+      "x": 38.13081741333008,
+      "y": 9.014039993286133,
+      "w": 77.33474000000001,
+      "h": 42.924,
+      "rotation": 0,
+      "color": "#e8e9e5",
+      "bold": false,
+      "templateOrigin": true,
+      "customerEditable": true,
+      "fieldKey": "name",
+      "required": true
+    },
+    "bounds": {
+      "x": -38.13081741333008,
+      "y": -9.014039993286133,
+      "width": 79.48094177246094,
+      "height": 23.71550941467285
+    },
+    "rect": {
+      "x": 38,
+      "y": 227.8671875,
+      "width": 946.40625,
+      "height": 602.2578125,
+      "top": 227.8671875,
+      "right": 984.40625,
+      "bottom": 830.125,
+      "left": 38
+    },
+    "ink": {
+      "left": 0,
+      "top": 0,
+      "right": 79.48094177246094,
+      "bottom": 23.71550941467285
+    },
+    "undo": 1,
+    "other": "[{\"id\":\"text-2\",\"type\":\"text\",\"text\":\"* 14.03.2011   † 22.08.2024\",\"font\":\"Montserrat Light\",\"size\":7.87,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.443520243840487,\"x\":60.637,\"y\":68.408,\"w\":94.44,\"h\":9.443999999999999,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"daten\",\"required\":false},{\"id\":\"text-3\",\"type\":\"text\",\"text\":\"Treu bis zum\\nletzten Atemzug.\",\"font\":\"Bellefair\",\"size\":8,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.600000000000007,\"x\":60.637,\"y\":97.146,\"w\":50.816,\"h\":19.200000000000006,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"spruch\",\"required\":false},{\"id\":\"motiv-1\",\"type\":\"motif\",\"motif\":\"katalog-tiere-d1000-rechteck-3-2-ohne-motiv-1\",\"x\":167.329,\"y\":69.987,\"w\":78.575,\"h\":67.477,\"rotation\":0,\"color\":\"#e8e9e5\",\"templateOrigin\":true,\"customerEditable\":true}]"
+  },
+  "oldR11": {
+    "o": {
+      "id": "text-1",
+      "type": "text",
+      "text": "Bruno",
+      "font": "Allura",
+      "size": 35.77,
+      "textAnchor": "middle",
+      "letterSpacing": 0,
+      "lineHeight": 42.924240020130284,
+      "x": 38.667370000000005,
+      "y": 21.462,
+      "w": 77.33474000000001,
+      "h": 42.924,
+      "rotation": 0,
+      "color": "#e8e9e5",
+      "bold": false,
+      "templateOrigin": true,
+      "customerEditable": true,
+      "fieldKey": "name",
+      "required": true
+    },
+    "bounds": {
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0
+    },
+    "rect": {
+      "x": 28,
+      "y": 329.7265625,
+      "width": 334,
+      "height": 212.5390625,
+      "top": 329.7265625,
+      "right": 362,
+      "bottom": 542.265625,
+      "left": 28
+    },
+    "ink": {
+      "left": 38.667370000000005,
+      "top": 21.462,
+      "right": 38.667370000000005,
+      "bottom": 21.462
+    },
+    "undo": 1,
+    "other": "[{\"id\":\"text-2\",\"type\":\"text\",\"text\":\"* 14.03.2011   † 22.08.2024\",\"font\":\"Montserrat Light\",\"size\":7.87,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.443520243840487,\"x\":60.637,\"y\":68.408,\"w\":94.44,\"h\":9.443999999999999,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"daten\",\"required\":false},{\"id\":\"text-3\",\"type\":\"text\",\"text\":\"Treu bis zum\\nletzten Atemzug.\",\"font\":\"Bellefair\",\"size\":8,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.600000000000007,\"x\":60.637,\"y\":97.146,\"w\":50.816,\"h\":19.200000000000006,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"spruch\",\"required\":false},{\"id\":\"motiv-1\",\"type\":\"motif\",\"motif\":\"katalog-tiere-d1000-rechteck-3-2-ohne-motiv-1\",\"x\":167.329,\"y\":69.987,\"w\":78.575,\"h\":67.477,\"rotation\":0,\"color\":\"#e8e9e5\",\"templateOrigin\":true,\"customerEditable\":true}]"
+  }
+}

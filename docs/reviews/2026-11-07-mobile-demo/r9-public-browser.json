@@ -1,0 +1,111 @@
+{
+  "url": "https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r9/22x14.html?fresh=1",
+  "sourceCommit": "04bfb9c032bebea1bf528c3b2ac935601123de72",
+  "viewports": [
+    {
+      "width": 390,
+      "height": 844,
+      "mobile": true
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "mobile": false
+    }
+  ],
+  "controlledScene": "Name via UI Bello; text-1 x changed to 138/138.1 via CDP to reproduce overlap. Fresh reload restores original design.",
+  "consentObjectsUnchanged": true,
+  "fitBefore": [
+    {
+      "h": 42.924,
+      "id": "text-1",
+      "w": 63.92099,
+      "x": 138.1,
+      "y": 42.356
+    },
+    {
+      "h": 9.444,
+      "id": "text-2",
+      "w": 94.44,
+      "x": 60.637,
+      "y": 68.408
+    },
+    {
+      "h": 19.200000000000006,
+      "id": "text-3",
+      "w": 50.816,
+      "x": 60.637,
+      "y": 97.146
+    },
+    {
+      "h": 67.477,
+      "id": "motiv-1",
+      "w": 78.575,
+      "x": 167.329,
+      "y": 69.987
+    }
+  ],
+  "fitAfter": [
+    {
+      "h": 42.924,
+      "id": "text-1",
+      "w": 63.92099,
+      "x": 138.1,
+      "y": 22.872273849607183
+    },
+    {
+      "h": 9.444,
+      "id": "text-2",
+      "w": 94.44,
+      "x": 60.637,
+      "y": 68.408
+    },
+    {
+      "h": 19.200000000000006,
+      "id": "text-3",
+      "w": 50.816,
+      "x": 60.637,
+      "y": 97.146
+    },
+    {
+      "h": 67.477,
+      "id": "motiv-1",
+      "w": 78.575,
+      "x": 167.329,
+      "y": 69.987
+    }
+  ],
+  "undo": [
+    {
+      "h": 42.924,
+      "id": "text-1",
+      "w": 63.92099,
+      "x": 138.1,
+      "y": 42.356
+    },
+    {
+      "h": 9.444,
+      "id": "text-2",
+      "w": 94.44,
+      "x": 60.637,
+      "y": 68.408
+    },
+    {
+      "h": 19.200000000000006,
+      "id": "text-3",
+      "w": 50.816,
+      "x": 60.637,
+      "y": 97.146
+    },
+    {
+      "h": 67.477,
+      "id": "motiv-1",
+      "w": 78.575,
+      "x": 167.329,
+      "y": 69.987
+    }
+  ],
+  "undoMatches": true,
+  "realOrder": false,
+  "price30": "24,99 €"
+}

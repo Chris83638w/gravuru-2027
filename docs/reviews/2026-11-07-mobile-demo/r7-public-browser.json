@@ -1,0 +1,16 @@
+{
+  "scope": "Public R7 in Chrome mobile viewport 390x844, not physical phone",
+  "photoPanelBeforeChooser": true,
+  "explicitPhotoChooser": true,
+  "photoInserted": true,
+  "selectedTextAfterDone": {
+    "end": 6,
+    "focused": false,
+    "start": 6,
+    "value": "Murmel"
+  },
+  "resetConfirmationShown": true,
+  "resetConfirmed": true,
+  "darkCategoryScrollbar": true,
+  "screenshot": "r7-public-motive-mobile.png"
+}

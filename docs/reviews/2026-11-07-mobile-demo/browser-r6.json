@@ -1,0 +1,34 @@
+{
+  "schema": "gravuru-demo-r6-browser-check/v1",
+  "sourceCommit": "cb7edcebd672744ede652aa697e2ba3e4e65e7ed",
+  "testedBuild": "r6-c3",
+  "releaseBuild": "r6-release",
+  "releaseFilesEqual": true,
+  "files": 2006,
+  "phoneSizes": [
+    "390x708",
+    "360x640"
+  ],
+  "fontAt360": {
+    "footerTop": 550,
+    "bottom": 539,
+    "top": 495
+  },
+  "keyboardSimulation": {
+    "textBottom": 360.5,
+    "fontSize": 16,
+    "height": 430,
+    "width": 390,
+    "footerTop": 382,
+    "textTop": 269.5
+  },
+  "edgeTouch": {
+    "undo": 36,
+    "before": 36,
+    "text": "Murmel",
+    "position": "top-left",
+    "after": 59
+  },
+  "desktop": "1440x900",
+  "physicalPhoneTest": false
+}

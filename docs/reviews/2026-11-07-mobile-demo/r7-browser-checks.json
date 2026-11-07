@@ -1,0 +1,43 @@
+{
+  "scope": "R7 candidate C3; Chrome mobile viewport simulation, not physical Android",
+  "selectionBefore": {
+    "end": 6,
+    "focused": true,
+    "start": 0,
+    "value": "Murmel"
+  },
+  "selectionDone": {
+    "end": 6,
+    "focused": false,
+    "sheet": "closed",
+    "start": 6,
+    "value": "Murmel"
+  },
+  "resetCancelUnchanged": true,
+  "reset": {
+    "width": 300,
+    "height": 200,
+    "options": {
+      "mounting": "B02",
+      "size": "30x20"
+    },
+    "objects": 4
+  },
+  "undo": {
+    "width": 300,
+    "height": 200,
+    "objects": 5
+  },
+  "photoChooserOpenedOnlyInsidePanel": true,
+  "photoInserted": true,
+  "mobileViewports": [
+    "360x640",
+    "390x708"
+  ],
+  "desktopRegression": "1440x900 unchanged two-column categories, photo shortcut and original reset label",
+  "notes": [
+    "search kreuz returns 18 results despite Blumen selection",
+    "font Cinzel selected successfully",
+    "physical Edge menu not verified"
+  ]
+}

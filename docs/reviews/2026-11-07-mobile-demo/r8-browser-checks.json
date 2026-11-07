@@ -1,0 +1,253 @@
+{
+  "sourceCommit": "41792b7e",
+  "browsers": "Chrome desktop; viewport emulation, not physical Android or Edge",
+  "viewports": [
+    [
+      1440,
+      900
+    ],
+    [
+      1024,
+      768
+    ],
+    [
+      390,
+      844
+    ]
+  ],
+  "assertions": {
+    "textName": true,
+    "textDates": true,
+    "motifPanel": true,
+    "photoExplicitChooser": true,
+    "photoClickPanel": true,
+    "resetConfirmation": true,
+    "noConsoleErrors": true
+  },
+  "optionJump": {
+    "before": {
+      "outerY": 0,
+      "editorY": 0,
+      "plate": {
+        "x": 28,
+        "y": 143.203125,
+        "width": 334,
+        "height": 212.5390625,
+        "top": 143.203125,
+        "right": 362,
+        "bottom": 355.7421875,
+        "left": 28
+      },
+      "material": 533.953125,
+      "size": 608.8984375,
+      "mounting": 731.890625,
+      "header": 434.953125,
+      "design": "[{\"id\":\"text-1\",\"type\":\"text\",\"text\":\"Bruno\",\"font\":\"Allura\",\"size\":35.77,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":42.924240020130284,\"x\":60.637,\"y\":42.356,\"w\":77.33474000000001,\"h\":42.924,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"name\",\"required\":true},{\"id\":\"text-2\",\"type\":\"text\",\"text\":\"* 14.03.2011   † 22.08.2024\",\"font\":\"Montserrat Light\",\"size\":7.87,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.443520243840487,\"x\":60.637,\"y\":68.408,\"w\":94.44,\"h\":9.443999999999999,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"daten\",\"required\":false},{\"id\":\"text-3\",\"type\":\"text\",\"text\":\"Treu bis zum\\nletzten Atemzug.\",\"font\":\"Bellefair\",\"size\":8,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.600000000000007,\"x\":60.637,\"y\":97.146,\"w\":50.816,\"h\":19.200000000000006,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"spruch\",\"required\":false},{\"id\":\"motiv-1\",\"type\":\"motif\",\"motif\":\"katalog-tiere-d1000-rechteck-3-2-ohne-motiv-1\",\"x\":167.329,\"y\":69.987,\"w\":78.575,\"h\":67.477,\"rotation\":0,\"color\":\"#e8e9e5\",\"templateOrigin\":true,\"customerEditable\":true}]",
+      "price": "Schiefer-Gedenktafel19,99 €"
+    },
+    "after": {
+      "outerY": 0,
+      "editorY": 255.5,
+      "plate": {
+        "x": 28,
+        "y": 143.203125,
+        "width": 334,
+        "height": 212.5390625,
+        "top": 143.203125,
+        "right": 362,
+        "bottom": 355.7421875,
+        "left": 28
+      },
+      "material": 278.453125,
+      "size": 353.3984375,
+      "mounting": 476.390625,
+      "header": 434.953125,
+      "design": "[{\"id\":\"text-1\",\"type\":\"text\",\"text\":\"Bruno\",\"font\":\"Allura\",\"size\":35.77,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":42.924240020130284,\"x\":60.637,\"y\":42.356,\"w\":77.33474000000001,\"h\":42.924,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"name\",\"required\":true},{\"id\":\"text-2\",\"type\":\"text\",\"text\":\"* 14.03.2011   † 22.08.2024\",\"font\":\"Montserrat Light\",\"size\":7.87,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.443520243840487,\"x\":60.637,\"y\":68.408,\"w\":94.44,\"h\":9.443999999999999,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"daten\",\"required\":false},{\"id\":\"text-3\",\"type\":\"text\",\"text\":\"Treu bis zum\\nletzten Atemzug.\",\"font\":\"Bellefair\",\"size\":8,\"textAnchor\":\"middle\",\"letterSpacing\":0,\"lineHeight\":9.600000000000007,\"x\":60.637,\"y\":97.146,\"w\":50.816,\"h\":19.200000000000006,\"rotation\":0,\"color\":\"#e8e9e5\",\"bold\":false,\"templateOrigin\":true,\"customerEditable\":true,\"fieldKey\":\"spruch\",\"required\":false},{\"id\":\"motiv-1\",\"type\":\"motif\",\"motif\":\"katalog-tiere-d1000-rechteck-3-2-ohne-motiv-1\",\"x\":167.329,\"y\":69.987,\"w\":78.575,\"h\":67.477,\"rotation\":0,\"color\":\"#e8e9e5\",\"templateOrigin\":true,\"customerEditable\":true}]",
+      "price": "Schiefer-Gedenktafel19,99 €"
+    }
+  },
+  "canvasSelection": {
+    "before": {
+      "objects": [
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Bruno",
+          "font": "Allura",
+          "size": 35.77,
+          "textAnchor": "middle",
+          "letterSpacing": 0,
+          "lineHeight": 42.924240020130284,
+          "x": 60.637,
+          "y": 42.356,
+          "w": 77.33474000000001,
+          "h": 42.924,
+          "rotation": 0,
+          "color": "#e8e9e5",
+          "bold": false,
+          "templateOrigin": true,
+          "customerEditable": true,
+          "fieldKey": "name",
+          "required": true
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "* 14.03.2011   † 22.08.2024",
+          "font": "Montserrat Light",
+          "size": 7.87,
+          "textAnchor": "middle",
+          "letterSpacing": 0,
+          "lineHeight": 9.443520243840487,
+          "x": 60.637,
+          "y": 68.408,
+          "w": 94.44,
+          "h": 9.443999999999999,
+          "rotation": 0,
+          "color": "#e8e9e5",
+          "bold": false,
+          "templateOrigin": true,
+          "customerEditable": true,
+          "fieldKey": "daten",
+          "required": false
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "Treu bis zum\nletzten Atemzug.",
+          "font": "Bellefair",
+          "size": 8,
+          "textAnchor": "middle",
+          "letterSpacing": 0,
+          "lineHeight": 9.600000000000007,
+          "x": 60.637,
+          "y": 97.146,
+          "w": 50.816,
+          "h": 19.200000000000006,
+          "rotation": 0,
+          "color": "#e8e9e5",
+          "bold": false,
+          "templateOrigin": true,
+          "customerEditable": true,
+          "fieldKey": "spruch",
+          "required": false
+        },
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "motif": "katalog-tiere-d1000-rechteck-3-2-ohne-motiv-1",
+          "x": 167.329,
+          "y": 69.987,
+          "w": 78.575,
+          "h": 67.477,
+          "rotation": 0,
+          "color": "#e8e9e5",
+          "templateOrigin": true,
+          "customerEditable": true
+        }
+      ],
+      "plate": {
+        "x": 38,
+        "y": 177.3671875,
+        "width": 946.40625,
+        "height": 602.2578125,
+        "top": 177.3671875,
+        "right": 984.40625,
+        "bottom": 779.625,
+        "left": 38
+      },
+      "selected": "text-2"
+    },
+    "after": {
+      "objects": [
+        {
+          "id": "text-1",
+          "type": "text",
+          "text": "Bruno",
+          "font": "Allura",
+          "size": 35.77,
+          "textAnchor": "middle",
+          "letterSpacing": 0,
+          "lineHeight": 42.924240020130284,
+          "x": 60.637,
+          "y": 42.356,
+          "w": 77.33474000000001,
+          "h": 42.924,
+          "rotation": 0,
+          "color": "#e8e9e5",
+          "bold": false,
+          "templateOrigin": true,
+          "customerEditable": true,
+          "fieldKey": "name",
+          "required": true
+        },
+        {
+          "id": "text-2",
+          "type": "text",
+          "text": "* 14.03.2011   † 22.08.2024",
+          "font": "Montserrat Light",
+          "size": 7.87,
+          "textAnchor": "middle",
+          "letterSpacing": 0,
+          "lineHeight": 9.443520243840487,
+          "x": 60.637,
+          "y": 68.408,
+          "w": 94.44,
+          "h": 9.443999999999999,
+          "rotation": 0,
+          "color": "#e8e9e5",
+          "bold": false,
+          "templateOrigin": true,
+          "customerEditable": true,
+          "fieldKey": "daten",
+          "required": false
+        },
+        {
+          "id": "text-3",
+          "type": "text",
+          "text": "Treu bis zum\nletzten Atemzug.",
+          "font": "Bellefair",
+          "size": 8,
+          "textAnchor": "middle",
+          "letterSpacing": 0,
+          "lineHeight": 9.600000000000007,
+          "x": 60.637,
+          "y": 97.146,
+          "w": 50.816,
+          "h": 19.200000000000006,
+          "rotation": 0,
+          "color": "#e8e9e5",
+          "bold": false,
+          "templateOrigin": true,
+          "customerEditable": true,
+          "fieldKey": "spruch",
+          "required": false
+        },
+        {
+          "id": "motiv-1",
+          "type": "motif",
+          "motif": "katalog-tiere-d1000-rechteck-3-2-ohne-motiv-1",
+          "x": 167.329,
+          "y": 69.987,
+          "w": 78.575,
+          "h": 67.477,
+          "rotation": 0,
+          "color": "#e8e9e5",
+          "templateOrigin": true,
+          "customerEditable": true
+        }
+      ],
+      "plate": {
+        "x": 38,
+        "y": 177.3671875,
+        "width": 946.40625,
+        "height": 602.2578125,
+        "top": 177.3671875,
+        "right": 984.40625,
+        "bottom": 779.625,
+        "left": 38
+      },
+      "selected": "motiv-1"
+    }
+  }
+}

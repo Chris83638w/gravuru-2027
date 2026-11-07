@@ -1,0 +1,46 @@
+✔ opt-in and native readiness are required; installation does not touch another editor (35.2086ms)
+✔ header reuses the native product return and restores its position and label on removal (16.4601ms)
+✔ the actual native controls and callbacks move; crop tools stay in the photo panel (3.5379ms)
+✔ native validation reveals the text sheet before focusing its field (3.0896ms)
+✔ native hidden and disabled capabilities remain authoritative across design changes (3.308ms)
+✔ undo and redo stay enabled from native history even when a feedback control becomes first (3.9916ms)
+✔ native fullscreen receives its real controls, and closing restores their demo homes (3.0085ms)
+✔ native fullscreen retains checkout across viewport changes from 390px (2.7244ms)
+✔ native fullscreen retains checkout across viewport changes from 844px (2.501ms)
+✔ native fullscreen retains checkout across viewport changes from 1440px (2.7746ms)
+✔ disposing during fullscreen leaves native checkout in the dialog through later resizes (1.5773ms)
+✔ a rejected native fullscreen call is not swallowed and leaves demo controls reachable (3.0388ms)
+✔ Escape leaves a native dialog alone; validation can return safely from fullscreen (2.6472ms)
+✔ dispose restores original nodes, ordering, labels, attributes and hooks without queued work (1.9172ms)
+✔ the disconnected demo is labelled without replacing the native account content or callback (2.07ms)
+✔ keyboard detection keeps Android pre-keyboard height and ignores rotation (0.087ms)
+✔ footer opens native sections; a canvas tap closes but drag and buttons do not (2.2161ms)
+✔ desktop photo tab opens the panel first and preserves native upload limits (2.3714ms)
+✔ desktop overview cart uses native validation once and follows availability; editing and mobile keep Fertig (2.4397ms)
+✔ desktop uses the same five top buttons and restores the mobile footer at the breakpoint (2.9394ms)
+✔ mobile photo navigation opens the panel without a chooser; explicit upload remains native (2.8131ms)
+✔ mobile reset is clearly named and still delegates confirmation; disposal restores its content (1.836ms)
+✔ starts on size; real section tabs change only the inner option body without page/canvas/editor scrolling (7.7411ms)
+✔ all mounting, alternative accessories, conditional groups and multiple accessory checks stay together (4.8774ms)
+✔ native conditional hidden, visual-only and CSS visibility are never overwritten or exposed by a tab (3.764ms)
+✔ spacer colour dialog and delegated selection stay native and are not hidden when already open (2.4301ms)
+✔ info buttons keep identity, callbacks and independent behavior beside the tab label (1.6523ms)
+✔ fixed material copies only native text and follows replaced and emptied information sources (3.8107ms)
+✔ unknown material values remain unavailable and never become an invented choice (7.9757ms)
+✔ a real material selector remains native and does not gain a duplicated summary (3.5497ms)
+✔ all family forms/sizes remain on size, family colour on material, with complete native rerenders (3.1971ms)
+✔ stake and native format selectors remain size controls; all other native fields remain reachable (2.6204ms)
+✔ legacy mounting controls outside the native options body keep the original scroll container (2.6979ms)
+✔ a natively hidden options container is not made visible by the demo layout (2.0599ms)
+✔ hidden panels and inert inspectors do not switch; native changes keep the chosen tab and inner scroll (2.3585ms)
+✔ replaced navigation is rebuilt once and observers settle without rewriting native controls (2.3032ms)
+✔ installation is idempotent; dispose restores every owned attribute, text node, style and listener (1.6279ms)
+✔ unrelated editors and incomplete native shells remain unchanged (1.3304ms)
+ℹ tests 38
+ℹ suites 0
+ℹ pass 38
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 235.7301

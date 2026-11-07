@@ -1,3 +1,108 @@
+# Mobile Demo R6 – gezielte Korrekturen am 07.11.2026
+
+50/50 Tests bestanden. Lokale Browserprüfung: sechs Footeraktionen einschließlich Ausführung; Foto-Dateidialog, Import und Löschen; Text-Eckdrag links oben 36→59, ein Undo zurück auf 36; Schriftwahl bei 360×640 sichtbar; Tastaturhöhe 390×430 simuliert; Desktop 1440×900. Alle C3-Nutzdateien entsprechen dem Release. Öffentlich nach Veröffentlichung bei 390×708 bestätigt: Ausführung, sofort sichtbare Schriftwahl, Dateiauswahl über Foto unten, vollständiges Testbild und korrekter Preis nach Einfügen/Löschen. Physische Smartphone-Tastatur-/Touchabnahme und echte Bestellung nicht behauptet.
+
+[R6-Sicherung und Prüfumfang](docs/handoffs/2026-11-07-mobile-demo-r6-sicherung.md), [Textansicht](docs/reviews/2026-11-07-mobile-demo/r6-public-text-mobile.png), [Ausführung](docs/reviews/2026-11-07-mobile-demo/r6-public-options-mobile.png). 4067 vorherige öffentliche Dateien unverändert, nur getrennte Demo ergänzt.
+
+# Mobile Demo R5 – veröffentlichte Bedienkorrektur am 07.11.2026
+
+38 gezielte Tests bestanden; separater R5-Ordner auf Quellcommit `07d5d8a4`. Die [R5-Übergabe](docs/handoffs/2026-11-07-mobile-demo-r5-bedienung.md) dokumentiert die lokalen C3/C4/Final-Bedienfälle und die genaue Abgrenzung. Öffentlich geprüft: frischer 22×14-Start mit Bruno/19,99 €, Textpanel mit nativen Feldern und Schrifthöhenregler, mehrzeilige Eingabe, lesbares Textfeld bei simulierter Tastaturhöhe, PC-Anordnung bei 1440×900; im geprüften öffentlichen Ablauf keine Konsolenwarnungen/-fehler.
+
+[PC-Screenshot](docs/reviews/2026-11-07-mobile-demo/demo-r5-desktop-online-1440.jpg), [Handy-Screenshot](docs/reviews/2026-11-07-mobile-demo/demo-r5-text-online-390.jpg), [simulierte Tastaturhöhe](docs/reviews/2026-11-07-mobile-demo/demo-r5-tastatur-online-390x430.jpg), [Server-/HTTP-Belege](docs/reviews/2026-11-07-mobile-demo/). Vorherige 2061 öffentliche Dateien und Originale unverändert. Keine Live-Shop-Änderung oder tatsächliche Bestellung. Physischer Android-/iOS-Tastaturtest und Touchabnahme weiter offen. Historischer R4-Bericht folgt unverändert.
+
+# Mobile Demo R4 – veröffentlicht und geprüft am 07.11.2026
+
+**Ergebnis: lokale Funktions- und Sichtprüfung für die nachfolgend tatsächlich bedienten Fälle bestanden; getrennte Demo veröffentlicht und öffentlich zurückgelesen.** Physische Touch-/iOS-Tastaturprüfung bleibt offen. Der folgende frühere Abschnitt „Abnahme noch laufend“ bleibt als anfängliches Prüfprotokoll erhalten; für die unten benannten Fälle gilt dieser neuere Nachtrag.
+
+Eigener Branch `dev/mika-mobile-demo-20261107`, unveränderter Engine-Grundstand `8ffeed8d90191cb89f1188a336751de2b2a4e0c0`. Paketnamespace `/konfi-demo/mobil-20261107-r4/`. Vollständige bestehende Schiefermodelle mit 43 Designs je Größe und allen 30 Produktschriften. Die mobile Demo ordnet vorhandene Werkzeuge neu; kein Motiv-/Schriftersatz, keine neue Preisberechnung. Bestehender Kundenkonfi und Astra-Arbeitskopie bleiben unverändert.
+
+## Tatsächlich bediente eigene Demo
+
+Die Bedienprüfungen entstanden verteilt über **R1 bis R4 mit gleicher Engine**: R1 Design/Größe/Schrift/Maske/Vollbild, R2 Undo/Namenlöschen; R4 Foto-Eckdrag, Regler, Fotolöschen, Reset, Querformat sowie öffentliche Suche/Werkzeuge. Die folgende Tabelle ist die gemeinsame Prüfbilanz; nicht jede Handlung wurde in R4 erneut ausgeführt. Grundplatten-/43-Design-Datenhashes sind erhalten, nicht alle 43 Designs einzeln visuell geprüft.
+
+| Prüfung | Beobachtetes Ergebnis |
+|---|---|
+| Designwahl | 43 Designs vorhanden; Bruno → Emma gewechselt. |
+| Größe / Basispreis | 22×14 → 30×20; Preis 19,99 → 24,99 €. |
+| Motivsuche | Kategorie Blumen ausgewählt; Suchtext „kreuz“ zeigt trotzdem 18 passende Treffer. |
+| Motivpreis / Löschen | Hinzufügen +1,69 €; anschließendes Löschen stellt den vorherigen Preis wieder her. |
+| Schrift | Cinzel ausgewählt, sofort übernommen; Schriftauswahl schließt. |
+| Foto | Neutrales Testbild vollständig auf der Tafel; Herz als Zuschnitt gewählt und mit Übernehmen angewendet. Keine Behauptung eines erneut gespeicherten Galerie-Fotoroundtrips. |
+| Foto-Eckgriff / Auswahl / Regler | Eckgriff in Chrome per echter Browser-Mauseingabe gezogen: Größe 130 → 156; Bildrechteck 197,36×138,15 → 236,80×165,76 px; Seitenverhältnis 1,4286 unverändert. Klick auf das Foto öffnet keinen Upload. Pfeiltaste nach rechts verschiebt das Foto. Größenregler mit Pfeiltaste nach links: 156 → 155,9. Dies ist ein PC-/Chrome-Nachweis, kein physischer Touchtest. |
+| Original zurücksetzen | Reset fragt vor dem Wiederherstellen der gewählten Originalvorlage nach. |
+| Undo / Redo | Namensänderung Luna ↔ Bruno über die vorhandene Historie zurück-/wiederhergestellt. |
+| Vorlagennamen löschen | Name tatsächlich gelöscht, danach mit Undo wiederhergestellt. |
+| Vollbild | Native Vollbildansicht geöffnet und in die Demo zurückgekehrt; Werkzeuge wieder erreichbar. |
+| Abschluss | Native Prüfübersicht mit den gewählten Werten geöffnet; endgültiger Checkout bleibt gesperrt. Keine Bestellung ausgelöst. |
+
+**Darstellungen:** 360×740, 390×844, 430×932 CSS-Pixel; Querformat 844×390 mit rechtem Werkzeugbereich; Desktop 1440×900 mit zentrierter 600-px-Demo. Dies sind Browseransichten, keine Tests auf einem physischen Smartphone. Native Dialoge und die eigentlichen Werkzeugfunktionen bleiben erhalten.
+
+Lokale Aufnahmen in `outputs/mobile-demo-20261107/`: `demo-start-390.jpg`, `demo-werkzeuge-390.jpg`, `demo-text-430.jpg`, `demo-text-844x390.jpg`, `demo-desktop-1440.jpg`. Das Uploadbild `foto-test-komplett.png` ist eine neutrale Testdatei. Die zuvor dokumentierten Zakeke-Aufnahmen bleiben reine Bedienreferenz; keine Produktgrafik daraus wurde übernommen.
+
+## Korrekturen und technische Nachweise
+
+- Alte lokale Vollmodelle hatten bei 43 Vorlagennamen je Größe noch `delete:false`; die veröffentlichten Prüfseiten enthielten bereits das bestätigte Löschrecht. Demo-Kopien gleichen genau diese Rechte und den bereits deaktivierten Sammlungsfilter ab. `required:true` bleibt bestehen; der native Löschvertrag unterstützt ausdrücklich löschbare Pflichttexte. Originale und produktive Daten werden nicht geschrieben.
+- Der Erklärungstext zu erlaubten Elementänderungen ist bereits im veröffentlichten R12 enthalten; seine spätere Ausblendung lag nur im separaten festen-Werkzeugtest. Er ist jetzt allein im Demo-Layout ausgeblendet, ohne Berechtigungen zu lockern.
+- Lesender R12-Abgleich: Live-Hauptbundle-SHA stimmt mit dem dokumentierten R12-Beleg überein; 16/16 enthaltene Styles gleich. 141/149 Hauptmodule nach Host-URL- und Bundlernormalisierung identisch, übrige Änderungen sind nachvollziehbare aktuelle Galerie-/Ressourcen-/Sortier-/Kontur- und Iconstände. Kein fehlender veröffentlichter R12-Kundenfix gefunden. Dies ist keine erneute Prüfung aller separat geladenen Server-Nebenbundles.
+- **22/22 automatisierte gezielte Tests bestanden:** zehn Demo-Adaptertests, sechs Paket-/Isolationsprüfungen und sechs Veröffentlichungsskripttests. Native Knoten/Callbacks, versteckte/gesperrte Produktfunktionen, Undo/Redo, Vollbild/Fokus/Validierungsrückkehr, rückbaubare Installation, Modell-/Font-/Bild-Erhalt, Namespace-/Symlinkgrenzen, erlaubte statische Lesewege und gesperrte Schreibwege sind abgedeckt. Die Veröffentlichungstests prüfen standardmäßig lesenden Modus, additive Auslieferung mit Sicherung und Erhalt vorhandener Bytes, Vorbedingungen vor Schreibbeginn, Überschreibschutz sowie ZIP-Traversal-/Duplikat-/Symlinkabwehr. Kein physischer Geräte- oder Livecheckoutnachweis daraus ableiten.
+- Manifest R4: SHA256 `f354482b23fb6635a1cec1621390649a6836cd2f7815e67def3f04ce0641ba06`; ZIP `gravuru-mobile-demo-r4.zip`: SHA256 `713bac99dd7372eca7780f5634ac5410e47b2dfc5595670802f449c118afda94`.
+- Tatsächliche Servervorprüfung: `outputs/mobile-demo-20261107/host-preflight-r4.json`, Aktion `verify-only`, `changesPerformed:0`. Paket-Hashes identisch, 58 vorhandene öffentliche Dateien inventarisiert; Inventar-SHA256 `d3506ad4391b42069b6a44fb9c33dbbc4bcbdf4576007abb3e3e0347f2c8f6ed`. Die folgende Veröffentlichung wurde getrennt ausgeführt und nachgeprüft.
+
+## Tatsächliche getrennte Veröffentlichung und öffentlicher Test
+
+- [22×14 cm – frisch starten](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r4/22x14.html?fresh=1), [30×20 cm – frisch starten](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r4/30x20.html?fresh=1).
+- `outputs/mobile-demo-20261107/host-publication-r4.json` bestätigt `verified:true`, `originalFilesUnchanged:true` und `oldPublicInventoryUnchanged:true`. Alle 58 bisherigen öffentlichen Dateien plus `start-r5.cjs`, `app.cjs` und beide alten HTMLs hashgleich; Neustart und Routeränderung false, Shop-/Datenbankschreibzugriffe 0. Nur der zusätzliche Demo-Namespace wurde veröffentlicht.
+- Private Sicherung vor Veröffentlichung: `/var/www/vhosts/gravuru-designwerkstatt.de/private/mobil-20261107-r4-before-publication`, vier Originalkopien und vollständiges Public-Inventar. Dies ist keine Datenbanksicherung und keine neue Shopvollsicherung.
+- `outputs/mobile-demo-20261107/http-public-r4.json`: sechs öffentliche Stichproben (beide Einstiegs-HTMLs, JS, CSS, Katalogsegment und Motiv-JSON) mit HTTP 200, gzip, richtigem MIME-Typ, Manifestgleichheit, `Cache-Control: no-store` und `X-Robots-Tag: noindex, nofollow, noarchive`. Die gemessenen Einzelabrufe vom PC sind keine Handy-/Lasttestzeiten.
+- Öffentliche Demo in Chrome bei 390 px tatsächlich bedient: Start Bruno und 19,99 €, fünf Werkzeuge vorhanden; Kategorie Blumen plus Suchwort „kreuz“ zeigt 18 Treffer. Keine Konsolenwarnungen oder -fehler im geprüften Ablauf. Die übrigen oben genannten Handlungen verteilen sich auf lokale R1–R4-Prüfungen mit gleicher Engine; kein vollständiger zweiter R4-/Online-Durchlauf aller Fälle behauptet. Die öffentlichen R4-Dateihashes entsprechen dem fertigen R4-Paket.
+- Repositorykopien der Screenshots sowie HTTP-/Hostnachweise: [docs/reviews/2026-11-07-mobile-demo](docs/reviews/2026-11-07-mobile-demo/). Die lokalen Demo-Server 8217–8220 sind nach Ende der Prüfung beendet; der öffentliche statische Demolink bleibt erreichbar.
+
+**Noch offen:** echte Touchgesten und iOS-Bildschirmtastatur. Nicht alle 43 Designs wurden einzeln neu freigegeben. Keine aktivierte native Galerie-/Kundenspeicherung in dieser statischen Demo, keine echte Shopify-Kaufprüfung. Kundenkonfi und Shop wurden nicht ersetzt, kein Main-Merge oder Astra-Eingriff. Commit-/PR-Link wird nach Erstellung ergänzt.
+
+---
+
+# Mobile Demo – sichtbare Prüfung vom 07.11.2026
+
+## Auftrag und Grenzen
+
+Eigener Branch `dev/mika-mobile-demo-20261107`, Basis `8ffeed8d90191cb89f1188a336751de2b2a4e0c0`. Neue mobile Bedienoberfläche als abschaltbarer Zusatz zum vorhandenen Editor. Keine Änderung am bisherigen Konfi, keine neue Preis-/Geometrielogik, keine Shopify-Schreibzugriffe, kein Main-Merge und keine Arbeit in Astras Arbeitskopie.
+
+## Referenz tatsächlich bedient
+
+[Zakeke-Beispiel](https://store.zakeke.com/apps/zakeke?pid=5788997451932&handle=custom-phone-case&locale=en), Chrome mit 390 × 844 CSS-Pixeln. Prüfung mit neutralem Testtext „Demo“ und einem Motiv aus Zakekes eigener Galerie; keine Kundendaten hochgeladen und keine Bestellung ausgelöst.
+
+- Plus öffnet die Werkzeugliste als unteres Panel.
+- Text eingegeben und bestätigt; Textwerkzeuge erscheinen.
+- Schrift „Aladin“ ausgewählt; Schriftgröße von 120 auf 80 geändert. Angezeigte Objektmaße ändern sich von 8,24 × 3,26 auf 5,49 × 2,18 cm.
+- Text gelöscht; Design-Schaltfläche verschwindet. Rückgängig stellt die Gestaltung wieder her.
+- „Images gallery“ geöffnet; sichtbare Kategorien, Suche und Kategorie „Funny Faces“ geprüft.
+- „Snowman 1“ eingefügt; Original-Werkzeuge Entfernen, Ersetzen, Farben, Maske und Maße erscheinen.
+- Maskenliste geöffnet; unter anderem Stern, Herz und Quadrat sichtbar. Maskenanwendung wurde nicht getestet.
+- Kein echter Smartphone-/Touchtest behauptet. Browserbreite ist emuliert. Drag-/Pinch- und Checkoutprüfung der Referenz nicht durchgeführt.
+
+Referenzaufnahmen liegen im lokalen Ausgabeordner `outputs/mobile-demo-20261107/` als `zakeke-bildbearbeitung-390.jpg` und `zakeke-werkzeuge-390.jpg`. Es werden keine Zakeke-Produktgrafiken in die Gravuru-Demo kopiert.
+
+## Eigene Demo – Abnahme noch laufend
+
+Die folgenden Nachweise werden nach der tatsächlichen Browserprüfung ergänzt. Ein erfolgreicher Build allein gilt nicht als Sichtprüfung.
+
+- [ ] Startansicht 390 × 844 mit Originaltafel, Originaldesign und Preis
+- [ ] Werkzeugmenü und alle fünf bestehenden Module
+- [ ] Größen-/Preiswechsel, Motive und Suche
+- [ ] Texte und Schriftwechsel
+- [ ] Foto: vollständiger Upload, Größe, Maske, Löschen
+- [ ] Rückgängig / Wiederholen / bestätigtes Zurücksetzen
+- [ ] Hilfe / Ebenen / Vollbild / Speichern / Abschlussprüfung
+- [ ] Weitere Mobilbreite, Querformat, Desktop
+- [ ] Getrennte URL, Daten- und Browserablage; unveränderter bisheriger Konfi
+
+## Sicherung
+
+Vor Beginn neues vollständiges Git-Codearchiv `work/checkpoints/mobile-demo-20261107/baseline-8ffeed8d.zip`, SHA256 `e62c495dbe6544b6eb6735787ad6dd39cc8ca7e29ececaefc95d093edb0a3714`. Dies ist eine Codesicherung, keine neue Datenbank- oder Serversicherung.
+
+
+---
+
 # Design QA — Orientierung und sichtbare Bemaßung
 
 Lokale Sichtprüfung Desktop 1280×720, 390×664 und 375×548: flacher Kundenkopf, aktive Feld-/Objektmarkierung, Feldname in der Schriftleiste, mobile zwei Reihen mit vollständig sichtbarem Papierkorb, komplette Bemaßung und freier Preis. Schraubenköpfe metallisch und 3,6 mm, Bohrungen unverändert. Eigene Texte und synthetisches Foto nach Design-/Größenwechsel in separater Testkopie erhalten. 146/146 gezielte Tests und Build bestanden. [Bilder, genaue Regeln und Grenzen](docs/handoffs/2026-10-30-konfi-orientierung-astra.md). Kein Live-/Safari-/Linux-Nachweis; Nutzeroriginale unangetastet.

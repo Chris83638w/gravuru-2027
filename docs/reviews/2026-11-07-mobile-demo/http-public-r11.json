@@ -1,0 +1,126 @@
+{
+  "scope": "R11 public HTTP samples; not a physical mobile or performance measurement",
+  "sourceCommit": "beaa751de6e49c5dbb713c2de9ef2f3b27ca37c8",
+  "results": [
+    {
+      "path": "MANIFEST.json",
+      "status": 200,
+      "contentType": "application/json",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "5e5214e0d20be58bba1b5db6e90251821b719206017d48feb8c9e91b173713b6",
+      "matches": true
+    },
+    {
+      "path": "22x14.html",
+      "status": 200,
+      "contentType": "text/html",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "d5a4c0d18af4688bfedf53c7323241e254bbcf4414b281a6135663fe8dc82931",
+      "matches": true
+    },
+    {
+      "path": "30x20.html",
+      "status": 200,
+      "contentType": "text/html",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "e873ad533d23e09ae2a572274de487ab7e5d3289fcebfe504d2774e99539d449",
+      "matches": true
+    },
+    {
+      "path": "demo.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "229bcc8bf3c3a85c0854439fcede006cba540b7aa046ff386cc34195cfbee8eb",
+      "matches": true
+    },
+    {
+      "path": "demo.css",
+      "status": 200,
+      "contentType": "text/css",
+      "encoding": "br",
+      "cache": "no-store              ",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "90160c76b0d4a1975158e1f7825b6498f4227daf5c001212168d80424976aa63",
+      "matches": true
+    },
+    {
+      "path": "text-selection-dismiss.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "a63edb616fa2d439e82e0cf51d212479cc3fc32fb5a68e96aef0732176ba2c61",
+      "matches": true
+    },
+    {
+      "path": "desktop-selection.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "6fe2f0c16bb033007c11f48e2dd42edf85186a0d13839a9e836d5ad8ab24f189",
+      "matches": true
+    },
+    {
+      "path": "options-navigation.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "fddb8654791d8e98cfab29fa6fd66f753908751d35c949f08db5f86a880fc68b",
+      "matches": true
+    },
+    {
+      "path": "product-return.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "9501984a9f2518a17945dd5eb3e891111d4277bcb4cd9791575ff17342977c66",
+      "matches": true
+    },
+    {
+      "path": "overlap-review.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "8f11e0c6bca40ce0a94bee94b0a82ff1e691db1ea8b09b1235ac98ca6bbea749",
+      "matches": true
+    },
+    {
+      "path": "overlap-consent.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "78bea28a6261408080646f8320f0798e73a89656c4501cf95500935b98d64de3",
+      "matches": true
+    },
+    {
+      "path": "contour-placement.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "br",
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive",
+      "sha256": "78741e914e4d84ba7c6f38e8edf55159bedc5df32ff0b3189daae956539424ac",
+      "matches": true
+    }
+  ]
+}

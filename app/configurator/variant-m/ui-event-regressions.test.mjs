@@ -1,4 +1,5 @@
 import {customerFieldLabel} from './text-fields.mjs';
+import {createTextBounds} from './text-bounds.mjs';
 import {executionOptionGroups} from './execution-registry.mjs';
 import {alignmentContent,alignmentLabel} from './ui-icons.mjs';
 import {selectionScaleFactor} from './selection-arrows.mjs';
@@ -397,13 +398,13 @@ test('Befestigungskacheln: jede Befestigung als Kachel mit Icon, Bezeichnung und
 
 test('workflow glyph bounds and autofit caches distinguish catalogue typography',()=>{
  const object={id:'name',type:'text',text:'A\nA',font:'Source',size:5,bold:false,italic:false,w:10,letterSpacing:0,textAnchor:'middle',lineHeight:6};
- let renders=0,rendered;
- const env={el:{fontData:{},state:{fkFrame:'none'},uxTextScale:()=>1},r:{append(){}},
-  textPaths:o=>{renders++;rendered={x:o.textAnchor==='start'?-o.w/2:o.textAnchor==='end'?o.w/2:0,y:0,width:o.w+o.letterSpacing,height:o.lineHeight};return '<path/>';},
-  document:{createElementNS:()=>({style:{},firstElementChild:{getBBox:()=>rendered},remove(){}})},object};
+ let renders=0,measuring;
+ const env={el:{fontData:{Source:{regular:{units:1000,glyphs:{A:{a:500,d:'M0 0H500V700H0Z'}}}}},state:{fkFrame:'none'},uxTextScale:()=>1},r:{append(){}},
+  createTextBounds:el=>{const measure=createTextBounds(el);return o=>{measuring=o;return measure(o);};},object};
+ env.el.shadowRoot=env.r;
+ env.el.ownerDocument={createElementNS:()=>({style:{},firstElementChild:{getBBox:()=>{renders++;const o=measuring;return {x:o.textAnchor==='start'?-o.w/2:o.textAnchor==='end'?o.w/2:0,y:0,width:o.w+o.letterSpacing,height:o.lineHeight};}},remove(){}})};
  vm.createContext(env);
- vm.runInContext(line('workflow.mjs','const boundsCache=new Map();'),env);
- vm.runInContext(line('workflow.mjs','function bounds(o){'),env);
+ vm.runInContext(line('workflow.mjs','const bounds=createTextBounds(el);'),env);
  vm.runInContext(line('workflow.mjs','const fitted=new Map(),signature='),env);
  const original=vm.runInContext('bounds(object)',env),signature=vm.runInContext('signature(object)',env);
  assert.equal(original.height,6);assert.equal(renders,1);
@@ -431,9 +432,11 @@ test('LF2 customer size input and normalization preserve the source leading rati
 });
 
 test('usability glyph cache distinguishes catalogue spacing and alignment for edge limits',()=>{
- let renders=0,rendered;const object={text:'A\nA',font:'Source',size:5,w:10,lineHeight:6,textAnchor:'middle',letterSpacing:0};
- const env={object,el:{fontData:{}},r:{append(){}},textPaths:o=>{renders++;rendered={x:0,y:0,width:o.w+o.letterSpacing,height:o.lineHeight};return '<path/>';},document:{createElementNS:()=>({style:{},firstElementChild:{getBBox:()=>rendered},remove(){}})}};
- vm.createContext(env);vm.runInContext(line('usability.mjs','const boundsCache=new Map();'),env);vm.runInContext(block('usability.mjs','  function textBounds(o){','\n  }'),env);
+ let renders=0,measuring;const object={text:'A\nA',font:'Source',size:5,w:10,lineHeight:6,textAnchor:'middle',letterSpacing:0};
+ const env={object,el:{fontData:{Source:{regular:{units:1000,glyphs:{A:{a:500,d:'M0 0H500V700H0Z'}}}}},shadowRoot:{append(){}}},
+  createTextBounds:el=>{const measure=createTextBounds(el);return o=>{measuring=o;return measure(o);};}};
+ env.el.ownerDocument={createElementNS:()=>({style:{},firstElementChild:{getBBox:()=>{renders++;return {x:0,y:0,width:measuring.w+measuring.letterSpacing,height:measuring.lineHeight};}},remove(){}})};
+ vm.createContext(env);vm.runInContext(line('usability.mjs','const textBounds=createTextBounds(el);'),env);
  const original=vm.runInContext('textBounds(object)',env);assert.equal(original.height,6);
  for(const change of [{lineHeight:20},{textAnchor:'start'},{letterSpacing:2},{w:30}]){env.changed={...object,...change};const before=renders,measured=vm.runInContext('textBounds(changed)',env);assert.equal(renders,before+1);assert.equal(vm.runInContext('textBounds({...changed})',env),measured);assert.equal(renders,before+1);if(change.lineHeight)assert.equal(measured.height,20);}
 });

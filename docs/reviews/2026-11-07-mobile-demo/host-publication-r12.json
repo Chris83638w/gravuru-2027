@@ -1,0 +1,23 @@
+{
+  "schema": "gravuru-mobile-demo-publication/v1",
+  "namespace": "/konfi-demo/mobil-20261107-r12/",
+  "zipSha256": "5b1a9e98c62cc78a93d507f3393300b57b6554266b7484185f9c1e7b78301ed1",
+  "manifestSha256": "585698c584b429a72049361e0b0d455435e214f31439f8c8039a931d6e203b18",
+  "files": 2023,
+  "additionalNewFiles": {
+    ".htaccess": {
+      "sha256": "a4dbbbe070341d87f2e038ac5d84af4471c97001003aeaf8c813cf67d33afd97",
+      "bytes": 631
+    }
+  },
+  "privateBackup": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mobil-20261107-r12-before-publication",
+  "originalFilesUnchanged": true,
+  "oldPublicInventoryUnchanged": true,
+  "beforePublicInventorySha256": "58d1056b559c860a66c976988d3e0446f8d46e490be35c338fac6e988793b009",
+  "afterPublicInventorySha256": "58d1056b559c860a66c976988d3e0446f8d46e490be35c338fac6e988793b009",
+  "verified": true,
+  "restart": false,
+  "routerChanged": false,
+  "shopWrites": 0,
+  "databaseWrites": 0
+}

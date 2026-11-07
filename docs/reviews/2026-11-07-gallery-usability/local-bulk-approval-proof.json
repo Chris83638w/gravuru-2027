@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-07",
+  "environment": "isolated-local-test-copy",
+  "origin": "http://127.0.0.1:9004",
+  "browser": "Chrome",
+  "filter": {"material": "steel", "theme": "andenkenschilder", "search": "TRE-V2A-5x2"},
+  "targets": ["TRE-V2A-5x2-D401", "TRE-V2A-5x2-D406", "TRE-V2A-5x2-D408", "TRE-V2A-5x2-D410"],
+  "displayedFormat": "Edelstahl, 5 x 2 cm",
+  "checks": {
+    "firstClickShowsVisiblePageConfirmation": true,
+    "confirmationNamesCountMaterialAndFormat": true,
+    "cancelLeavesAllFourUnchecked": true,
+    "secondExplicitClickReportsFourSaved": true,
+    "reloadShowsAllFourApproved": true,
+    "localTestApprovalsWithdrawnUsingNormalCheckboxes": true,
+    "finalFourDisplayedCheckboxesUnchecked": true
+  },
+  "notes": [
+    "Four local test approvals already existed at the beginning of this acceptance run and were withdrawn before testing the new page confirmation.",
+    "Only the local test copy was written. No online design approval was performed."
+  ]
+}

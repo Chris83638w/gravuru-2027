@@ -9,6 +9,7 @@ import {makeProductDocument,validateProductDocument} from './product-model.mjs';
 import {createProductGroupTemplates} from './product-group-templates.mjs';
 import {galleryEditorDocument} from '../../scripts/fixtures/gallery-editor.mjs';
 import {doorbellFixture} from './test-fixtures/doorbell-config.mjs';
+import {galleryProductGroupSources} from '../../scripts/lib/gallery-management-targets.mjs';
 
 const isCode=code=>e=>e.code===code;
 function fixture(t){
@@ -41,6 +42,18 @@ test('versioned templates retain all option groups/fields, source identities, pr
  assert.equal(f.service.save(template.id,changed,2).revision,2,'no-op keeps revision');
  assert.throws(()=>f.service.save(template.id,template.document,1),isCode('group_revision_conflict'));
  assert.equal(f.repository.list().length,2,'saving a reusable template creates no products');
+});
+
+test('management source overview reads each native product once even with thousands of design targets',t=>{
+ const f=fixture(t),reads=[],repo={...f.repository,get:(...args)=>{reads.push(args[0]);return f.repository.get(...args);}};
+ const targets=[f.a,f.b].flatMap((record,i)=>Array.from({length:1000},(_,j)=>({productId:record.id,productKey:'product-'+i,sizeKey:'size-'+i,designId:j%2?'source-a':'source-b'})));
+ let registries=0;
+ const service=f.open({repository:repo,targets:options=>{registries++;return galleryProductGroupSources({repository:repo},targets,options);}});
+ const sources=service.sources();assert.equal(sources.length,2);assert.equal(registries,1);assert.deepEqual(reads,[f.a.id,f.b.id]);
+ assert.equal(sources[0].currentPrice.totalCents,f.service.sources()[0].currentPrice.totalCents);
+ assert.equal(sources[0].optionGroups.length,3);assert.equal(sources[0].optionFields.length,1);assert.ok(!JSON.stringify(sources).includes('svgFragment'));
+ const ambiguous=[...targets,{...targets[0],sizeKey:'different'}];
+ assert.throws(()=>galleryProductGroupSources({repository:repo},ambiguous),/Ambiguous product group source/);
 });
 
 test('concrete multi-product plan must be confirmed exactly; executes actual draft products with no duplicate retry',t=>{

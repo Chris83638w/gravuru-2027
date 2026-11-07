@@ -1,5 +1,5 @@
 import {materialOverviewHtml} from './review-material-overview.mjs';
-import {designReviewMaterial, designReviewMaterials, designReviewCategory, designReviewApprovalKey, resolveDesignReviewTarget} from './design-review-targets.mjs';
+import {designReviewMaterial, designReviewMaterials, designReviewCategory, designReviewApprovalKey, resolveDesignReviewTarget, indexDesignReviewProducts} from './design-review-targets.mjs';
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const sizeLabel = mm => mm.map(value => Number((value / 10).toFixed(2))).join(' × ') + ' cm';
@@ -7,6 +7,25 @@ const compareText = (a, b) => String(a ?? '').localeCompare(String(b ?? ''), 'de
 const json = value => JSON.stringify(value).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026');
 export const reviewProcessLabel = row => ['uv','uv-druck'].includes(String(row.process||'').toLowerCase()) ? 'UV-Druck' : String(row.process||'').toLowerCase()==='gravur' ? 'Gravur' : 'Verfahren offen';
 export const reviewSourceHierarchy = row => [row.sourceProduct,row.sourceTargetGroup,row.sourceSubcategory].filter(value=>typeof value==='string'&&value.trim()).join(' / ');
+// Display/filter identity only. Catalogue categories, native target identities,
+// comments and approvals keep their original keys and values.
+export function galleryReviewCategory(row) {
+  const category=designReviewCategory(row);
+  const originalPhotoFlag=[row.mitFoto,row.catalogueCategory?.photo,row.katalog?.kategorie?.foto].some(value=>typeof value==='boolean'||typeof value==='string'&&/^(?:ja|nein|yes|no|with|without|mit foto|ohne foto)$/i.test(value.trim()));
+  const missingOriginal=Array.isArray(row.files)&&row.files.length===0&&Array.isArray(row.sourceIssues)&&row.sourceIssues.some(issue=>typeof issue==='string'&&/^Katalogdateien fehlen: .+\/design\.svg\|json$/.test(issue));
+  // These supplier placeholders have neither original files nor a photo flag.
+  // Their builder's false fallback is not evidence of a design without a photo.
+  if(category.photo==='without'&&missingOriginal&&!originalPhotoFlag&&!(Number(row.photoSlots)>0)&&!row.targets?.some(target=>target.status==='prepared'))category.photo='unknown';
+  const suffix={without:'ohne Foto',with:'mit Foto',unknown:'Fotozuordnung offen'}[category.photo];
+  const hierarchy=[row.sourceProduct,row.sourceTargetGroup,row.sourceSubcategory].map(value=>typeof value==='string'?value.trim():'');
+  if(hierarchy.some(Boolean))return {...category,key:'source:'+JSON.stringify([...hierarchy,category.photo]),
+    label:hierarchy.map((value,index)=>value||['Produkt offen','Zielgruppe offen','Unterkategorie offen'][index]).join(' / ')+' · '+suffix};
+  // The established slate groups already include the photo state. Retain them
+  // byte-for-byte; generic master categories still need a distinct photo scope.
+  if(category.key.endsWith('-'+category.photo))return category;
+  return {...category,key:'category:'+JSON.stringify([category.key,category.photo]),
+    label:category.label.replace(/(?: ·| )?(?:ohne Foto|mit Foto|Fotozuordnung offen)$/,'')+' · '+suffix};
+}
 export function reviewSourcePreviewUrl(preview) {
   if (typeof preview !== 'string' || !/^originals\/.+\.(?:png|webp)$/i.test(preview) || /[\\\x00-\x1f]/.test(preview)) return null;
   const parts = preview.split('/');
@@ -31,10 +50,10 @@ export function reviewThemes(row, category = designReviewCategory(row)) {
   const declared = (row.reviewThemes || []).filter(theme => typeof theme?.key === 'string' && theme.key && typeof theme.label === 'string' && theme.label);
   return [...new Map((declared.length ? declared : [{key: category.topic || category.key, label: category.label.replace(/ (?:ohne Foto|mit Foto|Fotozuordnung offen)$/, '')}]).map(theme => [theme.key, {key: theme.key, label: theme.label}])).values()];
 }
-export function orderedReviewTargets(row, imported) {
+export function orderedReviewTargets(row, imported, products = indexDesignReviewProducts(imported)) {
   const primary = designReviewMaterial(row).key;
   return (row.targets || []).flatMap(target => {
-    const resolved = resolveDesignReviewTarget(row, target, imported);
+    const resolved = resolveDesignReviewTarget(row, target, imported, products);
     return resolved ? [{...resolved, approvalKey: designReviewApprovalKey(row, target.sizeKey, target)}] : [];
   }).sort((a, b) => Number(b.material.key === primary) - Number(a.material.key === primary) || compareText(a.material.label, b.material.label) ||
     (a.material.key === 'slate'
@@ -48,8 +67,9 @@ export function blankPreviewUrl(preview) {
 }
 
 export function slateGalleryHtml(pack, imported, {comments = {}, csrfToken = '', approvals = {}, overviewHtml = '', managementEnabled = false, paging = null, assignmentEnabled = false} = {}) {
+  const products = indexDesignReviewProducts(imported);
   const rows = [...pack.originals].sort((a, b) => {
-    const am = designReviewMaterial(a), bm = designReviewMaterial(b), ac = designReviewCategory(a), bc = designReviewCategory(b);
+    const am = designReviewMaterial(a), bm = designReviewMaterial(b), ac = galleryReviewCategory(a), bc = galleryReviewCategory(b);
     return Number(bm.key === 'slate') - Number(am.key === 'slate') ||
       (Number.isFinite(a.reviewOrder) && Number.isFinite(b.reviewOrder) ? a.reviewOrder - b.reviewOrder : 0) ||
       compareText(am.label, bm.label) || ac.rank - bc.rank || compareText(ac.key, bc.key) || compareText(a.id, b.id);
@@ -62,7 +82,7 @@ export function slateGalleryHtml(pack, imported, {comments = {}, csrfToken = '',
   };
   let editable = 0;
   for (const row of rows) {
-    const category = designReviewCategory(row), material = designReviewMaterial(row), rowMaterials = designReviewMaterials(row), rowThemes = reviewThemes(row, category);
+    const category = galleryReviewCategory(row), material = designReviewMaterial(row), rowMaterials = designReviewMaterials(row), rowThemes = reviewThemes(row);
     const multipleMaterials = rowMaterials.length > 1;
     const sectionKey = JSON.stringify([material.key, category.key]);
     if (!sections.has(sectionKey)) sections.set(sectionKey, {category, material, materials: new Map(), cards: []});
@@ -70,7 +90,7 @@ export function slateGalleryHtml(pack, imported, {comments = {}, csrfToken = '',
     categories.set(category.key, category);
     for (const theme of rowThemes) if (!themes.has(theme.key)) themes.set(theme.key, theme);
     for (const item of rowMaterials) materialEntry(item).originals++;
-    const targets = orderedReviewTargets(row, imported).map(target => ({...target, label: (multipleMaterials ? (target.familyLabel || target.material.label) + ' · ' : '') + sizeLabel(target.mm),
+    const targets = orderedReviewTargets(row, imported, products).map(target => ({...target, label: (multipleMaterials ? (target.familyLabel || target.material.label) + ' · ' : '') + sizeLabel(target.mm),
       preview: approvals[target.approvalKey]?.metadata?.previewUrl || '/api/workshop/products/' + encodeURIComponent(target.productId) + '/preview.svg?' + new URLSearchParams({designId: target.designId}),
       edit: '/originale/editor?' + new URLSearchParams({configuration: target.productId, design: target.designId, originalId:row.id})}));
     if (targets.length) editable++;

@@ -4,6 +4,7 @@ import {installApprovalReview,approvalScopeUrl} from './lib/slate-review-approva
 
 const base = 'http://localhost:8976';
 const hashA = 'a'.repeat(64), hashB = 'b'.repeat(64);
+const isRead = request => request.url === '/originale/approvals?action=read';
 function state({fingerprint = hashA, productRevision = 1, status = 'unreviewed', revision = 0} = {}) {
   return {key:'target-D1',status,revision,fingerprint,metadata:{id:'D1',productRevision,
     previewUrl:'/api/workshop/products/cfg_a/preview.svg?' + new URLSearchParams({designId:'D1',revision:String(productRevision),reviewFingerprint:fingerprint})}};
@@ -39,7 +40,7 @@ function harness(t, initial = state(), {inline = false, loaded = true,originalId
   const requests=[];
   globalThis.fetch=async(url,options)=>{
     requests.push({url,...options,body:options.body?JSON.parse(options.body):undefined});
-    if(!options.method&&getResponse)return getResponse();
+    if(isRead({url})&&getResponse)return getResponse();
     return{ok:true,json:async()=>({approvals:{[next.key]:next},overviewHtml:''})};
   };
   const api=installApprovalReview({cards:[card]});
@@ -47,14 +48,26 @@ function harness(t, initial = state(), {inline = false, loaded = true,originalId
     next:value=>{next=value;},getResponse:fn=>{getResponse=fn;},
     async imageLoaded(){image.complete=true;image.naturalWidth=500;await image.emit('load');},
     async click(checked=true){checkbox.checked=checked;await checkbox.emit('change',{target:checkbox});},
-    posts:()=>requests.filter(r=>r.method==='POST')};
+    posts:()=>requests.filter(r=>!isRead(r))};
 }
 
 test('paged approval reads and writes carry only the explicit loaded-original scope',async t=>{
   const h=harness(t,state(),{originalIds:['D1']});await h.api.refresh();await h.click();
-  assert(h.requests.length>=2);assert(h.requests.every(request=>request.url===approvalScopeUrl(['D1'])));
-  assert.equal(new URL(h.requests[0].url,base).searchParams.get('originalIds'),'["D1"]');
+  assert(h.requests.length>=2);assert(h.requests.every(request=>isRead(request)||request.url===approvalScopeUrl(['D1'],['target-D1'])));
+  assert.deepEqual(h.requests[0].body,{originalIds:['D1'],targetKeys:['target-D1']});
   assert.equal(approvalScopeUrl(null),'/originale/approvals');assert.throws(()=>approvalScopeUrl(['D1','D1']));assert.throws(()=>approvalScopeUrl(Array.from({length:61},(_,i)=>'D'+i)));
+});
+
+test('summary-only cards fetch just their selected format and require its pinned image before approval',async t=>{
+  const initial=state({fingerprint:null}),h=harness(t,initial,{originalIds:['D1']});
+  assert.equal(h.checkbox.disabled,true);await new Promise(setImmediate);assert.equal(h.requests.length,1);
+  assert.deepEqual(h.requests[0].body.targetKeys,['target-D1']);
+  const next={...state(),key:'target-D1-other'};next.metadata.previewUrl=next.metadata.previewUrl.replace('designId=D1','designId=D1-other');
+  h.card.dataset.approvalKey=next.key;h.next(next);h.api.formatChanged(h.card);
+  await new Promise(setImmediate);
+  assert.deepEqual(h.requests.at(-1).body.targetKeys,[next.key]);
+  assert.equal(h.checkbox.disabled,true);await h.click();assert.equal(h.posts().length,0);
+  await h.imageLoaded();assert.equal(h.checkbox.disabled,false);await h.click();assert.equal(h.posts()[0].body.key,next.key);
 });
 
 test('a pending or failed preview cannot submit approval',async t=>{
@@ -151,16 +164,16 @@ function batchHarness(t, definitions) {
   const response=()=>({ok:true,json:async()=>({approvals:structuredClone(remote)})});
   globalThis.fetch=async(url,options)=>{
     const request={url,...options,body:options.body?JSON.parse(options.body):undefined};requests.push(request);
-    if(options.method!=='POST')return getHook?getHook():response();
+    if(isRead(request))return getHook?getHook():response();
     activePosts++;maxPosts=Math.max(maxPosts,activePosts);
     try{
       await new Promise(setImmediate);
-      if(postHook){const custom=await postHook(request.body,requests.filter(r=>r.method==='POST').length);if(custom)return custom;}
+      if(postHook){const custom=await postHook(request.body,requests.filter(r=>!isRead(r)).length);if(custom)return custom;}
       save(request.body);return response();
     }finally{activePosts--;}
   };
   const api=installApprovalReview({cards:items.map(i=>i.card),onChanged(){for(const item of items)if(item.card.dataset.approvalStatus==='approved')item.card.hidden=true;}});
-  return {api,items,remote,button,status,panel,summary,confirmButton,filters,requests,save,response,posts:()=>requests.filter(r=>r.method==='POST'),maxPosts:()=>maxPosts,
+  return {api,items,remote,button,status,panel,summary,confirmButton,filters,requests,save,response,posts:()=>requests.filter(r=>!isRead(r)),maxPosts:()=>maxPosts,
     cancel:()=>cancelButton.emit('click'),confirm:()=>confirmButton.emit('click'),post:fn=>{postHook=fn;},get:fn=>{getHook=fn;},click:()=>button.emit('click'),
     async approve(){await button.emit('click');await confirmButton.emit('click');}};
 }
@@ -181,6 +194,17 @@ test('bulk approval confirms count and material/formats, excluding dirty, unavai
   assert.equal(h.maxPosts(),1,'CAS writes are serial');assert.equal(h.status.textContent,'2 Freigaben gespeichert.');
   for(const post of h.posts()){assert.equal(post.credentials,'same-origin');assert.equal(post.headers['X-Slate-Review-CSRF'],'private-token');}
   assert.equal(h.items[0].card.hidden,true,'approved-status filtering does not add or change the frozen batch');
+});
+
+test('60 long IDs stay in the read body; one approval uses a short scope and preserves other card states',async t=>{
+ const definitions=Array.from({length:60},(_,i)=>({id:'bestand/'+('lange-originalfamilie-'.repeat(4))+i})),h=batchHarness(t,definitions);
+ await h.api.refresh();const read=h.requests.find(isRead);
+ assert.equal(read.url,'/originale/approvals?action=read');assert.equal(read.method,'POST');assert.equal(read.body.originalIds.length,60);assert.equal(read.body.targetKeys.length,60);
+ assert(Buffer.byteLength(JSON.stringify(read.body))<65536);assert.equal(read.headers['X-Slate-Review-CSRF'],'private-token');
+ const first=h.items[0],key=first.card.dataset.approvalKey;
+ h.post(body=>{h.save(body);return {ok:true,json:async()=>({partial:true,approvals:{[key]:structuredClone(h.remote[key])}})};});
+ await first.checkbox.emit('change',{target:{checked:true}});
+ assert.equal(h.posts().length,1);assert(h.posts()[0].url.length<1000);assert.equal(h.items[1].checkbox.disabled,false);assert.equal(h.items[1].card.dataset.approvalStatus,'unreviewed');
 });
 
 test('bulk approval rejects a format change during confirmation without approving the old target',async t=>{
@@ -207,7 +231,7 @@ test('bulk approval stops on CAS conflict, reports proven partial success and ne
   const h=batchHarness(t,[{id:'A'},{id:'B'},{id:'C'}]);
   h.post((_body,index)=>index===2?{ok:false,status:409,json:async()=>({error:'Vorlage inzwischen geändert'})}:null);
   await h.approve();assert.deepEqual(h.posts().map(r=>r.body.key),['target-A','target-B']);
-  assert.equal(h.requests.filter(r=>!r.method).length,1,'one readback, no automatic write retry');
+  assert.equal(h.requests.filter(isRead).length,1,'one readback, no automatic write retry');
   assert.match(h.status.textContent,/^1 von 3 ausgewählten Vorlagen bestätigt\. Gestoppt: Vorlage inzwischen geändert/);
   assert.match(h.items[1].message.textContent,/Vorlage inzwischen geändert/);assert.equal(h.remote['target-C'].status,'unreviewed');
 });
@@ -221,7 +245,7 @@ test('a renderer or resource fingerprint change stops remaining bulk approvals e
 test('lost approval response is read back without resending and counts only the proven saved state',async t=>{
   const h=batchHarness(t,[{id:'A'},{id:'B'}]);
   h.post(body=>{h.save(body);throw Error('Antwort unterbrochen');});
-  await h.approve();assert.equal(h.posts().length,1);assert.equal(h.requests.filter(r=>!r.method).length,1);
+  await h.approve();assert.equal(h.posts().length,1);assert.equal(h.requests.filter(isRead).length,1);
   assert.match(h.status.textContent,/^1 von 2 ausgewählten Vorlagen bestätigt\. Gestoppt: Antwort unterbrochen/);
   assert.equal(h.remote['target-B'].status,'unreviewed');
 });
@@ -237,7 +261,7 @@ test('lost POST response and failed readback report only acknowledged writes and
   h.post((body,index)=>{if(index===2){h.save(body);throw Error('Speicherantwort unterbrochen');}});
   h.get(()=>{throw Error('Nachlesen fehlgeschlagen');});
   await h.approve();
-  assert.equal(h.posts().length,2);assert.equal(h.requests.filter(r=>!r.method).length,1);
+  assert.equal(h.posts().length,2);assert.equal(h.requests.filter(isRead).length,1);
   assert.equal(h.remote['target-B'].status,'approved','the lost response really committed in the fixture');
   assert.match(h.status.textContent,/^1 Freigaben sicher gespeichert\./);
   assert.match(h.status.textContent,/letzte Freigabe bleibt ungeklärt/);assert.match(h.status.textContent,/Bitte neu laden/);

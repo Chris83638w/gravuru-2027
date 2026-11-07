@@ -1,9 +1,16 @@
 const labels = {approved:'Bestätigt', unreviewed:'Noch nicht freigegeben', changed:'Geändert · erneut prüfen', unavailable:'Aufbereitung offen'};
 
-export function approvalScopeUrl(ids) {
-  if(ids===null)return '/originale/approvals';
-  if(!Array.isArray(ids)||ids.length>60||ids.some(id=>typeof id!=='string'||!id)||new Set(ids).size!==ids.length)throw Error('Ungültiger Galerie-Seitenumfang.');
-  return '/originale/approvals?originalIds='+encodeURIComponent(JSON.stringify(ids));
+export function approvalScopeUrl(ids, targetKeys = null) {
+  const query=new URLSearchParams();
+  if(ids!==null){
+   if(!Array.isArray(ids)||ids.length>60||ids.some(id=>typeof id!=='string'||!id)||new Set(ids).size!==ids.length)throw Error('Ungültiger Galerie-Seitenumfang.');
+   query.set('originalIds',JSON.stringify(ids));
+  }
+  if(targetKeys!==null){
+   if(!Array.isArray(targetKeys)||targetKeys.length>60||targetKeys.some(key=>typeof key!=='string'||!key)||new Set(targetKeys).size!==targetKeys.length)throw Error('Ungültige Galerie-Formatauswahl.');
+   query.set('targetKeys',JSON.stringify(targetKeys));
+  }
+  return '/originale/approvals'+(query.size?'?'+query:'');
 }
 
 export function approvalCanBeChanged(state, {dirty=false,busy=false,previewReady=false}={}) {
@@ -12,7 +19,8 @@ export function approvalCanBeChanged(state, {dirty=false,busy=false,previewReady
 
 export function installApprovalReview({cards,onChanged=()=>{}}) {
   const scopeElement=document.querySelector('#review-original-ids');
-  const approvalUrl=approvalScopeUrl(scopeElement?JSON.parse(scopeElement.textContent):null);
+  const originalIds=scopeElement?JSON.parse(scopeElement.textContent):null;
+  const selectedKeys=()=>[...new Set(cards.map(card=>card.dataset.approvalKey).filter(Boolean))];
   let states = JSON.parse(document.querySelector('#review-approval-data')?.textContent || '{}');
   function progressIndex(bundle) {
     const byOriginal = new Map();
@@ -103,7 +111,7 @@ export function installApprovalReview({cards,onChanged=()=>{}}) {
   const syncControls = () => { cards.forEach(syncCard); syncBulk(); scheduleBulkSync(); };
   function apply(bundle) {
     if (!bundle?.approvals) throw Error('Die Freigaben konnten nicht gelesen werden.');
-    states = bundle.approvals;
+    states = bundle.partial ? {...states,...bundle.approvals} : bundle.approvals;
     progressByOriginal = progressIndex(states);
     if (typeof bundle.overviewHtml === 'string') {
       const host = document.querySelector('#review-overview'), expanded = host.querySelector('details')?.open;
@@ -121,7 +129,14 @@ export function installApprovalReview({cards,onChanged=()=>{}}) {
     syncControls(); onChanged();
   }
   async function request(options) {
-    const response = await fetch(approvalUrl,{credentials:'same-origin',cache:'no-store',...options});
+    let url='/originale/approvals?action=read';
+    if(options?.method==='POST'){
+      const {key}=JSON.parse(options.body),card=cards.find(card=>card.dataset.approvalKey===key);
+      if(!card)throw Error('Das Prüfziel ist nicht mehr ausgewählt.');
+      url=approvalScopeUrl([card.dataset.originalId],[key]);
+    }else options={method:'POST',headers:{'Content-Type':'application/json','X-Slate-Review-CSRF':csrf()},
+      body:JSON.stringify({originalIds:originalIds||[...new Set(cards.map(card=>card.dataset.originalId))],targetKeys:selectedKeys()})};
+    const response = await fetch(url,{credentials:'same-origin',cache:'no-store',...options});
     let result; try { result = await response.json(); } catch { throw Error('Die Freigabe konnte nicht gelesen werden. Bitte erneut versuchen.'); }
     if (!response.ok) throw Object.assign(Error(result.error || 'Die Freigabe konnte nicht gespeichert werden.'),{status:response.status});
     return result;
@@ -134,6 +149,12 @@ export function installApprovalReview({cards,onChanged=()=>{}}) {
       if (current === sequence) { apply(result); return true; }
     } catch { /* Keep the last proven state; writes still compare the exact server fingerprint. */ }
     return false;
+  }
+  let refreshPending=false;
+  function scheduleRefresh(){
+    if(refreshPending)return;
+    refreshPending=true;
+    queueMicrotask(()=>{refreshPending=false;void refresh();});
   }
   function currentEntry(entry) {
     const state = states[entry.key];
@@ -239,5 +260,8 @@ export function installApprovalReview({cards,onChanged=()=>{}}) {
   window.addEventListener('focus',()=>void refresh());
   document.addEventListener('visibilitychange',()=>{if(!document.hidden)void refresh();});
   syncControls();
-  return {refresh,syncControls,formatChanged(card){syncCard(card);scheduleBulkSync();onChanged();}};
+  // The server initially supplies summary metadata, not every format's native
+  // fonts/photos. Fetch only the exact material/size selected on each card.
+  queueMicrotask(()=>{if(cards.some(card=>!states[card.dataset.approvalKey]?.fingerprint&&states[card.dataset.approvalKey]?.status!=='unavailable'))scheduleRefresh();});
+  return {refresh,syncControls,formatChanged(card){++sequence;syncCard(card);scheduleBulkSync();onChanged();scheduleRefresh();}};
 }

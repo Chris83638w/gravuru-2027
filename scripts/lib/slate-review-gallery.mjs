@@ -41,21 +41,23 @@ export function createSlateGalleryHandler(root, importsFile, {csrfToken: supplie
  }
  refreshRegistry();
  const comments=createSlateReviewComments(path.join(path.dirname(importsFile),'review-comments.sqlite'),pack.originals.map(r=>r.id));
- const approvalBundle=(originalIds=null)=>{
+ const approvalBundle=(originalIds=null,selectedKeys=[],base=null)=>{
   approvalTargets.beginRead();
-  const summary=approvals.summary();
-  const keys=originalIds?approvalTargets.targets.filter(t=>originalIds.includes(t.id)).map(t=>t.key):null;
-  const states=originalIds?approvals.all(keys):summary;
+  const summary=base?.approvals||approvals.summary(),ids=originalIds&&new Set(originalIds);
+  // Unselected formats contribute lightweight status/progress only. Their
+  // native document is read when that exact format is actually displayed.
+  const states=ids?Object.fromEntries(Object.entries(summary).filter(([,state])=>ids.has(state.metadata?.id))):{...summary};
+  Object.assign(states,approvals.all(selectedKeys));
   approvalTargets.flushCache();
-  const overview=buildDesignReviewOverview(Object.values(summary).map(state=>({...state.metadata,key:state.key,status:state.status})),{expectedCategories:null});
-  return {approvals:states,overview,overviewHtml:designReviewOverviewHtml(overview)};
+  const overview=base?.overview||buildDesignReviewOverview(Object.values(summary).map(state=>({...state.metadata,key:state.key,status:state.status})),{expectedCategories:null});
+  return {approvals:states,overview,overviewHtml:base?.overviewHtml||designReviewOverviewHtml(overview)};
  };
  const catalogue=management.assignmentCatalogue||galleryAssignmentCatalogue(root);
  const assignments=workshop?createGalleryDesignAssignments({workshop,catalogue,
   listTargets:()=>approvalTargets.targets.map(t=>({...t,originalId:t.id,material:{key:t.materialKey,label:t.material,kind:t.materialKind}})),
   originalFor:id=>{const row=pack.originals.find(row=>row.id===id);if(!row)return null;const reviewCategory=designReviewCategory(row);return {...row,reviewCategory,reviewThemes:reviewThemes(row,reviewCategory)};}}):null;
  const productGroups=workshop?createProductGroupTemplates({filename:management.filename||path.join(path.dirname(importsFile),'workshop.sqlite'),repository:workshop.repository,tenantId:workshop.tenantId,
-  targets:()=>galleryProductGroupSources(workshop,approvalTargets.targets),
+  targets:options=>galleryProductGroupSources(workshop,approvalTargets.targets,options),
   offeringFor:scope=>{
    const catalogue=workshop.catalogStructure.read(),line=catalogue.lines?.find(l=>l.id===scope.lineId),sub=line?.subcategories?.find(s=>s.id===scope.subcategoryId);
    if(!line||line.enabled===false||!sub||!Array.isArray(sub.effectiveFamilyIds))return null;
@@ -114,30 +116,47 @@ export function createSlateGalleryHandler(root, importsFile, {csrfToken: supplie
   }catch(error){json(res,error.status||500,{error:error.status?error.message:'Speichern ist momentan nicht möglich. Deine Eingabe bleibt erhalten.'});}
  }
  function approvalScope(url){
-  if([...url.searchParams.keys()].some(key=>key!=='originalIds'))fail(422,'Unbekannter Freigabeumfang.');
-  if(!url.searchParams.has('originalIds'))return null;
+  if([...url.searchParams.keys()].some(key=>!['originalIds','targetKeys'].includes(key)))fail(422,'Unbekannter Freigabeumfang.');
+  let ids=null;
+  if(url.searchParams.has('originalIds')){
   if(url.searchParams.getAll('originalIds').length!==1)fail(422,'Bitte die angezeigten Vorlagen eindeutig wählen.');
-  let ids;try{ids=JSON.parse(url.searchParams.get('originalIds'));}catch{fail(422,'Ungültige Vorlagenauswahl.');}
+  try{ids=JSON.parse(url.searchParams.get('originalIds'));}catch{fail(422,'Ungültige Vorlagenauswahl.');}
   const known=new Set(pack.originals.map(row=>row.id));
   if(!Array.isArray(ids)||ids.length>60||new Set(ids).size!==ids.length||ids.some(id=>!known.has(id)))fail(422,'Bitte höchstens 60 bekannte Vorlagen wählen.');
-  return ids;
+  }
+  const selected=ids&&new Set(ids),allowed=new Set(approvalTargets.targets.filter(target=>!selected||selected.has(target.id)).map(target=>target.key));
+  let keys;
+  if(url.searchParams.has('targetKeys')){
+   if(url.searchParams.getAll('targetKeys').length!==1)fail(422,'Bitte die angezeigten Formate eindeutig wählen.');
+   try{keys=JSON.parse(url.searchParams.get('targetKeys'));}catch{fail(422,'Ungültige Formatauswahl.');}
+  }else keys=[...allowed]; // Bounded compatibility for old small review clients.
+  if(!Array.isArray(keys)||keys.length>60||new Set(keys).size!==keys.length||keys.some(key=>!allowed.has(key)))fail(422,'Bitte höchstens 60 angezeigte Material-/Formatziele wählen.');
+  return {ids,keys};
  }
  async function reviewApprovals(req,res,url){
   try{
-   const scope=approvalScope(url);
+   const read=url.searchParams.get('action')==='read';
+   if(read&&([...url.searchParams.keys()].some(key=>key!=='action')||url.searchParams.getAll('action').length!==1))fail(422,'Unbekannter Freigabeumfang.');
    if(req.headers.origin&&req.headers.origin!=='http://'+req.headers.host||req.headers['sec-fetch-site']==='cross-site')fail(403,'Bitte die Galerie neu laden.');
-   if(req.method==='GET')return json(res,200,scope===null?(()=>{approvalTargets.beginRead();const result=approvalBundle();return {...result,approvals:approvals.all()};})():approvalBundle(scope));
+   if(req.method==='GET'&&!url.searchParams.size)return json(res,200,approvalBundle());
+   let scope=read?null:approvalScope(url);
+   if(req.method==='GET'&&!read)return json(res,200,approvalBundle(scope.ids,scope.keys));
    if(req.method!=='POST')return json(res,405,{error:'Diese Aktion wird nicht unterstützt.'});
    if(req.headers.origin!=='http://'+req.headers.host||req.headers['x-slate-review-csrf']!==csrfToken)fail(403,'Bitte die Galerie neu laden.');
    if(!/^application\/json(?:;|$)/i.test(req.headers['content-type']||''))fail(415,'Freigabe konnte nicht gelesen werden.');
-   let size=0;const chunks=[];
-   for await(const chunk of req.iterator({destroyOnReturn:false})){size+=chunk.length;if(size<=16384)chunks.push(chunk);}
-   if(size>16384)fail(413,'Zu viele Freigabedaten.');
+   let size=0;const chunks=[],limit=read?65536:16384;
+   for await(const chunk of req.iterator({destroyOnReturn:false})){size+=chunk.length;if(size<=limit)chunks.push(chunk);}
+   if(size>limit)fail(413,'Zu viele Freigabedaten.');
    let input;try{input=JSON.parse(Buffer.concat(chunks).toString('utf8'));}catch{fail(400,'Freigabe konnte nicht gelesen werden.');}
-   if(scope!==null&&!approvalTargets.targets.some(target=>target.key===input?.key&&scope.includes(target.id)))fail(422,'Das Prüfziel gehört nicht zu den angezeigten Vorlagen.');
+   if(read){
+    if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).sort().join(',')!=='originalIds,targetKeys')fail(422,'Ungültiger Freigabeumfang.');
+    scope=approvalScope({searchParams:new URLSearchParams(Object.entries(input).map(([key,value])=>[key,JSON.stringify(value)]))});
+    return json(res,200,approvalBundle(scope.ids,scope.keys));
+   }
+   if(!scope.keys.includes(input?.key))fail(422,'Das Prüfziel gehört nicht zu den angezeigten Vorlagen.');
    approvalTargets.beginRead();
    approvals.save(input);
-   return json(res,200,scope===null?(()=>{const result=approvalBundle();return {...result,approvals:approvals.all()};})():approvalBundle(scope));
+   return json(res,200,{...approvalBundle(scope.ids,scope.keys),partial:true});
   }catch(error){
    if(error.status===413){req.resume();res.setHeader('Connection','close');}
    json(res,error.status||500,{error:error.status?error.message:'Die Freigabe konnte nicht gespeichert werden. Bitte erneut versuchen.'});
@@ -148,13 +167,13 @@ export function createSlateGalleryHandler(root, importsFile, {csrfToken: supplie
    if(!assignments)fail(503,'Die Familienzuordnung ist hier noch nicht verbunden.');
    if(req.headers.origin&&req.headers.origin!=='http://'+req.headers.host||req.headers['sec-fetch-site']==='cross-site')fail(403,'Bitte die Galerie neu laden.');
    const action=url.searchParams.get('action');
-   const allowed=action==='context'?['action','sourceKeys']:['action'];
+   const allowed=action==='context'&&req.method==='GET'?['action','sourceKeys']:['action'];
    if([...url.searchParams.keys()].some(key=>!allowed.includes(key)||url.searchParams.getAll(key).length!==1))fail(422,'Bitte eine eindeutige Zuordnungsaktion angeben.');
    if(req.method==='GET'&&action==='context'){
     let sourceKeys;try{sourceKeys=JSON.parse(url.searchParams.get('sourceKeys')||'[]');}catch{fail(422,'Ungültige Vorlagenauswahl.');}
     return json(res,200,await assignments.context({sourceKeys}));
    }
-   if(req.method!=='POST'||!['plan','execute'].includes(action))fail(405,'Diese Zuordnungsaktion wird nicht unterstützt.');
+   if(req.method!=='POST'||!['context','plan','execute'].includes(action))fail(405,'Diese Zuordnungsaktion wird nicht unterstützt.');
    if(req.headers.origin!=='http://'+req.headers.host||req.headers['x-slate-review-csrf']!==csrfToken)fail(403,'Bitte die Galerie neu laden.');
    if(!/^application\/json(?:;|$)/i.test(req.headers['content-type']||''))fail(415,'Die Auswahl konnte nicht gelesen werden.');
    let size=0;const chunks=[];for await(const chunk of req.iterator({destroyOnReturn:false})){size+=chunk.length;if(size<=65536)chunks.push(chunk);}
@@ -187,7 +206,7 @@ export function createSlateGalleryHandler(root, importsFile, {csrfToken: supplie
   if(['/originale','/originale/'].includes(url.pathname)){
    try{
     const summary=approvalBundle(),page=galleryReviewPage(pack,url.searchParams,summary.approvals),ids=page.pack.originals.map(row=>row.id);
-    bytes=Buffer.from(slateGalleryHtml(page.pack,imported,{comments:comments.all(ids),csrfToken,managementEnabled:!!manage,assignmentEnabled:!!assignments,paging:page.paging,...approvalBundle(ids)}));type='text/html; charset=utf-8';
+    bytes=Buffer.from(slateGalleryHtml(page.pack,imported,{comments:comments.all(ids),csrfToken,managementEnabled:!!manage,assignmentEnabled:!!assignments,paging:page.paging,...approvalBundle(ids,[],summary)}));type='text/html; charset=utf-8';
    }catch(error){json(res,error.status||500,{error:error.status?error.message:'Die Galerie konnte nicht geladen werden.'});return true;}
   }
   else if(url.pathname==='/originale/comments.js'){bytes=fs.readFileSync(new URL('./slate-review-comments-ui.js',import.meta.url));type='text/javascript; charset=utf-8';}

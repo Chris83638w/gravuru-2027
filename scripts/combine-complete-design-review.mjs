@@ -23,7 +23,7 @@ export function orderedReviewBatches(progress,sourcePlan){
  if(done.size!==progress.completed.length||done.size!==plan.batches.length||plan.batches.some(b=>!done.has(b.id)))throw Error('Completed batches differ from the pinned source plan');
  return plan.batches.map(b=>done.get(b.id));
 }
-function missingOriginalEvidence(source,row,match,sourcePlan,descriptors){
+export function missingOriginalEvidence(source,row,match,sourcePlan,descriptors){
  if(match.action!=='alias-incoming-id-to-existing-id'||match.sourceStandConflict!==true||match.sameSvgAndJson===true||row.status!=='open'||row.source!==match.incomingSource||row.targets?.some(t=>t.status==='prepared')||row.reusedTargetRefs?.length)throw Error('Missing-original alias is not an explicit open source conflict');
  if(!Array.isArray(row.files)||row.files.some(f=>/\.(?:json|svg)$/i.test(f.name||''))||[...descriptors.keys()].some(name=>name.startsWith('originals/'+row.id+'/')&&/\.(?:json|svg)$/i.test(name)))throw Error('Original files exist despite missing-source claim: '+row.id);
  const plan=checkedSourcePlan(sourcePlan),batch=plan.batches.find(b=>b.id===source.pack.batchId);
@@ -35,7 +35,7 @@ function missingOriginalEvidence(source,row,match,sourcePlan,descriptors){
  const blob=createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex');
  if(report.schema!=='gravuru-design-batch-preparation/v1'||report.batchId!==source.pack.batchId||report.deliveryCommit!==plan.deliveryCommit||report.catalogueCommit!==plan.catalogueCommit||pin?.sha256!==batch.manifestSha256||pin?.bytes!==bytes.length||pin?.blob!==blob)throw Error('Missing-source Git evidence differs');
  const manifest=JSON.parse(bytes),entries=manifest.designs?.filter(d=>d.id===row.id);
- if(manifest.schema!=='gravuru-gesamtuebergabe/v1'||manifest.art!=='stapel'||manifest.stapel?.id!==source.pack.batchId||entries?.length!==1)throw Error('Missing-source original is absent or ambiguous in pinned batch');
+ if(manifest.schema!=='gravuru-gesamtuebergabe/v1'||!['stapel','stapel-bestand'].includes(manifest.art)||manifest.stapel?.id!==source.pack.batchId||entries?.length!==1)throw Error('Missing-source original is absent or ambiguous in pinned batch');
  const original=entries[0];
  if(original.pfad!==match.incomingSource||original.stapel!==source.pack.batchId||original.zustand!=='offen'||!Array.isArray(original.dateien)||original.dateien.some(f=>/\.(?:json|svg)$/i.test(f.pfad||'')||/design-(?:json|svg)/i.test(f.rolle||'')))throw Error('Pinned batch does not confirm missing original files');
  return {originalFilesMissing:true,missingOriginalFiles:['design.json','design.svg'],sourceManifestSha256:batch.manifestSha256,sourceIssue:'Originaldateien design.json und design.svg fehlen in der Kataloglieferung. Bestehende Vorlage bleibt unverändert; neuer Quellstand offen.'};

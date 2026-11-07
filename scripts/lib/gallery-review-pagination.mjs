@@ -1,5 +1,5 @@
-import {designReviewMaterial,designReviewMaterials,designReviewCategory,designReviewApprovalKey} from './design-review-targets.mjs';
-import {reviewThemes,reviewProcessLabel,reviewSourceHierarchy} from './slate-review-gallery-page.mjs';
+import {designReviewMaterial,designReviewMaterials,designReviewApprovalKey} from './design-review-targets.mjs';
+import {reviewThemes,reviewProcessLabel,reviewSourceHierarchy,galleryReviewCategory} from './slate-review-gallery-page.mjs';
 
 export const GALLERY_PAGE_SIZE=60;
 const compare=(a,b)=>String(a??'').localeCompare(String(b??''),'de',{numeric:true});
@@ -15,12 +15,12 @@ export function galleryReviewPage(pack,parameters=new URLSearchParams(),states={
   const materials=new Map(),categories=new Map(),themes=new Map(),forms=new Set();
   const materialEntry=m=>{if(!materials.has(m.key))materials.set(m.key,{...m,originals:0,editable:0,blanks:0});return materials.get(m.key);};
   const sorted=[...pack.originals].sort((a,b)=>{
-    const am=designReviewMaterial(a),bm=designReviewMaterial(b),ac=designReviewCategory(a),bc=designReviewCategory(b);
+    const am=designReviewMaterial(a),bm=designReviewMaterial(b),ac=galleryReviewCategory(a),bc=galleryReviewCategory(b);
     return Number(bm.key==='slate')-Number(am.key==='slate')||(Number.isFinite(a.reviewOrder)&&Number.isFinite(b.reviewOrder)?a.reviewOrder-b.reviewOrder:0)||compare(am.label,bm.label)||ac.rank-bc.rank||compare(ac.key,bc.key)||compare(a.id,b.id);
   });
   const search=filters.search.toLocaleLowerCase('de').trim();
   const designs=sorted.filter(row=>{
-    const category=designReviewCategory(row),ms=designReviewMaterials(row),ts=reviewThemes(row,category),process=reviewProcessLabel(row);
+    const category=galleryReviewCategory(row),ms=designReviewMaterials(row),ts=reviewThemes(row),process=reviewProcessLabel(row);
     categories.set(category.key,category);for(const theme of ts)themes.set(theme.key,theme);
     for(const m of ms){const entry=materialEntry(m);entry.originals++;if(row.targets?.some(t=>t.status==='prepared'&&designReviewMaterial(row,t).key===m.key))entry.editable++;}
     const searchable=[row.id,row.group,row.subcategory,reviewSourceHierarchy(row),...ms.map(m=>m.label),category.label,...ts.map(t=>t.label),process].join(' ').toLocaleLowerCase('de');

@@ -89,3 +89,21 @@ test('source checksum and resource collisions cannot be silently replaced',t=>{
   assert.throws(()=>readSlatePackage(f.addonRoot),/checksum mismatch/);
   assert.equal(fs.existsSync(f.galleryOut),false);
 });
+
+test('merged process counts keep unspecified procedures separate from engraving and UV',t=>{
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'review-process-counts-'));
+  t.after(()=>fs.rmSync(root,{recursive:true,force:true}));
+  const baseRoot=path.join(root,'base'),addonRoot=path.join(root,'addon');
+  const make=(dir,rows)=>{
+    write(path.join(dir,'manifest.json'),{schema:'gravuru-slate-original-review/v1',catalogueCommit:'synthetic-test-only',reviewOnly:true,released:false,
+      counts:{originals:rows.length},products:[],assets:[],fontFiles:{},originals:rows.map(([id,process])=>({id,...(process===undefined?{}:{process}),targets:[]}))});
+    checksum(dir);
+  };
+  make(baseRoot,[['engraved','Gravur'],['engraved-lower','gravur'],['uv','UV'],['uv-lower','uv']]);
+  make(addonRoot,[['uv-print','UV-Druck'],['blank',''],['absent'],['null',null],['unspecified','offen']]);
+  const before=[baseRoot,addonRoot].map(dir=>fs.readFileSync(path.join(dir,'manifest.json')));
+  const result=mergeSlatePackages({baseRoot,addonRoot,out:path.join(root,'combined')});
+  assert.equal(result.counts.originals,9);assert.equal(result.counts.engraving,2);assert.equal(result.counts.uv,3);assert.equal(result.counts.unknownProcess,4);
+  assert.equal(result.counts.engraving+result.counts.uv+result.counts.unknownProcess,result.counts.originals);
+  [baseRoot,addonRoot].forEach((dir,i)=>assert.deepEqual(fs.readFileSync(path.join(dir,'manifest.json')),before[i]));
+});

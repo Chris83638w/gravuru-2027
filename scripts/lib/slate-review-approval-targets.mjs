@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
-import {designReviewMaterial, designReviewMaterialMatches, designReviewCategory, designReviewApprovalKey, resolveDesignReviewTarget, validatedDesignReviewTargets} from './design-review-targets.mjs';
+import {designReviewMaterial, designReviewMaterialMatches, designReviewCategory, designReviewApprovalKey, resolveDesignReviewTarget, validatedDesignReviewTargets, indexDesignReviewProducts} from './design-review-targets.mjs';
 import {nativeDesignReviewFingerprint} from './design-review-approvals.mjs';
 import {createDesignReviewFingerprintCache} from './design-review-fingerprint-cache.mjs';
 
@@ -12,10 +12,11 @@ export const slateReviewApprovalKey = (id, sizeKey) => JSON.stringify(['slate', 
 export const reviewSizeLabel = mm => Array.isArray(mm) ? mm.map(n => Number((n / 10).toFixed(2))).join(' × ') + ' cm' : 'Format offen';
 
 export function slateReviewApprovalTargets(pack, imported) {
+  const products = indexDesignReviewProducts(imported);
   return pack.originals.flatMap(row => {
     const category = designReviewCategory(row);
     return (row.targets?.length ? row.targets : [{mm: row.sourcePlateMm}]).map(target => {
-      const resolved = resolveDesignReviewTarget(row, target, imported), material = designReviewMaterial(row, target);
+      const resolved = resolveDesignReviewTarget(row, target, imported, products), material = designReviewMaterial(row, target);
       return {key: designReviewApprovalKey(row, target.sizeKey, target), id: row.id, categoryKey: category.key, categoryLabel: category.label,
         material: material.label, materialKey: material.key, materialKind: material.kind, format: reviewSizeLabel(target.mm), sizeKey: target.sizeKey || null, mm: target.mm,
         familyId: target.familyId || null, familyLabel: target.familyLabel || null,

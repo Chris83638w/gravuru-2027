@@ -57,10 +57,8 @@ export function installAssignmentReview({cards,onApplied=()=>{},remember=()=>{},
     enabled?selection.set(source.originalId,source):selection.delete(source.originalId);persist();sync();
   }
   async function request(action,body){
-    let url='/originale/assignments?action='+action;
-    const options={method:action==='context'?'GET':'POST',credentials:'same-origin',cache:'no-store',redirect:'error',headers:{'X-Slate-Review-CSRF':find('meta[name="slate-review-csrf"]').content}};
-    if(action==='context')url+='&sourceKeys='+encodeURIComponent(JSON.stringify(body.sourceKeys));
-    else{options.headers['Content-Type']='application/json';options.body=JSON.stringify(body);}
+    const url='/originale/assignments?action='+action;
+    const options={method:'POST',credentials:'same-origin',cache:'no-store',redirect:'error',headers:{'X-Slate-Review-CSRF':find('meta[name="slate-review-csrf"]').content,'Content-Type':'application/json'},body:JSON.stringify(body)};
     const response=await fetchImpl(url,options),result=await response.json();
     if(!response.ok)throw Object.assign(Error(result.error||'Die Zuordnung konnte nicht bestätigt werden.'),{status:response.status});
     return result;

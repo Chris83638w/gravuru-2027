@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {designReviewMaterial, designReviewMaterials, designReviewMaterialMatches, designReviewCategory, designReviewApprovalKey, resolveDesignReviewTarget, validatedDesignReviewTargets} from './lib/design-review-targets.mjs';
+import {designReviewMaterial, designReviewMaterials, designReviewMaterialMatches, designReviewCategory, designReviewApprovalKey, resolveDesignReviewTarget, validatedDesignReviewTargets, indexDesignReviewProducts} from './lib/design-review-targets.mjs';
 import {slateReviewApprovalKey, slateReviewApprovalTargets, createSlateApprovalTargetSource} from './lib/slate-review-approval-targets.mjs';
 import {familyProductConfig} from '../app/workshop/product-families.mjs';
 import {makeProductDocument} from '../app/workshop/product-model.mjs';
@@ -9,6 +9,15 @@ import {makeProductDocument} from '../app/workshop/product-model.mjs';
 const steel = {key: 'steel', label: 'Edelstahl', kind: 'steel'};
 const category = {key: 'steel-tuerschilder', label: 'Türschilder', rank: 100, photo: 'without', topic: 'tuerschilder'};
 const originalId = 'TRE-V2A-8x3,5-D1', nativeDesignId = 'katalog-TRE-V2A-8x3-5-D1';
+
+test('target index avoids scanning unrelated products and still rejects duplicate native mappings',()=>{
+ const f=fixture(),rows=Array.from({length:3381},(_,i)=>({key:'other-'+i,productId:'cfg_'+i,designIds:['other-'+i]}));
+ f.imported.products.push(...rows);const index=indexDesignReviewProducts(f.imported);
+ assert.equal(resolveDesignReviewTarget(f.row,f.row.targets[0],{get products(){throw Error('full mapping scan');}},index).productId,'cfg_steel');
+ const old=slateReviewApprovalTargets(f.pack,f.imported);assert.equal(old[0].productId,'cfg_steel');
+ f.imported.products.push({...f.imported.products[0],productId:'cfg_duplicate'});
+ assert.throws(()=>resolveDesignReviewTarget(f.row,f.row.targets[0],f.imported,indexDesignReviewProducts(f.imported)),/Ambiguous/);
+});
 function fixture() {
   const row = {id: originalId, reviewMaterial: steel, reviewCategory: category,
     targets: [{sizeKey: 'GR-ES-RE-80X35-T15', productKey: 'steel:GR-ES-RE-80X35-T15', nativeDesignId, mm: [80,35], status: 'prepared'}]};

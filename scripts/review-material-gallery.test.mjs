@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {slateGalleryHtml, orderedReviewTargets, reviewThemes, blankPreviewUrl} from './lib/slate-review-gallery-page.mjs';
+import {slateGalleryHtml, orderedReviewTargets, reviewThemes, blankPreviewUrl, galleryReviewCategory} from './lib/slate-review-gallery-page.mjs';
 import {reviewDesignMatches, reviewBlankMatches, materialOption} from './lib/slate-review-gallery-ui.js';
 import {materialOverviewHtml, REVIEW_MATERIAL_OVERVIEW} from './lib/review-material-overview.mjs';
 import {galleryReviewPage} from './lib/gallery-review-pagination.mjs';
@@ -26,6 +26,45 @@ const imported = {products: [
   {key: 'small:Hunde', productId: 'cfg_slate_small', designIds: [slate.id]},
 ]};
 const blanks = [{key: 'steel-round-100', materialKey: 'steel', materialLabel: 'Edelstahl', form: 'Rund', label: 'Rund Ø 10 cm', mm: [100, 100], preview: 'originals/_blanks/steel-round-100.webp'}];
+
+test('source hierarchy separates steel Allgemein for people, animals, products and photo state consistently in filters and sections',()=>{
+  const originals=[];
+  for(const sourceProduct of ['gedenktafeln','blumenstecker'])for(const sourceTargetGroup of ['Menschen','Tiere'])for(const photo of ['without','with'])originals.push({
+    id:[sourceProduct,sourceTargetGroup,photo].join('/'),process:'Gravur',reviewMaterial:steel.reviewMaterial,sourceProduct,sourceTargetGroup,sourceSubcategory:'Allgemein',sourceCategoryCertainty:'Vorschlag',
+    reviewCategory:{key:'Allgemein',label:'Allgemein',rank:80,photo,topic:'Allgemein'},reviewThemes:[{key:'Allgemein',label:'Allgemein'}],targets:[]});
+  const pack={originals},before=JSON.stringify(pack),page=galleryReviewPage(pack);
+  assert.equal(page.paging.facets.categories.length,8);
+  assert.equal((slateGalleryHtml(page.pack,{products:[]},{paging:page.paging}).match(/<section data-category-section=/g)||[]).length,8);
+  for(const row of originals){
+    const category=galleryReviewCategory(row),filtered=galleryReviewPage(pack,new URLSearchParams({category:category.key}));
+    assert.deepEqual(filtered.pack.originals.map(item=>item.id),[row.id]);
+    assert.equal(category.label,[row.sourceProduct,row.sourceTargetGroup,'Allgemein'].join(' / ')+' · '+(row.reviewCategory.photo==='with'?'mit Foto':'ohne Foto'));
+    assert.equal(reviewDesignMatches({category:category.key,themes:'[]',search:''},{view:'designs',category:filtered.paging.filters.category}),true);
+    assert.deepEqual(reviewThemes(row),row.reviewThemes);
+  }
+  assert.equal(JSON.stringify(pack),before,'display grouping must never reclassify source rows');
+});
+
+test('master photo scopes are distinct while established dog and people groups remain unchanged and unknowns stay open',()=>{
+  const dog={...slate},people={...slate,id:'human',group:'Menschen',subcategory:'Allgemein'};
+  assert.equal(galleryReviewCategory(dog).key,'hunde-without');assert.equal(galleryReviewCategory(people).key,'menschen-without');
+  const master={...steel,reviewCategory:{key:'tiergedenktafeln',label:'Tiergedenktafeln',rank:80,photo:'with',topic:'tiergedenktafeln'}};
+  assert.notEqual(galleryReviewCategory(master).key,galleryReviewCategory({...master,reviewCategory:{...master.reviewCategory,photo:'without'}}).key);
+  const unknown={...master,sourceProduct:'gedenktafeln',sourceTargetGroup:'',sourceSubcategory:'',reviewCategory:{key:'offen',label:'Kategorie offen',rank:999,photo:'unknown',topic:'offen'}};
+  assert.equal(galleryReviewCategory(unknown).label,'gedenktafeln / Zielgruppe offen / Unterkategorie offen · Fotozuordnung offen');
+});
+
+test('explicit missing-original placeholders have unknown photo state without reclassifying saved originals or known photo flags',()=>{
+  const row={id:'gedenktafeln/Menschen/Allgemein/uv-acryl-D16',reviewMaterial:steel.reviewMaterial,sourceProduct:'gedenktafeln',sourceTargetGroup:'Menschen',sourceSubcategory:'Allgemein',
+    files:[],sourceIssues:['Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D16/design.svg|json'],photoSlots:0,targets:[],
+    reviewCategory:{key:'Allgemein',label:'Allgemein',rank:80,photo:'without',topic:'Allgemein'}};
+  const before=JSON.stringify(row),category=galleryReviewCategory(row);
+  assert.equal(category.photo,'unknown');assert.match(category.label,/Fotozuordnung offen$/);assert.equal(JSON.stringify(row),before);
+  const page=galleryReviewPage({originals:[row]},new URLSearchParams({category:category.key}));assert.equal(page.pack.originals.length,1);assert.match(slateGalleryHtml(page.pack,{products:[]},{paging:page.paging}),/Fotozuordnung offen/);
+  for(const preserved of [{...row,sourceIssues:[]},{...row,files:[{name:'design.json'}]},{...row,mitFoto:false},{...row,catalogueCategory:{photo:false}},{...row,targets:[{status:'prepared'}]},
+    {...row,sourceIssues:[],catalogueSourceUpdates:[{sourceStandConflict:true,originalFilesMissing:true}]}])assert.equal(galleryReviewCategory(preserved).photo,'without');
+  assert.equal(galleryReviewCategory({...row,reviewCategory:{...row.reviewCategory,photo:'with'}}).photo,'with');
+});
 
 test('paged approval filtering selects the actual matching native format before JavaScript runs',()=>{
   const key=JSON.stringify(['steel',steel.id,'large']),approvals={[key]:{status:'approved',metadata:{productRevision:4,previewUrl:'/exact-large.svg'}}};

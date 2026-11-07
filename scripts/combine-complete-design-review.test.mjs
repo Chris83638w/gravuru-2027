@@ -91,13 +91,13 @@ test('baseline resource drift cannot reuse a correspondence with the same manife
  assert.throws(()=>combineCompleteDesignReview(f.options),/correspondence differs from baseline original/);assert.equal(fs.existsSync(f.options.out),false);
 });
 
-function missingSourceFixture(t,{supplierListsOriginal=false}={}){
+function missingSourceFixture(t,{supplierListsOriginal=false,kind='stapel-bestand'}={}){
  const f=correspondenceFixture(t),manifest=read(path.join(f.partRoot,'manifest.json')),row=manifest.originals[0],match=f.correspondence.rows[0];
  for(const name of ['design.json','design.svg','preview.svg'])fs.unlinkSync(path.join(f.partRoot,'originals/'+row.id+'/'+name));
  delete row.reviewSourcePreview;Object.assign(row,{status:'open',source:match.incomingSource,files:[],reusedTargetRefs:[]});
  Object.assign(match,{incomingFiles:[],sourceStandConflict:true,sameSvgAndJson:false});write(f.root,'correspondence.json',f.correspondence);
  const file='auftraege/2026-11-06-gesamtbestand/stapel/fresh/manifest.json',evidence='evidence/'+file;
- const supplier={schema:'gravuru-gesamtuebergabe/v1',art:'stapel',stapel:{id:'fresh'},designs:[{id:row.id,pfad:match.incomingSource,stapel:'fresh',zustand:'offen',dateien:supplierListsOriginal?[{pfad:match.incomingSource+'/design.json',rolle:'design-json'}]:[]}]};
+ const supplier={schema:'gravuru-gesamtuebergabe/v1',art:kind,stapel:{id:'fresh'},designs:[{id:row.id,pfad:match.incomingSource,stapel:'fresh',zustand:'offen',dateien:supplierListsOriginal?[{pfad:match.incomingSource+'/design.json',rolle:'design-json'}]:[]}]};
  write(f.partRoot,evidence,supplier);const bytes=fs.readFileSync(path.join(f.partRoot,evidence)),manifestSha256=sha(bytes);
  const sourcePlan={schema:'gravuru-complete-review-plan/v1',reviewOnly:true,released:false,deliveryCommit:'b'.repeat(40),catalogueCommit:'a'.repeat(40),batches:[{id:'fresh',manifestSha256}]};
  const pin={file,bytes:bytes.length,sha256:manifestSha256,blob:createHash('sha1').update('blob '+bytes.length+'\0').update(bytes).digest('hex')};
@@ -126,6 +126,12 @@ test('false missing-original claims and unpinned supplier evidence are rejected'
 
 test('a supplier listing an original file cannot be treated as proven missing even when its prepared copy is absent',t=>{
  const f=missingSourceFixture(t,{supplierListsOriginal:true});assert.throws(()=>combineCompleteDesignReview(f.options),/does not confirm missing original files/);assert.equal(fs.existsSync(f.options.out),false);
+});
+
+test('missing-original evidence accepts the documented batch kinds only',t=>{
+ const f=missingSourceFixture(t,{kind:'stapel'});combineCompleteDesignReview(f.options);
+ const wrong=missingSourceFixture(t,{kind:'unverified-export'});
+ assert.throws(()=>combineCompleteDesignReview(wrong.options),/absent or ambiguous/);
 });
 
 test('late retried batches return to the source plan order, with exact batch coverage',()=>{

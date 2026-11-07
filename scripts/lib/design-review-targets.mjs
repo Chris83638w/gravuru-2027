@@ -58,12 +58,27 @@ export const designReviewApprovalKey = (row, sizeKey, target) => JSON.stringify(
 // included so legacy pilot targets (which have no familyId) retain identity.
 export const designReviewTargetKey = (row, target) => designReviewApprovalKey(row, target.sizeKey, target);
 
+// Request/startup-scoped index: callers retain no mutable global mapping cache.
+export function indexDesignReviewProducts(imported) {
+  const byOriginal = new Map(), byKey = new Map();
+  for (const product of imported.products) {
+    if (!byKey.has(product.key)) byKey.set(product.key, []);
+    byKey.get(product.key).push(product);
+    for (const id of new Set(product.designIds || [])) {
+      if (!byOriginal.has(id)) byOriginal.set(id, []);
+      byOriginal.get(id).push(product);
+    }
+  }
+  return {byOriginal, byKey};
+}
+
 export function resolveDesignReviewTarget(row, target, imported, candidates) {
   const material = designReviewMaterial(row, target);
   if (target.status !== 'prepared' || !dimensions(target.mm) || !text(target.sizeKey)) return null;
   const explicit = target.productKey !== undefined || target.nativeDesignId !== undefined || material.key !== 'slate';
   if (explicit && (!text(target.productKey) || !text(target.nativeDesignId))) return null;
-  const products = (candidates || imported.products).filter(product => Array.isArray(product.designIds) && product.designIds.includes(row.id) &&
+  const rows = candidates?.byOriginal ? (explicit ? candidates.byKey.get(target.productKey) : candidates.byOriginal.get(row.id)) || [] : candidates || imported.products;
+  const products = rows.filter(product => Array.isArray(product.designIds) && product.designIds.includes(row.id) &&
     (explicit ? product.key === target.productKey : product.key.startsWith(target.sizeKey + ':')));
   if (products.length > 1) fail('Ambiguous review target');
   const product = products[0];

@@ -186,7 +186,9 @@ export function mergeSlatePackages({baseRoot,addonRoot,out,materialExtension=fal
   // Source preparedDesigns used different meanings (both memorial sizes versus
   // one exact door-sign size). Keep source counts verbatim and derive explicit
   // aggregate meanings from the actual combined targets.
-  pack.counts={originals:pack.originals.length,engraving:pack.originals.filter(row=>row.process!=='UV').length,uv:pack.originals.filter(row=>row.process==='UV').length,
+  const processes=pack.originals.map(row=>String(row.process||'').toLowerCase());
+  const engraving=processes.filter(process=>process==='gravur').length,uv=processes.filter(process=>['uv','uv-druck'].includes(process)).length;
+  pack.counts={originals:pack.originals.length,engraving,uv,unknownProcess:pack.originals.length-engraving-uv,
     editableOriginals:editable.length,fullyPreparedOriginals:complete.length,partiallyPreparedOriginals:editable.length-complete.length,
     unpreparedOriginals:pack.originals.length-editable.length,preparedTargets:pack.originals.reduce((sum,row)=>sum+(row.targets||[]).filter(target=>target.status==='prepared').length,0),reviewProducts:pack.products.length};
   validateSlateReviewMapping(pack,{localOnly:true,published:false,shopifyWrites:0,products:pack.products});

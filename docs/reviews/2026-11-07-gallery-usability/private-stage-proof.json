@@ -1,0 +1,91 @@
+{
+  "schema": "gravuru-usability-code-stage/v1",
+  "stagedAtUtc": "2026-11-07T08:39:42.853007+00:00",
+  "ready": true,
+  "sourceCommit": "6191e3b3d6ac5c0b740bfac9b6bbcbf62e62e6a3",
+  "archiveSha256": "de4a9ab90efc45f2b7aca6b8aa88fd3c5b324a1d9ab220fcaab2eee7ebcb4ae7",
+  "archiveBytes": 31673156,
+  "entries": 811,
+  "newApplicationRoot": "gravuru-2027-usability-6191e3b3",
+  "documentRoot": "gravuru-2027-usability-6191e3b3/public",
+  "existingConfigPath": "private/gesamtbestand-stage-0bb50565-20261106-v1/config.json",
+  "sameExistingData": true,
+  "sameExistingGallery": true,
+  "privateBackup": {
+    "directory": "private/galerie-usability-6191e3b3-backup-20261107-v1",
+    "databases": [
+      {
+        "file": "databases/design-assets.sqlite",
+        "bytes": 8052736,
+        "sha256": "5b024033d868f98c9a0ce3688fa77b5a37d5dbfa20a228199f04addaa3317f2c"
+      },
+      {
+        "file": "databases/profiles.sqlite",
+        "bytes": 77824,
+        "sha256": "38e6ecf7a069ad75d9d4aed2e1e15a848bb9008317bd827efd0fa0760943417b"
+      },
+      {
+        "file": "databases/workshop.sqlite",
+        "bytes": 2439389184,
+        "sha256": "3dbfdbcd02b265fb9901f212a9d68b31e6747701cf7fad404b72377b3b1b8c73"
+      },
+      {
+        "file": "databases/review-comments.sqlite",
+        "bytes": 12288,
+        "sha256": "fb2d918730b724d1d7720a574618e3cc9387787aae777f715bbc20333da3741d"
+      },
+      {
+        "file": "databases/review-approvals.sqlite",
+        "bytes": 12288,
+        "sha256": "db8efc3b95b536a5481d51fab9588f3bc1139cbf43b81cb1ad602651e02e2ae6"
+      }
+    ],
+    "products": 348,
+    "revisionRows": 358,
+    "workshopHeadsSha256": "0f6f8b6ca720b54750b81364b5dc1e26cf4b32febeb320a14283c8eb886dedb7",
+    "metadataSha256": {
+      "data/local-review-import.json": "4b7f1d40c9599d3e031efd4eed3bb1497e9da1c0950412d259c6b29984f71b75",
+      "data/.gravuru-private-test.json": "b95fd45e98e429e1bae26aa20eb39a2056a37649e33b0f56c314dbe143507d53",
+      "gallery/manifest.json": "adf73fee5050692402fe8f34e1e89f30c648c1cc11f18dc1dafd4a05c37cd78e",
+      "gallery/files-sha256.json": "a669965491865522d417acf60f2f3db9ebcd33353c3fd93a109da4ad64f40587",
+      "gallery/.gravuru-slate-review.json": "19343f0f6ec1f93f8b0faab878accac9d7431bc73d878500f6dd1e8e0e11563a"
+    },
+    "sqliteQuickCheck": "ok",
+    "allFiveSourceLocksHeldDuringCapture": true
+  },
+  "runtimeOverlaySha256": "2c7bf58d7fe54b1db5fdd9c71e9b29bb609c1b4bde824c26e2b5af88a6c611d7",
+  "wrapperSha256": "c8b4d25ce0992bb0aec4b8a4456899ac5aa02272ddd1a69ce656bc16488bc222",
+  "beforeSourceSha256": {
+    "app/configurator/variant-m/adapter.mjs": "0765d4cdab7661ea661a43c5bb81376d24c2cf6659fe7d29768338adfca8f070",
+    "app/configurator/variant-m/gallery-workbench.mjs": "84b56582c0fa2cb30a894ff59dad8f8dba10810c8a8afda0451422bfe33dabeb",
+    "app/configurator/variant-m/ux.mjs": "8acadf1803ac1370debbb66dc01be52760d58a8e7e39ea7b08ff65dd993c21d0",
+    "app/platform/sources/app/shared/models/studio-svg.mjs": "6929b2699ebf67883b30c5d29dae2e12d04b4224d16dbc7adbeb4dff6ada6e7a",
+    "app/workshop/gallery-editor.mjs": "17e6b36c9b223613d20e09904b9e7e09088a2cca6b3dce1c2072648be7d0388e",
+    "app/workshop/product-preview.mjs": "518536b6e7564eec75ee9eb0c10f358789f2e7d358d80be7a67704bb862e41a2",
+    "app/workshop/slate-review-positions.mjs": "df96ef9e998824e47b07bfa645c5ca1197aaa8f4bf0e7a34eafd0d733b34d6e5",
+    "scripts/lib/slate-review-catalog.mjs": "95ad956e47f029da08ec51a6d3b49e7b1da459281c7e023b468ca192fa284feb",
+    "scripts/lib/slate-review-gallery-page.mjs": "9b05866f4bd610973a4f34abb6ed4ee2aa47b2004b6387790a32bfcc3630d0a2",
+    "scripts/lib/slate-review-gallery.css": "ec4cfae6124c5dc1bf81d4bb607218fd51a778008f43de5346d1e6037090cb16",
+    "scripts/lib/slate-review-gallery.mjs": "ff2bd9917b31bde11d0c80bc7a17885335e27df53a6ab2d330413cf0b9486d8d",
+    "scripts/lib/slate-review-inline-ui.js": "20313cbaf2109ab4a85fd17319755ce5dc27ce8a1607eadae3b9991d7afe535a"
+  },
+  "newSourceSha256": {
+    "app/configurator/variant-m/adapter.mjs": "7c93218a96c925b1409216367c4f2543a1444f589dace34864d8287b01ed0dc0",
+    "app/configurator/variant-m/gallery-workbench.mjs": "4a8f6bb260fefb238c32e49701ab0653a8c27ca2fee99522b8e70b3f39befad4",
+    "app/configurator/variant-m/ux.mjs": "d316577343e77cf5022d49ab387d2b0aa70fd3fc26581ff14e51b0a777aba20a",
+    "app/platform/sources/app/shared/models/studio-svg.mjs": "e93d8984d2150d7a18320e4b4672a12fce1e34cf09d7e5cc8bf1eef333c9770c",
+    "app/workshop/gallery-editor.mjs": "670fc4ba55edec9b67fb2b3f1568f1a0f636b63052789efad39de8b40dc34f5f",
+    "app/workshop/product-preview.mjs": "fbebf0b986bb31dd662824ad6b057eed3f860628595ec45593057fc276dbdb2d",
+    "app/workshop/slate-review-positions.mjs": "262db7ed1738a9e234d500a49d34ddf648450f19e347fb67970a769ea474b685",
+    "scripts/lib/slate-review-catalog.mjs": "e75c97123da2d2daa193e8fac5d9ab10fac44ee9074e9eb97992e13e48630fad",
+    "scripts/lib/slate-review-gallery-page.mjs": "6520ce2b1d52b0a3f9d15790e5d0871186bd4d5a9b1eda38a38346dee5b7b340",
+    "scripts/lib/slate-review-gallery.css": "851c6433e30e886f17da75484447d703df69fdef60834117467cb8bf912dc87b",
+    "scripts/lib/slate-review-gallery.mjs": "4e2c9314113155e549ca94623d8f426b4e451472d72e9ed879c37b997d2a68a7",
+    "scripts/lib/slate-review-inline-ui.js": "ef8b11b8480c1a6c1fbb8a64786a8d9d230e1770bec1794daad83a10cc7df4c1"
+  },
+  "activated": false,
+  "onlineBrowserVerified": false,
+  "activationBlocker": "Plesk session expired; user re-login requested. Previous gallery remains active.",
+  "shopifyWrites": false,
+  "mainMerged": false
+}

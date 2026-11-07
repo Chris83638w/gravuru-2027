@@ -31,4 +31,14 @@ Die Gruppierung nutzt nun auch vorhandene Themen, Blattangaben und boolesche Fot
 
 Mikas vorhandene Verwaltung und Synchronisierung sind Grundlage, aber keine bestandene reale Shop-Abnahme. Nach der Galerieabnahme folgt eine einzelne bestätigte Produktgruppe als Pilot mit Änderungsvergleich und Rücklesung. Shopify-Schreibschalter bleiben aus; Freigabehäkchen sind keine Veröffentlichung. Chris hat nach dem Zeitpunkt gefragt und damit keinen Shopwrite freigegeben.
 
+## Private Bereitstellung und Wiederaufnahme
+
+Draft [#188](https://github.com/Chris83638w/gravuru-2027/pull/188), Code `6191e3b3d6ac5c0b740bfac9b6bbcbf62e62e6a3`. Vollständiges, importgeprüftes Privatpaket `gesamtbestand-usability-6191e3b3.zip`, 31.673.156 Bytes / 811 Einträge, SHA-256 `de4a9ab90efc45f2b7aca6b8aa88fd3c5b324a1d9ab220fcaab2eee7ebcb4ae7`. Genau zwölf erwartete Laufzeitdateien geändert; alle übrigen Paketdateien und die bestehende Runtime unverändert.
+
+07.11.2026 08:39 UTC: alle fünf tatsächlichen Serverdatenbanken konsistent neu gesichert, 348 Produkte und **358 Revisionen** (neuer Nutzerstand gegenüber vorherigem Navigationsnachweis). Sicherung: `private/galerie-usability-6191e3b3-backup-20261107-v1`. Keine lokalen Testdaten übertragen. Getrenntes Codeverzeichnis `gravuru-2027-usability-6191e3b3` gebaut, weiterhin dieselbe private Konfiguration/Datenablage. [Bereinigter Nachweis](../reviews/2026-11-07-gallery-usability/private-stage-proof.json).
+
+**Noch nicht aktiviert:** Die Plesk-Sitzung ist beim Neuladen abgelaufen; erneute Nutzeranmeldung wurde angefragt. Alte Galerie `gravuru-2027-navigation-e166741c` läuft weiter. Nach Anmeldung nur Site 19 Anwendungsstamm auf neues Verzeichnis und Dokumentenstamm auf dessen `/public` ändern, starten und tatsächlichen Onlineaufruf prüfen. Alte Runtime bleibt Rückweg; keine Datenrücksicherung zur Code-Rücknahme.
+
+Lokaler Fortsetzungshelfer: `work/run-gallery-usability-probe.py --plan work/stage-gallery-usability-6191e3b3-plan.json`, erst nach Umschaltung. Der vorbereitete Testcode ist gepinnt und prüft ausschließlich lesend Größensteuerung, Assethashes, Fotodarstellung, Zuordnungshinweise und fünf Datenbanken gegen die frische Sicherung. Danach echte Onlinebedienung: Größenänderung/Zurücksetzen und Voll-Konfi öffnen/No-op speichern. Bei inzwischen weiter geänderten Nutzerdaten Abweichungen einzeln nachweisen; niemals gegen die Sicherung zurückschreiben.
+
 Die getrennte Chrome-Frame-Störung ist weiter offen. Historische Browsersteuerungs-Unterbrechungen sind ein Kandidat, keine bestätigte aktuelle Fehlerursache. Kein unbegründeter Produktcode- oder Sicherheitsumbau.

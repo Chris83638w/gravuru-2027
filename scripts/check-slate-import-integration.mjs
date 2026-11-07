@@ -5,6 +5,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import {DatabaseSync,backup} from 'node:sqlite';
 import {gunzipSync} from 'node:zlib';
+import {readStoredDocumentText} from '../app/workshop/product-document-resources.mjs';
 import {importBundle,digest} from './slate-group-import.mjs';
 const args=process.argv.slice(2),arg=k=>args[args.indexOf(k)+1];
 for(const k of ['--source','--target','--bundle','--out'])assert(args.includes(k),k+' required');
@@ -15,7 +16,7 @@ for(const file of ['workshop.sqlite','design-assets.sqlite']){
  const db=new DatabaseSync(path.join(source,file),{readOnly:true});
  try{await backup(db,path.join(target,file));}finally{db.close();}
 }
-function products(){const db=new DatabaseSync(path.join(target,'workshop.sqlite'),{readOnly:true});try{return db.prepare('SELECT p.id,p.revision,r.document FROM products p JOIN product_revisions r ON p.id=r.product_id AND p.tenant_id=r.tenant_id AND p.revision=r.revision ORDER BY p.id').all().map(r=>({id:r.id,revision:r.revision,hash:digest(r.document)}));}finally{db.close();}}
+function products(){const db=new DatabaseSync(path.join(target,'workshop.sqlite'),{readOnly:true});try{return db.prepare('SELECT p.id,p.revision,p.tenant_id,r.document FROM products p JOIN product_revisions r ON p.id=r.product_id AND p.tenant_id=r.tenant_id AND p.revision=r.revision ORDER BY p.id').all().map(r=>({id:r.id,revision:r.revision,hash:digest(readStoredDocumentText(db,r.document,{tenantId:r.tenant_id}))}));}finally{db.close();}}
 const before=products();assert.equal(before.length,48);
 const bundle=JSON.parse(gunzipSync(fs.readFileSync(arg('--bundle'))));
 assert.deepEqual(bundle.products.map(p=>p.sourceDesignId),['MG-S-22x14-D1']);

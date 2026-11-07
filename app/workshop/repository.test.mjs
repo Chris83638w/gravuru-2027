@@ -231,7 +231,7 @@ test('migration is durable and idempotent, enforces foreign keys, and rejects fu
   repository.close();
   const raw = new DatabaseSync(filename);
   try {
-    assert.equal(raw.prepare('PRAGMA user_version').get().user_version, 4);
+    assert.equal(raw.prepare('PRAGMA user_version').get().user_version, 5);
     raw.exec('PRAGMA foreign_keys = ON');
     assert.throws(() => raw.prepare('UPDATE products SET master_id = ? WHERE id = ?').run('missing', first.id), /FOREIGN KEY/);
     assert.equal(raw.prepare('PRAGMA foreign_key_check').all().length, 0);
@@ -240,13 +240,13 @@ test('migration is durable and idempotent, enforces foreign keys, and rejects fu
   assert.equal(restarted.get(first.id).revision, 1);
   restarted.close();
   const future = new DatabaseSync(filename);
-  future.exec('PRAGMA user_version = 5');
+  future.exec('PRAGMA user_version = 6');
   future.close();
   assert.throws(() => open(), errorIs(422, 'unsupported_database_version'));
   const inspect = new DatabaseSync(filename);
   try {
     assert.equal(inspect.prepare('SELECT COUNT(*) AS count FROM products').get().count, 1);
-    assert.equal(inspect.prepare('PRAGMA user_version').get().user_version, 5);
+    assert.equal(inspect.prepare('PRAGMA user_version').get().user_version, 6);
   } finally { inspect.close(); }
 });
 
@@ -352,7 +352,7 @@ for (const version of [1, 2]) test(`migration from schema ${version} preserves h
   assert.deepEqual(restarted.get(first.id).metadata, { profileRevision: 1 });
   const inspect = new DatabaseSync(filename);
   try {
-    assert.equal(inspect.prepare('PRAGMA user_version').get().user_version, 4);
+    assert.equal(inspect.prepare('PRAGMA user_version').get().user_version, 5);
     assert.equal(inspect.prepare('PRAGMA foreign_key_check').all().length, 0);
   } finally { inspect.close(); }
 });

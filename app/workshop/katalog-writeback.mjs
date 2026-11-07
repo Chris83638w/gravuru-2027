@@ -6,6 +6,7 @@
 // Editor-/CLI-Rückweg darunter ersetzt die frühere Beschränkung auf Textebenen.
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
+import {readStoredDocumentText} from './product-document-resources.mjs';
 import {safeKatalogPath,withKatalogWriteLock,writeKatalogTransaction} from './katalog-transaction.mjs';
 import {planTemplateWriteback as planTemplateWritebackInternal,editorTextToMaster,masterTextLayout} from './katalog-template-writeback.mjs';
 import path from 'node:path';
@@ -26,7 +27,7 @@ export function readCorrections(dbFile,{tenantId='gravuru'}={}){
   const rows=db.prepare('SELECT c.product_id,c.product_revision,c.design_id,c.revision,c.state,c.actor,c.updated_at FROM design_corrections c WHERE c.tenant_id=? AND c.revision=(SELECT MAX(revision) FROM design_corrections x WHERE x.tenant_id=c.tenant_id AND x.product_id=c.product_id AND x.product_revision=c.product_revision AND x.design_id=c.design_id) ORDER BY c.product_id,c.product_revision,c.design_id').all(tenantId);
   const hasTenant=tables.has('product_revisions')&&db.prepare('PRAGMA table_info(product_revisions)').all().some(c=>c.name==='tenant_id');
   const doc=tables.has('product_revisions')?db.prepare('SELECT document FROM product_revisions WHERE product_id=? AND revision=?'+(hasTenant?' AND tenant_id=?':'')):null;
-  return rows.map(r=>{let document=null;if(doc){const d=doc.get(...(hasTenant?[r.product_id,r.product_revision,tenantId]:[r.product_id,r.product_revision]));if(d)try{document=JSON.parse(d.document);}catch{}}
+  return rows.map(r=>{let document=null;if(doc){const d=doc.get(...(hasTenant?[r.product_id,r.product_revision,tenantId]:[r.product_id,r.product_revision]));if(d)try{document=JSON.parse(readStoredDocumentText(db,d.document,{tenantId}));}catch(error){if(error.code!=='product_resource_document'&&!(error instanceof SyntaxError))throw error;}}
    let state=null;try{state=JSON.parse(r.state);}catch{}
    return {productId:r.product_id,productRevision:r.product_revision,designId:r.design_id,revision:r.revision,state,actor:r.actor,updatedAt:r.updated_at,document};});
  }finally{db.close();}

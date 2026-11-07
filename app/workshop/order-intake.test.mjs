@@ -1,5 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import os from 'node:os';import path from 'node:path';import {DatabaseSync} from 'node:sqlite';import {createHmac,randomBytes} from 'node:crypto';import {once} from 'node:events';
 import {createOrderIntake,verifyPaidWebhook} from './order-intake.mjs';import {build} from '../configurator/variant-m/build.mjs';import {createWorkshop} from './http.mjs';import {createPreviewServer} from '../configurator/variant-m/server.mjs';
+import {initializeProductDocumentResources,encodeStoredDocument} from './product-document-resources.mjs';
 const config={shopDomain:'gravuru-synthetic.myshopify.com',apiVersion:'2026-07',secret:randomBytes(32).toString('hex')};
 const sign=(payload,eventId='test-event-1234',overrides={})=>{const raw=Buffer.from(typeof payload==='string'?payload:JSON.stringify(payload));return {raw,headers:{'x-shopify-hmac-sha256':createHmac('sha256',config.secret).update(raw).digest('base64'),'x-shopify-shop-domain':config.shopDomain,'x-shopify-api-version':config.apiVersion,'x-shopify-topic':'orders/paid','x-shopify-webhook-id':eventId,...overrides}};};
 const order=token=>({id:101,test:true,financial_status:'paid',currency:'EUR',cancelled_at:null,customer:{email:'private-fixture@example.invalid'},line_items:[{id:201,variant_id:301,quantity:2,price:'29.99',properties:[{name:'_gravuru_offer',value:token}]}]});
@@ -103,7 +104,7 @@ test('gallery approval batch checks every variant, reuses one document hash and 
  const connection=new Proxy(db,{get(target,key){if(key==='prepare')return sql=>{if(sql.startsWith('SELECT document FROM product_revisions'))reads++;return target.prepare(sql);};const value=Reflect.get(target,key,target);return typeof value==='function'?value.bind(target):value;}});
  const intake=createOrderIntake({database:connection,snapshot:()=>{throw Error('No customer snapshot');}});
  const productId='cfg_11111111-1111-4111-8111-111111111111',shopDomain='batch-test.myshopify.com',shopifyProductId='gid://shopify/Product/123';
- const record={id:productId,revision:1,status:'draft',document:{schema:'gravuru-form-product/v1',kind:'product',basePriceCents:1999,designs:[{}]}};
+ const record={id:productId,revision:1,status:'draft',document:{schema:'gravuru-form-product/v1',kind:'product',basePriceCents:1999,designs:[{}],config:{localResources:{fonts:{Synthetic:{regular:{units:1000,glyphs:{A:{a:500,d:'M0 0L10 10Z'}}}}}}}}};
  for(const variantId of ['301','302','303'])intake.bind({shopDomain,variantId,record});
  db.exec('CREATE TABLE product_revisions(tenant_id TEXT,product_id TEXT,revision INTEGER,document TEXT);CREATE TABLE doorbell_live_order_approvals(tenant_id TEXT,shop TEXT,product_gid TEXT,cfg_id TEXT,cfg_revision INTEGER,document_sha256 TEXT,variants_json TEXT,approval_id TEXT,approved_at TEXT);');
  const body=JSON.stringify(record.document),{createHash}=await import('node:crypto');
@@ -112,6 +113,11 @@ test('gallery approval batch checks every variant, reuses one document hash and 
  const inputs=['301','302','303'].map(id=>({shopDomain,shopifyProductId,productId,productRevision:1,shopifyVariantId:'gid://shopify/ProductVariant/'+id}));
  const result=await intake.doorbellGalleryApprovals(inputs);assert.deepEqual(result.map(r=>r?.id??null),['test-approval',null,'test-approval']);assert.equal(reads,1);
  assert.equal(intake.doorbellLiveApproval(inputs[1]),null);
+ const approval=db.prepare('SELECT * FROM doorbell_live_order_approvals').get();
+ initializeProductDocumentResources(db);const compact=encodeStoredDocument(db,body,{tenantId:'gravuru'});assert.notEqual(compact,body);
+ db.prepare('UPDATE product_revisions SET document=?').run(compact);
+ assert.deepEqual((await intake.doorbellGalleryApprovals(inputs)).map(r=>r?.id??null),['test-approval',null,'test-approval']);assert.equal(reads,2);
+ assert.deepEqual(db.prepare('SELECT * FROM doorbell_live_order_approvals').get(),approval,'pre-existing release hashes are never rewritten by hydration');
  db.prepare('UPDATE product_revisions SET document=?').run(body+' ');
- assert.deepEqual(await intake.doorbellGalleryApprovals(inputs),[null,null,null]);assert.equal(reads,2,'a second request must rehash the fixed document');
+ assert.deepEqual(await intake.doorbellGalleryApprovals(inputs),[null,null,null]);assert.equal(reads,3,'each request must rehash the fixed document');
 });

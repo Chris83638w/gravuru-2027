@@ -1,6 +1,7 @@
 // Derived, compact index. Immutable product revisions stay the source of truth;
 // browsing thousands of products never loads their font/image/design payloads.
 import {tenantOption,ensureTenantColumn,TENANT_COLUMN} from './tenant.mjs';
+import {parseStoredDocument} from './product-document-resources.mjs';
 export function createProductCatalog(db,overview,tenantId){
  const tenant=tenantOption({tenantId});
  db.exec(`CREATE TABLE IF NOT EXISTS product_catalog (
@@ -13,7 +14,7 @@ export function createProductCatalog(db,overview,tenantId){
  revision=excluded.revision,material=excluded.material,method=excluded.method,categories=excluded.categories,search_name=excluded.search_name,overview=excluded.overview,tenant_id=excluded.tenant_id`);
  function update(row,d){const info=overview(d)||{};save.run(row.id,row.revision,info.material||'',info.method||'',JSON.stringify(d.categoryIds||[]),d.name.toLocaleLowerCase('de'),JSON.stringify(info),tenant);}
  for(const row of db.prepare(`SELECT p.* FROM products p LEFT JOIN product_catalog c ON c.product_id=p.id WHERE p.tenant_id=? AND (c.product_id IS NULL OR c.revision!=p.revision OR c.overview='{}' OR c.tenant_id!=p.tenant_id)`).all(tenant)){
-  const d=JSON.parse(db.prepare('SELECT document FROM product_revisions WHERE product_id=? AND revision=? AND tenant_id=?').get(row.id,row.revision,tenant).document);update(row,d);
+  const d=parseStoredDocument(db,db.prepare('SELECT document FROM product_revisions WHERE product_id=? AND revision=? AND tenant_id=?').get(row.id,row.revision,tenant).document,{tenantId:tenant});update(row,d);
  }
  function list({query='',kind='product',filter='all',material='',category='',sort='updated',page=1,pageSize=24}={}){
   if(typeof query!=='string'||query.length>200||!['product','master'].includes(kind)||!['all','print','engraving','archived'].includes(filter)||typeof material!=='string'||material.length>100||typeof category!=='string'||category.length>128||!['updated','name','oldest'].includes(sort)||!Number.isSafeInteger(page)||page<1||page>1000000||!Number.isSafeInteger(pageSize)||pageSize<1||pageSize>100)throw Object.assign(Error('Ungültige Katalogfilter.'),{status:422,code:'invalid_catalog_query'});

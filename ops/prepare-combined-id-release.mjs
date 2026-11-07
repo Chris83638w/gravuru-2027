@@ -18,7 +18,7 @@ function edit(store,rel,fn,reason){const raw=fs.readFileSync(path.join(dest,stor
 function replace(source,old,value){if(source.split(old).length!==2)throw Error('Unique patch anchor missing: '+old.slice(0,100));return source.replace(old,value);}
 const shared=[
  'cart-edit-revision.mjs','cart-configuration.mjs','draft-cart-handoff.mjs','cart-handoff-journal.mjs','storefront-cart.mjs','storefront-transport.mjs','cart-personalization.mjs',
- 'shop-product-binding-store.mjs','shop-product-binding-plan.mjs','shop-product-binding-adapter.mjs','shop-product-binding-check.mjs','shop-product-binding-legacy.mjs'
+ 'shop-product-binding-store.mjs','shop-product-binding-plan.mjs','shop-product-binding-adapter.mjs','shop-product-binding-check.mjs','shop-product-binding-legacy.mjs','product-document-resources.mjs'
 ];
 for(const store of ['legacy','acryl'])for(const file of shared)overlay(store,'app/workshop/'+file);
 for(const file of ['configurator-test-gateway.mjs','configurator-integration.mjs','bound-test-cart.mjs','cross-store-order-intake.mjs','acryl-employee-host.mjs','http.mjs','order-intake.mjs','shopify-admin-test-server.mjs','acrylic-review.mjs','form-review-snapshot.mjs'])overlay('acryl','app/workshop/'+file);

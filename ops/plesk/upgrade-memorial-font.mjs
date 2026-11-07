@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {once} from 'node:events';
 import {DatabaseSync} from 'node:sqlite';
+import {parseStoredDocument} from '../../app/workshop/product-document-resources.mjs';
 import {createHash} from 'node:crypto';
 import {merchantConfig,verifyMerchantStorage} from './merchant-config.mjs';
 import {lockTestData} from './lock.mjs';
@@ -31,7 +32,7 @@ try {
  const readRecord=file=>{const db=new DatabaseSync(file,{readOnly:true});try {
   const row=db.prepare('SELECT p.id,p.revision,p.archived,r.document,r.metadata,r.status FROM products p JOIN product_revisions r ON r.product_id=p.id AND r.revision=p.revision WHERE p.id=?').get(id);
   if(!row||row.archived)throw Error('product');
-  return {id,revision:row.revision,document:JSON.parse(row.document),metadata:JSON.parse(row.metadata),status:row.status};
+  return {id,revision:row.revision,document:parseStoredDocument(db,row.document,{tenantId:'gravuru'}),metadata:JSON.parse(row.metadata),status:row.status};
  }finally{db.close();}};
  if(receipt.sqliteBackups?.length!==3||new Set(receipt.sqliteBackups.map(i=>i.file)).size!==3)throw Error('backup_inventory');
  for(const item of receipt.sqliteBackups){

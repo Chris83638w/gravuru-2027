@@ -7,6 +7,7 @@ import {DatabaseSync,backup} from 'node:sqlite';
 import {gzipSync,gunzipSync} from 'node:zlib';
 import {pathToFileURL} from 'node:url';
 import {createProductRepository} from '../app/workshop/repository.mjs';
+import {parseStoredDocument} from '../app/workshop/product-document-resources.mjs';
 import {createDesignAssetStore} from '../app/workshop/design-assets.mjs';
 import {validateProductDocument} from '../app/workshop/product-model.mjs';
 import {prepareShopProduct} from '../app/workshop/shop-preparation.mjs';
@@ -76,7 +77,7 @@ export function makeBundle(source,{only=[]}={}){
  const db=new DatabaseSync(path.join(source,'workshop.sqlite'),{readOnly:true}),adb=new DatabaseSync(path.join(source,'design-assets.sqlite'),{readOnly:true});
  try{
   checkTables(adb);
-  const entries=products.map(p=>{const row=db.prepare('SELECT document FROM product_revisions WHERE product_id=? AND revision=? AND tenant_id=?').get(p.productId,p.revision,'gravuru');if(!row)fail('Vorbereitete Revision fehlt.');const imagePath=fs.realpathSync(path.join(source,p.mainImage.file)),relative=path.relative(fs.realpathSync(source),imagePath);if(relative.startsWith('..'+path.sep)||path.isAbsolute(relative))fail('Hauptbild liegt außerhalb der Vorbereitung.');return {...p,document:JSON.parse(row.document),imageSvg:fs.readFileSync(imagePath).toString('base64')};});
+  const entries=products.map(p=>{const row=db.prepare('SELECT document FROM product_revisions WHERE product_id=? AND revision=? AND tenant_id=?').get(p.productId,p.revision,'gravuru');if(!row)fail('Vorbereitete Revision fehlt.');const imagePath=fs.realpathSync(path.join(source,p.mainImage.file)),relative=path.relative(fs.realpathSync(source),imagePath);if(relative.startsWith('..'+path.sep)||path.isAbsolute(relative))fail('Hauptbild liegt außerhalb der Vorbereitung.');return {...p,document:parseStoredDocument(db,row.document,{tenantId:'gravuru'}),imageSvg:fs.readFileSync(imagePath).toString('base64')};});
   const ids=new Set(entries.flatMap(p=>[...assetReferences(p.document)])),assets=Object.fromEntries(Object.keys(tables).map(t=>[t,[]]));
   assets.design_assets=adb.prepare('SELECT * FROM design_assets WHERE tenant_id=?').all('gravuru').filter(r=>ids.has(r.id));
   assets.photo_example_sources=adb.prepare('SELECT * FROM photo_example_sources WHERE tenant_id=?').all('gravuru').filter(r=>ids.has(r.asset_id));
@@ -100,7 +101,7 @@ export function planImport(bundle,target){
  validateBundle(bundle);
  const db=new DatabaseSync(path.join(target,'workshop.sqlite'),{readOnly:true}),adb=new DatabaseSync(path.join(target,'design-assets.sqlite'),{readOnly:true});
  try{
-  if(db.prepare('PRAGMA user_version').get().user_version!==4)fail('Ziel ist keine vorhandene Werkstatt mit Schema 4.');
+  if(![4,5].includes(db.prepare('PRAGMA user_version').get().user_version))fail('Ziel ist keine vorhandene Werkstatt mit Schema 4 oder 5.');
   const pending=existingRows(adb,bundle),stateFile=path.join(target,'slate-group-import-state.json'),states=fs.existsSync(stateFile)?read(stateFile):{};
   const products=bundle.products.map(p=>{
    const prior=db.prepare('SELECT product_id FROM import_items WHERE import_key=? AND tenant_id=?').get(p.key,bundle.tenantId);
@@ -109,7 +110,7 @@ export function planImport(bundle,target){
    if(!prior)return {key:p.key,action:'create',sourceDesignId:p.sourceDesignId};
    const row=db.prepare('SELECT p.id,p.revision,p.archived,r.document FROM products p JOIN product_revisions r ON p.id=r.product_id AND p.tenant_id=r.tenant_id AND p.revision=r.revision WHERE p.id=? AND p.tenant_id=?').get(prior.product_id,bundle.tenantId);
    if(!row||row.archived)fail('Früher importierte Produktgruppe fehlt oder ist archiviert.');
-   const fingerprint=digest(JSON.parse(row.document));
+   const fingerprint=digest(parseStoredDocument(db,row.document,{tenantId:bundle.tenantId}));
    if(fingerprint!==p.fingerprint&&(!states[p.key]||states[p.key].id!==row.id||states[p.key].revision!==row.revision||states[p.key].fingerprint!==fingerprint))fail('Produktgruppe wurde außerhalb des Imports bearbeitet.');
    return {key:p.key,action:fingerprint===p.fingerprint?'unchanged':'update',id:row.id,revision:row.revision,sourceDesignId:p.sourceDesignId};
   });

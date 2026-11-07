@@ -1,6 +1,7 @@
 // Offline, explicit pin after a verified deployment backup. Shopify reads only;
 // immutable price bindings are appended before the private runtime pin changes.
 import fs from 'node:fs';import path from 'node:path';import {once} from 'node:events';import {createHash} from 'node:crypto';import {DatabaseSync} from 'node:sqlite';
+import {parseStoredDocument} from '../../app/workshop/product-document-resources.mjs';
 import {merchantConfig,verifyMerchantStorage} from './merchant-config.mjs';import {readPrivateFile} from './shopify-preflight.mjs';import {lockTestData} from './lock.mjs';
 import {createShopifyAdminReadonly} from '../../app/workshop/shopify-admin-readonly.mjs';import {preflightVariantBindings} from '../../app/workshop/shopify-variant-preflight.mjs';import {prepareShopProduct} from '../../app/workshop/shop-preparation.mjs';import {createWorkshop} from '../../app/workshop/http.mjs';import {OUTPUT} from '../../app/configurator/variant-m/build.mjs';
 let lock,released,workshop;
@@ -18,11 +19,11 @@ try{
  const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
  if(!same(current,previous)&&!same(current,enabled))throw Error('concurrent_config_change');
  const originalDb=new DatabaseSync(path.join(backup,'workshop.sqlite'),{readOnly:true});let original;
- try{original=originalDb.prepare('SELECT p.revision,p.archived,r.document FROM products p JOIN product_revisions r ON p.id=r.product_id AND p.revision=r.revision WHERE p.id=?').get(config.merchantTestCart.productId);}finally{originalDb.close();}
+ try{original=originalDb.prepare('SELECT p.revision,p.archived,r.document FROM products p JOIN product_revisions r ON p.id=r.product_id AND p.revision=r.revision WHERE p.id=?').get(config.merchantTestCart.productId);if(original)original.document=parseStoredDocument(originalDb,original.document,{tenantId:'gravuru'});}finally{originalDb.close();}
  if(original?.revision!==revision||original.archived)throw Error('backup_product_revision');
  process.env.GRAVURU_PYTHON=config.python;const seed=JSON.parse(fs.readFileSync(path.join(OUTPUT,'models.json')))[0];workshop=createWorkshop({filename:path.join(config.data,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy});
  const record=workshop.repository.get(config.merchantTestCart.productId);
- if(record.revision!==revision||record.status==='archived'||!same(record.document,JSON.parse(original.document)))throw Error('product_changed_since_backup');
+ if(record.revision!==revision||record.status==='archived'||!same(record.document,original.document))throw Error('product_changed_since_backup');
  const client=createShopifyAdminReadonly({readSecret:()=>config.runtimeEnv.GRAVURU_SHOPIFY_CLIENT_SECRET}),product='gid://shopify/Product/16138083107196',remote=await client.inspectProductPricing(product),pricing=remote.product?.pricing;
  if(!pricing?.enabled)throw Error('pricing_unavailable');
  const plan=prepareShopProduct(record),mappings=plan.variants.map(v=>{const ids=Object.entries(pricing.variants).filter(([,price])=>price===v.priceCents).map(([id])=>id);if(ids.length!==1)throw Error('ambiguous_variant');return {key:v.key,variantId:ids[0]};});

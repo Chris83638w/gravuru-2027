@@ -1,0 +1,1440 @@
+{
+  "scope": "isolated local copies only",
+  "baseline": "3ad2cdc3947db211c1c5864c3acb8faa1883fa62",
+  "shopifyWrites": 0,
+  "astraContact": false,
+  "sets": [
+    {
+      "name": "steel",
+      "migration": {
+        "rows": 81,
+        "beforeBytes": 179855360,
+        "afterBytes": 5386240,
+        "rawDocBytesBefore": 178625977,
+        "rawDocBytesAfter": 625118,
+        "resourceBytes": 3735280,
+        "uniqueKinds": [
+          {
+            "kind": "font",
+            "rows": 6,
+            "bytes": 1813984
+          },
+          {
+            "kind": "material-image",
+            "rows": 1,
+            "bytes": 1921296
+          }
+        ],
+        "references": 181,
+        "documentHashParity": true,
+        "immutableTriggerRestored": true,
+        "vacuum": true,
+        "integrity": "ok"
+      },
+      "parity": {
+        "schema": "gravuru-product-resource-parity/v1",
+        "startedAt": "2026-11-07T09:37:58.172Z",
+        "scope": "isolated-acceptance-copies",
+        "immutableBackupOpened": false,
+        "shopifyWrites": 0,
+        "result": "PASS",
+        "tables": [
+          {
+            "name": "acryl_shop_jobs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "acrylic_customer_drafts",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "acrylic_customer_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "acrylic_review_requests",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "ai_design_batch_items",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "ai_design_batches",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "ai_design_jobs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "batch_jobs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "cart_configuration_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "cart_configurations",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "catalog_structure_settings",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "customer_draft_photos",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "customer_drafts",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "customer_file_grants",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "customer_file_revocations",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "design_corrections",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "export_output_checks",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_customer_drafts",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_customer_photos",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_customer_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_export_events",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_export_jobs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_offer_personalization",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_customers",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_event_selections",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_events",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_line_errors",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_lines",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_offers",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_refund_reports",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_status_events",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_print_proofs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_review_snapshots",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_shop_binding_personalization",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_shop_binding_selections",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_shop_bindings",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_variant_imports",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_variant_members",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_variant_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_variant_sets",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "import_items",
+            "rows": 73,
+            "sha256": "6d870519c8082a0b088b610c5f2bfd86dcd8cfb6b02654b2c6afb0fb1998fa3d"
+          },
+          {
+            "name": "konfi_status",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "konfi_status_events",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "motif_search_daily",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "product_catalog",
+            "rows": 74,
+            "sha256": "0f75d5f81f43576ff782c2cf20af399b7459e094d7446a007f0df0f2338284ff"
+          },
+          {
+            "name": "product_families",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "product_family_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "production_release_events",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "products",
+            "rows": 74,
+            "sha256": "9534ade1b9a32a442b56126445820c61fa96b535da20719b575e3853b6415488"
+          },
+          {
+            "name": "shop_draft_transfers",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "storefront_cart_handoffs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "tenant_settings",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "tenants",
+            "rows": 1,
+            "sha256": "63e325e9b30e2346e2e2cbc42c035a79216bee351502a5dd1e75c260b32208a6"
+          },
+          {
+            "name": "theme_cart_transfers",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "variant_batch_jobs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "design-assets.sqlite/design_assets",
+            "rows": 1,
+            "sha256": "45cffd52d78c3863cb3b3886deeca967dc49892fda55e70a334f733773e2ace6"
+          },
+          {
+            "name": "design-assets.sqlite/design_sources",
+            "rows": 1,
+            "sha256": "87540a97679b4ee6eecd77fe9866b972993233242f0ae7531cd499a7bbf43695"
+          },
+          {
+            "name": "design-assets.sqlite/form_contours",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "design-assets.sqlite/material_surfaces",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "design-assets.sqlite/photo_example_sources",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "design-assets.sqlite/review_photo_edits",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "design-assets.sqlite/workshop_fonts",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "profiles.sqlite/manufacturing_profile_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "profiles.sqlite/manufacturing_profiles",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "profiles.sqlite/profile_library_settings",
+            "rows": 1,
+            "sha256": "78e6d5bd0f9f42ee43e1be91b46be786a24bb828fa829bad71cef157844598b1"
+          },
+          {
+            "name": "profiles.sqlite/profile_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "profiles.sqlite/profile_settings_revisions",
+            "rows": 1,
+            "sha256": "327d6ca671c77ff160906c6ab6916b394fae365c748d98936923b1c843047952"
+          },
+          {
+            "name": "profiles.sqlite/profiles",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "review-approvals.sqlite/design_review_approval_events",
+            "rows": 2,
+            "sha256": "ff6f3e68eec5c0ae54ca3d0f0f0af3d55a06ba3c05a6740802f5e7b035aabf98"
+          },
+          {
+            "name": "review-comments.sqlite/review_comments",
+            "rows": 1,
+            "sha256": "dda1473e66b32300df73aa70787e4a4023257b08bc8731d2b1b02265e1ea85c3"
+          }
+        ],
+        "revisions": 81,
+        "heads": 74,
+        "previews": 147,
+        "production": 3,
+        "examples": [
+          {
+            "group": "steel-ellipse",
+            "name": "example-0",
+            "productId": "cfg_0184ce9d-0920-4284-8b77-f02f2a34b0da",
+            "designId": "katalog-TO-V2A-9x6-D3",
+            "comparisonSha256": "39308ea336a47792bccdfb72be92d28b8bd6c4d8acf2ba98ec4e6ee4f2b68c11",
+            "beforeSha256": "39308ea336a47792bccdfb72be92d28b8bd6c4d8acf2ba98ec4e6ee4f2b68c11",
+            "afterSha256": "39308ea336a47792bccdfb72be92d28b8bd6c4d8acf2ba98ec4e6ee4f2b68c11"
+          },
+          {
+            "group": "steel-contour",
+            "name": "example-1",
+            "productId": "cfg_121a7e25-2287-4774-bb80-8e26bad831c6",
+            "designId": "katalog-TR1-V2A-9x6-D3",
+            "comparisonSha256": "54c73ab2072b1782ef03ec82a12491e07c8d06f6c1acac7314695e45bd555d36",
+            "beforeSha256": "d988330d3460124b086e76a2bb4756e530a463d43ef77c01b84cf2f911a6bf8f",
+            "afterSha256": "b4a46bf7e000a1ab90f84f59046361c24333ef0a41052c6271eab0120df4b02d"
+          },
+          {
+            "group": "steel-rect",
+            "name": "example-2",
+            "productId": "cfg_15d5edb9-702b-4e92-9c7f-3626ec7db787",
+            "designId": "katalog-TRE-V2A-8x5-D3",
+            "comparisonSha256": "388c5600c0fc42a2e7639b5110bf95673e2ab51b31ffd2938cdfc9c881a91ec8",
+            "beforeSha256": "388c5600c0fc42a2e7639b5110bf95673e2ab51b31ffd2938cdfc9c881a91ec8",
+            "afterSha256": "388c5600c0fc42a2e7639b5110bf95673e2ab51b31ffd2938cdfc9c881a91ec8"
+          },
+          {
+            "group": "acrylic-rect",
+            "name": "example-3",
+            "productId": "cfg_78266bd7-b4f2-453a-bb60-989df4adb1c4",
+            "designId": "acryl-unser-anfang-01",
+            "comparisonSha256": "e69930c7d39e534db19fc62a64ba2269e695bae3a840915d53c6715399bae9aa",
+            "beforeSha256": "e69930c7d39e534db19fc62a64ba2269e695bae3a840915d53c6715399bae9aa",
+            "afterSha256": "e69930c7d39e534db19fc62a64ba2269e695bae3a840915d53c6715399bae9aa"
+          }
+        ],
+        "svgComparison": "Exact after renaming only process-local m-design-area mask IDs and their matching references",
+        "revisionSha256": "a487872336c77ae3886517a05b462178aa936768e12223823b08fd52f311ff52",
+        "productionCases": [
+          {
+            "group": "steel-ellipse",
+            "productId": "cfg_0184ce9d-0920-4284-8b77-f02f2a34b0da",
+            "designId": "katalog-TO-V2A-9x6-D3",
+            "requiredCustomerInput": "same reversed template text, no stored changes",
+            "svgSha256": "8b1c9274d3a8c4aa15ca4766f2caa25d17ba6419e844e076031654dc5c54639d",
+            "geometrySha256": "8bc11b0cb0bf913efbd3ee71dc3110899213a33a79fba0a937d7d23f4bfc080f"
+          },
+          {
+            "group": "steel-contour",
+            "productId": "cfg_121a7e25-2287-4774-bb80-8e26bad831c6",
+            "designId": "katalog-TR1-V2A-9x6-D3",
+            "requiredCustomerInput": "same reversed template text, no stored changes",
+            "svgSha256": "1d6e94cf3762d75677d7d9ffe15c80b38d89895d25724f29d6761a3e461dbecb",
+            "geometrySha256": "2b4c9115ff0fa3d250d96649afb50fffa44ed55bec3f026675634aec72157341"
+          },
+          {
+            "group": "steel-rect",
+            "productId": "cfg_15d5edb9-702b-4e92-9c7f-3626ec7db787",
+            "designId": "katalog-TRE-V2A-8x5-D3",
+            "requiredCustomerInput": "same reversed template text, no stored changes",
+            "svgSha256": "92f9358316d75e783d1d0231eec4bb110a7ff6d0782839527320d7607adbe1b9",
+            "geometrySha256": "08b6339871b88d46ed54576a3b61f9e88ec13ffe92afb424db1aca46b96293b6"
+          }
+        ],
+        "previewLocalIdDifferences": 14,
+        "productionSkipped": [
+          {
+            "productId": "cfg_78266bd7-b4f2-453a-bb60-989df4adb1c4",
+            "designId": "acryl-unser-anfang-01",
+            "reason": "Requires customer photo input; original sources and masks are covered by document/asset/preview parity."
+          }
+        ],
+        "previewSha256": "fd555af0819624311837a2f9a5ab612d3d017a03f6e80bccb808bcb40214b343",
+        "finishedAt": "2026-11-07T09:38:21.261Z"
+      },
+      "rollback": {
+        "status": "verified",
+        "afterSchemaVersion": 5,
+        "references": 181,
+        "documentHashParity": true,
+        "rows": 81
+      }
+    },
+    {
+      "name": "slate",
+      "migration": {
+        "rows": 4,
+        "beforeBytes": 86564864,
+        "afterBytes": 46997504,
+        "rawDocBytesBefore": 85684394,
+        "rawDocBytesAfter": 32801266,
+        "resourceBytes": 13303353,
+        "uniqueKinds": [
+          {
+            "kind": "font",
+            "rows": 30,
+            "bytes": 13145175
+          },
+          {
+            "kind": "material-image",
+            "rows": 2,
+            "bytes": 158178
+          }
+        ],
+        "references": 124,
+        "documentHashParity": true,
+        "immutableTriggerRestored": true,
+        "vacuum": true,
+        "integrity": "ok"
+      },
+      "parity": {
+        "schema": "gravuru-product-resource-parity/v1",
+        "startedAt": "2026-11-07T09:35:08.389Z",
+        "scope": "isolated-acceptance-copies",
+        "immutableBackupOpened": false,
+        "shopifyWrites": 0,
+        "result": "PASS",
+        "tables": [
+          {
+            "name": "acryl_shop_jobs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "acrylic_customer_drafts",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "acrylic_customer_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "acrylic_review_requests",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "ai_design_batch_items",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "ai_design_batches",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "ai_design_jobs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "batch_jobs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "cart_configuration_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "cart_configurations",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "catalog_structure_settings",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "customer_draft_photos",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "customer_drafts",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "customer_file_grants",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "customer_file_revocations",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "design_corrections",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "export_output_checks",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_customer_drafts",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_customer_photos",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_customer_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_export_events",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_export_jobs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_offer_personalization",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_customers",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_event_selections",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_events",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_line_errors",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_lines",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_offers",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_refund_reports",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_status_events",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_print_proofs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_review_snapshots",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_shop_binding_personalization",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_shop_binding_selections",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_shop_bindings",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_variant_imports",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_variant_members",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_variant_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_variant_sets",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "import_items",
+            "rows": 2,
+            "sha256": "c53dc3a3fccd9fd4f2c2ec00032b30b490abb172cb3c2a8e3f6ce7ef7bcc1f76"
+          },
+          {
+            "name": "konfi_status",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "konfi_status_events",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "motif_search_daily",
+            "rows": 2,
+            "sha256": "5bcc3ca3a20393cf207f9e180da7025636eb1ea84bc1e2cbdd7b1e8d8a1f2ac2"
+          },
+          {
+            "name": "product_catalog",
+            "rows": 2,
+            "sha256": "ab6d8b4cc290ded30ab05d87b52e3a2d0e17d41c168bf2fe4f6b70e1ca90306e"
+          },
+          {
+            "name": "product_families",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "product_family_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "production_release_events",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "products",
+            "rows": 2,
+            "sha256": "47166021704b5e84f65985a481a03c7e1fad29a672fd5d81925979814c56cf56"
+          },
+          {
+            "name": "shop_draft_transfers",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "storefront_cart_handoffs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "tenant_settings",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "tenants",
+            "rows": 1,
+            "sha256": "e74b9650fb51c849462464cffeea10a27aa72e98e3f43f6abee3ed59fba70883"
+          },
+          {
+            "name": "theme_cart_transfers",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "variant_batch_jobs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "design-assets.sqlite/design_assets",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "design-assets.sqlite/design_sources",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "design-assets.sqlite/form_contours",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "design-assets.sqlite/material_surfaces",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "design-assets.sqlite/photo_example_sources",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "design-assets.sqlite/review_photo_edits",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "design-assets.sqlite/workshop_fonts",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "profiles.sqlite/manufacturing_profile_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "profiles.sqlite/manufacturing_profiles",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "profiles.sqlite/profile_library_settings",
+            "rows": 1,
+            "sha256": "112e5e42e6831cad1b36c4fc4725044da333f1528be5f803d7fedb62a07e1b94"
+          },
+          {
+            "name": "profiles.sqlite/profile_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "profiles.sqlite/profile_settings_revisions",
+            "rows": 1,
+            "sha256": "d38a9ae7ceb003154b651cd85db41d08088e47118cf4d97ba202f45dc1bc5142"
+          },
+          {
+            "name": "profiles.sqlite/profiles",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "revisions": 4,
+        "heads": 2,
+        "previews": 86,
+        "production": 2,
+        "examples": [
+          {
+            "group": "slate-rect-220x140",
+            "name": "example-0",
+            "productId": "cfg_4f70b373-f49b-42ea-8a27-1c4a0e0e6d57",
+            "designId": "katalog-tiere-d1000-rechteck-3-2-ohne",
+            "sha256": "fda92810a91245b7913de081e5bd7c191671fa6a2b48d8281f3fc3f15ea4da81"
+          },
+          {
+            "group": "slate-rect-300x200",
+            "name": "example-1",
+            "productId": "cfg_b5b1326f-f4df-4cc9-9345-bd0591cf7071",
+            "designId": "katalog-tiere-d1000-rechteck-3-2-ohne",
+            "sha256": "65272de838ec7521beb41f28d8200c226b9ef5ffa90a144152867f37ad5c1659"
+          }
+        ],
+        "revisionSha256": "a21647d4e95b7b20838b0118ef248e989e2c2b0a1d06b130ef22b3c0a2edd605",
+        "productionCases": [
+          {
+            "group": "slate-rect-220x140",
+            "productId": "cfg_4f70b373-f49b-42ea-8a27-1c4a0e0e6d57",
+            "designId": "katalog-tiere-d1000-rechteck-3-2-ohne",
+            "requiredCustomerInput": "same reversed template text, no stored changes",
+            "svgSha256": "8f9367b298bd662b1a815a618705268f7f0f634f36ae56b75c613ce9ba68759f",
+            "geometrySha256": "cc65282ac0882a4406dd59f7d2628589623613b25cf67ab69dab856aaec8234d"
+          },
+          {
+            "group": "slate-rect-300x200",
+            "productId": "cfg_b5b1326f-f4df-4cc9-9345-bd0591cf7071",
+            "designId": "katalog-tiere-d1000-rechteck-3-2-ohne",
+            "requiredCustomerInput": "same reversed template text, no stored changes",
+            "svgSha256": "ea73d5f97932f3058f4c84570291b6ef5467598a5e632267224485526e32f4e0",
+            "geometrySha256": "70bf552c6b19302ca21ab658d2aad20f8d95a1e549fa9049cb609ec3f12fe96e"
+          }
+        ],
+        "previewSha256": "3a64d4ff113957f002137d7f711711281ba308815cfb9a4204a2c72911437658",
+        "finishedAt": "2026-11-07T09:37:31.593Z"
+      },
+      "rollback": {
+        "status": "verified",
+        "afterSchemaVersion": 4,
+        "references": 0,
+        "documentHashParity": true,
+        "rows": 4
+      }
+    },
+    {
+      "name": "photo",
+      "migration": {
+        "rows": 5,
+        "beforeBytes": 3248128,
+        "afterBytes": 1732608,
+        "rawDocBytesBefore": 2443007,
+        "rawDocBytesAfter": 26252,
+        "resourceBytes": 894675,
+        "uniqueKinds": [
+          {
+            "kind": "font",
+            "rows": 3,
+            "bytes": 894675
+          }
+        ],
+        "references": 6,
+        "documentHashParity": true,
+        "immutableTriggerRestored": true,
+        "vacuum": true,
+        "integrity": "ok"
+      },
+      "parity": {
+        "schema": "gravuru-product-resource-parity/v1",
+        "startedAt": "2026-11-07T09:35:08.447Z",
+        "scope": "isolated-acceptance-copies",
+        "immutableBackupOpened": false,
+        "shopifyWrites": 0,
+        "result": "PASS",
+        "tables": [
+          {
+            "name": "acryl_shop_jobs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "acrylic_customer_drafts",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "acrylic_customer_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "acrylic_review_requests",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "ai_design_batch_items",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "ai_design_batches",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "ai_design_jobs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "batch_jobs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "cart_configuration_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "cart_configurations",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "catalog_structure_settings",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "customer_draft_photos",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "customer_drafts",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "customer_file_grants",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "customer_file_revocations",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "design_corrections",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "export_output_checks",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_customer_drafts",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_customer_photos",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_customer_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_export_events",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_export_jobs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_offer_personalization",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_customers",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_event_selections",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_events",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_line_errors",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_lines",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_offers",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_refund_reports",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_order_status_events",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_print_proofs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_review_snapshots",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_shop_binding_personalization",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_shop_binding_selections",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_shop_bindings",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_variant_imports",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_variant_members",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_variant_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "form_variant_sets",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "import_items",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "konfi_status",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "konfi_status_events",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "motif_search_daily",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "product_catalog",
+            "rows": 2,
+            "sha256": "d97c7b8dfeb6bd8d108982d03e90d8bd989c397ab8546001f103fe59fd181bde"
+          },
+          {
+            "name": "product_families",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "product_family_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "production_release_events",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "products",
+            "rows": 2,
+            "sha256": "09fa02d66c43213950dc487baac098218dbd5d49e90dd18e0a5bab85c8183e2f"
+          },
+          {
+            "name": "shop_draft_transfers",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "storefront_cart_handoffs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "tenant_settings",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "tenants",
+            "rows": 1,
+            "sha256": "cc651adecc2c4e827aecbeb1f68736c17fb361b00e82ff0f4bbf1c292e0bcc66"
+          },
+          {
+            "name": "theme_cart_transfers",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "variant_batch_jobs",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "design-assets.sqlite/design_assets",
+            "rows": 5,
+            "sha256": "0d3676f56cf0fa81e00827a9ef350cc44cf3c684c6853281a04e7f3dfdbf2048"
+          },
+          {
+            "name": "design-assets.sqlite/design_sources",
+            "rows": 8,
+            "sha256": "e8c7929074dab4f52a3e347e32ad94962d8ffcde14e9289399ea80b5caf189d6"
+          },
+          {
+            "name": "design-assets.sqlite/form_contours",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "design-assets.sqlite/material_surfaces",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "design-assets.sqlite/photo_example_sources",
+            "rows": 4,
+            "sha256": "76a594774be42a42f4a67ac76e892f1921ec9c503a1c7889cf581590b3dbd259"
+          },
+          {
+            "name": "design-assets.sqlite/review_photo_edits",
+            "rows": 3,
+            "sha256": "97a56baffefff1277d31db1957d7b62c3dd9eb8004e5666d3cf9236aecad00ac"
+          },
+          {
+            "name": "design-assets.sqlite/workshop_fonts",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "profiles.sqlite/manufacturing_profile_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "profiles.sqlite/manufacturing_profiles",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "profiles.sqlite/profile_library_settings",
+            "rows": 1,
+            "sha256": "a60b959c6540712659b43e9ccecb6bb0747c7fe17ec66ee5987b4f02186a1b17"
+          },
+          {
+            "name": "profiles.sqlite/profile_revisions",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "profiles.sqlite/profile_settings_revisions",
+            "rows": 1,
+            "sha256": "46ca6d74c2ed350289451eb7f43ac941a7494ca3cc87bc15e435305b066afc0e"
+          },
+          {
+            "name": "profiles.sqlite/profiles",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "review-approvals.sqlite/design_review_approval_events",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "name": "review-comments.sqlite/review_comments",
+            "rows": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "revisions": 5,
+        "heads": 2,
+        "previews": 3,
+        "production": 2,
+        "examples": [
+          {
+            "group": "slate-rect-220x140",
+            "name": "example-0",
+            "productId": "cfg_1c743edf-54fe-4f1c-97b8-797bf0730402",
+            "designId": "source-a",
+            "sha256": "6e931499108e23fe52e94ab20374202f50c0970cddcb613484e7ff6a4983e0dd"
+          },
+          {
+            "group": "acrylic-rect",
+            "name": "example-1",
+            "productId": "cfg_c09a7a80-83d3-4c58-9ed8-a7e68d07cc88",
+            "designId": "acryl-unser-anfang-01",
+            "sha256": "e69930c7d39e534db19fc62a64ba2269e695bae3a840915d53c6715399bae9aa"
+          }
+        ],
+        "revisionSha256": "49cb4a89ffb409340c362d2dc663c439bf0109f3f64215c70ac67918e2c95c36",
+        "productionCases": [
+          {
+            "group": "slate-rect-220x140-example-photo",
+            "productId": "cfg_1c743edf-54fe-4f1c-97b8-797bf0730402",
+            "designId": "source-a",
+            "requiredCustomerInput": "same reversed template text, no stored changes",
+            "svgSha256": "f1a6d0cbdeafe250684098f62ffd0a85b3cc87628adafb4b8bc0b37ba18ca333",
+            "geometrySha256": "cc65282ac0882a4406dd59f7d2628589623613b25cf67ab69dab856aaec8234d"
+          },
+          {
+            "group": "slate-rect-220x140",
+            "productId": "cfg_1c743edf-54fe-4f1c-97b8-797bf0730402",
+            "designId": "source-b",
+            "requiredCustomerInput": "same reversed template text, no stored changes",
+            "svgSha256": "62276fa96c4b912eadbf14cbe3160efb97cd61fe663ba5253d58009a043e456e",
+            "geometrySha256": "cc65282ac0882a4406dd59f7d2628589623613b25cf67ab69dab856aaec8234d"
+          }
+        ],
+        "productionSkipped": [
+          {
+            "productId": "cfg_c09a7a80-83d3-4c58-9ed8-a7e68d07cc88",
+            "designId": "acryl-unser-anfang-01",
+            "reason": "Requires customer photo input; original sources and masks are covered by document/asset/preview parity."
+          }
+        ],
+        "previewSha256": "0fc730a8261df613688bd37b272711c216564c05f2d8c2ab73d3c23389dcf401",
+        "finishedAt": "2026-11-07T09:35:09.718Z"
+      },
+      "rollback": {
+        "status": "verified",
+        "afterSchemaVersion": 5,
+        "references": 6,
+        "documentHashParity": true,
+        "rows": 5
+      }
+    }
+  ],
+  "oldRuntimeRollback": {
+    "baseline": "3ad2cdc3947db211c1c5864c3acb8faa1883fa62",
+    "oldRuntimeRead": true,
+    "sets": [
+      {
+        "name": "steel",
+        "revisions": 81,
+        "rawTextParity": true,
+        "schema": 4,
+        "sharedReferences": 0
+      },
+      {
+        "name": "slate",
+        "revisions": 4,
+        "rawTextParity": true,
+        "schema": 4,
+        "sharedReferences": 0
+      },
+      {
+        "name": "photo",
+        "revisions": 5,
+        "rawTextParity": true,
+        "schema": 4,
+        "sharedReferences": 0
+      }
+    ],
+    "result": "PASS"
+  },
+  "browser": {
+    "scope": "isolated synthetic photo browser copy",
+    "rows": [
+      {
+        "revision": 4,
+        "sha256": "8c8896b77263058ea5e23f28f19b5b6d50e39892508a6707e3d0e7e7352edb0a",
+        "text": "Hallo",
+        "compact": true
+      },
+      {
+        "revision": 5,
+        "sha256": "c95eab86872272ce3823c065721b649dd48de2e5d2e8500d583d25fc59bcf2f2",
+        "text": "Hallo Hallo",
+        "compact": true
+      },
+      {
+        "revision": 6,
+        "sha256": "5dd09f9e4c44ad730c89c5b865bceaa7a708f7a272d0a10fe97a8d7c80c08fb8",
+        "text": "Hallo",
+        "compact": true
+      }
+    ],
+    "returnToCorrectCard": true,
+    "reopened": true,
+    "desktop": true,
+    "mobileViewport": {
+      "width": 390,
+      "height": 844
+    },
+    "poolRows": 3,
+    "originalRestored": true,
+    "shopifyWrites": 0,
+    "originalValuesRestored": true,
+    "newRevisionKeyOrderChanged": true,
+    "note": "Reopening, editing and restoring may reorder JSON keys in a new revision; all original values, photos, masks and positions restored. Existing immutable revision 4 is untouched."
+  },
+  "tests": [
+    {
+      "suite": "codec, repository, head, catalogue",
+      "pass": 37,
+      "fail": 0
+    },
+    {
+      "suite": "consumers, orders, bindings, import, backup",
+      "pass": 98,
+      "fail": 0
+    },
+    {
+      "suite": "native gallery, sync, production and tenants",
+      "pass": 42,
+      "fail": 0
+    },
+    {
+      "suite": "offline migration and rollback",
+      "pass": 17,
+      "fail": 0
+    }
+  ],
+  "totals": {
+    "revisions": 90,
+    "heads": 78,
+    "previews": 236,
+    "production": 7,
+    "targetedTests": 194
+  }
+}

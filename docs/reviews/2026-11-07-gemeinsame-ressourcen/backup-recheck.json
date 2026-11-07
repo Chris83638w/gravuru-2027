@@ -1,0 +1,24 @@
+{
+  "result": "PASS",
+  "sets": [
+    {
+      "set": "shared-resources-20261107T090130Z",
+      "files": 237,
+      "manifestSha256": "a1b16d58fd03b8de7fcaf0a7f49167dadb4e5cce6b2a86ac74b7ee86c1abf05d",
+      "allHashesMatch": true
+    },
+    {
+      "set": "steel-current",
+      "files": 6,
+      "manifestSha256": "16f8358d81254692e7127e95e1f82c618400fc75bf0da6cac78e045968eaf7e5",
+      "allHashesMatch": true
+    },
+    {
+      "set": "photo-current",
+      "files": 8,
+      "manifestSha256": "ae6b7c5bd801355581a4ba359f6002d7e9236ada5bffff258fade1b079f3726e",
+      "allHashesMatch": true
+    }
+  ],
+  "privateBackupsOnly": true
+}

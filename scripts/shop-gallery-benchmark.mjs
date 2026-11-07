@@ -2,6 +2,7 @@
 // No network, source migrations or customer-table reads.
 import {createShopGalleryCache} from '../app/workshop/shop-gallery-cache.mjs';
 import {DatabaseSync} from 'node:sqlite';
+import {readStoredDocumentText} from '../app/workshop/product-document-resources.mjs';
 import {createHash} from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -20,7 +21,7 @@ export async function benchmarkGalleryCopy({filename,tenantId,storeId,shopDomain
  try{
   cacheDb=cacheFilename?new DatabaseSync(cacheFilename):null;
   const scope={tenantId,storeId,shopDomain},tables=new Set(db.prepare("SELECT name FROM sqlite_master WHERE type='table'").all().map(r=>r.name));
-  const source=(id,revision)=>legacySingleStore?db.prepare('SELECT document FROM product_revisions WHERE product_id=? AND revision=?').get(id,revision):db.prepare('SELECT document FROM product_revisions WHERE tenant_id=? AND product_id=? AND revision=?').get(tenantId,id,revision);
+  const source=(id,revision)=>{const row=legacySingleStore?db.prepare('SELECT document FROM product_revisions WHERE product_id=? AND revision=?').get(id,revision):db.prepare('SELECT document FROM product_revisions WHERE tenant_id=? AND product_id=? AND revision=?').get(tenantId,id,revision);return row?{document:readStoredDocumentText(db,row.document,{tenantId})}:null;};
   const get=(id,revision)=>{const row=source(id,revision);if(!row)fail('missing_fixed_product');return {id,revision,document:JSON.parse(row.document)};};
   const noWrite=()=>fail('benchmark_read_only');
   const baseRegistry=createShopProductBindingStore({database:db,orderIntake:{tenantId,bindVariants:noWrite,bindings:noWrite},adapter:{...scope,getCurrentProduct:noWrite},...scope,legacySingleStore,readOnly:true,logger:()=>{}});

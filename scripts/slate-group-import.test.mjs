@@ -10,7 +10,7 @@ import {makeProductDocument,validateProductDocument} from '../app/workshop/produ
 import {slateProductGroups,slateGroupDocument,slateGroupVariants,slateGroupMainImage} from '../app/workshop/slate-product-groups.mjs';
 import {createProductRepository} from '../app/workshop/repository.mjs';
 import {createDesignAssetStore} from '../app/workshop/design-assets.mjs';
-import {BUNDLE_SCHEMA,digest,validateBundle,planImport,importBundle} from './slate-group-import.mjs';
+import {BUNDLE_SCHEMA,digest,validateBundle,planImport,importBundle,makeBundle} from './slate-group-import.mjs';
 import {checkRuntime} from './check-slate-import-runtime.mjs';
 const runtime=fileURLToPath(new URL('..',import.meta.url));
 function fixture(){
@@ -69,4 +69,22 @@ test('immutable resource collisions and an existing writer lock cannot be overwr
  const db=new DatabaseSync(path.join(dir,'design-assets.sqlite'));db.prepare('INSERT INTO design_sources(sha256,bytes) VALUES (?,?)').run(digest(source),Buffer.from('corrupt'));db.close();
  assert.throws(()=>planImport(bundle,dir),/unveränderliche Ressource/);
  bundle.assets.design_sources=[];fs.writeFileSync(path.join(dir,'.slate-group-import.lock'),'other writer');await assert.rejects(()=>importBundle(bundle,dir,{apply:true,runtime}),/EEXIST/);assert.equal(fs.readFileSync(path.join(dir,'.slate-group-import.lock'),'utf8'),'other writer');
+});
+
+test('portable bundle hydrates compact source fonts and imports them into a separate target without dangling references',async t=>{
+ const source=target(t),destination=target(t),bundle=fixture(),p=bundle.products[0];
+ const first=await importBundle(bundle,source.dir,{apply:true,runtime}),saved=first.products[0];
+ const db=new DatabaseSync(path.join(source.dir,'workshop.sqlite'),{readOnly:true});
+ try{assert.match(db.prepare('SELECT document FROM product_revisions WHERE product_id=? AND revision=?').get(saved.id,saved.revision).document,/\$gravuruResource/);}finally{db.close();}
+ fs.mkdirSync(path.join(source.dir,'images'));
+ fs.writeFileSync(path.join(source.dir,'images/main.svg'),Buffer.from(p.imageSvg,'base64'));
+ fs.writeFileSync(path.join(source.dir,'shopify-plan.json'),JSON.stringify([{...p,productId:saved.id,revision:saved.revision,mainImage:{...p.mainImage,file:'images/main.svg'}}]));
+ const exported=makeBundle(source.dir);
+ assert.deepEqual(exported.products[0].document,p.document);
+ assert.equal(exported.products[0].fingerprint,p.fingerprint);
+ assert.equal(JSON.stringify(exported).includes('$gravuruResource'),false,'internal storage markers never leave in import packages');
+ const imported=await importBundle(exported,destination.dir,{apply:true,runtime});
+ const repo=createProductRepository({filename:path.join(destination.dir,'workshop.sqlite'),tenantId:'gravuru'});
+ try{assert.deepEqual(repo.get(imported.products[0].id).document,p.document);}finally{repo.close();}
+ assert.equal((await importBundle(exported,destination.dir,{apply:true,runtime})).products[0].action,'unchanged');
 });

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {createHmac} from 'node:crypto';
+import {createHash,createHmac} from 'node:crypto';
 import {planFamilyFormats} from './katalog-family-formats.mjs';
 import {workshopResources} from './catalog.mjs';
 import {makeProductDocument} from './product-model.mjs';
@@ -84,4 +84,25 @@ test('catalog activation is explicit and does not change doorbell activation',()
  assert.equal(customerIntegrationFromEnv({...base,GRAVURU_CATALOG_LIVE_ORDERS:'approved-issue139-20261102'}).doorbellLiveOrders,undefined);
  for(const flag of ['true',true,'approved','approved-20261027'])assert.throws(()=>customerIntegrationFromEnv({...base,GRAVURU_CATALOG_LIVE_ORDERS:flag}),{code:'catalog_live_orders_env'});
  assert.throws(()=>customerIntegrationFromEnv({GRAVURU_CATALOG_LIVE_ORDERS:'approved-issue139-20261102'}),{code:'catalog_live_orders_env'});
+});
+
+test('shared resources preserve the original approval hash, paid webhook proof and immutable order line',async t=>{
+ const f=await fixture(t),originalText=JSON.stringify(f.record.document);
+ const raw=f.ws.db.prepare('SELECT document FROM product_revisions WHERE product_id=? AND revision=1').get(f.record.id).document;
+ assert.match(raw,/\$gravuruResource/,'the real repository stores the tested native fonts compactly');
+ assert.notEqual(raw,originalText);
+ f.intake.approveCatalogLiveProducts(f.args);
+ const approved=f.ws.db.prepare('SELECT * FROM catalog_live_order_approvals WHERE cfg_id=?').get(f.record.id);
+ assert.equal(approved.document_sha256,createHash('sha256').update(originalText).digest('hex'));
+ assert.notEqual(approved.document_sha256,createHash('sha256').update(raw).digest('hex'));
+ const message=signed(f.payload,'shared-resources-paid-event');
+ assert.throws(()=>f.intake.receive(Buffer.concat([message.raw,Buffer.from(' ')]),message.headers,live),/nicht bestätigt/);
+ const paid=f.intake.receive(message.raw,message.headers,live);assert.equal(paid.lines.length,1);
+ const fixed=f.ws.db.prepare('SELECT document FROM form_order_lines WHERE id=?').get(paid.lines[0].id).document;
+ f.ws.repository.save(f.record.id,{...f.record.document,name:'Later unrelated draft'},1);
+ assert.deepEqual(f.ws.repository.get(f.record.id,{revision:1}).document,f.record.document);
+ assert.equal(f.intake.catalogLiveApproval(f.lookup).kind,'catalog');
+ assert.equal(f.intake.receive(message.raw,message.headers,live).duplicate,true);
+ assert.equal(f.ws.db.prepare('SELECT document FROM form_order_lines WHERE id=?').get(paid.lines[0].id).document,fixed);
+ assert.deepEqual(f.ws.db.prepare('SELECT * FROM catalog_live_order_approvals WHERE cfg_id=?').get(f.record.id),approved);
 });

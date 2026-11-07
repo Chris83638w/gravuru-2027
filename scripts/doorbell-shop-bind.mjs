@@ -5,6 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {DatabaseSync} from 'node:sqlite';
+import {parseStoredDocument} from '../app/workshop/product-document-resources.mjs';
 import {prepareShopProduct} from '../app/workshop/shop-preparation.mjs';
 import {openWorkshopDb,checkSelections,applyChecks,priceMismatches} from './shop-bind.mjs';
 import {readCredentials,createShopifyClient} from './shop-export.mjs';
@@ -76,10 +77,10 @@ export function readDoorbellRecords(filename,manifest,{tenantId='gravuru'}={}){
  if(!fs.existsSync(filename))fail('Der vorhandene Acryl-Speicher fehlt.');
  const db=new DatabaseSync(filename,{readOnly:true});
  try{
-  if(db.prepare('PRAGMA user_version').get().user_version!==4)fail('Nur der vorhandene Acryl-Speicher mit Schema v4 ist zulässig; Legacy wird niemals migriert.');
+  if(![4,5].includes(db.prepare('PRAGMA user_version').get().user_version))fail('Nur der vorhandene Acryl-Speicher mit Schema v4 oder v5 ist zulässig; Legacy wird niemals migriert.');
   return validateDoorbellRecords(manifest,id=>{
    const row=db.prepare('SELECT p.id,p.revision,p.archived,p.kind,r.document,r.status FROM products p JOIN product_revisions r ON r.product_id=p.id AND r.tenant_id=p.tenant_id AND r.revision=p.revision WHERE p.tenant_id=? AND p.id=?').get(tenantId,id);
-   return row&&!row.archived&&row.kind==='product'?{id:row.id,revision:row.revision,status:row.status,document:JSON.parse(row.document)}:null;
+   return row&&!row.archived&&row.kind==='product'?{id:row.id,revision:row.revision,status:row.status,document:parseStoredDocument(db,row.document,{tenantId})}:null;
   });
  }finally{db.close();}
 }

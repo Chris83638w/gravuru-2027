@@ -156,7 +156,7 @@ export function buildDoorbellConfig(native,entry,{fontIds=[],motifIds=[],imageSh
 export function assertCurrentRepository(filename){
  if(!fs.existsSync(filename))return;
  const db=new DatabaseSync(filename,{readOnly:true});
- try{const version=db.prepare('PRAGMA user_version').get().user_version;if(version!==4)fail('Bestehende Datenbank hat nicht Version 4; niemals durch diesen Import automatisch migrieren.');}
+ try{const version=db.prepare('PRAGMA user_version').get().user_version;if(![4,5].includes(version))fail('Bestehende Datenbank hat nicht Version 4 oder 5; niemals durch diesen Import automatisch migrieren.');}
  finally{db.close();}
 }
 

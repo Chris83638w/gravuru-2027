@@ -1,0 +1,30 @@
+# Executed only for the separately approved, unpublished stainless-steel pilot.
+# Variables come from shopDraftRequest after the native guarded import.
+query ApprovedSteelPilotLookup($query: String!) {
+  shop { id myshopifyDomain currencyCode }
+  products(first: 2, query: $query) {
+    nodes {
+      id handle title status tags publishedAt onlineStoreUrl
+      seo { title description }
+      variants(first: 50) {
+        nodes { id price selectedOptions { name value } }
+        pageInfo { hasNextPage endCursor }
+      }
+    }
+    pageInfo { hasNextPage endCursor }
+  }
+}
+
+mutation ApprovedSteelPilotCreate($input: ProductSetInput!) {
+  productSet(input: $input, synchronous: true) {
+    product {
+      id handle title status tags publishedAt onlineStoreUrl
+      seo { title description }
+      variants(first: 50) {
+        nodes { id price selectedOptions { name value } }
+        pageInfo { hasNextPage endCursor }
+      }
+    }
+    userErrors { field code message }
+  }
+}

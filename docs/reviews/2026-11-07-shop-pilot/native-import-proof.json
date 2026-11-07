@@ -1,0 +1,39 @@
+{
+  "scope": "private-draft-only",
+  "checkedAtUtc": "2026-11-07T09:46:11.579467+00:00",
+  "shopifyWrites": 0,
+  "runtimeSwitched": false,
+  "backups": [
+    {
+      "file": "design-assets.sqlite",
+      "bytes": 8052736,
+      "sha256": "b923b0ee0020b9de0b49ef13e17a3ff396e41888fb9d20fdeb1c5bf65838440d"
+    },
+    {
+      "file": "profiles.sqlite",
+      "bytes": 77824,
+      "sha256": "c423d1a2bb43f993c09bf196d01f4486ecb3f69ece5e519643ef57f346fdf11d"
+    },
+    {
+      "file": "workshop.sqlite",
+      "bytes": 2439389184,
+      "sha256": "86aa16b477fc281bde0da968abb6dcbefcbf95202f613e17449b7f5c8d8424bf"
+    },
+    {
+      "file": "review-comments.sqlite",
+      "bytes": 12288,
+      "sha256": "fb2d918730b724d1d7720a574618e3cc9387787aae777f715bbc20333da3741d"
+    },
+    {
+      "file": "review-approvals.sqlite",
+      "bytes": 139264,
+      "sha256": "e896cc06dbd5bb81c5df20bbe68b268537cda0d204f67f8de92770d2e2271336"
+    }
+  ],
+  "beforeProducts": 348,
+  "ok": true,
+  "afterProducts": 349,
+  "preservedExistingProducts": 348,
+  "nativeProductId": "cfg_95f1e9be-0a63-4168-8cbe-d19b789546a5",
+  "nativeRevision": 1
+}

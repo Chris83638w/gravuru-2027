@@ -43,6 +43,9 @@ function verifyProduct(product, request) {
   return {shopifyProductId: product.id, handle: product.handle, status: 'DRAFT', mappings, published: false, imagesTransferred: false};
 }
 
+// The private operator reconciliation CLI uses this same readback validator.
+export {verifyProduct as verifyShopDraftProduct};
+
 export function createShopDraftTransport(config, {fetchImpl = globalThis.fetch, timeoutMs = 15000} = {}) {
   if (!config || !shopPattern.test(config.shopDomain || '') || config.apiVersion !== '2026-07' || !(typeof config.getAccessToken==='function'||typeof config.accessToken==='string'&&/^[\x21-\x7e]{16,4096}$/.test(config.accessToken)) || !Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 60000) fail(503, 'Shop-Entwurfsanbindung ist nicht eingerichtet.');
   const endpoint = `https://${config.shopDomain}/admin/api/${config.apiVersion}/graphql.json`;

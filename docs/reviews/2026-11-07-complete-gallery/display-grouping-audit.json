@@ -1,0 +1,19 @@
+{
+  "schema": "gravuru-gallery-grouping-audit/v1",
+  "sourceCommit": "86c1ff5f431acfe60d4cff388958112187005550",
+  "originals": 19533,
+  "groups": 624,
+  "mixedPhotoGroups": 0,
+  "mixedPeopleAnimalsGroups": 0,
+  "displayPhotoCounts": {
+    "without": 16820,
+    "with": 2630,
+    "unknown": 83
+  },
+  "missingSourceOriginals": 83,
+  "missingSourcePhotoUnknown": 83,
+  "otherPhotoClassificationChanges": 0,
+  "maximumCategoryKeyLength": 76,
+  "issues": [],
+  "passed": true
+}

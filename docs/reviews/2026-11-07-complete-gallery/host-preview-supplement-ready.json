@@ -1,0 +1,31 @@
+{
+  "schema": "gravuru-complete-gallery-preview-install/v1",
+  "createdAtUtc": "2026-11-07T17:19:40.076852+00:00",
+  "ready": true,
+  "sourceCommit": "01c3da9a33249eba2600079d689b5b1769f88f7e",
+  "catalogueCommit": "86c1ff5f431acfe60d4cff388958112187005550",
+  "helperSha256": "57a0ef05d71714152afd045dadeb97e2dc985fc6451a5f34929a175983824147",
+  "archiveSha256": "275a643955b63d776697a2ac749169969c25f88cadd3d221897b4a05438e1833",
+  "manifestSha256": "3221955808592c83cd5ad9eb8bef257b7956d9c5d9e423d2856ccac12e05502d",
+  "preparationProofSha256": "976ca2d1597f3577325fdc4bad96d2caa0a3c4bb886222c1edeaa1eba8b4e709",
+  "previousStageProofSha256": "bfef8d6fcc73c8e8b46fc54001454786e53919a247e36aadb6570436041ba8e9",
+  "previousGalleryManifestSha256": "099ea747bd3607fc8b916eac03568c7e90c7cd83884121685cf37b82665bfb0c",
+  "previousGalleryIndexSha256": "1a79a4e39be27fc130ba47ccb558c003428c9366e74580ef95993afbfb21c4e3",
+  "galleryManifestSha256": "ccbc54381a74fa34d967bd3ff286cd2bee655321122c97ebc56811fe1f1516a1",
+  "galleryIndexSha256": "4e8890cfd21a3fbbe60a123c0890c16b453a5fdd3fa47a120881ca150f6a4396",
+  "previewsAdded": 3447,
+  "blocked": 0,
+  "gallery": "/var/www/vhosts/gravuru-designwerkstatt.de/private/complete-gallery-20261107-v1/gallery",
+  "backup": "/var/www/vhosts/gravuru-designwerkstatt.de/private/complete-gallery-20261107-v1/preview-supplement-275a643955b63d77",
+  "metadataFieldsChanged": [
+    "originals[].reviewSourcePreview"
+  ],
+  "originalsTargetsAndNativeFilesPreserved": true,
+  "activeMappingPreserved": true,
+  "configurationWrites": 0,
+  "databaseWrites": 0,
+  "shopifyWrites": 0,
+  "activated": false,
+  "gitProofSha256": "e7b1bb9e98cfc733d27a92e2e099a96e25288f9ad1f21e302010b19e3b7084ee",
+  "pinnedCataloguePreviews": 59
+}

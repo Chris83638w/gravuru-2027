@@ -32,13 +32,16 @@ export function planDesignImportBatches(plan,maxBytes=DEFAULT_DESIGN_IMPORT_BATC
   return batches;
 }
 
-export async function extendDesignReview({baseRoot,addonRoot,data,galleryOut,maxBatchBytes=DEFAULT_DESIGN_IMPORT_BATCH_BYTES,onProgress=()=>{}}){
+export async function extendDesignReview({baseRoot,addonRoot,data,galleryOut,mappingOut,maxBatchBytes=DEFAULT_DESIGN_IMPORT_BATCH_BYTES,onProgress=()=>{}}){
   planDesignImportBatches([],maxBatchBytes);
   if(typeof onProgress!=='function')fail('Synchronous import progress callback required');
   const base=readSlatePackage(baseRoot),addon=readSlatePackage(addonRoot);
   if(addon.pack.schema!=='gravuru-design-original-review/v1')fail('Versioned material review package required');
   data=privateReviewPath(data);
   const mappingFile=reviewPackageFile(data,'local-review-import.json');
+  const destination=mappingOut?privateReviewPath(mappingOut):mappingFile;
+  if(mappingOut&&(destination===mappingFile||fs.existsSync(destination)||!fs.statSync(path.dirname(destination)).isDirectory()))fail('Staged mapping output must be a new separate file');
+  if(mappingOut&&[base.root,addon.root,path.resolve(galleryOut)].some(root=>destination===root||destination.startsWith(root+path.sep)))fail('Staged mapping must remain outside immutable gallery packages');
   for(const name of ['workshop.sqlite','design-assets.sqlite','profiles.sqlite','review-comments.sqlite']){
     if(!fs.statSync(reviewPackageFile(data,name)).isFile())fail('Existing review database required: '+name);
   }
@@ -144,13 +147,13 @@ export async function extendDesignReview({baseRoot,addonRoot,data,galleryOut,max
     }
     const result={...prior,products:[...prior.products,...added]};
     validateSlateReviewMapping(read(path.join(merged.out,'manifest.json')),result);
-    temp=mappingFile+'.'+randomUUID()+'.tmp';
+    temp=destination+'.'+randomUUID()+'.tmp';
     const fd=fs.openSync(temp,'wx',0o600);try{fs.writeFileSync(fd,JSON.stringify(result,null,2)+'\n');fs.fsyncSync(fd);}finally{fs.closeSync(fd);}
     if(!fs.readFileSync(mappingFile).equals(mappingBytes))fail('Review mapping changed concurrently; inspect before retrying');
-    fs.renameSync(temp,mappingFile);temp=null;
+    fs.renameSync(temp,destination);temp=null;
     const priorIds=new Set(base.pack.originals.map(row=>row.id));
     return {localOnly:true,published:false,shopifyWrites:0,alreadyPresent:false,oldProducts:prior.products.length,newProducts:added.length,newOriginals:addon.pack.originals.filter(row=>!priorIds.has(row.id)).length,
-      extendedOriginals:addon.pack.originals.filter(row=>priorIds.has(row.id)).length,importBatches:batches.length,maxBatchBytes,gallery:merged.out,counts:merged.counts};
+      extendedOriginals:addon.pack.originals.filter(row=>priorIds.has(row.id)).length,importBatches:batches.length,maxBatchBytes,gallery:merged.out,mapping:destination,mappingActivated:!mappingOut,counts:merged.counts};
   }finally{
     repo?.close();assets?.close();
     if(temp&&fs.existsSync(temp))fs.unlinkSync(temp);
@@ -161,5 +164,5 @@ export async function extendDesignReview({baseRoot,addonRoot,data,galleryOut,max
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
   const args=process.argv.slice(2),value=key=>args[args.indexOf(key)+1];
   for(const key of ['--base','--addon','--data','--gallery-out'])if(!args.includes(key)||!value(key))fail(key+' required');
-  console.log(JSON.stringify(await extendDesignReview({baseRoot:value('--base'),addonRoot:value('--addon'),data:value('--data'),galleryOut:value('--gallery-out')})));
+  console.log(JSON.stringify(await extendDesignReview({baseRoot:value('--base'),addonRoot:value('--addon'),data:value('--data'),galleryOut:value('--gallery-out'),mappingOut:args.includes('--mapping-out')?value('--mapping-out'):undefined,onProgress:progress=>console.log(JSON.stringify(progress))})));
 }

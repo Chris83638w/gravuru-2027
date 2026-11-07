@@ -56,8 +56,8 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
   if(!plain(value)||!Array.isArray(value.familyIds)||value.familyIds.some(id=>typeof id!=='string')||new Set(value.familyIds).size!==value.familyIds.length||typeof value.fingerprint!=='string'||!value.fingerprint||value.fingerprint.length>200)fail(422,'group_offering_invalid','Die bestätigte Materialauswahl der Unterkategorie ist nicht vollständig.');
   return {familyIds:value.familyIds.map(identifier).sort(),fingerprint:value.fingerprint};
  }
- function registry(){
-  const rows=typeof targets==='function'?targets():targets;
+ function registry(options){
+  const rows=typeof targets==='function'?targets(options):targets;
   if(!Array.isArray(rows))throw Error('Authoritative product target list required');
   const map=new Map();
   for(const raw of rows){
@@ -66,20 +66,22 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
   }
   return map;
  }
- function source(key,revision){
-  const target=registry().get(key);if(!target)fail(404,'group_source_missing','Die Produktquelle ist nicht mehr zugeordnet.');
+ function source(key,revision,registered){
+  const target=(registered||registry()).get(key);if(!target)fail(404,'group_source_missing','Die Produktquelle ist nicht mehr zugeordnet.');
   const current=repository.get(target.productId),record=revision===undefined?current:repository.get(target.productId,{revision:version(revision)}),document=record.document,p=document.config?.profile;
   if(current.status==='archived'||current.document.kind!=='product'||!p||!Array.isArray(p.optionGroups))fail(422,'group_source_unsupported','Für diese Quelle fehlt ein aktiver nativer Produktstand mit Optionsbereichen.');
   return {target,current,record,document};
  }
- function sourceView(key){
-  const {target,record,document}=source(key),p=document.config.profile;
+ function recordView(target,record){
+  const document=record.document,p=document.config?.profile;
+  if(record.status==='archived'||document.kind!=='product'||!p||!Array.isArray(p.optionGroups))fail(422,'group_source_unsupported','Für diese Quelle fehlt ein aktiver nativer Produktstand mit Optionsbereichen.');
   let currentOptions=null,currentPrice=null,issue=null;
   try{currentOptions=resolvedOptions(document.config,{});currentPrice=quote(document.config,[],p.defaultDesignId,currentOptions);}catch(error){issue=error.message;}
   return {...target,name:document.name,label:document.name,source:{productId:record.id,revision:record.revision},material:copy(p.material),geometry:copy(p.geometry),
    optionGroups:copy(p.optionGroups),optionFields:copy(p.optionFields||[]),currentOptions,currentPrice,
    issues:[...(!target.familyId?['Familienzuordnung offen.']:[]),...(!target.sizeKey?['Größenzuordnung offen.']:[]),...(issue?[issue]:[])]};
  }
+ function sourceView(key,registered){const {target,record}=source(key,undefined,registered);return recordView(target,record);}
  function validate(input){
   keys(input,['schema','name','scope','targets','openQuestions']);
   if(input.schema!==PRODUCT_GROUP_TEMPLATE_SCHEMA)fail(422,'group_schema','Unbekanntes Vorlagenformat.');
@@ -142,7 +144,11 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
  }
  const resultRow=id=>db.prepare('SELECT document FROM product_group_creation_results WHERE tenant_id=? AND plan_id=?').get(tenant,id);
  const service={tenantId:tenant,
-  sources:()=>[...registry().keys()].map(key=>{try{return sourceView(key);}catch(e){return {...registry().get(key),label:key,issues:[e.message],unsupported:true};}}),
+  sources:()=>{
+   const views=new Map(),unavailable=(target,e)=>({...target,label:target.key,issues:[e.message],unsupported:true});
+   const registered=registry({onRecord:(target,record)=>{try{views.set(target.key,recordView(target,record));}catch(e){views.set(target.key,unavailable(target,e));}}});
+   return [...registered].map(([key,target])=>{try{return views.get(key)||sourceView(key,registered);}catch(e){return unavailable(target,e);}});
+  },
   draft(input){keys(input,['name','scope','sourceKeys']);if(!Array.isArray(input.sourceKeys))fail(422,'group_targets','Produktquellen auswählen.');return validate({schema:PRODUCT_GROUP_TEMPLATE_SCHEMA,name:input.name,scope:input.scope,targets:input.sourceKeys.map(key=>{const s=sourceView(key);return {key:s.key,source:s.source,familyId:s.familyId,sizeKey:s.sizeKey,material:s.material,optionGroups:s.optionGroups,optionFields:s.optionFields};}),openQuestions:[]});},
   validate,get,
   list:()=>db.prepare('SELECT id FROM product_group_templates WHERE tenant_id=? ORDER BY rowid DESC').all(tenant).map(r=>get(r.id)),

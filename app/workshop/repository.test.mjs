@@ -12,6 +12,18 @@ const document = (name = 'Acryl 150 × 200', extra = {}) => ({
 });
 const errorIs = (status, code) => (error) => error.status === status && error.code === code;
 
+test('cached registration projection sees other connections and never borrows editable head metadata',t=>{
+ const {repository,open}=fixture(t),other=open(),prefix='gallery-assignment:';
+ const entry=(id,n)=>({key:prefix+id,fingerprint:String(n).repeat(64),document:document('source',{config:{profile:{designs:[{id,katalog:{galleryAssignment:{originalId:id}}}]}}})});
+ assert.deepEqual(repository.importItems({prefix}),[]);
+ const first=other.importBatch([entry('a',1)])[0];
+ let rows=repository.importItems({prefix});assert.equal(rows.length,1);rows[0].registrations[0].originalId='client-mutation';
+ assert.equal(repository.importItems({prefix})[0].registrations[0].originalId,'a');
+ const changed=other.get(first.id);changed.document.config.profile.designs[0].katalog.galleryAssignment.originalId='editable-head';other.save(first.id,changed.document,1);
+ assert.equal(repository.importItems({prefix})[0].registrations[0].originalId,'a');
+ other.importBatch([entry('b',2)]);assert.equal(repository.importItems({prefix}).length,2);
+});
+
 function fixture(t, options = {}) {
   const directory = mkdtempSync(join(tmpdir(), 'gravuru-products-'));
   const filename = join(directory, 'nested', 'products.sqlite');

@@ -6,6 +6,13 @@ const MATERIALS = Object.freeze(Object.fromEntries([
   ['acrylic-anthrazit-3mm', 'Acrylglas Anthrazit · 3 mm', 'acrylic'],
   ['acrylic-as-5mm', 'Acrylglas Schwarz · 5 mm', 'acrylic'],
   ['acrylic-aa-5mm', 'Acrylglas Anthrazit · 5 mm', 'acrylic'],
+  ['acrylic-ss-3mm', 'Acrylglas Satiniert · 3 mm', 'acrylic'],
+  ['acrylic-unspecified', 'Acrylglas · Ausführung offen', 'acrylic'],
+  ['wood', 'Holz', 'wood'], ['leather', 'Leder', 'leather'],
+  ['plastic', 'Kunststoff', 'plastic'], ['aluminium-composite', 'Alu-Dibond', 'aluminium-composite'],
+  ['granite', 'Granit', 'granite'], ['marble', 'Marmor', 'marble'],
+  ['canvas', 'Leinwand', 'canvas'], ['stone', 'Stein', 'stone'],
+  ['unknown', 'Material offen', 'unknown'],
 ].map(([key, label, kind]) => [key, {key, label, kind}])));
 const text = value => typeof value === 'string' && value.length > 0 && value.length <= 200;
 const dimensions = mm => Array.isArray(mm) && mm.length === 2 && mm.every(value => Number.isFinite(value) && value > 0);
@@ -25,11 +32,13 @@ export function designReviewMaterials(row) {
 }
 
 export function designReviewMaterialMatches(nativeMaterial, material) {
+  if(!['steel','slate','acrylic'].includes(material.kind))return false;
   if (nativeMaterial?.kind !== material.kind) return false;
   if (material.kind !== 'acrylic') return true;
   const expected = {
     'acrylic-schwarz-3mm': ['schwarz', 3], 'acrylic-anthrazit-3mm': ['anthrazit', 3],
     'acrylic-as-5mm': ['schwarz', 5], 'acrylic-aa-5mm': ['anthrazit', 5],
+    'acrylic-ss-3mm': ['satiniert', 3],
   }[material.key];
   return !!expected && nativeMaterial.variant === expected[0] && nativeMaterial.thicknessMm === expected[1];
 }
@@ -49,12 +58,27 @@ export const designReviewApprovalKey = (row, sizeKey, target) => JSON.stringify(
 // included so legacy pilot targets (which have no familyId) retain identity.
 export const designReviewTargetKey = (row, target) => designReviewApprovalKey(row, target.sizeKey, target);
 
-export function resolveDesignReviewTarget(row, target, imported) {
+// Request/startup-scoped index: callers retain no mutable global mapping cache.
+export function indexDesignReviewProducts(imported) {
+  const byOriginal = new Map(), byKey = new Map();
+  for (const product of imported.products) {
+    if (!byKey.has(product.key)) byKey.set(product.key, []);
+    byKey.get(product.key).push(product);
+    for (const id of new Set(product.designIds || [])) {
+      if (!byOriginal.has(id)) byOriginal.set(id, []);
+      byOriginal.get(id).push(product);
+    }
+  }
+  return {byOriginal, byKey};
+}
+
+export function resolveDesignReviewTarget(row, target, imported, candidates) {
   const material = designReviewMaterial(row, target);
   if (target.status !== 'prepared' || !dimensions(target.mm) || !text(target.sizeKey)) return null;
   const explicit = target.productKey !== undefined || target.nativeDesignId !== undefined || material.key !== 'slate';
   if (explicit && (!text(target.productKey) || !text(target.nativeDesignId))) return null;
-  const products = imported.products.filter(product => Array.isArray(product.designIds) && product.designIds.includes(row.id) &&
+  const rows = candidates?.byOriginal ? (explicit ? candidates.byKey.get(target.productKey) : candidates.byOriginal.get(row.id)) || [] : candidates || imported.products;
+  const products = rows.filter(product => Array.isArray(product.designIds) && product.designIds.includes(row.id) &&
     (explicit ? product.key === target.productKey : product.key.startsWith(target.sizeKey + ':')));
   if (products.length > 1) fail('Ambiguous review target');
   const product = products[0];
@@ -81,6 +105,8 @@ export function validatedDesignReviewTargets(pack, imported) {
         product.designIds.some(id => !originals.has(id) || !source.designIds.includes(id))) fail('Invalid review product mapping');
     productIds.add(product.productId); productKeys.add(product.key);
   }
+  const candidates = new Map();
+  for(const product of imported.products)for(const id of product.designIds){if(!candidates.has(id))candidates.set(id,[]);candidates.get(id).push(product);}
   const targets = [], nativePairs = new Set(), reviewKeys = new Set();
   for (const row of pack.originals) {
     designReviewMaterial(row);
@@ -88,7 +114,7 @@ export function validatedDesignReviewTargets(pack, imported) {
       const key = designReviewTargetKey(row, target);
       if (reviewKeys.has(key)) fail('Duplicate material/format review target');
       reviewKeys.add(key);
-      const resolved = resolveDesignReviewTarget(row, target, imported);
+      const resolved = resolveDesignReviewTarget(row, target, imported, candidates.get(row.id)||[]);
       if (target.status === 'prepared' && !resolved) fail('Prepared review target is missing its explicit native mapping');
       if (!resolved) continue;
       const pair = JSON.stringify([resolved.productId, resolved.designId]);

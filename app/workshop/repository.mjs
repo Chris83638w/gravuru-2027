@@ -19,6 +19,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
   if (typeof snapshotMetadata !== 'function') throw new TypeError('snapshotMetadata must be a synchronous function.');
   if (filename !== ':memory:') mkdirSync(dirname(filename), { recursive: true });
   const db = new DatabaseSync(filename);
+  const importProjectionCache=new Map();
   const transact = (work) => {
     db.exec('BEGIN IMMEDIATE');
     try {
@@ -240,6 +241,25 @@ export function createProductRepository({ filename, validateDocument = (value) =
     importItem(key) {
       const row=db.prepare('SELECT * FROM import_items WHERE import_key = ? AND tenant_id = ?').get(key, tenant);
       return row ? {key:row.import_key,fingerprint:row.fingerprint,id:row.product_id} : null;
+    },
+    // Registered gallery targets are part of the immutable first native
+    // revision and its import journal, committed together. Project only the
+    // small registration objects in SQLite; never hydrate all embedded fonts.
+    importItems({prefix} = {}) {
+      if(typeof prefix!=='string'||!/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(prefix))throw failure(422,'invalid_import_prefix','Ein eindeutiges Importpräfix ist erforderlich.');
+      // Immutable R1 metadata need only be extracted when its small journal
+      // changes. Ordinary image/CSS requests must not reparse font payloads.
+      const stamp=JSON.stringify(db.prepare('SELECT import_key,fingerprint,product_id FROM import_items WHERE tenant_id=? AND substr(import_key,1,length(?))=? ORDER BY import_key').all(tenant,prefix,prefix));
+      const cached=importProjectionCache.get(prefix);if(cached?.stamp===stamp)return structuredClone(cached.rows);
+      const rows=db.prepare(`SELECT i.import_key,i.fingerprint,i.product_id,
+        (SELECT json_group_array(json_extract(d.value,'$.katalog.galleryAssignment'))
+         FROM json_each(r.document,'$.config.profile.designs') d
+         WHERE json_type(d.value,'$.katalog.galleryAssignment')='object') AS registrations
+        FROM import_items i JOIN product_revisions r ON r.product_id=i.product_id AND r.tenant_id=i.tenant_id AND r.revision=1
+        WHERE i.tenant_id=? AND substr(i.import_key,1,length(?))=? ORDER BY i.import_key`).all(tenant,prefix,prefix)
+        .map(row=>({key:row.import_key,fingerprint:row.fingerprint,id:row.product_id,registrations:JSON.parse(row.registrations)}));
+      if(importProjectionCache.size>=8)importProjectionCache.clear();importProjectionCache.set(prefix,{stamp,rows});
+      return structuredClone(rows);
     },
     importBatch(entries, { beforeWrite } = {}) {
       if(!Array.isArray(entries)||entries.length<1||entries.length>100)throw failure(422,'invalid_batch','Eine Serie umfasst 1 bis 100 Produkte.');

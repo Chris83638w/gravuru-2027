@@ -10,7 +10,7 @@ import {createGalleryShopSync} from '../app/workshop/gallery-shop-sync.mjs';
 test('mounted private gallery requires exact options confirmation and retains real native drafts',async t=>{
  const root=fs.mkdtempSync(path.join(os.tmpdir(),'gallery-management-')),f=await createGalleryManagementFixture(root),base=await f.listen();
  t.after(async()=>{await f.close();assert.ok(root.startsWith(path.join(os.tmpdir(),'gallery-management-')));fs.rmSync(root,{recursive:true,force:true});});
- const page=await fetch(base+'/originale/');assert.match(await page.text(),/Produktgruppen &amp; Synchronisierung/);
+ const page=await fetch(base+'/originale/');assert.match(await page.text(),/href="\/originale\/verwaltung"[^>]*>Verwaltung<\/a>/);
  assert.equal((await fetch(base+'/originale/verwaltung',{headers:{'Sec-Fetch-Site':'cross-site'}})).status,200,'navigation to public shell is allowed');
  assert.equal((await fetch(base+'/originale/verwaltung/api/context',{headers:{'Sec-Fetch-Site':'cross-site'}})).status,403,'private context remains same-origin');
  const context=await(await fetch(base+'/originale/verwaltung/api/context')).json();
@@ -51,7 +51,8 @@ test('private UI endpoints synchronize only the approved current source and the 
  const context=await(await fetch(base+'/originale/verwaltung/api/context')).json();
  const post=async(action,data,path='/originale/verwaltung/api/')=>{const response=await fetch(base+path+action,{method:'POST',headers:{Origin:base,'Content-Type':'application/json','X-Slate-Review-CSRF':context.csrfToken},body:JSON.stringify(data)});return {status:response.status,body:await response.json()};};
  const unapproved=await post('sync-plan',{targetIds:[s.mapping.id]});assert.equal(unapproved.body.ready,false);assert.equal(s.transport.writes.length,0);
- const approvals=await(await fetch(base+'/originale/approvals')).json(),state=Object.values(approvals.approvals).find(a=>a.metadata.id===s.mapping.source.originalId);
+ const approvals=await(await fetch(base+'/originale/approvals')).json(),summary=Object.values(approvals.approvals).find(a=>a.metadata.id===s.mapping.source.originalId);
+ const scoped=await post('approvals?action=read',{originalIds:[summary.metadata.id],targetKeys:[summary.key]},'/originale/'),state=scoped.body.approvals[summary.key];
  assert.equal(state.status,'unreviewed',JSON.stringify(state));assert.match(state.fingerprint,/^[a-f0-9]{64}$/);
  const approved=await post('approvals',{key:state.key,approved:true,expectedRevision:state.revision,expectedFingerprint:state.fingerprint},'/originale/');assert.equal(approved.status,200);
  const plan=await post('sync-plan',{targetIds:[s.mapping.id]});assert.equal(plan.body.ready,true,JSON.stringify(plan.body.entries.map(e=>e.issues)));

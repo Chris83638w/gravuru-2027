@@ -95,6 +95,17 @@ test('changed package with overlapping IDs is a conflict, never a replacement of
   assert.equal(fs.existsSync(path.join(f.root,'conflict')),false);
 });
 
+test('staged import keeps the active gallery mapping untouched until explicit activation',async t=>{
+ const f=fixture(t),active=path.join(f.data,'local-review-import.json'),before=fs.readFileSync(active),mappingOut=path.join(f.root,'staged-import.json');
+ const result=await extendDesignReview({...f,mappingOut});
+ assert.equal(result.mappingActivated,false);assert.equal(result.mapping,mappingOut);
+ assert.deepEqual(fs.readFileSync(active),before);assert.equal(read(mappingOut).products.length,2);
+ const repo=createProductRepository({filename:path.join(f.data,'workshop.sqlite'),validateDocument:validateProductDocument});
+ try{assert.deepEqual(repo.get(f.edited.id),f.edited);for(const p of read(mappingOut).products)assert.ok(repo.head(p.productId));}finally{repo.close();}
+ await assert.rejects(extendDesignReview({...f,mappingOut}),/new separate file/);
+ assert.deepEqual(fs.readFileSync(active),before);
+});
+
 test('additive target merge keeps one original, preserves old metadata and rejects changed reused targets',()=>{
   const steel={key:'steel',label:'Edelstahl',kind:'steel'},acrylic={key:'acrylic-schwarz-3mm',label:'Acrylglas Schwarz · 3 mm',kind:'acrylic'};
   const old={id:'SAME',reviewMaterial:steel,note:'keep',reviewThemes:[{key:'a',label:'A'}],targets:[{sizeKey:'steel-small',mm:[80,35],status:'prepared',productKey:'pilot',nativeDesignId:'native'}]};

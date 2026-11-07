@@ -1,4 +1,4 @@
-import {installCatalog} from './catalog-ui.mjs';
+import {installCatalog,loadCatalogChoices} from './catalog-ui.mjs';
 import {installSteelOptions} from './steel-options-ui.mjs';
 import {installAiBatch} from './ai-batch-ui.mjs';
 import {installAiDesign} from './ai-design-ui.mjs';
@@ -343,7 +343,7 @@ document.addEventListener('click',async event=>{
  try{
   const action=button.dataset.action;
   if(action==='overview'){await showOverview();return;}
-  if(action==='from-master'){if(!await canDiscard())return;const all=await api('/api/workshop/products');const masters=all.products.filter(p=>p.kind==='master');if(!masters.length){notify('Lege zuerst eine Mastervorlage an.','info');await showOverview('masters');return;}$('#master-choice').innerHTML=masters.map(p=>'<option value="'+escape(p.id)+'">'+escape(p.name)+' · Stand '+p.revision+'</option>').join('');openCreate('master');$('#create-description').textContent='Wähle eine gespeicherte Mastervorlage. Das neue Produkt erhält eine eigene ID; die Vorlage bleibt erhalten.';return;}
+  if(action==='from-master'){if(!await canDiscard())return;const masters=await loadCatalogChoices(api,{kinds:['master']});if(!masters.length){notify('Lege zuerst eine Mastervorlage an.','info');await showOverview('masters');return;}$('#master-choice').innerHTML=masters.map(p=>'<option value="'+escape(p.id)+'">'+escape(p.name)+' · Stand '+p.revision+'</option>').join('');openCreate('master');$('#create-description').textContent='Wähle eine gespeicherte Mastervorlage. Das neue Produkt erhält eine eigene ID; die Vorlage bleibt erhalten.';return;}
   if(action==='new'){if(await canDiscard())openCreate('seed');}
   if(action==='copy')openCreate('copy');
   if(action==='save-separate')openCreate('separate');

@@ -1,0 +1,43 @@
+{
+  "sourceCommit": "3db1ef5d537b495d2bfbaefae9152401293f75cc",
+  "attempt": 2,
+  "checkedAt": "2026-11-07T09:11:02.115246+00:00",
+  "mutationRequests": 0,
+  "schema": "gravuru-readonly-approval-event-comparison/v1",
+  "before": {
+    "events": 4,
+    "targetsWithEvents": 4,
+    "storedLatestApproved": 4,
+    "storedLatestUnapproved": 0,
+    "maximumEventRevision": 1,
+    "eventsSha256": "85bb05c97b10c869aabb68f6b10794257ec3061d15fc857864bb6d889b6f181b"
+  },
+  "after": {
+    "events": 4,
+    "targetsWithEvents": 4,
+    "storedLatestApproved": 4,
+    "storedLatestUnapproved": 0,
+    "maximumEventRevision": 1,
+    "eventsSha256": "85bb05c97b10c869aabb68f6b10794257ec3061d15fc857864bb6d889b6f181b"
+  },
+  "oldEventsPreserved": true,
+  "deletedOldEvents": 0,
+  "modifiedOldEvents": 0,
+  "appendedEvents": 0,
+  "appendedApprovedEvents": 0,
+  "appendedUnapprovedEvents": 0,
+  "appendedRevisionsConsecutive": true,
+  "additiveChangesOnly": true,
+  "changedTargets": [],
+  "identitiesAndContentsOmitted": true,
+  "attribution": "Append-only events observed; user activity is reported by the operator, not inferred from raw actor identities.",
+  "statusNote": "Stored approved flags are historical decisions; current effective approved/changed status also depends on the current renderer fingerprint.",
+  "schemaUnchanged": true,
+  "currentEffectiveStatusCounts": {
+    "approved": 0,
+    "unreviewed": 2445,
+    "changed": 4,
+    "unavailable": 101
+  },
+  "readOnlyConsistencyNote": "The DB snapshot and HTTP status read are sequential; concurrent user approvals can occur between them."
+}

@@ -10,6 +10,8 @@ import {createWorkshop} from '../../workshop/http.mjs';
 import {readThemeCatalog} from '../../workshop/theme-catalog.mjs';
 import {openKatalog,katalogPath} from '../../workshop/katalog-source.mjs';
 import {doorbellImageResource,isDoorbellImagePath} from '../../workshop/doorbell-image-resource.mjs';
+import {createBrowserModelResources} from '../../workshop/browser-model-resources.mjs';
+import {serveBrowserResource} from '../../workshop/browser-resource-http.mjs';
 
 const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.txt':'text/plain; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml','.gz':'application/gzip'};
 // Ladezeit: Textantworten gzip-komprimiert, wenn der Browser es anbietet (Inhalt unverändert).
@@ -35,6 +37,8 @@ const csp="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' 'un
 // No hosted authentication, checkout or production release is implied.
 export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp=null}={}) {
   const adminHost=embeddedApp?createShopifyAdminHost(embeddedApp,workshop?.sessionContext):null;
+  // Opt-in transport for local previews only; hosted shop/admin routes stay unchanged.
+  const browserResources=workshop&&!adminHost?createBrowserModelResources({prefix:'/browser-ressourcen'}):null;
   const server=http.createServer(async (req,res)=>{
     const fail=status=>res.writeHead(status,{'Cache-Control':'no-store'}).end();
     try {
@@ -49,11 +53,17 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
         if(!adminHost.allows(pathname))return fail(404);
       }
       if(pathname.includes('\\')||pathname.includes('\0')||pathname.split('/').some(p=>p==='..'||p.startsWith('.')))return fail(404);
+      if(browserResources&&serveBrowserResource(req,res,url,browserResources))return;
       if(workshop&&pathname.startsWith('/api/workshop/'))return await workshop.handle(req,res,url);
       if(!['GET','HEAD'].includes(req.method))return fail(405);
       if(workshop&&pathname==='/models.json'){
         try{
-          let bytes=Buffer.from(JSON.stringify([workshop.model(url.searchParams.get('configuration')||workshop.defaultId,url.searchParams.get('revision'))]));
+          let model=workshop.model(url.searchParams.get('configuration')||workshop.defaultId,url.searchParams.get('revision'));
+          if(browserResources&&req.headers['x-gravuru-resources']==='lazy-v1'){
+            const {id,revision}=model.configuration;
+            model=browserResources.prepare(model,{source:()=>workshop.model(id,revision)});
+          }
+          let bytes=Buffer.from(JSON.stringify([model]));
           const headers={'Content-Type':types['.json'],'Cache-Control':'no-store','X-Content-Type-Options':'nosniff',Vary:'Accept-Encoding'};
           if(bytes.length>1024&&acceptsGzip(req.headers['accept-encoding'])){bytes=await gzip(bytes,{level:6});headers['Content-Encoding']='gzip';}
           headers['Content-Length']=bytes.length;

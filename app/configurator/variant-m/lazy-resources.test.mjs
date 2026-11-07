@@ -10,7 +10,7 @@ import {fileURLToPath} from 'node:url';
 import vm from 'node:vm';
 import {build,LAZY,ROOT,HERE} from './build.mjs';
 import {createPreviewServer,acceptsGzip} from './server.mjs';
-import {fontFileName,startNeeds,draftNeeds,resourceNeeds,lazyUrls,libraryEntries,LAZY_BASE,productFontIndex} from './lazy-resources-model.mjs';
+import {fontFileName,startNeeds,draftNeeds,resourceNeeds,lazyUrls,libraryEntries,LAZY_BASE,productFontIndex,prefetchFontNames} from './lazy-resources-model.mjs';
 import {localFontIds} from './local-pilot.mjs';
 import {readRuntimeBundles,splitRuntimeBundles,patchEditorLoading,BASE_FONT_CATEGORIES} from './lazy-resources-build.mjs';
 test('contour validation hydrates actual outlines for every switchable size and reuses the font cache',async()=>{
@@ -72,6 +72,7 @@ test('Build schreibt die Teile mit Stempel und baut die Editor-Anpassungen genau
   for(const file of ['katalog-kern.json','motive-alle.json','schriften/lora.json','schriften/great-vibes.json','motive/import-59b5854feb26a2bf2754a477.json'])assert.ok(fs.statSync(path.join(LAZY,file)).size>100,file);
   const editor=fs.readFileSync(path.join(HERE,'.preview/editor.html'),'utf8');
   assert.match(editor,/import\('\/configurator\/variant-m\/lazy-resources\.mjs'\)/);
+  assert.match(editor,/await resources\.hydrateMaterialSurface\(window\.parent\.UniversalConfig\);await resources\.hydrateContourFonts\(window\.parent\.UniversalConfig\);adapter\.installUniversal\(window\.parent\.UniversalConfig\)/);
   assert.match(editor,/if\(!window\.parent\.UniversalConfig\)await ensureScrew\(\);/);
   assert.match(editor,/schraubenkopf-fotorealistisch\.webp/);assert.doesNotMatch(editor,/\/_runtime\/images\/gravuru-schraubenkopf-fotorealistisch\.png/);
   assert.match(editor,/edelstahl-feine-maserung-vorschau\.webp/);assert.doesNotMatch(editor,/edelstahl-feine-maserung-vorschau\.png/);
@@ -200,7 +201,7 @@ test('Kundenansicht verdrahtet: Reiter/Schritt Motive, Schriftauswahl, Text hinz
   assert.match(ux,/new MutationObserver\(\(\)=>\{if\(!panel\.hidden\)el\.uxEnsureMotifLibrary\(\)/);
   assert.match(ux,/async function openFonts\(\)\{[\s\S]*?await el\.uxEnsureFonts\(selectionIds\(el\.uxKnownFonts\(\),profileChoices\?\.fonts\)\)/);
   assert.match(ux,/if\(action==='add-text'\)\{const font=[^;]+;try\{await el\.uxEnsureFonts\?\./);
-  assert.match(ux,/if\(sessionGuard&&!config\?\.workbench&&!pendingDesignTransfer&&el\.uxEnsureDraftResources\)\{const stored=sessionGuard\.read\(\);if\(stored\)try\{await el\.uxEnsureDraftResources\(stored\.draft\);\}catch\{\}\}\n  if\(sessionGuard&&!config\?\.workbench\)\{/);
+  assert.match(ux,/if\(sessionGuard&&!config\?\.workbench&&!pendingDesignTransfer&&el\.uxEnsureDraftResources\)\{const stored=sessionGuard\.read\(\);if\(stored\)try\{await el\.uxEnsureDraftResources\(stored\.draft\);\}catch\{\}\}/);
   assert.match(read('account-drafts.mjs'),/await el\.uxEnsureDraftResources\?\.\(draft\);\n\s*restoreDraft\(draft\);/);
   assert.match(read('adapter.mjs'),/await this\.uxEnsureDraftResources\?\.\(input\);this\.restoreDraft\(input\);/);
   assert.match(read('print-export.mjs'),/await el\.uxEnsureDraftResources\?\.\(\{design:\{objects:el\.state\.objects\}\}\);\n\s*const fingerprint=/);
@@ -216,12 +217,13 @@ test('Sitzungsstart wartet auf Ressourcen vor Wiederherstellung; ausstehende Des
     const loaded=new Promise(resolve=>{finishLoad=resolve;});
     const env={config:{},initialDraft:null,$:()=>banner,say(){},
       window:{parent:{GravuruShopEntry:{designGallery:{hasPendingTransfer:()=>pending}}},addEventListener(){}},
-      sessionGuard:{read(){events.push('read');return {draft};},recover(){events.push('recover');return {uploads:[]};},arm(){events.push('arm');}},
+      sessionGuard:{read(){events.push('read');return {draft,uploads:['saved-photo']};},recover(){events.push('recover');return {uploads:[]};},arm(){events.push('arm');}},
+      sessionUploads:{restore(uploads){assert.deepEqual([...uploads],['saved-photo']);events.push('uploads');return [];},prune(){events.push('prune');}},
       el:{state:{selected:'old'},draftPayload:()=>draft,sync(){events.push('sync');},async uxEnsureDraftResources(value){assert.equal(value,draft);events.push('load-start');await loaded;events.push('load-ready');}}};
     const running=vm.runInNewContext('(async()=>{'+code+'})()',env);
     if(!pending){assert.deepEqual(events,['read','load-start'],'keine Wiederherstellung solange Schriften/Motive fehlen');finishLoad();}
     await running;
-    assert.deepEqual(events,pending?['arm']:['read','load-start','load-ready','recover','sync','arm']);
+    assert.deepEqual(events,pending?['arm','prune']:['read','load-start','load-ready','read','uploads','recover','sync','arm','prune']);
     assert.equal(banner.hidden,pending);assert.equal(env.el.state.selected,pending?'old':null);
   }
 });
@@ -266,4 +268,40 @@ test('fixed product fonts load by hash even when the shared catalogue uses the s
  const get=async p=>{seen.push(p);if(p.endsWith('katalog-kern.json'))return {fonts:{Lora:wrong},motifs:{},font_index:[{name:'Lora',file:'lora.json'}],motif_index:[]};if(p===url)return own;throw Error('Unexpected '+p);};
  const {catalog}=await loader.loadStart(config,{get,base:'/l/'});
  assert.deepEqual(catalog.fonts.Lora,own);assert.equal(seen.filter(p=>p===url).length,1);assert.ok(!seen.includes('/l/schriften/lora.json'));
+});
+
+test('private browser fonts skip idle prefetch but still load for explicit choice and restoration',async()=>{
+ const loader=await freshLoader('private-idle'),token='12'.repeat(16),hash='d'.repeat(64),url='/originale/editor/ressourcen/'+token+'/schriften/'+hash+'.json',other='/browser-ressourcen/'+token+'/schriften/'+'e'.repeat(64)+'.json',seen=[];
+ const shared={regular:{units:1000,glyphs:{A:{a:500,d:'M0 0L1 1Z'},'ä':{a:450,d:'M2 2Z'}}}};
+ const catalog={fonts:{},font_index:[{name:'Ordinary',file:'ordinary.json'},{name:'Private',url},{name:'Second private',url:other}],motif_index:[]};
+ const get=async(u,options)=>{seen.push({url:u,options});return structuredClone(shared);};
+ const el={fontData:{},fontList:[],motifs:{},catalog:{motifs:{},motif_bounds:{}},labels:{},dataset:{},shadowRoot:null,dispatchEvent(){}};
+ loader.attach(el,{catalog,entries:[],prepare:()=>{},get,base:'/l/'});
+ assert.deepEqual(prefetchFontNames(catalog.font_index),['Ordinary']);
+ assert.deepEqual(prefetchFontNames(catalog.font_index,{names:['Private','Second private']}),[]);
+ assert.equal(await el.uxPrefetchFonts(),1);assert.deepEqual(seen,[{url:'/l/schriften/ordinary.json',options:{priority:'low'}}]);
+ assert.equal(await el.uxPrefetchFonts({names:['Private']}),0);assert.equal(el.fontData.Private,undefined);
+ await el.uxEnsureFonts(['Private']);assert.deepEqual(el.fontData.Private,shared);assert.equal(seen.at(-1).url,url);
+ await el.uxEnsureDraftResources({design:{objects:[{type:'text',font:'Second private'}]}});assert.deepEqual(el.fontData['Second private'],shared);assert.equal(seen.at(-1).url,other);
+ assert.deepEqual(el.uxKnownFonts(),['Ordinary','Private','Second private']);
+});
+
+test('all private fonts used by current gallery designs load at start; unused private fonts wait',async t=>{
+ const loader=await freshLoader('private-start'),token='34'.repeat(16),seen=[],font={regular:{units:1000,glyphs:{A:{a:500,d:'M0 0L1 1Z'},'Ö':{a:600,d:'M2 3Z'}}}},json=JSON.stringify(font),hash=createHash('sha256').update(json).digest('hex');
+ const url='/browser-ressourcen/'+token+'/schriften/'+hash+'.json',unused='/browser-ressourcen/'+token+'/schriften/'+'f'.repeat(64)+'.json';
+ const config={profile:{designs:[{id:'first',objects:[{type:'text',font:'First'}]},{id:'gallery-second',objects:[{type:'text',font:'Alias'}]}]},localResources:{fonts:{},lazyFonts:[{name:'First',url},{name:'Alias',url},{name:'Unused',url:unused}]}};
+ t.mock.method(globalThis,'fetch',async u=>{seen.push(u);if(u.endsWith('katalog-kern.json'))return Response.json({fonts:{},motifs:{},font_index:[],motif_index:[]});if(u===url)return new Response(json);throw Error('unused font was fetched');});
+ const {catalog}=await loader.loadStart(config);
+ assert.deepEqual(catalog.fonts.First,font);assert.deepEqual(catalog.fonts.Alias,font);assert.equal(catalog.fonts.Unused,undefined);
+ assert.equal(seen.filter(u=>u===url).length,1);assert.ok(!seen.includes(unused));
+ assert.deepEqual(startNeeds(config).fonts,['First','Alias']);
+});
+
+test('private font integrity failure does not populate editor fonts and an explicit retry succeeds',async t=>{
+ const loader=await freshLoader('private-ensure-retry'),font={regular:{units:1000,glyphs:{A:{a:321,d:'M3 2L1 0Z'}}}},json=JSON.stringify(font),url='/originale/editor/ressourcen/'+'56'.repeat(16)+'/schriften/'+createHash('sha256').update(json).digest('hex')+'.json';let calls=0;
+ t.mock.method(globalThis,'fetch',async()=>{calls++;return new Response(calls===1?'{}':json);});
+ const catalog={fonts:{},font_index:[{name:'Own',url}],motif_index:[]},el={fontData:{},fontList:[],motifs:{},catalog:{motifs:{},motif_bounds:{}},dataset:{}};
+ loader.attach(el,{catalog,entries:[],prepare:()=>{}});
+ await assert.rejects(el.uxEnsureFonts(['Own']),e=>e.code==='browser_resource_integrity');assert.deepEqual(el.fontData,{});assert.deepEqual(catalog.fonts,{});
+ await el.uxEnsureFonts(['Own']);assert.deepEqual(el.fontData.Own,font);assert.equal(calls,2);
 });

@@ -8,12 +8,14 @@ import {build,OUTPUT} from '../configurator/variant-m/build.mjs';
 import {createPreviewServer} from '../configurator/variant-m/server.mjs';
 import {createWorkshop} from './http.mjs';
 import {createSlateGalleryHandler} from '../../scripts/lib/slate-review-gallery.mjs';
-import {galleryEditorDocument} from '../../scripts/fixtures/gallery-editor.mjs';
+import {galleryEditorDocument,galleryTestPng} from '../../scripts/fixtures/gallery-editor.mjs';
+import {fetchResourceJSON,hydrateMaterialSurface} from '../configurator/variant-m/browser-model-resources.mjs';
 
 test('private full editor HTTP saves same card, refreshes approval/quick preview, rejects stale/foreign writes and hides no resource failure',async t=>{
  build();const seed=JSON.parse(fs.readFileSync(path.join(OUTPUT,'models.json')))[0];
  const root=fs.mkdtempSync(path.join(os.tmpdir(),'gallery-editor-http-')),galleryRoot=path.join(root,'gallery');fs.mkdirSync(galleryRoot);
- const workshop=createWorkshop({filename:path.join(root,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy}),record=workshop.repository.create(galleryEditorDocument());
+ const document=galleryEditorDocument();document.config.materialSurface='data:image/png;base64,'+galleryTestPng;
+ const workshop=createWorkshop({filename:path.join(root,'workshop.sqlite'),seedConfig:seed.universal,legacy:seed.legacy}),record=workshop.repository.create(document);
  const products=[{key:'TEST:slate',productId:record.id,reviewOnly:true,designIds:record.document.config.profile.designs.map(d=>d.katalog.designId)}];
  const originals=record.document.config.profile.designs.map(d=>({id:d.katalog.designId,group:'Hunde',subcategory:'Allgemein',process:'Gravur',targets:[{status:'prepared',sizeKey:'TEST',mm:[220,140],productKey:products[0].key,nativeDesignId:d.id}]}));
  fs.writeFileSync(path.join(galleryRoot,'manifest.json'),JSON.stringify({schema:'gravuru-design-original-review/v1',reviewOnly:true,released:false,products,originals}));
@@ -23,11 +25,41 @@ test('private full editor HTTP saves same card, refreshes approval/quick preview
  server.listen(0,'127.0.0.1');await once(server,'listening');const origin='http://127.0.0.1:'+server.address().port;
  t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));gallery.close();workshop.close();assert.ok(root.startsWith(path.join(os.tmpdir(),'gallery-editor-http-')));fs.rmSync(root,{recursive:true,force:true});});
  const target={productId:record.id,designId:'source-a',originalId:'TRE-V2A-8x3,5-D1'};
- const request=async(route,data,headers={})=>{const response=await fetch(origin+route,{method:data?'POST':'GET',headers:{origin,'Content-Type':'application/json','X-Slate-Review-CSRF':token,...headers},...(data?{body:JSON.stringify(data)}:{})});const text=await response.text();return {status:response.status,headers:response.headers,text,data:response.headers.get('content-type')?.includes('application/json')?JSON.parse(text):null};};
+ const request=async(route,data,headers={})=>{const response=await fetch(origin+route,{method:data?'POST':'GET',headers:{origin,'Content-Type':'application/json','X-Slate-Review-CSRF':token,...headers},...(data?{body:JSON.stringify(data)}:{})});const text=await response.text();return {status:response.status,headers:response.headers,text,data:text&&response.headers.get('content-type')?.includes('application/json')?JSON.parse(text):null};};
  const page=await request('/originale/');assert.equal(page.status,200);assert.match(page.text,/\/originale\/editor\?/);assert.match(page.text,/originalId=TRE-V2A-8x3%2C5-D1/);
  for(const route of ['/originale/editor','/originale/editor.js','/originale/editor.css'])assert.equal((await request(route)).status,200);
  const opened=await request('/originale/editor/context?'+new URLSearchParams(target));assert.equal(opened.status,200);assert.equal(opened.headers.get('cache-control'),'no-store');assert.equal(opened.data.csrfToken,token);
  assert.equal(opened.data.model.universal.workbench.gallery,true);assert.equal(opened.data.context.designId,'source-a');
+ // Opt-in transport changes only delivery. The authoritative model and legacy API stay inline.
+ const lazy=(await request('/originale/editor/context?'+new URLSearchParams(target),null,{'X-Gravuru-Resources':'lazy-v1'})).data;
+ const lazyConfig=lazy.model.universal,resourceUrls=[lazyConfig.localResources.lazyMaterialSurface.url,...lazyConfig.localResources.lazyFonts.map(f=>f.url)];
+ assert.ok(resourceUrls.length>1);assert.equal(lazyConfig.materialSurface,undefined);assert.deepEqual(lazyConfig.localResources.fonts,{});
+ const originalResources=opened.data.model.universal.localResources;
+ const browserGet=url=>fetchResourceJSON(url,{fetcher:(resource,options)=>fetch(origin+resource,options)});
+ for(const entry of lazyConfig.localResources.lazyFonts){
+  const response=await request(entry.url);assert.equal(response.status,200);assert.match(response.headers.get('cache-control'),/^private,.*immutable$/);
+  assert.deepEqual(response.data,originalResources.fonts[entry.name]);
+  assert.equal((await request(entry.url,null,{'If-None-Match':response.headers.get('etag')})).status,304);
+  const head=await fetch(origin+entry.url,{method:'HEAD'});assert.equal(head.status,200);assert.equal((await head.text()).length,0);
+  lazyConfig.localResources.fonts[entry.name]=await browserGet(entry.url);
+ }
+ await hydrateMaterialSurface(lazyConfig,{get:browserGet});delete lazyConfig.localResources.lazyFonts;
+ assert.deepEqual(lazy.model,opened.data.model,'exact gallery model after hydration');
+ assert.deepEqual(workshop.repository.get(record.id).document,record.document,'transport never writes the document');
+ const otherLazy=(await request('/originale/editor/context?'+new URLSearchParams({...target,designId:'source-b',originalId:'OTHER-ORIGINAL'}),null,{'X-Gravuru-Resources':'lazy-v1'})).data;
+ assert.equal(otherLazy.model.universal.localResources.lazyMaterialSurface.url,resourceUrls[0],'same plate uses same URL across gallery cards');
+ assert.equal((await request(resourceUrls[0],null,{origin:'https://foreign.example'})).status,403);
+ assert.equal((await request(resourceUrls[0],null,{'sec-fetch-site':'cross-site'})).status,403);
+ assert.equal((await request(resourceUrls[0]+'?arbitrary=1')).status,404);
+ assert.equal((await request(resourceUrls[0],{})).status,405);
+ assert.equal((await request(resourceUrls[0].replace(/\/[a-f0-9]{64}\.json$/,'/'+'0'.repeat(64)+'.json'))).status,404);
+ const ordinary=(await request('/models.json?configuration='+record.id+'&revision=1')).data[0];
+ const preview=(await request('/models.json?configuration='+record.id+'&revision=1',null,{'X-Gravuru-Resources':'lazy-v1'})).data[0];
+ assert.equal(preview.configuration.revision,1);assert.ok(preview.universal.localResources.lazyFonts.length);
+ for(const f of preview.universal.localResources.lazyFonts)preview.universal.localResources.fonts[f.name]=(await request(f.url)).data;
+ preview.universal.materialSurface=(await request(preview.universal.localResources.lazyMaterialSurface.url)).data;
+ delete preview.universal.localResources.lazyFonts;delete preview.universal.localResources.lazyMaterialSurface;
+ assert.deepEqual(preview,ordinary,'exact local model after hydration');
  const approvals=await request('/originale/approvals'),before=Object.values(approvals.data.approvals).find(a=>a.metadata.id===target.originalId),other=Object.values(approvals.data.approvals).find(a=>a.metadata.id==='OTHER-ORIGINAL');
  for(const state of [before,other])assert.equal((await request('/originale/approvals',{key:state.key,expectedRevision:0,expectedFingerprint:state.fingerprint,approved:true})).status,200);
  const payload={...target,expectedRevision:1,objects:opened.data.model.universal.profile.designs[0].objects,photos:[]};payload.objects[0].text='Gesichert';payload.objects[0].x+=2;
@@ -36,6 +68,7 @@ test('private full editor HTTP saves same card, refreshes approval/quick preview
  assert.equal((await request('/originale/editor/context?'+new URLSearchParams({...target,originalId:'source-a'}))).status,404);
  assert.equal((await request('/originale/editor/media?'+new URLSearchParams({...target,revision:'1',assetId:'a'.repeat(64),part:'original'}))).status,404);
  const saved=await request('/originale/editor/save',payload);assert.equal(saved.status,200);assert.equal(saved.data.context.revision,2);assert.equal(saved.data.context.returnUrl,'/originale/#design-TRE-V2A-8x3%2C5-D1');
+ assert.equal((await request(resourceUrls[0])).data,opened.data.model.universal.materialSurface,'old immutable resource survives saving a new revision');
  assert.equal((await request('/originale/editor/save',payload)).status,409);
  const after=(await request('/originale/approvals')).data.approvals;assert.equal(after[before.key].status,'changed');assert.equal(after[other.key].status,'approved');assert.equal(after[other.key].fingerprint,other.fingerprint);
  const inline=(await request('/originale/design?'+new URLSearchParams({productId:record.id,designId:'source-a'}))).data;

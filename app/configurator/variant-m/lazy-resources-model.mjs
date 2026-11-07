@@ -4,6 +4,7 @@
 // die Schriftauswahl bzw. „Text hinzufügen“, die Motivbibliothek der Reiter „Motive“,
 // Entwürfe (Sitzungsschutz, Kundenkonto, Warenkorb) vor dem Einlesen genau ihre Ressourcen.
 import {isLayeredDoorbell} from './product-model-module.mjs';
+import {isBrowserResourceUrl} from './browser-model-resources.mjs';
 export const LAZY_BASE='/_runtime/lazy/';
 export const LAZY_MOTIF_KEY=/^[A-Za-z0-9_-]{1,80}$/;
 
@@ -45,6 +46,11 @@ export function productFontIndex(config){
     if(!f||typeof f.name!=='string'||!f.name.trim()||f.name.length>120||!PRODUCT_FONT_URL.test(f.url||''))throw Error('Nachladbare Produktschrift ungültig.');
     return {name:f.name,url:f.url,...(typeof f.label==='string'?{label:f.label}:{}),...(typeof f.category==='string'?{category:f.category}:{})};
   });
+}
+// Shared private product payloads stay demand-loaded. Explicit font selection,
+// current product designs and draft restoration still use the complete index.
+export function prefetchFontNames(fontIndex,{names=null}={}){
+  return fontIndex.filter(f=>!isBrowserResourceUrl(f.url)&&(!names||names.includes(f.name))).map(f=>f.name);
 }
 // Nur bekannte Namen werden angefragt; unbekannte meldet der Entwurfsprüfer wie bisher.
 export function lazyUrls({fonts=[],motifs=[]},{fontIndex=[],motifIndex=[]},base=LAZY_BASE){

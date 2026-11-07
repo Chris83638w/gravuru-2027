@@ -35,7 +35,9 @@ export function rewriteDemoText(text,namespace){
  demoNamespace(namespace);
  const id=namespace.split('/').filter(Boolean).at(-1);
  const roots=['/_runtime/','/_bundle/','/configurator/','/platform/','/workshop/','/api/','/acrylic-assets/','/doorbell-assets/','/assistant.js'];
- const pattern=new RegExp(roots.map(p=>p.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'g');
+ // Only root-relative URLs: ../../platform imports already resolve within the
+ // copied package and must not receive the demo prefix a second time.
+ const pattern=new RegExp('(?<![.\\w/\\-])(?:'+roots.map(p=>p.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')','g');
  let result=text.replace(pattern,match=>namespace+match.slice(1));
  // Only generated copies change; the original engine/storage remains untouched.
  for(const prefix of ['gravuru-session:','gravuru-acrylic-private:','gravuru-form-draft:','gravuru:text-toolbar-placement:v1'])result=result.replaceAll(prefix,'gravuru-mobile-demo:'+id+':'+prefix);
@@ -68,13 +70,13 @@ export function buildMobileDemo({outputDirectory,modelFiles,namespace='/konfi-de
  }
  const editor=fs.readFileSync(path.join(preview,'editor.html'),'utf8');
  if((editor.match(/<head>/g)||[]).length!==1||!editor.includes('gravuruModules'))throw Error('Vollständiger Editor-Build fehlt.');
- for(const name of ['demo.mjs','demo.css','text-editor.mjs','shopping-cart.svg'])if(!fs.statSync(path.join(source,'app/configurator/mobile-demo',name)).isFile())throw Error('Demo-Oberfläche fehlt: '+name);
+ for(const name of ['demo.mjs','demo.css','text-editor.mjs','edge-resize.mjs','shopping-cart.svg'])if(!fs.statSync(path.join(source,'app/configurator/mobile-demo',name)).isFile())throw Error('Demo-Oberfläche fehlt: '+name);
  fs.mkdirSync(output,{recursive:true,mode:0o700});
  const manifest={schema:'gravuru-mobile-demo/v1',namespace,sourceCommit,checkout:false,storagePrefix:'gravuru-mobile-demo:'+id+':',inputs:inputHashes,models:{},files:{}};
  const put=(relative,bytes,{origin=null,transform=false}={})=>{
   if(typeof relative!=='string'||relative.startsWith('/')||relative.split('/').some(p=>!p||p==='..'||p.startsWith('.')))throw Error('Ungültiger Paketpfad.');
   let data=Buffer.isBuffer(bytes)?bytes:Buffer.from(bytes);
-  if(transform&&textExtensions.has(path.extname(relative)))data=Buffer.from(rewriteDemoText(data.toString('utf8'),namespace));
+  if(transform&&textExtensions.has(path.extname(relative)))data=Buffer.from(typeof transform==='function'?transform(data.toString('utf8')):rewriteDemoText(data.toString('utf8'),namespace));
   const file=path.join(output,...relative.split('/'));if(!inside(output,file))throw Error('Paketpfad verlässt Ziel.');
   if(fs.existsSync(file)){if(!fs.readFileSync(file).equals(data))throw Error('Unterschiedliche Ressourcen mit gleichem Ziel: '+relative);return;}
   fs.mkdirSync(path.dirname(file),{recursive:true,mode:0o700});fs.writeFileSync(file,data,{flag:'wx',mode:0o600});
@@ -92,7 +94,9 @@ export function buildMobileDemo({outputDirectory,modelFiles,namespace='/konfi-de
  for(const name of ['theme-limits.mjs','process-profiles.mjs'])put('workshop/'+name,fs.readFileSync(path.join(source,'app/workshop',name)),{origin:name,transform:true});
  copyTree(path.join(source,'app/designs/acrylic-unser-anfang'),'acrylic-assets',name=>!name.includes('/')&&/\.(?:png|webp)$/.test(name));
  for(const [target,original] of [['assistant.js','assistant.js'],['api/guides','guides.json']])put(target,fs.readFileSync(path.join(preview,original)),{origin:original,transform:true});
- for(const name of ['demo.mjs','demo.css','text-editor.mjs','shopping-cart.svg'])put(name,fs.readFileSync(path.join(source,'app/configurator/mobile-demo',name)),{origin:name});
+ for(const name of ['demo.mjs','demo.css','text-editor.mjs','shopping-cart.svg'])put(name,fs.readFileSync(path.join(source,'app/configurator/mobile-demo',name)),{origin:name,transform:name==='demo.mjs'?text=>text.replace("'./edge-resize.mjs'","'./configurator/mobile-demo/edge-resize.mjs'"):false});
+ // Preserve the native relative import paths of the isolated geometry adapter.
+ put('configurator/mobile-demo/edge-resize.mjs',fs.readFileSync(path.join(source,'app/configurator/mobile-demo/edge-resize.mjs')),{origin:'edge-resize.mjs'});
  for(const [size,original] of Object.entries(models)){
   const model=structuredClone(original),config=model.universal,resource=config.localResources;
   delete model.configuration;

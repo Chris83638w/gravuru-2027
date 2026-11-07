@@ -1,5 +1,6 @@
 // Opt-in presentation adapter. The existing editor owns geometry, prices and actions.
 import {installDemoTextEditor} from './text-editor.mjs';
+import {installDemoEdgeResize} from './edge-resize.mjs';
 
 // Keep the pre-keyboard height even on Android where innerHeight also shrinks.
 export function keyboardViewport(previous, {width, height, innerHeight, focused}) {
@@ -62,17 +63,21 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   summary.append(productButton); move($('[data-fk-total]'), summary);
   const bar = make('nav', 'md-bar'); bar.setAttribute('aria-label', 'Gestaltung verwalten');
   const navButtons = new Map();
-  for (const [key,label] of [['design','Designs'],['text','Text'],['motif','Motive'],['upload','Foto']]) {
+  for (const [key,label] of [['options','Ausführung'],['design','Designs'],['text','Text'],['motif','Motive'],['upload','Foto']]) {
     if (!toolButtons.has(key)) continue;
-    const b = button('', 'md-nav', () => open(key)); b.dataset.demoSection = key;
+    const b = button('', 'md-nav', () => key === 'upload' ? choosePhoto() : open(key)); b.dataset.demoSection = key;
     b.setAttribute('aria-label',label); const icon = toolButtons.get(key)?.native.querySelector('svg');
     if (icon) b.append(icon.cloneNode(true)); b.append(make('span','',label)); bar.append(b); navButtons.set(key,b);
   }
   const nativeUpload = $('#ux-panel-upload [data-ux=photo-upload]');
-  const photoShortcut = button('', 'md-photo-shortcut', () => {
-    if (!nativeUpload || nativeUpload.hidden || nativeUpload.disabled || toolButtons.get('upload')?.native.hidden) return;
-    open('upload',false); nativeUpload.click();
-  });
+  function choosePhoto() {
+    // Both visible photo icons must reach the real chooser in this same user
+    // gesture. The original importer still owns file checks, prices and rights.
+    if (!open('upload',false)) return;
+    if (!nativeUpload || nativeUpload.hidden || nativeUpload.disabled) return;
+    nativeUpload.click();
+  }
+  const photoShortcut = button('', 'md-photo-shortcut', choosePhoto);
   const photoIcon = toolButtons.get('upload')?.native.querySelector('svg');
   if (photoIcon) photoShortcut.append(photoIcon.cloneNode(true)); photoShortcut.append(make('span','','Foto +'));
   photoShortcut.setAttribute('aria-label','Foto hochladen');
@@ -233,11 +238,13 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
   observer.observe($('[data-fk-total]'), { childList:true, subtree:true, characterData:true });
   if (photoSize) observer.observe(photoSize, { attributes:true, attributeFilter:['hidden'] });
   textEditor = installDemoTextEditor(el,{onFocusChange:resize});
+  const edgeResize = installDemoEdgeResize(el);
   shut(false);
   const api = { open, close:shut, dispose() {
     if (disposed) return;
     disposed = true;
     textEditor?.dispose();
+    edgeResize?.dispose();
     if (resizeFrame) cancelAnimationFrame(resizeFrame);
     observer.disconnect(); tabObserver.disconnect(); cleanups.forEach(fn => fn()); el.uxShowSection = oldShow;
     if (typeof oldSync === 'function') el.sync = oldSync;

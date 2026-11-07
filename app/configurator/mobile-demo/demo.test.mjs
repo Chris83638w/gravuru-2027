@@ -301,6 +301,8 @@ test('keyboard detection keeps Android pre-keyboard height and ignores rotation'
 
 test('footer opens native sections; a canvas tap closes but drag and buttons do not',async t => {
   const env=runtime(t),f=editorFixture(env),api=await installMobileDemo(f.el);
+  const options=f.r.querySelector('[data-demo-section=options]'); options.click();
+  assert.equal(f.panels.get('options').hidden,false); assert.equal(options.getAttribute('aria-pressed'),'true');
   const text=f.r.querySelector('[data-demo-section=text]'); text.click();
   assert.equal(f.panels.get('text').hidden,false); assert.equal(text.getAttribute('aria-pressed'),'true');
   f.el.dispatchEvent({type:'pointerdown',target:f.stage,clientX:10,clientY:10});
@@ -315,12 +317,15 @@ test('footer opens native sections; a canvas tap closes but drag and buttons do 
   f.finish.click(); assert.ok(f.calls.some(c=>c[0]==='native-review'));
 });
 
-test('direct upload calls the original upload button synchronously and respects its rights',async t => {
+test('both photo icons open the original chooser synchronously and respect upload limits',async t => {
   const env=runtime(t),f=editorFixture(env),upload=env.doc.createElement('button');
   upload.dataset.ux='photo-upload'; f.panels.get('upload').append(upload);
   let called=0; upload.addEventListener('click',()=>called++);
-  await installMobileDemo(f.el); const shortcut=f.r.querySelector('.md-photo-shortcut');
+  const api=await installMobileDemo(f.el); const shortcut=f.r.querySelector('.md-photo-shortcut'),footer=f.r.querySelector('[data-demo-section=upload]');
   shortcut.click(); assert.equal(called,1); assert.equal(f.panels.get('upload').hidden,false);
-  upload.disabled=true;env.flush();assert.equal(shortcut.disabled,true);shortcut.click();assert.equal(called,1);
-  upload.disabled=false;upload.hidden=true;env.flush();assert.equal(shortcut.hidden,true);shortcut.click();assert.equal(called,1);
+  api.close(); footer.click(); assert.equal(called,2); assert.equal(f.panels.get('upload').hidden,false);
+  upload.disabled=true;env.flush();assert.equal(shortcut.disabled,true);shortcut.click();assert.equal(called,2);
+  api.close();footer.click();assert.equal(called,2);assert.equal(f.panels.get('upload').hidden,false,'existing photos remain reachable at upload limit');
+  upload.disabled=false;upload.hidden=true;env.flush();assert.equal(shortcut.hidden,true);shortcut.click();assert.equal(called,2);
+  f.nativeTabs.get('upload').hidden=true;env.flush();footer.click();assert.equal(called,2);
 });

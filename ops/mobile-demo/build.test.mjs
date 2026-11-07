@@ -27,7 +27,8 @@ function fixture(t){
  write('app/platform/sources/app/shared/models/geometry.mjs','export const width=220;');
  write('app/workshop/theme-limits.mjs','export const limits={};');write('app/workshop/process-profiles.mjs','export const profiles=[];');
  write('app/designs/acrylic-unser-anfang/base.webp','base');
- write('app/configurator/mobile-demo/demo.mjs','if(window.GravuruMobileDemo)window.demoLoaded=true;');write('app/configurator/mobile-demo/demo.css',':host{color:#111}');write('app/configurator/mobile-demo/text-editor.mjs','export const installDemoTextEditor=()=>null;');write('app/configurator/mobile-demo/shopping-cart.svg','<svg/>');
+ write('app/configurator/mobile-demo/demo.mjs',"import {installDemoEdgeResize} from './edge-resize.mjs';if(window.GravuruMobileDemo)window.demoLoaded=true;");write('app/configurator/mobile-demo/demo.css',':host{color:#111}');write('app/configurator/mobile-demo/text-editor.mjs','export const installDemoTextEditor=()=>null;');write('app/configurator/mobile-demo/shopping-cart.svg','<svg/>');
+ write('app/configurator/mobile-demo/edge-resize.mjs',"import {data} from '../variant-m/module.mjs';export const installDemoEdgeResize=()=>data;");
  const font={label:'Real Font',regular:{units:1000,glyphs:{A:{d:'M0 0L500 1000',a:500},'ä':{d:'M3 4L5 6',a:510}}},bold:{units:1000,glyphs:{A:{d:'M1 0L501 1000',a:510}}}};
  const designs=Array.from({length:43},(_,i)=>({id:'original-'+i,objects:[{id:'text-1',type:'text',text:'Bruno '+i,font:'Real Font',x:10+i,y:22}]}));
  const profile={id:'original-product',revision:'original-product:2',binding:{kind:'local-review',productId:'original-product'},material:{kind:'slate'},designs,geometry:{width:220,height:140},features:{orderEnabled:false}};
@@ -62,6 +63,9 @@ test('full models retain every design, glyph and groundplate; only demo identiti
   assert.equal(hash(fs.readFileSync(f.modelFiles[size])),before[size]);
  }
  assert.equal(fs.existsSync(path.join(root,'configurator/variant-m/module.test.mjs')),false);
+ assert.match(fs.readFileSync(path.join(root,'demo.mjs'),'utf8'),/from '\.\/configurator\/mobile-demo\/edge-resize\.mjs'/);
+ assert.match(fs.readFileSync(path.join(root,'configurator/mobile-demo/edge-resize.mjs'),'utf8'),/from '\.\.\/variant-m\/module\.mjs'/);
+ assert.equal(manifest.files['demo.mjs'].sourceSha256,hash(fs.readFileSync(path.join(f.source,'app/configurator/mobile-demo/demo.mjs'))));
  assert.equal(fs.readFileSync(path.join(root,'_runtime/images/blank.webp'),'utf8'),'unchanged image');
  const bundle=fs.readFileSync(path.join(root,'_bundle/editor-0000000000000000.mjs'),'utf8');
  assert.ok(bundle.includes('gravuru-mobile-demo-test-package-uploads'));assert.ok(bundle.includes('gravuru-mobile-demo:test-package:gravuru-session:'));
@@ -110,4 +114,6 @@ test('generated URL and storage rewrites are scoped; text data and designs are n
  const source="'/configurator/variant-m/a.mjs' '/_runtime/lazy/x.json' '/api/workshop/events' 'gravuru-session:' 'gravuru-session-uploads' 'gravuru:text-toolbar-placement:v1'";
  const result=rewriteDemoText(source,'/konfi-demo/test-package/');
  assert.ok(result.includes("'/konfi-demo/test-package/api/workshop/events'"));assert.ok(result.includes('gravuru-mobile-demo-test-package-uploads'));assert.ok(result.includes('gravuru-mobile-demo:test-package:gravuru:text-toolbar-placement:v1'));
+ const imports="import x from '../../platform/sources/app/shared/x.mjs';import y from '../../workshop/process-profiles.mjs';import z from '../configurator/variant-m/z.mjs';";
+ assert.equal(rewriteDemoText(imports,'/konfi-demo/test-package/'),imports);
 });

@@ -389,7 +389,7 @@
 :host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .md-text-size-range { flex: 1; min-width: 0 !important; width: 100% !important; height: 44px !important; min-height: 44px !important; margin: 0 !important; padding: 0 !important; accent-color: var(--md-petrol); }
 :host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-add { width: 100% !important; max-width: none !important; min-height: 44px !important; margin: 12px 0 0 !important; color: var(--md-petrol) !important; }
 
-/* Price above five persistent actions. Native cart remains on the far right. */
+/* Price above six persistent actions. Native cart remains on the far right. */
 :host([data-mobile-demo]) .md-summary {
   position: absolute; left: 0; right: 0; bottom: calc(var(--md-bar-h) + var(--md-safe)); z-index: 80;
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
@@ -408,7 +408,7 @@
 :host([data-mobile-demo]) .md-product-button svg { flex: none; width: 17px; height: 17px; }
 :host([data-mobile-demo]) .md-bar {
   position: absolute; inset: auto 0 0; z-index: 90;
-  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; gap: 4px;
+  display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); align-items: center; gap: 4px;
   box-sizing: border-box; height: calc(var(--md-bar-h) + var(--md-safe)); padding: 4px 7px calc(4px + var(--md-safe));
   border-top: 1px solid #e6edef; background: #fff;
 }
@@ -422,7 +422,7 @@
 }
 :host([data-mobile-demo]) .md-bar > button > svg { display: block; width: 22px; height: 22px; flex: none; }
 :host([data-mobile-demo]) .md-bar > .md-nav:is([aria-pressed="true"], [aria-current="page"], [data-active="true"]) { background: var(--md-petrol-soft) !important; color: var(--md-petrol) !important; }
-:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .md-bar > .completion-finish { grid-column: 5 !important; grid-row: 1 !important; width: 100% !important; min-width: 0 !important; margin: 0 !important; padding: 5px 2px !important; border-radius: 10px !important; background: var(--md-green) !important; color: #fff !important; font-size: 10px !important; font-weight: 700 !important; }
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .md-bar > .completion-finish { grid-column: 6 !important; grid-row: 1 !important; width: 100% !important; min-width: 0 !important; margin: 0 !important; padding: 5px 2px !important; border-radius: 10px !important; background: var(--md-green) !important; color: #fff !important; font-size: 10px !important; font-weight: 700 !important; }
 :host([data-mobile-demo]) .md-cart-icon { display: block; width: 22px !important; height: 22px !important; object-fit: contain; filter: invert(1); pointer-events: none; flex: none; }
 :host([data-mobile-demo]) .ux-shell .md-plus {
   position: absolute !important; left: calc((100% - var(--md-inspector-w)) / 2) !important; right: auto !important;
@@ -442,11 +442,40 @@
 :host([data-mobile-demo]) :is(.md-tools, .md-sheet-back, .md-controls, .md-photo-shortcut, .md-product-button)[hidden],
 :host([data-mobile-demo]) :is(.md-tools, .md-controls, .md-bar, .md-history) [hidden],
 :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-controls :is(.ux-view-zoom, .ux-photo-size, .ux-design-reset)[hidden] { display: none !important; }
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .md-bar > button[hidden] { display: none !important; }
 @media (hover: hover) {
   :host([data-mobile-demo]) :is(.md-top, .md-controls, .md-tools, .md-text-picker) button:not(:disabled):hover,
   :host([data-mobile-demo]) .md-bar > .md-nav:not(:disabled):hover { background: var(--md-petrol-soft) !important; }
   :host([data-mobile-demo]) .ux-shell :is(.md-plus, .md-sheet-close):hover { background: var(--md-petrol-dark) !important; }
   :host([data-mobile-demo]) .ux-shell .md-bar > .completion-finish:not(:disabled):hover { background: #0e5b36 !important; }
+}
+
+/* R6: expose font selection immediately on portrait phones. The hidden text
+   toolbar no longer needs its full reserved gap; the artwork loses almost no
+   fitted height. Desktop, other panels and the existing keyboard budget stay. */
+@media (max-width: 599px) {
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral]) .md-bar > .md-nav[data-demo-section="options"] { font-size: 10px !important; letter-spacing: -.15px; }
+  :host([data-mobile-demo][data-demo-sheet="panel"][data-demo-selected-type="text"]:not([data-demo-keyboard])) .ux-shell:has(#ux-panel-text[data-md-text-editor]:not([hidden])) {
+    --md-canvas-h: max(120px, min(clamp(180px, calc(var(--md-vh) * .29), 260px), calc(var(--md-vh) - 482px)));
+    --md-sheet-top: calc(var(--md-preview-top) + var(--md-canvas-h));
+  }
+  :host([data-mobile-demo][data-demo-sheet="panel"][data-demo-selected-type="text"][data-ux-layout][data-ux-neutral][data-ux-modern]:not([data-demo-keyboard])) .ux-shell:has(#ux-panel-text[data-md-text-editor]:not([hidden])) .ux-layout > .ux-preview .stage:not(.acryl-scene) {
+    padding: 20px 28px !important;
+  }
+  :host([data-mobile-demo][data-demo-sheet="panel"][data-demo-selected-type="text"]:not([data-demo-keyboard])) .ux-shell:has(#ux-panel-text[data-md-text-editor]:not([hidden])) .md-sheet-header {
+    min-height: 48px;
+    padding: 1px 10px;
+  }
+  :host([data-mobile-demo][data-demo-sheet="panel"][data-demo-selected-type="text"][data-ux-layout][data-ux-neutral][data-ux-modern]:not([data-demo-keyboard])) .ux-shell .ux-editor #ux-panel-text[data-md-text-editor]:not([hidden]) {
+    padding-top: 8px !important;
+  }
+  :host([data-mobile-demo][data-demo-sheet="panel"][data-demo-selected-type="text"]:not([data-demo-keyboard])) #ux-panel-text[data-md-text-editor]:not([hidden]) .md-text-picker {
+    margin-bottom: 6px;
+  }
+  :host([data-mobile-demo][data-demo-sheet="panel"][data-demo-selected-type="text"][data-ux-layout][data-ux-neutral][data-ux-modern]:not([data-demo-keyboard])) #ux-panel-text[data-md-text-editor]:not([hidden]) .ux-controls:not([hidden]) {
+    margin-top: 6px !important;
+    padding-top: 8px !important;
+  }
 }
 
 /* Wide desktop workbench, not an enlarged phone: stable canvas + inspector. */

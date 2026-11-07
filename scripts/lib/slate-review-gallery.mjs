@@ -65,19 +65,19 @@ export function createSlateGalleryHandler(root, importsFile, {csrfToken: supplie
     if([...url.searchParams.keys()].some(key=>!['productId','designId'].includes(key))||url.searchParams.getAll('productId').length!==1||url.searchParams.getAll('designId').length!==1)fail(422,'Bitte genau eine Vorlage und ihr Format wählen.');
     return json(res,200,withReviewFingerprint(positions.open(url.searchParams.get('productId'),url.searchParams.get('designId'))));
    }
-   if(req.method!=='PATCH')fail(405,'Vorlagen werden hier gelesen oder ihre Positionen gespeichert.');
+   if(req.method!=='PATCH')fail(405,'Vorlagen werden hier gelesen oder Positionen und Größen gespeichert.');
    if(req.headers.origin!=='http://'+req.headers.host||req.headers['x-slate-review-csrf']!==csrfToken)fail(403,'Bitte die Galerie neu laden.');
-   if(!/^application\/json(?:;|$)/i.test(req.headers['content-type']||''))fail(415,'Positionen konnten nicht gelesen werden.');
+   if(!/^application\/json(?:;|$)/i.test(req.headers['content-type']||''))fail(415,'Änderungen konnten nicht gelesen werden.');
    let size=0;const chunks=[];
    for await(const chunk of req.iterator({destroyOnReturn:false})){size+=chunk.length;if(size<=65536)chunks.push(chunk);}
-   if(size>65536)fail(413,'Zu viele Positionsdaten.');
-   let input;try{input=JSON.parse(Buffer.concat(chunks).toString('utf8'));}catch{fail(400,'Positionen konnten nicht gelesen werden.');}
+   if(size>65536)fail(413,'Zu viele Änderungsdaten.');
+   let input;try{input=JSON.parse(Buffer.concat(chunks).toString('utf8'));}catch{fail(400,'Änderungen konnten nicht gelesen werden.');}
    json(res,200,withReviewFingerprint(positions.save(input)));
   }catch(error){
    // An over-limit async body reader closes its request. Advertise that close
    // so the private proxy never reuses the just-rejected loopback connection.
    if(error.status===413){req.resume();res.setHeader('Connection','close');}
-   json(res,error.status||500,{error:error.status?error.message:'Speichern ist momentan nicht möglich. Deine Verschiebungen bleiben erhalten.',code:error.code,actualRevision:error.actualRevision});
+   json(res,error.status||500,{error:error.status?error.message:'Speichern ist momentan nicht möglich. Deine Änderungen bleiben erhalten.',code:error.code,actualRevision:error.actualRevision});
   }
  }
  async function saveComment(req,res){

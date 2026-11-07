@@ -31,7 +31,9 @@ export async function installGalleryWorkbench({el,config,files,say,pending}){
   const id=crypto.randomUUID(),asset={file:new File([original],'Galeriefoto.png',{type:original.type||'image/png'}),blob:processed,url,
    originalUrl:URL.createObjectURL(original),editSourceUrl:URL.createObjectURL(editSource),originalBlob:original,editSourceBlob:editSource,
    edited:photo.edited||false,photoEdit:photo.photoEdit||undefined,editSourceColor:photo.editSourceColor||'original',width:image.naturalWidth,height:image.naturalHeight,galleryAssetId:photo.assetId};
-  Object.assign(object,{uxUploadId:id,uxUploadKind:'photo',uxPhotoColor:photo.color||(config.profile.material.kind==='slate'?'grayscale':'original')});
+  // A legacy catalogue example is not a new customer upload. Existing edited
+  // gallery photos retain the explicit saved colour and editing source above.
+  Object.assign(object,{uxUploadId:id,uxUploadKind:'photo',uxPhotoColor:photo.color||'original'});
   if(photo.crop)object.uxPhotoCrop=structuredClone(photo.crop);
   else if(!photo.schema)object.uxPhotoCrop={zoom:1,x:0,y:0,angle:0}; // Existing native example SVGs explicitly use cover framing.
   files.set(id,asset);

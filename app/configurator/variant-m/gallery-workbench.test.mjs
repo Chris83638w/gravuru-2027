@@ -22,12 +22,23 @@ function environment(t,{fetchFails=false}={}){
 
 test('legacy photo no-op restores source precision and reuses the immutable photo asset',async t=>{
  const f=environment(t);await installGalleryWorkbench({...f,say(){},pending:()=>false});
+ assert.equal(f.el.state.objects[0].uxPhotoColor,'original');
  f.listeners.message({origin:f.parent.location.origin,source:f.parent,data:{type:'gravuru-gallery-snapshot-request',requestId:'one'}});
  const snapshot=f.messages.find(m=>m.type==='gravuru-gallery-snapshot');assert.ok(snapshot);
  for(const key of ['x','y','w','h'])assert.equal(snapshot.objects[0][key],f.source[key]);
  assert.deepEqual(snapshot.photos,[{objectId:'photo',assetId:'a'.repeat(64)}]);
  f.listeners.message({origin:'https://foreign.example',source:f.parent,data:{type:'gravuru-gallery-snapshot-request',requestId:'foreign'}});
  assert.equal(f.messages.some(m=>m.requestId==='foreign'),false);
+});
+
+test('existing user-edited photo retains saved colour, edit source and crop without replacing its immutable asset',async t=>{
+ const f=environment(t),crop={zoom:1.3,x:.1,y:-.2,angle:90};
+ Object.assign(f.parent.GravuruGalleryEditor.photos[0],{schema:'gravuru-gallery-photo/v1',edited:true,color:'sepia',editSourceColor:'grayscale',crop});
+ await installGalleryWorkbench({...f,say(){},pending:()=>false});
+ const object=f.el.state.objects[0],asset=f.files.get(object.uxUploadId);
+ assert.equal(object.uxPhotoColor,'sepia');assert.equal(asset.edited,true);assert.equal(asset.editSourceColor,'grayscale');assert.deepEqual(object.uxPhotoCrop,crop);
+ f.listeners.message({origin:f.parent.location.origin,source:f.parent,data:{type:'gravuru-gallery-snapshot-request',requestId:'edited'}});
+ assert.deepEqual(f.messages.find(m=>m.type==='gravuru-gallery-snapshot').photos,[{objectId:'photo',assetId:'a'.repeat(64)}]);
 });
 
 test('missing stored photo leaves the full editor unsaveable and reports the resource error to its host',async t=>{

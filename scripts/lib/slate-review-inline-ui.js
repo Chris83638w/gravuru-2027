@@ -1,15 +1,30 @@
-// The card edits native object positions only. Rendering, validation and revisions
+// The card edits native positions and proportional sizes. Rendering, validation and revisions
 // remain in the existing workshop backend; no product documents live in the page.
 export function changedPositions(original, current) {
   const old = new Map(original.map(object => [object.id, object]));
   return current.filter(object => object.movable === true && old.has(object.id) &&
-    (object.x !== old.get(object.id).x || object.y !== old.get(object.id).y))
-    .map(object => ({objectId: object.id, x: object.x, y: object.y}));
+    (object.x !== old.get(object.id).x || object.y !== old.get(object.id).y ||
+      old.get(object.id).resizable === true && (object.scale ?? 1) !== 1))
+    .map(object => ({objectId: object.id, x: object.x, y: object.y,
+      ...(old.get(object.id).resizable === true && (object.scale ?? 1) !== 1 ? {scale: object.scale} : {})}));
 }
 
 export function translatedObjectMatrix(matrix, original, current) {
-  return {a: matrix.a, b: matrix.b, c: matrix.c, d: matrix.d,
+  const scale = original.resizable === true ? current.scale ?? 1 : 1;
+  return {a: matrix.a * scale, b: matrix.b * scale, c: matrix.c * scale, d: matrix.d * scale,
     e: matrix.e + current.x - original.x, f: matrix.f + current.y - original.y};
+}
+
+export function scaledInlineObject(original, current, factor) {
+  if (!original?.resizable || !current?.resizable || !Number.isFinite(factor) || factor <= 0) return null;
+  // Always derive from the loaded snapshot; multiple operations never scale SVG
+  // matrices or text measurements cumulatively. Native text is remeasured at save.
+  let scale = (current.scale ?? 1) * factor;
+  if (Math.abs(scale - 1) < 1e-12) scale = 1;
+  const next = {...current, scale, w: original.w * scale, h: original.h * scale};
+  if (original.type === 'text') next.size = original.size * scale;
+  return [next.w, next.h, scale].every(value => Number.isFinite(value) && value > 0) &&
+    (original.type !== 'text' || Number.isFinite(next.size) && next.size > 0) ? next : null;
 }
 
 export function latestPreviewUrl(href, base) {
@@ -46,6 +61,19 @@ export function installInlineReview({cards, onSaved = () => {}, onVisibilityChan
     query(card, '[data-inline-element]').disabled = session.busy || !session.record;
     const selected = session.objects.find(object => object.id === session.selected && object.movable);
     for (const button of card.querySelectorAll('[data-inline-nudge]')) button.disabled = session.busy || !selected;
+    for (const button of card.querySelectorAll('[data-inline-resize]')) button.disabled = session.busy || !selected?.resizable;
+    const percentage = query(card, '[data-inline-scale]');
+    if (percentage) {
+      percentage.disabled = session.busy || !selected?.resizable;
+      percentage.value = selected?.resizable ? Number(((selected.scale ?? 1) * 100).toFixed(6)) : '';
+    }
+    const dimensions = query(card, '[data-inline-dimensions]');
+    if (dimensions) {
+      const mm = value => Number(value.toFixed(2)).toLocaleString('de-DE');
+      dimensions.textContent = selected?.resizable ? mm(selected.w) + ' × ' + mm(selected.h) + ' mm' +
+        (selected.type === 'text' ? ' · Schrift ' + mm(selected.size) + ' mm' : '') +
+        ((selected.scale ?? 1) !== 1 ? ' · ' + mm(selected.scale * 100) + ' %' : '') : '';
+    }
     card.classList.toggle('inline-dirty', changed);
     card.setAttribute('aria-busy', String(session.busy));
     const pinned = session.busy || changed;
@@ -69,8 +97,11 @@ export function installInlineReview({cards, onSaved = () => {}, onVisibilityChan
     group.dataset.inlineSelection = id;
     group.setAttribute('transform', `matrix(${matrix.a} ${matrix.b} ${matrix.c} ${matrix.d} ${matrix.e} ${matrix.f})`);
     group.setAttribute('pointer-events', 'none'); group.setAttribute('aria-hidden', 'true');
-    const box = Number.isFinite(object.w) && Number.isFinite(object.h)
-      ? {x: -object.w / 2, y: -object.h / 2, width: object.w, height: object.h} : node.getBBox();
+    // The node matrix already includes the proportional change; use original
+    // local bounds so the selection rectangle is not scaled twice.
+    const original = session.record.objects.find(item => item.id === id);
+    const box = Number.isFinite(original.w) && Number.isFinite(original.h)
+      ? {x: -original.w / 2, y: -original.h / 2, width: original.w, height: original.h} : node.getBBox();
     for (const key of ['x', 'y', 'width', 'height']) rect.setAttribute(key, box[key]);
     rect.setAttribute('fill', 'none'); rect.setAttribute('stroke', '#c58e2f');
     rect.setAttribute('stroke-width', '2'); rect.setAttribute('vector-effect', 'non-scaling-stroke');
@@ -102,7 +133,7 @@ export function installInlineReview({cards, onSaved = () => {}, onVisibilityChan
       || session.objects.find(object => object.type === 'text' && session.transforms.has(object.id))
       || session.objects.find(object => session.transforms.has(object.id));
     if (chosen) select(session, chosen.id);
-    status(session, chosen ? 'Element ziehen oder links/rechts/oben/unten mit den Pfeiltasten verschieben.' : 'Diese Vorlage enthält kein direkt verschiebbares Element. Öffne „Bearbeiten“.');
+    status(session, chosen ? 'Element ziehen oder mit den Knöpfen verschieben und vergrößern. Danach Änderungen speichern.' : 'Diese Vorlage enthält kein direkt bearbeitbares Element. Öffne „Im Konfi bearbeiten“.');
     sync(session);
   }
   function move(session, object, x, y) {
@@ -113,7 +144,7 @@ export function installInlineReview({cards, onSaved = () => {}, onVisibilityChan
     const matrix = translatedObjectMatrix(base, original, object);
     nodeFor(session, object.id).setAttribute('transform', `matrix(${matrix.a} ${matrix.b} ${matrix.c} ${matrix.d} ${matrix.e} ${matrix.f})`);
     select(session, object.id); sync(session);
-    status(session, dirty(session) ? 'Verschoben · noch nicht gespeichert' : 'Gespeicherte Position');
+    status(session, dirty(session) ? 'Geändert · noch nicht gespeichert' : 'Gespeicherter Stand');
   }
   function nudge(session, direction, step = 1) {
     if (session.busy || session.drag || !session.record) return false;
@@ -121,6 +152,16 @@ export function installInlineReview({cards, onSaved = () => {}, onVisibilityChan
     const object = session.objects.find(object => object.id === session.selected && object.movable);
     if (!delta || !object) return false;
     move(session, object, object.x + delta[0] * step, object.y + delta[1] * step);
+    return true;
+  }
+  function resize(session, factor) {
+    if (session.busy || session.drag || !session.record) return false;
+    const object = session.objects.find(object => object.id === session.selected && object.movable);
+    const original = session.record.objects.find(item => item.id === object?.id);
+    const next = scaledInlineObject(original, object, factor);
+    if (!next) return false;
+    Object.assign(object, next);
+    move(session, object, object.x, object.y);
     return true;
   }
   function close(session) {
@@ -136,7 +177,7 @@ export function installInlineReview({cards, onSaved = () => {}, onVisibilityChan
   }
   function canClose(session) {
     if (session.busy) { status(session, 'Bitte warten, bis Laden oder Speichern abgeschlossen ist.'); return false; }
-    return !dirty(session) || window.confirm('Die Verschiebungen sind noch nicht gespeichert. Wirklich verwerfen?');
+    return !dirty(session) || window.confirm('Die Änderungen sind noch nicht gespeichert. Wirklich verwerfen?');
   }
   async function load(session) {
     session.busy = true; sync(session); status(session, 'Bearbeitbare Vorlage wird geladen …');
@@ -152,7 +193,7 @@ export function installInlineReview({cards, onSaved = () => {}, onVisibilityChan
     if (active?.card === card) return;
     if (active) {
       if (active.busy || dirty(active)) {
-        status(active, 'Bitte diese Verschiebungen zuerst speichern oder zurücksetzen.');
+        status(active, 'Bitte diese Änderungen zuerst speichern oder zurücksetzen.');
         active.card.scrollIntoView({block: 'nearest'}); return;
       }
       close(active);
@@ -163,7 +204,7 @@ export function installInlineReview({cards, onSaved = () => {}, onVisibilityChan
   }
   async function save(session) {
     if (session.busy || !dirty(session) || session.drag) return;
-    session.busy = true; sync(session); status(session, 'Verschiebungen werden gespeichert …');
+    session.busy = true; sync(session); status(session, 'Änderungen werden gespeichert …');
     try {
       const positions = changedPositions(session.record.objects, session.objects);
       const record = await request('/originale/design', {method: 'PATCH', headers: {'Content-Type': 'application/json', 'X-Slate-Review-CSRF': csrf()},
@@ -176,7 +217,7 @@ export function installInlineReview({cards, onSaved = () => {}, onVisibilityChan
       onSaved(session.card, record);
     } catch (error) {
       session.conflict = error.status === 409;
-      status(session, session.conflict ? 'Zwischenzeitlich geändert. Deine Verschiebungen bleiben erhalten. Prüfe sie, bevor du den aktuellen Stand lädst.' : error.message, 'error');
+      status(session, session.conflict ? 'Zwischenzeitlich geändert. Deine Änderungen bleiben erhalten. Prüfe sie, bevor du den aktuellen Stand lädst.' : error.message, 'error');
     } finally { session.busy = false; sync(session); }
   }
   for (const card of cards) {
@@ -191,6 +232,25 @@ export function installInlineReview({cards, onSaved = () => {}, onVisibilityChan
     for (const button of card.querySelectorAll('[data-inline-nudge]')) button.addEventListener('click', () => {
       if (active?.card === card && nudge(active, button.dataset.inlineNudge)) stage.focus({preventScroll: true});
     });
+    for (const button of card.querySelectorAll('[data-inline-resize]')) button.addEventListener('click', () => {
+      const factor = {smaller: .9, larger: 1.1}[button.dataset.inlineResize];
+      if (active?.card === card && resize(active, factor)) stage.focus({preventScroll: true});
+    });
+    const applyPercentage = value => {
+      if (active?.card !== card || active.busy) return;
+      const object = active.objects.find(object => object.id === active.selected);
+      const percentage = Number(value);
+      if (!object || !Number.isFinite(percentage) || percentage <= 0 || !resize(active, percentage / 100 / (object.scale ?? 1))) {
+        sync(active); status(active, 'Bitte eine Größe größer als 0 Prozent eingeben.', 'error');
+      }
+    };
+    const percentageInput = query(card, '[data-inline-scale]');
+    percentageInput?.addEventListener('change', event => applyPercentage(event.target.value));
+    percentageInput?.addEventListener('keydown', event => {
+      if (event.key !== 'Enter' || event.isComposing) return;
+      event.preventDefault();
+      applyPercentage(percentageInput.value);
+    });
     query(card, '[data-inline-save]').addEventListener('click', () => { if (active?.card === card) void save(active); });
     query(card, '[data-inline-reset]').addEventListener('click', () => { if (active?.card === card && !active.busy) { const conflict = active.conflict; draw(active, active.record); active.conflict = conflict; sync(active); } });
     query(card, '[data-inline-close]').addEventListener('click', () => { if (active?.card === card && canClose(active)) close(active); });
@@ -203,7 +263,7 @@ export function installInlineReview({cards, onSaved = () => {}, onVisibilityChan
       const object = candidates[0];
       if (!object) return;
       const matrix = nodeFor(session, object.id).parentNode.getScreenCTM()?.inverse(); if (!matrix) return;
-      select(session, object.id);
+      select(session, object.id); sync(session);
       const start = new DOMPoint(event.clientX, event.clientY).matrixTransform(matrix);
       session.drag = {pointer: event.pointerId, start, matrix, object, x: object.x, y: object.y};
       stage.setPointerCapture(event.pointerId); stage.focus({preventScroll: true}); event.preventDefault();
@@ -228,6 +288,8 @@ export function installInlineReview({cards, onSaved = () => {}, onVisibilityChan
       const session = active; if (session?.card !== card || session.busy || !session.record) return;
       const direction = {ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down'}[event.key];
       if (direction && nudge(session, direction, event.shiftKey ? 10 : 1)) event.preventDefault();
+      const factor = {'+': 1.1, '=': 1.1, '-': .9}[event.key];
+      if (!event.ctrlKey && !event.metaKey && !event.altKey && factor && resize(session, factor)) event.preventDefault();
     });
     new ResizeObserver(() => { if (active?.card === card && active.selected) select(active, active.selected); }).observe(stage);
   }

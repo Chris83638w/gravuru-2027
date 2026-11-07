@@ -22,9 +22,11 @@ with tempfile.TemporaryDirectory(prefix='gravuru-font-upgrade-') as temp:
  shutil.copyfile(pricing_path,private/'pricing.json')
  preload=private/'mock.mjs';preload.write_text('''import fs from 'node:fs';import {DatabaseSync} from 'node:sqlite';
 import {prepareShopProduct} from '../release/app/workshop/shop-preparation.mjs';
+import {parseStoredDocument} from '../release/app/workshop/product-document-resources.mjs';
 const db=new DatabaseSync(new URL('./data/workshop.sqlite',import.meta.url).pathname,{readOnly:true});
-const row=db.prepare("SELECT product_id,revision,document FROM product_revisions WHERE product_id='cfg_b4fd3f0c-1d36-4708-b65a-2450134c4ef1' ORDER BY revision DESC LIMIT 1").get();db.close();
-const document=JSON.parse(row.document),plan=prepareShopProduct({id:row.product_id,revision:row.revision,document,status:'draft'});
+const row=db.prepare("SELECT product_id,revision,document FROM product_revisions WHERE product_id='cfg_b4fd3f0c-1d36-4708-b65a-2450134c4ef1' ORDER BY revision DESC LIMIT 1").get();
+const document=parseStoredDocument(db,row.document,{tenantId:'gravuru'});db.close();
+const plan=prepareShopProduct({id:row.product_id,revision:row.revision,document,status:'draft'});
 const pricing=JSON.parse(fs.readFileSync(new URL('./pricing.json',import.meta.url))).product.pricing;
 const variants=plan.variants.map(v=>({id:'gid://shopify/ProductVariant/'+Object.entries(pricing.variants).find(([,p])=>p===v.priceCents)[0],price:(v.priceCents/100).toFixed(2),product:{id:pricing.productId,status:'ACTIVE'},selectedOptions:document.config.profile.optionGroups.map(g=>({name:g.name,value:g.values.find(i=>i.id===v.options[g.id]).label}))}));
 globalThis.fetch=async(url,options)=>{

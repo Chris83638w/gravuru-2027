@@ -2,6 +2,7 @@
 // options, prices and fixed revisions. A release never invents product rules
 // and never changes an existing paid snapshot or grants production approval.
 import {createHash} from 'node:crypto';
+import {readStoredDocumentText} from './product-document-resources.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
 import {PRODUCT_SCHEMA} from './product-model.mjs';
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'catalog_live_orders'});};
@@ -21,7 +22,7 @@ export function createCatalogLiveOrders({database:db,tenantId,clock=Date.now}){
   const row=db.prepare('SELECT * FROM catalog_live_order_approvals WHERE tenant_id=? AND shop=? AND product_gid=? AND cfg_id=? AND cfg_revision=?').get(tenantId,shopDomain,shopifyProductId,productId,productRevision);
   if(!row||!JSON.parse(row.variants_json).includes(shopifyVariantId))return null;
   const source=db.prepare('SELECT document FROM product_revisions WHERE tenant_id=? AND product_id=? AND revision=?').get(tenantId,productId,productRevision);
-  if(!source||sha(source.document)!==row.document_sha256)fail(409,'Der freigegebene Katalogstand stimmt nicht mehr überein.');
+  if(!source||sha(readStoredDocumentText(db,source.document,{tenantId}))!==row.document_sha256)fail(409,'Der freigegebene Katalogstand stimmt nicht mehr überein.');
   return {id:row.approval_id,approvedAt:row.approved_at,kind:'catalog'};
  }
  function approve({shopDomain,products,approvalId,registry}={}){
@@ -34,7 +35,7 @@ export function createCatalogLiveOrders({database:db,tenantId,clock=Date.now}){
     ids.add(p.productId);shopIds.add(p.shopifyProductId);
     const row=db.prepare('SELECT r.document,r.status,p.revision AS head,p.archived,p.kind FROM products p JOIN product_revisions r ON r.product_id=p.id AND r.tenant_id=p.tenant_id WHERE p.tenant_id=? AND p.id=? AND r.revision=?').get(tenantId,p.productId,p.productRevision);
     if(!row||row.head!==p.productRevision||row.archived||row.kind!=='product'||row.status==='archived')fail(409,'Der freizugebende Katalogstand ist nicht aktuell.');
-    const document=JSON.parse(row.document),config=document.config;
+    const documentText=readStoredDocumentText(db,row.document,{tenantId}),document=JSON.parse(documentText),config=document.config;
     if(document.schema!==PRODUCT_SCHEMA||!config||config.doorbell)fail(422,'Katalogfreigaben gelten für native Produkte; Funkklingeln behalten ihre eigene Freigabe.');
     if(config.familyFormats&&(!config.familyFormats.source?.shopProduct||config.familyFormats.source?.reviewUnreleased===true))fail(422,'Für den Shop ist ein fester, freigegebener Produktzuschnitt erforderlich.');
     const plan=prepareShopProduct({id:p.productId,revision:p.productRevision,status:row.status,document});
@@ -46,7 +47,7 @@ export function createCatalogLiveOrders({database:db,tenantId,clock=Date.now}){
      if(bound.storeId!=='acryl'||bound.tenantId!==tenantId||bound.shopDomain!==shopDomain||bound.productId!==p.productId||bound.productRevision!==p.productRevision||!expected||expected.priceCents!==bound.unitCents||seen.has(k))fail(422,'Katalogbindung, Auswahl oder Preis passen nicht zum festen Produktstand.');
      seen.add(k);
     }
-    return {...p,documentSha256:sha(row.document),variants};
+    return {...p,documentSha256:sha(documentText),variants};
    });
    db.exec(`CREATE TABLE IF NOT EXISTS catalog_live_order_approvals(tenant_id TEXT NOT NULL,shop TEXT NOT NULL,product_gid TEXT NOT NULL,cfg_id TEXT NOT NULL,cfg_revision INTEGER NOT NULL,document_sha256 TEXT NOT NULL,variants_json TEXT NOT NULL,approval_id TEXT NOT NULL,approved_at TEXT NOT NULL,PRIMARY KEY(tenant_id,shop,product_gid,cfg_id,cfg_revision));
     CREATE TRIGGER IF NOT EXISTS catalog_live_approval_fixed BEFORE UPDATE ON catalog_live_order_approvals BEGIN SELECT RAISE(ABORT,'Live approvals are immutable');END;

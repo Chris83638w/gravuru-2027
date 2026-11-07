@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {DatabaseSync} from 'node:sqlite';
+import {readStoredDocumentText} from '../app/workshop/product-document-resources.mjs';
 import {openKatalog} from '../app/workshop/katalog-source.mjs';
 import {approvedForFamily,assignTargetSeries,designTargets} from '../app/workshop/design-targets.mjs';
 import {createProductRepository} from '../app/workshop/repository.mjs';
@@ -50,7 +51,7 @@ try{
   if(!size)throw Error('Tafel fehlt im aktuellen Katalog: '+plan.sizeKey);
   const row=sourceDb.prepare('SELECT r.document,r.revision FROM product_revisions r JOIN products p ON p.id=r.product_id AND p.tenant_id=r.tenant_id AND p.revision=r.revision WHERE p.id=? AND p.tenant_id=?').get(plan.productId,'gravuru');
   if(!row)throw Error('Native Ausgangstafel fehlt: '+plan.productId);
-  const original=readDocument(row.document);
+  const original=readDocument(readStoredDocumentText(sourceDb,row.document,{tenantId:'gravuru'}));
   const currentBase=slateCatalogueProduct(root,family,size);
   for(const key of ['basePriceCents','photoDesignCents','extraMotifCents','quantityTiers','materialSurface'])if(JSON.stringify(currentBase[key])!==JSON.stringify(original.config[key]))throw Error('Native Vorbereitung erneuern: '+size.key+' / '+key+' wurde geändert.');
   for(const key of ['geometry','material','processing','optionGroups'])if(JSON.stringify(currentBase.profile[key])!==JSON.stringify(original.config.profile[key]))throw Error('Native Vorbereitung erneuern: '+size.key+' / '+key+' wurde geändert.');

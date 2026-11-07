@@ -82,6 +82,23 @@ test('native option rows are reused, copied on output and never duplicated into 
  assert.ok(!f.db.prepare('PRAGMA table_info(shop_product_binding_revisions)').all().some(c=>c.name==='options'));
 });
 
+test('native bindings use hydrated evidence and fail closed on a missing shared font before any assignment write',t=>{
+ const f=fixture(t,nativeDocument()),options={size:'large',base:'eiche',wall:'wall'};
+ const plan=f.plan([{record:f.record,...pair(),options}]);
+ const raw=f.db.prepare('SELECT document FROM product_revisions WHERE product_id=? AND revision=1').get(f.record.id).document;
+ assert.match(raw,/\$gravuruResource/);
+ const first=f.persist(plan).assignments[0];
+ assert.equal(first.documentSha256,plan.entries[0].documentSha256);
+ assert.deepEqual(f.registry.resolve(pair()).options,options);
+ const retry=f.plan([{record:f.record,...pair(),options}]),before=counts(f);
+ f.db.exec('DROP TRIGGER immutable_product_document_resource_delete');
+ f.db.prepare("DELETE FROM product_document_resources WHERE tenant_id=? AND kind='font'").run(tenantId);
+ assert.throws(()=>f.persist(retry,1),{code:'shop_binding_product_missing'},'the repository-backed read adapter rejects the broken source before SQL activation');
+ assert.deepEqual(counts(f),before,'no new binding, head or assignment on broken resource evidence');
+ assert.throws(()=>f.registry.resolve(pair()),{code:'shop_binding_document'});
+ assert.deepEqual(f.registry.listActive(),[],'an unreadable product cannot be offered by the gallery');
+});
+
 test('explicit head CAS preserves historical revisions and a new source revision is never silently selected',t=>{
  const f=fixture(t),first=f.persist().assignments[0],doc=structuredClone(f.record.document);doc.basePriceCents=2699;
  const next=f.repository.save(f.record.id,doc,1);assert.equal(f.registry.resolve(pair()).productRevision,1);assert.equal(f.registry.resolve(pair()).unitCents,2599);

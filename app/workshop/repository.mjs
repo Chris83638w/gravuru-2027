@@ -4,6 +4,7 @@ import { mkdirSync, realpathSync, statSync } from 'node:fs';
 import { dirname } from 'node:path';
 import {createProductCatalog} from './product-catalog.mjs';
 import {tenantOption,ensureTenantColumn,TENANT_COLUMN} from './tenant.mjs';
+import {initializeProductDocumentResources,encodeStoredDocument,parseStoredDocument} from './product-document-resources.mjs';
 
 const OWNED_FIELDS = ['id', 'revision', 'publishedRevision', 'status', 'createdAt', 'updatedAt', 'metadata'];
 
@@ -35,7 +36,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
     db.exec('PRAGMA foreign_keys = ON; PRAGMA busy_timeout = 5000; PRAGMA journal_mode = WAL;');
     transact(() => {
       const version = db.prepare('PRAGMA user_version').get().user_version;
-      if (version > 4) throw failure(422, 'unsupported_database_version', 'Die Datenbank benötigt eine neuere Anwendung.');
+      if (version > 5) throw failure(422, 'unsupported_database_version', 'Die Datenbank benötigt eine neuere Anwendung.');
       if (version === 0) {
         db.exec(`
           CREATE TABLE products (
@@ -87,6 +88,10 @@ export function createProductRepository({ filename, validateDocument = (value) =
         DROP TABLE import_items; ALTER TABLE import_items_v4 RENAME TO import_items;
         PRAGMA user_version = 4;`);
       }
+      // V5 is a storage-only change. Existing immutable rows remain untouched;
+      // new snapshots share exact payloads in the same transactional database.
+      initializeProductDocumentResources(db);
+      if(version<5)db.exec('PRAGMA user_version = 5');
     });
   } catch (error) {
     db.close();
@@ -159,7 +164,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
     const snap = snapshot(row.id, revision);
     return {
       id: row.id, revision: snap.revision, publishedRevision: snap.published_revision,
-      status: snap.status, document: JSON.parse(snap.document), metadata: JSON.parse(snap.metadata),
+      status: snap.status, document: parseStoredDocument(db,snap.document,{tenantId:tenant}), metadata: JSON.parse(snap.metadata),
       createdAt: row.created_at, updatedAt: snap.created_at,
     };
   }
@@ -184,7 +189,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
     }
     db.prepare(`INSERT INTO product_revisions
       (product_id, revision, document, published_revision, status, created_at, metadata, tenant_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`)
-      .run(row.id, row.revision, JSON.stringify(document), row.published_revision, state(row), row.updated_at, metadata, tenant);
+      .run(row.id, row.revision, encodeStoredDocument(db,JSON.stringify(document),{tenantId:tenant}), row.published_revision, state(row), row.updated_at, metadata, tenant);
     catalog.update(row,document);
   }
 
@@ -337,7 +342,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
       return transact(() => {
         const row = product(id);
         expected(row, expectedRevision);
-        const document = JSON.parse(snapshot(id, row.revision).document);
+        const document = parseStoredDocument(db,snapshot(id, row.revision).document,{tenantId:tenant});
         document.name = name ?? `${document.name} – Kopie`;
         document.kind = kind;
         document.masterId = kind === 'master' ? null : row.kind === 'master' ? id : document.masterId;
@@ -349,7 +354,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
         const row = product(id);
         expected(row, expectedRevision);
         if (typeof archived !== 'boolean') throw failure(422, 'invalid_archive_state', 'Archivstatus muss true oder false sein.');
-        return append(row, JSON.parse(snapshot(id, row.revision).document), { archived: archived ? 1 : 0 });
+        return append(row, parseStoredDocument(db,snapshot(id, row.revision).document,{tenantId:tenant}), { archived: archived ? 1 : 0 });
       });
     },
     publish(id, { expectedRevision } = {}) {
@@ -357,7 +362,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
         const row = product(id);
         expected(row, expectedRevision);
         if (row.archived) throw failure(422, 'archived_product', 'Archivierte Konfigurationen können nicht veröffentlicht werden.');
-        return append(row, documentValue(JSON.parse(snapshot(id, row.revision).document)), { publish: true });
+        return append(row, documentValue(parseStoredDocument(db,snapshot(id, row.revision).document,{tenantId:tenant})), { publish: true });
       });
     },
     history(id) {
@@ -370,7 +375,7 @@ export function createProductRepository({ filename, validateDocument = (value) =
         const row = product(id);
         expected(row, expectedRevision);
         positiveRevision(revision);
-        return append(row, documentValue(JSON.parse(snapshot(id, revision).document)));
+        return append(row, documentValue(parseStoredDocument(db,snapshot(id, revision).document,{tenantId:tenant})));
       });
     },
     close() { db.close(); },

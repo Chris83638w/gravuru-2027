@@ -1,5 +1,6 @@
 import {choiceOptions} from '../configurator/variant-m/contract.mjs';
 import {createCatalogLiveOrders} from './catalog-live-orders.mjs';
+import {readStoredDocumentText} from './product-document-resources.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
 import {createOrderStatus} from './order-status.mjs';
 import {createProductionRelease} from './production-release.mjs';
@@ -88,7 +89,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
   const row=db.prepare('SELECT * FROM doorbell_live_order_approvals WHERE tenant_id=? AND shop=? AND product_gid=? AND cfg_id=? AND cfg_revision=?').get(tenant,shop,shopifyProductId,b.product_id,b.product_revision);
   if(!row||!JSON.parse(row.variants_json).includes(b.variant_id))fail(422,'Produkt, Variante und fester Stand sind nicht für echte Funkklingelbestellungen freigegeben.');
   const key=b.product_id+':'+b.product_revision;let digest=records?.get(key);
-  if(digest===undefined){const source=db.prepare('SELECT document FROM product_revisions WHERE tenant_id=? AND product_id=? AND revision=?').get(tenant,b.product_id,b.product_revision);digest=source?sha(source.document):null;records?.set(key,digest);}
+  if(digest===undefined){const source=db.prepare('SELECT document FROM product_revisions WHERE tenant_id=? AND product_id=? AND revision=?').get(tenant,b.product_id,b.product_revision);digest=source?sha(readStoredDocumentText(db,source.document,{tenantId:tenant})):null;records?.set(key,digest);}
   if(digest!==row.document_sha256)fail(409,'Der freigegebene Funkklingelstand stimmt nicht mehr überein.');
   return {id:row.approval_id,approvedAt:row.approved_at};
  }
@@ -135,7 +136,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
    ids.add(p.productId);shopIds.add(p.shopifyProductId);
    const row=db.prepare('SELECT r.document,r.status,p.revision AS head,p.archived,p.kind FROM products p JOIN product_revisions r ON r.product_id=p.id AND r.tenant_id=p.tenant_id WHERE p.tenant_id=? AND p.id=? AND r.revision=?').get(tenant,p.productId,p.productRevision);
    if(!row||row.head!==p.productRevision||row.archived||row.kind!=='product'||row.status==='archived')fail(409,'Der freizugebende Funkklingelstand ist nicht aktuell.');
-   const document=JSON.parse(row.document),config=document.config;
+   const documentText=readStoredDocumentText(db,row.document,{tenantId:tenant}),document=JSON.parse(documentText),config=document.config;
    if(document.schema!==PRODUCT_SCHEMA||config?.doorbell?.schema!=='gravuru-doorbell/v1'||config.profile?.kind!=='layered-doorbell')fail(422,'Live-Freigaben gelten ausschließlich für neue modellgebundene Funkklingeln.');
    if((config.profile.optionGroups||[]).map(g=>g.id).sort().join(',')!=='color,format,frame,mounting')fail(422,'Die vier Funkklingel-Ausführungsgruppen fehlen.');
    const record={id:p.productId,revision:p.productRevision,status:row.status,document},plan=prepareShopProduct(record);
@@ -148,13 +149,13 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
     if(bound.storeId!=='acryl'||bound.productId!==p.productId||bound.productRevision!==p.productRevision||!expected||expected.priceCents!==bound.unitCents||seen.has(key))fail(422,'Eine aktive Funkklingelbindung passt nicht zum freigegebenen Stand.');
     seen.add(key);return identifier(r.variant_gid.split('/').at(-1));
    }).sort();
-   return {...p,documentSha256:sha(row.document),variants};
+   return {...p,documentSha256:sha(documentText),variants};
   });
   return tx(()=>{
    for(const e of entries){
     const current=db.prepare('SELECT p.revision,r.document FROM products p JOIN product_revisions r ON r.product_id=p.id AND r.tenant_id=p.tenant_id AND r.revision=p.revision WHERE p.tenant_id=? AND p.id=? AND p.archived=0').get(tenant,e.productId);
     const variants=db.prepare('SELECT r.variant_gid FROM shop_product_binding_heads h JOIN shop_product_binding_revisions r ON r.tenant_id=h.tenant_id AND r.shop=h.shop AND r.variant_gid=h.variant_gid AND r.revision=h.revision WHERE r.tenant_id=? AND r.shop=? AND r.store_id=? AND r.product_gid=? AND r.cfg_id=? AND r.cfg_revision=?').all(tenant,shopDomain,'acryl',e.shopifyProductId,e.productId,e.productRevision).map(r=>r.variant_gid.split('/').at(-1)).sort();
-    if(!current||current.revision!==e.productRevision||sha(current.document)!==e.documentSha256||JSON.stringify(variants)!==JSON.stringify(e.variants))fail(409,'Produkt oder Bindungen wurden während der Live-Freigabe geändert.');
+    if(!current||current.revision!==e.productRevision||sha(readStoredDocumentText(db,current.document,{tenantId:tenant}))!==e.documentSha256||JSON.stringify(variants)!==JSON.stringify(e.variants))fail(409,'Produkt oder Bindungen wurden während der Live-Freigabe geändert.');
    }
    db.exec(`CREATE TABLE IF NOT EXISTS doorbell_live_order_approvals(tenant_id TEXT NOT NULL,shop TEXT NOT NULL,product_gid TEXT NOT NULL,cfg_id TEXT NOT NULL,cfg_revision INTEGER NOT NULL,document_sha256 TEXT NOT NULL,variants_json TEXT NOT NULL,approval_id TEXT NOT NULL,approved_at TEXT NOT NULL,PRIMARY KEY(tenant_id,shop,product_gid,cfg_id,cfg_revision));
     CREATE TRIGGER IF NOT EXISTS doorbell_live_approval_fixed BEFORE UPDATE ON doorbell_live_order_approvals BEGIN SELECT RAISE(ABORT,'Live approvals are immutable');END;

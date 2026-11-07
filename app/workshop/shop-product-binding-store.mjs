@@ -1,6 +1,7 @@
 // Additive exact-ID activation over the EXISTING order-intake connection. No DB
 // constructor, Shopify call, option register, price formula or production release.
 import {createHash, randomUUID} from 'node:crypto';
+import {parseStoredDocument} from './product-document-resources.mjs';
 import {withBindingReadSnapshot} from './shop-product-binding-read-snapshot.mjs';
 import {isDeepStrictEqual} from 'node:util';
 import {resolveShopProductBinding} from './shop-product-binding-plan.mjs';
@@ -104,12 +105,13 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
       fail('shop_binding_active_integrity','Bindung, Ausführung und fester Produktstand stimmen nicht überein.');
   }
   function parseDocument(text){try{return JSON.parse(text);}catch{fail('shop_binding_document','Der gespeicherte Produktbeleg ist ungültig.',422);}}
+  function parseProductDocument(text){try{return parseStoredDocument(db,text,{tenantId});}catch(error){if(!error.code?.startsWith('product_resource_'))throw error;fail('shop_binding_document',error.message,422);}}
   function result(row,records=new Map(),timings){
     if(row.store_id!==storeId)fail('shop_binding_store_scope','Die Zuordnung gehört zu einem anderen Store.',503);
     const key=row.cfg_id+'@'+row.cfg_revision;let record=records.get(key);
     if(!record){
       let at=performance.now();const source=productRow(row.cfg_id,row.cfg_revision,{withMetadata:false});if(timings)timings.documentReadMs+=performance.now()-at;
-      at=performance.now();const document=parseDocument(source.document);if(timings)timings.documentParseMs+=performance.now()-at;
+      at=performance.now();const document=parseProductDocument(source.document);if(timings)timings.documentParseMs+=performance.now()-at;
       at=performance.now();record={digest:digest(document),productionStatus:document.productionProfile==null?'profile-assignment-pending':'not-released'};if(timings){timings.documentHashMs+=performance.now()-at;timings.products++;}
       // Retain only the digest, never all parsed documents of a large catalogue.
       records.set(key,record);
@@ -148,7 +150,8 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
         if(!expected.has(entry.shopifyVariantId))fail('shop_binding_expected_head','Ein erwarteter Zuordnungsstand fehlt.',422);
         const resolved=resolveShopProductBinding(plan,{...scope,shopifyProductId:entry.shopifyProductId,shopifyVariantId:entry.shopifyVariantId,adapter,now});
         const row=productRow(resolved.productId,resolved.productRevision,{requireHead:true}),record=sync(adapter.getCurrentProduct,resolved.productId);
-        if(digest(JSON.parse(row.document))!==resolved.documentSha256||!isDeepStrictEqual(JSON.parse(row.document),record.document)||
+        const document=parseProductDocument(row.document);
+        if(digest(document)!==resolved.documentSha256||!isDeepStrictEqual(document,record.document)||
           !isDeepStrictEqual(JSON.parse(row.metadata),record.metadata)||row.status!==record.status)
           fail('shop_binding_cfg_changed','Die bestehende Datenbank stimmt nicht mit dem bestätigten Produktbeleg überein.');
         const old=currentHead(resolved.shopifyVariantId),expectedRevision=expected.get(resolved.shopifyVariantId);

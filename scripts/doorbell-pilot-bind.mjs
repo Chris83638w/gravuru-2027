@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {DatabaseSync} from 'node:sqlite';
+import {parseStoredDocument} from '../app/workshop/product-document-resources.mjs';
 import {isDeepStrictEqual} from 'node:util';
 import {resolvedOptions} from '../app/configurator/variant-m/contract.mjs';
 import {DOORBELL_BIND_SCHEMA,validateDoorbellManifest,validateDoorbellExport,validateDoorbellRecords,createDoorbellLiveReader,applyDoorbellBindings} from './doorbell-shop-bind.mjs';
@@ -48,7 +49,7 @@ export function readPilotManifest({createdInput,portraitPlan,importReportFile,da
  const report=read(importReportFile),base=fs.realpathSync(path.dirname(importReportFile));
  const db=new DatabaseSync(database,{readOnly:true});
  try{
-  if(db.prepare('PRAGMA user_version').get().user_version!==4)fail('Nur der vorhandene Acryl-Speicher mit Schema v4 ist zulässig.');
+  if(![4,5].includes(db.prepare('PRAGMA user_version').get().user_version))fail('Nur der vorhandene Acryl-Speicher mit Schema v4 oder v5 ist zulässig.');
   const query=db.prepare('SELECT p.id,p.revision,p.archived,p.kind,r.document,r.status,r.metadata,i.fingerprint FROM import_items i JOIN products p ON p.id=i.product_id AND p.tenant_id=i.tenant_id JOIN product_revisions r ON r.product_id=p.id AND r.tenant_id=p.tenant_id AND r.revision=p.revision WHERE i.tenant_id=? AND i.import_key=?');
   return preparePilotManifest({createdInput,portraitPlan,importReport:report,
    readImportDocument:relative=>{
@@ -58,7 +59,7 @@ export function readPilotManifest({createdInput,portraitPlan,importReportFile,da
    },
    resolveImportedRecord:key=>{
     const r=query.get('gravuru',key);
-    return r&&!r.archived&&r.kind==='product'?{id:r.id,revision:r.revision,status:r.status,metadata:JSON.parse(r.metadata),document:JSON.parse(r.document),importFingerprint:r.fingerprint}:null;
+    return r&&!r.archived&&r.kind==='product'?{id:r.id,revision:r.revision,status:r.status,metadata:JSON.parse(r.metadata),document:parseStoredDocument(db,r.document,{tenantId:'gravuru'}),importFingerprint:r.fingerprint}:null;
    }});
  }finally{db.close();}
 }

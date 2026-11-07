@@ -5,6 +5,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {once} from 'node:events';
 import {DatabaseSync} from 'node:sqlite';
+import {parseStoredDocument} from '../../app/workshop/product-document-resources.mjs';
 import {merchantConfig,verifyMerchantStorage} from './merchant-config.mjs';
 import {readPrivateFile} from './shopify-preflight.mjs';
 import {hashPrivateFile} from './private-file-digest.mjs';
@@ -56,7 +57,7 @@ export function readState(filename){
  const db=new DatabaseSync(filename,{readOnly:true});try{
   const row=db.prepare('SELECT p.id,p.revision,p.archived,p.published_revision,r.document,r.metadata FROM products p JOIN product_revisions r ON p.id=r.product_id AND p.revision=r.revision WHERE p.id=?').get(TARGET.productId);
   if(!row||row.archived)fail('product_unavailable');
-  const record={id:row.id,revision:row.revision,status:row.published_revision===row.revision?'active':'draft',document:JSON.parse(row.document),metadata:JSON.parse(row.metadata)};
+  const record={id:row.id,revision:row.revision,status:row.published_revision===row.revision?'active':'draft',document:parseStoredDocument(db,row.document,{tenantId:'gravuru'}),metadata:JSON.parse(row.metadata)};
   const mappings=db.prepare('SELECT b.variant_id,s.options FROM form_shop_bindings b JOIN form_shop_binding_selections s ON s.binding_id=b.id WHERE b.product_id=? AND b.product_revision=? AND b.shop=? ORDER BY b.variant_id').all(TARGET.productId,TARGET.fromRevision,TARGET.shopDomain).map(b=>({key:variantKey(JSON.parse(b.options)),variantId:b.variant_id}));
   if(mappings.length!==9||!same(mappings.map(b=>b.variantId).sort(),VARIANTS))fail('previous_bindings');
   return {record,mappings};

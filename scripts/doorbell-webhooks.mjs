@@ -5,6 +5,7 @@ import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
 import {DatabaseSync} from 'node:sqlite';
+import {readStoredDocumentText} from '../app/workshop/product-document-resources.mjs';
 import {readCredentials,createShopifyClient,SHOP_DOMAIN,CLIENT_ID,API_VERSION} from './shop-export.mjs';
 import {validateDoorbellManifest} from './doorbell-shop-bind.mjs';
 export const APP_ID='gid://shopify/App/423276544001';
@@ -25,10 +26,10 @@ export function assertDoorbellRelease({filename,manifest,env=process.env}){
  if(!fs.existsSync(filename))fail('acryl_database_missing');
  const db=new DatabaseSync(filename,{readOnly:true});
  try{
-  if(db.prepare('PRAGMA user_version').get().user_version!==4)fail('wrong_database_schema');
+  if(![4,5].includes(db.prepare('PRAGMA user_version').get().user_version))fail('wrong_database_schema');
   for(const p of manifest.products){
    const r=db.prepare('SELECT a.*,r.document,p.revision AS head,p.archived FROM doorbell_live_order_approvals a JOIN products p ON p.tenant_id=a.tenant_id AND p.id=a.cfg_id JOIN product_revisions r ON r.tenant_id=a.tenant_id AND r.product_id=a.cfg_id AND r.revision=a.cfg_revision WHERE a.tenant_id=? AND a.shop=? AND a.product_gid=? AND a.cfg_id=? AND a.cfg_revision=?').get('gravuru',SHOP_DOMAIN,p.shopifyProductId,p.productId,p.productRevision);
-   if(!r||r.approval_id!=='user-20261027-funkklingeln'||r.archived||r.head!==p.productRevision||createHash('sha256').update(r.document).digest('hex')!==r.document_sha256||!same(JSON.parse(r.variants_json),p.variants.map(v=>v.shopifyVariantId.split('/').at(-1))))fail('persisted_release_missing');
+   if(!r||r.approval_id!=='user-20261027-funkklingeln'||r.archived||r.head!==p.productRevision||createHash('sha256').update(readStoredDocumentText(db,r.document,{tenantId:'gravuru'})).digest('hex')!==r.document_sha256||!same(JSON.parse(r.variants_json),p.variants.map(v=>v.shopifyVariantId.split('/').at(-1))))fail('persisted_release_missing');
    const current=db.prepare('SELECT r.variant_gid FROM shop_product_binding_heads h JOIN shop_product_binding_revisions r ON r.tenant_id=h.tenant_id AND r.shop=h.shop AND r.variant_gid=h.variant_gid AND r.revision=h.revision WHERE r.tenant_id=? AND r.shop=? AND r.store_id=? AND r.product_gid=? AND r.cfg_id=? AND r.cfg_revision=?').all('gravuru',SHOP_DOMAIN,'acryl',p.shopifyProductId,p.productId,p.productRevision);
    if(!same(current.map(v=>v.variant_gid),p.variants.map(v=>v.shopifyVariantId)))fail('active_bindings_changed');
   }

@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {gunzipSync} from 'node:zlib';
 import {DatabaseSync} from 'node:sqlite';
+import {parseStoredDocument} from '../app/workshop/product-document-resources.mjs';
 import {pathToFileURL} from 'node:url';
 import {digest,validateBundle} from './slate-group-import.mjs';
 import {slateVariantSku} from './slate-draft-plan.mjs';
@@ -22,14 +23,14 @@ const read=file=>JSON.parse(fs.readFileSync(file,'utf8'));
 export function readNativeRecords(bundle,filename){
  const db=new DatabaseSync(filename,{readOnly:true});
  try{
-  if(db.prepare('PRAGMA user_version').get().user_version!==4)fail('Werkstatt-Schema 4 erforderlich.');
+  if(![4,5].includes(db.prepare('PRAGMA user_version').get().user_version))fail('Werkstatt-Schema 4 oder 5 erforderlich.');
   const records={};
   for(const p of bundle.products){
    const journal=db.prepare('SELECT product_id FROM import_items WHERE tenant_id=? AND import_key=?').get(bundle.tenantId,p.key);
    if(!journal)continue;
    const row=db.prepare('SELECT p.id,p.revision,p.archived,r.document FROM products p JOIN product_revisions r ON p.id=r.product_id AND p.tenant_id=r.tenant_id AND p.revision=r.revision WHERE p.id=? AND p.tenant_id=?').get(journal.product_id,bundle.tenantId);
    if(!row||row.archived)fail('Importiertes Produkt fehlt oder ist archiviert: '+p.sourceDesignId);
-   const document=JSON.parse(row.document);
+   const document=parseStoredDocument(db,row.document,{tenantId:bundle.tenantId});
    if(document.config.profile.id!==p.document.config.profile.id||digest(document)!==p.fingerprint)fail('Importierte Produktgruppe wurde verändert: '+p.sourceDesignId);
    records[p.key]={id:row.id,revision:row.revision,fingerprint:p.fingerprint};
   }

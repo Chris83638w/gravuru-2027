@@ -55,7 +55,7 @@ def db_summary(path):
         return dict(integrity='ok', version=db.execute('PRAGMA user_version').fetchone()[0], tables=tables)
 
 
-def verify_state(state):
+def verify_state(state, source_root=None):
     result = {n: db_summary(state / n) for n in ['workshop.sqlite', 'profiles.sqlite', 'design-assets.sqlite']}
     with contextlib.closing(ro_db(state / 'design-assets.sqlite')) as db:
         source_ids = set()
@@ -73,7 +73,20 @@ def verify_state(state):
             asset_ids.add(aid)
     with contextlib.closing(ro_db(state / 'workshop.sqlite')) as db:
         references = 0
-        for (raw,) in db.execute('SELECT document FROM product_revisions'):
+        shared_resources = db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='product_document_resources'").fetchone()
+        version = db.execute('PRAGMA user_version').fetchone()[0]
+        if version >= 5 or shared_resources:
+            # One authoritative decoder, including tenant/hash checks. Never
+            # normalize the stored rows or copy hydrated payloads back into SQLite.
+            root = source_root or Path(__file__).resolve().parent.parent
+            helper = root / 'scripts' / 'lib' / 'product-revision-resources-audit.mjs'
+            node = os.environ.get('GRAVURU_NODE') or shutil.which('node')
+            if not node or not helper.is_file():
+                raise ValueError('Shared resource verification requires Node and the matching source package')
+            check = subprocess.run([node, str(helper), str(state / 'workshop.sqlite')],
+                                   input=json.dumps(sorted(asset_ids)), text=True, capture_output=True, check=True)
+            references = json.loads(check.stdout)['verifiedAssetReferences']
+        for (raw,) in ([] if version >= 5 or shared_resources else db.execute('SELECT document FROM product_revisions')):
             def visit(value):
                 nonlocal references
                 if isinstance(value, dict):
@@ -152,7 +165,7 @@ def create(repo, dest, inputs):
         for db in reversed(locks):
             db.rollback()
             db.close()
-    database_report = verify_state(state)
+    database_report = verify_state(state, repo)
     for p in state.iterdir():
         if p.suffix == '.sqlite':
             included.append(dict(path='state/' + p.name, size=p.stat().st_size, sha256=digest(p), role='private-database'))
@@ -195,7 +208,7 @@ def verify(package):
         p = (package / item['path']).resolve()
         if not p.is_relative_to(package.resolve()) or not p.is_file() or digest(p) != item['sha256']:
             raise ValueError('Missing or changed file: ' + item['path'])
-    if verify_state(package / 'state') != manifest['databases']:
+    if verify_state(package / 'state', package / 'source') != manifest['databases']:
         raise ValueError('Database logical state mismatch')
     return dict(status='PASS' if not manifest['missing'] else 'INCOMPLETE_INPUTS', files=len(manifest['files']),
                 missing=manifest['missing'], databaseIntegrity='ok', originalAssetHashes='ok', revisionReferences='ok')
@@ -211,7 +224,7 @@ def restore(package, target):
     for name in ['workshop.sqlite', 'profiles.sqlite', 'design-assets.sqlite']:
         shutil.copy2(package / 'state' / name, data / name)
     manifest = json.loads((package / 'MANIFEST.json').read_text(encoding='utf-8'))
-    if verify_state(data) != manifest['databases']:
+    if verify_state(data, target) != manifest['databases']:
         raise ValueError('Restore verification failed')
     report.update(restoredTo=str(target.resolve()), cloudAcceptance='Still requires runtimes, tests, build and application checks at destination')
     print(json.dumps(report, ensure_ascii=False, indent=2))

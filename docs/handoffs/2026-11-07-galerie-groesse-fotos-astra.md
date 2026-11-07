@@ -14,7 +14,7 @@ Eigener Branch `dev/astra-galerie-groesse-fotos-20261107`, auf dem privaten Navi
 
 ## Umsetzung und Abnahme
 
-Lokal abgenommen; private Hostübernahme folgt. Größenänderung nutzt die bestehende native Galerie-Schnittstelle und deren Versionsprüfung. Keine zweite Designdatenbank. Bereits geänderte Nutzerdaten auf dem Server dürfen niemals durch lokale Testdaten ersetzt werden.
+Lokal und auf privater Site 19 abgenommen. Größenänderung nutzt die bestehende native Galerie-Schnittstelle und deren Versionsprüfung. Keine zweite Designdatenbank. Bereits geänderte Nutzerdaten auf dem Server dürfen niemals durch lokale Testdaten ersetzt werden.
 
 - Karte: Element auswählen, kleiner/größer um 10 Prozent oder Prozentwert eingeben und Enter; aktuelle Maße anzeigen, Änderungen speichern. Text wird mit der nativen Schriftmessung skaliert, Motive/Fotos proportional und Grafiken einschließlich Strichstärke. Originalanker, Masken, Zuschnitt und Ressourcen bleiben erhalten. Unzulässige Überstände werden weiterhin abgewiesen.
 - Voll-Konfi: bestehende, proportional skalierte Fotoressource wieder öffnen und unverändert speichern. Fotoverweise behalten ihre Reihenfolge, damit unverändertes Speichern keine neue Revision erzeugt.
@@ -37,8 +37,16 @@ Draft [#188](https://github.com/Chris83638w/gravuru-2027/pull/188), Code `6191e3
 
 07.11.2026 08:39 UTC: alle fünf tatsächlichen Serverdatenbanken konsistent neu gesichert, 348 Produkte und **358 Revisionen** (neuer Nutzerstand gegenüber vorherigem Navigationsnachweis). Sicherung: `private/galerie-usability-6191e3b3-backup-20261107-v1`. Keine lokalen Testdaten übertragen. Getrenntes Codeverzeichnis `gravuru-2027-usability-6191e3b3` gebaut, weiterhin dieselbe private Konfiguration/Datenablage. [Bereinigter Nachweis](../reviews/2026-11-07-gallery-usability/private-stage-proof.json).
 
-**Noch nicht aktiviert:** Die Plesk-Sitzung ist beim Neuladen abgelaufen; erneute Nutzeranmeldung wurde angefragt. Alte Galerie `gravuru-2027-navigation-e166741c` läuft weiter. Nach Anmeldung nur Site 19 Anwendungsstamm auf neues Verzeichnis und Dokumentenstamm auf dessen `/public` ändern, starten und tatsächlichen Onlineaufruf prüfen. Alte Runtime bleibt Rückweg; keine Datenrücksicherung zur Code-Rücknahme.
+**Aktiviert und geprüft:** Nach erneuter Nutzeranmeldung Site 19 auf `gravuru-2027-usability-6191e3b3` und dessen `/public` umgestellt. Erster Aufruf nach Start bediente noch alten Prozess; expliziter Neustart und anschließende tatsächliche Prüfung bestätigen neuen Stand. **123/123 GET-/Datei-/Bestandsprüfungen grün**, [Onlinebeleg](../reviews/2026-11-07-gallery-usability/online-proof.json). Alte Runtime bleibt Rückweg; keine Datenrücksicherung zur Code-Rücknahme.
 
-Lokaler Fortsetzungshelfer: `work/run-gallery-usability-probe.py --plan work/stage-gallery-usability-6191e3b3-plan.json`, erst nach Umschaltung. Der vorbereitete Testcode ist gepinnt und prüft ausschließlich lesend Größensteuerung, Assethashes, Fotodarstellung, Zuordnungshinweise und fünf Datenbanken gegen die frische Sicherung. Danach echte Onlinebedienung: Größenänderung/Zurücksetzen und Voll-Konfi öffnen/No-op speichern. Bei inzwischen weiter geänderten Nutzerdaten Abweichungen einzeln nachweisen; niemals gegen die Sicherung zurückschreiben.
+Onlinebrowser: D230 Foto auf 80 Prozent in der Karte ausprobiert und ohne Speichern zurückgesetzt, voller Konfi öffnet tatsächlichen Stand 2, No-op „Speichern & zurück“ und Wiederöffnung zeigen weiterhin Stand 2. [Karte](../reviews/2026-11-07-gallery-usability/06-online-D230-groesse-80-vorschau.png), [Konfi](../reviews/2026-11-07-gallery-usability/07-online-D230-konfi-stand2.png). Echte Größenänderung mit SQLite-Speicherung bleibt auf der isolierten lokalen Kopie belegt; keine Online-Teständerung oder Freigabe ausgeführt.
+
+Währenddessen hat Chris vier Freigaben gesetzt. Ihre Ereignisse sind unverändert vorhanden, lückenlos angehängt, keine Löschung/Mutation. Wegen neuer Renderersignatur aktuell viermal „Erneut prüfen“; das ist keine verschwundene Freigabe. Chris darüber informiert. [Freigabenerhalt](../reviews/2026-11-07-gallery-usability/online-approval-preservation.json). Die vier übrigen Datenbanken stimmen strikt mit der frischen Sicherung überein.
+
+Ausgeführter Abnahmehelfer: `work/run-gallery-usability-probe.py --plan work/stage-gallery-usability-6191e3b3-plan.json --attempt 2`. Versuch 1 bleibt als historischer Vor-Neustart-Befund erhalten. Bei inzwischen weiter geänderten Nutzerdaten Abweichungen einzeln nachweisen; niemals gegen die Sicherung zurückschreiben.
+
+## Ergänzung Sammelfreigabe
+
+Chris ist bei Andenken/Edelstahl und möchte alle Designs auf der gefilterten Seite freigeben. Ergänzung in Arbeit: konkrete Auswahl geladener gespeicherter Karten und angezeigter Material-/Formatziele, separate Bestätigung durch den Nutzer, serielle bestehende revisions- und fingerprintgebundene Freigaben. Offene/ungespeicherte/ungeladene und bereits bestätigte Vorlagen auslassen. Keine echten Freigaben durch den Agenten. Lokaler Ersttest des Browser-Standarddialogs blockierte im integrierten Browser; wird durch sichtbaren Seitendialog ersetzt.
 
 Die getrennte Chrome-Frame-Störung ist weiter offen. Historische Browsersteuerungs-Unterbrechungen sind ein Kandidat, keine bestätigte aktuelle Fehlerursache. Kein unbegründeter Produktcode- oder Sicherheitsumbau.

@@ -1,0 +1,3 @@
+# Keep the pinned publication helper hashes identical on Windows and Linux.
+archive.py text eol=lf
+publish-plesk.cjs text eol=lf

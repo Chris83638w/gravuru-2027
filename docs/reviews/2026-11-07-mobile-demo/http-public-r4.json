@@ -1,0 +1,79 @@
+{
+  "base": "https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r4/",
+  "checks": [
+    {
+      "path": "22x14.html",
+      "status": 200,
+      "contentType": "text/html",
+      "encoding": "gzip",
+      "transferBytes": 1336843,
+      "decodedBytes": 3848383,
+      "seconds": 1.437,
+      "manifestMatch": true,
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive"
+    },
+    {
+      "path": "30x20.html",
+      "status": 200,
+      "contentType": "text/html",
+      "encoding": "gzip",
+      "transferBytes": 1372545,
+      "decodedBytes": 3933158,
+      "seconds": 1.906,
+      "manifestMatch": true,
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive"
+    },
+    {
+      "path": "demo.mjs",
+      "status": 200,
+      "contentType": "text/javascript",
+      "encoding": "gzip",
+      "transferBytes": 4887,
+      "decodedBytes": 14454,
+      "seconds": 0.359,
+      "manifestMatch": true,
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive"
+    },
+    {
+      "path": "demo.css",
+      "status": 200,
+      "contentType": "text/css",
+      "encoding": "gzip",
+      "transferBytes": 4430,
+      "decodedBytes": 22271,
+      "seconds": 0.375,
+      "manifestMatch": true,
+      "cache": "no-store              ",
+      "robots": "noindex, nofollow, noarchive"
+    },
+    {
+      "path": "_runtime/gravuru-catalog-51fa7e857d52-part-00.txt",
+      "status": 200,
+      "contentType": "text/plain",
+      "encoding": "gzip",
+      "transferBytes": 109128,
+      "decodedBytes": 400357,
+      "seconds": 0.781,
+      "manifestMatch": true,
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive"
+    },
+    {
+      "path": "_runtime/acryl-original-motifs.json",
+      "status": 200,
+      "contentType": "application/json",
+      "encoding": "gzip",
+      "transferBytes": 564921,
+      "decodedBytes": 1460528,
+      "seconds": 1.032,
+      "manifestMatch": true,
+      "cache": "no-store",
+      "robots": "noindex, nofollow, noarchive"
+    }
+  ],
+  "allMatch": true,
+  "timingNote": "Single fetch per file from this PC; not a mobile or load-test timing."
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "TRE-V2A-5x2-D401",
+    "sha256": "cebd9e1dc751b8012be53fbf17a6b156984e858f3f067fa90473ae38de4662b9",
+    "bytes": 1942429
+  },
+  {
+    "id": "TRE-V2A-5x2-D406",
+    "sha256": "83849b9ef54f101301ac2e719629478158d45bb7d6d9db6b4957a13893a10d22",
+    "bytes": 1937547
+  },
+  {
+    "id": "TRE-V2A-5x2-D408",
+    "sha256": "074f2a48c0fdebd6f9b1a6efc8017186253f2356509ba1abe489fcca3352d359",
+    "bytes": 1943296
+  },
+  {
+    "id": "TRE-V2A-5x2-D410",
+    "sha256": "e255e109f513b0ea550738e84addb1de42d1e9c39e09b6c0346914205a5b5b9e",
+    "bytes": 1937439
+  }
+]

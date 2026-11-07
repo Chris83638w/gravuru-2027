@@ -1,0 +1,1029 @@
+{
+  "schema": "gravuru-catalogue-online-coverage/v1",
+  "generatedAt": "2026-11-07T09:42:02.966Z",
+  "scope": "Read-only comparison of existing pinned supplier manifests, local native preparation report and recorded online approval snapshot. No new import, host check or Shopify write.",
+  "conclusion": {
+    "allClaudeDesignsOnline": false,
+    "nineRemainingBatchesAreThemeBatchesNotAllRemainingMaterials": true,
+    "wording": "Online ist ein Teilbestand. Die übrige Gesamtlieferung umfasst neben neun weiteren Türschild-Themen auch weitere Produktlinien, Materialfamilien und 192 Bestandsstapel."
+  },
+  "provenance": {
+    "deliveryCommit": "86c1ff5f431acfe60d4cff388958112187005550",
+    "catalogueSourceCommit": "3c6051fbbc7904969948950fae12cae2ae663f30",
+    "onlineSnapshotAt": "2026-11-07T09:26:00.240392+00:00",
+    "sourceStandNotClaimedAsCurrentMain": true,
+    "sources": [
+      {
+        "path": "work/gravuru-gesamtbestand-quellen/auftraege/2026-11-06-gesamtbestand/README.md",
+        "sha256": "b7618a5f78490408f40425ceead00a6e19825cfb39fcb0c3a255f1087026f3fd"
+      },
+      {
+        "path": "work/gravuru-gesamtbestand-quellen/auftraege/2026-11-06-gesamtbestand/register.json",
+        "sha256": "aa6b0aa6590c8704d687e33927e1098cb613da185f94325183129511b5358b6f"
+      },
+      {
+        "path": "work/gravuru-gesamtbestand-quellen/auftraege/2026-11-06-gesamtbestand/stapel.json",
+        "sha256": "ad4503fe6af54be6ad0976ae74a023203c02bcec25e8c4579d71f6338f56196f"
+      },
+      {
+        "path": "work/gravuru-gesamtbestand-galerie/docs/reviews/2026-11-06-gesamtbestand/door-batches.json",
+        "sha256": "f16f0fc27b7cccb30f8dd9e939ed0b16e7b2106eb790290510962b606d80cc97"
+      },
+      {
+        "path": "work/gallery-approval-status-20261107T092559Z.json",
+        "sha256": "26c3a3bc131978e43eeeeb9f30a31270ec7fc88b9205f150b9856f3ec78f7c51"
+      }
+    ]
+  },
+  "online": {
+    "snapshotTargetStates": {
+      "unavailable": 101,
+      "unreviewed": 2340,
+      "approved": 109
+    },
+    "materials": [
+      {
+        "material": "Schiefer",
+        "preparedTargets": 377,
+        "unavailable": 101,
+        "unreviewed": 377
+      },
+      {
+        "material": "Edelstahl",
+        "preparedTargets": 788,
+        "unreviewed": 679,
+        "approved": 109
+      },
+      {
+        "material": "Acrylglas Schwarz · 3 mm",
+        "preparedTargets": 642,
+        "unreviewed": 642
+      },
+      {
+        "material": "Acrylglas Anthrazit · 3 mm",
+        "preparedTargets": 642,
+        "unreviewed": 642
+      }
+    ],
+    "preparedTargets": 2449,
+    "unavailableTargets": 101,
+    "approvedTargets": 109,
+    "recordedActivationCounts": {
+      "originals": 462,
+      "editableOriginals": 370,
+      "preparedTargets": 2449,
+      "unavailableTargets": 101,
+      "products": 348,
+      "blanks": 240,
+      "newOriginals": 137
+    },
+    "recordedIncludedSources": {
+      "slateOriginals": 325,
+      "steelPilotOriginals": 28,
+      "doorAndenkenOriginals": 109
+    },
+    "cardCountsEvidence": "Historical activation counts from door-batches.json; fresh 2026-11-07 snapshot independently confirms the 2,449 prepared /101 unavailable target counts and four material variants. This task did not re-fetch all cards.",
+    "approvalBoundary": "109 approvals apply only to the concrete original/material/format/revision targets recorded in the snapshot, not automatically to every format or all catalogue entries.",
+    "historicalReportCaveat": "The old iframe-open field and initial runtime commit in door-batches.json are historical, not a current browser/runtime assertion."
+  },
+  "supplierDelivery": {
+    "registerEntries": 20598,
+    "masterEntries": 9743,
+    "stockEntries": 10855,
+    "stockMasterReferences": 1065,
+    "totalBatches": 219,
+    "masterBatches": 27,
+    "stockBatches": 192,
+    "registeredFamilies": 16,
+    "blanks": 1147,
+    "blankSourceStates": {
+      "geliefert": 73,
+      "offen": 227,
+      "vorbereitet": 847
+    },
+    "masterSourceStates": {
+      "geliefert": 28,
+      "vorbereitet": 6491,
+      "vorbereitet als Gravurfassung, Verfahren klären": 60,
+      "Design vorbereitet, Produkt/Rohling fehlt": 3019,
+      "vorbereitet (Lieferform-2-Prüfung: lieferbar)": 0,
+      "vorbereitet (Lieferform-2-Prüfung: umbenennung)": 0,
+      "vorbereitet (Lieferform-2-Prüfung: umbau)": 0,
+      "vorbereitet (Lieferform-2-Prüfung: ungeprüft)": 0,
+      "offen: Verfahren klären": 0,
+      "offen": 145,
+      "vorhanden": 0,
+      "Verweis auf Master (nicht doppelt geliefert)": 0
+    },
+    "stockSourceStates": {
+      "geliefert": 0,
+      "vorbereitet": 0,
+      "vorbereitet als Gravurfassung, Verfahren klären": 0,
+      "Design vorbereitet, Produkt/Rohling fehlt": 0,
+      "vorbereitet (Lieferform-2-Prüfung: lieferbar)": 5413,
+      "vorbereitet (Lieferform-2-Prüfung: umbenennung)": 2729,
+      "vorbereitet (Lieferform-2-Prüfung: umbau)": 1563,
+      "vorbereitet (Lieferform-2-Prüfung: ungeprüft)": 0,
+      "offen: Verfahren klären": 0,
+      "offen": 85,
+      "vorhanden": 0,
+      "Verweis auf Master (nicht doppelt geliefert)": 1065
+    },
+    "countSemantics": "Register entries include 1,065 stock-to-master references and are not equal to unique online cards or native target counts. No global missing-card number is obtained by subtracting 462 from 20,598.",
+    "sourcePreparedIsNativeImported": false
+  },
+  "ourNativeDoorSignPreparation": {
+    "familyIds": [
+      "steel-door-signs",
+      "acryl-3mm-tuerschilder-schwarz",
+      "acryl-3mm-tuerschilder-anthrazit"
+    ],
+    "note": "These are three door-sign product families with multiple contours; the prepared scope is not restricted to rectangles.",
+    "allTenBatchTotals": {
+      "originals": 2503,
+      "preparedDesigns": 2382,
+      "openDesigns": 121,
+      "preparedTargets": 42832,
+      "openTargets": 2385,
+      "reusedTargets": 146,
+      "reviewProducts": 2639,
+      "packages": 32,
+      "reviewTargets": 4793,
+      "uncertainReplacementOriginals": 15
+    },
+    "fullyOnlineBatchIds": [
+      "1-tuerschilder-edelstahl-acryl--andenkenschilder"
+    ],
+    "partialPilotFromFamilyBatch": {
+      "originals": 28,
+      "reusedSteelTargets": 146
+    },
+    "pendingNine": {
+      "registerEntries": 2394,
+      "alreadyOnlinePilotOriginals": 28,
+      "additionalOriginalIds": 2366,
+      "newPreparedTargets": 40906,
+      "openTargets": 2385,
+      "batches": [
+        {
+          "batchId": "1-tuerschilder-edelstahl-acryl--familienschilder",
+          "originals": 1298,
+          "preparedDesigns": 1256,
+          "openDesigns": 42,
+          "preparedTargets": 22954,
+          "openTargets": 837,
+          "reusedTargets": 146,
+          "reviewProducts": 479,
+          "packages": 5,
+          "reviewTargets": 2642,
+          "uncertainReplacementOriginals": 2,
+          "nativeBlockerCount": 45,
+          "status": "native-package-local-only-new-targets-not-imported-online"
+        },
+        {
+          "batchId": "1-tuerschilder-edelstahl-acryl--hinweisschilder",
+          "originals": 243,
+          "preparedDesigns": 211,
+          "openDesigns": 32,
+          "preparedTargets": 4470,
+          "openTargets": 636,
+          "reusedTargets": 0,
+          "reviewProducts": 240,
+          "packages": 3,
+          "reviewTargets": 396,
+          "uncertainReplacementOriginals": 13,
+          "nativeBlockerCount": 0,
+          "status": "native-package-local-only-new-targets-not-imported-online"
+        },
+        {
+          "batchId": "1-tuerschilder-edelstahl-acryl--hausnummern",
+          "originals": 182,
+          "preparedDesigns": 182,
+          "openDesigns": 0,
+          "preparedTargets": 2793,
+          "openTargets": 0,
+          "reusedTargets": 0,
+          "reviewProducts": 240,
+          "packages": 3,
+          "reviewTargets": 285,
+          "uncertainReplacementOriginals": 0,
+          "nativeBlockerCount": 0,
+          "status": "native-package-local-only-new-targets-not-imported-online"
+        },
+        {
+          "batchId": "1-tuerschilder-edelstahl-acryl--pferdeschilder",
+          "originals": 181,
+          "preparedDesigns": 168,
+          "openDesigns": 13,
+          "preparedTargets": 2802,
+          "openTargets": 246,
+          "reusedTargets": 0,
+          "reviewProducts": 240,
+          "packages": 3,
+          "reviewTargets": 252,
+          "uncertainReplacementOriginals": 0,
+          "nativeBlockerCount": 0,
+          "status": "native-package-local-only-new-targets-not-imported-online"
+        },
+        {
+          "batchId": "1-tuerschilder-edelstahl-acryl--hochzeitsschilder",
+          "originals": 148,
+          "preparedDesigns": 148,
+          "openDesigns": 0,
+          "preparedTargets": 2616,
+          "openTargets": 0,
+          "reusedTargets": 0,
+          "reviewProducts": 240,
+          "packages": 3,
+          "reviewTargets": 387,
+          "uncertainReplacementOriginals": 0,
+          "nativeBlockerCount": 0,
+          "status": "native-package-local-only-new-targets-not-imported-online"
+        },
+        {
+          "batchId": "1-tuerschilder-edelstahl-acryl--firmenschilder",
+          "originals": 107,
+          "preparedDesigns": 94,
+          "openDesigns": 13,
+          "preparedTargets": 1584,
+          "openTargets": 258,
+          "reusedTargets": 0,
+          "reviewProducts": 240,
+          "packages": 3,
+          "reviewTargets": 195,
+          "uncertainReplacementOriginals": 0,
+          "nativeBlockerCount": 0,
+          "status": "native-package-local-only-new-targets-not-imported-online"
+        },
+        {
+          "batchId": "1-tuerschilder-edelstahl-acryl--willkommensschilder",
+          "originals": 99,
+          "preparedDesigns": 96,
+          "openDesigns": 3,
+          "preparedTargets": 1650,
+          "openTargets": 63,
+          "reusedTargets": 0,
+          "reviewProducts": 240,
+          "packages": 3,
+          "reviewTargets": 168,
+          "uncertainReplacementOriginals": 0,
+          "nativeBlockerCount": 0,
+          "status": "native-package-local-only-new-targets-not-imported-online"
+        },
+        {
+          "batchId": "1-tuerschilder-edelstahl-acryl--hundeschilder",
+          "originals": 68,
+          "preparedDesigns": 50,
+          "openDesigns": 18,
+          "preparedTargets": 897,
+          "openTargets": 345,
+          "reusedTargets": 0,
+          "reviewProducts": 240,
+          "packages": 3,
+          "reviewTargets": 63,
+          "uncertainReplacementOriginals": 0,
+          "nativeBlockerCount": 0,
+          "status": "native-package-local-only-new-targets-not-imported-online"
+        },
+        {
+          "batchId": "1-tuerschilder-edelstahl-acryl--katzenschilder",
+          "originals": 68,
+          "preparedDesigns": 68,
+          "openDesigns": 0,
+          "preparedTargets": 1140,
+          "openTargets": 0,
+          "reusedTargets": 0,
+          "reviewProducts": 240,
+          "packages": 3,
+          "reviewTargets": 189,
+          "uncertainReplacementOriginals": 0,
+          "nativeBlockerCount": 0,
+          "status": "native-package-local-only-new-targets-not-imported-online"
+        }
+      ]
+    },
+    "blockers": {
+      "supplierOpenOriginals": 121,
+      "totalOpenTargets": 2385,
+      "additionalNativeTargetBlockers": 45,
+      "additionalNativeBlockerKinds": {
+        "nativeFontSizeLimit": 15,
+        "objectOutsideOvalOrContour": 30
+      },
+      "additionalNativeBlockersAffectOnly": "1-tuerschilder-edelstahl-acryl--familienschilder",
+      "nonBlockingReviewTargets": 4793,
+      "originalsWithExplicitUncertainReplacementWarning": 15,
+      "handling": "Originale unverändert erhalten; keine automatische Größenkorrektur, Motivänderung oder Freigabe. Nicht blockierende Prüfhilfen bleiben sichtbar.",
+      "acrylicCategoryCarrier": "Für Hausnummern, Pferde, Katzen und Willkommen enthält die Acryl-Linie keine eigene Unterkategorie. Galerie-Unterkategorien und Design-Themen bleiben erhalten; private Produktträger verwenden die vorhandene neutrale Kategorie namensschilder. Spätere Shopzuordnung bleibt gesondert.",
+      "d412Clarification": {
+        "originalId": "TRE-V2A-8x3,5-D412",
+        "issue": "Hauchdünne Kontur, kein Motivüberstand.",
+        "maximumObservedContourMm": 0.0393,
+        "minimumContourMm": 0.3,
+        "previousIncorrectComment": "https://github.com/Chris83638w/gravuru-2027/issues/85#issuecomment-6691208088",
+        "codeAndUiAlreadyCorrect": true,
+        "originalModified": false
+      }
+    },
+    "storageEvidence": {
+      "products": 2639,
+      "nativeJsonBytes": 20468558785,
+      "nativeJsonMiB": 19520.34,
+      "uniqueUsedFonts": 58,
+      "largestDocumentBytes": 22391725,
+      "method": "UTF-8-Bytes von minifiziertem nativem Dokument-JSON mit exakt wieder eingesetzten Schriftressourcen; unkomprimiert.",
+      "notMeasured": [
+        "Tatsächlicher RAM-/Heap-/RSS-Verbrauch",
+        "SQLite-Dateigröße, Mehrfachhaltung und WAL"
+      ],
+      "implication": "Die gemessene Datenmenge ist keine RAM-Messung. Streaming-Import und begrenzte Dokumentauflösung sind separat durch Root/onlinezugang implementiert und geprüft; diese Übergabe wiederholt keinen Runtimecheck. Datenbank-Fontduplikation und die vollständige HTML-Galerie bleiben Skalierungspunkte; vor dem gesamten Onlineausbau Pagination bzw. gezieltes Nachladen berücksichtigen."
+    }
+  },
+  "beyondOurTenDoorSignBatches": {
+    "remainingMasterBatches": 17,
+    "remainingMasterEntries": 7240,
+    "stockBatches": 192,
+    "stockEntries": 10855,
+    "totalBatchesWithoutNativeBatchAcceptanceInThisWorkstream": 209,
+    "lines": [
+      {
+        "lineId": "tuerschilder-edelstahl",
+        "sourceMaterial": "Edelstahl",
+        "registerEntries": 960,
+        "batchIds": [
+          "2-tuerschilder-edelstahl--hundeschilder",
+          "2-tuerschilder-edelstahl--katzenschilder"
+        ],
+        "familyIds": [
+          "steel-door-signs"
+        ],
+        "nativePreparationEvidence": "not-covered-by-the-existing-ten-batch-native-report",
+        "onlineBatchImportEvidence": "none-in-the-recorded-online-scope",
+        "individualExistingSlateOverlap": "not-assessed-by-this-summary"
+      },
+      {
+        "lineId": "grabstecker-edelstahl",
+        "sourceMaterial": "Edelstahl",
+        "registerEntries": 2680,
+        "batchIds": [
+          "3-grabstecker-edelstahl--andenkenschilder"
+        ],
+        "familyIds": [
+          "grabstecker-edelstahl"
+        ],
+        "nativePreparationEvidence": "not-covered-by-the-existing-ten-batch-native-report",
+        "onlineBatchImportEvidence": "none-in-the-recorded-online-scope",
+        "individualExistingSlateOverlap": "not-assessed-by-this-summary"
+      },
+      {
+        "lineId": "acryl-abstandshalter",
+        "sourceMaterial": "Acryl",
+        "registerEntries": 286,
+        "batchIds": [
+          "4-acryl-abstandshalter--familienschilder",
+          "4-acryl-abstandshalter--hausnummern"
+        ],
+        "familyIds": [
+          "acryl-aa-abstandshalter",
+          "acryl-as-abstandshalter",
+          "acryl-ss-abstandshalter"
+        ],
+        "nativePreparationEvidence": "not-covered-by-the-existing-ten-batch-native-report",
+        "onlineBatchImportEvidence": "none-in-the-recorded-online-scope",
+        "individualExistingSlateOverlap": "not-assessed-by-this-summary"
+      },
+      {
+        "lineId": "gedenktafeln-acryl",
+        "sourceMaterial": "Acryl",
+        "registerEntries": 107,
+        "batchIds": [
+          "5-gedenktafeln-acryl--gedenktafeln",
+          "5-gedenktafeln-acryl--tiergedenktafeln"
+        ],
+        "familyIds": [
+          "gedenktafel-ae-acryl-anthrazit",
+          "gedenktafel-ae-acryl-schwarz"
+        ],
+        "nativePreparationEvidence": "not-covered-by-the-existing-ten-batch-native-report",
+        "onlineBatchImportEvidence": "none-in-the-recorded-online-scope",
+        "individualExistingSlateOverlap": "not-assessed-by-this-summary"
+      },
+      {
+        "lineId": "gedenktafeln-schiefer-22x14",
+        "sourceMaterial": "Schiefer",
+        "registerEntries": 104,
+        "batchIds": [
+          "6-gedenktafeln-schiefer-22x14--monogramme",
+          "6-gedenktafeln-schiefer-22x14--tiergedenktafeln"
+        ],
+        "familyIds": [
+          "gedenktafel-22x14-schiefer-natur"
+        ],
+        "nativePreparationEvidence": "not-covered-by-the-existing-ten-batch-native-report",
+        "onlineBatchImportEvidence": "none-in-the-recorded-online-scope",
+        "individualExistingSlateOverlap": "unknown-not-globally-deduplicated"
+      },
+      {
+        "lineId": "gedenktafeln-schiefer-30x20",
+        "sourceMaterial": "Schiefer",
+        "registerEntries": 82,
+        "batchIds": [
+          "7-gedenktafeln-schiefer-30x20--monogramme"
+        ],
+        "familyIds": [
+          "gedenktafel-30x20-schiefer-natur",
+          "gedenktafel-30x20-schiefer-premium"
+        ],
+        "nativePreparationEvidence": "not-covered-by-the-existing-ten-batch-native-report",
+        "onlineBatchImportEvidence": "none-in-the-recorded-online-scope",
+        "individualExistingSlateOverlap": "unknown-not-globally-deduplicated"
+      },
+      {
+        "lineId": "ohne-zielfamilie",
+        "sourceMaterial": "offen",
+        "registerEntries": 3021,
+        "batchIds": [
+          "9-ohne-zielfamilie--tiergedenktafeln",
+          "9-ohne-zielfamilie--gedenktafeln",
+          "9-ohne-zielfamilie--familienschilder",
+          "9-ohne-zielfamilie--willkommensschilder",
+          "9-ohne-zielfamilie--namensschilder",
+          "9-ohne-zielfamilie--geschenkartikel",
+          "9-ohne-zielfamilie--hochzeitsschilder"
+        ],
+        "familyIds": [],
+        "nativePreparationEvidence": "not-covered-by-the-existing-ten-batch-native-report",
+        "onlineBatchImportEvidence": "none-in-the-recorded-online-scope",
+        "individualExistingSlateOverlap": "not-assessed-by-this-summary"
+      }
+    ],
+    "note": "Claude has prepared many of these source designs and previews. This status concerns native-gallery preparation/import acceptance in our workstream; it does not claim that the supplier did no preparation."
+  },
+  "catalogueFamilies": [
+    {
+      "id": "acryl-3mm-tuerschilder-anthrazit",
+      "sourceFile": "familien/acryl/acryl-3mm-tuerschilder-anthrazit.json",
+      "sourceMaterial": "Acrylglas anthrazit",
+      "sourceDesignTargets": 2503,
+      "sizeCount": 80,
+      "blankCount": 80,
+      "sourceState": "vorbereitet",
+      "sourceReasons": [],
+      "sourceBlankStates": {
+        "vorbereitet": 80
+      },
+      "ourTenBatchFamily": true,
+      "individualIdCoverageOutsideTenBatchesKnown": false
+    },
+    {
+      "id": "acryl-3mm-tuerschilder-schwarz",
+      "sourceFile": "familien/acryl/acryl-3mm-tuerschilder-schwarz.json",
+      "sourceMaterial": "Acrylglas schwarz",
+      "sourceDesignTargets": 2503,
+      "sizeCount": 80,
+      "blankCount": 80,
+      "sourceState": "vorbereitet",
+      "sourceReasons": [],
+      "sourceBlankStates": {
+        "vorbereitet": 80
+      },
+      "ourTenBatchFamily": true,
+      "individualIdCoverageOutsideTenBatchesKnown": false
+    },
+    {
+      "id": "acryl-aa-abstandshalter",
+      "sourceFile": "familien/acryl/acryl-aa-abstandshalter.json",
+      "sourceMaterial": "Acrylglas anthrazit",
+      "sourceDesignTargets": 286,
+      "sizeCount": 54,
+      "blankCount": 54,
+      "sourceState": "offen",
+      "sourceReasons": [
+        "54 von 54 Rohlingen ohne Zeichnung (keine Kontur-SVG im Katalog)",
+        "54 Rohlinge offen"
+      ],
+      "sourceBlankStates": {
+        "offen": 54
+      },
+      "ourTenBatchFamily": false,
+      "individualIdCoverageOutsideTenBatchesKnown": false
+    },
+    {
+      "id": "acryl-as-abstandshalter",
+      "sourceFile": "familien/acryl/acryl-as-abstandshalter.json",
+      "sourceMaterial": "Acrylglas schwarz",
+      "sourceDesignTargets": 286,
+      "sizeCount": 54,
+      "blankCount": 54,
+      "sourceState": "offen",
+      "sourceReasons": [
+        "54 von 54 Rohlingen ohne Zeichnung (keine Kontur-SVG im Katalog)",
+        "54 Rohlinge offen"
+      ],
+      "sourceBlankStates": {
+        "offen": 54
+      },
+      "ourTenBatchFamily": false,
+      "individualIdCoverageOutsideTenBatchesKnown": false
+    },
+    {
+      "id": "acryl-ss-abstandshalter",
+      "sourceFile": "familien/acryl/acryl-ss-abstandshalter.json",
+      "sourceMaterial": "Acrylglas satiniert, Front",
+      "sourceDesignTargets": 286,
+      "sizeCount": 54,
+      "blankCount": 54,
+      "sourceState": "offen",
+      "sourceReasons": [
+        "54 von 54 Rohlingen ohne Zeichnung (keine Kontur-SVG im Katalog)",
+        "54 Rohlinge offen"
+      ],
+      "sourceBlankStates": {
+        "offen": 54
+      },
+      "ourTenBatchFamily": false,
+      "individualIdCoverageOutsideTenBatchesKnown": false
+    },
+    {
+      "id": "gedenktafel-22x14-schiefer-hunde-2027",
+      "sourceFile": "familien/schiefer/gedenktafel-22x14-schiefer-hunde-2027.json",
+      "sourceMaterial": "Naturschiefer, natürliche Bruchkante, helle Gravur",
+      "sourceDesignTargets": 0,
+      "sizeCount": 1,
+      "blankCount": 1,
+      "sourceState": "offen",
+      "sourceReasons": [
+        "keine Designs mit dieser Zielfamilie (inventar.json)",
+        "1 von 1 Rohlingen ohne Zeichnung (keine Kontur-SVG im Katalog)",
+        "1 Rohlinge offen"
+      ],
+      "sourceBlankStates": {
+        "offen": 1
+      },
+      "ourTenBatchFamily": false,
+      "individualIdCoverageOutsideTenBatchesKnown": false
+    },
+    {
+      "id": "gedenktafel-22x14-schiefer-natur",
+      "sourceFile": "familien/schiefer/gedenktafel-22x14-schiefer-natur.json",
+      "sourceMaterial": "Naturschiefer, natürliche Bruchkante, helle Gravur",
+      "sourceDesignTargets": 104,
+      "sizeCount": 1,
+      "blankCount": 1,
+      "sourceState": "offen",
+      "sourceReasons": [
+        "1 von 1 Rohlingen ohne Zeichnung (keine Kontur-SVG im Katalog)",
+        "1 Rohlinge offen"
+      ],
+      "sourceBlankStates": {
+        "offen": 1
+      },
+      "ourTenBatchFamily": false,
+      "individualIdCoverageOutsideTenBatchesKnown": false
+    },
+    {
+      "id": "gedenktafel-30x20-acryl-anthrazit",
+      "sourceFile": "familien/acryl/gedenktafel-30x20-acryl-anthrazit.json",
+      "sourceMaterial": "Acrylglas anthrazit",
+      "sourceDesignTargets": 0,
+      "sizeCount": 1,
+      "blankCount": 1,
+      "sourceState": "offen",
+      "sourceReasons": [
+        "keine Designs mit dieser Zielfamilie (inventar.json)",
+        "1 von 1 Rohlingen ohne Zeichnung (keine Kontur-SVG im Katalog)",
+        "1 Rohlinge offen"
+      ],
+      "sourceBlankStates": {
+        "offen": 1
+      },
+      "ourTenBatchFamily": false,
+      "individualIdCoverageOutsideTenBatchesKnown": false
+    },
+    {
+      "id": "gedenktafel-30x20-acryl-schwarz",
+      "sourceFile": "familien/acryl/gedenktafel-30x20-acryl-schwarz.json",
+      "sourceMaterial": "Acrylglas schwarz",
+      "sourceDesignTargets": 0,
+      "sizeCount": 1,
+      "blankCount": 1,
+      "sourceState": "offen",
+      "sourceReasons": [
+        "keine Designs mit dieser Zielfamilie (inventar.json)",
+        "1 von 1 Rohlingen ohne Zeichnung (keine Kontur-SVG im Katalog)",
+        "1 Rohlinge offen"
+      ],
+      "sourceBlankStates": {
+        "offen": 1
+      },
+      "ourTenBatchFamily": false,
+      "individualIdCoverageOutsideTenBatchesKnown": false
+    },
+    {
+      "id": "gedenktafel-30x20-edelstahl",
+      "sourceFile": "familien/edelstahl/gedenktafel-30x20-edelstahl.json",
+      "sourceMaterial": "Edelstahl gebürstet",
+      "sourceDesignTargets": 0,
+      "sizeCount": 1,
+      "blankCount": 1,
+      "sourceState": "offen",
+      "sourceReasons": [
+        "keine Designs mit dieser Zielfamilie (inventar.json)",
+        "1 von 1 Rohlingen ohne Zeichnung (keine Kontur-SVG im Katalog)",
+        "1 Rohlinge offen"
+      ],
+      "sourceBlankStates": {
+        "offen": 1
+      },
+      "ourTenBatchFamily": false,
+      "individualIdCoverageOutsideTenBatchesKnown": false
+    },
+    {
+      "id": "gedenktafel-30x20-schiefer-natur",
+      "sourceFile": "familien/schiefer/gedenktafel-30x20-schiefer-natur.json",
+      "sourceMaterial": "Naturschiefer, natürliche Bruchkante",
+      "sourceDesignTargets": 82,
+      "sizeCount": 1,
+      "blankCount": 1,
+      "sourceState": "offen",
+      "sourceReasons": [
+        "1 von 1 Rohlingen ohne Zeichnung (keine Kontur-SVG im Katalog)",
+        "1 Rohlinge offen"
+      ],
+      "sourceBlankStates": {
+        "offen": 1
+      },
+      "ourTenBatchFamily": false,
+      "individualIdCoverageOutsideTenBatchesKnown": false
+    },
+    {
+      "id": "gedenktafel-30x20-schiefer-premium",
+      "sourceFile": "familien/schiefer/gedenktafel-30x20-schiefer-premium.json",
+      "sourceMaterial": "Premium-Schiefer",
+      "sourceDesignTargets": 82,
+      "sizeCount": 1,
+      "blankCount": 1,
+      "sourceState": "offen",
+      "sourceReasons": [
+        "1 von 1 Rohlingen ohne Zeichnung (keine Kontur-SVG im Katalog)",
+        "1 Rohlinge offen"
+      ],
+      "sourceBlankStates": {
+        "offen": 1
+      },
+      "ourTenBatchFamily": false,
+      "individualIdCoverageOutsideTenBatchesKnown": false
+    },
+    {
+      "id": "gedenktafel-ae-acryl-anthrazit",
+      "sourceFile": "familien/acryl/gedenktafel-ae-acryl-anthrazit.json",
+      "sourceMaterial": "Acrylglas anthrazit",
+      "sourceDesignTargets": 107,
+      "sizeCount": 8,
+      "blankCount": 8,
+      "sourceState": "offen",
+      "sourceReasons": [
+        "8 von 8 Rohlingen ohne Zeichnung (keine Kontur-SVG im Katalog)",
+        "8 Rohlinge offen"
+      ],
+      "sourceBlankStates": {
+        "offen": 8
+      },
+      "ourTenBatchFamily": false,
+      "individualIdCoverageOutsideTenBatchesKnown": false
+    },
+    {
+      "id": "gedenktafel-ae-acryl-schwarz",
+      "sourceFile": "familien/acryl/gedenktafel-ae-acryl-schwarz.json",
+      "sourceMaterial": "Acrylglas schwarz",
+      "sourceDesignTargets": 107,
+      "sizeCount": 8,
+      "blankCount": 8,
+      "sourceState": "offen",
+      "sourceReasons": [
+        "8 von 8 Rohlingen ohne Zeichnung (keine Kontur-SVG im Katalog)",
+        "8 Rohlinge offen"
+      ],
+      "sourceBlankStates": {
+        "offen": 8
+      },
+      "ourTenBatchFamily": false,
+      "individualIdCoverageOutsideTenBatchesKnown": false
+    },
+    {
+      "id": "grabstecker-edelstahl",
+      "sourceFile": "familien/edelstahl/grabstecker-edelstahl.json",
+      "sourceMaterial": "Edelstahl",
+      "sourceDesignTargets": 2680,
+      "sizeCount": 33,
+      "blankCount": 33,
+      "sourceState": "vorbereitet",
+      "sourceReasons": [],
+      "sourceBlankStates": {
+        "vorbereitet": 33
+      },
+      "ourTenBatchFamily": false,
+      "individualIdCoverageOutsideTenBatchesKnown": false
+    },
+    {
+      "id": "steel-door-signs",
+      "sourceFile": "familien/edelstahl/steel-door-signs.json",
+      "sourceMaterial": "Edelstahl gebürstet",
+      "sourceDesignTargets": 3463,
+      "sizeCount": 80,
+      "blankCount": 80,
+      "sourceState": "vorbereitet",
+      "sourceReasons": [],
+      "sourceBlankStates": {
+        "geliefert": 73,
+        "vorbereitet": 7
+      },
+      "ourTenBatchFamily": true,
+      "individualIdCoverageOutsideTenBatchesKnown": false
+    }
+  ],
+  "supplierMaterials": [
+    {
+      "material": "Acryl",
+      "registerEntries": 393,
+      "sourceStatusCounts": {
+        "vorbereitet": 393
+      },
+      "onlineMaterialLabelPresent": "partial-material-name-only",
+      "individualSourceIdOverlapKnown": false
+    },
+    {
+      "material": "Bestand: Acryl",
+      "registerEntries": 3469,
+      "sourceStatusCounts": {
+        "vorbereitet (Lieferform-2-Prüfung: lieferbar)": 2089,
+        "vorbereitet (Lieferform-2-Prüfung: umbenennung)": 955,
+        "vorbereitet (Lieferform-2-Prüfung: umbau)": 424,
+        "offen": 1
+      },
+      "onlineMaterialLabelPresent": "partial-material-name-only",
+      "individualSourceIdOverlapKnown": false
+    },
+    {
+      "material": "Bestand: Acryl + Edelstahl",
+      "registerEntries": 286,
+      "sourceStatusCounts": {
+        "vorbereitet (Lieferform-2-Prüfung: lieferbar)": 69,
+        "vorbereitet (Lieferform-2-Prüfung: umbenennung)": 211,
+        "vorbereitet (Lieferform-2-Prüfung: umbau)": 6
+      },
+      "onlineMaterialLabelPresent": "partial-material-name-only",
+      "individualSourceIdOverlapKnown": false
+    },
+    {
+      "material": "Bestand: Alu-Dibond",
+      "registerEntries": 134,
+      "sourceStatusCounts": {
+        "vorbereitet (Lieferform-2-Prüfung: lieferbar)": 105,
+        "vorbereitet (Lieferform-2-Prüfung: umbenennung)": 1,
+        "vorbereitet (Lieferform-2-Prüfung: umbau)": 28
+      },
+      "onlineMaterialLabelPresent": "not-in-online-material-list",
+      "individualSourceIdOverlapKnown": false
+    },
+    {
+      "material": "Bestand: Aludibond",
+      "registerEntries": 15,
+      "sourceStatusCounts": {
+        "vorbereitet (Lieferform-2-Prüfung: umbau)": 15
+      },
+      "onlineMaterialLabelPresent": "not-in-online-material-list",
+      "individualSourceIdOverlapKnown": false
+    },
+    {
+      "material": "Bestand: Edelstahl",
+      "registerEntries": 400,
+      "sourceStatusCounts": {
+        "vorbereitet (Lieferform-2-Prüfung: lieferbar)": 256,
+        "vorbereitet (Lieferform-2-Prüfung: umbenennung)": 113,
+        "vorbereitet (Lieferform-2-Prüfung: umbau)": 31
+      },
+      "onlineMaterialLabelPresent": "partial-material-name-only",
+      "individualSourceIdOverlapKnown": false
+    },
+    {
+      "material": "Bestand: Granit",
+      "registerEntries": 72,
+      "sourceStatusCounts": {
+        "vorbereitet (Lieferform-2-Prüfung: lieferbar)": 31,
+        "vorbereitet (Lieferform-2-Prüfung: umbau)": 41
+      },
+      "onlineMaterialLabelPresent": "not-in-online-material-list",
+      "individualSourceIdOverlapKnown": false
+    },
+    {
+      "material": "Bestand: Holz",
+      "registerEntries": 1188,
+      "sourceStatusCounts": {
+        "vorbereitet (Lieferform-2-Prüfung: lieferbar)": 485,
+        "vorbereitet (Lieferform-2-Prüfung: umbenennung)": 564,
+        "vorbereitet (Lieferform-2-Prüfung: umbau)": 139
+      },
+      "onlineMaterialLabelPresent": "not-in-online-material-list",
+      "individualSourceIdOverlapKnown": false
+    },
+    {
+      "material": "Bestand: Kunststoff",
+      "registerEntries": 596,
+      "sourceStatusCounts": {
+        "vorbereitet (Lieferform-2-Prüfung: lieferbar)": 594,
+        "vorbereitet (Lieferform-2-Prüfung: umbau)": 2
+      },
+      "onlineMaterialLabelPresent": "not-in-online-material-list",
+      "individualSourceIdOverlapKnown": false
+    },
+    {
+      "material": "Bestand: Leder",
+      "registerEntries": 507,
+      "sourceStatusCounts": {
+        "vorbereitet (Lieferform-2-Prüfung: lieferbar)": 65,
+        "vorbereitet (Lieferform-2-Prüfung: umbenennung)": 427,
+        "vorbereitet (Lieferform-2-Prüfung: umbau)": 15
+      },
+      "onlineMaterialLabelPresent": "not-in-online-material-list",
+      "individualSourceIdOverlapKnown": false
+    },
+    {
+      "material": "Bestand: Leinwand",
+      "registerEntries": 125,
+      "sourceStatusCounts": {
+        "vorbereitet (Lieferform-2-Prüfung: lieferbar)": 74,
+        "vorbereitet (Lieferform-2-Prüfung: umbenennung)": 5,
+        "vorbereitet (Lieferform-2-Prüfung: umbau)": 46
+      },
+      "onlineMaterialLabelPresent": "not-in-online-material-list",
+      "individualSourceIdOverlapKnown": false
+    },
+    {
+      "material": "Bestand: Marmor",
+      "registerEntries": 64,
+      "sourceStatusCounts": {
+        "vorbereitet (Lieferform-2-Prüfung: lieferbar)": 32,
+        "vorbereitet (Lieferform-2-Prüfung: umbau)": 32
+      },
+      "onlineMaterialLabelPresent": "not-in-online-material-list",
+      "individualSourceIdOverlapKnown": false
+    },
+    {
+      "material": "Bestand: Material offen",
+      "registerEntries": 3524,
+      "sourceStatusCounts": {
+        "vorbereitet (Lieferform-2-Prüfung: lieferbar)": 1262,
+        "vorbereitet (Lieferform-2-Prüfung: umbenennung)": 397,
+        "vorbereitet (Lieferform-2-Prüfung: umbau)": 716,
+        "offen": 84,
+        "Verweis auf Master (nicht doppelt geliefert)": 1065
+      },
+      "onlineMaterialLabelPresent": "not-in-online-material-list",
+      "individualSourceIdOverlapKnown": false
+    },
+    {
+      "material": "Bestand: Schiefer",
+      "registerEntries": 472,
+      "sourceStatusCounts": {
+        "vorbereitet (Lieferform-2-Prüfung: lieferbar)": 351,
+        "vorbereitet (Lieferform-2-Prüfung: umbenennung)": 56,
+        "vorbereitet (Lieferform-2-Prüfung: umbau)": 65
+      },
+      "onlineMaterialLabelPresent": "partial-material-name-only",
+      "individualSourceIdOverlapKnown": false
+    },
+    {
+      "material": "Bestand: Stein",
+      "registerEntries": 3,
+      "sourceStatusCounts": {
+        "vorbereitet (Lieferform-2-Prüfung: umbau)": 3
+      },
+      "onlineMaterialLabelPresent": "not-in-online-material-list",
+      "individualSourceIdOverlapKnown": false
+    },
+    {
+      "material": "Edelstahl",
+      "registerEntries": 3640,
+      "sourceStatusCounts": {
+        "vorbereitet": 3640
+      },
+      "onlineMaterialLabelPresent": "partial-material-name-only",
+      "individualSourceIdOverlapKnown": false
+    },
+    {
+      "material": "Edelstahl + Acryl",
+      "registerEntries": 2503,
+      "sourceStatusCounts": {
+        "geliefert": 28,
+        "vorbereitet": 2354,
+        "vorbereitet als Gravurfassung, Verfahren klären": 60,
+        "offen": 61
+      },
+      "onlineMaterialLabelPresent": "partial-material-name-only",
+      "individualSourceIdOverlapKnown": false
+    },
+    {
+      "material": "Schiefer",
+      "registerEntries": 186,
+      "sourceStatusCounts": {
+        "vorbereitet": 104,
+        "offen": 82
+      },
+      "onlineMaterialLabelPresent": "partial-material-name-only",
+      "individualSourceIdOverlapKnown": false
+    },
+    {
+      "material": "ohne Zielfamilie (Holz)",
+      "registerEntries": 104,
+      "sourceStatusCounts": {
+        "Design vorbereitet, Produkt/Rohling fehlt": 104
+      },
+      "onlineMaterialLabelPresent": "not-in-online-material-list",
+      "individualSourceIdOverlapKnown": false
+    },
+    {
+      "material": "ohne Zielfamilie (Schiefer)",
+      "registerEntries": 2917,
+      "sourceStatusCounts": {
+        "Design vorbereitet, Produkt/Rohling fehlt": 2915,
+        "offen": 2
+      },
+      "onlineMaterialLabelPresent": "not-in-online-material-list",
+      "individualSourceIdOverlapKnown": false
+    }
+  ],
+  "supplierBlockersAndClarifications": {
+    "sourceMasterHardOpen": 145,
+    "sourceStockHardOpen": 85,
+    "masterWithoutTargetFamily": 3021,
+    "designPreparedButProductMissing": 3019,
+    "stockRebuildRequired": 1563,
+    "photoDesignsProcedureToClarify": 1565,
+    "formerUvEngravingProcedureToClarify": 61,
+    "uncertainFontReplacementRules": 129,
+    "uncertainFontCountIsNotDesignCount": true,
+    "examples": [
+      {
+        "kind": "missing-source-material-thickness",
+        "count": 82,
+        "note": "Pinned supplier family is null. User decision 4.52 already records Premium 12mm; this is a source-data repair, not automatically a new user question."
+      },
+      {
+        "kind": "supplier-render-fit-open",
+        "count": 14,
+        "note": "Supplier classification; hole overlaps must not be converted into a new blanket block because current decisions allow artwork over drilling holes."
+      },
+      {
+        "kind": "missing-original-stock-evidence",
+        "count": 47
+      },
+      {
+        "kind": "missing-font",
+        "count": 2,
+        "ids": [
+          "TQ-V2A-8x8-D14",
+          "TO-V2A-9x6-D38"
+        ],
+        "note": "Decision5.26 already authorizes appropriate replacement. No replacement/rebuild performed in this coverage audit."
+      },
+      {
+        "kind": "stock-missing-svg",
+        "count": 83
+      },
+      {
+        "kind": "stock-without-layers",
+        "count": 2
+      }
+    ],
+    "noGlobalVisualApprovalInferred": true,
+    "dryRunZeroConflicts": "Supplier dry-runs used empty targets. They do not prove conflict-free import into the current edited gallery."
+  },
+  "knownUnknowns": {
+    "expectedSubcategoryCoverageKnown": false,
+    "expectedSubcategorySourceStatus": "Soll-Liste fehlt noch (Chris liefert die endgültigen Unterkategorien)",
+    "globalUniqueIdOverlapWithExistingSlateKnown": false,
+    "allRemainingSourceEntriesNativelyEditableVerified": false,
+    "fullRemainingImportRuntimeAndMemoryMeasured": false,
+    "allNativeTargetsVisuallyApproved": false,
+    "otherMaterialsAbsentFromOnlineSnapshot": [
+      "Holz",
+      "Leder",
+      "Kunststoff",
+      "Alu-Dibond",
+      "Granit",
+      "Marmor",
+      "Leinwand",
+      "Stein"
+    ],
+    "note": "Missing from the online material list means not present in this recorded private gallery, not absent from Claude catalogue delivery or every other project."
+  },
+  "mutations": {
+    "catalogue": false,
+    "databases": false,
+    "host": false,
+    "shopify": false,
+    "approvalEvents": false,
+    "reportFileOnly": true
+  }
+}

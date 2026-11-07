@@ -1,0 +1,60 @@
+{
+  "schema": "gravuru-pilot-evidence-index/v1",
+  "files": [
+    {
+      "file": "catalogue-online-coverage.json",
+      "bytes": 37297,
+      "sha256": "70043c04f79fa9b1f8554a73311b9231be4eb7932788471c6b163c121f37bf19"
+    },
+    {
+      "file": "final-source-check.json",
+      "bytes": 311,
+      "sha256": "23d83304b034010e6d5a422dcfd15510f58e0b6eff1abcd5ceac17363fd0ec2f"
+    },
+    {
+      "file": "native-import-proof.json",
+      "bytes": 1129,
+      "sha256": "1924c7568853640df4e23d5a2f4c3d721c3aefbc019d9e9d75fba0fff1a582d9"
+    },
+    {
+      "file": "native-shop-bindings.json",
+      "bytes": 3926,
+      "sha256": "d1a979ec1ddc3a05e6af12e58582b51fac46014a6f380d9eb13cb3aeed2dbfbd"
+    },
+    {
+      "file": "pilot-operations.graphql",
+      "bytes": 982,
+      "sha256": "be6b401e8d593b68abc0bae3dce24ce8415f063d2a937ffee7d73d38957dbf52"
+    },
+    {
+      "file": "preview-manifest.json",
+      "bytes": 571,
+      "sha256": "38b7d5451ccbdc6296b8db0afb385a3d04e9166ff0613e0b4d69ea374a2389af"
+    },
+    {
+      "file": "private-konfi-readback-detail.png",
+      "bytes": 36540,
+      "sha256": "7607641af6677b2453221e5e4f66c96ac423b2fcee92fbd08c373dfd303ca38a"
+    },
+    {
+      "file": "private-konfi-readback.png",
+      "bytes": 144317,
+      "sha256": "6bd0e35a6ef2907f24b50adc19761e729f80b9cf646af43f5434f502cd92d9bd"
+    },
+    {
+      "file": "private-konfi-save.png",
+      "bytes": 28910,
+      "sha256": "4e540bb2e2c44a5feb0c5e4b7e97c3b5d050a7fcfb07cbc170197b107a179292"
+    },
+    {
+      "file": "shopify-image-references.json",
+      "bytes": 2660,
+      "sha256": "619509f356c1570f8f6ee36b3abc333c73dc9fa08b75349a468ccf8c5ec2eaeb"
+    },
+    {
+      "file": "shopify-readback.json",
+      "bytes": 4310,
+      "sha256": "4bed9d9bd93c7819c0b6cee53422245461d8c78f9e2ed6bae5277451c8de966f"
+    }
+  ]
+}

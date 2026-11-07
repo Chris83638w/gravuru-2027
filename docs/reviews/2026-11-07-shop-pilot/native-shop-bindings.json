@@ -1,0 +1,119 @@
+{
+  "schema": "gravuru-approved-steel-shop-pilot-reconcile/v1",
+  "action": "reconcile",
+  "scope": "draft-only",
+  "published": false,
+  "productionReady": false,
+  "shopifyWrites": 0,
+  "networkRequests": 0,
+  "productId": "cfg_95f1e9be-0a63-4168-8cbe-d19b789546a5",
+  "revision": 1,
+  "planSha256": "6c48e87ce620d0661d01cbe2c218f9ef247764af68310bb710ff675a0d6adbb7",
+  "requestSha256": "c255f285d0a82761a49d23b02f900efbafb53788786d6bd8b9d36bc32689596e",
+  "evidence": {
+    "source": "operator-supplied-shopify-connector-readback",
+    "checkedAtUtc": "2026-11-07T09:59:17.868Z",
+    "sha256": "3590f11aaaf48a3c2c260452c2f26536082dad91be527303dc346d0b658ebd99",
+    "shopId": "gid://shopify/Shop/92055503228",
+    "shopDomain": "gravuru-design.myshopify.com",
+    "lookupQuery": "handle:gravuru-5b8d6aaea0f2451fc67bd8a62937d92e789a970ed0cf0c239db5af420e07a9af AND status:active,draft,archived,unlisted"
+  },
+  "transfer": {
+    "id": "transfer_36bf4e4b-e1da-48eb-8a12-5dea6fa116cc",
+    "state": "completed",
+    "sourceSha256": "ce2811517a33eed8b84f1f34eb4da63ddb7d013e2c31e3732cd38aaa624b9239",
+    "result": {
+      "shopifyProductId": "gid://shopify/Product/16196606001532",
+      "handle": "gravuru-5b8d6aaea0f2451fc67bd8a62937d92e789a970ed0cf0c239db5af420e07a9af",
+      "status": "DRAFT",
+      "mappings": [
+        {
+          "key": "[[\"mounting\",\"K00\"]]",
+          "variantId": "58162739446140"
+        },
+        {
+          "key": "[[\"mounting\",\"KGL\"]]",
+          "variantId": "58162739478908"
+        },
+        {
+          "key": "[[\"mounting\",\"KRA\"]]",
+          "variantId": "58162739511676"
+        },
+        {
+          "key": "[[\"mounting\",\"B02\"]]",
+          "variantId": "58162739544444"
+        },
+        {
+          "key": "[[\"mounting\",\"B02S\"]]",
+          "variantId": "58162739577212"
+        }
+      ],
+      "published": false,
+      "imagesTransferred": false
+    },
+    "createdAt": "2026-11-07T09:59:00.024Z",
+    "bindings": [
+      {
+        "id": "binding_dc9a8b36-19ef-4524-89c0-be21e23fad02",
+        "shopDomain": "gravuru-design.myshopify.com",
+        "variantId": "58162739446140",
+        "productId": "cfg_95f1e9be-0a63-4168-8cbe-d19b789546a5",
+        "productRevision": 1,
+        "unitCents": 799,
+        "options": {
+          "mounting": "K00"
+        }
+      },
+      {
+        "id": "binding_c0c0cfc9-21b8-4e87-9496-5424206143fb",
+        "shopDomain": "gravuru-design.myshopify.com",
+        "variantId": "58162739478908",
+        "productId": "cfg_95f1e9be-0a63-4168-8cbe-d19b789546a5",
+        "productRevision": 1,
+        "unitCents": 1098,
+        "options": {
+          "mounting": "KGL"
+        }
+      },
+      {
+        "id": "binding_1aa268cb-456c-44e1-8302-bc3665432a85",
+        "shopDomain": "gravuru-design.myshopify.com",
+        "variantId": "58162739511676",
+        "productId": "cfg_95f1e9be-0a63-4168-8cbe-d19b789546a5",
+        "productRevision": 1,
+        "unitCents": 1198,
+        "options": {
+          "mounting": "KRA"
+        }
+      },
+      {
+        "id": "binding_587fb08b-dff4-475b-bc74-fb68d4f51d04",
+        "shopDomain": "gravuru-design.myshopify.com",
+        "variantId": "58162739544444",
+        "productId": "cfg_95f1e9be-0a63-4168-8cbe-d19b789546a5",
+        "productRevision": 1,
+        "unitCents": 1048,
+        "options": {
+          "mounting": "B02"
+        }
+      },
+      {
+        "id": "binding_97a849a0-41a2-45ed-996a-cb0a9e3c8b0b",
+        "shopDomain": "gravuru-design.myshopify.com",
+        "variantId": "58162739577212",
+        "productId": "cfg_95f1e9be-0a63-4168-8cbe-d19b789546a5",
+        "productRevision": 1,
+        "unitCents": 1068,
+        "options": {
+          "mounting": "B02S"
+        }
+      }
+    ],
+    "bindingsConfirmed": true,
+    "scope": "draft-only",
+    "published": false
+  },
+  "mayCreateDraft": false,
+  "idBindingsRequested": false,
+  "idBindings": null
+}

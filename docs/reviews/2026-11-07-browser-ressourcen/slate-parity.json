@@ -1,0 +1,35 @@
+{
+  "schema": "gravuru-browser-resource-parity/v1",
+  "shopifyWrites": 0,
+  "models": 2,
+  "designs": 86,
+  "originalModelBytes": 43035853,
+  "transportModelBytes": 16596593,
+  "uniqueResourceBytes": 13303353,
+  "fonts": 30,
+  "plates": 2,
+  "examples": [
+    {
+      "productId": "cfg_4f70b373-f49b-42ea-8a27-1c4a0e0e6d57",
+      "revision": 2,
+      "designs": 43,
+      "originalBytes": 21475539,
+      "transportBytes": 8257381,
+      "productFonts": 30,
+      "startFonts": 30,
+      "roundTripSha256": "f8dd3e4160595cc0b1b4fd6cdcc4c4d5c705b39f8c0cdf9712bd849d2fc64c46"
+    },
+    {
+      "productId": "cfg_b5b1326f-f4df-4cc9-9345-bd0591cf7071",
+      "revision": 2,
+      "designs": 43,
+      "originalBytes": 21560314,
+      "transportBytes": 8339212,
+      "productFonts": 30,
+      "startFonts": 0,
+      "roundTripSha256": "956029341eec964fd2c77199c882591ae83a9477ca41640ddedbee224e526611"
+    }
+  ],
+  "result": "PASS",
+  "finishedAt": "2026-11-07T10:19:06.451Z"
+}

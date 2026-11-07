@@ -1,0 +1,14 @@
+{
+  "tests": 84,
+  "passed": 84,
+  "failed": 0,
+  "backupFilesUnchanged": 34,
+  "browser": {
+    "result": "BLOCKED_BY_BROWSER_CONTROL",
+    "desktop": "iframe document response remains paused by browser control; parent reports about:blank and scripts=0",
+    "mobile": "not claimed",
+    "pending": "Visible desktop/mobile editor, font selection and save/reopen acceptance before deployment"
+  },
+  "liveShopWrites": 0,
+  "astraContacted": false
+}

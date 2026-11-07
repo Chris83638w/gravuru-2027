@@ -21,7 +21,17 @@ Ausgangscommit `e5e7befb093d61f16249b0202a8ae431abe34800`. Quellarchiv `checkpoi
 
 220/220 gezielte Tests bestanden (Shell, Reiter 16, Rückweg 12, übrige Demo-/Überlagerungs- sowie Build-/Publikations-/native Workflow-/Vertragstests). Zwei Unteragenten arbeiteten getrennt an Reitern und Rückweg/Live-Abnahmevorbereitung. Lokale Chrome-Bedienprüfung: 390×844, 320×740, PC 1440×1000. Material-/Größen-/Befestigungswechsel hält Canvas und Navigation an derselben Position, page scroll 0. 30×20 plus zwei goldene Abstandshalter ergibt unverändert 31,98 €. Materialinformation öffnet. Beide Dialogaktionen jeweils 340×44 px bei 390 px Ansicht. PC-Tabs enden exakt an der Vorschaugrenze; Preisblock vollständig innerhalb der 76-px-Leiste. Testüberschneidung nur im eigenen Browser-Testzustand, danach frischer Originalstart.
 
-Handybreiten im Desktop-Chrome ersetzen keinen physischen Android-/Edge-Test. Keine echte Bestellung ausgeführt. Veröffentlichungsnachweise werden nach der neuen, getrennten Demo-Bereitstellung ergänzt.
+Handybreiten im Desktop-Chrome ersetzen keinen physischen Android-/Edge-Test. Keine echte Bestellung ausgeführt. Auch 1024×768 geprüft: alle fünf PC-Reiter ohne Textüberlauf, Preis innerhalb der Leiste.
+
+## Veröffentlichung und öffentliche Abnahme
+
+Quellcommit `10bc14d6e0705da55a7353d54ca2f80712b6c078`, ausschließlich neuer Pfad `/konfi-demo/mobil-20261107-r10/`. [22×14 frisch starten](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r10/22x14.html?fresh=1), [30×20 frisch starten](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r10/30x20.html?fresh=1). R9 bleibt unverändert erreichbar.
+
+ZIP: 83.376.976 Bytes, 2.021 Archivdateien; SHA256 `2ae6f746c4e05c3a7c3c662b1855266607ccbbfba8d6385065b97709811a357a`. Manifest SHA256 `2c3b0ed7375327b1631e6ca9bedc37cc403b53ae22a78edbcf5eab79f1581dfd`. Vorher reiner Prüflauf, dann private Originalsicherung und Public-Inventar unter `/var/www/vhosts/gravuru-designwerkstatt.de/private/mobil-20261107-r10-before-publication`. **Alle 12.119 vorherigen öffentlichen Dateien und vier geschützten Originale hashgleich erhalten.** Ausschließlich neuer R10-Ordner mit zusätzlicher `.htaccess`; kein Neustart, Routerwechsel, Datenbank- oder Shopify-Schreiben.
+
+Zwölf öffentliche HTTP-Stichproben: 200, bytegleich zum Paket, Brotli, no-store/noindex. Öffentlicher Chrome bei 390×844: Material → Größe → Befestigung → zurück; Canvas bleibt y=94/h=286,95, Reiter y=485,95/h=58, page scroll 0. Bei 1440×1000: Hauptreiter enden exakt bei x=1022,41 wie die Vorschau; 30×20 zeigt 24,99 €. Preisblock vollständig innerhalb der Fußleiste, etwa 11 px Abstand nach unten. Keine erfassten Konsolenfehler. Nach Prüfung frischer Originalstart und Emulation zurückgenommen. Der Rückbutton bleibt in der ungebundenen Demo erwartungsgemäß deaktiviert; echter Shop-Rückweg gehört zur folgenden Live-Abnahme.
+
+Nachweise: [220 Tests](../reviews/2026-11-07-mobile-demo/r10-tests.txt), [Vorprüfung](../reviews/2026-11-07-mobile-demo/host-preflight-r10.json), [Publikation](../reviews/2026-11-07-mobile-demo/host-publication-r10.json), [HTTP](../reviews/2026-11-07-mobile-demo/http-public-r10.json), [lokale Bedienprüfung](../reviews/2026-11-07-mobile-demo/r10-local-browser.json), [öffentliche Bedienprüfung](../reviews/2026-11-07-mobile-demo/r10-public-browser.json), [PC](../reviews/2026-11-07-mobile-demo/r10-public-desktop.png), [Handy](../reviews/2026-11-07-mobile-demo/r10-public-mobile.png), [gleich große Dialogbuttons](../reviews/2026-11-07-mobile-demo/r10-local-dialog.png).
 
 ## Angekündigter Livegang – noch getrennt abzunehmen
 

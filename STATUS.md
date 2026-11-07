@@ -1,6 +1,6 @@
-## 07.11.2026 · Codex/Mika · Demo R10 vorbereitet: echte Reiter, Kopfzeile und PC-Preis
+## 07.11.2026 · Codex/Mika · Demo R10 veröffentlicht: echte Reiter, Kopfzeile und PC-Preis
 
-Material/Größe/Befestigung wechseln Inhalte ohne Canvas-Sprung; gleich große Prüfdialogaktionen; nativer Produkt-Rückbutton und eingerücktes Logo. PC-Hauptreiter nur über der Produktfläche, Preis sauber im Fußbereich. 220/220 gezielte Tests, lokale Handybreiten und PC geprüft. Vorab gesichert; kein Live-Shop-Eingriff. Angekündigter Livegang benötigt echte Produktbindung und Warenkorbabnahme, statische Demo bleibt gesperrt. [Übergabe und Sicherung](docs/handoffs/2026-11-07-mobile-demo-r10-optionen-reiter.md).
+Material/Größe/Befestigung wechseln Inhalte ohne Canvas-Sprung; gleich große Prüfdialogaktionen; nativer Produkt-Rückbutton und eingerücktes Logo. PC-Hauptreiter nur über der Produktfläche, Preis sauber im Fußbereich. 220/220 gezielte Tests, lokale Handybreiten und PC geprüft. Vorab gesichert; kein Live-Shop-Eingriff. Angekündigter Livegang benötigt echte Produktbindung und Warenkorbabnahme, statische Demo bleibt gesperrt. [R10 frisch testen](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r10/22x14.html?fresh=1). Quellcommit 10bc14d6, 12.119 alte Public-Dateien hashgleich, private Hostsicherung, zwölf HTTP-Stichproben und öffentliche Handy-/PC-Prüfung bestanden. [Übergabe und Sicherung](docs/handoffs/2026-11-07-mobile-demo-r10-optionen-reiter.md).
 
 ## 07.11.2026 · Codex/Mika · Demo R9 veröffentlicht: Überlagerung bewusst übernehmen
 

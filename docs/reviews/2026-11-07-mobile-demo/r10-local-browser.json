@@ -1,0 +1,156 @@
+{
+  "desktop": {
+    ".md-bar": {
+      "bottom": 1000,
+      "height": 76,
+      "left": 1234,
+      "right": 1440,
+      "top": 924,
+      "width": 206,
+      "x": 1234,
+      "y": 924
+    },
+    ".md-desktop-tabs": {
+      "bottom": 120,
+      "height": 64,
+      "left": 0,
+      "right": 1022.40625,
+      "top": 56,
+      "width": 1022.40625,
+      "x": 0,
+      "y": 56
+    },
+    ".md-summary": {
+      "bottom": 1000,
+      "height": 76,
+      "left": 1022.40625,
+      "right": 1234,
+      "top": 924,
+      "width": 211.59375,
+      "x": 1022.40625,
+      "y": 924
+    },
+    ".md-summary .md-product-button": {
+      "bottom": 959.8515625,
+      "height": 24,
+      "left": 1081.421875,
+      "right": 1222,
+      "top": 935.8515625,
+      "width": 140.578125,
+      "x": 1081.421875,
+      "y": 935.8515625
+    },
+    ".md-summary [data-fk-total]": {
+      "bottom": 989.1484375,
+      "height": 25.296875,
+      "left": 1146.6953125,
+      "right": 1222,
+      "top": 963.8515625,
+      "width": 75.3046875,
+      "x": 1146.6953125,
+      "y": 963.8515625
+    },
+    ".ux-preview": {
+      "bottom": 924,
+      "height": 804,
+      "left": 0,
+      "right": 1022.40625,
+      "top": 120,
+      "width": 1022.40625,
+      "x": 0,
+      "y": 120
+    }
+  },
+  "overlapButtons": [
+    {
+      "rect": {
+        "bottom": 448,
+        "height": 44,
+        "left": 25,
+        "right": 365,
+        "top": 404,
+        "width": 340,
+        "x": 25,
+        "y": 404
+      },
+      "text": "Automatisch einpassen"
+    },
+    {
+      "rect": {
+        "bottom": 500,
+        "height": 44,
+        "left": 25,
+        "right": 365,
+        "top": 456,
+        "width": 340,
+        "x": 25,
+        "y": 456
+      },
+      "text": "Weiter bearbeiten"
+    },
+    {
+      "rect": {
+        "bottom": 556,
+        "height": 44,
+        "left": 25,
+        "right": 365,
+        "top": 512,
+        "width": 340,
+        "x": 25,
+        "y": 512
+      },
+      "text": "So übernehmen und weiter"
+    }
+  ],
+  "mobileTabs": {
+    "viewport": [
+      390,
+      844
+    ],
+    "before": {
+      "nav": {
+        "bottom": 543.953125,
+        "height": 58,
+        "left": 17,
+        "right": 373,
+        "top": 485.953125,
+        "width": 356,
+        "x": 17,
+        "y": 485.953125
+      },
+      "page": 0,
+      "plate": {
+        "bottom": 380.953125,
+        "height": 286.953125,
+        "left": 0,
+        "right": 390,
+        "top": 94,
+        "width": 390,
+        "x": 0,
+        "y": 94
+      }
+    },
+    "after": {
+      "page": 0,
+      "canvas": {
+        "x": 0,
+        "y": 94,
+        "width": 390,
+        "height": 286.953125
+      },
+      "nav": {
+        "x": 17,
+        "y": 485.953125,
+        "width": 356,
+        "height": 58
+      }
+    },
+    "tested": [
+      "Material information opens",
+      "Mounting colour dialog survives native delegation",
+      "30x20 + 2 gold spacers = 31,98 EUR",
+      "Tab switch only resets inner options scroll"
+    ]
+  },
+  "testScope": "Local Chrome emulation, not physical Android or real purchase. Controlled overlap cleared by fresh reload."
+}

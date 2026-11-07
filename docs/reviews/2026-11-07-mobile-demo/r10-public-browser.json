@@ -1,0 +1,121 @@
+{
+  "mobileBefore": {
+    "page": 0,
+    "plate": {
+      "bottom": 380.953125,
+      "height": 286.953125,
+      "left": 0,
+      "right": 390,
+      "top": 94,
+      "width": 390,
+      "x": 0,
+      "y": 94
+    },
+    "price": "19,99 €",
+    "tabs": {
+      "bottom": 543.953125,
+      "height": 58,
+      "left": 17,
+      "right": 373,
+      "top": 485.953125,
+      "width": 356,
+      "x": 17,
+      "y": 485.953125
+    }
+  },
+  "mobileAfter": {
+    "page": 0,
+    "plate": {
+      "bottom": 380.953125,
+      "height": 286.953125,
+      "left": 0,
+      "right": 390,
+      "top": 94,
+      "width": 390,
+      "x": 0,
+      "y": 94
+    },
+    "price": "19,99 €",
+    "tabs": {
+      "bottom": 543.953125,
+      "height": 58,
+      "left": 17,
+      "right": 373,
+      "top": 485.953125,
+      "width": 356,
+      "x": 17,
+      "y": 485.953125
+    }
+  },
+  "desktop": {
+    "price": "24,99 €",
+    "rects": {
+      ".md-bar": {
+        "bottom": 1000,
+        "height": 76,
+        "left": 1234,
+        "right": 1440,
+        "top": 924,
+        "width": 206,
+        "x": 1234,
+        "y": 924
+      },
+      ".md-desktop-tabs": {
+        "bottom": 120,
+        "height": 64,
+        "left": 0,
+        "right": 1022.40625,
+        "top": 56,
+        "width": 1022.40625,
+        "x": 0,
+        "y": 56
+      },
+      ".md-summary": {
+        "bottom": 1000,
+        "height": 76,
+        "left": 1022.40625,
+        "right": 1234,
+        "top": 924,
+        "width": 211.59375,
+        "x": 1022.40625,
+        "y": 924
+      },
+      ".md-summary .md-product-button": {
+        "bottom": 959.8515625,
+        "height": 24,
+        "left": 1080.734375,
+        "right": 1222,
+        "top": 935.8515625,
+        "width": 141.265625,
+        "x": 1080.734375,
+        "y": 935.8515625
+      },
+      ".md-summary [data-fk-total]": {
+        "bottom": 989.1484375,
+        "height": 25.296875,
+        "left": 1146.6953125,
+        "right": 1222,
+        "top": 963.8515625,
+        "width": 75.3046875,
+        "x": 1146.6953125,
+        "y": 963.8515625
+      },
+      ".ux-preview": {
+        "bottom": 924,
+        "height": 804,
+        "left": 0,
+        "right": 1022.40625,
+        "top": 120,
+        "width": 1022.40625,
+        "x": 0,
+        "y": 120
+      }
+    },
+    "returnDisabled": true,
+    "viewport": [
+      1440,
+      1000
+    ]
+  },
+  "consoleErrors": []
+}

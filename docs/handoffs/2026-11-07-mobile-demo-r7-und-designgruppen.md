@@ -88,4 +88,37 @@ und zweispaltige Schnellkategorien erhalten.
 Belege in `docs/reviews/2026-11-07-mobile-demo/`: `r7-tests.txt` und
 `r7-browser-checks.json`. Physischer Android-/Edge-Test des systemeigenen
 Kopiermenüs bleibt offen. Keine neue Prüfung aller 43 Designs oder Bestellung.
-Öffentliche Veröffentlichung wird nach tatsächlichem Abschluss ergänzt.
+## Getrennte Veröffentlichung und öffentliche Prüfung
+
+R7 ist erreichbar: [22×14 – frisch starten](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r7/22x14.html?fresh=1),
+[30×20 – frisch starten](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r7/30x20.html?fresh=1).
+Paket-Quellcommit `fd27a755f6b570131348f325bca7a6cbca800f2a`.
+
+- Manifest: `a76c1b98148868d92e9fba51245f72c68012599beb3d6f8bf105c8bcc280ca54`
+- ZIP: `a95cd9022cd39509543999d41a5f2c12ea67d351033c6326593f10e51146bd23`,
+  83.335.000 Bytes, 2.009 Manifest-/Paketdateien plus eigene `.htaccess`.
+- Beide Größen behalten je 43 Designs und 30 Produktschriften. Vorher-/Nachher-
+  Hashes der Designobjekte und Grundplatten im Manifest sind identisch.
+- Private Hostsicherung vor Veröffentlichung:
+  `/var/www/vhosts/gravuru-designwerkstatt.de/private/mobil-20261107-r7-before-publication`.
+  Vier geschützte Originaldateien plus vollständiges Public-Hashinventar.
+- Veröffentlichung `verified:true`: alle **6.075 bisherigen öffentlichen Dateien**
+  und geschützten Originale unverändert; kein Neustart, Router-, Datenbank- oder
+  Shopify-Schreiben. Nur eigener neuer R7-Ordner. R6 bleibt vorhanden.
+- Sechs öffentliche HTTP-Stichproben (beide HTMLs, Manifest, Demo-JS/CSS,
+  Auswahlbeendigung) liefern 200 und exakt lokale Hashes, passende MIME-Typen,
+  Brotli-Komprimierung, `no-store` und `noindex`.
+- Öffentlicher Chrome-Test 390×844: neue Kategorien/Scrollleisten sichtbar;
+  Foto-Panel vor Dateiauswahl, expliziter Upload und eingefügtes Foto bestätigt;
+  „Murmel“ markiert → Fertig: Auswahl 6/6, kein Fokus, Wert erhalten. Resetdialog
+  bestätigt und Original/19,99 € wiederhergestellt. Keine Konsolenwarnungen/-fehler.
+
+Zusätzliche Nachweise im Reviewordner: `host-preflight-r7.json`,
+`host-publication-r7.json`, `http-public-r7.json`, `r7-public-browser.json`,
+`r7-public-motive-mobile.png`. Die umfangreicheren Reset-/Undo-/Desktopproben
+oben stammen vom lokalen C3-Paket derselben Implementierung, nicht alle aus
+dem öffentlichen finalen Paket. Keine reale Bestellung; der Demo-Warenkorb ist
+weiterhin von Shopify getrennt. Keine Kundenübernahme oder Main-Merge.
+
+Als Nächstes Mikails Handy-Abnahme, insbesondere Edge-Kopiermenü. Danach seine
+Desktop-Korrekturen sammeln und umsetzen; anschließend Backend/Design-Gruppen.

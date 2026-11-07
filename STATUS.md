@@ -1,8 +1,10 @@
-## 07.11.2026 · Codex/Mika · Mobile Demo R7 vorbereitet, Design-Gruppen bestätigt
+## 07.11.2026 · Codex/Mika · Mobile Demo R7 veröffentlicht, Design-Gruppen bestätigt
 
 Nur mobile Demo: vier Motivkategorien nebeneinander, dunklere Scrollleisten, Foto-Footer öffnet zuerst das Foto-Panel, Upload erst durch dessen Button. Oberer Foto-Shortcut entfällt mobil. „Gestaltung zurücksetzen“ nutzt unverändert die Bestätigung zur Originalvorlage; Größe und Ausführung bleiben erhalten. Native Textauswahl wird bei Fertig oder bewusstem Außentap beendet. **64/64 gezielte Tests**, lokale Chrome-Bedienprüfung und Desktop-Regressionsprüfung bestanden; physisches Android-/Edge-Kopiermenü noch offen. Eigener Branch / Draft #193, kein Kundenkonfi-, Shopify- oder Astra-Eingriff. [Sicherung, Prüfnachweise und Design-Gruppen-Regel](docs/handoffs/2026-11-07-mobile-demo-r7-und-designgruppen.md).
 
 Bestätigte Reihenfolge: **Mobile → Nutzerpunkte Desktop → Backend**. Künftige Angebote erhalten explizit Design-Gruppe und Startdesign; Shopbild und Konfi müssen dieselbe freigegebene Designrevision verwenden. Keine Bilderkennung und kein neues Backend in diesem Schritt.
+
+[R7 – frisch testen](https://app-2027.gravuru-designwerkstatt.de/konfi-demo/mobil-20261107-r7/22x14.html?fresh=1). Paket-Quellcommit `fd27a755`, eigene private Hostsicherung; alle **6.075 vorherigen öffentlichen Dateien** unverändert. Sechs HTTP-Stichproben hashgleich, 200/Brotli/no-store/noindex. Öffentlicher Handy-Viewporttest bestätigt Foto-Panel → Upload, eingefügtes Foto, Textbeendigung, Resetbestätigung und neue Kategorien. [Screenshot](docs/reviews/2026-11-07-mobile-demo/r7-public-motive-mobile.png). R6 bleibt als Rückweg; echter Android-/Edge-Test offen. Keine Bestellung.
 
 ## 07.11.2026 · Codex/Mika · Demo R6: Ausführung, Fotoauswahl und Randgröße
 

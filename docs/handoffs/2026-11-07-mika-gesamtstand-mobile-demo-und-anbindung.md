@@ -68,7 +68,7 @@ Die frühere Grenze „nur besprochene Punkte ändern“ gilt für den bestehend
 | Quellenauflösung / Materialidentität | [Draft-PR #189](https://github.com/Chris83638w/gravuru-2027/pull/189), `3ad2cdc3947db211c1c5864c3acb8faa1883fa62` | Getrennt auf #187. 43 Tests; keine neue Hostübernahme. |
 | Gemeinsame interne Ressourcen | [Draft-PR #190](https://github.com/Chris83638w/gravuru-2027/pull/190), `6f859471603c74948dc441db85131b477ab2e8bc` | Schema V5, exakte Wiederherstellung, Migration in Kopien/Rückweg. 194 Tests, lokale Browserabnahme. |
 | Gemeinsame Browserressourcen | [Draft-PR #192](https://github.com/Chris83638w/gravuru-2027/pull/192), `8ffeed8d90191cb89f1188a336751de2b2a4e0c0` | Nur private Galerie/lokale Vorschau optiert ein; 84 Tests, 78 Modelle/236 Designs exakt. Sichtbare Abnahme dieses Pakets offen. |
-| Mobile Demo | `dev/mika-mobile-demo-20261107`, Basis #192 | Eigene Arbeitskopie `work/konfi-mobile-demo-20261107`. R4 separat veröffentlicht, 22/22 gezielte Tests und dokumentierte Browser-/HTTP-Prüfungen; Kundenkonfi unverändert. Physische Touch-/iOS-Prüfung offen, Commit-/PR-Link folgt nach Erstellung. Abschnitt 13 enthält Nachweise. |
+| Mobile Demo | `dev/mika-mobile-demo-20261107`, Basis #192 | Eigene Arbeitskopie `work/konfi-mobile-demo-20261107`. R4 separat veröffentlicht, 22/22 gezielte Tests und dokumentierte Browser-/HTTP-Prüfungen; Kundenkonfi unverändert. Physische Touch-/iOS-Prüfung offen, Code und Nachweise sind mit `78a30547` auf GitHub in [Draft-PR #193](https://github.com/Chris83638w/gravuru-2027/pull/193) gesichert; kein Main-Merge. Abschnitt 13 enthält Nachweise. |
 
 Historischer veröffentlichter Kundenstand aus der älteren Sicherungsakte: R12 `8cb8c3caa63f9066020252e79932a5c984e951dc`, Bundle `editor-f5c81c94a6bbe07a.mjs`. Dies ist ein dokumentierter früherer Stand, keine hier erneut ausgelesene aktuelle Deployment-ID. Vor einer späteren Übernahme den tatsächlich laufenden Host erneut vergleichen.
 
@@ -187,7 +187,7 @@ Quellbereiche: `app/workshop/ui/shop-embed.mjs`, `shop-entry-page.mjs`, `shop-en
 
 ## 9. Mobile Demo: Erhaltungsschnittstellen und Abnahmeplan
 
-Die technische Hookprüfung auf Basis `8ffeed8d` erfolgte nur lesend. Kein neuer Testlauf, kein Browser-/Hosteingriff durch diesen ursprünglichen Prüfauftrag. Die folgende Schnittstellen-/Prüfliste bleibt als Implementierungsgrundlage erhalten; die inzwischen ausgeführten Tests, Browserhandlungen und getrennte R4-Veröffentlichung stehen in Abschnitt 13. Commit-/PR-Link folgt nach Erstellung.
+Die technische Hookprüfung auf Basis `8ffeed8d` erfolgte nur lesend. Kein neuer Testlauf, kein Browser-/Hosteingriff durch diesen ursprünglichen Prüfauftrag. Die folgende Schnittstellen-/Prüfliste bleibt als Implementierungsgrundlage erhalten; die inzwischen ausgeführten Tests, Browserhandlungen und getrennte R4-Veröffentlichung stehen in Abschnitt 13. Code und Nachweise sind mit `78a30547` auf GitHub in [Draft-PR #193](https://github.com/Chris83638w/gravuru-2027/pull/193) gesichert; kein Main-Merge.
 
 **Integration:** vorhandenes Element `gravuru-configurator` mit offener `shadowRoot` wiederverwenden. Native Knoten und Handler verschieben, nicht klonen oder mit `innerHTML` neu erfinden. Alle Delegationen bleiben in derselben ShadowRoot. Komplette `.stage-wrap` / `.stage` / `.plate-holder` / `.scene` samt Auswahlgriffen erhalten; nur das SVG zu versetzen würde Koordinaten und Overlays auseinanderziehen. Fertigsignal `gravuru-ux-ready` abwarten. Bestehende `el.sync`-Kette nicht ersetzen.
 
@@ -243,7 +243,7 @@ Wiederaufnahme immer in **neuem** Verzeichnis: passenden Code/Commit plus zusamm
 
 | Thema | Nächster konkreter Schritt |
 |---|---|
-| Mobile Demo | R4 ist getrennt veröffentlicht und geprüft; Mikails Sichtprüfung sowie physische Touch-/iOS-Tastaturfälle stehen aus. Commit-/PR-Link nach tatsächlicher Erstellung ergänzen. Keine automatische Kundenkonfi-Übernahme. |
+| Mobile Demo | R4 ist getrennt veröffentlicht und geprüft; Mikails Sichtprüfung sowie physische Touch-/iOS-Tastaturfälle stehen aus. Code und Nachweise: [Draft-PR #193](https://github.com/Chris83638w/gravuru-2027/pull/193), Stand `78a30547`. Keine automatische Kundenkonfi-Übernahme. |
 | #192-Sichtprüfung | Voller Editor, Schriftwechsel, Speichern, richtige Karte und erneutes Öffnen auf PC/Handyansicht nach Lösung der Browsersteuerungsstörung abnehmen. Kein Bestehen aus Paritätstests ableiten. |
 | Integration | Gestapelte #189/#190/#192/Demo später gegen Astras **dann aktuellen** Stand prüfen; keine fremden Dateien oder laufenden Daten ersetzen. Aktuelle Weisung: Astra nicht stören/kontaktieren. |
 | Gemeinsame Ressourcen online | Erst bei genehmigter Übernahme frische Hostsicherung, Kopier-/Paritätsprüfung, privater Proxy-/Cacheanschluss und sichtbare Abnahme. Der Code allein schaltet nichts um. |
@@ -255,9 +255,9 @@ Wiederaufnahme immer in **neuem** Verzeichnis: passenden Code/Commit plus zusamm
 
 ## 12. Erinnerung zuverlässig fortführen
 
-Nach jedem abgeschlossenen Paket eine kurze überprüfbare Ergänzung mit **Nutzerentscheidung, tatsächlichem Commit/PR, Code-/Host-/Datenstand, ausgeführten Tests, offenen Grenzen und genau nächstem Schritt**. Den festen Einstieg `MIKA-START-HIER.md` anschließend auf die jüngste Übergabe verweisen lassen; frühere Sicherungen erhalten. Diese neue Datei wird durch Root committed/gepusht, nicht durch den dokumentierenden Unteragenten. Bis zum zurückgelesenen GitHub-Commit ist sie ein lokaler Arbeitsstand, keine bereits remote gesicherte Datei.
+Nach jedem abgeschlossenen Paket eine kurze überprüfbare Ergänzung mit **Nutzerentscheidung, tatsächlichem Commit/PR, Code-/Host-/Datenstand, ausgeführten Tests, offenen Grenzen und genau nächstem Schritt**. Den festen Einstieg `MIKA-START-HIER.md` anschließend auf die jüngste Übergabe verweisen lassen; frühere Sicherungen erhalten. Diese Datei und die Nachweise wurden auf GitHub gesichert: [Draft-PR #193](https://github.com/Chris83638w/gravuru-2027/pull/193), Implementierung `3afb5923`, veröffentlichte Prüfbelege `78a30547`. Dokumentationsnachträge stehen in der PR-Historie. Der ältere Dokumentationsbranch bleibt als historische Sicherung erhalten; neue Chats sollen diese aktuelle Übergabe direkt als Einstieg erhalten.
 
-Für einen neuen Chat: zuerst den festen Einstieg auf dem Dokumentationsbranch, dann diese Übergabe und zuletzt den aktuellen PR-Kopf/STATUS sowie neuere Nutzerentscheidungen lesen. Autorisierte laufende Aufgaben nicht durch eine neue Komplettplanung ersetzen. Entscheidungen und Testbefunde nicht vermischen; bei Widerspruch die jüngste belegte Nutzerentscheidung prüfen. Ein Chatgedächtnis allein ersetzt diese versionierte Akte nicht.
+Für einen neuen Chat: zuerst diese aktuelle Übergabe, dann den aktuellen PR-Kopf/STATUS und neuere Nutzerentscheidungen lesen; den älteren festen Einstieg auf dem Dokumentationsbranch ergänzend für historische Quellen verwenden. Autorisierte laufende Aufgaben nicht durch eine neue Komplettplanung ersetzen. Entscheidungen und Testbefunde nicht vermischen; bei Widerspruch die jüngste belegte Nutzerentscheidung prüfen. Ein Chatgedächtnis allein ersetzt diese versionierte Akte nicht.
 
 Weiterer Vorschlag, nicht als aktiv eingerichtet behaupten: eine knappe versionierte Übersicht **Code / private Galerie / Kundenhost / Produktrevisionen / letzte getestete Sicherung** und eine regelmäßige Wiederherstellungsprobe auf unabhängiger Kopie. Keine neue Automation oder zusätzliche externe Speicherung ohne besprochenen Umfang.
 
@@ -322,6 +322,6 @@ Visuell geprüfte CSS-Viewports: **360×740, 390×844, 430×932, 844×390** (rec
 - Foto-Eckgriff ist per PC-Mauseingabe geprüft; Fingerbedienung auf einem physischen Smartphone bleibt offen.
 - Kein neuer Einzel-Sichtfreigabelauf über alle 43 Designs.
 - Keine echte Konto-/Galeriespeicherung und kein Shopify-Kauf aus dieser Demo. Deren reale Anschlüsse bleiben wie in Abschnitt 6 separat zu aktivieren und abnehmen.
-- Abschließender Commit-/PR-Link wird nach tatsächlicher Erstellung ergänzt; kein Main-Merge.
+- GitHub: [Draft-PR #193](https://github.com/Chris83638w/gravuru-2027/pull/193), Implementierung `3afb5923`, Prüfbelege `78a30547`; kein Main-Merge.
 
-Genau nächster Schritt: Mikails Sichtprüfung der getrennten Demo und verfügbare physische Touch-/iOS-Tastaturfälle; anschließend tatsächlichen Commit-/PR-Link ergänzen. Eine spätere Übernahme in den Kundenkonfi bleibt ein eigener abgestimmter Schritt. Bestehenden Kundenkonfi, Live-Shop und Astras Arbeit weiterhin unangetastet lassen.
+Genau nächster Schritt: Mikails Sichtprüfung der getrennten Demo und verfügbare physische Touch-/iOS-Tastaturfälle. Code und Nachweise sind in Draft-PR #193 gesichert. Eine spätere Übernahme in den Kundenkonfi bleibt ein eigener abgestimmter Schritt. Bestehenden Kundenkonfi, Live-Shop und Astras Arbeit weiterhin unangetastet lassen.

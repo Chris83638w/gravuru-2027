@@ -96,20 +96,36 @@ Vor der Ergänzung werden Manifest, Hashindex, Stage-Nachweis und Quellenbelege 
 
 Vorschauoperator und Aktivator verwenden gemeinsam `STAGE/.metadata.lock`. `complete-gallery-activate.py` darf die Zuordnung zusätzlich nur bei gestoppter privater Runtime unter deren Laufzeitsperre atomar ersetzen. Er überprüft den Vorschau-Nachweis, schreibt Aktivierungsbeleg und `ACTIVATED.json` und schaltet selbst weder Plesk noch Shopify um. Alte Codewurzel, Galerie und gesicherte Zuordnung bleiben der Rückweg. Ein Rückweg darf keine inzwischen hinzugekommenen Kommentare oder Freigaben durch Wiederherstellen kompletter Datenbanken verwerfen.
 
-**Aktueller Serverstatus:** STAGE-Vorbereitung läuft. Die lokale Zusammenführung und V2-Prüfung sind abgeschlossen; ein fertiger Host-Import oder eine Anwendung von V2 auf dem Host wird hier noch nicht behauptet. Aktivierung, Plesk-Umschaltung und Chrome-Abnahme stehen aus. Der Zielzugang bleibt die geschützte private Galerie `https://test-2027.gravuru-designwerkstatt.de/originale/`.
+**Aktueller Serverstatus, 07.11.2026, 17:19 UTC:** STAGE-Import und V2-Ergänzung sind auf dem tatsächlichen Host erfolgreich abgeschlossen. 1.564 Importtransaktionen ergänzten 2.793 neue Gruppen; insgesamt liegen 3.142 native Gruppen vor, davon 3.141 Galeriegruppen und der bereits bestehende separate Shop-DRAFT-Pilot. Alle 349 bisherigen Produktköpfe sind unverändert. Die fünf Datenbanken bewahren sämtliche bisherigen geprüften Zeilen: 240 Assets, 2 Profile, 723 Werkstattzeilen, 4 Kommentarzeilen und 113 Freigabe-/Ereigniszeilen. Die 109 bestehenden Bestätigungen wurden nicht verändert. Die aktive Zuordnung und Konfiguration sind weiterhin unverändert.
+
+V2 wurde anschließend mit allen 3.447 Bildern auf die inaktive Galerie angewendet, davon 59 bytegleiche und per Git-Commit/Tree/Blob nachgewiesene Katalog-PNGs. Originalziele und native Dateien sind erhalten; der Bildnachtrag schrieb keine Datenbank und keine Konfiguration. Der neue Stand hat 19.661 Originalkarten, 6.623 zumindest in einem Format bearbeitbare Originale (6.612 vollständig, 11 teilweise vorbereitet), 13.038 weiterhin offene Originale und 51.259 vorbereitete Material-/Formatziele. Alle Karten haben eine native oder originale Katalogvorschau.
+
+**Noch nicht aktiviert:** Die Plesk-Sitzung ist während des Imports abgelaufen; die erneute Anmeldung wurde beim Nutzer angefragt. Site 19 zeigt weiterhin die bisherige Galerie mit 462 Karten. Der Aktivator wurde nicht ausgeführt, keine Plesk-Pfade oder Dienste wurden verändert. Aktivierung, Plesk-Umschaltung und die tatsächliche Chrome-Abnahme bleiben offen. Es gibt für Site 19 keinen bereits belegten CLI-Ersatz für sicheren Stopp, beide Plesk-Pfadwechsel und Start; ein historischer `tmp/restart.txt`-Nachweis einer anderen Anwendung ersetzt diese Schritte nicht. Der Zielzugang bleibt `https://test-2027.gravuru-designwerkstatt.de/originale/`.
 
 ### Abschließender Hostbeleg — nach tatsächlicher Prüfung ergänzen
 
 | Schritt | Status / noch einzutragender Beleg |
 | --- | --- |
-| Append-only-STAGE abgeschlossen | Offen: `STAGE-READY.json`, Codecommit, Mapping-/Manifesthash, Erhalt alter Köpfe/Revisionen und Nutzerzeilen |
-| V2 auf der inaktiven Galerie angewendet | Offen: `SUPPLEMENT-READY.json`, 3.447 Ergänzungen, neuer Manifest-/Indexhash, unveränderte aktive Zuordnung/Konfiguration |
+| Append-only-STAGE abgeschlossen | Bestanden: [Host-Stage](../reviews/2026-11-07-complete-gallery/host-stage-ready.json), Runtime `01c3da9a33249eba2600079d689b5b1769f88f7e`, 349 alte Köpfe und alle geprüften Nutzerzeilen erhalten |
+| V2 auf der inaktiven Galerie angewendet | Bestanden: [Host-Vorschau-Nachweis](../reviews/2026-11-07-complete-gallery/host-preview-supplement-ready.json), 3.447 Ergänzungen, 0 offene Bildnachträge, aktive Zuordnung/Konfiguration unverändert |
 | Aktivierung bei gestoppter Runtime | Offen: `ACTIVATION-RECEIPT.json`, `ACTIVATED.json`, Sicherungs-/Rückwegpfad |
 | Site 19 auf neue Code-/Galeriefassung umgestellt | Offen: tatsächliche Plesk-Pfade, Neustart und Zeitpunkt |
 | Geschützter HTTP-/Daten-Erhaltungsbeleg | Offen: wirkliche Hostantworten, nachgewiesene Bilder/Filter/API-Pfade und Erhalt laufender Nutzerfreigaben; keine Geheimnisse protokollieren |
 | Chrome-Abnahme | Offen: tatsächliches Laden, Filtern/Blättern, Schnellbearbeitung und voller Editor samt Speichern/Rücksprung; erfolgreiche lokale oder andere Browserprüfungen ersetzen diesen Nachweis nicht |
 
 Diese offenen Felder dürfen erst durch echte Host-/Browserergebnisse ersetzt werden. Ein lokaler Test oder ein laufender STAGE-Prozess gilt nicht als Onlinefreigabe.
+
+### Verbindliche Fortsetzung nach Plesk-Anmeldung
+
+Der Import und der Vorschauoperator sind fertig und dürfen nicht erneut gestartet werden. Auf Site 19 die bestehende App anhalten, dann den bereits geprüften Aktivator mit Codecommit `01c3da9a33249eba2600079d689b5b1769f88f7e` und Mapping-SHA `f399e6731928b92dcdb0d7898f9df9ad676c14316af6a5918247aee00ad720af` ausführen. Der finale `STAGE-READY.json`-SHA ist `2c63d454573f1a90f9ae01d6bab2a2bd8beb2dc11255eb776391947c360f9c2c`; er enthält den Bildnachtrag. Der Aktivator sichert die dann aktuellen Kommentare/Freigaben/Profile nochmals und verlangt die exklusive Runtime- und Metadatensperre.
+
+Danach Anwendungsstamm `/gravuru-2027-complete-01c3da9a`, Dokumentenstamm `/gravuru-2027-complete-01c3da9a/public`, Startdatei `app.cjs` setzen und nur diese private App starten. Vorheriger Anwendungsstamm ist `/gravuru-2027-bulkapproval-3db1ef5d`; bestehende Datenbanken niemals durch alte Backups ersetzen. Alle Operatordateien liegen unter `/var/www/vhosts/gravuru-designwerkstatt.de/private/complete-gallery-20261107-v1/`.
+
+Anschließend den geprüften `readback.py` ausführen: Schutz ohne Anmeldung, private Betriebsart ohne Shopify, 19.661 Originale im Manifest und der Seitenübersicht, höchstens 60 Karten auf Seite 1, 109 identische Bestätigungen und drei bytegleiche Original-PNG-HTTP-Antworten. Er schreibt einmalig `ONLINE-READBACK.json`; es existiert bisher kein solcher erfolgreicher Onlinebeleg. Readback-Helper-SHA `39b5bdb1ffc8e45f8fba0faa5768c263a7391a51c0988915021f1cbb79818036`, 11/11 Linux-Tests bestanden. Aktivator-SHA `3e137f737b86a4d7db5376a4e7a2d22c6ace89a702028952ad728f9a06129137`, 15/15 Linux-Tests bestanden. Alle drei hochgeladenen Helper-SHAs wurden tatsächlich auf dem Host zurückgelesen.
+
+Chrome-Prüfung: Originale `TRE-V2A-5x2-D401` und `TRE-V2A-5x2-D406`, Quelle Edelstahl 5 × 2 cm, über die gesonderten Zuordnungshäkchen auswählen. Belegte Zielkombination: Linie `acryl-tuerschilder`, Unterkategorie `andenkenschilder`, Familie `acryl-3mm-tuerschilder-schwarz`, Größe `TS-Acryl-RE-60X20-T30-SW` (6 × 2 cm). AS 3 mm / 5 × 2 cm ist für beide Originale bereits vorhanden und muss als vorhandene Zuordnung behandelt werden. Die tatsächliche Planantwort vor einer Übernahme prüfen; kein blindes Wiederholen. Nur eine neu erzeugte, ungeprüfte Zielvariante verschieben/speichern, im vollen Konfi öffnen, den Testversatz zurücksetzen/speichern und nach Neuladen prüfen. Bestehende bestätigte Quellen unverändert lassen, keine Freigabehäkchen setzen. Screenshots und konkrete neue Konfi-IDs erst nach dieser echten Bedienfolge ergänzen. Danach Abschlussrückmeldung in #85 und #168.
+
+Die normalen Galerie-/Zuordnungspfade verwenden Metadaten und begrenzte Dokumentabrufe. Die ältere Verwaltungs-Quellübersicht liest beim kalten Aufbau weiterhin große native Dokumente sequenziell; diese verbleibende Leistungsgrenze ist keine Freigabe für ungefilterte Vollabrufe der rund 23 GB nativen Daten.
 
 ## Mika / Shop-Anbindung
 

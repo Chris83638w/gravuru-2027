@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {installMobileDemo} from './demo.mjs';
+import {installMobileDemo,keyboardViewport} from './demo.mjs';
 
 // The real opt-in adapter runs against a small DOM port. Rendering and native
 // editor behaviour are verified separately in the browser; these tests cover
@@ -176,7 +176,7 @@ test('opt-in and native readiness are required; installation does not touch anot
 
 test('the actual native controls and callbacks move; crop tools stay in the photo panel',async t => {
   const env = runtime(t), f = editorFixture(env); await installMobileDemo(f.el);
-  assert.equal(f.r.querySelector('.md-bar [data-ux=undo]'),f.nodes.undo);
+  assert.equal(f.r.querySelector('.md-history [data-ux=undo]'),f.nodes.undo);
   assert.equal(f.r.querySelector('.md-summary [data-fk-total]'),f.price);
   assert.equal(f.r.querySelector('.md-controls [data-photo-object-size]'),f.photoSlider);
   assert.equal(f.photoPosition.parentNode,f.panels.get('upload'));
@@ -288,4 +288,39 @@ test('the disconnected demo is labelled without replacing the native account con
   assert.equal(f.accountBody.textContent,'Native account content'); f.nodes.account.click(); assert.ok(f.calls.some(c => c[0] === 'account'));
   f.accountBody.textContent = 'Native unavailable status'; assert.equal(note.isConnected,true,'native rerender cannot swallow the demo explanation');
   api.dispose(); assert.equal(f.accountDialog.querySelector('.md-service-note'),null); assert.equal(f.accountBody.textContent,'Native unavailable status');
+});
+
+test('keyboard detection keeps Android pre-keyboard height and ignores rotation',() => {
+  const normal = keyboardViewport(null,{width:390,height:844,innerHeight:844,focused:false});
+  const reduced = keyboardViewport(normal,{width:390,height:400,innerHeight:400,focused:true});
+  assert.equal(reduced.keyboard,true); assert.equal(reduced.baseline,844);
+  assert.equal(keyboardViewport(reduced,{width:390,height:400,innerHeight:400,focused:false}).keyboard,false);
+  assert.equal(keyboardViewport(reduced,{width:844,height:390,innerHeight:390,focused:true}).keyboard,false);
+  assert.equal(keyboardViewport(normal,{width:390,height:790,innerHeight:844,focused:true}).keyboard,false);
+});
+
+test('footer opens native sections; a canvas tap closes but drag and buttons do not',async t => {
+  const env=runtime(t),f=editorFixture(env),api=await installMobileDemo(f.el);
+  const text=f.r.querySelector('[data-demo-section=text]'); text.click();
+  assert.equal(f.panels.get('text').hidden,false); assert.equal(text.getAttribute('aria-pressed'),'true');
+  f.el.dispatchEvent({type:'pointerdown',target:f.stage,clientX:10,clientY:10});
+  f.el.dispatchEvent({type:'pointermove',target:f.stage,clientX:55,clientY:10}); f.el.dispatchEvent({type:'click',target:f.stage});
+  assert.equal(f.el.dataset.demoSheet,'panel');
+  f.el.dispatchEvent({type:'pointerdown',target:f.stage,clientX:10,clientY:10}); f.el.dispatchEvent({type:'click',target:f.stage});
+  assert.equal(f.el.dataset.demoSheet,'closed');
+  await Promise.resolve(); api.open('text');
+  const control=env.doc.createElement('button'); f.stage.append(control);
+  f.el.dispatchEvent({type:'pointerdown',target:control,clientX:10,clientY:10});f.el.dispatchEvent({type:'click',target:control});
+  assert.equal(f.el.dataset.demoSheet,'panel'); assert.equal(f.finish.getAttribute('aria-label'),'Warenkorb');
+  f.finish.click(); assert.ok(f.calls.some(c=>c[0]==='native-review'));
+});
+
+test('direct upload calls the original upload button synchronously and respects its rights',async t => {
+  const env=runtime(t),f=editorFixture(env),upload=env.doc.createElement('button');
+  upload.dataset.ux='photo-upload'; f.panels.get('upload').append(upload);
+  let called=0; upload.addEventListener('click',()=>called++);
+  await installMobileDemo(f.el); const shortcut=f.r.querySelector('.md-photo-shortcut');
+  shortcut.click(); assert.equal(called,1); assert.equal(f.panels.get('upload').hidden,false);
+  upload.disabled=true;env.flush();assert.equal(shortcut.disabled,true);shortcut.click();assert.equal(called,1);
+  upload.disabled=false;upload.hidden=true;env.flush();assert.equal(shortcut.hidden,true);shortcut.click();assert.equal(called,1);
 });

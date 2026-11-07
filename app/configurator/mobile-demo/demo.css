@@ -1,20 +1,28 @@
-/* Opt-in mobile demonstration, Mikail 07.11.2026.
-   Presentation only: original panels, gestures, dialogs and price actions remain native.
-   The canvas has two deliberate sizes (sheet closed/open), never selection-dependent. */
+/* Isolated R5 demo, Mikail 07.11.2026.
+   Native controls still own state, prices, gestures and dialogs.
+   Canvas bounds depend on viewport/sheet state, never on the selected object. */
 :host([data-mobile-demo]) {
   --md-vh: var(--md-height, 100dvh);
   --md-top: var(--md-offset, 0px);
-  --md-header-h: 40px;
+  --md-header-h: 44px;
+  --md-controls-h: 50px;
+  --md-bar-h: 58px;
+  --md-summary-h: 32px;
+  --md-inspector-w: 0px;
   --md-safe: env(safe-area-inset-bottom, 0px);
-  --md-footer-h: calc(150px + var(--md-safe));
-  --md-canvas-h: calc(var(--md-vh) - var(--md-header-h) - var(--md-footer-h));
+  --md-footer-h: calc(var(--md-bar-h) + var(--md-summary-h) + var(--md-safe));
+  --md-preview-top: calc(var(--md-header-h) + var(--md-controls-h));
+  --md-canvas-h: calc(var(--md-vh) - var(--md-preview-top) - var(--md-footer-h));
+  --md-sheet-top: calc(var(--md-preview-top) + var(--md-canvas-h));
   --md-ink: #252c32;
   --md-muted: #64717b;
   --md-border: #e1e5e8;
-  --md-green: #176b58;
-  --md-orange: #df5b20;
+  --md-green: #147648;
+  --md-petrol: #125965;
+  --md-petrol-dark: #0b424b;
+  --md-petrol-soft: #e6f1f3;
   display: block;
-  width: min(100%, 600px);
+  width: min(100%, 1440px);
   height: var(--md-vh);
   margin: 0 auto;
   padding: 0 !important;
@@ -23,7 +31,7 @@
 }
 :host([data-mobile-demo][data-demo-sheet="menu"]),
 :host([data-mobile-demo][data-demo-sheet="panel"]) {
-  --md-canvas-h: calc(var(--md-vh) * .43 - var(--md-header-h));
+  --md-canvas-h: clamp(220px, calc(var(--md-vh) * .34), 290px);
 }
 
 /* Strongly scoped overrides beat the native mobile/selection size rules. */
@@ -31,8 +39,8 @@
   position: fixed !important;
   inset: var(--md-top) auto auto 50% !important;
   transform: translateX(-50%);
-  width: min(100vw, 600px) !important;
-  max-width: 600px !important;
+  width: min(100vw, 1440px) !important;
+  max-width: 1440px !important;
   height: var(--md-vh) !important;
   min-height: 0 !important;
   margin: 0 !important;
@@ -63,13 +71,13 @@
 }
 :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-preview {
   position: absolute !important;
-  inset: var(--md-header-h) 0 auto !important;
+  inset: var(--md-preview-top) var(--md-inspector-w) auto 0 !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: stretch !important;
   justify-content: center !important;
-  width: 100% !important;
-  height: max(80px, var(--md-canvas-h)) !important;
+  width: auto !important;
+  height: var(--md-canvas-h) !important;
   min-height: 0 !important;
   max-height: none !important;
   margin: 0 !important;
@@ -78,7 +86,7 @@
   border-radius: 0 !important;
   overflow: hidden !important;
   background: #f6f7f8 !important;
-  transition: height 200ms ease !important;
+  transition: none !important;
   will-change: auto !important;
 }
 :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-preview > [data-ux-stage],
@@ -99,7 +107,7 @@
   height: 100% !important;
   min-height: 0 !important;
   max-height: 100% !important;
-  padding: 54px 28px 46px !important;
+  padding: 48px 28px 24px !important;
   margin: 0 !important;
   display: flex !important;
   align-items: center !important;
@@ -144,13 +152,13 @@
   pointer-events: none;
 }
 
-/* The original selection toolbar floats in a constant slot above the artwork. */
+/* Non-text native actions use a constant slot; text editing stays below. */
 :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-preview > .ux-direct-slot:not([hidden]),
 :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-preview > .ux-direct-edit:not([hidden]) {
   position: absolute !important;
-  inset: 4px 8px auto !important;
+  inset: 0 64px auto 12px !important;
   display: block !important;
-  width: calc(100% - 16px) !important;
+  width: auto !important;
   height: 44px !important;
   min-height: 0 !important;
   max-height: 44px !important;
@@ -190,7 +198,7 @@
 /* Native editor becomes a non-modal sheet; native dialogs retain the top layer. */
 :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-editor {
   position: absolute !important;
-  inset: 45% 0 var(--md-footer-h) !important;
+  inset: var(--md-sheet-top) 0 var(--md-footer-h) !important;
   display: block !important;
   width: 100% !important;
   height: auto !important;
@@ -210,10 +218,9 @@
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   z-index: 70;
-  transition: transform 200ms ease, visibility 200ms !important;
+  transition: none !important;
 }
 :host([data-mobile-demo][data-demo-sheet="closed"]) .ux-shell .ux-layout > .ux-editor {
-  transform: translateY(calc(100% + var(--md-footer-h) + 20px)) !important;
   visibility: hidden !important;
   pointer-events: none !important;
 }
@@ -229,26 +236,27 @@
 :host([data-mobile-demo]) .ux-shell .ux-editor .ux-panel h2 { font-size: 20px !important; margin: 0 0 12px !important; }
 :host([data-mobile-demo]) .ux-shell .ux-editor .ux-status { margin: 4px 16px; font-size: 12px; }
 :host([data-mobile-demo]) [data-element-rights-note] { display: none !important; }
-:host([data-mobile-demo]) .md-service-note { padding: 10px 12px; border-left: 3px solid var(--md-orange); border-radius: 5px; background: #fff4e9; color: #563c29; font-size: 13px; line-height: 1.45; }
+:host([data-mobile-demo]) .md-service-note { padding: 10px 12px; border-left: 3px solid var(--md-petrol); border-radius: 5px; background: #edf6f7; color: #294e56; font-size: 13px; line-height: 1.45; }
 :host([data-mobile-demo]) .md-sheet-header {
   position: sticky;
   top: 0;
   z-index: 5;
   display: grid;
-  grid-template-columns: 64px minmax(0, 1fr) 64px;
+  grid-template-columns: 64px minmax(0, 1fr) 74px;
   align-items: center;
   gap: 6px;
-  min-height: 48px;
-  padding: 6px 10px 4px;
+  box-sizing: border-box;
+  min-height: 52px;
+  padding: 4px 10px;
   border-bottom: 1px solid #edf0f2;
   background: #fff;
   touch-action: pan-x;
 }
-:host([data-mobile-demo]) .md-sheet-header::before { content: ''; position: absolute; top: 5px; left: calc(50% - 16px); width: 32px; height: 3px; border-radius: 4px; background: #d6dce1; }
 :host([data-mobile-demo]) .md-sheet-header h2 { grid-column: 2; grid-row: 1; margin: 0 !important; font-size: 15px !important; line-height: 1.25; text-align: center; color: var(--md-ink) !important; }
-:host([data-mobile-demo]) .md-sheet-header button { min-height: 40px !important; margin: 0 !important; padding: 6px !important; background: transparent !important; border: 0 !important; border-radius: 8px !important; font-size: 12px !important; color: var(--md-green) !important; }
+:host([data-mobile-demo]) .md-sheet-header button { min-height: 44px !important; margin: 0 !important; padding: 6px !important; background: transparent !important; border: 0 !important; border-radius: 8px !important; font-size: 12px !important; color: var(--md-green) !important; }
 :host([data-mobile-demo]) .md-sheet-back { grid-column: 1; grid-row: 1; }
-:host([data-mobile-demo]) .md-sheet-close { grid-column: 3; grid-row: 1; font-weight: 700 !important; }
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .md-sheet-header > .md-sheet-close { grid-column: 3; grid-row: 1; color: #fff !important; background: var(--md-petrol) !important; border-color: var(--md-petrol) !important; font-weight: 700 !important; }
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .md-sheet-header > .md-sheet-close:not(:disabled) { opacity: 1 !important; }
 :host([data-mobile-demo]) .md-tools { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding: 14px; }
 :host([data-mobile-demo]) .md-tools .md-tool {
   display: flex !important;
@@ -277,70 +285,237 @@
 :host([data-mobile-demo]) .md-extra .ux-quantity-stepper :is(button, input) { width: 34px !important; min-width: 34px !important; height: 42px !important; min-height: 42px !important; margin: 0 !important; padding: 4px !important; border: 0 !important; background: #fff !important; font-size: 16px !important; text-align: center; }
 :host([data-mobile-demo]) .md-extra :is(svg, img) { width: 20px; height: 20px; object-fit: contain; flex: none; }
 
-/* Fixed chrome: the amount and checkout retain their existing calculation/actions. */
-:host([data-mobile-demo]) .md-top { position: absolute; inset: 0 0 auto; height: var(--md-header-h); box-sizing: border-box; display: flex; align-items: center; gap: 8px; padding: 0 14px; z-index: 80; background: #f6f7f8; }
-:host([data-mobile-demo]) .md-brand { font-size: 17px; font-weight: 750; letter-spacing: -.5px; color: #28373b; }
-:host([data-mobile-demo]) .md-badge { padding: 3px 7px; border-radius: 5px; background: #e9edf0; color: #5e6c76; font-size: 10px; line-height: 1.2; font-weight: 600; }
-:host([data-mobile-demo]) .md-top > button { position: static !important; inset: auto !important; width: auto !important; min-width: 40px !important; height: 36px !important; min-height: 36px !important; margin: 0 0 0 auto !important; padding: 5px 8px !important; border: 0 !important; border-radius: 8px !important; box-shadow: none !important; color: #52616b !important; background: transparent !important; font-size: 12px !important; }
-:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-top [data-ux="help"] { display: inline-flex !important; align-items: center; justify-content: center; gap: 5px; color: #344c42 !important; opacity: 1 !important; }
-:host([data-mobile-demo]) .md-top [data-ux="help"] svg { width: 20px; height: 20px; flex: none; }
-:host([data-mobile-demo]) .ux-shell .md-plus { position: absolute !important; left: 50% !important; right: auto !important; bottom: calc(var(--md-footer-h) + 20px); transform: translateX(-50%) !important; z-index: 65; box-sizing: border-box; display: flex !important; align-items: center; justify-content: center; width: 58px !important; height: 58px !important; min-height: 58px !important; padding: 0 0 3px !important; margin: 0 !important; border: 0 !important; border-radius: 50% !important; color: #fff !important; background: var(--md-orange) !important; box-shadow: 0 6px 18px #c94e2038 !important; font-size: 36px !important; line-height: 1 !important; }
-:host([data-mobile-demo]) .md-plus-label { position: absolute; top: calc(100% + 4px); left: 50%; transform: translateX(-50%); color: #88421f; font-size: 10px; font-weight: 650; line-height: 1.2; white-space: nowrap; }
-:host([data-mobile-demo]:not([data-demo-sheet="closed"])) .md-plus { visibility: hidden; pointer-events: none; }
-:host([data-mobile-demo]) .md-controls { position: absolute; left: 0; right: 0; bottom: calc(94px + var(--md-safe)); z-index: 80; display: flex; align-items: center; justify-content: center; gap: 8px; height: 56px; box-sizing: border-box; padding: 5px 12px; border-top: 1px solid #e4e8eb; background: #fff; }
-:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-controls :is(.ux-view-zoom, .ux-photo-size) { position: static !important; inset: auto !important; transform: none !important; flex: 1 1 0; display: grid !important; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 14px 24px; align-items: center; gap: 0 4px; width: auto !important; max-width: none !important; min-width: 0 !important; height: 44px !important; min-height: 44px !important; margin: 0 !important; padding: 3px 6px !important; border: 0 !important; border-radius: 8px !important; background: #f5f7f7 !important; color: #42564e !important; font-size: 10px !important; line-height: 14px !important; font-weight: 500 !important; }
-:host([data-mobile-demo]) .md-controls :is(.ux-view-zoom, .ux-photo-size) input { grid-row: 2; grid-column: 1 / -1; width: 100% !important; min-width: 0 !important; height: 24px !important; min-height: 24px !important; margin: 0 !important; padding: 0 !important; accent-color: var(--md-green); }
+/* Header: original history/help actions, with readable icons and 44px targets. */
+:host([data-mobile-demo]) .md-top {
+  position: absolute; inset: 0 0 auto; z-index: 80;
+  display: flex; align-items: center; gap: 3px;
+  box-sizing: border-box; height: var(--md-header-h); padding: 0 8px;
+  background: #fff; border-bottom: 1px solid var(--md-border);
+}
+:host([data-mobile-demo]) .md-brand { flex: none; color: var(--md-petrol-dark); font-size: 16px; font-weight: 750; letter-spacing: -.5px; }
+:host([data-mobile-demo]) .md-badge { max-width: 44px; padding: 3px 5px; border-radius: 5px; background: var(--md-petrol-soft); color: #48636a; font-size: 9px; line-height: 1.2; font-weight: 600; text-align: center; }
+:host([data-mobile-demo]) .md-history { display: flex; align-items: center; min-width: 0; margin-left: auto; }
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral]) .md-top button {
+  position: static !important; inset: auto !important; transform: none !important;
+  display: inline-flex !important; align-items: center; justify-content: center; flex: 0 0 44px;
+  box-sizing: border-box; width: 44px !important; min-width: 44px !important;
+  height: 44px !important; min-height: 44px !important; margin: 0 !important; padding: 9px !important;
+  border: 0 !important; border-radius: 8px !important; box-shadow: none !important;
+  color: #465b66 !important; background: transparent !important; font-size: 0 !important;
+}
+:host([data-mobile-demo]) .md-top :is(.ux-tool-label, [data-ux-count]) { display: none !important; }
+:host([data-mobile-demo]) .md-top button svg { display: block; flex: none; width: 22px; height: 22px; }
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-top [data-ux="help"] { display: inline-flex !important; color: var(--md-petrol) !important; font-size: 20px !important; font-weight: 700 !important; opacity: 1 !important; }
+
+/* View zoom, selected photo size and reset share one line above the product. */
+:host([data-mobile-demo]) .md-controls {
+  position: absolute; top: var(--md-header-h); left: 0; right: var(--md-inspector-w); z-index: 80;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  box-sizing: border-box; height: var(--md-controls-h); padding: 3px 12px;
+  background: #fff; border-bottom: 1px solid var(--md-border);
+}
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-controls :is(.ux-view-zoom, .ux-photo-size) {
+  position: static !important; inset: auto !important; transform: none !important; flex: 1 1 0;
+  display: grid !important; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 14px 26px;
+  align-items: center; gap: 0 4px; box-sizing: border-box;
+  width: auto !important; max-width: 300px !important; min-width: 0 !important;
+  height: 44px !important; min-height: 44px !important; margin: 0 !important; padding: 2px 6px !important;
+  border: 0 !important; border-radius: 8px !important; background: #f0f5f5 !important;
+  color: var(--md-petrol-dark) !important; font-size: 11px !important; line-height: 14px !important; font-weight: 600 !important;
+}
+:host([data-mobile-demo]) .md-controls :is(.ux-view-zoom, .ux-photo-size) input { grid-row: 2; grid-column: 1 / -1; width: 100% !important; min-width: 0 !important; height: 26px !important; min-height: 26px !important; margin: 0 !important; padding: 0 !important; accent-color: var(--md-petrol); }
 :host([data-mobile-demo]) .md-controls .ux-view-zoom output { grid-row: 1; grid-column: 2; width: auto; font-size: 10px; }
 :host([data-mobile-demo]) .md-controls .ux-design-reset { position: static !important; inset: auto !important; transform: none !important; flex: 0 0 auto; width: auto !important; margin: 0 !important; }
-:host([data-mobile-demo]) .md-controls .ux-design-reset button { height: 44px !important; min-height: 44px !important; padding: 7px 9px !important; margin: 0 !important; border: 0 !important; border-radius: 8px !important; background: #f5f7f7 !important; color: #3f514b !important; font-size: 11px !important; font-weight: 500 !important; }
-:host([data-mobile-demo]) .md-summary { position: absolute; left: 0; right: 0; bottom: calc(56px + var(--md-safe)); z-index: 80; display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 38px; box-sizing: border-box; padding: 0 16px; background: #fff; }
-:host([data-mobile-demo]) .md-product { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 12px; font-weight: 500; color: #63716b; }
-:host([data-mobile-demo]) .md-summary [data-fk-total] { flex: none; color: #263d32 !important; font-size: 18px !important; line-height: 1.2; font-weight: 750; }
-:host([data-mobile-demo]) .md-bar { position: absolute; inset: auto 0 0; z-index: 80; display: flex; align-items: center; gap: 3px; height: calc(56px + var(--md-safe)); box-sizing: border-box; padding: 5px 10px calc(5px + var(--md-safe)); background: #fff; border-top: 1px solid #edf0f1; }
-:host([data-mobile-demo]) .md-bar > button { display: inline-flex !important; align-items: center; justify-content: center; flex: 0 0 36px; width: 36px !important; min-width: 0 !important; height: 44px !important; min-height: 44px !important; margin: 0 !important; padding: 8px !important; border: 0 !important; border-radius: 9px !important; background: transparent !important; color: #4f5b62 !important; box-shadow: none !important; font-size: 11px !important; }
-:host([data-mobile-demo]) .md-bar > .md-footer-tools { flex-basis: 66px; width: 66px !important; padding: 6px !important; font-weight: 650 !important; color: #344c42 !important; }
-:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .md-bar > .completion-finish { flex: 1 1 auto; width: auto !important; min-width: 72px !important; margin-left: 4px !important; padding: 8px 12px !important; border-radius: 11px !important; background: #16834b !important; color: #fff !important; font-size: 14px !important; font-weight: 700 !important; }
-:host([data-mobile-demo]) .md-bar :is(.ux-tool-label, [data-ux-count]) { display: none !important; }
-:host([data-mobile-demo]) .md-bar > button > svg { display: block; width: 21px; height: 21px; flex: none; }
-:host([data-mobile-demo]) :is(.md-top, .md-bar, .md-tools, .md-sheet-header) button:focus-visible { outline: 2px solid var(--md-green) !important; outline-offset: 2px; }
-:host([data-mobile-demo]) :is(.md-top, .md-bar, .md-tools) button:disabled { opacity: .38; cursor: default; }
-:host([data-mobile-demo]) :is(.md-tools, .md-sheet-back, .md-controls)[hidden],
-:host([data-mobile-demo]) :is(.md-tools, .md-controls, .md-bar) [hidden] { display: none !important; }
+:host([data-mobile-demo]) .md-controls .ux-design-reset button { height: 44px !important; min-height: 44px !important; padding: 7px 10px !important; margin: 0 !important; border: 1px solid #d3e2e5 !important; border-radius: 8px !important; background: #fff !important; color: var(--md-petrol) !important; font-size: 11px !important; font-weight: 600 !important; }
+:host([data-mobile-demo]) .ux-shell .md-photo-shortcut {
+  position: absolute !important; top: calc(var(--md-preview-top) + 1px) !important; right: calc(var(--md-inspector-w) + 10px) !important;
+  z-index: 60; display: flex !important; align-items: center; justify-content: center;
+  box-sizing: border-box; width: 44px !important; min-width: 44px !important; height: 44px !important; min-height: 44px !important;
+  margin: 0 !important; padding: 10px !important; border: 1px solid #bfd7dc !important; border-radius: 10px !important;
+  background: #fff !important; color: var(--md-petrol) !important; font-size: 0 !important; box-shadow: 0 2px 8px #16353c0a !important;
+}
+:host([data-mobile-demo]) .md-photo-shortcut svg { width: 22px; height: 22px; flex: none; }
+:host([data-mobile-demo]) .md-photo-shortcut span { display: none; }
+
+/* Native non-text tools are compact; only the upper text editor is removed. */
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-preview > .ux-canvas-toolbar { display: none !important; }
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral]) .ux-shell .ux-direct-edit button { min-width: 44px !important; height: 44px !important; min-height: 44px !important; padding: 6px 9px !important; border-radius: 8px !important; color: var(--md-petrol) !important; font-size: 12px !important; }
+:host([data-mobile-demo]) .ux-shell .ux-direct-edit button svg { width: 20px; height: 20px; }
+:host([data-mobile-demo][data-demo-selected-type="text"][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-preview :is(.ux-direct-slot, .ux-direct-edit, .ux-direct-input) { display: none !important; }
+
+/* Original selected text field, followed immediately by native font and size. */
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] > :is(h2, p),
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] [data-text-options],
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-text-row:not(.md-text-active),
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-size-value > span { display: none !important; }
+:host([data-mobile-demo]) .md-text-picker { display: flex; align-items: center; gap: 6px; min-width: 0; margin: 0 0 10px; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; }
+:host([data-mobile-demo]) .md-text-picker .md-text-choice { flex: none; min-height: 44px !important; max-width: 180px; margin: 0 !important; padding: 8px 12px !important; border: 1px solid var(--md-border) !important; border-radius: 9px !important; background: #f6f8f9 !important; color: #405762 !important; font-size: 13px !important; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+:host([data-mobile-demo]) .md-text-picker .md-text-choice[aria-pressed="true"] { background: var(--md-petrol-soft) !important; border-color: #7aafb9 !important; color: var(--md-petrol-dark) !important; font-weight: 700; }
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) #ux-panel-text[data-md-text-editor] .ux-fields { display: block !important; max-width: none !important; margin: 0 !important; }
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) #ux-panel-text[data-md-text-editor] .ux-text-row.md-text-active { display: grid !important; grid-template-columns: minmax(0, 1fr) !important; gap: 6px !important; margin: 0 !important; padding: 0 !important; border: 0 !important; background: transparent !important; }
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral]) #ux-panel-text[data-md-text-editor] .ux-text-row > label { grid-column: 1 !important; grid-row: auto !important; margin: 0 !important; color: var(--md-ink) !important; font-size: 13px !important; line-height: 18px; }
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) #ux-panel-text[data-md-text-editor] .ux-text-row > textarea[data-ux-text] {
+  grid-column: 1 !important; grid-row: auto !important; box-sizing: border-box !important;
+  width: 100% !important; min-height: 90px !important; max-height: 220px !important; margin: 0 !important; padding: 12px !important;
+  border: 1.5px solid #80acb6 !important; border-radius: 10px !important; background: #fff !important; color: var(--md-ink) !important;
+  font-size: 16px !important; line-height: 1.5 !important; white-space: pre-wrap !important; overflow-wrap: anywhere !important;
+  overflow-y: auto !important; resize: vertical; box-shadow: none !important;
+}
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral]) #ux-panel-text[data-md-text-editor] textarea[data-ux-text]:focus { outline: 2px solid var(--md-petrol) !important; outline-offset: 1px !important; }
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-text-meta { grid-column: 1 !important; grid-row: auto !important; min-height: 0; margin: 0 !important; font-size: 11px; }
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-text-meta:not(:has(:not(:empty))) { display: none; }
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) #ux-panel-text[data-md-text-editor] .ux-controls:not([hidden]) { grid-column: 1 !important; grid-row: auto !important; display: grid !important; grid-template-columns: minmax(0, 1fr) !important; gap: 12px !important; margin: 10px 0 0 !important; padding: 12px 0 0 !important; border: 0 !important; border-top: 1px solid var(--md-border) !important; border-radius: 0 !important; background: transparent !important; }
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-font-row { gap: 6px; }
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-font-row button { min-height: 44px !important; border-color: #a6cbd3 !important; background: var(--md-petrol-soft) !important; color: var(--md-petrol-dark) !important; }
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-size-align { display: grid !important; grid-template-columns: minmax(0, 1fr) !important; gap: 12px !important; }
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-size-align > div { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; min-width: 0; }
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-size-align > div:has(.md-text-size-control) { display: grid; grid-template-columns: 136px minmax(0, 1fr); grid-template-rows: auto 44px; align-items: start; gap: 4px 12px; }
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-size-align > div:has(.md-text-size-control) > .ux-size-label { grid-column: 1; grid-row: 1; }
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-size-align > div:has(.md-text-size-control) > .ux-stepper { grid-column: 1; grid-row: 2; display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; width: 100%; }
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-size-align > div:has(.md-text-size-control) .ux-size-value input { width: 100% !important; min-width: 0 !important; }
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-size-label { flex: 1; margin: 0; font-size: 13px !important; }
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-stepper :is(button, input) { height: 44px !important; min-height: 44px !important; margin: 0 !important; }
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-stepper button { width: 44px !important; }
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-align { flex: 1 0 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-align button { min-width: 0 !important; min-height: 44px !important; padding: 7px 5px !important; font-size: 12px !important; }
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .md-text-size-control { grid-column: 2; grid-row: 1 / 3; display: grid; grid-template-rows: auto 44px; align-items: center; gap: 4px; min-width: 0; min-height: 44px; margin: 0; font-size: 13px !important; }
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .md-text-size-range { flex: 1; min-width: 0 !important; width: 100% !important; height: 44px !important; min-height: 44px !important; margin: 0 !important; padding: 0 !important; accent-color: var(--md-petrol); }
+:host([data-mobile-demo]) #ux-panel-text[data-md-text-editor] .ux-add { width: 100% !important; max-width: none !important; min-height: 44px !important; margin: 12px 0 0 !important; color: var(--md-petrol) !important; }
+
+/* Price above five persistent actions. Native cart remains on the far right. */
+:host([data-mobile-demo]) .md-summary {
+  position: absolute; left: 0; right: 0; bottom: calc(var(--md-bar-h) + var(--md-safe)); z-index: 80;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  box-sizing: border-box; height: var(--md-summary-h); padding: 0 14px;
+  border-top: 1px solid var(--md-border); background: #fff;
+}
+:host([data-mobile-demo]) .md-product { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 12px; font-weight: 500; color: var(--md-muted); }
+:host([data-mobile-demo]) .md-summary [data-fk-total] { flex: none; color: var(--md-ink) !important; font-size: 18px !important; line-height: 1.2; font-weight: 750; }
+:host([data-mobile-demo]) .md-summary .md-product-button {
+  position: relative !important; display: inline-flex !important; align-items: center; gap: 5px;
+  min-width: 0 !important; min-height: 32px !important; max-width: calc(100% - 100px);
+  margin: 0 !important; padding: 4px 0 !important; border: 0 !important; border-radius: 6px !important;
+  background: transparent !important; color: var(--md-petrol) !important; font-size: 12px !important; font-weight: 600 !important; box-shadow: none !important;
+}
+:host([data-mobile-demo]) .md-product-button::after { content: ''; position: absolute; inset: -6px 0; }
+:host([data-mobile-demo]) .md-product-button svg { flex: none; width: 17px; height: 17px; }
+:host([data-mobile-demo]) .md-bar {
+  position: absolute; inset: auto 0 0; z-index: 90;
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: center; gap: 4px;
+  box-sizing: border-box; height: calc(var(--md-bar-h) + var(--md-safe)); padding: 4px 7px calc(4px + var(--md-safe));
+  border-top: 1px solid #e6edef; background: #fff;
+}
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral]) .md-bar > button {
+  grid-column: auto !important; grid-row: auto !important;
+  display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  box-sizing: border-box; width: 100% !important; min-width: 0 !important; height: 50px !important; min-height: 44px !important;
+  margin: 0 !important; padding: 5px 2px !important; border: 0 !important; border-radius: 10px !important;
+  background: transparent !important; color: #536671 !important; box-shadow: none !important;
+  font-size: 11px !important; font-weight: 600 !important; line-height: 1.2 !important; white-space: nowrap !important;
+}
+:host([data-mobile-demo]) .md-bar > button > svg { display: block; width: 22px; height: 22px; flex: none; }
+:host([data-mobile-demo]) .md-bar > .md-nav:is([aria-pressed="true"], [aria-current="page"], [data-active="true"]) { background: var(--md-petrol-soft) !important; color: var(--md-petrol) !important; }
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .md-bar > .completion-finish { grid-column: 5 !important; grid-row: 1 !important; width: 100% !important; min-width: 0 !important; margin: 0 !important; padding: 5px 2px !important; border-radius: 10px !important; background: var(--md-green) !important; color: #fff !important; font-size: 10px !important; font-weight: 700 !important; }
+:host([data-mobile-demo]) .md-cart-icon { display: block; width: 22px !important; height: 22px !important; object-fit: contain; filter: invert(1); pointer-events: none; flex: none; }
+:host([data-mobile-demo]) .ux-shell .md-plus {
+  position: absolute !important; left: calc((100% - var(--md-inspector-w)) / 2) !important; right: auto !important;
+  bottom: calc(var(--md-footer-h) + 16px); z-index: 65;
+  display: inline-flex !important; align-items: center; justify-content: center; gap: 7px;
+  box-sizing: border-box; width: auto !important; min-width: 132px !important; height: 46px !important; min-height: 44px !important;
+  margin: 0 !important; padding: 10px 18px !important; border: 1px solid var(--md-petrol) !important; border-radius: 11px !important;
+  background: var(--md-petrol) !important; color: #fff !important; box-shadow: 0 4px 12px #12596526 !important;
+  font-size: 15px !important; line-height: 1.2 !important; font-weight: 700 !important; transform: translateX(-50%) !important;
+}
+:host([data-mobile-demo]:not([data-demo-sheet="closed"])) .md-plus { visibility: hidden; pointer-events: none; }
+
+/* Clear focus/hover states, preserving native hidden/disabled availability. */
+:host([data-mobile-demo]) :is(.md-top, .md-controls, .md-bar, .md-tools, .md-sheet-header, .md-text-picker) button:focus-visible,
+:host([data-mobile-demo]) :is(.md-product-button, .md-photo-shortcut, .md-plus, .md-text-size-range):focus-visible { outline: 2px solid var(--md-petrol) !important; outline-offset: 2px; }
+:host([data-mobile-demo]) :is(.md-top, .md-controls, .md-bar, .md-tools) button:disabled { opacity: .38; cursor: default; }
+:host([data-mobile-demo]) :is(.md-tools, .md-sheet-back, .md-controls, .md-photo-shortcut, .md-product-button)[hidden],
+:host([data-mobile-demo]) :is(.md-tools, .md-controls, .md-bar, .md-history) [hidden],
 :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-controls :is(.ux-view-zoom, .ux-photo-size, .ux-design-reset)[hidden] { display: none !important; }
-
-:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell > .md-plus { border-radius: 50% !important; }
-
-/* A short landscape viewport needs a side panel rather than a shallow sheet.
-   Keep the native action bar full-width; canvas controls stay with the artwork. */
-@media (min-width: 600px) and (max-height: 500px) {
-  :host([data-mobile-demo][data-demo-sheet]) {
-    width: min(100%, 900px);
-    --md-canvas-h: calc(var(--md-vh) - var(--md-header-h) - var(--md-footer-h));
-  }
-  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell {
-    width: min(100vw, 900px) !important;
-    max-width: 900px !important;
-  }
-  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]:is([data-demo-sheet="menu"], [data-demo-sheet="panel"])) .ux-shell .ux-layout > .ux-preview {
-    inset: var(--md-header-h) auto auto 0 !important;
-    width: 45% !important;
-  }
-  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]:is([data-demo-sheet="menu"], [data-demo-sheet="panel"])) .ux-shell .ux-layout > .ux-editor {
-    inset: var(--md-header-h) 0 calc(56px + var(--md-safe)) 45% !important;
-    width: auto !important;
-    border-radius: 16px 0 0 !important;
-  }
-  :host([data-mobile-demo]:is([data-demo-sheet="menu"], [data-demo-sheet="panel"])) :is(.md-controls, .md-summary) {
-    right: 55%;
-  }
+@media (hover: hover) {
+  :host([data-mobile-demo]) :is(.md-top, .md-controls, .md-tools, .md-text-picker) button:not(:disabled):hover,
+  :host([data-mobile-demo]) .md-bar > .md-nav:not(:disabled):hover { background: var(--md-petrol-soft) !important; }
+  :host([data-mobile-demo]) .ux-shell :is(.md-plus, .md-sheet-close):hover { background: var(--md-petrol-dark) !important; }
+  :host([data-mobile-demo]) .ux-shell .md-bar > .completion-finish:not(:disabled):hover { background: #0e5b36 !important; }
 }
 
+/* Wide desktop workbench, not an enlarged phone: stable canvas + inspector. */
+@media (min-width: 1000px) {
+  :host([data-mobile-demo][data-demo-sheet]) {
+    --md-header-h: 56px; --md-controls-h: 56px; --md-bar-h: 64px; --md-summary-h: 36px;
+    --md-inspector-w: clamp(360px, 29vw, 420px);
+    --md-canvas-h: calc(var(--md-vh) - var(--md-preview-top) - var(--md-footer-h));
+    --md-sheet-top: var(--md-preview-top);
+  }
+  :host([data-mobile-demo]) .md-top { padding: 0 22px; gap: 10px; }
+  :host([data-mobile-demo]) .md-brand { font-size: 23px; }
+  :host([data-mobile-demo]) .md-badge { max-width: none; padding: 5px 8px; font-size: 11px; }
+  :host([data-mobile-demo]) .md-history { gap: 4px; }
+  :host([data-mobile-demo]) .md-controls { padding: 6px 24px; gap: 10px; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-editor { inset: var(--md-sheet-top) 0 var(--md-footer-h) auto !important; width: var(--md-inspector-w) !important; border-radius: 0 !important; border-right: 0 !important; box-shadow: -4px 0 20px #18313c08; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-preview .stage:not(.acryl-scene) { padding: 50px 38px 36px !important; }
+  :host([data-mobile-demo]) .ux-shell .ux-preview :is(.dimension-x, .dimension-y) span { font-size: 12px !important; line-height: 16px !important; }
+  :host([data-mobile-demo]) .md-sheet-header { min-height: 58px; padding: 7px 12px; }
+  :host([data-mobile-demo]) .md-sheet-header h2 { font-size: 16px !important; }
+  :host([data-mobile-demo]) .md-tools { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  :host([data-mobile-demo]) .md-tools .md-tool { min-height: 100px !important; font-size: 14px !important; }
+  :host([data-mobile-demo]) .md-summary { padding: 0 24px; }
+  :host([data-mobile-demo]) .md-summary .md-product-button { font-size: 14px !important; }
+  :host([data-mobile-demo]) .md-bar { gap: 8px; padding: 6px 20px calc(6px + var(--md-safe)); }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral]) .md-bar > button { flex-direction: row; gap: 10px; height: 52px !important; font-size: 14px !important; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .md-bar > .completion-finish { font-size: 14px !important; }
+  :host([data-mobile-demo]) .md-bar > button > svg { width: 24px; height: 24px; }
+}
+
+/* A short landscape phone gets a side inspector instead of a shallow sheet. */
+@media (min-width: 600px) and (max-width: 999px) and (max-height: 550px) {
+  :host([data-mobile-demo][data-demo-sheet]) {
+    --md-controls-h: 48px; --md-bar-h: 50px; --md-summary-h: 28px;
+    --md-inspector-w: 47%;
+    --md-canvas-h: calc(var(--md-vh) - var(--md-preview-top) - var(--md-footer-h));
+    --md-sheet-top: var(--md-preview-top);
+  }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-editor { inset: var(--md-sheet-top) 0 var(--md-footer-h) auto !important; width: var(--md-inspector-w) !important; border-radius: 12px 0 0 !important; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral]) .md-bar > button { height: 44px !important; flex-direction: row; gap: 7px; }
+  :host([data-mobile-demo]) .md-tools { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-preview .stage:not(.acryl-scene) { padding: 44px 24px 24px !important; }
+}
+
+/* Real keyboard shrink: 360x400 => 32px header + 100px canvas + 48px footer,
+   leaving 220px for the scrolling inspector and a minimum 90px textarea. */
+:host([data-mobile-demo][data-demo-keyboard]) {
+  --md-header-h: 32px; --md-controls-h: 0px; --md-bar-h: 48px; --md-summary-h: 0px;
+  --md-safe: 0px; --md-inspector-w: 0px;
+  --md-canvas-h: clamp(90px, calc(var(--md-vh) * .25), 125px);
+  --md-sheet-top: calc(var(--md-preview-top) + var(--md-canvas-h));
+}
+:host([data-mobile-demo][data-demo-keyboard]) :is(.md-controls, .md-product-button, .md-history, .md-badge, .md-summary, .md-photo-shortcut, .md-plus) { display: none !important; }
+:host([data-mobile-demo][data-demo-keyboard]) .md-top { justify-content: space-between; }
+:host([data-mobile-demo][data-demo-keyboard][data-ux-layout][data-ux-neutral]) .md-top button { height: 32px !important; min-height: 32px !important; padding: 5px !important; }
+:host([data-mobile-demo][data-demo-keyboard][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-preview .stage:not(.acryl-scene) { padding: 6px 20px 18px !important; }
+:host([data-mobile-demo][data-demo-keyboard]) .ux-shell .ux-preview :is(.dimension-x, .dimension-y) span { font-size: 8px !important; line-height: 10px !important; }
+:host([data-mobile-demo][data-demo-keyboard]) .ux-shell .ux-preview .ux-overlap-note { font-size: 8px !important; line-height: 10px !important; }
+:host([data-mobile-demo][data-demo-keyboard][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-editor { inset: var(--md-sheet-top) 0 var(--md-footer-h) !important; width: 100% !important; padding-bottom: 8px !important; border-radius: 12px 12px 0 0 !important; }
+:host([data-mobile-demo][data-demo-keyboard]) .md-sheet-header { min-height: 40px; padding: 2px 10px; }
+:host([data-mobile-demo][data-demo-keyboard]) .md-sheet-header button { min-height: 36px !important; padding: 5px 8px !important; }
+:host([data-mobile-demo][data-demo-keyboard]) .md-sheet-header h2 { font-size: 13px !important; }
+:host([data-mobile-demo][data-demo-keyboard][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-editor #ux-panel-text { padding: 6px 12px 12px !important; }
+:host([data-mobile-demo][data-demo-keyboard]) .md-text-picker { margin-bottom: 6px; }
+:host([data-mobile-demo][data-demo-keyboard]) .md-text-picker .md-text-choice { padding: 6px 10px !important; }
+:host([data-mobile-demo][data-demo-keyboard][data-ux-layout][data-ux-neutral][data-ux-modern]) #ux-panel-text[data-md-text-editor] .ux-text-row > textarea[data-ux-text] { min-height: 90px !important; max-height: 140px !important; padding: 8px 10px !important; }
+:host([data-mobile-demo][data-demo-keyboard]) .md-bar { gap: 3px; padding: 2px 6px; }
+:host([data-mobile-demo][data-demo-keyboard][data-ux-layout][data-ux-neutral]) .md-bar > button { flex-direction: column; gap: 2px; height: 44px !important; min-height: 44px !important; padding: 3px 2px !important; font-size: 10px !important; }
+:host([data-mobile-demo][data-demo-keyboard]) .md-bar > button > svg,
+:host([data-mobile-demo][data-demo-keyboard]) .md-cart-icon { width: 19px !important; height: 19px !important; }
+
 @media (max-width: 359px) {
-  :host([data-mobile-demo]) .md-bar { padding-left: 6px; padding-right: 6px; gap: 1px; }
-  :host([data-mobile-demo]) .md-bar > button { flex-basis: 32px; width: 32px !important; padding: 6px !important; }
-  :host([data-mobile-demo]) .md-bar > .md-footer-tools { flex-basis: 59px; width: 59px !important; }
-  :host([data-mobile-demo]) .md-controls { gap: 5px; padding-left: 8px; padding-right: 8px; }
-  :host([data-mobile-demo]) .md-tools { gap: 7px; padding: 12px; }
+  :host([data-mobile-demo]) .md-badge { display: none; }
+  :host([data-mobile-demo]) .md-controls { gap: 4px; padding-left: 8px; padding-right: 8px; }
+  :host([data-mobile-demo]) .md-tools { gap: 7px; padding: 10px; }
+  :host([data-mobile-demo]) .md-bar { gap: 2px; padding-left: 4px; padding-right: 4px; }
 }
 @media (prefers-reduced-motion: reduce) {
   :host([data-mobile-demo]) .ux-shell .ux-layout > :is(.ux-preview, .ux-editor) { transition: none !important; }

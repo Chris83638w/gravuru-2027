@@ -27,7 +27,7 @@ function fixture(t){
  write('app/platform/sources/app/shared/models/geometry.mjs','export const width=220;');
  write('app/workshop/theme-limits.mjs','export const limits={};');write('app/workshop/process-profiles.mjs','export const profiles=[];');
  write('app/designs/acrylic-unser-anfang/base.webp','base');
- write('app/configurator/mobile-demo/demo.mjs','if(window.GravuruMobileDemo)window.demoLoaded=true;');write('app/configurator/mobile-demo/demo.css',':host{color:#111}');
+ write('app/configurator/mobile-demo/demo.mjs','if(window.GravuruMobileDemo)window.demoLoaded=true;');write('app/configurator/mobile-demo/demo.css',':host{color:#111}');write('app/configurator/mobile-demo/text-editor.mjs','export const installDemoTextEditor=()=>null;');write('app/configurator/mobile-demo/shopping-cart.svg','<svg/>');
  const font={label:'Real Font',regular:{units:1000,glyphs:{A:{d:'M0 0L500 1000',a:500},'ä':{d:'M3 4L5 6',a:510}}},bold:{units:1000,glyphs:{A:{d:'M1 0L501 1000',a:510}}}};
  const designs=Array.from({length:43},(_,i)=>({id:'original-'+i,objects:[{id:'text-1',type:'text',text:'Bruno '+i,font:'Real Font',x:10+i,y:22}]}));
  const profile={id:'original-product',revision:'original-product:2',binding:{kind:'local-review',productId:'original-product'},material:{kind:'slate'},designs,geometry:{width:220,height:140},features:{orderEnabled:false}};

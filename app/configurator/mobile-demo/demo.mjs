@@ -116,7 +116,7 @@ export async function installMobileDemo(el, config = window.UniversalConfig) {
     if (key !== 'menu') { if (!nativeAlreadyShown) el.uxShowSection(key); editor.scrollTop = 0; }
     plus.setAttribute('aria-expanded', 'true');
     if (focus) close.focus({ preventScroll: true });
-    textEditor?.refresh();
+    if(key === 'text') textEditor?.activate(); else textEditor?.refresh();
     resize();
     return true;
   }

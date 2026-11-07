@@ -271,6 +271,19 @@ test('a later canvas selection is not overwritten by refresh and does not focus 
   assert.equal(f.el.state.selected,'motif'); assert.equal(f.controls.hidden,true); assert.equal(f.range.disabled,true); assert.equal(f.byId('name').focusCalls,0);
 });
 
+test('explicit sheet re-entry restores controls after reset even if the native text panel stayed visible',t => {
+  const f = fixture(t); f.open(); assert.equal(f.panel.hidden,false); assert.equal(f.controls.hidden,false);
+  f.el.dataset.demoSheet = 'closed'; f.el.state.selected = null; f.el.sync(); f.flush();
+  assert.equal(f.panel.hidden,false,'closing only the demo sheet leaves the native panel selected');
+  assert.equal(f.el.state.selected,null); assert.equal(f.controls.hidden,true);
+  f.el.dataset.demoSheet = 'panel'; f.api.activate(); f.flush();
+  assert.equal(f.el.state.selected,'name'); assert.equal(f.controls.hidden,false);
+  assert.equal(f.byId('name').focusCalls,0); assert.equal(f.el.history.length,0);
+  f.choice('quote').click(); f.flush(); const selections = f.calls.filter(c => c[0] === 'native-select').length;
+  f.api.activate(); f.flush(); assert.equal(f.el.state.selected,'quote');
+  assert.equal(f.calls.filter(c => c[0] === 'native-select').length,selections,'entry preserves an existing selected text');
+});
+
 test('the existing double-tap hook opens the lower text panel without its upper input or keyboard',t => {
   const f = fixture(t); assert.equal(f.el.uxTextTap,f.nativeTap); f.full.open = true;
   f.el.uxTextTap('quote'); assert.equal(f.panel.hidden,true);

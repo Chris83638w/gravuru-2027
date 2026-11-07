@@ -126,7 +126,12 @@ export function installDemoTextEditor(el, {onFocusChange} = {}) {
   el.uxEditText = edit;
   const observer = new MutationObserver(refresh);
   observer.observe(panel,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','disabled','readonly','min','max','step']});
-  const api = {refresh,dispose() {
+  const api = {refresh,activate() {
+    if (disposed) return;
+    // Closing the demo sheet does not hide the native panel. Explicit entry
+    // therefore needs its own signal, separate from ordinary model refreshes.
+    visible = false; refresh();
+  },dispose() {
     if (disposed) return;
     disposed = true; observer.disconnect(); cleanups.forEach(fn => fn());
     if (el.uxUpdateTextUI === update) {

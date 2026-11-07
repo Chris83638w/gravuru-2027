@@ -70,6 +70,16 @@ class ActivationTests(unittest.TestCase):
         file.write_bytes(value if isinstance(value, bytes) else (json.dumps(value) + '\n').encode())
         file.chmod(0o600)
 
+    def supplement(self):
+        backup = self.stage / ('preview-supplement-' + 'b' * 16)
+        self.write(self.gallery / 'files-sha256.json', {'files': []})
+        fields = {'archiveSha256': 'b' * 64, 'manifestSha256': 'c' * 64, 'preparationProofSha256': 'd' * 64, 'previousGalleryManifestSha256': 'e' * 64, 'galleryManifestSha256': self.proof['galleryManifestSha256'], 'galleryIndexSha256': module.digest(self.gallery / 'files-sha256.json'), 'previewsAdded': 2, 'blocked': 1}
+        report = {'schema': 'gravuru-complete-gallery-preview-install/v1', 'ready': True, 'activated': False, 'sourceCommit': self.commit, 'gallery': str(self.gallery), 'backup': str(backup), 'originalsTargetsAndNativeFilesPreserved': True, 'activeMappingPreserved': True, 'configurationWrites': 0, 'databaseWrites': 0, 'shopifyWrites': 0, **fields}
+        file = backup / 'SUPPLEMENT-READY.json'; self.write(file, report)
+        self.proof['supplementProof'] = {**fields, 'file': str(file), 'sha256': module.digest(file)}
+        self.write(self.stage / 'STAGE-READY.json', self.proof)
+        return file, report
+
     def test_atomic_mapping_and_sqlite_backups_preserve_all_active_databases_and_edits(self):
         before = {p.name: module.digest(p) for p in self.data.glob('*.sqlite')}
         receipt = module.activate(self.args)
@@ -79,6 +89,12 @@ class ActivationTests(unittest.TestCase):
         self.assertEqual(receipt['counts']['addedMappedGroups'], 1)
         self.assertEqual(module.digest(self.backup / 'previous-local-review-import.json'), self.proof['beforeMappingSha256'])
         self.assertEqual(json.loads((self.backup / 'ACTIVATION-RECEIPT.json').read_text()), receipt)
+        marker = json.loads((self.stage / 'ACTIVATED.json').read_text())
+        self.assertEqual(marker['mappingSha256'], self.proof['mappingSha256'])
+        self.assertEqual(marker['receiptSha256'], module.digest(self.backup / 'ACTIVATION-RECEIPT.json'))
+        self.assertTrue(receipt['rollback']['requiresStageMetadataLock'])
+        with self.assertRaisesRegex(ValueError, 'already activated'):
+            module.activate(self.args)
         summary = json.loads((self.backup / 'product-heads.json').read_text())
         self.assertIn(['gravuru', 'cfg_old', 2, None, 0], summary['heads'])
         for name in module.DATABASES:
@@ -91,6 +107,67 @@ class ActivationTests(unittest.TestCase):
             with self.assertRaises(BlockingIOError):
                 module.activate(self.args)
         self.assertFalse(self.backup.exists()); self.assertEqual(module.digest(self.data / module.MAPPING), self.proof['beforeMappingSha256'])
+
+    def test_preview_metadata_lock_excludes_activation_before_any_proof_read(self):
+        with module.metadata_lock(), patch.object(module, 'verify_stage') as verify:
+            with self.assertRaises(BlockingIOError):
+                module.activate(self.args)
+            verify.assert_not_called()
+        self.assertFalse(self.backup.exists())
+        self.assertEqual(module.digest(self.data / module.MAPPING), self.proof['beforeMappingSha256'])
+        self.assertEqual((self.stage / '.metadata.lock').stat().st_mode & 0o777, 0o600)
+        with module.metadata_lock():
+            pass
+
+    def test_metadata_lock_remains_held_through_all_proof_checks_and_mapping_commit(self):
+        verify, replace = module.verify_stage, os.replace
+        checked = []
+        def prove_locked(phase):
+            with (self.stage / '.metadata.lock').open('r+b') as rival:
+                with self.assertRaises(BlockingIOError):
+                    fcntl.flock(rival, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            checked.append(phase)
+        def guarded_verify(args):
+            prove_locked('proof')
+            return verify(args)
+        def guarded_replace(source, target):
+            prove_locked('replace:' + Path(target).name)
+            return replace(source, target)
+        with patch.object(module, 'verify_stage', side_effect=guarded_verify), patch.object(module.os, 'replace', side_effect=guarded_replace):
+            module.activate(self.args)
+        self.assertEqual(checked.count('proof'), 3)
+        for name in (module.MAPPING, 'ACTIVATION-RECEIPT.json', 'ACTIVATED.json'):
+            self.assertIn('replace:' + name, checked)
+        with module.metadata_lock():
+            pass
+
+    def test_linked_or_nonprivate_stage_lock_is_rejected(self):
+        target = self.stage / '.metadata.lock'; target.symlink_to(self.data / '.runtime.lock')
+        with self.assertRaisesRegex(ValueError, 'Linked metadata lock'):
+            module.activate(self.args)
+        target.unlink(); self.write(target, b''); target.chmod(0o644)
+        with self.assertRaisesRegex(ValueError, 'Private permissions'):
+            module.activate(self.args)
+        self.assertFalse(self.backup.exists())
+
+    def test_valid_preview_supplement_is_pinned_in_the_activation_evidence(self):
+        file, _ = self.supplement()
+        receipt = module.activate(self.args)
+        self.assertEqual(receipt['stageProofSha256'], module.digest(self.stage / 'STAGE-READY.json'))
+        retained = json.loads((self.backup / 'STAGE-READY.json').read_text())
+        self.assertEqual(retained['supplementProof']['sha256'], module.digest(file))
+
+    def test_changed_supplement_report_or_gallery_index_cannot_activate(self):
+        file, report = self.supplement()
+        self.write(file, {**report, 'previewsAdded': 3})
+        with self.assertRaisesRegex(ValueError, 'supplement report changed'):
+            module.activate(self.args)
+        self.write(file, report)
+        self.write(self.gallery / 'files-sha256.json', {'changed': True})
+        with self.assertRaisesRegex(ValueError, 'supplement gallery changed'):
+            module.activate(self.args)
+        self.assertFalse(self.backup.exists())
+        self.assertEqual(module.digest(self.data / module.MAPPING), self.proof['beforeMappingSha256'])
 
     def test_wrong_mapping_commit_or_active_config_fails_before_backup(self):
         self.args.commit = 'b' * 40
@@ -136,6 +213,23 @@ class ActivationTests(unittest.TestCase):
         self.assertFalse((self.backup / 'ACTIVATION-RECEIPT.json').exists())
         self.assertTrue((self.backup / 'ACTIVATION-PREPARED.json').exists())
         with module.runtime_lock():
+            pass
+        with module.metadata_lock():
+            pass
+
+    def test_marker_failure_rolls_back_mapping_receipt_and_releases_both_locks(self):
+        replace = os.replace
+        def fail_marker(source, target):
+            if Path(target) == self.stage / 'ACTIVATED.json':
+                raise OSError('simulated marker failure')
+            return replace(source, target)
+        with patch.object(module.os, 'replace', side_effect=fail_marker):
+            with self.assertRaisesRegex(OSError, 'simulated marker failure'):
+                module.activate(self.args)
+        self.assertEqual(module.digest(self.data / module.MAPPING), self.proof['beforeMappingSha256'])
+        self.assertFalse((self.backup / 'ACTIVATION-RECEIPT.json').exists())
+        self.assertFalse((self.stage / 'ACTIVATED.json').exists())
+        with module.metadata_lock(), module.runtime_lock():
             pass
 
     def test_running_native_write_during_backup_cannot_be_overwritten(self):

@@ -1,0 +1,74 @@
+{
+  "schema": "gravuru-source-preview-supplement-final-proof/v1",
+  "sourceCommit": "86c1ff5f431acfe60d4cff388958112187005550",
+  "readOnly": true,
+  "counts": {
+    "requested": 3388,
+    "rendered": 3353,
+    "existingOriginalPreviews": 35,
+    "available": 3388,
+    "blocked": 0,
+    "pending": 0,
+    "renderingBlockers": 8
+  },
+  "indexFilesVerified": 3390,
+  "originalSourcesVerified": 3388,
+  "fontReferencesVerified": 6296,
+  "photoReferencesVerified": 1565,
+  "byteIdenticalOriginalPngsVerified": 35,
+  "totalIndexedBytes": 275058506,
+  "finalGalleryOriginals": 19661,
+  "visibleAfterSupplement": 19602,
+  "remainingMissingSourceImages": 59,
+  "manifestSha256": "fdec72621d29104d8f8a830233e2a55722ae3cc040c52fb1d2e86baafa7d2379",
+  "filesIndexSha256": "7d3e81ace6c63fd28d1df3ad0bb1077157bffb263692d4dccee191ba28e5be49",
+  "backgrounds": {
+    "#ffffff": 3236,
+    "#252a31": 117,
+    "unchanged-original-png": 35
+  },
+  "renderingBlockers": [
+    {
+      "originalId": "GT-S-30x20-D80",
+      "reason": "Legacy source font mapping not resolved",
+      "coveredByExistingOriginalPreview": true
+    },
+    {
+      "originalId": "GT-S-30x20-D97",
+      "reason": "Legacy source font mapping not resolved",
+      "coveredByExistingOriginalPreview": true
+    },
+    {
+      "originalId": "GTSK-S-30x20-D2",
+      "reason": "Legacy source font mapping not resolved",
+      "coveredByExistingOriginalPreview": true
+    },
+    {
+      "originalId": "GT-S-30x20-D203",
+      "reason": "Legacy source font mapping not resolved",
+      "coveredByExistingOriginalPreview": true
+    },
+    {
+      "originalId": "GT-S-30x20-D227",
+      "reason": "Legacy source font mapping not resolved",
+      "coveredByExistingOriginalPreview": true
+    },
+    {
+      "originalId": "GT-S-30x20-D264",
+      "reason": "Legacy source font mapping not resolved",
+      "coveredByExistingOriginalPreview": true
+    },
+    {
+      "originalId": "GT-S-30x20-D271",
+      "reason": "Legacy source font mapping not resolved",
+      "coveredByExistingOriginalPreview": true
+    },
+    {
+      "originalId": "GTSK-S-30x20-D4",
+      "reason": "page.evaluate: Error: Font lacks source glyph Segoe UI Emoji U+2B50",
+      "coveredByExistingOriginalPreview": true
+    }
+  ],
+  "errors": [],
+  "passed": true
+}

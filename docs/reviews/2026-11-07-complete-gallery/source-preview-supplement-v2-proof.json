@@ -1,0 +1,73 @@
+{
+  "schema": "gravuru-source-preview-supplement-v2-final-proof/v1",
+  "sourceCommit": "86c1ff5f431acfe60d4cff388958112187005550",
+  "catalogueCommit": "3c6051fbbc7904969948950fae12cae2ae663f30",
+  "readOnly": true,
+  "counts": {
+    "requested": 3447,
+    "rendered": 3353,
+    "existingOriginalPreviews": 35,
+    "available": 3447,
+    "blocked": 0,
+    "pending": 0,
+    "renderingBlockers": 8,
+    "pinnedCataloguePreviews": 59
+  },
+  "indexFilesVerified": 3523,
+  "totalIndexedBytes": 283453768,
+  "gitObjectsVerified": 73,
+  "gitRootTree": "effcdb327b9782c6900a39e98fc36f3688300f89",
+  "byteIdenticalPinnedCatalogueImagesVerified": 59,
+  "priorV1Preserved": true,
+  "priorManifestSha256": "fdec72621d29104d8f8a830233e2a55722ae3cc040c52fb1d2e86baafa7d2379",
+  "manifestSha256": "3221955808592c83cd5ad9eb8bef257b7956d9c5d9e423d2856ccac12e05502d",
+  "filesIndexSha256": "454993e85cd46a10e56ee46e4673b9d306abcff0eb3688c73882c0ee4fa1b235",
+  "galleryOriginals": 19661,
+  "visibleAfterSupplement": 19661,
+  "remainingWithoutImage": 0,
+  "sourceDeliveryFinding": "All 59 PNGs and design.json existed in commit86c1; supplier dateien:[] excluded them because consolidated design.svg is missing. Original catalogue PNGs are copied unchanged, not regenerated.",
+  "renderingBlockers": [
+    {
+      "originalId": "GT-S-30x20-D80",
+      "reason": "Legacy source font mapping not resolved",
+      "coveredByExistingOriginalPreview": true
+    },
+    {
+      "originalId": "GT-S-30x20-D97",
+      "reason": "Legacy source font mapping not resolved",
+      "coveredByExistingOriginalPreview": true
+    },
+    {
+      "originalId": "GTSK-S-30x20-D2",
+      "reason": "Legacy source font mapping not resolved",
+      "coveredByExistingOriginalPreview": true
+    },
+    {
+      "originalId": "GT-S-30x20-D203",
+      "reason": "Legacy source font mapping not resolved",
+      "coveredByExistingOriginalPreview": true
+    },
+    {
+      "originalId": "GT-S-30x20-D227",
+      "reason": "Legacy source font mapping not resolved",
+      "coveredByExistingOriginalPreview": true
+    },
+    {
+      "originalId": "GT-S-30x20-D264",
+      "reason": "Legacy source font mapping not resolved",
+      "coveredByExistingOriginalPreview": true
+    },
+    {
+      "originalId": "GT-S-30x20-D271",
+      "reason": "Legacy source font mapping not resolved",
+      "coveredByExistingOriginalPreview": true
+    },
+    {
+      "originalId": "GTSK-S-30x20-D4",
+      "reason": "page.evaluate: Error: Font lacks source glyph Segoe UI Emoji U+2B50",
+      "coveredByExistingOriginalPreview": true
+    }
+  ],
+  "errors": [],
+  "passed": true
+}

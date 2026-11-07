@@ -1,0 +1,2200 @@
+{
+  "schema": "gravuru-missing-delivered-original-resources/v1",
+  "sourceCommit": "86c1ff5f431acfe60d4cff388958112187005550",
+  "readOnly": true,
+  "derivation": "Actual canonical gallery union minus prepared native targets, declared source previews, verified existing original raster files and finalized supplemental previews; not derived from an expected count.",
+  "finding": "These 59 cards lack delivered gallery resources. The pinned catalogue still contains original PNG previews and design.json. The batch manifest listed dateien:[] because the consolidated design.svg is absent. Do not report these as 59 wholly missing catalogue originals.",
+  "provenance": {
+    "baseManifestSha256": "adf73fee5050692402fe8f34e1e89f30c648c1cc11f18dc1dafd4a05c37cd78e",
+    "addonManifestSha256": "005ffca60d4dcf6b050d6ca6cea6bf8271b6b38cd1e51b09b18b20f0457b9949",
+    "supplementManifestSha256": "fdec72621d29104d8f8a830233e2a55722ae3cc040c52fb1d2e86baafa7d2379"
+  },
+  "counts": {
+    "canonicalGalleryOriginals": 19661,
+    "supplementPreviews": 3388,
+    "remainingGalleryPreviewGaps": 59,
+    "sourceFilesChecked": 236,
+    "sourceDesignSvgPresent": 0,
+    "sourceDesignJsonPresent": 59,
+    "sourcePreviewPngPresent": 59,
+    "sourceProductJsonPresent": 22
+  },
+  "groups": [
+    {
+      "batchId": "B-gedenktafeln--menschen",
+      "count": 34
+    },
+    {
+      "batchId": "B-gedenktafeln--sternenkinder",
+      "count": 1
+    },
+    {
+      "batchId": "B-gedenktafeln--tiere",
+      "count": 24
+    }
+  ],
+  "deliveryEvidence": [
+    {
+      "batchId": "B-gedenktafeln--menschen",
+      "file": "auftraege/2026-11-06-gesamtbestand/stapel/B-gedenktafeln--menschen/manifest.json",
+      "sha256": "97f4188340d88d3fbb5e3f79e09d74b3ff99b5666c7a4e81a95b8e989828ee63"
+    },
+    {
+      "batchId": "B-gedenktafeln--sternenkinder",
+      "file": "auftraege/2026-11-06-gesamtbestand/stapel/B-gedenktafeln--sternenkinder/manifest.json",
+      "sha256": "4bfb988b451573bb235cc0c65e781bd095499d6b5d87d444d7b8ae7be04dd13a"
+    },
+    {
+      "batchId": "B-gedenktafeln--tiere",
+      "file": "auftraege/2026-11-06-gesamtbestand/stapel/B-gedenktafeln--tiere/manifest.json",
+      "sha256": "bca1ebefd8783ca6271490342060779b09c3ee1c5a2a7866bbcb6b49bda82226"
+    }
+  ],
+  "rows": [
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-acryl-D16",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D16",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D16/design.json",
+          "present": true,
+          "bytes": 3364,
+          "sha256": "626a5deff66bb1bf0212ca95fdc5d226fc678660129f7621431e6fc2922fa6c0",
+          "gitBlob": "6a226bf6cdc0f14f7acba07cbdce4b35e7e4ef8a"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D16/preview.png",
+          "present": true,
+          "bytes": 231698,
+          "sha256": "87bad7fa15ec35d2274e27022366ce36f118ae8f9b515f367a0d203d8ac82243",
+          "gitBlob": "921ea4007096809c62bf220642981d8a95ed2837"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D16/product.json",
+          "present": true,
+          "bytes": 9913,
+          "sha256": "d034563ec569bddefc1b6e11d7cd0316ae7853760afac913f303654be70c42fc",
+          "gitBlob": "bfaaeb69c0ad580ac9d878d653065fd3e65298b2"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D16/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-acryl-D17",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D17",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D17/design.json",
+          "present": true,
+          "bytes": 3388,
+          "sha256": "1e8ee35a5f91b9306db6f8d2bd3f81aa88a0438445f14e70fc9b29609a082dbc",
+          "gitBlob": "05402e94b864b96b4dba55a0da5e6602c1079409"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D17/preview.png",
+          "present": true,
+          "bytes": 298289,
+          "sha256": "fd98c73724c084b3362b53b423b9e3fc74fda108e87e0154d19e0a91f11ecfc8",
+          "gitBlob": "1a0304e32fecf63dd7de1acaf5387d6eecc31989"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D17/product.json",
+          "present": true,
+          "bytes": 9934,
+          "sha256": "a31dce5539926fab7f0fc55b35a157ac1a85f62fa0d7635431d279bf1063bea8",
+          "gitBlob": "6dd7b8a2dacbc3a6869cb7bf546c6285dc76f960"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D17/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-acryl-D18",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D18",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D18/design.json",
+          "present": true,
+          "bytes": 3706,
+          "sha256": "a409503f5e7c74da7bd0812be964f83e7d2bbe0abfb877dc5f141d08f6cd0115",
+          "gitBlob": "bc7754dfe9681ca46a90f16d51cc1850beb2c72c"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D18/preview.png",
+          "present": true,
+          "bytes": 175703,
+          "sha256": "a700e5421af1014abcb44393740c996a8eaced5d70be85f5b4f6216372a1fa6f",
+          "gitBlob": "84d43afa0b986d475acdf858ab5367b065c2fe8a"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D18/product.json",
+          "present": true,
+          "bytes": 10309,
+          "sha256": "8d1c934eef75f2c744a6c5193da8947e1dd233d01ac156e7a3bfa6dba0cde1af",
+          "gitBlob": "e16238118dc344b2e1a51749f2d4a4c13cf55fe8"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D18/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-acryl-D6",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D6",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D6/design.json",
+          "present": true,
+          "bytes": 4632,
+          "sha256": "de43bf37a8c60c37e5e1445c8b5d8d4d791b122c81ec3301668018d3eb61579d",
+          "gitBlob": "8783e00bb6e3eae1c70fbada1a92629b594aca01"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D6/preview.png",
+          "present": true,
+          "bytes": 138703,
+          "sha256": "3a91c02ba2dc067b56ee7fbd94f21b4b90e647b296ce28fc0f1a0b6f40e151f2",
+          "gitBlob": "0da710c95ce43361db248ff97cf4cd6716a81a12"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D6/product.json",
+          "present": true,
+          "bytes": 13611,
+          "sha256": "f5c7224a99b0bafe9cbe3e15fa492b3c2018c023103ba88f9484579566ce2df7",
+          "gitBlob": "2cb8cc230b66b7ca2b887f45ac766b6500fa24b6"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D6/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-acryl-D7",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D7",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D7/design.json",
+          "present": true,
+          "bytes": 3854,
+          "sha256": "408dabe808831edfb4f27c2bd7eb1008e43a322d5b947accf45329ef3f8868da",
+          "gitBlob": "40e715014ad3afe35362ac3dbe09889a0895a4b5"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D7/preview.png",
+          "present": true,
+          "bytes": 183282,
+          "sha256": "3a3041199bf2765ac624230fe2ff2e8dfbc160f59f5a1121e2e60323f2ebdb64",
+          "gitBlob": "b6e989b87f013b779fbaf442e2ba91e5f64815f0"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D7/product.json",
+          "present": true,
+          "bytes": 11098,
+          "sha256": "e71f740a915f2fc1be8a83165fba21f5f72d49cce92fe851c0e0c07c9b507861",
+          "gitBlob": "ccf6e30a55281740a18906234963886aa1697a56"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-acryl-D7/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D1",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D1",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D1/design.json",
+          "present": true,
+          "bytes": 1671,
+          "sha256": "e28e28c87ee9056061e6bfa9c682fed1cc29bbd628a06866cdcfab06a1520a97",
+          "gitBlob": "6cf8cd5e775e08062b53b3efcb629a4664cd05ea"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D1/preview.png",
+          "present": true,
+          "bytes": 65002,
+          "sha256": "5950ec4f38cb2b56abac4a283a09643302fe5eecaf2132ab3d5564cfb7aefd4f",
+          "gitBlob": "34262d1d52a4f8bc0253723ff4b9c8d83110fbd9"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D1/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D10",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D10",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D10/design.json",
+          "present": true,
+          "bytes": 1258,
+          "sha256": "b10ba9b847639b9d654d1a0bc8e9feb6485270508f796b140e0a1009a8f9afd8",
+          "gitBlob": "6fe20b297a39142b4c8391954e0929e26ae5d605"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D10/preview.png",
+          "present": true,
+          "bytes": 32025,
+          "sha256": "d3684955e4456321d5b789fa3b5ec221cdeaafd6e592743b91b0c58e38b2795c",
+          "gitBlob": "1d3584908bac25633b74c0f42c03236bb21ee064"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D10/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D11",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D11",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D11/design.json",
+          "present": true,
+          "bytes": 1256,
+          "sha256": "09b4d6ad2f02765be58822e38f0320ae5b4ef55e253def5fbf8b453f7893273e",
+          "gitBlob": "f2e2101758d57b87a36e92468942a90af599f6aa"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D11/preview.png",
+          "present": true,
+          "bytes": 83287,
+          "sha256": "021b950fc8d2402ada54e5d9bf11045b85eceefd1969064630071e3a583631d5",
+          "gitBlob": "3830b1c278c53506b9e265a25acf6fbff2f02a26"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D11/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D12",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D12",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D12/design.json",
+          "present": true,
+          "bytes": 1893,
+          "sha256": "85c6da4bf71ebbd5e2a7d21ab3d1d54c67b3f5f4f7a624a5374c06c4293184d6",
+          "gitBlob": "d48beb079f14e03d336559b733a27aa9379bc47c"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D12/preview.png",
+          "present": true,
+          "bytes": 111343,
+          "sha256": "a7d11c08be3eb1b2362994ca61e5a8a563c1062fdecf5dabbb746189cd28fa13",
+          "gitBlob": "6a70d5ecddb6b2cef9164e717dc3683fc7f5c432"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D12/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D3",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D3",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D3/design.json",
+          "present": true,
+          "bytes": 1249,
+          "sha256": "b127339a44048830f9faa9178e047e080cda60f2f26d0faa41b2191e5359b2f0",
+          "gitBlob": "a1d4718e98207ecf9e2f8bdb0cc701751e9031b6"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D3/preview.png",
+          "present": true,
+          "bytes": 95888,
+          "sha256": "5e661bbea505c9289125cee0b33ec0d40029cab3738d6363f12205ee320efd6f",
+          "gitBlob": "ef31ccd73f4ec72cee4bdb91dc2d42f83b3d8080"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D3/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D4",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D4",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D4/design.json",
+          "present": true,
+          "bytes": 1434,
+          "sha256": "6920b9fda287dfd0cfc10ae2f8182bed5b33a080a4b2ea5802d6f7c19c75e59d",
+          "gitBlob": "0a59db86fd0361d75efd1d3e29ebe70a59c2d9b6"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D4/preview.png",
+          "present": true,
+          "bytes": 86651,
+          "sha256": "fb644419b2053030c96950fd29407e28b400478e2fe22f68ef7272ae086aac79",
+          "gitBlob": "d61f72f1f7c09e0bd08ce2e7d0f81454d8ac9c25"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D4/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D5",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D5",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D5/design.json",
+          "present": true,
+          "bytes": 1249,
+          "sha256": "5043cc259e84e3cef22817a07b5596cdeb163cfbfa7f5ce90ed92143d8e595ec",
+          "gitBlob": "c3852c093ea8631d10bf511831876895b9bdfb53"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D5/preview.png",
+          "present": true,
+          "bytes": 91995,
+          "sha256": "0a813fa43477205d53e36b4b7a1bdd1bb0e547053054eed6b5383e0d30695af8",
+          "gitBlob": "891b307a4e83208a978c5e282e126241ef709dcc"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D5/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D6",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D6",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D6/design.json",
+          "present": true,
+          "bytes": 1434,
+          "sha256": "8297a04c3f030e4dc82ca96f86c4eeaa1df3d7b931beddf7640d4e74dcc54cc7",
+          "gitBlob": "985fac34ea8213a2cd2a2a78ff35fdc6536a7dd3"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D6/preview.png",
+          "present": true,
+          "bytes": 108491,
+          "sha256": "fd5d4615425424a5854b95ef660bc7e030da92eeb1df878c0c7d4099c6de6bba",
+          "gitBlob": "d05222cde5e6e637f9e12a3430729f78f0dbd394"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D6/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D9",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D9",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D9/design.json",
+          "present": true,
+          "bytes": 1434,
+          "sha256": "06164e97b2f82bd6a38fe51461c5e2c545ceef659f30ef4524112bde94ec9615",
+          "gitBlob": "dc79c36c49e957c22b6295a739bc0661e492c6a1"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D9/preview.png",
+          "present": true,
+          "bytes": 86185,
+          "sha256": "d6b2cc5f55bcba8a2d2f0550ae41b96d6b54f22ccf84c379f1e764abe3411237",
+          "gitBlob": "97076d92c9a863d4523e947e7c21598e616d3bd7"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-herz-D9/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D1",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D1",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D1/design.json",
+          "present": true,
+          "bytes": 1492,
+          "sha256": "7e52f3e945c556228f6eac087b454fe707a45386ea2421bca0d8b72b3ca2bade",
+          "gitBlob": "41444fde69664023604de873cbdf1a78a0e8f2ba"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D1/preview.png",
+          "present": true,
+          "bytes": 169875,
+          "sha256": "8a29c0efe196402043a7cfbaf6c745048a533bfa70ec24ac46ef46ca7eaf8aff",
+          "gitBlob": "6ac5fac00f5810fe3cde6c378bcc38ba57bfed24"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D1/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D11",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D11",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D11/design.json",
+          "present": true,
+          "bytes": 1700,
+          "sha256": "81dd0008ca2072ccb3f0ad2d858b1e10d1b75a8f15db3eddb3913ca458048800",
+          "gitBlob": "fed6f8fb6d03ce0dea060a2cc53e62d5ec1ab9f3"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D11/preview.png",
+          "present": true,
+          "bytes": 123219,
+          "sha256": "cfc4fb0a64107f9b563bcb1cb4809fb88bc54d7d80800a121dbe7002300abf28",
+          "gitBlob": "357e8abc4655ab8e86f20de6fb484acc43caba47"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D11/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D12",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D12",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D12/design.json",
+          "present": true,
+          "bytes": 1479,
+          "sha256": "8e3c6068facec2a043c8e9202483c3ba874fcb4b0cbc3c55e062e8f7cc6e7297",
+          "gitBlob": "ef7b21af53e35fc6e3433671efffaf18796382d3"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D12/preview.png",
+          "present": true,
+          "bytes": 149721,
+          "sha256": "dc7fd3a7c9c10c2911148a69e03e858815c0456c26481f29b524c2b415c4a57d",
+          "gitBlob": "87e67b95635a1820ad46b22bc52e7525a1713eec"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D12/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D13",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D13",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D13/design.json",
+          "present": true,
+          "bytes": 1700,
+          "sha256": "ea3495373c317529ab6d09927cbbb397b13c87ecbe311a7332a9708d2b64e94f",
+          "gitBlob": "8c4473b5a01a960ae5b3e08c36dbed72e3b6975e"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D13/preview.png",
+          "present": true,
+          "bytes": 154302,
+          "sha256": "6644fc559e3e7a1107ea9bf9d13928ee0ae0c78780e0f43c4ffde885d14d87cf",
+          "gitBlob": "1b0874cf46007c4cad7fa02c237525b46335a1af"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D13/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D14",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D14",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D14/design.json",
+          "present": true,
+          "bytes": 1700,
+          "sha256": "0a1916bdda289382b2cbb697423001bd1050d4a1310a7359f503c19466fd86f5",
+          "gitBlob": "a525d59c9c0073744f9ec06cda11cb701243376f"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D14/preview.png",
+          "present": true,
+          "bytes": 88035,
+          "sha256": "8c5cb4e5bbca1e7c7ffcf2885162247cab830edd0588abc2a08a7736996372c2",
+          "gitBlob": "7d01c4c8b43b897e8dd9e45fc0c8d53153785941"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D14/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D15",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D15",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D15/design.json",
+          "present": true,
+          "bytes": 1294,
+          "sha256": "60dc40958bfb4e4ada632258ef01b2faaf154f24a8aa20fabdbc521daaacfa5f",
+          "gitBlob": "72a5fb16583d59efb458e13ebe08e8d353517b3b"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D15/preview.png",
+          "present": true,
+          "bytes": 148796,
+          "sha256": "fb0c140202e1ec317b9ffb85e5f7659e28d163d64d07f018c6355a5084989adb",
+          "gitBlob": "7b0685116a69b452cb8747160368e8840c5f7c3c"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D15/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D2",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D2",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D2/design.json",
+          "present": true,
+          "bytes": 2384,
+          "sha256": "37f22d7a56ca032e75c93c4ac05cb03ca57c22e1e4a5fb5e594652bcec2e3828",
+          "gitBlob": "e2a3a8f355e1604c57acca7eeca20f4fbf41b6ba"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D2/preview.png",
+          "present": true,
+          "bytes": 152809,
+          "sha256": "2c7728b51f5df3e624ab4154c8545e0082d177345f2edad18e7f48cb76e6aca5",
+          "gitBlob": "24c5b49858042495ddba9f7046f9481509143be7"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D2/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D4",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D4",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D4/design.json",
+          "present": true,
+          "bytes": 1472,
+          "sha256": "95f7857e09a3aa6b83ffd3340fc71108d6b15ebe8251d6a6b4123d5f39faa262",
+          "gitBlob": "236fe97767e19f125d6fc7bc007158651023f15e"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D4/preview.png",
+          "present": true,
+          "bytes": 151040,
+          "sha256": "d1c6c3599e243486ab09af92cf2d59c1a06e7cd85d668eba3c7cb877962ae6e0",
+          "gitBlob": "146f2e502688090b3d8543bc18a8d7337b880b0f"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D4/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D5",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D5",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D5/design.json",
+          "present": true,
+          "bytes": 1681,
+          "sha256": "8776e2139f1d71391e8e0e1334c0814c98ccfd728c777a36e723e959a79cd695",
+          "gitBlob": "1c051e7197f8d95ec5ce0862f3ef84dc05f4071e"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D5/preview.png",
+          "present": true,
+          "bytes": 145696,
+          "sha256": "25b91e5c0e9027af7247485ab30e0e562d6187f972eb3b949dd3bb0b68aec14e",
+          "gitBlob": "3f735755c0ffcd022f06647552c8ff5701e0e1ef"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D5/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D6",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D6",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D6/design.json",
+          "present": true,
+          "bytes": 1494,
+          "sha256": "b43eb1b92b3098840e1898a4b605fe700cbf272564ddf6c46a91b8dcea7e0491",
+          "gitBlob": "a6260eaf0d531c0125d776d628412be165b362d3"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D6/preview.png",
+          "present": true,
+          "bytes": 69687,
+          "sha256": "8d95b0907ec0df5206d90febaa0f1ac20dc08adfe2b48f3a072abb35a1322e24",
+          "gitBlob": "a612e66069eb3e4fa56a4b10264f8363f4e92120"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-quadrat-D6/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D1",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D1",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D1/design.json",
+          "present": true,
+          "bytes": 1464,
+          "sha256": "3fd5e24c4ff7f7a38ee7ca366177406cca4f6362cd165ac27c83af01c6386caf",
+          "gitBlob": "bbc9e9d3a6e9bf1125b9d32e0bc174ec2035904d"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D1/preview.png",
+          "present": true,
+          "bytes": 85483,
+          "sha256": "9db5d3cdc054ba53eaa62bd3d9e51bf353adb4aaffb5abe664f976a778a1bda0",
+          "gitBlob": "2699238ae9a9dcc5637ebdbbfdc50c70189d00cd"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D1/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D2",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D2",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D2/design.json",
+          "present": true,
+          "bytes": 1436,
+          "sha256": "77362355c343626dd082d652347fa61f013cbd996cfc2c274f9997124486bacb",
+          "gitBlob": "711aa34997d2815d845abba0839a01a9d38e3ece"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D2/preview.png",
+          "present": true,
+          "bytes": 133063,
+          "sha256": "e0dcd73570f5b14e58034e2372823e2edaec97028054372093870c06f58229ec",
+          "gitBlob": "81e10071809046f046fd153f60de10e99a7b3702"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D2/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D3",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D3",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D3/design.json",
+          "present": true,
+          "bytes": 1438,
+          "sha256": "9d4e316f00317bb752b7e1b774c155a890f5148acfae4f104a500691e413a73e",
+          "gitBlob": "20faf7a80b7618d98a95eaf69506c0ab2dad0bf9"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D3/preview.png",
+          "present": true,
+          "bytes": 112245,
+          "sha256": "c8a774c11292076b50fab2d0a83ff5f6052678f46c0a9488e13c77a15d1007d3",
+          "gitBlob": "6e65c6fe0f2f0d140ea908056e7df698ec2a6ca4"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D3/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D4",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D4",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D4/design.json",
+          "present": true,
+          "bytes": 1661,
+          "sha256": "89683bae9532859f7c17ab7ddcdec99c59626dcbe90156d32aa5d6c27023f7c2",
+          "gitBlob": "c1963bb5360aee40f7e98cf1c7d3c748934dced1"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D4/preview.png",
+          "present": true,
+          "bytes": 107731,
+          "sha256": "3d2b13f20a8ba8044eeffb7d15e604beb2ba6a56a1aadf9df8668fcce5321009",
+          "gitBlob": "4cbad03e5851ddbc54efb382ca43ad04536d91d7"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D4/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D5",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D5",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D5/design.json",
+          "present": true,
+          "bytes": 1434,
+          "sha256": "a1078aea0627cad257f18c32174df6a82d31b54711ce2bb9c701e812c5c7b616",
+          "gitBlob": "f91877bc22dc05f03bf52c0ed11304a10c47f623"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D5/preview.png",
+          "present": true,
+          "bytes": 133110,
+          "sha256": "b5a6386d1066739453af622b6317b59ab238f9fc1f5cc857baff4869a467fe14",
+          "gitBlob": "ea1335f7a846d5e80b7ad68c424f727a964eb0c8"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D5/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D6",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D6",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D6/design.json",
+          "present": true,
+          "bytes": 1434,
+          "sha256": "c088fea75ba8fd33934453a879c4180061a02f03d6db0748c3384294389d3097",
+          "gitBlob": "ff8c6f6ca6a36ba735bf83c94dd356c016479336"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D6/preview.png",
+          "present": true,
+          "bytes": 132959,
+          "sha256": "a4bef45dba7406e8cc241da795a6540515f7c82e941624437dd6d15af48970bd",
+          "gitBlob": "67f67b7e13868fc10ceb6c28cd68a0343334d0db"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D6/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D7",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D7",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D7/design.json",
+          "present": true,
+          "bytes": 1886,
+          "sha256": "811a1887b0876d45a8483dd8977e6a8135c798d317a98f6c826ce1ef51661832",
+          "gitBlob": "c459bc85df32e4533cf8c7da318e8a2ad887a3d9"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D7/preview.png",
+          "present": true,
+          "bytes": 108129,
+          "sha256": "68157d73bf3037fd7a64c7b72791d493d944694bae3e9485b482a8b7759205b5",
+          "gitBlob": "ab41dbc4ff7d04d897b76c085df71fd0ab4200fb"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D7/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D8",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D8",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D8/design.json",
+          "present": true,
+          "bytes": 2340,
+          "sha256": "682808f273d65e083e6d7db9e522b72eeda95ed4668fae3e48c8fdf5c9b172fb",
+          "gitBlob": "554da0e9e2c68ac058634df709133016dad59931"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D8/preview.png",
+          "present": true,
+          "bytes": 121352,
+          "sha256": "9120033a5f914f1673ec5f792323a3c8a6724ce50c2e7df19a619c9dd67c5c95",
+          "gitBlob": "5ad04bd9d5617f94f04191e01524c1a15869ecb8"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D8/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D9",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D9",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D9/design.json",
+          "present": true,
+          "bytes": 1438,
+          "sha256": "f4c58c2f6e59d40680173ecc7c033d63bfa12c33996b1a6ed00f1d33bda4fbfb",
+          "gitBlob": "48192bd7a493439e0038142194a0338d6e6476d3"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D9/preview.png",
+          "present": true,
+          "bytes": 119458,
+          "sha256": "eea79c9ce93c4370dfacedcd48eb1b82d3c45b07521895b12a17a33b9472ec29",
+          "gitBlob": "ca8ba87f2e19dd931fc23c8819f0c41a92fd3bea"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rund-D9/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Menschen/Freund/uv-acryl-D22",
+      "sourcePath": "designs/bestand/gedenktafeln/Menschen/Freund/uv-acryl-D22",
+      "batchId": "B-gedenktafeln--menschen",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Freund/uv-acryl-D22/design.json",
+          "present": true,
+          "bytes": 3293,
+          "sha256": "38266cff65f9bf91a41c02c5833b55e2d0c5e3360356d5c773cbcf4221c8cdb5",
+          "gitBlob": "179a402073891dab61ca7a046007c3d194e7cc53"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Freund/uv-acryl-D22/preview.png",
+          "present": true,
+          "bytes": 165834,
+          "sha256": "89bf9d08336321e4ea912cfaa48897cf60cd2cc1e5f5e1a8aa43a1bc21ff98b4",
+          "gitBlob": "0af29012bce25fa14089cab57b1d08f7b4995dd6"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Menschen/Freund/uv-acryl-D22/product.json",
+          "present": true,
+          "bytes": 8566,
+          "sha256": "f78ff4ed9399af9378a9b4fbf8df634cf9c17f0f0e62e764dea29084ebef86e2",
+          "gitBlob": "a1244bf1acdb0a4ca03fb1ab26f979af9d471d6d"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Menschen/Freund/uv-acryl-D22/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Sternenkinder/Sternenkind/uv-schiefer-quadrat-D7",
+      "sourcePath": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/uv-schiefer-quadrat-D7",
+      "batchId": "B-gedenktafeln--sternenkinder",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/uv-schiefer-quadrat-D7/design.json",
+          "present": true,
+          "bytes": 1301,
+          "sha256": "a75ad68dd60faa337c3c4c6c432ede4119a5999e3d7e45423171927adc7c1e73",
+          "gitBlob": "63bc6094bf7bde44b0847c7d3dce3baa7315be4c"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/uv-schiefer-quadrat-D7/preview.png",
+          "present": true,
+          "bytes": 141692,
+          "sha256": "14e89550bf2be094bc901f9f213eaee58f85f29f06ace6594e2d2040cf01bf91",
+          "gitBlob": "963828f6000fc77db60703aa25721534d4590da3"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/uv-schiefer-quadrat-D7/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Allgemein/uv-acryl-D10",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D10",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D10/design.json",
+          "present": true,
+          "bytes": 5109,
+          "sha256": "fb2de0f29efdabcb8827ec2109725d371e3b3acb8befea986fa78a86eb38f920",
+          "gitBlob": "253f83bab9bcfefd36dcca1066c852babeef5492"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D10/preview.png",
+          "present": true,
+          "bytes": 138327,
+          "sha256": "3d94ba9d7ec7100dedf4e75a0b7f08738cc9753464762f76c8ac93d6a5fc44f3",
+          "gitBlob": "0d53d1941e9e689f19164fc1cdc30f102e699faa"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D10/product.json",
+          "present": true,
+          "bytes": 16465,
+          "sha256": "ca8c785055b04d9aca10886dac3a2d4c9f9eab9a1d1c35815449678add60e62a",
+          "gitBlob": "568e19072d91a7bef25395edf3ad70d86d9f6863"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D10/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Allgemein/uv-acryl-D11",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D11",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D11/design.json",
+          "present": true,
+          "bytes": 3741,
+          "sha256": "b6a404f7d2a33fde0907e37d593a87ce9c7b68d7c54f76c3f28f2c3f96b40e1d",
+          "gitBlob": "10426cb2620005eb0b3e2d0b16d01e1f0cfb74d9"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D11/preview.png",
+          "present": true,
+          "bytes": 131494,
+          "sha256": "6faf352d900de73f7c3c124e2d54361951183c791cd18238681175bac326ff85",
+          "gitBlob": "555956f74850b7311b2a86b6debe6f5f3c64feb2"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D11/product.json",
+          "present": true,
+          "bytes": 11393,
+          "sha256": "ea62cf2d42a848c486cf3f3ad1a311484a72a3ce14fdb09bebafcabe31296fb0",
+          "gitBlob": "c23b44ddc0c716bf290cc7655d4b3e63ca2d7701"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D11/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Allgemein/uv-acryl-D12",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D12",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D12/design.json",
+          "present": true,
+          "bytes": 3551,
+          "sha256": "ef8e4fb763e05503ec691ba4d49239441d68307104fcac4572a1a9d281b8ef86",
+          "gitBlob": "0e96e05036e69af447ef619065b1b2dcad1ee4ef"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D12/preview.png",
+          "present": true,
+          "bytes": 262262,
+          "sha256": "1a719ac5db229611d2c25424835b61de22f95dea957323fe70627319f8268af6",
+          "gitBlob": "149e42979d727d7294bde727b30e01b03ee172e0"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D12/product.json",
+          "present": true,
+          "bytes": 9403,
+          "sha256": "f8393e2e502144803de836f3654eea659e715202b0c9ce4eff3ddf2d0507d2e7",
+          "gitBlob": "14957461e96480da0a723f37c5c13e173e4363be"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D12/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Allgemein/uv-acryl-D13",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D13",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D13/design.json",
+          "present": true,
+          "bytes": 4239,
+          "sha256": "033d47eb3ee1c675449cc6d5f819e3938aee85514abfaf491371923805354fd9",
+          "gitBlob": "788e620130259f93726e793ee5433728aeda00f3"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D13/preview.png",
+          "present": true,
+          "bytes": 193433,
+          "sha256": "8726547616e8a8b125659bf58fd0c4c37cc22df5e9a77874a32172f8ade5f55e",
+          "gitBlob": "8623ad2b77179e584da708203b3cf21055a90132"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D13/product.json",
+          "present": true,
+          "bytes": 13626,
+          "sha256": "1370ae015699705ca0d6c27ceba4ea490750e0ce10144335bb0c002e5ad7bf9b",
+          "gitBlob": "520cd19b1f5a004df477b719461a57349c7ad983"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D13/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Allgemein/uv-acryl-D15",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D15",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D15/design.json",
+          "present": true,
+          "bytes": 5252,
+          "sha256": "695c8dad4445502822a5728cf1796252adaf938196395aefda0d58bb35f3f1e8",
+          "gitBlob": "fa00a4ba201fb934463f03c9723905391e0890a1"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D15/preview.png",
+          "present": true,
+          "bytes": 225606,
+          "sha256": "e7804feafbafd64a5efe28369bc1e92b28a1fa7cd1730816ff867ec7b4ce1e16",
+          "gitBlob": "66b7f2416987c35f4e05f0ba0e6c9f3bf7db4527"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D15/product.json",
+          "present": true,
+          "bytes": 14145,
+          "sha256": "6788fd608cd93763d32ba43cc9890a2653feb463ed6bb41020b05e6895f15f91",
+          "gitBlob": "143bada98ae65543c99fffae31ae404d83118f44"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D15/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Allgemein/uv-acryl-D19",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D19",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D19/design.json",
+          "present": true,
+          "bytes": 3912,
+          "sha256": "ed3654684bd34bd98719223eaa31c56a36e7c0937d5fa37c43e87fd2b24096ff",
+          "gitBlob": "df688efb7b90569bfb1acf8208374dc464549d32"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D19/preview.png",
+          "present": true,
+          "bytes": 202807,
+          "sha256": "252f90b64b99fc2098027078ab676c72fe3956edf2d6b117b4db45434dab1318",
+          "gitBlob": "efb63d8ac0ef1778bc1c8519d810d5d9768fc696"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D19/product.json",
+          "present": true,
+          "bytes": 11589,
+          "sha256": "09cd9519894d91baf6f185b5f14624188279071c0a9cb741d563ce2acea4f426",
+          "gitBlob": "7734dc5be21f3db149e48504cf2f0467d1edfa05"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D19/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Allgemein/uv-acryl-D2",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D2",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D2/design.json",
+          "present": true,
+          "bytes": 4154,
+          "sha256": "959d18f26455a8a751f7b24456ffb22483dd26fe30eb6996489077380d9be034",
+          "gitBlob": "66ee46c4bc3ad933783a932f488136c14bda23bb"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D2/preview.png",
+          "present": true,
+          "bytes": 211091,
+          "sha256": "81a5ae2b6444cd57dabb5de36d8f87100f9b88135b135dd7330ae9ec42a30d33",
+          "gitBlob": "686826dc230ef9882a6f08f240ab3e080cee5df7"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D2/product.json",
+          "present": true,
+          "bytes": 11815,
+          "sha256": "e7b1482df79d93b7bae77d1f53632918b13450c718a1f1dedc3a7a7616a757e4",
+          "gitBlob": "cd7974e09c002ca8aecbf62544ecbe69c3cf2231"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D2/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Allgemein/uv-acryl-D20",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D20",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D20/design.json",
+          "present": true,
+          "bytes": 3122,
+          "sha256": "fff5f4f2ac4c1fdb240c23dfd4d8e5c92d55e71adc5f8aef8c9c06b026250511",
+          "gitBlob": "71ddaad6a33bf0eb86ceb56b1cd9a9acd80f0a65"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D20/preview.png",
+          "present": true,
+          "bytes": 195164,
+          "sha256": "0923301abdc4194acd9761d6c8374d14e959a275379a6872fc397529bb081c33",
+          "gitBlob": "82387e5475a9e94d431ac27a36af296a7429c2a7"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D20/product.json",
+          "present": true,
+          "bytes": 8308,
+          "sha256": "0d054819c99f78972ee1b6f4f50e19f11bae6927aa429b9af45bb4270e71ae47",
+          "gitBlob": "918393b6b81d31183d80cf725be927ded5f1ce8f"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D20/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Allgemein/uv-acryl-D21",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D21",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D21/design.json",
+          "present": true,
+          "bytes": 4015,
+          "sha256": "8bdde9b8384da7c67548c0fdab0b72354a2840a15035b24196446d6c6cea1572",
+          "gitBlob": "8a5cced2a979ea69767d715b1ed505c5d07fd0ff"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D21/preview.png",
+          "present": true,
+          "bytes": 179438,
+          "sha256": "5ccee68945f3f8662edc9c44902ba7b29a00eb84d6bf1f57267a154321c64180",
+          "gitBlob": "825954e97493511c5d0c7a0c6a5d7be62c193aef"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D21/product.json",
+          "present": true,
+          "bytes": 11363,
+          "sha256": "e76ac82028dae262d1a7ac9df26b5b3f4a49364e3b044abe2fa3a65bcc208102",
+          "gitBlob": "4567c96889028e7a9bf9e4c6145fcf036f1a909d"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D21/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Allgemein/uv-acryl-D5",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D5",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D5/design.json",
+          "present": true,
+          "bytes": 3980,
+          "sha256": "1257bc506b93fc5279ce2da0d5992f71d48f3ace4264775b5517d0e1c0af6f79",
+          "gitBlob": "f56c7292c31bef89370fb5460f97b441638b5029"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D5/preview.png",
+          "present": true,
+          "bytes": 118892,
+          "sha256": "9f1b1bf97d02c0d493843c03781c3de940ea8c13065519a812c2fe99b0046155",
+          "gitBlob": "472943f64cf947a56778ea00748932d7e4ec7e97"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D5/product.json",
+          "present": true,
+          "bytes": 10275,
+          "sha256": "4e9a2c0d64747655e6c995d468e7f43e148c9912aad5141f5fa57886d906390a",
+          "gitBlob": "53b6988cefa69d17dcf87fea47353bc7c9e7a524"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D5/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Allgemein/uv-acryl-D8",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D8",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D8/design.json",
+          "present": true,
+          "bytes": 3644,
+          "sha256": "f00bdba79938a73e1efaf81b95970e191bb4cf1562876fdccb36b39dae53209a",
+          "gitBlob": "d03e810d0666d2c8ed2859b5e3a44b39cc762661"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D8/preview.png",
+          "present": true,
+          "bytes": 156613,
+          "sha256": "6506227d7e481895aa22afe9e807dbc2a851103295818a27b913d86dc260e2c7",
+          "gitBlob": "a7344c1148b9ef0f4133885295c1fee793d90fb8"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D8/product.json",
+          "present": true,
+          "bytes": 10110,
+          "sha256": "e3a19b6a6de5a284cf1d1ccd7e02646f54a6c5865d065b0ab59e9018d4a8209b",
+          "gitBlob": "0b98979bb362b09e4b8959f17f9a31d7d47a8cf5"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D8/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Allgemein/uv-acryl-D9",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D9",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D9/design.json",
+          "present": true,
+          "bytes": 4102,
+          "sha256": "daa861e657b17df528b5f50e97de11c6a78c8341e843713b5e170829432485d8",
+          "gitBlob": "e1e40b9ecdd9ad2c3aeda2b6be2d7da6ba044ea7"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D9/preview.png",
+          "present": true,
+          "bytes": 246486,
+          "sha256": "937cb2fdaa84a3b41636e74cfbe2c28f1a9acb2acbb7841402ad974d2332bbbe",
+          "gitBlob": "affd9165fa3c69cf4f42cf2597a0acd6466368f1"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D9/product.json",
+          "present": true,
+          "bytes": 10624,
+          "sha256": "71263fcf67a848304db524746276d9a53fa65f3db46bc6bf68991c979cd6f335",
+          "gitBlob": "7f588fffd4c70b45112d22acbcb259777e2ae6a8"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Allgemein/uv-acryl-D9/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Allgemein/uv-schiefer-herz-D7",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-herz-D7",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-herz-D7/design.json",
+          "present": true,
+          "bytes": 1243,
+          "sha256": "85201cfcf05f69d73a9becc6ab5b9d594a0987efb7e64d087183520d00a67374",
+          "gitBlob": "32205fd726725755163e9e032882e6149dc8a86e"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-herz-D7/preview.png",
+          "present": true,
+          "bytes": 88512,
+          "sha256": "8cb55415f62a95ae213e7c5df015b6196b4246f0214c8719f95b247c6a55da79",
+          "gitBlob": "5dfaa28989340a1907e8a04cd92232dfd46cf4a7"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-herz-D7/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Allgemein/uv-schiefer-herz-D8",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-herz-D8",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-herz-D8/design.json",
+          "present": true,
+          "bytes": 1243,
+          "sha256": "e8363696a30e6b6144a8ce03a97df7a18209d5ecaf036a00f9160858e8d517d6",
+          "gitBlob": "6df70422cd63299ecbd04e7658c318f24a4a6929"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-herz-D8/preview.png",
+          "present": true,
+          "bytes": 86558,
+          "sha256": "24ee6b543b144adb4b623bff86d379c02f430e6503827d921b999d988c53da2b",
+          "gitBlob": "e256a4c40123b6083d855bfa4605142fd4cb7be6"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-herz-D8/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D10",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D10",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D10/design.json",
+          "present": true,
+          "bytes": 1300,
+          "sha256": "67f42b6baff91d5fded06f8ae6b133e490cc70e16f3f8993cbf9ce864c78da02",
+          "gitBlob": "126962f14f368097f1d34bb05993b7b8be10a293"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D10/preview.png",
+          "present": true,
+          "bytes": 140908,
+          "sha256": "86933ce4903458b73646f5a1e6dd882fc099bc5e6473795bcf73e9a050d4038a",
+          "gitBlob": "3eab030d3782715812e5773b4bc3b2750f7251cc"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D10/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D3",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D3",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D3/design.json",
+          "present": true,
+          "bytes": 1269,
+          "sha256": "bb0f2c09ade5704353ca132462bb94d06ae61b134a563f160b7ec14430fb6138",
+          "gitBlob": "e83e7a982be60dd12be1f24366c2b27be084b06d"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D3/preview.png",
+          "present": true,
+          "bytes": 140933,
+          "sha256": "969e0c5a0503b7467d245a3341e9a19a75458f85f3beb73ca5046dcb658c3a2d",
+          "gitBlob": "a33664cccf2b8724f67a35e2f3e5b742591da56d"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D3/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D8",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D8",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D8/design.json",
+          "present": true,
+          "bytes": 1281,
+          "sha256": "2c0b0a139a5f6ecc497b893d2e48eebb0791339f76fcae0004392ce115c22ce4",
+          "gitBlob": "3602139e07564bb4984f24c74b2036ad8ee9efe0"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D8/preview.png",
+          "present": true,
+          "bytes": 56124,
+          "sha256": "c28bdc0dc2dae46d317bcd888b4fc4c40f90a3fc4b2c6620d48d755fca6abfdc",
+          "gitBlob": "f1cf861804444ca3b162aa15f1e312bab70c1aec"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D8/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D9",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D9",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D9/design.json",
+          "present": true,
+          "bytes": 1281,
+          "sha256": "bdeb670cf6ba5fe0986b54f972a85a6724e8e14a181cc9894ad639ac0db1a979",
+          "gitBlob": "0dd21a8da240a1813294532af0bc3b9e9b2b6b3f"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D9/preview.png",
+          "present": true,
+          "bytes": 125311,
+          "sha256": "0519fe8641b03e4ead9405ef1e54fcbe4cfa491215084bca00356d8d9660397a",
+          "gitBlob": "b88be4466d7189e50fb82a158f4aa84b4f0e4362"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-quadrat-D9/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Hund/uv-acryl-D1",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Hund/uv-acryl-D1",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Hund/uv-acryl-D1/design.json",
+          "present": true,
+          "bytes": 2984,
+          "sha256": "81bd902322b35505a4b5a4912f96805935e6ba0e7d378cf7bfa8f15bd03a7a14",
+          "gitBlob": "87de8341dc762f8a14116c4906348e5032a9eab0"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Hund/uv-acryl-D1/preview.png",
+          "present": true,
+          "bytes": 187039,
+          "sha256": "7ab1c51e7c9d000bf7b7cdef1dd9179bdd87e520944818daa9b5f3aea5e27c10",
+          "gitBlob": "24b073dd862e57cc0e1868151fb40407e6329bd0"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Hund/uv-acryl-D1/product.json",
+          "present": true,
+          "bytes": 8366,
+          "sha256": "a34ba639305b5348b528fdf328d1040f70728f1bc7f589f6b19a1df5be185f76",
+          "gitBlob": "51664f22e5b298a296604dd6ed01a7e6016df8ec"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Hund/uv-acryl-D1/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Hund/uv-acryl-D14",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Hund/uv-acryl-D14",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Hund/uv-acryl-D14/design.json",
+          "present": true,
+          "bytes": 3114,
+          "sha256": "ba7f7e2e5214892e22038e73db648009bde030415d315cd2a8f719872d181f70",
+          "gitBlob": "26c7a0baad1539707b7ed9d4f89cafb122b66d5c"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Hund/uv-acryl-D14/preview.png",
+          "present": true,
+          "bytes": 170833,
+          "sha256": "08dc5c2eff9ee96d162c9587809e215335375b3fbd19a1b30133c42da950ccd5",
+          "gitBlob": "8ef0d41e5716a53f13b24e1d5bb0ef3794c48a50"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Hund/uv-acryl-D14/product.json",
+          "present": true,
+          "bytes": 9072,
+          "sha256": "9ae677089a995578d9ce2348e188cb8d6cba73a49558c2536ae34165af84b508",
+          "gitBlob": "e9600fe2f348d8e536426429eaf9fc78b56c8c57"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Hund/uv-acryl-D14/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Hund/uv-acryl-D4",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Hund/uv-acryl-D4",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Hund/uv-acryl-D4/design.json",
+          "present": true,
+          "bytes": 3107,
+          "sha256": "9d6feea91209617991c1ac43f06e60ab96664630dd664809e9427a67c78d02b2",
+          "gitBlob": "8a78f262fd7bfabad5964ea10cca0b4c49ec0299"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Hund/uv-acryl-D4/preview.png",
+          "present": true,
+          "bytes": 129012,
+          "sha256": "2a98ded598aac3a8641ec55f72d343f45648db60343e90dd4e155b8e95ee15df",
+          "gitBlob": "2b373fcc4bd301dff9da7529c80b3135ee5f4f57"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Hund/uv-acryl-D4/product.json",
+          "present": true,
+          "bytes": 9059,
+          "sha256": "504df1806425839d6bb7615a567bdf2fa71b5c5af2cae70b9763840fdd8aa266",
+          "gitBlob": "b84b47d055c11ce346dd146530cfba42a3c9ec1e"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Hund/uv-acryl-D4/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Hund/uv-schiefer-herz-D2",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Hund/uv-schiefer-herz-D2",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Hund/uv-schiefer-herz-D2/design.json",
+          "present": true,
+          "bytes": 1235,
+          "sha256": "7f97f145432bff0254c1c08ddc56db9557f85b311ed00294c8745e2af7bfab2a",
+          "gitBlob": "85456dcd4eb319820607cc86708006e84144a4ca"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Hund/uv-schiefer-herz-D2/preview.png",
+          "present": true,
+          "bytes": 57082,
+          "sha256": "2502e3098bdde25fefd89f3656ed1e7af6fa22d2e1166182d33a5594baaa24c9",
+          "gitBlob": "fd2e61ad30152fe56a0338258357bb32470c5ae7"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Hund/uv-schiefer-herz-D2/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Hund/uv-schiefer-quadrat-D16",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Hund/uv-schiefer-quadrat-D16",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg",
+        "product.json"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Hund/uv-schiefer-quadrat-D16/design.json",
+          "present": true,
+          "bytes": 1278,
+          "sha256": "05eb0f18fe9a42c16267ce47de89ad4fbd8a699f6539a4b3d0f851253a3f7db9",
+          "gitBlob": "5d7aef6327a0234126de9575fc22991cb7ef1763"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Hund/uv-schiefer-quadrat-D16/preview.png",
+          "present": true,
+          "bytes": 119361,
+          "sha256": "fe1ae46eca3b71541beadef4c0a4827170c43e6ddeccb619ab7bba84a86a4193",
+          "gitBlob": "5cf4421cf55c09a223f110bb1165b318e9ce2c63"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Hund/uv-schiefer-quadrat-D16/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    },
+    {
+      "canonicalOriginalId": "gedenktafeln/Tiere/Katze/uv-acryl-D3",
+      "sourcePath": "designs/bestand/gedenktafeln/Tiere/Katze/uv-acryl-D3",
+      "batchId": "B-gedenktafeln--tiere",
+      "missingDeliveredFiles": [
+        "design.svg",
+        "design.json",
+        "preview.png"
+      ],
+      "actuallyAbsentAtSourceCommit": [
+        "design.svg"
+      ],
+      "availablePinnedSourceFiles": [
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Katze/uv-acryl-D3/design.json",
+          "present": true,
+          "bytes": 3629,
+          "sha256": "f54d56fac7e06df3c39349e8bba6bd418ba07d016ece7aaa9bfce8c896fa1307",
+          "gitBlob": "df9d47e4ba4b688664859eaf50cb6342d4f7739e"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Katze/uv-acryl-D3/preview.png",
+          "present": true,
+          "bytes": 140573,
+          "sha256": "59b8c0d320bbe07f56ed5ecddc25ba788bfb8610064bc6bec47cddd7724639d8",
+          "gitBlob": "af2786589360d4fc24dbd142096dd703eed7d013"
+        },
+        {
+          "file": "designs/bestand/gedenktafeln/Tiere/Katze/uv-acryl-D3/product.json",
+          "present": true,
+          "bytes": 10686,
+          "sha256": "5bfb4d83fa7ef642463659660ea36f3c4bc16e62b704977aff9bdfeb4ff8d223",
+          "gitBlob": "097cc950058e56a85e94f62fe892bce032762163"
+        }
+      ],
+      "deliveryDeclaredFiles": 0,
+      "deliverySourceEvidence": "Katalogdateien fehlen: designs/bestand/gedenktafeln/Tiere/Katze/uv-acryl-D3/design.svg|json",
+      "preparedNativeTarget": false,
+      "supplementPreview": false
+    }
+  ],
+  "fontFindings": {
+    "separateFromMissingDeliveredResources": true,
+    "count": 8,
+    "proof": "source-preview-supplement-proof.json",
+    "manifestField": "renderingBlockers",
+    "allCoveredByExistingOriginalPreview": true
+  }
+}

@@ -74,6 +74,23 @@ def fsync_directory(directory):
 
 
 @contextmanager
+def metadata_lock():
+    # Preview supplementation and activation share this lock. Acquire it before
+    # reading the first stage proof and retain it through commit or rollback.
+    require(os.getuid() == EXPECTED_UID and SITE_ID == 19, 'Only the private site 19 account is allowed')
+    checked_path(STAGE, directory=True)
+    lock_path = STAGE / '.metadata.lock'
+    require(not lock_path.is_symlink(), 'Linked metadata lock rejected')
+    fd = os.open(lock_path, os.O_RDWR | os.O_CREAT | os.O_NOFOLLOW, 0o600)
+    with os.fdopen(fd, 'r+b') as stream:
+        checked_path(lock_path)
+        fcntl.flock(stream, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        opened, current = os.fstat(stream.fileno()), lock_path.stat()
+        require((opened.st_dev, opened.st_ino) == (current.st_dev, current.st_ino), 'Metadata lock path changed')
+        yield
+
+
+@contextmanager
 def runtime_lock():
     lock_path = checked_path(DATA / '.runtime.lock')
     fd = os.open(lock_path, os.O_RDWR | os.O_NOFOLLOW)
@@ -94,11 +111,30 @@ def verify_config(file, *, gallery, expected_sha):
     return config
 
 
+def verify_supplement(proof, paths, commit):
+    if 'supplementProof' not in proof:
+        return
+    supplement = proof['supplementProof']
+    hash_fields = ('archiveSha256', 'manifestSha256', 'preparationProofSha256', 'previousGalleryManifestSha256', 'galleryManifestSha256', 'galleryIndexSha256')
+    require(isinstance(supplement, dict) and all(isinstance(supplement.get(key), str) and re.fullmatch('[a-f0-9]{64}', supplement[key]) for key in (*hash_fields, 'sha256')), 'Invalid preview supplement proof')
+    report_path = STAGE / ('preview-supplement-' + supplement['archiveSha256'][:16]) / 'SUPPLEMENT-READY.json'
+    require(supplement.get('file') == str(report_path), 'Unexpected preview supplement path')
+    checked_path(report_path.parent, directory=True)
+    report = read_json(report_path)
+    require(digest(report_path) == supplement['sha256'], 'Preview supplement report changed')
+    require(report.get('schema') == 'gravuru-complete-gallery-preview-install/v1' and report.get('ready') is True and report.get('activated') is False and report.get('sourceCommit') == commit, 'Ready inactive preview supplement required')
+    require(report.get('originalsTargetsAndNativeFilesPreserved') is True and report.get('activeMappingPreserved') is True and all(report.get(key) == 0 for key in ('configurationWrites', 'databaseWrites', 'shopifyWrites')), 'Preview supplement preservation required')
+    require(report.get('gallery') == str(paths['gallery']) and report.get('backup') == str(report_path.parent), 'Preview supplement location differs')
+    require(all(report.get(key) == supplement[key] for key in hash_fields) and all(type(supplement.get(key)) is int and supplement[key] >= 0 and report.get(key) == supplement[key] for key in ('previewsAdded', 'blocked')), 'Preview supplement evidence differs')
+    require(supplement['galleryManifestSha256'] == proof['galleryManifestSha256'] and digest(checked_path(paths['gallery'] / 'files-sha256.json')) == supplement['galleryIndexSha256'], 'Preview supplement gallery changed')
+
+
 def verify_stage(args):
     require(os.getuid() == EXPECTED_UID and SITE_ID == 19, 'Only the private site 19 account is allowed')
     require(re.fullmatch('[a-f0-9]{40}', args.commit or '') and re.fullmatch('[a-f0-9]{64}', args.mapping_sha256 or ''), 'Pinned commit and mapping digest required')
     for directory in (STAGE, ACTIVE, DATA):
         checked_path(directory, directory=True)
+    require(not any(STAGE.glob('activation-backup-*/ACTIVATION-RECEIPT.json')) and not any((STAGE / name).exists() or (STAGE / name).is_symlink() for name in ('ACTIVATED', 'ACTIVATED.json', 'ACTIVATION-RECEIPT.json')), 'Stage was already activated')
     proof_file = STAGE / 'STAGE-READY.json'
     proof = read_json(proof_file)
     require(proof.get('schema') == 'gravuru-complete-gallery-stage/v1' and proof.get('ready') is True and proof.get('activated') is False and proof.get('shopifyWrites') == 0, 'Ready unpublished stage required')
@@ -112,6 +148,7 @@ def verify_stage(args):
         checked_path(file, directory=key in ('code', 'gallery'), private=key != 'code')
     for field, file in [('mappingSha256', paths['mapping']), ('galleryManifestSha256', paths['gallery'] / 'manifest.json'), ('wrapperSha256', paths['code'] / 'app.cjs')]:
         require(re.fullmatch('[a-f0-9]{64}', proof.get(field, '')) and digest(file) == proof[field], 'Stage content differs: ' + field)
+    verify_supplement(proof, paths, args.commit)
     current = verify_config(ACTIVE / 'config.json', gallery=ACTIVE / 'gallery-4', expected_sha=proof.get('activeConfigSha256'))
     staged = verify_config(paths['config'], gallery=paths['gallery'], expected_sha=proof.get('configSha256'))
     left = dict(current['values']); right = dict(staged['values'])
@@ -130,7 +167,7 @@ def verify_stage(args):
         if name != 'app.cjs':
             require(file.stat().st_size == row['bytes'] and digest(file) == row['sha256'], 'Staged code changed: ' + name)
     expected_wrapper = 'process.env.GRAVURU_TEST_CONFIG_FILE=' + json.dumps(str(paths['config'])) + ";\nrequire('./ops/plesk/app.cjs');\n"
-    require((paths['code'] / 'app.cjs').read_text() == expected_wrapper, 'Unexpected private entry wrapper')
+    require((paths['code'] / 'app.cjs').read_text(encoding='utf-8') == expected_wrapper, 'Unexpected private entry wrapper')
     return proof, paths
 
 
@@ -200,6 +237,11 @@ def backup_sqlite(source, target):
 
 def activate(args):
     os.umask(0o077)
+    with metadata_lock():
+        return activate_locked(args)
+
+
+def activate_locked(args):
     proof, paths = verify_stage(args)
     backup = args.backup or STAGE / ('activation-backup-' + datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ'))
     require(backup.is_absolute() and backup.resolve() == backup and backup.parent == STAGE and re.fullmatch(r'activation-backup-[A-Za-z0-9_-]+', backup.name) and not backup.exists(), 'Fresh private stage backup required')
@@ -226,11 +268,15 @@ def activate(args):
         next_file = backup / 'mapping-next.tmp'; rollback_file = backup / 'mapping-rollback.tmp'
         write_new(next_file, next_bytes); write_new(rollback_file, before_bytes)
         receipt = {'schema': 'gravuru-complete-gallery-activation/v1', 'createdAtUtc': datetime.now(timezone.utc).isoformat(), 'siteId': SITE_ID, 'sourceCommit': args.commit, 'stageProofSha256': digest(STAGE / 'STAGE-READY.json'), 'previousMappingSha256': proof['beforeMappingSha256'], 'mappingSha256': args.mapping_sha256, 'data': str(DATA), 'sameData': True, 'code': str(paths['code']), 'gallery': str(paths['gallery']), 'config': str(paths['config']), 'counts': counts, 'sqliteBackups': sqlite_backups, 'headsSha256': digest(backup / 'product-heads.json'), 'rollback': {'mappingBackup': str(backup / 'previous-local-review-import.json'), 'mappingTarget': str(active_mapping), 'previousConfig': str(ACTIVE / 'config.json'), 'requiresStoppedApplicationAndRuntimeLock': True}, 'mappingActivated': True, 'serviceStarted': False, 'pleskChanged': False, 'shopifyWrites': 0, 'databaseHistoryReplaced': False, 'noHops': True}
+        receipt['rollback'].update({'activationMarker': str(STAGE / 'ACTIVATED.json'), 'requiresStageMetadataLock': True})
         write_new(backup / 'ACTIVATION-PREPARED.json', {**receipt, 'mappingActivated': False})
         pending_receipt = backup / 'ACTIVATION-RECEIPT.pending.json'
         write_new(pending_receipt, receipt)
+        marker = STAGE / 'ACTIVATED.json'
+        pending_marker = backup / 'ACTIVATED.pending.json'
+        write_new(pending_marker, {'schema': 'gravuru-complete-gallery-activated/v1', 'siteId': SITE_ID, 'sourceCommit': args.commit, 'mappingSha256': args.mapping_sha256, 'stageProofSha256': receipt['stageProofSha256'], 'receipt': str(backup / 'ACTIVATION-RECEIPT.json'), 'receiptSha256': digest(pending_receipt), 'mappingActivated': True, 'serviceStarted': False, 'shopifyWrites': 0})
         fsync_directory(backup)
-        changed = False
+        changed = False; marked = False
         try:
             verify_stage(args)
             require(digest(active_mapping) == proof['beforeMappingSha256'], 'Concurrent active mapping edit')
@@ -241,6 +287,8 @@ def activate(args):
             require(digest(active_mapping) == args.mapping_sha256, 'Installed mapping readback differs')
             os.replace(pending_receipt, backup / 'ACTIVATION-RECEIPT.json')
             fsync_directory(backup)
+            os.replace(pending_marker, marker); marked = True
+            fsync_directory(STAGE)
         except BaseException:
             if changed:
                 os.replace(rollback_file, active_mapping)
@@ -249,6 +297,10 @@ def activate(args):
                 receipt_file = backup / 'ACTIVATION-RECEIPT.json'
                 if receipt_file.exists():
                     receipt_file.unlink()
+                if marked:
+                    marker.unlink()
+                    fsync_directory(STAGE)
+                fsync_directory(backup)
             raise
         return receipt
 

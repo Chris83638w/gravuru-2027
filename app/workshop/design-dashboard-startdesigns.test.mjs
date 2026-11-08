@@ -45,6 +45,19 @@ test('one design retains every main product and size binding, using distinct mai
  assert.deepEqual(hashTree(f.root),before,'listing never changes the catalog');
 });
 
+test('material offers affect main-product checks without hiding source designs or deleting references',t=>{
+ const f=fixture(t),before=f.read();
+ f.line.subcategories[0].familyIdsOffered=[];write(f.root,'linien/'+LINE+'.json',f.line);forgetKatalog();
+ const excluded=f.read(),row=excluded.rows.find(row=>row.id==='T-D1');
+ assert.deepEqual(excluded.rows.map(row=>row.id),before.rows.map(row=>row.id));assert.equal(row.isStartDesign,true);
+ assert.equal(row.mainProducts[0].id,'1000');assert.equal(row.mainProducts[0].familyId,null);assert.ok(codes(row.mainProducts[0]).includes('material_not_offered'));
+ const family=JSON.parse(fs.readFileSync(path.join(f.root,FAMILY),'utf8'));family.id='second-family';family.name='Second family';
+ write(f.root,'familien/edelstahl/second-family.json',family);f.line.subcategories[0].familyIdsOffered=['second-family'];write(f.root,'linien/'+LINE+'.json',f.line);forgetKatalog();
+ const offered=f.read(),entry=offered.rows.find(row=>row.id==='T-D1').mainProducts[0];
+ assert.equal(entry.familyId,'second-family');assert.equal(entry.sizeKey,REGULAR);assert.ok(!codes(entry).includes('material_not_offered'));
+ assert.deepEqual(offered.rows.map(row=>row.id),before.rows.map(row=>row.id));assert.deepEqual(f.line.families,['test-schilder']);
+});
+
 test('explicit size constraints and out-of-line referenced designs remain visible with blockers',t=>{
  const f=fixture(t,{mains:[{id:'1000',startDesign:'T-D1',sizesOffered:[REGULAR,LARGE]},{id:'2000',startDesign:'SQUARE',sizesOffered:[REGULAR]},{id:'3000',startDesign:'T-D1',sizesOffered:['unknown-size']}]});
  f.design('T-D1',{sizes:[REGULAR]});f.design('SQUARE',{plateMm:[80,80],themes:['hundeschilder']});

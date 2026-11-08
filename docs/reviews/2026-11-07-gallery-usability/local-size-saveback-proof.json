@@ -1,0 +1,35 @@
+{
+  "scope": "isolated local test data; no host or Shopify mutation",
+  "design": "GT-S-30x20-D230",
+  "formatMm": [
+    300,
+    200
+  ],
+  "steps": [
+    "Native original restored as revision 4",
+    "Actual browser quick card foto-1 set to 80 percent, Enter, save revision 5",
+    "Actual full Konfi opens revision 5 and exact scaled slot and mask dimensions",
+    "Full Konfi Save and return leaves revision 5 unchanged",
+    "Guarded native local save restores exact baseline as revision 6"
+  ],
+  "photoDimensionsMm": {
+    "w": {
+      "before": 98.971,
+      "after": 79.17680000000001
+    },
+    "h": {
+      "before": 176.873,
+      "after": 141.4984
+    }
+  },
+  "changedFieldsOnly": [
+    "foto-1.w",
+    "foto-1.h"
+  ],
+  "other347ProductHeadsUnchanged": true,
+  "allOtherDocumentContentUnchanged": true,
+  "finalDocumentExactlyBaseline": true,
+  "fullEditorNoOpCreatedRevision": false,
+  "finalRevision": 6,
+  "browser": "Codex integrated browser; separate Chrome frame issue still open"
+}

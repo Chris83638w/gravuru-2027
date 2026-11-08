@@ -1,0 +1,19 @@
+{
+  "approval": "Chris, 06.11.2026: farbige Vorlagen sind Druck; konkret die mit gelben Sternen. Beide Originalvorschauen visuell bestätigt.",
+  "designs": {
+    "GTSK-S-30x20-D2": {
+      "from": "Gravur",
+      "to": "UV",
+      "name": "Tabea",
+      "previewSha256": "07924c81b39ad2201c1ac4dd3200600128a5e132213440e30e8766ab9bbb99e2",
+      "reason": "Gelbe Sterne: Druckvorlage. Die farbigen Sterne und benötigten Schriften müssen noch originalgetreu für den Editor vorbereitet werden."
+    },
+    "GTSK-S-30x20-D4": {
+      "from": "Gravur",
+      "to": "UV",
+      "name": "Lara",
+      "previewSha256": "dde83cf915c736f07625541a22ee9fc0ce2ba6c58d7dfa82e749ada04506a3a8",
+      "reason": "Gelbe Sterne: Druckvorlage. Die farbigen Sterne und benötigten Schriften müssen noch originalgetreu für den Editor vorbereitet werden."
+    }
+  }
+}

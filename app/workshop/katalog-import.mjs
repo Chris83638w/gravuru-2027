@@ -13,6 +13,7 @@ import {resolveDesignTargets,approvedForFamily,assignTargetSeries,designTargetCo
 import {customerUxConfig} from './customer-ux-policy.mjs';
 import {assessDesignTarget} from './design-target-rules.mjs';
 import {FAMILY_MATERIALS,familyReady} from './product-families.mjs';
+import {offeredFamilyIds,lineOfferedFamilyIds} from './subcategory-materials.mjs';
 
 const sha=v=>createHash('sha256').update(v).digest('hex');
 const fail=message=>{throw Object.assign(Error(message),{status:422,code:'katalog_import'});};
@@ -52,7 +53,8 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
  const line=katalog.lines.get(lineId);if(!line)fail('Linie „'+lineId+'“ ist im Katalog nicht vorhanden ('+[...katalog.lines.keys()].join(', ')+').');
  const report={line:{id:line.id,name:line.name,status:line.status??null,file:katalog.files.get('linie:'+line.id)},families:[],subcategories:[],designs:{masters:katalog.designs.masters.length,bestand:0,considered:0,withSeries:0,oldSize:[],withoutTheme:0,failed:[]},counts:{products:0,new:0,update:0,unchanged:0,blocked:0,templates:0,sizes:0,pricesOpen:0,designsWithoutSeries:0,fit:{passt:0,'prüfen':0,'passt nicht':0}},notes:[]};
  if(customerUx)report.notes.push('Kunden-UX 29.10. Sichtprüfung: alle für das Ziel freigegebenen Designs, 80 Zeichen je Feld mit Zeilenumbrüchen, Vorlagenmotiv enthalten; jedes weitere oder geänderte Motiv 1,69 EUR. Nur neue Produktstände; Form-, Größen-, Foto- und Freigaberegeln bleiben bindend.');
- if(!line.families.length)report.notes.push('Linie „'+line.id+'“ hat noch keine Familie (Status: '+(line.status??'offen')+').');
+ const selectedFamilies=lineOfferedFamilyIds(line,{families:katalog.families,subcategoryIds:only?.subcategories});
+ if(!selectedFamilies.length)report.notes.push('Für die gewählten Unterkategorien der Linie „'+line.id+'“ sind keine Materialfamilien angeboten.');
  // Ausgeblendete Master (`hidden: true` in design.json, gesetzt im Design-Dashboard) bleiben im Katalog, kommen aber nicht ins Produkt.
  const hidden=katalog.designs.masters.filter(d=>d.hidden).map(d=>d.id);
  if(hidden.length)report.notes.push('Ausgeblendet (hidden): '+hidden.join(', ')+'.');
@@ -66,7 +68,7 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
  // identisch zum vollständigen Plan; die kleinen Dokument-Prüfsummen reichen dafür.
  const items=[],itemDigests=[],familyPlans=[],fontSets=new Map(),seenDesigns=new Map();
  await reporter?.begin?.(report);
- for(const familyId of line.families){
+ for(const familyId of selectedFamilies){
   const family=katalog.families.get(familyId),doc=stripFamily(family);
   const ready=familyReady(doc),series=formatSeries(doc),assigned=assignTargetSeries(doc,designs.filter(d=>materialMatch(doc,d)&&(allDesigns||approvedForFamily(d,familyId,katalog))),katalog);
   const priceOpen=doc.sizes.flatMap(s=>priceGaps(doc,s));
@@ -81,6 +83,7 @@ export async function planKatalogImport(katalog,lineId,{repository,families,best
   report.counts.sizes+=doc.sizes.length;report.counts.pricesOpen+=priceOpen.length;
   for(const sub of line.subcategories){
    if(only?.subcategories&&!only.subcategories.includes(sub.id))continue;
+   if(!offeredFamilyIds(line,sub,{families:katalog.families}).includes(familyId))continue;
    const theme=sub.themeId?katalog.theme(sub.themeId):null,fontSet=katalog.fontSet(sub,theme);
    const hasPhotoField=d=>Array.isArray(d.json?.photos)?d.json.photos.length>0:/class="[^"]*\bfoto\b/.test(d.svg?.()||'');
    const photoMatch=a=>sub.photoDesigns==null||(sub.photoDesigns==='mit')===hasPhotoField(a.design);

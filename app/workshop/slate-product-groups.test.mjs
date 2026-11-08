@@ -100,3 +100,13 @@ test('a removed catalogue main-image design never becomes a new generic product'
  const lines=[{id:'andenken',families:[familyId],subcategories:[{id:'mensch',themeId:'gedenken',startDesign:'WITHDRAWN'}]}];
  assert.deepEqual(slateMainProducts([group],{lines,excluded}),[]);assert.equal(excluded.length,1);assert.match(excluded[0].reason,/Startdesign nicht vorbereitet/);
 });
+
+test('explicit disabled subcategory offers do not reappear through generic slate fallback',()=>{
+ const {groups}=fixture(),group=human(groups),excluded=[];
+ const sub={id:'mensch',themeId:'gedenken',familyIdsOffered:[],mainProducts:[{id:'rose',startDesign:'M2'}]},lines=[{id:'andenken',families:[familyId],subcategories:[sub]}];
+ assert.deepEqual(slateMainProducts([group],{lines,excluded}),[]);assert.match(excluded[0].reason,/Materialfamilie nicht angeboten/);
+ sub.familyIdsOffered=null;assert.equal(slateMainProducts([group],{lines})[0].catalogueMainProduct.main,'rose');
+ // A known material can be offered by a different line without changing its source identity.
+ lines[0].families=['another-source-family'];sub.familyIdsOffered=[familyId];
+ assert.equal(slateMainProducts([group],{lines})[0].catalogueMainProduct.main,'rose');
+});

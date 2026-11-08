@@ -1,0 +1,83 @@
+{
+  "schema": "gravuru-steel-pilot-isolated-import-evidence/v1",
+  "localOnly": true,
+  "published": false,
+  "shopifyWrites": 0,
+  "sourceCommit": "3c6051fbbc7904969948950fae12cae2ae663f30",
+  "deliveryCommit": "5e0c3f151bbbb9cdae08e0562561014f727b40fe",
+  "counts": {
+    "products": 108,
+    "originals": 353,
+    "nativeTargets": 523,
+    "blanks": 73,
+    "steelOriginals": 28,
+    "steelTargets": 146
+  },
+  "initialPreserved": {
+    "products": 35,
+    "revisions": 41,
+    "mappingRows": 35,
+    "protectedFileHashes": 3,
+    "unchanged": true
+  },
+  "repeat": {
+    "alreadyPresent": true,
+    "newProducts": 0,
+    "newOriginals": 0,
+    "preservedProducts": 108,
+    "preservedRevisions": 115,
+    "mappingByteIdentical": true,
+    "unusedOutputAbsent": true
+  },
+  "mutationChecks": [
+    {
+      "productId": "cfg_5e924221-8acb-4b92-b6c1-cab945b5130a",
+      "originalId": "TRE-V2A-8x3,5-D66",
+      "nativeDesignId": "katalog-TRE-V2A-8x3-5-D66",
+      "revision": 2,
+      "documentSha256": "2ac092a3bf8c2ba9473f840d45a7939e264f6db4483d6e8a42baec4eb3839f4e",
+      "editPreserved": true
+    }
+  ],
+  "syntheticApprovalEvents": 2,
+  "nativeChecks": {
+    "result": "passed",
+    "targets": 146
+  },
+  "evidenceFiles": [
+    {
+      "file": "before-import.json",
+      "sha256": "c756bc3a1b154c401d3a29b1821bc1dd4380976760aec0778754f253754796d9"
+    },
+    {
+      "file": "import-result.json",
+      "sha256": "c83b4f27a45d6e4d0b90e466c55d430b083132853c438403f094a9c2b4904f98"
+    },
+    {
+      "file": "after-import.json",
+      "sha256": "43288de705af084ac5cd4a68660469e1e919fb0b47c731f336fedc836e245e57"
+    },
+    {
+      "file": "preservation-after-import.json",
+      "sha256": "31a7cf4f1ad302df7a7d4960cbeedb762847e59f186d990ee85dc563a5fe92b1"
+    },
+    {
+      "file": "before-repeat.json",
+      "sha256": "3e4339f076e7753eaa58a4bfb2eab533a331d147b0a986a56cba27fe4cea7296"
+    },
+    {
+      "file": "after-repeat.json",
+      "sha256": "e45b65c56527724dfc012cd18ed4750d5d5e47766d1f61aa604b647d3fa1d49a"
+    },
+    {
+      "file": "repeat-result.json",
+      "sha256": "e00a80fe37b2f6292c7cd8869c95664abf80398f5f4d56634a7777f962299b1b"
+    }
+  ],
+  "nativeEvidenceSha256": "1e454f5e81d0e43b477b2df2d33833148fb43c5c4739be334ce1b2e908be87bc",
+  "limits": [
+    "Only isolated local import; no browser/live/shop/production approval implied.",
+    "Synthetic review approvals belong only to this test copy.",
+    "Known upstream README checksum defect and missing smallest TO15x8 B02S delivery probes remain documented."
+  ]
+}

@@ -1,0 +1,3796 @@
+{
+  "schema": "gravuru-slate-chat-review/v1",
+  "startedOn": "2026-11-06",
+  "catalogueCommit": "dc0a0f6c2d59a93cbe2727709e0657e5d1697b06",
+  "packageManifestSha256": "8914ccc84c9b0adb6749ca150834453721df9d7bb00cb813a98ce9e57f09e24e",
+  "scope": "Bildfreigabe der angezeigten Vorlage in beiden Groessen; keine Live- oder Bestellfreigabe.",
+  "ordering": "Vorbereitete Tiergedenkdesigns ohne Foto zuerst, danach weitere vorbereitete Originale und die unvollstaendigen Originale. Alle 180 bleiben im Stapel.",
+  "currentId": "GT-S-30x20-D250",
+  "approvedCount": 0,
+  "events": [
+    {
+      "date": "2026-11-06",
+      "type": "package-updated",
+      "reason": "Vorhandene Fotomasken mit thematischen Katalogfotos befuellt; 14 Foto-Korrekturen, bearbeitbare Galerie. Keine Bildfreigabe.",
+      "previousManifestSha256": "f90eb60b053eee8d390a4bdcae44a54d0df2436f9eacb3978ed44f851067f4e5",
+      "manifestSha256": "8dd3466f7aeba8f083ca0cd250ea72d10286573f53f9af4b7cfb485a0f53f216",
+      "preparedBothSizes": 144,
+      "openOriginals": 36
+    },
+    {
+      "date": "2026-11-06",
+      "type": "process-correction",
+      "ids": [
+        "GTSK-S-30x20-D2",
+        "GTSK-S-30x20-D4"
+      ],
+      "from": "Gravur",
+      "to": "UV",
+      "userStatement": "mit gelben sternen",
+      "previousManifestSha256": "8dd3466f7aeba8f083ca0cd250ea72d10286573f53f9af4b7cfb485a0f53f216",
+      "manifestSha256": "8914ccc84c9b0adb6749ca150834453721df9d7bb00cb813a98ce9e57f09e24e"
+    }
+  ],
+  "entries": [
+    {
+      "position": 1,
+      "id": "GT-S-30x20-D250",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "a0e68769f99123567db5075685e5c37d6436e2a868f3d72d2151906879a65668"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "f51542725b6c91d79b62af9139b7591235608fc178f6b1d4523ae45c755c21c1"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 2,
+      "id": "GT-S-30x20-D251",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "b4c329f5940494eff85628ecaaf2faf03cf9c6149ac3f48edd09b0108cc1c19f"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "e89df7270c712056cd62cda18f514f4f8aa6f04ccbaddf52bc1080c8367f431b"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 3,
+      "id": "GT-S-30x20-D252",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "65c5d3d1516da69d2c0cb2b33f71edc577a9a8d22f9a0fe547ae0253d7626c8e"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "025276f7e0d007a581e7b972dd51bd09da65278a0aa1a6412cba258330d8afc4"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 4,
+      "id": "GT-S-30x20-D253",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "dbd9c31cc47f0bddad191c378652188387876c4ff155c4cf37e94c9136a50f7e"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "f35698c8f53e788b6c5079f6738aab85c22249ec2a0435fefe86c8f4dadbf049"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 5,
+      "id": "GT-S-30x20-D254",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "ffbb3d4b32c85e21e427cd0e419571154a48a7e47fbbb8ab01d225ef8c542351"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "2f443a346ea5d880d4e432d0dfdc118f49fc532c3dd35c2c9aef4f875c24a5a7"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 6,
+      "id": "GT-S-30x20-D255",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "3dfe14cbb36eed3b5b483b998e6677aa445fd636de50b18c8ac1944630f5b40b"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "e75ebf2f2f2d84427a3a2044e91e47bc7eaa8153338c27bbbc4a10541dbefbe0"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 7,
+      "id": "GT-S-30x20-D256",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "a1e31601cb8e1a13afe8d93eaffe0d5414f89c77d2070056e67e7cb2397735d8"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "a2e1771910d991219ea70bf5b71561608c23602b43f94a0605f94675db3b4c7d"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 8,
+      "id": "GT-S-30x20-D257",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "379c90f288a9f98a05d800c17e63f1f26ce9f61489b1aef18b1390542a27d7f4"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "5d8ce564a74faebac4674092ffc033af30d41c375e67179bdb12d7ab7114caac"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 9,
+      "id": "GT-S-30x20-D258",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "6b340b28598460f0b77131aa27122b78a6a603d70c6df32bea4db8b5a1cb1dd8"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "b6ef90a46a01c1906c005ad85147deeae92658435f5275a944f065e1c16c6bde"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 10,
+      "id": "GT-S-30x20-D259",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "e762a5d5ca7f9fbd8c4c93ba749ce3af8fe0d900f4058f8bb477ca10369e578c"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "82f2839b38c9a4187d3833ce8110cfc84c403d12f6e910ac3ea54e57495b8b6c"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 11,
+      "id": "GT-S-30x20-D260",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "84d55d33fdab06c52a1a745006785d11241abfbdfd668fcad5f2646851163e73"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "3ead2d41cb0b67133f2e1b88969728be595adc32dd4ca81cc48689729ac92815"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 12,
+      "id": "GT-S-30x20-D261",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "19bd922250e476f1d68c09820a988a06a611bdc85e0dfd4f881f0199e288b017"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "b4ff8b257fe72cac4b33fbda948e8a434241d9a9b948fb2eaf587339b487a593"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 13,
+      "id": "GT-S-30x20-D262",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "c6615ffa7f131c5685b266d519fa29e75ecace2e8bbd388753b313a9d1e2c667"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "644c45795cac9f654d95c66aa07478788171d54b1bedeff11640a2e808e93bec"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 14,
+      "id": "GT-S-30x20-D263",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "fd3729aeff7c68eb9b62cd3663b8ace0db2679c78bf9e8e0d023ff29c22c5933"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "2ec5acb9ae31bf31c493a443996322dcf617f09e8dbe552e4c7bb612544fcd88"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 15,
+      "id": "GT-S-30x20-D265",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "47a4b072284ba0c8ed2b8d13a154f43de0c406dca5f31c1a44101e4472a45041"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "82e669493e445592e6969eea9fcd1a4a371c45d0542dea81f9d785718c047302"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 16,
+      "id": "GT-S-30x20-D266",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "73ebf85ce614a96da25bebf7da2ba6377c431e9a3494e613f1a7a9ab0528ca95"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "6673afd18de263c9d472a7680dadcfd0d7c7f7c2f0d785051773bc906d3e50e7"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 17,
+      "id": "GT-S-30x20-D267",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "5ea3e862920ca7b973812a8f867e644b37f59f3809c7eb7cb4143d98567e22c6"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "eb26867824692d2b66f1a74eca546f463987eef2f8998d88042e570ef553c9ec"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 18,
+      "id": "GT-S-30x20-D268",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "4033570d5c5c6462aba4b1d706fea94965c5551005908f0f1e53594e8129653b"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "2a7a9ca0eb98db743a357313f9c79c8467c491bb86344439195c17a38c55503b"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 19,
+      "id": "GT-S-30x20-D269",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "bef2b5ec3f086cac62359c3592aff3e69ec3e0f620cae0e34691de00d8e89b53"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "65f900541ed6a36fc1bc128a0e95fd9f822da1ff1caf7f337f9b599c5a2f092a"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 20,
+      "id": "GT-S-30x20-D270",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "c7fcd4bd411c5045836dcf967684da8de77ff73806fd94128e2045be2fb2d50e"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "156dd5ef28655fbc4fecf7434fb728346fff9eba320d134b6d9c70a8173bd22c"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 21,
+      "id": "GT-S-30x20-D272",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "eaa512b8013d43226caa8697e9b4364331fd86249a94971d8ff426590e8af5f5"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "ec962e20e0bd7bb41f9f32741a2413a3bb3753f48925b87e3ce989342c204968"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 22,
+      "id": "GT-S-30x20-D273",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "08dc1e660c0eace9aaa2d7c2cf65224c7b89a1b060d20c880dabde6446c0f50f"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "b9ae0a8b46734949d374f3601e3703b8d4492cacf87202fa286df509d60134d4"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 23,
+      "id": "GT-S-30x20-D275",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "d3e2e2274917222af02613621fa52eb1eb4d8b150274cbc567376c07c04a9449"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "fc0f9010355c823fc04f3c0d17214376335a5175f73e4f5c11d570f23bb8e577"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 24,
+      "id": "GT-S-30x20-D276",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "e0a6e57138b253a5eb6da9e69ddba30fe28fb8e8d619b810c8a7a4e4b1d0d879"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "c2feb56a42af254b76271f99e46188aa31a99173875a42fd2a5571f5be13ea6a"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 25,
+      "id": "GT-S-30x20-D277",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "3177fad30f88e30cf63b303833256c053dcbb6618ba1ee62ec0a841dafcff6ca"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "7e2672bb48da1cbce013c269645672c9313233d2024d58cc480a29a4ee541d83"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 26,
+      "id": "GT-S-30x20-D278",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "ec621409d980db6a5d3d858ee874263d0b3b246de618066039081086e0564e2b"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "89da30d6bede64e4986af2f7ec4f1ee1a91b1a91b4156f865be0f1299b2c138e"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 27,
+      "id": "GT-S-30x20-D279",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "2c7d22077724a5143f784827726edd2c03a6b0cadff59820ba3c0bb2e934ebfd"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "a4845d57450cf9504df2aacf1b60da471f91480fcd526b531003e453bebdc22c"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 28,
+      "id": "GT-S-30x20-D280",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "73a5335d7a697ec7fb8bf12896ad43bdb75bce387b91168d6774250be81a5e73"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "c33c485da0e07630d23408c48b31565dc428aff0cdc022728a0f81a51be1d231"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 29,
+      "id": "GT-S-30x20-D281",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "5af6e2bf4f519f8a492073ca13d27c8e829c78bbc3a4e18e7e84ff25908db95c"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "70476ce81b922a20e8d0d29ca471385e94e194c0dff340e5aa63d7854fe21904"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 30,
+      "id": "GT-S-30x20-D283",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "111d07848854cb97e32efabe069a779b37b90e041b5f8f25bdaac3d8ec66a5b6"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "720f53adaa03100ff564ae5257b93e77db754b93fc3fb0dfb76908a499cf5fe1"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 31,
+      "id": "GT-S-30x20-D284",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "3a3f2feb30755b83c8f9655fe12f31021da30fac4395eb0dcf5514703cc2fb35"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "8a70438fe47654e9563461915002495a4259ee6b23cdee51779c8d49a6789a57"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 32,
+      "id": "GT-S-30x20-D285",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "86f99ec81038aa42cfaeab1fd43db7c964dda5276843b3ad1427437f586c44d5"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "a7bb0b0e3eb18188f9cabd42ef0048c52adc16fb63d172d9265346ba3dbc1ba2"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 33,
+      "id": "GT-S-30x20-D286",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "35c9ff4909d24755812f7cef6cac1074e09809883086047c47d7797e4e4c4b19"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "4c2d676fd7a52b155edd58a0f84454b68a32eb0349a75f898920cf5808495bbf"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 34,
+      "id": "GT-S-30x20-D287",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "92e304f92acf657689ee5dc5614da5ebc75bf7e44944d3ccc1a1a4ffb6505116"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "c7f20d7703d020eea1cf624f331c34ee1f8c7d8c9c7562b8bacada9c6e64e245"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 35,
+      "id": "GT-S-30x20-D288",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "294e3998ca532cd3cbbddd294d33db3876941399122b7b27179e7f2f8bcbd1f3"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "3c63aadb4c772c23219a1e2a2f10733762c58890a2baecf899010767ff83d72c"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 36,
+      "id": "GT-S-30x20-D290",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "342cb1ed740b7df16803910632ac296e3dcf2f2df45dc95502a3824c08c6238b"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "f10ff215f3ca93a6f36f316a53ff2f1d1e5140e6d26b7b583bcc3f135bd88e9d"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 37,
+      "id": "GT-S-30x20-D291",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "ff6025b18df271852a51cddbefd9803d6b696d1d5e948a13b515dd163757daac"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "9e7a755a73546428ffd65e847c61f4c6dc07c43a21c6b8a40b4ae12d0b2558f7"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 38,
+      "id": "GT-S-30x20-D292",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "a137d7b4849e23afdc2ba5b9d7792d295a6cd304bd215c5f55f60f27ccf574cd"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "c0f0297cbbc6a5ce6516a728fa07a251e207533a3f9b928ac87e7e9b896defb9"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 39,
+      "id": "GT-S-30x20-D200",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "edb7c2c89564a39c04ec0fa85607b41583b2503e245657b821aa8222782d701d"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "97a89b95d13f31e85cc7f0361272f651aed417198cc1aa6a2bd780f90513af7f"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 40,
+      "id": "GT-S-30x20-D201",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "47000d01bb4e1a379e07fd0527081df5e72b8248693170a95d89d024c2c5f991"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "dfd0d1064cf08ee0cbf34a6ce765a80265f40da2c37ab299ae47cc606d5251a6"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 41,
+      "id": "GT-S-30x20-D202",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "28805baf3defce70d3c137997be4360615451b3c10cc45f0364d7ddd1d8627c7"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "c72bac5dc64d9ecc7e7607223d2d09c8e789d1f19ffba010157b087cd8d8fc95"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 42,
+      "id": "GT-S-30x20-D204",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "e9d3825065a29a74b2775611c91f86d623963c8faf1101c6f8bb33db7a2fed76"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "d8c14aef6262f690e5b0090db5e8c022d51679df21ababc92fbecf45cb2fc8ed"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 43,
+      "id": "GT-S-30x20-D207",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "058f01d8db0a95f7e8177c6f6f7d403e6dbf57748f2ad3398c206d3bb29d56e2"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "4be51fb87d069e09ddb2a81ae04e2f7523e47113c6269589425e844357568c47"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 44,
+      "id": "GT-S-30x20-D208",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "c0ad175dad093a06eaa5d0cefcb9ca75cd6e5c88639c02636ff5eb026c9b8283"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "65c2aa66fd774bfef093cf0a66c1accd81dd44c0d36d911c82ab50ad16c5d80c"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 45,
+      "id": "GT-S-30x20-D209",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "006d7614475fdba4a986e3510910fcc29e340ebdd8805031c8de7fe3941f9a4a"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "dbc7ec4c844050cc02622175ccf7a2d40394b92e0c59c982b271309494412383"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 46,
+      "id": "GT-S-30x20-D210",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "e8fa5953081521ba6e3c109a4baa62d7f1034641ae2a0a1a87c201e51bd1d7f3"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "69da1da385c8c97099d43adaad89ddccfcb0ce8c2adc0ad4c772d2a09e1f4c1f"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 47,
+      "id": "GT-S-30x20-D211",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "a230b593581d7f4242c5ae7c80895cb8be2005972e35185ed30a0dffa47acb30"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "6a13f80759c3da83ab273862a955b91956173f49d49c706d1e6606ee910b8880"
+        }
+      ],
+      "notes": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D211/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ]
+    },
+    {
+      "position": 48,
+      "id": "GT-S-30x20-D212",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "627f57a00eb84703e916ef7f4b61ec30cfd3321e8a5d5e89f28718a86377acc6"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "29c0a54829bf7709114747794093f0a6d4cfdb873c1284cd9e2342fbb4dd15d7"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 49,
+      "id": "GT-S-30x20-D213",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "88950bb00559bb56871d4f0bf20667867e80715ee8fbebfba1bfa303f2082fb6"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "0b2d8e133d81d5354910034fa287a3a8ac294fdfbe4bcdc1b280902821e13f38"
+        }
+      ],
+      "notes": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D213/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ]
+    },
+    {
+      "position": 50,
+      "id": "GT-S-30x20-D214",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "f359c93be0221012f64ddebe1d7b12e524f290b359b1fdc477b3993abba9077b"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "57a16a14c67b849a098030ff0ac7759efdb7f883f9d3f611298e6ee821aa13fe"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 51,
+      "id": "GT-S-30x20-D215",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "c9454365a6b902667d4e3e1579357b8a1502aa5fc6e85abb8a6bf0c63c50aec1"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "59392933873cbec935647498403340ef2b9e085572ec50c0a571c7bf2064321a"
+        }
+      ],
+      "notes": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D215/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ]
+    },
+    {
+      "position": 52,
+      "id": "GT-S-30x20-D216",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "00b902b6cf4e6ae0a38435bafa9b7c9b2cb50cfacce7b8b823b78d55809f7ee0"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "c89bfdf075bbca15e43204b5e4bfb96438b77d918e3c73aec6394fd99fabf5a1"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 53,
+      "id": "GT-S-30x20-D218",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "6c11d280d42ace697e595ace3990a52cc4b31e19d4e883f793be0f73a739c47d"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "1fa527280a5c4e441132d8e72d5773b29928603c6adb148b876b6b8ed939a54b"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 54,
+      "id": "GT-S-30x20-D219",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "4b80a44ad5f54d46c2c2e29d45f47ed2bf0b89d8698ce203677715059d97598b"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "d275b4f16dace7f82dfb7e95739124f75b5b4854e8d1a7f28817258d7ab8f11d"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 55,
+      "id": "GT-S-30x20-D220",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "5509417a4bf74c798b4c37422c4b7a72a46c8bc935a733b65ab3aa49f16974a5"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "2aa6f44478ee4facec0b71a86306d9aab6292d8dc596fa9026c5b27a30d4c55c"
+        }
+      ],
+      "notes": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D220/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ]
+    },
+    {
+      "position": 56,
+      "id": "GT-S-30x20-D221",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "9d4f308a2338725043796318892dd5ee938e6a3f73cfea05f892c0f300b5d38e"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "1b8cb31b6608a3fced060be0534361e1906f69576e92c6d4a4da3ca7e73f38dc"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 57,
+      "id": "GT-S-30x20-D222",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "38496cae0c7bd12afb7e1ec69591e3a1205e210bb856f5dfe2ce3b229a8ad68f"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "a8710ca0bb7b1cc27ffbe0fc8744a5ace1651a0d9ac7d7d57ac9da150f353878"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 58,
+      "id": "GT-S-30x20-D224",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "7713ce995d01ac1b9d2fe0180d308c95a0bae0f595bebc744095dea39dad6c7f"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "08dc19b93dbc66bd32982f299036052d7ecf4172a680415ac367d63cfde9acc8"
+        }
+      ],
+      "notes": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D224/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ]
+    },
+    {
+      "position": 59,
+      "id": "GT-S-30x20-D225",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "39cea43e0c5a8165cac65389bbff309d775a1bc24f245420952978b47de6e663"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "20fc656ff761a15b430b791eb0276168bc2ae0e28487afa26c8485d5da00c8c4"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 60,
+      "id": "GT-S-30x20-D226",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "8520ced992400677460d4486627ff6e077690a36d601de950a7c0d1021d9c522"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "fdb113c687572581a40b25d177ed991dc95e153c259faf51aa9dbe6267de1c4a"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 61,
+      "id": "GT-S-30x20-D228",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "1e48d844c451e0833c7122abed9fa034a3d30f3a3b457477ab68ba140236590f"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "2d8471dbbb595934f8e5f47f8696b67f248e12b47e335799134194d9de259169"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 62,
+      "id": "GT-S-30x20-D229",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "bffed3f2e402993d0c627105218df394b4b2b8bb4d9535af683bb0e8a1651e3c"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "ff07c3d55f577a8e26ab389f9c98a06dd19590f6737dac70bff90c932c7a7c83"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 63,
+      "id": "GT-S-30x20-D231",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "cb3895368fe27324be3659004f2abf3e63553ff17ec67ee211bee7658e591ff1"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "4ed10d87042e48f211622d12c5f729c5435371298f6c8e797aa10c42963817c5"
+        }
+      ],
+      "notes": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D231/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ]
+    },
+    {
+      "position": 64,
+      "id": "GT-S-30x20-D234",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "145529dbd03e160514982a191cf862883288a62b9ce40ad2772e1457fe7aebfb"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "e5f722d877e11f2910b685a943ca636617255b07bcd20531a61e50df06d51290"
+        }
+      ],
+      "notes": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D234/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ]
+    },
+    {
+      "position": 65,
+      "id": "GT-S-30x20-D236",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "cd1b90b9ff48a428cb30504a89c0806ac6dc58677ec5208ff3ee3288c06f2d8f"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "db096e840f65085a7bbfc0a8b327fccdb90706accbd8c477501dca79fddd2791"
+        }
+      ],
+      "notes": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D236/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ]
+    },
+    {
+      "position": 66,
+      "id": "GT-S-30x20-D217",
+      "group": "Tiere",
+      "subcategory": "Hund",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "148a993ed1b58961acc9482c0613135791145969e51c4bface394b4622ce0cd9"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "5d10d6007848ef372a6c44d73e0f5acec064df8cfb4dfeef942f9176f36158ea"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 67,
+      "id": "GT-S-30x20-D230",
+      "group": "Tiere",
+      "subcategory": "Hund",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "b3bc2e9a21748e03d56f93c8a556fe2c0ce26503194de4693b9f641583ad49d9"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "e9a8c1cf2e30ccc57a08c74045b276a124b24725ca60812d67f17ac9849addef"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 68,
+      "id": "GT-S-30x20-D232",
+      "group": "Tiere",
+      "subcategory": "Hund",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "1464154291454cfe17618c2adc59274bc77012a7b278c767c1b023730bf36a7b"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "b1f5d090a1b83c76ece372f25f3d432e2fd31138f25549bc628125f5769d7c7d"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 69,
+      "id": "GT-S-30x20-D282",
+      "group": "Tiere",
+      "subcategory": "Katze",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "0119c02e4f4876b08287d49a3a40588a8f8ae8db58c5b27d4943256b82977f63"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "3826529bc02fa9ebb3ada1bcff9e9f939ed4f488d814c7e5c9bafc75f2a3f64d"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 70,
+      "id": "GT-S-30x20-D289",
+      "group": "Tiere",
+      "subcategory": "Katze",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "62b13b391e419f9cfab320e67bf8b8e93ee923170b0ea31ecf5a8e1aee5838cf"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "20dd085a3808fcbe8e2ff86132731fb17e6048225f74b14d6af25cccfbad9a9b"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 71,
+      "id": "GT-S-30x20-D293",
+      "group": "Tiere",
+      "subcategory": "Katze",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "534f97ec20a7e9e184be9a9195c4783f598bdd597355eebb1443648320ca465d"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "4e4d52818e5f89ed7c72624b6f50b3522b13b1e4580fff70903db99da7e9261b"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 72,
+      "id": "GT-S-30x20-D205",
+      "group": "Tiere",
+      "subcategory": "Katze",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "eba63e989199f9fd7849a7c8a3ee78d4ef87fc3442143f25fd8e158a9f8eea00"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "014b912ae3b2b14f564a8c9c789ce545aa2f76a1203f2a07a790341ab412e190"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 73,
+      "id": "GT-S-30x20-D223",
+      "group": "Tiere",
+      "subcategory": "Katze",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "941ee3f934d212d990c486267963004026f419a37e00d45655fbbf515b660a1b"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "d01cc766e2e5c7ad00471ce31c4d6bd548c7067725a0527cefb9151c0e688876"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 74,
+      "id": "GT-S-30x20-D233",
+      "group": "Tiere",
+      "subcategory": "Kleintier",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "aa6f472cf9f238a7cd85e9f6ee9e30c1721ba5a4a6368bf10feb92577df6f1bb"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "db31e125b5c62306dc48e7a1f1c30030e902908a9d2f78bba3b0a5808ff44545"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 75,
+      "id": "GT-S-30x20-D235",
+      "group": "Tiere",
+      "subcategory": "Pferd",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "19e984d33a9a84291416624213f7970821c1822a96bc136dcb2bfaa5ab643386"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "6dc53b707402fd51f4c611f3aaf75fd705b9dd4b88194d2a289b150f6ec1c1d7"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 76,
+      "id": "GT-S-30x20-D50",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "f8cc372bc9fc477a62add7f40ea05ac3cdb229d5e9d233a4375ec8bfbe9d21ef"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "e3368c87ed9dcfa6f27c345230eca6652a3a5ba03e1a6ddecc5bebad689b29ac"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 77,
+      "id": "GT-S-30x20-D51",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "196dad1247e6851cb2f5fc0cd9b9f3fa4a2bcd7901f6c360cf307028e74eac67"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "9a97461b9fb0912a8d18b6c01530befe361407325bc9a1df55928bc44e48d70a"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 78,
+      "id": "GT-S-30x20-D52",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "0407e48d5fc2830aacf096727f76c76594e94b6c5b5cd8d5049f61990f143877"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "37c6a6096eb02cf9225da1654323b6076a5bc7aed30a7264e0c434dd9cd169b5"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 79,
+      "id": "GT-S-30x20-D53",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "3432f9e71bba256560d269fc43124d92bccdccd58ffbba0ea161c79e10379c6e"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "6b2013618a411de0a4640ab16934923009db4ed58e6c4770e629b085ba451f0e"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 80,
+      "id": "GT-S-30x20-D54",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "d67b302c785d12a25ad6668f404a08b57c560cc38be1518df4fb3fc460fdb7cb"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "4fdb5f38a7ed02df56929d1fad3ea81cf490c19cf33a037e3aa480d7c2f050d4"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 81,
+      "id": "GT-S-30x20-D56",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "bb9ad0acd93b9f92249a45d6c5f2f980e146b0079dabae24205fcb35342dd39a"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "ed5d08871f8c21d1be95eff226e4478a062cbd6b1674f170fc6143bbcf3b4489"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 82,
+      "id": "GT-S-30x20-D57",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "a6d1055ce4b77832b887387f91847320bab73dd2e52549760dd27d427a23b003"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "b760df3f362b7c3751687003f4628980725c1ba2d95817fefd6ba844b228571a"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 83,
+      "id": "GT-S-30x20-D58",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "2e139e70ce104d30fe26b62a6e9a647b481937ad97839fe187c8c6667cb2e422"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "ef774fce5da2eb6b83523af6e4701733b84685a78414755507de8947566f089d"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 84,
+      "id": "GT-S-30x20-D60",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "af583dfc0dfc96982ccdfe4a2d17dd920d729d407ef1bde8103d2f6b38d7ec33"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "85cf9c54b2cf95cce5da524b6bb0808e027840c9ced9de25c3f0f384fbea55a2"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 85,
+      "id": "GT-S-30x20-D61",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "15a96f1b93558ed5d8de8dd1cf20990518e69c3e366d47506f3124f29a781290"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "0f1a73c05a47d05934b6dc9eae9e3d714593a9b6e8d64c75dd6079168936042c"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 86,
+      "id": "GT-S-30x20-D62",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "c55c24010d37c0ce3b8be347cb5373d2d65f3a41342f5ea69284e56f69706f67"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "2cad485dd73d6f97d4dd022692e9ec8f12f046971f3a38a84e78a4fc62a8d55c"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 87,
+      "id": "GT-S-30x20-D63",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "cf768cd8cbca361a28a384aadf15133fa46697f7f1be0161c3685c58fc7232e6"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "fe17185102f64b05f2e19ae8cbf79a1fcd718c47c8b2cc657f790a2836c7fa28"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 88,
+      "id": "GT-S-30x20-D64",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "b21f67bcd6fd987406bf02a01ad08a96d59ed6f42ddacc88c78b9873c441515e"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "bbe09e9f9e958fbf168dccb98c2d38de0838b243e67c45fd21ed2b8f41a421f1"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 89,
+      "id": "GT-S-30x20-D65",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "a722f1be2e009b94e40fbf3f240b54a07642251bccfabd28779de425ed6ab249"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "ae49953772469ca2a71356a2cb736b1f08cfcb33a143a555e169166dbc97c338"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 90,
+      "id": "GT-S-30x20-D66",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "e1ec1c2539158a3267cdfade84c7f62557138a03754e3b25ecbf7b0ccce24f69"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "6607574c7448f51a73be94e1df71add04cec2f87d6ec028c0eb4aeaaf26ffb60"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 91,
+      "id": "GT-S-30x20-D70",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "08d9fe9cface9a11dfc24ba2e0745d1afd109d1e5dbe77868cbd0161831f5ef3"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "3de368bd55ebc4a0ef6bba836a66ecb749336507abce4ba738fd1173fa5c1b9d"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 92,
+      "id": "GT-S-30x20-D71",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "e209ddf4267535d11bf12f442c6f8db6ea2e43a5b266e0079fe496c7015aa341"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "6b0036556de8974aa057f3458b0570d59181432ebb1f84d43502b92737fe626f"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 93,
+      "id": "GT-S-30x20-D72",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "6deec1c32a87da360811d8c46bad2f54d8905434d16bb6c19b39d5589d52f9bb"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "ea8ce2f3287fdd239e83942d8f5f40799667d745ceb1dcd9af436714f4f95766"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 94,
+      "id": "GT-S-30x20-D73",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "9fb3ccdac166656734d049caf25d2c50f907c9dc4b594800543d5bc4964931b2"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "88fde18b1bd9294c61a20eadb4549e2abac727b9ed9ba58deec39f6c3fd4e7c9"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 95,
+      "id": "GT-S-30x20-D74",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "771cb7d8ce026bc42956eda3323b2fec2e221923386495e8aa645c179113a696"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "6bd54801955855f1c6038c49243c3f422026cc172a7014fbce6e19a3491f8e2c"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 96,
+      "id": "GT-S-30x20-D76",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "dc7b2d6dbafad9283f4c64ad5e339871efebaeb4441fda169a63968508c21e7d"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "75b5ceb7e3316cac70d5674b29a7d95dd51d70c7f287e3ac0c94fec98a8d22b0"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 97,
+      "id": "GT-S-30x20-D78",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "7bbc1e999deede2e24b559c802f6e94abd4c7f2adecc21b3c9fc605a1245b12f"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "012d9ba3690eef903807894ba60375413133de166497ca3ad62c3155049cb60f"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 98,
+      "id": "GT-S-30x20-D87",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "41dd09511546a84079e8cbba5d2f0652fd337cd2f1c7dc684dbfc1e8699e7f41"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "191b7136afff51c7bce908e453492fce3bc990b2e38f7018cbb1bf0892c1f189"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 99,
+      "id": "GT-S-30x20-D89",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "24056b049a36fd19d8acf083c68fdb3eb86ef738d1dddcf11a391bde8692f756"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "9bcb60d02bcdf2ebfbab1fe37573f5c0c77ecd3f9004cdd17f13414f51ba2633"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 100,
+      "id": "GT-S-30x20-D92",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "fe7875d40570c967b8275f2e8b818b1fb732190a27faa4490403f50f33747490"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "91dc5f8fc39cbf35779c811bb7c7dd808edd3e187184fbd7d6dbe3e004bcb5c5"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 101,
+      "id": "GT-S-30x20-D94",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "214ebb3d35132e12f34a35148134289e8be356b6424d481cb817b8394f1e44e4"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "d08307085df9267aa971a5ae4c64572c21e67f2587dc7fc6b019e5bd687a162c"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 102,
+      "id": "GT-S-30x20-D96",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "aa87f7d4d648e9daa4abca156677b6edf9d2594f7d9b6d70b8fb8d10b523c6f7"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "244a2f68540eacf3c3bface9395c2261001e82ce57fc2b13233ce9ccddc339b9"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 103,
+      "id": "GT-S-30x20-D98",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "f06d8bb3dc747f41c9d647430b9fb0fdad2645073b8e9fc356e117cc9a19ed56"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "e5a0683b7cac69acb9f6ca267ea9594c70c543c723b3a1d6701e9459d65dbbd3"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 104,
+      "id": "GT-S-30x20-D100",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "7a67440559fb99ae531df9e95d4c4a22daa49358ac06b2f3a2a55f4c89e4e083"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "21741e1e6df730b72b01bcf72d106e46c82c325cdebdfc5ac788ff30c553e83b"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 105,
+      "id": "GT-S-30x20-D4",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "05929153e6a193b69e3bce17d23523748d34c3194a7d6e77d1641e99787f959b"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "8649c2305386afbb3d8b4ca0526c3d214fe3512e5b115081bc8a7a7ac49ffab3"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 106,
+      "id": "GT-S-30x20-D5",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "394a1c11ac77ae6d56a67949f7e994f5550add786d412cf7fcf2c06d435e6554"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "49251cc7394ca782a0f68329a5da3b8f304c70d18183ff0591792fe8c20fa16f"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 107,
+      "id": "GT-S-30x20-D6",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "6d0b70390459f16715dfcb6abb5d568f1e513e8dbda887a5e400bc4bfedfc91c"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "2995d9a6d10070a4385be3257bab75589272065449b5a7f06577e2400d17f1a5"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 108,
+      "id": "GT-S-30x20-D7",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "b8fa0755e57936dfa0daa078040edad16c41299759f8228907e880b30f86fd42"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "dc8789bcce111fc0d5517aaef57591e9a55a73f041b68af2fe8cbd70e4b9da63"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 109,
+      "id": "GT-S-30x20-D8",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "e9097ee5d1326ab94954845025149cbbea236ac57bd05b8f92387b5d7ab6db19"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "f8134b2f425dc3cba4f52ad28ba86f588f5e26899bc41a10afccb26a93935f54"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 110,
+      "id": "GT-S-30x20-D9",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "53ddfb54f1263beef2a613f1ca94b95d20d661abaf3a9b057901d9bf589765b7"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "3424633ccdaa45523fea9e26640565d210d36d9142698c4adf11a9b110613860"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 111,
+      "id": "GT-S-30x20-D15",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "3c6d9c6870929048c0dcbedc5335c1519d98776cd8bbdeeceda416e59ec66122"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "93eb60f9234e3bb6f5237adfbd2189cd2763acafe13f05b9631d58ebca3d238e"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 112,
+      "id": "GT-S-30x20-D16",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "0e3656055c5fee44a6391feb0dd203e24fa5e00b055a4355188db89386b22122"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "53d322b9d1ded9ff7a7ca237824141b1287a3a4a864a2b6f2bf75b3579490637"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 113,
+      "id": "GT-S-30x20-D17",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "0add29e921e19b006f1c78229bd91997718417832cbe79875339dfaeb6c0fb1e"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "e7264afea579a0bc8842343df5afafa8fd965b63f55b0097a1b90f2366faf60a"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 114,
+      "id": "GT-S-30x20-D19",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "08b5e7abbbea2babdc29e97bb4171e1899e787ecb58ab378e11adb4da8d7db72"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "ce16ae85318043da2870bfb43511588e42a867c3e575e03269be3cc355b3a2ac"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 115,
+      "id": "GT-S-30x20-D20",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "7f81479ef954f520784112558ceda5d6f8c2dfa0854b68700f5b8f14a022273c"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "38a4bea5bc8affb39fd3f8349edeca4433b28e4eddff5d74da28948ec72d4f61"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 116,
+      "id": "GT-S-30x20-D21",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "989198bbca339885b6461e937177e6c3c146298ea78461f6bbed434d40ce7021"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "56cf64521ba2bcd15f49a6cdaea89dd32e1a9efb241e534e08d4f0413c5e3e6a"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 117,
+      "id": "GT-S-30x20-D68",
+      "group": "Menschen",
+      "subcategory": "Kind",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "d68dd7907dcf27e271d975e780d074e6b93e3b50e03b701dbf8efe2557d20ef3"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "1e0ff2b9e1a53154e356438023cedb4dde47abd36434aa75e4f6019246e65ba9"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 118,
+      "id": "GT-S-30x20-D75",
+      "group": "Menschen",
+      "subcategory": "Kind",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "dd07e5a1e5a9f61e1fea233022e47abe35a9941617cc726cc277e638be34b48f"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "cc11249bc22152f8f11394e1d266a4a78c45335c08b82959cb0395d5b726ee97"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 119,
+      "id": "GT-S-30x20-D93",
+      "group": "Menschen",
+      "subcategory": "Kind",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "cc288f235f8a1fefe497a42d714e543094112db3eab209a181bf41bd900d34cb"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "daf5d903bfe0e38a27c590efb366a6fa7a33dd7dd0a40ad2d5c5835f0caa3815"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 120,
+      "id": "GT-S-30x20-D95",
+      "group": "Menschen",
+      "subcategory": "Kind",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "50f4a29f1ed54f8e4181ea6eb4409b8b2752948c9cb20080a57f7a8a76b8d8c1"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "02f5cca016e9f4e90b6c45fddb935ca7279f6ee6e385b413099301ebadd2a568"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 121,
+      "id": "GT-S-30x20-D99",
+      "group": "Menschen",
+      "subcategory": "Kind",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "97cf535966126ac9864411aa9dba2923850423d466d0d1df0b664542c6fa3d94"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "75d009da8b60d4e4483b96f39514c172148920c663faad9b93be64d399cbee00"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 122,
+      "id": "GT-S-30x20-D59",
+      "group": "Menschen",
+      "subcategory": "Mama",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "be43668e705c1c8c3b7022f4fd5577894bdf67c1afa2229f034a80725c0f191c"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "b945133ac268bebe09b3d0d8e78bbe827d62de6be9fc005797438758f77ba7e0"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 123,
+      "id": "GT-S-30x20-D67",
+      "group": "Menschen",
+      "subcategory": "Mama",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "8aa19f306e7424e1ed45f896fac1c880e952381b57e79fe5b089c49f71df099e"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "3f0a8d962296115590cb2c80bdc8d5969ab899a17612291b5434a68dde31cc9b"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 124,
+      "id": "GT-S-30x20-D69",
+      "group": "Menschen",
+      "subcategory": "Mama",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "ba35e95ffd6e3d35d37e2bce8b6fcb321b0466bfbba34509c3b225b2f1196676"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "d8deda965580139b29d295fb9d44f449bfc93c1ba7c7d465d882da01899c2759"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 125,
+      "id": "GT-S-30x20-D90",
+      "group": "Menschen",
+      "subcategory": "Mama",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "b5abe95427df63571a68713abafd2b16d02ff6310f8a94a65936c600e2321db3"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "2bcf9f6f4f0936c9c4a4e9f525d59dc4042cf5f03bd9a5fa523cdb4d53d1e9ee"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 126,
+      "id": "GT-S-30x20-D14",
+      "group": "Menschen",
+      "subcategory": "Mama",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "69413722a75cdcffe767a284328abc557e65dd44755b3a88fcd7ac228dc2e2be"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "259e1733ba1b6c1ab6784557b2688e58b4cd175fda51790f0e8cc0107c6c81b1"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 127,
+      "id": "GT-S-30x20-D18",
+      "group": "Menschen",
+      "subcategory": "Mama",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "25f7e38532e6560297247e98572cd0186194afc16e949f7c0f8de40cd60e9964"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "419c4ddf72a4234e4705a92a7d754699af61f109a52e1105359d313cb5c112bd"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 128,
+      "id": "GT-S-30x20-D55",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "9b8bc7815615852cce5661d0516dc5d33df9f47d27a9ce358bace15a46028cdf"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "7d5f9a5105b1c731925fff66b762c691da9199edf2bc16127056bdf258127746"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 129,
+      "id": "GT-S-30x20-D85",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "9daa6002e727c29b67da7cc470144e026463c25dcb90f384d6396dcb89892b00"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "a9bc0828b329319947916fd43120dcf840a59586294092443a082869cc65d983"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 130,
+      "id": "GT-S-30x20-D86",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "66a5d9f8b65c9afd78f71ee529e726598c7757146d45e16017af077e0cfd5b66"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "0b1ff5ec76373b7254686811d931be19bf9e732a6fb74b3b1c1cf8cfbd2aa5ec"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 131,
+      "id": "GT-S-30x20-D88",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "a421c0fba1edee7327ec1372d1bbeb2b8c9c740d84decd5492ee634dcac7969b"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "3bc289e97c1c9d405f0723e245c66145dc828857776d8f547e4fdfe7fb42a346"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 132,
+      "id": "GT-S-30x20-D91",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "e0d445a9e002ebb2201f791b0dbbe4a9131df3bf11c308ae2e6e51616b856692"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "1fa12035dae6744f901d37122af63ba2c84d948ef7a8603aaacc56388ddcdf49"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 133,
+      "id": "GTSK-S-30x20-D1",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "c4efff4c43975cf53f46bb92690d6a3983b9e4ac01badcc4f02423f6a1ef82a3"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "589771ba0e412589bb74fc4bccc87b7a2d72aa9cb0c44d1a1196bcbb83dfb419"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 134,
+      "id": "GT-S-30x20-D12",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "23128cd688b77f9705d86c46a07106c67a4e522c16e2eea6f508da75691adcc6"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "ab028a7a18f7ad1ffd747fea6313867b9eb778aaad5ad88d0b94ee3284c35b3f"
+        }
+      ],
+      "notes": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D12/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ]
+    },
+    {
+      "position": 135,
+      "id": "GT-S-30x20-D13",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "3eeaea4aa40312960da8ae0fffb81b3c69e3e99e91a9ea76203c28c1d51737ff"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "6125dff2f8d32ab73f517da8920c45683c709e310bedcf6e6e46db64489a12d0"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 136,
+      "id": "GT-S-30x20-D264",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "open",
+          "reason": "GT-S-30x20-D264 · Malmo: Element ragt über die Gestaltungsfläche hinaus."
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "open",
+          "reason": "GT-S-30x20-D264 · Malmo: Element ragt über die Gestaltungsfläche hinaus."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 137,
+      "id": "GT-S-30x20-D271",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "open",
+          "reason": "GT-S-30x20-D271 · Mogli: Element ragt über die Gestaltungsfläche hinaus."
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "open",
+          "reason": "GT-S-30x20-D271 · Mogli: Element ragt über die Gestaltungsfläche hinaus."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 138,
+      "id": "GTUV-S-30x20-D17",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 139,
+      "id": "GT-S-30x20-D203",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "open",
+          "reason": "GT-S-30x20-D203 · Simba: Element ragt über die Gestaltungsfläche hinaus."
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "open",
+          "reason": "GT-S-30x20-D203 · Simba: Element ragt über die Gestaltungsfläche hinaus."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 140,
+      "id": "GT-S-30x20-D227",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "open",
+          "reason": "GT-S-30x20-D227 · Mogli: Element ragt über die Gestaltungsfläche hinaus."
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "open",
+          "reason": "GT-S-30x20-D227 · Mogli: Element ragt über die Gestaltungsfläche hinaus."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 141,
+      "id": "GTUV-S-30x20-D13",
+      "group": "Tiere",
+      "subcategory": "Hund",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 142,
+      "id": "GTUV-S-30x20-D14",
+      "group": "Tiere",
+      "subcategory": "Hund",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 143,
+      "id": "GTUV-S-30x20-D8",
+      "group": "Tiere",
+      "subcategory": "Katze",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 144,
+      "id": "GT-S-30x20-D1",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "6384a4bbad3013f8ffd628181ff35a14a99d4251455834ead6c4b89591bc2e3a"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "45031f2a0eacb35a5abe69a405a35f9902c0e7eb031a75df1a444c70e6256e7e"
+        }
+      ],
+      "notes": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D1/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ]
+    },
+    {
+      "position": 145,
+      "id": "GT-S-30x20-D2",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "edaaf886536a8b6c7d60b32319506f7c9ea9bf6db5a297c6144bf381181cabf7"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "b55c0e353740d1b902fc7d0856d6675e416ba790832e04f663dae591a8c0ff89"
+        }
+      ],
+      "notes": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D2/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ]
+    },
+    {
+      "position": 146,
+      "id": "GT-S-30x20-D3",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "857da401990f7e1a7fded2a40b3cc89c4019f9e9843d076c8a034ff7ea26d928"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "0a108aba3039fe6a5131fa597b17518f04bdb37dc3fbb08f830c9cc73773222f"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 147,
+      "id": "GT-S-30x20-D10",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "ea963c63387dfba3fd947dfc000bb02d6b1108775cefe11ddbffe9a1c4cb1a9b"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "de8f3490bb66a551efda3be0883fdfaa4ebae8de16f5adf94c561ccfbf1aa29d"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 148,
+      "id": "GT-S-30x20-D22",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "69b139795577a17a420d87964497d5acfe635afadf174029f9f2f4d244201508"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "5e14596e384138010a7c30752df5ac9a6cdebf4c973b614d40152f5da58d4299"
+        }
+      ],
+      "notes": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D22/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ]
+    },
+    {
+      "position": 149,
+      "id": "GT-S-30x20-D23",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "1f5a30f4ee0417ff3cf9a583ed1542a4d300ba4319332c99913362ac122318c1"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "316888e385764d719410292e87619de76a384fd1282f5bdabcdd1e2c9ece01eb"
+        }
+      ],
+      "notes": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D23/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ]
+    },
+    {
+      "position": 150,
+      "id": "GT-S-30x20-D24",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "decaea7ff315064d0ed264a87e3025fd35063de54da6f887340905562daa5691"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "fe39690d8d86952ef9503f97737497a106efbac118837b558845fc77f631d1ac"
+        }
+      ],
+      "notes": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D24/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ]
+    },
+    {
+      "position": 151,
+      "id": "GT-S-30x20-D25",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "5f82d67f46a273fcf07b776e48d9455af06175eb2cbc62ccf3d96b221b058569"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "8e4185805248098c977e63fdb9158640a73545a547a401b10d483acdef3ed325"
+        }
+      ],
+      "notes": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D25/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ]
+    },
+    {
+      "position": 152,
+      "id": "GT-S-30x20-D80",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "open",
+          "reason": "GT-S-30x20-D80 · Isabell: Element ragt über die Gestaltungsfläche hinaus."
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "open",
+          "reason": "GT-S-30x20-D80 · Isabell: Element ragt über die Gestaltungsfläche hinaus."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 153,
+      "id": "GT-S-30x20-D83",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "open",
+          "reason": "GT-S-30x20-D83 · Anja Große: Element ragt über die Gestaltungsfläche hinaus."
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "open",
+          "reason": "GT-S-30x20-D83 · Anja Große: Element ragt über die Gestaltungsfläche hinaus."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 154,
+      "id": "GT-S-30x20-D84",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "open",
+          "reason": "GT-S-30x20-D84 · Peter Friedrich: Element ragt über die Gestaltungsfläche hinaus."
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "open",
+          "reason": "GT-S-30x20-D84 · Peter Friedrich: Element ragt über die Gestaltungsfläche hinaus."
+        }
+      ],
+      "notes": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D84/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ]
+    },
+    {
+      "position": 155,
+      "id": "GT-S-30x20-D97",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "Gravur",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 156,
+      "id": "GTUV-S-30x20-D1",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 157,
+      "id": "GTUV-S-30x20-D2",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 158,
+      "id": "GTUV-S-30x20-D3",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 159,
+      "id": "GTUV-S-30x20-D4",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 160,
+      "id": "GTUV-S-30x20-D5",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 161,
+      "id": "GTUV-S-30x20-D6",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 162,
+      "id": "GTUV-S-30x20-D7",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 163,
+      "id": "GTUV-S-30x20-D9",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 164,
+      "id": "GTUV-S-30x20-D10",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 165,
+      "id": "GTUV-S-30x20-D11",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 166,
+      "id": "GTUV-S-30x20-D12",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 167,
+      "id": "GTUV-S-30x20-D15",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 168,
+      "id": "GTUV-S-30x20-D16",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 169,
+      "id": "GTUV-S-30x20-D18",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 170,
+      "id": "GTUV-S-30x20-D19",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 171,
+      "id": "GTUV-S-30x20-D20",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 172,
+      "id": "GTUV-S-30x20-D21",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 173,
+      "id": "GTUV-S-30x20-D22",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 174,
+      "id": "GTUV-S-30x20-D23",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 175,
+      "id": "GTUV-S-30x20-D24",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": []
+    },
+    {
+      "position": 176,
+      "id": "GT-S-30x20-D79",
+      "group": "Menschen",
+      "subcategory": "Mama",
+      "process": "Gravur",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "open",
+          "reason": "GT-S-30x20-D79 · In Gedenken an: Element ragt über die Gestaltungsfläche hinaus."
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "open",
+          "reason": "GT-S-30x20-D79 · In Gedenken an: Element ragt über die Gestaltungsfläche hinaus."
+        }
+      ],
+      "notes": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D79/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ]
+    },
+    {
+      "position": 177,
+      "id": "GT-S-30x20-D11",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "process": "Gravur",
+      "preparedBothSizes": true,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "89ff47bd91c34d67de1788ae9c7410655b24703231fb5a699f505efdde088242"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "prepared",
+          "templateHash": "f09bf59e0613871e0967ca326dde5e3696a8ab79ff9362cfa3ab5a46f46dbc3d"
+        }
+      ],
+      "notes": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D11/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ]
+    },
+    {
+      "position": 178,
+      "id": "GTSK-S-30x20-D2",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": [
+        "Chris: gelbe Sterne sind Druck. Originalvorschau visuell bestätigt; Druckaufbereitung bleibt offen."
+      ]
+    },
+    {
+      "position": 179,
+      "id": "GTSK-S-30x20-D3",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "process": "Gravur",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [
+        {
+          "sizeKey": "GT-SN-RE-220X140",
+          "status": "prepared",
+          "templateHash": "fd51cd7c33f1c277a670cca04b808e8ab274405d156f2caccb3078d80ac69f69"
+        },
+        {
+          "sizeKey": "GT-SN-RE-300X200",
+          "status": "open",
+          "reason": "GTSK-S-30x20-D3 · Kira Kunze: Element ragt über die Gestaltungsfläche hinaus."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "position": 180,
+      "id": "GTSK-S-30x20-D4",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "process": "UV",
+      "preparedBothSizes": false,
+      "decision": "pending",
+      "targets": [],
+      "notes": [
+        "Chris: gelbe Sterne sind Druck. Originalvorschau visuell bestätigt; Druckaufbereitung bleibt offen."
+      ]
+    }
+  ],
+  "preparedCodeBranch": "dev/astra-schiefer-originale-20261105",
+  "codeReviewPR": 180,
+  "updatedOn": "2026-11-06"
+}

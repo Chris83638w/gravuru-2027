@@ -3,15 +3,76 @@ import argparse
 import hashlib
 import io
 import json
+import os
 from pathlib import Path, PurePosixPath
 import subprocess
+import tempfile
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
+SHARED_RUNTIME_FILES = [
+    # Pure shared price validation, imported transitively by workshop/http.mjs.
+    # Do not include the surrounding Shopify release/deployment tools.
+    'ops/shopify/master-release/priced-options.mjs',
+]
+SLATE_RUNTIME_FILES = [
+    # Private offline batch tools are shipped from the same reviewed commit.
+    # They are never exposed as HTTP routes or automatically run at startup.
+    'scripts/extend-design-review.mjs',
+    'scripts/extend-slate-original-review.mjs',
+    'scripts/combine-complete-design-review.mjs',
+    'scripts/lib/gallery-assignment-catalogue.mjs',
+    'scripts/lib/gallery-review-pagination.mjs',
+    'scripts/lib/gallery-review-registry.mjs',
+    'scripts/lib/slate-review-assignment-ui.js',
+    'scripts/lib/slate-review-gallery.mjs',
+    'scripts/lib/slate-review-gallery-page.mjs',
+    'scripts/lib/slate-review-catalog.mjs',
+    'scripts/lib/slate-review-gallery-ui.js',
+    'scripts/lib/slate-review-inline-ui.js',
+    'scripts/lib/review-material-overview.mjs',
+    'scripts/data/review-material-overview-20261106.json',
+    'scripts/lib/slate-review-gallery.css',
+    'scripts/lib/slate-review-comments.mjs',
+    'scripts/lib/slate-review-comments-ui.js',
+    'scripts/lib/design-review-approvals.mjs',
+    'scripts/lib/design-review-fingerprint-cache.mjs',
+    'scripts/lib/design-review-overview.mjs',
+    'scripts/lib/slate-review-approval-targets.mjs',
+    'scripts/lib/design-review-targets.mjs',
+    'scripts/lib/slate-review-approvals-ui.js',
+    'scripts/lib/gallery-editor-http.mjs',
+    'scripts/lib/gallery-management-http.mjs',
+    'scripts/lib/gallery-management-targets.mjs',
+    'scripts/lib/gallery-management-creation-gate.mjs',
+]
 
 
 def git(*args):
     return subprocess.check_output(['git', *args], cwd=ROOT)
+
+
+def check_runtime_imports(archive, runtime):
+    """Import the delivered module graph, without starting a server or opening data."""
+    entry = 'merchant-runtime.mjs' if runtime == 'shopify-merchant-test' else 'runtime.mjs'
+    modules = ['ops/plesk/' + entry, 'ops/plesk/slate-review-runtime.mjs',
+               'scripts/extend-design-review.mjs']
+    environment = {key: value for key, value in os.environ.items()
+                   if not key.startswith('GRAVURU_') and key not in
+                   ['NODE_OPTIONS', 'NODE_PATH', 'PYTHONHOME', 'PYTHONPATH']}
+    with tempfile.TemporaryDirectory(prefix='gravuru-package-import-') as temporary:
+        with zipfile.ZipFile(archive) as packaged:
+            for name in packaged.namelist():
+                parts = PurePosixPath(name).parts
+                if not parts or name.startswith('/') or '\\' in name or ':' in name or '..' in parts:
+                    raise ValueError('Unsafe runtime package member')
+            packaged.extractall(temporary)
+        result = subprocess.run(['node', '--input-type=module', '-e',
+            "import {pathToFileURL} from 'node:url';import path from 'node:path';"
+            "for(const file of process.argv.slice(1))await import(pathToFileURL(path.resolve(file)));",
+            *modules], cwd=temporary, env=environment, capture_output=True, text=True, timeout=60)
+        if result.returncode:
+            raise ValueError('Extracted runtime module import failed:\n' + result.stderr[-6000:])
 
 
 def package(commit, destination, runtime='private-operator-test'):
@@ -20,7 +81,7 @@ def package(commit, destination, runtime='private-operator-test'):
     commit = git('rev-parse', '--verify', commit + '^{commit}').decode().strip()
     version = '0.1.0-recovery.20261010+' + commit[:12]
     files = {}
-    tree = git('ls-tree', '-rz', '--full-tree', commit, 'app', 'ops/plesk')
+    tree = git('ls-tree', '-rz', '--full-tree', commit, 'app', 'ops/plesk', *SHARED_RUNTIME_FILES, *SLATE_RUNTIME_FILES)
     for item in tree.split(b'\0'):
         if not item:
             continue
@@ -29,7 +90,7 @@ def package(commit, destination, runtime='private-operator-test'):
         name = raw_path.decode()
         if mode != '100644' and mode != '100755' or kind != 'blob':
             raise ValueError('Only regular committed files may enter the package: ' + name)
-        if name.endswith('.test.mjs'):
+        if name.endswith(('.test.mjs', '.test.py')):
             continue
         parts = PurePosixPath(name).parts
         if any(p in ['.git', '.local-data', 'node_modules', '__pycache__', '.preview'] or p.startswith('.env') for p in parts) or any(name.endswith(s) for s in ['.sqlite', '.sqlite-wal', '.sqlite-shm', '.log', '.pem', '.key']):
@@ -38,9 +99,13 @@ def package(commit, destination, runtime='private-operator-test'):
         if b'-----BEGIN PRIVATE KEY-----' in data or b'-----BEGIN OPENSSH PRIVATE KEY-----' in data:
             raise ValueError('Key material must never enter the package')
         files[name] = data
-    for required in ['ops/plesk/app.cjs', 'ops/plesk/README.md', 'app/workshop/design-zip.mjs', 'app/workshop/design-source-path.mjs']:
+    for required in ['ops/plesk/app.cjs', 'ops/plesk/README.md', 'app/workshop/design-zip.mjs', 'app/workshop/design-source-path.mjs', *SHARED_RUNTIME_FILES]:
         if required not in files:
             raise ValueError('Required committed runtime file missing: ' + required)
+    if 'ops/plesk/slate-review-runtime.mjs' in files:
+        for required in SLATE_RUNTIME_FILES:
+            if required not in files:
+                raise ValueError('Required committed gallery file missing: ' + required)
     entry = 'merchant-app.cjs' if runtime == 'shopify-merchant-test' else 'app.cjs'
     installation = 'ops/plesk/MERCHANT-README.md' if runtime == 'shopify-merchant-test' else 'ops/plesk/README.md'
     if 'ops/plesk/' + entry not in files or installation not in files:
@@ -70,8 +135,10 @@ def package(commit, destination, runtime='private-operator-test'):
         assert archive.testzip() is None
         for item in manifest['files']:
             assert hashlib.sha256(archive.read(item['path'])).hexdigest() == item['sha256']
+    check_runtime_imports(destination, runtime)
     result = {'sourceCommit': commit, 'file': destination.name, 'bytes': destination.stat().st_size,
-              'sha256': hashlib.sha256(destination.read_bytes()).hexdigest(), 'entries': len(files)}
+              'sha256': hashlib.sha256(destination.read_bytes()).hexdigest(), 'entries': len(files),
+              'runtimeModuleImportsVerified': True}
     destination.with_suffix('.sha256').write_text(result['sha256'] + '  ' + destination.name + '\n')
     print(json.dumps(result))
 

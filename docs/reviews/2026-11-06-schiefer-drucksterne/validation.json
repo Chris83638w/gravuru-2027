@@ -1,0 +1,21 @@
+{
+  "counts": {
+    "originals": 180,
+    "engraving": 154,
+    "uv": 26,
+    "preparedDesigns": 144,
+    "preparedTargets": 289,
+    "openDesigns": 10,
+    "reviewProducts": 28,
+    "missingPhotoFields": 0
+  },
+  "manifestSha256": "8914ccc84c9b0adb6749ca150834453721df9d7bb00cb813a98ce9e57f09e24e",
+  "allPackageFilesVerified": true,
+  "nativeProductDocumentsUnchanged": true,
+  "assetsUnchanged": true,
+  "approvedCount": 0,
+  "correctedIds": [
+    "GTSK-S-30x20-D2",
+    "GTSK-S-30x20-D4"
+  ]
+}

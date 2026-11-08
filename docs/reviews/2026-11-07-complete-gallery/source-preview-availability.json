@@ -1,0 +1,151 @@
+{
+  "schema": "gravuru-source-preview-availability/v1",
+  "sourceCommit": "86c1ff5f431acfe60d4cff388958112187005550",
+  "catalogueCommit": "3c6051fbbc7904969948950fae12cae2ae663f30",
+  "scope": "Geprüfte kanonische Union aus bestehender Galerie, Gesamtlieferung und endgültigem Vorschau-Nachtrag V2. Bildverfügbarkeit ist unabhängig von nativer Konfi-Aufbereitung oder Designfreigabe.",
+  "counts": {
+    "effectiveOriginals": 19661,
+    "visibleWithImage": 19661,
+    "remainingWithoutImage": 0,
+    "availableSupplementRows": 3447,
+    "renderedOriginalSvgPreviews": 3353,
+    "byteIdenticalExistingOriginalPngs": 35,
+    "byteIdenticalPinnedCataloguePngs": 59,
+    "deliveryManifestOmissionsResolved": 59,
+    "renderingBlockersStillOpenButOriginalPngShown": 8
+  },
+  "finalResult": {
+    "version": 2,
+    "verified": true,
+    "proof": "source-preview-supplement-v2-proof.json",
+    "deliveryOmissionEvidence": "missing-originals-59.json",
+    "manifestSha256": "3221955808592c83cd5ad9eb8bef257b7956d9c5d9e423d2856ccac12e05502d",
+    "filesIndexSha256": "454993e85cd46a10e56ee46e4673b9d306abcff0eb3688c73882c0ee4fa1b235",
+    "priorV1Preserved": true,
+    "sourceMembershipVerified": true,
+    "gitObjectsVerified": 73,
+    "createsDesignApproval": false,
+    "changesNativeReadiness": false
+  },
+  "findings": [
+    "Endgültiger V2-Stand: Alle 19.661 Karten sind mit einem Bild abgedeckt; es bleibt keine Bildlücke.",
+    "Der Nachtrag enthält 3.353 gerenderte Original-SVG-Vorschauen, 35 byteidentische bestehende Original-PNGs und 59 byteidentische PNGs aus dem gepinnten Katalog.",
+    "Die 59 zuletzt offenen Anzeigen waren Auslassungen im Liefermanifest. preview.png und design.json waren bei allen 59 im Commit86c1 vorhanden; lediglich die zusammengeführte design.svg fehlt. Es fehlen nicht 59 Originalbilder.",
+    "Die 59 Katalog-PNGs wurden mit SHA256 und vollständigem Commit-/Tree-/Blob-Nachweis geprüft und unverändert übernommen.",
+    "Sieben offene Legacy-Schriftenzuordnungen und ein fehlendes Stern-Glyph bleiben dokumentiert. Vorhandene unveränderte Original-PNGs decken ihre Bildansicht ab; die Schrift- und Konfi-Befunde sind dadurch nicht erledigt."
+  ],
+  "beforeSupplement": {
+    "historical": true,
+    "description": "Historische Ressourcen- und Anzeigelücken vor den separaten Vorschau-Nachträgen. Diese Zahlen beschreiben nicht die endgültige Bildverfügbarkeit.",
+    "counts": {
+      "effectiveOriginals": 19661,
+      "effectiveOpenOriginals": 13038,
+      "openWithSourcePreview": 9591,
+      "openWithoutNativeOrSourcePreview": 3447,
+      "openWithoutPreviewWithOriginalSvg": 3364,
+      "svgFilesExist": 3364,
+      "svgWithText": 3364,
+      "svgWithImage": 1568,
+      "svgWithExternalHref": 0,
+      "svgWithScriptEvent": 0,
+      "svgWithForeignObject": 0,
+      "openWithoutPreviewOrSvg": 83,
+      "existingUnmappedPreviewPng": 35,
+      "existingUnmappedPreviewPngWithSvg": 11,
+      "existingUnmappedPreviewPngWithoutSvg": 24,
+      "deliveryManifestOmittedExistingCatalogueImages": 59
+    },
+    "resources": {
+      "svgOriginals": 3364,
+      "svgWithInlineFonts": 0,
+      "svgWithRelativeImageReferences": 1568,
+      "relativeImageDesignsCompleteInPackage": 3,
+      "relativeImageDesignsCompleteInPinnedSource": 1568,
+      "relativeImageDesignsMissingInPinnedSource": 0,
+      "svgFontFamiliesFullyMappedToExistingPinnedFontFiles": 3351,
+      "svgFontFamiliesMissingPinnedMappingOrFile": 6,
+      "legacySourceFontMappingNotResolved": 7
+    },
+    "findings": [
+      "3.364 offene Karten hatten ein vorhandenes Original-SVG, aber noch kein gesetztes Anzeigevorschaubild.",
+      "83 offene Karten hatten weder reviewSourcePreview noch design.svg. Bei 24 alten Karten lag preview.png bereits im Galeriepaket; die übrigen 59 PNGs waren in der gepinnten Katalogquelle vorhanden, aber nicht im Liefermanifest aufgeführt.",
+      "Keines der 3.364 SVGs enthielt eingebettete Schriftdateien. Eine einfache SVG-Durchreichung hätte Browser-Ersatzschriften zugelassen.",
+      "1.568 SVGs verwiesen auf relative Bilddateien; nur drei waren bereits im jeweiligen Prüfpaket vollständig, sämtliche Bilddateien lagen jedoch in der gepinnten Katalogquelle.",
+      "Die Ressourcenprüfung ergab 3.351 direkte Schriftdateizuordnungen, sechs Fälle mit dokumentierten Ersatznamen und sieben gesondert zu prüfende Legacy-Zuordnungen.",
+      "Weitere elf Legacy-SVG-Karten hatten bereits eine unveränderte preview.png ohne gesetztes Vorschaufeld. Der Original-PNG-Vorrang vermied unnötige Neurasterung."
+    ],
+    "examples": [
+      {
+        "id": "TR-V2A-6.5x6.5-D803",
+        "source": "designs/edelstahl-gravur-65x65-rund/TR-V2A-6.5x6.5-D803",
+        "fonts": [
+          "Bebas Neue",
+          "Stylish",
+          "Raleway"
+        ],
+        "inlineFonts": false,
+        "relativeImages": [],
+        "openReason": "Gelieferte Zielprüfung meldet Textüberstand in der ovalen Gestaltungsfläche; Originalquelle kann dennoch als Katalogansicht gezeigt werden."
+      },
+      {
+        "id": "GT-S-30x20-D50--source-095ec4f8e87f",
+        "sourceOriginalId": "GT-S-30x20-D50",
+        "source": "designs/gedenktafeln-30x20/GT-S-30x20-D50",
+        "fonts": [
+          "Poppins ExtraLight"
+        ],
+        "inlineFonts": false,
+        "relativeImages": [],
+        "openReason": "AE-Zielfamilien und Maße geliefert, jedoch keine ausdrückliche Produktlinie in Katalogfamilie/Lieferung. Keine neue Produktlinie erfinden."
+      },
+      {
+        "id": "GT-S-22x14-D234",
+        "source": "designs/gedenktafeln-22x14/GT-S-22x14-D234",
+        "fonts": [
+          "Great Vibes",
+          "Montserrat Light"
+        ],
+        "inlineFonts": false,
+        "relativeImages": [
+          "foto-1.png"
+        ],
+        "imagePresentInReviewPackage": false,
+        "imagePresentInPinnedCatalogue": true,
+        "openReason": "Zielfamilie mehrdeutig und Fotoressourcenadapter ungeprüft. Quelle darf sichtbar werden; Konfi-Bearbeitung bleibt offen."
+      }
+    ],
+    "existingCode": {
+      "sourcePreviewPath": "scripts/prepare-design-batch-review.mjs: rowFor übernimmt nur gelieferte vorschau-png als reviewSourcePreview.",
+      "safeFileRoute": "scripts/lib/slate-review-gallery.mjs: /originale/files erlaubt PNG/JPG/WebP, keine SVG-Durchreichung.",
+      "designConverter": "app/workshop/design-converter.py: Text benötigt Pfade; keine automatische Schriftersetzung.",
+      "reusablePreviewApproach": "scripts/slate-review-sheets.mjs: Original-SVG, gepinnte Schriftdateien als @font-face und lokale Bilder einbetten; Originalmaße und Gestaltung erhalten."
+    },
+    "existingPngProof": {
+      "rowsChecked": 92,
+      "actualByteHashesVerified": 92,
+      "effectiveAdditionalFallbacks": 35,
+      "example": "originals/GTUV-S-30x20-D11/preview.png",
+      "fontOrGlyphBlockedButOriginalPngAvailable": [
+        "GT-S-30x20-D80",
+        "GT-S-30x20-D97",
+        "GTSK-S-30x20-D2",
+        "GT-S-30x20-D203",
+        "GT-S-30x20-D227",
+        "GT-S-30x20-D264",
+        "GT-S-30x20-D271",
+        "GTSK-S-30x20-D4"
+      ]
+    }
+  },
+  "implementation": {
+    "implemented": true,
+    "label": "Katalogvorschau · Konfi-Aufbereitung offen",
+    "preserveBlockers": true,
+    "createsApproval": false,
+    "sourceAndNativeDocumentsUnchanged": true,
+    "sourcePreviewBuilder": "scripts/prepare-source-preview-supplement.mjs",
+    "originalPngPreference": "scripts/finalize-source-preview-supplement.mjs",
+    "pinnedCatalogueImages": "scripts/extend-source-preview-catalogue-images.mjs",
+    "claudeFollowup": "Liefermanifest um die 59 vorhandenen Katalog-PNGs und design.json korrigieren; zusammengeführte design.svg sowie die acht gesonderten Schrift-/Glyphenbefunde für die native Aufbereitung klären. Keine fehlenden Originalbilder behaupten."
+  }
+}

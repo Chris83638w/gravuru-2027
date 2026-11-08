@@ -1,0 +1,100 @@
+{
+  "sourceCommit": "6191e3b3d6ac5c0b740bfac9b6bbcbf62e62e6a3",
+  "attempt": 2,
+  "checkedAt": "2026-11-07T08:49:15.439613+00:00",
+  "mutationRequests": 0,
+  "schema": "gravuru-readonly-approval-event-comparison/v1",
+  "before": {
+    "events": 0,
+    "targetsWithEvents": 0,
+    "storedLatestApproved": 0,
+    "storedLatestUnapproved": 0,
+    "maximumEventRevision": 0,
+    "eventsSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "after": {
+    "events": 4,
+    "targetsWithEvents": 4,
+    "storedLatestApproved": 4,
+    "storedLatestUnapproved": 0,
+    "maximumEventRevision": 1,
+    "eventsSha256": "85bb05c97b10c869aabb68f6b10794257ec3061d15fc857864bb6d889b6f181b"
+  },
+  "oldEventsPreserved": true,
+  "deletedOldEvents": 0,
+  "modifiedOldEvents": 0,
+  "appendedEvents": 4,
+  "appendedApprovedEvents": 4,
+  "appendedUnapprovedEvents": 0,
+  "appendedRevisionsConsecutive": true,
+  "additiveChangesOnly": true,
+  "changedTargets": [
+    {
+      "keySha256": "d3a9e0921b7ba507974184d70e1d4e36f977eb7aa486c61132f3b285168e9721",
+      "beforeRevision": 0,
+      "afterRevision": 1,
+      "beforeStoredApproved": false,
+      "afterStoredApproved": true,
+      "appendedRevisions": [
+        1
+      ],
+      "appendedApprovedFlags": [
+        true
+      ],
+      "appendedEventsSha256": "e12ec21a16f8cd9a84ffd2d87dec07e28d786122448cafec941df4e459ae08ea"
+    },
+    {
+      "keySha256": "fb0e3264e80b633b3c2619b9940aec120bbe9f003feae775ac9d1352b3d2aa7e",
+      "beforeRevision": 0,
+      "afterRevision": 1,
+      "beforeStoredApproved": false,
+      "afterStoredApproved": true,
+      "appendedRevisions": [
+        1
+      ],
+      "appendedApprovedFlags": [
+        true
+      ],
+      "appendedEventsSha256": "126a611356d9696f35f36549b47b2b6f148e754c63af7548c085027aadcdb542"
+    },
+    {
+      "keySha256": "753a4a6f617952adc77df42ede8b3792c3c855ab01ac524ccaed5831be91811c",
+      "beforeRevision": 0,
+      "afterRevision": 1,
+      "beforeStoredApproved": false,
+      "afterStoredApproved": true,
+      "appendedRevisions": [
+        1
+      ],
+      "appendedApprovedFlags": [
+        true
+      ],
+      "appendedEventsSha256": "5e42c90100752cde4f158c4baf319ebc3d66bd54e3983a751b6aea6887ae2a96"
+    },
+    {
+      "keySha256": "a6f791b3a2fd35a3a74e0aec299d87bd64612f733c01650ff69b52315e91b16e",
+      "beforeRevision": 0,
+      "afterRevision": 1,
+      "beforeStoredApproved": false,
+      "afterStoredApproved": true,
+      "appendedRevisions": [
+        1
+      ],
+      "appendedApprovedFlags": [
+        true
+      ],
+      "appendedEventsSha256": "cd4341c5b15bb9751919d1f6e356dfc2403f01ad5aa06f87178780d0d0af463f"
+    }
+  ],
+  "identitiesAndContentsOmitted": true,
+  "attribution": "Append-only events observed; user activity is reported by the operator, not inferred from raw actor identities.",
+  "statusNote": "Stored approved flags are historical decisions; current effective approved/changed status also depends on the current renderer fingerprint.",
+  "schemaUnchanged": true,
+  "currentEffectiveStatusCounts": {
+    "approved": 0,
+    "unreviewed": 2445,
+    "changed": 4,
+    "unavailable": 101
+  },
+  "readOnlyConsistencyNote": "The DB snapshot and HTTP status read are sequential; concurrent user approvals can occur between them."
+}

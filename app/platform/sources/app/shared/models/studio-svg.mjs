@@ -18,8 +18,8 @@ function selectionMarkup(o,units){
  const u=Number.isFinite(units)&&units>0?units:.4,grip=12*u,hit=24*u,offset=4*u;
  return '<rect x="'+(-o.w/2)+'" y="'+(-o.h/2)+'" width="'+o.w+'" height="'+o.h+'" fill="none" stroke="#16845d" stroke-width="'+u+'" pointer-events="none"/>'+[[-1,-1],[1,-1],[-1,1],[1,1]].map(([x,y])=>'<g data-resize="'+esc(o.id)+'" transform="translate('+(x*(o.w/2+offset))+' '+(y*(o.h/2+offset))+')" style="cursor:'+(x===y?'nwse':'nesw')+'-resize"><title>Ziehen zum Vergrößern oder Verkleinern</title><rect x="'+(-hit/2)+'" y="'+(-hit/2)+'" width="'+hit+'" height="'+hit+'" fill="transparent" pointer-events="all"/><rect x="'+(-grip/2)+'" y="'+(-grip/2)+'" width="'+grip+'" height="'+grip+'" rx="'+2*u+'" fill="#fff" stroke="#196347" stroke-width="'+1.5*u+'" pointer-events="none"/></g>').join('');
 }
-export function studioSvg(profile,design,fonts,{selected='',frameKey='',mountingKey='K00',motifs=[],media=[],guides=false,id='studio',color='schwarz',handles=true,handleUnits,photoExampleMarkup}={}){
- if(profile.kind==='universal-product')return universalSvg(profile,design,fonts,{selected,motifs,media,guides,id,handles,handleUnits,photoExampleMarkup});
+export function studioSvg(profile,design,fonts,{selected='',frameKey='',mountingKey='K00',motifs=[],media=[],guides=false,id='studio',color='schwarz',handles=true,handleUnits,photoExampleMarkup,originalPhotoPreview=false}={}){
+ if(profile.kind==='universal-product')return universalSvg(profile,design,fonts,{selected,motifs,media,guides,id,handles,handleUnits,photoExampleMarkup,originalPhotoPreview});
  const {width:w=160,height:h=280}=profile.geometry;
  const a=(profile.frames.find(f=>f.key===frameKey)||profile.frames[0]).acrylic,b=profile.geometry.bellImageBounds||profile.geometry.bell;
  const native=profile.doorbellSchema==='gravuru-doorbell/v1';
@@ -88,7 +88,7 @@ export function graphicMarkup(o,ink){
 }
 export function universalPreviewViewport(p,{working=false}={}){const w=p.geometry.width,h=working&&p.workingArea?p.workingArea.previewHeightMm:p.geometry.height,pad=Math.max(Math.max(w,h)*.035,(p.backingPreview?.offsetMm||0)+Math.max(w,h)*.02);return [-pad,-pad,w+2*pad,h+2*pad];}
 
-function universalSvg(p,d,fonts,{selected,motifs,media,guides,id,handles,handleUnits,photoExampleMarkup}){
+function universalSvg(p,d,fonts,{selected,motifs,media,guides,id,handles,handleUnits,photoExampleMarkup,originalPhotoPreview}){
  const {width:w,height:h,shape,cornerRadiusMm:radius=0}=p.geometry,pad=Math.max(Math.max(w,h)*.035,(p.backingPreview?.offsetMm||0)+Math.max(w,h)*.02),stroke=Math.max(w,h)*.002;
  const safeId='studio-'+String(id).replace(/[^a-zA-Z0-9_-]/g,'_');
  const processing=getProcessingProfile(p),ink=processing.ink;
@@ -108,7 +108,9 @@ function universalSvg(p,d,fonts,{selected,motifs,media,guides,id,handles,handleU
   return '<g data-object="'+esc(o.id)+'"'+roleAttribute(o)+' transform="translate('+o.x+' '+o.y+') rotate('+(o.rotation||0)+')" fill="'+color+'" style="cursor:move"><rect x="'+(-o.w/2)+'" y="'+(-o.h/2)+'" width="'+o.w+'" height="'+o.h+'" fill="transparent"/>'+content+'</g>';
  }).join('');
  const surface=/^#[a-fA-F0-9]{6}$/.test(p.material.color)?p.material.color:'#eeeeee';
- const contourBlend=p.material.kind==='slate'&&typeof photoExampleMarkup==='function'?' style="mix-blend-mode:lighten"':'';
+ // Only authored example previews opt out. Customer media and production calls
+ // retain the existing path and never set originalPhotoPreview.
+ const contourBlend=p.material.kind==='slate'&&typeof photoExampleMarkup==='function'&&!originalPhotoPreview?' style="mix-blend-mode:lighten"':'';
  const familyAcrylic=p.material.kind==='acrylic'&&['anthrazit','schwarz','satiniert'].includes(p.material.variant),middle=p.material.kind==='steel'?'#e3e8e7':familyAcrylic?({anthrazit:'#474c50',schwarz:'#303336',satiniert:'#858788'}[p.material.variant]):surface;
  const backing=p.backingPreview,bg=backing?'<path data-m-backing="true" data-role="guide" aria-label="'+esc(backing.label)+'" d="'+esc(backing.geometry.outlinePath)+'" transform="translate('+(-backing.offsetMm)+' '+(-backing.offsetMm)+')" fill="#17191b" stroke="#5b5f61" stroke-width="'+stroke+'" pointer-events="none"/>':'';
  return '<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+esc(d.name)+'" viewBox="'+[-pad,-pad,w+pad*2,h+pad*2].join(' ')+'"><defs><linearGradient id="'+safeId+'-surface" x2=".2" y2="1"><stop stop-color="'+surface+'"/><stop offset=".5" stop-color="'+middle+'"/><stop offset="1" stop-color="'+surface+'"/></linearGradient><filter id="'+safeId+'-ink" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="'+inkMatrix(ink)+'"/></filter>'+(contour?'<clipPath id="'+safeId+'-plate-clip"><path d="'+esc(contour)+'" clip-rule="evenodd"/></clipPath>':'')+(safe?.defs||'')+'</defs>'+bg+(glass?.back||plate+' fill="url(#'+safeId+'-surface)" stroke="#8c9991" stroke-width="'+stroke+'"/>')+(contour?'<g data-contour-artwork="true"'+contourBlend+' clip-path="url(#'+safeId+'-plate-clip)">':'')+objects+'<g fill="none" stroke="'+ink+'">'+(d.marks||[]).map(m=>'<path d="'+esc(m.d)+'" stroke="'+elementColor(p,m)+'" stroke-width="'+m.width+'"/>').join('')+'</g>'+(contour?'</g>':'')+(glass?.front||'')+(contour?[]:p.geometry.holes||[]).map(hole=>'<circle cx="'+hole.x+'" cy="'+hole.y+'" r="'+hole.diameter/2+'" fill="#f4f5f3" stroke="#84958c" stroke-width="'+stroke+'" pointer-events="none"/>').join('')+(guides?'<path '+(safe?safe.attribute+' ':'')+'d="M'+w/2+' 0V'+h+'M0 '+h/2+'H'+w+'" fill="none" stroke="#5da894" stroke-width="'+stroke+'" stroke-dasharray="'+stroke*3+' '+stroke*5+'" pointer-events="none"/>':'')+'</svg>';

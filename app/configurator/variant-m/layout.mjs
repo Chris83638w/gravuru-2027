@@ -30,7 +30,7 @@ export async function installLayout({el,r,config}){
  const headingSync=el.sync;el.sync=function(...args){const result=headingSync.apply(this,args);updateHeading();return result;};updateHeading();
  heading.querySelector('[data-ux=back]').after(name);heading.append($('.ux-session-note'));
  const contents=$('[data-ux=contents]');if(contents){contents.classList.remove('ux-contents-bottom');toolbar.append(contents);}
- for(const [node,label,symbol] of [[$('[data-ux=back]'),'Zum Produkt','back'],[$('[data-ux=account]'),'Entwurf speichern','save'],[$('.ux-canvas-help'),'Hilfe','help']])if(node){node.setAttribute('aria-label',label);node.title=label;node.innerHTML=uiIcon(symbol)+'<span class="ux-tool-label">'+label+'</span>';}
+ for(const [node,label,symbol] of [[$('[data-ux=back]'),config?.workbench?.gallery?'Zur Galerie':'Zum Produkt','back'],[$('[data-ux=account]'),config?.workbench?.gallery?'Vorlage speichern':'Entwurf speichern','save'],[$('.ux-canvas-help'),'Hilfe','help']])if(node){node.setAttribute('aria-label',label);node.title=label;node.innerHTML=uiIcon(symbol)+'<span class="ux-tool-label">'+label+'</span>';}
  const note=$('.ux-session-note'),restored=document.createElement('details'),summary=document.createElement('summary'),actions=document.createElement('div');
  restored.className='ux-restored';summary.setAttribute('aria-label','Stand wiederhergestellt – Optionen');summary.title='Dein letzter Stand wurde wiederhergestellt';summary.innerHTML='<span aria-hidden="true">✓</span><span class="ux-restored-label">Stand wiederhergestellt</span>';
  actions.className='ux-restored-actions';actions.append(...note.children);restored.append(summary,actions);note.append(restored);

@@ -1,0 +1,16 @@
+✔ M02 draft preview resolves chosen design and base without saving; protects CSRF and revisions (851.2621ms)
+<string>:1: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+<string>:1: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+<string>:1: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+<string>:1: DeprecationWarning: Image.Image.getdata is deprecated and will be removed in Pillow 14 (2027-10-15). Use get_flattened_data instead.
+✔ photo coverage detects pan, shrink and rotation without changing free placement (0.8229ms)
+✔ circle, ellipse and arch coverage use their masks instead of rectangular corners (0.3258ms)
+✔ coverage agrees with independently rasterized real mask and photo transforms (1465.1683ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1563.0389

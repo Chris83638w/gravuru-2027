@@ -1,0 +1,97 @@
+{
+  "schema": "gravuru-complete-gallery-source-proof/v1",
+  "deliveryCommit": "86c1ff5f431acfe60d4cff388958112187005550",
+  "catalogueCommit": "3c6051fbbc7904969948950fae12cae2ae663f30",
+  "sourceAudit": {
+    "passed": true,
+    "counts": {
+      "hashes": 55293,
+      "hashResults": {
+        "verified": 55293
+      },
+      "batches": 219,
+      "masterBatches": 27,
+      "stockBatches": 192,
+      "registeredIds": 20598,
+      "actualDesigns": 19533,
+      "masterDesigns": 9743,
+      "stockDesigns": 9790,
+      "masterReferences": 1065,
+      "blanks": 1147,
+      "designVersionsVerified": 19450,
+      "states": {
+        "vorbereitet": 6491,
+        "geliefert": 28,
+        "offen": 230,
+        "vorbereitet als Gravurfassung, Verfahren klären": 60,
+        "Design vorbereitet, Produkt/Rohling fehlt": 3019,
+        "vorbereitet (Lieferform-2-Prüfung: lieferbar)": 5413,
+        "vorbereitet (Lieferform-2-Prüfung: umbau)": 1563,
+        "vorbereitet (Lieferform-2-Prüfung: umbenennung)": 2729,
+        "Verweis auf Master (nicht doppelt geliefert)": 1065
+      },
+      "holdCounts": {
+        "declared-blocker": 3249,
+        "process-unclear": 60,
+        "excluded-font": 21,
+        "uncertain-font": 1433,
+        "photo-decision": 2630,
+        "no-target-family": 12811,
+        "rebuild": 1565,
+        "print-review": 3028,
+        "rename": 2729
+      }
+    },
+    "sha256": "462e231bf3240fc77bd42dfa1141d19a13e37c045d58d193101a87a13b0a8d60"
+  },
+  "preparedSet": {
+    "counts": {
+      "batches": 219,
+      "packages": 244,
+      "referenceOnlyPackages": 4,
+      "originals": 19533,
+      "preparedOriginals": 6390,
+      "openOriginals": 13143,
+      "sourcePreviewOriginals": 9707,
+      "products": 3033,
+      "preparedTargets": 50736,
+      "openTargets": 3426,
+      "reusedExistingTargets": 146,
+      "uniqueBlankTriples": 1075,
+      "uniqueFontPayloads": 59
+    },
+    "sizes": {
+      "packageBytes": 7791554592,
+      "productFileBytes": 3107250577,
+      "expandedNativeBytes": 22875775942,
+      "expandedNativeFileSizeUpperEstimate": 24038292398,
+      "maxExpandedProductBytes": 28685593,
+      "formula": "Exact UTF-8 bytes of JSON.stringify(document) after replacing localResources.fonts with the full referenced JSON font objects. File-size upper estimate additionally sums referenced on-disk font bytes per product. No glyph reduction or compression.",
+      "notMeasured": [
+        "SQLite file growth and WAL",
+        "runtime heap/RSS",
+        "additional revisions or backups"
+      ],
+      "scope": "All 219 source batch packages plus central blank supplement, before deduplication against the existing online gallery. Reused existing pilot targets remain in the base gallery and are not new products."
+    },
+    "sha256": "c127be38efcc2c179ee05d2cf577884f1d319dd77d94a63ff76ae9ff29b3ad59"
+  },
+  "blankUnion": {
+    "passed": true,
+    "counts": {
+      "supplier": 1147,
+      "preparedPackageBlankTriples": 1075,
+      "preservedBaseBlanks": 240,
+      "additionalFromBase": 72,
+      "union": 1147,
+      "unionFamilyKeyCount": 1147,
+      "missing": 0,
+      "extra": 0,
+      "mmMismatches": 0,
+      "sourceVersionMismatches": 0
+    },
+    "sha256": "1b7d4b4a299cb6fb011116558fef28b549e9b85834420cff19ad95960f5855b3"
+  },
+  "online": false,
+  "shopifyWrites": 0
+}

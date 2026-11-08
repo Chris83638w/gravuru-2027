@@ -94,3 +94,13 @@ test('fixed product preserves the confirmed catalog tier precedence and matching
  sub.priceOverrides={quantityTiers:[]};const {config:none}=await planFamilyFormats(k,'test','familie',{shopProduct});
  assert.deepEqual(none.quantityTiers,[]);assert.equal(quote(none,[],none.profile.defaultDesignId,resolvedOptions(none),3).unitCents,1999);
 });
+
+test('subcategory material choice filters the format planner without expanding its technical support',async()=>{
+ const k=source({approved:true}),sub=k.lines.get('test').subcategories[0];
+ const inherited=await planFamilyFormats(k,'test','familie');
+ sub.familyIdsOffered=['steel-door-signs'];const explicit=await planFamilyFormats(k,'test','familie');
+ assert.deepEqual(explicit.config,inherited.config);assert.deepEqual(explicit.report.shopify,inherited.report.shopify);
+ sub.familyIdsOffered=[];await assert.rejects(planFamilyFormats(k,'test','familie'),/Keine freigegebene Türschild-Familienart/);
+ for(const name of ['aa','as']){const family=JSON.parse(fs.readFileSync(new URL('../designs/acrylic-standoff-signs/'+name+'.json',import.meta.url)));k.families.set(family.id,family);sub.familyIdsOffered=['steel-door-signs',family.id];await assert.rejects(planFamilyFormats(k,'test','familie'),e=>e.message.includes(family.id)&&/noch nicht.*angeschlossen/.test(e.message));}
+ sub.familyIdsOffered=null;assert.deepEqual((await planFamilyFormats(k,'test','familie')).config,inherited.config);
+});

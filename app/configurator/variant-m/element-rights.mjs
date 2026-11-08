@@ -58,7 +58,7 @@ export const isDecorationLine=(object,design)=>object.uxDecoration===true&&objec
 
 export function canEditElement(config,designId,object,right){
   if(!object)return false;
-  if(config?.workbench?.embedded)return true;
+  if(config?.workbench?.embedded)return !config.workbench.gallery||!(object.technicalLocked||object.role==='guide'||object.type==='motif-raster');
   if(right==='color'&&!moduleEnabled(config,'colors'))return false;
   if(right==='content'&&object.type==='text'&&!moduleEnabled(config,'text'))return false;
   if(right==='replace'&&object.type==='motif'&&!moduleEnabled(config,'motifs'))return false;

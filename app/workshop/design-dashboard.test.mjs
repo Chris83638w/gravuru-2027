@@ -92,6 +92,13 @@ test('Dashboard: Zeilen je Linie aus Lieferform 2 und Bestand, Ampel mit Gründe
  assert.throws(()=>designDashboard(path.join(root,'fehlt')),e=>e.status===503&&e.code==='katalog_missing');
 });
 
+test('Neue-Struktur priority precedes natural numbering in workshop overview',t=>{
+ const root=miniKatalog(t),file=path.join(root,'designs/test-reihe/T-D3/design.json');
+ const j=JSON.parse(fs.readFileSync(file));j.katalog={prio:1};fs.writeFileSync(file,JSON.stringify(j));forgetKatalog();
+ const rows=designDashboard(root,{linie:'test-linie',reihe:'test-reihe'}).rows;
+ assert.deepEqual(rows.map(r=>r.id),['T-D3','T-D1','T-D2']);assert.equal(rows[0].katalogPrio,1);
+});
+
 test('Designdateien: nur design.svg/-produktion.svg/original.png/preview.png unter designs/, Pfadausbruch abgelehnt',t=>{
  const root=miniKatalog(t);
  const f=designFile(root,{reihe:'test-reihe',id:'T-D1',file:'design.svg'});

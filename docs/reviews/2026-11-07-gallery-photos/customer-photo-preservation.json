@@ -1,0 +1,115 @@
+{
+  "schema": "gravuru-customer-photo-preservation/v1",
+  "date": "2026-11-07",
+  "beforeCodeCommit": "6b799d9a79c789d097c970c6283cd4369d02f97b",
+  "checks": [
+    {
+      "path": "native-studio",
+      "kind": "slate",
+      "profileId": "slate-engraving",
+      "withCallback": false,
+      "byteEqual": true,
+      "sha256": "13db24a61b26851f73a176a5fca4f623418b059eb47deae1265d9f43774aed9a"
+    },
+    {
+      "path": "native-studio",
+      "kind": "slate",
+      "profileId": "slate-engraving",
+      "withCallback": true,
+      "byteEqual": true,
+      "sha256": "245128874aaac05d8a38d3b3c61d7023a0829201f4ec2ae1b95b9a120a929db1"
+    },
+    {
+      "path": "native-studio",
+      "kind": "slate",
+      "profileId": "color-print",
+      "withCallback": false,
+      "byteEqual": true,
+      "sha256": "0ac2771d1d2a49507897b482c182e909bb81260af3e10237927852d5f7342514"
+    },
+    {
+      "path": "native-studio",
+      "kind": "slate",
+      "profileId": "color-print",
+      "withCallback": true,
+      "byteEqual": true,
+      "sha256": "b4575814fb155ff15fc1bf2072d5f1bc323bc92841ad3e9eff7b30303e902072"
+    },
+    {
+      "path": "native-studio",
+      "kind": "acrylic",
+      "profileId": "acrylic-engraving",
+      "withCallback": false,
+      "byteEqual": true,
+      "sha256": "e36058307d2f1e9d2af31406cb74d08a7a1e2fe354366381718a1f940243418c"
+    },
+    {
+      "path": "native-studio",
+      "kind": "acrylic",
+      "profileId": "acrylic-engraving",
+      "withCallback": true,
+      "byteEqual": true,
+      "sha256": "e36058307d2f1e9d2af31406cb74d08a7a1e2fe354366381718a1f940243418c"
+    },
+    {
+      "path": "native-studio",
+      "kind": "acrylic",
+      "profileId": "color-print",
+      "withCallback": false,
+      "byteEqual": true,
+      "sha256": "0ac2771d1d2a49507897b482c182e909bb81260af3e10237927852d5f7342514"
+    },
+    {
+      "path": "native-studio",
+      "kind": "acrylic",
+      "profileId": "color-print",
+      "withCallback": true,
+      "byteEqual": true,
+      "sha256": "0ac2771d1d2a49507897b482c182e909bb81260af3e10237927852d5f7342514"
+    },
+    {
+      "path": "customer-full-editor",
+      "color": "original",
+      "edited": false,
+      "byteEqual": true,
+      "sha256": "382aa4f3b51a25dcea1f5ac649e5a5a60cc753492424cbdf225bcb94753ada81"
+    },
+    {
+      "path": "customer-full-editor",
+      "color": "original",
+      "edited": true,
+      "byteEqual": true,
+      "sha256": "382aa4f3b51a25dcea1f5ac649e5a5a60cc753492424cbdf225bcb94753ada81"
+    },
+    {
+      "path": "customer-full-editor",
+      "color": "grayscale",
+      "edited": false,
+      "byteEqual": true,
+      "sha256": "ced0c394cbbcc663a879395c90e9a8601245e27212668e3ccd9627b8ee30de5e"
+    },
+    {
+      "path": "customer-full-editor",
+      "color": "grayscale",
+      "edited": true,
+      "byteEqual": true,
+      "sha256": "8d198492be2846276f62b77ba7d1b42f04a7d2760a74a332f6048eba45e8f56e"
+    },
+    {
+      "path": "customer-full-editor",
+      "color": "sepia",
+      "edited": false,
+      "byteEqual": true,
+      "sha256": "dde888c5c0e41906bab351f1ec7ffb4284d66fc65492c63a1d0dc987e72c5540"
+    },
+    {
+      "path": "customer-full-editor",
+      "color": "sepia",
+      "edited": true,
+      "byteEqual": true,
+      "sha256": "382aa4f3b51a25dcea1f5ac649e5a5a60cc753492424cbdf225bcb94753ada81"
+    }
+  ],
+  "allByteEqual": true,
+  "scope": "Synthetic customer/native renderer inputs compared to the actual preceding Git revision. Production PNG colour/alpha checked separately by photo-color-export.test.mjs."
+}

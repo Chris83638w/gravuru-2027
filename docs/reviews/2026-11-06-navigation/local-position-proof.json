@@ -1,0 +1,107 @@
+{
+  "schema": "gravuru-local-navigation-position-proof/v1",
+  "capturedAt": "2026-11-06T21:12:49.889117+00:00",
+  "passed": true,
+  "readOnly": true,
+  "localOnly": true,
+  "databaseWrites": 0,
+  "productId": "cfg_36f1e741-2c4d-4ca8-8a80-3395444e8af8",
+  "originalId": "TRE-V2A-5x2-D401",
+  "designId": "katalog-TRE-V2A-5x2-D401",
+  "material": "acrylic-schwarz-3mm",
+  "mm": [
+    50,
+    20
+  ],
+  "headRevision": 7,
+  "checks": {
+    "readStable": true,
+    "sevenRevisionsAndHead7": true,
+    "revision5SelectedDesignEqualsOriginalRevision1": true,
+    "revision6ExactlyText1XPlus1mmInWholeDocument": true,
+    "revision7WholeDocumentEqualsRevision5": true,
+    "revision7SelectedDesignEqualsRevision5": true,
+    "otherDesignsAndDocumentFieldsEqualRevision5InAllSevenRevisions": true,
+    "allOtherProductHeadsPredateRevision5": true,
+    "noOtherProductRevisionsSinceRevision5": true,
+    "otherHeadsMatchTheirImmutableHistoryAtRevision5": true,
+    "sameMaterialAnd50x20Geometry": true
+  },
+  "movement": {
+    "objectId": "text-1",
+    "field": "x",
+    "fromRevision": 5,
+    "toRevision": 6,
+    "beforeMm": 28.87,
+    "afterMm": 29.87,
+    "deltaMm": 1.0
+  },
+  "otherDesignsPreserved": 3,
+  "otherProducts": {
+    "count": 347,
+    "headsUpdatedAfterReference": 0,
+    "newRevisionsAfterReference": 0,
+    "currentHeadsSha256": "43b3d1189b3aee4d4ea330207fee645b15e339e009e886e93e8ed3ff51913714",
+    "referenceTime": "2026-11-06T17:24:05.221Z",
+    "method": "Reconstructed from immutable revision history and product created_at/updated_at at revision 5; no independent complete head snapshot was taken immediately before this UI test."
+  },
+  "history": [
+    {
+      "revision": 1,
+      "createdAt": "2026-11-06T16:46:39.757Z",
+      "documentSha256": "021fdcbfe862161ef9a6a33cff25a54591f475f8e537bf69fe1c2a7b830692a2",
+      "selectedDesignSha256": "694f59994d6e19fe8bd894854c240bc3668704ace144efacaa78d8fde5724a95",
+      "selectedDesignEqualsRevision5": true,
+      "otherDocumentFieldsEqualRevision5": true
+    },
+    {
+      "revision": 2,
+      "createdAt": "2026-11-06T17:12:29.907Z",
+      "documentSha256": "9de7059a88c10465215b7e416149237eb2b135d188a8d73dd3513487121c7ea1",
+      "selectedDesignSha256": "317b2a5f727c1896f5a5db74e23c2dbf610b71b79e6053a28d0a8dffd62c25ed",
+      "selectedDesignEqualsRevision5": false,
+      "otherDocumentFieldsEqualRevision5": true
+    },
+    {
+      "revision": 3,
+      "createdAt": "2026-11-06T17:13:23.173Z",
+      "documentSha256": "be6854583196bccec6a014e04f1b3e23d944d8fd40957e79ba1be07a1bbdb780",
+      "selectedDesignSha256": "78e8f916074e9e7c0aa6e4f8eb7c550ca04f13308de76369c0700b511b40408a",
+      "selectedDesignEqualsRevision5": false,
+      "otherDocumentFieldsEqualRevision5": true
+    },
+    {
+      "revision": 4,
+      "createdAt": "2026-11-06T17:18:36.064Z",
+      "documentSha256": "9de7059a88c10465215b7e416149237eb2b135d188a8d73dd3513487121c7ea1",
+      "selectedDesignSha256": "317b2a5f727c1896f5a5db74e23c2dbf610b71b79e6053a28d0a8dffd62c25ed",
+      "selectedDesignEqualsRevision5": false,
+      "otherDocumentFieldsEqualRevision5": true
+    },
+    {
+      "revision": 5,
+      "createdAt": "2026-11-06T17:24:05.221Z",
+      "documentSha256": "021fdcbfe862161ef9a6a33cff25a54591f475f8e537bf69fe1c2a7b830692a2",
+      "selectedDesignSha256": "694f59994d6e19fe8bd894854c240bc3668704ace144efacaa78d8fde5724a95",
+      "selectedDesignEqualsRevision5": true,
+      "otherDocumentFieldsEqualRevision5": true
+    },
+    {
+      "revision": 6,
+      "createdAt": "2026-11-06T21:09:53.997Z",
+      "documentSha256": "9de7059a88c10465215b7e416149237eb2b135d188a8d73dd3513487121c7ea1",
+      "selectedDesignSha256": "317b2a5f727c1896f5a5db74e23c2dbf610b71b79e6053a28d0a8dffd62c25ed",
+      "selectedDesignEqualsRevision5": false,
+      "otherDocumentFieldsEqualRevision5": true
+    },
+    {
+      "revision": 7,
+      "createdAt": "2026-11-06T21:11:33.320Z",
+      "documentSha256": "021fdcbfe862161ef9a6a33cff25a54591f475f8e537bf69fe1c2a7b830692a2",
+      "selectedDesignSha256": "694f59994d6e19fe8bd894854c240bc3668704ace144efacaa78d8fde5724a95",
+      "selectedDesignEqualsRevision5": true,
+      "otherDocumentFieldsEqualRevision5": true
+    }
+  ],
+  "browserEvidence": "Root separately verifies the new buttons, full configurator and reload; this report proves stored native revisions only."
+}

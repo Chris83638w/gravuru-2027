@@ -1,0 +1,19 @@
+{
+  "approval": "Chris, 06.11.2026: vorhandene Masken mit thematisch passenden Fotos fuellen; farbige Designs sind Druck.",
+  "designs": {
+    "GT-S-30x20-D1": {"maskId":"motiv-4","sampleId":"GT-S-30x20-D9","sampleFile":"foto-1.jpg","theme":"Menschen"},
+    "GT-S-30x20-D2": {"maskId":"motiv-4","sampleId":"GT-S-30x20-D8","sampleFile":"foto-1.png","theme":"Menschen"},
+    "GT-S-30x20-D3": {"maskId":"motiv-2","sampleId":"GT-S-30x20-D19","sampleFile":"foto-1.jpg","theme":"Menschen"},
+    "GT-S-30x20-D10": {"maskId":"motiv-3","sampleId":"GT-S-30x20-D14","sampleFile":"foto-1.png","theme":"Menschen"},
+    "GT-S-30x20-D11": {"maskId":"motiv-2","sampleId":"GT-S-30x20-D12","sampleFile":"foto-1.png","theme":"Sternenkinder"},
+    "GT-S-30x20-D22": {"maskId":"motiv-2","sampleId":"GT-S-30x20-D9","sampleFile":"foto-1.jpg","theme":"Menschen"},
+    "GT-S-30x20-D23": {"maskId":"motiv-2","sampleId":"GT-S-30x20-D19","sampleFile":"foto-1.jpg","theme":"Menschen"},
+    "GT-S-30x20-D24": {"maskId":"motiv-2","sampleId":"GT-S-30x20-D6","sampleFile":"foto-1.jpg","theme":"Menschen"},
+    "GT-S-30x20-D25": {"maskId":"motiv-2","sampleId":"GT-S-30x20-D8","sampleFile":"foto-1.png","theme":"Menschen"},
+    "GT-S-30x20-D12": {"removeEmptyOverlay":"foto-2","theme":"Sternenkinder","reason":"Leere weisse Kreisgrafik verdeckt das bereits vorhandene Babyfoto; Original-Fotomaske von foto-1 bleibt."},
+    "GT-S-30x20-D205": {"replaceImageId":"foto-1","sampleId":"GT-S-30x20-D200","sampleFile":"foto-1.png","theme":"Katze"},
+    "GT-S-30x20-D217": {"replaceImageId":"foto-1","sampleId":"GT-S-30x20-D220","sampleFile":"foto-1.jpg","theme":"Hund"},
+    "GT-S-30x20-D223": {"replaceImageId":"foto-1","sampleId":"GT-S-30x20-D219","sampleFile":"foto-1.png","theme":"Katze"},
+    "GT-S-30x20-D233": {"replaceImageId":"foto-1","sampleId":"GT-S-30x20-D234","sampleFile":"foto-1.jpg","theme":"Kleintier"}
+  }
+}

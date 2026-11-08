@@ -1,0 +1,24 @@
+{
+  "schema": "gravuru-complete-combine-final-audit/v1",
+  "readOnly": true,
+  "sourceCommit": "86c1ff5f431acfe60d4cff388958112187005550",
+  "counts": {
+    "originals": 19661,
+    "products": 3141,
+    "preparedTargets": 51259,
+    "editableOriginals": 6623,
+    "preservedBaseIds": 462,
+    "sourceReviewUpdates": 197,
+    "collisionSuffixCards": 64
+  },
+  "checks": {
+    "originals": true,
+    "products": true,
+    "preparedTargets": true,
+    "editableOriginals": true,
+    "oldIds": true,
+    "aliases": true,
+    "collisions": true
+  },
+  "passed": true
+}

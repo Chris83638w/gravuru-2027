@@ -286,6 +286,7 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
  if(!objects.length)fail(design.id+': keine Ebenen text-/motiv-/deko-/foto- gefunden.');
  if(objects.length>20)fail(design.id+': höchstens 20 Elemente je Vorlage ('+objects.length+' gefunden).');
  const template={id:templateId,name:design.name,objects,marks:[],themes:design.themes??[],bestseller:design.bestseller===true,katalog:{designId:design.id,source:design.source,plateMm:[plate[0],plate[1]]}};
+ if(design.json?.katalog?.prio===1)template.katalog.prio=1;
  if(family.id.startsWith('schiefer-tafeln-')){const group=slateDesignGroup(design.json??design);if(group)template.collections=[group];}
  if(motifPolicy.wholePrintDesign!==undefined)template.wholePrintDesign=motifPolicy.wholePrintDesign;
  return {template,motifs,rights,photo,placeholders,photoAssets,fonts:[...usedFonts],notes,process:process.id};

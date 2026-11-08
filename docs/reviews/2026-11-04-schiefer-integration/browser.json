@@ -1,0 +1,25 @@
+{
+  "localOnly": true,
+  "productId": "cfg_e40db2c7-7674-4fee-81bb-3b861c4bdf3e",
+  "revision": 1,
+  "checks": [
+    {
+      "device": "desktop",
+      "designId": "katalog-MG-S-22x14-D1",
+      "designs": 82,
+      "expectedCents": 3597,
+      "displayedTotal": "35,97 €",
+      "errors": []
+    },
+    {
+      "device": "mobile",
+      "designId": "katalog-MG-S-22x14-D1",
+      "designs": 82,
+      "expectedCents": 3597,
+      "displayedTotal": "35,97 €",
+      "errors": []
+    }
+  ],
+  "shopifyWrites": 0,
+  "realCartChecked": false
+}

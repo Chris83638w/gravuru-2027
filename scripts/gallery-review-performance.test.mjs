@@ -1,0 +1,66 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import http from 'node:http';
+import {once} from 'node:events';
+import {DatabaseSync} from 'node:sqlite';
+import {createGalleryManagementFixture} from './fixtures/gallery-management.mjs';
+import {createSlateGalleryHandler} from './lib/slate-review-gallery.mjs';
+
+test('real gallery reads no unreviewed native formats initially and fingerprints only displayed targets',async t=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'gallery-bounded-')),f=await createGalleryManagementFixture(root),base=await f.listen();
+ t.after(async()=>{await f.close();assert.equal(path.dirname(root),os.tmpdir());fs.rmSync(root,{recursive:true,force:true});});
+ const get=f.workshop.repository.get,reads=[];
+ f.workshop.repository.get=(...args)=>{reads.push(args[0]);return get(...args);};
+ const html=await(await fetch(base+'/originale/')).text();
+ assert.match(html,/data-design-card/);assert.deepEqual(reads,[],'summary/page must not hydrate unseen native formats');
+ const initial=JSON.parse(html.match(/<script id="review-approval-data"[^>]*>(.*?)<\/script>/s)[1]);
+ const keys=Object.keys(initial);assert.equal(keys.length,2);assert(keys.every(key=>initial[key].fingerprint===null));
+ const csrf=html.match(/name="slate-review-csrf" content="([^"]+)"/)[1];
+ const url=selected=>base+'/originale/approvals?'+new URLSearchParams({originalIds:JSON.stringify([f.originalId]),targetKeys:JSON.stringify(selected)});
+ const response=await fetch(url([keys[0]])),bundle=await response.json();assert.equal(response.status,200);
+ const selected=bundle.approvals[keys[0]],other=bundle.approvals[keys[1]];
+ assert.match(selected.fingerprint,/^[a-f0-9]{64}$/);assert.equal(other.fingerprint,null);
+ assert.deepEqual(reads,[selected.metadata.productId],'one selected format reads exactly its one product');
+ assert.equal((await fetch(url([keys[0],'foreign']))).status,422);
+ const post=async(key,proof)=>fetch(url([keys[0]]),{method:'POST',headers:{Origin:base,'Content-Type':'application/json','X-Slate-Review-CSRF':csrf},body:JSON.stringify({key,approved:true,expectedRevision:proof.revision,expectedFingerprint:proof.fingerprint})});
+ assert.equal((await post(keys[1],selected)).status,422,'other format cannot be approved through selected scope');
+ const saved=await(await post(keys[0],selected)).json();assert.equal(saved.approvals[keys[0]].status,'approved');
+ assert.equal(saved.approvals[keys[1]].fingerprint,null);assert.equal(reads.length,1);
+ const native=get(selected.metadata.productId),changed=structuredClone(native.document);changed.config.profile.designs[0].objects[0].text='Neu';
+ f.workshop.repository.save(native.id,changed,native.revision);
+ assert.equal((await post(keys[0],saved.approvals[keys[0]])).status,409,'CAS/fingerprint protection survives bounded reads');
+ const refreshed=await(await fetch(url([keys[0]]))).json();assert.equal(refreshed.approvals[keys[0]].status,'changed');assert.equal(refreshed.approvals[keys[1]].fingerprint,null);
+ const newFormat=await(await fetch(url([keys[1]]))).json();assert.match(newFormat.approvals[keys[1]].fingerprint,/^[a-f0-9]{64}$/);
+ assert(reads.includes(other.metadata.productId),'format switch reads its own native state');
+ reads.length=0;
+ const context=await(await fetch(base+'/originale/verwaltung/api/context')).json();assert.equal(context.sources.length,2);
+ assert.equal(reads.length,2);assert.equal(new Set(reads).size,2,'management describes each native product exactly once');
+ const assignmentContext=await fetch(base+'/originale/assignments?action=context',{method:'POST',headers:{Origin:base,'Content-Type':'application/json','X-Slate-Review-CSRF':csrf},body:JSON.stringify({sourceKeys:[keys[0]]})});
+ assert.equal(assignmentContext.status,200);assert.equal((await assignmentContext.json()).sources.length,1);
+});
+
+test('60 long catalogue identities use a bounded CSRF-protected read body without writing approvals',async t=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'gallery-long-scope-')),token='a'.repeat(64);
+ const ids=Array.from({length:60},(_,i)=>'bestand/'+('lange-originalfamilie-'.repeat(4))+i),keys=ids.map(id=>JSON.stringify(['slate',id,'unprepared']));
+ fs.writeFileSync(path.join(root,'manifest.json'),JSON.stringify({schema:'gravuru-design-original-review/v1',reviewOnly:true,released:false,originals:ids.map(id=>({id,targets:[]})),products:[]}));
+ const mapping=path.join(root,'mapping.json');fs.writeFileSync(mapping,JSON.stringify({localOnly:true,published:false,shopifyWrites:0,products:[]}));
+ const handler=createSlateGalleryHandler(root,mapping,{csrfToken:token}),server=http.createServer((req,res)=>{if(!handler(req,res))res.writeHead(404).end();});
+ server.listen(0,'127.0.0.1');await once(server,'listening');const base='http://127.0.0.1:'+server.address().port;
+ t.after(async()=>{server.closeAllConnections();await new Promise(resolve=>server.close(resolve));handler.close();assert.equal(path.dirname(root),os.tmpdir());fs.rmSync(root,{recursive:true,force:true});});
+ const body={originalIds:ids,targetKeys:keys},send=(input,headers={})=>fetch(base+'/originale/approvals?action=read',{method:'POST',headers:{Origin:base,'Content-Type':'application/json','X-Slate-Review-CSRF':token,...headers},body:JSON.stringify(input)});
+ assert(new URLSearchParams(Object.entries(body).map(([key,value])=>[key,JSON.stringify(value)])).toString().length>16000);
+ assert(Buffer.byteLength(JSON.stringify(body))<65536);
+ const response=await send(body);assert.equal(response.status,200);const bundle=await response.json();assert.equal(Object.keys(bundle.approvals).length,60);
+ assert(Object.values(bundle.approvals).every(state=>state.fingerprint===null&&state.status==='unavailable'&&state.revision===0));
+ const summary=await(await fetch(base+'/originale/approvals')).json();assert.equal(Object.keys(summary.approvals).length,60);
+ assert.equal((await send(body,{'X-Slate-Review-CSRF':'wrong'})).status,403);
+ assert.equal((await send(body,{Origin:'https://foreign.invalid'})).status,403);
+ assert.equal((await send({...body,targetKeys:[...keys,keys[0]]})).status,422);
+ assert.equal((await send({...body,approved:true})).status,422);
+ assert.equal((await send({...body,extra:'x'.repeat(65536)})).status,413);
+ const db=new DatabaseSync(path.join(root,'review-approvals.sqlite'),{readOnly:true});
+ try{assert.equal(db.prepare('SELECT count(*) AS n FROM design_review_approval_events').get().n,0);}finally{db.close();}
+});

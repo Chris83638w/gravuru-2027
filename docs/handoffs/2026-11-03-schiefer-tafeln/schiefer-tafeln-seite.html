@@ -1,0 +1,863 @@
+<title>Schiefer-Tafeln</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: Kategorien als Abschnitte, darin je Form ein Raster; jede Tafel maßstabsgleich zur größten Breite (600 mm), blaue Haarlinie wie in Corel. */
+:root{--bg:#f6f7f9;--card:#ffffff;--fg:#1c2430;--muted:#5d6876;--line:#d9dee5;--cut:#0000ff;--accent:#1f4fd1;
+ --display:"Archivo",Arial,sans-serif;--body:"IBM Plex Sans",Arial,sans-serif}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#12161c;--card:#1a2029;--fg:#e8ecf1;--muted:#9aa5b3;--line:#2c3541;--cut:#6f8bff;--accent:#8fa8ff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#12161c;--card:#1a2029;--fg:#e8ecf1;--muted:#9aa5b3;--line:#2c3541;--cut:#6f8bff;--accent:#8fa8ff;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:14px/1.45 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+header{max-width:1400px;margin:0 auto 8px}h1{font:700 26px/1.2 var(--display);margin:0 0 6px;text-wrap:balance}
+header p{margin:0;color:var(--muted);max-width:75ch}
+section{max-width:1400px;margin:28px auto 0}h2{font:700 19px/1.25 var(--display);margin:0 0 4px;padding-bottom:6px;border-bottom:2px solid var(--fg)}h2 span{font:400 13px var(--body);color:var(--muted);margin-left:8px}
+h3{font:600 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:16px 0 8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,calc(230px * var(--z,1))),1fr));gap:12px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;max-width:1400px;margin:10px auto 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--bg);padding-block:8px;border-bottom:1px solid var(--line)}
+.bar button{font:600 13px var(--body);min-width:36px;padding:5px 10px;border:1px solid var(--line);border-radius:4px;background:var(--card);color:var(--fg);cursor:pointer}
+.bar input{width:min(240px,40vw)}.bar output{font-variant-numeric:tabular-nums;min-width:4ch}
+.plate{cursor:zoom-in}
+dialog{width:min(96vw,1400px);height:min(92vh,1000px);border:1px solid var(--line);border-radius:8px;padding:0;background:var(--card);color:var(--fg)}dialog::backdrop{background:rgba(0,0,0,.45)}
+.dz{display:flex;flex-direction:column;height:100%}.dz .bar{position:static;margin:0;padding:8px 12px;max-width:none}.view{flex:1;overflow:auto;padding:16px}.view svg{display:block;margin:auto}
+@media (prefers-reduced-motion:no-preference){.grid{transition:none}}
+.card{margin:0;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:10px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.plate{min-height:120px;display:flex;align-items:flex-end;justify-content:center;border-bottom:1px dashed var(--line);padding-bottom:6px}
+.plate svg{height:auto;max-width:100%;overflow:visible}
+figcaption{display:flex;flex-direction:column;gap:2px;font-variant-numeric:tabular-nums}
+figcaption b{font-size:14px}.mm,.price{color:var(--muted);font-size:12.5px}.note{font-size:12.5px}.pics{display:flex;flex-wrap:wrap;gap:4px}.pics img{width:56px;height:56px;object-fit:cover;border:1px solid var(--line);border-radius:3px;cursor:zoom-in;background:var(--bg)}.bg{align-self:flex-start;font:600 12px var(--body);color:var(--accent);background:none;border:1px solid var(--line);border-radius:4px;padding:4px 10px;cursor:pointer}.up{font-size:12px}.boegen-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,200px),1fr));gap:10px}.boegen-list button{display:flex;flex-direction:column;gap:4px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:6px;cursor:pointer;color:var(--fg);font:13px var(--body)}.boegen-list img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:4px}.gal img{display:block;max-width:none;margin:0 auto 12px}.ol{font-size:12px;color:var(--muted);margin-top:4px}
+.c{align-self:flex-start;margin-top:6px;font:600 12px var(--body);color:var(--accent);background:none;border:1px solid var(--line);border-radius:4px;padding:4px 10px;cursor:pointer}
+.hint{color:var(--muted);margin:6px 0 10px;max-width:80ch}
+.opts{display:grid;gap:22px}
+.og h3{display:flex;align-items:baseline;gap:8px;margin:0 0 6px}.og h3 small{font:400 12px var(--body);letter-spacing:0;text-transform:none;color:var(--muted)}
+.otab{background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.ohead,.orow{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr) 110px 170px;gap:14px;align-items:center;padding:10px 14px}
+.ohead{font:600 11px var(--body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);background:var(--bg);border-bottom:1px solid var(--line);padding-block:7px}.ohead .r{text-align:right}
+.orow+.orow{border-top:1px solid var(--line)}.orow:hover{background:color-mix(in srgb,var(--accent) 4%,var(--card))}
+.oimg{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-width:0}
+.oimg .ti{position:relative}.oimg img{width:52px;height:52px;object-fit:contain;border:1px solid var(--line);border-radius:6px;cursor:zoom-in;background:#eceef1;display:block}
+.oimg .ti:only-child img,.oimg .ti:first-child:nth-last-child(2) img{width:68px;height:68px}
+.oimg .ti button{position:absolute;top:-6px;right:-6px;z-index:1;width:18px;height:18px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--muted);font:600 10px/1 var(--body);cursor:pointer;opacity:0;padding:0}
+.oimg .ti:hover button,.oimg .ti button:focus-visible{opacity:1}
+.oimg .ti{display:flex;flex-direction:column;align-items:center;gap:2px}.oimg figcaption{font-size:10.5px;color:var(--muted);line-height:1.1;max-width:68px;text-align:center}.oimg .none{font-size:12px;color:var(--muted);font-style:italic}
+.otxt{display:grid;gap:2px;min-width:0}
+.otxt input{font:600 14.5px var(--body);color:var(--fg);border:1px solid transparent;border-radius:4px;background:none;padding:3px 6px;margin-left:-6px;min-width:0;width:100%}
+.otxt textarea.hin{font:400 12.5px/1.4 var(--body);color:var(--muted);border:1px solid transparent;border-radius:4px;background:none;padding:3px 6px;margin-left:-6px;resize:none;field-sizing:content;min-height:1.6em;width:100%}.otxt textarea:hover{border-color:var(--line)}.otxt textarea:focus{border-color:var(--accent);background:var(--bg);outline:none;color:var(--fg)}
+.otxt input:hover,.opr input:hover{border-color:var(--line)}.otxt input:focus,.opr input:focus{border-color:var(--accent);background:var(--bg);outline:none}
+.opr{display:flex;align-items:center;justify-content:flex-end;gap:4px;font:600 16px var(--display);font-variant-numeric:tabular-nums}
+.opr input{font:inherit;width:78px;text-align:right;border:1px solid transparent;border-radius:4px;background:none;color:var(--fg);padding:3px 6px}
+.oact{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end;align-items:center}
+.oact select,.oact .up,.oact button{font:600 12px var(--body);border:1px solid var(--line);border-radius:4px;background:var(--card);color:var(--fg);padding:4px 8px;cursor:pointer}
+.oact .up input{position:absolute;width:1px;height:1px;opacity:0}.oact .up{position:relative}.oact .up:focus-within{outline:2px solid var(--accent)}
+.oact button.del{color:var(--muted)}
+.addf input,.addf select{font:13px var(--body);padding:6px 8px;border:1px solid var(--line);border-radius:4px;background:var(--card);color:var(--fg);min-width:0}
+.addf button{font:600 13px var(--body);border:1px solid var(--accent);border-radius:4px;background:var(--accent);color:#fff;padding:6px 12px;cursor:pointer}
+.addf{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;align-items:center}.addf b{font:600 13px var(--body);margin-right:4px}.st{color:var(--muted);font-size:12.5px;min-height:1.4em}
+.ed summary{cursor:pointer;font:600 12.5px var(--body);color:var(--accent)}.edb{display:grid;gap:5px;margin-top:6px;font-size:12.5px}.edb label{display:flex;align-items:center;gap:6px}.edb .pr{display:grid;grid-template-columns:1fr 90px;gap:6px;align-items:center}.edb input{font:13px var(--body);padding:5px 7px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--fg);min-width:0}
+@media (max-width:760px){.ohead{display:none}.orow{grid-template-columns:minmax(0,1fr) 110px;grid-template-areas:"i i" "t p" "a a"}.orow .oimg{grid-area:i}.orow .otxt{grid-area:t}.orow .opr{grid-area:p}.orow .oact{grid-area:a;justify-content:flex-start}}
+.c:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.c[hidden]{display:none}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<header><h1>Schiefer-Tafeln</h1><p>Alle 48 Tafeln aus der finalen Zeichnung „Gedenktafeln_Schiefer.cdr“ (29.10.) und der Excel (Lochbilder Spalte M, Preise 02.11.). Konturen und Löcher als blaue Haarlinie, alle Tafeln im selben Maßstab. Lochabstand = Mitte zu Mitte. Zum Kommentieren „Kommentar“ an der Tafel drücken oder im Kommentarmodus auf die Tafel klicken.</p></header>
+<div class="bar" role="toolbar" aria-label="Zoom"><span>Zoom</span><button type="button" id="zm" aria-label="kleiner">−</button><input id="zr" type="range" min="0.5" max="4" step="0.25" value="1" aria-label="Zoom"><button type="button" id="zp" aria-label="größer">+</button><output id="zo">100 %</output><button type="button" id="z1">100 %</button><span style="color:var(--muted)">Tafel anklicken = Großansicht mit eigenem Zoom</span></div>
+<section id="glob"><h2>Aufpreise, Befestigung &amp; Zubehör <span>gelten für alle Schiefer-Tafeln · mit Bildern</span></h2><p class="hint">Preise und Bilder gelten für alle Tafeln. Name, Hinweis und Preis direkt anklicken und ändern – wird automatisch gespeichert. Bild anklicken = groß ansehen. Welche Befestigung eine Tafel hat, kommt aus der Zeichnung (Lochbild).</p><div id="opts" class="opts">Wird geladen …</div><form id="addf" class="addf"><b>Neu:</b><input id="an" placeholder="Neues Zubehör, z. B. Geschenkverpackung" aria-label="Name"><input id="ap" inputmode="decimal" placeholder="Preis €" aria-label="Preis"><select id="aa" aria-label="Art"><option value="zubehoer">Zubehör</option><option value="befestigung">Befestigung</option><option value="aufpreis">Aufpreis</option></select><button>Hinzufügen</button></form><p id="st" class="st" role="status"></p></section>
+<section id="boegen"><h2>Kontaktbögen <span>Designs je Tafel zum Prüfen</span></h2><p class="hint">Vorhandene Bögen aus dem Katalog (Menschen, Schiefer mit Foto). Weitere Bögen kannst du an jeder Tafel unter „Preis dieser Tafel“ hochladen.</p><div class="boegen-list"><button type="button" data-set="0"><img src="boegen/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-01.jpg" alt="" loading="lazy"><span>Menschen · Herz geschnitten 24×19 · Teil 1 · 7 Bögen</span></button><button type="button" data-set="1"><img src="boegen/herz-geschnitten-24x19-mit-foto-02/kontaktbogen-01.jpg" alt="" loading="lazy"><span>Menschen · Herz geschnitten 24×19 · Teil 2 · 1 Bögen</span></button><button type="button" data-set="2"><img src="boegen/herz-kordel-225x267-mit-foto-01/kontaktbogen-01.jpg" alt="" loading="lazy"><span>Menschen · Kordelherz 22,5×26,7 · Teil 1 · 7 Bögen</span></button><button type="button" data-set="3"><img src="boegen/herz-kordel-225x267-mit-foto-02/kontaktbogen-01.jpg" alt="" loading="lazy"><span>Menschen · Kordelherz 22,5×26,7 · Teil 2 · 1 Bögen</span></button><button type="button" data-set="4"><img src="boegen/herz-mit-foto-01/kontaktbogen-01.jpg" alt="" loading="lazy"><span>Menschen · Herz 10×10 / 20×20 / 25×25 · Teil 1 · 7 Bögen</span></button><button type="button" data-set="5"><img src="boegen/herz-mit-foto-02/kontaktbogen-01.jpg" alt="" loading="lazy"><span>Menschen · Herz 10×10 / 20×20 / 25×25 · Teil 2 · 1 Bögen</span></button><button type="button" data-set="6"><img src="boegen/herz-schief-mit-foto-01/kontaktbogen-01.jpg" alt="" loading="lazy"><span>Menschen · Herz schief 18×13 / 26×19 · Teil 1 · 7 Bögen</span></button><button type="button" data-set="7"><img src="boegen/herz-schief-mit-foto-02/kontaktbogen-01.jpg" alt="" loading="lazy"><span>Menschen · Herz schief 18×13 / 26×19 · Teil 2 · 1 Bögen</span></button></div></section>
+<section><h2>Premium-Schiefer (geschnitten, gerade Kanten, bis 12 mm) <span>6 Tafeln</span></h2><h3>Rechteck</h3><div class="grid"><figure class="card" id="tafel-1" data-comment-target="Schiefer Rechteck 15 × 20 cm (Premium-Schiefer)"><div class="plate"><svg viewBox="-6 -6 162.0 212.0" style="width:25.0%" role="img" aria-label="Rechteck 15 × 20 cm"><g transform="scale(0.35277777777777775) translate(24107,-3350)"><path d=" 
+M-24107.2049,3917.0274
+L-23682.0081,3917.0274
+L-23682.0081,3350.0983
+L-24107.2049,3350.0983
+L-24107.2049,3917.0274
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rechteck 15 × 20 cm</b><span class="mm">150 × 200 mm</span><span class="price">48,99 €</span><span class="note">ohne Löcher</span><span class="ol"></span><details class="ed" open data-key="premium-schiefer-rechteck-15-x-20"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-1">Kommentar</button></figcaption></figure><figure class="card" id="tafel-2" data-comment-target="Schiefer Rechteck 20 × 15 cm (Premium-Schiefer)"><div class="plate"><svg viewBox="-6 -6 212.0 162.0" style="width:33.3%" role="img" aria-label="Rechteck 20 × 15 cm"><g transform="scale(0.35277777777777775) translate(23344,-3366)"><path d=" 
+M-23344.3481,3366.1092
+L-23344.3481,3791.3061
+L-22777.4189,3791.3061
+L-22777.4189,3366.1092
+L-23344.3481,3366.1092
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rechteck 20 × 15 cm</b><span class="mm">200 × 150 mm</span><span class="price">48,99 €</span><span class="note">ohne Löcher</span><span class="ol"></span><details class="ed" open data-key="premium-schiefer-rechteck-20-x-15"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-2">Kommentar</button></figcaption></figure><figure class="card" id="tafel-3" data-comment-target="Schiefer Rechteck 20 × 30 cm (Premium-Schiefer)"><div class="plate"><svg viewBox="-6 -6 212.0 312.0" style="width:33.3%" role="img" aria-label="Rechteck 20 × 30 cm"><g transform="scale(0.35277777777777775) translate(22511,-3154)"><path d=" 
+M-22510.6248,3153.5107
+L-22510.6248,4003.9044
+L-21943.6957,4003.9044
+L-21943.6957,3153.5107
+L-22510.6248,3153.5107
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rechteck 20 × 30 cm</b><span class="mm">200 × 300 mm</span><span class="price">65,99 €</span><span class="note">ohne Löcher</span><span class="ol"></span><details class="ed" open data-key="premium-schiefer-rechteck-20-x-30"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-3">Kommentar</button></figcaption></figure><figure class="card" id="tafel-4" data-comment-target="Schiefer Rechteck 30 × 20 cm (Premium-Schiefer)"><div class="plate"><svg viewBox="-6 -6 312.0 212.0" style="width:50.0%" role="img" aria-label="Rechteck 30 × 20 cm"><g transform="scale(0.35277777777777775) translate(21677,-3366)"><path d=" 
+M-21676.9018,3366.1091
+L-21676.9018,3933.0383
+L-20826.5081,3933.0383
+L-20826.5081,3366.1091
+L-21676.9018,3366.1091
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rechteck 30 × 20 cm</b><span class="mm">300 × 200 mm</span><span class="price">65,99 €</span><span class="note">ohne Löcher</span><span class="ol"></span><details class="ed" open data-key="premium-schiefer-rechteck-30-x-20"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-4">Kommentar</button></figcaption></figure><figure class="card" id="tafel-5" data-comment-target="Schiefer Rechteck 30 × 40 cm (Premium-Schiefer)"><div class="plate"><svg viewBox="-6 -6 312.0 412.0" style="width:50.0%" role="img" aria-label="Rechteck 30 × 40 cm"><g transform="scale(0.35277777777777775) translate(19272,-3058)"><path d=" 
+M-19271.9815,4192.2203
+L-18421.5878,4192.2203
+L-18421.5878,3058.3620
+L-19271.9815,3058.3620
+L-19271.9815,4192.2203
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rechteck 30 × 40 cm</b><span class="mm">300 × 400 mm</span><span class="price">89,99 €</span><span class="note">ohne Löcher</span><span class="ol"></span><details class="ed" open data-key="premium-schiefer-rechteck-30-x-40"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-5">Kommentar</button></figcaption></figure><figure class="card" id="tafel-6" data-comment-target="Schiefer Rechteck 40 × 30 cm (Premium-Schiefer)"><div class="plate"><svg viewBox="-6 -6 412.0 312.0" style="width:66.7%" role="img" aria-label="Rechteck 40 × 30 cm"><g transform="scale(0.35277777777777775) translate(20560,-3224)"><path d=" 
+M-20559.7139,3224.3768
+L-20559.7139,4074.7706
+L-19425.8555,4074.7706
+L-19425.8555,3224.3768
+L-20559.7139,3224.3768
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rechteck 40 × 30 cm</b><span class="mm">400 × 300 mm</span><span class="price">89,99 €</span><span class="note">ohne Löcher</span><span class="ol"></span><details class="ed" open data-key="premium-schiefer-rechteck-40-x-30"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-6">Kommentar</button></figcaption></figure></div></section><section><h2>Geschnittene Formen (ohne Bruchkante) <span>9 Tafeln</span></h2><h3>Rechteck</h3><div class="grid"><figure class="card" id="tafel-7" data-comment-target="Schiefer Rechteck 7 × 2 cm (Geschnittene Formen)"><div class="plate"><svg viewBox="-6 -6 82.0 32.0" style="width:11.7%" role="img" aria-label="Rechteck 7 × 2 cm"><rect width="70.0" height="20.0" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></svg></div><figcaption><b>Rechteck 7 × 2 cm</b><span class="mm">70 × 20 mm</span><span class="price">12,99 €</span><span class="note">ohne Löcher</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-rechteck-7-x-2"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-7">Kommentar</button></figcaption></figure><figure class="card" id="tafel-8" data-comment-target="Schiefer Rechteck 8 × 3,5 cm (Geschnittene Formen)"><div class="plate"><svg viewBox="-6 -6 92.0 47.0" style="width:13.3%" role="img" aria-label="Rechteck 8 × 3,5 cm"><rect width="80.0" height="35.0" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></svg></div><figcaption><b>Rechteck 8 × 3,5 cm</b><span class="mm">80 × 35 mm</span><span class="price">14,99 €</span><span class="note">ohne Löcher</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-rechteck-8-x-3-5"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-8">Kommentar</button></figcaption></figure><figure class="card" id="tafel-9" data-comment-target="Schiefer Rechteck 8 × 5 cm (Geschnittene Formen)"><div class="plate"><svg viewBox="-6 -6 92.0 62.0" style="width:13.3%" role="img" aria-label="Rechteck 8 × 5 cm"><rect width="80.0" height="50.0" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></svg></div><figcaption><b>Rechteck 8 × 5 cm</b><span class="mm">80 × 50 mm</span><span class="price">17,99 €</span><span class="note">ohne Löcher</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-rechteck-8-x-5"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-9">Kommentar</button></figcaption></figure></div><h3>Herz</h3><div class="grid"><figure class="card" id="tafel-10" data-comment-target="Schiefer Herz 24 × 19 cm (Geschnittene Formen)"><div class="plate"><svg viewBox="-6 -6 252.0 204.0" style="width:40.0%" role="img" aria-label="Herz 24 × 19 cm"><path d="M240.0 66.633C240.0 121.163 120.264 192.0 120.264 192.0C120.264 192.0 0.0 116.59 0.0 62.063C0.0 7.538 79.192 -29.001 118.872 30.752C170.209 -31.769 240.0 12.103 240.0 66.633Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></svg></div><figcaption><b>Herz 24 × 19 cm</b><span class="mm">240 × 192 mm</span><span class="price">26,99 € · mit Foto 32,99 €</span><span class="note">ohne Löcher</span><span class="ol"></span><button type="button" class="bg" data-boegen="geschnittene-herz-24-x-19">Kontaktbögen (8)</button><details class="ed" open data-key="geschnittene-herz-24-x-19"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-10">Kommentar</button></figcaption></figure></div><h3>Herz schief</h3><div class="grid"><figure class="card" id="tafel-11" data-comment-target="Schiefer Herz schief 18 × 13 cm (Geschnittene Formen)"><div class="plate"><svg viewBox="-6 -6 194.2 145.1" style="width:30.4%" role="img" aria-label="Herz schief 18 × 13 cm"><path d="M62.894 132.276C43.305 130.673 15.035 126.122 0.0 123.37C13.219 119.363 21.801 115.49 27.584 101.52C39.345 73.11 25.103 24.012 60.859 4.519C86.616 -9.523 117.349 10.931 119.284 41.466C119.455 43.99 119.37 46.05 119.203 47.747C130.933 42.858 138.714 40.718 151.783 43.656C178.555 49.673 190.81 79.763 175.518 103.699C166.256 118.196 150.539 126.578 133.83 129.285C112.455 132.749 84.781 134.068 62.894 132.276Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></svg></div><figcaption><b>Herz schief 18 × 13 cm</b><span class="mm">182,2 × 133,1 mm</span><span class="price">28,99 € · mit Foto 33,99 €</span><span class="note">ohne Löcher</span><span class="ol"></span><button type="button" class="bg" data-boegen="geschnittene-herz-schief-18-x-13">Kontaktbögen (8)</button><details class="ed" open data-key="geschnittene-herz-schief-18-x-13"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-11">Kommentar</button></figcaption></figure><figure class="card" id="tafel-12" data-comment-target="Schiefer Herz schief 26 × 19 cm (Geschnittene Formen)"><div class="plate"><svg viewBox="-6 -6 271.4 201.6" style="width:43.2%" role="img" aria-label="Herz schief 26 × 19 cm"><path d="M169.769 67.672 173.137 65.97 176.737 64.473 180.533 63.193 184.499 62.139 188.601 61.32 192.813 60.728 197.1 60.387 201.433 60.291 205.786 60.452 210.119 60.879 214.406 61.572 218.618 62.541 222.72 63.791 226.686 65.327 230.487 67.154 234.087 69.283 239.288 73.089 243.892 77.266 247.893 81.764 251.287 86.569 254.093 91.619 256.308 96.891 257.929 102.343 258.958 107.936 259.405 113.624 259.26 119.383 258.537 125.161 257.236 130.93 255.359 136.643 252.903 142.266 249.871 147.759 246.276 153.091 243.189 156.901 239.755 160.491 235.984 163.86 231.873 167.017 227.429 169.964 222.665 172.696 217.579 175.211 212.172 177.52 206.454 179.624 200.434 181.522 194.108 183.214 187.481 184.705 180.568 185.995 173.363 187.089 165.878 187.988 158.111 188.691 141.769 189.524 124.373 189.605 105.958 188.942 86.564 187.561 66.236 185.473 45.004 182.681 22.914 179.217 0.0 175.085 7.159 173.288 13.53 170.923 17.552 168.945 21.227 166.721 24.57 164.261 27.603 161.585 30.344 158.688 32.804 155.591 35.003 152.312 36.956 148.853 39.777 142.583 42.022 135.9 43.779 128.857 45.134 121.512 46.169 113.931 46.972 106.169 48.217 90.344 49.542 74.514 50.451 66.748 51.641 59.157 53.187 51.802 55.18 44.743 57.706 38.035 60.849 31.75 64.298 26.318 68.123 21.347 72.3 16.849 76.784 12.842 81.553 9.343 86.564 6.366 91.785 3.936 97.182 2.063 102.72 0.778 108.368 0.08 114.086 0.0 119.845 0.547 125.603 1.737 131.337 3.605 137.0 6.15 142.568 9.398 145.961 11.843 149.159 14.59 152.157 17.607 154.943 20.87 157.514 24.339 159.863 27.989 161.987 31.795 163.875 35.711 165.521 39.722 166.917 43.789 168.067 47.876 168.95 51.967 169.573 56.019 169.919 60.01 169.99 63.906 169.769 67.672Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></svg></div><figcaption><b>Herz schief 26 × 19 cm</b><span class="mm">259,4 × 189,6 mm</span><span class="price">32,99 € · mit Foto 38,99 €</span><span class="note">ohne Löcher</span><span class="ol"></span><button type="button" class="bg" data-boegen="geschnittene-herz-schief-26-x-19">Kontaktbögen (8)</button><details class="ed" open data-key="geschnittene-herz-schief-26-x-19"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-12">Kommentar</button></figcaption></figure></div><h3>Kreuz</h3><div class="grid"><figure class="card" id="tafel-13" data-comment-target="Schiefer Kreuz 21,5 × 30 cm (Geschnittene Formen)"><div class="plate"><svg viewBox="-6 -6 227.0 312.0" style="width:35.8%" role="img" aria-label="Kreuz 21,5 × 30 cm"><g transform="scale(0.35277777777777775) translate(12458,-4458)"><path d=" 
+M-12243.9291,4457.9826
+C-12243.9291,4457.9826 -12061.9995,4457.9826 -12061.9995,4457.9826
+C-12061.9995,4457.9826 -12061.9995,4669.9523 -12061.9995,4669.9523
+C-12061.9995,4669.9523 -11848.2401,4669.9523 -11848.2401,4669.9523
+C-11848.2401,4669.9523 -11848.2401,4851.8819 -11848.2401,4851.8819
+C-11848.2401,4851.8819 -12061.9995,4851.8819 -12061.9995,4851.8819
+C-12061.9995,4851.8819 -12061.9995,5308.3760 -12061.9995,5308.3760
+C-12061.9995,5308.3760 -12243.9291,5308.3760 -12243.9291,5308.3760
+C-12243.9291,5308.3760 -12243.9291,4851.8819 -12243.9291,4851.8819
+C-12243.9291,4851.8819 -12457.6890,4851.8819 -12457.6890,4851.8819
+C-12457.6890,4851.8819 -12457.6890,4669.9523 -12457.6890,4669.9523
+C-12457.6890,4669.9523 -12243.9291,4669.9523 -12243.9291,4669.9523
+C-12243.9291,4669.9523 -12243.9291,4457.9826 -12243.9291,4457.9826
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Kreuz 21,5 × 30 cm</b><span class="mm">215 × 300 mm</span><span class="price">32,99 € · mit Foto 39,99 €</span><span class="note">ohne Löcher</span><span class="ol"></span><details class="ed" open data-key="geschnittene-kreuz-21-5-x-30"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-13">Kommentar</button></figcaption></figure></div><h3>Stern</h3><div class="grid"><figure class="card" id="tafel-14" data-comment-target="Schiefer Stern ca. 20 × 19 cm (Geschnittene Formen)"><div class="plate"><svg viewBox="-6 -6 212.7 202.8" style="width:33.4%" role="img" aria-label="Stern ca. 20 × 19 cm"><g transform="scale(0.35277777777777775) translate(16483,-3516)"><path d=" 
+M-16030.2594,4055.8345
+C-16032.5552,4055.8345 -16034.8232,4055.1264 -16036.7786,4053.7091
+C-16036.7786,4053.7091 -16198.5790,3936.1566 -16198.5790,3936.1566
+C-16198.5790,3936.1566 -16360.3517,4053.7091 -16360.3517,4053.7091
+C-16364.2632,4056.5438 -16369.5362,4056.5438 -16373.4188,4053.7091
+C-16377.3303,4050.8742 -16378.9461,4045.8571 -16377.4729,4041.2931
+C-16377.4729,4041.2931 -16315.6782,3851.0901 -16315.6782,3851.0901
+C-16315.6782,3851.0901 -16477.4786,3733.5373 -16477.4786,3733.5373
+C-16481.3621,3730.7027 -16482.9779,3725.6856 -16481.5036,3721.1213
+C-16480.0018,3716.5294 -16475.7495,3713.4397 -16470.9303,3713.4397
+C-16470.9303,3713.4397 -16270.9469,3713.4397 -16270.9469,3713.4397
+C-16270.9469,3713.4397 -16209.1522,3523.2369 -16209.1522,3523.2369
+C-16207.6502,3518.6448 -16203.3979,3515.5551 -16198.5790,3515.5551
+C-16193.7601,3515.5551 -16189.5079,3518.6448 -16188.0336,3523.2369
+C-16188.0336,3523.2369 -16126.2099,3713.4397 -16126.2099,3713.4397
+C-16126.2099,3713.4397 -15926.2265,3713.4397 -15926.2265,3713.4397
+C-15921.4074,3713.4397 -15917.1554,3716.5294 -15915.6533,3721.1213
+C-15914.1790,3725.6856 -15915.7948,3730.7027 -15919.6782,3733.5373
+C-15919.6782,3733.5373 -16081.4787,3851.0612 -16081.4787,3851.0612
+C-16081.4787,3851.0612 -16019.6840,4041.2931 -16019.6840,4041.2931
+C-16018.1819,4045.8571 -16019.8254,4050.8742 -16023.7091,4053.7091
+C-16025.6653,4055.1264 -16027.9614,4055.8345 -16030.2572,4055.8345
+C-16030.2572,4055.8345 -16030.2572,4055.8345 -16030.2572,4055.8345
+C-16030.2572,4055.8345 -16030.2572,4055.8345 -16030.2572,4055.8345
+C-16030.2572,4055.8345 -16030.2594,4055.8345 -16030.2594,4055.8345
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Stern ca. 20 × 19 cm</b><span class="mm">200,7 × 190,8 mm</span><span class="price">32,99 € · mit Foto 39,99 €</span><span class="note">ohne Löcher</span><span class="ol"></span><details class="ed" open data-key="geschnittene-stern-ca-20-x-19"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-14">Kommentar</button></figcaption></figure></div><h3>Knochen</h3><div class="grid"><figure class="card" id="tafel-15" data-comment-target="Schiefer Knochen ca. 23 × 10,5 cm (Geschnittene Formen)"><div class="plate"><svg viewBox="-6 -6 242.0 117.0" style="width:38.3%" role="img" aria-label="Knochen ca. 23 × 10,5 cm"><g transform="scale(0.35277777777777775) translate(15379,-3637)"><path d=" 
+M-14890.0020,3871.0547
+L-15216.1948,3871.0547
+C-15224.5539,3907.3935 -15257.3816,3934.5140 -15296.6080,3934.5140
+C-15342.1574,3934.5140 -15379.0826,3897.9468 -15379.0826,3852.8390
+C-15379.0826,3825.0132 -15365.0278,3800.4420 -15343.5686,3785.6951
+C-15365.0278,3770.9482 -15379.0826,3746.3770 -15379.0826,3718.5512
+C-15379.0826,3673.4434 -15342.1574,3636.8762 -15296.6080,3636.8762
+C-15257.3625,3636.8762 -15224.5223,3664.0233 -15216.1831,3700.3890
+L-14890.0137,3700.3890
+C-14881.6745,3664.0233 -14848.8343,3636.8762 -14809.5888,3636.8762
+C-14764.0394,3636.8762 -14727.1142,3673.4434 -14727.1142,3718.5512
+C-14727.1142,3746.3770 -14741.1690,3770.9482 -14762.6282,3785.6951
+C-14741.1690,3800.4420 -14727.1142,3825.0132 -14727.1142,3852.8390
+C-14727.1142,3897.9468 -14764.0394,3934.5140 -14809.5888,3934.5140
+C-14848.8152,3934.5140 -14881.6429,3907.3935 -14890.0020,3871.0547
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Knochen ca. 23 × 10,5 cm</b><span class="mm">230 × 105 mm</span><span class="price">28,99 € · mit Foto 34,99 €</span><span class="note">ohne Löcher</span><span class="ol"></span><details class="ed" open data-key="geschnittene-knochen-ca-23-x-10-5"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-15">Kommentar</button></figcaption></figure></div></section><section><h2>Naturschiefer mit Bruchkante <span>24 Tafeln</span></h2><h3>Rechteck</h3><div class="grid"><figure class="card" id="tafel-16" data-comment-target="Schiefer Rechteck 15 × 10 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 162.0 112.0" style="width:25.0%" role="img" aria-label="Rechteck 15 × 10 cm"><g transform="scale(0.35277777777777775) translate(7168,-8864)"><path d=" 
+M-7167.5579,8863.8542
+L-7167.5579,9147.3188
+L-6742.3610,9147.3188
+L-6742.3610,8863.8542
+L-7167.5579,8863.8542
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-7139.2113,8999.9172
+A5.6694,5.6693 0.0000 0,1 -7133.5419,9005.5865
+A5.6694,5.6693 0.0000 1,1 -7139.2113,8999.9172
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-6770.7074,8999.9172
+A5.6694,5.6693 0.0000 0,1 -6765.0379,9005.5865
+A5.6694,5.6693 0.0000 1,1 -6770.7074,8999.9172
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rechteck 15 × 10 cm</b><span class="mm">150 × 100 mm</span><span class="price">18,99 € · mit Foto 24,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 130 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 10 mm links/rechts · 50 mm oben/unten</span><span class="note">keine Abstandshalter</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-rechteck-15-x-10"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-16">Kommentar</button></figcaption></figure><figure class="card" id="tafel-17" data-comment-target="Schiefer Rechteck 30 × 10 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 312.0 112.0" style="width:50.0%" role="img" aria-label="Rechteck 30 × 10 cm"><g transform="scale(0.35277777777777775) translate(8078,-4049)"><path d=" 
+M-8077.6953,4331.9659
+L-7227.3011,4331.9659
+L-7227.3011,4048.5014
+L-8077.6953,4048.5014
+L-8077.6953,4331.9659
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-7281.1593,4190.2336
+A5.6693,5.6693 0.0000 0,1 -7275.4900,4184.5643
+A5.6693,5.6693 0.0000 1,1 -7281.1593,4190.2336
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-7281.1593,4096.6903
+A5.6693,5.6693 0.0000 0,1 -7275.4900,4091.0210
+A5.6693,5.6693 0.0000 1,1 -7281.1593,4096.6903
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-7281.1593,4283.7769
+A5.6693,5.6693 0.0000 0,1 -7275.4900,4278.1076
+A5.6693,5.6693 0.0000 1,1 -7281.1593,4283.7769
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-8035.1756,4190.2336
+A5.6693,5.6693 0.0000 0,1 -8029.5063,4184.5643
+A5.6693,5.6693 0.0000 1,1 -8035.1756,4190.2336
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-8035.1756,4096.6903
+A5.6693,5.6693 0.0000 0,1 -8029.5063,4091.0210
+A5.6693,5.6693 0.0000 1,1 -8035.1756,4096.6903
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-8035.1756,4283.7769
+A5.6693,5.6693 0.0000 0,1 -8029.5063,4278.1076
+A5.6693,5.6693 0.0000 1,1 -8035.1756,4283.7769
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rechteck 30 × 10 cm</b><span class="mm">300 × 100 mm</span><span class="price">26,99 € · mit Foto 32,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 266 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 17 mm links/rechts · 50 mm oben/unten</span><span class="note">4er Ø 4 Ecken: Lochabstand 266 × 66 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 17 mm zu allen Seiten</span><span class="note">Abstandshalter 12 mm breit: 2er/4er auf den Löchern</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-rechteck-30-x-10"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-17">Kommentar</button></figcaption></figure><figure class="card" id="tafel-18" data-comment-target="Schiefer Rechteck 22 × 14 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 232.0 152.0" style="width:36.7%" role="img" aria-label="Rechteck 22 × 14 cm"><g transform="scale(0.35277777777777775) translate(5515,-3948)"><path d=" 
+M-5515.1116,4344.4458
+L-4891.4895,4344.4458
+L-4891.4895,3947.5954
+L-5515.1116,3947.5954
+L-5515.1116,4344.4458
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-4945.3478,3995.7843
+A5.6693,5.6693 0.0000 0,1 -4939.6785,3990.1150
+A5.6693,5.6693 0.0000 1,1 -4945.3478,3995.7843
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-5472.5919,3995.7843
+A5.6693,5.6693 0.0000 0,1 -5466.9226,3990.1150
+A5.6693,5.6693 0.0000 1,1 -5472.5919,3995.7843
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-4945.3478,4296.2567
+A5.6693,5.6693 0.0000 0,1 -4939.6785,4290.5874
+A5.6693,5.6693 0.0000 1,1 -4945.3478,4296.2567
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-5472.5919,4296.2567
+A5.6693,5.6693 0.0000 0,1 -5466.9226,4290.5874
+A5.6693,5.6693 0.0000 1,1 -5472.5919,4296.2567
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-4945.3478,4146.0205
+A5.6693,5.6693 0.0000 0,1 -4939.6785,4140.3512
+A5.6693,5.6693 0.0000 1,1 -4945.3478,4146.0205
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-5472.5919,4146.0205
+A5.6693,5.6693 0.0000 0,1 -5466.9226,4140.3512
+A5.6693,5.6693 0.0000 1,1 -5472.5919,4146.0205
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rechteck 22 × 14 cm</b><span class="mm">220 × 140 mm</span><span class="price">21,99 € · mit Foto 28,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 186 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 17 mm links/rechts · 70 mm oben/unten</span><span class="note">4er Ø 4 Ecken: Lochabstand 186 × 106 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 17 mm zu allen Seiten</span><span class="note">Abstandshalter 12 mm breit: 2er/4er auf den Löchern</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-rechteck-22-x-14"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-18">Kommentar</button></figcaption></figure><figure class="card" id="tafel-19" data-comment-target="Schiefer Rechteck 38 × 13 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 392.0 142.0" style="width:63.3%" role="img" aria-label="Rechteck 38 × 13 cm"><g transform="scale(0.35277777777777775) translate(1389,-3900)"><path d=" 
+M-1389.1427,4268.7224
+L-311.9775,4268.7224
+L-311.9775,3900.2185
+L-1389.1427,3900.2185
+L-1389.1427,4268.7224
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-1340.9538,3954.0767
+A5.6693,5.6693 0.0000 0,1 -1335.2845,3948.4074
+A5.6693,5.6693 0.0000 1,1 -1340.9538,3954.0767
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-1340.9538,4214.8641
+A5.6693,5.6693 0.0000 0,1 -1335.2845,4209.1948
+A5.6693,5.6693 0.0000 1,1 -1340.9538,4214.8641
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-371.5050,3954.0767
+A5.6693,5.6693 0.0000 0,1 -365.8357,3948.4074
+A5.6693,5.6693 0.0000 1,1 -371.5050,3954.0767
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-371.5050,4214.8641
+A5.6693,5.6693 0.0000 0,1 -365.8357,4209.1948
+A5.6693,5.6693 0.0000 1,1 -371.5050,4214.8641
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-1340.9538,4084.4704
+A5.6693,5.6693 0.0000 0,1 -1335.2845,4078.8011
+A5.6693,5.6693 0.0000 1,1 -1340.9538,4084.4704
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-371.5050,4084.4704
+A5.6693,5.6693 0.0000 0,1 -365.8357,4078.8011
+A5.6693,5.6693 0.0000 1,1 -371.5050,4084.4704
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rechteck 38 × 13 cm</b><span class="mm">380 × 130 mm</span><span class="price">38,99 € · mit Foto 43,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 342 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm links/rechts · 65 mm oben/unten</span><span class="note">4er Ø 4 Ecken: Lochabstand 342 × 92 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm zu allen Seiten</span><span class="note">Abstandshalter 12 mm breit: 2er/4er auf den Löchern</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-rechteck-38-x-13"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-19">Kommentar</button></figcaption></figure><figure class="card" id="tafel-20" data-comment-target="Schiefer Rechteck 20 × 30 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 212.0 312.0" style="width:33.3%" role="img" aria-label="Rechteck 20 × 30 cm"><g transform="scale(0.35277777777777775) translate(3602,-3697)"><path d=" 
+M-3601.7077,3696.7292
+L-3601.7077,4547.1229
+L-3034.7786,4547.1229
+L-3034.7786,3696.7292
+L-3601.7077,3696.7292
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-3088.6367,3744.9181
+A5.6693,5.6693 0.0000 0,1 -3082.9674,3750.5874
+A5.6693,5.6693 0.0000 1,1 -3088.6367,3744.9181
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-3547.8493,3744.9181
+A5.6693,5.6693 0.0000 0,1 -3542.1800,3750.5874
+A5.6693,5.6693 0.0000 1,1 -3547.8493,3744.9181
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-3088.6367,4487.5953
+A5.6693,5.6693 0.0000 0,1 -3082.9674,4493.2646
+A5.6693,5.6693 0.0000 1,1 -3088.6367,4487.5953
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-3547.8493,4487.5953
+A5.6693,5.6693 0.0000 0,1 -3542.1800,4493.2646
+A5.6693,5.6693 0.0000 1,1 -3547.8493,4487.5953
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-3318.2430,3744.9181
+A5.6693,5.6693 0.0000 0,1 -3312.5737,3750.5874
+A5.6693,5.6693 0.0000 1,1 -3318.2430,3744.9181
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-3318.2430,4487.5953
+A5.6693,5.6693 0.0000 0,1 -3312.5737,4493.2646
+A5.6693,5.6693 0.0000 1,1 -3318.2430,4487.5953
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rechteck 20 × 30 cm</b><span class="mm">200 × 300 mm</span><span class="price">23,99 € · mit Foto 32,99 €</span><span class="note">2er Ø 4 oben/unten: Lochabstand 262 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 100 mm links/rechts · 19 mm oben/unten</span><span class="note">4er Ø 4 Ecken: Lochabstand 162 × 262 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm zu allen Seiten</span><span class="note">Abstandshalter 12 mm breit: 2er/4er auf den Löchern</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-rechteck-20-x-30"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-20">Kommentar</button></figcaption></figure><figure class="card" id="tafel-21" data-comment-target="Schiefer Rechteck 30 × 20 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 312.0 212.0" style="width:50.0%" role="img" aria-label="Rechteck 30 × 20 cm"><g transform="scale(0.35277777777777775) translate(2637,-3807)"><path d=" 
+M-2636.6071,4373.6044
+L-1786.2134,4373.6044
+L-1786.2134,3806.6752
+L-2636.6071,3806.6752
+L-2636.6071,4373.6044
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-2588.4182,3860.5334
+A5.6693,5.6693 0.0000 0,1 -2582.7489,3854.8641
+A5.6693,5.6693 0.0000 1,1 -2588.4182,3860.5334
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-2588.4182,4319.7460
+A5.6693,5.6693 0.0000 0,1 -2582.7489,4314.0767
+A5.6693,5.6693 0.0000 1,1 -2588.4182,4319.7460
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-1845.7410,3860.5334
+A5.6693,5.6693 0.0000 0,1 -1840.0717,3854.8641
+A5.6693,5.6693 0.0000 1,1 -1845.7410,3860.5334
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-1845.7410,4319.7460
+A5.6693,5.6693 0.0000 0,1 -1840.0717,4314.0767
+A5.6693,5.6693 0.0000 1,1 -1845.7410,4319.7460
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-2588.4182,4090.1397
+A5.6693,5.6693 0.0000 0,1 -2582.7489,4084.4704
+A5.6693,5.6693 0.0000 1,1 -2588.4182,4090.1397
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-1845.7410,4090.1397
+A5.6693,5.6693 0.0000 0,1 -1840.0717,4084.4704
+A5.6693,5.6693 0.0000 1,1 -1845.7410,4090.1397
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rechteck 30 × 20 cm</b><span class="mm">300 × 200 mm</span><span class="price">23,99 € · mit Foto 32,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 262 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm links/rechts · 100 mm oben/unten</span><span class="note">4er Ø 4 Ecken: Lochabstand 262 × 162 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm zu allen Seiten</span><span class="note">Abstandshalter 12 mm breit: 2er/4er auf den Löchern</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-rechteck-30-x-20"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-21">Kommentar</button></figcaption></figure><figure class="card" id="tafel-22" data-comment-target="Schiefer Rechteck 40 × 20 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 412.0 212.0" style="width:66.7%" role="img" aria-label="Rechteck 40 × 20 cm"><g transform="scale(0.35277777777777775) translate(-185,-3773)"><path d=" 
+M184.6030,3772.6586
+L184.6030,4339.5877
+L1318.4612,4339.5877
+L1318.4612,3772.6586
+L184.6030,3772.6586
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M1264.6029,4050.4538
+A5.6693,5.6693 0.0000 0,1 1270.2722,4056.1231
+A5.6693,5.6693 0.0000 1,1 1264.6029,4050.4538
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M238.4612,4050.4538
+A5.6693,5.6693 0.0000 0,1 244.1305,4056.1231
+A5.6693,5.6693 0.0000 1,1 238.4612,4050.4538
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M1264.6029,4280.0601
+A5.6693,5.6693 0.0000 0,1 1270.2722,4285.7294
+A5.6693,5.6693 0.0000 1,1 1264.6029,4280.0601
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M238.4612,4280.0601
+A5.6693,5.6693 0.0000 0,1 244.1305,4285.7294
+A5.6693,5.6693 0.0000 1,1 238.4612,4280.0601
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M1264.6029,3820.8475
+A5.6693,5.6693 0.0000 0,1 1270.2722,3826.5168
+A5.6693,5.6693 0.0000 1,1 1264.6029,3820.8475
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M238.4612,3820.8475
+A5.6693,5.6693 0.0000 0,1 244.1305,3826.5168
+A5.6693,5.6693 0.0000 1,1 238.4612,3820.8475
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rechteck 40 × 20 cm</b><span class="mm">400 × 200 mm</span><span class="price">39,99 € · mit Foto 47,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 362 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm links/rechts · 100 mm oben/unten</span><span class="note">4er Ø 4 Ecken: Lochabstand 362 × 162 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm zu allen Seiten</span><span class="note">Abstandshalter 12 mm breit: 2er/4er auf den Löchern</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-rechteck-40-x-20"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-22">Kommentar</button></figcaption></figure><figure class="card" id="tafel-23" data-comment-target="Schiefer Rechteck 56 × 18 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 572.0 192.0" style="width:93.3%" role="img" aria-label="Rechteck 56 × 18 cm"><g transform="scale(0.35277777777777775) translate(-3293,-3907)"><path d=" 
+M3349.2597,3957.8953
+A5.6693,5.6693 0.0000 0,1 3354.9290,3963.5646
+A5.6693,5.6693 0.0000 1,1 3349.2597,3957.8953
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M4823.2755,3957.8953
+A5.6693,5.6693 0.0000 0,1 4828.9448,3963.5646
+A5.6693,5.6693 0.0000 1,1 4823.2755,3957.8953
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M3292.5669,3906.8717
+L3292.5669,4417.1079
+L4879.9685,4417.1079
+L4879.9685,3906.8717
+L3292.5669,3906.8717
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M3349.2597,4354.7457
+A5.6693,5.6693 0.0000 0,1 3354.9290,4360.4150
+A5.6693,5.6693 0.0000 1,1 3349.2597,4354.7457
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M4823.2755,4354.7457
+A5.6693,5.6693 0.0000 0,1 4828.9448,4360.4150
+A5.6693,5.6693 0.0000 1,1 4823.2755,4354.7457
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M3349.2597,4156.3205
+A5.6693,5.6693 0.0000 0,1 3354.9290,4161.9898
+A5.6693,5.6693 0.0000 1,1 3349.2597,4156.3205
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M4823.2755,4156.3205
+A5.6693,5.6693 0.0000 0,1 4828.9448,4161.9898
+A5.6693,5.6693 0.0000 1,1 4823.2755,4156.3205
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rechteck 56 × 18 cm</b><span class="mm">560 × 180 mm</span><span class="price">56,99 € · mit Foto 64,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 520 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 20 mm links/rechts · 90 mm oben/unten</span><span class="note">4er Ø 4 Ecken: Lochabstand 520 × 140 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 20 mm zu allen Seiten</span><span class="note">Abstandshalter 12 mm breit: 2er/4er auf den Löchern</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-rechteck-56-x-18"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-23">Kommentar</button></figcaption></figure><figure class="card" id="tafel-24" data-comment-target="Schiefer Rechteck 40 × 30 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 412.0 312.0" style="width:66.7%" role="img" aria-label="Rechteck 40 × 30 cm"><g transform="scale(0.35277777777777775) translate(-1765,-3714)"><path d=" 
+M1765.1785,3713.7362
+L1765.1785,4564.1299
+L2899.0367,4564.1299
+L2899.0367,3713.7362
+L1765.1785,3713.7362
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M1821.8713,3764.7598
+A5.6693,5.6693 0.0000 0,1 1827.5406,3770.4291
+A5.6693,5.6693 0.0000 1,1 1821.8713,3764.7598
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M2842.3437,3764.7598
+A5.6693,5.6693 0.0000 0,1 2848.0130,3770.4291
+A5.6693,5.6693 0.0000 1,1 2842.3437,3764.7598
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M1821.8713,4501.7677
+A5.6693,5.6693 0.0000 0,1 1827.5406,4507.4370
+A5.6693,5.6693 0.0000 1,1 1821.8713,4501.7677
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M2842.3437,4501.7677
+A5.6693,5.6693 0.0000 0,1 2848.0130,4507.4370
+A5.6693,5.6693 0.0000 1,1 2842.3437,4501.7677
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M1821.8713,4133.2637
+A5.6693,5.6693 0.0000 0,1 1827.5406,4138.9330
+A5.6693,5.6693 0.0000 1,1 1821.8713,4133.2637
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M2842.3437,4133.2637
+A5.6693,5.6693 0.0000 0,1 2848.0130,4138.9330
+A5.6693,5.6693 0.0000 1,1 2842.3437,4133.2637
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rechteck 40 × 30 cm</b><span class="mm">400 × 300 mm</span><span class="price">49,99 € · mit Foto 59,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 360 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 20 mm links/rechts · 150 mm oben/unten</span><span class="note">4er Ø 4 Ecken: Lochabstand 360 × 260 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 20 mm zu allen Seiten</span><span class="note">Abstandshalter 12 mm breit: 2er/4er auf den Löchern</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-rechteck-40-x-30"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-24">Kommentar</button></figcaption></figure><figure class="card" id="tafel-25" data-comment-target="Schiefer Rechteck 60 × 30 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 612.0 312.0" style="width:100.0%" role="img" aria-label="Rechteck 60 × 30 cm"><g transform="scale(0.35277777777777775) translate(-5279,-3671)"><path d=" 
+M5279.3752,3671.2165
+L5279.3752,4521.6102
+L6980.1625,4521.6102
+L6980.1625,3671.2165
+L5279.3752,3671.2165
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M5336.0683,3722.2401
+A5.6693,5.6693 0.0000 0,1 5341.7375,3727.9094
+A5.6693,5.6693 0.0000 1,1 5336.0683,3722.2401
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M6923.4695,3722.2401
+A5.6693,5.6693 0.0000 0,1 6929.1388,3727.9094
+A5.6693,5.6693 0.0000 1,1 6923.4695,3722.2401
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M5336.0683,4459.2480
+A5.6693,5.6693 0.0000 0,1 5341.7375,4464.9173
+A5.6693,5.6693 0.0000 1,1 5336.0683,4459.2480
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M6923.4695,4459.2480
+A5.6693,5.6693 0.0000 0,1 6929.1388,4464.9173
+A5.6693,5.6693 0.0000 1,1 6923.4695,4459.2480
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M5336.0683,4090.7441
+A5.6693,5.6693 0.0000 0,1 5341.7375,4096.4134
+A5.6693,5.6693 0.0000 1,1 5336.0683,4090.7441
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M6923.4695,4090.7441
+A5.6693,5.6693 0.0000 0,1 6929.1388,4096.4134
+A5.6693,5.6693 0.0000 1,1 6923.4695,4090.7441
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rechteck 60 × 30 cm</b><span class="mm">600 × 300 mm</span><span class="price">69,99 € · mit Foto 79,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 560 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 20 mm links/rechts · 150 mm oben/unten</span><span class="note">4er Ø 4 Ecken: Lochabstand 560 × 260 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 20 mm zu allen Seiten</span><span class="note">Abstandshalter 12 mm breit: 2er/4er auf den Löchern</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-rechteck-60-x-30"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-25">Kommentar</button></figcaption></figure></div><h3>Quadrat</h3><div class="grid"><figure class="card" id="tafel-26" data-comment-target="Schiefer Quadrat 10 × 10 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 112.0 112.0" style="width:16.7%" role="img" aria-label="Quadrat 10 × 10 cm"><g transform="scale(0.35277777777777775) translate(8167,-8864)"><path d=" 
+M-8167.4247,8863.8542
+L-8167.4247,9147.3188
+L-7883.9601,9147.3188
+L-7883.9601,8863.8542
+L-8167.4247,8863.8542
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-8139.0781,8999.9172
+A5.6694,5.6693 0.0000 0,1 -8133.4087,9005.5865
+A5.6694,5.6693 0.0000 1,1 -8139.0781,8999.9172
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-7912.3065,8999.9172
+A5.6694,5.6693 0.0000 0,1 -7906.6370,9005.5865
+A5.6694,5.6693 0.0000 1,1 -7912.3065,8999.9172
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Quadrat 10 × 10 cm</b><span class="mm">100 × 100 mm</span><span class="price">16,99 € · mit Foto 22,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 80 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 10 mm links/rechts · 50 mm oben/unten</span><span class="note">keine Abstandshalter</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-quadrat-10-x-10"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-26">Kommentar</button></figcaption></figure><figure class="card" id="tafel-27" data-comment-target="Schiefer Quadrat 13 × 13 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 142.0 142.0" style="width:21.7%" role="img" aria-label="Quadrat 13 × 13 cm"><g transform="scale(0.35277777777777775) translate(7725,-8821)"><path d=" 
+M-7724.5385,8821.3345
+L-7724.5385,9189.8385
+L-7356.0346,9189.8385
+L-7356.0346,8821.3345
+L-7724.5385,8821.3345
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-7696.1919,8999.9172
+A5.6694,5.6693 0.0000 0,1 -7690.5225,9005.5865
+A5.6694,5.6693 0.0000 1,1 -7696.1919,8999.9172
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-7384.3809,8999.9172
+A5.6694,5.6693 0.0000 0,1 -7378.7115,9005.5865
+A5.6694,5.6693 0.0000 1,1 -7384.3809,8999.9172
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Quadrat 13 × 13 cm</b><span class="mm">130 × 130 mm</span><span class="price">17,99 € · mit Foto 23,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 110 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 10 mm links/rechts · 65 mm oben/unten</span><span class="note">keine Abstandshalter</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-quadrat-13-x-13"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-27">Kommentar</button></figcaption></figure><figure class="card" id="tafel-28" data-comment-target="Schiefer Quadrat 16 × 16 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 172.0 172.0" style="width:26.7%" role="img" aria-label="Quadrat 16 × 16 cm"><g transform="scale(0.35277777777777775) translate(-7380,-3924)"><path d=" 
+M7379.5694,3924.3137
+L7379.5694,4377.8570
+L7833.1127,4377.8570
+L7833.1127,3924.3137
+L7379.5694,3924.3137
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M7779.2545,4151.0854
+A5.6693,5.6693 0.0000 0,1 7784.9237,4145.4162
+A5.6693,5.6693 0.0000 1,1 7779.2545,4151.0854
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M7779.2545,3972.5028
+A5.6693,5.6693 0.0000 0,1 7784.9237,3966.8335
+A5.6693,5.6693 0.0000 1,1 7779.2545,3972.5028
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M7779.2545,4329.6681
+A5.6693,5.6693 0.0000 0,1 7784.9237,4323.9988
+A5.6693,5.6693 0.0000 1,1 7779.2545,4329.6681
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M7422.0891,4151.0854
+A5.6693,5.6693 0.0000 0,1 7427.7584,4145.4162
+A5.6693,5.6693 0.0000 1,1 7422.0891,4151.0854
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M7422.0891,3972.5028
+A5.6693,5.6693 0.0000 0,1 7427.7584,3966.8335
+A5.6693,5.6693 0.0000 1,1 7422.0891,3972.5028
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M7422.0891,4329.6681
+A5.6693,5.6693 0.0000 0,1 7427.7584,4323.9988
+A5.6693,5.6693 0.0000 1,1 7422.0891,4329.6681
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Quadrat 16 × 16 cm</b><span class="mm">160 × 160 mm</span><span class="price">22,99 € · mit Foto 29,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 126 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 17 mm links/rechts · 80 mm oben/unten</span><span class="note">4er Ø 4 Ecken: Lochabstand 126 × 126 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 17 mm zu allen Seiten</span><span class="note">Abstandshalter 12 mm breit: 2er/4er auf den Löchern</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-quadrat-16-x-16"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-28">Kommentar</button></figcaption></figure><figure class="card" id="tafel-29" data-comment-target="Schiefer Quadrat 20 × 20 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 212.0 212.0" style="width:33.3%" role="img" aria-label="Quadrat 20 × 20 cm"><g transform="scale(0.35277777777777775) translate(4530,-3866)"><path d=" 
+M-4530.0631,4433.3958
+L-3963.1340,4433.3958
+L-3963.1340,3866.4667
+L-4530.0631,3866.4667
+L-4530.0631,4433.3958
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-4481.8744,3920.3249
+A5.6693,5.6693 0.0000 0,1 -4476.2051,3914.6556
+A5.6693,5.6693 0.0000 1,1 -4481.8744,3920.3249
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-4481.8744,4379.5375
+A5.6693,5.6693 0.0000 0,1 -4476.2051,4373.8682
+A5.6693,5.6693 0.0000 1,1 -4481.8744,4379.5375
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-4022.6615,3920.3249
+A5.6693,5.6693 0.0000 0,1 -4016.9922,3914.6556
+A5.6693,5.6693 0.0000 1,1 -4022.6615,3920.3249
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-4022.6615,4379.5375
+A5.6693,5.6693 0.0000 0,1 -4016.9922,4373.8682
+A5.6693,5.6693 0.0000 1,1 -4022.6615,4379.5375
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-4481.8741,4149.9312
+A5.6693,5.6693 0.0000 0,1 -4476.2049,4144.2619
+A5.6693,5.6693 0.0000 1,1 -4481.8741,4149.9312
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-4022.6615,4149.9312
+A5.6693,5.6693 0.0000 0,1 -4016.9923,4144.2619
+A5.6693,5.6693 0.0000 1,1 -4022.6615,4149.9312
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Quadrat 20 × 20 cm</b><span class="mm">200 × 200 mm</span><span class="price">24,99 € · mit Foto 32,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 162 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm links/rechts · 100 mm oben/unten</span><span class="note">4er Ø 4 Ecken: Lochabstand 162 × 162 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm zu allen Seiten</span><span class="note">Abstandshalter 12 mm breit: 2er/4er auf den Löchern</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-quadrat-20-x-20"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-29">Kommentar</button></figcaption></figure><figure class="card" id="tafel-30" data-comment-target="Schiefer Quadrat 22 × 22 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 232.0 232.0" style="width:36.7%" role="img" aria-label="Quadrat 22 × 22 cm"><g transform="scale(0.35277777777777775) translate(-8076,-3839)"><path d=" 
+M8076.4135,3839.2740
+L8076.4135,4462.8961
+L8700.0355,4462.8961
+L8700.0355,3839.2740
+L8076.4135,3839.2740
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M8124.6025,3893.1324
+A5.6693,5.6693 0.0000 0,1 8130.2717,3887.4631
+A5.6693,5.6693 0.0000 1,1 8124.6025,3893.1324
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M8124.6025,4409.0379
+A5.6693,5.6693 0.0000 0,1 8130.2717,4403.3686
+A5.6693,5.6693 0.0000 1,1 8124.6025,4409.0379
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M8640.5080,3893.1324
+A5.6693,5.6693 0.0000 0,1 8646.1773,3887.4631
+A5.6693,5.6693 0.0000 1,1 8640.5080,3893.1324
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M8640.5080,4409.0379
+A5.6693,5.6693 0.0000 0,1 8646.1773,4403.3686
+A5.6693,5.6693 0.0000 1,1 8640.5080,4409.0379
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M8124.6025,4151.0854
+A5.6693,5.6693 0.0000 0,1 8130.2717,4145.4162
+A5.6693,5.6693 0.0000 1,1 8124.6025,4151.0854
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M8640.5080,4151.0854
+A5.6693,5.6693 0.0000 0,1 8646.1773,4145.4162
+A5.6693,5.6693 0.0000 1,1 8640.5080,4151.0854
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Quadrat 22 × 22 cm</b><span class="mm">220 × 220 mm</span><span class="price">26,99 € · mit Foto 33,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 182 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm links/rechts · 110 mm oben/unten</span><span class="note">4er Ø 4 Ecken: Lochabstand 182 × 182 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm zu allen Seiten</span><span class="note">Abstandshalter 12 mm breit: 2er/4er auf den Löchern</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-quadrat-22-x-22"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-30">Kommentar</button></figcaption></figure><figure class="card" id="tafel-31" data-comment-target="Schiefer Quadrat 25 × 25 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 262.0 262.0" style="width:41.7%" role="img" aria-label="Quadrat 25 × 25 cm"><g transform="scale(0.35277777777777775) translate(-10099,-3762)"><path d=" 
+M10099.2183,3761.9152
+L10099.2183,4470.5767
+L10807.8797,4470.5767
+L10807.8797,3761.9152
+L10099.2183,3761.9152
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M10147.4073,3815.7735
+A5.6693,5.6693 0.0000 0,1 10153.0766,3810.1042
+A5.6693,5.6693 0.0000 1,1 10147.4073,3815.7735
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M10147.4073,4416.7184
+A5.6693,5.6693 0.0000 0,1 10153.0766,4411.0491
+A5.6693,5.6693 0.0000 1,1 10147.4073,4416.7184
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M10748.3522,3815.7735
+A5.6693,5.6693 0.0000 0,1 10754.0215,3810.1042
+A5.6693,5.6693 0.0000 1,1 10748.3522,3815.7735
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M10748.3522,4416.7184
+A5.6693,5.6693 0.0000 0,1 10754.0215,4411.0491
+A5.6693,5.6693 0.0000 1,1 10748.3522,4416.7184
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M10147.4073,4116.2460
+A5.6693,5.6693 0.0000 0,1 10153.0766,4110.5767
+A5.6693,5.6693 0.0000 1,1 10147.4073,4116.2460
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M10748.3522,4116.2460
+A5.6693,5.6693 0.0000 0,1 10754.0215,4110.5767
+A5.6693,5.6693 0.0000 1,1 10748.3522,4116.2460
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Quadrat 25 × 25 cm</b><span class="mm">250 × 250 mm</span><span class="price">33,99 € · mit Foto 41,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 212 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm links/rechts · 125 mm oben/unten</span><span class="note">4er Ø 4 Ecken: Lochabstand 212 × 212 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm zu allen Seiten</span><span class="note">Abstandshalter 12 mm breit: 2er/4er auf den Löchern</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-quadrat-25-x-25"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-31">Kommentar</button></figcaption></figure><figure class="card" id="tafel-32" data-comment-target="Schiefer Quadrat 30 × 30 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 312.0 312.0" style="width:50.0%" role="img" aria-label="Quadrat 30 × 30 cm"><g transform="scale(0.35277777777777775) translate(-8943,-3726)"><path d=" 
+M8943.3360,3725.8884
+L8943.3360,4576.2822
+L9793.7297,4576.2822
+L9793.7297,3725.8884
+L8943.3360,3725.8884
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M8991.5250,3779.7466
+A5.6693,5.6693 0.0000 0,1 8997.1943,3774.0773
+A5.6693,5.6693 0.0000 1,1 8991.5250,3779.7466
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M8991.5250,4522.4238
+A5.6693,5.6693 0.0000 0,1 8997.1943,4516.7545
+A5.6693,5.6693 0.0000 1,1 8991.5250,4522.4238
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M9734.2022,3779.7466
+A5.6693,5.6693 0.0000 0,1 9739.8714,3774.0773
+A5.6693,5.6693 0.0000 1,1 9734.2022,3779.7466
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M9734.2022,4522.4238
+A5.6693,5.6693 0.0000 0,1 9739.8714,4516.7545
+A5.6693,5.6693 0.0000 1,1 9734.2022,4522.4238
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M8991.5250,4151.0857
+A5.6693,5.6693 0.0000 0,1 8997.1943,4145.4164
+A5.6693,5.6693 0.0000 1,1 8991.5250,4151.0857
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M9734.2022,4151.0857
+A5.6693,5.6693 0.0000 0,1 9739.8714,4145.4164
+A5.6693,5.6693 0.0000 1,1 9734.2022,4151.0857
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Quadrat 30 × 30 cm</b><span class="mm">300 × 300 mm</span><span class="price">46,99 € · mit Foto 53,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 262 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm links/rechts · 150 mm oben/unten</span><span class="note">4er Ø 4 Ecken: Lochabstand 262 × 262 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm zu allen Seiten</span><span class="note">Abstandshalter 12 mm breit: 2er/4er auf den Löchern</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-quadrat-30-x-30"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-32">Kommentar</button></figcaption></figure></div><h3>Rund</h3><div class="grid"><figure class="card" id="tafel-33" data-comment-target="Schiefer Rund Ø 20 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 212.0 212.0" style="width:33.3%" role="img" aria-label="Rund Ø 20 cm"><g transform="scale(0.35277777777777775) translate(-11284,-3880)"><path d=" 
+M11567.4051,3880.4581
+A283.4648,283.4646 0.0000 0,1 11850.8699,4163.9227
+A283.4648,283.4646 0.0000 1,1 11567.4051,3880.4581
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M11332.1293,4163.9227
+A5.6693,5.6693 0.0000 0,1 11337.7986,4158.2534
+A5.6693,5.6693 0.0000 1,1 11332.1293,4163.9227
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M11791.3419,4163.9227
+A5.6693,5.6693 0.0000 0,1 11797.0112,4158.2534
+A5.6693,5.6693 0.0000 1,1 11791.3419,4163.9227
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rund Ø 20 cm</b><span class="mm">200 × 200 mm</span><span class="price">23,99 € · mit Foto 29,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 162 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm links/rechts · 100 mm oben/unten</span><span class="note">Abstandshalter 12 mm breit: 2er auf den Löchern</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-rund-20"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-33">Kommentar</button></figcaption></figure><figure class="card" id="tafel-34" data-comment-target="Schiefer Rund Ø 22 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 232.0 232.0" style="width:36.7%" role="img" aria-label="Rund Ø 22 cm"><g transform="scale(0.35277777777777775) translate(-12195,-3837)"><path d=" 
+M12507.0142,3836.5211
+A311.8113,311.8110 0.0000 0,1 12818.8255,4148.3322
+A311.8113,311.8110 0.0000 1,1 12507.0142,3836.5211
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M12243.3919,4148.3322
+A5.6693,5.6693 0.0000 0,1 12249.0612,4142.6629
+A5.6693,5.6693 0.0000 1,1 12243.3919,4148.3322
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M12759.2974,4148.3322
+A5.6693,5.6693 0.0000 0,1 12764.9667,4142.6629
+A5.6693,5.6693 0.0000 1,1 12759.2974,4148.3322
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rund Ø 22 cm</b><span class="mm">220 × 220 mm</span><span class="price">24,99 € · mit Foto 31,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 182 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm links/rechts · 110 mm oben/unten</span><span class="note">Abstandshalter 12 mm breit: 2er auf den Löchern</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-rund-22"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-34">Kommentar</button></figcaption></figure><figure class="card" id="tafel-35" data-comment-target="Schiefer Rund Ø 28 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 292.0 292.0" style="width:46.7%" role="img" aria-label="Rund Ø 28 cm"><g transform="scale(0.35277777777777775) translate(-13013,-3767)"><path d=" 
+M13409.8467,3767.0723
+A396.8507,396.8504 0.0000 0,1 13806.6974,4163.9227
+A396.8507,396.8504 0.0000 1,1 13409.8467,3767.0723
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M13061.1849,4163.9227
+A5.6693,5.6693 0.0000 0,1 13066.8542,4158.2534
+A5.6693,5.6693 0.0000 1,1 13061.1849,4163.9227
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M13747.1692,4163.9227
+A5.6693,5.6693 0.0000 0,1 13752.8385,4158.2534
+A5.6693,5.6693 0.0000 1,1 13747.1692,4163.9227
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rund Ø 28 cm</b><span class="mm">280 × 280 mm</span><span class="price">32,99 € · mit Foto 38,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 242 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm links/rechts · 140 mm oben/unten</span><span class="note">Abstandshalter 12 mm breit: 2er auf den Löchern</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-rund-28"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-35">Kommentar</button></figcaption></figure><figure class="card" id="tafel-36" data-comment-target="Schiefer Rund Ø 35,5 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 367.0 367.0" style="width:59.2%" role="img" aria-label="Rund Ø 35,5 cm"><g transform="scale(0.35277777777777775) translate(-13967,-3730)"><path d=" 
+M14470.3192,3730.2219
+A503.1500,503.1496 0.0000 0,1 14973.4692,4233.3715
+A503.1500,503.1496 0.0000 1,1 14470.3192,3730.2219
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M14015.3581,4233.3715
+A5.6693,5.6693 0.0000 0,1 14021.0274,4227.7022
+A5.6693,5.6693 0.0000 1,1 14015.3581,4233.3715
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M14913.9408,4233.3715
+A5.6693,5.6693 0.0000 0,1 14919.6101,4227.7022
+A5.6693,5.6693 0.0000 1,1 14913.9408,4233.3715
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rund Ø 35,5 cm</b><span class="mm">355 × 355 mm</span><span class="price">39,99 € · mit Foto 48,99 €</span><span class="note">2er Ø 4 links/rechts: Lochabstand 317 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm links/rechts · 178 mm oben, 177 mm unten</span><span class="note">Abstandshalter 12 mm breit: 2er auf den Löchern</span><span class="ol"></span><details class="ed" open data-key="naturschiefer-rund-35-5"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-36">Kommentar</button></figcaption></figure></div><h3>Herz</h3><div class="grid"><figure class="card" id="tafel-37" data-comment-target="Schiefer Herz 10 × 10 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 114.0 114.0" style="width:17.0%" role="img" aria-label="Herz 10 × 10 cm"><path d="M51.0 7.069C53.416 7.069 60.13 0.0 72.998 0.0C80.092 0.0 87.276 3.248 92.509 7.933C98.341 13.154 102.0 20.276 102.0 28.188C102.0 48.841 93.493 60.858 80.573 76.293C75.624 82.205 58.549 101.996 51.0 101.996C43.451 101.996 26.376 82.205 21.427 76.293C8.507 60.858 0.0 48.841 0.0 28.188C0.0 20.276 3.659 13.154 9.491 7.933C14.724 3.248 21.908 0.0 29.002 0.0C41.87 0.0 48.584 7.069 51.0 7.069Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></svg></div><figcaption><b>Herz 10 × 10 cm</b><span class="mm">102 × 102 mm</span><span class="price">13,99 € · mit Foto 19,99 €</span><span class="note">ohne Löcher</span><span class="ol"></span><button type="button" class="bg" data-boegen="naturschiefer-herz-10-x-10">Kontaktbögen (8)</button><details class="ed" open data-key="naturschiefer-herz-10-x-10"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-37">Kommentar</button></figcaption></figure><figure class="card" id="tafel-38" data-comment-target="Schiefer Herz 20 × 20 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 212.0 212.0" style="width:33.3%" role="img" aria-label="Herz 20 × 20 cm"><path d="M103.288 200.0C63.106 168.526 -8.894 114.367 0.907 54.021C6.526 19.425 36.37 -4.107 62.881 0.858C84.046 4.821 92.419 16.586 99.881 18.321C107.987 17.252 115.619 4.833 136.755 0.713C163.23 -4.449 192.66 18.968 199.109 53.414C208.554 103.864 140.617 166.666 103.288 200.0Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></svg></div><figcaption><b>Herz 20 × 20 cm</b><span class="mm">200 × 200 mm</span><span class="price">21,99 € · mit Foto 27,99 €</span><span class="note">ohne Löcher</span><span class="ol"></span><button type="button" class="bg" data-boegen="naturschiefer-herz-20-x-20">Kontaktbögen (8)</button><details class="ed" open data-key="naturschiefer-herz-20-x-20"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-38">Kommentar</button></figcaption></figure><figure class="card" id="tafel-39" data-comment-target="Schiefer Herz 25 × 25 cm (Naturschiefer mit Bruchkante)"><div class="plate"><svg viewBox="-6 -6 262.0 262.0" style="width:41.7%" role="img" aria-label="Herz 25 × 25 cm"><path d="M129.11 250.0C78.882 210.657 -11.118 142.958 1.134 67.526C8.157 24.281 45.462 -5.134 78.601 1.072C105.058 6.026 115.524 20.733 124.851 22.901C134.983 21.565 144.523 6.042 170.944 0.891C204.037 -5.561 240.825 23.71 248.886 66.768C260.692 129.83 175.771 208.332 129.11 250.0Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></svg></div><figcaption><b>Herz 25 × 25 cm</b><span class="mm">250 × 250 mm</span><span class="price">25,99 € · mit Foto 32,99 €</span><span class="note">ohne Löcher</span><span class="ol"></span><button type="button" class="bg" data-boegen="naturschiefer-herz-25-x-25">Kontaktbögen (8)</button><details class="ed" open data-key="naturschiefer-herz-25-x-25"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-39">Kommentar</button></figcaption></figure></div></section><section><h2>Kordelschilder (nur Kordel, keine Varianten) <span>9 Tafeln</span></h2><h3>Rechteck</h3><div class="grid"><figure class="card" id="tafel-40" data-comment-target="Schiefer Rechteck 20 × 10 cm (Kordelschilder)"><div class="plate"><svg viewBox="-6 -6 212.0 112.0" style="width:33.3%" role="img" aria-label="Rechteck 20 × 10 cm"><g transform="scale(0.35277777777777775) translate(8060,-5508)"><path d=" 
+M-8060.2637,5791.3818
+L-8060.2637,5507.9172
+L-7493.3345,5507.9172
+L-7493.3345,5791.3818
+L-8060.2637,5791.3818
+Z
+Z
+M-8013.4920,5550.4369
+C-8013.4920,5546.5231 -8010.3192,5543.3503 -8006.4054,5543.3503
+C-8002.4916,5543.3503 -7999.3188,5546.5231 -7999.3188,5550.4369
+C-7999.3188,5554.3507 -8002.4916,5557.5235 -8006.4054,5557.5235
+C-8010.3192,5557.5235 -8013.4920,5554.3507 -8013.4920,5550.4369
+Z
+Z
+M-7554.2794,5550.4369
+C-7554.2794,5546.5231 -7551.1066,5543.3503 -7547.1928,5543.3503
+C-7543.2790,5543.3503 -7540.1062,5546.5231 -7540.1062,5550.4369
+C-7540.1062,5554.3507 -7543.2790,5557.5235 -7547.1928,5557.5235
+C-7551.1066,5557.5235 -7554.2794,5554.3507 -7554.2794,5550.4369
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g><circle cx="19.0" cy="15.0" r="2.5" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><circle cx="181.0" cy="15.0" r="2.5" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></svg></div><figcaption><b>Rechteck 20 × 10 cm</b><span class="mm">200 × 100 mm</span><span class="price">19,99 € · mit Foto 27,99 €</span><span class="note">Kordel Ø 5,0 mm: Lochabstand 162 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm links/rechts · 15 mm oben</span><span class="ol"></span><details class="ed" open data-key="kordelschilder-rechteck-20-x-10"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-40">Kommentar</button></figcaption></figure><figure class="card" id="tafel-41" data-comment-target="Schiefer Rechteck 30 × 10 cm (Kordelschilder)"><div class="plate"><svg viewBox="-6 -6 312.0 112.0" style="width:50.0%" role="img" aria-label="Rechteck 30 × 10 cm"><g transform="scale(0.35277777777777775) translate(7141,-5508)"><path d=" 
+M-7140.8092,5791.3818
+L-6290.4149,5791.3818
+L-6290.4149,5507.9173
+L-7140.8092,5507.9173
+L-7140.8092,5791.3818
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-6347.1078,5556.1062
+A8.5039,8.5039 0.0000 0,1 -6338.6039,5547.6023
+A8.5039,8.5039 0.0000 1,1 -6347.1078,5556.1062
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-7101.1242,5556.1062
+A8.5039,8.5039 0.0000 0,1 -7092.6202,5547.6023
+A8.5039,8.5039 0.0000 1,1 -7101.1242,5556.1062
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rechteck 30 × 10 cm</b><span class="mm">300 × 100 mm</span><span class="price">26,99 € · mit Foto 32,99 €</span><span class="note">Kordel Ø 6,0 mm: Lochabstand 266 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 17 mm links/rechts · 17 mm oben</span><span class="ol"></span><details class="ed" open data-key="kordelschilder-rechteck-30-x-10"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-41">Kommentar</button></figcaption></figure><figure class="card" id="tafel-42" data-comment-target="Schiefer Rechteck 22 × 14 cm (Kordelschilder)"><div class="plate"><svg viewBox="-6 -6 232.0 152.0" style="width:36.7%" role="img" aria-label="Rechteck 22 × 14 cm"><g transform="scale(0.35277777777777775) translate(4759,-5434)"><path d=" 
+M-4758.9386,5830.5073
+L-4135.3166,5830.5073
+L-4135.3166,5433.6570
+L-4758.9386,5433.6570
+L-4758.9386,5830.5073
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-4192.0095,5481.8459
+A8.5039,8.5039 0.0000 0,1 -4183.5056,5473.3419
+A8.5039,8.5039 0.0000 1,1 -4192.0095,5481.8459
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-4719.2536,5481.8459
+A8.5039,8.5039 0.0000 0,1 -4710.7497,5473.3419
+A8.5039,8.5039 0.0000 1,1 -4719.2536,5481.8459
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rechteck 22 × 14 cm</b><span class="mm">220 × 140 mm</span><span class="price">23,99 € · mit Foto 29,99 €</span><span class="note">Kordel Ø 6,0 mm: Lochabstand 186 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 17 mm links/rechts · 17 mm oben</span><span class="ol"></span><details class="ed" open data-key="kordelschilder-rechteck-22-x-14"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-42">Kommentar</button></figcaption></figure><figure class="card" id="tafel-43" data-comment-target="Schiefer Rechteck 20 × 25 cm (Kordelschilder)"><div class="plate"><svg viewBox="-6 -6 212.0 262.0" style="width:33.3%" role="img" aria-label="Rechteck 20 × 25 cm"><g transform="scale(0.35277777777777775) translate(2793,-5304)"><path d=" 
+M-2793.1272,5303.6745
+L-2226.1980,5303.6745
+L-2226.1980,6012.3359
+L-2793.1272,6012.3359
+L-2793.1272,5303.6745
+Z
+Z
+M-2285.7256,5340.5249
+C-2281.0289,5340.5249 -2277.2217,5344.3324 -2277.2217,5349.0288
+C-2277.2217,5353.7253 -2281.0289,5357.5328 -2285.7256,5357.5328
+C-2290.4223,5357.5328 -2294.2295,5353.7253 -2294.2295,5349.0288
+C-2294.2295,5344.3324 -2290.4223,5340.5249 -2285.7256,5340.5249
+Z
+Z
+M-2733.5996,5340.5249
+C-2728.9029,5340.5249 -2725.0957,5344.3324 -2725.0957,5349.0288
+C-2725.0957,5353.7253 -2728.9029,5357.5328 -2733.5996,5357.5328
+C-2738.2963,5357.5328 -2742.1036,5353.7253 -2742.1036,5349.0288
+C-2742.1036,5344.3324 -2738.2963,5340.5249 -2733.5996,5340.5249
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g><circle cx="21.0" cy="16.0" r="3.0" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><circle cx="179.0" cy="16.0" r="3.0" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></svg></div><figcaption><b>Rechteck 20 × 25 cm</b><span class="mm">200 × 250 mm</span><span class="price">26,99 € · mit Foto 33,99 €</span><span class="note">Kordel Ø 6,0 mm: Lochabstand 158 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 21 mm links/rechts · 16 mm oben</span><span class="ol"></span><details class="ed" open data-key="kordelschilder-rechteck-20-x-25"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-43">Kommentar</button></figcaption></figure><figure class="card" id="tafel-44" data-comment-target="Schiefer Rechteck 25 × 20 cm (Kordelschilder)"><div class="plate"><svg viewBox="-6 -6 262.0 212.0" style="width:41.7%" role="img" aria-label="Rechteck 25 × 20 cm"><g transform="scale(0.35277777777777775) translate(1863,-5382)"><path d=" 
+M-1863.2551,5382.1590
+L-1154.5937,5382.1590
+L-1154.5937,5949.0882
+L-1863.2551,5949.0882
+L-1863.2551,5382.1590
+Z
+Z
+M-1219.7906,5427.5134
+C-1219.7906,5422.8166 -1215.9831,5419.0094 -1211.2866,5419.0094
+C-1206.5902,5419.0094 -1202.7827,5422.8166 -1202.7827,5427.5134
+C-1202.7827,5432.2101 -1206.5902,5436.0173 -1211.2866,5436.0173
+C-1215.9831,5436.0173 -1219.7906,5432.2101 -1219.7906,5427.5134
+Z
+Z
+M-1815.0661,5427.5134
+C-1815.0661,5422.8166 -1811.2586,5419.0094 -1806.5622,5419.0094
+C-1801.8658,5419.0094 -1798.0583,5422.8166 -1798.0583,5427.5134
+C-1798.0583,5432.2101 -1801.8658,5436.0173 -1806.5622,5436.0173
+C-1811.2586,5436.0173 -1815.0661,5432.2101 -1815.0661,5427.5134
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g><circle cx="20.0" cy="16.0" r="3.0" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><circle cx="230.0" cy="16.0" r="3.0" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></svg></div><figcaption><b>Rechteck 25 × 20 cm</b><span class="mm">250 × 200 mm</span><span class="price">26,99 € · mit Foto 33,99 €</span><span class="note">Kordel Ø 6,0 mm: Lochabstand 210 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 20 mm links/rechts · 16 mm oben</span><span class="ol"></span><details class="ed" open data-key="kordelschilder-rechteck-25-x-20"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-44">Kommentar</button></figcaption></figure><figure class="card" id="tafel-45" data-comment-target="Schiefer Rechteck 30 × 20 cm (Kordelschilder)"><div class="plate"><svg viewBox="-6 -6 312.0 212.0" style="width:50.0%" role="img" aria-label="Rechteck 30 × 20 cm"><g transform="scale(0.35277777777777775) translate(792,-5413)"><path d=" 
+M-791.6510,5980.0902
+L58.7426,5980.0902
+L58.7426,5413.1611
+L-791.6510,5413.1611
+L-791.6510,5980.0902
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-746.2967,5467.0192
+A8.5039,8.5039 0.0000 0,1 -737.7928,5458.5153
+A8.5039,8.5039 0.0000 1,1 -746.2967,5467.0192
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-3.6196,5467.0192
+A8.5039,8.5039 0.0000 0,1 4.8844,5458.5153
+A8.5039,8.5039 0.0000 1,1 -3.6196,5467.0192
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Rechteck 30 × 20 cm</b><span class="mm">300 × 200 mm</span><span class="price">24,99 € · mit Foto 32,99 €</span><span class="note">Kordel Ø 6,0 mm: Lochabstand 262 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm links/rechts · 19 mm oben</span><span class="ol"></span><details class="ed" open data-key="kordelschilder-rechteck-30-x-20"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-45">Kommentar</button></figcaption></figure></div><h3>Quadrat</h3><div class="grid"><figure class="card" id="tafel-46" data-comment-target="Schiefer Quadrat 20 × 20 cm (Kordelschilder)"><div class="plate"><svg viewBox="-6 -6 212.0 212.0" style="width:33.3%" role="img" aria-label="Quadrat 20 × 20 cm"><g transform="scale(0.35277777777777775) translate(3775,-5320)"><path d=" 
+M-3774.6035,5319.7969
+L-3774.6035,5886.7261
+L-3207.6744,5886.7261
+L-3207.6744,5319.7969
+L-3774.6035,5319.7969
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-3720.7451,5365.1511
+A8.5040,8.5040 0.0000 0,1 -3712.2411,5373.6552
+A8.5040,8.5040 0.0000 1,1 -3720.7451,5365.1511
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><path d=" 
+M-3261.5325,5365.1511
+A8.5040,8.5040 0.0000 0,1 -3253.0285,5373.6552
+A8.5040,8.5040 0.0000 1,1 -3261.5325,5365.1511
+Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></g></svg></div><figcaption><b>Quadrat 20 × 20 cm</b><span class="mm">200 × 200 mm</span><span class="price">24,99 € · mit Foto 31,99 €</span><span class="note">Kordel Ø 6,0 mm: Lochabstand 162 mm (Mitte–Mitte)</span><span class="note">Lochmitte–Rand: 19 mm links/rechts · 19 mm oben</span><span class="ol"></span><details class="ed" open data-key="kordelschilder-quadrat-20-x-20"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-46">Kommentar</button></figcaption></figure></div><h3>Herz</h3><div class="grid"><figure class="card" id="tafel-47" data-comment-target="Schiefer Herz 10 × 10 cm (Kordelschilder)"><div class="plate"><svg viewBox="-6 -6 114.0 114.0" style="width:17.0%" role="img" aria-label="Herz 10 × 10 cm"><path d="M51.0 7.069C53.416 7.069 60.13 0.0 72.998 0.0C80.092 0.0 87.276 3.248 92.509 7.933C98.341 13.154 102.0 20.276 102.0 28.188C102.0 48.841 93.493 60.858 80.573 76.293C75.624 82.205 58.549 101.996 51.0 101.996C43.451 101.996 26.376 82.205 21.427 76.293C8.507 60.858 0.0 48.841 0.0 28.188C0.0 20.276 3.659 13.154 9.491 7.933C14.724 3.248 21.908 0.0 29.002 0.0C41.87 0.0 48.584 7.069 51.0 7.069Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><circle cx="51" cy="16.1" r="2.5" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></svg></div><figcaption><b>Herz 10 × 10 cm</b><span class="mm">102 × 102 mm</span><span class="price">14,99 € · mit Foto 19,99 €</span><span class="note">Kordel Ø 5,0 mm: 1 Loch mittig</span><span class="note">Lochmitte–Rand: 16,1 mm oben</span><span class="ol"></span><details class="ed" open data-key="kordelschilder-herz-10-x-10"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-47">Kommentar</button></figcaption></figure><figure class="card" id="tafel-48" data-comment-target="Schiefer Herz 22,5 × 26,7 cm (Kordelschilder)"><div class="plate"><svg viewBox="-6 -6 239.0 283.1" style="width:37.8%" role="img" aria-label="Herz 22,5 × 26,7 cm"><path d="M1.9404586439844902 66.26655399188941C-1.569518136155364 82.7695445859414 0.16577398133536098 100.65844524280136 3.3161675287472185 115.72272920022411C21.427647714268865 202.3233247292674 115.45664294211902 271.09999999999997 115.45664294211902 271.09999999999997C156.59559093587904 240.69831134750225 180.68261720235247 208.08424318814835 197.6042405110382 180.1396258557937C215.22280884944956 151.04465240537203 224.85378110804913 126.75619781013938 226.40625141339447 102.15400972816118C227.71428592570555 81.42526259095402 227.19107212078112 62.30681095529517 221.44885111499835 46.93285478603621C212.6845148498837 23.469854316124355 202.88688182330625 12.934907201329018 182.65325452553313 5.025574315413863C159.2187304173246 -4.133615923846809 131.7560660503541 3.193939331307194 115.68087742994379 31.332482540582244C110.35480331147545 20.723417158691685 101.97833210638198 14.742174535979721 94.20183966600882 9.999620760612624C81.5457219522959 2.2821831141631876 68.32194756219779 -0.25611370416645174 56.3839862486804 0.02005298966781304C48.29437357756095 0.2068716354968745 42.022878375290915 3.147234669849929 35.392810005553365 6.97194031570903C21.16200055076476 15.178761588732419 9.230099628810196 31.98736311971129 1.9404586439844902 66.26655399188941Z" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/><circle cx="113.5" cy="42.9" r="2.9" stroke="var(--cut)" stroke-width="1.2" fill="none" vector-effect="non-scaling-stroke"/></svg></div><figcaption><b>Herz 22,5 × 26,7 cm</b><span class="mm">227 × 271,1 mm</span><span class="price">24,99 € · mit Foto 29,99 €</span><span class="note">Kordel Ø 5,8 mm: 1 Loch mittig</span><span class="note">Lochmitte–Rand: 42,9 mm oben</span><span class="ol"></span><button type="button" class="bg" data-boegen="kordelschilder-herz-22-5-x-26-7">Kontaktbögen (8)</button><details class="ed" open data-key="kordelschilder-herz-22-5-x-26-7"><summary>Preis dieser Tafel</summary><div class="edb" data-pending>Wird geladen …</div></details><button type="button" class="c" data-target="tafel-48">Kommentar</button></figcaption></figure></div></section>
+<dialog id="dlg"><div class="dz"><div class="bar"><b id="dt"></b><button type="button" id="dm" aria-label="kleiner">−</button><output id="do">100 %</output><button type="button" id="dp" aria-label="größer">+</button><button type="button" id="df">Einpassen</button><button type="button" id="dc">Schließen</button></div><div class="view" id="dv"></div></div></dialog>
+<script>
+(()=>{const r=document.documentElement,zr=document.getElementById('zr'),zo=document.getElementById('zo');
+ const set=v=>{v=Math.min(4,Math.max(.5,v));zr.value=v;r.style.setProperty('--z',v);zo.textContent=Math.round(v*100)+' %';try{localStorage.setItem('zoom',v)}catch(e){}};
+ try{const v=parseFloat(localStorage.getItem('zoom'));if(v)set(v)}catch(e){}
+ zr.oninput=()=>set(+zr.value);document.getElementById('zm').onclick=()=>set(+zr.value-.25);document.getElementById('zp').onclick=()=>set(+zr.value+.25);document.getElementById('z1').onclick=()=>set(1);
+ const dlg=document.getElementById('dlg'),dv=document.getElementById('dv'),dout=document.getElementById('do');let svg,base=1,k=1;
+ let mode='svg';
+ const applyImg=()=>{dv.querySelectorAll('img').forEach(i=>i.style.width=Math.max(80,(dv.clientWidth-40)*k)+'px');dout.textContent=Math.round(k*100)+' %';};
+ window.openGal=(title,urls)=>{mode='img';dv.classList.add('gal');dv.replaceChildren(...urls.map(u=>{const i=new Image();i.src=u;i.alt=title;i.loading='lazy';return i;}));document.getElementById('dt').textContent=title;dlg.showModal();k=1;applyImg();};
+ const apply=()=>{if(mode==='img')return applyImg();if(!svg)return;const vb=svg.viewBox.baseVal;svg.style.width=(vb.width*base*k)+'px';svg.style.height=(vb.height*base*k)+'px';dout.textContent=Math.round(k*100)+' %';};
+ const fit=()=>{if(mode==='img'){k=1;return applyImg();}const vb=svg.viewBox.baseVal;base=Math.min((dv.clientWidth-32)/vb.width,(dv.clientHeight-32)/vb.height);k=1;apply();};
+ document.querySelectorAll('.plate').forEach(pl=>pl.addEventListener('click',()=>{mode='svg';dv.classList.remove('gal');svg=pl.querySelector('svg').cloneNode(true);svg.removeAttribute('style');svg.style.maxWidth='none';dv.replaceChildren(svg);document.getElementById('dt').textContent=pl.parentElement.querySelector('b').textContent;dlg.showModal();fit();}));
+ document.getElementById('dp').onclick=()=>{k=Math.min(k*1.5,20);apply()};document.getElementById('dm').onclick=()=>{k=Math.max(k/1.5,.25);apply()};document.getElementById('df').onclick=fit;document.getElementById('dc').onclick=()=>dlg.close();
+ document.querySelectorAll('[data-set]').forEach(b=>b.onclick=()=>{const v=ALLSETS[+b.dataset.set];window.openGal(v.label,v.files);});
+ dv.addEventListener('wheel',e=>{if(!e.ctrlKey&&!e.metaKey)return;e.preventDefault();k=Math.min(20,Math.max(.25,k*(e.deltaY<0?1.15:1/1.15)));apply();},{passive:false});
+})();
+</script>
+<script>const BOEGEN={"geschnittene-herz-24-x-19": [{"label": "Menschen · Herz geschnitten 24×19 · Teil 1", "files": ["boegen/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-01.jpg", "boegen/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-02.jpg", "boegen/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-03.jpg", "boegen/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-04.jpg", "boegen/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-05.jpg", "boegen/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-06.jpg", "boegen/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-07.jpg"]}, {"label": "Menschen · Herz geschnitten 24×19 · Teil 2", "files": ["boegen/herz-geschnitten-24x19-mit-foto-02/kontaktbogen-01.jpg"]}], "kordelschilder-herz-22-5-x-26-7": [{"label": "Menschen · Kordelherz 22,5×26,7 · Teil 1", "files": ["boegen/herz-kordel-225x267-mit-foto-01/kontaktbogen-01.jpg", "boegen/herz-kordel-225x267-mit-foto-01/kontaktbogen-02.jpg", "boegen/herz-kordel-225x267-mit-foto-01/kontaktbogen-03.jpg", "boegen/herz-kordel-225x267-mit-foto-01/kontaktbogen-04.jpg", "boegen/herz-kordel-225x267-mit-foto-01/kontaktbogen-05.jpg", "boegen/herz-kordel-225x267-mit-foto-01/kontaktbogen-06.jpg", "boegen/herz-kordel-225x267-mit-foto-01/kontaktbogen-07.jpg"]}, {"label": "Menschen · Kordelherz 22,5×26,7 · Teil 2", "files": ["boegen/herz-kordel-225x267-mit-foto-02/kontaktbogen-01.jpg"]}], "naturschiefer-herz-10-x-10": [{"label": "Menschen · Herz 10×10 / 20×20 / 25×25 · Teil 1", "files": ["boegen/herz-mit-foto-01/kontaktbogen-01.jpg", "boegen/herz-mit-foto-01/kontaktbogen-02.jpg", "boegen/herz-mit-foto-01/kontaktbogen-03.jpg", "boegen/herz-mit-foto-01/kontaktbogen-04.jpg", "boegen/herz-mit-foto-01/kontaktbogen-05.jpg", "boegen/herz-mit-foto-01/kontaktbogen-06.jpg", "boegen/herz-mit-foto-01/kontaktbogen-07.jpg"]}, {"label": "Menschen · Herz 10×10 / 20×20 / 25×25 · Teil 2", "files": ["boegen/herz-mit-foto-02/kontaktbogen-01.jpg"]}], "naturschiefer-herz-20-x-20": [{"label": "Menschen · Herz 10×10 / 20×20 / 25×25 · Teil 1", "files": ["boegen/herz-mit-foto-01/kontaktbogen-01.jpg", "boegen/herz-mit-foto-01/kontaktbogen-02.jpg", "boegen/herz-mit-foto-01/kontaktbogen-03.jpg", "boegen/herz-mit-foto-01/kontaktbogen-04.jpg", "boegen/herz-mit-foto-01/kontaktbogen-05.jpg", "boegen/herz-mit-foto-01/kontaktbogen-06.jpg", "boegen/herz-mit-foto-01/kontaktbogen-07.jpg"]}, {"label": "Menschen · Herz 10×10 / 20×20 / 25×25 · Teil 2", "files": ["boegen/herz-mit-foto-02/kontaktbogen-01.jpg"]}], "naturschiefer-herz-25-x-25": [{"label": "Menschen · Herz 10×10 / 20×20 / 25×25 · Teil 1", "files": ["boegen/herz-mit-foto-01/kontaktbogen-01.jpg", "boegen/herz-mit-foto-01/kontaktbogen-02.jpg", "boegen/herz-mit-foto-01/kontaktbogen-03.jpg", "boegen/herz-mit-foto-01/kontaktbogen-04.jpg", "boegen/herz-mit-foto-01/kontaktbogen-05.jpg", "boegen/herz-mit-foto-01/kontaktbogen-06.jpg", "boegen/herz-mit-foto-01/kontaktbogen-07.jpg"]}, {"label": "Menschen · Herz 10×10 / 20×20 / 25×25 · Teil 2", "files": ["boegen/herz-mit-foto-02/kontaktbogen-01.jpg"]}], "geschnittene-herz-schief-18-x-13": [{"label": "Menschen · Herz schief 18×13 / 26×19 · Teil 1", "files": ["boegen/herz-schief-mit-foto-01/kontaktbogen-01.jpg", "boegen/herz-schief-mit-foto-01/kontaktbogen-02.jpg", "boegen/herz-schief-mit-foto-01/kontaktbogen-03.jpg", "boegen/herz-schief-mit-foto-01/kontaktbogen-04.jpg", "boegen/herz-schief-mit-foto-01/kontaktbogen-05.jpg", "boegen/herz-schief-mit-foto-01/kontaktbogen-06.jpg", "boegen/herz-schief-mit-foto-01/kontaktbogen-07.jpg"]}, {"label": "Menschen · Herz schief 18×13 / 26×19 · Teil 2", "files": ["boegen/herz-schief-mit-foto-02/kontaktbogen-01.jpg"]}], "geschnittene-herz-schief-26-x-19": [{"label": "Menschen · Herz schief 18×13 / 26×19 · Teil 1", "files": ["boegen/herz-schief-mit-foto-01/kontaktbogen-01.jpg", "boegen/herz-schief-mit-foto-01/kontaktbogen-02.jpg", "boegen/herz-schief-mit-foto-01/kontaktbogen-03.jpg", "boegen/herz-schief-mit-foto-01/kontaktbogen-04.jpg", "boegen/herz-schief-mit-foto-01/kontaktbogen-05.jpg", "boegen/herz-schief-mit-foto-01/kontaktbogen-06.jpg", "boegen/herz-schief-mit-foto-01/kontaktbogen-07.jpg"]}, {"label": "Menschen · Herz schief 18×13 / 26×19 · Teil 2", "files": ["boegen/herz-schief-mit-foto-02/kontaktbogen-01.jpg"]}]},ALLSETS=[{"label": "Menschen · Herz geschnitten 24×19 · Teil 1", "files": ["boegen/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-01.jpg", "boegen/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-02.jpg", "boegen/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-03.jpg", "boegen/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-04.jpg", "boegen/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-05.jpg", "boegen/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-06.jpg", "boegen/herz-geschnitten-24x19-mit-foto-01/kontaktbogen-07.jpg"]}, {"label": "Menschen · Herz geschnitten 24×19 · Teil 2", "files": ["boegen/herz-geschnitten-24x19-mit-foto-02/kontaktbogen-01.jpg"]}, {"label": "Menschen · Kordelherz 22,5×26,7 · Teil 1", "files": ["boegen/herz-kordel-225x267-mit-foto-01/kontaktbogen-01.jpg", "boegen/herz-kordel-225x267-mit-foto-01/kontaktbogen-02.jpg", "boegen/herz-kordel-225x267-mit-foto-01/kontaktbogen-03.jpg", "boegen/herz-kordel-225x267-mit-foto-01/kontaktbogen-04.jpg", "boegen/herz-kordel-225x267-mit-foto-01/kontaktbogen-05.jpg", "boegen/herz-kordel-225x267-mit-foto-01/kontaktbogen-06.jpg", "boegen/herz-kordel-225x267-mit-foto-01/kontaktbogen-07.jpg"]}, {"label": "Menschen · Kordelherz 22,5×26,7 · Teil 2", "files": ["boegen/herz-kordel-225x267-mit-foto-02/kontaktbogen-01.jpg"]}, {"label": "Menschen · Herz 10×10 / 20×20 / 25×25 · Teil 1", "files": ["boegen/herz-mit-foto-01/kontaktbogen-01.jpg", "boegen/herz-mit-foto-01/kontaktbogen-02.jpg", "boegen/herz-mit-foto-01/kontaktbogen-03.jpg", "boegen/herz-mit-foto-01/kontaktbogen-04.jpg", "boegen/herz-mit-foto-01/kontaktbogen-05.jpg", "boegen/herz-mit-foto-01/kontaktbogen-06.jpg", "boegen/herz-mit-foto-01/kontaktbogen-07.jpg"]}, {"label": "Menschen · Herz 10×10 / 20×20 / 25×25 · Teil 2", "files": ["boegen/herz-mit-foto-02/kontaktbogen-01.jpg"]}, {"label": "Menschen · Herz schief 18×13 / 26×19 · Teil 1", "files": ["boegen/herz-schief-mit-foto-01/kontaktbogen-01.jpg", "boegen/herz-schief-mit-foto-01/kontaktbogen-02.jpg", "boegen/herz-schief-mit-foto-01/kontaktbogen-03.jpg", "boegen/herz-schief-mit-foto-01/kontaktbogen-04.jpg", "boegen/herz-schief-mit-foto-01/kontaktbogen-05.jpg", "boegen/herz-schief-mit-foto-01/kontaktbogen-06.jpg", "boegen/herz-schief-mit-foto-01/kontaktbogen-07.jpg"]}, {"label": "Menschen · Herz schief 18×13 / 26×19 · Teil 2", "files": ["boegen/herz-schief-mit-foto-02/kontaktbogen-01.jpg"]}];</script>
+<script>
+(async()=>{
+ const eur=c=>c==null?'':(c/100).toFixed(2).replace('.',',');const cents=v=>{v=String(v).trim().replace(/\s|€/g,'').replace(',','.');if(v==='')return null;const n=Math.round(parseFloat(v)*100);return Number.isFinite(n)&&n>=0?n:undefined};
+ const st=document.getElementById('st');const say=t=>{st.textContent=t};
+ const db=await window.claude?.use?.('db').catch(()=>null);
+ if(!db){document.getElementById('opts').textContent='Bearbeiten ist in dieser Ansicht nicht verfügbar (nur angemeldet in claude.ai).';document.querySelectorAll('.edb').forEach(e=>e.textContent='Nur angemeldet bearbeitbar.');return;}
+ let OPTS=[],TAF={};const queue=new Map();
+ const assets=await window.claude.use('assets').catch(()=>null);const blob=id=>'/_blob/'+id;
+ const thumbs=(ids,title,onRemove,names)=>{const w=document.createElement('div');w.className='oimg';if(!(ids||[]).length){const n=document.createElement('span');n.className='none';n.textContent='noch kein Bild';w.append(n);}(ids||[]).forEach((id,ix)=>{const t=document.createElement('span');t.className='ti';const im=new Image();im.src=blob(id);im.alt=title;im.loading='lazy';im.onerror=()=>{im.alt='Bild fehlt';};im.onclick=()=>window.openGal(title,(ids||[]).map(blob));t.append(im);if(names&&names[ix]){const fc=document.createElement('figcaption');fc.textContent=names[ix];t.append(fc);im.alt=title+' – '+names[ix];}
+   if(onRemove){const x=document.createElement('button');x.type='button';x.textContent='✕';x.title='Bild entfernen';x.setAttribute('aria-label','Bild entfernen');let armed=false;x.onclick=()=>{if(!armed){armed=true;x.textContent='?';x.style.opacity=1;say('Zum Entfernen des Bildes noch einmal drücken.');setTimeout(()=>{armed=false;x.textContent='✕';x.style.opacity=''},4000);return;}onRemove(ix);};t.append(x);}w.append(t);});return w;};
+ const uploader=(label,onIds)=>{const l=document.createElement('label');l.className='up';if(!assets){l.textContent='Bilder hochladen nur für Bearbeiter.';return l;}l.innerHTML='<span>'+label+'</span> ';const f=document.createElement('input');f.type='file';f.accept='image/*,application/pdf';f.multiple=true;l.append(f);
+   f.onchange=async()=>{const ids=[];for(const file of f.files){try{say('Lade „'+file.name+'“ hoch …');const r=await assets.upload(file);ids.push(r.id);}catch(e){say('Nicht hochgeladen: '+(e.code||'Fehler')+(e.code==='too_large'?' (max. 20 MB)':''));}}f.value='';if(ids.length)onIds(ids);};return l;};
+ const save=(path,data)=>{const prev=queue.get(path)||Promise.resolve();const next=prev.then(()=>db.doc(path).set(data)).then(()=>say('Gespeichert.')).catch(e=>say('Nicht gespeichert: '+(e.code||'Fehler')+'. Bitte erneut ändern.'));queue.set(path,next);return next;};
+ const timers={};const later=(path,fn)=>{clearTimeout(timers[path]);timers[path]=setTimeout(()=>save(path,fn()),500)};
+ const GRP=[['befestigung','Befestigung','am Schiefer montiert'],['zubehoer','Zubehör','liegt bei bzw. extra'],['aufpreis','Aufpreise','Gestaltung']];
+ const renderOpts=()=>{const box=document.getElementById('opts');if(!OPTS.length){box.textContent='Noch keine Optionen hinterlegt.';return;}if(box.contains(document.activeElement)&&/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))return;
+  const row=o=>{const r=document.createElement('div');r.className='orow';
+   const im=thumbs(o.bilder,o.name||'Option',ix=>{const b2=[...(o.bilder||[])];b2.splice(ix,1);const n2=[...(o.bildTexte||[])];n2.splice(ix,1);save('optionen/'+o.id,{...o,bilder:b2,bildTexte:n2});},o.bildTexte);
+   const tx=document.createElement('div');tx.className='otxt';tx.innerHTML='<input class="n" aria-label="Name"><textarea class="hin" rows="1" placeholder="Hinweis hinzufügen" aria-label="Hinweis"></textarea>';
+   const pr=document.createElement('div');pr.className='opr';pr.innerHTML='<input class="p" inputmode="decimal" aria-label="Preis in Euro"><span>€</span>';
+   const ac=document.createElement('div');ac.className='oact';ac.innerHTML='<select class="art" aria-label="Bereich"><option value="befestigung">Befestigung</option><option value="zubehoer">Zubehör</option><option value="aufpreis">Aufpreis</option></select>';
+   ac.append(uploader('+ Bild',ids=>save('optionen/'+o.id,{...o,bilder:[...(o.bilder||[]),...ids]})));
+   const b=document.createElement('button');b.type='button';b.className='del';b.textContent='Entfernen';ac.append(b);
+   r.append(im,tx,pr,ac);
+   const n=tx.querySelector('.n'),h=tx.querySelector('.hin'),p=pr.querySelector('.p'),a=ac.querySelector('.art');n.value=o.name||'';h.value=o.hinweis||'';p.value=eur(o.preisCents);a.value=o.art||'zubehoer';
+   const up=()=>{const c=cents(p.value);if(c===undefined){say('Preis bitte als Zahl, z. B. 2,99');return;}later('optionen/'+o.id,()=>({...o,name:n.value.trim(),preisCents:c,art:a.value,hinweis:h.value.trim()}))};
+   n.oninput=up;p.oninput=up;h.oninput=up;a.onchange=up;
+   let armed=false;b.onclick=()=>{if(!armed){armed=true;b.textContent='Wirklich?';say('Zum Entfernen von „'+(o.name||'')+'“ noch einmal drücken.');setTimeout(()=>{armed=false;b.textContent='Entfernen'},4000);return;}db.doc('optionen/'+o.id).delete().then(()=>say('Entfernt.')).catch(e=>say('Nicht entfernt: '+(e.code||'Fehler')))};
+   return r;};
+  const known=GRP.map(g=>g[0]);
+  const groups=GRP.map(([k,t,sub])=>[t,sub,OPTS.filter(o=>(o.art||'zubehoer')===k)]).concat([['Sonstiges','',OPTS.filter(o=>!known.includes(o.art||'zubehoer'))]]).filter(g=>g[2].length);
+  box.replaceChildren(...groups.map(([t,sub,list])=>{const g=document.createElement('div');g.className='og';
+   g.innerHTML='<h3>'+t+' <small>'+list.length+(list.length===1?' Eintrag':' Einträge')+(sub?' · '+sub:'')+'</small></h3>';
+   const tab=document.createElement('div');tab.className='otab';tab.innerHTML='<div class="ohead"><span>Bilder</span><span>Bezeichnung · Hinweis</span><span class="r">Preis</span><span class="r">Bearbeiten</span></div>';
+   list.forEach(o=>tab.append(row(o)));g.append(tab);return g;}));renderTaf();};
+ const renderTaf=()=>{document.querySelectorAll('.ed').forEach(d=>{const key=d.dataset.key,t=TAF[key],box=d.querySelector('.edb');
+  let bb=d.parentElement.querySelector('.bg');const upB=(t&&t.boegen)||[];const stat=(BOEGEN[key]||[]).flatMap(x=>x.files);
+  if((stat.length||upB.length)&&!bb){bb=document.createElement('button');bb.type='button';bb.className='bg';d.before(bb);}
+  if(bb){bb.textContent='Kontaktbögen ('+(stat.length+upB.length)+')';bb.onclick=()=>window.openGal((t&&t.name)||'Kontaktbögen',[...stat,...upB.map(blob)]);}
+  const ol=d.parentElement.querySelector('.ol');if(ol)ol.textContent=t?OPTS.filter(o=>(t.optionen||{})[o.id]).map(o=>o.name+' '+eur(o.preisCents)+' €').join(' · '):'';if(!t){box.textContent='Für diese Tafel ist noch nichts hinterlegt.';return;}
+  if(box.contains(document.activeElement))return;
+  box.removeAttribute('data-pending');box.innerHTML='<div class="pr"><span>Grundpreis €</span><input class="g" inputmode="decimal" aria-label="Grundpreis"></div><div class="pr"><span>mit Foto €</span><input class="f" inputmode="decimal" aria-label="Preis mit Foto" placeholder="kein Foto"></div>'+
+
+   '<div class="pr"><span>Notiz</span><input class="nz" aria-label="Notiz"></div>';
+  const g=box.querySelector('.g'),f=box.querySelector('.f'),nz=box.querySelector('.nz');g.value=eur(t.preisCents);f.value=eur(t.preisMitFotoCents);nz.value=t.notiz||'';
+  
+  const up=()=>{const gc=cents(g.value),fc=cents(f.value);if(gc===undefined||fc===undefined){say('Preis bitte als Zahl, z. B. 24,99');return;}
+   const nt={...t,preisCents:gc,preisMitFotoCents:fc,notiz:nz.value.trim()};TAF[key]=nt;later('tafeln/'+key,()=>nt);};
+  box.querySelectorAll('input').forEach(i=>{i.oninput=up;i.onchange=up;});
+  box.append(uploader('Kontaktbogen hochladen',ids=>{const nt={...TAF[key],boegen:[...(TAF[key].boegen||[]),...ids]};TAF[key]=nt;save('tafeln/'+key,nt).then(renderTaf);}));
+  });};
+ let gotO=false,gotT=false;const tm=setTimeout(()=>{if(!gotO||!gotT)say('Die Daten laden gerade nicht. Seite später neu öffnen.')},10000);
+ db.collection('optionen').onSnapshot(sn=>{gotO=true;OPTS=sn.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.reihenfolge??99)-(b.reihenfolge??99));renderOpts();if(gotT)clearTimeout(tm)},e=>say('Optionen nicht ladbar: '+(e.code||'Fehler')));
+ db.collection('tafeln').onSnapshot(sn=>{gotT=true;TAF={};sn.docs.forEach(d=>TAF[d.id]=d.data());renderTaf();if(gotO)clearTimeout(tm)},e=>say('Tafeln nicht ladbar: '+(e.code||'Fehler')));
+ document.getElementById('addf').addEventListener('submit',ev=>{ev.preventDefault();const n=document.getElementById('an').value.trim(),c=cents(document.getElementById('ap').value);if(!n||c==null||c===undefined){say('Bitte Name und Preis eingeben.');return;}
+  const id=n.toLowerCase().replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,60)||('o'+Date.now());
+  save('optionen/'+id,{name:n,preisCents:c,art:document.getElementById('aa').value,hinweis:'',reihenfolge:50+OPTS.length}).then(()=>{document.getElementById('an').value='';document.getElementById('ap').value='';});});
+})();
+</script>
+<script>
+(async()=>{const btns=[...document.querySelectorAll('.c')];btns.forEach(b=>b.hidden=true);
+ const c=await window.claude?.use?.('comments').catch(()=>null);if(!c)return;btns.forEach(b=>{b.hidden=false;b.onclick=()=>{try{c.openComposer({element:document.getElementById(b.dataset.target)});}catch(e){}};});})();
+</script>

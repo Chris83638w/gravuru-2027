@@ -1,0 +1,5554 @@
+{
+  "catalogueCommit": "dc0a0f6c2d59a93cbe2727709e0657e5d1697b06",
+  "counts": {
+    "originals": 180,
+    "engraving": 156,
+    "uv": 24,
+    "preparedDesigns": 135,
+    "preparedTargets": 271,
+    "openDesigns": 21,
+    "reviewProducts": 28,
+    "missingPhotoFields": 9
+  },
+  "originals": [
+    {
+      "id": "GT-S-30x20-D1",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D1/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "sourceIssue": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden.",
+      "catalogueReview": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D1/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "open",
+          "reason": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden."
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "open",
+          "reason": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden."
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Constantia",
+          "to": "Lora",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D1/design.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Constantia",
+          "to": "Lora",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D1/design.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Constantia",
+          "to": "Lora",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D1/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D10",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D10/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "sourceIssue": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden.",
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "open",
+          "reason": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden."
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "open",
+          "reason": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden."
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Amalfi Coast",
+          "to": "Sacramento",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D10/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D100",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D100/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D15",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D15/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D16",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D16/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D17",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D17/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Copperplate Gothic Light",
+          "to": "Cinzel",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D17/design.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Copperplate Gothic",
+          "to": "Cinzel",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D17/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D19",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D19/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D2",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D2/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "sourceIssue": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden.",
+      "catalogueReview": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D2/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "open",
+          "reason": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden."
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "open",
+          "reason": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden."
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Century Gothic",
+          "to": "Montserrat",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Century Gothic",
+          "to": "Montserrat",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Century Gothic",
+          "to": "Montserrat",
+          "source": "schriften/schriften.json#replacements"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D20",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D20/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D21",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D21/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D22",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D22/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "sourceIssue": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden.",
+      "catalogueReview": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D22/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "open",
+          "reason": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden."
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "open",
+          "reason": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden."
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D23",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D23/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "sourceIssue": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden.",
+      "catalogueReview": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D23/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "open",
+          "reason": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden."
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "open",
+          "reason": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden."
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D24",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D24/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "sourceIssue": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden.",
+      "catalogueReview": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D24/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "open",
+          "reason": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden."
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "open",
+          "reason": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden."
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D25",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D25/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "sourceIssue": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden.",
+      "catalogueReview": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D25/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "open",
+          "reason": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden."
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "open",
+          "reason": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden."
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Handlee",
+          "to": "Patrick Hand",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D25/design.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Handlee",
+          "to": "Patrick Hand",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D25/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D3",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D3/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "sourceIssue": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden.",
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "open",
+          "reason": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden."
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "open",
+          "reason": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden."
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D4",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D4/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Standlist",
+          "to": "Ashley",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "MINIMALIST",
+          "to": "Minimalist",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D4/design.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "MINIMALIST",
+          "to": "Minimalist",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D4/design.json"
+        },
+        {
+          "id": "text-4",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "MINIMALIST",
+          "to": "Minimalist",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D4/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D5",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D5/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Vista La Diva",
+          "to": "Parisienne",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D5/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D50",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D50/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D51",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D51/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D52",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D52/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D53",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D53/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D54",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D54/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-4",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Rainbow Starmoon",
+          "to": "Satisfy",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D54/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D56",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D56/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Copperplate Gothic Light",
+          "to": "Cinzel",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D17/design.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Copperplate Gothic",
+          "to": "Cinzel",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D17/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D57",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D57/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D58",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D58/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D6",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D6/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D60",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D60/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Mondevilla",
+          "to": "Great Vibes",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D61",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D61/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D62",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D62/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Amalfi Coast",
+          "to": "Sacramento",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D10/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D63",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D63/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D64",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D64/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Mondevilla",
+          "to": "Great Vibes",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Mondevilla",
+          "to": "Great Vibes",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-4",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Mondevilla",
+          "to": "Great Vibes",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-5",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Mondevilla",
+          "to": "Great Vibes",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D65",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D65/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D66",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D66/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D7",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D7/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D70",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D70/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Georgia",
+          "to": "Libre Baskerville",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Georgia",
+          "to": "Libre Baskerville",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D71",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D71/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Soulmate",
+          "to": "Alex Brush",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D71/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D72",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D72/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D73",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D73/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D74",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D74/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Ashley Marie",
+          "to": "Ashley",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D55/design.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Ashley Marie",
+          "to": "Ashley",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D55/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D76",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D76/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Challista",
+          "to": "Great Vibes",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D76/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D78",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D78/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D8",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D8/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D80",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D80/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "open",
+          "reason": "GT-S-30x20-D80 · Isabell: Element ragt über die Gestaltungsfläche hinaus."
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "open",
+          "reason": "GT-S-30x20-D80 · Isabell: Element ragt über die Gestaltungsfläche hinaus."
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D83",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D83/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "open",
+          "reason": "GT-S-30x20-D83 · Anja Große: Element ragt über die Gestaltungsfläche hinaus."
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "open",
+          "reason": "GT-S-30x20-D83 · Anja Große: Element ragt über die Gestaltungsfläche hinaus."
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "The Feeling",
+          "to": "Sacramento",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D83/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D84",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D84/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D84/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "open",
+          "reason": "GT-S-30x20-D84 · Peter Friedrich: Element ragt über die Gestaltungsfläche hinaus."
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "open",
+          "reason": "GT-S-30x20-D84 · Peter Friedrich: Element ragt über die Gestaltungsfläche hinaus."
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Amalfi Coast",
+          "to": "Sacramento",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D10/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D87",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D87/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Ashley Marie",
+          "to": "Ashley",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D55/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D89",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D89/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Brown Pen",
+          "to": "Caveat",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D89/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D9",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D9/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D92",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D92/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Century751 BT",
+          "to": "Libre Baskerville",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D92/design.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Century751 BT",
+          "to": "Libre Baskerville",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D92/design.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Century751 BT",
+          "to": "Libre Baskerville",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D92/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D94",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D94/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Edwardian Script ITC",
+          "to": "Italianno",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D94/design.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Edwardian Script ITC",
+          "to": "Italianno",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D94/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D96",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D96/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Vista La Diva",
+          "to": "Parisienne",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D5/design.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Georgia",
+          "to": "Libre Baskerville",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Georgia",
+          "to": "Libre Baskerville",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-4",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Georgia",
+          "to": "Libre Baskerville",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-5",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Georgia",
+          "to": "Libre Baskerville",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-6",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Georgia",
+          "to": "Libre Baskerville",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-7",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Georgia",
+          "to": "Libre Baskerville",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D97",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D97/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "GT-S-30x20-D97: Ebene „text-1“ – Die gewählte Schrift enthält das Zeichen „†“ nicht.",
+      "catalogueReview": [],
+      "targets": [],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "MINIMALIST",
+          "to": "Minimalist",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D4/design.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "MINIMALIST",
+          "to": "Minimalist",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D4/design.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "MINIMALIST",
+          "to": "Minimalist",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D4/design.json"
+        },
+        {
+          "id": "text-4",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "MINIMALIST",
+          "to": "Minimalist",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D4/design.json"
+        },
+        {
+          "id": "text-5",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "MINIMALIST",
+          "to": "Minimalist",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D4/design.json"
+        },
+        {
+          "id": "text-6",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "MINIMALIST",
+          "to": "Minimalist",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D4/design.json"
+        },
+        {
+          "id": "text-7",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "MINIMALIST",
+          "to": "Minimalist",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D4/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D98",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/gravur-rechteck-D98/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GTUV-S-30x20-D1",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D1/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D10",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D10/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D11",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D11/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D12",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D12/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D15",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D15/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D16",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D16/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D18",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D18/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D19",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D19/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D2",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D2/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D20",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D20/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D21",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D21/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D22",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D22/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D23",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D23/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D24",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D24/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D3",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D3/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D4",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D4/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D5",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D5/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D6",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D6/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D7",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D7/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D9",
+      "source": "designs/bestand/gedenktafeln/Menschen/Allgemein/uv-schiefer-rechteck-D9/design.json",
+      "process": "UV",
+      "group": "Menschen",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GT-S-30x20-D68",
+      "source": "designs/bestand/gedenktafeln/Menschen/Kind/gravur-rechteck-D68/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Kind",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D75",
+      "source": "designs/bestand/gedenktafeln/Menschen/Kind/gravur-rechteck-D75/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Kind",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D93",
+      "source": "designs/bestand/gedenktafeln/Menschen/Kind/gravur-rechteck-D93/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Kind",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Soulmate",
+          "to": "Alex Brush",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D71/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D95",
+      "source": "designs/bestand/gedenktafeln/Menschen/Kind/gravur-rechteck-D95/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Kind",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D99",
+      "source": "designs/bestand/gedenktafeln/Menschen/Kind/gravur-rechteck-D99/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Kind",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Edwardian Script ITC",
+          "to": "Italianno",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D94/design.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Edwardian Script ITC",
+          "to": "Italianno",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D94/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D14",
+      "source": "designs/bestand/gedenktafeln/Menschen/Mama/gravur-rechteck-D14/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Mama",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D18",
+      "source": "designs/bestand/gedenktafeln/Menschen/Mama/gravur-rechteck-D18/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Mama",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D59",
+      "source": "designs/bestand/gedenktafeln/Menschen/Mama/gravur-rechteck-D59/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Mama",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D67",
+      "source": "designs/bestand/gedenktafeln/Menschen/Mama/gravur-rechteck-D67/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Mama",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D69",
+      "source": "designs/bestand/gedenktafeln/Menschen/Mama/gravur-rechteck-D69/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Mama",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Sunny Coast",
+          "to": "Sacramento",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D69/design.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Georgia",
+          "to": "Libre Baskerville",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Georgia",
+          "to": "Libre Baskerville",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-4",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Georgia",
+          "to": "Libre Baskerville",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-5",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Sunny Coast",
+          "to": "Sacramento",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D69/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D79",
+      "source": "designs/bestand/gedenktafeln/Menschen/Mama/gravur-rechteck-D79/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Mama",
+      "photoSlots": 0,
+      "catalogueReview": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D79/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "open",
+          "reason": "GT-S-30x20-D79 · In Gedenken an: Element ragt über die Gestaltungsfläche hinaus."
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "open",
+          "reason": "GT-S-30x20-D79 · In Gedenken an: Element ragt über die Gestaltungsfläche hinaus."
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Amalfi Coast",
+          "to": "Sacramento",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D10/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D90",
+      "source": "designs/bestand/gedenktafeln/Menschen/Mama/gravur-rechteck-D90/design.json",
+      "process": "Gravur",
+      "group": "Menschen",
+      "subcategory": "Mama",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D11",
+      "source": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-rechteck-D11/design.json",
+      "process": "Gravur",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "photoSlots": 0,
+      "sourceIssue": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden.",
+      "catalogueReview": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D11/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "open",
+          "reason": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden."
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "open",
+          "reason": "Katalog kennzeichnet mit Foto, enthält aber keinen Original-Fotobereich. Keine Position oder Maske erfunden."
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D12",
+      "source": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-rechteck-D12/design.json",
+      "process": "Gravur",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "photoSlots": 2,
+      "catalogueReview": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D12/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D13",
+      "source": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-rechteck-D13/design.json",
+      "process": "Gravur",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-4",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-5",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-6",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-7",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D55",
+      "source": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-rechteck-D55/design.json",
+      "process": "Gravur",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Ashley Marie",
+          "to": "Ashley",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D55/design.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Ashley Marie",
+          "to": "Ashley",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D55/design.json"
+        },
+        {
+          "id": "text-4",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Ashley Marie",
+          "to": "Ashley",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D55/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D85",
+      "source": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-rechteck-D85/design.json",
+      "process": "Gravur",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D86",
+      "source": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-rechteck-D86/design.json",
+      "process": "Gravur",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D88",
+      "source": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-rechteck-D88/design.json",
+      "process": "Gravur",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D91",
+      "source": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-rechteck-D91/design.json",
+      "process": "Gravur",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        }
+      ]
+    },
+    {
+      "id": "GTSK-S-30x20-D1",
+      "source": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-sternenkinder-D1/design.json",
+      "process": "Gravur",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GTSK-S-30x20-D2",
+      "source": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-sternenkinder-D2/design.json",
+      "process": "Gravur",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "reason": "Original or documented replacement font missing: Segoe UI Emoji",
+      "catalogueReview": [],
+      "targets": [],
+      "fontReplacements": []
+    },
+    {
+      "id": "GTSK-S-30x20-D3",
+      "source": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-sternenkinder-D3/design.json",
+      "process": "Gravur",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "open",
+          "reason": "GTSK-S-30x20-D3 · Kira Kunze: Element ragt über die Gestaltungsfläche hinaus."
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GTSK-S-30x20-D4",
+      "source": "designs/bestand/gedenktafeln/Sternenkinder/Sternenkind/gravur-sternenkinder-D4/design.json",
+      "process": "Gravur",
+      "group": "Sternenkinder",
+      "subcategory": "Sternenkind",
+      "reason": "Original or documented replacement font missing: bangkar, Segoe UI Emoji",
+      "catalogueReview": [],
+      "targets": [],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D200",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D200/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Arial",
+          "to": "Lato",
+          "source": "schriften/schriften.json#replacements"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D201",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D201/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Centaur",
+          "to": "Cormorant Garamond",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D202",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D202/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D203",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D203/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "open",
+          "reason": "GT-S-30x20-D203 · Simba: Element ragt über die Gestaltungsfläche hinaus."
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "open",
+          "reason": "GT-S-30x20-D203 · Simba: Element ragt über die Gestaltungsfläche hinaus."
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Amarillo",
+          "to": "Kaushan Script",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D204",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D204/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D207",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D207/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D208",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D208/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Centaur",
+          "to": "Cormorant Garamond",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Georgia",
+          "to": "Libre Baskerville",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Mondevilla",
+          "to": "Great Vibes",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D209",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D209/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D210",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D210/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D211",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D211/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D211/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D212",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D212/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D213",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D213/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D213/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Mondevilla",
+          "to": "Great Vibes",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Georgia",
+          "to": "Libre Baskerville",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Georgia",
+          "to": "Libre Baskerville",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D214",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D214/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D215",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D215/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D215/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D216",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D216/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D218",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D218/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D219",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D219/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D220",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D220/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D220/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Centaur",
+          "to": "Cormorant Garamond",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D221",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D221/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-6",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Ampera",
+          "to": "Dancing Script",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D222",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D222/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D224",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D224/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D224/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D225",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D225/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D226",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D226/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "BOLICA",
+          "to": "Satisfy",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D226/design.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "BOLICA",
+          "to": "Satisfy",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D226/design.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "The BraggestDemo",
+          "to": "Allura",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D226/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D227",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D227/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "open",
+          "reason": "GT-S-30x20-D227 · Mogli: Element ragt über die Gestaltungsfläche hinaus."
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "open",
+          "reason": "GT-S-30x20-D227 · Mogli: Element ragt über die Gestaltungsfläche hinaus."
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Ampera",
+          "to": "Dancing Script",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Amarillo",
+          "to": "Kaushan Script",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D228",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D228/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D229",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D229/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D231",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D231/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D231/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-4",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Anthoni Signature",
+          "to": "Great Vibes",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-5",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Anthoni Signature",
+          "to": "Great Vibes",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-6",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Anthoni Signature",
+          "to": "Great Vibes",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D234",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D234/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D234/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D236",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D236/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 1,
+      "catalogueReview": [
+        {
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D236/design.json",
+          "note": "Sichtprüfung 04.11.: Sichtprüfung: leerer Foto-/Herzrahmen ohne Upload, Foto über Rahmen, Überlappung oder Rand angeschnitten"
+        }
+      ],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D250",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D250/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Ampera",
+          "to": "Dancing Script",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Ampera",
+          "to": "Dancing Script",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Ampera",
+          "to": "Dancing Script",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D251",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D251/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D252",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D252/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Ampera",
+          "to": "Dancing Script",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Ampera",
+          "to": "Dancing Script",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Ampera",
+          "to": "Dancing Script",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D253",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D253/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Morning Glory",
+          "to": "Dancing Script",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D253/design.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Georgia",
+          "to": "Libre Baskerville",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Georgia",
+          "to": "Libre Baskerville",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D254",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D254/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "The BraggestDemo",
+          "to": "Allura",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D226/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D255",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D255/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "The BraggestDemo",
+          "to": "Allura",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D226/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D256",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D256/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Atlanta",
+          "to": "Allura",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D256/design.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Magnolia",
+          "to": "Magnolia Script",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D256/design.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Chicken",
+          "to": "Chewy",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D256/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D257",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D257/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D258",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D258/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Copperplate Gothic Light",
+          "to": "Cinzel",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D17/design.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Copperplate Gothic Light",
+          "to": "Cinzel",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D17/design.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Copperplate Gothic Light",
+          "to": "Cinzel",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D17/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D259",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D259/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D260",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D260/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D261",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D261/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D262",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D262/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D263",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D263/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D264",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D264/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "open",
+          "reason": "GT-S-30x20-D264 · Malmo: Element ragt über die Gestaltungsfläche hinaus."
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "open",
+          "reason": "GT-S-30x20-D264 · Malmo: Element ragt über die Gestaltungsfläche hinaus."
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D265",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D265/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Arial",
+          "to": "Lato",
+          "source": "schriften/schriften.json#replacements"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D266",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D266/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D267",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D267/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D268",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D268/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Arial",
+          "to": "Lato",
+          "source": "schriften/schriften.json#replacements"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D269",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D269/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Arial",
+          "to": "Lato",
+          "source": "schriften/schriften.json#replacements"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D270",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D270/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D271",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D271/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "open",
+          "reason": "GT-S-30x20-D271 · Mogli: Element ragt über die Gestaltungsfläche hinaus."
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "open",
+          "reason": "GT-S-30x20-D271 · Mogli: Element ragt über die Gestaltungsfläche hinaus."
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Ampera",
+          "to": "Dancing Script",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Amarillo",
+          "to": "Kaushan Script",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D272",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D272/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D273",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D273/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D275",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D275/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "The BraggestDemo",
+          "to": "Allura",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D226/design.json"
+        },
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D276",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D276/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D277",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D277/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D278",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D278/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D279",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D279/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D280",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D280/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D281",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D281/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D283",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D283/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Georgia",
+          "to": "Libre Baskerville",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D284",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D284/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D285",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D285/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Atlanta",
+          "to": "Allura",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D256/design.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Atlanta",
+          "to": "Allura",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D256/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D286",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D286/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D287",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D287/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Centaur",
+          "to": "Cormorant Garamond",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D288",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D288/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Maddison",
+          "to": "Allura",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D205/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D290",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D290/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "EB Garamond",
+          "to": "Cormorant Garamond",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D290/design.json"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "EB Garamond",
+          "to": "Cormorant Garamond",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D290/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D291",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D291/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D292",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/gravur-rechteck-D292/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GTUV-S-30x20-D17",
+      "source": "designs/bestand/gedenktafeln/Tiere/Allgemein/uv-schiefer-rechteck-D17/design.json",
+      "process": "UV",
+      "group": "Tiere",
+      "subcategory": "Allgemein",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GT-S-30x20-D217",
+      "source": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-rechteck-D217/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Hund",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-4",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Centaur",
+          "to": "Cormorant Garamond",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-5",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Centaur",
+          "to": "Cormorant Garamond",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D230",
+      "source": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-rechteck-D230/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Hund",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Centaur",
+          "to": "Cormorant Garamond",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-4",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Georgia",
+          "to": "Libre Baskerville",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-5",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Centaur",
+          "to": "Cormorant Garamond",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-6",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Centaur",
+          "to": "Cormorant Garamond",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D232",
+      "source": "designs/bestand/gedenktafeln/Tiere/Hund/gravur-rechteck-D232/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Hund",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GTUV-S-30x20-D13",
+      "source": "designs/bestand/gedenktafeln/Tiere/Hund/uv-schiefer-rechteck-D13/design.json",
+      "process": "UV",
+      "group": "Tiere",
+      "subcategory": "Hund",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GTUV-S-30x20-D14",
+      "source": "designs/bestand/gedenktafeln/Tiere/Hund/uv-schiefer-rechteck-D14/design.json",
+      "process": "UV",
+      "group": "Tiere",
+      "subcategory": "Hund",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GT-S-30x20-D205",
+      "source": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D205/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Katze",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Maddison",
+          "to": "Allura",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D205/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D223",
+      "source": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D223/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Katze",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Centaur",
+          "to": "Cormorant Garamond",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        },
+        {
+          "id": "text-5",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Centaur",
+          "to": "Cormorant Garamond",
+          "source": "schriften/ersatz-gedenktafeln-22x14.json"
+        }
+      ]
+    },
+    {
+      "id": "GT-S-30x20-D282",
+      "source": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D282/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Katze",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D289",
+      "source": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D289/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Katze",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D293",
+      "source": "designs/bestand/gedenktafeln/Tiere/Katze/gravur-rechteck-D293/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Katze",
+      "photoSlots": 0,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-1",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "josephsophia",
+          "to": "Alex Brush",
+          "source": "designs/schiefer-gedenktafeln-katalog-rechteck-3-2/GT-S-30x20-D293/design.json"
+        }
+      ]
+    },
+    {
+      "id": "GTUV-S-30x20-D8",
+      "source": "designs/bestand/gedenktafeln/Tiere/Katze/uv-schiefer-rechteck-D8/design.json",
+      "process": "UV",
+      "group": "Tiere",
+      "subcategory": "Katze",
+      "reason": "UV source is incomplete; editable original print layers cannot be reconstructed exactly.",
+      "catalogueReview": [],
+      "targets": []
+    },
+    {
+      "id": "GT-S-30x20-D233",
+      "source": "designs/bestand/gedenktafeln/Tiere/Kleintier/gravur-rechteck-D233/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Kleintier",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": []
+    },
+    {
+      "id": "GT-S-30x20-D235",
+      "source": "designs/bestand/gedenktafeln/Tiere/Pferd/gravur-rechteck-D235/design.json",
+      "process": "Gravur",
+      "group": "Tiere",
+      "subcategory": "Pferd",
+      "photoSlots": 1,
+      "catalogueReview": [],
+      "targets": [
+        {
+          "mm": [
+            220,
+            140
+          ],
+          "status": "prepared"
+        },
+        {
+          "mm": [
+            300,
+            200
+          ],
+          "status": "prepared"
+        }
+      ],
+      "fontReplacements": [
+        {
+          "id": "text-2",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        },
+        {
+          "id": "text-3",
+          "action": "documented font replacement approved by Chris 2026-11-05",
+          "from": "Champagne & Limousines",
+          "to": "Montserrat Light",
+          "source": "schriften/schriften.json#replacements"
+        }
+      ]
+    }
+  ]
+}

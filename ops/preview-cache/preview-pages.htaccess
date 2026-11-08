@@ -1,0 +1,8 @@
+# Mutable review pages must load the currently published bundle/model.
+# Install only in the authorized product-review directory, not the shop root.
+# Versioned bundles and shared assets keep their existing cache policy.
+<IfModule mod_headers.c>
+  <FilesMatch "^(22x14|30x20)\.(html|json)$">
+    Header always set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+  </FilesMatch>
+</IfModule>

@@ -14,12 +14,24 @@ function fixture(t){
  const model={key:'acryl',galleryCategoryIds:['linie-edelstahl','familie-test'],name:'Synthetic',configuration:{id:'cfg_1',revision:4},universal:{basePriceCents:1999,extraMotifCents:169,motifCharge:'additional',photo:{},familyFormats:{fixedSize:'120x80'},profile:{kind:'universal-product',id:'profile',geometry:{shape:'rect',width:120,height:80,holes:[]},material:{kind:'steel'},processing:{method:'engraving'},optionGroups:[],defaultDesignId:'d1',designs:[{id:'hidden',hidden:true,objects:[]},...Array.from({length:5},(_,i)=>({id:'d'+(i+1),name:'D'+i,objects:[]}))]},localResources:{fonts:{},motifs:[],photoExamples:[]}}};
  const store={storeId:'acryl',workshop:{tenantId:'tenant1',assets:{read(){throw Error('Unexpected private asset read');}}},registry:{listActive:()=>[structuredClone(binding)]}};
  let allowed=true,active=true,renders=0;
- const resolve=ids=>{if(!active||ids.shopifyProductId!==binding.shopifyProductId||ids.shopifyVariantId!==binding.shopifyVariantId)throw Object.assign(Error('Not active'),{status:404});return {store,binding:structuredClone(binding)};};
+ const resolve=ids=>{assert.deepEqual(Object.keys(ids).sort(),['shopifyProductId','shopifyVariantId'],'native registry accepts only the two Shopify identifiers');if(!active||ids.shopifyProductId!==binding.shopifyProductId||ids.shopifyVariantId!==binding.shopifyVariantId)throw Object.assign(Error('Not active'),{status:404});return {store,binding:structuredClone(binding)};};
  const modelFor=()=>structuredClone(model),checkBinding=()=>{if(!allowed)throw Object.assign(Error('Approval revoked'),{status:423});};
  const create=(rendererFingerprint='a'.repeat(64))=>{const cache=createPublicDesignPreviewCache({directory,secret,rendererFingerprint}),gallery=createShopDesignGallery({secret,resolve,modelFor,checkBinding,allowedAssets:()=>new Set(),previewUrl:url}),native=gallery.preview;gallery.preview=(...args)=>{renders++;return native(...args);};const previews=createPublicDesignPreviews({cache,resolve,modelFor,checkBinding,gallery,renderTemplate:(context,id)=>{const fresh=createShopDesignGallery({secret,resolve,modelFor,checkBinding,allowedAssets:()=>new Set()});renders++;return fresh.preview(context,fresh.start(context,context.model,id).target);},previewUrl:url});return {cache,previews,gallery};};
  return {directory,binding,model,store,create,get renders(){return renders;},revoke:()=>{allowed=false;},deactivate:()=>{active=false;}};
 }
 const hash=url=>url.split('/').at(-1).slice(0,-4);
+
+test('strict native resolver supports prepare, full-binding warm lookup and direct read without trusting claimed binding fields',async t=>{
+ const f=fixture(t),p=f.create().previews,ids={shopifyProductId:f.binding.shopifyProductId,shopifyVariantId:f.binding.shopifyVariantId};
+ const prepared=await p.prepare(ids);assert.equal(prepared.prepared,3);
+ const urls=p.urls(f.binding);assert.deepEqual(urls,prepared.items.map(item=>item.url));
+ for(const value of urls)assert.match(p.read(hash(value)).toString(),/<svg/);
+ assert.deepEqual(p.urls({...f.binding,tenantId:'foreign-tenant'}),[]);
+ assert.deepEqual(p.urls({...f.binding,assignmentRevision:99}),[]);
+ const original=structuredClone(f.binding);f.binding.unitCents++;
+ assert.deepEqual(p.urls(original),[]);assert.equal(p.read(hash(urls[0])),null);
+ assert.equal(f.renders,3);
+});
 
 test('exact first three own templates persist over restart; lookups never render or write product data',async t=>{
  const f=fixture(t),before=JSON.stringify([f.binding,f.model]),one=f.create();assert.deepEqual(one.previews.urls(f.binding),[]);assert.equal(f.renders,0);

@@ -6,6 +6,7 @@ const VARIANT_FIELDS='id price compareAtPrice sku selectedOptions{name value} in
 const RELEASE_QUERY=`query GallerySyncProduct($id:ID!){shop{myshopifyDomain currencyCode}product(id:$id){id updatedAt title handle status descriptionHtml seo{title description} options{name values} variants(first:250){nodes{${VARIANT_FIELDS}}pageInfo{hasNextPage endCursor}}media(first:100){nodes{id status ... on MediaImage{image{url}}}pageInfo{hasNextPage}}metafield(namespace:"gravuru",key:"gallery_release"){value compareDigest}pricing:metafield(namespace:"$app",key:"personalization"){jsonValue}}}`;
 const VARIANTS_QUERY=`query GallerySyncVariants($id:ID!,$after:String!){shop{myshopifyDomain currencyCode}product(id:$id){id updatedAt variants(first:250,after:$after){nodes{${VARIANT_FIELDS}}pageInfo{hasNextPage endCursor}}}}`;
 const RELEASE_MUTATION=`mutation GallerySyncRelease($metafields:[MetafieldsSetInput!]!){metafieldsSet(metafields:$metafields){metafields{value compareDigest}userErrors{field message code}}}`;
+export const GALLERY_SYNC_OPERATIONS=Object.freeze({product:RELEASE_QUERY,variants:VARIANTS_QUERY,release:RELEASE_MUTATION});
 export function remoteCommerceHash(snapshot){return syncHash({id:snapshot.id,shopDomain:snapshot.shopDomain,commerce:snapshot.commerce,variants:snapshot.variants});}
 export function remoteReleaseMatches(snapshot,desired){return snapshot.release?.value===desired.release&&desired.images.every(image=>snapshot.media.some(m=>m.id===image.id&&m.sha256===image.sha256));}
 export function remoteBaselineMatches(snapshot,baseline){return remoteCommerceHash(snapshot)===remoteCommerceHash(baseline)&&syncHash(snapshot.release)===syncHash(baseline.release)&&syncHash(snapshot.media)===syncHash(baseline.media);}
@@ -18,7 +19,7 @@ export function remoteBaselineMatches(snapshot,baseline){return remoteCommerceHa
  */
 export function createGallerySyncShopifyTransport({shopDomain,graphql,writesEnabled=false,mediaAdapter,clock=Date.now}={}){
  if(!/^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(shopDomain)||typeof graphql!=='function')syncFail('gallery_sync_transport','Ein authentifizierter Shopify-Transport fehlt.',422);
- async function call(query,variables){const response=await graphql(query,variables);if(response?.errors?.length)syncFail('gallery_sync_graphql','Shopify konnte den gezielten Abgleich nicht bestätigen.',502);return response.data??response;}
+ async function call(query,variables,guard){const response=await graphql(query,variables,guard);if(response?.errors?.length)syncFail('gallery_sync_graphql','Shopify konnte den gezielten Abgleich nicht bestätigen.',502);return response.data??response;}
  async function inspect(mapping){
   const data=await call(RELEASE_QUERY,{id:mapping.shopifyProductId}),product=data.product;
   if(data.shop?.myshopifyDomain!==shopDomain||data.shop.currencyCode!=='EUR'||!product||product.id!==mapping.shopifyProductId)syncFail('gallery_sync_remote_identity','Shop, Währung oder Produkt passen nicht zur festen Zuordnung.');
@@ -41,12 +42,13 @@ export function createGallerySyncShopifyTransport({shopDomain,graphql,writesEnab
    release:product.metafield?{value:product.metafield.value,compareDigest:product.metafield.compareDigest}:{value:null,compareDigest:null},
    commerce:{title:product.title,handle:product.handle,status:product.status,descriptionHtml:product.descriptionHtml,seo:product.seo,options:product.options,variants:nodes,personalizationPricing:product.pricing?.jsonValue??null}};
  }
- async function apply({mapping,baseline,desired}){
+ async function apply({mapping,baseline,desired,beforeWrite}){
   if(!writesEnabled)syncFail('gallery_sync_live_disabled','Shopify-Schreibzugriffe sind für diesen Anschluss deaktiviert.',403);
   if(desired.images.length&&!mediaAdapter)syncFail('gallery_sync_media_disabled','Der gezielte Produktbild-Anschluss ist noch nicht freigegeben.',422);
   const fresh=await inspect(mapping);if(!remoteBaselineMatches(fresh,baseline))syncFail('gallery_sync_remote_changed','Das Shopprodukt wurde seit der Vorschau geändert.');
   if(desired.images.length)await mediaAdapter.apply({mapping,baseline:fresh,images:clone(desired.images)});
-  const data=await call(RELEASE_MUTATION,{metafields:[{ownerId:mapping.shopifyProductId,namespace:'gravuru',key:'gallery_release',type:'json',value:desired.release,compareDigest:baseline.release.compareDigest}]});
+  beforeWrite?.();
+  const data=await call(RELEASE_MUTATION,{metafields:[{ownerId:mapping.shopifyProductId,namespace:'gravuru',key:'gallery_release',type:'json',value:desired.release,compareDigest:baseline.release.compareDigest}]},beforeWrite);
   if(data.metafieldsSet?.userErrors?.length)syncFail('gallery_sync_remote_cas','Shopify hat die Freigabe wegen eines Konflikts nicht übernommen.');
   return inspect(mapping);
  }
@@ -58,9 +60,10 @@ export function createGallerySyncTestTransport({shopDomain,products,clock=Date.n
  const records=new Map(products.map(p=>[p.id,clone({...p,shopDomain,release:p.release||{value:null,compareDigest:null},media:p.media||[]})]));
  const writes=[];
  const inspect=async mapping=>{const p=records.get(mapping.shopifyProductId);if(!p)syncFail('gallery_sync_test_product','Produkt im isolierten Testsystem fehlt.',404);return {...clone(p),readAt:new Date(clock()).toISOString()};};
- async function apply({mapping,baseline,desired}){
+ async function apply({mapping,baseline,desired,beforeWrite:guard}){
   const current=await inspect(mapping);if(!remoteBaselineMatches(current,baseline))syncFail('gallery_sync_remote_changed','Das Testprodukt wurde parallel geändert.');
   if(beforeWrite)await beforeWrite({mapping,desired});
+  guard?.();
   const p=records.get(mapping.shopifyProductId);p.release={value:desired.release,compareDigest:createHash('sha256').update(desired.release).digest('hex')};
   for(const image of desired.images){const old=p.media.find(m=>m.id===image.id);if(!old)syncFail('gallery_sync_media_missing','Das zugeordnete Testbild fehlt.');Object.assign(old,{sha256:image.sha256,url:image.url});}
   writes.push({productId:p.id,release:desired.release,images:clone(desired.images)});

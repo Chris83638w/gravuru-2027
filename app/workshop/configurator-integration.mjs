@@ -39,7 +39,7 @@ export function createConfiguratorIntegration({settings,legacy,acryl,origin,shop
  if(settings.doorbellLiveOrders===true&&!orderWebhook)throw Error('Funkklingel-Livefreigabe benötigt den eingerichteten signierten Bestelleingang.');
  if(settings.doorbellLiveOrders===true&&typeof acryl.orderIntake?.approveDoorbellLiveProducts!=='function')throw Error('Der bestehende Acryl-Speicher unterstützt keine geprüften Funkklingel-Livefreigaben.');
  const entry=settings.shopEntry===undefined?null:settings.shopEntry;
- if(entry!==null&&(!entry||typeof entry!=='object'||Array.isArray(entry)||Object.keys(entry).some(k=>!['proxyPath','pagePath','ttlMs'].includes(k))||typeof entry.proxyPath!=='string'))throw Error('Der Kundeneinstieg ist nicht eindeutig eingerichtet.');
+ if(entry!==null&&(!entry||typeof entry!=='object'||Array.isArray(entry)||Object.keys(entry).some(k=>!['proxyPath','pagePath','ttlMs','publicPreviewDirectory','publicPreviewPrepare'].includes(k))||typeof entry.proxyPath!=='string'))throw Error('Der Kundeneinstieg ist nicht eindeutig eingerichtet.');
  const shopDomain=shopifySessions.shopDomain;
  const stores=[{storeId:settings.legacyStoreId,workshop:legacy,apiPrefix:'/api/workshop/',nativeEditorPath:'/_merchant-editor.html',formEditorPath:'/_merchant-form-editor.html'},{storeId:settings.acrylStoreId,workshop:acryl,apiPrefix:'/api/workshop/acryl/',nativeEditorPath:'/_merchant-acryl-editor.html',formEditorPath:'/_merchant-acryl-form-editor.html'}].map(store=>{
   const {storeId,workshop}=store,isLegacy=workshop===legacy;
@@ -66,7 +66,7 @@ export function createConfiguratorIntegration({settings,legacy,acryl,origin,shop
  // entry. The explicit shop-entry activation controls this lazy image adapter;
  // the session label must not silently disable checkout previews.
  const checkoutImage=entry?createShopifyCheckoutImages({origin,shopDomain,getAccessToken:createDraftTokenProvider({shopDomain,clientId:shopifySessions.clientId,clientSecret:shopifySessions.secret})}):null;
- const shopEntry=entry?createShopEntry({origin,shopDomain,secret:shopifySessions.secret,stores,checkoutImage,proxyPath:entry.proxyPath,...(entry.pagePath===undefined?{}:{pagePath:entry.pagePath}),...(entry.ttlMs===undefined?{}:{ttlMs:entry.ttlMs})}):null;
+ const shopEntry=entry?createShopEntry({origin,shopDomain,secret:shopifySessions.secret,stores,checkoutImage,proxyPath:entry.proxyPath,...(entry.pagePath===undefined?{}:{pagePath:entry.pagePath}),...(entry.ttlMs===undefined?{}:{ttlMs:entry.ttlMs}),...(entry.publicPreviewDirectory===undefined?{}:{publicPreviewDirectory:entry.publicPreviewDirectory}),...(entry.publicPreviewPrepare===undefined?{}:{publicPreviewPrepare:entry.publicPreviewPrepare})}):null;
  const statusWebhook=liveEnabled?createDoorbellStatusWebhookHandler({config:webhookConfig,intake:acryl.orderIntake}):null;
  const orders=createCrossStoreOrders({stores,origin,shopDomain,verifyMerchant:createShopifySessionVerifier(shopifySessions),enabled:Boolean(orderWebhook)});
  return Object.freeze({gateway,webhook,statusWebhook,shopEntry,orders});

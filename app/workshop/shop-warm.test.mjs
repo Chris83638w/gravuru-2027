@@ -36,3 +36,12 @@ test('oversized responses are cancelled; speculative decoded byte budget is boun
  let cancelled=0;const result=await warmShopAssets(manifest,{fetchImpl:async()=>new Response(new ReadableStream({pull(controller){controller.enqueue(new Uint8Array(2*1024*1024));},cancel(){cancelled++;}}))});
  assert.ok(cancelled>=2&&cancelled<=3);assert.ok(result.requests.length<=3);
 });
+
+test('public template warmup accepts at most three exact public hash URLs within the existing worker budget',async()=>{
+ const previews=['a','b','c'].map(c=>'/konfigurator/shop/vorschauen/'+c.repeat(64)+'.svg'),m={...manifest,previews};
+ assert.ok(validWarmManifest(m));assert.deepEqual(warmAssetPaths(m,{}).slice(-3),previews);
+ for(const bad of [['/api/shop-entry/private'],[previews[0]+'?token=secret'],['https://foreign.example/a.svg'],[...previews,previews[0]]])assert.equal(validWarmManifest({...manifest,previews:bad}),false);
+ const config={profile:{designs:[]},workshopProfiles:{selections:{motifs:[]}}};assert.deepEqual(shopWarmManifest(config,{editorPath:manifest.editorPath,previews:[...previews,'/api/private']}).previews,previews);
+ let active=0,max=0;const result=await warmShopAssets(m,{fetchImpl:async(p,o)=>{assert.equal(o.priority,'low');active++;max=Math.max(max,active);await new Promise(r=>setImmediate(r));active--;return new Response(p===manifest.catalogPath?'{}':p===manifest.editorPath?'<link rel="modulepreload" href="'+bundle+'">':'<svg/>');}});
+ assert.equal(max,2);assert.deepEqual(result.requests.filter(p=>p.includes('/vorschauen/')),previews);
+});

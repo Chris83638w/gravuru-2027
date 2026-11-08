@@ -234,8 +234,8 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   while(previews.size>1&&(previews.size>256||previewBytes>32*1024*1024)){const [key,old]=previews.entries().next().value;previews.delete(key);previewBytes-=old.body.length;if(![...previews.values()].some(p=>p.hash===old.hash))previewFiles.delete(old.hash);}
   return result;
  }
- function start(context,model,designId){
-  const scope=galleryScope(cardFor(context.store,context.binding),context.binding);
+ function start(context,model,designId,{cardModel=null}={}){
+  const scope=galleryScope(cardModel||cardFor(context.store,context.binding),context.binding);
   if(!scope)return null;
   const selected=selection(context.binding,model,designId);
   const hit=cachedPreview(context.binding,selected.design.id);

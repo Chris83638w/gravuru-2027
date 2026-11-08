@@ -1,5 +1,7 @@
 # R15 – freigegebene Bedienkorrekturen, SVG und Nachladen
 
+**Späterer Stand:** Zentrierung beider Desktopansichten bei e9c36ce seit17:41 online. Vollständiger Sicherungsauftrag und angehaltene Agentenarbeiten stehen im [aktuellen Wiederanlaufbericht](2026-11-08-flight-backup-and-resume.md). Die folgenden Releaseangaben von17:36 bleiben als ursprünglicher Nachweis erhalten.
+
 Stand 08.11.2026, 17:36 Berlin. Auftrag: „Setze alles um“. Laufzeit seit 17:28:22 Berlin veröffentlicht. Kein weiterer Layoutumbau freigegeben.
 
 ## Tatsächlich online

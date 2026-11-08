@@ -1,3 +1,7 @@
+## 08.11.2026, 17:52 Berlin – Codex/Mika: Flugpause und vollständiger Sicherungsauftrag
+
+Livecode e9c36ce auf PR219: kompakte Aktionen in normaler Desktopansicht und Vollansicht mittig; beide echte Shopify-Browseransichten geprüft. Sonstige R15-Bedien-/SVG-/Vorladefixes im Livebericht dokumentiert. Plesk-Vollbackup für Abonnement14 um17:43:04 gestartet, Auftrag1158; noch kein Abschlussnachweis. Zusätzlich beide Repository-Historien und private lokale Projektdateien sichern/verifizieren. Cacheagenten bei6686e86/04ef061 angehalten; ModulePR217/214 nicht aktiviert. **Aktueller Einstieg und verbindlicher Wiederanlauf:** [Flugpause, Sicherungen, offene Arbeiten](docs/handoffs/2026-11-08-flight-backup-and-resume.md). Keine neue Funktionsentwicklung während des Sicherungsschritts.
+
 ## 08.11.2026 – Codex/Mika: erste Motiv- und Designkarten vorbereiten
 
 Auf isolierter Basis `587a395`: gemeinsamer nativer Startmotiv-Resolver, sechs erlaubte Motive im Hintergrund vor Taböffnung, drei authentifizierte Galerievorschauen im Hintergrund mit Wiederverwendung, Produktseiten-Vorwärmen nach DOM/ersten Zeichenzyklen statt window.load. Sieben Produktionsdateien, keine Layout-/Preis-/Produktänderung. 66 unterschiedliche gezielte Prüfungen final grün; tatsächliche Browserabnahme und Deployment bei Root. Designvorschauen direkt auf Shopify-Produktseite weiterhin offen und ausdrücklich nicht als fertig bezeichnet. Übergabe: `docs/handoffs/2026-11-08-first-panel-preload.md`.

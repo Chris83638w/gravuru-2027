@@ -276,6 +276,31 @@ test('native fullscreen receives its real controls, and closing restores their d
   assert.deepEqual(f.el.state,f.original);
 });
 
+for (const width of [390,1440]) {
+  test(`large preview below the product reuses native fullscreen and returns safely at ${width}px`,async t => {
+    const env=runtime(t),f=editorFixture(env);env.win.innerWidth=width;
+    const api=await installMobileDemo(f.el),action=f.r.querySelector('.md-large-preview');
+    assert.equal(action.textContent,'Große Vorschau');
+    assert.equal(action.closest('.ux-preview'),f.stage.parentNode);
+    assert.equal(action.getAttribute('aria-haspopup'),'dialog');
+    for (const panel of ['menu','text','motif']) {
+      api.open(panel,false);action.click();env.flush();
+      assert.equal(f.full.open,true);
+      assert.equal(f.full.contains(f.stage),true);
+      assert.equal(f.full.contains(f.finish),true);
+      assert.equal(f.r.querySelectorAll('.c-large-preview').length,1);
+      assert.equal(f.r.querySelectorAll('[data-ux=enlarge]').length,1);
+      f.full.close();env.flush();
+      assert.equal(f.finish.parentNode.className,'md-bar');
+      assert.equal(f.r.querySelector('.md-large-preview'),action);
+    }
+    f.nodes.enlarge.disabled=true;action.click();assert.equal(f.full.open,false);
+    assert.deepEqual(f.el.state,f.original);
+    api.dispose();assert.equal(f.r.querySelector('.md-preview-actions'),null);
+    for (const [parent,children] of f.originalChildren) assert.deepEqual(parent.childNodes,children);
+  });
+}
+
 for (const [startWidth,widths] of [[390,[390,844,390]],[844,[844,390,844]],[1440,[1440,390,844,1440,390]]]) {
   test(`native fullscreen retains checkout across viewport changes from ${startWidth}px`,async t => {
     const env=runtime(t),f=editorFixture(env);env.win.innerWidth=startWidth;

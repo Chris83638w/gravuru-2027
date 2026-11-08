@@ -8,6 +8,7 @@ import {installDemoDesktopSelection} from './desktop-selection.mjs';
 import {installDemoOptionsNavigation} from './options-navigation.mjs';
 import {installDemoOverlapReview} from './overlap-review.mjs';
 import {installDemoProductReturn} from './product-return.mjs';
+import {installDemoPreviewAction} from './preview-action.mjs';
 
 // Keep the pre-keyboard height even on Android where innerHeight also shrinks.
 export function keyboardViewport(previous, {width, height, innerHeight, focused}) {
@@ -284,6 +285,7 @@ export async function installMobileDemo(el, config = window.UniversalConfig, con
   const smallMotifControls = installDemoSmallMotifControls(el);
   const overlapReview = installDemoOverlapReview(el);
   const productReturn = installDemoProductReturn(el,{button:returnButton});
+  const previewAction = installDemoPreviewAction({el,preview:$('.ux-preview'),trigger:$('[data-ux=enlarge]'),plus});
   shut(false);
   const api = { open, close:shut, dispose() {
     if (disposed) return;
@@ -297,6 +299,7 @@ export async function installMobileDemo(el, config = window.UniversalConfig, con
     edgeResize?.dispose();
     overlapReview?.dispose();
     productReturn?.dispose();
+    previewAction?.dispose();
     if (resizeFrame) cancelAnimationFrame(resizeFrame);
     observer.disconnect(); tabObserver.disconnect(); cleanups.forEach(fn => fn()); el.uxShowSection = oldShow;
     if (typeof oldSync === 'function') el.sync = oldSync;

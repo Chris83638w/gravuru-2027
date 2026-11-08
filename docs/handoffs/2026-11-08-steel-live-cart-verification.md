@@ -1,46 +1,44 @@
-# Übergabe: Edelstahl-Türschilder, echter Shopify-Warenkorb
+# Übergabe: Edelstahl-Türschilder – Warenkorbprüfung bestanden
 
-08.11.2026, Mika/Codex. Dauerhaft gesicherter Zwischenstand auf `dev/mika-stahl-shopify-preflight-20261108` / [PR #196](https://github.com/Chris83638w/gravuru-2027/pull/196); ein abschließender Logo-/Warenkorbnachweis folgt erst nach erfolgreicher tatsächlicher Prüfung. Verbindlicher Konfi-Schutz: [PRIO-KONFI.md](../../PRIO-KONFI.md). Designs bleiben unverändert und folgen dem [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md).
+08.11.2026, Mika/Codex. Branch `dev/mika-stahl-shopify-preflight-20261108`, [PR #196](https://github.com/Chris83638w/gravuru-2027/pull/196). Verbindlicher Konfi-Schutz: [PRIO-KONFI.md](../../PRIO-KONFI.md). Designs bleiben unverändert und folgen dem [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md).
 
-## Auftrag und bestätigter Live-Stand
+## Aktueller Stand
 
-Der Nutzer hat die Theme-Kopie selbst veröffentlicht und den echten Warenkorbtest mit verschiedenen Größen, Befestigungen und SVG-Logo beauftragt. **Keine Änderung am freigegebenen Konfi-Aufbau.** Produktoptionen sind bereits bestätigt: acht Katalogformen, 80 Größen, 404 zulässige Kombinationen, präzise Maßbezeichnungen, kein Foto, SVG-Logo 12,99 € je Logo, normale Türschilder als Startdesigngruppe. Es werden keine Produktduplikate angelegt.
+Der Nutzer hat das Theme selbst veröffentlicht und echte Warenkorbtests mit Größen, Befestigungen und SVG-Logo beauftragt. Der Konfi-Aufbau bleibt unverändert. Bestätigt sind acht Katalogformen, 80 Größen, 404 Kombinationen, genaue Maße, kein Foto und SVG-Logos für 12,99 € je Logo. Sieben sichtbare Formschaltflächen fassen EL/OV als Oval zusammen; keine Form entfernt.
 
-Theme `190984126844` ist `MAIN`; Produkt `16190784438652` ist `ACTIVE`, ausschließlich Onlineshop-Publikation `291556688252`. [Veröffentlichungsbeleg](../reviews/2026-11-08-steel-shopify/live-cart-product-release.json). Ältere `DRAFT`-/Vorschau-Nachweise sind historisch und beschreiben nicht mehr den aktuellen Veröffentlichungsstatus.
+Theme `190984126844` ist MAIN, Produkt `16190784438652` ACTIVE und im Onlineshop veröffentlicht. Aktive App-Version: `gravuru-2027-steel-pricing-input-20261108-v2`, ID `1199363391489`. Keine Produktduplikate.
 
-## Nachgewiesen und offen
+## Echte Warenkorbabnahme
 
-| Prüfung | Beobachtung | Status |
-| --- | --- | --- |
-| AB 12 × 8 cm / K00 | 19,99 € im echten Shopify-Warenkorb | Bestanden |
-| RE 15 × 10 cm / KGL | 26,98 € im echten Shopify-Warenkorb | Preis bestanden; Textzuordnung inzwischen korrigiert und AB → RE live bestanden |
-| Retro 2 / 9 × 6 cm / B02 / ein Logo | 17,48 € statt 30,47 € | Nicht bestanden; 12,99 € Logo-Aufpreis fehlen |
-| Vollständiger Testwarenkorb | Drei synthetische Positionen; 64,45 € statt 77,44 € mit Logo-Aufpreis | Noch nicht bereinigt |
-| Checkout / Bestellung | Keine bezahlte oder abgeschlossene Bestellung | Noch kein vollständiger Abnahmenachweis |
+| Test | Tatsächlich geprüft |
+| --- | ---: |
+| Abgerundetes Rechteck, 12 × 8 cm, ohne Bohrung, Test Eins | 19,99 € |
+| Rechteck, 15 × 10 cm, selbstklebend für glatte Flächen, Test Zwei | 26,98 € |
+| Retro 2, 9 × 6 cm, 2 Bohrlöcher und SVG-Logo, Test Drei | 30,47 € |
+| Gesamt, jeweils ein Stück | **77,44 €** |
+| Logo-Position auf zwei Stück / Gesamt | 60,94 € / 107,91 € |
+| Wieder ein Stück, danach Neuladen | **77,44 €** |
 
-Echte Warenkorbbelege, Screenshots und Grenzen stehen im [Anschlussbericht](../reviews/2026-11-08-steel-shopify/integration-progress.md). Die Kundenansicht/Konfi-Bestellübersicht allein ist kein Preisnachweis für Shopify.
+Die vollständigen Namen und der zweite Text „Familie“ bleiben beim Formwechsel erhalten. Alle drei eigenen Testpositionen gezielt entfernt; leerer Warenkorb sichtbar. Keine Bestellung ausgelöst oder bezahlt. [Ergebnis](../reviews/2026-11-08-steel-shopify/cart-retest-result.json), [Screenshot](../reviews/2026-11-08-steel-shopify/cart-retest-final-viewport.png), [Bereinigung](../reviews/2026-11-08-steel-shopify/cart-retest-cleanup-sanitized.json).
 
-## Anschlussfehler und getrennte Korrekturen
+## Gezielte Reparaturen und Sicherung
 
-**Text – erledigt:** Der Name „Test Eins“ wurde beim Formwechsel AB → RE in verschiedene Felder zerlegt. [PR #199](https://github.com/Chris83638w/gravuru-2027/pull/199), finaler Stand `32b81163e42dcddc239d700973d7aa9a6deac158`, korrigiert ausschließlich die semantische Textzuordnung. 65 gezielte Tests bestanden; Formwechsel hin/zurück und vorhandene Ein-/Mehrfeldregeln sind abgedeckt. Kein CSS-/Layoutumbau. Serverübernahme mit vorheriger gezielter Sicherung ist abgeschlossen; vorhandene Serverabweichungen erhalten, neuer Baustein `editor-1bea892b2cd23111.mjs`, alter Baustein behalten. [Serverbeleg](../reviews/2026-11-08-steel-shopify/text-fix-server-receipt.json). Der echte Nachtest über die Shopify-Produktseite bestätigt AB → RE mit vollständigem „Test Eins“ und unverändertem „Familie“: [Prüfbeleg](../reviews/2026-11-08-steel-shopify/text-switch-live-proof.json), [Screenshot](../reviews/2026-11-08-steel-shopify/text-switch-live-proof.png).
+- Textzuordnung: [PR #199](https://github.com/Chris83638w/gravuru-2027/pull/199), Code `32b81163e42dcddc239d700973d7aa9a6deac158`. 65 Tests und Live-Formwechsel bestanden; gezielte Sicherung vor Übernahme. Kein Layoutumbau.
+- Logo-Aufpreis: [PR #200](https://github.com/Chris83638w/gravuru-2027/pull/200), Code `2abfd92ff8b12b5f8ff300cbc2bdf23788f1d54b`, finale Dokumentation `4d2f5bec14e685c7e39c29befc28bf757aba00a9`. Preisvertrag verlustfrei 18.557 → 2.318 Bytes; alle 404 aktuellen Preise und 94 historischen Preisabweichungen erhalten. 14.140 Preisvergleiche bestanden. Nach vollständiger privater Vertragsicherung genau eine Mutation mit Versionsvergleich und Rückleseprüfung.
+- Alle acht App-Module geprüft, sieben unverändert. Alle 21 Theme-Dateien bytegleich. Nur Function-WASM und Preisabfrage `jsonValue` → `value` geändert; Scopes, Proxy und URLs unverändert.
+- Finales WASM: 20.977 Bytes, SHA-256 `a5c59354755dcf73bdeca8006134847549d8712f70277634fab405db93532da2`.
+- Vollständige ursprüngliche Sicherung `/private/mika-steel-shopify-backup-20261108-v1` erhalten. Zusätzlicher Vollsicherungsversuch `cart-fixes` bleibt **unvollständig**. Gezielte Textdatei-, App-Asset- und Preisvertragssicherungen abgeschlossen. Letztere liegt unter `/private/mika-steel-price-repair-20261108`; Sicherungs-SHA-256 `5a6a393bd5a3f9a7130c0d55e2b35a8f1ef63ef5d49dc4e22d5772585fd5809a`.
+- Keine Zugangsdaten, Preisrohdateien, Sitzungen, Datenbanken oder echten Kundendaten im Repository. Nur synthetische Testdaten.
 
-**Logo – noch offen, keine Korrektur veröffentlicht:** Der aktive Preisvertrag hat gemessene 18.557 Bytes, SHA-256 `76012d418f5c82b8f7c0c8339a0441f3fe41286aa903d287d84f00d169daf1ed`. Er enthält V2/Revision 2 mit 404 Varianten und V1/Revision 1 mit erneut 404 Varianten. [Authentischer Servermessbeleg](../reviews/2026-11-08-steel-shopify/pricing-function-input-diagnostic.json). Damit liegt der Vertrag oberhalb der [Shopify-Functions-Grenze von 10.000 Bytes](https://shopify.dev/docs/apps/build/metafields/metafield-limits); größere Werte erscheinen dort als `null`.
+[Ausführlicher Anschlussbericht mit Sicherungs- und Versionsnachweisen](../reviews/2026-11-08-steel-shopify/integration-progress.md). Rücknahme muss Preisvertrag und passende Function gemeinsam berücksichtigen; die alte Function versteht den kompakten Vertrag nicht. Altes inaktives Function-only-Artefakt `1199344418817` niemals veröffentlichen.
 
-- Erster Erhaltungs-/Stagingversuch fehlgeschlagen: WASM-Asset fehlt, Theme-Bundle-Verzeichnisse ungültig. **Keine Veröffentlichung; aktive App-Version v1 unverändert. Altes inaktives Function-Artefakt `1199344418817` niemals veröffentlichen.**
-- Aktueller und historischer Preisvertrag unterscheiden sich in **94 Preisen**. Erster rein lesender Plan mit bloß gemeinsam referenzierter Variantenliste hat wegen der 10.000-Byte-Grenze korrekt gestoppt; **keine Metafield-Mutation**.
-- Neuer verlustfreier Plan erhält unveränderliche Revisionen und gruppiert nur die Preisabweichungen: echter Vertrag **18.557 → 9.944 Bytes**, **8.484 Preisvergleiche bestanden**. Neues passendes WASM noch ausstehend; Plan ist kein Nachweis für eine veröffentlichte Function oder korrekten Live-Warenkorb.
-- Erhaltungsplan: acht App-Module, sieben unverändert. Veröffentlichten Ausgangsstand erhalten, keine pauschale App-/Theme-Ersetzung. Keine Preisänderungen oder gelöschte Historie als Abkürzung.
-- Plesk-Sitzung abgelaufen; erneute Anmeldung wurde angefragt. Textkorrektur bleibt sicher übernommen und live bestanden.
+## Offene Grenzen und nächster Schritt
 
-## Sicherungen und Grenzen
+- Zehn gemischte Positionen bestehen lokal mit 8.937.352 Instruktionen. **20 unterschiedliche Positionen überschreiten das Shopify-Function-Budget von 11 Millionen.** Bei noch größeren Warenkörben ist auch die Eingabegröße zu hoch. Keine allgemeine Freigabe für große gemischte Warenkörbe; keine neue Kundenbegrenzung eingebaut.
+- Mengen 20/50/99 derselben Konfiguration in einer Position sind lokal bestanden; Menge 2 live bestanden. Stückzahl ist nicht Zeilenzahl.
+- SVG-Upload, Vorschau und Abrechnung funktionieren im direkten Konfi-Einstieg. Die automatisierte Dateiauswahl im doppelt eingebetteten Shopify-Fenster lief in einen Tool-Timeout; kein erwiesener Kundenfehler. Dieser Einbettungsfall bleibt getrennt zu prüfen.
+- Warenkorb-/Preisabnahme bestanden. Checkout, Zahlung, Bestellverarbeitung und Werkstatt-/Produktionsfreigabe sind damit **nicht** vollständig abgenommen.
 
-- Vollständige ursprüngliche private Sicherung `/private/mika-steel-shopify-backup-20261108-v1` abgeschlossen und weiterhin erhalten: sechs SQLite-Sicherungen, Laufzeitarchiv und Einstiegspunkt. [Beleg](../reviews/2026-11-08-steel-shopify/server-backup-receipt.json).
-- Zusätzlicher umfassender Sicherungsversuch `/private/mika-steel-shopify-backup-20261108-cart-fixes`: nach 120 Sekunden abgebrochen, **unvollständig**. Nicht als vollständige Sicherung behandeln und die ursprüngliche Sicherung nicht ersetzen.
-- Gezielte Sicherung der Textdateien vor der Textkorrektur unter `/private/mika-steel-shopify-backup-20261108-cart-text-patch` bestätigt; [Sicherungs-/Übernahmebeleg mit Dateiprüfsummen](../reviews/2026-11-08-steel-shopify/text-fix-server-receipt.json). Diese gezielte Sicherung macht den zusätzlichen umfassenden Sicherungsversuch nicht nachträglich vollständig.
-- Gesicherte veröffentlichte App-Ressourcen: `/private/mika-steel-theme-assets-20261108.json.gz`, **4.133.788 Bytes**, SHA-256 `07897a1e5b1662ad7bae901333783aae27e7b745199d24030baf4edfbcf31f24`. Enthält 14 exakt veröffentlichte Assets; 15. Asset aus dem Repository stimmt mit LF-Zeilenenden überein. Gezielte Asset-Sicherung, keine vollständige neue Serversicherung.
-- Keine Datenbanken, Zugangsdaten, Sitzungsdaten oder echten Kundendaten im Repository. Warenkorbtexte enthalten ausschließlich synthetische Testnamen.
-- PR #196 dokumentiert Optionen/Anschluss, PR #197 isoliert die Runtime, PR #198 den produktspezifischen Einstieg, PR #199 die Textzuordnung. Keine pauschale Zusammenführung fremder Galerie-Vorgeschichte; keine parallelen Schreibläufe auf die 404 Bindungen.
+Nächster Schritt: Einbettungsprüfung und Bestell-/Produktionsstrecke getrennt abnehmen; große gemischte Warenkörbe gezielt optimieren. Den bestätigten Konfi-Aufbau nicht ändern. Der frühere Zwischenstand mit 17,48 € statt 30,47 €, App-v1, 9.944-Byte-Entwurf und nötiger Plesk-Neuanmeldung ist überholt; Git-Historie bleibt erhalten.
 
-## Genau nächster Schritt
-
-Textkorrektur und AB → RE sind live nachgewiesen. Nach erneuter Serveranmeldung neues WASM für den verlustfreien 9.944-Byte-Vertrag bauen, sämtliche Assets/Module im Staging prüfen und ausschließlich den neuen geprüften Stand kontrolliert freigeben. Altes Artefakt `1199344418817` niemals veröffentlichen. Danach Vertrag übernehmen und echten Retro-2-Warenkorb mit einem Logo auf **30,47 €** kontrollieren. Anschließend Checkout-Übergabe prüfen, eigene Testpositionen entfernen und Bericht abschließen. Der gemeinsame Konfi-Aufbau bleibt unverändert. Aktueller Zwischenstand: **veröffentlichtes Produkt, unveränderte aktive App-v1, noch keine vollständig nachgewiesene Verkaufsbereitschaft**.
+Abschlussmeldung: [Issue #168](https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6718967521).

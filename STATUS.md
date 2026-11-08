@@ -1,3 +1,11 @@
+## 2026-11-08 · Mika/Codex · Edelstahl-Warenkorb mit Logo bestanden
+
+Echte Shopify-Abnahme: AB 12×8/K00 19,99 €, RE 15×10/KGL 26,98 €, Retro2 9×6/B02 + SVG 30,47 €; Gesamt 77,44 €. Logo-Menge 2 ergibt 60,94 €/Gesamt 107,91 €; zurück auf 1 und Neuladen wieder 77,44 €. Testpositionen entfernt, keine Bestellung ausgelöst. [Abschließende Übergabe](docs/handoffs/2026-11-08-steel-live-cart-verification.md) und [Nachweise](docs/reviews/2026-11-08-steel-shopify/integration-progress.md).
+
+Textfix #199 und Preisfix #200 gezielt übernommen. Aktive App `gravuru-2027-steel-pricing-input-20261108-v2` / `1199363391489`. Preisvertrag nach Sicherung einmal vergleichsgesichert von 18.557 auf 2.318 Bytes aktualisiert; 404 aktuelle Preise und 94 historische Unterschiede erhalten, 14.140 Preisvergleiche bestanden. Alle acht App-Module geprüft, sieben unverändert; Theme-Dateien und Konfi-Aufbau unverändert. Code #200 `2abfd92`, finale Doku `4d2f5be`. Kein Main-Merge.
+
+Offen: 20 unterschiedliche Konfigurationen überschreiten das Function-Laufzeitbudget, zehn gemischte Positionen geprüft. Automatisierte Dateiauswahl im verschachtelten Shop-Fenster nicht abgeschlossen; direkter SVG-Upload und echte Preisabrechnung bestanden. Checkout/Zahlung/Produktion noch keine vollständige Abnahme. Nächster Schritt: diese Anschlussgrenzen gezielt prüfen und große Warenkörbe optimieren, ohne den Konfi-Aufbau zu verändern. Die folgenden Abschnitte sind historische Zwischenstände.
+
 ## 2026-11-08 · Mika/Codex · Edelstahl live: Textwechsel korrigiert, Logo-Aufpreis noch offen
 
 Theme `190984126844` nach manueller Nutzerveröffentlichung `MAIN`; bestehendes Produkt `16190784438652` `ACTIVE`, ausschließlich Onlineshop. Kein Produktduplikat, kein Layoutumbau. Echte Shopify-Warenkörbe: AB 12 × 8/K00 **19,99 € bestanden**; RE 15 × 10/KGL **26,98 € preislich bestanden**, aber Text beim Formwechsel falsch aufgeteilt; Retro 2 9 × 6/B02 mit SVG-Logo **17,48 € statt 30,47 €**, Logo-Aufpreis fehlt. [Aktueller Bericht und Nachweise](docs/reviews/2026-11-08-steel-shopify/integration-progress.md), [Übergabe](docs/handoffs/2026-11-08-steel-live-cart-verification.md). Ältere DRAFT-Angaben sind im Bericht ausdrücklich historisch markiert.

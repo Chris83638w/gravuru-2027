@@ -73,9 +73,16 @@ export function attach(el,{catalog,entries,prepare,get=fetchJSON,base=LAZY_BASE}
     if(added)el.uxFontChoicesRefresh?.();
     return added;
   };
-  el.uxEnsureMotifs=async(keys=[])=>{
+  el.uxEnsureMotifs=async(keys=[],{priority}={})=>{
     const urls=lazyUrls({motifs:[...new Set(keys)].filter(k=>el.motifs[k]===undefined)},{motifIndex},base).motifs;if(!urls.length)return;
-    for(const m of await prepared(await Promise.all(urls.map(m=>loadMotif(m,get)))))addMotif(m);
+    for(const m of await prepared(await Promise.all(urls.map(m=>loadMotif(m,url=>get(url,priority?{priority}:undefined))))))addMotif(m);
+  };
+  // Warm only the actual initial allowed cards, even while their tab is hidden.
+  // Native per-item promises are shared with subsequent visible loading.
+  el.uxPrefetchInitialMotifs=async()=>{
+    const keys=[...new Set(el.uxInitialMotifKeys||[])].slice(0,6);let next=0;
+    async function worker(){while(next<keys.length){const key=keys[next++];try{await el.uxEnsureMotifs([key],{priority:'low'});}catch{/* Optional warming never prevents opening the panel. */}}}
+    await Promise.all([worker(),worker()]);el.uxLibraryRefresh?.();
   };
   // The full index already supplies search/category metadata. Only the real
   // contours of visible cards load now; an unrelated slow card blocks no other.

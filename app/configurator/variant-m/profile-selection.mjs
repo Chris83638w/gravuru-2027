@@ -1,4 +1,5 @@
-export {themedMotifSelection} from './motif-themes.mjs';
+import {themedMotifSelection} from './motif-themes.mjs';
+export {themedMotifSelection};
 export {filterMotifBrowser} from './motif-browser-model.mjs';
 // Profiles limit customer choices, never the rendering resources of existing designs.
 // Missing/null keeps the native catalog; an explicit empty array offers no new choices.
@@ -33,4 +34,10 @@ export function colorPalettes(fallback, selection = null) {
   const labels = new Map(fallback.flatMap(([, colors]) => colors.map(([label, color]) => [color.toLowerCase(), label])));
   const colors = [...new Set(selection.map(color => color.toLowerCase()))];
   return colors.length ? [['Empfohlene Farben', colors.map(color => [labels.get(color) ?? color.toUpperCase(), color])]] : [];
+}
+
+// The existing native starter order is shared with the bounded shop warmup.
+export const NATIVE_STARTER_MOTIFS=Object.freeze(['import-b56d5711a75f34c1fa8d9c30','import-8adc51cf09cbad881db95ef6','import-4609f5a437c8a0a9d6c8dca3','import-7435d6dce5e1fa3c4c4fc1b5','import-178f0cc0a5c7c40768ed14cf','import-f46b8d0fcc6e60810ece9d9d','import-e0d730f75c8bea96d661a446','branch']);
+export function initialMotifChoices(available,ranked=[],config={}){
+ return bestsellerChoices(available,ranked.length?ranked:NATIVE_STARTER_MOTIFS.map(key=>({key})),themedMotifSelection(available,config.motifTheme,config.workshopProfiles?.selections?.bestsellers),{fillTo:ranked.length?0:18});
 }

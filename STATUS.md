@@ -1,3 +1,17 @@
+## 08.11.2026, 17:52 Berlin – Codex/Mika: Flugpause und vollständiger Sicherungsauftrag
+
+Livecode e9c36ce auf PR219: kompakte Aktionen in normaler Desktopansicht und Vollansicht mittig; beide echte Shopify-Browseransichten geprüft. Sonstige R15-Bedien-/SVG-/Vorladefixes im Livebericht dokumentiert. Plesk-Vollbackup für Abonnement14 um17:43:04 gestartet, Auftrag1158; noch kein Abschlussnachweis. Zusätzlich beide Repository-Historien und private lokale Projektdateien sichern/verifizieren. Cacheagenten bei6686e86/04ef061 angehalten; ModulePR217/214 nicht aktiviert. **Aktueller Einstieg und verbindlicher Wiederanlauf:** [Flugpause, Sicherungen, offene Arbeiten](docs/handoffs/2026-11-08-flight-backup-and-resume.md). Keine neue Funktionsentwicklung während des Sicherungsschritts.
+
+## 08.11.2026 – Codex/Mika: erste Motiv- und Designkarten vorbereiten
+
+Auf isolierter Basis `587a395`: gemeinsamer nativer Startmotiv-Resolver, sechs erlaubte Motive im Hintergrund vor Taböffnung, drei authentifizierte Galerievorschauen im Hintergrund mit Wiederverwendung, Produktseiten-Vorwärmen nach DOM/ersten Zeichenzyklen statt window.load. Sieben Produktionsdateien, keine Layout-/Preis-/Produktänderung. 66 unterschiedliche gezielte Prüfungen final grün; tatsächliche Browserabnahme und Deployment bei Root. Designvorschauen direkt auf Shopify-Produktseite weiterhin offen und ausdrücklich nicht als fertig bezeichnet. Übergabe: `docs/handoffs/2026-11-08-first-panel-preload.md`.
+## 08.11.2026 – Mika: SVG-Viewportkorrektur lokal geprüft
+
+Ein Python-Worker akzeptiert jetzt gültige abweichende SVG-Außenmaße/ViewBox und Ausrichtungen durch korrekte Normalisierung. Alle bisher akzeptierten v1-Ausgaben bleiben bytegleich. 29/29 Kern-/Medien-/Preis-/Historientests plus1/1 unabhängiger Renderer-Vergleich bestanden; kein Livezugriff. Kundendatei noch nicht vorhanden. [Übergabe und Rücknahme](docs/handoffs/2026-11-08-svg-viewport-import.md).
+## 08.11.2026 – Mika: kompakte R15-Aktionen getrennt vorbereitet
+
+Im freigegebenen UI-Umfang drei Quelldateien auf587a395: native Desktopaktionen unten gruppiert, volle Vorschauzeile entfernt, grauer44pxPfeil am Produkt, sichtbarer Produkt-Rückweg und Schließen der Vollansicht per freiem Doppeltipp. 57/57 gezielte Demo-/Touch-/Zoom-/Toolbar-Tests grün; Build grün, unabhängiger enger Review ohne Blocker. Keine CSS-Datei/Preis-/Produkt-/Moduländerung und kein Livezugriff durch Agent. [Übergabe, Einzelfilepaket und Browsergrenzen](docs/handoffs/2026-11-08-r15-compact-controls.md).
+
 ## 08.11.2026, 17:05 Berlin – Mika: Live-Stand und offene Kundenmeldungen vor Flugpause gesichert
 
 Touch-/Vorschaufix seit 16:41, begrenztes Produktseiten-Vorladen und Einzelressourcen seit 16:54 veröffentlicht. Aktive Runtime `private/mika-r15-assets-20261108-v1`, Bundle `editor-6b08ecd29481848d.mjs`; keine Produkt-/Datenbank-/Themeänderung. Tatsächliche Shopify-Einbettung geprüft; keine gemessenen Handy-Cachetreffer behaupten. Kunde meldet weiterhin langsame Designs/Motive und SVG-Seitenverhältnisfehler: offen, Diagnose läuft. Neue Desktopleiste, Entfernen des grauen Balkens und sichtbarer Produkt-Zurück-Button sind wegen „Warte noch“ noch nicht umgesetzt. Module separat vorbereitet; keine Produktprofilaktivierung. [Zentrale Wiederaufnahme mit Sicherungen, Links und Prüfgrenzen](docs/handoffs/2026-11-08-current-konfi-before-flight.md).

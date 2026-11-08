@@ -264,7 +264,7 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  const ownLink=()=>{const link=document.querySelector('[data-gravuru-personalisieren] a[data-gravuru-start]');if(link&&config)link.href=startHref(config,currentVariant(config,document));return link;};
  const fetchTicket=()=>{const link=ownLink();if(link&&!frame){const key=startUrl(link);tickets.load(key).then(()=>{const current=ownLink();if(current&&startUrl(current)===key)warmAssets(key);});}};
  connectOnIntent(document,EDITOR_ORIGIN,fetchTicket);
- if(config){const idle=()=>window.requestIdleCallback?window.requestIdleCallback(fetchTicket,{timeout:4000}):setTimeout(fetchTicket,1500);if(document.readyState==='complete')idle();else window.addEventListener('load',idle,{once:true});}
+ if(config)scheduleProductWarmup(document,window,fetchTicket);
  // Klick in der Einfangphase: Theme-Skripte (Kaufleiste, Akkordeons …) können ihn nicht vorher schlucken.
  // Klappt das Fenster nicht, läuft der normale Link weiter (ganze Seite über den App-Proxy).
  document.addEventListener('click',event=>{
@@ -281,4 +281,11 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
 
 if(typeof window!=='undefined'&&typeof document!=='undefined'&&!globalThis.GRAVURU_SHOP_EMBED_NO_AUTO){
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>install(),{once:true});else install();
+}
+
+// Product markup and first paint are enough; unrelated images must not delay
+// the small optional warmup. Intent listeners above still promote it immediately.
+export function scheduleProductWarmup(doc,win,start){
+ const run=()=>{const paint=fn=>win.requestAnimationFrame?win.requestAnimationFrame(fn):win.setTimeout(fn,0);paint(()=>paint(()=>{if(doc.visibilityState==='hidden')return;if(win.requestIdleCallback)win.requestIdleCallback(start,{timeout:600});else win.setTimeout(start,50);}));};
+ if(doc.readyState==='loading')doc.addEventListener('DOMContentLoaded',run,{once:true});else run();
 }

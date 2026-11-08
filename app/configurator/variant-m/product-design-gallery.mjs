@@ -1,3 +1,4 @@
+import {saveDataActive,idleScheduler} from './preload-queue.mjs';
 import {createGalleryPager} from './gallery-pager.mjs';
 import {captureDesignContent,carryDesignContent,capturePhotoFiles} from './design-content-transfer.mjs';
 import {preserveProductSelection} from './product-design-transfer.mjs';
@@ -64,6 +65,7 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
     if(prepareRetries++<4)retryTimer=setTimeout(load,1200);return;
    }
    prepareRetries=0;themeLabel.hidden=!result.hasTheme;more.textContent='Weitere Designs';
+   const initial=grid.children.length===0,warmRequests=[];
    for(const item of result.items){
     const card=document.createElement('div');card.className='ux-product-card ux-choice-tile';
     const select=document.createElement('button');select.type='button';select.className='ux-product-choose';select.setAttribute('aria-pressed',String(item.current&&item.designId===el.state.designId));select.setAttribute('aria-label','Design '+item.designName);
@@ -72,7 +74,9 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
     const check=document.createElement('span');check.className='completion-check';check.textContent='✓';check.setAttribute('aria-hidden','true');select.append(check);select.onclick=()=>choose(item);
     card.append(select);grid.append(card);
     img.previewRequest={item,img,version};if(observer)observer.observe(img);else queue.push(img.previewRequest);
+    if(initial&&warmRequests.length<3)warmRequests.push(img.previewRequest);
    }
+   if(observer&&!saveDataActive(window.navigator?.connection))idleScheduler(window,{timeout:600})(()=>{if(version===epoch){queue.push(...warmRequests);pump();}});
    if(!observer)pump();status.textContent=result.total?designGalleryCount(result.total):'Für dieses Produkt sind noch keine weiteren Designs verfügbar.';more.hidden=pager.next===null;
   }catch(error){status.textContent=error.message||'Die Designauswahl ist gerade nicht erreichbar. Bitte erneut versuchen.';more.textContent='Erneut versuchen';more.hidden=false;}
   finally{if(version===epoch){more.disabled=false;themes.disabled=false;}}

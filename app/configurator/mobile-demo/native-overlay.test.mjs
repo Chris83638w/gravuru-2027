@@ -21,6 +21,7 @@ test('R15 presentation stays outside the native blob bundle and resolves its com
   if(url.endsWith('/ux.mjs'))assert.match(transformed.code,/gravuruModules\.import\('\/configurator\/mobile-demo\/shop-shell\.mjs'\)/);
  }
  assert.ok(presentation.modules.size>13);
+ assert.ok(presentation.modules.has('/configurator/mobile-demo/compact-controls.mjs'),'the real shop-shell import graph includes compact controls');
  for(const url of presentation.order){
   assert.ok(!url.includes('gallery-workbench')&&!url.includes('browser-model-resources'),url);
   if(url.startsWith('/configurator/mobile-demo/'))assert.equal(isPrioPresentationAsset(url),true,url);

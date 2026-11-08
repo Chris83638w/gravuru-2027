@@ -33,3 +33,13 @@ test('actual visibility observer loads new visible rows after filtering, preserv
  current=[c];a.isConnected=false;mutation();io.fn([{target:c,isIntersecting:true}]);await tick();await tick();assert.deepEqual(calls,['first','searched']);assert.equal(changes,2);
  observed.disconnect();io.fn([{target:b,isIntersecting:true}]);await tick();assert.equal(calls.length,2);
 });
+
+
+test('more than twelve visible rows all load, including rows after already-ready entries',async()=>{
+ for(const readyAtStart of [0,12]){
+  const keys=Array.from({length:15},(_,i)=>'visible-'+i),loaded=new Set(keys.slice(0,readyAtStart)),calls=[];let active=0,max=0;
+  const q=createVisibleResourceQueue({ready:key=>loaded.has(key),load:async key=>{calls.push(key);active++;max=Math.max(max,active);await tick();loaded.add(key);active--;}});
+  q.request(keys);for(let n=0;n<20&&loaded.size<15;n++)await tick();
+  assert.equal(loaded.size,15);assert.deepEqual(calls,keys.slice(readyAtStart));assert.ok(max<=2);assert.equal(q.pending,0);q.stop();
+ }
+});

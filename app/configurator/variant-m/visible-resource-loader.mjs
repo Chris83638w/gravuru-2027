@@ -1,6 +1,6 @@
 // Only rows in the actual scrolling viewport are requested. Metadata stays complete;
 // real contours still pass through the existing font/motif loaders before selection.
-export function createVisibleResourceQueue({load,ready=()=>false,changed=()=>{},concurrency=2,maxPending=12}){
+export function createVisibleResourceQueue({load,ready=()=>false,changed=()=>{},concurrency=2}){
  const pending=new Map(),failed=new Set(),completed=new Set();let wanted=[],running=0,stopped=false;
  function pump(){
   if(stopped)return;
@@ -10,7 +10,7 @@ export function createVisibleResourceQueue({load,ready=()=>false,changed=()=>{},
    task.then(()=>{completed.add(key);changed(key);}).catch(()=>failed.add(key)).finally(()=>{running--;pending.delete(key);pump();});
   }
  }
- return {request(keys,{retry=false}={}){if(retry){failed.clear();for(const key of completed)if(!ready(key))completed.delete(key);}wanted=[...new Set(keys)].filter(k=>typeof k==='string'&&k).slice(0,maxPending);pump();},stop(){stopped=true;wanted=[];},get pending(){return pending.size;}};
+ return {request(keys,{retry=false}={}){if(retry){failed.clear();for(const key of completed)if(!ready(key))completed.delete(key);}wanted=[...new Set(keys)].filter(k=>typeof k==='string'&&k);pump();},stop(){stopped=true;wanted=[];},get pending(){return pending.size;}};
 }
 
 export function observeVisibleResources({root,selector,key,load,ready,changed,win=globalThis}){

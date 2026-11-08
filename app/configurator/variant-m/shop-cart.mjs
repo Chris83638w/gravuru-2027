@@ -17,9 +17,9 @@ async function referencePng(svg,geometry){
 }
 const euro=cents=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100);
 // K8: Nur die Warenkorbzeile desselben Entwurfs wird ersetzt; eine andere Gestaltung wird neu hinzugefügt.
-export function shopCartRequest({saved,cartEdit,quantity}){
+export function shopCartRequest({saved,cartEdit,quantity,cartMode,presentation}){
  const edit=cartEdit&&cartEdit.draftId===saved.draftId?cartEdit:null;
- return {draftId:saved.draftId,expectedRevision:saved.revision,quantity,...(edit?{configId:edit.configId,...(edit.cartLineId?{cartLineId:edit.cartLineId,...(edit.cartLineId==='theme'?{cartRevision:edit.rev}:{})}:{})}:{})};
+ return {draftId:saved.draftId,expectedRevision:saved.revision,quantity,...(edit?{configId:edit.configId,...(edit.cartLineId?{cartLineId:edit.cartLineId,...(edit.cartLineId==='theme'?{cartRevision:edit.rev}:{})}:{})}:{}),...(cartMode==='theme'&&presentation==='prio-r15'?{presentation:'prio-r15'}:{})};
 }
 // Weiterleitung nur zur Checkout-Adresse des bestätigten Shops; Zahlung ist damit nicht bestätigt.
 export function checkoutTarget(result,shopDomain){
@@ -70,7 +70,7 @@ export function installShopCart(api,footer,gate){
    save??=createAcrylicDraftClient({storage:sessionStorage,fetchImpl:gate.request});
    say('2 von 3 · Gestaltung wird gesichert …');
    const saved=await save(payload,gate.csrfToken||'shop-entry');
-   const body=shopCartRequest({saved,cartEdit:api.el.cartEdit,quantity:count});
+   const body=shopCartRequest({saved,cartEdit:api.el.cartEdit,quantity:count,cartMode:gate.cartMode,presentation:gate.presentation});
    say('3 von 3 · Warenkorb wird geprüft …');
    const result=await gate.submitCart(body,{draftToken:saved.draftToken});
    if(fingerprint!==JSON.stringify(api.el.state)||count!==quantity())throw Error('Die Gestaltung wurde während der Übergabe geändert. Bitte erneut in den Warenkorb legen.');

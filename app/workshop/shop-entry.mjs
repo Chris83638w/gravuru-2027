@@ -241,8 +241,9 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   let usedExisting=null;
   try{
    const data=await body(req,limit.cartBytes),draftToken=req.headers['x-gravuru-draft'];
-   const fields=['draftId','expectedRevision','quantity','configId','cartLineId',...(theme?['cartRevision']:[])];
+   const fields=['draftId','expectedRevision','quantity','configId','cartLineId',...(theme?['cartRevision','presentation']:[])];
    if(Object.keys(data).some(k=>!fields.includes(k))||!/^adraft_[a-f0-9-]{36}$/.test(data.draftId||'')||!Number.isSafeInteger(data.expectedRevision)||data.expectedRevision<1||!Number.isSafeInteger(data.quantity)||data.quantity<1||data.quantity>99||
+     (data.presentation!==undefined&&data.presentation!=='prio-r15')||
      (data.configId!==undefined&&(typeof data.configId!=='string'||!CART_CONFIG_ID.test(data.configId)))||(data.cartLineId!==undefined&&(typeof data.cartLineId!=='string'||!(theme&&data.cartLineId==='theme')&&!CART_LINE_ID.test(data.cartLineId)))||(data.cartLineId!==undefined&&data.configId===undefined)||(data.cartRevision!==undefined&&(!Number.isSafeInteger(data.cartRevision)||data.cartRevision<1||data.configId===undefined))||typeof draftToken!=='string'||!/^[a-f0-9]{64}$/.test(draftToken))fail(422,'shop_entry_cart_fields','Bitte die gesicherte Gestaltung, ihren Stand und die Menge angeben.');
    const drafts=store.workshop.customerDrafts,draft=drafts.acrylicDrafts.get(data.draftId,draftToken);
    if(draft.productId!==session.productId||draft.productRevision!==session.productRevision)fail(409,'shop_entry_product','Die gesicherte Gestaltung gehört nicht zu diesem Produkt.');
@@ -264,9 +265,11 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    if(theme){
     for(const [token,t] of themeTransfers)if(t.expiresAt<=clock())themeTransfers.delete(token);
     if(themeTransfers.size>=limit.maxContexts)fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
-    const args={workshop:store.workshop,registry:store.registry,shopDomain,proxyPath,...(typeof store.workshop.orderIntake.imageSnapshot==='function'?{customerImageUrl:id=>customerImages.url(store.storeId,id)}:{})};
-    const prepared=prepareThemeCart(args,binding,data,{draftToken}),token=randomBytes(32).toString('hex');
-    themeTransfers.set(token,{args,binding:structuredClone(binding),input:structuredClone(data),draftToken,sessionToken:req.headers['x-gravuru-shop-session'],customerId:session.customerId,expiresAt:clock()+limit.contextTtlMs});
+    // Nur Darstellungswahl für den Bearbeiten-Link; kein Teil des Preis-/Gestaltungsstands.
+    const {presentation,...themeInput}=data;
+    const args={workshop:store.workshop,registry:store.registry,shopDomain,proxyPath,...(presentation?{presentation}:{}),...(typeof store.workshop.orderIntake.imageSnapshot==='function'?{customerImageUrl:id=>customerImages.url(store.storeId,id)}:{})};
+    const prepared=prepareThemeCart(args,binding,themeInput,{draftToken}),token=randomBytes(32).toString('hex');
+    themeTransfers.set(token,{args,binding:structuredClone(binding),input:structuredClone(themeInput),draftToken,sessionToken:req.headers['x-gravuru-shop-session'],customerId:session.customerId,expiresAt:clock()+limit.contextTtlMs});
     return json(res,200,{handoffUrl:'https://'+shopDomain+themePath+'#handoff='+token,shopDomain,configuration:prepared.payload.configuration,quantity:prepared.payload.quantity,totalCents:prepared.payload.totalCents,mode:'theme',paymentConfirmed:false,productionReady:false});
    }
    const key=createHash('sha256').update(JSON.stringify([store.storeId,binding.bindingId,binding.assignmentRevision,...fields.map(k=>data[k]??null),draftToken])).digest('hex');

@@ -1,0 +1,23 @@
+{
+  "schema": "gravuru-runtime-file-patch/v1",
+  "baseCommit": "7b8bc28",
+  "purpose": "Preserve strictly allowlisted prio-r15 on theme-cart edit return",
+  "noLiveWrites": true,
+  "files": [
+    {
+      "path": "app/configurator/variant-m/shop-cart.mjs",
+      "beforeSha256": "ea16037f14d5489801ca0d0eaadfb6c11220b0831e313296166632b486ca70a9",
+      "afterSha256": "ceb9683cbd62a9ad201abf71bca7e0bf1c02a0275dd324912fffc8c230fa877e"
+    },
+    {
+      "path": "app/workshop/shop-entry.mjs",
+      "beforeSha256": "3f1299d5523977ca9ac37cd648dc4edc85bf8b6daca0db43029fe6491581d7a0",
+      "afterSha256": "c441a01c59cae92eeab796db4fe3acc784aeee0ae3e856826dda2a095b04b3a4"
+    },
+    {
+      "path": "app/workshop/theme-cart.mjs",
+      "beforeSha256": "f937699b86db29a88adc8e2c31f37f38bb567c996fffc54a6f993a4a1662a526",
+      "afterSha256": "a624afc8e1d18570ee7ee31de7423ff6abc0830a1caff595e9a8595a5507716d"
+    }
+  ]
+}

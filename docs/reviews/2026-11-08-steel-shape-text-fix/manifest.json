@@ -1,0 +1,111 @@
+{
+  "schema": "gravuru-steel-shape-text-fix/v1",
+  "baseCommit": "3a780000d44ae6f6671d8560c5b9ff919738ac91",
+  "branch": "dev/mika-steel-shape-text-fix-20261108",
+  "scope": "Only complete text-group transfer during a family shape switch",
+  "runtimeFiles": [
+    {
+      "path": "app/configurator/variant-m/family-formats.mjs",
+      "bytes": 15710,
+      "sha256": "183d00d611042e2c2d9f6097787859656388adcc6ef92ae52c3c6498e4deb210",
+      "baselineSha256": "43ab12c0ecd55b6ca826077302a194dc9f24a8ae4ed996e326eaf4dbd2627499"
+    },
+    {
+      "path": "app/configurator/variant-m/.preview/editor.html",
+      "bytes": 373501,
+      "sha256": "9ee81d1481e2280139d0d407247ac6ac3040d035c4e04599c4695b97f53e2636",
+      "baselineSha256": "018e29152fb44d758f193b79622d276d1fe33666a9eef31b21acbf256d964b8b"
+    },
+    {
+      "path": "app/configurator/variant-m/.preview/bundle/editor-eb6b798c7398f566.mjs",
+      "bytes": 1426167,
+      "sha256": "538a7417200b07edf65912c845526f587f48007806090fa020c6ad55981489c3",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/variant-m/.preview/bundle/editor-eb6b798c7398f566.mjs.gz",
+      "bytes": 476894,
+      "sha256": "4fda8299903d66a30ba71a6065663aba5d4664f82c901b10c67114d6d09f3c75",
+      "baselineSha256": null
+    }
+  ],
+  "bundleProof": {
+    "baselineCore": "editor-bab5a1fa49ee42d2.mjs",
+    "newCore": "editor-eb6b798c7398f566.mjs",
+    "moduleCount": 150,
+    "changedModules": [
+      "/configurator/variant-m/family-formats.mjs"
+    ],
+    "stylesByteEqual": true,
+    "editorOnlyBundleUrlChanged": true,
+    "unchangedChunks": [
+      {
+        "path": "app/configurator/variant-m/.preview/bundle/editor-2e3da3b988eb0da4.mjs",
+        "sha256": "b227638c16aebd6cd7c685c44d3ace5b75205e3e1774b5ddd39c34c9d32e1ccf",
+        "bytes": 37895
+      },
+      {
+        "path": "app/configurator/variant-m/.preview/bundle/editor-2e3da3b988eb0da4.mjs.gz",
+        "sha256": "def2dc087e7060dd1fbccd82e7b3fe8a4fc1029526927a55f9b1ca4abb2a6169",
+        "bytes": 12418
+      },
+      {
+        "path": "app/configurator/variant-m/.preview/bundle/editor-69eb9880b804359a.mjs",
+        "sha256": "7601bdd524c58ddacbd0edf5e4067139002f220c67763e7eb7dafd8dbb8331a3",
+        "bytes": 3342
+      },
+      {
+        "path": "app/configurator/variant-m/.preview/bundle/editor-69eb9880b804359a.mjs.gz",
+        "sha256": "dccea5df39be2913d38d9bd0a5115d3d8dea97ace54af1ce9ba157b6c9a4b348",
+        "bytes": 1614
+      },
+      {
+        "path": "app/configurator/variant-m/.preview/bundle/editor-c419119a6ef437c6.mjs",
+        "sha256": "d6230c6059e2b8b5e4334ea0d3a401aa41f362b6fa3fe8035b8784b74d7ef78c",
+        "bytes": 7915
+      },
+      {
+        "path": "app/configurator/variant-m/.preview/bundle/editor-c419119a6ef437c6.mjs.gz",
+        "sha256": "4b412bd07d5838b1cd4b9e60f88ae6e5b1c2f09e210f77d7800f778c739e5a25",
+        "bytes": 3037
+      },
+      {
+        "path": "app/configurator/variant-m/.preview/bundle/editor-e1e24f0ee6b66daf.mjs",
+        "sha256": "d4fc652911bec1326419762462fb206660c26d5d97e9823e16501c179262a58c",
+        "bytes": 10914
+      },
+      {
+        "path": "app/configurator/variant-m/.preview/bundle/editor-e1e24f0ee6b66daf.mjs.gz",
+        "sha256": "8731a573ad56981184aeb0407a9cfa17920818e0e67c4f31a691ed37004911e8",
+        "bytes": 3880
+      }
+    ]
+  },
+  "tests": {
+    "passed": 65,
+    "failed": 0,
+    "skipped": 0,
+    "files": [
+      "family-format-text-transfer.test.mjs",
+      "family-formats.test.mjs",
+      "workflow.test.mjs",
+      "bundle.test.mjs",
+      "customer-orientation.test.mjs",
+      "product-design-transfer.test.mjs"
+    ],
+    "actualCandidate": {
+      "path": "outputs/steel-shopify-20261108/normal-door-native-plan.json",
+      "sha256": "8f994b378cbb4b7b1fcf833b4907af1317ded452838c6509ef284b75300ee95f",
+      "designId": "katalog-TAE-V2A-8x5-D1",
+      "result": "AB120x80 K00 -> RE150x100 KGL -> AB120x80 K00: full name retained; unchanged name-2 Familie retained"
+    },
+    "browserOrCartVerified": false
+  },
+  "deploymentNotes": [
+    "Build artifacts are local and reproducible, not committed.",
+    "Copy only runtimeFiles after verifying baseline hashes and backup.",
+    "Keep the previous hashed core bundle for already-open sessions.",
+    "Do not copy generated models.json, guides.json, assistant.js or lazy resources.",
+    "No source data, layout, pricing, server, database, Shopify or theme changes."
+  ]
+}

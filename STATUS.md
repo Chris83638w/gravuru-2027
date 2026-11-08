@@ -1,3 +1,7 @@
+## 08.11.2026 – Mika: Große Vorschau unter dem Produkt vorbereitet
+
+Im ausdrücklichen Nutzerauftrag ein zusätzlicher Button „Große Vorschau“ direkt unter der Tafel für Handy und PC; öffnet nur den bestehenden nativen Vollbilddialog. Eine schmale 44-px-Zeile verhindert Überdeckung, freigegebener Aufbau und Produktlogik bleiben erhalten. Aktive Quellen vorab gesichert/gehasht; abweichende Live-`demo.css` ausdrücklich nicht ersetzt. 25 Adaptertests + 4 Shop-/Assettests grün, Build erfolgreich. Getrennter Branch, keine Live-/Shopify-Änderung; tatsächliche visuelle Abnahme und der getrennte Wieder-Auswahlfehler bleiben offen. [Übergabe](docs/handoffs/2026-11-08-r15-large-preview.md).
+
 ## 08.11.2026 – Codex: Warenkorb-PNG bindet geprüfte Uploads ein
 
 - Isolierter Branch `dev/mika-cart-preview-uploads-20261108`; nur `adapter.mjs`, `ux.mjs` und neues `preview-uploads.mjs` betreffen die Laufzeit. Kein Layout-, Preis- oder Designumbau.

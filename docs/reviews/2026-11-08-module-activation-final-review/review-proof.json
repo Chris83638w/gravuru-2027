@@ -72,8 +72,9 @@
   "logs": [
     {
       "name": "activation-review-tests.log",
-      "bytes": 1436,
-      "sha256": "e2377e39559f8c6ea3b079101507bab61c4f1e325261096a192ccfabe97c0bfa"
+      "bytes": 1432,
+      "sha256": "8231d3f05f395763fbdf98b20fec651da8c024a3ac5a3a51d721b99d3052436a",
+      "normalization": "Trailing whitespace removed; untouched original log remains in private outputs."
     },
     {
       "name": "history-concurrency-tests.log",

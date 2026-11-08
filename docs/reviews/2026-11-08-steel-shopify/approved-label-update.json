@@ -1,0 +1,450 @@
+{
+  "schema": "gravuru-steel-approved-label-update/v1",
+  "checkedDate": "2026-11-08",
+  "shop": "gravuru-design.myshopify.com",
+  "productId": "gid://shopify/Product/16190784438652",
+  "scope": "15 existing draft variants; only approved display labels",
+  "status": "DRAFT",
+  "variantsCreated": 0,
+  "variantIdsChanged": 0,
+  "priceChangesRequested": 0,
+  "updates": [
+    {
+      "id": "gid://shopify/ProductVariant/58104601313660",
+      "optionValues": [
+        {
+          "optionName": "Form & Größe",
+          "name": "Rechteck · 7 × 2,33 cm"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104601346428",
+      "optionValues": [
+        {
+          "optionName": "Form & Größe",
+          "name": "Rechteck · 7 × 2,33 cm"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104601379196",
+      "optionValues": [
+        {
+          "optionName": "Form & Größe",
+          "name": "Rechteck · 7 × 2,33 cm"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104601411964",
+      "optionValues": [
+        {
+          "optionName": "Form & Größe",
+          "name": "Rechteck · 7 × 2,33 cm"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104601444732",
+      "optionValues": [
+        {
+          "optionName": "Form & Größe",
+          "name": "Rechteck · 7 × 2,33 cm"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605573500",
+      "optionValues": [
+        {
+          "optionName": "Form & Größe",
+          "name": "Rechteck · 8 × 5,33 cm"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605606268",
+      "optionValues": [
+        {
+          "optionName": "Form & Größe",
+          "name": "Rechteck · 8 × 5,33 cm"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605639036",
+      "optionValues": [
+        {
+          "optionName": "Form & Größe",
+          "name": "Rechteck · 8 × 5,33 cm"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605671804",
+      "optionValues": [
+        {
+          "optionName": "Form & Größe",
+          "name": "Rechteck · 8 × 5,33 cm"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605704572",
+      "optionValues": [
+        {
+          "optionName": "Form & Größe",
+          "name": "Rechteck · 8 × 5,33 cm"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605737340",
+      "optionValues": [
+        {
+          "optionName": "Form & Größe",
+          "name": "Rechteck abgerundet · 8 × 5,33 cm"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605770108",
+      "optionValues": [
+        {
+          "optionName": "Form & Größe",
+          "name": "Rechteck abgerundet · 8 × 5,33 cm"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605802876",
+      "optionValues": [
+        {
+          "optionName": "Form & Größe",
+          "name": "Rechteck abgerundet · 8 × 5,33 cm"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605835644",
+      "optionValues": [
+        {
+          "optionName": "Form & Größe",
+          "name": "Rechteck abgerundet · 8 × 5,33 cm"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605868412",
+      "optionValues": [
+        {
+          "optionName": "Form & Größe",
+          "name": "Rechteck abgerundet · 8 × 5,33 cm"
+        }
+      ]
+    }
+  ],
+  "readback": [
+    {
+      "id": "gid://shopify/ProductVariant/58104601313660",
+      "title": "Rechteck · 7 × 2,33 cm / Ohne Bohrung",
+      "sku": "156-GR-ES-RE-70X23P3-T15-K00",
+      "price": "8.99",
+      "selectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "product": {
+        "id": "gid://shopify/Product/16190784438652",
+        "status": "DRAFT"
+      }
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104601346428",
+      "title": "Rechteck · 7 × 2,33 cm / Selbstklebend – glatte Flächen",
+      "sku": "156-GR-ES-RE-70X23P3-T15-KGL",
+      "price": "11.98",
+      "selectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "product": {
+        "id": "gid://shopify/Product/16190784438652",
+        "status": "DRAFT"
+      }
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104601379196",
+      "title": "Rechteck · 7 × 2,33 cm / Selbstklebend – raue Flächen",
+      "sku": "156-GR-ES-RE-70X23P3-T15-KRA",
+      "price": "12.98",
+      "selectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "product": {
+        "id": "gid://shopify/Product/16190784438652",
+        "status": "DRAFT"
+      }
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104601411964",
+      "title": "Rechteck · 7 × 2,33 cm / Mit 2 Bohrlöchern",
+      "sku": "156-GR-ES-RE-70X23P3-T15-B02",
+      "price": "11.48",
+      "selectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "product": {
+        "id": "gid://shopify/Product/16190784438652",
+        "status": "DRAFT"
+      }
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104601444732",
+      "title": "Rechteck · 7 × 2,33 cm / Mit 2 Schrauben",
+      "sku": "156-GR-ES-RE-70X23P3-T15-B02S",
+      "price": "11.68",
+      "selectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "product": {
+        "id": "gid://shopify/Product/16190784438652",
+        "status": "DRAFT"
+      }
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605573500",
+      "title": "Rechteck · 8 × 5,33 cm / Ohne Bohrung",
+      "sku": "156-GR-ES-RE-80X53P3-T15-K00",
+      "price": "13.99",
+      "selectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "product": {
+        "id": "gid://shopify/Product/16190784438652",
+        "status": "DRAFT"
+      }
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605606268",
+      "title": "Rechteck · 8 × 5,33 cm / Selbstklebend – glatte Flächen",
+      "sku": "156-GR-ES-RE-80X53P3-T15-KGL",
+      "price": "16.98",
+      "selectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "product": {
+        "id": "gid://shopify/Product/16190784438652",
+        "status": "DRAFT"
+      }
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605639036",
+      "title": "Rechteck · 8 × 5,33 cm / Selbstklebend – raue Flächen",
+      "sku": "156-GR-ES-RE-80X53P3-T15-KRA",
+      "price": "17.98",
+      "selectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "product": {
+        "id": "gid://shopify/Product/16190784438652",
+        "status": "DRAFT"
+      }
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605671804",
+      "title": "Rechteck · 8 × 5,33 cm / Mit 2 Bohrlöchern",
+      "sku": "156-GR-ES-RE-80X53P3-T15-B02",
+      "price": "16.48",
+      "selectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "product": {
+        "id": "gid://shopify/Product/16190784438652",
+        "status": "DRAFT"
+      }
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605704572",
+      "title": "Rechteck · 8 × 5,33 cm / Mit 2 Schrauben",
+      "sku": "156-GR-ES-RE-80X53P3-T15-B02S",
+      "price": "16.68",
+      "selectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "product": {
+        "id": "gid://shopify/Product/16190784438652",
+        "status": "DRAFT"
+      }
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605737340",
+      "title": "Rechteck abgerundet · 8 × 5,33 cm / Ohne Bohrung",
+      "sku": "156-GR-ES-AB-80X53P3-T15-K00",
+      "price": "13.99",
+      "selectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "product": {
+        "id": "gid://shopify/Product/16190784438652",
+        "status": "DRAFT"
+      }
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605770108",
+      "title": "Rechteck abgerundet · 8 × 5,33 cm / Selbstklebend – glatte Flächen",
+      "sku": "156-GR-ES-AB-80X53P3-T15-KGL",
+      "price": "16.98",
+      "selectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "product": {
+        "id": "gid://shopify/Product/16190784438652",
+        "status": "DRAFT"
+      }
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605802876",
+      "title": "Rechteck abgerundet · 8 × 5,33 cm / Selbstklebend – raue Flächen",
+      "sku": "156-GR-ES-AB-80X53P3-T15-KRA",
+      "price": "17.98",
+      "selectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "product": {
+        "id": "gid://shopify/Product/16190784438652",
+        "status": "DRAFT"
+      }
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605835644",
+      "title": "Rechteck abgerundet · 8 × 5,33 cm / Mit 2 Bohrlöchern",
+      "sku": "156-GR-ES-AB-80X53P3-T15-B02",
+      "price": "16.48",
+      "selectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "product": {
+        "id": "gid://shopify/Product/16190784438652",
+        "status": "DRAFT"
+      }
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104605868412",
+      "title": "Rechteck abgerundet · 8 × 5,33 cm / Mit 2 Schrauben",
+      "sku": "156-GR-ES-AB-80X53P3-T15-B02S",
+      "price": "16.68",
+      "selectedOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "product": {
+        "id": "gid://shopify/Product/16190784438652",
+        "status": "DRAFT"
+      }
+    }
+  ]
+}

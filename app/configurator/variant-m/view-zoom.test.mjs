@@ -47,6 +47,37 @@ test('blank deselection may replace the SVG target: document release must not le
  assert.deepEqual(f.el.state,saved);assert.equal(f.el.uxViewZoom(),1);
 });
 
+test('new primary touch recovers when Chromium drops all end events of a detached blank target',async t=>{
+ const f=await runtime(t),saved=structuredClone(f.el.state);
+ // Real browser repro: blank pointerdown redraws/removes the touched SVG image;
+ // neither host nor document receives its pointerup, cancel or capture loss.
+ f.el.dispatch('pointerdown',f.event(f.holder,{pointerId:101,isPrimary:true}));
+ assert.equal(f.api.gesture.has(101),true);
+ for(const kind of ['text','motif']){
+  f.el.state.objects[0].type=kind;
+  const next=f.event(f.object,{pointerId:102,isPrimary:true});f.el.dispatch('pointerdown',next);
+  assert.equal(next.prevented,undefined,kind+' must reach the native object handler');
+  assert.deepEqual(f.api.gesture.ids(),[102]);
+  // A real second finger stays blocked; isPrimary is browser-owned, not inferred
+  // from position, timing or element selection.
+  const second=f.event(f.object,{pointerId:103,isPrimary:false});f.el.dispatch('pointerdown',second);
+  assert.equal(second.prevented,true);assert.deepEqual(f.api.gesture.ids(),[102,103]);
+  f.el.dispatch('pointerup',f.event(f.object,{pointerId:103,isPrimary:false}));
+  f.el.dispatch('pointerup',f.event(f.object,{pointerId:102,isPrimary:true}));
+ }
+ f.el.state.objects[0].type=saved.objects[0].type;
+ assert.deepEqual(f.el.state,saved);assert.equal(f.el.uxViewZoom(),1);
+});
+
+test('fresh primary contact also releases a lost TouchEvent handover without changing the design',async t=>{
+ const f=await runtime(t),saved=structuredClone(f.el.state);
+ f.el.dispatch('touchstart',touchBatch(f,[contact(f,201,360),contact(f,202,460)]));
+ const next=f.event(f.object,{pointerId:203,isPrimary:true});f.el.dispatch('pointerdown',next);
+ assert.equal(next.prevented,undefined);assert.deepEqual(f.api.gesture.ids(),[203]);
+ assert.equal(f.object.listeners.touchend.length,0);
+ assert.deepEqual(f.el.state,saved);assert.equal(f.el.uxViewZoom(),1);
+});
+
 test('document finalizers leave native in-host gestures and unrelated pointers untouched, then detach on pagehide',async t=>{
  const f=await runtime(t),outside=new NodePort();
  f.el.dispatch('pointerdown',f.event(f.object,{pointerId:41}));

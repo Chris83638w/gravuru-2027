@@ -1,6 +1,12 @@
 ## 08.11.2026 – Mika: Große Vorschau unter dem Produkt vorbereitet
 
 Im ausdrücklichen Nutzerauftrag ein zusätzlicher Button „Große Vorschau“ direkt unter der Tafel für Handy und PC; öffnet nur den bestehenden nativen Vollbilddialog. Eine schmale 44-px-Zeile verhindert Überdeckung, freigegebener Aufbau und Produktlogik bleiben erhalten. Aktive Quellen vorab gesichert/gehasht; abweichende Live-`demo.css` ausdrücklich nicht ersetzt. 25 Adaptertests + 4 Shop-/Assettests grün, Build erfolgreich. Getrennter Branch, keine Live-/Shopify-Änderung; tatsächliche visuelle Abnahme und der getrennte Wieder-Auswahlfehler bleiben offen. [Übergabe](docs/handoffs/2026-11-08-r15-large-preview.md).
+## 08.11.2026 – Codex: Warenkorb-Bearbeiten erhält freigegebenen R15-Konfi
+
+- Isolierter Branch `dev/mika-cart-edit-r15-20261108` auf PR #206. Drei vorher gesicherte, mit Live-SHA verglichene Quelldateien tragen nur den bereits vorhandenen Darstellungswert `prio-r15` durch Theme-Warenkorbübergabe und Bearbeiten-Link. Keine Layout-, Preis-, Design- oder Datenbankänderung; kein Livezugriff.
+- 67/67 gezielte Tests grün: echter lokaler Kundenclient und HTTP-Handoff bis erneut signiertem R15-Start, Bearbeitung derselben Position, Legacy-Kompatibilität, Ablehnung fremder Darstellungswerte sowie bisherige Rechte-/Bestellprüfungen. Diffprüfung sauber.
+- Drei-Datei-Paket mit Vorher-/Nachher-SHAs und Rücknahme vorbereitet. Reale Browser-/Shopify-Abnahme übernimmt Root. Vorhandene alte Warenkorb-Links bleiben unverändert; der separate Verdacht auf verlorene flüchtige Handoffs wird nicht mit diesem Fix vermischt.
+- [Übergabe, Prüfgrenzen und Einzeldatei-Rollout](docs/handoffs/2026-11-08-cart-edit-r15.md). Nächster Schritt: Root-Review, anschließend neuer R15-Warenkorbtest; keine pauschale Runtimekopie, damit #204/#205/#206 erhalten bleiben.
 
 ## 08.11.2026 – Codex: Warenkorb-PNG bindet geprüfte Uploads ein
 

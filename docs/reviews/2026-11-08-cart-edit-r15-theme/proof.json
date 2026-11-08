@@ -1,0 +1,19 @@
+{
+  "schema": "gravuru-theme-file-patch/v1",
+  "date": "2026-11-08",
+  "themeId": "190984126844",
+  "filename": "snippets/gravuru-warenkorb-bearbeiten.liquid",
+  "beforeMd5": "62fe3f4568d23eb44587cce516da312d",
+  "beforeSha256": "7867ca8c4e3dd72e2edf1b33ca9ca2dc667c42cd682eec5863a59e155d7c9cfd",
+  "afterMd5": "f8c59d746d2413eae1b99f004bfac860",
+  "afterSha256": "60217e0334a091285e85cf5178faa8e948157fb60298e3e9c13c0570f6a181dc",
+  "passed": 7,
+  "failed": 0,
+  "skipped": 0,
+  "durationMs": 219.4808,
+  "renderer": "LiquidJS 10.30.1",
+  "rendererSha256": "170bc09c38dd37f41aa3d031de14228f3aadc53e0ed54ee1f0d5bdc4620a60a2",
+  "deployment": "Not executed by subagent",
+  "rollback": "Restore exact same theme filename from verified before export",
+  "serverRestartRequired": false
+}

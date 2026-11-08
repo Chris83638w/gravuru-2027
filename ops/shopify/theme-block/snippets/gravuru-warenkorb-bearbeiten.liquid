@@ -33,6 +33,22 @@
   if gv_preview != blank
     assign gv_line = 'theme'
   endif
+  assign gv_edit_link = item.properties['_gravuru_bearbeiten'] | split: '#' | first
+  assign gv_edit_parts = gv_edit_link | split: '?'
+  assign gv_ui_count = 0
+  assign gv_ui_prio = false
+  if gv_edit_parts.size == 2
+    assign gv_edit_params = gv_edit_parts | last | split: '&'
+    for gv_edit_param in gv_edit_params
+      assign gv_edit_key = gv_edit_param | split: '=' | first
+      if gv_edit_key == 'ui'
+        assign gv_ui_count = gv_ui_count | plus: 1
+        if gv_edit_param == 'ui=prio-r15'
+          assign gv_ui_prio = true
+        endif
+      endif
+    endfor
+  endif
 -%}
 {%- if gv_native or gv_legacy -%}
   <div class="gravuru-cart-personalization">
@@ -53,7 +69,7 @@
     {%- else -%}
     <a class="gravuru-cart-edit" rel="nofollow"
        aria-label="{{ 'general.cart.edit' | t | escape }}: {{ item.product.title | escape }}"
-       href="/apps/{{ gv_subpath | escape }}/start?product={{ item.product.id }}&amp;variant={{ item.variant.id }}&amp;config={{ gv_config | url_encode }}&amp;rev={{ gv_rev | url_encode }}&amp;line={{ gv_line | url_encode }}&amp;back={{ item.product.url | split: '?' | first | url_encode }}">{{ 'general.cart.edit' | t }}</a>
+       href="/apps/{{ gv_subpath | escape }}/start?product={{ item.product.id }}&amp;variant={{ item.variant.id }}&amp;config={{ gv_config | url_encode }}&amp;rev={{ gv_rev | url_encode }}&amp;line={{ gv_line | url_encode }}&amp;back={{ item.product.url | split: '?' | first | url_encode }}{% if gv_ui_count == 1 and gv_ui_prio %}&amp;ui=prio-r15{% endif %}">{{ 'general.cart.edit' | t }}</a>
     {%- endif -%}
   </div>
   <script type="module" src="{{ 'gravuru-legacy-cart.js' | asset_url }}"></script>

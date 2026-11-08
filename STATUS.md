@@ -1,3 +1,10 @@
+## 08.11.2026 – Codex: tatsächlicher Theme-Link erhält gespeicherte R15-Auswahl
+
+- Live-Abnahme von PR #209 deckte eine zweite Stelle auf: Das Theme erzeugt den Bearbeiten-Link selbst und ließ die nun gespeicherte Darstellungswahl erneut weg. Ein einzelnes Liquid-Snippet übernimmt jetzt ausschließlich den exakten einzelnen `ui=prio-r15`-Wert; aktuelle Zeilen-IDs und lokales Linkziel bleiben unverändert.
+- 7/7 echte Liquid-Renderprüfungen grün für exakten Live-Patch und Git-Fassung, einschließlich Legacy, doppelter/fremder Werte und bytegleicher normaler Ausgabe. Keine Layout-, Preis-, Server-, DB- oder sonstige Themeänderung; kein Livezugriff durch Unteragenten.
+- Deploybare Datei wurde auf dem frisch gesicherten Theme-Export aufgebaut, dessen SHA `7867ca8c…` Root bestätigt hat. Ein schon vorhandener Unterschied im Git-Vorschaufallback wird nicht mit ausgerollt. Patch-SHA `60217e03…`. [Vollständige Übergabe und Rücknahme](docs/handoffs/2026-11-08-cart-edit-r15-theme.md).
+- Nächster Schritt: Root aktualisiert nach Review nur `snippets/gravuru-warenkorb-bearbeiten.liquid` und prüft den tatsächlichen Warenkorb-Link und seine Wiederöffnung. Kein Serverneustart für diesen Theme-Fix erforderlich.
+
 ## 08.11.2026 – Codex: Warenkorb-Bearbeiten erhält freigegebenen R15-Konfi
 
 - Isolierter Branch `dev/mika-cart-edit-r15-20261108` auf PR #206. Drei vorher gesicherte, mit Live-SHA verglichene Quelldateien tragen nur den bereits vorhandenen Darstellungswert `prio-r15` durch Theme-Warenkorbübergabe und Bearbeiten-Link. Keine Layout-, Preis-, Design- oder Datenbankänderung; kein Livezugriff.

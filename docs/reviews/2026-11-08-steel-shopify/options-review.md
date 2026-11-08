@@ -1,6 +1,8 @@
 # Edelstahl-Türschilder: Auswahl vor Produktanlage
 
-Stand 08.11.2026. **Noch nicht freigegeben. Keine Produkte angelegt oder geändert.**
+Stand 08.11.2026. **Die Optionen wurden vom Nutzer bestätigt**, einschließlich genauer Größenbezeichnungen, ohne Fotos und mit SVG-Logo zu 12,99 €. Siehe [verbindliche Bestätigung](user-approval.md). Die nachfolgende ursprüngliche Vorlage bleibt als Entscheidungsgrundlage erhalten; ihre offenen Bestätigungsformulierungen sind damit erledigt.
+
+Der vorhandene Shopify-Entwurf mit 404 Varianten wird weiterverwendet. Die 15 betroffenen Variantenbezeichnungen wurden berichtigt; IDs, Preise und unveröffentlichter Entwurfsstatus blieben erhalten. Siehe [Änderungsnachweis](approved-label-update.json).
 
 Vorbereitet sind **alle 8 Formen und 80 Größen**, Edelstahl gebürstet, **1,5 mm**. Die Auswahl folgt den bestehenden Tabellen. Im Konfi bleiben die vereinbarten drei Bereiche **Form, Größe, Befestigung**. Größen, Preise, Befestigungen und Startdesign müssen für diesen neuen Pilot noch bestätigt werden.
 

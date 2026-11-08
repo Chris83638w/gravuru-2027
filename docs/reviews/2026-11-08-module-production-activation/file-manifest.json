@@ -1,0 +1,58 @@
+{
+  "schema": "gravuru-module-activation-code-proof/v1",
+  "base": "df468325dc7480c5da10510ced62c5ef1cb080d1",
+  "liveInstalled": false,
+  "gates": {
+    "executionEnabled": false,
+    "writesEnabled": false
+  },
+  "customerFilesChanged": 0,
+  "files": [
+    {
+      "path": "app/workshop/gallery-shop-sync-transport.mjs",
+      "beforeSha256": "59abac4af093d1ae73af2b60b8f5211a323a1bca5e75fee04f53c2afc9d8d7fd",
+      "afterSha256": "d303423b37d7a4c53f7354dd48e93a2b43778dffedd904e77d8d320027d3663a",
+      "bytes": 8553
+    },
+    {
+      "path": "app/workshop/gallery-shop-sync.mjs",
+      "beforeSha256": "54b7f517c0ef82069c1473b8f3e5000416d44bc59024a37bf1d11d4e571faaf7",
+      "afterSha256": "0d62e2d956de0b1cda1d1c59fa0534fe537f3bb8569251c6fd9c2678b3b71d49",
+      "bytes": 27487
+    },
+    {
+      "path": "scripts/lib/gallery-production-shopify-read.mjs",
+      "beforeSha256": "19c411adf7ee0089874c3d0fd3a6737e4b1639adcbebe23d3f5942dd674796e9",
+      "afterSha256": "e925775bae602c924688048c592dd5121208cb23f75d42bb529b4a6b2063225a",
+      "bytes": 6005
+    },
+    {
+      "path": "scripts/lib/gallery-production-module-target.mjs",
+      "beforeSha256": null,
+      "afterSha256": "d84e1c1aa51dcc0946fa4b899ca620fe07636cb4f6c2f26c16043fac87abd45b",
+      "bytes": 10367
+    },
+    {
+      "path": "scripts/lib/gallery-production-activation.mjs",
+      "beforeSha256": null,
+      "afterSha256": "0012470246c15f517ba3bea4e64ca86d1a67dc26d5ef1eca484960936fb8ec96",
+      "bytes": 6549
+    }
+  ],
+  "tests": {
+    "newUnique": 3,
+    "existingConnectionAndPagination": 11,
+    "historicalOrders": 1,
+    "realBank": {
+      "sha256": "2e74548aa7211a2f5546af428e1d27d9f00f12181490356633e3cd109cb179c0",
+      "designs": 251,
+      "formats": 80,
+      "variants": 404,
+      "wholeScenarioMs": 247704.9221,
+      "shopify": "simulated",
+      "nativeStores": "isolated temporary SQLite",
+      "externalWrites": 0
+    }
+  },
+  "independentReview": "pending"
+}

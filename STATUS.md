@@ -1,3 +1,7 @@
+## 2026-11-08 · Mika/Codex · Universelle Modulvorlagen statt neuer Konfiguratoren
+
+Mikail bekräftigt: ein gemeinsamer Konfi mit zuschaltbaren Foto-/Logo-/Farb-/Text-/Motivmodulen und produktspezifischen Ausführungen, keine Neuentwicklung je Angebot. Read-only Code-Audit mit Unteragent: Bibliotheksprofile und mehrere Fähigkeitsschalter vorhanden, aber Familien-/SVG-/Sockelregeln teils fest codiert; noch kein durchgängiger Moduleditor. [Verbindlicher Zielaufbau, Ist-Stand und nächste Abnahme](docs/plans/2026-11-08-universal-konfi-module.md). Erster begrenzter Nachweis: Edelstahl mit/ohne Logo aus zwei Profilen und identischem Editor-Code. Dokumentation allein geändert; keine Live-, Layout-, Design- oder Preisänderung. Bestehende Sync-/Produktgruppenarbeit weiterverwenden, keine zweite Strecke bauen.
+
 ## 2026-11-08 · Mika/Codex · Edelstahl-Warenkorb mit Logo bestanden
 
 Echte Shopify-Abnahme: AB 12×8/K00 19,99 €, RE 15×10/KGL 26,98 €, Retro2 9×6/B02 + SVG 30,47 €; Gesamt 77,44 €. Logo-Menge 2 ergibt 60,94 €/Gesamt 107,91 €; zurück auf 1 und Neuladen wieder 77,44 €. Testpositionen entfernt, keine Bestellung ausgelöst. [Abschließende Übergabe](docs/handoffs/2026-11-08-steel-live-cart-verification.md) und [Nachweise](docs/reviews/2026-11-08-steel-shopify/integration-progress.md).

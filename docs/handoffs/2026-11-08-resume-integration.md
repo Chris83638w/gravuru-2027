@@ -78,6 +78,8 @@ Die öffentliche Bildroute liefert HTTP200 und `public, max-age=31536000, immuta
 
 **Verbleibende Performancearbeit:** Produktmodell in diesem Lauf 3,72 s, Galerieliste 2,03 s; eine weitere nicht vorbereitete Vorschau 4,45 s. Noch nicht behaupten, der ganze Konfi starte sofort. Nachladelogik bleibt begrenzt; keine Vollbibliothek oder 404 Varianten beim Produktseitenbesuch laden. Frische Handy-/Netzprüfung und enges Profiling dieser Serverabrufe sind die nächsten Messschritte. Keine neue Live-Warenkorbabnahme in diesem Schritt.
 
+Ergänzende Einzelmessung derselben öffentlichen Route über die aktuelle Arbeitsplatzverbindung: HEAD200 nach 1,49 s; komprimierter GET200 mit 101.773 übertragenen Bytes, erstes Byte nach 1,07 s, vollständig nach 2,36 s. Unkomprimiert 139.106 Bytes: erstes Byte 1,50 s, vollständig 6,01 s. Das trennt den sichtbaren Transferanteil von der ersten Antwort, beweist aber keine reine Serverlaufzeit. Netzwerk und serverseitiger Modellpfad sind getrennt zu untersuchen; Cachetreffer vermeiden beide Kosten.
+
 ## Module: separate Aktivierungsvorbereitung
 
 Die zuerst beobachtete 60-s-Fristüberschreitung in PR214 ist isoliert behoben, ohne diese Frist zu erhöhen. [Draft PR223](https://github.com/Chris83638w/gravuru-2027/pull/223) enthält die enge native Batchkorrektur (`173b414a2444afe55f86fd195c8bc7b2c4539230`, Dokumentationsstand `fce83b0494e320ce3821be25edad27ab747332f5`). Fremde Trigger/TEMP-Tabellen/Indexabweichungen bleiben auf dem vollständig vergleichenden Weg.

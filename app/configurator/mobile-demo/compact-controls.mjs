@@ -46,7 +46,7 @@ export function installDemoCompactControls({el,full,controls,returnButton}) {
       :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .c-large-preview .ux-workbench-toolbar,
       :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .c-large-preview .stage>.ux-design-reset{display:none!important}
       :host([data-mobile-demo]) .c-large-preview>.stage-wrap,:host([data-mobile-demo]) .c-large-preview>.fk-live-preview{order:0}
-      :host([data-mobile-demo]) .c-large-preview .md-compact-tools{align-self:flex-start;margin:0 0 0 6px!important;flex:none}
+      :host([data-mobile-demo]) .c-large-preview .md-compact-tools{align-self:center;margin:0 auto!important;flex:none}
       :host([data-mobile-demo]) .c-large-preview>.fk-buy-dock{order:2}
       :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .c-large-preview .stage:not(.acryl-scene){padding-top:max(12px,var(--ux-toolbar-space,0px))!important}
     }

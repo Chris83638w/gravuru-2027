@@ -1,0 +1,13 @@
+✔ existing private management mounts module review → exact confirmation → same Shopify IDs, with no network (3880.9666ms)
+✔ mounted management rejects changed module revision after confirmation without touching the product (2458.8895ms)
+✔ same demo mounts the existing module editor and guarded API; saved profile becomes a new explicit sync review (3036.357ms)
+✔ actual Plesk routes share gallery scopes, profile assignment, confirmation, source conflict and draft replay (1412.8138ms)
+✔ real native r4 module toggle preserves all 251 designs and all format data (649.7628ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9684.3702

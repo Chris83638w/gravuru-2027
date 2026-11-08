@@ -1,0 +1,35 @@
+{
+  "base": "324a6434c2e506f222dd3056b4333ad36af38b8d",
+  "pleskHost": "4821ff99babd41b32784e1014e8124bac9912d5b",
+  "productionMountReady": false,
+  "blocker": "Gallery source 24 designs; active steel bank 251 designs",
+  "tests": {
+    "skipped": 0,
+    "failed": 0,
+    "passed": 5
+  },
+  "shopifyWrites": 0,
+  "schema": "gravuru-shared-module-management-proof/v1",
+  "files": [
+    {
+      "sha256": "7dc62d340517e106a1ceb80eb363b9feef0bba8bc3ad8784a6acc123a63b630f",
+      "path": "app/workshop/http.mjs"
+    },
+    {
+      "sha256": "c215d2f5c7fc0c9853158ecefe756af42f58ced925a0354971004bfc2078d3a4",
+      "path": "scripts/lib/gallery-module-management-host.mjs"
+    },
+    {
+      "sha256": "ce12e7b21d1e8b91ed1afc8b18e671708667a7da82a3311fb79930e4da5591f7",
+      "path": "scripts/lib/gallery-module-management-host.test.mjs"
+    },
+    {
+      "sha256": "4767642d8c337ed1bbcbeac5efdeb2023eeaf0b7c202ad188f6fc105414d5edc",
+      "path": "scripts/lib/gallery-module-plesk-shared.test.mjs"
+    }
+  ],
+  "nativeCandidateSha256": "2e74548aa7211a2f5546af428e1d27d9f00f12181490356633e3cd109cb179c0",
+  "liveWrites": 0,
+  "nativeDesigns": 251,
+  "productionFiles": 2
+}

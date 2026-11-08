@@ -151,8 +151,21 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   const repository=createProductRepository({filename,tenantId,catalogOverview:d=>isFormProduct(d)?formOverview(d):productOverview(d),validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document)){if(document.profileAssignments)profiles.resolve(document);return verifyForm(document);}profiles.resolve(document);assets.validateDocument(document);productionProfiles.resolve(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{...(document.profileAssignments?{profiles:profiles.resolve(document)}:{}),form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)})});
   if(ownsBundled&&!repository.firstId())repository.create(seed);
   const families=createProductFamilies({filename,repository,tenantId});
-  let moduleManagement=null;
+  let moduleManagement=null,moduleSourceRegistry=null;
   const configuredModules=()=>moduleManagement??=createConfiguratorModuleManagement({filename,repository,tenantId});
+  // The private gallery installs its dynamic registry before serving requests.
+  // Both merchant surfaces share one service, not merely rows whose source and
+  // scope identifiers could otherwise refer to different catalogues.
+  function configureModuleManagement({filename:requestedFilename=filename,sourceRegistry}={}){
+    if(requestedFilename!==filename||!sourceRegistry||['targets','offeringFor','scopes'].some(key=>typeof sourceRegistry[key]!=='function'))fail(422,'module_management_registry','Die Modulverwaltung benötigt dieselbe Werkstattablage und die vorhandene Galeriezuordnung.');
+    if(moduleManagement){
+      if(moduleSourceRegistry===sourceRegistry)return moduleManagement;
+      fail(409,'module_management_initialized','Die Modulverwaltung wurde bereits mit einer anderen Quelle geöffnet. Den Galerieanschluss vor den ersten Anfragen konfigurieren.');
+    }
+    moduleManagement=createConfiguratorModuleManagement({filename,repository,tenantId,sourceRegistry});
+    moduleSourceRegistry=sourceRegistry;
+    return moduleManagement;
+  }
   // Katalogseite liest Linien/Hauptprodukte aus dem Katalog-Repo, sobald eines verbunden ist (sonst eingebauter Stand).
   const catalogStructure=createCatalogStructure({filename,tenantId,katalogDir:()=>{if(!ownsBundled)return null;const root=katalogDir===undefined?katalogPath():katalogDir;return root||null;}});
   // B1: Klarnamen für Kategorie-Kennungen (nur Anzeige) und Kundenstatus je Konfi.
@@ -1136,7 +1149,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {tenantId,catalogStructure,acrylShop,corrections,families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model:customerModelFor,galleryModel:(id,version)=>shopGalleryModel(repository.get(id,{revision:revision(version)})),internalModel:model,editorPreview,pausedPage,labelCategories,konfis,defaultId,close:()=>{moduleManagement?.close();motifSearchStats.close();catalogStructure.close();acrylShop.close();corrections.close();konfis.close();families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
+  return {tenantId,configureModuleManagement,catalogStructure,acrylShop,corrections,families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model:customerModelFor,galleryModel:(id,version)=>shopGalleryModel(repository.get(id,{revision:revision(version)})),internalModel:model,editorPreview,pausedPage,labelCategories,konfis,defaultId,close:()=>{moduleManagement?.close();motifSearchStats.close();catalogStructure.close();acrylShop.close();corrections.close();konfis.close();families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
 }
 
 /** Loopback preview; optional test session gate is not a public deployment.

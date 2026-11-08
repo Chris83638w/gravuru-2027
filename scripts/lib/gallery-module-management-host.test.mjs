@@ -60,6 +60,9 @@ test('same demo mounts the existing module editor and guarded API; saved profile
  const base='http://127.0.0.1:'+server.address().port;
  for(const route of ['/werkstatt/module/','/workshop-ui/module-profiles.mjs','/workshop-ui/module-profiles.css','/workshop-ui/merchant-request.mjs'])assert.equal((await fetch(base+route)).status,200,route);
  const api='/api/workshop/configurator-modules',initial=await(await fetch(base+api)).json();assert.ok(initial.profiles.some(p=>p.id===demo.profile.id));
+ assert.deepEqual(initial.sources.map(s=>s.key),demo.host.management.groups.sources().map(s=>s.key));
+ assert.equal(initial.scopes[0].lineId,'demo');
+ assert.equal(initial.scopes[0].subcategoryId,'steel');
  const {csrfToken}=await(await fetch(base+'/api/workshop/session')).json();
  const input={action:'profile-save',id:demo.profile.id,expectedRevision:1,document:{name:'Demo mit Logo',modules:{...demo.profile.profile.modules,logo:true}}};
  const post=token=>fetch(base+api,{method:'POST',headers:{'Content-Type':'application/json','X-Gravuru-CSRF':token},body:JSON.stringify(input)});

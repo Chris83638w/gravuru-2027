@@ -6,6 +6,7 @@ import os from 'node:os';
 import {createPublicDesignPreviewCache,publicPreviewRendererFingerprint} from './public-design-preview-cache.mjs';
 import {createPublicDesignPreviews} from './public-design-previews.mjs';
 import {createShopDesignGallery} from './shop-design-gallery.mjs';
+import {MODULE_PROFILE_SCHEMA} from '../configurator/variant-m/module-profile.mjs';
 
 const secret='synthetic-public-template-secret',url=h=>'/konfigurator/shop/vorschauen/'+h+'.svg';
 function fixture(t){
@@ -90,4 +91,23 @@ test('repreparing changed model bytes uses a fresh native renderer instead of th
  f.model.universal.profile.geometry.width=140;
  const second=await previews.prepare(f.binding),secondBytes=previews.read(hash(second.items[0].url));
  assert.notEqual(first.items[0].url,second.items[0].url);assert.notDeepEqual(firstBytes,secondBytes);assert.notEqual(secondBytes.toString(),before);
+});
+
+test('combined module/cache gate retires existing public URLs and prepares nothing when design choice is disabled',async t=>{
+ const f=fixture(t),profile={schema:MODULE_PROFILE_SCHEMA,id:'combined-review',revision:1,modules:{options:true,designs:true,text:true,motifs:true,photo:false,logo:false,colors:false}};
+ f.model.universal.moduleProfile=profile;
+ const original=JSON.stringify(f.model.universal.profile),{previews,gallery}=f.create(),prepared=await previews.prepare(f.binding);
+ assert.equal(prepared.prepared,3);const oldUrl=prepared.items[0].url;assert.ok(previews.read(hash(oldUrl)));
+ const context={store:f.store,binding:f.binding,session:{sid:'combined-review'}};
+ profile.modules.designs=false;profile.revision++;
+ assert.equal(previews.read(hash(oldUrl)),null);assert.deepEqual(previews.urls(f.binding),[]);
+ assert.deepEqual(await previews.prepare(f.binding),{prepared:0,items:[]});assert.equal(f.renders,3);
+ assert.equal(gallery.start(context,f.model,'d1',{cardModel:f.model}),null,'optional checked cardModel does not bypass the module gate');
+ await assert.rejects(()=>gallery.list(context,{sourceModel:f.model}),{status:403,code:'shop_gallery_disabled'});
+ assert.equal(JSON.stringify(f.model.universal.profile),original,'original designs and geometry remain exact');
+ delete profile.modules.designs;
+ assert.equal(previews.read(hash(oldUrl)),null);assert.deepEqual(previews.urls(f.binding),[]);
+ assert.throws(()=>gallery.start(context,f.model,'d1',{cardModel:f.model}),{code:'module_profile_invalid'});
+ // Optional speculative preparation deliberately omits rejected templates.
+ assert.deepEqual(await previews.prepare(f.binding),{prepared:0,items:[]});assert.equal(f.renders,3);
 });

@@ -1,3 +1,11 @@
+## 08.11.2026 · Codex/Mika · Ein kohärenter Modulverwaltungsstand, PR 213
+
+PR 194/201/202/203/207/208 und die freigegebenen R15-/Warenkorbreparaturen bis PR 212 sind in einem ausführbaren Checkout zusammengeführt. Repository-APIs und Materialkatalog bleiben erhalten; echte Plesk-Routen verwenden dieselbe Galerie-Registry, Profilbibliothek und Produktgruppenverwaltung. Reiner Profilwechsel hat einen eigenen nativen Zielvertrag ohne erfundene Galerie-Originale; Bestätigung, Versionen, Preise und unveränderliche Bestellstände bleiben geschützt.
+
+Reale 251-Design-/404-Variantenprüfung einschließlich später atomarer Rücknahme, Retry und Replay grün; finale Raceprüfungen 7/7 und Freigabe-/Cachetests 5/5. Unabhängiger Review bestätigt bei Quell-/Ziel-/Zuordnungsänderung vor dem Schreiben null Remote-Schreibaufrufe sowie Schutz bei eigenen, externen und Schemaänderungen. Kunden-Stylesheets bleiben bytegleich zur freigegebenen Basis. Kein Live-, Shopify- oder Main-Schreibzugriff durch diesen Integrationslauf.
+
+Nächster Schritt: geprüfte readonly Anschlussfactory in dasselbe private Runtimepaket aufnehmen, Sicherungsbelege prüfen und ausschließlich den bestehenden Galeriehost mit beiden Schreibschaltern aus anschließen. Aktive `gallery-4` und R15-Kundenhost bleiben erhalten. [Übergabe](docs/handoffs/2026-11-08-coherent-module-runtime.md) · [Produktionsbelege und Grenzen](docs/handoffs/2026-11-08-module-production-preflight.md).
+
 ## 08.11.2026 · Codex/Mika · Gemeinsamer Modul-/Gruppenservice lokal geprüft
 
 Galerie- und Modulverwaltung verwenden nach expliziter Host-Registrierung denselben Service mit Astras dynamischer Quellenregistry. Zwei Produktionsdateien geändert; kein Kundenlayout, Live-Mount, Shopifywrite oder Designrewrite. 5/5 gezielte Tests: echte Plesk-Routen mit bestätigter Entwurfsanlage, Konflikt/CSRF/Idempotenz sowie unveränderte 251 Designs des realen Edelstahl-r4 bei Logo an/aus. Integrationsbasis PR194/201/202/203/207 ausdrücklich dokumentiert. Gemeinsame Produktionsfreischaltung und Designsync bleiben wegen Galeriequelle 24 / Livebank 251 gesperrt. [Übergabe](docs/handoffs/2026-11-08-shared-module-management.md).

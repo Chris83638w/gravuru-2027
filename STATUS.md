@@ -1,3 +1,7 @@
+## 09.11.2026 – Mika: verbleibende Ladezeit lokal aufgeschlüsselt
+
+Begrenzter Profilversuch mit nativer Werkstatt, echtem Bindungsresolver und privater r4-Bank: warme Modellabfrage 1,14–1,37 s, Galerie 1,16–1,25 s, private Vorschau 1,33–1,38 s. Wiederholtes Lesen/Hashen/Kopieren desselben Produktstands dominiert; SVG-Erzeugung 3,8 ms beziehungsweise kein erneuter Aufruf. Reale Netzwerkwerte von Root separat dokumentiert; keine Server-CPU- oder Gesamtladezeitprognose. Nächster Reviewvorschlag: Wiederverwendung einer geprüften unveränderlichen Revision innerhalb einer abgesicherten Anfragephase, aktuelle Zuordnungen/Freigaben weiter frisch prüfen. Nur Bericht und Rohmesswerte gesichert, keine Produktionsdatei geändert. [Messung, Einschränkungen und Prüfanforderungen](docs/handoffs/2026-11-09-native-customer-path-profile.md).
+
 ## 09.11.2026 – Mika: fehlende Startvorschauen unabhängig reproduziert
 
 Native Werkstattmodelle, echter Slimmer und reale r4-Bank lokal geprüft. Ursache: vollständige Bindung statt ausschließlich zwei Shopify-IDs an die strikte Registry übergeben. Vorher Vorbereitung 3 / Startmanifest 0 / Bildabruf 404; mit Einzeiler `126574a4` drei URLs, GET/HEAD erfolgreich, identische Dateien nach Prozessneustart und kein Rendering beim Start. Nur unabhängiger Test und Dokumentation; keine Produktions- oder Liveänderung. [Prüfbericht und genaue Grenzen](docs/handoffs/2026-11-09-public-preview-native-start-review.md).

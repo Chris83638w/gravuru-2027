@@ -2,6 +2,8 @@
 
 Stand 08.11.2026. Nutzerauftrag: alle Formen, Optionen vor einer Anlage bestätigen lassen, freigegebenen R15-Aufbau erhalten. Drei Unteragenten haben Katalog/Excel, tatsächlichen Shopify-Bestand und Runtime-Anschluss getrennt geprüft. Mika hat den reproduzierbaren Options-/Bestandsabgleich umgesetzt. **Keine Produktanlage, kein Shop- oder Serverwrite, keine Änderung an `app/` oder dem freigegebenen Konfi.**
 
+**Nachtrag:** Die Optionen wurden anschließend vom Nutzer bestätigt: [vollständiger Freigabevermerk](user-approval.md). Erste Gruppe sind die normalen Türschilder. Die technischen Anschlussprüfungen bleiben erforderlich.
+
 ## Ergebnis
 
 - [Optionsübersicht zur Bestätigung](options-review.md): alle acht Formen / 80 Größen, konkrete Grundpreise und nur die je Größe verfügbaren Befestigungen. [Vollständige Matrix](catalog-matrix.json) einschließlich Excelzellen und echter Lochpositionen.
@@ -28,7 +30,7 @@ node --test scripts/prepare-steel-shopify-options.test.mjs
 
 ## Vor Anschluss noch notwendig
 
-1. **Nutzerbestätigung:** angebotene Größen/Preise/Befestigungen; ohne Bohrung als vorgeschlagener Startwert; Foto aus / SVG-Logo 12,99 €; präzise Benennung der drei verkürzten Größenlabels; erste Original-/Designgruppe. Keine dieser Entscheidungen aus einem JSON-Status ableiten.
+1. **Nutzerbestätigung erfolgt:** Größen/Preise/Befestigungen, ohne Bohrung als Startwert, Foto aus / SVG-Logo 12,99 €, präzise Größenlabels und „normale Türschilder“ sind ausdrücklich bestätigt. Siehe [Freigabevermerk](user-approval.md). Konkrete Originalzuordnung weiterhin anhand der Quellen prüfen.
 2. **R15-Sitzungsadapter:** vorhandenen nativen Shop-Einstieg nutzen, R15 vor dessen Bereitschaftsmeldung installieren. Produktdaten, Checkout und Designwechsel bleiben in derselben nativen Strecke. Kein Entfernen der Demo-Sperren. [Exakter Anschlussbericht](runtime-integration.md).
 3. **Alle Formen bedienbar machen:** R15-Motivgrößenlimit ist derzeit auf RE/QU beschränkt; AB/OV/EL/R/RT1/RT2 müssen konturbezogen angeschlossen und geprüft werden. Dies ist eine technische Anschlusslücke, keine Aufforderung zum UI-Umbau.
 4. **Echte Serverbindung und Preise:** native Produktrevision, Registry und installierte Gravuru-Preisfunktion aus der eigenen App prüfen. Der angeschlossene Connector gehört einer anderen App und darf `cartTransforms` nicht lesen. Das ist noch kein Nachweis einer fehlenden Function. [Tatsächliche Vorprüfung](shop-preflight.md).

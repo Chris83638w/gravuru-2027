@@ -1,0 +1,80 @@
+{
+  "readAt": "2026-11-08T01:45:29.228Z",
+  "status": "PASS_WITH_DECLARED_QUANTITY_LIMIT",
+  "productId": "gid://shopify/Product/16190784438652",
+  "productStatus": "DRAFT",
+  "variantsCount": 404,
+  "first": {
+    "id": "gid://shopify/ProductVariant/58104606556540",
+    "position": 1,
+    "sku": "156-GR-ES-AB-120X80-T15-K00",
+    "price": "19.99",
+    "availableForSale": true,
+    "inventoryPolicy": "CONTINUE",
+    "inventoryQuantity": 0,
+    "selectedOptions": [
+      {
+        "name": "Form & Größe",
+        "value": "Rechteck abgerundet · 12 × 8 cm"
+      },
+      {
+        "name": "Befestigung",
+        "value": "Ohne Bohrung"
+      }
+    ]
+  },
+  "second": {
+    "id": "gid://shopify/ProductVariant/58104601149820",
+    "position": 2,
+    "sku": "156-GR-ES-RE-80X20-T15-K00",
+    "price": "9.49",
+    "availableForSale": true,
+    "inventoryPolicy": "CONTINUE",
+    "inventoryQuantity": 0,
+    "selectedOptions": [
+      {
+        "name": "Form & Größe",
+        "value": "Rechteck · 8 × 2 cm"
+      },
+      {
+        "name": "Befestigung",
+        "value": "Ohne Bohrung"
+      }
+    ]
+  },
+  "all404IdsPreserved": true,
+  "all404PriceSkuOptionAvailabilityInventoryPolicyUnchanged": true,
+  "fieldChanges": [],
+  "optionAxesAndValueOrderUnchanged": false,
+  "orderExactlyTargetFirstRestUnchanged": true,
+  "positionsSequential": true,
+  "inventoryQuantityComparison": {
+    "comparedBeforeAndAfterUniqueCount": 51,
+    "changed": [],
+    "full404BeforeAndAfter": false,
+    "current404QuantitiesAllZero": true,
+    "limitation": "The fresh complete pre-change baseline included availability and policy, but inventoryQuantity only for first50 variants plus target. Do not claim full404 quantity comparison."
+  },
+  "performedShopMutationsByReviewer": 0,
+  "optionAxesAndValueSetsUnchanged": true,
+  "observedNativeOptionValueReorder": {
+    "optionId": "gid://shopify/ProductOption/18709769650556",
+    "name": "Form & Größe",
+    "value": "Rechteck abgerundet · 12 × 8 cm",
+    "from": 34,
+    "to": 1,
+    "other79RelativeOrderUnchanged": true,
+    "mounting7ValuesUnchanged": true,
+    "reason": "Shopify naturally placed the selected default variant option value first; parent accepted this as part of the approved start variant."
+  },
+  "evidenceFiles": {
+    "before": {
+      "file": "before.json",
+      "sha256": "22fc51439778586576c7a902b721c7ab91ce3a27a4a04adf0651c986d4b11490"
+    },
+    "after": {
+      "file": "after.json",
+      "sha256": "0758f455f177caaa0f0b27355181f44ae2303b9432e6593cd3fbd803aa405673"
+    }
+  }
+}

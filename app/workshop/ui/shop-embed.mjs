@@ -62,17 +62,36 @@ export function createStartTickets({fetchImpl=globalThis.fetch,now=Date.now,marg
 // Fehlt auf der Vorlage der eigene Knopf, setzt diese Datei ihn an die Stelle der Kaufknöpfe; die normalen
 // Kaufknöpfe dieses Produkts werden ausgeblendet (kein Kauf ohne Gestaltung).
 const ID=/^\d{1,20}$/;
+// Optional product-local presentation data. Liquid's product.variants is capped
+// at 250; the reviewed product manifest supplies its complete ID list. These
+// display/navigation hints never replace the server's signed binding checks.
+function productPresentation(doc,raw){
+ let data;try{data=JSON.parse(doc?.getElementById?.('gravuru-konfi-presentation')?.textContent||'');}catch{return null;}
+ if(data?.schema!=='gravuru-shop-presentation/v1'||data.ui!=='prio-r15'||!ID.test(String(data.productId))||!Array.isArray(data.variants)||!data.variants.length||data.variants.length>2048)return null;
+ // The existing custom-Liquid entry need not have the global app-embed JSON.
+ // In that case accept this complete profile only beside its matching own link.
+ if(!raw){
+  const own=[...(doc?.querySelectorAll?.('[data-gravuru-personalisieren]')||[])].some(block=>block.getAttribute?.('data-product-id')===String(data.productId)&&block.getAttribute?.('data-start')===PROXY+'/start');
+  if(!own)return null;raw={productId:data.productId,variantId:data.themeVariantId,back:data.back};
+ }
+ if(String(data.productId)!==String(raw.productId))return null;
+ const variants=data.variants.map(String);
+ if(variants.some(v=>!ID.test(v))||new Set(variants).size!==variants.length||!variants.includes(String(data.variantId))||!variants.includes(String(raw.variantId)))return null;
+ return {ui:'prio-r15',variants,variantId:String(data.variantId),themeVariantId:String(raw.variantId),source:raw};
+}
 export function pageConfig(doc=globalThis.document){
- const node=doc?.getElementById?.('gravuru-konfi');if(!node)return null;
- let raw;try{raw=JSON.parse(node.textContent||'');}catch{return null;}
- const productId=String(raw?.productId??''),variants=Array.isArray(raw?.variants)?[...new Set(raw.variants.map(String))].filter(v=>ID.test(v)):[];
- if(!ID.test(productId)||!variants.length||variants.length>250)return null;
- const variantId=variants.includes(String(raw.variantId))?String(raw.variantId):variants[0];
+ const node=doc?.getElementById?.('gravuru-konfi');
+ let raw;try{raw=node?JSON.parse(node.textContent||''):null;}catch{return null;}
+ const presentation=productPresentation(doc,raw);raw??=presentation?.source;if(!raw)return null;
+ const productId=String(raw?.productId??''),variants=presentation?.variants||(Array.isArray(raw?.variants)?[...new Set(raw.variants.map(String))].filter(v=>ID.test(v)):[]);
+ if(!ID.test(productId)||!variants.length||variants.length>(presentation?2048:250))return null;
+ const variantId=presentation?.variantId||(variants.includes(String(raw.variantId))?String(raw.variantId):variants[0]);
  const back=typeof raw.back==='string'&&/^\/(?!\/)[^\s]{0,300}$/.test(raw.back)?raw.back:'/';
- return {productId,variantId,variants,back};
+ return {productId,variantId,variants,back,...(presentation?{ui:presentation.ui,themeVariantId:presentation.themeVariantId}:{})};
 }
 export function startHref(config,variantId=config.variantId,search=globalThis.location?.search||''){
  const params=new URLSearchParams({product:config.productId,variant:config.variants.includes(String(variantId))?String(variantId):config.variantId,back:config.back});
+ if(config.ui==='prio-r15')params.set('ui','prio-r15');
  const toolbar=new URLSearchParams(search).getAll('leiste');if(toolbar.length===1&&['a','b'].includes(toolbar[0]))params.set('leiste',toolbar[0]);
  return PROXY+'/start?'+params;
 }
@@ -80,7 +99,20 @@ export function startHref(config,variantId=config.variantId,search=globalThis.lo
 export function productForms(config,doc=globalThis.document){
  return [...doc.querySelectorAll('form[action*="/cart/add"]')].filter(form=>config.variants.includes(String(form.querySelector('[name="id"]')?.value||'')));
 }
-const currentVariant=(config,doc)=>productForms(config,doc).map(form=>String(form.querySelector('[name="id"]')?.value||'')).find(v=>config.variants.includes(v))||config.variantId;
+const variantSelections=new WeakMap();
+export function currentVariant(config,doc,search=globalThis.location?.search||''){
+ const forms=productForms(config,doc),value=form=>String(form?.querySelector('[name="id"]')?.value||'');
+ if(config.ui!=='prio-r15')return forms.map(value).find(v=>config.variants.includes(v))||config.variantId;
+ // Start at the main-image variant until a real selection changes. Prefer the
+ // main purchase form over stale installment/sticky copies of the same product.
+ const buy=form=>!!form.querySelector('[type="submit"],[name="add"]'),sticky=form=>!!form.closest?.('[class*="sticky"],sticky-atc-bar');
+ const form=forms.find(form=>buy(form)&&!sticky(form))||forms.find(buy)||forms[0],selected=value(form);
+ let state=variantSelections.get(config);if(!state){state={form:config.themeVariantId,query:null,chosen:config.variantId};variantSelections.set(config,state);}
+ if(selected&&selected!==state.form){state.form=selected;state.chosen=selected;}
+ const values=new URLSearchParams(search).getAll('variant'),query=values.length===1&&config.variants.includes(values[0])?values[0]:null;
+ if(query&&query!==state.query)state.chosen=query;state.query=query;
+ return state.chosen;
+}
 export function prepareProductPage(config,doc=globalThis.document){
  const forms=productForms(config,doc);
  for(const form of forms)for(const node of form.querySelectorAll('[type="submit"],[name="add"],.shopify-payment-button'))node.setAttribute('data-gravuru-hidden-buy','');

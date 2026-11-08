@@ -34,7 +34,7 @@ Vor dem Mount wird eine private Online-Sicherung von acht SQLite-Datenbanken sow
 
 **Sicherung abgeschlossen:** 08.11.2026, 13:54:00 UTC. 16 Dateien einschließlich acht SQLite-Datenbanken mit `quick_check` und SHA256 wurden privat gesichert; zusätzlich drei Galerie-/Importdateien. Sicherungsordner `private/mika-module-connect-20261108-v2/pre-mount-backup-v2`, ergänzende Dateien `pre-mount-files-extra`. Vollständiger Receipt SHA256 `e4ae36a7e450fc295b4955266e556a36474bf0ed81f6d8a6d50162321339c83e`; lokale Nachweiskopie `outputs/module-production-connection-20261108/live-host/pre-mount-backup-final.json`.
 
-**Aktivierungsstand:** Noch keine Aktivierung des neuen Modulanschlusses, keine Änderung am Kundenhost und keine Shopify-Schreibaktion in diesem Arbeitsschritt. Beide Schreibschalter bleiben beim ersten Anschluss ausgeschaltet. Der lokale Integrationsstand ist in Draft PR 213; der neue rein lesende Anschluss wird in dasselbe Runtimepaket aufgenommen.
+**Aktualisierung nach privatem Mount:** Das geprüfte Paket aus `a71b3eb` wurde am 08.11. um 14:22:54 UTC am privaten Quellhost angeschlossen; zwei Modulprofile sind gespeichert und die echte native/Shopify-Vorprüfung ist grün. Kundenhost und Shopify bleiben unverändert, beide Schreibschalter aus. Die Verwaltung liefert HTML 200, ihr Datenabruf braucht jedoch einen gezielten Performancefix; sichtbare Abschlussabnahme noch offen. [Tatsächlicher Serverstand, Sicherung und nächste Schritte](2026-11-08-module-server-connection.md).
 
 ## Koordination
 

@@ -1,3 +1,9 @@
+## 08.11.2026 · Codex/Mika · Privater Modulanschluss installiert, Abschlussabnahme offen
+
+Paket `a71b3eb` mit 1.267 Dateien auf dem privaten Quellhost installiert; davor acht Datenbanken und elf ergänzende Dateien gesichert. Echte native/Shopify-Vorprüfung bestätigt 251 Originale, 80 Größen und 404 Verbindungen. Zwei reguläre Stahlprofile mit/ohne Logo gespeichert. Aktive Galerie, Kundenhost, Theme, Designs und Preise bleiben erhalten; keine Shopify-Schreibaktion, beide Sync-Schreibschalter aus.
+
+Einmaliger Katalogaufbau abgeschlossen (2.793 fehlende Einträge → 0). Tatsächliche Verwaltungs-HTML 200, aber Datenabruf nach 20.023 ms ohne Antwort: vollständige Quellprodukt-Scans werden jetzt gezielt aus dem Erstabruf entfernt. Sichtbare Browserabnahme und normaler Neustart offen. Allgemeine Modulregeln sind noch nicht auf dem R15-Kundenhost aktiviert; dafür getrenntes Minimalpaket in Vorbereitung. [Servernachweis, Sicherung und Rücknahme](docs/handoffs/2026-11-08-module-server-connection.md).
+
 ## 08.11.2026 · Codex/Mika · Ein kohärenter Modulverwaltungsstand, PR 213
 
 PR 194/201/202/203/207/208 und die freigegebenen R15-/Warenkorbreparaturen bis PR 212 sind in einem ausführbaren Checkout zusammengeführt. Repository-APIs und Materialkatalog bleiben erhalten; echte Plesk-Routen verwenden dieselbe Galerie-Registry, Profilbibliothek und Produktgruppenverwaltung. Reiner Profilwechsel hat einen eigenen nativen Zielvertrag ohne erfundene Galerie-Originale; Bestätigung, Versionen, Preise und unveränderliche Bestellstände bleiben geschützt.

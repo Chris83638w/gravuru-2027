@@ -1,3 +1,10 @@
+## 08.11.2026 – Codex: erneute Elementauswahl nach freiem Touch
+
+- Isolierter Branch `dev/mika-r15-pointer-reselect-20261108`, Basis `7b8bc287`; eine Laufzeitdatei `view-zoom.mjs`, kein Layout-/Preis-/Designumbau.
+- Nach außerhalb des Hosts beendeter Berührung bleiben keine verwaisten Pointer im Ansichtsregler. Eigene aktive Capture-Übergaben und native Ereignisse behalten ihr Verhalten; BFCache-Rückkehr meldet die begrenzten Beobachter einmalig wieder an.
+- Regression vor Fix rot, danach 29/29 gezielte Adapter-/Modelltests grün; Build 151 Module/16 Styles und Diffprüfung grün. Vorher-SHA exakt Live-Manifest; Sicherung und Einzeldateipaket vorhanden.
+- Kein Livezugriff durch Unteragent. Root prüft und veröffentlicht nur den Einzelpatch; reale Handy-/Maus-Nachprüfung noch offen. [Übergabe](docs/handoffs/2026-11-08-r15-pointer-reselect.md).
+
 ## 08.11.2026 – Codex: Warenkorb-PNG bindet geprüfte Uploads ein
 
 - Isolierter Branch `dev/mika-cart-preview-uploads-20261108`; nur `adapter.mjs`, `ux.mjs` und neues `preview-uploads.mjs` betreffen die Laufzeit. Kein Layout-, Preis- oder Designumbau.

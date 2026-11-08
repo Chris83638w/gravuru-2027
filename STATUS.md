@@ -1,3 +1,7 @@
+## 08.11.2026 – Mika: R15-Hotfix, Performance und Modulregeln gemeinsam vorbereitet
+
+Isolierte Zusammenführung auf c76e2a7: zwölf Moduldateien plus Cross-Realm-Korrektur, beide Performanceüberschneidungen erhalten. 274 unterschiedliche gezielte Fälle erfolgreich nach zwei reinen Testfixturekorrekturen; nativer Build und echter r4-Nachweis (251 Designs, acht Formen, 80 Größen, 404 Preisvarianten) grün. Demo, Vorschau, Touch/Zoom, Reset und sämtliche CSS unverändert zur freigegebenen Basis. Kein Livezugriff, keine Profilzuweisung, private Schreibgates weiterhin aus. [Paket, Prüfgrenzen und Wiederaufnahme](docs/handoffs/2026-11-08-r15-modules-performance.md).
+
 ## 08.11.2026, 17:05 Berlin – Mika: Live-Stand und offene Kundenmeldungen vor Flugpause gesichert
 
 Touch-/Vorschaufix seit 16:41, begrenztes Produktseiten-Vorladen und Einzelressourcen seit 16:54 veröffentlicht. Aktive Runtime `private/mika-r15-assets-20261108-v1`, Bundle `editor-6b08ecd29481848d.mjs`; keine Produkt-/Datenbank-/Themeänderung. Tatsächliche Shopify-Einbettung geprüft; keine gemessenen Handy-Cachetreffer behaupten. Kunde meldet weiterhin langsame Designs/Motive und SVG-Seitenverhältnisfehler: offen, Diagnose läuft. Neue Desktopleiste, Entfernen des grauen Balkens und sichtbarer Produkt-Zurück-Button sind wegen „Warte noch“ noch nicht umgesetzt. Module separat vorbereitet; keine Produktprofilaktivierung. [Zentrale Wiederaufnahme mit Sicherungen, Links und Prüfgrenzen](docs/handoffs/2026-11-08-current-konfi-before-flight.md).
@@ -9,6 +13,9 @@ PR216: Die Sichtliste wird nicht mehr vor dem Filtern geladener Karten auf zwöl
 ## 08.11.2026 – Codex: begrenztes Produktseiten-Vorladen und sichtbare Bibliothekskarten
 
 Eigener Branch auf aktiver Basis 16eda61. Der Kunden-Fontdialog zeigt vorhandene Proben sofort, weitere Schriften/Motive laden nur für sichtbare Karten mit zwei parallelen Einzelabrufen. Die bestehende Shopify-Startkarte liefert eine kleine öffentliche Warmup-Liste; keine Themeänderung, keine Vollbibliothek und kein versteckter kompletter Editorstart. Echter r4-Datensatz (251 Originale/80 Größen) unverändert; Manifest 484 Bytes, native Startschrift plus sechs vorhandene Motive. 38/38 Loader/Build/Shop-Client-Tests und 4/4 gezielte HTTP-Tests grün; weitere Queue/UI-Nachweise und Messgrenzen in der [Übergabe](docs/handoffs/2026-11-08-shop-assets-visible-loading.md). Build erfolgreich; Browserabnahme und Live separat durch Root. Aktuelle Touch-/Vorschaufixes sowie Modulpatch nicht durch Baselinekopie ersetzen.
+## 08.11.2026 – Mika: R15-Modulregeln getrennt vorbereitet
+
+Zwölf exakt begrenzte Runtime-Dateien übertragen: gemeinsamer Modulvertrag in bestehender Oberfläche sowie serverseitiger Entwurfs-/Preisprüfung, ohne Layout-/CSS-/Produktänderung. Aktive Vorher-SHAs frisch durch Root bestätigt; V1/V2 und Pointer/PNG/Vorschau/Cart-Rückweg erhalten. 237/237 gezielte Tests (19 Dateien), realer r4-Nachweis für 251 Designs/80 Größen/404 Kombinationen und nativer Build grün. Noch kein Deployment oder neuer Kunden-Browsernachweis; Modulprofile dürfen erst nach kontrollierter Laufzeitabnahme produktiv gebunden werden. [Übergabe, Paket und Rücknahme](docs/handoffs/2026-11-08-r15-module-rules.md).
 
 ## 08.11.2026 – Mika: Große Vorschau unter dem Produkt vorbereitet
 

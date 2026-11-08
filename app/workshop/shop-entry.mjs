@@ -17,6 +17,8 @@ import {loadCartRevision,loadCartRevisionPhoto} from './cart-edit-revision.mjs';
 import {CART_CONFIG_ID,CART_LINE_ID} from './cart-configuration.mjs';
 import {PAUSED_MESSAGE} from './konfi-status.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
+import {moduleEnabled} from '../configurator/variant-m/module-profile.mjs';
+import {selectedProfile} from '../configurator/variant-m/contract.mjs';
 
 // Öffentlicher Kundeneinstieg „Jetzt personalisieren“ (SHOP-ENTRY.txt). Shopify ruft über den App-Proxy
 // `GET <proxyPath>/start?product=&variant=…&signature=…` auf; die Zuordnung läuft ausschließlich über die
@@ -155,6 +157,10 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  const previewRoute=new RegExp('^'+pagePath+'vorschauen/([a-f0-9]{64})\\.svg$');
  const slimmer=modelSlimmer===undefined?createModelSlimmer({fetchJson:async p=>{const r=await fetch(origin+p,{signal:AbortSignal.timeout(15000)});if(!r.ok)throw Error('http '+r.status);return r.json();},surfaceSwaps:surfaceSwapsFrom(DEFAULT_SURFACE_DIR),fontUrl:hash=>pagePath+'schriften/'+hash+'.json'}):modelSlimmer;
  function presentedModel(model,binding,store,designId=null){
+  if(designId&&!moduleEnabled(model.universal,'designs')){
+   const profile=selectedProfile(model.universal,binding.options);
+   if(designId!==(profile.defaultDesignId||profile.designs[0]?.id))fail(403,'shop_entry_design_disabled','Die Designauswahl ist bei diesem Produkt ausgeschaltet.');
+  }
   const copy=shopStartModel(model,designId,{deferFonts:!!slimmer&&!model.universal.doorbell,options:binding.options});
   // `source`: ausgelagerte Schriften lassen sich nach Verdrängung aus dem gespeicherten Modell nachliefern.
   if(slimmer){if(copy.universal.doorbell&&!slimmer.ready())slimmer.load();slimmer.slim(copy.universal,{deferAll:!copy.universal.doorbell,key:copy.configuration?.id&&copy.configuration?.revision?copy.configuration.id+':'+copy.configuration.revision+':fonts':null,source:()=>modelFor(store,binding).universal?.localResources?.fonts});}

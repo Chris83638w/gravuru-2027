@@ -3,6 +3,12 @@
   "base": "587a395841f3a7ff8ab4a1a7028e9505defad6ae",
   "files": [
     {
+      "path": "app/configurator/mobile-demo/assets.mjs",
+      "beforeSha256": "986b29da25802cb87a31bddd69f46a789bcb32cfbe2d1afa7682fc6c0e2c3a51",
+      "afterSha256": "37d74852e564b96e34c0ddb37e20a10c522986f37b826cecef285ac9320dcdfc",
+      "bytes": 659
+    },
+    {
       "path": "app/configurator/mobile-demo/demo.mjs",
       "beforeSha256": "2b114442ee6fd43f3f215862f579fa0680bc98f2f7f6f07337ffbd2dd6a19992",
       "afterSha256": "4227eb43f63d384797c2ba7fe68d3f5797eddae3fa435446fd6e4fcfd7cb9308",
@@ -168,8 +174,8 @@
     }
   ],
   "tests": {
-    "passed": 57,
-    "files": 3
+    "passed": 59,
+    "files": 4
   },
   "modulesActivated": false,
   "productWrites": 0,

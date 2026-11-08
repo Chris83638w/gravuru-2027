@@ -5,7 +5,12 @@ Nutzerfreigabe: „Setze alles um“, 08.11.2026. Isolierte Basis
 `dev/mika-r15-controls-20261108`. Keine Modulaktivierung, keine Produkt-/Preis-/
 Shopify-/Datenbankänderung und kein Main-Merge. Root übernimmt Live und Browser.
 
-## Drei Produktionsdateien
+## Vier Produktionsdateien
+
+- `app/configurator/mobile-demo/assets.mjs`: bestehende öffentliche Allowlist
+  ausdrücklich um den neuen Helper ergänzen. Der erste Drei-Datei-Entwurf hatte
+  diese Route übersehen; Roots Browserabnahme erkannte den 404 vor Veröffentlichung.
+  Korrigiert in `e5d2195`, echter Importgraph/HTTP-Nachweis anschließend 2/2 grün.
 
 - `app/configurator/mobile-demo/demo.mjs`: ausschließlich Helper importieren,
   installieren und beim Entfernen wieder abbauen.
@@ -38,7 +43,10 @@ app/configurator/variant-m/toolbar-hosts.test.mjs`. Neue Fälle decken native
 Aktionsweiterleitung und Status, Fullscreen-Rückkehr, freie Fläche versus
 Produkt, Doppeltipp/Drag/Mehrfinger sowie verlorenen SVG-Pointer ab. Bestehende
 Demo-/Checkout-/Viewportwechsel-/Dispose-/Touch- und Zoomtests bleiben grün.
-Nativer Build erfolgreich. Contract prüfte die drei Dateien ohne konkreten
+Zusätzlich 2/2 echte Importgraph-/HTTP-Prüfungen mit
+`node --test app/configurator/mobile-demo/native-overlay.test.mjs`, einschließlich
+aller abhängigen Module, no-store und unveränderten 403/404/405-Sperren. Insgesamt
+59 unterschiedliche Fälle grün. Nativer Build erfolgreich. Contract prüfte die UI-Dateien ohne konkreten
 Funktionsblocker; die tatsächliche Positionierung bei kleinen Viewports,
 Großansicht und ausgewähltem Foto benötigt Roots reale Browserabnahme.
 
@@ -49,15 +57,16 @@ rechte Bearbeitungsspalte, Checkout, Zoom-/Reset-/Pointergrundlogik.
 ## Veröffentlichung und Rücknahme
 
 Paket `outputs/r15-controls-20261108/r15-controls-patch.tar.gz` enthält ausschließlich
-die drei Quellen, Vorherkopien der zwei bestehenden Dateien, SHA256-Manifest,
+die vier Quellen, Vorherkopien der drei bestehenden Dateien, SHA256-Manifest,
 diese Übergabe und einen rein lesenden Prüfmodus. Root prüft die Vorher-SHAs
-gegen den aktuell veröffentlichten Stand, sichert und übernimmt nur die drei
-Dateien. Danach nativer Build in der exakt aktuellen Laufzeit; keine vollständige
+gegen den aktuell veröffentlichten Stand, sichert und übernimmt nur die vier
+Dateien. Das frühere Drei-Dateipaket ohne assets.mjs darf nicht verwendet werden.
+Danach nativer Build in der exakt aktuellen Laufzeit; keine vollständige
 isolierte Runtime oder deren CSS über die aktive App kopieren.
 
 Vor Freigabe Handy und Desktop: Produkt-Zurück-Link, Normalansicht/Vollansicht,
 Platzierung des grauen Pfeils außerhalb der Grafik, Plus, Resetbestätigung,
 Undo/Redo/Hilfe/Ebenen, freie Doppeltippfläche, Elementverschieben nach Leer-Tap,
 Tab-/Viewportwechsel und Checkout prüfen. Die Helper sind wieder entfernbar:
-zwei Vorherdateien zurück, ausschließlich neu hinzugefügten Helper entfernen,
+drei Vorherdateien zurück, ausschließlich neu hinzugefügten Helper entfernen,
 erneut bauen und kontrolliert umstellen. Keine DB-/Shopify-Rücknahme erforderlich.

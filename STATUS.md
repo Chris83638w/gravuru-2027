@@ -1,6 +1,6 @@
 ## 08.11.2026 – Mika: kompakte R15-Aktionen getrennt vorbereitet
 
-Im freigegebenen UI-Umfang drei Quelldateien auf587a395: native Desktopaktionen unten gruppiert, volle Vorschauzeile entfernt, grauer44pxPfeil am Produkt, sichtbarer Produkt-Rückweg und Schließen der Vollansicht per freiem Doppeltipp. 57/57 gezielte Demo-/Touch-/Zoom-/Toolbar-Tests grün; Build grün, unabhängiger enger Review ohne Blocker. Keine CSS-Datei/Preis-/Produkt-/Moduländerung und kein Livezugriff durch Agent. [Übergabe, Einzelfilepaket und Browsergrenzen](docs/handoffs/2026-11-08-r15-compact-controls.md).
+Im freigegebenen UI-Umfang vier Quelldateien auf 587a395: native Desktopaktionen unten gruppiert, volle Vorschauzeile entfernt, grauer 44-px-Pfeil am Produkt, sichtbarer Produkt-Rückweg und Schließen der Vollansicht per freiem Doppeltipp. 57/57 gezielte Demo-/Touch-/Zoom-/Toolbar-Tests plus 2/2 echte Importgraph-/HTTP-Tests grün; Build grün. Die zunächst fehlende Helper-Allowlist wurde durch Roots Browserprüfung vor Veröffentlichung entdeckt und in e5d2195 ergänzt. Keine CSS-Datei/Preis-/Produkt-/Moduländerung und kein Livezugriff durch Agent. [Übergabe, Einzelfilepaket und Browsergrenzen](docs/handoffs/2026-11-08-r15-compact-controls.md).
 
 ## 08.11.2026, 17:05 Berlin – Mika: Live-Stand und offene Kundenmeldungen vor Flugpause gesichert
 

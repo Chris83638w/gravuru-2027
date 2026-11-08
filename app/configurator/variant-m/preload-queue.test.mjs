@@ -102,7 +102,7 @@ async function fakeEditor(name){
     if(url.endsWith('motive/import-a.json'))return {key:'import-a',name:'A',category:'K',svgFragment:'<g/>',bounds:[0,0,1,1]};
     if(url.endsWith('motive-alle.json'))return [{key:'import-a',name:'A',category:'K',svgFragment:'<g/>',bounds:[0,0,1,1]}];
     throw Error(url);};
-  attach(el,{catalog,entries,prepare:()=>{},get,base:'/l/'});el.uxEnsureVisibleMotifs=()=>el.uxEnsureMotifs(['import-a']);
+  el.uxInitialMotifKeys=['import-a'];attach(el,{catalog,entries,prepare:()=>{},get,base:'/l/'});el.uxEnsureVisibleMotifs=()=>el.uxEnsureMotifs(['import-a']);
   const images=[];
   class FakeImage{constructor(){images.push(this);}set src(url){this.url=url;setTimeout(()=>this.onload?.(),2);}}
   const timers=[];
@@ -112,7 +112,7 @@ async function fakeEditor(name){
   return {el,r,win,requests,images,panels,listeners,run};
 }
 
-test('Background warms only bounded recommended fonts and visible motifs; no complete library or all-font sweep',async()=>{
+test('Background warms bounded recommended fonts and actual initial motifs before the hidden panel opens',async()=>{
  const f=await fakeEditor('bounded-background');
  const q=installBackgroundLoading({el:f.el,r:f.r,config:{acrylic:{},profile:{optionGroups:[]}},win:f.win});await f.run();
  assert.deepEqual(f.images.map(i=>i.url),optionImageUrls({acrylic:{}}));assert.ok(f.images.every(i=>i.fetchPriority==='low'));

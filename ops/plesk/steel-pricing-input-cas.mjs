@@ -5,12 +5,12 @@ import {isDeepStrictEqual} from 'node:util';
 // emergency tool bundles without importing the running app or product fixtures.
 const I=Object.freeze({appId:'gid://shopify/App/423276544001',shopDomain:'gravuru-design.myshopify.com',apiVersion:'2026-07',clientId:'9640dd7a6907f0c73e7013ea8c24869b'});
 import {encodeFunctionPricing} from '../shopify/master-release/pricing-storage.mjs';
-import {resolvedPricingHistory} from '../shopify/master-release/pricing-history.mjs';
+import {resolvedPricingHistory,expandPricingVariants} from '../shopify/master-release/pricing-history.mjs';
 export const TARGET='gid://shopify/Product/16190784438652';
 export const EXPECTED_BEFORE_SHA='76012d418f5c82b8f7c0c8339a0441f3fe41286aa903d287d84f00d169daf1ed';
 export const sha=value=>createHash('sha256').update(value).digest('hex');
 const fail=code=>{throw Object.assign(Error(code),{code});};
-const expand=p=>({...p,...(p.history===undefined?{}:{history:resolvedPricingHistory(p)})});
+const expand=p=>({...expandPricingVariants(p),...(p.history===undefined?{}:{history:resolvedPricingHistory(p)})});
 export function planSteelPricingInput(raw,expectedBeforeSha=EXPECTED_BEFORE_SHA){
  if(typeof raw!=='string'||sha(raw)!==expectedBeforeSha)fail('previous_pricing_changed');
  const before=JSON.parse(raw);

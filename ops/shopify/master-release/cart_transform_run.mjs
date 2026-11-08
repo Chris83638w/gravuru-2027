@@ -1,17 +1,18 @@
 import {cartTransformRun as currentPriceTransform} from './price-v1.mjs';
 import {withCheckoutDesignImages} from '../checkout-image/cart-image.mjs';
 import {legacyPrice} from './legacy-price.mjs';
-import {pricingForLine} from './pricing-history.mjs';
+import {createPricingResolver} from './pricing-history.mjs';
 import {readSelectedOptions,priceSelectedOptions} from './priced-options.mjs';
 
 // Keep the currently released V1 arithmetic and all existing quantity tiers.
 // V2 adds a separately counted logo fee to the complete unit before that same
 // discount/rounding step. No browser-supplied price is accepted.
 export function cartTransformRun(input){
+ const pricingForLine=createPricingResolver();
  const legacy=[];
  const lines=input.cart.lines.map(line=>{
   let item=line.merchandise;const pricing=pricingForLine(line);
-  if(pricing&&pricing!==item.product.pricing?.jsonValue){item={...item,product:{...item.product,pricing:{...item.product.pricing,jsonValue:pricing}}};line={...line,merchandise:item};}
+  if(pricing&&pricing.schema!=='gravuru-personalization-pricing/v2'&&pricing!==item.product.pricing?.jsonValue){item={...item,product:{...item.product,pricing:{...item.product.pricing,jsonValue:pricing}}};line={...line,merchandise:item};}
   const optionsContract=pricing?.schema==='gravuru-personalization-pricing/v3';
   if(optionsContract){
    if(pricing.enabled!==true||pricing.productId!==item.product.id||pricing.currency!=='EUR')throw Error('Invalid option pricing configuration');
@@ -36,7 +37,7 @@ export function cartTransformRun(input){
   if(logos+uploads>4)throw Error('Invalid combined upload count');
   const variantId=item.id.split('/').pop(),base=pricing.variants?.[variantId];
   if(!Number.isSafeInteger(base)||base<0||base>100000000)throw Error('Invalid variant price');
-  const mapped={...pricing,schema:'gravuru-personalization-pricing/v1',variants:{...pricing.variants,[variantId]:base+logos*pricing.extraLogoCents}};
+  const mapped={...pricing,schema:'gravuru-personalization-pricing/v1',variants:{[variantId]:base+logos*pricing.extraLogoCents}};
   return {...line,merchandise:{...item,product:{...item.product,pricing:{...item.product.pricing,jsonValue:mapped}}}};
  }).filter(Boolean);
  const current=currentPriceTransform({...input,cart:{...input.cart,lines}});

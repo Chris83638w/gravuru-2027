@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {compactPricingHistory,encodeFunctionPricing} from './pricing-storage.mjs';
-import {resolvedPricingHistory,pricingForLine} from './pricing-history.mjs';
+import {resolvedPricingHistory,pricingForLine,expandPricingVariants} from './pricing-history.mjs';
 import {cartTransformRun} from './cart_transform_run.mjs';
 const productId='gid://shopify/Product/16190784438652';
 function contract(){
@@ -22,13 +22,15 @@ test('404 complete current and old variant prices survive below the Function inp
  assert.equal(cartTransformRun(input(line(after))).operations[0].lineUpdate.price.adjustment.fixedPricePerUnit.amount,'30.47');
  assert.deepEqual(compactPricingHistory(after),after);
 });
-test('later changed prices keep old revision references stable and oversized unique maps cannot publish',()=>{
- const p=encodeFunctionPricing(contract()).pricing,{history,...oldCurrent}=p;
+test('later changed prices keep old revision references stable after recompaction',()=>{
+ const p=expandPricingVariants(encodeFunctionPricing(contract()).pricing),{history,...oldCurrent}=p;
  const later={...structuredClone(oldCurrent),revision:3,variants:{...oldCurrent.variants,'58104613339516':9999},history:[...history,oldCurrent]};
  assert.equal(pricingForLine(line(later,1)).variants['58104613339516'],1748);
  assert.equal(pricingForLine(line(later,2)).variants['58104613339516'],1748);
  assert.equal(pricingForLine(line(later,3)).variants['58104613339516'],9999);
- assert.throws(()=>encodeFunctionPricing(later),/10000-byte/);
+ const after=encodeFunctionPricing(later).pricing;
+ assert.deepEqual({...expandPricingVariants(after),history:resolvedPricingHistory(after)},{...later,history:resolvedPricingHistory(later)});
+ for(const revision of [1,2,3])assert.deepEqual(cartTransformRun(input(line(after,revision,undefined,0))),cartTransformRun(input(line(later,revision,undefined,0))));
 });
 test('dangling, cyclic, ambiguous and mixed references reject without altering legacy offers',()=>{
  for(const mutate of [p=>p.history[0].variantsFromRevision=99,p=>p.history[0].variantsFromRevision=1,p=>p.history[0].variants={},p=>p.history[0].variantsFromRevision='2',p=>p.variantsFromRevision=1,p=>p.history.push({...p.history[0]})]){
@@ -44,8 +46,51 @@ test('missing/omitted pricing fails closed for personalized cart, ordinary produ
  l.configuration={value:'konfig_aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'};l.offer={value:'a'.repeat(64)};
  assert.throws(()=>cartTransformRun(input(l)),/pricing unavailable/);
 });
-test('unequal price map is never shared and UTF8 bytes are checked before publication',()=>{
+test('unequal prices retain explicit historical deltas and UTF8 bytes are checked',()=>{
  const p=contract();p.history[0].variants['58104613339516']+=1;
- const c=compactPricingHistory(p);assert.deepEqual(c.history[0].variants,p.history[0].variants);assert.throws(()=>encodeFunctionPricing(c));
+ const c=compactPricingHistory(p);assert.deepEqual(c.history[0].variantDeltas,[[1,'0']]);assert.deepEqual(resolvedPricingHistory(c),p.history);assert.ok(encodeFunctionPricing(c).bytes<10000);
  const one=contract();one.history=[];one.note='ä'.repeat(6000);assert.throws(()=>encodeFunctionPricing(one));
+});
+
+test('historical delta ranges are strict, disjoint and preserve zero or higher prices',()=>{
+ const p=contract();p.history[0].variants['58104613339516']+=20;
+ for(const bad of [[],[[0,'0']],[[20,'01']],[[20,'1-0']],[[20,'0-0']],[[20,'404']],[[20,'0,0']],[[20,'0'],[30,'0']],[[20,'0'],[20,'1']],[[20,'9007199254740992']],[[20,'1,0']],[[20,'0-999999999']],[[20,'']],[[20,0]],[[-99999,'0']]]){
+  const c=compactPricingHistory(p);c.history[0].variantDeltas=bad;assert.throws(()=>resolvedPricingHistory(c));
+ }
+ const unbound=contract();unbound.history[0].variantDeltas=[[1,'0']];assert.throws(()=>resolvedPricingHistory(unbound));
+ const c=compactPricingHistory(p);c.history[0].variantDeltas=[[-1748,'0']];assert.equal(resolvedPricingHistory(c)[0].variants['58104613339516'],0);
+ const changedKeys=contract();delete changedKeys.history[0].variants['58104613339516'];assert.deepEqual(resolvedPricingHistory(encodeFunctionPricing(changedKeys).pricing),changedKeys.history);
+});
+
+test('sequence IDs, prices and mutually exclusive table representations are exact',()=>{
+ const p=encodeFunctionPricing(contract()).pricing;assert.equal(p.variants,undefined);assert.equal(p.variantSequence.prices36.length,404*p.variantSequence.width);assert.deepEqual(expandPricingVariants(p).variants,contract().variants);
+ for(const mutate of [p=>p.variants={},p=>p.variantSequence.step=0,p=>p.variantSequence.step=0.5,p=>p.variantSequence.first='058104613339516',p=>p.variantSequence.first='9007199254740991',p=>{p.variantSequence.width=6;p.variantSequence.prices36='zzzzzz'+p.variantSequence.prices36.slice(6)},p=>p.variantSequence.prices36='!'+p.variantSequence.prices36.slice(1),p=>p.variantSequence.width=0,p=>p.variantSequence.width=7,p=>p.variantSequence.prices36+='0',p=>p.variantSequence.prices=[],p=>p.variantSequence.extra=1,p=>p.history[0].variantSequence=p.variantSequence]){
+  const c=structuredClone(p);mutate(c);assert.throws(()=>encodeFunctionPricing(c));
+ }
+ assert.throws(()=>pricingForLine(line(p,2,'58104613339517')),/Missing historical variant/);
+ const unordered=contract();unordered.variants=Object.fromEntries(Object.entries(unordered.variants).reverse());assert.deepEqual(expandPricingVariants(encodeFunctionPricing(unordered).pricing).variants,contract().variants);
+ const nonSequence=contract();nonSequence.variants['58104613339517']=1234;const c=encodeFunctionPricing({...nonSequence,history:[]}).pricing;assert.ok(c.variants);assert.equal(c.variantSequence,undefined);
+});
+
+test('raw input cache is isolated by the complete contract and by Function invocation',()=>{
+ const first=contract(),second=contract();second.variants['58104613339516']+=117;
+ const a=encodeFunctionPricing(first).pricing,b=encodeFunctionPricing(second).pricing;
+ const raw=l=>{const r=structuredClone(l),f=r.merchandise.product.pricing;r.merchandise.product.pricing={value:JSON.stringify(f.jsonValue)};return r;};
+ const lines=[line(a,2),line(b,2),line(a,1,undefined,0),line(b,1,undefined,0)];
+ const invoke=ls=>cartTransformRun({presentmentCurrencyRate:'1',cart:{lines:ls}});
+ assert.deepEqual(invoke(lines.map(raw)),invoke(lines));assert.deepEqual(invoke(lines.toReversed().map(raw)),invoke(lines.toReversed()));
+ const bad=structuredClone(b);bad.currency='USD';assert.throws(()=>invoke([raw(lines[0]),raw(line(bad))]));
+ const other=structuredClone(b);other.productId='gid://shopify/Product/9';for(const h of other.history)h.productId=other.productId;
+ const mixed=line(other);mixed.merchandise.product.id=other.productId;assert.deepEqual(invoke([raw(lines[0]),raw(mixed)]),invoke([lines[0],mixed]));
+ const changed=contract();changed.variants['58104613339516']+=999;const c=encodeFunctionPricing(changed).pricing;assert.deepEqual(invoke([raw(line(c))]),invoke([line(c)]));
+ const malformed=raw(line(a));malformed.merchandise.product.pricing.value='{';assert.throws(()=>invoke([malformed]));
+});
+
+test('independent historical ID sequences never look up the selected variant in an unrelated revision',()=>{
+ const base={schema:'gravuru-personalization-pricing/v1',enabled:true,productId,currency:'EUR',extraMotifCents:169,extraPhotoCents:999};
+ const make=(revision,offset)=>({...base,revision,variants:Object.fromEntries(Array.from({length:8},(_,i)=>[String(58104613339516+offset+i),1000+i]))});
+ const p={...make(3,0),history:[make(1,100),make(2,200)]},compact=encodeFunctionPricing(p).pricing;
+ const selected=line(p,1,'58104613339616',0),after=line(compact,1,'58104613339616',0);
+ assert.deepEqual(cartTransformRun(input(after)),cartTransformRun(input(selected)));
+ after.merchandise.product.pricing={value:JSON.stringify(compact)};assert.deepEqual(cartTransformRun(input(after)),cartTransformRun(input(selected)));
 });

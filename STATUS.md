@@ -1,4 +1,8 @@
-## 08.11.2026 – Mika-Unteragent: Logo-Aufpreisfehler durch Function-Metafeldgrenze eingegrenzt und Korrektur vorbereitet
+## 08.11.2026 – Mika-Unteragent: echter Preisvertrag verlustfrei auf 2.318 Bytes verdichtet
+
+27 Tests und 14.140 Preisvergleiche gegen echten privaten Export bestanden. Alle 404 Varianten und 94 abweichenden Altpreise erhalten. Vollständiger App-Kandidat mit 21 bytegleichen Theme-Dateien; nur Function-Preisquery jsonValue→value, Resolver/Adapter und Binary ändern sich. Zehn gemischte Zeilen im WASM-Budget; 20 verschiedene Zeilen bleiben ausdrücklich eine offene Leistungsgrenze, Menge 20/50/99 in einer Zeile dagegen grün. Kein Kundenlimit, kein UI-Umbau und keine Veröffentlichung durch Unteragent. [Artefakte, Grenzen und Rollout](docs/handoffs/2026-11-08-steel-pricing-input-fix.md). Nächster Schritt: Parent prüft serverseitigen Preview und vollständige App-Differenz, danach echte Warenkorbabnahme.
+
+## 08.11.2026 – Mika-Unteragent: Logo-Aufpreisfehler eingegrenzt (historischer Zwischenstand)
 
 Realer Parent-Warenkorbtest zeigte 17,48 € statt 30,47 € mit einem Logo. Eigener App-Read bestätigt 18.557-Byte-Preisvertrag; Shopify Functions lassen Werte >10.000 Bytes aus. Historische identische 404er-Preistabelle wird nun revisionsgebunden referenziert, alle alten Preise/Verträge bleiben erhalten. Enger CAS-Helfer sichert Original vor Einzelmutation; fehlende Preisverträge werden in der Function abgewiesen. V1/V2-WASM synthetisch geprüft, vollständiger Remote-Modulerhalt für App-Kandidaten vorbereitet, kein UI-/Server-/Shop-Deploy durch diesen Agenten. [Ursache, Nachweise, Rollout und Rückweg](docs/handoffs/2026-11-08-steel-pricing-input-fix.md). Nächster Schritt: Parent prüft vollständigen Kandidaten, veröffentlicht Function, führt gesicherten Metafeld-CAS und echten Warenkorbtest aus.
 

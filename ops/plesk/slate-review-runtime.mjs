@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {verifyDirectory,markerValue,fail} from './config.mjs';
 import {createSlateGalleryHandler} from '../../scripts/lib/slate-review-gallery.mjs';
+import {loadSlateManagementConfig} from '../../scripts/lib/slate-management-config.mjs';
 
 export const SLATE_REVIEW_MARKER='.gravuru-slate-review.json';
 
@@ -33,12 +34,22 @@ export function verifySlateReviewDirectory(config){
   return validateSlateReviewMapping(pack,imported);
 }
 
-export function attachSlateReviewGallery(server,config,{csrfToken,workshop}){
+// The existing Plesk server owns authentication, CSRF and the data lock. This
+// optional local factory is selected only by its private startup configuration.
+export async function attachConfiguredSlateReviewGallery(server,config,context){
+  const management=await loadSlateManagementConfig(config.galleryManagementConfig,{
+    workshop:context.workshop,filename:path.join(config.data,'workshop.sqlite'),
+    dataDirectory:config.data,galleryDirectory:config.slateReviewPackage,
+    importsFile:path.join(config.data,'local-review-import.json')});
+  return attachSlateReviewGallery(server,config,{...context,management});
+}
+
+export function attachSlateReviewGallery(server,config,{csrfToken,workshop,management}){
   verifySlateReviewDirectory(config);
   const importsFile=path.join(config.data,'local-review-import.json');
   // Native products and their revision history are already in the copied
   // database. Never re-import catalogue baselines over the user's edits.
-  const gallery=createSlateGalleryHandler(config.slateReviewPackage,importsFile,{csrfToken,workshop});
+  const gallery=createSlateGalleryHandler(config.slateReviewPackage,importsFile,{csrfToken,workshop,...(management?{management}:{})});
   const handlers=server.listeners('request');server.removeAllListeners('request');
   server.on('request',(req,res)=>{if(!gallery(req,res))for(const handler of handlers)handler.call(server,req,res);});
   return gallery;

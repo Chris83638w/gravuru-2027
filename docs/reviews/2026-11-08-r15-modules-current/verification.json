@@ -1,0 +1,92 @@
+{
+  "schema": "gravuru-r15-modules-current-verification/v1",
+  "base": "c7710dec6f2c4f6d0b36073ad2dc623fd5d5ac05",
+  "tests": [
+    "app/configurator/variant-m/module-profile.test.mjs",
+    "app/configurator/variant-m/module-runtime.test.mjs",
+    "app/configurator/variant-m/logo-upload.test.mjs",
+    "app/configurator/variant-m/ui-event-regressions.test.mjs",
+    "app/configurator/variant-m/lazy-resources.test.mjs",
+    "app/configurator/variant-m/visible-resource-loader.test.mjs",
+    "app/configurator/variant-m/first-panel-preload.test.mjs",
+    "app/configurator/variant-m/preload-queue.test.mjs",
+    "app/configurator/variant-m/design-reset.test.mjs",
+    "app/configurator/variant-m/view-zoom.test.mjs",
+    "app/configurator/variant-m/preview-uploads.test.mjs",
+    "app/configurator/variant-m/preview-uploads-integration.test.mjs",
+    "app/configurator/mobile-demo/demo.test.mjs",
+    "app/configurator/mobile-demo/native-overlay.test.mjs",
+    "app/workshop/cart-personalization.test.mjs",
+    "app/workshop/r15-module-bank.test.mjs",
+    "app/workshop/shop-design-gallery.test.mjs",
+    "app/workshop/shop-entry.test.mjs",
+    "app/workshop/shop-preparation.test.mjs",
+    "app/workshop/theme-cart-flow.test.mjs",
+    "app/workshop/shop-warm.test.mjs",
+    "app/workshop/customer-vector-logo.test.mjs",
+    "app/workshop/customer-vector-logo-media.test.mjs"
+  ],
+  "testFiles": 23,
+  "uniqueCases": 274,
+  "firstRun": {
+    "durationMs": 25038.6392,
+    "skipped": 0,
+    "failure": "Windows EPERM during two concurrent test builds renaming one generated reference-device file",
+    "pass": 273,
+    "fail": 1
+  },
+  "affectedRepeat": {
+    "productCodeChangedForFailure": false,
+    "command": "node --test --test-concurrency=1 app/configurator/variant-m/lazy-resources.test.mjs",
+    "fail": 0,
+    "pass": 17,
+    "durationMs": 1703.4948,
+    "skipped": 0
+  },
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 373304,
+    "lazyResources": {
+      "fonts": 30,
+      "motifs": 703
+    },
+    "bundle": {
+      "url": "/_bundle/editor-622e0d4afd819f7c.mjs",
+      "modules": 154,
+      "styles": 16,
+      "bytes": 1448642,
+      "gzipBytes": 483407
+    }
+  },
+  "nativeBank": {
+    "sizes": 80,
+    "priceCombinations": 404,
+    "designs": 251,
+    "sha256": "2e74548aa7211a2f5546af428e1d27d9f00f12181490356633e3cd109cb179c0",
+    "forms": 8,
+    "logoProfiles": [
+      true,
+      false
+    ],
+    "sourceUnchanged": true
+  },
+  "pr214": {
+    "review": "read-only API/schema compatibility; activation not executed",
+    "commit": "57f6f70bc79eeb4f0d1655e80792b5d9fdd59db7",
+    "writesEnabled": false,
+    "executionEnabled": false
+  },
+  "browser": "pending Root acceptance on combined runtime",
+  "liveWrites": 0,
+  "testLogs": [
+    {
+      "file": "targeted-tests.log",
+      "sha256": "69e5f22e790ed52d1e0972dd04dbe246fa75477db1b8bcba6c054f66eab212af"
+    },
+    {
+      "file": "lazy-sequential.log",
+      "sha256": "aa08f5bae61008baa50ac3625c4eabbd70f8a41ff04e0a082ec4139e1883997a"
+    }
+  ]
+}

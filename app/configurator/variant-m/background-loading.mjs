@@ -1,4 +1,4 @@
-// Ladefolge nach dem Start (preload-queue.mjs) für den Kundeneditor: Optionsbilder → Schriften → Motive,
+// Ladefolge nach dem Start (preload-queue.mjs) für den Kundeneditor: Optionsbilder → erste Motive → Schriften,
 // erst wenn die Oberfläche fertig und das Szenenbild da ist. Kunde öffnet vorher einen Bereich → sofort.
 import {createPreloadQueue,idleScheduler} from './preload-queue.mjs';
 import {ACRYLIC_BASES,acrylicBaseImageUrl} from './acrylic-product.mjs';
@@ -14,7 +14,7 @@ export function optionImageUrls(config){
 
 // Connection classification remains diagnostic for existing hosts. Regardless of
 // classification, the customer request (08.11.2026) now limits speculative work
-// to two common fonts and visible motifs; Save-Data/2g skips it entirely.
+// to two common fonts and the first six permitted motifs; Save-Data/2g skips it entirely.
 export const RECOMMENDED_FONTS=Object.freeze(['Montserrat','Nunito','Lora','Caveat','Allura','Dancing Script']);
 export function preloadScope(win=globalThis){
   const type=win.navigator?.connection?.type;
@@ -43,12 +43,12 @@ export function installBackgroundLoading({el,r,config,win=window}){
   const urls=optionImageUrls(config);
   queue.add('images',{background:async()=>{for(const url of urls)await loadImage(url,'low');},now:()=>Promise.all(urls.map(url=>loadImage(url,'high'))),saveData:'skip'});
   const scope=preloadScope(win);el.uxPreloadScope=scope;
-  // Bounded on every connection: two common fonts, then only cards actually on
-  // screen. The legacy explicit all-loader remains available to old controls,
+  // Bounded on every connection: six initial motifs and two common fonts.
+  // The legacy explicit all-loader remains available to old controls,
   // but opening the current text/motif tabs never invokes it.
   const recommended=RECOMMENDED_FONTS.slice(0,2);
+  queue.add('motifs',{background:()=>config?.moduleProfile?.modules?.motifs===false?undefined:el.uxPrefetchInitialMotifs?.(),now:()=>el.uxEnsureVisibleMotifs?.(),saveData:'skip'});
   queue.add('fonts',{background:()=>el.uxPrefetchFonts?.({priority:'low',names:recommended}),now:()=>el.uxEnsureFonts?.(recommended),saveData:'skip'});
-  queue.add('motifs',{background:()=>el.uxEnsureVisibleMotifs?.(),now:()=>el.uxEnsureVisibleMotifs?.(),saveData:'skip'});
   // Kundenaktionen: Schritt/Reiter gewechselt, Schriftauswahl oder Optionsfeld angefasst.
   const promoteVisible=()=>{for(const [selector,key] of PANEL_TASKS){const panel=r.querySelector(selector);if(panel&&!panel.hidden&&panel.offsetParent!==null)queue.request(key).catch(()=>{});}};
   r.addEventListener('click',event=>{

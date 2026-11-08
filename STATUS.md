@@ -1,3 +1,7 @@
+## 08.11.2026 – Codex/Mika: erste Motiv- und Designkarten vorbereiten
+
+Auf isolierter Basis `587a395`: gemeinsamer nativer Startmotiv-Resolver, sechs erlaubte Motive im Hintergrund vor Taböffnung, drei authentifizierte Galerievorschauen im Hintergrund mit Wiederverwendung, Produktseiten-Vorwärmen nach DOM/ersten Zeichenzyklen statt window.load. Sieben Produktionsdateien, keine Layout-/Preis-/Produktänderung. 66 unterschiedliche gezielte Prüfungen final grün; tatsächliche Browserabnahme und Deployment bei Root. Designvorschauen direkt auf Shopify-Produktseite weiterhin offen und ausdrücklich nicht als fertig bezeichnet. Übergabe: `docs/handoffs/2026-11-08-first-panel-preload.md`.
+
 ## 08.11.2026, 17:05 Berlin – Mika: Live-Stand und offene Kundenmeldungen vor Flugpause gesichert
 
 Touch-/Vorschaufix seit 16:41, begrenztes Produktseiten-Vorladen und Einzelressourcen seit 16:54 veröffentlicht. Aktive Runtime `private/mika-r15-assets-20261108-v1`, Bundle `editor-6b08ecd29481848d.mjs`; keine Produkt-/Datenbank-/Themeänderung. Tatsächliche Shopify-Einbettung geprüft; keine gemessenen Handy-Cachetreffer behaupten. Kunde meldet weiterhin langsame Designs/Motive und SVG-Seitenverhältnisfehler: offen, Diagnose läuft. Neue Desktopleiste, Entfernen des grauen Balkens und sichtbarer Produkt-Zurück-Button sind wegen „Warte noch“ noch nicht umgesetzt. Module separat vorbereitet; keine Produktprofilaktivierung. [Zentrale Wiederaufnahme mit Sicherungen, Links und Prüfgrenzen](docs/handoffs/2026-11-08-current-konfi-before-flight.md).

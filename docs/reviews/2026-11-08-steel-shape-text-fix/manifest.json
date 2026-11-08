@@ -1,0 +1,156 @@
+{
+  "schema": "gravuru-steel-shape-text-fix/v1",
+  "baseCommit": "3a780000d44ae6f6671d8560c5b9ff919738ac91",
+  "branch": "dev/mika-steel-shape-text-fix-20261108",
+  "scope": "Only complete text-group transfer during a family shape switch",
+  "runtimeFiles": [
+    {
+      "path": "app/configurator/variant-m/family-formats.mjs",
+      "bytes": 15710,
+      "sha256": "183d00d611042e2c2d9f6097787859656388adcc6ef92ae52c3c6498e4deb210",
+      "baselineSha256": "43ab12c0ecd55b6ca826077302a194dc9f24a8ae4ed996e326eaf4dbd2627499"
+    },
+    {
+      "path": "app/configurator/variant-m/.preview/editor.html",
+      "bytes": 373501,
+      "sha256": "8dea7bac2880bae731aedc09f366942b829f7092098133b2cf348dcac8a43042",
+      "baselineSha256": "5e06c711fa047ec72a34c58afae8275476280cd66a83cfb7cef3d8c2a65fd8d3"
+    },
+    {
+      "path": "app/configurator/variant-m/.preview/bundle/editor-1bea892b2cd23111.mjs",
+      "bytes": 1426699,
+      "sha256": "08f14a7949bc529ffc79023cf03290bce927dbf13613b7069c4f984773b23cb8",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/variant-m/.preview/bundle/editor-1bea892b2cd23111.mjs.gz",
+      "bytes": 476928,
+      "sha256": "52ce356967e7c2891c7165668ac77a7d5304e8060e179b01a10419196e80052e",
+      "baselineSha256": null
+    }
+  ],
+  "bundleProof": {
+    "baselineCore": "editor-e85d012dc6812f15.mjs",
+    "newCore": "editor-1bea892b2cd23111.mjs",
+    "moduleCount": 150,
+    "changedModules": [
+      "/configurator/variant-m/family-formats.mjs"
+    ],
+    "stylesByteEqual": true,
+    "editorOnlyBundleUrlChanged": true,
+    "unchangedChunks": [
+      {
+        "path": "app/configurator/variant-m/.preview/bundle/editor-2e3da3b988eb0da4.mjs",
+        "sha256": "b227638c16aebd6cd7c685c44d3ace5b75205e3e1774b5ddd39c34c9d32e1ccf",
+        "bytes": 37895
+      },
+      {
+        "path": "app/configurator/variant-m/.preview/bundle/editor-2e3da3b988eb0da4.mjs.gz",
+        "sha256": "def2dc087e7060dd1fbccd82e7b3fe8a4fc1029526927a55f9b1ca4abb2a6169",
+        "bytes": 12418
+      },
+      {
+        "path": "app/configurator/variant-m/.preview/bundle/editor-69eb9880b804359a.mjs",
+        "sha256": "7601bdd524c58ddacbd0edf5e4067139002f220c67763e7eb7dafd8dbb8331a3",
+        "bytes": 3342
+      },
+      {
+        "path": "app/configurator/variant-m/.preview/bundle/editor-69eb9880b804359a.mjs.gz",
+        "sha256": "dccea5df39be2913d38d9bd0a5115d3d8dea97ace54af1ce9ba157b6c9a4b348",
+        "bytes": 1614
+      },
+      {
+        "path": "app/configurator/variant-m/.preview/bundle/editor-c419119a6ef437c6.mjs",
+        "sha256": "d6230c6059e2b8b5e4334ea0d3a401aa41f362b6fa3fe8035b8784b74d7ef78c",
+        "bytes": 7915
+      },
+      {
+        "path": "app/configurator/variant-m/.preview/bundle/editor-c419119a6ef437c6.mjs.gz",
+        "sha256": "4b412bd07d5838b1cd4b9e60f88ae6e5b1c2f09e210f77d7800f778c739e5a25",
+        "bytes": 3037
+      },
+      {
+        "path": "app/configurator/variant-m/.preview/bundle/editor-e1e24f0ee6b66daf.mjs",
+        "sha256": "d4fc652911bec1326419762462fb206660c26d5d97e9823e16501c179262a58c",
+        "bytes": 10914
+      },
+      {
+        "path": "app/configurator/variant-m/.preview/bundle/editor-e1e24f0ee6b66daf.mjs.gz",
+        "sha256": "8731a573ad56981184aeb0407a9cfa17920818e0e67c4f31a691ed37004911e8",
+        "bytes": 3880
+      }
+    ],
+    "preservedPreexistingModules": [
+      {
+        "url": "/configurator/variant-m/option-media.mjs",
+        "sha256": "73107240710bcb7117968ee5f33f7dd9567ef659d2b59f94127dbf58df2c2a02",
+        "preserved": true
+      },
+      {
+        "url": "/configurator/variant-m/design-reset.mjs",
+        "sha256": "2a5f1dbed5ad46e80ecf6139ad897ad8b4fed1ba9bdff322d887fefb575ad11b",
+        "preserved": true
+      }
+    ],
+    "preservedPreexistingStyles": [
+      {
+        "url": "/configurator/variant-m/modern-navigation.css",
+        "sha256": "1fc314b7c23e2f67b2315e5dac27555674b45a467dcd56b8a53958847c9a55ce",
+        "preserved": true
+      },
+      {
+        "url": "/configurator/variant-m/view-zoom.css",
+        "sha256": "ce31226dbc655204b04f5a90926f6d280db974e62d40252b20d828967232ea14",
+        "preserved": true
+      }
+    ],
+    "gzip": {
+      "level": 9,
+      "osByte": 3,
+      "baselineReproduced": true,
+      "roundTripSha256": "08f14a7949bc529ffc79023cf03290bce927dbf13613b7069c4f984773b23cb8",
+      "actualExportBytesVerified": true,
+      "serverNode": "v24.22.2",
+      "localNode": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b"
+    },
+    "unchangedChunksEvidence": "Local prior build hashes only; names are identical in exported server HTML; these files are never rewritten by delta."
+  },
+  "tests": {
+    "passed": 65,
+    "failed": 0,
+    "skipped": 0,
+    "files": [
+      "family-format-text-transfer.test.mjs",
+      "family-formats.test.mjs",
+      "workflow.test.mjs",
+      "bundle.test.mjs",
+      "customer-orientation.test.mjs",
+      "product-design-transfer.test.mjs"
+    ],
+    "actualCandidate": {
+      "path": "outputs/steel-shopify-20261108/normal-door-native-plan.json",
+      "sha256": "8f994b378cbb4b7b1fcf833b4907af1317ded452838c6509ef284b75300ee95f",
+      "designId": "katalog-TAE-V2A-8x5-D1",
+      "result": "AB120x80 K00 -> RE150x100 KGL -> AB120x80 K00: full name retained; unchanged name-2 Familie retained"
+    },
+    "browserOrCartVerified": false
+  },
+  "deploymentNotes": [
+    "Deployment uses verified actual server core e85d012dc6812f15, not earlier local bab5a1fa49ee42d2 build.",
+    "Build artifacts are local and reproducible, not committed.",
+    "Copy only runtimeFiles after verifying baseline hashes and backup.",
+    "Keep the previous hashed core bundle for already-open sessions.",
+    "Do not copy generated models.json, guides.json, assistant.js or lazy resources.",
+    "No source data, layout, pricing, server, database, Shopify or theme changes."
+  ],
+  "deploymentScript": {
+    "path": "docs/reviews/2026-11-08-steel-shape-text-fix/deploy-delta.mjs",
+    "bytes": 7124,
+    "sha256": "9f3ca3dd9b4e41d3d5042691a2f927f5dac28b3029cabea23809976a31f979aa",
+    "base64Chars": 9500,
+    "runtimeExecuted": false,
+    "localInMemoryTestsPassed": 6,
+    "syntaxCheckPassed": true
+  }
+}

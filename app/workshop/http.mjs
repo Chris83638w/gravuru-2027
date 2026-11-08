@@ -151,18 +151,22 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   const repository=createProductRepository({filename,tenantId,catalogOverview:d=>isFormProduct(d)?formOverview(d):productOverview(d),validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document)){if(document.profileAssignments)profiles.resolve(document);return verifyForm(document);}profiles.resolve(document);assets.validateDocument(document);productionProfiles.resolve(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{...(document.profileAssignments?{profiles:profiles.resolve(document)}:{}),form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)})});
   if(ownsBundled&&!repository.firstId())repository.create(seed);
   const families=createProductFamilies({filename,repository,tenantId});
-  let moduleManagement=null,moduleSourceRegistry=null;
-  const configuredModules=()=>moduleManagement??=createConfiguratorModuleManagement({filename,repository,tenantId});
+  let moduleManagement=null,moduleSourceRegistry=null,moduleManagementFilename=filename;
+  const configuredModules=()=>moduleManagement??=createConfiguratorModuleManagement({filename:moduleManagementFilename,repository,tenantId});
   // The private gallery installs its dynamic registry before serving requests.
   // Both merchant surfaces share one service, not merely rows whose source and
   // scope identifiers could otherwise refer to different catalogues.
   function configureModuleManagement({filename:requestedFilename=filename,sourceRegistry}={}){
-    if(requestedFilename!==filename||!sourceRegistry||['targets','offeringFor','scopes'].some(key=>typeof sourceRegistry[key]!=='function'))fail(422,'module_management_registry','Die Modulverwaltung benötigt dieselbe Werkstattablage und die vorhandene Galeriezuordnung.');
+    // Private host configuration only: a separate module database avoids adding
+    // unknown files to the existing gallery data directory. No HTTP request can
+    // choose this path, and its first registration is fixed for this workshop.
+    if(!(requestedFilename===filename||typeof requestedFilename==='string'&&path.isAbsolute(requestedFilename)&&path.resolve(requestedFilename)===requestedFilename)||!sourceRegistry||['targets','offeringFor','scopes'].some(key=>typeof sourceRegistry[key]!=='function'))fail(422,'module_management_registry','Die Modulverwaltung benötigt eine feste private Ablage und die vorhandene Galeriezuordnung.');
     if(moduleManagement){
-      if(moduleSourceRegistry===sourceRegistry)return moduleManagement;
+      if(moduleSourceRegistry===sourceRegistry&&moduleManagementFilename===requestedFilename)return moduleManagement;
       fail(409,'module_management_initialized','Die Modulverwaltung wurde bereits mit einer anderen Quelle geöffnet. Den Galerieanschluss vor den ersten Anfragen konfigurieren.');
     }
-    moduleManagement=createConfiguratorModuleManagement({filename,repository,tenantId,sourceRegistry});
+    moduleManagement=createConfiguratorModuleManagement({filename:requestedFilename,repository,tenantId,sourceRegistry});
+    moduleManagementFilename=requestedFilename;
     moduleSourceRegistry=sourceRegistry;
     return moduleManagement;
   }

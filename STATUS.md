@@ -4,7 +4,9 @@ PR 194/201/202/203/207/208 und die freigegebenen R15-/Warenkorbreparaturen bis P
 
 Reale 251-Design-/404-Variantenprüfung einschließlich später atomarer Rücknahme, Retry und Replay grün; finale Raceprüfungen 7/7 und Freigabe-/Cachetests 5/5. Unabhängiger Review bestätigt bei Quell-/Ziel-/Zuordnungsänderung vor dem Schreiben null Remote-Schreibaufrufe sowie Schutz bei eigenen, externen und Schemaänderungen. Kunden-Stylesheets bleiben bytegleich zur freigegebenen Basis. Kein Live-, Shopify- oder Main-Schreibzugriff durch diesen Integrationslauf.
 
-Nächster Schritt: geprüfte readonly Anschlussfactory in dasselbe private Runtimepaket aufnehmen, Sicherungsbelege prüfen und ausschließlich den bestehenden Galeriehost mit beiden Schreibschaltern aus anschließen. Aktive `gallery-4` und R15-Kundenhost bleiben erhalten. [Übergabe](docs/handoffs/2026-11-08-coherent-module-runtime.md) · [Produktionsbelege und Grenzen](docs/handoffs/2026-11-08-module-production-preflight.md).
+Readonly Anschlussfactory jetzt im selben Checkout. Abschließender tatsächlicher Mount-/Plan-/Neustart-Test mit realer 251er Quelle und 404 nativen Preisbindungen 1/1 grün in 56,9 s; zwei genehmigte Stahlprofile über native API, gleicher Service auf beiden Verwaltungswegen, Ziel-DB bytegleich. Kleine serverseitige Erstregistrierung erlaubt die eigene feste ModulDB; danach sind Pfad und Registry unveränderlich. Quellordner-Prüfung bleibt streng. Explizites einmaliges Seedverfahren ist standardmäßig nur Vorschau, vorhandene Bibliotheken bleiben unangetastet.
+
+Nächster Schritt: SHA-geprüftes privates Paket nach vollständiger Sicherung am vorhandenen Galeriehost lesend abnehmen. Aktive `gallery-4` und R15-Kundenhost bleiben erhalten. Tatsächliche Profilaktivierung bleibt gesperrt, bis die Modulregeln gezielt auch im Kunden-/Serverpfad ausgerollt und geprüft sind; kein automatischer Kundenhostwechsel. [Übergabe](docs/handoffs/2026-11-08-coherent-module-runtime.md) · [Produktionsbelege und Grenzen](docs/handoffs/2026-11-08-module-production-preflight.md).
 
 ## 08.11.2026 · Codex/Mika · Gemeinsamer Modul-/Gruppenservice lokal geprüft
 

@@ -18,7 +18,7 @@ import {syncHash} from './gallery-shop-sync-native.mjs';
 
 export const GALLERY_SYNC_TEST_SHOP='isolated-gallery-sync.myshopify.com';
 export const GALLERY_SYNC_TEST_PRODUCT='gid://shopify/Product/168001';
-export async function createGallerySyncTestFixture({directory,transportOptions={},serviceOptions={},documentTransform,activationOptions={}}={}){
+export async function createGallerySyncTestFixture({directory,transportOptions={},serviceOptions={},documentTransform,activationOptions={},initialPricingFor}={}){
  const tenantId='gravuru',shopDomain=GALLERY_SYNC_TEST_SHOP,PRODUCT=GALLERY_SYNC_TEST_PRODUCT;
  if(!path.isAbsolute(directory)||fs.existsSync(path.join(directory,'source'))||fs.existsSync(path.join(directory,'target')))throw Error('Use a fresh, explicitly isolated test directory.');
  fs.mkdirSync(directory,{recursive:true});
@@ -41,13 +41,15 @@ export async function createGallerySyncTestFixture({directory,transportOptions={
   for(const d of [sourceDocument.config.profile.designs[0],sourceDocument.config.familyFormats.designs[0]])d.objects[0].text='Neu aus Galerie';
   const source=sourceWorkshop.repository.create(sourceDocument),designId=source.document.config.profile.designs[0].id;
   const variants=prepareShopProduct(target).variants.map((v,i)=>({...v,id:'gid://shopify/ProductVariant/'+(168100+i)}));
+  const initialPricing=initialPricingFor?.({record:target,variants});
+  const initialIntake=initialPricingFor?{...targetWorkshop.orderIntake,idBindings:args=>targetWorkshop.orderIntake.idBindings({...args,personalizationPricingFor:()=>initialPricing})}:targetWorkshop.orderIntake;
   const selections=variants.map(v=>({shopifyProductId:PRODUCT,shopifyVariantId:v.id,productId:target.id,productRevision:1,options:v.options,expectedUnitCents:v.priceCents}));
   // Existing installations already have a binding store. Register the same
   // native store before checking this fresh fixture, so the check uses its
   // audited immutable read scope instead of the conservative legacy fallback.
-  const registry=targetWorkshop.orderIntake.idBindings({storeId:'acryl',shopDomain,adapter});
+  const registry=initialIntake.idBindings({storeId:'acryl',shopDomain,adapter});
   const reader={async inspectVariants(ids){return {installation:{shopDomain,currency:'EUR',scope:'admin-readonly'},variants:ids.map(id=>{const v=variants.find(v=>v.id===id);return {id,found:true,productId:PRODUCT,status:'ACTIVE',priceCents:v.priceCents,options:Object.entries(v.options).map(([name,value])=>({name,value}))};})};}};
-  for(let offset=0;offset<selections.length;offset+=100){const checks=await checkSelections(selections.slice(offset,offset+100),{adapter,reader});applyChecks(checks,{orderIntake:targetWorkshop.orderIntake,storeId:'acryl',shopDomain,adapter});}
+  for(let offset=0;offset<selections.length;offset+=100){const checks=await checkSelections(selections.slice(offset,offset+100),{adapter,reader});applyChecks(checks,{orderIntake:initialIntake,storeId:'acryl',shopDomain,adapter});}
   targetWorkshop.orderIntake.approveCatalogLiveProducts({shopDomain,approvalId:'synthetic-original',registry,products:[{productId:target.id,productRevision:1,shopifyProductId:PRODUCT}]});
   const mapping={id:'test-mapping',label:'Türschild Test',source:{productId:source.id,designId,originalId:master.id},target:{productId:target.id,designId},shopifyProductId:PRODUCT,shopifyVariantIds:variants.map(v=>v.id),media:[{id:'gid://shopify/MediaImage/168'}]};
   const transport=createGallerySyncTestTransport({shopDomain,products:[{id:PRODUCT,variants:variants.map(v=>({id:v.id,priceCents:v.priceCents})),commerce:{title:'Shop-Titel',seo:{title:'Beibehalten'},inventory:17},media:[{id:mapping.media[0].id,sha256:'a'.repeat(64),url:'https://synthetic.invalid/old.png'}]}],...transportOptions});

@@ -1,0 +1,32 @@
+{
+  "schema": "gravuru-pricing-function-input-diagnostic/v1",
+  "observedAt": "2026-11-08T06:31:55.104Z",
+  "readOnly": true,
+  "productId": "gid://shopify/Product/16190784438652",
+  "metafieldFound": true,
+  "namespace": "app--423276544001",
+  "type": "json",
+  "rawBytes": 18557,
+  "aboveFunctionLimit": true,
+  "rawSha256": "76012d418f5c82b8f7c0c8339a0441f3fe41286aa903d287d84f00d169daf1ed",
+  "current": {
+    "schema": "gravuru-personalization-pricing/v2",
+    "revision": 2,
+    "enabled": true,
+    "variants": 404,
+    "extraLogoCents": 1299,
+    "legacyOffers": 0,
+    "minifiedBytes": 18557
+  },
+  "history": [
+    {
+      "schema": "gravuru-personalization-pricing/v1",
+      "revision": 1,
+      "enabled": true,
+      "variants": 404,
+      "legacyOffers": 0,
+      "minifiedBytes": 9261
+    }
+  ],
+  "testVariantBaseCents": 1748
+}

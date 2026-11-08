@@ -1,0 +1,18 @@
+{
+  "testedAt": "2026-11-08T06:55:45.516Z",
+  "from": "AB",
+  "to": "RE",
+  "name": "Test Eins",
+  "second": "Familie",
+  "nameProof": [
+    "+\t\t\t\t\t\t\t\t\t\t\t\t361 checkbox Text „Familie“, Value: 0",
+    "+\t\t\t\t\t\t\t\t\t\t\t\t365 text entry area (settable) Description: Name, Value: Test Eins, ID: ux-text-0"
+  ],
+  "secondProof": [
+    "~\t\t\t\t\t\t\t\t\t\t\t\t361 checkbox Text „Familie“, Value: 1",
+    "+\t\t\t\t\t\t\t\t\t\t\t\t386 text Text „Familie“",
+    "+\t\t\t\t\t\t\t\t\t\t\t\t387 text entry area (settable) Description: Text „Familie“, Value: Familie, ID: ux-text-1",
+    "The focused UI element is 361 checkbox Text „Familie“, Value: 1"
+  ],
+  "passed": true
+}

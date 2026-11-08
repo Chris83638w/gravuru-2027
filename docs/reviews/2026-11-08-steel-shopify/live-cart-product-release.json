@@ -1,0 +1,60 @@
+{
+  "observedAt": "2026-11-08T04:38:27.103Z",
+  "theme": {
+    "id": "gid://shopify/OnlineStoreTheme/190984126844",
+    "name": "Gravuru Edelstahl-Konfi Prüfvorschau 08.11.2026",
+    "role": "MAIN"
+  },
+  "before": {
+    "data": {
+      "product": {
+        "id": "gid://shopify/Product/16190784438652",
+        "status": "DRAFT",
+        "resourcePublications": {
+          "nodes": []
+        }
+      }
+    }
+  },
+  "activation": {
+    "data": {
+      "productUpdate": {
+        "product": {
+          "id": "gid://shopify/Product/16190784438652",
+          "status": "ACTIVE"
+        },
+        "userErrors": []
+      }
+    }
+  },
+  "publication": {
+    "data": {
+      "publishablePublish": {
+        "publishable": {
+          "publishedOnPublication": true
+        },
+        "userErrors": []
+      }
+    }
+  },
+  "after": {
+    "data": {
+      "product": {
+        "id": "gid://shopify/Product/16190784438652",
+        "status": "ACTIVE",
+        "onlineStoreUrl": "https://gravuru-design.myshopify.com/products/tuerschild-edelstahl-form-und-groesse-selbst-waehlen",
+        "publishedOnPublication": true,
+        "resourcePublications": {
+          "nodes": [
+            {
+              "publication": {
+                "id": "gid://shopify/Publication/291556688252"
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "configuratorLayoutChanged": false
+}

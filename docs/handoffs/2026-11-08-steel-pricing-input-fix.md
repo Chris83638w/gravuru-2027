@@ -38,6 +38,10 @@ Fehlende Preisverträge und ungültige Referenzen lassen die Function-Ausführun
 
 ## Gesicherter Rollout durch Parent
 
+**Stand nach Veröffentlichung am 08.11.2026:** Der Hauptagent hat die vollständige App-Version `1199363391489` unter `gravuru-2027-steel-pricing-input-20261108-v2` veröffentlicht und aktiv zurückgelesen. Vorher wurden alle 8 Remote-Module verglichen: 7 unverändert, in der Function ausschließlich Binary-Metadaten und der genehmigte Wechsel `jsonValue → value`. Die 21 Theme-Dateien, Scopes, URLs und Proxy-Einstellungen sind unverändert. Die [Prüfquittung](../reviews/2026-11-08-steel-pricing-input/app-preservation-receipt.json) entstand vor der Veröffentlichung und vermerkt deshalb `released:false`.
+
+Die anschließende gesicherte Metafeld-Reparatur führte genau eine Mutation aus. Readback: 2.318 Bytes, erwarteter SHA `6b0e4d19ba2f50e638637d03c6e8c0796f93f09d8d362bcf453b495d04a0eb46`. Die private Original-Sicherung wurde vor dem Schreiben geprüft; [Reparaturquittung](../reviews/2026-11-08-steel-pricing-input/metafield-repair-receipt.json). Echte neue Warenkorbfälle mit Größen, Befestigung und Logo prüft der Hauptagent anschließend. Bis deren Nachweis gilt die Veröffentlichung allein nicht als Warenkorbabnahme.
+
 Aktive Baseline `gravuru-2027-issue139-pricing-20261102-v1`,ID1191284113409. Zieltag `gravuru-2027-steel-pricing-input-20261108-v2`. Bestehende FunctionUID3194be17-ee65-e144-e1da-65b8d1e1720183f0f9ef, ThemeUIDa4d6506c-8e89-ca7d-f5b1-1a0d1e00a1f9bb93e76a. Keine Cart-Transform-Neuanlage.
 
 1. Privates Originalmetafeld sichern; neuen CAS-Helfer zuerst `--mode preview` serverseitig prüfen. Exakter VorherSHA sowie App/Shop/Produkt fest verdrahtet.

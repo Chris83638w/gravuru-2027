@@ -7,7 +7,7 @@ Stand: 09.11.2026, Codex/Mika, nur lokale Prüfung. Keine Server-, Shopify- oder
 Der korrigierte enge Batch-Patch hat im unabhängigen Review keinen verbleibenden Codeblocker. **15 gezielte Tests bestanden, 0 übersprungen**: elf vorhandene Konflikt-/Transaktionstests und vier eigene Gegenproben. Zusätzlich liegt der erfolgreiche lokale Autorbeleg mit dem realen 251-Design-/404-Varianten-Dokument vor; die Shopify-Gegenstelle ist dabei simuliert. Keine Live-Abnahme wird daraus abgeleitet.
 
 - Basis: PR214, `57f6f70bc79eeb4f0d1655e80792b5d9fdd59db7`.
-- Finaler Implementierungscommit: `173b414a2444afe55f86fd195c8bc7b2c4539230`.
+- Finaler Implementierungscommit: `173b414a2444afe55f86fd195c8bc7b2c4539230`, [Draft PR223](https://github.com/Chris83638w/gravuru-2027/pull/223). Nachweis-HEAD `fce83b0494e320ce3821be25edad27ab747332f5` enthält danach nur Log-/Hashnormalisierung.
 - Implementierung: `work/module-activation-review-20261108`, ausschließlich `app/workshop/shop-product-binding-store.mjs` als Produktionsdatei.
 - Geprüfter Produktions-SHA-256: `0b12557c7519e59461df5021ba6afe2ec74d93425d8a9de8cf0d8854a3995b26`.
 - Eigener isolierter Reviewbaum: `work/binding-batch-review-20261108`; keine Dateien im Implementierungsbaum geändert.
@@ -51,6 +51,8 @@ Der implementierende Agent meldet den vollständigen Adapterlauf mit **3/3 besta
 | Bestätigtes Logo an als neue Revision | 45,670 s | Abgeschlossen |
 
 Die volle Dokumentprüfung bleibt bestehen: 431 Rohlesungen pro Phase, keine SQL-Bytevergleich-Optimierung. Die 60-Sekunden-Frist wurde nicht verändert. Belege lokal: `outputs/module-activation-review-20261108/activation-phases-final.json` und `activation-final-tests.log`.
+
+Die Autorbelege sind zusätzlich in PR223 versioniert: `docs/reviews/2026-11-08-module-activation-final-review/` enthält `review-proof.json`, `activation-final-tests.log`, `activation-phases-final.json`, `batch-guard-tests.log` und `history-concurrency-final-tests.log`.
 
 Der Autor hat zusätzlich **33/33 Storetests sowie 3/3 Historien-/Konkurrenz-/Journaltests auf dem endgültigen Produktionshash** abgeschlossen. Diese Autorläufe werden ausdrücklich von den 15 selbst ausgeführten Reviewprüfungen unterschieden.
 

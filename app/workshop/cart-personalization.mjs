@@ -41,7 +41,11 @@ export function capturePersonalization(pricing, {variantId, baseCents, document}
       !money(pricing.extraMotifCents) || !money(pricing.extraPhotoCents) ||
       pricing.extraMotifCents !== document.config?.extraMotifCents ||
       pricing.extraPhotoCents !== document.config?.photo?.extraPriceCents) fail();
-  if(vectorLogos!==logoContract||(logoContract?pricing.extraLogoCents!==1299:has(pricing,'extraLogoCents')))fail();
+  // An explicitly disabled logo module may retain the owning shop's immutable
+  // V2 price contract. The module snapshot still forbids all logo uploads/counts;
+  // legacy products without a module profile keep the strict schema match.
+  const retainedDisabledLogo=pricing.schema==='gravuru-personalization-pricing/v2'&&moduleProfile?.modules.logo===false;
+  if(vectorLogos!==logoContract&&!retainedDisabledLogo||(logoContract?pricing.extraLogoCents!==1299:has(pricing,'extraLogoCents')))fail();
   let optionPrices;
   if(optionsContract){
     const fields=document.config?.profile?.optionFields||[];
@@ -99,8 +103,11 @@ export function personalizationForSnapshot(contract, manifest) {
   const motifCount=contract.motifCharge==='all'?p.chargedMotifs:p.additionalMotifs;
   if(!count(motifCount,200)||motifCount<p.additionalMotifs||contract.motifCharge!=='all'&&has(p,'chargedMotifs'))fail();
   const logoContract=has(contract,'extraLogoCents');
-  if(logoContract?(contract.extraLogoCents!==1299||!count(p.chargedLogos,4)||p.chargedLogos+p.chargedUploads>4):has(p,'chargedLogos'))fail();
-  const logoCents=logoContract?p.chargedLogos*contract.extraLogoCents:0;
+  // Native quotes omit this field when vector upload is disabled. Only the
+  // explicit immutable disabled-module snapshot may interpret absence as zero.
+  const chargedLogos=contract.moduleProfile?.modules.logo===false&&p.chargedLogos===undefined?0:p.chargedLogos;
+  if(logoContract?(contract.extraLogoCents!==1299||!count(chargedLogos,4)||chargedLogos+p.chargedUploads>4):has(p,'chargedLogos'))fail();
+  const logoCents=logoContract?chargedLogos*contract.extraLogoCents:0;
   const photoCents = p.chargedUploads * contract.extraPhotoCents;
   const listCents = contract.baseCents + motifCount * contract.extraMotifCents + photoCents + logoCents + optionCents;
   if (!money(listCents) || !money(photoCents)) fail();
@@ -118,7 +125,7 @@ export function personalizationForSnapshot(contract, manifest) {
   if (!money(unitCents) || p.unitCents !== unitCents || manifest.product?.basePriceCents !== unitCents ||
       p.totalCents !== unitCents * p.quantity) fail();
   return {unitCents, personalization:{revision:contract.revision, motifs:motifCount, uploads:p.chargedUploads,
-    ...(logoContract?{logos:p.chargedLogos}:{}),
+    ...(logoContract?{logos:chargedLogos}:{}),
     ...(selectedOptions?{options:selectedOptions.join(',')||'-'}:{}),
     // An opaque reference to the privately stored editable original; no customer
     // text, media, download capability or draft token goes into cart attributes.

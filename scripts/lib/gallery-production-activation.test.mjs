@@ -12,12 +12,18 @@ import {GALLERY_SYNC_OPERATIONS} from '../../app/workshop/gallery-shop-sync-tran
 import {createProductionModuleActivationConfig} from './gallery-production-activation.mjs';
 import {createGalleryProductionShopifyRelease} from './gallery-production-shopify-read.mjs';
 import {APPROVED_STEEL_DOCUMENT_SHA} from '../../ops/plesk/seed-approved-steel-module-profiles.mjs';
+import {installActivationProbe} from './gallery-activation-probe.mjs';
 
 const candidate=process.env.GRAVURU_MODULE_NATIVE_CANDIDATE;
 test('real 251/404 native bank: confirmed module activation, atomic failure, restart recovery, replay and reversible logo',{skip:!candidate},async t=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'module-production-write-'));
  assert.equal(createHash('sha256').update(fs.readFileSync(candidate)).digest('hex'),APPROVED_STEEL_DOCUMENT_SHA);
  const document=JSON.parse(fs.readFileSync(candidate));let pricing,host;
+ const phaseTimings=[],measured=async(label,run)=>{
+  if(!process.env.GRAVURU_ACTIVATION_PROBE_OUTPUT)return run();
+  const probe=installActivationProbe(host.targetWorkshop);let value;
+  try{return value=await run();}finally{phaseTimings.push({label,state:value?.operations?.[0]?.state??'thrown',metrics:probe.finish()});fs.writeFileSync(process.env.GRAVURU_ACTIVATION_PROBE_OUTPUT,JSON.stringify(phaseTimings,null,2)+'\n');}
+ };
  const f=await createGallerySyncTestFixture({directory:dir,documentTransform:()=>structuredClone(document),initialPricingFor:({record,variants})=>{
   pricing={schema:'gravuru-personalization-pricing/v2',enabled:true,productId:PRODUCT,revision:2,currency:'EUR',variants:Object.fromEntries(variants.map(v=>[v.id.split('/').at(-1),v.priceCents])),extraMotifCents:record.document.config.extraMotifCents,extraPhotoCents:record.document.config.photo.extraPriceCents,extraLogoCents:1299,...(record.document.config.quantityTiers?{quantityTiers:record.document.config.quantityTiers,quantityTierScope:record.document.config.quantityTierScope}:{})};return pricing;
  }});
@@ -65,15 +71,15 @@ test('real 251/404 native bank: confirmed module activation, atomic failure, res
  host.close();host=null;host=open({executionEnabled:true,writesEnabled:true});
  const approve=host.targetWorkshop.orderIntake.approveCatalogLiveProducts;
  host.targetWorkshop.orderIntake.approveCatalogLiveProducts=args=>{approve(args);throw Error('Synthetic failure AFTER all 404 heads and approval');};
- const failed=await host.synchronizer.reconcile({operationId:op.id});assert.equal(failed.operations[0].state,'conflict');assert.deepEqual(active(),initialHeads);
+ const failed=await measured('fault-after-all-heads-and-approval',()=>host.synchronizer.reconcile({operationId:op.id}));assert.equal(failed.operations[0].state,'conflict');assert.deepEqual(active(),initialHeads);
  assert.equal(db.prepare('SELECT count(*) AS n FROM form_shop_bindings WHERE product_id=? AND product_revision=2').get(f.target.id).n,0);
  host.targetWorkshop.orderIntake.approveCatalogLiveProducts=approve;
- const recovered=await host.synchronizer.reconcile({operationId:op.id});assert.equal(recovered.operations[0].state,'completed',JSON.stringify(recovered.operations[0].error));assert.equal(state.writes,1);
+ const recovered=await measured('restart-reconcile-logo-off',()=>host.synchronizer.reconcile({operationId:op.id}));assert.equal(recovered.operations[0].state,'completed',JSON.stringify(recovered.operations[0].error));assert.equal(state.writes,1);
  assert.equal(active().length,404);assert.ok(active().every(h=>h.cfg_revision===2));
  const afterCount=db.prepare('SELECT count(*) AS n FROM form_shop_bindings').get().n;
  assert.equal((await host.synchronizer.execute(confirmation)).operations[0].state,'completed');assert.equal(state.writes,1);assert.equal(db.prepare('SELECT count(*) AS n FROM form_shop_bindings').get().n,afterCount);
  const back=await createPlan(management.profiles.get(enabled.id)),backConfirmation=confirm(back);
- const restored=await host.synchronizer.execute(backConfirmation);assert.equal(restored.operations[0].state,'completed',JSON.stringify(restored.operations[0].error));assert.equal(state.writes,2);
+ const restored=await measured('confirmed-logo-on-new-revision',()=>host.synchronizer.execute(backConfirmation));assert.equal(restored.operations[0].state,'completed',JSON.stringify(restored.operations[0].error));assert.equal(state.writes,2);
  const current=host.targetWorkshop.repository.get(f.target.id);assert.equal(current.revision,3);assert.equal(current.document.config.moduleProfile.modules.logo,true);
  for(const key of ['familyFormats','localResources','workshopElementRights'])assert.deepEqual(current.document.config[key],f.target.document.config[key]);
  assert.deepEqual(active().map(({cfg_revision,...h})=>h),initialHeads.map(({cfg_revision,...h})=>h));

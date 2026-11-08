@@ -1,0 +1,33 @@
+✖ real 251/404 native bank: confirmed module activation, atomic failure, restart recovery, replay and reversible logo (664574.6761ms)
+✔ release writer defaults off, admits only exact one-product release CAS and rechecks after token await (4.1092ms)
+✔ last transport await rechecks actual source/target state before any release write (7485.6623ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 2
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 690346.5211
+
+✖ failing tests:
+
+test at scripts\lib\gallery-production-activation.test.mjs:17:1
+✖ real 251/404 native bank: confirmed module activation, atomic failure, restart recovery, replay and reversible logo (664574.6761ms)
+  AssertionError [ERR_ASSERTION]: {"code":"shop_binding_freshness","message":"Die ID-Prüfung ist vor Abschluss der Speicherung abgelaufen."}
+  + actual - expected
+  
+  + 'conflict'
+  - 'completed'
+       ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/Mikail%20Erdem/Documents/Codex/2026-11-04/lie/work/module-activation-review-20261108/scripts/lib/gallery-production-activation.test.mjs:76:74)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'conflict',
+    expected: 'completed',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

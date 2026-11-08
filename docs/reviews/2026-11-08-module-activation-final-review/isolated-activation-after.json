@@ -1,0 +1,37 @@
+{
+  "state": "conflict",
+  "error": {
+    "code": "shop_binding_freshness",
+    "message": "Die ID-Prüfung ist vor Abschluss der Speicherung abgelaufen."
+  },
+  "metrics": {
+    "transactionMs": 60365.378899999996,
+    "rawRead": {
+      "calls": 14,
+      "ms": 585.7013000000006,
+      "characters": 166442234
+    },
+    "byteComparison": {
+      "calls": 800,
+      "ms": 38952.93329999983
+    },
+    "sql": {
+      "calls": 26126,
+      "ms": 40833.95849999723
+    },
+    "methods": {
+      "catalogLiveApprovals": {
+        "calls": 1,
+        "ms": 201.65090000000782
+      },
+      "bindingPricing": {
+        "calls": 404,
+        "ms": 18.60690000014438
+      },
+      "bindVariants": {
+        "calls": 400,
+        "ms": 4918.116399999839
+      }
+    }
+  }
+}

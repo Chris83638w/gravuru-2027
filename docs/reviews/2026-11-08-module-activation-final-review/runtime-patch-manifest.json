@@ -1,0 +1,17 @@
+{
+  "schema": "gravuru-module-activation-store-patch/v1",
+  "baseCommit": "57f6f70bc79eeb4f0d1655e80792b5d9fdd59db7",
+  "files": [
+    {
+      "path": "app/workshop/shop-product-binding-store.mjs",
+      "beforeSha256": "b957a5c104849e1b0f4b3ea646f7746b7066c451060d276ccddd9270e59f5971",
+      "afterSha256": "0b12557c7519e59461df5021ba6afe2ec74d93425d8a9de8cf0d8854a3995b26",
+      "bytes": 30288
+    }
+  ],
+  "customerFilesChanged": 0,
+  "cssFilesChanged": 0,
+  "liveWrites": 0,
+  "profileAssignments": 0,
+  "gatesOpened": false
+}

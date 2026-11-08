@@ -1,0 +1,21 @@
+{
+  "exactRemoteModulePreservation": true,
+  "themeFilesUnchanged": true,
+  "scopesUnchanged": true,
+  "proxyAndUrlsUnchanged": true,
+  "functionQueryUnchanged": false,
+  "functionQueryChange": "pricing jsonValue -> value only",
+  "moduleCount": 8,
+  "changedFields": [
+    "function.module_id",
+    "function.module_metadata",
+    "function.targets[0].input_query: pricing jsonValue -> value only"
+  ],
+  "wasm": {
+    "bytes": 20977,
+    "sha256": "a5c59354755dcf73bdeca8006134847549d8712f70277634fab405db93532da2"
+  },
+  "released": false,
+  "mutations": 0,
+  "tag": "gravuru-2027-steel-pricing-input-20261108-v2"
+}

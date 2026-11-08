@@ -3,6 +3,7 @@
 // Ein Objekt erhält nur eine bereits geladene Schrift bzw. ein geladenes Motiv; Vorschau,
 // Entwurfsprüfung und Export rechnen deshalb immer mit vorhandenen Konturen.
 import {LAZY_BASE,startNeeds,draftNeeds,lazyUrls,motifLibraryUrl,coreCatalogUrl,libraryEntries,fontFileName,resourceNeeds,productFontIndex} from './lazy-resources-model.mjs';
+import {observeVisibleResources} from './visible-resource-loader.mjs';
 
 // `priority` (fetch-Priorität, Chromium): 'low' beim Vorladen im Hintergrund (preload-queue.mjs).
 const fetchJSON=async(url,{priority}={})=>{const response=await fetch(url,{credentials:'same-origin',...(priority?{priority}:{})});if(!response.ok)throw Error('Laden fehlgeschlagen: '+url.split('/').pop());return response.json();};
@@ -43,7 +44,7 @@ export async function loadStart(config,{get=fetchJSON,base=LAZY_BASE}={}){
   return {catalog,entries:libraryEntries(catalog.motif_index,motifData.map(m=>structuredClone(m)))};
 }
 
-const LIBRARY_STYLE=':host([data-lazy-library=loading]) [data-motif]{pointer-events:none;opacity:.35}[data-lazy-library-status]{margin:6px 0 10px;font-size:14px}';
+const LIBRARY_STYLE='[data-lazy-library-status]{margin:6px 0 10px;font-size:14px}';
 
 // Hängt die Nachlader an einen montierten gravuru-configurator. `catalog`/`entries` sind die
 // gemeinsamen Objekte des Editors (für erneutes Montieren), `prepare` = prepareMotifGeometry.
@@ -76,6 +77,14 @@ export function attach(el,{catalog,entries,prepare,get=fetchJSON,base=LAZY_BASE}
     const urls=lazyUrls({motifs:[...new Set(keys)].filter(k=>el.motifs[k]===undefined)},{motifIndex},base).motifs;if(!urls.length)return;
     for(const m of await prepared(await Promise.all(urls.map(m=>loadMotif(m,get)))))addMotif(m);
   };
+  // The full index already supplies search/category metadata. Only the real
+  // contours of visible cards load now; an unrelated slow card blocks no other.
+  if(el.shadowRoot?.querySelectorAll){
+    const visible=observeVisibleResources({root:el.shadowRoot,selector:'[data-motif]',key:row=>row.dataset.motif,
+      ready:key=>typeof el.motifs[key]==='string',load:key=>el.uxEnsureMotifs([key]),
+      changed:()=>{el.uxLibraryRefresh?.();el.dispatchEvent(new CustomEvent('gravuru-motif-library',{detail:{partial:true}}));}});
+    el.uxEnsureVisibleMotifs=()=>visible.refresh({retry:true});
+  }
   el.uxEnsureDesignResources=async design=>{const needs=resourceNeeds(design?.objects,{localFonts:Object.keys(el.fontData),localMotifs:Object.keys(el.motifs)});await Promise.all([el.uxEnsureFonts(needs.fonts),el.uxEnsureMotifs(needs.motifs)]);};
   // Entwurf (Sitzungsschutz, Kundenkonto, Warenkorb, Datei): genau seine Schriften und Motive vor readDraft.
   el.uxEnsureDraftResources=async draft=>{

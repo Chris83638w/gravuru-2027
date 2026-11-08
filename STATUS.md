@@ -1,3 +1,7 @@
+## 08.11.2026 – Mika: unabhängiger Review des öffentlichen Vorlagen-Caches
+
+Read-only-Abschluss im isolierten Cachebaum: Entzugsrückfall über alte Bildhashes und veraltete Renderbytes bei erneuter Vorbereitung erkannt und durch den implementierenden Agenten behoben. Nach dem letzten Diff unabhängig **17/17 unterschiedliche gezielte Tests** bestanden, einschließlich echter lokaler HTTP-Anfragen, Neustart, direktem Abruf nach Entzug, Tenanttrennung, privaten Uploadkennzeichen und Start ohne Rendering. Acht Produktionsdateien geprüft; eigene Änderungen ausschließlich Dokumentation. Aktuelle UI und parallele Modulprüfungen beim Merge erhalten. Browserabnahme, Zusammenführung und Veröffentlichung bleiben bei Root; keine Liveaktivierung behauptet. [Prüfbericht mit Belegen und Grenzen](docs/handoffs/2026-11-08-public-preview-review.md).
+
 ## 08.11.2026 – Mika: unabhängigen Cache-Prüfstand vor Flugpause gesichert
 
 Nur Dokumentation auf eigenem Branch. Bestehende Galerie-/Start-/Vorladepfade und erster Speicherbaustein gelesen; Implementierungscheckpoint `6686e86` ist gesichert, Integration und Tests sind noch offen. Keine Cache-Abnahme, keine Liveänderung. Freigabeentzug, Mandanten-/Shoptrennung, Ressourcenidentität, keine Kundenuploads und Start ohne Rendering bleiben verbindliche Prüfpunkte. Aktuellere UI-Korrekturen nicht mit der älteren Ausgangsbasis überschreiben. [Prüfstand und Fortsetzung](docs/handoffs/2026-11-08-public-preview-review-checkpoint.md).

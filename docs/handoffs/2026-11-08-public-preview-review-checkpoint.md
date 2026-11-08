@@ -1,5 +1,7 @@
 # Öffentliche Designvorschauen – unabhängiger Prüfstand
 
+**Fortgeschrieben nach Wiederaufnahme:** Der folgende Text hält den historischen Stand vor der Flugpause fest. Die inzwischen ausgeführten Prüfungen und korrigierten Befunde stehen im [abschließenden unabhängigen Review](2026-11-08-public-preview-review.md). Auch dieser Folgebericht behauptet keine Liveaktivierung.
+
 Stand: 08.11.2026, Codex/Mika, Sicherung vor der Flugpause. **Noch keine Freigabe und nicht live aktiviert.** Diese Datei dokumentiert ausschließlich den unabhängigen Read-only-Review. Die Umsetzung liegt getrennt auf `dev/mika-public-design-previews-20261108`, Ausgangspunkt `ad9b24a`, gesicherter Zwischenstand **`6686e86`**. Die zugehörige Übergabe ist `docs/handoffs/2026-11-08-public-design-preview-cache.md` auf diesem Umsetzungsbranch; Integration und Tests sind dort ausdrücklich noch offen.
 
 ## Ziel und Abgrenzung

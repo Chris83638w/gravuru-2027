@@ -1,0 +1,185 @@
+{
+  "schema": "gravuru-independent-native-start-review/v1",
+  "integrationCommit": "491b82ad105477dd2222cbf6c9f006f82d141fcc",
+  "reviewedCommit": "126574a4c219469cf32c1aa9bb3ad3bdada28cd6",
+  "reviewedServiceSha256": "58151ce11021a41592492a3ea62f303074826b810f32db7e69e41d0b8df9b6cf",
+  "live": false,
+  "productionFilesChanged": 0,
+  "nativeModel": true,
+  "registry": "synthetic with strict native two-key identity contract",
+  "before": {
+    "phase": "prepare",
+    "nativeModel": true,
+    "coldHash": "8badf23fe1a7c99e61c66c2137378dd44c0d95db79386ca43d38cc946ff36ac8",
+    "warmHash": "8badf23fe1a7c99e61c66c2137378dd44c0d95db79386ca43d38cc946ff36ac8",
+    "legacy": true,
+    "publishedRevision": null,
+    "prepared": 3,
+    "warmCount": 0,
+    "directStatus": 404,
+    "directCode": "shop_entry_route",
+    "rejectedIdentityKeys": [
+      [
+        "shopifyProductId",
+        "shopifyVariantId",
+        "storeId",
+        "tenantId",
+        "shopDomain",
+        "productId",
+        "productRevision",
+        "bindingId",
+        "assignmentRevision",
+        "options",
+        "unitCents"
+      ],
+      [
+        "shopifyProductId",
+        "shopifyVariantId",
+        "storeId",
+        "tenantId",
+        "shopDomain",
+        "productId",
+        "productRevision",
+        "bindingId",
+        "assignmentRevision",
+        "options",
+        "unitCents"
+      ],
+      [
+        "assignmentRevision",
+        "bindingId",
+        "options",
+        "productId",
+        "productRevision",
+        "shopDomain",
+        "shopifyProductId",
+        "shopifyVariantId",
+        "storeId",
+        "tenantId",
+        "unitCents"
+      ]
+    ],
+    "renderCalls": 3
+  },
+  "after": [
+    {
+      "phase": "prepare",
+      "coldHash": "d102f9a0046b04e85e0b2fd63f3b1f1b19f9b15d57ddf849b865831eed3ea85f",
+      "warmHash": "d102f9a0046b04e85e0b2fd63f3b1f1b19f9b15d57ddf849b865831eed3ea85f",
+      "legacy": true,
+      "publishedRevision": null,
+      "sourceSha256": "2e74548aa7211a2f5546af428e1d27d9f00f12181490356633e3cd109cb179c0",
+      "sourceBytes": 11906263,
+      "designs": 251,
+      "sizes": 80,
+      "variants": 404,
+      "selectedOptions": {
+        "size": "GR-ES-AB-120X80-T15",
+        "mounting": "K00"
+      },
+      "unitCents": 1999,
+      "warmBeforeCount": 0,
+      "warmAfterCount": 3,
+      "renderCalls": 3,
+      "preparedFromDisk": false,
+      "galleryCards": 21,
+      "startBeforeMs": 487.6728000000003,
+      "startAfterMs": 412.0046999999995,
+      "prepareMs": 2600.2045,
+      "manifestBytes": 800,
+      "imageStatuses": [
+        200,
+        200,
+        200
+      ],
+      "imageBytes": [
+        140037,
+        139106,
+        139156
+      ],
+      "imageHashes": [
+        "8d6215214fea44c4440ff494742ce5417f658d42f8c18e83a6e99e5ecc725a32",
+        "fcc90d10bc2bc7bb1cb67afd863f2f0a00a9ed2e6c1dbfbdbf578e9438af1d83",
+        "79aa07e6933daaf8becb0f53e395bf652dfd0ceef5cc4020026abcf2c615ffc0"
+      ],
+      "cacheFiles": [
+        {
+          "name": "7a738f6620fe6985c80b56a2309fb7267f24d786b58f4842572bd60d8a4932e8.json",
+          "bytes": 186350,
+          "sha256": "933ea1425adc8e894df130fffb06c1e65ef2fa87675c766135d7b0afacd307be"
+        },
+        {
+          "name": "a6724e9fef0982d85e30da97f140fc1d7d2b7851cb13d21c92db38f1febc741e.json",
+          "bytes": 187590,
+          "sha256": "d2f4ab91d8ff8c4d93031850251d0f8653fecb4505a2dc2be2a4fde05eb01cdb"
+        },
+        {
+          "name": "c50f2a4a973d1d285f86c14ed4040836e72771e2f0f9de8409a481742f121ba9.json",
+          "bytes": 186418,
+          "sha256": "27ecb2d16ad987fb91b44899a1ed4cb4f3da64a2eb4caf6eed08a1ab4d540cf2"
+        }
+      ]
+    },
+    {
+      "phase": "restart",
+      "coldHash": "d102f9a0046b04e85e0b2fd63f3b1f1b19f9b15d57ddf849b865831eed3ea85f",
+      "warmHash": "d102f9a0046b04e85e0b2fd63f3b1f1b19f9b15d57ddf849b865831eed3ea85f",
+      "legacy": true,
+      "publishedRevision": null,
+      "sourceSha256": "2e74548aa7211a2f5546af428e1d27d9f00f12181490356633e3cd109cb179c0",
+      "sourceBytes": 11906263,
+      "designs": 251,
+      "sizes": 80,
+      "variants": 404,
+      "selectedOptions": {
+        "size": "GR-ES-AB-120X80-T15",
+        "mounting": "K00"
+      },
+      "unitCents": 1999,
+      "warmBeforeCount": 3,
+      "warmAfterCount": 3,
+      "renderCalls": 0,
+      "preparedFromDisk": true,
+      "galleryCards": 21,
+      "startBeforeMs": 507.4481999999998,
+      "startAfterMs": 432.1118999999999,
+      "prepareMs": 1297.4578000000001,
+      "manifestBytes": 800,
+      "imageStatuses": [
+        200,
+        200,
+        200
+      ],
+      "imageBytes": [
+        140037,
+        139106,
+        139156
+      ],
+      "imageHashes": [
+        "8d6215214fea44c4440ff494742ce5417f658d42f8c18e83a6e99e5ecc725a32",
+        "fcc90d10bc2bc7bb1cb67afd863f2f0a00a9ed2e6c1dbfbdbf578e9438af1d83",
+        "79aa07e6933daaf8becb0f53e395bf652dfd0ceef5cc4020026abcf2c615ffc0"
+      ],
+      "cacheFiles": [
+        {
+          "name": "7a738f6620fe6985c80b56a2309fb7267f24d786b58f4842572bd60d8a4932e8.json",
+          "bytes": 186350,
+          "sha256": "933ea1425adc8e894df130fffb06c1e65ef2fa87675c766135d7b0afacd307be"
+        },
+        {
+          "name": "a6724e9fef0982d85e30da97f140fc1d7d2b7851cb13d21c92db38f1febc741e.json",
+          "bytes": 187590,
+          "sha256": "d2f4ab91d8ff8c4d93031850251d0f8653fecb4505a2dc2be2a4fde05eb01cdb"
+        },
+        {
+          "name": "c50f2a4a973d1d285f86c14ed4040836e72771e2f0f9de8409a481742f121ba9.json",
+          "bytes": 186418,
+          "sha256": "27ecb2d16ad987fb91b44899a1ed4cb4f3da64a2eb4caf6eed08a1ab4d540cf2"
+        }
+      ]
+    }
+  ],
+  "headStatus": 200,
+  "processRestartSameUrls": true,
+  "processRestartSameCacheBytes": true
+}

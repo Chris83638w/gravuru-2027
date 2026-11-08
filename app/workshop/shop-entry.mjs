@@ -1,5 +1,6 @@
 import {createCustomerDesignImages} from './customer-design-image.mjs';
 import {shopStartModel,isAllSizesFamily} from './shop-start-model.mjs';
+import {shopWarmManifest} from './shop-warm-manifest.mjs';
 import fs from 'node:fs';
 import {createModelSlimmer,surfaceSwapsFrom,DEFAULT_SURFACE_DIR} from './shop-model-slim.mjs';
 import {createHash,randomBytes} from 'node:crypto';
@@ -25,7 +26,7 @@ import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mj
 // Warenkorb des vorhandenen Pfads (bound-test-cart → draft-cart-handoff). Keine Händleranmeldung,
 // Galerie nur nach Sitzungsprüfung im selben Datenbereich; keine Preise aus dem Browser, keine Fertigungsfreigabe.
 const API='/api/shop-entry/';
-const PAGE_FILES=['shop-entry-page.mjs','shop-entry-client.mjs','shop-design-switch.mjs','shop-selection-transfer.mjs'];
+const PAGE_FILES=['shop-entry-page.mjs','shop-entry-client.mjs','shop-design-switch.mjs','shop-selection-transfer.mjs','shop-warm.mjs'];
 const WARM_RUNTIME={'/_merchant-acryl-editor.html':['/_acryl-runtime/lazy/katalog-kern.json']};
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const gid=(value,kind)=>typeof value==='string'&&new RegExp('^gid://shopify/'+kind+'/[1-9][0-9]{0,19}$').test(value);
@@ -80,6 +81,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  // ausschließlich die iframe-Navigation, damit der Browser es nicht doppelt abruft.
  const warm=Object.fromEntries(fixed.map(s=>[s.storeId,WARM_RUNTIME[s.nativeEditorPath]||[]]));
  const pageHtml=Buffer.from(fs.readFileSync(ui('shop-entry.html'),'utf8').replaceAll('/konfigurator/shop/',pagePath).replace('<meta name="robots"','<meta name="gravuru-warm" content="'+esc(JSON.stringify(warm))+'">\n  <meta name="robots"')),pageFiles=new Map(PAGE_FILES.map(name=>[pagePath+name,fs.readFileSync(ui(name))]));
+ const warmPath=pagePath+'warm/',warmHtml=Buffer.from('<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><title>Konfigurator vorbereiten</title></head><body><script type="module" src="'+esc(pagePath)+'shop-warm.mjs"></script></body></html>');
  const cartContexts=new Map(),reviewJobs=new Set(),assetIndex=new Map();
  const startPath=proxyPath+'/start';
  const PAGE_CSP=pageCsp(shopDomain);
@@ -215,7 +217,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   // Startkarte (`format=json`, Vorabruf der Produktseite) zählt getrennt: Seitenaufrufe sperren keine echten Starts.
   if(!startLimiter(input.ticket?'ticket':'start'))fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
   const {store,binding}=resolve({shopifyProductId:input.shopifyProductId,shopifyVariantId:input.shopifyVariantId});
-  modelFor(store,binding);
+  const startModel=modelFor(store,binding);
   const issued=sessions.issue(binding,{customerId:proxy.customerId});
   const fragment=new URLSearchParams({s:issued.token});
   if(input.config){fragment.set('config',input.config);fragment.set('rev',input.rev);if(input.line)fragment.set('line',input.line);}
@@ -224,7 +226,11 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   if(input.embed){fragment.set('embed','1');if(input.leiste)fragment.set('leiste',input.leiste);}
   const target=origin+pagePath+'#'+fragment.toString();
   // Startkarte: dieselbe Zieladresse als JSON; die Produktseite öffnet beim Klick direkt den Konfigurator-Host.
-  if(input.ticket)return json(res,200,{url:target,expiresAt:issued.expiresAt});
+  if(input.ticket){
+   let assets=null;
+   if(!input.config)try{assets=shopWarmManifest(presentedModel(startModel,binding,store).universal,{editorPath:store.nativeEditorPath,pagePath});}catch{/* Warming is optional; the actual start remains authoritative. */}
+   return json(res,200,{url:target,expiresAt:issued.expiresAt,...(assets?{warm:{url:origin+warmPath,manifest:assets}}:{})});
+  }
   // Shopify reicht die Weiterleitung an den Browser durch; Meta-Refresh und Verweis sind der Rückfall.
   const html=Buffer.from(simplePage('Konfigurator wird geöffnet …','Einen Moment – der Konfigurator wird geöffnet.',{link:target}));
   res.writeHead(302,headersFor('text/html; charset=utf-8',{Location:target,'Content-Length':html.length}));res.end(html);
@@ -351,7 +357,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  }
  return Object.freeze({
   pagePath,startPath,
-  matches:pathname=>customerImages.matches(pathname)||fontRoute.test(pathname)||previewRoute.test(pathname)||pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pageFiles.has(pathname)||pathname.startsWith(API),
+  matches:pathname=>customerImages.matches(pathname)||fontRoute.test(pathname)||previewRoute.test(pathname)||pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pathname===warmPath||pageFiles.has(pathname)||pathname.startsWith(API),
   async handle(req,res,url){
    try{
     if(req.headers.host!==address.host||req.headers['x-forwarded-proto']!=='https')fail(403,'shop_entry_host','Diese Anfrage ist nicht zulässig.');
@@ -378,12 +384,12 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      if(!bytes)fail(404,'shop_entry_route','Diese Datei gibt es hier nicht.');
      res.writeHead(200,headersFor('application/json; charset=utf-8',{'Content-Length':bytes.length,'Cache-Control':'public, max-age=31536000, immutable'}));return res.end(req.method==='HEAD'?undefined:bytes);
     }
-    if(pathname===pagePath||pageFiles.has(pathname)){
+    if(pathname===pagePath||pathname===warmPath||pageFiles.has(pathname)){
      if(!['GET','HEAD'].includes(req.method))fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
      if(url.search)fail(404,'shop_entry_route','Diese Seite gibt es hier nicht.');
      const script=pageFiles.has(pathname);
      if(script)checkOrigin(req,{mutating:false});
-     const bytes=script?pageFiles.get(pathname):pageHtml;
+     const bytes=script?pageFiles.get(pathname):pathname===warmPath?warmHtml:pageHtml;
      res.writeHead(200,headersFor(script?'text/javascript; charset=utf-8':'text/html; charset=utf-8',{'Content-Length':bytes.length,'Content-Security-Policy':PAGE_CSP}));return res.end(req.method==='HEAD'?undefined:bytes);
     }
     const action=pathname.slice(API.length);

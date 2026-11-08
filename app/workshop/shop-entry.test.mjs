@@ -136,6 +136,9 @@ test('paused product and anonymous customer handling on start',()=>run(async(f,r
  const customer=await token({logged_in_customer_id:'42'});assert.equal(JSON.parse(Buffer.from(customer.token.split('.')[1],'base64url').toString()).cu,'gid://shopify/Customer/42');
 }));
 test('page and script are served with a strict policy and nothing else leaks',()=>run(async(f,request)=>{
+ const warm=await request('/konfigurator/shop/warm/');assert.equal(warm.status,200);assert.match(warm.headers['content-security-policy'],/frame-ancestors https:\/\//);assert.match(warm.body.toString(),/shop-warm\.mjs/);assert.doesNotMatch(warm.body.toString(),/shop-entry-page|api\/|iframe|UniversalConfig/);
+ assert.equal((await request('/konfigurator/shop/warm/?model=1')).status,404);assert.equal((await request('/konfigurator/shop/warm/','POST',{})).status,405);
+ assert.equal((await request('/konfigurator/shop/shop-warm.mjs','GET',undefined,{'Sec-Fetch-Site':'cross-site'})).status,403);
  const page=await request('/konfigurator/shop/');assert.equal(page.status,200);assert.match(page.headers['content-type'],/text\/html/);assert.ok(page.body.toString().includes('/konfigurator/shop/shop-entry-page.mjs'));assert.match(page.headers['content-security-policy'],/frame-src 'self'/);
  const script=await request('/konfigurator/shop/shop-entry-page.mjs',undefined,undefined,{'Sec-Fetch-Site':'same-origin'});assert.equal(script.status,200);assert.match(script.headers['content-type'],/text\/javascript/);assert.ok(script.body.toString().includes('./shop-entry-client.mjs'));
  const client=await request('/konfigurator/shop/shop-entry-client.mjs',undefined,undefined,{'Sec-Fetch-Site':'same-origin'});assert.equal(client.status,200);assert.ok(client.body.toString().includes('/api/shop-entry/'));
@@ -577,6 +580,12 @@ test('start ticket (format=json) returns the same target as the redirect and cou
  const unsigned=new URLSearchParams({...base,format:'json',shop:shopDomain,timestamp:String(Math.floor(f.now()/1000))});
  assert.equal((await request(proxyPath+'/start?'+unsigned)).status,401,'nur signiert über den App-Proxy');
 },f=>{f.options.limits={startPerMinute:1,requestsPerMinute:1000};}));
+
+test('warm manifest is optional public metadata; cart-edit tickets never preload private saved designs',()=>run(async(f,request,{open})=>{
+ const ticket=await open({format:'json',embed:'1'});assert.equal(ticket.status,200);assert.equal(ticket.data.warm.url,origin+'/konfigurator/shop/warm/');
+ assert.deepEqual(Object.keys(ticket.data.warm.manifest).sort(),['catalogPath','editorPath','fonts','motifs','schema']);assert.doesNotMatch(JSON.stringify(ticket.data.warm),/PRIVATE CUSTOMER|data:image|blob:|gse1\.|konfig_/);
+ const edited=await open({format:'json',config:'konfig_'+uuid(9),rev:'1',line:'theme'});assert.equal(edited.status,200);assert.equal(edited.data.warm,undefined);
+}));
 
 test('repeated design switches cannot extend the original source session',()=>run(async(f,request,{token})=>{
  let current=(await token()).token;

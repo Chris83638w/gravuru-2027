@@ -99,9 +99,10 @@ async function fakeEditor(name){
   const entries=libraryEntries(catalog.motif_index,[]);
   const get=async(url,options={})=>{requests.push({url,priority:options.priority||null});await new Promise(r=>setTimeout(r,3));
     if(url.includes('/schriften/'))return {regular:{glyphs:{}}};
+    if(url.endsWith('motive/import-a.json'))return {key:'import-a',name:'A',category:'K',svgFragment:'<g/>',bounds:[0,0,1,1]};
     if(url.endsWith('motive-alle.json'))return [{key:'import-a',name:'A',category:'K',svgFragment:'<g/>',bounds:[0,0,1,1]}];
     throw Error(url);};
-  attach(el,{catalog,entries,prepare:()=>{},get,base:'/l/'});
+  attach(el,{catalog,entries,prepare:()=>{},get,base:'/l/'});el.uxEnsureVisibleMotifs=()=>el.uxEnsureMotifs(['import-a']);
   const images=[];
   class FakeImage{constructor(){images.push(this);}set src(url){this.url=url;setTimeout(()=>this.onload?.(),2);}}
   const timers=[];
@@ -111,45 +112,28 @@ async function fakeEditor(name){
   return {el,r,win,requests,images,panels,listeners,run};
 }
 
-test('Hintergrund: Schriften einzeln mit niedriger Priorität, Schriftauswahl übernimmt laufende Abrufe – keine Doppel-Downloads',async()=>{
-  const f=await fakeEditor('vorladen-schriften');
-  const queue=installBackgroundLoading({el:f.el,r:f.r,config:{acrylic:{},profile:{optionGroups:[]}},win:f.win});
-  // Bilder laufen zuerst (6 Sockel, nacheinander, niedrige Priorität).
-  await f.run();
-  assert.deepEqual(f.images.map(i=>i.url),optionImageUrls({acrylic:{}}));assert.ok(f.images.every(i=>i.fetchPriority==='low'));
-  assert.equal(queue.state('motifs'),'done');
-  const fontRequests=f.requests.filter(r=>r.url.includes('/schriften/'));
-  assert.deepEqual(fontRequests.map(r=>r.url),['/l/schriften/lora.json','/l/schriften/caveat.json','/l/schriften/montserrat.json']);
-  assert.ok(f.requests.every(r=>r.priority==='low'),JSON.stringify(f.requests));
-  // Alles geladen: Schriftauswahl und Motivbereich laden nichts erneut.
-  await f.el.uxEnsureAllFonts();await f.el.uxEnsureMotifLibrary();
-  assert.equal(f.requests.length,4);
-  assert.deepEqual(f.requests.map(r=>r.url).filter((u,i,a)=>a.indexOf(u)!==i),[]);
+test('Background warms only bounded recommended fonts and visible motifs; no complete library or all-font sweep',async()=>{
+ const f=await fakeEditor('bounded-background');
+ const q=installBackgroundLoading({el:f.el,r:f.r,config:{acrylic:{},profile:{optionGroups:[]}},win:f.win});await f.run();
+ assert.deepEqual(f.images.map(i=>i.url),optionImageUrls({acrylic:{}}));assert.ok(f.images.every(i=>i.fetchPriority==='low'));
+ assert.equal(q.state('motifs'),'done');assert.deepEqual(f.requests.filter(r=>r.url.includes('/schriften/')).map(r=>r.url),['/l/schriften/montserrat.json']);
+ assert.ok(!f.requests.some(r=>r.url.includes('motive-alle')));assert.equal(f.requests.filter(r=>r.url.includes('motive/import-a.json')).length,1);
+ await f.el.uxEnsureVisibleMotifs();assert.equal(f.requests.length,2,'visible loader deduplicates');
 });
 
-test('Vorziehen: Motivbereich geöffnet, während Schriften im Hintergrund laden → Motive sofort, je Datei ein Abruf',async()=>{
-  const f=await fakeEditor('vorladen-vorziehen');
-  installBackgroundLoading({el:f.el,r:f.r,config:{profile:{optionGroups:[]}},win:f.win});
-  // Kunde öffnet den Motivbereich (bestehender Aufrufer ruft el.uxEnsureMotifLibrary()).
-  const library=f.el.uxEnsureMotifLibrary();
-  // Gleichzeitig öffnet er die Schriftauswahl.
-  const fonts=f.el.uxEnsureAllFonts();
-  await Promise.all([library,fonts,f.run()]);
-  const urls=f.requests.map(r=>r.url);
-  assert.equal(urls[0],'/l/motive-alle.json');assert.equal(f.requests[0].priority,null,'sofort, nicht niedrig');
-  assert.deepEqual([...new Set(urls)].length,urls.length,'kein Abruf doppelt: '+urls.join(', '));
-  assert.equal(urls.filter(u=>u.includes('/schriften/')).length,3);
-  assert.equal(f.el.dataset.lazyLibrary,'ready');
+test('Opening current panels promotes visible content, leaving explicit legacy all-loaders available',async()=>{
+ const f=await fakeEditor('bounded-intent');
+ const q=installBackgroundLoading({el:f.el,r:f.r,config:{profile:{optionGroups:[]}},win:f.win});
+ await Promise.all([q.request('motifs'),q.request('fonts'),f.run()]);
+ assert.deepEqual(f.requests.map(r=>r.url).sort(),['/l/motive/import-a.json','/l/schriften/montserrat.json']);
+ await f.el.uxEnsureAllFonts();assert.equal(f.requests.filter(r=>r.url.includes('/schriften/')).length,3);
 });
 
-test('Datensparmodus im Editor: Motive werden nicht vorgeladen, aber beim Öffnen des Motivbereichs',async()=>{
-  const f=await fakeEditor('vorladen-sparen');
-  f.win.navigator.connection={saveData:true};
-  const queue=installBackgroundLoading({el:f.el,r:f.r,config:{profile:{optionGroups:[]}},win:f.win});
-  await f.run();
-  assert.equal(queue.state('motifs'),'skipped');assert.ok(!f.requests.some(r=>r.url.endsWith('motive-alle.json')));
-  await f.el.uxEnsureMotifLibrary();
-  assert.equal(f.requests.filter(r=>r.url.endsWith('motive-alle.json')).length,1);
+test('Save-Data preloads no optional font/motif/image; explicit visible request still works',async()=>{
+ const f=await fakeEditor('bounded-savedata');f.win.navigator.connection={saveData:true};
+ const q=installBackgroundLoading({el:f.el,r:f.r,config:{profile:{optionGroups:[]}},win:f.win});await f.run();
+ assert.equal(q.state('fonts'),'skipped');assert.equal(q.state('motifs'),'skipped');assert.equal(f.requests.length,0);
+ await q.request('motifs');assert.deepEqual(f.requests.map(r=>r.url),['/l/motive/import-a.json']);
 });
 
 test('Kundenoberfläche startet die Ladefolge erst am Ende von installUX',()=>{

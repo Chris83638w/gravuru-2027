@@ -50,11 +50,13 @@ export function createStartTickets({fetchImpl=globalThis.fetch,now=Date.now,marg
   entry.pending=Promise.resolve().then(()=>fetchImpl(request.href,{credentials:'same-origin',cache:'no-store',headers:{Accept:'application/json'}})).then(async response=>{
    const data=response.ok?await response.json():null,until=Math.min(Date.parse(data?.expiresAt)-marginMs,fetchedAt+maxAgeMs);
    if(typeof data?.url!=='string'||!data.url.startsWith(EDITOR_ORIGIN+'/')||!(until>now()))throw Error('Startkarte ungültig');
-   entry.url=data.url;entry.until=until;entry.pending=null;return entry.url;
+   entry.url=data.url;entry.until=until;entry.pending=null;
+   try{const warm=new URL(data.warm?.url);if(warm.origin===EDITOR_ORIGIN&&!warm.username&&!warm.password&&/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/warm\/$/.test(warm.pathname)&&!warm.search&&!warm.hash&&JSON.stringify(data.warm?.manifest).length<4096)entry.warm={url:warm.href,manifest:data.warm.manifest};}catch{}
+   return entry.url;
   }).catch(()=>{entry.url=null;entry.pending=null;entry.failedUntil=now()+retryMs;return null;});
   return entry.pending;
  }
- return Object.freeze({get,load});
+ return Object.freeze({get,load,warm:key=>get(key)?tickets.get(key)?.warm||null:null});
 }
 
 // Global (Chris 27.10.2026: „universal, auch wenn ich ein neues Produkt anlege“): Ein Theme-Baustein im
@@ -250,12 +252,17 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
   // Sperrt das Theme den Knopf nachträglich (Klasse, Stil, disabled), sofort wieder freigeben.
   new MutationObserver(records=>{for(const r of records)if(r.target?.matches?.('[data-gravuru-personalisieren] a[data-gravuru-start]'))unlockStartLink(r.target);}).observe(document.body,{attributes:true,subtree:true,attributeFilter:['class','style','disabled','aria-disabled','tabindex']});
  }
- // Fenster-Vorladen ist aus (Messung 27.10.2026, Chrome): ein unsichtbares Fenster lädt der Browser stark gebremst
- // und kostete nur Daten. Vorab kommt stattdessen nur die Startkarte (wenige Hundert Byte) nach dem Laden der Seite
- // bzw. bei erkennbarer Absicht; preload() bleibt für spätere Versuche.
+ // Keep full-editor preloading off. A tiny separate app-origin frame warms only
+ // the server's bounded public asset manifest in the same browser cache partition.
  const tickets=createStartTickets();
+ let warmFrame=null,warmSignature=null;
+ function warmAssets(key){
+  const connection=navigator.connection;if(connection?.saveData||/(^|-)2g$/.test(String(connection?.effectiveType||''))||document.visibilityState==='hidden'||frame)return;
+  const data=tickets.warm(key);if(!data)return;const signature=JSON.stringify(data);if(signature===warmSignature)return;warmSignature=signature;
+  warmFrame?.remove();warmFrame=document.createElement('iframe');warmFrame.hidden=true;warmFrame.tabIndex=-1;warmFrame.setAttribute('aria-hidden','true');warmFrame.title='Konfigurator vorbereiten';warmFrame.referrerPolicy='no-referrer';warmFrame.src=data.url+'#'+encodeURIComponent(JSON.stringify(data.manifest));document.body.append(warmFrame);
+ }
  const ownLink=()=>{const link=document.querySelector('[data-gravuru-personalisieren] a[data-gravuru-start]');if(link&&config)link.href=startHref(config,currentVariant(config,document));return link;};
- const fetchTicket=()=>{const link=ownLink();if(link&&!frame)tickets.load(startUrl(link));};
+ const fetchTicket=()=>{const link=ownLink();if(link&&!frame){const key=startUrl(link);tickets.load(key).then(()=>{const current=ownLink();if(current&&startUrl(current)===key)warmAssets(key);});}};
  connectOnIntent(document,EDITOR_ORIGIN,fetchTicket);
  if(config){const idle=()=>window.requestIdleCallback?window.requestIdleCallback(fetchTicket,{timeout:4000}):setTimeout(fetchTicket,1500);if(document.readyState==='complete')idle();else window.addEventListener('load',idle,{once:true});}
  // Klick in der Einfangphase: Theme-Skripte (Kaufleiste, Akkordeons …) können ihn nicht vorher schlucken.

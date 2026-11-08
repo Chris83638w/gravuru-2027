@@ -1,49 +1,60 @@
-# Konfi-Module und Edelstahl-Designbank – gesicherter Arbeitsstand
+# Konfi-Module und Edelstahl-Designbank – gesicherter Stand
 
-Stand: 08.11.2026. Dieser Nachweis unterscheidet vorbereitete Änderungen von tatsächlicher Veröffentlichung.
+08.11.2026: **Die Designbank ist serverseitig auf Revision 4 aktiviert.** Kundenstart, Designwechsel auch nach Formatwechsel und drei Warenkorbpreise sind bestätigt. Der Logo-Vorschaufix ist veröffentlicht; sein tatsächlicher PNG-Endnachweis läuft noch. Die allgemeine Modulverwaltung und Synchronisierung bleiben **nicht produktiv aktiviert**.
 
-## Unveränderliche Vorgaben
+## Verbindlicher Umfang
 
-- Ein gemeinsamer, freigegebener R15-Konfigurator. Keine neue Oberfläche pro Produktgruppe.
-- Kundenaufbau, Bedienung und bestehende Gestaltung bleiben unverändert.
-- Produktgruppen bestimmen verfügbare Module und zulässige Ausführungen. Vor Neuanlage werden konkrete Optionen und Preise bestätigt.
-- Edelstahl-Türschilder: alle acht Quellformen, 80 Größen, 404 gültige Ausführungen. Fotos aus; optional SVG-Logo für 12,99 EUR. Ausgangsdesign Familie Rosenberg.
-- Historische Bestell-/Warenkorbstände und Preise dürfen durch Synchronisierung nicht umgeschrieben werden.
+Ein gemeinsamer freigegebener R15-Konfi; Kundenaufbau und bestehende Gestaltung bleiben unverändert. Produktgruppen bestimmen Module und Ausführungen, konkrete Optionen/Preise werden vor Neuanlage bestätigt. Edelstahl: acht Formen, 80 Größen, 404 Kombinationen; keine Fotos, optional SVG-Logo für 12,99 EUR. Startdesign Familie Rosenberg. Historische Bestellstände bleiben erhalten.
 
-## Nachgewiesene Sicherung des veröffentlichten Servers
+## Sicherung
 
-Die private Sicherung `mika-module-design-backup-20261108-v1` ist abgeschlossen. Zeitraum: 08.11.2026, 10:36:45 bis 10:38:42 Uhr Europe/Berlin.
+Private Sicherung `mika-module-design-backup-20261108-v1`, abgeschlossen am 08.11., 10:36:45–10:38:42 Uhr Berlin: sechs SQLite-Dateien mit Integritätsprüfung, zugehörige JSON-Dateien, beide Startdateien und aktive Laufzeit; insgesamt 13 Dateien. Private Nutzdaten liegen nicht in GitHub.
 
-Gesichert wurden alle sechs SQLite-Dateien der nativen Werkstatt und Händleranbindung mit Integritätsprüfung, zugehörige JSON-Dateien, beide Startdateien und die aktive Laufzeit. Insgesamt 13 Dateien. Datenbanken und private Nutzdaten werden nicht in GitHub abgelegt.
+- Serverbeleg: `/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-module-design-backup-20261108-v1/receipt.json`
+- Beleg-SHA-256: `4adcfced9feac1a0c6c8d9649cf9590aeaf63bfd664b53746c7f7fc60ed985ef`
+- Gesicherte Codebasis: `private/mika-steel-r15-shopify-20261108`; lesender Vergleich von 770 Quellmodulen, Manifest-SHA-256 `5f10e8caa033dc922562e8d3d57b80640e7f451d06a46ba2f0acfac954e91e94`.
 
-Belegdatei auf dem Server: `/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-module-design-backup-20261108-v1/receipt.json`.
+## Designbank: erfolgreich aktiviert
 
-Exakte SHA-256 des Belegs: `4adcfced9feac1a0c6c8d9649cf9590aeaf63bfd664b53746c7f7fc60ed985ef`.
+Der D1-Import bot zuvor nur eine Wahl je Größe. Revision 4 enthält **251 vorhandene freigegebene Originale**, je Format 9–23 passende Designs; AB 12×8 und RE 15×10 jeweils 21. Alle 80 Größen, 404 Preis-/Befestigungskombinationen, bisherigen Originale und Rosenberg als Start bleiben erhalten. Ungeeignete Originale/Größenzuordnungen wurden dokumentiert, nicht umgestaltet.
 
-Aktive Codebasis: `private/mika-steel-r15-shopify-20261108`. Ein zusätzlicher, lesend erzeugter Vergleich umfasst 770 Quellmodule. Manifest-SHA-256: `5f10e8caa033dc922562e8d3d57b80640e7f451d06a46ba2f0acfac954e91e94`.
+Produkt: `cfg_ac514214-a313-4738-8008-00445ee1befd`. Der erfolgreiche Serverlauf dauerte **11:04:44–11:05:48 UTC / 12:04–12:05 Uhr Berlin**, Exit 0. Alle 404 Pläne wurden geprüft; 404 neue Bindungen und 404 aktive Zuordnungsköpfe auf Revision 4 atomar übernommen. Katalogfreigabe `mika-steel-normal-door-bank-r4-20261108` einmal angelegt. Anschließende externe Rückprüfung erfolgreich; **0 Shopify-Schreibzugriffe**, alte Bestellstände nicht umgeschrieben. Lokaler Beleg: `outputs/steel-design-bank-repair-20261108/server-activation-complete.json`. Signierte Kundenlinks werden nicht dokumentiert.
 
-## Module: lokale Abnahme mit echten Produktdaten
+Die ersten Versuche stoppten wegen 53 fehlender Katalogressourcen und anschließend wegen unterschiedlicher Sortierung numerischer Schlüssel im Operator-Hash; die Bindungstransaktion wurde zurückgerollt. Ressourcen und vier benötigte Laufzeitkonstruktoren wurden privat ergänzt. Nur der Operator-Bindungshash wurde korrigiert; Importfingerprint, Preisbelege und nativer Binder blieben unverändert. Drei gezielte Regressionen bestanden, danach der erfolgreiche dritte Serverlauf.
 
-[PR #201](https://github.com/Chris83638w/gravuru-2027/pull/201) enthält versionierte Module, Produktgruppen-Vorlagen und bestätigte Anlagepläne. Die echte Edelstahlquelle wurde lokal einmal mit und einmal ohne Logo angelegt. Beide Entwürfe behalten alle 80 Größen, 404 Kombinationen und die 15 ursprünglichen Designobjekte. 808 Preis-/Geometrievergleiche bestanden; Wiederholung erzeugt keine Duplikate.
+Die Prüfsummen haben unterschiedliche Zwecke:
 
-Siehe [vollständige lokale Abnahme](../reviews/2026-11-08-module-profiles/real-steel-local-acceptance.md). Die zentrale Browser-Sichtprüfung ist noch offen: Die Automatisierungsnavigation sendet `Sec-Fetch-Site: cross-site` und wird durch den bestehenden lokalen Schutz mit 403 zurückgewiesen. Keine Schutzregel wurde abgeschwächt.
+| Zweck | SHA-256 |
+|---|---|
+| Gesicherte Ausgangsrevision 3 | `bfca056e6e9e4a026e004c52e6bc95b35fc2b2567244a0116bf04d5c1e47245a` |
+| Finale normalisierte Kandidatdatei | `2e74548aa7211a2f5546af428e1d27d9f00f12181490356633e3cd109cb179c0` |
+| Operator-Kanonisierung / Importfingerprint | `852bfe8174aa0bec8d8187f8dd00d3f90b281b1ea58399ce7441f1b4ee9dd451` |
+| Nativer Bindungs-Dokumenthash | `3b28df2b1792ca561243f1c592458f4dd309b0c317e88b83362a69e3e0586c1c` |
 
-## Fehlende Designs: geprüfter Datenkandidat
+Kandidat: `outputs/steel-design-bank-repair-20261108/live-runner/candidate-product-document.live-normalized.compact.json`. Operator-/Transportdateien bleiben privat unter `private/mika-steel-designbank-update-20261108-v1/`. Frühere Payloadgrößen waren vor Normalisierung gemessen; die finale Kundenauslieferung ist separat zu messen.
 
-Der alte Import beschränkte die normale Türschildgruppe auf D1: 15 formatspezifische Originale, aber jeweils nur eine Wahl pro Größe. Der neue additive Kandidat enthält 251 bereits vorhandene, passend freigegebene Originale; abhängig von der Größe 9–23 Wahlmöglichkeiten. AB 12×8 und RE 15×10 erhalten jeweils 21.
+## Module und Synchronisierung: geprüft, noch nicht live
 
-Alle 80 Größen, 404 Preis-/Befestigungskombinationen, bisherigen Originale und Rosenberg als Start bleiben erhalten. Vier ungeeignete Originale und drei Größenzuordnungen zweier weiterer Originale wurden dokumentiert und nicht still umgestaltet.
+- [PR #201](https://github.com/Chris83638w/gravuru-2027/pull/201): Modulprofile und bestätigte Produktgruppen-Anlage. Echter Edelstahl lokal mit/ohne Logo geprüft: 808 unveränderte Preis-/Geometrievergleiche, keine Duplikate. [Abnahme](../reviews/2026-11-08-module-profiles/real-steel-local-acceptance.md).
+- [PR #202](https://github.com/Chris83638w/gravuru-2027/pull/202), Abschluss `324a6434c2e506f222dd3056b4333ad36af38b8d`: bestätigter Galerieabgleich, serverseitige Modulgrenzen und atomare Bindungen. Zwischenreview: Legacy-Preisverträge bleiben strikt, gesperrte Logos nicht speicherbar, Altbestellungen unverändert. Browser-Modulverwaltung auf **Port 8209 mit simuliertem Shopify** erfolgreich geprüft; die frühere 403-Navigation ist kein offenes Abnahmehindernis mehr. Zugriffsschutz unverändert. [Übergabe](https://github.com/Chris83638w/gravuru-2027/blob/dev/mika-module-sync-20261108/docs/handoffs/2026-11-08-module-sync-adapter.md).
+- [Draft PR #203](https://github.com/Chris83638w/gravuru-2027/pull/203), Commit `0da2cf7ea59a4b9670e71e6aaf647f11cf26b2f0`, Basis PR #194 `d689044b`: separater Verwaltungshost-Anschluss, optional `--management-config`; 4/4 Tests bestanden, nicht aktiviert.
+- [Draft PR #207](https://github.com/Chris83638w/gravuru-2027/pull/207), Commit `4821ff99babd41b32784e1014e8124bac9912d5b`: derselbe optionale Anschluss für den tatsächlichen Plesk-Start. 7/7 gezielte Prüfungen; fremde/fehlende Originalzuordnung gesperrt. Drei Live-Basisdateien gesichert und Delta geprüft; kein Deploy.
+- [Draft PR #208](https://github.com/Chris83638w/gravuru-2027/pull/208), Produktionscommit `150a04f`, Nachweisstand `043846538d9177f933708dafa55392a58fb5036a`: gemeinsamer Modul-/Gruppenservice mit derselben dynamischen Galerie-Registry. **5/5 Tests, keine übersprungenen Fälle**: echte isolierte Plesk-Routen, Profilzuweisung, bestätigter Entwurf, Quellkonflikt, Idempotenz und Zugriffsschutz. Logo an/aus am echten r4-Dokument erhält alle 251 Designs. Zwei Produktionsmodule geändert, nicht aktiviert. [Übergabe](https://github.com/Chris83638w/gravuru-2027/blob/dev/mika-shared-module-management-20261108/docs/handoffs/2026-11-08-shared-module-management.md).
 
-Bestanden: 7.021 Struktur-/Galerie-/Preisprüfungen, 1.497 Vorlagenverträge und 37 Kundenfälle mit eigener Texteingabe. Das gemessene native Startmodell wächst nur von 309.081 auf 311.691 Byte; komprimiert von 120.638 auf 122.259 Byte. Weitere Designs und Schriftpfade werden nachgeladen.
+## Abnahme und nächster Schritt
 
-Kompakter Kandidat: `candidate-product-document.compact.json`, SHA-256 `edbb74578eae61fa2dc288ab04588aa7115a0d0b88c4306b7b8a823d66cecb4a`. Transportdatei: `candidate-product-document.compact.json.gz`, 3.275.617 Byte, SHA-256 `747d7c3246a180f465ecb36206f5b81078f9ef7a6fe73460e4035bd3ba1ff7e1`.
+Designkandidat: 7.021 Struktur-/Galerie-/Preisprüfungen, 1.497 Vorlagenverträge und 37 Kundenfälle. Performance: 67/67 gezielte Tests; unabhängige Live-Codekopie mit 404 Bindungen erfolgreich, einschließlich spätem Rollback und Wiederholung ohne Duplikate. Alle 404 alten Bindungen/Preisverträge unverändert; 60-Sekunden-Frischegrenze erhalten. [Nachweis](https://github.com/Chris83638w/gravuru-2027/blob/dev/mika-module-sync-20261108/docs/reviews/2026-11-08-module-sync-performance/README.md).
 
-Die Transportdatei liegt geprüft ausschließlich unter `private/mika-steel-designbank-update-20261108-v1/`. Noch keine Produktrevision oder aktive Bindung wurde dadurch geändert.
+Browserabnahme durch den Hauptagenten: frischer Kundenstart auf Revision 4, 21 Designs sichtbar; D3 „Zwei Zeilen mit Trennlinie“ mit drei Ebenen und eigenem Text geladen. Im tatsächlichen Shopify-Warenkorb bestätigt:
 
-## Ausstehende Übernahme
+- AB 12×8, ohne Bohrung, D3 / „Test Eins“: **19,99 EUR**.
+- RE 15×10, KGL, D1 / „Test Zwei“: **26,98 EUR**.
+- Retro2 9×6, B02, „Test Drei“ mit SVG-Logo: **30,47 EUR**, davon Logo 12,99 EUR.
 
-Die native Ausgangsrevision 3 wurde frisch gelesen und entspricht exakt der gesicherten Quelle. Für Revision 4 werden die vorhandenen Repository-/Binding-Funktionen verwendet; alle 404 Zuordnungen und die Katalogfreigabe müssen zusammen in einer Transaktion wechseln. Der frühere DRAFT-Importhelfer eignet sich dafür nicht unverändert.
+Gesamt **77,44 EUR**. Logo-Position mit Menge 2: 60,94 EUR, Gesamt 107,91 EUR; anschließend zurück auf Menge 1. Belege: `outputs/steel-design-bank-repair-20261108/live-cart-r4-three-cases.jpg` und `.txt`. Die fehlerhafte Logo-PNG-Vorschau führte zu dem unten beschriebenen Fix; **ihre tatsächliche Endabnahme bleibt noch offen**.
 
-Der bestehende komprimierte Shopify-Preisvertrag bleibt unverändert. Siehe [Aktivierungsprüfung](../reviews/2026-11-08-module-profiles/live-designbank-update-plan.md). Der sichere Operator-Lauf und seine Fehlertests werden separat vorbereitet. Live-Aktivierung und anschließender Kunden-/Warenkorbtest sind noch nicht erfolgt.
+Die gezielten Serverfixes [PR #204](https://github.com/Chris83638w/gravuru-2027/pull/204) und [PR #205](https://github.com/Chris83638w/gravuru-2027/pull/205) sind aktiv: Nach Wechsel auf **RE 15×10 / KGL** erscheinen 21 Designs; **D3 „Zwei Zeilen mit Trennlinie“ wird übernommen**, drei Ebenen, Preis weiterhin **26,98 EUR**. Belege: `outputs/steel-gallery-lookup-fix-20261108/live-activation.json` und `outputs/steel-design-switch-projection-fix-20261108/live-selected-design.jpg`. Preise und Ausführungen unverändert.
 
-Die allgemeine Synchronisierung wird auf der vorhandenen Galerie-Sync-Engine ergänzt: bestätigte Moduländerungen und genau zugeordnete Designs, vollständiges Lesen der 404 Varianten, unveränderte Preise und atomare Aktivierung. Auch diese Ergänzung ist noch keine Live-Freigabe.
+[PR #206](https://github.com/Chris83638w/gravuru-2027/pull/206) für die Upload-PNG-Vorschau wurde **11:52:47.732 UTC / 12:52 Uhr Berlin** veröffentlicht: drei exakt geprüfte Quelldateien, bestehender R15-Serverbuild mit 151 Modulen/16 Styles; Bundle `editor-40ce536a78607de9.mjs`, HTML-SHA `b2a6d21d0ef3f096d91911b8b8c970dd42e58d7398b0efc539cd79d7a9d99d37`. Beleg: `outputs/cart-preview-uploads-20261108/live-activation.json`. Freigegebener Aufbau unverändert; Veröffentlichung und tatsächlicher Logo-PNG-Nachweis werden getrennt bewertet.
+
+Für den Verwaltungshost sind Zielwerkstatt (`private/acryl-employee-20261021-v1/data`), Mandant `gravuru`, Store-Key `acryl`, Shop `gravuru-design.myshopify.com`, Produkt `16190784438652` und alle 404 aktiven Varianten belegt. Site 19 startet über `gravuru-2027-bulkapproval-3db1ef5d/ops/plesk/app.cjs`, Daten/Galerie unter `private/gesamtbestand-stage-0bb50565-20261106-v1/{data,gallery-4}`. **Dort sind nur 24/251 benötigte Stahloriginale vorhanden; diese alte Galerie darf nicht die vollständige r4-Designbank ersetzen.** Die 23-GB-Datenbank wurde nicht kopiert oder unbeschränkt durchsucht. Reine Moduländerung ohne Designüberschreibung ist lokal nachgewiesen; produktiver Anschluss bleibt getrennt freizugeben. Vorhandene App-/Preisleser, Freigabe und CSRF wiederverwenden; geprüfte PR-Stände kontrolliert zusammenführen. Private Anschlussvorlage: `outputs/module-production-connection-20261108/README.md`. Kein neuer Konfi, kein Live-Mount vor geklärter Quelle und bestätigtem Plan.

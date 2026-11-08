@@ -110,7 +110,9 @@ export function installUniversal(configInput) {
     };
     el.svg = function() { return svg(current()); };
     el.png = async function() {
-      const url = URL.createObjectURL(new Blob([await embedSurface(this.svg(true),config.materialSurface)], {type:'image/svg+xml'}));
+      let source=await embedSurface(this.svg(true),config.materialSurface);
+      if(this.uxEmbedPreviewUploads)source=await this.uxEmbedPreviewUploads(source);
+      const url = URL.createObjectURL(new Blob([source], {type:'image/svg+xml'}));
       try {
         const image = new Image(); image.src = url; await image.decode();
         const {width,height}=profile().geometry;

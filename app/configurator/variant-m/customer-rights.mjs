@@ -1,4 +1,4 @@
-import {canEditElement,restoreElementRights,rightForProperty} from './element-rights.mjs';
+import {canEditElement,restoreElementRights,rightForProperty,designElementRights} from './element-rights.mjs';
 import {isLayeredDoorbell,selectedDoorbellProfile} from './product-model-module.mjs';
 import {sizeConfiguration,isScalableSizes} from './scalable-sizes.mjs';
 
@@ -10,7 +10,7 @@ export function customerRightsTemplate(config,state){
 // Install event guards before the legacy gesture handlers; finish after all
 // presentation adapters, so their normalizers cannot undo a persisted restriction.
 export function beginCustomerRights({el,r,config,selected,select,say}){
-  if(!config?.workshopElementRights||config?.workbench?.embedded)return ()=>{};
+  if((!config?.workshopElementRights&&!config?.moduleProfile)||config?.workbench?.embedded)return ()=>{};
   const $=selector=>r.querySelector(selector),all=selector=>[...r.querySelectorAll(selector)];
   const objectById=id=>el.state.objects.find(object=>object.id===id);
   const can=(object,right)=>canEditElement(config,el.state.designId,object,right);
@@ -76,7 +76,7 @@ export function beginCustomerRights({el,r,config,selected,select,say}){
     try{
       const design=customerRightsTemplate(config,el.state);if(!design)return;
       const historyKey=isLayeredDoorbell(config)?JSON.stringify([design.id,el.state.mOptions?.format,el.state.mOptions?.position]):isScalableSizes(config)?JSON.stringify([design.id,el.state.mOptions?.size]):design.id;
-      const result=restoreElementRights(design.objects,el.state.objects,config.workshopElementRights[design.id]||{},previous.get(historyKey));
+      const result=restoreElementRights(design.objects,el.state.objects,designElementRights(config,design.id,design.objects),previous.get(historyKey));
       if(result.blockedIds.length){
         const current=new Map(el.state.objects.map(object=>[object.id,object]));
         el.state.objects=result.objects.map(object=>{const existing=current.get(object.id);if(!existing)return object;for(const key of Object.keys(existing))if(!Object.hasOwn(object,key))delete existing[key];Object.assign(existing,object);return existing;});
@@ -94,7 +94,7 @@ export function beginCustomerRights({el,r,config,selected,select,say}){
     }
     const object=selected();
     let notice=$('[data-element-rights-note]');
-    if(!notice&&$('.ux-controls')){notice=document.createElement('p');notice.dataset.elementRightsNote='';notice.className='ux-small';$('.ux-controls').prepend(notice);}
+    if(!notice&&config.workshopElementRights&&$('.ux-controls')){notice=document.createElement('p');notice.dataset.elementRightsNote='';notice.className='ux-small';$('.ux-controls').prepend(notice);}
     if(notice){
       const labels=[['content','Text und Schrift'],['color','Farbe'],['move','Position'],['scale','Größe'],['delete','Entfernen']];
       notice.hidden=!object||labels.every(([right])=>can(object,right));

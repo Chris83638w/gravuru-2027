@@ -6,6 +6,7 @@ import {once} from 'node:events';
 import {createShopEntry} from './shop-entry.mjs';
 import {appProxySignature} from './shopify-app-proxy.mjs';
 import {createModelSlimmer} from './shop-model-slim.mjs';
+import {MODULE_PROFILE_SCHEMA} from '../configurator/variant-m/module-profile.mjs';
 
 // Fixture: die drei 7×2-Hauptprodukte (Edelstahl-Türschilder, Befestigung als Variante) aus der Shopify-
 // Übergabe vom 22.10.2026. Shopify-IDs und Preise stammen aus der Datei; Werkstattmodell, Registry, Entwürfe
@@ -55,6 +56,20 @@ async function run(fn,mutate=()=>{}){
  try{await fn(f,request,{open,token,entry});}finally{server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}
 }
 const session=t=>({'X-Gravuru-Shop-Session':t});
+
+test('a disabled design module keeps the pinned default and refuses explicit customer design overrides',()=>run(async(f,request,{token})=>{
+ const issued=await token(),headers=session(issued.token);
+ for(const route of ['/api/shop-entry/model','/api/shop-entry/model?design=d1']){
+  const response=await request(route,'GET',undefined,headers);
+  assert.equal(response.status,200,response.body.toString());assert.equal(response.data.model.universal.profile.defaultDesignId,'d1');assert.equal(response.data.startPreview,null);
+ }
+ const response=await request('/api/shop-entry/model?design=d2','GET',undefined,headers);
+ assert.equal(response.status,403);assert.equal(response.data.error.code,'shop_entry_design_disabled');
+},f=>{
+ const source=f.models.get(f.first.localWorkshopRecord);
+ source.universal.profile.designs.push({id:'d2',objects:[]});
+ source.universal.moduleProfile={schema:MODULE_PROFILE_SCHEMA,id:'fixed-design',revision:1,modules:{options:true,designs:false,text:true,motifs:true,photo:true,logo:true,colors:false}};
+}));
 
 test('customer logo conversion stays behind the shop session, same origin and exact product revision',()=>run(async(f,request,{token})=>{
  const issued=await token(),headers=session(issued.token),input={productId:f.first.localWorkshopRecord,productRevision:3,name:'synthetic.svg',original:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect x="1" y="1" width="18" height="18" fill="red"/></svg>').toString('base64')};
@@ -343,6 +358,19 @@ test('gallery endpoints require current authentication, correct origin and stric
   assert.equal((await request('/api/shop-entry/'+path,'POST',{target:'x'},{...session(t),Origin:undefined})).status,403);
  }
  f.tick(5*60*60*1000);const expired=await request('/api/shop-entry/design-gallery','GET',undefined,session(t));assert.equal(expired.status,403);assert.equal(expired.data.error.code,'shop_entry_expired');
+},galleryEntryFixture));
+
+test('public gallery and switch endpoints enforce the source module instead of trusting a previously issued target',()=>run(async(f,request,{token})=>{
+ const {token:t}=await token(),card=await otherGalleryCard(f,request,t),source=f.models.get(f.first.localWorkshopRecord);
+ source.universal.moduleProfile={schema:MODULE_PROFILE_SCHEMA,id:'fixed-design',revision:1,modules:{options:true,designs:false,text:true,motifs:true,photo:false,logo:false,colors:false}};
+ const listed=await request('/api/shop-entry/design-gallery','GET',undefined,session(t));
+ assert.equal(listed.status,403);assert.equal(listed.data.error.code,'shop_gallery_disabled');
+ for(const path of ['design-gallery-preview','design-switch']){
+  const response=await request('/api/shop-entry/'+path,'POST',{target:card.target},session(t));
+  assert.equal(response.status,403,response.body.toString());assert.equal(response.data.error.code,'shop_gallery_disabled');
+ }
+ assert.equal((await request('/api/shop-entry/model','GET',undefined,session(t))).status,200);
+ assert.equal(f.cartCalls.length,0);
 },galleryEntryFixture));
 
 test('design switching issues a session for the exact destination and leaves the original session and draft intact',()=>run(async(f,request,{token})=>{

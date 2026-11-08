@@ -8,7 +8,7 @@ export const PYTHON_MARKER='.gravuru-test-python.json';
 export const fail=message=>{throw Error(message);};
 const within=(root,file)=>file===root||file.startsWith(root+path.sep);
 const PRIVATE_ENV_KEYS=['GRAVURU_TEST_ORIGIN','GRAVURU_PRIVATE_DATA_DIR','GRAVURU_TEST_PYTHON_DIR','GRAVURU_BOOTSTRAP_PYTHON','GRAVURU_TEST_USERNAME','GRAVURU_TEST_PASSWORD'];
-const OPTIONAL_PRIVATE_ENV_KEYS=['GRAVURU_SLATE_REVIEW_PACKAGE'];
+const OPTIONAL_PRIVATE_ENV_KEYS=['GRAVURU_SLATE_REVIEW_PACKAGE','GRAVURU_GALLERY_MANAGEMENT_CONFIG'];
 // Plesk's npm runner does not inherit application variables. A separately
 // uploaded private file lets that runner and the app use the same configuration.
 export function privateTestEnvironment(env){
@@ -47,8 +47,10 @@ export function testConfig(env,{credentials=true}={}){
   if(within(data,pythonDir)||within(pythonDir,data))fail('Daten und Python benötigen getrennte Verzeichnisse.');
   const slateReviewPackage=env.GRAVURU_SLATE_REVIEW_PACKAGE===undefined?undefined:externalPath(env.GRAVURU_SLATE_REVIEW_PACKAGE,'GRAVURU_SLATE_REVIEW_PACKAGE');
   if(slateReviewPackage&&[data,pythonDir].some(folder=>within(folder,slateReviewPackage)||within(slateReviewPackage,folder)))fail('Schiefer-Galerie, Daten und Python benötigen getrennte Verzeichnisse.');
+  const galleryManagementConfig=env.GRAVURU_GALLERY_MANAGEMENT_CONFIG===undefined?undefined:externalPath(env.GRAVURU_GALLERY_MANAGEMENT_CONFIG,'GRAVURU_GALLERY_MANAGEMENT_CONFIG');
+  if(galleryManagementConfig&&(!slateReviewPackage||path.extname(galleryManagementConfig)!=='.mjs'))fail('Galerieverwaltung benötigt ein vorhandenes Galeriepaket und eine ausdrücklich konfigurierte lokale .mjs-Datei.');
   if(credentials&&(!/^[A-Za-z0-9._-]{1,64}$/.test(env.GRAVURU_TEST_USERNAME||'')||! /^[\x20-\x7e]{24,200}$/.test(env.GRAVURU_TEST_PASSWORD||'')))fail('GRAVURU_TEST_USERNAME und eigenes GRAVURU_TEST_PASSWORD (24–200 Zeichen) sicher in Plesk hinterlegen.');
-  return {origin:origin.origin,host:origin.host,data,pythonDir,python:path.join(pythonDir,'bin/python'),username:env.GRAVURU_TEST_USERNAME,password:env.GRAVURU_TEST_PASSWORD,slateReviewPackage};
+  return {origin:origin.origin,host:origin.host,data,pythonDir,python:path.join(pythonDir,'bin/python'),username:env.GRAVURU_TEST_USERNAME,password:env.GRAVURU_TEST_PASSWORD,slateReviewPackage,...(galleryManagementConfig?{galleryManagementConfig}:{})};
 }
 export const markerValue=(config,purpose)=>({schema:1,purpose,origin:config.origin});
 export function verifyDirectory(directory,marker,expected){

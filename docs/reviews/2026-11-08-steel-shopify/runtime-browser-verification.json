@@ -1,0 +1,26 @@
+{
+  "observedAt": "2026-11-08T01:59:21.873Z",
+  "runtime": "mika-steel-r15-shopify-20261108",
+  "supersedesPendingFlagOnly": "runtime-activation-receipt.json",
+  "restartPerformed": true,
+  "serverRespondedHttp200": true,
+  "actualSignedShopifyEntryRendered": true,
+  "embeddedDraftThemeVerified": true,
+  "desktopVerified": true,
+  "mobileBrowserViewport": {
+    "width": 390,
+    "height": 844
+  },
+  "physicalPhoneTest": false,
+  "returnToProductVerified": true,
+  "svgUploadAndServerConversionVerified": true,
+  "logoPriceCents": 1299,
+  "basePriceCents": 1999,
+  "reviewTotalCents": 3298,
+  "photoModuleVisible": false,
+  "logoModuleVisible": true,
+  "shopifyCartSucceeded": false,
+  "checkoutVerified": false,
+  "productStatus": "DRAFT",
+  "publishedThemeChanged": false
+}

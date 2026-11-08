@@ -1,0 +1,56 @@
+{
+  "observedAt": "2026-11-08T01:56:58.673Z",
+  "readOnly": true,
+  "product": {
+    "id": "gid://shopify/Product/16190784438652",
+    "status": "DRAFT",
+    "title": "Türschild Edelstahl – Form und Größe selbst wählen",
+    "variantsCount": {
+      "count": 404
+    },
+    "featuredMedia": {
+      "id": "gid://shopify/MediaImage/70063610659196"
+    },
+    "variants": {
+      "nodes": [
+        {
+          "id": "gid://shopify/ProductVariant/58104606556540",
+          "price": "19.99",
+          "position": 1,
+          "title": "Rechteck abgerundet · 12 × 8 cm / Ohne Bohrung"
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58104601149820",
+          "price": "9.49",
+          "position": 2,
+          "title": "Rechteck · 8 × 2 cm / Ohne Bohrung"
+        }
+      ]
+    }
+  },
+  "main": {
+    "id": "gid://shopify/OnlineStoreTheme/185833718140",
+    "role": "MAIN",
+    "files": {
+      "nodes": [
+        {
+          "filename": "templates/product.konfi.json",
+          "checksumMd5": "5af4fe28dd355c66a56a554535f18b1c"
+        }
+      ]
+    }
+  },
+  "draft": {
+    "id": "gid://shopify/OnlineStoreTheme/190984126844",
+    "name": "Gravuru Edelstahl-Konfi Prüfvorschau 08.11.2026",
+    "role": "UNPUBLISHED",
+    "files": {
+      "nodes": [
+        {
+          "filename": "templates/product.konfi.json",
+          "checksumMd5": "f361e868957722b161142e284dbb7ee5"
+        }
+      ]
+    }
+  }
+}

@@ -1,3 +1,11 @@
+## 08.11.2026 – Codex: Warenkorb-PNG bindet geprüfte Uploads ein
+
+- Isolierter Branch `dev/mika-cart-preview-uploads-20261108`; nur `adapter.mjs`, `ux.mjs` und neues `preview-uploads.mjs` betreffen die Laufzeit. Kein Layout-, Preis- oder Designumbau.
+- Die Kundenvorschau bindet akzeptierte Fotos und bestätigte SVG-Ausgaben aus der bestehenden Upload-Map byteidentisch ein. Kein Nachladen fremder URLs; MIME-/Größenprüfung und bestätigte SVG-Prüfsumme bleiben erforderlich.
+- 19 Unit-/Cart-/Restoretests sowie 2 echte CLI-Integrationstests grün; Build und Diffprüfung grün. Tatsächliche Browser-/Shopify-Pixelprüfung und Veröffentlichung durch Root noch offen.
+- Beide Vorherdateien gegen aktives Live-Manifest geprüft und gesichert. Nur drei Quelldateien übernehmen und im aktiven R15-Baum bauen: Der isolierte Git-Build enthält andere ältere R15-Abweichungen und darf nicht vollständig deployed werden.
+- Details, Quellen, Rücknahme und Cachegrenzen: [Übergabe](docs/handoffs/2026-11-08-cart-preview-uploads.md).
+
 ## 08.11.2026 – Mika-Unteragent: gezielter Variantenlookup für Edelstahl-Galerie
 
 Der Form-/Größenwechsel prüfte bisher die komplette aktive Shopgalerie und konnte am unveränderten Fünfsekunden-Clientlimit scheitern. Eine Produktionsdatei korrigiert: gespeicherte Optionsbindungen liefern Kandidaten-IDs, ausschließlich frisch geprüfte aktive Registry-Zuordnungen werden verwendet. 28 bestehende und vier neue Tests bestanden; vier zusätzliche Fälle mit echtem 251er-Kandidaten auf 62 exakt livegleichen Abhängigkeiten (nur Galeriefix abweichend). Layout, Preise, Produktdaten, Timeout und Freigaben unverändert. Kein Livezugriff durch Unteragent. [Übergabe und Rollback](docs/handoffs/2026-11-08-steel-gallery-targeted-lookup.md). Nächster Schritt: Root veröffentlicht nach Einzeldatei-SHA-Prüfung und prüft echte Variantenwechsel/Warenkorb.

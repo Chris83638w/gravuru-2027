@@ -1,4 +1,5 @@
 import {canDeleteTemplateElement} from './element-rights.mjs';
+import {embedPreviewUploads} from './preview-uploads.mjs';
 import {installDialogDismissal} from './dialog-dismiss.mjs';
 import {installCustomerHelp} from './customer-help.mjs';
 import {executionHeading} from './execution-registry.mjs';
@@ -95,6 +96,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   const vectorLogos=vectorLogoEnabled(config);
   const uploadOffered=(photoEnabled||logoEnabled)&&(photoEnabled||designsHaveUploadLayer(config)||vectorLogos);
   const files=new Map(), icons={};
+  el.uxEmbedPreviewUploads=svg=>embedPreviewUploads(svg,files);
   const freshPreview=freshPreviewRequested(config,location.search);
   const sessionUploads=config&&!config.workbench&&!freshPreview?createSessionUploads({key:profile.binding.productId+':'+profile.revision,files}):null;
   let uploadStorageWarning=false;

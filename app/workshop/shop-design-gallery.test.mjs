@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 import {doorbellFixture} from './test-fixtures/doorbell-config.mjs';
 import {quote} from '../configurator/variant-m/contract.mjs';
 import {createShopDesignGallery} from './shop-design-gallery.mjs';
+import {MODULE_PROFILE_SCHEMA} from '../configurator/variant-m/module-profile.mjs';
 
 // Synthetic immutable-model transport only. Real quote, geometry, signing and
 // preview code run here; no Shopify connection or production data is opened.
@@ -28,6 +29,18 @@ test('gallery cards and signed target resolve the exact product, variant, option
  const f=fixture(),b=f.add(2,{price:2499}),card=(await f.gallery.list(f.context)).items.find(i=>i.productId===b.productId);
  assert.equal(card.unitCents,2499);assert.equal(card.currency,'EUR');assert.equal(card.widthMm,120);assert.equal(card.heightMm,80);assert.equal(card.shape,'rect');assert.equal(card.current,false);
  const target=f.gallery.target(f.context,card.target);assert.deepEqual(target.binding,b);assert.equal(target.price.unitCents,2499);assert.equal(target.design.id,'d1');assert.equal(target.model.configuration.id,b.productId);
+});
+
+test('disabled source design module refuses listing, cached target and preview even when the destination permits designs',async()=>{
+ const f=fixture(),destination=f.add(2),card=(await f.gallery.list(f.context)).items.find(item=>item.productId===destination.productId);
+ const source=f.models.get(f.context.binding.productId);
+ source.universal.moduleProfile={schema:MODULE_PROFILE_SCHEMA,id:'fixed-design',revision:1,modules:{options:true,designs:false,text:true,motifs:true,photo:false,logo:false,colors:false}};
+ await assert.rejects(()=>f.gallery.list(f.context,{sourceModel:source}),{status:403,code:'shop_gallery_disabled'});
+ assert.throws(()=>f.gallery.target(f.context,card.target),{status:403,code:'shop_gallery_disabled'});
+ assert.throws(()=>f.gallery.preview(f.context,card.target),{status:403,code:'shop_gallery_disabled'});
+ assert.equal(f.gallery.start(f.context,source,'d1'),null);
+ delete source.universal.moduleProfile;
+ assert.equal(f.gallery.target(f.context,card.target).binding.productId,destination.productId,'legacy source retains its existing signed-target behavior');
 });
 
 test('signed targets cannot be forged, borrowed from another session or switched to a different store',async()=>{

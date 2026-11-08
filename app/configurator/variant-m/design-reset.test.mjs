@@ -13,7 +13,7 @@ test('reset loads the selected template without carrying edits and retains produ
 test('reset button requires explicit confirmation; cancel and dismissal preserve the design',t=>{
  const control=()=>({addEventListener(type,fn){this[type]=fn;}}),open=control(),cancel=control(),confirm=control(),name={},bar={querySelector:()=>open},dialog={open:false,querySelector:s=>s==='[data-reset-design-name]'?name:s==='[data-ux=reset-design-cancel]'?cancel:confirm,showModal(){this.open=true;},close(){this.open=false;}};
  const prior=globalThis.document;globalThis.document={createElement:()=>bar};t.after(()=>{if(prior===undefined)delete globalThis.document;else globalThis.document=prior;});
- let resets=0;const el={state:{designId:'kalle'}},r={querySelector:()=>({after(node){assert.equal(node,bar);}})};
+ let resets=0;const el={state:{designId:'kalle'}},r={querySelector:selector=>{assert.equal(selector,'.stage');return {append(node){assert.equal(node,bar);}};}};
  installDesignReset({el,r,config:{},dialog:()=>dialog,button:()=>'',design:()=>({name:'Kalle'}),reset:()=>resets++,say(){}});
  open.click();assert.equal(dialog.open,true);assert.equal(name.textContent,'Kalle');assert.equal(resets,0);
  cancel.click();assert.equal(dialog.open,false);assert.equal(resets,0);

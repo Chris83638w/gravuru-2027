@@ -1,7 +1,8 @@
 // Customer SVGs are converted by the bound server. Raw upload markup is never
 // inserted into the editor DOM; preview and production use the checked result.
+import {moduleEnabled} from './module-profile.mjs';
 export const VECTOR_LOGO_ACCEPT='.svg,image/svg+xml';
-export const vectorLogoEnabled=config=>config?.logo?.enabled===true&&config.logo.vectorUpload===true;
+export const vectorLogoEnabled=config=>moduleEnabled(config,'logo')&&config?.logo?.enabled===true&&config.logo.vectorUpload===true;
 export function validateVectorLogoFile(file,objects=[],replacingId){
   if(!file||!Number.isSafeInteger(file.size)||file.size<1||file.size>2*1024*1024||!/\.svg$/i.test(file.name||'')||!['','image/svg+xml','application/xml','text/xml'].includes(file.type))throw Error('Bitte ein Vektorlogo als SVG bis 2 MB auswählen. Fotos und eingebettete Bilder sind auf Edelstahl nicht möglich.');
   if(!replacingId&&new Set(objects.filter(o=>o.uxUploadId).map(o=>o.uxUploadId)).size>=4)throw Error('Du kannst insgesamt vier Fotos oder Logos hinzufügen.');

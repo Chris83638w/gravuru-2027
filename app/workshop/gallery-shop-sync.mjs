@@ -192,12 +192,15 @@ export function createGalleryShopSync({database,tenantId,shopDomain,sourceWorksh
     if(reconcileOnly){op.state='pending';persist();return status({operationId:op.id});}
     // The authenticated remote read yields. Recheck local evidence after it,
     // immediately before the durable write intent and any outbound mutation.
-    checkRegistry(entry);checkSource(entry);
-    const targetBeforeWrite=targetWorkshop.repository.get(entry.mapping.target.productId);
-    if(targetBeforeWrite.revision!==entry.newRevision||syncHash(targetBeforeWrite.document)!==entry.documentSha256)syncFail('gallery_sync_target_changed','Der Zielentwurf wurde während der Shopprüfung geändert.');
-    if(syncHash(activation.capture(entry.mapping))!==syncHash(entry.binding))syncFail('gallery_sync_binding_changed','Die aktive Zuordnung wurde während der Shopprüfung geändert.');
+    const beforeWrite=()=>{
+     checkRegistry(entry);checkSource(entry);
+     const targetBeforeWrite=targetWorkshop.repository.get(entry.mapping.target.productId);
+     if(targetBeforeWrite.revision!==entry.newRevision||syncHash(targetBeforeWrite.document)!==entry.documentSha256)syncFail('gallery_sync_target_changed','Der Zielentwurf wurde während der Shopprüfung geändert.');
+     if(syncHash(activation.capture(entry.mapping))!==syncHash(entry.binding))syncFail('gallery_sync_binding_changed','Die aktive Zuordnung wurde während der Shopprüfung geändert.');
+    };
+    beforeWrite();
     progress.stage='unknown';persist(); // durable intent BEFORE any outbound write
-    await transport.apply({mapping:entry.mapping,baseline:entry.baseline,desired:entry.desired,operationId:op.id});
+    await transport.apply({mapping:entry.mapping,baseline:entry.baseline,desired:entry.desired,operationId:op.id,beforeWrite});
     checkpoint('after-remote',{entry,operationId:op.id});
     const checked=await transport.inspect(entry.mapping);validateRemote(entry,checked);
     if(remoteCommerceHash(checked)!==remoteCommerceHash(entry.baseline)||!remoteReleaseMatches(checked,entry.desired))syncFail('gallery_sync_remote_unverified','Der neue Shopstand ist noch nicht vollständig nachgewiesen.');

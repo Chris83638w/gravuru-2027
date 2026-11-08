@@ -1,0 +1,73 @@
+{
+  "serverCore": {
+    "path": "../../outputs/steel-shopify-20261108/server-editor-e85d012dc6812f15.mjs",
+    "bytes": 1426318,
+    "sha256": "f11d9c15bbdf51b33f87e71e3759508f13d0085bde4a0eab3df757f0cc6920da",
+    "gzipSha256": "3af402b4a4d6360b58eb2759be375cece75b1e40aa458d4774a44bd5fb82deb9",
+    "gzipReproduced": true
+  },
+  "serverHtml": {
+    "path": "../../outputs/steel-shopify-20261108/server-editor-before-text-fix.html",
+    "bytes": 373501,
+    "sha256": "5e06c711fa047ec72a34c58afae8275476280cd66a83cfb7cef3d8c2a65fd8d3"
+  },
+  "originalGuardStoppedBeforeAnyWrite": true,
+  "changes": {
+    "modules": [
+      "/configurator/variant-m/family-formats.mjs"
+    ],
+    "styles": [],
+    "html": "Only two core bundle references"
+  },
+  "preservedPreexistingModules": [
+    {
+      "url": "/configurator/variant-m/option-media.mjs",
+      "sha256": "73107240710bcb7117968ee5f33f7dd9567ef659d2b59f94127dbf58df2c2a02",
+      "preserved": true
+    },
+    {
+      "url": "/configurator/variant-m/design-reset.mjs",
+      "sha256": "2a5f1dbed5ad46e80ecf6139ad897ad8b4fed1ba9bdff322d887fefb575ad11b",
+      "preserved": true
+    }
+  ],
+  "preservedPreexistingStyles": [
+    {
+      "url": "/configurator/variant-m/modern-navigation.css",
+      "sha256": "1fc314b7c23e2f67b2315e5dac27555674b45a467dcd56b8a53958847c9a55ce",
+      "preserved": true
+    },
+    {
+      "url": "/configurator/variant-m/view-zoom.css",
+      "sha256": "ce31226dbc655204b04f5a90926f6d280db974e62d40252b20d828967232ea14",
+      "preserved": true
+    }
+  ],
+  "postimages": [
+    {
+      "path": "app/configurator/variant-m/family-formats.mjs",
+      "bytes": 15710,
+      "sha256": "183d00d611042e2c2d9f6097787859656388adcc6ef92ae52c3c6498e4deb210",
+      "baselineSha256": "43ab12c0ecd55b6ca826077302a194dc9f24a8ae4ed996e326eaf4dbd2627499"
+    },
+    {
+      "path": "app/configurator/variant-m/.preview/editor.html",
+      "bytes": 373501,
+      "sha256": "8dea7bac2880bae731aedc09f366942b829f7092098133b2cf348dcac8a43042",
+      "baselineSha256": "5e06c711fa047ec72a34c58afae8275476280cd66a83cfb7cef3d8c2a65fd8d3"
+    },
+    {
+      "path": "app/configurator/variant-m/.preview/bundle/editor-1bea892b2cd23111.mjs",
+      "bytes": 1426699,
+      "sha256": "08f14a7949bc529ffc79023cf03290bce927dbf13613b7069c4f984773b23cb8",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/variant-m/.preview/bundle/editor-1bea892b2cd23111.mjs.gz",
+      "bytes": 476928,
+      "sha256": "52ce356967e7c2891c7165668ac77a7d5304e8060e179b01a10419196e80052e",
+      "baselineSha256": null
+    }
+  ],
+  "noWholeBuildOrServerRestart": true
+}

@@ -13,25 +13,25 @@
     {
       "path": "app/configurator/variant-m/.preview/editor.html",
       "bytes": 373501,
-      "sha256": "9ee81d1481e2280139d0d407247ac6ac3040d035c4e04599c4695b97f53e2636",
-      "baselineSha256": "018e29152fb44d758f193b79622d276d1fe33666a9eef31b21acbf256d964b8b"
+      "sha256": "8dea7bac2880bae731aedc09f366942b829f7092098133b2cf348dcac8a43042",
+      "baselineSha256": "5e06c711fa047ec72a34c58afae8275476280cd66a83cfb7cef3d8c2a65fd8d3"
     },
     {
-      "path": "app/configurator/variant-m/.preview/bundle/editor-eb6b798c7398f566.mjs",
-      "bytes": 1426167,
-      "sha256": "538a7417200b07edf65912c845526f587f48007806090fa020c6ad55981489c3",
+      "path": "app/configurator/variant-m/.preview/bundle/editor-1bea892b2cd23111.mjs",
+      "bytes": 1426699,
+      "sha256": "08f14a7949bc529ffc79023cf03290bce927dbf13613b7069c4f984773b23cb8",
       "baselineSha256": null
     },
     {
-      "path": "app/configurator/variant-m/.preview/bundle/editor-eb6b798c7398f566.mjs.gz",
-      "bytes": 476894,
-      "sha256": "4fda8299903d66a30ba71a6065663aba5d4664f82c901b10c67114d6d09f3c75",
+      "path": "app/configurator/variant-m/.preview/bundle/editor-1bea892b2cd23111.mjs.gz",
+      "bytes": 476928,
+      "sha256": "52ce356967e7c2891c7165668ac77a7d5304e8060e179b01a10419196e80052e",
       "baselineSha256": null
     }
   ],
   "bundleProof": {
-    "baselineCore": "editor-bab5a1fa49ee42d2.mjs",
-    "newCore": "editor-eb6b798c7398f566.mjs",
+    "baselineCore": "editor-e85d012dc6812f15.mjs",
+    "newCore": "editor-1bea892b2cd23111.mjs",
     "moduleCount": 150,
     "changedModules": [
       "/configurator/variant-m/family-formats.mjs"
@@ -79,7 +79,42 @@
         "sha256": "8731a573ad56981184aeb0407a9cfa17920818e0e67c4f31a691ed37004911e8",
         "bytes": 3880
       }
-    ]
+    ],
+    "preservedPreexistingModules": [
+      {
+        "url": "/configurator/variant-m/option-media.mjs",
+        "sha256": "73107240710bcb7117968ee5f33f7dd9567ef659d2b59f94127dbf58df2c2a02",
+        "preserved": true
+      },
+      {
+        "url": "/configurator/variant-m/design-reset.mjs",
+        "sha256": "2a5f1dbed5ad46e80ecf6139ad897ad8b4fed1ba9bdff322d887fefb575ad11b",
+        "preserved": true
+      }
+    ],
+    "preservedPreexistingStyles": [
+      {
+        "url": "/configurator/variant-m/modern-navigation.css",
+        "sha256": "1fc314b7c23e2f67b2315e5dac27555674b45a467dcd56b8a53958847c9a55ce",
+        "preserved": true
+      },
+      {
+        "url": "/configurator/variant-m/view-zoom.css",
+        "sha256": "ce31226dbc655204b04f5a90926f6d280db974e62d40252b20d828967232ea14",
+        "preserved": true
+      }
+    ],
+    "gzip": {
+      "level": 9,
+      "osByte": 3,
+      "baselineReproduced": true,
+      "roundTripSha256": "08f14a7949bc529ffc79023cf03290bce927dbf13613b7069c4f984773b23cb8",
+      "actualExportBytesVerified": true,
+      "serverNode": "v24.22.2",
+      "localNode": "v24.22.1",
+      "zlib": "1.3.2.1-motley-285e94b"
+    },
+    "unchangedChunksEvidence": "Local prior build hashes only; names are identical in exported server HTML; these files are never rewritten by delta."
   },
   "tests": {
     "passed": 65,
@@ -102,6 +137,7 @@
     "browserOrCartVerified": false
   },
   "deploymentNotes": [
+    "Deployment uses verified actual server core e85d012dc6812f15, not earlier local bab5a1fa49ee42d2 build.",
     "Build artifacts are local and reproducible, not committed.",
     "Copy only runtimeFiles after verifying baseline hashes and backup.",
     "Keep the previous hashed core bundle for already-open sessions.",
@@ -110,11 +146,11 @@
   ],
   "deploymentScript": {
     "path": "docs/reviews/2026-11-08-steel-shape-text-fix/deploy-delta.mjs",
-    "bytes": 6923,
-    "sha256": "495f25e052cfc0f542e7e63464c79476b65061e9a5f9749a72c137b8c3cdb907",
-    "base64Chars": 9232,
+    "bytes": 7124,
+    "sha256": "9f3ca3dd9b4e41d3d5042691a2f927f5dac28b3029cabea23809976a31f979aa",
+    "base64Chars": 9500,
     "runtimeExecuted": false,
-    "localInMemoryTestsPassed": 5,
+    "localInMemoryTestsPassed": 6,
     "syntaxCheckPassed": true
   }
 }

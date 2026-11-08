@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import {createHash} from 'node:crypto';
-import {gzipSync} from 'node:zlib';
+import {gzipSync,gunzipSync} from 'node:zlib';
 
 const baseline=process.env.GRAVURU_TEXT_PATCH_BASELINE;
 assert.ok(baseline,'Set GRAVURU_TEXT_PATCH_BASELINE to the existing local pre-fix R15 worktree');
@@ -15,11 +15,11 @@ const backup='/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-steel-shop
 const prefix='app/configurator/variant-m/';
 const source=prefix+'family-formats.mjs',html=prefix+'.preview/editor.html';
 const bundle=prefix+'.preview/bundle/';
-const old='editor-bab5a1fa49ee42d2.mjs',next='editor-eb6b798c7398f566.mjs';
+const manifest=JSON.parse(fs.readFileSync(new URL('./manifest.json',import.meta.url),'utf8'));
+const old=manifest.bundleProof.baselineCore,next=manifest.bundleProof.newCore;
 const inputs=[source,html,bundle+old,bundle+old+'.gz'];
 const original=new Map(inputs.map(file=>[root+'/'+file,fs.readFileSync(path.join(baseline,file))]));
 const digest=bytes=>createHash('sha256').update(bytes).digest('hex');
-const manifest=JSON.parse(fs.readFileSync(new URL('./manifest.json',import.meta.url),'utf8'));
 
 function memory(){
  const files=new Map([...original].map(([p,b])=>[p,Buffer.from(b)])),dirs=new Set(),events=[],fds=new Map();let fd=10,failRename;
@@ -35,7 +35,7 @@ function memory(){
   linkSync(from,to){assert.equal(files.has(to),false);files.set(to,files.get(from));events.push(['link',to]);},
   unlinkSync(file){assert.ok(files.has(file));files.delete(file);events.push(['unlink',file]);}
  };
- const run=(args=[],code=script)=>{const messages=[];vm.runInNewContext(code,{fs:mock,path:path.posix,createHash,gzipSync,Buffer,process:{pid:101,argv:['node','deploy-delta.mjs',...args]},console:{log:message=>messages.push(JSON.parse(message))}});return messages;};
+ const run=(args=[],code=script)=>{const messages=[];vm.runInNewContext(code,{fs:mock,path:path.posix,createHash,gzipSync,gunzipSync,Buffer,process:{pid:101,argv:['node','deploy-delta.mjs',...args]},console:{log:message=>messages.push(JSON.parse(message))}});return messages;};
  return {files,dirs,events,run,interruptRename(file){failRename=file;}};
 }
 
@@ -75,4 +75,19 @@ test('manual rollback recovers an interrupted final rename and refuses unknown c
  for(const file of inputs)assert.deepEqual(m.files.get(root+'/'+file),original.get(root+'/'+file));
  m.files.set(root+'/'+source,Buffer.from('foreign edit'));const count=m.events.length;
  assert.throws(()=>m.run(['--rollback']),/Unknown current file/);assert.equal(m.events.length,count);
+});
+
+test('actual server core retains all unrelated modules/styles and changes only two editor references',()=>{
+ const m=memory();m.run();
+ const before=original.get(root+'/'+bundle+old).toString('utf8'),after=m.files.get(root+'/'+bundle+next).toString('utf8');
+ const modules=s=>JSON.parse(s.match(/const MODULES=(.*);\nconst STYLES=/)[1]);
+ const beforeModules=modules(before),afterModules=modules(after);
+ assert.deepEqual(beforeModules.map(x=>x.url),afterModules.map(x=>x.url));
+ assert.deepEqual(afterModules.filter((x,i)=>JSON.stringify(x)!==JSON.stringify(beforeModules[i])).map(x=>x.url),['/configurator/variant-m/family-formats.mjs']);
+ assert.equal(before.match(/const STYLES=(.*);\n/)[1],after.match(/const STYLES=(.*);\n/)[1]);
+ assert.equal(original.get(root+'/'+html).toString('utf8').replaceAll(old,next),m.files.get(root+'/'+html).toString('utf8'));
+ assert.equal(original.get(root+'/'+html).toString('utf8').split(old).length-1,2);
+ const compressed=m.files.get(root+'/'+bundle+next+'.gz');
+ assert.equal(compressed[9],original.get(root+'/'+bundle+old+'.gz')[9]);
+ assert.deepEqual(gunzipSync(compressed),m.files.get(root+'/'+bundle+next));
 });

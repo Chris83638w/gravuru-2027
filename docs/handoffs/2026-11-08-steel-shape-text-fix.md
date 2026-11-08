@@ -37,7 +37,11 @@ Ohne die Umgebungsvariable laufen fünf synthetische Regressionen; nur der zusä
 
 ## Build und genaues Paket
 
-Bestehenden Build unverändert ausgeführt: 76 Referenzressourcen geprüft, 150 Kernmodule, 16 Stylesheets. Neues Kernbundle `editor-eb6b798c7398f566.mjs` (1.426.167 Bytes, gzip 476.894 Bytes). Gegen den vorhandenen R15-Build `editor-bab5a1fa49ee42d2.mjs` ist exakt ein eingebettetes Modul verändert: `family-formats.mjs`. Alle gebündelten Stylesheets und die acht anderen Bundle-Dateien sind bytegleich. `editor.html` unterscheidet sich ausschließlich durch den Kernbundle-Dateinamen.
+Der ursprüngliche lokale Build (76 geprüfte Referenzressourcen, 150 Kernmodule, 16 Stylesheets) ergab `editor-eb6b798c7398f566.mjs`. Dieses lokale Bundle ist **nicht das aktuelle Deployziel**: Der erste Server-Guard stoppte korrekt ohne Schreiben, weil die tatsächliche Runtime `editor-e85d012dc6812f15.mjs` verwendet.
+
+Nach vollständigem Abgleich der exportierten Ist-Dateien lautet das freigegebene Delta nun `editor-1bea892b2cd23111.mjs` (1.426.699 Bytes, gzip 476.928 Bytes). Gegen den tatsächlichen Server-Core ändert sich exakt das eingebettete Modul `family-formats.mjs`; alle anderen 149 Module und alle 16 Stylesheets bleiben bytegleich. Die Ist-HTML ändert ausschließlich zwei Kernbundle-Referenzen. Bestehende Abweichungen gegenüber dem lokalen R15-Build in `option-media.mjs`, `design-reset.mjs`, `modern-navigation.css` und `view-zoom.css` bleiben ausdrücklich erhalten. Die vier anderen Chunks werden nicht angefasst; ihre Namen stimmen in der Ist-HTML überein. Deren Manifesthashes stammen aus dem bisherigen lokalen Vergleich, nicht aus einer neuen Serverauslesung.
+
+Die neue Hash-ID folgt unverändert dem vorhandenen `bundle-build.mjs`-Verfahren. Kein Gesamtbuild und kein Neustart auf dem Server sind hierfür erforderlich. [Ist-Abgleich mit Hashes](../reviews/2026-11-08-steel-shape-text-fix/server-reconciliation.json).
 
 Vier Laufzeitdateien stehen mit SHA-256 und Ausgangshashes im [Manifest](../reviews/2026-11-08-steel-shape-text-fix/manifest.json), als reine Pfadliste in [deployment-files.txt](../reviews/2026-11-08-steel-shape-text-fix/deployment-files.txt). Generierte Dateien liegen lokal unter `.preview/`, sind per Build reproduzierbar und werden nicht als große Artefakte eingecheckt.
 
@@ -49,7 +53,9 @@ Der Hauptagent übernimmt Sicherung und eine kontrollierte Aktivierung, danach B
 
 ## Vorbereitetes kleines Deploy-Delta für Root
 
-Zusatzauftrag: [deploy-delta.mjs](../reviews/2026-11-08-steel-shape-text-fix/deploy-delta.mjs), 6.923 Bytes / 9.232 Base64-Zeichen, erzeugt nur die vier Manifest-Laufzeitdateien. Es liest den vorhandenen Kern `editor-bab5a1fa49ee42d2.mjs`, ersetzt eindeutig geprüfte Zeichenfolgen und reproduziert gzip mit `{level:9}`. Quell-, Editor-, altes Bundle-/gzip- und alle vier Zielhashes sind fest vorgegeben. Alle vollständigen Postimages werden vor dem ersten Schreibzugriff im Speicher erzeugt und geprüft.
+Zusatzauftrag: [deploy-delta.mjs](../reviews/2026-11-08-steel-shape-text-fix/deploy-delta.mjs), 7.124 Bytes / 9.500 Base64-Zeichen, erzeugt nur die vier Manifest-Laufzeitdateien. Es liest den tatsächlichen Kern `editor-e85d012dc6812f15.mjs`, ersetzt eindeutig geprüfte Zeichenfolgen und reproduziert gzip mit `{level:9}`. Quell-, Editor-, altes Bundle-/gzip- und alle vier Zielhashes sind fest vorgegeben. Alle vollständigen Postimages werden vor dem ersten Schreibzugriff im Speicher erzeugt und geprüft.
+
+Server Node v24.22.2 und lokales Node v24.22.1 verwenden beide zlib `1.3.2.1-motley-285e94b`. Die komprimierten Nutzdaten sind identisch; Windows setzt nur gzip-OS-Byte 9 auf 0, der Server auf 3. Das Delta übernimmt dieses Byte aus dem vollständig per Ist-SHA geprüften alten gzip. Der exportierte alte Server-gzip ist damit exakt reproduziert (SHA `3af402b4a4d6360b58eb2759be375cece75b1e40aa458d4774a44bd5fb82deb9`). Zusätzlich prüft es `gunzip` gegen den vollständigen neuen Core-SHA. Kein Hash-Guard wurde abgeschwächt.
 
 Explizite Zielruntime: `/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-steel-r15-shopify-20261108`. Backup: `/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-steel-shopify-backup-20261108-cart-text-patch`. Der neue Backupordner wird atomar mit `mkdir` ohne `recursive` angelegt; bei vorhandenem Ordner, vorhandenen neuen Bundles oder abweichenden Hashes stoppt die Aktivierung. Original-Quelldatei und Original-Editor werden vor Laufzeitänderungen gesichert und rückgelesen. Reihenfolge: neues Bundle, dessen gzip, Quelldatei, `editor.html` zuletzt per atomarem Rename. Alte Bundles bleiben bestehen.
 
@@ -60,10 +66,10 @@ node deploy-delta.mjs --check
 node deploy-delta.mjs
 ```
 
-`--check` prüft alle Bytes, erzeugt aber weder Backup noch Laufzeitdateien. Das Skript wurde hier **nicht gegen ein echtes Dateisystem ausgeführt**; lediglich `node --check` zur Syntaxprüfung sowie fünf Tests mit einem vollständig simulierten Dateisystem wurden ausgeführt. Diese verwenden die echten lokalen R15-Ausgangsbytes und prüfen erfolgreiche Rekonstruktion, falsche Vor-/Nachhashes, vorhandene Ziele/Backup, Schreibreihenfolge, unterbrochenen letzten Rename und Rücknahme.
+`--check` prüft alle Bytes, erzeugt aber weder Backup noch Laufzeitdateien. Das Skript wurde hier **nicht gegen ein echtes Dateisystem ausgeführt**; lediglich `node --check` zur Syntaxprüfung sowie sechs Tests mit einem vollständig simulierten Dateisystem wurden ausgeführt. Diese verwenden jetzt die exportierten Server-Ausgangsbytes und prüfen erfolgreiche Rekonstruktion, falsche Vor-/Nachhashes, vorhandene Ziele/Backup, Schreibreihenfolge, unterbrochenen letzten Rename, Rücknahme und vollständigen Erhalt aller fremden Module/Styles.
 
 ```powershell
-$env:GRAVURU_TEXT_PATCH_BASELINE='<workspace>/work/steel-r15-native-overlay-20261108'
+$env:GRAVURU_TEXT_PATCH_BASELINE='<worktree>/.test-output/server-text-patch-baseline'
 node --test docs/reviews/2026-11-08-steel-shape-text-fix/deploy-delta.test.mjs
 ```
 

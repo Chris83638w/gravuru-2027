@@ -2,24 +2,24 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
-import {gzipSync} from 'node:zlib';
+import {gzipSync,gunzipSync} from 'node:zlib';
 
 const ROOT='/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-steel-r15-shopify-20261108';
 const BACKUP='/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-steel-shopify-backup-20261108-cart-text-patch';
 const P='app/configurator/variant-m/';
-const OLD='editor-bab5a1fa49ee42d2.mjs',NEW='editor-eb6b798c7398f566.mjs';
+const OLD='editor-e85d012dc6812f15.mjs',NEW='editor-1bea892b2cd23111.mjs';
 const source=P+'family-formats.mjs',html=P+'.preview/editor.html',core=P+'.preview/bundle/';
 const BEFORE={
  [source]:'43ab12c0ecd55b6ca826077302a194dc9f24a8ae4ed996e326eaf4dbd2627499',
- [html]:'018e29152fb44d758f193b79622d276d1fe33666a9eef31b21acbf256d964b8b',
- [core+OLD]:'72bcf141b4775f2d5aee5ff2543dd5fd69e52b883e4f85bd3cb2a7fe764b0ea2',
- [core+OLD+'.gz']:'bb11f9388c5be9021918fdbaeaf21aef382e517840cbf6aa0b43999962a60b4c'
+ [html]:'5e06c711fa047ec72a34c58afae8275476280cd66a83cfb7cef3d8c2a65fd8d3',
+ [core+OLD]:'f11d9c15bbdf51b33f87e71e3759508f13d0085bde4a0eab3df757f0cc6920da',
+ [core+OLD+'.gz']:'3af402b4a4d6360b58eb2759be375cece75b1e40aa458d4774a44bd5fb82deb9'
 };
 const AFTER={
  [source]:'183d00d611042e2c2d9f6097787859656388adcc6ef92ae52c3c6498e4deb210',
- [html]:'9ee81d1481e2280139d0d407247ac6ac3040d035c4e04599c4695b97f53e2636',
- [core+NEW]:'538a7417200b07edf65912c845526f587f48007806090fa020c6ad55981489c3',
- [core+NEW+'.gz']:'4fda8299903d66a30ba71a6065663aba5d4664f82c901b10c67114d6d09f3c75'
+ [html]:'8dea7bac2880bae731aedc09f366942b829f7092098133b2cf348dcac8a43042',
+ [core+NEW]:'08f14a7949bc529ffc79023cf03290bce927dbf13613b7069c4f984773b23cb8',
+ [core+NEW+'.gz']:'52ce356967e7c2891c7165668ac77a7d5304e8060e179b01a10419196e80052e'
 };
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 const fail=message=>{throw Error(message);};
@@ -41,7 +41,7 @@ function patched(input,bundled=false){
  const dep=bundled?'gravuru-bundle:36':'./workflow-model.mjs';
  let output=replace(input,`import {transferTexts} from '${dep}';`,`import {changedCustomerTexts,transferTexts} from '${dep}';`);
  output=replace(output,bundled?escaped(oldEdit):oldEdit,bundled?escaped(newEdit):newEdit);
- return bundled?replace(output,'HASH="bab5a1fa49ee42d2"','HASH="eb6b798c7398f566"'):output;
+ return bundled?replace(output,'HASH="e85d012dc6812f15"','HASH="1bea892b2cd23111"'):output;
 }
 function atomic(file,bytes,{mode=0o644,expected=null}={}){
  if(expected){verify(fs.readFileSync(file),expected,file);}
@@ -73,7 +73,10 @@ function deploy(){
  post.set(source,Buffer.from(patched(originals.get(source).toString('utf8'))));
  post.set(html,Buffer.from(replace(originals.get(html).toString('utf8'),OLD,NEW,2)));
  post.set(core+NEW,Buffer.from(patched(originals.get(core+OLD).toString('utf8'),true)));
- post.set(core+NEW+'.gz',gzipSync(post.get(core+NEW),{level:9}));
+ const compressed=gzipSync(post.get(core+NEW),{level:9});
+ compressed[9]=originals.get(core+OLD+'.gz')[9]; // Keep the verified server gzip OS header.
+ verify(gunzipSync(compressed),AFTER[core+NEW],'gzip round trip');
+ post.set(core+NEW+'.gz',compressed);
  for(const [file,bytes] of post)verify(bytes,AFTER[file],file+' postimage');
  // The four complete target images now exist and are verified in memory.
  for(const file of [core+NEW,core+NEW+'.gz'])if(fs.existsSync(path.join(ROOT,file)))fail('New bundle already exists: '+file);

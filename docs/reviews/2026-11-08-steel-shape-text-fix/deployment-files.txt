@@ -1,4 +1,4 @@
 app/configurator/variant-m/family-formats.mjs
 app/configurator/variant-m/.preview/editor.html
-app/configurator/variant-m/.preview/bundle/editor-eb6b798c7398f566.mjs
-app/configurator/variant-m/.preview/bundle/editor-eb6b798c7398f566.mjs.gz
+app/configurator/variant-m/.preview/bundle/editor-1bea892b2cd23111.mjs
+app/configurator/variant-m/.preview/bundle/editor-1bea892b2cd23111.mjs.gz

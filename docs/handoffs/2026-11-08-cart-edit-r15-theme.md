@@ -1,5 +1,20 @@
 # R15 beim Warenkorb-Bearbeiten: Theme-Link ergänzen
 
+## Nachtrag: echte Shopify-Property-Ausgabe geprüft
+
+Der erste Theme-Patch wurde gespeichert, bestand aber die echte Warenkorb-Abnahme nicht. PR #209 liefert den Darstellungswert korrekt in der privaten Eigenschaft; Shopify gibt diese Eigenschaft in Liquid jedoch mit `&amp;` statt rohem `&` aus. Der erste lokale LiquidJS-Test benutzte normale JavaScript-Objekte und bildete diesen Shopify-Drop-Unterschied nicht ab. Der folgende Nachweis korrigiert diese Testgrenze ausdrücklich.
+
+Im bereits vorhandenen unveröffentlichten Theme `190557716860` wurde ausschließlich `templates/cart.gravuru-r15-diagnostic.liquid` neu angelegt, ohne bestehende Dateien oder das MainTheme zu ändern. Root öffnete die echte Shopify-Vorschau mit dem Testwarenkorb. Der Diagnosetext gibt nur Zeilennummer, Zähler und Boolesche Werte aus, keine URLs, Namen oder Kundendaten. Bei der R15-Position: fünf Entity-Trenner, zwei Queryteile, vor Normalisierung UI-Zähler 0 / R15 false, nach einmaligem `replace: '&amp;', '&'` UI-Zähler 1 / R15 true. Bei beiden älteren Positionen ohne gespeicherte Darstellungswahl bleibt der Zähler 0. Diagnose-MD5: `0e8836227a4c06ec9bf0fd5b59f04614`; Quelle liegt neben dem Prüfbeleg. Root-Belege: `outputs/r15-final-corrections-20261108/shopify-liquid-entity-diagnostic.txt` und `.jpg`. Eine [bereits gemeldete Shopify-Liquid-Abweichung](https://github.com/Shopify/liquid/issues/1696) half bei der Hypothese; der konkrete Nachweis stammt aus diesem Shop.
+
+Die abschließende Korrektur ergänzt **nur einen Filter** vor dem unveränderten Query-/Fragmentparser. Kein allgemeines HTML-/URL-Decoding, keine neue Zieladresse, keine andere ID und keine Lockerung der Einzelwertprüfung. Eine neue Regression zeigte zunächst zwei Fehler, danach bestehen 9/9 gezielte Tests, darunter HTML-escaped, doppelte, fremde und nur im Fragment stehende Werte. Ein unabhängiger Read-only-Review bestätigte zusätzlich 13 Varianten einschließlich gemischter, doppelt codierter und feindlicher URL-Inhalte.
+
+Aktuelles Einzeldatei-Paket: `outputs/cart-edit-r15-theme-entities-20261108/patch/snippets/gravuru-warenkorb-bearbeiten.liquid`; Backup im benachbarten `backup`-Ordner. Gegen die aktuell gespeicherte Livefassung wurde bytegenau geprüft, dass ausschließlich dieser Filter hinzukommt.
+
+- Erwarteter aktueller MD5: `f8c59d746d2413eae1b99f004bfac860`, SHA-256: `60217e0334a091285e85cf5178faa8e948157fb60298e3e9c13c0570f6a181dc`.
+- Neuer MD5: `b83738890b508a1de9f0be80333e2456`, SHA-256: `e9e4f2b65cc7aac3d222d298fe0f34aa48706f39336db1f809778de6ec16e1b2`.
+
+Nur Root/Nutzer übernehmen das MainTheme-Speichern und die abschließende echte Link-/Wiederöffnungsprüfung. Bis dahin ist der Status vorbereitet, nicht live abgenommen. Kein Serverneustart und keine Warenkorbdatenänderung nötig. Nach der Diagnose den Browser wieder auf das MainTheme umstellen.
+
 ## Konkreter Folgefehler und Umfang
 
 Root hat PR #209 veröffentlicht und die echte Shopify-Strecke geprüft. Die R15-Oberfläche blieb beim Kundenabschluss aktiv, die Warenkorbaktualisierung gelang mit gleichem Preis, aber der im Theme gerenderte Bearbeiten-Link enthielt weiterhin kein `ui`. Ursache: `snippets/gravuru-warenkorb-bearbeiten.liquid` baut seinen Link selbst aus der aktuellen Warenkorbposition und ignorierte die gespeicherte Darstellungswahl in `_gravuru_bearbeiten`.

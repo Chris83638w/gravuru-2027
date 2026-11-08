@@ -1,3 +1,10 @@
+## 08.11.2026 – Codex: Shopify-Liquid-Entity-Ursache nativ bestätigt
+
+- Der erste PR-212-Theme-Patch war gespeichert, bestand die reale Abnahme aber nicht. Die echte unveröffentlichte Shopify-Diagnose zeigt: private Linkeigenschaft enthält in Liquid `&amp;`, während die Ajax-Antwort rohe `&` enthält. Rohparser UI-Zähler 0, nach einmaliger Entity-Normalisierung 1; alte Positionen bleiben 0.
+- Ein zusätzlicher Filter im einzigen betroffenen Snippet, keine andere Produktionsänderung. Neue Regression zunächst 2 Fehler, nach Fix insgesamt 9/9 grün; unabhängiger Review 13 weitere Fälle grün. IDs/Zieladresse und exakte Einzelwert-/Fragmentprüfung bleiben bestehen.
+- Geprüfter Einzeldatei-Patch `outputs/cart-edit-r15-theme-entities-20261108/patch/snippets/gravuru-warenkorb-bearbeiten.liquid`, SHA `e9e4f2b6…`, erwarteter MD5 `b8373889…`. Backup vorhanden. Nur neue Diagnosetemplate-Datei im bereits unveröffentlichten Testtheme durch Unteragent, kein MainTheme-Write.
+- Root/Nutzer speichern den finalen Patch und prüfen danach echten Bearbeiten-Link und R15-Wiederöffnung; bis dahin keine Fertigbehauptung. [Native Diagnose, Prüfgrenze und Rücknahme](docs/handoffs/2026-11-08-cart-edit-r15-theme.md).
+
 ## 08.11.2026 – Codex: tatsächlicher Theme-Link erhält gespeicherte R15-Auswahl
 
 - Live-Abnahme von PR #209 deckte eine zweite Stelle auf: Das Theme erzeugt den Bearbeiten-Link selbst und ließ die nun gespeicherte Darstellungswahl erneut weg. Ein einzelnes Liquid-Snippet übernimmt jetzt ausschließlich den exakten einzelnen `ui=prio-r15`-Wert; aktuelle Zeilen-IDs und lokales Linkziel bleiben unverändert.

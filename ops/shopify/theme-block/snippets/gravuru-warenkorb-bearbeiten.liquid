@@ -33,7 +33,7 @@
   if gv_preview != blank
     assign gv_line = 'theme'
   endif
-  assign gv_edit_link = item.properties['_gravuru_bearbeiten'] | split: '#' | first
+  assign gv_edit_link = item.properties['_gravuru_bearbeiten'] | replace: '&amp;', '&' | split: '#' | first
   assign gv_edit_parts = gv_edit_link | split: '?'
   assign gv_ui_count = 0
   assign gv_ui_prio = false

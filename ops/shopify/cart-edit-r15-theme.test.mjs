@@ -51,6 +51,20 @@ for(const [name,source]of [['live',live],['repository',repo]]){
    assert.equal(link(await render(source,row)).searchParams.get('ui'),null,String(value));
   }
  });
+ test(name+': Shopify HTML-escaped property separators preserve only one exact R15 query flag',async()=>{
+  const row=item();
+  const escaped=value=>value.replaceAll('&','&amp;');
+  row.properties._gravuru_bearbeiten=escaped(base+'&ui=prio-r15');
+  const edit=link(await render(source,row));
+  assert.equal(edit.searchParams.get('ui'),'prio-r15');
+  assert.equal(edit.searchParams.getAll('ui').length,1);
+  for(const value of [base,base+'&ui=demo',base+'&ui=PRIO-R15',base+'&ui=prio-r15x',base+'&ui=prio-r15&ui=prio-r15',base+'&ui=demo&ui=prio-r15',base+'&ui=prio-r15&ui=demo',base+'#ui=prio-r15',base+'#?ui=prio-r15',base+'&ui=prio-r15%26foo%3D1']){
+   row.properties._gravuru_bearbeiten=escaped(value);
+   assert.equal(link(await render(source,row)).searchParams.get('ui'),null,value);
+  }
+  row.properties._gravuru_bearbeiten=escaped(base+'&ui=prio-r15#?ui=demo');
+  assert.equal(link(await render(source,row)).searchParams.get('ui'),'prio-r15','fragment never supplies query parameters');
+ });
  test(name+': legacy path and native non-R15 rendered content remain unchanged',async()=>{
   const native=item();assert.equal(await render(source,native),await render(name==='live'?before:repo.replace(addition+'\n','').replace(suffix,''),native));
   const legacy=item();legacy.properties={'_Gravuru Vorgang':'legacy-id','Bearbeitbarer Entwurf':'https://cdn.shopify.com/draft.json',Entwurf:'https://cdn.shopify.com/preview.png',_gravuru_bearbeiten:base+'&ui=prio-r15'};

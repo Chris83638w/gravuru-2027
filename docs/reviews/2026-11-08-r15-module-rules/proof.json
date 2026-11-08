@@ -1,0 +1,90 @@
+{
+  "schema": "gravuru-r15-module-rules-proof/v1",
+  "date": "2026-11-08",
+  "base": "16eda61",
+  "reference": "a71b3eb4bfdbb02a8d6b811c9f188fefcac72f06",
+  "runtimeFiles": 12,
+  "tests": {
+    "total": 237,
+    "passed": 237,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 13179.3966,
+    "files": [
+      "app/configurator/variant-m/module-profile.test.mjs",
+      "app/configurator/variant-m/module-runtime.test.mjs",
+      "app/configurator/variant-m/logo-upload.test.mjs",
+      "app/workshop/cart-personalization.test.mjs",
+      "app/workshop/shop-entry.test.mjs",
+      "app/workshop/shop-design-gallery.test.mjs",
+      "app/configurator/mobile-demo/demo.test.mjs",
+      "app/configurator/variant-m/view-zoom.test.mjs",
+      "app/configurator/variant-m/preview-uploads.test.mjs",
+      "app/configurator/variant-m/ui-event-regressions.test.mjs",
+      "app/configurator/variant-m/shop-cart.test.mjs",
+      "app/configurator/variant-m/native-overlay.test.mjs",
+      "app/workshop/shop-entry-client.test.mjs",
+      "app/workshop/theme-cart-flow.test.mjs",
+      "app/workshop/shop-design-gallery-variant.test.mjs",
+      "app/workshop/shop-preparation.test.mjs",
+      "app/workshop/slate-shop-preparation.test.mjs",
+      "app/configurator/variant-m/element-rights.test.mjs",
+      "app/workshop/r15-module-bank.test.mjs"
+    ],
+    "logSha256": "4b90541c41c8b289a56740fcd28dacdb9552737f8c1281195abc5c072ce82742"
+  },
+  "build": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 373501,
+    "lazyResources": {
+      "fonts": 30,
+      "motifs": 703
+    },
+    "bundle": {
+      "url": "/_bundle/editor-e27682e70d9aff3a.mjs",
+      "modules": 153,
+      "styles": 16,
+      "bytes": 1442602,
+      "gzipBytes": 481365
+    }
+  },
+  "sourcePinReceipt": {
+    "path": "outputs/r15-module-rules-20261108/live-pins-before.json",
+    "sha256": "80966a74ebf4820f1428ccf59c17c63bf2e30de13bc1921e4949634c7c87d066",
+    "verifiedBy": "root",
+    "existingFiles": 10,
+    "newFilesAbsent": 2
+  },
+  "bank": {
+    "sha256": "2e74548aa7211a2f5546af428e1d27d9f00f12181490356633e3cd109cb179c0",
+    "designs": 251,
+    "forms": 8,
+    "sizes": 80,
+    "variantCombinations": 404,
+    "logoProfiles": [
+      true,
+      false
+    ],
+    "unchangedSource": true
+  },
+  "localOnly": true,
+  "serverWrites": 0,
+  "shopifyWrites": 0,
+  "productRevisionWrites": 0,
+  "cssChanged": false,
+  "demoChanged": false,
+  "browserAcceptance": "pending",
+  "independentReview": {
+    "agent": "module_contract",
+    "result": "passed",
+    "runtimeManifestVerified": 12,
+    "protectedActiveSourcesVerified": 9,
+    "additionalChecks": [
+      "Disabled logo rejects customer vector preview before converter",
+      "Disabled logo rejects accepted-media verification",
+      "Incomplete module profile rejected",
+      "Legacy logo API preserved"
+    ]
+  }
+}

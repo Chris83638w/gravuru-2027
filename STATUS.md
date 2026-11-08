@@ -1,3 +1,7 @@
+## 08.11.2026 – Mika: produktspezifischer R15-Einstieg für Edelstahl
+
+Eigener Branch `dev/mika-steel-product-entry-20261108` auf `c8318af`. Ein Laufzeitmodul hält den R15-Opt-in und die echten404Varianten beim Vorladen/Klick/Variantenwechsel zusammen; Erststart passt zum nativen TAE-D1-Hauptbild AB12×8. Vorbereiteter Theme-Kandidat ändert nur den vorhandenen Startblock und darin nur Produkt16190784438652.72Tests grün; zusätzlich alle404echten IDs mit/ohne globalem App-Embed-JSON geprüft. Keine Shop-/Serveraktion. [Übergabe, Bildnachweis und Grenzen](docs/handoffs/2026-11-08-steel-product-entry.md). Nächster Schritt: Parent prüft Kandidaten-SHAs und frische Browser-/Warenkorb-Abnahme vor Aktivierung.
+
 ## 08.11.2026 – Mika: isolierter R15-Anschluss auf tatsächlichem Serverstand
 
 Uncommitted Branch `dev/mika-steel-r15-native-overlay-20261108` auf `b6b1b749d9724fa6d9a8098033ebbd967f6d6996`. 26 Laufzeit-Quelldateien + 11 erzeugte Editor-/Bundle-Dateien; keine Galerie-/DB-Schema-/Shopify-Datenänderung. 306 gezielte unterschiedliche Tests bestanden nach Nutzung der vorhandenen vollständigen Python-Testumgebung. Kein Commit/Deploy und noch keine Browser-/Checkoutabnahme des echten Edelstahlprofils. [Übergabe und genaue Grenzen](docs/handoffs/2026-11-08-steel-r15-native-overlay.md), [Dateimanifest](docs/reviews/2026-11-08-steel-r15-native-overlay/manifest.json). Nächster Schritt: Parent prüft private Serversicherung/Ausgangshashes und den isolierten echten Produktkandidaten.

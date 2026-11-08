@@ -534,6 +534,12 @@ export async function installUX(el,config,legacy,{attach}={}){
   // A connectedCallback replay is harmless: the reference component has a ready guard.
   attach?.();
   el.sync();
+  if(window.parent.GravuruShopEntry?.presentation==='prio-r15'){
+    // R15 uses real module-relative asset URLs. Keep this optional presentation
+    // module outside the legacy blob bundle; the native session owns checkout.
+    const presentation=await import('/configurator/mobile-demo/shop-shell.mjs');
+    await presentation.installPrioShopShell(el,config);
+  }
   window.dispatchEvent(new Event('resize'));
   window.parent.postMessage({type:'gravuru-ux-ready'},location.origin);
   // Ladefolge nach dem Start: Optionsbilder → Schriften → Motive im Leerlauf (background-loading.mjs).

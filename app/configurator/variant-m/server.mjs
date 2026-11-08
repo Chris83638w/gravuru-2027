@@ -10,6 +10,7 @@ import {createWorkshop} from '../../workshop/http.mjs';
 import {readThemeCatalog} from '../../workshop/theme-catalog.mjs';
 import {openKatalog,katalogPath} from '../../workshop/katalog-source.mjs';
 import {doorbellImageResource,isDoorbellImagePath} from '../../workshop/doorbell-image-resource.mjs';
+import {isPrioPresentationAsset} from '../mobile-demo/assets.mjs';
 
 const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.txt':'text/plain; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml','.gz':'application/gzip'};
 // Ladezeit: Textantworten gzip-komprimiert, wenn der Browser es anbietet (Inhalt unverändert).
@@ -108,6 +109,8 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
       }
       else if(/^\/acrylic-assets\/[a-z0-9-]+\.(png|webp)$/.test(pathname)){
         base=path.join(ROOT,'designs/acrylic-unser-anfang');relative=pathname.split('/').pop();
+      } else if(isPrioPresentationAsset(pathname)){
+        base=path.join(HERE,'../mobile-demo');relative=pathname.slice('/configurator/mobile-demo/'.length);
       } else {
         // `/_runtime/lazy/`: beim Build abgeleitete Einzelteile (build.mjs LAZY), vor dem allgemeinen Laufzeitordner.
         const mounts=[['/_runtime/lazy/',LAZY],['/_runtime/',path.join(ROOT,'designs/aosu-labrador/runtime')],['/platform/sources/app/shared/',path.join(ROOT,'platform/sources/app/shared')],['/configurator/variant-m/',HERE]];

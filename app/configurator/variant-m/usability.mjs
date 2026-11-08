@@ -1,6 +1,7 @@
+import {createTextBounds} from './text-bounds.mjs';
 import {productPreviewSize} from './backing-preview-viewport.mjs';
 import {maskContourGuides} from './contour-guides.mjs';
-import {textPaths,setTextSize} from '../../platform/sources/app/shared/models/text-paths.mjs';
+import {setTextSize} from '../../platform/sources/app/shared/models/text-paths.mjs';
 import {fitsSurface,fittingTextSize,canColorElement,PRINT_PALETTES,paletteGroups,restoreOriginalColors} from './usability-model.mjs';
 import {processPalette,processFreeColor} from '../../workshop/process-profiles.mjs';
 import {colorPalettes} from './profile-selection.mjs';
@@ -178,15 +179,7 @@ export async function installUsability(api) {
     }
   }
 
-  const boundsCache=new Map();
-  function textBounds(o){
-    const key=JSON.stringify([o.text,o.font,o.bold,o.italic,o.size,o.letterSpacing,o.textAnchor,o.lineHeight,o.w]);if(boundsCache.has(key))return boundsCache.get(key);
-    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
-    svg.style.cssText='position:absolute;visibility:hidden;width:1px;height:1px';
-    svg.innerHTML='<g>'+textPaths(o,el.fontData)+'</g>';r.append(svg);
-    const measured=svg.firstElementChild.getBBox();const bounds={x:measured.x,y:measured.y,width:measured.width,height:measured.height};svg.remove();
-    if(boundsCache.size>100)boundsCache.clear();boundsCache.set(key,bounds);return bounds;
-  }
+  const textBounds=createTextBounds(el);
   function surface(){
     if(config)return {x:0,y:0,...(el.uxProfileGeometry?.()||profile.geometry)};
     return profile.frames.find(f=>f.key===el.state.fkFrame)?.acrylic||profile.frames[0].acrylic;

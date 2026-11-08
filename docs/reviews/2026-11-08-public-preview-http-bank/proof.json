@@ -1,0 +1,231 @@
+{
+  "schema": "gravuru-local-public-preview-http-proof/v1",
+  "integrationCommit": "f4c370fcc6bfdd388f63f14ea339046ea1103aca",
+  "live": false,
+  "registry": "synthetic",
+  "artwork": "real immutable local r4",
+  "processRestart": true,
+  "productionFilesChanged": 0,
+  "phases": [
+    {
+      "phase": "prepare",
+      "sourceSha256": "2e74548aa7211a2f5546af428e1d27d9f00f12181490356633e3cd109cb179c0",
+      "sourceBytes": 11906263,
+      "designs": 251,
+      "sizes": 80,
+      "variants": 404,
+      "selectedOptions": {
+        "size": "GR-ES-AB-120X80-T15",
+        "mounting": "K00"
+      },
+      "syntheticBindingBaseCents": 1999,
+      "warmBeforeCount": 0,
+      "warmAfterCount": 3,
+      "startBeforeMs": 311.63430000000005,
+      "startAfterMs": 179.63659999999982,
+      "prepareMs": 1647.2426,
+      "preparedFromDisk": false,
+      "galleryMs": 125.95529999999962,
+      "galleryCards": 21,
+      "gallerySameUrls": true,
+      "renderCalls": 3,
+      "modelReads": 19,
+      "approvalReads": 40,
+      "manifest": {
+        "schema": "gravuru-shop-warm/v1",
+        "editorPath": "/_merchant-acryl-editor.html",
+        "catalogPath": "/_acryl-runtime/lazy/katalog-kern.json",
+        "fonts": [
+          {
+            "name": "Michroma",
+            "url": "/konfigurator/shop/schriften/3201589047768a19ed4506e9b76a18aa1b353b932b9cd599e632bbde1575e0d1.json"
+          }
+        ],
+        "previews": [
+          "/konfigurator/shop/vorschauen/8c590a798125d645c95fb4a8e5755f16ed6edeb5f68d947d2832f298e7b7229f.svg",
+          "/konfigurator/shop/vorschauen/33b6415f5a1308c016506948f603d3fd48429b84259aa9ca24e7a0b2391804ca.svg",
+          "/konfigurator/shop/vorschauen/08b11b36c4a4cd401ca9b5bcf0c73b152735184a36ba7b964979b68e327d9d97.svg"
+        ],
+        "motifs": [
+          "import-b56d5711a75f34c1fa8d9c30",
+          "import-8adc51cf09cbad881db95ef6",
+          "import-4609f5a437c8a0a9d6c8dca3",
+          "import-7435d6dce5e1fa3c4c4fc1b5",
+          "import-178f0cc0a5c7c40768ed14cf",
+          "import-f46b8d0fcc6e60810ece9d9d"
+        ]
+      },
+      "manifestBytes": 800,
+      "publicUrls": [
+        "/konfigurator/shop/vorschauen/8c590a798125d645c95fb4a8e5755f16ed6edeb5f68d947d2832f298e7b7229f.svg",
+        "/konfigurator/shop/vorschauen/33b6415f5a1308c016506948f603d3fd48429b84259aa9ca24e7a0b2391804ca.svg",
+        "/konfigurator/shop/vorschauen/08b11b36c4a4cd401ca9b5bcf0c73b152735184a36ba7b964979b68e327d9d97.svg"
+      ],
+      "images": [
+        {
+          "url": "/konfigurator/shop/vorschauen/8c590a798125d645c95fb4a8e5755f16ed6edeb5f68d947d2832f298e7b7229f.svg",
+          "status": 200,
+          "bytes": 140037,
+          "sha256": "8d6215214fea44c4440ff494742ce5417f658d42f8c18e83a6e99e5ecc725a32",
+          "ms": 105.94329999999991,
+          "contentType": "image/svg+xml",
+          "cacheControl": "public, max-age=31536000, immutable"
+        },
+        {
+          "url": "/konfigurator/shop/vorschauen/33b6415f5a1308c016506948f603d3fd48429b84259aa9ca24e7a0b2391804ca.svg",
+          "status": 200,
+          "bytes": 139106,
+          "sha256": "fcc90d10bc2bc7bb1cb67afd863f2f0a00a9ed2e6c1dbfbdbf578e9438af1d83",
+          "ms": 103.51990000000023,
+          "contentType": "image/svg+xml",
+          "cacheControl": "public, max-age=31536000, immutable"
+        },
+        {
+          "url": "/konfigurator/shop/vorschauen/08b11b36c4a4cd401ca9b5bcf0c73b152735184a36ba7b964979b68e327d9d97.svg",
+          "status": 200,
+          "bytes": 139156,
+          "sha256": "79aa07e6933daaf8becb0f53e395bf652dfd0ceef5cc4020026abcf2c615ffc0",
+          "ms": 101.02790000000005,
+          "contentType": "image/svg+xml",
+          "cacheControl": "public, max-age=31536000, immutable"
+        }
+      ],
+      "previewDecodedBytes": 418299,
+      "cacheFiles": [
+        {
+          "name": "08b11b36c4a4cd401ca9b5bcf0c73b152735184a36ba7b964979b68e327d9d97.json",
+          "bytes": 186436,
+          "sha256": "e34401071542737ad6d7ea95d36839860f8fe862b6875983c836961bdfa6ec09"
+        },
+        {
+          "name": "33b6415f5a1308c016506948f603d3fd48429b84259aa9ca24e7a0b2391804ca.json",
+          "bytes": 186368,
+          "sha256": "20bb0d1edbe0e7fd23edf2fbe7ec392667dff9f742a86e3e478d6e75bc1d3714"
+        },
+        {
+          "name": "8c590a798125d645c95fb4a8e5755f16ed6edeb5f68d947d2832f298e7b7229f.json",
+          "bytes": 187608,
+          "sha256": "92e65804a9331a7bf61a798c9f26001198c7b7e23f0c6cb81633373d9a4b6e1d"
+        }
+      ],
+      "cacheBytes": 560412,
+      "requestForms": {
+        "shopProxy": "/apps/konfigurator/start?product=16190784438652&variant=58104606556540&ui=prio-r15&format=json",
+        "backendProxy": "same route plus Shopify-signed shop/path_prefix/timestamp/signature; values omitted",
+        "warmIframe": "https://app.example/konfigurator/shop/warm/",
+        "gallery": "/api/shop-entry/design-gallery (existing session header; omitted)",
+        "publicImage": "/konfigurator/shop/vorschauen/8c590a798125d645c95fb4a8e5755f16ed6edeb5f68d947d2832f298e7b7229f.svg"
+      }
+    },
+    {
+      "phase": "restart",
+      "sourceSha256": "2e74548aa7211a2f5546af428e1d27d9f00f12181490356633e3cd109cb179c0",
+      "sourceBytes": 11906263,
+      "designs": 251,
+      "sizes": 80,
+      "variants": 404,
+      "selectedOptions": {
+        "size": "GR-ES-AB-120X80-T15",
+        "mounting": "K00"
+      },
+      "syntheticBindingBaseCents": 1999,
+      "warmBeforeCount": 3,
+      "warmAfterCount": 3,
+      "startBeforeMs": 298.7838,
+      "startAfterMs": 186.45969999999988,
+      "prepareMs": 694.6918,
+      "preparedFromDisk": true,
+      "galleryMs": 143.0300000000002,
+      "galleryCards": 21,
+      "gallerySameUrls": true,
+      "renderCalls": 0,
+      "modelReads": 13,
+      "approvalReads": 28,
+      "manifest": {
+        "schema": "gravuru-shop-warm/v1",
+        "editorPath": "/_merchant-acryl-editor.html",
+        "catalogPath": "/_acryl-runtime/lazy/katalog-kern.json",
+        "fonts": [
+          {
+            "name": "Michroma",
+            "url": "/konfigurator/shop/schriften/3201589047768a19ed4506e9b76a18aa1b353b932b9cd599e632bbde1575e0d1.json"
+          }
+        ],
+        "previews": [
+          "/konfigurator/shop/vorschauen/8c590a798125d645c95fb4a8e5755f16ed6edeb5f68d947d2832f298e7b7229f.svg",
+          "/konfigurator/shop/vorschauen/33b6415f5a1308c016506948f603d3fd48429b84259aa9ca24e7a0b2391804ca.svg",
+          "/konfigurator/shop/vorschauen/08b11b36c4a4cd401ca9b5bcf0c73b152735184a36ba7b964979b68e327d9d97.svg"
+        ],
+        "motifs": [
+          "import-b56d5711a75f34c1fa8d9c30",
+          "import-8adc51cf09cbad881db95ef6",
+          "import-4609f5a437c8a0a9d6c8dca3",
+          "import-7435d6dce5e1fa3c4c4fc1b5",
+          "import-178f0cc0a5c7c40768ed14cf",
+          "import-f46b8d0fcc6e60810ece9d9d"
+        ]
+      },
+      "manifestBytes": 800,
+      "publicUrls": [
+        "/konfigurator/shop/vorschauen/8c590a798125d645c95fb4a8e5755f16ed6edeb5f68d947d2832f298e7b7229f.svg",
+        "/konfigurator/shop/vorschauen/33b6415f5a1308c016506948f603d3fd48429b84259aa9ca24e7a0b2391804ca.svg",
+        "/konfigurator/shop/vorschauen/08b11b36c4a4cd401ca9b5bcf0c73b152735184a36ba7b964979b68e327d9d97.svg"
+      ],
+      "images": [
+        {
+          "url": "/konfigurator/shop/vorschauen/8c590a798125d645c95fb4a8e5755f16ed6edeb5f68d947d2832f298e7b7229f.svg",
+          "status": 200,
+          "bytes": 140037,
+          "sha256": "8d6215214fea44c4440ff494742ce5417f658d42f8c18e83a6e99e5ecc725a32",
+          "ms": 101.22409999999991,
+          "contentType": "image/svg+xml",
+          "cacheControl": "public, max-age=31536000, immutable"
+        },
+        {
+          "url": "/konfigurator/shop/vorschauen/33b6415f5a1308c016506948f603d3fd48429b84259aa9ca24e7a0b2391804ca.svg",
+          "status": 200,
+          "bytes": 139106,
+          "sha256": "fcc90d10bc2bc7bb1cb67afd863f2f0a00a9ed2e6c1dbfbdbf578e9438af1d83",
+          "ms": 105.1377,
+          "contentType": "image/svg+xml",
+          "cacheControl": "public, max-age=31536000, immutable"
+        },
+        {
+          "url": "/konfigurator/shop/vorschauen/08b11b36c4a4cd401ca9b5bcf0c73b152735184a36ba7b964979b68e327d9d97.svg",
+          "status": 200,
+          "bytes": 139156,
+          "sha256": "79aa07e6933daaf8becb0f53e395bf652dfd0ceef5cc4020026abcf2c615ffc0",
+          "ms": 102.04290000000015,
+          "contentType": "image/svg+xml",
+          "cacheControl": "public, max-age=31536000, immutable"
+        }
+      ],
+      "previewDecodedBytes": 418299,
+      "cacheFiles": [
+        {
+          "name": "08b11b36c4a4cd401ca9b5bcf0c73b152735184a36ba7b964979b68e327d9d97.json",
+          "bytes": 186436,
+          "sha256": "e34401071542737ad6d7ea95d36839860f8fe862b6875983c836961bdfa6ec09"
+        },
+        {
+          "name": "33b6415f5a1308c016506948f603d3fd48429b84259aa9ca24e7a0b2391804ca.json",
+          "bytes": 186368,
+          "sha256": "20bb0d1edbe0e7fd23edf2fbe7ec392667dff9f742a86e3e478d6e75bc1d3714"
+        },
+        {
+          "name": "8c590a798125d645c95fb4a8e5755f16ed6edeb5f68d947d2832f298e7b7229f.json",
+          "bytes": 187608,
+          "sha256": "92e65804a9331a7bf61a798c9f26001198c7b7e23f0c6cb81633373d9a4b6e1d"
+        }
+      ],
+      "cacheBytes": 560412,
+      "requestForms": {
+        "shopProxy": "/apps/konfigurator/start?product=16190784438652&variant=58104606556540&ui=prio-r15&format=json",
+        "backendProxy": "same route plus Shopify-signed shop/path_prefix/timestamp/signature; values omitted",
+        "warmIframe": "https://app.example/konfigurator/shop/warm/",
+        "gallery": "/api/shop-entry/design-gallery (existing session header; omitted)",
+        "publicImage": "/konfigurator/shop/vorschauen/8c590a798125d645c95fb4a8e5755f16ed6edeb5f68d947d2832f298e7b7229f.svg"
+      }
+    }
+  ]
+}

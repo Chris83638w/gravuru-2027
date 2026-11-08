@@ -2,6 +2,10 @@
 
 Isolierte Zusammenführung auf c76e2a7: zwölf Moduldateien plus Cross-Realm-Korrektur, beide Performanceüberschneidungen erhalten. 274 unterschiedliche gezielte Fälle erfolgreich nach zwei reinen Testfixturekorrekturen; nativer Build und echter r4-Nachweis (251 Designs, acht Formen, 80 Größen, 404 Preisvarianten) grün. Demo, Vorschau, Touch/Zoom, Reset und sämtliche CSS unverändert zur freigegebenen Basis. Kein Livezugriff, keine Profilzuweisung, private Schreibgates weiterhin aus. [Paket, Prüfgrenzen und Wiederaufnahme](docs/handoffs/2026-11-08-r15-modules-performance.md).
 
+## 08.11.2026, 17:05 Berlin – Mika: Live-Stand und offene Kundenmeldungen vor Flugpause gesichert
+
+Touch-/Vorschaufix seit 16:41, begrenztes Produktseiten-Vorladen und Einzelressourcen seit 16:54 veröffentlicht. Aktive Runtime `private/mika-r15-assets-20261108-v1`, Bundle `editor-6b08ecd29481848d.mjs`; keine Produkt-/Datenbank-/Themeänderung. Tatsächliche Shopify-Einbettung geprüft; keine gemessenen Handy-Cachetreffer behaupten. Kunde meldet weiterhin langsame Designs/Motive und SVG-Seitenverhältnisfehler: offen, Diagnose läuft. Neue Desktopleiste, Entfernen des grauen Balkens und sichtbarer Produkt-Zurück-Button sind wegen „Warte noch“ noch nicht umgesetzt. Module separat vorbereitet; keine Produktprofilaktivierung. [Zentrale Wiederaufnahme mit Sicherungen, Links und Prüfgrenzen](docs/handoffs/2026-11-08-current-konfi-before-flight.md).
+
 ## 08.11.2026 – Codex: Reviewkorrektur sichtbarer Bibliothekskarten
 
 PR216: Die Sichtliste wird nicht mehr vor dem Filtern geladener Karten auf zwölf Einträge gekürzt. Nur zwei tatsächliche Abrufe laufen parallel; alle sichtbaren Karten werden berücksichtigt. 5/5 gezielte Queue-/Observertests grün einschließlich15 gleichzeitig sichtbarer Karten und12 bereits geladener Startkarten. Root-Browsernachweis für Einzelmotivabrufe und sofort öffnenden Fontdialog positiv; kein Livezugriff durch diesen Agenten.

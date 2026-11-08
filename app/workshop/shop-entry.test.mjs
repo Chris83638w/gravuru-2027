@@ -680,3 +680,33 @@ test('public template HTTP warmup persists across restart, never renders on star
   assert.deepEqual((await open({format:'json'})).data.warm.manifest.previews,undefined);
  },f=>{setup(f);f.options.publicPreviewPrepare=f.ids;});
 });
+
+test('combined public cache and module guards reject stale gallery targets and disabled logo upload through real HTTP',async t=>{
+ const {default:os}=await import('node:os'),{default:path}=await import('node:path');
+ const directory=fs.mkdtempSync(path.join(os.tmpdir(),'combined-cache-modules-'));t.after(()=>fs.rmSync(directory,{recursive:true,force:true}));
+ await run(async(f,request,{open,token,entry})=>{
+  const source=f.models.get(f.first.localWorkshopRecord),original=JSON.stringify(source.universal.profile);
+  const prepared=await entry.preparePublicDesignPreviews(f.ids);assert.equal(prepared.prepared,3);
+  const oldUrl=prepared.items[0].url;assert.equal((await request(oldUrl)).status,200);
+  const issued=await token(),headers=session(issued.token),before=await request('/api/shop-entry/design-gallery','GET',undefined,headers);
+  assert.equal(before.status,200);const target=before.data.items[0].target;
+  source.universal.moduleProfile.modules.designs=false;source.universal.moduleProfile.revision++;
+  assert.equal((await request(oldUrl)).status,404);
+  const warm=await open({format:'json'});assert.equal(warm.status,200);assert.equal(warm.data.warm.manifest.previews,undefined);
+  const model=await request('/api/shop-entry/model','GET',undefined,headers);assert.equal(model.status,200);assert.equal(model.data.startPreview,null);assert.equal(model.data.model.universal.profile.defaultDesignId,'d1');
+  for(const [route,method,data] of [['design-gallery','GET',undefined],['design-gallery-preview','POST',{target}],['design-switch','POST',{target}]]){
+   const result=await request('/api/shop-entry/'+route,method,data,headers);assert.equal(result.status,403,route);assert.equal(result.data.error.code,'shop_gallery_disabled');
+  }
+  const input={productId:f.first.localWorkshopRecord,productRevision:3,name:'synthetic.svg',original:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect width="20" height="20"/></svg>').toString('base64')};
+  const denied=await request('/api/shop-entry/customer-vector-logo/preview','POST',input,headers);
+  assert.equal(denied.status,422);assert.equal(denied.data.error.code,'customer_vector_logo');assert.match(denied.data.error.message,/nicht freigegeben/);
+  assert.deepEqual(await entry.preparePublicDesignPreviews(f.ids),{prepared:0,items:[]});assert.equal(fs.readdirSync(directory).length,3);
+  assert.equal(JSON.stringify(source.universal.profile),original);assert.equal(source.universal.logo.extraPriceCents,1299);
+ },f=>{
+  f.options.publicPreviewDirectory=directory;
+  const model=f.models.get(f.first.localWorkshopRecord),binding=f.bindings.get(f.ids.shopifyProductId+'|'+f.ids.shopifyVariantId);
+  model.galleryCategoryIds=['linie-edelstahl','familie-fixture'];
+  model.universal={basePriceCents:binding.unitCents,extraMotifCents:169,motifCharge:'additional',photo:{enabled:false},logo:{enabled:true,vectorUpload:true,extraPriceCents:1299},familyFormats:{fixedSize:'120x80'},moduleProfile:{schema:MODULE_PROFILE_SCHEMA,id:'combined-review',revision:1,modules:{options:true,designs:true,text:true,motifs:true,photo:false,logo:false,colors:false}},profile:{kind:'universal-product',id:'http-template',geometry:{shape:'rect',width:120,height:80,holes:[]},material:{kind:'steel'},processing:{profileId:'steel-engraving'},optionGroups:[],defaultDesignId:'d1',designs:Array.from({length:5},(_,i)=>({id:'d'+(i+1),objects:[]}))},localResources:{fonts:{},motifs:[],photoExamples:[]}};
+  binding.options={};f.store.workshop.galleryModel=id=>structuredClone(f.models.get(id));f.store.registry.listActive=()=>[structuredClone(binding)];
+ });
+});

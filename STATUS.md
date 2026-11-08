@@ -1,3 +1,7 @@
+## 08.11.2026 – Mika: Modulregeln und Vorschaucache zusammen geprüft
+
+Integrationscommit `f4c370fc` unabhängig in eigenem Reviewbaum geprüft, keine Produktionsdatei verändert. Zwei neue Regressionen belegen Designs aus mit aktivem Cache einschließlich Alt-URL/Token-Ablehnung und gesperrten SVG-Upload über echten lokalen HTTP-Handler. 22 unterschiedliche gezielte Tests grün; native Preise, Logo 12,99 € und historische Verträge bleiben strikt. Root-/Review-Produktionsbytes verglichen. Browser-/Liveabnahme bleibt separat. [Bericht, Tests und exakte Pins](docs/handoffs/2026-11-08-r15-modules-cache-combination-review.md).
+
 ## 08.11.2026 – Codex/Mika: Modulpatch auf aktuellem R15 nach Flugpause vorbereitet
 
 Eigener Branch `dev/mika-r15-modules-current-20261108` auf `c7710dec`/Livecode `e9c36ce`: ausschließlich PR217-App-Delta aus `61fcb3f`, konfliktfrei integriert. Zwölf Laufzeitdateien, 69 geschützte Dateien inklusive 36 CSS, aktueller Zentrierung, SVG-Viewportworker und Vorladen bytegleich. 274 unterschiedliche gezielte Fälle erfolgreich geprüft: erster paralleler Lauf 273/274; Windows-EPERM bei gemeinsamem Testbuild, betroffene Datei allein danach17/17 grün, kein Produktcode deswegen geändert. Reale r4-Bank251Designs/80Größen/404Preise für beide Logo-Profile unverändert; Build154Module/16Styles grün. PR214 ausschließlich als API-/Schemakontrakt gelesen. Kein Main-Merge, Live-/Shopifyzugriff oder produktive Profilzuweisung. [Übergabe, Paket und konkrete Root-Abnahme](docs/handoffs/2026-11-08-r15-modules-current.md).

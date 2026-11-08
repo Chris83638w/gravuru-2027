@@ -263,6 +263,7 @@ test('undo and redo stay enabled from native history even when a feedback contro
 test('native fullscreen receives its real controls, and closing restores their demo homes',async t => {
   const env = runtime(t), f = editorFixture(env), api = await installMobileDemo(f.el);
   const demoParents = new Map([...f.originalParents.keys()].map(n => [n,n.parentNode]));
+  const headerOrder = [...f.r.querySelector('.md-top').childNodes];
   api.open('menu');
   for (let i = 0; i < 2; i++) {
     assert.equal(f.full.showModal('native-argument'),'native-fullscreen-result');
@@ -271,6 +272,7 @@ test('native fullscreen receives its real controls, and closing restores their d
     f.zoomSlider.dispatchEvent({type:'input'});
     f.full.close(); env.flush(); assert.equal(f.el.getAttribute('data-demo-fullscreen'),null);
     for (const [node,parent] of demoParents) assert.equal(node.parentNode,parent,'same native node returns to its demo home');
+    assert.deepEqual(f.r.querySelector('.md-top').childNodes,headerOrder,'fullscreen return retains product button and logo order');
   }
   assert.equal(f.r.querySelectorAll('[data-photo-object-size]').length,1);
   assert.deepEqual(f.el.state,f.original);
@@ -280,7 +282,9 @@ for (const width of [390,1440]) {
   test(`large preview below the product reuses native fullscreen and returns safely at ${width}px`,async t => {
     const env=runtime(t),f=editorFixture(env);env.win.innerWidth=width;
     const api=await installMobileDemo(f.el),action=f.r.querySelector('.md-large-preview');
-    assert.equal(action.textContent,'Große Vorschau');
+    assert.equal(action.getAttribute('aria-label'),'Produkt vergrößern');
+    assert.equal(action.textContent,'');
+    assert.equal(f.r.querySelector('.md-plus').textContent,'+');
     assert.equal(action.closest('.ux-preview'),f.stage.parentNode);
     assert.equal(action.getAttribute('aria-haspopup'),'dialog');
     for (const panel of ['menu','text','motif']) {

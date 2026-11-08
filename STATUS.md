@@ -24,6 +24,12 @@ Drei Unteragenten haben Modulvertrag, Verwaltung/Produktgruppen und Laufzeit-/Wa
 - 67/67 gezielte Tests grün: echter lokaler Kundenclient und HTTP-Handoff bis erneut signiertem R15-Start, Bearbeitung derselben Position, Legacy-Kompatibilität, Ablehnung fremder Darstellungswerte sowie bisherige Rechte-/Bestellprüfungen. Diffprüfung sauber.
 - Drei-Datei-Paket mit Vorher-/Nachher-SHAs und Rücknahme vorbereitet. Reale Browser-/Shopify-Abnahme übernimmt Root. Vorhandene alte Warenkorb-Links bleiben unverändert; der separate Verdacht auf verlorene flüchtige Handoffs wird nicht mit diesem Fix vermischt.
 - [Übergabe, Prüfgrenzen und Einzeldatei-Rollout](docs/handoffs/2026-11-08-cart-edit-r15.md). Nächster Schritt: Root-Review, anschließend neuer R15-Warenkorbtest; keine pauschale Runtimekopie, damit #204/#205/#206 erhalten bleiben.
+## 08.11.2026 – Codex: erneute Elementauswahl nach freiem Touch
+
+- Isolierter Branch `dev/mika-r15-pointer-reselect-20261108`, Basis `7b8bc287`; eine Laufzeitdatei `view-zoom.mjs`, kein Layout-/Preis-/Designumbau.
+- Nach außerhalb des Hosts beendeter Berührung bleiben keine verwaisten Pointer im Ansichtsregler. Eigene aktive Capture-Übergaben und native Ereignisse behalten ihr Verhalten; BFCache-Rückkehr meldet die begrenzten Beobachter einmalig wieder an.
+- Regression vor Fix rot, danach 29/29 gezielte Adapter-/Modelltests grün; Build 151 Module/16 Styles und Diffprüfung grün. Vorher-SHA exakt Live-Manifest; Sicherung und Einzeldateipaket vorhanden.
+- Kein Livezugriff durch Unteragent. Root prüft und veröffentlicht nur den Einzelpatch; reale Handy-/Maus-Nachprüfung noch offen. [Übergabe](docs/handoffs/2026-11-08-r15-pointer-reselect.md).
 
 ## 08.11.2026 – Codex: Warenkorb-PNG bindet geprüfte Uploads ein
 

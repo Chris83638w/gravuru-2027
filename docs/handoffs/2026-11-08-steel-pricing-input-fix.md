@@ -40,7 +40,11 @@ Fehlende Preisverträge und ungültige Referenzen lassen die Function-Ausführun
 
 **Stand nach Veröffentlichung am 08.11.2026:** Der Hauptagent hat die vollständige App-Version `1199363391489` unter `gravuru-2027-steel-pricing-input-20261108-v2` veröffentlicht und aktiv zurückgelesen. Vorher wurden alle 8 Remote-Module verglichen: 7 unverändert, in der Function ausschließlich Binary-Metadaten und der genehmigte Wechsel `jsonValue → value`. Die 21 Theme-Dateien, Scopes, URLs und Proxy-Einstellungen sind unverändert. Die [Prüfquittung](../reviews/2026-11-08-steel-pricing-input/app-preservation-receipt.json) entstand vor der Veröffentlichung und vermerkt deshalb `released:false`.
 
-Die anschließende gesicherte Metafeld-Reparatur führte genau eine Mutation aus. Readback: 2.318 Bytes, erwarteter SHA `6b0e4d19ba2f50e638637d03c6e8c0796f93f09d8d362bcf453b495d04a0eb46`. Die private Original-Sicherung wurde vor dem Schreiben geprüft; [Reparaturquittung](../reviews/2026-11-08-steel-pricing-input/metafield-repair-receipt.json). Echte neue Warenkorbfälle mit Größen, Befestigung und Logo prüft der Hauptagent anschließend. Bis deren Nachweis gilt die Veröffentlichung allein nicht als Warenkorbabnahme.
+Die anschließende gesicherte Metafeld-Reparatur führte genau eine Mutation aus. Readback: 2.318 Bytes, erwarteter SHA `6b0e4d19ba2f50e638637d03c6e8c0796f93f09d8d362bcf453b495d04a0eb46`. Die private Original-Sicherung wurde vor dem Schreiben geprüft; [Reparaturquittung](../reviews/2026-11-08-steel-pricing-input/metafield-repair-receipt.json).
+
+**Echte Warenkorbabnahme anschließend bestanden:** Der Hauptagent prüfte drei neue synthetische Positionen: AB 12 × 8 cm / K00 für 19,99 €, RE 15 × 10 cm / KGL für 26,98 € und Retro 2 9 × 6 cm / B02 einschließlich SVG-Logo für 30,47 €. Warenkorbsumme: 77,44 €. Menge 2 beim Logo-Artikel ergab 60,94 € für die Position und 107,91 € gesamt. Nach Rückkehr auf Menge 1 und Neuladen blieb die Summe korrekt bei 77,44 €. Alle drei Testpositionen wurden anschließend entfernt; es wurde keine Bestellung bezahlt. Der freigegebene Konfi-Aufbau blieb unverändert.
+
+Der [strukturierte Abnahmenachweis](../reviews/2026-11-08-steel-pricing-input/cart-retest-result.json) enthält nur diese Testdaten. Die vollständige Warenkorbübergabe wird im [Hauptbericht / PR #196](https://github.com/Chris83638w/gravuru-2027/pull/196) geführt. Lokale Browserbelege: `outputs/steel-shopify-20261108/cart-retest-final.txt`, `cart-retest-reload.txt`, `cart-retest-quantity-two.txt` und `cart-retest-cleanup.txt`. Diese drei echten Warenkorbfälle heben die oben dokumentierte Leistungsgrenze bei 20 unterschiedlichen Positionen nicht auf.
 
 Aktive Baseline `gravuru-2027-issue139-pricing-20261102-v1`,ID1191284113409. Zieltag `gravuru-2027-steel-pricing-input-20261108-v2`. Bestehende FunctionUID3194be17-ee65-e144-e1da-65b8d1e1720183f0f9ef, ThemeUIDa4d6506c-8e89-ca7d-f5b1-1a0d1e00a1f9bb93e76a. Keine Cart-Transform-Neuanlage.
 
@@ -48,7 +52,7 @@ Aktive Baseline `gravuru-2027-issue139-pricing-20261102-v1`,ID1191284113409. Zie
 2. Vollständiges Projekt mit bestehender CLI4.9.0 nur `--no-release --no-build` unter Zieltag hochladen. Keine Function-only-Version freigeben.
 3. `stage-steel-pricing-preserved.mjs --mode verify-complete --cli <CLI-Paketpfad> --out <neuer Ordner>` liest aktive Version/Kandidaten. Alle7anderenModule müssen vollständig identisch sein. In der Function nur Binarymetadata und exakt ein Querywort `jsonValue→value` erlaubt. Keine Scopes/URL/Proxy/Themeänderung.
 4. Parent prüft Readback, veröffentlicht vollständige kompatible App und führt Metafeld-CAS aus. Apply verlangt benannten Functionrelease und privaten Backupordner. Vor exakt einer Mutation: Originalbytesicherung0600, Readback, frischer compareDigest. Keine automatische Wiederholung bei Konflikt.
-5. Neue echte Warenkorbfälle mit Größen/Befestigung/Logo sowie Menge prüfen. Bis dahin keine Live-Erfolgsaussage.
+5. Neue echte Warenkorbfälle mit Größen/Befestigung/Logo sowie Menge prüfen. Am 08.11.2026 für die drei oben dokumentierten Fälle, Mengenänderung und Neuladen bestanden.
 
 Ein früherer manifest-only-Stagingversuch wurde wegen fehlender Assetbytes abgewiesen; keine Version entstand. Der Weg ist jetzt gesperrt. Nur vollständig rekonstruiertes CLI-Bundle verwenden.
 

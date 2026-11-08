@@ -4,6 +4,9 @@ Auf isolierter Basis `587a395`: gemeinsamer nativer Startmotiv-Resolver, sechs e
 ## 08.11.2026 – Mika: SVG-Viewportkorrektur lokal geprüft
 
 Ein Python-Worker akzeptiert jetzt gültige abweichende SVG-Außenmaße/ViewBox und Ausrichtungen durch korrekte Normalisierung. Alle bisher akzeptierten v1-Ausgaben bleiben bytegleich. 29/29 Kern-/Medien-/Preis-/Historientests plus1/1 unabhängiger Renderer-Vergleich bestanden; kein Livezugriff. Kundendatei noch nicht vorhanden. [Übergabe und Rücknahme](docs/handoffs/2026-11-08-svg-viewport-import.md).
+## 08.11.2026 – Mika: kompakte R15-Aktionen getrennt vorbereitet
+
+Im freigegebenen UI-Umfang drei Quelldateien auf587a395: native Desktopaktionen unten gruppiert, volle Vorschauzeile entfernt, grauer44pxPfeil am Produkt, sichtbarer Produkt-Rückweg und Schließen der Vollansicht per freiem Doppeltipp. 57/57 gezielte Demo-/Touch-/Zoom-/Toolbar-Tests grün; Build grün, unabhängiger enger Review ohne Blocker. Keine CSS-Datei/Preis-/Produkt-/Moduländerung und kein Livezugriff durch Agent. [Übergabe, Einzelfilepaket und Browsergrenzen](docs/handoffs/2026-11-08-r15-compact-controls.md).
 
 ## 08.11.2026, 17:05 Berlin – Mika: Live-Stand und offene Kundenmeldungen vor Flugpause gesichert
 

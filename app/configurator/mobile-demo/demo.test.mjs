@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {installMobileDemo,keyboardViewport} from './demo.mjs';
 import {installPrioShopShell} from './shop-shell.mjs';
+import {freeFullscreenSurface} from './compact-controls.mjs';
 
 // The real opt-in adapter runs against a small DOM port. Rendering and native
 // editor behaviour are verified separately in the browser; these tests cover
@@ -162,6 +163,49 @@ function editorFixture(env, {uploadHidden = false} = {}) {
   env.cleanups.push(() => el.mobileDemo?.dispose());
   return {el,r,shell,editor,stage,toolbar,heading,panels,nativeTabs,field,photoPosition,photoSize,photoSlider,zoom,zoomSlider,reset,dock,price,finish,quantity,full,accountDialog,accountBody,fullShow,show,reveal,sync,feedbackUndo,originalParents,originalChildren,original,calls,nodes};
 }
+
+test('compact desktop tools forward the existing actions and restore without changing design or checkout',async t=>{
+ const env=runtime(t),f=editorFixture(env);env.win.innerWidth=1440;const api=await installMobileDemo(f.el);env.flush();
+ const normal=f.r.querySelector('.md-controls .md-compact-tools'),full=f.full.querySelector('.md-compact-tools');
+ assert.ok(normal&&full);assert.equal(normal.querySelector('[data-compact-action=undo]').disabled,true);
+ f.el.history.push({});f.el.sync();env.flush();assert.equal(normal.querySelector('[data-compact-action=undo]').disabled,false);
+ for(const key of ['undo','help','contents']){const count=f.calls.filter(c=>c[0]===key).length;normal.querySelector(`[data-compact-action=${key}]`).click();assert.equal(f.calls.filter(c=>c[0]===key).length,count+1);}
+ normal.querySelector('[data-compact-action=reset]').click();assert.ok(f.calls.some(c=>c[0]==='reset-confirmation'));
+ normal.querySelector('[data-compact-action=enlarge]').click();assert.equal(f.full.open,true);assert.equal(f.full.contains(f.finish),true);
+ full.querySelector('[data-compact-action=close]').click();env.flush();assert.equal(f.full.open,false);assert.equal(f.finish.parentNode,f.r.querySelector('.md-bar'));
+ assert.deepEqual(f.el.state,f.original);api.dispose();assert.equal(f.r.querySelector('.md-compact-tools'),null);
+});
+
+test('native fullscreen double-tap closes free background, but drag, multitouch and closed dialogs do not',async t=>{
+ const env=runtime(t),f=editorFixture(env);await installMobileDemo(f.el);
+ const event=(type,id,x,timeStamp)=>f.full.dispatchEvent({type,pointerId:id,pointerType:'touch',clientX:x,clientY:10,timeStamp});
+ f.full.showModal();event('pointerdown',1,5,10);event('pointerup',1,5,20);assert.equal(f.full.open,true);event('pointerdown',2,5,100);event('pointerup',2,5,120);assert.equal(f.full.open,false);
+ f.full.showModal();event('pointerdown',3,5,500);event('pointermove',3,30,510);event('pointermove',3,5,520);event('pointerup',3,5,530);event('pointerdown',4,5,600);event('pointerup',4,5,620);assert.equal(f.full.open,true,'drag returning to its start is not a tap');
+ event('pointerdown',5,5,700);event('pointerdown',6,5,710);event('pointerup',5,5,720);event('pointerup',6,5,730);event('pointerdown',7,5,750);event('pointerup',7,5,760);assert.equal(f.full.open,true,'multitouch clears the double-tap candidate');
+ f.full.dispatchEvent({type:'dblclick',clientX:5,clientY:10});assert.equal(f.full.open,false);
+ f.full.dispatchEvent({type:'dblclick',clientX:5,clientY:10});assert.equal(f.full.open,false);
+});
+
+test('only free native fullscreen background qualifies, never product, selected objects or controls',()=>{
+ const full={open:true,contains:()=>true,querySelector:()=>({getBoundingClientRect:()=>({left:50,right:200,top:50,bottom:150})})};
+ const background={closest:selector=>selector.includes('.stage-wrap')?{}:null};
+ assert.equal(freeFullscreenSurface({target:background,clientX:10,clientY:10},full),true);
+ assert.equal(freeFullscreenSurface({target:background,clientX:100,clientY:100},full),false,'product rectangle is protected even with retargeted events');
+ for(const name of ['button','input','label','[data-object]','[data-ux-handle]','.plate-holder','.scene','.fk-buy-dock']){
+   const target={closest:selector=>selector.split(',').includes(name)?{}:null};assert.equal(freeFullscreenSurface({target,clientX:10,clientY:10},full),false,name);
+ }
+ full.open=false;assert.equal(freeFullscreenSurface({target:background,clientX:10,clientY:10},full),false);
+});
+
+test('a fresh primary touch clears a lost SVG pointer without treating a second finger as a tap',async t=>{
+ const env=runtime(t),f=editorFixture(env);await installMobileDemo(f.el);f.full.showModal();
+ const send=(type,pointerId,isPrimary,timeStamp)=>f.full.dispatchEvent({type,pointerId,isPrimary,pointerType:'touch',clientX:5,clientY:10,timeStamp});
+ send('pointerdown',10,true,10); // Native SVG replacement loses every terminating event.
+ send('pointerdown',11,true,100);send('pointerup',11,true,120);assert.equal(f.full.open,true);
+ send('pointerdown',12,true,200);send('pointerup',12,true,220);assert.equal(f.full.open,false);
+ f.full.showModal();send('pointerdown',20,true,300);send('pointerdown',21,false,310);send('pointerup',20,true,330);send('pointerup',21,false,340);
+ send('pointerdown',22,true,400);send('pointerup',22,true,420);assert.equal(f.full.open,true);
+});
 
 test('opt-in and native readiness are required; installation does not touch another editor',async t => {
   const env = runtime(t), f = editorFixture(env), other = editorFixture(env);

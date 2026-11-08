@@ -1,0 +1,26 @@
+{
+  "archive": "C:\\Users\\Mikail Erdem\\Documents\\Codex\\2026-11-04\\lie\\outputs\\r15-controls-20261108\\r15-controls-patch.tar.gz",
+  "bytes": 24458,
+  "sha256": "1988d7beae4ff47c4660232d359dc9842cbe9a9ec67fd26cb9995856e7b572a4",
+  "manifestSha256": "4604175de13a6eb5eae4cc53af9608fb45d348a8c500f376191205a8722c8034",
+  "files": [
+    {
+      "path": "app/configurator/mobile-demo/demo.mjs",
+      "beforeSha256": "2b114442ee6fd43f3f215862f579fa0680bc98f2f7f6f07337ffbd2dd6a19992",
+      "afterSha256": "4227eb43f63d384797c2ba7fe68d3f5797eddae3fa435446fd6e4fcfd7cb9308",
+      "bytes": 24777
+    },
+    {
+      "path": "app/configurator/mobile-demo/preview-action.mjs",
+      "beforeSha256": "fe30da3308221862f0289aa7ce2f4967284a180affd050c47887061c28f57cd2",
+      "afterSha256": "47ddf5856386d760d379ca16b95abf1f6f0ddb5d5157593dcc45630e12d88274",
+      "bytes": 5802
+    },
+    {
+      "path": "app/configurator/mobile-demo/compact-controls.mjs",
+      "beforeSha256": null,
+      "afterSha256": "bbf4c0eee5c4a0a5497601f02ab7a2f2ccd86cfd9f627a0f136a8c0d70162c51",
+      "bytes": 8448
+    }
+  ]
+}

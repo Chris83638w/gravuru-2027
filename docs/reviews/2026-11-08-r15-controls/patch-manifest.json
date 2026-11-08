@@ -1,0 +1,184 @@
+{
+  "schema": "gravuru-r15-compact-controls/v1",
+  "base": "587a395841f3a7ff8ab4a1a7028e9505defad6ae",
+  "files": [
+    {
+      "path": "app/configurator/mobile-demo/assets.mjs",
+      "beforeSha256": "986b29da25802cb87a31bddd69f46a789bcb32cfbe2d1afa7682fc6c0e2c3a51",
+      "afterSha256": "37d74852e564b96e34c0ddb37e20a10c522986f37b826cecef285ac9320dcdfc",
+      "bytes": 659
+    },
+    {
+      "path": "app/configurator/mobile-demo/demo.mjs",
+      "beforeSha256": "2b114442ee6fd43f3f215862f579fa0680bc98f2f7f6f07337ffbd2dd6a19992",
+      "afterSha256": "4227eb43f63d384797c2ba7fe68d3f5797eddae3fa435446fd6e4fcfd7cb9308",
+      "bytes": 24777
+    },
+    {
+      "path": "app/configurator/mobile-demo/preview-action.mjs",
+      "beforeSha256": "fe30da3308221862f0289aa7ce2f4967284a180affd050c47887061c28f57cd2",
+      "afterSha256": "47ddf5856386d760d379ca16b95abf1f6f0ddb5d5157593dcc45630e12d88274",
+      "bytes": 5802
+    },
+    {
+      "path": "app/configurator/mobile-demo/compact-controls.mjs",
+      "beforeSha256": null,
+      "afterSha256": "bbf4c0eee5c4a0a5497601f02ab7a2f2ccd86cfd9f627a0f136a8c0d70162c51",
+      "bytes": 8448
+    }
+  ],
+  "cssUnchanged": [
+    {
+      "path": "app/configurator/mobile-demo/demo.css",
+      "sha256": "86ad576eabdc6bc532637af41a0a80812380a9f56d22f6d76a91457f0214439b"
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-scene.css",
+      "sha256": "597d501ce2cf1b235a9b0cdc956a1a6336a9fe5077d74eb7327c395401ba263a"
+    },
+    {
+      "path": "app/configurator/variant-m/completion.css",
+      "sha256": "10d9912e1d99d1bc0530f50537cda909f4016fcf4da9f8e245a7f07e18c1b572"
+    },
+    {
+      "path": "app/configurator/variant-m/customer-tools.css",
+      "sha256": "280c4fe50b5c70ff15544d74168ba47a4495e0afa273bfd1638d77bbecbf90ac"
+    },
+    {
+      "path": "app/configurator/variant-m/form-panels.css",
+      "sha256": "d2134fbc85fa118d1e1e1bb2bec7453f397f999219c969d9c13466d3b304b781"
+    },
+    {
+      "path": "app/configurator/variant-m/layout.css",
+      "sha256": "4720185f58f85f3a07f901a914764708173625834eecae7bf1e0ab0003294b0b"
+    },
+    {
+      "path": "app/configurator/variant-m/mobile.css",
+      "sha256": "45a96ce87b6edfb121108b901d5f1685b789a901e8418fd52fadc5359c0c8807"
+    },
+    {
+      "path": "app/configurator/variant-m/modern-layout.css",
+      "sha256": "54105beedbe4884eb02183d04e53b3a63f6b2d5d1322a1599f1b8d91c2bff1b6"
+    },
+    {
+      "path": "app/configurator/variant-m/modern-navigation.css",
+      "sha256": "6b8457738d8054d62962f40f564a8487325079454a2fdd208bdceed7ee75690f"
+    },
+    {
+      "path": "app/configurator/variant-m/motif-tile-fit.css",
+      "sha256": "3e6b7a90615e305e5feef7b5753949abafb8153cb90625bf5a5019b8d8ecdd4f"
+    },
+    {
+      "path": "app/configurator/variant-m/neutral-theme.css",
+      "sha256": "664c3df6c34036d12704e0b0efca4bd82f9be9d2aaf6a28cc663bc92fdd74ade"
+    },
+    {
+      "path": "app/configurator/variant-m/product-design-gallery.css",
+      "sha256": "680a886ac1262a563c84833bccdb02b781a80f39d792f5d2a73718220b8c2362"
+    },
+    {
+      "path": "app/configurator/variant-m/refinements.css",
+      "sha256": "1b425f5f872e7a571b6a77e489d695ed71c058680c7026eac616100e5bbf1ccf"
+    },
+    {
+      "path": "app/configurator/variant-m/usability.css",
+      "sha256": "976c809d6495286661487a13db18a35ed62830dfb7b44fab652d6f82451123be"
+    },
+    {
+      "path": "app/configurator/variant-m/ux-details.css",
+      "sha256": "14236ee67279be7a92fd6c8c99f50a5ad0f8284b52c00708d5ac2a36e682efd1"
+    },
+    {
+      "path": "app/configurator/variant-m/ux.css",
+      "sha256": "85a9345eaf38cef203954b965e183b592165e7a9eab6cb732d0d88e7d6f32582"
+    },
+    {
+      "path": "app/configurator/variant-m/view-zoom.css",
+      "sha256": "7336130365733e2ca03e5873a3fbc557cb11d2111ac634a2109685b2926ab723"
+    },
+    {
+      "path": "app/configurator/variant-m/workflow.css",
+      "sha256": "947fd37483750f06d7701b06aa30eab4095d381e202bad76f3b76bef9cafa677"
+    },
+    {
+      "path": "app/workshop/ui/acryl-gallery.css",
+      "sha256": "49d20e9c3a22961bc11fab094529befe576e383f3e7e4afb15422768008a8e8a"
+    },
+    {
+      "path": "app/workshop/ui/catalog-structure.css",
+      "sha256": "d0f6e1a45ec5903b9da1fb7b6abfc2b2037f7aa8ef0a3369a17ed15c4adfe06d"
+    },
+    {
+      "path": "app/workshop/ui/catalog.css",
+      "sha256": "c4ee6355c1e0d7e0324d5524597a6417dc0b87337d7301324a1929bd3d55297f"
+    },
+    {
+      "path": "app/workshop/ui/contours.css",
+      "sha256": "3994c41afd15e89b9447e9b8ea7cf5bddf620fd4321d8bc8c9585690e6972b96"
+    },
+    {
+      "path": "app/workshop/ui/customer-preview.css",
+      "sha256": "f61081ec4abf25b378fcbdf04b9486205a9facc255b8bbb606fc636eb62c6490"
+    },
+    {
+      "path": "app/workshop/ui/dashboard.css",
+      "sha256": "26133357bf241ec783684b7682a578f28bafb8e3bca73fab25382bef702f6a35"
+    },
+    {
+      "path": "app/workshop/ui/design-dashboard.css",
+      "sha256": "3491017150831e555bc4fe807ee8505bd6b36d454457fb4b8a931fdb818c4a49"
+    },
+    {
+      "path": "app/workshop/ui/editor.css",
+      "sha256": "865103fd587649767a783117549cd950a8d34fcde5906d3b8d18d5a8a3ba328f"
+    },
+    {
+      "path": "app/workshop/ui/form-customer.css",
+      "sha256": "524040344cbac3a698a4c8dd6146ba2dc9b10560066e34f6389b3a355d62c6e5"
+    },
+    {
+      "path": "app/workshop/ui/form-product.css",
+      "sha256": "25764b2d2204fcfa96a26f04537acd723a6e7d15b2b7b9ed7f891c69b606b3fd"
+    },
+    {
+      "path": "app/workshop/ui/form-variants.css",
+      "sha256": "ec1d48d7625457c474942e8ad3f16150da618b772edc80450f280c2d4c413980"
+    },
+    {
+      "path": "app/workshop/ui/konfis.css",
+      "sha256": "abe154f148c6d8baa99c697dc312d20533d572aa7118926a6be282b84bdd8c9e"
+    },
+    {
+      "path": "app/workshop/ui/motif-searches.css",
+      "sha256": "3e569e2247253b38d550925ef6e38fb31d2309eda55470d842f56a87b8d147d7"
+    },
+    {
+      "path": "app/workshop/ui/production-profiles.css",
+      "sha256": "9975c9ae63350445228a8cd4d4580bc87b5262c60bef285787b8d1c778eb0718"
+    },
+    {
+      "path": "app/workshop/ui/review-snapshots.css",
+      "sha256": "4b22b50893307852c5105166a916893aea2e9f3d1239e55357c13d3e24ef3e39"
+    },
+    {
+      "path": "app/workshop/ui/revision-compare.css",
+      "sha256": "b1fb7a7673c75b69986971d414ba146077b98957907e5dcd7b918d77c074e791"
+    },
+    {
+      "path": "app/workshop/ui/style.css",
+      "sha256": "04ce55cc1091cbcb24c5cbf2a21648a13def1dc862e051a05dd828a6684eae74"
+    },
+    {
+      "path": "app/workshop/ui/workshop-shell.css",
+      "sha256": "e725f2f3f3989a3f716a5fbbf5d094e72b423ed6b003db953b3d170c654a6499"
+    }
+  ],
+  "tests": {
+    "passed": 59,
+    "files": 4
+  },
+  "modulesActivated": false,
+  "productWrites": 0,
+  "shopifyWrites": 0,
+  "serverWrites": 0
+}

@@ -1,7 +1,7 @@
 // Private synchronous reads over EXISTING server instances. No database constructor,
 // migration, binding write, Shopify request, price formula or material conversion.
 import {isDeepStrictEqual} from 'node:util';
-import {immutableBindingReadSnapshot} from './shop-product-binding-read-snapshot.mjs';
+import {immutableBindingReadSnapshot,immutableBindingProductSnapshot,isBindingProductSnapshot} from './shop-product-binding-read-snapshot.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
 
 const object = v => v !== null && typeof v === 'object' && !Array.isArray(v) && [Object.prototype, null].includes(Object.getPrototypeOf(v));
@@ -50,10 +50,13 @@ export function createShopBindingReadAdapter({storeId, tenantId, shopDomain, wor
     fail('shop_binding_adapter_instances', 'Vorhandene Repository-, Bindungs- und Profilinstanzen fehlen.');
   const documents = new WeakMap();
   let bindingRead=null;
-  function withBindingReadSnapshot(read){
+  function withBindingReadSnapshot(read,{readProductStamp,reuseSnapshot=false}={}){
     scope();
-    if(bindingRead||typeof read!=='function')fail('shop_binding_snapshot_scope','Only one synchronous binding read phase is allowed.');
-    bindingRead={rows:null,readiness:new Map()};
+    if(typeof read!=='function'||readProductStamp!==undefined&&typeof readProductStamp!=='function')fail('shop_binding_snapshot_scope','A synchronous binding read phase is required.');
+    // Nested native validation shares the caller's still-locked phase. A new
+    // source guard must never replace the guard of an existing phase.
+    if(bindingRead){if(!reuseSnapshot||readProductStamp&&readProductStamp!==bindingRead.readProductStamp)fail('shop_binding_snapshot_scope','The binding read source changed.');const value=read();if(value?.then instanceof Function)fail('shop_binding_adapter_async','A binding read phase must be synchronous.');return value;}
+    bindingRead={rows:null,readiness:new Map(),products:new Map(),prepared:new WeakMap(),readProductStamp};
     try{const value=read();if(value&&typeof value.then==='function')fail('shop_binding_adapter_async','A binding read phase must be synchronous.');return value;}finally{bindingRead=null;}
   }
   function scope() {
@@ -67,6 +70,8 @@ export function createShopBindingReadAdapter({storeId, tenantId, shopDomain, wor
   function getCurrentProduct(id) {
     scope();
     if (typeof id !== 'string' || !configId.test(id)) fail('shop_binding_product', 'Eine gespeicherte Produkt-ID ist erforderlich.');
+    const stamp=bindingRead?.readProductStamp?.(id),cached=bindingRead?.products.get(id);
+    if(cached){if(!isDeepStrictEqual(stamp,cached.stamp))fail('shop_binding_revision','Der Produktstand wurde innerhalb der gesperrten Prüfung geändert.',409);return cached.record;}
     let value;
     try { value = sync(repository, 'get', id); }
     catch (error) {
@@ -76,18 +81,25 @@ export function createShopBindingReadAdapter({storeId, tenantId, shopDomain, wor
     if (!object(value) || value.id !== id || !positive(value.revision) || !object(value.document) ||
         (own(value, 'tenantId') && value.tenantId !== tenantId)) fail('shop_binding_product', 'Produktbeleg oder fester Stand ist ungültig.');
     const result = copy(value);
-    documents.set(result.document, copy(result));
+    if(stamp!==undefined){
+      // The stamp is read from the exact locked binding database, not browser
+      // state. Recheck after repository access in case a local callback wrote.
+      if(!isDeepStrictEqual(stamp,bindingRead.readProductStamp(id)))fail('shop_binding_revision','Der Produktstand wurde während des Lesens geändert.',409);
+      immutableBindingProductSnapshot(result);bindingRead.products.set(id,{stamp,record:result});
+    }
+    documents.set(result.document, isBindingProductSnapshot(result)?result:copy(result));
     return result;
   }
   function currentRecord(value) {
     const result = getCurrentProduct(typeof value === 'string' ? value : value?.id);
-    if (typeof value !== 'string' && (!object(value) || !isDeepStrictEqual(result, value)))
+    if (typeof value !== 'string' && (!object(value) || result!==value&&!isDeepStrictEqual(result, value)))
       fail('shop_binding_revision', 'Der übergebene Produktbeleg entspricht nicht dem aktuellen gespeicherten Stand.', 409);
     return result;
   }
   function prepared(record) {
     if (!schemas.has(record.document.schema)) fail('shop_binding_product_schema', 'Dieser Produktvertrag wird nicht unterstützt.');
-    try { return prepareShopProduct(copy(record)); }
+    const cached=bindingRead?.prepared.get(record);if(cached)return cached;
+    try {const value=prepareShopProduct(record);if(isBindingProductSnapshot(record))bindingRead?.prepared.set(record,value);return value;}
     catch { fail('shop_binding_source_invalid', 'Der gespeicherte Produktvertrag kann noch nicht für den Shop vorbereitet werden.'); }
   }
   function resolveSelection(record, selected) {

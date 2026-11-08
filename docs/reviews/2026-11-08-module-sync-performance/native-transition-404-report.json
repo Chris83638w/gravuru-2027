@@ -1,0 +1,20 @@
+{
+  "schema": "gravuru-operator-native-404-transition/v1",
+  "passed": true,
+  "candidateSha256": "2e74548aa7211a2f5546af428e1d27d9f00f12181490356633e3cd109cb179c0",
+  "variants": 404,
+  "designs": 251,
+  "nativeRevisionTransition": "1->2 (isolated same native APIs as live3->4)",
+  "baselineMs": 2050.4171,
+  "rollbackMs": 28296.2405,
+  "activationMs": 29027.035900000003,
+  "replayMs": 6374.428800000009,
+  "oldBindingsUnchanged": 404,
+  "oldPriceContractsUnchanged": 404,
+  "replayCreatedBindings": 0,
+  "replayChangedAssignments": 0,
+  "externalPlansPreparedBeforeTransaction": true,
+  "maxEvidenceAgeMs": 60000,
+  "liveWrites": 0,
+  "shopifyWrites": 0
+}

@@ -50,3 +50,38 @@ Browser-/Theme-Vorschau auf dem echten Produkt durch Parent noch ausstehend. Nac
 Rollback: exakten bisherigen Custom-Liquid-Block aus dem Backup wiederherstellen; der R15-Opt-in entfällt. Geändertes Servermodul ebenfalls auf die c8318af-Fassung zurücknehmen. Produkt-/Varianten-/Preis-/Bestelldaten werden von diesem Patch nicht berührt.
 
 Offizielle Shopify-Belege, gelesen08.11.2026: [High-variant products](https://shopify.dev/docs/storefronts/themes/product-merchandising/variants/support-high-variant-products), [Liquid product.variants](https://shopify.dev/docs/api/liquid/objects/product), [2048-Variantenlimit](https://shopify.dev/docs/api/admin-graphql/latest/objects/ProductVariant). Liquid liefert unpaginiert maximal250; deshalb reicht das bloße Anheben eines JS-Limits nicht.
+
+## Kaufbutton-Schutz ohne App-JavaScript
+
+Ergänzungsauftrag Mika/Parent, 08.11.2026: Die normale Kaufmöglichkeit darf bei ausbleibendem App-Import nicht irrtümlich eine unpersonalisierte Variante anbieten. Dafür ausschließlich das bestätigte Produkt und den vorhandenen Custom-Liquid-Block verwenden; keine globale Layoutänderung und keine fremden Produkte ändern.
+
+`ops/shopify/prepare-steel-purchase-guard.mjs` ergänzt genau ein `<style>` **innerhalb** der bestehenden Bedingung für Produkt `16190784438652` und Customization-ID `katalog-formate-edelstahl-tuerschilder-familienschilder-eb5fe26624befe4a`. Selektoren stammen aus den frisch aus dem MAIN-Theme exportierten Dateien `main-product-before.liquid`, `product-information-blocks-before.liquid`, `buy-buttons-before.liquid` und `sticky-atc-bar-before.liquid`. Der Main-Kaufbereich wird anhand MainProduct-ID, Produkt-ID und Buy-Block eingegrenzt. Beide tatsächlichen Sticky-Elemente werden anhand Produkt-ID und Section eingegrenzt. Nur `button[name="add"]` und Express-Kaufbereiche werden verborgen. Konfi-Link, Variantenfelder und übrige Oberfläche bleiben bestehen.
+
+Der Helfer verändert keinen laufenden Shop und keine Repository-Runtime. Sein CLI prüft die exakten Basis-/Snippet-Bytes, bevor es lokale Kandidaten schreibt. Die Reproduktionsdatei und Tests liegen im PR; aktuelle vollständige Theme-Kandidaten bleiben lokal in `outputs/steel-shopify-20261108/product-entry-guard-candidate/`:
+
+- `product.konfi.candidate.json`, `custom-liquid.candidate.liquid`
+- `patch.json`: einziger JSON-Pfad und genau einzufügender Style
+- `manifest.json`: Basis-, Kandidaten- und tatsächliche Snippet-Hashes
+
+Verbindlicher Bytevergleich:
+
+| Stand | SHA-256 |
+|---|---|
+| Frisch gelesene Theme-Vorlage vor PR198 | `68c1a442ad7f268df5da9ee04d2a66d86f9ed8aa6edab0abd4f5e37e626ba046` |
+| PR198-Kandidat vor Schutz, Basis `13ed25a` | `42ab2208695ba263e687cc80cd5a38e06f9241e4eb5bb3a533c833fbbd8f85d0` |
+| Derselbe Kandidat mit Kaufbutton-Schutz | `8b54d1fb3aabdd99d50ffd7d00b88e10930d43981088ab53c4b88da69305317e` |
+
+Nach Entfernen **genau** des eingefügten Style-Strings ist der Custom-Liquid-Inhalt bytegleich zur PR198-Basis. Das übrige Theme-JSON ist vollständig identisch. Die 404-ID-Daten, Konfi-Startlinks, UI-Parameter und Liquid-Verzweigungen für andere Produkte bleiben bytegleich. Vier gezielte Node-Tests bestanden. Zusätzlich wurde mit vorhandenem `cssselect2`/`lxml` die echte Selektorauswertung gegen die beobachteten Main-/Sticky-DOM-Strukturen geprüft: alle sechs Ziel-Kaufcontrols getroffen; Konfi-Links, andere Produkte, andere Sections, Mengenknöpfe und Empfehlungen nicht getroffen. Kein Browsernachweis dieser Ergänzung behauptet.
+
+```powershell
+node --test app/workshop/shop-product-purchase-guard.test.mjs
+node ops/shopify/prepare-steel-purchase-guard.mjs --theme ../../outputs/steel-shopify-20261108/product-entry-candidate/product.konfi.candidate.json --markup-root ../../outputs/steel-shopify-20261108 --out ../../outputs/steel-shopify-20261108/product-entry-guard-candidate
+```
+
+**Aktivierungsgrenze:** Von diesem Arbeitsauftrag wurde weder MAIN-Theme noch ein anderes externes System geschrieben. Parent meldete, dass der MAIN-Theme-Schreibversuch blockiert wurde und eine separate Theme-Kopie `190984126844` unveröffentlicht vorbereitet wird. Dies ist keine Live-Theme-Veröffentlichung. Der fertige Kandidat ist für diese getrennte Prüfung bestimmt.
+
+**Preisgrenze:** Der PR198-Startlink setzt AB12×8, ändert jedoch nicht `product.selected_or_first_available_variant` in den normalen Theme-Preisrenderern. Ohne explizite Varianten-URL ist daher noch kein Gleichlauf des Theme-Erstpreises belegt. `?variant=58104606556540` wählt die richtige serverseitige Theme-Variante; die endgültige Default-Lösung wird separat geprüft. Der Kaufbutton-Schutz ändert keine Preise.
+
+**Sicherheitsgrenze:** CSS verhindert die sichtbare normale Kaufaktion, ist aber keine API-/Checkout-Sperre. Die vorhandene V2-Preisfunktion wirft bei fehlenden Konfiattributen einen Fehler. Der aktuelle tatsächliche `blockOnFailure`-Stand und der reale Warenkorb müssen unabhängig bestätigt werden. Keine Function oder globale Checkout-Regel wird durch diesen Zusatz geändert.
+
+Rollback dieses Zusatzes: exakt den Style-String aus `patch.json` entfernen; Ergebnis muss wieder Basis-SHA `42ab2208…` ergeben. Rücknahme des gesamten Produktentry-Patches weiterhin über die gesicherte ursprüngliche Vorlage.

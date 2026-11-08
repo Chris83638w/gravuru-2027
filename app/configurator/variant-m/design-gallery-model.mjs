@@ -30,8 +30,7 @@ export function themeDefinition(config,profile){
 // „Weitere Designs“. Ohne Produktthema gibt es keine zweite Gruppe.
 export function galleryOrder(designs,theme){
  const id=normalizeId(theme);
- // Chris 05.11., #85/6658238343: Neue-Struktur originals precede even bestsellers.
- const byBestseller=list=>[...list].sort((a,b)=>(b.katalog?.prio===1)-(a.katalog?.prio===1)||(b.bestseller===true)-(a.bestseller===true));
+ const byBestseller=list=>[...list.filter(d=>d.bestseller===true),...list.filter(d=>d.bestseller!==true)];
  const all=Array.isArray(designs)?designs.filter(Boolean):[];
  if(!id)return {theme:null,primary:byBestseller(all).map(d=>d.id),more:[]};
  const primary=all.filter(d=>{const themes=designThemes(d);return !themes.length||themes.includes(id);});

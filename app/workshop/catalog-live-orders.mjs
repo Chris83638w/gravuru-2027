@@ -20,11 +20,20 @@ export function createCatalogLiveOrders({database:db,tenantId,clock=Date.now}){
   if(!b)return null;
   const row=db.prepare('SELECT * FROM catalog_live_order_approvals WHERE tenant_id=? AND shop=? AND product_gid=? AND cfg_id=? AND cfg_revision=?').get(tenantId,shopDomain,shopifyProductId,productId,productRevision);
   if(!row||!JSON.parse(row.variants_json).includes(shopifyVariantId))return null;
-  const source=db.prepare('SELECT document FROM product_revisions WHERE tenant_id=? AND product_id=? AND revision=?').get(tenantId,productId,productRevision);
-  if(!source)fail(409,'Der freigegebene Katalogstand fehlt.');
   const key=productId+'@'+productRevision,cached=documents.get(key);
-  if(cached&&cached.document!==source.document)fail(409,'Der freigegebene Katalogstand wurde innerhalb der Prüfung geändert.');
-  const digest=cached?.sha256??sha(source.document);if(!cached)documents.set(key,{document:source.document,sha256:digest});
+  // approvals() owns one synchronous SQLite read transaction. Other connections
+  // cannot change its snapshot; same-connection writes must force a fresh raw
+  // comparison. This avoids rereading a large bank once per bound variant.
+  const changes=db.prepare('SELECT total_changes() AS count').get().count;
+  const schemaVersion=db.prepare('PRAGMA schema_version').get().schema_version,dataVersion=db.prepare('PRAGMA data_version').get().data_version;
+  let digest;
+  if(cached&&cached.changes===changes&&cached.schemaVersion===schemaVersion&&cached.dataVersion===dataVersion&&db.isTransaction)digest=cached.sha256;
+  else{
+   const source=db.prepare('SELECT document FROM product_revisions WHERE tenant_id=? AND product_id=? AND revision=?').get(tenantId,productId,productRevision);
+   if(!source)fail(409,'Der freigegebene Katalogstand fehlt.');
+   if(cached&&cached.document!==source.document)fail(409,'Der freigegebene Katalogstand wurde innerhalb der Prüfung geändert.');
+   digest=cached?.sha256??sha(source.document);documents.set(key,{document:source.document,sha256:digest,changes,schemaVersion,dataVersion});
+  }
   if(digest!==row.document_sha256)fail(409,'Der freigegebene Katalogstand stimmt nicht mehr überein.');
   return {id:row.approval_id,approvedAt:row.approved_at,kind:'catalog'};
  }

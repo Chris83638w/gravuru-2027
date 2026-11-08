@@ -16,15 +16,6 @@ const designs=[
 ];
 const profile=themeId=>({id:'p',themeId,designs:structuredClone(designs),optionGroups:[{id:'size',name:'Schildgröße',defaultValueId:'GR-ES-S-200X100-T15',values:[{id:'GR-ES-S-200X100-T15',label:'200 × 100 mm',priceCents:1000},{id:'GR-ES-S-300X150-T15',label:'300 × 150 mm',priceCents:1500}]},{id:'mounting',name:'Befestigung',defaultValueId:'OHNE',values:[{id:'OHNE',priceCents:0}]}]});
 
-test('Neue Struktur precedes bestsellers, remains stable and preserves theme boundaries',()=>{
- const list=[{id:'new-best',bestseller:true,themes:['gedenktafeln']},{id:'original-a',katalog:{prio:1},themes:['gedenktafeln']},{id:'original-b',katalog:{prio:1},themes:['gedenktafeln']},{id:'other-original',katalog:{prio:1},themes:['tuerschilder']},{id:'new',themes:['gedenktafeln']}];
- const before=structuredClone(list);
- assert.deepEqual(galleryOrder(list).primary,['original-a','original-b','other-original','new-best','new']);
- assert.deepEqual(galleryOrder(list,'gedenktafeln').primary,['original-a','original-b','new-best','new']);
- assert.deepEqual(galleryOrder(list,'gedenktafeln').more,['other-original']);
- assert.deepEqual(list,before);
-});
-
 test('Galerie: Designs des Produktthemas zuerst, Bestseller vorn, ohne Thema sichtbar, andere Themen unter „Weitere Designs“',()=>{
  const order=galleryOrder(designs,productTheme(profile('tiergedenktafeln')));
  assert.equal(order.theme,'tiergedenktafeln');

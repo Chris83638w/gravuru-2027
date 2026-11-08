@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import {createHash} from 'node:crypto';
 import {createConfiguratorModuleProfiles} from './configurator-module-profiles.mjs';
 import {createGalleryModuleSync} from './gallery-module-sync.mjs';
 import {createGallerySyncActivation} from './gallery-shop-sync-activation.mjs';
@@ -27,7 +28,8 @@ async function fixture(t,options={}){
  const activation=createGallerySyncActivation({workshop:f.targetWorkshop,tenantId:'gravuru',shopDomain,personalizationPricingFor:pricingFor});
  function configure(logo=true){
   const profile=library.create({name:'Synthetisches Profil '+logo,modules:modules(logo)});
-  const mapping={...f.mapping,media:[],mediaRequired:false,moduleUpdate:{id:profile.id,revision:1,sourceRevision:1}};
+  const mapping={...f.mapping,kind:'module-profile',media:[],mediaRequired:false,moduleUpdate:{id:profile.id,revision:1,sourceRevision:1}};
+  delete mapping.source;
   const service=createGalleryModuleSync({...f.args,targets:()=>[mapping],moduleProfiles:library,activation});
   return {profile,mapping,service};
  }
@@ -39,6 +41,9 @@ test('one existing product can switch its logo module off/on with explicit confi
  const f=await fixture(t),before=structuredClone(f.target),native=prepareShopProduct(before),ids=f.variants.map(v=>v.id);
  for(const logo of [false,true]){
   const {mapping,service}=f.configure(logo),{plan,request}=await approvedRun(service,mapping);
+  assert.equal(plan.entries[0].kind,'module-profile');assert.equal(plan.entries[0].originalId,null);
+  assert.equal(plan.entries[0].beforeSvg,null);assert.equal(plan.entries[0].afterSvg,null);
+  assert.equal(plan.entries[0].source.productId,f.target.id);assert.equal(plan.entries[0].source.kind,'module-profile');
   assert.equal(f.targetWorkshop.repository.get(f.target.id).revision,logo?2:1,'preview and confirmation do not save a product');
   assert.throws(()=>service.execute(plan),e=>e.code==='gallery_sync_confirmation');
   assert.throws(()=>service.confirm({...plan,accepted:false}),e=>e.code==='gallery_sync_confirmation');
@@ -50,6 +55,40 @@ test('one existing product can switch its logo module off/on with explicit confi
   assert.equal(f.activation.capture(mapping).approved,true);assert.ok(f.activation.capture(mapping).heads.every(h=>h.personalization.moduleProfile.modules.logo===logo));
  }
  assert.deepEqual(f.targetWorkshop.repository.get(f.target.id,{revision:1}),before);assert.equal(f.transport.writes.length,2);assert.ok(f.transport.writes.every(w=>w.images.length===0));
+ const release=JSON.parse(f.transport.writes.at(-1).release);assert.equal(release.kind,'module-profile');assert.equal(release.originalId,undefined);assert.equal(release.nativeSource.productId,f.target.id);
+});
+
+test('profile-only mappings reject gallery identities, media writes and nonexistent preview designs',async t=>{
+ const f=await fixture(t),{mapping}=f.configure(false);
+ for(const extra of [{source:f.mapping.source},{designs:[]},{media:f.mapping.media},{mediaRequired:true},{kind:'unknown'}]){
+  const service=createGalleryModuleSync({...f.args,targets:[{...mapping,...extra}],moduleProfiles:f.library,activation:f.activation});
+  await assert.rejects(service.plan({targetIds:[mapping.id]}),{code:'gallery_sync_registry'});
+ }
+ const wrong=createGalleryModuleSync({...f.args,targets:[{...mapping,target:{...mapping.target,designId:'not-this-product'}}],moduleProfiles:f.library,activation:f.activation});
+ const plan=await wrong.plan({targetIds:[mapping.id]});assert.equal(plan.ready,false);assert.equal(plan.entries[0].issues[0].code,'gallery_module_target');
+ assert.equal(f.transport.writes.length,0);assert.equal(f.targetWorkshop.repository.get(f.target.id).revision,1);
+});
+
+test('profile-only preview uses the native readonly target without constructing artwork resources',async t=>{
+ const f=await fixture(t),{mapping}=f.configure(false);
+ const targetWorkshop={...f.targetWorkshop,editorPreview(){throw Error('No graphics construction for an unchanged design bank');}};
+ const service=createGalleryModuleSync({...f.args,targetWorkshop,targets:[mapping],moduleProfiles:f.library,activation:f.activation});
+ const {plan}=await approvedRun(service,mapping);assert.equal(plan.entries[0].beforeSvg,null);assert.ok(plan.entries[0].changes.some(change=>change.kind==='module'&&change.key==='logo'));
+ assert.equal(f.transport.writes.length,0);assert.equal(f.targetWorkshop.repository.get(f.target.id).revision,1);
+});
+
+for(const mutation of ['profile','mapping','target','binding'])test('a '+mutation+' change during the final remote read prevents the first remote write',async t=>{
+ const f=await fixture(t),{profile,mapping}=f.configure(false);let armed=false,reads=0;
+ const transport={...f.transport,async inspect(input){const remote=await f.transport.inspect(input);if(armed&&++reads===2){
+  if(mutation==='profile')f.library.save(profile.id,{name:'Während Lesefenster geändert',modules:modules(true)},1);
+  else if(mutation==='mapping')mapping.label='Während Lesefenster geändert';
+  else if(mutation==='target'){const record=f.targetWorkshop.repository.get(f.target.id);f.targetWorkshop.repository.save(record.id,{...record.document,name:'Parallel geändert'},record.revision);}
+ }return remote;}};
+ const activation={...f.activation,capture(input){const value=f.activation.capture(input);return mutation==='binding'&&armed&&reads>=2?{...value,approved:false}:value;}};
+ const service=createGalleryModuleSync({...f.args,transport,targets:()=>[mapping],moduleProfiles:f.library,activation});
+ const {request}=await approvedRun(service,mapping);armed=true;
+ const outcome=result(await service.execute(request));assert.equal(outcome.state,'conflict');assert.ok(['gallery_module_profile_changed','gallery_sync_mapping_changed','gallery_sync_source_changed','gallery_sync_target_changed','gallery_sync_binding_changed'].includes(outcome.error.code));
+ assert.equal(f.transport.writes.length,0);assert.equal(f.activation.capture(mapping).boundRevision,1);
 });
 
 test('profile changes invalidate the exact confirmed plan before any local revision or outbound write',async t=>{
@@ -108,6 +147,7 @@ test('the sixty-second activation evidence limit remains enforced and rolls back
 });
 
 async function allSteel(){
+ if(process.env.GRAVURU_MODULE_NATIVE_CANDIDATE){const raw=fs.readFileSync(process.env.GRAVURU_MODULE_NATIVE_CANDIDATE);assert.equal(createHash('sha256').update(raw).digest('hex'),'2e74548aa7211a2f5546af428e1d27d9f00f12181490356633e3cd109cb179c0');return JSON.parse(raw);}
  const family=JSON.parse(fs.readFileSync(new URL('../../scripts/fixtures/steel-shopify-options/family.json',import.meta.url))),fonts=JSON.parse(fs.readFileSync(new URL('../designs/aosu-labrador/assets/michroma-vectors.json',import.meta.url))),size=family.sizes.find(s=>s.groupKey==='AB'&&s.widthMm===120&&s.heightMm===80);
  const katalog={families:new Map([[family.id,family]]),lines:new Map([['sync-proof',{id:'sync-proof',name:'Isolierte Prüfung',families:[family.id],subcategories:[{id:'normal',name:'Türschilder',themeId:'familie'}]}]]),designs:{masters:[]},theme:()=>null,fontResources:async ids=>({fonts:Object.fromEntries(ids.map(id=>[id,fonts[id]])),missing:ids.filter(id=>!fonts[id])})};
  const {config,report}=await planFamilyFormats(katalog,'sync-proof','normal',{shopProduct:{sizeKey:size.key,themeId:'familie',defaultDesignId:blankDesignId(size),groessenWahl:'alle',vorlagen:'leer'}});
@@ -116,6 +156,7 @@ async function allSteel(){
 
 test('actual native steel family: all 404 existing IDs switch atomically, 8 forms/80 sizes survive; late approval failure rolls every binding back',async t=>{
  const f=await fixture(t,{documentTransform:allSteel}),{mapping,service}=f.configure(true),old=f.activation.capture(mapping),original=structuredClone(f.target.document);
+ if(process.env.GRAVURU_MODULE_NATIVE_CANDIDATE)assert.equal(original.config.familyFormats.designs.length,251);
  assert.equal(f.variants.length,404);assert.equal(new Set(original.config.familyFormats.formats.map(x=>x.form)).size,8);assert.equal(original.config.familyFormats.formats.length,80);
  const {request}=await approvedRun(service,mapping),orders=f.targetWorkshop.orderIntake,approve=orders.approveCatalogLiveProducts;
  orders.approveCatalogLiveProducts=()=>{throw Error('Synthetischer Fehler nach letztem Variantenblock');};
@@ -125,4 +166,8 @@ test('actual native steel family: all 404 existing IDs switch atomically, 8 form
  const now=f.activation.capture(mapping);assert.equal(now.heads.length,404);assert.equal(now.boundRevision,2);assert.equal(now.approved,true);assert.ok(now.heads.every(h=>h.personalization.extraLogoCents===1299));
  assert.deepEqual(now.heads.map(h=>({id:h.shopifyVariantId,options:h.options,cents:h.unitCents})),old.heads.map(h=>({id:h.shopifyVariantId,options:h.options,cents:h.unitCents})));
  const latest=f.targetWorkshop.repository.get(f.target.id);assert.deepEqual(latest.document.config.familyFormats,original.config.familyFormats);assert.deepEqual(latest.document.config.profile,original.config.profile);assert.equal(f.transport.writes.length,1);
+ assert.deepEqual(latest.document.config.localResources,original.config.localResources);assert.deepEqual(latest.document.elementRights,original.elementRights);assert.deepEqual(latest.document.config.workshopElementRights,original.config.workshopElementRights);
+ assert.deepEqual(f.targetWorkshop.repository.get(f.target.id,{revision:1}).document,original);
+ for(const previous of old.heads)assert.deepEqual(orders.bindingPricing(previous.bindingId),previous.personalization,'historical binding price contract is immutable');
+ assert.equal(result(await service.execute(request)).state,'completed');assert.equal(f.transport.writes.length,1);assert.deepEqual(f.activation.capture(mapping),now);
 });

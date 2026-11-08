@@ -33,7 +33,11 @@ export function createGalleryShopSync({database,tenantId,shopDomain,sourceWorksh
   if(!Array.isArray(list)||list.length>5000)syncFail('gallery_sync_registry','Eine ausdrücklich verwaltete Zielzuordnung fehlt.',422);
   const seen=new Set();
   for(const m of list){
-   if(typeof m.id!=='string'||!m.id||seen.has(m.id)||!cfg.test(m.source?.productId)||!cfg.test(m.target?.productId)||!m.source?.designId||!m.source.originalId||!m.target.designId||!productGid.test(m.shopifyProductId)||!Array.isArray(m.shopifyVariantIds)||!m.shopifyVariantIds.length||m.shopifyVariantIds.some(v=>!variantGid.test(v))||new Set(m.shopifyVariantIds).size!==m.shopifyVariantIds.length)
+   const profileOnly=m.kind==='module-profile';
+   const sourceValid=profileOnly
+    ?projection?.supportsModuleProfiles===true&&m.moduleUpdate&&!m.source&&!m.designs&&(!m.media||Array.isArray(m.media)&&m.media.length===0)&&m.mediaRequired===false
+    :m.kind===undefined&&cfg.test(m.source?.productId)&&m.source?.designId&&m.source.originalId;
+   if(typeof m.id!=='string'||!m.id||seen.has(m.id)||!sourceValid||!cfg.test(m.target?.productId)||!m.target.designId||!productGid.test(m.shopifyProductId)||!Array.isArray(m.shopifyVariantIds)||!m.shopifyVariantIds.length||m.shopifyVariantIds.some(v=>!variantGid.test(v))||new Set(m.shopifyVariantIds).size!==m.shopifyVariantIds.length)
     syncFail('gallery_sync_registry','Eine Galerie-/Produkt-/Varianten-Zuordnung ist unvollständig oder doppelt.',422);
    seen.add(m.id);
   }
@@ -42,7 +46,7 @@ export function createGalleryShopSync({database,tenantId,shopDomain,sourceWorksh
  function environment(){return {mode:transport.mode,label:transport.mode==='test'?'Isoliertes Testsystem':'Shopify-Anschluss',executionEnabled:executionEnabled&&transport.canWrite===true,shopDomain};}
  function sourceCheck(source,mapping){const approval=sourceApproval({source,mapping,target:mapping});if(approval?.then||approval?.approved!==true)syncFail('gallery_sync_source_approval',approval?.reason||'Die aktuelle Galerievorlage benötigt ihre Sichtfreigabe.',422);}
  function brief(mapping){
-  const result={id:mapping.id,label:mapping.label||mapping.id,originalId:mapping.source.originalId,shopifyProductId:mapping.shopifyProductId,source:clone(mapping.source),target:clone(mapping.target),issues:[]};
+  const result={id:mapping.id,kind:mapping.kind||'gallery-design',label:mapping.label||mapping.id,originalId:mapping.source?.originalId??null,shopifyProductId:mapping.shopifyProductId,source:mapping.source?clone(mapping.source):null,target:clone(mapping.target),issues:[]};
   try{
    const source=readSource(mapping),record=targetWorkshop.repository.get(mapping.target.productId),binding=activation.capture(mapping),profile=record.document.config.profile;
    Object.assign(result,{sourceRevision:source.record.revision,targetRevision:record.revision,boundRevision:binding.boundRevision,material:profile.material?.label||profile.material?.kind,size:{widthMm:profile.geometry.width,heightMm:profile.geometry.height},name:record.document.name});
@@ -55,7 +59,7 @@ export function createGalleryShopSync({database,tenantId,shopDomain,sourceWorksh
  function listTargets(){return {schema:SCHEMA,...environment(),targets:registry().map(brief)};}
  function readPlan(id,sha){const row=db.prepare('SELECT * FROM gallery_shop_sync_plans WHERE scope=? AND id=?').get(scope,id);if(!row||sha&&row.sha!==sha)syncFail('gallery_sync_plan','Der feste Vorschauplan fehlt oder wurde verändert.',404);const value=JSON.parse(row.document);if(syncHash(value)!==row.sha)syncFail('gallery_sync_plan_integrity','Der gespeicherte Vorschauplan ist beschädigt.');return {...value,planSha256:row.sha};}
  function publicPlan(plan){return {schema:SCHEMA,planId:plan.id,planSha256:plan.planSha256,createdAt:plan.createdAt,...environment(),ready:plan.ready,
-  entries:plan.entries.map(e=>({id:e.id,label:e.mapping.label||e.id,originalId:e.mapping.source.originalId,source:e.source??e.mapping.source,target:{...e.mapping.target,revision:e.expectedRevision??null},shopifyProductId:e.mapping.shopifyProductId,boundRevision:e.binding?.boundRevision??null,changes:e.changes,issues:e.issues,beforeSvg:e.beforeSvg,afterSvg:e.afterSvg,designPreviews:e.designPreviews||[],images:e.images.map(i=>({id:i.id,sha256:i.sha256})),ready:e.issues.length===0}))};}
+  entries:plan.entries.map(e=>({id:e.id,kind:e.mapping.kind||'gallery-design',label:e.mapping.label||e.id,originalId:e.mapping.source?.originalId??null,source:e.source??e.mapping.source??null,target:{...e.mapping.target,revision:e.expectedRevision??null},shopifyProductId:e.mapping.shopifyProductId,boundRevision:e.binding?.boundRevision??null,changes:e.changes,issues:e.issues,beforeSvg:e.beforeSvg,afterSvg:e.afterSvg,designPreviews:e.designPreviews||[],images:e.images.map(i=>({id:i.id,sha256:i.sha256})),ready:e.issues.length===0}))};}
  async function plan({targetIds}={}){
   if(!Array.isArray(targetIds)||!targetIds.length||targetIds.length>25||new Set(targetIds).size!==targetIds.length)syncFail('gallery_sync_targets','Bitte eindeutige bestehende Zielprodukte auswählen (höchstens 25).',422);
   const all=registry(),selected=targetIds.map(id=>{const m=all.find(m=>m.id===id);if(!m)syncFail('gallery_sync_target_missing','Eine ausgewählte Zuordnung ist nicht mehr vorhanden.',404);return m;});
@@ -74,7 +78,12 @@ export function createGalleryShopSync({database,tenantId,shopDomain,sourceWorksh
     if(projection)await projection.ensureAssets(source);else await ensureNativeAssets(sourceWorkshop,targetWorkshop,source);
     entry.document=validateProductDocument(proposed);entry.documentSha256=syncHash(entry.document);
     entry.newRevision=record.revision+(entry.documentSha256===entry.expectedDocumentSha256?0:1);
-    entry.beforeSvg=targetWorkshop.editorPreview(record.document,mapping.target.designId).svg;entry.afterSvg=targetWorkshop.editorPreview(entry.document,mapping.target.designId).svg;
+    // A profile-only plan never changes artwork. Its useful preview is the
+    // explicit module diff, not two identical renders requiring a write-capable
+    // asset/workshop constructor on the independent customer data store.
+    if(mapping.kind!=='module-profile'){
+     entry.beforeSvg=targetWorkshop.editorPreview(record.document,mapping.target.designId).svg;entry.afterSvg=targetWorkshop.editorPreview(entry.document,mapping.target.designId).svg;
+    }
     if(mapping.designs)entry.designPreviews=mapping.designs.map(d=>({designId:d.target.designId,originalId:d.source.originalId,beforeSvg:targetWorkshop.editorPreview(record.document,d.target.designId).svg,afterSvg:targetWorkshop.editorPreview(entry.document,d.target.designId).svg}));
     entry.baseline=await transport.inspect(mapping);validateRemote(entry,entry.baseline);
     if(activation.prepare)entry.pricing=activation.prepare({mapping,record,document:entry.document,binding,remote:entry.baseline});
@@ -89,7 +98,10 @@ export function createGalleryShopSync({database,tenantId,shopDomain,sourceWorksh
      if(!Array.isArray(entry.images)||entry.images.length!==assigned.length||new Set(entry.images.map(i=>i.id)).size!==assigned.length||entry.images.some(i=>!assigned.some(a=>a.id===i.id)||!entry.baseline.media.some(m=>m.id===i.id)||!/^[a-f0-9]{64}$/.test(i.sha256)||typeof i.url!=='string'||!/^https:\/\//.test(i.url)))
       syncFail('gallery_sync_media_plan','Die Produktbilder brauchen eindeutige bestehende Medien-IDs, geprüfte Bildinhalte und gesicherte Quellen.',422);
     }else if(mapping.mediaRequired!==false)syncFail('gallery_sync_media_mapping','Das zugehörige Shop-Produktbild ist noch nicht ausdrücklich zugeordnet.',422);
-    entry.desired={images:clone(entry.images),release:canonical({schema:SCHEMA,originalId:mapping.source.originalId,sourceRevision:source.record.revision,sourceFingerprint:source.evidence.fingerprint,productId:record.id,productRevision:entry.newRevision,designId:mapping.target.designId,documentSha256:entry.documentSha256})};
+    const origin=mapping.kind==='module-profile'
+     ?{kind:'module-profile',nativeSource:{productId:source.capability.id,revision:source.capability.revision},moduleProfile:{id:source.module.id,revision:source.module.revision,sha256:source.module.sha256}}
+     :{originalId:mapping.source.originalId};
+    entry.desired={images:clone(entry.images),release:canonical({schema:SCHEMA,...origin,sourceRevision:source.record.revision,sourceFingerprint:source.evidence.fingerprint,productId:record.id,productRevision:entry.newRevision,designId:mapping.target.designId,documentSha256:entry.documentSha256})};
     entry.changes=projection?projection.describe(source,record,entry.document,mapping):[{kind:'design',label:entry.newRevision===record.revision?'Gestaltung bereits identisch':'Gesicherte native Gestaltung übernehmen'},{kind:'startDesign',label:'Bestehende Startdesign-ID beibehalten; ihr Inhalt wird aktualisiert'},{kind:'images',label:entry.images.length?entry.images.length+' zugeordnete Produktbilder aktualisieren':'Für diese Zuordnung ausdrücklich keine Produktbilder ändern'},{kind:'commerce',label:'Preise, Ausführungen, Bestand, Texte und SEO beibehalten'}];
    }catch(e){entry.issues.push(issue(e));}
   }
@@ -178,6 +190,12 @@ export function createGalleryShopSync({database,tenantId,shopDomain,sourceWorksh
     }
     if(!remoteBaselineMatches(remote,entry.baseline))syncFail('gallery_sync_remote_changed','Die Shopdaten unterscheiden sich vom bestätigten Vorschauplan.');
     if(reconcileOnly){op.state='pending';persist();return status({operationId:op.id});}
+    // The authenticated remote read yields. Recheck local evidence after it,
+    // immediately before the durable write intent and any outbound mutation.
+    checkRegistry(entry);checkSource(entry);
+    const targetBeforeWrite=targetWorkshop.repository.get(entry.mapping.target.productId);
+    if(targetBeforeWrite.revision!==entry.newRevision||syncHash(targetBeforeWrite.document)!==entry.documentSha256)syncFail('gallery_sync_target_changed','Der Zielentwurf wurde während der Shopprüfung geändert.');
+    if(syncHash(activation.capture(entry.mapping))!==syncHash(entry.binding))syncFail('gallery_sync_binding_changed','Die aktive Zuordnung wurde während der Shopprüfung geändert.');
     progress.stage='unknown';persist(); // durable intent BEFORE any outbound write
     await transport.apply({mapping:entry.mapping,baseline:entry.baseline,desired:entry.desired,operationId:op.id});
     checkpoint('after-remote',{entry,operationId:op.id});
@@ -192,6 +210,7 @@ export function createGalleryShopSync({database,tenantId,shopDomain,sourceWorksh
     if(remoteCommerceHash(remote)!==remoteCommerceHash(entry.baseline)||!remoteReleaseMatches(remote,entry.desired))syncFail('gallery_sync_remote_unverified','Der Shopstand hat sich vor der Freigabe geändert.');
     activationEntries.push({...entry,remote});
    }
+   for(const entry of prepared.entries){checkRegistry(entry);checkSource(entry);}
    persist();activation.activate({entries:activationEntries,operationId:op.id});checkpoint('after-activation',{operationId:op.id});
    op.state='completed';op.entries.forEach(e=>e.stage='activated');persist();return status({operationId:op.id});
   }catch(error){op.state=op.entries.some(e=>e.stage==='unknown')?'reconciliation-needed':'conflict';op.error=issue(error);persist();return status({operationId:op.id});}

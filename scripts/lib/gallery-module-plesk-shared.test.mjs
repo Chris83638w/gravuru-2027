@@ -1,5 +1,5 @@
-// Cross-PR integration against the actual, explicitly selected Plesk gallery
-// host. The second checkout is a test dependency; no server or live DB is used.
+// One checkout, one native repository and one shared module/gallery service.
+// The real Plesk mount/authentication runs against an isolated local database.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -11,34 +11,23 @@ import {createWorkshop} from '../../app/workshop/http.mjs';
 import {createPreviewServer} from '../../app/configurator/variant-m/server.mjs';
 import {nativeModuleAvailability,applyModuleProfile,MODULE_PROFILE_SCHEMA} from '../../app/configurator/variant-m/module-profile.mjs';
 import {validateProductDocument} from '../../app/workshop/product-model.mjs';
+import {createGalleryManagementFixture} from '../fixtures/gallery-management.mjs';
+import {attachConfiguredSlateReviewGallery,SLATE_REVIEW_MARKER} from '../../ops/plesk/slate-review-runtime.mjs';
+import {createPrivateTestProxy} from '../../ops/plesk/runtime.mjs';
+import {markerValue} from '../../ops/plesk/config.mjs';
+import {OUTPUT} from '../../app/configurator/variant-m/build.mjs';
 
-const hostRoot=process.env.GRAVURU_PLESK_MODULE_HOST_ROOT;
-test('actual Plesk routes share gallery scopes, profile assignment, confirmation, source conflict and draft replay',{skip:!hostRoot},async t=>{
- assert.ok(path.isAbsolute(hostRoot),'Choose the reviewed Plesk checkout explicitly');
- const load=relative=>import(pathToFileURL(path.join(hostRoot,relative)).href);
- const [{createGalleryManagementFixture},{attachConfiguredSlateReviewGallery,SLATE_REVIEW_MARKER},{createPrivateTestProxy},{markerValue},{OUTPUT}]=await Promise.all([
-  load('scripts/fixtures/gallery-management.mjs'),load('ops/plesk/slate-review-runtime.mjs'),load('ops/plesk/runtime.mjs'),load('ops/plesk/config.mjs'),load('app/configurator/variant-m/build.mjs')]);
+test('actual Plesk routes share gallery scopes, profile assignment, confirmation, source conflict and draft replay',async t=>{
  const root=fs.mkdtempSync(path.join(os.tmpdir(),'g27-shared-plesk-'));
- let workshop,gallery,inner,proxy,galleryReadRepository,galleryCatalogue;
- t.after(async()=>{if(proxy)await new Promise(r=>proxy.close(r));if(inner)await new Promise(r=>inner.close(r));gallery?.close();workshop?.close();galleryReadRepository?.close();galleryCatalogue?.close();assert.equal(path.dirname(root),os.tmpdir());assert.ok(path.basename(root).startsWith('g27-shared-plesk-'));fs.rmSync(root,{recursive:true,force:true});});
+ let workshop,gallery,inner,proxy;
+ t.after(async()=>{if(proxy)await new Promise(r=>proxy.close(r));if(inner)await new Promise(r=>inner.close(r));gallery?.close();workshop?.close();assert.equal(path.dirname(root),os.tmpdir());assert.ok(path.basename(root).startsWith('g27-shared-plesk-'));fs.rmSync(root,{recursive:true,force:true});});
  const fixture=await createGalleryManagementFixture(path.join(root,'data'));
  const sourceIds=fixture.products.map(p=>p.record.id),filename=fixture.filename;
- await fixture.close(); // Reopen the same isolated native DB with PR202 + fix.
+ await fixture.close(); // Reopen through the same production runtime.
  const seed=JSON.parse(fs.readFileSync(path.join(OUTPUT,'models.json')))[0];
  workshop=createWorkshop({filename,katalogDir:path.join(root,'data','catalogue'),seedConfig:seed.universal,legacy:seed.legacy});
- // PR194 adds these read APIs to the repository; PR202 adds moduleSources.
- // Use PR194's real implementations against the same isolated SQLite file.
- // This models their combined API without copying or replacing either branch's
- // repository writes, schema, import guards or revision validation.
- const {createProductRepository}=await load('app/workshop/repository.mjs');
- galleryReadRepository=createProductRepository({filename,tenantId:workshop.tenantId});
- for(const key of ['importItems','head','cacheIdentity']){
-  assert.equal(typeof galleryReadRepository[key],'function');
-  if(!workshop.repository[key])workshop.repository[key]=galleryReadRepository[key].bind(galleryReadRepository);
- }
- const {createCatalogStructure}=await load('app/workshop/catalog-structure.mjs');
- galleryCatalogue=createCatalogStructure({filename,tenantId:workshop.tenantId,katalogDir:path.join(root,'data','catalogue')});
- workshop.catalogStructure=galleryCatalogue; // Actual PR194 family-offering reader.
+ for(const key of ['moduleSources','importItems','head','cacheIdentity'])assert.equal(typeof workshop.repository[key],'function',key+' is present on the single native repository');
+ assert.ok(workshop.catalogStructure,'The production workshop owns the real material catalogue');
  const config={origin:'https://module-private.example',host:'module-private.example',username:'synthetic',password:'synthetic-shared-module-password',data:path.dirname(filename),slateReviewPackage:path.join(root,'data','package'),galleryManagementConfig:path.join(root,'host.mjs')};
  fs.writeFileSync(path.join(config.slateReviewPackage,SLATE_REVIEW_MARKER),JSON.stringify(markerValue(config,'slate-review-gallery')));
  if(process.platform==='win32'){const original=fs.statSync;t.mock.method(fs,'statSync',(name,...args)=>{const stat=original(name,...args);if(name===config.slateReviewPackage)Object.defineProperty(stat,'mode',{value:stat.mode&~0o077});return stat;});}

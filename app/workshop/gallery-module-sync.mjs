@@ -38,7 +38,8 @@ export function createGalleryModuleProjection({sourceWorkshop,targetWorkshop,mod
    if(capability.document.config.moduleProfile&&MODULE_KEYS.some(key=>module.profile.modules[key]&&!capability.document.config.moduleProfile.modules[key]))fail('gallery_module_source','Die gewählte Ursprungsrevision enthält bereits abgeschaltete Module. Für das Wiedereinschalten bitte die tatsächlich freigegebene native Ursprungsrevision wählen.');
   }
   const record=designs[0]?.source.record||capability;
-  const evidence={...mapping.source,revision:record.revision,designs:designs.map(d=>({identity:d.identity,source:d.source.evidence})),
+  const origin=mapping.kind==='module-profile'?{kind:'module-profile',productId:capability.id}:mapping.source;
+  const evidence={...origin,revision:record.revision,designs:designs.map(d=>({identity:d.identity,source:d.source.evidence})),
    module:module?{id:module.id,revision:module.revision,sha256:module.sha256}:null,
    capability:capability?{id:capability.id,revision:capability.revision,sha256:syncHash(capability.document)}:null};
   return {record,designs,module,capability,evidence:{...evidence,fingerprint:syncHash(evidence)}};
@@ -46,6 +47,7 @@ export function createGalleryModuleProjection({sourceWorkshop,targetWorkshop,mod
  function assert(source,record,mapping){
   if(!source.designs)return assertNativeTargetIdentity(source,record,mapping.target);
   if(record.status==='archived'||record.document.kind!=='product'||record.id!==mapping.target.productId)fail('gallery_module_target','Die vorhandene Produktzuordnung stimmt nicht mehr.');
+  if(mapping.kind==='module-profile'&&!record.document.config.profile.designs.some(design=>design.id===mapping.target.designId))fail('gallery_module_target','Das Vorschaudesign gehört nicht zu diesem vorhandenen Produkt.');
   if(source.capability&&source.capability.id!==record.id)fail('gallery_module_source','Die ursprünglichen Modulrechte müssen zu genau demselben Produkt gehören.');
   for(const d of source.designs)assertNativeTargetIdentity(d.source,record,d.identity.target,{allowSecondary:true});
   // Changing policy never changes the product's native price/limit contract.
@@ -89,7 +91,7 @@ export function createGalleryModuleProjection({sourceWorkshop,targetWorkshop,mod
    {kind:'extras',label:'Zusatzmodule verwenden ihre gespeicherten Preise',before:prepareShopProduct(record).extras,after:prepareShopProduct({...record,document}).extras});
   return changes;
  }
- return Object.freeze({read,assert,compose,ensureAssets,describe});
+ return Object.freeze({read,assert,compose,ensureAssets,describe,supportsModuleProfiles:true});
 }
 
 /** Reuses the existing journal, conflict checks, CAS transport and activation.

@@ -32,7 +32,9 @@ Der Modulanschluss muss dieselbe aktive Quellregistry, Datenablage, Anmeldung un
 
 Vor dem Mount wird eine private Online-Sicherung von acht SQLite-Datenbanken sowie Start-/Konfigurationsdateien erstellt. Galeriezuordnung, Manifest und Marker werden zusätzlich gesichert. Datenbankkopien bleiben privat auf dem Server; GitHub erhält nur die Beschreibung und Prüfsummen. Für den Mount sind vollständige Sicherungsbelege, unabhängige Prüfung und geschlossenes Dateimanifest erforderlich.
 
-**Aktueller Stand dieser Notiz:** Datenbanksicherung und abschließende Integrationsprüfung laufen. Noch keine Aktivierung des neuen Modulanschlusses, keine Änderung am Kundenhost und keine Shopify-Schreibaktion in diesem Arbeitsschritt. Beide Schreibschalter bleiben beim ersten Anschluss ausgeschaltet.
+**Sicherung abgeschlossen:** 08.11.2026, 13:54:00 UTC. 16 Dateien einschließlich acht SQLite-Datenbanken mit `quick_check` und SHA256 wurden privat gesichert; zusätzlich drei Galerie-/Importdateien. Sicherungsordner `private/mika-module-connect-20261108-v2/pre-mount-backup-v2`, ergänzende Dateien `pre-mount-files-extra`. Vollständiger Receipt SHA256 `e4ae36a7e450fc295b4955266e556a36474bf0ed81f6d8a6d50162321339c83e`; lokale Nachweiskopie `outputs/module-production-connection-20261108/live-host/pre-mount-backup-final.json`.
+
+**Aktivierungsstand:** Noch keine Aktivierung des neuen Modulanschlusses, keine Änderung am Kundenhost und keine Shopify-Schreibaktion in diesem Arbeitsschritt. Beide Schreibschalter bleiben beim ersten Anschluss ausgeschaltet. Der lokale Integrationsstand ist in Draft PR 213; der neue rein lesende Anschluss wird in dasselbe Runtimepaket aufgenommen.
 
 ## Koordination
 

@@ -37,7 +37,9 @@ Quellstand: 7daab90, separat von den Moduländerungen. Paket verändert ausschli
 
 Alle übrigen Appdateien werden mit dem aktiven Stand verglichen. Bestehende Datenbankpfade, Shopify-Konfiguration und Produktdaten bleiben erhalten. Erst nach gesondertem Build wird der Kundenstarter umgeschaltet. Rückfall erfolgt ausschließlich durch Wiederherstellen des gesicherten Starters und Neustart, nicht durch Zurücksetzen von Bestell- oder Produktdatenbanken.
 
-**Stand dieser Übergabe:** lokale Abnahme abgeschlossen; Serververöffentlichung noch ausstehend, Plesk-Anmeldung angefordert. Nach Veröffentlichung mit tatsächlichem Bundle, Zeitstempel und öffentlichem Nachtest ergänzen.
+**Veröffentlicht:** 08.11.2026, 15:41:15 UTC (16:41 Uhr Berlin). Kandidat `private/mika-r15-touch-ui-20261108-v1` ersetzt ausschließlich den Startpfad; 1062 übrige Appdateien stimmen mit dem zuvor aktiven Stand überein. Build: `/_bundle/editor-72df81c9093744f7.mjs`, 151 Module, 16 Styles, 478288 gzip-Bytes. Starter vorher `31781a783270f4704d0a1831f62aa50a4c44566a6ec6fa18c691a1205a81f6b9`, danach `e71bc152ecce3c9c2fd2a94ccef18d856842f94fde826efa67961280ec839009`.
+
+Öffentlicher Shopify-Nachtest bestand: erneutes Textverschieben nach Abwahl, neues Motiv nach Platzierung/Abwahl verschieben, neues Pfeilsymbol öffnet vorhandenes Vollbild, Ansicht/Zurücksetzen mit 8 px Abstand. Preisprüfung 19,99 € → 21,68 € nach einem Motiv. Keine Bestellung ausgelöst. Live-Screenshot: `outputs/r15-ui-touch-refresh-20261108/live-mobile-compact-preview.png`. Belege: `prepared-receipt.json`, `activated-receipt.json`. Gesicherter alter Starter: `private/mika-r15-touch-ui-20261108-v1/pre-switch-backup/customer-app.cjs`; alte Runtime bleibt vorhanden.
 
 ## Parallel gesichert
 

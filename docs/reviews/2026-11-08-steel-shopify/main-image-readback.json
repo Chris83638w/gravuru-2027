@@ -1,0 +1,24 @@
+{
+  "data": {
+    "product": {
+      "id": "gid://shopify/Product/16190784438652",
+      "status": "DRAFT",
+      "featuredMedia": {
+        "id": "gid://shopify/MediaImage/70063610659196",
+        "alt": "Edelstahl-Türschild, abgerundetes Rechteck 12 × 8 cm ohne Befestigung, Design Familie Rosenberg"
+      },
+      "media": {
+        "nodes": [
+          {
+            "id": "gid://shopify/MediaImage/70063610659196",
+            "alt": "Edelstahl-Türschild, abgerundetes Rechteck 12 × 8 cm ohne Befestigung, Design Familie Rosenberg"
+          },
+          {
+            "id": "gid://shopify/MediaImage/70017733165436",
+            "alt": "Türschild Edelstahl – Form und Größe selbst wählen – leeres Schild, Vorschau 12 × 8 cm"
+          }
+        ]
+      }
+    }
+  }
+}

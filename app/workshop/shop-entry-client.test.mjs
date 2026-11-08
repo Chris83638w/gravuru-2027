@@ -290,6 +290,11 @@ test('start ticket: fetched once per start address through the proxy, only edito
  answer=()=>({ok:false,json:async()=>({})});const failing=key+'&f=1',before=calls.length;
  await tickets.load(failing);await tickets.load(failing);await tickets.load(failing);assert.equal(calls.length,before+1);
  time+=61*1000;answer=()=>({ok:true,json:async()=>({url:'https://app.example/y',expiresAt:new Date(time+4*3600e3).toISOString()})});assert.equal(await tickets.load(failing),'https://app.example/y');assert.equal(calls.length,before+2);
+ const warmManifest={schema:'gravuru-shop-warm/v1',fonts:[],motifs:[]};
+ for(const [warmURL,expected] of [['https://app.example/konfigurator/shop/warm/',true],['https://evil.example/konfigurator/shop/warm/',false],['https://user:password@app.example/konfigurator/shop/warm/',false],['https://app.example/konfigurator/shop/warm/?x=1',false]]){
+  const warmKey=key+'&warm='+encodeURIComponent(warmURL);answer=()=>({ok:true,json:async()=>({url:'https://app.example/y',expiresAt:new Date(time+4*3600e3).toISOString(),warm:{url:warmURL,manifest:warmManifest}})});
+  await tickets.load(warmKey);assert.equal(!!tickets.warm(warmKey),expected);
+ }
  assert.equal(await tickets.load(null),null);
 });
 

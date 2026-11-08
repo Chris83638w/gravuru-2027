@@ -196,11 +196,12 @@ test('Startladen: Kern + benötigte Schriften parallel, unbekannte Schriftnamen 
 
 test('Kundenansicht verdrahtet: Reiter/Schritt Motive, Schriftauswahl, Text hinzufügen, Entwürfe und Export laden vorher',()=>{
   const read=f=>fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)),f),'utf8');
-  const ux=read('ux.mjs');
-  assert.match(ux,/new MutationObserver\(\(\)=>\{if\(!panel\.hidden\)el\.uxEnsureMotifLibrary\(\)/);
-  assert.match(ux,/async function openFonts\(\)\{[\s\S]*?await el\.uxEnsureFonts\(selectionIds\(el\.uxKnownFonts\(\),profileChoices\?\.fonts\)\)/);
+  const ux=read('ux.mjs').replaceAll('\r\n','\n');
+  assert.match(ux,/new MutationObserver\(\(\)=>\{if\(!panel\.hidden\)el\.uxEnsureVisibleMotifs\(\)/);
+  assert.match(ux,/async function openFonts\(\)\{[\s\S]*?renderFontPage\(\);fontRows\?\.refresh\(\{retry:true\}\)/);
+  assert.doesNotMatch(ux,/await el\.uxEnsureFonts\(selectionIds\(el\.uxKnownFonts/);
   assert.match(ux,/if\(action==='add-text'\)\{const font=[^;]+;try\{await el\.uxEnsureFonts\?\./);
-  assert.match(ux,/if\(sessionGuard&&!config\?\.workbench&&!pendingDesignTransfer&&el\.uxEnsureDraftResources\)\{const stored=sessionGuard\.read\(\);if\(stored\)try\{await el\.uxEnsureDraftResources\(stored\.draft\);\}catch\{\}\}\n  if\(sessionGuard&&!config\?\.workbench\)\{/);
+  assert.match(ux,/await el\.uxEnsureDraftResources\(stored\.draft\);[\s\S]*?const savedSession=[^;]+;\n  const missingUploads=savedSession\?await sessionUploads\?\.restore\(savedSession\.uploads\|\|\[\]\):\[\];\n  if\(sessionGuard&&!config\?\.workbench\)\{/);
   assert.match(read('account-drafts.mjs'),/await el\.uxEnsureDraftResources\?\.\(draft\);\n\s*restoreDraft\(draft\);/);
   assert.match(read('adapter.mjs'),/await this\.uxEnsureDraftResources\?\.\(input\);this\.restoreDraft\(input\);/);
   assert.match(read('print-export.mjs'),/await el\.uxEnsureDraftResources\?\.\(\{design:\{objects:el\.state\.objects\}\}\);\n\s*const fingerprint=/);
@@ -214,14 +215,14 @@ test('Sitzungsstart wartet auf Ressourcen vor Wiederherstellung; ausstehende Des
   for(const pending of [false,true]){
     const events=[],draft={design:{id:'saved',objects:[]}},banner={hidden:true};let finishLoad;
     const loaded=new Promise(resolve=>{finishLoad=resolve;});
-    const env={config:{},initialDraft:null,$:()=>banner,say(){},
+    const env={config:{},initialDraft:null,$:()=>banner,say(){},sessionUploads:{restore:async()=>{events.push('uploads');return [];},prune:()=>events.push('prune')},
       window:{parent:{GravuruShopEntry:{designGallery:{hasPendingTransfer:()=>pending}}},addEventListener(){}},
       sessionGuard:{read(){events.push('read');return {draft};},recover(){events.push('recover');return {uploads:[]};},arm(){events.push('arm');}},
       el:{state:{selected:'old'},draftPayload:()=>draft,sync(){events.push('sync');},async uxEnsureDraftResources(value){assert.equal(value,draft);events.push('load-start');await loaded;events.push('load-ready');}}};
     const running=vm.runInNewContext('(async()=>{'+code+'})()',env);
     if(!pending){assert.deepEqual(events,['read','load-start'],'keine Wiederherstellung solange Schriften/Motive fehlen');finishLoad();}
     await running;
-    assert.deepEqual(events,pending?['arm']:['read','load-start','load-ready','recover','sync','arm']);
+    assert.deepEqual(events,pending?['arm','prune']:['read','load-start','load-ready','read','uploads','recover','sync','arm','prune']);
     assert.equal(banner.hidden,pending);assert.equal(env.el.state.selected,pending?'old':null);
   }
 });

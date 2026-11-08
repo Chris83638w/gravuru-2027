@@ -4,6 +4,38 @@ Galerie- und Modulverwaltung verwenden nach expliziter Host-Registrierung densel
 ## 08.11.2026 – Mika: ein Konfi mit wiederverwendbaren Modulprofilen
 
 Drei Unteragenten haben Modulvertrag, Verwaltung/Produktgruppen und Laufzeit-/Warenkorb-Anbindung umgesetzt und gegengeprüft. Sieben vorhandene Module werden je Produktgruppe ausdrücklich ein-/ausgeschaltet; kein neuer Editor je Produktart. Exakte Optionen und Preise müssen vor jeder lokalen Anlage bestätigt werden, veraltete Bestätigungen werden auch unmittelbar vor dem Schreiben abgewiesen. Vollständige Edelstahl-Vorschau: 8 Formen, 80 Größen, 404 Kombinationen; mit/ohne Logo 808 Preisvergleiche ohne Abweichung. **212/212 Tests in einem gemeinsamen Abschlusslauf**, Build erfolgreich. Kein Kundenlayout-Umbau, keine Live-/Shopify-Änderung. Browser-Sichtprüfung und anschließende Aktivierung offen; bestehende Produkte erhalten neue Profile nicht automatisch. [Sicherung](docs/handoffs/2026-11-08-universal-module-baseline.md), [Übergabe und Grenzen](docs/handoffs/2026-11-08-universal-module-profiles.md), [Prüfnachweis](docs/reviews/2026-11-08-module-profiles/README.md).
+## 08.11.2026 – Codex: Shopify-Liquid-Entity-Ursache nativ bestätigt
+
+- Der erste PR-212-Theme-Patch war gespeichert, bestand die reale Abnahme aber nicht. Die echte unveröffentlichte Shopify-Diagnose zeigt: private Linkeigenschaft enthält in Liquid `&amp;`, während die Ajax-Antwort rohe `&` enthält. Rohparser UI-Zähler 0, nach einmaliger Entity-Normalisierung 1; alte Positionen bleiben 0.
+- Ein zusätzlicher Filter im einzigen betroffenen Snippet, keine andere Produktionsänderung. Neue Regression zunächst 2 Fehler, nach Fix insgesamt 9/9 grün; unabhängiger Review 13 weitere Fälle grün. IDs/Zieladresse und exakte Einzelwert-/Fragmentprüfung bleiben bestehen.
+- Geprüfter Einzeldatei-Patch `outputs/cart-edit-r15-theme-entities-20261108/patch/snippets/gravuru-warenkorb-bearbeiten.liquid`, SHA `e9e4f2b6…`, erwarteter MD5 `b8373889…`. Backup vorhanden. Nur neue Diagnosetemplate-Datei im bereits unveröffentlichten Testtheme durch Unteragent, kein MainTheme-Write.
+- Root/Nutzer speichern den finalen Patch und prüfen danach echten Bearbeiten-Link und R15-Wiederöffnung; bis dahin keine Fertigbehauptung. [Native Diagnose, Prüfgrenze und Rücknahme](docs/handoffs/2026-11-08-cart-edit-r15-theme.md).
+
+## 08.11.2026 – Codex: tatsächlicher Theme-Link erhält gespeicherte R15-Auswahl
+
+- Live-Abnahme von PR #209 deckte eine zweite Stelle auf: Das Theme erzeugt den Bearbeiten-Link selbst und ließ die nun gespeicherte Darstellungswahl erneut weg. Ein einzelnes Liquid-Snippet übernimmt jetzt ausschließlich den exakten einzelnen `ui=prio-r15`-Wert; aktuelle Zeilen-IDs und lokales Linkziel bleiben unverändert.
+- 7/7 echte Liquid-Renderprüfungen grün für exakten Live-Patch und Git-Fassung, einschließlich Legacy, doppelter/fremder Werte und bytegleicher normaler Ausgabe. Keine Layout-, Preis-, Server-, DB- oder sonstige Themeänderung; kein Livezugriff durch Unteragenten.
+- Deploybare Datei wurde auf dem frisch gesicherten Theme-Export aufgebaut, dessen SHA `7867ca8c…` Root bestätigt hat. Ein schon vorhandener Unterschied im Git-Vorschaufallback wird nicht mit ausgerollt. Patch-SHA `60217e03…`. [Vollständige Übergabe und Rücknahme](docs/handoffs/2026-11-08-cart-edit-r15-theme.md).
+- Nächster Schritt: Root aktualisiert nach Review nur `snippets/gravuru-warenkorb-bearbeiten.liquid` und prüft den tatsächlichen Warenkorb-Link und seine Wiederöffnung. Kein Serverneustart für diesen Theme-Fix erforderlich.
+
+## 08.11.2026 – Codex: Warenkorb-Bearbeiten erhält freigegebenen R15-Konfi
+
+- Isolierter Branch `dev/mika-cart-edit-r15-20261108` auf PR #206. Drei vorher gesicherte, mit Live-SHA verglichene Quelldateien tragen nur den bereits vorhandenen Darstellungswert `prio-r15` durch Theme-Warenkorbübergabe und Bearbeiten-Link. Keine Layout-, Preis-, Design- oder Datenbankänderung; kein Livezugriff.
+- 67/67 gezielte Tests grün: echter lokaler Kundenclient und HTTP-Handoff bis erneut signiertem R15-Start, Bearbeitung derselben Position, Legacy-Kompatibilität, Ablehnung fremder Darstellungswerte sowie bisherige Rechte-/Bestellprüfungen. Diffprüfung sauber.
+- Drei-Datei-Paket mit Vorher-/Nachher-SHAs und Rücknahme vorbereitet. Reale Browser-/Shopify-Abnahme übernimmt Root. Vorhandene alte Warenkorb-Links bleiben unverändert; der separate Verdacht auf verlorene flüchtige Handoffs wird nicht mit diesem Fix vermischt.
+- [Übergabe, Prüfgrenzen und Einzeldatei-Rollout](docs/handoffs/2026-11-08-cart-edit-r15.md). Nächster Schritt: Root-Review, anschließend neuer R15-Warenkorbtest; keine pauschale Runtimekopie, damit #204/#205/#206 erhalten bleiben.
+
+## 08.11.2026 – Codex: Warenkorb-PNG bindet geprüfte Uploads ein
+
+- Isolierter Branch `dev/mika-cart-preview-uploads-20261108`; nur `adapter.mjs`, `ux.mjs` und neues `preview-uploads.mjs` betreffen die Laufzeit. Kein Layout-, Preis- oder Designumbau.
+- Die Kundenvorschau bindet akzeptierte Fotos und bestätigte SVG-Ausgaben aus der bestehenden Upload-Map byteidentisch ein. Kein Nachladen fremder URLs; MIME-/Größenprüfung und bestätigte SVG-Prüfsumme bleiben erforderlich.
+- 19 Unit-/Cart-/Restoretests sowie 2 echte CLI-Integrationstests grün; Build und Diffprüfung grün. Tatsächliche Browser-/Shopify-Pixelprüfung und Veröffentlichung durch Root noch offen.
+- Beide Vorherdateien gegen aktives Live-Manifest geprüft und gesichert. Nur drei Quelldateien übernehmen und im aktiven R15-Baum bauen: Der isolierte Git-Build enthält andere ältere R15-Abweichungen und darf nicht vollständig deployed werden.
+- Details, Quellen, Rücknahme und Cachegrenzen: [Übergabe](docs/handoffs/2026-11-08-cart-preview-uploads.md).
+
+## 08.11.2026 – Mika-Unteragent: gezielter Variantenlookup für Edelstahl-Galerie
+
+Der Form-/Größenwechsel prüfte bisher die komplette aktive Shopgalerie und konnte am unveränderten Fünfsekunden-Clientlimit scheitern. Eine Produktionsdatei korrigiert: gespeicherte Optionsbindungen liefern Kandidaten-IDs, ausschließlich frisch geprüfte aktive Registry-Zuordnungen werden verwendet. 28 bestehende und vier neue Tests bestanden; vier zusätzliche Fälle mit echtem 251er-Kandidaten auf 62 exakt livegleichen Abhängigkeiten (nur Galeriefix abweichend). Layout, Preise, Produktdaten, Timeout und Freigaben unverändert. Kein Livezugriff durch Unteragent. [Übergabe und Rollback](docs/handoffs/2026-11-08-steel-gallery-targeted-lookup.md). Nächster Schritt: Root veröffentlicht nach Einzeldatei-SHA-Prüfung und prüft echte Variantenwechsel/Warenkorb.
 
 ## 08.11.2026 – Mika-Unteragent: echter Preisvertrag verlustfrei auf 2.318 Bytes verdichtet
 

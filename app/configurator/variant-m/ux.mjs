@@ -2,6 +2,7 @@ import {moduleEnabled} from './module-profile.mjs';
 import {moduleTabs} from './module-runtime.mjs';
 import {canDeleteTemplateElement} from './element-rights.mjs';
 import {installGalleryWorkbench} from './gallery-workbench.mjs';
+import {embedPreviewUploads} from './preview-uploads.mjs';
 import {installDialogDismissal} from './dialog-dismiss.mjs';
 import {installCustomerHelp} from './customer-help.mjs';
 import {executionHeading} from './execution-registry.mjs';
@@ -99,6 +100,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   const uploadOffered=(photoEnabled||logoEnabled)&&(photoEnabled||designsHaveUploadLayer(config)||vectorLogos);
   const allowedTabs=moduleTabs(config,{upload:uploadOffered});
   const files=new Map(), icons={};
+  el.uxEmbedPreviewUploads=svg=>embedPreviewUploads(svg,files);
   const freshPreview=freshPreviewRequested(config,location.search);
   const sessionUploads=config&&!config.workbench&&!freshPreview?createSessionUploads({key:profile.binding.productId+':'+profile.revision,files}):null;
   let uploadStorageWarning=false;

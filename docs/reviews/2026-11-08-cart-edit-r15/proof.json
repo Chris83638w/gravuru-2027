@@ -1,0 +1,23 @@
+{
+  "schema": "gravuru-targeted-test-proof/v1",
+  "date": "2026-11-08",
+  "baseCommit": "7b8bc28",
+  "command": "node --test app/configurator/variant-m/shop-cart.test.mjs app/workshop/shop-entry-client.test.mjs app/workshop/theme-cart-flow.test.mjs app/workshop/shop-entry.test.mjs",
+  "passed": 67,
+  "failed": 0,
+  "skipped": 0,
+  "durationMs": 12420.9224,
+  "diffCheck": "clean",
+  "liveWrites": 0,
+  "browserVerification": "Not performed by this subagent; Root owns final live verification",
+  "coverage": [
+    "Approved presentation from current editor context; theme-only",
+    "Real local client submitThemeCart and HTTP private handoff",
+    "Generated edit URL re-signed and same product revision reopened",
+    "Same cart line edit, following edit URL retains presentation",
+    "Legacy handoff contains no ui parameter",
+    "Invalid presentation rejects before offering",
+    "Existing shop/customer/origin/revision/order protections pass"
+  ],
+  "archiveSha256": "95384d71198e0f3706d269893e78cb36bf4f7994b4e169224810bcdee8905ec5"
+}

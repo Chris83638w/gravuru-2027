@@ -57,7 +57,7 @@ test('client sends the session only as a header, validates the model answer and 
 test('normal-cart preparation uses private headers and never treats a prepared URL as a confirmed payment',async()=>{
  const calls=[],response={mode:'theme',handoffUrl:'https://gravuru-design.myshopify.com/apps/konfigurator/cart#handoff='+'c'.repeat(64),totalCents:1499,paymentConfirmed:false};
  const c=createShopEntryClient({token,fetchImpl:async(url,options)=>{calls.push({url,options});return Response.json(response);}});
- const input={draftId:adraft,expectedRevision:3,quantity:1,configId:konfig,cartLineId:'theme',cartRevision:1};
+ const input={draftId:adraft,expectedRevision:3,quantity:1,configId:konfig,cartLineId:'theme',cartRevision:1,presentation:'prio-r15'};
  assert.deepEqual(await c.submitThemeCart(input,{draftToken:'b'.repeat(64)}),response);
  assert.equal(calls[0].url,'/api/shop-entry/theme-cart');assert.equal(calls[0].options.headers['X-Gravuru-Shop-Session'],token);assert.equal(calls[0].options.headers['X-Gravuru-Draft'],'b'.repeat(64));
  assert.deepEqual(JSON.parse(calls[0].options.body),input);assert.equal(calls[0].options.credentials,'omit');

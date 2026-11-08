@@ -17,6 +17,8 @@ import {readReviewPackage} from './review-package.mjs';
 import {NATIVE_REVIEW_SCHEMAS} from './native-review-schema.mjs';
 import {createThemeCartClient} from './ui/theme-cart-client.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
+import {createShopEntryClient} from './ui/shop-entry-client.mjs';
+import {shopCartRequest} from '../configurator/variant-m/shop-cart.mjs';
 
 // Durchlauf des öffentlichen Einstiegs mit echter Werkstatt: Start über App-Proxy-Signatur → Modell →
 // Gestaltung als privater Prüfstand → normaler Theme-Warenkorb (synthetischer Ajax-Shop)
@@ -65,10 +67,11 @@ test('theme cart: signed entry, motif, immutable design, preview upload, edit an
   const req=http.request({host:'127.0.0.1',port:server.address().port,path:pathname,method,headers},res=>{const chunks=[];res.on('data',c=>chunks.push(c));res.on('end',()=>{const body=Buffer.concat(chunks);let json=null;try{json=JSON.parse(body);}catch{}resolve({status:res.statusCode,headers:res.headers,body,data:json});});});req.on('error',reject);req.end(bytes);
  });
  // 1. Start wie von Shopify weitergeleitet: Produktseite zeigt Variante 2 (hier „KGL“), der Kunde ist nicht angemeldet.
- const pageVariant=product.variants[1],params=new URLSearchParams({shop:shopDomain,path_prefix:proxyPath,timestamp:String(Math.floor(now/1000)),logged_in_customer_id:'',product:product.shopifyProductId.split('/').at(-1),variant:pageVariant.shopifyVariantId.split('/').at(-1),back:'/products/'+product.handle});
+ const pageVariant=product.variants[1],params=new URLSearchParams({shop:shopDomain,path_prefix:proxyPath,timestamp:String(Math.floor(now/1000)),logged_in_customer_id:'',product:product.shopifyProductId.split('/').at(-1),variant:pageVariant.shopifyVariantId.split('/').at(-1),back:'/products/'+product.handle,ui:'prio-r15'});
  params.set('signature',appProxySignature(params,secret));
  const start=await request(proxyPath+'/start?'+params);assert.equal(start.status,302,start.body.toString());
  const fragment=new URLSearchParams(new URL(start.headers.location).hash.slice(1)),token=fragment.get('s');assert.equal(fragment.get('back'),'/products/'+product.handle);
+ assert.equal(fragment.get('ui'),'prio-r15');
  const session={'X-Gravuru-Shop-Session':token};
  // 2. Modell: echtes Werkstattmodell der festen Revision, Ausführung der Seitenvariante vorausgewählt.
  const model=await request('/api/shop-entry/model',undefined,undefined,session);assert.equal(model.status,200,JSON.stringify(model.data));
@@ -101,8 +104,20 @@ test('theme cart: signed entry, motif, immutable design, preview upload, edit an
  assert.equal(unknown.status,422);assert.match(unknown.data.error.message,/Bibliothek/);
  // Actual saved baseline without paid additions follows the normal theme-cart path.
  const headers={...session,'X-Gravuru-Draft':draft.token};
- const prepared=await request('/api/shop-entry/theme-cart','POST',{draftId:draft.id,expectedRevision:1,quantity:2},headers);
- assert.equal(prepared.status,200,JSON.stringify(prepared.data));assert.equal(prepared.data.mode,'theme');assert.equal(sent.length,0,'no separate Storefront cart is created');
+ const cartInput={draftId:draft.id,expectedRevision:1,quantity:2};
+ for(const presentation of ['demo','PRIO-R15','https://evil.example/ui.mjs',null,0,['prio-r15'],{ui:'prio-r15'}]){
+  const denied=await request('/api/shop-entry/theme-cart','POST',{...cartInput,presentation},headers);
+  assert.equal(denied.status,422);assert.equal(denied.data.error.code,'shop_entry_cart_fields');
+ }
+ const ordinary=await request('/api/shop-entry/cart','POST',{...cartInput,presentation:'prio-r15'},headers);
+ assert.equal(ordinary.status,422,'the legacy Storefront endpoint keeps its existing field contract');
+ const entryClient=createShopEntryClient({token,fetchImpl:async(url,options)=>{
+  const result=await request(url,options.method,JSON.parse(options.body),options.headers);
+  return Response.json(result.data,{status:result.status});
+ }});
+ const requestInput=shopCartRequest({saved:{draftId:draft.id,revision:1},quantity:2,cartMode:'theme',presentation:fragment.get('ui')});
+ const prepared={data:await entryClient.submitThemeCart(requestInput,{draftToken:draft.token})};
+ assert.equal(prepared.data.mode,'theme');assert.equal(sent.length,0,'no separate Storefront cart is created');
  const transferToken=new URLSearchParams(new URL(prepared.data.handoffUrl).hash.slice(1)).get('handoff');assert.match(transferToken,/^[a-f0-9]{64}$/);
  function signed(){const q=new URLSearchParams({shop:shopDomain,path_prefix:proxyPath,timestamp:String(Math.floor(now/1000)),logged_in_customer_id:''});q.set('signature',appProxySignature(q,secret));return q;}
  const proxyRequest=(part,method='GET',token=transferToken,extra={})=>request(proxyPath+part+'?'+signed(),method,undefined,{'X-Gravuru-Cart-Handoff':token,...(method==='POST'?{Origin:'https://'+shopDomain}:{}),...extra});
@@ -121,6 +136,21 @@ test('theme cart: signed entry, motif, immutable design, preview upload, edit an
  assert.ok(!JSON.stringify(p).includes(draft.token));assert.ok(!JSON.stringify(p).includes(token));assert.equal(new URL(p.properties._gravuru_bearbeiten).searchParams.get('line'),'theme');
  assert.equal(p.properties.Bearbeiten,undefined);
  assert.equal(p.properties._gravuru_checkout_image,registeredImage);assert.equal(imageCalls,1);
+ const editUrl=new URL(p.properties._gravuru_bearbeiten);
+ assert.equal(editUrl.searchParams.get('ui'),'prio-r15','presentation survives the private handoff round trip');
+ assert.deepEqual([...editUrl.searchParams.keys()].sort(),['config','line','product','rev','ui','variant']);
+ // Shopify signs the generated edit URL again; all identity/revision guards remain in force.
+ const reopenParams=new URLSearchParams(editUrl.searchParams);
+ for(const [key,value]of signed())if(key!=='signature')reopenParams.set(key,value);
+ reopenParams.set('signature',appProxySignature(reopenParams,secret));
+ const reopened=await request(proxyPath+'/start?'+reopenParams);assert.equal(reopened.status,302);
+ const reopenedFragment=new URLSearchParams(new URL(reopened.headers.location).hash.slice(1));
+ for(const key of ['ui','config','rev','line'])assert.equal(reopenedFragment.get(key),editUrl.searchParams.get(key));
+ const reopenedModel=await request('/api/shop-entry/model','GET',undefined,{'X-Gravuru-Shop-Session':reopenedFragment.get('s')});
+ assert.equal(reopenedModel.status,200);assert.deepEqual(reopenedModel.data.model.configuration,model.data.model.configuration);
+ const legacyToken=new URLSearchParams(new URL(includedMotif.data.handoffUrl).hash.slice(1)).get('handoff');
+ const legacyData=await proxyRequest('/cart/data','GET',legacyToken);assert.equal(legacyData.status,200);
+ assert.equal(new URL(legacyData.data.properties._gravuru_bearbeiten).searchParams.get('ui'),null,'legacy callers remain on the legacy editor');
  const customerImagePath=new URL(p.properties._gravuru_bild).pathname;
  const customerImage=await request(customerImagePath);assert.equal(customerImage.status,200);assert.deepEqual(customerImage.body,Buffer.from(png,'base64'));
  assert.equal((await request(customerImagePath,'HEAD')).body.length,0);
@@ -150,9 +180,10 @@ test('theme cart: signed entry, motif, immutable design, preview upload, edit an
  const abandoned=await request('/api/shop-entry/acrylic-drafts/'+draft.id,'POST',{input:{...input,quantity:3},expectedRevision:1},headers);assert.equal(abandoned.status,200);
  const abandonedTransfer=await request('/api/shop-entry/theme-cart','POST',{draftId:draft.id,expectedRevision:2,quantity:3,configId:p.configuration.id,cartLineId:'theme',cartRevision:1},headers);assert.equal(abandonedTransfer.status,200);
  const edited=await request('/api/shop-entry/acrylic-drafts/'+draft.id,'POST',{input:{...input,quantity:3},expectedRevision:2},headers);assert.equal(edited.status,200,JSON.stringify(edited.data));
- const edit=await request('/api/shop-entry/theme-cart','POST',{draftId:draft.id,expectedRevision:3,quantity:3,configId:p.configuration.id,cartLineId:'theme',cartRevision:1},headers);assert.equal(edit.status,200,JSON.stringify(edit.data));
+ const edit=await request('/api/shop-entry/theme-cart','POST',{draftId:draft.id,expectedRevision:3,quantity:3,configId:p.configuration.id,cartLineId:'theme',cartRevision:1,presentation:'prio-r15'},headers);assert.equal(edit.status,200,JSON.stringify(edit.data));
  const editToken=new URLSearchParams(new URL(edit.data.handoffUrl).hash.slice(1)).get('handoff'),editData=await proxyRequest('/cart/data','GET',editToken);assert.equal(editData.status,200);
  assert.equal(editData.data.previousRevision,1);assert.equal(editData.data.configuration.rev,3);
+ assert.equal(new URL(editData.data.properties._gravuru_bearbeiten).searchParams.get('ui'),'prio-r15','editing keeps the approved presentation for the next return');
  await bridge(editToken).submit(editData.data);assert.equal(adds,2);assert.equal(removes,1);assert.equal(themeCart.items.length,2);assert.deepEqual(themeCart.items[0],other);
  // Signed order intake still binds precisely to the immutable edited design.
  const item=themeCart.items[1],paid={id:13745774461308,test:true,financial_status:'paid',currency:'EUR',customer:{id:42},line_items:[{id:9001,product_id:Number(p.productId),variant_id:item.variant_id,quantity:3,price:euro(item.original_price),properties:Object.entries(item.properties).map(([name,value])=>({name,value}))}]};

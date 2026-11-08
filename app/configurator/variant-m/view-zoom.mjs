@@ -96,6 +96,24 @@ export async function installViewZoom({el,r,selected}){
  const end=(e,cancelled)=>{if(touchView&&e.pointerType==='touch'){stop(e);return;}if(!gesture.has(e.pointerId))return;const used=gesture.up(point(e),{cancelled});if(used){stop(e);suppressUntil=performance.now()+500;}if(el.hasPointerCapture?.(e.pointerId))el.releasePointerCapture(e.pointerId);};
  el.addEventListener('pointerup',e=>end(e,false),true);el.addEventListener('pointercancel',e=>end(e,true),true);
  el.addEventListener('lostpointercapture',e=>{if(path(e)[0]===el)end(e,true);},true);
+ // A blank tap deselects and redraws the SVG before release. Touch capture may
+ // then end on the document instead of this host. Retire only our tracked ID:
+ // leaving it alive turns the next single touch into a phantom two-finger wait.
+ const pointerDocument=el.ownerDocument||document;
+ const endOutside=e=>{
+  if(path(e).includes(el)||!gesture.has(e.pointerId))return;
+  // An SVG replacement can transfer implicit capture to the native drag layer.
+  // That is still the same live gesture, not an outside cancellation.
+  if(e.type==='lostpointercapture'&&[el,holder,stage].some(node=>node.hasPointerCapture?.(e.pointerId)))return;
+  gesture.up(point(e),{cancelled:true});
+  if(el.hasPointerCapture?.(e.pointerId))el.releasePointerCapture(e.pointerId);
+ };
+ const outsideEnds=['pointerup','pointercancel','lostpointercapture'];
+ let outsideAttached=false;
+ const attachOutsideEnds=()=>{if(outsideAttached)return;outsideAttached=true;for(const type of outsideEnds)pointerDocument.addEventListener(type,endOutside,true);};
+ const detachOutsideEnds=()=>{if(!outsideAttached)return;outsideAttached=false;for(const type of outsideEnds)pointerDocument.removeEventListener(type,endOutside,true);};
+ attachOutsideEnds();
+ window.addEventListener('pageshow',event=>{if(event.persisted)attachOutsideEnds();});
  el.addEventListener('click',e=>{if(performance.now()<suppressUntil&&onStage(e)&&!control(target(e))){stop(e);suppressUntil=0;}},true);
  // Navigation resets the view; selecting or editing never zooms.
  r.addEventListener('click',e=>{const node=e.target.closest?.('[data-ux],[data-ux-tab]');if(node?.dataset.uxTab||['mobile-prev','mobile-next','mobile-step'].includes(node?.dataset.ux))fit(true);},true);
@@ -104,6 +122,6 @@ export async function installViewZoom({el,r,selected}){
  if(typeof ResizeObserver==='function')new ResizeObserver(schedule).observe(stage);
  window.addEventListener('resize',()=>{cancelAnimation();schedule();});
  window.visualViewport?.addEventListener('resize',schedule);window.visualViewport?.addEventListener('scroll',schedule);
- window.addEventListener('pagehide',()=>{cancelAnimation();resetGestures();if(pending)cancelAnimationFrame(pending);},{once:true});
+ window.addEventListener('pagehide',()=>{cancelAnimation();resetGestures();detachOutsideEnds();if(pending)cancelAnimationFrame(pending);});
  refresh();return {fit:el.uxFitView,zoom:el.uxSetViewZoom,refresh:schedule,view:()=>({...view}),gesture};
 }

@@ -64,3 +64,10 @@ Zur Rücknahme die fünf gesicherten vorhandenen Quellen wiederherstellen und im
 [Shopify Theme Performance](https://shopify.dev/docs/storefronts/themes/best-practices/performance) und [Preload sparsam verwenden](https://shopify.dev/docs/storefronts/themes/best-practices/performance/use-preload-resource-hints-sparingly) begründen die begrenzte Nachladefolge. [Chrome Cache-Partitionierung](https://developer.chrome.com/blog/http-cache-partitioning) und [MDN Speculative Loading](https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Speculative_loading) erklären die Origin-/Einbettungsgrenzen. Die konkrete Partition-Wiederverwendung ist eine Umsetzungserwartung, kein bereits gemessener Browserbeweis.
 
 Nächste Abnahme durch Root: Produktseite normal laden, begrenzte Warmabrufe prüfen; Editor öffnen; Fontdialog sofort mit echten bereits geladenen Proben, später sichtbare Proben nachladen; Motive suchen/Kategorie wechseln/weiterscrollen ohne `motive-alle.json`; Element platzieren und Warenkorb einschließlich SVG-Logo unverändert prüfen. Mobile/Desktop und bewusst langsame Verbindung; Netzwerkfehler/erneutes Öffnen; anschließend getrennte Freigabe/Veröffentlichung.
+
+
+## Reviewnachtrag: vollständige sichtbare Liste
+
+Der unabhängige Review fand eine feste Zwölfergrenze vor dem Filter bereits geladener Karten. Dadurch blieben bei 15 gleichzeitig sichtbaren Karten die letzten drei dauerhaft ungeladen. Die Sichtliste bleibt jetzt vollständig; nur die tatsächlichen parallelen Abrufe sind auf zwei begrenzt. Gezielte Regression: 15 sichtbare Zeilen, davon einmal keine und einmal die ersten zwölf bereits geladen; alle 15 nutzbar, nie mehr als zwei Abrufe gleichzeitig. Alle fünf Queue-/Observertests grün. Kein Layout geändert.
+
+Root meldete für den vorherigen Stand positive Browserbelege: sechs einzelne Motivabrufe, nach Kreuzsuche drei weitere, kein Gesamtpaket; Fontdialog sofort mit sichtbaren Proben und nachladenden Zeilen. Die letzte Queuekorrektur benötigt denselben Serverbuild aus aktuellen Quellen; Browserbelege und Veröffentlichungsstatus werden weiterhin durch Root geführt.

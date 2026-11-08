@@ -12,7 +12,7 @@ const same=(a,b)=>previewDigest(fixedBinding(a))===previewDigest(fixedBinding(b)
 // legacy scene/shared-font renderer is deliberately left on its private path.
 export function createPublicDesignPreviews({cache,resolve,modelFor,checkBinding,gallery,renderTemplate,previewUrl}){
  function current(ids){
-  const {store,binding}=resolve(ids);
+  const {store,binding}=resolve({shopifyProductId:ids.shopifyProductId,shopifyVariantId:ids.shopifyVariantId});
   if(binding.storeId!==store.storeId||binding.tenantId!==store.workshop.tenantId||binding.shopifyProductId!==ids.shopifyProductId||binding.shopifyVariantId!==ids.shopifyVariantId)unavailable();
   const model=modelFor(store,binding);checkBinding(store,binding,model);
   if(model.configuration?.id!==binding.productId||model.configuration?.revision!==binding.productRevision||model.key!=='acryl')unavailable();

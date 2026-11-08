@@ -1,0 +1,33 @@
+{
+  "status": "pass",
+  "cases": [
+    {
+      "form": "AB",
+      "size": "12 × 8 cm",
+      "mounting": "K00",
+      "name": "Test Eins",
+      "price": 19.99
+    },
+    {
+      "form": "RE",
+      "size": "15 × 10 cm",
+      "mounting": "KGL",
+      "name": "Test Zwei",
+      "price": 26.98
+    },
+    {
+      "form": "Retro 2",
+      "size": "9 × 6 cm",
+      "mounting": "B02",
+      "name": "Test Drei",
+      "svgLogo": true,
+      "logoSurcharge": 12.99,
+      "price": 30.47
+    }
+  ],
+  "total": 77.44,
+  "quantityTwoLogoLine": 60.94,
+  "quantityTwoCartTotal": 107.91,
+  "reloadTotal": 77.44,
+  "paidOrder": false
+}

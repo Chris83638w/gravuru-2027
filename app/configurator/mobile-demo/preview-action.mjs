@@ -1,5 +1,5 @@
 // Compact entry to the existing native fullscreen dialog, not a second viewer.
-// Keep the live demo stylesheet intact: these rules only affect this new row.
+// Keep the live demo stylesheet intact; no full-width preview strip.
 export function installDemoPreviewAction({el, preview, trigger, plus}) {
   if (!preview || !trigger || !plus) return null;
   const doc = preview.ownerDocument || document;
@@ -13,12 +13,12 @@ export function installDemoPreviewAction({el, preview, trigger, plus}) {
   const style = doc.createElement('style');
   style.textContent = `
     :host([data-mobile-demo]) .ux-preview > .md-preview-actions {
-      display:grid!important; grid-template-columns:1fr auto 1fr; align-items:center; gap:8px;
-      box-sizing:border-box; flex:0 0 48px!important; height:48px!important; min-height:48px!important;
-      margin:0!important; padding:2px 10px!important; z-index:66; pointer-events:none;
+      display:contents!important;
     }
+    :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-preview{background:#fff!important}
+    :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-preview .stage:not(.acryl-scene){padding-bottom:60px!important}
     :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .md-preview-actions > button {
-      position:static!important; inset:auto!important; transform:none!important;
+      position:absolute!important; transform:none!important; z-index:66;
       display:inline-flex!important; align-items:center; justify-content:center;
       box-sizing:border-box; width:44px!important; min-width:44px!important;
       height:44px!important; min-height:44px!important; margin:0!important; padding:10px!important;
@@ -26,10 +26,10 @@ export function installDemoPreviewAction({el, preview, trigger, plus}) {
       font-weight:650!important; line-height:1!important;
     }
     :host([data-mobile-demo]) .ux-shell .md-preview-actions > .md-plus {
-      grid-column:2; grid-row:1; font-size:30px!important;
+      left:calc(50% - 22px)!important; bottom:4px!important; top:auto!important; font-size:30px!important;
     }
     :host([data-mobile-demo]) .ux-shell .md-preview-actions > .md-large-preview {
-      grid-column:3; grid-row:1; justify-self:end;
+      left:var(--md-preview-action-x,calc(100% - 48px))!important; top:var(--md-preview-action-y,calc(100% - 48px))!important; bottom:auto!important; right:auto!important;
       background:transparent!important; color:#626b73!important; box-shadow:none!important;
     }
     :host([data-mobile-demo]) .ux-shell .md-preview-actions > .md-large-preview svg {
@@ -62,5 +62,11 @@ export function installDemoPreviewAction({el, preview, trigger, plus}) {
     if (!trigger.disabled && !trigger.hidden && trigger.getAttribute('aria-disabled') !== 'true') trigger.click();
   };
   action.addEventListener('click', open);
-  return { dispose() { action.removeEventListener('click', open); anchor.replaceWith(plus); row.remove(); style.remove(); } };
+  let frame=0,disposed=false;
+  const place=()=>{frame=0;if(disposed)return;const plate=preview.querySelector('.plate-holder'),pr=preview.getBoundingClientRect?.(),br=plate?.getBoundingClientRect?.();if(!pr||!br||!pr.width||!pr.height)return;const x=Math.max(4,Math.min(pr.width-48,br.right-pr.left-44)),y=br.bottom-pr.top+8;if(y+44<=pr.height){action.style.setProperty('--md-preview-action-x',Math.round(x)+'px');action.style.setProperty('--md-preview-action-y',Math.round(y)+'px');}};
+  const schedule=()=>{if(!disposed&&!frame)frame=requestAnimationFrame(place);};
+  const oldSync=el.sync;if(typeof oldSync==='function')el.sync=function(...args){const result=oldSync.apply(this,args);schedule();return result;};
+  const view=doc.defaultView||window;view.addEventListener('resize',schedule);el.shadowRoot.addEventListener('input',schedule);
+  const observer=typeof ResizeObserver==='function'?new ResizeObserver(schedule):null;observer?.observe(preview);const plate=preview.querySelector('.plate-holder');if(plate)observer?.observe(plate);schedule();
+  return { dispose() { disposed=true;if(frame)cancelAnimationFrame(frame);observer?.disconnect();view.removeEventListener('resize',schedule);el.shadowRoot.removeEventListener('input',schedule);if(typeof oldSync==='function')el.sync=oldSync;action.removeEventListener('click', open); anchor.replaceWith(plus); row.remove(); style.remove(); } };
 }

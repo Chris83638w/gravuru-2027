@@ -1,3 +1,7 @@
+## 08.11.2026 – Mika: kompakte R15-Aktionen getrennt vorbereitet
+
+Im freigegebenen UI-Umfang drei Quelldateien auf587a395: native Desktopaktionen unten gruppiert, volle Vorschauzeile entfernt, grauer44pxPfeil am Produkt, sichtbarer Produkt-Rückweg und Schließen der Vollansicht per freiem Doppeltipp. 57/57 gezielte Demo-/Touch-/Zoom-/Toolbar-Tests grün; Build grün, unabhängiger enger Review ohne Blocker. Keine CSS-Datei/Preis-/Produkt-/Moduländerung und kein Livezugriff durch Agent. [Übergabe, Einzelfilepaket und Browsergrenzen](docs/handoffs/2026-11-08-r15-compact-controls.md).
+
 ## 08.11.2026, 17:05 Berlin – Mika: Live-Stand und offene Kundenmeldungen vor Flugpause gesichert
 
 Touch-/Vorschaufix seit 16:41, begrenztes Produktseiten-Vorladen und Einzelressourcen seit 16:54 veröffentlicht. Aktive Runtime `private/mika-r15-assets-20261108-v1`, Bundle `editor-6b08ecd29481848d.mjs`; keine Produkt-/Datenbank-/Themeänderung. Tatsächliche Shopify-Einbettung geprüft; keine gemessenen Handy-Cachetreffer behaupten. Kunde meldet weiterhin langsame Designs/Motive und SVG-Seitenverhältnisfehler: offen, Diagnose läuft. Neue Desktopleiste, Entfernen des grauen Balkens und sichtbarer Produkt-Zurück-Button sind wegen „Warte noch“ noch nicht umgesetzt. Module separat vorbereitet; keine Produktprofilaktivierung. [Zentrale Wiederaufnahme mit Sicherungen, Links und Prüfgrenzen](docs/handoffs/2026-11-08-current-konfi-before-flight.md).

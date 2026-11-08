@@ -107,5 +107,14 @@
     "Keep the previous hashed core bundle for already-open sessions.",
     "Do not copy generated models.json, guides.json, assistant.js or lazy resources.",
     "No source data, layout, pricing, server, database, Shopify or theme changes."
-  ]
+  ],
+  "deploymentScript": {
+    "path": "docs/reviews/2026-11-08-steel-shape-text-fix/deploy-delta.mjs",
+    "bytes": 6923,
+    "sha256": "495f25e052cfc0f542e7e63464c79476b65061e9a5f9749a72c137b8c3cdb907",
+    "base64Chars": 9232,
+    "runtimeExecuted": false,
+    "localInMemoryTestsPassed": 5,
+    "syntaxCheckPassed": true
+  }
 }

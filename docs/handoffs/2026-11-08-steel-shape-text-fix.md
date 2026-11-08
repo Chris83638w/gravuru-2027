@@ -46,3 +46,31 @@ Nicht kopieren: `models.json`, `guides.json`, `assistant.js`, Lazy-Ressourcen, K
 ## Offen und genauer nächster Schritt
 
 Der Hauptagent übernimmt Sicherung und eine kontrollierte Aktivierung, danach Browser-/Warenkorbabnahme mit dem exakten AB→RE-Fall und Rückwechsel. Dieser Agent hat keine Shop-, Theme-, Server-, Datenbank- oder Browseränderung vorgenommen. Lokale Modell-/Bundleprüfungen sind kein Ersatz für die tatsächliche Warenkorbprüfung. Die parallel untersuchte Logo-Preisfrage gehört ausdrücklich nicht in diesen Fix.
+
+## Vorbereitetes kleines Deploy-Delta für Root
+
+Zusatzauftrag: [deploy-delta.mjs](../reviews/2026-11-08-steel-shape-text-fix/deploy-delta.mjs), 6.923 Bytes / 9.232 Base64-Zeichen, erzeugt nur die vier Manifest-Laufzeitdateien. Es liest den vorhandenen Kern `editor-bab5a1fa49ee42d2.mjs`, ersetzt eindeutig geprüfte Zeichenfolgen und reproduziert gzip mit `{level:9}`. Quell-, Editor-, altes Bundle-/gzip- und alle vier Zielhashes sind fest vorgegeben. Alle vollständigen Postimages werden vor dem ersten Schreibzugriff im Speicher erzeugt und geprüft.
+
+Explizite Zielruntime: `/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-steel-r15-shopify-20261108`. Backup: `/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-steel-shopify-backup-20261108-cart-text-patch`. Der neue Backupordner wird atomar mit `mkdir` ohne `recursive` angelegt; bei vorhandenem Ordner, vorhandenen neuen Bundles oder abweichenden Hashes stoppt die Aktivierung. Original-Quelldatei und Original-Editor werden vor Laufzeitänderungen gesichert und rückgelesen. Reihenfolge: neues Bundle, dessen gzip, Quelldatei, `editor.html` zuletzt per atomarem Rename. Alte Bundles bleiben bestehen.
+
+Nur Root nach Prüfung ausführen:
+
+```sh
+node deploy-delta.mjs --check
+node deploy-delta.mjs
+```
+
+`--check` prüft alle Bytes, erzeugt aber weder Backup noch Laufzeitdateien. Das Skript wurde hier **nicht gegen ein echtes Dateisystem ausgeführt**; lediglich `node --check` zur Syntaxprüfung sowie fünf Tests mit einem vollständig simulierten Dateisystem wurden ausgeführt. Diese verwenden die echten lokalen R15-Ausgangsbytes und prüfen erfolgreiche Rekonstruktion, falsche Vor-/Nachhashes, vorhandene Ziele/Backup, Schreibreihenfolge, unterbrochenen letzten Rename und Rücknahme.
+
+```powershell
+$env:GRAVURU_TEXT_PATCH_BASELINE='<workspace>/work/steel-r15-native-overlay-20261108'
+node --test docs/reviews/2026-11-08-steel-shape-text-fix/deploy-delta.test.mjs
+```
+
+Rücknahme durch Root, auch nach unterbrochenem letztem Rename:
+
+```sh
+node deploy-delta.mjs --rollback
+```
+
+Die Rücknahme liest und prüft zunächst beide gesicherten Originale sowie alle vorhandenen Bundle-Dateien. Sie akzeptiert bei Quelle/Editor nur den bekannten Vor- oder Nachstand, ersetzt beide atomar durch den Vorstand und prüft danach erneut. Unbekannte zwischenzeitliche Änderungen werden nicht überschrieben. Beide Bundle-Versionen und der private Backupordner bleiben erhalten. Das Skript startet keinen Prozess neu und greift weder auf Shopify noch Datenbanken, Backend- oder Stylesheetdateien zu.

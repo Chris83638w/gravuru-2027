@@ -20,6 +20,7 @@ import {galleryAssignmentCatalogue} from './gallery-assignment-catalogue.mjs';
 import {galleryReviewPage} from './gallery-review-pagination.mjs';
 export {slateGalleryHtml};
 export function createSlateGalleryHandler(root, importsFile, {csrfToken: suppliedToken,workshop,management={},fingerprintCacheFile} = {}) {
+ if(management.connect!==undefined&&(typeof management.connect!=='function'||!workshop||management.synchronizer))throw Error('Choose one explicit server-side gallery management connection.');
  let pack=JSON.parse(fs.readFileSync(path.join(root,'manifest.json'))),imported=JSON.parse(fs.readFileSync(importsFile));
  pack.originals=pack.originals.map(row=>{
   const file=path.resolve(root,'originals',row.id,'design.json');
@@ -56,20 +57,35 @@ export function createSlateGalleryHandler(root, importsFile, {csrfToken: supplie
  const assignments=workshop?createGalleryDesignAssignments({workshop,catalogue,
   listTargets:()=>approvalTargets.targets.map(t=>({...t,originalId:t.id,material:{key:t.materialKey,label:t.material,kind:t.materialKind}})),
   originalFor:id=>{const row=pack.originals.find(row=>row.id===id);if(!row)return null;const reviewCategory=designReviewCategory(row);return {...row,reviewCategory,reviewThemes:reviewThemes(row,reviewCategory)};}}):null;
- const productGroups=workshop?createProductGroupTemplates({filename:management.filename||path.join(path.dirname(importsFile),'workshop.sqlite'),repository:workshop.repository,tenantId:workshop.tenantId,
-  targets:options=>galleryProductGroupSources(workshop,approvalTargets.targets,options),
+ const sourceRegistry=Object.freeze({
+  targets:options=>{refreshRegistry();return galleryProductGroupSources(workshop,approvalTargets.targets,options);},
   offeringFor:scope=>{
    const catalogue=workshop.catalogStructure.read(),line=catalogue.lines?.find(l=>l.id===scope.lineId),sub=line?.subcategories?.find(s=>s.id===scope.subcategoryId);
    if(!line||line.enabled===false||!sub||!Array.isArray(sub.effectiveFamilyIds))return null;
    return {familyIds:sub.effectiveFamilyIds,fingerprint:createHash('sha256').update(JSON.stringify({source:catalogue.sourceSha256,scope,families:sub.effectiveFamilyIds})).digest('hex')};
-  }}):null;
+  },
+  scopes:()=>{
+   const sources=sourceRegistry.targets(),catalogue=workshop.catalogStructure.read();
+   return (catalogue.lines||[]).filter(line=>line.enabled!==false).flatMap(line=>(line.subcategories||[]).filter(sub=>Array.isArray(sub.effectiveFamilyIds)).map(sub=>({
+    lineId:line.id,subcategoryId:sub.id,label:[line.name||line.label||line.id,sub.name||sub.label||sub.id].join(' / '),
+    sourceKeys:sources.filter(source=>sub.effectiveFamilyIds.includes(source.familyId)).map(source=>source.key)
+   })));
+  }
+ });
  const sourceApproval=({mapping})=>{
+  refreshRegistry();
   approvalTargets.beginRead();
   const target=approvalTargets.targets.find(t=>t.productId===mapping.source.productId&&t.designId===mapping.source.designId&&t.id===mapping.source.originalId);
   return {approved:!!target&&approvals.get(target.key)?.status==='approved',reason:'Die aktuelle Galerievorlage muss für genau dieses Material und Format bestätigt sein.'};
  };
- const synchronizer=typeof management.synchronizer==='function'?management.synchronizer({workshop,sourceApproval}):management.synchronizer||null;
- const manage=productGroups?createGalleryManagementHandler({workshop,templates:productGroups,synchronizer,csrfToken}):null;
+ // Optional trusted host factory: owns the same management routes, never a
+ // second UI/router. Registry closures follow Astra's native import journal.
+ const managementFilename=management.filename||path.join(path.dirname(importsFile),'workshop.sqlite');
+ const connected=management.connect?.({sourceWorkshop:workshop,filename:managementFilename,sourceRegistry,sourceApproval,csrfToken});
+ if(management.connect&&(!connected||typeof connected.handle!=='function'||typeof connected.close!=='function'||typeof connected.then==='function'))throw Error('The gallery management connection must return a synchronous scoped host.');
+ const productGroups=!connected&&workshop?createProductGroupTemplates({filename:managementFilename,repository:workshop.repository,tenantId:workshop.tenantId,targets:sourceRegistry.targets,offeringFor:sourceRegistry.offeringFor}):null;
+ const synchronizer=!connected?(typeof management.synchronizer==='function'?management.synchronizer({workshop,sourceApproval,sourceRegistry}):management.synchronizer||null):null;
+ const manage=connected?connected.handle.bind(connected):productGroups?createGalleryManagementHandler({workshop,templates:productGroups,synchronizer,csrfToken}):null;
  const creationGate=manage?createGalleryManagementCreationGate():null;
  const json=(res,status,data)=>res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(JSON.stringify(data));
  const fail=(status,message)=>{throw Object.assign(Error(message),{status});};
@@ -223,6 +239,6 @@ export function createSlateGalleryHandler(root, importsFile, {csrfToken: supplie
   }
   res.writeHead(200,{'Content-Type':type,'Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(req.method==='HEAD'?undefined:bytes);return true;
  };
- handler.close=()=>{approvalTargets.flushCache();comments.close();approvals.close();productGroups?.close();synchronizer?.close?.();};
+ handler.close=()=>{approvalTargets.flushCache();comments.close();approvals.close();connected?.close();productGroups?.close();synchronizer?.close?.();};
  return handler;
 }

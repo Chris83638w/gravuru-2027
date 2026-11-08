@@ -7,7 +7,7 @@ import {createPreviewServer} from '../../app/configurator/variant-m/server.mjs';
 import {createWorkshop} from '../../app/workshop/http.mjs';
 import {galleryEditorDocument} from './gallery-editor.mjs';
 import {createSlateGalleryHandler} from '../lib/slate-review-gallery.mjs';
-export async function createGalleryManagementFixture(root,{syncFactory,extraDocument}={}){
+export async function createGalleryManagementFixture(root,{syncFactory,extraDocument,managementFactory}={}){
  if(!fs.existsSync(path.join(OUTPUT,'models.json')))build();
  fs.mkdirSync(root,{recursive:true});
  const catalog=path.join(root,'catalogue'),pack=path.join(root,'package'),filename=path.join(root,'workshop.sqlite');
@@ -48,7 +48,8 @@ export async function createGalleryManagementFixture(root,{syncFactory,extraDocu
  const importsFile=path.join(root,'local-review-import.json');
  fs.writeFileSync(importsFile,JSON.stringify({localOnly:true,published:false,shopifyWrites:0,products:rows}));
  const sync=syncFactory?await syncFactory({root,workshop,source:products[0].record,extraSource,originalId}):null;
- const gallery=createSlateGalleryHandler(pack,importsFile,{workshop,management:{filename,...(sync?{synchronizer:({sourceApproval})=>sync.service(sourceApproval)}:{})}});
+ const configured=managementFactory?await managementFactory({workshop,filename,root,galleryDirectory:pack,importsFile,extraSource}):{};
+ const gallery=createSlateGalleryHandler(pack,importsFile,{workshop,management:{filename,...(sync?{synchronizer:({sourceApproval})=>sync.service(sourceApproval)}:{}),...configured}});
  const server=createPreviewServer({workshop}),handlers=server.listeners('request');server.removeAllListeners('request');
  server.on('request',(req,res)=>{if(!gallery(req,res))for(const handle of handlers)handle.call(server,req,res);});
  return {root,filename,workshop,products,originalId,sync,server,

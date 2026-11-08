@@ -88,6 +88,10 @@ Die zuerst beobachtete 60-s-Fristüberschreitung in PR214 ist isoliert behoben, 
 
 **PR214/223 ist noch nicht produktiv aktiviert.** Nächster Schritt: vorhandenen Backend-Bedienweg für Profilwahl → konkrete Änderungsübersicht → Nutzerbestätigung prüfen und integrieren. Keine stillschweigende neue Produktzuweisung. Erst danach getrennte Liveabnahme der bestätigten Zuordnung und Warenkorbprüfung.
 
+**Zusätzlicher Anschluss-Meilenstein gesichert:** [Draft PR224](https://github.com/Chris83638w/gravuru-2027/pull/224), HEAD `56be0409defa92653d9400a4ed3e688f4e94210d`. Externe Vorschau-Konfiguration nutzt vorhandene Profilpins, Bibliothek und Journal, beide Aktivierungsschalter fest `false`. 2/2 gezielte HTTP-Tests grün: reale 251/404-Testquelle, vorhandener Auth-/CSRF-Weg, Plan → Bestätigung → Ausführung 403, Neustart mit demselben Plan/Bestätigung, Zieldatei bytegleich, keine Shopify-Mutation. Unabhängiger enger Review ohne Blocker. Verwaltungsprofile und Prüfplanjournal bleiben bestimmungsgemäß schreibbar; die **Produktübernahme** ist gesperrt. Kein Live-Mount durch Agent oder Root in diesem Schritt.
+
+[Installationsübergabe](https://github.com/Chris83638w/gravuru-2027/blob/dev/mika-module-activation-preview-mount-20261109/docs/handoffs/2026-11-09-module-activation-preview-mount.md): vor privater Installation tatsächlich vorhandene Serverdateien gegen das enge Backenddelta prüfen, vorhandenen externen Loader gezielt umschalten; keine vollständige Runtimekopie oder Kunden-UI-Änderung. Für echte Aktivierung anschließend konkretes Produkt und gewünschtes Profil bestätigen lassen. Das bestehende Türschild bleibt bis dahin mit Logo wie bisher. Allgemeine Gruppen-Vorlagen sind vorhanden, automatische Gruppenänderung benötigt noch explizite reale Zielzuordnungen.
+
 Eine bereits gespeicherte Profilrevision darf später nicht mit profilunkundiger alter Runtime betrieben werden. Fachliche Rücknahme erfolgt als neue bestätigte Revision; historische Bestellungen bleiben unverändert.
 
 ## Zusätzliche Browserprüfung nach wiederhergestellter Verbindung

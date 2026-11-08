@@ -1,0 +1,45 @@
+{%- layout none -%}
+<!doctype html><meta charset="utf-8"><title>Gravuru R15 Liquid diagnostic</title><h1>Private theme diagnostic</h1>
+<p>Only counts and flags; no customer content or URLs.</p>
+<table border="1"><thead><tr><th>Row</th><th>Native configuration</th><th>Property present</th><th>Entity separator count</th><th>Raw query parts</th><th>Raw UI count</th><th>Raw R15</th><th>Normalized UI count</th><th>Normalized R15</th></tr></thead><tbody>
+{%- for item in cart.items -%}
+{%- liquid
+assign raw = item.properties['_gravuru_bearbeiten'] | default: ''
+assign entity_parts = raw | split: '&amp;'
+assign entity_count = entity_parts.size | minus: 1
+assign fragmentless = raw | split: '#' | first
+assign raw_parts = fragmentless | split: '?'
+assign raw_ui_count = 0
+assign raw_r15 = false
+if raw_parts.size == 2
+ assign raw_params = raw_parts | last | split: '&'
+ for param in raw_params
+  assign key = param | split: '=' | first
+  if key == 'ui'
+   assign raw_ui_count = raw_ui_count | plus: 1
+   if param == 'ui=prio-r15'
+    assign raw_r15 = true
+   endif
+  endif
+ endfor
+endif
+assign normalized = raw | replace: '&amp;', '&' | split: '#' | first
+assign normalized_parts = normalized | split: '?'
+assign normalized_ui_count = 0
+assign normalized_r15 = false
+if normalized_parts.size == 2
+ assign normalized_params = normalized_parts | last | split: '&'
+ for param in normalized_params
+  assign key = param | split: '=' | first
+  if key == 'ui'
+   assign normalized_ui_count = normalized_ui_count | plus: 1
+   if param == 'ui=prio-r15'
+    assign normalized_r15 = true
+   endif
+  endif
+ endfor
+endif
+-%}
+<tr><td>{{ forloop.index }}</td><td>{% if item.properties['_gravuru_config'] != blank %}yes{% else %}no{% endif %}</td><td>{% if raw != blank %}yes{% else %}no{% endif %}</td><td>{{ entity_count }}</td><td>{{ raw_parts.size }}</td><td>{{ raw_ui_count }}</td><td>{{ raw_r15 }}</td><td>{{ normalized_ui_count }}</td><td>{{ normalized_r15 }}</td></tr>
+{%- endfor -%}
+</tbody></table>

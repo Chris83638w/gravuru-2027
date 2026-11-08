@@ -1,10 +1,9 @@
-import {createServer} from 'node:http';
-import {createGalleryModuleManagementDemo} from './fixtures/gallery-module-management.mjs';
+import {createGalleryModuleManagementDemo,createGalleryModuleManagementDemoServer} from './fixtures/gallery-module-management.mjs';
 
 const args=process.argv.slice(2),portArg=args.find(v=>v.startsWith('--port=')),port=portArg?Number(portArg.slice(7)):8209;
 if(args.some(v=>v!==portArg)||!Number.isInteger(port)||port<1024||port>65535)throw Error('Use only --port=1024..65535');
 const demo=await createGalleryModuleManagementDemo();
-const server=createServer((req,res)=>{if(!demo.handle(req,res))res.writeHead(404).end('Private Modul-Demo: nur /originale/verwaltung ist eingerichtet.');});
+const server=createGalleryModuleManagementDemoServer(demo);
 let closed=false;
 const close=()=>{if(closed)return;closed=true;server.close(()=>{demo.close();process.exit(0);});};
 process.on('SIGINT',close);process.on('SIGTERM',close);

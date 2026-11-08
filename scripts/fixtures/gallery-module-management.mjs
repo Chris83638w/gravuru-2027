@@ -8,6 +8,7 @@ import {randomBytes} from 'node:crypto';
 import {createGallerySyncTestFixture,GALLERY_SYNC_TEST_SHOP as shopDomain,GALLERY_SYNC_TEST_PRODUCT as productId} from '../../app/workshop/gallery-shop-sync-test-fixture.mjs';
 import {createGalleryModuleManagementHost} from '../lib/gallery-module-management-host.mjs';
 import {createGalleryManagementHandler} from '../lib/gallery-management-http.mjs';
+import {createPreviewServer} from '../../app/configurator/variant-m/server.mjs';
 
 export async function createGalleryModuleManagementDemo(){
  const directory=fs.mkdtempSync(path.join(os.tmpdir(),'gravuru-module-demo-'));
@@ -33,7 +34,7 @@ export async function createGalleryModuleManagementDemo(){
   const csrfToken=randomBytes(24).toString('hex');
   host=createGalleryModuleManagementHost({sourceWorkshop,targetWorkshop,filename:path.join(directory,'source','workshop.sqlite'),sourceRegistry,
    sourceApproval:()=>({approved:true,reason:'Synthetische Testfreigabe, keine Artwork-Abnahme'}),
-   targets:()=>profile?[{...mapping,label:'Demo: vorhandenes Türschild – Logo ausschalten',media:[],mediaRequired:false,moduleUpdate:{id:profile.id,revision:profile.revision,sourceRevision:1}}]:[],
+   targets:()=>{if(!profile)return [];const current=host.management.profiles.get(profile.id);return [{...mapping,label:'Demo: vorhandenes Türschild – gespeichertes Modulprofil übernehmen',media:[],mediaRequired:false,moduleUpdate:{id:current.id,revision:current.revision,sourceRevision:1}}];},
    csrfToken,shopDomain,journalFilename:path.join(directory,'mounted-sync.sqlite'),graphql,executionEnabled:true,writesEnabled:true});
   profile=host.management.profiles.create({name:'Demo Türschild ohne Logo',modules:{options:true,designs:true,text:true,motifs:true,photo:false,logo:false,colors:false}});
   const privateHandler=createGalleryManagementHandler({workshop:sourceWorkshop,templates:host.management.groups,csrfToken,
@@ -47,4 +48,14 @@ export async function createGalleryModuleManagementDemo(){
    close(){host.close();fixture.close();if(path.dirname(directory)!==os.tmpdir()||!path.basename(directory).startsWith('gravuru-module-demo-'))throw Error('Unsafe temporary demo path');fs.rmSync(directory,{recursive:true,force:true});}
   };
  }catch(error){host?.close();fixture?.close();if(path.dirname(directory)===os.tmpdir()&&path.basename(directory).startsWith('gravuru-module-demo-'))fs.rmSync(directory,{recursive:true,force:true});throw error;}
+}
+
+/** The original workshop preview host serves its existing module administration
+ * and merchant session/CSRF endpoints. Only the existing gallery paths are
+ * prepended; no second module UI or replacement authentication is introduced. */
+export function createGalleryModuleManagementDemoServer(demo){
+ const server=createPreviewServer({outputDirectory:demo.directory,workshop:demo.fixture.sourceWorkshop});
+ const existing=server.listeners('request');server.removeAllListeners('request');
+ server.on('request',(req,res)=>{if(!demo.handle(req,res))for(const listener of existing)listener.call(server,req,res);});
+ return server;
 }

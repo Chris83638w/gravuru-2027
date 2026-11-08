@@ -1,6 +1,6 @@
 # Entscheidungsregister Chris (gravuru 2027)
 
-Stand 04.11.2026, 11:58 – von Claude (Operator) aus STATUS.md, Übergaben, Katalog und allen Issues zusammengestellt. **Pflichtlektüre für jede KI vor jedem Auftrag.** Bei Widerspruch gilt der neueste Eintrag. Einträge „Agent-Annahme“ sind keine Entscheidung von Chris.
+Stand 08.11.2026, 15:20 – von Claude (Operator) aus STATUS.md, Übergaben, Katalog und allen Issues zusammengestellt. **Pflichtlektüre für jede KI vor jedem Auftrag.** Bei Widerspruch gilt der neueste Eintrag. Einträge „Agent-Annahme“ sind keine Entscheidung von Chris.
 
 
 Stand: 02.11.2026 abends. Gelesen: Code-Repo `origin/main` f78ad5b (STATUS.md, AGENTS.md, START_HERE.md, UMSETZUNGSPAKETE.md, NEUE-WERKSTATT-PLAN.md, docs/handoffs, docs/plans), Katalog-Repo 5171686f6 (DESIGN-MASTER, KATALOG, STATUS, STAND, linien/README, auftraege), alle 153 Issues/PRs mit 601 Kommentaren (REST).
@@ -180,6 +180,7 @@ Stand: 02.11.2026 abends. Gelesen: Code-Repo `origin/main` f78ad5b (STATUS.md, A
 | 4.64 | 03.11. 16:52–17:47 | **Schiefer-Löcher:** Zitate: „Premium hat keine Löcher!!“, „Bei 7x2, 8x3,5 und 8x5 gibt es keine Löcher“, „rund ist ok“.<br>• Lochbild aus der Excel `Schiefer-Gedenktafeln-Groessen-2026-10-29.xlsx`, Spalte M, Ø 4 mm.<br>• Ohne Löcher: Premium, alle geschnittenen Formen, Herz-Reihe, 7 × 2 / 8 × 3,5 / 8 × 5.<br>• Rund nur mit 2 Löchern.<br>• 10 × 10 / 13 × 13 / 15 × 10 nur „ohne“ oder „2 Bohrlöcher“.<br>• Kordelschilder: feste Kordellöcher, keine Befestigungsauswahl. | #85·6607023826, ·6607233022, ·6608406976 |
 | 4.65 | 04.11. 11:56 | **Schiefer: Stern auch für Tiere.** Frage: 46 Designs `schiefer-tiere-stern` gegen 4.33 „Stern nur Sternenkinder“ → Antwort „Tiere dürfen auch Stern“. Gilt für Schiefer; macht 4.33 (Stern) für Schiefer **ÜBERHOLT**. Knochen bleibt nur Hunde. | Chat 04.11. |
 | 4.66 | 04.11. 11:56 | **Rasse-Schilder: ab 15 × 10 und alle skalierbaren Größen, auch abgerundete Ecken.** Frage, ob Katalog #8 (8.100 Designs, 22 Größen/Formen, Oktober) durch „nur 15 × 10“ überholt ist → Antwort: „ab 15x10, skalierbaren Größen können die Designs auch bekommen, genauso wie abgerundete Ecken“. Erweitert 4.37: Rasse-Designs gibt es ab 15 × 10 in allen Größen gleichen Seitenverhältnisses (3:2) und als Rechteck mit abgerundeten Ecken. #8 ist damit **nicht** überholt; seine Größen ab 15 × 10 sind verwendbar, kleinere nicht. | Chat 04.11. |
+| 4.67 | 08.11. 15:20 | **Druckbare Produkte (UV) aus der Neuen Struktur vorbereiten**, Zitat: „bereite jetzt auch alle Druckbaren Produkte aus der neuen Struktur vor. Stelle sicher, dass wir alle dateien haben. Wir gehen erst einen Probelauf durch“. Antworten: **Probelauf = Boxenschilder UV**; die nur auf dem Server liegenden Druck-Designs (`V:\Produkte`) **einlesen, nur lesend**; **Wandbilder = Druck**, die übrigen farbigen Designs ohne Verfahrensangabe (Anhänger, Stundenpläne, Blumenstecker, Belohnungstafeln, Türkränze) als Prüfrunde vorlegen. Druck bleibt farbig, eigene Produkte (4.13). | Chat 08.11.; Inventur `Druck-Inventur-2026-11-08.xlsx` |
 
 ## 5. Designs / Gestaltung
 

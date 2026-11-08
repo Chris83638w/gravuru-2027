@@ -1,0 +1,361 @@
+{
+  "schema": "gravuru-r15-native-overlay/v1",
+  "createdAt": "2026-11-08T00:56:07.721Z",
+  "baseCommit": "b6b1b749d9724fa6d9a8098033ebbd967f6d6996",
+  "branch": "dev/mika-steel-r15-native-overlay-20261108",
+  "committed": false,
+  "deployed": false,
+  "databaseSchemaChanged": false,
+  "sourceFiles": [
+    {
+      "path": "app/configurator/mobile-demo/assets.mjs",
+      "bytes": 615,
+      "sha256": "afa57074425ba4ac7613526b3c34243e578c862cf4a3ccc044db9ebfc8b0921a",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/mobile-demo/contour-placement.mjs",
+      "bytes": 14225,
+      "sha256": "78741e914e4d84ba7c6f38e8edf55159bedc5df32ff0b3189daae956539424ac",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/mobile-demo/demo.css",
+      "bytes": 54453,
+      "sha256": "3c9b782d70ca644c17a62172f2cf908125fa6a49c7192ae7e0af8bf5e5f43646",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/mobile-demo/demo.mjs",
+      "bytes": 24150,
+      "sha256": "50e55149ff716d678e824e33e01504aa57c2aea022341e67546eccdfda2e4eb1",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/mobile-demo/desktop-selection.mjs",
+      "bytes": 4993,
+      "sha256": "6fe2f0c16bb033007c11f48e2dd42edf85186a0d13839a9e836d5ad8ab24f189",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/mobile-demo/edge-resize.mjs",
+      "bytes": 4370,
+      "sha256": "ea2a603c14be0fa3d26e568968fc0b13086765e86982cfc2767c7ccb60c9404c",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/mobile-demo/motif-size-limit.mjs",
+      "bytes": 8796,
+      "sha256": "a6adad5f2d3d24e7714d1b92eb5baa78f2ced49d5c9b42ae6bf9808de43ff825",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/mobile-demo/options-navigation.mjs",
+      "bytes": 14932,
+      "sha256": "0f9318beee99c133bae576db6f1a67f22894df25b70ee2b26c3e4eba201c976d",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/mobile-demo/overlap-consent.mjs",
+      "bytes": 7415,
+      "sha256": "78bea28a6261408080646f8320f0798e73a89656c4501cf95500935b98d64de3",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/mobile-demo/overlap-review.mjs",
+      "bytes": 10210,
+      "sha256": "8f11e0c6bca40ce0a94bee94b0a82ff1e691db1ea8b09b1235ac98ca6bbea749",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/mobile-demo/product-return.mjs",
+      "bytes": 2576,
+      "sha256": "9501984a9f2518a17945dd5eb3e891111d4277bcb4cd9791575ff17342977c66",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/mobile-demo/shop-shell.mjs",
+      "bytes": 2231,
+      "sha256": "cab632b7bfc620f7e5a3cad6aa3dd94ece18c0870a42dc906ba7125b9a8193ec",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/mobile-demo/shopping-cart.svg",
+      "bytes": 530,
+      "sha256": "932c1ac5856496f9aa7067dd0a9036b72016baaec1653a3a7c57c179725a21b4",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/mobile-demo/small-motif-controls.mjs",
+      "bytes": 6350,
+      "sha256": "94b2a6aafe9f0cfa0b259394188b6cb9bb1f419efa8633942c272763d30d8a65",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/mobile-demo/text-editor.mjs",
+      "bytes": 9331,
+      "sha256": "b2a17b79c9fbe1e1660925359880d071133a344f59abdcf118d87532cfdf4dee",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/mobile-demo/text-selection-dismiss.mjs",
+      "bytes": 4260,
+      "sha256": "a63edb616fa2d439e82e0cf51d212479cc3fc32fb5a68e96aef0732176ba2c61",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/variant-m/server.mjs",
+      "bytes": 16178,
+      "sha256": "f1445f2dc4f90637a77c3b80c0cd6271dd204d4136c9d598343bce3cc904500b",
+      "baselineSha256": "6322b31590867dc67f8e84ba255fc3d7a92e5ebcea3d339de3edc4a5972bdf98"
+    },
+    {
+      "path": "app/configurator/variant-m/text-bounds.mjs",
+      "bytes": 1633,
+      "sha256": "3b50d36889cf4c215939fde717483d4f7a07891646409939852c5a38647c2b55",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/variant-m/text-fields.mjs",
+      "bytes": 6864,
+      "sha256": "11bed1bfa0dc89d5d4be797719075e0cbfc91bcee17bb427e28da510e0203c2e",
+      "baselineSha256": "6fe351e802db2cf2d42233c1f664df180bcf12b85728cfb22b59cedc6d574e9e"
+    },
+    {
+      "path": "app/configurator/variant-m/usability.mjs",
+      "bytes": 19591,
+      "sha256": "a038f0a6ff8b105259916a9d2a241743d6eaa5f7737538939fa3efa492008668",
+      "baselineSha256": "896c540ee07c85ae3ff31b043f21a76a19fc151dd0574e5278c112f2cbf0a0ce"
+    },
+    {
+      "path": "app/configurator/variant-m/ux.mjs",
+      "bytes": 78633,
+      "sha256": "6a112310029b8673ea047ab215e53f66e1aa52f44f74db9385a71ffafe93f99e",
+      "baselineSha256": "055fd51752b074dc2414388ffbeec208602e42f7886ae9ec6011e589d0d3eede"
+    },
+    {
+      "path": "app/configurator/variant-m/workflow.mjs",
+      "bytes": 26540,
+      "sha256": "b4ee0d29d4988ac906da19913d9f8dba898c53ded1f3129f4487a070f415efad",
+      "baselineSha256": "a35d3d6b170d58a3accf74093abb406f65d012661d0eccf323ce7e95a39cd559"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/text-outline-fit.mjs",
+      "bytes": 5777,
+      "sha256": "dfd8193b0995db36224b639507635ecb45475d5ed2fb98d09fa0f8d8049d95b5",
+      "baselineSha256": "8fd7d7b7b5019b0930ac3b519de50551d5bff09d0f70d220cf464fc53c8bc133"
+    },
+    {
+      "path": "app/workshop/shop-entry.mjs",
+      "bytes": 48941,
+      "sha256": "3f1299d5523977ca9ac37cd648dc4edc85bf8b6daca0db43029fe6491581d7a0",
+      "baselineSha256": "fb94276d60b701cdfbc150bf53e5a04d61fdf2450c0c45ad6d4e3d277d5577f3"
+    },
+    {
+      "path": "app/workshop/shopify-admin-host.mjs",
+      "bytes": 5147,
+      "sha256": "743552772b5013f1334e8010bd919af9326d57df14aeb6743119106a0a5ca93c",
+      "baselineSha256": "8a53c9a3a64e803c71142e06a272c6c270dd9d27802cd15e382a30d5715bffe9"
+    },
+    {
+      "path": "app/workshop/ui/shop-entry-page.mjs",
+      "bytes": 6649,
+      "sha256": "d553c801fc6505eba5bf8f2cd267626be0ffe8067379066961c4659011fae364",
+      "baselineSha256": "6e41af48a1ee4892326827546139b6efbc1212716dd201f318ca1dfd046dd224"
+    }
+  ],
+  "generatedFiles": [
+    {
+      "path": "app/configurator/variant-m/.preview/bundle/editor-2e3da3b988eb0da4.mjs",
+      "bytes": 37895,
+      "sha256": "b227638c16aebd6cd7c685c44d3ace5b75205e3e1774b5ddd39c34c9d32e1ccf",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/variant-m/.preview/bundle/editor-2e3da3b988eb0da4.mjs.gz",
+      "bytes": 12418,
+      "sha256": "def2dc087e7060dd1fbccd82e7b3fe8a4fc1029526927a55f9b1ca4abb2a6169",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/variant-m/.preview/bundle/editor-69eb9880b804359a.mjs",
+      "bytes": 3342,
+      "sha256": "7601bdd524c58ddacbd0edf5e4067139002f220c67763e7eb7dafd8dbb8331a3",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/variant-m/.preview/bundle/editor-69eb9880b804359a.mjs.gz",
+      "bytes": 1614,
+      "sha256": "dccea5df39be2913d38d9bd0a5115d3d8dea97ace54af1ce9ba157b6c9a4b348",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/variant-m/.preview/bundle/editor-bab5a1fa49ee42d2.mjs",
+      "bytes": 1425786,
+      "sha256": "72bcf141b4775f2d5aee5ff2543dd5fd69e52b883e4f85bd3cb2a7fe764b0ea2",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/variant-m/.preview/bundle/editor-bab5a1fa49ee42d2.mjs.gz",
+      "bytes": 476762,
+      "sha256": "bb11f9388c5be9021918fdbaeaf21aef382e517840cbf6aa0b43999962a60b4c",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/variant-m/.preview/bundle/editor-c419119a6ef437c6.mjs",
+      "bytes": 7915,
+      "sha256": "d6230c6059e2b8b5e4334ea0d3a401aa41f362b6fa3fe8035b8784b74d7ef78c",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/variant-m/.preview/bundle/editor-c419119a6ef437c6.mjs.gz",
+      "bytes": 3037,
+      "sha256": "4b412bd07d5838b1cd4b9e60f88ae6e5b1c2f09e210f77d7800f778c739e5a25",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/variant-m/.preview/bundle/editor-e1e24f0ee6b66daf.mjs",
+      "bytes": 10914,
+      "sha256": "d4fc652911bec1326419762462fb206660c26d5d97e9823e16501c179262a58c",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/variant-m/.preview/bundle/editor-e1e24f0ee6b66daf.mjs.gz",
+      "bytes": 3880,
+      "sha256": "8731a573ad56981184aeb0407a9cfa17920818e0e67c4f31a691ed37004911e8",
+      "baselineSha256": null
+    },
+    {
+      "path": "app/configurator/variant-m/.preview/editor.html",
+      "bytes": 373501,
+      "sha256": "018e29152fb44d758f193b79622d276d1fe33666a9eef31b21acbf256d964b8b",
+      "baselineSha256": null
+    }
+  ],
+  "unchanged": [
+    {
+      "path": "app/workshop/acryl-employee-host.mjs",
+      "sha256": "4f55b2463cf2c09fe21c5203e5ca715a6c04917875871e5cbd70fa3577220d8f",
+      "byteEqualBaseline": true
+    },
+    {
+      "path": "app/workshop/repository.mjs",
+      "sha256": "9095a1dbc199c74784e908ef7bb0692162631b8540b9c0484c491ce7fdaa4dcc",
+      "byteEqualBaseline": true
+    },
+    {
+      "path": "app/workshop/native-review-schema.mjs",
+      "sha256": "7411452340592d8b037e1db962e5806b0029ca56dc81e3cc571057e94026e554",
+      "byteEqualBaseline": true
+    },
+    {
+      "path": "app/workshop/http.mjs",
+      "sha256": "718d7df4ad1dd4f05c3fe4e0ecfc6f5ae8a68e77855fa90c7c7df83159559ee9",
+      "byteEqualBaseline": true
+    },
+    {
+      "path": "app/workshop/design-dashboard.mjs",
+      "sha256": "59fc7c49cc5f24ffdedaa9334328468015bd1ac83d21cfc6dfc65f1ca32a76e6",
+      "byteEqualBaseline": true
+    },
+    {
+      "path": "app/workshop/product-families.mjs",
+      "sha256": "cd5378098a21abddeb92e3e1056d5a944745595ee410f3e35859f7f67790f3ea",
+      "byteEqualBaseline": true
+    },
+    {
+      "path": "app/workshop/draft-cart-handoff.mjs",
+      "sha256": "2df0c2cec466affef15585a432196a49e2ce9474c994b37a7049ba5d0c54d362",
+      "byteEqualBaseline": true
+    },
+    {
+      "path": "app/workshop/ui/shop-entry-client.mjs",
+      "sha256": "6ee4ae62c7e821b74c4b1f743f62d794972e2a0218ebd2725e2399a07351e069",
+      "byteEqualBaseline": true
+    },
+    {
+      "path": "app/configurator/variant-m/build.mjs",
+      "sha256": "e0c226052cde58cb2875cc49be77bdb77129b0b0d0d7ac8b298abb94b2909432",
+      "byteEqualBaseline": true
+    },
+    {
+      "path": "app/configurator/variant-m/lazy-resources.mjs",
+      "sha256": "5264780a52e2c32e2fb6619506c540f38ca355b93011e35f9d648a0f470d8e56",
+      "byteEqualBaseline": true
+    },
+    {
+      "path": "app/configurator/variant-m/lazy-resources-model.mjs",
+      "sha256": "669b5bf05a16599d56102c07c14dec06406749d959c5eab34d4ecd6700e5aa4e",
+      "byteEqualBaseline": true
+    }
+  ],
+  "dependencies": {
+    "nativeCoreModules": 150,
+    "presentationModuleUrls": [
+      "/configurator/mobile-demo/text-editor.mjs",
+      "/platform/sources/app/shared/models/contour-geometry.mjs",
+      "/configurator/variant-m/contour-pdf-path.mjs",
+      "/configurator/variant-m/print-export-model.mjs",
+      "/platform/sources/app/shared/models/processing-profiles.mjs",
+      "/workshop/process-profiles.mjs",
+      "/configurator/variant-m/usability-model.mjs",
+      "/platform/sources/app/shared/models/embedded-motif-fit.mjs",
+      "/configurator/variant-m/surfaces.mjs",
+      "/platform/sources/app/shared/models/text-paths.mjs",
+      "/platform/sources/app/shared/models/text-outline-fit.mjs",
+      "/configurator/variant-m/edge-clamp.mjs",
+      "/configurator/mobile-demo/edge-resize.mjs",
+      "/configurator/variant-m/product-module-context.mjs",
+      "/configurator/variant-m/product-model-module.mjs",
+      "/platform/sources/app/shared/vendor/fflate-0.8.3.mjs",
+      "/platform/sources/app/shared/models/design-content.mjs",
+      "/configurator/mobile-demo/motif-size-limit.mjs",
+      "/configurator/mobile-demo/small-motif-controls.mjs",
+      "/configurator/mobile-demo/text-selection-dismiss.mjs",
+      "/configurator/mobile-demo/desktop-selection.mjs",
+      "/configurator/mobile-demo/options-navigation.mjs",
+      "/configurator/mobile-demo/overlap-consent.mjs",
+      "/configurator/mobile-demo/contour-placement.mjs",
+      "/configurator/mobile-demo/overlap-review.mjs",
+      "/configurator/mobile-demo/product-return.mjs",
+      "/configurator/mobile-demo/demo.mjs",
+      "/configurator/mobile-demo/shop-shell.mjs"
+    ],
+    "publicPresentationAssets": 15
+  },
+  "tests": {
+    "uniqueTestsPassed": 306,
+    "mobileAndPresentation": 187,
+    "nativeAndShop": 80,
+    "existingGeometryAndEvents": 39,
+    "environment": "GRAVURU_PYTHON=work/audit-python-env/Scripts/python.exe; PYTHONPATH=work/audit-python-deps; existing environment only",
+    "initialEnvironmentFailuresResolved": true,
+    "browserOrRealCheckoutTest": false
+  },
+  "excluded": [
+    "databases",
+    "uploads",
+    "credentials",
+    "Shopify product changes",
+    "gallery/schema migrations",
+    "new browser resource transport",
+    ".preview/models.json",
+    ".preview/guides.json",
+    ".preview/assistant.js",
+    ".preview/lazy (unchanged baseline resources)"
+  ],
+  "updatedAt": "2026-11-08T01:01:19.072Z",
+  "confirmedProductNavigation": {
+    "familyId": "steel-door-signs",
+    "material": "steel",
+    "execution": "door-sign",
+    "tabs": [
+      "Form",
+      "Größe",
+      "Befestigung"
+    ],
+    "allNativeSizesReachable": 80,
+    "catalogueForms": 8,
+    "existingOtherFamiliesUnchanged": true
+  }
+}

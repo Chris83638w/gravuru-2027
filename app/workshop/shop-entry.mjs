@@ -205,7 +205,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   const back=optional('back',v=>v.length<=512&&/^\/(?!\/)[A-Za-z0-9/_.~%-]*(?:\?[A-Za-z0-9=&_.~%-]*)?$/.test(v));
   const embed=optional('embed',v=>v==='1')==='1',ticket=optional('format',v=>v==='json')==='json';
   const toolbar=params.getAll('leiste'),leiste=toolbar.length===1&&['a','b'].includes(toolbar[0])?toolbar[0]:null;
-  return {shopifyProductId:number('product','Product'),shopifyVariantId:number('variant','ProductVariant'),config,rev,line,back,embed,ticket,leiste};
+  const presentations=params.getAll('ui'),presentation=presentations.length===1&&presentations[0]==='prio-r15'?'prio-r15':null;
+  return {shopifyProductId:number('product','Product'),shopifyVariantId:number('variant','ProductVariant'),config,rev,line,back,embed,ticket,leiste,presentation};
  }
  function start(req,res,url){
   if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
@@ -219,6 +220,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   const fragment=new URLSearchParams({s:issued.token});
   if(input.config){fragment.set('config',input.config);fragment.set('rev',input.rev);if(input.line)fragment.set('line',input.line);}
   if(input.back)fragment.set('back',input.back);
+  if(input.presentation)fragment.set('ui',input.presentation);
   if(input.embed){fragment.set('embed','1');if(input.leiste)fragment.set('leiste',input.leiste);}
   const target=origin+pagePath+'#'+fragment.toString();
   // Startkarte: dieselbe Zieladresse als JSON; die Produktseite öffnet beim Klick direkt den Konfigurator-Host.

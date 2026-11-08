@@ -1,3 +1,7 @@
+## 08.11.2026 – Mika: unabhängigen Cache-Prüfstand vor Flugpause gesichert
+
+Nur Dokumentation auf eigenem Branch. Bestehende Galerie-/Start-/Vorladepfade und erster Speicherbaustein gelesen; Implementierungscheckpoint `6686e86` ist gesichert, Integration und Tests sind noch offen. Keine Cache-Abnahme, keine Liveänderung. Freigabeentzug, Mandanten-/Shoptrennung, Ressourcenidentität, keine Kundenuploads und Start ohne Rendering bleiben verbindliche Prüfpunkte. Aktuellere UI-Korrekturen nicht mit der älteren Ausgangsbasis überschreiben. [Prüfstand und Fortsetzung](docs/handoffs/2026-11-08-public-preview-review-checkpoint.md).
+
 ## 08.11.2026 – Codex/Mika: erste Motiv- und Designkarten vorbereiten
 
 Auf isolierter Basis `587a395`: gemeinsamer nativer Startmotiv-Resolver, sechs erlaubte Motive im Hintergrund vor Taböffnung, drei authentifizierte Galerievorschauen im Hintergrund mit Wiederverwendung, Produktseiten-Vorwärmen nach DOM/ersten Zeichenzyklen statt window.load. Sieben Produktionsdateien, keine Layout-/Preis-/Produktänderung. 66 unterschiedliche gezielte Prüfungen final grün; tatsächliche Browserabnahme und Deployment bei Root. Designvorschauen direkt auf Shopify-Produktseite weiterhin offen und ausdrücklich nicht als fertig bezeichnet. Übergabe: `docs/handoffs/2026-11-08-first-panel-preload.md`.

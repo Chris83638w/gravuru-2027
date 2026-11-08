@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {shopStartModel} from './shop-start-model.mjs';
 import {createModelSlimmer} from './shop-model-slim.mjs';
 import {FAMILY_FORMATS_SCHEMA} from '../configurator/variant-m/family-formats.mjs';
+import {switchedModel} from './ui/shop-design-switch.mjs';
 const fixture=()=>{const designs=Array.from({length:208},(_,i)=>({id:'D'+i,name:'Design '+i,objects:[{id:'text',type:'text',text:'Familie',font:'Lora'},{id:'motif',type:'motif',svg:'x'.repeat(5000)}]}));return {key:'acryl',configuration:{id:'p',revision:3},legacy:{designs},universal:{profile:{defaultDesignId:'D4',designs,optionGroups:[{id:'mount',values:[{id:'K00'},{id:'B02'}]}]},name:'Schild'}};};
 test('memorial projection retains only its selected photo examples, placeholders and hints',()=>{
  const m=fixture(),items=['D4','D6'].map(designId=>({designId,slotId:'photo',assetId:'a'.repeat(64)}));
@@ -77,4 +78,17 @@ test('all-sizes start follows the chosen Shopify variant and keeps explicit gall
  assert.equal(shopStartModel(model,'D150',{options:{size:'QU-100X100'}}).universal.profile.defaultDesignId,'D150');
  assert.throws(()=>shopStartModel(model,'D4',{options:{size:'QU-100X100'}}),{code:'shop_entry_design'});
  assert.throws(()=>shopStartModel(model,null,{options:{size:'OV-90X60'}}),{code:'shop_entry_design'});
+});
+
+test('a design outside the original root profile reaches the unchanged switch guard in both model copies',()=>{
+ const model=allSizesFixture();model.universal.profile.designs=model.universal.familyFormats.designs.slice(0,104);model.legacy.designs=structuredClone(model.universal.profile.designs);
+ const before=JSON.stringify(model),options={size:'QU-100X100',mounting:'K00'},projected=shopStartModel(model,'D150',{options});
+ const binding={productId:model.configuration.id,productRevision:model.configuration.revision,shopifyProductId:'gid://shopify/Product/1',shopifyVariantId:'gid://shopify/ProductVariant/2',options};
+ assert.ok(!model.universal.profile.designs.some(d=>d.id==='D150'),'fixture root must not already contain the target');
+ assert.deepEqual(projected.universal.profile.designs.map(d=>d.id),['D150']);assert.deepEqual(projected.legacy.designs,projected.universal.profile.designs);
+ assert.deepEqual(projected.universal.profile.designs[0].katalog.targetMm,[100,100]);
+ assert.equal(switchedModel({model:projected,binding},{binding,designId:'D150'}).model.universal.profile.defaultDesignId,'D150');
+ assert.throws(()=>shopStartModel(model,'D4',{options}),{code:'shop_entry_design'});
+ for(const field of ['productId','productRevision','shopifyProductId','shopifyVariantId'])assert.throws(()=>switchedModel({model:projected,binding},{binding:{...binding,[field]:'foreign'},designId:'D150'}));
+ assert.equal(JSON.stringify(model),before,'native source and original profile are immutable');
 });

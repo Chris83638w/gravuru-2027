@@ -1,3 +1,7 @@
+## 08.11.2026 – Mika-Unteragent: Designwechsel nach Formwechsel vollständig geprüft
+
+Nach dem Galerie-Lookup-Fix #204 wurden D3-Zielmodell und Sitzung korrekt geladen, aber die Root-Designliste enthielt noch das ursprüngliche Startformat. Eine Backend-Projektionsdatei korrigiert; Client-Guard unverändert. 56/56 Tests grün. Vollständige HTTP-Kette mit echtem 251er-Kandidaten reproduziert den ursprünglichen Kundenfehler und besteht nach der Korrektur. Keine native Daten-/Preis-/Layoutänderung, kein Livezugriff durch Unteragent. [Übergabe und Rückweg](docs/handoffs/2026-11-08-steel-design-switch-projection.md). Root veröffentlicht und prüft den tatsächlichen Warenkorb.
+
 ## 08.11.2026 – Mika-Unteragent: gezielter Variantenlookup für Edelstahl-Galerie
 
 Der Form-/Größenwechsel prüfte bisher die komplette aktive Shopgalerie und konnte am unveränderten Fünfsekunden-Clientlimit scheitern. Eine Produktionsdatei korrigiert: gespeicherte Optionsbindungen liefern Kandidaten-IDs, ausschließlich frisch geprüfte aktive Registry-Zuordnungen werden verwendet. 28 bestehende und vier neue Tests bestanden; vier zusätzliche Fälle mit echtem 251er-Kandidaten auf 62 exakt livegleichen Abhängigkeiten (nur Galeriefix abweichend). Layout, Preise, Produktdaten, Timeout und Freigaben unverändert. Kein Livezugriff durch Unteragent. [Übergabe und Rollback](docs/handoffs/2026-11-08-steel-gallery-targeted-lookup.md). Nächster Schritt: Root veröffentlicht nach Einzeldatei-SHA-Prüfung und prüft echte Variantenwechsel/Warenkorb.

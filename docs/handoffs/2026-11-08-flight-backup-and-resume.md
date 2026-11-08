@@ -1,6 +1,6 @@
 # Flugpause: Sicherung und verbindlicher Wiederanlauf
 
-Stand 08.11.2026, 17:52 Berlin, Codex/Mika. **Diesen Bericht zuerst lesen.** Er ersetzt den Zwischenstand von 17:05 Uhr als Einstieg. Nutzer: „du kannst jetzt aber eine komplette sicherung machen. Ich bin jetzt im Flugzeug“. Weitere Funktionsentwicklung angehalten; offene Agentenarbeiten wurden committet und gepusht.
+Stand 08.11.2026, 18:10 Berlin, Codex/Mika. **Diesen Bericht zuerst lesen.** Er ersetzt den Zwischenstand von 17:05 Uhr als Einstieg. Nutzer: „du kannst jetzt aber eine komplette sicherung machen. Ich bin jetzt im Flugzeug“. Weitere Funktionsentwicklung angehalten; offene Agentenarbeiten wurden committet und gepusht.
 
 ## Aktuell online
 
@@ -27,7 +27,7 @@ Das ist eine vollständige Sicherung dieses Plesk-Abonnements, **kein Image des 
 Privater Ordner außerhalb des Arbeitsverzeichnisses:
 `C:/Users/Mikail Erdem/Documents/Codex/2026-11-04/lie-flight-backup-20261108-1750/`.
 
-**Kopie abgeschlossen am 08.11.2026 um 18:00:49 Berlin:** 288.704 Dateien, ca. 33,082 GiB; Robocopy Exit1 (Dateien erfolgreich kopiert), 0 Fehler. Die zusätzliche SHA256-Prüfung aller Dateien läuft noch. `copy.log` und anschließend `backup-receipt.json` sind die Nachweise.
+**Kopie abgeschlossen am 08.11.2026 um 18:00:49 Berlin:** 288.704 Dateien, ca. 33,082 GiB; Robocopy Exit1 (Dateien erfolgreich kopiert), 0 Fehler. Die zusätzliche SHA256-Prüfung aller Dateien läuft noch (zuletzt 131.818 von 288.704 Dateien abgearbeitet). Der laufende lokale Prozess kann ohne Internet weiterprüfen; sein finaler backup-receipt.json ist nach Wiederaufnahme zu lesen. Noch keinen vollständigen Hash-PASS behaupten. `copy.log` und anschließend `backup-receipt.json` sind die Nachweise.
 
 - `workspace-private/`: vollständige private Dateikopie der Arbeitsbäume einschließlich nicht committierter lokaler Dateien, vorhandener lokaler Gitobjekte, Projektstände, Checkpoints, Releasepakete, Screenshots und Gesprächsanhänge. Ausgenommen nur regenerierbare Verzeichnisse `node_modules`, `.venv`, `__pycache__`; Verzeichnislinks nicht verfolgt. Kein gesamtes Computer-/Betriebssystemsbackup.
 - `gravuru-2027-all-refs.bundle`: vollständige lokale Code-Git-Historie einschließlich aller vorhandenen Branches/Referenzen bis e9c36ce; `git bundle verify` erfolgreich. Neuere lokale Dokumentationscommits befinden sich zusätzlich in der Dateikopie.
@@ -37,7 +37,7 @@ Privater Ordner außerhalb des Arbeitsverzeichnisses:
 - `recent-user-screenshots/`: zusätzlich fünf ausdrücklich übergebene aktuelle PC-Screenshots aus dem temporären Ordner gesichert.
 - `README.md`: Wiederanlauf, Umfang und Grenzen. Dateien mit `.partial` oder `.lock` sind **keine gültigen Sicherungen**. Die gültige vollständige Kopie ist der Ordner `workspace-private/`, kein ZIP-Archiv.
 
-Private Archive, Datenbanken und Zugangsdaten niemals in GitHub hochladen. Dort liegen ausschließlich Quellstände und bereinigte Übergaben. Der PC konnte den lokalen Übergabecommit c7710dec wegen Internetverlust nicht pushen. Diese Übergabe wurde deshalb über den GitHub-Connector auf `backup/mika-flight-20261108` gesichert. Nach Wiederverbindung nicht force-pushen, sondern Dokumentation und lokalen Commit geordnet zusammenführen.
+Private Archive, Datenbanken und Zugangsdaten niemals in GitHub hochladen. Dort liegen ausschließlich Quellstände und bereinigte Übergaben. Der erste PC-Push schlug wegen eines vorübergehenden Verbindungsfehlers fehl. Nach Hinweis des Nutzers erneut geprüft: GitHub HTTP200 und Git-Verbindung erfolgreich; c7710dec inzwischen regulär auf dem Quellbranch gepusht. Die aktuellere Übergabe bleibt auf `backup/mika-flight-20261108`. Kein Force-Push. Plesk-Browsersteuerung konnte die vorhandene Backuptab-Verbindung zuletzt nicht wieder aufnehmen; das ist kein Nachweis fehlender Internetverbindung oder eines fehlgeschlagenen Serverbackups.
 
 ### Vorher-/Rücknahmesicherung
 
@@ -66,6 +66,10 @@ Cache-Implementierung: [Übergabe](https://github.com/Chris83638w/gravuru-2027/b
 - Galerie als Bearbeitungsquelle; „Synchronisieren“ aktualisiert zugeordnete Shopprodukte kontrolliert und ohne Duplikate. Vorher Änderungsübersicht, Konfliktprüfung, Journal, Wiederaufnahme. „Werkstattprüfung sichern“ allein ist nicht die Rückspeicherung derselben Galerievorlage.
 - Bei Designgruppen startet der Kundenkonfi mit der Vorlage des Hauptproduktbildes; nur passende freigegebene Designs anzeigen. Historische Bestellungen unveränderlich erhalten.
 - Gespeicherte Kundenfotos/Masken und SVGs bei Wiederöffnen unverändert erhalten. Keine pauschale Datenbankrücknahme als UI-Rollback.
+
+## Fortsetzung in vier Stunden
+
+Nutzer am 08.11.2026: „du hast noch 5 min“ und „du arbeitest gleich weiter in 4 std“. Keine neue Konfi-Änderung mehr gestartet. Einmalige künftige Fortsetzung in diesem Chat als lokale App-Automation `konfi-nach-flug-fortsetzen` eingerichtet (erstellt ca.18:07:58 Berlin, nächster Lauf in vier Stunden). Codex/PC müssen für diese lokale Fortsetzung verfügbar sein. Sie liest zuerst diesen Bericht und die Sicherungsbelege. Kein Versprechen, dass ein ausgeschalteter oder schlafender PC weiterarbeitet.
 
 ## Wiederanlauf nach dem Flug
 

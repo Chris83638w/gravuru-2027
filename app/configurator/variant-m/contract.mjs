@@ -4,6 +4,8 @@ import {isFamilyFormats,validateFamilyFormats,familyFormatOptions,familyFormatSe
 import {QUANTITY_TIER_MAX,quantityTiersIssue,quantityTiersOpen,activeQuantityTiers,quantityTierFor,applyQuantityTier,quantityTierLabels} from './quantity-tiers.mjs';
 export {QUANTITY_TIER_MAX,quantityTiersIssue,quantityTiersOpen,activeQuantityTiers,quantityTierFor,applyQuantityTier,quantityTierLabels} from './quantity-tiers.mjs';
 import {canDeleteTemplateElement,templateRightsIssue,customerAdditionPolicy,validateCustomerAdditions,designElementRights} from './element-rights.mjs';
+import {moduleEnabled,applyModuleProfile} from './module-profile.mjs';
+import {moduleDesignIssue} from './module-runtime.mjs';
 import {processProfile,processColorIssue} from '../../workshop/process-profiles.mjs';
 import {validateOptionPresentation} from './option-media.mjs';
 import {validateStudio} from '../../platform/sources/app/shared/models/studio-validation.mjs';
@@ -40,7 +42,7 @@ export const MAX_PHOTO_BYTES = 15 * 1024 * 1024;
 // K10 / Ü1: Verfahrensprofil des Produkts (Werkzeuge, Palette, Mindestschriftgröße, Soll-DPI).
 export const productProcess=config=>processProfile(config.profile);
 // New product revisions opt in explicitly. Existing logo/photo pricing remains unchanged.
-export const vectorLogoAllowed=config=>config?.logo?.enabled===true&&config.logo.vectorUpload===true&&config.logo.extraPriceCents===1299&&config?.photo?.enabled===false&&config?.profile?.material?.kind==='steel'&&productProcess(config).method==='engraving';
+export const vectorLogoAllowed=config=>moduleEnabled(config,'logo')&&config?.logo?.enabled===true&&config.logo.vectorUpload===true&&config.logo.extraPriceCents===1299&&config?.photo?.enabled===false&&config?.profile?.material?.kind==='steel'&&productProcess(config).method==='engraving';
 // Physischer Maßstab der Gestaltung (Acryl: gewählte Größe / Designbreite, sonst 1).
 export function physicalScale(config, options={}) {
   return config.acrylic ? acrylicSelection(acrylicOptions(resolvedOptions(config, options)), config.acrylic.pricing).size.width / config.acrylic.designWidth : 1;
@@ -50,7 +52,7 @@ export const money = cents => euroFormat.format(cents / 100);
 
 // This adapter consumes the existing native profile. It never grants a runtime release.
 export function prepareConfig(input) {
-  const config = clone(input);
+  const config = input.moduleProfile===undefined?clone(input):applyModuleProfile(input,input.moduleProfile);
   if(config.scalableSizes){
     validateScalableSizes(config);
     for(const size of config.scalableSizes.sizes)prepareConfig(sizeConfiguration(config,{size:size.id}));
@@ -84,6 +86,7 @@ export function prepareConfig(input) {
   }
   for(const group of p.optionGroups||[])for(const value of group.values)validateOptionPresentation(value);
   validateOptionConditions(p); // K14 / Ü12.1: bedingte Gruppen und Zusatzfelder
+  if(!moduleEnabled(config,'options')&&missingRequiredFields(config,resolvedOptions(config)).length)fail('Ausführungen können nicht abgeschaltet werden: Ein sichtbares Pflicht-Zusatzfeld benötigt eine Kundeneingabe.');
   // K14 / Ü15.1: Flächen (Vorder-/Rückseite). Die Rückseite darf ein eigenes Verfahrensprofil
   // tragen, aber dasselbe Verfahren (Gravur/Druck): die Fertigungsausgabe erzeugt beide Dateien
   // im selben Lauf; ein Verfahrenswechsel je Seite ist noch nicht an die Ausgabe angeschlossen.
@@ -228,6 +231,7 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
   const options = resolvedOptions(config, values);
   const design = isFamilyFormats(config)?selectedFamilyDesign(config,designId,options):isLayeredDoorbell(config)?selectedDoorbellDesign(config,designId,options):config.profile.designs.find(d => d.id === designId);
   if (!design) fail('Unbekanntes Design.');
+  const moduleIssue=config.moduleProfile&&moduleDesignIssue(config,{source:design,objects,designId,defaultDesignId:selectedProfile(config,options).defaultDesignId,options,defaultOptions:resolvedOptions(config),ink:getProcessingProfile(selectedProfile(config,options)).ink,template:objects.length===0});if(moduleIssue)fail(moduleIssue);
   const selectedBase=templatePhotoPrice(config,design,isFamilyFormats(config)?familyFormatSelection(config,options).variant:undefined).baseCents;
   // Original template motifs are included once. A duplicate must not inherit this credit.
   const included = new Map(design.objects.filter(o => o.type === 'motif').map(o => [o.id, o.motif]));
@@ -268,6 +272,7 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
 export function validateDesign(config, design, options, fonts, motifs, {template=false,draft=false}={}) {
   const source = selectedProfile(config,options).designs.find(d => d.id === design?.id);
   if (!source) fail('Die Vorlage gehört nicht zu diesem Produkt.');
+  const moduleIssue=config.moduleProfile&&moduleDesignIssue(config,{source,objects:design.objects,designId:design.id,defaultDesignId:selectedProfile(config,options).defaultDesignId,options:resolvedOptions(config,options),defaultOptions:resolvedOptions(config),ink:getProcessingProfile(selectedProfile(config,options)).ink,template});if(moduleIssue)fail(moduleIssue);
   if(design.textOnTop!==undefined&&typeof design.textOnTop!=='boolean')fail('Ungültige Textebenen-Regel.');
   if(source.importedSource&&!source.objects.some(o=>o.type==='photoSlot')&&design.objects.some(o=>o.type==='photoSlot'))fail('Diese importierte Vorlage hat noch keinen freigegebenen Fotobereich.');
   validateDesignContent(design, {universal:true,extraFontIds:localFontIds(config)});

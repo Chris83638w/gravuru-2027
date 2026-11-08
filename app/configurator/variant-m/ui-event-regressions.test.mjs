@@ -1,4 +1,5 @@
 import {customerFieldLabel} from './text-fields.mjs';
+import {moduleEnabled} from './module-profile.mjs';
 import {createTextBounds} from './text-bounds.mjs';
 import {executionOptionGroups} from './execution-registry.mjs';
 import {alignmentContent,alignmentLabel} from './ui-icons.mjs';
@@ -32,8 +33,8 @@ const inertEvent=target=>({target,preventDefault(){},stopImmediatePropagation(){
 
 test('direct-link UI passes the active text policy through to the real text importer',()=>{
  const text='N'.repeat(100),object={id:'name',type:'text',text:'Name',required:true,maxLength:32},template={objects:[object],themes:['namensschilder']};
- const env={link:{text,notes:[]},config:{textRules:{maxCharsPerField:80}},profile:{},design:()=>template,dirty:false,applyLinkText,el:{state:{objects:[{...object}]},normalize(){},sync(){}}};
- vm.createContext(env);vm.runInContext(line('ux.mjs','if(link.text){const result=applyLinkText'),env);
+ const env={moduleEnabled,link:{text,notes:[]},config:{textRules:{maxCharsPerField:80}},profile:{},design:()=>template,dirty:false,applyLinkText,el:{state:{objects:[{...object}]},normalize(){},sync(){}}};
+ vm.createContext(env);vm.runInContext(line('ux.mjs',"if(link.text&&moduleEnabled(config,'text')){const result=applyLinkText"),env);
  assert.equal(env.el.state.objects[0].text,'N'.repeat(80));assert.equal(env.dirty,true);assert.equal(env.link.notes.length,1);
 });
 function textEnvironment(){
@@ -239,8 +240,8 @@ test('K10 / Ü1.2: engraving products build the text panel without a colour pick
  const render=(freeColor,minTextMm)=>{const env={freeColor,minTextMm,alignmentContent,alignmentLabel,icons:{},button:(k,l,extra='')=>`<button data-ux="${k}" ${extra}>${l}</button>`,config:null,out:''};vm.createContext(env);vm.runInContext(markup.replace("$('#ux-panel-text').innerHTML=",'out='),env);return env.out;};
  assert.doesNotMatch(render(false,4),/data-ux-color/);assert.match(render(true,3),/data-ux-color/);
  assert.match(render(false,4),/id="ux-size" type="number" min="4"/);assert.match(render(true,3),/min="3"/);
- const photoLine=line('ux.mjs','const photoEnabled=config?');
- const photo=(enabled,tool)=>{const env={config:{photo:{enabled},logo:{enabled:true}},process:{tools:{photo:tool}}};vm.createContext(env);vm.runInContext(photoLine,env);return vm.runInContext('photoEnabled',env);};
+ const photoLine=line('ux.mjs','const photoEnabled=');
+ const photo=(enabled,tool)=>{const env={moduleEnabled,config:{photo:{enabled},logo:{enabled:true}},process:{tools:{photo:tool}}};vm.createContext(env);vm.runInContext(photoLine,env);return vm.runInContext('photoEnabled',env);};
  assert.equal(photo(true,true),true);assert.equal(photo(true,false),false);assert.equal(photo(false,true),false);
 });
 // Chris 22./23.10.2026: Ein neues Element bekommt immer einen freien Platz. Die echte place()-Funktion aus workflow.mjs:

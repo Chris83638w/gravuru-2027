@@ -13,8 +13,11 @@ import {createCartHandoffJournal,createPersistentCartHandoff} from './cart-hando
 import {commercePrice} from '../configurator/variant-m/commerce-model.mjs';
 import {personalizationForSnapshot} from './cart-personalization.mjs';
 import {applyQuantityTier} from '../configurator/variant-m/contract.mjs';
+import {MODULE_PROFILE_SCHEMA} from '../configurator/variant-m/module-profile.mjs';
+import {prepareShopProduct} from './shop-preparation.mjs';
 
 const shop='gravuru-synthetic.myshopify.com';
+const modules=overrides=>({schema:MODULE_PROFILE_SCHEMA,id:'checked-module-policy',revision:1,modules:{options:true,designs:true,text:true,motifs:true,photo:true,logo:true,colors:false,...overrides}});
 function fixture(t) {
   const resources=JSON.parse(fs.readFileSync(new URL('../designs/acrylic-unser-anfang/resources.json',import.meta.url)));
   const config=makeAcrylicConfig({profile:{kind:'universal-product',schemaVersion:2}},resources,'a'.repeat(64));
@@ -50,6 +53,48 @@ function response(offer) {
       cost:{amountPerQuantity:{amount:(offer.unitCents/100).toFixed(2),currencyCode:'EUR'},totalAmount:{amount:(offer.unitCents*offer.quantity/100).toFixed(2),currencyCode:'EUR'}}}]}}}}};
 }
 function offer(f) {const binding=f.intake.bind(f.args);return f.intake.offer({bindingId:binding.id,snapshotId:f.m.id,quantity:2});}
+
+test('disabled motif choice retains all-motif source charges in native quote, cart and shop preparation',t=>{
+ const f=fixture(t),config=f.record.document.config;
+ config.moduleProfile=modules({motifs:false,photo:false,logo:false});config.motifCharge='all';
+ const motif={id:'original-motif',type:'motif',motif:config.localResources.motifs.find(m=>!m.embeddedOnly).key,x:170,y:100,w:20,h:20,rotation:0,color:'#e8e9e4',customerEditable:true};
+ config.profile.designs[0].objects.push(motif);
+ f.record.document.elementRights.test[motif.id]={content:false,color:false,replace:true,move:true,scale:true,delete:true};
+ const captured=capturePersonalization(f.pricing,{variantId:'301',baseCents:2299,document:f.record.document});
+ const state={designId:'test',objects:structuredClone(config.profile.designs[0].objects),mOptions:{mounting:'none'}};
+ const price=commercePrice(config,state);assert.equal(price.additionalMotifs,0);assert.equal(price.chargedMotifs,1);assert.equal(price.unitCents,2468);
+ const manifest={...f.m,product:{...f.m.product,basePriceCents:price.unitCents},selection:{price}};
+ assert.equal(personalizationForSnapshot(captured,manifest).unitCents,2468);
+ const preview=prepareShopProduct(f.record);assert.equal(preview.extras.motifCents,169);assert.match(preview.checks.find(c=>c.id==='pricingConnection').message,/Aufpreisbindung/);
+ assert.throws(()=>personalizationForSnapshot(captured,{...manifest,selection:{price:{...price,additionalMotifs:1}}}),{code:'cart_personalization'});
+ state.objects.pop();const removed=commercePrice(config,state);assert.equal(removed.chargedMotifs,0);assert.equal(removed.unitCents,2299);
+});
+
+test('legacy raster-logo charges remain orderable with photos off; disabling both uploads still rejects them',t=>{
+ const f=fixture(t),config=f.record.document.config;
+ config.photo.enabled=false;config.logo={enabled:true};config.moduleProfile=modules({photo:false});
+ const state={designId:'test',objects:[...structuredClone(config.profile.designs[0].objects),{id:'local-logo',type:'image',x:170,y:100,w:20,h:20,rotation:0,uxUploadKind:'logo',uxUploadId:'logo-file'}],mOptions:{mounting:'none'}};
+ const price=commercePrice(config,state);assert.equal(price.chargedUploads,1);assert.equal(price.chargedLogos,undefined);assert.equal(price.unitCents,3298);
+ const manifest={...f.m,product:{...f.m.product,basePriceCents:price.unitCents},selection:{price}};
+ const captured=capturePersonalization(f.pricing,{variantId:'301',baseCents:2299,document:f.record.document});
+ assert.equal(personalizationForSnapshot(captured,manifest).unitCents,3298);
+ assert.equal(prepareShopProduct(f.record).extras.photoCents,999,'legacy combined-upload price remains visible for the connector');
+ const off=structuredClone(captured);off.moduleProfile.modules.logo=false;assert.throws(()=>personalizationForSnapshot(off,manifest),{code:'cart_personalization'});
+ config.moduleProfile.modules.logo=false;assert.equal(prepareShopProduct(f.record).extras.photoCents,0);
+});
+
+test('enabled photos retain included-slot credit and charge only additional photos under a module profile',t=>{
+ const f=fixture(t),config=f.record.document.config;config.moduleProfile=modules({logo:false});config.photo.includedCount=1;
+ const original={id:'photo-slot',type:'photoSlot',fieldKey:'photo-original',x:170,y:100,w:20,h:20,rotation:0,photoShape:'rect',required:false};config.profile.designs[0].objects.push(original);
+ const state={designId:'test',objects:[...structuredClone(config.profile.designs[0].objects.slice(0,-1)),{...original,uxUploadKind:'photo',uxUploadId:'included-photo'}],mOptions:{mounting:'none'}};
+ const captured=capturePersonalization(f.pricing,{variantId:'301',baseCents:2299,document:f.record.document});
+ for(const expected of [0,1]){
+  if(expected)state.objects.push({...original,id:'extra-photo',fieldKey:'photo-extra',uxUploadKind:'photo',uxUploadId:'extra-file'});
+  const price=commercePrice(config,state);assert.equal(price.chargedUploads,expected);
+  const manifest={...f.m,product:{...f.m.product,basePriceCents:price.unitCents},selection:{price}};
+  assert.equal(personalizationForSnapshot(captured,manifest).unitCents,2299+expected*999);
+ }
+});
 
 test('native shop path keeps an included design orderable and explains unbound extras without weakening binding checks',t=>{
  const f=fixture(t),binding=f.intake.bind({...f.args,snapshotId:undefined,personalizationPricing:undefined,options:{mounting:'none'}});

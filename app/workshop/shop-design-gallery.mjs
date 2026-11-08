@@ -150,7 +150,24 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   // Wie der Konfi selbst normalisieren (Standardfarbe/-befestigung, keine fremden Schlüssel), dann exakt vergleichen.
   let wanted;try{wanted=familyFormatOptions(own.universal,options);}catch{fail(409,'shop_gallery_variant','Diese Ausführung ist im Shop nicht verfügbar. Bitte eine andere Größe oder Befestigung wählen.');}
   if(optionKey(wanted)===optionKey(b.options))return b;
-  const found=context.store.registry.listActive().filter(x=>x.storeId===b.storeId&&x.tenantId===b.tenantId&&x.shopDomain===b.shopDomain&&x.shopifyProductId===b.shopifyProductId&&x.productId===b.productId&&x.productRevision===b.productRevision&&optionKey(x.options)===optionKey(wanted));
+  const {registry,workshop}=context.store,intake=workshop.orderIntake;let found;
+  if(typeof intake?.bindings==='function'&&typeof registry.resolve==='function'){
+   // Like the cart path: inexpensive saved selections identify candidate IDs;
+   // only the exact active head supplies authority. Do not validate every
+   // unrelated product document in the store when one size/mounting changes.
+   if(intake.tenantId!==b.tenantId)unavailable();
+   const candidates=intake.bindings().filter(x=>x.shopDomain===b.shopDomain&&x.productId===b.productId&&x.productRevision===b.productRevision&&optionKey(x.options)===optionKey(wanted));
+   found=[];
+   for(const variantId of new Set(candidates.map(x=>x.variantId))){
+    if(typeof variantId!=='string'||!/^[1-9][0-9]{0,19}$/.test(variantId))unavailable();
+    let active;try{active=registry.resolve({shopifyProductId:b.shopifyProductId,shopifyVariantId:'gid://shopify/ProductVariant/'+variantId});}catch(error){if(error.status===404&&error.code==='shop_binding_active_not_found')continue;throw error;}
+    if(!active||active.storeId!==b.storeId||active.tenantId!==b.tenantId||active.shopDomain!==b.shopDomain||active.shopifyProductId!==b.shopifyProductId||active.shopifyVariantId!=='gid://shopify/ProductVariant/'+variantId||active.productId!==b.productId||active.productRevision!==b.productRevision||optionKey(active.options)!==optionKey(wanted))unavailable();
+    found.push(active);
+   }
+  }else{
+   // Legacy adapters without the native saved-selection API keep their checks.
+   found=registry.listActive().filter(x=>x.storeId===b.storeId&&x.tenantId===b.tenantId&&x.shopDomain===b.shopDomain&&x.shopifyProductId===b.shopifyProductId&&x.productId===b.productId&&x.productRevision===b.productRevision&&optionKey(x.options)===optionKey(wanted));
+  }
   if(found.length!==1)fail(409,'shop_gallery_variant','Diese Ausführung ist im Shop nicht verfügbar. Bitte eine andere Größe oder Befestigung wählen.');
   return found[0];
  }

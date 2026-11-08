@@ -1,3 +1,7 @@
+## 09.11.2026 – Mika: fehlende Startvorschauen unabhängig reproduziert
+
+Native Werkstattmodelle, echter Slimmer und reale r4-Bank lokal geprüft. Ursache: vollständige Bindung statt ausschließlich zwei Shopify-IDs an die strikte Registry übergeben. Vorher Vorbereitung 3 / Startmanifest 0 / Bildabruf 404; mit Einzeiler `126574a4` drei URLs, GET/HEAD erfolgreich, identische Dateien nach Prozessneustart und kein Rendering beim Start. Nur unabhängiger Test und Dokumentation; keine Produktions- oder Liveänderung. [Prüfbericht und genaue Grenzen](docs/handoffs/2026-11-09-public-preview-native-start-review.md).
+
 ## 08.11.2026, 23:45 Berlin – Codex/Mika: Module und Vorladen auf aktuellem R15 zusammengeführt
 
 Eigener Integrationszweig auf PR220 plus Cache PR221; produktiver Kundenaufbau e9c36ce erhalten. 18 Produktionsdateien im engen Hashpaket, 68 geschützte Dateien bytegleich, separater Build mit allen 36 erfassten Live-Styles erfolgreich. 106 unterschiedliche Integrationsfälle bestanden; echte 251 Originale/80 Größen/404 Kombinationen unverändert. Lokale Flugkopie mit 288.704 Dateien vollständig gelesen, neun erwartete Quelländerungen aus Cachearbeit, keine Lesefehler. Plesk-Auftrag 1158 noch ohne Abschlussbeleg; Browsersteuerung kann offenen Server-Tab nicht verbinden. PR214-Aktivierung separat noch durch 60-s-Frischeprüfung gestoppt, Ursache wird untersucht. **Keine neue Liveveröffentlichung oder Profilzuordnung.** [Zusammenführung, Sicherung, Nachweise und genauer nächster Schritt](docs/handoffs/2026-11-08-resume-integration.md).

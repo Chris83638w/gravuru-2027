@@ -1,5 +1,6 @@
 import {applyQuantityTier, quantityTierFor, vectorLogoAllowed} from '../configurator/variant-m/contract.mjs';
 import {readOptionPrices,readSelectedOptions,priceSelectedOptions} from '../../ops/shopify/master-release/priced-options.mjs';
+import {validateModuleProfile} from '../configurator/variant-m/module-profile.mjs';
 
 // Internal server contract. Callers must read pricing with the owning Shopify app
 // and verify product/variant ownership before binding; never accept browser prices.
@@ -29,6 +30,8 @@ const sameTier = (actual, expected) => expected === null ? actual === null :
   actual.minQuantity === expected.minQuantity && actual.percentOff === expected.percentOff;
 
 export function capturePersonalization(pricing, {variantId, baseCents, document}) {
+  const moduleProfile=document.config?.moduleProfile;
+  if(moduleProfile!==undefined)validateModuleProfile(moduleProfile);
   const optionsContract=pricing?.schema==='gravuru-personalization-pricing/v3';
   const vectorLogos=vectorLogoAllowed(document.config),logoContract=pricing?.schema==='gravuru-personalization-pricing/v2'||optionsContract&&has(pricing,'extraLogoCents');
   if (!['gravuru-personalization-pricing/v1','gravuru-personalization-pricing/v2','gravuru-personalization-pricing/v3'].includes(pricing?.schema) || pricing.enabled !== true ||
@@ -52,6 +55,7 @@ export function capturePersonalization(pricing, {variantId, baseCents, document}
   const quantityTiers = withTiers ? checkoutTiers(pricing.quantityTiers) : null;
   if (withTiers && JSON.stringify(quantityTiers) !== JSON.stringify(checkoutTiers(document.config.quantityTiers))) fail();
   return {productId:pricing.productId, revision:String(pricing.revision), baseCents,
+    ...(moduleProfile?{moduleProfile:structuredClone(moduleProfile)}:{}),
     extraMotifCents:pricing.extraMotifCents, extraPhotoCents:pricing.extraPhotoCents,
     ...(logoContract?{extraLogoCents:pricing.extraLogoCents}:{}),
     ...(optionsContract?{optionPrices}:{}),
@@ -61,6 +65,16 @@ export function capturePersonalization(pricing, {variantId, baseCents, document}
 
 export function personalizationForSnapshot(contract, manifest) {
   const p = manifest.selection?.price;
+  // The internal, revision-pinned contract retains module permissions. It is
+  // not added to the Shopify Function input or inferred from client flags.
+  if(contract?.moduleProfile!==undefined){
+    const modules=validateModuleProfile(contract.moduleProfile).modules;
+    // V1 counts raster logos together with photos in chargedUploads. Only V2/V3
+    // with extraLogoCents splits the counts. Artwork validation has already
+    // checked each upload kind against the same saved product revision.
+    const uploadsAllowed=modules.photo||(!has(contract,'extraLogoCents')&&modules.logo);
+    if(!p||(!uploadsAllowed&&p.chargedUploads!==0)||(!modules.logo&&(p.chargedLogos||0)!==0)||(!modules.motifs&&p.additionalMotifs!==0))fail();
+  }
   if (!p || !count(p.additionalMotifs, 200) || !count(p.chargedUploads, 4) ||
       !Number.isSafeInteger(p.quantity) || p.quantity < 1 || p.quantity > 99 ||
       !money(contract?.baseCents) || !money(contract?.extraMotifCents) || !money(contract?.extraPhotoCents) ||

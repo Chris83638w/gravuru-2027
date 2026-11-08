@@ -1,4 +1,5 @@
 import {shopGalleryModel} from './shop-gallery-model.mjs';
+import {createConfiguratorModuleManagement} from './configurator-module-http.mjs';
 import {SIGN_PLACEMENT_FAMILIES} from '../configurator/variant-m/mounting-dimensions.mjs';
 import {createAcrylShopService} from './acryl-shop-service.mjs';
 import {createDesignCorrections} from './design-corrections.mjs';
@@ -150,6 +151,8 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   const repository=createProductRepository({filename,tenantId,catalogOverview:d=>isFormProduct(d)?formOverview(d):productOverview(d),validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document)){if(document.profileAssignments)profiles.resolve(document);return verifyForm(document);}profiles.resolve(document);assets.validateDocument(document);productionProfiles.resolve(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{...(document.profileAssignments?{profiles:profiles.resolve(document)}:{}),form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)})});
   if(ownsBundled&&!repository.firstId())repository.create(seed);
   const families=createProductFamilies({filename,repository,tenantId});
+  let moduleManagement=null;
+  const configuredModules=()=>moduleManagement??=createConfiguratorModuleManagement({filename,repository,tenantId});
   // Katalogseite liest Linien/Hauptprodukte aus dem Katalog-Repo, sobald eines verbunden ist (sonst eingebauter Stand).
   const catalogStructure=createCatalogStructure({filename,tenantId,katalogDir:()=>{if(!ownsBundled)return null;const root=katalogDir===undefined?katalogPath():katalogDir;return root||null;}});
   // B1: Klarnamen für Kategorie-Kennungen (nur Anzeige) und Kundenstatus je Konfi.
@@ -401,6 +404,12 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       }
       const merchantSession=verifySession?verifySession(req.headers.authorization,'merchant'):null;
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
+      if(pathname==='/api/workshop/configurator-modules'){
+        if(url.search)fail(422,'module_query','Diese Verwaltung benötigt keine URL-Parameter.');
+        if(method==='GET')return json(res,200,configuredModules().overview());
+        if(method!=='POST')fail(405,'method_not_allowed','Bitte die angezeigte Verwaltungsaktion verwenden.');
+        return json(res,200,configuredModules().dispatch(await body(req),{actor:merchantSession?.subject||localActor}));
+      }
       if(pathname==='/api/workshop/motif-search-stats'){if(method!=='GET')fail(405,'method_not_allowed','Auswertungen werden nur gelesen.');return json(res,200,motifSearchStats.report(Object.fromEntries(url.searchParams)));}
       if(pathname==='/api/workshop/customer-vector-logo/preview'){
         if(method!=='POST'||url.search)fail(405,'method_not_allowed','Die Logo-Vorschau benötigt POST.');
@@ -1127,7 +1136,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {tenantId,catalogStructure,acrylShop,corrections,families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model:customerModelFor,galleryModel:(id,version)=>shopGalleryModel(repository.get(id,{revision:revision(version)})),internalModel:model,pausedPage,labelCategories,konfis,defaultId,close:()=>{motifSearchStats.close();catalogStructure.close();acrylShop.close();corrections.close();konfis.close();families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
+  return {tenantId,catalogStructure,acrylShop,corrections,families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model:customerModelFor,galleryModel:(id,version)=>shopGalleryModel(repository.get(id,{revision:revision(version)})),internalModel:model,pausedPage,labelCategories,konfis,defaultId,close:()=>{moduleManagement?.close();motifSearchStats.close();catalogStructure.close();acrylShop.close();corrections.close();konfis.close();families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
 }
 
 /** Loopback preview; optional test session gate is not a public deployment.

@@ -1,3 +1,5 @@
+import {moduleEnabled} from './module-profile.mjs';
+import {moduleTabs} from './module-runtime.mjs';
 import {canDeleteTemplateElement} from './element-rights.mjs';
 import {embedPreviewUploads} from './preview-uploads.mjs';
 import {installDialogDismissal} from './dialog-dismiss.mjs';
@@ -76,12 +78,12 @@ export async function installUX(el,config,legacy,{attach}={}){
   const isPrint=config?.profile.processing?.profileId==='color-print';
   // K10 / Ü1: Das Verfahrensprofil steuert Werkzeuge (Farbe, Foto), Palette und Mindestschriftgröße.
   // Ohne Produktkonfiguration (Klingelschild-Altpfad) bleibt das bisherige Verhalten.
-  const process=config?productProcess(config):null,colorTool=!!process?.tools.textColor;
+  const process=config?productProcess(config):null,colorTool=!!process?.tools.textColor&&moduleEnabled(config,'colors');
   // Freie Farbe (Farbwähler) zusätzlich zur Palette: processFreeColor – Farbdruck ja (Chris 22./23.10.2026), Gravur nein.
   // Die Palette selbst zeichnen usability.mjs (Swatches) und direct-editing.mjs (Schnellfarbpunkte).
   const freeColor=colorTool&&processFreeColor(process,config?.workshopProfiles?.selections?.colors??null);
   const minTextMm=process?.minTextMm??4;
-  el.uxProcess=process;el.uxMinTextMm=minTextMm;
+  el.uxProcess=process&&!moduleEnabled(config,'colors')?{...process,tools:{...process.tools,textColor:false,motifColor:false}}:process;el.uxMinTextMm=minTextMm;
   const profileChoices=config?.workshopProfiles?.selections;
   const availableFonts=()=>selectionIds(Object.keys(el.fontData).sort((a,b)=>a.localeCompare(b,'de')),profileChoices?.fonts);
   const fontFits=(object,font)=>{try{measureText({...object,font},el.fontData);return true;}catch{return false;}};
@@ -90,11 +92,12 @@ export async function installUX(el,config,legacy,{attach}={}){
   const displayTextSize=o=>physicalTextSize(o,textScale());
   el.uxTextScale=textScale;
   el.uxDisplayTextSize=displayTextSize;
-  const photoEnabled=config?config.logo?.vectorUpload!==true&&config.photo.enabled&&process.tools.photo!==false:true, logoEnabled=config?.logo?.enabled!==false;
+  const photoEnabled=moduleEnabled(config,'photo')&&(config?config.logo?.vectorUpload!==true&&config.photo.enabled&&process.tools.photo!==false:true), logoEnabled=moduleEnabled(config,'logo')&&config?.logo?.enabled!==false;
   // Reiter „Foto / Logo“ wird gar nicht erst angelegt, wenn weder Foto noch Logo möglich ist oder wenn das
   // Produkt kein Foto vorsieht und kein Design eine Foto-/Logo-Ebene hat (Chris 22./23.10.2026, ux-model.mjs).
   const vectorLogos=vectorLogoEnabled(config);
   const uploadOffered=(photoEnabled||logoEnabled)&&(photoEnabled||designsHaveUploadLayer(config)||vectorLogos);
+  const allowedTabs=moduleTabs(config,{upload:uploadOffered});
   const files=new Map(), icons={};
   el.uxEmbedPreviewUploads=svg=>embedPreviewUploads(svg,files);
   const freshPreview=freshPreviewRequested(config,location.search);
@@ -111,7 +114,7 @@ export async function installUX(el,config,legacy,{attach}={}){
       <div class="ux-preview-caption"><span>${config?esc(profile.name):'AOSU Pro V8P1AX11 · Lieferung ohne Klingel'}</span>${button('enlarge','Vollbild ↗')}</div>
       <div class="ux-preview-tools">${button('undo',icons.undo||'↶','aria-label="Rückgängig"')}${button('redo',icons.redo||'↷','aria-label="Wiederholen"')}<label><input type="checkbox" data-ux-guides> Hilfslinien</label><label><input type="checkbox" data-ux-dimensions> Maße</label>${button('contents','Ebenenverwaltung <span data-ux-count></span>')}</div>
       <p class="ux-preview-help">Text oder Motiv antippen. Zum Verschieben auf dem Handy die Vollbildansicht öffnen.</p></section>
-    <section class="ux-editor" aria-label="Gestaltungswerkzeuge"><nav class="ux-tabs" role="tablist" aria-label="Gestaltung">${[['options','Optionen',''],['design','Designs','templates'],['text','Text','text'],['motif','Motive','motif'],['upload',photoEnabled&&logoEnabled?'Foto / Logo':photoEnabled?'Foto':'Logo','image']].filter(([id])=>id!=='upload'||uploadOffered).map(([id,title,icon])=>`<button type="button" role="tab" id="ux-tab-${id}" aria-controls="ux-panel-${id}" aria-selected="${id==='options'}" tabindex="${id==='options'?0:-1}" data-ux-tab="${id}"><span class="ux-tab-icon" aria-hidden="true">${icons[icon]||(id==='options'?'⚙':'')}</span>${title}</button>`).join('')}</nav>
+    <section class="ux-editor" aria-label="Gestaltungswerkzeuge"><nav class="ux-tabs" role="tablist" aria-label="Gestaltung">${[['options','Optionen',''],['design','Designs','templates'],['text','Text','text'],['motif','Motive','motif'],['upload',photoEnabled&&logoEnabled?'Foto / Logo':photoEnabled?'Foto':'Logo','image']].filter(([id])=>id!=='upload'||uploadOffered).map(([id,title,icon])=>`<button type="button" role="tab" id="ux-tab-${id}" aria-controls="ux-panel-${id}" aria-selected="${id==='options'}" tabindex="${id==='options'?0:-1}" data-ux-tab="${id}" ${allowedTabs.includes(id)?'':'hidden disabled'}><span class="ux-tab-icon" aria-hidden="true">${icons[icon]||(id==='options'?'⚙':'')}</span>${title}</button>`).join('')}</nav>
     ${['options','design','text','motif','upload'].map(id=>`<section class="ux-panel" role="tabpanel" id="ux-panel-${id}" aria-labelledby="ux-tab-${id}" ${id==='options'?'':'hidden'}></section>`).join('')}
     <p class="ux-status" role="status" aria-live="polite" data-ux-status></p></section></div>${button('help','? Hilfe','class="ux-help-button"')}</div>`;
   r.append(shell);
@@ -156,8 +159,8 @@ export async function installUX(el,config,legacy,{attach}={}){
   const finishCustomerRights=beginCustomerRights({el,r,config,selected,select,say});
   const finishTemplateDeletion=installTemplateDeletion({el,r,config,selected,mutate,say});
   const selectable=()=>selected()&&!selected().uxLocked&&!selected().uxHidden;
-  function showTab(key,focus=false){if(!$('#ux-tab-'+key)||$('#ux-tab-'+key).hidden)key='text';activeTab=key;for(const b of all('[data-ux-tab]')){const is=b.dataset.uxTab===key;b.setAttribute('aria-selected',is);b.tabIndex=is?0:-1;}for(const p of all('.ux-panel'))p.hidden=p.id!=='ux-panel-'+key;if(key==='text')el.uxUpdateTextUI?.();if(focus)$('#ux-tab-'+key).focus();}
-  $('.ux-tabs').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const tabs=all('[data-ux-tab]').filter(b=>!b.hidden&&!b.disabled),i=tabs.indexOf(e.target);const next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;showTab(tabs[next].dataset.uxTab,true);});
+  function showTab(key,focus=false){if(!$('#ux-tab-'+key)||$('#ux-tab-'+key).hidden||$('#ux-tab-'+key).disabled)key=config?.moduleProfile===undefined?'text':all('[data-ux-tab]').find(b=>!b.hidden&&!b.disabled)?.dataset.uxTab;activeTab=key;for(const b of all('[data-ux-tab]')){const is=b.dataset.uxTab===key;b.setAttribute('aria-selected',is);b.tabIndex=is?0:-1;}for(const p of all('.ux-panel'))p.hidden=p.id!=='ux-panel-'+key;if(key==='text')el.uxUpdateTextUI?.();if(focus)$('#ux-tab-'+key)?.focus();}
+  $('.ux-tabs').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const tabs=all('[data-ux-tab]').filter(b=>!b.hidden&&!b.disabled),i=tabs.indexOf(e.target);if(!tabs.length)return;const next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;showTab(tabs[next].dataset.uxTab,true);});
   el.uxShowSection=section=>showTab(({font:'text',arrangement:'text',form:'options',start:'design',logo:'upload'})[section]||section);
   el.revealEditor=function(o){if(o?.type==='text')showTab('text');else if(o?.type==='photoSlot'||o?.uxUploadId)showTab('upload');};
   el.guidedGo=function(step){showTab(({1:'design',2:'text',3:'motif',4:'options'})[step]||'text');};
@@ -206,7 +209,7 @@ export async function installUX(el,config,legacy,{attach}={}){
       return result;
     };
   }
-  const oldChoose=el.chooseDesign;el.chooseDesign=function(id,...rest){const keep=this.state.objects.map(clone);oldChoose.call(this,id,...rest);this.state.uxDecorationsFor=null;const transfer=mapPersonalObjects(keep,this.state.objects);this.state.objects=transfer.objects;addDecoration();this.state.selected=null;this.normalize();this.sync();dirty=true;if(transfer.unmappedUploads.length)say('Dein Foto konnte im neuen Design nicht eindeutig zugeordnet werden. Bitte den gewünschten Fotobereich wählen und das Foto dort ersetzen.');};
+  const oldChoose=el.chooseDesign;el.chooseDesign=function(id,...rest){if(!moduleEnabled(config,'designs')&&id!==chosenProfile().defaultDesignId)return;const keep=this.state.objects.map(clone);oldChoose.call(this,id,...rest);this.state.uxDecorationsFor=null;const transfer=mapPersonalObjects(keep,this.state.objects);this.state.objects=transfer.objects;addDecoration();this.state.selected=null;this.normalize();this.sync();dirty=true;if(transfer.unmappedUploads.length)say('Dein Foto konnte im neuen Design nicht eindeutig zugeordnet werden. Bitte den gewünschten Fotobereich wählen und das Foto dort ersetzen.');};
   const oldAdd=el.add;el.add=function(object,...args){
     if(object?.type==='motif'&&Array.isArray(this.uxMotifChoiceIds)&&!this.uxMotifChoiceIds.includes(object.motif))return say('Dieses Motiv steht für dieses Produkt nicht zur Auswahl.');
     if(object?.type==='text'){
@@ -301,7 +304,7 @@ export async function installUX(el,config,legacy,{attach}={}){
     // dialog is visible, so Safari and Chromium measure a rendered SVG.
     for(const svg of all('.ux-font-grid svg')){const b=svg.querySelector('[data-font-ink]').getBBox();if(b.width>0&&b.height>0){const pad=Math.max(1,b.height*.12);svg.setAttribute('viewBox',`${b.x-pad} ${b.y-pad} ${b.width+2*pad} ${b.height+2*pad}`);}}
   }
-  function updateGallery(){const tab=$('#ux-tab-design'),hasChoice=el.uxHasProductDesignGallery===true||profile.designs.length>0;tab.hidden=!hasChoice;tab.disabled=!hasChoice;tab.tabIndex=hasChoice&&activeTab==='design'?0:-1;$('.ux-tabs').style.setProperty('--ux-tab-count',all('[data-ux-tab]').filter(b=>!b.hidden).length);if(!hasChoice&&activeTab==='design')showTab('text');const cards=all('[data-c-design]');const filters=Object.fromEntries(all('[data-m-filter]').map(f=>[f.dataset.mFilter,f.value]));let shown=0;for(const card of cards){const d=designFor(card.dataset.cDesign);card.hidden=!d||!!((filters.category&&d?.category!==filters.category)||(filters.collection&&!d?.collections?.includes(filters.collection)));if(!card.hidden)shown++;const note=card.querySelector('small');if(note){const review=familyDesignReviewNote(config,el.state.mOptions,card.dataset.cDesign);note.textContent=review;note.hidden=!review;note.toggleAttribute('data-family-review',!!review);}}const count=$('[data-c-count]');if(count)count.textContent=shown+' Designs';}
+  function updateGallery(){const tab=$('#ux-tab-design'),hasChoice=moduleEnabled(config,'designs')&&(el.uxHasProductDesignGallery===true||profile.designs.length>0);tab.hidden=!hasChoice;tab.disabled=!hasChoice;tab.tabIndex=hasChoice&&activeTab==='design'?0:-1;$('.ux-tabs').style.setProperty('--ux-tab-count',all('[data-ux-tab]').filter(b=>!b.hidden).length);if(!hasChoice&&activeTab==='design')showTab('text');const cards=all('[data-c-design]');const filters=Object.fromEntries(all('[data-m-filter]').map(f=>[f.dataset.mFilter,f.value]));let shown=0;for(const card of cards){const d=designFor(card.dataset.cDesign);card.hidden=!d||!!((filters.category&&d?.category!==filters.category)||(filters.collection&&!d?.collections?.includes(filters.collection)));if(!card.hidden)shown++;const note=card.querySelector('small');if(note){const review=familyDesignReviewNote(config,el.state.mOptions,card.dataset.cDesign);note.textContent=review;note.hidden=!review;note.toggleAttribute('data-family-review',!!review);}}const count=$('[data-c-count]');if(count)count.textContent=shown+' Designs';}
   const designFor=id=>chosenProfile().designs.find(d=>d.id===id);
   function label(o){return o.uxDecoration?'Gestaltungslinie':o.uxUploadId?(o.uxUploadKind==='logo'?'Dein Logo':'Dein Foto'):o.type==='text'?(o.text||'Leerer Text'):o.type==='motif'?(el.catalog.motif_labels?.[o.motif]||'Motiv'):names[o.type]||'Element';}
   function renderContents(){if(!dialogs.contents.open||r.activeElement?.matches('[data-ux-content-prop]'))return;$('[data-ux-contents-list]').innerHTML=el.state.objects.map(o=>`<div class="ux-content-row">${button('select-content',`${esc(label(o))}<small>${o.uxHidden?'Ausgeblendet':'Auf deinem Produkt'}${o.uxLocked?' · gesperrt':''}</small>`,`data-id="${esc(o.id)}" aria-pressed="${o.id===el.state.selected}"`)}<label title="Anzeigen oder ausblenden"><input type="checkbox" data-ux-visible="${esc(o.id)}" aria-label="${esc(label(o))} anzeigen" ${o.uxHidden?'':'checked'}></label>${button('lock',o.uxLocked?'🔒':'🔓',`data-id="${esc(o.id)}" aria-label="${esc(label(o))} ${o.uxLocked?'entsperren':'sperren'}" aria-pressed="${!!o.uxLocked}"`)}${button('remove-content',icons.delete||'×',`data-id="${esc(o.id)}" aria-label="${esc(label(o))} löschen" ${o.uxLocked?'disabled':''}`)}</div>`).join('');
@@ -374,13 +377,13 @@ export async function installUX(el,config,legacy,{attach}={}){
     if(action==='select-content'){select(b.dataset.id);return;}
     if(action==='lock'){mutate(()=>{const o=el.state.objects.find(o=>o.id===b.dataset.id);if(o?.type==='motif-raster')return;o.uxLocked=!o.uxLocked;});return;}
     if(action==='remove-content'){const o=el.state.objects.find(o=>o.id===b.dataset.id);if(!o||o.uxLocked||o.locked||o.acrylicFixed)return;mutate(()=>{el.state.objects=el.state.objects.filter(v=>v.id!==o.id);if(el.state.selected===o.id)el.state.selected=null;});return;}
-    if(['photo-upload','logo-upload','replace-upload','fill-photo-slot'].includes(action)){replacing=['replace-upload','fill-photo-slot'].includes(action)?b.dataset.id:null;uploadKind=replacing?(el.state.objects.find(o=>o.id===replacing)?.uxUploadKind||'photo'):action==='logo-upload'?'logo':'photo';$('[data-ux-file]').accept=uploadKind==='logo'&&vectorLogos?VECTOR_LOGO_ACCEPT:PHOTO_ACCEPT;$('[data-ux-file]').click();return;}
-    if(action==='add-text'){const font=config?'Montserrat':'Nunito';try{await el.uxEnsureFonts?.(profileChoices?.fonts?selectionIds(el.uxKnownFonts(),profileChoices.fonts):[font]);}catch{return say('Die Schrift konnte nicht geladen werden. Bitte erneut versuchen.');}el.add({type:'text',text:'Dein Text',font,size:10,bold:false});showTab('text');return;}
+    if(['photo-upload','logo-upload','replace-upload','fill-photo-slot'].includes(action)){replacing=['replace-upload','fill-photo-slot'].includes(action)?b.dataset.id:null;uploadKind=replacing?(el.state.objects.find(o=>o.id===replacing)?.uxUploadKind||'photo'):action==='logo-upload'?'logo':'photo';if(!uploadAllowed(config,uploadKind))return say('Dieser Upload ist bei diesem Produkt nicht vorgesehen.');$('[data-ux-file]').accept=uploadKind==='logo'&&vectorLogos?VECTOR_LOGO_ACCEPT:PHOTO_ACCEPT;$('[data-ux-file]').click();return;}
+    if(action==='add-text'){if(!additions.text)return say('Eigener Text ist bei diesem Produkt nicht vorgesehen.');const font=config?'Montserrat':'Nunito';try{await el.uxEnsureFonts?.(profileChoices?.fonts?selectionIds(el.uxKnownFonts(),profileChoices.fonts):[font]);}catch{return say('Die Schrift konnte nicht geladen werden. Bitte erneut versuchen.');}el.add({type:'text',text:'Dein Text',font,size:10,bold:false});showTab('text');return;}
     if(action==='smaller'||action==='bigger'){changeObject('size',(selected()?displayTextSize(selected()):minTextMm)+(action==='bigger'?1:-1));return;}
     if(action==='bold'||action==='italic'){changeObject(action,!selected()?.[action]);return;}
     if(['left','center','right'].includes(action)){if(el.uxAlign){el.uxAlign(action);return;}const o=selected();if(o)changeObject('x',action==='center'?currentSize().width/2:action==='left'?o.w/2+8:currentSize().width-o.w/2-8);return;}
     if(['layer-front','layer-back'].includes(action)){if(!selectable())return;const o=selected();if(!canEditElement(config,el.state.designId,o,'order'))return say('Die Reihenfolge der Vorlagenelemente ist fest. Eigene Elemente liegen immer darüber.');mutate(()=>{const templateIds=new Set((design()?.objects||[]).map(v=>v.id)),rest=el.state.objects.filter(v=>v.id!==o.id);if(action==='layer-front')rest.push(o);else rest.splice(rest.findLastIndex(v=>templateIds.has(v.id))+1,0,o);el.state.objects=rest;});return;}
-    if(['undo','redo','delete','duplicate'].includes(action)){if(['delete','duplicate'].includes(action)&&selected()?.locked)return say('Das feste Rastermotiv kann verschoben und skaliert werden.');if(action==='duplicate'&&selected()?.uxUploadId)return say('Bitte Fotos und Logos über den Upload hinzufügen, damit Anzahl und Aufpreis eindeutig bleiben.');await el.action(action);return;}
+    if(['undo','redo','delete','duplicate'].includes(action)){if(action==='duplicate'&&(selected()?.type==='text'&&!additions.text||selected()?.type==='motif'&&!additions.motifs))return say('Dieses Element wird bei diesem Produkt nicht zusätzlich angeboten.');if(['delete','duplicate'].includes(action)&&selected()?.locked)return say('Das feste Rastermotiv kann verschoben und skaliert werden.');if(action==='duplicate'&&selected()?.uxUploadId)return say('Bitte Fotos und Logos über den Upload hinzufügen, damit Anzahl und Aufpreis eindeutig bleiben.');await el.action(action);return;}
   });
   r.addEventListener('focusin',e=>{const f=e.target.closest('[data-ux-text]');if(f&&el.state.selected!==f.dataset.uxText){el.state.selected=f.dataset.uxText;el.sync();}});
   r.addEventListener('input',e=>{const t=e.target;if(t.dataset.uxText){if(!t.dataset.editStarted){el.record();t.dataset.editStarted='true';}const o=el.state.objects.find(o=>o.id===t.dataset.uxText);
@@ -495,8 +498,8 @@ export async function installUX(el,config,legacy,{attach}={}){
       const link=parseDirectLink(new URL(href).searchParams,profile);
       if(!link.present)continue;
       if(link.designId&&link.designId!==el.state.designId)el.chooseDesign(link.designId);
-      if(link.sizeId&&config){try{el.record?.();el.state.mOptions={...(el.state.mOptions||{}),size:link.sizeId};el.sync();}catch{link.notes.push('Die verlinkte Größe konnte nicht übernommen werden.');}}
-      if(link.text){const result=applyLinkText(el.state.objects,design(),profile,link.text,config);if(result){dirty=true;el.normalize();el.sync();if(result.truncated)link.notes.push('Der verlinkte Text wurde auf das Limit des Feldes gekürzt.');}else link.notes.push('Der verlinkte Text konnte keinem Textfeld zugeordnet werden.');}
+      if(link.sizeId&&config&&moduleEnabled(config,'options')){try{el.record?.();el.state.mOptions={...(el.state.mOptions||{}),size:link.sizeId};el.sync();}catch{link.notes.push('Die verlinkte Größe konnte nicht übernommen werden.');}}
+      if(link.text&&moduleEnabled(config,'text')){const result=applyLinkText(el.state.objects,design(),profile,link.text,config);if(result){dirty=true;el.normalize();el.sync();if(result.truncated)link.notes.push('Der verlinkte Text wurde auf das Limit des Feldes gekürzt.');}else link.notes.push('Der verlinkte Text konnte keinem Textfeld zugeordnet werden.');}
       applied=link;break;
     }
     if(applied){for(const host of directLinkWindows()){try{const clean=withoutDirectLinkParams(host.location.href);if(clean)host.history.replaceState(host.history.state,'',clean);}catch{}}if(applied.notes.length)say(applied.notes.join(' '));}

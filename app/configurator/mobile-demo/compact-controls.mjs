@@ -36,7 +36,7 @@ export function installDemoCompactControls({el,full,controls,returnButton}) {
       :host([data-mobile-demo]) .md-compact-tools svg{width:21px;height:21px;pointer-events:none}
       :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-top :is([data-ux=undo],[data-ux=redo],[data-ux=contents],[data-ux=help]),
       :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-controls>.ux-design-reset{display:none!important}
-      :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-controls{justify-content:flex-start!important;gap:6px!important;padding:6px 10px!important}
+      :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-controls{justify-content:center!important;gap:6px!important;padding:6px 10px!important}
       :host([data-mobile-demo]) .md-controls>.md-compact-tools{order:-2}
       :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-controls>.ux-view-zoom{flex:1 1 130px!important;min-width:100px!important;max-width:220px!important;width:auto!important}
       :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .c-large-preview[open]{padding-top:4px!important;gap:3px!important}

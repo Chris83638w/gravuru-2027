@@ -10,6 +10,7 @@ import {createProductRepository} from './repository.mjs';
 import {createOrderIntake} from './order-intake.mjs';
 import {createShopBindingReadAdapter} from './shop-product-binding-adapter.mjs';
 import {planShopProductBindings} from './shop-product-binding-plan.mjs';
+import {createShopProductBindingCheck} from './shop-product-binding-check.mjs';
 import {makeFormProduct} from './form-product.mjs';
 import {addFormDesign} from './form-designs.mjs';
 import {makeProductDocument} from './product-model.mjs';
@@ -51,6 +52,74 @@ function fixture(t,document=formDocument()){
 }
 const tables=['form_shop_bindings','form_shop_binding_selections','shop_product_binding_heads','shop_product_binding_revisions'];
 const counts=f=>Object.fromEntries(tables.map(table=>[table,f.db.prepare('SELECT count(*) AS n FROM '+table).get().n]));
+
+test('locked read phase reuses only frozen source records and rejects a same-connection mutation',t=>{
+ const f=fixture(t),get=f.repository.get;let reads=0;f.repository.get=(...args)=>{reads++;return get(...args);};
+ f.registry.withReadSnapshot(()=>{const first=f.adapter.getCurrentProduct(f.record.id),second=f.adapter.getCurrentProduct(f.record.id);assert.equal(first,second);assert.equal(reads,1);assert.ok(Object.isFrozen(first.document));assert.throws(()=>{first.document.name='changed';},TypeError);});
+ assert.equal(Object.isFrozen(f.adapter.getCurrentProduct(f.record.id)),false,'ordinary reads remain detached mutable copies');
+ assert.throws(()=>f.registry.withReadSnapshot(()=>{f.adapter.getCurrentProduct(f.record.id);f.db.prepare('UPDATE products SET archived=1 WHERE id=?').run(f.record.id);f.adapter.getCurrentProduct(f.record.id);}),{code:'shop_binding_cfg_changed'});
+ assert.equal(f.db.prepare('SELECT archived FROM products WHERE id=?').get(f.record.id).archived,0,'failed phase rolls its mutation back');
+ const next=f.repository.save(f.record.id,{...f.record.document,name:'new revision'},1);
+ f.registry.withReadSnapshot(()=>assert.equal(f.adapter.getCurrentProduct(f.record.id).revision,next.revision));
+});
+
+test('provider-side product mutation after native binding validation rolls the whole write back',t=>{
+ const f=fixture(t),plan=f.plan(),before=counts(f),bind=f.orders.bindVariants;
+ f.orders.bindVariants=function(input){const value=bind.call(this,input);f.db.prepare('UPDATE products SET archived=1 WHERE id=?').run(f.record.id);return value;};
+ assert.throws(()=>f.persist(plan),{code:'shop_binding_cfg_changed'});assert.deepEqual(counts(f),before);assert.equal(f.db.prepare('SELECT archived FROM products WHERE id=?').get(f.record.id).archived,0);
+});
+
+test('native REPLACE and recursive-trigger toggles cannot replace a cached revision',t=>{
+ for(const mode of ['replace','disable','disable-replace-restore']){
+  const f=fixture(t),plan=f.plan(),before=counts(f),bind=f.orders.bindVariants;
+  const original=f.db.prepare('SELECT * FROM product_revisions WHERE product_id=? AND revision=1').get(f.record.id);
+  f.db.exec('PRAGMA recursive_triggers=OFF');
+  f.orders.bindVariants=function(input){
+   const value=bind.call(this,input);assert.equal(f.db.prepare('PRAGMA recursive_triggers').get().recursive_triggers,1);
+   if(mode!=='replace')f.db.exec('PRAGMA recursive_triggers=OFF');
+   if(mode!=='disable'){
+    const changed={...original,document:JSON.stringify({...f.record.document,name:'replaced inside provider'})},keys=Object.keys(changed);
+    f.db.prepare('INSERT OR REPLACE INTO product_revisions('+keys.join(',')+') VALUES('+keys.map(()=>'?').join(',')+')').run(...keys.map(key=>changed[key]));
+   }
+   if(mode==='disable-replace-restore')f.db.exec('PRAGMA recursive_triggers=ON');
+   return value;
+  };
+  assert.throws(()=>f.persist(plan),mode==='replace'?/immutable/:{code:'shop_binding_cfg_changed'});
+  assert.deepEqual(counts(f),before);
+  assert.deepEqual(f.db.prepare('SELECT * FROM product_revisions WHERE product_id=? AND revision=1').get(f.record.id),original);
+  assert.equal(f.db.prepare('PRAGMA recursive_triggers').get().recursive_triggers,0,'connection setting restored after failed scope');
+ }
+});
+
+test('native trigger/schema changes invalidate a locked product cache and unknown schemas keep full document checks',t=>{
+ const f=fixture(t),raw=f.db.prepare('SELECT document FROM product_revisions WHERE product_id=?').get(f.record.id).document;
+ assert.throws(()=>f.registry.withReadSnapshot(()=>{
+  f.adapter.getCurrentProduct(f.record.id);
+  assert.throws(()=>f.db.prepare('UPDATE product_revisions SET document=? WHERE product_id=?').run(raw,f.record.id),/immutable/);
+  f.db.exec('DROP TRIGGER immutable_revision_update');
+  f.db.prepare('UPDATE product_revisions SET document=? WHERE product_id=?').run(JSON.stringify({...f.record.document,name:'changed inside locked phase'}),f.record.id);
+  f.adapter.getCurrentProduct(f.record.id);
+ }),{code:'shop_binding_revision'});
+ assert.equal(f.db.prepare('SELECT document FROM product_revisions WHERE product_id=?').get(f.record.id).document,raw);
+ assert.ok(f.db.prepare("SELECT 1 FROM sqlite_master WHERE name='immutable_revision_update'").get());
+ // A non-native schema cannot acquire the lightweight native immutability path.
+ f.db.exec('DROP TRIGGER immutable_revision_update');
+ f.db.exec("CREATE TRIGGER immutable_revision_update BEFORE UPDATE ON product_revisions WHEN 0 BEGIN SELECT RAISE(ABORT, 'Product revisions are immutable'); END");
+ assert.throws(()=>f.registry.withReadSnapshot(()=>{
+  f.adapter.getCurrentProduct(f.record.id);
+  f.db.prepare('UPDATE product_revisions SET document=? WHERE product_id=?').run(JSON.stringify({...f.record.document,name:'same schema mutation'}),f.record.id);
+  f.adapter.getCurrentProduct(f.record.id);
+ }),{code:'shop_binding_revision'});
+ assert.equal(f.db.prepare('SELECT document FROM product_revisions WHERE product_id=?').get(f.record.id).document,raw);
+});
+
+test('batched exact reads preserve every ID, historical revision and later archive rejection',t=>{
+ const f=fixture(t),second=f.repository.create(formDocument());f.persist(f.plan([{record:f.record,...pair(),options:{}},{record:second,...pair(2),options:{}}]));
+ const expected=[f.registry.resolve(pair()),f.registry.resolve(pair(2))];assert.deepEqual(f.registry.resolveMany([pair(),pair(2)]),expected);
+ f.repository.save(f.record.id,{...f.record.document,name:'new draft'},1);assert.equal(f.registry.resolveMany([pair()])[0].productRevision,1);
+ assert.throws(()=>f.registry.resolveMany([pair(),pair(3)]),{code:'shop_binding_active_not_found'});
+ f.repository.setArchived(second.id,{expectedRevision:1,archived:true});assert.throws(()=>f.registry.resolveMany([pair(),pair(2)]),{code:'shop_binding_cfg_changed'});
+});
 
 test('exact ID assignment persists on the existing connection with real form geometry and no profile release',t=>{
  const f=fixture(t),before=f.repository.get(f.record.id),saved=f.persist();
@@ -230,8 +299,13 @@ test('read-only audit opens the existing registry without schema changes and can
  try{
  const registry=createShopProductBindingStore({database:db,orderIntake:f.orders,adapter:f.adapter,tenantId,shopDomain,storeId,readOnly:true});
  assert.deepEqual(registry.resolve(pair()),f.registry.resolve(pair()));assert.equal((await registry.listActiveForGallery()).length,1);assert.equal(registry.galleryRevision(),f.registry.galleryRevision());
+ assert.deepEqual(registry.resolveMany([pair()]),[f.registry.resolve(pair())]);
+ registry.withReadSnapshot(()=>{assert.equal(db.isTransaction,true);assert.equal(f.adapter.getCurrentProduct(f.record.id).revision,1);assert.throws(()=>db.exec('UPDATE products SET archived=1'),/readonly/);});
  assert.throws(()=>registry.persist({}),{code:'shop_binding_read_only',status:403});assert.deepEqual(counts(f),before);
  }finally{db.close();} // Close before the fixture removes its directory on Windows.
+ const checker=createShopProductBindingCheck({adapter:f.adapter,clock:f.clock,reader:{async inspectVariants(){assert.equal(f.db.isTransaction,false);return {installation:{shopDomain,currency:'EUR',scope:'admin-readonly'},variants:[{id:pair().shopifyVariantId,found:true,productId:pair().shopifyProductId,status:'ACTIVE',priceCents:2599}]};}}});
+ const checked=await checker.check({selections:[{...pair(),productId:f.record.id,productRevision:1,options:{}}]});
+ assert.equal(checked.status,'id-plan-ready','closed audit connection never replaces the original writable checker scope');
 });
 
 

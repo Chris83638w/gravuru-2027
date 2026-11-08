@@ -1,7 +1,7 @@
 import {createHash} from 'node:crypto';
 import {isDeepStrictEqual} from 'node:util';
 import {isFormProduct,formReadiness} from './form-product.mjs';
-import {validateProductDocument,resolveProduct} from './product-model.mjs';
+import {resolveProduct,withProductResolutionSnapshot} from './product-model.mjs';
 import {quote,variantCombinations} from '../configurator/variant-m/contract.mjs';
 import {variantKey} from '../configurator/variant-m/commerce-model.mjs';
 import {isFamilyFormats} from '../configurator/variant-m/family-formats.mjs';
@@ -13,17 +13,29 @@ import {moduleEnabled} from '../configurator/variant-m/module-profile.mjs';
 const doorbellPreparations=new Map(),DOORBELL_PREPARATION_LIMIT=32;
 const familyPreparations=new Map(),FAMILY_PREPARATION_LIMIT=2;
 const slatePreparations=new Map(),SLATE_PREPARATION_LIMIT=2;
+const preparationSnapshots=new WeakMap();
+export function withShopPreparationSnapshot(record,read){
+ if(typeof read!=='function')throw Error('Eine synchrone Vorbereitung ist erforderlich.');
+ if(preparationSnapshots.has(record)){const value=read(record);if(value?.then instanceof Function)throw Error('Die Vorbereitung darf nicht asynchron sein.');return value;}
+ return withProductResolutionSnapshot(record.document,document=>{
+  const snapshot={...structuredClone({...record,document:null}),document},seen=new WeakSet();
+  function freeze(value){if(value&&typeof value==='object'&&!seen.has(value)){seen.add(value);Object.values(value).forEach(freeze);Object.freeze(value);}}
+  freeze(snapshot);const prepared=prepareShopProduct(snapshot);preparationSnapshots.set(snapshot,prepared);
+  try{const value=read(snapshot);if(value?.then instanceof Function)throw Error('Die Vorbereitung darf nicht asynchron sein.');return value;}finally{preparationSnapshots.delete(snapshot);}
+ });
+}
 export function prepareShopProduct(record){
+ const scoped=preparationSnapshots.get(record);if(scoped)return structuredClone(scoped);
  const family=isFamilyFormats(record.document?.config),slate=record.document?.config?.profile?.material?.kind==='slate';
  const cache=slate?slatePreparations:family?familyPreparations:doorbellPreparations,limit=slate?SLATE_PREPARATION_LIMIT:family?FAMILY_PREPARATION_LIMIT:DOORBELL_PREPARATION_LIMIT;
- if(!family&&!slate&&record.document?.config?.doorbell?.schema!=='gravuru-doorbell/v1')return prepareValidated(record,validateProductDocument(record.document));
+ if(!family&&!slate&&record.document?.config?.doorbell?.schema!=='gravuru-doorbell/v1')return withProductResolutionSnapshot(record.document,d=>prepareValidated(record,d));
  const source={document:record.document,id:record.id,revision:record.revision,status:record.status,productionProfile:record.metadata?.productionProfile??null};
  const cacheKey=createHash('sha256').update(JSON.stringify(source)).digest('hex'),cached=cache.get(cacheKey);
  if(cached&&isDeepStrictEqual(source,cached.source)){
   cache.delete(cacheKey);cache.set(cacheKey,cached);
   return structuredClone(cached.result);
  }
- const d=validateProductDocument(record.document),result=prepareValidated(record,d);
+ const result=withProductResolutionSnapshot(record.document,d=>prepareValidated(record,d));
  cache.set(cacheKey,{source:structuredClone(source),result:structuredClone(result)});
  if(cache.size>limit)cache.delete(cache.keys().next().value);
  return result;
@@ -42,7 +54,7 @@ function prepareValidated(record,d){
   if(d.basePriceCents!==null)variants.push({key:variantKey({}),title:'Standard',options:{},priceCents:d.basePriceCents,widthMm:d.form.geometry.widthMm,heightMm:d.form.geometry.heightMm});
  }else{
   // K14 / Ü12.1: unsichtbare Gruppen (visibleIf) entfallen, gleiche Ausführungen nur einmal.
-  const groups=d.config.profile.optionGroups,options=variantCombinations(validateProductDocument(d).config);
+  const groups=d.config.profile.optionGroups,options=variantCombinations(d.config);
   for(const option of options){const resolved=resolveProduct(d,{options:option}),price=quote(resolved.config,[],resolved.designId,option);variants.push({key:variantKey(option),title:groups.filter(g=>option[g.id]!==undefined).map(g=>g.values.find(v=>v.id===option[g.id]).label||option[g.id]).join(' · '),options:option,priceCents:price.unitCents,widthMm:resolved.physical.widthMm,heightMm:resolved.physical.heightMm});}
   check('variants',true,variants.length+' gültige Ausführungen aus derselben Preis-/Variantenprüfung wie im Konfigurator.');
  }

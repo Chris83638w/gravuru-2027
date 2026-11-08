@@ -17,6 +17,19 @@ export const PRODUCT_SCHEMA='gravuru-product/v1';
 const PROFILE_TYPES=['fonts','motifs','colors','bestsellers'];
 const RIGHTS=ELEMENT_RIGHTS;
 const DOCUMENT_KEYS=['schema','name','kind','masterId','categoryIds','seo','profileAssignments','elementRights','config'];
+const resolutionSnapshots=new WeakSet();
+// A synchronous internal batch validates once and receives a detached, deeply
+// frozen document. There is no caller-controlled "already validated" flag.
+// Outside the callback resolveProduct keeps its normal validation behaviour.
+export function withProductResolutionSnapshot(document,read){
+  if(typeof read!=='function')throw Error('Eine synchrone Produktprüfung ist erforderlich.');
+  if(resolutionSnapshots.has(document)){const result=read(document);if(result?.then instanceof Function)throw Error('Die Produktprüfung darf nicht asynchron sein.');return result;}
+  const validated=validateProductDocument(document),seen=new WeakSet();
+  function freeze(value){if(value&&typeof value==='object'&&!seen.has(value)){seen.add(value);Object.values(value).forEach(freeze);Object.freeze(value);}}
+  freeze(validated);resolutionSnapshots.add(validated);
+  try{const result=read(validated);if(result?.then instanceof Function)throw Error('Die Produktprüfung darf nicht asynchron sein.');return result;}
+  finally{resolutionSnapshots.delete(validated);}
+}
 const fail=message=>{throw Error(message);};
 const record=value=>value!==null&&typeof value==='object'&&!Array.isArray(value)&&[Object.prototype,null].includes(Object.getPrototypeOf(value));
 const id=value=>typeof value==='string'&&/^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(value);
@@ -124,7 +137,7 @@ export function validateProductDocument(document){
 }
 
 export function resolveProduct(document,{options={},designId}={}){
-  const product=validateProductDocument(document),config=product.config;
+  const product=resolutionSnapshots.has(document)?document:validateProductDocument(document),config=product.config;
   const resolved=resolvedOptions(config,options),selected=selectedProfile(config,resolved);
   const chosenId=designId===undefined?selected.defaultDesignId:designId;
   const design=selected.designs.find(item=>item.id===chosenId);

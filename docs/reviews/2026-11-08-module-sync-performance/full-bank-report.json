@@ -1,0 +1,24 @@
+{
+  "schema": "gravuru-module-full-bank-performance/v1",
+  "runtime": "file:///C:/Users/Mikail%20Erdem/Documents/Codex/2026-11-04/lie/work/module-sync-20261108/",
+  "candidateSha256": "2e74548aa7211a2f5546af428e1d27d9f00f12181490356633e3cd109cb179c0",
+  "designs": 251,
+  "variants": 404,
+  "referencePriceComparisons": 404,
+  "prepareMs": 1100.0149,
+  "checkBatchesMs": [
+    675.5305000000001,
+    583.2568000000001,
+    568.0163000000002,
+    557.4783000000002,
+    450.4813000000004
+  ],
+  "check404Ms": 2835.1706000000004,
+  "rollback404Ms": 5943.1624,
+  "activate404Ms": 5931.848600000001,
+  "resolve404Ms": 141.07340000000113,
+  "expiredEvidenceAccepted": false,
+  "lateFailureRolledBack": true,
+  "shopifyWrites": 0,
+  "liveWrites": 0
+}

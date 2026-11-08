@@ -20,7 +20,8 @@ test('existing private management mounts module review → exact confirmation �
  const html=await(await fetch(base+'/originale/verwaltung')).text();assert.match(html,/accept-sync/);assert.match(html,/genau die angezeigten Änderungen/);
  const js=await(await fetch(base+'/originale/verwaltung.js')).text();assert.match(js,/sync-confirm/);assert.match(js,/designPreviews/);assert.match(js,/c.before\?'an':'aus'/);
  assert.equal((await fetch(base+'/originale/verwaltung.css')).status,200);
- const context=await(await fetch(base+api+'context')).json();assert.equal(context.sync.mode,'test');assert.equal(context.targets.targets.length,1);assert.equal(demo.counts().reads,0);
+ const context=await(await fetch(base+api+'context')).json();assert.equal(context.sync.mode,'test');assert.deepEqual(context.targets,[]);assert.equal(context.targetsDeferred,true);assert.equal(demo.counts().reads,0);
+ const lazySync=await(await fetch(base+api+'sync')).json();assert.equal(lazySync.targets.targets.length,1);
  assert.equal((await send('sync-plan',{targetIds:[f.mapping.id]},{token:'wrong'})).status,403);
  assert.equal((await send('sync-plan',{targetIds:[f.mapping.id]},{origin:'https://other.invalid'})).status,403);
  assert.equal((await send('sync-plan',{targetIds:[f.mapping.id]},{'Sec-Fetch-Site':'cross-site'})).status,403);

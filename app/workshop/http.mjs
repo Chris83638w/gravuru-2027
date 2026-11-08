@@ -421,6 +421,10 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       }
       const merchantSession=verifySession?verifySession(req.headers.authorization,'merchant'):null;
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');
+      if(pathname==='/api/workshop/configurator-modules/sources'){
+        if(method!=='GET'||[...url.searchParams.keys()].some(key=>key!=='key'))fail(422,'module_query','Bitte konkrete Produktquellen auswählen.');
+        return json(res,200,{sources:configuredModules().groups.sources({sourceKeys:url.searchParams.getAll('key')})});
+      }
       if(pathname==='/api/workshop/configurator-modules'){
         if(url.search)fail(422,'module_query','Diese Verwaltung benötigt keine URL-Parameter.');
         if(method==='GET')return json(res,200,configuredModules().overview());

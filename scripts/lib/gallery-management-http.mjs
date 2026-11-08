@@ -20,8 +20,12 @@ export function createGalleryManagementHandler({workshop,templates,synchronizer=
    if(req.headers.origin&&req.headers.origin!==origin||req.headers['sec-fetch-site']==='cross-site')fail(403,'Bitte die private Galerie neu öffnen.');
    const action=url.pathname.replace('/originale/verwaltung/api/','');
    if(req.method==='GET'){
-    if(action==='context')return json(res,200,{csrfToken,sources:templates.sources(),templates:templates.list(),catalogue:catalogue(),sync:synchronizer?await synchronizer.status({}):{enabled:false,executionEnabled:false,mode:'disabled'},targets:synchronizer?await synchronizer.listTargets():[]});
-    if(action==='templates')return json(res,200,{templates:templates.list(),sources:templates.sources()});
+    if(action==='context')return json(res,200,{csrfToken,sources:templates.sourceSummaries(),templates:templates.list(),catalogue:catalogue(),sync:synchronizer?await synchronizer.status({}):{enabled:false,executionEnabled:false,mode:'disabled'},targets:[],targetsDeferred:!!synchronizer});
+    if(action==='templates')return json(res,200,{templates:templates.list(),sources:templates.sourceSummaries()});
+    if(action==='sources'){
+     if([...url.searchParams.keys()].some(key=>key!=='key'))fail(422,'Bitte konkrete Produktquellen auswählen.');
+     return json(res,200,{sources:templates.sources({sourceKeys:url.searchParams.getAll('key')})});
+    }
     if(action==='sync')return json(res,200,{status:synchronizer?await synchronizer.status({}):{executionEnabled:false,mode:'disabled'},targets:synchronizer?await synchronizer.listTargets():[]});
     if(action==='creation-preview'){
      if(url.searchParams.getAll('planId').length!==1||url.searchParams.getAll('key').length!==1)fail(422,'Genauen Anlageplan auswählen.');

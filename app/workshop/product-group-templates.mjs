@@ -55,7 +55,7 @@ export function productGroupVariantReview(config,combinations=variantCombination
  * The template/plan tables share the repository file, but use a separate read
  * connection during its guarded write transaction. Product writes go through
  * the existing repository/import journal, not a second product store. */
-export function createProductGroupTemplates({filename,repository,tenantId,targets=()=>[],offeringFor=()=>null,moduleProfiles=null}={}){
+export function createProductGroupTemplates({filename,repository,tenantId,targets=()=>[],sourceSummaries=null,offeringFor=()=>null,moduleProfiles=null}={}){
  const tenant=tenantOption({tenantId:tenantId??repository?.tenantId});
  if(!repository||repository.tenantId!==tenant||typeof repository.validate!=='function'||typeof repository.importBatch!=='function')throw Error('Tenant-scoped native repository required');
  if(typeof filename!=='string'||!filename)throw Error('Product group database filename required');
@@ -76,8 +76,8 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
   if(!plain(value)||!Array.isArray(value.familyIds)||value.familyIds.some(id=>typeof id!=='string')||new Set(value.familyIds).size!==value.familyIds.length||typeof value.fingerprint!=='string'||!value.fingerprint||value.fingerprint.length>200)fail(422,'group_offering_invalid','Die bestätigte Materialauswahl der Unterkategorie ist nicht vollständig.');
   return {familyIds:value.familyIds.map(identifier).sort(),fingerprint:value.fingerprint};
  }
- function registry(){
-  const rows=typeof targets==='function'?targets():targets;
+ function registry(sourceKeys){
+  const rows=typeof targets==='function'?targets(sourceKeys?{sourceKeys}:{}):targets;
   if(!Array.isArray(rows))throw Error('Authoritative product target list required');
   const map=new Map();
   for(const raw of rows){
@@ -91,7 +91,7 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
   // total (current + historical share the limit). Fonts/images can be large:
   // source listings must never retain a full document for every gallery product.
   // Confirm and both execute checks create fresh lookups, never a service cache.
-  let targets;const records=new Map(),recordLimit=2;
+  let targets;const records=new Map(),resolvedTargets=new Map(),recordLimit=2;
   const read=(key,load)=>{
    let entry=records.get(key);
    if(entry){records.delete(key);records.set(key,entry);}
@@ -103,7 +103,9 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
    if(Object.hasOwn(entry,'error'))throw entry.error;return entry.value;
   };
   return {get targets(){return targets??=registry();},source(key,revision){
-   const target=(targets??=registry()).get(key);if(!target)fail(404,'group_source_missing','Die Produktquelle ist nicht mehr zugeordnet.');
+   identifier(key);
+   if(!targets&&!resolvedTargets.has(key))resolvedTargets.set(key,registry([key]).get(key));
+   const target=(targets||resolvedTargets).get(key);if(!target)fail(404,'group_source_missing','Die Produktquelle ist nicht mehr zugeordnet.');
    const current=read('head:'+target.productId,()=>repository.get(target.productId));
    const requested=revision===undefined?current.revision:version(revision);
    const record=requested===current.revision?current:read('revision:'+target.productId+':'+requested,()=>repository.get(target.productId,{revision:requested})),document=record.document,p=document.config?.profile;
@@ -117,7 +119,7 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
   try{currentOptions=resolvedOptions(document.config,{});currentPrice=quote(document.config,[],p.defaultDesignId,currentOptions);}catch(error){issue=error.message;}
   return {...target,name:document.name,label:document.name,source:{productId:record.id,revision:record.revision},material:copy(p.material),geometry:copy(p.geometry),
    optionGroups:copy(p.optionGroups),optionFields:copy(p.optionFields||[]),optionsManagedByFormat:!!(document.config.familyFormats||document.config.scalableSizes||document.config.steelFormats||document.config.doorbell?.formats),moduleAvailability:nativeModuleAvailability(document.config),currentOptions,currentPrice,
-   issues:[...(!target.familyId?['Familienzuordnung offen.']:[]),...(!target.sizeKey?['Größenzuordnung offen.']:[]),...(issue?[issue]:[])]};
+   detailsLoaded:true,issues:[...(!target.familyId?['Familienzuordnung offen.']:[]),...(!target.sizeKey?['Größenzuordnung offen.']:[]),...(issue?[issue]:[])]};
  }
  function pinnedModule(reference){
   if(reference===undefined)return null;
@@ -192,7 +194,12 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
  }
  const resultRow=id=>db.prepare('SELECT document FROM product_group_creation_results WHERE tenant_id=? AND plan_id=?').get(tenant,id);
  const service={tenantId:tenant,
-  sources(){const lookup=sourceLookup();return [...lookup.targets.keys()].map(key=>{try{return sourceView(key,lookup);}catch(e){return {...lookup.targets.get(key),label:key,issues:[e.message],unsupported:true};}});},
+  sourceSummaries(){return typeof sourceSummaries==='function'?copy(sourceSummaries()):[...registry().values()].map(t=>({...t,label:t.key,name:t.key,detailsLoaded:false}));},
+  sources({sourceKeys}={}){
+   if(sourceKeys!==undefined&&(!Array.isArray(sourceKeys)||!sourceKeys.length||sourceKeys.length>100||new Set(sourceKeys).size!==sourceKeys.length))fail(422,'group_targets','Bitte 1 bis 100 eindeutige Produktquellen wählen.');
+   const lookup=sourceLookup(),selected=sourceKeys?sourceKeys.map(identifier):[...lookup.targets.keys()];
+   return selected.map(key=>{try{return sourceView(key,lookup);}catch(e){if(sourceKeys)throw e;return {...lookup.targets.get(key),label:key,issues:[e.message],unsupported:true};}});
+  },
   draft(input){keys(input,['name','scope','sourceKeys']);if(!Array.isArray(input.sourceKeys))fail(422,'group_targets','Produktquellen auswählen.');const lookup=sourceLookup();return validateWithSources({schema:PRODUCT_GROUP_TEMPLATE_SCHEMA,name:input.name,scope:input.scope,targets:input.sourceKeys.map(key=>{const s=sourceView(key,lookup);return {key:s.key,source:s.source,familyId:s.familyId,sizeKey:s.sizeKey,material:s.material,optionGroups:s.optionGroups,optionFields:s.optionFields};}),openQuestions:[]},lookup);},
   validate,get,
   list:()=>db.prepare('SELECT id FROM product_group_templates WHERE tenant_id=? ORDER BY rowid DESC').all(tenant).map(r=>get(r.id)),

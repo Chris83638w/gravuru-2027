@@ -11,6 +11,7 @@ const fingerprint=value=>createHash('sha256').update(JSON.stringify(value)).dige
 export function nativeModuleSources(repository){
   const rows=()=>repository.moduleSources();
   return {
+    summaries:()=>rows().map(r=>({key:r.id,productId:r.id,familyId:r.id,sizeKey:r.id,name:r.name,label:r.name,detailsLoaded:false})),
     scopes:()=>rows().map(r=>({lineId:'native-products',subcategoryId:r.id,label:r.name,sourceKeys:[r.id]})),
     targets:()=>rows().map(r=>({key:r.id,productId:r.id,familyId:r.id,sizeKey:r.id})),
     offeringFor(scope){
@@ -25,7 +26,7 @@ export function nativeModuleSources(repository){
 export function createConfiguratorModuleManagement({filename,repository,tenantId,sourceRegistry=nativeModuleSources(repository)}){
   const profiles=createConfiguratorModuleProfiles({filename,tenantId});
   let groups;
-  try{groups=createProductGroupTemplates({filename,repository,tenantId,moduleProfiles:profiles,targets:sourceRegistry.targets,offeringFor:sourceRegistry.offeringFor});}
+  try{groups=createProductGroupTemplates({filename,repository,tenantId,moduleProfiles:profiles,targets:sourceRegistry.targets,sourceSummaries:sourceRegistry.summaries,offeringFor:sourceRegistry.offeringFor});}
   catch(error){profiles.close();throw error;}
   function dispatch(input,{actor='werkstatt'}={}){
     const action=input?.action;
@@ -50,7 +51,7 @@ export function createConfiguratorModuleManagement({filename,repository,tenantId
     }
   }
   return {profiles,groups,dispatch,
-    overview:()=>({profiles:profiles.list(),sources:groups.sources(),templates:groups.list(),scopes:sourceRegistry.scopes(),localOnly:true,shopifyWrites:0}),
+    overview:()=>({profiles:profiles.list(),sources:groups.sourceSummaries(),templates:groups.list(),scopes:sourceRegistry.scopes(),localOnly:true,shopifyWrites:0}),
     close(){groups.close();profiles.close();}
   };
 }

@@ -1,3 +1,7 @@
+## 08.11.2026 · Codex/Mika · Verwaltungsquellen gezielt nachladen, v2 vorbereitet
+
+Privater Erstabruf nach echtem 20.023-ms-Timeout korrigiert: kleine Importmetadaten statt aller großen Galeriedokumente, vollständige Optionen erst für konkret ausgewählte Quellen. Beide Verwaltungswege teilen weiterhin dieselbe Registry und Profilbibliothek. 7/7 gezielte Prüfungen grün; neue strukturelle Abnahme bestätigt 0 vollständige Dokumentlesungen im Erstabruf, nur gewählte Quelle im Detail und weiterhin gesperrte veraltete Bestätigung. Unabhängiger Review ohne Blocker. Acht Verwaltungsproduktionsdateien; Kundenlayout, Preise, Datenbankstände und Ausführungsschalter unverändert. Separate v2-Auslieferung, tatsächliche Server-/Browserabnahme noch offen. [Nachweis und lesende Prüfrouten](docs/handoffs/2026-11-08-module-management-lazy-sources.md).
+
 ## 08.11.2026 · Codex/Mika · Privater Modulanschluss installiert, Abschlussabnahme offen
 
 Paket `a71b3eb` mit 1.267 Dateien auf dem privaten Quellhost installiert; davor acht Datenbanken und elf ergänzende Dateien gesichert. Echte native/Shopify-Vorprüfung bestätigt 251 Originale, 80 Größen und 404 Verbindungen. Zwei reguläre Stahlprofile mit/ohne Logo gespeichert. Aktive Galerie, Kundenhost, Theme, Designs und Preise bleiben erhalten; keine Shopify-Schreibaktion, beide Sync-Schreibschalter aus.

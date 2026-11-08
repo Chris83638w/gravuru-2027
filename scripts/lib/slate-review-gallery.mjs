@@ -12,7 +12,7 @@ import {buildDesignReviewOverview, designReviewOverviewHtml} from './design-revi
 import {createGalleryEditorHandler} from './gallery-editor-http.mjs';
 import {createProductGroupTemplates} from '../../app/workshop/product-group-templates.mjs';
 import {createGalleryManagementHandler} from './gallery-management-http.mjs';
-import {galleryProductGroupSources} from './gallery-management-targets.mjs';
+import {galleryProductGroupSources,galleryProductGroupSourceSummaries} from './gallery-management-targets.mjs';
 import {createGalleryManagementCreationGate} from './gallery-management-creation-gate.mjs';
 import {createGalleryDesignAssignments} from '../../app/workshop/gallery-design-assignments.mjs';
 import {createGalleryReviewRegistry} from './gallery-review-registry.mjs';
@@ -58,6 +58,7 @@ export function createSlateGalleryHandler(root, importsFile, {csrfToken: supplie
   listTargets:()=>approvalTargets.targets.map(t=>({...t,originalId:t.id,material:{key:t.materialKey,label:t.material,kind:t.materialKind}})),
   originalFor:id=>{const row=pack.originals.find(row=>row.id===id);if(!row)return null;const reviewCategory=designReviewCategory(row);return {...row,reviewCategory,reviewThemes:reviewThemes(row,reviewCategory)};}}):null;
  const sourceRegistry=Object.freeze({
+  summaries:()=>{refreshRegistry();return galleryProductGroupSourceSummaries(approvalTargets.targets);},
   targets:options=>{refreshRegistry();return galleryProductGroupSources(workshop,approvalTargets.targets,options);},
   offeringFor:scope=>{
    const catalogue=workshop.catalogStructure.read(),line=catalogue.lines?.find(l=>l.id===scope.lineId),sub=line?.subcategories?.find(s=>s.id===scope.subcategoryId);
@@ -65,10 +66,10 @@ export function createSlateGalleryHandler(root, importsFile, {csrfToken: supplie
    return {familyIds:sub.effectiveFamilyIds,fingerprint:createHash('sha256').update(JSON.stringify({source:catalogue.sourceSha256,scope,families:sub.effectiveFamilyIds})).digest('hex')};
   },
   scopes:()=>{
-   const sources=sourceRegistry.targets(),catalogue=workshop.catalogStructure.read();
+   const sources=sourceRegistry.summaries(),catalogue=workshop.catalogStructure.read();
    return (catalogue.lines||[]).filter(line=>line.enabled!==false).flatMap(line=>(line.subcategories||[]).filter(sub=>Array.isArray(sub.effectiveFamilyIds)).map(sub=>({
     lineId:line.id,subcategoryId:sub.id,label:[line.name||line.label||line.id,sub.name||sub.label||sub.id].join(' / '),
-    sourceKeys:sources.filter(source=>sub.effectiveFamilyIds.includes(source.familyId)).map(source=>source.key)
+    sourceKeys:sources.filter(source=>!source.familyId||sub.effectiveFamilyIds.includes(source.familyId)).map(source=>source.key)
    })));
   }
  });
@@ -83,7 +84,7 @@ export function createSlateGalleryHandler(root, importsFile, {csrfToken: supplie
  const managementFilename=management.filename||path.join(path.dirname(importsFile),'workshop.sqlite');
  const connected=management.connect?.({sourceWorkshop:workshop,filename:managementFilename,sourceRegistry,sourceApproval,csrfToken});
  if(management.connect&&(!connected||typeof connected.handle!=='function'||typeof connected.close!=='function'||typeof connected.then==='function'))throw Error('The gallery management connection must return a synchronous scoped host.');
- const productGroups=!connected&&workshop?createProductGroupTemplates({filename:managementFilename,repository:workshop.repository,tenantId:workshop.tenantId,targets:sourceRegistry.targets,offeringFor:sourceRegistry.offeringFor}):null;
+ const productGroups=!connected&&workshop?createProductGroupTemplates({filename:managementFilename,repository:workshop.repository,tenantId:workshop.tenantId,targets:sourceRegistry.targets,sourceSummaries:sourceRegistry.summaries,offeringFor:sourceRegistry.offeringFor}):null;
  const synchronizer=!connected?(typeof management.synchronizer==='function'?management.synchronizer({workshop,sourceApproval,sourceRegistry}):management.synchronizer||null):null;
  const manage=connected?connected.handle.bind(connected):productGroups?createGalleryManagementHandler({workshop,templates:productGroups,synchronizer,csrfToken}):null;
  const creationGate=manage?createGalleryManagementCreationGate():null;

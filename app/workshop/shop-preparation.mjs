@@ -5,6 +5,7 @@ import {validateProductDocument,resolveProduct} from './product-model.mjs';
 import {quote,variantCombinations} from '../configurator/variant-m/contract.mjs';
 import {variantKey} from '../configurator/variant-m/commerce-model.mjs';
 import {isFamilyFormats} from '../configurator/variant-m/family-formats.mjs';
+import {moduleEnabled} from '../configurator/variant-m/module-profile.mjs';
 // Read-only preparation. No Shopify credentials, IDs, writes or publication are fabricated.
 // Cache only an exact previously validated source and return isolated results.
 // Changed documents, metadata or status must pass validation again. Deep equality
@@ -47,6 +48,13 @@ function prepareValidated(record,d){
  }
  check('seo',Boolean(d.seo?.title?.trim()&&d.seo?.description?.trim()),'Titel und Beschreibung für die Produktseite'+(d.seo?.title?.trim()&&d.seo?.description?.trim()?' sind vorbereitet.':' noch ergänzen.'));
  const extras=form?{motifCents:0,photoCents:0}:{motifCents:d.config.extraMotifCents||0,photoCents:d.config.photo?.extraPriceCents||0,...(d.config.logo?.vectorUpload===true?{logoCents:d.config.logo.extraPriceCents}:{})};
+ if(!form&&d.config.moduleProfile){
+  if(!moduleEnabled(d.config,'motifs')&&d.config.motifCharge!=='all')extras.motifCents=0;
+  // The legacy price is shared by photos and raster logos; hiding photos must
+  // not hide the required surcharge binding of a still-allowed raster logo.
+  if(!moduleEnabled(d.config,'photo')&&!(moduleEnabled(d.config,'logo')&&d.config.logo?.enabled!==false&&d.config.logo?.vectorUpload!==true))extras.photoCents=0;
+  if(!moduleEnabled(d.config,'logo'))delete extras.logoCents;
+ }
  check('pricingConnection',false,extras.logoCents?'Eigene Vektorlogos kosten 12,99 € je Logo und benötigen den geprüften V2-Preisvertrag samt passender Shopify-Preisfunktion. Die Tabelle enthält nur die Grundausführungen.':extras.motifCents||extras.photoCents?'Zusätzliche Motive/Fotos benötigen eine serverseitig geprüfte Shopify-Aufpreisbindung. Die Tabelle enthält nur die Grundausführungen.':'Shopify-Varianten und Preise müssen noch mit den gespeicherten Ausführungen verbunden werden.');
  check('store',false,'Der Entwurfsanschluss wird unten für diesen Shop geprüft. Eine öffentliche Produktfreigabe mit Konfigurator ist ein eigener Schritt.');
  check('orders',false,'Bestelleingang, Zahlung, unveränderliche Position und Kundenkonto-Download müssen noch durchgängig angebunden werden.');

@@ -1,0 +1,593 @@
+{
+  "schema": "gravuru-r15-modules-current/v1",
+  "base": "c7710dec6f2c4f6d0b36073ad2dc623fd5d5ac05",
+  "liveCodeBase": "e9c36ce12d38fcb36bcb4b4c57add458d1859af7",
+  "sourceCommits": [
+    "61fcb3fb05bdcb636d1cb92e06917e175b64306a"
+  ],
+  "liveApplied": false,
+  "profileAssigned": false,
+  "privateExecutionEnabled": false,
+  "files": [
+    {
+      "path": "app/configurator/variant-m/contract.mjs",
+      "beforeSha256": "071690831e3c53f8f40febbff15ed37d82434729fcdb8d7dde51829ece3f257e",
+      "afterSha256": "f0536de234d7ac9cc79eeb68a372db13c58a1c28424654a83e30333e6ea54cbe",
+      "bytes": 39652
+    },
+    {
+      "path": "app/configurator/variant-m/customer-rights.mjs",
+      "beforeSha256": "2742434efcc4976ce49fbe64ff319a257cb0d58ea9bdb28a6c92d43059d30dcd",
+      "afterSha256": "cd57f01e13c2ac3c2cc2f30d6ab31fce71b1bd0db021fdd048d6d69734434fae",
+      "bytes": 10017
+    },
+    {
+      "path": "app/configurator/variant-m/element-rights.mjs",
+      "beforeSha256": "258686c83749c4a835e28f23fd0f96c5c6a7bd9440e317320076a1f6165d392e",
+      "afterSha256": "cd135ad46ad7fd0fee18e90f97c00a236ebfea23ba18249dc1b5565fe7240f8d",
+      "bytes": 11856
+    },
+    {
+      "path": "app/configurator/variant-m/logo-upload.mjs",
+      "beforeSha256": "aa258b240b11934816cca884e0a89d6c1e1922c690fcf0f4b9d758cc61eb96a7",
+      "afterSha256": "8447609b2479d31946f0b796d07a47dbe81dc4773c57144ea92a222a49d07210",
+      "bytes": 6628
+    },
+    {
+      "path": "app/configurator/variant-m/module-profile.mjs",
+      "beforeSha256": null,
+      "afterSha256": "1b6ef98458d11020b68219082f3ab6e35d0f344cb786828996cb21eae95164eb",
+      "bytes": 6635
+    },
+    {
+      "path": "app/configurator/variant-m/module-runtime.mjs",
+      "beforeSha256": null,
+      "afterSha256": "2ff141318caa5b2f26e53aca42524c0198b6bac4f63d10146d37d57713a63a97",
+      "bytes": 2445
+    },
+    {
+      "path": "app/configurator/variant-m/ux-model.mjs",
+      "beforeSha256": "c34c3c70895226d992ab02b1c687d59cbdaee332c0a3ce8e2d989adc89c55c65",
+      "afterSha256": "fa4351b9b9affaafe1eec2ac552318d4acc3104214bee0ef7fb40a50956ad871",
+      "bytes": 6174
+    },
+    {
+      "path": "app/configurator/variant-m/ux.mjs",
+      "beforeSha256": "b1d3a1a71c6696746752f789dfccf64efc2449f946b3f12944f1bddaa787a8e5",
+      "afterSha256": "9d8fe87088c4df386ad4fb69167d61f033f768004f5aa1328f95ecc68d24e3d2",
+      "bytes": 80561
+    },
+    {
+      "path": "app/workshop/cart-personalization.mjs",
+      "beforeSha256": "72e36b4ae1de450f82931d6d71a4fa97dac6656c06649296f3a5c2a215fd33a8",
+      "afterSha256": "2aa4ef46b03ff70ac5db49b06e657c9a86c6f4584299c9ce11cff7b1fd93d481",
+      "bytes": 9905
+    },
+    {
+      "path": "app/workshop/shop-design-gallery.mjs",
+      "beforeSha256": "5e750f516b5e0b5b4234e33fc0d556bc97c546097a6376772a11028f2f2d3f26",
+      "afterSha256": "47365dd933cb46fc525708ebb21e53acef29d5ecfbeadd6bf6f2d2889a1b33a3",
+      "bytes": 21656
+    },
+    {
+      "path": "app/workshop/shop-entry.mjs",
+      "beforeSha256": "6385419168720b7b56335b6e92c2729262a6f564b83a0dfd06509badacf21f18",
+      "afterSha256": "d0e025f3a22c836eac6c7016068f317b3efb41adde2d1032b5df41a17211e284",
+      "bytes": 50428
+    },
+    {
+      "path": "app/workshop/shop-preparation.mjs",
+      "beforeSha256": "e0fbf159653ca9d14fe66581efc627a41f1cba1e4cd16534927f0c8f7cabb6de",
+      "afterSha256": "038e38a135d9c8506d1a56d35ed09630430640d82c5d145a2c08c55ebbfbbc60",
+      "bytes": 6957
+    }
+  ],
+  "protectedFiles": [
+    {
+      "path": "app/configurator/mobile-demo/assets.mjs",
+      "beforeSha256": "37d74852e564b96e34c0ddb37e20a10c522986f37b826cecef285ac9320dcdfc",
+      "afterSha256": "37d74852e564b96e34c0ddb37e20a10c522986f37b826cecef285ac9320dcdfc",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/mobile-demo/compact-controls.mjs",
+      "beforeSha256": "07711729793fce1b8200a68e1b95247b04a0decfabde8ed3b50499c3e1031212",
+      "afterSha256": "07711729793fce1b8200a68e1b95247b04a0decfabde8ed3b50499c3e1031212",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/mobile-demo/contour-placement.mjs",
+      "beforeSha256": "78741e914e4d84ba7c6f38e8edf55159bedc5df32ff0b3189daae956539424ac",
+      "afterSha256": "78741e914e4d84ba7c6f38e8edf55159bedc5df32ff0b3189daae956539424ac",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/mobile-demo/demo.css",
+      "beforeSha256": "86ad576eabdc6bc532637af41a0a80812380a9f56d22f6d76a91457f0214439b",
+      "afterSha256": "86ad576eabdc6bc532637af41a0a80812380a9f56d22f6d76a91457f0214439b",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/mobile-demo/demo.mjs",
+      "beforeSha256": "4227eb43f63d384797c2ba7fe68d3f5797eddae3fa435446fd6e4fcfd7cb9308",
+      "afterSha256": "4227eb43f63d384797c2ba7fe68d3f5797eddae3fa435446fd6e4fcfd7cb9308",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/mobile-demo/desktop-selection.mjs",
+      "beforeSha256": "6fe2f0c16bb033007c11f48e2dd42edf85186a0d13839a9e836d5ad8ab24f189",
+      "afterSha256": "6fe2f0c16bb033007c11f48e2dd42edf85186a0d13839a9e836d5ad8ab24f189",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/mobile-demo/edge-resize.mjs",
+      "beforeSha256": "ea2a603c14be0fa3d26e568968fc0b13086765e86982cfc2767c7ccb60c9404c",
+      "afterSha256": "ea2a603c14be0fa3d26e568968fc0b13086765e86982cfc2767c7ccb60c9404c",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/mobile-demo/motif-size-limit.mjs",
+      "beforeSha256": "a6adad5f2d3d24e7714d1b92eb5baa78f2ced49d5c9b42ae6bf9808de43ff825",
+      "afterSha256": "a6adad5f2d3d24e7714d1b92eb5baa78f2ced49d5c9b42ae6bf9808de43ff825",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/mobile-demo/options-navigation.mjs",
+      "beforeSha256": "0f9318beee99c133bae576db6f1a67f22894df25b70ee2b26c3e4eba201c976d",
+      "afterSha256": "0f9318beee99c133bae576db6f1a67f22894df25b70ee2b26c3e4eba201c976d",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/mobile-demo/overlap-consent.mjs",
+      "beforeSha256": "78bea28a6261408080646f8320f0798e73a89656c4501cf95500935b98d64de3",
+      "afterSha256": "78bea28a6261408080646f8320f0798e73a89656c4501cf95500935b98d64de3",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/mobile-demo/overlap-review.mjs",
+      "beforeSha256": "8f11e0c6bca40ce0a94bee94b0a82ff1e691db1ea8b09b1235ac98ca6bbea749",
+      "afterSha256": "8f11e0c6bca40ce0a94bee94b0a82ff1e691db1ea8b09b1235ac98ca6bbea749",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/mobile-demo/preview-action.mjs",
+      "beforeSha256": "47ddf5856386d760d379ca16b95abf1f6f0ddb5d5157593dcc45630e12d88274",
+      "afterSha256": "47ddf5856386d760d379ca16b95abf1f6f0ddb5d5157593dcc45630e12d88274",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/mobile-demo/product-return.mjs",
+      "beforeSha256": "9501984a9f2518a17945dd5eb3e891111d4277bcb4cd9791575ff17342977c66",
+      "afterSha256": "9501984a9f2518a17945dd5eb3e891111d4277bcb4cd9791575ff17342977c66",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/mobile-demo/shop-shell.mjs",
+      "beforeSha256": "cab632b7bfc620f7e5a3cad6aa3dd94ece18c0870a42dc906ba7125b9a8193ec",
+      "afterSha256": "cab632b7bfc620f7e5a3cad6aa3dd94ece18c0870a42dc906ba7125b9a8193ec",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/mobile-demo/small-motif-controls.mjs",
+      "beforeSha256": "94b2a6aafe9f0cfa0b259394188b6cb9bb1f419efa8633942c272763d30d8a65",
+      "afterSha256": "94b2a6aafe9f0cfa0b259394188b6cb9bb1f419efa8633942c272763d30d8a65",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/mobile-demo/text-editor.mjs",
+      "beforeSha256": "b2a17b79c9fbe1e1660925359880d071133a344f59abdcf118d87532cfdf4dee",
+      "afterSha256": "b2a17b79c9fbe1e1660925359880d071133a344f59abdcf118d87532cfdf4dee",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/mobile-demo/text-selection-dismiss.mjs",
+      "beforeSha256": "a63edb616fa2d439e82e0cf51d212479cc3fc32fb5a68e96aef0732176ba2c61",
+      "afterSha256": "a63edb616fa2d439e82e0cf51d212479cc3fc32fb5a68e96aef0732176ba2c61",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-scene.css",
+      "beforeSha256": "597d501ce2cf1b235a9b0cdc956a1a6336a9fe5077d74eb7327c395401ba263a",
+      "afterSha256": "597d501ce2cf1b235a9b0cdc956a1a6336a9fe5077d74eb7327c395401ba263a",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/background-loading.mjs",
+      "beforeSha256": "c0d8692c6da07dfd8a64afa91886b44d8e20344ae36313adac2ac4ba66b2cbcc",
+      "afterSha256": "c0d8692c6da07dfd8a64afa91886b44d8e20344ae36313adac2ac4ba66b2cbcc",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/build.mjs",
+      "beforeSha256": "b7dfb58afb136ed6ad6939b6a9df0a56c26eef4b16e5926c3b700594dd4fb782",
+      "afterSha256": "b7dfb58afb136ed6ad6939b6a9df0a56c26eef4b16e5926c3b700594dd4fb782",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/completion.css",
+      "beforeSha256": "10d9912e1d99d1bc0530f50537cda909f4016fcf4da9f8e245a7f07e18c1b572",
+      "afterSha256": "10d9912e1d99d1bc0530f50537cda909f4016fcf4da9f8e245a7f07e18c1b572",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/customer-tools.css",
+      "beforeSha256": "280c4fe50b5c70ff15544d74168ba47a4495e0afa273bfd1638d77bbecbf90ac",
+      "afterSha256": "280c4fe50b5c70ff15544d74168ba47a4495e0afa273bfd1638d77bbecbf90ac",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/design-reset.mjs",
+      "beforeSha256": "a3a4d09c22205fa2f2ba824b6788757774512743e75f8617146e78f8bd9a8f06",
+      "afterSha256": "a3a4d09c22205fa2f2ba824b6788757774512743e75f8617146e78f8bd9a8f06",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/form-panels.css",
+      "beforeSha256": "d2134fbc85fa118d1e1e1bb2bec7453f397f999219c969d9c13466d3b304b781",
+      "afterSha256": "d2134fbc85fa118d1e1e1bb2bec7453f397f999219c969d9c13466d3b304b781",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/layout.css",
+      "beforeSha256": "4720185f58f85f3a07f901a914764708173625834eecae7bf1e0ab0003294b0b",
+      "afterSha256": "4720185f58f85f3a07f901a914764708173625834eecae7bf1e0ab0003294b0b",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/lazy-resources.mjs",
+      "beforeSha256": "eee28c7c69d0ac190d06facb9d01b89d86a62d5c1372587b31a32c9ba6691d01",
+      "afterSha256": "eee28c7c69d0ac190d06facb9d01b89d86a62d5c1372587b31a32c9ba6691d01",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/mobile.css",
+      "beforeSha256": "45a96ce87b6edfb121108b901d5f1685b789a901e8418fd52fadc5359c0c8807",
+      "afterSha256": "45a96ce87b6edfb121108b901d5f1685b789a901e8418fd52fadc5359c0c8807",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/modern-layout.css",
+      "beforeSha256": "54105beedbe4884eb02183d04e53b3a63f6b2d5d1322a1599f1b8d91c2bff1b6",
+      "afterSha256": "54105beedbe4884eb02183d04e53b3a63f6b2d5d1322a1599f1b8d91c2bff1b6",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/modern-navigation.css",
+      "beforeSha256": "6b8457738d8054d62962f40f564a8487325079454a2fdd208bdceed7ee75690f",
+      "afterSha256": "6b8457738d8054d62962f40f564a8487325079454a2fdd208bdceed7ee75690f",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/motif-tile-fit.css",
+      "beforeSha256": "3e6b7a90615e305e5feef7b5753949abafb8153cb90625bf5a5019b8d8ecdd4f",
+      "afterSha256": "3e6b7a90615e305e5feef7b5753949abafb8153cb90625bf5a5019b8d8ecdd4f",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/neutral-theme.css",
+      "beforeSha256": "664c3df6c34036d12704e0b0efca4bd82f9be9d2aaf6a28cc663bc92fdd74ade",
+      "afterSha256": "664c3df6c34036d12704e0b0efca4bd82f9be9d2aaf6a28cc663bc92fdd74ade",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/preload-queue.mjs",
+      "beforeSha256": "b1e256915563fe3911073d51a87a91913935a26c1b1c834641820340b861a45d",
+      "afterSha256": "b1e256915563fe3911073d51a87a91913935a26c1b1c834641820340b861a45d",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/preview-uploads.mjs",
+      "beforeSha256": "e2f81c3fa6e06336f99b33480adc90fac7922fda158413a0136f457955fb664c",
+      "afterSha256": "e2f81c3fa6e06336f99b33480adc90fac7922fda158413a0136f457955fb664c",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/product-design-gallery.css",
+      "beforeSha256": "680a886ac1262a563c84833bccdb02b781a80f39d792f5d2a73718220b8c2362",
+      "afterSha256": "680a886ac1262a563c84833bccdb02b781a80f39d792f5d2a73718220b8c2362",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/product-design-gallery.mjs",
+      "beforeSha256": "34dc24dea73f0efa2f3495db7f757ce60a2e680decae536587a918ac3e7ed25a",
+      "afterSha256": "34dc24dea73f0efa2f3495db7f757ce60a2e680decae536587a918ac3e7ed25a",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/profile-selection.mjs",
+      "beforeSha256": "fada871b2a18f27a433f6c2473dfaad3d32e95f147323e8d488190b5fe02148d",
+      "afterSha256": "fada871b2a18f27a433f6c2473dfaad3d32e95f147323e8d488190b5fe02148d",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/refinements.css",
+      "beforeSha256": "1b425f5f872e7a571b6a77e489d695ed71c058680c7026eac616100e5bbf1ccf",
+      "afterSha256": "1b425f5f872e7a571b6a77e489d695ed71c058680c7026eac616100e5bbf1ccf",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/usability.css",
+      "beforeSha256": "976c809d6495286661487a13db18a35ed62830dfb7b44fab652d6f82451123be",
+      "afterSha256": "976c809d6495286661487a13db18a35ed62830dfb7b44fab652d6f82451123be",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/ux-details.css",
+      "beforeSha256": "14236ee67279be7a92fd6c8c99f50a5ad0f8284b52c00708d5ac2a36e682efd1",
+      "afterSha256": "14236ee67279be7a92fd6c8c99f50a5ad0f8284b52c00708d5ac2a36e682efd1",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/ux.css",
+      "beforeSha256": "85a9345eaf38cef203954b965e183b592165e7a9eab6cb732d0d88e7d6f32582",
+      "afterSha256": "85a9345eaf38cef203954b965e183b592165e7a9eab6cb732d0d88e7d6f32582",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/view-zoom.css",
+      "beforeSha256": "7336130365733e2ca03e5873a3fbc557cb11d2111ac634a2109685b2926ab723",
+      "afterSha256": "7336130365733e2ca03e5873a3fbc557cb11d2111ac634a2109685b2926ab723",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/view-zoom.mjs",
+      "beforeSha256": "a0642c7dda1b876d655b64ae225b3f1afc6317410c2007084b31581adfcbf25e",
+      "afterSha256": "a0642c7dda1b876d655b64ae225b3f1afc6317410c2007084b31581adfcbf25e",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/visible-resource-loader.mjs",
+      "beforeSha256": "fcd51f827bfa891b37561ae0c7976c0a1ccc5ed33a6f073b17d8f3eb7fe12e06",
+      "afterSha256": "fcd51f827bfa891b37561ae0c7976c0a1ccc5ed33a6f073b17d8f3eb7fe12e06",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/configurator/variant-m/workflow.css",
+      "beforeSha256": "947fd37483750f06d7701b06aa30eab4095d381e202bad76f3b76bef9cafa677",
+      "afterSha256": "947fd37483750f06d7701b06aa30eab4095d381e202bad76f3b76bef9cafa677",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/customer-vector-logo.mjs",
+      "beforeSha256": "3a69056ce6a8a7f78d0c748ad5abd507736b7b58cfe5ba120d169b6379a10ebc",
+      "afterSha256": "3a69056ce6a8a7f78d0c748ad5abd507736b7b58cfe5ba120d169b6379a10ebc",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/customer-vector-logo.py",
+      "beforeSha256": "50b106b04b091fb1c5a7532a8837b9a3a7c7c77472992246468303fa7dab79dc",
+      "afterSha256": "50b106b04b091fb1c5a7532a8837b9a3a7c7c77472992246468303fa7dab79dc",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/shop-start-model.mjs",
+      "beforeSha256": "a0019123c08f3faffc5fd61f0a19582bbfa339483d4f9302475533a0406f597a",
+      "afterSha256": "a0019123c08f3faffc5fd61f0a19582bbfa339483d4f9302475533a0406f597a",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/shop-warm-manifest.mjs",
+      "beforeSha256": "f95c8c97f31b08a3e32966486199cf1cab2d15d3e96c384a96a0ef3e7f34666e",
+      "afterSha256": "f95c8c97f31b08a3e32966486199cf1cab2d15d3e96c384a96a0ef3e7f34666e",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/theme-cart.mjs",
+      "beforeSha256": "a624afc8e1d18570ee7ee31de7423ff6abc0830a1caff595e9a8595a5507716d",
+      "afterSha256": "a624afc8e1d18570ee7ee31de7423ff6abc0830a1caff595e9a8595a5507716d",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/acryl-gallery.css",
+      "beforeSha256": "49d20e9c3a22961bc11fab094529befe576e383f3e7e4afb15422768008a8e8a",
+      "afterSha256": "49d20e9c3a22961bc11fab094529befe576e383f3e7e4afb15422768008a8e8a",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/catalog-structure.css",
+      "beforeSha256": "d0f6e1a45ec5903b9da1fb7b6abfc2b2037f7aa8ef0a3369a17ed15c4adfe06d",
+      "afterSha256": "d0f6e1a45ec5903b9da1fb7b6abfc2b2037f7aa8ef0a3369a17ed15c4adfe06d",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/catalog.css",
+      "beforeSha256": "c4ee6355c1e0d7e0324d5524597a6417dc0b87337d7301324a1929bd3d55297f",
+      "afterSha256": "c4ee6355c1e0d7e0324d5524597a6417dc0b87337d7301324a1929bd3d55297f",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/contours.css",
+      "beforeSha256": "3994c41afd15e89b9447e9b8ea7cf5bddf620fd4321d8bc8c9585690e6972b96",
+      "afterSha256": "3994c41afd15e89b9447e9b8ea7cf5bddf620fd4321d8bc8c9585690e6972b96",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/customer-preview.css",
+      "beforeSha256": "f61081ec4abf25b378fcbdf04b9486205a9facc255b8bbb606fc636eb62c6490",
+      "afterSha256": "f61081ec4abf25b378fcbdf04b9486205a9facc255b8bbb606fc636eb62c6490",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/dashboard.css",
+      "beforeSha256": "26133357bf241ec783684b7682a578f28bafb8e3bca73fab25382bef702f6a35",
+      "afterSha256": "26133357bf241ec783684b7682a578f28bafb8e3bca73fab25382bef702f6a35",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/design-dashboard.css",
+      "beforeSha256": "3491017150831e555bc4fe807ee8505bd6b36d454457fb4b8a931fdb818c4a49",
+      "afterSha256": "3491017150831e555bc4fe807ee8505bd6b36d454457fb4b8a931fdb818c4a49",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/editor.css",
+      "beforeSha256": "865103fd587649767a783117549cd950a8d34fcde5906d3b8d18d5a8a3ba328f",
+      "afterSha256": "865103fd587649767a783117549cd950a8d34fcde5906d3b8d18d5a8a3ba328f",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/form-customer.css",
+      "beforeSha256": "524040344cbac3a698a4c8dd6146ba2dc9b10560066e34f6389b3a355d62c6e5",
+      "afterSha256": "524040344cbac3a698a4c8dd6146ba2dc9b10560066e34f6389b3a355d62c6e5",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/form-product.css",
+      "beforeSha256": "25764b2d2204fcfa96a26f04537acd723a6e7d15b2b7b9ed7f891c69b606b3fd",
+      "afterSha256": "25764b2d2204fcfa96a26f04537acd723a6e7d15b2b7b9ed7f891c69b606b3fd",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/form-variants.css",
+      "beforeSha256": "ec1d48d7625457c474942e8ad3f16150da618b772edc80450f280c2d4c413980",
+      "afterSha256": "ec1d48d7625457c474942e8ad3f16150da618b772edc80450f280c2d4c413980",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/konfis.css",
+      "beforeSha256": "abe154f148c6d8baa99c697dc312d20533d572aa7118926a6be282b84bdd8c9e",
+      "afterSha256": "abe154f148c6d8baa99c697dc312d20533d572aa7118926a6be282b84bdd8c9e",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/motif-searches.css",
+      "beforeSha256": "3e569e2247253b38d550925ef6e38fb31d2309eda55470d842f56a87b8d147d7",
+      "afterSha256": "3e569e2247253b38d550925ef6e38fb31d2309eda55470d842f56a87b8d147d7",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/production-profiles.css",
+      "beforeSha256": "9975c9ae63350445228a8cd4d4580bc87b5262c60bef285787b8d1c778eb0718",
+      "afterSha256": "9975c9ae63350445228a8cd4d4580bc87b5262c60bef285787b8d1c778eb0718",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/review-snapshots.css",
+      "beforeSha256": "4b22b50893307852c5105166a916893aea2e9f3d1239e55357c13d3e24ef3e39",
+      "afterSha256": "4b22b50893307852c5105166a916893aea2e9f3d1239e55357c13d3e24ef3e39",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/revision-compare.css",
+      "beforeSha256": "b1fb7a7673c75b69986971d414ba146077b98957907e5dcd7b918d77c074e791",
+      "afterSha256": "b1fb7a7673c75b69986971d414ba146077b98957907e5dcd7b918d77c074e791",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/shop-embed.mjs",
+      "beforeSha256": "dd5eaa145b8ff058f06b9b1dd1035315793a8bd431f694e79bc3edec23671abc",
+      "afterSha256": "dd5eaa145b8ff058f06b9b1dd1035315793a8bd431f694e79bc3edec23671abc",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/shop-entry-client.mjs",
+      "beforeSha256": "6ee4ae62c7e821b74c4b1f743f62d794972e2a0218ebd2725e2399a07351e069",
+      "afterSha256": "6ee4ae62c7e821b74c4b1f743f62d794972e2a0218ebd2725e2399a07351e069",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/style.css",
+      "beforeSha256": "04ce55cc1091cbcb24c5cbf2a21648a13def1dc862e051a05dd828a6684eae74",
+      "afterSha256": "04ce55cc1091cbcb24c5cbf2a21648a13def1dc862e051a05dd828a6684eae74",
+      "sameAsBase": true
+    },
+    {
+      "path": "app/workshop/ui/workshop-shell.css",
+      "beforeSha256": "e725f2f3f3989a3f716a5fbbf5d094e72b423ed6b003db953b3d170c654a6499",
+      "afterSha256": "e725f2f3f3989a3f716a5fbbf5d094e72b423ed6b003db953b3d170c654a6499",
+      "sameAsBase": true
+    }
+  ],
+  "verification": {
+    "schema": "gravuru-r15-modules-current-verification/v1",
+    "base": "c7710dec6f2c4f6d0b36073ad2dc623fd5d5ac05",
+    "tests": [
+      "app/configurator/variant-m/module-profile.test.mjs",
+      "app/configurator/variant-m/module-runtime.test.mjs",
+      "app/configurator/variant-m/logo-upload.test.mjs",
+      "app/configurator/variant-m/ui-event-regressions.test.mjs",
+      "app/configurator/variant-m/lazy-resources.test.mjs",
+      "app/configurator/variant-m/visible-resource-loader.test.mjs",
+      "app/configurator/variant-m/first-panel-preload.test.mjs",
+      "app/configurator/variant-m/preload-queue.test.mjs",
+      "app/configurator/variant-m/design-reset.test.mjs",
+      "app/configurator/variant-m/view-zoom.test.mjs",
+      "app/configurator/variant-m/preview-uploads.test.mjs",
+      "app/configurator/variant-m/preview-uploads-integration.test.mjs",
+      "app/configurator/mobile-demo/demo.test.mjs",
+      "app/configurator/mobile-demo/native-overlay.test.mjs",
+      "app/workshop/cart-personalization.test.mjs",
+      "app/workshop/r15-module-bank.test.mjs",
+      "app/workshop/shop-design-gallery.test.mjs",
+      "app/workshop/shop-entry.test.mjs",
+      "app/workshop/shop-preparation.test.mjs",
+      "app/workshop/theme-cart-flow.test.mjs",
+      "app/workshop/shop-warm.test.mjs",
+      "app/workshop/customer-vector-logo.test.mjs",
+      "app/workshop/customer-vector-logo-media.test.mjs"
+    ],
+    "testFiles": 23,
+    "uniqueCases": 274,
+    "firstRun": {
+      "durationMs": 25038.6392,
+      "skipped": 0,
+      "failure": "Windows EPERM during two concurrent test builds renaming one generated reference-device file",
+      "pass": 273,
+      "fail": 1
+    },
+    "affectedRepeat": {
+      "productCodeChangedForFailure": false,
+      "command": "node --test --test-concurrency=1 app/configurator/variant-m/lazy-resources.test.mjs",
+      "fail": 0,
+      "pass": 17,
+      "durationMs": 1703.4948,
+      "skipped": 0
+    },
+    "build": {
+      "verifiedResources": 76,
+      "models": 1,
+      "editorBytes": 373304,
+      "lazyResources": {
+        "fonts": 30,
+        "motifs": 703
+      },
+      "bundle": {
+        "url": "/_bundle/editor-622e0d4afd819f7c.mjs",
+        "modules": 154,
+        "styles": 16,
+        "bytes": 1448642,
+        "gzipBytes": 483407
+      }
+    },
+    "nativeBank": {
+      "sizes": 80,
+      "priceCombinations": 404,
+      "designs": 251,
+      "sha256": "2e74548aa7211a2f5546af428e1d27d9f00f12181490356633e3cd109cb179c0",
+      "forms": 8,
+      "logoProfiles": [
+        true,
+        false
+      ],
+      "sourceUnchanged": true
+    },
+    "pr214": {
+      "review": "read-only API/schema compatibility; activation not executed",
+      "commit": "57f6f70bc79eeb4f0d1655e80792b5d9fdd59db7",
+      "writesEnabled": false,
+      "executionEnabled": false
+    },
+    "browser": "pending Root acceptance on combined runtime",
+    "liveWrites": 0,
+    "testLogs": [
+      {
+        "file": "targeted-tests.log",
+        "sha256": "69e5f22e790ed52d1e0972dd04dbe246fa75477db1b8bcba6c054f66eab212af"
+      },
+      {
+        "file": "lazy-sequential.log",
+        "sha256": "aa08f5bae61008baa50ac3625c4eabbd70f8a41ff04e0a082ec4139e1883997a"
+      }
+    ]
+  }
+}

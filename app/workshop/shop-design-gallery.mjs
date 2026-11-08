@@ -6,9 +6,11 @@ import {productPreview} from './product-preview.mjs';
 import {gallerySnapshotCodec} from './shop-gallery-snapshot.mjs';
 import {isAllSizesFamily,familyFormatOptions} from '../configurator/variant-m/family-formats.mjs';
 import {performance} from 'node:perf_hooks';
+import {moduleEnabled} from '../configurator/variant-m/module-profile.mjs';
 
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const unavailable=()=>fail(409,'shop_gallery_changed','Dieses Design ist nicht mehr verfügbar. Bitte die Designauswahl neu öffnen.');
+const requireDesignChoice=config=>{if(!moduleEnabled(config,'designs'))fail(403,'shop_gallery_disabled','Die Designauswahl ist bei diesem Produkt ausgeschaltet.');};
 const sameBinding=(a,b)=>['storeId','tenantId','shopDomain','shopifyProductId','shopifyVariantId','productId','productRevision','bindingId','assignmentRevision'].every(k=>a[k]===b[k]);
 const optionKey=o=>JSON.stringify(Object.entries(o||{}).sort());
 const identity=b=>({shopifyProductId:b.shopifyProductId,shopifyVariantId:b.shopifyVariantId});
@@ -52,6 +54,7 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   const current=resolve(identity(input));checkScope(context,current.binding);
   if(current.store!==context.store||!fields.filter(k=>!['sid','designId','scope','sourceProductId','sourceProductRevision'].includes(k)).every(k=>current.binding[k]===input[k]))unavailable();
   const sourceModel=cardFor(context.store,context.binding),targetModel=cardFor(current.store,current.binding);
+  requireDesignChoice(sourceModel.universal);
   const source={scope:galleryScope(sourceModel,context.binding),process:galleryProcess(selectedProfile(sourceModel.universal,context.binding.options))};
   const destination={scope:galleryScope(targetModel,current.binding),process:galleryProcess(selectedProfile(targetModel.universal,current.binding.options))};
   if(input.scope!==source.scope.key||input.sourceProductId!==context.binding.productId||input.sourceProductRevision!==context.binding.productRevision)unavailable();
@@ -205,6 +208,9 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
  async function list(context,{page=0,theme='preferred',sourceModel=null,options=null}={}){
   if(!['preferred','all'].includes(theme))fail(422,'shop_gallery_theme','Dieses Thema gibt es nicht.');
   if(!Number.isSafeInteger(page)||page<0||page>10000)fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
+  // Public entry supplies its revision-pinned source. Do not defeat the legacy
+  // lightweight gallery cache by rebuilding a model for every warm page.
+  if(sourceModel)requireDesignChoice(sourceModel.universal);
   if(typeof context.store.registry.listActive!=='function')return {items:[],nextPage:null,total:0};
   const result=await boundedCards(context,sourceModel,options);
   if(result===preparing)return {status:'preparing',message:'Designs werden vorbereitet – bitte gleich noch einmal versuchen.',items:[],nextPage:page,total:null};
@@ -235,6 +241,7 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   return result;
  }
  function start(context,model,designId){
+  if(!moduleEnabled(model.universal,'designs'))return null;
   const scope=galleryScope(cardFor(context.store,context.binding),context.binding);
   if(!scope)return null;
   const selected=selection(context.binding,model,designId);

@@ -1,0 +1,34 @@
+{
+  "state": "completed",
+  "error": null,
+  "metrics": {
+    "transactionMs": 57872.6679,
+    "rawRead": {
+      "calls": 830,
+      "ms": 36092.422599999816,
+      "characters": 9867673658
+    },
+    "sql": {
+      "calls": 32822,
+      "ms": 37401.67749999931
+    },
+    "methods": {
+      "catalogLiveApprovals": {
+        "calls": 2,
+        "ms": 152.0010000000184
+      },
+      "bindingPricing": {
+        "calls": 808,
+        "ms": 28.87809999989986
+      },
+      "bindVariants": {
+        "calls": 404,
+        "ms": 4116.377199999872
+      },
+      "approveCatalogLiveProducts": {
+        "calls": 1,
+        "ms": 746.8722000000125
+      }
+    }
+  }
+}

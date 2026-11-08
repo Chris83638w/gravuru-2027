@@ -1,0 +1,42 @@
+[shop-gallery] {"event":"shop_gallery_binding_skipped","storeId":"synthetic-store","code":"shop_binding_cfg_changed"}
+✔ locked read phase reuses only frozen source records and rejects a same-connection mutation (78.7512ms)
+✔ provider-side product mutation after native binding validation rolls the whole write back (71.0294ms)
+✔ native REPLACE and recursive-trigger toggles cannot replace a cached revision (275.8563ms)
+✔ native trigger/schema changes invalidate a locked product cache and unknown schemas keep full document checks (68.2549ms)
+✔ batched exact reads preserve every ID, historical revision and later archive rejection (74.1317ms)
+✔ exact ID assignment persists on the existing connection with real form geometry and no profile release (71.9627ms)
+✔ existing bindings are not activated implicitly and their immutable price contracts are preserved on reuse (63.0296ms)
+✔ native option rows are reused, copied on output and never duplicated into the registry (257.4487ms)
+✔ explicit head CAS preserves historical revisions and a new source revision is never silently selected (84.8495ms)
+✔ a product changed or archived after planning cannot create any binding or active assignment (66.2961ms)
+✔ SQL head CAS rejects a stale adapter even when its own in-memory proof is internally consistent (70.0886ms)
+✔ a matching cfg ID/revision from a different database is not accepted as a source (86.0234ms)
+✔ all new legacy bindings and ID assignments roll back when a later SQL write fails (79.3819ms)
+✔ batch return values preserve requested order and catch a later callback changing an earlier product (190.3884ms)
+✔ reentrant competing batch activation cannot overwrite expected heads or leave partial bindings (115.4418ms)
+✔ custom permanent or temporary head triggers keep the immediate source check before a later callback can restore it (273.1785ms)
+✔ a shadowing TEMP head table or added expression index cannot use deferred integrity checks (149.7088ms)
+✔ nested failures roll back only this operation and a successful outer rollback removes the entire assignment (100.9231ms)
+✔ a second SQLite writer cannot change the product between locked head check and binding insertion (115.2214ms)
+✔ forged or expired plans and incomplete head expectations are rejected without writes (71.7185ms)
+✔ explicit ID mapping cannot be switched to another Shopify product, store, tenant or cfg (86.4171ms)
+✔ active assignment revisions are append-only and archive changes block use without deleting history (80.3868ms)
+✔ asynchronous personalization provider is rejected and partial legacy writes remain absent (65.3544ms)
+✔ evidence expiring during a synchronous write rolls back before commit (61.8411ms)
+✔ listActive returns only assignment heads, preserves pinned source revisions and copies option data (455.6643ms)
+✔ listActive excludes archived products while retaining other active records and all binding history (102.4301ms)
+✔ listActive cannot leak a foreign tenant or shop and refuses a different store scope (107.1604ms)
+✔ gallery skips broken documents/bindings, logs only fixed diagnostics, while exact resolution stays strict (347.4714ms)
+✔ gallery revision heads change on activation, new product revision and archive (115.616ms)
+✔ read-only audit opens the existing registry without schema changes and cannot persist (129.7792ms)
+✔ benchmark reads a native copy cold and warm without changing any binding or product (392.4107ms)
+✔ covering revision index preserves all head checks and read-only older copies need no migration (110.3895ms)
+✔ benchmark cache uses a separate file, survives reopening, and rejects the source as cache (466.7794ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 33
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5166.7918

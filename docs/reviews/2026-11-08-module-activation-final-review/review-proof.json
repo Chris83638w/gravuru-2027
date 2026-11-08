@@ -1,0 +1,250 @@
+{
+  "schema": "gravuru-module-activation-review/v1",
+  "reviewedCommit": "57f6f70bc79eeb4f0d1655e80792b5d9fdd59db7",
+  "createdAt": "2026-11-08T23:14:06.589Z",
+  "result": "local_acceptance_passed",
+  "productCodeChanges": 1,
+  "externalRequests": 0,
+  "liveWrites": 0,
+  "profileAssignments": 0,
+  "gatesOpened": false,
+  "files": [
+    {
+      "path": "app/workshop/gallery-shop-sync-transport.mjs",
+      "sha256": "d303423b37d7a4c53f7354dd48e93a2b43778dffedd904e77d8d320027d3663a",
+      "expectedSha256": "d303423b37d7a4c53f7354dd48e93a2b43778dffedd904e77d8d320027d3663a"
+    },
+    {
+      "path": "app/workshop/gallery-shop-sync.mjs",
+      "sha256": "0d62e2d956de0b1cda1d1c59fa0534fe537f3bb8569251c6fd9c2678b3b71d49",
+      "expectedSha256": "0d62e2d956de0b1cda1d1c59fa0534fe537f3bb8569251c6fd9c2678b3b71d49"
+    },
+    {
+      "path": "scripts/lib/gallery-production-shopify-read.mjs",
+      "sha256": "e925775bae602c924688048c592dd5121208cb23f75d42bb529b4a6b2063225a",
+      "expectedSha256": "e925775bae602c924688048c592dd5121208cb23f75d42bb529b4a6b2063225a"
+    },
+    {
+      "path": "scripts/lib/gallery-production-module-target.mjs",
+      "sha256": "d84e1c1aa51dcc0946fa4b899ca620fe07636cb4f6c2f26c16043fac87abd45b",
+      "expectedSha256": "d84e1c1aa51dcc0946fa4b899ca620fe07636cb4f6c2f26c16043fac87abd45b"
+    },
+    {
+      "path": "scripts/lib/gallery-production-activation.mjs",
+      "sha256": "0012470246c15f517ba3bea4e64ca86d1a67dc26d5ef1eca484960936fb8ec96",
+      "expectedSha256": "0012470246c15f517ba3bea4e64ca86d1a67dc26d5ef1eca484960936fb8ec96"
+    }
+  ],
+  "source": {
+    "file": "candidate-product-document.live-normalized.compact.json",
+    "bytes": 11906263,
+    "sha256": "2e74548aa7211a2f5546af428e1d27d9f00f12181490356633e3cd109cb179c0",
+    "designs": 251,
+    "formats": 80,
+    "variants": 404
+  },
+  "tests": {
+    "unique": 39,
+    "passed": 39,
+    "failed": 0,
+    "skipped": 0,
+    "activation": {
+      "passed": 3,
+      "failed": 0,
+      "durationMs": 335704.7626,
+      "scenarioMs": 327954.9308,
+      "startedWithStoreSha256": "64946ee74847cbe40981049f85bddc718b486b9151bf20060ef515e876e01e32",
+      "finalFallbackDifference": "Only final TEMP-shadow object and explicit head-index exclusions were subsequently added; unchanged native fast path covered by real bank scenario, final fallbacks covered by full store and independent negative tests."
+    },
+    "store": {
+      "passed": 33,
+      "failed": 0,
+      "durationMs": 5166.7918,
+      "storeSha256": "0b12557c7519e59461df5021ba6afe2ec74d93425d8a9de8cf0d8854a3995b26"
+    },
+    "historyAndConcurrency": {
+      "passed": 3,
+      "failed": 0,
+      "durationMs": 14229.5999,
+      "storeSha256": "0b12557c7519e59461df5021ba6afe2ec74d93425d8a9de8cf0d8854a3995b26"
+    }
+  },
+  "logs": [
+    {
+      "name": "activation-review-tests.log",
+      "bytes": 1432,
+      "sha256": "8231d3f05f395763fbdf98b20fec651da8c024a3ac5a3a51d721b99d3052436a",
+      "normalization": "Trailing whitespace removed; untouched original log remains in private outputs."
+    },
+    {
+      "name": "history-concurrency-tests.log",
+      "bytes": 518,
+      "sha256": "3dc991fa518ee09d25dd71b82471ebc4cfc8d31dfa3f7964d398054d77fda972"
+    },
+    {
+      "name": "activation-final-tests.log",
+      "bytes": 480,
+      "sha256": "66c440a29dc0dc5f6fa82fe006f24434c0802da98b4082675e9cea3fb90d5f2b"
+    },
+    {
+      "name": "batch-guard-tests.log",
+      "bytes": 3884,
+      "sha256": "52e437c4f341e0c9aefb2f4425a48f8a1989d8d225e17a9c3d443e94d3e538dd"
+    },
+    {
+      "name": "history-concurrency-final-tests.log",
+      "bytes": 518,
+      "sha256": "06966a9572c679f2473e807ce0f4fd060be488225b88d0e6d9180996e4e7903b"
+    },
+    {
+      "name": "isolated-activation-before.json",
+      "bytes": 666,
+      "sha256": "8cd443c97dd252077e914e026af4ad5b61ff4f4a0f3fd26781e83efd6a361e28"
+    },
+    {
+      "name": "isolated-activation-after.json",
+      "bytes": 771,
+      "sha256": "4f8039b25ff79d5a8ea17c04b335e23d646116bee6d430dca9442492492af839"
+    },
+    {
+      "name": "isolated-activation-batched.json",
+      "bytes": 739,
+      "sha256": "5c368d72ed186f2eba34d1e26db7c7910b185957b7ece3a9beac87a0e836afbb"
+    },
+    {
+      "name": "activation-phases-final.json",
+      "bytes": 2516,
+      "sha256": "5273d4e1df74fba659d3ef225b36b9353cb42068ab3f088faad2e270ed563c43"
+    }
+  ],
+  "blocker": null,
+  "next": "Integrate exact single-file patch with PR214 and current R15 module/runtime contracts; keep gates off, then show a fresh real profile-change plan for confirmation before any controlled activation.",
+  "productionPatch": {
+    "path": "app/workshop/shop-product-binding-store.mjs",
+    "beforeSha256": "b957a5c104849e1b0f4b3ea646f7746b7066c451060d276ccddd9270e59f5971",
+    "afterSha256": "0b12557c7519e59461df5021ba6afe2ec74d93425d8a9de8cf0d8854a3995b26",
+    "bytes": 30288
+  },
+  "phaseTimings": [
+    {
+      "label": "fault-after-all-heads-and-approval",
+      "state": "conflict",
+      "metrics": {
+        "transactionMs": 39637.5742,
+        "rawRead": {
+          "calls": 431,
+          "ms": 20278.2043999999,
+          "characters": 5124058109
+        },
+        "byteComparison": {
+          "calls": 0,
+          "ms": 0
+        },
+        "sql": {
+          "calls": 37680,
+          "ms": 21733.65730000069
+        },
+        "methods": {
+          "catalogLiveApprovals": {
+            "calls": 2,
+            "ms": 245.50789999999688
+          },
+          "bindingPricing": {
+            "calls": 808,
+            "ms": 42.82360000058543
+          },
+          "bindVariants": {
+            "calls": 404,
+            "ms": 5024.686200000375
+          },
+          "approveCatalogLiveProducts": {
+            "calls": 1,
+            "ms": 667.4645000000019
+          }
+        }
+      }
+    },
+    {
+      "label": "restart-reconcile-logo-off",
+      "state": "completed",
+      "metrics": {
+        "transactionMs": 38807.851199999976,
+        "rawRead": {
+          "calls": 431,
+          "ms": 19842.546099999774,
+          "characters": 5124058109
+        },
+        "byteComparison": {
+          "calls": 0,
+          "ms": 0
+        },
+        "sql": {
+          "calls": 37680,
+          "ms": 21367.02369999996
+        },
+        "methods": {
+          "catalogLiveApprovals": {
+            "calls": 2,
+            "ms": 243.42990000001737
+          },
+          "bindingPricing": {
+            "calls": 808,
+            "ms": 57.12470000030589
+          },
+          "bindVariants": {
+            "calls": 404,
+            "ms": 4871.061700000166
+          },
+          "approveCatalogLiveProducts": {
+            "calls": 1,
+            "ms": 675.0148000000045
+          }
+        }
+      }
+    },
+    {
+      "label": "confirmed-logo-on-new-revision",
+      "state": "completed",
+      "metrics": {
+        "transactionMs": 45669.95499999996,
+        "rawRead": {
+          "calls": 431,
+          "ms": 20521.65239999938,
+          "characters": 5124057290
+        },
+        "byteComparison": {
+          "calls": 0,
+          "ms": 0
+        },
+        "sql": {
+          "calls": 37680,
+          "ms": 22038.8403000033
+        },
+        "methods": {
+          "catalogLiveApprovals": {
+            "calls": 2,
+            "ms": 230.8979999999865
+          },
+          "bindingPricing": {
+            "calls": 808,
+            "ms": 36.08980000013253
+          },
+          "bindVariants": {
+            "calls": 404,
+            "ms": 4786.17599999957
+          },
+          "approveCatalogLiveProducts": {
+            "calls": 1,
+            "ms": 624.2954000000027
+          }
+        }
+      }
+    }
+  ],
+  "initialFailure": {
+    "error": "shop_binding_freshness",
+    "phase": "final logo-on activation persist",
+    "sourceCommit": "57f6f70bc79eeb4f0d1655e80792b5d9fdd59db7",
+    "preservedLog": "activation-review-tests.log"
+  }
+}

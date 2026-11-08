@@ -70,7 +70,7 @@ test('provider-side product mutation after native binding validation rolls the w
 });
 
 test('native REPLACE and recursive-trigger toggles cannot replace a cached revision',t=>{
- for(const mode of ['replace','disable','disable-replace-restore']){
+ for(const mode of ['replace','disable','disable-replace-restore','disable-replace-metadata-restore']){
   const f=fixture(t),plan=f.plan(),before=counts(f),bind=f.orders.bindVariants;
   const original=f.db.prepare('SELECT * FROM product_revisions WHERE product_id=? AND revision=1').get(f.record.id);
   f.db.exec('PRAGMA recursive_triggers=OFF');
@@ -78,10 +78,10 @@ test('native REPLACE and recursive-trigger toggles cannot replace a cached revis
    const value=bind.call(this,input);assert.equal(f.db.prepare('PRAGMA recursive_triggers').get().recursive_triggers,1);
    if(mode!=='replace')f.db.exec('PRAGMA recursive_triggers=OFF');
    if(mode!=='disable'){
-    const changed={...original,document:JSON.stringify({...f.record.document,name:'replaced inside provider'})},keys=Object.keys(changed);
+    const changed=mode==='disable-replace-metadata-restore'?{...original,metadata:JSON.stringify({changed:'Metadaten · geändert 🐾'})}:{...original,document:JSON.stringify({...f.record.document,name:'replaced inside provider'})},keys=Object.keys(changed);
     f.db.prepare('INSERT OR REPLACE INTO product_revisions('+keys.join(',')+') VALUES('+keys.map(()=>'?').join(',')+')').run(...keys.map(key=>changed[key]));
    }
-   if(mode==='disable-replace-restore')f.db.exec('PRAGMA recursive_triggers=ON');
+   if(mode.endsWith('-restore'))f.db.exec('PRAGMA recursive_triggers=ON');
    return value;
   };
   assert.throws(()=>f.persist(plan),mode==='replace'?/immutable/:{code:'shop_binding_cfg_changed'});
@@ -187,6 +187,55 @@ test('all new legacy bindings and ID assignments roll back when a later SQL writ
  const f=fixture(t),second=f.repository.create(formDocument());const plan=f.plan([{record:f.record,...pair(),options:{}},{record:second,...pair(2),options:{}}]);
  f.db.exec("CREATE TRIGGER synthetic_late_failure BEFORE INSERT ON shop_product_binding_revisions WHEN NEW.variant_gid='gid://shopify/ProductVariant/102' BEGIN SELECT RAISE(ABORT,'synthetic failure');END;");
  const before=counts(f);assert.throws(()=>f.persist(plan),/synthetic failure/);assert.deepEqual(counts(f),before);assert.equal(f.db.isTransaction,false);
+});
+
+test('batch return values preserve requested order and catch a later callback changing an earlier product',t=>{
+ for(const tamper of [false,true]){
+  const f=fixture(t),records=[f.record,f.repository.create(formDocument()),f.repository.create(formDocument())];
+  const items=[2,0,1].map(i=>({record:records[i],...pair(i+1),options:{}})),plan=f.plan(items),before=counts(f);
+  const bind=f.orders.bindVariants;let calls=0;
+  f.orders.bindVariants=function(input){const value=bind.call(this,input);if(++calls===3&&tamper)f.db.prepare('UPDATE products SET archived=1 WHERE id=?').run(items[0].record.id);return value;};
+  if(tamper){assert.throws(()=>f.persist(plan),{code:'shop_binding_cfg_changed'});assert.deepEqual(counts(f),before);assert.equal(f.db.prepare('SELECT archived FROM products WHERE id=?').get(items[0].record.id).archived,0);}
+  else{const saved=f.persist(plan);assert.deepEqual(saved.assignments.map(v=>v.shopifyVariantId),items.map(v=>v.shopifyVariantId));assert.deepEqual(saved.assignments.map(v=>v.productId),items.map(v=>v.record.id));assert.equal(saved.changedAssignments,3);assert.equal(saved.createdBindings,3);}
+  assert.equal(calls,3);
+ }
+});
+
+test('reentrant competing batch activation cannot overwrite expected heads or leave partial bindings',t=>{
+ const f=fixture(t),other=f.repository.create(formDocument()),items=[{record:f.record,...pair(),options:{}},{record:other,...pair(2),options:{}}];
+ f.persist(f.plan(items));
+ const old=items.map(v=>f.registry.resolve({shopifyProductId:v.shopifyProductId,shopifyVariantId:v.shopifyVariantId}));
+ const next=items.map(v=>({...v,record:f.repository.save(v.record.id,{...v.record.document,name:'Next '+v.record.id},1)})),plan=f.plan(next),before=counts(f);
+ const bind=f.orders.bindVariants;let nested=false;
+ f.orders.bindVariants=function(input){const value=bind.call(this,input);if(!nested){nested=true;f.persist(plan,1);}return value;};
+ assert.throws(()=>f.persist(plan,1),/UNIQUE constraint failed: shop_product_binding_revisions/);assert.equal(nested,true);assert.deepEqual(counts(f),before);
+ assert.deepEqual(items.map(v=>f.registry.resolve({shopifyProductId:v.shopifyProductId,shopifyVariantId:v.shopifyVariantId})),old);
+});
+
+test('custom permanent or temporary head triggers keep the immediate source check before a later callback can restore it',t=>{
+ for(const timing of ['before','callback','temporary-callback']){
+  const f=fixture(t),other=f.repository.create(formDocument()),items=[{record:f.record,...pair(),options:{}},{record:other,...pair(2),options:{}}],plan=f.plan(items),before=counts(f);
+  const install=()=>f.db.exec(`CREATE ${timing==='temporary-callback'?'TEMP ':''}TRIGGER review_archive_after_head AFTER INSERT ON shop_product_binding_heads
+   WHEN NEW.variant_gid='gid://shopify/ProductVariant/101'
+   BEGIN UPDATE products SET archived=1 WHERE id='${f.record.id}'; END;`);
+  if(timing==='before')install();
+  const bind=f.orders.bindVariants;let calls=0;
+  f.orders.bindVariants=function(input){const value=bind.call(this,input);calls++;if(calls===1&&timing!=='before')install();if(calls===2)f.db.prepare('UPDATE products SET archived=0 WHERE id=?').run(f.record.id);return value;};
+  assert.throws(()=>f.persist(plan),{code:'shop_binding_cfg_changed'});assert.deepEqual(counts(f),before);assert.equal(calls,1,'the immediate check rejects before the restoring callback runs');
+ }
+});
+
+test('a shadowing TEMP head table or added expression index cannot use deferred integrity checks',t=>{
+ for(const extension of ['temporary-table','expression-index']){
+  const f=fixture(t),other=f.repository.create(formDocument()),items=[{record:f.record,...pair(),options:{}},{record:other,...pair(2),options:{}}],plan=f.plan(items);
+  f.db.function('review_archive',{deterministic:true},variant=>{if(variant===pair().shopifyVariantId)f.db.prepare('UPDATE products SET archived=1 WHERE id=?').run(f.record.id);return 1;});
+  if(extension==='temporary-table')f.db.exec(`CREATE TEMP TABLE shop_product_binding_heads(tenant_id TEXT NOT NULL,shop TEXT NOT NULL,variant_gid TEXT NOT NULL,revision INTEGER NOT NULL,
+   PRIMARY KEY(tenant_id,shop,variant_gid),CHECK(review_archive(variant_gid)=1))`);
+  else f.db.exec('CREATE INDEX review_head_expression ON shop_product_binding_heads(review_archive(variant_gid))');
+  const before=counts(f),bind=f.orders.bindVariants;let calls=0;
+  f.orders.bindVariants=function(input){const value=bind.call(this,input);if(++calls===2)f.db.prepare('UPDATE products SET archived=0 WHERE id=?').run(f.record.id);return value;};
+  assert.throws(()=>f.persist(plan),{code:'shop_binding_cfg_changed'});assert.deepEqual(counts(f),before);assert.equal(calls,1);
+ }
 });
 
 test('nested failures roll back only this operation and a successful outer rollback removes the entire assignment',t=>{

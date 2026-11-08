@@ -1,0 +1,11 @@
+✔ real repositories + binding registry: native edit, explicit media, revision switch; immutable historical contracts and commercial values (5546.7969ms)
+✔ two identical pre-created plans cannot send concurrently; unknown writes retain target ownership beyond leases (4116.5457ms)
+✔ failure after atomic activation recovers without duplicate assignments or approval changes (3905.246ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 14229.5999

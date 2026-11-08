@@ -102,13 +102,36 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
   let checkedSchema;
   function immutableRevisionSchema(){
     const version=db.prepare('PRAGMA schema_version').get().schema_version;
-    if(checkedSchema?.version!==version){
+    const tempVersion=db.prepare('PRAGMA temp.schema_version').get().schema_version;
+    if(checkedSchema?.version!==version||checkedSchema?.tempVersion!==tempVersion){
       const rows=db.prepare("SELECT name,sql FROM sqlite_master WHERE type='trigger' AND tbl_name='product_revisions'").all();
       const native=event=>rows.some(row=>{
         const name='immutable_revision_'+event.toLowerCase(),sql=row.sql?.replace(/\s+/g,' ').trim().replace(/;$/,'').replace(/^CREATE TRIGGER IF NOT EXISTS /,'CREATE TRIGGER ');
         return row.name===name&&sql===`CREATE TRIGGER ${name} BEFORE ${event} ON product_revisions BEGIN SELECT RAISE(ABORT, 'Product revisions are immutable'); END`;
       });
-      checkedSchema={version,immutable:!legacySingleStore&&native('UPDATE')&&native('DELETE')};
+      const headTriggers=db.prepare("SELECT name,sql FROM sqlite_master WHERE type='trigger' AND tbl_name IN ('shop_product_binding_revisions','shop_product_binding_heads') UNION ALL SELECT name,sql FROM sqlite_temp_master WHERE type='trigger' AND tbl_name IN ('shop_product_binding_revisions','shop_product_binding_heads')").all();
+      const expectedHeadTriggers=new Map([
+        ['shop_product_binding_revision_fixed',"CREATE TRIGGER shop_product_binding_revision_fixed BEFORE UPDATE ON shop_product_binding_revisions BEGIN SELECT RAISE(ABORT,'Active binding revisions are immutable');END"],
+        ['shop_product_binding_revision_keep',"CREATE TRIGGER shop_product_binding_revision_keep BEFORE DELETE ON shop_product_binding_revisions BEGIN SELECT RAISE(ABORT,'Active binding revisions are immutable');END"],
+        ['shop_product_binding_head_keep',"CREATE TRIGGER shop_product_binding_head_keep BEFORE DELETE ON shop_product_binding_heads BEGIN SELECT RAISE(ABORT,'Active binding heads require an explicit transition');END"],
+      ]);
+      const normalize=sql=>sql?.replace(/\s+/g,' ').trim().replace(/;$/,'').replace(/^CREATE (TABLE|TRIGGER) IF NOT EXISTS /,'CREATE $1 ');
+      const expectedHeadTables=new Map([
+        ['shop_product_binding_revisions',normalize(`CREATE TABLE shop_product_binding_revisions(
+      tenant_id TEXT NOT NULL,shop TEXT NOT NULL,variant_gid TEXT NOT NULL,revision INTEGER NOT NULL CHECK(revision>0),
+      product_gid TEXT NOT NULL,store_id TEXT NOT NULL,binding_id TEXT NOT NULL REFERENCES form_shop_bindings(id),
+      cfg_id TEXT NOT NULL,cfg_revision INTEGER NOT NULL CHECK(cfg_revision>0),document_sha256 TEXT NOT NULL,
+      evidence_read_at TEXT NOT NULL,created_at TEXT NOT NULL,
+      PRIMARY KEY(tenant_id,shop,variant_gid,revision))`)],
+        ['shop_product_binding_heads',normalize(`CREATE TABLE shop_product_binding_heads(
+      tenant_id TEXT NOT NULL,shop TEXT NOT NULL,variant_gid TEXT NOT NULL,revision INTEGER NOT NULL,
+      PRIMARY KEY(tenant_id,shop,variant_gid),
+      FOREIGN KEY(tenant_id,shop,variant_gid,revision) REFERENCES shop_product_binding_revisions(tenant_id,shop,variant_gid,revision))`)],
+      ]);
+      const headTables=db.prepare("SELECT name,sql FROM sqlite_master WHERE type='table' AND name IN ('shop_product_binding_revisions','shop_product_binding_heads')").all();
+      const extendedHeads=db.prepare("SELECT 1 FROM sqlite_temp_master WHERE name IN ('shop_product_binding_revisions','shop_product_binding_heads') UNION ALL SELECT 1 FROM sqlite_master WHERE type='index' AND sql IS NOT NULL AND tbl_name IN ('shop_product_binding_revisions','shop_product_binding_heads') LIMIT 1").get();
+      const pureHeads=!extendedHeads&&headTriggers.length===expectedHeadTriggers.size&&headTriggers.every(row=>normalize(row.sql)===expectedHeadTriggers.get(row.name))&&headTables.length===expectedHeadTables.size&&headTables.every(row=>normalize(row.sql)===expectedHeadTables.get(row.name));
+      checkedSchema={version,tempVersion,immutable:!legacySingleStore&&native('UPDATE')&&native('DELETE'),pureHeads};
     }
     return checkedSchema;
   }
@@ -222,9 +245,15 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
       }));
       let createdBindings=0,changedAssignments=0;
       const resultRecords=new Map();
+      const assignmentRow=row=>{
+        const schema=immutableRevisionSchema();
+        // Only exact native head writes have no trigger callbacks/side effects.
+        // A custom/legacy schema keeps the previous immediate complete check.
+        return schema.immutable&&schema.pureHeads?{row}:{value:result(row,resultRecords)};
+      };
       const preparedRecords=new Map(),sources=[...checkedRecords.entries()];
       const withinPrepared=(index,read)=>index===sources.length?read():withShopPreparationSnapshot(sources[index][1].record,record=>{preparedRecords.set(sources[index][0],record);return withinPrepared(index+1,read);});
-      const assignments=withinPrepared(0,()=>checked.map(({entry,record:sourceRecord,old})=>{
+      const assignmentRows=withinPrepared(0,()=>checked.map(({entry,record:sourceRecord,old})=>{
         const record=preparedRecords.get(entry.productId+'@'+entry.productRevision)??sourceRecord;
         let bindingId=entry.binding.id;
         if(entry.binding.mode==='reuse')assertBinding(bindingFor(bindingId),entry);
@@ -241,14 +270,19 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
         // A provider/binding callback must not alter the product after its read.
         const verified=checkedRecords.get(entry.productId+'@'+entry.productRevision);
         if(!isDeepStrictEqual(revisionStamp(entry.productId,entry.productRevision,{requireHead:true}),verified.stamp))fail('shop_binding_cfg_changed','Der Produktstand wurde während der Speicherung geändert.');
-        if(old&&old.binding_id===bindingId&&old.cfg_revision===entry.productRevision&&old.document_sha256===entry.documentSha256)return result(old,resultRecords);
+        if(old&&old.binding_id===bindingId&&old.cfg_revision===entry.productRevision&&old.document_sha256===entry.documentSha256)return assignmentRow(old);
         const next=(old?.revision??0)+1;
         db.prepare(`INSERT INTO shop_product_binding_revisions(tenant_id,shop,variant_gid,revision,product_gid,store_id,binding_id,cfg_id,cfg_revision,document_sha256,evidence_read_at,created_at)
           VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`).run(tenantId,shopDomain,entry.shopifyVariantId,next,entry.shopifyProductId,storeId,bindingId,entry.productId,entry.productRevision,entry.documentSha256,plan.evidenceReadAt,new Date(now).toISOString());
         if(old){const update=db.prepare('UPDATE shop_product_binding_heads SET revision=? WHERE tenant_id=? AND shop=? AND variant_gid=? AND revision=?').run(next,tenantId,shopDomain,entry.shopifyVariantId,old.revision);if(update.changes!==1)fail('shop_binding_head_conflict','Die aktive Zuordnung wurde inzwischen geändert.');}
         else db.prepare('INSERT INTO shop_product_binding_heads(tenant_id,shop,variant_gid,revision) VALUES(?,?,?,?)').run(tenantId,shopDomain,entry.shopifyVariantId,next);
-        changedAssignments++;return result(currentHead(entry.shopifyVariantId),resultRecords);
+        changedAssignments++;return assignmentRow(currentHead(entry.shopifyVariantId));
       }));
+      // Keep every provider/binding callback check above. Materialize the return
+      // values only once the synchronous batch has finished writing its heads;
+      // these internal result reads need no intermediate view of each head write.
+      // Final source/binding integrity checks still run for every returned row.
+      const assignments=assignmentRows.map(item=>item.value??result(item.row,resultRecords));
       const finished=clock(),readAt=Date.parse(plan.evidenceReadAt);
       if(!Number.isSafeInteger(finished)||finished<now||!Number.isFinite(readAt)||finished-readAt>plan.maxEvidenceAgeMs)
         fail('shop_binding_freshness','Die ID-Prüfung ist vor Abschluss der Speicherung abgelaufen.');

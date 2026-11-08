@@ -647,3 +647,36 @@ test('startup warms the gallery without a customer and list never calls the full
  f.store.workshop.galleryModel=(id,rev)=>{reads++;return structuredClone(f.models.get(id));};
  f.store.registry.galleryRevision=()=> 'fixed';f.store.registry.listActiveForGallery=async()=>f.store.registry.listActive();
 }));
+
+test('public template HTTP warmup persists across restart, never renders on start and rejects revoked and legacy image URLs',async t=>{
+ const {default:os}=await import('node:os'),{default:path}=await import('node:path'),{createHash}=await import('node:crypto');
+ const directory=fs.mkdtempSync(path.join(os.tmpdir(),'public-template-http-'));t.after(()=>fs.rmSync(directory,{recursive:true,force:true}));
+ let paused=false,urls,bodyHash;
+ const setup=f=>{
+  f.options.publicPreviewDirectory=directory;
+  const model=f.models.get(f.first.localWorkshopRecord),binding=f.bindings.get(f.ids.shopifyProductId+'|'+f.ids.shopifyVariantId);
+  model.galleryCategoryIds=['linie-edelstahl','familie-fixture'];
+  model.universal={basePriceCents:binding.unitCents,extraMotifCents:169,motifCharge:'additional',photo:{},familyFormats:{fixedSize:'120x80'},profile:{kind:'universal-product',id:'http-template',geometry:{shape:'rect',width:120,height:80,holes:[]},material:{kind:'steel'},processing:{method:'engraving'},optionGroups:[],defaultDesignId:'d1',designs:Array.from({length:5},(_,i)=>({id:'d'+(i+1),objects:[]}))},localResources:{fonts:{},motifs:[],photoExamples:[]}};
+  binding.options={};f.store.workshop.galleryModel=id=>structuredClone(f.models.get(id));f.store.workshop.konfis={paused:()=>paused};f.store.registry.listActive=()=>[structuredClone(binding)];
+ };
+ await run(async(f,request,{open,token,entry})=>{
+  const cold=await open({format:'json'});assert.equal(cold.status,200);assert.deepEqual(cold.data.warm.manifest.previews,undefined);assert.deepEqual(fs.readdirSync(directory),[],'customer start creates no render/cache files');
+  assert.equal((await request('/api/shop-entry/public-preview-prepare','POST',f.ids)).status,404,'no public preparation route');
+  const prepared=await entry.preparePublicDesignPreviews(f.ids);assert.equal(prepared.prepared,3);urls=prepared.items.map(x=>x.url);
+  const ticket=await open({format:'json'});assert.deepEqual(ticket.data.warm.manifest.previews,urls);assert.equal(fs.readdirSync(directory).length,3);
+  assert.ok(!JSON.stringify(ticket.data.warm.manifest).includes('sgt1.'));
+  const image=await request(urls[0]);assert.equal(image.status,200);assert.match(image.headers['cache-control'],/public.*immutable/);bodyHash=createHash('sha256').update(image.body).digest('hex');
+  assert.equal((await request('/konfigurator/shop/vorschauen/'+bodyHash+'.svg')).status,404,'old renderer memory hash is never a public fallback while feature is enabled');
+  assert.equal((await request(urls[0],'GET',undefined,{Origin:'https://foreign.example'})).status,403);
+  const {token:sessionToken}=await token(),headers=session(sessionToken),gallery=await request('/api/shop-entry/design-gallery','GET',undefined,headers);assert.equal(gallery.status,200);assert.deepEqual(gallery.data.items.slice(0,3).map(x=>x.previewUrl),urls);
+  const fallback=await request('/api/shop-entry/design-gallery-preview','POST',{target:gallery.data.items[3].target},headers);assert.equal(fallback.status,200);assert.equal(fallback.headers['cache-control'],'private, no-store');
+  const after=await request('/api/shop-entry/design-gallery','GET',undefined,headers);assert.equal(after.data.items[3].previewUrl,undefined);
+ },setup);
+ await run(async(f,request,{open,entry})=>{
+  assert.ok((await entry.publicPreviewPreparation).items.every(x=>x.cached),'explicit startup prepares only this one already cached variant');
+  const ticket=await open({format:'json'});assert.equal(ticket.status,200);assert.deepEqual(ticket.data.warm.manifest.previews,urls,'fresh entry process uses identical saved URLs');
+  assert.equal((await request(urls[0],'HEAD')).status,200);assert.ok((await entry.preparePublicDesignPreviews(f.ids)).items.every(x=>x.cached));
+  paused=true;assert.equal((await request(urls[0])).status,404);assert.equal((await request('/konfigurator/shop/vorschauen/'+bodyHash+'.svg')).status,404);
+  assert.deepEqual((await open({format:'json'})).data.warm.manifest.previews,undefined);
+ },f=>{setup(f);f.options.publicPreviewPrepare=f.ids;});
+});

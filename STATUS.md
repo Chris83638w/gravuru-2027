@@ -5,6 +5,9 @@ Eigener Branch `dev/mika-r15-modules-current-20261108` auf `c7710dec`/Livecode `
 ## 08.11.2026, 17:52 Berlin – Codex/Mika: Flugpause und vollständiger Sicherungsauftrag
 
 Livecode e9c36ce auf PR219: kompakte Aktionen in normaler Desktopansicht und Vollansicht mittig; beide echte Shopify-Browseransichten geprüft. Sonstige R15-Bedien-/SVG-/Vorladefixes im Livebericht dokumentiert. Plesk-Vollbackup für Abonnement14 um17:43:04 gestartet, Auftrag1158; noch kein Abschlussnachweis. Zusätzlich beide Repository-Historien und private lokale Projektdateien sichern/verifizieren. Cacheagenten bei6686e86/04ef061 angehalten; ModulePR217/214 nicht aktiviert. **Aktueller Einstieg und verbindlicher Wiederanlauf:** [Flugpause, Sicherungen, offene Arbeiten](docs/handoffs/2026-11-08-flight-backup-and-resume.md). Keine neue Funktionsentwicklung während des Sicherungsschritts.
+## 08.11.2026 – Mika: drei persistente Originalvorschauen für die Produktseite
+
+Isolierte Fortsetzung der Flugsicherung `6686e86`: acht Produktionsdateien ergänzen einen optionalen signierten Dateicache und maximal drei vorbereitete Originalbilder im bestehenden Produktseiten-Warmup. Kundenstart und öffentliche GETs rendern nichts; aktuelle Zuordnung/Freigabe, Modell/Ressourcen und Renderer werden geprüft, private Vorschauen bleiben erreichbar. 91/91 gezielte Tests grün, 0 Skip; reale lokale r4-Quelle mit 251 Originalen/80 Größen/404 Kombinationen unverändert. Unabhängiger Review ohne offenen Blocker. Kein Live-, Layout-, Preis- oder Datenbankzugriff. [Übergabe, exakte Startvariante, Vorbereitung und Rücknahme](docs/handoffs/2026-11-08-public-design-preview-cache.md). Root integriert mit aktueller geschützter UI und PR220-Modulprüfungen, danach echte Produktseiten-/Handyabnahme.
 
 ## 08.11.2026 – Codex/Mika: erste Motiv- und Designkarten vorbereiten
 

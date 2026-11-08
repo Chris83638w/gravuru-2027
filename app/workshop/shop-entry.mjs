@@ -1,6 +1,8 @@
 import {createCustomerDesignImages} from './customer-design-image.mjs';
 import {shopStartModel,isAllSizesFamily} from './shop-start-model.mjs';
 import {shopWarmManifest} from './shop-warm-manifest.mjs';
+import {createPublicDesignPreviewCache} from './public-design-preview-cache.mjs';
+import {createPublicDesignPreviews} from './public-design-previews.mjs';
 import fs from 'node:fs';
 import {createModelSlimmer,surfaceSwapsFrom,DEFAULT_SURFACE_DIR} from './shop-model-slim.mjs';
 import {createHash,randomBytes} from 'node:crypto';
@@ -60,7 +62,7 @@ function createWindowLimiter(perMinute,clock){
  return key=>{const minute=Math.floor(clock()/60000);if(windows.size>4096)windows.clear();const entry=windows.get(key);if(!entry||entry.minute!==minute){windows.set(key,{minute,count:1});return true;}entry.count++;return entry.count<=perMinute;};
 }
 
-export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,logger=event=>console.warn(JSON.stringify(event))}){
+export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,publicPreviewDirectory=null,publicPreviewPrepare=null,logger=event=>console.warn(JSON.stringify(event))}){
  let address;try{address=new URL(origin);}catch{}
  if(!address||address.origin!==origin||address.protocol!=='https:'||address.username||address.password||!/^[-a-z0-9]+\.myshopify\.com$/.test(shopDomain||'')||typeof secret!=='string'||secret.length<16||!Array.isArray(stores)||!stores.length||stores.length>8||
    typeof proxyPath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*$/.test(proxyPath)||typeof pagePath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/$/.test(pagePath)||pagePath.startsWith('/api/')||proxyPath.startsWith('/api/')||proxyPath+'/'===pagePath)
@@ -199,6 +201,12 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   return allowed;
  }
  const designGallery=createShopDesignGallery({secret,resolve,modelFor,cardFor,allowedAssets,checkBinding:checkGalleryBinding,checkBindings:checkGalleryBindings,onMeasure:logger,previewUrl:hash=>pagePath+'vorschauen/'+hash+'.svg'});
+ const renderPublicTemplate=(context,designId)=>{const fresh=createShopDesignGallery({secret,resolve,modelFor,cardFor,allowedAssets,checkBinding:checkGalleryBinding});const start=fresh.start(context,context.model,designId);return fresh.preview(context,start.target);};
+ const publicPreviews=publicPreviewDirectory===null?null:createPublicDesignPreviews({cache:createPublicDesignPreviewCache({directory:publicPreviewDirectory,secret}),resolve,modelFor,checkBinding:checkGalleryBinding,gallery:designGallery,renderTemplate:renderPublicTemplate,previewUrl:hash=>pagePath+'vorschauen/'+hash+'.svg'});
+ const preparePublicDesignPreviews=ids=>{if(!publicPreviews)throw Error('Öffentlicher Vorschauspeicher ist nicht eingeschaltet.');return publicPreviews.prepare(ids);};
+ if(publicPreviewPrepare!==null&&(!publicPreviews||!publicPreviewPrepare||Object.keys(publicPreviewPrepare).length!==2||!gid(publicPreviewPrepare.shopifyProductId,'Product')||!gid(publicPreviewPrepare.shopifyVariantId,'ProductVariant')))fail(503,'public_preview_config','Vorbereitung benötigt genau ein festes Produkt und eine feste Variante.');
+ // Explicit server startup preparation, never a customer HTTP write endpoint.
+ const publicPreviewPreparation=publicPreviewPrepare===null?null:new Promise(done=>setImmediate(done)).then(()=>preparePublicDesignPreviews(publicPreviewPrepare)).then(result=>{logger({event:'public_preview_prepared',prepared:result.prepared,bytes:result.items.reduce((n,item)=>n+item.bytes,0)});return result;},error=>{logger({event:'public_preview_prepare_failed',code:error.code||'public_preview_prepare'});return {prepared:0,error:error.code||'public_preview_prepare'};});
  // Warm each configured store after startup without creating a customer session.
  // A transient failure is retried on the next gallery request, never unhandled.
  for(const store of fixed)if(typeof store.registry.listActiveForGallery==='function'){
@@ -234,7 +242,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   // Startkarte: dieselbe Zieladresse als JSON; die Produktseite öffnet beim Klick direkt den Konfigurator-Host.
   if(input.ticket){
    let assets=null;
-   if(!input.config)try{assets=shopWarmManifest(presentedModel(startModel,binding,store).universal,{editorPath:store.nativeEditorPath,pagePath});}catch{/* Warming is optional; the actual start remains authoritative. */}
+   if(!input.config)try{assets=shopWarmManifest(presentedModel(startModel,binding,store).universal,{editorPath:store.nativeEditorPath,pagePath,previews:publicPreviews?.urls(binding)});}catch{/* Warming is optional; the actual start remains authoritative. */}
    return json(res,200,{url:target,expiresAt:issued.expiresAt,...(assets?{warm:{url:origin+warmPath,manifest:assets}}:{})});
   }
   // Shopify reicht die Weiterleitung an den Browser durch; Meta-Refresh und Verweis sind der Rückfall.
@@ -362,7 +370,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   if(site!==undefined&&site!=='same-origin')fail(403,'shop_entry_origin','Diese Anfrage ist nicht zulässig.');
  }
  return Object.freeze({
-  pagePath,startPath,
+  pagePath,startPath,preparePublicDesignPreviews,publicPreviewPreparation,
   matches:pathname=>customerImages.matches(pathname)||fontRoute.test(pathname)||previewRoute.test(pathname)||pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pathname===warmPath||pageFiles.has(pathname)||pathname.startsWith(API),
   async handle(req,res,url){
    try{
@@ -375,7 +383,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     const templatePreview=pathname.match(previewRoute);
     if(templatePreview){
      if(!['GET','HEAD'].includes(req.method)||url.search)fail(404,'shop_entry_route','Diese Vorschau gibt es hier nicht.');
-     checkOrigin(req,{mutating:false});const bytes=designGallery.previewFile(templatePreview[1]);
+     checkOrigin(req,{mutating:false});const bytes=publicPreviews?publicPreviews.read(templatePreview[1]):designGallery.previewFile(templatePreview[1]);
      if(!bytes)fail(404,'shop_entry_route','Diese Vorschau gibt es hier nicht.');
      res.writeHead(200,headersFor('image/svg+xml',{'Content-Length':bytes.length,'Cache-Control':'public, max-age=31536000, immutable','Content-Security-Policy':"default-src 'none'; img-src data:; style-src 'unsafe-inline'; sandbox"}));return res.end(req.method==='HEAD'?undefined:bytes);
     }
@@ -409,7 +417,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      const presented=presentedModel(model,context.binding,context.store,url.searchParams.get('design'));
      const designId=presented.universal.profile.defaultDesignId||presented.universal.profile.designs[0]?.id;
      let startPreview=null;
-     try{startPreview=designGallery.start(context,model,designId);}catch{/* Products without a gallery still open normally. */}
+     try{startPreview=designGallery.start(context,model,designId);if(publicPreviews&&startPreview){const {previewUrl:oldPublicUrl,...privateStart}=startPreview;const prepared=publicPreviews.attach({items:[{...publicBinding(context.binding),designId,...privateStart}]}).items[0];startPreview={...privateStart,...(prepared.previewUrl?{previewUrl:prepared.previewUrl}:{})};}}catch{/* Products without a gallery still open normally. */}
      return json(res,200,{model:presented,startPreview,binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false});
     }
     if(action==='design-gallery'){
@@ -419,7 +427,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      // Türschild-Konfi: aktuelle Ausführung aus dem Konfi (Form & Größe, Farbe, Befestigung); nur dort ausgewertet.
      const chosen=GALLERY_OPTIONS.filter(k=>url.searchParams.has(k)),options=chosen.length&&isAllSizesFamily(sourceModel.universal)?Object.fromEntries(chosen.map(k=>[k,url.searchParams.get(k)])):null;
      const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0),theme:url.searchParams.get('theme')||'preferred',sourceModel,options});active(req);
-     return json(res,200,result);
+     return json(res,200,publicPreviews?publicPreviews.attach(result):result);
     }
     if(action==='customer-vector-logo/preview'){
      if(req.method!=='POST')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');

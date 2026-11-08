@@ -1,0 +1,7 @@
+{
+  "status": "pass",
+  "source": "cart-retest-cleanup.txt, browser accessibility observation",
+  "observedText": "Ihr Warenkorb ist derzeit leer.",
+  "removedOnlyOwnSyntheticPositions": ["Test Drei", "Test Zwei", "Test Eins"],
+  "orderSubmitted": false
+}

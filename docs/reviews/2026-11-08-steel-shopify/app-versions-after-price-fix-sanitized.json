@@ -1,0 +1,20 @@
+{
+  "source": "app-versions-after-price-fix.json",
+  "scope": "Only successful final release and forbidden earlier staging artifact; user identities omitted",
+  "versions": [
+    {
+      "createdAt": "2026-11-08 07:44:05",
+      "versionTag": "gravuru-2027-steel-pricing-input-20261108-v2",
+      "status": "active",
+      "versionId": "gid://shopify/Version/1199363391489",
+      "message": "Logo-Preisreparatur mit erhaltenen historischen Preisen; bestehende Theme-Dateien unveraendert."
+    },
+    {
+      "createdAt": "2026-11-08 06:51:50",
+      "versionTag": "gravuru-2027-steel-pricing-input-artifact-20261108",
+      "status": "inactive",
+      "versionId": "gid://shopify/Version/1199344418817",
+      "message": "Artefakt für geprüfte Logo-Preisreparatur. Nicht freigeben: vollständige Erweiterungen werden separat erhalten."
+    }
+  ]
+}

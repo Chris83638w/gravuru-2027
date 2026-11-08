@@ -1,0 +1,31 @@
+{
+  "schema": "gravuru-own-app-cart-transform-read/v1",
+  "observedAt": "2026-11-08T01:45:11.855Z",
+  "passed": true,
+  "code": "verified",
+  "shop": "gravuru-design.myshopify.com",
+  "appId": "gid://shopify/App/423276544001",
+  "apiVersion": "2026-07",
+  "scopes": [
+    "read_cart_transforms",
+    "read_files",
+    "read_metaobjects",
+    "read_orders",
+    "read_products",
+    "read_publications",
+    "write_cart_transforms",
+    "write_files",
+    "write_metaobjects",
+    "write_products",
+    "write_publications"
+  ],
+  "transform": {
+    "id": "gid://shopify/CartTransform/172523900",
+    "functionId": "01a0e45d-c47f-70b9-9d5a-a2c72120ae01",
+    "blockOnFailure": true
+  },
+  "configurationVerified": true,
+  "functionCodeValidated": false,
+  "checkoutVerified": false,
+  "shopifyWrites": false
+}

@@ -1,0 +1,42 @@
+{
+  "schema": "gravuru-function-input-size-audit/v1",
+  "readOnlyMeasurement": true,
+  "realPricingContractUsed": true,
+  "contractValueBytes": 2318,
+  "sourceFixture": "pricing-release-final-proof/input-9.json",
+  "sourceFixtureSha256": "e888e8f23ade0316dce9ea0146fb9ddf9ddea380762691d45bbb3857ce3c5b46",
+  "method": "Repeat one synthetic cart line with the real compact pricing value; second column includes queried optional attributes as null and realistic-length cart-line IDs. No raw contract or identifiers included.",
+  "shopifyLimitSource": "https://shopify.dev/docs/api/functions/latest",
+  "limitAppliesThroughLines": 200,
+  "matrix": [
+    {
+      "lines": 20,
+      "fixtureBytes": 55520,
+      "queryCompleteWithNullOptionalAttributesBytes": 58430,
+      "limitBytes": 128000,
+      "fixtureFits": true,
+      "queryCompleteFits": true
+    },
+    {
+      "lines": 50,
+      "fixtureBytes": 138740,
+      "queryCompleteWithNullOptionalAttributesBytes": 146000,
+      "limitBytes": 128000,
+      "fixtureFits": false,
+      "queryCompleteFits": false
+    },
+    {
+      "lines": 200,
+      "fixtureBytes": 554940,
+      "queryCompleteWithNullOptionalAttributesBytes": 583850,
+      "limitBytes": 128000,
+      "fixtureFits": false,
+      "queryCompleteFits": false
+    }
+  ],
+  "limitations": [
+    "Measured input size only; runtime instructions have a separate limit.",
+    "Real configuration IDs, URLs and other attributes can increase input size.",
+    "This is not a new customer quantity rule or a confirmed maximum supported cart size."
+  ]
+}

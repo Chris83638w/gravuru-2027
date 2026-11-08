@@ -1,0 +1,15 @@
+{
+  "observedAt": "2026-11-08T01:49:20.894Z",
+  "productId": "16190784438652",
+  "variantId": "58104606556540",
+  "shopifyStatus": "DRAFT",
+  "nativePreparationReached": true,
+  "syntheticName": "Test Edelstahl",
+  "logoCount": 1,
+  "expectedTotalCents": 3298,
+  "shopifyCartSucceeded": false,
+  "visibleResult": "Kann Variante nicht finden",
+  "checkoutVerified": false,
+  "paidOrderCreated": false,
+  "dom": "- main:\n  - heading \"Deine Gestaltung\" [level=1]\n  - img \"Deine gespeicherte Gestaltung\"\n  - paragraph: \"Zwei Zeilen, mittig 120 × 80 mm Text „Familie“: Familie · Name: Test Edelstahl\"\n  - status: Kann Variante nicht finden\n  - navigation:\n    - button \"Warenkorb erneut prüfen\"\n    - link \"Warenkorb öffnen\":\n      - /url: /cart\n    - button \"Zurück zur Gestaltung\""
+}

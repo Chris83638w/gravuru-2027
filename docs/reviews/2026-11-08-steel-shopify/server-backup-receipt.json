@@ -1,0 +1,74 @@
+{
+  "schema": "gravuru-steel-prechange-backup/v1",
+  "startedAt": "2026-11-08T00:41:40Z",
+  "complete": true,
+  "files": [
+    {
+      "path": "native/workshop.sqlite",
+      "bytes": 4128710656,
+      "sha256": "00874b1436b44bd0df71fa8967547ed1c1e5f3078698563199993c51160dac9e"
+    },
+    {
+      "path": "native/profiles.sqlite",
+      "bytes": 77824,
+      "sha256": "871bb9f4cb8bf44765e6de5e04acab63ce3c622c71a18d4871e1d02258e60f08"
+    },
+    {
+      "path": "native/design-assets.sqlite",
+      "bytes": 13856768,
+      "sha256": "0b56ba5bde09abf8a33c8e5285644d618852122c33010d5ac7d4c9ff19e98808"
+    },
+    {
+      "path": "native/slate-group-import-state.json",
+      "bytes": 223,
+      "sha256": "edb0809ecb99b32b1afcbcfe00a4b0dd7fc3e714baea1156da06e1fbbe5172dc"
+    },
+    {
+      "path": "native/motif-search-previews.json",
+      "bytes": 268,
+      "sha256": "e3d688510367f057846ae3e2a20c8703fe96e5a8dc92e491d7c33cf3673edb77"
+    },
+    {
+      "path": "merchant/workshop.sqlite",
+      "bytes": 410042368,
+      "sha256": "daaae669cabf1b39987fb1b2bb7a036bac7b944abb61c4797d8ee2ab92d7007c"
+    },
+    {
+      "path": "merchant/profiles.sqlite",
+      "bytes": 45056,
+      "sha256": "f41f2094e0e7b1c5b84ee29d52d108aa71f6801d68b7f149ae39dcc394dd1ef4"
+    },
+    {
+      "path": "merchant/design-assets.sqlite",
+      "bytes": 170434560,
+      "sha256": "bf17d6ff4342f37bff728e2eeda915903d20c363707e5efa2157de6a730ec3ad"
+    },
+    {
+      "path": "merchant/approved-customer-preview.json",
+      "bytes": 5858,
+      "sha256": "0de8dfe8ac7f0623ded5afca2c49d22794d6cf0f88049d013e3e52140b1f5113"
+    },
+    {
+      "path": "merchant/.gravuru-shopify-merchant-test.json",
+      "bytes": 107,
+      "sha256": "21df6f2a56a65e447934f9c4e077ffa6c70064b75d6e289a446a82c9a9611d13"
+    },
+    {
+      "path": "app.cjs",
+      "bytes": 1035,
+      "sha256": "e7aba8400e511dfee0a8ebb229d6a8239fd6f6945d577d323c7eff6837e6dadb"
+    },
+    {
+      "path": "start-r5.cjs",
+      "bytes": 22,
+      "sha256": "42cd0a64f2e8e2a48761aefac2c0323990dbfe667517c88497eb03ca243852dd"
+    },
+    {
+      "path": "native-runtime.tar.gz",
+      "bytes": 65977384,
+      "sha256": "1c43e6e327dfd3a6176b9db9371595b2377ce500d144b95719dbf91a4229fb25"
+    }
+  ],
+  "sourceDataChanged": false,
+  "finishedAt": "2026-11-08T00:44:49Z"
+}

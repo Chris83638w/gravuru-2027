@@ -1,0 +1,7 @@
+{
+  "beforeSha256": "e7aba8400e511dfee0a8ebb229d6a8239fd6f6945d577d323c7eff6837e6dadb",
+  "afterSha256": "31781a783270f4704d0a1831f62aa50a4c44566a6ec6fa18c691a1205a81f6b9",
+  "runtime": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-steel-r15-shopify-20261108",
+  "changedOnlyRequire": true,
+  "restartPending": true
+}

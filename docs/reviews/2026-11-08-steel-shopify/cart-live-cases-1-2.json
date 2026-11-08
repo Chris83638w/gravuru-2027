@@ -1,0 +1,15 @@
+[
+  {
+    "case": "AB12x8-K00",
+    "observedAt": "2026-11-08T04:39:00.602Z",
+    "expectedCents": 1999,
+    "cartText": "Home\nIhr Warenkorb\nIhr Warenkorb\n(1)\nIhr Warenkorb\nEntfernen\nBearbeiten\nTürschild Edelstahl – Form und Größe selbst wählen\nRechteck abgerundet · 12 × 8 cm, Ohne Bohrung\nDesign: \nZwei Zeilen, mittig\nFormat: \n120 × 80 mm\nGravurtext: \nText „Familie“: Familie · Name: Test Eins\n€19,99\n\t\nMenge\n\t€19,99\nNoch €70,01 bis zum kostenlosen Versand!\nSumme\n€19,99 EUR\ninkl. MwSt. zzgl. Versandkosten\nJetzt sicher zur Kasse\n\nTÜRSCHILD\n\nTürschild Edelstahl – Form und Größe selbst wählen\nRegulärer Preis\nVon €7,99\nInkl. Mwst. zzgl. Versandkosten.\n\nTÜRSCHILD\n\nTürschild Leuchtturm aus Edelstahl – 12 × 8 cm personalisiert\nRegulärer Preis\nVon €19,99\nInkl. Mwst. zzgl. Versandkosten."
+  },
+  {
+    "case": "RE15x10-KGL",
+    "observedAt": "2026-11-08T04:41:15.289Z",
+    "expectedCents": 2698,
+    "expectedCartTotalCents": 4697,
+    "cartText": "Home\nIhr Warenkorb\nIhr Warenkorb\n(2)\nIhr Warenkorb\nEntfernen\nBearbeiten\nTürschild Edelstahl – Form und Größe selbst wählen\nRechteck · 15 × 10 cm, Selbstklebend – glatte Flächen\nDesign: \nZwei Zeilen, mittig\nFormat: \n150 × 100 mm\nGravurtext: \nText 2: Eins · Name: Test Zwei\n€26,98\n\t\nMenge\n\t€26,98\n\nEntfernen\nBearbeiten\nTürschild Edelstahl – Form und Größe selbst wählen\nRechteck abgerundet · 12 × 8 cm, Ohne Bohrung\nDesign: \nZwei Zeilen, mittig\nFormat: \n120 × 80 mm\nGravurtext: \nText „Familie“: Familie · Name: Test Eins\n€19,99\n\t\nMenge\n\t€19,99\nNoch €43,03 bis zum kostenlosen Versand!\nSumme\n€46,97 EUR\ninkl. MwSt. zzgl. Versandkosten\nJetzt sicher zur Kasse\n\nTÜRSCHILD\n\nTürschild Edelstahl – Form und Größe selbst wählen\nRegulärer Preis\nVon €7,99\nInkl. Mwst. zzgl. Versandkosten.\n\nTÜRSCHILD\n\nTürschild Leuchtturm aus Edelstahl – 12 × 8 cm personalisiert\nRegulärer Preis\nVon €19,99\nInkl. Mwst. zzgl. Versandkosten."
+  }
+]

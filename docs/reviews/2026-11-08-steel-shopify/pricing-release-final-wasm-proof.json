@@ -1,0 +1,143 @@
+{
+  "compiled": true,
+  "noRelease": true,
+  "noShopMutation": true,
+  "allWithinInstructionLimit": false,
+  "baseline": "1c3c61f",
+  "realPrivatePricing": true,
+  "pricingBytes": 2318,
+  "wasm": {
+    "bytes": 20977,
+    "sha256": "a5c59354755dcf73bdeca8006134847549d8712f70277634fab405db93532da2"
+  },
+  "cases": [
+    {
+      "name": "three-steel-lines-404-variants-old-and-new",
+      "priceSemanticsPassed": true,
+      "withinShopifyInstructionLimit": true,
+      "rejected": false,
+      "instructions": 4670660,
+      "inputBytes": 8364
+    },
+    {
+      "name": "one-logo-line-quantity-20",
+      "priceSemanticsPassed": true,
+      "withinShopifyInstructionLimit": true,
+      "rejected": false,
+      "instructions": 1697644,
+      "inputBytes": 2830
+    },
+    {
+      "name": "one-logo-line-quantity-50",
+      "priceSemanticsPassed": true,
+      "withinShopifyInstructionLimit": true,
+      "rejected": false,
+      "instructions": 1697644,
+      "inputBytes": 2830
+    },
+    {
+      "name": "one-logo-line-quantity-99",
+      "priceSemanticsPassed": true,
+      "withinShopifyInstructionLimit": true,
+      "rejected": false,
+      "instructions": 1697644,
+      "inputBytes": 2830
+    },
+    {
+      "name": "three-historical-lines-with-old-prices",
+      "priceSemanticsPassed": true,
+      "withinShopifyInstructionLimit": true,
+      "rejected": false,
+      "instructions": 4719289,
+      "inputBytes": 8369
+    },
+    {
+      "name": "three-current-lines-with-logo",
+      "priceSemanticsPassed": true,
+      "withinShopifyInstructionLimit": true,
+      "rejected": false,
+      "instructions": 2878263,
+      "inputBytes": 8368
+    },
+    {
+      "name": "four-historical-lines",
+      "priceSemanticsPassed": true,
+      "withinShopifyInstructionLimit": true,
+      "rejected": false,
+      "instructions": 5329993,
+      "inputBytes": 11142
+    },
+    {
+      "name": "six-current-lines",
+      "priceSemanticsPassed": true,
+      "withinShopifyInstructionLimit": true,
+      "rejected": false,
+      "instructions": 4657519,
+      "inputBytes": 16688
+    },
+    {
+      "name": "ten-mixed-lines",
+      "priceSemanticsPassed": true,
+      "withinShopifyInstructionLimit": true,
+      "rejected": false,
+      "instructions": 8937352,
+      "inputBytes": 27800
+    },
+    {
+      "name": "twenty-current-lines",
+      "priceSemanticsPassed": true,
+      "withinShopifyInstructionLimit": false,
+      "rejected": false,
+      "instructions": 12959105,
+      "inputBytes": 55520
+    },
+    {
+      "name": "twenty-historical-lines",
+      "priceSemanticsPassed": true,
+      "withinShopifyInstructionLimit": false,
+      "rejected": false,
+      "instructions": 15230050,
+      "inputBytes": 55520
+    },
+    {
+      "name": "twenty-mixed-lines",
+      "priceSemanticsPassed": true,
+      "withinShopifyInstructionLimit": false,
+      "rejected": false,
+      "instructions": 14992773,
+      "inputBytes": 55560
+    },
+    {
+      "name": "ordinary-item-no-price-contract",
+      "priceSemanticsPassed": true,
+      "withinShopifyInstructionLimit": true,
+      "rejected": false,
+      "instructions": 746462,
+      "inputBytes": 223
+    },
+    {
+      "name": "reject-missing-price-contract",
+      "priceSemanticsPassed": true,
+      "withinShopifyInstructionLimit": true,
+      "rejected": true,
+      "instructions": 928983,
+      "inputBytes": 5916
+    },
+    {
+      "name": "reject-dangling-history-map",
+      "priceSemanticsPassed": true,
+      "withinShopifyInstructionLimit": true,
+      "rejected": true,
+      "instructions": 1380623,
+      "inputBytes": 8367
+    },
+    {
+      "name": "reject-outside-historical-delta-range",
+      "priceSemanticsPassed": true,
+      "withinShopifyInstructionLimit": true,
+      "rejected": true,
+      "instructions": 1602123,
+      "inputBytes": 7551
+    }
+  ]
+}

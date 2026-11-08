@@ -1,0 +1,170 @@
+{
+  "observedAt": "2026-11-08T01:34:31.479Z",
+  "events": [
+    {
+      "phase": "backup-verified",
+      "files": 13,
+      "sourceDataChanged": false
+    },
+    {
+      "phase": "local-preflight",
+      "mode": "apply",
+      "revision": 2,
+      "heads": 404,
+      "candidateSha256": "79d45d8444ce691821c95817b3c5b005ffc8d0e56e9b9da1ca1bb78d9f028992",
+      "nativeVariants": 404,
+      "metadataPreserved": true,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "live-read-preflight",
+      "variants": 404,
+      "contractRevision": 2,
+      "status": "DRAFT",
+      "shopifyWrites": false
+    },
+    {
+      "phase": "revision-committed",
+      "productId": "cfg_ac514214-a313-4738-8008-00445ee1befd",
+      "revision": 3,
+      "published": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 20,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 40,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 60,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 80,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 100,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 120,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 140,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 160,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 180,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 200,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 220,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 240,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 260,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 280,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 300,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 320,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 340,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 360,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 380,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 400,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "bindings-committed",
+      "atRevision3": 404,
+      "total": 404,
+      "shopifyWrites": false
+    },
+    {
+      "phase": "apply-complete",
+      "productId": "cfg_ac514214-a313-4738-8008-00445ee1befd",
+      "revision": 3,
+      "heads": 404,
+      "shopifyStatus": "DRAFT",
+      "nativeCatalogApproval": "mika-steel-normal-door-16190784438652-r3-20261108",
+      "productionReady": false,
+      "published": false,
+      "shopifyWrites": false
+    }
+  ]
+}

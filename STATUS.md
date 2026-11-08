@@ -32,6 +32,9 @@ Drei Unteragenten haben Modulvertrag, Verwaltung/Produktgruppen und Laufzeit-/Wa
 - 19 Unit-/Cart-/Restoretests sowie 2 echte CLI-Integrationstests grün; Build und Diffprüfung grün. Tatsächliche Browser-/Shopify-Pixelprüfung und Veröffentlichung durch Root noch offen.
 - Beide Vorherdateien gegen aktives Live-Manifest geprüft und gesichert. Nur drei Quelldateien übernehmen und im aktiven R15-Baum bauen: Der isolierte Git-Build enthält andere ältere R15-Abweichungen und darf nicht vollständig deployed werden.
 - Details, Quellen, Rücknahme und Cachegrenzen: [Übergabe](docs/handoffs/2026-11-08-cart-preview-uploads.md).
+## 08.11.2026 – Mika-Unteragent: Designwechsel nach Formwechsel vollständig geprüft
+
+Nach dem Galerie-Lookup-Fix #204 wurden D3-Zielmodell und Sitzung korrekt geladen, aber die Root-Designliste enthielt noch das ursprüngliche Startformat. Eine Backend-Projektionsdatei korrigiert; Client-Guard unverändert. 56/56 Tests grün. Vollständige HTTP-Kette mit echtem 251er-Kandidaten reproduziert den ursprünglichen Kundenfehler und besteht nach der Korrektur. Keine native Daten-/Preis-/Layoutänderung, kein Livezugriff durch Unteragent. [Übergabe und Rückweg](docs/handoffs/2026-11-08-steel-design-switch-projection.md). Root veröffentlicht und prüft den tatsächlichen Warenkorb.
 
 ## 08.11.2026 – Mika-Unteragent: gezielter Variantenlookup für Edelstahl-Galerie
 

@@ -1,5 +1,5 @@
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
-import {isFamilyFormats,isAllSizesFamily,designNumber} from '../configurator/variant-m/family-formats.mjs';
+import {isFamilyFormats,isAllSizesFamily,designNumber,projectFamilyDesign} from '../configurator/variant-m/family-formats.mjs';
 export {isAllSizesFamily};
 
 // Türschild-Konfi (Chris 03.11.2026, ENTSCHEIDUNGEN 4.42): ein Produkt mit allen Formen und Größen
@@ -27,7 +27,7 @@ function allSizesKeep(config,designId,options){
  if(!start)unavailable();
  const keep=new Set([start]),source=byId.get(start);
  for(const s of f.formats)for(const v of s.variants){const list=v.designIds.filter(id=>usable(byId.get(id)));if(list.length)keep.add(fallbackFor(list,source,byId));}
- return {start,keep,size:format.key};
+ return {start,keep,size:format.key,format};
 }
 
 // Only the public shop entry uses this projection. The stored document and
@@ -41,7 +41,10 @@ export function shopStartModel(model,designId=null,{deferFonts=false,options=nul
  const design=allSizes?config.familyFormats.designs.find(d=>d.id===id):profile.designs.find(d=>d.id===id&&usable(d));
  if(!design)unavailable();
  // Project before cloning: never copy the complete design library twice.
- const profileDesigns=allSizes?profile.designs.filter(d=>keep.has(d.id)):[design];
+ // The root profile may still belong to the catalogue's original start size.
+ // Project the approved selected template for the actual binding instead of
+ // filtering that old profile, which can omit a valid design of another form.
+ const profileDesigns=allSizes?[projectFamilyDesign(config,id,lazy.format)]:[design];
  const selected={...profile,defaultDesignId:id,designs:profileDesigns};
  const keptDesigns=allSizes?config.familyFormats.designs.filter(d=>keep.has(d.id)):[design];
  const used=new Set(keptDesigns.concat(profileDesigns).flatMap(d=>d.objects.filter(o=>o.type==='motif').map(o=>o.motif)));
@@ -49,7 +52,7 @@ export function shopStartModel(model,designId=null,{deferFonts=false,options=nul
  if(resources)for(const key of ['photoExamples','photoPlaceholders'])if(resources[key])resources[key]=resources[key].filter(item=>keep.has(item.designId));
  const family=isFamilyFormats(config)?{...config.familyFormats,designs:config.familyFormats.designs.filter(d=>keep.has(d.id))}:undefined;
  const rights=config.workshopElementRights?Object.fromEntries([...keep].filter(k=>config.workshopElementRights[k]).map(k=>[k,config.workshopElementRights[k]])):undefined;
- const copy=structuredClone({...model,universal:{...config,profile:selected,...(resources?{localResources:resources}:{}),...(family?{familyFormats:family}:{}),...(rights?{workshopElementRights:rights}:{})},...(model.legacy?{legacy:{...model.legacy,defaultDesignId:id,designs:allSizes?model.legacy.designs?.filter(d=>keep.has(d.id))??[]:[design]}}:{})});
+ const copy=structuredClone({...model,universal:{...config,profile:selected,...(resources?{localResources:resources}:{}),...(family?{familyFormats:family}:{}),...(rights?{workshopElementRights:rights}:{})},...(model.legacy?{legacy:{...model.legacy,defaultDesignId:id,designs:profileDesigns}}:{})});
  // The caller immediately serializes these immutable outlines to hash files
  // and removes the shallow keys; no outline is edited or sent in the model.
  if(deferFonts&&resources)copy.universal.localResources.fonts={...config.localResources.fonts};

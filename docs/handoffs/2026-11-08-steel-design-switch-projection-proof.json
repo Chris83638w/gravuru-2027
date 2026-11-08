@@ -1,0 +1,12 @@
+{
+  "schema": "gravuru-steel-switch-projection-proof/v1",
+  "candidateSha256": "2e74548aa7211a2f5546af428e1d27d9f00f12181490356633e3cd109cb179c0",
+  "beforeSha256": "aac9c33e0e38dd4c466e6a04d9953f3939e720e8020c58febf3e2f25b8de2e4c",
+  "afterSha256": "a0019123c08f3faffc5fd61f0a19582bbfa339483d4f9302475533a0406f597a",
+  "originalExactClientErrorReproduced": true,
+  "fixedHttpChainPassed": true,
+  "sourceMutation": false,
+  "shopifyWrites": 0,
+  "liveWrites": 0,
+  "scope": "125 executable modules (two authorized patches vs original manifest), 2 verified static resources; local unverified HTML scaffold is not deployed"
+}

@@ -1,0 +1,53 @@
+{
+  "source": {
+    "id": "cfg_48cbf452-83d6-4723-9f98-c88f847f64c7",
+    "sha256": "bfca056e6e9e4a026e004c52e6bc95b35fc2b2567244a0116bf04d5c1e47245a",
+    "forms": 8,
+    "sizes": 80,
+    "designs": 15
+  },
+  "created": [
+    {
+      "id": "cfg_6825c414-c30a-47c9-a545-6cca3921b512",
+      "name": "Edelstahl-Türschilder mit Logo",
+      "profileId": "cmp_8e1481c3-04fe-4a18-a9b9-e4b37b0860c8",
+      "profileRevision": 1,
+      "templateId": "pgt_e8e7d1b8-eb02-433b-9b52-95e44f55d821",
+      "planId": "pgp_b422ef11-0ba9-4fe4-802a-4cd4fa242f4f",
+      "combinations": 404,
+      "reviewRows": 404,
+      "designs": 15,
+      "logo": true,
+      "editorUrl": "http://127.0.0.1:8221/werkstatt/?configuration=cfg_6825c414-c30a-47c9-a545-6cca3921b512",
+      "customerUrl": "http://127.0.0.1:8221/?configuration=cfg_6825c414-c30a-47c9-a545-6cca3921b512",
+      "originalDesignsSha256": "c06542f80e36dbffbd11a92b2181973c59555d3cc08b3e23e66673c1d6696bff",
+      "sourceUnchanged": true,
+      "replayCreated": 0
+    },
+    {
+      "id": "cfg_0795aee3-d600-4bd8-b541-de540dca39da",
+      "name": "Edelstahl-Türschilder ohne Logo",
+      "profileId": "cmp_8898b6e0-edf2-47ae-9df3-82cbe4809899",
+      "profileRevision": 1,
+      "templateId": "pgt_3f5b10dd-299b-475a-a711-5407e2c2f8e4",
+      "planId": "pgp_3e9ed06e-5324-42de-8dcd-466984182026",
+      "combinations": 404,
+      "reviewRows": 404,
+      "designs": 15,
+      "logo": false,
+      "editorUrl": "http://127.0.0.1:8221/werkstatt/?configuration=cfg_0795aee3-d600-4bd8-b541-de540dca39da",
+      "customerUrl": "http://127.0.0.1:8221/?configuration=cfg_0795aee3-d600-4bd8-b541-de540dca39da",
+      "originalDesignsSha256": "c06542f80e36dbffbd11a92b2181973c59555d3cc08b3e23e66673c1d6696bff",
+      "sourceUnchanged": true,
+      "replayCreated": 0
+    }
+  ],
+  "priceComparisons": 808,
+  "shopifyWrites": 0,
+  "browserChecked": false,
+  "security": {
+    "missingCsrfRejected": 403,
+    "crossSiteRejected": 403
+  },
+  "databaseReopen": true
+}

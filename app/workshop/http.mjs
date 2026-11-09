@@ -215,7 +215,28 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   // Ein fest angefragter Produktstand (id + Revision) ist unveränderlich: Dokument, gespeicherte Profilauswahl
   // (metadata.profiles), Materialbild und Motivquellen hängen nur daran. Der Shop-Einstieg baut das Modell sonst
   // bei jeder Anfrage neu (Modell, jede Designgrafik, Sichern) – live ~11 MB je Aufbau. Aufrufer erhalten eine Kopie.
-  const modelCache=new Map(),MODEL_CACHE_SIZE=8;
+  const modelCache=new Map(),MODEL_CACHE_SIZE=8,publicPreviewModels=new WeakMap();
+  // Only the public original-image reader needs a fingerprint, never a mutable
+  // 12 MB copy. The existing bounded native cache owns these JSON values.
+  function publicPreviewModel(id,version){
+    if(!Number.isSafeInteger(version)||version<1)fail(422,'public_preview_revision','Eine feste Produktrevision ist erforderlich.');
+    assertKonfiAvailable(id);
+    const record=repository.get(id,{revision:version}),key=record.id+':'+record.revision;
+    if(isFormProduct(record.document))fail(422,'public_preview_model','Dieses Modell verwendet den privaten Vorschauweg.');
+    if(!modelCache.has(key)){
+      const built=model(id,version);
+      // The synchronous model memo can outlive eviction from the bounded LRU.
+      if(!modelCache.has(key)){modelCache.set(key,structuredClone(built));while(modelCache.size>MODEL_CACHE_SIZE)modelCache.delete(modelCache.keys().next().value);}
+    }
+    let cached=modelCache.get(key);
+    if(cached.configuration.publishedRevision!==record.publishedRevision){cached={...cached,configuration:{id:record.id,revision:record.revision,publishedRevision:record.publishedRevision}};modelCache.set(key,cached);}
+    let proof=publicPreviewModels.get(cached);
+    if(!proof){
+      const seen=new WeakSet(),freeze=value=>{if(value&&typeof value==='object'&&!seen.has(value)){seen.add(value);for(const child of Object.values(value))freeze(child);Object.freeze(value);}return value;};
+      freeze(cached);proof=Object.freeze({model:cached,digest:createHash('sha256').update(JSON.stringify(cached)).digest('hex')});publicPreviewModels.set(cached,proof);
+    }
+    return proof;
+  }
   function model(id,version){
     const pinned=version!==null&&version!==undefined;
     const record=repository.get(id,{revision:revision(version)});
@@ -1131,7 +1152,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {tenantId,catalogStructure,acrylShop,corrections,families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model:customerModelFor,galleryModel:(id,version)=>shopGalleryModel(repository.get(id,{revision:revision(version)})),internalModel:model,pausedPage,labelCategories,konfis,defaultId,close:()=>{motifSearchStats.close();catalogStructure.close();acrylShop.close();corrections.close();konfis.close();families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
+  return {tenantId,catalogStructure,acrylShop,corrections,families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model:customerModelFor,publicPreviewModel,galleryModel:(id,version)=>shopGalleryModel(repository.get(id,{revision:revision(version)})),internalModel:model,pausedPage,labelCategories,konfis,defaultId,close:()=>{motifSearchStats.close();catalogStructure.close();acrylShop.close();corrections.close();konfis.close();families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
 }
 
 /** Loopback preview; optional test session gate is not a public deployment.

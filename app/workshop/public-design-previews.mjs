@@ -10,13 +10,25 @@ const sourceDigest=model=>createHash('sha256').update(JSON.stringify(model)).dig
 const same=(a,b)=>previewDigest(fixedBinding(a))===previewDigest(fixedBinding(b));
 // Optional derived previews for the existing own-product gallery. A separate
 // legacy scene/shared-font renderer is deliberately left on its private path.
-export function createPublicDesignPreviews({cache,resolve,modelFor,checkBinding,gallery,renderTemplate,previewUrl}){
- function current(ids){
+export function createPublicDesignPreviews({cache,resolve,modelFor,modelForRead,checkBinding,gallery,renderTemplate,previewUrl}){
+ const immutableModels=new WeakSet();
+ function immutableModel(model){
+  if(!model||typeof model!=='object')return false;
+  if(immutableModels.has(model))return true;
+  const seen=new WeakSet(),pending=[model];
+  while(pending.length){const value=pending.pop();if(!value||typeof value!=='object'||seen.has(value))continue;seen.add(value);if(!Object.isFrozen(value))return false;pending.push(...Object.values(value));}
+  immutableModels.add(model);return true;
+ }
+ function current(ids,reading=false){
   const {store,binding}=resolve({shopifyProductId:ids.shopifyProductId,shopifyVariantId:ids.shopifyVariantId});
   if(binding.storeId!==store.storeId||binding.tenantId!==store.workshop.tenantId||binding.shopifyProductId!==ids.shopifyProductId||binding.shopifyVariantId!==ids.shopifyVariantId)unavailable();
-  const model=modelFor(store,binding);checkBinding(store,binding,model);
+  const proof=reading&&modelForRead?modelForRead(store,binding):null;
+  const model=proof?proof.model:modelFor(store,binding);checkBinding(store,binding,model);
+  if(proof&&!/^[a-f0-9]{64}$/.test(proof.digest))unavailable();
   if(model.configuration?.id!==binding.productId||model.configuration?.revision!==binding.productRevision||model.key!=='acryl')unavailable();
-  return {store,binding,model,session:{sid:'template-preparation-'+randomBytes(12).toString('hex')}};
+  // Only the native provider's deeply frozen model may retain its fingerprint.
+  // Mutable adapters still hash their actual current model on every read.
+  return {store,binding,model,source:proof&&immutableModel(model)?proof.digest:undefined,session:{sid:'template-preparation-'+randomBytes(12).toString('hex')}};
  }
  function choices(context){
   const c=context.model.universal;
@@ -32,7 +44,7 @@ export function createPublicDesignPreviews({cache,resolve,modelFor,checkBinding,
   }
   return selected;
  }
- function identity(context,designId){return {renderer:cache.rendererFingerprint,binding:fixedBinding(context.binding),source:sourceDigest(context.model),designId};}
+ function identity(context,designId){return {renderer:cache.rendererFingerprint,binding:fixedBinding(context.binding),source:context.source??sourceDigest(context.model),designId};}
  function lookup(binding,context=current(binding)){if(!same(context.binding,binding))unavailable();
   const source=sourceDigest(context.model),found=new Map();
   for(const row of choices(context)){const id={renderer:cache.rendererFingerprint,binding:fixedBinding(context.binding),source,designId:row.designId},hit=cache.get(id);if(hit)found.set(row.designId,{...hit,url:previewUrl(hit.hash)});}
@@ -53,7 +65,7 @@ export function createPublicDesignPreviews({cache,resolve,modelFor,checkBinding,
  }
  function read(hash){
   const hit=cache.read(hash);if(!hit)return null;
-  try{const context=current(hit.identity.binding);
+  try{const context=current(hit.identity.binding,true);
    if(!same(context.binding,hit.identity.binding)||previewDigest(identity(context,hit.identity.designId))!==previewDigest(hit.identity))return null;
    // Signed preparation already validated the original selection. The exact
    // current model/resource digest above includes its visibility and module

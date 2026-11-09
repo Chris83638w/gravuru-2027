@@ -262,7 +262,7 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
    if(!process.tools.photo)fail(design.id+': Fotofeld „'+layer.id+'“, aber das Verfahren „'+process.id+'“ sieht kein Foto vor.');
    const [bx,by,bw,bh]=layer.bounds,fieldKey='photo-'+id;
    if(fieldKeys.has(fieldKey))fail(design.id+': Fotofeld „'+fieldKey+'“ doppelt.');fieldKeys.add(fieldKey);
-   objects.push({id,type:'photoSlot',fieldKey,photoShape:layer.shape,...(layer.maskSvg?{photoMaskAssetId:createHash('sha256').update(layer.maskSvg).digest('hex')}:{}),required:rule.required??true,x:round(bx+bw/2),y:round(by+bh/2),w:round(bw),h:round(bh),rotation:round(layer.rotation),templateOrigin:true,customerEditable:true});
+   objects.push({id,type:'photoSlot',fieldKey,photoShape:layer.shape,...(layer.maskSvg?{photoMaskAssetId:createHash('sha256').update(layer.maskSvg).digest('hex'),photoMaskGeometry:{path:layer.maskPath,viewBox:[bx-layer.maskTranslation[0],by-layer.maskTranslation[1],bw,bh],fillRule:layer.maskEvenodd?'evenodd':'nonzero'}}:{}),required:rule.required??true,x:round(bx+bw/2),y:round(by+bh/2),w:round(bw),h:round(bh),rotation:round(layer.rotation),templateOrigin:true,customerEditable:true});
    if(layer.maskSvg||layer.exampleImage)photoAssets.push({slotId:id,maskSvg:layer.maskSvg??null,exampleImage:layer.exampleImage??null});
    rights[id]={content:false,color:false,replace:true,move:movableAll(design),scale:false,delete:false};photo=true;
    if(layer.placeholder)placeholders.push({slotId:id,file:layer.placeholder,widthMm:round(bw),heightMm:round(bh)});
@@ -285,7 +285,7 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
  }
  if(!objects.length)fail(design.id+': keine Ebenen text-/motiv-/deko-/foto- gefunden.');
  if(objects.length>20)fail(design.id+': höchstens 20 Elemente je Vorlage ('+objects.length+' gefunden).');
- const template={id:templateId,name:design.name,objects,marks:[],themes:design.themes??[],bestseller:design.bestseller===true,katalog:{designId:design.id,source:design.source,plateMm:[plate[0],plate[1]]}};
+ const template={id:templateId,name:design.name,objects,marks:[],themes:design.themes??[],bestseller:design.bestseller===true,katalog:{designId:design.id,source:design.source,plateMm:[plate[0],plate[1]],...(design.json?.sourceDesignId?{sourceDesignId:design.json.sourceDesignId}:{})}};
  if(design.json?.katalog?.prio===1)template.katalog.prio=1;
  if(family.id.startsWith('schiefer-tafeln-')){const group=slateDesignGroup(design.json??design);if(group)template.collections=[group];}
  if(motifPolicy.wholePrintDesign!==undefined)template.wholePrintDesign=motifPolicy.wholePrintDesign;

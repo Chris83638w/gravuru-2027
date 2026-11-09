@@ -6,6 +6,7 @@ import {katalogDesignToTemplate,scaleTemplate,applyPriceOverrides,defaultQuantit
 import {assessDesignTarget} from './design-target-rules.mjs';
 import {customerUxConfig} from './customer-ux-policy.mjs';
 import {offeredFamilyIds} from './subcategory-materials.mjs';
+import {prepareKatalogPhotoAssets} from './katalog-photo-assets.mjs';
 import {prepareConfig} from '../configurator/variant-m/contract.mjs';
 import {validateShopProductCut,shopProductCutMetafield,designZielgruppe,hasFigureMotif} from './shop-product-cut.mjs';
 import {FAMILY_FORMATS_SCHEMA,FAMILY_FORMAT_SOURCES,FAMILY_FORMS,customerForm,familyFormatCombinations} from '../configurator/variant-m/family-formats.mjs';
@@ -29,7 +30,7 @@ export function blankSignDesign(size,themeId){
  return {id,name:'Eigene Gestaltung',plateMm:[w,h],themes:[themeId],fonts:[BLANK_FONT],movable:true,svg:()=>svg,json:{movable:true}};
 }
 
-export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnreleased=false,designIds=null,available={},converter=null,shopProduct=null}={}){
+export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnreleased=false,designIds=null,available={},converter=null,shopProduct=null,assets=null}={}){
  if(shopProduct)shopProduct=validateShopProductCut(shopProduct);
  const line=katalog.lines.get(lineId),sub=line?.subcategories.find(s=>s.id===subcategoryId);
  if(!sub)fail('Linie oder Unterkategorie fehlt.');
@@ -37,23 +38,24 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
  if(sub.familyIdsOffered!=null&&unsupported.length)fail('Diese gewählten Materialfamilien sind noch nicht an die gemeinsame Türschild-Formatauswahl angeschlossen: '+unsupported.join(', ')+'. Für sie den passenden Produktgruppen-Anschluss prüfen.');
  const families=offered.filter(id=>SIGN_FAMILIES.includes(id)).map(id=>applyPriceOverrides(katalog.families.get(id),sub));
  if(!families.length)fail('Keine freigegebene Türschild-Familienart.');
+ const uvCross=families.every(f=>f.id==='uv-gedenkkreuze-acryl-klar');
  // Issue #139: the product metafield selects one physical format and one
  // starter. Other approved themes remain available in "Weitere Designs".
  const selectedSize=shopProduct&&families.flatMap(f=>f.sizes).find(s=>s.key===shopProduct.sizeKey);
  const formChoice=shopProduct?.groessenWahl==='form',allChoice=shopProduct?.groessenWahl==='alle';
  const inCut=size=>!selectedSize||allChoice||(formChoice?size.groupKey===selectedSize.groupKey:slotKey(size)===slotKey(selectedSize));
  if(shopProduct&&(!selectedSize||shopProduct.themeId!==sub.themeId||!shopProduct.defaultDesignId||reviewUnreleased||designIds))fail('Shop-Produktschnitt braucht Kataloggröße, passendes Thema und Startdesign; keine Prüffreigaben oder eingeschränkte Galerie.');
- const allMasters=katalog.designs.masters.filter(d=>!d.hidden&&(!designIds||designIds.includes(d.id))&&(shopProduct||d.themes?.includes(sub.themeId))&&(!shopProduct?.zielgruppe||designZielgruppe(d)===shopProduct.zielgruppe));
+ const allMasters=katalog.designs.masters.filter(d=>!d.hidden&&(!designIds||designIds.includes(d.id))&&(shopProduct||d.themes?.includes(sub.themeId))&&(!shopProduct?.zielgruppe||designZielgruppe(d)===shopProduct.zielgruppe)&&(!uvCross||d.themes?.includes(sub.themeId)&&d.json?.photoDesigns===sub.photoDesigns));
  const report={schema:'gravuru-family-formats-plan/v1',lineId,subcategoryId,reviewUnreleased,shopifyWrites:false,sourceFamilies:families.map(f=>f.id),excluded:[],blocked:[],sizes:[],shopify:{options:families.length>1?['Form & Größe','Farbe','Befestigung']:['Form & Größe','Befestigung'],maximumVariants:2048,maximumOptions:3,variantIdsCreated:0,sources:['https://help.shopify.com/en/manual/products/variants/add-variants','https://shopify.dev/docs/api/admin-graphql/latest/mutations/productSet']}};
  const blank=shopProduct?.vorlagen==='leer';
  const assigned=blank?new Map(families.map(f=>[f.id,[]])):new Map(families.map(f=>[f.id,assignTargetSeries(f,allMasters.filter(d=>designTargets(d,katalog).some(t=>t.familie===f.id)&&(reviewUnreleased||approvedForFamily(d,f.id,katalog))),katalog)]));
  const needed=[...new Set([...assigned.entries()].flatMap(([id,list])=>list.filter(a=>!a.oldSize&&a.sizes.some(key=>inCut(katalog.families.get(id).sizes.find(s=>s.key===key)))).flatMap(a=>a.design.fonts||[])))];
  if(blank&&!needed.includes(BLANK_FONT))needed.push(BLANK_FONT);
  const {fonts,missing}=await katalog.fontResources(needed,{available,converter});report.fontsMissing=missing;
- const bank=new Map(),motifs=new Map(),rights={},formats=new Map(),colors=[],converted=new Map();let base;
+ const bank=new Map(),motifs=new Map(),rights={},formats=new Map(),colors=[],converted=new Map(),photoExamples=[];let base;
  const theme=katalog.theme(sub.themeId);
  for(const family of families){
-  const colorId=color(family);colors.push({id:colorId,label:colorId==='edelstahl'?'Edelstahl':colorId==='schwarz'?'Schwarz':'Anthrazit'});
+  const colorId=color(family);colors.push({id:colorId,label:colorId==='edelstahl'?'Edelstahl':colorId==='klar'?'Klar':colorId==='schwarz'?'Schwarz':'Anthrazit'});
   for(const size of family.sizes){
    if(!inCut(size))continue;
    // No generic family starter is exposed: it supplies geometry/options only.
@@ -66,7 +68,12 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
     if(compatibility.status==='passt nicht'){report.excluded.push({familyId:family.id,sizeKey:size.key,designId:a.design.id,issues:compatibility.issues});continue;}
     const key=family.id+'\0'+a.design.id;
     try{
-     if(!converted.has(key))converted.set(key,katalogDesignToTemplate(a.design,family,theme,{fonts}));
+     if(!converted.has(key)){
+      let result=katalogDesignToTemplate(a.design,family,theme,{fonts});
+      if(result.photoAssets?.length)result=await prepareKatalogPhotoAssets(result,a.design,{assets});
+      converted.set(key,result);
+      for(const e of result.examples||[])photoExamples.push({...e,designId:result.template.id});
+     }
      if(shopProduct&&!converted.get(key).template.objects.some(o=>o.type==='text'&&o.role!=='guide'&&o.text?.trim())){report.excluded.push({familyId:family.id,sizeKey:size.key,designId:a.design.id,issues:['Kein Schild ohne Text (Issue #139).']});continue;}
      if(shopProduct?.motive==='ohne'&&hasFigureMotif(converted.get(key).template,converted.get(key).template.katalog?.plateMm)){report.excluded.push({familyId:family.id,sizeKey:size.key,designId:a.design.id,issues:['Motiv-Design: im Türschild-Konfi erstmal nicht (Chris 03.11.2026).']});continue;}
      const t=converted.get(key),scaled=scaleTemplate(t.template,t.template.katalog.plateMm,[size.widthMm,size.heightMm],fonts,{contain:true});
@@ -125,6 +132,11 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
   report.shopify.metafields=[shopProductCutMetafield(shopProduct)];
  }
  c.workshopElementRights=rights;c.localResources.fonts=fonts;c.localResources.motifs=[...motifs.values()];
+ if(photoExamples.length){
+  c.localResources.photoExamples=photoExamples.map(({designId,slotId,assetId})=>({designId,slotId,assetId}));
+  c.photo.hints=photoExamples.map(({designId,slotId,uploadHint})=>({designId,slotId,text:'Foto-Upload hier klicken',enabled:uploadHint===true}));
+ }
+ if(uvCross){c.photo.enabled=sub.photoDesigns==='mit';c.photo.includedCount=0;c.photo.extraPriceCents=300;const sizeGroup=p.optionGroups.find(g=>g.id==='size');if(sizeGroup){sizeGroup.name='Größe';for(const v of sizeGroup.values)v.label=list.find(s=>s.key===v.id).label;}p.name=line.name+' – '+sub.name;}
  delete c.familyAcrylic;delete c.steelFormats;delete c.quantityTierScope;delete c.quantityTiers;
  // The same catalogue precedence as the ordinary importer. Fixed products also
  // expose their common tier contract to the existing saved-offer price binding.

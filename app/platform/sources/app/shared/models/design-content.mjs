@@ -4,6 +4,7 @@ import {PROCESSING_PROFILES} from './processing-profiles.mjs';
 import {contourContainsPoint,contourContainsPolygon,contourObjectCorners,surfaceGeometry,ellipseEdgeDistance} from './contour-geometry.mjs';
 import {embeddedMotifFits} from './embedded-motif-fit.mjs';
 import {textOutlineFits} from './text-outline-fit.mjs';
+import {photoMaskFits,photoMaskGeometryIssue} from './photo-shape.mjs';
 import {gunzipSync,strFromU8} from '../vendor/fflate-0.8.3.mjs';
 // These limits match the supported customer text/motif draft format.
 // maxDesigns: Vorlagen je Produkt (Chris 23.10.2026: 60 → 100, wie MAX_FORM_DESIGNS in der Werkstatt).
@@ -75,6 +76,7 @@ export function surfaceObjectIssue(object,profile,{motifs=[],fonts}={}){
  if(issue&&profile.kind!=='layered-doorbell'&&profile.doorbellSchema!==DOORBELL_SCHEMA&&['Element ragt über die Gestaltungsfläche hinaus.','Element ragt über die ovale Gestaltungsfläche hinaus.','Element ragt über die Kontur-Gestaltungsfläche hinaus.','Element ragt über die gerundete Gestaltungsfläche hinaus.'].includes(issue)){
   const geometry={...oriented.geometry,safeMarginMm:artworkMargin(oriented),holes:[]};
   if(textOutlineFits(object,geometry,fonts)===true)return '';
+  if(photoMaskFits(object,geometry)===true)return '';
   const resources=typeof motifs==='function'?motifs():motifs;
   if(embeddedMotifFits(object,{...oriented.geometry,safeMarginMm:artworkMargin(oriented),holes:[]},resources.find(m=>m.key===object?.motif))===true)return '';
  }
@@ -106,6 +108,7 @@ export function validateDesignContent(d,{universal=false,extraFontIds=[]}={}){
   if(o.lineHeight!==undefined&&(o.type!=='text'||!Number.isFinite(o.lineHeight)||o.lineHeight<=0||o.lineHeight>1000))throw Error('Ungültiger Zeilenabstand.');
   if(o.textAnchor!==undefined&&(o.type!=='text'||!['start','middle','end'].includes(o.textAnchor)))throw Error('Ungültige Textausrichtung.');
   if((o.photoMaskAssetId!==undefined&&!/^[a-f0-9]{64}$/.test(o.photoMaskAssetId))||(o.photoShape==='template'&&!o.photoMaskAssetId))throw Error('Ungültige Original-Fotomaske.');
+  if(photoMaskGeometryIssue(o))throw Error(photoMaskGeometryIssue(o));
   if(o.photoShape==='arch'&&o.h<o.w/2)throw Error('Bogenfoto braucht mindestens eine halbe Breite als Höhe.');
   if(o.customerEditable!==undefined&&typeof o.customerEditable!=='boolean')throw Error('Ungültige Ebenenfreigabe.');
   if(o.type==='motif'&&(typeof o.motif!=='string'||!/^[\w-]{1,120}$/.test(o.motif)))throw Error('Motivkennung fehlt.');

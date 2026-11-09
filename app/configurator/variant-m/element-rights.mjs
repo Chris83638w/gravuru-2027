@@ -6,7 +6,7 @@ export const ELEMENT_RIGHT_FIELDS=Object.freeze({
   move:['x','y','rotation'], scale:['w','h','size'],
 });
 export const ELEMENT_RIGHTS=Object.freeze(['content','color','replace','move','scale','delete']);
-const structural=['letterSpacing','textAnchor','lineHeight','type','fieldKey','photoShape','photoMaskAssetId','shape','filled','strokeWidth','assetId','required','templateOrigin','customerEditable','locked','technicalLocked','acrylicFixed','role'];
+const structural=['letterSpacing','textAnchor','lineHeight','type','fieldKey','photoShape','photoMaskAssetId','photoMaskGeometry','shape','filled','strokeWidth','assetId','required','templateOrigin','customerEditable','locked','technicalLocked','acrylicFixed','role'];
 export const rightForProperty=key=>Object.entries(ELEMENT_RIGHT_FIELDS).find(([,fields])=>fields.includes(key))?.[0];
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 // Source leading is fixed relative to font size when the customer may scale text.

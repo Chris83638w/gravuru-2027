@@ -107,9 +107,10 @@ export function prepareConfig(input) {
   if (p.designs.some(d => d.objects.some(o => o.type === 'image'))) fail('Die feste Bildressource braucht zuerst eine geprüfte Medienzuordnung.');
   const rasters=config.localResources?.rasters||[];
   for(const o of p.designs.flatMap(d=>d.objects).filter(o=>o.type==='motif-raster'))if(!rasters.some(r=>r.assetId===o.assetId&&r.sha256===o.assetId&&r.pixelWidth>=Math.ceil(o.w*600/25.4)&&r.pixelHeight>=Math.ceil(o.h*600/25.4)))fail('Rastermotiv fehlt oder unterschreitet 600 dpi.');
+  const resourceDesigns=isFamilyFormats(config)?config.familyFormats.designs:p.designs;
   const placeholders=config.localResources?.photoPlaceholders||[],seen=new Set();
   for(const asset of placeholders){
-    const design=p.designs.find(d=>d.id===asset.designId),slot=design?.objects.find(o=>o.id===asset.slotId&&o.type==='photoSlot');
+    const design=resourceDesigns.find(d=>d.id===asset.designId),slot=design?.objects.find(o=>o.id===asset.slotId&&o.type==='photoSlot');
     const key=asset.designId+'\0'+asset.slotId,box=asset.placement;
     if(!slot||seen.has(key)||!/^[a-f0-9]{64}$/.test(asset.sha256)||!Number.isInteger(asset.pixelWidth)||!Number.isInteger(asset.pixelHeight)||Math.min(asset.pixelWidth,asset.pixelHeight)<512||Math.max(asset.pixelWidth,asset.pixelHeight)>4096||!box||!['x','y','w','h'].every(k=>typeof box[k]==='number'&&Number.isFinite(box[k]))||box.w<=0||box.h<=0||Math.abs(box.w/box.h-asset.pixelWidth/asset.pixelHeight)>0.02||!/^\/(?:api\/product-workbench\/|produktvorschau\/)[A-Za-z0-9_./%-]+\.png$/.test(asset.url))fail('Fotoplatzhalter-Ressource ist ungültig.');
     seen.add(key);
@@ -117,14 +118,14 @@ export function prepareConfig(input) {
   const examples=config.localResources?.photoExamples||[],exampleKeys=new Set();
   if(!Array.isArray(examples)||examples.length>1200)fail('Ungültige Beispielfotos.');
   for(const example of examples){
-    const key=example.designId+'\0'+example.slotId,slot=p.designs.find(d=>d.id===example.designId)?.objects.find(o=>o.id===example.slotId&&o.type==='photoSlot');
+    const key=example.designId+'\0'+example.slotId,slot=resourceDesigns.find(d=>d.id===example.designId)?.objects.find(o=>o.id===example.slotId&&o.type==='photoSlot');
     if(!slot||exampleKeys.has(key)||!/^[a-f0-9]{64}$/.test(example.assetId||'')||Object.keys(example).some(k=>!['designId','slotId','assetId'].includes(k)))fail('Ungültige Beispielfoto-Zuordnung.');
     exampleKeys.add(key);
   }
   const hints=config.photo.hints||[],hintKeys=new Set();
   if(!Array.isArray(hints)||hints.length>1200)fail('Ungültige Fotohinweise.');
   for(const h of hints){
-    const key=h.designId+'\0'+h.slotId,slot=p.designs.find(d=>d.id===h.designId)?.objects.find(o=>o.id===h.slotId&&o.type==='photoSlot');
+    const key=h.designId+'\0'+h.slotId,slot=resourceDesigns.find(d=>d.id===h.designId)?.objects.find(o=>o.id===h.slotId&&o.type==='photoSlot');
     if(!slot||hintKeys.has(key)||typeof h.text!=='string'||!h.text.trim()||h.text.length>100||typeof h.enabled!=='boolean'||Object.keys(h).some(k=>!['designId','slotId','text','enabled'].includes(k)))fail('Ungültiger Fotohinweis.');
     hintKeys.add(key);
   }
@@ -378,7 +379,7 @@ export function validateDesign(config, design, options, fonts, motifs, {template
 
 // Explicit whitelist: no selected objects, embedded photo bytes, arbitrary URLs or credentials.
 const objectKeys = ['id','type','x','y','w','h','rotation','color','text','font','size','bold','italic','motif','fieldKey',
-  'letterSpacing','textAnchor','lineHeight','customerEditable','templateOrigin','includedInDesign','slateIncluded','photoShape','photoMaskAssetId','required','shape','filled','strokeWidth','preserveColors','acrylicFixed',
+  'letterSpacing','textAnchor','lineHeight','customerEditable','templateOrigin','includedInDesign','slateIncluded','photoShape','photoMaskAssetId','photoMaskGeometry','required','shape','filled','strokeWidth','preserveColors','acrylicFixed',
   'uxHidden','uxLocked','uxUploadId','uxUploadKind','uxLogoTint','uxVectorLogo','uxPhotoBackground','uxPhotoCrop','uxPhotoColor','uxDecoration','uxPersonal','cSourceId','technicalLocked','assetId','opacity','locked','role','surfaceId'];
 export function cleanObject(o) { return Object.fromEntries(objectKeys.filter(k => o[k] !== undefined).map(k => [k, clone(o[k])])); }
 export function editedDesignTexts(config,state){

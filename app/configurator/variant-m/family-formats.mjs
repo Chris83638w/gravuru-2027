@@ -9,9 +9,9 @@ import {productFontIndex} from './lazy-resources-model.mjs';
 
 export const FAMILY_FORMATS_SCHEMA='gravuru-family-formats/v1';
 // Katalogfamilien, die als Familienformat (fester Shop-Produktschnitt) laufen dürfen.
-export const FAMILY_FORMAT_SOURCES=Object.freeze(['steel-door-signs','grabstecker-edelstahl','acryl-3mm-tuerschilder-schwarz','acryl-3mm-tuerschilder-anthrazit']);
+export const FAMILY_FORMAT_SOURCES=Object.freeze(['steel-door-signs','grabstecker-edelstahl','acryl-3mm-tuerschilder-schwarz','acryl-3mm-tuerschilder-anthrazit','uv-gedenkkreuze-acryl-klar']);
 export const FAMILY_FORMS=Object.freeze([
- ['RE','Rechteck'],['AB','Rechteck abgerundet'],['QU','Quadrat'],['OV','Oval'],['R','Rund'],['RT1','Retro 1'],['RT2','Retro 2'],
+ ['RE','Rechteck'],['AB','Rechteck abgerundet'],['QU','Quadrat'],['OV','Oval'],['R','Rund'],['RT1','Retro 1'],['RT2','Retro 2'],['KREUZ','Gedenkkreuz'],
  // Grabstecker (Familie grabstecker-edelstahl, Chris 02.11.2026 #137): nur feste Shop-Produkte, Form = Kopfform.
  ['GS-HERZ','Herz'],['GS-HERZRAHMEN','Herz mit Rahmen'],['GS-HERZDOPPEL','Herz mit Doppelrahmen'],['GS-HERZLIEGEND','Herz liegend'],['GS-HERZPFOTE','Herz mit Pfote'],['GS-KREUZ','Kreuz'],['GS-KREUZ2','Kreuz 2'],['GS-ENGEL','Engel'],['GS-STERN','Stern'],['GS-STERN2','Stern 2'],['GS-INFINITY','Unendlichkeit'],['GS-KATZE','Katze'],['GS-PFOTE','Pfote']
 ]);
@@ -20,7 +20,7 @@ export const isFamilyFormats=c=>c?.familyFormats?.schema===FAMILY_FORMATS_SCHEMA
 // Türschild-Konfi (ENTSCHEIDUNGEN 4.42): ein Shop-Produkt mit allen Formen und Größen der Familie.
 export const isAllSizesFamily=c=>isFamilyFormats(c)&&!c.familyFormats.fixedSize&&c.familyFormats.source?.shopProduct?.groessenWahl==='alle';
 export const customerForm=key=>key==='EL'?'OV':key;
-export const designNumber=d=>/-D(\d+)$/.exec(d?.katalog?.designId||'')?.[1]??null;
+export const designNumber=d=>d?.katalog?.sourceDesignId??/-D(\d+)$/.exec(d?.katalog?.designId||'')?.[1]??null;
 const cents=v=>Number.isSafeInteger(v)&&v>=0;
 
 export function familyFormatSelection(c,values={}){
@@ -49,7 +49,8 @@ export function familyFormatCombinations(c){
 export function familyFormatPrice(c,o={}){const s=familyFormatSelection(c,o);return s.variant.basePriceCents+s.mounting.priceCents;}
 export function familyFormatChoices(c,o={}){
  const color=o.color??c.familyFormats.defaultColor;
- return FAMILY_FORMS.filter(([id])=>!id.startsWith('GS-')||c.familyFormats.formats.some(f=>customerForm(f.form)===id)).map(([id,label])=>({id,label,sizes:c.familyFormats.formats.filter(f=>customerForm(f.form)===id).map(f=>{
+ const crosses=c.familyFormats.formats.every(f=>f.variants.every(v=>v.familyId==='uv-gedenkkreuze-acryl-klar'));
+ return FAMILY_FORMS.filter(([id])=>(!crosses&&!id.startsWith('GS-')&&id!=='KREUZ')||c.familyFormats.formats.some(f=>customerForm(f.form)===id)).map(([id,label])=>({id,label,sizes:c.familyFormats.formats.filter(f=>customerForm(f.form)===id).map(f=>{
   const v=f.variants.find(v=>v.color===color);return {...f,priceCents:v?.basePriceCents,available:!!v?.designIds.length};
  }).sort((a,b)=>{
   const ar=a.geometry.width/a.geometry.height,br=b.geometry.width/b.geometry.height;
@@ -116,7 +117,15 @@ export function familyFormatState(c,state,requested,{fonts={},motifs=[]}={}){
   objects=clone(target.objects);
   const edited=state.objects.filter(o=>o.type==='text'&&!o.uxHidden&&o.customerEditable!==false&&o.text!==source.objects.find(s=>s.id===o.id)?.text);
   const remaining=transferTexts(edited,objects);
-  const extras=[...remaining,...state.objects.filter(o=>o.type==='photoSlot'&&o.uxUploadId||o.uxUploadKind==='logo')];
+  const carriedPhotos=new Set();
+  if(source.katalog?.sourceDesignId&&source.katalog.sourceDesignId===target.katalog?.sourceDesignId){
+   for(const original of state.objects.filter(o=>o.type==='photoSlot'&&(o.uxUploadId||o.media))){
+    const slot=objects.find(o=>o.type==='photoSlot'&&o.fieldKey===original.fieldKey);if(!slot)continue;
+    for(const key of ['uxUploadId','uxUploadKind','uxPhotoCrop','uxPhotoColor','uxPhotoBackground','uxPersonal','media','crop'])if(original[key]!==undefined)slot[key]=clone(original[key]);
+    carriedPhotos.add(original.id);
+   }
+  }
+  const extras=[...remaining,...state.objects.filter(o=>!carriedPhotos.has(o.id)&&(o.type==='photoSlot'&&o.uxUploadId||o.uxUploadKind==='logo'))];
   for(const original of extras){const moved=scaleFamilyObjects([original],before.geometry,after.geometry)[0];if(objects.some(o=>o.id===moved.id))moved.id='carry-'+moved.id;objects.push(moved);}
  }
  objects=objects.map(o=>fitTransferred(o,after,fonts,motifs));
@@ -143,7 +152,8 @@ export function validateFamilyFormats(c){
    validateOptionGroups([{id:'mounting',name:'Befestigung',required:true,defaultValueId:'K00',values:v.mounting}]);
    for(const m of v.mounting)validateGeometryHoles({...c.profile,geometry:{...g,holes:m.holes}});
    if(v.quantityTiers!==undefined&&quantityTiersIssue(v.quantityTiers))fail('Ungültige Mengenstaffel der Familiengröße.');
-   if(v.material?.kind!==c.profile.material.kind||!/^#[0-9a-f]{6}$/i.test(v.material.color)||v.material.thicknessMm!==c.profile.material.thicknessMm||v.material.kind==='acrylic'&&(!['schwarz','anthrazit'].includes(v.material.variant)||v.material.engravingSide!=='back'))fail('Widersprüchliches Familienmaterial.');
+   const clearCross=v.familyId==='uv-gedenkkreuze-acryl-klar'&&v.material?.variant==='klar'&&v.material.thicknessMm===5&&v.material.engravingSide==='back'&&c.profile.processing?.profileId==='color-print';
+   if(v.material?.kind!==c.profile.material.kind||!/^#[0-9a-f]{6}$/i.test(v.material.color)||v.material.thicknessMm!==c.profile.material.thicknessMm||v.material.kind==='acrylic'&&(!(['schwarz','anthrazit'].includes(v.material.variant)||clearCross)||v.material.engravingSide!=='back'))fail('Widersprüchliches Familienmaterial.');
   }
  }
  if(f.fixedSize!==undefined){

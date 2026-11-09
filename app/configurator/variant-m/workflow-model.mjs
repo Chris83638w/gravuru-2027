@@ -86,6 +86,13 @@ function mapDates(fromTexts,to){
  const tokens=fromTexts.flatMap(t=>String(t).match(DATE_TOKEN)||[]);
  const slots=to.map(o=>(String(o.text).match(DATE_TOKEN)||[]).length);
  if(tokens.length&&slots.reduce((a,b)=>a+b,0)===tokens.length){let i=0;return to.map(o=>String(o.text).replace(DATE_TOKEN,()=>tokens[i++]));}
+ // Memorial crosses use years as well as full dates. Preserve the target's
+ // separators and symbols, and never reinterpret an incomplete full date.
+ const years=/\b\d{4}\b/g,yearOnly=t=>!String(t).match(DATE_TOKEN)&&!String(t).replace(years,'').replace(/[\s*†✝–—−-]/g,'');
+ if(fromTexts.every(yearOnly)&&to.every(o=>yearOnly(o.text))){
+  const values=fromTexts.flatMap(t=>String(t).match(years)||[]),count=to.reduce((n,o)=>n+(String(o.text).match(years)||[]).length,0);
+  if(values.length&&values.length===count){let i=0;return to.map(o=>String(o.text).replace(years,()=>values[i++]));}
+ }
  if(to.length===1)return [fromTexts.map(t=>String(t).trim()).join(' - ')];
  return null;
 }

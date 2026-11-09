@@ -114,6 +114,7 @@ export function createGalleryEditor({workshop,targets}){
     if(object.type==='photoSlot'){
      if(!config.photo.enabled)fail(422,'review_photo_disabled','Fotos sind für diese Produktgruppe nicht vorgesehen.');
      if((object.photoMaskAssetId||null)!==(original?.photoMaskAssetId||null))fail(422,'review_photo_invalid','Die Original-Fotomaske muss erhalten bleiben.');
+     if(!same(object.photoMaskGeometry,original?.photoMaskGeometry))fail(422,'review_photo_invalid','Die Original-Fotogeometrie muss erhalten bleiben.');
      if(original?.photoShape==='template'&&object.photoShape!=='template')fail(422,'review_photo_invalid','Die Original-Fotomaske muss erhalten bleiben.');
      if(raw.uxUploadId&&!photos.has(object.id))fail(422,'review_photo_missing','Ein Foto wurde noch nicht dauerhaft gespeichert.');
      if(photos.has(object.id)){

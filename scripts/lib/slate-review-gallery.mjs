@@ -1,3 +1,4 @@
+import {uvCrossSeriesAvailable} from '../../app/workshop/uv-cross-series.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {randomBytes,createHash} from 'node:crypto';
@@ -223,7 +224,7 @@ export function createSlateGalleryHandler(root, importsFile, {csrfToken: supplie
   if(['/originale','/originale/'].includes(url.pathname)){
    try{
     const summary=approvalBundle(),page=galleryReviewPage(pack,url.searchParams,summary.approvals),ids=page.pack.originals.map(row=>row.id);
-    bytes=Buffer.from(slateGalleryHtml(page.pack,imported,{comments:comments.all(ids),csrfToken,managementEnabled:!!manage,assignmentEnabled:!!assignments,paging:page.paging,...approvalBundle(ids,[],summary)}));type='text/html; charset=utf-8';
+    bytes=Buffer.from(slateGalleryHtml(page.pack,imported,{comments:comments.all(ids),csrfToken,uvCrossAvailable:uvCrossSeriesAvailable(workshop),managementEnabled:!!manage,assignmentEnabled:!!assignments,paging:page.paging,...approvalBundle(ids,[],summary)}));type='text/html; charset=utf-8';
    }catch(error){json(res,error.status||500,{error:error.status?error.message:'Die Galerie konnte nicht geladen werden.'});return true;}
   }
   else if(url.pathname==='/originale/comments.js'){bytes=fs.readFileSync(new URL('./slate-review-comments-ui.js',import.meta.url));type='text/javascript; charset=utf-8';}

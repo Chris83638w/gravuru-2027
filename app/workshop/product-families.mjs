@@ -33,7 +33,7 @@ const FAMILY_SCHEMAS=['gravuru-product-family/v1',FAMILY_SCHEMA];
 export const FAMILY_MATERIALS=Object.freeze({
  steel:{name:'Edelstahl',processing:'steel-engraving',ink:'Gravur erscheint dunkel auf dem Metall; Weiß bleibt ungraviert.',color:()=>'#bac2c4',adapter:'steel'},
  slate:{name:'Schiefer',processing:'slate-engraving',ink:'Gravur erscheint hell auf dem dunklen Stein; Weiß bleibt ungraviert.',color:()=>'#343b3d',adapter:'slate'},
- acrylic:{name:'Acrylglas',processing:'acrylic-engraving',ink:'Gravur erscheint hell (weiß) auf dem farbigen Acrylglas; Weiß bleibt ungraviert.',color:v=>v==='anthrazit'?'#33373a':v==='satiniert'?'#7b7d7e':'#17191b',adapter:'acrylic'}
+ acrylic:{name:'Acrylglas',processing:'acrylic-engraving',ink:'Gravur erscheint hell (weiß) auf dem farbigen Acrylglas; Weiß bleibt ungraviert.',color:v=>v==='klar'?'#e4ece9':v==='anthrazit'?'#33373a':v==='satiniert'?'#7b7d7e':'#17191b',adapter:'acrylic'}
 });
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const invalid=message=>fail(422,'family_invalid',message);

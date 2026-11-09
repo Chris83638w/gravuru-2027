@@ -26,6 +26,9 @@ export function profileBlockers(profile){
 // Native family acrylic retains its exact material and thickness; the pedestal pilot remains clear acrylic.
 export function productionSubject(document){
  if(document.schema==='gravuru-product/v1'){
+  const c=document.config,p=c?.profile;
+  const uvCross=c?.familyFormats?.formats?.length&&c.familyFormats.formats.every(f=>f.variants?.length&&f.variants.every(v=>v.familyId==='uv-gedenkkreuze-acryl-klar'))||c?.familyAcrylic?.familyId==='uv-gedenkkreuze-acryl-klar';
+  if(uvCross&&p?.material?.kind==='acrylic'&&p.material.variant==='klar'&&p.material.thicknessMm===5&&p.material.engravingSide==='back'&&p.processing?.profileId==='color-print')return {method:'print',materialId:'acrylic-clear',thicknessMm:5};
   if(document.config?.profile?.material?.kind==='slate'&&document.config.profile.processing?.profileId==='slate-engraving')return {method:'engraving',materialId:'slate',thicknessMm:document.config.profile.material.thicknessMm};
   if(document.config?.profile?.material?.kind==='steel'&&document.config.profile.processing?.profileId==='steel-engraving')return {method:'engraving',materialId:'steel',thicknessMm:document.config.profile.material.thicknessMm};
   if(document.config?.familyAcrylic?.schema==='gravuru-family-acrylic/v1'&&document.config.profile?.material?.kind==='acrylic'){

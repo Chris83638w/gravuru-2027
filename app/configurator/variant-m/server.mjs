@@ -7,6 +7,7 @@ import {fileURLToPath} from 'node:url';
 import {build,HERE,ROOT,OUTPUT,LAZY} from './build.mjs';
 import {createShopifyAdminHost} from '../../workshop/shopify-admin-host.mjs';
 import {createWorkshop} from '../../workshop/http.mjs';
+import {uvCrossSeriesHtml} from '../../workshop/uv-cross-series.mjs';
 import {readThemeCatalog} from '../../workshop/theme-catalog.mjs';
 import {openKatalog,katalogPath} from '../../workshop/katalog-source.mjs';
 import {doorbellImageResource,isDoorbellImagePath} from '../../workshop/doorbell-image-resource.mjs';
@@ -52,6 +53,9 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
       if(pathname.includes('\\')||pathname.includes('\0')||pathname.split('/').some(p=>p==='..'||p.startsWith('.')))return fail(404);
       if(workshop&&pathname.startsWith('/api/workshop/'))return await workshop.handle(req,res,url);
       if(!['GET','HEAD'].includes(req.method))return fail(405);
+      if(workshop&&['/uv-gedenkkreuze','/uv-gedenkkreuze/'].includes(pathname)){
+        const bytes=Buffer.from(uvCrossSeriesHtml(workshop));res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'private, no-store','Content-Length':bytes.length});return res.end(req.method==='HEAD'?undefined:bytes);
+      }
       if(workshop&&pathname==='/models.json'){
         try{
           let bytes=Buffer.from(JSON.stringify([workshop.model(url.searchParams.get('configuration')||workshop.defaultId,url.searchParams.get('revision'))]));

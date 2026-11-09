@@ -1,3 +1,7 @@
+## 09.11.2026 · Codex · UV-Gedenkkreuze
+
+20 freigegebene Designs, 60 native SVG-Formatfassungen, vier sortierte Gruppen; 5 mm Klaracryl Hinterdruck, bestätigte Preise und Foto +300 Cent. Gemeinsamer Anschluss mit expliziter Freigabe von Chris umgesetzt. 60 Modell-/Preisprüfungen und 180 Größenwechsel bestanden. Online-Übernahme wird im nächsten Schritt separat belegt. [Übergabe](docs/handoffs/2026-11-09-uv-gedenkkreuze.md).
+
 ## 08.11.2026 · Codex/Mika · Verwaltungsquellen gezielt nachladen, v2 vorbereitet
 
 Privater Erstabruf nach echtem 20.023-ms-Timeout korrigiert: kleine Importmetadaten statt aller großen Galeriedokumente, vollständige Optionen erst für konkret ausgewählte Quellen. Beide Verwaltungswege teilen weiterhin dieselbe Registry und Profilbibliothek. 7/7 gezielte Prüfungen grün; neue strukturelle Abnahme bestätigt 0 vollständige Dokumentlesungen im Erstabruf, nur gewählte Quelle im Detail und weiterhin gesperrte veraltete Bestätigung. Unabhängiger Review ohne Blocker. Acht Verwaltungsproduktionsdateien; Kundenlayout, Preise, Datenbankstände und Ausführungsschalter unverändert. Separate v2-Auslieferung, tatsächliche Server-/Browserabnahme noch offen. [Nachweis und lesende Prüfrouten](docs/handoffs/2026-11-08-module-management-lazy-sources.md).

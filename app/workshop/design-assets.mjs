@@ -122,7 +122,7 @@ export function createDesignAssetStore({filename,converter=convertDesign,tenantI
         const asset=get(example.assetId);
         if(asset.format!=='svg')fail(422,'asset_mismatch','Beispielfoto muss als geprüfte SVG-Vorschau vorliegen.');
       }
-      for(const d of document.config?.profile?.designs||[])for(const o of d.objects||[])if(o.photoMaskAssetId&&get(o.photoMaskAssetId).format!=='svg')fail(422,'mask_missing','Original-Fotomaske fehlt.');
+      for(const d of document.config?.familyFormats?.designs??document.config?.profile?.designs??[])for(const o of d.objects||[])if(o.photoMaskAssetId&&get(o.photoMaskAssetId).format!=='svg')fail(422,'mask_missing','Original-Fotomaske fehlt.');
       const motifs=document.config?.localResources?.motifs||[];
       for(const item of motifs)if(item.artwork){const expected=resource(item.artwork.assetId);if(!isArtworkResource(item)||JSON.stringify(item.artwork)!==JSON.stringify(expected.artwork))fail(422,'asset_mismatch','Die Originaldatei des importierten Designs fehlt oder wurde verändert.');}
       for(const design of document.config?.profile?.designs||[])if(design.importedSource){

@@ -123,3 +123,30 @@ test('combined module/cache gate retires existing public URLs and prepares nothi
  // Optional speculative preparation deliberately omits rejected templates.
  assert.deepEqual(await previews.prepare(f.binding),{prepared:0,items:[]});assert.equal(f.renders,3);
 });
+
+// The optional native proof changes only how original model bytes are read;
+// all current binding and approval checks must still run on every cache hit.
+test('native read proof never caches binding or release and mutable legacy models retain the full fallback',async t=>{
+ const f=fixture(t),cache=createPublicDesignPreviewCache({directory:f.directory,secret,rendererFingerprint:'a'.repeat(64)});
+ let allowed=true,reads=0;
+ const resolve=ids=>{assert.deepEqual(Object.keys(ids).sort(),['shopifyProductId','shopifyVariantId']);return {store:f.store,binding:structuredClone(f.binding)};};
+ const modelFor=()=>structuredClone(f.model),checkBinding=()=>{if(!allowed)throw Error('revoked');};
+ const gallery=createShopDesignGallery({secret,resolve,modelFor,checkBinding,allowedAssets:()=>new Set()});
+ const service=(modelForRead)=>createPublicDesignPreviews({cache,resolve,modelFor,modelForRead,checkBinding,gallery,previewUrl:url,renderTemplate:(ctx,id)=>gallery.preview(ctx,gallery.start(ctx,ctx.model,id).target)});
+ const initial=service(),prepared=await initial.prepare(f.binding),id=hash(prepared.items[0].url);
+ const {createHash}=await import('node:crypto');
+ const p=service(()=>{reads++;const model=modelFor();return {model,digest:createHash('sha256').update(JSON.stringify(model)).digest('hex')};});
+ assert.deepEqual(p.read(id),initial.read(id));assert.equal(reads,1);
+ allowed=false;assert.equal(p.read(id),null);allowed=true;
+ for(const key of ['unitCents','assignmentRevision','productRevision']){f.binding[key]++;assert.equal(p.read(id),null,key);f.binding[key]--;}
+ const oldDigest=createHash('sha256').update(JSON.stringify(f.model)).digest('hex');
+ f.model.universal.profile.name='Changed model';assert.equal(service(()=>({model:f.model,digest:oldDigest})).read(id),null,'mutable provider cannot reuse a stale digest');assert.equal(p.read(id),null);assert.equal(initial.read(id),null,'legacy mutable model still hashes fresh');
+ delete f.model.universal.profile.name;assert.ok(p.read(id));
+ assert.equal(service(()=>({model:modelFor(),digest:'invalid'})).read(id),null);
+ assert.ok(service(()=>null).read(id),'legacy adapter without native proof falls back');
+ const shallow=Object.freeze(modelFor()),shallowService=service(()=>({model:shallow,digest:oldDigest}));
+ assert.ok(shallowService.read(id),'unchanged shallow-frozen adapter uses its current bytes');
+ shallow.universal.profile.name='Changed beneath a frozen root';
+ assert.equal(shallowService.read(id),null,'mutable children cannot retain an old fingerprint');
+ assert.ok(reads>=7);
+});

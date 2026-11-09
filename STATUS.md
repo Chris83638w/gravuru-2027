@@ -1,3 +1,7 @@
+## 09.11.2026 – Mika: veraltete Galerieabrufe beim Optionswechsel abbrechen
+
+Drei Clientdateien auf `a143acbc`: laufende Vorschauabrufe der alten Auswahl abbrechen und deren zwei Ladeplätze sofort für aktuelle Karten freigeben. Späte alte Antworten können neue Karten/Slots nicht verändern; Vorwärmen bleibt bei drei Bildern, keine neue Route oder Layoutänderung. 42/42 gezielte Tests grün, Root-Diffreview ohne Befund. Nicht live aktiviert. [Nachweis und Rücknahme](docs/handoffs/2026-11-09-design-preview-abort.md).
+
 ## 09.11.2026 – Mika: doppelte Produktlesungen im Kundenstart lokal reduziert
 
 Fünf Serverdateien auf aktiver Basis `4dc5653b`: geprüfte unveränderliche Revisionen nur innerhalb derselben synchronen Anfragephase wiederverwenden. Frische Bindungs-, Mandanten-, Preis- und Freigabeprüfungen bleiben bestehen; keine UI-/Daten-/Preisänderung. Lokaler nativer r4-Modellabruf 617/643 ms statt 1.180/1.239 ms, keine Live-Laufzeitgarantie. 96/96 gezielte Tests plus sechs unabhängige Gegenproben grün. Paket und Rücknahme vorbereitet, **noch nicht veröffentlicht**. [Umsetzung, Grenzen und exakte Belege](docs/handoffs/2026-11-09-customer-read-snapshot.md).

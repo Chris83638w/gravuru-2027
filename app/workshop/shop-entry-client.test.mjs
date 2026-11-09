@@ -353,3 +353,13 @@ test('hashed gallery previews use browser caching; unavailable cache falls back 
  found=false;await client.loadDesignPreview('signed-choice',url);assert.equal(calls.at(-1).options.headers['X-Gravuru-Shop-Session'],token);
  await client.loadDesignPreview('signed-choice','https://foreign.example/x.svg');assert.ok(calls.every(c=>!c.path.includes('foreign.example')));
 });
+
+test('preview cancellation reaches public and private fetches; cancellation prevents fallback requests',async()=>{
+ const url='/konfigurator/shop/vorschauen/'+'a'.repeat(64)+'.svg',controller=new AbortController(),calls=[];
+ const client=createShopEntryClient({token,fetchImpl:async(path,options)=>{calls.push({path,options});if(path===url){controller.abort();return new Response('',{status:404});}return new Response('<svg/>');}});
+ await assert.rejects(client.loadDesignPreview('signed-choice',url,controller.signal),{name:'AbortError'});
+ assert.equal(calls.length,1);assert.equal(calls[0].options.signal,controller.signal);assert.equal(calls[0].options.headers,undefined);
+ await assert.rejects(client.loadDesignPreview('signed-choice',undefined,controller.signal),{name:'AbortError'});assert.equal(calls.length,1);
+ const fresh=new AbortController();assert.equal(await (await client.loadDesignPreview('signed-choice',undefined,fresh.signal)).text(),'<svg/>');
+ assert.equal(calls[1].options.signal,fresh.signal);assert.equal(calls[1].options.headers['X-Gravuru-Shop-Session'],token);
+});

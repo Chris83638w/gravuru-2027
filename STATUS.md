@@ -1,6 +1,8 @@
 ## 09.11.2026 · Codex · UV-Kreuz-Modul mit Original-DXF
 
-Chris' Korrekturen umgesetzt: eigenständiges UV-Kreuz-Modul, klare Glasvorschau, Größen-Icons, keine sichtbare Bohrungsoption. Drei Original-DXF-Konturen und 1,5 mm Überdruck; freigegebene Gestaltungen unverändert. Lokal 60 Varianten/180 Wechsel, 22 Modulprüfungen, drei native Fotodrucke und drei echte Randüberdruckproben bestanden. Versionierte R1→R2-Übernahme vorbereitet; Live-Nachweis folgt. [Übergabe](docs/handoffs/2026-11-09-uv-cross-dxf-module.md).
+Im geschützten Online-Konfigurator sind vier bestehende UV-Kreuz-Produkte auf Revision 2 aktualisiert, 0 neu. Vollständige Sicherung der drei betroffenen Datenbanken einschließlich rund 23 GB Werkstattdaten. SHA-256 bestätigte 3.142 übrige Produktköpfe und alle 3.156 älteren Revisionen unverändert. 14/14 Staging-Tests bestanden. 20/20 Vorschauen und 20/20 Editor-Einstiege HTTP 200. Im Browser 60/60 Design-Größen-Kombinationen mit Original-DXF und Preis geprüft. Hunde- und Katzen-Fotodesign behielten Texte und Upload über drei Größen. Der Fototausch beim Katzen-Fotodesign berechnete den Zuschlag einmal. Druckprüfung 60/60 inklusive zwei präziser Nachmessungen der geglätteten Kante ohne Änderung der Produktionsausgabe. Drei Randproben mit 1,5 mm Überdruck bestanden.
+
+Aktiver Runtime unter `/private/uv-cross-dxf-20261109/runtime`, Arbeitsbranch `dev/uv-gedenkkreuze-anschluss-20261109`. DXF/Modul/Überdruck in `e13dd8b`, Aktivierungsnachweis in `0c2b333`, Nachmessung in `31fb4d1`. Gartenhintergrund als 75-KB-WebP (`3daba5b`) online ausgeliefert; sechs Server-Modultests sowie finale Browser-Sichtprüfung mit und ohne Foto bestanden. [Übergabe](docs/handoffs/2026-11-09-uv-cross-dxf-module.md).
 
 ## 09.11.2026 · Codex · UV-Gedenkkreuze
 

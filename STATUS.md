@@ -1,3 +1,7 @@
+## 09.11.2026 – Codex/Mika: Motivtreffer unter leerem Textrahmen gezielt korrigiert
+
+Nur `refinements.mjs` auf `77805437`: sichtbare editierbare Motivkontur kann durch eine transparente Text-Hilfsfläche ausgewählt werden; sichtbarer Text, kleine Text-Hilfsflächen und Rechte bleiben erhalten. 61/61 gezielte Handler-/Foto-/UI-Tests; echte lokale SVG-/ShadowRoot-Probe 9/9 Desktop und 9/9 Mobil einschließlich Drehung/Zoom; reale Maus-/Touch-Gegenproben bewegen jeweils nur das richtige Element. Keine Liveaktion. Nächster Schritt: unabhängiger Review, danach Root-Integration und reale Kundenabnahme. [Übergabe](docs/handoffs/2026-11-09-overlap-pointer-hit.md).
+
 ## 09.11.2026, 11:54 Berlin – Codex/Mika: Performancepaket veröffentlicht, Restengpässe offen
 
 Elf freigegebene Produktionsdateien gesichert auf der bestehenden Runtime installiert und App in Plesk neu gestartet. Alte Bündel bleiben erhalten; keine Shopify-, Datenbank-, Produktbindungs- oder Preisänderung. Live bestätigt: R15-Paket aus Cache, 17 statt 46 Editor-HTTP-Ressourcen, mobiler Kopf ohne Logo und mit größerem Rückbutton, Designwechsel und Preis-/Resetfolge korrekt. **Gesamtladezeit noch nicht abgenommen:** Modell/Galerie und Designwechsel weiterhin langsam. Separater Befund: Ein Touchzug am Motiv über einem Text wählt teilweise den Text dahinter. Enger Server- und Hit-Test-Review läuft. Belege/Rückweg und genauer Stand: [aktuelle Übergabe](docs/handoffs/2026-11-09-performance-continuation.md).

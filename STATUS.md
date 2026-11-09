@@ -1,6 +1,6 @@
 ## 09.11.2026 – Mika: Galerie-Vorschauen beim Designwechsel gezielt pausieren
 
-Zwei Clientdateien auf `64291020`: alte Vorschauladevorgänge vor dem Wechsel abbrechen, neue Bilder erst bei bereitem Editor starten, bei Fehler/Zurück fehlende Bilder fortsetzen. Fertige Bilder, zwei Ladeplätze und höchstens drei spekulative Startbilder bleiben erhalten. 24/24 gezielte Tests grün; **nicht live und noch ohne echte Browserabnahme**. Keine Änderung an Oberfläche, Designs, Preisen oder Daten. [Nachweise, Grenzen und Rücknahme](docs/handoffs/2026-11-09-gallery-switch-lifecycle.md).
+Zwei Clientdateien auf `64291020`: alte Vorschauladevorgänge vor dem Wechsel abbrechen, neue Bilder erst bei bereitem Editor starten, bei Fehler/Zurück fehlende Bilder fortsetzen. Fertige Bilder, zwei Ladeplätze und höchstens drei spekulative Startbilder bleiben erhalten. 24/24 gezielte Tests und zusätzlich 12/12 Prüfungen im echten Chrome mit lokalen synthetischen HTTP-Antworten grün; **nicht live**. Kein UI-/Daten- oder Preisdiff. Der Browsernachweis gilt dem Lebenszyklus beider echten Module, nicht einer vollständigen Kunden- oder Handyabnahme. [Nachweise, Grenzen und Rücknahme](docs/handoffs/2026-11-09-gallery-switch-lifecycle.md).
 
 ## 09.11.2026 – Mika: öffentliche Originalbilder ohne wiederholte Modellkopie lesen
 

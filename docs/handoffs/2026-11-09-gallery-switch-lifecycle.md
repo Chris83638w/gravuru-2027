@@ -21,7 +21,9 @@ node --test app/configurator/variant-m/first-panel-preload.test.mjs app/workshop
 
 Geprüft wurden Pause vor der ersten Wechselanfrage, keine alten Observer-/Idle-Abrufe, ignorierte verspätete Antworten, sofort nutzbare neue Ladeplätze, erhaltene fertige Bilder, Wiederaufnahme nach Lade- und Übernahmefehler, „Zurück“, Candidate-Lesen vor Ready ohne Bildabruf, Save-Data, unveränderte Foto-/Options-/Warenkorbkontextübernahme und die bestehenden Seiten-/Generationsregeln.
 
-Die Prüfung verwendet echte Module mit kontrollierten DOM-/Gateway-Fixtures. Eine echte Browserabnahme und Zeitmessung dieses Folgekandidaten stehen aus. Abbrechen des Browserabrufs garantiert **keinen** Abbruch einer bereits begonnenen serverseitigen Renderarbeit. Das Paket verhindert neue konkurrierende Vorschauabrufe; es verspricht keine Gesamtladezeit.
+Zusätzlich wurde der Kandidat `6c310120d48daef12b16e9568916a62ecd278597` in einem eigenen Chrome-Tab über CUA geprüft: **12/12 sichtbare Browserprüfungen grün**, einschließlich wartendem Wechsel, absichtlichem Modellfehler, erfolgreichem Wechsel und dem echten Zurück-Button. [Browserereignisse und Ergebnisse](../reviews/2026-11-09-gallery-switch-lifecycle/browser-evidence.json) und [Startanleitung](../reviews/2026-11-09-gallery-switch-lifecycle/browser-proof.md). Beide unveränderten Produktionsmodule liefen im Browser, mit synthetischen lokalen Karten und verzögerten HTTP-Antworten. Das ist eine abgegrenzte Lebenszyklusprüfung, keine Live-Shop-, vollständige R15-Gestaltungs- oder Handyhardware-Abnahme.
+
+Abbrechen des Browserabrufs garantiert **keinen** Abbruch einer bereits begonnenen serverseitigen Renderarbeit. Das Paket verhindert neue konkurrierende Vorschauabrufe; es verspricht keine Gesamtladezeit. Produktive Aktivierung und reale Laufzeitmessung bleiben Roots eigener Schritt.
 
 ## Übernahme und Rückweg
 

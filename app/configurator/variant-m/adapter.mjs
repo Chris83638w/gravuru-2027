@@ -22,8 +22,8 @@ import {designResourcesReady} from './product-view-module.mjs';
 import {isLayeredDoorbell} from './product-model-module.mjs';
 import {doorbellOptionState,updateDoorbellViewport,doorbellTextSurface} from './product-view-module.mjs';
 import {installDoorbellPresentation} from './product-view-module.mjs';
-import {isFamilyFormats,familyFormatState,familyDesignReviewNote,familyFormatPrice} from './family-formats.mjs';
-import {installExecutionPresentation} from './product-execution-module.mjs';
+import {isFamilyFormats,familyFormatState,familyDesignReviewNote} from './family-formats.mjs';
+import {executionPlatePreview,installExecutionPresentation} from './product-execution-module.mjs';
 import {executionOptionGroups} from './execution-registry.mjs';
 import {mountingPlacementState} from './mounting-placement.mjs';
 import {prepareNativeShellState} from './native-shell-state.mjs';
@@ -37,6 +37,7 @@ const pendingThumbnail='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240
 
 export function installUniversal(configInput) {
   const config = prepareConfig(configInput), p = config.profile, processing = getProcessingProfile(p);
+  const productPlatePreview=executionPlatePreview(config);
   const dynamicDoorbell=isLayeredDoorbell(config);
   const dynamicFamily=isFamilyFormats(config),dynamicSizes=isScalableSizes(config),dynamicProfiles=dynamicFamily||dynamicSizes,dynamicFormats=dynamicDoorbell||dynamicProfiles;
   let options = {}, quantity = 1, el, renderId = 0;
@@ -57,8 +58,10 @@ export function installUniversal(configInput) {
   const motifs = () => customerMotifs(config, el.motifs, el.catalog);
   const svg = (design, {guides=false, selected='', handles=false, keepout=false, surface='front', screen=false, bare=false} = {}) => {
     const visible={...design,textOnTop:true,objects:design.objects.filter(o=>!o.uxHidden&&objectSurface(o)===surface)};
-    let result=surfacePreview(studioSvg(profile(surface), visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId)}),bare?'':screen?previewSurfaceUrl(config.materialSurface):config.materialSurface,profile(surface).geometry);
-    if(dynamicFamily&&screen&&!bare)result=plateDepthPreview(result,profile(surface).geometry,'customer-'+renderId);
+    const selectedProfile=profile(surface);
+    const materialSurface=bare||productPlatePreview?'':screen?previewSurfaceUrl(config.materialSurface):config.materialSurface;
+    let result=surfacePreview(studioSvg(selectedProfile, visible, el.fontData,{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:motifs(),media:[],guides,selected,handles,id:'customer-'+(++renderId),platePreview:bare?undefined:productPlatePreview}),materialSurface,selectedProfile.geometry);
+    if(dynamicFamily&&screen&&!bare&&!productPlatePreview)result=plateDepthPreview(result,selectedProfile.geometry,'customer-'+renderId);
     if(config.reviewOnly){const doc=svgDocument(result);for(const o of visible.objects.filter(o=>o.type==='photoSlot'&&!o.uxUploadId)){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group){for(const rect of group.querySelectorAll('rect:not([fill="transparent"])')){rect.setAttribute('fill','none');rect.setAttribute('stroke-dasharray','2 2');}for(const text of group.querySelectorAll('text'))text.setAttribute('fill',processing.ink);}}result=doc.documentElement.outerHTML;}
     if(el.uxObjectSVG){const doc=svgDocument(result);for(const o of visible.objects){const replacement=el.uxObjectSVG(o);if(replacement!==undefined){const group=doc.querySelector('[data-object="'+CSS.escape(o.id)+'"]');if(group)group.outerHTML=replacement;}}result=doc.documentElement.outerHTML;}
     // Clip artwork to the real plate for every universal shape; external edit handles remain outside.
@@ -152,8 +155,6 @@ export function installUniversal(configInput) {
     optionPanel.querySelector('h2').textContent = 'Deine Ausführung';
     const picks=document.createElement('div'); picks.className='m-options';
     const fullOptionPrice=g=>!!config.steelFormats&&g.id==='size'||dynamicDoorbell&&g.id==='format';
-    // These catalogue size options have zero surcharges; their actual base price belongs to the selected format.
-    const uvCrossSize=g=>dynamicFamily&&config.familyFormats.source?.lineId==='uv-gedenkkreuze'&&g.id==='size';
     const changeOption=(key,value,{record=true}={})=>{
       if(options[key]===value)return;
       const next={...options,[key]:value};
@@ -164,7 +165,7 @@ export function installUniversal(configInput) {
       options=state.mOptions;Object.assign(el.state,state);el.sync();
     };
     el.uxChangeOption=changeOption;
-    picks.innerHTML=executionOptionGroups(config).map(g=>'<label>'+esc(g.name)+'<select data-m-option="'+esc(g.id)+'" aria-label="'+esc(g.name)+'">'+g.values.map(v=>'<option value="'+esc(v.id)+'">'+esc(v.label)+(uvCrossSize(g)?' · Grundpreis '+money(familyFormatPrice(config,{size:v.id})):fullOptionPrice(g)?' · '+money(v.priceCents):v.priceCents?' · +'+money(v.priceCents):' · ohne Aufpreis')+'</option>').join('')+'</select></label>').join('');
+    picks.innerHTML=executionOptionGroups(config).map(g=>'<label>'+esc(g.name)+'<select data-m-option="'+esc(g.id)+'" aria-label="'+esc(g.name)+'">'+g.values.map(v=>'<option value="'+esc(v.id)+'">'+esc(v.label)+(fullOptionPrice(g)?' · '+money(v.priceCents):v.priceCents?' · +'+money(v.priceCents):' · ohne Aufpreis')+'</option>').join('')+'</select></label>').join('');
     optionPanel.append(picks);
     // Chris 22./23.10.2026: Befestigung als Kacheln mit Icon, Bezeichnung und Aufpreis („+2,99 €“ oder
     // „ohne Aufpreis“) wie die alte Auswahl [data-fk-mount] in completion.mjs; der Auswahlhaken kommt von

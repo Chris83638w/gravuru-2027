@@ -121,7 +121,7 @@ export const DEVICE_ENTRIES=[
  ...['doorbell-selection','doorbell-ui','doorbell-presentation','doorbell-lazy-designs'].map(n=>'/configurator/variant-m/'+n+'.mjs'),
  ...['doorbell-material-preview','doorbell-profile-validation'].map(n=>'/platform/sources/app/shared/models/'+n+'.mjs')
 ];
-export const EXECUTION_ENTRIES=Object.freeze(Object.fromEntries(['family-formats-ui','stake-execution','memorial-execution'].map(n=>[n,['/configurator/variant-m/'+n+'.mjs']])));
+export const EXECUTION_ENTRIES=Object.freeze(Object.fromEntries(['family-formats-ui','stake-execution','memorial-execution','uv-cross-execution'].map(n=>[n,['/configurator/variant-m/'+n+'.mjs']])));
 export function buildProductEditorBundles(directory){
  const core=buildEditorBundle(directory,{keepExisting:true});
  const device=buildEditorBundle(directory,{entries:DEVICE_ENTRIES,external:new Set(core.modules),keepExisting:true});

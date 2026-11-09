@@ -1,3 +1,7 @@
+## 09.11.2026 · Codex · UV-Kreuz-Modul mit Original-DXF
+
+Chris' Korrekturen umgesetzt: eigenständiges UV-Kreuz-Modul, klare Glasvorschau, Größen-Icons, keine sichtbare Bohrungsoption. Drei Original-DXF-Konturen und 1,5 mm Überdruck; freigegebene Gestaltungen unverändert. Lokal 60 Varianten/180 Wechsel, 22 Modulprüfungen, drei native Fotodrucke und drei echte Randüberdruckproben bestanden. Versionierte R1→R2-Übernahme vorbereitet; Live-Nachweis folgt. [Übergabe](docs/handoffs/2026-11-09-uv-cross-dxf-module.md).
+
 ## 09.11.2026 · Codex · UV-Gedenkkreuze
 
 20 freigegebene Designs, 60 native SVG-Formatfassungen, vier sortierte Gruppen; 5 mm Klaracryl Hinterdruck, bestätigte Preise und Foto +300 Cent. Gemeinsamer Anschluss mit expliziter Freigabe von Chris umgesetzt. 60 Modell-/Preisprüfungen und 180 Größenwechsel bestanden. Online am 09.11.2026: vier neue Produkte, 20 Designs / 60 Formate; 20/20 Vorschauen und Editorlinks HTTP 200. Alle 3.142 bestehenden Produktköpfe unverändert. [Serie öffnen](https://test-2027.gravuru-designwerkstatt.de/uv-gedenkkreuze/). [Übergabe](docs/handoffs/2026-11-09-uv-gedenkkreuze.md).

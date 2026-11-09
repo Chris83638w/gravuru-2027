@@ -14,7 +14,7 @@ function inspect(pdf,points=[]){return JSON.parse(execFileSync('python3',['-c',`
 p=f.open(stream=sys.stdin.buffer.read(),filetype='pdf');page=p[0];k=72/25.4;pix=page.get_pixmap(matrix=f.Matrix(2,2),alpha=True);layers=p.get_ocgs();objs='\\n'.join(p.xref_object(i) for i in range(1,p.xref_length()));white=[i for i,v in layers.items() if v['name'] in ['RDG_WHITE','Weissersatz Vektor']];pts=${JSON.stringify(points)}
 def samples(image):return [list(image.pixel(round(x*k*2),round(y*k*2))) for x,y in pts]
 color=samples(pix);p.set_layer(-1,on=white,off=[i for i in layers if i not in white]);q=f.open(stream=p.tobytes(),filetype='pdf');wp=q[0].get_pixmap(matrix=f.Matrix(2,2),alpha=True)
-print(json.dumps({'width':page.rect.width/k,'height':page.rect.height/k,'layers':[v['name'] for v in layers.values()],'rdg':'/Separation /RDG_WHITE' in objs,'cut':'/Separation /CutContour' in objs,'images':[(i[2],i[3],i[5],i[2]*72/page.get_image_rects(i[0])[0].width) for i in page.get_images()],'color':color,'white':samples(wp),'drawings':len(page.get_drawings())}))`],{input:pdf,env:importEnvironment(),maxBuffer:1024*1024}).toString());}
+print(json.dumps({'width':page.rect.width/k,'height':page.rect.height/k,'trim':[x/k for x in page.trimbox],'layers':[v['name'] for v in layers.values()],'rdg':'/Separation /RDG_WHITE' in objs,'cut':'/Separation /CutContour' in objs,'cutBounds':[[x/k for x in d['rect']] for d in page.get_drawings() if d.get('layer')=='CutContour'],'images':[(i[2],i[3],i[5],i[2]*72/page.get_image_rects(i[0])[0].width) for i in page.get_images()],'color':color,'white':samples(wp),'drawings':len(page.get_drawings())}))`],{input:pdf,env:importEnvironment(),maxBuffer:1024*1024}).toString());}
 test('free-form CMYK proof uses originals, leaves empty slots/holes transparent, defaults to motif white and 300 dpi',async t=>{
  const {bundle}=await fixture(t);const result=await createFormPrintProof(bundle.package,bundle.manifest.packageSha256,{bleedMm:1});assert.equal(result.metadata.settings.dpi,300);assert.equal(result.metadata.settings.bleedMm,0);assert.ok(!result.metadata.warnings.some(x=>x.includes('600 dpi empfohlen')));assert.ok(result.metadata.vectorGlyphs>0);assert.ok(result.metadata.warnings.some(x=>x.includes('Kein Druck am Außenrand')));
  const data=inspect(result.pdf,[[2,2],[15,7],[8,20],[5,25],[29,12],[44,12],[50,35]]);assert.ok(Math.abs(data.width-60)<.001);assert.ok(Math.abs(data.height-40)<.001);assert.equal(data.images[0][2],'DeviceCMYK');assert.ok(Math.abs(data.images[0][3]-300)<1);assert.equal(data.rdg,true);assert.equal(data.cut,true);
@@ -27,6 +27,23 @@ test('free-form CMYK proof uses originals, leaves empty slots/holes transparent,
 test('edge bleed follows the free outer contour and mirror transforms ink, hole and white once',async t=>{
  const {bundle}=await fixture(t,true);const result=await createFormPrintProof(bundle.package,bundle.manifest.packageSha256,{bleedMm:1,mirror:true});assert.equal(result.metadata.settings.bleedMm,1);assert.equal(result.metadata.settings.whiteBleedMm,0);const d=inspect(result.pdf,[[.5,11],[5,11],[57,11],[53,21],[11,36]]);assert.ok(Math.abs(d.width-62)<.001);assert.ok(Math.abs(d.height-42)<.001);assert.equal(d.white[0][3],0);assert.equal(d.color[0][3],255);assert.ok(d.color[1][2]>d.color[1][0]+50);assert.ok(d.color[2][0]>d.color[2][2]+100);assert.equal(d.white[3][3],0);assert.equal(d.color[3][3],0);assert.equal(d.color[4][3],0);
  const expandedWhite=await createFormPrintProof(bundle.package,bundle.manifest.packageSha256,{bleedMm:1,whiteBleedMm:1});assert.equal(inspect(expandedWhite.pdf,[[.5,11]]).white[0][3],255);
+ const overprint=await createFormPrintProof(bundle.package,bundle.manifest.packageSha256,{bleedMm:1.5,whiteBleedMm:1.5,mirror:true});
+ assert.equal(overprint.metadata.settings.bleedMm,1.5);
+ assert.equal(overprint.metadata.settings.whiteBleedMm,1.5);
+ const points=[[.2,11],[.8,11],[.2,36],[53.5,21.5]];
+ const expanded=inspect(overprint.pdf,points);
+ const rounded=box=>box.map(n=>Number(n.toFixed(3)));
+ assert.deepEqual(rounded([expanded.width,expanded.height]),[63,43]);
+ assert.deepEqual(rounded(expanded.trim),[1.5,1.5,61.5,41.5]);
+ assert.deepEqual(expanded.cutBounds.map(rounded),[[1.5,1.5,61.5,41.5]]);
+ assert.ok(expanded.color[0][2]>expanded.color[0][0]+50,'Mirrored blue ink extends past 1 mm.');
+ assert.deepEqual(expanded.white.map(pixel=>pixel[3]),[255,255,0,0]);
+ assert.deepEqual(expanded.color.slice(2).map(pixel=>pixel[3]),[0,0]);
+ const shorterWhite=await createFormPrintProof(bundle.package,bundle.manifest.packageSha256,{bleedMm:1.5,whiteBleedMm:1,mirror:true});
+ const mixed=inspect(shorterWhite.pdf,points);
+ assert.deepEqual(mixed.white.map(pixel=>pixel[3]),[0,255,0,0]);
+ assert.ok(mixed.color[0][2]>mixed.color[0][0]+50);
+ assert.throws(()=>formPrintSettings({bleedMm:1,whiteBleedMm:1.5}));
 });
 test('backend print download enforces CSRF and settings and retains byte-identical cached PDF/ZIP',async t=>{
  const {w,dir,bundle}=await fixture(t);const server=createPreviewServer({outputDirectory:dir,workshop:w});server.listen(0,'127.0.0.1');await once(server,'listening');t.after(()=>new Promise(r=>server.close(r)));const base='http://127.0.0.1:'+server.address().port,csrf=(await (await fetch(base+'/api/workshop/session')).json()).csrfToken,url=base+'/api/workshop/review-snapshots/'+bundle.manifest.id+'/print';

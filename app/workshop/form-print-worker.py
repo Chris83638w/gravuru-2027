@@ -154,7 +154,7 @@ def prepare_svg(data):
  return root
 def run(data):
  g,s=data['geometry'],data['settings'];mw,mh=g['widthMm'],g['heightMm'];dpi=s['dpi'];requested=s['bleedMm']
- c.require(g['schema']=='gravuru-contour/v1' and 0<mw<=500 and 0<mh<=500 and dpi in [300,600] and requested in [0,1],'Ungültiges Druckformat.')
+ c.require(g['schema']=='gravuru-contour/v1' and 0<mw<=500 and 0<mh<=500 and dpi in [300,600] and requested in [0,1,1.5] and s['whiteBleedMm'] in [0,1,1.5] and s['whiteBleedMm']<=requested,'Ungültiges Druckformat.')
  root=prepare_svg(data)
  parts,text_vectors,nontext_root=text_module.split_artwork(root,set(data['textFields']),c.require,number)
  # Only the outer edge is expanded; original hole paths are never enlarged or filled.
@@ -162,9 +162,12 @@ def run(data):
  # Native customer products are engraved/printed first, then drilled (Issue 48/10).
  artwork_rings=[outer] if data.get('fillDrillHoles') is True else rings
  holes=[r for r in artwork_rings if r['role']=='hole'];plain=' '.join(r['d']+' Z' for r in artwork_rings)
- polygon=c.Polygon(c.flatten(c.parse_path(outer['d'])));expanded=polygon.buffer(1,quad_segs=32)
- c.require(expanded.geom_type=='Polygon','Überdruckkontur ist nicht eindeutig.')
- coords=list(expanded.exterior.coords);expanded_d='M'+' L'.join(number(x)+' '+number(y) for x,y in coords)+' Z';extended=[{'d':expanded_d},*holes]
+ def offset_rings(distance):
+  polygon=c.Polygon(c.flatten(c.parse_path(outer['d'])))
+  expanded=polygon.buffer(distance,quad_segs=32)
+  c.require(expanded.geom_type=='Polygon','Überdruckkontur ist nicht eindeutig.')
+  path='M'+' L'.join(number(x)+' '+number(y) for x,y in expanded.exterior.coords)+' Z'
+  return [{'d':path},*holes]
  def prepare(bleed):
   W,H=math.ceil((mw+2*bleed)*dpi/25.4),math.ceil((mh+2*bleed)*dpi/25.4);c.require(W*H<=32_000_000,'Das Format überschreitet bei dieser Auflösung 32 Megapixel. Bitte 300 dpi oder ein kleineres Format wählen.')
   root.set('viewBox',f'{-bleed} {-bleed} {mw+2*bleed} {mh+2*bleed}');root.set('width',str(W));root.set('height',str(H))
@@ -179,8 +182,9 @@ def run(data):
  W,H,rgba,original,mask,edge,touches=prepare(requested)
  bleed=requested if touches else 0
  if requested and not bleed:W,H,rgba,original,mask,edge,touches=prepare(0)
+ color_rings=offset_rings(bleed) if bleed else artwork_rings
  if bleed:
-  expanded_mask=mask(' '.join(r['d']+' Z' for r in extended));outside=(expanded_mask>0)&(original==0)
+  expanded_mask=mask(' '.join(r['d']+' Z' for r in color_rings));outside=(expanded_mask>0)&(original==0)
   # Sample fully covered inner-edge pixels, not the contour antialias fringe.
   # Actual artwork alpha is preserved, including empty and translucent edges.
   boundary=np.argwhere(edge&(original==255));targets=np.argwhere(outside)
@@ -188,7 +192,8 @@ def run(data):
    indices=cKDTree(boundary).query(targets,workers=1)[1];nearest=boundary[indices];rgba[targets[:,0],targets[:,1]]=rgba[nearest[:,0],nearest[:,1]]
   rgba[:,:,3]=np.minimum(rgba[:,:,3],expanded_mask)
  white_bleed=s['whiteBleedMm'] if bleed else 0
- white_allowed=mask(' '.join(r['d']+' Z' for r in extended)) if white_bleed else original
+ white_rings=color_rings if white_bleed==bleed else offset_rings(white_bleed) if white_bleed else artwork_rings
+ white_allowed=mask(' '.join(r['d']+' Z' for r in white_rings)) if white_bleed else original
  # Render non-text batches separately so photos can cover earlier text fields.
  def render_root(r):
   r.set('viewBox',root.get('viewBox'));r.set('width',str(W));r.set('height',str(H))
@@ -210,7 +215,7 @@ def run(data):
  if s['mirror']:white_alpha=np.flip(white_alpha,axis=1).copy()
  if s['mirror']:rgba=np.flip(rgba,axis=1).copy();white_allowed=np.flip(white_allowed,axis=1).copy()
  enc=lambda a:base64.b64encode(np.ascontiguousarray(a).tobytes()).decode()
- return {'width':W,'height':H,'rgb':enc(rgba[:,:,:3]),'alpha':enc(rgba[:,:,3]),'whiteAllowed':enc(white_allowed),'whiteAlpha':enc(white_alpha),'artworkLayers':layers,'textVectors':text_vectors,'bleedMm':bleed,'whiteBleedMm':white_bleed,'edgeInk':touches,'paths':{'cut':pdf_path(rings),'artwork':pdf_path(artwork_rings),'color':pdf_path(extended if bleed else artwork_rings),'white':pdf_path(extended if white_bleed else artwork_rings)}}
+ return {'width':W,'height':H,'rgb':enc(rgba[:,:,:3]),'alpha':enc(rgba[:,:,3]),'whiteAllowed':enc(white_allowed),'whiteAlpha':enc(white_alpha),'artworkLayers':layers,'textVectors':text_vectors,'bleedMm':bleed,'whiteBleedMm':white_bleed,'edgeInk':touches,'paths':{'cut':pdf_path(rings),'artwork':pdf_path(artwork_rings),'color':pdf_path(color_rings),'white':pdf_path(white_rings)}}
 if __name__=='__main__':
  try:
   result=run(json.load(sys.stdin));print(json.dumps(result))

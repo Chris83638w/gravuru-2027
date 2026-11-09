@@ -1,6 +1,7 @@
 import {isLayeredDoorbell} from './product-module-context.mjs';
 
 export const EXECUTION_SCHEMA='gravuru-product-execution/v1';
+export const UV_CROSS_FAMILY='uv-gedenkkreuze-acryl-klar';
 export const MEMORIAL_FAMILIES=Object.freeze([
  'schiefer-tafeln-premium','schiefer-tafeln-geschnitten','schiefer-tafeln-natur','schiefer-tafeln-kordel',
  'gedenktafel-22x14-schiefer-natur','gedenktafel-22x14-schiefer-hunde-2027',
@@ -10,7 +11,7 @@ export const MEMORIAL_FAMILIES=Object.freeze([
 ]);
 const SIGNS=['steel-door-signs','acryl-3mm-tuerschilder-schwarz','acryl-3mm-tuerschilder-anthrazit'];
 export function familyExecution(familyId){
- const kind=familyId==='grabstecker-edelstahl'?'stake':MEMORIAL_FAMILIES.includes(familyId)?'memorial':SIGNS.includes(familyId)?'door-sign':null;
+ const kind=familyId===UV_CROSS_FAMILY?'uv-cross':familyId==='grabstecker-edelstahl'?'stake':MEMORIAL_FAMILIES.includes(familyId)?'memorial':SIGNS.includes(familyId)?'door-sign':null;
  return kind?{schema:EXECUTION_SCHEMA,kind,sourceFamilyId:familyId}:null;
 }
 // Source identifiers, never names, materials or guessed visual similarity.
@@ -22,9 +23,12 @@ export function executionKind(c){
  if(families.length){const kinds=new Set(families.map(id=>familyExecution(id)?.kind));if(kinds.size===1&&!kinds.has(undefined))return [...kinds][0];}
  return familyExecution(c?.familyAcrylic?.familyId)?.kind||'generic';
 }
-export const executionHeading=c=>({stake:'Größe',memorial:'Befestigung & Zubehör','door-sign':'Format & Größe'})[executionKind(c)]||'Material & Befestigung';
-export const executionTabLabel=c=>executionKind(c)==='stake'?'Größe':c?.familyFormats?'Format & Größe':'Ausführungen';
-export const executionOptionGroups=c=>(c.profile.optionGroups||[]).filter(g=>executionKind(c)!=='stake'||g.id==='size');
+const sizeOnly=c=>['stake','uv-cross'].includes(executionKind(c));
+export const executionHeading=c=>sizeOnly(c)?'Größe':({memorial:'Befestigung & Zubehör','door-sign':'Format & Größe'})[executionKind(c)]||'Material & Befestigung';
+export const executionTabLabel=c=>sizeOnly(c)?'Größe':c?.familyFormats?'Format & Größe':'Ausführungen';
+// Canonical options retain fixed catalogue values for existing drafts and prices.
+export const executionOptionGroups=(c,groups=c?.profile?.optionGroups||[])=>sizeOnly(c)?groups.filter(g=>g.id==='size'):groups;
+export const executionSummaryGroups=(c,groups)=>executionKind(c)==='uv-cross'?executionOptionGroups(c,groups):groups;
 export function validateExecution(c){
  const tag=c.productExecution;
  if(tag!==undefined&&(tag?.schema!==EXECUTION_SCHEMA||!familyExecution(tag.sourceFamilyId)||familyExecution(tag.sourceFamilyId).kind!==tag.kind))throw Error('Ungültige Ausführungsquelle.');

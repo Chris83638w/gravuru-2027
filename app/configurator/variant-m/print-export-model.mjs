@@ -9,7 +9,7 @@ export function exportSettings(geometry,input={}){
  for(const h of holes)if(![h.x,h.y,h.diameter].every(Number.isFinite)||h.diameter<=0||h.x-h.diameter/2<0||h.y-h.diameter/2<0||h.x+h.diameter/2>width||h.y+h.diameter/2>height)throw Error('Ungültiges Bohrbild.');
  if(shape==='contour')validateContourGeometry(geometry);
  const o={profile:'roland',bleedMm:0,white:'motif',whiteBleedMm:0,mirror:false,dpi:300,...input};
- if(![300,600].includes(o.dpi)||!['roland','mimaki'].includes(o.profile)||![0,1].includes(o.bleedMm)||![0,1].includes(o.whiteBleedMm)||!['motif','full','none'].includes(o.white)||typeof o.mirror!=='boolean'||o.whiteBleedMm>o.bleedMm)throw Error('Ungültige Exporteinstellungen. Weißüberdruck darf den Farbüberdruck nicht überschreiten.');
+ if(![300,600].includes(o.dpi)||!['roland','mimaki'].includes(o.profile)||![0,1,1.5].includes(o.bleedMm)||![0,1,1.5].includes(o.whiteBleedMm)||!['motif','full','none'].includes(o.white)||typeof o.mirror!=='boolean'||o.whiteBleedMm>o.bleedMm)throw Error('Ungültige Exporteinstellungen. Weißüberdruck darf den Farbüberdruck nicht überschreiten.');
  if(shape==='contour'&&(o.bleedMm||o.whiteBleedMm))throw Error('Randüberdruck für freie Konturen bitte über die Werkstatt-Fertigungsprüfung erzeugen.');
  return {...o,geometry:{width,height,shape,cornerRadiusMm,holes,...(shape==='contour'?{outlinePath:geometry.outlinePath}: {})},pageWidthMm:width+2*o.bleedMm,pageHeightMm:height+2*o.bleedMm,colorSpace:'DeviceCMYK'};
 }

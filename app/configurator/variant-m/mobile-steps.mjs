@@ -4,7 +4,7 @@
 // bildet die vorhandenen Reiter nur auf Schritte ab und verschiebt keine Logik.
 
 import {customerTextLine} from './text-summary.mjs';
-import {executionTabLabel} from './execution-registry.mjs';
+import {executionKind,executionSummaryGroups,executionTabLabel} from './execution-registry.mjs';
 import {visibleBy,optionFields,fieldValue,fieldDisplay} from './option-fields.mjs';
 
 export const MOBILE_MAX_WIDTH=767;
@@ -78,7 +78,7 @@ const sizeLabel=geometry=>geometry&&Number.isFinite(geometry.width)&&Number.isFi
 
 // Zusammenfassung für den Schritt „Prüfen“: Größe, Material, Optionen, Preis.
 // Reine Funktion über dem Produktstand – keine zweite Preislogik, der Preis kommt als Text.
-export function summaryRows({profile,legacy,state,quantity=1,totalText='',designName=''}){
+export function summaryRows({profile,config,legacy,state,quantity=1,totalText='',designName=''}){
   const rows=[];
   const groups=profile?.optionGroups||[];
   const chosen=group=>group.values?.find(v=>v.id===(state?.mOptions?.[group.id]||group.defaultValueId));
@@ -90,9 +90,9 @@ export function summaryRows({profile,legacy,state,quantity=1,totalText='',design
   if(size)rows.push(['Größe',size]);
   const material=materialLabel(profile?.material)||(state?.fkColor?'Acrylglas · '+(state.fkColor==='anthrazit'?'Anthrazit':'Schwarz'):'');
   if(material)rows.push(['Material',material]);
-  const options=groups.filter(g=>g!==sizeGroup&&picked[g.id]!==undefined).map(g=>chosen(g)?.label).filter(Boolean);
+  const options=executionSummaryGroups(config,groups).filter(g=>g!==sizeGroup&&picked[g.id]!==undefined).map(g=>chosen(g)?.label).filter(Boolean);
   if(options.length)rows.push(['Optionen',options.join(' · ')]);
-  else if(legacy?.mounting&&state?.fkMounting){const m=legacy.mounting.options?.find(v=>v.key===state.fkMounting);if(m)rows.push(['Befestigung',m.name]);}
+  else if(executionKind(config)!=='uv-cross'&&legacy?.mounting&&state?.fkMounting){const m=legacy.mounting.options?.find(v=>v.key===state.fkMounting);if(m)rows.push(['Befestigung',m.name]);}
   rows.push(...fieldRows);
   if(designName)rows.push(['Design',designName]);
   const objects=(state?.objects||[]).filter(o=>!o.uxHidden);
@@ -174,7 +174,7 @@ export async function installMobileSteps(api){
     if(!active||current!=='review')return;
     const designName=profile?.designs?.find(d=>d.id===el.state.designId)?.name||'';
     const quantity=$('[data-fk-quantity]')?.value||1,totalText=$('[data-fk-total]')?.textContent.trim()||'';
-    const rows=summaryRows({profile,legacy,state:el.state,quantity,totalText,designName});
+    const rows=summaryRows({profile,config,legacy,state:el.state,quantity,totalText,designName});
     review.querySelector('[data-ux-mobile-summary]').innerHTML=rows.map(([label,value])=>`<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join('');
     // K1-Hinweise (Pflichtfeld, Limit) und fehlendes Pflichtfoto sichtbar vor dem Warenkorb.
     el.uxAttemptTextValidation?.();

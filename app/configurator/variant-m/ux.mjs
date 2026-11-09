@@ -5,7 +5,7 @@ import {installGalleryWorkbench} from './gallery-workbench.mjs';
 import {embedPreviewUploads} from './preview-uploads.mjs';
 import {installDialogDismissal} from './dialog-dismiss.mjs';
 import {installCustomerHelp} from './customer-help.mjs';
-import {executionHeading} from './execution-registry.mjs';
+import {executionHeading,executionKind,executionSummaryGroups} from './execution-registry.mjs';
 import {installReviewLayout} from './review-layout.mjs';
 import {installProductDesignGallery} from './product-design-gallery.mjs';
 import {installViewZoom} from './view-zoom.mjs';
@@ -97,7 +97,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   // Reiter „Foto / Logo“ wird gar nicht erst angelegt, wenn weder Foto noch Logo möglich ist oder wenn das
   // Produkt kein Foto vorsieht und kein Design eine Foto-/Logo-Ebene hat (Chris 22./23.10.2026, ux-model.mjs).
   const vectorLogos=vectorLogoEnabled(config);
-  const uvCrossPhoto=config?.familyFormats?.source?.lineId==='uv-gedenkkreuze';
+  const uvCrossPhoto=executionKind(config)==='uv-cross';
   const uploadOffered=(photoEnabled||logoEnabled)&&(photoEnabled||designsHaveUploadLayer(config)||vectorLogos);
   const allowedTabs=moduleTabs(config,{upload:uploadOffered});
   const files=new Map(), icons={};
@@ -327,7 +327,7 @@ export async function installUX(el,config,legacy,{attach}={}){
       if(q.selectedTierLabels){tierNote.textContent=q.selectedTierLabels.join(' · ');tierNote.hidden=!q.selectedTierLabels.length;}
       if(q.quantityTier){tierLine=`<p>Mengenstaffel ab ${q.quantityTier.minQuantity} Stück: −${money(q.quantityTierDiscountCents)} je Stück</p>`;tierNote.dataset.uxTierActive=String(q.quantityTier.minQuantity);}else delete tierNote.dataset.uxTierActive;}
     else{base=legacy.purchasing.basePriceCents;options=legacy.mounting.options.find(v=>v.key===el.state.fkMounting)?.surchargeCents||0;motifs=additionalMotifCount(el.state.objects,design()?.objects||[])*(legacy.purchasing.motifPriceCents??169);total=(base+options+motifs)*quantity+extra.totalCents;}
-    const optionNames=config?visibleGroups(config,el.state.mOptions||{}).map(g=>g.values.find(v=>v.id===(el.state.mOptions?.[g.id]||g.defaultValueId))?.label).filter(Boolean).join(', '):legacy.mounting.options.find(v=>v.key===el.state.fkMounting)?.name;
+    const optionNames=config?executionSummaryGroups(config,visibleGroups(config,el.state.mOptions||{})).map(g=>g.values.find(v=>v.id===(el.state.mOptions?.[g.id]||g.defaultValueId))?.label).filter(Boolean).join(', '):legacy.mounting.options.find(v=>v.key===el.state.fkMounting)?.name;
     $('[data-fk-total]').textContent=config?.demo?'Materialdemo':money(total);$('[data-ux-price-lines]').innerHTML=config?.demo?'<p>Reiner Profiltest ohne Artikelpreis oder Shopify-Zuordnung.</p>':`<p>Grundpreis: <strong>${money(base)}</strong></p><p>${esc(optionNames||'Optionen')}: ${money(options)}</p><p>${config?.motifCharge==='all'?'Motive':'Zusätzliche Motive'}: ${money(motifs)}</p><p>Fotos / Logos (${extra.count}): ${money(extra.unitCents)}</p>${tierLine}<p>Menge: ${quantity}</p><p>Gesamt: <strong>${money(total)}</strong></p><small>Inkl. MwSt. · zzgl. Versand. Berechnet werden nur Fotos und Logos, die auf deinem Produkt sichtbar sind.</small>`;
   }catch(error){say(error.message);}}
   function update(){updateFields();updateGallery();updateUploads();updatePrice();$('[data-ux-guides]').checked=$('[data-setting=guides]').checked;$('[data-ux-count]').textContent=`(${el.state.objects.length})`;$('[data-ux=undo]').disabled=!el.history.length;$('[data-ux=redo]').disabled=!el.future.length;$('.fk-buy-button').disabled=true;$('.fk-order-status').textContent=config?.productPreview?'Produktvorschau · Bestellung noch nicht verbunden':'Lokaler Prüfstand · Bestellung noch nicht verbunden';renderContents();if(dialogs.contents.open&&freeColor&&selected()&&!$('[data-ux-content-color]'))$('[data-ux-object-tools]').insertAdjacentHTML('beforeend','<label class="ux-print-color">Druckfarbe <input type="color" data-ux-content-color aria-label="Druckfarbe des ausgewählten Elements" value="'+esc(selected().color||'#202824')+'"></label>');}

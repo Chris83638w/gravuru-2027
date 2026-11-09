@@ -11,6 +11,8 @@ import {textsNearHoles,holeHintText} from '../platform/sources/app/shared/models
 import {surfacePreview,scenePreview} from '../configurator/variant-m/material-surface.mjs';
 import {examplePhotoMarkup,emptyMaskedPhotoMarkup} from '../configurator/variant-m/photo-placeholder.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
+import {executionKind} from '../configurator/variant-m/execution-registry.mjs';
+import {uvCrossGlassPreview} from '../configurator/variant-m/uv-cross-glass.mjs';
 import {workshopResources} from './catalog.mjs';
 
 // Resolve shared fonts only for the new model family, never persist the merged map.
@@ -62,11 +64,12 @@ export function productPreview(model,{options={},examples=[],designId,layout='po
   }
   return p.material.kind==='slate'&&o.type==='photoSlot'&&c.photo.enabled?emptyMaskedPhotoMarkup(o,getProcessingProfile(p).ink,p.material.color):'';
  };
- let svg=studioSvg(p,d,previewFonts(c),{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:c.localResources.motifs,media,handles:false,id:'product-card',photoExampleMarkup,originalPhotoPreview:examples.length>0});
+ const uvCross=executionKind(c)==='uv-cross';
+ let svg=studioSvg(p,d,previewFonts(c),{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:c.localResources.motifs,media,handles:false,id:'product-card',photoExampleMarkup,originalPhotoPreview:examples.length>0,platePreview:uvCross?uvCrossGlassPreview:undefined});
  svg=svg.replace('href="blob:gravuru-workshop-reference"','href="'+example+'"');
  for(const e of examples)svg=svg.replaceAll('href="blob:workshop-'+e.assetId+'"','href="'+e.url+'"');
  if(c.familyAcrylic)svg=spacerPreview(svg,p);
- if(!c.acrylic)return scenePreview(designAreaPreview(keepoutPreview(screwPreview(surfacePreview(svg,c.materialSurface,p.geometry),p),p,{show:keepout}),c,p,{show:designArea}),c.sceneBackground);
+ if(!c.acrylic)return scenePreview(designAreaPreview(keepoutPreview(screwPreview(surfacePreview(svg,uvCross?'':c.materialSurface,p.geometry),p),p,{show:keepout}),c,p,{show:designArea}),c.sceneBackground);
  backdrop??=image('scene-empty-v2.jpg');
  svg=svg.replace(/viewBox="[^"]+"/,'x="85.794" y="49.956" width="915.498" height="1196.048" viewBox="0 0 150 200"').replace('fill="url(#studio-product-card-surface)"','fill="transparent"');
  const choice=acrylicSelection(acrylicOptions(options),c.acrylic.pricing),b=choice.base;

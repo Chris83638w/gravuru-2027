@@ -18,8 +18,8 @@ function selectionMarkup(o,units){
  const u=Number.isFinite(units)&&units>0?units:.4,grip=12*u,hit=24*u,offset=4*u;
  return '<rect x="'+(-o.w/2)+'" y="'+(-o.h/2)+'" width="'+o.w+'" height="'+o.h+'" fill="none" stroke="#16845d" stroke-width="'+u+'" pointer-events="none"/>'+[[-1,-1],[1,-1],[-1,1],[1,1]].map(([x,y])=>'<g data-resize="'+esc(o.id)+'" transform="translate('+(x*(o.w/2+offset))+' '+(y*(o.h/2+offset))+')" style="cursor:'+(x===y?'nwse':'nesw')+'-resize"><title>Ziehen zum Vergrößern oder Verkleinern</title><rect x="'+(-hit/2)+'" y="'+(-hit/2)+'" width="'+hit+'" height="'+hit+'" fill="transparent" pointer-events="all"/><rect x="'+(-grip/2)+'" y="'+(-grip/2)+'" width="'+grip+'" height="'+grip+'" rx="'+2*u+'" fill="#fff" stroke="#196347" stroke-width="'+1.5*u+'" pointer-events="none"/></g>').join('');
 }
-export function studioSvg(profile,design,fonts,{selected='',frameKey='',mountingKey='K00',motifs=[],media=[],guides=false,id='studio',color='schwarz',handles=true,handleUnits,photoExampleMarkup,originalPhotoPreview=false}={}){
- if(profile.kind==='universal-product')return universalSvg(profile,design,fonts,{selected,motifs,media,guides,id,handles,handleUnits,photoExampleMarkup,originalPhotoPreview});
+export function studioSvg(profile,design,fonts,{selected='',frameKey='',mountingKey='K00',motifs=[],media=[],guides=false,id='studio',color='schwarz',handles=true,handleUnits,photoExampleMarkup,originalPhotoPreview=false,platePreview=acrylicPlatePreview}={}){
+ if(profile.kind==='universal-product')return universalSvg(profile,design,fonts,{selected,motifs,media,guides,id,handles,handleUnits,photoExampleMarkup,originalPhotoPreview,platePreview});
  const {width:w=160,height:h=280}=profile.geometry;
  const a=(profile.frames.find(f=>f.key===frameKey)||profile.frames[0]).acrylic,b=profile.geometry.bellImageBounds||profile.geometry.bell;
  const native=profile.doorbellSchema==='gravuru-doorbell/v1';
@@ -88,14 +88,14 @@ export function graphicMarkup(o,ink){
 }
 export function universalPreviewViewport(p,{working=false}={}){const w=p.geometry.width,h=working&&p.workingArea?p.workingArea.previewHeightMm:p.geometry.height,pad=Math.max(Math.max(w,h)*.035,(p.backingPreview?.offsetMm||0)+Math.max(w,h)*.02);return [-pad,-pad,w+2*pad,h+2*pad];}
 
-function universalSvg(p,d,fonts,{selected,motifs,media,guides,id,handles,handleUnits,photoExampleMarkup,originalPhotoPreview}){
+function universalSvg(p,d,fonts,{selected,motifs,media,guides,id,handles,handleUnits,photoExampleMarkup,originalPhotoPreview,platePreview}){
  const {width:w,height:h,shape,cornerRadiusMm:radius=0}=p.geometry,pad=Math.max(Math.max(w,h)*.035,(p.backingPreview?.offsetMm||0)+Math.max(w,h)*.02),stroke=Math.max(w,h)*.002;
  const safeId='studio-'+String(id).replace(/[^a-zA-Z0-9_-]/g,'_');
  const processing=getProcessingProfile(p),ink=processing.ink;
  const contour=shape==='contour'?contourPathWithHoles(p.geometry):null;
  const safe=contour&&guides?contourSafeAreaSvg(p.geometry,safeId+'-design-area'):null;
  const plate=contour?'<path d="'+esc(contour)+'" fill-rule="evenodd"':shape==='ellipse'?'<ellipse cx="'+w/2+'" cy="'+h/2+'" rx="'+w/2+'" ry="'+h/2+'"':'<rect width="'+w+'" height="'+h+'" rx="'+radius+'"';
- const glass=acrylicPlatePreview(p,plate,safeId);
+ const glass=platePreview(p,plate,safeId);
  const objects=designPaintOrder(d).map((o,index)=>{
   const key=safeId+'-element-'+index,color=elementColor(p,o);let content;
   if(o.type==='text')content=textPaths(o,fonts)||placeholder(o,'Schrift fehlt',stroke);

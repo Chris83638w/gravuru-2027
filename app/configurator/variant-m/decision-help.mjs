@@ -32,7 +32,7 @@ export function installDecisionHelp({el,r,config}){
  // These terms explain the three product properties even when a product has
  // only one material/size and therefore no corresponding selection control.
  const options=r.querySelector('#ux-panel-options h2');
- if(options){const row=document.createElement('div');row.className='ux-info-links';for(const kind of (executionKind(config)==='stake'?['size']:['material','size','mounting'])){const term=document.createElement('span');term.className='ux-info-term';term.append(document.createTextNode(decisionHelp(kind,config).title),info(kind));row.append(term);}options.after(row);}
+ if(options){const row=document.createElement('div');row.className='ux-info-links';for(const kind of (['stake','uv-cross'].includes(executionKind(config))?['size']:['material','size','mounting'])){const term=document.createElement('span');term.className='ux-info-term';term.append(document.createTextNode(decisionHelp(kind,config).title),info(kind));row.append(term);}options.after(row);}
  // Keep each existing navigation button and its listeners intact. The help is
  // a sibling directly beside its term, never a nested button or a trailing row.
  const nav=r.querySelector('.completion-motif-nav');

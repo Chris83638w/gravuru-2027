@@ -1,3 +1,7 @@
+## 09.11.2026 – Codex/Mika: Motivtreffer unter leerem Textrahmen gezielt korrigiert
+
+Nur `refinements.mjs` auf `77805437`: sichtbare editierbare Motivkontur kann durch eine transparente Text-Hilfsfläche ausgewählt werden; sichtbarer Text, kleine Text-Hilfsflächen und Rechte bleiben erhalten. 61/61 gezielte Handler-/Foto-/UI-Tests; echte lokale SVG-/ShadowRoot-Probe 9/9 Desktop und 9/9 Mobil einschließlich Drehung/Zoom; reale Maus-/Touch-Gegenproben bewegen jeweils nur das richtige Element. Keine Liveaktion. Nächster Schritt: unabhängiger Review, danach Root-Integration und reale Kundenabnahme. [Übergabe](docs/handoffs/2026-11-09-overlap-pointer-hit.md).
+
 ## 09.11.2026 – Mika: öffentliche Originalbilder ohne wiederholte Modellkopie lesen
 
 Drei Serverdateien auf `4afd1a2b`, keine Oberfläche oder Daten geändert. Bereits vorhandene begrenzte Modellablage liefert für öffentliche Originalbilder einen tief unveränderlichen Nachweis; Bindung, Preis, Mandant, Pause und Freigabe bleiben frisch geprüft. 20/20 gezielte Tests plus unabhängige Gegenprobe grün. Echte r4-Bank lokal: warme Bildabrufe meist 154–159 statt 233–271 ms; erster Nachweis 244 ms, keine Zusage für Netz- oder Gesamtladezeit. **Noch nicht veröffentlicht.** Root übernimmt nach frischem Drei-Dateien-Hashabgleich. [Nachweise und Rücknahme](docs/handoffs/2026-11-09-public-preview-model-read.md).

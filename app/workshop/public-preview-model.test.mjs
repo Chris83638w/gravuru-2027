@@ -1,0 +1,38 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
+import {createHash} from 'node:crypto';
+import {createWorkshop} from './http.mjs';
+import {build} from '../configurator/variant-m/build.mjs';
+import {withCustomerReadScope} from './customer-read-scope.mjs';
+const sha=v=>createHash('sha256').update(JSON.stringify(v)).digest('hex');
+
+test('public original model proof keeps exact native bytes, stays deeply immutable and refreshes current publication and pause',t=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'gravuru-public-model-'));
+ build({outputDirectory:dir});const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0];
+ const w=createWorkshop({filename:path.join(dir,'native.sqlite'),seedConfig:seed.universal,legacy:seed.legacy});
+ t.after(()=>{w.close();fs.rmSync(dir,{recursive:true,force:true});});
+ const record=w.repository.get(w.defaultId),id=record.id;
+ const before=w.model(id,1),first=withCustomerReadScope(()=>w.publicPreviewModel(id,1));
+ assert.equal(first.digest,sha(before));assert.deepEqual(first.model,before);
+ assert.equal(withCustomerReadScope(()=>w.publicPreviewModel(id,1)),first);
+ assert.throws(()=>{first.model.universal.profile.designs[0].name='Mutated';},TypeError);
+ assert.throws(()=>{first.digest='x';},TypeError);
+ const own=w.model(id,1);own.universal.profile.name='Caller copy';assert.equal(w.publicPreviewModel(id,1),first);
+ for(const invalid of [undefined,null,0,-1,'1',1.5])assert.throws(()=>w.publicPreviewModel(id,invalid),{code:'public_preview_revision'});
+ assert.throws(()=>w.publicPreviewModel(id,9999),{status:404});
+ const published=w.repository.publish(id,{expectedRevision:1});assert.equal(published.revision,2);
+ assert.equal(w.publicPreviewModel(id,1),first,'published head does not rewrite historical snapshot');
+ const changed=w.publicPreviewModel(id,2);assert.notEqual(changed,first);assert.equal(changed.digest,sha(w.model(id,2)));assert.notEqual(changed.digest,first.digest);
+ const doc=structuredClone(w.repository.get(id).document);doc.name+=' changed';const saved=w.repository.save(id,doc,2);
+ const next=w.publicPreviewModel(id,saved.revision);assert.notEqual(next.digest,changed.digest);assert.equal(next.digest,sha(w.model(id,saved.revision)));
+ w.konfis.set(id,{to:'paused',expectedStatus:'draft',productRevision:saved.revision,actor:'test'});
+ assert.throws(()=>w.publicPreviewModel(id,1),{code:'konfi_paused'});
+ w.konfis.set(id,{to:'released',expectedStatus:'paused',productRevision:saved.revision,actor:'test'});
+ assert.equal(w.publicPreviewModel(id,1).digest,first.digest);
+ assert.deepEqual(first.model,before,'earlier proof remains unchanged');
+ const copies=Array.from({length:9},(_,i)=>w.repository.create({...record.document,name:'Cache '+i}));
+ withCustomerReadScope(()=>{for(const copy of copies)w.model(copy.id,1);const recovered=w.publicPreviewModel(copies[0].id,1);assert.equal(recovered.digest,sha(w.model(copies[0].id,1)));});
+});

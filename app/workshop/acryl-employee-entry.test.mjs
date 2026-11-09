@@ -46,3 +46,11 @@ test('entry script: without the variable and with the valid value the start fail
   assert.doesNotMatch(result.stderr,/GRAVURU_CUSTOMER_INTEGRATION/);
  }
 });
+
+test('optional public preview preparation has exact server-only directory/product/variant settings',()=>{
+ const base={GRAVURU_CUSTOMER_INTEGRATION:'merchant-test-only'},directory=process.cwd();
+ const configured=customerIntegrationFromEnv({...base,GRAVURU_PUBLIC_PREVIEW_DIRECTORY:directory,GRAVURU_PUBLIC_PREVIEW_PREPARE_PRODUCT:'gid://shopify/Product/16190784438652',GRAVURU_PUBLIC_PREVIEW_PREPARE_VARIANT:'gid://shopify/ProductVariant/58104606556540'});
+ assert.equal(configured.shopEntry.publicPreviewDirectory,directory);assert.deepEqual(configured.shopEntry.publicPreviewPrepare,{shopifyProductId:'gid://shopify/Product/16190784438652',shopifyVariantId:'gid://shopify/ProductVariant/58104606556540'});
+ for(const extra of [{GRAVURU_PUBLIC_PREVIEW_DIRECTORY:'../private'},{GRAVURU_PUBLIC_PREVIEW_PREPARE_PRODUCT:'gid://shopify/Product/1'},{GRAVURU_PUBLIC_PREVIEW_DIRECTORY:directory,GRAVURU_PUBLIC_PREVIEW_PREPARE_PRODUCT:'gid://shopify/Product/1'}])assert.throws(()=>customerIntegrationFromEnv({...base,...extra}),{code:'public_preview_env'});
+ assert.throws(()=>customerIntegrationFromEnv({GRAVURU_PUBLIC_PREVIEW_DIRECTORY:directory}),{code:'public_preview_env'});
+});

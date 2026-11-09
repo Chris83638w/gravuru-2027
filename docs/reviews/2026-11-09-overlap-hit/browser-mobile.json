@@ -1,0 +1,145 @@
+{
+  "schema": "gravuru-overlap-browser-proof/v1",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "checks": [
+    {
+      "name": "Dach unter leerem Textrahmen",
+      "pass": true,
+      "expected": "house",
+      "actual": "house",
+      "raw": {
+        "tag": "rect",
+        "object": "text",
+        "fill": "transparent"
+      },
+      "x": 160.47529807387255,
+      "y": 279.1341718568051
+    },
+    {
+      "name": "Sichtbare Textkontur",
+      "pass": true,
+      "expected": "text",
+      "actual": "text",
+      "raw": {
+        "tag": "path",
+        "object": "text",
+        "fill": null
+      },
+      "x": 154.39473797044664,
+      "y": 333.1835905032349
+    },
+    {
+      "name": "Transparenter Motivrand",
+      "pass": true,
+      "expected": "text",
+      "actual": "text",
+      "raw": {
+        "tag": "rect",
+        "object": "text",
+        "fill": "transparent"
+      },
+      "x": 135.07207099539121,
+      "y": 295.3489976515804
+    },
+    {
+      "name": "Gesperrtes Motiv",
+      "pass": true,
+      "expected": "text",
+      "actual": "text",
+      "raw": {
+        "tag": "rect",
+        "object": "text",
+        "fill": "transparent"
+      },
+      "x": 160.47529807387255,
+      "y": 279.1341718568051
+    },
+    {
+      "name": "Fehlende Verschiebefreigabe",
+      "pass": true,
+      "expected": "text",
+      "actual": "text",
+      "raw": {
+        "tag": "rect",
+        "object": "text",
+        "fill": "transparent"
+      },
+      "x": 160.47529807387255,
+      "y": 279.1341718568051
+    },
+    {
+      "name": "Drehung 25 Grad / Zoom 125 Prozent",
+      "pass": true,
+      "expected": "house",
+      "actual": "house",
+      "raw": {
+        "tag": "rect",
+        "object": "text",
+        "fill": "transparent"
+      },
+      "x": 165.14025841203434,
+      "y": 268.1538212360525
+    },
+    {
+      "name": "Gedrehte sichtbare Textkontur",
+      "pass": true,
+      "expected": "text",
+      "actual": "text",
+      "raw": {
+        "tag": "path",
+        "object": "text",
+        "fill": null
+      },
+      "x": 146.83054923191392,
+      "y": 329.9713950933012
+    },
+    {
+      "name": "Gedrehter transparenter Motivrand",
+      "pass": true,
+      "expected": "text",
+      "actual": "text",
+      "raw": {
+        "tag": "rect",
+        "object": "text",
+        "fill": "transparent"
+      },
+      "x": 127.79547840090414,
+      "y": 273.103515251972
+    },
+    {
+      "name": "Erneute Auswahl nach Abwählen",
+      "pass": true,
+      "actual": "house",
+      "raw": {
+        "tag": "rect",
+        "object": "text",
+        "fill": "transparent"
+      },
+      "x": 160.47529807387255,
+      "y": 279.1341718568051
+    }
+  ],
+  "passed": true,
+  "renderedOrder": [
+    "house",
+    "text"
+  ],
+  "probeCoordinates": {
+    "roof": {
+      "x": 160.47529807387255,
+      "y": 279.1341718568051,
+      "z": 0,
+      "w": 1
+    },
+    "glyph": {
+      "x": 154.39473797044664,
+      "y": 333.1835905032349,
+      "z": 0,
+      "w": 1
+    }
+  }
+}

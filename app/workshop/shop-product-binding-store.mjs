@@ -7,6 +7,7 @@ import {resolveShopProductBinding} from './shop-product-binding-plan.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
 import {createShopGalleryCache} from './shop-gallery-cache.mjs';
 import {performance} from 'node:perf_hooks';
+import {customerDatabaseRead} from './customer-read-scope.mjs';
 
 const plain = v => v !== null && typeof v === 'object' && !Array.isArray(v) && [Object.prototype,null].includes(Object.getPrototypeOf(v));
 const positive = v => Number.isSafeInteger(v) && v > 0;
@@ -108,9 +109,12 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
     if(row.store_id!==storeId)fail('shop_binding_store_scope','Die Zuordnung gehört zu einem anderen Store.',503);
     const key=row.cfg_id+'@'+row.cfg_revision;let record=records.get(key);
     if(!record){
+      record=customerDatabaseRead(db,'binding-document:'+tenantId+':'+key,()=>{
       let at=performance.now();const source=productRow(row.cfg_id,row.cfg_revision,{withMetadata:false});if(timings)timings.documentReadMs+=performance.now()-at;
       at=performance.now();const document=parseDocument(source.document);if(timings)timings.documentParseMs+=performance.now()-at;
       at=performance.now();record={digest:digest(document),productionStatus:document.productionProfile==null?'profile-assignment-pending':'not-released'};if(timings){timings.documentHashMs+=performance.now()-at;timings.products++;}
+      return record;
+      });
       // Retain only the digest, never all parsed documents of a large catalogue.
       records.set(key,record);
     }

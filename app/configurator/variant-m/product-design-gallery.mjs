@@ -40,13 +40,14 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
  const status=gallery.querySelector('.ux-product-status'),grid=gallery.querySelector('.ux-product-grid'),more=gallery.querySelector('.ux-product-more');
  const themeLabel=gallery.querySelector('.ux-product-themes'),themes=themeLabel.querySelector('select');
  const pager=createGalleryPager((page,theme,options)=>api.load(page,theme,options));
- let epoch=0,switching=false,retryTimer,prepareRetries=0;const urls=[],queue=[];let active=0;
- const pump=()=>{while(active<2&&queue.length){const request=queue.shift(),{item,img,version}=request;
-  if(version!==epoch||img.previewStarted)continue;img.previewStarted=true;active++;
-  Promise.resolve().then(()=>api.preview(item.target,item.previewUrl)).then(blob=>{
+ let epoch=0,switching=false,retryTimer,prepareRetries=0;const urls=[],queue=[],active=new Set();
+ const cancelPreviews=()=>{queue.length=0;for(const controller of active)controller.abort();active.clear();};
+ const pump=()=>{while(active.size<2&&queue.length){const request=queue.shift(),{item,img,version}=request;
+  if(version!==epoch||img.previewStarted)continue;img.previewStarted=true;const controller=new AbortController();active.add(controller);
+  Promise.resolve().then(()=>{if(!controller.signal.aborted)return api.preview(item.target,item.previewUrl,controller.signal);}).then(blob=>{
    if(version!==epoch)return;const url=URL.createObjectURL(blob);urls.push(url);img.src=url;img.alt=item.designName;
-  }).catch(()=>{img.alt='Vorschau nicht verfügbar';img.previewStarted=false;
-  }).finally(()=>{active--;pump();});}};
+  }).catch(()=>{if(version===epoch){img.alt='Vorschau nicht verfügbar';img.previewStarted=false;}
+  }).finally(()=>{if(active.delete(controller))pump();});}};
  const observer=typeof IntersectionObserver==='function'?new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){observer.unobserve(entry.target);queue.push(entry.target.previewRequest);pump();}},{rootMargin:'150px'}):null;
  async function choose(item){
   if(switching)return;
@@ -81,12 +82,12 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
   }catch(error){status.textContent=error.message||'Die Designauswahl ist gerade nicht erreichbar. Bitte erneut versuchen.';more.textContent='Erneut versuchen';more.hidden=false;}
   finally{if(version===epoch){more.disabled=false;themes.disabled=false;}}
  }
- function reset(){epoch++;pager.reset();clearTimeout(retryTimer);prepareRetries=0;observer?.disconnect();queue.length=0;grid.replaceChildren();for(const url of urls)URL.revokeObjectURL(url);urls.length=0;load();}
+ function reset(){epoch++;pager.reset();clearTimeout(retryTimer);prepareRetries=0;observer?.disconnect();cancelPreviews();grid.replaceChildren();for(const url of urls)URL.revokeObjectURL(url);urls.length=0;load();}
  themes.onchange=reset;
  // Invalidate stale pages even if size/mounting changes during a pending request.
  let shownFor=JSON.stringify(galleryOptions()??null);
  const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args),now=JSON.stringify(galleryOptions()??null);if(now!==shownFor){shownFor=now;reset();}for(const card of grid.querySelectorAll('.ux-product-choose'))card.setAttribute('aria-pressed',String(card.dataset.productDesignId===el.state.designId));return result;};more.onclick=()=>{clearTimeout(retryTimer);load();};
- window.addEventListener('pagehide',()=>{epoch++;pager.reset();clearTimeout(retryTimer);observer?.disconnect();for(const url of urls)URL.revokeObjectURL(url);},{once:true});
+ window.addEventListener('pagehide',()=>{epoch++;pager.reset();clearTimeout(retryTimer);observer?.disconnect();cancelPreviews();for(const url of urls)URL.revokeObjectURL(url);},{once:true});
  el.sync();
  // Begin loading immediately; the editor itself does not wait for thumbnails.
  load();

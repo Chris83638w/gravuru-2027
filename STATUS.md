@@ -1,3 +1,53 @@
+## 09.11.2026 – Codex/Mika: Server-/Motivfix live, äußerer Übertragungsengpass eingegrenzt
+
+Vierdateienstand `767701ee` am15:10:27UTC gesichert installiert, Plesk-App danach neu gestartet; alle36 Styles, fremde Quellen, alte Bündel und Produktdaten unverändert. Echte mobile Touchprobe: Motiv nach Abwahl durch transparente Textfläche erneut verschoben, sichtbarer Text weiter auswählbar, Größe unverändert, bestätigter Reset wieder19,99€. Browser fiel nach abgebrochenem Coretransfer auf Einzelmodule zurück; deshalb keine vollständige Performanceabnahme. Vollständiger Core bytegenau geprüft: externer Abruf43,99s, serverseitiger HTTPS-Abruf desselben öffentlichen Pfads51ms. Äußerer Übertragungsweg bleibt zu prüfen. Zweidateien-Galerie-Lifecycle separat vorbereitet, noch nicht live. PR223/224-Zuweisung unverändert. [Aktueller Stand, Nachweise und Rückweg](docs/handoffs/2026-11-09-server-hit-live-and-transfer.md).
+
+## 09.11.2026 – Codex/Mika: Motivtreffer unter leerem Textrahmen gezielt korrigiert
+
+Nur `refinements.mjs` auf `77805437`: sichtbare editierbare Motivkontur kann durch eine transparente Text-Hilfsfläche ausgewählt werden; sichtbarer Text, kleine Text-Hilfsflächen und Rechte bleiben erhalten. 61/61 gezielte Handler-/Foto-/UI-Tests; echte lokale SVG-/ShadowRoot-Probe 9/9 Desktop und 9/9 Mobil einschließlich Drehung/Zoom; reale Maus-/Touch-Gegenproben bewegen jeweils nur das richtige Element. Keine Liveaktion. Nächster Schritt: unabhängiger Review, danach Root-Integration und reale Kundenabnahme. [Übergabe](docs/handoffs/2026-11-09-overlap-pointer-hit.md).
+
+## 09.11.2026 – Mika: öffentliche Originalbilder ohne wiederholte Modellkopie lesen
+
+Drei Serverdateien auf `4afd1a2b`, keine Oberfläche oder Daten geändert. Bereits vorhandene begrenzte Modellablage liefert für öffentliche Originalbilder einen tief unveränderlichen Nachweis; Bindung, Preis, Mandant, Pause und Freigabe bleiben frisch geprüft. 20/20 gezielte Tests plus unabhängige Gegenprobe grün. Echte r4-Bank lokal: warme Bildabrufe meist 154–159 statt 233–271 ms; erster Nachweis 244 ms, keine Zusage für Netz- oder Gesamtladezeit. **Noch nicht veröffentlicht.** Root übernimmt nach frischem Drei-Dateien-Hashabgleich. [Nachweise und Rücknahme](docs/handoffs/2026-11-09-public-preview-model-read.md).
+
+## 09.11.2026, 11:54 Berlin – Codex/Mika: Performancepaket veröffentlicht, Restengpässe offen
+
+Elf freigegebene Produktionsdateien gesichert auf der bestehenden Runtime installiert und App in Plesk neu gestartet. Alte Bündel bleiben erhalten; keine Shopify-, Datenbank-, Produktbindungs- oder Preisänderung. Live bestätigt: R15-Paket aus Cache, 17 statt 46 Editor-HTTP-Ressourcen, mobiler Kopf ohne Logo und mit größerem Rückbutton, Designwechsel und Preis-/Resetfolge korrekt. **Gesamtladezeit noch nicht abgenommen:** Modell/Galerie und Designwechsel weiterhin langsam. Separater Befund: Ein Touchzug am Motiv über einem Text wählt teilweise den Text dahinter. Enger Server- und Hit-Test-Review läuft. Belege/Rückweg und genauer Stand: [aktuelle Übergabe](docs/handoffs/2026-11-09-performance-continuation.md).
+
+## 09.11.2026 – Codex/Mika: Performance-Folgestand gemeinsam im Browser geprüft
+
+Elf Produktionsdateien auf der aktuellen Integration: begrenzte synchrone Serverlesungen, veraltete Galerieabrufe abbrechen, eigener kleiner R15-Chunk samt Produktseiten-Vorladen und ausschließlich der verlangte mobile Kopf ohne Logo/mit breiterem Rückbutton. 23/23 zusätzliche gemeinsame Tests grün; Desktop-/Mobilansicht, Schriftwechsel, wiederholte Touchbewegung, Löschen und Preis 19,99 → 21,68 → 19,99 € lokal geprüft. Keine einzelnen R15-JS-Dateien mehr im Browserabruf. 35 andere aktive Styles und beide fremden Serverkorrekturen erhalten. **Noch nicht live: Plesk zeigt die Anmeldung; keine neue Produktprofilzuweisung oder Shopify-Schreibaktion.** [Konkrete Messwerte, Belege und Fortsetzung](docs/handoffs/2026-11-09-performance-continuation.md).
+
+## 09.11.2026 – Codex/Mika: R15-Importkaskade getrennt gebündelt
+
+Nur Bundler und begrenztes Produktseiten-Warmup geändert, Basis `4dc5653b`. R15: 15 zusätzliche Module als eigenes Paket (38.138 Bytes gzip); 15 gemeinsame Module behalten ihre Kerninstanz. Bestehende Kern-/Produktpakete im Vergleichsbuild bytegleich. 30 unterschiedliche gezielte Bundle-/Host-/Warm-/nativen HTTP-Startfälle grün; sieben Warmtests nach letzter Parserkorrektur erneut grün. Kein Livezugriff, keine Änderung an Oberfläche, Preisen oder Produkten. Nächster Schritt: Root übernimmt den Commit und prüft sichtbares Verhalten/Netzwerk im kombinierten lokalen Stand. [Übergabe und Hashnachweise](docs/handoffs/2026-11-09-r15-demo-bundle.md).
+
+## 09.11.2026 – Mika: veraltete Galerieabrufe beim Optionswechsel abbrechen
+
+Drei Clientdateien auf `a143acbc`: laufende Vorschauabrufe der alten Auswahl abbrechen und deren zwei Ladeplätze sofort für aktuelle Karten freigeben. Späte alte Antworten können neue Karten/Slots nicht verändern; Vorwärmen bleibt bei drei Bildern, keine neue Route oder Layoutänderung. 42/42 gezielte Tests grün, Root-Diffreview ohne Befund. Nicht live aktiviert. [Nachweis und Rücknahme](docs/handoffs/2026-11-09-design-preview-abort.md).
+
+## 09.11.2026 – Mika: doppelte Produktlesungen im Kundenstart lokal reduziert
+
+Fünf Serverdateien auf aktiver Basis `4dc5653b`: geprüfte unveränderliche Revisionen nur innerhalb derselben synchronen Anfragephase wiederverwenden. Frische Bindungs-, Mandanten-, Preis- und Freigabeprüfungen bleiben bestehen; keine UI-/Daten-/Preisänderung. Lokaler nativer r4-Modellabruf 617/643 ms statt 1.180/1.239 ms, keine Live-Laufzeitgarantie. 96/96 gezielte Tests plus sechs unabhängige Gegenproben grün. Paket und Rücknahme vorbereitet, **noch nicht veröffentlicht**. [Umsetzung, Grenzen und exakte Belege](docs/handoffs/2026-11-09-customer-read-snapshot.md).
+
+## 09.11.2026, 00:41 Berlin – Codex/Mika: begrenztes Vorladen im echten Shop bestätigt
+
+R15-Integration aus PR222 in getrennte Runtime veröffentlicht; aktuelle Zentrierung und zwei zusätzliche aktive Form-/Befestigungskorrekturen erhalten. Bestehende Designs, Preise, Styles und Produktzuordnungen unverändert. Cache-Resolver-Einzeiler `b3e188f5` separat gesichert/veröffentlicht: echte Registry erhält nur die beiden Shopify-IDs, alle weiteren Prüfungen bleiben bestehen. 11/11 integrierte Service-Tests und unabhängige native HTTP-/Neustartprobe grün. Tatsächliche Shopify-Produktseite liefert drei Vorschau-URLs; danach Konfi geöffnet: alle drei Designbilder, sechs Startmotive, Startschrift und Bundle mit 0 übertragenen Bytes aus Browsercache. Galeriebilder ca. 5–45 ms. Sichtbare Auswahl mit 21 Designs geprüft. Produktmodell weiterhin ca. 3,7 s, Galerieliste ca. 2,0 s; keine vollständige Performance-/Handy-/Warenkorbabnahme behaupten.
+
+Lokale Flugkopie vollständig geprüft; Plesk1158 weiterhin ohne eindeutigen Abschlussbeleg, kein zweites Vollbackup. PR223 behebt den lokalen 251/404-Modulaktivierungsengpass (39 unterschiedliche Tests plus unabhängiger Review); produktive Profilzuordnung weiterhin unverändert. Nächster Modulschritt ist der vorhandene Verwaltungsanschluss mit ausgeschalteten Schreibschaltern und konkreter Planprüfung. [Aktueller Live-Stand, Rücknahme, Messwerte und offene Grenzen](docs/handoffs/2026-11-08-resume-integration.md).
+
+## 09.11.2026 – Codex/Mika: native Zuordnung für vorbereitete Designvorschauen korrigiert
+
+Auf isolierter Basis `f4c370fc` genau eine Produktionszeile in `public-design-previews.mjs`: bestehende Registry erhält ausschließlich Produkt- und Varianten-ID; vollständige aktuelle Bindungs-, Freigabe- und Modellprüfung bleibt bestehen. Native Registry verweigert Zusatzfelder, die bisher beim Warmabruf und direkten Bildabruf übergeben wurden. Neue Regression reproduziert vor dem Fix drei erzeugte Bilder, aber leeres Warmmanifest; danach alle zehn gezielten Service-Tests grün, einschließlich Entzug, falscher Bindung, Neustart und Manipulation. Kein Live-/Datenbankzugriff, keine Oberflächenänderung. [Ursache und enger Rückweg](docs/handoffs/2026-11-09-public-preview-identity-fix.md).
+
+## 08.11.2026, 23:45 Berlin – Codex/Mika: Module und Vorladen auf aktuellem R15 zusammengeführt
+
+Eigener Integrationszweig auf PR220 plus Cache PR221; produktiver Kundenaufbau e9c36ce erhalten. 18 Produktionsdateien im engen Hashpaket, 68 geschützte Dateien bytegleich, separater Build mit allen 36 erfassten Live-Styles erfolgreich. 106 unterschiedliche Integrationsfälle bestanden; echte 251 Originale/80 Größen/404 Kombinationen unverändert. Lokale Flugkopie mit 288.704 Dateien vollständig gelesen, neun erwartete Quelländerungen aus Cachearbeit, keine Lesefehler. Plesk-Auftrag 1158 noch ohne Abschlussbeleg; Browsersteuerung kann offenen Server-Tab nicht verbinden. PR214-Aktivierung separat noch durch 60-s-Frischeprüfung gestoppt, Ursache wird untersucht. **Keine neue Liveveröffentlichung oder Profilzuordnung.** [Zusammenführung, Sicherung, Nachweise und genauer nächster Schritt](docs/handoffs/2026-11-08-resume-integration.md).
+
+## 08.11.2026 – Mika: Modulregeln und Vorschaucache zusammen geprüft
+
+Integrationscommit `f4c370fc` unabhängig in eigenem Reviewbaum geprüft, keine Produktionsdatei verändert. Zwei neue Regressionen belegen Designs aus mit aktivem Cache einschließlich Alt-URL/Token-Ablehnung und gesperrten SVG-Upload über echten lokalen HTTP-Handler. 22 unterschiedliche gezielte Tests grün; native Preise, Logo 12,99 € und historische Verträge bleiben strikt. Root-/Review-Produktionsbytes verglichen. Browser-/Liveabnahme bleibt separat. [Bericht, Tests und exakte Pins](docs/handoffs/2026-11-08-r15-modules-cache-combination-review.md).
+
 ## 08.11.2026 – Codex/Mika: Modulpatch auf aktuellem R15 nach Flugpause vorbereitet
 
 Eigener Branch `dev/mika-r15-modules-current-20261108` auf `c7710dec`/Livecode `e9c36ce`: ausschließlich PR217-App-Delta aus `61fcb3f`, konfliktfrei integriert. Zwölf Laufzeitdateien, 69 geschützte Dateien inklusive 36 CSS, aktueller Zentrierung, SVG-Viewportworker und Vorladen bytegleich. 274 unterschiedliche gezielte Fälle erfolgreich geprüft: erster paralleler Lauf 273/274; Windows-EPERM bei gemeinsamem Testbuild, betroffene Datei allein danach17/17 grün, kein Produktcode deswegen geändert. Reale r4-Bank251Designs/80Größen/404Preise für beide Logo-Profile unverändert; Build154Module/16Styles grün. PR214 ausschließlich als API-/Schemakontrakt gelesen. Kein Main-Merge, Live-/Shopifyzugriff oder produktive Profilzuweisung. [Übergabe, Paket und konkrete Root-Abnahme](docs/handoffs/2026-11-08-r15-modules-current.md).
@@ -5,6 +55,9 @@ Eigener Branch `dev/mika-r15-modules-current-20261108` auf `c7710dec`/Livecode `
 ## 08.11.2026, 17:52 Berlin – Codex/Mika: Flugpause und vollständiger Sicherungsauftrag
 
 Livecode e9c36ce auf PR219: kompakte Aktionen in normaler Desktopansicht und Vollansicht mittig; beide echte Shopify-Browseransichten geprüft. Sonstige R15-Bedien-/SVG-/Vorladefixes im Livebericht dokumentiert. Plesk-Vollbackup für Abonnement14 um17:43:04 gestartet, Auftrag1158; noch kein Abschlussnachweis. Zusätzlich beide Repository-Historien und private lokale Projektdateien sichern/verifizieren. Cacheagenten bei6686e86/04ef061 angehalten; ModulePR217/214 nicht aktiviert. **Aktueller Einstieg und verbindlicher Wiederanlauf:** [Flugpause, Sicherungen, offene Arbeiten](docs/handoffs/2026-11-08-flight-backup-and-resume.md). Keine neue Funktionsentwicklung während des Sicherungsschritts.
+## 08.11.2026 – Mika: drei persistente Originalvorschauen für die Produktseite
+
+Isolierte Fortsetzung der Flugsicherung `6686e86`: acht Produktionsdateien ergänzen einen optionalen signierten Dateicache und maximal drei vorbereitete Originalbilder im bestehenden Produktseiten-Warmup. Kundenstart und öffentliche GETs rendern nichts; aktuelle Zuordnung/Freigabe, Modell/Ressourcen und Renderer werden geprüft, private Vorschauen bleiben erreichbar. 91/91 gezielte Tests grün, 0 Skip; reale lokale r4-Quelle mit 251 Originalen/80 Größen/404 Kombinationen unverändert. Unabhängiger Review ohne offenen Blocker. Kein Live-, Layout-, Preis- oder Datenbankzugriff. [Übergabe, exakte Startvariante, Vorbereitung und Rücknahme](docs/handoffs/2026-11-08-public-design-preview-cache.md). Root integriert mit aktueller geschützter UI und PR220-Modulprüfungen, danach echte Produktseiten-/Handyabnahme.
 
 ## 08.11.2026 – Codex/Mika: erste Motiv- und Designkarten vorbereiten
 

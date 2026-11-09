@@ -1,0 +1,57 @@
+{
+  "at": "2026-11-09T15:17:56.938Z",
+  "rounds": [
+    [
+      {
+        "id": "8055eaaa9826fb809c8dd33d9a09c1eee524c5c56f23809fb9c4c6340d6fc674",
+        "status": 200,
+        "headersMs": 937,
+        "totalMs": 937,
+        "bytes": 140037,
+        "cache": "public, max-age=31536000, immutable"
+      },
+      {
+        "id": "e395f10ebdb0501a6a2b61457a1731bde6465dff112ce80593c04b497c0dc18d",
+        "status": 200,
+        "headersMs": 601,
+        "totalMs": 602,
+        "bytes": 139106,
+        "cache": "public, max-age=31536000, immutable"
+      },
+      {
+        "id": "ac0d324aec1d9cddc997503e1a94606445fafb58b59438516091b5ff48eb90ec",
+        "status": 200,
+        "headersMs": 1276,
+        "totalMs": 1276,
+        "bytes": 139156,
+        "cache": "public, max-age=31536000, immutable"
+      }
+    ],
+    [
+      {
+        "id": "8055eaaa9826fb809c8dd33d9a09c1eee524c5c56f23809fb9c4c6340d6fc674",
+        "status": 200,
+        "headersMs": 6738,
+        "totalMs": 6739,
+        "bytes": 140037,
+        "cache": "public, max-age=31536000, immutable"
+      },
+      {
+        "id": "e395f10ebdb0501a6a2b61457a1731bde6465dff112ce80593c04b497c0dc18d",
+        "status": 200,
+        "headersMs": 7617,
+        "totalMs": 7618,
+        "bytes": 139106,
+        "cache": "public, max-age=31536000, immutable"
+      },
+      {
+        "id": "ac0d324aec1d9cddc997503e1a94606445fafb58b59438516091b5ff48eb90ec",
+        "status": 200,
+        "headersMs": 8439,
+        "totalMs": 8440,
+        "bytes": 139156,
+        "cache": "public, max-age=31536000, immutable"
+      }
+    ]
+  ]
+}

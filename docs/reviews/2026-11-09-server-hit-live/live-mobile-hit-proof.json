@@ -1,0 +1,47 @@
+{
+  "at": "2026-11-09T19:10:26.270Z",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "core": "editor-e49b3da45a697a36.mjs",
+  "test": "Real CDP touch input, motif selected again through transparent text hitbox after deselection",
+  "before": {
+    "motif": {
+      "x": 59.985,
+      "y": 28.97950000000001,
+      "w": 22.97002376091561,
+      "h": 20
+    }
+  },
+  "after": {
+    "selected": "c69cb216-d3c5-49b4-ae40-8d5c857c7272",
+    "objects": [
+      {
+        "id": "text-1",
+        "type": "text",
+        "x": 59.985,
+        "y": 49.04950000000001,
+        "w": 92.04798339843751,
+        "h": 15.876
+      },
+      {
+        "id": "text-2",
+        "type": "text",
+        "x": 60,
+        "y": 28.97950000000001,
+        "w": 56.854116210937505,
+        "h": 15.876
+      },
+      {
+        "id": "c69cb216-d3c5-49b4-ae40-8d5c857c7272",
+        "type": "motif",
+        "x": 74.35642944335939,
+        "y": 37.602354232788095,
+        "w": 22.97002376091561,
+        "h": 20
+      }
+    ]
+  },
+  "textSelectAfter": "text-2"
+}

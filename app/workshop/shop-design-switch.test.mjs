@@ -73,3 +73,10 @@ test('the candidate can load gallery and thumbnails before ready, while mutation
  const f=fixture({readDuringActivation:true});await f.api.choose('signed-target',{});
  const [gallery,image]=await Promise.all(f.initReads);assert.deepEqual(gallery,{items:['next-design']});assert.equal(await image.text(),'preview');
 });
+
+test('existing frame gateway forwards preview AbortSignal without changing selection or token',async()=>{
+ const f=fixture(),controller=new AbortController(),calls=[];
+ f.active.client.loadDesignPreview=async(...args)=>{calls.push(args);return new Blob(['svg']);};
+ const frame=f.active.frame;await f.api.preview('signed-choice','/public.svg',controller.signal);
+ assert.deepEqual(calls,[['signed-choice','/public.svg',controller.signal]]);assert.equal(f.active.frame,frame);assert.equal(f.api.canGoBack(),false);
+});

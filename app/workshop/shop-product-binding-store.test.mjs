@@ -15,6 +15,7 @@ import {addFormDesign} from './form-designs.mjs';
 import {makeProductDocument} from './product-model.mjs';
 import {makeAcrylicConfig} from '../configurator/variant-m/acrylic-product.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
+import {withCustomerReadScope} from './customer-read-scope.mjs';
 
 // Synthetic documents and a NEW temporary SQLite database only. No backup, live
 // application, Shopify request or production profile is opened or manufactured.
@@ -51,6 +52,29 @@ function fixture(t,document=formDocument()){
 }
 const tables=['form_shop_bindings','form_shop_binding_selections','shop_product_binding_heads','shop_product_binding_revisions'];
 const counts=f=>Object.fromEntries(tables.map(table=>[table,f.db.prepare('SELECT count(*) AS n FROM '+table).get().n]));
+
+test('customer read phases keep current heads and archive/tenant checks authoritative',t=>{
+ const f=fixture(t);f.persist();
+ withCustomerReadScope(()=>{
+  const first=f.registry.resolve(pair());assert.equal(first.productRevision,1);
+  assert.throws(()=>f.registry.resolve(pair(2)),{code:'shop_binding_active_not_found'});
+  f.repository.save(f.record.id,{...f.record.document,name:'Next'},1);
+  f.persist(f.plan(),1);assert.equal(f.registry.resolve(pair()).productRevision,2);
+  assert.equal(f.registry.history(pair()).length,2);
+  f.repository.setArchived(f.record.id,{expectedRevision:2,archived:true});
+  assert.throws(()=>f.registry.resolve(pair()),{code:'shop_binding_cfg_changed'});
+ });
+});
+
+test('customer read phase detects same-connection document tampering even if revision IDs stay unchanged',t=>{
+ const f=fixture(t);f.persist();
+ withCustomerReadScope(()=>{
+  f.registry.resolve(pair());
+  f.db.exec('DROP TRIGGER immutable_revision_update');
+  f.db.prepare("UPDATE product_revisions SET document=json_set(document,'$.basePriceCents',0) WHERE product_id=?").run(f.record.id);
+  assert.throws(()=>f.registry.resolve(pair()),{code:'shop_binding_active_integrity'});
+ });
+});
 
 test('exact ID assignment persists on the existing connection with real form geometry and no profile release',t=>{
  const f=fixture(t),before=f.repository.get(f.record.id),saved=f.persist();

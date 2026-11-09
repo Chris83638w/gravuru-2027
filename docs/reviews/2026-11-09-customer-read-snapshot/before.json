@@ -1,0 +1,804 @@
+{
+  "basis": "4dc5653b",
+  "localOnly": true,
+  "sourceSha256": "2e74548aa7211a2f5546af428e1d27d9f00f12181490356633e3cd109cb179c0",
+  "coldModelMs": 700.3567999999996,
+  "registry": "native resolve, one synthetic binding explicitly inserted in temporary DB",
+  "model": "native workshop.model pinned r4",
+  "approval": "synthetic approval lookup (not a production DB latency claim)",
+  "measurements": [
+    {
+      "name": "signed-start-cached",
+      "wallMs": 915.279199999999,
+      "status": 200,
+      "bytes": 1368,
+      "stats": {
+        "shop-product-binding-store.mjs:productRow": {
+          "calls": 2,
+          "inclusiveMs": 97.71839999999975,
+          "selfMs": 97.71839999999975
+        },
+        "JSON.parse>100KB": {
+          "calls": 7,
+          "inclusiveMs": 104.47700000000441,
+          "selfMs": 104.47700000000441
+        },
+        "shop-product-binding-store.mjs:parseDocument": {
+          "calls": 4,
+          "inclusiveMs": 51.3726000000006,
+          "selfMs": 0.5424000000020897
+        },
+        "binding.canonicalHash": {
+          "calls": 2,
+          "inclusiveMs": 323.3166000000001,
+          "selfMs": 323.3166000000001
+        },
+        "structuredClone": {
+          "calls": 901,
+          "inclusiveMs": 134.29279999999198,
+          "selfMs": 134.29279999999198
+        },
+        "shop-product-binding-store.mjs:result": {
+          "calls": 2,
+          "inclusiveMs": 473.53740000000107,
+          "selfMs": 1.0562000000008993
+        },
+        "shop-product-binding-store.mjs:resolve": {
+          "calls": 2,
+          "inclusiveMs": 474.27230000000054,
+          "selfMs": 0.7348999999994703
+        },
+        "shop-entry.mjs:resolve": {
+          "calls": 2,
+          "inclusiveMs": 474.41120000000046,
+          "selfMs": 0.09170000000085565
+        },
+        "repository.mjs:record": {
+          "calls": 2,
+          "inclusiveMs": 190.37100000000282,
+          "selfMs": 137.6721000000034
+        },
+        "http.mjs:model": {
+          "calls": 2,
+          "inclusiveMs": 293.90230000000156,
+          "selfMs": 0.42969999999877473
+        },
+        "shop-entry.mjs:requireDoorbellApproval": {
+          "calls": 3,
+          "inclusiveMs": 0.026699999998527346,
+          "selfMs": 0.026699999998527346
+        },
+        "shop-entry.mjs:modelFor": {
+          "calls": 2,
+          "inclusiveMs": 294.15180000000146,
+          "selfMs": 0.2242999999998574
+        },
+        "shop-entry.mjs:presentedModel": {
+          "calls": 1,
+          "inclusiveMs": 5.228399999999965,
+          "selfMs": 1.4882999999972526
+        },
+        "public-design-previews.mjs:current": {
+          "calls": 1,
+          "inclusiveMs": 395.4207000000006,
+          "selfMs": 0.13610000000153377
+        },
+        "preview.modelHash": {
+          "calls": 1,
+          "inclusiveMs": 83.51640000000043,
+          "selfMs": 83.51640000000043
+        },
+        "shop-design-gallery.mjs:selection": {
+          "calls": 3,
+          "inclusiveMs": 31.261099999999715,
+          "selfMs": 6.31689999999071
+        },
+        "shop-design-gallery.mjs:start": {
+          "calls": 3,
+          "inclusiveMs": 31.95169999999416,
+          "selfMs": 0.690599999994447
+        },
+        "public-design-previews.mjs:choices": {
+          "calls": 1,
+          "inclusiveMs": 35.13139999999839,
+          "selfMs": 0.7936000000227068
+        },
+        "public-design-previews.mjs:lookup": {
+          "calls": 1,
+          "inclusiveMs": 529.5035000000007,
+          "selfMs": 14.487099999994825
+        }
+      }
+    },
+    {
+      "name": "native-registry-resolve",
+      "wallMs": 229.64170000000013,
+      "stats": {
+        "shop-product-binding-store.mjs:productRow": {
+          "calls": 1,
+          "inclusiveMs": 43.822299999999814,
+          "selfMs": 43.822299999999814
+        },
+        "JSON.parse>100KB": {
+          "calls": 1,
+          "inclusiveMs": 24.454799999999523,
+          "selfMs": 24.454799999999523
+        },
+        "shop-product-binding-store.mjs:parseDocument": {
+          "calls": 2,
+          "inclusiveMs": 24.50550000000294,
+          "selfMs": 0.05070000000341679
+        },
+        "binding.canonicalHash": {
+          "calls": 1,
+          "inclusiveMs": 160.5070999999989,
+          "selfMs": 160.5070999999989
+        },
+        "structuredClone": {
+          "calls": 1,
+          "inclusiveMs": 0.03590000000258442,
+          "selfMs": 0.03590000000258442
+        },
+        "shop-product-binding-store.mjs:result": {
+          "calls": 1,
+          "inclusiveMs": 229.3161,
+          "selfMs": 0.4452999999957683
+        },
+        "shop-product-binding-store.mjs:resolve": {
+          "calls": 1,
+          "inclusiveMs": 229.54360000000088,
+          "selfMs": 0.22750000000087311
+        }
+      }
+    },
+    {
+      "name": "native-model-warm",
+      "wallMs": 150.83490000000165,
+      "stats": {
+        "JSON.parse>100KB": {
+          "calls": 1,
+          "inclusiveMs": 26.35019999999713,
+          "selfMs": 26.35019999999713
+        },
+        "repository.mjs:record": {
+          "calls": 1,
+          "inclusiveMs": 96.84330000000045,
+          "selfMs": 70.49310000000332
+        },
+        "structuredClone": {
+          "calls": 1,
+          "inclusiveMs": 53.59540000000197,
+          "selfMs": 53.59540000000197
+        },
+        "http.mjs:model": {
+          "calls": 1,
+          "inclusiveMs": 150.63070000000153,
+          "selfMs": 0.19199999999909778
+        }
+      }
+    },
+    {
+      "name": "model-http-1",
+      "wallMs": 1180.1942000000017,
+      "status": 200,
+      "bytes": 322368,
+      "stats": {
+        "shop-product-binding-store.mjs:productRow": {
+          "calls": 2,
+          "inclusiveMs": 99.92129999999815,
+          "selfMs": 99.92129999999815
+        },
+        "JSON.parse>100KB": {
+          "calls": 9,
+          "inclusiveMs": 179.089299999996,
+          "selfMs": 179.089299999996
+        },
+        "shop-product-binding-store.mjs:parseDocument": {
+          "calls": 4,
+          "inclusiveMs": 55.00720000000365,
+          "selfMs": 0.08620000000519212
+        },
+        "binding.canonicalHash": {
+          "calls": 2,
+          "inclusiveMs": 327.1408999999985,
+          "selfMs": 327.1408999999985
+        },
+        "structuredClone": {
+          "calls": 1158,
+          "inclusiveMs": 132.8407999999581,
+          "selfMs": 132.8407999999581
+        },
+        "shop-product-binding-store.mjs:result": {
+          "calls": 2,
+          "inclusiveMs": 482.95910000000003,
+          "selfMs": 0.819099999996979
+        },
+        "shop-product-binding-store.mjs:resolve": {
+          "calls": 2,
+          "inclusiveMs": 483.6283999999978,
+          "selfMs": 0.6692999999977474
+        },
+        "shop-entry.mjs:resolve": {
+          "calls": 2,
+          "inclusiveMs": 483.7558999999965,
+          "selfMs": 0.08060000000114087
+        },
+        "repository.mjs:record": {
+          "calls": 4,
+          "inclusiveMs": 433.2343000000037,
+          "selfMs": 309.9573000000091
+        },
+        "shop-entry.mjs:requireDoorbellApproval": {
+          "calls": 4,
+          "inclusiveMs": 104.08289999999397,
+          "selfMs": 0.3335999999944761
+        },
+        "http.mjs:model": {
+          "calls": 2,
+          "inclusiveMs": 332.09100000000035,
+          "selfMs": 0.3589999999931024
+        },
+        "shop-entry.mjs:modelFor": {
+          "calls": 2,
+          "inclusiveMs": 332.55309999999736,
+          "selfMs": 0.44100000000253203
+        },
+        "shop-entry.mjs:allowedAssets": {
+          "calls": 1,
+          "inclusiveMs": 0.013799999996990664,
+          "selfMs": 0.013799999996990664
+        },
+        "shop-entry.mjs:presentedModel": {
+          "calls": 1,
+          "inclusiveMs": 5.377599999999802,
+          "selfMs": 1.4523999999983062
+        },
+        "shop-entry.mjs:cardFor": {
+          "calls": 1,
+          "inclusiveMs": 109.80400000000009,
+          "selfMs": 0.413300000000163
+        },
+        "shop-design-gallery.mjs:selection": {
+          "calls": 4,
+          "inclusiveMs": 18.613500000003114,
+          "selfMs": 3.3303000000487373
+        },
+        "shop-design-gallery.mjs:start": {
+          "calls": 4,
+          "inclusiveMs": 129.28549999999814,
+          "selfMs": 0.8679999999949359
+        },
+        "public-design-previews.mjs:current": {
+          "calls": 1,
+          "inclusiveMs": 422.10440000000017,
+          "selfMs": 0.155800000004092
+        },
+        "preview.modelHash": {
+          "calls": 1,
+          "inclusiveMs": 92.26680000000124,
+          "selfMs": 92.26680000000124
+        },
+        "public-design-previews.mjs:choices": {
+          "calls": 1,
+          "inclusiveMs": 16.622999999999593,
+          "selfMs": 0.4499000000032538
+        },
+        "public-design-previews.mjs:lookup": {
+          "calls": 1,
+          "inclusiveMs": 125.37089999999807,
+          "selfMs": 15.589799999994284
+        }
+      }
+    },
+    {
+      "name": "model-http-2",
+      "wallMs": 1239.131699999998,
+      "status": 200,
+      "bytes": 322368,
+      "stats": {
+        "shop-product-binding-store.mjs:productRow": {
+          "calls": 2,
+          "inclusiveMs": 95.9555999999975,
+          "selfMs": 95.9555999999975
+        },
+        "JSON.parse>100KB": {
+          "calls": 9,
+          "inclusiveMs": 155.53580000000147,
+          "selfMs": 155.53580000000147
+        },
+        "shop-product-binding-store.mjs:parseDocument": {
+          "calls": 4,
+          "inclusiveMs": 52.73109999999724,
+          "selfMs": 0.09809999999924912
+        },
+        "binding.canonicalHash": {
+          "calls": 2,
+          "inclusiveMs": 398.1988999999994,
+          "selfMs": 398.1988999999994
+        },
+        "structuredClone": {
+          "calls": 1158,
+          "inclusiveMs": 144.87379999994664,
+          "selfMs": 144.87379999994664
+        },
+        "shop-product-binding-store.mjs:result": {
+          "calls": 2,
+          "inclusiveMs": 547.9879000000037,
+          "selfMs": 1.0186000000103377
+        },
+        "shop-product-binding-store.mjs:resolve": {
+          "calls": 2,
+          "inclusiveMs": 548.7589000000007,
+          "selfMs": 0.7709999999970023
+        },
+        "shop-entry.mjs:resolve": {
+          "calls": 2,
+          "inclusiveMs": 548.8931999999986,
+          "selfMs": 0.08329999999841675
+        },
+        "repository.mjs:record": {
+          "calls": 4,
+          "inclusiveMs": 391.0983000000015,
+          "selfMs": 288.96500000000015
+        },
+        "shop-entry.mjs:requireDoorbellApproval": {
+          "calls": 4,
+          "inclusiveMs": 113.76390000000174,
+          "selfMs": 0.20270000000164146
+        },
+        "http.mjs:model": {
+          "calls": 2,
+          "inclusiveMs": 295.26850000000195,
+          "selfMs": 0.4201000000030035
+        },
+        "shop-entry.mjs:modelFor": {
+          "calls": 2,
+          "inclusiveMs": 295.59270000000106,
+          "selfMs": 0.28959999999642605
+        },
+        "shop-entry.mjs:allowedAssets": {
+          "calls": 1,
+          "inclusiveMs": 0.024000000001251465,
+          "selfMs": 0.024000000001251465
+        },
+        "shop-entry.mjs:presentedModel": {
+          "calls": 1,
+          "inclusiveMs": 5.575199999999313,
+          "selfMs": 1.3971000000019558
+        },
+        "shop-entry.mjs:cardFor": {
+          "calls": 1,
+          "inclusiveMs": 105.39710000000196,
+          "selfMs": 0.7348999999994703
+        },
+        "shop-design-gallery.mjs:selection": {
+          "calls": 4,
+          "inclusiveMs": 19.139899999998306,
+          "selfMs": 3.800400000047375
+        },
+        "shop-design-gallery.mjs:start": {
+          "calls": 4,
+          "inclusiveMs": 125.33519999999771,
+          "selfMs": 0.7981999999974505
+        },
+        "public-design-previews.mjs:current": {
+          "calls": 1,
+          "inclusiveMs": 451.20600000000195,
+          "selfMs": 0.23549999999886495
+        },
+        "preview.modelHash": {
+          "calls": 1,
+          "inclusiveMs": 123.40060000000085,
+          "selfMs": 123.40060000000085
+        },
+        "public-design-previews.mjs:choices": {
+          "calls": 1,
+          "inclusiveMs": 19.463299999999435,
+          "selfMs": 0.8757000000041444
+        },
+        "public-design-previews.mjs:lookup": {
+          "calls": 1,
+          "inclusiveMs": 156.1138000000028,
+          "selfMs": 12.480400000000373
+        }
+      }
+    },
+    {
+      "name": "gallery-http-1",
+      "wallMs": 1289.5770000000011,
+      "status": 200,
+      "bytes": 27079,
+      "stats": {
+        "shop-product-binding-store.mjs:productRow": {
+          "calls": 3,
+          "inclusiveMs": 138.50629999999728,
+          "selfMs": 138.50629999999728
+        },
+        "JSON.parse>100KB": {
+          "calls": 10,
+          "inclusiveMs": 191.0098000000071,
+          "selfMs": 191.0098000000071
+        },
+        "shop-product-binding-store.mjs:parseDocument": {
+          "calls": 6,
+          "inclusiveMs": 82.12530000000334,
+          "selfMs": 0.16040000000066357
+        },
+        "binding.canonicalHash": {
+          "calls": 3,
+          "inclusiveMs": 483.0047999999988,
+          "selfMs": 483.0047999999988
+        },
+        "structuredClone": {
+          "calls": 1382,
+          "inclusiveMs": 78.13119999999617,
+          "selfMs": 78.13119999999617
+        },
+        "shop-product-binding-store.mjs:result": {
+          "calls": 3,
+          "inclusiveMs": 705.0891999999949,
+          "selfMs": 1.3302999999941676
+        },
+        "shop-product-binding-store.mjs:resolve": {
+          "calls": 3,
+          "inclusiveMs": 705.9825000000019,
+          "selfMs": 0.8933000000070024
+        },
+        "shop-entry.mjs:resolve": {
+          "calls": 3,
+          "inclusiveMs": 706.1620000000003,
+          "selfMs": 0.10579999999754364
+        },
+        "repository.mjs:record": {
+          "calls": 4,
+          "inclusiveMs": 376.8400000000038,
+          "selfMs": 268.6222000000016
+        },
+        "shop-entry.mjs:requireDoorbellApproval": {
+          "calls": 6,
+          "inclusiveMs": 193.07210000000487,
+          "selfMs": 0.3938000000016473
+        },
+        "shop-entry.mjs:cardFor": {
+          "calls": 1,
+          "inclusiveMs": 88.65400000000227,
+          "selfMs": 0.3712000000014086
+        },
+        "shop-design-gallery.mjs:selection": {
+          "calls": 24,
+          "inclusiveMs": 18.14539999999033,
+          "selfMs": 4.943800000004558
+        },
+        "http.mjs:model": {
+          "calls": 1,
+          "inclusiveMs": 154.35819999999876,
+          "selfMs": 0.18989999999757856
+        },
+        "shop-entry.mjs:modelFor": {
+          "calls": 1,
+          "inclusiveMs": 154.56890000000203,
+          "selfMs": 0.19160000000192667
+        },
+        "public-design-previews.mjs:current": {
+          "calls": 1,
+          "inclusiveMs": 397.7810000000027,
+          "selfMs": 0.23909999999887077
+        },
+        "preview.modelHash": {
+          "calls": 1,
+          "inclusiveMs": 97.67859999999928,
+          "selfMs": 97.67859999999928
+        },
+        "shop-design-gallery.mjs:start": {
+          "calls": 3,
+          "inclusiveMs": 14.33350000000064,
+          "selfMs": 0.6544000000030792
+        },
+        "public-design-previews.mjs:choices": {
+          "calls": 1,
+          "inclusiveMs": 17.473000000001775,
+          "selfMs": 0.6972999999816238
+        },
+        "public-design-previews.mjs:lookup": {
+          "calls": 1,
+          "inclusiveMs": 129.8878999999979,
+          "selfMs": 13.909199999994598
+        }
+      }
+    },
+    {
+      "name": "gallery-http-2",
+      "wallMs": 1361.3682000000008,
+      "status": 200,
+      "bytes": 27079,
+      "stats": {
+        "shop-product-binding-store.mjs:productRow": {
+          "calls": 3,
+          "inclusiveMs": 150.19930000000386,
+          "selfMs": 150.19930000000386
+        },
+        "JSON.parse>100KB": {
+          "calls": 10,
+          "inclusiveMs": 209.32410000000527,
+          "selfMs": 209.32410000000527
+        },
+        "shop-product-binding-store.mjs:parseDocument": {
+          "calls": 6,
+          "inclusiveMs": 95.39999999999782,
+          "selfMs": 0.12609999999767751
+        },
+        "binding.canonicalHash": {
+          "calls": 3,
+          "inclusiveMs": 521.6994999999952,
+          "selfMs": 521.6994999999952
+        },
+        "structuredClone": {
+          "calls": 1382,
+          "inclusiveMs": 89.55290000005698,
+          "selfMs": 89.55290000005698
+        },
+        "shop-product-binding-store.mjs:result": {
+          "calls": 3,
+          "inclusiveMs": 769.130000000001,
+          "selfMs": 1.7040000000015425
+        },
+        "shop-product-binding-store.mjs:resolve": {
+          "calls": 3,
+          "inclusiveMs": 770.1296000000002,
+          "selfMs": 0.9995999999991909
+        },
+        "shop-entry.mjs:resolve": {
+          "calls": 3,
+          "inclusiveMs": 770.5358000000015,
+          "selfMs": 0.14789999999993597
+        },
+        "repository.mjs:record": {
+          "calls": 4,
+          "inclusiveMs": 387.47940000000017,
+          "selfMs": 274.34289999999964
+        },
+        "shop-entry.mjs:requireDoorbellApproval": {
+          "calls": 6,
+          "inclusiveMs": 196.46379999999408,
+          "selfMs": 1.2064999999929569
+        },
+        "shop-entry.mjs:cardFor": {
+          "calls": 1,
+          "inclusiveMs": 103.18529999999737,
+          "selfMs": 0.5632999999979802
+        },
+        "shop-design-gallery.mjs:selection": {
+          "calls": 24,
+          "inclusiveMs": 19.77360000000408,
+          "selfMs": 7.0239999999903375
+        },
+        "http.mjs:model": {
+          "calls": 1,
+          "inclusiveMs": 160.98389999999927,
+          "selfMs": 0.16979999999966822
+        },
+        "shop-entry.mjs:modelFor": {
+          "calls": 1,
+          "inclusiveMs": 161.1297999999988,
+          "selfMs": 0.13330000000132713
+        },
+        "public-design-previews.mjs:current": {
+          "calls": 1,
+          "inclusiveMs": 438.9292999999998,
+          "selfMs": 0.09879999999975553
+        },
+        "preview.modelHash": {
+          "calls": 1,
+          "inclusiveMs": 77.98329999999987,
+          "selfMs": 77.98329999999987
+        },
+        "shop-design-gallery.mjs:start": {
+          "calls": 3,
+          "inclusiveMs": 14.021600000003673,
+          "selfMs": 0.6013000000020838
+        },
+        "public-design-previews.mjs:choices": {
+          "calls": 1,
+          "inclusiveMs": 16.214200000002165,
+          "selfMs": 0.4722999999721651
+        },
+        "public-design-previews.mjs:lookup": {
+          "calls": 1,
+          "inclusiveMs": 113.09070000000065,
+          "selfMs": 17.979499999994005
+        }
+      }
+    },
+    {
+      "name": "private-preview-http-1",
+      "wallMs": 1512.1124000000018,
+      "status": 200,
+      "bytes": 138503,
+      "stats": {
+        "shop-product-binding-store.mjs:productRow": {
+          "calls": 3,
+          "inclusiveMs": 153.0461000000032,
+          "selfMs": 153.0461000000032
+        },
+        "JSON.parse>100KB": {
+          "calls": 9,
+          "inclusiveMs": 235.0630999999994,
+          "selfMs": 235.0630999999994
+        },
+        "shop-product-binding-store.mjs:parseDocument": {
+          "calls": 6,
+          "inclusiveMs": 78.09439999999813,
+          "selfMs": 0.1757999999972526
+        },
+        "binding.canonicalHash": {
+          "calls": 3,
+          "inclusiveMs": 497.9500999999982,
+          "selfMs": 497.9500999999982
+        },
+        "structuredClone": {
+          "calls": 636,
+          "inclusiveMs": 182.8777999999911,
+          "selfMs": 182.8777999999911
+        },
+        "shop-product-binding-store.mjs:result": {
+          "calls": 3,
+          "inclusiveMs": 731.0496999999959,
+          "selfMs": 1.815999999998894
+        },
+        "shop-product-binding-store.mjs:resolve": {
+          "calls": 3,
+          "inclusiveMs": 732.1744000000035,
+          "selfMs": 1.1247000000075786
+        },
+        "shop-entry.mjs:resolve": {
+          "calls": 3,
+          "inclusiveMs": 732.4206999999988,
+          "selfMs": 0.16600000000107684
+        },
+        "repository.mjs:record": {
+          "calls": 6,
+          "inclusiveMs": 579.3374000000076,
+          "selfMs": 422.1929000000091
+        },
+        "shop-entry.mjs:requireDoorbellApproval": {
+          "calls": 5,
+          "inclusiveMs": 189.57129999999597,
+          "selfMs": 0.9474999999947613
+        },
+        "http.mjs:model": {
+          "calls": 2,
+          "inclusiveMs": 303.3586000000032,
+          "selfMs": 0.4241000000038184
+        },
+        "shop-entry.mjs:modelFor": {
+          "calls": 2,
+          "inclusiveMs": 303.9233000000022,
+          "selfMs": 0.5332000000016706
+        },
+        "shop-entry.mjs:cardFor": {
+          "calls": 2,
+          "inclusiveMs": 200.0421000000024,
+          "selfMs": 0.7461999999977706
+        },
+        "shop-design-gallery.mjs:selection": {
+          "calls": 1,
+          "inclusiveMs": 5.291900000000169,
+          "selfMs": 1.1125999999967462
+        },
+        "shop-design-gallery.mjs:target": {
+          "calls": 1,
+          "inclusiveMs": 594.0373,
+          "selfMs": 1.1837999999879685
+        },
+        "shop-entry.mjs:allowedAssets": {
+          "calls": 1,
+          "inclusiveMs": 0.013100000000122236,
+          "selfMs": 0.013100000000122236
+        },
+        "product-preview.mjs:productPreview": {
+          "calls": 1,
+          "inclusiveMs": 4.535100000000966,
+          "selfMs": 2.266600000013568
+        },
+        "shop-design-gallery.mjs:preview": {
+          "calls": 1,
+          "inclusiveMs": 661.3132000000005,
+          "selfMs": 0.9401999999972759
+        }
+      }
+    },
+    {
+      "name": "private-preview-http-2",
+      "wallMs": 1433.6805999999997,
+      "status": 200,
+      "bytes": 138503,
+      "stats": {
+        "shop-product-binding-store.mjs:productRow": {
+          "calls": 3,
+          "inclusiveMs": 139.1501999999964,
+          "selfMs": 139.1501999999964
+        },
+        "JSON.parse>100KB": {
+          "calls": 9,
+          "inclusiveMs": 238.7548999999999,
+          "selfMs": 238.7548999999999
+        },
+        "shop-product-binding-store.mjs:parseDocument": {
+          "calls": 6,
+          "inclusiveMs": 79.49930000000313,
+          "selfMs": 0.18470000000525033
+        },
+        "binding.canonicalHash": {
+          "calls": 3,
+          "inclusiveMs": 506.5697999999975,
+          "selfMs": 506.5697999999975
+        },
+        "structuredClone": {
+          "calls": 511,
+          "inclusiveMs": 115.00329999999667,
+          "selfMs": 115.00329999999667
+        },
+        "shop-product-binding-store.mjs:result": {
+          "calls": 3,
+          "inclusiveMs": 726.9234999999971,
+          "selfMs": 1.5718999999990046
+        },
+        "shop-product-binding-store.mjs:resolve": {
+          "calls": 3,
+          "inclusiveMs": 727.8436000000038,
+          "selfMs": 0.9201000000066415
+        },
+        "shop-entry.mjs:resolve": {
+          "calls": 3,
+          "inclusiveMs": 728.0658999999978,
+          "selfMs": 0.13269999999465654
+        },
+        "repository.mjs:record": {
+          "calls": 6,
+          "inclusiveMs": 574.7255000000041,
+          "selfMs": 415.2852000000021
+        },
+        "shop-entry.mjs:requireDoorbellApproval": {
+          "calls": 5,
+          "inclusiveMs": 195.21340000000419,
+          "selfMs": 0.36150000000270666
+        },
+        "http.mjs:model": {
+          "calls": 2,
+          "inclusiveMs": 296.95140000000174,
+          "selfMs": 0.3813000000009197
+        },
+        "shop-entry.mjs:modelFor": {
+          "calls": 2,
+          "inclusiveMs": 297.370600000002,
+          "selfMs": 0.39549999999871943
+        },
+        "shop-entry.mjs:cardFor": {
+          "calls": 2,
+          "inclusiveMs": 192.21899999999732,
+          "selfMs": 0.7656999999962864
+        },
+        "shop-design-gallery.mjs:selection": {
+          "calls": 1,
+          "inclusiveMs": 4.255099999998492,
+          "selfMs": 0.8140000000057626
+        },
+        "shop-design-gallery.mjs:target": {
+          "calls": 1,
+          "inclusiveMs": 596.8375000000015,
+          "selfMs": 0.8456000000005588
+        },
+        "shop-entry.mjs:allowedAssets": {
+          "calls": 1,
+          "inclusiveMs": 0.011600000001635635,
+          "selfMs": 0.011600000001635635
+        },
+        "shop-design-gallery.mjs:preview": {
+          "calls": 1,
+          "inclusiveMs": 597.0301,
+          "selfMs": 0.1809999999968568
+        }
+      }
+    }
+  ]
+}

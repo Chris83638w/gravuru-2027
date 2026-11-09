@@ -1,0 +1,664 @@
+[
+ [
+  "FM132",
+  "Isabell",
+  null,
+  "links",
+  [
+   [
+    "name",
+    "Isabell",
+    "Allura",
+    1.0
+   ],
+   [
+    "spruch",
+    "Während andere Kinder",
+    "Allura",
+    0.418
+   ],
+   [
+    "spruch-2",
+    "laufen lernen,",
+    "Allura",
+    0.418
+   ],
+   [
+    "spruch-3",
+    "lernt unseres",
+    "Allura",
+    0.418
+   ],
+   [
+    "spruch-4",
+    "mit den Engeln",
+    "Allura",
+    0.418
+   ],
+   [
+    "spruch-5",
+    "zu fliegen.",
+    "Allura",
+    0.418
+   ]
+  ]
+ ],
+ [
+  "FM135",
+  "Ben",
+  null,
+  "links",
+  [
+   [
+    "name",
+    "Ben",
+    "Ashley",
+    1.0
+   ],
+   [
+    "spruch",
+    "Unser Schmetterlingskind",
+    "Ashley",
+    0.379
+   ],
+   [
+    "spruch-2",
+    "Die Erinnerungen an",
+    "Ashley",
+    0.379
+   ],
+   [
+    "spruch-3",
+    "Dich bleiben Bestandteil unserer Herzen.",
+    "Ashley",
+    0.379
+   ]
+  ]
+ ],
+ [
+  "FM340",
+  "Emma Richter",
+  null,
+  "links",
+  [
+   [
+    "name",
+    "Emma Richter",
+    "Ashley",
+    1.0
+   ],
+   [
+    "daten",
+    "12.06.2007 – 12.06.2020",
+    "Poppins ExtraLight",
+    0.424
+   ],
+   [
+    "spruch",
+    "Du warst so jung, du starbst so früh,",
+    "Poppins ExtraLight",
+    0.351
+   ],
+   [
+    "spruch-2",
+    "wer dich gekannt, vergisst dich nie.",
+    "Poppins ExtraLight",
+    0.351
+   ]
+  ]
+ ],
+ [
+  "FM341",
+  "Sebastian Klein",
+  null,
+  "links",
+  [
+   [
+    "name",
+    "Sebastian Klein",
+    "Allura",
+    1.0
+   ],
+   [
+    "daten",
+    "*12.04.2012 † 22.08.2019",
+    "Cinzel",
+    0.35
+   ],
+   [
+    "spruch",
+    "„Wenn im Kreis der Lebenswelt",
+    "Allura",
+    0.37
+   ],
+   [
+    "spruch-2",
+    "das Blatt zurück zur Erde fällt,",
+    "Allura",
+    0.37
+   ],
+   [
+    "spruch-3",
+    "kehrt es zum Ursprung nur zurück",
+    "Allura",
+    0.37
+   ],
+   [
+    "spruch-4",
+    "und findet dort sein stilles Glück.“",
+    "Allura",
+    0.37
+   ]
+  ]
+ ],
+ [
+  "FM342",
+  "Mein kleiner Engel",
+  null,
+  "links",
+  [
+   [
+    "titel",
+    "Mein kleiner Engel",
+    "Sweetie",
+    1.0
+   ],
+   [
+    "spruch",
+    "schon nach ein paar Tagen musstest du von uns gehen... Meine",
+    "Poppins ExtraLight",
+    0.391
+   ],
+   [
+    "spruch-2",
+    "Trauer um dich, wird mich ein Leben lang begleiten und sie wird",
+    "Poppins ExtraLight",
+    0.391
+   ],
+   [
+    "spruch-3",
+    "mich verändern...",
+    "Poppins ExtraLight",
+    0.391
+   ]
+  ]
+ ],
+ [
+  "FM343",
+  "Frieda",
+  null,
+  "links",
+  [
+   [
+    "name",
+    "Frieda",
+    "Caviar Dreams",
+    1.0
+   ],
+   [
+    "daten",
+    "25.11.2008 – 02.09.2017",
+    "Caviar Dreams",
+    0.248
+   ],
+   [
+    "spruch",
+    "Was im Herzen liebevolle",
+    "Caviar Dreams",
+    0.299
+   ],
+   [
+    "spruch-2",
+    "Erinnerungen hinterlässt",
+    "Caviar Dreams",
+    0.299
+   ],
+   [
+    "spruch-3",
+    "und unsere Seele berührt,",
+    "Caviar Dreams",
+    0.299
+   ],
+   [
+    "spruch-4",
+    "kann weder vergessen werden,",
+    "Caviar Dreams",
+    0.299
+   ],
+   [
+    "spruch-5",
+    "noch verloren gehen...",
+    "Caviar Dreams",
+    0.299
+   ]
+  ]
+ ],
+ [
+  "FM344",
+  "Elisabeth Wagner",
+  null,
+  "links",
+  [
+   [
+    "name",
+    "Elisabeth Wagner",
+    "Great Vibes",
+    1.0
+   ],
+   [
+    "daten",
+    "*10.02.2007 † 05.01.2019",
+    "Great Vibes",
+    0.436
+   ]
+  ]
+ ],
+ [
+  "FM352",
+  "Finn Albers",
+  null,
+  "links",
+  [
+   [
+    "name",
+    "Finn Albers",
+    "Hello Georgia",
+    1.0
+   ],
+   [
+    "daten",
+    "12.06.2010 – 12.06.2020",
+    "Cinzel",
+    0.35
+   ],
+   [
+    "spruch",
+    "Du warst so jung, du\nstarbst so früh, wer",
+    "Cinzel",
+    0.393
+   ],
+   [
+    "spruch-2",
+    "dich gekannt, vergisst\ndich nie. Wir vermissen",
+    "Cinzel",
+    0.393
+   ],
+   [
+    "spruch-3",
+    "dich sehr!",
+    "Cinzel",
+    0.393
+   ],
+   [
+    "spruch-4",
+    "Mama & Papa",
+    "Hello Georgia",
+    0.326
+   ]
+  ]
+ ],
+ [
+  "FM355",
+  "Linus",
+  null,
+  "links",
+  [
+   [
+    "daten",
+    "02.04.2010 16.07.2020",
+    "Caviar Dreams",
+    0.314
+   ],
+   [
+    "name",
+    "Linus",
+    "Caviar Dreams",
+    1.0
+   ],
+   [
+    "spruch",
+    "Wir vermissen Dich.",
+    "Caviar Dreams",
+    0.333
+   ],
+   [
+    "spruch-2",
+    "In Liebe Mama und Papa",
+    "Caviar Dreams",
+    0.333
+   ]
+  ]
+ ],
+ [
+  "FM366",
+  "Anne- Marie",
+  null,
+  "links",
+  [
+   [
+    "name",
+    "Anne-Marie",
+    "Sweetie",
+    1.0
+   ],
+   [
+    "spruch",
+    "Mein geliebtes Kind",
+    "Caviar Dreams",
+    0.323
+   ]
+  ]
+ ],
+ [
+  "FM376",
+  "Ida",
+  null,
+  "links",
+  [
+   [
+    "daten",
+    "11.02.2005 29.10.2005",
+    "Amatic SC",
+    0.416
+   ],
+   [
+    "name",
+    "Ida",
+    "Allura",
+    1.0
+   ],
+   [
+    "spruch",
+    "Unser kleiner Engel",
+    "Allura",
+    0.677
+   ]
+  ]
+ ],
+ [
+  "FM379",
+  "Mia",
+  null,
+  "links",
+  [
+   [
+    "name",
+    "Mia",
+    "Betsy Bailey",
+    1.0
+   ],
+   [
+    "daten",
+    "02.04.2021 – 04.04.2021",
+    "Montserrat Light",
+    0.222
+   ],
+   [
+    "spruch",
+    "Nun wird der Himmel\nvon einem weiteren\nStern erleuchtet. Wir\nwerden Dich nie",
+    "Montserrat Light",
+    0.271
+   ],
+   [
+    "spruch-2",
+    "vergessen.",
+    "Montserrat Light",
+    0.271
+   ]
+  ]
+ ],
+ [
+  "FM380",
+  "Anna-Lena",
+  null,
+  "links",
+  [
+   [
+    "name",
+    "Anna-Lena",
+    "Allura",
+    1.0
+   ],
+   [
+    "daten",
+    "*27.09.2019 † 06.06.2021",
+    "Cinzel",
+    0.284
+   ],
+   [
+    "spruch",
+    "Ein kleiner Engel kam,\nlächelte und kehrte um.",
+    "Allura",
+    0.426
+   ]
+  ]
+ ],
+ [
+  "FM382",
+  "Kira Kunze",
+  null,
+  "links",
+  [
+   [
+    "name",
+    "Kira Kunze",
+    "Allura",
+    1.0
+   ],
+   [
+    "daten",
+    "*16.08.2020 † 22.08.2020",
+    "Cinzel",
+    0.268
+   ],
+   [
+    "spruch",
+    "Du bist nicht mehr da, wo du warst,\naber du bist überall, wo wir sind.",
+    "Allura",
+    0.475
+   ]
+  ]
+ ],
+ [
+  "FSD1090",
+  "Carla",
+  null,
+  "links",
+  [
+   [
+    "name",
+    "Carla",
+    "Allura",
+    1.0
+   ],
+   [
+    "daten",
+    "* 16.08.2025   † 22.08.2025",
+    "Cinzel",
+    0.22
+   ],
+   [
+    "spruch",
+    "Du bist nicht mehr da, wo\ndu warst, aber du bist\nüberall, wo wir sind.",
+    "Allura",
+    0.256
+   ]
+  ]
+ ],
+ [
+  "FSD1091",
+  "Noah",
+  null,
+  "links",
+  [
+   [
+    "name",
+    "Noah",
+    "Hello Georgia",
+    1.0
+   ],
+   [
+    "daten",
+    "still geboren am 10.03.2025",
+    "Caviar Dreams",
+    0.219
+   ],
+   [
+    "spruch",
+    "Nun wird der Himmel\nvon einem weiteren\nStern erleuchtet.",
+    "Caviar Dreams",
+    0.219
+   ]
+  ]
+ ],
+ [
+  "FSD1092",
+  "Lotta",
+  null,
+  "links",
+  [
+   [
+    "name",
+    "Lotta",
+    "Allura",
+    1.0
+   ],
+   [
+    "daten",
+    "* 27.09.2025   † 06.10.2025",
+    "Cinzel",
+    0.22
+   ],
+   [
+    "spruch",
+    "Ein kleiner Engel kam,\nlächelte und kehrte um.",
+    "Allura",
+    0.256
+   ]
+  ]
+ ],
+ [
+  "FSD1093",
+  "Maja",
+  null,
+  "links",
+  [
+   [
+    "name",
+    "Maja",
+    "Allura",
+    1.0
+   ],
+   [
+    "daten",
+    "11.02.2025 · 2140 g · 46 cm",
+    "Amatic SC",
+    0.203
+   ],
+   [
+    "spruch",
+    "Für einen Augenblick\nbei uns, für immer\nin unseren Herzen.",
+    "Allura",
+    0.256
+   ]
+  ]
+ ],
+ [
+  "FSD1094",
+  "Tabea",
+  null,
+  "links",
+  [
+   [
+    "name",
+    "Tabea",
+    "Cookie",
+    1.0
+   ],
+   [
+    "daten",
+    "Juni 2025",
+    "Josefin Sans",
+    0.234
+   ],
+   [
+    "spruch",
+    "Unser\nkleiner Stern",
+    "Josefin Sans",
+    0.234
+   ]
+  ]
+ ],
+ [
+  "FSD1095",
+  "Romy",
+  null,
+  "links",
+  [
+   [
+    "name",
+    "Romy",
+    "Betsy Bailey",
+    1.0
+   ],
+   [
+    "daten",
+    "02.04.2025 – 04.04.2025",
+    "Montserrat Light",
+    0.261
+   ],
+   [
+    "spruch",
+    "Manche Seelen\nberühren die\nWelt nur ganz leise.",
+    "Montserrat Light",
+    0.261
+   ]
+  ]
+ ],
+ [
+  "FSD1096",
+  "Leo",
+  null,
+  "links",
+  [
+   [
+    "name",
+    "Leo",
+    "Great Vibes",
+    1.0
+   ],
+   [
+    "daten",
+    "still geboren am 18.05.2025",
+    "Lato",
+    0.272
+   ]
+  ]
+ ],
+ [
+  "FSD1097",
+  "Ella",
+  null,
+  "links",
+  [
+   [
+    "name",
+    "Ella",
+    "Parisienne",
+    1.0
+   ],
+   [
+    "daten",
+    "* 03.02.2025",
+    "Raleway",
+    0.263
+   ],
+   [
+    "spruch",
+    "Wir haben dich nur\nkurz gehalten, aber\nim Herzen für immer.",
+    "Raleway",
+    0.263
+   ]
+  ]
+ ]
+]

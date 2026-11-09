@@ -25,4 +25,14 @@ Die lokale Prüfung bestand für 60/60 native Größen-, Preis- und Konturfälle
 
 Der Gartenhintergrund nach Chris’ Bildreferenz läuft im privaten Konfigurator mit `d70ffc6`. Die sechs Modultests auf dem Server und die Browser-Sichtprüfung bestanden. Der Hintergrund gehört zur Bildschirmvorschau.
 
-Abgeschlossen: `3daba5b` liefert den Gartenhintergrund als WebP mit 75.456 Byte bei 1672 × 941 Pixeln, 96,04 % kleiner als das PNG. Hostprüfung HTTP 200, `image/webp`, identischer SHA-256 und sechs Modultests bestanden. Finale Browser-Sichtprüfung mit und ohne Foto bestätigt den geladenen WebP-Hintergrund, klare Acrylflächen und gut lesbare Maßangaben. Die Vorschauänderung erzeugte keine weiteren Produktrevisionen. Belege unter `reports/garden-webp/{APPLIED,VERIFIED}.json`; der vollständige Drucknachweis liegt unter `reports/uv-cross-print-audit-final.json`. Keine reale Bestellung oder Shopify-Veröffentlichung.
+Die erste Gartenfassung im Querformat wurde mit `3daba5b` als WebP ausgeliefert. Hostprüfung und Browser-Sichtprüfung mit und ohne Foto bestanden. Die Belege liegen unter `reports/garden-webp/{APPLIED,VERIFIED}.json`. Der vollständige Drucknachweis liegt unter `reports/uv-cross-print-audit-final.json`.
+
+## Quadratische Gartenvorschau
+
+`d1905a7` ist im geschützten Online-Konfigurator aktiv. Auf Chris’ erneuten Wunsch wurde der Garten mit der integrierten Bildfunktion quadratisch komponiert. Der Boden belegt die unteren 24 % des Hintergrunds. Das WebP misst 1254 × 1254 Pixel und 144.228 Byte. Es ist 93,78 % kleiner als die PNG-Quelle mit 2.320.314 Byte. Das Kreuz wird aus der aktuellen DXF-Kontur und den editierbaren Gestaltungselementen gezeichnet. Die Bilddatei enthält ausschließlich die Gartenszene.
+
+Die Vordergrundebene überdeckt den vollständigen Spieß ab der Bodenlinie auf 76 % der quadratischen Fläche. Bei mehr als 100 % Zoom oder bei einem ausgewählten Gestaltungselement unter der Bodenlinie blendet der Editor die Vordergrundebene aus und zeigt die ganze Kontur zum Bearbeiten. Das Vorschauglas nutzt die physische Materialstärke von 5 mm für die polierte Kante und zeigt eine dezente Lichtbrechung im Hintergrund.
+
+15 gezielte lokale Modul- und Exporttests sowie sechs Modultests auf dem Host bestanden. Die Änderung betrifft die Vorschau. Produktrevisionen und Druckexport entsprechen weiterhin dem geprüften DXF-R2-Stand.
+
+Die abschließende Browser-Sichtprüfung bestand im aktiven Online-Konfigurator. Auf dem Desktop maß die Vorschau bei allen drei Produktgrößen 669 × 669 Pixel. Mobil maß sie 390 × 390 Pixel bei einer Bildschirmfläche von 390 × 844 Pixeln. Der geladene WebP-Garten, die polierte 5-mm-Kante, die dezente Lichtbrechung und der in der Erde liegende Spieß wurden sichtbar geprüft. Bei 101 % Zoom erschien die vollständige Kontur. Das Zurücksetzen auf 100 % stellte den Erd-Vordergrund wieder her. Nachweis `square-scene-browser.json`, Bildschirmaufnahme `UV-Gedenkkreuze-Quadratisch-Acryl-Konfi.jpg`.

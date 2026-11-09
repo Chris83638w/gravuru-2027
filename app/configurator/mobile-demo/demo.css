@@ -101,7 +101,7 @@
   padding: 0 !important;
   flex: 1 1 0 !important;
 }
-:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-preview .stage:not(.acryl-scene) {
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-preview .stage:not(.acryl-scene,[data-uv-cross-stage]) {
   box-sizing: border-box !important;
   width: 100% !important;
   height: 100% !important;
@@ -118,7 +118,7 @@
   background: transparent !important;
   overflow: hidden !important;
 }
-:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-preview .stage:not(.acryl-scene) .plate-holder {
+:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-preview .stage:not(.acryl-scene,[data-uv-cross-stage]) .plate-holder {
   margin: auto !important;
   flex: none !important;
   width: min(100cqw, calc(100cqh * var(--ux-product-width) / var(--ux-product-height))) !important;
@@ -127,6 +127,13 @@
   max-width: none !important;
   max-height: none !important;
   aspect-ratio: var(--ux-preview-ratio) !important;
+}
+/* Fit the native square scene into the space left by the R15 action row. */
+:host([data-mobile-demo][data-product-execution="uv-cross"]) .ux-preview > [data-ux-stage] {
+  container-type: size;
+}
+:host([data-mobile-demo][data-product-execution="uv-cross"][data-universal-profile][data-ux-layout]) .ux-shell .ux-layout > .ux-preview .stage[data-uv-cross-stage] {
+  width: min(100%, 100cqh) !important;
 }
 :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-preview .stage.acryl-scene {
   width: min(100%, calc((var(--md-canvas-h) - 36px) * 1086 / 1448)) !important;
@@ -483,7 +490,7 @@
     --md-canvas-h: max(120px, min(clamp(180px, calc(var(--md-vh) * .29), 260px), calc(var(--md-vh) - 482px)));
     --md-sheet-top: calc(var(--md-preview-top) + var(--md-canvas-h));
   }
-  :host([data-mobile-demo][data-demo-sheet="panel"][data-demo-selected-type="text"][data-ux-layout][data-ux-neutral][data-ux-modern]:not([data-demo-keyboard])) .ux-shell:has(#ux-panel-text[data-md-text-editor]:not([hidden])) .ux-layout > .ux-preview .stage:not(.acryl-scene) {
+  :host([data-mobile-demo][data-demo-sheet="panel"][data-demo-selected-type="text"][data-ux-layout][data-ux-neutral][data-ux-modern]:not([data-demo-keyboard])) .ux-shell:has(#ux-panel-text[data-md-text-editor]:not([hidden])) .ux-layout > .ux-preview .stage:not(.acryl-scene,[data-uv-cross-stage]) {
     padding: 20px 28px !important;
   }
   :host([data-mobile-demo][data-demo-sheet="panel"][data-demo-selected-type="text"]:not([data-demo-keyboard])) .ux-shell:has(#ux-panel-text[data-md-text-editor]:not([hidden])) .md-sheet-header {
@@ -510,7 +517,7 @@
     --md-canvas-h: max(130px, min(220px, calc(var(--md-vh) * .26), calc(var(--md-vh) - 480px)));
     --md-sheet-top: calc(var(--md-preview-top) + var(--md-canvas-h));
   }
-  :host([data-mobile-demo][data-demo-sheet="panel"][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell:has(#ux-panel-options:not([hidden])) .ux-layout > .ux-preview .stage:not(.acryl-scene) { padding: 48px 28px 30px !important; }
+  :host([data-mobile-demo][data-demo-sheet="panel"][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell:has(#ux-panel-options:not([hidden])) .ux-layout > .ux-preview .stage:not(.acryl-scene,[data-uv-cross-stage]) { padding: 48px 28px 30px !important; }
   :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-editor #ux-panel-options[data-demo-options-layout="stack"] { padding: 8px 12px !important; }
   :host([data-mobile-demo]) #ux-panel-options[data-demo-options-layout="stack"] > .fk-options > h2 { display: none !important; }
   :host([data-mobile-demo]) #ux-panel-options .ux-info-links[data-demo-options-tabs] { margin: 0 0 6px !important; padding: 0 0 4px !important; }
@@ -567,13 +574,13 @@
   :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-desktop-tabs > .md-nav[hidden] { display: none !important; }
   :host([data-mobile-demo]) .md-controls { top: auto; bottom: 0; height: var(--md-footer-h); padding: 8px 22px; gap: 10px; border-top: 1px solid var(--md-border); border-bottom: 0; }
   :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-editor { inset: var(--md-sheet-top) 0 var(--md-footer-h) auto !important; width: var(--md-inspector-w) !important; border-radius: 0 !important; border-right: 0 !important; box-shadow: -4px 0 20px #18313c08; }
-  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-preview .stage:not(.acryl-scene) { padding: 50px 38px 36px !important; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-preview .stage:not(.acryl-scene,[data-uv-cross-stage]) { padding: 50px 38px 36px !important; }
   :host([data-mobile-demo]) .ux-shell .ux-preview :is(.dimension-x, .dimension-y) span { font-size: 12px !important; line-height: 16px !important; }
   :host([data-mobile-demo]) .md-sheet-header { min-height: 58px; padding: 7px 12px; }
   :host([data-mobile-demo]) .md-sheet-header h2 { font-size: 16px !important; }
-  :host([data-mobile-demo]) .md-sheet-header:has([data-demo-cart-action]) { grid-template-columns: minmax(0,1fr) 150px; }
-  :host([data-mobile-demo]) .md-sheet-header:has([data-demo-cart-action]) h2 { grid-column: 1; }
-  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .md-sheet-header > [data-demo-cart-action] {
+  :host([data-mobile-demo]) .md-sheet-header:has(:is([data-demo-cart-action],[data-demo-review-action])) { grid-template-columns: minmax(0,1fr) 150px; }
+  :host([data-mobile-demo]) .md-sheet-header:has(:is([data-demo-cart-action],[data-demo-review-action])) h2 { grid-column: 1; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .md-sheet-header > :is([data-demo-cart-action],[data-demo-review-action]) {
     grid-column: 2; background: var(--md-green) !important; border-color: var(--md-green) !important;
   }
   /* Desktop only: keep adding text reachable without squeezing the canvas or
@@ -607,7 +614,7 @@
   :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-editor { inset: var(--md-sheet-top) 0 var(--md-footer-h) auto !important; width: var(--md-inspector-w) !important; border-radius: 12px 0 0 !important; }
   :host([data-mobile-demo][data-ux-layout][data-ux-neutral]) .md-bar > button { height: 44px !important; flex-direction: row; gap: 7px; }
   :host([data-mobile-demo]) .md-tools { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-preview .stage:not(.acryl-scene) { padding: 44px 24px 24px !important; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-preview .stage:not(.acryl-scene,[data-uv-cross-stage]) { padding: 44px 24px 24px !important; }
 }
 
 /* Real keyboard shrink: 360x400 => 32px header + 100px canvas + 48px footer,
@@ -621,7 +628,7 @@
 :host([data-mobile-demo][data-demo-keyboard]) :is(.md-controls, .md-product-button, .md-history, .md-badge, .md-summary, .md-photo-shortcut, .md-plus) { display: none !important; }
 :host([data-mobile-demo][data-demo-keyboard]) .md-top { justify-content: space-between; }
 :host([data-mobile-demo][data-demo-keyboard][data-ux-layout][data-ux-neutral]) .md-top button { height: 32px !important; min-height: 32px !important; padding: 5px !important; }
-:host([data-mobile-demo][data-demo-keyboard][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-preview .stage:not(.acryl-scene) { padding: 6px 20px 18px !important; }
+:host([data-mobile-demo][data-demo-keyboard][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-preview .stage:not(.acryl-scene,[data-uv-cross-stage]) { padding: 6px 20px 18px !important; }
 :host([data-mobile-demo][data-demo-keyboard]) .ux-shell .ux-preview :is(.dimension-x, .dimension-y) span { font-size: 8px !important; line-height: 10px !important; }
 :host([data-mobile-demo][data-demo-keyboard]) .ux-shell .ux-preview .ux-overlap-note { font-size: 8px !important; line-height: 10px !important; }
 :host([data-mobile-demo][data-demo-keyboard][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-editor { inset: var(--md-sheet-top) 0 var(--md-footer-h) !important; width: 100% !important; padding-bottom: 8px !important; border-radius: 12px 12px 0 0 !important; }

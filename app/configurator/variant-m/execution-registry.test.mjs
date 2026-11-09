@@ -80,9 +80,14 @@ test('UV rear print keeps its geometry and paint between translucent glass layer
  const profile={kind:'universal-product',geometry:{width:110,height:200,shape:'contour',outlinePath,holes:[]},material:{kind:'acrylic',variant:'klar',thicknessMm:5,engravingSide:'back',color:'#dbe6e3'},processing:{profileId:'color-print'}};
  const design={name:'Gedenkkreuz',objects:[{id:'print',type:'graphic',shape:'rect',x:55,y:50,w:10,h:5,color:'#274c51',filled:true}],marks:[]};
  const before=JSON.stringify({profile,design}),svg=studioSvg(profile,design,{},{platePreview:uvCrossGlassPreview});
- assert.match(svg,/data-preview-acrylic-glass="klar"[^]*fill-opacity=".07"[^]*data-object="print"[^]*data-preview-glass-finish="front"/);
- assert.ok(svg.includes(`d="${outlinePath}"`));
- assert.match(svg,/translate\(2 2.7\)/);
+ assert.match(svg,/data-preview-acrylic-glass="klar"[^]*fill-opacity=".025"[^]*data-object="print"[^]*data-preview-glass-finish="front"/);
+ const rim=svg.match(/<g data-preview-polished-edge="" clip-path="url\(#([^"]+)\)" fill="none">([\s\S]*?)<\/g>/);
+ assert.ok(rim);
+ assert.ok(svg.includes(`<clipPath id="${rim[1]}"><path d="${outlinePath}"`));
+ assert.deepEqual([...rim[2].matchAll(/<path d="([^"]+)"/g)].map(match=>match[1]),[outlinePath,outlinePath]);
+ assert.match(rim[2],/stroke-width="3"/);
+ assert.doesNotMatch(svg.match(/<g [^>]*data-preview-acrylic-glass="klar"[^>]*>[\s\S]*?<\/g>/)?.[0]||'',/transform=/);
+ assert.doesNotMatch(rim[2],/transform=/);
  assert.match(svg,/data-object="print" transform="translate\(55 50\) rotate\(0\)" fill="#274c51"/);
  assert.doesNotMatch(svg,/data-plate-shadow|scale\(-1/);
  assert.equal(JSON.stringify({profile,design}),before);

@@ -10,15 +10,19 @@ import {isPrioPresentationAsset} from './assets.mjs';
 const app=new URL('../../',import.meta.url);
 const read=url=>fs.readFileSync(new URL('.'+url,app),'utf8');
 const entry='/configurator/mobile-demo/shop-shell.mjs';
-const presentation=collectModules([entry],{read});
+const reviewEntry='/configurator/mobile-demo/review-shell.mjs';
+const presentation=collectModules([entry,reviewEntry],{read});
 
 test('R15 presentation stays outside the native blob bundle and resolves its complete real module graph',()=>{
  const native=collectModules(BUNDLE_ENTRIES,{read});
  assert.equal(native.modules.has(entry),false);
+ assert.equal(native.modules.has(reviewEntry),false);
  const index=new Map(native.order.map((url,i)=>[url,i]));
  for(const url of native.order){
   const transformed=transformModule(url,native.modules.get(url).source,index);
-  if(url.endsWith('/ux.mjs'))assert.match(transformed.code,/gravuruModules\.import\('\/configurator\/mobile-demo\/shop-shell\.mjs'\)/);
+  if(url.endsWith('/ux.mjs')){
+   for(const shell of [entry,reviewEntry])assert.ok(transformed.code.includes("gravuruModules.import('"+shell+"')"));
+  }
  }
  assert.ok(presentation.modules.size>13);
  for(const url of presentation.order){

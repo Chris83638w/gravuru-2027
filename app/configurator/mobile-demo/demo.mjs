@@ -18,7 +18,8 @@ export function keyboardViewport(previous, {width, height, innerHeight, focused}
 }
 
 export async function installMobileDemo(el, config = window.UniversalConfig, context = null) {
-  if ((!window.GravuruMobileDemo && context?.mode !== 'shop') || el.mobileDemo) return el.mobileDemo;
+  const review = context?.mode === 'review';
+  if ((!window.GravuruMobileDemo && context?.mode !== 'shop' && !review) || el.mobileDemo) return el.mobileDemo;
   const r = el.shadowRoot, $ = s => r.querySelector(s);
   if (!r || !el.uxLayoutReady || !el.uxShowSection) return null;
   const css = await fetch(new URL('./demo.css', import.meta.url));
@@ -37,7 +38,7 @@ export async function installMobileDemo(el, config = window.UniversalConfig, con
   const returnButton = $('.ux-heading [data-ux=back]');
   const priorReturn = returnButton ? {nodes:[...returnButton.childNodes],text:returnButton.textContent,label:returnButton.getAttribute('aria-label'),marker:returnButton.getAttribute('data-demo-product-return')} : null;
   move(returnButton,top);
-  if(returnButton){returnButton.textContent='Zurück zum Produkt';returnButton.setAttribute('aria-label','Zurück zum Produkt');returnButton.setAttribute('data-demo-product-return','');}
+  if(returnButton){const label=context?.returnLabel||'Zurück zum Produkt';returnButton.textContent=label;returnButton.setAttribute('aria-label',label);returnButton.setAttribute('data-demo-product-return','');}
   const identity = make('div','md-identity');
   identity.append(make('span', 'md-brand', 'gravuru'), make('span', 'md-badge', context?.badge || 'Mobile Demo')); top.append(identity);
   top.querySelector('.md-badge').title = context?.badgeTitle || 'Getrennte Testversion. Kundenkonto und Bestellung sind nicht verbunden.';
@@ -63,7 +64,7 @@ export async function installMobileDemo(el, config = window.UniversalConfig, con
   editor.id = 'md-tool-sheet'; editor.setAttribute('aria-labelledby', heading.id);
   editor.prepend(header);
   const menu = make('div', 'md-tools'); header.after(menu);
-  const sections = [['options','Ausführung & Größe'],['design','Designs'],['text','Text'],['motif','Motive'],['upload',context?.logoOnly?'Logo':'Fotos & Logos']];
+  const sections = [['options',context?.optionLabel||'Ausführung & Größe'],['design','Designs'],['text','Text'],['motif','Motive'],['upload',context?.uploadLabel||(context?.logoOnly?'Logo':'Fotos & Logos')]];
   const toolButtons = new Map();
   for (const [key, label] of sections) {
     const native = $('#ux-tab-' + key); if (!native) continue;
@@ -81,12 +82,12 @@ export async function installMobileDemo(el, config = window.UniversalConfig, con
   const summary = make('div', 'md-summary'), title = make('span', 'md-product', context?.summary?.(el.state) || 'Schiefer-Gedenktafel');
   const productButton = button('', 'md-product-button', () => open('options'));
   const optionsIcon=toolButtons.get('options')?.native.querySelector('svg'); if(optionsIcon)productButton.append(optionsIcon.cloneNode(true));
-  productButton.setAttribute('aria-label','Ausführung und Größe auswählen'); productButton.append(title);
+  productButton.setAttribute('aria-label',context?.optionLabel ? context.optionLabel+' auswählen' : 'Ausführung und Größe auswählen'); productButton.append(title);
   summary.append(productButton); move($('[data-fk-total]'), summary);
   const bar = make('nav', 'md-bar'); bar.setAttribute('aria-label', 'Gestaltung verwalten');
   const desktopTabs = make('nav', 'md-desktop-tabs'); desktopTabs.setAttribute('aria-label', 'Gestaltungsbereiche');
   const navButtons = new Map();
-  for (const [key,label] of [['options','Ausführung'],['design','Designs'],['text','Text'],['motif','Motive'],['upload',context?.logoOnly?'Logo':'Foto']]) {
+  for (const [key,label] of [['options',context?.optionLabel||'Ausführung'],['design','Designs'],['text','Text'],['motif','Motive'],['upload',context?.logoOnly?'Logo':'Foto']]) {
     if (!toolButtons.has(key)) continue;
     const b = button('', 'md-nav', () => open(key)); b.dataset.demoSection = key;
     b.setAttribute('aria-label',label); const icon = toolButtons.get(key)?.native.querySelector('svg');
@@ -95,7 +96,9 @@ export async function installMobileDemo(el, config = window.UniversalConfig, con
   const nativeUpload = $('#ux-panel-upload [data-ux=photo-upload]');
   const finish = $('.completion-finish'); move(finish, bar);
   const priorFinish = finish ? {nodes:[...finish.childNodes],text:finish.textContent,label:finish.getAttribute('aria-label')} : null;
-  if (finish) {
+  if (finish && review) {
+    finish.textContent = 'Prüfen'; finish.setAttribute('aria-label', 'Gestaltung prüfen');
+  } else if (finish) {
     finish.textContent = ''; const cartIcon = make('img','md-cart-icon'); cartIcon.src = new URL('./shopping-cart.svg',import.meta.url).href; cartIcon.alt = '';
     finish.append(cartIcon,make('span','','Warenkorb')); finish.setAttribute('aria-label', 'Warenkorb');
   }
@@ -111,12 +114,12 @@ export async function installMobileDemo(el, config = window.UniversalConfig, con
   let textEditor, textSelection;
   const desktop = () => window.innerWidth >= 1000;
   function refreshCloseAction() {
-    const cart = desktop() && current === 'menu';
-    const label = cart ? 'In den Warenkorb' : 'Fertig';
+    const desktopFinish = desktop() && current === 'menu';
+    const label = desktopFinish ? (review ? 'Gestaltung prüfen' : 'In den Warenkorb') : 'Fertig';
     if (close.textContent !== label) close.textContent = label;
     close.setAttribute('aria-label',label);
-    close.toggleAttribute('data-demo-cart-action',cart);
-    close.disabled = cart && (!finish || finish.hidden || finish.disabled || finish.getAttribute('aria-disabled') === 'true');
+    close.toggleAttribute(review ? 'data-demo-review-action' : 'data-demo-cart-action',desktopFinish);
+    close.disabled = desktopFinish && (!finish || finish.hidden || finish.disabled || finish.getAttribute('aria-disabled') === 'true');
   }
   function resize() {
     if (disposed) return;
@@ -128,7 +131,7 @@ export async function installMobileDemo(el, config = window.UniversalConfig, con
     // The native fullscreen dialog owns checkout until its close handler restores it.
     if (!nativeFullscreen && !desktop() && finish && bar.children[bar.children.length - 1] !== finish) bar.append(finish);
     desktopTabs.hidden = !desktop();
-    bar.setAttribute('aria-label',desktop() ? 'Warenkorb' : 'Gestaltung verwalten');
+    bar.setAttribute('aria-label',desktop() ? (review ? 'Gestaltung prüfen' : 'Warenkorb') : 'Gestaltung verwalten');
     if (resetButton) {
       const label = desktop() ? priorReset.text : 'Gestaltung zurücksetzen';
       if (resetButton.textContent !== label) {

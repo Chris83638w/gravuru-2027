@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {installMobileDemo,keyboardViewport} from './demo.mjs';
 import {installPrioShopShell} from './shop-shell.mjs';
+import {installPrioReviewShell,reviewPresentationContext} from './review-shell.mjs';
+import {familyExecution,UV_CROSS_FAMILY} from '../variant-m/execution-registry.mjs';
 
 // The real opt-in adapter runs against a small DOM port. Rendering and native
 // editor behaviour are verified separately in the browser; these tests cover
@@ -194,6 +196,55 @@ test('native shop installs the approved presentation while preserving checkout, 
  assert.equal(await installPrioShopShell(f.el,config,{host,view:env.win}),api);
  api.dispose();assert.equal(f.finish.parentNode,f.dock);assert.equal(f.el.sync,f.sync);
  assert.equal(host.GravuruShopEntry,originalEntry);assert.equal(f.r.querySelector('.md-top'),null);
+});
+
+function uvReviewFixture(view={location:{origin:'https://app.example'}}){
+ const binding={productId:'cfg_uv',productRevision:2};
+ const config={reviewOnly:true,productExecution:familyExecution(UV_CROSS_FAMILY),familyFormats:{source:{lineId:'uv-gedenkkreuze'}},
+  profile:{name:'UV-Gedenkkreuze',binding:{kind:'local-review',productId:binding.productId},revision:'cfg_uv:2',features:{orderEnabled:false}}};
+ const host={location:{origin:'https://app.example'},UniversalConfig:config,GravuruWorkshopReview:binding,
+  GravuruReviewPresentation:{name:'prio-r15',binding}};
+ return {host,view,config};
+}
+
+test('UV Prio review requires the exact non-orderable model and revision from its own review host',async()=>{
+ const fixture=uvReviewFixture();
+ assert.equal(reviewPresentationContext(fixture).mode,'review');
+ for(const alter of [
+  ({host})=>{host.GravuruShopEntry={};},({host})=>{host.GravuruConfiguratorTest={};},({host})=>{host.GravuruCommerce={};},
+  ({host})=>{host.GravuruWorkshopReview.productRevision=1;},({host})=>{host.GravuruWorkshopReview={...host.GravuruWorkshopReview};},
+  ({config})=>{config.profile.features.orderEnabled=true;},({config})=>{config.reviewOnly=false;},
+  ({config})=>{config.familyFormats.source.lineId='anderes-produkt';},({config})=>{delete config.productExecution;},
+  v=>{v.config=structuredClone(v.config);},({view})=>{view.location.origin='https://other.example';},
+ ]){
+  const invalid=uvReviewFixture();alter(invalid);assert.throws(()=>reviewPresentationContext(invalid),/geladenen Prüfstand/);
+ }
+ delete fixture.host.GravuruReviewPresentation;
+ assert.equal(await installPrioReviewShell(null,fixture.config,fixture),null);
+});
+
+test('UV Prio review mounts the native controls with the review action on desktop and mobile',async t=>{
+ const env=runtime(t),f=editorFixture(env);delete env.win.GravuruMobileDemo;
+ env.win.location={origin:'https://app.example'};
+ const fixture=uvReviewFixture(env.win),api=await installPrioReviewShell(f.el,fixture.config,fixture);
+ assert.ok(api);
+ assert.equal(f.r.querySelector('.md-badge').textContent,'Prio Konfi');
+ assert.equal(f.nodes.back.textContent,'Zur UV-Galerie');
+ assert.equal(f.r.querySelector('.md-bar .completion-finish'),f.finish);
+ assert.equal(f.r.querySelector('.md-summary [data-fk-total]'),f.price);
+ assert.equal(f.finish.getAttribute('aria-label'),'Gestaltung prüfen');
+ assert.equal(f.r.querySelector('.md-cart-icon'),null);
+ assert.equal(env.win.GravuruMobileDemo,undefined);
+ assert.equal(fixture.host.GravuruShopEntry,undefined);
+ assert.ok(f.r.textContent.includes('Acrylglas · 22 × 14 cm'));
+ f.finish.click();
+ env.win.innerWidth=1200;env.win.dispatchEvent({type:'resize'});api.open('menu');env.flush();
+ const review=f.r.querySelector('[data-demo-review-action]');
+ assert.equal(review.textContent,'Gestaltung prüfen');
+ assert.equal(f.r.querySelector('[data-demo-cart-action]'),null);
+ review.click();
+ assert.equal(f.calls.filter(c=>c[0]==='native-review').length,2);
+ api.dispose();assert.equal(f.finish.parentNode,f.dock);
 });
 
 test('header reuses the native product return and restores its position and label on removal',async t => {

@@ -73,7 +73,7 @@ export function installUvCrossExecution({el,config,picks,pictures}){
  .uv-cross-refraction{
   position:absolute;inset:0;pointer-events:none;
   mask-size:100% 100%;mask-repeat:no-repeat;
-  backdrop-filter:blur(.7px) saturate(1.05) brightness(1.045);
+  backdrop-filter:blur(.35px) contrast(1.035) brightness(.985);
  }
  .uv-cross-foreground{
   position:absolute;inset:0;pointer-events:none;z-index:2;

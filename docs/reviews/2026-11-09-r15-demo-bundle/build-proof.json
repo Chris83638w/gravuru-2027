@@ -1,0 +1,30 @@
+{
+  "schema": "gravuru-narrow-patch/v1",
+  "baseline": "4dc5653b2ee31d2e3e28f10614e5433469348a5a",
+  "files": [
+    {
+      "path": "app/configurator/variant-m/bundle-build.mjs",
+      "beforeSha256": "13fc47d0f4db9902a2ac66bda6499cebb47bfe196166dbaa21b02872af84fd07",
+      "afterSha256": "c1cc164a7edb825890c1ebb09941305ef4c1221ec4a9e798db29076c988991bf"
+    },
+    {
+      "path": "app/workshop/ui/shop-warm.mjs",
+      "beforeSha256": "74e1ccf61a6b698c76419b4ae40214f41ea6e020378371ac77ee3b3d8a294a05",
+      "afterSha256": "fed78aabfaececc9f8556b92c911a4dc344c2a59818958b73f417a67f23ea1dc"
+    }
+  ],
+  "proof": {
+    "baseline": "4dc5653b2ee31d2e3e28f10614e5433469348a5a",
+    "coreUnchanged": true,
+    "core": "/_bundle/editor-622e0d4afd819f7c.mjs",
+    "unchangedProductChunks": true,
+    "presentation": {
+      "url": "/_bundle/editor-bf7d088b9bdf015e.mjs",
+      "modules": 15,
+      "bytes": 134324,
+      "gzipBytes": 38138
+    },
+    "previousStaticGraph": 30,
+    "sharedCoreModules": 15
+  }
+}

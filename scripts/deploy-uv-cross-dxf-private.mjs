@@ -23,7 +23,7 @@ const write=(f,v)=>fs.writeFileSync(f,JSON.stringify(v,null,2)+'\n',{mode:0o600}
 const cfg=read(configFile).values;
 assert.equal(cfg.GRAVURU_PRIVATE_DATA_DIR,data);
 assert.equal(cfg.GRAVURU_TEST_ORIGIN,'https://test-2027.gravuru-designwerkstatt.de');
-const env={...process.env,GRAVURU_PYTHON:cfg.GRAVURU_TEST_PYTHON_DIR+'/bin/python',PYTHONIOENCODING:'utf-8'};delete env.PYTHONPATH;
+const env={...process.env,GRAVURU_PYTHON:cfg.GRAVURU_TEST_PYTHON_DIR+'/bin/python',PYTHONIOENCODING:'utf-8',PATH:cfg.GRAVURU_TEST_PYTHON_DIR+'/bin:'+process.env.PATH};delete env.PYTHONPATH;
 process.umask(0o077);
 function run(args){const r=spawnSync(process.execPath,args,{cwd:runtime,env,encoding:'utf8',maxBuffer:30*1024*1024});if(r.stdout)process.stdout.write(r.stdout);if(r.stderr)process.stderr.write(r.stderr);assert.equal(r.status,0,'Failed: '+args[0]);}
 function validatePackage(){for(const f of manifest.files){assert(!f.file.includes('..')&&!path.isAbsolute(f.file));assert.equal(hash(fs.readFileSync(path.join(pack,f.file))),f.sha256,'Package: '+f.file);}}
@@ -32,7 +32,7 @@ function preserved(before){const after=snapshot();assert.equal(after.heads.lengt
 const phase=process.argv[2];
 if(phase==='stage'){
  validatePackage();assert.equal(fs.readFileSync(shim,'utf8'),oldShim,'Active runtime changed');
- for(const f of manifest.overrides){const p=path.join(source,f.file);if(f.baseSha256===null)assert(!fs.existsSync(p),'Unexpected existing file '+f.file);else assert.equal(hash(fs.readFileSync(p)),f.baseSha256,'Source changed '+f.file);}
+ for(const f of manifest.overrides){const p=path.join(source,f.file);if(f.baseSha256===null)assert(!fs.existsSync(p),'Unexpected existing file '+f.file);else if(f.file.endsWith('.test.mjs')&&!fs.existsSync(p))console.log('Add test omitted from runtime: '+f.file);else assert.equal(hash(fs.readFileSync(p,'utf8').replaceAll('\r\n','\n')),f.baseSha256,'Source changed '+f.file);}
  assert(!fs.existsSync(target),'Stage already exists');fs.mkdirSync(target,{mode:0o700});fs.mkdirSync(reports,{mode:0o700});
  fs.cpSync(source,runtime,{recursive:true,preserveTimestamps:true});
  for(const f of manifest.overrides){const p=path.join(runtime,f.file);fs.mkdirSync(path.dirname(p),{recursive:true});fs.copyFileSync(path.join(pack,'code',f.file),p);}

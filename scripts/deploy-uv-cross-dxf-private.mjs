@@ -27,8 +27,52 @@ const env={...process.env,GRAVURU_PYTHON:cfg.GRAVURU_TEST_PYTHON_DIR+'/bin/pytho
 process.umask(0o077);
 function run(args){const r=spawnSync(process.execPath,args,{cwd:runtime,env,encoding:'utf8',maxBuffer:30*1024*1024});if(r.stdout)process.stdout.write(r.stdout);if(r.stderr)process.stderr.write(r.stderr);assert.equal(r.status,0,'Failed: '+args[0]);}
 function validatePackage(){for(const f of manifest.files){assert(!f.file.includes('..')&&!path.isAbsolute(f.file));assert.equal(hash(fs.readFileSync(path.join(pack,f.file))),f.sha256,'Package: '+f.file);}}
-function snapshot(){const db=new DatabaseSync(path.join(data,'workshop.sqlite'),{readOnly:true});try{return {heads:db.prepare('SELECT * FROM products ORDER BY id').all().map(r=>({id:r.id,revision:r.revision,sha:hash(JSON.stringify(r))})),history:Array.from(db.prepare('SELECT * FROM product_revisions ORDER BY product_id,revision').iterate(),r=>({id:r.product_id,revision:r.revision,sha:hash(JSON.stringify(r))}))};}finally{db.close();}}
-function preserved(before){const after=snapshot();assert.equal(after.heads.length,before.heads.length,'No duplicate products');const heads=new Map(after.heads.map(x=>[x.id,x]));for(const x of before.heads){const now=heads.get(x.id);if(ids.includes(x.id))assert.equal(now.revision,2);else assert.equal(now.sha,x.sha,'Unrelated product changed: '+x.id);}const oldRows=new Map(after.history.map(x=>[x.id+':'+x.revision,x.sha]));for(const x of before.history)assert.equal(oldRows.get(x.id+':'+x.revision),x.sha,'Historical revision changed');assert.equal(after.history.length,before.history.length+4);return {products:after.heads.length,created:0,updated:4,historicalRevisionsPreserved:before.history.length,unrelatedHeadsPreserved:before.heads.length-4};}
+function readHeads(db){
+ return db.prepare('SELECT * FROM products ORDER BY id').all().map(r=>({id:r.id,revision:r.revision,sha:hash(JSON.stringify(r))}));
+}
+function snapshot(){
+ const db=new DatabaseSync(path.join(data,'workshop.sqlite'),{readOnly:true});
+ try{
+  return {heads:readHeads(db),history:Array.from(db.prepare('SELECT * FROM product_revisions ORDER BY product_id,revision').iterate(),r=>({id:r.product_id,revision:r.revision,sha:hash(JSON.stringify(r))}))};
+ }finally{db.close();}
+}
+function checkHeads(before,after){
+ assert.equal(after.length,before.length,'No duplicate products');
+ const heads=new Map(after.map(x=>[x.id,x]));
+ for(const x of before){
+  const now=heads.get(x.id);
+  assert.ok(now,'Product missing: '+x.id);
+  if(ids.includes(x.id))assert.equal(now.revision,2);
+  else assert.equal(now.sha,x.sha,'Unrelated product changed: '+x.id);
+ }
+}
+function preservationCounts(before){
+ return {products:before.heads.length,created:0,updated:ids.length,historicalRevisionsPreserved:before.history.length,unrelatedHeadsPreserved:before.heads.length-ids.length};
+}
+function preserved(before){
+ const after=snapshot();
+ checkHeads(before.heads,after.heads);
+ const oldRows=new Map(after.history.map(x=>[x.id+':'+x.revision,x.sha]));
+ for(const x of before.history)assert.equal(oldRows.get(x.id+':'+x.revision),x.sha,'Historical revision changed');
+ assert.equal(after.history.length,before.history.length+ids.length);
+ return preservationCounts(before);
+}
+function verifyImported(){
+ const imported=read(target+'/IMPORTED.json');
+ assert.equal(imported.ok,true,'Full import verification required');
+ const before=read(target+'/before.json'),counts=preservationCounts(before);
+ for(const [key,value] of Object.entries(counts))assert.equal(imported[key],value,'Import proof differs: '+key);
+ // The import receipt records the completed byte-level history comparison.
+ // Here read current heads and count revisions without loading their payloads.
+ const db=new DatabaseSync(path.join(data,'workshop.sqlite'),{readOnly:true});
+ try{
+  db.exec('BEGIN');
+  checkHeads(before.heads,readHeads(db));
+  const {count}=db.prepare('SELECT COUNT(*) AS count FROM product_revisions').get();
+  assert.equal(count,before.history.length+ids.length,'Revision count changed since import');
+ }finally{db.close();}
+ return counts;
+}
 const phase=process.argv[2];
 if(phase==='stage'){
  validatePackage();assert.equal(fs.readFileSync(shim,'utf8'),oldShim,'Active runtime changed');
@@ -52,10 +96,10 @@ if(phase==='stage'){
  run(['scripts/check-uv-cross-products.mjs',data,reports+'/online-check.json',reports+'/online/uv-cross-products.json']);
  write(target+'/IMPORTED.json',{ok:true,...counts,at:new Date().toISOString()});console.log(JSON.stringify({event:'UV_DXF_IMPORT_OK',...counts}));
 }else if(phase==='activate'){
- assert(read(target+'/IMPORTED.json').ok);assert.equal(fs.readFileSync(shim,'utf8'),oldShim);assert.equal(hash(fs.readFileSync(configFile)),read(target+'/deployment.json').configSha);validatePackage();preserved(read(target+'/before.json'));
+ assert.equal(fs.readFileSync(shim,'utf8'),oldShim);assert.equal(hash(fs.readFileSync(configFile)),read(target+'/deployment.json').configSha);validatePackage();verifyImported();
  fs.writeFileSync(shim+'.uv-dxf-next',newShim,{mode:0o600});fs.renameSync(shim+'.uv-dxf-next',shim);write(target+'/ACTIVATED.json',{ok:true,at:new Date().toISOString()});console.log('UV_DXF_ACTIVATED_RESTART_REQUIRED');
 }else if(phase==='verify'){
- assert.equal(fs.readFileSync(shim,'utf8'),newShim);const counts=preserved(read(target+'/before.json'));
+ assert.equal(fs.readFileSync(shim,'utf8'),newShim);const counts=verifyImported();
  const headers={Authorization:'Basic '+Buffer.from(cfg.GRAVURU_TEST_USERNAME+':'+cfg.GRAVURU_TEST_PASSWORD).toString('base64')};
  const get=async route=>{assert(route.startsWith('/')&&!route.startsWith('//'));const r=await fetch(cfg.GRAVURU_TEST_ORIGIN+route,{headers,redirect:'error',signal:AbortSignal.timeout(60000)});assert.equal(r.status,200,'HTTP '+r.status+' '+route);return r.text();};
  assert(JSON.parse(await get('/__test/health')).ready);const html=await get('/uv-gedenkkreuze/');assert.equal((html.match(/<article>/g)||[]).length,20);

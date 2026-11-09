@@ -38,4 +38,6 @@ Alle Größen bleiben unverändert. Viewport- und Touch-Emulation anschließend 
 
 ## Nächster Schritt und Rücknahme
 
-Unabhängiger enger Review ist angefragt. Root kann anschließend die eine Produktionsdatei auf der exakten aktiven Basis übernehmen, das vorhandene Kundenpaket neu bauen und die reale überlagerte Haus-/Textgestaltung erneut prüfen. Frühere Bundledateien für offene Kundensitzungen behalten. Rücknahme: exakt diese Quelldatei auf den vorherigen SHA zurückstellen und das vorherige Paket verwenden. Keine Datenmigration nötig. Diese lokale Probe ersetzt keine Geräteabnahme auf einem echten Handy oder eine Liveabnahme.
+Produktionscommit: `d8895b39`; Browserbelege: `65e74bcd`. Der unabhängige Read-only-Review durch `module_backend` ist abgeschlossen: kein konkreter Blocker auf dem oben genannten Produktionshash. Reviewer hat Quellcode und die vorhandenen 61/61- sowie 9+9-Browsernachweise geprüft und keine doppelten Tests ausgeführt.
+
+Root kann die eine Produktionsdatei auf der exakten aktiven Basis übernehmen, das vorhandene Kundenpaket neu bauen und die reale überlagerte Haus-/Textgestaltung erneut prüfen. Frühere Bundledateien für offene Kundensitzungen behalten. Rücknahme: exakt diese Quelldatei auf den vorherigen SHA zurückstellen und das vorherige Paket verwenden. Keine Datenmigration nötig. Diese lokale Probe ersetzt keine Geräteabnahme auf einem echten Handy oder eine Liveabnahme.

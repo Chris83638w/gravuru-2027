@@ -690,3 +690,13 @@
 /* R15 inherited hint styling, isolated from the native R12 presentation. */
 :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-modern-motifs .ux-motif-pricing{margin:6px 0 10px!important;padding:0!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;color:#000!important;font-size:12px!important;line-height:1.4!important;font-weight:400!important;cursor:default}
 @media(max-width:767px){:host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern][data-ux-mobile-tabs]) .ux-modern-motifs .ux-motif-pricing{margin:4px 0 8px!important;font-size:11px!important;line-height:1.35!important}}
+
+/* Mobile return action uses the identity space; the native action buttons stay put. */
+@media (max-width: 999px) {
+  :host([data-mobile-demo]) .md-top > .md-identity { display:none!important; }
+  :host([data-mobile-demo]) .md-top > .md-history { flex:0 0 auto; }
+  :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .md-top > button[data-demo-product-return] {
+    flex:1 1 0; width:auto!important; min-width:0!important; max-width:200px;
+    padding:5px 8px!important; font-size:13px!important; line-height:1.15!important;
+  }
+}

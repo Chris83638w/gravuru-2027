@@ -1,3 +1,7 @@
+## 09.11.2026 – Mika: Galerie-Vorschauen beim Designwechsel gezielt pausieren
+
+Zwei Clientdateien auf `64291020`: alte Vorschauladevorgänge vor dem Wechsel abbrechen, neue Bilder erst bei bereitem Editor starten, bei Fehler/Zurück fehlende Bilder fortsetzen. Fertige Bilder, zwei Ladeplätze und höchstens drei spekulative Startbilder bleiben erhalten. 24/24 gezielte Tests grün; **nicht live und noch ohne echte Browserabnahme**. Keine Änderung an Oberfläche, Designs, Preisen oder Daten. [Nachweise, Grenzen und Rücknahme](docs/handoffs/2026-11-09-gallery-switch-lifecycle.md).
+
 ## 09.11.2026 – Mika: öffentliche Originalbilder ohne wiederholte Modellkopie lesen
 
 Drei Serverdateien auf `4afd1a2b`, keine Oberfläche oder Daten geändert. Bereits vorhandene begrenzte Modellablage liefert für öffentliche Originalbilder einen tief unveränderlichen Nachweis; Bindung, Preis, Mandant, Pause und Freigabe bleiben frisch geprüft. 20/20 gezielte Tests plus unabhängige Gegenprobe grün. Echte r4-Bank lokal: warme Bildabrufe meist 154–159 statt 233–271 ms; erster Nachweis 244 ms, keine Zusage für Netz- oder Gesamtladezeit. **Noch nicht veröffentlicht.** Root übernimmt nach frischem Drei-Dateien-Hashabgleich. [Nachweise und Rücknahme](docs/handoffs/2026-11-09-public-preview-model-read.md).

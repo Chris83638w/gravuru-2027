@@ -1,0 +1,33 @@
+{
+  "basis": "642910209f587da0651cea89bf461b928c3246c9",
+  "localOnly": true,
+  "productionFiles": [
+    {
+      "file": "app/configurator/variant-m/product-design-gallery.mjs",
+      "before": "3fd3dd7cd080a08868e91feece9cd536e7795ab3636cbbcf5c773d490d75961e",
+      "after": "041ac15c181b664282ec9e337704d17f6624894c5fec7a3f8b20d9c6975dbfcd"
+    },
+    {
+      "file": "app/workshop/ui/shop-design-switch.mjs",
+      "before": "7eb0f39b94948165f1d17bf5b0bafc6ccd271e0d3def12fc3a05070b8d092fc9",
+      "after": "83af68c2c70b902d577cef0110e560720962a09decb931c8ba732c4f90677e0c"
+    }
+  ],
+  "tests": {
+    "command": "node --test app/configurator/variant-m/first-panel-preload.test.mjs app/workshop/shop-design-switch.test.mjs app/configurator/variant-m/gallery-pager.test.mjs",
+    "passed": 24,
+    "failed": 0,
+    "skipped": 0,
+    "exitCode": 0,
+    "durationMs": 341.8095
+  },
+  "independentReview": {
+    "agent": "module_backend",
+    "result": "Read-only review of both exact production hashes: no concrete blocker; no test repetition"
+  },
+  "limits": [
+    "Controlled DOM and gateway fixtures, not an actual browser acceptance",
+    "Client abort does not promise cancellation of server rendering already started",
+    "No live, Shopify, UI, product, price or database changes"
+  ]
+}

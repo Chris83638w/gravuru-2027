@@ -1,0 +1,9 @@
+Summary of the actual tool-run protocol (not reconstructed raw stdout)
+Command: node --test app/configurator/variant-m/first-panel-preload.test.mjs app/workshop/shop-design-switch.test.mjs app/configurator/variant-m/gallery-pager.test.mjs
+Exit: 0
+Tests: 24
+Pass: 24
+Fail: 0
+Skipped: 0
+Duration_ms: 341.8095
+Covered: switch pause/late replies/resume/Back, candidate ready, saved images, two slots/first three/Save-Data, old option/pager/transfer regressions.

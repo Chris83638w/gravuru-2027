@@ -31,7 +31,7 @@ export function installUvCrossExecution({el,config,picks,pictures}){
  style.textContent=`
  :host([data-product-execution="uv-cross"][data-universal-profile]) :is(.ux-shell .ux-preview,.c-large-preview .fk-live-preview) .stage:not(.acryl-scene){
   background:linear-gradient(#fffaf038,#fffaf038),
-    url("/acrylic-assets/uv-cross-garden-background.png") center bottom / cover no-repeat,
+    url("/acrylic-assets/uv-cross-garden-background.webp") center bottom / cover no-repeat,
     linear-gradient(152deg,#d9e6e3 0%,#e5eeeb 35%,#f8faf8 58%,#f0f4f1 100%)!important;
  }
  :host([data-product-execution="uv-cross"][data-universal-profile]) :is(.ux-shell .ux-preview,.c-large-preview .fk-live-preview) .stage :is(.plate-holder,svg.scene){

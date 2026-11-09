@@ -11,6 +11,7 @@ import {isDeepStrictEqual} from 'node:util';
 import {createAppProxyVerifier} from './shopify-app-proxy.mjs';
 import {createShopEntrySessions} from './shop-entry-session.mjs';
 import {createShopDesignGallery} from './shop-design-gallery.mjs';
+import {withCustomerReadScope} from './customer-read-scope.mjs';
 import {shopGalleryModel} from './shop-gallery-model.mjs';
 import {queueGalleryPreview} from './shop-gallery-preview-queue.mjs';
 import {prepareAcrylicReview} from './acrylic-review.mjs';
@@ -372,7 +373,12 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  return Object.freeze({
   pagePath,startPath,preparePublicDesignPreviews,publicPreviewPreparation,
   matches:pathname=>customerImages.matches(pathname)||fontRoute.test(pathname)||previewRoute.test(pathname)||pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pathname===warmPath||pageFiles.has(pathname)||pathname.startsWith(API),
-  async handle(req,res,url){
+  handle(req,res,url){
+   const read=url.pathname===startPath||previewRoute.test(url.pathname)||['model','design-gallery','design-gallery-preview'].some(action=>url.pathname===API+action);
+   return read?withCustomerReadScope(()=>handle(req,res,url)):handle(req,res,url);
+  }
+ });
+ async function handle(req,res,url){
    try{
     if(req.headers.host!==address.host||req.headers['x-forwarded-proto']!=='https')fail(403,'shop_entry_host','Diese Anfrage ist nicht zulässig.');
     if(customerImages.matches(url.pathname)){
@@ -426,8 +432,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      checkOrigin(req,{mutating:false});const context=active(req),sourceModel=cardFor(context.store,context.binding);checkGalleryBinding(context.store,context.binding,sourceModel);
      // Türschild-Konfi: aktuelle Ausführung aus dem Konfi (Form & Größe, Farbe, Befestigung); nur dort ausgewertet.
      const chosen=GALLERY_OPTIONS.filter(k=>url.searchParams.has(k)),options=chosen.length&&isAllSizesFamily(sourceModel.universal)?Object.fromEntries(chosen.map(k=>[k,url.searchParams.get(k)])):null;
-     const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0),theme:url.searchParams.get('theme')||'preferred',sourceModel,options});active(req);
-     return json(res,200,publicPreviews?publicPreviews.attach(result):result);
+     const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0),theme:url.searchParams.get('theme')||'preferred',sourceModel,options});
+     return withCustomerReadScope(()=>{active(req);return json(res,200,publicPreviews?publicPreviews.attach(result):result);});
     }
     if(action==='customer-vector-logo/preview'){
      if(req.method!=='POST')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
@@ -443,7 +449,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      checkOrigin(req,{mutating:true});const context=active(req),input=await body(req,8192);
      modelFor(context.store,context.binding);
      if(Object.keys(input).length!==1||typeof input.target!=='string')fail(422,'shop_gallery_fields','Bitte ein Design aus der Auswahl wählen.');
-     const bytes=await queueGalleryPreview(()=>{if(req.aborted||res.destroyed)fail(409,'shop_gallery_cancelled','Vorschau abgebrochen.');const current=active(req);return Buffer.from(designGallery.preview(current,input.target));});
+     const bytes=await queueGalleryPreview(()=>withCustomerReadScope(()=>{if(req.aborted||res.destroyed)fail(409,'shop_gallery_cancelled','Vorschau abgebrochen.');const current=active(req);return Buffer.from(designGallery.preview(current,input.target));}));
      res.writeHead(200,headersFor('image/svg+xml',{'Content-Length':bytes.length,'Content-Security-Policy':"default-src 'none'; img-src data:; style-src 'unsafe-inline'; sandbox"}));return res.end(bytes);
     }
     if(action==='design-switch'){
@@ -502,5 +508,4 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     json(res,status,{error:{code,message},productionReady:false});
    }
   }
- });
 }

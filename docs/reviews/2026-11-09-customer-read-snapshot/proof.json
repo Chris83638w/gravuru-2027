@@ -1,0 +1,102 @@
+{
+  "schema": "gravuru-customer-read-proof/v1",
+  "basis": "4dc5653b2ee31d2e3e28f10614e5433469348a5a",
+  "productDocumentSha256": "2e74548aa7211a2f5546af428e1d27d9f00f12181490356633e3cd109cb179c0",
+  "tests": {
+    "pass": 96,
+    "fail": 0,
+    "skip": 0,
+    "log": "final-tests.log"
+  },
+  "independentReview": {
+    "agent": "module_contract",
+    "reportedCounterprobes": 6,
+    "result": "no blocker",
+    "scope": "read-only DB plus foreign commit; write during loader; foreign DDL; loader error; exception cleanup; await cleanup"
+  },
+  "measurements": [
+    {
+      "name": "signed-start-cached",
+      "beforeMs": 915.28,
+      "afterMs": 519.12,
+      "beforeHashCalls": 2,
+      "afterHashCalls": 1,
+      "status": 200,
+      "responseBytes": 1368
+    },
+    {
+      "name": "native-registry-resolve",
+      "beforeMs": 229.64,
+      "afterMs": 240.7,
+      "beforeHashCalls": 1,
+      "afterHashCalls": 1
+    },
+    {
+      "name": "native-model-warm",
+      "beforeMs": 150.83,
+      "afterMs": 182.46,
+      "beforeHashCalls": 0,
+      "afterHashCalls": 0
+    },
+    {
+      "name": "model-http-1",
+      "beforeMs": 1180.19,
+      "afterMs": 616.72,
+      "beforeHashCalls": 2,
+      "afterHashCalls": 1,
+      "status": 200,
+      "responseBytes": 322368
+    },
+    {
+      "name": "model-http-2",
+      "beforeMs": 1239.13,
+      "afterMs": 642.6,
+      "beforeHashCalls": 2,
+      "afterHashCalls": 1,
+      "status": 200,
+      "responseBytes": 322368
+    },
+    {
+      "name": "gallery-http-1",
+      "beforeMs": 1289.58,
+      "afterMs": 874.56,
+      "beforeHashCalls": 3,
+      "afterHashCalls": 2,
+      "status": 200,
+      "responseBytes": 27079
+    },
+    {
+      "name": "gallery-http-2",
+      "beforeMs": 1361.37,
+      "afterMs": 530.85,
+      "beforeHashCalls": 3,
+      "afterHashCalls": 2,
+      "status": 200,
+      "responseBytes": 27079
+    },
+    {
+      "name": "private-preview-http-1",
+      "beforeMs": 1512.11,
+      "afterMs": 957.22,
+      "beforeHashCalls": 3,
+      "afterHashCalls": 2,
+      "status": 200,
+      "responseBytes": 138503
+    },
+    {
+      "name": "private-preview-http-2",
+      "beforeMs": 1433.68,
+      "afterMs": 1202.32,
+      "beforeHashCalls": 3,
+      "afterHashCalls": 2,
+      "status": 200,
+      "responseBytes": 138503
+    }
+  ],
+  "limits": [
+    "Local temporary SQLite, native product/model/registry, one synthetic binding and synthetic approval.",
+    "One bounded instrumented before/after series; no production latency guarantee.",
+    "After measurement used same pinned path before final unpinned-only bypass guard; guard does not affect these explicitly pinned requests.",
+    "No live, Shopify, database, order or UI mutation."
+  ]
+}

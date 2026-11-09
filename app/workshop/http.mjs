@@ -1,4 +1,5 @@
 import {shopGalleryModel} from './shop-gallery-model.mjs';
+import {customerReadMemo} from './customer-read-scope.mjs';
 import {SIGN_PLACEMENT_FAMILIES} from '../configurator/variant-m/mounting-dimensions.mjs';
 import {createAcrylShopService} from './acryl-shop-service.mjs';
 import {createDesignCorrections} from './design-corrections.mjs';
@@ -218,6 +219,8 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   function model(id,version){
     const pinned=version!==null&&version!==undefined;
     const record=repository.get(id,{revision:revision(version)});
+    // Unpinned editor models also use mutable profile-library selections.
+    return customerReadMemo(pinned?record:null,'customer-model',()=>{
     const key=pinned&&!isFormProduct(record.document)?record.id+':'+record.revision:null;
     if(key&&modelCache.has(key)){
       const hit=modelCache.get(key);modelCache.delete(key);modelCache.set(key,hit);
@@ -226,6 +229,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
     const built=buildModel(record,version);
     if(key){modelCache.set(key,structuredClone(built));while(modelCache.size>MODEL_CACHE_SIZE)modelCache.delete(modelCache.keys().next().value);}
     return built;
+    });
   }
   function buildModel(record,version){
     if(isFormProduct(record.document)){

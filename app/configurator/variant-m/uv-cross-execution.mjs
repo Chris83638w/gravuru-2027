@@ -30,10 +30,18 @@ export function installUvCrossExecution({el,config,picks,pictures}){
  const style=document.createElement('style');
  style.textContent=`
  :host([data-product-execution="uv-cross"][data-universal-profile]) :is(.ux-shell .ux-preview,.c-large-preview .fk-live-preview) .stage:not(.acryl-scene){
-  background:linear-gradient(152deg,#d9e6e3 0%,#e5eeeb 35%,#f8faf8 58%,#f0f4f1 100%)!important;
+  background:linear-gradient(#fffaf038,#fffaf038),
+    url("/acrylic-assets/uv-cross-garden-background.png") center bottom / cover no-repeat,
+    linear-gradient(152deg,#d9e6e3 0%,#e5eeeb 35%,#f8faf8 58%,#f0f4f1 100%)!important;
  }
  :host([data-product-execution="uv-cross"][data-universal-profile]) :is(.ux-shell .ux-preview,.c-large-preview .fk-live-preview) .stage :is(.plate-holder,svg.scene){
   background:transparent!important;box-shadow:none!important;
+ }
+ :host([data-product-execution="uv-cross"][data-universal-profile]) :is(.ux-shell .ux-preview,.c-large-preview .fk-live-preview) .stage :is(.dimension-x,.dimension-y){
+  border-color:#f7fbf4!important;filter:drop-shadow(0 1px 1px #162a23a0);
+ }
+ :host([data-product-execution="uv-cross"][data-universal-profile]) :is(.ux-shell .ux-preview,.c-large-preview .fk-live-preview) .stage :is(.dimension-x,.dimension-y) span{
+  color:#253229!important;background:#f7fbf4f5!important;border-radius:4px;padding:1px 5px!important;
  }
  .m-option-pictures>div[data-uv-cross-sizes]{grid-template-columns:repeat(3,minmax(0,1fr))}
  [data-uv-cross-sizes] button.m-option-tile{min-width:0;min-height:104px;padding:8px 2px!important}

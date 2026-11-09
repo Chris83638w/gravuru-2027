@@ -6,11 +6,18 @@ export function validWarmManifest(value){
  if(value.previews!==undefined&&(!Array.isArray(value.previews)||value.previews.length>3||!value.previews.every(url=>typeof url==='string'&&/^\/konfigurator\/shop\/vorschauen\/[a-f0-9]{64}\.svg$/.test(url))))return false;
  return value.fonts.every(f=>typeof f?.name==='string'&&f.name.length>0&&f.name.length<=120&&(f.url===undefined||/^\/konfigurator\/shop\/schriften\/[a-f0-9]{64}\.json$/.test(f.url)))&&value.motifs.every(k=>/^import-[a-f0-9]{24}$/.test(k));
 }
-export function currentEditorBundle(html){
+export function currentEditorBundles(html){
  // Match the active preload tag, never historical strings embedded in scripts.
- for(const tag of String(html).match(/<link\b[^>]*>/gi)||[]){if(!/\brel=["']modulepreload["']/i.test(tag))continue;const path=/\bhref=["'](\/_acryl-bundle\/editor-[a-f0-9]{16}\.mjs)["']/i.exec(tag)?.[1];if(path)return path;}
- return null;
+ let core=null,presentation=null;
+ for(const tag of String(html).replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi,'').match(/<link\b[^>]*>/gi)||[]){
+  if(!/\brel=["']modulepreload["']/i.test(tag))continue;
+  const path=/\bhref=["'](\/_acryl-bundle\/editor-[a-f0-9]{16}\.mjs)["']/i.exec(tag)?.[1];if(!path)continue;
+  if(/\bdata-gravuru-bundle=["']prio-r15["']/i.test(tag))presentation??=path;
+  else if(!/\bdata-gravuru-bundle\s*=/i.test(tag))core??=path;
+ }
+ return [...new Set([core,presentation].filter(Boolean))];
 }
+export function currentEditorBundle(html){return currentEditorBundles(html)[0]||null;}
 export function warmAssetPaths(manifest,catalog){
  if(!validWarmManifest(manifest))return [];
  const index=new Map((catalog?.font_index||[]).map(f=>[f.name,f])),known=new Set((catalog?.motif_index||[]).map(m=>m.key)),out=[];
@@ -31,7 +38,7 @@ export async function warmShopAssets(manifest,{fetchImpl=globalThis.fetch,connec
  }
  const [core,html]=await Promise.all([get(manifest.catalogPath,512*1024),get(manifest.editorPath,1024*1024)]);
  let catalog=null;try{catalog=JSON.parse(core);}catch{}
- const bundle=currentEditorBundle(html),paths=[...(bundle?[bundle]:[]),...warmAssetPaths(manifest,catalog)];
+ const paths=[...currentEditorBundles(html),...warmAssetPaths(manifest,catalog)];
  let next=0;async function worker(){while(next<paths.length){const path=paths[next++];await get(path,2*1024*1024);}}
  await Promise.all([worker(),worker()]);return {skipped:false,requests};
 }

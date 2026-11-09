@@ -1,3 +1,7 @@
+## 09.11.2026 – Codex/Mika: R15-Importkaskade getrennt gebündelt
+
+Nur Bundler und begrenztes Produktseiten-Warmup geändert, Basis `4dc5653b`. R15: 15 zusätzliche Module als eigenes Paket (38.138 Bytes gzip); 15 gemeinsame Module behalten ihre Kerninstanz. Bestehende Kern-/Produktpakete im Vergleichsbuild bytegleich. 30 unterschiedliche gezielte Bundle-/Host-/Warm-/nativen HTTP-Startfälle grün; sieben Warmtests nach letzter Parserkorrektur erneut grün. Kein Livezugriff, keine Änderung an Oberfläche, Preisen oder Produkten. Nächster Schritt: Root übernimmt den Commit und prüft sichtbares Verhalten/Netzwerk im kombinierten lokalen Stand. [Übergabe und Hashnachweise](docs/handoffs/2026-11-09-r15-demo-bundle.md).
+
 ## 09.11.2026 – Mika: veraltete Galerieabrufe beim Optionswechsel abbrechen
 
 Drei Clientdateien auf `a143acbc`: laufende Vorschauabrufe der alten Auswahl abbrechen und deren zwei Ladeplätze sofort für aktuelle Karten freigeben. Späte alte Antworten können neue Karten/Slots nicht verändern; Vorwärmen bleibt bei drei Bildern, keine neue Route oder Layoutänderung. 42/42 gezielte Tests grün, Root-Diffreview ohne Befund. Nicht live aktiviert. [Nachweis und Rücknahme](docs/handoffs/2026-11-09-design-preview-abort.md).

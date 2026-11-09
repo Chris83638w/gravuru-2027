@@ -1,0 +1,33 @@
+{
+  "file": "docs/templates/Produktfreigabe-Vorlage.xlsx",
+  "bytes": 27285,
+  "sha256": "5909b7714ef1c180a6affcb3896b7a4c16b2d6b3a46e7e5231f5ffbb19ec47a4",
+  "sheetNames": [
+    "Freigabe",
+    "Module",
+    "Varianten",
+    "Optionen"
+  ],
+  "nativeTables": 6,
+  "dropdownRanges": [
+    3,
+    3,
+    1,
+    4
+  ],
+  "formulaCount": 12,
+  "formulaErrors": [],
+  "blankPrices": true,
+  "noProductIdsOrApprovals": true,
+  "explicitServiceReferences": {
+    "plan_id": "Freigabe!C23",
+    "plan_hash": "Freigabe!C24",
+    "template_id": "Freigabe!C25",
+    "template_revision": "Freigabe!C26",
+    "module_profile_id": "Freigabe!C27",
+    "module_profile_revision": "Freigabe!C28"
+  },
+  "fileHashOnlyExternal": true,
+  "taxContextOpen": true,
+  "zipIntegrity": "passed"
+}

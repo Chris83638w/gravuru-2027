@@ -1,8 +1,16 @@
 # Prio Konfi – verbindlicher Stand und Anschlussplan
 
-Stand: 08.11.2026. Zuständig: Mika, ausschließlich in Abstimmung mit Mikail. Diese Datei ist der Einstieg für jeden beteiligten KI-Chat. Historische Pläne und Demo-Anweisungen gelten nur, soweit sie den folgenden aktuellen Nutzerentscheidungen nicht widersprechen.
+Stand: 09.11.2026. Zuständig: Mika, ausschließlich in Abstimmung mit Mikail. Diese Datei ist der Einstieg für jeden beteiligten KI-Chat. Historische Pläne und Demo-Anweisungen gelten nur, soweit sie den aktuellen Nutzerentscheidungen nicht widersprechen.
 
-## 1. Was freigegeben ist – und was noch nicht verbunden ist
+## Aktuell: Produktworkflow und Betriebsstand vom 09.11.2026
+
+**Für jedes neue Produkt verbindlich: [Produktanlage mit Modulen, Preisbestätigung und Excel](docs/handoffs/2026-11-09-produktanlage-module-excel-workflow.md).** Ein gemeinsamer Konfi, keine Produktkopien des Editors. Vor Neuanlage Module, Ausführungen, Preise und Standardwerte konkret von Mikail bestätigen lassen; eigene neue Modulwünsche abfragen. Je Produkt eine Excel als versionierte Referenz. Kein Foto → keine Foto-Funktion; unmögliche Bohrungsoptionen ausblenden, zulässige Alternativen erhalten. Schnellster vorhandener Skript-/API-Weg, ein koordinierter Schreiber.
+
+Der Kundenkonfi ist inzwischen mit Edelstahl-Türschildern verbunden und veröffentlicht. Aktueller belegter Livecode `767701ee`, Dokumentation `f69c8dbf`: [Live- und Übertragungsnachweis](https://github.com/Chris83638w/gravuru-2027/blob/f69c8dbfd1703e4abe2da80c1955d086cddbe547/docs/handoffs/2026-11-09-server-hit-live-and-transfer.md). Die bestehende Warenkorbabnahme vom 08.11. ist in [#168 dokumentiert](https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6718967521); sie ist keine Abnahme neuer Produktprofile. Ladezeit bleibt offen. Profilaktivierung PR223/224 weiterhin vorbereitet, ohne neue produktive Zuordnung. Die nachfolgenden Demo-/Pilotlücken dokumentieren die **historische Erstfreigabe vom 08.11.** und sind keine aktuelle Behauptung, dass der Kundenkonfi noch vollständig unverbunden sei. Aktuelle Details immer aus der jüngsten Übergabe lesen; alte Branches nicht blind veröffentlichen.
+
+Diese Aktualisierung umfasst nur Arbeitsanleitung und Referenzvorlage, keine Runtime-/Shopänderung.
+
+## 1. Historische Erstfreigabe vom 08.11.2026
 
 **R15 ist der vom Nutzer freigegebene offizielle Prio-Konfigurator für Handy und PC.** Die gemeinsame Bedienung bleibt erhalten. Verbesserungen zuerst vorschlagen, nicht eigenständig einbauen. Andere KIs dürfen bei Produktanlagen ausschließlich zuvor vom Nutzer bestätigte produktspezifische Options-/Ausführungsdaten bearbeiten. Gemeinsame Oberfläche, Werkzeuge, Kernlogik, Preis-/Checkout-Verhalten und Ressourcenänderungen gehören zu Mika + Nutzer. Eigenständige Produktgruppen erhalten keinen neuen Konfi-Fork.
 

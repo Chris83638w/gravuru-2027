@@ -34,7 +34,7 @@ Exakte Vorher-/Nachher-Hashes und Buildnachweis: `docs/reviews/2026-11-09-r15-de
 
 Vor Veröffentlichung die beiden Produktionsdateien gegen das Manifest prüfen, aktuelle komplette Runtime weiterverwenden und dort neu bauen. Die sichtbare R15-/Handy-/Desktopabnahme und tatsächliche Netzwerkmessung übernimmt Root. Bisherige Bedienung, Vorladen und Sitzungsschutz dabei prüfen.
 
-**Bestehendes Verhalten des Builders beachten:** `buildProductEditorBundles` entfernt alte gehashte Bundle-Artefakte im Ausgabeordner. Root sichert diese vor dem Livebuild und legt fehlende alte Artefakte danach wieder ein. So können bereits geöffnete Kundenkonfis ihre bisherigen späten Chunks weiterhin laden. Dieser Patch ändert diese Aufräumfunktion nicht.
+**Bestehendes Verhalten des Builders beachten:** `buildProductEditorBundles` entfernt alte gehashte Bundle-Artefakte im Ausgabeordner. Deshalb niemals direkt im aktiven Ausgabeordner bauen. Der tatsächlich verwendete kombinierte Installer baut getrennt, prüft die Ergebnisbytes, ergänzt neue JS-/gzip-Dateien atomar und ersetzt das Editor-HTML zuletzt. Alte Artefakte bleiben durchgehend vorhanden. Der genaue veröffentlichte Stand und Rückweg stehen in der [aktuellen Übergabe](2026-11-09-performance-continuation.md).
 
 Rückweg: genau diese beiden Quellen auf die gesicherte Basis zurückstellen, neu bauen und alte Bundle-Artefakte weiter bereithalten. Kein Produkt-, Profil-, Datenbank- oder Shopify-Rückweg erforderlich, da dieses Paket dort nichts schreibt.
 

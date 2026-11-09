@@ -29,7 +29,7 @@ export function createDesignSwitch({initial,fragment,container,activate,toDataUr
  const setFragment=entry=>win.history.replaceState(win.history.state,'','#'+entry.fragment);
  function api(entry){return Object.freeze({
   load:(page,theme,options)=>{checkRead(entry);return entry.client.loadDesignGallery(page,theme,options);},
-  preview:(target,url)=>{checkRead(entry);return entry.client.loadDesignPreview(target,url);},
+  preview:(target,url,signal)=>{checkRead(entry);return entry.client.loadDesignPreview(target,url,signal);},
   hasPendingTransfer:()=>!!entry.pending,
   takeTransfer:()=>{const value=entry.pending;entry.pending=null;return value;},
   canGoBack:()=>history.length>0||!!entry.previous,

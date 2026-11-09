@@ -82,7 +82,7 @@ test('UV rear print keeps its geometry and paint between translucent glass layer
  const before=JSON.stringify({profile,design}),svg=studioSvg(profile,design,{},{platePreview:uvCrossGlassPreview});
  assert.match(svg,/data-preview-acrylic-glass="klar"[^]*fill-opacity=".07"[^]*data-object="print"[^]*data-preview-glass-finish="front"/);
  assert.ok(svg.includes(`d="${outlinePath}"`));
- assert.match(svg,/translate\(1.75 2.5\)/);
+ assert.match(svg,/translate\(2 2.7\)/);
  assert.match(svg,/data-object="print" transform="translate\(55 50\) rotate\(0\)" fill="#274c51"/);
  assert.doesNotMatch(svg,/data-plate-shadow|scale\(-1/);
  assert.equal(JSON.stringify({profile,design}),before);

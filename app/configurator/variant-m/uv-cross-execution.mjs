@@ -1,8 +1,14 @@
 import {escapeXml as esc} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {familyFormatPrice} from './family-formats.mjs';
 import {money} from './contract.mjs';
+import {transformedCorners} from './usability-model.mjs';
 
 export {uvCrossGlassPreview} from './uv-cross-glass.mjs';
+
+// Placement on the square garden photograph. The full contour extends under
+// the photographed soil, while the editor keeps using its physical millimetres.
+const plateTop=6,plateHeight=84,ground=76;
+const stageSelector=':host([data-product-execution="uv-cross"][data-universal-profile][data-ux-layout]) :is(.ux-shell .ux-preview,.c-large-preview .fk-live-preview) .stage[data-uv-cross-stage]';
 
 export function uvCrossSizeMarkup(config){
  const formats=config.familyFormats?.formats||[];
@@ -27,21 +33,62 @@ export function installUvCrossExecution({el,config,picks,pictures}){
  material.className='uv-cross-material';
  material.textContent='Klares Acrylglas · '+config.profile.material.thicknessMm+' mm · rückseitiger UV-Druck';
  picks.prepend(material);
+ const stage=el.shadowRoot.querySelector('.stage');
+ const holder=stage.querySelector('.plate-holder');
+ const refraction=document.createElement('div');
+ const foreground=document.createElement('div');
+ const dimensions=document.createElement('span');
+ stage.dataset.uvCrossStage='';
+ refraction.className='uv-cross-refraction';
+ foreground.className='uv-cross-foreground';
+ for(const node of [refraction,foreground])node.setAttribute('aria-hidden','true');
+ dimensions.className='uv-cross-dimensions';
+ holder.prepend(refraction);
+ stage.append(foreground,dimensions);
  const style=document.createElement('style');
  style.textContent=`
- :host([data-product-execution="uv-cross"][data-universal-profile]) :is(.ux-shell .ux-preview,.c-large-preview .fk-live-preview) .stage:not(.acryl-scene){
-  background:linear-gradient(#fffaf038,#fffaf038),
-    url("/acrylic-assets/uv-cross-garden-background.webp") center bottom / cover no-repeat,
-    linear-gradient(152deg,#d9e6e3 0%,#e5eeeb 35%,#f8faf8 58%,#f0f4f1 100%)!important;
+ ${stageSelector}:not(.acryl-scene){
+  --uv-cross-room:calc(100dvh - 220px - var(--ux-textbar-h,0px));
+  --uv-cross-backdrop:url("/acrylic-assets/uv-cross-garden-square.webp") center / cover no-repeat,
+    linear-gradient(155deg,#c5d6bd,#7f9970 60%,#6d5e47 76%,#554435);
+  box-sizing:border-box!important;position:relative!important;isolation:isolate;
+  width:min(100%,max(120px,var(--uv-cross-room)))!important;height:auto!important;
+  min-height:0!important;max-height:none!important;aspect-ratio:1!important;
+  flex:none!important;margin-inline:auto!important;padding:0!important;
+  border:0!important;container-type:inline-size!important;overflow:hidden!important;
+  background:var(--uv-cross-backdrop)!important;
  }
- :host([data-product-execution="uv-cross"][data-universal-profile]) :is(.ux-shell .ux-preview,.c-large-preview .fk-live-preview) .stage :is(.plate-holder,svg.scene){
-  background:transparent!important;box-shadow:none!important;
+ ${stageSelector}:is(.c-large-preview .stage){--uv-cross-room:calc(100dvh - 245px)}
+ ${stageSelector}:not(.acryl-scene)>.plate-holder{
+  --uv-cross-plate-width:calc(${plateHeight}cqw * (var(--ux-ratio)));
+  position:absolute!important;top:${plateTop}%!important;left:calc(50% - var(--uv-cross-plate-width) / 2)!important;
+  width:var(--uv-cross-plate-width)!important;height:${plateHeight}%!important;
+  max-width:none!important;max-height:none!important;min-width:0!important;min-height:0!important;
+  margin:0!important;z-index:1;
  }
- :host([data-product-execution="uv-cross"][data-universal-profile]) :is(.ux-shell .ux-preview,.c-large-preview .fk-live-preview) .stage :is(.dimension-x,.dimension-y){
-  border-color:#f7fbf4!important;filter:drop-shadow(0 1px 1px #162a23a0);
+ ${stageSelector} :is(.plate-holder,svg.scene){
+  background:transparent!important;box-shadow:none!important;filter:none!important;
  }
- :host([data-product-execution="uv-cross"][data-universal-profile]) :is(.ux-shell .ux-preview,.c-large-preview .fk-live-preview) .stage :is(.dimension-x,.dimension-y) span{
-  color:#253229!important;background:#f7fbf4f5!important;border-radius:4px;padding:1px 5px!important;
+ ${stageSelector} svg.scene{position:relative;height:100%!important}
+ .uv-cross-refraction{
+  position:absolute;inset:0;pointer-events:none;
+  mask-size:100% 100%;mask-repeat:no-repeat;
+  backdrop-filter:blur(.7px) saturate(1.05) brightness(1.045);
+ }
+ .uv-cross-foreground{
+  position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:radial-gradient(ellipse 12% 1.35% at 50% ${ground}%,#23271f70,transparent),var(--uv-cross-backdrop);
+  mask-image:linear-gradient(transparent ${ground-.5}%,#000 ${ground+.15}%);
+ }
+ [data-uv-cross-reveal]>.uv-cross-foreground,[data-uv-cross-stage][data-view-zoom]:not([data-view-zoom="1"])>.uv-cross-foreground{visibility:hidden}
+ ${stageSelector} :is(.dimension-x,.dimension-y){display:none!important}
+ .uv-cross-dimensions{
+  position:absolute;z-index:3;top:8px;left:8px;padding:4px 8px;border-radius:5px;
+  background:#f7fbf4f2;color:#253229;font:600 12px/1.25 system-ui,sans-serif;white-space:nowrap;
+ }
+ @media(max-width:767px){
+  ${stageSelector}:is(.ux-preview .stage){--uv-cross-room:var(--ux-mobile-preview-h,40dvh)}
+  .uv-cross-dimensions{padding:3px 5px;font-size:11px}
  }
  .m-option-pictures>div[data-uv-cross-sizes]{grid-template-columns:repeat(3,minmax(0,1fr))}
  [data-uv-cross-sizes] button.m-option-tile{min-width:0;min-height:104px;padding:8px 2px!important}
@@ -50,5 +97,19 @@ export function installUvCrossExecution({el,config,picks,pictures}){
  @media(max-width:420px){[data-uv-cross-sizes] button.m-option-tile strong{font-size:12px}}
  `;
  el.shadowRoot.append(style);
- return ()=>{};
+ let lastOutline;
+ const mm=new Intl.NumberFormat('de-DE',{maximumFractionDigits:3});
+ return ()=>{
+  const {width,height,outlinePath}=el.uxSelectedProfile().geometry;
+  if(lastOutline!==outlinePath){
+   const mask=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}"><path fill="white" d="${esc(outlinePath)}"/></svg>`;
+   refraction.style.maskImage=`url("data:image/svg+xml,${encodeURIComponent(mask)}")`;
+   dimensions.textContent=`${mm.format(width)} × ${mm.format(height)} mm`;
+   lastOutline=outlinePath;
+  }
+  const selected=el.state.objects.find(object=>object.id===el.state.selected);
+  const groundY=height*(ground-plateTop)/plateHeight;
+  const needsEditingRoom=selected&&transformedCorners(selected,{x:-selected.w/2,y:-selected.h/2,width:selected.w,height:selected.h}).some(point=>point.y>groundY);
+  stage.toggleAttribute('data-uv-cross-reveal',Boolean(needsEditingRoom));
+ };
 }

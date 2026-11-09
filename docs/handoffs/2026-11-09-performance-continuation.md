@@ -1,0 +1,57 @@
+# Kunden-Ladezeit: geprüfter Folgestand, noch nicht veröffentlicht
+
+Stand 09.11.2026, Codex/Mika. Integrationszweig `dev/mika-r15-resume-integration-20261108`, PR222. Produktionscode bis `e8dbc446`, ergänzender Hashnachweis `79d0158e`. **Diese Fortsetzung ist lokal geprüft und auf GitHub gesichert; sie wurde noch nicht auf den Kundenserver eingespielt.** Die Plesk-Konsole zeigt die Anmeldung, die einmalige Rückfrage an Mikail bleibt offen.
+
+## Auftrag und Grenze
+
+Kunden-Ladezeit verbessern, vorhandene freigegebene Bedienung, Preise, Originaldesigns und Produktbindungen erhalten. Einzige neue sichtbare Änderung: im mobilen Kopf das Gravuru-Logo ausblenden und den vorhandenen Button „Zurück zum Produkt“ verbreitern. Desktop bleibt dadurch unverändert. Keine neuen Produktoptionen, kein Shopify-Theme-/Produkt-Schreibzugriff und keine Modulprofilzuweisung.
+
+## Zusammengeführte Änderungen
+
+1. `84bdfb92` / Agent `a143acbc`: fünf Serverdateien. Geprüfte Produktrevisionen werden innerhalb einer synchronen Anfragephase wiederverwendet. Keine anfrageübergreifende Cachefreigabe; Bindung, Preisstand, Rechte und Änderungen bleiben frisch geprüft. 96/96 Tests plus sechs unabhängige Gegenproben. Lokaler nativer Modellabruf 617–643 ms gegenüber 1.180–1.239 ms. [Details](2026-11-09-customer-read-snapshot.md).
+2. `323d5f1c` / Agent `8071f696`: zehn mobile CSS-Zeilen. Logo/Identitätsblock ausblenden, vorhandenen Rückbutton verbreitern. Sichtprüfung bei 390 px und gemessene Breiten 320/360/430 px: alle sechs Kopfaktionen erreichbar, keine horizontalen Überläufe. Desktop weiterhin mit bisherigem Kopf. Keine Änderung an Bedienfunktionen.
+3. `83f83a08` / Agent `e4ead10d`: drei Clientdateien. Beim Optionswechsel alte Vorschauabrufe abbrechen, Warteschlange leeren und beide Ladeplätze sofort für die neue Auswahl freigeben. Verspätete alte Antworten verändern keine neuen Karten. 42/42 Tests und zwei enge unabhängige Diffprüfungen ohne Befund. Ein bereits laufender synchroner Serverrender lässt sich hierdurch nicht rückwirkend abbrechen. [Details](2026-11-09-design-preview-abort.md).
+4. `e8dbc446` / Agent `5a34fa23`: zwei Dateien. R15-Präsentation als eigenes Paket mit 15 zusätzlichen Modulen, 134.324 Bytes / 38.138 Bytes gzip. 15 bereits vorhandene Abhängigkeiten verwenden dieselben Kerninstanzen. Produktseiten-Warmup lädt ausschließlich Kern plus markiertes R15-Paket innerhalb des bestehenden 6-MB-Limits mit zwei parallelen Abrufen. Keine pauschale Vorladung aller Größen oder Motive. 30 unterschiedliche gezielte Tests plus unabhängiger Graph-/Pfadreview. [Details](2026-11-09-r15-demo-bundle.md).
+
+Insgesamt elf Produktionsdateien. Die Kopfkorrektur und die drei Performancekorrekturen sind getrennt nachvollziehbar. Der einzige Zusammenführungskonflikt lag in `STATUS.md`; alle Einträge sind erhalten.
+
+## Gemeinsame Prüfung
+
+Zusätzlicher integrierter Lauf: **23/23 bestanden, kein Skip**:
+
+`node --test app/configurator/variant-m/bundle.test.mjs app/configurator/variant-m/first-panel-preload.test.mjs app/workshop/shop-warm.test.mjs`
+
+Lokaler nativer HTTP-Host unter `http://127.0.0.1:8230/steel`, echte unveränderte r4-Quelle (251 Originale, acht Formen, 80 Größen, 404 Kombinationen), Datenbank ausschließlich im Speicher, keine Shopify- oder Kundenspeicher-Schreibverbindung. Alle 36 tatsächlichen Live-Styles als Basis; ausschließlich die freigegebene mobile Kopfkorrektur überschreibt `demo.css`. Beide zusätzlich vorhandenen Serverkorrekturen in `option-media.mjs` und `family-formats.mjs` sind erhalten.
+
+Sichtbarer Browserlauf Desktop/Mobil:
+
+- R15-Oberfläche startet korrekt; kein einzelner R15-`.mjs`-Abruf mehr. Geladen werden Kern, R15-Paket, benötigter Ausführungs-Chunk und die vorhandenen CSS-/Symbolressourcen.
+- Text geändert; Schrift Michroma → Allura gewählt; Auswahl schließt wie bisher.
+- Motiv „Haus“ ergänzt, per emulierten Touchereignissen verschoben, Bewegung rückgängig gemacht, nach Textauswahl erneut verschoben und gelöscht. Die Motivabmessungen bleiben bei beiden Bewegungen unverändert.
+- Preis 19,99 € → 21,68 € → 19,99 € nach Hinzufügen/Entfernen; keine Bestellung ausgelöst.
+- Zurücksetzen öffnet die bestehende Bestätigung und stellt nach Bestätigung die Originalvorlage wieder her.
+
+Das ist eine Browserprüfung mit mobiler Größe und Touchereignissen, **kein physisches Android-/iOS-Gerätetestat**. Der lokale Host bildet keinen authentifizierten Live-Galerieabruf und keinen Shopify-Warenkorb ab; diese Anschlussfälle sind durch gezielte Tests abgesichert, ihre erneute Liveprüfung bleibt ausstehend.
+
+Gebauter Kern: `editor-257c5700803ea894.mjs`, SHA-256 `152219814c7bc1e249979bf90108040ed9ef6a56f45ec9ca8e2e13ab7fc6758f`.
+R15: `editor-bf7d088b9bdf015e.mjs`, SHA-256 `85980521d93b13147e844a0bf7986f128ff92fdd078fecead57f2494f0db513c`.
+
+## Tatsächliche Live-Messung vor dieser Veröffentlichung
+
+Shopify-Produktseite: https://gravuru-design.myshopify.com/products/tuerschild-edelstahl-form-und-groesse-selbst-waehlen
+
+Im echten Browser am 09.11.2026 um 08:31 UTC: Modellabruf 9.306 ms, Editor-HTML 1.995 ms, Galerieliste 2.385 ms, privater Vorschauabruf 4.690 ms. Gleichzeitig waren vorhandenes Kernpaket und drei vorbereitete Originalvorschauen aus dem Cache schnell. Insgesamt 46 Editorressourcen; zusätzliche ungecachete Modulabrufe kosteten teils 700–2.500 ms. Diese Zahl bezeichnet nicht ausschließlich R15-Module.
+
+Diese Messung bestätigt das gemeldete Problem. Lokale Millisekundenwerte dürfen nicht als bereits erzielte Liveverbesserung ausgegeben werden. Das neue R15-Paket beseitigt einen konkreten Abrufpfad; Server-/Verbindungszeiten müssen nach Veröffentlichung erneut gemessen werden. Weitere Schriftproben und Motive außerhalb der begrenzten Startauswahl werden weiterhin bei Bedarf geladen.
+
+## Sicherung und Veröffentlichung
+
+Lokale Belege unter `outputs/r15-resume-integration-20261108/`: `customer-before-20261109.json`, `mobile-header-width-proof.json`, `mobile-header-390.png`, `combined-browser-resources.json`, `combined-browser-proof.json`, `combined-mobile-390.png`, `performance-patch-manifest.json` und `install-performance.cjs`. Gesicherte [Live-Vorhermessung](../reviews/2026-11-09-performance-continuation/customer-before-20261109.json), [Kopfbreiten](../reviews/2026-11-09-performance-continuation/mobile-header-width-proof.json), [gemeinsame Browserbelege](../reviews/2026-11-09-performance-continuation/combined-browser-proof.json) und [Ressourcenabrufe](../reviews/2026-11-09-performance-continuation/combined-browser-resources.json); Sitzungs-URLs/Token sind nicht enthalten.
+
+Der neue kombinierte Installer ersetzt den **nicht ausgeführten** Einzelinstaller `install-read-scope.cjs`. Nicht beide nacheinander blind anwenden. Er prüft den aktiven Wrapper, alle elf Baselines, 35 unveränderte Styles, zwei fremde aktive Quellen und das bisherige Editor-HTML. `--check` schreibt nichts. Die tatsächliche Anwendung sichert alte Quellen, Editor und Bündel, prüft Syntax, baut mit den vorhandenen Ressourcen neu und verlangt exakt die lokal geprüften Ergebnis-Hashes. Alte Bündel bleiben für bereits offene Kundenkonfiguratoren erhalten. Bei Fehler werden Quellen/Editor/alte Bündel wiederhergestellt. Keine Datenbank oder Shopify-Daten zurückspielen. Bestehender Beleg/abweichende Baseline stoppt eine Wiederholung.
+
+Aktive Runtime unverändert: `/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-r15-resume-20261108-v1`. Wrapper-SHA `e679ca2dd1285c7925126bec3ef67bf1b775e080f6306e3210a996874b90d53c`. Bisheriges Editor-HTML-SHA `14574d69939f210a4b6d8f5b3241c72610dc739ee843cf456102c133cd6aa2b9`. Vor Anwendung alles frisch gegenprüfen, nicht auf den alten Messzeitpunkt vertrauen.
+
+Nach Anwendung: Plesk-App neu starten, die drei vorbereiteten Originalvorschauen für die aktuelle Rendererkennung prüfen/aufbauen lassen, echte Produktseite → Konfi → Design-/Größenwechsel kontrollieren, Ressourcenabrufe und Serverzeiten erneut erfassen. Keine Liveverbesserung behaupten, bevor dieser Schritt belegt ist.
+
+Modulverwaltung PR223/224 bleibt danach der nächste getrennte Schritt. Keine produktive Profilzuweisung vorgenommen. Plesk-Vollbackupauftrag1158 weiterhin ohne eindeutigen Abschlussbeleg; kein zweites Vollbackup gestartet. Die bereits vollständig geprüfte lokale Flugsicherung bleibt erhalten.

@@ -1,5 +1,7 @@
 # Wiederaufnahme: aktuelle R15-Module und begrenztes Design-Vorladen
 
+**Neuere Fortsetzung vom 09.11.2026:** [Gemeinsam geprüfte Ladezeitkorrekturen und mobile Kopfzeile](2026-11-09-performance-continuation.md). Dieser Folgestand ist noch nicht veröffentlicht. Die folgende Livebeschreibung gilt für die zuvor veröffentlichte Basis, nicht automatisch für alle späteren Commits dieses Zweigs.
+
 Stand: 09.11.2026, Codex/Mika. Eigener Branch `dev/mika-r15-resume-integration-20261108`, Draft PR222. **Runtime am 09.11.2026 um 00:17 Berlin veröffentlicht, Plesk anschließend neu gestartet.** Keine neue Produktprofilzuweisung, kein Main-Merge, kein Theme-/Shopify-Produkt-Schreibzugriff. Die bestehende Kundenanbindung verwendet weiterhin ihre bisherigen Datenverzeichnisse und Bindungen.
 
 ## Verbindlicher Ausgangspunkt

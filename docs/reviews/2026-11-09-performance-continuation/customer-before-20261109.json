@@ -1,0 +1,413 @@
+{
+  "at": "2026-11-09T08:31:07.111Z",
+  "entry": [
+    {
+      "path": "/konfigurator/shop/shop-entry-client.mjs",
+      "ms": 185,
+      "transfer": 7543,
+      "bytes": 17875
+    },
+    {
+      "path": "/konfigurator/shop/shop-entry-page.mjs",
+      "ms": 393,
+      "transfer": 3063,
+      "bytes": 6649
+    },
+    {
+      "path": "/konfigurator/shop/shop-design-switch.mjs",
+      "ms": 176,
+      "transfer": 2339,
+      "bytes": 5126
+    },
+    {
+      "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+      "ms": 203,
+      "transfer": 985,
+      "bytes": 1258
+    },
+    {
+      "path": "/_acryl-runtime/lazy/katalog-kern.json",
+      "ms": 5,
+      "transfer": 0,
+      "bytes": 166290
+    },
+    {
+      "path": "/api/shop-entry/model",
+      "ms": 9306,
+      "transfer": 122858,
+      "bytes": 321897
+    },
+    {
+      "path": "/konfigurator/shop/vorschauen/8055eaaa9826fb809c8dd33d9a09c1eee524c5c56f23809fb9c4c6340d6fc674.svg",
+      "ms": 9,
+      "transfer": 0,
+      "bytes": 140037
+    },
+    {
+      "path": "/konfigurator/shop/schriften/3201589047768a19ed4506e9b76a18aa1b353b932b9cd599e632bbde1575e0d1.json",
+      "ms": 8,
+      "transfer": 0,
+      "bytes": 205976
+    },
+    {
+      "path": "/_merchant-acryl-editor.html",
+      "ms": 1995,
+      "transfer": 100696,
+      "bytes": 373718
+    },
+    {
+      "path": "/api/shop-entry/design-gallery",
+      "ms": 2385,
+      "transfer": 2853,
+      "bytes": 27079
+    },
+    {
+      "path": "/konfigurator/shop/vorschauen/8055eaaa9826fb809c8dd33d9a09c1eee524c5c56f23809fb9c4c6340d6fc674.svg",
+      "ms": 14,
+      "transfer": 0,
+      "bytes": 140037
+    },
+    {
+      "path": "/konfigurator/shop/vorschauen/e395f10ebdb0501a6a2b61457a1731bde6465dff112ce80593c04b497c0dc18d.svg",
+      "ms": 15,
+      "transfer": 0,
+      "bytes": 139106
+    },
+    {
+      "path": "/konfigurator/shop/vorschauen/ac0d324aec1d9cddc997503e1a94606445fafb58b59438516091b5ff48eb90ec.svg",
+      "ms": 5,
+      "transfer": 0,
+      "bytes": 139156
+    },
+    {
+      "path": "/api/shop-entry/design-gallery-preview",
+      "ms": 4690,
+      "transfer": 100952,
+      "bytes": 138503
+    }
+  ],
+  "editor": [
+    {
+      "path": "/_acryl-bundle/editor-70b3f27030bbc2db.mjs",
+      "ms": 15,
+      "start": 255,
+      "transfer": 0,
+      "bytes": 1451779
+    },
+    {
+      "path": "/_acryl-bundle/editor-c419119a6ef437c6.mjs",
+      "ms": 9,
+      "start": 2198,
+      "transfer": 0,
+      "bytes": 7963
+    },
+    {
+      "path": "/konfigurator/shop/schriften/3201589047768a19ed4506e9b76a18aa1b353b932b9cd599e632bbde1575e0d1.json",
+      "ms": 5,
+      "start": 2264,
+      "transfer": 0,
+      "bytes": 205976
+    },
+    {
+      "path": "/_acryl-runtime/lazy/katalog-kern.json",
+      "ms": 5,
+      "start": 2264,
+      "transfer": 0,
+      "bytes": 166290
+    },
+    {
+      "path": "/acryl-configurator/mobile-demo/shop-shell.mjs",
+      "ms": 2299,
+      "start": 2983,
+      "transfer": 1379,
+      "bytes": 2231
+    },
+    {
+      "path": "/acryl-configurator/mobile-demo/demo.mjs",
+      "ms": 182,
+      "start": 5297,
+      "transfer": 8184,
+      "bytes": 24777
+    },
+    {
+      "path": "/acryl-configurator/mobile-demo/motif-size-limit.mjs",
+      "ms": 1593,
+      "start": 5485,
+      "transfer": 3585,
+      "bytes": 8802
+    },
+    {
+      "path": "/acryl-configurator/mobile-demo/text-editor.mjs",
+      "ms": 2088,
+      "start": 5485,
+      "transfer": 3555,
+      "bytes": 9331
+    },
+    {
+      "path": "/acryl-configurator/mobile-demo/edge-resize.mjs",
+      "ms": 2156,
+      "start": 5485,
+      "transfer": 2092,
+      "bytes": 4376
+    },
+    {
+      "path": "/acryl-configurator/mobile-demo/small-motif-controls.mjs",
+      "ms": 2158,
+      "start": 5485,
+      "transfer": 2875,
+      "bytes": 6350
+    },
+    {
+      "path": "/acryl-configurator/mobile-demo/text-selection-dismiss.mjs",
+      "ms": 1592,
+      "start": 5485,
+      "transfer": 1941,
+      "bytes": 4260
+    },
+    {
+      "path": "/acryl-configurator/mobile-demo/desktop-selection.mjs",
+      "ms": 2153,
+      "start": 5485,
+      "transfer": 2167,
+      "bytes": 4993
+    },
+    {
+      "path": "/acryl-configurator/mobile-demo/options-navigation.mjs",
+      "ms": 2159,
+      "start": 5485,
+      "transfer": 4939,
+      "bytes": 14932
+    },
+    {
+      "path": "/acryl-configurator/mobile-demo/overlap-review.mjs",
+      "ms": 2157,
+      "start": 5486,
+      "transfer": 4145,
+      "bytes": 10210
+    },
+    {
+      "path": "/acryl-configurator/mobile-demo/preview-action.mjs",
+      "ms": 2161,
+      "start": 5486,
+      "transfer": 2231,
+      "bytes": 5802
+    },
+    {
+      "path": "/acryl-configurator/mobile-demo/product-return.mjs",
+      "ms": 2282,
+      "start": 5486,
+      "transfer": 1294,
+      "bytes": 2576
+    },
+    {
+      "path": "/acryl-configurator/mobile-demo/compact-controls.mjs",
+      "ms": 2285,
+      "start": 5486,
+      "transfer": 2959,
+      "bytes": 8437
+    },
+    {
+      "path": "/acryl-configurator/variant-m/edge-clamp.mjs",
+      "ms": 846,
+      "start": 7088,
+      "transfer": 3711,
+      "bytes": 8159
+    },
+    {
+      "path": "/acryl-configurator/variant-m/usability-model.mjs",
+      "ms": 716,
+      "start": 7088,
+      "transfer": 2058,
+      "bytes": 4563
+    },
+    {
+      "path": "/acryl-platform/sources/app/shared/models/design-content.mjs",
+      "ms": 1012,
+      "start": 7088,
+      "transfer": 6092,
+      "bytes": 14552
+    },
+    {
+      "path": "/acryl-configurator/variant-m/surfaces.mjs",
+      "ms": 1245,
+      "start": 7088,
+      "transfer": 2502,
+      "bytes": 5210
+    },
+    {
+      "path": "/acryl-platform/sources/app/shared/models/text-paths.mjs",
+      "ms": 1121,
+      "start": 7677,
+      "transfer": 1754,
+      "bytes": 3200
+    },
+    {
+      "path": "/acryl-configurator/mobile-demo/overlap-consent.mjs",
+      "ms": 671,
+      "start": 7677,
+      "transfer": 2814,
+      "bytes": 7415
+    },
+    {
+      "path": "/acryl-configurator/mobile-demo/contour-placement.mjs",
+      "ms": 1122,
+      "start": 7677,
+      "transfer": 5639,
+      "bytes": 14225
+    },
+    {
+      "path": "/acryl-configurator/variant-m/print-export-model.mjs",
+      "ms": 1408,
+      "start": 7814,
+      "transfer": 7477,
+      "bytes": 18276
+    },
+    {
+      "path": "/acryl-platform/sources/app/shared/models/contour-geometry.mjs",
+      "ms": 1840,
+      "start": 7814,
+      "transfer": 8434,
+      "bytes": 20852
+    },
+    {
+      "path": "/acryl-workshop/process-profiles.mjs",
+      "ms": 1410,
+      "start": 7814,
+      "transfer": 3279,
+      "bytes": 6727
+    },
+    {
+      "path": "/acryl-platform/sources/app/shared/models/embedded-motif-fit.mjs",
+      "ms": 1714,
+      "start": 7942,
+      "transfer": 3224,
+      "bytes": 6748
+    },
+    {
+      "path": "/acryl-platform/sources/app/shared/models/text-outline-fit.mjs",
+      "ms": 1717,
+      "start": 7942,
+      "transfer": 2799,
+      "bytes": 5777
+    },
+    {
+      "path": "/acryl-configurator/variant-m/product-model-module.mjs",
+      "ms": 2470,
+      "start": 8107,
+      "transfer": 644,
+      "bytes": 818
+    },
+    {
+      "path": "/acryl-platform/sources/app/shared/models/processing-profiles.mjs",
+      "ms": 1558,
+      "start": 8108,
+      "transfer": 1517,
+      "bytes": 3062
+    },
+    {
+      "path": "/acryl-platform/sources/app/shared/vendor/fflate-0.8.3.mjs",
+      "ms": 2465,
+      "start": 8108,
+      "transfer": 23840,
+      "bytes": 90922
+    },
+    {
+      "path": "/acryl-configurator/variant-m/contour-pdf-path.mjs",
+      "ms": 1346,
+      "start": 9233,
+      "transfer": 1471,
+      "bytes": 2202
+    },
+    {
+      "path": "/acryl-configurator/variant-m/product-module-context.mjs",
+      "ms": 245,
+      "start": 10593,
+      "transfer": 692,
+      "bytes": 707
+    },
+    {
+      "path": "/acryl-configurator/mobile-demo/demo.css",
+      "ms": 1468,
+      "start": 10869,
+      "transfer": 9908,
+      "bytes": 54453
+    },
+    {
+      "path": "/acryl-configurator/mobile-demo/shopping-cart.svg",
+      "ms": 384,
+      "start": 12396,
+      "transfer": 566,
+      "bytes": 530
+    },
+    {
+      "path": "/acryl-assistant.js",
+      "ms": 1636,
+      "start": 12403,
+      "transfer": 17227,
+      "bytes": 49490
+    },
+    {
+      "path": "/_acryl-runtime/lazy/motive/import-b56d5711a75f34c1fa8d9c30.json",
+      "ms": 4,
+      "start": 12444,
+      "transfer": 0,
+      "bytes": 966
+    },
+    {
+      "path": "/_acryl-runtime/lazy/motive/import-8adc51cf09cbad881db95ef6.json",
+      "ms": 4,
+      "start": 12444,
+      "transfer": 0,
+      "bytes": 6449
+    },
+    {
+      "path": "/_acryl-runtime/lazy/motive/import-4609f5a437c8a0a9d6c8dca3.json",
+      "ms": 3,
+      "start": 12458,
+      "transfer": 0,
+      "bytes": 1242
+    },
+    {
+      "path": "/_acryl-runtime/lazy/motive/import-7435d6dce5e1fa3c4c4fc1b5.json",
+      "ms": 13,
+      "start": 12465,
+      "transfer": 0,
+      "bytes": 7309
+    },
+    {
+      "path": "/_acryl-runtime/lazy/motive/import-178f0cc0a5c7c40768ed14cf.json",
+      "ms": 7,
+      "start": 12475,
+      "transfer": 0,
+      "bytes": 32540
+    },
+    {
+      "path": "/_acryl-runtime/lazy/motive/import-f46b8d0fcc6e60810ece9d9d.json",
+      "ms": 7,
+      "start": 12485,
+      "transfer": 0,
+      "bytes": 17633
+    },
+    {
+      "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+      "ms": 5807,
+      "start": 13179,
+      "transfer": 124402,
+      "bytes": 471283
+    },
+    {
+      "path": "/api/acryl-guides",
+      "ms": 205,
+      "start": 14050,
+      "transfer": 1715,
+      "bytes": 2917
+    },
+    {
+      "path": "/konfigurator/shop/schriften/af923c8f9dca05fc70000003381d03a484a30a604a01c19835989931aec268e7.json",
+      "ms": 13,
+      "start": 18994,
+      "transfer": 0,
+      "bytes": 474879
+    }
+  ]
+}

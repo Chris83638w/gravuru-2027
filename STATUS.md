@@ -1,3 +1,7 @@
+## 09.11.2026 – Codex/Mika: Performance-Folgestand gemeinsam im Browser geprüft
+
+Elf Produktionsdateien auf der aktuellen Integration: begrenzte synchrone Serverlesungen, veraltete Galerieabrufe abbrechen, eigener kleiner R15-Chunk samt Produktseiten-Vorladen und ausschließlich der verlangte mobile Kopf ohne Logo/mit breiterem Rückbutton. 23/23 zusätzliche gemeinsame Tests grün; Desktop-/Mobilansicht, Schriftwechsel, wiederholte Touchbewegung, Löschen und Preis 19,99 → 21,68 → 19,99 € lokal geprüft. Keine einzelnen R15-JS-Dateien mehr im Browserabruf. 35 andere aktive Styles und beide fremden Serverkorrekturen erhalten. **Noch nicht live: Plesk zeigt die Anmeldung; keine neue Produktprofilzuweisung oder Shopify-Schreibaktion.** [Konkrete Messwerte, Belege und Fortsetzung](docs/handoffs/2026-11-09-performance-continuation.md).
+
 ## 09.11.2026 – Codex/Mika: R15-Importkaskade getrennt gebündelt
 
 Nur Bundler und begrenztes Produktseiten-Warmup geändert, Basis `4dc5653b`. R15: 15 zusätzliche Module als eigenes Paket (38.138 Bytes gzip); 15 gemeinsame Module behalten ihre Kerninstanz. Bestehende Kern-/Produktpakete im Vergleichsbuild bytegleich. 30 unterschiedliche gezielte Bundle-/Host-/Warm-/nativen HTTP-Startfälle grün; sieben Warmtests nach letzter Parserkorrektur erneut grün. Kein Livezugriff, keine Änderung an Oberfläche, Preisen oder Produkten. Nächster Schritt: Root übernimmt den Commit und prüft sichtbares Verhalten/Netzwerk im kombinierten lokalen Stand. [Übergabe und Hashnachweise](docs/handoffs/2026-11-09-r15-demo-bundle.md).

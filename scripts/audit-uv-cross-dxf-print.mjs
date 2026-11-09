@@ -199,6 +199,27 @@ function readColorImage(image, table) {
   }
   return {width,height,transparent,red,green,blue,redX:redX/red,greenX:greenX/green,alpha};
 }
+function inspectRasterClearance(raster, {top,bottom,clearFromY,stakeY}) {
+  const {alpha,width,height}=raster, pixelHeight=(bottom-top)/height;
+  const firstRow=Math.max(0,Math.floor((clearFromY-top)/pixelHeight));
+  let pixels=0, maxAlpha=0;
+  for(let y=firstRow;y<height;y++){
+    const rowTop=top+y*pixelHeight, rowBottom=top+(y+1)*pixelHeight;
+    if(rowBottom<=clearFromY)continue;
+    // Only a partially covered sample in the one row crossing the clearance
+    // boundary can overhang it. Any coverage at the physical stake is invalid.
+    const straddlesClearance=rowTop<clearFromY && rowBottom<=stakeY;
+    for(let x=0;x<width;x++){
+      const coverage=alpha[y*width+x];
+      if(!coverage)continue;
+      assert.ok(straddlesClearance && coverage<128,
+        `Color ink in clearance (alpha ${coverage}/255, y=${rowTop.toFixed(6)}–${rowBottom.toFixed(6)} mm, clearance from ${clearFromY} mm, stake from ${stakeY} mm)`);
+      pixels++;
+      maxAlpha=Math.max(maxAlpha,coverage);
+    }
+  }
+  return {pixels,maxAlpha};
+}
 function inspectPdf(pdf, geometry, photo, bleed) {
   const {width:w,height:h} = geometry, {table,page,layers}=pdfLayers(pdf);
   const W=w+2*bleed,H=h+2*bleed;
@@ -240,11 +261,16 @@ function inspectPdf(pdf, geometry, photo, bleed) {
   for (const [x,y,rw,rh] of rects) {
     for (let yy=y; yy<y+rh; yy++) whiteRows[yy].push([x,x+rw]);
   }
-  let whiteRegistrationSamples = 0;
+  let whiteRegistrationSamples = 0, colorBottomMm = 0;
+  const clearanceFringe={pixels:0,maxAlpha:0};
   for (const raster of rasters) {
     const imageMatrix = new RegExp(`([\\d.]+) 0 0 (-[\\d.]+) (-?[\\d.]+) ([\\d.]+) cm /${raster.name} Do Q`).exec(artwork);
     assert.ok(imageMatrix && Number(imageMatrix[1]) > 0, 'Expected color-image placement');
     const [ , , negHeight, x, bottom ] = imageMatrix.map(Number);
+    const fringe=inspectRasterClearance(raster,{top:bottom+negHeight,bottom,clearFromY,stakeY});
+    colorBottomMm=Math.max(colorBottomMm,bottom);
+    clearanceFringe.pixels+=fringe.pixels;
+    clearanceFringe.maxAlpha=Math.max(clearanceFringe.maxAlpha,fringe.maxAlpha);
     const x0 = Math.round((x+bleed)/W*rasterW), y0 = Math.round((bottom+negHeight+bleed)/H*rasterH);
     const step = Math.max(1, Math.floor(raster.alpha.length / 4096));
     for (let p=0; p<raster.alpha.length; p+=step) {
@@ -266,11 +292,9 @@ function inspectPdf(pdf, geometry, photo, bleed) {
   } else {
     assert.equal(sentinels.length, 0, 'No test-photo pixels in no-photo variants');
   }
-  const layerBottom = [...artwork.matchAll(/ ([\d.]+) cm \/Art\d+ Do Q/g)].map(m => Number(m[1]));
-  assert.ok(layerBottom.length && Math.max(...layerBottom) <= clearFromY, 'Raster ink cannot reach soil stake');
   const embeddedTestPhoto = sentinels.length ? Object.fromEntries(Object.entries(sentinels[0]).filter(([key]) => key !== 'alpha')) : null;
   return {layers:layers.map(l=>l.name), dxfSha256, cutPathSha256:digest(Buffer.from(drawing)), cubicSegments, maxRadiusErrorMm, whiteRectangles:rects.length, whiteBottomMm:whiteBottom,
-    stakeBeginsMm:stakeY, clearFromMm:clearFromY, colorRasterLayers:rasters.length, whiteRegistrationSamples, embeddedTestPhoto};
+    stakeBeginsMm:stakeY, clearFromMm:clearFromY, colorBottomMm, clearanceFringe, colorRasterLayers:rasters.length, whiteRegistrationSamples, embeddedTestPhoto};
 }
 
 async function inspectEdgeBleed(geometry,settings,expectedCut) {

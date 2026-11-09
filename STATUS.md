@@ -1,3 +1,7 @@
+## 09.11.2026 – Codex/Mika: mobile Kopfzeile eng vorbereitet
+
+Eigener Produktionscommit `8071f696`: nur `mobile-demo/demo.css`, zehn zusätzliche Zeilen innerhalb der mobilen Medienregel. Identitätsblock verborgen; „Zurück zum Produkt“ nutzt den freien Platz, vorhandene Symbole und Desktop bleiben unverändert. Tatsächlicher CSS-Ausgang gesichert; Regelerhalt, Spezifität und Breitenbilanz für 320/360/390/430 px geprüft. Sichtprüfung übernimmt Root vor Veröffentlichung. Keine Live-/Shopify-/Datenbankänderung. [Übergabe mit CSS-SHAs und unabhängigem Vorladeaudit](docs/handoffs/2026-11-09-mobile-header-and-preload-audit.md).
+
 ## 09.11.2026, 00:41 Berlin – Codex/Mika: begrenztes Vorladen im echten Shop bestätigt
 
 R15-Integration aus PR222 in getrennte Runtime veröffentlicht; aktuelle Zentrierung und zwei zusätzliche aktive Form-/Befestigungskorrekturen erhalten. Bestehende Designs, Preise, Styles und Produktzuordnungen unverändert. Cache-Resolver-Einzeiler `b3e188f5` separat gesichert/veröffentlicht: echte Registry erhält nur die beiden Shopify-IDs, alle weiteren Prüfungen bleiben bestehen. 11/11 integrierte Service-Tests und unabhängige native HTTP-/Neustartprobe grün. Tatsächliche Shopify-Produktseite liefert drei Vorschau-URLs; danach Konfi geöffnet: alle drei Designbilder, sechs Startmotive, Startschrift und Bundle mit 0 übertragenen Bytes aus Browsercache. Galeriebilder ca. 5–45 ms. Sichtbare Auswahl mit 21 Designs geprüft. Produktmodell weiterhin ca. 3,7 s, Galerieliste ca. 2,0 s; keine vollständige Performance-/Handy-/Warenkorbabnahme behaupten.

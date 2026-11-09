@@ -1,5 +1,9 @@
 # Gravuru 2027 – Arbeitsregeln
 
+## Neue Produkte: Module, Preise und Excel (Mikail, 09.11.2026)
+
+**Vor jeder neuen Produktanlage [den verbindlichen Produktworkflow](docs/handoffs/2026-11-09-produktanlage-module-excel-workflow.md) lesen.** Mikail muss die konkret benannten Produkte einschließlich Module, Ausführungen, Standardwerte, Basispreise und aller Aufpreise bestätigen; neue Modulwünsche ausdrücklich abfragen. Je Produkt eine versionierte Excel als Referenz, mit denselben Daten wie der bestätigte Anlageplan. Vorhandene Gruppenfreigaben oder gespeicherte Profile ersetzen diese konkrete Bestätigung nicht. Vorlagen/Excel/Prüfplan dürfen vorher vorbereitet werden; keine unbestätigte Produktanlage. Bestehende Dienste per Skript/API verwenden, keinen Konfi pro Produkt kopieren. Kein Foto erlaubt → Foto-Funktion aus. Keine Bohrungen erlaubt → entsprechende Optionen aus; zulässige Alternativen erhalten. Gültigkeit je Material/Form/Größe prüfen, leere Auswahlbereiche ausblenden. Unbekannte Modulwünsche zunächst klären, keine neuen Vertragsfelder erfinden. Diese Regeln ändern selbst keine Runtime, Preise oder bestehenden Produktbindungen.
+
 ## Verbindliche Prio-Konfi-Regel (Mikail, 08.11.2026)
 
 **Zuerst [PRIO-KONFI.md](PRIO-KONFI.md) lesen.** R15 ist die freigegebene gemeinsame Konfi-Basis. Gemeinsame Oberfläche, Werkzeuge, Kernlogik, Preis-/Checkout-Verhalten und Ressourcenänderungen ausschließlich durch Mika in Abstimmung mit Mikail. Andere KIs dürfen beim Anlegen von Produkten nur zuvor von Mikail bestätigte produktspezifische Options-/Ausführungsdaten bearbeiten. Keine eigenständige Optimierung, Ersetzung oder Veröffentlichung des gemeinsamen Konfis. Vorschläge zuerst vorlegen. Bestehende parallele Arbeiten getrennt halten.

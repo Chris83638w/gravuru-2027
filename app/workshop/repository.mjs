@@ -4,6 +4,7 @@ import { mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 import {createProductCatalog} from './product-catalog.mjs';
 import {tenantOption,ensureTenantColumn,TENANT_COLUMN} from './tenant.mjs';
+import {customerDatabaseRead} from './customer-read-scope.mjs';
 
 const OWNED_FIELDS = ['id', 'revision', 'publishedRevision', 'status', 'createdAt', 'updatedAt', 'metadata'];
 
@@ -156,12 +157,14 @@ export function createProductRepository({ filename, validateDocument = (value) =
   }
 
   function record(row, revision = row.revision) {
+    return customerDatabaseRead(db,'product:'+tenant+':'+row.id+':'+revision,()=>{
     const snap = snapshot(row.id, revision);
     return {
       id: row.id, revision: snap.revision, publishedRevision: snap.published_revision,
       status: snap.status, document: JSON.parse(snap.document), metadata: JSON.parse(snap.metadata),
       createdAt: row.created_at, updatedAt: snap.created_at,
     };
+    });
   }
 
   const state = (row) => row.archived ? 'archived' : row.published_revision !== null ? 'active' : 'draft';

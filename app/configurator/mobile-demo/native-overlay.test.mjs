@@ -12,7 +12,7 @@ const read=url=>fs.readFileSync(new URL('.'+url,app),'utf8');
 const entry='/configurator/mobile-demo/shop-shell.mjs';
 const presentation=collectModules([entry],{read});
 
-test('R15 presentation stays outside the native blob bundle and resolves its complete real module graph',()=>{
+test('R15 remains an optional separate presentation graph with the same hosted source fallback',()=>{
  const native=collectModules(BUNDLE_ENTRIES,{read});
  assert.equal(native.modules.has(entry),false);
  const index=new Map(native.order.map((url,i)=>[url,i]));

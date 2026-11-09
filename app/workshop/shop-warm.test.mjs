@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {shopWarmManifest} from './shop-warm-manifest.mjs';
-import {validWarmManifest,warmShopAssets,warmAssetPaths,currentEditorBundle} from './ui/shop-warm.mjs';
+import {validWarmManifest,warmShopAssets,warmAssetPaths,currentEditorBundle,currentEditorBundles} from './ui/shop-warm.mjs';
 const hash='a'.repeat(64),key='import-'+'b'.repeat(24),bundle='/_acryl-bundle/editor-'+ 'c'.repeat(16)+'.mjs';
 const manifest={schema:'gravuru-shop-warm/v1',editorPath:'/_merchant-acryl-editor.html',catalogPath:'/_acryl-runtime/lazy/katalog-kern.json',fonts:[{name:'Native',url:'/konfigurator/shop/schriften/'+hash+'.json'},{name:'Allura'}],motifs:[key]};
 test('manifest derives exact selected template resources without changing or exporting designs/prices/uploads',()=>{
@@ -19,6 +19,23 @@ test('only current link bundle, allowlisted public resources; no arbitrary URLs 
  assert.deepEqual(warmAssetPaths(manifest,{font_index:[{name:'Allura',file:'allura.json'}],motif_index:[{key}]}),[manifest.fonts[0].url,'/_acryl-runtime/lazy/schriften/allura.json','/_acryl-runtime/lazy/motive/'+key+'.json']);
  for(const url of ['https://evil/font.json','/api/shop-entry/model','/konfigurator/shop/schriften/../model','/konfigurator/shop/schriften/'+hash+'.json?secret=1'])assert.equal(validWarmManifest({...manifest,fonts:[{name:'x',url}]}),false);
  assert.equal(validWarmManifest({...manifest,motifs:Array(7).fill(key)}),false);
+});
+test('only the current core and explicitly marked R15 chunk are warmed, with unchanged budgets and two workers',async()=>{
+ const r15=bundle.replace('c'.repeat(16),'d'.repeat(16)),device=bundle.replace('c'.repeat(16),'e'.repeat(16)),other=bundle.replace('c'.repeat(16),'f'.repeat(16));
+ const html='<script>const old=\'<link rel="modulepreload" href="'+other+'">\';</script>'+[
+  `<link rel="modulepreload" href="${device}" data-gravuru-bundle="device">`,
+  `<link rel="modulepreload" href="${bundle}">`,
+  `<link rel="modulepreload" href="${r15}" data-gravuru-bundle="prio-r15">`,
+  `<link rel="modulepreload" href="${device}" data-gravuru-bundle="device">`,
+  `<link rel="modulepreload" href="${other}" data-gravuru-bundle="prio-r15">`,
+  `<link rel="modulepreload" href="https://foreign.example${r15}" data-gravuru-bundle="prio-r15">`
+ ].join('');
+ assert.deepEqual(currentEditorBundles(html),[bundle,r15]);assert.equal(currentEditorBundle(html),bundle);
+ assert.deepEqual(currentEditorBundles(`<link rel="modulepreload" href="${bundle}?token=private">`),[]);
+ let active=0,max=0;const calls=[];
+ const result=await warmShopAssets(manifest,{fetchImpl:async(path,options)=>{calls.push(path);active++;max=Math.max(max,active);await new Promise(r=>setImmediate(r));active--;assert.equal(options.priority,'low');return new Response(path===manifest.catalogPath?'{}':path===manifest.editorPath?html:'asset');}});
+ assert.equal(max,2);assert.deepEqual(result.requests.filter(p=>p.includes('/_acryl-bundle/')),[bundle,r15]);
+ assert.equal(calls.filter(p=>p===r15).length,1);assert.ok(!calls.includes(device));assert.ok(!calls.includes(other));
 });
 test('warmup fetches bounded assets at low priority, never initializes editor/model or full library',async()=>{
  const calls=[],core={font_index:[{name:'Allura',file:'allura.json'}],motif_index:[{key}]};

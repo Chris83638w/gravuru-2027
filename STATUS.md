@@ -1,6 +1,12 @@
+## 09.11.2026 · Codex · Heller Studiohintergrund im UV-Prio-Konfigurator
+
+Christopher bat wegen der schlecht lesbaren Schrift und Motive vor dem Garten um einen helleren Ton. Die quadratische Vorschau im geschützten Prio-R15-Konfigurator zeigt nun einen hellen Studiohintergrund mit dezenter Standlinie. UV-H-O01 im Browser geprüft. Dunkle Schrift, Motive und polierte Acrylkante sind klar erkennbar. Das Paket betrifft ausschließlich die Darstellung der UV-Kreuze. Designfarben, Druckexport, Preise und Produktstände entsprechen weiterhin DXF-R2.
+
+V1 auf Basis `71e2131` mit einer Laufzeitdatei aktiviert. Sechs lokale Modultests, 21/21 Server-Tests und Editor-Build bestanden. Nach dem Plesk-Neustart sechs ältere Editor-Bündel aus der Sicherung wiederhergestellt. 20/20 Designs im Prio-Konfi mit hellem Hintergrund erneut aufgenommen und visuell kontrolliert, je fünf Hunde/Katzen mit und ohne Foto in 11 × 20 cm. Vier WebP-Tafeln und eine eigenständige vergrößerbare Studiogalerie sind im Arbeitschat verfügbar. Nächster Schritt: Rückmeldung zur neuen Darstellung. [Übergabe und Paketnachweis](docs/handoffs/2026-11-09-uv-cross-prio-glass.md).
+
 ## 09.11.2026 · Codex · Prio-R15-Anschluss und polierte Kante der UV-Gedenkkreuze
 
-Der geschützte Testserver zeigt die UV-Gedenkkreuze in der Prio-R15-Oberfläche. Die Galerielinks öffnen das jeweilige Design auf DXF-R2 im Werkstatt-Prüfmodus mit deaktivierter Bestellung. Die quadratische Gartenszene zeigt den versenkten Erdspieß und die polierte Kante entlang der DXF-Silhouette.
+Der geschützte Testserver zeigt die UV-Gedenkkreuze in der Prio-R15-Oberfläche. Die Galerielinks öffnen das jeweilige Design auf DXF-R2 im Werkstatt-Prüfmodus mit deaktivierter Bestellung. Die erste Prio-Fassung zeigte den versenkten Erdspieß in der quadratischen Gartenszene und die polierte Kante entlang der DXF-Silhouette.
 
 V4 auf Basis `24779d5` mit neun Laufzeitdateien aktiviert. 55/55 Prio-Tests und 21/21 Glas-, Kontur- und PDF-Tests auf dem Linux-Host bestanden, Editor-Build erfolgreich. Nach Plesk-Neustart vier ältere Editor-Bündel aus der Sicherung wiederhergestellt. Im Browser UV-H-O01 und die drei Größen-Icons mit 110 × 200, 140 × 250 und 220 × 400 mm sowie 14,99 €, 22,99 € und 27,99 € geprüft. 0 Produkte neu, 0 revidiert. 20/20 Designs im aktiven Prio fotografiert und visuell geprüft, vier Gruppen zu je fünf Designs mit identischem Format 11 × 20 cm. Vier WebP-Tafeln und eine vergrößerbare HTML-Galerie im Arbeitschat bereitgestellt. Nächster Schritt: gestalterische Rückmeldung von Chris zu diesen konkreten Vorschauen. [Übergabe und Paketnachweis](docs/handoffs/2026-11-09-uv-cross-prio-glass.md).
 

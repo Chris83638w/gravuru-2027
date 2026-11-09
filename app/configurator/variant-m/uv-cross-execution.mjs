@@ -5,8 +5,8 @@ import {transformedCorners} from './usability-model.mjs';
 
 export {uvCrossGlassPreview} from './uv-cross-glass.mjs';
 
-// Placement on the square garden photograph. The full contour extends under
-// the photographed soil, while the editor keeps using its physical millimetres.
+// Placement in the square studio scene. The foreground covers the stake while
+// the editor keeps using the full contour in physical millimetres.
 const plateTop=6,plateHeight=84,ground=76;
 const stageSelector=':host([data-product-execution="uv-cross"][data-universal-profile][data-ux-layout]) :is(.ux-shell .ux-preview,.c-large-preview .fk-live-preview) .stage[data-uv-cross-stage]';
 
@@ -49,8 +49,8 @@ export function installUvCrossExecution({el,config,picks,pictures}){
  style.textContent=`
  ${stageSelector}:not(.acryl-scene){
   --uv-cross-room:calc(100dvh - 220px - var(--ux-textbar-h,0px));
-  --uv-cross-backdrop:url("/acrylic-assets/uv-cross-garden-square.webp") center / cover no-repeat,
-    linear-gradient(155deg,#c5d6bd,#7f9970 60%,#6d5e47 76%,#554435);
+  --uv-cross-backdrop:radial-gradient(ellipse at 24% 16%,#f8f6f1,transparent 68%),
+    linear-gradient(#ede9e2,#e8e3da ${ground-.35}%,#ded7ca ${ground+.15}%,#f2eee7);
   box-sizing:border-box!important;position:relative!important;isolation:isolate;
   width:min(100%,max(120px,var(--uv-cross-room)))!important;height:auto!important;
   min-height:0!important;max-height:none!important;aspect-ratio:1!important;
@@ -77,14 +77,15 @@ export function installUvCrossExecution({el,config,picks,pictures}){
  }
  .uv-cross-foreground{
   position:absolute;inset:0;pointer-events:none;z-index:2;
-  background:radial-gradient(ellipse 12% 1.35% at 50% ${ground}%,#23271f70,transparent),var(--uv-cross-backdrop);
+  background:radial-gradient(ellipse 12% 1.35% at 50% ${ground}%,#67584545,transparent),var(--uv-cross-backdrop);
   mask-image:linear-gradient(transparent ${ground-.5}%,#000 ${ground+.15}%);
  }
  [data-uv-cross-reveal]>.uv-cross-foreground,[data-uv-cross-stage][data-view-zoom]:not([data-view-zoom="1"])>.uv-cross-foreground{visibility:hidden}
  ${stageSelector} :is(.dimension-x,.dimension-y){display:none!important}
  .uv-cross-dimensions{
   position:absolute;z-index:3;top:8px;left:8px;padding:4px 8px;border-radius:5px;
-  background:#f7fbf4f2;color:#253229;font:600 12px/1.25 system-ui,sans-serif;white-space:nowrap;
+  background:#fbfaf6f5;box-shadow:0 1px 4px #3f382514;
+  color:#253229;font:600 12px/1.25 system-ui,sans-serif;white-space:nowrap;
  }
  @media(max-width:767px){
   ${stageSelector}:is(.ux-preview .stage){--uv-cross-room:var(--ux-mobile-preview-h,40dvh)}

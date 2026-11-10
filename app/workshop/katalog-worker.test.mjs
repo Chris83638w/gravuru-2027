@@ -14,7 +14,7 @@ import {targetDesignPreview} from './design-target-preview.mjs';
 import {designPreviewGlyphs,previewWarningHeader} from './design-preview-glyphs.mjs';
 import {createProductRepository} from './repository.mjs';
 import {createKatalogWorker} from './katalog-worker-client.mjs';
-import {openKatalogReader,codeFingerprint,loadDiskCache,saveDiskCache} from './katalog-worker.mjs';
+import {openKatalogReader,codeFingerprint,loadDiskCache,saveDiskCache,memoReader} from './katalog-worker.mjs';
 import {createWorkshop} from './http.mjs';
 import {build} from '../configurator/variant-m/build.mjs';
 import {createPreviewServer} from '../configurator/variant-m/server.mjs';
@@ -305,6 +305,26 @@ test('Speicherwächter: belegt der Prozess zu viel Arbeitsspeicher, endet nur de
  // Der Hauptprozess lebt und der nächste Aufruf startet einen neuen Worker.
  for(let i=0;i<100&&process.memoryUsage().rss/1048576>limit;i++)await new Promise(r=>setTimeout(r,50));
  assert.equal(JSON.parse((await worker.call('test.sleep','/x',{ms:1})).bytes).counter,1);
+});
+
+test('Datenbank je Rechnung: gleiche Schlüssel und Produkte werden nur einmal gelesen, Fehler bleiben Fehler, Antwort bleibt gleich',async t=>{
+ const root=katalog(t,8),db=database(t,root);
+ const imported=importProduct(db.repository,db.keys[0]);
+ const counts={items:0,gets:0},keys=new Set(),ids=new Set();
+ const counting={importItem:key=>{counts.items+=1;keys.add(key);return db.repository.importItem(key);},get:id=>{counts.gets+=1;ids.add(id);return db.repository.get(id);}};
+ const options={linie:'test-linie',available:{Michroma:FONT}};
+ forgetKatalog();
+ const direct=JSON.stringify(await designDashboardWithFit(root,{...options,repository:db.repository}));
+ forgetKatalog();
+ const memo=JSON.stringify(await designDashboardWithFit(root,{...options,repository:memoReader(counting)}));
+ assert.equal(memo,direct,'Antwort mit gemerkten Datenbankantworten bytegleich');
+ assert.ok(memo.includes(imported.id),'das importierte Produkt steht in der Antwort');
+ assert.equal(counts.items,keys.size,'jeder Schlüssel wird genau einmal gelesen');
+ assert.equal(counts.gets,ids.size,'jedes Produkt wird genau einmal gelesen');
+ // Fehler werden gemerkt und wieder geworfen; null bleibt null; ohne Leser bleibt es ohne Leser.
+ let calls=0;const failing=memoReader({importItem:()=>null,get:()=>{calls+=1;throw Object.assign(new Error('weg'),{status:404});}});
+ assert.throws(()=>failing.get('a'),/weg/);assert.throws(()=>failing.get('a'),/weg/);assert.equal(calls,1);
+ assert.equal(failing.importItem('x'),null);assert.equal(memoReader(null),null);
 });
 
 // ---- HTTP: Weiche ----

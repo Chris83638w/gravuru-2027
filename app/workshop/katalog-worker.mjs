@@ -44,6 +44,24 @@ export function openKatalogReader({dbFile,tenantId}){
   };
 }
 
+/** Merkt sich die Datenbankantworten für die Dauer EINER Listenrechnung. Die Designliste fragt je Zeile, Unterkategorie und
+ *  Größe nach (Linie Edelstahl: rund 126.000 Anfragen für 824 verschiedene Schlüssel) und liest gefundene Produkte jedes Mal
+ *  vollständig neu ein – bei einem großen Produktdokument waren das auf dem Server rund 85 Sekunden je Aufruf (Befund 11.11.2026).
+ *  Innerhalb einer Rechnung ist der Stand derselbe; die nächste Rechnung liest wieder frisch. */
+export function memoReader(reader){
+ if(!reader)return reader;
+ const items=new Map(),records=new Map();
+ return {
+  importItem(key){if(!items.has(key))items.set(key,reader.importItem(key));return items.get(key);},
+  get(id){
+   let hit=records.get(id);
+   if(!hit){try{hit={value:reader.get(id)};}catch(error){hit={error};}records.set(id,hit);}
+   if(hit.error)throw hit.error;
+   return hit.value;
+  },
+ };
+}
+
 // Fertige Bytes für die Übertragung: eigener ArrayBuffer ohne Pool-Anteil (ein Pool-Puffer darf nie übertragen werden).
 const transferable=buffer=>{
   if(buffer.byteOffset===0&&buffer.byteLength===buffer.buffer.byteLength&&buffer.buffer instanceof ArrayBuffer&&buffer.byteLength>=8192)return buffer.buffer;
@@ -92,7 +110,7 @@ export function createKatalogOperations({reader,getAvailable,testOps=false}){
   const ops={
     // Gleiche Aufrufe wie der Handler in http.mjs (ohne Worker).
     'designs.list':async(root,args,{acceptGzip})=>{
-      const started=performance.now(),value=await designDashboardWithFit(root,{...args,repository:reader,available:getAvailable()}),computed=performance.now();
+      const started=performance.now(),value=await designDashboardWithFit(root,{...args,repository:memoReader(reader),available:getAvailable()}),computed=performance.now();
       const out=json(value,acceptGzip);out.timing={msList:Math.round(computed-started),msSerialize:Math.round(performance.now()-computed)};return out;
     },
     // Vorrechnen aller Linien im Hintergrund (nach dem Start): füllt die Zwischenspeicher, damit niemand auf den ersten,
@@ -103,7 +121,7 @@ export function createKatalogOperations({reader,getAvailable,testOps=false}){
         if(typeof line?.id!=='string')continue;
         await new Promise(resolve=>setImmediate(resolve));
         const started=performance.now();let ok=true;
-        try{await designDashboardWithFit(root,{linie:line.id,repository:reader,available:getAvailable()});}catch{ok=false;}
+        try{await designDashboardWithFit(root,{linie:line.id,repository:memoReader(reader),available:getAvailable()});}catch{ok=false;}
         lines.push({id:line.id,ms:Math.round(performance.now()-started),ok});
       }
       return json({lines},false);

@@ -183,3 +183,26 @@ Offen: Wirkung auf dem Server (kalter Durchlauf dort, Speicherbedarf) – erst n
   Start (so ist ein unbemerkter Neustart des Prozesses erkennbar), `katalog_worker_lost` bei jedem Ausfall.
 - Lokal gemessen (ein Prozess, ohne Worker): Linie Edelstahl Spitze 967 MB Arbeitsspeicher, kleine Linie 641 MB.
 - Tests der betroffenen Dateien: 160 von 160 grün (neu: Speicherwächter).
+
+### Nachtrag 11.11.2026, 00:35 – Messwerte vom Server und Ursache der 85 Sekunden
+
+Server nach Installation von `54e3602` (Prozess 3268008, Protokoll `katalog_worker`):
+
+| Aufruf | Dauer | Rechenzeit Thread | Antwort | Speicher Worker | Speicher Prozess |
+|---|---|---|---|---|---|
+| Übersicht | 2,9 s | 2,8 s | 11 KB | 279 MB | 1.310 MB |
+| Linie Acrylglas mit Abstandshaltern | 2,2 s | 2,1 s | 1,37 MB | 494 MB | 1.603 MB |
+| Linie Edelstahl Türschilder, 1. Aufruf | 98,5 s | 95,4 s | 21,2 MB | 814 MB | 1.910 MB |
+| Linie Edelstahl Türschilder, 2. Aufruf | 85,1 s | 84,4 s | 21,2 MB | 518 MB | 1.880 MB |
+
+Kunde währenddessen: 200 Außenproben, 0 Fehler, Mittel 0,49 s, Maximum 0,88 s. Die Linie wird in der Werkstatt angezeigt.
+
+Ursache der gleichbleibend langen Rechnung (lokal gezählt): Die Designliste fragt die Produktdatenbank je Zeile,
+Unterkategorie und Größe – Linie Edelstahl **126.645 Anfragen für 824 verschiedene Schlüssel** – und liest jedes gefundene
+Produkt bei jedem Treffer vollständig neu ein (bis zu 3.391-mal). Mit der vollen Schriftbibliothek allein (80 Schriften,
+31,7 MB) bleibt die Linie lokal bei 17 s / 3,9 s; die Schriften sind es also nicht mehr.
+
+Behebung: `memoReader` im Worker merkt sich die Datenbankantworten für die Dauer einer Listenrechnung (nächste Rechnung
+liest wieder frisch). Antwort bytegleich. Nachbildung mit einem 2,9 MB großen Produktdokument: 11,7 s → 4,2 s.
+Tests der betroffenen Dateien: 161 von 161 grün (neu: „Datenbank je Rechnung“).
+Wie viel es auf dem Server bringt, zeigt erst die Messung dort.

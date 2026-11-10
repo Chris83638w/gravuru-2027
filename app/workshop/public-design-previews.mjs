@@ -7,11 +7,18 @@ const fields=['storeId','tenantId','shopDomain','shopifyProductId','shopifyVaria
 const fixedBinding=b=>Object.fromEntries(fields.map(k=>[k,b[k]]));
 const unavailable=()=>{throw Object.assign(Error('Öffentliche Vorlage ist nicht mehr freigegeben.'),{status:409,code:'public_preview_changed'});};
 const sourceDigest=model=>createHash('sha256').update(JSON.stringify(model)).digest('hex');
+const heldDigests=new WeakMap();
 const same=(a,b)=>previewDigest(fixedBinding(a))===previewDigest(fixedBinding(b));
 // Optional derived previews for the existing own-product gallery. A separate
 // legacy scene/shared-font renderer is deliberately left on its private path.
 export function createPublicDesignPreviews({cache,resolve,modelFor,modelForRead,checkBinding,gallery,renderTemplate,previewUrl}){
- const immutableModels=new WeakSet();
+ const immutableModels=new WeakSet(),mutableModels=new WeakSet();
+ // Prüfsumme eines gehaltenen Modells: Funktion eines unveränderlichen Werts, deshalb je Objekt einmal; nicht tief eingefroren = jedes Mal neu.
+ function heldSource(model){
+  if(mutableModels.has(model))return sourceDigest(model);
+  if(!immutableModel(model)){mutableModels.add(model);return sourceDigest(model);}
+  let digest=heldDigests.get(model);if(!digest){digest=sourceDigest(model);heldDigests.set(model,digest);}return digest;
+ }
  function immutableModel(model){
   if(!model||typeof model!=='object')return false;
   if(immutableModels.has(model))return true;
@@ -19,16 +26,18 @@ export function createPublicDesignPreviews({cache,resolve,modelFor,modelForRead,
   while(pending.length){const value=pending.pop();if(!value||typeof value!=='object'||seen.has(value))continue;seen.add(value);if(!Object.isFrozen(value))return false;pending.push(...Object.values(value));}
   immutableModels.add(model);return true;
  }
- function current(ids,reading=false){
+ // `override`: Aufrufer liefert ein bereits gehaltenes, tief eingefrorenes Modell desselben Produktstands (Antwortspeicher-Treffer); er
+ // führt dieselben Prüfungen wie modelFor selbst aus. Nur dann darf die Quell-Prüfsumme je Modellobjekt gemerkt werden.
+ function current(ids,reading=false,override=null){
   const {store,binding}=resolve({shopifyProductId:ids.shopifyProductId,shopifyVariantId:ids.shopifyVariantId});
   if(binding.storeId!==store.storeId||binding.tenantId!==store.workshop.tenantId||binding.shopifyProductId!==ids.shopifyProductId||binding.shopifyVariantId!==ids.shopifyVariantId)unavailable();
   const proof=reading&&modelForRead?modelForRead(store,binding):null;
-  const model=proof?proof.model:modelFor(store,binding);checkBinding(store,binding,model);
+  const model=proof?proof.model:override?override(store,binding):modelFor(store,binding);checkBinding(store,binding,model);
   if(proof&&!/^[a-f0-9]{64}$/.test(proof.digest))unavailable();
   if(model.configuration?.id!==binding.productId||model.configuration?.revision!==binding.productRevision||model.key!=='acryl')unavailable();
   // Only the native provider's deeply frozen model may retain its fingerprint.
   // Mutable adapters still hash their actual current model on every read.
-  return {store,binding,model,source:proof&&immutableModel(model)?proof.digest:undefined,session:{sid:'template-preparation-'+randomBytes(12).toString('hex')}};
+  return {store,binding,model,source:proof&&immutableModel(model)?proof.digest:undefined,session:{sid:'template-preparation-'+randomBytes(12).toString('hex')},stable:Boolean(override)&&!proof};
  }
  function choices(context){
   const c=context.model.universal;
@@ -46,12 +55,12 @@ export function createPublicDesignPreviews({cache,resolve,modelFor,modelForRead,
  }
  function identity(context,designId){return {renderer:cache.rendererFingerprint,binding:fixedBinding(context.binding),source:context.source??sourceDigest(context.model),designId};}
  function lookup(binding,context=current(binding)){if(!same(context.binding,binding))unavailable();
-  const source=sourceDigest(context.model),found=new Map();
+  const source=context.stable?heldSource(context.model):sourceDigest(context.model),found=new Map();
   for(const row of choices(context)){const id={renderer:cache.rendererFingerprint,binding:fixedBinding(context.binding),source,designId:row.designId},hit=cache.get(id);if(hit)found.set(row.designId,{...hit,url:previewUrl(hit.hash)});}
   return found;
  }
  function urls(binding){try{return [...lookup(binding).values()].map(hit=>hit.url);}catch{return [];}}
- function attach(result){
+ function attach(result,options=null){
   const groups=new Map();
   // Only the first three visible cards are speculative candidates. No scans
   // across every variant or every template occur here.
@@ -59,7 +68,7 @@ export function createPublicDesignPreviews({cache,resolve,modelFor,modelForRead,
    const {previewUrl:oldPublicUrl,...privateItem}=item;
    if(index>=3)return privateItem;
    const key=item.shopifyProductId+'|'+item.shopifyVariantId;
-   try{if(!groups.has(key)){const context=current(item);groups.set(key,lookup(context.binding,context));}const hit=groups.get(key).get(item.designId);return hit?{...privateItem,previewUrl:hit.url}:privateItem;}catch{return privateItem;}
+   try{if(!groups.has(key)){const context=current(item,false,options?.modelFor??null);groups.set(key,lookup(context.binding,context));}const hit=groups.get(key).get(item.designId);return hit?{...privateItem,previewUrl:hit.url}:privateItem;}catch{return privateItem;}
   });
   return {...result,items};
  }

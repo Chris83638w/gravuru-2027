@@ -14,14 +14,17 @@ const product=v=>/^cfg_[a-f0-9-]{36}$/.test(v||'');
 export function createCatalogLiveOrders({database:db,tenantId,clock=Date.now}){
  const exists=()=>!!db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='catalog_live_order_approvals'").get();
  const active=(shopDomain,p)=>db.prepare('SELECT r.variant_gid FROM shop_product_binding_heads h JOIN shop_product_binding_revisions r ON r.tenant_id=h.tenant_id AND r.shop=h.shop AND r.variant_gid=h.variant_gid AND r.revision=h.revision WHERE r.tenant_id=? AND r.shop=? AND r.store_id=? AND r.product_gid=? AND r.cfg_id=? AND r.cfg_revision=?').all(tenantId,shopDomain,'acryl',p.shopifyProductId,p.productId,p.productRevision).map(r=>r.variant_gid).sort();
- function approval({shopDomain,shopifyProductId,shopifyVariantId,productId,productRevision}={}){
+ function approval({shopDomain,shopifyProductId,shopifyVariantId,productId,productRevision}={},{documentMemo=null}={}){
   if(!shop(shopDomain)||!gid(shopifyProductId,'Product')||!gid(shopifyVariantId,'ProductVariant')||!product(productId)||!Number.isSafeInteger(productRevision)||productRevision<1||!exists())return null;
   const b=db.prepare('SELECT 1 FROM form_shop_bindings WHERE tenant_id=? AND shop=? AND variant_id=? AND product_id=? AND product_revision=?').get(tenantId,shopDomain,shopifyVariantId.split('/').at(-1),productId,productRevision);
   if(!b)return null;
   const row=db.prepare('SELECT * FROM catalog_live_order_approvals WHERE tenant_id=? AND shop=? AND product_gid=? AND cfg_id=? AND cfg_revision=?').get(tenantId,shopDomain,shopifyProductId,productId,productRevision);
   if(!row||!JSON.parse(row.variants_json).includes(shopifyVariantId))return null;
-  const source=db.prepare('SELECT document FROM product_revisions WHERE tenant_id=? AND product_id=? AND revision=?').get(tenantId,productId,productRevision);
-  if(!source||sha(source.document)!==row.document_sha256)fail(409,'Der freigegebene Katalogstand stimmt nicht mehr überein.');
+  // Nur Kundenweg mit Antwortspeicher (documentMemo): die SHA-256 des unveränderlichen Dokuments wird wiederverwendet, wenn der frische
+  // Beleg (rowid, Schema, Kopf) passt; der Vergleich mit der Freigabe bleibt bei jedem Aufruf. Ohne Beleg: bisheriger Weg.
+  const digestOf=()=>{const source=db.prepare('SELECT document FROM product_revisions WHERE tenant_id=? AND product_id=? AND revision=?').get(tenantId,productId,productRevision);return source?sha(source.document):null;};
+  const actual=documentMemo?documentMemo.derive({scope:'catalog-live',kind:'document-sha256',db,tenantId,productId,revision:productRevision,compute:digestOf}).value:digestOf();
+  if(actual===null||actual!==row.document_sha256)fail(409,'Der freigegebene Katalogstand stimmt nicht mehr überein.');
   return {id:row.approval_id,approvedAt:row.approved_at,kind:'catalog'};
  }
  function approve({shopDomain,products,approvalId,registry}={}){

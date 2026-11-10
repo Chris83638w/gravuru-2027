@@ -20,6 +20,7 @@ import {loadCartRevision,loadCartRevisionPhoto} from './cart-edit-revision.mjs';
 import {CART_CONFIG_ID,CART_LINE_ID} from './cart-configuration.mjs';
 import {PAUSED_MESSAGE} from './konfi-status.mjs';
 import {createModelResponseCache,modelResponseKey} from './customer-model-response-cache.mjs';
+import {createRevisionDerivationMemo} from './revision-derivation-memo.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
 import {moduleEnabled} from '../configurator/variant-m/module-profile.mjs';
 import {selectedProfile} from '../configurator/variant-m/contract.mjs';
@@ -107,11 +108,14 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  const themeFiles=new Map(['theme-cart-ui.mjs','theme-cart-client.mjs','shop-embed.mjs'].map(name=>[proxyPath+'/'+name,name==='shop-embed.mjs'?Buffer.from(fs.readFileSync(ui(name),'utf8').replaceAll('__EDITOR_ORIGIN__',origin).replaceAll('__PROXY_PATH__',proxyPath)):fs.readFileSync(ui(name))]));
  const themeTransfers=new Map(),themePath=proxyPath+'/cart';
 
+ // Paket 1a-2: nur mit Antwortspeicher, je Store getrennt – gemerkte Prüfsummen unveränderlicher Revisionen (revision-derivation-memo.mjs).
+ const derivationMemos=new Map();
+ const memoOptions=store=>{if(!modelCache)return undefined;let documentMemo=derivationMemos.get(store.storeId);if(!documentMemo){documentMemo=createRevisionDerivationMemo();derivationMemos.set(store.storeId,documentMemo);}return {documentMemo};};
  function resolve(identity){
   if(!gid(identity.shopifyProductId,'Product')||!gid(identity.shopifyVariantId,'ProductVariant'))fail(422,'shop_entry_ids','Eine eindeutige Shopify-Produkt- und Varianten-ID ist erforderlich.');
   const matches=[];
   for(const store of fixed){
-   let binding;try{binding=store.registry.resolve(identity);}catch(error){if(error.code==='shop_binding_active_not_found'&&error.status===404)continue;throw error;}
+   let binding;try{binding=store.registry.resolve(identity,memoOptions(store));}catch(error){if(error.code==='shop_binding_active_not_found'&&error.status===404)continue;throw error;}
    if(!binding||binding.storeId!==store.storeId||binding.shopDomain!==shopDomain||binding.tenantId!==store.workshop.tenantId||binding.shopifyProductId!==identity.shopifyProductId||binding.shopifyVariantId!==identity.shopifyVariantId)fail(409,'shop_entry_scope','Die Produktzuordnung passt nicht zum privaten Datenbereich.');
    matches.push({store,binding:structuredClone(binding)});
   }
@@ -126,7 +130,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  }
  function requireApproval(store,binding,kind){
   if(kind==='catalog'){
-   const approved=store.catalogLiveOrders===true&&store.workshop.orderIntake.catalogLiveApproval?.({shopDomain,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId,productId:binding.productId,productRevision:binding.productRevision});
+   const approved=store.catalogLiveOrders===true&&store.workshop.orderIntake.catalogLiveApproval?.({shopDomain,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId,productId:binding.productId,productRevision:binding.productRevision},memoOptions(store));
    if(!approved)fail(404,'shop_entry_catalog_release',NOT_BOUND);
    return;
   }
@@ -142,11 +146,20 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   let model;
   try{model=store.workshop.model(binding.productId,binding.productRevision);}
   catch(error){if(error.status===423)fail(423,'konfi_paused',PAUSED_MESSAGE);throw error;}
+  return checkedModel(store,binding,model);
+ }
+ // Prüfungen nach dem Modellaufbau (Zuordnung, Art, Freigabe); auch für ein gehaltenes Modell eines Speichertreffers.
+ function checkedModel(store,binding,model){
   if(!model||model.configuration?.id!==binding.productId||model.configuration?.revision!==binding.productRevision||!['form','acryl'].includes(model.key))fail(409,'shop_entry_model','Das Modell gehört nicht zur festen Produktzuordnung.');
   // Der Formeditor hat eigene Kundenrouten (customer-drafts); er ist im öffentlichen Einstieg noch nicht angebunden.
   if(model.key!=='acryl'||!model.universal)fail(404,'shop_entry_form_pending',NOT_BOUND);
   requireDoorbellApproval(store,binding,model.universal);
   return model;
+ }
+ // Wie modelFor für das gehaltene Modell eines Treffers: Pause (423) und alle Prüfungen von checkedModel; nur der Neuaufbau entfällt.
+ function heldModelFor(store,binding,model){
+  if(store.workshop.konfis.paused(binding.productId))fail(423,'konfi_paused',PAUSED_MESSAGE);
+  return checkedModel(store,binding,model);
  }
  // Sitzung prüfen und die Zuordnung erneut auflösen: eine zwischenzeitlich geänderte aktive Zuordnung
  // oder ein anderer Store beenden die Sitzung (wie `active()` im Händlertest-Gateway).
@@ -199,9 +212,9 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  function publicBinding(binding){return {shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId,productId:binding.productId,productRevision:binding.productRevision,options:structuredClone(binding.options||{})};}
  // Startvorschau des Modellzweigs. Das Ziel-Token ist an die Sitzung gebunden (sid) und wird deshalb bei JEDER Anfrage neu
  // ausgestellt; der Antwortspeicher hält dafür das Servermodell, nicht das Token. `threw`: der Aufbau schlug fehl (nicht speichern).
- function startPreviewFor(context,model,designId,cardModel=null){
+ function startPreviewFor(context,model,designId,cardModel=null,held=false){
   let startPreview=null,threw=false;
-  try{let at=performance.now();startPreview=designGallery.start(context,model,designId,cardModel?{cardModel}:undefined);at=lap('msStartGallery',at);if(publicPreviews&&startPreview){const {previewUrl:oldPublicUrl,...privateStart}=startPreview;const prepared=publicPreviews.attach({items:[{...publicBinding(context.binding),designId,...privateStart}]}).items[0];startPreview={...privateStart,...(prepared.previewUrl?{previewUrl:prepared.previewUrl}:{})};lap('msStartPublic',at);}}catch{/* Products without a gallery still open normally. */threw=true;}
+  try{let at=performance.now();startPreview=designGallery.start(context,model,designId,cardModel?{cardModel}:undefined);at=lap('msStartGallery',at);if(publicPreviews&&startPreview){const {previewUrl:oldPublicUrl,...privateStart}=startPreview;const prepared=publicPreviews.attach({items:[{...publicBinding(context.binding),designId,...privateStart}]},held?{modelFor:(store,binding)=>heldModelFor(store,binding,model)}:null).items[0];startPreview={...privateStart,...(prepared.previewUrl?{previewUrl:prepared.previewUrl}:{})};lap('msStartPublic',at);}}catch{/* Products without a gallery still open normally. */threw=true;}
   return {startPreview,threw};
  }
  const modelRest=(context,startPreview)=>({startPreview,binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false});
@@ -501,7 +514,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
       requireApproval(context.store,context.binding,hit.activeKind);
       if(context.store.workshop.konfis.paused(context.binding.productId))fail(423,'konfi_paused',PAUSED_MESSAGE);
       requireApproval(context.store,context.binding,hit.modelKind);at=lap('msChecks',at);
-      const {startPreview}=startPreviewFor(context,hit.held.model,hit.startDesignId,hit.held.cardModel);
+      const {startPreview}=startPreviewFor(context,hit.held.model,hit.startDesignId,hit.held.cardModel,true);
       at=performance.now();const sent=sendJson(res,200,modelBytes(hit.json,modelRest(context,startPreview)));lap('msSend',at);return sent;
      }
      if(hit)modelCache.unusable();

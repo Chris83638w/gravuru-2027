@@ -215,6 +215,21 @@ test('Katalogstand: nach invalidate() sieht der Worker eine Änderung sofort, ni
  assert.notDeepEqual(after,before);assert.ok(after.includes('Umbenannt im Test'));
 });
 
+test('Katalogkontext: die Schriftliste wird je Anfrage ausgewertet, nicht je Design (Befund 10.11.2026: zwei Minuten je Linie)',async t=>{
+ // Die verfügbaren Formschriften sind mehrere MB groß. Wird ihre Signatur je Design neu gebildet, wächst die Rechenzeit mit
+ // der Zahl der Designs. Gezählt wird, wie oft die Schriftliste aufgezählt wird: das darf nicht von der Designzahl abhängen.
+ const count=async designs=>{
+  const root=katalog(t,designs);let reads=0;
+  const available=new Proxy({Michroma:FONT},{ownKeys(target){reads+=1;return Reflect.ownKeys(target);}});
+  forgetKatalog();forgetDashboardCache();
+  const result=await designDashboardWithFit(root,{linie:'test-linie',available});
+  assert.equal(result.rows.length>=designs,true);
+  return reads;
+ };
+ const few=await count(2),many=await count(9);
+ assert.equal(many,few,'Auswertungen der Schriftliste: '+few+' bei 2 Designs, '+many+' bei 9 Designs');
+});
+
 // ---- HTTP: Weiche ----
 const raw=(base,route,headers={})=>new Promise((resolve,reject)=>{
  http.get(base+route,{headers},res=>{const chunks=[];res.on('data',c=>chunks.push(c));res.on('end',()=>resolve({status:res.statusCode,headers:res.headers,body:Buffer.concat(chunks)}));}).on('error',reject);

@@ -293,6 +293,9 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
  const referenced=new Set(referencedMasters(katalog,line));
  const l2=katalog.designs.masters.filter(d=>designOfLine(ctx,d)||referenced.has(d));
  const rows=[],byBestandId=new Map(),targetVersionCache=new Map();
+ // Katalogkontext einmal je Anfrage: die Signatur enthält die verfügbaren Formschriften (mehrere MB). Je Design neu gebildet
+ // kostete das auf dem Server rund zwei Minuten je Linie (Befund 10.11.2026, #229).
+ const contextSig=katalogContextSig(katalog,available);
  for(const d of l2){
   const j=d.json||{},texts=Array.isArray(j.texts)?j.texts.filter(record):[],motifs=Array.isArray(j.motifs)?j.motifs.filter(record):[];
   const fonts=[...new Set([...(Array.isArray(j.fonts)?j.fonts:[]),...texts.map(t=>t.font)].filter(f=>typeof f==='string'&&f))].map(n=>fontStatus(n,katalog,replacements));
@@ -306,7 +309,7 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
    lieferform2:{reihe:d.seriesFolder,dir:path.relative(root,d.dir).split(path.sep).join('/'),transferFrom:j.transfer?.fromKey??j.transfer?.from??null},bestand:null,
    files:filesFor(root,{reihe:d.seriesFolder,id:d.id}),reasons:[],warnings:Array.isArray(j.warnings)?j.warnings.filter(w=>typeof w==='string'):[],
    herkunftRang:herkunftRang(j)};
-  {const sig=designStamp(d)+'|'+line.id+'|'+katalogContextSig(katalog,available),hit=targetCache.get(d.dir);
+  {const sig=designStamp(d)+'|'+line.id+'|'+contextSig,hit=targetCache.get(d.dir);
    let value=hit&&hit.sig===sig?hit.value:null;
    if(!value){let svgText=null,versions=null;// SVG und Schriftstände einmal je Design, nicht je Familie
     value=dashboardDesignTargets(d,katalog,line,{checksumFor:family=>{try{svgText??=d.svg();versions??=targetFontVersions({...d,svg:()=>svgText},katalog,available,targetVersionCache);return designTargetChecksum(d,family,svgText,versions);}catch{return null;}}});targetCache.set(d.dir,{sig,value});}

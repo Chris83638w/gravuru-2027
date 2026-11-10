@@ -110,3 +110,25 @@ Abnahme auf dem Server (steht aus, nur nach „live“ von Chris): nach Installa
 inhaltsgleich, pixelgleich), dann Werkstatt › Designs öffnen und **gleichzeitig** von außen den Kunden-Konfi messen.
 Bestanden, wenn der Konfi dabei unter 1 s bleibt. Offen bleibt bis dahin: Speicherbedarf des Workers unter den
 Grenzen des Hostings (CloudLinux), Dauer des kalten Durchlaufs auf der Serverplatte.
+
+## Nachtrag 10.11.2026, 22:40 – live, Abnahme auf dem Server, Fehler aus #231 gefunden und behoben
+
+- Paket 1c live seit 21:55 (Hashes und Ablauf in #233). Abnahme auf dem Server bestanden: 221 Außenproben auf den
+  Kunden-Konfi, während der Arbeiter rechnete im Mittel 0,53 s (max 1,44 s), in Ruhe 0,55 s (max 1,84 s), 0 Fehler.
+- Befund: Linie „Acrylglas Schilder mit Abstandshaltern“ brauchte auf dem Server 120,8 s und beim zweiten Aufruf 125,3 s.
+- Ursache (lokal mit echten Schriften nachgestellt und profiliert, 74 s je Aufruf): `katalogContextSig(katalog, available)`
+  aus dem #231-Zwischenspeicher wurde **je Design** aufgerufen und bildet dabei jedes Mal den Schlüssel aus der kompletten
+  Schriftliste (mehrere MB). 88 % der Rechenzeit. Ohne Schriften (`available={}`) fällt das nicht auf – deshalb zeigten
+  die bisherigen lokalen Messungen Sekunden.
+- Behebung: Signatur einmal je Anfrage (eine Zeile vor der Schleife in `designDashboard`). Antwort bytegleich
+  (SHA-256 der Linie vorher/nachher identisch: `4a5b0d811214554a`).
+
+| Linie (lokal, echte Schriften, Katalog `b5d8f28bc1`) | vorher | nachher 1. Aufruf | nachher 2. Aufruf |
+|---|---|---|---|
+| Acrylglas Schilder mit Abstandshaltern (1,37 MB) | 73–75 s | 1,8–2,0 s | 0,5 s |
+| Edelstahl Türschilder (21,1 MB) | nicht gemessen | 22,2 s | 5,9 s |
+
+- Neuer Test „Katalogkontext: die Schriftliste wird je Anfrage ausgewertet, nicht je Design“ (rot ohne Behebung, grün mit).
+- Läufe: `katalog-worker`, `design-dashboard*`, `design-target*`, `http` – 156 von 156 grün.
+- `app/workshop/design-dashboard.mjs` neu: SHA-256 beginnt `9024bbaabc956168` (ersetzt `ee4b1060d2d03737`).
+- Derselbe Fehler steckt in `main` (PR #231) – dort ebenfalls zu beheben.

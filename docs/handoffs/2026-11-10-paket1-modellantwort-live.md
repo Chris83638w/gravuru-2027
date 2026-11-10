@@ -61,3 +61,21 @@ Auf dem Trefferpfad läuft je Abruf weiterhin `startPreviewFor` → `publicPrevi
 ## Nachtrag 10.11.2026, ca. 11:45 – Abschnitte live gemessen
 
 `shop-entry.mjs` live auf Commit `c1649ad` (`06ece2ae74ec78de`; nur Messfelder in der Zeile `model_response_cache`), ein Neustart. Je Speichertreffer: `msContext` ca. 220–260 ms, `msChecks` ca. 115–130 ms, `msStartPublic` ca. 315–360 ms, alles übrige unter 5 ms. Die Vermutung oben stimmt also nur zur Hälfte: Zuordnung auflösen und Freigabe/Pause kosten zusammen etwa gleich viel wie die öffentliche Startvorschau. Auftrag daraus: [2026-11-10-paket1a2-trefferpfad-bauanleitung.md](2026-11-10-paket1a2-trefferpfad-bauanleitung.md).
+
+## Nachtrag 10.11.2026, ca. 13:55 – Paket 1a-2 live
+
+Freigabe Chris im Claude-Chat, 10.11.2026 12:45: „Ja, ‚live‘ für Paket 1a-2“. Installiert aus `8e394cd`, ein Neustart:
+
+| Datei | vorher | nachher |
+|---|---|---|
+| `revision-derivation-memo.mjs` | (neu) | `8bda1a5dbe38b113` |
+| `shop-product-binding-store.mjs` | `42c4999be3336751` | `9bb289a50b1282c3` |
+| `catalog-live-orders.mjs` | `dce568c366662313` | `d8cd175043937d3b` |
+| `public-design-previews.mjs` | `7fb810e1b2551302` | `a46b1a3c137feeb8` |
+| `shop-entry.mjs` | `06ece2ae74ec78de` | `3c6ab9e14974286c` |
+
+Sicherung der alten Stände: `private/claude-paket1a-20261110/` (`*.vorher-8ceb866`, `shop-entry.mjs.vorher-c1649ad`). Rückbau schnell: Schalterzeile in `app.cjs` entfernen + Neustart (ohne Schalter sind Speicher und Gedächtnis aus).
+
+Messung live (Protokoll, 5 Treffer): `msContext` 14 ms je Abruf (vorher ca. 260), `msChecks` unter 1 ms (vorher ca. 127), `msStartPublic` 27 ms (vorher ca. 359). Von außen: Modellabruf ohne TLS ca. 0,30 s (vorher ca. 0,85 s); vier gleichzeitige, Zeit bis erstes Byte mit TLS: 0,6 / 0,9 / 0,9 / 1,0 s (vorher 1,2 / 2,0 / 2,8 / 3,6 s). Modellinhalt identisch, `startPreview` bis auf `target` identisch, Konfi 1440×800 und 390×844 pixelgleich zu vorher.
+
+Offen/beobachtet: (1) Zwischen Prozess und außen bleiben ca. 0,15 s über dem billigen Abruf (0,13 s) – nicht untersucht. (2) Nach jedem Neustart einmalig ein Abruf mit 6–8 s; im Protokoll stehen dann je zwei Paare `shop_gallery_cache_hit` (ca. 3 s) / `public_preview_prepared` – Startaufwärmen blockiert, evtl. zwei Prozesse. (3) Review Mika steht aus.

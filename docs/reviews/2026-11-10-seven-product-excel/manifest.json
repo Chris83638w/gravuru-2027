@@ -1,0 +1,122 @@
+{
+  "sourceCommit": "bf8824c80347f63ffeb2c05cc9a34a9ffed6f9bd",
+  "workbookCount": 7,
+  "combinationCount": 823,
+  "workbooks": [
+    {
+      "path": "docs/produktfreigaben/Tuerschild-Acrylglas-3mm_v4.xlsx",
+      "sha256": "495e7e59d7abf6a46f1fb7098a75e666162e58be3cad99ad75de6db5d3923841",
+      "counts": {
+        "sizeRows": 77,
+        "forms": {
+          "Rechteck / RE": 24,
+          "Rechteck abgerundet / AB": 10,
+          "Quadrat / QU": 7,
+          "Oval / OV": 17,
+          "Rund / R": 5,
+          "Retro 1 / RT1": 7,
+          "Retro 2 / RT2": 7
+        },
+        "explicitOptionRows": 774,
+        "mountingRows": 389,
+        "analysisCombinations": 778
+      },
+      "planId": null,
+      "planHash": null
+    },
+    {
+      "path": "docs/produktfreigaben/Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "sha256": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+      "counts": {
+        "sizeRows": 1,
+        "forms": {
+          "Rechteck / RE": 1
+        },
+        "explicitOptionRows": 10,
+        "mountingRows": 5,
+        "analysisCombinations": 10
+      },
+      "planId": null,
+      "planHash": null
+    },
+    {
+      "path": "docs/produktfreigaben/Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "sha256": "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+      "counts": {
+        "sizeRows": 1,
+        "forms": {
+          "Rechteck / RE": 1
+        },
+        "explicitOptionRows": 10,
+        "mountingRows": 5,
+        "analysisCombinations": 10
+      },
+      "planId": null,
+      "planHash": null
+    },
+    {
+      "path": "docs/produktfreigaben/Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "sha256": "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+      "counts": {
+        "sizeRows": 1,
+        "forms": {
+          "Rechteck / RE": 1
+        },
+        "explicitOptionRows": 10,
+        "mountingRows": 5,
+        "analysisCombinations": 10
+      },
+      "planId": null,
+      "planHash": null
+    },
+    {
+      "path": "docs/produktfreigaben/Tuerschild-Edelstahl-5x2_v1.xlsx",
+      "sha256": "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+      "counts": {
+        "sizeRows": 1,
+        "forms": {
+          "Rechteck / RE": 1
+        },
+        "explicitOptionRows": 7,
+        "mountingRows": 5,
+        "analysisCombinations": 5
+      },
+      "planId": null,
+      "planHash": null
+    },
+    {
+      "path": "docs/produktfreigaben/Tuerschild-Edelstahl-6x2_v1.xlsx",
+      "sha256": "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+      "counts": {
+        "sizeRows": 1,
+        "forms": {
+          "Rechteck / RE": 1
+        },
+        "explicitOptionRows": 7,
+        "mountingRows": 5,
+        "analysisCombinations": 5
+      },
+      "planId": null,
+      "planHash": null
+    },
+    {
+      "path": "docs/produktfreigaben/Tuerschild-Edelstahl-8x2_v1.xlsx",
+      "sha256": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+      "counts": {
+        "sizeRows": 1,
+        "forms": {
+          "Rechteck / RE": 1
+        },
+        "explicitOptionRows": 7,
+        "mountingRows": 5,
+        "analysisCombinations": 5
+      },
+      "planId": null,
+      "planHash": null
+    }
+  ],
+  "jsonSha256": "2218e5d9e6917016e59526781e2f57c650c59b449f00f979d6a0d0605bfb61e9",
+  "gzipSha256": "8fc7ffc75c70d56270d24a04f826d761f1df6904c459ee901f2607b01966188e",
+  "gzipBytes": 70495,
+  "status": "analysis-only; no confirmation or execution"
+}

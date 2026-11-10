@@ -4,7 +4,7 @@ import { mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 import {createProductCatalog} from './product-catalog.mjs';
 import {tenantOption,ensureTenantColumn,TENANT_COLUMN} from './tenant.mjs';
-import {customerDatabaseRead} from './customer-read-scope.mjs';
+import {customerDatabaseRead,databaseEpoch} from './customer-read-scope.mjs';
 
 const OWNED_FIELDS = ['id', 'revision', 'publishedRevision', 'status', 'createdAt', 'updatedAt', 'metadata'];
 
@@ -223,6 +223,8 @@ export function createProductRepository({ filename, validateDocument = (value) =
 
   return {
     tenantId:tenant,
+    // Lesender Nachweis „seit dem letzten Aufruf nichts geschrieben“ für Antwortspeicher (customer-model-response-cache.mjs).
+    readEpoch:()=>databaseEpoch(db),
     firstId:()=>db.prepare('SELECT id FROM products WHERE tenant_id = ? ORDER BY created_at,id LIMIT 1').get(tenant)?.id||null,
     catalog:options=>catalog.list(options),
     // The dry-run uses the same pure validation as the transactional write.

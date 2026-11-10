@@ -19,6 +19,7 @@ import {customerVectorLogoPreview,VECTOR_LOGO_REQUEST_BYTES} from './customer-ve
 import {loadCartRevision,loadCartRevisionPhoto} from './cart-edit-revision.mjs';
 import {CART_CONFIG_ID,CART_LINE_ID} from './cart-configuration.mjs';
 import {PAUSED_MESSAGE} from './konfi-status.mjs';
+import {createModelResponseCache,modelResponseKey} from './customer-model-response-cache.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
 import {moduleEnabled} from '../configurator/variant-m/module-profile.mjs';
 import {selectedProfile} from '../configurator/variant-m/contract.mjs';
@@ -40,7 +41,15 @@ const optionKey=o=>JSON.stringify(Object.entries(o||{}).sort());
 const NOT_BOUND='Dieses Produkt ist noch nicht für den Konfigurator eingerichtet.';
 const ERROR_STATUSES=[400,401,403,404,405,409,413,415,422,423,429,502,503];
 const headersFor=(type,extra={})=>({'Content-Type':type,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','X-Robots-Tag':'noindex, nofollow, noarchive',...extra});
-const json=(res,status,value)=>{const bytes=Buffer.from(JSON.stringify(value));res.writeHead(status,headersFor('application/json; charset=utf-8',{'Content-Length':bytes.length}));res.end(bytes);};
+const sendJson=(res,status,bytes)=>{res.writeHead(status,headersFor('application/json; charset=utf-8',{'Content-Length':bytes.length}));res.end(bytes);};
+const json=(res,status,value)=>sendJson(res,status,Buffer.from(JSON.stringify(value)));
+// Antwort mit bereits serialisiertem Modell: dieselben Bytes wie `json(res,200,{model,...rest})`, `model` als erstes Feld.
+const MODEL_MARK='@@gravuru-model-json@@';
+function modelBytes(modelJson,rest){
+ const text=JSON.stringify({model:MODEL_MARK,...rest}),mark='"'+MODEL_MARK+'"';
+ if(!text.startsWith('{"model":'+mark)||text.indexOf(mark,mark.length+9)!==-1)throw Error('Antwortaufbau ist nicht eindeutig.');
+ return Buffer.from('{"model":'+modelJson+text.slice(9+mark.length));
+}
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 // Die Kundenseite darf nur im eigenen Shop als Fenster über der Produktseite erscheinen (shop-embed.mjs).
 const pageCsp=shopDomain=>"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; font-src 'self' data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors https://"+shopDomain;
@@ -63,7 +72,7 @@ function createWindowLimiter(perMinute,clock){
  return key=>{const minute=Math.floor(clock()/60000);if(windows.size>4096)windows.clear();const entry=windows.get(key);if(!entry||entry.minute!==minute){windows.set(key,{minute,count:1});return true;}entry.count++;return entry.count<=perMinute;};
 }
 
-export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,publicPreviewDirectory=null,publicPreviewPrepare=null,logger=event=>console.warn(JSON.stringify(event))}){
+export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,publicPreviewDirectory=null,publicPreviewPrepare=null,modelResponseCache=null,logger=event=>console.warn(JSON.stringify(event))}){
  let address;try{address=new URL(origin);}catch{}
  if(!address||address.origin!==origin||address.protocol!=='https:'||address.username||address.password||!/^[-a-z0-9]+\.myshopify\.com$/.test(shopDomain||'')||typeof secret!=='string'||secret.length<16||!Array.isArray(stores)||!stores.length||stores.length>8||
    typeof proxyPath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*$/.test(proxyPath)||typeof pagePath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/$/.test(pagePath)||pagePath.startsWith('/api/')||proxyPath.startsWith('/api/')||proxyPath+'/'===pagePath)
@@ -71,6 +80,9 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  // Starts zählen jetzt auch das Vorladen beim Ansehen einer Produktseite (Konfigurator-Fenster).
  const limit={startPerMinute:600,requestsPerMinute:240,draftBytes:100*1024*1024,cartBytes:16*1024,concurrentReviews:2,maxContexts:1024,contextTtlMs:30*60*1000,...limits};
  for(const [key,value] of Object.entries(limit))if(!Number.isSafeInteger(value)||value<1)fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
+ // Antwortspeicher des Modells (Paket 1a): standardmäßig aus. `true` = Standardgrenzen, Objekt = eigene Grenzen (Tests).
+ if(modelResponseCache!==null&&modelResponseCache!==undefined&&modelResponseCache!==false&&modelResponseCache!==true&&(typeof modelResponseCache!=='object'||Array.isArray(modelResponseCache)||Object.keys(modelResponseCache).some(k=>!['maxEntries','maxBytes','maxModels'].includes(k))))fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
+ let modelCache;try{modelCache=modelResponseCache===null||modelResponseCache===undefined||modelResponseCache===false?null:createModelResponseCache(modelResponseCache===true?{}:modelResponseCache);}catch{fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');}
  const ids=new Set(),fixed=stores.map(s=>{
   const w=s?.workshop;
   if(!s||!/^[-a-zA-Z0-9_]{1,100}$/.test(s.storeId||'')||ids.has(s.storeId)||typeof s.registry?.resolve!=='function'||typeof s.cart!=='function'||typeof w?.model!=='function'||!w.tenantId||w.sessionContext?.shopDomain!==shopDomain||
@@ -106,16 +118,25 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   if(matches.length!==1)fail(matches.length?409:404,matches.length?'shop_entry_duplicate':'shop_entry_not_bound',matches.length?'Diese Variante ist mehreren Datenbereichen zugeordnet.':NOT_BOUND);
   return matches[0];
  }
- function requireDoorbellApproval(store,binding,config){
-  const saved=config??store.workshop.repository.get(binding.productId,{revision:binding.productRevision}).document?.config;
-  if(saved?.familyFormats?.source?.shopProduct){
+ // Welche Freigabe ein Produktstand braucht: Katalog, Funkklingel oder keine. Nur die ART wird abgeleitet; ob die Freigabe
+ // gilt, wird bei jeder Anfrage frisch gelesen (requireApproval) und nie gemerkt.
+ function approvalKind(saved){
+  if(saved?.familyFormats?.source?.shopProduct)return 'catalog';
+  return isLayeredDoorbell(saved)?'doorbell':null;
+ }
+ function requireApproval(store,binding,kind){
+  if(kind==='catalog'){
    const approved=store.catalogLiveOrders===true&&store.workshop.orderIntake.catalogLiveApproval?.({shopDomain,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId,productId:binding.productId,productRevision:binding.productRevision});
    if(!approved)fail(404,'shop_entry_catalog_release',NOT_BOUND);
    return;
   }
-  if(!isLayeredDoorbell(saved))return;
+  if(kind!=='doorbell')return;
   const approved=store.doorbellLiveOrders===true&&typeof store.workshop.orderIntake.doorbellLiveApproval==='function'&&store.workshop.orderIntake.doorbellLiveApproval({shopDomain,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId,productId:binding.productId,productRevision:binding.productRevision});
   if(!approved||typeof approved.id!=='string'||!approved.id)fail(404,'shop_entry_doorbell_unapproved',NOT_BOUND);
+ }
+ function requireDoorbellApproval(store,binding,config){
+  const saved=config??store.workshop.repository.get(binding.productId,{revision:binding.productRevision}).document?.config;
+  requireApproval(store,binding,approvalKind(saved));
  }
  function modelFor(store,binding){
   let model;
@@ -130,12 +151,17 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  // Sitzung prüfen und die Zuordnung erneut auflösen: eine zwischenzeitlich geänderte aktive Zuordnung
  // oder ein anderer Store beenden die Sitzung (wie `active()` im Händlertest-Gateway).
  function active(req){
+  const context=activeContext(req);
+  requireDoorbellApproval(context.store,context.binding);
+  return context;
+ }
+ // Sitzung, Anfragebegrenzung und frische Zuordnung ohne Freigabeprüfung (der Modellzweig prüft sie selbst, siehe dort).
+ function activeContext(req){
   const session=sessions.verify(req.headers['x-gravuru-shop-session']);
   if(!requestLimiter(session.sid))fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
   const store=fixed.find(s=>s.storeId===session.storeId);if(!store)fail(409,'shop_entry_changed','Die Produktzuordnung wurde geändert. Bitte die Produktseite neu öffnen.');
   const current=resolve({shopifyProductId:session.shopifyProductId,shopifyVariantId:session.shopifyVariantId});
   if(current.store!==store||current.binding.productId!==session.productId||current.binding.productRevision!==session.productRevision||current.binding.bindingId!==session.bindingId||current.binding.assignmentRevision!==session.assignmentRevision)fail(409,'shop_entry_changed','Die Produktzuordnung wurde geändert. Bitte die Produktseite neu öffnen.');
-  requireDoorbellApproval(store,current.binding);
   return {session,store,binding:current.binding};
  }
  // Nur Ressourcen, die das Modell dieses Produktstands selbst nennt (Motivgrafiken, Fotomasken, Beispielfotos).
@@ -171,6 +197,24 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   return copy;
  }
  function publicBinding(binding){return {shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId,productId:binding.productId,productRevision:binding.productRevision,options:structuredClone(binding.options||{})};}
+ // Startvorschau des Modellzweigs. Das Ziel-Token ist an die Sitzung gebunden (sid) und wird deshalb bei JEDER Anfrage neu
+ // ausgestellt; der Antwortspeicher hält dafür das Servermodell, nicht das Token. `threw`: der Aufbau schlug fehl (nicht speichern).
+ function startPreviewFor(context,model,designId,cardModel=null){
+  let startPreview=null,threw=false;
+  try{startPreview=designGallery.start(context,model,designId,cardModel?{cardModel}:undefined);if(publicPreviews&&startPreview){const {previewUrl:oldPublicUrl,...privateStart}=startPreview;const prepared=publicPreviews.attach({items:[{...publicBinding(context.binding),designId,...privateStart}]}).items[0];startPreview={...privateStart,...(prepared.previewUrl?{previewUrl:prepared.previewUrl}:{})};}}catch{/* Products without a gallery still open normally. */threw=true;}
+  return {startPreview,threw};
+ }
+ const modelRest=(context,startPreview)=>({startPreview,binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false});
+ // Antwortspeicher: nur für Stores, die Datenbankstand und Pause lesend nachweisen können (sonst wie bisher ohne Speicher).
+ function cacheEpoch(store){
+  if(!modelCache)return null;
+  const w=store.workshop;
+  if(typeof w.repository?.readEpoch!=='function'||typeof w.konfis?.paused!=='function')return null;
+  try{const epoch=w.repository.readEpoch();return typeof epoch==='string'?epoch:null;}catch{return null;}
+ }
+ // Ausgelagerte Schriften müssen weiter abrufbar sein, wenn die Antwort aus dem Speicher kommt (sonst: neu aufbauen).
+ const fontsAvailable=entry=>entry.fontHashes.every(hash=>typeof slimmer?.fontFile==='function'&&slimmer.fontFile(hash)!==null);
+ const lazyFontHashes=model=>(model.universal?.localResources?.lazyFonts||[]).map(f=>String(f?.url||'').split('/').at(-1).replace(/\.json$/,''));
  function cardFor(store,binding){
   // The separately installed legacy runtime has no galleryModel method yet.
   // Its fixed document can use the same lightweight projection, never model().
@@ -418,13 +462,44 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
      if([...url.searchParams.keys()].some(k=>k!=='design')||url.searchParams.getAll('design').length>1||(url.searchParams.has('design')&&(!url.searchParams.get('design')||url.searchParams.get('design').length>200)))fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');
      checkOrigin(req,{mutating:false});
-     const context=active(req),model=modelFor(context.store,context.binding);
+     const designParam=url.searchParams.get('design');
+     const context=activeContext(req),epoch=cacheEpoch(context.store);
+     // Zustand des Verschlankers (4.5): bereit/nicht bereit, Teil des Schlüssels.
+     const slimState=slimmer?(slimmer.ready()?'ready':'cold'):'none';
+     const key=epoch===null?null:modelResponseKey({storeId:context.store.storeId,productId:context.binding.productId,productRevision:context.binding.productRevision,bindingId:context.binding.bindingId,assignmentRevision:context.binding.assignmentRevision,unitCents:context.binding.unitCents,options:context.binding.options,designId:designParam,slimState});
+     const hit=key===null?null:modelCache.get(context.store.storeId,key,epoch);
+     if(hit&&fontsAvailable(hit)){
+      // Treffer: alles, was an Sitzung, Zuordnung, Pause und Freigabe hängt, wird jetzt frisch geprüft – in derselben Reihenfolge
+      // und mit denselben Fehlern wie auf dem bisherigen Weg (active → modelFor → Freigabe des Modells).
+      requireApproval(context.store,context.binding,hit.activeKind);
+      if(context.store.workshop.konfis.paused(context.binding.productId))fail(423,'konfi_paused',PAUSED_MESSAGE);
+      requireApproval(context.store,context.binding,hit.modelKind);
+      const {startPreview}=startPreviewFor(context,hit.held.model,hit.startDesignId,hit.held.cardModel);
+      return sendJson(res,200,modelBytes(hit.json,modelRest(context,startPreview)));
+     }
+     requireDoorbellApproval(context.store,context.binding);
+     const model=modelFor(context.store,context.binding);
      allowedAssets(context.store,context.binding,model);
-     const presented=presentedModel(model,context.binding,context.store,url.searchParams.get('design'));
+     const presented=presentedModel(model,context.binding,context.store,designParam);
      const designId=presented.universal.profile.defaultDesignId||presented.universal.profile.designs[0]?.id;
-     let startPreview=null;
-     try{startPreview=designGallery.start(context,model,designId);if(publicPreviews&&startPreview){const {previewUrl:oldPublicUrl,...privateStart}=startPreview;const prepared=publicPreviews.attach({items:[{...publicBinding(context.binding),designId,...privateStart}]}).items[0];startPreview={...privateStart,...(prepared.previewUrl?{previewUrl:prepared.previewUrl}:{})};}}catch{/* Products without a gallery still open normally. */}
-     return json(res,200,{model:presented,startPreview,binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false});
+     if(key===null){
+      const {startPreview}=startPreviewFor(context,model,designId);
+      return json(res,200,{model:presented,...modelRest(context,startPreview)});
+     }
+     // Ohne Treffer: heutiger Weg; danach ablegen, wenn nichts dagegen spricht.
+     // Wie designGallery.start: nur mit eingeschalteter Designauswahl wird das Kartenmodell gebraucht.
+     let cardModel=null,cardFailed=false;
+     if(moduleEnabled(model.universal,'designs')){try{cardModel=cardFor(context.store,context.binding);}catch{cardFailed=true;}}
+     const {startPreview,threw}=startPreviewFor(context,model,designId,cardModel);
+     const modelJson=JSON.stringify(presented),bytes=modelBytes(modelJson,modelRest(context,startPreview));
+     // Nicht speichern: Fehler beim Aufbau der Startvorschau, Funkklingel bei nicht bereitem Verschlanker, Schreibvorgang während des Aufbaus.
+     if(!threw&&!cardFailed&&!(slimmer&&model.universal.doorbell&&slimState!=='ready')&&(!slimmer||slimmer.ready()===(slimState==='ready'))&&cacheEpoch(context.store)===epoch){
+      const holderKey=JSON.stringify([context.store.storeId,context.binding.productId,context.binding.productRevision]);
+      const held=modelCache.heldFor(context.store.storeId,holderKey,epoch)||{holderKey,model,cardModel};
+      let activeKind;try{activeKind=approvalKind(context.store.workshop.repository.get(context.binding.productId,{revision:context.binding.productRevision}).document?.config);}catch{activeKind=undefined;}
+      if(activeKind!==undefined)modelCache.set(context.store.storeId,key,epoch,{json:modelJson,activeKind,modelKind:approvalKind(model.universal),startDesignId:designId,fontHashes:lazyFontHashes(presented),held});
+     }
+     return sendJson(res,200,bytes);
     }
     if(action==='design-gallery'){
      if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');

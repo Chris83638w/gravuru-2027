@@ -23,7 +23,7 @@ const bank=()=>bankCache??=syntheticBank({designsPerSize:2,padKb:0});
 // Flavor „bank“: echte Familienformate (Katalogfreigabe, Startvorschau, Designauswahl). Flavor „plain“: kleines Modell mit
 // ausgeschalteter Designauswahl (keine Startvorschau), für Funkklingel-, Verschlanker- und Grafikfälle.
 function state(flavor='bank'){
- const s={flavor,time:1_800_000_000_000,epoch:1,readEpoch:true,paused:false,catalogApproved:true,doorbellApproved:true,modelCalls:0,modelError:null,onModel:null,docConfig:{},modelExtra:{},bindings:new Map()};
+ const s={flavor,time:1_800_000_000_000,epoch:1,readEpoch:true,product:{headRevision:3,headPublishedRevision:null,archived:false,schemaVersion:1},stateReads:0,paused:false,catalogApproved:true,doorbellApproved:true,modelCalls:0,modelError:null,onModel:null,docConfig:{},modelExtra:{},bindings:new Map()};
  const b=bank(),format=f=>b.config.familyFormats.formats.find(x=>x.key===f),other=b.config.familyFormats.formats.find(x=>x.key!==b.startKey);
  s.startKey=b.startKey;s.otherKey=other.key;s.designs=format(b.startKey).variants[0].designIds;
  const optionsFor={201:flavor==='bank'?{size:b.startKey,mounting:'K00'}:{mounting:'K00'},202:flavor==='bank'?{size:other.key,mounting:'K00'}:{mounting:'B02'}};
@@ -36,7 +36,7 @@ function state(flavor='bank'){
  s.model=()=>({key:'acryl',name:'Prüfprodukt',configuration:{id:PRODUCT,revision:3},galleryCategoryIds:[],legacy:{designs:[]},universal:{...(flavor==='bank'?structuredClone(b.config):plain()),...s.modelExtra}});
  return s;
 }
-function workshop(s,{withEpoch=true,withPause=true}={}){
+function workshop(s,{withEpoch=true,withPause=true,withState=true}={}){
  const assets=new Map([[assetA,Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"/>')],[assetB,Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"/>')]]);
  return {tenantId:'gravuru',sessionContext:{shopDomain},
   model:(id,rev)=>{
@@ -47,7 +47,16 @@ function workshop(s,{withEpoch=true,withPause=true}={}){
    s.onModel?.();return structuredClone(s.model());
   },
   galleryModel:(id,rev)=>{const m=s.model();return {key:m.key,configuration:m.configuration,galleryCategoryIds:m.galleryCategoryIds,universal:m.universal};},
-  repository:{get:id=>({id,revision:3,status:'draft',document:{config:s.docConfig}}),...(withEpoch?{readEpoch:()=>{if(!s.readEpoch)throw Error('Stand nicht lesbar');return 'epoch-'+s.epoch;}}:{})},
+  repository:{get:id=>{if(s.missing)throw Object.assign(Error('Konfiguration nicht gefunden.'),{status:404,code:'not_found'});return {id,revision:3,status:'draft',document:{config:s.docConfig}};},
+   ...(withState?{revisionState:(id,{revision}={})=>{
+    s.stateReads++;
+    if(s.missing)throw Object.assign(Error('Konfiguration nicht gefunden.'),{status:404,code:'not_found'});
+    if(id!==PRODUCT)throw Object.assign(Error('Konfiguration nicht gefunden.'),{status:404,code:'not_found'});
+    if(revision!==undefined&&(!Number.isSafeInteger(revision)||revision<1))throw Object.assign(Error('ungültig'),{status:422,code:'invalid_revision'});
+    if((revision??3)!==3)throw Object.assign(Error('Revision nicht gefunden.'),{status:404,code:'revision_not_found'});
+    return {tenantId:'gravuru',id,revision:3,publishedRevision:null,status:'draft',updatedAt:'x',...s.product};
+   }}:{}),
+   ...(withEpoch?{readEpoch:()=>{if(!s.readEpoch)throw Error('Stand nicht lesbar');return 'epoch-'+s.epoch;}}:{})},
   ...(withPause?{konfis:{paused:id=>id===PRODUCT&&s.paused}}:{}),
   assets:{read:id=>{if(!assets.has(id))throw Object.assign(Error('fehlt'),{status:404});return assets.get(id);}},
   customerDrafts:{acrylicDrafts:{get(){throw Error('nicht im Test');},create(){throw Error('nicht im Test');},save(){throw Error('nicht im Test');}},review(){throw Error('nicht im Test');},cartConfigurations:{forDraft:()=>null}},
@@ -62,10 +71,10 @@ const signed=(s,params)=>{
  search.set('signature',appProxySignature(search,secret));return search;
 };
 // `options.cache`: false | true | Grenzen; `workshopOptions`: Fähigkeiten der Werkstatt; `slimmer`: Verschlanker beider Einstiege.
-async function run(fn,{flavor='bank',setup=()=>{},cache=true,workshopOptions,slimmer=null,limits={}}={}){
+async function run(fn,{flavor='bank',setup=()=>{},cache=true,workshopOptions,slimmer=null,limits={},logger=()=>{}}={}){
  const s=state(flavor);setup(s);
  const store=storeFor(s,workshopOptions);
- const base={origin,shopDomain,secret,stores:[store],proxyPath,pagePath,clock:()=>s.time,limits:{startPerMinute:1000,requestsPerMinute:1000,...limits},modelSlimmer:slimmer,logger:()=>{}};
+ const base={origin,shopDomain,secret,stores:[store],proxyPath,pagePath,clock:()=>s.time,limits:{startPerMinute:1000,requestsPerMinute:1000,...limits},modelSlimmer:slimmer,logger};
  const entries={on:createShopEntry({...base,modelResponseCache:cache}),off:createShopEntry(base)};
  const servers=[];
  const client=entry=>{
@@ -121,16 +130,81 @@ test('option sets and design choices have their own entries; no entry answers fo
  assert.equal((await both(a)).data.model.universal.profile.defaultDesignId,s.designs[0]);
 }));
 
-test('every database write invalidates the entries of the store, including rolled-back and foreign ones',()=>run(async({s,on,open,model,both})=>{
+test('customer-side writes into the same database file leave the entry alone; changes of THIS product apply at once',()=>run(async({s,on,open,model,both})=>{
  const headers=await open();await both(headers);
- for(const [name,write] of [['eigener Schreibvorgang',()=>{s.epoch++;}],['fremde Verbindung',()=>{s.epoch++;}],['zurückgerollter Versuch',()=>{s.epoch++;}],['Schemaänderung',()=>{s.epoch++;}]]){
+ // Motivsuche, Entwurf, Konfi-Status eines anderen Produkts, Auftrag: Schreibvorgänge in der Datei, nicht am Produkt.
+ for(const name of ['Motivsuche protokolliert','Entwurf gespeichert','Konfi-Status eines anderen Produkts','Auftrag angelegt','fremde Verbindung']){
+  s.epoch++;
+  assert.equal((await calls(s,()=>model(on,headers))).calls,0,name+': weiter Treffer');
+ }
+ // Neue Revision, Veröffentlichung, Archivierung, Schemaänderung dieses Produkts.
+ for(const [name,write] of [['neue Revision',()=>{s.product.headRevision++;}],['Veröffentlichung',()=>{s.product.headPublishedRevision=s.product.headRevision;}],['Archivierung',()=>{s.product.archived=true;}],['Schemaänderung',()=>{s.product.schemaVersion++;}]]){
   assert.equal((await calls(s,()=>model(on,headers))).calls,0,name+': vorher Treffer');
   write();
   const {calls:n,result}=await calls(s,()=>model(on,headers));
-  assert.ok(n>=1,name+': nach dem Schreiben wird frisch gebaut');assert.equal(result.status,200);
-  assert.equal((await both(headers)).status,200);
+  assert.ok(n>=1,name+': nach der Änderung wird frisch gebaut');assert.equal(result.status,200);
+  assert.equal((await both(headers)).status,200,name+': Bytegleichheit nach der Änderung');
   assert.equal((await calls(s,()=>model(on,headers))).calls,0,name+': danach wieder Treffer');
  }
+}));
+
+test('changed options of the same assignment never get the old entry (everything else in the key stays equal)',()=>run(async({s,on,open,model,both})=>{
+ const headers=await open();
+ const group=r=>r.data.model.universal.profile.optionGroups.find(g=>g.id==='mounting').defaultValueId;
+ const first=await both(headers);assert.equal(group(first),'K00');
+ assert.equal((await calls(s,()=>model(on,headers))).calls,0,'Treffer vor der Änderung');
+ // Gleiche Zuordnung (bindingId, assignmentRevision, Revision, unitCents), nur die Optionen ändern sich.
+ const binding=s.bindings.get(variantGid);binding.options={mounting:'B02'};
+ const changed=await both(headers);
+ assert.equal(group(changed),'B02','die Antwort folgt den neuen Optionen');
+ assert.notDeepEqual(changed.body,first.body);
+ assert.equal((await calls(s,()=>model(on,headers))).calls,0,'neue Optionen: danach Treffer');
+ binding.options={mounting:'K00'};
+ assert.equal(group(await both(headers)),'K00','zurück zu den alten Optionen: wieder deren Antwort');
+ // Reihenfolge der Schlüssel in den Optionen ist kein anderer Eintrag.
+ binding.options={size:'x',mounting:'K00'};await both(headers);
+ binding.options={mounting:'K00',size:'x'};
+ assert.equal((await calls(s,()=>model(on,headers))).calls,0,'gleiche Optionen in anderer Reihenfolge: gleicher Eintrag');
+},{flavor:'plain'}));
+
+test('unknown product, missing revision and another tenant give the same status and code with a warm entry as without the store',()=>run(async({s,on,open,model,both})=>{
+ const headers=await open();await both(headers);
+ assert.equal((await calls(s,()=>model(on,headers))).calls,0);
+ s.missing=true;
+ const gone=await both(headers);
+ assert.equal(gone.status,404);assert.equal(gone.data.error.code,'not_found');
+ s.missing=false;
+ assert.equal((await both(headers)).status,200);
+}));
+
+test('counters go through the logger: numbers only, at most one line per minute',async()=>{
+ const lines=[];
+ await run(async({s,on,open,model})=>{
+  const headers=await open();
+  await model(on,headers);await model(on,headers);await model(on,headers);
+  assert.equal(lines.length,0,'innerhalb derselben Minute keine Zeile');
+  s.time+=61_000;
+  await model(on,headers);await model(on,headers);
+  assert.equal(lines.length,1);
+  const line=lines[0];
+  assert.equal(line.event,'model_response_cache');
+  assert.equal(line.hits,3);assert.equal(line.misses,1);assert.equal(line.stores,1);assert.equal(line.invalidations,0);assert.equal(line.evictions,0);
+  assert.deepEqual(Object.keys(line).sort(),['bytes','entries','event','evictions','hits','invalidations','misses','models','stores']);
+  assert.ok(Object.values(line).every(v=>typeof v==='string'||Number.isSafeInteger(v)));
+  assert.ok(!JSON.stringify(line).match(/gid:|cfg_|binding_|session|shop/i),'keine Kunden-, Sitzungs- oder Produktdaten');
+  s.time+=30_000;await model(on,headers);
+  assert.equal(lines.length,1,'weniger als eine Minute später keine zweite Zeile');
+  s.product.headRevision++;s.time+=61_000;
+  await model(on,headers);await model(on,headers);
+  assert.equal(lines.length,2);assert.equal(lines[1].invalidations,1);assert.equal(lines[1].hits,2);
+ },{logger:e=>lines.push(e)});
+});
+
+test('the product state is read on every request, also on hits',()=>run(async({s,on,open,model})=>{
+ const headers=await open();await model(on,headers);
+ const before=s.stateReads;
+ for(let i=0;i<3;i++)await model(on,headers);
+ assert.equal(s.stateReads-before,3);
 }));
 
 test('an unreadable database state or a write while building never stores an entry',()=>run(async({s,on,open,model,both})=>{
@@ -140,13 +214,13 @@ test('an unreadable database state or a write while building never stores an ent
  s.onModel=null;
  assert.ok((await calls(s,()=>model(on,headers))).calls>=1,'Schreibvorgang während des Aufbaus: nicht gespeichert');
  assert.equal((await calls(s,()=>model(on,headers))).calls,0);
- s.readEpoch=false;
+ s.readEpoch=false;s.product.headRevision++;
  const {calls:n}=await calls(s,async()=>{await both(headers);await both(headers);});
  assert.ok(n>=4,'ohne lesbaren Stand läuft jeder Abruf wie bisher: '+n);
 }));
 
-test('stores without readEpoch or konfis.paused run exactly as before',async()=>{
- for(const workshopOptions of [{withEpoch:false},{withPause:false}])await run(async({s,on,open,model,both})=>{
+test('stores without revisionState, readEpoch or konfis.paused run exactly as before',async()=>{
+ for(const workshopOptions of [{withEpoch:false},{withPause:false},{withState:false}])await run(async({s,on,open,model,both})=>{
   const headers=await open();await both(headers);
   const {calls:n}=await calls(s,async()=>{for(let i=0;i<3;i++)assert.equal((await model(on,headers)).status,200);});
   assert.equal(n,3,JSON.stringify(workshopOptions));

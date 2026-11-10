@@ -205,12 +205,32 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   return {startPreview,threw};
  }
  const modelRest=(context,startPreview)=>({startPreview,binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false});
- // Antwortspeicher: nur für Stores, die Datenbankstand und Pause lesend nachweisen können (sonst wie bisher ohne Speicher).
- function cacheEpoch(store){
-  if(!modelCache)return null;
+ // Antwortspeicher: nur für Stores, die den Stand des einen Produkts (revisionState), den Datenbankstand (readEpoch, nur für
+ // „während des Aufbaus wurde geschrieben“) und die Pause lesend nachweisen können (sonst wie bisher ohne Speicher).
+ function cacheCapable(store){
+  if(!modelCache)return false;
   const w=store.workshop;
-  if(typeof w.repository?.readEpoch!=='function'||typeof w.konfis?.paused!=='function')return null;
-  try{const epoch=w.repository.readEpoch();return typeof epoch==='string'?epoch:null;}catch{return null;}
+  return typeof w.repository?.revisionState==='function'&&typeof w.repository?.readEpoch==='function'&&typeof w.konfis?.paused==='function';
+ }
+ // Stand des einen Produkts, bei jeder Anfrage frisch gelesen (ohne Dokument). Jeder Fehler (fehlendes Produkt, fremder Mandant,
+ // fehlende Revision, Schreibvorgang während des Lesens) heißt: nicht aus dem Speicher – der bisherige Weg wirft dann den Fehler.
+ function productState(store,binding){
+  if(!cacheCapable(store))return null;
+  try{return JSON.stringify(store.workshop.repository.revisionState(binding.productId,{revision:binding.productRevision}));}catch{return null;}
+ }
+ // Nur für „wurde während des Aufbaus geschrieben?“ (Schreibvorgänge in der ganzen Datei, auch fremde Verbindungen).
+ function writeEpoch(store){
+  try{const epoch=store.workshop.repository.readEpoch();return typeof epoch==='string'?epoch:null;}catch{return null;}
+ }
+ // Zähler über den vorhandenen logger: höchstens eine Zeile je Minute, nur Zahlen (keine Kunden-, Sitzungs- oder Produktdaten).
+ let counterMinute=Math.floor(clock()/60000);
+ function reportCache(){
+  if(!modelCache)return;
+  const minute=Math.floor(clock()/60000);if(minute===counterMinute)return;
+  counterMinute=minute;
+  const counts=modelCache.takeCounts();
+  if(counts.hits+counts.misses+counts.stores+counts.invalidations+counts.evictions===0)return;
+  try{logger({event:'model_response_cache',...counts,...(({entries,bytes,models})=>({entries,bytes,models}))(modelCache.stats())});}catch{/* Protokoll ist nie Teil der Antwort. */}
  }
  // Ausgelagerte Schriften müssen weiter abrufbar sein, wenn die Antwort aus dem Speicher kommt (sonst: neu aufbauen).
  const fontsAvailable=entry=>entry.fontHashes.every(hash=>typeof slimmer?.fontFile==='function'&&slimmer.fontFile(hash)!==null);
@@ -463,11 +483,12 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      if([...url.searchParams.keys()].some(k=>k!=='design')||url.searchParams.getAll('design').length>1||(url.searchParams.has('design')&&(!url.searchParams.get('design')||url.searchParams.get('design').length>200)))fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');
      checkOrigin(req,{mutating:false});
      const designParam=url.searchParams.get('design');
-     const context=activeContext(req),epoch=cacheEpoch(context.store);
+     const context=activeContext(req),state=productState(context.store,context.binding);
      // Zustand des Verschlankers (4.5): bereit/nicht bereit, Teil des Schlüssels.
      const slimState=slimmer?(slimmer.ready()?'ready':'cold'):'none';
-     const key=epoch===null?null:modelResponseKey({storeId:context.store.storeId,productId:context.binding.productId,productRevision:context.binding.productRevision,bindingId:context.binding.bindingId,assignmentRevision:context.binding.assignmentRevision,unitCents:context.binding.unitCents,options:context.binding.options,designId:designParam,slimState});
-     const hit=key===null?null:modelCache.get(context.store.storeId,key,epoch);
+     const key=state===null?null:modelResponseKey({storeId:context.store.storeId,productId:context.binding.productId,productRevision:context.binding.productRevision,bindingId:context.binding.bindingId,assignmentRevision:context.binding.assignmentRevision,unitCents:context.binding.unitCents,options:context.binding.options,designId:designParam,slimState});
+     const hit=key===null?null:modelCache.get(context.store.storeId,key,state);
+     reportCache();
      if(hit&&fontsAvailable(hit)){
       // Treffer: alles, was an Sitzung, Zuordnung, Pause und Freigabe hängt, wird jetzt frisch geprüft – in derselben Reihenfolge
       // und mit denselben Fehlern wie auf dem bisherigen Weg (active → modelFor → Freigabe des Modells).
@@ -477,12 +498,14 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
       const {startPreview}=startPreviewFor(context,hit.held.model,hit.startDesignId,hit.held.cardModel);
       return sendJson(res,200,modelBytes(hit.json,modelRest(context,startPreview)));
      }
+     if(hit)modelCache.unusable();
+     const epoch=key===null?null:writeEpoch(context.store);
      requireDoorbellApproval(context.store,context.binding);
      const model=modelFor(context.store,context.binding);
      allowedAssets(context.store,context.binding,model);
      const presented=presentedModel(model,context.binding,context.store,designParam);
      const designId=presented.universal.profile.defaultDesignId||presented.universal.profile.designs[0]?.id;
-     if(key===null){
+     if(key===null||epoch===null){
       const {startPreview}=startPreviewFor(context,model,designId);
       return json(res,200,{model:presented,...modelRest(context,startPreview)});
      }
@@ -493,11 +516,11 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      const {startPreview,threw}=startPreviewFor(context,model,designId,cardModel);
      const modelJson=JSON.stringify(presented),bytes=modelBytes(modelJson,modelRest(context,startPreview));
      // Nicht speichern: Fehler beim Aufbau der Startvorschau, Funkklingel bei nicht bereitem Verschlanker, Schreibvorgang während des Aufbaus.
-     if(!threw&&!cardFailed&&!(slimmer&&model.universal.doorbell&&slimState!=='ready')&&(!slimmer||slimmer.ready()===(slimState==='ready'))&&cacheEpoch(context.store)===epoch){
+     if(!threw&&!cardFailed&&!(slimmer&&model.universal.doorbell&&slimState!=='ready')&&(!slimmer||slimmer.ready()===(slimState==='ready'))&&writeEpoch(context.store)===epoch&&productState(context.store,context.binding)===state){
       const holderKey=JSON.stringify([context.store.storeId,context.binding.productId,context.binding.productRevision]);
-      const held=modelCache.heldFor(context.store.storeId,holderKey,epoch)||{holderKey,model,cardModel};
+      const held=modelCache.heldFor(context.store.storeId,holderKey,state)||{holderKey,model,cardModel};
       let activeKind;try{activeKind=approvalKind(context.store.workshop.repository.get(context.binding.productId,{revision:context.binding.productRevision}).document?.config);}catch{activeKind=undefined;}
-      if(activeKind!==undefined)modelCache.set(context.store.storeId,key,epoch,{json:modelJson,activeKind,modelKind:approvalKind(model.universal),startDesignId:designId,fontHashes:lazyFontHashes(presented),held});
+      if(activeKind!==undefined)modelCache.set(context.store.storeId,key,state,{json:modelJson,activeKind,modelKind:approvalKind(model.universal),startDesignId:designId,fontHashes:lazyFontHashes(presented),held});
      }
      return sendJson(res,200,bytes);
     }

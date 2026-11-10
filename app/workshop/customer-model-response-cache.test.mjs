@@ -29,14 +29,18 @@ test('the key covers store, product, revision, assignment, price, canonical opti
  assert.notEqual(modelResponseKey({...base,designId:'null'}),key);
 });
 
-test('a hit needs exactly the same database epoch; any other epoch drops every entry of that store',()=>{
+test('a hit needs exactly the same product state; another state drops only that entry and is counted',()=>{
  const cache=createModelResponseCache();
  cache.set('acryl','k1','e1',entry('{"a":1}'));cache.set('acryl','k2','e1',entry('{"b":2}'));cache.set('legacy','k1','x1',entry('{"c":3}'));
  assert.equal(cache.get('acryl','k1','e1').json,'{"a":1}');
  assert.equal(cache.get('acryl','k1','e2'),null,'anderer Stand: kein Treffer');
- assert.equal(cache.get('acryl','k2','e1'),null,'… und auch der Stand e1 ist damit verworfen (kein Zurück)');
+ assert.equal(cache.get('acryl','k1','e1'),null,'… der Eintrag ist verworfen (kein Zurück)');
+ assert.equal(cache.get('acryl','k2','e1').json,'{"b":2}','anderer Eintrag (anderes Produkt) bleibt gültig');
  assert.equal(cache.get('legacy','k1','x1').json,'{"c":3}','anderer Store bleibt unberührt');
- assert.equal(cache.stats().entries,1);
+ assert.equal(cache.stats().entries,2);
+ const counts=cache.takeCounts();
+ assert.deepEqual(counts,{hits:3,misses:2,stores:3,invalidations:1,evictions:0});
+ assert.deepEqual(cache.takeCounts(),{hits:0,misses:0,stores:0,invalidations:0,evictions:0},'Zähler werden zurückgesetzt');
  cache.set('acryl','k1','e3',entry('{"d":4}'));
  assert.equal(cache.get('acryl','k1','e3').json,'{"d":4}');
 });
@@ -46,7 +50,7 @@ test('entry and byte limits evict the least recently used entry; oversized respo
  cache.set('s','a','e',entry('1234567'));cache.set('s','b','e',entry('1234567'));
  assert.ok(cache.get('s','a','e'),'a benutzt → jüngster');
  cache.set('s','c','e',entry('1234567'));
- assert.equal(cache.get('s','b','e'),null,'b war der älteste (Byte-Grenze 20 bei 3 × 7)');
+ assert.equal(cache.get('s','b','e'),null,'b war der älteste (Byte-Grenze 20 bei 3 × 7)');assert.equal(cache.stats().evictions,1,'Verdrängung gezählt');
  assert.ok(cache.get('s','a','e'));assert.ok(cache.get('s','c','e'));
  assert.ok(cache.stats().bytes<=20);
  assert.equal(cache.set('s','big','e',entry('x'.repeat(21))),false);assert.equal(cache.get('s','big','e'),null);
@@ -108,6 +112,55 @@ test('repository.readEpoch follows every repository write, including a rolled-ba
  step('zurückgerollter Speicherversuch (UPDATE, dann Fehler)',()=>{failNext=true;assert.throws(()=>repository.save(created.id,doc('Drei'),revision),{code:'invalid_snapshot_metadata'});failNext=false;});
  assert.equal(head(),revision,'nichts wurde gespeichert');
  step('Schreibvorgang einer anderen Repository-Verbindung',()=>foreign.create(doc('Fremd')));
+});
+
+test('repository.revisionState: product state without the document column, same errors as get, blind to writes elsewhere in the file',t=>{
+ const dir=mkdtempSync(join(tmpdir(),'gravuru-repo-state-'));t.after(()=>rmSync(dir,{recursive:true,force:true}));
+ const file=join(dir,'products.sqlite');
+ const repository=createProductRepository({filename:file}),other=createProductRepository({filename:file,tenantId:'fremder-mandant'});
+ const side=new DatabaseSync(file);
+ t.after(()=>{repository.close();other.close();side.close();});
+ const a=repository.create(doc('A')),b=repository.create(doc('B'));
+ const state=(id,options)=>JSON.stringify(repository.revisionState(id,options));
+ const snap=repository.revisionState(a.id,{revision:1});
+ assert.deepEqual({...snap,schema:undefined},{tenantId:repository.tenantId,id:a.id,revision:1,headRevision:1,headPublishedRevision:null,archived:false,status:'draft',schema:undefined});
+ assert.equal(repository.revisionState(a.id).revision,1,'ohne Revision = Kopf');
+ // Dieselben Fehler (Status, Code, Text) wie get, in derselben Reihenfolge der Prüfungen.
+ const outcome=work=>{try{work();return 'ok';}catch(error){return JSON.stringify([error.status,error.code,error.message]);}};
+ for(const [label,id,options] of [['unbekanntes Produkt','cfg_gibt-es-nicht',{revision:1}],['keine Zeichenkette',undefined,{revision:1}],['Zahl als Kennung',5,{revision:1}],['fehlende Revision',a.id,{revision:99}],['Revision 0',a.id,{revision:0}],['Revision -1',a.id,{revision:-1}],['Revision 1.5',a.id,{revision:1.5}],['Revision als Text',a.id,{revision:'1'}],['unbekanntes Produkt und Revision 0','cfg_x',{revision:0}],['ohne Optionen','cfg_gibt-es-nicht',undefined]]){
+  const expected=outcome(()=>repository.get(id,options)),actual=outcome(()=>repository.revisionState(id,options));
+  assert.notEqual(expected,'ok',label);assert.equal(actual,expected,label);
+ }
+ // Fremder Mandant: Produkt existiert in der Datei, gehört aber einem anderen Mandanten.
+ for(const [label,work] of [['get','get'],['revisionState','revisionState']].map(([l,m])=>[l,()=>other[m](a.id,{revision:1})])){
+  assert.equal(outcome(work),JSON.stringify([404,'not_found','Konfiguration nicht gefunden.']),label+' (fremder Mandant)');
+ }
+ assert.equal(outcome(()=>other.revisionState(a.id,{revision:1})),outcome(()=>other.get(a.id,{revision:1})));
+ // Liest die Spalten document und metadata nicht: alle Anweisungen eines Aufrufs werden mitgeschrieben.
+ const prepared=[],original=DatabaseSync.prototype.prepare;
+ DatabaseSync.prototype.prepare=function(sql){prepared.push(String(sql));return original.call(this,sql);};
+ try{repository.revisionState(a.id,{revision:1});}finally{DatabaseSync.prototype.prepare=original;}
+ assert.ok(prepared.length>=2);
+ assert.ok(prepared.every(sql=>!/document|metadata/i.test(sql)),prepared.join(' | '));
+ assert.deepEqual(prepared.filter(sql=>/product_revisions/.test(sql)),['SELECT r.revision FROM product_revisions r JOIN products p ON p.id = r.product_id WHERE r.product_id = ? AND r.revision = ? AND p.tenant_id = ?'],'Revisionstabelle nur über den Index (keine Spalte hinter document)');
+ assert.ok(prepared.some(sql=>/product_revisions/.test(sql))&&prepared.some(sql=>/FROM products/.test(sql)));
+ // Schreibvorgänge anderswo in derselben Datei (andere Tabelle, anderes Produkt, anderer Mandant, eigene Verbindung) ändern den Stand NICHT.
+ const before=state(a.id,{revision:1});
+ side.exec('CREATE TABLE IF NOT EXISTS motif_search_log (term TEXT, at TEXT)');
+ const withTable=state(a.id,{revision:1});
+ for(let i=0;i<3;i++)side.prepare('INSERT INTO motif_search_log VALUES (?,?)').run('Eiche'+i,'jetzt');
+ repository.save(b.id,doc('B2'),1);repository.publish(b.id,{expectedRevision:2});
+ other.create(doc('Fremd'));
+ assert.equal(state(a.id,{revision:1}),withTable,'Schreibvorgänge in anderen Tabellen, Produkten und Mandanten');
+ // Eine neue Tabelle ändert die Schemaversion: Stand ändert sich (Schemaänderungen verwerfen alles).
+ assert.notEqual(withTable,before,'Schemaänderung ändert den Stand');
+ // Dieses Produkt: neue Revision, Veröffentlichung, Archivierung wirken auf die Revision 1 UND auf den Kopf.
+ const seen=new Set([withTable]);
+ const step=(label,work)=>{work();const next=state(a.id,{revision:1});assert.ok(!seen.has(next),label);seen.add(next);};
+ step('neue Revision',()=>repository.save(a.id,doc('A2'),1));
+ step('Veröffentlichung',()=>repository.publish(a.id,{expectedRevision:2}));
+ step('Archivierung',()=>repository.setArchived(a.id,{expectedRevision:repository.get(a.id).revision,archived:true}));
+ assert.equal(repository.revisionState(a.id,{revision:1}).archived,true);
 });
 
 test('the environment switch accepts only "enabled", needs the customer integration and is off by default',()=>{

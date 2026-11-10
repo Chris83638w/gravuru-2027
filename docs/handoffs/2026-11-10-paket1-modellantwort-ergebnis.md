@@ -88,3 +88,76 @@ Abnahme nach Abschnitt 6:
 - Die 8 Fehlschläge des Gesamtlaufs (Abschnitt 4) bestehen schon auf der Basis; bitte getrennt klären.
 - Nicht getestet: echter Plesk-Betrieb, echte Shopify-Sitzung, echte r4-Bank, Handy-/PC-Sichtprüfung (laut Anleitung erst bei Installation).
 - Nächster Schritt: Abnahme durch den Operator, danach Installation mit `GRAVURU_CUSTOMER_MODEL_CACHE=enabled` erst nach ausdrücklichem „live“ von Chris.
+
+## N1 – Gültigkeit je Produkt statt je Datenbankdatei (Nachbesserung nach Bauanleitung Abschnitt 9)
+
+Stand 10.11.2026. Der Operator-Befund stimmt: `readEpoch` galt für die ganze Datei; Motivsuche, Entwürfe, Konfi-Status und Aufträge schreiben in dieselbe Datei und hätten jeden Eintrag verworfen. Jetzt gilt ein Eintrag nur, solange der **Stand des einen Produkts** unverändert ist. Der Schalter bleibt standardmäßig aus; ohne Schalter läuft alles wie die Basis.
+
+### N1.1 Umbau in Kürze
+
+- `repository.revisionState(id,{revision})` (neu, `repository.mjs`): liefert `{tenantId,id,revision,headRevision,headPublishedRevision,archived,status,schema}`. Fehler identisch zu `repository.get` (Status, Code, Text, Reihenfolge der Prüfungen: Produkt/Mandant 404 `not_found`, Revisionszahl 422 `invalid_revision`, Revision 404 `revision_not_found`). Läuft über `customerDatabaseRead` wie `get`.
+- Bei **jeder** Anfrage frisch gelesen (auch bei Treffern). Der Stand-Text ist Teil der Trefferbedingung: anderer Stand = Eintrag verworfen und als „Invalidierung“ gezählt, danach Neubau. Nur dieser eine Eintrag geht verloren, nicht der ganze Store. Ein Schemawechsel steckt im Stand (`main`/`temp` `schema_version`) und verwirft damit nach und nach alles.
+- `readEpoch` bleibt, aber nur noch für „während des Aufbaus wurde geschrieben → nicht ablegen“ (Punkt 4 des Auftrags); zusätzlich wird der Produktstand nach dem Aufbau erneut gelesen und muss dem davor entsprechen.
+- Jeder Fehler beim Lesen des Stands (Produkt weg, fremder Mandant, Revision fehlt, Schreibvorgang während des Lesens) heißt: nicht aus dem Speicher; der bisherige Weg wirft dann den Fehler selbst. So sind Status und Code mit warmem Eintrag zwangsläufig dieselben wie ohne Speicher.
+- Zähler: `modelCache.takeCounts()`; der Shop-Einstieg schreibt über den vorhandenen `logger` höchstens eine Zeile je Minute `{"event":"model_response_cache",hits,misses,stores,invalidations,evictions,entries,bytes,models}` (nur Zahlen, nur wenn etwas passiert ist, bei der nächsten Modellanfrage nach Minutenwechsel; kein Zeitgeber).
+
+### N1.2 Eingaben des gespeicherten Antwortteils (Auftrag 3)
+
+Der gespeicherte Teil ist: serialisiertes `presentedModel(...)`, `activeKind`, `modelKind`, `startDesignId`, `fontHashes`, das gehaltene Servermodell (`held`: `model`, `cardModel`). Quellen: `modelFor` → `workshop.model` (`customerModelFor` → `model` → `buildModel`) und `presentedModel` → `shopStartModel`, `slimmer.slim`, `selectedProfile`; Karten: `workshop.galleryModel` → `shopGalleryModel(repository.get(...))`. Einstufung: **K** = im Schlüssel, **F** = je Anfrage frisch (nie gespeichert), **P** = Produktstand (Teil der Trefferbedingung), **U** = unveränderlich bzw. von der bestehenden `modelCache`-Ablage in `http.mjs` ebenso eingefroren (gleiche Annahme, ausdrücklich), **offen** = Meldung.
+
+| Eingabe | Quelle | Einstufung |
+|---|---|---|
+| Produktdokument der gepinnten Revision (`record.document`) | `repository.get(id,{revision})`, Tabelle `product_revisions`, Trigger `immutable_revision_update/_delete` | K (`productId`, `productRevision`) + U (Trigger) |
+| Profilauswahl der Revision (`record.metadata.profiles`) | gleiche Zeile, unveränderlich | K + U; `http.mjs` friert sie in `modelCache` ebenso ein |
+| `configuration.{id,revision,publishedRevision}` | `record` der gepinnten Revision; `publishedRevision` stammt aus der Snapshot-Zeile (unveränderlich), nicht aus dem Kopf | K + U. Der Kopf (`headPublishedRevision`) steht trotzdem im Produktstand: jede Veröffentlichung verwirft den Eintrag |
+| Produktkopf (aktuelle Revision, Veröffentlichung, Archivierung) | Tabelle `products` | P (neu in `revisionState`); für Akryl-Modelle fließt er heute nicht in die Antwort, steht aber zur Sicherheit im Stand |
+| Mandant | `tenant` des Repositorys, 404 bei fremdem Produkt | P (Fehler wie `get`) |
+| Pause (`konfis.paused`) | Tabelle des Konfi-Status | F (Treffer prüft vor Freigabe 2, 423) |
+| Katalog-/Funkklingel-Freigabe | `orderIntake.*LiveApproval` | F (Art der Freigabe `activeKind`/`modelKind` ist U aus dem Dokument, die Freigabe selbst F) |
+| Sitzung, Begrenzer, Herkunft, Zuordnung (`registry.resolve`) | `activeContext` | F |
+| Optionen, Preis (`unitCents`), `bindingId`, `assignmentRevision` der Zuordnung | `context.binding` | K |
+| `design`-Parameter | Anfrage | K |
+| Zustand des Verschlankers (`none/cold/ready`), Schriftenablage auf der Platte | `slimmer.ready()`, `slimmer.fontFile(hash)` | K (Zustand) + F (`fontsAvailable` je Treffer) |
+| Materialbild (`/api/workshop/material-surfaces/<sha>.png`), Motivquellen (`assets.resource`) | `design-assets`: inhaltsadressiert (SHA-256), Trigger `design_asset_immutable`/`material_surface_immutable`, kein `DELETE` im Code | U (Inhalt = Schlüssel; gleiche Annahme wie `modelCache`) |
+| Schriften `formFonts`, Katalog-Ressourcen `workshopResources()`, `themeCatalog`, `SIGN_PLACEMENT_FAMILIES`, `familyExecution` | Moduldateien bzw. Optionen, einmal je Prozess geladen (`catalog.mjs` `loaded`) | U je Prozessleben (Neustart leert den Speicher ohnehin); gleiche Annahme wie `modelCache` |
+| Familien, Korrekturen, Katalogstruktur, Profilbibliothek (`profiles.resolve`) | werden von `buildModel` für gepinnte Revisionen **nicht** gelesen (`profiles.resolve` nur ungepinnt, `families`/`corrections`/`catalogStructure` gar nicht; per Durchsicht von `buildModel`, `resolveProduct`, `embedMaterialSurface`) | nicht Eingabe |
+| Startvorschau (Ziel-Token mit `sid`), `publicPreviews.attach`, `expiresAt`, `customerId`, `publicBinding` | je Anfrage | F |
+| Uhrzeit | nur in Sitzung/`expiresAt` | F |
+| **offen** | keine | – |
+
+Ergebnis: **nichts steht auf „offen“.** Ehrlich benannte Annahmen (nicht neu, sondern dieselben wie `modelCache` in `http.mjs`): (a) Revisionszeilen und Assets sind unveränderlich/inhaltsadressiert; (b) Prozessdateien (Katalog, Schriften, Theme) ändern sich nicht im laufenden Prozess; (c) die Mandantenzeile der Revision entspricht der des Produkts (so werden sie geschrieben; siehe Abweichung N1-A).
+
+### N1.3 Tests
+
+- `customer-model-response-cache.test.mjs`: jetzt 10 Tests (vorher 9; Stand-Semantik und Zähler umgeschrieben, neu: `revisionState` – gleiche Fehler wie `get` für 10 Fälle plus fremden Mandanten, liest weder `document` noch `metadata` (Anweisungen mitgeschrieben), blind für Motivsuche-Tabelle/anderes Produkt/anderen Mandanten, reagiert auf Revision/Veröffentlichung/Archivierung/Schema).
+- `shop-entry-model-cache.test.mjs`: jetzt 20 (vorher 16). Neu bzw. neu gefasst: kundenseitige Schreibvorgänge verwerfen nicht, Änderungen dieses Produkts wirken sofort mit Bytegleichheit danach; Produktstand wird je Anfrage gelesen; **Optionen** (nur Optionen ändern sich bei gleicher Zuordnung → neue Antwort, zurück → alte Antwort, andere Reihenfolge → gleicher Eintrag); unbekanntes Produkt/fehlende Revision mit warmem Eintrag = Status/Code/Text wie ohne Speicher; Zähler über `logger` (eine Zeile je Minute, nur Zahlen).
+- `shop-entry-model-cache-real.test.mjs`: jetzt 7 (vorher 6), echte SQLite-Werkstatt: Änderungen dieses Produkts (Revision, Veröffentlichung, Archivierung, Schema) wirken sofort; echte Motivsuche (`createMotifSearchStats` auf derselben Datei, auch 20 Eingaben hintereinander), Konfi-Status eines anderen Produkts, Revision/Veröffentlichung/Archivierung/Kopie anderer Produkte, fremde Verbindung (Zeilen, zurückgerollt) lassen den Eintrag stehen und die Antwort bytegleich; Optionen mit echtem Modell.
+- Mutationsproben (jeweils rückgängig gemacht): Gültigkeit wieder auf `readEpoch` → 5 neue Tests schlagen fehl; Optionen aus dem Schlüssel → 3 Tests (Schlüsseltest + beide Optionentests); Stand beim Abruf ignoriert → 6 Tests.
+
+Kommandos und Zähler (Node 24, `GRAVURU_PYTHON=$(which python3)`):
+
+- `node --test app/workshop/customer-model-response-cache.test.mjs app/workshop/shop-entry-model-cache.test.mjs app/workshop/shop-entry-model-cache-real.test.mjs` → 37 Tests / 37 grün / 0 Fehlschläge / 0 übersprungen.
+- Basis-Suites (6.5): `node --test app/workshop/customer-read-scope.test.mjs app/workshop/repository.test.mjs app/workshop/shop-product-binding-store.test.mjs app/workshop/shop-entry.test.mjs app/workshop/public-preview-model.test.mjs app/workshop/public-design-previews.test.mjs` → 109 / 109 / 0 / 0, unverändert gegenüber vorher.
+- Gesamtlauf `node --test app/workshop/*.test.mjs` (vor der letzten Korrektur unten): 1712 Tests / 1701 grün / 9 Fehlschläge / 2 übersprungen. 8 davon sind die bekannten der Basis `8ceb866` (acrylic-photo-resolution 3, cart-priced-options 4, `Werkstatt einheitlich …` 1). Der neunte war `tenant.test.mjs` „Grep: keine Abfrage ohne Mandantenfilter“: meine erste `revisionState`-Abfrage hatte keinen `tenant_id`-Filter. Ursache behoben (Verbund über `products.tenant_id`, Index bleibt abdeckend, 0,03 ms), `tenant.test.mjs` danach einzeln 9/9 grün, die 37 und die 109 Tests oben danach neu gelaufen. Der Gesamtlauf wurde nach dieser Korrektur NICHT noch einmal komplett wiederholt.
+
+### N1.4 Messung (lokal, synthetisch, Server-Zeit, Median aus 20; Skript `--motif-search none|between`)
+
+Mit `between` wird vor jedem Abruf eine echte Motivsuche in `motif_search_daily` derselben Datei protokolliert (eigene Verbindung, 60 Suchen je Lauf).
+
+| Lauf | Erstabruf (Server) | Wiederholter Abruf (Server / Client) | vier gleichzeitig (langsamster, Client) |
+|---|---|---|---|
+| Schalter aus, ohne Schreiben | 153,5 | 104,0 / 106,1 | 458,9 |
+| Schalter aus, Motivsuche dazwischen | 153,4 | 103,2 / 107,0 | 454,2 |
+| Schalter an, ohne Schreiben | 166,6 | 4,2 / 5,1 | 20,7 |
+| Schalter an, **Motivsuche dazwischen** | 168,3 | 4,2 / 5,1 | 19,7 |
+
+Zum Vergleich der Vorversion (Stand-der-Datei): ohne Schreiben 3,9 ms; **mit** Motivsuche dazwischen wäre sie bei jedem Abruf ein Fehltreffer (≈ Erstabruf-Zeit) gewesen – nicht gemessen, aus dem Aufbau folgend; die neue Variante belegt den Gegenfall. Der Erstabruf kostet etwa 8 % mehr als ohne Speicher (153,5 → 166,6; Stand lesen, Antwort serialisieren, Kartenmodell halten). Lokale Werte, keine Live-Aussage; Freigabe im Skript ist ein Stub.
+
+### N1.5 Abweichungen von der Anleitung und offene Punkte
+
+- **N1-A, `revisionState` liest die Snapshot-Spalten `status`/`published_revision`/`created_at` nicht.** Sie liegen in `product_revisions` hinter der bis zu 12 MB großen Spalte `document`; SQLite liest dafür die ganze Überlaufkette (gemessen 2,1 ms je Aufruf, in der Messung 6,8 statt 3,9 ms am Treffer). Stattdessen: Dasein der Revision über den Index `(product_id, revision)` mit Verbund auf `products.tenant_id` (der Wächtertest `tenant.test.mjs` verlangt einen Mandantenfilter in jeder Abfrage), Kopfzeile aus `products`. Die Spalten der gewählten Revision sind unveränderlich (Trigger) und stehen damit nicht im Stand; `configuration.publishedRevision` stammt aus dieser unveränderlichen Zeile. Folge: der Mandant wird an der Produktzeile gefiltert, nicht an der Revisionszeile (beide werden mit demselben Mandanten geschrieben). Gemessen mit `revisionState`: 0,03 ms. Wenn der Operator die Snapshot-Spalten dennoch im Stand will, kostet das pro Anfrage ~2 ms.
+- **N1-B, Produktstand enthält den Kopf (neue Revision, Veröffentlichung, Archivierung) auch dort, wo die Akryl-Antwort ihn heute nicht liest.** Absicht (vorsichtig): solche Änderungen verwerfen den Eintrag und kosten einmal einen Neubau.
+- **N1-C, Schemawechsel verwerfen alles** (Stand enthält `schema_version`). Zur Laufzeit legt kein Kundenweg Tabellen an (`CREATE TABLE IF NOT EXISTS` ändert die Version nicht, wenn die Tabelle da ist); bei einer Migration im laufenden Betrieb beginnt der Speicher neu.
+- Treffer-Zähler `hits` zählt einen Treffer, dessen ausgelagerte Schrift fehlt, als Fehltreffer (`unusable`).
+- Veraltete Einträge (anderer Stand) werden erst beim nächsten Abruf desselben Schlüssels oder durch Verdrängung entfernt und belegen bis dahin Platz (und ein gehaltenes Modell, ca. 12 MB, gegen die Grenze von 2). Begrenzung bleibt wirksam.
+- Der Zeilen-Zähler erscheint nur bei Modellanfragen; ohne Anfragen kommt keine Zeile (kein Zeitgeber, absichtlich).

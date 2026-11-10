@@ -225,6 +225,23 @@ export function createProductRepository({ filename, validateDocument = (value) =
     tenantId:tenant,
     // Lesender Nachweis „seit dem letzten Aufruf nichts geschrieben“ für Antwortspeicher (customer-model-response-cache.mjs).
     readEpoch:()=>databaseEpoch(db),
+    // Lesender Stand EINES Produkts für Antwortspeicher (customer-model-response-cache.mjs): Kopfzeile des Produkts (Revision,
+    // Veröffentlichung, Archivierung) und Dasein der Revision, ohne document/metadata. Gleiche Prüfungen und Fehler (Status, Code,
+    // Text) wie get(id,{revision}) in derselben Reihenfolge: Produkt/Mandant (404 not_found), Revisionszahl (422 invalid_revision),
+    // Revision (404 revision_not_found). Status, Veröffentlichung und Zeitstempel der gewählten Revision selbst werden NICHT
+    // gelesen: product_revisions ist unveränderlich (Trigger), und die Spalten hinter document liegen in der Zeile hinter dem
+    // bis zu 12 MB großen Dokument (SQLite liest dafür die ganze Überlaufkette, gemessen ~2 ms statt 0,002 ms über den Index).
+    // Das Dasein prüft deshalb nur der Index (product_id, revision); der Mandant wird an der Produktzeile gefiltert (Verbund über products.tenant_id).
+    revisionState(id,{revision}={}){
+      return customerDatabaseRead(db,'state:'+tenant+':'+typeof id+':'+String(id)+':'+typeof revision+':'+String(revision),()=>{
+        const head=product(id);
+        if(revision!==undefined)positiveRevision(revision);
+        const at=revision??head.revision;
+        if(!db.prepare('SELECT r.revision FROM product_revisions r JOIN products p ON p.id = r.product_id WHERE r.product_id = ? AND r.revision = ? AND p.tenant_id = ?').get(id,at,tenant))throw failure(404,'revision_not_found','Revision nicht gefunden.');
+        return {tenantId:tenant,id:head.id,revision:at,headRevision:head.revision,headPublishedRevision:head.published_revision,archived:Boolean(head.archived),status:state(head),
+          schema:JSON.stringify([db.prepare('PRAGMA main.schema_version').get(),db.prepare('PRAGMA temp.schema_version').get()])};
+      });
+    },
     firstId:()=>db.prepare('SELECT id FROM products WHERE tenant_id = ? ORDER BY created_at,id LIMIT 1').get(tenant)?.id||null,
     catalog:options=>catalog.list(options),
     // The dry-run uses the same pure validation as the transactional write.

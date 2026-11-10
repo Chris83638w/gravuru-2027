@@ -28,6 +28,7 @@ import {shopStartModel} from '../app/workshop/shop-start-model.mjs';
 import {createShopDesignGallery} from '../app/workshop/shop-design-gallery.mjs';
 import {shopGalleryModel} from '../app/workshop/shop-gallery-model.mjs';
 import {withCustomerReadScope} from '../app/workshop/customer-read-scope.mjs';
+import {createMotifSearchStats} from '../app/workshop/motif-search-stats.mjs';
 import {appProxySignature} from '../app/workshop/shopify-app-proxy.mjs';
 
 const here=path.dirname(fileURLToPath(import.meta.url));
@@ -113,10 +114,14 @@ async function serve(entry,timings){
  return {server,request,open,close:async()=>{agent.destroy();server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}};
 }
 
-export async function measure({runs=20,modelResponseCache=false,designsPerSize=3,padKb=50}={}){
+export async function measure({runs=20,modelResponseCache=false,designsPerSize=3,padKb=50,motifWrites=false}={}){
  const bench=openBench({designsPerSize,padKb}),{workshop,record}=bench;
+ // Mit `motifWrites`: vor jedem Abruf wird – wie bei jeder Motivsuche im Betrieb – eine Suche in die echte Tabelle
+ // motif_search_daily DERSELBEN Datei geschrieben (eigene Verbindung, eindeutiger Suchbegriff). Die Zeit dafür zählt nicht mit.
+ const stats=motifWrites?createMotifSearchStats({filename:path.join(bench.dir,'native.sqlite'),tenantId:workshop.tenantId}):null;
+ let searches=0;const search=()=>{if(stats&&!stats.record({query:'eiche '+(searches++)+' x'+Math.random().toString(36).slice(2,6),resultCount:2,group:'Messung'}))throw Error('Motivsuche wurde nicht protokolliert');};
  try{
-  const result={schema:'gravuru-customer-model-benchmark/v1',note:'lokal, synthetisch, keine Live-Aussage',node:process.version,modelResponseCache:!!modelResponseCache,runs,
+  const result={schema:'gravuru-customer-model-benchmark/v1',note:'lokal, synthetisch, keine Live-Aussage',node:process.version,modelResponseCache:!!modelResponseCache,motifSearchBetweenCalls:!!motifWrites,runs,
    bank:{designs:bench.bank.designs,formats:bench.bank.formats,documentBytes:bench.documentBytes}};
   // ---- Phasen, jeweils in einer frischen Lesephase wie bei einer Anfrage ----
   const phase={documentRead:[],modelBuilt:[],startModel:[],galleryStart:[],serialize:[]};
@@ -138,7 +143,7 @@ export async function measure({runs=20,modelResponseCache=false,designsPerSize=3
   for(let i=0;i<runs;i++){
    const timings=[],entry=benchEntry(bench,{modelResponseCache}).create(),s=await serve(entry,timings);
    try{
-    const token=await s.open(),headers={'X-Gravuru-Shop-Session':token};timings.length=0;
+    const token=await s.open(),headers={'X-Gravuru-Shop-Session':token};search();timings.length=0;
     const r=await s.request('/api/shop-entry/model',headers);if(r.status!==200)throw Error('model '+r.status+' '+r.body);
     if(!JSON.parse(r.body).startPreview)throw Error('startPreview fehlt in der Messung');
     firstCalls.push(r.totalMs);firstServer.push(timings.at(-1));
@@ -149,9 +154,9 @@ export async function measure({runs=20,modelResponseCache=false,designsPerSize=3
    try{
     const token=await s.open(),headers={'X-Gravuru-Shop-Session':token};
     await s.request('/api/shop-entry/model',headers);
-    for(let i=0;i<runs;i++){timings.length=0;const r=await s.request('/api/shop-entry/model',headers);if(r.status!==200)throw Error('model '+r.status);hits.push(r.totalMs);hitsServer.push(timings.at(-1));}
+    for(let i=0;i<runs;i++){search();timings.length=0;const r=await s.request('/api/shop-entry/model',headers);if(r.status!==200)throw Error('model '+r.status);hits.push(r.totalMs);hitsServer.push(timings.at(-1));}
     for(let i=0;i<runs;i++){
-     timings.length=0;const t=await Promise.all([0,1,2,3].map(()=>s.request('/api/shop-entry/model',headers)));
+     search();timings.length=0;const t=await Promise.all([0,1,2,3].map(()=>s.request('/api/shop-entry/model',headers)));
      if(t.some(r=>r.status!==200))throw Error('gleichzeitig '+t.map(r=>r.status));
      four.push(Math.max(...t.map(r=>r.totalMs)));fourServer.push(timings.reduce((a,b)=>a+b,0));
     }
@@ -162,16 +167,18 @@ export async function measure({runs=20,modelResponseCache=false,designsPerSize=3
    repeatedCall:{clientMs:stat(hits),serverMs:stat(hitsServer)},
    fourConcurrent:{slowestClientMs:stat(four),sumServerMs:stat(fourServer)},
   };
+  result.motifSearchesWritten=searches;
   return result;
- }finally{bench.close();}
+ }finally{stats?.close();bench.close();}
 }
 
 function args(argv){
- const out={runs:20,cache:'off',designsPerSize:3,padKb:50};
+ const out={runs:20,cache:'off',designsPerSize:3,padKb:50,motif:'none'};
  for(let i=0;i<argv.length;i++){
   const k=argv[i],v=argv[i+1];
   if(k==='--runs'&&/^\d+$/.test(v||''))out.runs=+argv[++i];
   else if(k==='--model-cache'&&['off','enabled'].includes(v))out.cache=argv[++i];
+  else if(k==='--motif-search'&&['none','between'].includes(v))out.motif=argv[++i];
   else if(k==='--designs-per-size'&&/^\d+$/.test(v||''))out.designsPerSize=+argv[++i];
   else if(k==='--pad-kb'&&/^\d+$/.test(v||''))out.padKb=+argv[++i];
   else throw Error('unbekanntes Argument '+k);
@@ -180,5 +187,5 @@ function args(argv){
 }
 if(process.argv[1]&&pathToFileURL(path.resolve(process.argv[1])).href===import.meta.url){
  const a=args(process.argv.slice(2));
- measure({runs:a.runs,modelResponseCache:a.cache==='enabled',designsPerSize:a.designsPerSize,padKb:a.padKb}).then(r=>console.log(JSON.stringify(r,null,2))).catch(e=>{console.error(e);process.exitCode=1;});
+ measure({runs:a.runs,modelResponseCache:a.cache==='enabled',designsPerSize:a.designsPerSize,padKb:a.padKb,motifWrites:a.motif==='between'}).then(r=>console.log(JSON.stringify(r,null,2))).catch(e=>{console.error(e);process.exitCode=1;});
 }

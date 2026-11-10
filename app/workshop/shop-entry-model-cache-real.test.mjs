@@ -9,6 +9,7 @@ import {appProxySignature} from './shopify-app-proxy.mjs';
 import {createModelSlimmer} from './shop-model-slim.mjs';
 import {makeProductDocument} from './product-model.mjs';
 import {quote} from '../configurator/variant-m/contract.mjs';
+import {createMotifSearchStats} from './motif-search-stats.mjs';
 import {openBench} from '../../scripts/customer-model-benchmark.mjs';
 
 // Paket 1a, Teil 2: echte SQLite-Werkstatt (synthetische Prüfbank mit 80 Formaten, siehe scripts/customer-model-benchmark.mjs).
@@ -90,13 +91,11 @@ test('the start-preview target is issued per session: two sessions share one ent
  assert.match(hitB.result.data.startPreview.target,/^sgt1\./);
 }));
 
-test('real writes on the product database invalidate the entries: new revision, publish, archive, copy, foreign connection, schema change',async()=>{
+test('real changes of THIS product (new revision, publish, archive) and of the schema apply at once',async()=>{
  const cases=[
   ['neue Revision speichern',({workshop,records})=>{const r=workshop.repository.get(records[0].id);workshop.repository.save(r.id,structuredClone(r.document),r.revision);}],
   ['Veröffentlichung',({workshop,records})=>{workshop.repository.publish(records[0].id,{expectedRevision:workshop.repository.get(records[0].id).revision});}],
-  ['Archivierung',({workshop,records})=>{workshop.repository.setArchived(records[1].id,{expectedRevision:workshop.repository.get(records[1].id).revision,archived:true});}],
-  ['anderes Produkt anlegen',({workshop,records})=>{workshop.repository.copy(records[2].id,{expectedRevision:workshop.repository.get(records[2].id).revision,name:'Kopie'});}],
-  ['fremde Verbindung schreibt',({file})=>{const db=new DatabaseSync(file);db.exec('CREATE TABLE IF NOT EXISTS zz_fremd(x)');db.exec('INSERT INTO zz_fremd VALUES(1)');db.close();}],
+  ['Archivierung',({workshop,records})=>{workshop.repository.setArchived(records[0].id,{expectedRevision:workshop.repository.get(records[0].id).revision,archived:true});}],
   ['Schemaänderung durch fremde Verbindung',({file})=>{const db=new DatabaseSync(file);db.exec('CREATE TABLE zz_schema(x)');db.close();}],
  ];
  for(const [name,write] of cases)await harness(async context=>{
@@ -108,25 +107,49 @@ test('real writes on the product database invalidate the entries: new revision, 
   const after=await calls(()=>model(headers));
   assert.ok(after.calls>=1,name+': nächster Abruf wird frisch gebaut');
   assert.equal(after.result.status,200);
-  assert.equal((await both(headers)).status,200);
+  assert.equal((await both(headers)).status,200,name+': Bytegleichheit nach der Änderung');
   assert.equal((await calls(()=>model(headers))).calls,0,name+': danach wieder Treffer');
  });
 });
 
-test('a foreign write that is rolled back leaves nothing to invalidate; the committed one does',()=>harness(async({variants,open,both,calls,model,file})=>{
- const headers=await open(variants[0]);await both(headers);
- const db=new DatabaseSync(file);
+test('real customer-side and other-product writes into the same database file leave a warm entry alone',()=>harness(async({workshop,records,variants,open,both,calls,model,file})=>{
+ const stats=createMotifSearchStats({filename:file,tenantId:workshop.tenantId}),side=new DatabaseSync(file);
+ side.exec('CREATE TABLE IF NOT EXISTS zz_fremd(x)');// Schemaänderungen verwerfen alles (eigener Test); hier nur Zeilen.
+ const headers=await open(variants[0]),otherHeaders=await open(variants[2]);
+ const first=await both(headers);await both(otherHeaders);
  try{
-  db.exec('CREATE TABLE zz_rollback(x)');
-  assert.ok((await calls(()=>model(headers))).calls>=1,'festgeschriebene Schemaänderung');
-  await both(headers);
-  assert.equal((await calls(()=>model(headers))).calls,0);
-  db.exec('BEGIN');db.exec('INSERT INTO zz_rollback VALUES(1)');db.exec('ROLLBACK');
-  assert.equal((await calls(()=>model(headers))).calls,0,'zurückgerollt und nie festgeschrieben: Stand unverändert');
-  db.exec('INSERT INTO zz_rollback VALUES(2)');
-  assert.ok((await calls(()=>model(headers))).calls>=1,'festgeschriebener Schreibvorgang');
-  await both(headers);
- }finally{db.close();}
+  const writes=[
+   ['Motivsuche protokolliert (echte Tabelle motif_search_daily)',()=>{assert.equal(stats.record({query:'Eiche '+Math.random().toString(36).slice(2),resultCount:3,group:'Prüfgruppe'}),true);}],
+   ['Motivsuche, viele Eingaben hintereinander',()=>{for(let i=0;i<20;i++)stats.record({query:'Tanne '+i+' '+Math.random().toString(36).slice(2),resultCount:0,group:'Prüfgruppe'});}],
+   ['Konfi-Status eines ANDEREN Produkts',()=>{workshop.konfis.set(records[1].id,{to:'paused',expectedStatus:'draft',productRevision:1,actor:'test'});}],
+   ['anderes Produkt: neue Revision',()=>{const r=workshop.repository.get(records[1].id);workshop.repository.save(r.id,structuredClone(r.document),r.revision);}],
+   ['anderes Produkt: Veröffentlichung',()=>{workshop.repository.publish(records[2].id,{expectedRevision:workshop.repository.get(records[2].id).revision});}],
+   ['anderes Produkt: Archivierung',()=>{workshop.repository.setArchived(records[2].id,{expectedRevision:workshop.repository.get(records[2].id).revision,archived:true});}],
+   ['Kopie eines anderen Produkts anlegen',()=>{workshop.repository.copy(records[1].id,{expectedRevision:workshop.repository.get(records[1].id).revision,name:'Kopie'});}],
+   ['fremde Verbindung fügt Zeilen in eine eigene Tabelle ein',()=>{side.exec('INSERT INTO zz_fremd VALUES(1)');}],
+   ['zurückgerollter Versuch einer fremden Verbindung',()=>{side.exec('BEGIN');side.exec('INSERT INTO zz_fremd VALUES(2)');side.exec('ROLLBACK');}],
+  ];
+  for(const [name,write] of writes){
+   write();
+   const hit=await calls(()=>model(headers));
+   assert.equal(hit.calls,0,name+': weiter Treffer');
+   assert.ok(hit.result.body.equals(first.body),name+': Antwort unverändert');
+  }
+  // Der Zustand des ANDEREN Produkts bleibt ein eigener: sein Eintrag ist pausiert (423), dieser läuft weiter.
+  assert.equal((await both(headers)).status,200);
+  const paused=await both(otherHeaders);assert.equal(paused.status,423,'das pausierte andere Produkt antwortet trotz warmem Eintrag 423');
+ }finally{stats.close();side.close();}
+}));
+
+test('changed options of the same assignment never get the old entry (real model, only options differ in the key)',()=>harness(async({variants,open,both,calls,model})=>{
+ const [a,b]=variants,headers=await open(a);
+ const size=r=>r.data.model.universal.profile.optionGroups.find(g=>g.id==='size').defaultValueId;
+ const old=await both(headers);assert.equal(size(old),a.binding.options.size);
+ assert.equal((await calls(()=>model(headers))).calls,0);
+ a.binding.options={...a.binding.options,size:b.binding.options.size};
+ const changed=await both(headers);
+ assert.equal(size(changed),b.binding.options.size,'Antwort folgt den neuen Optionen');
+ assert.ok(!changed.body.equals(old.body));
 }));
 
 test('pause and approval come from live state: a warm entry answers 423 / 404 at once and recovers',()=>harness(async({workshop,variants,approval,open,both})=>{

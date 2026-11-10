@@ -46,3 +46,15 @@
 .footer{--color-background:19,41,75;--color-secondary-background:28,54,95;--color-foreground:255,255,255;--color-text-heading:255,255,255;--color-subtext:206,214,228;--color-link:255,255,255;--color-link-hover:244,166,42;--color-border:42,66,104;--color-field:28,54,95;--color-field-text:255,255,255;background:rgb(19,41,75);color:#fff}
 /* Handy-Knopf */
 .gv27-cta.is-on{background:#fff}
+/* Logo (Entwurf): Wortmarke ersetzt das Bild im Kopf */
+.header__logo img,.header-logo img,.header .logo img{opacity:0!important}
+.header__logo a,.header-logo a,.header .logo a,.header__logo,.header-logo{background:url("gv27-logo.svg") no-repeat left center/contain}
+/* Sternzeile in der Kopfleiste */
+.topbar-section [style*="709383"],.topbar-section .highlight-text{color:rgb(244,166,42)!important}
+/* Fuß: neue Farben statt Dunkelgrün */
+footer.footer{background:rgb(19,41,75)!important;color:rgb(236,240,247)!important;border-top:4px solid rgb(244,166,42)!important}
+footer.footer .footer-block--image_text h3{color:#fff!important;font-family:var(--font-heading-family);font-weight:700}
+footer.footer a:hover{color:rgb(244,166,42)!important}
+/* Produktkarten und Überschriften shopweit */
+.product-card__title,.pcard__title,.card__heading{font-weight:600}
+h1,h2,.h1,.h2{letter-spacing:-0.02em}

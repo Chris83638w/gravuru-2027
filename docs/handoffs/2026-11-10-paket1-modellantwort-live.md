@@ -37,7 +37,7 @@ Operator: Claude (Auftrag Chris im Claude-Chat, 10.11.2026: „kannst du machen,
 | Messung von außen (Zeit bis erstes Byte minus TLS-Aufbau) | vorher | nachher |
 |---|---|---|
 | Modellabruf einzeln | ca. 0,8–0,9 s | ca. 0,85–0,9 s |
-| vier gleichzeitig (gesamt) | 1,3 / 2,2 / 2,8 / 3,4 s | 1,6 / 2,8 / 3,2 / 4,1 s und 1,9 / 2,6 / 3,2 / 3,5 s |
+| vier gleichzeitig (Zeit bis erstes Byte, mit TLS) | 1,3 / 2,2 / 2,8 / 3,4 s | 1,2 / 1,8 / 2,4 / 3,1 s und 1,2 / 2,0 / 2,8 / 3,6 s |
 | billiger Abruf derselben App (403 ohne Sitzung, Konfi-HTML) | – | ca. 0,13 s |
 
 Der Modellaufbau, den Paket 1a einspart, ist live nicht der bestimmende Anteil. Rund 0,75 s je Abruf bleiben auch bei einem Speichertreffer im Node-Prozess, und sie blockieren den einen Prozess (vier gleichzeitige Abrufe stapeln sich unverändert).

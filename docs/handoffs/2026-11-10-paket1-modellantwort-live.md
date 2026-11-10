@@ -57,3 +57,7 @@ Auf dem Trefferpfad läuft je Abruf weiterhin `startPreviewFor` → `publicPrevi
 ## Nebenbefund für Mika
 
 `stderr.log` zeigt `shop_gallery_cache_hit` mit 2,7–9,6 s Dauer. Das betrifft die Designauswahl, nicht den Modellabruf; bitte bei der Galerie-Leistung berücksichtigen.
+
+## Nachtrag 10.11.2026, ca. 11:45 – Abschnitte live gemessen
+
+`shop-entry.mjs` live auf Commit `c1649ad` (`06ece2ae74ec78de`; nur Messfelder in der Zeile `model_response_cache`), ein Neustart. Je Speichertreffer: `msContext` ca. 220–260 ms, `msChecks` ca. 115–130 ms, `msStartPublic` ca. 315–360 ms, alles übrige unter 5 ms. Die Vermutung oben stimmt also nur zur Hälfte: Zuordnung auflösen und Freigabe/Pause kosten zusammen etwa gleich viel wie die öffentliche Startvorschau. Auftrag daraus: [2026-11-10-paket1a2-trefferpfad-bauanleitung.md](2026-11-10-paket1a2-trefferpfad-bauanleitung.md).

@@ -161,3 +161,32 @@ Chris, Claude-Chat 10.11.2026, 14:11, wörtlich: „5x2 bis 8x2 sind keine skali
 - Neu (Frage 13): Gehört 7 × 2,33 zu den eigenen Produkten (Operator-Lesart)?
 - Neu (Frage 15): Foto/Logo/Motive bei den Kleinformaten.
 - Weiter offen: Frage 11 („Abgerundete Seiten“, TAS-A), Frage B (Designs, anderer Chat), Startdesign, Steuerkontext/Mengenstaffel/Logo-Modul (Operator-Vorschläge ohne Widerspruch).
+
+## v4 – Entscheidungen 14:25
+
+Chris, Claude-Chat 10.11.2026, 14:25 (wörtlich): „7x2,33 gehört zud en skalierbarenb größen, die kleinformate haben gesonderte motive. FIligrane oder große Motive sind da nicht umsetzbar.. 3. Ja Edelstahl und Acrylglas sind gleich“. Eingetragen als „Chris (Chat), eingetragen vom Operator“. Nichts angelegt, nichts live, kein Produktivcode, nichts gelöscht. Ältere Versionen (v1 bis v3, Kleinformat-v1) bleiben liegen.
+
+### Was sich ändert
+
+1. **7 × 2,33 cm ist skalierbar** und gehört ins Hauptprodukt (Rechteck 3:1: 7 × 2,33, 9 × 3, …). Neues `Tuerschild-Acrylglas-3mm_v4.xlsx`: 77 Größen (v3 + 7 × 2,33; Variantenbestätigung wie bei den anderen). Frage 13 ist entschieden. Die Operator-Lesart aus v3 ist hinfällig: `Tuerschild-Acrylglas-3mm-7x2-33_v1.xlsx` ist **verworfen durch Entscheidung 14:25** und per `git mv` nach `docs/produktfreigaben/_verworfen/` verschoben (nicht gelöscht). Der v3-Abschnitt oben beschreibt es noch als Operator-Lesart.
+2. **Kleinformate 5 × 2, 6 × 2, 8 × 2** haben „gesonderte Motive“, filigrane oder große Motive sind nicht umsetzbar. Neue Acryl-Dateien `Tuerschild-Acrylglas-3mm-5x2_v2.xlsx`, `-6x2_v2.xlsx`, `-8x2_v2.xlsx`: Modul motifs = an, aber nur mit eigener Kleinformat-Motivauswahl (Bestätigung offen, weil die Auswahl offen ist). Foto und Logo: „Operator-Vorschlag: aus (nicht sinnvoll), von Chris nicht ausdrücklich beantwortet“, Status offen.
+3. **Motivquelle:** Der Live-Konfi zeigt eine Kategorie „Motive kleine Schilder“ (vom Operator am 10.11. gelesen). Im Katalog belegt: `motive/motive-kleine-schilder` mit 14 SVG-Motiven (Anker 3, Brief, Feine Trennlinie, Haus, Herz 2, Klingel, Pfote 1, Schmetterling 1, Schmetterlinge 1, Stern 1, Strich Haus, Strich horizontal, Verschlungene Herzen, Vogel_1; `motive/INDEX.md`, `motive/motive.json`, Katalog main 3c6051fb). **Offene Frage an Chris/Mika:** Ist genau diese Kategorie die gesonderte Auswahl der Kleinformate?
+4. **„Edelstahl und Acrylglas sind gleich“:** Die Abtrennung gilt auch für das live stehende Edelstahl-Türschild. Neu: `Tuerschild-Edelstahl-5x2_v1.xlsx`, `-6x2_v1.xlsx`, `-8x2_v1.xlsx` (Preise und Befestigungen aus `steel-door-signs.json`, gegen den Shopify-Rücklesestand 08.11. und die Edelstahl-Schilder-Liste geprüft; kein Foto, keine Farbwahl, Logo Operator-Vorschlag aus, Motive wie Punkt 2). Dazu der Änderungsplan `docs/produktfreigaben/Aenderungsplan-Tuerschild-Edelstahl-Kleinformate_v1.md` (Vorher/Nachher, die 15 entfallenden Varianten mit SKU und Variant-ID, Fragen zu Bindungen/Warenkörben nur als Fragen). **Kundenseite ändert sich: drei Größen verschwinden aus der Größenwahl; Umsetzung erst nach ausdrücklicher Freigabe des Änderungsplans durch Chris.**
+
+### Kennzahlen
+
+| Produkt | Größen | Verkaufskombinationen |
+|---|---|---|
+| Acryl Hauptprodukt v4 | 77 | 389 je Farbe, 778 gesamt (154 Größe-Farbe-Zeilen) |
+| Acryl 5 × 2 / 6 × 2 / 8 × 2 | je 1 | je 5 je Farbe, 10 gesamt |
+| Acryl gesamt | 77 + 3 = 80 | 778 + 30 = 808 |
+| Edelstahl Hauptprodukt nachher | 77 (vorher 80) | 389 Varianten (vorher 404) |
+| Edelstahl 5 × 2 / 6 × 2 / 8 × 2 | je 1 | je 5 Varianten (7,99 / 8,79 / 9,49 € ohne Befestigung) |
+
+Preise und Aufpreise sind gegenüber v2 unverändert.
+
+### Weiterhin offen
+
+- Motivauswahl der Kleinformate (Kategorie „Motive kleine Schilder“?), Foto/Logo bei Kleinformaten (Operator-Vorschlag aus), Designs (Frage B, anderer Chat) und Startdesigns, Frage 11 („Abgerundete Seiten“, TAS-A).
+- Freigabe des Edelstahl-Änderungsplans durch Chris; dessen Fragen (Bindungen, Entwürfe/Warenkörbe, Löschen oder Archivieren der 15 Varianten, SKUs, Navigation).
+- Operator-Vorschläge ohne Widerspruch: Logo-Modul, Mengenstaffel, brutto, feste Acryl-Produkte D8/D10 unverändert.

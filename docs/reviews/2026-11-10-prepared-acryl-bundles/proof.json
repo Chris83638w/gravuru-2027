@@ -45,5 +45,13 @@
       "maxMs": 18.974
     },
     "limits": "No LiteSpeed or external network; old Node route returns identity and edge compression is not simulated. No predicted customer latency."
+  },
+  "independentReview": {
+    "reviewer": "module_backend",
+    "commit": "333d77b4b98b4ce71fb2e4ae8b017d60b156d2d9",
+    "concreteBlockers": 0,
+    "ownProbe": "12 simultaneous cold gzip/identity HTTP requests transformed exactly once, decoded bytes identical; HEAD; authorization denied on warm hit; removed artifact falls through; /models.json untouched.",
+    "productionEdits": false,
+    "limits": "No live or LiteSpeed proof; no duplicated suite."
   }
 }

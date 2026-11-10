@@ -120,3 +120,23 @@ In `docs/handoffs/2026-11-10-paket1-modellantwort-ergebnis.md`: geänderte Datei
 - **Paket 4:** Produktanlage aus Chat/Katalog nach #227, Werkstatt-Dashboards (Vorschläge erst an Chris).
 - **Paket 5:** Amazon-Vorlagen aus denselben Daten, Amazon-Bestellimport.
 - Entscheidung Chris 10.11.2026 zur Aufbewahrung: Kundenfotos und Druck-/Gravurdateien 45 Tage nach Versand löschen, Bestellstand ohne Foto 2 Jahre. Umsetzung mit dem neuen Speicher, nicht hier.
+
+## 9. Nachbesserung N1 (Operator, 10.11.2026, nach Gegenlesen von `86ccee6`)
+
+**Befund – Fehler in meiner Anleitung 4.3, nicht im Bau:** Der Datenbankstand (`readEpoch`) gilt für die ganze Datei. In derselben Datei schreiben aber auch Kundenwege: `createMotifSearchStats({filename})` bei jeder Motivsuche, `createFormCustomerStore({filename})` bei Entwürfen, dazu Konfi-Status, Stapel- und KI-Aufträge. Jeder dieser Schreibvorgänge verwirft alle Einträge. Im echten Betrieb wäre der Speicher damit ständig leer; die lokale Messung zeigt das nicht, weil dort nichts dazwischen schreibt.
+
+**Belegte Grundlage für die Korrektur:**
+- `product_revisions` ist durch die Trigger `immutable_revision_update` und `immutable_revision_delete` unveränderlich (`repository.mjs`).
+- Die bestehende Modellablage in `http.mjs` (`modelCache`) behandelt das gebaute Modell einer gepinnten Revision bereits als unveränderlich und setzt bei jedem Abruf nur `configuration:{id,revision,publishedRevision}` frisch aus dem Datensatz.
+
+**Auftrag N1:**
+1. Gültigkeit je Eintrag nicht mehr am Stand der ganzen Datei, sondern am **Stand des einen Produkts**: neue lesende Methode in `repository.mjs` (z. B. `revisionState(id,revision)`), die **ohne** die Spalte `document` zu lesen genau die Kopf- und Revisionsangaben liefert, die heute über `repository.get(id,{revision})` in die Antwort oder in Prüfungen einfließen (mindestens `revision`, `publishedRevision`, `status`/archiviert, Mandant). Sie muss für fehlendes Produkt, fehlende Revision und fremden Mandanten **dieselben Fehler** (Status und Code) liefern wie `repository.get`.
+2. Dieser Produktstand wird bei **jeder** Anfrage frisch gelesen und ist Teil des Schlüssels bzw. der Trefferbedingung. Vorher belegen (Quelle nennen), welche Felder der Antwort vom Produktkopf abhängen; `configuration.publishedRevision` gehört sicher dazu.
+3. Vor dem Umbau **vollständig auflisten**, was `buildModel`, `presentedModel` und der gespeicherte Teil der Antwort außer dem unveränderlichen Dokument lesen (Tabellen derselben Datei wie Familien, Korrekturen, Katalogstruktur; andere Dateien; Platte; Prozesszustand). Je Eintrag: bleibt je Anfrage frisch / steht im Schlüssel / wird von der bestehenden `modelCache`-Ablage ebenfalls eingefroren (dann gleiche Annahme, ausdrücklich benennen) / **offen**. Steht etwas auf „offen“, nicht umbauen, sondern melden.
+4. Die Prüfung „während des Aufbaus wurde geschrieben → nicht ablegen“ bleibt mit `readEpoch` bestehen. Schemaänderungen verwerfen weiterhin alles.
+5. Neue Tests: Kundenseitige Schreibvorgänge in derselben Datei (Motivsuche protokollieren, Entwurf speichern, Konfi-Status eines **anderen** Produkts) verwerfen den Eintrag **nicht**; neue Revision, Veröffentlichung, Archivierung und Pause **dieses** Produkts wirken sofort; gelöschtes/unbekanntes Produkt und fremder Mandant liefern mit warmem Eintrag denselben Status und Code wie ohne Speicher. Bytegleichheit aus 6.1 bleibt, auch nach einer Veröffentlichung dazwischen.
+6. Zähler für Treffer, Fehltreffer und Verdrängungen über den vorhandenen `logger`/`onMeasure`-Weg, ohne Kunden- oder Sitzungsdaten, höchstens eine Zeile je Minute.
+7. Messskript um einen Lauf erweitern, in dem zwischen den Abrufen eine Motivsuche protokolliert wird (vorher/nachher).
+8. Offener Punkt aus dem Bericht: Test nachziehen, der belegt, dass geänderte **Optionen** der Zuordnung nicht den alten Eintrag liefern.
+
+Grenzen und Dateien wie in Abschnitt 5; zusätzlich darf `http.mjs` **nicht** geändert werden. Bericht als Abschnitt „N1“ an die Ergebnisdatei anhängen, `STATUS.md` oben ergänzen.

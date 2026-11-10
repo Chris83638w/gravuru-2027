@@ -154,6 +154,20 @@ test('Obergrenze: bei vollem Wartestand sofort 503 designs_busy',async t=>{
  assert.equal(JSON.parse((await worker.call('test.sleep','/x',{ms:5})).bytes).counter,3,'danach wieder frei');
 });
 
+test('Obergrenze: viele gleichzeitige Vorschaubilder zählen nicht gegen die enge Grenze der Listenrechnungen',async t=>{
+ const worker=createKatalogWorker({dbFile:':memory:',tenantId:'gravuru',available:{},testOps:true,maxPending:1});t.after(()=>worker.close());
+ // Eine schwere Rechnung belegt die enge Grenze vollständig.
+ const heavy=worker.call('test.sleep','/x',{ms:200});
+ // 60 verschiedene leichte Aufrufe (unbekannte Designdatei -> fachlicher Fehler aus dem Worker, kein designs_busy).
+ const light=await Promise.allSettled(Array.from({length:60},(_,i)=>worker.call('designs.svg','/nicht-vorhanden-'+i,{reihe:'r',bestand:null,id:'d'+i,file:'design.svg'})));
+ assert.equal(light.length,60);
+ assert.equal(light.filter(r=>r.status==='rejected'&&r.reason?.code==='designs_busy').length,0,'kein Vorschaubild darf an der Listen-Grenze scheitern');
+ assert.equal(light.filter(r=>r.status==='rejected'&&r.reason?.code==='designs_worker').length,0);
+ // Die enge Grenze gilt weiter für eine zweite schwere Rechnung.
+ await assert.rejects(worker.call('test.sleep','/x',{ms:201}),e=>e.status===503&&e.code==='designs_busy');
+ await heavy;
+});
+
 test('Absturz: wartende Aufrufe enden mit 503 designs_worker, der nächste Aufruf startet den Worker neu',async t=>{
  const worker=createKatalogWorker({dbFile:':memory:',tenantId:'gravuru',available:{},testOps:true});t.after(()=>worker.close());
  const waiting=worker.call('test.sleep','/x',{ms:2000}),crash=worker.call('test.crash','/x',{});
@@ -220,7 +234,7 @@ test('HTTP: mit Schalter antwortet die Werkstatt bytegleich (Kopfzeilen und Kör
  const root=katalog(t,6,60000);
  const dir=fs.mkdtempSync(path.join(path.resolve('.local-data'),'p1c-http-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
  build({outputDirectory:dir});const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0];
- const logs=[],log=console.log;console.log=(...a)=>{try{const e=JSON.parse(a[0]);if(e.event==='katalog_worker'){logs.push(e);return;}}catch{}log(...a);};t.after(()=>{console.log=log;});
+ const logs=[],log=console.warn;console.warn=(...a)=>{try{const e=JSON.parse(a[0]);if(e.event==='katalog_worker'){logs.push(e);return;}}catch{}log(...a);};t.after(()=>{console.warn=log;});
  const off=await server(t,root,dir,seed,false),on=await server(t,root,dir,seed,true);
  const routes=['/api/workshop/designs','/api/workshop/designs?linie=test-linie','/api/workshop/designs?linie=test-linie&status=ok','/api/workshop/designs?linie=test-linie&startDesigns=true','/api/workshop/designs?linie=test-linie&startDesigns=quatsch','/api/workshop/designs?linie=nix','/api/workshop/designs?linie=test-linie&status=quatsch',
   '/api/workshop/designs/target-preview?reihe=test-reihe&id=T-D1&familie=test-schilder','/api/workshop/designs/target-preview?reihe=test-reihe&id=T-D1&familie=erfunden',
@@ -243,7 +257,7 @@ test('HTTP: Schreibweg bleibt im Hauptprozess; nach PATCH liefert der Worker sof
  const root=katalog(t,3);
  const dir=fs.mkdtempSync(path.join(path.resolve('.local-data'),'p1c-http-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
  build({outputDirectory:dir});const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0];
- const log=console.log;console.log=(...a)=>{try{if(JSON.parse(a[0]).event==='katalog_worker')return;}catch{}log(...a);};t.after(()=>{console.log=log;});
+ const log=console.warn;console.warn=(...a)=>{try{if(JSON.parse(a[0]).event==='katalog_worker')return;}catch{}log(...a);};t.after(()=>{console.warn=log;});
  const on=await server(t,root,dir,seed,true);
  const rows=async()=>(await (await fetch(on.base+'/api/workshop/designs?linie=test-linie&reihe=test-reihe')).json()).rows;
  const before=await rows();assert.ok(before.length>0);

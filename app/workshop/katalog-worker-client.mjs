@@ -13,10 +13,15 @@ export function writeJsonResult(res,status,result){
   return res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Content-Encoding':'gzip','Vary':'Accept-Encoding','Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);
 }
 
-export function createKatalogWorker({dbFile,tenantId,available={},logger=null,maxPending=6,testOps=false}){
+// Leichte Aufrufe (einzelne Vorschaubilder/Zielvorschauen): eine Werkstattseite fragt davon viele gleichzeitig ab. Sie zählen
+// nicht gegen die enge Grenze der schweren Listenrechnungen, sondern haben eine eigene, weite Grenze.
+const LIGHT_OPS=new Set(['designs.svg','designs.targetPreview']);
+
+export function createKatalogWorker({dbFile,tenantId,available={},logger=null,maxPending=6,maxLightPending=400,testOps=false}){
   let worker=null,nextId=1,epoch=0,fontsVersion=0,closed=false;
   const inflight=new Map();// id → {key,resolve,reject}
-  const pending=new Map();// key → {promise,id}
+  const pending=new Map();// key → {promise,id,light}
+  const waiting=light=>{let n=0;for(const entry of pending.values())if(entry.light===light)n+=1;return n;};
   let seenFonts=new Map();
   const log=entry=>{if(typeof logger==='function'){try{logger(entry);}catch{}}};
 
@@ -69,7 +74,8 @@ export function createKatalogWorker({dbFile,tenantId,available={},logger=null,ma
     if(shared){
       return shared.promise.then(result=>{note(true,true,result);return result;},error=>{note(true,false,null,error);throw error;});
     }
-    if(pending.size>=maxPending){
+    const light=LIGHT_OPS.has(op);
+    if(waiting(light)>=(light?maxLightPending:maxPending)){
       const error=failure(503,'designs_busy',BUSY_TEXT);
       note(false,false,null,error);
       return Promise.reject(error);
@@ -87,7 +93,7 @@ export function createKatalogWorker({dbFile,tenantId,available={},logger=null,ma
         reject(error.status?error:failure(503,'designs_worker','Der Katalog-Arbeiter konnte nicht gestartet werden: '+error.message));
       }
     });
-    const entry={promise,id};
+    const entry={promise,id,light};
     pending.set(key,entry);
     const done=()=>{if(pending.get(key)===entry)pending.delete(key);};
     promise.then(done,done);

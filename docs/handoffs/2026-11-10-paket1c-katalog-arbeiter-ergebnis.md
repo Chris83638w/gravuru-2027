@@ -68,3 +68,45 @@ Am Code nachvollzogen (`katalog-transaction.mjs`): `withKatalogWriteLock` legt `
 - Messung auf dem Server (kalte Platte, 76.000 Dateien) fehlt; die lokale Messung hat warmen Betriebssystem-Cache.
 - Die 8 roten Tests sind schon im Ausgangsstand rot (Ausgangslauf aus einer `git archive`-Kopie von `HEAD` in /tmp) und hängen nicht an der Designliste; Ursache nicht untersucht.
 - Die Sperrbestätigung (4.1) ist Code-Lektüre, kein Test.
+
+## Abnahme Operator (Claude), 10.11.2026
+
+Gelesen: kompletter Diff (`http.mjs`, Client, Worker, Tests). Zwei Korrekturen von mir nach der Abgabe:
+
+1. **Grenze getrennt nach schwer/leicht.** Die Abgabe zählte auch einzelne Vorschaubilder (`designs.svg`) und Zielvorschauen
+   gegen `maxPending=6`. Eine Werkstattseite fragt davon Dutzende gleichzeitig ab – die meisten Kacheln wären mit
+   503 `designs_busy` leer geblieben. Jetzt: Listenrechnungen weiter höchstens 6 verschiedene wartende,
+   Vorschaubilder/Zielvorschauen eigene Grenze 400. Neuer Test dazu (60 gleichzeitige Vorschaubilder, keine `designs_busy`).
+2. **Protokoll nach stderr** (`console.warn` wie `model_response_cache`), damit `katalog_worker`-Zeilen im selben
+   `stderr.log` landen und auf dem Server auswertbar sind.
+
+Eigene Läufe:
+- `katalog-worker.test.mjs`: 17 von 17 grün.
+- Nachbarn (`design-dashboard*.test.mjs`, `http.test.mjs`, `shop-entry*.test.mjs`): 193 von 193 grün.
+- Messung selbst wiederholt (Katalog `b5d8f28bc1`, Linie `edelstahl-tuerschilder`, 21,1 MB):
+
+| Weg | Aufruf | Rechendauer | größte Verzögerung im Hauptprozess |
+|---|---|---|---|
+| Worker | 1. | 23,4 s | 12 ms |
+| Worker | 2. | 3,8 s | 6 ms |
+| direkt | 1. | 22,6 s | 1188 ms |
+| direkt | 2. | 5,9 s | komplett blockiert (0 Ticks) |
+
+Dateien für die Installation (SHA-256, nach meinen Korrekturen):
+
+| Datei | Art | SHA-256 |
+|---|---|---|
+| app/workshop/katalog-worker.mjs | neu | dbd62e827e8c9f63fccbb35daff2b2d195d55e4421ffa94074e786c916eee8b1 |
+| app/workshop/katalog-worker-client.mjs | neu | ceffc409cb5a413b0a1f07d7019f71815549327346388b8e62a8082e855cce90 |
+| app/workshop/http.mjs | ersetzt (live vorher `2a4069c72084e923`) | 781b84f33d46205d563833d78780b98469dbe705744465760bfbb8c01b2b7c77 |
+| app/workshop/design-dashboard.mjs | ersetzt, aus #231-Port (live vorher `59fc7c49cc5f24ff`) | ee4b1060d2d0373789fe94cc5288dede9d6c5058dd0d02379a5a817f27907b8d |
+| app/workshop/ui/design-dashboard-ui.mjs | ersetzt, aus #231-Port (live vorher `0be5a823b9bb4450`) | 6a09c4c753df70c670601949dd84faf75675ca67d2549fd69885f623cb681775 |
+
+Schalter: in `gravuru-2027-merchant/app.cjs` vor dem `require(...)` die Zeile
+`process.env.GRAVURU_KATALOG_WORKER = "enabled";`. Abschalten: Zeile entfernen, App neu starten – dann rechnet wieder der
+Hauptprozess (mit #231-Zwischenspeicher).
+
+Abnahme auf dem Server (steht aus, nur nach „live“ von Chris): nach Installation Kunden-Konfi prüfen (HTTP 200, Modell
+inhaltsgleich, pixelgleich), dann Werkstatt › Designs öffnen und **gleichzeitig** von außen den Kunden-Konfi messen.
+Bestanden, wenn der Konfi dabei unter 1 s bleibt. Offen bleibt bis dahin: Speicherbedarf des Workers unter den
+Grenzen des Hostings (CloudLinux), Dauer des kalten Durchlaufs auf der Serverplatte.

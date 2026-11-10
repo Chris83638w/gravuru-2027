@@ -1,0 +1,23 @@
+{
+  "sourceCommit": "3bfe6a3151517ffdfb78ba5e010ab55de0aeace0",
+  "archive": {
+    "name": "r15-performance-followup-20261110.tar.gz",
+    "bytes": 84992,
+    "sha256": "74495e7bc443f74eb15019a29d6abf457a7496f29eb114f2d360ac29fb6501ea",
+    "members": 21
+  },
+  "installer": {
+    "name": "install-performance-followup.cjs",
+    "sha256": "9aa96ac7f9cbbdc3a66a19c26e42b6621959134f1eb60b6ebe77f1cf02ab63b3",
+    "bytes": 29452
+  },
+  "gzip": {
+    "name": "install-performance-followup.cjs.gz",
+    "sha256": "964a211db4141d3c4df1695bdafd09c9590d579af517baaafcb69f122886a529",
+    "bytes": 16208
+  },
+  "chunks": 11,
+  "maxEncodedCharsPerChunk": 2100,
+  "allFiveArchivedSourcesVerified": true,
+  "noLiveAccess": true
+}

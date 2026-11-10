@@ -17,7 +17,7 @@ export function writeJsonResult(res,status,result){
 // nicht gegen die enge Grenze der schweren Listenrechnungen, sondern haben eine eigene, weite Grenze.
 const LIGHT_OPS=new Set(['designs.svg','designs.targetPreview']);
 
-export function createKatalogWorker({dbFile,tenantId,available={},logger=null,maxPending=6,maxLightPending=400,testOps=false}){
+export function createKatalogWorker({dbFile,tenantId,available={},logger=null,maxPending=6,maxLightPending=400,testOps=false,cacheFile=null,cacheSaveDelayMs=5000}){
   let worker=null,nextId=1,epoch=0,fontsVersion=0,closed=false;
   const inflight=new Map();// id → {key,resolve,reject}
   const pending=new Map();// key → {promise,id,light}
@@ -40,15 +40,17 @@ export function createKatalogWorker({dbFile,tenantId,available={},logger=null,ma
   }
   function start(){
     fontsChanged();
-    const instance=new Worker(new URL('./katalog-worker.mjs',import.meta.url),{workerData:{dbFile,tenantId,available:{...available},testOps},name:'katalog-worker'});
+    const instance=new Worker(new URL('./katalog-worker.mjs',import.meta.url),{workerData:{dbFile,tenantId,available:{...available},testOps,cacheFile,cacheSaveDelayMs},name:'katalog-worker'});
     instance.unref();
     sentFontsVersion=fontsVersion;
     instance.on('message',message=>{
+      // Meldungen des Workers ohne Aufruf: Zwischenspeicher geladen/gesichert.
+      if(message?.note){const {note,...rest}=message;log({event:'katalog_worker_'+note,...rest});return;}
       const entry=inflight.get(message.id);if(!entry)return;
       inflight.delete(message.id);
       if(message.ok){
         const bytes=Buffer.from(message.bytes);
-        entry.resolve(message.kind==='file'?{type:message.type,bytes,warnings:message.warnings||[]}:{bytes,gzip:Boolean(message.gzip)});
+        entry.resolve(message.kind==='file'?{type:message.type,bytes,warnings:message.warnings||[],timing:message.timing}:{bytes,gzip:Boolean(message.gzip),timing:message.timing});
       }else{
         entry.reject(Object.assign(new Error(message.message),{status:message.status,code:message.code,actualRevision:message.actualRevision}));
       }
@@ -70,7 +72,7 @@ export function createKatalogWorker({dbFile,tenantId,available={},logger=null,ma
     const key=JSON.stringify([op,root,args,Boolean(acceptGzip),epoch,fontsVersion]);
     const shared=pending.get(key);
     const started=performance.now();
-    const note=(sharedCall,ok,result,error)=>log({event:'katalog_worker',op,ms:Math.round(performance.now()-started),bytes:result?.bytes?.length??0,gzip:Boolean(result?.gzip),pending:pending.size,shared:sharedCall,ok});
+    const note=(sharedCall,ok,result,error)=>log({event:'katalog_worker',op,ms:Math.round(performance.now()-started),bytes:result?.bytes?.length??0,gzip:Boolean(result?.gzip),pending:pending.size,shared:sharedCall,ok,...(result?.timing||{})});
     if(shared){
       return shared.promise.then(result=>{note(true,true,result);return result;},error=>{note(true,false,null,error);throw error;});
     }

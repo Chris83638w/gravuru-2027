@@ -69,9 +69,38 @@ export function katalogContextSig(katalog,available={}){
 function cachedTargetsOf(d,katalog){
  const sig=designStamp(d)+'|'+katalogContextSig(katalog),hit=targetsOfCache.get(d.dir);
  if(hit&&hit.sig===sig)return hit.value;
- const value=designTargets(d,katalog);targetsOfCache.set(d.dir,{sig,value});return value;
+ const value=designTargets(d,katalog);targetsOfCache.set(d.dir,{sig,value});cacheWrites+=1;return value;
 }
 export const forgetDashboardCache=()=>{targetCache.clear();targetsOfCache.clear();};
+// ---- Zwischenspeicher sichern und laden (Paket 1c-2, #229) ----
+// Der kalte Durchlauf einer großen Linie dauert auf dem Server viele Minuten; ein Neustart soll ihn nicht verwerfen.
+// Gesichert werden nur Einträge aus einfachen JSON-Werten. Ein geladener Eintrag gilt wie ein im Speicher liegender nur bei
+// passender Signatur (Zeitstempel+Größe der Designdateien, Linie, Katalogkontext); sonst wird neu gerechnet.
+let cacheWrites=0;
+export const dashboardCacheWrites=()=>cacheWrites;
+const plainJson=value=>{
+ if(value===null)return true;
+ const type=typeof value;
+ if(type==='string'||type==='boolean')return true;
+ if(type==='number')return Number.isFinite(value);
+ if(type!=='object')return false;
+ if(Array.isArray(value)){for(let i=0;i<value.length;i++){if(!(i in value)||!plainJson(value[i]))return false;}return true;}
+ const proto=Object.getPrototypeOf(value);
+ if(proto!==Object.prototype&&proto!==null)return false;
+ for(const key of Object.keys(value))if(!plainJson(value[key]))return false;
+ return true;
+};
+export function exportDashboardCache(){
+ const take=map=>{const out=[];let skipped=0;for(const [dir,entry] of map){if(typeof entry?.sig==='string'&&plainJson(entry.value))out.push([dir,entry.sig,entry.value]);else skipped+=1;}return {out,skipped};};
+ const targets=take(targetCache),targetsOf=take(targetsOfCache);
+ return {targets:targets.out,targetsOf:targetsOf.out,skipped:targets.skipped+targetsOf.skipped};
+}
+export function importDashboardCache(data){
+ let loaded=0;
+ const put=(map,rows)=>{if(!Array.isArray(rows))return;for(const row of rows){if(!Array.isArray(row)||row.length!==3)continue;const [dir,sig,value]=row;if(typeof dir!=='string'||typeof sig!=='string'||value===undefined||map.has(dir))continue;map.set(dir,{sig,value});loaded+=1;}};
+ put(targetCache,data?.targets);put(targetsOfCache,data?.targetsOf);
+ return loaded;
+}
 
 // Reihenfolge (Chris 10.11.2026: „Prio haben immer unsere Designs aus dem Katalog“):
 // 0 = unser Design aus dem Corel-Bestand (Original oder Übertragung), 1 = neu entworfen, 2 = nur Bestand ohne Lieferform 2.
@@ -312,7 +341,7 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
   {const sig=designStamp(d)+'|'+line.id+'|'+contextSig,hit=targetCache.get(d.dir);
    let value=hit&&hit.sig===sig?hit.value:null;
    if(!value){let svgText=null,versions=null;// SVG und Schriftstände einmal je Design, nicht je Familie
-    value=dashboardDesignTargets(d,katalog,line,{checksumFor:family=>{try{svgText??=d.svg();versions??=targetFontVersions({...d,svg:()=>svgText},katalog,available,targetVersionCache);return designTargetChecksum(d,family,svgText,versions);}catch{return null;}}});targetCache.set(d.dir,{sig,value});}
+    value=dashboardDesignTargets(d,katalog,line,{checksumFor:family=>{try{svgText??=d.svg();versions??=targetFontVersions({...d,svg:()=>svgText},katalog,available,targetVersionCache);return designTargetChecksum(d,family,svgText,versions);}catch{return null;}}});targetCache.set(d.dir,{sig,value});cacheWrites+=1;}
    Object.assign(row,structuredClone(value));}
   if(!series)row.reasons.push(ctx.families.length?'alte Größe: '+row.plate[0]+' × '+row.plate[1]+' mm passt in keine Formatreihe der Familie (nur Einpassen, keine Übernahme).':'Formatreihe offen (Linie ohne Familie).');
   if(!d.themes||!d.themes.length)row.reasons.push('kein Thema zugeordnet.');

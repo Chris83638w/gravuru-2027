@@ -132,3 +132,36 @@ Grenzen des Hostings (CloudLinux), Dauer des kalten Durchlaufs auf der Serverpla
 - Läufe: `katalog-worker`, `design-dashboard*`, `design-target*`, `http` – 156 von 156 grün.
 - `app/workshop/design-dashboard.mjs` neu: SHA-256 beginnt `9024bbaabc956168` (ersetzt `ee4b1060d2d03737`).
 - Derselbe Fehler steckt in `main` (PR #231) – dort ebenfalls zu beheben.
+
+## Paket 1c-2 (10.11.2026, spät): Vorrechnen, Zwischenspeicher auf Platte, Messwerte
+
+Anlass: Nach der Behebung lädt eine kleine Linie auf dem Server in 2,3 s, der erste kalte Durchlauf der Linie
+„Edelstahl Türschilder“ lief dort aber über 12 Minuten (lokal 22 s) und beginnt nach jedem Neustart von vorn.
+
+Gebaut (Operator):
+- **Zwischenspeicher auf Platte:** Der Arbeiter sichert den Rechenstand der Designliste nach Listenrechnungen als
+  `katalog-worker-cache.json.gz` neben der Werkstatt-Datenbank (lokal 0,78 MB für 13.678 Einträge) und lädt ihn beim Start.
+  Ein Eintrag gilt wie bisher nur bei passender Signatur (Zeitstempel+Größe der Designdateien, Linie, Katalogkontext).
+  Die Datei gilt nur für genau den installierten Programmstand (Fingerabdruck über alle Module der Werkstatt und des
+  Konfigurators) – nach jeder Installation wird einmal neu gerechnet. Unlesbare Datei wird ignoriert.
+- **Vorrechnen:** 20 s nach dem Start rechnet der Arbeiter alle Linien einmal im Hintergrund (`designs.warm`), meldet je
+  Linie Dauer und Erfolg (`katalog_worker_warm`) und sichert danach. Abschaltbar: `GRAVURU_KATALOG_WORKER_WARM=off`.
+- **Messwerte im Protokoll** je Aufruf: `msList`, `msSerialize`, `msRun`, `cpuMs` (Rechenzeit des Threads). Liegt `cpuMs`
+  weit unter `msRun`, wartet der Arbeiter auf die Platte oder wird vom Hosting gebremst – damit lässt sich die Ursache
+  der langen Serverläufe belegen statt vermuten.
+- `design-dashboard.mjs`: `exportDashboardCache`/`importDashboardCache`/`dashboardCacheWrites` (nur einfache JSON-Werte
+  werden gesichert; geprüft am echten Katalog: 0 übersprungene Einträge).
+
+Lokale Abnahme mit echtem Katalog (`b5d8f28bc1`), über HTTP mit Schalter:
+
+| Schritt | Ergebnis |
+|---|---|
+| Vorrechnen aller 13 Linien nach dem Start | 42 s, 0 Fehler (Edelstahl 17,2 s, Acryl-Türschilder 12,9 s) |
+| Edelstahl-Linie nach dem Vorrechnen | 4,3 s |
+| „Neustart“, Edelstahl-Linie sofort (ohne Vorrechnen, Speicher von Platte) | 8,2 s statt 22 s kalt, Antwort bytegleich |
+| nach dem Laden neu gerechnete Einträge | 0 |
+
+Tests: `katalog-worker` (21), `design-dashboard*`, `design-target*`, `http` – zusammen 159 von 159 grün. Neu: Plattenspeicher
+(Laden, anderer Programmstand, geänderte Datei, beschädigte Datei), Sichern/Laden über den Worker mit Messwerten, Vorrechnen.
+
+Offen: Wirkung auf dem Server (kalter Durchlauf dort, Speicherbedarf) – erst nach Installation messbar.

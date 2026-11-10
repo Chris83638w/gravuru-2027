@@ -9,12 +9,12 @@ import http from 'node:http';
 import {once} from 'node:events';
 import {gunzipSync} from 'node:zlib';
 import {fileURLToPath} from 'node:url';
-import {designDashboardWithFit,designFile,forgetKatalog,forgetDashboardCache} from './design-dashboard.mjs';
+import {designDashboardWithFit,designFile,forgetKatalog,forgetDashboardCache,dashboardCacheWrites} from './design-dashboard.mjs';
 import {targetDesignPreview} from './design-target-preview.mjs';
 import {designPreviewGlyphs,previewWarningHeader} from './design-preview-glyphs.mjs';
 import {createProductRepository} from './repository.mjs';
 import {createKatalogWorker} from './katalog-worker-client.mjs';
-import {openKatalogReader} from './katalog-worker.mjs';
+import {openKatalogReader,codeFingerprint,loadDiskCache,saveDiskCache} from './katalog-worker.mjs';
 import {createWorkshop} from './http.mjs';
 import {build} from '../configurator/variant-m/build.mjs';
 import {createPreviewServer} from '../configurator/variant-m/server.mjs';
@@ -135,7 +135,7 @@ test('Zusammenlegen: drei gleichzeitige gleiche Aufrufe teilen eine Rechnung',as
  assert.equal(JSON.parse((await worker.call('test.sleep','/x',{ms:200})).bytes).counter,3,'nach Abschluss wird nicht aus altem Ergebnis geantwortet');
  await Promise.all([logged.call('test.sleep','/y',{ms:100}),logged.call('test.sleep','/y',{ms:100})]);
  assert.deepEqual(logs.map(l=>[l.event,l.op,l.shared,l.ok]),[['katalog_worker','test.sleep',true,true],['katalog_worker','test.sleep',false,true]].sort((a,b)=>logs.findIndex(l=>l.shared===a[2])-logs.findIndex(l=>l.shared===b[2])),'je Aufruf eine Zeile');
- assert.ok(logs.every(l=>Object.keys(l).sort().join()==='bytes,event,gzip,ms,ok,op,pending,shared'),'nur technische Felder, keine Pfade');
+ {const allowed=new Set(['bytes','event','gzip','ms','ok','op','pending','shared','msList','msSerialize','msRun','cpuMs']);assert.ok(logs.every(l=>Object.keys(l).every(key=>allowed.has(key))&&Object.values(l).every(v=>typeof v!=='string'||!v.includes('/'))),'nur technische Felder, keine Pfade');}
 });
 
 test('Zusammenlegen: nach invalidate() wird nicht an eine ältere Rechnung angehängt',async t=>{
@@ -228,6 +228,70 @@ test('Katalogkontext: die Schriftliste wird je Anfrage ausgewertet, nicht je Des
  };
  const few=await count(2),many=await count(9);
  assert.equal(many,few,'Auswertungen der Schriftliste: '+few+' bei 2 Designs, '+many+' bei 9 Designs');
+});
+
+// ---- Paket 1c-2: Zwischenspeicher auf Platte, Vorrechnen, Messwerte ----
+test('Plattenspeicher: nach „Neustart“ wird nichts neu gerechnet und die Antwort ist bytegleich; anderer Programmstand wird verworfen',async t=>{
+ const root=katalog(t,6),dir=fs.mkdtempSync(path.join(os.tmpdir(),'p1c2-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ const file=path.join(dir,'cache.json.gz'),fingerprint=codeFingerprint();
+ assert.match(fingerprint,/^[0-9a-f]{64}$/);
+ forgetKatalog();forgetDashboardCache();
+ const options={linie:'test-linie',available:{Michroma:FONT}};
+ const cold=JSON.stringify(await designDashboardWithFit(root,options));
+ const saved=saveDiskCache(file,fingerprint);
+ assert.ok(saved.entries>0);assert.equal(saved.skipped,0);
+ // „Neustart“: Speicher leer, Datei laden.
+ forgetKatalog();forgetDashboardCache();
+ assert.deepEqual(loadDiskCache(path.join(dir,'fehlt.gz'),fingerprint),{loaded:0,reason:'keine Datei'});
+ assert.deepEqual(loadDiskCache(file,'0'.repeat(64)),{loaded:0,reason:'anderer Programmstand'});
+ const loaded=loadDiskCache(file,fingerprint);
+ assert.equal(loaded.reason,'geladen');assert.equal(loaded.loaded,saved.entries);
+ const writes=dashboardCacheWrites();
+ const warm=JSON.stringify(await designDashboardWithFit(root,options));
+ assert.equal(warm,cold,'Antwort nach dem Laden bytegleich');
+ assert.equal(dashboardCacheWrites(),writes,'nach dem Laden wird kein Eintrag neu gerechnet');
+ // Geänderte Designdatei: genau dieser Eintrag wird trotz geladenem Speicher neu gerechnet.
+ const design=path.join(root,'designs/test-reihe/T-D1/design.json'),j=JSON.parse(fs.readFileSync(design,'utf8'));j.name='Nach dem Sichern geändert';fs.writeFileSync(design,JSON.stringify(j,null,1)+'\n');
+ const later=new Date(Date.now()+5000);fs.utimesSync(design,later,later);forgetKatalog();
+ const changed=await designDashboardWithFit(root,options);
+ assert.ok(changed.rows.some(row=>row.name==='Nach dem Sichern geändert'));
+ assert.ok(dashboardCacheWrites()>writes,'geänderte Datei wird neu gerechnet');
+ // Beschädigte Datei wird ignoriert, nicht geworfen.
+ fs.writeFileSync(file,'kaputt');assert.deepEqual(loadDiskCache(file,fingerprint),{loaded:0,reason:'unlesbar'});
+});
+
+test('Worker: sichert den Zwischenspeicher nach einer Listenrechnung, lädt ihn beim nächsten Start und meldet Messwerte',async t=>{
+ const root=katalog(t,5),db=database(t,root),dir=fs.mkdtempSync(path.join(os.tmpdir(),'p1c2w-'));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ const cacheFile=path.join(dir,'cache.json.gz'),args=queryArgs({linie:'test-linie'});
+ const logs=[],make=()=>createKatalogWorker({dbFile:db.file,tenantId:'gravuru',available:{Michroma:FONT},cacheFile,cacheSaveDelayMs:20,logger:entry=>logs.push(entry)});
+ const first=make();
+ const cold=(await first.call('designs.list',root,args)).bytes;
+ for(let i=0;i<200&&!logs.some(e=>e.event==='katalog_worker_cache_save');i++)await new Promise(r=>setTimeout(r,25));
+ await first.close();
+ const save=logs.find(e=>e.event==='katalog_worker_cache_save');
+ assert.ok(save&&save.entries>0&&!save.error,'Speicher wurde gesichert');assert.ok(fs.statSync(cacheFile).size>0);
+ assert.equal(logs.find(e=>e.event==='katalog_worker_cache_load').reason,'keine Datei');
+ const list=logs.find(e=>e.event==='katalog_worker'&&e.op==='designs.list');
+ for(const key of ['msList','msSerialize','msRun','cpuMs'])assert.equal(typeof list[key],'number',key);
+ logs.length=0;
+ const second=make();t.after(()=>second.close());
+ const warm=(await second.call('designs.list',root,args)).bytes;
+ assert.ok(Buffer.compare(warm,cold)===0,'Antwort nach Neustart bytegleich');
+ const load=logs.find(e=>e.event==='katalog_worker_cache_load');
+ assert.equal(load.reason,'geladen');assert.equal(load.loaded,save.entries);
+});
+
+test('Vorrechnen: designs.warm rechnet jede Linie einmal und meldet je Linie Dauer und Erfolg',async t=>{
+ const root=katalog(t,4),db=database(t,root);
+ const worker=createKatalogWorker({dbFile:db.file,tenantId:'gravuru',available:{Michroma:FONT}});t.after(()=>worker.close());
+ const result=JSON.parse((await worker.call('designs.warm',root,{})).bytes);
+ assert.ok(Array.isArray(result.lines)&&result.lines.length>=1);
+ assert.ok(result.lines.some(line=>line.id==='test-linie'&&line.ok===true&&typeof line.ms==='number'));
+ // Danach kommt die Linie aus dem Zwischenspeicher und ist bytegleich zum direkten Weg.
+ const viaWorker=(await worker.call('designs.list',root,queryArgs({linie:'test-linie'}))).bytes;
+ forgetKatalog();
+ const direct=Buffer.from(JSON.stringify(await designDashboardWithFit(root,{...queryArgs({linie:'test-linie'}),repository:db.repository,available:{Michroma:FONT}})));
+ assert.ok(Buffer.compare(viaWorker,direct)===0);
 });
 
 // ---- HTTP: Weiche ----

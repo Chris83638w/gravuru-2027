@@ -165,3 +165,21 @@ Tests: `katalog-worker` (21), `design-dashboard*`, `design-target*`, `http` – 
 (Laden, anderer Programmstand, geänderte Datei, beschädigte Datei), Sichern/Laden über den Worker mit Messwerten, Vorrechnen.
 
 Offen: Wirkung auf dem Server (kalter Durchlauf dort, Speicherbedarf) – erst nach Installation messbar.
+
+### Nachtrag 10.11.2026, 23:30 – Speicherbefund, Speicherwächter, Vorrechnen nur auf Wunsch
+
+- Serverprotokoll um 23:14 gelesen: Der Durchlauf „Edelstahl Türschilder“ (gestartet ca. 22:27) wurde **nie** als fertig
+  protokolliert. CloudLinux-Statistik „Heute“ für das Konto `gravuru_werkstatt`: Arbeitsspeicher im Mittel 1,38 GB bei
+  Grenze 4 GB, **3 Überschreitungen der Speichergrenze** (Zeitpunkte dort nicht ablesbar); CPU-Grenze 400 %, Lesegrenze
+  50 MB/s, jeweils 0 Überschreitungen. Die Vermutung „Lese-Begrenzung des Hostings“ ist damit **nicht** gestützt; naheliegend
+  ist, dass der Prozess an der Speichergrenze beendet wurde. Belegt ist das noch nicht.
+- Deshalb: **Vorrechnen ist nicht mehr automatisch an**, sondern nur mit `GRAVURU_KATALOG_WORKER_WARM=enabled`
+  (sonst könnte es nach jedem Start dieselbe Lage auslösen).
+- **Speicherwächter** im Hauptprozess: solange der Worker rechnet, wird jede Sekunde der Arbeitsspeicher des Prozesses
+  geprüft; über `GRAVURU_KATALOG_WORKER_MAX_RSS_MB` (Standard 2200) wird nur der Worker beendet (503 `designs_memory`,
+  Protokoll `katalog_worker_lost` mit Messwert). Die eingebaute Speichergrenze für Worker-Threads (`resourceLimits`) hat
+  im Versuch mit Node 24.22 nicht gegriffen (456 MB belegt bei Grenze 32 MB) und wird deshalb nicht verwendet.
+- Protokoll zusätzlich: `heapMb` (Worker), `rssMb` (Prozess) je Aufruf, `katalog_worker_ready` mit Prozessnummer beim
+  Start (so ist ein unbemerkter Neustart des Prozesses erkennbar), `katalog_worker_lost` bei jedem Ausfall.
+- Lokal gemessen (ein Prozess, ohne Worker): Linie Edelstahl Spitze 967 MB Arbeitsspeicher, kleine Linie 641 MB.
+- Tests der betroffenen Dateien: 160 von 160 grün (neu: Speicherwächter).

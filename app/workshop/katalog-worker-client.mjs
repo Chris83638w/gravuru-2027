@@ -17,7 +17,7 @@ export function writeJsonResult(res,status,result){
 // nicht gegen die enge Grenze der schweren Listenrechnungen, sondern haben eine eigene, weite Grenze.
 const LIGHT_OPS=new Set(['designs.svg','designs.targetPreview']);
 
-export function createKatalogWorker({dbFile,tenantId,available={},logger=null,maxPending=6,maxLightPending=400,testOps=false,cacheFile=null,cacheSaveDelayMs=5000}){
+export function createKatalogWorker({dbFile,tenantId,available={},logger=null,maxPending=6,maxLightPending=400,testOps=false,cacheFile=null,cacheSaveDelayMs=5000,maxRssMb=0,watchMs=1000}){
   let worker=null,nextId=1,epoch=0,fontsVersion=0,closed=false;
   const inflight=new Map();// id → {key,resolve,reject}
   const pending=new Map();// key → {promise,id,light}
@@ -34,6 +34,24 @@ export function createKatalogWorker({dbFile,tenantId,available={},logger=null,ma
     return changed;
   }
 
+  // Speicherwächter (Befund 10.11.2026: das Hosting hat an diesem Tag dreimal die Speichergrenze des Kontos gemeldet).
+  // Der Hauptprozess bleibt frei und prüft, solange der Worker rechnet, den Arbeitsspeicher des Prozesses. Über der Grenze
+  // wird nur der Worker beendet (503 an die Werkstatt, protokolliert) – nicht der ganze Prozess mit dem Kunden-Konfigurator.
+  // (Die eingebaute Speichergrenze für Worker-Threads hat im Versuch mit Node 24 nicht gegriffen.)
+  let watchdog=null;
+  function watch(){
+    if(watchdog||!(maxRssMb>0))return;
+    watchdog=setInterval(()=>{
+      if(!worker||inflight.size===0){clearInterval(watchdog);watchdog=null;return;}
+      const rss=Math.round(process.memoryUsage().rss/1048576);
+      if(rss<=maxRssMb)return;
+      const instance=worker;worker=null;
+      log({event:'katalog_worker_lost',reason:'Speichergrenze: Prozess belegt '+rss+' MB (Grenze '+maxRssMb+' MB)',waiting:inflight.size});
+      endAll(failure(503,'designs_memory','Die Designliste braucht zu viel Arbeitsspeicher und wurde abgebrochen.'));
+      instance.terminate();
+    },watchMs);
+    watchdog.unref();
+  }
   function endAll(error){
     const waiting=[...inflight.values()];inflight.clear();
     for(const entry of waiting)entry.reject(error);
@@ -56,7 +74,7 @@ export function createKatalogWorker({dbFile,tenantId,available={},logger=null,ma
       }
     });
     const lost=reason=>{
-      if(worker===instance)worker=null;
+      if(worker===instance){worker=null;if(!closed)log({event:'katalog_worker_lost',reason:String(reason).slice(0,200),waiting:inflight.size});}
       endAll(failure(503,'designs_worker',reason));
     };
     instance.on('error',error=>lost('Der Katalog-Arbeiter ist ausgefallen: '+(error?.message||'unbekannter Fehler')));
@@ -89,7 +107,7 @@ export function createKatalogWorker({dbFile,tenantId,available={},logger=null,ma
         inflight.set(id,{resolve,reject});
         const message={id,op,root,args,acceptGzip:Boolean(acceptGzip),epoch,fontsVersion};
         if(sentFontsVersion!==fontsVersion||changed){message.available={...available};sentFontsVersion=fontsVersion;}
-        worker.postMessage(message);
+        worker.postMessage(message);watch();
       }catch(error){
         inflight.delete(id);
         reject(error.status?error:failure(503,'designs_worker','Der Katalog-Arbeiter konnte nicht gestartet werden: '+error.message));
@@ -110,7 +128,7 @@ export function createKatalogWorker({dbFile,tenantId,available={},logger=null,ma
     pendingCount:()=>pending.size,
     started:()=>worker!==null,
     close(){
-      closed=true;
+      closed=true;if(watchdog){clearInterval(watchdog);watchdog=null;}
       const instance=worker;worker=null;
       endAll(failure(503,'designs_worker','Der Katalog-Arbeiter ist beendet.'));
       if(instance)return instance.terminate();

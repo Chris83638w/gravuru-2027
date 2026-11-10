@@ -155,9 +155,11 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   const repository=createProductRepository({filename,tenantId,catalogOverview:d=>isFormProduct(d)?formOverview(d):productOverview(d),validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document)){if(document.profileAssignments)profiles.resolve(document);return verifyForm(document);}profiles.resolve(document);assets.validateDocument(document);productionProfiles.resolve(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{...(document.profileAssignments?{profiles:profiles.resolve(document)}:{}),form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)})});
   if(ownsBundled&&!repository.firstId())repository.create(seed);
   // Paket 1c: Designliste/Zielvorschau/Designdateien in einem Arbeiter-Thread (nur mit GRAVURU_KATALOG_WORKER=enabled; :memory: hat keine gemeinsame Datei).
-  const katalogWorker=ownsBundled&&process.env.GRAVURU_KATALOG_WORKER==='enabled'&&filename!==':memory:'?createKatalogWorker({dbFile:filename,tenantId,available:formFonts,cacheFile:path.join(path.dirname(filename),'katalog-worker-cache.json.gz'),logger:entry=>console.warn(JSON.stringify(entry))}):null;
-  // Paket 1c-2: kurz nach dem Start alle Linien im Arbeiter vorrechnen (abschaltbar mit GRAVURU_KATALOG_WORKER_WARM=off).
-  const katalogWarmTimer=katalogWorker&&process.env.GRAVURU_KATALOG_WORKER_WARM!=='off'?setTimeout(()=>{
+  const katalogWorker=ownsBundled&&process.env.GRAVURU_KATALOG_WORKER==='enabled'&&filename!==':memory:'?createKatalogWorker({dbFile:filename,tenantId,available:formFonts,cacheFile:path.join(path.dirname(filename),'katalog-worker-cache.json.gz'),maxRssMb:Number(process.env.GRAVURU_KATALOG_WORKER_MAX_RSS_MB)||2200,logger:entry=>console.warn(JSON.stringify(entry))}):null;
+  if(katalogWorker)console.warn(JSON.stringify({event:'katalog_worker_ready',pid:process.pid,warm:process.env.GRAVURU_KATALOG_WORKER_WARM==='enabled'}));
+  // Paket 1c-2: kurz nach dem Start alle Linien im Arbeiter vorrechnen – nur mit GRAVURU_KATALOG_WORKER_WARM=enabled
+  // (bewusst getrennt einschaltbar, bis der Speicherbedarf auf dem Server gemessen ist).
+  const katalogWarmTimer=katalogWorker&&process.env.GRAVURU_KATALOG_WORKER_WARM==='enabled'?setTimeout(()=>{
     let root;try{root=katalogRoot();}catch{return;}
     katalogWorker.call('designs.warm',root,{}).then(result=>{let lines=null;try{lines=JSON.parse(result.bytes).lines;}catch{}console.warn(JSON.stringify({event:'katalog_worker_warm',lines}));},()=>{});
   },Number(process.env.GRAVURU_KATALOG_WORKER_WARM_DELAY_MS||20000)):null;

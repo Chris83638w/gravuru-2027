@@ -8,6 +8,7 @@ import {DatabaseSync} from 'node:sqlite';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
+import v8 from 'node:v8';
 import {gzipSync,gunzipSync} from 'node:zlib';
 import {designDashboardWithFit,designFile,forgetKatalog,exportDashboardCache,importDashboardCache,dashboardCacheWrites} from './design-dashboard.mjs';
 import {targetDesignPreview} from './design-target-preview.mjs';
@@ -119,6 +120,7 @@ export function createKatalogOperations({reader,getAvailable,testOps=false}){
     ops['test.busy']=async(root,args,{acceptGzip})=>{const end=performance.now()+Number(args.ms||0);while(performance.now()<end);counter+=1;return json({counter},acceptGzip);};
     ops['test.sleep']=async(root,args,{acceptGzip})=>{await new Promise(r=>setTimeout(r,Number(args.ms||0)));counter+=1;return json({counter},acceptGzip);};
     ops['test.crash']=async()=>{process.exit(3);};
+    ops['test.memory']=async(root,args)=>{const hold=[];for(let i=0;i<Number(args.mb||0)*8;i++)hold.push(new Array(16384).fill(i));const end=performance.now()+Number(args.holdMs||0);while(performance.now()<end);return json({held:hold.length},false);};
   }
   return ops;
 }
@@ -133,7 +135,8 @@ async function run(ops,message){
     if(!handler)throw Object.assign(new Error('Unbekannte Operation.'),{status:500,code:'worker_op'});
     const cpuBefore=cpuNow(),runStarted=performance.now();
     const result=await handler(root,args||{},{acceptGzip:Boolean(acceptGzip)});
-    const timing={...(result.timing||{}),msRun:Math.round(performance.now()-runStarted),cpuMs:Math.round(cpuNow()-cpuBefore)};
+    // heapMb: belegter Speicher dieses Workers; rssMb: Arbeitsspeicher des ganzen Prozesses (Grenze des Hostings beachten).
+    const timing={...(result.timing||{}),msRun:Math.round(performance.now()-runStarted),cpuMs:Math.round(cpuNow()-cpuBefore),heapMb:Math.round(v8.getHeapStatistics().used_heap_size/1048576),rssMb:Math.round(process.memoryUsage().rss/1048576)};
     // Nur frisch erzeugte Antworten dürfen übertragen (und damit im Worker ungültig) werden; Dateiantworten stammen aus dem
     // Vorschau-Speicher des Workers und werden kopiert.
     const buffer=result.bytes,bytes=result.fresh?transferable(buffer):copyOf(buffer);

@@ -135,7 +135,7 @@ test('Zusammenlegen: drei gleichzeitige gleiche Aufrufe teilen eine Rechnung',as
  assert.equal(JSON.parse((await worker.call('test.sleep','/x',{ms:200})).bytes).counter,3,'nach Abschluss wird nicht aus altem Ergebnis geantwortet');
  await Promise.all([logged.call('test.sleep','/y',{ms:100}),logged.call('test.sleep','/y',{ms:100})]);
  assert.deepEqual(logs.map(l=>[l.event,l.op,l.shared,l.ok]),[['katalog_worker','test.sleep',true,true],['katalog_worker','test.sleep',false,true]].sort((a,b)=>logs.findIndex(l=>l.shared===a[2])-logs.findIndex(l=>l.shared===b[2])),'je Aufruf eine Zeile');
- {const allowed=new Set(['bytes','event','gzip','ms','ok','op','pending','shared','msList','msSerialize','msRun','cpuMs']);assert.ok(logs.every(l=>Object.keys(l).every(key=>allowed.has(key))&&Object.values(l).every(v=>typeof v!=='string'||!v.includes('/'))),'nur technische Felder, keine Pfade');}
+ {const allowed=new Set(['bytes','event','gzip','ms','ok','op','pending','shared','msList','msSerialize','msRun','cpuMs','heapMb','rssMb']);assert.ok(logs.every(l=>Object.keys(l).every(key=>allowed.has(key))&&Object.values(l).every(v=>typeof v!=='string'||!v.includes('/'))),'nur technische Felder, keine Pfade');}
 });
 
 test('Zusammenlegen: nach invalidate() wird nicht an eine ältere Rechnung angehängt',async t=>{
@@ -272,7 +272,7 @@ test('Worker: sichert den Zwischenspeicher nach einer Listenrechnung, lädt ihn 
  assert.ok(save&&save.entries>0&&!save.error,'Speicher wurde gesichert');assert.ok(fs.statSync(cacheFile).size>0);
  assert.equal(logs.find(e=>e.event==='katalog_worker_cache_load').reason,'keine Datei');
  const list=logs.find(e=>e.event==='katalog_worker'&&e.op==='designs.list');
- for(const key of ['msList','msSerialize','msRun','cpuMs'])assert.equal(typeof list[key],'number',key);
+ for(const key of ['msList','msSerialize','msRun','cpuMs','heapMb','rssMb'])assert.equal(typeof list[key],'number',key);
  logs.length=0;
  const second=make();t.after(()=>second.close());
  const warm=(await second.call('designs.list',root,args)).bytes;
@@ -292,6 +292,19 @@ test('Vorrechnen: designs.warm rechnet jede Linie einmal und meldet je Linie Dau
  forgetKatalog();
  const direct=Buffer.from(JSON.stringify(await designDashboardWithFit(root,{...queryArgs({linie:'test-linie'}),repository:db.repository,available:{Michroma:FONT}})));
  assert.ok(Buffer.compare(viaWorker,direct)===0);
+});
+
+test('Speicherwächter: belegt der Prozess zu viel Arbeitsspeicher, endet nur der Worker (503 designs_memory, protokolliert); der Hauptprozess läuft weiter',async t=>{
+ const logs=[],limit=Math.round(process.memoryUsage().rss/1048576)+150;
+ const worker=createKatalogWorker({dbFile:':memory:',tenantId:'gravuru',available:{},testOps:true,maxRssMb:limit,watchMs:20,logger:entry=>logs.push(entry)});t.after(()=>worker.close());
+ const started=performance.now();
+ await assert.rejects(worker.call('test.memory','/x',{mb:500,holdMs:20000}),e=>e.status===503&&e.code==='designs_memory');
+ assert.ok(performance.now()-started<10000,'der Worker wird beendet, bevor seine Rechnung fertig wäre');
+ const lost=logs.find(e=>e.event==='katalog_worker_lost');
+ assert.ok(lost&&/^Speichergrenze: Prozess belegt \d+ MB \(Grenze \d+ MB\)$/.test(lost.reason),'Ausfall ist mit Messwert protokolliert');
+ // Der Hauptprozess lebt und der nächste Aufruf startet einen neuen Worker.
+ for(let i=0;i<100&&process.memoryUsage().rss/1048576>limit;i++)await new Promise(r=>setTimeout(r,50));
+ assert.equal(JSON.parse((await worker.call('test.sleep','/x',{ms:1})).bytes).counter,1);
 });
 
 // ---- HTTP: Weiche ----

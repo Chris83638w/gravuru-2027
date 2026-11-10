@@ -118,3 +118,46 @@ Logo-Modul an (Preis 12,99 € ist bestätigt, das Modul selbst nicht), Mengenst
 - Offene Fragen: Spalten Status und Stand; Nr. 1, 2, 3, 9 beantwortet; Nr. 4, 7, 8 Operator-Vorschlag ohne Widerspruch; Nr. 5 ersetzt durch B; neu 10 (A), 11 (A, Zusatzfund), 12 (B).
 - Quellen: drei Einträge neu (Chat-Entscheidungen, Kontaktbögen Live-Konfi, Bestandsliste Designs).
 - Neue Blätter: Formen-Reihen, Bestand-Acryl-D1-D73. Die Tabelle ProduktVarianten reicht jetzt bis Spalte N, die Spalten A–M sind unverändert.
+
+## v3 – Kleinformate als eigene Produkte (Entscheidung Chris 14:11)
+
+Chris, Claude-Chat 10.11.2026, 14:11, wörtlich: „5x2 bis 8x2 sind keine skalierbare Größen und daher einzelne produkte“. Eingetragen als „Chris (Chat), eingetragen vom Operator“ (Freigabe Zeile 44, bestätigt). Nichts angelegt, nichts live, kein Produktivcode. v1 und v2 bleiben unverändert.
+
+### Dateien
+
+- `docs/produktfreigaben/Tuerschild-Acrylglas-3mm_v3.xlsx`: Hauptprodukt ohne Kleinformate.
+- `docs/produktfreigaben/Tuerschild-Acrylglas-3mm-5x2_v1.xlsx`, `-6x2_v1.xlsx`, `-7x2-33_v1.xlsx`, `-8x2_v1.xlsx`: je eine Excel je Produkt (#227), gleiche Vorlage.
+
+### Kennzahlen
+
+| Datei | Größen | Farben | Befestigungen je Größe | Verkaufskombinationen je Farbe | gesamt (2 Farben) |
+|---|---|---|---|---|---|
+| Hauptprodukt v3 | 76 (vorher 80) | 2 | je Größe laut Blatt Optionen | 384 (vorher 404) | 768 (vorher 808) |
+| 5 × 2 cm | 1 | 2 | 5 (K00, KGL, KRA, B02, B02S) | 5 | 10 |
+| 6 × 2 cm | 1 | 2 | 5 | 5 | 10 |
+| 7 × 2,33 cm (Operator-Lesart, von Chris noch zu bestätigen) | 1 | 2 | 5 | 5 | 10 |
+| 8 × 2 cm | 1 | 2 | 5 | 5 | 10 |
+
+76 + 4 × 1 = 80 Größen, 768 + 4 × 10 = 808 Verkaufskombinationen: nichts doppelt, nichts verloren. Preise und Aufpreise sind in allen Dateien identisch zu v2. Das Hauptprodukt hat 152 Größe-Farbe-Zeilen (vorher 160) und 764 Optionenzeilen (vorher 804).
+
+### Was sich im Hauptprodukt ändert
+
+- Die vier Größen 5 × 2, 6 × 2, 7 × 2,33, 8 × 2 sind aus Varianten, Optionen und Preisvergleich entfernt (76 Größen).
+- Die Rechteck-Reihe 3:1 beginnt jetzt bei 9 × 3 cm. 12 × 5,25 bleibt in der Reihe 16:7, 8 × 5,33 in der Reihe 3:2 (beides rechnerisch skalierbar, Operator-Lesart, von Chris nicht genannt). Blatt „Formen-Reihen“ ist entsprechend neu aufgebaut (die vier ausgegliederten Größen stehen als eigener Block darunter).
+- Frage 10 (Lesarten) ist entschieden und geschlossen. Die Formauswahl im Konfi bleibt unverändert (7 Formen, Kundenseite eingefroren).
+- Freigabe: Dateiversion v3, Zeile 44 bestätigt, Zeile 46 (7 × 2,33, offen) und Zeile 47 (Edelstahl-Frage, offen) neu; die Nachweis-Tabelle liegt jetzt in A54:F61.
+
+### Inhalt der Kleinformat-Dateien
+
+- 1 Größe, 2 Farben, 5 zulässige Befestigungen, Preise und Bestätigungsstand wie v2 (Preise und Befestigungs-Aufschläge „bestätigt“, „Ohne Befestigung“ und Farben „offen“).
+- Foto, Logo und Motive je Größe als „offen – bei dieser Größe sinnvoll?“ (Module und Optionen: Zulässig = offen, Bestätigung = offen; die Preise 9,99 / 12,99 / 1,69 € bleiben als aus v2 übernommene Werte eingetragen). Grund: Chris-Regel laut Operator (auf 6×2 bis 9×3 nur Standardmotive, unter 9×6 keine filigranen Motive) und ENTSCHEIDUNGEN 5.5/5.27 (kleine Größen nur einfache Designs). Im Katalog selbst (Edelstahl-Familie, briefingNotes) steht dazu nichts Größenspezifisches.
+- Designbasis: Bestandsliste, Acryl-Reihe Rechteck (TRE-A): je Format 56 Bestandsdesigns (D1–D56; D57–D73 nicht vorhanden); Edelstahl-Reihe Rechteck (TRE-V2A): je Format 59. Katalog-Master-Ordner (nur Information): edelstahl-gravur-50x20 59 D-Nummern, -60x20 60, -70x23 61, -80x20 65. Im Live-Konfi je 9 Designs (Kontaktbogen 05, 04, 02, 01). Im Bestand steht 7 × 2,33 als „7x2“; als 7 × 2,33 cm gelesen. Übernahme der Designs läuft im anderen Chat, Stand offen. Startdesign: kein Vorschlag.
+- Produktname und Handle nur als Vorschlag (z. B. „Türschild Acrylglas 3 mm 5 × 2 cm (Schwarz/Anthrazit)“, Handle `tuerschild-acrylglas-3mm-5x2-cm`).
+- 7 × 2,33: in jeder Datei als „Operator-Lesart, von Chris noch zu bestätigen“ gekennzeichnet; in seiner eigenen Datei steht die Variantenbestätigung deshalb auf „offen“.
+
+### Weiterhin offen
+
+- Neu (Frage 14): Gilt die Abtrennung der Kleinformate auch für das bereits live stehende Edelstahl-Türschild (dort sind 5×2, 6×2, 7×2,33, 8×2 heute Teil des Produkts)? Nicht entschieden.
+- Neu (Frage 13): Gehört 7 × 2,33 zu den eigenen Produkten (Operator-Lesart)?
+- Neu (Frage 15): Foto/Logo/Motive bei den Kleinformaten.
+- Weiter offen: Frage 11 („Abgerundete Seiten“, TAS-A), Frage B (Designs, anderer Chat), Startdesign, Steuerkontext/Mengenstaffel/Logo-Modul (Operator-Vorschläge ohne Widerspruch).

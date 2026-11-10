@@ -1,0 +1,139 @@
+{
+  "at": "2026-11-10T05:04:11.693Z",
+  "base": "f69c8dbfd1703e4abe2da80c1955d086cddbe547",
+  "source": "6c310120d48daef12b16e9568916a62ecd278597",
+  "sourceBrowserProof": "59e02af2f877774c660cfd067f1ea9881ec89477",
+  "currentProductionFiles": [
+    {
+      "path": "app/configurator/variant-m/product-design-gallery.mjs",
+      "beforeSha256": "3fd3dd7cd080a08868e91feece9cd536e7795ab3636cbbcf5c773d490d75961e",
+      "afterSha256": "041ac15c181b664282ec9e337704d17f6624894c5fec7a3f8b20d9c6975dbfcd"
+    },
+    {
+      "path": "app/workshop/ui/shop-design-switch.mjs",
+      "beforeSha256": "7eb0f39b94948165f1d17bf5b0bafc6ccd271e0d3def12fc3a05070b8d092fc9",
+      "afterSha256": "83af68c2c70b902d577cef0110e560720962a09decb931c8ba732c4f90677e0c"
+    }
+  ],
+  "inheritedPacket": {
+    "installerSha256": "782fa652eb0281149bfeb12ff25b0d79dcdbbd2409193a0580112a5226a641ba",
+    "gzipSha256": "975abe4f83b8cc89877f50f7d69313ce4f03fd4b9c65ef5eef008f70b80a4e21",
+    "twoPatchesExactlyReconstruct": true,
+    "executed": false
+  },
+  "regression": {
+    "command": "node --test app/configurator/variant-m/first-panel-preload.test.mjs app/workshop/shop-design-switch.test.mjs app/configurator/variant-m/gallery-pager.test.mjs",
+    "node": "v24.22.1",
+    "passed": 24,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 253.5947,
+    "runSeparatelyOnce": true
+  },
+  "bundleSmoke": {
+    "before": {
+      "core": {
+        "name": "editor-b755275a7fccc96c.mjs",
+        "sha256": "b0cd7b1752065c1d3cf0d3198d9ebf95b590f71a9f3f33860fd2bf2746239961",
+        "bytes": 1451622,
+        "modules": 154,
+        "styles": 16
+      },
+      "device": {
+        "name": "editor-2e3da3b988eb0da4.mjs",
+        "sha256": "b227638c16aebd6cd7c685c44d3ace5b75205e3e1774b5ddd39c34c9d32e1ccf",
+        "bytes": 37895,
+        "modules": 6,
+        "styles": 0
+      },
+      "executions": {
+        "family-formats-ui": {
+          "name": "editor-c419119a6ef437c6.mjs",
+          "sha256": "d6230c6059e2b8b5e4334ea0d3a401aa41f362b6fa3fe8035b8784b74d7ef78c",
+          "bytes": 7915,
+          "modules": 1,
+          "styles": 0
+        },
+        "stake-execution": {
+          "name": "editor-69eb9880b804359a.mjs",
+          "sha256": "7601bdd524c58ddacbd0edf5e4067139002f220c67763e7eb7dafd8dbb8331a3",
+          "bytes": 3342,
+          "modules": 1,
+          "styles": 0
+        },
+        "memorial-execution": {
+          "name": "editor-e1e24f0ee6b66daf.mjs",
+          "sha256": "d4fc652911bec1326419762462fb206660c26d5d97e9823e16501c179262a58c",
+          "bytes": 10914,
+          "modules": 2,
+          "styles": 0
+        }
+      },
+      "presentation": {
+        "name": "editor-bf7d088b9bdf015e.mjs",
+        "sha256": "85980521d93b13147e844a0bf7986f128ff92fdd078fecead57f2494f0db513c",
+        "bytes": 134324,
+        "modules": 15,
+        "styles": 0
+      }
+    },
+    "after": {
+      "core": {
+        "name": "editor-3bae9f5d9bc67f15.mjs",
+        "sha256": "271f863b036b729c4aa688e1dbbc96afae3e72f5941cce9a76875aab8d7bdadb",
+        "bytes": 1452734,
+        "modules": 154,
+        "styles": 16
+      },
+      "device": {
+        "name": "editor-2e3da3b988eb0da4.mjs",
+        "sha256": "b227638c16aebd6cd7c685c44d3ace5b75205e3e1774b5ddd39c34c9d32e1ccf",
+        "bytes": 37895,
+        "modules": 6,
+        "styles": 0
+      },
+      "executions": {
+        "family-formats-ui": {
+          "name": "editor-c419119a6ef437c6.mjs",
+          "sha256": "d6230c6059e2b8b5e4334ea0d3a401aa41f362b6fa3fe8035b8784b74d7ef78c",
+          "bytes": 7915,
+          "modules": 1,
+          "styles": 0
+        },
+        "stake-execution": {
+          "name": "editor-69eb9880b804359a.mjs",
+          "sha256": "7601bdd524c58ddacbd0edf5e4067139002f220c67763e7eb7dafd8dbb8331a3",
+          "bytes": 3342,
+          "modules": 1,
+          "styles": 0
+        },
+        "memorial-execution": {
+          "name": "editor-e1e24f0ee6b66daf.mjs",
+          "sha256": "d4fc652911bec1326419762462fb206660c26d5d97e9823e16501c179262a58c",
+          "bytes": 10914,
+          "modules": 2,
+          "styles": 0
+        }
+      },
+      "presentation": {
+        "name": "editor-bf7d088b9bdf015e.mjs",
+        "sha256": "85980521d93b13147e844a0bf7986f128ff92fdd078fecead57f2494f0db513c",
+        "bytes": 134324,
+        "modules": 15,
+        "styles": 0
+      }
+    },
+    "onlyCoreChanged": true,
+    "liveOverlay": false,
+    "note": "Repository-only build. Actual protected active styles and two foreign live sources must still be preserved by the existing guarded installer."
+  },
+  "untouched": {
+    "otherTrackedAppFiles": true,
+    "styles": true,
+    "prices": true,
+    "productData": true,
+    "rootWorktree": true
+  },
+  "noLiveAccess": true,
+  "noNewBrowserAcceptance": true
+}

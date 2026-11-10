@@ -63,6 +63,7 @@ import {planPreparedDesign,applyPreparedDesign} from './prepared-design.mjs';
 import {createProductFamilies} from './product-families.mjs';
 import {randomBytes,randomUUID,timingSafeEqual} from 'node:crypto';
 import fs from 'node:fs';
+import {gzipSync} from 'node:zlib';
 import path from 'node:path';
 import {createProductRepository} from './repository.mjs';
 import {createProfileLibrary} from './profile-library.mjs';
@@ -92,6 +93,8 @@ const bundledFile=path=>()=>JSON.parse(fs.readFileSync(new URL('../designs/'+pat
 const BUNDLED_FAMILIES=[{id:'steel-door-signs',name:'Edelstahl-Türschilder (vorhandene Stammdaten)',load:bundledFile('steel-door-signs/family.json')},
  ...[['edelstahl','Edelstahl','Stammdaten teils offen'],['schiefer-natur','Naturschiefer','Werte aus Testdaten, bitte bestätigen'],['schiefer-premium','Premium-Schiefer','Stammdaten offen'],['acryl-schwarz','Acrylglas schwarz','Stammdaten offen'],['acryl-anthrazit','Acrylglas anthrazit','Stammdaten offen']].map(([k,n,state])=>({id:'gedenktafel-30x20-'+k,name:'Gedenktafel 30 × 20 · '+n+' ('+state+')',load:bundledFile('gedenktafeln-30x20/'+k+'.json')}))];
 const sameToken=(actual,expected)=>typeof actual==='string'&&/^[a-f0-9]{64}$/.test(actual)&&timingSafeEqual(Buffer.from(actual),Buffer.from(expected));
+// Große Antworten (Designliste einer Linie, bis ~20 MB) komprimiert senden, wenn der Browser gzip annimmt.
+const jsonMaybeGzip=(req,res,status,value)=>{const raw=Buffer.from(JSON.stringify(value));if(raw.length<262144||!/\bgzip\b/.test(String(req.headers['accept-encoding']||'')))return res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Content-Length':raw.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(raw);const bytes=gzipSync(raw,{level:6});res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Content-Encoding':'gzip','Vary':'Accept-Encoding','Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);};
 const json=(res,status,value)=>{const bytes=Buffer.from(JSON.stringify(value));res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}).end(bytes);};
 async function body(req,limit=2*1024*1024){
   if(!/^application\/json(?:;|$)/i.test(req.headers['content-type']||''))fail(415,'json_required','Bitte JSON-Daten senden.');
@@ -436,7 +439,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
         if(method==='GET'){
           const startDesigns=q.get('startDesigns');
           if(startDesigns!==null&&!['true','false'].includes(startDesigns))fail(422,'designs_query','startDesigns ist true oder false.');
-          return json(res,200,await designDashboardWithFit(root,{linie:q.get('linie'),reihe:q.get('reihe'),material:q.get('material'),status:q.get('status'),freigabe:q.get('freigabe'),bestand:q.get('bestand'),startDesigns:startDesigns==='true',repository,available:formFonts}));
+          return jsonMaybeGzip(req,res,200,await designDashboardWithFit(root,{linie:q.get('linie'),reihe:q.get('reihe'),material:q.get('material'),status:q.get('status'),freigabe:q.get('freigabe'),bestand:q.get('bestand'),startDesigns:startDesigns==='true',repository,available:formFonts}));
         }
         if(method==='PATCH')return json(res,200,await patchDesignWithTargetReview(root,await body(req,16384),{actor:merchantSession?.subject||localActor,available:formFonts}));
         fail(405,'method_not_allowed','Designs lesen (GET) oder ändern (PATCH).');

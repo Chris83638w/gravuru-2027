@@ -5,10 +5,11 @@ import {transformedCorners} from './usability-model.mjs';
 
 export {uvCrossGlassPreview} from './uv-cross-glass.mjs';
 
-// Placement in the square studio scene. The foreground covers the stake while
-// the editor keeps using the full contour in physical millimetres.
-const plateTop=6,plateHeight=84,ground=76;
+// The planted view fits the visible part of the cross. Editing and zooming
+// use a smaller fit so the full contour stays reachable.
+const plateTop=3,plateHeight=106,editingHeight=94,ground=91;
 const stageSelector=':host([data-product-execution="uv-cross"][data-universal-profile][data-ux-layout]) :is(.ux-shell .ux-preview,.c-large-preview .fk-live-preview) .stage[data-uv-cross-stage]';
+const revealedStage=':is([data-uv-cross-reveal],[data-view-zoom]:not([data-view-zoom="1"]))';
 
 export function uvCrossSizeMarkup(config){
  const formats=config.familyFormats?.formats||[];
@@ -49,8 +50,8 @@ export function installUvCrossExecution({el,config,picks,pictures}){
  style.textContent=`
  ${stageSelector}:not(.acryl-scene){
   --uv-cross-room:calc(100dvh - 220px - var(--ux-textbar-h,0px));
-  --uv-cross-backdrop:radial-gradient(ellipse at 24% 16%,#f8f6f1,transparent 68%),
-    linear-gradient(#ede9e2,#e8e3da ${ground-.35}%,#ded7ca ${ground+.15}%,#f2eee7);
+  --uv-cross-height:${plateHeight};
+  --uv-cross-backdrop:radial-gradient(ellipse at 43% 29%,#f5f6f7,#e3e6e9 85%);
   box-sizing:border-box!important;position:relative!important;isolation:isolate;
   width:min(100%,max(120px,var(--uv-cross-room)))!important;height:auto!important;
   min-height:0!important;max-height:none!important;aspect-ratio:1!important;
@@ -59,10 +60,11 @@ export function installUvCrossExecution({el,config,picks,pictures}){
   background:var(--uv-cross-backdrop)!important;
  }
  ${stageSelector}:is(.c-large-preview .stage){--uv-cross-room:calc(100dvh - 245px)}
+ ${stageSelector}${revealedStage}{--uv-cross-height:${editingHeight}}
  ${stageSelector}:not(.acryl-scene)>.plate-holder{
-  --uv-cross-plate-width:calc(${plateHeight}cqw * (var(--ux-ratio)));
+  --uv-cross-plate-width:calc(var(--uv-cross-height) * 1cqw * (var(--ux-ratio)));
   position:absolute!important;top:${plateTop}%!important;left:calc(50% - var(--uv-cross-plate-width) / 2)!important;
-  width:var(--uv-cross-plate-width)!important;height:${plateHeight}%!important;
+  width:var(--uv-cross-plate-width)!important;height:calc(var(--uv-cross-height) * 1%)!important;
   max-width:none!important;max-height:none!important;min-width:0!important;min-height:0!important;
   margin:0!important;z-index:1;
  }
@@ -73,19 +75,19 @@ export function installUvCrossExecution({el,config,picks,pictures}){
  .uv-cross-refraction{
   position:absolute;inset:0;pointer-events:none;
   mask-size:100% 100%;mask-repeat:no-repeat;
-  backdrop-filter:blur(.35px) contrast(1.035) brightness(.985);
+  backdrop-filter:blur(.35px) contrast(1.04) brightness(.975);
  }
  .uv-cross-foreground{
   position:absolute;inset:0;pointer-events:none;z-index:2;
-  background:radial-gradient(ellipse 12% 1.35% at 50% ${ground}%,#67584545,transparent),var(--uv-cross-backdrop);
-  mask-image:linear-gradient(transparent ${ground-.5}%,#000 ${ground+.15}%);
+  background:radial-gradient(ellipse 11% 1.05% at 50% ${ground}%,#4c566054,transparent),var(--uv-cross-backdrop);
+  mask-image:linear-gradient(transparent ${ground-.35}%,#000 ${ground+.1}%);
  }
- [data-uv-cross-reveal]>.uv-cross-foreground,[data-uv-cross-stage][data-view-zoom]:not([data-view-zoom="1"])>.uv-cross-foreground{visibility:hidden}
+ ${stageSelector}${revealedStage}>.uv-cross-foreground{visibility:hidden}
  ${stageSelector} :is(.dimension-x,.dimension-y){display:none!important}
  .uv-cross-dimensions{
   position:absolute;z-index:3;top:8px;left:8px;padding:4px 8px;border-radius:5px;
-  background:#fbfaf6f5;box-shadow:0 1px 4px #3f382514;
-  color:#253229;font:600 12px/1.25 system-ui,sans-serif;white-space:nowrap;
+  background:#fafbfcf5;box-shadow:0 1px 4px #30394014;
+  color:#27323a;font:600 12px/1.25 system-ui,sans-serif;white-space:nowrap;
  }
  @media(max-width:767px){
   ${stageSelector}:is(.ux-preview .stage){--uv-cross-room:var(--ux-mobile-preview-h,40dvh)}
@@ -98,6 +100,8 @@ export function installUvCrossExecution({el,config,picks,pictures}){
  @media(max-width:420px){[data-uv-cross-sizes] button.m-option-tile strong{font-size:12px}}
  `;
  el.shadowRoot.append(style);
+ // Zoom uses the fitted holder box. Its size can change without a stage resize.
+ if(typeof ResizeObserver==='function')new ResizeObserver(()=>el.uxRefreshViewZoom?.()).observe(holder);
  let lastOutline;
  const mm=new Intl.NumberFormat('de-DE',{maximumFractionDigits:3});
  return ()=>{

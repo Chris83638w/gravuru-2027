@@ -1,3 +1,9 @@
+## 10.11.2026 · Codex · Größere UV-Prio-Vorschau und Produktakten nach Issue 227
+
+Zwei Vorschaumodule auf Basis `91a69e3` angepasst. Das Kreuz erscheint im gleichen quadratischen Prio-Ausschnitt nominal rund 26 % größer auf neutral hellgrauer Fläche. Der Spieß ist im unteren Randbereich verdeckt, beim Zoomen oder Bearbeiten ist die vollständige Kontur sichtbar. V1 und V2 im privaten Teststand aktiviert. V2 verschmälert die polierte Kante und bestand 32/32 Server-Tests sowie den Editor-Build. Der Browser bestätigte bei UV-H-O01 die schmalere Kante, alle drei Größen und die vollständige Kontur bei 101 % Zoom.
+
+Vier Excel-Bestandsreferenzen nach Issue 227 sind im Katalogstand `d0a11e9` archiviert. Sie dokumentieren die vorhandenen Produktstände auf Revision 2. Die Freigabe der Excel-Versionen und die separate Bestätigung des technisch hinterlegten Zusatzmotivpreises von 169 Cent stehen aus. HTTP 403 blockierte den abschließenden Browsercheck von UV-H-F01. Nächster Schritt ist die V2-Fotoansicht nach erneuter Anmeldung zu prüfen. [Übergabe und Paketdaten](docs/handoffs/2026-11-10-uv-cross-prio-edge.md).
+
 ## 09.11.2026 · Codex · Heller Studiohintergrund im UV-Prio-Konfigurator
 
 Christopher bat wegen der schlecht lesbaren Schrift und Motive vor dem Garten um einen helleren Ton. Die quadratische Vorschau im geschützten Prio-R15-Konfigurator zeigt nun einen hellen Studiohintergrund mit dezenter Standlinie. UV-H-O01 im Browser geprüft. Dunkle Schrift, Motive und polierte Acrylkante sind klar erkennbar. Das Paket betrifft ausschließlich die Darstellung der UV-Kreuze. Designfarben, Druckexport, Preise und Produktstände entsprechen weiterhin DXF-R2.

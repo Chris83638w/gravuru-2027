@@ -11,6 +11,7 @@ import {readThemeCatalog} from '../../workshop/theme-catalog.mjs';
 import {openKatalog,katalogPath} from '../../workshop/katalog-source.mjs';
 import {doorbellImageResource,isDoorbellImagePath} from '../../workshop/doorbell-image-resource.mjs';
 import {isPrioPresentationAsset} from '../mobile-demo/assets.mjs';
+import {createPreparedEditorBundles} from '../../workshop/prepared-editor-bundles.mjs';
 
 const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.txt':'text/plain; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml','.gz':'application/gzip'};
 // Ladezeit: Textantworten gzip-komprimiert, wenn der Browser es anbietet (Inhalt unverändert).
@@ -136,6 +137,14 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
       res.end(req.method==='HEAD'?undefined:bytes);
     } catch {if(!res.headersSent)fail(404);else res.end();}
   });
+  // Private composition hook, not a URL or a second authorization policy.
+  // Acryl bundles keep the same host check while avoiding the loopback/rewrite per request.
+  server.prepareBundleDelivery=transform=>createPreparedEditorBundles({outputDirectory,transform,
+    authorize:(req,pathname)=>adminHost?adminHost.authorize(req,pathname)&&adminHost.allows(pathname):
+      [`127.0.0.1:${server.address()?.port}`,`localhost:${server.address()?.port}`].includes(req.headers.host)&&
+      (!req.headers.origin||req.headers.origin==='http://'+req.headers.host)&&req.headers['sec-fetch-site']!=='cross-site',
+    headers:pathname=>({'Content-Security-Policy':adminHost?.cspFor(pathname)||csp,
+      ...(adminHost?{'Referrer-Policy':'no-referrer'}:{}),'X-Content-Type-Options':'nosniff','X-Robots-Tag':'noindex, nofollow, noarchive'})});
   return server;
 }
 

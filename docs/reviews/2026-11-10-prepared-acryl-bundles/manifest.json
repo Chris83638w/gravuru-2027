@@ -1,0 +1,24 @@
+{
+  "base": "f69c8dbfd1703e4abe2da80c1955d086cddbe547",
+  "scope": "public immutable generated bundles only",
+  "files": [
+    {
+      "file": "app/configurator/variant-m/server.mjs",
+      "beforeSha256": "f1445f2dc4f90637a77c3b80c0cd6271dd204d4136c9d598343bce3cc904500b",
+      "afterSha256": "c3d8a32805e272d78cfbe16dad1b7570c9e72a738f93fa930bddbac7a3bf50ca",
+      "bytes": 17100
+    },
+    {
+      "file": "app/workshop/acryl-employee-host.mjs",
+      "beforeSha256": "20cbb93fb4430e8a21c33ddccd132da17c111883a147b66d310b2f7a80b15766",
+      "afterSha256": "0ff5ab74f792da5729ea6d34637d89950858d05994403893882a1e26b41bda4d",
+      "bytes": 12300
+    },
+    {
+      "file": "app/workshop/prepared-editor-bundles.mjs",
+      "beforeSha256": null,
+      "afterSha256": "2c4152da80c5a669fb5c8420c3a8b1ac3811d37045d1598bf257b6713e40d450",
+      "bytes": 3949
+    }
+  ]
+}

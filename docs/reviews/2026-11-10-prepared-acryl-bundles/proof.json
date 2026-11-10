@@ -1,0 +1,49 @@
+{
+  "base": "f69c8dbfd1703e4abe2da80c1955d086cddbe547",
+  "liveWrites": false,
+  "productionFiles": 3,
+  "tests": {
+    "uniquePassed": 43,
+    "skipped": 0,
+    "initialCombined": {
+      "passed": 39,
+      "total": 41,
+      "remaining": "Two unrelated existing Excel exports needed documented openpyxl dependency."
+    },
+    "targetedExcelAfterOwnVenv": {
+      "passed": 2,
+      "total": 2
+    },
+    "finalNewTests": {
+      "passed": 8,
+      "total": 8
+    },
+    "commands": [
+      "node --test app/workshop/prepared-editor-bundles.test.mjs app/workshop/acryl-host-routing.test.mjs app/configurator/variant-m/bundle.test.mjs app/workshop/shopify-admin-host.test.mjs",
+      "GRAVURU_PYTHON=<own-venv>; node --test --test-name-pattern=\"variant report and saved checks|batch correction download\" app/workshop/shopify-admin-host.test.mjs",
+      "node --test app/workshop/prepared-editor-bundles.test.mjs"
+    ]
+  },
+  "measurement": {
+    "scope": "local HTTP loopback, actual released public core",
+    "core": "editor-e49b3da45a697a36.mjs",
+    "sourceSha256": "f3dbf79b06a3c5c9ff617fd2aef8e972df44a4d0cfe8bf38d4b04260b07ab133",
+    "rewrittenSha256": "12c0c828986e8acf132e34ca078527b21b577c69edc96a5405d1e0b002c09af4",
+    "identityBytes": 1454759,
+    "gzipBytes": 484780,
+    "prepareMs": 44.9211,
+    "old": {
+      "samples": 12,
+      "minMs": 10.266,
+      "medianMs": 14.2141,
+      "maxMs": 20.3354
+    },
+    "prepared": {
+      "samples": 12,
+      "minMs": 2.1567,
+      "medianMs": 3.1666,
+      "maxMs": 18.974
+    },
+    "limits": "No LiteSpeed or external network; old Node route returns identity and edge compression is not simulated. No predicted customer latency."
+  }
+}

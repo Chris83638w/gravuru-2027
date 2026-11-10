@@ -73,6 +73,7 @@ export async function createAcrylEmployeeHost({legacyRelease,dataDirectory,env=p
   integration=createConfiguratorIntegration({settings:customerIntegration,legacy:existing.workshop,acryl:acrylWorkshop,origin:config.origin,shopifySessions:config.runtime.shopifySessions,orderWebhook:config.orderWebhook});
   inner.address=net.Server.prototype.address;net.Server.prototype.listen.call(inner,0,'127.0.0.1');await once(inner,'listening');
  }catch(e){inner?.close();existing?.close();lock?.stdin.end();throw e;}
+ const deliverBundle=inner.prepareBundleDelivery(acrylAssetText);
  const port=inner.address().port,server=http.createServer((req,res)=>{
   let url;try{url=new URL(req.url,config.origin);}catch{return res.writeHead(400).end();}
   if(req.headers.host!==config.host||req.headers['x-forwarded-proto']!=='https'||!req.url.startsWith('/')||req.url.startsWith('//'))return res.writeHead(403).end();
@@ -83,6 +84,7 @@ export async function createAcrylEmployeeHost({legacyRelease,dataDirectory,env=p
   if(integration?.statusWebhook&&url.pathname===DOORBELL_STATUS_WEBHOOK_PATH)return void integration.statusWebhook(req,res);
   const target=acrylRoute(url.pathname);
   if(!target)return existing.emit('request',req,res);
+  if(deliverBundle(req,res,target))return;
   const headers={host:config.host};for(const key of ['authorization','accept','accept-language','content-type','content-length','origin','x-gravuru-csrf','x-gravuru-draft','sec-fetch-site','sec-fetch-mode','sec-fetch-dest'])if(req.headers[key]!==undefined)headers[key]=req.headers[key];
   const upstream=http.request({hostname:'127.0.0.1',port,path:target+url.search,method:req.method,headers},response=>{
    const publicDoorbellImage=response.statusCode===200&&/^\/doorbell-assets\/[a-f0-9]{64}\.webp$/.test(target);

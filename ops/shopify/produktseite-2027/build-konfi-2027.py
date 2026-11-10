@@ -24,6 +24,7 @@ H={"highlight_style":"none","highlight_font_style":"italic","highlight_style_col
 def tab(h,c,page=""): return {"type":"collapsible_tab","settings":{"heading":h,"heading_size":"h4","icon":"none","content":c,"page":page,"default_open":False,"show_below_product_media":True}}
 def col(t,x): return {"type":"column","settings":{"title":t,**H,"heading_size":"h4","text":"<p>%s</p>"%x,"text_size":"text-base","button_label":"","button_link":"","button_style":"btn--underline","button_icon":"none"}}
 main={"type":"main-product","blocks":{
+ "custom_liquid_gv27css":{"type":"custom_liquid","settings":{"custom_liquid":"<link rel=\"preload\" as=\"font\" type=\"font/woff2\" crossorigin href=\"{{ 'gv27-bricolage-latin.woff2' | asset_url }}\"><link rel=\"preload\" as=\"font\" type=\"font/woff2\" crossorigin href=\"{{ 'gv27-instrument-latin.woff2' | asset_url }}\">{{ 'gv27.css' | asset_url | stylesheet_tag }}"}},
  "badges":{"type":"badges","settings":{"show_soldout_badge":True,"show_sale_badge":True,"sale_badge_type":"percentage"}},
  "title":{"type":"title","settings":{"heading_size":"h3"}},
  "text_AbYXLT":{"type":"text","settings":{"text":"{{ product.metafields.custom.untertitel.value }}","text_style":"body"}},
@@ -44,7 +45,7 @@ main={"type":"main-product","blocks":{
  "collapsible_tab_TikNb8":tab("Sicherheitshinweise","{{ product.metafields.custom.sicherheitshinweise | metafield_tag }}"),
  "sticky_atc_bar_7HgNgP":{"type":"sticky-atc-bar","settings":{"visibility":"all","style":"minimalist","container":"full","show_atc_button":True,"show_dynamic_checkout_buttons":False,"show_quantity":True}},
  "custom_liquid_gv27cta":{"type":"custom_liquid","settings":{"custom_liquid":cta}}},
- "block_order":["badges","title","text_AbYXLT","custom_liquid_gv27preis","icon_with_text","custom_liquid_mTPWzc","promise_box_qjdKWr","shipping_FfQnNC","quantity_selector_qYU4Rg","buy_buttons","collapsible-row-1","collapsible-row-2","collapsible-row-3","collapsible_tab_TikNb8","sticky_atc_bar_7HgNgP","custom_liquid_gv27cta"],
+ "block_order":["custom_liquid_gv27css","badges","title","text_AbYXLT","custom_liquid_gv27preis","icon_with_text","custom_liquid_mTPWzc","promise_box_qjdKWr","shipping_FfQnNC","quantity_selector_qYU4Rg","buy_buttons","collapsible-row-1","collapsible-row-2","collapsible-row-3","collapsible_tab_TikNb8","sticky_atc_bar_7HgNgP","custom_liquid_gv27cta"],
  "custom_css":["@media (min-width: 1280px) {.product {padding-inline: 5rem; }}"],
  "settings":{"color_scheme":"scheme-1","use_color_scheme_in_container":False,"enable_sticky_info":True,"media_size":"large","gallery_layout":"vertical-carousel","mobile_thumbnails":"show","show_image_border":False,"enable_image_zoom":True,"enable_video_looping":True,"padding_top":0,"padding_bottom":60}}
 B={"button_label":"","button_link":"","button_style":"btn--underline","button_icon":"none"}

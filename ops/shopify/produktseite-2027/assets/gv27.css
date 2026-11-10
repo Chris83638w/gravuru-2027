@@ -1,0 +1,49 @@
+/* gravuru 2027 – Designschicht (Entwurf). Farben: Nachtblau, Sand, Bernstein. Schriften selbst gehostet (OFL). */
+@font-face{font-family:"Bricolage Grotesque";src:url("gv27-bricolage-latin.woff2") format("woff2");font-weight:200 800;font-style:normal;font-display:swap}
+@font-face{font-family:"Instrument Sans";src:url("gv27-instrument-latin.woff2") format("woff2");font-weight:400 700;font-style:normal;font-display:swap}
+:root,.color-scheme-1{
+  --color-background:255,255,255;--color-secondary-background:247,243,236;--color-primary:19,41,75;
+  --color-text-heading:19,41,75;--color-foreground:28,36,52;--color-subtext:88,96,112;--color-border:228,221,210;
+  --color-button:244,166,42;--color-button-text:19,41,75;
+  --color-secondary-button:255,255,255;--color-secondary-button-border:19,41,75;--color-secondary-button-text:19,41,75;
+  --color-link:19,41,75;--color-link-hover:19,41,75;--color-product-price-sale:180,58,40;--color-progress-bar:244,166,42;
+  --font-body-family:"Instrument Sans",system-ui,sans-serif;--font-heading-family:"Bricolage Grotesque","Instrument Sans",sans-serif;
+  --font-heading-weight:650;--font-heading-letter-spacing:-0.02em;
+  --font-subheading-family:"Instrument Sans",system-ui,sans-serif;--font-navigation-family:"Instrument Sans",system-ui,sans-serif;--font-navigation-weight:600;
+  --font-button-family:"Instrument Sans",system-ui,sans-serif;--font-button-weight:700;
+  --font-pcard-title-family:"Instrument Sans",system-ui,sans-serif;--font-pcard-price-family:"Instrument Sans",system-ui,sans-serif;--font-pcard-badge-family:"Instrument Sans",system-ui,sans-serif;
+}
+.color-scheme-info{--color-background:247,243,236;--color-secondary-background:255,255,255;--color-text-heading:19,41,75;--color-foreground:28,36,52;--color-subtext:88,96,112;--color-border:228,221,210;--color-button:244,166,42;--color-button-text:19,41,75;--color-link:19,41,75}
+/* Kopf */
+.topbar-section,.topbar-section [class*="color-"]{--color-background:19,41,75;--color-foreground:255,255,255;--color-text-heading:255,255,255;--color-subtext:214,222,235;--color-link:255,255,255;--color-link-hover:244,166,42;--color-border:42,66,104}
+.topbar-section{background:rgb(19,41,75);color:#fff}
+.topbar-section a,.topbar-section span,.topbar-section p{color:#fff}
+.header-section .header{border-bottom:1px solid rgb(228,221,210)}
+.header input[type="search"],.header .search__input{border-radius:999px;border-color:rgb(228,221,210);background:rgb(247,243,236)}
+/* Knöpfe */
+.btn,.button{border-radius:999px}
+.btn--primary,.btn--gravuru-primary{background:rgb(244,166,42)!important;color:rgb(19,41,75)!important;border-color:rgb(244,166,42)!important;box-shadow:0 6px 18px rgba(244,166,42,.35);letter-spacing:0}
+.btn--primary:hover,.btn--gravuru-primary:hover{background:rgb(232,150,22)!important;transform:translateY(-1px)}
+.gravuru-personalisieren .btn--gravuru-primary{display:flex;align-items:center;justify-content:center;width:100%;min-height:58px;font-size:1.8rem}
+.gravuru-personalisieren p{color:rgb(88,96,112)!important;opacity:1!important}
+/* Produktkopf */
+.product__block--title h1{font-family:var(--font-heading-family);font-weight:700;font-size:clamp(2.8rem,2.4vw + 1.6rem,4.2rem);line-height:1.08;letter-spacing:-0.025em;color:rgb(19,41,75)}
+.gv27-preis .f-price-item{color:rgb(19,41,75)!important;font-family:var(--font-heading-family);font-weight:700;font-size:3.2rem}
+.gv27-preis .text-subtext{font-size:1.6rem}
+.product__media-wrapper img{border-radius:20px}
+.product__media-wrapper{background:rgb(247,243,236);border-radius:24px}
+/* Vertrauenspunkte */
+.promise-box{gap:10px}
+.promise-box__item{background:rgb(247,243,236);border:0!important;border-radius:16px;padding:14px 16px;box-shadow:none}
+.promise-box__title{font-family:var(--font-body-family);font-weight:700;color:rgb(19,41,75);font-size:1.5rem}
+.promise-box__text{color:rgb(88,96,112);font-size:1.3rem;line-height:1.4}
+.promise-box__icon{filter:grayscale(1) brightness(.35) sepia(1) hue-rotate(185deg) saturate(3)}
+/* Abschnitte */
+.section__header h2,.s__header h2{font-weight:700;letter-spacing:-0.02em}
+.accordion-details{border-color:rgb(228,221,210)}
+.accordion-details__summary h2,.accordion-details__summary .h4{font-family:var(--font-body-family);font-weight:600}
+.multicolumn .h4,.multicolumn h3{font-family:var(--font-heading-family);font-weight:650}
+/* Fuß */
+.footer{--color-background:19,41,75;--color-secondary-background:28,54,95;--color-foreground:255,255,255;--color-text-heading:255,255,255;--color-subtext:206,214,228;--color-link:255,255,255;--color-link-hover:244,166,42;--color-border:42,66,104;--color-field:28,54,95;--color-field-text:255,255,255;background:rgb(19,41,75);color:#fff}
+/* Handy-Knopf */
+.gv27-cta.is-on{background:#fff}

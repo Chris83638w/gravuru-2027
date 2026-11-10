@@ -31,7 +31,6 @@
 .gv27-preis .f-price-item{color:rgb(19,41,75)!important;font-family:var(--font-heading-family);font-weight:700;font-size:3.2rem}
 .gv27-preis .text-subtext{font-size:1.6rem}
 .product__media-wrapper img{border-radius:20px}
-.product__media-wrapper{background:rgb(247,243,236);border-radius:24px}
 /* Vertrauenspunkte */
 .promise-box{gap:10px}
 .promise-box__item{background:rgb(247,243,236);border:0!important;border-radius:16px;padding:14px 16px;box-shadow:none}

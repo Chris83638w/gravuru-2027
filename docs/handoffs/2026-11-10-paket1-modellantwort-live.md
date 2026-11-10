@@ -79,3 +79,19 @@ Sicherung der alten Stände: `private/claude-paket1a-20261110/` (`*.vorher-8ceb8
 Messung live (Protokoll, 5 Treffer): `msContext` 14 ms je Abruf (vorher ca. 260), `msChecks` unter 1 ms (vorher ca. 127), `msStartPublic` 27 ms (vorher ca. 359). Von außen: Modellabruf ohne TLS ca. 0,30 s (vorher ca. 0,85 s); vier gleichzeitige, Zeit bis erstes Byte mit TLS: 0,6 / 0,9 / 0,9 / 1,0 s (vorher 1,2 / 2,0 / 2,8 / 3,6 s). Modellinhalt identisch, `startPreview` bis auf `target` identisch, Konfi 1440×800 und 390×844 pixelgleich zu vorher.
 
 Offen/beobachtet: (1) Zwischen Prozess und außen bleiben ca. 0,15 s über dem billigen Abruf (0,13 s) – nicht untersucht. (2) Nach jedem Neustart einmalig ein Abruf mit 6–8 s; im Protokoll stehen dann je zwei Paare `shop_gallery_cache_hit` (ca. 3 s) / `public_preview_prepared` – Startaufwärmen blockiert, evtl. zwei Prozesse. (3) Review Mika steht aus.
+
+## Nachtrag 10.11.2026, 19:15 – #231-Port eingespielt und zurückgenommen (Störung)
+
+- Freigabe Chris im Chat: „Live“ (18:03). Eingespielt 18:20–18:24: `app/workshop/http.mjs` `7704ff02b80e7103`,
+  `app/workshop/design-dashboard.mjs` `ee4b1060d2d03737`, `app/workshop/ui/design-dashboard-ui.mjs` `6a09c4c753df70c6`
+  (Commit `38dab40`), Neustart. Kunden-Konfi danach: HTTP 200, Modell inhaltsgleich, PC/Handy pixelgleich.
+- Öffnen von Werkstatt › Designs hat die App angehalten (ca. 18:38–18:53, über 13 Minuten ohne Antwort,
+  auch Kunden-Konfi). Neustart, dann Rücknahme auf die Vorher-Dateien (`2a4069c72084e923`, `59fc7c49cc5f24ff`,
+  `0be5a823b9bb4450`), zweiter Neustart. Kontrolle: HTTP 200, Modell inhaltsgleich, PC/Handy pixelgleich, ca. 0,3 s.
+- Sicherungen der Vorher-Dateien liegen auf dem Server in `private/claude-paket1a-20261110/*.vorher-8ceb866`.
+- Ursache: Designliste rechnet synchron im Kundenprozess; kalter Katalog auf der Serverplatte braucht Minuten.
+  Nicht der neue Code (lokal 2,5 s statt 18 s je Linie). Messung in #229.
+- Folge: Paket 1c (Katalog-Arbeiter, Branch `dev/claude-paket1c-katalog-arbeiter-20261110`). Bis dahin
+  Werkstatt › Designs auf dem Server nicht öffnen.
+- Katalog auf dem Server: Git-Arbeitsverzeichnis, HEAD `b5d8f28bc1`; Fast-Forward auf `8236b8bfa` = 552 Dateien
+  (168 neu, 384 geändert), bei Mika (Auftrag in #233).

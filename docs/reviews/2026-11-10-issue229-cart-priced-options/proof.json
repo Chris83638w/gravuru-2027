@@ -1,0 +1,92 @@
+{
+  "schema": "gravuru-issue229-cart-diagnostic/v1",
+  "recordedAt": "2026-11-10T14:13:49.133Z",
+  "node": "v24.22.1",
+  "branch": "dev/mika-cart229-20261110",
+  "candidate": "8e394cd0e440b94ef3b1b2c08bd32c92c3b40dc5",
+  "baseline": "8ceb866be1ed7b85fd8b0813babe78a833b60d11",
+  "observedRuns": [
+    {
+      "cwd": "cart229-baseline-20261110",
+      "command": "node --test app/workshop/cart-priced-options.test.mjs",
+      "tests": 4,
+      "passed": 0,
+      "failed": 4,
+      "skipped": 0,
+      "exitCode": 1,
+      "failure": "Fixture capturePersonalization rejects V3; cart_personalization HTTP422"
+    },
+    {
+      "cwd": "cart229-20261110",
+      "command": "node --test app/workshop/cart-priced-options.test.mjs",
+      "tests": 4,
+      "passed": 0,
+      "failed": 4,
+      "skipped": 0,
+      "exitCode": 1,
+      "failure": "Fixture capturePersonalization rejects V3; cart_personalization HTTP422"
+    },
+    {
+      "cwd": "cart229-20261110",
+      "command": "node --test app/workshop/cart-priced-options-diagnostic.test.mjs",
+      "tests": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "exitCode": 0
+    },
+    {
+      "cwd": "cart229-20261110",
+      "command": "node --test app/workshop/cart-personalization.test.mjs app/workshop/customer-vector-logo-pricing.test.mjs",
+      "tests": 22,
+      "passed": 22,
+      "failed": 0,
+      "skipped": 0,
+      "exitCode": 0
+    }
+  ],
+  "sourceHashes": [
+    {
+      "file": "app/workshop/cart-priced-options.test.mjs",
+      "sha256": "d92368e99ef7ce11acc03ad83fd8b287f9892f73576579f30c46dfdec0935bfc",
+      "bytes": 5536
+    },
+    {
+      "file": "app/workshop/cart-personalization.mjs",
+      "sha256": "2aa4ef46b03ff70ac5db49b06e657c9a86c6f4584299c9ce11cff7b1fd93d481",
+      "bytes": 9905
+    },
+    {
+      "file": "app/workshop/order-intake.mjs",
+      "sha256": "e630449ab543fee1cbc05d4656ae6e57c63da8f945373b807aea74294d23da90",
+      "bytes": 48867
+    },
+    {
+      "file": "ops/shopify/master-release/cart_transform_run.mjs",
+      "sha256": "b9ca53a432f938072b627b72dcf73382b5f685d65d45f1c8c360977b5bef54fc",
+      "bytes": 3729
+    },
+    {
+      "file": "app/workshop/cart-priced-options-diagnostic.test.mjs",
+      "sha256": "180324dc8047243da98ea47c2c6a687b1dfb34286334bc96c0b7ec63b1d68548",
+      "bytes": 6480
+    }
+  ],
+  "checks": {
+    "newBindingsAfterV3Rejection": 0,
+    "newOffersAfterV3Rejection": 0,
+    "paidCheckboxCombinationsRejected": 7,
+    "newOffersAfterEachPaidCheckboxRejection": 0,
+    "syntheticMountingVariantNativeAndTransformCents": 2698,
+    "wrongCheaperVariantRejected": true
+  },
+  "limits": {
+    "liveTest": false,
+    "shopifyCalls": 0,
+    "productionEdits": 0,
+    "uiEdits": 0,
+    "originalRedTestsModified": false,
+    "priceApproval": false,
+    "generatedArtifactsAreSynthetic": true
+  }
+}

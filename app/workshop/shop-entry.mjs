@@ -201,7 +201,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  // ausgestellt; der Antwortspeicher hält dafür das Servermodell, nicht das Token. `threw`: der Aufbau schlug fehl (nicht speichern).
  function startPreviewFor(context,model,designId,cardModel=null){
   let startPreview=null,threw=false;
-  try{startPreview=designGallery.start(context,model,designId,cardModel?{cardModel}:undefined);if(publicPreviews&&startPreview){const {previewUrl:oldPublicUrl,...privateStart}=startPreview;const prepared=publicPreviews.attach({items:[{...publicBinding(context.binding),designId,...privateStart}]}).items[0];startPreview={...privateStart,...(prepared.previewUrl?{previewUrl:prepared.previewUrl}:{})};}}catch{/* Products without a gallery still open normally. */threw=true;}
+  try{let at=performance.now();startPreview=designGallery.start(context,model,designId,cardModel?{cardModel}:undefined);at=lap('msStartGallery',at);if(publicPreviews&&startPreview){const {previewUrl:oldPublicUrl,...privateStart}=startPreview;const prepared=publicPreviews.attach({items:[{...publicBinding(context.binding),designId,...privateStart}]}).items[0];startPreview={...privateStart,...(prepared.previewUrl?{previewUrl:prepared.previewUrl}:{})};lap('msStartPublic',at);}}catch{/* Products without a gallery still open normally. */threw=true;}
   return {startPreview,threw};
  }
  const modelRest=(context,startPreview)=>({startPreview,binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false});
@@ -224,13 +224,19 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  }
  // Zähler über den vorhandenen logger: höchstens eine Zeile je Minute, nur Zahlen (keine Kunden-, Sitzungs- oder Produktdaten).
  let counterMinute=Math.floor(clock()/60000);
+ // Abschnittszeiten des Modellabrufs (Paket 1a-2, nur Messung): Summen in Millisekunden seit der letzten Protokollzeile.
+ // context: Sitzung/Zuordnung, state: Produktstand+Speicher, checks: Freigabe/Pause, startGallery/startPublic: Startvorschau,
+ // send: Antwort schreiben (nur Treffer), build: gesamter Weg ohne Treffer ab dem Speicherblick.
+ const phases={timed:0,msContext:0,msState:0,msChecks:0,msStartGallery:0,msStartPublic:0,msSend:0,msBuild:0};
+ const lap=(name,since)=>{const now=performance.now();phases[name]+=now-since;return now;};
+ function takePhases(){const out=Object.fromEntries(Object.entries(phases).map(([k,v])=>[k,Math.round(v)]));for(const k of Object.keys(phases))phases[k]=0;return out;}
  function reportCache(){
   if(!modelCache)return;
   const minute=Math.floor(clock()/60000);if(minute===counterMinute)return;
   counterMinute=minute;
   const counts=modelCache.takeCounts();
   if(counts.hits+counts.misses+counts.stores+counts.invalidations+counts.evictions===0)return;
-  try{logger({event:'model_response_cache',...counts,...(({entries,bytes,models})=>({entries,bytes,models}))(modelCache.stats())});}catch{/* Protokoll ist nie Teil der Antwort. */}
+  try{logger({event:'model_response_cache',...counts,...(({entries,bytes,models})=>({entries,bytes,models}))(modelCache.stats()),...takePhases()});}catch{/* Protokoll ist nie Teil der Antwort. */}
  }
  // Ausgelagerte Schriften müssen weiter abrufbar sein, wenn die Antwort aus dem Speicher kommt (sonst: neu aufbauen).
  const fontsAvailable=entry=>entry.fontHashes.every(hash=>typeof slimmer?.fontFile==='function'&&slimmer.fontFile(hash)!==null);
@@ -483,20 +489,20 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      if([...url.searchParams.keys()].some(k=>k!=='design')||url.searchParams.getAll('design').length>1||(url.searchParams.has('design')&&(!url.searchParams.get('design')||url.searchParams.get('design').length>200)))fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');
      checkOrigin(req,{mutating:false});
      const designParam=url.searchParams.get('design');
-     const context=activeContext(req),state=productState(context.store,context.binding);
+     let at=performance.now();const context=activeContext(req);at=lap('msContext',at);phases.timed++;const state=productState(context.store,context.binding);
      // Zustand des Verschlankers (4.5): bereit/nicht bereit, Teil des Schlüssels.
      const slimState=slimmer?(slimmer.ready()?'ready':'cold'):'none';
      const key=state===null?null:modelResponseKey({storeId:context.store.storeId,productId:context.binding.productId,productRevision:context.binding.productRevision,bindingId:context.binding.bindingId,assignmentRevision:context.binding.assignmentRevision,unitCents:context.binding.unitCents,options:context.binding.options,designId:designParam,slimState});
      const hit=key===null?null:modelCache.get(context.store.storeId,key,state);
-     reportCache();
+     reportCache();at=lap('msState',at);
      if(hit&&fontsAvailable(hit)){
       // Treffer: alles, was an Sitzung, Zuordnung, Pause und Freigabe hängt, wird jetzt frisch geprüft – in derselben Reihenfolge
       // und mit denselben Fehlern wie auf dem bisherigen Weg (active → modelFor → Freigabe des Modells).
       requireApproval(context.store,context.binding,hit.activeKind);
       if(context.store.workshop.konfis.paused(context.binding.productId))fail(423,'konfi_paused',PAUSED_MESSAGE);
-      requireApproval(context.store,context.binding,hit.modelKind);
+      requireApproval(context.store,context.binding,hit.modelKind);at=lap('msChecks',at);
       const {startPreview}=startPreviewFor(context,hit.held.model,hit.startDesignId,hit.held.cardModel);
-      return sendJson(res,200,modelBytes(hit.json,modelRest(context,startPreview)));
+      at=performance.now();const sent=sendJson(res,200,modelBytes(hit.json,modelRest(context,startPreview)));lap('msSend',at);return sent;
      }
      if(hit)modelCache.unusable();
      const epoch=key===null?null:writeEpoch(context.store);
@@ -507,7 +513,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      const designId=presented.universal.profile.defaultDesignId||presented.universal.profile.designs[0]?.id;
      if(key===null||epoch===null){
       const {startPreview}=startPreviewFor(context,model,designId);
-      return json(res,200,{model:presented,...modelRest(context,startPreview)});
+      lap('msBuild',at);return json(res,200,{model:presented,...modelRest(context,startPreview)});
      }
      // Ohne Treffer: heutiger Weg; danach ablegen, wenn nichts dagegen spricht.
      // Wie designGallery.start: nur mit eingeschalteter Designauswahl wird das Kartenmodell gebraucht.
@@ -522,7 +528,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
       let activeKind;try{activeKind=approvalKind(context.store.workshop.repository.get(context.binding.productId,{revision:context.binding.productRevision}).document?.config);}catch{activeKind=undefined;}
       if(activeKind!==undefined)modelCache.set(context.store.storeId,key,state,{json:modelJson,activeKind,modelKind:approvalKind(model.universal),startDesignId:designId,fontHashes:lazyFontHashes(presented),held});
      }
-     return sendJson(res,200,bytes);
+     lap('msBuild',at);return sendJson(res,200,bytes);
     }
     if(action==='design-gallery'){
      if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');

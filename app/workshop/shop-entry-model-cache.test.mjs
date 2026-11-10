@@ -189,7 +189,7 @@ test('counters go through the logger: numbers only, at most one line per minute'
   const line=lines[0];
   assert.equal(line.event,'model_response_cache');
   assert.equal(line.hits,3);assert.equal(line.misses,1);assert.equal(line.stores,1);assert.equal(line.invalidations,0);assert.equal(line.evictions,0);
-  assert.deepEqual(Object.keys(line).sort(),['bytes','entries','event','evictions','hits','invalidations','misses','models','stores']);
+  assert.deepEqual(Object.keys(line).sort(),['bytes','entries','event','evictions','hits','invalidations','misses','models','msBuild','msChecks','msContext','msSend','msStartGallery','msStartPublic','msState','stores','timed']);
   assert.ok(Object.values(line).every(v=>typeof v==='string'||Number.isSafeInteger(v)));
   assert.ok(!JSON.stringify(line).match(/gid:|cfg_|binding_|session|shop/i),'keine Kunden-, Sitzungs- oder Produktdaten');
   s.time+=30_000;await model(on,headers);

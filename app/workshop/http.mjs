@@ -83,6 +83,7 @@ import {createCatalogStructure} from './catalog-structure.mjs';
 import {designDashboardWithFit,designFile,forgetKatalog} from './design-dashboard.mjs';
 import {targetDesignPreview,patchDesignWithTargetReview} from './design-target-preview.mjs';
 import {designPreviewGlyphs,previewWarningHeader,PREVIEW_WARNING_HEADER} from './design-preview-glyphs.mjs';
+import {createKatalogWorker,writeJsonResult} from './katalog-worker-client.mjs';
 import {createDesignEditor} from './design-editor.mjs';
 import {createDesignVariants} from './design-variants.mjs';
 import {katalogPath} from './katalog-source.mjs';
@@ -153,6 +154,8 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   const verifyForm=document=>{const d=verifyFormDesignSources(verifyFormSource(document,contours),assets,formFonts);productionProfiles.resolve(d);return d;};
   const repository=createProductRepository({filename,tenantId,catalogOverview:d=>isFormProduct(d)?formOverview(d):productOverview(d),validateDocument:value=>{const document=validateProductDocument(value);if(isFormProduct(document)){if(document.profileAssignments)profiles.resolve(document);return verifyForm(document);}profiles.resolve(document);assets.validateDocument(document);productionProfiles.resolve(document);return document;},snapshotMetadata:document=>isFormProduct(document)?{...(document.profileAssignments?{profiles:profiles.resolve(document)}:{}),form:{contourId:document.form.contourId,geometrySha256:document.form.geometrySha256},readiness:formReadiness(document),productionProfile:productionProfiles.resolve(document)}:({profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)})});
   if(ownsBundled&&!repository.firstId())repository.create(seed);
+  // Paket 1c: Designliste/Zielvorschau/Designdateien in einem Arbeiter-Thread (nur mit GRAVURU_KATALOG_WORKER=enabled; :memory: hat keine gemeinsame Datei).
+  const katalogWorker=ownsBundled&&process.env.GRAVURU_KATALOG_WORKER==='enabled'&&filename!==':memory:'?createKatalogWorker({dbFile:filename,tenantId,available:formFonts,logger:entry=>console.log(JSON.stringify(entry))}):null;
   const families=createProductFamilies({filename,repository,tenantId});
   // Katalogseite liest Linien/Hauptprodukte aus dem Katalog-Repo, sobald eines verbunden ist (sonst eingebauter Stand).
   const catalogStructure=createCatalogStructure({filename,tenantId,katalogDir:()=>{if(!ownsBundled)return null;const root=katalogDir===undefined?katalogPath():katalogDir;return root||null;}});
@@ -384,6 +387,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
   async function handle(req,res,url){
     try{
       const pathname=url.pathname,method=req.method;
+      if(katalogWorker&&method!=='GET'&&(pathname.startsWith('/api/workshop/designs')||pathname==='/api/workshop/catalog-structure')){katalogWorker.invalidate();const again=()=>katalogWorker.invalidate();res.once('finish',again);res.once('close',again);}
       const accountDraft=pathname.match(/^\/api\/workshop\/account-drafts(?:\/(cdraft_[a-f0-9-]{36})(?:\/(preview\.png)|\/photos\/([A-Za-z0-9_-]{1,64}))?)?$/);
       if(accountDraft)return await accountDraftRoute(req,res,url,accountDraft);
       if(!['GET','POST','PATCH'].includes(method)&&!(method==='PUT'&&pathname==='/api/workshop/designs/editor'))fail(405,'method_not_allowed','Diese Aktion wird nicht unterstützt.');
@@ -471,6 +475,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       if(pathname==='/api/workshop/designs/target-preview'){
    if(!ownsBundled)fail(503,'katalog_missing','Katalog nicht verfügbar.');
    if(req.method!=='GET')fail(405,'method','GET verwenden.');
+   if(katalogWorker){const root=katalogRoot();return writeJsonResult(res,200,await katalogWorker.call('designs.targetPreview',root,Object.fromEntries(url.searchParams)));}
    return json(res,200,await targetDesignPreview(katalogRoot(),Object.fromEntries(url.searchParams),{available:formFonts}));
   }
   if(pathname==='/api/workshop/designs'||pathname==='/api/workshop/designs/svg'){
@@ -478,14 +483,17 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
         const root=katalogRoot(),q=url.searchParams;
         if(pathname==='/api/workshop/designs/svg'){
           if(method!=='GET')fail(405,'method_not_allowed','Designdateien nur lesen.');
-          const {file,type}=designFile(root,{reihe:q.get('reihe'),bestand:q.get('bestand'),id:q.get('id')||'',file:q.get('file')||'design.svg'});
-          const preview=type.startsWith('image/svg+xml')?await designPreviewGlyphs({file,root,available:formFonts}):{bytes:fs.readFileSync(file),warnings:[]};
+          const request={reihe:q.get('reihe'),bestand:q.get('bestand'),id:q.get('id')||'',file:q.get('file')||'design.svg'};
+          let type,preview;
+          if(katalogWorker){const result=await katalogWorker.call('designs.svg',root,request);type=result.type;preview=result;}
+          else{const {file,type:fileType}=designFile(root,request);type=fileType;preview=type.startsWith('image/svg+xml')?await designPreviewGlyphs({file,root,available:formFonts}):{bytes:fs.readFileSync(file),warnings:[]};}
           const bytes=preview.bytes,warning=previewWarningHeader(preview.warnings);
           return res.writeHead(200,{'Content-Type':type,'Content-Length':bytes.length,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Disposition':'inline','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; img-src data:",...(warning?{[PREVIEW_WARNING_HEADER]:warning}:{})}).end(bytes);
         }
         if(method==='GET'){
           const startDesigns=q.get('startDesigns');
           if(startDesigns!==null&&!['true','false'].includes(startDesigns))fail(422,'designs_query','startDesigns ist true oder false.');
+          if(katalogWorker)return writeJsonResult(res,200,await katalogWorker.call('designs.list',root,{linie:q.get('linie'),reihe:q.get('reihe'),material:q.get('material'),status:q.get('status'),freigabe:q.get('freigabe'),bestand:q.get('bestand'),startDesigns:startDesigns==='true'},{acceptGzip:/\bgzip\b/.test(String(req.headers['accept-encoding']||''))}));
           return jsonMaybeGzip(req,res,200,await designDashboardWithFit(root,{linie:q.get('linie'),reihe:q.get('reihe'),material:q.get('material'),status:q.get('status'),freigabe:q.get('freigabe'),bestand:q.get('bestand'),startDesigns:startDesigns==='true',repository,available:formFonts}));
         }
         if(method==='PATCH')return json(res,200,await patchDesignWithTargetReview(root,await body(req,16384),{actor:merchantSession?.subject||localActor,available:formFonts}));
@@ -1155,7 +1163,7 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       if(!res.headersSent)json(res,status,{error:{code:error.code||'invalid_product',message:status===500?'Speichern ist momentan nicht möglich.':error.message,actualRevision:error.actualRevision}});
     }
   }
-  return {tenantId,catalogStructure,acrylShop,corrections,families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model:customerModelFor,publicPreviewModel,galleryModel:(id,version)=>shopGalleryModel(repository.get(id,{revision:revision(version)})),internalModel:model,pausedPage,labelCategories,konfis,defaultId,close:()=>{motifSearchStats.close();catalogStructure.close();acrylShop.close();corrections.close();konfis.close();families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
+  return {tenantId,katalogWorker,catalogStructure,acrylShop,corrections,families,sessionContext:shopifySessions?Object.freeze({mode:shopifySessions.mode,shopDomain:shopifySessions.shopDomain,clientId:shopifySessions.clientId}):null,repository,aiJobs,aiBatches,variants,batchJobs,variantBatchJobs,profiles,productionProfiles,assets,fonts,contours,customerDrafts,exportJobs,exportWorker,orderIntake,handle,model:customerModelFor,publicPreviewModel,galleryModel:(id,version)=>shopGalleryModel(repository.get(id,{revision:revision(version)})),internalModel:model,pausedPage,labelCategories,konfis,defaultId,close:()=>{katalogWorker?.close();motifSearchStats.close();catalogStructure.close();acrylShop.close();corrections.close();konfis.close();families.close();aiBatches.close();aiJobs.close();variantBatchJobs.close();batchJobs.close();exportWorker.close();exportJobs.close();variants.close();repository.close();profiles.close();productionProfiles.close();assets.close();fonts.close();contours.close();customerDrafts.close();}};
 }
 
 /** Loopback preview; optional test session gate is not a public deployment.

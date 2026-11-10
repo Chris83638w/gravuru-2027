@@ -1,0 +1,20 @@
+✔ merchant module flow: confirm exact source/options, create two local profiles, reopen same editor and reject forged logo (967.0335ms)
+✔ checking a plan keeps the full source options available for a second edit (6.6135ms)
+✔ concrete multi-product plan must be confirmed exactly; executes actual draft products with no duplicate retry (1431.9201ms)
+✔ template, source, offered families or catalogue revision changes invalidate confirmation (305.767ms)
+✔ native dependent-option validation blocks an invalid restriction; valid restriction keeps authoritative prices (253.3907ms)
+✔ legacy embedded format options cannot silently ignore a profile-only restriction (118.4262ms)
+✔ transaction guard rechecks confirmation dependencies immediately before repository write (170.4689ms)
+✔ one native steel source creates logo and no-logo products from confirmed module profiles without changing designs or prices (796.0744ms)
+✔ changing a module profile invalidates a confirmed creation and retains the prior product snapshot (725.4322ms)
+✔ module changes immediately before native write are checked inside the product creation guard (547.7884ms)
+✔ module assignments cannot inject prices or substitute a client-supplied policy (245.998ms)
+✔ family-format confirmation shows every real steel form, size, allowed mounting and its exact native price (1401.3284ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8034.7941

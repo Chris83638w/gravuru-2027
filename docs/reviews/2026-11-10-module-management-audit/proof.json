@@ -1,0 +1,94 @@
+{
+  "schema": "gravuru-module-management-review/v1",
+  "date": "2026-11-10",
+  "baseCommit": "56be0409defa92653d9400a4ed3e688f4e94210d",
+  "branch": "review/mika-module-management-20261110",
+  "runtime": "v24.22.1",
+  "privateUiPatch": {
+    "path": "app/workshop/ui/module-profiles.mjs",
+    "beforeSha256": "17fa6ef47055222e0b57c6c464b612451e6c5f180ae6b80e44e9c6fb76adb17d",
+    "afterSha256": "678a8e48569c0f5054bfb4ad19af2d86ad803664e8bfe9cd665694bb077aa8c3"
+  },
+  "protectedFiles": [
+    {
+      "path": "app/configurator/variant-m/module-profile.mjs",
+      "sha256": "38e96ed61c4ea5e37c71e7cb06ed87e05fa057ff99521f44b3ef1f4fd59b2844"
+    },
+    {
+      "path": "app/configurator/variant-m/contract.mjs",
+      "sha256": "f0536de234d7ac9cc79eeb68a372db13c58a1c28424654a83e30333e6ea54cbe"
+    },
+    {
+      "path": "app/configurator/mobile-demo/demo.mjs",
+      "sha256": "669c31856273fc90718ecd4c77ab533cc425f7d1c4ebd7f89c090c530c40e367"
+    },
+    {
+      "path": "app/configurator/mobile-demo/demo.css",
+      "sha256": "86ad576eabdc6bc532637af41a0a80812380a9f56d22f6d76a91457f0214439b"
+    },
+    {
+      "path": "app/workshop/product-group-templates.mjs",
+      "sha256": "b374510ec754cbe799236940a8b0d34f29da5cb2103452b00b0f0ff3c92a9768"
+    },
+    {
+      "path": "app/workshop/configurator-module-http.mjs",
+      "sha256": "70c9eaefe325258016fb8328e77c98803b183550f328bd13b6bdde212cb7adb8"
+    },
+    {
+      "path": "app/workshop/gallery-shop-sync.mjs",
+      "sha256": "0d62e2d956de0b1cda1d1c59fa0534fe537f3bb8569251c6fd9c2678b3b71d49"
+    },
+    {
+      "path": "scripts/lib/gallery-production-preview-mount.mjs",
+      "sha256": "bab734d78b1f4d970b6eb81322adf4f184469a5853202dec13109871b0a3aa99"
+    },
+    {
+      "path": "ops/plesk/module-activation-preview-config.mjs",
+      "sha256": "4af95a9d1f02542abecb8f962c08b103befc581650991e5adf346211046d7930"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "app/workshop/module-profiles-ui.test.mjs",
+      "sha256": "ba257e24f704dcd5316c36bc0e4cf8fd673cf3313c1af931223996eec89b2338"
+    },
+    {
+      "path": "docs/handoffs/2026-11-10-module-management-audit.md",
+      "sha256": "3792359202064c133c143058fb837cdfec0cf754f240c258f772840f85f348f5"
+    },
+    {
+      "path": "docs/reviews/2026-11-10-module-management-audit/targeted-tests.log",
+      "sha256": "f296920bcaffbabb01fe61bd7fc5865c2681a5e364896deb341097b8ec396a92"
+    },
+    {
+      "path": "docs/reviews/2026-11-10-module-management-audit/family-module-tests.log",
+      "sha256": "8ec14f29f9ba0449b9f5c8d65d267c52faac82267702d399b1283f742597f49d"
+    }
+  ],
+  "regressionBefore": {
+    "failed": true,
+    "observation": "reselected third source option serialized as null instead of its original option/price"
+  },
+  "tests": {
+    "targeted": 12,
+    "family": 2,
+    "failed": 0,
+    "skipped": 0,
+    "scope": "isolated temporary databases, mocked merchant UI boundary and local HTTP; actual checked-in steel geometry/options with test artwork; no live or fresh 251-original proof"
+  },
+  "publication": {
+    "server": false,
+    "shopify": false,
+    "profileAssignments": 0,
+    "newBusinessProducts": 0,
+    "gitPush": false
+  },
+  "previewMount": {
+    "pr": 224,
+    "draft": true,
+    "installedByThisTask": false,
+    "writesEnabled": false,
+    "executionEnabled": false
+  },
+  "issue": 227
+}

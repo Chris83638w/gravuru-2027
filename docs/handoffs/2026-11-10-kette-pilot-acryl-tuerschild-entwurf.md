@@ -88,3 +88,33 @@ Vollständig im Excel-Blatt „Quellen“. Kern: Katalog-Repo `Chris83638w/gravu
 - Steuersatz/Brutto-Kontext der Acryl-Serie nicht ausdrücklich belegt (nur Preisdatei 02.11. „EUR brutto“).
 - Entscheidung vom 20.09.2026 (Rückseite gespiegelt, 2 € unter Edelstahl, Farbe als Option) ist in ENTSCHEIDUNGEN.md nicht auffindbar; sie stützt sich auf die Angabe im Auftrag. Bohrbild-Schrauben-Details je Kontur (Retro) aus Katalog `holesMm` nicht einzeln nachgemessen.
 - Namensformel/Handle/SKU des neuen Produkts sind Vorschläge, nicht mit den gravuru-Skills 01/12 abgeglichen.
+
+## v2 – Stand nach Chris' Entscheidungen 10.11.
+
+Neue Datei: `docs/produktfreigaben/Tuerschild-Acrylglas-3mm_v2.xlsx` (v1 bleibt unverändert). Eingetragen sind Chris' Entscheidungen aus dem Claude-Chat vom 10.11.2026, 12:57, als „Chris (Chat), eingetragen vom Operator“ (Blatt Freigabe, Zeilen 39 bis 42). Die Wortlaute liegen im Chat; im Excel stehen nur die im Auftrag zitierten Auszüge, sonst sinngemäß vermerkt. Nichts angelegt, nichts live, kein Produktivcode, nichts in Shopify oder Issues geschrieben.
+
+### Bestätigt (Chris, Chat 10.11.)
+
+1. **Grundpreise** = Katalogpreise Acryl (Chris-Excel 21.10.; Oval 30×10 = 39,99 € Chris 01.11.), nicht „Edelstahl − 2 €“. In Varianten alle 80 Zeilen auf „bestätigt“; Blatt Preisvergleich bleibt als Beleg mit der Spalte „entschieden: Katalogpreise“.
+2. **Aufpreise (EUR):** Kleben glatt 2,99; Kleben rau 3,99; 2 Bohrlöcher 2,49; 4 Bohrlöcher 2,89; 2 Schrauben 2,69; 4 Schrauben 3,29; weiteres Motiv 1,69; SVG-Logo 12,99. In Optionen „bestätigt“ für 324 Befestigungszeilen (ohne „Ohne Befestigung“), 80 Motiv-, 80 Logo-, 80 Foto-Zeilen. Die abweichenden Acryl-Katalogwerte für Schrauben (2,99 / 3,39) sind im Blatt Quellen als „überholt durch Entscheidung 10.11.“ vermerkt.
+3. **Foto-Modul an**, 9,99 € je Foto („Foto rein, wir prüfen direkt alles“). Module photo = an, Optionen foto Zulässig = ja, bestätigt. Prüfvermerk für Station 2 bleibt: Rückseitengravur des Fotos (gespiegelt) technisch prüfen.
+4. **Weiteres Modul / weitere Option:** nein (Pflichtfrage beantwortet, Offene Fragen Nr. 9).
+
+### Operator-Vorschlag, von Chris nicht widersprochen (10.11.), nicht als Bestätigung gewertet
+
+Logo-Modul an (Preis 12,99 € ist bestätigt, das Modul selbst nicht), Mengenstaffel 5/10/15 % ab 3/5/10 Stück, Preise brutto, die bestehenden festen Acryl-Produkte D8/D10 bleiben unverändert. In Freigabe Zeile 43 mit „offen“ geführt; Steuerkontext (Freigabe C19) bleibt „offen“.
+
+### Weiterhin OFFEN (nicht entschieden, sichtbar markiert)
+
+- **A. Formen.** Chris: „Es sind aber mehr Formen, diese sind in skalierbaren Größen unterteilt. 5x2, 6x2 und 8x2 sind eigenständige Türschilder.“ Das Live-Konfi zeigt 7 Formen in 17 Reihen. Neu: Spalte N „Reihe (Seitenverhältnis)“ in Varianten (Einzelgrößen des Live-Konfi markiert) und Blatt „Formen-Reihen“ (je Form die skalierbaren Reihen mit Größenlisten und die Einzelgrößen 5×2, 6×2, 8×2, 7×2,33, 12×5,25, 8×5,33). Drei Lesarten stehen als Frage 10: (1) nur im Produktblatt getrennt führen, (2) mehr Formen im Konfi zeigen (Kundenänderung, wirkt auch auf Edelstahl), (3) 5×2, 6×2, 8×2 als eigene Shopify-Produkte. Chris hat nur 5×2, 6×2, 8×2 genannt, im Live-Konfi sind 7×2,33, 12×5,25 und 8×5,33 ebenfalls Einzelgrößen; ob sie dazugehören, ist offen. Zusatzfund (Frage 11): die Bestandsreihe „Abgerundete Seiten“ (TAS-A, 56 Designs) ist im Konfi keine Form.
+- **B. Designs.** Chris: „es muss andere Designs geben“ – die Bestandsdesigns D1–D73 je Acryl-Reihe (Oval 73, Abgerundete Ecken 73, Retro 1 73, Retro 2 73, Quadrat 61+12, Rechteck 57+16, Abgerundete Seiten 56). Das Live-Konfi Edelstahl hat nur 24 Design-Nummern, davon 14 im Bereich D1–D73 (D1–D5, D13, D55–D57, D64, D68–D71) und 10 außerhalb (D161, D801, D803, D807, D811, D815, D819, D952, D954, D956). Die Übernahme der richtigen Designs macht ein anderer Chat. Designbasis steht in Freigabe C16 als „Bestandsdesigns D1–D73 je Acryl-Reihe, Übernahme läuft separat, Stand offen“; Startdesign (C17) bleibt offen. Die alte Liste (238 D-Nummern) steht im Blatt Designs als „Katalog-Master Stand 10.11. (Information, nicht freigegeben für den Piloten)“ mit zwei neuen Spalten (im Live-Konfi ja/nein; in wie vielen der 7 Bestandsreihen vorhanden). Neues Blatt „Bestand-Acryl-D1-D73“: je Nummer und Reihe ja/nein plus Live-Konfi-Flag. Keine Designs erfunden, keine Corel-Dateien berührt.
+
+### Geändert gegenüber v1
+
+- Freigabe: Dateiversion v2; Zeilen 39 bis 45 neu (4 bestätigt, 3 offen); Nachweis-Tabelle um 7 Zeilen nach unten verschoben (Bereich A52:F59); Brutto-Eintrag jetzt als Operator-Vorschlag gekennzeichnet.
+- Module: photo an und bestätigt; übrige Module unverändert „offen“ (Preise in den Hinweisen als bestätigt vermerkt).
+- Varianten: 80 Zeilen unverändert in Schlüsseln und Preisen, Bestätigung „bestätigt“, neue Spalte N.
+- Optionen: 804 Zeilen unverändert in Schlüsseln und Preisen; Bestätigung und Texte aktualisiert. Farbe (160) und „Ohne Befestigung“ (80) bleiben „offen“ (nicht Teil der Entscheidungen vom 10.11.).
+- Offene Fragen: Spalten Status und Stand; Nr. 1, 2, 3, 9 beantwortet; Nr. 4, 7, 8 Operator-Vorschlag ohne Widerspruch; Nr. 5 ersetzt durch B; neu 10 (A), 11 (A, Zusatzfund), 12 (B).
+- Quellen: drei Einträge neu (Chat-Entscheidungen, Kontaktbögen Live-Konfi, Bestandsliste Designs).
+- Neue Blätter: Formen-Reihen, Bestand-Acryl-D1-D73. Die Tabelle ProduktVarianten reicht jetzt bis Spalte N, die Spalten A–M sind unverändert.

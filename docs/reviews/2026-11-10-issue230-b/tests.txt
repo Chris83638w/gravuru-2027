@@ -1,0 +1,12 @@
+✔ seven real pinned Excel inputs remain blocked, no invented plan or approval (23.721ms)
+✔ altered extraction pin, missing Excel and later source handoff fail closed (32.2298ms)
+✔ native ProductGroupTemplate plan binds exact Excel SHA without confirm, execution or new output product (1461.9158ms)
+✔ missing source/template and fabricated plan readback cannot be presented as real plan (0.2095ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3091.2491

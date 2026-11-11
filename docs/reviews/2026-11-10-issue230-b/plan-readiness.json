@@ -1,0 +1,3122 @@
+{
+  "schema": "gravuru-issue230-plan-readiness/v1",
+  "scope": "B-local-plan-only",
+  "inputs": {
+    "excelCommit": "bf8824c80347f63ffeb2c05cc9a34a9ffed6f9bd",
+    "extractionSha256": "2218e5d9e6917016e59526781e2f57c650c59b449f00f979d6a0d0605bfb61e9",
+    "codeBase": "f4645189c3dd8e5ba6f2aa2a3c11c16c604f33d5"
+  },
+  "operatorInstructions": {
+    "issue": 230,
+    "scopeComments": [
+      6772867984,
+      6772914392
+    ],
+    "fastLaneApprovalComment": 6773693287,
+    "latestScopeAcknowledgement": 6774617558,
+    "priceApprovalComment": 6766806272,
+    "notes": [
+      "Confirmed prices are not asked again. Acrylic mounting catalogue needs the confirmed 269/329-cent correction in the candidate source package.",
+      "The fast-lane workflow approval is not confirmation of these seven nonexistent native plans."
+    ]
+  },
+  "summary": {
+    "requestedProducts": 7,
+    "actualNativePlans": 0,
+    "blockedBeforePlan": 7,
+    "confirms": 0,
+    "executions": 0,
+    "productWrites": 0,
+    "shopifyWrites": 0,
+    "bindingWrites": 0
+  },
+  "products": [
+    {
+      "workbook": {
+        "path": "docs/produktfreigaben/Tuerschild-Acrylglas-3mm_v4.xlsx",
+        "sha256": "495e7e59d7abf6a46f1fb7098a75e666162e58be3cad99ad75de6db5d3923841",
+        "gitBlob": "948144b8b0b94ed828056e8aa18e9d9c841e9e06",
+        "sourceCommit": "bf8824c80347f63ffeb2c05cc9a34a9ffed6f9bd",
+        "revision": "v4"
+      },
+      "productName": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen (Schwarz / Anthrazit)",
+      "status": "blocked-before-native-plan",
+      "planId": null,
+      "planHash": null,
+      "templateId": null,
+      "templateRevision": null,
+      "counts": {
+        "sizeRows": 77,
+        "forms": {
+          "Rechteck / RE": 24,
+          "Rechteck abgerundet / AB": 10,
+          "Quadrat / QU": 7,
+          "Oval / OV": 17,
+          "Rund / R": 5,
+          "Retro 1 / RT1": 7,
+          "Retro 2 / RT2": 7
+        },
+        "explicitOptionRows": 774,
+        "mountingRows": 389,
+        "analysisCombinations": 778
+      },
+      "moduleRequests": [
+        {
+          "key": "options",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 7
+        },
+        {
+          "key": "designs",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 8
+        },
+        {
+          "key": "text",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 9
+        },
+        {
+          "key": "motifs",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 10
+        },
+        {
+          "key": "photo",
+          "requested": "an",
+          "confirmation": "bestätigt",
+          "sourceRow": 11
+        },
+        {
+          "key": "logo",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 12
+        },
+        {
+          "key": "colors",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 13
+        }
+      ],
+      "openApprovalRows": [
+        {
+          "row": 33,
+          "values": {
+            "A": "Module und neue Modulwünsche",
+            "B": "offen",
+            "F": "OFFEN (Teilbestätigungen siehe Zeilen 41 und 42): Foto-Modul an und kein weiteres Modul bestätigt. Logo-Modul nur Operator-Vorschlag (Zeile 43). Text-, Farben-Modul und Modulstatus Ausführung/Motive nicht ausdrücklich bestätigt; Designs-Modul hängt an Frage B."
+          }
+        },
+        {
+          "row": 34,
+          "values": {
+            "A": "Formen, Größen, Material und zulässige Optionen",
+            "B": "offen",
+            "F": "Hauptprodukt: Formen/Größen entschieden (Zeilen 44, 46). Bereich bleibt OFFEN wegen Frage 11 („Abgerundete Seiten“, TAS-A)."
+          }
+        },
+        {
+          "row": 35,
+          "values": {
+            "A": "Grundpreise, Aufpreise und Steuerkontext",
+            "B": "offen",
+            "F": "OFFEN als Gesamtbereich: Grundpreise und Aufpreise sind bestätigt (Zeilen 39 und 40), der Steuerkontext (brutto) und die Mengenstaffel sind nur Operator-Vorschlag (Zeile 43)."
+          }
+        },
+        {
+          "row": 36,
+          "values": {
+            "A": "Originale, Designgruppe und Startdesign",
+            "B": "offen",
+            "F": "OFFEN – Frage B: Bestandsdesigns D1–D73 je Acryl-Reihe, Übernahme läuft in einem anderen Chat (Zeile 45)."
+          }
+        },
+        {
+          "row": 37,
+          "values": {
+            "A": "Neuanlage / gezielte Änderung dieses Produktes",
+            "B": "offen",
+            "F": "OFFEN. Nichts angelegt, nichts live (Station 1)."
+          }
+        },
+        {
+          "row": 38,
+          "values": {
+            "A": "Veröffentlichung / Shopify-Synchronisierung",
+            "B": "offen",
+            "F": "OFFEN. Keine Synchronisierung."
+          }
+        },
+        {
+          "row": 43,
+          "values": {
+            "A": "Operator-Vorschläge: Logo-Modul an (12,99 € je Logo), Mengenstaffel 5/10/15 % ab 3/5/10 Stück, Preise brutto, bestehende feste Acryl-Produkte D8/D10 unverändert",
+            "B": "offen",
+            "C": "– (kein ausdrückliches Ja)",
+            "D": "2026-11-10",
+            "E": "v2",
+            "F": "Operator-Vorschlag, von Chris nicht widersprochen (10.11.). Ausdrücklich NICHT als Bestätigung gewertet."
+          }
+        },
+        {
+          "row": 45,
+          "values": {
+            "A": "Designgrundlage (Frage B)",
+            "B": "offen",
+            "C": "–",
+            "D": "–",
+            "E": "v2",
+            "F": "Chris: „es muss andere Designs geben“ (Bestandsdesigns D1–D73 je Acryl-Reihe). Übernahme läuft in einem anderen Chat; Stand offen. Blatt „Bestand-Acryl-D1-D73“ zeigt je Nummer, ob sie im Live-Konfi vorkommt."
+          }
+        }
+      ],
+      "differences": [
+        {
+          "code": "native_source_missing",
+          "cells": [
+            "Freigabe!C11"
+          ],
+          "excel": "nicht vorhanden (Neuanlage)",
+          "required": "Echter nativer Produktdatensatz mit Produkt-ID, Revision und Dokumenthash; keine Arbeitskennung."
+        },
+        {
+          "code": "registry_and_template_missing",
+          "cells": [
+            "Freigabe!C9",
+            "Freigabe!C25",
+            "Freigabe!C26"
+          ],
+          "required": "Autoritative Zielzuordnung (key, productId, familyId, sizeKey), konkreter Linien-/Unterkategorienumfang und gespeicherte ProductGroupTemplate-Revision."
+        },
+        {
+          "code": "module_profile_missing",
+          "cells": [
+            "Freigabe!C27",
+            "Freigabe!C28"
+          ],
+          "required": "Tatsächlich gespeichertes, versionsgebundenes Modulprofil; Wunschstatus ist keine Fähigkeit/Freigabe."
+        },
+        {
+          "code": "excel_catalog_pin_old",
+          "cells": [
+            "Freigabe!C21"
+          ],
+          "excel": "Katalog main 3c6051fbbc79; Blobs: steel-door-signs 2e046d4a, acryl-schwarz e340d775, acryl-anthrazit 491e1abc, serie acryl-tuerschilder-2027 df892cab; Shopify-Readback 08.11. after.json (sha256 0758f455…)",
+          "required": "8236b8bfab7322447ec46661c116fa526331af3d"
+        },
+        {
+          "code": "design_group_not_paired",
+          "cells": [
+            "Freigabe!C16",
+            "Freigabe!C17"
+          ],
+          "excel": {
+            "group": "Bestandsdesigns D1–D73 je Acryl-Reihe, Übernahme läuft separat, Stand offen (Frage B). Die frühere Liste (238 D-Nummern aus dem Edelstahl-Master) steht im Blatt „Designs“ nur als „Katalog-Master Stand 10.11. (Information, nicht freigegeben für den Piloten)“.",
+            "start": "TAE-V2A-8x5-D1 (native ID katalog-TAE-V2A-8x5-D1), Start: Rechteck abgerundet 12 × 8 cm, ohne Befestigung – Vorschlag wie Edelstahl-Pilot"
+          },
+          "required": "Katalog #185: 1.298 insgesamt, davon 1.217 Hauptprodukt und 27 je Kleinformat; rang 0 vor 1. Originalzuordnung und tatsächliches Startdesign nativ belegen."
+        }
+      ],
+      "confirmed": false,
+      "executed": false,
+      "approvalReady": false
+    },
+    {
+      "workbook": {
+        "path": "docs/produktfreigaben/Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+        "sha256": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+        "gitBlob": "58d9d6186c0abb4c59ea9743084f9e5f6b5a1220",
+        "sourceCommit": "bf8824c80347f63ffeb2c05cc9a34a9ffed6f9bd",
+        "revision": "v2"
+      },
+      "productName": "Türschild Acrylglas 3 mm 5 × 2 cm (Schwarz/Anthrazit)",
+      "status": "blocked-before-native-plan",
+      "planId": null,
+      "planHash": null,
+      "templateId": null,
+      "templateRevision": null,
+      "counts": {
+        "sizeRows": 1,
+        "forms": {
+          "Rechteck / RE": 1
+        },
+        "explicitOptionRows": 10,
+        "mountingRows": 5,
+        "analysisCombinations": 10
+      },
+      "moduleRequests": [
+        {
+          "key": "options",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 7
+        },
+        {
+          "key": "designs",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 8
+        },
+        {
+          "key": "text",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 9
+        },
+        {
+          "key": "motifs",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 10
+        },
+        {
+          "key": "photo",
+          "requested": "offen",
+          "confirmation": "offen",
+          "sourceRow": 11
+        },
+        {
+          "key": "logo",
+          "requested": "offen",
+          "confirmation": "offen",
+          "sourceRow": 12
+        },
+        {
+          "key": "colors",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 13
+        }
+      ],
+      "openApprovalRows": [
+        {
+          "row": 33,
+          "values": {
+            "A": "Module und neue Modulwünsche",
+            "B": "offen",
+            "F": "OFFEN (Teilbestätigungen siehe Zeilen 41 und 42): Foto-Modul an und kein weiteres Modul bestätigt. Logo-Modul nur Operator-Vorschlag (Zeile 43). Text-, Farben-Modul und Modulstatus Ausführung/Motive nicht ausdrücklich bestätigt; Designs-Modul hängt an Frage B."
+          }
+        },
+        {
+          "row": 34,
+          "values": {
+            "A": "Formen, Größen, Material und zulässige Optionen",
+            "B": "offen",
+            "F": "Dieses Kleinformat ist ein eigenes Produkt (Zeile 44). Bereich bleibt offen: Motivauswahl, Foto/Logo, Designs."
+          }
+        },
+        {
+          "row": 35,
+          "values": {
+            "A": "Grundpreise, Aufpreise und Steuerkontext",
+            "B": "offen",
+            "F": "OFFEN als Gesamtbereich: Grundpreise und Aufpreise sind bestätigt (Zeilen 39 und 40), der Steuerkontext (brutto) und die Mengenstaffel sind nur Operator-Vorschlag (Zeile 43)."
+          }
+        },
+        {
+          "row": 36,
+          "values": {
+            "A": "Originale, Designgruppe und Startdesign",
+            "B": "offen",
+            "F": "OFFEN – Frage B: Bestandsdesigns D1–D73 je Acryl-Reihe, Übernahme läuft in einem anderen Chat (Zeile 45)."
+          }
+        },
+        {
+          "row": 37,
+          "values": {
+            "A": "Neuanlage / gezielte Änderung dieses Produktes",
+            "B": "offen",
+            "F": "OFFEN. Nichts angelegt, nichts live (Station 1)."
+          }
+        },
+        {
+          "row": 38,
+          "values": {
+            "A": "Veröffentlichung / Shopify-Synchronisierung",
+            "B": "offen",
+            "F": "OFFEN. Keine Synchronisierung."
+          }
+        },
+        {
+          "row": 41,
+          "values": {
+            "A": "Foto- und Logo-Modul bei 5 × 2 cm",
+            "B": "offen",
+            "C": "–",
+            "D": "2026-11-10",
+            "E": "v2 (planHash: noch nicht vorhanden)",
+            "F": "Operator-Vorschlag: aus (bei 5 × 2 cm nicht sinnvoll), von Chris nicht ausdrücklich beantwortet. Status offen. (Hauptprodukt: Foto-Modul an, Chris 12:57; Preise 9,99 / 12,99 € bleiben als Werte eingetragen.)"
+          }
+        },
+        {
+          "row": 43,
+          "values": {
+            "A": "Operator-Vorschläge: Logo-Modul an (12,99 € je Logo), Mengenstaffel 5/10/15 % ab 3/5/10 Stück, Preise brutto, bestehende feste Acryl-Produkte D8/D10 unverändert",
+            "B": "offen",
+            "C": "– (kein ausdrückliches Ja)",
+            "D": "2026-11-10",
+            "E": "v2",
+            "F": "Operator-Vorschlag, von Chris nicht widersprochen (10.11.). Ausdrücklich NICHT als Bestätigung gewertet."
+          }
+        },
+        {
+          "row": 45,
+          "values": {
+            "A": "Designgrundlage (Frage B)",
+            "B": "offen",
+            "C": "–",
+            "D": "–",
+            "E": "v2",
+            "F": "Chris: „es muss andere Designs geben“ (Bestandsdesigns D1–D73 je Acryl-Reihe). Übernahme läuft in einem anderen Chat; Stand offen. Blatt „Bestand-Acryl-D1-D73“ zeigt je Nummer, ob sie im Live-Konfi vorkommt."
+          }
+        }
+      ],
+      "differences": [
+        {
+          "code": "native_source_missing",
+          "cells": [
+            "Freigabe!C11"
+          ],
+          "excel": "nicht vorhanden (Neuanlage)",
+          "required": "Echter nativer Produktdatensatz mit Produkt-ID, Revision und Dokumenthash; keine Arbeitskennung."
+        },
+        {
+          "code": "registry_and_template_missing",
+          "cells": [
+            "Freigabe!C9",
+            "Freigabe!C25",
+            "Freigabe!C26"
+          ],
+          "required": "Autoritative Zielzuordnung (key, productId, familyId, sizeKey), konkreter Linien-/Unterkategorienumfang und gespeicherte ProductGroupTemplate-Revision."
+        },
+        {
+          "code": "module_profile_missing",
+          "cells": [
+            "Freigabe!C27",
+            "Freigabe!C28"
+          ],
+          "required": "Tatsächlich gespeichertes, versionsgebundenes Modulprofil; Wunschstatus ist keine Fähigkeit/Freigabe."
+        },
+        {
+          "code": "excel_catalog_pin_old",
+          "cells": [
+            "Freigabe!C21"
+          ],
+          "excel": "Katalog main 3c6051fbbc79; Blobs: steel-door-signs 2e046d4a, acryl-schwarz e340d775, acryl-anthrazit 491e1abc, serie acryl-tuerschilder-2027 df892cab; Shopify-Readback 08.11. after.json (sha256 0758f455…)",
+          "required": "8236b8bfab7322447ec46661c116fa526331af3d"
+        },
+        {
+          "code": "design_group_not_paired",
+          "cells": [
+            "Freigabe!C16",
+            "Freigabe!C17"
+          ],
+          "excel": {
+            "group": "Bestandsdesigns dieses Formats (Acryl-Reihe Rechteck TRE-A: 56 Designs, D1–D56; Edelstahl TRE-V2A: 59); Übernahme läuft in einem anderen Chat – Stand offen. Blatt „Designbasis“.",
+            "start": "offen – kein Startdesign vorgeschlagen (Startdesign des Hauptprodukts gilt für 12 × 8 cm)"
+          },
+          "required": "Katalog #185: 1.298 insgesamt, davon 1.217 Hauptprodukt und 27 je Kleinformat; rang 0 vor 1. Originalzuordnung und tatsächliches Startdesign nativ belegen."
+        },
+        {
+          "code": "small_design_revision_open",
+          "required": "13 Motive ohne schmetterlinge-1; Katalog-PR187 ist offen, Anpassungen sind nicht Bestandteil des gepinnten main 8236b8bfa."
+        }
+      ],
+      "confirmed": false,
+      "executed": false,
+      "approvalReady": false
+    },
+    {
+      "workbook": {
+        "path": "docs/produktfreigaben/Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+        "sha256": "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+        "gitBlob": "1589d2f7d673c18e2ccb437b41849ad62ad3bc4a",
+        "sourceCommit": "bf8824c80347f63ffeb2c05cc9a34a9ffed6f9bd",
+        "revision": "v2"
+      },
+      "productName": "Türschild Acrylglas 3 mm 6 × 2 cm (Schwarz/Anthrazit)",
+      "status": "blocked-before-native-plan",
+      "planId": null,
+      "planHash": null,
+      "templateId": null,
+      "templateRevision": null,
+      "counts": {
+        "sizeRows": 1,
+        "forms": {
+          "Rechteck / RE": 1
+        },
+        "explicitOptionRows": 10,
+        "mountingRows": 5,
+        "analysisCombinations": 10
+      },
+      "moduleRequests": [
+        {
+          "key": "options",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 7
+        },
+        {
+          "key": "designs",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 8
+        },
+        {
+          "key": "text",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 9
+        },
+        {
+          "key": "motifs",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 10
+        },
+        {
+          "key": "photo",
+          "requested": "offen",
+          "confirmation": "offen",
+          "sourceRow": 11
+        },
+        {
+          "key": "logo",
+          "requested": "offen",
+          "confirmation": "offen",
+          "sourceRow": 12
+        },
+        {
+          "key": "colors",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 13
+        }
+      ],
+      "openApprovalRows": [
+        {
+          "row": 33,
+          "values": {
+            "A": "Module und neue Modulwünsche",
+            "B": "offen",
+            "F": "OFFEN (Teilbestätigungen siehe Zeilen 41 und 42): Foto-Modul an und kein weiteres Modul bestätigt. Logo-Modul nur Operator-Vorschlag (Zeile 43). Text-, Farben-Modul und Modulstatus Ausführung/Motive nicht ausdrücklich bestätigt; Designs-Modul hängt an Frage B."
+          }
+        },
+        {
+          "row": 34,
+          "values": {
+            "A": "Formen, Größen, Material und zulässige Optionen",
+            "B": "offen",
+            "F": "Dieses Kleinformat ist ein eigenes Produkt (Zeile 44). Bereich bleibt offen: Motivauswahl, Foto/Logo, Designs."
+          }
+        },
+        {
+          "row": 35,
+          "values": {
+            "A": "Grundpreise, Aufpreise und Steuerkontext",
+            "B": "offen",
+            "F": "OFFEN als Gesamtbereich: Grundpreise und Aufpreise sind bestätigt (Zeilen 39 und 40), der Steuerkontext (brutto) und die Mengenstaffel sind nur Operator-Vorschlag (Zeile 43)."
+          }
+        },
+        {
+          "row": 36,
+          "values": {
+            "A": "Originale, Designgruppe und Startdesign",
+            "B": "offen",
+            "F": "OFFEN – Frage B: Bestandsdesigns D1–D73 je Acryl-Reihe, Übernahme läuft in einem anderen Chat (Zeile 45)."
+          }
+        },
+        {
+          "row": 37,
+          "values": {
+            "A": "Neuanlage / gezielte Änderung dieses Produktes",
+            "B": "offen",
+            "F": "OFFEN. Nichts angelegt, nichts live (Station 1)."
+          }
+        },
+        {
+          "row": 38,
+          "values": {
+            "A": "Veröffentlichung / Shopify-Synchronisierung",
+            "B": "offen",
+            "F": "OFFEN. Keine Synchronisierung."
+          }
+        },
+        {
+          "row": 41,
+          "values": {
+            "A": "Foto- und Logo-Modul bei 6 × 2 cm",
+            "B": "offen",
+            "C": "–",
+            "D": "2026-11-10",
+            "E": "v2 (planHash: noch nicht vorhanden)",
+            "F": "Operator-Vorschlag: aus (bei 6 × 2 cm nicht sinnvoll), von Chris nicht ausdrücklich beantwortet. Status offen. (Hauptprodukt: Foto-Modul an, Chris 12:57; Preise 9,99 / 12,99 € bleiben als Werte eingetragen.)"
+          }
+        },
+        {
+          "row": 43,
+          "values": {
+            "A": "Operator-Vorschläge: Logo-Modul an (12,99 € je Logo), Mengenstaffel 5/10/15 % ab 3/5/10 Stück, Preise brutto, bestehende feste Acryl-Produkte D8/D10 unverändert",
+            "B": "offen",
+            "C": "– (kein ausdrückliches Ja)",
+            "D": "2026-11-10",
+            "E": "v2",
+            "F": "Operator-Vorschlag, von Chris nicht widersprochen (10.11.). Ausdrücklich NICHT als Bestätigung gewertet."
+          }
+        },
+        {
+          "row": 45,
+          "values": {
+            "A": "Designgrundlage (Frage B)",
+            "B": "offen",
+            "C": "–",
+            "D": "–",
+            "E": "v2",
+            "F": "Chris: „es muss andere Designs geben“ (Bestandsdesigns D1–D73 je Acryl-Reihe). Übernahme läuft in einem anderen Chat; Stand offen. Blatt „Bestand-Acryl-D1-D73“ zeigt je Nummer, ob sie im Live-Konfi vorkommt."
+          }
+        }
+      ],
+      "differences": [
+        {
+          "code": "native_source_missing",
+          "cells": [
+            "Freigabe!C11"
+          ],
+          "excel": "nicht vorhanden (Neuanlage)",
+          "required": "Echter nativer Produktdatensatz mit Produkt-ID, Revision und Dokumenthash; keine Arbeitskennung."
+        },
+        {
+          "code": "registry_and_template_missing",
+          "cells": [
+            "Freigabe!C9",
+            "Freigabe!C25",
+            "Freigabe!C26"
+          ],
+          "required": "Autoritative Zielzuordnung (key, productId, familyId, sizeKey), konkreter Linien-/Unterkategorienumfang und gespeicherte ProductGroupTemplate-Revision."
+        },
+        {
+          "code": "module_profile_missing",
+          "cells": [
+            "Freigabe!C27",
+            "Freigabe!C28"
+          ],
+          "required": "Tatsächlich gespeichertes, versionsgebundenes Modulprofil; Wunschstatus ist keine Fähigkeit/Freigabe."
+        },
+        {
+          "code": "excel_catalog_pin_old",
+          "cells": [
+            "Freigabe!C21"
+          ],
+          "excel": "Katalog main 3c6051fbbc79; Blobs: steel-door-signs 2e046d4a, acryl-schwarz e340d775, acryl-anthrazit 491e1abc, serie acryl-tuerschilder-2027 df892cab; Shopify-Readback 08.11. after.json (sha256 0758f455…)",
+          "required": "8236b8bfab7322447ec46661c116fa526331af3d"
+        },
+        {
+          "code": "design_group_not_paired",
+          "cells": [
+            "Freigabe!C16",
+            "Freigabe!C17"
+          ],
+          "excel": {
+            "group": "Bestandsdesigns dieses Formats (Acryl-Reihe Rechteck TRE-A: 56 Designs, D1–D56; Edelstahl TRE-V2A: 59); Übernahme läuft in einem anderen Chat – Stand offen. Blatt „Designbasis“.",
+            "start": "offen – kein Startdesign vorgeschlagen (Startdesign des Hauptprodukts gilt für 12 × 8 cm)"
+          },
+          "required": "Katalog #185: 1.298 insgesamt, davon 1.217 Hauptprodukt und 27 je Kleinformat; rang 0 vor 1. Originalzuordnung und tatsächliches Startdesign nativ belegen."
+        },
+        {
+          "code": "small_design_revision_open",
+          "required": "13 Motive ohne schmetterlinge-1; Katalog-PR187 ist offen, Anpassungen sind nicht Bestandteil des gepinnten main 8236b8bfa."
+        }
+      ],
+      "confirmed": false,
+      "executed": false,
+      "approvalReady": false
+    },
+    {
+      "workbook": {
+        "path": "docs/produktfreigaben/Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+        "sha256": "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+        "gitBlob": "b096eac4ff264c502546ec468fe7c1c94278a329",
+        "sourceCommit": "bf8824c80347f63ffeb2c05cc9a34a9ffed6f9bd",
+        "revision": "v2"
+      },
+      "productName": "Türschild Acrylglas 3 mm 8 × 2 cm (Schwarz/Anthrazit)",
+      "status": "blocked-before-native-plan",
+      "planId": null,
+      "planHash": null,
+      "templateId": null,
+      "templateRevision": null,
+      "counts": {
+        "sizeRows": 1,
+        "forms": {
+          "Rechteck / RE": 1
+        },
+        "explicitOptionRows": 10,
+        "mountingRows": 5,
+        "analysisCombinations": 10
+      },
+      "moduleRequests": [
+        {
+          "key": "options",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 7
+        },
+        {
+          "key": "designs",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 8
+        },
+        {
+          "key": "text",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 9
+        },
+        {
+          "key": "motifs",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 10
+        },
+        {
+          "key": "photo",
+          "requested": "offen",
+          "confirmation": "offen",
+          "sourceRow": 11
+        },
+        {
+          "key": "logo",
+          "requested": "offen",
+          "confirmation": "offen",
+          "sourceRow": 12
+        },
+        {
+          "key": "colors",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 13
+        }
+      ],
+      "openApprovalRows": [
+        {
+          "row": 33,
+          "values": {
+            "A": "Module und neue Modulwünsche",
+            "B": "offen",
+            "F": "OFFEN (Teilbestätigungen siehe Zeilen 41 und 42): Foto-Modul an und kein weiteres Modul bestätigt. Logo-Modul nur Operator-Vorschlag (Zeile 43). Text-, Farben-Modul und Modulstatus Ausführung/Motive nicht ausdrücklich bestätigt; Designs-Modul hängt an Frage B."
+          }
+        },
+        {
+          "row": 34,
+          "values": {
+            "A": "Formen, Größen, Material und zulässige Optionen",
+            "B": "offen",
+            "F": "Dieses Kleinformat ist ein eigenes Produkt (Zeile 44). Bereich bleibt offen: Motivauswahl, Foto/Logo, Designs."
+          }
+        },
+        {
+          "row": 35,
+          "values": {
+            "A": "Grundpreise, Aufpreise und Steuerkontext",
+            "B": "offen",
+            "F": "OFFEN als Gesamtbereich: Grundpreise und Aufpreise sind bestätigt (Zeilen 39 und 40), der Steuerkontext (brutto) und die Mengenstaffel sind nur Operator-Vorschlag (Zeile 43)."
+          }
+        },
+        {
+          "row": 36,
+          "values": {
+            "A": "Originale, Designgruppe und Startdesign",
+            "B": "offen",
+            "F": "OFFEN – Frage B: Bestandsdesigns D1–D73 je Acryl-Reihe, Übernahme läuft in einem anderen Chat (Zeile 45)."
+          }
+        },
+        {
+          "row": 37,
+          "values": {
+            "A": "Neuanlage / gezielte Änderung dieses Produktes",
+            "B": "offen",
+            "F": "OFFEN. Nichts angelegt, nichts live (Station 1)."
+          }
+        },
+        {
+          "row": 38,
+          "values": {
+            "A": "Veröffentlichung / Shopify-Synchronisierung",
+            "B": "offen",
+            "F": "OFFEN. Keine Synchronisierung."
+          }
+        },
+        {
+          "row": 41,
+          "values": {
+            "A": "Foto- und Logo-Modul bei 8 × 2 cm",
+            "B": "offen",
+            "C": "–",
+            "D": "2026-11-10",
+            "E": "v2 (planHash: noch nicht vorhanden)",
+            "F": "Operator-Vorschlag: aus (bei 8 × 2 cm nicht sinnvoll), von Chris nicht ausdrücklich beantwortet. Status offen. (Hauptprodukt: Foto-Modul an, Chris 12:57; Preise 9,99 / 12,99 € bleiben als Werte eingetragen.)"
+          }
+        },
+        {
+          "row": 43,
+          "values": {
+            "A": "Operator-Vorschläge: Logo-Modul an (12,99 € je Logo), Mengenstaffel 5/10/15 % ab 3/5/10 Stück, Preise brutto, bestehende feste Acryl-Produkte D8/D10 unverändert",
+            "B": "offen",
+            "C": "– (kein ausdrückliches Ja)",
+            "D": "2026-11-10",
+            "E": "v2",
+            "F": "Operator-Vorschlag, von Chris nicht widersprochen (10.11.). Ausdrücklich NICHT als Bestätigung gewertet."
+          }
+        },
+        {
+          "row": 45,
+          "values": {
+            "A": "Designgrundlage (Frage B)",
+            "B": "offen",
+            "C": "–",
+            "D": "–",
+            "E": "v2",
+            "F": "Chris: „es muss andere Designs geben“ (Bestandsdesigns D1–D73 je Acryl-Reihe). Übernahme läuft in einem anderen Chat; Stand offen. Blatt „Bestand-Acryl-D1-D73“ zeigt je Nummer, ob sie im Live-Konfi vorkommt."
+          }
+        }
+      ],
+      "differences": [
+        {
+          "code": "native_source_missing",
+          "cells": [
+            "Freigabe!C11"
+          ],
+          "excel": "nicht vorhanden (Neuanlage)",
+          "required": "Echter nativer Produktdatensatz mit Produkt-ID, Revision und Dokumenthash; keine Arbeitskennung."
+        },
+        {
+          "code": "registry_and_template_missing",
+          "cells": [
+            "Freigabe!C9",
+            "Freigabe!C25",
+            "Freigabe!C26"
+          ],
+          "required": "Autoritative Zielzuordnung (key, productId, familyId, sizeKey), konkreter Linien-/Unterkategorienumfang und gespeicherte ProductGroupTemplate-Revision."
+        },
+        {
+          "code": "module_profile_missing",
+          "cells": [
+            "Freigabe!C27",
+            "Freigabe!C28"
+          ],
+          "required": "Tatsächlich gespeichertes, versionsgebundenes Modulprofil; Wunschstatus ist keine Fähigkeit/Freigabe."
+        },
+        {
+          "code": "excel_catalog_pin_old",
+          "cells": [
+            "Freigabe!C21"
+          ],
+          "excel": "Katalog main 3c6051fbbc79; Blobs: steel-door-signs 2e046d4a, acryl-schwarz e340d775, acryl-anthrazit 491e1abc, serie acryl-tuerschilder-2027 df892cab; Shopify-Readback 08.11. after.json (sha256 0758f455…)",
+          "required": "8236b8bfab7322447ec46661c116fa526331af3d"
+        },
+        {
+          "code": "design_group_not_paired",
+          "cells": [
+            "Freigabe!C16",
+            "Freigabe!C17"
+          ],
+          "excel": {
+            "group": "Bestandsdesigns dieses Formats (Acryl-Reihe Rechteck TRE-A: 56 Designs, D1–D56; Edelstahl TRE-V2A: 59); Übernahme läuft in einem anderen Chat – Stand offen. Blatt „Designbasis“.",
+            "start": "offen – kein Startdesign vorgeschlagen (Startdesign des Hauptprodukts gilt für 12 × 8 cm)"
+          },
+          "required": "Katalog #185: 1.298 insgesamt, davon 1.217 Hauptprodukt und 27 je Kleinformat; rang 0 vor 1. Originalzuordnung und tatsächliches Startdesign nativ belegen."
+        },
+        {
+          "code": "small_design_revision_open",
+          "required": "13 Motive ohne schmetterlinge-1; Katalog-PR187 ist offen, Anpassungen sind nicht Bestandteil des gepinnten main 8236b8bfa."
+        }
+      ],
+      "confirmed": false,
+      "executed": false,
+      "approvalReady": false
+    },
+    {
+      "workbook": {
+        "path": "docs/produktfreigaben/Tuerschild-Edelstahl-5x2_v1.xlsx",
+        "sha256": "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+        "gitBlob": "a9d857cea077cb04a2adaa692f4bffd5bb434c71",
+        "sourceCommit": "bf8824c80347f63ffeb2c05cc9a34a9ffed6f9bd",
+        "revision": "v1"
+      },
+      "productName": "Türschild Edelstahl 5 × 2 cm (gebürstet, Gravur)",
+      "status": "blocked-before-native-plan",
+      "planId": null,
+      "planHash": null,
+      "templateId": null,
+      "templateRevision": null,
+      "counts": {
+        "sizeRows": 1,
+        "forms": {
+          "Rechteck / RE": 1
+        },
+        "explicitOptionRows": 7,
+        "mountingRows": 5,
+        "analysisCombinations": 5
+      },
+      "moduleRequests": [
+        {
+          "key": "options",
+          "requested": "an",
+          "confirmation": "bestätigt",
+          "sourceRow": 7
+        },
+        {
+          "key": "designs",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 8
+        },
+        {
+          "key": "text",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 9
+        },
+        {
+          "key": "motifs",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 10
+        },
+        {
+          "key": "photo",
+          "requested": "aus",
+          "confirmation": "bestätigt",
+          "sourceRow": 11
+        },
+        {
+          "key": "logo",
+          "requested": "offen",
+          "confirmation": "offen",
+          "sourceRow": 12
+        },
+        {
+          "key": "colors",
+          "requested": "aus",
+          "confirmation": "bestätigt",
+          "sourceRow": 13
+        }
+      ],
+      "openApprovalRows": [
+        {
+          "row": 33,
+          "values": {
+            "A": "Module und neue Modulwünsche",
+            "B": "offen",
+            "F": "OFFEN: Motive-Auswahl und Logo offen (Zeilen 43, 46); Foto aus ist Bestand."
+          }
+        },
+        {
+          "row": 34,
+          "values": {
+            "A": "Formen, Größen, Material und zulässige Optionen",
+            "B": "offen",
+            "F": "Dieses Kleinformat ist ein eigenes Produkt (Zeile 44). Bereich bleibt offen: Motivauswahl, Foto/Logo, Designs."
+          }
+        },
+        {
+          "row": 35,
+          "values": {
+            "A": "Grundpreise, Aufpreise und Steuerkontext",
+            "B": "offen",
+            "F": "Preise Bestand/bestätigt (Zeilen 39, 40); Steuerkontext nur Operator-Vorschlag (Zeile 43)."
+          }
+        },
+        {
+          "row": 36,
+          "values": {
+            "A": "Originale, Designgruppe und Startdesign",
+            "B": "offen",
+            "F": "OFFEN – Frage B (Zeile 45)."
+          }
+        },
+        {
+          "row": 37,
+          "values": {
+            "A": "Neuanlage / gezielte Änderung dieses Produktes",
+            "B": "offen",
+            "F": "OFFEN. Nichts angelegt, nichts live (Station 1)."
+          }
+        },
+        {
+          "row": 38,
+          "values": {
+            "A": "Veröffentlichung / Shopify-Synchronisierung",
+            "B": "offen",
+            "F": "OFFEN. Keine Synchronisierung."
+          }
+        },
+        {
+          "row": 42,
+          "values": {
+            "A": "Weiteres Modul / weitere Option gewünscht? (Edelstahl-Kleinformat)",
+            "B": "offen",
+            "C": "–",
+            "D": "2026-11-10",
+            "E": "v1",
+            "F": "Für Acryl mit „nein“ beantwortet (12:57); für diese Edelstahl-Datei nicht gefragt."
+          }
+        },
+        {
+          "row": 43,
+          "values": {
+            "A": "Operator-Vorschläge: Logo-Modul aus (Vorschlag, bei Kleinformaten), Preise brutto, Mengenstaffel 5/10/15 %",
+            "B": "offen",
+            "C": "– (kein ausdrückliches Ja)",
+            "D": "2026-11-10",
+            "E": "v1",
+            "F": "Operator-Vorschlag, von Chris nicht widersprochen. Das Logo (12,99 €) ist beim Edelstahl-Hauptprodukt live; bei Kleinformaten offen."
+          }
+        },
+        {
+          "row": 45,
+          "values": {
+            "A": "Designgrundlage (Frage B)",
+            "B": "offen",
+            "C": "–",
+            "D": "2026-11-10",
+            "E": "v1",
+            "F": "Bestandsdesigns, Übernahme in anderem Chat. Blatt Designbasis."
+          }
+        },
+        {
+          "row": 47,
+          "values": {
+            "A": "Änderung am live stehenden Produkt 16190784438652: 3 Größen (5×2, 6×2, 8×2) entfallen, 15 Varianten",
+            "B": "offen",
+            "C": "– (Freigabe des Änderungsplans durch Chris steht aus)",
+            "D": "–",
+            "E": "v1",
+            "F": "Siehe docs/produktfreigaben/Aenderungsplan-Tuerschild-Edelstahl-Kleinformate_v1.md. Entscheidung dem Grunde nach bestätigt (Chris 14:25: „Ja Edelstahl und Acrylglas sind gleich“), Umsetzung erst nach ausdrücklicher Freigabe des Änderungsplans. Kundenseite ändert sich."
+          }
+        }
+      ],
+      "differences": [
+        {
+          "code": "native_source_missing",
+          "cells": [
+            "Freigabe!C11"
+          ],
+          "excel": "nicht vorhanden (Neuanlage)",
+          "required": "Echter nativer Produktdatensatz mit Produkt-ID, Revision und Dokumenthash; keine Arbeitskennung."
+        },
+        {
+          "code": "registry_and_template_missing",
+          "cells": [
+            "Freigabe!C9",
+            "Freigabe!C25",
+            "Freigabe!C26"
+          ],
+          "required": "Autoritative Zielzuordnung (key, productId, familyId, sizeKey), konkreter Linien-/Unterkategorienumfang und gespeicherte ProductGroupTemplate-Revision."
+        },
+        {
+          "code": "module_profile_missing",
+          "cells": [
+            "Freigabe!C27",
+            "Freigabe!C28"
+          ],
+          "required": "Tatsächlich gespeichertes, versionsgebundenes Modulprofil; Wunschstatus ist keine Fähigkeit/Freigabe."
+        },
+        {
+          "code": "excel_catalog_pin_old",
+          "cells": [
+            "Freigabe!C21"
+          ],
+          "excel": "Katalog main 3c6051fbbc79; Blobs: steel-door-signs 2e046d4a, acryl-schwarz e340d775, acryl-anthrazit 491e1abc, serie acryl-tuerschilder-2027 df892cab; Shopify-Readback 08.11. after.json (sha256 0758f455…)",
+          "required": "8236b8bfab7322447ec46661c116fa526331af3d"
+        },
+        {
+          "code": "design_group_not_paired",
+          "cells": [
+            "Freigabe!C16",
+            "Freigabe!C17"
+          ],
+          "excel": {
+            "group": "Bestandsdesigns dieses Formats (Edelstahl-Reihe Rechteck TRE-V2A: 59 Designs; Katalog-Master-Ordner designs/edelstahl-gravur-50x20: 59 D-Nummern); Übernahme läuft in einem anderen Chat – Stand offen",
+            "start": "offen – kein Startdesign vorgeschlagen"
+          },
+          "required": "Katalog #185: 1.298 insgesamt, davon 1.217 Hauptprodukt und 27 je Kleinformat; rang 0 vor 1. Originalzuordnung und tatsächliches Startdesign nativ belegen."
+        },
+        {
+          "code": "small_design_revision_open",
+          "required": "13 Motive ohne schmetterlinge-1; Katalog-PR187 ist offen, Anpassungen sind nicht Bestandteil des gepinnten main 8236b8bfa."
+        }
+      ],
+      "confirmed": false,
+      "executed": false,
+      "approvalReady": false
+    },
+    {
+      "workbook": {
+        "path": "docs/produktfreigaben/Tuerschild-Edelstahl-6x2_v1.xlsx",
+        "sha256": "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+        "gitBlob": "5eb6e1f47221b0743361b821bac3288507c45a86",
+        "sourceCommit": "bf8824c80347f63ffeb2c05cc9a34a9ffed6f9bd",
+        "revision": "v1"
+      },
+      "productName": "Türschild Edelstahl 6 × 2 cm (gebürstet, Gravur)",
+      "status": "blocked-before-native-plan",
+      "planId": null,
+      "planHash": null,
+      "templateId": null,
+      "templateRevision": null,
+      "counts": {
+        "sizeRows": 1,
+        "forms": {
+          "Rechteck / RE": 1
+        },
+        "explicitOptionRows": 7,
+        "mountingRows": 5,
+        "analysisCombinations": 5
+      },
+      "moduleRequests": [
+        {
+          "key": "options",
+          "requested": "an",
+          "confirmation": "bestätigt",
+          "sourceRow": 7
+        },
+        {
+          "key": "designs",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 8
+        },
+        {
+          "key": "text",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 9
+        },
+        {
+          "key": "motifs",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 10
+        },
+        {
+          "key": "photo",
+          "requested": "aus",
+          "confirmation": "bestätigt",
+          "sourceRow": 11
+        },
+        {
+          "key": "logo",
+          "requested": "offen",
+          "confirmation": "offen",
+          "sourceRow": 12
+        },
+        {
+          "key": "colors",
+          "requested": "aus",
+          "confirmation": "bestätigt",
+          "sourceRow": 13
+        }
+      ],
+      "openApprovalRows": [
+        {
+          "row": 33,
+          "values": {
+            "A": "Module und neue Modulwünsche",
+            "B": "offen",
+            "F": "OFFEN: Motive-Auswahl und Logo offen (Zeilen 43, 46); Foto aus ist Bestand."
+          }
+        },
+        {
+          "row": 34,
+          "values": {
+            "A": "Formen, Größen, Material und zulässige Optionen",
+            "B": "offen",
+            "F": "Dieses Kleinformat ist ein eigenes Produkt (Zeile 44). Bereich bleibt offen: Motivauswahl, Foto/Logo, Designs."
+          }
+        },
+        {
+          "row": 35,
+          "values": {
+            "A": "Grundpreise, Aufpreise und Steuerkontext",
+            "B": "offen",
+            "F": "Preise Bestand/bestätigt (Zeilen 39, 40); Steuerkontext nur Operator-Vorschlag (Zeile 43)."
+          }
+        },
+        {
+          "row": 36,
+          "values": {
+            "A": "Originale, Designgruppe und Startdesign",
+            "B": "offen",
+            "F": "OFFEN – Frage B (Zeile 45)."
+          }
+        },
+        {
+          "row": 37,
+          "values": {
+            "A": "Neuanlage / gezielte Änderung dieses Produktes",
+            "B": "offen",
+            "F": "OFFEN. Nichts angelegt, nichts live (Station 1)."
+          }
+        },
+        {
+          "row": 38,
+          "values": {
+            "A": "Veröffentlichung / Shopify-Synchronisierung",
+            "B": "offen",
+            "F": "OFFEN. Keine Synchronisierung."
+          }
+        },
+        {
+          "row": 42,
+          "values": {
+            "A": "Weiteres Modul / weitere Option gewünscht? (Edelstahl-Kleinformat)",
+            "B": "offen",
+            "C": "–",
+            "D": "2026-11-10",
+            "E": "v1",
+            "F": "Für Acryl mit „nein“ beantwortet (12:57); für diese Edelstahl-Datei nicht gefragt."
+          }
+        },
+        {
+          "row": 43,
+          "values": {
+            "A": "Operator-Vorschläge: Logo-Modul aus (Vorschlag, bei Kleinformaten), Preise brutto, Mengenstaffel 5/10/15 %",
+            "B": "offen",
+            "C": "– (kein ausdrückliches Ja)",
+            "D": "2026-11-10",
+            "E": "v1",
+            "F": "Operator-Vorschlag, von Chris nicht widersprochen. Das Logo (12,99 €) ist beim Edelstahl-Hauptprodukt live; bei Kleinformaten offen."
+          }
+        },
+        {
+          "row": 45,
+          "values": {
+            "A": "Designgrundlage (Frage B)",
+            "B": "offen",
+            "C": "–",
+            "D": "2026-11-10",
+            "E": "v1",
+            "F": "Bestandsdesigns, Übernahme in anderem Chat. Blatt Designbasis."
+          }
+        },
+        {
+          "row": 47,
+          "values": {
+            "A": "Änderung am live stehenden Produkt 16190784438652: 3 Größen (5×2, 6×2, 8×2) entfallen, 15 Varianten",
+            "B": "offen",
+            "C": "– (Freigabe des Änderungsplans durch Chris steht aus)",
+            "D": "–",
+            "E": "v1",
+            "F": "Siehe docs/produktfreigaben/Aenderungsplan-Tuerschild-Edelstahl-Kleinformate_v1.md. Entscheidung dem Grunde nach bestätigt (Chris 14:25: „Ja Edelstahl und Acrylglas sind gleich“), Umsetzung erst nach ausdrücklicher Freigabe des Änderungsplans. Kundenseite ändert sich."
+          }
+        }
+      ],
+      "differences": [
+        {
+          "code": "native_source_missing",
+          "cells": [
+            "Freigabe!C11"
+          ],
+          "excel": "nicht vorhanden (Neuanlage)",
+          "required": "Echter nativer Produktdatensatz mit Produkt-ID, Revision und Dokumenthash; keine Arbeitskennung."
+        },
+        {
+          "code": "registry_and_template_missing",
+          "cells": [
+            "Freigabe!C9",
+            "Freigabe!C25",
+            "Freigabe!C26"
+          ],
+          "required": "Autoritative Zielzuordnung (key, productId, familyId, sizeKey), konkreter Linien-/Unterkategorienumfang und gespeicherte ProductGroupTemplate-Revision."
+        },
+        {
+          "code": "module_profile_missing",
+          "cells": [
+            "Freigabe!C27",
+            "Freigabe!C28"
+          ],
+          "required": "Tatsächlich gespeichertes, versionsgebundenes Modulprofil; Wunschstatus ist keine Fähigkeit/Freigabe."
+        },
+        {
+          "code": "excel_catalog_pin_old",
+          "cells": [
+            "Freigabe!C21"
+          ],
+          "excel": "Katalog main 3c6051fbbc79; Blobs: steel-door-signs 2e046d4a, acryl-schwarz e340d775, acryl-anthrazit 491e1abc, serie acryl-tuerschilder-2027 df892cab; Shopify-Readback 08.11. after.json (sha256 0758f455…)",
+          "required": "8236b8bfab7322447ec46661c116fa526331af3d"
+        },
+        {
+          "code": "design_group_not_paired",
+          "cells": [
+            "Freigabe!C16",
+            "Freigabe!C17"
+          ],
+          "excel": {
+            "group": "Bestandsdesigns dieses Formats (Edelstahl-Reihe Rechteck TRE-V2A: 59 Designs; Katalog-Master-Ordner designs/edelstahl-gravur-60x20: 60 D-Nummern); Übernahme läuft in einem anderen Chat – Stand offen",
+            "start": "offen – kein Startdesign vorgeschlagen"
+          },
+          "required": "Katalog #185: 1.298 insgesamt, davon 1.217 Hauptprodukt und 27 je Kleinformat; rang 0 vor 1. Originalzuordnung und tatsächliches Startdesign nativ belegen."
+        },
+        {
+          "code": "small_design_revision_open",
+          "required": "13 Motive ohne schmetterlinge-1; Katalog-PR187 ist offen, Anpassungen sind nicht Bestandteil des gepinnten main 8236b8bfa."
+        }
+      ],
+      "confirmed": false,
+      "executed": false,
+      "approvalReady": false
+    },
+    {
+      "workbook": {
+        "path": "docs/produktfreigaben/Tuerschild-Edelstahl-8x2_v1.xlsx",
+        "sha256": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+        "gitBlob": "6c3d8dc2e83241ea4a1955307d46e9e4f6a41e3e",
+        "sourceCommit": "bf8824c80347f63ffeb2c05cc9a34a9ffed6f9bd",
+        "revision": "v1"
+      },
+      "productName": "Türschild Edelstahl 8 × 2 cm (gebürstet, Gravur)",
+      "status": "blocked-before-native-plan",
+      "planId": null,
+      "planHash": null,
+      "templateId": null,
+      "templateRevision": null,
+      "counts": {
+        "sizeRows": 1,
+        "forms": {
+          "Rechteck / RE": 1
+        },
+        "explicitOptionRows": 7,
+        "mountingRows": 5,
+        "analysisCombinations": 5
+      },
+      "moduleRequests": [
+        {
+          "key": "options",
+          "requested": "an",
+          "confirmation": "bestätigt",
+          "sourceRow": 7
+        },
+        {
+          "key": "designs",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 8
+        },
+        {
+          "key": "text",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 9
+        },
+        {
+          "key": "motifs",
+          "requested": "an",
+          "confirmation": "offen",
+          "sourceRow": 10
+        },
+        {
+          "key": "photo",
+          "requested": "aus",
+          "confirmation": "bestätigt",
+          "sourceRow": 11
+        },
+        {
+          "key": "logo",
+          "requested": "offen",
+          "confirmation": "offen",
+          "sourceRow": 12
+        },
+        {
+          "key": "colors",
+          "requested": "aus",
+          "confirmation": "bestätigt",
+          "sourceRow": 13
+        }
+      ],
+      "openApprovalRows": [
+        {
+          "row": 33,
+          "values": {
+            "A": "Module und neue Modulwünsche",
+            "B": "offen",
+            "F": "OFFEN: Motive-Auswahl und Logo offen (Zeilen 43, 46); Foto aus ist Bestand."
+          }
+        },
+        {
+          "row": 34,
+          "values": {
+            "A": "Formen, Größen, Material und zulässige Optionen",
+            "B": "offen",
+            "F": "Dieses Kleinformat ist ein eigenes Produkt (Zeile 44). Bereich bleibt offen: Motivauswahl, Foto/Logo, Designs."
+          }
+        },
+        {
+          "row": 35,
+          "values": {
+            "A": "Grundpreise, Aufpreise und Steuerkontext",
+            "B": "offen",
+            "F": "Preise Bestand/bestätigt (Zeilen 39, 40); Steuerkontext nur Operator-Vorschlag (Zeile 43)."
+          }
+        },
+        {
+          "row": 36,
+          "values": {
+            "A": "Originale, Designgruppe und Startdesign",
+            "B": "offen",
+            "F": "OFFEN – Frage B (Zeile 45)."
+          }
+        },
+        {
+          "row": 37,
+          "values": {
+            "A": "Neuanlage / gezielte Änderung dieses Produktes",
+            "B": "offen",
+            "F": "OFFEN. Nichts angelegt, nichts live (Station 1)."
+          }
+        },
+        {
+          "row": 38,
+          "values": {
+            "A": "Veröffentlichung / Shopify-Synchronisierung",
+            "B": "offen",
+            "F": "OFFEN. Keine Synchronisierung."
+          }
+        },
+        {
+          "row": 42,
+          "values": {
+            "A": "Weiteres Modul / weitere Option gewünscht? (Edelstahl-Kleinformat)",
+            "B": "offen",
+            "C": "–",
+            "D": "2026-11-10",
+            "E": "v1",
+            "F": "Für Acryl mit „nein“ beantwortet (12:57); für diese Edelstahl-Datei nicht gefragt."
+          }
+        },
+        {
+          "row": 43,
+          "values": {
+            "A": "Operator-Vorschläge: Logo-Modul aus (Vorschlag, bei Kleinformaten), Preise brutto, Mengenstaffel 5/10/15 %",
+            "B": "offen",
+            "C": "– (kein ausdrückliches Ja)",
+            "D": "2026-11-10",
+            "E": "v1",
+            "F": "Operator-Vorschlag, von Chris nicht widersprochen. Das Logo (12,99 €) ist beim Edelstahl-Hauptprodukt live; bei Kleinformaten offen."
+          }
+        },
+        {
+          "row": 45,
+          "values": {
+            "A": "Designgrundlage (Frage B)",
+            "B": "offen",
+            "C": "–",
+            "D": "2026-11-10",
+            "E": "v1",
+            "F": "Bestandsdesigns, Übernahme in anderem Chat. Blatt Designbasis."
+          }
+        },
+        {
+          "row": 47,
+          "values": {
+            "A": "Änderung am live stehenden Produkt 16190784438652: 3 Größen (5×2, 6×2, 8×2) entfallen, 15 Varianten",
+            "B": "offen",
+            "C": "– (Freigabe des Änderungsplans durch Chris steht aus)",
+            "D": "–",
+            "E": "v1",
+            "F": "Siehe docs/produktfreigaben/Aenderungsplan-Tuerschild-Edelstahl-Kleinformate_v1.md. Entscheidung dem Grunde nach bestätigt (Chris 14:25: „Ja Edelstahl und Acrylglas sind gleich“), Umsetzung erst nach ausdrücklicher Freigabe des Änderungsplans. Kundenseite ändert sich."
+          }
+        }
+      ],
+      "differences": [
+        {
+          "code": "native_source_missing",
+          "cells": [
+            "Freigabe!C11"
+          ],
+          "excel": "nicht vorhanden (Neuanlage)",
+          "required": "Echter nativer Produktdatensatz mit Produkt-ID, Revision und Dokumenthash; keine Arbeitskennung."
+        },
+        {
+          "code": "registry_and_template_missing",
+          "cells": [
+            "Freigabe!C9",
+            "Freigabe!C25",
+            "Freigabe!C26"
+          ],
+          "required": "Autoritative Zielzuordnung (key, productId, familyId, sizeKey), konkreter Linien-/Unterkategorienumfang und gespeicherte ProductGroupTemplate-Revision."
+        },
+        {
+          "code": "module_profile_missing",
+          "cells": [
+            "Freigabe!C27",
+            "Freigabe!C28"
+          ],
+          "required": "Tatsächlich gespeichertes, versionsgebundenes Modulprofil; Wunschstatus ist keine Fähigkeit/Freigabe."
+        },
+        {
+          "code": "excel_catalog_pin_old",
+          "cells": [
+            "Freigabe!C21"
+          ],
+          "excel": "Katalog main 3c6051fbbc79; Blobs: steel-door-signs 2e046d4a, acryl-schwarz e340d775, acryl-anthrazit 491e1abc, serie acryl-tuerschilder-2027 df892cab; Shopify-Readback 08.11. after.json (sha256 0758f455…)",
+          "required": "8236b8bfab7322447ec46661c116fa526331af3d"
+        },
+        {
+          "code": "design_group_not_paired",
+          "cells": [
+            "Freigabe!C16",
+            "Freigabe!C17"
+          ],
+          "excel": {
+            "group": "Bestandsdesigns dieses Formats (Edelstahl-Reihe Rechteck TRE-V2A: 59 Designs; Katalog-Master-Ordner designs/edelstahl-gravur-80x20: 65 D-Nummern); Übernahme läuft in einem anderen Chat – Stand offen",
+            "start": "offen – kein Startdesign vorgeschlagen"
+          },
+          "required": "Katalog #185: 1.298 insgesamt, davon 1.217 Hauptprodukt und 27 je Kleinformat; rang 0 vor 1. Originalzuordnung und tatsächliches Startdesign nativ belegen."
+        },
+        {
+          "code": "small_design_revision_open",
+          "required": "13 Motive ohne schmetterlinge-1; Katalog-PR187 ist offen, Anpassungen sind nicht Bestandteil des gepinnten main 8236b8bfa."
+        }
+      ],
+      "confirmed": false,
+      "executed": false,
+      "approvalReady": false
+    }
+  ],
+  "catalogue": {
+    "commit": "8236b8bfab7322447ec46661c116fa526331af3d",
+    "designList": {
+      "path": "auftraege/2026-11-10-tuerschild-designs-namensschilder/designs.json",
+      "sha256": "92a7dec4398424f53a75653835c3598e8d256372458dfb5999cbeca37e5f5f46",
+      "total": 1298,
+      "rankCounts": {
+        "0": 751,
+        "1": 547
+      },
+      "products": {
+        "Kleinformat 5 × 2": 27,
+        "Kleinformat 6 × 2": 27,
+        "Hauptprodukt (Form + Größe)": 1217,
+        "Kleinformat 8 × 2": 27
+      },
+      "orderedIdsSha256": "46ad2ea2915463dc80046061afffd2d3e62d2b024fcaea0dd8f4a04b988a695c",
+      "ordering": "rank ascending; original list order within each rank",
+      "orderAppliedToCustomer": false
+    },
+    "smallMotifs": {
+      "excluded": "motive/motive-kleine-schilder/schmetterlinge-1.svg",
+      "allowed": [
+        {
+          "path": "motive/motive-kleine-schilder/anker-3.svg",
+          "sha256": "b1512de9388b226a426719e4aff9fc31ea5d61cd4a4e6971a30a289612a13d64"
+        },
+        {
+          "path": "motive/motive-kleine-schilder/brief.svg",
+          "sha256": "9853762731697c7a4af2362d3335f153b00a52d823373cb2a35cbe8944a91679"
+        },
+        {
+          "path": "motive/motive-kleine-schilder/feine-trennlinie.svg",
+          "sha256": "dd17ece403de8f27762bc9a7d57d7329e3f41b02a8361513c1f43ada4f544c1c"
+        },
+        {
+          "path": "motive/motive-kleine-schilder/haus.svg",
+          "sha256": "7c2ed4f83ce18b00f0d0c8097a2c8deefe7ddd82b6a73c8f00243efa61e3d12a"
+        },
+        {
+          "path": "motive/motive-kleine-schilder/herz-2.svg",
+          "sha256": "963a64ebc8ea54b2dfd37ece1b7c5beabc9e5f81f3922829f6c0d90b2f390147"
+        },
+        {
+          "path": "motive/motive-kleine-schilder/klingel.svg",
+          "sha256": "5ad151a6a9a23c45f9ca4c2370c0814fea80aa6dfc2a3e60b14d2241c06431f6"
+        },
+        {
+          "path": "motive/motive-kleine-schilder/pfote-1.svg",
+          "sha256": "41b2eb1bdd5f7090b532462a841c65a1592b76b87b49f827db23316affc6d0f8"
+        },
+        {
+          "path": "motive/motive-kleine-schilder/schmetterling-1.svg",
+          "sha256": "f0fb7dc120e6cf427b044ab03a381a2d87752bff90ad56db6b43e7601405ce75"
+        },
+        {
+          "path": "motive/motive-kleine-schilder/stern-1.svg",
+          "sha256": "3a1856aa9f2f16f1a2f3e4443c60bb00f24f340eb0c44e1cbdb46df62588b047"
+        },
+        {
+          "path": "motive/motive-kleine-schilder/strich-haus.svg",
+          "sha256": "3651b6922f6b57935892ad4ca0448a4918c18956c165504e8db8a3999a226515"
+        },
+        {
+          "path": "motive/motive-kleine-schilder/strich-horizontal.svg",
+          "sha256": "e98927147448936031c8a54d6123b1994ce92a6c94481f9dfba316644db80dfd"
+        },
+        {
+          "path": "motive/motive-kleine-schilder/verschlungene-herzen.svg",
+          "sha256": "0008287c9833fb15429791037b61174e522ba27a48ce75dc3cc0422c3ee278f8"
+        },
+        {
+          "path": "motive/motive-kleine-schilder/vogel-1.svg",
+          "sha256": "2036412532dcc3b6125416397137789f5b2756282d827b80f37088372c794658"
+        }
+      ],
+      "placement": {
+        "sourceComment": 6772716646,
+        "default": "left or right beside the text",
+        "exceptions": [
+          "strich-horizontal",
+          "feine-trennlinie"
+        ],
+        "exceptionPlacement": "centered or text offset on the line"
+      },
+      "filterAppliedToCustomer": false
+    },
+    "openDesignAdaptation": {
+      "pr": "https://github.com/Chris83638w/gravuru-katalog./pull/187",
+      "observedHead": "69bf6448fb2bde47b2da3e1616f854786f1f65ee",
+      "stateAtRead": "open",
+      "mergedIntoPinnedCatalog": false,
+      "applied": false
+    }
+  },
+  "cataloguePriceComparison": [
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm_v4.xlsx",
+      "family": {
+        "id": "acryl-3mm-tuerschilder-schwarz",
+        "path": "familien/acryl/acryl-3mm-tuerschilder-schwarz.json",
+        "sha256": "9c82b605cafb70d9f72f2bf5f7321d2366cd36649641861400e36dbec31f9773"
+      },
+      "matchedSizes": 77,
+      "differences": [
+        {
+          "variantKey": "TS-Acryl-RE-80X53P3-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-90X60-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-120X80-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-150X100-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-180X120-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-210X140-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-240X160-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-300X200-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-300X200-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-RE-420X280-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-RE-450X300-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-RE-80X35-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-120X52P5-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-160X70-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-240X105-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-320X140-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-400X175-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-70X23P3-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-90X30-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-120X40-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-150X50-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-180X60-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-210X70-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-240X80-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-270X90-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-AB-80X53P3-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-AB-90X60-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-AB-120X80-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-AB-150X100-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-AB-180X120-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-AB-210X140-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-AB-240X160-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-AB-300X200-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-AB-300X200-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-AB-420X280-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-AB-450X300-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-QU-80X80-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-QU-100X100-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-QU-120X120-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-QU-160X160-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-QU-200X200-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-QU-260X260-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-QU-300X300-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-OV-90X60-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-120X80-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-150X100-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-180X120-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-210X140-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-240X160-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-300X200-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-150X80-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-225X120-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-300X160-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-EL-120X40-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-EL-150X50-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-EL-180X60-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-EL-210X70-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-EL-240X80-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-EL-270X90-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-300X100-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-R-65X65-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-R-85X85-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-R-120X120-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-R-160X160-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-R-200X200-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT1-90X60-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT1-120X80-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT1-150X100-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT1-180X120-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT1-210X140-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT1-240X160-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT1-300X200-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT2-90X60-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT2-120X80-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT2-150X100-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT2-180X120-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT2-210X140-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT2-240X160-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT2-300X200-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm_v4.xlsx",
+      "family": {
+        "id": "acryl-3mm-tuerschilder-anthrazit",
+        "path": "familien/acryl/acryl-3mm-tuerschilder-anthrazit.json",
+        "sha256": "ac4e6a5ff475acc5a09344ea001911a2529687f4f63f06c7e5e7caa070509068"
+      },
+      "matchedSizes": 77,
+      "differences": [
+        {
+          "variantKey": "TS-Acryl-RE-80X53P3-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-90X60-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-120X80-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-150X100-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-180X120-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-210X140-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-240X160-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-300X200-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-300X200-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-RE-420X280-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-RE-450X300-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-RE-80X35-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-120X52P5-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-160X70-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-240X105-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-320X140-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-400X175-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-70X23P3-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-90X30-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-120X40-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-150X50-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-180X60-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-210X70-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-240X80-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RE-270X90-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-AB-80X53P3-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-AB-90X60-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-AB-120X80-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-AB-150X100-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-AB-180X120-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-AB-210X140-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-AB-240X160-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-AB-300X200-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-AB-300X200-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-AB-420X280-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-AB-450X300-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-QU-80X80-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-QU-100X100-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-QU-120X120-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-QU-160X160-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-QU-200X200-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-QU-260X260-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-QU-300X300-T30",
+          "optionId": "B04S",
+          "code": "mounting_price",
+          "excelCents": 329,
+          "catalogCents": 339
+        },
+        {
+          "variantKey": "TS-Acryl-OV-90X60-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-120X80-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-150X100-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-180X120-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-210X140-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-240X160-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-300X200-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-150X80-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-225X120-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-300X160-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-EL-120X40-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-EL-150X50-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-EL-180X60-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-EL-210X70-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-EL-240X80-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-EL-270X90-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-OV-300X100-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-R-65X65-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-R-85X85-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-R-120X120-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-R-160X160-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-R-200X200-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT1-90X60-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT1-120X80-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT1-150X100-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT1-180X120-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT1-210X140-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT1-240X160-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT1-300X200-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT2-90X60-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT2-120X80-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT2-150X100-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT2-180X120-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT2-210X140-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT2-240X160-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        },
+        {
+          "variantKey": "TS-Acryl-RT2-300X200-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "family": {
+        "id": "acryl-3mm-tuerschilder-schwarz",
+        "path": "familien/acryl/acryl-3mm-tuerschilder-schwarz.json",
+        "sha256": "9c82b605cafb70d9f72f2bf5f7321d2366cd36649641861400e36dbec31f9773"
+      },
+      "matchedSizes": 1,
+      "differences": [
+        {
+          "variantKey": "TS-Acryl-RE-50X20-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "family": {
+        "id": "acryl-3mm-tuerschilder-anthrazit",
+        "path": "familien/acryl/acryl-3mm-tuerschilder-anthrazit.json",
+        "sha256": "ac4e6a5ff475acc5a09344ea001911a2529687f4f63f06c7e5e7caa070509068"
+      },
+      "matchedSizes": 1,
+      "differences": [
+        {
+          "variantKey": "TS-Acryl-RE-50X20-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "family": {
+        "id": "acryl-3mm-tuerschilder-schwarz",
+        "path": "familien/acryl/acryl-3mm-tuerschilder-schwarz.json",
+        "sha256": "9c82b605cafb70d9f72f2bf5f7321d2366cd36649641861400e36dbec31f9773"
+      },
+      "matchedSizes": 1,
+      "differences": [
+        {
+          "variantKey": "TS-Acryl-RE-60X20-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "family": {
+        "id": "acryl-3mm-tuerschilder-anthrazit",
+        "path": "familien/acryl/acryl-3mm-tuerschilder-anthrazit.json",
+        "sha256": "ac4e6a5ff475acc5a09344ea001911a2529687f4f63f06c7e5e7caa070509068"
+      },
+      "matchedSizes": 1,
+      "differences": [
+        {
+          "variantKey": "TS-Acryl-RE-60X20-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "family": {
+        "id": "acryl-3mm-tuerschilder-schwarz",
+        "path": "familien/acryl/acryl-3mm-tuerschilder-schwarz.json",
+        "sha256": "9c82b605cafb70d9f72f2bf5f7321d2366cd36649641861400e36dbec31f9773"
+      },
+      "matchedSizes": 1,
+      "differences": [
+        {
+          "variantKey": "TS-Acryl-RE-80X20-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "family": {
+        "id": "acryl-3mm-tuerschilder-anthrazit",
+        "path": "familien/acryl/acryl-3mm-tuerschilder-anthrazit.json",
+        "sha256": "ac4e6a5ff475acc5a09344ea001911a2529687f4f63f06c7e5e7caa070509068"
+      },
+      "matchedSizes": 1,
+      "differences": [
+        {
+          "variantKey": "TS-Acryl-RE-80X20-T30",
+          "optionId": "B02S",
+          "code": "mounting_price",
+          "excelCents": 269,
+          "catalogCents": 299
+        }
+      ]
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+      "family": {
+        "id": "steel-door-signs",
+        "path": "familien/edelstahl/steel-door-signs.json",
+        "sha256": "0c1cfeb0a185c9f58f1ca9c70d9d733da1297df52d3227866fc47d4671771e42"
+      },
+      "matchedSizes": 1,
+      "differences": []
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+      "family": {
+        "id": "steel-door-signs",
+        "path": "familien/edelstahl/steel-door-signs.json",
+        "sha256": "0c1cfeb0a185c9f58f1ca9c70d9d733da1297df52d3227866fc47d4671771e42"
+      },
+      "matchedSizes": 1,
+      "differences": []
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+      "family": {
+        "id": "steel-door-signs",
+        "path": "familien/edelstahl/steel-door-signs.json",
+        "sha256": "0c1cfeb0a185c9f58f1ca9c70d9d733da1297df52d3227866fc47d4671771e42"
+      },
+      "matchedSizes": 1,
+      "differences": []
+    }
+  ],
+  "steelChange": {
+    "status": "difference-only-not-approved-not-applied",
+    "documentSha256": "2e74548aa7211a2f5546af428e1d27d9f00f12181490356633e3cd109cb179c0",
+    "sourceRevision": 4,
+    "sourceIsHistoricalNotFresh": true,
+    "existingProductId": "16190784438652",
+    "before": {
+      "sizes": 80,
+      "variants": 404
+    },
+    "proposed": {
+      "sizes": 77,
+      "variants": 389
+    },
+    "unchangedDefault": {
+      "size": "GR-ES-AB-120X80-T15",
+      "color": "edelstahl"
+    },
+    "removedSizeKeys": [
+      "GR-ES-RE-50X20-T15",
+      "GR-ES-RE-60X20-T15",
+      "GR-ES-RE-80X20-T15"
+    ],
+    "proposedVariantRemovals": [
+      {
+        "workbook": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+        "sourceRow": 2,
+        "existingParentShopifyProductId": "16190784438652",
+        "existingVariantId": "58104603935100",
+        "existingSku": "156-GR-ES-RE-50X20-T15-K00",
+        "historicalShopifyPriceCents": 799,
+        "catalogCombinationPriceCents": 799,
+        "differenceCents": 0,
+        "proposedRemovalOnly": true,
+        "approvedRemoval": false,
+        "newProductId": null,
+        "newSku": null,
+        "nativeHistoricalPriceCents": 799
+      },
+      {
+        "workbook": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+        "sourceRow": 3,
+        "existingParentShopifyProductId": "16190784438652",
+        "existingVariantId": "58104603967868",
+        "existingSku": "156-GR-ES-RE-50X20-T15-KGL",
+        "historicalShopifyPriceCents": 1098,
+        "catalogCombinationPriceCents": 1098,
+        "differenceCents": 0,
+        "proposedRemovalOnly": true,
+        "approvedRemoval": false,
+        "newProductId": null,
+        "newSku": null,
+        "nativeHistoricalPriceCents": 1098
+      },
+      {
+        "workbook": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+        "sourceRow": 4,
+        "existingParentShopifyProductId": "16190784438652",
+        "existingVariantId": "58104604000636",
+        "existingSku": "156-GR-ES-RE-50X20-T15-KRA",
+        "historicalShopifyPriceCents": 1198,
+        "catalogCombinationPriceCents": 1198,
+        "differenceCents": 0,
+        "proposedRemovalOnly": true,
+        "approvedRemoval": false,
+        "newProductId": null,
+        "newSku": null,
+        "nativeHistoricalPriceCents": 1198
+      },
+      {
+        "workbook": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+        "sourceRow": 5,
+        "existingParentShopifyProductId": "16190784438652",
+        "existingVariantId": "58104604033404",
+        "existingSku": "156-GR-ES-RE-50X20-T15-B02",
+        "historicalShopifyPriceCents": 1048,
+        "catalogCombinationPriceCents": 1048,
+        "differenceCents": 0,
+        "proposedRemovalOnly": true,
+        "approvedRemoval": false,
+        "newProductId": null,
+        "newSku": null,
+        "nativeHistoricalPriceCents": 1048
+      },
+      {
+        "workbook": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+        "sourceRow": 6,
+        "existingParentShopifyProductId": "16190784438652",
+        "existingVariantId": "58104604066172",
+        "existingSku": "156-GR-ES-RE-50X20-T15-B02S",
+        "historicalShopifyPriceCents": 1068,
+        "catalogCombinationPriceCents": 1068,
+        "differenceCents": 0,
+        "proposedRemovalOnly": true,
+        "approvedRemoval": false,
+        "newProductId": null,
+        "newSku": null,
+        "nativeHistoricalPriceCents": 1068
+      },
+      {
+        "workbook": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+        "sourceRow": 2,
+        "existingParentShopifyProductId": "16190784438652",
+        "existingVariantId": "58104601477500",
+        "existingSku": "156-GR-ES-RE-60X20-T15-K00",
+        "historicalShopifyPriceCents": 879,
+        "catalogCombinationPriceCents": 879,
+        "differenceCents": 0,
+        "proposedRemovalOnly": true,
+        "approvedRemoval": false,
+        "newProductId": null,
+        "newSku": null,
+        "nativeHistoricalPriceCents": 879
+      },
+      {
+        "workbook": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+        "sourceRow": 3,
+        "existingParentShopifyProductId": "16190784438652",
+        "existingVariantId": "58104601510268",
+        "existingSku": "156-GR-ES-RE-60X20-T15-KGL",
+        "historicalShopifyPriceCents": 1178,
+        "catalogCombinationPriceCents": 1178,
+        "differenceCents": 0,
+        "proposedRemovalOnly": true,
+        "approvedRemoval": false,
+        "newProductId": null,
+        "newSku": null,
+        "nativeHistoricalPriceCents": 1178
+      },
+      {
+        "workbook": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+        "sourceRow": 4,
+        "existingParentShopifyProductId": "16190784438652",
+        "existingVariantId": "58104601543036",
+        "existingSku": "156-GR-ES-RE-60X20-T15-KRA",
+        "historicalShopifyPriceCents": 1278,
+        "catalogCombinationPriceCents": 1278,
+        "differenceCents": 0,
+        "proposedRemovalOnly": true,
+        "approvedRemoval": false,
+        "newProductId": null,
+        "newSku": null,
+        "nativeHistoricalPriceCents": 1278
+      },
+      {
+        "workbook": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+        "sourceRow": 5,
+        "existingParentShopifyProductId": "16190784438652",
+        "existingVariantId": "58104601575804",
+        "existingSku": "156-GR-ES-RE-60X20-T15-B02",
+        "historicalShopifyPriceCents": 1128,
+        "catalogCombinationPriceCents": 1128,
+        "differenceCents": 0,
+        "proposedRemovalOnly": true,
+        "approvedRemoval": false,
+        "newProductId": null,
+        "newSku": null,
+        "nativeHistoricalPriceCents": 1128
+      },
+      {
+        "workbook": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+        "sourceRow": 6,
+        "existingParentShopifyProductId": "16190784438652",
+        "existingVariantId": "58104601608572",
+        "existingSku": "156-GR-ES-RE-60X20-T15-B02S",
+        "historicalShopifyPriceCents": 1148,
+        "catalogCombinationPriceCents": 1148,
+        "differenceCents": 0,
+        "proposedRemovalOnly": true,
+        "approvedRemoval": false,
+        "newProductId": null,
+        "newSku": null,
+        "nativeHistoricalPriceCents": 1148
+      },
+      {
+        "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+        "sourceRow": 2,
+        "existingParentShopifyProductId": "16190784438652",
+        "existingVariantId": "58104601149820",
+        "existingSku": "156-GR-ES-RE-80X20-T15-K00",
+        "historicalShopifyPriceCents": 949,
+        "catalogCombinationPriceCents": 949,
+        "differenceCents": 0,
+        "proposedRemovalOnly": true,
+        "approvedRemoval": false,
+        "newProductId": null,
+        "newSku": null,
+        "nativeHistoricalPriceCents": 949
+      },
+      {
+        "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+        "sourceRow": 3,
+        "existingParentShopifyProductId": "16190784438652",
+        "existingVariantId": "58104601182588",
+        "existingSku": "156-GR-ES-RE-80X20-T15-KGL",
+        "historicalShopifyPriceCents": 1248,
+        "catalogCombinationPriceCents": 1248,
+        "differenceCents": 0,
+        "proposedRemovalOnly": true,
+        "approvedRemoval": false,
+        "newProductId": null,
+        "newSku": null,
+        "nativeHistoricalPriceCents": 1248
+      },
+      {
+        "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+        "sourceRow": 4,
+        "existingParentShopifyProductId": "16190784438652",
+        "existingVariantId": "58104601215356",
+        "existingSku": "156-GR-ES-RE-80X20-T15-KRA",
+        "historicalShopifyPriceCents": 1348,
+        "catalogCombinationPriceCents": 1348,
+        "differenceCents": 0,
+        "proposedRemovalOnly": true,
+        "approvedRemoval": false,
+        "newProductId": null,
+        "newSku": null,
+        "nativeHistoricalPriceCents": 1348
+      },
+      {
+        "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+        "sourceRow": 5,
+        "existingParentShopifyProductId": "16190784438652",
+        "existingVariantId": "58104601248124",
+        "existingSku": "156-GR-ES-RE-80X20-T15-B02",
+        "historicalShopifyPriceCents": 1198,
+        "catalogCombinationPriceCents": 1198,
+        "differenceCents": 0,
+        "proposedRemovalOnly": true,
+        "approvedRemoval": false,
+        "newProductId": null,
+        "newSku": null,
+        "nativeHistoricalPriceCents": 1198
+      },
+      {
+        "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+        "sourceRow": 6,
+        "existingParentShopifyProductId": "16190784438652",
+        "existingVariantId": "58104601280892",
+        "existingSku": "156-GR-ES-RE-80X20-T15-B02S",
+        "historicalShopifyPriceCents": 1218,
+        "catalogCombinationPriceCents": 1218,
+        "differenceCents": 0,
+        "proposedRemovalOnly": true,
+        "approvedRemoval": false,
+        "newProductId": null,
+        "newSku": null,
+        "nativeHistoricalPriceCents": 1218
+      }
+    ],
+    "priceSumCents": 16783,
+    "preservesExistingHistory": true,
+    "skuReuseAllowed": false,
+    "planId": null,
+    "planHash": null,
+    "open": [
+      "Frischen Iststand und aktuelle Bindungen vor einem Änderungsplan prüfen.",
+      "Rücknahme/Bestell- und Warenkorb-Historie sowie Umleitungsstrategie bestätigen.",
+      "Eigene neue SKUs erst nach Prüfung, keine Wiederverwendung bestehender 15 SKUs.",
+      "Explizite Freigabe des 80→77-Änderungsplans fehlt."
+    ],
+    "confirmed": false,
+    "executed": false
+  },
+  "prerequisite": "Vorhandenen planFamilyFormats-Pfad für vollständige Produktpakete nutzen. Erst nach realer review-only Quellregistrierung, echten Registry-/Profilständen und Versionsübergabe den unveränderten ProductGroupTemplate.plan-Service aufrufen. Keine flüchtigen Testquellen als Freigabeplan."
+}

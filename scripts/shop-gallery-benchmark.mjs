@@ -45,8 +45,8 @@ export async function benchmarkGalleryCopy({filename,tenantId,storeId,shopDomain
   const gallery=createShopDesignGallery({secret:'local-benchmark-not-a-shop-session',resolve:ids=>({store,binding:registry.resolve(ids)}),cardFor:(_store,b)=>{cardReads++;return shopGalleryModel(get(b.productId,b.productRevision));},modelFor:()=>fail('full_model_read_in_gallery'),allowedAssets:()=>fail('asset_read_in_gallery'),onMeasure:entry=>measurements.push(entry),checkBinding});
   async function measure(){
    approvalHashes.clear();const start=performance.now(),binding=registry.resolve(identity),context={store,binding,session:{sid:'local-copy-benchmark'}};
-   checkBinding(store,binding,shopGalleryModel(get(binding.productId,binding.productRevision)));
-   const result=await gallery.list(context);registry.resolve(identity);
+   const sourceModel=shopGalleryModel(get(binding.productId,binding.productRevision));checkBinding(store,binding,sourceModel);
+   const result=await gallery.list(context,{sourceModel});registry.resolve(identity);
    return {ms:+(performance.now()-start).toFixed(2),status:result.status||'ready',cards:result.total,firstPage:result.items.length};
   }
   const started=performance.now(),cold=await measure();await gallery.warm({store,binding:{shopDomain}});const preparationMs=+(performance.now()-started).toFixed(2),warm=await measure();

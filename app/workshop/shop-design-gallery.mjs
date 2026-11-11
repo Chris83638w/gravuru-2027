@@ -86,6 +86,9 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
     if(current.store!==context.store||!sameBinding(candidate,current.binding))continue;
     const binding=current.binding,key=binding.productId+':'+binding.productRevision;
     if(key!==lastKey){const at=performance.now();model=cardFor(current.store,binding);lastKey=key;timings.modelMs+=performance.now()-at;timings.models++;}
+    // These product/revision-isolated galleries use the selected binding below.
+    // Warming every variant/design combination creates unreachable global cards.
+    if(model.universal.familyFormats?.fixedSize||isAllSizesFamily(model.universal))continue;
     // Availability is checked on every response, including cache hits.
     // A pause/resume or doorbell approval is not a product revision.
     const profileAt=performance.now(),profile=selectedProfile(model.universal,binding.options),scope=galleryScope(model,binding),process=galleryProcess(profile);timings.profileMs+=performance.now()-profileAt;
@@ -192,7 +195,18 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
    return {cards,source};
   }
   const snapshot=await cachedCards(context),source=snapshot.sources.get(context.binding.bindingId);
-  if(!source)return {cards:[],source:null};
+  if(!source){
+   // Legacy/internal callers may omit the public route's pinned source model.
+   // Only a missing source needs this lookup; ordinary cache hits stay model-free.
+   const own=cardFor(context.store,context.binding);
+   if(own.universal.familyFormats?.fixedSize||isAllSizesFamily(own.universal)){
+    const current=resolve(identity(context.binding));checkScope(context,current.binding);
+    if(current.store!==context.store||!sameBinding(context.binding,current.binding))unavailable();
+    requireDesignChoice(own.universal);
+    return availableCards(context,own,options);
+   }
+   return {cards:[],source:null};
+  }
   const cards=(snapshot.scopes.get(source.scope.key)||[]).filter(row=>galleryTargetAllowed(source,row,row.design)),unique=[...new Map(cards.map(row=>[row.binding.bindingId,row])).values()];
   if(checkBindings){const allowed=await checkBindings(context.store,unique);return {cards:cards.filter(row=>allowed.has(row.binding.bindingId)),source};}
   const allowed=new Set();

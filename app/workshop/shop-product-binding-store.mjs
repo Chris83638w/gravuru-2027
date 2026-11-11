@@ -182,10 +182,21 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
       fail('shop_binding_active_integrity','Bindung, Ausführung und fester Produktstand stimmen nicht überein.');
   }
   function parseDocument(text){try{return JSON.parse(text);}catch{fail('shop_binding_document','Der gespeicherte Produktbeleg ist ungültig.',422);}}
+  function compactReadStamp(stamp){
+    // Gallery scans keep one stamp per fixed product. Preserve the exact raw
+    // byte comparison without retaining every embedded font/image document.
+    // The write-side revisionStamp and its under-lock raw guard stay unchanged.
+    if(stamp===null)return null;
+    const result={...stamp};
+    for(const field of ['document','metadata'])if(typeof result[field]==='string'){
+      result[field]={rawSha256:createHash('sha256').update(result[field]).digest('hex')};
+    }
+    return result;
+  }
   function result(row,records=new Map(),timings,memo=null){
     if(row.store_id!==storeId)fail('shop_binding_store_scope','Die Zuordnung gehört zu einem anderen Store.',503);
     const key=row.cfg_id+'@'+row.cfg_revision;let record=records.get(key);
-    let at=performance.now();const stamp=memo&&!legacySingleStore?null:customerDatabaseRead(db,'binding-stamp:'+tenantId+':'+key,()=>revisionStamp(row.cfg_id,row.cfg_revision));if(timings)timings.documentReadMs+=performance.now()-at;
+    let at=performance.now();const stamp=memo&&!legacySingleStore?null:customerDatabaseRead(db,'binding-stamp:'+tenantId+':'+key,()=>compactReadStamp(revisionStamp(row.cfg_id,row.cfg_revision)));if(timings)timings.documentReadMs+=performance.now()-at;
     if(record&&!isDeepStrictEqual(record.stamp,stamp))fail('shop_binding_cfg_changed','Der Produktbeleg wurde innerhalb der Prüfung geändert.');
     if(!record){
       const read=()=>customerDatabaseRead(db,'binding-document:'+tenantId+':'+key,()=>{

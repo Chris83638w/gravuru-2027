@@ -364,3 +364,31 @@ test('search metadata follows the revision cache and survives signed snapshot re
  f.models.get('cfg_1').universal.profile.designs[0].name='Haus';revision='r2';assert.equal((await f.gallery.list(f.context,{q:'Anker'})).total,0);assert.equal((await f.gallery.list(f.context,{q:'Haus'})).total,1);
  const restored=createShopDesignGallery({secret:'synthetic-only-gallery-secret',resolve:()=>{throw Error('unexpected resolution');},modelFor:()=>{throw Error('snapshot should restore without rebuilding');},allowedAssets:()=>new Set()});assert.equal((await restored.list(f.context,{q:'Haus'})).total,1);assert.equal((await restored.list(f.context,{q:'Anker'})).total,0);
 });
+
+test('fixed products warm no global cards; selected designs retain paging, search, price and permission checks',async()=>{
+ const f=fixture(),own=f.models.get('cfg_1');own.universal.familyFormats={fixedSize:'120x80'};
+ own.universal.profile.designs=Array.from({length:85},(_,i)=>({id:'d'+i,name:'Haus '+i,objects:[]}));
+ own.universal.profile.designs.push({id:'hidden',name:'Haus hidden',hidden:true,objects:[]},{id:'revoked',name:'Haus revoked',released:false,objects:[]},{id:'misfit',name:'Haus misfit',katalog:{fit:'passt nicht'},objects:[]});
+ f.add(2);f.models.get('cfg_2').universal.familyFormats={fixedSize:'120x80'};
+ const b=f.bindings.get(f.context.binding.shopifyVariantId);
+ f.bindings.set('gid://shopify/ProductVariant/999',{...b,shopifyVariantId:'gid://shopify/ProductVariant/999',bindingId:'other-mounting'});
+ let modelReads=0,saved,allowed=true;const measures=[];
+ f.store.registry.galleryRevision=()=> 'fixed-r1';f.store.registry.listActiveForGallery=async()=>f.store.registry.listActive();
+ f.store.registry.galleryCache={read:()=>saved,write:(_r,value)=>{saved=value;}};
+ const options={secret:'fixed-warm-test',resolve:ids=>({store:f.store,binding:structuredClone(f.bindings.get(ids.shopifyVariantId))}),modelFor:(_s,b)=>f.models.get(b.productId),cardFor:(_s,b)=>{modelReads++;return f.models.get(b.productId);},allowedAssets:()=>new Set(),onMeasure:m=>measures.push(m),checkBinding:()=>{if(!allowed)throw Object.assign(Error('paused'),{status:423});}};
+ const gallery=createShopDesignGallery(options);await gallery.warm(f.context);
+ assert.equal(modelReads,2,'one lightweight model per product/revision despite extra bindings');
+ assert.equal(measures.find(m=>m.event==='shop_gallery_build_measure').cards,0);
+ assert.deepEqual(JSON.parse(saved.payload).scopes,[]);assert.deepEqual(JSON.parse(saved.payload).sources,[]);
+ const pages=await Promise.all([0,1,2].map(page=>gallery.list(f.context,{sourceModel:own,page,q:'Haus'})));
+ assert.deepEqual(pages.map(p=>[p.items.length,p.nextPage,p.total]),[[40,1,85],[40,2,85],[5,null,85]]);
+ assert.ok(pages.flatMap(p=>p.items).every(c=>c.productId==='cfg_1'&&c.shopifyVariantId===b.shopifyVariantId&&c.unitCents===1999&&c.widthMm===120&&c.heightMm===80));
+ assert.equal(modelReads,2,'the public own-model path does not need the global cache');
+ const restarted=createShopDesignGallery(options),fallback=await restarted.list(f.context,{q:'D23'});
+ assert.deepEqual(fallback.items.map(c=>c.designId),['d23']);assert.equal(restarted.target(f.context,fallback.items[0].target).price.unitCents,1999);
+ assert.equal(measures.filter(m=>m.event==='shop_gallery_cache_hit').length,1);
+ allowed=false;await assert.rejects(restarted.list(f.context),{status:423});allowed=true;
+ b.assignmentRevision++;await assert.rejects(restarted.list(f.context),{code:'shop_gallery_changed'});b.assignmentRevision--;
+ own.universal.moduleProfile={schema:MODULE_PROFILE_SCHEMA,id:'disabled',revision:1,modules:{options:true,designs:false,text:true,motifs:true,photo:false,logo:false,colors:false}};
+ await assert.rejects(restarted.list(f.context),{code:'shop_gallery_disabled'});
+});

@@ -1,0 +1,284 @@
+{
+  "sourceSha256": "0f766fac0df850f5d65cabfeaa4defb51b82c84867c64ba4003b27d90de1d19a",
+  "planId": "pgp_80a0c3b9-b599-428f-8626-05e3ace880b6",
+  "planHash": "83cd95dc900fcbc9631086f54c26591e2dbab75d285cc80fa46d64673f63bb33",
+  "valid": true,
+  "main": {
+    "key": "TS-Acryl-RE-70X23P3-T30-SW",
+    "label": "7 × 2 cm",
+    "geometry": {
+      "width": 70,
+      "height": 23.3,
+      "shape": "rect",
+      "cornerRadiusMm": 0,
+      "safeMarginMm": 0,
+      "holes": []
+    },
+    "variantCount": 10,
+    "variants": [
+      {
+        "color": "schwarz",
+        "familyId": "acryl-3mm-tuerschilder-schwarz",
+        "sizeKey": "TS-Acryl-RE-70X23P3-T30-SW",
+        "basePriceCents": 799,
+        "mounting": [
+          {
+            "id": "K00",
+            "priceCents": 0,
+            "totalCents": 799
+          },
+          {
+            "id": "KGL",
+            "priceCents": 299,
+            "totalCents": 1098
+          },
+          {
+            "id": "KRA",
+            "priceCents": 399,
+            "totalCents": 1198
+          },
+          {
+            "id": "B02",
+            "priceCents": 249,
+            "totalCents": 1048
+          },
+          {
+            "id": "B02S",
+            "priceCents": 269,
+            "totalCents": 1068
+          }
+        ]
+      },
+      {
+        "color": "anthrazit",
+        "familyId": "acryl-3mm-tuerschilder-anthrazit",
+        "sizeKey": "TS-Acryl-RE-70X23P3-T30-AN",
+        "basePriceCents": 799,
+        "mounting": [
+          {
+            "id": "K00",
+            "priceCents": 0,
+            "totalCents": 799
+          },
+          {
+            "id": "KGL",
+            "priceCents": 299,
+            "totalCents": 1098
+          },
+          {
+            "id": "KRA",
+            "priceCents": 399,
+            "totalCents": 1198
+          },
+          {
+            "id": "B02",
+            "priceCents": 249,
+            "totalCents": 1048
+          },
+          {
+            "id": "B02S",
+            "priceCents": 269,
+            "totalCents": 1068
+          }
+        ]
+      }
+    ],
+    "samePlanGeometry": true
+  },
+  "mainFormatCount": 77,
+  "mainLabelMismatches": [
+    {
+      "key": "TS-Acryl-RE-70X23P3-T30-SW",
+      "label": "7 × 2 cm",
+      "widthMm": 70,
+      "heightMm": 23.3,
+      "exactLabel": "7 × 2,33 cm",
+      "matches": false
+    },
+    {
+      "key": "TS-Acryl-RE-80X53P3-T30-SW",
+      "label": "8 × 5 cm",
+      "widthMm": 80,
+      "heightMm": 53.3,
+      "exactLabel": "8 × 5,33 cm",
+      "matches": false
+    },
+    {
+      "key": "TS-Acryl-AB-80X53P3-T30-SW",
+      "label": "8 × 5 cm",
+      "widthMm": 80,
+      "heightMm": 53.3,
+      "exactLabel": "8 × 5,33 cm",
+      "matches": false
+    }
+  ],
+  "mainUnparsedLabels": [],
+  "families": [
+    {
+      "path": "familien/acryl/acryl-3mm-tuerschilder-schwarz.json",
+      "familyId": "acryl-3mm-tuerschilder-schwarz",
+      "total": 80,
+      "mismatches": [
+        {
+          "key": "TS-Acryl-RE-70X23P3-T30-SW",
+          "label": "7 × 2 cm",
+          "widthMm": 70,
+          "heightMm": 23.3,
+          "exactLabel": "7 × 2,33 cm",
+          "matches": false
+        },
+        {
+          "key": "TS-Acryl-RE-80X53P3-T30-SW",
+          "label": "8 × 5 cm",
+          "widthMm": 80,
+          "heightMm": 53.3,
+          "exactLabel": "8 × 5,33 cm",
+          "matches": false
+        },
+        {
+          "key": "TS-Acryl-AB-80X53P3-T30-SW",
+          "label": "8 × 5 cm",
+          "widthMm": 80,
+          "heightMm": 53.3,
+          "exactLabel": "8 × 5,33 cm",
+          "matches": false
+        }
+      ],
+      "unparsed": [],
+      "target": {
+        "key": "TS-Acryl-RE-70X23P3-T30-SW",
+        "groupKey": "RE",
+        "label": "7 × 2 cm",
+        "widthMm": 70,
+        "heightMm": 23.3,
+        "baseCents": 799,
+        "mounting": [
+          "KGL",
+          "KRA",
+          "B02-E6-D4",
+          "B02S-E6-D4"
+        ]
+      }
+    },
+    {
+      "path": "familien/acryl/acryl-3mm-tuerschilder-anthrazit.json",
+      "familyId": "acryl-3mm-tuerschilder-anthrazit",
+      "total": 80,
+      "mismatches": [
+        {
+          "key": "TS-Acryl-RE-70X23P3-T30-AN",
+          "label": "7 × 2 cm",
+          "widthMm": 70,
+          "heightMm": 23.3,
+          "exactLabel": "7 × 2,33 cm",
+          "matches": false
+        },
+        {
+          "key": "TS-Acryl-RE-80X53P3-T30-AN",
+          "label": "8 × 5 cm",
+          "widthMm": 80,
+          "heightMm": 53.3,
+          "exactLabel": "8 × 5,33 cm",
+          "matches": false
+        },
+        {
+          "key": "TS-Acryl-AB-80X53P3-T30-AN",
+          "label": "8 × 5 cm",
+          "widthMm": 80,
+          "heightMm": 53.3,
+          "exactLabel": "8 × 5,33 cm",
+          "matches": false
+        }
+      ],
+      "unparsed": [],
+      "target": {
+        "key": "TS-Acryl-RE-70X23P3-T30-AN",
+        "groupKey": "RE",
+        "label": "7 × 2 cm",
+        "widthMm": 70,
+        "heightMm": 23.3,
+        "baseCents": 799,
+        "mounting": [
+          "KGL",
+          "KRA",
+          "B02-E6-D4",
+          "B02S-E6-D4"
+        ]
+      }
+    },
+    {
+      "path": "familien/edelstahl/steel-door-signs.json",
+      "familyId": "steel-door-signs",
+      "total": 80,
+      "mismatches": [
+        {
+          "key": "GR-ES-RE-70X23P3-T15",
+          "label": "7 × 2 cm",
+          "widthMm": 70,
+          "heightMm": 23.3,
+          "exactLabel": "7 × 2,33 cm",
+          "matches": false
+        },
+        {
+          "key": "GR-ES-RE-80X53P3-T15",
+          "label": "8 × 5 cm",
+          "widthMm": 80,
+          "heightMm": 53.3,
+          "exactLabel": "8 × 5,33 cm",
+          "matches": false
+        },
+        {
+          "key": "GR-ES-AB-80X53P3-T15",
+          "label": "8 × 5 cm",
+          "widthMm": 80,
+          "heightMm": 53.3,
+          "exactLabel": "8 × 5,33 cm",
+          "matches": false
+        }
+      ],
+      "unparsed": [],
+      "target": {
+        "key": "GR-ES-RE-70X23P3-T15",
+        "groupKey": "RE",
+        "label": "7 × 2 cm",
+        "widthMm": 70,
+        "heightMm": 23.3,
+        "baseCents": 899,
+        "mounting": [
+          "KGL",
+          "KRA",
+          "B02-E6-D4",
+          "B02S-E6-D4"
+        ],
+        "netWeightG": 16
+      }
+    }
+  ],
+  "excelVariant": {
+    "variantKey": "TS-Acryl-RE-70X23P3-T30",
+    "sourceRow": 23,
+    "dimensions": {
+      "widthMm": "70",
+      "heightMm": "23.3",
+      "label": "7 × 2,33 cm"
+    },
+    "form": "Rechteck / RE",
+    "material": "Acrylglas 3 mm, Rückseite graviert / acrylic-3mm",
+    "series": "3:1",
+    "fixedOptionJson": null,
+    "baseCents": 799,
+    "fixedSurchargeCents": 0,
+    "totalCents": 799,
+    "totalCentsSource": "analysis of H+I, not cached workbook J",
+    "workbookTotalCell": {
+      "cell": "J23",
+      "type": "n",
+      "value": null,
+      "formula": "IF(OR(H23=\"\",I23=\"\"),\"\",H23+I23)",
+      "formulaAttributes": {}
+    },
+    "shopifyVariantReference": null,
+    "confirmation": "bestätigt",
+    "priceSource": "Grundpreis: Katalog-Repo Chris83638w/gravuru-katalog., main 3c6051fb: familien/acryl/acryl-3mm-tuerschilder-schwarz.json (Blob e340d775) bzw. -anthrazit.json (Blob 491e1abc), sizes[].baseCents; Preise dort laut source.note aus serien/acryl-tuerschilder-2027.json (Chris-Excel 21.10.2026, Blob df892cab). Fester Aufpreis 0,00 = „ohne Befestigung“ (K00 = Grundpreis in der Serie; Befestigung siehe Blatt Optionen). Reihe 3:1. Maße = Edelstahl GR-ES-RE-70X23P3-T15. Grundpreis BESTÄTIGT: Chris (Chat) 10.11.2026 12:57, Katalogpreise Acryl statt „Edelstahl − 2 €“ (Blatt Preisvergleich: entschieden: Katalogpreise). Größenumfang Hauptprodukt: 77 Größen (Entscheidung Chris 10.11. 14:11/14:25, Kleinformate 5×2, 6×2, 8×2 ausgegliedert); Frage 11 offen. 7 × 2,33 cm ist skalierbar und gehört ins Hauptprodukt (Chris 14:25, Reihe 3:1)."
+  }
+}

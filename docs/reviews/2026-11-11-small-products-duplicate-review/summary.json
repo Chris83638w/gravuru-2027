@@ -1,0 +1,76 @@
+{
+  "schema": "gravuru-small-product-duplicate-review/v1",
+  "startedAt": "2026-11-11T20:13:47.993Z",
+  "finishedAt": "2026-11-11T20:18:33.129Z",
+  "readOnly": true,
+  "shopifyMutations": 0,
+  "serverAccess": false,
+  "inventory": {
+    "products": 1519,
+    "uniqueProductIds": 1519,
+    "apiExactCount": {
+      "count": 1519,
+      "precision": "EXACT"
+    },
+    "byStatus": {
+      "ACTIVE": 1196,
+      "DRAFT": 313,
+      "ARCHIVED": 2,
+      "UNLISTED": 8
+    },
+    "pages": 31,
+    "terminalHasNextPage": false,
+    "allPageCountsStable": true,
+    "allProductOptionsRead": true,
+    "productMetadataComplete": true,
+    "totalVariantCount": 30162,
+    "uniqueVariantRowsActuallyRead": 5950,
+    "variantRowsNotIndividuallyRead": 24212
+  },
+  "candidates": {
+    "products": 22,
+    "allVariants": 2477,
+    "allCandidateVariantsComplete": true,
+    "allCandidateProductMetafieldsComplete": true,
+    "relevantVariantRows": 126,
+    "existingSmallActive": 16,
+    "separateMemorialDrafts": 1,
+    "multiSizeProducts": 5
+  },
+  "globalVariantQueries": {
+    "queries": 3,
+    "returnedRows": 120,
+    "complete": true,
+    "additionalProducts": []
+  },
+  "relevantVariantMetafields": {
+    "requested": 126,
+    "returned": 126,
+    "allEmpty": true
+  },
+  "limits": [
+    "No server registry/order bindings or customer/cart/production flow read; missing Shopify metafields do not prove absence of another binding.",
+    "All product titles, handles, tags, option values and two known product binding fields read. Not every one of the 30,162 variant rows was individually exported; an unrelated-looking product with dimensions only in an unrecognized SKU or other metadata can remain outside this candidate set.",
+    "ACTIVE is a Shopify administrative status, not proof of publication to a particular channel or functional approval.",
+    "Legacy acrylic descriptions say 3–5 mm and individual colors/designs; physical equivalence to each v9 3-mm two-color product is not established.",
+    "No existing product was selected for takeover; no new-product, overwrite, archive, delete, or price approval is inferred."
+  ],
+  "localEvidence": {
+    "inventory.json": {
+      "sha256": "f3868c6a0f256f92fa6905cbbeab3459eda96f2fb5fa09bd36c3ee73ed994be3",
+      "bytes": 3607380
+    },
+    "candidate-details.json": {
+      "sha256": "1b20158a9ac14b755f900d80abb396afabebd3a43b7de173f0426fc622452ae4",
+      "bytes": 1921024
+    },
+    "global-variant-search.json": {
+      "sha256": "5d72941af85d93774955c49029efb5528e6e8685c34ba715c95a087628a45b6a",
+      "bytes": 38906
+    },
+    "variant-metafields.json": {
+      "sha256": "56e94420298243ed8ef81df473f64ed4b9bbb6a3137fd48cdd435c2c85ae1f83",
+      "bytes": 40616
+    }
+  }
+}

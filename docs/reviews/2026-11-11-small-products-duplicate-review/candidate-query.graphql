@@ -1,0 +1,1 @@
+query CandidateProduct($id:ID!,$after:String){product(id:$id){id title handle status productType description options{name values} variantsCount{count precision} metafields(first:50){nodes{namespace key type value} pageInfo{hasNextPage endCursor}} variants(first:50,after:$after){nodes{id sku title price selectedOptions{name value}} pageInfo{hasNextPage endCursor}}}}

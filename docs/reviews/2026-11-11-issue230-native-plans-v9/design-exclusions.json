@@ -1,0 +1,76 @@
+[
+  {
+    "id": "TQ-V2A-8x8-D14",
+    "status": "already_hidden_preserved",
+    "issues": []
+  },
+  {
+    "id": "TO-V2A-12x4-D5",
+    "status": "native_geometry_exclusion",
+    "issues": [
+      "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+    ]
+  },
+  {
+    "id": "TO-V2A-15x8-D5",
+    "status": "native_geometry_exclusion",
+    "issues": [
+      "motiv-2: Element ragt über die ovale Gestaltungsfläche hinaus."
+    ]
+  },
+  {
+    "id": "TO-V2A-15x8-D9",
+    "status": "native_geometry_exclusion",
+    "issues": [
+      "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+    ]
+  },
+  {
+    "id": "TO-V2A-9x6-D38",
+    "status": "already_hidden_preserved",
+    "issues": []
+  },
+  {
+    "id": "TO-V2A-9x6-D46",
+    "status": "native_geometry_exclusion",
+    "issues": [
+      "motiv-1: Element ragt über die ovale Gestaltungsfläche hinaus."
+    ]
+  },
+  {
+    "id": "TR1-V2A-9x6-D19",
+    "status": "native_geometry_exclusion",
+    "issues": [
+      "motiv-1: Element ragt über die Gestaltungsfläche hinaus."
+    ]
+  },
+  {
+    "id": "TR1-V2A-9x6-D5",
+    "status": "native_geometry_exclusion",
+    "issues": [
+      "motiv-1: Element ragt über die Gestaltungsfläche hinaus.",
+      "motiv-2: Element ragt über die Gestaltungsfläche hinaus."
+    ]
+  },
+  {
+    "id": "TR1-V2A-9x6-D9",
+    "status": "native_geometry_exclusion",
+    "issues": [
+      "motiv-1: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+    ]
+  },
+  {
+    "id": "TR2-V2A-9x6-D15",
+    "status": "native_geometry_exclusion",
+    "issues": [
+      "motiv-2: Element ragt über die Kontur-Gestaltungsfläche hinaus."
+    ]
+  },
+  {
+    "id": "TR-V2A-6.5x6.5-D803",
+    "status": "native_geometry_exclusion",
+    "issues": [
+      "name: Element ragt über die ovale Gestaltungsfläche hinaus."
+    ]
+  }
+]

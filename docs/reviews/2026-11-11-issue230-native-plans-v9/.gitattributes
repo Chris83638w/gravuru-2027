@@ -1,0 +1,2 @@
+# Preserve exact delivered evidence bytes, including JSON hashes.
+* -text

@@ -1,0 +1,4 @@
+# Byte-pinned evidence and patches must survive Windows checkout unchanged.
+*.patch -text
+claude-ac10e6c/** -text
+claude-http-check/** -text

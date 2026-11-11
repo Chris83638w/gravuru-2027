@@ -1,0 +1,45 @@
+{
+  "archive": "Produktplaene-230-v9-Pruefpaket.zip",
+  "bytes": 210327770,
+  "sha256": "d1b497d76104a2499248c492bc7bb96c9fea9c0bc885529a914431d8ead31c44",
+  "manifestSha256": "f00dbabf61b504a5a8bc45cf368b9815721a3e7c5be81130a8b50851fe386c68",
+  "files": 118,
+  "allArchivedFileHashesVerified": true,
+  "currentValidPlans": 7,
+  "historicalPlans": 7,
+  "pricesMatched": 823,
+  "confirmations": 0,
+  "executions": 0,
+  "shopifyWrites": 0,
+  "serverWrites": 0,
+  "databaseChecks": {
+    "workshop.sqlite": {
+      "mainFileOnly": true,
+      "walRequired": false,
+      "quickCheck": "ok",
+      "counts": {
+        "sources": 7,
+        "sourceRevisions": 14,
+        "plans": 14,
+        "confirmations": 0,
+        "executions": 0
+      },
+      "currentValidPlanIds": [
+        "pgp_80a0c3b9-b599-428f-8626-05e3ace880b6",
+        "pgp_7307b213-09ef-4758-b525-88aea139502d",
+        "pgp_6831ea29-73f3-40c4-abfa-834c8479d93d",
+        "pgp_1d526e2a-fe1d-4749-be52-5386cf227afe",
+        "pgp_7699e1dc-2f19-427d-a983-0fd6610f9bd9",
+        "pgp_b216801b-a754-447b-be24-308e5f47de18",
+        "pgp_869d2800-de7c-48d6-96f4-87a5f889186e"
+      ],
+      "sha256": "24f681b15e572ca35607b3b5786e55f56d988ff56ff313d44181b67027be79f2"
+    },
+    "profiles.sqlite": {
+      "mainFileOnly": true,
+      "walRequired": false,
+      "quickCheck": "ok",
+      "sha256": "a89e25e7f89ba7648c22293133eda9fc37c2f9466abe8adf108ef518f3680c5f"
+    }
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "profiles": {
+    "selections": {
+      "fonts": null,
+      "motifs": [
+        "import-6abda909c44bc599330856dd",
+        "import-0073ea6aa7103bb1e8ec9088",
+        "import-9373218480c87a6ad167f3cb",
+        "import-41fb65efd1d8996ac305f6ab",
+        "import-1abd6f06096e47c66b0b4e00",
+        "import-286db893566ced2e6bd75bad",
+        "import-d94f1406fde432cf9dd70389",
+        "import-9c76c3476a406eaac7f05e42",
+        "import-10edf8a5dd07bd1035ba508d",
+        "import-4269dbda54a15a99e178f00a",
+        "import-0f3193fd49e254bb5975e74d",
+        "import-54b3b489bbebe12119deda9a",
+        "import-8239d6c658366716f578c984"
+      ],
+      "colors": null,
+      "bestsellers": null
+    },
+    "sources": {
+      "fonts": {
+        "level": "unbound",
+        "categoryId": null,
+        "mode": "inherit",
+        "profileId": null,
+        "profileRevision": null
+      },
+      "motifs": {
+        "level": "product",
+        "categoryId": null,
+        "mode": "override",
+        "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
+        "profileRevision": 1
+      },
+      "colors": {
+        "level": "unbound",
+        "categoryId": null,
+        "mode": "inherit",
+        "profileId": null,
+        "profileRevision": null
+      },
+      "bestsellers": {
+        "level": "unbound",
+        "categoryId": null,
+        "mode": "inherit",
+        "profileId": null,
+        "profileRevision": null
+      }
+    },
+    "settingsRevision": 1,
+    "categoryPriority": "last-non-inherit-wins",
+    "warnings": []
+  },
+  "businessDecisions": {
+    "schema": "gravuru-issue230-business-decisions/v1",
+    "manifestSha256": "730168634964272693b514e3efd742975bd56af30a96a7ae751a2aed7fe71a64",
+    "tax": {
+      "pricePresentation": "gross",
+      "vatPercent": 19,
+      "country": "DE",
+      "confirmed": true,
+      "date": "2026-11-11",
+      "quote": "Ja, inklusive 19 % MwSt.",
+      "source": "Explicit user reply in the current Codex chat, relayed by coordinator to product_plans; all seven base prices and surcharges.",
+      "storage": "Revision metadata and external decision manifest only; no unsupported product-config tax field."
+    },
+    "quantityDiscount": {
+      "confirmed": true,
+      "decisionDate": "2026-10-20",
+      "scope": "complete-unit",
+      "tiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ]
+    },
+    "startsKept": true,
+    "uploadsConfirmed": true,
+    "station3Confirmed": false
+  }
+}

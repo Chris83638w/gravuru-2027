@@ -1,12 +1,14 @@
 {
-  "purpose": "Operator tools for explicit database-copy rehearsal and read-only target inventory",
+  "purpose": "Operator tools for explicit database-copy rehearsal and read-only target inventory including inner profile alias lookup",
   "appCodeUnchanged": true,
   "liveDbOpened": false,
   "appStatsModuleSha256": "ada0706845d396e089a6d3bd7007f11b937ed145b03ee5f99a2776cb5054de96",
   "tests": {
-    "passed": 3,
+    "uniquePassed": 4,
     "failed": 0,
     "skipped": 0,
+    "initialBatch": 3,
+    "aliasFollowupBatch": 2,
     "fixtureRows": 8
   },
   "files": [
@@ -17,8 +19,8 @@
     },
     {
       "path": "inspect-native-target.mjs",
-      "bytes": 5015,
-      "sha256": "af48d0568efad7126e2a5982eb7f4ff7f4f6fcac187c7003804a08eb9db44118"
+      "bytes": 6981,
+      "sha256": "0933f13c9b191ccda016da552140fb4e2efe05a52065322935f4aaee788dd68a"
     },
     {
       "path": "migrate-search-stats-copy.mjs",
@@ -27,18 +29,23 @@
     },
     {
       "path": "operator-tools.test.mjs",
-      "bytes": 6105,
-      "sha256": "f0fcf1d2be6f430989b0f6582ec167a6f219e11744996793d2bf137eedadfa09"
+      "bytes": 8321,
+      "sha256": "680b672a2b6eb180b72b6ab3f3f5a5e56d2ae5312f36782df7d292708856ab4a"
     },
     {
       "path": "README.md",
-      "bytes": 6889,
-      "sha256": "deccaf29b6713bf27940b3916b9aabf5a048324455b9ef97dc59141a348a03bc"
+      "bytes": 8095,
+      "sha256": "e9309f8667203fbae9e62252ce22d08fab7ebb3dd04bd10e05a44fe307ecfe99"
     },
     {
       "path": "tests.log",
       "bytes": 460,
       "sha256": "a6e700be54623ad6fed9151485c4808534c4374263dac34a1be90d44d4cd5f49"
+    },
+    {
+      "path": "alias-tests.log",
+      "bytes": 355,
+      "sha256": "6551b928820a53f8644dea04ad5ace36ec8dcfd2f7de1e2178d311c2bb5f6510"
     }
   ]
 }

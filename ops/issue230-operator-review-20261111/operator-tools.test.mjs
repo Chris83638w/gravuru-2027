@@ -50,3 +50,22 @@ test('read-only native inventory uses explicit active heads, target filters and 
  assert.equal(result.products[0].revision,2);assert.equal(result.revisions.length,2);assert.equal(result.activeBindingCount,1);assert.equal(result.activeBindings[0].assignment_revision,2);assert.equal(result.activeBindingGroups[0].variants,1);
  assert.doesNotMatch(JSON.stringify(result),/DO-NOT-|private-other/);assert.equal(sha(fs.readFileSync(file)),before);
 });
+
+test('alias lookup finds actual cfg identities only in valid current product JSON and keeps ambiguity explicit',t=>{
+ const file=fixture(t),db=new DatabaseSync(file);
+ db.exec(`CREATE TABLE products(id TEXT,revision INTEGER,published_revision INTEGER,archived INTEGER,kind TEXT,tenant_id TEXT);
+ CREATE TABLE product_revisions(product_id TEXT,revision INTEGER,status TEXT,tenant_id TEXT,document TEXT);
+ CREATE TABLE form_shop_bindings(id TEXT,shop TEXT,variant_id TEXT,product_id TEXT,product_revision INTEGER,unit_cents INTEGER,tenant_id TEXT);`);
+ const cfg='cfg_11111111-1111-4111-8111-111111111111',other='cfg_22222222-2222-4222-8222-222222222222';
+ const add=(id,tenant,revision,document)=>db.prepare('INSERT INTO product_revisions VALUES(?,?,\'draft\',?,?)').run(id,revision,tenant,document);
+ const document=JSON.stringify({schema:'gravuru-product/v1',config:{profile:{id:TARGET_CFG}},privateText:'MUST-NOT-BE-RETURNED'});
+ for(const [id,tenant,revision]of [[cfg,'gravuru',2],[other,'gravuru',1],['old-only','gravuru',2],['bad-json','gravuru',1],['another-tenant','other',1]])db.prepare('INSERT INTO products VALUES(?,?,NULL,0,\'product\',?)').run(id,revision,tenant);
+ add(cfg,'gravuru',1,document);add(cfg,'gravuru',2,document);add(other,'gravuru',1,document);
+ add('old-only','gravuru',1,document);add('old-only','gravuru',2,JSON.stringify({schema:'gravuru-product/v1',config:{profile:{id:'other-profile'}}}));
+ add('bad-json','gravuru',1,'malformed');add('another-tenant','other',1,document);
+ db.prepare('INSERT INTO form_shop_bindings VALUES(\'kept-binding\',\'test.myshopify.com\',\'123\',?,2,1000,\'gravuru\')').run(cfg);db.close();
+ const before=sha(fs.readFileSync(file)),result=inspectNativeTarget(file);
+ assert.equal(result.directProductIdMatches.length,0);assert.deepEqual(result.nativeIdentityCandidates,[{id:cfg,revision:2},{id:other,revision:1}]);
+ assert.equal(result.profileAliasLookup.matches.length,2);assert.equal(result.revisions.length,3);assert.equal(result.legacyFixedBindings[0].product_id,cfg);assert.equal(result.activeBindingCount,0);
+ assert.doesNotMatch(JSON.stringify(result),/MUST-NOT|old-only|bad-json|another-tenant/);assert.equal(sha(fs.readFileSync(file)),before);
+});

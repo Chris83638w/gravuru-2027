@@ -1,0 +1,34 @@
+{
+  "schema": "gravuru-start-selection-integration-check/v1",
+  "appliedPatchSha256": "459de9b6478b1919532df84f29b4e281ff4a8bbf83dc17003fc680197cf4f9cb",
+  "parent": "91d7f94f473da5661da59d86ed70188309741e10",
+  "sourceBase": "af6fd986c735d97bddc974261398ab8c4e88e00b",
+  "files": [
+    {
+      "file": "app/workshop/ui/shop-embed.mjs",
+      "sha256": "ace194434dab6e124175a4ac3319248e1e6a6e4c86e8b3d65722baa0c1e3b8a2"
+    },
+    {
+      "file": "app/workshop/shop-product-presentation.test.mjs",
+      "sha256": "5f91e88ee38f52f4aa126f3e33ae0459a29dfd062a499eda3db80a23dbd5d52d"
+    }
+  ],
+  "rootVerification": {
+    "presentationTests": {
+      "passed": 15,
+      "failed": 0,
+      "skipped": 0
+    },
+    "globalEmbedTests": {
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    "syntax": true,
+    "diffCheck": true
+  },
+  "independentReview": "over250-independent-review.md",
+  "runtimeFilesChanged": 1,
+  "shopMutations": 0,
+  "serverInstalled": false
+}

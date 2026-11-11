@@ -1,0 +1,23 @@
+✔ reviewed product presentation includes all404 IDs, beyond Liquid first250, without changing ordinary product data (1.9104ms)
+✔ malformed, cross-product or duplicate opt-ins never activate presentation or broaden ordinary membership (1.0679ms)
+✔ the actual custom-Liquid shape works without global app-embed JSON, only beside the matching own product link (0.303ms)
+✔ main image default wins until actual main form changes; choosing the first variant later remains possible (0.212ms)
+✔ explicit variant deep link and later URL changes preserve a valid selection without following stale installment or sticky fields (0.28ms)
+✔ ordinary products use the main form instead of stale installment and sticky values (0.1775ms)
+✔ Liquid selected variant outside the first250 remains the start selection without enlarging the list (0.4524ms)
+✔ a previously identified own form keeps its selection beyond250; a foreign owner always excludes it (0.2772ms)
+✔ a rerendered unknown form needs the actual matching product wrapper; ambiguous main forms do not choose a new ID (0.1882ms)
+✔ unknown arguments and URL values cannot expand the selected variant; own invalid inputs and R15 IDs stay bounded (0.4197ms)
+✔ outside250 selection survives prefetch and the page fallback after a verified own-form change (1.5771ms)
+✔ start URLs retain explicit product presentation, variant and toolbar; arbitrary URL fields cannot opt another product in (0.5999ms)
+✔ prefetch ticket and page fallback keep the presentation and selected variant together (0.7083ms)
+✔ local theme candidate changes exactly the existing start block and gates all additional metadata/imports on the one product and customization ID (1.6831ms)
+✔ candidate preparation fails closed for changed source, incomplete variants, other products or changed approved start (0.9015ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 113.4121

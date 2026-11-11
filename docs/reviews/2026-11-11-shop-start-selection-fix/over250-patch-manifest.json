@@ -1,0 +1,24 @@
+{
+  "baseCommit": "af6fd986c735d97bddc974261398ab8c4e88e00b",
+  "changedFiles": [
+    {
+      "file": "app/workshop/ui/shop-embed.mjs",
+      "beforeSha256": "dd5eaa145b8ff058f06b9b1dd1035315793a8bd431f694e79bc3edec23671abc",
+      "afterSha256": "ace194434dab6e124175a4ac3319248e1e6a6e4c86e8b3d65722baa0c1e3b8a2"
+    },
+    {
+      "file": "app/workshop/shop-product-presentation.test.mjs",
+      "beforeSha256": "27667548fde454a9d927ccda9642ff63795fd70f72218c5670a17e8804a45dbb",
+      "afterSha256": "5f91e88ee38f52f4aa126f3e33ae0459a29dfd062a499eda3db80a23dbd5d52d"
+    }
+  ],
+  "patchSha256": "459de9b6478b1919532df84f29b4e281ff4a8bbf83dc17003fc680197cf4f9cb",
+  "tests": {
+    "presentation": 15,
+    "globalEmbed": 1,
+    "serverNegative": 2,
+    "total": 18
+  },
+  "liveWrites": false,
+  "candidateModified": false
+}

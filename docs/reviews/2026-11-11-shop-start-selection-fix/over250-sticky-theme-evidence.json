@@ -1,0 +1,54 @@
+{
+  "themeId": "190984126844",
+  "role": "MAIN",
+  "filename": "snippets/sticky-atc-bar.liquid",
+  "checksumMd5": "e2cbf5d10160489b067a86595602f7c8",
+  "readAt": "2026-11-11T20:53:41.142Z",
+  "relevantLines": [
+    {
+      "line": 19,
+      "text": "    <sticky-atc-bar-minimalist"
+    },
+    {
+      "line": 20,
+      "text": "      class=\"sticky-atc-bar blocks-radius items-center justify-between gap-2{{ wrap_class }}\""
+    },
+    {
+      "line": 21,
+      "text": "      data-product-id=\"{{ product.id }}\""
+    },
+    {
+      "line": 56,
+      "text": "          form=\"{{ product_form_id }}\""
+    },
+    {
+      "line": 68,
+      "text": "    </sticky-atc-bar-minimalist>"
+    },
+    {
+      "line": 82,
+      "text": "      <sticky-atc-bar"
+    },
+    {
+      "line": 83,
+      "text": "        class=\"sticky-atc-bar__inner flex items-center justify-between\""
+    },
+    {
+      "line": 84,
+      "text": "        data-product-id=\"{{ product.id }}\""
+    },
+    {
+      "line": 116,
+      "text": "        {%- form 'product',"
+    },
+    {
+      "line": 119,
+      "text": "          class: 'sticky-atc-bar__form flex items-center justify-center md:justify-start gap-2',"
+    },
+    {
+      "line": 125,
+      "text": "              name=\"id\""
+    }
+  ],
+  "finding": "Both active sticky render variants match existing [class*=\"sticky\"] selector. Minimalist button references the main form; normal sticky has its own classed form."
+}

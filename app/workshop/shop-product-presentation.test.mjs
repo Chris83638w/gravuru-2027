@@ -7,7 +7,7 @@ const ids=Array.from({length:404},(_,i)=>String(1000+i));
 const base={productId:'16190784438652',variantId:ids[0],variants:ids.slice(0,250),back:'/products/steel'};
 const presentation={schema:'gravuru-shop-presentation/v1',productId:base.productId,ui:'prio-r15',variantId:ids[260],themeVariantId:ids[0],back:base.back,variants:ids};
 function documentFor(raw=base,profile=presentation){
- const form=(value,{sticky=false,submit=true}={})=>({value,querySelector(selector){if(selector==='[name="id"]')return {value:this.value};if(selector==='[type="submit"],[name="add"]')return submit?{}:null;return null;},closest(){return sticky?{}:null;}});
+ const form=(value,{sticky=false,submit=true}={})=>({value,owner:null,querySelector(selector){if(selector==='[name="id"]')return {value:this.value};if(selector==='[type="submit"],[name="add"]')return submit?{}:null;return null;},closest(selector){if(selector==='[data-product-id]')return this.owner===null?null:{getAttribute:()=>this.owner};return sticky?{}:null;}});
  const installment=form(ids[0],{submit:false}),sticky=form(ids[0],{sticky:true}),main=form(ids[0]),foreign=form('9000');
  return {main,sticky,foreign,getElementById(id){const data=id==='gravuru-konfi'?raw:id==='gravuru-konfi-presentation'?profile:null;return data?{textContent:JSON.stringify(data)}:null;},querySelectorAll(){return [installment,sticky,main,foreign];}};
 }
@@ -48,9 +48,53 @@ test('explicit variant deep link and later URL changes preserve a valid selectio
  assert.equal(currentVariant(config,doc,'?variant='+ids[0]),ids[0]);
  for(const search of ['?variant=9000','?variant='+ids[3]+'&variant='+ids[4],'?price=0'])assert.equal(currentVariant(config,doc,search),ids[0]);
 });
-test('ordinary products retain existing form-first behavior',()=>{
+test('ordinary products use the main form instead of stale installment and sticky values',()=>{
  const doc=documentFor(base,null),config=pageConfig(doc);doc.main.value=ids[10];
- assert.equal(currentVariant(config,doc,'?variant='+ids[20]),ids[0]);
+ assert.equal(currentVariant(config,doc,'?variant='+ids[20]),ids[10]);
+});
+
+test('Liquid selected variant outside the first250 remains the start selection without enlarging the list',()=>{
+ const raw={...base,variantId:ids[330]},doc=documentFor(raw,null),config=pageConfig(doc);doc.main.value=ids[330];
+ assert.equal(config.variantId,ids[330]);assert.equal(config.variants.length,250);
+ assert.equal(currentVariant(config,doc,''),ids[330]);
+ assert.equal(new URL(startHref(config,currentVariant(config,doc),''),'https://shop.example/').searchParams.get('variant'),ids[330]);
+ for(const bad of ['not-id','-1','1&product=77','9'.repeat(21)])assert.equal(pageConfig(documentFor({...raw,variantId:bad},null)).variantId,ids[0]);
+});
+
+test('a previously identified own form keeps its selection beyond250; a foreign owner always excludes it',()=>{
+ const doc=documentFor(base,null),config=pageConfig(doc);assert.equal(currentVariant(config,doc,''),ids[0]);
+ doc.main.value=ids[330];assert.equal(currentVariant(config,doc,''),ids[330]);
+ assert.equal(new URL(startHref(config,ids[330],''),'https://shop.example/').searchParams.get('variant'),ids[330]);
+ doc.main.owner='77';assert.ok(!productForms(config,doc).includes(doc.main),'explicit foreign identity overrides remembered form');
+ doc.foreign.owner='77';doc.foreign.value=ids[2];assert.ok(!productForms(config,doc).includes(doc.foreign),'known variant alone cannot override a foreign product wrapper');
+});
+
+test('a rerendered unknown form needs the actual matching product wrapper; ambiguous main forms do not choose a new ID',()=>{
+ const doc=documentFor(base,null),config=pageConfig(doc);doc.main.value=ids[330];
+ assert.ok(!productForms(config,doc).includes(doc.main));assert.equal(currentVariant(config,doc,''),ids[0]);
+ doc.main.owner=base.productId;assert.equal(currentVariant(config,doc,''),ids[330]);
+ doc.foreign.owner=base.productId;doc.foreign.value=ids[331];doc.main.value=ids[332];
+ assert.equal(currentVariant(config,doc,''),ids[330],'conflicting primary forms retain the last unambiguous selection');
+ doc.foreign.owner='77';assert.equal(currentVariant(config,doc,''),ids[332]);
+ doc.main.value=ids[0];assert.equal(currentVariant(config,doc,''),ids[0],'deliberate return to the first variant remains possible');
+});
+
+test('unknown arguments and URL values cannot expand the selected variant; own invalid inputs and R15 IDs stay bounded',()=>{
+ const doc=documentFor(base,null),config=pageConfig(doc);doc.main.owner=base.productId;
+ assert.equal(new URL(startHref(config,'9000','?variant=9000'),'https://shop.example/').searchParams.get('variant'),ids[0]);
+ assert.equal(currentVariant(config,doc,'?variant=9000'),ids[0]);
+ doc.main.value='1&product=77';assert.ok(!productForms(config,doc).includes(doc.main));assert.equal(currentVariant(config,doc,''),ids[0]);
+ const r15=documentFor(),r15Config=pageConfig(r15);r15.main.owner=base.productId;r15.main.value='9000';
+ assert.equal(currentVariant(r15Config,r15,''),ids[260]);
+ assert.equal(new URL(startHref(r15Config,'9000',''),'https://shop.example/').searchParams.get('variant'),ids[260]);
+});
+
+test('outside250 selection survives prefetch and the page fallback after a verified own-form change',async()=>{
+ const doc=documentFor(base,null),config=pageConfig(doc);doc.main.owner=base.productId;doc.main.value=ids[330];
+ const key=new URL(startHref(config,currentVariant(config,doc),''),'https://shop.example/');key.searchParams.set('embed','1');
+ const requests=[],tickets=createStartTickets({now:()=>1000,fetchImpl:async url=>{requests.push(new URL(url));return {ok:true,json:async()=>({url:'__EDITOR_ORIGIN__/#s=synthetic',expiresAt:new Date(3601000).toISOString()})};}});
+ await tickets.load(key.href);assert.equal(requests[0].searchParams.get('variant'),ids[330]);
+ assert.equal(new URL(pageStartUrl(requests[0].href)).searchParams.get('variant'),ids[330]);
 });
 test('start URLs retain explicit product presentation, variant and toolbar; arbitrary URL fields cannot opt another product in',()=>{
  const config=pageConfig(documentFor());

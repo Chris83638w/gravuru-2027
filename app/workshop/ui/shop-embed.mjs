@@ -87,28 +87,47 @@ export function pageConfig(doc=globalThis.document){
  const presentation=productPresentation(doc,raw);raw??=presentation?.source;if(!raw)return null;
  const productId=String(raw?.productId??''),variants=presentation?.variants||(Array.isArray(raw?.variants)?[...new Set(raw.variants.map(String))].filter(v=>ID.test(v)):[]);
  if(!ID.test(productId)||!variants.length||variants.length>(presentation?2048:250))return null;
- const variantId=presentation?.variantId||(variants.includes(String(raw.variantId))?String(raw.variantId):variants[0]);
+ // Liquid's selected variant belongs to this product even when product.variants
+ // contains only the first 250 IDs. This is a start hint, never a server binding.
+ const variantId=presentation?.variantId||(ID.test(String(raw.variantId??''))?String(raw.variantId):variants[0]);
  const back=typeof raw.back==='string'&&/^\/(?!\/)[^\s]{0,300}$/.test(raw.back)?raw.back:'/';
  return {productId,variantId,variants,back,...(presentation?{ui:presentation.ui,themeVariantId:presentation.themeVariantId}:{})};
 }
 export function startHref(config,variantId=config.variantId,search=globalThis.location?.search||''){
- const params=new URLSearchParams({product:config.productId,variant:config.variants.includes(String(variantId))?String(variantId):config.variantId,back:config.back});
+ const selected=String(variantId),known=config.variants.includes(selected)||selected===config.variantId||selected===variantSelections.get(config)?.chosen;
+ const params=new URLSearchParams({product:config.productId,variant:known?selected:config.variantId,back:config.back});
  if(config.ui==='prio-r15')params.set('ui','prio-r15');
  const toolbar=new URLSearchParams(search).getAll('leiste');if(toolbar.length===1&&['a','b'].includes(toolbar[0]))params.set('leiste',toolbar[0]);
  return PROXY+'/start?'+params;
 }
 // Kaufformulare genau dieses Produkts (auch die mitlaufende Kaufleiste), nicht die anderer Produkte auf der Seite.
+const identifiedForms=new WeakMap();
 export function productForms(config,doc=globalThis.document){
- return [...doc.querySelectorAll('form[action*="/cart/add"]')].filter(form=>config.variants.includes(String(form.querySelector('[name="id"]')?.value||'')));
+ let known=identifiedForms.get(config);if(!known){known=new WeakSet();identifiedForms.set(config,known);}
+ return [...doc.querySelectorAll('form[action*="/cart/add"]')].filter(form=>{
+  const value=String(form.querySelector('[name="id"]')?.value||'');if(!ID.test(value))return false;
+  // The active theme's product-info (and sticky product wrapper) identifies its
+  // product explicitly. A foreign wrapper wins over any remembered form/ID.
+  const owner=form.closest?.('[data-product-id]')?.getAttribute?.('data-product-id');
+  const own=owner!=null?owner===config.productId:known.has(form)||config.variants.includes(value)||value===config.variantId;
+  if(own)known.add(form);return own;
+ });
 }
 const variantSelections=new WeakMap();
 export function currentVariant(config,doc,search=globalThis.location?.search||''){
  const forms=productForms(config,doc),value=form=>String(form?.querySelector('[name="id"]')?.value||'');
- if(config.ui!=='prio-r15')return forms.map(value).find(v=>config.variants.includes(v))||config.variantId;
+ if(config.ui!=='prio-r15'){
+  let state=variantSelections.get(config);if(!state){state={chosen:config.variantId};variantSelections.set(config,state);}
+  const buy=form=>!!form.querySelector('[type="submit"],[name="add"]'),sticky=form=>!!form.closest?.('[class*="sticky"],sticky-atc-bar');
+  const main=forms.filter(form=>buy(form)&&!sticky(form)),buyForms=forms.filter(buy),candidates=main.length?main:buyForms.length?buyForms:forms;
+  const choices=new Set(candidates.map(value));
+  if(choices.size===1)state.chosen=[...choices][0];
+  return state.chosen;
+ }
  // Start at the main-image variant until a real selection changes. Prefer the
  // main purchase form over stale installment/sticky copies of the same product.
  const buy=form=>!!form.querySelector('[type="submit"],[name="add"]'),sticky=form=>!!form.closest?.('[class*="sticky"],sticky-atc-bar');
- const form=forms.find(form=>buy(form)&&!sticky(form))||forms.find(buy)||forms[0],selected=value(form);
+ const form=forms.find(form=>buy(form)&&!sticky(form))||forms.find(buy)||forms[0],rawSelected=value(form),selected=config.variants.includes(rawSelected)?rawSelected:'';
  let state=variantSelections.get(config);if(!state){state={form:config.themeVariantId,query:null,chosen:config.variantId};variantSelections.set(config,state);}
  if(selected&&selected!==state.form){state.form=selected;state.chosen=selected;}
  const values=new URLSearchParams(search).getAll('variant'),query=values.length===1&&config.variants.includes(values[0])?values[0]:null;

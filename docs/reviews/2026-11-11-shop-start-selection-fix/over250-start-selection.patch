@@ -1,0 +1,126 @@
+diff --git a/app/workshop/ui/shop-embed.mjs b/app/workshop/ui/shop-embed.mjs
+index d18967a..d288814 100644
+--- a/app/workshop/ui/shop-embed.mjs
++++ b/app/workshop/ui/shop-embed.mjs
+@@ -87,28 +87,47 @@ export function pageConfig(doc=globalThis.document){
+  const presentation=productPresentation(doc,raw);raw??=presentation?.source;if(!raw)return null;
+  const productId=String(raw?.productId??''),variants=presentation?.variants||(Array.isArray(raw?.variants)?[...new Set(raw.variants.map(String))].filter(v=>ID.test(v)):[]);
+  if(!ID.test(productId)||!variants.length||variants.length>(presentation?2048:250))return null;
+- const variantId=presentation?.variantId||(variants.includes(String(raw.variantId))?String(raw.variantId):variants[0]);
++ // Liquid's selected variant belongs to this product even when product.variants
++ // contains only the first 250 IDs. This is a start hint, never a server binding.
++ const variantId=presentation?.variantId||(ID.test(String(raw.variantId??''))?String(raw.variantId):variants[0]);
+  const back=typeof raw.back==='string'&&/^\/(?!\/)[^\s]{0,300}$/.test(raw.back)?raw.back:'/';
+  return {productId,variantId,variants,back,...(presentation?{ui:presentation.ui,themeVariantId:presentation.themeVariantId}:{})};
+ }
+ export function startHref(config,variantId=config.variantId,search=globalThis.location?.search||''){
+- const params=new URLSearchParams({product:config.productId,variant:config.variants.includes(String(variantId))?String(variantId):config.variantId,back:config.back});
++ const selected=String(variantId),known=config.variants.includes(selected)||selected===config.variantId||selected===variantSelections.get(config)?.chosen;
++ const params=new URLSearchParams({product:config.productId,variant:known?selected:config.variantId,back:config.back});
+  if(config.ui==='prio-r15')params.set('ui','prio-r15');
+  const toolbar=new URLSearchParams(search).getAll('leiste');if(toolbar.length===1&&['a','b'].includes(toolbar[0]))params.set('leiste',toolbar[0]);
+  return PROXY+'/start?'+params;
+ }
+ // Kaufformulare genau dieses Produkts (auch die mitlaufende Kaufleiste), nicht die anderer Produkte auf der Seite.
++const identifiedForms=new WeakMap();
+ export function productForms(config,doc=globalThis.document){
+- return [...doc.querySelectorAll('form[action*="/cart/add"]')].filter(form=>config.variants.includes(String(form.querySelector('[name="id"]')?.value||'')));
++ let known=identifiedForms.get(config);if(!known){known=new WeakSet();identifiedForms.set(config,known);}
++ return [...doc.querySelectorAll('form[action*="/cart/add"]')].filter(form=>{
++  const value=String(form.querySelector('[name="id"]')?.value||'');if(!ID.test(value))return false;
++  // The active theme's product-info (and sticky product wrapper) identifies its
++  // product explicitly. A foreign wrapper wins over any remembered form/ID.
++  const owner=form.closest?.('[data-product-id]')?.getAttribute?.('data-product-id');
++  const own=owner!=null?owner===config.productId:known.has(form)||config.variants.includes(value)||value===config.variantId;
++  if(own)known.add(form);return own;
++ });
+ }
+ const variantSelections=new WeakMap();
+ export function currentVariant(config,doc,search=globalThis.location?.search||''){
+  const forms=productForms(config,doc),value=form=>String(form?.querySelector('[name="id"]')?.value||'');
+- if(config.ui!=='prio-r15')return forms.map(value).find(v=>config.variants.includes(v))||config.variantId;
++ if(config.ui!=='prio-r15'){
++  let state=variantSelections.get(config);if(!state){state={chosen:config.variantId};variantSelections.set(config,state);}
++  const buy=form=>!!form.querySelector('[type="submit"],[name="add"]'),sticky=form=>!!form.closest?.('[class*="sticky"],sticky-atc-bar');
++  const main=forms.filter(form=>buy(form)&&!sticky(form)),buyForms=forms.filter(buy),candidates=main.length?main:buyForms.length?buyForms:forms;
++  const choices=new Set(candidates.map(value));
++  if(choices.size===1)state.chosen=[...choices][0];
++  return state.chosen;
++ }
+  // Start at the main-image variant until a real selection changes. Prefer the
+  // main purchase form over stale installment/sticky copies of the same product.
+  const buy=form=>!!form.querySelector('[type="submit"],[name="add"]'),sticky=form=>!!form.closest?.('[class*="sticky"],sticky-atc-bar');
+- const form=forms.find(form=>buy(form)&&!sticky(form))||forms.find(buy)||forms[0],selected=value(form);
++ const form=forms.find(form=>buy(form)&&!sticky(form))||forms.find(buy)||forms[0],rawSelected=value(form),selected=config.variants.includes(rawSelected)?rawSelected:'';
+  let state=variantSelections.get(config);if(!state){state={form:config.themeVariantId,query:null,chosen:config.variantId};variantSelections.set(config,state);}
+  if(selected&&selected!==state.form){state.form=selected;state.chosen=selected;}
+  const values=new URLSearchParams(search).getAll('variant'),query=values.length===1&&config.variants.includes(values[0])?values[0]:null;
+diff --git a/app/workshop/shop-product-presentation.test.mjs b/app/workshop/shop-product-presentation.test.mjs
+index 72c010c..fcf2844 100644
+--- a/app/workshop/shop-product-presentation.test.mjs
++++ b/app/workshop/shop-product-presentation.test.mjs
+@@ -7,7 +7,7 @@ const ids=Array.from({length:404},(_,i)=>String(1000+i));
+ const base={productId:'16190784438652',variantId:ids[0],variants:ids.slice(0,250),back:'/products/steel'};
+ const presentation={schema:'gravuru-shop-presentation/v1',productId:base.productId,ui:'prio-r15',variantId:ids[260],themeVariantId:ids[0],back:base.back,variants:ids};
+ function documentFor(raw=base,profile=presentation){
+- const form=(value,{sticky=false,submit=true}={})=>({value,querySelector(selector){if(selector==='[name="id"]')return {value:this.value};if(selector==='[type="submit"],[name="add"]')return submit?{}:null;return null;},closest(){return sticky?{}:null;}});
++ const form=(value,{sticky=false,submit=true}={})=>({value,owner:null,querySelector(selector){if(selector==='[name="id"]')return {value:this.value};if(selector==='[type="submit"],[name="add"]')return submit?{}:null;return null;},closest(selector){if(selector==='[data-product-id]')return this.owner===null?null:{getAttribute:()=>this.owner};return sticky?{}:null;}});
+  const installment=form(ids[0],{submit:false}),sticky=form(ids[0],{sticky:true}),main=form(ids[0]),foreign=form('9000');
+  return {main,sticky,foreign,getElementById(id){const data=id==='gravuru-konfi'?raw:id==='gravuru-konfi-presentation'?profile:null;return data?{textContent:JSON.stringify(data)}:null;},querySelectorAll(){return [installment,sticky,main,foreign];}};
+ }
+@@ -48,9 +48,53 @@ test('explicit variant deep link and later URL changes preserve a valid selectio
+  assert.equal(currentVariant(config,doc,'?variant='+ids[0]),ids[0]);
+  for(const search of ['?variant=9000','?variant='+ids[3]+'&variant='+ids[4],'?price=0'])assert.equal(currentVariant(config,doc,search),ids[0]);
+ });
+-test('ordinary products retain existing form-first behavior',()=>{
++test('ordinary products use the main form instead of stale installment and sticky values',()=>{
+  const doc=documentFor(base,null),config=pageConfig(doc);doc.main.value=ids[10];
+- assert.equal(currentVariant(config,doc,'?variant='+ids[20]),ids[0]);
++ assert.equal(currentVariant(config,doc,'?variant='+ids[20]),ids[10]);
++});
++
++test('Liquid selected variant outside the first250 remains the start selection without enlarging the list',()=>{
++ const raw={...base,variantId:ids[330]},doc=documentFor(raw,null),config=pageConfig(doc);doc.main.value=ids[330];
++ assert.equal(config.variantId,ids[330]);assert.equal(config.variants.length,250);
++ assert.equal(currentVariant(config,doc,''),ids[330]);
++ assert.equal(new URL(startHref(config,currentVariant(config,doc),''),'https://shop.example/').searchParams.get('variant'),ids[330]);
++ for(const bad of ['not-id','-1','1&product=77','9'.repeat(21)])assert.equal(pageConfig(documentFor({...raw,variantId:bad},null)).variantId,ids[0]);
++});
++
++test('a previously identified own form keeps its selection beyond250; a foreign owner always excludes it',()=>{
++ const doc=documentFor(base,null),config=pageConfig(doc);assert.equal(currentVariant(config,doc,''),ids[0]);
++ doc.main.value=ids[330];assert.equal(currentVariant(config,doc,''),ids[330]);
++ assert.equal(new URL(startHref(config,ids[330],''),'https://shop.example/').searchParams.get('variant'),ids[330]);
++ doc.main.owner='77';assert.ok(!productForms(config,doc).includes(doc.main),'explicit foreign identity overrides remembered form');
++ doc.foreign.owner='77';doc.foreign.value=ids[2];assert.ok(!productForms(config,doc).includes(doc.foreign),'known variant alone cannot override a foreign product wrapper');
++});
++
++test('a rerendered unknown form needs the actual matching product wrapper; ambiguous main forms do not choose a new ID',()=>{
++ const doc=documentFor(base,null),config=pageConfig(doc);doc.main.value=ids[330];
++ assert.ok(!productForms(config,doc).includes(doc.main));assert.equal(currentVariant(config,doc,''),ids[0]);
++ doc.main.owner=base.productId;assert.equal(currentVariant(config,doc,''),ids[330]);
++ doc.foreign.owner=base.productId;doc.foreign.value=ids[331];doc.main.value=ids[332];
++ assert.equal(currentVariant(config,doc,''),ids[330],'conflicting primary forms retain the last unambiguous selection');
++ doc.foreign.owner='77';assert.equal(currentVariant(config,doc,''),ids[332]);
++ doc.main.value=ids[0];assert.equal(currentVariant(config,doc,''),ids[0],'deliberate return to the first variant remains possible');
++});
++
++test('unknown arguments and URL values cannot expand the selected variant; own invalid inputs and R15 IDs stay bounded',()=>{
++ const doc=documentFor(base,null),config=pageConfig(doc);doc.main.owner=base.productId;
++ assert.equal(new URL(startHref(config,'9000','?variant=9000'),'https://shop.example/').searchParams.get('variant'),ids[0]);
++ assert.equal(currentVariant(config,doc,'?variant=9000'),ids[0]);
++ doc.main.value='1&product=77';assert.ok(!productForms(config,doc).includes(doc.main));assert.equal(currentVariant(config,doc,''),ids[0]);
++ const r15=documentFor(),r15Config=pageConfig(r15);r15.main.owner=base.productId;r15.main.value='9000';
++ assert.equal(currentVariant(r15Config,r15,''),ids[260]);
++ assert.equal(new URL(startHref(r15Config,'9000',''),'https://shop.example/').searchParams.get('variant'),ids[260]);
++});
++
++test('outside250 selection survives prefetch and the page fallback after a verified own-form change',async()=>{
++ const doc=documentFor(base,null),config=pageConfig(doc);doc.main.owner=base.productId;doc.main.value=ids[330];
++ const key=new URL(startHref(config,currentVariant(config,doc),''),'https://shop.example/');key.searchParams.set('embed','1');
++ const requests=[],tickets=createStartTickets({now:()=>1000,fetchImpl:async url=>{requests.push(new URL(url));return {ok:true,json:async()=>({url:'__EDITOR_ORIGIN__/#s=synthetic',expiresAt:new Date(3601000).toISOString()})};}});
++ await tickets.load(key.href);assert.equal(requests[0].searchParams.get('variant'),ids[330]);
++ assert.equal(new URL(pageStartUrl(requests[0].href)).searchParams.get('variant'),ids[330]);
+ });
+ test('start URLs retain explicit product presentation, variant and toolbar; arbitrary URL fields cannot opt another product in',()=>{
+  const config=pageConfig(documentFor());

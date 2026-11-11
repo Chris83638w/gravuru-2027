@@ -1,0 +1,17 @@
+✔ complete 808-row read compares 778 target plus 30 preserved options and all prices without writes or private output (353.9807ms)
+✔ missing, extra, wrong-head and changed native options remain explicit, not a partial green result (263.6988ms)
+✔ missing profiles copy is a precise unresolved check and altered artifact pins stop before reading a DB (221.8871ms)
+✔ unknown schema, live-style filename and dependent WAL copy are rejected without migration (197.1967ms)
+✔ native numeric-key hash methods deliberately differ and are stable across property insertion order (0.2453ms)
+✔ large-copy hashing uses bounded chunks and matches byte SHA across several chunk boundaries (12.9172ms)
+✔ legacy tables require explicit single-store gravuru scope, never arbitrary tenant inference (247.2403ms)
+✔ manufacturing metadata exposes only the stored pin and motifCharge retains its actual value (219.8724ms)
+✔ target defaults are projected by IDs/counts/hashes and native bestseller filtering without exporting items (254.0405ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1863.9076

@@ -9,7 +9,7 @@ import {copyPath} from './copy-guard.mjs';
 import {inspectNativeTarget,TARGET_CFG,TARGET_SHOP_PRODUCT} from './inspect-native-target.mjs';
 import {migrateSearchStatsCopy} from './migrate-search-stats-copy.mjs';
 const here=path.dirname(fileURLToPath(import.meta.url));
-const codeRoot=path.resolve(process.env.GRAVURU_OPERATOR_TEST_CODE_ROOT||path.join(here,'../../issue230-integration-candidate'));
+const codeRoot=path.resolve(process.env.GRAVURU_OPERATOR_TEST_CODE_ROOT||path.join(here,'../..'));
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 const moduleSha256=sha(fs.readFileSync(path.join(codeRoot,'app/workshop/motif-search-stats.mjs')));
 function fixture(t){const dir=fs.mkdtempSync(path.join(here,'.test-')),file=path.join(dir,'workshop.copy.sqlite');t.after(()=>{assert.ok(fs.realpathSync(dir).startsWith(here+path.sep+'.test-'));fs.rmSync(dir,{recursive:true,force:true});});return file;}

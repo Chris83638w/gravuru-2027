@@ -29,13 +29,13 @@
     },
     {
       "path": "operator-tools.test.mjs",
-      "bytes": 8321,
-      "sha256": "680b672a2b6eb180b72b6ab3f3f5a5e56d2ae5312f36782df7d292708856ab4a"
+      "bytes": 8290,
+      "sha256": "8219a918e033af7ff4acece5fdea26cf866f15db38bb45cb9cc8b0a110b2f7bc"
     },
     {
       "path": "README.md",
-      "bytes": 8095,
-      "sha256": "e9309f8667203fbae9e62252ce22d08fab7ebb3dd04bd10e05a44fe307ecfe99"
+      "bytes": 8870,
+      "sha256": "631dd4a82446f820cf3deb148f967f8520dc60693fe584f3f8a0893e6424a5f3"
     },
     {
       "path": "tests.log",
@@ -46,6 +46,11 @@
       "path": "alias-tests.log",
       "bytes": 355,
       "sha256": "6551b928820a53f8644dea04ad5ace36ec8dcfd2f7de1e2178d311c2bb5f6510"
+    },
+    {
+      "path": "repository-path-tests.log",
+      "bytes": 581,
+      "sha256": "c431505a668b7a31c21377a4799e5a2f092ddd27589d4364f62cb04c467e01e2"
     }
   ]
 }

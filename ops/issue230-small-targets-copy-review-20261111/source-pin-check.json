@@ -1,0 +1,53 @@
+{
+  "fileOnly": true,
+  "noDatabaseOpened": true,
+  "auditSha256": "d2cb6cac1149da13db9ed9c2af83f27f3060a4531840636542e9fe95f4d6346f",
+  "aliasesSha256": "2ddc13a66c323ece8228867e1e8bf32388f7d82b129ff37128d37fb12a79f694",
+  "groups": 6,
+  "uniqueProducts": 22,
+  "variants": 126,
+  "sourceChecks": [
+    {
+      "group": "acrylic-5x2",
+      "profileAlias": "katalog-formate-acryl-tuerschilder-familienschilder-ed5a3d38e2187691",
+      "sourceFileSha256": "94645c95ba8d27cd51caeaae582503b0f4f57dc71c7ef04d32cd4c15979f2d04",
+      "sourceProductGroupSha256": "7d951cec1d47abc13b1c2c6d6e0552c0616e4843fc941e4c75943ad89aeb53f8",
+      "checked": true
+    },
+    {
+      "group": "acrylic-6x2",
+      "profileAlias": "katalog-formate-acryl-tuerschilder-familienschilder-8c01b1e4b24e2012",
+      "sourceFileSha256": "cec58d88841ced32a6762efe73d508e47ded93c8f967970e57f0ae7799a5b77b",
+      "sourceProductGroupSha256": "4e74e4921f46d07382e2e2b605c3aaf237b11492905ed4e662a5e91aec22d3f5",
+      "checked": true
+    },
+    {
+      "group": "acrylic-8x2",
+      "profileAlias": "katalog-formate-acryl-tuerschilder-familienschilder-4c3feec7c4b62cf0",
+      "sourceFileSha256": "1ec018e04ad54cdef84bb223f32d04304b76de89c190f92514ba1837939213ca",
+      "sourceProductGroupSha256": "21479a11ae22c881fe40a05975d8beb7aa2e1fafc30db657b04bd3591ee36ed2",
+      "checked": true
+    },
+    {
+      "group": "steel-5x2",
+      "profileAlias": "katalog-formate-edelstahl-tuerschilder-familienschilder-e93cdb9a062f7b7e",
+      "sourceFileSha256": "9521226a9e91b0b297450eb81647f31e0bbb451eedde1c86101a02a0c574accd",
+      "sourceProductGroupSha256": "c37159312125ef333a01ea1ab96d1c25fe46edfd946c52495a7e9039f2f1f466",
+      "checked": true
+    },
+    {
+      "group": "steel-6x2",
+      "profileAlias": "katalog-formate-edelstahl-tuerschilder-familienschilder-e3312bbc1040a700",
+      "sourceFileSha256": "f3aa10c351d7c0343c747193eb0081842f92055dcfa0f16a072ab457104e0f92",
+      "sourceProductGroupSha256": "3ef423c8c81ba076b3b61eaf116467464a42a70f266536451a870ab09824f516",
+      "checked": true
+    },
+    {
+      "group": "steel-8x2",
+      "profileAlias": "katalog-formate-edelstahl-tuerschilder-familienschilder-0ee0f26cce4d3deb",
+      "sourceFileSha256": "9fcf89dab365bcc053384d752c1321b66d07d228f8549aa0925c12708af600a6",
+      "sourceProductGroupSha256": "9520da5156363805a1c11853b13795a09321410dc7b9ef1aa3fe711eb76ef2e3",
+      "checked": true
+    }
+  ]
+}

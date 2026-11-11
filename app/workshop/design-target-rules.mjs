@@ -4,10 +4,8 @@ import {familyProcess,geometryOf,holeless,ruleComplete} from './product-families
 import {flattenClosedSvgPath} from '../platform/sources/app/shared/models/contour-geometry.mjs';
 import {holesFor} from '../platform/sources/app/shared/models/mounting-rules.mjs';
 import {textsNearHoles,holeHintText} from '../platform/sources/app/shared/models/hole-proximity.mjs';
-import {avoidMounting,touchesMounting,SIGN_PLACEMENT_FAMILIES} from '../configurator/variant-m/mounting-placement.mjs';
 export const TARGET_MIN_TEXT_MM=3;
-// Feine Linien bis ca. 0,3 mm sind gravierbar (Chris 01.11.2026, DESIGN-MASTER §8; ersetzt 0,5 mm vom 24.10.).
-export const V2A_MIN_STROKE_MM=.3;
+export const V2A_MIN_STROKE_MM=.5;
 const rank={'passt':0,'prüfen':1,'passt nicht':2};
 const n=v=>Number(v.toFixed(4));
 // Neutraltöne sind keine Farbe: Corel exportiert „Schwarz“ als #1b1918 bzw. #231f20 (aus CMYK). Ein Ton gilt erst
@@ -62,10 +60,10 @@ export function designTargetRules(master,family,{scale=1,template=null}={}){
   if(process.id!=='steel-engraving'||!['motiv','deko'].includes(layer.kind))continue;
   for(let i=0;i<(layer.paths?.length||0);i++){
    const attrs=layer.pathAttributes?.[i]||{},path=layer.paths[i],bounds=pathBounds(path),factor=object&&layer.bounds?.[2]>0?object.w/layer.bounds[2]:scale;
-   if(attrs.stroke&&attrs.stroke!=='none'&&attrs.strokeMm>0&&attrs.strokeMm*factor<V2A_MIN_STROKE_MM-.00001)add('v2a_thin_stroke','prüfen',layer.id,layer.id+' · Pfad '+(i+1)+': V2A-Linie '+n(attrs.strokeMm*factor)+' mm unter 0,3 mm – prüfen.',{pathIndex:i,widthMm:n(attrs.strokeMm*factor),location});
+   if(attrs.stroke&&attrs.stroke!=='none'&&attrs.strokeMm>0&&attrs.strokeMm*factor<V2A_MIN_STROKE_MM-.00001)add('v2a_thin_stroke','prüfen',layer.id,layer.id+' · Pfad '+(i+1)+': V2A-Linie '+n(attrs.strokeMm*factor)+' mm unter 0,5 mm – prüfen.',{pathIndex:i,widthMm:n(attrs.strokeMm*factor),location});
    if(attrs.fill==='none')continue;
    const parts=path.match(/[Mm][^Mm]*/g)||[];
-   for(let j=0;j<parts.length;j++){if(!/[zZ]\s*$/.test(parts[j]))continue;const width=narrowComponent(parts[j]);if(width!==null&&width>0&&(width+.02)*factor<V2A_MIN_STROKE_MM)add('v2a_thin_contour','prüfen',layer.id,layer.id+' · Pfad '+(i+1)+'/'+(j+1)+': Motivkontur höchstens '+n((width+.02)*factor)+' mm breit, unter 0,3 mm – prüfen.',{pathIndex:i,componentIndex:j,widthUpperBoundMm:n((width+.02)*factor),location,boundsMm:bounds.map(v=>n(v*factor))});}
+   for(let j=0;j<parts.length;j++){if(!/[zZ]\s*$/.test(parts[j]))continue;const width=narrowComponent(parts[j]);if(width!==null&&width>0&&(width+.02)*factor<V2A_MIN_STROKE_MM)add('v2a_thin_contour','prüfen',layer.id,layer.id+' · Pfad '+(i+1)+'/'+(j+1)+': Motivkontur höchstens '+n((width+.02)*factor)+' mm breit, unter 0,5 mm – prüfen.',{pathIndex:i,componentIndex:j,widthUpperBoundMm:n((width+.02)*factor),location,boundsMm:bounds.map(v=>n(v*factor))});}
   }
  }
  const issues=details.map(d=>d.message),status=details.reduce((s,d)=>rank[d.severity]>rank[s]?d.severity:s,'passt');return {status,issues,details};
@@ -75,16 +73,7 @@ export function assessDesignTarget({master,template,family,size,fonts={},motifs=
  const geometry=geometryOf(family,size),holeDetails=[];
  for(const id of size.mounting||[]){const rule=family.mountingRules.find(r=>r.id===id);if(!rule||holeless(rule)||geometry.shape!=='contour'&&!ruleComplete(rule))continue;
   const holes=geometry.shape==='contour'?geometry.holesMm.map(h=>({x:h.x,y:h.y,diameter:h.diameterMm})):holesFor(geometry,rule);
-  let near=textsNearHoles(template,{geometry:{...geometry,holes}},fonts,family.designArea.keepoutMm??0);
-  // Chris, 04.11.2026: Wo der Konfi beim Wechsel auf Bohrung/Schrauben selbst ausweicht (kleiner machen
-  // und einrücken, ENTSCHEIDUNGEN 3.40), kein Hinweis mehr – nur noch, wenn auch das Ausweichen nicht reicht.
-  if(near.length&&SIGN_PLACEMENT_FAMILIES.includes(family.id)){
-   // Hinweis bleibt für alles, was nach dem Ausweichen noch am Loch liegt (nicht lösbar oder gesperrt).
-   let still=null;
-   try{const profile={geometry:{...geometry,holes},mountingPreview:{keepoutMm:family.designArea.keepoutMm??0}},resources={fonts,motifs},placed=avoidMounting(template.objects||[],profile,resources);
-    still=new Set([...placed.unresolved,...placed.objects.filter(o=>touchesMounting(o,profile,resources)).map(o=>o.id)]);}catch{}
-   if(still)near=near.filter(item=>still.has(item.id));
-  }
+  const near=textsNearHoles(template,{geometry:{...geometry,holes}},fonts,family.designArea.keepoutMm??0);
   for(const item of near)holeDetails.push({code:'text_near_hole',severity:'prüfen',element:item.id,mounting:id,location:{xMm:item.hole.x,yMm:item.hole.y},message:rule.label+': '+holeHintText([item])});
  }
  const details=[...rules.details,...holeDetails],status=[fit.status,rules.status,...holeDetails.map(d=>d.severity)].reduce((a,b)=>rank[a]>=rank[b]?a:b,'passt');

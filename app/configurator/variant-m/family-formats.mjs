@@ -1,5 +1,5 @@
 // N39: only catalog-bound formats. Free merchant steelFormats keep their stricter rules.
-import {transferTexts} from './workflow-model.mjs';
+import {changedCustomerTexts,transferTexts} from './workflow-model.mjs';
 import {measureText} from '../../platform/sources/app/shared/models/text-paths.mjs';
 import {surfaceObjectIssue,validateDesignContent,validateGeometryHoles} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {validateUniversalElements,validateOptionGroups} from '../../platform/sources/app/shared/models/universal-elements.mjs';
@@ -114,7 +114,12 @@ export function familyFormatState(c,state,requested,{fonts={},motifs=[]}={}){
  if(sameForm&&exact){objects=scaleFamilyObjects(state.objects,before.geometry,after.geometry);}
  else{
   objects=clone(target.objects);
-  const edited=state.objects.filter(o=>o.type==='text'&&!o.uxHidden&&o.customerEditable!==false&&o.text!==source.objects.find(s=>s.id===o.id)?.text);
+  const editable=state.objects.filter(o=>o.type==='text'&&!o.uxHidden&&o.customerEditable!==false);
+  // Keep complete name/date groups: omitting an unchanged second field makes
+  // transferTexts split a multiword first field into the second one. Retain the
+  // existing shape-switch transfer of other edited texts (including slogans).
+  const grouped=new Set(changedCustomerTexts(editable,source));
+  const edited=editable.filter(o=>grouped.has(o)||o.text!==source.objects.find(s=>s.id===o.id)?.text);
   const remaining=transferTexts(edited,objects);
   const extras=[...remaining,...state.objects.filter(o=>o.type==='photoSlot'&&o.uxUploadId||o.uxUploadKind==='logo')];
   for(const original of extras){const moved=scaleFamilyObjects([original],before.geometry,after.geometry)[0];if(objects.some(o=>o.id===moved.id))moved.id='carry-'+moved.id;objects.push(moved);}

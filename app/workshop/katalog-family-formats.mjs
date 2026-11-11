@@ -107,9 +107,7 @@ export async function planFamilyFormats(katalog,lineId,subcategoryId,{reviewUnre
   else{c.familyFormats.fixedSize=start.key;p.optionGroups=p.optionGroups.filter(g=>g.id!=='size');}
   p.id+='-'+createHash('sha256').update(JSON.stringify(allChoice?['alle',shopProduct.zielgruppe??null,shopProduct.defaultDesignId,shopProduct.motive??null,shopProduct.vorlagen??null]:formChoice?[start.form,shopProduct.zielgruppe??null,shopProduct.defaultDesignId]:[start.key,shopProduct.defaultDesignId])).digest('hex').slice(0,16);p.binding.productId='local-'+p.id;
   p.name+=' · '+(allChoice?'alle Formen'+(shopProduct.zielgruppe?' · '+shopProduct.zielgruppe:''):formChoice?(FAMILY_FORMS.find(([id])=>id===customerForm(start.form))?.[1]??start.form)+(shopProduct.zielgruppe?' · '+shopProduct.zielgruppe:''):start.label);
-  // Edelstahl: nie Foto. Logo nur bei den Edelstahl-Schildern, als SVG-Vektor für 12,99 € (Chris 03.11.2026: „ergänze Logo für 12,99€“; ersetzt 02.11. „Logo erstmal raus“).
-  const steelDoorSigns=list.some(s=>s.variants.some(v=>v.familyId==='steel-door-signs'));
-  if(p.material.kind==='steel'){c.photo={...c.photo,enabled:false};c.logo=steelDoorSigns?{...c.logo,enabled:true,vectorUpload:true,extraPriceCents:1299}:{...c.logo,enabled:false,vectorUpload:false};}
+  if(p.material.kind==='steel'){c.photo={...c.photo,enabled:false};c.logo={...c.logo,enabled:false,vectorUpload:false};}
   if(formChoice){
    // Nur die Größe benennen („Herz M · 20,9 × 45,0 cm“), die Form steht im Produkt.
    const plainLabel=new Map(list.map(s=>[optionLabel(s),s.label]));

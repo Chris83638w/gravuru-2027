@@ -7,7 +7,7 @@ import {resolveShopProductBinding} from './shop-product-binding-plan.mjs';
 import {prepareShopProduct,withShopPreparationSnapshot} from './shop-preparation.mjs';
 import {createShopGalleryCache} from './shop-gallery-cache.mjs';
 import {performance} from 'node:perf_hooks';
-import {customerDatabaseRead} from './customer-read-scope.mjs';
+import {customerDatabaseRead,databaseEpoch} from './customer-read-scope.mjs';
 
 const plain = v => v !== null && typeof v === 'object' && !Array.isArray(v) && [Object.prototype,null].includes(Object.getPrototypeOf(v));
 const positive = v => Number.isSafeInteger(v) && v > 0;
@@ -193,10 +193,16 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
     }
     return result;
   }
-  function result(row,records=new Map(),timings,memo=null){
+  function result(row,records=new Map(),timings,memo=null,galleryMemo=null){
     if(row.store_id!==storeId)fail('shop_binding_store_scope','Die Zuordnung gehört zu einem anderen Store.',503);
     const key=row.cfg_id+'@'+row.cfg_revision;let record=records.get(key);
-    let at=performance.now();const stamp=memo&&!legacySingleStore?null:customerDatabaseRead(db,'binding-stamp:'+tenantId+':'+key,()=>compactReadStamp(revisionStamp(row.cfg_id,row.cfg_revision)));if(timings)timings.documentReadMs+=performance.now()-at;
+    // Only an asynchronous gallery scan opts in. Never reuse the write-side
+    // transaction stamp, or retain document/metadata bytes across an await.
+    const galleryEpoch=galleryMemo&&!db.isTransaction?databaseEpoch(db):null;
+    const cached=galleryEpoch===null?null:galleryMemo.get(key);
+    let at=performance.now();const stamp=cached?.epoch===galleryEpoch&&galleryEpoch!==null
+      ?{...cached.stamp,...productRow(row.cfg_id,row.cfg_revision,{withMetadata:false,withDocument:false})}
+      :memo&&!legacySingleStore?null:customerDatabaseRead(db,'binding-stamp:'+tenantId+':'+key,()=>compactReadStamp(revisionStamp(row.cfg_id,row.cfg_revision)));if(timings)timings.documentReadMs+=performance.now()-at;
     if(record&&!isDeepStrictEqual(record.stamp,stamp))fail('shop_binding_cfg_changed','Der Produktbeleg wurde innerhalb der Prüfung geändert.');
     if(!record){
       const read=()=>customerDatabaseRead(db,'binding-document:'+tenantId+':'+key,()=>{
@@ -215,11 +221,18 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
       }else record=read();
       record={...record,stamp};
       // Retain only the digest, never all parsed documents of a large catalogue.
-      records.set(key,record);
+      if(galleryEpoch===null)records.set(key,record);
     }
     at=performance.now();const bound=bindingFor(row.binding_id);if(timings)timings.bindingReadMs+=performance.now()-at;
     if(record.digest!==row.document_sha256)fail('shop_binding_active_integrity','Der feste Produktbeleg wurde verändert.');
     assertBinding(bound,{shopifyVariantId:row.variant_gid,productId:row.cfg_id,productRevision:row.cfg_revision,baseUnitCents:bound.unit_cents,options:bound.options});
+    if(galleryEpoch!==null){
+      // Include the document/digest and binding reads in the same checked
+      // epoch. Changes cause the next read to compare against the ORIGINAL
+      // compact stamp; they never silently replace a gallery's baseline.
+      if(databaseEpoch(db)!==galleryEpoch)fail('shop_binding_cfg_changed','Der Produktbeleg wurde während der Galerieprüfung geändert.');
+      records.set(key,record);galleryMemo.set(key,{epoch:galleryEpoch,stamp});
+    }
     return {...scope,shopifyProductId:row.product_gid,shopifyVariantId:row.variant_gid,
       bindingId:row.binding_id,productId:row.cfg_id,productRevision:row.cfg_revision,
       options:clone(bound.options),unitCents:bound.unit_cents,assignmentRevision:row.revision,
@@ -343,8 +356,8 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
       WHERE h.tenant_id=? AND h.shop=? AND r.store_id=? ORDER BY h.variant_gid`).all(tenantId,shopDomain,storeId);
     return createHash('sha256').update(JSON.stringify(rows)).digest('hex');
   }
-  function galleryResult(row,records,timings){
-    try{return result(row,records,timings);}
+  function galleryResult(row,records,timings,galleryMemo=null){
+    try{return result(row,records,timings,null,galleryMemo);}
     catch(error){
       if(!['shop_binding_cfg_changed','shop_binding_active_integrity','shop_binding_document'].includes(error.code))throw error;
       // Fixed diagnostic codes only: never document text, tokens or customer fields.
@@ -356,11 +369,11 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
     const records=new Map();return activeRows().map(row=>galleryResult(row,records)).filter(Boolean);
   }
   async function listActiveForGallery({onMeasure=()=>{}}={}){
-    const started=performance.now(),rows=activeRows(),records=new Map(),bindings=[];
+    const started=performance.now(),rows=activeRows(),records=new Map(),galleryMemo=new Map(),bindings=[];
     const timings={activeRowsMs:performance.now()-started,documentReadMs:0,documentParseMs:0,documentHashMs:0,bindingReadMs:0,products:0,bindings:rows.length};
     for(let i=0;i<rows.length;i++){
       if(i%8===0)await new Promise(resolve=>setImmediate(resolve));
-      const binding=galleryResult(rows[i],records,timings);if(binding)bindings.push(binding);
+      const binding=galleryResult(rows[i],records,timings,galleryMemo);if(binding)bindings.push(binding);
     }
     onMeasure({...timings,totalMs:performance.now()-started});return bindings;
   }

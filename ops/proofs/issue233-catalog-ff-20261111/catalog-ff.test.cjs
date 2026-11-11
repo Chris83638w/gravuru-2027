@@ -1,12 +1,13 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
-const {mergeJson,appendAudit,inspect,apply,sha}=require('./catalog-ff.cjs');
+const {mergeJson,appendAudit,inspect,apply,sha}=require('./catalog-ff-v2.cjs');
 test('independent leaves, additions and local deletion are preserved',()=>{
  const got=mergeJson({a:1,b:{x:1,y:2},remove:1},{a:2,b:{x:1,y:2}},{a:1,b:{x:3,y:2},remove:1,newKey:4});
  assert.deepEqual(JSON.parse(JSON.stringify(got)),{a:2,b:{x:3,y:2},newKey:4});
 });
 test('competing leaves and arrays stop',()=>{assert.throws(()=>mergeJson({a:1},{a:2},{a:3}),/conflict/);assert.throws(()=>mergeJson({a:[1]},{a:[1,2]},{a:[1,3]}),/conflict/);});
 test('audit preserves both raw appended histories and rejects prefix change',()=>{const b=Buffer.from('{"base":1}\n'),l=Buffer.from('{"base":1}\n{"local":1}\n'),t=Buffer.from('{"base":1}\n{"target":1}\n');assert.equal(appendAudit(b,l,t).toString(),'{"base":1}\n{"target":1}\n{"local":1}\n');assert.throws(()=>appendAudit(b,Buffer.from('{"base":2}\n'),t),/append-only/);assert.throws(()=>appendAudit(b,Buffer.from('{"base":1}\n{"bad":2}'),t),/incomplete/);});
-const fixtures=path.join(__dirname,'test-fixtures');fs.mkdirSync(fixtures,{recursive:true});
+// Keep isolated test paths below Windows' Git path limit; production paths are fixed.
+const fixtures=fs.realpathSync.native(fs.mkdtempSync(path.join(require('node:os').tmpdir(),'gravuru-catalog-ff-')));
 function fixture(){
  const root=fs.mkdtempSync(path.join(fixtures,'catalog-'));const git=(...args)=>cp.execFileSync('git',args,{cwd:root,stdio:['pipe','pipe','pipe']}).toString().trim();
  git('init','-b','fixture');git('config','user.name','Local test');git('config','user.email','fixture@example.invalid');git('config','core.autocrlf','false');
@@ -32,4 +33,12 @@ test('extra local file and changed pinned dirty bytes stop before writes',()=>{
 });
 test('native writer lock and pending journal block inspect',()=>{
  const f=fixture(),lock=path.join(f.root,'designs/.werkstatt-write.lock');fs.mkdirSync(lock);assert.throws(()=>inspect(f.m,f.bundle),/lock exists/);fs.rmdirSync(lock);fs.writeFileSync(path.join(f.root,'designs/.werkstatt-write-journal.json'),'{}');assert.throws(()=>inspect(f.m,f.bundle),/Pending writer/);
+});
+test('multi-file check-attr uses NUL input and returns exactly two attribute rows per real path',()=>{
+ const f=fixture(),real=cp.execFileSync;let observed;
+ cp.execFileSync=function(command,args,options){const result=real.apply(this,arguments);if(command==='git'&&args[0]==='check-attr'){observed={input:options.input,parts:result.toString('utf8').split('\0').slice(0,-1)};}return result;};
+ try{inspect(f.m,f.bundle);}finally{cp.execFileSync=real;}
+ assert.ok(observed);assert.equal(observed.input,f.m.files.map(v=>v.path).join('\0')+'\0');assert.equal(observed.parts.length,f.m.files.length*2*3);
+ const rows=[];for(let i=0;i<observed.parts.length;i+=3)rows.push(observed.parts.slice(i,i+3));
+ assert.deepEqual(rows,f.m.files.flatMap(v=>[[v.path,'filter','unspecified'],[v.path,'working-tree-encoding','unspecified']]));assert.equal(f.head(),f.m.base);
 });

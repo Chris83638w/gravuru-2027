@@ -1,3 +1,7 @@
+## 11.11.2026 – Mika/Codex: #233 Prüfer v2, Übergabe an Astra 1
+
+Erster Server-Inspect laut Root schreibfrei mit ENOBUFS gestoppt. Enger Fix: `git check-attr -z --stdin` erhält NUL-getrennte Eingabepfade. Separater Runner `catalog-ff-v2.cjs`, SHA `7104c52f22138ffae40d1f1a774674fe3ab7bc44a5d82c167955198a47001935`; Bundle/Manifest/alter Runner unverändert, 8/8 lokale Tests grün. Keine v2-Serverausführung und kein FF. [Nachtrag und nächste Prüfanweisung für Astra 1](docs/handoffs/2026-11-11-issue233-catalog-ff-package.md). Weitere Arbeit durch diesen Unteragenten beendet.
+
 ## 11.11.2026 – Mika/Codex: #233 Katalog-FF-Paket gesichert, Serverabnahme offen
 
 Gepinnter Übergang `b5d8f28bc1` → `8236b8bfa`, 552 Zieländerungen und drei gesicherte lokale D20-/Auditänderungen. Runner, Manifest und sieben bestandene lokale Git-/Merge-/Rollbacktests im eigenen Paket gesichert; Bundle/ZIP bleiben private Outputs. ZIP-SHA `5875f5a93f4c704b25868b5e52cbc70f052e3a8c8faf79a9cffb8da587973a44`. Keine Serverausführung durch den Unteragenten, keine App-/DB-/Shopify-/Neustartaktion. [Pins, konkrete Prüfbefehle und Grenzen](docs/handoffs/2026-11-11-issue233-catalog-ff-package.md). Nächster Schritt: Operator führt zuerst nur den schreibfreien Inspect aus; Übernahme erst nach konfliktfreiem Ergebnis und bestätigtem Stillstand anderer Schreiber.

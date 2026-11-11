@@ -1,5 +1,14 @@
 # Issue 233: gepinnter Katalog-Fast-Forward
 
+## Nachtrag v2 – 11.11.2026
+
+Der erste Server-Inspect wurde laut Root **ohne Katalogänderung** bei `git check-attr` mit `ENOBUFS` gestoppt. Bei `-z --stdin` müssen mehrere Eingabepfade ebenfalls NUL-getrennt sein. Der neue, getrennte `catalog-ff-v2.cjs` korrigiert ausschließlich `join(\'\n\')`/Zeilenende zu NUL-Trennung. Der v1-Runner bleibt als Nachweis unverändert und darf nicht mehr ausgeführt werden. **Es wurde kein Fast-Forward vorgenommen; die Übergabe an Astra 1 ist jetzt maßgeblich.**
+
+V2: 15.887 Bytes, SHA256 `7104c52f22138ffae40d1f1a774674fe3ab7bc44a5d82c167955198a47001935`. Bundle und Manifest unverändert. Das vorhandene ZIP enthält v1; die v2-Datei muss separat und hashgeprüft daneben übertragen werden. Neuer erster Befehl: `node <privater Paketpfad>/catalog-ff-v2.cjs --inspect`. Noch keine v2-Serverabnahme.
+
+Die kleine Testsuite ist mit v2 erneut **8/8 grün**, keine Skips. Der neue Test beobachtet die tatsächliche Git-Eingabe und Ausgabe: NUL-getrennte Dateinamen, exakt zwei Attributzeilen je einzelnem Pfad. FF/Erhalt lokaler Änderungen/erzwungener Rollback bleiben grün. Test-Fixtures liegen jetzt unter einem kanonischen temporären Pfad, um Windows-Git-Pfadlängen und 8.3-Aliasnamen zu vermeiden; keine Produktionspfadregel geändert.
+
+
 Stand 11.11.2026, Codex-Unteragent. **Lokal vorbereitet, nicht auf dem Server ausgeführt.** Die bestehende Suchfeld-Vorschau auf `http://127.0.0.1:8240/steel` bleibt unverändert.
 
 ## Paket und feste Grenzen

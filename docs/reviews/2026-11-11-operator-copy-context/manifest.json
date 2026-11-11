@@ -1,0 +1,34 @@
+{
+  "base": "feebb047307d8810595014c8f5483c000f281479",
+  "runtime": "e49659fe9cd6e433e578a5ffd054e0345cbcc440",
+  "readOnlyAnalysis": true,
+  "newTests": 0,
+  "serverChanges": 0,
+  "files": [
+    {
+      "path": "main-update-native-context.md",
+      "bytes": 11711,
+      "sha256": "094b6282f77d009c95f9f506a7382f2b7848347987d6907e42376f57fd6b9afc"
+    },
+    {
+      "path": "isolated-shop-entry-proposal.md",
+      "bytes": 8836,
+      "sha256": "5e7b7fb6bb8c28d9f810408c5f6ff71598dc4a06bdd27b84a474a9468b693aa1"
+    },
+    {
+      "path": "full-host-session-isolation-independent-review.md",
+      "bytes": 6617,
+      "sha256": "becec5d1fd978d877883764df212bb49d91ea1bfcecbab3040f597fb588a9c65"
+    },
+    {
+      "path": "gallery-measurement-boundaries.md",
+      "bytes": 4643,
+      "sha256": "a5eb144beec9c4fa7e330bc26553decb352c6e05e42e2886ec4f85007d853f65"
+    },
+    {
+      "path": "main-update-published-blob-check.json",
+      "bytes": 219,
+      "sha256": "126cda76265d345dcd9aff4b14ba7a94f09b928226ae474b4976e94726a64905"
+    }
+  ]
+}

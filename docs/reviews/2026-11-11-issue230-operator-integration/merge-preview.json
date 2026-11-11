@@ -1,0 +1,1128 @@
+{
+  "schema": "issue230-merge-tree-preview/v1",
+  "left": "b7f5ca2ac639462a4148fadd662b4b89466c484c",
+  "right": "ac10e6cee00469591514dcb4fa477b0547a54c48",
+  "base": [
+    "7b8bc287012140cb3aba05f2aadbbe52248c6a55"
+  ],
+  "args": [
+    "-c",
+    "core.autocrlf=false",
+    "merge-tree",
+    "--write-tree",
+    "--messages",
+    "-z",
+    "b7f5ca2ac639462a4148fadd662b4b89466c484c",
+    "ac10e6cee00469591514dcb4fa477b0547a54c48"
+  ],
+  "exitCode": 1,
+  "error": null,
+  "before": {
+    "HEAD": "b7f5ca2ac639462a4148fadd662b4b89466c484c",
+    "refsSha256": "8e6d8fc52bbcdde5879a996c8c7063673b90a0bd1263366bd78dd2f7077b27e0",
+    "indexSha256": null
+  },
+  "after": {
+    "HEAD": "b7f5ca2ac639462a4148fadd662b4b89466c484c",
+    "refsSha256": "8e6d8fc52bbcdde5879a996c8c7063673b90a0bd1263366bd78dd2f7077b27e0",
+    "indexSha256": null
+  },
+  "stdoutBytes": 15960,
+  "stderrBytes": 0,
+  "tree": "44b286158d33e1c42640ddac15393b33ca0c03ab",
+  "appTreeMatches64e": true,
+  "unchangedState": true,
+  "conflictCount": 30,
+  "runtimeConflicts": 20,
+  "testConflicts": 9,
+  "documentationConflicts": 1,
+  "addAdd": [
+    "app/configurator/mobile-demo/preview-action.mjs",
+    "app/configurator/variant-m/module-profile.mjs",
+    "app/configurator/variant-m/module-profile.test.mjs"
+  ],
+  "conflicts": [
+    {
+      "path": "STATUS.md",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "8d140654a29f2ee6547412634d3d001301fbc9ec"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "8f11cb2df8e093f4eeb32edad41ef110baf35889"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "f0eaed8c3dc3e442da4130caa377d25c79bc39ea"
+        }
+      },
+      "kind": "content",
+      "test": false,
+      "runtime": false,
+      "hunks": [
+        {
+          "line": 1,
+          "oursLines": 88,
+          "theirsLines": 118
+        },
+        {
+          "line": 222,
+          "oursLines": 3,
+          "theirsLines": 0
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "documentation"
+    },
+    {
+      "path": "app/configurator/mobile-demo/assets.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "d03c5bcb01337d6625f1624e52bf5718834d0286"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "bbb421041ef6fff63fa3a6d120aafaf7414c22df"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "b1c03186664f2e9ae4f138d703c1d11677114633"
+        }
+      },
+      "kind": "content",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 5,
+          "oursLines": 1,
+          "theirsLines": 1
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "mobile-preview"
+    },
+    {
+      "path": "app/configurator/mobile-demo/demo.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "48f01a3097a597e459689a3d91b372edc6b16dd8"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "1443b0af731a94b98acd3962ac2e516003e46144"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "5a10624dbbee96a47cb02115f90d8cceea2209f7"
+        }
+      },
+      "kind": "content",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 12,
+          "oursLines": 0,
+          "theirsLines": 1
+        },
+        {
+          "line": 297,
+          "oursLines": 0,
+          "theirsLines": 1
+        },
+        {
+          "line": 315,
+          "oursLines": 0,
+          "theirsLines": 1
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "mobile-preview"
+    },
+    {
+      "path": "app/configurator/mobile-demo/demo.test.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "5627f8b256005d20578a2fb52a13ceafaf593eef"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "dd28a1f04c54aaf02d58dc14898f154a68972a7f"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "f846468bbcaa136324fa09146b7bca9bfb76b605"
+        }
+      },
+      "kind": "content",
+      "test": true,
+      "runtime": false,
+      "hunks": [
+        {
+          "line": 329,
+          "oursLines": 1,
+          "theirsLines": 3
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "mobile-preview"
+    },
+    {
+      "path": "app/configurator/mobile-demo/preview-action.mjs",
+      "stages": {
+        "2": {
+          "mode": "100644",
+          "blob": "fd8799a2c35a6c221f55135a6bbb4c7f4e071b94"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "21cb85c7d2706f2efa30013f73156492b5b6e1fb"
+        }
+      },
+      "kind": "add/add",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 1,
+          "oursLines": 2,
+          "theirsLines": 2
+        },
+        {
+          "line": 13,
+          "oursLines": 2,
+          "theirsLines": 3
+        },
+        {
+          "line": 26,
+          "oursLines": 14,
+          "theirsLines": 24
+        },
+        {
+          "line": 74,
+          "oursLines": 0,
+          "theirsLines": 12
+        },
+        {
+          "line": 95,
+          "oursLines": 1,
+          "theirsLines": 7
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "mobile-preview"
+    },
+    {
+      "path": "app/configurator/variant-m/contract.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "837376a8715c44b63797a76439918b12abfe559c"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "2680c992fff983ced685bed3c03d041a49b826c0"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "ee2bfe519b769a07ad9d57a6147613103ee28ba3"
+        }
+      },
+      "kind": "content",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 45,
+          "oursLines": 3,
+          "theirsLines": 1
+        }
+      ],
+      "alsoKnownLiveDivergence": true,
+      "group": "editor-module-upload-contract"
+    },
+    {
+      "path": "app/configurator/variant-m/element-rights.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "6c039c6c2014bd5867950b1f50859909e28f44c0"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "a41cfc2593e8a775ead82415e41f1926a8c98a1f"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "25b4d643d260757a9233dc2bd60444a5e889d5b9"
+        }
+      },
+      "kind": "content",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 61,
+          "oursLines": 1,
+          "theirsLines": 1
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "editor-module-upload-contract"
+    },
+    {
+      "path": "app/configurator/variant-m/logo-upload.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "d22b067108533a0d020262a681daf0a2400a99b6"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "93ace3980b113db2019ed4b23ea28bebd91b1d69"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "5ca27a7da9684007124aae17ce7cb22302936071"
+        }
+      },
+      "kind": "content",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 4,
+          "oursLines": 10,
+          "theirsLines": 2
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "editor-module-upload-contract"
+    },
+    {
+      "path": "app/configurator/variant-m/module-profile.mjs",
+      "stages": {
+        "2": {
+          "mode": "100644",
+          "blob": "16dd28d747a84c61d4f3c77e46a9d37ade6914de"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "4f4b4dfdaaaf3bffc6c966404d3c78af380bf4b8"
+        }
+      },
+      "kind": "add/add",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 8,
+          "oursLines": 10,
+          "theirsLines": 8
+        },
+        {
+          "line": 55,
+          "oursLines": 5,
+          "theirsLines": 0
+        },
+        {
+          "line": 74,
+          "oursLines": 1,
+          "theirsLines": 1
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "editor-module-upload-contract"
+    },
+    {
+      "path": "app/configurator/variant-m/module-profile.test.mjs",
+      "stages": {
+        "2": {
+          "mode": "100644",
+          "blob": "40b19430a63d7a70fc395817d2694733fc0befbf"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "fd152fe5f3e1cd7c2bcfb259405a32f7f28d6153"
+        }
+      },
+      "kind": "add/add",
+      "test": true,
+      "runtime": false,
+      "hunks": [
+        {
+          "line": 4,
+          "oursLines": 0,
+          "theirsLines": 1
+        },
+        {
+          "line": 24,
+          "oursLines": 0,
+          "theirsLines": 17
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "editor-module-upload-contract"
+    },
+    {
+      "path": "app/configurator/variant-m/product-design-gallery.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "f60e15281d3e2be3fff374a210110da76c6f58e5"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "0917b2ba202b93939b0bf43063e3ea9625939053"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "c6129dbfd37f0527159ce6bf01f39179c655a987"
+        }
+      },
+      "kind": "content",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 44,
+          "oursLines": 11,
+          "theirsLines": 22
+        },
+        {
+          "line": 109,
+          "oursLines": 7,
+          "theirsLines": 6
+        },
+        {
+          "line": 129,
+          "oursLines": 1,
+          "theirsLines": 1
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "gallery-search-preview"
+    },
+    {
+      "path": "app/configurator/variant-m/ui-event-regressions.test.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "5fcb2e3f85e8f056f1012dfa3f4c5806f3bf16e4"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "7b5a8f0b10020567d3d677f421c032d86115f23b"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "b406547f4bba73d821c28a62bbbfc785e7d18c42"
+        }
+      },
+      "kind": "content",
+      "test": true,
+      "runtime": false,
+      "hunks": [
+        {
+          "line": 2,
+          "oursLines": 1,
+          "theirsLines": 1
+        },
+        {
+          "line": 261,
+          "oursLines": 1,
+          "theirsLines": 1
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "editor-module-upload-contract"
+    },
+    {
+      "path": "app/configurator/variant-m/ux-model.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "96a5170cfbaed1036147f24becf8cc875f84c8c4"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "1590248d7bfe7f992cb0d7f6657da81c493d5190"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "84e73fcc4f1df9c06084c838abe35343e683768a"
+        }
+      },
+      "kind": "content",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 3,
+          "oursLines": 5,
+          "theirsLines": 5
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "editor-module-upload-contract"
+    },
+    {
+      "path": "app/configurator/variant-m/ux.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "c3b39d003627a94d187658cf4c4bea09f1b057b9"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "97876eb6218ec23d0024b9df3a710ff66fd08416"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "34805adb2467927d48af466847c82a73bc09511c"
+        }
+      },
+      "kind": "content",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 1,
+          "oursLines": 5,
+          "theirsLines": 4
+        },
+        {
+          "line": 104,
+          "oursLines": 1,
+          "theirsLines": 1
+        },
+        {
+          "line": 175,
+          "oursLines": 1,
+          "theirsLines": 1
+        }
+      ],
+      "alsoKnownLiveDivergence": true,
+      "group": "editor-module-upload-contract"
+    },
+    {
+      "path": "app/configurator/variant-m/view-zoom.test.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "fd0932730b52d009612635864f903b9114b87237"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "aaa07dff3897eeea59282e88ae7610dbc80bd98b"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "cbd8b83bbe9436aadba9f7a8326abfa25e3d6a1c"
+        }
+      },
+      "kind": "content",
+      "test": true,
+      "runtime": false,
+      "hunks": [
+        {
+          "line": 50,
+          "oursLines": 0,
+          "theirsLines": 31
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "mobile-preview"
+    },
+    {
+      "path": "app/workshop/cart-personalization.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "3adb984772a49430ccbaa2adfb16cee3071c859f"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "3cecad0704d2b06082b57d53c6a89752e32d5673"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "4801bc8ff19b12380d581f052405e63c3647302b"
+        }
+      },
+      "kind": "content",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 2,
+          "oursLines": 1,
+          "theirsLines": 0
+        },
+        {
+          "line": 38,
+          "oursLines": 3,
+          "theirsLines": 2
+        },
+        {
+          "line": 57,
+          "oursLines": 6,
+          "theirsLines": 0
+        },
+        {
+          "line": 86,
+          "oursLines": 1,
+          "theirsLines": 1
+        },
+        {
+          "line": 129,
+          "oursLines": 1,
+          "theirsLines": 0
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "cart-price-contract"
+    },
+    {
+      "path": "app/workshop/cart-personalization.test.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "2317e54df215a9cfab541e8a835d7d59496d5f2a"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "b85fc56e0bf654662e54964062a5ab92a4529ef3"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "97aaa283de4712d1e36962ccbdfba9c3ac0619ed"
+        }
+      },
+      "kind": "content",
+      "test": true,
+      "runtime": false,
+      "hunks": [
+        {
+          "line": 57,
+          "oursLines": 0,
+          "theirsLines": 6
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "cart-price-contract"
+    },
+    {
+      "path": "app/workshop/catalog-live-orders.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "8362c6d9e968df92fd2ee5b5538746fee58b0004"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "2af923f393d4b4e6de553321a3c56d585de8792a"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "f766f96a2feb32b8c971e6ca4b72fd3af1061b25"
+        }
+      },
+      "kind": "content",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 17,
+          "oursLines": 1,
+          "theirsLines": 1
+        },
+        {
+          "line": 27,
+          "oursLines": 15,
+          "theirsLines": 5
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "store-cache-and-binding"
+    },
+    {
+      "path": "app/workshop/customer-vector-logo-media.test.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "32b9ac5c52dec7b5a7315c19c7b96435a4e5fff5"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "4ec3685fd37b64be7ed59772cfc9079dbf6b9708"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "93668f87b5989465034bb20841bf50e91cc467f8"
+        }
+      },
+      "kind": "content",
+      "test": true,
+      "runtime": false,
+      "hunks": [
+        {
+          "line": 57,
+          "oursLines": 13,
+          "theirsLines": 14
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "editor-module-upload-contract"
+    },
+    {
+      "path": "app/workshop/design-dashboard.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "b3020371917f5e3997d0cb03079340984a70676d"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "5d3f165a2041a9b0d4c82ae9f96a23df1d26737c"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "23911b2c2dc5e7abb7244291986b59ce740fefef"
+        }
+      },
+      "kind": "content",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 403,
+          "oursLines": 1,
+          "theirsLines": 1
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "dashboard-priority"
+    },
+    {
+      "path": "app/workshop/http.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "ea771bbbf0c84a5d79fed98a10a8669db13713b7"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "ed696fb074ad0d803fb1aa3585fff7c13521b6ac"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "9b76ff90ee48b0536c0eecb67b56bab7f3f29f19"
+        }
+      },
+      "kind": "content",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 2,
+          "oursLines": 1,
+          "theirsLines": 1
+        },
+        {
+          "line": 1206,
+          "oursLines": 1,
+          "theirsLines": 1
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "store-cache-and-binding"
+    },
+    {
+      "path": "app/workshop/repository.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "b1a890ff43b284290816721ba9693385a74cb1d5"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "d97f56442d7dec2b9397a5e4a9126c5a37c932f0"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "7d5823fafa70edc4d5c7edce216b46e2fb31c212"
+        }
+      },
+      "kind": "content",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 228,
+          "oursLines": 19,
+          "theirsLines": 18
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "store-cache-and-binding"
+    },
+    {
+      "path": "app/workshop/shop-design-gallery.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "f87c5b38af681846b2b1147f2d6f1ecdc0b8d9dc"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "1f5abdc71a1f5480a6adf31482a9c7e5712dcc94"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "bfb3347a08fc36b046ba2ca9bf48a5ecb3d56b1d"
+        }
+      },
+      "kind": "content",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 10,
+          "oursLines": 1,
+          "theirsLines": 0
+        },
+        {
+          "line": 250,
+          "oursLines": 3,
+          "theirsLines": 3
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "gallery-search-preview"
+    },
+    {
+      "path": "app/workshop/shop-entry-client.test.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "188f69fefaa4cdb2480653fa5f9ec548c80bd671"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "822237a0419fcec8f8ba57f342f0fb7643d95cc5"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "63566cde5808bdbee0f86f7079da0d6bbf152388"
+        }
+      },
+      "kind": "content",
+      "test": true,
+      "runtime": false,
+      "hunks": [
+        {
+          "line": 357,
+          "oursLines": 5,
+          "theirsLines": 8
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "gallery-search-preview"
+    },
+    {
+      "path": "app/workshop/shop-entry.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "5c2f6628467ec72887e48b8a3578bb5142f130dd"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "6900fa8883d5a6086349d78fbe2874feafdb7539"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "b4799abe1279f58821f69d3ed32eab1c89d8d635"
+        }
+      },
+      "kind": "content",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 552,
+          "oursLines": 2,
+          "theirsLines": 2
+        }
+      ],
+      "alsoKnownLiveDivergence": true,
+      "group": "cart-price-contract"
+    },
+    {
+      "path": "app/workshop/shop-entry.test.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "da9a1d80a66c3627a2bb9f2eaad8a775a765e829"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "fb77ed077a41af8ff48059fc03800b497cd0fc07"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "5e0b512cafe74e1873d9240fa4aa98f697de2803"
+        }
+      },
+      "kind": "content",
+      "test": true,
+      "runtime": false,
+      "hunks": [
+        {
+          "line": 651,
+          "oursLines": 5,
+          "theirsLines": 62
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "cart-price-contract"
+    },
+    {
+      "path": "app/workshop/shop-product-binding-store.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "71ab6199219aac9936ee2f907eabaf568952d89b"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "dbd42603a16b578ea98ad306747a3a58ca7c3d8d"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "936a0b85821d4243e3b3cfde71632ce87374ab4a"
+        }
+      },
+      "kind": "content",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 191,
+          "oursLines": 3,
+          "theirsLines": 14
+        },
+        {
+          "line": 311,
+          "oursLines": 5,
+          "theirsLines": 1
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "store-cache-and-binding"
+    },
+    {
+      "path": "app/workshop/shop-product-binding-store.test.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "69b4e31c06f4754c3bd5c3e0bd3e97f81e3387e1"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "fa5593fd928828de3e84c138ceebd361e816e668"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "1c9d2b499e8d03677ff211fa9ee7459462c3cfea"
+        }
+      },
+      "kind": "content",
+      "test": true,
+      "runtime": false,
+      "hunks": [
+        {
+          "line": 57,
+          "oursLines": 66,
+          "theirsLines": 21
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "store-cache-and-binding"
+    },
+    {
+      "path": "app/workshop/ui/design-dashboard-ui.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "467c745920f40af098b19c335bd76ee1e7a73eb7"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "7e028d4b539a1c7ac8b4538b8d54f4cddf69586f"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "2619ae5dca694d71a1f4b24cbb39dcc606b75193"
+        }
+      },
+      "kind": "content",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 79,
+          "oursLines": 1,
+          "theirsLines": 1
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "dashboard-priority"
+    },
+    {
+      "path": "app/workshop/ui/shop-design-switch.mjs",
+      "stages": {
+        "1": {
+          "mode": "100644",
+          "blob": "ee24cb34248b2c646e45d7577864543554eada24"
+        },
+        "2": {
+          "mode": "100644",
+          "blob": "2249954dde74486dc8cffc067d642ab548d247d9"
+        },
+        "3": {
+          "mode": "100644",
+          "blob": "9434bf4bf7f971f8118c616cb95112fd9e121c08"
+        }
+      },
+      "kind": "content",
+      "test": false,
+      "runtime": true,
+      "hunks": [
+        {
+          "line": 33,
+          "oursLines": 2,
+          "theirsLines": 3
+        }
+      ],
+      "alsoKnownLiveDivergence": false,
+      "group": "gallery-search-preview"
+    }
+  ],
+  "cleanAutoMerged": [
+    "app/configurator/variant-m/server.mjs",
+    "app/configurator/variant-m/view-zoom.mjs",
+    "app/workshop/customer-vector-logo.py",
+    "app/workshop/shop-design-gallery.test.mjs",
+    "app/workshop/shop-preparation.mjs",
+    "app/workshop/ui/shop-entry-client.mjs"
+  ],
+  "existingLiveDivergences": [
+    "app/workshop/batch.mjs",
+    "app/workshop/product-model.mjs",
+    "app/workshop/shop-entry.mjs",
+    "app/workshop/shop-preparation.mjs",
+    "app/configurator/variant-m/acrylic-scene.css",
+    "app/configurator/variant-m/acrylic-scene.mjs",
+    "app/configurator/variant-m/contract.mjs",
+    "app/configurator/variant-m/scalable-size-state.mjs",
+    "app/configurator/variant-m/ux.mjs",
+    "app/configurator/variant-m/workshop-review.mjs",
+    "app/configurator/variant-m/scalable-acrylic-scene.mjs",
+    "app/workshop/design-target-rules.mjs",
+    "app/workshop/design-targets.mjs",
+    "app/workshop/katalog-family-formats.mjs",
+    "app/workshop/product-preview.mjs",
+    "app/configurator/variant-m/family-formats.mjs",
+    "app/configurator/variant-m/modern-navigation.css",
+    "app/configurator/variant-m/option-media.mjs",
+    "app/configurator/variant-m/view-zoom.css"
+  ],
+  "limits": [
+    "Unresolved diagnostic tree only. No merged branch, checkout or executable release.",
+    "19 live divergences are not included and must be integrated from their own verified snapshot.",
+    "Clean textual merge is not evidence of semantic compatibility or successful tests."
+  ],
+  "groups": [
+    {
+      "id": "store-cache-and-binding",
+      "title": "Repository, Lesecache, Freigaben und Bindungen",
+      "files": [
+        "app/workshop/repository.mjs",
+        "app/workshop/catalog-live-orders.mjs",
+        "app/workshop/shop-product-binding-store.mjs",
+        "app/workshop/shop-product-binding-store.test.mjs",
+        "app/workshop/http.mjs"
+      ]
+    },
+    {
+      "id": "cart-price-contract",
+      "title": "Warenkorb und Preisvertrag",
+      "files": [
+        "app/workshop/cart-personalization.mjs",
+        "app/workshop/cart-personalization.test.mjs",
+        "app/workshop/shop-entry.mjs",
+        "app/workshop/shop-entry.test.mjs"
+      ]
+    },
+    {
+      "id": "editor-module-upload-contract",
+      "title": "Modulprofile, Elementrechte und Uploads",
+      "files": [
+        "app/configurator/variant-m/contract.mjs",
+        "app/configurator/variant-m/element-rights.mjs",
+        "app/configurator/variant-m/logo-upload.mjs",
+        "app/configurator/variant-m/module-profile.mjs",
+        "app/configurator/variant-m/module-profile.test.mjs",
+        "app/configurator/variant-m/ux-model.mjs",
+        "app/configurator/variant-m/ux.mjs",
+        "app/configurator/variant-m/ui-event-regressions.test.mjs",
+        "app/workshop/customer-vector-logo-media.test.mjs"
+      ]
+    },
+    {
+      "id": "gallery-search-preview",
+      "title": "Suche, Vorschau-Abbruch und Designwechsel",
+      "files": [
+        "app/configurator/variant-m/product-design-gallery.mjs",
+        "app/workshop/shop-design-gallery.mjs",
+        "app/workshop/ui/shop-design-switch.mjs",
+        "app/workshop/shop-entry-client.test.mjs"
+      ]
+    },
+    {
+      "id": "dashboard-priority",
+      "title": "Designlistenrangfolge",
+      "files": [
+        "app/workshop/design-dashboard.mjs",
+        "app/workshop/ui/design-dashboard-ui.mjs"
+      ]
+    },
+    {
+      "id": "mobile-preview",
+      "title": "Mobile Vorschau und Zoom",
+      "files": [
+        "app/configurator/mobile-demo/assets.mjs",
+        "app/configurator/mobile-demo/demo.mjs",
+        "app/configurator/mobile-demo/demo.test.mjs",
+        "app/configurator/mobile-demo/preview-action.mjs",
+        "app/configurator/variant-m/view-zoom.test.mjs"
+      ]
+    },
+    {
+      "id": "documentation",
+      "title": "Dokumentation",
+      "files": [
+        "STATUS.md"
+      ]
+    }
+  ],
+  "sourceContextOmitted": "All conflict source text omitted from published proof; use the pinned Git blobs locally for resolution."
+}

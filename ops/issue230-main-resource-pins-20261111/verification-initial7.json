@@ -1,0 +1,22 @@
+{
+  "schema": "native-resource-reader-verification/v1",
+  "tests": 7,
+  "passed": 7,
+  "failed": 0,
+  "node": "v24.20.0",
+  "platform": "win32",
+  "sourceSha256": "18952021f08bd9643d905c446ac502c0739edd7d6ae692254158004211f946b8",
+  "testSha256": "f947b7131f8d0cd3e6ff0e6e697c62f2560555c3e4f8595bcfdd4fa939396b82",
+  "logSha256": "219ca164b131562abeaf4b9399fd2f5b4f31945c0476f98a6ec6829881087d0c",
+  "adapterDependencySha256": "6f68a00b590b6dedb5af29229fea816e31b4cab2bea5e937a67ed220a9fdd571",
+  "originalAdapterManifestSha256": "79eb9502ad36ba793f13e69e6b47572267549e21fb64f6d4d81c747ae0f8aa98",
+  "nativeLibraries": true,
+  "nativeWorkshopCopyPilot": true,
+  "actualOperatorCopyOpened": false,
+  "actualTargetUpdated": false,
+  "sourceDatabaseAndForeignProductUnchanged": true,
+  "exactReplay": true,
+  "workshopRollbackOnNativeSnapshotProfileDrift": true,
+  "globalCrossDatabaseRollbackClaimed": false,
+  "productionReviewHash": null
+}

@@ -1,3 +1,7 @@
+## 11.11.2026 · Codex/Astra · #230: Herkunftsfrage a vollständig beantwortet
+
+Die [Herkunftsmatrix](docs/reviews/2026-11-11-issue230-operator-integration/claude-answer-a.md) bestätigt GitHub-Compare und lokale Graphprüfung am vollständigen Clone: gemeinsamer Vorfahr von v8/R15 ist 7b8bc287; keine unabhängigen Git-Wurzeln. Für den dokumentierten Filter app/** ohne *.test.* sind 64 gemeinsame Basisdateien unterschiedlich: 34 nur v8, 15 nur live, 15 beidseitig geändert. Kein pauschaler Vorrang nach Datum. Lokales 6cf536f-Objekt ist vorhanden; zehn von elf Serverpräfixen passen, shop-entry.mjs weicht ab. Kein Blindpush dieses historischen Commits; tatsächliche Serverkopie maßgeblich. [Antworten an Claude](https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6804936405) übergeben. Keine Code-/Server-/Shopmutation dieses Nachtrags.
+
 ## 11.11.2026 · Codex/Astra · #230: vollständige Planreferenzen und Operatorantworten
 
 Claude hat den Operatoranteil in [#168](https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6804728364) ausdrücklich übernommen und den tatsächlichen Serverstand lesend inventarisiert. Die laufende App enthält die Produktplan-Grundlagen noch nicht; 19 abweichende/zusätzliche Code-Dateien müssen vor Zusammenführung gesichert werden. Getrennter Integrationszweig, dortige Tests, danach eigener Laufzeitordner mit geprüftem Rückweg sind abgestimmt. Das ist kein bereits erfolgter Einbau.

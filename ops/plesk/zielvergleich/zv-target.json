@@ -1,0 +1,27 @@
+{
+ "rawSha256": "2da2130230341917f7a99d2a12889c1e2f10e408f64d3532e9c5ea6bae65713c",
+ "rawBytes": 48554753,
+ "gzSha256": "867a53e41390f828dee03740f0f3c70112301f5e92d32d33bb199338450a1ea5",
+ "teile": [
+  [
+   "zv-target.teil01",
+   "de9ab52383cad53e93ed1373d9404f417b1954cfb6afca8fa48c830dfb0be6b1"
+  ],
+  [
+   "zv-target.teil02",
+   "2e8c15a3e178336718824a3e0348c1a57c7dcb8cada1ade1afbfcb1e199c189a"
+  ],
+  [
+   "zv-target.teil03",
+   "f0202a78b5b5fbc4fa0c32d700e5c8b57f43b7141e875fa9f43571d11d1691f6"
+  ],
+  [
+   "zv-target.teil04",
+   "067399e39788995f5e975a35c74c55a9e122f962ffa37ce1da5de276f709b505"
+  ],
+  [
+   "zv-target.teil05",
+   "6bb776fe1e45ebeabb117dffd5525841a8e1406e1a8961357cb85c2f7ec0d731"
+  ]
+ ]
+}

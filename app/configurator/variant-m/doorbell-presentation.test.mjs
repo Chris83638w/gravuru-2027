@@ -67,5 +67,7 @@ test('format selection plus rights repair retains custom text and the correct pr
  }
 });
 test('doorbells use their complete local gallery instead of requesting repeated cross-product cards',async()=>{
- await installProductDesignGallery({config:doorbellFixture()}); // no parent API or DOM needed
+ const config=doorbellFixture(),before=structuredClone(config);
+ await assert.doesNotReject(installProductDesignGallery({config})); // actual installer, no parent API or DOM
+ assert.deepEqual(config,before);
 });

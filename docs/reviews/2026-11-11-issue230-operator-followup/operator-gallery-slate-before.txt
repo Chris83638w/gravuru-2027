@@ -1,0 +1,39 @@
+✖ private full editor HTTP saves same card, refreshes approval/quick preview, rejects stale/foreign writes and hides no resource failure (1574.3032ms)
+✖ inline positions use native renderer/CAS through authenticated HTTPS proxy and preserve other designs, formats and comments (1162.2016ms)
+✔ explicit steel targets render and save native positions while material, source, format and revision gates remain closed (438.5091ms)
+✔ target-level acrylic binding distinguishes colour and thickness during native position editing (93.2563ms)
+✔ proportional inline sizes persist native text, motif, graphic strokes and masked photo dimensions and reopen in the full configurator (1738.7046ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 3
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6019.2324
+
+✖ failing tests:
+
+test at app\workshop\gallery-editor-http.test.mjs:13:1
+✖ private full editor HTTP saves same card, refreshes approval/quick preview, rejects stale/foreign writes and hides no resource failure (1574.3032ms)
+  [TypeError: fetch failed] {
+    [cause]: Error: connect EACCES 127.0.0.1:50735
+        at TCPConnectWrap.afterConnect [as oncomplete] (node:net:2017:16) {
+      errno: -4092,
+      code: 'EACCES',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 50735
+    }
+  }
+
+test at app\workshop\slate-review-positions.test.mjs:35:1
+✖ inline positions use native renderer/CAS through authenticated HTTPS proxy and preserve other designs, formats and comments (1162.2016ms)
+  Error: connect EACCES 127.0.0.1:50738
+      at TCPConnectWrap.afterConnect [as oncomplete] (node:net:2017:16) {
+    errno: -4092,
+    code: 'EACCES',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 50738
+  }

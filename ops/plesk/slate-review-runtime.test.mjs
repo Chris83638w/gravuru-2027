@@ -130,7 +130,9 @@ test('approval endpoint and script retain private proxy authentication, origin a
   assert.equal((await request('/originale/approvals',{method:'POST',body,headers:{'x-forwarded-proto':'http'}})).status,403);
   assert.equal((await request('/originale/approvals',{method:'POST',body,headers:{'sec-fetch-site':'cross-site'}})).status,403);
   assert.equal((await request('/originale/approvals',{headers:{origin:'https://foreign.example'}})).status,403);
-  assert.equal((await request('/originale/approvals',{method:'POST',body:{...body,key:'unknown-target'}})).status,404);
+  const outsideScope=await request('/originale/approvals',{method:'POST',body:{...body,key:'unknown-target'}});
+  assert.equal(outsideScope.status,422,'the displayed-target scope rejects foreign keys before registry lookup');
+  assert.equal(outsideScope.data.error,'Das Prüfziel gehört nicht zu den angezeigten Vorlagen.');
   assert.equal((await request('/originale/approvals',{method:'POST',body:{...body,approved:true}})).status,422);
   assert.equal((await request('/originale/approvals',{method:'POST',body:{...body,expectedRevision:1}})).status,409);
   assert.equal((await request('/originale/approvals',{method:'POST',body:{...body,unexpected:true}})).status,422);

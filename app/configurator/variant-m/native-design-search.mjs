@@ -4,8 +4,8 @@ import {moduleEnabled} from './module-profile.mjs';
 
 // Preview/native editors hold a complete, already projected design set. They use
 // the same metadata matching, without borrowing customer/shop gallery access.
-export async function installNativeDesignSearch({el,r,config}){
- if(!moduleEnabled(config,'designs'))return;
+export async function installNativeDesignSearch({el,r,config}={}){
+ if(typeof r?.querySelector!=='function'||typeof el?.sync!=='function'||!moduleEnabled(config,'designs'))return;
  const panel=r.querySelector('#ux-panel-design'),gallery=r.querySelector('.c-gallery');if(!panel||!gallery)return;
  const response=await fetch('/configurator/variant-m/product-design-gallery.css');if(!response.ok)throw Error('Designsuche konnte nicht geladen werden.');
  const style=document.createElement('style');style.textContent=await response.text();r.append(style);

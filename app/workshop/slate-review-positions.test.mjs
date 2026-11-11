@@ -56,6 +56,14 @@ test('inline positions use native renderer/CAS through authenticated HTTPS proxy
     req.on('error',reject);req.end(body===undefined?undefined:JSON.stringify(body));
   });
   const route=(id=main.id,designId='katalog-A')=>'/originale/design?'+new URLSearchParams({productId:id,designId});
+  const readApprovals=async()=>{
+    const summary=await request('/originale/approvals');assert.equal(summary.status,200);
+    const states=Object.values(summary.data.approvals);
+    // The real client explicitly resolves only displayed targets after the
+    // lightweight summary; never approve using an unresolved summary hash.
+    const detailed=await request('/originale/approvals?action=read',{method:'POST',body:{originalIds:[...new Set(states.map(s=>s.metadata.id))],targetKeys:states.map(s=>s.key)}});
+    assert.equal(detailed.status,200);return detailed;
+  };
   const payload=(positions,extra={})=>({productId:main.id,designId:'katalog-A',expectedRevision:1,positions,...extra});
   const patch=(body,headers)=>request('/originale/design',{method:'PATCH',body,headers});
   const opened=await request(route());assert.equal(opened.status,200);assert.equal(opened.data.revision,1);assert.deepEqual(opened.data.geometry,{width:300,height:200});
@@ -64,7 +72,7 @@ test('inline positions use native renderer/CAS through authenticated HTTPS proxy
   assert.equal(opened.data.objects.find(o=>o.id==='technical').movable,false);assert.equal(opened.data.objects.find(o=>o.id==='guide').movable,false);
   assert.equal((await request('/originale/inline.js')).status,200);
   assert.equal((await request('/originale/approvals.js')).status,200);
-  const approvalList=await request('/originale/approvals');assert.equal(approvalList.status,200);
+  const approvalList=await readApprovals();assert.equal(approvalList.status,200);
   const approval=Object.values(approvalList.data.approvals).find(s=>s.metadata.productId===main.id&&s.metadata.id==='A');
   assert.equal(approval.status,'unreviewed');assert.match(approval.fingerprint,/^[a-f0-9]{64}$/);
   assert.equal(approvalList.data.overview.expectedCoverageKnown,false);
@@ -102,7 +110,7 @@ test('inline positions use native renderer/CAS through authenticated HTTPS proxy
   const stale=await patch(payload([{...move,x:152}],{designId:'katalog-B'}));assert.equal(stale.status,409);assert.equal(stale.data.actualRevision,2);
   assert.deepEqual(workshop.repository.get(main.id).document,expected,'stale card from the same group cannot overwrite');
   const reopened=await request(route());assert.equal(reopened.data.objects.find(o=>o.id==='text-1').x,151);assert.equal(reopened.data.revision,2);
-  const changedApprovals=(await request('/originale/approvals')).data;
+  const changedApprovals=(await readApprovals()).data;
   assert.equal(changedApprovals.approvals[approval.key].status,'changed','moving a confirmed design requires a new visual OK');
   assert.equal(changedApprovals.approvals[approvalB.key].status,'approved','another design in the same saved product group remains confirmed');
   assert.equal((await approve({...approveBody,expectedRevision:1})).status,409,'old preview cannot approve the edited design');

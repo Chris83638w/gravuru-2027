@@ -4,6 +4,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {PHOTO_ACCEPT,photoTapPassThrough,replaceablePhotoSlot,emptyPhotoSlotAt,tapTracker,isHeicFile,HEIC_MESSAGE,canvasSize,CANVAS_MAX_PIXELS,normalizePhotoFile} from './photo-upload.mjs';
+import {VECTOR_LOGO_ACCEPT,vectorLogoEnabled} from './logo-upload.mjs';
+import {uploadAllowed} from './ux-model.mjs';
 const HERE=path.dirname(fileURLToPath(import.meta.url));
 
 // Kleine DOM-Attrappe: Knoten mit closest() über data-Attribute, Wurzel mit elementsFromPoint().
@@ -75,10 +77,35 @@ test('Alle Foto-Eingabefelder des Kundeneditors: Galerie wählbar (JPG/PNG/WebP,
     assert.doesNotMatch(source,/capture=|\.capture\s*=|setAttribute\('capture'/,file);
   }
   const acceptExpression=fs.readFileSync(path.join(HERE,'ux.mjs'),'utf8').match(/accept="\$\{([^}]+)\}" data-ux-file/)[1];
-  const accept=new Function('vectorLogos','VECTOR_LOGO_ACCEPT','PHOTO_ACCEPT','return '+acceptExpression);
-  assert.equal(accept(false,'.svg,image/svg+xml',PHOTO_ACCEPT),PHOTO_ACCEPT,'Fotoprodukte behalten ausschließlich JPG/PNG/WebP');
-  assert.equal(accept(true,'.svg,image/svg+xml',PHOTO_ACCEPT),'.svg,image/svg+xml','neuer Vektorlogo-Stand erlaubt keine Rasterbilder');
+  const accept=new Function('vectorLogos','photoEnabled','VECTOR_LOGO_ACCEPT','PHOTO_ACCEPT','return '+acceptExpression);
+  assert.equal(accept(false,true,VECTOR_LOGO_ACCEPT,PHOTO_ACCEPT),PHOTO_ACCEPT,'nur Foto: JPG/PNG/WebP');
+  assert.equal(accept(true,false,VECTOR_LOGO_ACCEPT,PHOTO_ACCEPT),VECTOR_LOGO_ACCEPT,'nur SVG-Logo: keine Rasterbilder');
+  assert.equal(accept(true,true,VECTOR_LOGO_ACCEPT,PHOTO_ACCEPT),PHOTO_ACCEPT,'Foto und SVG: erster Upload ist Foto; der separate Logo-Button schaltet um');
   assert.match(fs.readFileSync(path.join(HERE,'acrylic-scene.mjs'),'utf8'),/photoInput\.accept=PHOTO_ACCEPT/);
+});
+
+test('actual upload buttons select independent photo/SVG inputs and dispatch by kind for photo-only, SVG-only and both',async()=>{
+ const source=fs.readFileSync(path.join(HERE,'ux.mjs'),'utf8');
+ const buttonHandler=source.split('\n').find(line=>line.includes("if(['photo-upload','logo-upload','replace-upload','fill-photo-slot'].includes(action))"));
+ const dispatcher=source.split('\n').find(line=>line.includes('const acceptCustomerFiles=async('));
+ assert.ok(buttonHandler&&dispatcher,'test the actual installed handlers');
+ for(const [photo,logo]of [[true,false],[false,true],[true,true]]){
+  const config={profile:{material:{kind:photo?'acrylic':'steel'},processing:{profileId:photo?'acrylic-engraving':'steel-engraving'}},photo:{enabled:photo},logo:{enabled:logo,vectorUpload:logo}};
+  const input={accept:'',clicks:0,click(){this.clicks++;}},messages=[],el={state:{objects:[{id:'existing-photo',uxUploadKind:'photo'},{id:'existing-logo',uxUploadKind:'logo'}]}},vectors=[],photos=[];
+  const env={config,el,uploadAllowed,vectorLogos:vectorLogoEnabled(config),VECTOR_LOGO_ACCEPT,PHOTO_ACCEPT,$:selector=>{assert.equal(selector,'[data-ux-file]');return input;},say:message=>messages.push(message),normalizePhotoFile,acceptVectorLogos:(files,id)=>vectors.push({files,id}),acceptFiles:(files,kind,id)=>photos.push({files,kind,id})};
+  const handlers=Function(...Object.keys(env),`let replacing=null,uploadKind;${dispatcher}\nreturn {button(action,b={dataset:{}}){${buttonHandler}},accept:acceptCustomerFiles};`)(...Object.values(env));
+  for(const [kind,allowed]of [['photo',photo],['logo',logo]]){
+   const clicks=input.clicks;handlers.button(kind+'-upload');
+   assert.equal(input.clicks,clicks+(allowed?1:0),`${photo}/${logo} ${kind} gate`);
+   if(!allowed)continue;
+   assert.equal(input.accept,kind==='logo'?VECTOR_LOGO_ACCEPT:PHOTO_ACCEPT);
+   const file=new File([kind],kind==='logo'?'logo.svg':'photo.jpg',{type:kind==='logo'?'image/svg+xml':'image/jpeg'});
+   await handlers.accept([file]);
+   if(kind==='logo')assert.equal(vectors.at(-1).files[0],file);else{assert.equal(photos.at(-1).files[0],file);assert.equal(photos.at(-1).kind,'photo');}
+   handlers.button('replace-upload',{dataset:{id:'existing-'+kind}});assert.equal(input.accept,kind==='logo'?VECTOR_LOGO_ACCEPT:PHOTO_ACCEPT);
+  }
+  assert.equal(vectors.length,logo?1:0);assert.equal(photos.length,photo?1:0);assert.equal(messages.length,photo&&logo?0:1);
+ }
 });
 
 test('Fotohinweis ist als Vorschau-Hilfe markiert und fehlt in Prüfansicht und Fertigungsdatei',()=>{

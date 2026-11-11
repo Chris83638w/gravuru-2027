@@ -4,6 +4,16 @@ import {installNativeDesignSearch} from './native-design-search.mjs';
 import {createMotifSearchReporter} from './motif-search-analytics.mjs';
 import fs from 'node:fs';
 
+test('native search without an editor root or mounted gallery is a no-op and never requests browser resources',async t=>{
+ const fetch=globalThis.fetch;t.after(()=>{globalThis.fetch=fetch;});let requests=0;
+ globalThis.fetch=async()=>{requests++;throw Error('No DOM: no browser resources');};
+ const config={profile:{designs:[]}},el={sync(){throw Error('No mounted gallery: no sync');}};
+ for(const input of [undefined,{config},{el,config},{el,r:{},config},{r:{querySelector(){throw Error('No editor: no DOM access');}},config},{el,r:{querySelector:()=>null},config}]){
+  assert.equal(await installNativeDesignSearch(input),undefined);
+ }
+ assert.equal(requests,0);assert.equal(Object.hasOwn(el,'uxApplyDesignSearch'),false);
+});
+
 test('returning to a cancelled native search reports its completed result and never exposes excluded cards',async t=>{
  const original={document:globalThis.document,window:globalThis.window,fetch:globalThis.fetch};t.after(()=>Object.assign(globalThis,original));
  const basic=()=>({hidden:false,attrs:new Map(),handlers:{},addEventListener(k,fn){this.handlers[k]=fn;},setAttribute(k,v){this.attrs.set(k,v);},removeAttribute(k){this.attrs.delete(k);},toggleAttribute(k,on){if(on)this.attrs.set(k,'');else this.attrs.delete(k);},after(){},before(){},focus(){}}),input={...basic(),value:''},clear=basic();

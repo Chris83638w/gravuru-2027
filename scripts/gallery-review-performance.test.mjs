@@ -37,7 +37,13 @@ test('real gallery reads no unreviewed native formats initially and fingerprints
  assert(reads.includes(other.metadata.productId),'format switch reads its own native state');
  reads.length=0;
  const context=await(await fetch(base+'/originale/verwaltung/api/context')).json();assert.equal(context.sources.length,2);
- assert.equal(reads.length,2);assert.equal(new Set(reads).size,2,'management describes each native product exactly once');
+ assert.deepEqual(reads,[],'management context lists summaries without hydrating native documents');
+ assert(context.sources.every(source=>source.detailsLoaded===false));
+ const chosen=context.sources[0],detailQuery=new URLSearchParams({key:chosen.key});
+ const detailResponse=await fetch(base+'/originale/verwaltung/api/sources?'+detailQuery),details=await detailResponse.json();
+ assert.equal(detailResponse.status,200);assert.equal(details.sources.length,1);
+ assert.equal(details.sources[0].key,chosen.key);assert.equal(details.sources[0].detailsLoaded,true);
+ assert(reads.length>0);assert.deepEqual([...new Set(reads)],[chosen.productId],'explicit details read only the chosen native product');
  const assignmentContext=await fetch(base+'/originale/assignments?action=context',{method:'POST',headers:{Origin:base,'Content-Type':'application/json','X-Slate-Review-CSRF':csrf},body:JSON.stringify({sourceKeys:[keys[0]]})});
  assert.equal(assignmentContext.status,200);assert.equal((await assignmentContext.json()).sources.length,1);
 });

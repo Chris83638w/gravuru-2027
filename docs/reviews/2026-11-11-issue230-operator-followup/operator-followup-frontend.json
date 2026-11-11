@@ -1,0 +1,37 @@
+{
+  "baseHead": "045f0acb964913094e6b6df310554ef9d8463667",
+  "runtimeChanged": [
+    "app/configurator/variant-m/native-design-search.mjs"
+  ],
+  "uxRuntimeChanged": false,
+  "staged": false,
+  "committed": false,
+  "tests": {
+    "command": "node --test app/configurator/variant-m/native-design-search.test.mjs app/configurator/variant-m/doorbell-presentation.test.mjs app/configurator/variant-m/photo-upload.test.mjs",
+    "passed": 16,
+    "failed": 0,
+    "skipped": 0
+  },
+  "files": [
+    {
+      "path": "app/configurator/variant-m/native-design-search.mjs",
+      "bytes": 3489,
+      "sha256": "e1f3255b24ccfb30b969e04160c169d0ca7b28437ee17f62b4dd4fb917ffee9f"
+    },
+    {
+      "path": "app/configurator/variant-m/native-design-search.test.mjs",
+      "bytes": 4526,
+      "sha256": "05e436b88b073a0f62f557f9ea37bbb431c5a0e29d1d9ff71cb655c2d83862da"
+    },
+    {
+      "path": "app/configurator/variant-m/doorbell-presentation.test.mjs",
+      "bytes": 4311,
+      "sha256": "940caa7223c85f3b8d2cdf31ffd50d76de88c838dc18b355b40a4e1e93d293c2"
+    },
+    {
+      "path": "app/configurator/variant-m/photo-upload.test.mjs",
+      "bytes": 10074,
+      "sha256": "baba64fc70dd3ed719c34688091726cc197c70a9553e81b82217f6d965bcb566"
+    }
+  ]
+}

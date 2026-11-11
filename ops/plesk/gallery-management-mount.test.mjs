@@ -45,6 +45,11 @@ test('optional Plesk management key is accepted only by existing private config 
 for(const configured of [false,true])test(`Plesk gallery mount ${configured?'uses native registry factory':'without config keeps existing management'} behind unchanged private proxy`,async t=>{
  const root=temporary(t,{automatic:false}),fixture=await createGalleryManagementFixture(path.join(root,'source'));
  const config={origin:'https://gallery.example',host:'gallery.example',username:'synthetic',password:'synthetic-only-private-password',data:fixture.root,slateReviewPackage:path.join(fixture.root,'package')};
+ // The real Plesk mount requires a private package directory. mkdir's default
+ // mode depends on umask and is usually 0755 on Linux; the fixture must meet
+ // the same 0700 requirement instead of relying on the Windows metadata model.
+ fs.chmodSync(config.slateReviewPackage,0o700);
+ if(process.platform!=='win32')assert.equal(fs.statSync(config.slateReviewPackage).mode&0o777,0o700);
  fs.writeFileSync(path.join(config.slateReviewPackage,SLATE_REVIEW_MARKER),JSON.stringify(markerValue(config,'slate-review-gallery')));
  if(process.platform==='win32'){
   const original=fs.statSync;t.mock.method(fs,'statSync',(name,...args)=>{const stat=original(name,...args);if(name===config.slateReviewPackage)Object.defineProperty(stat,'mode',{value:stat.mode&~0o077});return stat;});

@@ -24,11 +24,20 @@ test('private full editor HTTP saves same card, refreshes approval/quick preview
  t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));gallery.close();workshop.close();assert.ok(root.startsWith(path.join(os.tmpdir(),'gallery-editor-http-')));fs.rmSync(root,{recursive:true,force:true});});
  const target={productId:record.id,designId:'source-a',originalId:'TRE-V2A-8x3,5-D1'};
  const request=async(route,data,headers={})=>{const response=await fetch(origin+route,{method:data?'POST':'GET',headers:{origin,'Content-Type':'application/json','X-Slate-Review-CSRF':token,...headers},...(data?{body:JSON.stringify(data)}:{})});const text=await response.text();return {status:response.status,headers:response.headers,text,data:response.headers.get('content-type')?.includes('application/json')?JSON.parse(text):null};};
+ const readApprovals=async()=>{
+  const summary=await request('/originale/approvals');assert.equal(summary.status,200);
+  const states=Object.values(summary.data.approvals);
+  // Match the actual gallery client: navigation is lightweight; displayed
+  // cards explicitly load their exact native fingerprint before approval.
+  const detailed=await request('/originale/approvals?action=read',{originalIds:[...new Set(states.map(s=>s.metadata.id))],targetKeys:states.map(s=>s.key)});
+  assert.equal(detailed.status,200);return detailed;
+ };
  const page=await request('/originale/');assert.equal(page.status,200);assert.match(page.text,/\/originale\/editor\?/);assert.match(page.text,/originalId=TRE-V2A-8x3%2C5-D1/);
  for(const route of ['/originale/editor','/originale/editor.js','/originale/editor.css'])assert.equal((await request(route)).status,200);
  const opened=await request('/originale/editor/context?'+new URLSearchParams(target));assert.equal(opened.status,200);assert.equal(opened.headers.get('cache-control'),'no-store');assert.equal(opened.data.csrfToken,token);
  assert.equal(opened.data.model.universal.workbench.gallery,true);assert.equal(opened.data.context.designId,'source-a');
- const approvals=await request('/originale/approvals'),before=Object.values(approvals.data.approvals).find(a=>a.metadata.id===target.originalId),other=Object.values(approvals.data.approvals).find(a=>a.metadata.id==='OTHER-ORIGINAL');
+ const approvals=await readApprovals(),before=Object.values(approvals.data.approvals).find(a=>a.metadata.id===target.originalId),other=Object.values(approvals.data.approvals).find(a=>a.metadata.id==='OTHER-ORIGINAL');
+ for(const state of [before,other])assert.match(state.fingerprint,/^[a-f0-9]{64}$/);
  for(const state of [before,other])assert.equal((await request('/originale/approvals',{key:state.key,expectedRevision:0,expectedFingerprint:state.fingerprint,approved:true})).status,200);
  const payload={...target,expectedRevision:1,objects:opened.data.model.universal.profile.designs[0].objects,photos:[]};payload.objects[0].text='Gesichert';payload.objects[0].x+=2;
  assert.equal((await request('/originale/editor/save',payload,{'X-Slate-Review-CSRF':''})).status,403);
@@ -37,7 +46,7 @@ test('private full editor HTTP saves same card, refreshes approval/quick preview
  assert.equal((await request('/originale/editor/media?'+new URLSearchParams({...target,revision:'1',assetId:'a'.repeat(64),part:'original'}))).status,404);
  const saved=await request('/originale/editor/save',payload);assert.equal(saved.status,200);assert.equal(saved.data.context.revision,2);assert.equal(saved.data.context.returnUrl,'/originale/#design-TRE-V2A-8x3%2C5-D1');
  assert.equal((await request('/originale/editor/save',payload)).status,409);
- const after=(await request('/originale/approvals')).data.approvals;assert.equal(after[before.key].status,'changed');assert.equal(after[other.key].status,'approved');assert.equal(after[other.key].fingerprint,other.fingerprint);
+ const after=(await readApprovals()).data.approvals;assert.equal(after[before.key].status,'changed');assert.equal(after[other.key].status,'approved');assert.equal(after[other.key].fingerprint,other.fingerprint);
  const inline=(await request('/originale/design?'+new URLSearchParams({productId:record.id,designId:'source-a'}))).data;
  assert.equal(inline.revision,2);assert.equal(inline.objects[0].label,'Gesichert');assert.equal(inline.objects[0].x,payload.objects[0].x);assert.equal(inline.reviewFingerprint,after[before.key].fingerprint);
  assert.equal((await request(after[before.key].metadata.previewUrl)).status,200);

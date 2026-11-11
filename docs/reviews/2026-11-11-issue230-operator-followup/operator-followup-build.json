@@ -1,0 +1,19 @@
+{
+  "scope": "Local rebuild after missing-DOM guard; no server, database or shop operation",
+  "result": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 374704,
+    "lazyResources": {
+      "fonts": 30,
+      "motifs": 703
+    },
+    "bundle": {
+      "url": "/_bundle/editor-e69c2c5ba68ac1eb.mjs",
+      "modules": 159,
+      "styles": 16,
+      "bytes": 1490671,
+      "gzipBytes": 495787
+    }
+  }
+}

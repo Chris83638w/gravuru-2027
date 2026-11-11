@@ -1,5 +1,5 @@
 import {customerFieldLabel} from './text-fields.mjs';
-import {moduleEnabled} from './module-profile.mjs';
+import {moduleEnabled,photoWithVectorLogoAllowed} from './module-profile.mjs';
 import {createTextBounds} from './text-bounds.mjs';
 import {executionOptionGroups} from './execution-registry.mjs';
 import {alignmentContent,alignmentLabel} from './ui-icons.mjs';
@@ -241,8 +241,15 @@ test('K10 / Ü1.2: engraving products build the text panel without a colour pick
  assert.doesNotMatch(render(false,4),/data-ux-color/);assert.match(render(true,3),/data-ux-color/);
  assert.match(render(false,4),/id="ux-size" type="number" min="4"/);assert.match(render(true,3),/min="3"/);
  const photoLine=line('ux.mjs','const photoEnabled=');
- const photo=(enabled,tool)=>{const env={moduleEnabled,config:{photo:{enabled},logo:{enabled:true}},process:{tools:{photo:tool}}};vm.createContext(env);vm.runInContext(photoLine,env);return vm.runInContext('photoEnabled',env);};
+ const photo=(enabled,tool)=>{const env={moduleEnabled,photoWithVectorLogoAllowed,config:{photo:{enabled},logo:{enabled:true}},process:{tools:{photo:tool}}};vm.createContext(env);vm.runInContext(photoLine,env);return vm.runInContext('photoEnabled',env);};
  assert.equal(photo(true,true),true);assert.equal(photo(true,false),false);assert.equal(photo(false,true),false);
+});
+
+test('acrylic combined upload panel distinguishes photo and SVG prices, limits and initial file chooser',()=>{
+ const markup=line('ux.mjs',"$('#ux-panel-upload').innerHTML=");
+ const render=photoEnabled=>{const env={photoEnabled,logoEnabled:true,vectorLogos:true,config:{photo:{extraPriceCents:999},logo:{extraPriceCents:1299}},money:c=>(c/100).toFixed(2),PHOTO_ACCEPT:'image/jpeg,image/png,image/webp',VECTOR_LOGO_ACCEPT:'.svg,image/svg+xml',button:(id,label)=>`<button data-ux="${id}">${label}</button>`,out:''};vm.createContext(env);vm.runInContext(markup.replace("$('#ux-panel-upload').innerHTML=",'out='),env);return env.out;};
+ const both=render(true);assert.match(both,/Deine Fotos & Logos/);assert.match(both,/Foto je 9.99/);assert.match(both,/je Logo <strong>\+12.99/);assert.match(both,/Fotos: JPG, PNG oder WebP bis 15 MB/);assert.match(both,/Logos: SVG bis 2 MB/);assert.match(both,/data-ux="photo-upload"/);assert.match(both,/accept="image\/jpeg,image\/png,image\/webp"/);
+ const logoOnly=render(false);assert.doesNotMatch(logoOnly,/data-ux="photo-upload"|Foto je/);assert.match(logoOnly,/accept="\.svg,image\/svg\+xml"/);
 });
 // Chris 22./23.10.2026: Ein neues Element bekommt immer einen freien Platz. Die echte place()-Funktion aus workflow.mjs:
 // Gestaltungsfläche innerhalb des Randes, Verkleinerung bis zur Mindestgröße (Text 3 mm, Motiv 10 mm), sonst mittig + Hinweis.

@@ -1,0 +1,141 @@
+{
+  "readOnly": true,
+  "rows": [
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm_v4.xlsx",
+      "checks": {
+        "bankRank0Before1": true,
+        "allFormatRanks0Before1": true,
+        "embeddedResourcesPreserved": true,
+        "noStation3CircularQuestion": true,
+        "profileMetadataReadback": true,
+        "motifProfileExact": true,
+        "motifSelectionExact": true,
+        "priceMatch": true
+      },
+      "allPassed": true,
+      "priceMatches": 778,
+      "priceErrors": [],
+      "smallMotifCount": null,
+      "duplicatedD34Count": 1,
+      "hiddenAbsent": true
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "checks": {
+        "bankRank0Before1": true,
+        "allFormatRanks0Before1": true,
+        "embeddedResourcesPreserved": true,
+        "noStation3CircularQuestion": true,
+        "profileMetadataReadback": true,
+        "motifProfileExact": true,
+        "motifSelectionExact": true,
+        "priceMatch": true
+      },
+      "allPassed": true,
+      "priceMatches": 10,
+      "priceErrors": [],
+      "smallMotifCount": 13,
+      "duplicatedD34Count": 0,
+      "hiddenAbsent": true
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "checks": {
+        "bankRank0Before1": true,
+        "allFormatRanks0Before1": true,
+        "embeddedResourcesPreserved": true,
+        "noStation3CircularQuestion": true,
+        "profileMetadataReadback": true,
+        "motifProfileExact": true,
+        "motifSelectionExact": true,
+        "priceMatch": true
+      },
+      "allPassed": true,
+      "priceMatches": 10,
+      "priceErrors": [],
+      "smallMotifCount": 13,
+      "duplicatedD34Count": 0,
+      "hiddenAbsent": true
+    },
+    {
+      "workbook": "Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "checks": {
+        "bankRank0Before1": true,
+        "allFormatRanks0Before1": true,
+        "embeddedResourcesPreserved": true,
+        "noStation3CircularQuestion": true,
+        "profileMetadataReadback": true,
+        "motifProfileExact": true,
+        "motifSelectionExact": true,
+        "priceMatch": true
+      },
+      "allPassed": true,
+      "priceMatches": 10,
+      "priceErrors": [],
+      "smallMotifCount": 13,
+      "duplicatedD34Count": 0,
+      "hiddenAbsent": true
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+      "checks": {
+        "bankRank0Before1": true,
+        "allFormatRanks0Before1": true,
+        "embeddedResourcesPreserved": true,
+        "noStation3CircularQuestion": true,
+        "profileMetadataReadback": true,
+        "motifProfileExact": true,
+        "motifSelectionExact": true,
+        "priceMatch": true
+      },
+      "allPassed": true,
+      "priceMatches": 5,
+      "priceErrors": [],
+      "smallMotifCount": 13,
+      "duplicatedD34Count": 0,
+      "hiddenAbsent": true
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+      "checks": {
+        "bankRank0Before1": true,
+        "allFormatRanks0Before1": true,
+        "embeddedResourcesPreserved": true,
+        "noStation3CircularQuestion": true,
+        "profileMetadataReadback": true,
+        "motifProfileExact": true,
+        "motifSelectionExact": true,
+        "priceMatch": true
+      },
+      "allPassed": true,
+      "priceMatches": 5,
+      "priceErrors": [],
+      "smallMotifCount": 13,
+      "duplicatedD34Count": 0,
+      "hiddenAbsent": true
+    },
+    {
+      "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+      "checks": {
+        "bankRank0Before1": true,
+        "allFormatRanks0Before1": true,
+        "embeddedResourcesPreserved": true,
+        "noStation3CircularQuestion": true,
+        "profileMetadataReadback": true,
+        "motifProfileExact": true,
+        "motifSelectionExact": true,
+        "priceMatch": true
+      },
+      "allPassed": true,
+      "priceMatches": 5,
+      "priceErrors": [],
+      "smallMotifCount": 13,
+      "duplicatedD34Count": 0,
+      "hiddenAbsent": true
+    }
+  ],
+  "allPassed": true,
+  "comparedPrices": 823,
+  "profileBindingLimit": "Document assignment contains profileId, revision evidence is separate and must be rechecked before any later execution."
+}

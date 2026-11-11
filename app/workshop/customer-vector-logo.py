@@ -82,7 +82,7 @@ def sanitized_source(raw):
                 count += 1
                 require(depth <= 24 and count <= MAX_ELEMENTS, 'Das SVG hat zu viele oder zu tief verschachtelte Elemente.', 'logo_complexity')
                 tag = tag_name(element.tag)
-                require(tag not in {'image', 'foreignObject'}, 'Fotos oder eingebettete Rasterbilder sind in Edelstahl-Logos nicht möglich. Bitte eine reine Vektordatei hochladen.', 'logo_raster')
+                require(tag not in {'image', 'foreignObject'}, 'Fotos oder eingebettete Rasterbilder sind in SVG-Logos nicht möglich. Bitte eine reine Vektordatei hochladen.', 'logo_raster')
                 require(tag not in {'text', 'tspan', 'textPath'}, 'Bitte die Schrift im Logo zuerst in Pfade umwandeln; Schriften werden nicht ersetzt.', 'logo_text')
                 require(tag in TAGS, 'Das SVG enthält nicht unterstützte Inhalte. Bitte als einfache Vektorpfade ohne Verläufe, Masken oder Effekte exportieren.', 'logo_effect')
                 require(tag != 'svg' or depth == 1, 'Verschachtelte SVG-Zeichenflächen werden nicht unterstützt.', 'logo_effect')

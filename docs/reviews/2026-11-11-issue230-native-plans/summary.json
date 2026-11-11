@@ -46,28 +46,28 @@
       "excelSha256": "495e7e59d7abf6a46f1fb7098a75e666162e58be3cad99ad75de6db5d3923841",
       "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
       "source": {
-        "id": "cfg_5442756e-4f0d-4e46-a266-026deb003534",
+        "id": "cfg_8d95909c-fcd9-4cf8-87e7-152eb21e7204",
         "revision": 1,
-        "sha256": "bd5ba5cfbfbd0815d58fc1806b9c134a0f05811cee44e112171f375adff3e301",
+        "sha256": "d4aa5e78a870decbecbda937e76feb740c299f8e52bd5c1fd3a8d93a93f715ad",
         "status": "draft",
         "publishedRevision": null
       },
       "registry": {
-        "key": "cfg_5442756e-4f0d-4e46-a266-026deb003534",
-        "productId": "cfg_5442756e-4f0d-4e46-a266-026deb003534",
-        "familyId": "cfg_5442756e-4f0d-4e46-a266-026deb003534",
-        "sizeKey": "cfg_5442756e-4f0d-4e46-a266-026deb003534",
+        "key": "cfg_8d95909c-fcd9-4cf8-87e7-152eb21e7204",
+        "productId": "cfg_8d95909c-fcd9-4cf8-87e7-152eb21e7204",
+        "familyId": "cfg_8d95909c-fcd9-4cf8-87e7-152eb21e7204",
+        "sizeKey": "cfg_8d95909c-fcd9-4cf8-87e7-152eb21e7204",
         "name": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen (Schwarz / Anthrazit)",
         "label": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen (Schwarz / Anthrazit)",
         "detailsLoaded": false
       },
       "template": {
-        "id": "pgt_0dc67ab7-cdbc-452f-a270-2b9355a2b3c8",
+        "id": "pgt_c868a507-a372-4111-9f3c-56af17cbf534",
         "revision": 1,
-        "sha256": "020b8d3e2a41316aeaa3fb2483821a6d87b2ee1dead8827b4ffaf6a1c0034348"
+        "sha256": "68e3035902c1e41efc7acd4d1da238af1058fd9d06d755185250209c5db8bfcb"
       },
-      "planId": "pgp_6720276e-c53e-4f9a-b0eb-2ea6d468e703",
-      "planHash": "0000d819c61180ce0ae1d30b71499e2109d8ece68e31323b39e9edbc0c550497",
+      "planId": "pgp_aad6d5ae-b255-4d19-8c92-9d91ba09d445",
+      "planHash": "7079dae2814c9c17526ae3c254696ccd2b253318066b38a435f7a9cfb610e197",
       "valid": false,
       "approvalReady": false,
       "proposedStart": {
@@ -251,7 +251,7 @@
         "text": true,
         "motifs": true,
         "photo": true,
-        "logo": false,
+        "logo": true,
         "colors": false
       },
       "requestedModules": [
@@ -293,8 +293,7 @@
       ],
       "openQuestions": [
         "Startdesign TAE-V2A-8x5-D1 / 12 × 8 cm / Schwarz ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung.",
-        "Offene Module gemäß unveränderter Excel: options=an, designs=an, text=an, motifs=an, logo=an, colors=an. Modulprofil noch nicht bestätigt.",
-        "Steuerkontext/Mengenstaffeln und Freigaben der unveränderten Excel sind vollständig offen zu prüfen; keine zusätzliche Entscheidung abgeleitet.",
+        "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung.",
         "9 Originaldesigns haben native Kontur-/Randfehler (family-report.json). 2 weitere Katalogdesigns sind bewusst hidden und bleiben ausgeblendet; keine Wiederfreigabe beantragt."
       ],
       "confirmations": 0,
@@ -343,48 +342,69 @@
       },
       "smallMotifProfile": null,
       "previousPreparation": {
-        "sourceHash": "07d63f047bed76dff8d4167214cc6589318afb43825e3f12ab136d8d6ae71e45",
-        "planId": "pgp_d1ee546d-03e9-4f1c-8543-4150b2baa6a2",
-        "planHash": "e696f38c873fbbf20af1df3536f78d8714c326c9232414a8b530545431368df9"
+        "sourceHash": "d4aa5e78a870decbecbda937e76feb740c299f8e52bd5c1fd3a8d93a93f715ad",
+        "planId": "pgp_366fe5a3-d1c0-4244-aee0-614c35409b5c",
+        "planHash": "864a9a667ddedb95809b6487177c971f217b3afcedf59895ed4b3ab2f0275610"
       },
-      "effectiveModuleProposal": {
-        "options": true,
+      "moduleProfilePins": [
+        {
+          "id": "cmp_8b4e451e-a9c0-400d-a148-094475734fb5",
+          "revision": 1,
+          "sha256": "426c0c7c30fef430107c46f2a8cdb729a897e69211f6bd92f65b36112816901f"
+        }
+      ],
+      "effectiveModules": {
+        "colors": false,
         "designs": true,
-        "text": true,
+        "logo": true,
         "motifs": true,
+        "options": true,
         "photo": true,
-        "logo": false,
-        "colors": false
+        "text": true
       },
-      "moduleProfilePins": []
+      "uploadDecision": {
+        "date": "2026-11-11",
+        "source": "Explicit user response in current Codex chat, relayed by root to product_plans",
+        "mainAcrylic": {
+          "photo": true,
+          "svgLogo": true,
+          "photoCents": 999,
+          "logoCents": 1299
+        },
+        "sixSmallProducts": {
+          "photo": false,
+          "logo": false
+        },
+        "scope": "Upload modules only; no product confirmation or execution"
+      }
     },
     {
       "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
       "excelSha256": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
       "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
       "source": {
-        "id": "cfg_fe1f2100-2f80-41e6-99a5-472c602a8269",
+        "id": "cfg_a185d396-3f2d-40cc-8199-b802743da334",
         "revision": 1,
-        "sha256": "a135615742c5ffe13af964b1ec08a699779a558c88261b4f4629e4e2d289baef",
+        "sha256": "7d951cec1d47abc13b1c2c6d6e0552c0616e4843fc941e4c75943ad89aeb53f8",
         "status": "draft",
         "publishedRevision": null
       },
       "registry": {
-        "key": "cfg_fe1f2100-2f80-41e6-99a5-472c602a8269",
-        "productId": "cfg_fe1f2100-2f80-41e6-99a5-472c602a8269",
-        "familyId": "cfg_fe1f2100-2f80-41e6-99a5-472c602a8269",
-        "sizeKey": "cfg_fe1f2100-2f80-41e6-99a5-472c602a8269",
+        "key": "cfg_a185d396-3f2d-40cc-8199-b802743da334",
+        "productId": "cfg_a185d396-3f2d-40cc-8199-b802743da334",
+        "familyId": "cfg_a185d396-3f2d-40cc-8199-b802743da334",
+        "sizeKey": "cfg_a185d396-3f2d-40cc-8199-b802743da334",
         "name": "Türschild Acrylglas 3 mm 5 × 2 cm (Schwarz/Anthrazit)",
         "label": "Türschild Acrylglas 3 mm 5 × 2 cm (Schwarz/Anthrazit)",
         "detailsLoaded": false
       },
       "template": {
-        "id": "pgt_5b954e8d-8f82-40ba-b49c-83df9cef2cb2",
+        "id": "pgt_31a79772-234a-485c-beec-c7565a7157c6",
         "revision": 1,
-        "sha256": "6c4cc045af9081c1dbd3527b3168d956e594bae0295e07625669e0193812b527"
+        "sha256": "20bc106ba6543daec811722fbd333c0d769c01ac7ada702822b4e9a06d49b83d"
       },
-      "planId": "pgp_0868a8f2-d0de-48ad-9290-2dea51371ba3",
-      "planHash": "c333b9826f19d00eadba899bcffa92c9c1f66ff3f465c15292a9d98c5f93345f",
+      "planId": "pgp_03932c0e-6f8f-4177-8ab5-cf7891b5bcdc",
+      "planHash": "01cf26109b3e49708f122fc7fb46e2493faad1be1e07235b0ff33bed3e28bc96",
       "valid": false,
       "approvalReady": false,
       "proposedStart": {
@@ -520,9 +540,7 @@
       ],
       "openQuestions": [
         "Startdesign TRE-V2A-5x2-D1 / 5 × 2 cm / Schwarz ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung.",
-        "Offene Module gemäß unveränderter Excel: options=an, designs=an, text=an, motifs=an, photo=offen, logo=offen, colors=an. Modulprofil noch nicht bestätigt.",
-        "Steuerkontext/Mengenstaffeln und Freigaben der unveränderten Excel sind vollständig offen zu prüfen; keine zusätzliche Entscheidung abgeleitet.",
-        "Die bestätigte 13-Motiv-Auswahl ist als echtes natives Motivprofil gespeichert; automatische Platzierung rechts/links neben Text (Strich-Ausnahmen) muss noch im vorhandenen Kundenadapter geprüft/angeschlossen werden."
+        "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung."
       ],
       "confirmations": 0,
       "executions": 0,
@@ -560,7 +578,7 @@
             "level": "product",
             "categoryId": null,
             "mode": "override",
-            "profileId": "prf_efc8e0a2-9455-4d98-8470-d32e000711a9",
+            "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
             "profileRevision": 1
           },
           "colors": {
@@ -583,16 +601,23 @@
         "warnings": []
       },
       "smallMotifProfile": {
-        "id": "prf_efc8e0a2-9455-4d98-8470-d32e000711a9",
+        "id": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
         "revision": 1,
         "count": 13
       },
       "previousPreparation": {
-        "sourceHash": "28082748d81e8ba74de14c66531b2c10c58487ce944c1e0f31c06299aa596703",
-        "planId": "pgp_1bdc0668-27b6-48a3-85d3-ec14628314d6",
-        "planHash": "9b06d5141779648ddc762d41bc95d36d6c3d6d53dcd823ea8d166f7b6ebf5c6a"
+        "sourceHash": "9c55558092bbe84a68c9296c09169abca7e789753edef0113d280e442346bf6b",
+        "planId": "pgp_4f57e6a6-7225-49e6-90a6-73b4e1c454c6",
+        "planHash": "94f25d75c65f6f126980643a987271c2f0e4afbf07894fb7758dd0a740249383"
       },
-      "effectiveModuleProposal": {
+      "moduleProfilePins": [
+        {
+          "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+          "revision": 1,
+          "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+        }
+      ],
+      "effectiveModules": {
         "colors": false,
         "designs": true,
         "logo": false,
@@ -601,41 +626,49 @@
         "photo": false,
         "text": true
       },
-      "moduleProfilePins": [
-        {
-          "id": "cmp_9f473930-ba19-4f1b-b8e0-ed1c226131f3",
-          "revision": 1,
-          "sha256": "ac66105168952c28b89276f42f21a974de9d7cea97222603a9d6371180e8f199"
-        }
-      ]
+      "uploadDecision": {
+        "date": "2026-11-11",
+        "source": "Explicit user response in current Codex chat, relayed by root to product_plans",
+        "mainAcrylic": {
+          "photo": true,
+          "svgLogo": true,
+          "photoCents": 999,
+          "logoCents": 1299
+        },
+        "sixSmallProducts": {
+          "photo": false,
+          "logo": false
+        },
+        "scope": "Upload modules only; no product confirmation or execution"
+      }
     },
     {
       "workbook": "Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
       "excelSha256": "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
       "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
       "source": {
-        "id": "cfg_3be6dd69-b68e-4b6e-87f9-ed133fb7ba04",
+        "id": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0",
         "revision": 1,
-        "sha256": "c6d5569df8726191974a280103986366c73a59524204d7df29e6774a3a59f3b5",
+        "sha256": "4e74e4921f46d07382e2e2b605c3aaf237b11492905ed4e662a5e91aec22d3f5",
         "status": "draft",
         "publishedRevision": null
       },
       "registry": {
-        "key": "cfg_3be6dd69-b68e-4b6e-87f9-ed133fb7ba04",
-        "productId": "cfg_3be6dd69-b68e-4b6e-87f9-ed133fb7ba04",
-        "familyId": "cfg_3be6dd69-b68e-4b6e-87f9-ed133fb7ba04",
-        "sizeKey": "cfg_3be6dd69-b68e-4b6e-87f9-ed133fb7ba04",
+        "key": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0",
+        "productId": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0",
+        "familyId": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0",
+        "sizeKey": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0",
         "name": "Türschild Acrylglas 3 mm 6 × 2 cm (Schwarz/Anthrazit)",
         "label": "Türschild Acrylglas 3 mm 6 × 2 cm (Schwarz/Anthrazit)",
         "detailsLoaded": false
       },
       "template": {
-        "id": "pgt_27a54540-104d-4bcf-b6da-3f8e4346844a",
+        "id": "pgt_e0676ce8-1bac-46fd-9665-ab04684143ec",
         "revision": 1,
-        "sha256": "919d722d41678f5d577cc063b3dc5966ef7a44d2db5f34eecb753229439439e9"
+        "sha256": "5474fff3e1b81fc4f7bcf0268a3b66646652ce4fd19cba5e3d333d0e671be73a"
       },
-      "planId": "pgp_853b95af-a140-45e2-9375-f8a8dd8a013a",
-      "planHash": "6b6d34709e85c1c7e046fe510bb7079a1be35e0286ee9f3e99ed6f93c59907c0",
+      "planId": "pgp_b6bd6b74-35e6-444e-b2cb-4bf64a49e280",
+      "planHash": "66931afab9bcac13e82b87ffb2b8e47473fad169e1b623353015e69dc7e31bbc",
       "valid": false,
       "approvalReady": false,
       "proposedStart": {
@@ -771,9 +804,7 @@
       ],
       "openQuestions": [
         "Startdesign TRE-V2A-6x2-D1 / 6 × 2 cm / Schwarz ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung.",
-        "Offene Module gemäß unveränderter Excel: options=an, designs=an, text=an, motifs=an, photo=offen, logo=offen, colors=an. Modulprofil noch nicht bestätigt.",
-        "Steuerkontext/Mengenstaffeln und Freigaben der unveränderten Excel sind vollständig offen zu prüfen; keine zusätzliche Entscheidung abgeleitet.",
-        "Die bestätigte 13-Motiv-Auswahl ist als echtes natives Motivprofil gespeichert; automatische Platzierung rechts/links neben Text (Strich-Ausnahmen) muss noch im vorhandenen Kundenadapter geprüft/angeschlossen werden."
+        "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung."
       ],
       "confirmations": 0,
       "executions": 0,
@@ -811,7 +842,7 @@
             "level": "product",
             "categoryId": null,
             "mode": "override",
-            "profileId": "prf_efc8e0a2-9455-4d98-8470-d32e000711a9",
+            "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
             "profileRevision": 1
           },
           "colors": {
@@ -834,16 +865,23 @@
         "warnings": []
       },
       "smallMotifProfile": {
-        "id": "prf_efc8e0a2-9455-4d98-8470-d32e000711a9",
+        "id": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
         "revision": 1,
         "count": 13
       },
       "previousPreparation": {
-        "sourceHash": "97fa120854910ba22abeca63bc124d73c8354a583751a5a8b53239107515d6ee",
-        "planId": "pgp_7dcaa1eb-b94b-4283-a345-b899b72fbd18",
-        "planHash": "0a4fe31cd02f7b6db0d0cabd561382da2ee7386a5156cd7cd7d845c6ecbbeccd"
+        "sourceHash": "69d8a6960e90b298b14309394590052ea1c51a6594376e41cc40d821cc9451fa",
+        "planId": "pgp_e2ea3aad-8536-494b-9fe1-f863cc599cf0",
+        "planHash": "143c324608de1e0bcbcc47a9bebb1ea859c0e0edadd25f0632049cdf6742a02d"
       },
-      "effectiveModuleProposal": {
+      "moduleProfilePins": [
+        {
+          "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+          "revision": 1,
+          "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+        }
+      ],
+      "effectiveModules": {
         "colors": false,
         "designs": true,
         "logo": false,
@@ -852,41 +890,49 @@
         "photo": false,
         "text": true
       },
-      "moduleProfilePins": [
-        {
-          "id": "cmp_9f473930-ba19-4f1b-b8e0-ed1c226131f3",
-          "revision": 1,
-          "sha256": "ac66105168952c28b89276f42f21a974de9d7cea97222603a9d6371180e8f199"
-        }
-      ]
+      "uploadDecision": {
+        "date": "2026-11-11",
+        "source": "Explicit user response in current Codex chat, relayed by root to product_plans",
+        "mainAcrylic": {
+          "photo": true,
+          "svgLogo": true,
+          "photoCents": 999,
+          "logoCents": 1299
+        },
+        "sixSmallProducts": {
+          "photo": false,
+          "logo": false
+        },
+        "scope": "Upload modules only; no product confirmation or execution"
+      }
     },
     {
       "workbook": "Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
       "excelSha256": "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
       "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
       "source": {
-        "id": "cfg_4faafb74-c5d8-4729-9a77-df724e3195eb",
+        "id": "cfg_ecf40ca9-b1f0-4782-ae2d-768cbe62d03d",
         "revision": 1,
-        "sha256": "6457071b5d1e4c508e0e38d058c6ca9be00dddfd6b2f919b9145dc16108083d7",
+        "sha256": "21479a11ae22c881fe40a05975d8beb7aa2e1fafc30db657b04bd3591ee36ed2",
         "status": "draft",
         "publishedRevision": null
       },
       "registry": {
-        "key": "cfg_4faafb74-c5d8-4729-9a77-df724e3195eb",
-        "productId": "cfg_4faafb74-c5d8-4729-9a77-df724e3195eb",
-        "familyId": "cfg_4faafb74-c5d8-4729-9a77-df724e3195eb",
-        "sizeKey": "cfg_4faafb74-c5d8-4729-9a77-df724e3195eb",
+        "key": "cfg_ecf40ca9-b1f0-4782-ae2d-768cbe62d03d",
+        "productId": "cfg_ecf40ca9-b1f0-4782-ae2d-768cbe62d03d",
+        "familyId": "cfg_ecf40ca9-b1f0-4782-ae2d-768cbe62d03d",
+        "sizeKey": "cfg_ecf40ca9-b1f0-4782-ae2d-768cbe62d03d",
         "name": "Türschild Acrylglas 3 mm 8 × 2 cm (Schwarz/Anthrazit)",
         "label": "Türschild Acrylglas 3 mm 8 × 2 cm (Schwarz/Anthrazit)",
         "detailsLoaded": false
       },
       "template": {
-        "id": "pgt_6577edf6-a9da-4620-bc67-62945380f10a",
+        "id": "pgt_2c75a0ba-8628-47b6-807c-5889687ad8f1",
         "revision": 1,
-        "sha256": "aff4cd6a541c594cec4f80730f80d2eb5184ea3afa79feb2475167171254f659"
+        "sha256": "e8d27fb095d25bdf6847b93b8ef2d5107cd2ce3f789df2539c1bdf8cb4ba0835"
       },
-      "planId": "pgp_1d20d28a-7f30-41ef-a33b-e0b278a1a966",
-      "planHash": "a1bae5f5637ef5037a452d528dbe7928e5097c8a8303b1e62e5e5c77891d06bc",
+      "planId": "pgp_6126fcb8-d8b7-4b5b-9410-9c09a9198b52",
+      "planHash": "0aa24af4bd611f5a674642a98bb5603d12f23d4a7175cdea3afca55865e0ab95",
       "valid": false,
       "approvalReady": false,
       "proposedStart": {
@@ -1022,9 +1068,7 @@
       ],
       "openQuestions": [
         "Startdesign TRE-V2A-8x2-D1 / 8 × 2 cm / Schwarz ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung.",
-        "Offene Module gemäß unveränderter Excel: options=an, designs=an, text=an, motifs=an, photo=offen, logo=offen, colors=an. Modulprofil noch nicht bestätigt.",
-        "Steuerkontext/Mengenstaffeln und Freigaben der unveränderten Excel sind vollständig offen zu prüfen; keine zusätzliche Entscheidung abgeleitet.",
-        "Die bestätigte 13-Motiv-Auswahl ist als echtes natives Motivprofil gespeichert; automatische Platzierung rechts/links neben Text (Strich-Ausnahmen) muss noch im vorhandenen Kundenadapter geprüft/angeschlossen werden."
+        "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung."
       ],
       "confirmations": 0,
       "executions": 0,
@@ -1062,7 +1106,7 @@
             "level": "product",
             "categoryId": null,
             "mode": "override",
-            "profileId": "prf_efc8e0a2-9455-4d98-8470-d32e000711a9",
+            "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
             "profileRevision": 1
           },
           "colors": {
@@ -1085,16 +1129,23 @@
         "warnings": []
       },
       "smallMotifProfile": {
-        "id": "prf_efc8e0a2-9455-4d98-8470-d32e000711a9",
+        "id": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
         "revision": 1,
         "count": 13
       },
       "previousPreparation": {
-        "sourceHash": "1153a29f5c09774a95eba900464dfd163a9e2831882945d3a77881b145992e2b",
-        "planId": "pgp_52cf6811-3f69-456c-966e-f12d0ff629a0",
-        "planHash": "a93fdadd2edc6fe1c1239d5da2e3a44ea0a3446d2480bbb0874a3ba70beddad0"
+        "sourceHash": "12f382a3244185954078138cebef2b027b838fa430dfc8bab593865166ff6f2e",
+        "planId": "pgp_915bdcc6-eea6-4d02-b85a-2838c0092150",
+        "planHash": "9034d712bbf1488c8b91f2a0da196c6f40e8ad23667f1b7c78238cc759d66236"
       },
-      "effectiveModuleProposal": {
+      "moduleProfilePins": [
+        {
+          "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+          "revision": 1,
+          "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+        }
+      ],
+      "effectiveModules": {
         "colors": false,
         "designs": true,
         "logo": false,
@@ -1103,41 +1154,49 @@
         "photo": false,
         "text": true
       },
-      "moduleProfilePins": [
-        {
-          "id": "cmp_9f473930-ba19-4f1b-b8e0-ed1c226131f3",
-          "revision": 1,
-          "sha256": "ac66105168952c28b89276f42f21a974de9d7cea97222603a9d6371180e8f199"
-        }
-      ]
+      "uploadDecision": {
+        "date": "2026-11-11",
+        "source": "Explicit user response in current Codex chat, relayed by root to product_plans",
+        "mainAcrylic": {
+          "photo": true,
+          "svgLogo": true,
+          "photoCents": 999,
+          "logoCents": 1299
+        },
+        "sixSmallProducts": {
+          "photo": false,
+          "logo": false
+        },
+        "scope": "Upload modules only; no product confirmation or execution"
+      }
     },
     {
       "workbook": "Tuerschild-Edelstahl-5x2_v1.xlsx",
       "excelSha256": "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
       "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
       "source": {
-        "id": "cfg_e50a42e5-4a6c-46d3-880e-87726262f727",
+        "id": "cfg_9c64f1b8-5e95-49ae-8937-d5990a3b26a6",
         "revision": 1,
-        "sha256": "4c75ab69fd9391dc6a91c98e0d4656c44270c29380349b967bcfa851aa0a20bf",
+        "sha256": "c37159312125ef333a01ea1ab96d1c25fe46edfd946c52495a7e9039f2f1f466",
         "status": "draft",
         "publishedRevision": null
       },
       "registry": {
-        "key": "cfg_e50a42e5-4a6c-46d3-880e-87726262f727",
-        "productId": "cfg_e50a42e5-4a6c-46d3-880e-87726262f727",
-        "familyId": "cfg_e50a42e5-4a6c-46d3-880e-87726262f727",
-        "sizeKey": "cfg_e50a42e5-4a6c-46d3-880e-87726262f727",
+        "key": "cfg_9c64f1b8-5e95-49ae-8937-d5990a3b26a6",
+        "productId": "cfg_9c64f1b8-5e95-49ae-8937-d5990a3b26a6",
+        "familyId": "cfg_9c64f1b8-5e95-49ae-8937-d5990a3b26a6",
+        "sizeKey": "cfg_9c64f1b8-5e95-49ae-8937-d5990a3b26a6",
         "name": "Türschild Edelstahl 5 × 2 cm (gebürstet, Gravur)",
         "label": "Türschild Edelstahl 5 × 2 cm (gebürstet, Gravur)",
         "detailsLoaded": false
       },
       "template": {
-        "id": "pgt_26f92dfa-f4a9-4a16-8adf-a4e5c50c7590",
+        "id": "pgt_26088966-d1b9-4212-92a3-4a3e3bb6a617",
         "revision": 1,
-        "sha256": "af5a95eb7fb39a676563ca885b7000e4669cfd5bb4446d6544f2553069ea5196"
+        "sha256": "278979ee06bfba708bf6052c631d4ebc2cd38af0d1ca11d6f5ebd5924ab6d5a5"
       },
-      "planId": "pgp_d8449da5-0339-48b8-8356-6c3ce76c66a8",
-      "planHash": "ac75e9b321c426948adc40c316e182cc0be9c8428c6d9044695fa688aa5b1260",
+      "planId": "pgp_fae5b365-a7c0-4d85-9096-e9f5670b5b21",
+      "planHash": "ac2f8ce469cf862471a6c1c35f7c6a0142bf25b235b00b20e8038d23551a8309",
       "valid": false,
       "approvalReady": false,
       "proposedStart": {
@@ -1208,9 +1267,7 @@
       ],
       "openQuestions": [
         "Startdesign TRE-V2A-5x2-D1 / 5 × 2 cm ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung.",
-        "Offene Module gemäß unveränderter Excel: designs=an, text=an, motifs=an, logo=offen. Modulprofil noch nicht bestätigt.",
-        "Steuerkontext/Mengenstaffeln und Freigaben der unveränderten Excel sind vollständig offen zu prüfen; keine zusätzliche Entscheidung abgeleitet.",
-        "Die bestätigte 13-Motiv-Auswahl ist als echtes natives Motivprofil gespeichert; automatische Platzierung rechts/links neben Text (Strich-Ausnahmen) muss noch im vorhandenen Kundenadapter geprüft/angeschlossen werden."
+        "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung."
       ],
       "confirmations": 0,
       "executions": 0,
@@ -1248,7 +1305,7 @@
             "level": "product",
             "categoryId": null,
             "mode": "override",
-            "profileId": "prf_efc8e0a2-9455-4d98-8470-d32e000711a9",
+            "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
             "profileRevision": 1
           },
           "colors": {
@@ -1271,16 +1328,23 @@
         "warnings": []
       },
       "smallMotifProfile": {
-        "id": "prf_efc8e0a2-9455-4d98-8470-d32e000711a9",
+        "id": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
         "revision": 1,
         "count": 13
       },
       "previousPreparation": {
-        "sourceHash": "649d28006edfd55313317693b5c4f50048676cf218cb70605625b9cf55f2eec2",
-        "planId": "pgp_d8bd51a4-a9c3-49ba-9bd9-373d72d53bc3",
-        "planHash": "c1e416c9ccedca48c8dd1e5078807cd3a087c55239c375e0fe98ffab6a471dc9"
+        "sourceHash": "f910c2150a106f2c3051e06f1971f5997f86f3835f13b563c5bc0d6d280bd871",
+        "planId": "pgp_bba31a18-cbf2-4595-979e-2563e04a833f",
+        "planHash": "d5af498d8d252d6924cfa4c81f9684959ac4b3374dfa90814c1ba41dd25c53dc"
       },
-      "effectiveModuleProposal": {
+      "moduleProfilePins": [
+        {
+          "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+          "revision": 1,
+          "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+        }
+      ],
+      "effectiveModules": {
         "colors": false,
         "designs": true,
         "logo": false,
@@ -1289,41 +1353,49 @@
         "photo": false,
         "text": true
       },
-      "moduleProfilePins": [
-        {
-          "id": "cmp_9f473930-ba19-4f1b-b8e0-ed1c226131f3",
-          "revision": 1,
-          "sha256": "ac66105168952c28b89276f42f21a974de9d7cea97222603a9d6371180e8f199"
-        }
-      ]
+      "uploadDecision": {
+        "date": "2026-11-11",
+        "source": "Explicit user response in current Codex chat, relayed by root to product_plans",
+        "mainAcrylic": {
+          "photo": true,
+          "svgLogo": true,
+          "photoCents": 999,
+          "logoCents": 1299
+        },
+        "sixSmallProducts": {
+          "photo": false,
+          "logo": false
+        },
+        "scope": "Upload modules only; no product confirmation or execution"
+      }
     },
     {
       "workbook": "Tuerschild-Edelstahl-6x2_v1.xlsx",
       "excelSha256": "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
       "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
       "source": {
-        "id": "cfg_015ed4ef-8732-455c-8310-aabf662364af",
+        "id": "cfg_d50868ac-bb33-476f-a07f-3a9a1b9af583",
         "revision": 1,
-        "sha256": "599d8376bc68f4d6748a251ebc5214a503b5c45953cc7c75068900bc6188a6da",
+        "sha256": "3ef423c8c81ba076b3b61eaf116467464a42a70f266536451a870ab09824f516",
         "status": "draft",
         "publishedRevision": null
       },
       "registry": {
-        "key": "cfg_015ed4ef-8732-455c-8310-aabf662364af",
-        "productId": "cfg_015ed4ef-8732-455c-8310-aabf662364af",
-        "familyId": "cfg_015ed4ef-8732-455c-8310-aabf662364af",
-        "sizeKey": "cfg_015ed4ef-8732-455c-8310-aabf662364af",
+        "key": "cfg_d50868ac-bb33-476f-a07f-3a9a1b9af583",
+        "productId": "cfg_d50868ac-bb33-476f-a07f-3a9a1b9af583",
+        "familyId": "cfg_d50868ac-bb33-476f-a07f-3a9a1b9af583",
+        "sizeKey": "cfg_d50868ac-bb33-476f-a07f-3a9a1b9af583",
         "name": "Türschild Edelstahl 6 × 2 cm (gebürstet, Gravur)",
         "label": "Türschild Edelstahl 6 × 2 cm (gebürstet, Gravur)",
         "detailsLoaded": false
       },
       "template": {
-        "id": "pgt_1849bdf1-49fd-49a6-874d-7114239ee74c",
+        "id": "pgt_176dd091-f9dc-4f7f-9bd1-42c350beb7f5",
         "revision": 1,
-        "sha256": "5e4ea80b287339b1a474051ce75f5d99151343afa4edb771a6affedd7ffcf5b8"
+        "sha256": "e8d5f73a313e937d233ee654e5cc3e50eb1194b2092a43bc03e0feea635a7bf2"
       },
-      "planId": "pgp_f6e8ac45-ab2d-4d13-83df-e735f58cfde5",
-      "planHash": "f35b350f337181a7d1e93fdc77f3c857618b689f44fc4ead51982ffac465cb45",
+      "planId": "pgp_ea7f2afb-fb41-4e91-90e7-986d8d524cc8",
+      "planHash": "f87a05e734982b900f49de674d8748b2870113ad76b5a3e9c39b30ee2cdddf9e",
       "valid": false,
       "approvalReady": false,
       "proposedStart": {
@@ -1394,9 +1466,7 @@
       ],
       "openQuestions": [
         "Startdesign TRE-V2A-6x2-D1 / 6 × 2 cm ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung.",
-        "Offene Module gemäß unveränderter Excel: designs=an, text=an, motifs=an, logo=offen. Modulprofil noch nicht bestätigt.",
-        "Steuerkontext/Mengenstaffeln und Freigaben der unveränderten Excel sind vollständig offen zu prüfen; keine zusätzliche Entscheidung abgeleitet.",
-        "Die bestätigte 13-Motiv-Auswahl ist als echtes natives Motivprofil gespeichert; automatische Platzierung rechts/links neben Text (Strich-Ausnahmen) muss noch im vorhandenen Kundenadapter geprüft/angeschlossen werden."
+        "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung."
       ],
       "confirmations": 0,
       "executions": 0,
@@ -1434,7 +1504,7 @@
             "level": "product",
             "categoryId": null,
             "mode": "override",
-            "profileId": "prf_efc8e0a2-9455-4d98-8470-d32e000711a9",
+            "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
             "profileRevision": 1
           },
           "colors": {
@@ -1457,16 +1527,23 @@
         "warnings": []
       },
       "smallMotifProfile": {
-        "id": "prf_efc8e0a2-9455-4d98-8470-d32e000711a9",
+        "id": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
         "revision": 1,
         "count": 13
       },
       "previousPreparation": {
-        "sourceHash": "777edaaa11cd54afcd42dcfdcfd50cfa968c82c0149b5f1a8cd90d45dff6d9ce",
-        "planId": "pgp_a8c79115-5613-4264-bc49-8f42147697cb",
-        "planHash": "d99655f3785e6f0dad48b4b92692c50c6be8a0e1946141de63d95196db1ddd34"
+        "sourceHash": "4a4f05966a487efa78f35053c608e588e1d687382dbc84d9edf3d00b0f9d7b49",
+        "planId": "pgp_e21b589f-5772-439c-9d48-bf3f9c9d7d23",
+        "planHash": "acbba5d79e6469ef02ecf0b3b98236c7a3eaabcfa40ef4a888342f158ee19cd6"
       },
-      "effectiveModuleProposal": {
+      "moduleProfilePins": [
+        {
+          "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+          "revision": 1,
+          "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+        }
+      ],
+      "effectiveModules": {
         "colors": false,
         "designs": true,
         "logo": false,
@@ -1475,41 +1552,49 @@
         "photo": false,
         "text": true
       },
-      "moduleProfilePins": [
-        {
-          "id": "cmp_9f473930-ba19-4f1b-b8e0-ed1c226131f3",
-          "revision": 1,
-          "sha256": "ac66105168952c28b89276f42f21a974de9d7cea97222603a9d6371180e8f199"
-        }
-      ]
+      "uploadDecision": {
+        "date": "2026-11-11",
+        "source": "Explicit user response in current Codex chat, relayed by root to product_plans",
+        "mainAcrylic": {
+          "photo": true,
+          "svgLogo": true,
+          "photoCents": 999,
+          "logoCents": 1299
+        },
+        "sixSmallProducts": {
+          "photo": false,
+          "logo": false
+        },
+        "scope": "Upload modules only; no product confirmation or execution"
+      }
     },
     {
       "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
       "excelSha256": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
       "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
       "source": {
-        "id": "cfg_cd6d52aa-ee74-4f94-8646-4c2fe2873728",
+        "id": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
         "revision": 1,
-        "sha256": "05591edc7110062c7e23f7e1be7eb7868aaf4eae9eef3efe865d00d734198993",
+        "sha256": "9520da5156363805a1c11853b13795a09321410dc7b9ef1aa3fe711eb76ef2e3",
         "status": "draft",
         "publishedRevision": null
       },
       "registry": {
-        "key": "cfg_cd6d52aa-ee74-4f94-8646-4c2fe2873728",
-        "productId": "cfg_cd6d52aa-ee74-4f94-8646-4c2fe2873728",
-        "familyId": "cfg_cd6d52aa-ee74-4f94-8646-4c2fe2873728",
-        "sizeKey": "cfg_cd6d52aa-ee74-4f94-8646-4c2fe2873728",
+        "key": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+        "productId": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+        "familyId": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+        "sizeKey": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
         "name": "Türschild Edelstahl 8 × 2 cm (gebürstet, Gravur)",
         "label": "Türschild Edelstahl 8 × 2 cm (gebürstet, Gravur)",
         "detailsLoaded": false
       },
       "template": {
-        "id": "pgt_6ab774e6-c70d-49f0-8d8c-f1f96b72b8d6",
+        "id": "pgt_abb30c39-1c05-4b4a-a666-812591d03a25",
         "revision": 1,
-        "sha256": "c645b9ee78bf1e8f063cb649bd800a6be6fadf0a21f95e1cb4cf291faddc3183"
+        "sha256": "c0501c00a717b14d33625ba451f16f8d7df4e2c5008d3372c24dbbda93a23a0c"
       },
-      "planId": "pgp_0a234181-0829-4f7c-bfb7-7704932d6507",
-      "planHash": "4bf7241215b49678519a6d1a3fc847afe6896fc520d01cc54bacc203464d216e",
+      "planId": "pgp_c2098259-36a3-4048-a4e6-e3ffa70c9d68",
+      "planHash": "5c4b729ea5be27e1ea9b4e4a6c65e94088803618219e5025836ca6e70654ec3e",
       "valid": false,
       "approvalReady": false,
       "proposedStart": {
@@ -1580,9 +1665,7 @@
       ],
       "openQuestions": [
         "Startdesign TRE-V2A-8x2-D1 / 8 × 2 cm ist ein technisch geprüfter Vorschlag, keine neue Nutzerentscheidung.",
-        "Offene Module gemäß unveränderter Excel: designs=an, text=an, motifs=an, logo=offen. Modulprofil noch nicht bestätigt.",
-        "Steuerkontext/Mengenstaffeln und Freigaben der unveränderten Excel sind vollständig offen zu prüfen; keine zusätzliche Entscheidung abgeleitet.",
-        "Die bestätigte 13-Motiv-Auswahl ist als echtes natives Motivprofil gespeichert; automatische Platzierung rechts/links neben Text (Strich-Ausnahmen) muss noch im vorhandenen Kundenadapter geprüft/angeschlossen werden."
+        "Steuerkontext/Mengenstaffeln und Start-/Designreferenzen der unveränderten Excel bleiben zu prüfen. Foto-/Logo-Auswahl wurde am 11.11.2026 ausdrücklich bestätigt und ist keine offene Nutzerentscheidung."
       ],
       "confirmations": 0,
       "executions": 0,
@@ -1620,7 +1703,7 @@
             "level": "product",
             "categoryId": null,
             "mode": "override",
-            "profileId": "prf_efc8e0a2-9455-4d98-8470-d32e000711a9",
+            "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
             "profileRevision": 1
           },
           "colors": {
@@ -1643,16 +1726,23 @@
         "warnings": []
       },
       "smallMotifProfile": {
-        "id": "prf_efc8e0a2-9455-4d98-8470-d32e000711a9",
+        "id": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
         "revision": 1,
         "count": 13
       },
       "previousPreparation": {
-        "sourceHash": "d5f9ecc279e3985647a529f13fd3d142282f1fb8272c8108de8b4c183c2a10d1",
-        "planId": "pgp_41216fda-7b2d-472a-ae10-d8dcceb55c31",
-        "planHash": "f18c910dd303d1a11c810730da7096de6a3d8351a73128e028a4903edace7f50"
+        "sourceHash": "ad512f5e8dfc1375b9960bb0d8080b65feabcbfb8ef2558f2843bf8db8b323d1",
+        "planId": "pgp_cf332f0f-a2be-4358-8101-2a1ec897f161",
+        "planHash": "bd82619ef2effa2f9a701668a6f7e989ee488000bd0e167d6d9d5dcb9c03aeda"
       },
-      "effectiveModuleProposal": {
+      "moduleProfilePins": [
+        {
+          "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+          "revision": 1,
+          "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+        }
+      ],
+      "effectiveModules": {
         "colors": false,
         "designs": true,
         "logo": false,
@@ -1661,13 +1751,21 @@
         "photo": false,
         "text": true
       },
-      "moduleProfilePins": [
-        {
-          "id": "cmp_9f473930-ba19-4f1b-b8e0-ed1c226131f3",
-          "revision": 1,
-          "sha256": "ac66105168952c28b89276f42f21a974de9d7cea97222603a9d6371180e8f199"
-        }
-      ]
+      "uploadDecision": {
+        "date": "2026-11-11",
+        "source": "Explicit user response in current Codex chat, relayed by root to product_plans",
+        "mainAcrylic": {
+          "photo": true,
+          "svgLogo": true,
+          "photoCents": 999,
+          "logoCents": 1299
+        },
+        "sixSmallProducts": {
+          "photo": false,
+          "logo": false
+        },
+        "scope": "Upload modules only; no product confirmation or execution"
+      }
     }
   ]
 }

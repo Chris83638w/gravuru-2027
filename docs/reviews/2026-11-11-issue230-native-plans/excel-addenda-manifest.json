@@ -1,0 +1,789 @@
+{
+  "schema": "gravuru-issue230-excel-appendices/v1",
+  "planRun": "v8",
+  "summarySha256": "12f1df80f8eecbaaf3892836c4df8d7c6b45d6bc67984fb580cb83e2e56bf824",
+  "scope": "Seven versioned copies. Exactly one new sheet per workbook; all original worksheet and table bytes preserved.",
+  "provenance": "Native plans bind the original XLSX SHA. The new appendix references the final plan. This external manifest hashes the new XLSX; no self-hash or circular hash claim.",
+  "newSheet": "BestätigteUploads",
+  "sourceWorkbooksUnchanged": true,
+  "records": [
+    {
+      "original": "Tuerschild-Acrylglas-3mm_v4.xlsx",
+      "output": "Tuerschild-Acrylglas-3mm_v5.xlsx",
+      "originalSha256": "495e7e59d7abf6a46f1fb7098a75e666162e58be3cad99ad75de6db5d3923841",
+      "planId": "pgp_aad6d5ae-b255-4d19-8c92-9d91ba09d445",
+      "planHash": "7079dae2814c9c17526ae3c254696ccd2b253318066b38a435f7a9cfb610e197",
+      "source": {
+        "id": "cfg_8d95909c-fcd9-4cf8-87e7-152eb21e7204",
+        "revision": 1,
+        "sha256": "d4aa5e78a870decbecbda937e76feb740c299f8e52bd5c1fd3a8d93a93f715ad",
+        "status": "draft",
+        "publishedRevision": null
+      },
+      "template": {
+        "id": "pgt_c868a507-a372-4111-9f3c-56af17cbf534",
+        "revision": 1,
+        "sha256": "68e3035902c1e41efc7acd4d1da238af1058fd9d06d755185250209c5db8bfcb"
+      },
+      "moduleProfile": {
+        "id": "cmp_8b4e451e-a9c0-400d-a148-094475734fb5",
+        "revision": 1,
+        "sha256": "426c0c7c30fef430107c46f2a8cdb729a897e69211f6bd92f65b36112816901f"
+      },
+      "main": true,
+      "appendixSheet": "BestätigteUploads",
+      "xlsxSha256": "901dc2a5a3e72f92611426cf4fbe5205323a893f18ee95f67431e799c0f8b8a2",
+      "size": 118654,
+      "modifiedPackageParts": [
+        "xl/styles.xml",
+        "xl/workbook.xml",
+        "xl/_rels/workbook.xml.rels",
+        "[Content_Types].xml"
+      ],
+      "addedPackagePart": "xl/worksheets/sheet11.xml",
+      "unchangedOriginalParts": 24,
+      "preservedSheetAndTableParts": [
+        {
+          "path": "xl/worksheets/sheet1.xml",
+          "sha256": "cef7555a6fe62af7df3cebfa873441ad567f3e0972185646338332b550deda73"
+        },
+        {
+          "path": "xl/tables/table1.xml",
+          "sha256": "924b3c7d660aabe2f91c9030f6ce8f6568668243788985380d7968be012da5b5"
+        },
+        {
+          "path": "xl/tables/table2.xml",
+          "sha256": "b805120a35dcdace31a3763075505a9b8eb937f7bb3c27d4c6069cd885a76fdd"
+        },
+        {
+          "path": "xl/tables/table3.xml",
+          "sha256": "4ffe3a9aa17ef24d8b624bd39320ee5a38a7203316caf5012366181da02d8e3a"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet1.xml.rels",
+          "sha256": "8d7debddb84299319af3ff5a790d017b6fe7781ab7f0c1a8034fcb8d082eed4f"
+        },
+        {
+          "path": "xl/worksheets/sheet2.xml",
+          "sha256": "c64751c73733d660c24881200efc632d8246e8ff2889990efc8bba338760916b"
+        },
+        {
+          "path": "xl/tables/table4.xml",
+          "sha256": "0ba1e65058cf6e13f378a0f05fc87e5329e7dddbe199d4ce2c88ec89efc33b5b"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet2.xml.rels",
+          "sha256": "ae2c7a8d1b20fc34473dd9ff81e6e7865d87905dee489513cfda1f62b64c5029"
+        },
+        {
+          "path": "xl/worksheets/sheet3.xml",
+          "sha256": "36dbc43f58921a722dd49be19c76dce35ef727466542b73779b344d7299d119a"
+        },
+        {
+          "path": "xl/tables/table5.xml",
+          "sha256": "7779a3995f5077f9b3de50b3dc49226cb613adaf5df63858b4ed3246593a9bdb"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet3.xml.rels",
+          "sha256": "ad1eb9c7249c192f9a26d9a007cf93028d4f70d63084634a6708ca49c11137c8"
+        },
+        {
+          "path": "xl/worksheets/sheet4.xml",
+          "sha256": "c2cf34c54759c4ccc91ffe0ad8df29d349db17c27b13a50129288d780e2f9f8b"
+        },
+        {
+          "path": "xl/tables/table6.xml",
+          "sha256": "d96069cc54ffa36d0ed4cc3e4a87800f10e02a2af66acac0b75356ab8511d52f"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet4.xml.rels",
+          "sha256": "19ed5f6eee860188a84a79233db3f388d0b21029bd13dab6551ab817b7e6113d"
+        },
+        {
+          "path": "xl/worksheets/sheet5.xml",
+          "sha256": "6280a8d65bfe351cc08c01895778bef6b16ffb197b475e4965214231e274557b"
+        },
+        {
+          "path": "xl/worksheets/sheet6.xml",
+          "sha256": "41c14991ffa10e7fdb2bed3d5aff00d59aad57497b947460111e355a3d7068b1"
+        },
+        {
+          "path": "xl/worksheets/sheet7.xml",
+          "sha256": "77cbf87f948bf08b5eed37b8f6e5f343d195016ad6f43ec7a7226e9e24991d91"
+        },
+        {
+          "path": "xl/worksheets/sheet8.xml",
+          "sha256": "b51ebb275ad6f0bcf2eecd561e819d4fa539641dbdbf2e26141ccc22cdd54616"
+        },
+        {
+          "path": "xl/worksheets/sheet9.xml",
+          "sha256": "98b3391ae773b8e9c8dfc0903039009715e98cbed38d135b567c0616a61605bb"
+        },
+        {
+          "path": "xl/worksheets/sheet10.xml",
+          "sha256": "d048447bc454da19d1eb18ab1ec0a4dfcbdef26f94f49dd5aff06fb42968f9ed"
+        }
+      ]
+    },
+    {
+      "original": "Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "output": "Tuerschild-Acrylglas-3mm-5x2_v3.xlsx",
+      "originalSha256": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+      "planId": "pgp_03932c0e-6f8f-4177-8ab5-cf7891b5bcdc",
+      "planHash": "01cf26109b3e49708f122fc7fb46e2493faad1be1e07235b0ff33bed3e28bc96",
+      "source": {
+        "id": "cfg_a185d396-3f2d-40cc-8199-b802743da334",
+        "revision": 1,
+        "sha256": "7d951cec1d47abc13b1c2c6d6e0552c0616e4843fc941e4c75943ad89aeb53f8",
+        "status": "draft",
+        "publishedRevision": null
+      },
+      "template": {
+        "id": "pgt_31a79772-234a-485c-beec-c7565a7157c6",
+        "revision": 1,
+        "sha256": "20bc106ba6543daec811722fbd333c0d769c01ac7ada702822b4e9a06d49b83d"
+      },
+      "moduleProfile": {
+        "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+        "revision": 1,
+        "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+      },
+      "main": false,
+      "appendixSheet": "BestätigteUploads",
+      "xlsxSha256": "a9cf81dd852fc50e1e7a84978261812c9e3f763ff6af46af7d2b0ee8b9d80a82",
+      "size": 43424,
+      "modifiedPackageParts": [
+        "xl/styles.xml",
+        "xl/workbook.xml",
+        "xl/_rels/workbook.xml.rels",
+        "[Content_Types].xml"
+      ],
+      "addedPackagePart": "xl/worksheets/sheet9.xml",
+      "unchangedOriginalParts": 22,
+      "preservedSheetAndTableParts": [
+        {
+          "path": "xl/worksheets/sheet1.xml",
+          "sha256": "b781b92d027f3952e6e16178b4912bb6a4015f28a8ec1430d7b55fcb31214330"
+        },
+        {
+          "path": "xl/tables/table1.xml",
+          "sha256": "924b3c7d660aabe2f91c9030f6ce8f6568668243788985380d7968be012da5b5"
+        },
+        {
+          "path": "xl/tables/table2.xml",
+          "sha256": "b805120a35dcdace31a3763075505a9b8eb937f7bb3c27d4c6069cd885a76fdd"
+        },
+        {
+          "path": "xl/tables/table3.xml",
+          "sha256": "4ffe3a9aa17ef24d8b624bd39320ee5a38a7203316caf5012366181da02d8e3a"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet1.xml.rels",
+          "sha256": "8d7debddb84299319af3ff5a790d017b6fe7781ab7f0c1a8034fcb8d082eed4f"
+        },
+        {
+          "path": "xl/worksheets/sheet2.xml",
+          "sha256": "b92edd649c25fe1983a1e28791793fd0afd3d940e719f81a4fc50ca5bd3f75b7"
+        },
+        {
+          "path": "xl/tables/table4.xml",
+          "sha256": "0ba1e65058cf6e13f378a0f05fc87e5329e7dddbe199d4ce2c88ec89efc33b5b"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet2.xml.rels",
+          "sha256": "ae2c7a8d1b20fc34473dd9ff81e6e7865d87905dee489513cfda1f62b64c5029"
+        },
+        {
+          "path": "xl/worksheets/sheet3.xml",
+          "sha256": "7988a27a0ccab7aaf1e377ad641d9e60dbf47511e2e4904b9838cd16658dec7e"
+        },
+        {
+          "path": "xl/tables/table5.xml",
+          "sha256": "4c1cd8df46449590f53f52a9002937f4a8b7e3bbf2beff2a43cde37c796eb02f"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet3.xml.rels",
+          "sha256": "ad1eb9c7249c192f9a26d9a007cf93028d4f70d63084634a6708ca49c11137c8"
+        },
+        {
+          "path": "xl/worksheets/sheet4.xml",
+          "sha256": "9cddf8a30452208474d8ac7aad6f49c29ec2fb7c260542d126a2499fc4a20aaf"
+        },
+        {
+          "path": "xl/tables/table6.xml",
+          "sha256": "9303cdedb5f2903f29f8b51c256ecad4690deec89dabf475462752959d673fe1"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet4.xml.rels",
+          "sha256": "19ed5f6eee860188a84a79233db3f388d0b21029bd13dab6551ab817b7e6113d"
+        },
+        {
+          "path": "xl/worksheets/sheet5.xml",
+          "sha256": "84096ac953d29e3d8e0c080b48a513408c47a86af421217761466cce3f145680"
+        },
+        {
+          "path": "xl/worksheets/sheet6.xml",
+          "sha256": "3860d2ba9fc6fd1fdb866b4c4c5bc9e32953943ea01936d5c5a004a6df1c1214"
+        },
+        {
+          "path": "xl/worksheets/sheet7.xml",
+          "sha256": "65a150935996add6491b36e4242b36f25b89dbeaaa565c63dc02f439bc590a73"
+        },
+        {
+          "path": "xl/worksheets/sheet8.xml",
+          "sha256": "dbcec93015a21e78f5531e95c621954677b6c9386449e80310258083a71e8a20"
+        }
+      ]
+    },
+    {
+      "original": "Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "output": "Tuerschild-Acrylglas-3mm-6x2_v3.xlsx",
+      "originalSha256": "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+      "planId": "pgp_b6bd6b74-35e6-444e-b2cb-4bf64a49e280",
+      "planHash": "66931afab9bcac13e82b87ffb2b8e47473fad169e1b623353015e69dc7e31bbc",
+      "source": {
+        "id": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0",
+        "revision": 1,
+        "sha256": "4e74e4921f46d07382e2e2b605c3aaf237b11492905ed4e662a5e91aec22d3f5",
+        "status": "draft",
+        "publishedRevision": null
+      },
+      "template": {
+        "id": "pgt_e0676ce8-1bac-46fd-9665-ab04684143ec",
+        "revision": 1,
+        "sha256": "5474fff3e1b81fc4f7bcf0268a3b66646652ce4fd19cba5e3d333d0e671be73a"
+      },
+      "moduleProfile": {
+        "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+        "revision": 1,
+        "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+      },
+      "main": false,
+      "appendixSheet": "BestätigteUploads",
+      "xlsxSha256": "dcf5075f426a05b89fdf86a2d122d56f72bd45b73c5555f29658b01076c8ebd8",
+      "size": 43445,
+      "modifiedPackageParts": [
+        "xl/styles.xml",
+        "xl/workbook.xml",
+        "xl/_rels/workbook.xml.rels",
+        "[Content_Types].xml"
+      ],
+      "addedPackagePart": "xl/worksheets/sheet9.xml",
+      "unchangedOriginalParts": 22,
+      "preservedSheetAndTableParts": [
+        {
+          "path": "xl/worksheets/sheet1.xml",
+          "sha256": "6000f38879a4d5ae2e5510e6113b8d927b5ea0b412b21774a36f7dfa311294e0"
+        },
+        {
+          "path": "xl/tables/table1.xml",
+          "sha256": "924b3c7d660aabe2f91c9030f6ce8f6568668243788985380d7968be012da5b5"
+        },
+        {
+          "path": "xl/tables/table2.xml",
+          "sha256": "b805120a35dcdace31a3763075505a9b8eb937f7bb3c27d4c6069cd885a76fdd"
+        },
+        {
+          "path": "xl/tables/table3.xml",
+          "sha256": "4ffe3a9aa17ef24d8b624bd39320ee5a38a7203316caf5012366181da02d8e3a"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet1.xml.rels",
+          "sha256": "8d7debddb84299319af3ff5a790d017b6fe7781ab7f0c1a8034fcb8d082eed4f"
+        },
+        {
+          "path": "xl/worksheets/sheet2.xml",
+          "sha256": "3698c0b580338e9290fa00fc42fc060e8873313688aa0f5d06af2bb344f2c996"
+        },
+        {
+          "path": "xl/tables/table4.xml",
+          "sha256": "0ba1e65058cf6e13f378a0f05fc87e5329e7dddbe199d4ce2c88ec89efc33b5b"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet2.xml.rels",
+          "sha256": "ae2c7a8d1b20fc34473dd9ff81e6e7865d87905dee489513cfda1f62b64c5029"
+        },
+        {
+          "path": "xl/worksheets/sheet3.xml",
+          "sha256": "bdb46f86b66fb20190b239bf4c8a48884b93c3c9bb5ad668a4573bc79e3cdde3"
+        },
+        {
+          "path": "xl/tables/table5.xml",
+          "sha256": "4c1cd8df46449590f53f52a9002937f4a8b7e3bbf2beff2a43cde37c796eb02f"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet3.xml.rels",
+          "sha256": "ad1eb9c7249c192f9a26d9a007cf93028d4f70d63084634a6708ca49c11137c8"
+        },
+        {
+          "path": "xl/worksheets/sheet4.xml",
+          "sha256": "215e7dafb20aa7433a13cd7b232584ddf7ee900756d83e8b497d7acac6d447be"
+        },
+        {
+          "path": "xl/tables/table6.xml",
+          "sha256": "9303cdedb5f2903f29f8b51c256ecad4690deec89dabf475462752959d673fe1"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet4.xml.rels",
+          "sha256": "19ed5f6eee860188a84a79233db3f388d0b21029bd13dab6551ab817b7e6113d"
+        },
+        {
+          "path": "xl/worksheets/sheet5.xml",
+          "sha256": "98261f3c1db8ca0244322d1b48623614d90b7046c40af2e4f90b70cb2f06a8c9"
+        },
+        {
+          "path": "xl/worksheets/sheet6.xml",
+          "sha256": "ca8ce5fb35a9ffc3f3338231f371be36b95c3d7733d0b99608baff70e19b73bd"
+        },
+        {
+          "path": "xl/worksheets/sheet7.xml",
+          "sha256": "65a150935996add6491b36e4242b36f25b89dbeaaa565c63dc02f439bc590a73"
+        },
+        {
+          "path": "xl/worksheets/sheet8.xml",
+          "sha256": "6cc8d958cb1140387e70dd981cffa45d8053a79122baa40da2980f4400dc382b"
+        }
+      ]
+    },
+    {
+      "original": "Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "output": "Tuerschild-Acrylglas-3mm-8x2_v3.xlsx",
+      "originalSha256": "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+      "planId": "pgp_6126fcb8-d8b7-4b5b-9410-9c09a9198b52",
+      "planHash": "0aa24af4bd611f5a674642a98bb5603d12f23d4a7175cdea3afca55865e0ab95",
+      "source": {
+        "id": "cfg_ecf40ca9-b1f0-4782-ae2d-768cbe62d03d",
+        "revision": 1,
+        "sha256": "21479a11ae22c881fe40a05975d8beb7aa2e1fafc30db657b04bd3591ee36ed2",
+        "status": "draft",
+        "publishedRevision": null
+      },
+      "template": {
+        "id": "pgt_2c75a0ba-8628-47b6-807c-5889687ad8f1",
+        "revision": 1,
+        "sha256": "e8d27fb095d25bdf6847b93b8ef2d5107cd2ce3f789df2539c1bdf8cb4ba0835"
+      },
+      "moduleProfile": {
+        "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+        "revision": 1,
+        "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+      },
+      "main": false,
+      "appendixSheet": "BestätigteUploads",
+      "xlsxSha256": "015f1775e2408455e3c14479ea0074d652099adaa0fc130b6650f5d55fc19386",
+      "size": 43428,
+      "modifiedPackageParts": [
+        "xl/styles.xml",
+        "xl/workbook.xml",
+        "xl/_rels/workbook.xml.rels",
+        "[Content_Types].xml"
+      ],
+      "addedPackagePart": "xl/worksheets/sheet9.xml",
+      "unchangedOriginalParts": 22,
+      "preservedSheetAndTableParts": [
+        {
+          "path": "xl/worksheets/sheet1.xml",
+          "sha256": "2a3468cda6a25f0a85338215029ac2958a300fc3d60fcbb4cdd5b3250958ab9b"
+        },
+        {
+          "path": "xl/tables/table1.xml",
+          "sha256": "924b3c7d660aabe2f91c9030f6ce8f6568668243788985380d7968be012da5b5"
+        },
+        {
+          "path": "xl/tables/table2.xml",
+          "sha256": "b805120a35dcdace31a3763075505a9b8eb937f7bb3c27d4c6069cd885a76fdd"
+        },
+        {
+          "path": "xl/tables/table3.xml",
+          "sha256": "4ffe3a9aa17ef24d8b624bd39320ee5a38a7203316caf5012366181da02d8e3a"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet1.xml.rels",
+          "sha256": "8d7debddb84299319af3ff5a790d017b6fe7781ab7f0c1a8034fcb8d082eed4f"
+        },
+        {
+          "path": "xl/worksheets/sheet2.xml",
+          "sha256": "dd7825dc835127a4b211fc1560e46f4ee1f4a6ece9657fd7e8a5d89856c21a1e"
+        },
+        {
+          "path": "xl/tables/table4.xml",
+          "sha256": "0ba1e65058cf6e13f378a0f05fc87e5329e7dddbe199d4ce2c88ec89efc33b5b"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet2.xml.rels",
+          "sha256": "ae2c7a8d1b20fc34473dd9ff81e6e7865d87905dee489513cfda1f62b64c5029"
+        },
+        {
+          "path": "xl/worksheets/sheet3.xml",
+          "sha256": "4f95dab3f8758c594620f8ab62439556e59e54f628103483ccc2749fda6e099d"
+        },
+        {
+          "path": "xl/tables/table5.xml",
+          "sha256": "4c1cd8df46449590f53f52a9002937f4a8b7e3bbf2beff2a43cde37c796eb02f"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet3.xml.rels",
+          "sha256": "ad1eb9c7249c192f9a26d9a007cf93028d4f70d63084634a6708ca49c11137c8"
+        },
+        {
+          "path": "xl/worksheets/sheet4.xml",
+          "sha256": "0e066b22f3743b172cce9d491393d31235870c1dba049040411811790e280c02"
+        },
+        {
+          "path": "xl/tables/table6.xml",
+          "sha256": "9303cdedb5f2903f29f8b51c256ecad4690deec89dabf475462752959d673fe1"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet4.xml.rels",
+          "sha256": "19ed5f6eee860188a84a79233db3f388d0b21029bd13dab6551ab817b7e6113d"
+        },
+        {
+          "path": "xl/worksheets/sheet5.xml",
+          "sha256": "2e9eea1cf5d80e64fbac725403d02ec6f7475e7096be5cffefca2719431e53eb"
+        },
+        {
+          "path": "xl/worksheets/sheet6.xml",
+          "sha256": "07742fa1119da124e6b760b14c70ba1e0214ebffea69fe1fdc576ef3b951ab16"
+        },
+        {
+          "path": "xl/worksheets/sheet7.xml",
+          "sha256": "65a150935996add6491b36e4242b36f25b89dbeaaa565c63dc02f439bc590a73"
+        },
+        {
+          "path": "xl/worksheets/sheet8.xml",
+          "sha256": "97f59c71774dec168bcee6656e43870860d41b24404980a5b7d95af21635226f"
+        }
+      ]
+    },
+    {
+      "original": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+      "output": "Tuerschild-Edelstahl-5x2_v2.xlsx",
+      "originalSha256": "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+      "planId": "pgp_fae5b365-a7c0-4d85-9096-e9f5670b5b21",
+      "planHash": "ac2f8ce469cf862471a6c1c35f7c6a0142bf25b235b00b20e8038d23551a8309",
+      "source": {
+        "id": "cfg_9c64f1b8-5e95-49ae-8937-d5990a3b26a6",
+        "revision": 1,
+        "sha256": "c37159312125ef333a01ea1ab96d1c25fe46edfd946c52495a7e9039f2f1f466",
+        "status": "draft",
+        "publishedRevision": null
+      },
+      "template": {
+        "id": "pgt_26088966-d1b9-4212-92a3-4a3e3bb6a617",
+        "revision": 1,
+        "sha256": "278979ee06bfba708bf6052c631d4ebc2cd38af0d1ca11d6f5ebd5924ab6d5a5"
+      },
+      "moduleProfile": {
+        "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+        "revision": 1,
+        "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+      },
+      "main": false,
+      "appendixSheet": "BestätigteUploads",
+      "xlsxSha256": "7374fbcce3a6a316a2def679d4326cd5c8af8f812fc9ddced59bf50a15e1698b",
+      "size": 38628,
+      "modifiedPackageParts": [
+        "xl/styles.xml",
+        "xl/workbook.xml",
+        "xl/_rels/workbook.xml.rels",
+        "[Content_Types].xml"
+      ],
+      "addedPackagePart": "xl/worksheets/sheet9.xml",
+      "unchangedOriginalParts": 22,
+      "preservedSheetAndTableParts": [
+        {
+          "path": "xl/worksheets/sheet1.xml",
+          "sha256": "179a32da55fe44af807421c2c89549ea549e115ba63bbd8d5ffc9cf3abfe028e"
+        },
+        {
+          "path": "xl/tables/table1.xml",
+          "sha256": "924b3c7d660aabe2f91c9030f6ce8f6568668243788985380d7968be012da5b5"
+        },
+        {
+          "path": "xl/tables/table2.xml",
+          "sha256": "b805120a35dcdace31a3763075505a9b8eb937f7bb3c27d4c6069cd885a76fdd"
+        },
+        {
+          "path": "xl/tables/table3.xml",
+          "sha256": "4ffe3a9aa17ef24d8b624bd39320ee5a38a7203316caf5012366181da02d8e3a"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet1.xml.rels",
+          "sha256": "8d7debddb84299319af3ff5a790d017b6fe7781ab7f0c1a8034fcb8d082eed4f"
+        },
+        {
+          "path": "xl/worksheets/sheet2.xml",
+          "sha256": "4bc96317d421a7f0b084bd5349d97580bfeb57b12b2430505529f11e8ac82cdc"
+        },
+        {
+          "path": "xl/tables/table4.xml",
+          "sha256": "0ba1e65058cf6e13f378a0f05fc87e5329e7dddbe199d4ce2c88ec89efc33b5b"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet2.xml.rels",
+          "sha256": "ae2c7a8d1b20fc34473dd9ff81e6e7865d87905dee489513cfda1f62b64c5029"
+        },
+        {
+          "path": "xl/worksheets/sheet3.xml",
+          "sha256": "c447a5fc3b90e9dfc964c9c91ee742eee3307aa7b57a172290e7bc6933c277a6"
+        },
+        {
+          "path": "xl/tables/table5.xml",
+          "sha256": "4c1cd8df46449590f53f52a9002937f4a8b7e3bbf2beff2a43cde37c796eb02f"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet3.xml.rels",
+          "sha256": "ad1eb9c7249c192f9a26d9a007cf93028d4f70d63084634a6708ca49c11137c8"
+        },
+        {
+          "path": "xl/worksheets/sheet4.xml",
+          "sha256": "a3e6b9abf09c5f67ae0efd9eb091040004a736170e0c0b4110ec269eceb8f716"
+        },
+        {
+          "path": "xl/tables/table6.xml",
+          "sha256": "8dab6a03454d8d8859412b7bf737eafd488dec58537ad8de1109bdb85d31f0b3"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet4.xml.rels",
+          "sha256": "19ed5f6eee860188a84a79233db3f388d0b21029bd13dab6551ab817b7e6113d"
+        },
+        {
+          "path": "xl/worksheets/sheet5.xml",
+          "sha256": "83bfef5b257f9ca30ce3be88756c34651a0c04e9dbd0b9df9d55f829631bb162"
+        },
+        {
+          "path": "xl/worksheets/sheet6.xml",
+          "sha256": "3860d2ba9fc6fd1fdb866b4c4c5bc9e32953943ea01936d5c5a004a6df1c1214"
+        },
+        {
+          "path": "xl/worksheets/sheet7.xml",
+          "sha256": "9574d8dd6bb0665437745e29258628ea03b37fefd121777338c50d89e6737d03"
+        },
+        {
+          "path": "xl/worksheets/sheet8.xml",
+          "sha256": "c96d0652128dfb04a14b2362eeb03ede8f24d7514993d38abdda7b83f5fd3842"
+        }
+      ]
+    },
+    {
+      "original": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+      "output": "Tuerschild-Edelstahl-6x2_v2.xlsx",
+      "originalSha256": "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+      "planId": "pgp_ea7f2afb-fb41-4e91-90e7-986d8d524cc8",
+      "planHash": "f87a05e734982b900f49de674d8748b2870113ad76b5a3e9c39b30ee2cdddf9e",
+      "source": {
+        "id": "cfg_d50868ac-bb33-476f-a07f-3a9a1b9af583",
+        "revision": 1,
+        "sha256": "3ef423c8c81ba076b3b61eaf116467464a42a70f266536451a870ab09824f516",
+        "status": "draft",
+        "publishedRevision": null
+      },
+      "template": {
+        "id": "pgt_176dd091-f9dc-4f7f-9bd1-42c350beb7f5",
+        "revision": 1,
+        "sha256": "e8d5f73a313e937d233ee654e5cc3e50eb1194b2092a43bc03e0feea635a7bf2"
+      },
+      "moduleProfile": {
+        "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+        "revision": 1,
+        "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+      },
+      "main": false,
+      "appendixSheet": "BestätigteUploads",
+      "xlsxSha256": "b1de85be647705f185e13956f2bb24ccbc18e7c8a6a8c93f5f7b20b90b270eb4",
+      "size": 38645,
+      "modifiedPackageParts": [
+        "xl/styles.xml",
+        "xl/workbook.xml",
+        "xl/_rels/workbook.xml.rels",
+        "[Content_Types].xml"
+      ],
+      "addedPackagePart": "xl/worksheets/sheet9.xml",
+      "unchangedOriginalParts": 22,
+      "preservedSheetAndTableParts": [
+        {
+          "path": "xl/worksheets/sheet1.xml",
+          "sha256": "820757f4d83ded9a3946edb4bb7340b28b0d432550cda7f2cb5c4b4d9d44b00e"
+        },
+        {
+          "path": "xl/tables/table1.xml",
+          "sha256": "924b3c7d660aabe2f91c9030f6ce8f6568668243788985380d7968be012da5b5"
+        },
+        {
+          "path": "xl/tables/table2.xml",
+          "sha256": "b805120a35dcdace31a3763075505a9b8eb937f7bb3c27d4c6069cd885a76fdd"
+        },
+        {
+          "path": "xl/tables/table3.xml",
+          "sha256": "4ffe3a9aa17ef24d8b624bd39320ee5a38a7203316caf5012366181da02d8e3a"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet1.xml.rels",
+          "sha256": "8d7debddb84299319af3ff5a790d017b6fe7781ab7f0c1a8034fcb8d082eed4f"
+        },
+        {
+          "path": "xl/worksheets/sheet2.xml",
+          "sha256": "5911a6c1f75ddb12aa8bae74136af1f6e276a4b181c17bbe15102561b6515b23"
+        },
+        {
+          "path": "xl/tables/table4.xml",
+          "sha256": "0ba1e65058cf6e13f378a0f05fc87e5329e7dddbe199d4ce2c88ec89efc33b5b"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet2.xml.rels",
+          "sha256": "ae2c7a8d1b20fc34473dd9ff81e6e7865d87905dee489513cfda1f62b64c5029"
+        },
+        {
+          "path": "xl/worksheets/sheet3.xml",
+          "sha256": "0e36ff3d44a71afa72c02e82c2c1faf0c8ee8b6f79fc0884cea0767937d62277"
+        },
+        {
+          "path": "xl/tables/table5.xml",
+          "sha256": "4c1cd8df46449590f53f52a9002937f4a8b7e3bbf2beff2a43cde37c796eb02f"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet3.xml.rels",
+          "sha256": "ad1eb9c7249c192f9a26d9a007cf93028d4f70d63084634a6708ca49c11137c8"
+        },
+        {
+          "path": "xl/worksheets/sheet4.xml",
+          "sha256": "f06d5380073658fd1291709cf032b32a851a681554671f76c8093d5d38be307f"
+        },
+        {
+          "path": "xl/tables/table6.xml",
+          "sha256": "8dab6a03454d8d8859412b7bf737eafd488dec58537ad8de1109bdb85d31f0b3"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet4.xml.rels",
+          "sha256": "19ed5f6eee860188a84a79233db3f388d0b21029bd13dab6551ab817b7e6113d"
+        },
+        {
+          "path": "xl/worksheets/sheet5.xml",
+          "sha256": "aea113b7777690ed8ce8e7b1f9131c0fbf9e339b96863b71f3a971131a275397"
+        },
+        {
+          "path": "xl/worksheets/sheet6.xml",
+          "sha256": "ca8ce5fb35a9ffc3f3338231f371be36b95c3d7733d0b99608baff70e19b73bd"
+        },
+        {
+          "path": "xl/worksheets/sheet7.xml",
+          "sha256": "1acfd2c452b1ce63d8c6ab7549ab7bb5ad279179fdbdb3fd55a13e5b7ba0f8b1"
+        },
+        {
+          "path": "xl/worksheets/sheet8.xml",
+          "sha256": "c7f79fd4ab2edf3de52573e258367771a637f4f5ef3009a6efe3266319f4eb36"
+        }
+      ]
+    },
+    {
+      "original": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+      "output": "Tuerschild-Edelstahl-8x2_v2.xlsx",
+      "originalSha256": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+      "planId": "pgp_c2098259-36a3-4048-a4e6-e3ffa70c9d68",
+      "planHash": "5c4b729ea5be27e1ea9b4e4a6c65e94088803618219e5025836ca6e70654ec3e",
+      "source": {
+        "id": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+        "revision": 1,
+        "sha256": "9520da5156363805a1c11853b13795a09321410dc7b9ef1aa3fe711eb76ef2e3",
+        "status": "draft",
+        "publishedRevision": null
+      },
+      "template": {
+        "id": "pgt_abb30c39-1c05-4b4a-a666-812591d03a25",
+        "revision": 1,
+        "sha256": "c0501c00a717b14d33625ba451f16f8d7df4e2c5008d3372c24dbbda93a23a0c"
+      },
+      "moduleProfile": {
+        "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+        "revision": 1,
+        "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+      },
+      "main": false,
+      "appendixSheet": "BestätigteUploads",
+      "xlsxSha256": "15026318b29006e0a4d479ec5c52a49b7b75dd89463e5316884e862e867fd890",
+      "size": 38642,
+      "modifiedPackageParts": [
+        "xl/styles.xml",
+        "xl/workbook.xml",
+        "xl/_rels/workbook.xml.rels",
+        "[Content_Types].xml"
+      ],
+      "addedPackagePart": "xl/worksheets/sheet9.xml",
+      "unchangedOriginalParts": 22,
+      "preservedSheetAndTableParts": [
+        {
+          "path": "xl/worksheets/sheet1.xml",
+          "sha256": "da09263af3073c688e61ecef45765a8b1428a2c79be61f842acfdc4076fb2fd7"
+        },
+        {
+          "path": "xl/tables/table1.xml",
+          "sha256": "924b3c7d660aabe2f91c9030f6ce8f6568668243788985380d7968be012da5b5"
+        },
+        {
+          "path": "xl/tables/table2.xml",
+          "sha256": "b805120a35dcdace31a3763075505a9b8eb937f7bb3c27d4c6069cd885a76fdd"
+        },
+        {
+          "path": "xl/tables/table3.xml",
+          "sha256": "4ffe3a9aa17ef24d8b624bd39320ee5a38a7203316caf5012366181da02d8e3a"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet1.xml.rels",
+          "sha256": "8d7debddb84299319af3ff5a790d017b6fe7781ab7f0c1a8034fcb8d082eed4f"
+        },
+        {
+          "path": "xl/worksheets/sheet2.xml",
+          "sha256": "8b070218b7f92299924b07cc0b4175f3297d06361e08dd4cee011ebfb303aba7"
+        },
+        {
+          "path": "xl/tables/table4.xml",
+          "sha256": "0ba1e65058cf6e13f378a0f05fc87e5329e7dddbe199d4ce2c88ec89efc33b5b"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet2.xml.rels",
+          "sha256": "ae2c7a8d1b20fc34473dd9ff81e6e7865d87905dee489513cfda1f62b64c5029"
+        },
+        {
+          "path": "xl/worksheets/sheet3.xml",
+          "sha256": "79bb68e8518d1767502c28712d683d1589ca01adc66d1e9b21d238de007ab0a2"
+        },
+        {
+          "path": "xl/tables/table5.xml",
+          "sha256": "4c1cd8df46449590f53f52a9002937f4a8b7e3bbf2beff2a43cde37c796eb02f"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet3.xml.rels",
+          "sha256": "ad1eb9c7249c192f9a26d9a007cf93028d4f70d63084634a6708ca49c11137c8"
+        },
+        {
+          "path": "xl/worksheets/sheet4.xml",
+          "sha256": "b5ddb7ac4fcf4a206c843ac577e9ce6263b3c691487b14c908b698ac90787868"
+        },
+        {
+          "path": "xl/tables/table6.xml",
+          "sha256": "8dab6a03454d8d8859412b7bf737eafd488dec58537ad8de1109bdb85d31f0b3"
+        },
+        {
+          "path": "xl/worksheets/_rels/sheet4.xml.rels",
+          "sha256": "19ed5f6eee860188a84a79233db3f388d0b21029bd13dab6551ab817b7e6113d"
+        },
+        {
+          "path": "xl/worksheets/sheet5.xml",
+          "sha256": "1ee06f4f4c3f084ed4b79d5322dd30e3cbda677c1eb1df0af2babc121e4cd80c"
+        },
+        {
+          "path": "xl/worksheets/sheet6.xml",
+          "sha256": "07742fa1119da124e6b760b14c70ba1e0214ebffea69fe1fdc576ef3b951ab16"
+        },
+        {
+          "path": "xl/worksheets/sheet7.xml",
+          "sha256": "6f6f479a3b57109ee0dbe5ec2ab6eb5a60ea3d8c1f9904f1d1c830b3ef8ffe0e"
+        },
+        {
+          "path": "xl/worksheets/sheet8.xml",
+          "sha256": "edb736488c1595a9960d309f178f6dd3c9bbb5a8c07112276aaf619a324b3a1c"
+        }
+      ]
+    }
+  ]
+}

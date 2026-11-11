@@ -31,6 +31,11 @@ function templateObjects(config){
 }
 const editable=object=>object.customerEditable!==false&&!object.technicalLocked&&!object.locked;
 
+// Chris, 11.11.2026 (#230): acrylic engraving may offer photos and checked SVG
+// logos together. The existing steel SVG-only path remains photo-free.
+export const photoWithVectorLogoAllowed=config=>config?.logo?.vectorUpload!==true||
+ (config?.profile?.material?.kind==='acrylic'&&config?.profile?.processing?.profileId==='acrylic-engraving');
+
 /** Upper bound from the saved source, independent of the selected module profile.
  * Keep binding to that source when changing a profile: applying a restricted
  * output does not reconstruct permissions that its source never granted. */
@@ -42,7 +47,7 @@ export function nativeModuleAvailability(config){
   text:additions===undefined||additions.text===true||objects.some(object=>object.type==='text'&&editable(object)),
   motifs:additions===undefined||additions.motifs===true||objects.some(object=>['motif','motif-raster'].includes(object.type)&&editable(object)),
   // No new photo capability on steel. Its explicitly approved upload is SVG logo.
-  photo:config?.photo?.enabled===true&&config?.logo?.vectorUpload!==true&&config?.profile?.material?.kind!=='steel'&&process?.tools.photo===true,
+  photo:config?.photo?.enabled===true&&photoWithVectorLogoAllowed(config)&&config?.profile?.material?.kind!=='steel'&&process?.tools.photo===true,
   logo:config?.logo?.enabled!==false,
   colors:process?.tools.textColor===true,
  };

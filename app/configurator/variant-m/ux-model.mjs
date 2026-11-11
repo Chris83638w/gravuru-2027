@@ -1,10 +1,10 @@
 // Shared UI rules. These do not authorize a Shopify order or a paid download.
 import {cleanObject} from './contract.mjs';
-import {moduleEnabled} from './module-profile.mjs';
+import {moduleEnabled,photoWithVectorLogoAllowed} from './module-profile.mjs';
 export {carryPersonalObjects,mapPersonalObjects} from './field-mapping.mjs';
-export const uploadAllowed=(config,kind)=>kind==='photo'?moduleEnabled(config,'photo')&&config?.logo?.vectorUpload!==true&&config?.photo?.enabled!==false:kind==='logo'?moduleEnabled(config,'logo')&&config?.logo?.enabled!==false:false;
+export const uploadAllowed=(config,kind)=>kind==='photo'?moduleEnabled(config,'photo')&&photoWithVectorLogoAllowed(config)&&config?.photo?.enabled!==false:kind==='logo'?moduleEnabled(config,'logo')&&config?.logo?.enabled!==false:false;
 export function photoAvailableForDesign(config,designId){
-  if(!moduleEnabled(config,'photo')||config?.logo?.vectorUpload===true||config?.photo?.enabled===false)return false;
+  if(!moduleEnabled(config,'photo')||!photoWithVectorLogoAllowed(config)||config?.photo?.enabled===false)return false;
   if(config?.photoDesignPricing===true)return true;
   const design=config?.profile?.designs?.find(d=>d.id===designId);
   return !design?.importedSource||design.objects.some(o=>o.type==='photoSlot');

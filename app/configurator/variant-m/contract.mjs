@@ -42,7 +42,9 @@ export const MAX_PHOTO_BYTES = 15 * 1024 * 1024;
 // K10 / Ü1: Verfahrensprofil des Produkts (Werkzeuge, Palette, Mindestschriftgröße, Soll-DPI).
 export const productProcess=config=>processProfile(config.profile);
 // New product revisions opt in explicitly. Existing logo/photo pricing remains unchanged.
-export const vectorLogoAllowed=config=>moduleEnabled(config,'logo')&&config?.logo?.enabled===true&&config.logo.vectorUpload===true&&config.logo.extraPriceCents===1299&&config?.photo?.enabled===false&&config?.profile?.material?.kind==='steel'&&productProcess(config).method==='engraving';
+export const vectorLogoAllowed=config=>moduleEnabled(config,'logo')&&config?.logo?.enabled===true&&config.logo.vectorUpload===true&&config.logo.extraPriceCents===1299&&
+ ((config?.profile?.material?.kind==='steel'&&config?.photo?.enabled===false)||
+ (config?.profile?.material?.kind==='acrylic'&&config?.profile?.processing?.profileId==='acrylic-engraving'))&&productProcess(config).method==='engraving';
 // Physischer Maßstab der Gestaltung (Acryl: gewählte Größe / Designbreite, sonst 1).
 export function physicalScale(config, options={}) {
   return config.acrylic ? acrylicSelection(acrylicOptions(resolvedOptions(config, options)), config.acrylic.pricing).size.width / config.acrylic.designWidth : 1;
@@ -98,7 +100,7 @@ export function prepareConfig(input) {
   if (typeof config.photo?.enabled !== 'boolean' || config.photo.mode !== 'upload-only') fail('Fotofunktion ausdrücklich festlegen.');
   if(config.logo!==undefined&&typeof config.logo.enabled!=='boolean')fail('Logofunktion ausdrücklich festlegen.');
   if(config.logo?.vectorUpload!==undefined&&typeof config.logo.vectorUpload!=='boolean')fail('Vektorlogo-Funktion ausdrücklich festlegen.');
-  if(config.logo?.vectorUpload===true&&!vectorLogoAllowed(config))fail('Vektorlogos benötigen Edelstahlgravur ohne Fotoupload und einen ausdrücklichen Aufpreis von 12,99 € je Logo.');
+  if(config.logo?.vectorUpload===true&&!vectorLogoAllowed(config))fail('Vektorlogos benötigen Acrylglasgravur oder Edelstahlgravur ohne Fotoupload und einen ausdrücklichen Aufpreis von 12,99 € je Logo.');
   validateCustomerAdditions(config);
   if (!config.photo.enabled){p.designs = p.designs.filter(d => !d.objects.some(o => o.type === 'photoSlot'));if(config.localResources){config.localResources.photoPlaceholders=[];config.localResources.photoExamples=[];}}
   if (!p.designs.length) fail('Für dieses Produkt gibt es keine passende Vorlage ohne Fotobereich.');

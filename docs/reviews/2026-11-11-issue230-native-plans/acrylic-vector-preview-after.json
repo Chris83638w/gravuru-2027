@@ -1,0 +1,36 @@
+{
+  "actualMaterial": "acrylic",
+  "actualSurface": "#17191b",
+  "expectedPreviewInk": "#e1e4e5",
+  "editorHasInkFilter": true,
+  "dialogGroupFilter": null,
+  "dialogImageFilter": true,
+  "dialogAsksBlackPreview": false,
+  "sourceSVGUnchanged": true,
+  "editorInkPixel": [
+    225,
+    228,
+    229,
+    255
+  ],
+  "dialogInkPixel": [
+    225,
+    228,
+    229,
+    255
+  ],
+  "editorCutoutPixel": [
+    23,
+    25,
+    27,
+    255
+  ],
+  "dialogCutoutPixel": [
+    23,
+    25,
+    27,
+    255
+  ],
+  "steelPreviewFilter": "",
+  "previewAlphaIdentity": true
+}

@@ -1,0 +1,168 @@
+{
+  "refs": {
+    "main": "76269aa85b5dd7e22957fb138de7d404758d9ea5",
+    "base": "411188db5777d7fb0ec06c6fab2f6faf85270fc9",
+    "B": "6298f7af22056333569b030c249ce64568e46beb",
+    "C": "9b0a4fddb73177ec1012c3ae12c0f11c7c55591c",
+    "tip": "64e026e8fd15b129a16cc97189b28506aa9e8ac2"
+  },
+  "all": 1023,
+  "app": 306,
+  "runtimeMainDiff": 183,
+  "priorApp": 287,
+  "BApp": 14,
+  "CApp": 33,
+  "requestedRuntime": 28,
+  "docsOnly": true,
+  "closure": 327,
+  "missingOnMain": 36,
+  "differentOnMain": 112,
+  "directMissing": [
+    {
+      "from": "app/configurator/variant-m/contract.mjs",
+      "to": "app/configurator/variant-m/scalable-sizes.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/contract.mjs",
+      "to": "app/configurator/variant-m/module-profile.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/contract.mjs",
+      "to": "app/configurator/variant-m/module-runtime.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/contract.mjs",
+      "to": "app/configurator/variant-m/photo-design-pricing.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/design-search-control.mjs",
+      "to": "app/configurator/variant-m/design-search.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/logo-upload.mjs",
+      "to": "app/configurator/variant-m/module-profile.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/native-design-search.mjs",
+      "to": "app/configurator/variant-m/design-search-control.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/native-design-search.mjs",
+      "to": "app/configurator/variant-m/design-search.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/native-design-search.mjs",
+      "to": "app/configurator/variant-m/module-profile.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/product-design-gallery.mjs",
+      "to": "app/configurator/variant-m/gallery-pager.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/product-design-gallery.mjs",
+      "to": "app/configurator/variant-m/design-search-control.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/product-design-gallery.mjs",
+      "to": "app/configurator/variant-m/native-design-search.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/ux-model.mjs",
+      "to": "app/configurator/variant-m/module-profile.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/ux.mjs",
+      "to": "app/configurator/variant-m/module-profile.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/ux.mjs",
+      "to": "app/configurator/variant-m/module-runtime.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/ux.mjs",
+      "to": "app/configurator/variant-m/gallery-workbench.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/ux.mjs",
+      "to": "app/configurator/variant-m/preview-uploads.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/ux.mjs",
+      "to": "app/configurator/variant-m/dialog-dismiss.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/ux.mjs",
+      "to": "app/configurator/variant-m/modern-motif-browser.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/ux.mjs",
+      "to": "app/configurator/variant-m/design-reset.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/workflow.mjs",
+      "to": "app/configurator/variant-m/text-bounds.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/ux.mjs",
+      "to": "app/configurator/variant-m/session-uploads.mjs"
+    },
+    {
+      "from": "app/configurator/variant-m/ux.mjs",
+      "to": "app/configurator/variant-m/photo-upload-geometry.mjs"
+    },
+    {
+      "from": "app/workshop/http.mjs",
+      "to": "app/workshop/configurator-module-http.mjs"
+    },
+    {
+      "from": "app/workshop/http.mjs",
+      "to": "app/workshop/motif-search-stats.mjs"
+    },
+    {
+      "from": "app/workshop/http.mjs",
+      "to": "app/workshop/motif-search-preview-products.mjs"
+    },
+    {
+      "from": "app/workshop/shop-design-gallery.mjs",
+      "to": "app/configurator/variant-m/module-profile.mjs"
+    },
+    {
+      "from": "app/workshop/shop-design-gallery.mjs",
+      "to": "app/configurator/variant-m/design-search.mjs"
+    },
+    {
+      "from": "app/workshop/shop-entry.mjs",
+      "to": "app/configurator/variant-m/module-profile.mjs"
+    }
+  ],
+  "requested": [
+    "app/configurator/variant-m/contract.mjs",
+    "app/configurator/variant-m/decision-help.mjs",
+    "app/configurator/variant-m/design-search-control.mjs",
+    "app/configurator/variant-m/design-search.mjs",
+    "app/configurator/variant-m/logo-upload.mjs",
+    "app/configurator/variant-m/material-surface.mjs",
+    "app/configurator/variant-m/module-profile.mjs",
+    "app/configurator/variant-m/motif-placement.mjs",
+    "app/configurator/variant-m/motif-search-analytics.mjs",
+    "app/configurator/variant-m/native-design-search.mjs",
+    "app/configurator/variant-m/product-design-gallery.css",
+    "app/configurator/variant-m/product-design-gallery.mjs",
+    "app/configurator/variant-m/ux-model.mjs",
+    "app/configurator/variant-m/ux.mjs",
+    "app/configurator/variant-m/workflow.mjs",
+    "app/platform/sources/app/shared/models/acrylic-plate-preview.mjs",
+    "app/workshop/customer-vector-logo.py",
+    "app/workshop/http.mjs",
+    "app/workshop/motif-search-stats.mjs",
+    "app/workshop/product-preview.mjs",
+    "app/workshop/shop-design-gallery.mjs",
+    "app/workshop/shop-entry.mjs",
+    "app/workshop/shop-gallery-model.mjs",
+    "app/workshop/shop-gallery-snapshot.mjs",
+    "app/workshop/ui/motif-searches.html",
+    "app/workshop/ui/motif-searches.mjs",
+    "app/workshop/ui/shop-design-switch.mjs",
+    "app/workshop/ui/shop-entry-client.mjs"
+  ]
+}

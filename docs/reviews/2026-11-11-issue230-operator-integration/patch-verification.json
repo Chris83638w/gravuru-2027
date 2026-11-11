@@ -1,0 +1,228 @@
+{
+  "refs": {
+    "main": "76269aa85b5dd7e22957fb138de7d404758d9ea5",
+    "base": "411188db5777d7fb0ec06c6fab2f6faf85270fc9",
+    "B": "6298f7af22056333569b030c249ce64568e46beb",
+    "C": "9b0a4fddb73177ec1012c3ae12c0f11c7c55591c",
+    "tip": "64e026e8fd15b129a16cc97189b28506aa9e8ac2"
+  },
+  "checkedFiles": 46,
+  "patchesApplySequentially": true,
+  "allPatchedFilesEqualFinal": true,
+  "claudeHttp": {
+    "sourceRef": "ac10e6cee00469591514dcb4fa477b0547a54c48",
+    "patch": "C-http-searchKind-only.patch",
+    "applies": true,
+    "syntaxCheckPassed": true,
+    "retained": [
+      "customerReadMemo",
+      "publicPreviewModel",
+      "katalogWorker",
+      "jsonMaybeGzip",
+      "GRAVURU_KATALOG_WORKER_WARM",
+      "katalogWorker?.close()"
+    ],
+    "patchedSha256": "be5a1ecd3ad6d210ba1270afe232e62fd1f810e5ada56c61ecfedae80e123d14",
+    "limit": "Patch application and syntax only; no integrated runtime execution."
+  },
+  "patches": [
+    {
+      "file": "B-runtime.patch",
+      "sha256": "0fadb59e483f8d89d4d96197522c7dd59713a6846b9b77fe87f25a21787647cb"
+    },
+    {
+      "file": "C-material-runtime.patch",
+      "sha256": "bee3d05ad115345555c8ad8eeb13c3a8901573b0217819c717cce5798b9269a2"
+    },
+    {
+      "file": "C-http-searchKind-only.patch",
+      "sha256": "2245463c90d82a7fd728912e0786dabf38d70b621653067357fd0f6580261fbd"
+    }
+  ],
+  "files": [
+    {
+      "path": "app/configurator/variant-m/contract.mjs",
+      "sha256": "9b024cb6d378bbd95f1671f90aa75bec185a0db4638880be3816c8b60520e4e6"
+    },
+    {
+      "path": "app/configurator/variant-m/decision-help.mjs",
+      "sha256": "bb282b81ae49d44df6a720d03b32264f627a4f2c5a4570a1c4e2bf4a4d907b08"
+    },
+    {
+      "path": "app/configurator/variant-m/design-search-control.mjs",
+      "sha256": "8eec41a5675e9edc1343b851820366650ef90f66b935e257ebe7b4c6cb4a1c78"
+    },
+    {
+      "path": "app/configurator/variant-m/design-search.mjs",
+      "sha256": "49183adf498f373e6c8bc210363b7a7b8ce3336a03e4b77c95c4a305c6ca8617"
+    },
+    {
+      "path": "app/configurator/variant-m/design-search.test.mjs",
+      "sha256": "58db9367a2b4d92aa885f3382f57771a85c5015509ae0346b8ee91876ca46a2f"
+    },
+    {
+      "path": "app/configurator/variant-m/logo-upload.mjs",
+      "sha256": "b7a1fe96ef42e6167b10d3707d5691930f845aea5107c1e3a536d1a755c0de8f"
+    },
+    {
+      "path": "app/configurator/variant-m/logo-upload.test.mjs",
+      "sha256": "d8c88fe215e8867c92d8f6a0e9ed9ace8305d34b8e0bd9cffaf1f927c0e09f60"
+    },
+    {
+      "path": "app/configurator/variant-m/material-surface-preview.test.mjs",
+      "sha256": "0cd7c934fb480208ffddcc3f9b0a0aa6a94c400b89c4f2209a7db3a171461244"
+    },
+    {
+      "path": "app/configurator/variant-m/material-surface.mjs",
+      "sha256": "b2e1aade8938aa31f2373d74ecdbaf060c049e8dbafed8599175a57f45a8a9b4"
+    },
+    {
+      "path": "app/configurator/variant-m/module-profile-realm.test.mjs",
+      "sha256": "b8b2596a399314b8f3460042babea724e562f02460954bb6ec2c41edbf599da8"
+    },
+    {
+      "path": "app/configurator/variant-m/module-profile.mjs",
+      "sha256": "cfc54268d73fa3b8c635b318ec182e58de868b335a37975b2106b2b41bc21e6b"
+    },
+    {
+      "path": "app/configurator/variant-m/motif-placement.mjs",
+      "sha256": "176135cbd8aad086d14fb8a894a5319ccfe8bada275d21d1446f5ca7602d3e94"
+    },
+    {
+      "path": "app/configurator/variant-m/motif-search-analytics.mjs",
+      "sha256": "daf263376e685f000c4d77e1a2e0dbc5f2afbe91ffde8a9cbc7a113cadd49c05"
+    },
+    {
+      "path": "app/configurator/variant-m/motif-search-analytics.test.mjs",
+      "sha256": "8e58d450903d68e3885c1d290b2d3edaa97e9032b8fc41997fe76bee5af6b3ff"
+    },
+    {
+      "path": "app/configurator/variant-m/native-design-search.mjs",
+      "sha256": "f58eb74648c1dfbca0e301f6291a2e6ed5fec388d75dd246eab9ed0a41150b2b"
+    },
+    {
+      "path": "app/configurator/variant-m/native-design-search.test.mjs",
+      "sha256": "d35272e9c749eab034ca66a3e1cc05673cb53ec19cabe8595c7be8e28535369f"
+    },
+    {
+      "path": "app/configurator/variant-m/product-design-gallery.css",
+      "sha256": "b2f13aeebfc5623eb45c63956b241f2a4765535025a98fb48af4daedee464c07"
+    },
+    {
+      "path": "app/configurator/variant-m/product-design-gallery.mjs",
+      "sha256": "69f75b10ec19f7ef8ab2825a23e6a85f212abb2abe2586aac3535c818803aa95"
+    },
+    {
+      "path": "app/configurator/variant-m/small-sign-motif-placement.test.mjs",
+      "sha256": "a80c93da331510696178e828f2c25271a1776aea88424ccdc085a7e0a06975f8"
+    },
+    {
+      "path": "app/configurator/variant-m/ui-event-regressions.test.mjs",
+      "sha256": "ec93e8a95c068a6530a3ec98efcdc0462e911fc65151bdfdb4eade814643fa9f"
+    },
+    {
+      "path": "app/configurator/variant-m/ux-model.mjs",
+      "sha256": "76ec98ba290c82d76457be43b7395be97cdf9d15922bc1357b2f7f3eb292007b"
+    },
+    {
+      "path": "app/configurator/variant-m/ux.mjs",
+      "sha256": "9b4f69d3ed6de6c0365d52aac9f346033dd37c6206b2fadd5c0972095df2b376"
+    },
+    {
+      "path": "app/configurator/variant-m/workflow.mjs",
+      "sha256": "89cb2bd74761bb224a9e5c0d096957666311481bc1b5fba576541a4c4ac30839"
+    },
+    {
+      "path": "app/platform/sources/app/shared/models/acrylic-plate-preview.mjs",
+      "sha256": "9d5fc1aca8482a7e53065e32e8fb5e98a812394c4b7138927bfb9ec836c0ed8c"
+    },
+    {
+      "path": "app/workshop/customer-vector-logo-media.test.mjs",
+      "sha256": "2bb2805b63eed103d704c1aecbe2982b3fd7723e2c336697fca0c648e44ca88f"
+    },
+    {
+      "path": "app/workshop/customer-vector-logo-pricing.test.mjs",
+      "sha256": "bcb488d4dc2e2658a49cea448491c95fee00299c78b288e1491be8c657543906"
+    },
+    {
+      "path": "app/workshop/customer-vector-logo.py",
+      "sha256": "11867835912b6f9c4dab8b04f9262f50c3577749a1fab8af890fa1886a4add85"
+    },
+    {
+      "path": "app/workshop/http.mjs",
+      "sha256": "27906057296693d66b1ea291c03f585241ed2f3acd155cf44c3572479f3e5383"
+    },
+    {
+      "path": "app/workshop/motif-search-http.test.mjs",
+      "sha256": "6a7bf9b99552d362bae810d21ec4a8a44e6f4f550749ee2bbd11c5ac5c5d4cd5"
+    },
+    {
+      "path": "app/workshop/motif-search-stats.mjs",
+      "sha256": "ada0706845d396e089a6d3bd7007f11b937ed145b03ee5f99a2776cb5054de96"
+    },
+    {
+      "path": "app/workshop/motif-search-stats.test.mjs",
+      "sha256": "e58f6eb1630501877c21d8c8c585324c6283cb60042de6cd67d98a3c7e1e5587"
+    },
+    {
+      "path": "app/workshop/motif-search-ui.test.mjs",
+      "sha256": "14788973ca3e17466c72ecb342967c45d55d87dfff36c69d5a49050bd09c70e8"
+    },
+    {
+      "path": "app/workshop/product-preview.mjs",
+      "sha256": "e0b7a15e0586b388e37c2029df9649d512632f753158ffaa0a5ae390f49d1c49"
+    },
+    {
+      "path": "app/workshop/shop-design-gallery.mjs",
+      "sha256": "4baf412872cf095f5be92d0c867195f345b6ba114714bdb81f60936337a79763"
+    },
+    {
+      "path": "app/workshop/shop-design-gallery.test.mjs",
+      "sha256": "5be30bee98da5481cb57976e77ee888e8e268f6e142a32d23afc8611c6ffb72d"
+    },
+    {
+      "path": "app/workshop/shop-entry-client.test.mjs",
+      "sha256": "6bad5091682808d64b799afb4730e432bc09bd17398a28f935ea6b18bef14d42"
+    },
+    {
+      "path": "app/workshop/shop-entry.mjs",
+      "sha256": "54125b8482c3160749f5b662c2ff7b16cf7c95d6ea0ee245331d7fd1b93cbe83"
+    },
+    {
+      "path": "app/workshop/shop-entry.test.mjs",
+      "sha256": "c31b6a368adb1aada767557a165e1177ef3e68ba5597d635e6bf2746ccf383de"
+    },
+    {
+      "path": "app/workshop/shop-gallery-model.mjs",
+      "sha256": "57e8f0ef005f10e5a59ce69b601c585959361e3999529c7673546158c1ee14c5"
+    },
+    {
+      "path": "app/workshop/shop-gallery-model.test.mjs",
+      "sha256": "8e1c22a336afb2f9b43dfc459248928faa1893a5c8976498f44b7aee1bf9b023"
+    },
+    {
+      "path": "app/workshop/shop-gallery-snapshot.mjs",
+      "sha256": "71f3b47e10ca2bfbce22f9712c2a3b76e48fb4757443cdfa5d58b354377e8902"
+    },
+    {
+      "path": "app/workshop/test-fixtures/acrylic-upload-source.mjs",
+      "sha256": "004fd821cf2842361cb84e8b0ac3b984c09ade18078bf9b4dd2d0f36c54c53ab"
+    },
+    {
+      "path": "app/workshop/ui/motif-searches.html",
+      "sha256": "be6f83d8678693e63b72c7caf41faa6601509ef3d586ed4aad1d4e76844843e9"
+    },
+    {
+      "path": "app/workshop/ui/motif-searches.mjs",
+      "sha256": "f47eb8945138ece906cb2f2d64bdb611b40e58d07e09c62752f406293b97b5c4"
+    },
+    {
+      "path": "app/workshop/ui/shop-design-switch.mjs",
+      "sha256": "e9dbdcf4030ce19f4d1417c6db865522e4a2ec73e2260a76bec6a15907f3e090"
+    },
+    {
+      "path": "app/workshop/ui/shop-entry-client.mjs",
+      "sha256": "e0adbfdfd98851594e900f0db191781201b6ed5b920088e8c963246e70c8134d"
+    }
+  ]
+}

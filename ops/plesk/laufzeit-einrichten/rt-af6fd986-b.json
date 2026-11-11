@@ -1,0 +1,15 @@
+{
+ "rev": "af6fd986c735d97bddc974261398ab8c4e88e00b",
+ "dateien": 1775,
+ "imPaket": 1087,
+ "gzBytes": 2730972,
+ "gzSha256": "3ded6933e32f5a6833fc97226c994b50dae416af297d1e7643598b89a338fec2",
+ "baumSha256": "6f7b76b0de6b0492eef086ebe32f728575163a472ac84d89f73500c3b4843988",
+ "teile": [
+  [
+   "rt-af6fd986-b.teil01",
+   2730972,
+   "3ded6933e32f5a6833fc97226c994b50dae416af297d1e7643598b89a338fec2"
+  ]
+ ]
+}

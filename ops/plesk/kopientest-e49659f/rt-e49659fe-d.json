@@ -1,0 +1,15 @@
+{
+ "rev": "e49659fe9cd6e433e578a5ffd054e0345cbcc440",
+ "dateien": 1800,
+ "imPaket": 33,
+ "gzBytes": 174305,
+ "gzSha256": "0c3b3712207887dd7c93bca876d7fbc98923cd9abb6a8acad24babd3167c398c",
+ "baumSha256": "b00de1f5a1fc24a5569bb3b42d3a24d2c7f63674989673f0d98ab4b8433dc3f8",
+ "teile": [
+  [
+   "rt-e49659fe-d.teil01",
+   174305,
+   "0c3b3712207887dd7c93bca876d7fbc98923cd9abb6a8acad24babd3167c398c"
+  ]
+ ]
+}

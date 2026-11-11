@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-11",
+  "source": "Explicit user response in current Codex chat, relayed by root to product_plans",
+  "mainAcrylic": {
+    "photo": true,
+    "svgLogo": true,
+    "photoCents": 999,
+    "logoCents": 1299
+  },
+  "sixSmallProducts": {
+    "photo": false,
+    "logo": false
+  },
+  "scope": "Upload modules only; no product confirmation or execution"
+}

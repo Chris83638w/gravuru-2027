@@ -1,0 +1,2 @@
+# Preserve exact evidence bytes and gzip payloads.
+* -text

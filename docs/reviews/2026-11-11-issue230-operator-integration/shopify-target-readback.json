@@ -1,0 +1,36 @@
+{
+  "checkedAt": "2026-11-11T18:53:47.611Z",
+  "main": {
+    "id": "gid://shopify/Product/16190784602492",
+    "title": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen",
+    "status": "DRAFT",
+    "variants": 808,
+    "featuredImageUrl": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-tuerschild-acryl-h1-vanessa-krueger-e5c9970d.png?v=1794421762"
+  },
+  "draftQuery": "status:draft AND (tag:tuerschild OR handle:tuerschild*)",
+  "matchingDrafts": [
+    {
+      "id": "gid://shopify/Product/16175627665788",
+      "title": "Acryl-Türschild selbst gestalten – Schwarz & Anthrazit",
+      "handle": "acryl-tuerschilder-schwarz-anthrazit-2027",
+      "status": "DRAFT",
+      "variants": 798
+    },
+    {
+      "id": "gid://shopify/Product/16190784602492",
+      "title": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen",
+      "handle": "tuerschild-acrylglas-3-mm-form-und-groesse-selbst-waehlen",
+      "status": "DRAFT",
+      "variants": 808
+    },
+    {
+      "id": "gid://shopify/Product/16127341068668",
+      "title": "Türschild Naturschiefer personalisiert mit Gravur 20 × 10 cm",
+      "handle": "tuerschild-naturschiefer-personalisiert-gravur-20x10",
+      "status": "DRAFT",
+      "variants": 4
+    }
+  ],
+  "queryComplete": true,
+  "limitations": "Matching draft search is not proof that no differently named or active small-product target exists. Operator must reconcile workshop bindings before creating products."
+}

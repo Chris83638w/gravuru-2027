@@ -1,0 +1,9 @@
+entrypoint	directMissingDependency
+app/configurator/variant-m/design-search-control.mjs	app/configurator/variant-m/design-search.mjs
+app/configurator/variant-m/native-design-search.mjs	app/configurator/variant-m/design-search-control.mjs
+app/configurator/variant-m/native-design-search.mjs	app/configurator/variant-m/design-search.mjs
+app/configurator/variant-m/product-design-gallery.mjs	app/configurator/variant-m/design-search-control.mjs
+app/configurator/variant-m/product-design-gallery.mjs	app/configurator/variant-m/native-design-search.mjs
+app/configurator/variant-m/ux.mjs	app/configurator/variant-m/gallery-workbench.mjs
+app/workshop/http.mjs	app/workshop/configurator-module-http.mjs
+app/workshop/shop-design-gallery.mjs	app/configurator/variant-m/design-search.mjs

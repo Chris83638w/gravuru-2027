@@ -1,0 +1,18 @@
+{
+  "syntaxOnly": true,
+  "sourceFilesParsed": [
+    "sources/catalog-config-check.cjs",
+    "sources/catalog-ff-v1.cjs",
+    "sources/catalog-ff-v2.cjs",
+    "sources/catalog-ff.test.cjs",
+    "sources/postcheck-original.cjs",
+    "sources/writer-preflight.cjs"
+  ],
+  "secretPatternScan": {
+    "obviousCredentialPatternsFound": 0,
+    "completeSecretDetectionClaimed": false
+  },
+  "copiedSourceExecuted": false,
+  "serverActions": 0,
+  "all55Mapping": false
+}

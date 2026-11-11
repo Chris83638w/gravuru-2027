@@ -1,0 +1,11 @@
+✔ real application migration preserves exactly eight aggregate rows, hides terms and is idempotent (65.7227ms)
+✔ copy acknowledgement, path, module hash, count and unknown schema guards abort before mutation (46.6227ms)
+✔ read-only native inventory uses explicit active heads, target filters and metadata columns only (41.5584ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 239.4818

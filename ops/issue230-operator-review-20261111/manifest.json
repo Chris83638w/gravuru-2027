@@ -1,0 +1,44 @@
+{
+  "purpose": "Operator tools for explicit database-copy rehearsal and read-only target inventory",
+  "appCodeUnchanged": true,
+  "liveDbOpened": false,
+  "appStatsModuleSha256": "ada0706845d396e089a6d3bd7007f11b937ed145b03ee5f99a2776cb5054de96",
+  "tests": {
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "fixtureRows": 8
+  },
+  "files": [
+    {
+      "path": "copy-guard.mjs",
+      "bytes": 1518,
+      "sha256": "466ffb3e96fa8bcc2b569a3069abe7ea4ca00a856fae9a8cc65ac186b39a1671"
+    },
+    {
+      "path": "inspect-native-target.mjs",
+      "bytes": 5015,
+      "sha256": "af48d0568efad7126e2a5982eb7f4ff7f4f6fcac187c7003804a08eb9db44118"
+    },
+    {
+      "path": "migrate-search-stats-copy.mjs",
+      "bytes": 5451,
+      "sha256": "1d872146a3fc28608a9f4c2a773d2fa17f2bcdceb3ee9ed9389ded4069c616ef"
+    },
+    {
+      "path": "operator-tools.test.mjs",
+      "bytes": 6105,
+      "sha256": "f0fcf1d2be6f430989b0f6582ec167a6f219e11744996793d2bf137eedadfa09"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6889,
+      "sha256": "deccaf29b6713bf27940b3916b9aabf5a048324455b9ef97dc59141a348a03bc"
+    },
+    {
+      "path": "tests.log",
+      "bytes": 460,
+      "sha256": "a6e700be54623ad6fed9151485c4808534c4374263dac34a1be90d44d4cd5f49"
+    }
+  ]
+}

@@ -1,0 +1,247 @@
+{
+  "schema": "gravuru/server-command-audit/v1",
+  "scope": "local evidence only; no server actions",
+  "unattributedReportedInvocationCount": 55,
+  "fullReportedCountIndependentlyVerified": false,
+  "exactSuccessfulPostcheckPayloadAvailable": false,
+  "remoteRunner": {
+    "repository": "Chris83638w/gravuru-2027",
+    "commit": "8ab147140f305ea1f6a47b4e106b7af3367bc76d",
+    "path": "ops/proofs/issue233-catalog-ff-20261111/catalog-ff-v2.cjs",
+    "gitBlobSha": "9e56e07ca8a853910881b69bd9f8b14d9fd4599d",
+    "displayUrl": "https://github.com/Chris83638w/gravuru-2027/blob/8ab147140f305ea1f6a47b4e106b7af3367bc76d/ops/proofs/issue233-catalog-ff-20261111/catalog-ff-v2.cjs",
+    "computedGitBlobSha": "9e56e07ca8a853910881b69bd9f8b14d9fd4599d",
+    "matches": true
+  },
+  "entries": [
+    {
+      "file": "sources/catalog-ff-v1.cjs",
+      "original": "work/catalog-final/catalog-ff.cjs",
+      "bytes": 15887,
+      "sha256": "5a2a5e9893eb0bf4870c2541062a1a6f8bfdc21df265dc8fe2b213442ab569ff",
+      "kind": "historical-runner",
+      "notes": "Mika V1: inspect failed with ENOBUFS; do not execute. No V1 apply documented.",
+      "localBase64Evidence": {
+        "original": "work/catalog-final/catalog-ff.cjs.b64",
+        "encodedBytes": 21539,
+        "encodedSha256": "acad198f0e50222b2925f4ba4c923b1cac4a723f444905f1ba82980fa127eef8",
+        "decodedSha256": "5a2a5e9893eb0bf4870c2541062a1a6f8bfdc21df265dc8fe2b213442ab569ff",
+        "byteEqual": true,
+        "serverInvocationIdentityEstablished": false
+      }
+    },
+    {
+      "file": "sources/catalog-ff-v2.cjs",
+      "original": "work/catalog-final/catalog-ff-v2.cjs",
+      "bytes": 15887,
+      "sha256": "7104c52f22138ffae40d1f1a774674fe3ab7bc44a5d82c167955198a47001935",
+      "kind": "applied-runner",
+      "notes": "Astra V2 runner; SHA pinned before documented server apply. Exact outer node -e transport not retained here.",
+      "localBase64Evidence": {
+        "original": "work/catalog-final/catalog-ff-v2.cjs.b64",
+        "encodedBytes": 21539,
+        "encodedSha256": "7679611c0cbd2539cbbc26a41a1d4148cf9697559ebae3d12232ed4cbfe3dd9e",
+        "decodedSha256": "7104c52f22138ffae40d1f1a774674fe3ab7bc44a5d82c167955198a47001935",
+        "byteEqual": true,
+        "serverInvocationIdentityEstablished": false
+      }
+    },
+    {
+      "file": "sources/catalog-ff.test.cjs",
+      "original": "work/catalog-final/catalog-ff.test.cjs",
+      "bytes": 6982,
+      "sha256": "ecd448aaf1457e63c412c631e8ccd37a54198a644aa1cae8466382878fdd03de",
+      "kind": "local-test-source",
+      "notes": "Local isolated Git tests only; not a server command. Depends on catalog-ff-v2.cjs.",
+      "localBase64Evidence": {
+        "original": "work/catalog-final/catalog-ff.test.cjs.b64",
+        "encodedBytes": 9469,
+        "encodedSha256": "f3a052beb67c3f33c3a99be6c761dca48d77a8aabfe9f8975f14b739cf9f9826",
+        "decodedSha256": "ecd448aaf1457e63c412c631e8ccd37a54198a644aa1cae8466382878fdd03de",
+        "byteEqual": true,
+        "serverInvocationIdentityEstablished": false
+      }
+    },
+    {
+      "file": "sources/writer-preflight.cjs",
+      "original": "work/catalog-final/writer-preflight.cjs",
+      "bytes": 2077,
+      "sha256": "be5e85b930d9357558584a8e96e3fad30450b5aff5ccc86653d958eefd758168",
+      "kind": "read-only-helper",
+      "notes": "Reads same-UID /proc metadata/cmdline and named lock paths; prints only counts, pid/comm and lock basenames, never command lines/environment."
+    },
+    {
+      "file": "sources/catalog-config-check.cjs",
+      "original": "work/catalog-final/catalog-config-check.cjs",
+      "bytes": 1054,
+      "sha256": "a4f2234c849624081c32443d0c36b08b94d01bb0ed2a72241e02a9011dc47f85",
+      "kind": "read-only-helper",
+      "notes": "Reads app.cjs as text, never executes it; prints only GRAVURU_KATALOG and match classification. argv[2] is a standalone-file convention."
+    },
+    {
+      "file": "sources/postcheck-original.cjs",
+      "original": "work/catalog-final/postcheck.cjs",
+      "bytes": 3722,
+      "sha256": "7d509e131e095a4280de76273a1601db2443333b2ef369b71c660ee2762bda77",
+      "kind": "original-read-only-helper",
+      "notes": "Original saved source, not asserted byte-identical to successful eval payload. Successful invocation used createRequire(runner), package cwd and argv adaptation; exact final bytes not retained."
+    },
+    {
+      "file": "historical-command-templates/writer-preflight.command.sh",
+      "original": "work/catalog-final/writer-preflight.command.sh",
+      "bytes": 2161,
+      "sha256": "b0c5d7ff6669d0ec351d925cb80083745d24baf18f303016beda31bd38f293b1",
+      "kind": "prepared-shell-template",
+      "notes": "As-found quoted node -e template. Not an execution transcript; postcheck still contains the old require(runner) and placeholder backup argument."
+    },
+    {
+      "file": "historical-command-templates/catalog-config-check.command.sh",
+      "original": "work/catalog-final/catalog-config-check.command.sh",
+      "bytes": 1085,
+      "sha256": "1fe8bb5ce70a931bec84e20ea22fd8009a63ad15d2471a4a379f4c2966d1106e",
+      "kind": "prepared-shell-template",
+      "notes": "As-found quoted node -e template. Not an execution transcript; postcheck still contains the old require(runner) and placeholder backup argument."
+    },
+    {
+      "file": "historical-command-templates/postcheck.command.sh",
+      "original": "work/catalog-final/postcheck.command.sh",
+      "bytes": 3979,
+      "sha256": "11ba8cc0a181f46041d828892ece4afef8a50cc12c966dc108840f2fb8cc3f73",
+      "kind": "prepared-shell-template",
+      "notes": "As-found quoted node -e template. Not an execution transcript; postcheck still contains the old require(runner) and placeholder backup argument."
+    },
+    {
+      "file": "inputs/manifest.json",
+      "original": "work/catalog-final/manifest.json",
+      "bytes": 552885,
+      "sha256": "5cca0332016c40d99ecbf2aaf93e9897c81d4e4fbaa39df83dc2635b5b414b3f",
+      "kind": "pinned-input",
+      "notes": "552 target paths and three preserved local differences; fixed catalog scope, no database payload.",
+      "localBase64Evidence": {
+        "original": "work/catalog-final/manifest.json.b64",
+        "encodedBytes": 749468,
+        "encodedSha256": "2adff75ca3d7cfc63df07e077a538f95fa39440097cef66d638979b05c258437",
+        "decodedSha256": "5cca0332016c40d99ecbf2aaf93e9897c81d4e4fbaa39df83dc2635b5b414b3f",
+        "byteEqual": true,
+        "serverInvocationIdentityEstablished": false
+      }
+    },
+    {
+      "file": "historical/proof-v1.json",
+      "original": "work/catalog-final/proof.json",
+      "bytes": 951,
+      "sha256": "d2d048e36da61922452f09e1bb07eeed38bc1a897414216e862a3fcf205af94d",
+      "kind": "historical-local-proof",
+      "notes": "Earlier local preparation summary; not a fresh server receipt.",
+      "localBase64Evidence": {
+        "original": "work/catalog-final/proof.json.b64",
+        "encodedBytes": 1291,
+        "encodedSha256": "af373e42c8adb9bb513b7bb8057b80663165384e9c07df90b76e5ea56f293a98",
+        "decodedSha256": "d2d048e36da61922452f09e1bb07eeed38bc1a897414216e862a3fcf205af94d",
+        "byteEqual": true,
+        "serverInvocationIdentityEstablished": false
+      }
+    },
+    {
+      "file": "historical/proof-v2.json",
+      "original": "work/catalog-final/proof-v2.json",
+      "bytes": 936,
+      "sha256": "5fef882e9f34ddfc0b1f7be37826d4f13190859c32feb910adcdcc3ba5be2c47",
+      "kind": "historical-local-proof",
+      "notes": "V2 correction summary before takeover; serverStatus is historical.",
+      "localBase64Evidence": {
+        "original": "work/catalog-final/proof-v2.json.b64",
+        "encodedBytes": 1270,
+        "encodedSha256": "62d7f4612e6de625a3a1a12b13048382bf89a5251a3ca50c0f0dc8ff1a337221",
+        "decodedSha256": "5fef882e9f34ddfc0b1f7be37826d4f13190859c32feb910adcdcc3ba5be2c47",
+        "byteEqual": true,
+        "serverInvocationIdentityEstablished": false
+      }
+    },
+    {
+      "file": "historical/README-package-as-found.md",
+      "original": "work/catalog-final/README.md",
+      "bytes": 7132,
+      "sha256": "1a604a317105ea4374e53080c764d891f15f9595d214397f14919ea31f0be30e",
+      "kind": "historical-instructions",
+      "notes": "Contains obsolete V1 examples and pre-apply state; evidence only, not current operator instructions.",
+      "localBase64Evidence": {
+        "original": "work/catalog-final/README.md.b64",
+        "encodedBytes": 9672,
+        "encodedSha256": "809b69048ad6f0b71e119aebb88563c953093438d8f4a06a81b71db6b21afbaa",
+        "decodedSha256": "1a604a317105ea4374e53080c764d891f15f9595d214397f14919ea31f0be30e",
+        "byteEqual": true,
+        "serverInvocationIdentityEstablished": false
+      }
+    },
+    {
+      "file": "historical/review-20261111.md",
+      "original": "work/catalog-final/review-20261111.md",
+      "bytes": 4509,
+      "sha256": "773c18fff2b938e30c35c5adce6d046f2c0a689a4eafb599246872c02e972b65",
+      "kind": "independent-review",
+      "notes": "Pre-apply V2 review and fixed paths/hashes."
+    },
+    {
+      "file": "evidence/Pruefbeleg.json",
+      "original": "outputs/Katalog-Uebernahme/Pruefbeleg.json",
+      "bytes": 4372,
+      "sha256": "23e34b4ba09424244105cb665ddaa729907213cf557a19e9e140daa73b96f84c",
+      "kind": "acceptance-summary",
+      "notes": "Summarizes observed server results; not a raw server log or complete command history."
+    },
+    {
+      "file": "evidence/Server-Nachpruefung.txt",
+      "original": "outputs/Katalog-Uebernahme/Server-Nachpruefung.txt",
+      "bytes": 1594,
+      "sha256": "960cb43fcf8a077a0f4d7a31351f097d6f92e97a52cbf71e01fd2bd4e9b503d9",
+      "kind": "saved-ui-output-extract",
+      "notes": "Four saved Plesk result entries; some output is truncated by UI. Contains no executable payload transcript."
+    },
+    {
+      "file": "evidence/Ergebnis-Katalog.md",
+      "original": "outputs/Katalog-Uebernahme/Ergebnis.md",
+      "bytes": 3723,
+      "sha256": "c5e20380066ab109fcf3ee1c350c0ae1a072e962eefd9d13014b348879fd0c0f",
+      "kind": "result-report",
+      "notes": "Historical catalog takeover result."
+    }
+  ],
+  "evidenceVerification": [
+    {
+      "original": "outputs/Katalog-Uebernahme/Server-Nachpruefung.txt",
+      "bytes": 1594,
+      "sha256": "960cb43fcf8a077a0f4d7a31351f097d6f92e97a52cbf71e01fd2bd4e9b503d9",
+      "acceptancePinMatches": true,
+      "copied": true
+    },
+    {
+      "original": "outputs/Katalog-Uebernahme/Server-Nachpruefung.jpg",
+      "bytes": 111903,
+      "sha256": "2ad6175e71ec1e8b38f5494c6ec907ffc6240af49a9d5f4490fc30947a8c3145",
+      "acceptancePinMatches": true,
+      "copied": false
+    },
+    {
+      "original": "outputs/Katalog-Uebernahme/Server-Pruefung-v2.jpg",
+      "bytes": 111158,
+      "sha256": "ec770bd130423190c8e9a00de0deb204c99e9a4b3e5888cf1502cb30971a9b69",
+      "acceptancePinMatches": true,
+      "copied": false
+    },
+    {
+      "original": "outputs/Katalog-Uebernahme/Kundenkonfigurator-danach.txt",
+      "bytes": 4409,
+      "sha256": "933bbb83c07e7c41751d5bd4410579603ef06074b9102d09d4b594a4a468ec03",
+      "acceptancePinMatches": true,
+      "copied": false
+    },
+    {
+      "original": "outputs/Katalog-Uebernahme/Kundenkonfigurator-danach.jpg",
+      "bytes": 138975,
+      "sha256": "c46f36ec7c000877de819e015d86d4e359e1994a8acdf94ba19ddae5c2e2f383",
+      "acceptancePinMatches": true,
+      "copied": false
+    }
+  ]
+}

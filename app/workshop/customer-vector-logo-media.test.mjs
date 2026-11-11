@@ -36,11 +36,11 @@ function fixture(material='steel'){
  const document=makeProductDocument(c),config=document.config,record={id:config.profile.id,revision:2,status:'draft',document};
  return {record,config};
 }
-async function inputFor(f){
- const preview=await customerVectorLogoPreview(f.config,{name:'logo.svg',original:ORIGINAL.toString('base64')});
+async function inputFor(f,original=ORIGINAL){
+ const preview=await customerVectorLogoPreview(f.config,{name:'logo.svg',original:original.toString('base64')});
  const vectorLogo={version:preview.version,sourceSha256:preview.sourceSha256,outputSha256:preview.outputSha256};
  const object={id:'own-logo',type:'image',x:115,y:85,w:60,h:40,rotation:15,customerEditable:true,uxPersonal:true,uxUploadId:'up-logo',uxUploadKind:'logo',uxVectorLogo:vectorLogo};
- const media={id:'up-logo',name:'logo.svg',original:ORIGINAL.toString('base64'),edited:preview.svg,vectorLogo};
+ const media={id:'up-logo',name:'logo.svg',original:original.toString('base64'),edited:preview.svg,vectorLogo};
  return {object,media,preview,input:{productId:f.record.id,productRevision:f.record.revision,designId:'test',objects:[...structuredClone(f.config.profile.designs[0].objects),object],options:{mounting:'none'},quantity:1,media:[media],preview:PNG.toString('base64')}};
 }
 
@@ -67,6 +67,22 @@ test('acrylic simultaneous photo and checked SVG survive native snapshot and art
  const proof=await createAcrylicEngravingProof(bundle.package,bundle.manifest.packageSha256,{mode:'raster',dpi:300,mirror:true});
  assert.equal(proof.pdf.subarray(0,5).toString(),'%PDF-');assert.equal(proof.metadata.photoSources.length,1);assert.equal(proof.metadata.settings.mirror,true);assert.equal(proof.metadata.productionReady,false);
  const forged=structuredClone(input);forged.media[0].edited=Buffer.from('<svg/>').toString('base64');await assert.rejects(()=>prepareAcrylicReview({...f,input:forged,assets:{},preparePhoto}),/Logo|SVG/);
+});
+
+test('new viewport-normalized SVG survives verified snapshot and native production with unchanged logo tariff',async()=>{
+ const original=Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100" viewBox="10 20 100 100" preserveAspectRatio="xMaxYMin meet"><rect x="10" y="20" width="100" height="100" fill="red"/><circle cx="60" cy="70" r="10" fill="white"/></svg>');
+ const f=fixture(),{preview,object,media,input}=await inputFor(f,original);
+ assert.equal(preview.width,100);assert.equal(preview.height,50);
+ object.w=60;object.h=30;
+ const verified=await verifyCustomerVectorLogoMedia(f.config,object,media);
+ assert.deepEqual(verified.original,original);assert.deepEqual(verified.svg,Buffer.from(preview.svg,'base64'));
+ const bundle=await prepareAcrylicReview({...f,input,assets:{},preparePhoto});
+ const saved=readReviewPackage(bundle.package,bundle.manifest.packageSha256,['gravuru-native-review/v1']),entry=saved.manifest.photos[0];
+ assert.equal(bundle.manifest.selection.price.chargedLogos,1);assert.equal(bundle.manifest.selection.price.unitCents,3598);
+ assert.deepEqual(saved.files.get(entry.path),original);assert.deepEqual(saved.files.get(entry.edited.path),verified.svg);
+ const fragment=customerVectorLogoFragment(entry,object,saved.files);assert.equal(fragment.width,100);assert.equal(fragment.height,50);
+ const artwork=await acrylicArtwork(bundle.package,bundle.manifest.packageSha256,{engraving:true});
+ assert.match(artwork.svg,/viewBox="0 0 100 50"/);assert.doesNotMatch(artwork.svg,/<image|data:image/);
 });
 
 test('text-on-top survives immutable saving and production while historical packages retain their order',async()=>{

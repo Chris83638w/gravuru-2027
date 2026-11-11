@@ -1,0 +1,18 @@
+✔ warm manifest and editor share native initial six; curated/empty restrictions remain authoritative (2.051ms)
+✔ six hidden initial motifs use two workers and same existing per-item cache on opening (8.0788ms)
+✔ search invalidation aborts obsolete previews and preserves activity pause, query and cleanup (5.0053ms)
+✔ authenticated gallery warms only three before tab; same images are reused when made visible (2.3844ms)
+✔ gallery Save-Data skips speculative previews and option change cancels stale warm callback (4.1924ms)
+✔ actual option change aborts both old previews and immediately frees slots; late completions cannot free current slots (2.1728ms)
+✔ pagehide aborts active previews and drops queued work without publishing late blobs (1.7951ms)
+✔ switch pause cancels pending previews and old idle/observer work; resume retains finished images and two current slots (2.4066ms)
+✔ candidate gallery may populate while inactive but starts thumbnails only after ready; Save-Data still prevents warmup (2.3828ms)
+✔ product warmup starts after markup and paint, without waiting for window load (0.3603ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 130.447

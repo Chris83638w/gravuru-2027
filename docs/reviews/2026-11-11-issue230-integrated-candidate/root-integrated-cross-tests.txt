@@ -1,0 +1,397 @@
+✔ merchant module flow: confirm exact source/options, create two local profiles, reopen same editor and reject forged logo (2108.2094ms)
+✔ one existing product can switch its logo module off/on with explicit confirmation; no artwork, variants or historical revisions change (8573.2984ms)
+✔ profile-only mappings reject gallery identities, media writes and nonexistent preview designs (1990.1999ms)
+✔ profile-only preview uses the native readonly target without constructing artwork resources (2814.8869ms)
+✔ a profile change during the final remote read prevents the first remote write (4477.1493ms)
+✔ a mapping change during the final remote read prevents the first remote write (4853.3425ms)
+✔ a target change during the final remote read prevents the first remote write (3821.7363ms)
+✔ a binding change during the final remote read prevents the first remote write (3369.7339ms)
+✔ profile changes invalidate the exact confirmed plan before any local revision or outbound write (2683.761ms)
+✔ a missing or incompatible checked pricing contract blocks module activation; no silently dropped logo surcharge (2806.4313ms)
+✔ an explicit two-design group updates both existing cards with separate previews and keeps its original starter (5433.2429ms)
+✔ owning app compressed V2 evidence is expanded, pinned and reused without changing its historical price table (4611.7672ms)
+✔ the sixty-second activation evidence limit remains enforced and rolls back without advancing any binding (2689.2426ms)
+✔ actual native steel family: all 404 existing IDs switch atomically, 8 forms/80 sizes survive; late approval failure rolls every binding back (28148.0202ms)
+✔ fixed private operator token cannot be malformed or used for Shopify sessions (1.6652ms)
+✔ workshop HTTP persists validated revisions and previews the exact saved configuration (3207.8822ms)
+✔ dashboard summaries and previews follow saved revisions without changing the product (747.7057ms)
+✖ Worker: Übersicht, Linie und Filter sind bytegleich zum direkten Weg (mit Produkt aus der Datenbank) (753.4783ms)
+✖ Worker: große Antwort wird im Worker gzip-komprimiert und entpackt bytegleich; kleine bleibt unkomprimiert (4228.1893ms)
+✖ Worker: Zielvorschau und Designdateien sind bytegleich zum direkten Weg (1363.6487ms)
+✖ Worker: Fehler haben Status, Code und Text wie im direkten Weg (436.0626ms)
+✖ Leser: importItem und get liefern dasselbe wie das Repository, nur lesend (101.4855ms)
+✔ Zusammenlegen: drei gleichzeitige gleiche Aufrufe teilen eine Rechnung (1047.8797ms)
+✔ Zusammenlegen: nach invalidate() wird nicht an eine ältere Rechnung angehängt (418.3134ms)
+✔ Obergrenze: bei vollem Wartestand sofort 503 designs_busy (550.4188ms)
+✔ Obergrenze: viele gleichzeitige Vorschaubilder zählen nicht gegen die enge Grenze der Listenrechnungen (463.3875ms)
+✔ Absturz: wartende Aufrufe enden mit 503 designs_worker, der nächste Aufruf startet den Worker neu (517.3915ms)
+✔ Test-Operationen sind ohne ausdrückliches Einschalten nicht erreichbar (240.8474ms)
+✔ Hauptprozess bleibt frei: während der Worker 600 ms rechnet, bleibt die größte Verzögerung unter 100 ms (845.8683ms)
+✖ Schriften: eine geänderte Schriftliste erreicht den laufenden Worker (480.558ms)
+✖ Katalogstand: nach invalidate() sieht der Worker eine Änderung sofort, nicht erst nach dem 2-Sekunden-Speicher (435.4018ms)
+✔ Katalogkontext: die Schriftliste wird je Anfrage ausgewertet, nicht je Design (Befund 10.11.2026: zwei Minuten je Linie) (143.3538ms)
+✔ Plattenspeicher: nach „Neustart“ wird nichts neu gerechnet und die Antwort ist bytegleich; anderer Programmstand wird verworfen (309.662ms)
+✖ Worker: sichert den Zwischenspeicher nach einer Listenrechnung, lädt ihn beim nächsten Start und meldet Messwerte (823.2807ms)
+✖ Vorrechnen: designs.warm rechnet jede Linie einmal und meldet je Linie Dauer und Erfolg (523.7357ms)
+✔ Speicherwächter: belegt der Prozess zu viel Arbeitsspeicher, endet nur der Worker (503 designs_memory, protokolliert); der Hauptprozess läuft weiter (596.829ms)
+✔ Datenbank je Rechnung: gleiche Schlüssel und Produkte werden nur einmal gelesen, Fehler bleiben Fehler, Antwort bleibt gleich (243.0942ms)
+✖ HTTP: mit Schalter antwortet die Werkstatt bytegleich (Kopfzeilen und Körper), ohne Schalter läuft kein Worker (48.0966ms)
+✖ HTTP: Schreibweg bleibt im Hauptprozess; nach PATCH liefert der Worker sofort den neuen Stand (32.3886ms)
+✖ Schalter aus: kein Worker wird erzeugt (auch nicht bei anderen Werten als „enabled“) (27.5938ms)
+✔ actual steel family: logo on/off preserves all 8 forms, 80 sizes, 404 fastenings and every template (2508.7496ms)
+✔ confirmed local creation of both steel profiles retains the complete native family after database reopen (2347.2138ms)
+✔ search events accept only known products; only an authenticated merchant can read the report (1721.1316ms)
+✔ two stores receive original HMAC payload once, each owns only its selected lines (19.7549ms)
+✔ cross-store partial failure safely resumes without duplicate first-store admission (11.3804ms)
+✔ event selection immutable across filtered and old three-argument replays (11.4771ms)
+✔ untrusted routing, missing IDs, foreign ownership and invalid HMAC never write (6.219ms)
+✔ known variant without offer retains existing per-line error, unrelated lines excluded (4.5227ms)
+✔ three-argument legacy admission still reports foreign offer instead of silently filtering it (7.1432ms)
+✔ quantity summary is exact snapshot/product/revision scoped and contains no token (4.6516ms)
+✔ paid ProductGID is checked against immutable binding history, not newest active assignment (3.8735ms)
+✔ cart offer resolution uses saved values and refuses changed snapshot hashes (321.7001ms)
+✔ cart offer capability cannot be combined with another offer ID or snapshot (854.872ms)
+✔ webhook authenticates exact raw bytes and rejects forged signatures, wrong shops/versions/topics, unpaid and live orders (2.8937ms)
+✔ paid test lines are immutable, deduplicated across deliveries/restart and cannot reuse an offer for another order (452.0485ms)
+✔ E3: an invalid position is rejected alone with status „fehler“; no order-wide refusal, no partial rows (283.5155ms)
+✔ E3: two positions, one broken – the valid one is admitted, the broken one gets „fehler“ with reason; a second delivery changes nothing (251.9512ms)
+✔ configured HTTP receiver requires HMAC instead of browser CSRF; default runtime keeps intake disabled (1170.2038ms)
+✔ status updates report partial/full refunds while preserving paid line, private package and restart state (260.857ms)
+✔ status may precede paid delivery; stale and duplicate paid events cannot erase a later refund (239.0435ms)
+✔ cancellation remains visible with a later refund; conflicting equal timestamps require review (268.9197ms)
+✔ status authentication, live rejection, currency, times and event collisions leave no partial rows (233.6581ms)
+✔ gallery approval batch checks every variant, reuses one document hash and reads fresh evidence on retry (11.1137ms)
+✔ versioned templates retain all option groups/fields, source identities, prices and history after reopening (652.3831ms)
+✔ concrete multi-product plan must be confirmed exactly; executes actual draft products with no duplicate retry (796.7674ms)
+✔ template, source, offered families or catalogue revision changes invalidate confirmation (600.0024ms)
+✔ no invented values/prices/rules, incomplete target or absent offered materials can become a confirmed creation (717.8224ms)
+✔ missing option data and unsupported new field kinds are reported without silently inventing defaults (184.4736ms)
+✔ native dependent-option validation blocks an invalid restriction; valid restriction keeps authoritative prices (466.3978ms)
+✔ legacy embedded format options cannot silently ignore a profile-only restriction (206.7718ms)
+✔ creation key conflicts and changed scope cannot reuse an earlier confirmation (516.4421ms)
+✔ tenant isolation covers templates, plans, confirmations, targets and repository writes (599.2672ms)
+✔ retry recovers atomic repository journal after interruption before the template result was recorded (883.4089ms)
+✔ transaction guard rechecks confirmation dependencies immediately before repository write (324.0459ms)
+✖ native document cache holds two records total, including historical revisions (948.8664ms)
+✔ source listing evicts old heads while retaining the two most recently used documents (265.9944ms)
+✖ draft, validation, planning and confirmation reuse source heads only within each operation (156.9564ms)
+✖ historical revisions and failed aliases are each read once per operation and reread on the next (203.1339ms)
+✔ fresh transaction guard detects source and target-material changes after the earlier execute preflight (838.1641ms)
+✔ one native steel source creates logo and no-logo products from confirmed module profiles without changing designs or prices (1836.8438ms)
+✔ changing a module profile invalidates a confirmed creation and retains the prior product snapshot (1770.905ms)
+✔ module changes immediately before native write are checked inside the product creation guard (1154.8602ms)
+✔ module assignments cannot inject prices or substitute a client-supplied policy (537.5123ms)
+✔ family-format confirmation shows every real steel form, size, allowed mounting and its exact native price (2737.3143ms)
+﹣ exact approved r4 bank: both logo profiles preserve 251 originals, 80 sizes and all 404 native prices (1.2527ms) # SKIP
+✔ late 100-variant block over 15120 prior bindings reads full evidence exactly three times and repeats idempotently (4405.2436ms)
+✔ a global conflict introduced during Shopify await is detected by a new after-read snapshot (758.0862ms)
+✔ a global conflict after checking is re-read inside the locked persist phase and writes nothing (451.0324ms)
+✔ writes do not reuse the pre-write snapshot: duplicate choices roll back the entire transaction (384.9967ms)
+✔ snapshot rows are deeply immutable; exceptions, async callbacks and scope failures leave no reusable cache (348.7313ms)
+✔ the existing 60-second evidence deadline is unchanged (1141.9119ms)
+✔ manifest derives exact selected template resources without changing or exporting designs/prices/uploads (4.3905ms)
+✔ only current link bundle, allowlisted public resources; no arbitrary URLs or historical bundles (1.4839ms)
+✔ only the current core and explicitly marked R15 chunk are warmed, with unchanged budgets and two workers (39.2221ms)
+✔ warmup fetches bounded assets at low priority, never initializes editor/model or full library (3.5572ms)
+✔ Save-Data, 2g and invalid manifests make zero requests; failures stay optional (1.0281ms)
+✔ oversized responses are cancelled; speculative decoded byte budget is bounded (2.901ms)
+✔ public template warmup accepts at most three exact public hash URLs within the existing worker budget (4.2702ms)
+ℹ tests 98
+ℹ suites 0
+ℹ pass 82
+ℹ fail 15
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 349282.0945
+
+✖ failing tests:
+
+test at app\workshop\katalog-worker.test.mjs:53:1
+✖ Worker: Übersicht, Linie und Filter sind bytegleich zum direkten Weg (mit Produkt aus der Datenbank) (753.4783ms)
+  Error: EPERM, Permission denied: \\?\C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\restabschluss\backend-test-temp\p1c-db-nWuUfQ '\\?\C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\restabschluss\backend-test-temp\p1c-db-nWuUfQ'
+      at Object.rmSync (node:fs:1283:18)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/katalog-worker.test.mjs:43:37)
+      at TestHook.runInAsyncScope (node:async_hooks:227:14)
+      at TestHook.run (node:internal/test_runner/test:1397:25)
+      at TestHook.run (node:internal/test_runner/test:1741:18)
+      at TestHook.run (node:internal/util:581:20)
+      at Test.runHook (node:internal/test_runner/test:1284:20)
+      at async after (node:internal/test_runner/test:1337:9)
+      at async Test.run (node:internal/test_runner/test:1423:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    errno: 1,
+    code: 'EPERM',
+    path: '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-11-11\\die-vollst-ndige-bergabe-findest-du\\work\\restabschluss\\backend-test-temp\\p1c-db-nWuUfQ',
+    syscall: 'rm'
+  }
+
+test at app\workshop\katalog-worker.test.mjs:69:1
+✖ Worker: große Antwort wird im Worker gzip-komprimiert und entpackt bytegleich; kleine bleibt unkomprimiert (4228.1893ms)
+  Error: EPERM, Permission denied: \\?\C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\restabschluss\backend-test-temp\p1c-db-elarDq '\\?\C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\restabschluss\backend-test-temp\p1c-db-elarDq'
+      at Object.rmSync (node:fs:1283:18)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/katalog-worker.test.mjs:43:37)
+      at TestHook.runInAsyncScope (node:async_hooks:227:14)
+      at TestHook.run (node:internal/test_runner/test:1397:25)
+      at TestHook.run (node:internal/test_runner/test:1741:18)
+      at TestHook.run (node:internal/util:581:20)
+      at Test.runHook (node:internal/test_runner/test:1284:20)
+      at async after (node:internal/test_runner/test:1337:9)
+      at async Test.run (node:internal/test_runner/test:1423:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: 1,
+    code: 'EPERM',
+    path: '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-11-11\\die-vollst-ndige-bergabe-findest-du\\work\\restabschluss\\backend-test-temp\\p1c-db-elarDq',
+    syscall: 'rm'
+  }
+
+test at app\workshop\katalog-worker.test.mjs:80:1
+✖ Worker: Zielvorschau und Designdateien sind bytegleich zum direkten Weg (1363.6487ms)
+  Error: EPERM, Permission denied: \\?\C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\restabschluss\backend-test-temp\p1c-db-9u9tvL '\\?\C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\restabschluss\backend-test-temp\p1c-db-9u9tvL'
+      at Object.rmSync (node:fs:1283:18)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/katalog-worker.test.mjs:43:37)
+      at TestHook.runInAsyncScope (node:async_hooks:227:14)
+      at TestHook.run (node:internal/test_runner/test:1397:25)
+      at TestHook.run (node:internal/test_runner/test:1741:18)
+      at TestHook.run (node:internal/util:581:20)
+      at Test.runHook (node:internal/test_runner/test:1284:20)
+      at async after (node:internal/test_runner/test:1337:9)
+      at async Test.run (node:internal/test_runner/test:1423:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: 1,
+    code: 'EPERM',
+    path: '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-11-11\\die-vollst-ndige-bergabe-findest-du\\work\\restabschluss\\backend-test-temp\\p1c-db-9u9tvL',
+    syscall: 'rm'
+  }
+
+test at app\workshop\katalog-worker.test.mjs:97:1
+✖ Worker: Fehler haben Status, Code und Text wie im direkten Weg (436.0626ms)
+  Error: EPERM, Permission denied: \\?\C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\restabschluss\backend-test-temp\p1c-db-COuvxG '\\?\C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\restabschluss\backend-test-temp\p1c-db-COuvxG'
+      at Object.rmSync (node:fs:1283:18)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/katalog-worker.test.mjs:43:37)
+      at TestHook.runInAsyncScope (node:async_hooks:227:14)
+      at TestHook.run (node:internal/test_runner/test:1397:25)
+      at TestHook.run (node:internal/test_runner/test:1741:18)
+      at TestHook.run (node:internal/util:581:20)
+      at Test.runHook (node:internal/test_runner/test:1284:20)
+      at async after (node:internal/test_runner/test:1337:9)
+      at async Test.run (node:internal/test_runner/test:1423:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: 1,
+    code: 'EPERM',
+    path: '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-11-11\\die-vollst-ndige-bergabe-findest-du\\work\\restabschluss\\backend-test-temp\\p1c-db-COuvxG',
+    syscall: 'rm'
+  }
+
+test at app\workshop\katalog-worker.test.mjs:112:1
+✖ Leser: importItem und get liefern dasselbe wie das Repository, nur lesend (101.4855ms)
+  Error: EPERM, Permission denied: \\?\C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\restabschluss\backend-test-temp\p1c-db-gSPOZg '\\?\C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\restabschluss\backend-test-temp\p1c-db-gSPOZg'
+      at Object.rmSync (node:fs:1283:18)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/katalog-worker.test.mjs:43:37)
+      at TestHook.runInAsyncScope (node:async_hooks:227:14)
+      at TestHook.run (node:internal/test_runner/test:1397:25)
+      at TestHook.run (node:internal/test_runner/test:1741:18)
+      at TestHook.run (node:internal/util:581:20)
+      at Test.runHook (node:internal/test_runner/test:1284:20)
+      at async after (node:internal/test_runner/test:1337:9)
+      at async Test.run (node:internal/test_runner/test:1423:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: 1,
+    code: 'EPERM',
+    path: '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-11-11\\die-vollst-ndige-bergabe-findest-du\\work\\restabschluss\\backend-test-temp\\p1c-db-gSPOZg',
+    syscall: 'rm'
+  }
+
+test at app\workshop\katalog-worker.test.mjs:194:1
+✖ Schriften: eine geänderte Schriftliste erreicht den laufenden Worker (480.558ms)
+  Error: EPERM, Permission denied: \\?\C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\restabschluss\backend-test-temp\p1c-db-nE6ojR '\\?\C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\restabschluss\backend-test-temp\p1c-db-nE6ojR'
+      at Object.rmSync (node:fs:1283:18)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/katalog-worker.test.mjs:43:37)
+      at TestHook.runInAsyncScope (node:async_hooks:227:14)
+      at TestHook.run (node:internal/test_runner/test:1397:25)
+      at TestHook.run (node:internal/test_runner/test:1741:18)
+      at TestHook.run (node:internal/util:581:20)
+      at Test.runHook (node:internal/test_runner/test:1284:20)
+      at async after (node:internal/test_runner/test:1337:9)
+      at async Test.run (node:internal/test_runner/test:1423:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: 1,
+    code: 'EPERM',
+    path: '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-11-11\\die-vollst-ndige-bergabe-findest-du\\work\\restabschluss\\backend-test-temp\\p1c-db-nE6ojR',
+    syscall: 'rm'
+  }
+
+test at app\workshop\katalog-worker.test.mjs:206:1
+✖ Katalogstand: nach invalidate() sieht der Worker eine Änderung sofort, nicht erst nach dem 2-Sekunden-Speicher (435.4018ms)
+  Error: EPERM, Permission denied: \\?\C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\restabschluss\backend-test-temp\p1c-db-i6xWUk '\\?\C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\restabschluss\backend-test-temp\p1c-db-i6xWUk'
+      at Object.rmSync (node:fs:1283:18)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/katalog-worker.test.mjs:43:37)
+      at TestHook.runInAsyncScope (node:async_hooks:227:14)
+      at TestHook.run (node:internal/test_runner/test:1397:25)
+      at TestHook.run (node:internal/test_runner/test:1741:18)
+      at TestHook.run (node:internal/util:581:20)
+      at Test.runHook (node:internal/test_runner/test:1284:20)
+      at async after (node:internal/test_runner/test:1337:9)
+      at async Test.run (node:internal/test_runner/test:1423:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: 1,
+    code: 'EPERM',
+    path: '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-11-11\\die-vollst-ndige-bergabe-findest-du\\work\\restabschluss\\backend-test-temp\\p1c-db-i6xWUk',
+    syscall: 'rm'
+  }
+
+test at app\workshop\katalog-worker.test.mjs:263:1
+✖ Worker: sichert den Zwischenspeicher nach einer Listenrechnung, lädt ihn beim nächsten Start und meldet Messwerte (823.2807ms)
+  Error: EPERM, Permission denied: \\?\C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\restabschluss\backend-test-temp\p1c-db-ajrvli '\\?\C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\restabschluss\backend-test-temp\p1c-db-ajrvli'
+      at Object.rmSync (node:fs:1283:18)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/katalog-worker.test.mjs:43:37)
+      at TestHook.runInAsyncScope (node:async_hooks:227:14)
+      at TestHook.run (node:internal/test_runner/test:1397:25)
+      at TestHook.run (node:internal/test_runner/test:1741:18)
+      at TestHook.run (node:internal/util:581:20)
+      at Test.runHook (node:internal/test_runner/test:1284:20)
+      at async after (node:internal/test_runner/test:1337:9)
+      at async Test.run (node:internal/test_runner/test:1423:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: 1,
+    code: 'EPERM',
+    path: '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-11-11\\die-vollst-ndige-bergabe-findest-du\\work\\restabschluss\\backend-test-temp\\p1c-db-ajrvli',
+    syscall: 'rm'
+  }
+
+test at app\workshop\katalog-worker.test.mjs:284:1
+✖ Vorrechnen: designs.warm rechnet jede Linie einmal und meldet je Linie Dauer und Erfolg (523.7357ms)
+  Error: EPERM, Permission denied: \\?\C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\restabschluss\backend-test-temp\p1c-db-V4RtHn '\\?\C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\restabschluss\backend-test-temp\p1c-db-V4RtHn'
+      at Object.rmSync (node:fs:1283:18)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/katalog-worker.test.mjs:43:37)
+      at TestHook.runInAsyncScope (node:async_hooks:227:14)
+      at TestHook.run (node:internal/test_runner/test:1397:25)
+      at TestHook.run (node:internal/test_runner/test:1741:18)
+      at TestHook.run (node:internal/util:581:20)
+      at Test.runHook (node:internal/test_runner/test:1284:20)
+      at async after (node:internal/test_runner/test:1337:9)
+      at async Test.run (node:internal/test_runner/test:1423:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: 1,
+    code: 'EPERM',
+    path: '\\\\?\\C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-11-11\\die-vollst-ndige-bergabe-findest-du\\work\\restabschluss\\backend-test-temp\\p1c-db-V4RtHn',
+    syscall: 'rm'
+  }
+
+test at app\workshop\katalog-worker.test.mjs:345:1
+✖ HTTP: mit Schalter antwortet die Werkstatt bytegleich (Kopfzeilen und Körper), ohne Schalter läuft kein Worker (48.0966ms)
+  Error: ENOENT: no such file or directory, mkdtemp 'C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\issue230-integration-candidate\.local-data\p1c-http-XXXXXX'
+      at Object.mkdtempSync (node:fs:3111:18)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/katalog-worker.test.mjs:347:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -4058,
+    code: 'ENOENT',
+    syscall: 'mkdtemp',
+    path: 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-11-11\\die-vollst-ndige-bergabe-findest-du\\work\\issue230-integration-candidate\\.local-data\\p1c-http-XXXXXX'
+  }
+
+test at app\workshop\katalog-worker.test.mjs:368:1
+✖ HTTP: Schreibweg bleibt im Hauptprozess; nach PATCH liefert der Worker sofort den neuen Stand (32.3886ms)
+  Error: ENOENT: no such file or directory, mkdtemp 'C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\issue230-integration-candidate\.local-data\p1c-http-XXXXXX'
+      at Object.mkdtempSync (node:fs:3111:18)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/katalog-worker.test.mjs:370:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -4058,
+    code: 'ENOENT',
+    syscall: 'mkdtemp',
+    path: 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-11-11\\die-vollst-ndige-bergabe-findest-du\\work\\issue230-integration-candidate\\.local-data\\p1c-http-XXXXXX'
+  }
+
+test at app\workshop\katalog-worker.test.mjs:383:1
+✖ Schalter aus: kein Worker wird erzeugt (auch nicht bei anderen Werten als „enabled“) (27.5938ms)
+  Error: ENOENT: no such file or directory, mkdtemp 'C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\issue230-integration-candidate\.local-data\p1c-http-XXXXXX'
+      at Object.mkdtempSync (node:fs:3111:18)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/katalog-worker.test.mjs:385:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -4058,
+    code: 'ENOENT',
+    syscall: 'mkdtemp',
+    path: 'C:\\Users\\Christopher Koch\\Documents\\Codex\\2026-11-11\\die-vollst-ndige-bergabe-findest-du\\work\\issue230-integration-candidate\\.local-data\\p1c-http-XXXXXX'
+  }
+
+test at app\workshop\product-group-templates.test.mjs:163:1
+✖ native document cache holds two records total, including historical revisions (948.8664ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  3 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/product-group-templates.test.mjs:174:49)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 3,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at app\workshop\product-group-templates.test.mjs:190:1
+✖ draft, validation, planning and confirmation reuse source heads only within each operation (156.9564ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at measured (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/product-group-templates.test.mjs:194:130)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/product-group-templates.test.mjs:195:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at app\workshop\product-group-templates.test.mjs:204:1
+✖ historical revisions and failed aliases are each read once per operation and reread on the next (203.1339ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 1
+  
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/product-group-templates.test.mjs:210:33)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

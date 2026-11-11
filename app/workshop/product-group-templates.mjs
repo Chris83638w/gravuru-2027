@@ -86,12 +86,14 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
   }
   return map;
  }
- function sourceLookup(){
+ function sourceLookup(sourceKeys){
   // One operation owns its compact registry and at most TWO native records in
   // total (current + historical share the limit). Fonts/images can be large:
   // source listings must never retain a full document for every gallery product.
   // Confirm and both execute checks create fresh lookups, never a service cache.
-  let targets;const records=new Map(),resolvedTargets=new Map(),recordLimit=2;
+  // Resolve the known selection together: adapters may derive target metadata
+  // from source heads, so resolving aliases separately repeats that work.
+  let targets;const records=new Map(),recordLimit=2;
   const read=(key,load)=>{
    let entry=records.get(key);
    if(entry){records.delete(key);records.set(key,entry);}
@@ -102,10 +104,9 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
    }
    if(Object.hasOwn(entry,'error'))throw entry.error;return entry.value;
   };
-  return {get targets(){return targets??=registry();},source(key,revision){
+  return {get targets(){return targets??=registry(sourceKeys);},source(key,revision){
    identifier(key);
-   if(!targets&&!resolvedTargets.has(key))resolvedTargets.set(key,registry([key]).get(key));
-   const target=(targets||resolvedTargets).get(key);if(!target)fail(404,'group_source_missing','Die Produktquelle ist nicht mehr zugeordnet.');
+   const target=(targets??=registry(sourceKeys)).get(key);if(!target)fail(404,'group_source_missing','Die Produktquelle ist nicht mehr zugeordnet.');
    const current=read('head:'+target.productId,()=>repository.get(target.productId));
    const requested=revision===undefined?current.revision:version(revision);
    const record=requested===current.revision?current:read('revision:'+target.productId+':'+requested,()=>repository.get(target.productId,{revision:requested})),document=record.document,p=document.config?.profile;
@@ -133,6 +134,7 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
   const d=copy(input);d.name=label(d.name);keys(d.scope,['lineId','subcategoryId']);identifier(d.scope.lineId);identifier(d.scope.subcategoryId);
   if(!Array.isArray(d.targets)||!d.targets.length||d.targets.length>100)fail(422,'group_targets','Bitte 1 bis 100 konkrete Material-/Größenstände zuordnen.');
   if(!Array.isArray(d.openQuestions)||d.openQuestions.length>100)fail(422,'group_questions','Offene Angaben als Liste führen.');d.openQuestions=d.openQuestions.map(v=>label(v,1000));
+  lookup??=sourceLookup(d.targets.map(t=>identifier(t?.key)));
   const seen=new Set();
   for(const t of d.targets){
    keys(t,['key','source','familyId','sizeKey','material','optionGroups','optionFields'],['moduleProfile']);identifier(t.key);keys(t.source,['productId','revision']);version(t.source.revision);
@@ -147,7 +149,7 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
   }
   return d;
  }
- function validate(input){return validateWithSources(input,sourceLookup());}
+ function validate(input){return validateWithSources(input);}
  function compile(t,name,lookup){
   const {record,document}=lookup.source(t.key,t.source.revision),d=copy(document);
   // Older format selectors keep additional option definitions inside their
@@ -188,7 +190,7 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
   if(template.revision!==plan.templateRevision||template.sha256!==plan.templateHash)fail(409,'group_confirmation_stale','Die Vorlage wurde geändert. Den neuen konkreten Anlageplan erneut bestätigen.');
   for(const ref of plan.moduleProfiles||[]){const latest=moduleProfiles?.get(ref.id);if(!latest||latest.revision!==ref.revision||latest.sha256!==ref.sha256)fail(409,'group_module_profile_changed','Ein Modulprofil wurde geändert. Den neuen Stand auswählen und die Optionen erneut bestätigen.');}
   if(!plan.offering||!same(offering(plan.scope),plan.offering))fail(409,'group_offering_changed','Die Materialauswahl der Unterkategorie wurde geändert oder ist noch offen. Den Anlageplan neu prüfen und bestätigen.');
-  const lookup=sourceLookup();validateWithSources(template.document,lookup);
+  const lookup=sourceLookup(template.document.targets.map(t=>t.key));validateWithSources(template.document,lookup);
   for(const s of plan.sources){const {current,record}=lookup.source(s.key,s.revision);if(current.revision!==s.revision||hash(record.document)!==s.sha256)fail(409,'group_source_changed','Eine Produktquelle wurde geändert. Den Anlageplan neu erstellen und bestätigen.');}
   if(!plan.valid)fail(422,'group_plan_open','Offene Angaben oder ungültige Kombinationen zuerst klären.');
  }
@@ -197,10 +199,10 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
   sourceSummaries(){return typeof sourceSummaries==='function'?copy(sourceSummaries()):[...registry().values()].map(t=>({...t,label:t.key,name:t.key,detailsLoaded:false}));},
   sources({sourceKeys}={}){
    if(sourceKeys!==undefined&&(!Array.isArray(sourceKeys)||!sourceKeys.length||sourceKeys.length>100||new Set(sourceKeys).size!==sourceKeys.length))fail(422,'group_targets','Bitte 1 bis 100 eindeutige Produktquellen wählen.');
-   const lookup=sourceLookup(),selected=sourceKeys?sourceKeys.map(identifier):[...lookup.targets.keys()];
+   const selectedKeys=sourceKeys?.map(identifier),lookup=sourceLookup(selectedKeys),selected=selectedKeys??[...lookup.targets.keys()];
    return selected.map(key=>{try{return sourceView(key,lookup);}catch(e){if(sourceKeys)throw e;return {...lookup.targets.get(key),label:key,issues:[e.message],unsupported:true};}});
   },
-  draft(input){keys(input,['name','scope','sourceKeys']);if(!Array.isArray(input.sourceKeys))fail(422,'group_targets','Produktquellen auswählen.');const lookup=sourceLookup();return validateWithSources({schema:PRODUCT_GROUP_TEMPLATE_SCHEMA,name:input.name,scope:input.scope,targets:input.sourceKeys.map(key=>{const s=sourceView(key,lookup);return {key:s.key,source:s.source,familyId:s.familyId,sizeKey:s.sizeKey,material:s.material,optionGroups:s.optionGroups,optionFields:s.optionFields};}),openQuestions:[]},lookup);},
+  draft(input){keys(input,['name','scope','sourceKeys']);if(!Array.isArray(input.sourceKeys))fail(422,'group_targets','Produktquellen auswählen.');const lookup=sourceLookup(input.sourceKeys.map(identifier));return validateWithSources({schema:PRODUCT_GROUP_TEMPLATE_SCHEMA,name:input.name,scope:input.scope,targets:input.sourceKeys.map(key=>{const s=sourceView(key,lookup);return {key:s.key,source:s.source,familyId:s.familyId,sizeKey:s.sizeKey,material:s.material,optionGroups:s.optionGroups,optionFields:s.optionFields};}),openQuestions:[]},lookup);},
   validate,get,
   list:()=>db.prepare('SELECT id FROM product_group_templates WHERE tenant_id=? ORDER BY rowid DESC').all(tenant).map(r=>get(r.id)),
   history:id=>{get(id);return db.prepare('SELECT revision FROM product_group_template_revisions WHERE tenant_id=? AND id=? ORDER BY revision DESC').all(tenant,id).map(r=>get(id,{revision:r.revision}));},
@@ -210,7 +212,7 @@ export function createProductGroupTemplates({filename,repository,tenantId,target
    keys(input,['templateId','templateRevision','creationKey','products']);version(input.templateRevision);identifier(input.creationKey);
    if(!Array.isArray(input.products)||!input.products.length||input.products.length>100)fail(422,'group_creation_scope','Der konkrete Anlageumfang muss 1 bis 100 Produkte enthalten.');
    return transaction(()=>{
-    const template=get(input.templateId);if(template.revision!==input.templateRevision)fail(409,'group_revision_conflict','Die Vorlage wurde geändert. Bitte den aktuellen Stand prüfen.');const lookup=sourceLookup();validateWithSources(template.document,lookup);
+    const template=get(input.templateId);if(template.revision!==input.templateRevision)fail(409,'group_revision_conflict','Die Vorlage wurde geändert. Bitte den aktuellen Stand prüfen.');const lookup=sourceLookup(template.document.targets.map(t=>t.key));validateWithSources(template.document,lookup);
     const selectedOffering=offering(template.document.scope),issues=template.document.openQuestions.map(message=>({code:'open_question',message})),products=[],sources=new Map(),modules=new Map(),ids=new Set();
     if(!selectedOffering)issues.push({code:'offering_open',message:'Angebotene Materialien der Unterkategorie zuerst festlegen.'});
     for(const item of input.products){

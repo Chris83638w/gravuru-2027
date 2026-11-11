@@ -28,6 +28,7 @@ TAGS = {'svg', 'g', 'path', 'rect', 'circle', 'ellipse', 'line', 'polyline', 'po
 GEOMETRY = {'d', 'points', 'x', 'y', 'x1', 'y1', 'x2', 'y2', 'cx', 'cy', 'r', 'rx', 'ry', 'width', 'height'}
 ATTRS = GEOMETRY | {'viewBox', 'preserveAspectRatio', 'version', 'id', 'transform', 'fill', 'stroke', 'fill-rule', 'stroke-width', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-dasharray', 'stroke-dashoffset', 'opacity', 'fill-opacity', 'stroke-opacity'}
 COLORS = dict(zip('black silver gray white maroon red purple fuchsia green lime olive yellow navy blue teal aqua orange'.split(), '#000000 #c0c0c0 #808080 #ffffff #800000 #ff0000 #800080 #ff00ff #008000 #00ff00 #808000 #ffff00 #000080 #0000ff #008080 #00ffff #ffa500'.split()))
+ASPECT = re.compile(r'(?:(?:defer)\s+)?(none|x(?:Min|Mid|Max)Y(?:Min|Mid|Max))(?:\s+(meet|slice))?\Z')
 
 
 class LogoFailure(Exception):
@@ -128,7 +129,7 @@ def sanitized_source(raw):
                 # contours before the normalized-path budget can be inspected.
                 require(value == 'none', 'Bitte gestrichelte Linien vor dem Upload in Flächen umwandeln.', 'logo_effect')
             elif key == 'preserveAspectRatio':
-                require(value in {'xMidYMid', 'xMidYMid meet', 'none'}, 'Bitte das Logo mit zentrierter Zeichenfläche exportieren.', 'logo_effect')
+                require(ASPECT.fullmatch(value.strip()), 'Die SVG-Ausrichtung ist ungültig.', 'logo_effect')
             if key in GEOMETRY | {'viewBox', 'transform', 'stroke-width', 'stroke-miterlimit', 'stroke-dasharray', 'stroke-dashoffset'}:
                 values = re.findall(NUMBER, value)
                 numbers += len(values)
@@ -139,8 +140,33 @@ def sanitized_source(raw):
     # No physical size is inferred from pixels or a viewBox-only source.
     physical = all(re.fullmatch(NUMBER + r'\s*(?:mm|cm|in|pt|pc)', source_root.get(k, '').strip(), re.I) for k in ('width', 'height'))
     dimensions = {'widthMm': sanitized['widthMm'] if physical else None, 'heightMm': sanitized['heightMm'] if physical else None}
-    require(abs((sanitized['widthMm'] / sanitized['heightMm']) / (box[2] / box[3]) - 1) < 0.00001,
-            'Die SVG-Zeichenfläche und die Dateimaße haben unterschiedliche Seitenverhältnisse. Bitte das Logo mit passender Zeichenfläche exportieren.', 'logo_viewbox')
+    aspect = root.get('preserveAspectRatio')
+    legacy = (aspect is None or aspect in {'xMidYMid', 'xMidYMid meet', 'none'}) and abs((sanitized['widthMm'] / sanitized['heightMm']) / (box[2] / box[3]) - 1) < 0.00001
+    if not legacy:
+        # SVG2 viewport mapping, before stroke expansion / boolean paths. Keep
+        # the exact old path for every previously accepted v1 source: saved
+        # output hashes are checked again when a customer edits an old order.
+        align, fit = ASPECT.fullmatch((aspect or 'xMidYMid meet').strip()).groups()
+        # Overall physical scale is metadata; retain the actual viewport ratio
+        # in bounded viewBox units (no guessed logo size on the product).
+        width, height = sanitized['widthMm'], sanitized['heightMm']
+        unit = max(box[2], box[3]) / max(width, height)
+        width, height = width * unit, height * unit
+        require(min(width, height) >= 0.001, 'Das Seitenverhältnis des SVG ist zu extrem.', 'logo_complexity')
+        sx, sy = width / box[2], height / box[3]
+        if align != 'none':
+            sx = sy = max(sx, sy) if fit == 'slice' else min(sx, sy)
+        tx, ty = -box[0] * sx, -box[1] * sy
+        if align != 'none':
+            tx += (width - box[2] * sx) * {'Min': 0, 'Mid': .5, 'Max': 1}[align[1:4]]
+            ty += (height - box[3] * sy) * {'Min': 0, 'Mid': .5, 'Max': 1}[align[5:8]]
+        group = ET.Element('{' + NS + '}g', {'transform': f'matrix({sx:.17g} 0 0 {sy:.17g} {tx:.17g} {ty:.17g})'})
+        for child in list(root):
+            root.remove(child)
+            group.append(child)
+        root.append(group)
+        box = [0, 0, width, height]
+        root.set('viewBox', ' '.join(format(v, '.17g') for v in box))
     # SVG geometry uses the viewBox. Source mm/px are metadata, not a second scale.
     root.set('width', str(box[2]))
     root.set('height', str(box[3]))

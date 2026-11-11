@@ -7,6 +7,7 @@ import {resolveShopProductBinding} from './shop-product-binding-plan.mjs';
 import {prepareShopProduct,withShopPreparationSnapshot} from './shop-preparation.mjs';
 import {createShopGalleryCache} from './shop-gallery-cache.mjs';
 import {performance} from 'node:perf_hooks';
+import {customerDatabaseRead} from './customer-read-scope.mjs';
 
 const plain = v => v !== null && typeof v === 'object' && !Array.isArray(v) && [Object.prototype,null].includes(Object.getPrototypeOf(v));
 const positive = v => Number.isSafeInteger(v) && v > 0;
@@ -181,15 +182,27 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
       fail('shop_binding_active_integrity','Bindung, Ausführung und fester Produktstand stimmen nicht überein.');
   }
   function parseDocument(text){try{return JSON.parse(text);}catch{fail('shop_binding_document','Der gespeicherte Produktbeleg ist ungültig.',422);}}
-  function result(row,records=new Map(),timings){
+  function result(row,records=new Map(),timings,memo=null){
     if(row.store_id!==storeId)fail('shop_binding_store_scope','Die Zuordnung gehört zu einem anderen Store.',503);
     const key=row.cfg_id+'@'+row.cfg_revision;let record=records.get(key);
-    let at=performance.now();const stamp=revisionStamp(row.cfg_id,row.cfg_revision);if(timings)timings.documentReadMs+=performance.now()-at;
+    let at=performance.now();const stamp=memo&&!legacySingleStore?null:customerDatabaseRead(db,'binding-stamp:'+tenantId+':'+key,()=>revisionStamp(row.cfg_id,row.cfg_revision));if(timings)timings.documentReadMs+=performance.now()-at;
     if(record&&!isDeepStrictEqual(record.stamp,stamp))fail('shop_binding_cfg_changed','Der Produktbeleg wurde innerhalb der Prüfung geändert.');
     if(!record){
-      const source=productRow(row.cfg_id,row.cfg_revision,{withMetadata:false});
+      const read=()=>customerDatabaseRead(db,'binding-document:'+tenantId+':'+key,()=>{
+      let at=performance.now();const source=productRow(row.cfg_id,row.cfg_revision,{withMetadata:false});if(timings)timings.documentReadMs+=performance.now()-at;
       at=performance.now();const document=parseDocument(source.document);if(timings)timings.documentParseMs+=performance.now()-at;
-      at=performance.now();record={stamp,digest:digest(document),productionStatus:document.productionProfile==null?'profile-assignment-pending':'not-released'};if(timings){timings.documentHashMs+=performance.now()-at;timings.products++;}
+      at=performance.now();record={digest:digest(document),productionStatus:document.productionProfile==null?'profile-assignment-pending':'not-released',status:source.status};if(timings){timings.documentHashMs+=performance.now()-at;timings.products++;}
+      return record;
+      });
+      // Nur Kundenweg mit Antwortspeicher (memo): Ableitung (Prüfsumme) der unveränderlichen Revision wiederverwenden, wenn der
+      // frische Beleg (rowid, Schema, Kopf) passt. Archivierung, Art und Status werden trotzdem bei jedem Aufruf entschieden –
+      // mit denselben Bedingungen und demselben Fehler wie productRow; ohne Beleg oder bei Fehlschlag gilt der bisherige Weg.
+      if(memo&&!legacySingleStore){
+        const found=memo.derive({scope:storeId,kind:'binding-record',db,tenantId,productId:row.cfg_id,revision:row.cfg_revision,compute:read});
+        record=found.value;
+        if(found.hit&&(found.marker.archived||found.marker.kind!=='product'||record.status==='archived'))record=read();
+      }else record=read();
+      record={...record,stamp};
       // Retain only the digest, never all parsed documents of a large catalogue.
       records.set(key,record);
     }
@@ -290,7 +303,7 @@ export function createShopProductBindingStore({database:db,orderIntake,tenantId,
         written:createdBindings>0||changedAssignments>0,shopifyWrites:false,productionReady:false,publicAccess:false,checkoutEnabled:false};
     });
   }
-  function resolve(input){storedScope();const pair=ids(input),row=currentHead(pair.shopifyVariantId);if(!row||row.product_gid!==pair.shopifyProductId)fail('shop_binding_active_not_found','Keine ausdrückliche aktive Zuordnung für diese beiden Shopify-IDs.',404);return result(row);}
+  function resolve(input,{documentMemo=null}={}){storedScope();const pair=ids(input),row=currentHead(pair.shopifyVariantId);if(!row||row.product_gid!==pair.shopifyProductId)fail('shop_binding_active_not_found','Keine ausdrückliche aktive Zuordnung für diese beiden Shopify-IDs.',404);return result(row,undefined,undefined,documentMemo);}
   function resolveMany(inputs){
     if(!Array.isArray(inputs)||!inputs.length||inputs.length>5000)fail('shop_binding_identity','Eine begrenzte Liste vollständiger Shopify-IDs ist erforderlich.',422);
     return transaction(()=>{storedScope();const records=new Map();return inputs.map(input=>{const pair=ids(input),row=currentHead(pair.shopifyVariantId);if(!row||row.product_gid!==pair.shopifyProductId)fail('shop_binding_active_not_found','Keine ausdrückliche aktive Zuordnung für diese beiden Shopify-IDs.',404);return result(row,records);});});

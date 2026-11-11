@@ -1,0 +1,11 @@
+{
+  "commandBytes": 22845,
+  "results": [
+    "fresh local mapped transfer creates exactly two files exclusively",
+    "identical files accepted without writing",
+    "different gzip rejected unchanged",
+    "different installer rejected unchanged"
+  ],
+  "noInstallerExecution": true,
+  "noLiveAccess": true
+}

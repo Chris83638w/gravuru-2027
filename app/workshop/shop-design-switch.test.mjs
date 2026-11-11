@@ -15,15 +15,15 @@ test('switch model must exactly match new session product, variant, revision and
  for(const field of ['productId','productRevision','shopifyProductId','shopifyVariantId'])assert.throws(()=>switchedModel(data(),{...result(),binding:{...binding,[field]:'foreign'}}));
  assert.throws(()=>switchedModel(data(),{...result(),designId:'unknown'}));
 });
-function fixture({fail=false,transferFailure=false,readDuringActivation=false,model=data()}={}){
+function fixture({fail=false,transferFailure=false,readDuringActivation=false,model=data(),switchGate}={}){
  const listeners=new Set(),frames=[],win={location:{origin:'https://test.example'},history:{replaceState(_s,_t,hash){win.hash=hash;}},addEventListener(_type,fn){listeners.add(fn);},removeEventListener(_type,fn){listeners.delete(fn);},setTimeout,clearTimeout};
  const makeFrame=()=>({style:{},contentWindow:{},remove(){this.removed=true;}}),old=makeFrame();old.photoFile={name:'customer-photo.png'};
- const initReads=[];
- const nextClient={loadDesignGallery:async()=>({items:['next-design']}),loadDesignPreview:async()=>new Blob(['preview']),loadModel:async()=>{if(fail)throw Error('target-load-failed');return model;},loadResources:async()=>({target:true})};
- const client={switchDesign:async()=>result(),loadDesignGallery:async()=>[],loadDesignPreview:async()=>new Blob()};
+ const initReads=[],previewCalls=[],activities=new Map();
+ const nextClient={loadDesignGallery:async()=>({items:['next-design']}),loadDesignPreview:async()=>{previewCalls.push('new');return new Blob(['preview']);},loadModel:async()=>{if(fail)throw Error('target-load-failed');return model;},loadResources:async()=>({target:true})};
+ const client={switchDesign:async()=>{await switchGate;return result();},loadDesignGallery:async()=>[],loadDesignPreview:async()=>{previewCalls.push('old');return new Blob();}};
  let active,api;const backAtActivation=[];
- const coordinator=createDesignSwitch({initial:{client,data:{old:true},resources:{old:true},frame:old},fragment:new URLSearchParams('s=gse1.old.signature&config=old-config&rev=2&line=old-line'),container:{append(frame){frames.push(frame);queueMicrotask(()=>{for(const listen of listeners)listen({origin:win.location.origin,source:frame.contentWindow,data:transferFailure?{type:'gravuru-design-transfer-failed',message:'Foto passt nicht in die neue Vorlage'}:{type:'gravuru-ux-ready'}});});}},activate(entry,gallery){active=entry;api=gallery;backAtActivation.push(gallery.canGoBack());if(readDuringActivation&&entry.previous){initReads.push(gallery.load(0),gallery.preview('target'));assert.throws(()=>gallery.back(),/vollständig geladen/);}},toDataUrl:async()=>'',win,doc:{createElement:makeFrame},clientFactory:()=>nextClient,timeoutMs:100});
- return {old,frames,win,coordinator,backAtActivation,initReads,get api(){return api;},get active(){return active;}};
+ const coordinator=createDesignSwitch({initial:{client,data:{old:true},resources:{old:true},frame:old},fragment:new URLSearchParams('s=gse1.old.signature&config=old-config&rev=2&line=old-line'),container:{append(frame){frames.push(frame);queueMicrotask(()=>{for(const listen of listeners)listen({origin:win.location.origin,source:frame.contentWindow,data:transferFailure?{type:'gravuru-design-transfer-failed',message:'Foto passt nicht in die neue Vorlage'}:{type:'gravuru-ux-ready'}});});}},activate(entry,gallery){active=entry;api=gallery;backAtActivation.push(gallery.canGoBack());if(!activities.has(entry.frame)){const states=[];activities.set(entry.frame,states);gallery.onPreviewActivity(value=>states.push(value));}if(readDuringActivation&&entry.previous){initReads.push(gallery.load(0));assert.throws(()=>gallery.preview('target'),{name:'AbortError'});assert.throws(()=>gallery.back(),/vollständig geladen/);}},toDataUrl:async()=>'',win,doc:{createElement:makeFrame},clientFactory:()=>nextClient,timeoutMs:100});
+ return {old,frames,win,coordinator,backAtActivation,initReads,activities,previewCalls,get api(){return api;},get active(){return active;}};
 }
 test('successful switch uses new gateway; original live frame/photo survive and Back restores exact cart IDs',async()=>{
  const f=fixture(),oldApi=f.api,photo=f.old.photoFile,transfer={texts:[{fieldKey:'name',text:'Anna'}]};await oldApi.choose('signed-target',transfer);
@@ -69,7 +69,28 @@ test('private transfer preserves photo bytes while the previous frame remains us
 });
 
 
-test('the candidate can load gallery and thumbnails before ready, while mutations remain locked',async()=>{
+test('the candidate can load gallery before ready, but thumbnails wait until the new editor is ready',async()=>{
  const f=fixture({readDuringActivation:true});await f.api.choose('signed-target',{});
- const [gallery,image]=await Promise.all(f.initReads);assert.deepEqual(gallery,{items:['next-design']});assert.equal(await image.text(),'preview');
+ const [gallery]=await Promise.all(f.initReads);assert.deepEqual(gallery,{items:['next-design']});assert.deepEqual(f.previewCalls,[]);assert.equal(await (await f.api.preview('target')).text(),'preview');
+});
+
+test('switch suspends old thumbnails before network work; success keeps old frame paused and Back resumes it',async()=>{
+ let release;const f=fixture({switchGate:new Promise(resolve=>release=resolve)}),oldApi=f.api;
+ const pending=oldApi.choose('target',{});assert.deepEqual(f.activities.get(f.old),[true,false]);assert.throws(()=>oldApi.preview('old'),{name:'AbortError'});assert.deepEqual(f.previewCalls,[]);
+ release();await pending;const next=f.active.frame;assert.deepEqual(f.activities.get(f.old),[true,false]);assert.deepEqual(f.activities.get(next),[false,true]);
+ await f.api.preview('new');assert.deepEqual(f.previewCalls,['new']);assert.equal(f.api.back(),true);
+ assert.deepEqual(f.activities.get(next),[false,true,false]);assert.deepEqual(f.activities.get(f.old),[true,false,true]);await oldApi.preview('restored');assert.deepEqual(f.previewCalls,['new','old']);
+});
+test('failed load or failed transfer resumes original thumbnails and faulty optional listener cannot break the transfer',async()=>{
+ for(const options of [{fail:true},{transferFailure:true}]){
+  const f=fixture(options),oldApi=f.api;const stop=oldApi.onPreviewActivity(()=>{if(f.activities.get(f.old).at(-1)===false)throw Error('optional preload failure');});
+  await assert.rejects(oldApi.choose('target',{}));assert.deepEqual(f.activities.get(f.old),[true,false,true]);assert.equal(f.active.frame,f.old);await f.api.preview('restored');assert.deepEqual(f.previewCalls,['old']);stop();
+ }
+});
+
+test('existing frame gateway forwards preview AbortSignal without changing selection or token',async()=>{
+ const f=fixture(),controller=new AbortController(),calls=[];
+ f.active.client.loadDesignPreview=async(...args)=>{calls.push(args);return new Blob(['svg']);};
+ const frame=f.active.frame;await f.api.preview('signed-choice','/public.svg',controller.signal);
+ assert.deepEqual(calls,[['signed-choice','/public.svg',controller.signal]]);assert.equal(f.active.frame,frame);assert.equal(f.api.canGoBack(),false);
 });

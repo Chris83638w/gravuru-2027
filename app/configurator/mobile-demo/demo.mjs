@@ -9,6 +9,7 @@ import {installDemoOptionsNavigation} from './options-navigation.mjs';
 import {installDemoOverlapReview} from './overlap-review.mjs';
 import {installDemoProductReturn} from './product-return.mjs';
 import {installDemoPreviewAction} from './preview-action.mjs';
+import {installDemoCompactControls} from './compact-controls.mjs';
 
 // Keep the pre-keyboard height even on Android where innerHeight also shrinks.
 export function keyboardViewport(previous, {width, height, innerHeight, focused}) {
@@ -49,7 +50,7 @@ export async function installMobileDemo(el, config = window.UniversalConfig, con
   const help=$('[data-ux=help]'), priorHelp=help ? {nodes:[...help.childNodes],text:help.textContent,label:help.getAttribute('aria-label')} : null;
   move(help, top);
   if(help){help.textContent='?';help.setAttribute('aria-label','Hilfe');}
-  const plus = button('Gestalten +', 'md-plus', () => open('menu')); plus.setAttribute('aria-label', 'Werkzeuge öffnen'); plus.setAttribute('aria-controls', 'md-tool-sheet');
+  const plus = button('+', 'md-plus', () => open('menu')); plus.setAttribute('aria-label', 'Werkzeuge öffnen'); plus.setAttribute('aria-controls', 'md-tool-sheet');
   const header = make('div', 'md-sheet-header'), heading = make('h2', '', 'Werkzeuge'); heading.id = 'md-sheet-title';
   const back = button('Zurück', 'md-sheet-back', () => open('menu'));
   const close = button('Fertig', 'md-sheet-close', () => {
@@ -176,17 +177,21 @@ export async function installMobileDemo(el, config = window.UniversalConfig, con
   // Temporarily restore our moved nodes before that happens, so none of their
   // controls remain inert behind the top layer. Their existing handlers stay.
   const full = $('.c-large-preview'), oldFullscreenShow = full.showModal;
-  let nativeFullscreen = false;
+  let nativeFullscreen = false, demoHomes = [];
   const restoreDemoNodes = () => {
     if (!nativeFullscreen) return;
     nativeFullscreen = false;
-    for (const [node, , target] of moved) target.append(node);
+    for (const [node, home] of demoHomes) home.replaceWith(node);
+    demoHomes = [];
     resize();
   };
   full.showModal = function(...args) {
     if (this.open) return oldFullscreenShow.apply(this, args);
     shut(false);
-    for (const [node, anchor] of moved) anchor.after(node);
+    demoHomes = moved.map(([node, anchor]) => {
+      const home = document.createComment('Fullscreen: demo position');
+      node.before(home); anchor.after(node); return [node, home];
+    });
     nativeFullscreen = true;
     try { return oldFullscreenShow.apply(this, args); }
     catch (error) { restoreDemoNodes(); throw error; }
@@ -286,6 +291,7 @@ export async function installMobileDemo(el, config = window.UniversalConfig, con
   const overlapReview = installDemoOverlapReview(el);
   const productReturn = installDemoProductReturn(el,{button:returnButton});
   const previewAction = installDemoPreviewAction({el,preview:$('.ux-preview'),trigger:$('[data-ux=enlarge]'),plus});
+  const compactControls = installDemoCompactControls({el,full,controls,returnButton});
   shut(false);
   const api = { open, close:shut, dispose() {
     if (disposed) return;
@@ -300,11 +306,13 @@ export async function installMobileDemo(el, config = window.UniversalConfig, con
     overlapReview?.dispose();
     productReturn?.dispose();
     previewAction?.dispose();
+    compactControls?.dispose();
     if (resizeFrame) cancelAnimationFrame(resizeFrame);
     observer.disconnect(); tabObserver.disconnect(); cleanups.forEach(fn => fn()); el.uxShowSection = oldShow;
     if (typeof oldSync === 'function') el.sync = oldSync;
     full.showModal = oldFullscreenShow;
     if (typeof oldRevealTextIssue === 'function') el.uxRevealTextIssue = oldRevealTextIssue;
+    for (const [,home] of demoHomes) home.remove(); demoHomes = [];
     for (const [node, anchor] of moved.reverse()) { anchor.replaceWith(node); }
     for (const node of [top,plus,controls,summary,bar,desktopTabs,header,menu,style,pageStyle,accountNote]) node.remove();
     const restoreAttribute = (node, name, value) => value === null ? node.removeAttribute(name) : node.setAttribute(name, value);

@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import {runInNewContext} from 'node:vm';
 import {MODULE_PROFILE_SCHEMA,MODULE_KEYS,validateModuleProfile,moduleEnabled,nativeModuleAvailability,moduleProfileIssue,applyModuleProfile} from './module-profile.mjs';
 import {makeAcrylicConfig} from './acrylic-product.mjs';
 import {makeProductDocument,validateProductDocument} from '../../workshop/product-model.mjs';
@@ -16,6 +17,23 @@ const source=()=>({
  localResources:{fonts:{Allura:{marker:'unchanged'}},motifs:[{key:'dog',marker:'unchanged'}]},
 });
 const profile=(changes={})=>({schema:MODULE_PROFILE_SCHEMA,id:'steel-door-signs',revision:1,modules:{options:true,designs:true,text:true,motifs:true,photo:false,logo:true,colors:false,...changes}});
+
+test('parent-frame JSON module profiles retain strict validation across realms',()=>{
+ const foreign=runInNewContext('JSON.parse(json)',{json:JSON.stringify(profile({logo:false}))});
+ assert.notEqual(Object.getPrototypeOf(foreign),Object.prototype);
+ assert.equal(validateModuleProfile(foreign),foreign);
+ assert.equal(moduleEnabled({moduleProfile:foreign},'logo'),false);
+ const projected=applyModuleProfile(source(),foreign);
+ assert.equal(projected.logo.enabled,false);assert.equal(projected.moduleProfile.modules.logo,false);
+ for(const expression of [
+  'Object.assign(new (class Profile {})(),p)',
+  'Object.assign(Object.create({}),p)',
+  'Object.assign(new Date(),p)',
+  '({...p,modules:{...p.modules,logo:"false"}})',
+  '({...p,modules:{options:true}})',
+  '({...p,extra:true})'
+ ])assert.throws(()=>validateModuleProfile(runInNewContext('let p=JSON.parse(json);'+expression,{json:JSON.stringify(profile())})),expression);
+});
 
 test('legacy configuration has no new gates, mutation or profile injected',()=>{
  const original=source(),before=structuredClone(original),result=applyModuleProfile(original);

@@ -1,0 +1,13 @@
+✔ explicit run reuses the same native preparation while every returned value remains isolated (46.6908ms)
+✔ price, revision, status, metadata and JSON-omitted mutations cannot reuse stale preparation (64.7449ms)
+✔ concurrent scopes stay independent and failed scopes close before a later run (42.5845ms)
+✔ all 43 selections use original check/persist/replay paths and keep the 60-second evidence limit (390.7949ms)
+✔ cached preparation does not hide a product revision change during the awaited shop read (128.0559ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 908.985

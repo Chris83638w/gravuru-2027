@@ -216,15 +216,17 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
     }catch(error){if(error instanceof TypeError||controller.signal.aborted)throw Error(retry);throw error;}
     finally{clearTimeout(timer);}
   }
-  async function designRequest(action,target){
+  async function designRequest(action,target,signal){
     if(typeof target!=='string'||target.length>4096)fail('Bitte ein Design aus der Auswahl wählen.');
-    return fetchImpl(API+action,{method:'POST',credentials:'omit',cache:'no-store',headers:headers({'Content-Type':'application/json'}),body:JSON.stringify({target})});
+    signal?.throwIfAborted();
+    return fetchImpl(API+action,{method:'POST',credentials:'omit',cache:'no-store',headers:headers({'Content-Type':'application/json'}),body:JSON.stringify({target}),...(signal?{signal}:{})});
   }
-  async function loadDesignPreview(target,previewUrl){
+  async function loadDesignPreview(target,previewUrl,signal){
+    signal?.throwIfAborted();
     if(typeof previewUrl==='string'&&/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/vorschauen\/[a-f0-9]{64}\.svg$/.test(previewUrl)){
-      const cached=await fetchImpl(previewUrl,{credentials:'omit',cache:'force-cache'});if(cached.ok)return cached.blob();
+      const cached=await fetchImpl(previewUrl,{credentials:'omit',cache:'force-cache',...(signal?{signal}:{})});if(cached.ok)return cached.blob();
     }
-    const response=await designRequest('design-gallery-preview',target);if(!response.ok)await json(response);return response.blob();
+    const response=await designRequest('design-gallery-preview',target,signal);if(!response.ok)await json(response);return response.blob();
   }
   async function switchDesign(target){return json(await designRequest('design-switch',target));}
   return Object.freeze({request,loadModel,loadInitialModel,loadResources,submitCart,submitThemeCart,loadDesignGallery,loadDesignPreview,switchDesign});

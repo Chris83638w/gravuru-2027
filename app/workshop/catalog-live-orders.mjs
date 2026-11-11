@@ -14,12 +14,13 @@ const product=v=>/^cfg_[a-f0-9-]{36}$/.test(v||'');
 export function createCatalogLiveOrders({database:db,tenantId,clock=Date.now}){
  const exists=()=>!!db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='catalog_live_order_approvals'").get();
  const active=(shopDomain,p)=>db.prepare('SELECT r.variant_gid FROM shop_product_binding_heads h JOIN shop_product_binding_revisions r ON r.tenant_id=h.tenant_id AND r.shop=h.shop AND r.variant_gid=h.variant_gid AND r.revision=h.revision WHERE r.tenant_id=? AND r.shop=? AND r.store_id=? AND r.product_gid=? AND r.cfg_id=? AND r.cfg_revision=?').all(tenantId,shopDomain,'acryl',p.shopifyProductId,p.productId,p.productRevision).map(r=>r.variant_gid).sort();
- function approval({shopDomain,shopifyProductId,shopifyVariantId,productId,productRevision}={},documents=new Map()){
+ function approval({shopDomain,shopifyProductId,shopifyVariantId,productId,productRevision}={},{documentMemo=null,documents=new Map()}={}){
   if(!shop(shopDomain)||!gid(shopifyProductId,'Product')||!gid(shopifyVariantId,'ProductVariant')||!product(productId)||!Number.isSafeInteger(productRevision)||productRevision<1||!exists())return null;
   const b=db.prepare('SELECT 1 FROM form_shop_bindings WHERE tenant_id=? AND shop=? AND variant_id=? AND product_id=? AND product_revision=?').get(tenantId,shopDomain,shopifyVariantId.split('/').at(-1),productId,productRevision);
   if(!b)return null;
   const row=db.prepare('SELECT * FROM catalog_live_order_approvals WHERE tenant_id=? AND shop=? AND product_gid=? AND cfg_id=? AND cfg_revision=?').get(tenantId,shopDomain,shopifyProductId,productId,productRevision);
   if(!row||!JSON.parse(row.variants_json).includes(shopifyVariantId))return null;
+  const digestOf=()=>{
   const key=productId+'@'+productRevision,cached=documents.get(key);
   // approvals() owns one synchronous SQLite read transaction. Other connections
   // cannot change its snapshot; same-connection writes must force a fresh raw
@@ -34,13 +35,18 @@ export function createCatalogLiveOrders({database:db,tenantId,clock=Date.now}){
    if(cached&&cached.document!==source.document)fail(409,'Der freigegebene Katalogstand wurde innerhalb der Prüfung geändert.');
    digest=cached?.sha256??sha(source.document);documents.set(key,{document:source.document,sha256:digest,changes,schemaVersion,dataVersion});
   }
-  if(digest!==row.document_sha256)fail(409,'Der freigegebene Katalogstand stimmt nicht mehr überein.');
+   return digest;
+  };
+  // Request-local batch guards and the revision memo share the same digest computation.
+  // The approval row and exact variant binding are still checked on every call.
+  const actual=documentMemo?documentMemo.derive({scope:'catalog-live',kind:'document-sha256',db,tenantId,productId,revision:productRevision,compute:digestOf}).value:digestOf();
+  if(actual===null||actual!==row.document_sha256)fail(409,'Der freigegebene Katalogstand stimmt nicht mehr überein.');
   return {id:row.approval_id,approvedAt:row.approved_at,kind:'catalog'};
  }
  function approvals(inputs){
   if(!Array.isArray(inputs)||!inputs.length||inputs.length>5000)fail(422,'Eine begrenzte Liste ausdrücklicher Freigabeprüfungen ist erforderlich.');
   const own=!db.isTransaction;if(own)db.exec('BEGIN');
-  try{const documents=new Map(),result=inputs.map(input=>approval(input,documents));if(own)db.exec('COMMIT');return result;}
+  try{const documents=new Map(),result=inputs.map(input=>approval(input,{documents}));if(own)db.exec('COMMIT');return result;}
   catch(error){if(own)db.exec('ROLLBACK');throw error;}
  }
  function approve({shopDomain,products,approvalId,registry}={}){
@@ -81,5 +87,5 @@ export function createCatalogLiveOrders({database:db,tenantId,clock=Date.now}){
    return {schema:'gravuru-catalog-live-release/v1',shopDomain,approvalId,products:entries.length,created,productionReady:false};
   }catch(error){if(own)db.exec('ROLLBACK');throw error;}
  }
- return {approval:input=>approval(input),approvals,approve};
+ return {approval,approvals,approve};
 }

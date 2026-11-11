@@ -1,3 +1,9 @@
+## 11.11.2026 · Codex/Astra · #230: gemeinsamer R15/B/C-Kandidat lokal geprüft
+
+0e200d8 und ac10e6c mit allen 19 Abweichungen aus der vollständigen Serversicherung 0d6d23d9 abgeglichen; 30 Konfliktpfade einzeln gelöst. Drei Agentengruppen: 211/180/184 gezielte Tests jeweils grün, ohne Summenbehauptung bei Überschneidung. Zusätzlicher Cross-Lauf deckte Windows-Testcleanup und drei bekannte Quellen-Cachezählfehler auf; gezielt behoben und 23/23 bzw. 22/22 grün, echter Modul-HTTP-Weg nochmals bestanden. Runtime-Katalogworker unverändert ac10. Eine echte Originalbankprüfung mangels gepinnter Eingabe übersprungen. Build 159 Module/16 Styles/76 geprüfte Ressourcen; PC-/Handybilder und Suche geprüft. Alle sieben v9-Pläne/823 Preisvarianten mit integriertem Code unverändert gültig, keine Planbestätigung/Ausführung.
+
+[Konkrete Übergabe und Prüfgrenzen](docs/handoffs/2026-11-11-issue230-integrated-candidate.md). Noch keine Serverinstallation oder Produktveröffentlichung. Claude übernimmt Linux-/Modell-/Bildabnahme, konsistente DB-Sicherung mit Rückweg und echten Acrylpilot; reale Zielpläne danach als eine konkrete Freigabe an Chris.
+
 ## 11.11.2026 · Codex/Astra · #230: lokaler Integrations-Vorabcheck
 
 `git merge-tree` zwischen b7f5ca2 und ac10e6c auf gemeinsamer Basis 7b8bc287 ausgeführt: 30 Konfliktpfade (20 Runtime, 9 Tests, 1 Logbuch), davon drei add/add. [Konfliktplan](docs/reviews/2026-11-11-issue230-operator-integration/merge-preview.md) mit Datei-/Vertragsgruppen und sechs zusätzlich zu prüfenden automatischen Zusammenführungen vorbereitet. HEAD/Refs unverändert, kein Checkout/Index/Branchwechsel. Der Vergleichsbaum enthält ungelöste Konflikte und ist kein getesteter Integrationsstand. Quelltextkontexte im veröffentlichten JSON bewusst weggelassen; gepinnte Blob-OIDs bleiben. Die 19 aktuellen Liveabweichungen müssen zusätzlich aus der gesicherten Serverkopie abgeglichen werden. Kein Server- oder Shopzugriff dieses Vorabchecks.
@@ -100,6 +106,125 @@ Drei Unteragenten haben Modulvertrag, Verwaltung/Produktgruppen und Laufzeit-/Wa
 - Deploybare Datei wurde auf dem frisch gesicherten Theme-Export aufgebaut, dessen SHA `7867ca8c…` Root bestätigt hat. Ein schon vorhandener Unterschied im Git-Vorschaufallback wird nicht mit ausgerollt. Patch-SHA `60217e03…`. [Vollständige Übergabe und Rücknahme](docs/handoffs/2026-11-08-cart-edit-r15-theme.md).
 - Nächster Schritt: Root aktualisiert nach Review nur `snippets/gravuru-warenkorb-bearbeiten.liquid` und prüft den tatsächlichen Warenkorb-Link und seine Wiederöffnung. Kein Serverneustart für diesen Theme-Fix erforderlich.
 
+
+## 10.11.2026 – Claude als Operator: Paket 1a-2 abgenommen und LIVE (Freigabe Chris 12:45)
+
+`8e394cd` (Sonnet) abgenommen: 301 Tests der betroffenen Suiten, 300 grün, 0 rot, 1 übersprungen; Diff ca. 100 Produktivzeilen, nichts an Kundenseite/`http.mjs`. Fünf Dateien live, ein Neustart, Sicherung in `private/claude-paket1a-20261110/`. Live je Speichertreffer im Prozess ca. 45 ms statt ca. 750 ms; von außen Modellabruf ca. 0,30 s statt 0,85 s (ohne TLS), vier gleichzeitige höchstens 1,0 s statt 3,6 s. Inhalt identisch, Konfi pixelgleich. Hashes und offene Punkte: [docs/handoffs/2026-11-10-paket1-modellantwort-live.md](docs/handoffs/2026-11-10-paket1-modellantwort-live.md). Leistungsarbeit ist damit vorerst beendet; Vorrang hat die Produktkette (#230).
+
+## 10.11.2026 – Claude (Bauer): Paket 1a-2 Trefferpfad entlastet, nichts live
+
+Bericht [docs/handoffs/2026-11-10-paket1a2-trefferpfad-ergebnis.md](docs/handoffs/2026-11-10-paket1a2-trefferpfad-ergebnis.md). Live-naher Benchmark (`--live-like`: echte Zuordnung mit 404 Varianten, echte Katalog-Freigabe, öffentlicher Vorschauspeicher, 12-MB-Dokument) trifft die Live-Abschnitte (Kontext 223, Prüfungen 138, Startvorschau 325 ms). Ursache: je Abruf viermal SHA-256 über das 12-MB-Dokument (Freigabe), einmal Kanonisierung+SHA (Zuordnung), Modellneuaufbau und Modell-Prüfsumme in der öffentlichen Vorschau. Neu `revision-derivation-memo.mjs` (nur mit `GRAVURU_CUSTOMER_MODEL_CACHE`), Änderungen in `shop-product-binding-store`, `catalog-live-orders`, `public-design-previews`, `shop-entry`; alle Entscheidungen weiter je Abruf frisch. Treffer 686 -> 9,9 ms (Server), vier gleichzeitig 2767 -> 48 ms. 12 neue Tests, 191 gezielte grün; Gesamtlauf 2753 Tests / 2741 grün / 8 rot (die bekannten) / 4 übersprungen. Nächster Schritt: Abnahme durch den Operator, Installation erst nach „live“ von Chris.
+
+## 10.11.2026 – Claude als Operator: Paket 1a LIVE installiert, Speicher an – von außen nicht schneller
+
+Auftrag Chris im Claude-Chat 10.11.2026 („kannst du machen, jetzt loslegen“). Sechs Dateien aus `ac24f6b` nach `private/mika-r15-resume-20261108-v1/app/workshop/` (Live-Stand vorher bytegleich `8ceb866`), Schalter `GRAVURU_CUSTOMER_MODEL_CACHE` in `gravuru-2027-merchant/app.cjs`, zwei Neustarts. Sicherung: `private/claude-paket1a-20261110/` und `app.cjs.bak-20261110-vor-paket1a`. Modellinhalt identisch, Konfi vorher/nachher pixelgleich (PC und Handy), Speicher meldet Treffer. Aber: Abruf von außen unverändert ca. 0,85 s, vier gleichzeitige stapeln sich weiter – rund 0,75 s je Abruf liegen in einem Abschnitt, den Paket 1a nicht berührt (Vermutung: Startvorschau/öffentlicher Vorschauspeicher, nicht belegt). Hashes, Rückbau, Messwerte und Vorschlag Paket 1a-2: [docs/handoffs/2026-11-10-paket1-modellantwort-live.md](docs/handoffs/2026-11-10-paket1-modellantwort-live.md).
+
+## 10.11.2026 – Claude/Sonnet als Bauer: Paket 1a Nachbesserung N1 (Gültigkeit je Produkt), nichts live
+
+Der Antwortspeicher für `GET /api/shop-entry/model` gilt jetzt je Eintrag am Stand des einen Produkts (`repository.revisionState`, ohne Spalte `document`, Fehler wie `get`) statt am Stand der ganzen Datenbankdatei: Motivsuche, Entwürfe, Konfi-Status anderer Produkte und Aufträge verwerfen nichts mehr; neue Revision, Veröffentlichung, Archivierung dieses Produkts und Schemawechsel wirken sofort. Vollständige Liste aller Eingaben des gespeicherten Teils im Bericht (Abschnitt N1.2), nichts „offen“. Zähler über den `logger`, höchstens eine Zeile je Minute. Lokal, synthetisch: Treffer 4,2 ms mit und ohne Motivsuche dazwischen (Basis 104 ms), vier gleichzeitig 20 statt 459 ms. Tests: 37 neue/umgebaute grün, Basis-Suites 109/109. Abweichung N1-A (Snapshot-Spalten hinter `document` nicht gelesen, 2 ms statt 0,03 ms) zur Abnahme im Bericht. Schalter weiter aus; Installation erst auf ausdrückliches „live“ von Chris.
+
+## 10.11.2026 – Claude/Sonnet als Bauer, Claude als Operator: Paket 1a (Kunden-Modellantwort) gebaut, nichts live
+
+Branch `dev/claude-paket1-modellantwort-20261110` (Basis `8ceb866`), Bericht [docs/handoffs/2026-11-10-paket1-modellantwort-ergebnis.md](docs/handoffs/2026-11-10-paket1-modellantwort-ergebnis.md). Neuer Antwortspeicher für `GET /api/shop-entry/model` (Schalter `GRAVURU_CUSTOMER_MODEL_CACHE=enabled`, Voreinstellung aus): Gültigkeit zunächst über den Datenbankstand der ganzen Datei (durch N1 darüber ersetzt: je Produkt); Sitzung, Zuordnung, Pause, Freigaben, Herkunft und Begrenzer bleiben je Anfrage frisch; das sitzungsgebundene Ziel der Startvorschau wird je Anfrage neu ausgestellt. Lokal, synthetisch (240 Designs, 80 Formate, Dokument 12 MB): Treffer 99,6 → 3,9 ms, vier gleichzeitig 442 → 19–26 ms, Erstabruf etwa +6 %. Tests: Basis-Suites 109/109 vorher und nachher (Python-Pakete inklusive `requirements-logo.txt`), 31 neue Tests grün; Gesamtlauf `app/workshop` 1696/1706, die 8 Fehlschläge bestehen identisch auf der Basis. Kein Byte unter `app/configurator/`, `app/workshop/ui/`, `ops/`. Offen: Abnahme durch den Operator (Abweichungen 1–4 im Bericht bestätigen), danach Installation erst auf ausdrückliches „live“ von Chris.
+
+## 10.11.2026 – Claude als Operator: Paket 1a beauftragt (Kunden-Modellantwort), nichts live
+
+Auftrag Chris im Claude-Chat 10.11.2026: Kundenseite R15 bleibt eingefroren (keine optische Änderung, keine Änderung an dem, was der Kunde bedienen kann); für Paket 1 baut ausnahmsweise nicht Mika, sondern Sonnet in der Cloud nach Anleitung des Operators, weil Mika zwei Tage schlechtes Internet hat. Eigene Außenmessung am echten Shop-Einstieg (nur Lesen): Modellabruf rund 0,55 s Serverarbeit je Anfrage, vier gleichzeitige Abrufe stapeln sich auf 1,25/1,72/2,35/2,93 s; Kernpaket 495 KB dreimal in rund 1 s aus dem Rechenzentrum. [Bauanleitung](docs/handoffs/2026-11-10-paket1-modellantwort-bauanleitung.md), Branch `dev/claude-paket1-modellantwort-20261110` auf Basis `8ceb866b` (Mikas Fünfdateienpaket). Nur Anleitung committet, noch kein Code, keine Installation, keine Shopify-/Datenbankänderung. Nächster Schritt: Bau und Messung nach Anleitung, danach Abnahme durch den Operator; „live“ nur durch Chris. Entscheidung Aufbewahrung (Chris 10.11.): Kundenfotos und Druck-/Gravurdateien 45 Tage nach Versand löschen, Bestellstand ohne Foto 2 Jahre.
+
+## 10.11.2026 – Codex/Mika: gemeinsames Fünfdateienpaket lokal gesichert
+
+Quellcommit `3bfe6a31`: vorhandene zwei Galerie-Lifecycledateien plus drei vorbereitete-Bundle-Serverquellen; keine UI-, Preis-, Produkt- oder DB-Änderung. Neun Installerergebnisse und vier Transferfälle grün; unabhängiger Review ohne verbleibenden belegten Blocker für die gepinnte Baseline `767701ee`. Neue Abhängigkeit vor Importern, bei Rücknahme zuletzt; alle 36 Styles und alte Hashdateien erhalten, HTML atomar zuletzt. Root hat frische vier Vorherpins/Wrapper/HTML bestätigt; vollständiger 51-Pin-`--check` und Liveabnahme bleiben vor Veröffentlichung offen. Hier keine Liveaktion. [Gesicherte Übergabe mit Archiv und Rückweg](docs/handoffs/2026-11-10-performance-followup-release.md).
+
+## 10.11.2026 – Codex/Mika: vorhandenen Galerie-Lifecycle auf aktuelle Basis übernommen
+
+Nur zwei Produktionsdateien aus `6c310120` unverändert auf `f69c8dbf`, ohne Rebasekonflikt; vorherige Dateien und Pins getrennt gesichert. 24/24 gezielte Lifecycle-/Gateway-/Pager-Tests grün, nativer Bundlevergleich mit unverändertem R15-/Geräte-/Ausführungspaket. Historisches Zweidateienpaket samt Patchpayloads und Installer/Gzip-Hashes bestätigt, nicht ausgeführt. Jüngste vier Beiträge in #168 abgeglichen. Keine Live-, Preis-, Produkt-, Daten- oder Layoutänderung. Root übernimmt den separaten Integrationscommit; frische aktive Hashprüfung und Kundenabnahme bleiben vor Veröffentlichung erforderlich. Äußerer Transferengpass bleibt separat offen. [Übergabe](docs/handoffs/2026-11-10-gallery-lifecycle-integration.md).
+
+## 09.11.2026 – Codex/Mika: Server-/Motivfix live, äußerer Übertragungsengpass eingegrenzt
+
+Vierdateienstand `767701ee` am15:10:27UTC gesichert installiert, Plesk-App danach neu gestartet; alle36 Styles, fremde Quellen, alte Bündel und Produktdaten unverändert. Echte mobile Touchprobe: Motiv nach Abwahl durch transparente Textfläche erneut verschoben, sichtbarer Text weiter auswählbar, Größe unverändert, bestätigter Reset wieder19,99€. Browser fiel nach abgebrochenem Coretransfer auf Einzelmodule zurück; deshalb keine vollständige Performanceabnahme. Vollständiger Core bytegenau geprüft: externer Abruf43,99s, serverseitiger HTTPS-Abruf desselben öffentlichen Pfads51ms. Äußerer Übertragungsweg bleibt zu prüfen. Zweidateien-Galerie-Lifecycle separat vorbereitet, noch nicht live. PR223/224-Zuweisung unverändert. [Aktueller Stand, Nachweise und Rückweg](docs/handoffs/2026-11-09-server-hit-live-and-transfer.md).
+
+## 09.11.2026 – Codex/Mika: Motivtreffer unter leerem Textrahmen gezielt korrigiert
+
+Nur `refinements.mjs` auf `77805437`: sichtbare editierbare Motivkontur kann durch eine transparente Text-Hilfsfläche ausgewählt werden; sichtbarer Text, kleine Text-Hilfsflächen und Rechte bleiben erhalten. 61/61 gezielte Handler-/Foto-/UI-Tests; echte lokale SVG-/ShadowRoot-Probe 9/9 Desktop und 9/9 Mobil einschließlich Drehung/Zoom; reale Maus-/Touch-Gegenproben bewegen jeweils nur das richtige Element. Keine Liveaktion. Nächster Schritt: unabhängiger Review, danach Root-Integration und reale Kundenabnahme. [Übergabe](docs/handoffs/2026-11-09-overlap-pointer-hit.md).
+
+## 09.11.2026 – Mika: öffentliche Originalbilder ohne wiederholte Modellkopie lesen
+
+Drei Serverdateien auf `4afd1a2b`, keine Oberfläche oder Daten geändert. Bereits vorhandene begrenzte Modellablage liefert für öffentliche Originalbilder einen tief unveränderlichen Nachweis; Bindung, Preis, Mandant, Pause und Freigabe bleiben frisch geprüft. 20/20 gezielte Tests plus unabhängige Gegenprobe grün. Echte r4-Bank lokal: warme Bildabrufe meist 154–159 statt 233–271 ms; erster Nachweis 244 ms, keine Zusage für Netz- oder Gesamtladezeit. **Noch nicht veröffentlicht.** Root übernimmt nach frischem Drei-Dateien-Hashabgleich. [Nachweise und Rücknahme](docs/handoffs/2026-11-09-public-preview-model-read.md).
+
+## 09.11.2026, 11:54 Berlin – Codex/Mika: Performancepaket veröffentlicht, Restengpässe offen
+
+Elf freigegebene Produktionsdateien gesichert auf der bestehenden Runtime installiert und App in Plesk neu gestartet. Alte Bündel bleiben erhalten; keine Shopify-, Datenbank-, Produktbindungs- oder Preisänderung. Live bestätigt: R15-Paket aus Cache, 17 statt 46 Editor-HTTP-Ressourcen, mobiler Kopf ohne Logo und mit größerem Rückbutton, Designwechsel und Preis-/Resetfolge korrekt. **Gesamtladezeit noch nicht abgenommen:** Modell/Galerie und Designwechsel weiterhin langsam. Separater Befund: Ein Touchzug am Motiv über einem Text wählt teilweise den Text dahinter. Enger Server- und Hit-Test-Review läuft. Belege/Rückweg und genauer Stand: [aktuelle Übergabe](docs/handoffs/2026-11-09-performance-continuation.md).
+
+## 09.11.2026 – Codex/Mika: Performance-Folgestand gemeinsam im Browser geprüft
+
+Elf Produktionsdateien auf der aktuellen Integration: begrenzte synchrone Serverlesungen, veraltete Galerieabrufe abbrechen, eigener kleiner R15-Chunk samt Produktseiten-Vorladen und ausschließlich der verlangte mobile Kopf ohne Logo/mit breiterem Rückbutton. 23/23 zusätzliche gemeinsame Tests grün; Desktop-/Mobilansicht, Schriftwechsel, wiederholte Touchbewegung, Löschen und Preis 19,99 → 21,68 → 19,99 € lokal geprüft. Keine einzelnen R15-JS-Dateien mehr im Browserabruf. 35 andere aktive Styles und beide fremden Serverkorrekturen erhalten. **Noch nicht live: Plesk zeigt die Anmeldung; keine neue Produktprofilzuweisung oder Shopify-Schreibaktion.** [Konkrete Messwerte, Belege und Fortsetzung](docs/handoffs/2026-11-09-performance-continuation.md).
+
+## 09.11.2026 – Codex/Mika: R15-Importkaskade getrennt gebündelt
+
+Nur Bundler und begrenztes Produktseiten-Warmup geändert, Basis `4dc5653b`. R15: 15 zusätzliche Module als eigenes Paket (38.138 Bytes gzip); 15 gemeinsame Module behalten ihre Kerninstanz. Bestehende Kern-/Produktpakete im Vergleichsbuild bytegleich. 30 unterschiedliche gezielte Bundle-/Host-/Warm-/nativen HTTP-Startfälle grün; sieben Warmtests nach letzter Parserkorrektur erneut grün. Kein Livezugriff, keine Änderung an Oberfläche, Preisen oder Produkten. Nächster Schritt: Root übernimmt den Commit und prüft sichtbares Verhalten/Netzwerk im kombinierten lokalen Stand. [Übergabe und Hashnachweise](docs/handoffs/2026-11-09-r15-demo-bundle.md).
+
+## 09.11.2026 – Mika: veraltete Galerieabrufe beim Optionswechsel abbrechen
+
+Drei Clientdateien auf `a143acbc`: laufende Vorschauabrufe der alten Auswahl abbrechen und deren zwei Ladeplätze sofort für aktuelle Karten freigeben. Späte alte Antworten können neue Karten/Slots nicht verändern; Vorwärmen bleibt bei drei Bildern, keine neue Route oder Layoutänderung. 42/42 gezielte Tests grün, Root-Diffreview ohne Befund. Nicht live aktiviert. [Nachweis und Rücknahme](docs/handoffs/2026-11-09-design-preview-abort.md).
+
+## 09.11.2026 – Mika: doppelte Produktlesungen im Kundenstart lokal reduziert
+
+Fünf Serverdateien auf aktiver Basis `4dc5653b`: geprüfte unveränderliche Revisionen nur innerhalb derselben synchronen Anfragephase wiederverwenden. Frische Bindungs-, Mandanten-, Preis- und Freigabeprüfungen bleiben bestehen; keine UI-/Daten-/Preisänderung. Lokaler nativer r4-Modellabruf 617/643 ms statt 1.180/1.239 ms, keine Live-Laufzeitgarantie. 96/96 gezielte Tests plus sechs unabhängige Gegenproben grün. Paket und Rücknahme vorbereitet, **noch nicht veröffentlicht**. [Umsetzung, Grenzen und exakte Belege](docs/handoffs/2026-11-09-customer-read-snapshot.md).
+
+## 09.11.2026, 00:41 Berlin – Codex/Mika: begrenztes Vorladen im echten Shop bestätigt
+
+R15-Integration aus PR222 in getrennte Runtime veröffentlicht; aktuelle Zentrierung und zwei zusätzliche aktive Form-/Befestigungskorrekturen erhalten. Bestehende Designs, Preise, Styles und Produktzuordnungen unverändert. Cache-Resolver-Einzeiler `b3e188f5` separat gesichert/veröffentlicht: echte Registry erhält nur die beiden Shopify-IDs, alle weiteren Prüfungen bleiben bestehen. 11/11 integrierte Service-Tests und unabhängige native HTTP-/Neustartprobe grün. Tatsächliche Shopify-Produktseite liefert drei Vorschau-URLs; danach Konfi geöffnet: alle drei Designbilder, sechs Startmotive, Startschrift und Bundle mit 0 übertragenen Bytes aus Browsercache. Galeriebilder ca. 5–45 ms. Sichtbare Auswahl mit 21 Designs geprüft. Produktmodell weiterhin ca. 3,7 s, Galerieliste ca. 2,0 s; keine vollständige Performance-/Handy-/Warenkorbabnahme behaupten.
+
+Lokale Flugkopie vollständig geprüft; Plesk1158 weiterhin ohne eindeutigen Abschlussbeleg, kein zweites Vollbackup. PR223 behebt den lokalen 251/404-Modulaktivierungsengpass (39 unterschiedliche Tests plus unabhängiger Review); produktive Profilzuordnung weiterhin unverändert. Nächster Modulschritt ist der vorhandene Verwaltungsanschluss mit ausgeschalteten Schreibschaltern und konkreter Planprüfung. [Aktueller Live-Stand, Rücknahme, Messwerte und offene Grenzen](docs/handoffs/2026-11-08-resume-integration.md).
+
+## 09.11.2026 – Codex/Mika: native Zuordnung für vorbereitete Designvorschauen korrigiert
+
+Auf isolierter Basis `f4c370fc` genau eine Produktionszeile in `public-design-previews.mjs`: bestehende Registry erhält ausschließlich Produkt- und Varianten-ID; vollständige aktuelle Bindungs-, Freigabe- und Modellprüfung bleibt bestehen. Native Registry verweigert Zusatzfelder, die bisher beim Warmabruf und direkten Bildabruf übergeben wurden. Neue Regression reproduziert vor dem Fix drei erzeugte Bilder, aber leeres Warmmanifest; danach alle zehn gezielten Service-Tests grün, einschließlich Entzug, falscher Bindung, Neustart und Manipulation. Kein Live-/Datenbankzugriff, keine Oberflächenänderung. [Ursache und enger Rückweg](docs/handoffs/2026-11-09-public-preview-identity-fix.md).
+
+## 08.11.2026, 23:45 Berlin – Codex/Mika: Module und Vorladen auf aktuellem R15 zusammengeführt
+
+Eigener Integrationszweig auf PR220 plus Cache PR221; produktiver Kundenaufbau e9c36ce erhalten. 18 Produktionsdateien im engen Hashpaket, 68 geschützte Dateien bytegleich, separater Build mit allen 36 erfassten Live-Styles erfolgreich. 106 unterschiedliche Integrationsfälle bestanden; echte 251 Originale/80 Größen/404 Kombinationen unverändert. Lokale Flugkopie mit 288.704 Dateien vollständig gelesen, neun erwartete Quelländerungen aus Cachearbeit, keine Lesefehler. Plesk-Auftrag 1158 noch ohne Abschlussbeleg; Browsersteuerung kann offenen Server-Tab nicht verbinden. PR214-Aktivierung separat noch durch 60-s-Frischeprüfung gestoppt, Ursache wird untersucht. **Keine neue Liveveröffentlichung oder Profilzuordnung.** [Zusammenführung, Sicherung, Nachweise und genauer nächster Schritt](docs/handoffs/2026-11-08-resume-integration.md).
+
+## 08.11.2026 – Mika: Modulregeln und Vorschaucache zusammen geprüft
+
+Integrationscommit `f4c370fc` unabhängig in eigenem Reviewbaum geprüft, keine Produktionsdatei verändert. Zwei neue Regressionen belegen Designs aus mit aktivem Cache einschließlich Alt-URL/Token-Ablehnung und gesperrten SVG-Upload über echten lokalen HTTP-Handler. 22 unterschiedliche gezielte Tests grün; native Preise, Logo 12,99 € und historische Verträge bleiben strikt. Root-/Review-Produktionsbytes verglichen. Browser-/Liveabnahme bleibt separat. [Bericht, Tests und exakte Pins](docs/handoffs/2026-11-08-r15-modules-cache-combination-review.md).
+
+## 08.11.2026 – Codex/Mika: Modulpatch auf aktuellem R15 nach Flugpause vorbereitet
+
+Eigener Branch `dev/mika-r15-modules-current-20261108` auf `c7710dec`/Livecode `e9c36ce`: ausschließlich PR217-App-Delta aus `61fcb3f`, konfliktfrei integriert. Zwölf Laufzeitdateien, 69 geschützte Dateien inklusive 36 CSS, aktueller Zentrierung, SVG-Viewportworker und Vorladen bytegleich. 274 unterschiedliche gezielte Fälle erfolgreich geprüft: erster paralleler Lauf 273/274; Windows-EPERM bei gemeinsamem Testbuild, betroffene Datei allein danach17/17 grün, kein Produktcode deswegen geändert. Reale r4-Bank251Designs/80Größen/404Preise für beide Logo-Profile unverändert; Build154Module/16Styles grün. PR214 ausschließlich als API-/Schemakontrakt gelesen. Kein Main-Merge, Live-/Shopifyzugriff oder produktive Profilzuweisung. [Übergabe, Paket und konkrete Root-Abnahme](docs/handoffs/2026-11-08-r15-modules-current.md).
+
+## 08.11.2026, 17:52 Berlin – Codex/Mika: Flugpause und vollständiger Sicherungsauftrag
+
+Livecode e9c36ce auf PR219: kompakte Aktionen in normaler Desktopansicht und Vollansicht mittig; beide echte Shopify-Browseransichten geprüft. Sonstige R15-Bedien-/SVG-/Vorladefixes im Livebericht dokumentiert. Plesk-Vollbackup für Abonnement14 um17:43:04 gestartet, Auftrag1158; noch kein Abschlussnachweis. Zusätzlich beide Repository-Historien und private lokale Projektdateien sichern/verifizieren. Cacheagenten bei6686e86/04ef061 angehalten; ModulePR217/214 nicht aktiviert. **Aktueller Einstieg und verbindlicher Wiederanlauf:** [Flugpause, Sicherungen, offene Arbeiten](docs/handoffs/2026-11-08-flight-backup-and-resume.md). Keine neue Funktionsentwicklung während des Sicherungsschritts.
+## 08.11.2026 – Mika: drei persistente Originalvorschauen für die Produktseite
+
+Isolierte Fortsetzung der Flugsicherung `6686e86`: acht Produktionsdateien ergänzen einen optionalen signierten Dateicache und maximal drei vorbereitete Originalbilder im bestehenden Produktseiten-Warmup. Kundenstart und öffentliche GETs rendern nichts; aktuelle Zuordnung/Freigabe, Modell/Ressourcen und Renderer werden geprüft, private Vorschauen bleiben erreichbar. 91/91 gezielte Tests grün, 0 Skip; reale lokale r4-Quelle mit 251 Originalen/80 Größen/404 Kombinationen unverändert. Unabhängiger Review ohne offenen Blocker. Kein Live-, Layout-, Preis- oder Datenbankzugriff. [Übergabe, exakte Startvariante, Vorbereitung und Rücknahme](docs/handoffs/2026-11-08-public-design-preview-cache.md). Root integriert mit aktueller geschützter UI und PR220-Modulprüfungen, danach echte Produktseiten-/Handyabnahme.
+
+## 08.11.2026 – Codex/Mika: erste Motiv- und Designkarten vorbereiten
+
+Auf isolierter Basis `587a395`: gemeinsamer nativer Startmotiv-Resolver, sechs erlaubte Motive im Hintergrund vor Taböffnung, drei authentifizierte Galerievorschauen im Hintergrund mit Wiederverwendung, Produktseiten-Vorwärmen nach DOM/ersten Zeichenzyklen statt window.load. Sieben Produktionsdateien, keine Layout-/Preis-/Produktänderung. 66 unterschiedliche gezielte Prüfungen final grün; tatsächliche Browserabnahme und Deployment bei Root. Designvorschauen direkt auf Shopify-Produktseite weiterhin offen und ausdrücklich nicht als fertig bezeichnet. Übergabe: `docs/handoffs/2026-11-08-first-panel-preload.md`.
+## 08.11.2026 – Mika: SVG-Viewportkorrektur lokal geprüft
+
+Ein Python-Worker akzeptiert jetzt gültige abweichende SVG-Außenmaße/ViewBox und Ausrichtungen durch korrekte Normalisierung. Alle bisher akzeptierten v1-Ausgaben bleiben bytegleich. 29/29 Kern-/Medien-/Preis-/Historientests plus1/1 unabhängiger Renderer-Vergleich bestanden; kein Livezugriff. Kundendatei noch nicht vorhanden. [Übergabe und Rücknahme](docs/handoffs/2026-11-08-svg-viewport-import.md).
+## 08.11.2026 – Mika: kompakte R15-Aktionen getrennt vorbereitet
+
+Im freigegebenen UI-Umfang drei Quelldateien auf587a395: native Desktopaktionen unten gruppiert, volle Vorschauzeile entfernt, grauer44pxPfeil am Produkt, sichtbarer Produkt-Rückweg und Schließen der Vollansicht per freiem Doppeltipp. 57/57 gezielte Demo-/Touch-/Zoom-/Toolbar-Tests grün; Build grün, unabhängiger enger Review ohne Blocker. Keine CSS-Datei/Preis-/Produkt-/Moduländerung und kein Livezugriff durch Agent. [Übergabe, Einzelfilepaket und Browsergrenzen](docs/handoffs/2026-11-08-r15-compact-controls.md).
+
+## 08.11.2026, 17:05 Berlin – Mika: Live-Stand und offene Kundenmeldungen vor Flugpause gesichert
+
+Touch-/Vorschaufix seit 16:41, begrenztes Produktseiten-Vorladen und Einzelressourcen seit 16:54 veröffentlicht. Aktive Runtime `private/mika-r15-assets-20261108-v1`, Bundle `editor-6b08ecd29481848d.mjs`; keine Produkt-/Datenbank-/Themeänderung. Tatsächliche Shopify-Einbettung geprüft; keine gemessenen Handy-Cachetreffer behaupten. Kunde meldet weiterhin langsame Designs/Motive und SVG-Seitenverhältnisfehler: offen, Diagnose läuft. Neue Desktopleiste, Entfernen des grauen Balkens und sichtbarer Produkt-Zurück-Button sind wegen „Warte noch“ noch nicht umgesetzt. Module separat vorbereitet; keine Produktprofilaktivierung. [Zentrale Wiederaufnahme mit Sicherungen, Links und Prüfgrenzen](docs/handoffs/2026-11-08-current-konfi-before-flight.md).
+
+## 08.11.2026 – Codex: Reviewkorrektur sichtbarer Bibliothekskarten
+
+PR216: Die Sichtliste wird nicht mehr vor dem Filtern geladener Karten auf zwölf Einträge gekürzt. Nur zwei tatsächliche Abrufe laufen parallel; alle sichtbaren Karten werden berücksichtigt. 5/5 gezielte Queue-/Observertests grün einschließlich15 gleichzeitig sichtbarer Karten und12 bereits geladener Startkarten. Root-Browsernachweis für Einzelmotivabrufe und sofort öffnenden Fontdialog positiv; kein Livezugriff durch diesen Agenten.
+
+## 08.11.2026 – Codex: begrenztes Produktseiten-Vorladen und sichtbare Bibliothekskarten
+
+Eigener Branch auf aktiver Basis 16eda61. Der Kunden-Fontdialog zeigt vorhandene Proben sofort, weitere Schriften/Motive laden nur für sichtbare Karten mit zwei parallelen Einzelabrufen. Die bestehende Shopify-Startkarte liefert eine kleine öffentliche Warmup-Liste; keine Themeänderung, keine Vollbibliothek und kein versteckter kompletter Editorstart. Echter r4-Datensatz (251 Originale/80 Größen) unverändert; Manifest 484 Bytes, native Startschrift plus sechs vorhandene Motive. 38/38 Loader/Build/Shop-Client-Tests und 4/4 gezielte HTTP-Tests grün; weitere Queue/UI-Nachweise und Messgrenzen in der [Übergabe](docs/handoffs/2026-11-08-shop-assets-visible-loading.md). Build erfolgreich; Browserabnahme und Live separat durch Root. Aktuelle Touch-/Vorschaufixes sowie Modulpatch nicht durch Baselinekopie ersetzen.
+
+## 08.11.2026 – Mika: Große Vorschau unter dem Produkt vorbereitet
+
+Im ausdrücklichen Nutzerauftrag ein zusätzlicher Button „Große Vorschau“ direkt unter der Tafel für Handy und PC; öffnet nur den bestehenden nativen Vollbilddialog. Eine schmale 44-px-Zeile verhindert Überdeckung, freigegebener Aufbau und Produktlogik bleiben erhalten. Aktive Quellen vorab gesichert/gehasht; abweichende Live-`demo.css` ausdrücklich nicht ersetzt. 25 Adaptertests + 4 Shop-/Assettests grün, Build erfolgreich. Getrennter Branch, keine Live-/Shopify-Änderung; tatsächliche visuelle Abnahme und der getrennte Wieder-Auswahlfehler bleiben offen. [Übergabe](docs/handoffs/2026-11-08-r15-large-preview.md).
 ## 08.11.2026 – Codex: Warenkorb-Bearbeiten erhält freigegebenen R15-Konfi
 
 - Isolierter Branch `dev/mika-cart-edit-r15-20261108` auf PR #206. Drei vorher gesicherte, mit Live-SHA verglichene Quelldateien tragen nur den bereits vorhandenen Darstellungswert `prio-r15` durch Theme-Warenkorbübergabe und Bearbeiten-Link. Keine Layout-, Preis-, Design- oder Datenbankänderung; kein Livezugriff.
@@ -115,6 +240,7 @@ Drei Unteragenten haben Modulvertrag, Verwaltung/Produktgruppen und Laufzeit-/Wa
 ## 08.11.2026 – Mika: Große Vorschau unter dem Produkt vorbereitet
 
 Im ausdrücklichen Nutzerauftrag ein zusätzlicher Button „Große Vorschau“ direkt unter der Tafel für Handy und PC; öffnet nur den bestehenden nativen Vollbilddialog. Eine schmale 44-px-Zeile verhindert Überdeckung, freigegebener Aufbau und Produktlogik bleiben erhalten. Aktive Quellen vorab gesichert/gehasht; abweichende Live-`demo.css` ausdrücklich nicht ersetzt. 25 Adaptertests + 4 Shop-/Assettests grün, Build erfolgreich. Getrennter Branch, keine Live-/Shopify-Änderung; tatsächliche visuelle Abnahme und der getrennte Wieder-Auswahlfehler bleiben offen. [Übergabe](docs/handoffs/2026-11-08-r15-large-preview.md).
+
 
 ## 08.11.2026 – Codex: Warenkorb-PNG bindet geprüfte Uploads ein
 

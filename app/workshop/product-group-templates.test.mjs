@@ -187,10 +187,24 @@ test('source listing evicts old heads while retaining the two most recently used
  assert.deepEqual(reads,[f.a.id,f.b.id,third.id,f.b.id,f.a.id],'two slots reuse A after B, then evict old heads instead of retaining every product');
 });
 
+test('selected source aliases resolve together without requesting unrelated native documents',t=>{
+ const f=fixture(t),get=f.repository.get,registryReads=[],reads=[];
+ const targets=[{key:'small',productId:f.a.id,familyId:'test-slate',sizeKey:'TEST-220X140'},{key:'alias',productId:f.a.id,familyId:'test-slate',sizeKey:'TEST-220X140'},{key:'unrelated',productId:f.b.id,familyId:'test-slate',sizeKey:'TEST-300X200'}];
+ const service=f.open({targets:({sourceKeys}={})=>{
+  assert.deepEqual(sourceKeys,['small','alias'],'the adapter receives the entire selected scope, never an unbounded request');
+  registryReads.push([...sourceKeys]);return targets.filter(t=>sourceKeys.includes(t.key));
+ }});
+ f.repository.get=function(id,options){assert.equal(id,f.a.id,'an unrelated product payload must not be opened');reads.push(id);return get.call(this,id,options);};
+ assert.equal(service.sources({sourceKeys:['small','alias']}).length,2);assert.equal(registryReads.length,1);assert.equal(reads.length,1);
+ const draft=service.draft({name:'Gezielte Alias-Auswahl',scope:{lineId:'test-line',subcategoryId:'test-sub'},sourceKeys:['small','alias']});
+ assert.equal(registryReads.length,2);assert.equal(reads.length,2);
+ service.validate(draft);assert.equal(registryReads.length,3);assert.equal(reads.length,3,'every operation reads a fresh source head');
+});
+
 test('draft, validation, planning and confirmation reuse source heads only within each operation',t=>{
  const f=fixture(t),get=f.repository.get;let registryReads=0;const reads=new Map();
  f.repository.get=function(id,options){const key=id+':'+(options?.revision??'head');reads.set(key,(reads.get(key)||0)+1);return get.call(this,id,options);};
- const service=f.open({targets:()=>{registryReads++;return [{key:'small',productId:f.a.id,familyId:'test-slate',sizeKey:'TEST-220X140'},{key:'large',productId:f.b.id,familyId:'test-slate',sizeKey:'TEST-300X200'}];}});
+ const service=f.open({targets:({sourceKeys}={})=>{assert.deepEqual(sourceKeys,['small','large']);registryReads++;return [{key:'small',productId:f.a.id,familyId:'test-slate',sizeKey:'TEST-220X140'},{key:'large',productId:f.b.id,familyId:'test-slate',sizeKey:'TEST-300X200'}];}});
  function measured(work,expectedIds=[f.a.id,f.b.id],expectedRegistry=1){reads.clear();registryReads=0;const result=work();assert.equal(registryReads,expectedRegistry);for(const id of expectedIds)assert.equal(reads.get(id+':head'),expectedRegistry);assert.ok([...reads.values()].every(n=>n<=expectedRegistry));return result;}
  const draft=measured(()=>service.draft({name:'Testgruppe',scope:{lineId:'test-line',subcategoryId:'test-sub'},sourceKeys:['small','large']}));
  measured(()=>service.validate(draft));const template=measured(()=>service.create(draft));

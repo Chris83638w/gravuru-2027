@@ -91,7 +91,15 @@ export async function installViewZoom({el,r,selected}){
  const touchFinished=e=>touchEnd(e,false),touchCancelled=e=>touchEnd(e,true);
  el.addEventListener('touchend',touchFinished,{capture:true,passive:false});
  el.addEventListener('touchcancel',touchCancelled,{capture:true,passive:false});
- el.addEventListener('pointerdown',e=>{if(touchView&&e.pointerType==='touch'){stop(e);return;}cancelAnimation();if(!onStage(e)||!bounds)return;const used=gesture.down(point(e));if(used){stop(e);for(const id of gesture.ids())try{el.setPointerCapture(id);}catch{}}},true);
+ el.addEventListener('pointerdown',e=>{
+  // Chromium can drop every end event when blank deselection replaces the
+  // implicitly captured SVG. A fresh primary touch proves the old contact is
+  // over; a genuine second finger is non-primary and still uses the blocker.
+  if(e.pointerType==='touch'&&e.isPrimary===true&&(gesture.ids().length||touchView)){
+   cancelObject();resetGestures();
+  }
+  if(touchView&&e.pointerType==='touch'){stop(e);return;}cancelAnimation();if(!onStage(e)||!bounds)return;const used=gesture.down(point(e));if(used){stop(e);for(const id of gesture.ids())try{el.setPointerCapture(id);}catch{}}
+ },true);
  el.addEventListener('pointermove',e=>{if(touchView&&e.pointerType==='touch'){stop(e);return;}if(gesture.has(e.pointerId)&&gesture.move(point(e)))stop(e);},true);
  const end=(e,cancelled)=>{if(touchView&&e.pointerType==='touch'){stop(e);return;}if(!gesture.has(e.pointerId))return;const used=gesture.up(point(e),{cancelled});if(used){stop(e);suppressUntil=performance.now()+500;}if(el.hasPointerCapture?.(e.pointerId))el.releasePointerCapture(e.pointerId);};
  el.addEventListener('pointerup',e=>end(e,false),true);el.addEventListener('pointercancel',e=>end(e,true),true);

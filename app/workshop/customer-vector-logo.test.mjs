@@ -87,7 +87,68 @@ test('nonzero viewBox origin is normalized; physical dimensions are reported onl
   assert.deepEqual(geometry(result.svg).bounds,[0,0,20,10]);
   const unitless=await prepare(svg('<rect width="10" height="10"/>'));
   assert.equal(unitless.widthMm,null);assert.equal(unitless.heightMm,null);
-  await assert.rejects(prepare(svg('<rect width="10" height="10"/>','width="50mm" height="10mm" viewBox="0 0 20 20"')),{code:'logo_viewbox'});
+  const wide=await prepare(svg('<rect width="10" height="10"/>','width="50mm" height="10mm" viewBox="0 0 20 20"'));
+  assert.equal(wide.width/wide.height,5);assert.equal(wide.widthMm,50);assert.equal(wide.heightMm,10);
+});
+
+test('valid viewport mismatch preserves default meet, explicit none, slice and all alignments',async()=>{
+ const body='<rect x="10" y="30" width="20" height="10"/>';
+ const base='width="200" height="100" viewBox="0 0 100 100"';
+ for(const [aspect,bounds] of [
+  ['', [30,15,40,20]],['xMidYMid meet',[30,15,40,20]],['none',[10,15,30,20]],
+  ['none slice',[10,15,30,20]],['xMidYMid slice',[10,5,30,15]],
+  ['xMinYMin meet',[5,15,15,20]],['xMaxYMax meet',[55,15,65,20]],
+  ['defer xMaxYMax meet',[55,15,65,20]],
+ ]){
+  const result=await prepare(svg(body,base+(aspect?` preserveAspectRatio="${aspect}"`:'')));
+  assert.equal(result.width,100);assert.equal(result.height,50);
+  assert.deepEqual(geometry(result.svg).bounds,bounds,aspect||'default meet');
+  assert.deepEqual(geometry(result.preview).bounds,bounds,'preview '+aspect);
+ }
+ for(const x of ['Min','Mid','Max'])for(const [y,offset] of [['Min',0],['Mid',25],['Max',50]]){
+  const result=await prepare(svg(body,`width="100" height="200" viewBox="0 0 100 100" preserveAspectRatio="x${x}Y${y} meet"`));
+  assert.deepEqual(geometry(result.svg).bounds,[5,15+offset,15,20+offset]);
+ }
+});
+
+test('viewport normalization handles rounded physical units, offset and slice clipping without rasterization',async()=>{
+ const rounded=await prepare(svg('<rect width="300" height="100"/>','width="100mm" height="33.33mm" viewBox="0 0 300 100"'));
+ assert.equal(rounded.widthMm,100);assert.equal(rounded.heightMm,33.33);
+ assert.ok(Math.abs(rounded.width/rounded.height-100/33.33)<1e-10);
+ const offset=await prepare(svg('<rect x="10" y="20" width="100" height="100"/>','width="2in" height="72pt" viewBox="10 20 100 100"'));
+ assert.deepEqual(geometry(offset.svg).bounds,[25,0,75,50]);
+ const cropped=await prepare(svg('<rect width="100" height="100"/>','width="200px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice"'));
+ assert.deepEqual(geometry(cropped.svg).bounds,[0,0,100,50]);
+ assert.equal(geometry(cropped.svg).area,5000);assert.ok(cropped.warnings.some(x=>x.includes('beschnitten')));
+ const stroked=await prepare(svg('<path d="M10 50H90" fill="none" stroke="black" stroke-width="10"/>','width="200" height="100" viewBox="0 0 100 100" preserveAspectRatio="none"'));
+ assert.deepEqual(geometry(stroked.svg).bounds,[10,22.5,90,27.5]);
+ assert.doesNotMatch(stroked.svg.toString(),/<image|stroke=|transform=/);
+ for(const aspect of ['xBogusYMid meet','xMidYMid stretch','none javascript'])await assert.rejects(prepare(svg('<rect width="5" height="5"/>',`viewBox="0 0 20 20" preserveAspectRatio="${aspect}"`)),{code:'logo_effect'});
+});
+
+test('previously accepted v1 source and preview bytes remain identical to the pinned 587a395 worker',async()=>{
+ // SHA-256 captured from the unmodified worker, before this change. Historical
+ // account/cart verification must still reproduce the exact stored output.
+ const cases=[
+  ['viewBox="0 0 20 20"','<rect x="1" y="2" width="12" height="10"/>','187fc87fdc234ce4d786b8a304777a978540387f16582af810c0791ff347003f'],
+  ['width="40mm" height="20mm" viewBox="10 20 20 10"','<rect x="10" y="20" width="20" height="10"/>','1c13433bf1887b003a634a3dd34a583cf893e3fc27ec0f5c4f405fb01b108c4b'],
+  ['width="200" height="100" viewBox="0 0 20 10" preserveAspectRatio="none"','<circle cx="10" cy="5" r="4"/>','4b7aed30440750fe28962d3656073a48e0521a1293fe6bd8b8c838efb8f9b154'],
+  ['viewBox="0 0 20 20"','<rect x="1" y="1" width="10" height="10" fill="red"/><rect x="6" y="1" width="10" height="10" fill="#00f"/><rect x="7" y="3" width="2" height="4" fill="white"/>','93a016824421537d5ae296243534b838ea1d398ae7c69c52fa7ac93290203e3c','a5b606807ba4a072a116f2d5baf935d51cf4c8b3c895d966c4f0c971fe7d728a'],
+  ['viewBox="0 0 20 20"','<path d="M2 12 C2 2 18 2 18 12 L18 18 L2 18 Z"/>','33e586b8b099df07847a4400d437b96758ca218ac32e2ab4f35358ebac3a3ccd'],
+  ['viewBox="0 0 20 20"','<path d="M2 10 L18 10" fill="none" stroke="black" stroke-width="2" stroke-linecap="round"/>','f655828721b4e9690e77974de3fa9d430b4a32e3133f088f620fb2542629f20f'],
+ ];
+ for(const [attrs,body,output,preview=output] of cases){const result=await prepare(svg(body,attrs));assert.equal(digest(result.svg),output);assert.equal(digest(result.preview),preview);assert.equal(result.version,'svg-black-v1');}
+});
+
+test('independent SVG renderer sees the same visible artwork before and after viewport normalization',async()=>{
+ const pairs=[];
+ for(const aspect of ['', 'none', 'xMidYMid slice', 'xMinYMin meet', 'xMaxYMax meet']){
+  const original=svg('<rect x="15" y="25" width="80" height="80" fill="red"/><circle cx="55" cy="65" r="10" fill="white"/>',`width="200" height="100" viewBox="10 20 100 100"${aspect?` preserveAspectRatio="${aspect}"`:''}`);
+  const result=await prepare(original);pairs.push({source:original.toString(),preview:result.preview.toString()});
+ }
+ const script=`import io,json,sys\nimport cairosvg\nfrom PIL import Image,ImageChops\nfor pair in json.load(sys.stdin):\n a,b=[Image.open(io.BytesIO(cairosvg.svg2png(bytestring=pair[k].encode(),output_width=400,output_height=200))).convert('RGBA') for k in ('source','preview')]\n assert ImageChops.difference(a,b).getbbox(alpha_only=False) is None, 'normalized preview changed visible artwork'\nprint('matched')`;
+ const result=spawnSync(process.env.GRAVURU_PYTHON||(existsSync(bundled)?bundled:process.platform==='win32'?'python':'python3'),['-c',script],{env:{...process.env,PYTHONPATH:[fileURLToPath(new URL('../../.local-data/python',import.meta.url)),process.env.PYTHONPATH].filter(Boolean).join(delimiter)},input:JSON.stringify(pairs),encoding:'utf8',windowsHide:true,timeout:10000});
+ assert.equal(result.status,0,result.stderr);assert.equal(result.stdout.trim(),'matched');
 });
 
 test('off-canvas paint is clipped to the same source viewport and reported',async()=>{

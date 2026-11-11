@@ -46,16 +46,25 @@ export function acrylAssetText(text,pathname=''){if(['/workshop-ui/configurator-
 // alles andere → Fehler vor dem Öffnen von Datenbanken. Live-Funkklingeln benötigen zusätzlich den exakten
 // Freigabewert GRAVURU_DOORBELL_LIVE_ORDERS=approved-20261027 und die gespeicherte Produktfreigabe.
 export function customerIntegrationFromEnv(env=process.env){
+ const previewDirectory=env.GRAVURU_PUBLIC_PREVIEW_DIRECTORY,prepareProduct=env.GRAVURU_PUBLIC_PREVIEW_PREPARE_PRODUCT,prepareVariant=env.GRAVURU_PUBLIC_PREVIEW_PREPARE_VARIANT;
+ const previews={};
+ if(previewDirectory){if(!path.isAbsolute(previewDirectory)||path.resolve(previewDirectory)!==previewDirectory)throw Object.assign(Error('Öffentlicher Vorschauspeicher benötigt einen absoluten normalisierten Pfad.'),{code:'public_preview_env'});previews.publicPreviewDirectory=previewDirectory;}
+ if(prepareProduct||prepareVariant){if(!previewDirectory||!/^gid:\/\/shopify\/Product\/[1-9][0-9]{0,19}$/.test(prepareProduct||'')||!/^gid:\/\/shopify\/ProductVariant\/[1-9][0-9]{0,19}$/.test(prepareVariant||''))throw Object.assign(Error('Vorschauvorbereitung benötigt genau ein festes Produkt und eine feste Variante.'),{code:'public_preview_env'});previews.publicPreviewPrepare={shopifyProductId:prepareProduct,shopifyVariantId:prepareVariant};}
  const value=env.GRAVURU_CUSTOMER_INTEGRATION,live=env.GRAVURU_DOORBELL_LIVE_ORDERS,catalog=env.GRAVURU_CATALOG_LIVE_ORDERS;
+ // Antwortspeicher des Kundenmodells (Paket 1a): ausgeschaltet, solange die Variable fehlt oder leer ist; einziger Wert ist `enabled`.
+ const modelCache=env.GRAVURU_CUSTOMER_MODEL_CACHE;
+ if(modelCache!==undefined&&modelCache!==''&&modelCache!=='enabled')throw Object.assign(Error('GRAVURU_CUSTOMER_MODEL_CACHE kennt nur den Wert enabled.'),{code:'customer_model_cache_env'});
  if(catalog!==undefined&&catalog!==''&&catalog!=='approved-issue139-20261102')throw Object.assign(Error('GRAVURU_CATALOG_LIVE_ORDERS kennt nur den Wert approved-issue139-20261102.'),{code:'catalog_live_orders_env'});
  if(live!==undefined&&live!==''&&live!=='approved-20261027')throw Object.assign(Error('GRAVURU_DOORBELL_LIVE_ORDERS kennt nur den Wert approved-20261027.'),{code:'doorbell_live_orders_env'});
  if(value===undefined||value===''){
+  if(modelCache==='enabled')throw Object.assign(Error('Der Antwortspeicher benötigt den bestehenden Kundeneinstieg.'),{code:'customer_model_cache_env'});
+  if(Object.keys(previews).length)throw Object.assign(Error('Vorschauen benötigen den bestehenden Kundeneinstieg.'),{code:'public_preview_env'});
   if(catalog==='approved-issue139-20261102')throw Object.assign(Error('Live-Katalogprodukte benötigen die bestehende customerIntegration.'),{code:'catalog_live_orders_env'});
   if(live==='approved-20261027')throw Object.assign(Error('Live-Funkklingeln benötigen die bestehende customerIntegration.'),{code:'doorbell_live_orders_env'});
   return null;
  }
  if(value!=='merchant-test-only')throw Object.assign(Error('GRAVURU_CUSTOMER_INTEGRATION kennt nur den Wert merchant-test-only.'),{code:'customer_integration_env'});
- return {mode:'merchant-test-only',legacyStoreId:'legacy',acrylStoreId:'acryl',shopEntry:{proxyPath:'/apps/konfigurator'},...(live==='approved-20261027'?{doorbellLiveOrders:true}:{}),...(catalog==='approved-issue139-20261102'?{catalogLiveOrders:true}:{})};
+ return {mode:'merchant-test-only',legacyStoreId:'legacy',acrylStoreId:'acryl',shopEntry:{proxyPath:'/apps/konfigurator',...previews,...(modelCache==='enabled'?{modelResponseCache:true}:{})},...(live==='approved-20261027'?{doorbellLiveOrders:true}:{}),...(catalog==='approved-issue139-20261102'?{catalogLiveOrders:true}:{})};
 }
 export async function createAcrylEmployeeHost({legacyRelease,dataDirectory,env=process.env,customerIntegration=null}){
  const module=file=>import(pathToFileURL(path.join(legacyRelease,'ops/plesk',file)).href);
@@ -68,6 +77,7 @@ export async function createAcrylEmployeeHost({legacyRelease,dataDirectory,env=p
   integration=createConfiguratorIntegration({settings:customerIntegration,legacy:existing.workshop,acryl:acrylWorkshop,origin:config.origin,shopifySessions:config.runtime.shopifySessions,orderWebhook:config.orderWebhook});
   inner.address=net.Server.prototype.address;net.Server.prototype.listen.call(inner,0,'127.0.0.1');await once(inner,'listening');
  }catch(e){inner?.close();existing?.close();lock?.stdin.end();throw e;}
+ const deliverBundle=inner.prepareBundleDelivery(acrylAssetText);
  const port=inner.address().port,server=http.createServer((req,res)=>{
   let url;try{url=new URL(req.url,config.origin);}catch{return res.writeHead(400).end();}
   if(req.headers.host!==config.host||req.headers['x-forwarded-proto']!=='https'||!req.url.startsWith('/')||req.url.startsWith('//'))return res.writeHead(403).end();
@@ -78,6 +88,7 @@ export async function createAcrylEmployeeHost({legacyRelease,dataDirectory,env=p
   if(integration?.statusWebhook&&url.pathname===DOORBELL_STATUS_WEBHOOK_PATH)return void integration.statusWebhook(req,res);
   const target=acrylRoute(url.pathname);
   if(!target)return existing.emit('request',req,res);
+  if(deliverBundle(req,res,target))return;
   const headers={host:config.host};for(const key of ['authorization','accept','accept-language','content-type','content-length','origin','x-gravuru-csrf','x-gravuru-draft','sec-fetch-site','sec-fetch-mode','sec-fetch-dest'])if(req.headers[key]!==undefined)headers[key]=req.headers[key];
   const upstream=http.request({hostname:'127.0.0.1',port,path:target+url.search,method:req.method,headers},response=>{
    const publicDoorbellImage=response.statusCode===200&&/^\/doorbell-assets\/[a-f0-9]{64}\.webp$/.test(target);

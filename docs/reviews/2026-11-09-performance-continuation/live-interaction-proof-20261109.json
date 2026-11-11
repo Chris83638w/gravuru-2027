@@ -1,0 +1,72 @@
+{
+  "at": "2026-11-09T11:10:37.607Z",
+  "width": 390,
+  "height": 844,
+  "physicalDevice": false,
+  "header": {
+    "logoHidden": true,
+    "returnButtonExpanded": true
+  },
+  "designSwitch": {
+    "from": "Zwei Zeilen, mittig",
+    "to": "Zwei Zeilen mit Trennlinie",
+    "completed": true,
+    "delayUnacceptable": true
+  },
+  "motif": {
+    "firstMove": {
+      "type": "motif",
+      "w": 22.97002376091561,
+      "h": 20,
+      "motif": "import-b56d5711a75f34c1fa8d9c30",
+      "id": "60e1d85c-6106-4124-a906-62356e2f881d",
+      "x": 59.5,
+      "y": 12,
+      "rotation": 0,
+      "color": "#000000",
+      "customerEditable": true,
+      "templateOrigin": false,
+      "uxPersonal": true
+    },
+    "after": {
+      "type": "motif",
+      "w": 22.97002376091561,
+      "h": 20,
+      "motif": "import-b56d5711a75f34c1fa8d9c30",
+      "id": "60e1d85c-6106-4124-a906-62356e2f881d",
+      "x": 72.91133117675781,
+      "y": 27.967000000000006,
+      "rotation": 0,
+      "color": "#000000",
+      "customerEditable": true,
+      "templateOrigin": false,
+      "uxPersonal": true
+    },
+    "secondOverlapDrag": {
+      "passed": false,
+      "observed": {
+        "selected": "text-2",
+        "object": {
+          "type": "motif",
+          "w": 22.97002376091561,
+          "h": 20,
+          "motif": "import-b56d5711a75f34c1fa8d9c30",
+          "id": "60e1d85c-6106-4124-a906-62356e2f881d",
+          "x": 72.91133117675781,
+          "y": 27.967000000000006,
+          "rotation": 0,
+          "color": "#000000",
+          "customerEditable": true,
+          "templateOrigin": false,
+          "uxPersonal": true
+        }
+      }
+    }
+  },
+  "priceCents": {
+    "original": 1999,
+    "withMotif": 2168,
+    "afterConfirmedReset": 1999
+  },
+  "orderPlaced": false
+}

@@ -1,0 +1,100 @@
+{
+  "scope": "LOCAL REVIEW ONLY – v9 plans unchanged; synthetic local bindings; no shop writes",
+  "codeBase": "working-integration-0e200d8-ac10e6c-server0d6d23d9",
+  "port": 8252,
+  "built": {
+    "verifiedResources": 76,
+    "models": 1,
+    "editorBytes": 374704,
+    "lazyResources": {
+      "fonts": 30,
+      "motifs": 703
+    },
+    "bundle": {
+      "url": "/_bundle/editor-f11e977b34d3925a.mjs",
+      "modules": 159,
+      "styles": 16,
+      "bytes": 1490600,
+      "gzipBytes": 495766
+    }
+  },
+  "products": [
+    {
+      "name": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "planId": "pgp_7307b213-09ef-4758-b525-88aea139502d",
+      "planHash": "cd2405c8f0a53544cfaaf87f97d84234ba9c51d58ec6b0e388bb7212ef141392",
+      "planFileSha": "2c4a60655e48fa2f3f533d8aef73e1de8c356bdfcc256361cfaea406638018b4",
+      "metadata": {
+        "designs": 27,
+        "withUnnamedMotifs": 24,
+        "unnamedMotifs": 26
+      }
+    },
+    {
+      "name": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "planId": "pgp_6831ea29-73f3-40c4-abfa-834c8479d93d",
+      "planHash": "df492d24f7da24f765ff62b8b03daf44865d839045191f3b3e449ca8f37cc09f",
+      "planFileSha": "37100a4dba335facda14c50c526e6f67b22b1fa239f26d6bafe0b3146d01c344",
+      "metadata": {
+        "designs": 27,
+        "withUnnamedMotifs": 24,
+        "unnamedMotifs": 26
+      }
+    },
+    {
+      "name": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "planId": "pgp_1d526e2a-fe1d-4749-be52-5386cf227afe",
+      "planHash": "8531d241fd230a52a14a4c77bf314bdc49c578a679fc5d0d1d9a6a439f995d53",
+      "planFileSha": "8cfb1ad6e3c101218ef1917372d12aebfe1a8369e4a41816748039fce5eb9d5d",
+      "metadata": {
+        "designs": 27,
+        "withUnnamedMotifs": 24,
+        "unnamedMotifs": 26
+      }
+    },
+    {
+      "name": "Tuerschild-Acrylglas-3mm_v4",
+      "planId": "pgp_80a0c3b9-b599-428f-8626-05e3ace880b6",
+      "planHash": "83cd95dc900fcbc9631086f54c26591e2dbab75d285cc80fa46d64673f63bb33",
+      "planFileSha": "c3bb9aa77fdb72a50503d3f3cfc631e43ea3f9465c9e239fa4f9cd3e4e942d33",
+      "metadata": {
+        "designs": 1205,
+        "withUnnamedMotifs": 1157,
+        "unnamedMotifs": 1367
+      }
+    },
+    {
+      "name": "Tuerschild-Edelstahl-5x2_v1",
+      "planId": "pgp_7699e1dc-2f19-427d-a983-0fd6610f9bd9",
+      "planHash": "24840f5fe16a074e5f842ae85bb6529285bee334254d5d82d99f98efc9f09117",
+      "planFileSha": "ad12d65562bd7990064dd8b20099f4283f54a21ce7812d51c8eb8bddae59c458",
+      "metadata": {
+        "designs": 27,
+        "withUnnamedMotifs": 24,
+        "unnamedMotifs": 26
+      }
+    },
+    {
+      "name": "Tuerschild-Edelstahl-6x2_v1",
+      "planId": "pgp_b216801b-a754-447b-be24-308e5f47de18",
+      "planHash": "8423f66172c8ff0258d5ca60591f42861457ba9634805d92941431dcfbf0764f",
+      "planFileSha": "8a0f296d0df9633261d7894d55443fcd6ae64bd3a31d95ce942335eafc76a386",
+      "metadata": {
+        "designs": 27,
+        "withUnnamedMotifs": 24,
+        "unnamedMotifs": 26
+      }
+    },
+    {
+      "name": "Tuerschild-Edelstahl-8x2_v1",
+      "planId": "pgp_869d2800-de7c-48d6-96f4-87a5f889186e",
+      "planHash": "634a3d3f45e462a03a4b79add03cc0d323e7587378d8cc402a3495f638652199",
+      "planFileSha": "6832fac837f6b85673e37789e49f720d89ded30ecca2358560e12d006aca5275",
+      "metadata": {
+        "designs": 27,
+        "withUnnamedMotifs": 24,
+        "unnamedMotifs": 26
+      }
+    }
+  ]
+}

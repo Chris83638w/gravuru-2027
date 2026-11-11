@@ -23,6 +23,12 @@ test('native geometry, revisions and input remain unchanged',()=>{
  assert.equal(config.profile.revision,native.revision);assert.equal(config.profile.material.thicknessMm,5);
  assert.deepEqual(config.profile,native);
 });
+
+test('the saved presentation selector accepts only the installed prio-r15 view and never silently replaces unknown views',()=>{
+ const c=structuredClone(config);c.customerUI={presentation:'prio-r15'};
+ assert.equal(prepareConfig(c).customerUI.presentation,'prio-r15');
+ c.customerUI.presentation='unknown';assert.throws(()=>prepareConfig(c),/Konfiguratoransicht/);
+});
 test('five native processing profiles stay independent from photo setting',()=>{
  for(const processing of PROCESSING_PROFILES){
   const fixture=structuredClone(config);fixture.profile.processing.profileId=processing.id;

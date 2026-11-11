@@ -1,0 +1,113 @@
+✔ server preview accepts only an explicitly enabled steel revision and returns two passive SVG views (398.2144ms)
+✔ acrylic simultaneous photo and checked SVG survive native snapshot and artwork with separate charges (15330.5787ms)
+✔ new viewport-normalized SVG survives verified snapshot and native production with unchanged logo tariff (1045.4914ms)
+✔ text-on-top survives immutable saving and production while historical packages retain their order (1163.1276ms)
+✔ immutable review, production and cart restore preserve approved vector bytes, placement, original and drilling (749.3556ms)
+✔ complete production PDF remains vector and the production archive keeps both immutable SVG versions (9839.7965ms)
+✔ snapshot re-runs conversion and rejects changed source, changed black SVG, forged approval or mismatched media (683.0737ms)
+✔ account store accepts only sealed server conversion and restores SVG MIME plus approval without a database migration (652.9521ms)
+✔ a historical raster-logo revision keeps its raster snapshot and photo tariff (76.6042ms)
+✔ workshop logo preview requires the existing CSRF session and pinned product revision (799.9611ms)
+✔ signed account route verifies SVG before storage and bounds duplicate-media work before conversion (781.1206ms)
+✔ three products x with/without design x two option sets: the stored response equals the uncached one byte for byte (10460.0263ms)
+✔ the start-preview target is issued per session: two sessions share one entry but never one token (5311.3873ms)
+✔ real changes of THIS product (new revision, publish, archive) and of the schema apply at once (15470.5807ms)
+✔ real customer-side and other-product writes into the same database file leave a warm entry alone (3822.5573ms)
+✔ changed options of the same assignment never get the old entry (real model, only options differ in the key) (2828.0098ms)
+✔ pause and approval come from live state: a warm entry answers 423 / 404 at once and recovers (3142.4208ms)
+✔ a pinned old revision still answers like the uncached path after a newer revision exists (3297.9496ms)
+✔ a warm response is served without building the model again and is byte-identical to the uncached one (2842.2006ms)
+✔ option sets and design choices have their own entries; no entry answers for another key (1467.2706ms)
+✔ customer-side writes into the same database file leave the entry alone; changes of THIS product apply at once (1894.7166ms)
+✔ changed options of the same assignment never get the old entry (everything else in the key stays equal) (57.2544ms)
+✔ unknown product, missing revision and another tenant give the same status and code with a warm entry as without the store (477.3648ms)
+✔ counters go through the logger: numbers only, at most one line per minute (556.462ms)
+✔ the product state is read on every request, also on hits (243.7573ms)
+✔ an unreadable database state or a write while building never stores an entry (825.2808ms)
+✔ stores without revisionState, readEpoch or konfis.paused run exactly as before (1664.0707ms)
+✔ pause is checked on every request, also with a warm entry; same status, code and text (773.8364ms)
+✔ catalog and doorbell approvals are read fresh on every hit and their result is never stored (589.244ms)
+✔ approval kind of the document and of the model are both re-checked in the original order (14.3878ms)
+✔ session, origin, binding, tenant and rate limit are checked on every request with a warm entry (347.3163ms)
+✔ the rate limiter still counts warm requests (196.6881ms)
+✔ a disabled design choice answers 403 every time and the error is never stored; the default stays warm (22.653ms)
+✔ error responses are not stored: a transient model error is followed by a fresh build and then hits (283.7199ms)
+✔ entry count and byte limits apply; oversized responses are not stored (2731.6548ms)
+✔ doorbell models are stored only while the slimmer is ready; cold and ready states never share an entry (57.4162ms)
+✔ lazy font files stay reachable when the answer comes from the store; vanished files force a rebuild (527.8758ms)
+✔ the asset route answers the same with and without the store after warm model requests (42.9636ms)
+✔ a disabled design module keeps the pinned default and refuses explicit customer design overrides (65.8891ms)
+✔ customer logo conversion stays behind the shop session, same origin and exact product revision (318.4765ms)
+✔ signed start resolves the binding through the registry and redirects with a session in the fragment (36.81ms)
+✔ approved presentation opt-in survives signed start and prefetch without granting new session rights (16.6005ms)
+✔ invalid, foreign-shop, expired and replayed-old signatures are refused before any registry lookup (13.4845ms)
+✔ toolbar query crosses the signed start only for embedded windows and ignores invalid or duplicate cosmetic values (31.9441ms)
+✔ missing, duplicate and form bindings answer with a customer message instead of an editor (17.4665ms)
+✔ paused product and anonymous customer handling on start (16.6475ms)
+✔ page and script are served with a strict policy and nothing else leaks (18.8585ms)
+✔ complete shop entry module graph is served by the production shop-entry allowlist (12.404ms)
+✔ start image uses the bound design and the existing session-gated gallery preview (18.6849ms)
+✔ model route serves only the bound product, preselects the shop variant and pins assignment revision (24.5743ms)
+✔ session expiry ends model, asset and cart access; a fresh start works again (25.663ms)
+✔ design assets are limited to the resources named by this product model (13.4706ms)
+✔ cart uses the registry binding of the configured variant, never the page variant or browser prices (24.0747ms)
+✔ unbound or ambiguous configured variants block before any cart call; foreign drafts too (10.727ms)
+✔ a failed handoff forgets the remembered cart and reports a retryable customer message (14.6859ms)
+✔ invalid personalization contracts stay distinct from missing surcharge support (12.7267ms)
+✔ parallel cart clicks of one session are serialised while a body is still arriving (18.185ms)
+✔ draft save route refuses foreign products and oversized or malformed bodies before any review work (19.5749ms)
+✔ rate limits answer 429 and misconfiguration fails closed (7.7315ms)
+✔ gallery endpoints require current authentication, correct origin and strictly shaped requests (33.3195ms)
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":1.0569000000000415,"modelMs":0.11329999999998108,"profileMs":0.5715000000000146,"selectionMs":0.5741999999995642,"models":3,"bindings":15,"cards":15,"totalMs":4.73090000000002}
+✔ public gallery and switch endpoints enforce the source module instead of trusting a previously issued target (20.8708ms)
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.0704000000000633,"modelMs":0.08229999999980464,"profileMs":0.2965999999996711,"selectionMs":0.16859999999996944,"models":3,"bindings":15,"cards":15,"totalMs":1.474999999999909}
+✔ design switching issues a session for the exact destination and leaves the original session and draft intact (18.0088ms)
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.06870000000003529,"modelMs":0.08060000000023138,"profileMs":0.2923000000000684,"selectionMs":0.20110000000045147,"models":3,"bindings":15,"cards":15,"totalMs":1.487100000000055}
+✔ gallery preview renders the selected plate with private no-store headers and signed targets belong to one source session (21.0568ms)
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.0627999999999247,"modelMs":0.11590000000001055,"profileMs":0.4608000000002903,"selectionMs":0.3413000000005013,"models":3,"bindings":15,"cards":15,"totalMs":3.2098000000000866}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.06490000000007967,"modelMs":0.05649999999991451,"profileMs":0.21669999999971878,"selectionMs":0.10140000000046712,"models":2,"bindings":15,"cards":10,"totalMs":1.1741000000001804}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.0544999999999618,"modelMs":0.07579999999984466,"profileMs":0.31650000000036016,"selectionMs":0.2360999999998512,"models":2,"bindings":15,"cards":10,"totalMs":2.1504999999999654}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.055600000000140426,"modelMs":0.051699999999755164,"profileMs":0.3018000000001848,"selectionMs":0.18290000000047257,"models":2,"bindings":15,"cards":10,"totalMs":1.6880000000001019}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.06359999999995125,"modelMs":0.23630000000002838,"profileMs":0.33210000000053697,"selectionMs":0.170500000000402,"models":2,"bindings":15,"cards":10,"totalMs":2.0721000000000913}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.11850000000004002,"modelMs":0.05060000000003129,"profileMs":0.2055000000000291,"selectionMs":0.1065000000000964,"models":2,"bindings":15,"cards":10,"totalMs":1.33199999999988}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.07079999999996289,"modelMs":0.09550000000012915,"profileMs":0.6231000000002496,"selectionMs":0.5604000000005271,"models":3,"bindings":15,"cards":14,"totalMs":3.0648999999998523}
+✔ gallery and switch recheck paused, missing, mismatched and foreign models after a card was displayed (47.8276ms)
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.05719999999996617,"modelMs":0.07930000000033033,"profileMs":0.3214000000004944,"selectionMs":0.1440999999995256,"models":3,"bindings":15,"cards":15,"totalMs":1.3684999999998126}
+✔ gallery tokens pin destination assignment revision, product revision and recomputed base price (20.4051ms)
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.05709999999999127,"modelMs":0.08129999999982829,"profileMs":0.2727999999997337,"selectionMs":0.15130000000044674,"models":3,"bindings":15,"cards":15,"totalMs":1.374599999999873}
+✔ a valid old configId and private photo revision stay with the original product after a design switch (22.553ms)
+✔ host integration takes the customer entry only as an explicit, well-formed setting (28.6412ms)
+✔ fixed catalog signs require their own approved revision before entry and selected cart variant (19.9426ms)
+✔ a fixed catalog sign cannot open when catalog intake was disabled at startup (16.4885ms)
+✔ new doorbells require the exact live approval at start and on every private session request (12.8152ms)
+✔ an approved doorbell still cannot start while its live order intake is disabled (6.1058ms)
+✔ changing a doorbell variant rechecks its live approval before any cart handoff (15.0924ms)
+✔ embed start: window flag in the fragment, page framable only by the own shop, embed module served through the proxy (24.5079ms)
+✔ embed scripts load on every product page without using up the cart rate limit (37.365ms)
+✔ customer model passes through the model slimmer with a revision key; the stored model stays complete (9.0002ms)
+✔ own fonts no design uses are served as immutable files from the shop entry and listed for lazy loading (15.5637ms)
+✔ start ticket (format=json) returns the same target as the redirect and counts separately from real starts (9.9072ms)
+✔ warm manifest is optional public metadata; cart-edit tickets never preload private saved designs (9.4445ms)
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.061599999999998545,"modelMs":0.09690000000023247,"profileMs":0.3445999999999003,"selectionMs":0.18599999999992178,"models":3,"bindings":15,"cards":15,"totalMs":1.7049000000001797}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.0805000000000291,"modelMs":0.07759999999984757,"profileMs":0.3078000000002703,"selectionMs":0.2632000000003245,"models":3,"bindings":15,"cards":15,"totalMs":2.04099999999994}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.058399999999892316,"modelMs":0.08139999999980319,"profileMs":0.3077000000002954,"selectionMs":0.20520000000033178,"models":3,"bindings":15,"cards":15,"totalMs":1.4144999999998618}
+✔ repeated design switches cannot extend the original source session (26.2635ms)
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.171100000000024,"modelMs":0.23390000000017608,"profileMs":0.4720999999997275,"selectionMs":0.27099999999995816,"models":3,"bindings":15,"cards":15,"totalMs":5.38149999999996}
+✔ startup warms the gallery without a customer and list never calls the full model builder (17.1261ms)
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.055000000000063665,"modelMs":0.2893999999996595,"profileMs":0.5128999999999451,"selectionMs":0.31890000000043983,"models":3,"bindings":15,"cards":15,"totalMs":2.408100000000104}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.053599999999960346,"modelMs":0.09099999999966712,"profileMs":0.4162000000003445,"selectionMs":0.25939999999991414,"models":3,"bindings":15,"cards":15,"totalMs":1.8152999999999793}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.054500000000189175,"modelMs":0.0909999999998945,"profileMs":0.5201000000001841,"selectionMs":0.7502000000006319,"models":3,"bindings":15,"cards":15,"totalMs":3.3038000000001375}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.0646999999999025,"modelMs":0.08799999999973807,"profileMs":0.35410000000069886,"selectionMs":0.3192000000005919,"models":3,"bindings":15,"cards":15,"totalMs":2.0412999999998647}
+{"event":"shop_gallery_build_measure","storeId":"acryl","registryMs":0.06809999999995853,"modelMs":0.10640000000012151,"profileMs":0.40649999999982356,"selectionMs":0.3104000000007545,"models":3,"bindings":15,"cards":15,"totalMs":2.1271999999999025}
+✔ public search passes only eligible results and exact number matches through the authenticated gallery route (32.3619ms)
+{"event":"public_preview_prepared","prepared":3,"bytes":3012}
+✔ public template HTTP warmup persists across restart, never renders on start and rejects revoked and legacy image URLs (133.0794ms)
+✔ combined public cache and module guards reject stale gallery targets and disabled logo upload through real HTTP (66.509ms)
+ℹ tests 83
+ℹ suites 0
+ℹ pass 83
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 44843.7411

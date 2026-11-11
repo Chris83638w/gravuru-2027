@@ -63,6 +63,36 @@ export async function installRefinements(api){
   const render=el.render;el.render=function(...args){const result=render.apply(this,args);updateSelection();return result;};
   const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args);updateSelection();return result;};
   let resize=null;
+  // Text keeps its generous hit rectangle. Only its unpainted area may yield
+  // to a visible motif contour underneath; neither paint order nor SVG changes.
+  function pointerObjectItem(event,item){
+    const object=el.state.objects.find(o=>o.id===item?.dataset.object),node=event.target;
+    const helper=(n,g)=>n?.localName==='rect'&&n.parentElement===g&&g.firstElementChild===n&&n.getAttribute('fill')==='transparent';
+    if(object?.type!=='text'||!helper(node,item)||typeof r.elementsFromPoint!=='function'||!Number.isFinite(event.clientX)||!Number.isFinite(event.clientY))return item;
+    const scene=item.closest('.scene'),view=scene?.ownerDocument?.defaultView;
+    if(!scene||!view?.getComputedStyle)return item;
+    const paint=value=>value&&value!=='none'&&value!=='transparent'&&!(/^(?:rgba|hsla)\(/.test(value)&&/,\s*0(?:\.0+)?\s*\)$/.test(value)||/\/\s*0(?:\.0+)?%?\s*\)$/.test(value));
+    try{
+      for(const hit of r.elementsFromPoint(event.clientX,event.clientY)){
+        const group=hit.closest?.('[data-object]');
+        if(!group||group.closest('.scene')!==scene||helper(hit,group)||['g','svg'].includes(hit.localName))continue;
+        const style=view.getComputedStyle(hit);
+        let visible=true;
+        for(let parent=hit;parent&&parent!==scene;parent=parent.parentElement){const s=view.getComputedStyle(parent);if(s.visibility==='hidden'||s.visibility==='collapse'||s.display==='none'||Number(s.opacity)===0){visible=false;break;}}
+        if(!visible)continue;
+        if(typeof hit.isPointInFill!=='function'||typeof hit.isPointInStroke!=='function')return item;
+        const matrix=hit.getScreenCTM();if(!matrix)continue;
+        const p=scene.createSVGPoint();p.x=event.clientX;p.y=event.clientY;
+        const local=p.matrixTransform(matrix.inverse());
+        if(!(paint(style.fill)&&Number(style.fillOpacity)>0&&hit.isPointInFill(local)||paint(style.stroke)&&Number(style.strokeOpacity)>0&&Number.parseFloat(style.strokeWidth)>0&&hit.isPointInStroke(local)))continue;
+        const candidate=el.state.objects.find(o=>o.id===group.dataset.object);
+        // The first actual painted object wins. Never tunnel through text,
+        // a locked motif or another painted object to a lower motif.
+        return candidate?.type==='motif'&&!candidate.uxLocked&&!candidate.uxHidden&&!candidate.locked&&!candidate.technicalLocked&&!candidate.acrylicFixed&&candidate.customerEditable!==false&&el.uxCanEdit?.(candidate,'move')!==false?group:item;
+      }
+    }catch{/* Unsupported SVG geometry/hit APIs keep the established text hit. */}
+    return item;
+  }
   const validPhotoGesture=prior=>prior.object.type!=='photoSlot'||el.state.designId===prior.old.designId&&selected()?.id===prior.object.id&&selected()?.uxUploadId===prior.object.uxUploadId&&!el.uxPhotoPositionActive?.(selected());
   function cancelPhotoGesture(prior){
     if(el.state.designId!==prior.old.designId)return;
@@ -73,7 +103,7 @@ export async function installRefinements(api){
   }
   for(const name of ['render','sync']){const original=el[name];el[name]=function(...args){if(resize?.object.type==='photoSlot'&&!validPhotoGesture(resize)){const prior=resize;resize=null;cancelPhotoGesture(prior);if(prior.target.hasPointerCapture(prior.id))prior.target.releasePointerCapture(prior.id);el.uxGuideGesture?.(false);}return original.apply(this,args);};}
   r.addEventListener('pointerdown',e=>{
-    const h=e.target.closest('[data-ux-handle]'),item=e.target.closest('.scene [data-object]');if((!h&&!item)||e.button!==0)return;
+    const h=e.target.closest('[data-ux-handle]'),nativeItem=e.target.closest('.scene [data-object]'),item=h?nativeItem:pointerObjectItem(e,nativeItem);if((!h&&!item)||e.button!==0)return;
     const o=item?el.state.objects.find(o=>o.id===item.dataset.object):selected();if(!o||o.uxLocked||o.uxHidden||o.acrylicFixed)return;
     if(o.type==='photoSlot'&&(o.locked||o.technicalLocked||o.customerEditable===false||el.uxCanEdit?.(o,h?.dataset.uxHandle==='scale'?'scale':'move')===false))return;
     if(h?.dataset.uxHandle==='rotate'&&el.uxCanRotate?.(o)===false)return;

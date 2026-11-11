@@ -1,5 +1,8 @@
 import {createCustomerDesignImages} from './customer-design-image.mjs';
 import {shopStartModel,isAllSizesFamily} from './shop-start-model.mjs';
+import {shopWarmManifest} from './shop-warm-manifest.mjs';
+import {createPublicDesignPreviewCache} from './public-design-preview-cache.mjs';
+import {createPublicDesignPreviews} from './public-design-previews.mjs';
 import fs from 'node:fs';
 import {createModelSlimmer,surfaceSwapsFrom,DEFAULT_SURFACE_DIR} from './shop-model-slim.mjs';
 import {createHash,randomBytes} from 'node:crypto';
@@ -8,6 +11,7 @@ import {isDeepStrictEqual} from 'node:util';
 import {createAppProxyVerifier} from './shopify-app-proxy.mjs';
 import {createShopEntrySessions} from './shop-entry-session.mjs';
 import {createShopDesignGallery} from './shop-design-gallery.mjs';
+import {withCustomerReadScope} from './customer-read-scope.mjs';
 import {shopGalleryModel} from './shop-gallery-model.mjs';
 import {queueGalleryPreview} from './shop-gallery-preview-queue.mjs';
 import {prepareAcrylicReview} from './acrylic-review.mjs';
@@ -15,6 +19,8 @@ import {customerVectorLogoPreview,VECTOR_LOGO_REQUEST_BYTES} from './customer-ve
 import {loadCartRevision,loadCartRevisionPhoto} from './cart-edit-revision.mjs';
 import {CART_CONFIG_ID,CART_LINE_ID} from './cart-configuration.mjs';
 import {PAUSED_MESSAGE} from './konfi-status.mjs';
+import {createModelResponseCache,modelResponseKey} from './customer-model-response-cache.mjs';
+import {createRevisionDerivationMemo} from './revision-derivation-memo.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
 import {moduleEnabled} from '../configurator/variant-m/module-profile.mjs';
 import {selectedProfile} from '../configurator/variant-m/contract.mjs';
@@ -27,7 +33,7 @@ import {selectedProfile} from '../configurator/variant-m/contract.mjs';
 // Warenkorb des vorhandenen Pfads (bound-test-cart → draft-cart-handoff). Keine Händleranmeldung,
 // Galerie nur nach Sitzungsprüfung im selben Datenbereich; keine Preise aus dem Browser, keine Fertigungsfreigabe.
 const API='/api/shop-entry/';
-const PAGE_FILES=['shop-entry-page.mjs','shop-entry-client.mjs','shop-design-switch.mjs','shop-selection-transfer.mjs'];
+const PAGE_FILES=['shop-entry-page.mjs','shop-entry-client.mjs','shop-design-switch.mjs','shop-selection-transfer.mjs','shop-warm.mjs'];
 const WARM_RUNTIME={'/_merchant-acryl-editor.html':['/_acryl-runtime/lazy/katalog-kern.json']};
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const gid=(value,kind)=>typeof value==='string'&&new RegExp('^gid://shopify/'+kind+'/[1-9][0-9]{0,19}$').test(value);
@@ -36,7 +42,15 @@ const optionKey=o=>JSON.stringify(Object.entries(o||{}).sort());
 const NOT_BOUND='Dieses Produkt ist noch nicht für den Konfigurator eingerichtet.';
 const ERROR_STATUSES=[400,401,403,404,405,409,413,415,422,423,429,502,503];
 const headersFor=(type,extra={})=>({'Content-Type':type,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer','X-Robots-Tag':'noindex, nofollow, noarchive',...extra});
-const json=(res,status,value)=>{const bytes=Buffer.from(JSON.stringify(value));res.writeHead(status,headersFor('application/json; charset=utf-8',{'Content-Length':bytes.length}));res.end(bytes);};
+const sendJson=(res,status,bytes)=>{res.writeHead(status,headersFor('application/json; charset=utf-8',{'Content-Length':bytes.length}));res.end(bytes);};
+const json=(res,status,value)=>sendJson(res,status,Buffer.from(JSON.stringify(value)));
+// Antwort mit bereits serialisiertem Modell: dieselben Bytes wie `json(res,200,{model,...rest})`, `model` als erstes Feld.
+const MODEL_MARK='@@gravuru-model-json@@';
+function modelBytes(modelJson,rest){
+ const text=JSON.stringify({model:MODEL_MARK,...rest}),mark='"'+MODEL_MARK+'"';
+ if(!text.startsWith('{"model":'+mark)||text.indexOf(mark,mark.length+9)!==-1)throw Error('Antwortaufbau ist nicht eindeutig.');
+ return Buffer.from('{"model":'+modelJson+text.slice(9+mark.length));
+}
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 // Die Kundenseite darf nur im eigenen Shop als Fenster über der Produktseite erscheinen (shop-embed.mjs).
 const pageCsp=shopDomain=>"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data: blob:; font-src 'self' data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors https://"+shopDomain;
@@ -59,7 +73,7 @@ function createWindowLimiter(perMinute,clock){
  return key=>{const minute=Math.floor(clock()/60000);if(windows.size>4096)windows.clear();const entry=windows.get(key);if(!entry||entry.minute!==minute){windows.set(key,{minute,count:1});return true;}entry.count++;return entry.count<=perMinute;};
 }
 
-export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,logger=event=>console.warn(JSON.stringify(event))}){
+export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=null,proxyPath,pagePath='/konfigurator/shop/',clock=Date.now,ttlMs,maxAgeSeconds=300,limits={},modelSlimmer,publicPreviewDirectory=null,publicPreviewPrepare=null,modelResponseCache=null,logger=event=>console.warn(JSON.stringify(event))}){
  let address;try{address=new URL(origin);}catch{}
  if(!address||address.origin!==origin||address.protocol!=='https:'||address.username||address.password||!/^[-a-z0-9]+\.myshopify\.com$/.test(shopDomain||'')||typeof secret!=='string'||secret.length<16||!Array.isArray(stores)||!stores.length||stores.length>8||
    typeof proxyPath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*$/.test(proxyPath)||typeof pagePath!=='string'||!/^\/[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_-]+)*\/$/.test(pagePath)||pagePath.startsWith('/api/')||proxyPath.startsWith('/api/')||proxyPath+'/'===pagePath)
@@ -67,6 +81,9 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  // Starts zählen jetzt auch das Vorladen beim Ansehen einer Produktseite (Konfigurator-Fenster).
  const limit={startPerMinute:600,requestsPerMinute:240,draftBytes:100*1024*1024,cartBytes:16*1024,concurrentReviews:2,maxContexts:1024,contextTtlMs:30*60*1000,...limits};
  for(const [key,value] of Object.entries(limit))if(!Number.isSafeInteger(value)||value<1)fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
+ // Antwortspeicher des Modells (Paket 1a): standardmäßig aus. `true` = Standardgrenzen, Objekt = eigene Grenzen (Tests).
+ if(modelResponseCache!==null&&modelResponseCache!==undefined&&modelResponseCache!==false&&modelResponseCache!==true&&(typeof modelResponseCache!=='object'||Array.isArray(modelResponseCache)||Object.keys(modelResponseCache).some(k=>!['maxEntries','maxBytes','maxModels'].includes(k))))fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');
+ let modelCache;try{modelCache=modelResponseCache===null||modelResponseCache===undefined||modelResponseCache===false?null:createModelResponseCache(modelResponseCache===true?{}:modelResponseCache);}catch{fail(503,'shop_entry_config','Der Konfigurator-Einstieg ist nicht eingerichtet.');}
  const ids=new Set(),fixed=stores.map(s=>{
   const w=s?.workshop;
   if(!s||!/^[-a-zA-Z0-9_]{1,100}$/.test(s.storeId||'')||ids.has(s.storeId)||typeof s.registry?.resolve!=='function'||typeof s.cart!=='function'||typeof w?.model!=='function'||!w.tenantId||w.sessionContext?.shopDomain!==shopDomain||
@@ -82,6 +99,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  // ausschließlich die iframe-Navigation, damit der Browser es nicht doppelt abruft.
  const warm=Object.fromEntries(fixed.map(s=>[s.storeId,WARM_RUNTIME[s.nativeEditorPath]||[]]));
  const pageHtml=Buffer.from(fs.readFileSync(ui('shop-entry.html'),'utf8').replaceAll('/konfigurator/shop/',pagePath).replace('<meta name="robots"','<meta name="gravuru-warm" content="'+esc(JSON.stringify(warm))+'">\n  <meta name="robots"')),pageFiles=new Map(PAGE_FILES.map(name=>[pagePath+name,fs.readFileSync(ui(name))]));
+ const warmPath=pagePath+'warm/',warmHtml=Buffer.from('<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><title>Konfigurator vorbereiten</title></head><body><script type="module" src="'+esc(pagePath)+'shop-warm.mjs"></script></body></html>');
  const cartContexts=new Map(),reviewJobs=new Set(),assetIndex=new Map();
  const startPath=proxyPath+'/start';
  const PAGE_CSP=pageCsp(shopDomain);
@@ -90,47 +108,73 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  const themeFiles=new Map(['theme-cart-ui.mjs','theme-cart-client.mjs','shop-embed.mjs'].map(name=>[proxyPath+'/'+name,name==='shop-embed.mjs'?Buffer.from(fs.readFileSync(ui(name),'utf8').replaceAll('__EDITOR_ORIGIN__',origin).replaceAll('__PROXY_PATH__',proxyPath)):fs.readFileSync(ui(name))]));
  const themeTransfers=new Map(),themePath=proxyPath+'/cart';
 
+ // Paket 1a-2: nur mit Antwortspeicher, je Store getrennt – gemerkte Prüfsummen unveränderlicher Revisionen (revision-derivation-memo.mjs).
+ const derivationMemos=new Map();
+ const memoOptions=store=>{if(!modelCache)return undefined;let documentMemo=derivationMemos.get(store.storeId);if(!documentMemo){documentMemo=createRevisionDerivationMemo();derivationMemos.set(store.storeId,documentMemo);}return {documentMemo};};
  function resolve(identity){
   if(!gid(identity.shopifyProductId,'Product')||!gid(identity.shopifyVariantId,'ProductVariant'))fail(422,'shop_entry_ids','Eine eindeutige Shopify-Produkt- und Varianten-ID ist erforderlich.');
   const matches=[];
   for(const store of fixed){
-   let binding;try{binding=store.registry.resolve(identity);}catch(error){if(error.code==='shop_binding_active_not_found'&&error.status===404)continue;throw error;}
+   let binding;try{binding=store.registry.resolve(identity,memoOptions(store));}catch(error){if(error.code==='shop_binding_active_not_found'&&error.status===404)continue;throw error;}
    if(!binding||binding.storeId!==store.storeId||binding.shopDomain!==shopDomain||binding.tenantId!==store.workshop.tenantId||binding.shopifyProductId!==identity.shopifyProductId||binding.shopifyVariantId!==identity.shopifyVariantId)fail(409,'shop_entry_scope','Die Produktzuordnung passt nicht zum privaten Datenbereich.');
    matches.push({store,binding:structuredClone(binding)});
   }
   if(matches.length!==1)fail(matches.length?409:404,matches.length?'shop_entry_duplicate':'shop_entry_not_bound',matches.length?'Diese Variante ist mehreren Datenbereichen zugeordnet.':NOT_BOUND);
   return matches[0];
  }
- function requireDoorbellApproval(store,binding,config){
-  const saved=config??store.workshop.repository.get(binding.productId,{revision:binding.productRevision}).document?.config;
-  if(saved?.familyFormats?.source?.shopProduct){
-   const approved=store.catalogLiveOrders===true&&store.workshop.orderIntake.catalogLiveApproval?.({shopDomain,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId,productId:binding.productId,productRevision:binding.productRevision});
+ // Welche Freigabe ein Produktstand braucht: Katalog, Funkklingel oder keine. Nur die ART wird abgeleitet; ob die Freigabe
+ // gilt, wird bei jeder Anfrage frisch gelesen (requireApproval) und nie gemerkt.
+ function approvalKind(saved){
+  if(saved?.familyFormats?.source?.shopProduct)return 'catalog';
+  return isLayeredDoorbell(saved)?'doorbell':null;
+ }
+ function requireApproval(store,binding,kind){
+  if(kind==='catalog'){
+   const approved=store.catalogLiveOrders===true&&store.workshop.orderIntake.catalogLiveApproval?.({shopDomain,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId,productId:binding.productId,productRevision:binding.productRevision},memoOptions(store));
    if(!approved)fail(404,'shop_entry_catalog_release',NOT_BOUND);
    return;
   }
-  if(!isLayeredDoorbell(saved))return;
+  if(kind!=='doorbell')return;
   const approved=store.doorbellLiveOrders===true&&typeof store.workshop.orderIntake.doorbellLiveApproval==='function'&&store.workshop.orderIntake.doorbellLiveApproval({shopDomain,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId,productId:binding.productId,productRevision:binding.productRevision});
   if(!approved||typeof approved.id!=='string'||!approved.id)fail(404,'shop_entry_doorbell_unapproved',NOT_BOUND);
+ }
+ function requireDoorbellApproval(store,binding,config){
+  const saved=config??store.workshop.repository.get(binding.productId,{revision:binding.productRevision}).document?.config;
+  requireApproval(store,binding,approvalKind(saved));
  }
  function modelFor(store,binding){
   let model;
   try{model=store.workshop.model(binding.productId,binding.productRevision);}
   catch(error){if(error.status===423)fail(423,'konfi_paused',PAUSED_MESSAGE);throw error;}
+  return checkedModel(store,binding,model);
+ }
+ // Prüfungen nach dem Modellaufbau (Zuordnung, Art, Freigabe); auch für ein gehaltenes Modell eines Speichertreffers.
+ function checkedModel(store,binding,model){
   if(!model||model.configuration?.id!==binding.productId||model.configuration?.revision!==binding.productRevision||!['form','acryl'].includes(model.key))fail(409,'shop_entry_model','Das Modell gehört nicht zur festen Produktzuordnung.');
   // Der Formeditor hat eigene Kundenrouten (customer-drafts); er ist im öffentlichen Einstieg noch nicht angebunden.
   if(model.key!=='acryl'||!model.universal)fail(404,'shop_entry_form_pending',NOT_BOUND);
   requireDoorbellApproval(store,binding,model.universal);
   return model;
  }
+ // Wie modelFor für das gehaltene Modell eines Treffers: Pause (423) und alle Prüfungen von checkedModel; nur der Neuaufbau entfällt.
+ function heldModelFor(store,binding,model){
+  if(store.workshop.konfis.paused(binding.productId))fail(423,'konfi_paused',PAUSED_MESSAGE);
+  return checkedModel(store,binding,model);
+ }
  // Sitzung prüfen und die Zuordnung erneut auflösen: eine zwischenzeitlich geänderte aktive Zuordnung
  // oder ein anderer Store beenden die Sitzung (wie `active()` im Händlertest-Gateway).
  function active(req){
+  const context=activeContext(req);
+  requireDoorbellApproval(context.store,context.binding);
+  return context;
+ }
+ // Sitzung, Anfragebegrenzung und frische Zuordnung ohne Freigabeprüfung (der Modellzweig prüft sie selbst, siehe dort).
+ function activeContext(req){
   const session=sessions.verify(req.headers['x-gravuru-shop-session']);
   if(!requestLimiter(session.sid))fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
   const store=fixed.find(s=>s.storeId===session.storeId);if(!store)fail(409,'shop_entry_changed','Die Produktzuordnung wurde geändert. Bitte die Produktseite neu öffnen.');
   const current=resolve({shopifyProductId:session.shopifyProductId,shopifyVariantId:session.shopifyVariantId});
   if(current.store!==store||current.binding.productId!==session.productId||current.binding.productRevision!==session.productRevision||current.binding.bindingId!==session.bindingId||current.binding.assignmentRevision!==session.assignmentRevision)fail(409,'shop_entry_changed','Die Produktzuordnung wurde geändert. Bitte die Produktseite neu öffnen.');
-  requireDoorbellApproval(store,current.binding);
   return {session,store,binding:current.binding};
  }
  // Nur Ressourcen, die das Modell dieses Produktstands selbst nennt (Motivgrafiken, Fotomasken, Beispielfotos).
@@ -166,6 +210,50 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   return copy;
  }
  function publicBinding(binding){return {shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId,productId:binding.productId,productRevision:binding.productRevision,options:structuredClone(binding.options||{})};}
+ // Startvorschau des Modellzweigs. Das Ziel-Token ist an die Sitzung gebunden (sid) und wird deshalb bei JEDER Anfrage neu
+ // ausgestellt; der Antwortspeicher hält dafür das Servermodell, nicht das Token. `threw`: der Aufbau schlug fehl (nicht speichern).
+ function startPreviewFor(context,model,designId,cardModel=null,held=false){
+  let startPreview=null,threw=false;
+  try{let at=performance.now();startPreview=designGallery.start(context,model,designId,cardModel?{cardModel}:undefined);at=lap('msStartGallery',at);if(publicPreviews&&startPreview){const {previewUrl:oldPublicUrl,...privateStart}=startPreview;const prepared=publicPreviews.attach({items:[{...publicBinding(context.binding),designId,...privateStart}]},held?{modelFor:(store,binding)=>heldModelFor(store,binding,model)}:null).items[0];startPreview={...privateStart,...(prepared.previewUrl?{previewUrl:prepared.previewUrl}:{})};lap('msStartPublic',at);}}catch{/* Products without a gallery still open normally. */threw=true;}
+  return {startPreview,threw};
+ }
+ const modelRest=(context,startPreview)=>({startPreview,binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false});
+ // Antwortspeicher: nur für Stores, die den Stand des einen Produkts (revisionState), den Datenbankstand (readEpoch, nur für
+ // „während des Aufbaus wurde geschrieben“) und die Pause lesend nachweisen können (sonst wie bisher ohne Speicher).
+ function cacheCapable(store){
+  if(!modelCache)return false;
+  const w=store.workshop;
+  return typeof w.repository?.revisionState==='function'&&typeof w.repository?.readEpoch==='function'&&typeof w.konfis?.paused==='function';
+ }
+ // Stand des einen Produkts, bei jeder Anfrage frisch gelesen (ohne Dokument). Jeder Fehler (fehlendes Produkt, fremder Mandant,
+ // fehlende Revision, Schreibvorgang während des Lesens) heißt: nicht aus dem Speicher – der bisherige Weg wirft dann den Fehler.
+ function productState(store,binding){
+  if(!cacheCapable(store))return null;
+  try{return JSON.stringify(store.workshop.repository.revisionState(binding.productId,{revision:binding.productRevision}));}catch{return null;}
+ }
+ // Nur für „wurde während des Aufbaus geschrieben?“ (Schreibvorgänge in der ganzen Datei, auch fremde Verbindungen).
+ function writeEpoch(store){
+  try{const epoch=store.workshop.repository.readEpoch();return typeof epoch==='string'?epoch:null;}catch{return null;}
+ }
+ // Zähler über den vorhandenen logger: höchstens eine Zeile je Minute, nur Zahlen (keine Kunden-, Sitzungs- oder Produktdaten).
+ let counterMinute=Math.floor(clock()/60000);
+ // Abschnittszeiten des Modellabrufs (Paket 1a-2, nur Messung): Summen in Millisekunden seit der letzten Protokollzeile.
+ // context: Sitzung/Zuordnung, state: Produktstand+Speicher, checks: Freigabe/Pause, startGallery/startPublic: Startvorschau,
+ // send: Antwort schreiben (nur Treffer), build: gesamter Weg ohne Treffer ab dem Speicherblick.
+ const phases={timed:0,msContext:0,msState:0,msChecks:0,msStartGallery:0,msStartPublic:0,msSend:0,msBuild:0};
+ const lap=(name,since)=>{const now=performance.now();phases[name]+=now-since;return now;};
+ function takePhases(){const out=Object.fromEntries(Object.entries(phases).map(([k,v])=>[k,Math.round(v)]));for(const k of Object.keys(phases))phases[k]=0;return out;}
+ function reportCache(){
+  if(!modelCache)return;
+  const minute=Math.floor(clock()/60000);if(minute===counterMinute)return;
+  counterMinute=minute;
+  const counts=modelCache.takeCounts();
+  if(counts.hits+counts.misses+counts.stores+counts.invalidations+counts.evictions===0)return;
+  try{logger({event:'model_response_cache',...counts,...(({entries,bytes,models})=>({entries,bytes,models}))(modelCache.stats()),...takePhases()});}catch{/* Protokoll ist nie Teil der Antwort. */}
+ }
+ // Ausgelagerte Schriften müssen weiter abrufbar sein, wenn die Antwort aus dem Speicher kommt (sonst: neu aufbauen).
+ const fontsAvailable=entry=>entry.fontHashes.every(hash=>typeof slimmer?.fontFile==='function'&&slimmer.fontFile(hash)!==null);
+ const lazyFontHashes=model=>(model.universal?.localResources?.lazyFonts||[]).map(f=>String(f?.url||'').split('/').at(-1).replace(/\.json$/,''));
  function cardFor(store,binding){
   // The separately installed legacy runtime has no galleryModel method yet.
   // Its fixed document can use the same lightweight projection, never model().
@@ -197,6 +285,12 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   return allowed;
  }
  const designGallery=createShopDesignGallery({secret,resolve,modelFor,cardFor,allowedAssets,checkBinding:checkGalleryBinding,checkBindings:checkGalleryBindings,onMeasure:logger,previewUrl:hash=>pagePath+'vorschauen/'+hash+'.svg'});
+ const renderPublicTemplate=(context,designId)=>{const fresh=createShopDesignGallery({secret,resolve,modelFor,cardFor,allowedAssets,checkBinding:checkGalleryBinding});const start=fresh.start(context,context.model,designId);return fresh.preview(context,start.target);};
+ const publicPreviews=publicPreviewDirectory===null?null:createPublicDesignPreviews({cache:createPublicDesignPreviewCache({directory:publicPreviewDirectory,secret}),resolve,modelFor,modelForRead:(store,binding)=>typeof store.workshop.publicPreviewModel==='function'?store.workshop.publicPreviewModel(binding.productId,binding.productRevision):null,checkBinding:checkGalleryBinding,gallery:designGallery,renderTemplate:renderPublicTemplate,previewUrl:hash=>pagePath+'vorschauen/'+hash+'.svg'});
+ const preparePublicDesignPreviews=ids=>{if(!publicPreviews)throw Error('Öffentlicher Vorschauspeicher ist nicht eingeschaltet.');return publicPreviews.prepare(ids);};
+ if(publicPreviewPrepare!==null&&(!publicPreviews||!publicPreviewPrepare||Object.keys(publicPreviewPrepare).length!==2||!gid(publicPreviewPrepare.shopifyProductId,'Product')||!gid(publicPreviewPrepare.shopifyVariantId,'ProductVariant')))fail(503,'public_preview_config','Vorbereitung benötigt genau ein festes Produkt und eine feste Variante.');
+ // Explicit server startup preparation, never a customer HTTP write endpoint.
+ const publicPreviewPreparation=publicPreviewPrepare===null?null:new Promise(done=>setImmediate(done)).then(()=>preparePublicDesignPreviews(publicPreviewPrepare)).then(result=>{logger({event:'public_preview_prepared',prepared:result.prepared,bytes:result.items.reduce((n,item)=>n+item.bytes,0)});return result;},error=>{logger({event:'public_preview_prepare_failed',code:error.code||'public_preview_prepare'});return {prepared:0,error:error.code||'public_preview_prepare'};});
  // Warm each configured store after startup without creating a customer session.
  // A transient failure is retried on the next gallery request, never unhandled.
  for(const store of fixed)if(typeof store.registry.listActiveForGallery==='function'){
@@ -221,16 +315,22 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   // Startkarte (`format=json`, Vorabruf der Produktseite) zählt getrennt: Seitenaufrufe sperren keine echten Starts.
   if(!startLimiter(input.ticket?'ticket':'start'))fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
   const {store,binding}=resolve({shopifyProductId:input.shopifyProductId,shopifyVariantId:input.shopifyVariantId});
-  modelFor(store,binding);
+  const startModel=modelFor(store,binding);
+  // Presentation is cosmetic and comes from this checked, fixed product revision.
+  const presentation=startModel.universal.customerUI?.presentation==='prio-r15'?'prio-r15':input.presentation;
   const issued=sessions.issue(binding,{customerId:proxy.customerId});
   const fragment=new URLSearchParams({s:issued.token});
   if(input.config){fragment.set('config',input.config);fragment.set('rev',input.rev);if(input.line)fragment.set('line',input.line);}
   if(input.back)fragment.set('back',input.back);
-  if(input.presentation)fragment.set('ui',input.presentation);
+  if(presentation)fragment.set('ui',presentation);
   if(input.embed){fragment.set('embed','1');if(input.leiste)fragment.set('leiste',input.leiste);}
   const target=origin+pagePath+'#'+fragment.toString();
   // Startkarte: dieselbe Zieladresse als JSON; die Produktseite öffnet beim Klick direkt den Konfigurator-Host.
-  if(input.ticket)return json(res,200,{url:target,expiresAt:issued.expiresAt});
+  if(input.ticket){
+   let assets=null;
+   if(!input.config)try{assets=shopWarmManifest(presentedModel(startModel,binding,store).universal,{editorPath:store.nativeEditorPath,pagePath,previews:publicPreviews?.urls(binding)});}catch{/* Warming is optional; the actual start remains authoritative. */}
+   return json(res,200,{url:target,expiresAt:issued.expiresAt,...(assets?{warm:{url:origin+warmPath,manifest:assets}}:{})});
+  }
   // Shopify reicht die Weiterleitung an den Browser durch; Meta-Refresh und Verweis sind der Rückfall.
   const html=Buffer.from(simplePage('Konfigurator wird geöffnet …','Einen Moment – der Konfigurator wird geöffnet.',{link:target}));
   res.writeHead(302,headersFor('text/html; charset=utf-8',{Location:target,'Content-Length':html.length}));res.end(html);
@@ -356,9 +456,14 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   if(site!==undefined&&site!=='same-origin')fail(403,'shop_entry_origin','Diese Anfrage ist nicht zulässig.');
  }
  return Object.freeze({
-  pagePath,startPath,
-  matches:pathname=>customerImages.matches(pathname)||fontRoute.test(pathname)||previewRoute.test(pathname)||pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pageFiles.has(pathname)||pathname.startsWith(API),
-  async handle(req,res,url){
+  pagePath,startPath,preparePublicDesignPreviews,publicPreviewPreparation,
+  matches:pathname=>customerImages.matches(pathname)||fontRoute.test(pathname)||previewRoute.test(pathname)||pathname===themePath||pathname===themePath+'/data'||pathname===themePath+'/claim'||themeFiles.has(pathname)||pathname===startPath||pathname===pagePath||pathname===warmPath||pageFiles.has(pathname)||pathname.startsWith(API),
+  handle(req,res,url){
+   const read=url.pathname===startPath||previewRoute.test(url.pathname)||['model','design-gallery','design-gallery-preview'].some(action=>url.pathname===API+action);
+   return read?withCustomerReadScope(()=>handle(req,res,url)):handle(req,res,url);
+  }
+ });
+ async function handle(req,res,url){
    try{
     if(req.headers.host!==address.host||req.headers['x-forwarded-proto']!=='https')fail(403,'shop_entry_host','Diese Anfrage ist nicht zulässig.');
     if(customerImages.matches(url.pathname)){
@@ -369,7 +474,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     const templatePreview=pathname.match(previewRoute);
     if(templatePreview){
      if(!['GET','HEAD'].includes(req.method)||url.search)fail(404,'shop_entry_route','Diese Vorschau gibt es hier nicht.');
-     checkOrigin(req,{mutating:false});const bytes=designGallery.previewFile(templatePreview[1]);
+     checkOrigin(req,{mutating:false});const bytes=publicPreviews?publicPreviews.read(templatePreview[1]):designGallery.previewFile(templatePreview[1]);
      if(!bytes)fail(404,'shop_entry_route','Diese Vorschau gibt es hier nicht.');
      res.writeHead(200,headersFor('image/svg+xml',{'Content-Length':bytes.length,'Cache-Control':'public, max-age=31536000, immutable','Content-Security-Policy':"default-src 'none'; img-src data:; style-src 'unsafe-inline'; sandbox"}));return res.end(req.method==='HEAD'?undefined:bytes);
     }
@@ -384,12 +489,12 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      if(!bytes)fail(404,'shop_entry_route','Diese Datei gibt es hier nicht.');
      res.writeHead(200,headersFor('application/json; charset=utf-8',{'Content-Length':bytes.length,'Cache-Control':'public, max-age=31536000, immutable'}));return res.end(req.method==='HEAD'?undefined:bytes);
     }
-    if(pathname===pagePath||pageFiles.has(pathname)){
+    if(pathname===pagePath||pathname===warmPath||pageFiles.has(pathname)){
      if(!['GET','HEAD'].includes(req.method))fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
      if(url.search)fail(404,'shop_entry_route','Diese Seite gibt es hier nicht.');
      const script=pageFiles.has(pathname);
      if(script)checkOrigin(req,{mutating:false});
-     const bytes=script?pageFiles.get(pathname):pageHtml;
+     const bytes=script?pageFiles.get(pathname):pathname===warmPath?warmHtml:pageHtml;
      res.writeHead(200,headersFor(script?'text/javascript; charset=utf-8':'text/html; charset=utf-8',{'Content-Length':bytes.length,'Content-Security-Policy':PAGE_CSP}));return res.end(req.method==='HEAD'?undefined:bytes);
     }
     const action=pathname.slice(API.length);
@@ -398,13 +503,47 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
      if([...url.searchParams.keys()].some(k=>k!=='design')||url.searchParams.getAll('design').length>1||(url.searchParams.has('design')&&(!url.searchParams.get('design')||url.searchParams.get('design').length>200)))fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');
      checkOrigin(req,{mutating:false});
-     const context=active(req),model=modelFor(context.store,context.binding);
+     const designParam=url.searchParams.get('design');
+     let at=performance.now();const context=activeContext(req);at=lap('msContext',at);phases.timed++;const state=productState(context.store,context.binding);
+     // Zustand des Verschlankers (4.5): bereit/nicht bereit, Teil des Schlüssels.
+     const slimState=slimmer?(slimmer.ready()?'ready':'cold'):'none';
+     const key=state===null?null:modelResponseKey({storeId:context.store.storeId,productId:context.binding.productId,productRevision:context.binding.productRevision,bindingId:context.binding.bindingId,assignmentRevision:context.binding.assignmentRevision,unitCents:context.binding.unitCents,options:context.binding.options,designId:designParam,slimState});
+     const hit=key===null?null:modelCache.get(context.store.storeId,key,state);
+     reportCache();at=lap('msState',at);
+     if(hit&&fontsAvailable(hit)){
+      // Treffer: alles, was an Sitzung, Zuordnung, Pause und Freigabe hängt, wird jetzt frisch geprüft – in derselben Reihenfolge
+      // und mit denselben Fehlern wie auf dem bisherigen Weg (active → modelFor → Freigabe des Modells).
+      requireApproval(context.store,context.binding,hit.activeKind);
+      if(context.store.workshop.konfis.paused(context.binding.productId))fail(423,'konfi_paused',PAUSED_MESSAGE);
+      requireApproval(context.store,context.binding,hit.modelKind);at=lap('msChecks',at);
+      const {startPreview}=startPreviewFor(context,hit.held.model,hit.startDesignId,hit.held.cardModel,true);
+      at=performance.now();const sent=sendJson(res,200,modelBytes(hit.json,modelRest(context,startPreview)));lap('msSend',at);return sent;
+     }
+     if(hit)modelCache.unusable();
+     const epoch=key===null?null:writeEpoch(context.store);
+     requireDoorbellApproval(context.store,context.binding);
+     const model=modelFor(context.store,context.binding);
      allowedAssets(context.store,context.binding,model);
-     const presented=presentedModel(model,context.binding,context.store,url.searchParams.get('design'));
+     const presented=presentedModel(model,context.binding,context.store,designParam);
      const designId=presented.universal.profile.defaultDesignId||presented.universal.profile.designs[0]?.id;
-     let startPreview=null;
-     try{startPreview=designGallery.start(context,model,designId);}catch{/* Products without a gallery still open normally. */}
-     return json(res,200,{model:presented,startPreview,binding:publicBinding(context.binding),editorPath:context.store.nativeEditorPath,shopDomain,themeCartPath:themePath,expiresAt:context.session.expiresAt,customerId:context.session.customerId,productionReady:false});
+     if(key===null||epoch===null){
+      const {startPreview}=startPreviewFor(context,model,designId);
+      lap('msBuild',at);return json(res,200,{model:presented,...modelRest(context,startPreview)});
+     }
+     // Ohne Treffer: heutiger Weg; danach ablegen, wenn nichts dagegen spricht.
+     // Wie designGallery.start: nur mit eingeschalteter Designauswahl wird das Kartenmodell gebraucht.
+     let cardModel=null,cardFailed=false;
+     if(moduleEnabled(model.universal,'designs')){try{cardModel=cardFor(context.store,context.binding);}catch{cardFailed=true;}}
+     const {startPreview,threw}=startPreviewFor(context,model,designId,cardModel);
+     const modelJson=JSON.stringify(presented),bytes=modelBytes(modelJson,modelRest(context,startPreview));
+     // Nicht speichern: Fehler beim Aufbau der Startvorschau, Funkklingel bei nicht bereitem Verschlanker, Schreibvorgang während des Aufbaus.
+     if(!threw&&!cardFailed&&!(slimmer&&model.universal.doorbell&&slimState!=='ready')&&(!slimmer||slimmer.ready()===(slimState==='ready'))&&writeEpoch(context.store)===epoch&&productState(context.store,context.binding)===state){
+      const holderKey=JSON.stringify([context.store.storeId,context.binding.productId,context.binding.productRevision]);
+      const held=modelCache.heldFor(context.store.storeId,holderKey,state)||{holderKey,model,cardModel};
+      let activeKind;try{activeKind=approvalKind(context.store.workshop.repository.get(context.binding.productId,{revision:context.binding.productRevision}).document?.config);}catch{activeKind=undefined;}
+      if(activeKind!==undefined)modelCache.set(context.store.storeId,key,state,{json:modelJson,activeKind,modelKind:approvalKind(model.universal),startDesignId:designId,fontHashes:lazyFontHashes(presented),held});
+     }
+     lap('msBuild',at);return sendJson(res,200,bytes);
     }
     if(action==='design-gallery'){
      if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
@@ -412,8 +551,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      checkOrigin(req,{mutating:false});const context=active(req),sourceModel=cardFor(context.store,context.binding);checkGalleryBinding(context.store,context.binding,sourceModel);
      // Türschild-Konfi: aktuelle Ausführung aus dem Konfi (Form & Größe, Farbe, Befestigung); nur dort ausgewertet.
      const chosen=GALLERY_OPTIONS.filter(k=>url.searchParams.has(k)),options=chosen.length&&isAllSizesFamily(sourceModel.universal)?Object.fromEntries(chosen.map(k=>[k,url.searchParams.get(k)])):null;
-     const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0),theme:url.searchParams.get('theme')||'preferred',sourceModel,options,q:url.searchParams.get('q')||''});active(req);
-     return json(res,200,result);
+     const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0),theme:url.searchParams.get('theme')||'preferred',sourceModel,options,q:url.searchParams.get('q')||''});
+     return withCustomerReadScope(()=>{active(req);return json(res,200,publicPreviews?publicPreviews.attach(result):result);});
     }
     if(action==='customer-vector-logo/preview'){
      if(req.method!=='POST')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
@@ -429,7 +568,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      checkOrigin(req,{mutating:true});const context=active(req),input=await body(req,8192);
      modelFor(context.store,context.binding);
      if(Object.keys(input).length!==1||typeof input.target!=='string')fail(422,'shop_gallery_fields','Bitte ein Design aus der Auswahl wählen.');
-     const bytes=await queueGalleryPreview(()=>{if(req.aborted||res.destroyed)fail(409,'shop_gallery_cancelled','Vorschau abgebrochen.');const current=active(req);return Buffer.from(designGallery.preview(current,input.target));});
+     const bytes=await queueGalleryPreview(()=>withCustomerReadScope(()=>{if(req.aborted||res.destroyed)fail(409,'shop_gallery_cancelled','Vorschau abgebrochen.');const current=active(req);return Buffer.from(designGallery.preview(current,input.target));}));
      res.writeHead(200,headersFor('image/svg+xml',{'Content-Length':bytes.length,'Content-Security-Policy':"default-src 'none'; img-src data:; style-src 'unsafe-inline'; sandbox"}));return res.end(bytes);
     }
     if(action==='design-switch'){
@@ -488,5 +627,4 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     json(res,status,{error:{code,message},productionReady:false});
    }
   }
- });
 }

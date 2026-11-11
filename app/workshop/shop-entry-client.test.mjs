@@ -290,6 +290,11 @@ test('start ticket: fetched once per start address through the proxy, only edito
  answer=()=>({ok:false,json:async()=>({})});const failing=key+'&f=1',before=calls.length;
  await tickets.load(failing);await tickets.load(failing);await tickets.load(failing);assert.equal(calls.length,before+1);
  time+=61*1000;answer=()=>({ok:true,json:async()=>({url:'https://app.example/y',expiresAt:new Date(time+4*3600e3).toISOString()})});assert.equal(await tickets.load(failing),'https://app.example/y');assert.equal(calls.length,before+2);
+ const warmManifest={schema:'gravuru-shop-warm/v1',fonts:[],motifs:[]};
+ for(const [warmURL,expected] of [['https://app.example/konfigurator/shop/warm/',true],['https://evil.example/konfigurator/shop/warm/',false],['https://user:password@app.example/konfigurator/shop/warm/',false],['https://app.example/konfigurator/shop/warm/?x=1',false]]){
+  const warmKey=key+'&warm='+encodeURIComponent(warmURL);answer=()=>({ok:true,json:async()=>({url:'https://app.example/y',expiresAt:new Date(time+4*3600e3).toISOString(),warm:{url:warmURL,manifest:warmManifest}})});
+  await tickets.load(warmKey);assert.equal(!!tickets.warm(warmKey),expected);
+ }
  assert.equal(await tickets.load(null),null);
 });
 
@@ -354,4 +359,14 @@ test('design search query is encoded separately from fixed options and preserves
  const calls=[],client=createShopEntryClient({token,fetchImpl:async(url,options)=>{calls.push({url,options});return Response.json({items:[],total:0,nextPage:null});}});
  await client.loadDesignGallery(0,'preferred',{size:'fixed'},'Haus & Familie');const url=new URL(calls[0].url,'http://localhost');assert.equal(url.searchParams.get('q'),'Haus & Familie');assert.equal(url.searchParams.get('size'),'fixed');assert.equal(calls[0].options.headers['X-Gravuru-Shop-Session'],token);
  for(const q of ['x'.repeat(81),'a\nb',{}])await assert.rejects(client.loadDesignGallery(0,'preferred',null,q));assert.equal(calls.length,1);
+});
+
+test('preview cancellation reaches public and private fetches; cancellation prevents fallback requests',async()=>{
+ const url='/konfigurator/shop/vorschauen/'+'a'.repeat(64)+'.svg',controller=new AbortController(),calls=[];
+ const client=createShopEntryClient({token,fetchImpl:async(path,options)=>{calls.push({path,options});if(path===url){controller.abort();return new Response('',{status:404});}return new Response('<svg/>');}});
+ await assert.rejects(client.loadDesignPreview('signed-choice',url,controller.signal),{name:'AbortError'});
+ assert.equal(calls.length,1);assert.equal(calls[0].options.signal,controller.signal);assert.equal(calls[0].options.headers,undefined);
+ await assert.rejects(client.loadDesignPreview('signed-choice',undefined,controller.signal),{name:'AbortError'});assert.equal(calls.length,1);
+ const fresh=new AbortController();assert.equal(await (await client.loadDesignPreview('signed-choice',undefined,fresh.signal)).text(),'<svg/>');
+ assert.equal(calls[1].options.signal,fresh.signal);assert.equal(calls[1].options.headers['X-Gravuru-Shop-Session'],token);
 });

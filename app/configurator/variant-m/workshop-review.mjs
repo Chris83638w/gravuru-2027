@@ -1,5 +1,6 @@
 import {cleanObject} from './contract.mjs';
 import {isFamilyFormats} from './family-formats.mjs';
+import {isScalableSizes} from './scalable-sizes.mjs';
 import {printArtwork} from './print-export.mjs';
 import {createAcrylicDraftClient} from './acrylic-draft-client.mjs';
 import {installShopCart} from './shop-cart.mjs';
@@ -17,7 +18,8 @@ export function installWorkshopReview(api,footer){
  const request=window.parent.GravuruMerchantRequest||fetch;
  const testGate=window.parent.GravuruConfiguratorTest;
  const universalTest=()=>typeof testGate?.submitCart==='function'&&testGate.productId===binding.productId&&testGate.productRevision===binding.productRevision;
- if(!binding||(!api.config?.acrylic&&!api.config?.doorbell&&!api.config?.familyAcrylic&&!isFamilyFormats(api.config)&&!['slate','steel'].includes(api.config?.profile?.material?.kind)))return;
+ const scalableAcrylic=isScalableSizes(api.config)&&api.config.profile?.material?.kind==='acrylic'&&api.config.profile?.processing?.profileId==='color-print';
+ if(!binding||(!scalableAcrylic&&!api.config?.acrylic&&!api.config?.doorbell&&!api.config?.familyAcrylic&&!isFamilyFormats(api.config)&&!['slate','steel'].includes(api.config?.profile?.material?.kind)))return;
  // Öffentlicher Shop-Einstieg (SHOP-ENTRY.txt): Kunden sehen „In den Warenkorb“ statt der Werkstatt-/Testknöpfe.
  if(window.parent.GravuruShopEntry)return void installShopCart(api,footer,window.parent.GravuruShopEntry);
  const button=document.createElement('button'),status=document.createElement('p'),link=document.createElement('a');

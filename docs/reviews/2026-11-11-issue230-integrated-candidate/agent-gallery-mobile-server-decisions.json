@@ -1,0 +1,119 @@
+{
+  "schema": "issue230-gallery-mobile-server-decisions/v1",
+  "serverBackupCommit": "0d6d23d9",
+  "serverInput": "work/restabschluss/server19-input",
+  "candidate": "work/issue230-integration-candidate",
+  "serverMutations": 0,
+  "originalDesignMutations": 0,
+  "planMutations": 0,
+  "records": [
+    {
+      "file": "app/workshop/design-targets.mjs",
+      "currentFileSha256": "2c6e7e5dce1eba2e5ab9ca2d281e12481c1f3c305d3e88d0ba3cfe12c1cb0eaf",
+      "currentLfSha256": "2c6e7e5dce1eba2e5ab9ca2d281e12481c1f3c305d3e88d0ba3cfe12c1cb0eaf",
+      "serverFileSha256": "cf778d17754debf1f868acac0dff70e3d3f10ff4bdbf816e08f0e6832695d202",
+      "gitBlobIds": {
+        "0e200d8": "f9b4dd6abe9ee70baac2fdfe1f40590f6f8fe964",
+        "ac10e6c": "f9b4dd6abe9ee70baac2fdfe1f40590f6f8fe964"
+      },
+      "decision": "retain-field-based-minimum-area-check",
+      "delta": "Server removes only the existing minimum-area guard; no targeted 27-design exception.",
+      "evidence": [
+        "ENTSCHEIDUNGEN.md §5.5, §5.27",
+        "DESIGN-MASTER.md:53",
+        "small-design-compatibility.json: 243 actual v9 design/size/color cases, 0 rejected, no minimum field on these 27 designs per product"
+      ]
+    },
+    {
+      "file": "app/workshop/design-target-rules.mjs",
+      "currentFileSha256": "de984c550cdb52acd359df570827e9b7f67595d46117628094a888b4cffb3572",
+      "currentLfSha256": "de984c550cdb52acd359df570827e9b7f67595d46117628094a888b4cffb3572",
+      "serverFileSha256": "21d03fb82245f0afc6cfac06d9380720a2e9c7d8b7c839a0657b183b1992c3fb",
+      "gitBlobIds": {
+        "0e200d8": "8548a8f3d6561e9563d5961d962f9e5292bca547",
+        "ac10e6c": "8548a8f3d6561e9563d5961d962f9e5292bca547"
+      },
+      "decision": "retain-catalog-0.3mm-and-post-placement-hole-hints",
+      "delta": "Server reverts workshop stroke threshold to 0.5 mm and removes post-placement hole-warning filtering.",
+      "evidence": [
+        "ENTSCHEIDUNGEN.md §5.8 / R17: catalog workshop 0.3 mm",
+        "ENTSCHEIDUNGEN.md §3.42: customer SVG-logo warning remains 0.5 mm",
+        "ENTSCHEIDUNGEN.md §3.40 and DESIGN-MASTER.md:58: native mounting avoidance",
+        "design-target-rules.test.mjs: 0.29 warns, 0.3 passes; unresolved/locked text still warns"
+      ]
+    },
+    {
+      "file": "app/workshop/katalog-family-formats.mjs",
+      "currentFileSha256": "2cefd08dd4bc6de096db5bbc09854f86b67ee602f11978e9da4168bf92194d5c",
+      "currentLfSha256": "2cefd08dd4bc6de096db5bbc09854f86b67ee602f11978e9da4168bf92194d5c",
+      "serverFileSha256": "bd85fd8b7f9b8a68d2319a0e9574dd34b747b42007dd000c61ce7f1fc5e1d6aa",
+      "gitBlobIds": {
+        "0e200d8": "43e9f8b185a0ad1f59a8df7e35ee248e6485b621",
+        "ac10e6c": "d500efcab5620f037507ec4ba2ff58df5bf55a4a"
+      },
+      "decision": "retain-subcategory-material-scope-and-explicit-per-product-upload-profiles",
+      "delta": "Server bypasses offeredFamilyIds and restores a blanket steel-logo off default. Native v9 small-product module profiles already disable both uploads.",
+      "evidence": [
+        "katalog-family-formats.test.mjs: selected subcategory families cannot expand technical support",
+        "docs/handoffs/2026-11-11-issue230-seven-native-plans-v9.md:19",
+        "Six v9 sources have both uploads disabled; this integration does not recompile or mutate them"
+      ]
+    },
+    {
+      "file": "app/workshop/product-preview.mjs",
+      "currentFileSha256": "e0b7a15e0586b388e37c2029df9649d512632f753158ffaa0a5ae390f49d1c49",
+      "currentLfSha256": "e0b7a15e0586b388e37c2029df9649d512632f753158ffaa0a5ae390f49d1c49",
+      "serverFileSha256": "ee6924c400b5b8471f6764d38e2d653f38520200c5959264e65db831aaaaad07",
+      "gitBlobIds": {
+        "0e200d8": "f2a85351506a449fcaadcf4536eb11266562ab04",
+        "ac10e6c": "32c8fb4965dcbc1d7bf3fff92593a6336694252c"
+      },
+      "decision": "retain-current-renderer-original-photo-pixels-soft-shadow-and-native-mounting",
+      "delta": "Server removes soft family shadow, original-photo display preservation, native mounting placement and screw heads; no new additive rendering branch.",
+      "evidence": [
+        "ENTSCHEIDUNGEN.md §1.21: catalog original photos are not customer grayscale uploads",
+        "docs/handoffs/2026-11-11-issue230-material-depth.md",
+        "catalogue-photo-preview.test.mjs and product-preview-mounting.test.mjs: 5 assertions/tests passed"
+      ]
+    }
+  ],
+  "merged": [
+    {
+      "file": "app/configurator/mobile-demo/assets.mjs",
+      "fileSha256": "37d74852e564b96e34c0ddb37e20a10c522986f37b826cecef285ac9320dcdfc"
+    },
+    {
+      "file": "app/configurator/mobile-demo/demo.mjs",
+      "fileSha256": "4227eb43f63d384797c2ba7fe68d3f5797eddae3fa435446fd6e4fcfd7cb9308"
+    },
+    {
+      "file": "app/configurator/mobile-demo/demo.test.mjs",
+      "fileSha256": "c13e9026acc4b9daaf08a403686d8cb72381c2c6964e5e14bdc1b064f40f32c6"
+    },
+    {
+      "file": "app/configurator/mobile-demo/preview-action.mjs",
+      "fileSha256": "47ddf5856386d760d379ca16b95abf1f6f0ddb5d5157593dcc45630e12d88274"
+    },
+    {
+      "file": "app/workshop/shop-design-gallery.mjs",
+      "fileSha256": "ae1e66349213618e10032145bee75b2ab16bb330a720b8d3888e5630100a2434"
+    },
+    {
+      "file": "app/workshop/design-dashboard.mjs",
+      "fileSha256": "0ffff3bbaaa3c05a36702892ee20ea391f8a0890030bdd39a5d88716d0fb80ad"
+    },
+    {
+      "file": "app/workshop/design-dashboard.test.mjs",
+      "fileSha256": "ab69dae7e8b78f5335bc0954008575792afad37729edfdd0acdfee9726886dbd"
+    },
+    {
+      "file": "app/workshop/ui/design-dashboard-ui.mjs",
+      "fileSha256": "a3ee85d54ea0eb58949ffc83ebd8d9c281f7c6a8d3df8225efeebb7c033d259d"
+    },
+    {
+      "file": "app/workshop/ui/shop-design-switch.mjs",
+      "fileSha256": "664507d58a5f4d6d5cbe29d7d69d647b04427249c447052dfbbc1742d2fcf7e7"
+    }
+  ],
+  "smallCompatibilityProofSha256": "730103a7811db588a140311c0b6da1a8f2c8632ba6ff0cbdae806c745a9fcdbc"
+}

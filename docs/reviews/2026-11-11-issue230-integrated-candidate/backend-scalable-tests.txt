@@ -1,0 +1,65 @@
+✔ saved batch job preserves four acrylic sizes, 43 native prices and module policy on commit and replay (1494.997ms)
+✔ legacy price columns cannot silently alter a scalable acrylic source or enter an executable batch (190.5713ms)
+✔ a nondefault variant review failure never leaks its row into an explicit partial import (964.4036ms)
+✔ four-size acrylic document persists, reopens and reimports without losing 43 native prices (2846.2402ms)
+✔ edited text and photo crop survive all four sizes and save/reopen while geometry rights remain fixed (503.399ms)
+✔ original motifs are included, added/replaced motifs cost 169 cents per item (160.8367ms)
+✔ invalid alternate sizes and other materials cannot enter the new native acrylic route (291.4463ms)
+✔ editor paths of both store flavours map to the narrow customer routes; everything else is refused (2.145ms)
+✔ return address stays inside the shop (0.4301ms)
+✔ product gallery uses private session headers and keeps signed choices out of URLs (24.2822ms)
+✔ client sends the session only as a header, validates the model answer and the cart result (2.6268ms)
+✔ normal-cart preparation uses private headers and never treats a prepared URL as a confirmed payment (0.7676ms)
+✔ all three format resources load privately in bounded parallel batches (31.0939ms)
+✔ a failed private resource refuses the configurator before any cart can be offered (0.3275ms)
+✔ embedded cart hands only the one-time token to the exact shop origin and surfaces its error answer (30.8326ms)
+✔ embedded cart sends the plate picture along with the token; a failing picture never blocks the cart (14.7827ms)
+✔ cart picture swaps only the known material image for its small copy and needs a valid view box (1.1189ms)
+✔ shop embed accepts messages only from the editor host and this frame, and only rewrites the own start link (31.3127ms)
+✔ global shop embed: product data from the theme block, own start link, buy buttons of exactly this product hidden (12.8504ms)
+✔ warm-up: targets come only from the page hint for the token store; editor page, then its hashed bundle, all low priority (32.8503ms)
+✔ shop embed opens a connection to the editor host once, only on intent toward the own start link (12.3055ms)
+✔ start resources: catalog fonts and library motifs of the start designs at the editor addresses; doorbell only its start design (580.3488ms)
+✔ start ticket: fetched once per start address through the proxy, only editor-host addresses, dropped before expiry or on failure (17.819ms)
+✔ shop embed safety net: own start link is always usable, ready/failed messages only from the frame, page fallback without window (10.3239ms)
+✔ gallery replaces HTML 502, malformed JSON and network errors with its own recoverable message (1.1613ms)
+✔ gallery client aborts a hanging proxy request at five seconds and a retry can succeed (0.9014ms)
+✔ cart bootstrap chooses the private saved design before loading the small model (0.537ms)
+✔ hashed gallery previews use browser caching; unavailable cache falls back to the authenticated preview (0.4245ms)
+✔ design search query is encoded separately from fixed options and preserves private session headers (0.4153ms)
+✔ preview cancellation reaches public and private fetches; cancellation prevents fallback requests (0.6823ms)
+node:internal/modules/esm/resolve:272
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\issue230-integration-candidate\scripts\acryl-original18\binding-cache.mjs' imported from C:\Users\Christopher Koch\Documents\Codex\2026-11-11\die-vollst-ndige-bergabe-findest-du\work\issue230-integration-candidate\app\workshop\shop-preparation.run-cache.test.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:272:11)
+    at moduleResolve (node:internal/modules/esm/resolve:879:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:705:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:725:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:763:56)
+    at #resolve (node:internal/modules/esm/loader:687:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:607:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:276:33)
+    at ModuleJob.link (node:internal/modules/esm/module_job:381:17) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/scripts/acryl-original18/binding-cache.mjs'
+}
+
+Node.js v24.20.0
+✖ app\workshop\shop-preparation.run-cache.test.mjs (419.6912ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 30
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4079.694
+
+✖ failing tests:
+
+test at app\workshop\shop-preparation.run-cache.test.mjs:1:1
+✖ app\workshop\shop-preparation.run-cache.test.mjs (419.6912ms)
+  'test failed'

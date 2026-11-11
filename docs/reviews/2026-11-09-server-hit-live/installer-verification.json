@@ -1,0 +1,22 @@
+{
+  "schema": "gravuru-server-hit-local-install-verification/v1",
+  "at": "2026-11-09T14:24:19.999Z",
+  "installerSha": "eb67ae6ab0032c017b6885801caad5d1c19c5cd8bc7b92063b63af7194f17f0e",
+  "sourceCommit": "767701ee59c14ef550b6b1c1468013869b8fe188",
+  "syntheticWrapper": true,
+  "actualNativeBuild": true,
+  "platform": "Windows fixture with reviewed Linux CLI guard simulated only in VM",
+  "results": [
+    "read-only --check: no backup, sources or preview written",
+    "changed source rejected before any write",
+    "success: four exact files, all prior hash assets retained, existing OS-variant gzip retained",
+    "second installation blocked by single backup/receipt",
+    "fault at atomic final HTML rename: four source files restored, old HTML and all previous bundles unchanged"
+  ],
+  "receipt": {
+    "html": "c2cff8848d89b0a2260ed5a7f5d824e08b1837482241445d310606d4ee2545d4",
+    "styles": 36,
+    "previousBundlesRetained": 14
+  },
+  "noLiveAccess": true
+}

@@ -1,0 +1,103 @@
+{
+  "schema": "gravuru-performance-release/v1",
+  "at": "2026-11-09T10:54:11.702Z",
+  "runtime": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-r15-resume-20261108-v1",
+  "backup": "/var/www/vhosts/gravuru-designwerkstatt.de/private/mika-r15-resume-20261108-v1/pre-switch-backup/performance-20261109-v2",
+  "commit": "4afd1a2b27e43efba2e1bd4f03119ff52b9e0bc6",
+  "wrapperSha": "e679ca2dd1285c7925126bec3ef67bf1b775e080f6306e3210a996874b90d53c",
+  "files": [
+    {
+      "relative": "app/configurator/mobile-demo/demo.css",
+      "before": "3c9b782d70ca644c17a62172f2cf908125fa6a49c7192ae7e0af8bf5e5f43646",
+      "after": "856dc180ea883a7a19be89a0862c61f96ddc2cd6fc48179a7e7fa20a0be8a321"
+    },
+    {
+      "relative": "app/configurator/variant-m/bundle-build.mjs",
+      "before": "13fc47d0f4db9902a2ac66bda6499cebb47bfe196166dbaa21b02872af84fd07",
+      "after": "c1cc164a7edb825890c1ebb09941305ef4c1221ec4a9e798db29076c988991bf"
+    },
+    {
+      "relative": "app/configurator/variant-m/product-design-gallery.mjs",
+      "before": "34dc24dea73f0efa2f3495db7f757ce60a2e680decae536587a918ac3e7ed25a",
+      "after": "3fd3dd7cd080a08868e91feece9cd536e7795ab3636cbbcf5c773d490d75961e"
+    },
+    {
+      "relative": "app/workshop/customer-read-scope.mjs",
+      "before": null,
+      "after": "f47460a1fdce7b9328b58fde7fb24f50d8d1c0d70d64c3784f575cd2b93f533a"
+    },
+    {
+      "relative": "app/workshop/http.mjs",
+      "before": "718d7df4ad1dd4f05c3fe4e0ecfc6f5ae8a68e77855fa90c7c7df83159559ee9",
+      "after": "711711bbea02f02e2333b462741af17389d0a9bbc32a3ad4a2b145a8212d6787"
+    },
+    {
+      "relative": "app/workshop/repository.mjs",
+      "before": "9095a1dbc199c74784e908ef7bb0692162631b8540b9c0484c491ce7fdaa4dcc",
+      "after": "ccc35a82957c63527c6cf5975b9e9aff24e7aa0b6bbf24aff09eab4448a39cc8"
+    },
+    {
+      "relative": "app/workshop/shop-entry.mjs",
+      "before": "8bf53f6048cd4ef3409169c728ad570f136c47c2b92fa8d2fb57dabff65ceb44",
+      "after": "2d8015b927a1f5e88b641519bd111532c7d2e98a9d7e6fb12b4d27623f4805a3"
+    },
+    {
+      "relative": "app/workshop/shop-product-binding-store.mjs",
+      "before": "5aeb5ef24a177fa987d0fdd8b62688e56177494e2cdd4745249e29302d0f31ea",
+      "after": "42c4999be33367519d9e4656b2a780d625c4578580d5c4ab09b3c0de652c5b48"
+    },
+    {
+      "relative": "app/workshop/ui/shop-design-switch.mjs",
+      "before": "1971c7c2cc9e01ec0c452350664ef1f9988dea353d84f6e7f1d26d78bba5410e",
+      "after": "7eb0f39b94948165f1d17bf5b0bafc6ccd271e0d3def12fc3a05070b8d092fc9"
+    },
+    {
+      "relative": "app/workshop/ui/shop-entry-client.mjs",
+      "before": "6ee4ae62c7e821b74c4b1f743f62d794972e2a0218ebd2725e2399a07351e069",
+      "after": "1b622fd99e09357e0eba7be5e6bd5f7c3663d9caa7863144c5717a811389cc9f"
+    },
+    {
+      "relative": "app/workshop/ui/shop-warm.mjs",
+      "before": "74e1ccf61a6b698c76419b4ae40214f41ea6e020378371ac77ee3b3d8a294a05",
+      "after": "fed78aabfaececc9f8556b92c911a4dc344c2a59818958b73f417a67f23ea1dc"
+    }
+  ],
+  "expected": {
+    "html": "8446b52d1b577263de8ac78a6cea30d8eb7784ff76d885381b03b4383ba40977",
+    "bundles": [
+      {
+        "name": "editor-257c5700803ea894.mjs",
+        "sha256": "152219814c7bc1e249979bf90108040ed9ef6a56f45ec9ca8e2e13ab7fc6758f",
+        "gzipSha256": "7fd78d7481289f172afa8878fbbaf2fabb835e4c3bd5c32b5f82040231097dc9"
+      },
+      {
+        "name": "editor-bf7d088b9bdf015e.mjs",
+        "sha256": "85980521d93b13147e844a0bf7986f128ff92fdd078fecead57f2494f0db513c",
+        "gzipSha256": "f0363d6be516e4df83012046a1e599a0beca8e555b0361dc746dce64d8bfd4f8"
+      }
+    ]
+  },
+  "publishedArtifacts": [
+    {
+      "name": "editor-257c5700803ea894.mjs",
+      "sha256": "152219814c7bc1e249979bf90108040ed9ef6a56f45ec9ca8e2e13ab7fc6758f"
+    },
+    {
+      "name": "editor-257c5700803ea894.mjs.gz",
+      "sha256": "5ff22b331318e8894d11344beaa1f19548d5c18b00061c46a14f3df678895922"
+    },
+    {
+      "name": "editor-bf7d088b9bdf015e.mjs",
+      "sha256": "85980521d93b13147e844a0bf7986f128ff92fdd078fecead57f2494f0db513c"
+    },
+    {
+      "name": "editor-bf7d088b9bdf015e.mjs.gz",
+      "sha256": "f376821833dba6af7ea7e6a876fe4b29a8399aeb3389f5751f9b4a0a927f13ca"
+    }
+  ],
+  "gzipValidation": "decoded bytes equal pinned raw JS",
+  "previousBundlesRetained": 10,
+  "databaseWritten": false,
+  "shopifyWritten": false,
+  "restartPending": true
+}

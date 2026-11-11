@@ -1,0 +1,455 @@
+{
+  "schema": "gravuru-performance-followup/v1",
+  "baseline": "767701ee59c14ef550b6b1c1468013869b8fe188",
+  "commit": "3bfe6a3151517ffdfb78ba5e010ab55de0aeace0",
+  "sources": {
+    "runtime": "333d77b4b98b4ce71fb2e4ae8b017d60b156d2d9",
+    "gallery": "6c310120d48daef12b16e9568916a62ecd278597"
+  },
+  "composition": "Saved actual server app 767701ee plus exactly 5 reviewed sources; 4 replacements and 1 previously absent helper",
+  "wrapperSha": "e679ca2dd1285c7925126bec3ef67bf1b775e080f6306e3210a996874b90d53c",
+  "oldHtmlSha": "c2cff8848d89b0a2260ed5a7f5d824e08b1837482241445d310606d4ee2545d4",
+  "edits": [
+    {
+      "relative": "app/configurator/variant-m/product-design-gallery.mjs",
+      "before": "3fd3dd7cd080a08868e91feece9cd536e7795ab3636cbbcf5c773d490d75961e",
+      "after": "041ac15c181b664282ec9e337704d17f6624894c5fec7a3f8b20d9c6975dbfcd",
+      "bytes": 10672,
+      "parts": [
+        {
+          "start": 4373,
+          "remove": 453,
+          "body": "IGxldCBlcG9jaD0wLHByZXZpZXdFcG9jaD0wLHByZXZpZXdzQWN0aXZlPXRydWUsc3dpdGNoaW5nPWZhbHNlLHJldHJ5VGltZXIscHJlcGFyZVJldHJpZXM9MDtjb25zdCB1cmxzPVtdLHF1ZXVlPVtdLGFjdGl2ZT1uZXcgU2V0KCkscmVxdWVzdHM9bmV3IFNldCgpOwogY29uc3QgY2FuY2VsUHJldmlld3M9KCk9PntwcmV2aWV3RXBvY2grKztxdWV1ZS5sZW5ndGg9MDtmb3IoY29uc3QgY29udHJvbGxlciBvZiBhY3RpdmUpY29udHJvbGxlci5hYm9ydCgpO2FjdGl2ZS5jbGVhcigpO2Zvcihjb25zdCB7aW1nfSBvZiByZXF1ZXN0cylpZighaW1nLnNyYylpbWcucHJldmlld1N0YXJ0ZWQ9ZmFsc2U7fTsKIGNvbnN0IHB1bXA9KCk9Pnt3aGlsZShwcmV2aWV3c0FjdGl2ZSYmYWN0aXZlLnNpemU8MiYmcXVldWUubGVuZ3RoKXtjb25zdCByZXF1ZXN0PXF1ZXVlLnNoaWZ0KCkse2l0ZW0saW1nLHZlcnNpb259PXJlcXVlc3Q7CiAgaWYodmVyc2lvbiE9PWVwb2NofHxpbWcucHJldmlld1N0YXJ0ZWQpY29udGludWU7aW1nLnByZXZpZXdTdGFydGVkPXRydWU7Y29uc3QgY29udHJvbGxlcj1uZXcgQWJvcnRDb250cm9sbGVyKCksZ2VuZXJhdGlvbj1wcmV2aWV3RXBvY2g7YWN0aXZlLmFkZChjb250cm9sbGVyKTsK"
+        },
+        {
+          "start": 4968,
+          "remove": 216,
+          "body": "ICAgaWYodmVyc2lvbiE9PWVwb2NofHxnZW5lcmF0aW9uIT09cHJldmlld0Vwb2NofHxjb250cm9sbGVyLnNpZ25hbC5hYm9ydGVkKXJldHVybjtjb25zdCB1cmw9VVJMLmNyZWF0ZU9iamVjdFVSTChibG9iKTt1cmxzLnB1c2godXJsKTtpbWcuc3JjPXVybDtpbWcuYWx0PWl0ZW0uZGVzaWduTmFtZTsKICB9KS5jYXRjaCgoKT0+e2lmKHZlcnNpb249PT1lcG9jaCYmZ2VuZXJhdGlvbj09PXByZXZpZXdFcG9jaCYmIWNvbnRyb2xsZXIuc2lnbmFsLmFib3J0ZWQpe2ltZy5hbHQ9J1ZvcnNjaGF1IG5pY2h0IHZlcmbDvGdiYXInO2ltZy5wcmV2aWV3U3RhcnRlZD1mYWxzZTt9Cg=="
+        },
+        {
+          "start": 5245,
+          "remove": 255,
+          "body": "IGNvbnN0IG9ic2VydmVyPXR5cGVvZiBJbnRlcnNlY3Rpb25PYnNlcnZlcj09PSdmdW5jdGlvbic/bmV3IEludGVyc2VjdGlvbk9ic2VydmVyKGVudHJpZXM9PntpZighcHJldmlld3NBY3RpdmUpcmV0dXJuO2Zvcihjb25zdCBlbnRyeSBvZiBlbnRyaWVzKWlmKGVudHJ5LmlzSW50ZXJzZWN0aW5nKXtvYnNlcnZlci51bm9ic2VydmUoZW50cnkudGFyZ2V0KTtxdWV1ZS5wdXNoKGVudHJ5LnRhcmdldC5wcmV2aWV3UmVxdWVzdCk7cHVtcCgpO319LHtyb290TWFyZ2luOicxNTBweCd9KTpudWxsOwogZnVuY3Rpb24gd2FybVByZXZpZXdzKCl7CiAgaWYoIW9ic2VydmVyfHwhcHJldmlld3NBY3RpdmV8fHNhdmVEYXRhQWN0aXZlKHdpbmRvdy5uYXZpZ2F0b3I/LmNvbm5lY3Rpb24pKXJldHVybjsKICBjb25zdCB2ZXJzaW9uPWVwb2NoLGdlbmVyYXRpb249cHJldmlld0Vwb2NoLHdhcm1SZXF1ZXN0cz1bLi4ucmVxdWVzdHNdLmZpbHRlcihyZXF1ZXN0PT5yZXF1ZXN0Lndhcm0mJiFyZXF1ZXN0LmltZy5zcmMpOwogIGlkbGVTY2hlZHVsZXIod2luZG93LHt0aW1lb3V0OjYwMH0pKCgpPT57aWYocHJldmlld3NBY3RpdmUmJnZlcnNpb249PT1lcG9jaCYmZ2VuZXJhdGlvbj09PXByZXZpZXdFcG9jaCl7cXVldWUucHVzaCguLi53YXJtUmVxdWVzdHMpO3B1bXAoKTt9fSk7CiB9CiBmdW5jdGlvbiBzZXRQcmV2aWV3QWN0aXZpdHkodmFsdWUpewogIGlmKHByZXZpZXdzQWN0aXZlPT09dmFsdWUpcmV0dXJuO3ByZXZpZXdzQWN0aXZlPXZhbHVlOwogIGlmKCF2YWx1ZSl7b2JzZXJ2ZXI/LmRpc2Nvbm5lY3QoKTtjYW5jZWxQcmV2aWV3cygpO3JldHVybjt9CiAgZm9yKGNvbnN0IHJlcXVlc3Qgb2YgcmVxdWVzdHMpaWYoIXJlcXVlc3QuaW1nLnNyYyl7aWYob2JzZXJ2ZXIpb2JzZXJ2ZXIub2JzZXJ2ZShyZXF1ZXN0LmltZyk7ZWxzZSBxdWV1ZS5wdXNoKHJlcXVlc3QpO30KICB3YXJtUHJldmlld3MoKTtwdW1wKCk7CiB9CiBjb25zdCB1bnN1YnNjcmliZVByZXZpZXdzPWFwaS5vblByZXZpZXdBY3Rpdml0eT8uKHNldFByZXZpZXdBY3Rpdml0eSk7Cg=="
+        },
+        {
+          "start": 5698,
+          "remove": 102,
+          "body": "ICBzd2l0Y2hpbmc9dHJ1ZTtpZighYXBpLm9uUHJldmlld0FjdGl2aXR5KXNldFByZXZpZXdBY3Rpdml0eShmYWxzZSk7Z3JpZC5pbmVydD10cnVlO2JhY2suZGlzYWJsZWQ9dHJ1ZTtzdGF0dXMudGV4dENvbnRlbnQ9J0Rlc2lnbiB3aXJkIMO8YmVybm9tbWVuIOKApic7Cg=="
+        },
+        {
+          "start": 6184,
+          "remove": 65,
+          "body": "ICBmaW5hbGx5e3N3aXRjaGluZz1mYWxzZTtpZighYXBpLm9uUHJldmlld0FjdGl2aXR5KXNldFByZXZpZXdBY3Rpdml0eSh0cnVlKTtncmlkLmluZXJ0PWZhbHNlO2JhY2suZGlzYWJsZWQ9ZmFsc2U7fQo="
+        },
+        {
+          "start": 6830,
+          "remove": 59,
+          "body": "ICAgY29uc3QgaW5pdGlhbD1ncmlkLmNoaWxkcmVuLmxlbmd0aD09PTA7bGV0IHdhcm1Db3VudD0wOwo="
+        },
+        {
+          "start": 7715,
+          "remove": 190,
+          "body": "ICAgIGltZy5wcmV2aWV3UmVxdWVzdD17aXRlbSxpbWcsdmVyc2lvbix3YXJtOmluaXRpYWwmJndhcm1Db3VudCsrPDN9O3JlcXVlc3RzLmFkZChpbWcucHJldmlld1JlcXVlc3QpOwogICAgaWYocHJldmlld3NBY3RpdmUpe2lmKG9ic2VydmVyKW9ic2VydmVyLm9ic2VydmUoaW1nKTtlbHNlIHF1ZXVlLnB1c2goaW1nLnByZXZpZXdSZXF1ZXN0KTt9Cg=="
+        },
+        {
+          "start": 7910,
+          "remove": 163,
+          "body": "ICAgd2FybVByZXZpZXdzKCk7Cg=="
+        },
+        {
+          "start": 8516,
+          "remove": 215,
+          "body": "IGZ1bmN0aW9uIHJlc2V0KCl7ZXBvY2grKztwYWdlci5yZXNldCgpO2NsZWFyVGltZW91dChyZXRyeVRpbWVyKTtwcmVwYXJlUmV0cmllcz0wO29ic2VydmVyPy5kaXNjb25uZWN0KCk7Y2FuY2VsUHJldmlld3MoKTtyZXF1ZXN0cy5jbGVhcigpO2dyaWQucmVwbGFjZUNoaWxkcmVuKCk7Zm9yKGNvbnN0IHVybCBvZiB1cmxzKVVSTC5yZXZva2VPYmplY3RVUkwodXJsKTt1cmxzLmxlbmd0aD0wO2xvYWQoKTt9Cg=="
+        },
+        {
+          "start": 9279,
+          "remove": 191,
+          "body": "IHdpbmRvdy5hZGRFdmVudExpc3RlbmVyKCdwYWdlaGlkZScsKCk9PntwcmV2aWV3c0FjdGl2ZT1mYWxzZTtlcG9jaCsrO3BhZ2VyLnJlc2V0KCk7Y2xlYXJUaW1lb3V0KHJldHJ5VGltZXIpO3Vuc3Vic2NyaWJlUHJldmlld3M/LigpO29ic2VydmVyPy5kaXNjb25uZWN0KCk7Y2FuY2VsUHJldmlld3MoKTtmb3IoY29uc3QgdXJsIG9mIHVybHMpVVJMLnJldm9rZU9iamVjdFVSTCh1cmwpO30se29uY2U6dHJ1ZX0pOwo="
+        }
+      ]
+    },
+    {
+      "relative": "app/workshop/ui/shop-design-switch.mjs",
+      "before": "7eb0f39b94948165f1d17bf5b0bafc6ccd271e0d3def12fc3a05070b8d092fc9",
+      "after": "83af68c2c70b902d577cef0110e560720962a09decb931c8ba732c4f90677e0c",
+      "bytes": 5864,
+      "parts": [
+        {
+          "start": 1736,
+          "remove": 0,
+          "body": "IGNvbnN0IHByZXZpZXdMaXN0ZW5lcnM9bmV3IFdlYWtNYXAoKSxwcmV2aWV3QWN0aXZlPWVudHJ5PT5jdXJyZW50PT09ZW50cnkmJiFidXN5OwogY29uc3Qgbm90aWZ5UHJldmlld3M9ZW50cnk9Pntmb3IoY29uc3QgbGlzdGVuZXIgb2YgcHJldmlld0xpc3RlbmVycy5nZXQoZW50cnkpfHxbXSl0cnl7bGlzdGVuZXIocHJldmlld0FjdGl2ZShlbnRyeSkpO31jYXRjaHsvKiBPcHRpb25hbCBwcmVsb2FkaW5nIGNhbm5vdCBicmVhayB0aGUgZGVzaWduIHRyYW5zZmVyLiAqL319Owo="
+        },
+        {
+          "start": 2391,
+          "remove": 109,
+          "body": "ICBwcmV2aWV3Oih0YXJnZXQsdXJsLHNpZ25hbCk9PntjaGVja1JlYWQoZW50cnkpO2lmKCFwcmV2aWV3QWN0aXZlKGVudHJ5KSl0aHJvdyBPYmplY3QuYXNzaWduKEVycm9yKCdWb3JzY2hhdWVuIHdhcnRlbiBhdWYgZGVuIERlc2lnbndlY2hzZWwuJykse25hbWU6J0Fib3J0RXJyb3InfSk7cmV0dXJuIGVudHJ5LmNsaWVudC5sb2FkRGVzaWduUHJldmlldyh0YXJnZXQsdXJsLHNpZ25hbCk7fSwKICBvblByZXZpZXdBY3Rpdml0eTpsaXN0ZW5lcj0+e2xldCBsaXN0ZW5lcnM9cHJldmlld0xpc3RlbmVycy5nZXQoZW50cnkpO2lmKCFsaXN0ZW5lcnMpe2xpc3RlbmVycz1uZXcgU2V0KCk7cHJldmlld0xpc3RlbmVycy5zZXQoZW50cnksbGlzdGVuZXJzKTt9bGlzdGVuZXJzLmFkZChsaXN0ZW5lcik7bGlzdGVuZXIocHJldmlld0FjdGl2ZShlbnRyeSkpO3JldHVybiAoKT0+bGlzdGVuZXJzLmRlbGV0ZShsaXN0ZW5lcik7fSwK"
+        },
+        {
+          "start": 2675,
+          "remove": 203,
+          "body": "ICBiYWNrOigpPT57Y2hlY2soZW50cnkpO2NvbnN0IHByZXZpb3VzPWhpc3RvcnkucG9wKCk7aWYoIXByZXZpb3VzKXJldHVybiBmYWxzZTtjdXJyZW50PXByZXZpb3VzO25vdGlmeVByZXZpZXdzKGVudHJ5KTtlbnRyeS5mcmFtZS5yZW1vdmUoKTthY3RpdmF0ZShwcmV2aW91cyxhcGkocHJldmlvdXMpKTtzaG93KHByZXZpb3VzKTtzZXRGcmFnbWVudChwcmV2aW91cyk7bm90aWZ5UHJldmlld3MocHJldmlvdXMpO3JldHVybiB0cnVlO30sCg=="
+        },
+        {
+          "start": 2913,
+          "remove": 68,
+          "body": "ICAgY2hlY2soZW50cnkpO2J1c3k9dHJ1ZTtub3RpZnlQcmV2aWV3cyhlbnRyeSk7bGV0IGNhbmRpZGF0ZT1udWxsLHJlbW92ZUxpc3RlbmVyPSgpPT57fTsK"
+        },
+        {
+          "start": 5042,
+          "remove": 24,
+          "body": "ICAgZmluYWxseXtidXN5PWZhbHNlO25vdGlmeVByZXZpZXdzKGN1cnJlbnQpO30K"
+        }
+      ]
+    },
+    {
+      "relative": "app/configurator/variant-m/server.mjs",
+      "before": "f1445f2dc4f90637a77c3b80c0cd6271dd204d4136c9d598343bce3cc904500b",
+      "after": "c3d8a32805e272d78cfbe16dad1b7570c9e72a738f93fa930bddbac7a3bf50ca",
+      "bytes": 17100,
+      "parts": [
+        {
+          "start": 695,
+          "remove": 0,
+          "body": "aW1wb3J0IHtjcmVhdGVQcmVwYXJlZEVkaXRvckJ1bmRsZXN9IGZyb20gJy4uLy4uL3dvcmtzaG9wL3ByZXBhcmVkLWVkaXRvci1idW5kbGVzLm1qcyc7Cg=="
+        },
+        {
+          "start": 14680,
+          "remove": 0,
+          "body": "ICAvLyBQcml2YXRlIGNvbXBvc2l0aW9uIGhvb2ssIG5vdCBhIFVSTCBvciBhIHNlY29uZCBhdXRob3JpemF0aW9uIHBvbGljeS4KICAvLyBBY3J5bCBidW5kbGVzIGtlZXAgdGhlIHNhbWUgaG9zdCBjaGVjayB3aGlsZSBhdm9pZGluZyB0aGUgbG9vcGJhY2svcmV3cml0ZSBwZXIgcmVxdWVzdC4KICBzZXJ2ZXIucHJlcGFyZUJ1bmRsZURlbGl2ZXJ5PXRyYW5zZm9ybT0+Y3JlYXRlUHJlcGFyZWRFZGl0b3JCdW5kbGVzKHtvdXRwdXREaXJlY3RvcnksdHJhbnNmb3JtLAogICAgYXV0aG9yaXplOihyZXEscGF0aG5hbWUpPT5hZG1pbkhvc3Q/YWRtaW5Ib3N0LmF1dGhvcml6ZShyZXEscGF0aG5hbWUpJiZhZG1pbkhvc3QuYWxsb3dzKHBhdGhuYW1lKToKICAgICAgW2AxMjcuMC4wLjE6JHtzZXJ2ZXIuYWRkcmVzcygpPy5wb3J0fWAsYGxvY2FsaG9zdDoke3NlcnZlci5hZGRyZXNzKCk/LnBvcnR9YF0uaW5jbHVkZXMocmVxLmhlYWRlcnMuaG9zdCkmJgogICAgICAoIXJlcS5oZWFkZXJzLm9yaWdpbnx8cmVxLmhlYWRlcnMub3JpZ2luPT09J2h0dHA6Ly8nK3JlcS5oZWFkZXJzLmhvc3QpJiZyZXEuaGVhZGVyc1snc2VjLWZldGNoLXNpdGUnXSE9PSdjcm9zcy1zaXRlJywKICAgIGhlYWRlcnM6cGF0aG5hbWU9Pih7J0NvbnRlbnQtU2VjdXJpdHktUG9saWN5JzphZG1pbkhvc3Q/LmNzcEZvcihwYXRobmFtZSl8fGNzcCwKICAgICAgLi4uKGFkbWluSG9zdD97J1JlZmVycmVyLVBvbGljeSc6J25vLXJlZmVycmVyJ306e30pLCdYLUNvbnRlbnQtVHlwZS1PcHRpb25zJzonbm9zbmlmZicsJ1gtUm9ib3RzLVRhZyc6J25vaW5kZXgsIG5vZm9sbG93LCBub2FyY2hpdmUnfSl9KTsK"
+        }
+      ]
+    },
+    {
+      "relative": "app/workshop/acryl-employee-host.mjs",
+      "before": "20cbb93fb4430e8a21c33ddccd132da17c111883a147b66d310b2f7a80b15766",
+      "after": "0ff5ab74f792da5729ea6d34637d89950858d05994403893882a1e26b41bda4d",
+      "bytes": 12300,
+      "parts": [
+        {
+          "start": 9295,
+          "remove": 0,
+          "body": "IGNvbnN0IGRlbGl2ZXJCdW5kbGU9aW5uZXIucHJlcGFyZUJ1bmRsZURlbGl2ZXJ5KGFjcnlsQXNzZXRUZXh0KTsK"
+        },
+        {
+          "start": 10251,
+          "remove": 0,
+          "body": "ICBpZihkZWxpdmVyQnVuZGxlKHJlcSxyZXMsdGFyZ2V0KSlyZXR1cm47Cg=="
+        }
+      ]
+    },
+    {
+      "relative": "app/workshop/prepared-editor-bundles.mjs",
+      "before": null,
+      "after": "2c4152da80c5a669fb5c8420c3a8b1ac3811d37045d1598bf257b6713e40d450",
+      "bytes": 3949,
+      "parts": [
+        {
+          "start": 0,
+          "remove": 0,
+          "body": "aW1wb3J0IGZzIGZyb20gJ25vZGU6ZnMnOwppbXBvcnQgcGF0aCBmcm9tICdub2RlOnBhdGgnOwppbXBvcnQge2d6aXBTeW5jfSBmcm9tICdub2RlOnpsaWInOwoKY29uc3QgQlVORExFPS9eXC9fYnVuZGxlXC8oZWRpdG9yLVthLWYwLTldezE2fVwubWpzKSQvOwpjb25zdCBNQVhfU09VUkNFPTIwKjEwMjQqMTAyNCxNQVhfQ0FDSEU9MzIqMTAyNCoxMDI0OwoKLy8gVGhlc2UgYXJlIHRoZSBhbHJlYWR5IHB1YmxpYyBidWlsZCBhcnRpZmFjdHMsIG5ldmVyIG1vZGVscywgcHJldmlld3Mgb3IgdXBsb2Fkcy4KLy8gQXV0aG9yaXphdGlvbiBpcyBkZWxpYmVyYXRlbHkgZXZhbHVhdGVkIGFnYWluIG9uIGV2ZXJ5IGhpdCBieSB0aGUgZXhpc3RpbmcgaG9zdC4KZXhwb3J0IGZ1bmN0aW9uIGNyZWF0ZVByZXBhcmVkRWRpdG9yQnVuZGxlcyh7b3V0cHV0RGlyZWN0b3J5LHRyYW5zZm9ybSxhdXRob3JpemUsaGVhZGVycz0oKT0+KHt9KX0pewogaWYodHlwZW9mIHRyYW5zZm9ybSE9PSdmdW5jdGlvbid8fHR5cGVvZiBhdXRob3JpemUhPT0nZnVuY3Rpb24nKXRocm93IG5ldyBUeXBlRXJyb3IoJ0J1bmRsZSBob3N0IGZ1bmN0aW9ucyByZXF1aXJlZC4nKTsKIGNvbnN0IGRpcmVjdG9yeT1wYXRoLnJlc29sdmUob3V0cHV0RGlyZWN0b3J5LCdidW5kbGUnKSxjYWNoZT1uZXcgTWFwKCk7bGV0IGNhY2hlQnl0ZXM9MDsKIGZ1bmN0aW9uIHJlbW92ZShuYW1lKXtjb25zdCBvbGQ9Y2FjaGUuZ2V0KG5hbWUpO2lmKG9sZCl7Y2FjaGVCeXRlcy09b2xkLmNvc3Q7Y2FjaGUuZGVsZXRlKG5hbWUpO319CiBmdW5jdGlvbiBsb2FkKG5hbWUpewogIGNvbnN0IGZpbGU9cGF0aC5qb2luKGRpcmVjdG9yeSxuYW1lKSxyb290PWZzLnJlYWxwYXRoU3luYyhkaXJlY3RvcnkpLHJlYWw9ZnMucmVhbHBhdGhTeW5jKGZpbGUpOwogIGlmKHBhdGguZGlybmFtZShyZWFsKSE9PXJvb3R8fGZzLmxzdGF0U3luYyhmaWxlKS5pc1N5bWJvbGljTGluaygpKXJldHVybiBudWxsOwogIGNvbnN0IHN0YXQ9ZnMuc3RhdFN5bmMoZmlsZSx7YmlnaW50OnRydWV9KTsKICBpZighc3RhdC5pc0ZpbGUoKXx8c3RhdC5zaXplPkJpZ0ludChNQVhfU09VUkNFKSlyZXR1cm4gbnVsbDsKICBjb25zdCBzdGFtcD1bc3RhdC5kZXYsc3RhdC5pbm8sc3RhdC5zaXplLHN0YXQubXRpbWVOcyxzdGF0LmN0aW1lTnNdLmpvaW4oJzonKTsKICBjb25zdCBoaXQ9Y2FjaGUuZ2V0KG5hbWUpO2lmKGhpdD8uc3RhbXA9PT1zdGFtcCl7Y2FjaGUuZGVsZXRlKG5hbWUpO2NhY2hlLnNldChuYW1lLGhpdCk7cmV0dXJuIGhpdDt9CiAgcmVtb3ZlKG5hbWUpOwogIGNvbnN0IHNvdXJjZT1mcy5yZWFkRmlsZVN5bmMoZmlsZSksYWZ0ZXI9ZnMuc3RhdFN5bmMoZmlsZSx7YmlnaW50OnRydWV9KTsKICBpZihbYWZ0ZXIuZGV2LGFmdGVyLmlubyxhZnRlci5zaXplLGFmdGVyLm10aW1lTnMsYWZ0ZXIuY3RpbWVOc10uam9pbignOicpIT09c3RhbXApcmV0dXJuIG51bGw7CiAgY29uc3QgaWRlbnRpdHk9QnVmZmVyLmZyb20odHJhbnNmb3JtKHNvdXJjZS50b1N0cmluZygndXRmOCcpLCcvX2J1bmRsZS8nK25hbWUpKSxnemlwPWd6aXBTeW5jKGlkZW50aXR5LHtsZXZlbDo5fSk7CiAgY29uc3QgcmVzdWx0PXtzdGFtcCxpZGVudGl0eSxnemlwLGNvc3Q6aWRlbnRpdHkubGVuZ3RoK2d6aXAubGVuZ3RofTsKICBpZihyZXN1bHQuY29zdDw9TUFYX0NBQ0hFKXt3aGlsZShjYWNoZUJ5dGVzK3Jlc3VsdC5jb3N0Pk1BWF9DQUNIRSlyZW1vdmUoY2FjaGUua2V5cygpLm5leHQoKS52YWx1ZSk7Y2FjaGUuc2V0KG5hbWUscmVzdWx0KTtjYWNoZUJ5dGVzKz1yZXN1bHQuY29zdDt9CiAgcmV0dXJuIHJlc3VsdDsKIH0KIC8vIFRoZSB0d28gZXhpc3RpbmcgSFRNTCBwcmVsb2FkcyBpZGVudGlmeSB0aGUgYWN0aXZlIGNvcmUgYW5kIHByZXNlbnRhdGlvbiBjaHVuay4KIC8vIEhpc3RvcmljYWwgY2h1bmtzIHJlbWFpbiBhdmFpbGFibGUgb24gZGVtYW5kOyBubyBhcnRpZmFjdCBpcyByZW1vdmVkIG9yIHdyaXR0ZW4uCiB0cnl7CiAgY29uc3QgaHRtbD1wYXRoLmpvaW4ob3V0cHV0RGlyZWN0b3J5LCdlZGl0b3IuaHRtbCcpOwogIGlmKGZzLnN0YXRTeW5jKGh0bWwpLnNpemU8MTAyNCoxMDI0KXsKICAgY29uc3QgbmFtZXM9Wy4uLmZzLnJlYWRGaWxlU3luYyhodG1sLCd1dGY4JykubWF0Y2hBbGwoLzxsaW5rXGJbXj5dKlxicmVsPSJtb2R1bGVwcmVsb2FkIltePl0qXGJocmVmPSIoXC9fYnVuZGxlXC9lZGl0b3ItW2EtZjAtOV17MTZ9XC5tanMpIltePl0qPi9nKV0uc2xpY2UoMCwyKTsKICAgZm9yKGNvbnN0IG1hdGNoIG9mIG5hbWVzKXRyeXtsb2FkKEJVTkRMRS5leGVjKG1hdGNoWzFdKVsxXSk7fWNhdGNoey8qIFRoZSBvcmlnaW5hbCBhc3NldCByb3V0ZSByZW1haW5zIHRoZSBmYWxsYmFjay4gKi99CiAgfQogfWNhdGNoey8qIE5vIHByZXBhcmVkIG91dHB1dDogbGVhdmUgdGhlIGV4aXN0aW5nIHJvdXRlIGF2YWlsYWJsZS4gKi99CiByZXR1cm4gZnVuY3Rpb24gaGFuZGxlUHJlcGFyZWRCdW5kbGUocmVxLHJlcyxwYXRobmFtZSl7CiAgY29uc3QgbWF0Y2g9QlVORExFLmV4ZWMocGF0aG5hbWUpO2lmKCFtYXRjaClyZXR1cm4gZmFsc2U7CiAgY29uc3QgY29tbW9uPWhlYWRlcnMocGF0aG5hbWUpLGZhaWw9c3RhdHVzPT57cmVzLndyaXRlSGVhZChzdGF0dXMsey4uLmNvbW1vbiwnQ2FjaGUtQ29udHJvbCc6J25vLXN0b3JlJ30pO3Jlcy5lbmQoKTtyZXR1cm4gdHJ1ZTt9OwogIGlmKCFhdXRob3JpemUocmVxLHBhdGhuYW1lKSlyZXR1cm4gZmFpbCg0MDMpOwogIGlmKCFbJ0dFVCcsJ0hFQUQnXS5pbmNsdWRlcyhyZXEubWV0aG9kKSlyZXR1cm4gZmFpbCg0MDUpOwogIGxldCBhc3NldDt0cnl7YXNzZXQ9bG9hZChtYXRjaFsxXSk7fWNhdGNoe3JldHVybiBmYWxzZTt9aWYoIWFzc2V0KXJldHVybiBmYWxzZTsKICBjb25zdCBlbmNvZGluZz1zZWxlY3RFbmNvZGluZyhyZXEuaGVhZGVyc1snYWNjZXB0LWVuY29kaW5nJ10pO2lmKCFlbmNvZGluZylyZXR1cm4gZmFpbCg0MDYpOwogIGNvbnN0IGJ5dGVzPWFzc2V0W2VuY29kaW5nXTsKICByZXMud3JpdGVIZWFkKDIwMCx7Li4uY29tbW9uLCdDb250ZW50LVR5cGUnOid0ZXh0L2phdmFzY3JpcHQ7IGNoYXJzZXQ9dXRmLTgnLCdDb250ZW50LUxlbmd0aCc6Ynl0ZXMubGVuZ3RoLAogICAnQ2FjaGUtQ29udHJvbCc6J3B1YmxpYywgbWF4LWFnZT0zMTUzNjAwMCwgaW1tdXRhYmxlJywnVmFyeSc6J0FjY2VwdC1FbmNvZGluZycsJ1gtQ29udGVudC1UeXBlLU9wdGlvbnMnOidub3NuaWZmJywKICAgLi4uKGVuY29kaW5nPT09J2d6aXAnP3snQ29udGVudC1FbmNvZGluZyc6J2d6aXAnfTp7fSl9KTsKICByZXMuZW5kKHJlcS5tZXRob2Q9PT0nSEVBRCc/dW5kZWZpbmVkOmJ5dGVzKTtyZXR1cm4gdHJ1ZTsKIH07Cn0KCmZ1bmN0aW9uIHNlbGVjdEVuY29kaW5nKGhlYWRlcil7CiBjb25zdCB2YWx1ZXM9bmV3IE1hcCgpOwogZm9yKGNvbnN0IHBhcnQgb2YgU3RyaW5nKGhlYWRlcnx8JycpLnNwbGl0KCcsJykpewogIGNvbnN0IFtuYW1lLC4uLnBhcmFtc109cGFydC50cmltKCkudG9Mb3dlckNhc2UoKS5zcGxpdCgnOycpLm1hcCh4PT54LnRyaW0oKSk7aWYoIW5hbWUpY29udGludWU7CiAgY29uc3QgcT1wYXJhbXMuZmluZCh4PT54LnN0YXJ0c1dpdGgoJ3E9JykpLHF1YWxpdHk9cT9OdW1iZXIocS5zbGljZSgyKSk6MTsKICB2YWx1ZXMuc2V0KG5hbWUsTnVtYmVyLmlzRmluaXRlKHF1YWxpdHkpJiZxdWFsaXR5Pj0wJiZxdWFsaXR5PD0xP3F1YWxpdHk6MCk7CiB9CiBjb25zdCBnemlwPXZhbHVlcy5nZXQoJ2d6aXAnKT8/dmFsdWVzLmdldCgnKicpPz8wOwogY29uc3QgaWRlbnRpdHk9dmFsdWVzLmdldCgnaWRlbnRpdHknKT8/KHZhbHVlcy5nZXQoJyonKT09PTA/MDoxKTsKIHJldHVybiBnemlwPjAmJmd6aXA+PWlkZW50aXR5PydnemlwJzppZGVudGl0eT4wPydpZGVudGl0eSc6Z3ppcD4wPydnemlwJzpudWxsOwp9Cg=="
+        }
+      ]
+    }
+  ],
+  "protectedFiles": [
+    {
+      "relative": "app/configurator/variant-m/acrylic-scene.css",
+      "sha256": "597d501ce2cf1b235a9b0cdc956a1a6336a9fe5077d74eb7327c395401ba263a"
+    },
+    {
+      "relative": "app/configurator/variant-m/completion.css",
+      "sha256": "10d9912e1d99d1bc0530f50537cda909f4016fcf4da9f8e245a7f07e18c1b572"
+    },
+    {
+      "relative": "app/configurator/variant-m/customer-tools.css",
+      "sha256": "280c4fe50b5c70ff15544d74168ba47a4495e0afa273bfd1638d77bbecbf90ac"
+    },
+    {
+      "relative": "app/configurator/variant-m/form-panels.css",
+      "sha256": "d2134fbc85fa118d1e1e1bb2bec7453f397f999219c969d9c13466d3b304b781"
+    },
+    {
+      "relative": "app/configurator/variant-m/layout.css",
+      "sha256": "4720185f58f85f3a07f901a914764708173625834eecae7bf1e0ab0003294b0b"
+    },
+    {
+      "relative": "app/configurator/variant-m/mobile.css",
+      "sha256": "45a96ce87b6edfb121108b901d5f1685b789a901e8418fd52fadc5359c0c8807"
+    },
+    {
+      "relative": "app/configurator/variant-m/modern-layout.css",
+      "sha256": "54105beedbe4884eb02183d04e53b3a63f6b2d5d1322a1599f1b8d91c2bff1b6"
+    },
+    {
+      "relative": "app/configurator/variant-m/modern-navigation.css",
+      "sha256": "1fc314b7c23e2f67b2315e5dac27555674b45a467dcd56b8a53958847c9a55ce"
+    },
+    {
+      "relative": "app/configurator/variant-m/motif-tile-fit.css",
+      "sha256": "3e6b7a90615e305e5feef7b5753949abafb8153cb90625bf5a5019b8d8ecdd4f"
+    },
+    {
+      "relative": "app/configurator/variant-m/neutral-theme.css",
+      "sha256": "664c3df6c34036d12704e0b0efca4bd82f9be9d2aaf6a28cc663bc92fdd74ade"
+    },
+    {
+      "relative": "app/configurator/variant-m/product-design-gallery.css",
+      "sha256": "680a886ac1262a563c84833bccdb02b781a80f39d792f5d2a73718220b8c2362"
+    },
+    {
+      "relative": "app/configurator/variant-m/refinements.css",
+      "sha256": "1b425f5f872e7a571b6a77e489d695ed71c058680c7026eac616100e5bbf1ccf"
+    },
+    {
+      "relative": "app/configurator/variant-m/usability.css",
+      "sha256": "976c809d6495286661487a13db18a35ed62830dfb7b44fab652d6f82451123be"
+    },
+    {
+      "relative": "app/configurator/variant-m/ux-details.css",
+      "sha256": "14236ee67279be7a92fd6c8c99f50a5ad0f8284b52c00708d5ac2a36e682efd1"
+    },
+    {
+      "relative": "app/configurator/variant-m/ux.css",
+      "sha256": "85a9345eaf38cef203954b965e183b592165e7a9eab6cb732d0d88e7d6f32582"
+    },
+    {
+      "relative": "app/configurator/variant-m/view-zoom.css",
+      "sha256": "ce31226dbc655204b04f5a90926f6d280db974e62d40252b20d828967232ea14"
+    },
+    {
+      "relative": "app/configurator/variant-m/workflow.css",
+      "sha256": "947fd37483750f06d7701b06aa30eab4095d381e202bad76f3b76bef9cafa677"
+    },
+    {
+      "relative": "app/workshop/ui/acryl-gallery.css",
+      "sha256": "49d20e9c3a22961bc11fab094529befe576e383f3e7e4afb15422768008a8e8a"
+    },
+    {
+      "relative": "app/workshop/ui/catalog-structure.css",
+      "sha256": "d0f6e1a45ec5903b9da1fb7b6abfc2b2037f7aa8ef0a3369a17ed15c4adfe06d"
+    },
+    {
+      "relative": "app/workshop/ui/catalog.css",
+      "sha256": "c4ee6355c1e0d7e0324d5524597a6417dc0b87337d7301324a1929bd3d55297f"
+    },
+    {
+      "relative": "app/workshop/ui/contours.css",
+      "sha256": "3994c41afd15e89b9447e9b8ea7cf5bddf620fd4321d8bc8c9585690e6972b96"
+    },
+    {
+      "relative": "app/workshop/ui/customer-preview.css",
+      "sha256": "f61081ec4abf25b378fcbdf04b9486205a9facc255b8bbb606fc636eb62c6490"
+    },
+    {
+      "relative": "app/workshop/ui/dashboard.css",
+      "sha256": "26133357bf241ec783684b7682a578f28bafb8e3bca73fab25382bef702f6a35"
+    },
+    {
+      "relative": "app/workshop/ui/design-dashboard.css",
+      "sha256": "3491017150831e555bc4fe807ee8505bd6b36d454457fb4b8a931fdb818c4a49"
+    },
+    {
+      "relative": "app/workshop/ui/editor.css",
+      "sha256": "865103fd587649767a783117549cd950a8d34fcde5906d3b8d18d5a8a3ba328f"
+    },
+    {
+      "relative": "app/workshop/ui/form-customer.css",
+      "sha256": "524040344cbac3a698a4c8dd6146ba2dc9b10560066e34f6389b3a355d62c6e5"
+    },
+    {
+      "relative": "app/workshop/ui/form-product.css",
+      "sha256": "25764b2d2204fcfa96a26f04537acd723a6e7d15b2b7b9ed7f891c69b606b3fd"
+    },
+    {
+      "relative": "app/workshop/ui/form-variants.css",
+      "sha256": "ec1d48d7625457c474942e8ad3f16150da618b772edc80450f280c2d4c413980"
+    },
+    {
+      "relative": "app/workshop/ui/konfis.css",
+      "sha256": "abe154f148c6d8baa99c697dc312d20533d572aa7118926a6be282b84bdd8c9e"
+    },
+    {
+      "relative": "app/workshop/ui/motif-searches.css",
+      "sha256": "3e569e2247253b38d550925ef6e38fb31d2309eda55470d842f56a87b8d147d7"
+    },
+    {
+      "relative": "app/workshop/ui/production-profiles.css",
+      "sha256": "9975c9ae63350445228a8cd4d4580bc87b5262c60bef285787b8d1c778eb0718"
+    },
+    {
+      "relative": "app/workshop/ui/review-snapshots.css",
+      "sha256": "4b22b50893307852c5105166a916893aea2e9f3d1239e55357c13d3e24ef3e39"
+    },
+    {
+      "relative": "app/workshop/ui/revision-compare.css",
+      "sha256": "b1fb7a7673c75b69986971d414ba146077b98957907e5dcd7b918d77c074e791"
+    },
+    {
+      "relative": "app/workshop/ui/style.css",
+      "sha256": "04ce55cc1091cbcb24c5cbf2a21648a13def1dc862e051a05dd828a6684eae74"
+    },
+    {
+      "relative": "app/workshop/ui/workshop-shell.css",
+      "sha256": "e725f2f3f3989a3f716a5fbbf5d094e72b423ed6b003db953b3d170c654a6499"
+    },
+    {
+      "relative": "app/configurator/variant-m/option-media.mjs",
+      "sha256": "48821e6157517ef403e7edb6932da8eca3692705f82f7ddeca473404e4b58db0"
+    },
+    {
+      "relative": "app/configurator/variant-m/family-formats.mjs",
+      "sha256": "183d00d611042e2c2d9f6097787859656388adcc6ef92ae52c3c6498e4deb210"
+    },
+    {
+      "relative": "app/configurator/variant-m/build.mjs",
+      "sha256": "b7dfb58afb136ed6ad6939b6a9df0a56c26eef4b16e5926c3b700594dd4fb782"
+    },
+    {
+      "relative": "app/configurator/variant-m/lazy-resources-build.mjs",
+      "sha256": "54311762f0fd24aeb8f177bddc894bd38d6e290f341fbc0632d24ca9d17c0ac6"
+    },
+    {
+      "relative": "app/configurator/variant-m/reference-device-build.mjs",
+      "sha256": "bfc40b56864fd1969f31fa9ee51b0556575afaa56c12ead15ec0fc66488b403b"
+    },
+    {
+      "relative": "app/configurator/mobile-demo/demo.css",
+      "sha256": "856dc180ea883a7a19be89a0862c61f96ddc2cd6fc48179a7e7fa20a0be8a321"
+    },
+    {
+      "relative": "app/configurator/variant-m/bundle-build.mjs",
+      "sha256": "c1cc164a7edb825890c1ebb09941305ef4c1221ec4a9e798db29076c988991bf"
+    },
+    {
+      "relative": "app/workshop/customer-read-scope.mjs",
+      "sha256": "f47460a1fdce7b9328b58fde7fb24f50d8d1c0d70d64c3784f575cd2b93f533a"
+    },
+    {
+      "relative": "app/workshop/repository.mjs",
+      "sha256": "ccc35a82957c63527c6cf5975b9e9aff24e7aa0b6bbf24aff09eab4448a39cc8"
+    },
+    {
+      "relative": "app/workshop/shop-product-binding-store.mjs",
+      "sha256": "42c4999be33367519d9e4656b2a780d625c4578580d5c4ab09b3c0de652c5b48"
+    },
+    {
+      "relative": "app/workshop/ui/shop-entry-client.mjs",
+      "sha256": "1b622fd99e09357e0eba7be5e6bd5f7c3663d9caa7863144c5717a811389cc9f"
+    },
+    {
+      "relative": "app/workshop/ui/shop-warm.mjs",
+      "sha256": "fed78aabfaececc9f8556b92c911a4dc344c2a59818958b73f417a67f23ea1dc"
+    },
+    {
+      "relative": "app/workshop/http.mjs",
+      "sha256": "2a4069c72084e923e544dd6c41fbb624da76a8905f7be808da95e521c78499de"
+    },
+    {
+      "relative": "app/workshop/public-design-previews.mjs",
+      "sha256": "7fb810e1b255130290c99fc9c20734809522fe0b60b2c8b3860331331dbc1ed4"
+    },
+    {
+      "relative": "app/workshop/shop-entry.mjs",
+      "sha256": "8fa170b5bbc4424d7bd551f4bcd4e2c71f53e140ffd201c1545fe19ca7f288a7"
+    },
+    {
+      "relative": "app/configurator/variant-m/refinements.mjs",
+      "sha256": "795300b87cb2895e143e9a70535c239867afb03b6e55bea93934523952a3803b"
+    }
+  ],
+  "lazyGuards": [
+    {
+      "name": "stempel.json",
+      "sha256": "f140ea57a6f9e82c49eb6b2db2e672a8fb0de49c5b5a173bc8cf295c9b59a8a8"
+    },
+    {
+      "name": "reference-device-737e6ec7d51ba6f8.js",
+      "sha256": "737e6ec7d51ba6f850f0ec830feb53176432a122984d0caca76b277d57c646b8"
+    }
+  ],
+  "expected": {
+    "html": "ddcdc1f39eabd95ea2d298d2940bc83f99df24b1fcf38b0cf8e7836c043d7993",
+    "htmlBytes": 374704,
+    "bundles": [
+      {
+        "name": "editor-2e3da3b988eb0da4.mjs",
+        "sha256": "b227638c16aebd6cd7c685c44d3ace5b75205e3e1774b5ddd39c34c9d32e1ccf",
+        "bytes": 37895,
+        "gzipSha256": "def2dc087e7060dd1fbccd82e7b3fe8a4fc1029526927a55f9b1ca4abb2a6169",
+        "gzipBytes": 12418
+      },
+      {
+        "name": "editor-69eb9880b804359a.mjs",
+        "sha256": "7601bdd524c58ddacbd0edf5e4067139002f220c67763e7eb7dafd8dbb8331a3",
+        "bytes": 3342,
+        "gzipSha256": "dccea5df39be2913d38d9bd0a5115d3d8dea97ace54af1ce9ba157b6c9a4b348",
+        "gzipBytes": 1614
+      },
+      {
+        "name": "editor-b9827ca8587a6c7b.mjs",
+        "sha256": "8b8be52b19d5c759adb60ee2966c30fb57e1bac28a3376f1d5397f7d5c78a4d1",
+        "bytes": 1453655,
+        "gzipSha256": "fc05623634fc549aea06c225b5753351310f18453c99f8d2e0fb679abe8cb7d3",
+        "gzipBytes": 484942
+      },
+      {
+        "name": "editor-bf7d088b9bdf015e.mjs",
+        "sha256": "85980521d93b13147e844a0bf7986f128ff92fdd078fecead57f2494f0db513c",
+        "bytes": 134324,
+        "gzipSha256": "f0363d6be516e4df83012046a1e599a0beca8e555b0361dc746dce64d8bfd4f8",
+        "gzipBytes": 38138
+      },
+      {
+        "name": "editor-c419119a6ef437c6.mjs",
+        "sha256": "d6230c6059e2b8b5e4334ea0d3a401aa41f362b6fa3fe8035b8784b74d7ef78c",
+        "bytes": 7915,
+        "gzipSha256": "4b412bd07d5838b1cd4b9e60f88ae6e5b1c2f09e210f77d7800f778c739e5a25",
+        "gzipBytes": 3037
+      },
+      {
+        "name": "editor-e1e24f0ee6b66daf.mjs",
+        "sha256": "d4fc652911bec1326419762462fb206660c26d5d97e9823e16501c179262a58c",
+        "bytes": 10914,
+        "gzipSha256": "8731a573ad56981184aeb0407a9cfa17920818e0e67c4f31a691ed37004911e8",
+        "gzipBytes": 3880
+      }
+    ]
+  },
+  "previousBundles": [
+    {
+      "name": "editor-2e3da3b988eb0da4.mjs",
+      "sha256": "b227638c16aebd6cd7c685c44d3ace5b75205e3e1774b5ddd39c34c9d32e1ccf"
+    },
+    {
+      "name": "editor-69eb9880b804359a.mjs",
+      "sha256": "7601bdd524c58ddacbd0edf5e4067139002f220c67763e7eb7dafd8dbb8331a3"
+    },
+    {
+      "name": "editor-bf7d088b9bdf015e.mjs",
+      "sha256": "85980521d93b13147e844a0bf7986f128ff92fdd078fecead57f2494f0db513c"
+    },
+    {
+      "name": "editor-c419119a6ef437c6.mjs",
+      "sha256": "d6230c6059e2b8b5e4334ea0d3a401aa41f362b6fa3fe8035b8784b74d7ef78c"
+    },
+    {
+      "name": "editor-e1e24f0ee6b66daf.mjs",
+      "sha256": "d4fc652911bec1326419762462fb206660c26d5d97e9823e16501c179262a58c"
+    },
+    {
+      "name": "editor-e49b3da45a697a36.mjs",
+      "sha256": "f3dbf79b06a3c5c9ff617fd2aef8e972df44a4d0cfe8bf38d4b04260b07ab133"
+    }
+  ],
+  "baselineReceiptCanonicalSha": "33bbe22b8222276cc0e6c290310ef9f9118a07d0f569bd382233f3c28683c308",
+  "installer": {
+    "name": "install-performance-followup.cjs",
+    "sha256": "9aa96ac7f9cbbdc3a66a19c26e42b6621959134f1eb60b6ebe77f1cf02ab63b3",
+    "bytes": 29452
+  },
+  "gzip": {
+    "name": "install-performance-followup.cjs.gz",
+    "sha256": "964a211db4141d3c4df1695bdafd09c9590d579af517baaafcb69f122886a529",
+    "bytes": 16208
+  }
+}

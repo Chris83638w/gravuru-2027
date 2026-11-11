@@ -31,6 +31,19 @@ const eventTarget=()=>({listeners:{},addEventListener(type,fn){(this.listeners[t
 const dispatch=async(target,type,event)=>{for(const fn of target.listeners[type]||[])await fn(event);};
 const inertEvent=target=>({target,preventDefault(){},stopImmediatePropagation(){}});
 
+test('real tab handler preserves legacy text fallback and never reopens a disabled module',()=>{
+ const run=config=>{
+  const tabs=['options','design','text','motif','upload'].map(id=>({id:'ux-tab-'+id,dataset:{uxTab:id},hidden:!!config?.moduleProfile&&id==='text',disabled:!!config?.moduleProfile&&id==='text',setAttribute(){},focus(){}}));
+  const panels=tabs.map(tab=>({id:tab.id.replace('tab','panel'),hidden:false}));
+  const env={config,$:selector=>tabs.find(tab=>'#'+tab.id===selector),all:selector=>selector==='[data-ux-tab]'?tabs:panels,activeTab:null,el:{uxUpdateTextUI(){}}};
+  vm.createContext(env);vm.runInContext(line('ux.mjs','function showTab(key,focus=false)'),env);
+  vm.runInContext("showTab('missing')",env);const fallback=env.activeTab;
+  vm.runInContext("showTab('text')",env);return {fallback,selected:env.activeTab,visible:panels.filter(p=>!p.hidden).map(p=>p.id)};
+ };
+ assert.equal(run({}).fallback,'text');
+ assert.deepEqual(run({moduleProfile:{}}),{fallback:'options',selected:'options',visible:['ux-panel-options']});
+});
+
 test('direct-link UI passes the active text policy through to the real text importer',()=>{
  const text='N'.repeat(100),object={id:'name',type:'text',text:'Name',required:true,maxLength:32},template={objects:[object],themes:['namensschilder']};
  const env={moduleEnabled,link:{text,notes:[]},config:{textRules:{maxCharsPerField:80}},profile:{},design:()=>template,dirty:false,applyLinkText,el:{state:{objects:[{...object}]},normalize(){},sync(){}}};

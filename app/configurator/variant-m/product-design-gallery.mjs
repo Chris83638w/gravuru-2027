@@ -1,3 +1,4 @@
+import {saveDataActive,idleScheduler} from './preload-queue.mjs';
 import {createGalleryPager} from './gallery-pager.mjs';
 import {captureDesignContent,carryDesignContent,capturePhotoFiles} from './design-content-transfer.mjs';
 import {preserveProductSelection} from './product-design-transfer.mjs';
@@ -42,22 +43,35 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
  const themeLabel=gallery.querySelector('.ux-product-themes'),themes=themeLabel.querySelector('select');
  grid.id='ux-design-search-results';
  const pager=createGalleryPager((page,theme,options,q)=>api.load(page,theme,options,q));
+ let epoch=0,previewEpoch=0,previewsActive=true,switching=false,retryTimer,prepareRetries=0;const urls=[],queue=[],active=new Set(),requests=new Set();
+ const cancelPreviews=()=>{previewEpoch++;queue.length=0;for(const controller of active)controller.abort();active.clear();for(const {img} of requests)if(!img.src)img.previewStarted=false;};
+ const pump=()=>{while(previewsActive&&active.size<2&&queue.length){const request=queue.shift(),{item,img,version}=request;
+  if(version!==epoch||img.previewStarted)continue;img.previewStarted=true;const controller=new AbortController(),generation=previewEpoch;active.add(controller);
+  Promise.resolve().then(()=>{if(!controller.signal.aborted)return api.preview(item.target,item.previewUrl,controller.signal);}).then(blob=>{
+   if(version!==epoch||generation!==previewEpoch||controller.signal.aborted)return;const url=URL.createObjectURL(blob);urls.push(url);img.src=url;img.alt=item.designName;
+  }).catch(()=>{if(version===epoch&&generation===previewEpoch&&!controller.signal.aborted){img.alt='Vorschau nicht verfügbar';img.previewStarted=false;}
+  }).finally(()=>{if(active.delete(controller))pump();});}};
+ const observer=typeof IntersectionObserver==='function'?new IntersectionObserver(entries=>{if(!previewsActive)return;for(const entry of entries)if(entry.isIntersecting){observer.unobserve(entry.target);queue.push(entry.target.previewRequest);pump();}},{rootMargin:'150px'}):null;
+ function warmPreviews(){
+  if(!observer||!previewsActive||saveDataActive(window.navigator?.connection))return;
+  const version=epoch,generation=previewEpoch,warmRequests=[...requests].filter(request=>request.warm&&!request.img.src);
+  idleScheduler(window,{timeout:600})(()=>{if(previewsActive&&version===epoch&&generation===previewEpoch){queue.push(...warmRequests);pump();}});
+ }
+ function setPreviewActivity(value){
+  if(previewsActive===value)return;previewsActive=value;
+  if(!value){observer?.disconnect();cancelPreviews();return;}
+  for(const request of requests)if(!request.img.src){if(observer)observer.observe(request.img);else queue.push(request);}
+  warmPreviews();pump();
+ }
+ const unsubscribePreviews=api.onPreviewActivity?.(setPreviewActivity);
  const search=installDesignSearchControl({container:section,before:themeLabel,onChange:()=>load(),onInvalidate:()=>invalidate()});
- let epoch=0,switching=false,retryTimer,prepareRetries=0;const urls=[],queue=[];let active=0;
- const pump=()=>{while(active<2&&queue.length){const request=queue.shift(),{item,img,version}=request;
-  if(version!==epoch||img.previewStarted)continue;img.previewStarted=true;active++;
-  Promise.resolve().then(()=>api.preview(item.target,item.previewUrl)).then(blob=>{
-   if(version!==epoch)return;const url=URL.createObjectURL(blob);urls.push(url);img.src=url;img.alt=item.designName;
-  }).catch(()=>{img.alt='Vorschau nicht verfügbar';img.previewStarted=false;
-  }).finally(()=>{active--;pump();});}};
- const observer=typeof IntersectionObserver==='function'?new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){observer.unobserve(entry.target);queue.push(entry.target.previewRequest);pump();}},{rootMargin:'150px'}):null;
  async function choose(item){
   if(switching)return;
   if(item.current&&profile().designs.some(d=>d.id===item.designId)){if(item.designId!==el.state.designId)el.chooseDesign(item.designId);return;}
-  switching=true;grid.inert=true;back.disabled=true;status.textContent='Design wird übernommen …';
+  switching=true;if(!api.onPreviewActivity)setPreviewActivity(false);grid.inert=true;back.disabled=true;status.textContent='Design wird übernommen …';
   try{const content=captureDesignContent(el.state.objects,design());await api.choose(item.target,{selection:{options:structuredClone(el.state.mOptions||{}),quantity:Number(r.querySelector('[data-fk-quantity]')?.value||1)},content,photoFiles:capturePhotoFiles(content,files),sizeLabel:productChoiceInfo(item)});status.textContent='';}
   catch(error){status.textContent=error.message;}
-  finally{switching=false;grid.inert=false;back.disabled=false;}
+  finally{switching=false;if(!api.onPreviewActivity)setPreviewActivity(true);grid.inert=false;back.disabled=false;}
  }
  async function load(){
   if(pager.loading||pager.next===null)return;const version=epoch;more.disabled=true;themes.disabled=true;status.textContent='Designs werden geladen …';
@@ -69,6 +83,7 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
     if(prepareRetries++<4)retryTimer=setTimeout(load,1200);return;
    }
    prepareRetries=0;themeLabel.hidden=!result.hasTheme;more.textContent='Weitere Designs';
+   const initial=grid.children.length===0;let warmCount=0;
    for(const item of result.items){
     const card=document.createElement('div');card.className='ux-product-card ux-choice-tile';
     const select=document.createElement('button');select.type='button';select.className='ux-product-choose';select.setAttribute('aria-pressed',String(item.current&&item.designId===el.state.designId));select.setAttribute('aria-label','Design '+item.designName);
@@ -76,20 +91,22 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
     const img=document.createElement('img');img.alt='Vorschau wird geladen';img.width=240;img.height=160;select.append(img);
     const check=document.createElement('span');check.className='completion-check';check.textContent='✓';check.setAttribute('aria-hidden','true');select.append(check);select.onclick=()=>choose(item);
     card.append(select);grid.append(card);
-    img.previewRequest={item,img,version};if(observer)observer.observe(img);else queue.push(img.previewRequest);
+    img.previewRequest={item,img,version,warm:initial&&warmCount++<3};requests.add(img.previewRequest);
+    if(previewsActive){if(observer)observer.observe(img);else queue.push(img.previewRequest);}
    }
+   warmPreviews();
    if(!observer)pump();status.textContent=query?(result.total===1?'1 Design gefunden':result.total?result.total+' Designs gefunden':'Keine passenden Designs gefunden. Versuche einen anderen Begriff oder leere die Suche.'):(result.total?designGalleryCount(result.total):'Für dieses Produkt sind noch keine weiteren Designs verfügbar.');more.hidden=pager.next===null;
    if(firstPage&&query)el.uxReportDesignSearch?.(query,result.total);
   }catch(error){status.textContent=error.message||'Die Designauswahl ist gerade nicht erreichbar. Bitte erneut versuchen.';more.textContent='Erneut versuchen';more.hidden=false;}
   finally{if(version===epoch){more.disabled=false;themes.disabled=false;}}
  }
- function invalidate(){epoch++;pager.reset();clearTimeout(retryTimer);prepareRetries=0;observer?.disconnect();queue.length=0;grid.replaceChildren();for(const url of urls)URL.revokeObjectURL(url);urls.length=0;more.hidden=true;el.uxReportDesignSearch?.('',0);status.textContent='Designs werden gesucht …';}
+ function invalidate(){epoch++;pager.reset();clearTimeout(retryTimer);prepareRetries=0;observer?.disconnect();cancelPreviews();requests.clear();grid.replaceChildren();for(const url of urls)URL.revokeObjectURL(url);urls.length=0;more.hidden=true;el.uxReportDesignSearch?.('',0);status.textContent='Designs werden gesucht …';}
  function reset(){invalidate();load();}
  themes.onchange=reset;
  // Invalidate stale pages even if size/mounting changes during a pending request.
  let shownFor=JSON.stringify(galleryOptions()??null);
  const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args),now=JSON.stringify(galleryOptions()??null);if(now!==shownFor){shownFor=now;reset();}for(const card of grid.querySelectorAll('.ux-product-choose'))card.setAttribute('aria-pressed',String(card.dataset.productDesignId===el.state.designId));return result;};more.onclick=()=>{clearTimeout(retryTimer);load();};
- window.addEventListener('pagehide',()=>{search.dispose();epoch++;pager.reset();clearTimeout(retryTimer);observer?.disconnect();for(const url of urls)URL.revokeObjectURL(url);},{once:true});
+ window.addEventListener('pagehide',()=>{search.dispose();previewsActive=false;epoch++;pager.reset();clearTimeout(retryTimer);unsubscribePreviews?.();observer?.disconnect();cancelPreviews();for(const url of urls)URL.revokeObjectURL(url);},{once:true});
  el.sync();
  // Begin loading immediately; the editor itself does not wait for thumbnails.
  load();

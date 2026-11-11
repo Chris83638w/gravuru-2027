@@ -51,6 +51,66 @@ export function katalogFor(root,{maxAgeMs=2000,now=Date.now()}={}){
 }
 export const forgetKatalog=()=>opened.clear();
 
+// ---- Zwischenspeicher über Anfragen hinweg (Chris 10.11.2026: Designliste lädt zu langsam) ----
+// Teuer sind je Design die SVG-Analyse und die Prüfsummen der Ziele. Das Ergebnis hängt nur an
+// design.json/design.svg (Zeitstempel+Größe) und am Katalogkontext (Familien, Linien, Schriften,
+// verfügbare Formschriften). Ändert sich eins davon, wird neu gerechnet; nichts wird geraten.
+const targetCache=new Map(),targetsOfCache=new Map();
+const fileStamp=file=>{try{const s=fs.statSync(file);return s.mtimeMs+':'+s.size;}catch{return 'x';}};
+export const designStamp=d=>fileStamp(path.join(d.dir,'design.json'))+'|'+fileStamp(path.join(d.dir,'design.svg'));
+const contextSigs=new WeakMap();
+export function katalogContextSig(katalog,available={}){
+ let byAvailable=contextSigs.get(katalog);if(!byAvailable){byAvailable=new Map();contextSigs.set(katalog,byAvailable);}
+ const availableKey=JSON.stringify(Object.entries(available||{}).map(([k,v])=>[k,typeof v==='string'?v:JSON.stringify(v)]).sort());
+ if(byAvailable.has(availableKey))return byAvailable.get(availableKey);
+ const fonts=[...katalog.fonts.list].map(([name,meta])=>[name,meta?.file??null,meta?.file?fileStamp(meta.file):null]);
+ const sig=createHash('sha256').update(JSON.stringify([...katalog.families.values()])).update(JSON.stringify([...katalog.lines.values()])).update(JSON.stringify(katalog.themes)).update(JSON.stringify(fonts)).update(availableKey).digest('hex');
+ byAvailable.set(availableKey,sig);return sig;
+}
+function cachedTargetsOf(d,katalog){
+ const sig=designStamp(d)+'|'+katalogContextSig(katalog),hit=targetsOfCache.get(d.dir);
+ if(hit&&hit.sig===sig)return hit.value;
+ const value=designTargets(d,katalog);targetsOfCache.set(d.dir,{sig,value});cacheWrites+=1;return value;
+}
+export const forgetDashboardCache=()=>{targetCache.clear();targetsOfCache.clear();};
+// ---- Zwischenspeicher sichern und laden (Paket 1c-2, #229) ----
+// Der kalte Durchlauf einer großen Linie dauert auf dem Server viele Minuten; ein Neustart soll ihn nicht verwerfen.
+// Gesichert werden nur Einträge aus einfachen JSON-Werten. Ein geladener Eintrag gilt wie ein im Speicher liegender nur bei
+// passender Signatur (Zeitstempel+Größe der Designdateien, Linie, Katalogkontext); sonst wird neu gerechnet.
+let cacheWrites=0;
+export const dashboardCacheWrites=()=>cacheWrites;
+const plainJson=value=>{
+ if(value===null)return true;
+ const type=typeof value;
+ if(type==='string'||type==='boolean')return true;
+ if(type==='number')return Number.isFinite(value);
+ if(type!=='object')return false;
+ if(Array.isArray(value)){for(let i=0;i<value.length;i++){if(!(i in value)||!plainJson(value[i]))return false;}return true;}
+ const proto=Object.getPrototypeOf(value);
+ if(proto!==Object.prototype&&proto!==null)return false;
+ for(const key of Object.keys(value))if(!plainJson(value[key]))return false;
+ return true;
+};
+export function exportDashboardCache(){
+ const take=map=>{const out=[];let skipped=0;for(const [dir,entry] of map){if(typeof entry?.sig==='string'&&plainJson(entry.value))out.push([dir,entry.sig,entry.value]);else skipped+=1;}return {out,skipped};};
+ const targets=take(targetCache),targetsOf=take(targetsOfCache);
+ return {targets:targets.out,targetsOf:targetsOf.out,skipped:targets.skipped+targetsOf.skipped};
+}
+export function importDashboardCache(data){
+ let loaded=0;
+ const put=(map,rows)=>{if(!Array.isArray(rows))return;for(const row of rows){if(!Array.isArray(row)||row.length!==3)continue;const [dir,sig,value]=row;if(typeof dir!=='string'||typeof sig!=='string'||value===undefined||map.has(dir))continue;map.set(dir,{sig,value});loaded+=1;}};
+ put(targetCache,data?.targets);put(targetsOfCache,data?.targetsOf);
+ return loaded;
+}
+
+// Reihenfolge (Chris 10.11.2026: „Prio haben immer unsere Designs aus dem Katalog“):
+// 0 = unser Design aus dem Corel-Bestand (Original oder Übertragung), 1 = neu entworfen, 2 = nur Bestand ohne Lieferform 2.
+export function herkunftRang(j){
+ const from=j?.transfer?.fromKey??j?.transfer?.from??null;
+ if(typeof from==='string'&&from)return 0;
+ return typeof j?.source==='string'&&/^\S+ \(Bestand[,)]/.test(j.source)?0:1;
+}
+
 // ---- Schriften ----
 function fontReplacements(root){
  const dir=path.join(root,'schriften'),map=new Map();
@@ -263,6 +323,9 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
  const referenced=new Set(referencedMasters(katalog,line));
  const l2=katalog.designs.masters.filter(d=>designOfLine(ctx,d)||referenced.has(d));
  const rows=[],byBestandId=new Map(),targetVersionCache=new Map();
+ // Katalogkontext einmal je Anfrage: die Signatur enthält die verfügbaren Formschriften (mehrere MB). Je Design neu gebildet
+ // kostete das auf dem Server rund zwei Minuten je Linie (Befund 10.11.2026, #229).
+ const contextSig=katalogContextSig(katalog,available);
  for(const d of l2){
   const j=d.json||{},texts=Array.isArray(j.texts)?j.texts.filter(record):[],motifs=Array.isArray(j.motifs)?j.motifs.filter(record):[];
   const fonts=[...new Set([...(Array.isArray(j.fonts)?j.fonts:[]),...texts.map(t=>t.font)].filter(f=>typeof f==='string'&&f))].map(n=>fontStatus(n,katalog,replacements));
@@ -275,8 +338,13 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
    texts:{count:texts.length,fonts:fonts.map(f=>f.name),sample:texts.map(t=>typeof t.text==='string'?t.text:'').filter(Boolean).slice(0,4)},fonts,fontsOriginal:Array.isArray(j.fontsOriginal)?j.fontsOriginal.filter(f=>typeof f==='string'):[],
    motifs:motifs.length,photos:Array.isArray(j.photos)?j.photos.length:0,themes:(d.themes||[]).map(id=>({id,name:themeName(id)})),
    lieferform2:{reihe:d.seriesFolder,dir:path.relative(root,d.dir).split(path.sep).join('/'),transferFrom:j.transfer?.fromKey??j.transfer?.from??null},bestand:null,
-   files:filesFor(root,{reihe:d.seriesFolder,id:d.id}),reasons:[],warnings:Array.isArray(j.warnings)?j.warnings.filter(w=>typeof w==='string'):[]};
-  Object.assign(row,dashboardDesignTargets(d,katalog,line,{checksumFor:family=>{try{return designTargetChecksum(d,family,d.svg(),targetFontVersions(d,katalog,available,targetVersionCache));}catch{return null;}}}));
+   files:filesFor(root,{reihe:d.seriesFolder,id:d.id}),reasons:[],warnings:Array.isArray(j.warnings)?j.warnings.filter(w=>typeof w==='string'):[],
+   herkunftRang:herkunftRang(j)};
+  {const sig=designStamp(d)+'|'+line.id+'|'+contextSig,hit=targetCache.get(d.dir);
+   let value=hit&&hit.sig===sig?hit.value:null;
+   if(!value){let svgText=null,versions=null;// SVG und Schriftstände einmal je Design, nicht je Familie
+    value=dashboardDesignTargets(d,katalog,line,{checksumFor:family=>{try{svgText??=d.svg();versions??=targetFontVersions({...d,svg:()=>svgText},katalog,available,targetVersionCache);return designTargetChecksum(d,family,svgText,versions);}catch{return null;}}});targetCache.set(d.dir,{sig,value});cacheWrites+=1;}
+   Object.assign(row,structuredClone(value));}
   if(!series)row.reasons.push(ctx.families.length?'alte Größe: '+row.plate[0]+' × '+row.plate[1]+' mm passt in keine Formatreihe der Familie (nur Einpassen, keine Übernahme).':'Formatreihe offen (Linie ohne Familie).');
   if(!d.themes||!d.themes.length)row.reasons.push('kein Thema zugeordnet.');
   else if(!d.themes.some(t=>ctx.themeIds.has(t)))row.reasons.push('Thema passt zu keiner Unterkategorie der Linie ('+d.themes.join(', ')+').');
@@ -321,7 +389,7 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
      production:{isProduction:false,hasVersion:productionOf.has(e.id),of:productionOf.get(e.id)??null},duplicate:typeof e.duplicateOf==='string'?{of:e.duplicateOf,identical:e.identicalDuplicate===true}:null,
      texts:{count:texts.length,fonts:fonts.map(f=>f.name),sample:texts.map(t=>typeof t.text==='string'?t.text:'').filter(Boolean).slice(0,4)},fonts,fontsOriginal:[],motifs:Number.isInteger(e.motifCount)?e.motifCount:null,photos:Array.isArray(e.photoFiles)?e.photoFiles.length:0,themes:[],
      lieferform2:null,bestand:{base:sheet.base,id:e.id,labelColor:e.labelColor??null,formatreihe:sheet.formatreihe??null,alteGroesse:sheet.alteGroesse===true,customizationIds:Array.isArray(e.customizationIds)?e.customizationIds:[]},
-     files:filesFor(root,{bestand:sheet.base,id:e.id}),reasons:['keine Lieferform 2.'+(selectable?'':' Im Bogen rot = nicht wählbar.')],warnings:[],konfi:{imported:false,products:[]}};
+     files:filesFor(root,{bestand:sheet.base,id:e.id}),herkunftRang:2,reasons:['keine Lieferform 2.'+(selectable?'':' Im Bogen rot = nicht wählbar.')],warnings:[],konfi:{imported:false,products:[]}};
     if(sheet.alteGroesse===true)row.reasons.push('alte Größe (Bogen außerhalb der neuen Formatreihen).');
     if(row.duplicate)row.reasons.push(row.duplicate.identical?'Doppelt: wie '+row.duplicate.of+'.':'Abweichende Fassung zu '+row.duplicate.of+'.');
     for(const f of fonts)if(f.status==='fehlt')row.reasons.push('Schrift fehlt: '+f.name+'.');
@@ -332,7 +400,7 @@ export function designDashboard(root,{linie=null,reihe=null,material=null,status
  }
  const startDesignSummary=attachMainProducts(katalog,line,rows,{fonts});
  for(const row of rows)row.status=row.lieferform2?(row.reasons.length?'prüfen':'ok'):'fehlt';
- rows.sort((a,b)=>(b.katalogPrio===1)-(a.katalogPrio===1)||natural.compare(a.id,b.id));
+ rows.sort((a,b)=>(a.herkunftRang??1)-(b.herkunftRang??1)||(b.katalogPrio===1)-(a.katalogPrio===1)||natural.compare(a.id,b.id));
  const count=list=>{const c={total:list.length,ok:0,'prüfen':0,fehlt:0,selectable:0,lieferform2:0,bestandOnly:0,hidden:0,freigegeben:0};for(const r of list){c[r.status]++;if(r.released)c.freigegeben++;if(r.selectable)c.selectable++;if(r.lieferform2)c.lieferform2++;else if(r.source==='bestand')c.bestandOnly++;if(r.hidden)c.hidden++;}return c;};
  const groups=(key)=>{const m=new Map();for(const r of rows){const k=r[key]??'offen';if(!m.has(k))m.set(k,[]);m.get(k).push(r);}return [...m].sort((a,b)=>natural.compare(a[0],b[0])).map(([k,list])=>({key:k,counts:count(list)}));};
  const reihen=groups('reihe'),formatreihen=groups('formatreihe'),materials=groups('material');
@@ -358,7 +426,7 @@ function availableFormGroups(katalog,families,masters,rows){
  });
 }
 // Bestätigte oder eindeutig aufgelöste Legacy-Ziele bestimmen die Linienzugehörigkeit.
-function designOfLine(ctx,d){return designTargets(d,ctx.katalog).some(target=>ctx.line.families.includes(target.familie));}
+function designOfLine(ctx,d){return cachedTargetsOf(d,ctx.katalog).some(target=>ctx.line.families.includes(target.familie));}
 
 // ---- Dateien unter designs/ (SVG/PNG-Vorschau) ----
 export function designFile(root,{reihe=null,bestand=null,id,file}){
@@ -502,4 +570,6 @@ export function targetFontVersions(master,katalog,available={},cache=null){
  }
  return versions;
 }
-export function designTargetChecksum(master,family,svgText=master.svg(),versions={}){return createHash('sha256').update(JSON.stringify(master.json)).update(svgText).update(JSON.stringify(family)).update(JSON.stringify(Object.entries(versions).sort(([a],[b])=>a.localeCompare(b)))).digest('hex');}
+const familyJsonText=new WeakMap();// gleiche Prüfsumme wie bisher, Familie nur einmal je geöffnetem Katalog serialisiert
+const familyJson=family=>{if(!family||typeof family!=='object')return JSON.stringify(family);let text=familyJsonText.get(family);if(text===undefined){text=JSON.stringify(family);familyJsonText.set(family,text);}return text;};
+export function designTargetChecksum(master,family,svgText=master.svg(),versions={}){return createHash('sha256').update(JSON.stringify(master.json)).update(svgText).update(familyJson(family)).update(JSON.stringify(Object.entries(versions).sort(([a],[b])=>a.localeCompare(b)))).digest('hex');}

@@ -12,7 +12,7 @@ const read=url=>fs.readFileSync(new URL('.'+url,app),'utf8');
 const entry='/configurator/mobile-demo/shop-shell.mjs';
 const presentation=collectModules([entry],{read});
 
-test('R15 presentation stays outside the native blob bundle and resolves its complete real module graph',()=>{
+test('R15 remains an optional separate presentation graph with the same hosted source fallback',()=>{
  const native=collectModules(BUNDLE_ENTRIES,{read});
  assert.equal(native.modules.has(entry),false);
  const index=new Map(native.order.map((url,i)=>[url,i]));
@@ -21,6 +21,7 @@ test('R15 presentation stays outside the native blob bundle and resolves its com
   if(url.endsWith('/ux.mjs'))assert.match(transformed.code,/gravuruModules\.import\('\/configurator\/mobile-demo\/shop-shell\.mjs'\)/);
  }
  assert.ok(presentation.modules.size>13);
+ assert.ok(presentation.modules.has('/configurator/mobile-demo/compact-controls.mjs'),'the real shop-shell import graph includes compact controls');
  for(const url of presentation.order){
   assert.ok(!url.includes('gallery-workbench')&&!url.includes('browser-model-resources'),url);
   if(url.startsWith('/configurator/mobile-demo/'))assert.equal(isPrioPresentationAsset(url),true,url);

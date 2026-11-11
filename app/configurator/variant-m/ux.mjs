@@ -3,6 +3,7 @@ import {moduleEnabled,photoWithVectorLogoAllowed} from './module-profile.mjs';
 import {moduleTabs} from './module-runtime.mjs';
 import {canDeleteTemplateElement} from './element-rights.mjs';
 import {installGalleryWorkbench} from './gallery-workbench.mjs';
+import {observeVisibleResources} from './visible-resource-loader.mjs';
 import {embedPreviewUploads} from './preview-uploads.mjs';
 import {installDialogDismissal} from './dialog-dismiss.mjs';
 import {installCustomerHelp} from './customer-help.mjs';
@@ -126,8 +127,8 @@ export async function installUX(el,config,legacy,{attach}={}){
   $('.fk-options h2').textContent=executionHeading(config);
   $('#ux-panel-design').append($('.c-design-section'));
   $('#ux-panel-motif').append($('#panel-motif'));
-  // Ladezeit: Motivbibliothek laden, sobald der Motivbereich sichtbar wird (Reiter oder mobiler Schritt „Foto / Motiv“).
-  {const panel=$('#ux-panel-motif');if(panel&&el.uxEnsureMotifLibrary)new MutationObserver(()=>{if(!panel.hidden)el.uxEnsureMotifLibrary().catch(()=>{});}).observe(panel,{attributes:true,attributeFilter:['hidden']});}
+  // Metadata is already complete; opening a panel must not download 703 contours.
+  {const panel=$('#ux-panel-motif');if(panel&&el.uxEnsureVisibleMotifs)new MutationObserver(()=>{if(!panel.hidden)el.uxEnsureVisibleMotifs();}).observe(panel,{attributes:true,attributeFilter:['hidden']});}
   if($('[data-m-invalid]'))$('.ux-editor').append($('[data-m-invalid]'));
   for(const s of all('#panel-motif summary'))if(s.textContent.includes('Motivideen'))s.textContent='Bestseller Motive';
   $('[data-bestsellers]').open=false;
@@ -154,14 +155,14 @@ export async function installUX(el,config,legacy,{attach}={}){
   const tierNote=document.createElement('small');tierNote.className='ux-quantity-tiers';tierNote.dataset.uxTiers='';tierNote.hidden=true;
   {const tierLabels=config?quantityTierLabels(config):[];tierNote.textContent=tierLabels.join(' · ');tierNote.hidden=!tierLabels.length;const qtyLabel=$('label.fk-quantity')||$('[data-fk-quantity]')?.parentElement;if(qtyLabel)qtyLabel.after(tierNote);else $('[data-fk-total]').parentElement.append(tierNote);}
   const detailsButton=document.createElement('button');detailsButton.type='button';detailsButton.className='ux-price-details';detailsButton.dataset.ux='price';detailsButton.textContent='Preisdetails';$('[data-fk-total]').parentElement.append(detailsButton);
-  let activeTab='options',fontChoice='',fontObject='',fieldSignature='',uploadKind=photoEnabled?'photo':'logo',replacing=null,dirty=false;
+  let activeTab='options',fontChoice='',fontObject='',fieldSignature='',uploadKind=photoEnabled?'photo':'logo',replacing=null,dirty=false,fontRows=null;
   const selected=()=>el.state.objects.find(o=>o.id===el.state.selected);
   const design=()=>chosenProfile().designs.find(d=>d.id===el.state.designId);
   const say=message=>{$('[data-ux-status]').textContent=message;};
   const finishCustomerRights=beginCustomerRights({el,r,config,selected,select,say});
   const finishTemplateDeletion=installTemplateDeletion({el,r,config,selected,mutate,say});
   const selectable=()=>selected()&&!selected().uxLocked&&!selected().uxHidden;
-  function showTab(key,focus=false){if(!$('#ux-tab-'+key)||$('#ux-tab-'+key).hidden||$('#ux-tab-'+key).disabled)key=all('[data-ux-tab]').find(b=>!b.hidden&&!b.disabled)?.dataset.uxTab;activeTab=key;for(const b of all('[data-ux-tab]')){const is=b.dataset.uxTab===key;b.setAttribute('aria-selected',is);b.tabIndex=is?0:-1;}for(const p of all('.ux-panel'))p.hidden=p.id!=='ux-panel-'+key;if(key==='text')el.uxUpdateTextUI?.();if(focus)$('#ux-tab-'+key)?.focus();}
+  function showTab(key,focus=false){if(!$('#ux-tab-'+key)||$('#ux-tab-'+key).hidden||$('#ux-tab-'+key).disabled)key=config?.moduleProfile===undefined?'text':all('[data-ux-tab]').find(b=>!b.hidden&&!b.disabled)?.dataset.uxTab;activeTab=key;for(const b of all('[data-ux-tab]')){const is=b.dataset.uxTab===key;b.setAttribute('aria-selected',is);b.tabIndex=is?0:-1;}for(const p of all('.ux-panel'))p.hidden=p.id!=='ux-panel-'+key;if(key==='text')el.uxUpdateTextUI?.();if(focus)$('#ux-tab-'+key)?.focus();}
   $('.ux-tabs').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const tabs=all('[data-ux-tab]').filter(b=>!b.hidden&&!b.disabled),i=tabs.indexOf(e.target);if(!tabs.length)return;const next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;showTab(tabs[next].dataset.uxTab,true);});
   el.uxShowSection=section=>showTab(({font:'text',arrangement:'text',form:'options',start:'design',logo:'upload'})[section]||section);
   el.revealEditor=function(o){if(o?.type==='text')showTab('text');else if(o?.type==='photoSlot'||o?.uxUploadId)showTab('upload');};
@@ -293,8 +294,9 @@ export async function installUX(el,config,legacy,{attach}={}){
     if(isText){$('[data-ux-font-name]').textContent=fontDisplayName(o.font);if(r.activeElement!==$('#ux-size'))$('#ux-size').value=(config?.workbench?.embedded?roundEdit(o.size):displayTextSize(o));$('[data-ux=bold]').setAttribute('aria-pressed',!!o.bold);$('[data-ux=italic]')?.setAttribute('aria-pressed',!!o.italic);if($('[data-ux-color]'))$('[data-ux-color]').value=o.color||'#202824';for(const f of all('[data-ux-prop]'))if(r.activeElement!==f)f.value=(config?.workbench?.embedded?roundEdit(o[f.dataset.uxProp]||0):Math.round((o[f.dataset.uxProp]||0)*10)/10);}
     el.uxUpdateTextUI?.();
   }
-  function renderFontPage(){const o=el.state.objects.find(o=>o.id===fontObject);if(!o)return;const fonts=availableFonts();
+  function renderFontPage(){const o=el.state.objects.find(o=>o.id===fontObject);if(!o)return;const fonts=selectionIds((el.uxKnownFonts?.()||Object.keys(el.fontData)).sort((a,b)=>a.localeCompare(b,'de')),profileChoices?.fonts),grid=$('.ux-font-grid'),scrollTop=grid.scrollTop,focusedFont=r.activeElement?.dataset?.uxFont;
     $('.ux-font-grid').innerHTML=fonts.length?fonts.map(name=>{
+      if(!el.fontData[name])return `<button type="button" data-ux-font="${esc(name)}" disabled aria-busy="true" aria-label="Schrift ${esc(fontDisplayName(name))} wird geladen"><svg viewBox="0 0 100 20" aria-hidden="true"></svg><span>${esc(fontDisplayName(name))}<small>Schriftprobe wird geladen …</small></span></button>`;
       const text={...o,text:o.text.trim()?o.text:'Dein Text',font:name,size:12,bold:false};let unavailable=false;
       try{measureText(text,el.fontData);}catch{
         unavailable=true;
@@ -306,7 +308,11 @@ export async function installUX(el,config,legacy,{attach}={}){
     }).join(''):'<p>Für dieses Produkt sind keine weiteren Schriften freigegeben. Die Schrift aus deinem Design bleibt erhalten.</p>';
     // Letter advances omit calligraphic overhangs. Fit the actual ink once the
     // dialog is visible, so Safari and Chromium measure a rendered SVG.
-    for(const svg of all('.ux-font-grid svg')){const b=svg.querySelector('[data-font-ink]').getBBox();if(b.width>0&&b.height>0){const pad=Math.max(1,b.height*.12);svg.setAttribute('viewBox',`${b.x-pad} ${b.y-pad} ${b.width+2*pad} ${b.height+2*pad}`);}}
+    for(const svg of all('.ux-font-grid svg')){const b=svg.querySelector('[data-font-ink]')?.getBBox();if(b?.width>0&&b.height>0){const pad=Math.max(1,b.height*.12);svg.setAttribute('viewBox',`${b.x-pad} ${b.y-pad} ${b.width+2*pad} ${b.height+2*pad}`);}}
+    grid.scrollTop=scrollTop;
+    if(focusedFont)all('[data-ux-font]').find(row=>row.dataset.uxFont===focusedFont)?.focus({preventScroll:true});
+    fontRows??=observeVisibleResources({root:grid,selector:'[data-ux-font]',key:row=>row.dataset.uxFont,ready:name=>!!el.fontData[name],load:name=>el.uxEnsureFonts([name]),changed:()=>{if(dialogs.font.open)renderFontPage();}});
+    fontRows.refresh();
   }
   function updateGallery(){const tab=$('#ux-tab-design'),hasChoice=moduleEnabled(config,'designs')&&(el.uxHasProductDesignGallery===true||profile.designs.length>0);tab.hidden=!hasChoice;tab.disabled=!hasChoice;tab.tabIndex=hasChoice&&activeTab==='design'?0:-1;$('.ux-tabs').style.setProperty('--ux-tab-count',all('[data-ux-tab]').filter(b=>!b.hidden).length);if(!hasChoice&&activeTab==='design')showTab('text');const cards=all('[data-c-design]');const filters=Object.fromEntries(all('[data-m-filter]').map(f=>[f.dataset.mFilter,f.value]));let shown=0;for(const card of cards){const d=designFor(card.dataset.cDesign);card.hidden=!d||!!((filters.category&&d?.category!==filters.category)||(filters.collection&&!d?.collections?.includes(filters.collection)));if(!card.hidden)shown++;const note=card.querySelector('small');if(note){const review=familyDesignReviewNote(config,el.state.mOptions,card.dataset.cDesign);note.textContent=review;note.hidden=!review;note.toggleAttribute('data-family-review',!!review);}}const count=$('[data-c-count]');if(count)count.textContent=shown+' Designs';}
   const designFor=id=>chosenProfile().designs.find(d=>d.id===id);
@@ -348,10 +354,10 @@ export async function installUX(el,config,legacy,{attach}={}){
     if(storage)sessionGuard=createSessionGuard({storage,productId:profile.binding.productId,profileRevision:profile.revision,
       payload:()=>({draft:el.draftPayload({draft:true}),uploads:uploadReferences(el.state.objects,files)}),restore:restoreDraft});
   }
-  // Ladezeit: die Schriftproben brauchen die Konturen aller angebotenen Schriften (lazy-resources.mjs).
+  // Show usable, already loaded fonts immediately. Other visible rows load
+  // independently; a failed/slow font never holds the entire menu hostage.
   async function openFonts(){const o=selected();if(o?.type!=='text')return say('Bitte zuerst eine Textzeile auswählen.');fontObject=o.id;fontChoice=o.font;dialogs.font.showModal();
-    if(el.uxEnsureFonts){$('.ux-font-grid').innerHTML='<p role="status">Schriften werden geladen …</p>';try{await el.uxEnsureFonts(selectionIds(el.uxKnownFonts(),profileChoices?.fonts));}catch{$('.ux-font-grid').innerHTML='<p role="status">Die Schriften konnten nicht geladen werden. Bitte erneut öffnen.</p>';return;}if(!dialogs.font.open||fontObject!==o.id)return;}
-    renderFontPage();}
+    renderFontPage();fontRows?.refresh({retry:true});}
   const questionHelp=installCustomerHelp({dialog:dialogs.help,context:()=>({photo:photoEnabled&&photoAvailableForDesign(config,el.state.designId),logo:logoEnabled&&uploadTabVisible(config,el.state.designId,{photoEnabled,logoEnabled}),vectorLogo:vectorLogos,logoCents:config?.logo?.extraPriceCents,minTextMm}),navigate:tab=>{showTab(tab);el.uxMobileSteps?.show(tab,{scroll:false});}});
   function guide(key){const content={text:['Text ändern','Tippe auf eine Textzeile und ersetze den Beispieltext. Alle Änderungen siehst du sofort auf deinem Produkt.'],font:['Schrift & Größe','Wähle eine Textzeile und danach „Schrift ändern“. Du siehst deinen eigenen Text in jeder Schrift. Mit Plus und Minus änderst du die Größe. Der Schriftgrößenwert beträgt mindestens '+String(minTextMm).replace('.',',')+' mm.'],guides:['Mittig ausrichten','Aktiviere „Hilfslinien“ unten links im Produktbild. Wähle deinen Text und tippe auf „Mitte“. Beim Ziehen rastet er auch an der Mitte und den Kanten anderer Texte ein. Ankerpunkte zeigen dir die Textmitten, damit du Texte untereinander setzen kannst. Gestrichelte Linie = Gestaltungsrand: Elemente bleiben innerhalb dieser Linie. Bohrungen und Beschläge zeigen das fertige Schild; sie sperren keine Gestaltung.'],motif:['Deine Motive',config?.acrylic?'Vorlagenmotive bleiben fest platziert; ihre Farbe kannst du ändern. Eigene zusätzliche Motive kannst du in der Motivbibliothek hinzufügen und bearbeiten.':'Wähle Motive aus Bestsellern oder Kategorien. In „Ebenenverwaltung“ kannst du ein freigegebenes Motiv bearbeiten.'],upload:['Fotos & Logos',vectorLogos?decisionHelp('photo',config).text:config?.acrylic?'Ein Foto ist enthalten. Tippe auf das Beispielfoto, um dein eigenes Foto an derselben Position einzusetzen. Ein weiterer Upload ersetzt dieses Foto. Der Hintergrund bleibt erhalten.':(config?.reviewOnly&&config.basePriceCents===null)?'Du kannst bis zu vier Fotos und Logos testen. Die Preise für dieses Produkt sind noch offen. Dein Bild erscheint direkt in der Vorschau. Zuschneiden öffnet die Bildbearbeitung.':'Du kannst bis zu vier Fotos und Logos zusammen hinzufügen. '+uploadPriceSentence((config?.photoDesignPricing?photoPolicyForDesign(config,el.state.designId,el.state.mOptions):config?.photo))+' Dein Bild erscheint direkt in der Vorschau. Über „Bild bearbeiten“ kannst du dein Foto zuschneiden, drehen oder spiegeln.'],save:['Entwurf speichern',config?.workbench?'Mit „Entwurf speichern“ sicherst du Text, Schrift und Positionen dauerhaft in der Produktanlage. Testfotos werden nicht als Vorlage gespeichert.':'Dein aktueller Stand bleibt auf diesem Gerät erhalten – auch wenn du die Seite neu lädst. Mit „Entwurf speichern“ legst du ihn mit Fotos für 90 Tage in deinem Kundenkonto ab und kannst ihn auf jedem Gerät wieder öffnen. Dafür meldest du dich kurz an oder registrierst dich. Nach dem bezahlten Kauf ist ein PNG-Download vorgesehen.']}[key];if(!content)return;
     if(['text','font','guides'].includes(key))showTab('text');else if(key==='motif')showTab('motif');else if(key==='upload')showTab('upload');
@@ -467,7 +473,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   // K14 / Ü15.1: Reiter Vorderseite/Rückseite über der Platte (nur Produkte mit Rückseite).
   if(config)installSurfaceTabs({el,r,config,button,say});
   if(config)installCommerce({el,config,files,pending:()=>uploadPending||el.uxDesignResourcePending===true});
-  if(config?.acrylic)await installAcrylicScene({el,r,config,files,select,selected,say,acceptFiles:acceptCustomerFiles});
+  if(config)await installAcrylicScene({el,r,config,files,select,selected,say,acceptFiles:acceptCustomerFiles});
   finishCustomerRights();
   finishTemplateDeletion();
   installFirstTextFocus({el,r});

@@ -33,7 +33,10 @@ export function scalableSizeState(config,state,nextOptions,resources={}){
   const a=oldTemplate.objects.find(v=>v.id===o.id),b=newTemplate.objects.find(v=>v.id===o.id),n=clone(o);
   n.x=a&&b?b.x+(o.x-a.x)*factor:(o.x-oldOffset[0])*factor+newOffset[0];
   n.y=a&&b?b.y+(o.y-a.y)*factor:(o.y-oldOffset[1])*factor+newOffset[1];
-  for(const key of ['w','h','size','letterSpacing','lineHeight','strokeWidth'])if(Number.isFinite(o[key]))n[key]=a&&b&&Number.isFinite(b[key])&&a[key]?o[key]*b[key]/a[key]:o[key]*factor;
+  for(const key of ['w','h','size','letterSpacing','lineHeight','strokeWidth'])if(Number.isFinite(o[key]))n[key]=a&&b&&o[key]===a[key]&&Number.isFinite(b[key])?b[key]:a&&b&&Number.isFinite(b[key])&&a[key]?o[key]*b[key]/a[key]:o[key]*factor;
+  // Some fixed artwork/masks have a separately validated projection per size.
+  // Carry the target reference only when the customer kept the source original.
+  for(const key of ['motif','photoMaskAssetId','assetId'])if(a&&b&&o[key]===a[key]&&Object.hasOwn(b,key))n[key]=b[key];
   return n;
  });
  objects=containTransferred(objects,unfitted.objects,before,after,resources);

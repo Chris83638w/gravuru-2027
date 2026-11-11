@@ -1,0 +1,11 @@
+# Vorbereitete Designvorschauen: nativen Resolver korrekt aufrufen
+
+Basis `f4c370fc`, eigener Branch `dev/mika-public-preview-identity-20261109`. Genau eine Produktionszeile geändert; freigegebener Kundenaufbau, Preise, Module, aktuelle aktive Form-/Befestigungsfixes und Originale bleiben unberührt. Keine neue fachliche Regel. Quelle des Auftrags: Nutzer verlangt vorab geladene Designs; Root hat diesen konkreten Fehlerfix freigegeben.
+
+`shop-product-binding-store.mjs` akzeptiert für `resolve()` exakt zwei Schlüssel. Vorbereitung erhielt bisher diese zwei IDs; Warmabruf und direkter Bildabruf reichten dagegen die vollständige gespeicherte Bindung weiter. Der Fehler `shop_binding_identity` wurde sicher als fehlende Vorschau behandelt. Die neue Zeile projiziert ausschließlich die beiden Shopify-IDs an den unveränderten Resolver. Die danach vorhandenen vollständigen Bindungs-, Mandanten-, Freigabe-, Revisions-, Modell-/Renderer-/Asset- und Signaturprüfungen bleiben erhalten.
+
+Geprüft: neue strikte Regression vor dem Fix rot (drei Dateien vorbereitet, anschließend `urls=[]`); danach `node --test app/workshop/public-design-previews.test.mjs` **10/10 grün**. Alle Test-Fixtures verwenden jetzt die native Zweifelderbedingung. Zusätzlich explizit: fremder behaupteter Mandant, falsche Zuordnungsrevision sowie nachträglich geänderter Variantenpreis liefern weiterhin keine öffentliche Vorschau. Bestehende Fälle prüfen Entzug, Neustart, Renderer-/Modellwechsel, manipulierte Dateien, private Medien und Vorbereitungsrennen. Unabhängige echte native HTTP-Prüfung und Serverabnahme übernimmt Root/Reviewagent getrennt; hier keine Liveabnahme behauptet.
+
+Übernahme: ausschließlich `app/workshop/public-design-previews.mjs`; bestehende aktive Datei vorher gegen Paket-SHA prüfen und privat sichern. Serverseitiges Modul, kein Editor-Bundle-/CSS-Neubau erforderlich. Bestehende drei signierten Dateien bleiben gültig, da Identität, Rendering und Cacheformat unverändert sind. Rückweg: exakt vorherige einzelne Quelldatei zurückstellen und kontrolliert neu starten; Cache/Produkte/DB nicht löschen oder rückspielen.
+
+Der [Design-Master](https://github.com/Chris83638w/gravuru-katalog./blob/main/designs/DESIGN-MASTER.md) bleibt unverändert; dieses Paket bearbeitet keine Designs.

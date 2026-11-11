@@ -1,0 +1,63 @@
+{
+  "localOnly": true,
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "coreAndR15Bundles": [
+    {
+      "path": "/_bundle/editor-257c5700803ea894.mjs",
+      "ms": 17,
+      "bytes": 1449854,
+      "transfer": 483931
+    },
+    {
+      "path": "/_bundle/editor-bf7d088b9bdf015e.mjs",
+      "ms": 11,
+      "bytes": 134324,
+      "transfer": 38438
+    },
+    {
+      "path": "/_bundle/editor-c419119a6ef437c6.mjs",
+      "ms": 3,
+      "bytes": 7915,
+      "transfer": 0
+    }
+  ],
+  "unbundledR15Modules": [],
+  "textEdited": true,
+  "fontChanged": "Allura",
+  "motifAddedAndRemoved": true,
+  "pricesCents": [
+    1999,
+    2168,
+    1999
+  ],
+  "touchDrags": [
+    {
+      "before": {
+        "x": 153.2922,
+        "y": 320.5806,
+        "width": 63.9325,
+        "height": 55.666
+      },
+      "after": {
+        "x": 194.2922,
+        "y": 365.2289,
+        "width": 63.9325,
+        "height": 55.666
+      }
+    },
+    {
+      "afterTextReselectionAndUndo": true,
+      "after": {
+        "height": 55.666015625,
+        "width": 63.9324951171875,
+        "x": 73.29220581054688,
+        "y": 306.6640625
+      }
+    }
+  ],
+  "resetConfirmed": true,
+  "remoteWrites": 0
+}

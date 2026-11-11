@@ -23,19 +23,22 @@ export function switchedModel(data,result){
 export function createDesignSwitch({initial,fragment,container,activate,toDataUrl,win=window,doc=document,clientFactory=createShopEntryClient,timeoutMs=60000}){
  let current={...initial,fragment:new URLSearchParams(fragment),pending:null},busy=false;
  const history=[];
+ const previewListeners=new WeakMap(),previewActive=entry=>current===entry&&!busy;
+ const notifyPreviews=entry=>{for(const listener of previewListeners.get(entry)||[])try{listener(previewActive(entry));}catch{/* Optional preloading cannot break the design transfer. */}};
  const checkRead=entry=>{if(current!==entry)throw Error('Diese Gestaltung ist nicht mehr aktiv.');};
  const check=entry=>{if(current!==entry||busy)throw Error('Bitte warten, bis das Design vollständig geladen ist.');};
  const show=entry=>{entry.frame.hidden=false;entry.frame.inert=false;entry.frame.style.display='';entry.frame.style.visibility='';entry.frame.style.position='';entry.frame.style.inset='';};
  const setFragment=entry=>win.history.replaceState(win.history.state,'','#'+entry.fragment);
  function api(entry){return Object.freeze({
   load:(page,theme,options,q)=>{checkRead(entry);return entry.client.loadDesignGallery(page,theme,options,q);},
-  preview:(target,url)=>{checkRead(entry);return entry.client.loadDesignPreview(target,url);},
+  preview:(target,url,signal)=>{checkRead(entry);if(!previewActive(entry))throw Object.assign(Error('Vorschauen warten auf den Designwechsel.'),{name:'AbortError'});return entry.client.loadDesignPreview(target,url,signal);},
+  onPreviewActivity:listener=>{let listeners=previewListeners.get(entry);if(!listeners){listeners=new Set();previewListeners.set(entry,listeners);}listeners.add(listener);listener(previewActive(entry));return ()=>listeners.delete(listener);},
   hasPendingTransfer:()=>!!entry.pending,
   takeTransfer:()=>{const value=entry.pending;entry.pending=null;return value;},
   canGoBack:()=>history.length>0||!!entry.previous,
-  back:()=>{check(entry);const previous=history.pop();if(!previous)return false;entry.frame.remove();current=previous;activate(previous,api(previous));show(previous);setFragment(previous);return true;},
+  back:()=>{check(entry);const previous=history.pop();if(!previous)return false;current=previous;notifyPreviews(entry);entry.frame.remove();activate(previous,api(previous));show(previous);setFragment(previous);notifyPreviews(previous);return true;},
   choose:async(target,transfer)=>{
-   check(entry);busy=true;let candidate=null,removeListener=()=>{};
+   check(entry);busy=true;notifyPreviews(entry);let candidate=null,removeListener=()=>{};
    try{
     const result=await entry.client.switchDesign(target),client=clientFactory({token:result.token});
     const data=switchedModel(await client.loadModel(result.designId),result);
@@ -52,7 +55,7 @@ export function createDesignSwitch({initial,fragment,container,activate,toDataUr
     entry.frame.inert=true;current=candidate;activate(candidate,api(candidate));frame.src=switchedEditorPath(data,nextFragment);container.append(frame);
     await ready;entry.frame.hidden=true;entry.frame.style.display='none';history.push(entry);show(candidate);setFragment(candidate);return true;
    }catch(error){removeListener();candidate?.frame.remove();current=entry;activate(entry,api(entry));show(entry);throw error;}
-   finally{busy=false;}
+   finally{busy=false;notifyPreviews(current);}
   }
  });}
  activate(current,api(current));return {current:()=>current};

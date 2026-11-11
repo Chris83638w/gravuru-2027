@@ -1,0 +1,217 @@
+{
+  "schema": "issue230-server19-integration/v1",
+  "backupCommit": "0d6d23d94d088d17b61397237537fdf42260117c",
+  "base": "ac10e6cee00469591514dcb4fa477b0547a54c48",
+  "source13Sha256": "ede208429912850fbaba9f75c493aa5ada4f9d9aceacb3adab6f92beb963c99f",
+  "records": [
+    {
+      "path": "app/configurator/variant-m/acrylic-scene.css",
+      "bytes": 5009,
+      "sha256": "372bf868189a5b07bde21905035a06ea30c6f283aa567ea16b9701f4264b5e6e",
+      "verifiedAgainstDownload": true,
+      "candidateBytes": 5009,
+      "candidateSha256": "372bf868189a5b07bde21905035a06ea30c6f283aa567ea16b9701f4264b5e6e",
+      "candidateLfSha256": "372bf868189a5b07bde21905035a06ea30c6f283aa567ea16b9701f4264b5e6e",
+      "byteEqual": true,
+      "decision": "new server feature combined with B/C/R15 or retained byte-exactly"
+    },
+    {
+      "path": "app/configurator/variant-m/acrylic-scene.mjs",
+      "bytes": 17125,
+      "sha256": "9dc52c5e3023da9aa3674a8a09442cff87fbab278efe56f1f89b8f0b086e0586",
+      "verifiedAgainstDownload": true,
+      "candidateBytes": 17125,
+      "candidateSha256": "9dc52c5e3023da9aa3674a8a09442cff87fbab278efe56f1f89b8f0b086e0586",
+      "candidateLfSha256": "9dc52c5e3023da9aa3674a8a09442cff87fbab278efe56f1f89b8f0b086e0586",
+      "byteEqual": true,
+      "decision": "new server feature combined with B/C/R15 or retained byte-exactly"
+    },
+    {
+      "path": "app/configurator/variant-m/contract.mjs",
+      "bytes": 39787,
+      "sha256": "c8a6eb14ef56b0d9565728708d93ccc9362b5bcc3d53fc80b1b6be092dc98393",
+      "verifiedAgainstDownload": true,
+      "candidateBytes": 39925,
+      "candidateSha256": "2a5bd4e1e755b84dd96cdff9af30a47c8cc372ba47ccc7215b8fdeca486e78cc",
+      "candidateLfSha256": "2a5bd4e1e755b84dd96cdff9af30a47c8cc372ba47ccc7215b8fdeca486e78cc",
+      "byteEqual": false,
+      "decision": "new server feature combined with B/C/R15 or retained byte-exactly"
+    },
+    {
+      "path": "app/configurator/variant-m/family-formats.mjs",
+      "bytes": 15710,
+      "sha256": "183d00d611042e2c2d9f6097787859656388adcc6ef92ae52c3c6498e4deb210",
+      "verifiedAgainstDownload": false,
+      "candidateBytes": 15710,
+      "candidateSha256": "183d00d611042e2c2d9f6097787859656388adcc6ef92ae52c3c6498e4deb210",
+      "candidateLfSha256": "183d00d611042e2c2d9f6097787859656388adcc6ef92ae52c3c6498e4deb210",
+      "byteEqual": true,
+      "decision": "documented 586a7541 name-group correction retained"
+    },
+    {
+      "path": "app/configurator/variant-m/modern-navigation.css",
+      "bytes": 16050,
+      "sha256": "1fc314b7c23e2f67b2315e5dac27555674b45a467dcd56b8a53958847c9a55ce",
+      "verifiedAgainstDownload": false,
+      "candidateBytes": 15615,
+      "candidateSha256": "6b8457738d8054d62962f40f564a8487325079454a2fdd208bdceed7ee75690f",
+      "candidateLfSha256": "6b8457738d8054d62962f40f564a8487325079454a2fdd208bdceed7ee75690f",
+      "byteEqual": false,
+      "decision": "ac10 retained; unsupported server CSS delta excluded"
+    },
+    {
+      "path": "app/configurator/variant-m/option-media.mjs",
+      "bytes": 7943,
+      "sha256": "48821e6157517ef403e7edb6932da8eca3692705f82f7ddeca473404e4b58db0",
+      "verifiedAgainstDownload": true,
+      "candidateBytes": 8289,
+      "candidateSha256": "bec4b93107842b2fdffe7d2c5241f8adb5586f06df8a8b96e5c52ef6e4a63ab7",
+      "candidateLfSha256": "bec4b93107842b2fdffe7d2c5241f8adb5586f06df8a8b96e5c52ef6e4a63ab7",
+      "byteEqual": false,
+      "decision": "separate KGL/KRA icons retained"
+    },
+    {
+      "path": "app/configurator/variant-m/scalable-acrylic-scene.mjs",
+      "bytes": 3724,
+      "sha256": "e83864e3dc1bb5881ce368c7244820c0b1eeb5c2d0e1661786289f85b02f73c4",
+      "verifiedAgainstDownload": true,
+      "candidateBytes": 3724,
+      "candidateSha256": "e83864e3dc1bb5881ce368c7244820c0b1eeb5c2d0e1661786289f85b02f73c4",
+      "candidateLfSha256": "e83864e3dc1bb5881ce368c7244820c0b1eeb5c2d0e1661786289f85b02f73c4",
+      "byteEqual": true,
+      "decision": "new server feature combined with B/C/R15 or retained byte-exactly"
+    },
+    {
+      "path": "app/configurator/variant-m/scalable-size-state.mjs",
+      "bytes": 4178,
+      "sha256": "149e44ad34fa4f07d25f4e2b7c078b43297163ffcb1607da875d5e364f707257",
+      "verifiedAgainstDownload": true,
+      "candidateBytes": 4178,
+      "candidateSha256": "149e44ad34fa4f07d25f4e2b7c078b43297163ffcb1607da875d5e364f707257",
+      "candidateLfSha256": "149e44ad34fa4f07d25f4e2b7c078b43297163ffcb1607da875d5e364f707257",
+      "byteEqual": true,
+      "decision": "new server feature combined with B/C/R15 or retained byte-exactly"
+    },
+    {
+      "path": "app/configurator/variant-m/ux.mjs",
+      "bytes": 80552,
+      "sha256": "a0018174ebde933edc8fa83c0559efcb2d98c704719380ecbd7c9217e2200ed6",
+      "verifiedAgainstDownload": true,
+      "candidateBytes": 81378,
+      "candidateSha256": "edac5b269432c58b3f18ac166aa9e1e43ccbfaca03f823ed1728607bfa569905",
+      "candidateLfSha256": "edac5b269432c58b3f18ac166aa9e1e43ccbfaca03f823ed1728607bfa569905",
+      "byteEqual": false,
+      "decision": "new server feature combined with B/C/R15 or retained byte-exactly"
+    },
+    {
+      "path": "app/configurator/variant-m/view-zoom.css",
+      "bytes": 2762,
+      "sha256": "ce31226dbc655204b04f5a90926f6d280db974e62d40252b20d828967232ea14",
+      "verifiedAgainstDownload": false,
+      "candidateBytes": 2307,
+      "candidateSha256": "7336130365733e2ca03e5873a3fbc557cb11d2111ac634a2109685b2926ab723",
+      "candidateLfSha256": "7336130365733e2ca03e5873a3fbc557cb11d2111ac634a2109685b2926ab723",
+      "byteEqual": false,
+      "decision": "ac10 retained; unsupported server CSS delta excluded"
+    },
+    {
+      "path": "app/configurator/variant-m/workshop-review.mjs",
+      "bytes": 9400,
+      "sha256": "4248d5521f9d943f95f32647bdedc5a913437dc0260c97f0a9d924dcdeed5a1e",
+      "verifiedAgainstDownload": true,
+      "candidateBytes": 9400,
+      "candidateSha256": "4248d5521f9d943f95f32647bdedc5a913437dc0260c97f0a9d924dcdeed5a1e",
+      "candidateLfSha256": "4248d5521f9d943f95f32647bdedc5a913437dc0260c97f0a9d924dcdeed5a1e",
+      "byteEqual": true,
+      "decision": "new server feature combined with B/C/R15 or retained byte-exactly"
+    },
+    {
+      "path": "app/workshop/batch.mjs",
+      "bytes": 17500,
+      "sha256": "07b1ea062561485c6ecfca5ed3f34d9237c42f7a71e0ea8b2f69ab1079c18b78",
+      "verifiedAgainstDownload": true,
+      "candidateBytes": 17500,
+      "candidateSha256": "07b1ea062561485c6ecfca5ed3f34d9237c42f7a71e0ea8b2f69ab1079c18b78",
+      "candidateLfSha256": "07b1ea062561485c6ecfca5ed3f34d9237c42f7a71e0ea8b2f69ab1079c18b78",
+      "byteEqual": true,
+      "decision": "new server feature combined with B/C/R15 or retained byte-exactly"
+    },
+    {
+      "path": "app/workshop/design-target-rules.mjs",
+      "bytes": 8045,
+      "sha256": "21d03fb82245f0afc6cfac06d9380720a2e9c7d8b7c839a0657b183b1992c3fb",
+      "verifiedAgainstDownload": false,
+      "candidateBytes": 9073,
+      "candidateSha256": "de984c550cdb52acd359df570827e9b7f67595d46117628094a888b4cffb3572",
+      "candidateLfSha256": "de984c550cdb52acd359df570827e9b7f67595d46117628094a888b4cffb3572",
+      "byteEqual": false,
+      "decision": "confirmed 0.3mm catalog rule and native mounting avoidance retained"
+    },
+    {
+      "path": "app/workshop/design-targets.mjs",
+      "bytes": 16435,
+      "sha256": "cf778d17754debf1f868acac0dff70e3d3f10ff4bdbf816e08f0e6832695d202",
+      "verifiedAgainstDownload": true,
+      "candidateBytes": 16916,
+      "candidateSha256": "2c6e7e5dce1eba2e5ab9ca2d281e12481c1f3c305d3e88d0ba3cfe12c1cb0eaf",
+      "candidateLfSha256": "2c6e7e5dce1eba2e5ab9ca2d281e12481c1f3c305d3e88d0ba3cfe12c1cb0eaf",
+      "byteEqual": false,
+      "decision": "confirmed minimum-area field guard retained; 243 small-format cases pass"
+    },
+    {
+      "path": "app/workshop/katalog-family-formats.mjs",
+      "bytes": 15512,
+      "sha256": "bd85fd8b7f9b8a68d2319a0e9574dd34b747b42007dd000c61ce7f1fc5e1d6aa",
+      "verifiedAgainstDownload": false,
+      "candidateBytes": 16310,
+      "candidateSha256": "2cefd08dd4bc6de096db5bbc09854f86b67ee602f11978e9da4168bf92194d5c",
+      "candidateLfSha256": "2cefd08dd4bc6de096db5bbc09854f86b67ee602f11978e9da4168bf92194d5c",
+      "byteEqual": false,
+      "decision": "explicit material scope and per-product upload profiles retained"
+    },
+    {
+      "path": "app/workshop/product-model.mjs",
+      "bytes": 14953,
+      "sha256": "1993bc362715e9a7736d6ad6d170a4a111ec607f3bdcce207d6fd5e2bdc9cb65",
+      "verifiedAgainstDownload": true,
+      "candidateBytes": 16093,
+      "candidateSha256": "f452d2590c6c9ec00fac260fd154d8fb5ec4f0fed1b7d34f98d16d594ae114a8",
+      "candidateLfSha256": "f452d2590c6c9ec00fac260fd154d8fb5ec4f0fed1b7d34f98d16d594ae114a8",
+      "byteEqual": false,
+      "decision": "new server feature combined with B/C/R15 or retained byte-exactly"
+    },
+    {
+      "path": "app/workshop/product-preview.mjs",
+      "bytes": 8210,
+      "sha256": "ee6924c400b5b8471f6764d38e2d653f38520200c5959264e65db831aaaaad07",
+      "verifiedAgainstDownload": false,
+      "candidateBytes": 8960,
+      "candidateSha256": "e0b7a15e0586b388e37c2029df9649d512632f753158ffaa0a5ae390f49d1c49",
+      "candidateLfSha256": "e0b7a15e0586b388e37c2029df9649d512632f753158ffaa0a5ae390f49d1c49",
+      "byteEqual": false,
+      "decision": "approved soft shadow, original photo pixels and mounting preview retained"
+    },
+    {
+      "path": "app/workshop/shop-entry.mjs",
+      "bytes": 63920,
+      "sha256": "ab2dfbcf308ac8aff54f5753d3f7914b7b210aa1a2b00a41a431cc8662d6fcbb",
+      "verifiedAgainstDownload": true,
+      "candidateBytes": 63960,
+      "candidateSha256": "69bdee189047811b12914b889949f8c4d6f9c25650d28eb72ec232ef35bd4c21",
+      "candidateLfSha256": "69bdee189047811b12914b889949f8c4d6f9c25650d28eb72ec232ef35bd4c21",
+      "byteEqual": false,
+      "decision": "new server feature combined with B/C/R15 or retained byte-exactly"
+    },
+    {
+      "path": "app/workshop/shop-preparation.mjs",
+      "bytes": 8516,
+      "sha256": "4410b6a61593efcb4a6539cb65c53139ed957d0879943e1ff946563ea0bee6c4",
+      "verifiedAgainstDownload": true,
+      "candidateBytes": 9597,
+      "candidateSha256": "633cd47ff251bb3927aff3ad991b7a80ee8fcd1d1549197983e63e0ccfabae32",
+      "candidateLfSha256": "633cd47ff251bb3927aff3ad991b7a80ee8fcd1d1549197983e63e0ccfabae32",
+      "byteEqual": false,
+      "decision": "new server feature combined with B/C/R15 or retained byte-exactly"
+    }
+  ]
+}

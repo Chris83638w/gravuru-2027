@@ -1,0 +1,187 @@
+{
+  "at": "2026-11-09T10:58:49.327Z",
+  "outer": [
+    {
+      "path": "/konfigurator/shop/shop-entry-client.mjs",
+      "ms": 1111,
+      "transfer": 7579,
+      "decoded": 18004
+    },
+    {
+      "path": "/konfigurator/shop/shop-entry-page.mjs",
+      "ms": 884,
+      "transfer": 3063,
+      "decoded": 6649
+    },
+    {
+      "path": "/konfigurator/shop/shop-design-switch.mjs",
+      "ms": 223,
+      "transfer": 2344,
+      "decoded": 5140
+    },
+    {
+      "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+      "ms": 183,
+      "transfer": 985,
+      "decoded": 1258
+    },
+    {
+      "path": "/_acryl-runtime/lazy/katalog-kern.json",
+      "ms": 14,
+      "transfer": 0,
+      "decoded": 166290
+    },
+    {
+      "path": "/api/shop-entry/model",
+      "ms": 8623,
+      "transfer": 122854,
+      "decoded": 321897
+    },
+    {
+      "path": "/konfigurator/shop/vorschauen/8055eaaa9826fb809c8dd33d9a09c1eee524c5c56f23809fb9c4c6340d6fc674.svg",
+      "ms": 5032,
+      "transfer": 101891,
+      "decoded": 140037
+    },
+    {
+      "path": "/konfigurator/shop/schriften/3201589047768a19ed4506e9b76a18aa1b353b932b9cd599e632bbde1575e0d1.json",
+      "ms": 32,
+      "transfer": 0,
+      "decoded": 205976
+    },
+    {
+      "path": "/_merchant-acryl-editor.html",
+      "ms": 21,
+      "transfer": 0,
+      "decoded": 375304
+    },
+    {
+      "path": "/api/shop-entry/design-gallery",
+      "ms": 3967,
+      "transfer": 2868,
+      "decoded": 27079
+    },
+    {
+      "path": "/konfigurator/shop/vorschauen/8055eaaa9826fb809c8dd33d9a09c1eee524c5c56f23809fb9c4c6340d6fc674.svg",
+      "ms": 18,
+      "transfer": 0,
+      "decoded": 140037
+    },
+    {
+      "path": "/konfigurator/shop/vorschauen/e395f10ebdb0501a6a2b61457a1731bde6465dff112ce80593c04b497c0dc18d.svg",
+      "ms": 13811,
+      "transfer": 100637,
+      "decoded": 139106
+    },
+    {
+      "path": "/konfigurator/shop/vorschauen/ac0d324aec1d9cddc997503e1a94606445fafb58b59438516091b5ff48eb90ec.svg",
+      "ms": 9038,
+      "transfer": 101488,
+      "decoded": 139156
+    }
+  ],
+  "inner": [
+    {
+      "path": "/_acryl-bundle/editor-257c5700803ea894.mjs",
+      "ms": 18,
+      "transfer": 0,
+      "decoded": 1452070
+    },
+    {
+      "path": "/_acryl-bundle/editor-bf7d088b9bdf015e.mjs",
+      "ms": 13,
+      "transfer": 0,
+      "decoded": 134600
+    },
+    {
+      "path": "/_acryl-bundle/editor-c419119a6ef437c6.mjs",
+      "ms": 4,
+      "transfer": 0,
+      "decoded": 7963
+    },
+    {
+      "path": "/konfigurator/shop/schriften/3201589047768a19ed4506e9b76a18aa1b353b932b9cd599e632bbde1575e0d1.json",
+      "ms": 6,
+      "transfer": 0,
+      "decoded": 205976
+    },
+    {
+      "path": "/_acryl-runtime/lazy/katalog-kern.json",
+      "ms": 7,
+      "transfer": 0,
+      "decoded": 166290
+    },
+    {
+      "path": "/_acryl-runtime/lazy/motive/import-b56d5711a75f34c1fa8d9c30.json",
+      "ms": 4,
+      "transfer": 0,
+      "decoded": 966
+    },
+    {
+      "path": "/acryl-configurator/mobile-demo/demo.css",
+      "ms": 1269,
+      "transfer": 10005,
+      "decoded": 55005
+    },
+    {
+      "path": "/acryl-configurator/mobile-demo/shopping-cart.svg",
+      "ms": 994,
+      "transfer": 566,
+      "decoded": 530
+    },
+    {
+      "path": "/acryl-assistant.js",
+      "ms": 983,
+      "transfer": 17227,
+      "decoded": 49490
+    },
+    {
+      "path": "/api/acryl-guides",
+      "ms": 1293,
+      "transfer": 1715,
+      "decoded": 2917
+    },
+    {
+      "path": "/_acryl-runtime/lazy/motive/import-8adc51cf09cbad881db95ef6.json",
+      "ms": 18,
+      "transfer": 0,
+      "decoded": 6449
+    },
+    {
+      "path": "/_acryl-runtime/lazy/motive/import-4609f5a437c8a0a9d6c8dca3.json",
+      "ms": 17,
+      "transfer": 0,
+      "decoded": 1242
+    },
+    {
+      "path": "/_acryl-runtime/lazy/motive/import-7435d6dce5e1fa3c4c4fc1b5.json",
+      "ms": 3,
+      "transfer": 0,
+      "decoded": 7309
+    },
+    {
+      "path": "/_acryl-runtime/lazy/motive/import-178f0cc0a5c7c40768ed14cf.json",
+      "ms": 15,
+      "transfer": 0,
+      "decoded": 32540
+    },
+    {
+      "path": "/_acryl-runtime/lazy/motive/import-f46b8d0fcc6e60810ece9d9d.json",
+      "ms": 8,
+      "transfer": 0,
+      "decoded": 17633
+    },
+    {
+      "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+      "ms": 9,
+      "transfer": 0,
+      "decoded": 471283
+    },
+    {
+      "path": "/konfigurator/shop/schriften/af923c8f9dca05fc70000003381d03a484a30a604a01c19835989931aec268e7.json",
+      "ms": 7,
+      "transfer": 0,
+      "decoded": 474879
+    }
+  ]
+}

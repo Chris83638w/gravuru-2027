@@ -151,6 +151,9 @@ test('paused product and anonymous customer handling on start',()=>run(async(f,r
  const customer=await token({logged_in_customer_id:'42'});assert.equal(JSON.parse(Buffer.from(customer.token.split('.')[1],'base64url').toString()).cu,'gid://shopify/Customer/42');
 }));
 test('page and script are served with a strict policy and nothing else leaks',()=>run(async(f,request)=>{
+ const warm=await request('/konfigurator/shop/warm/');assert.equal(warm.status,200);assert.match(warm.headers['content-security-policy'],/frame-ancestors https:\/\//);assert.match(warm.body.toString(),/shop-warm\.mjs/);assert.doesNotMatch(warm.body.toString(),/shop-entry-page|api\/|iframe|UniversalConfig/);
+ assert.equal((await request('/konfigurator/shop/warm/?model=1')).status,404);assert.equal((await request('/konfigurator/shop/warm/','POST',{})).status,405);
+ assert.equal((await request('/konfigurator/shop/shop-warm.mjs','GET',undefined,{'Sec-Fetch-Site':'cross-site'})).status,403);
  const page=await request('/konfigurator/shop/');assert.equal(page.status,200);assert.match(page.headers['content-type'],/text\/html/);assert.ok(page.body.toString().includes('/konfigurator/shop/shop-entry-page.mjs'));assert.match(page.headers['content-security-policy'],/frame-src 'self'/);
  const script=await request('/konfigurator/shop/shop-entry-page.mjs',undefined,undefined,{'Sec-Fetch-Site':'same-origin'});assert.equal(script.status,200);assert.match(script.headers['content-type'],/text\/javascript/);assert.ok(script.body.toString().includes('./shop-entry-client.mjs'));
  const client=await request('/konfigurator/shop/shop-entry-client.mjs',undefined,undefined,{'Sec-Fetch-Site':'same-origin'});assert.equal(client.status,200);assert.ok(client.body.toString().includes('/api/shop-entry/'));
@@ -606,6 +609,12 @@ test('start ticket (format=json) returns the same target as the redirect and cou
  assert.equal((await request(proxyPath+'/start?'+unsigned)).status,401,'nur signiert über den App-Proxy');
 },f=>{f.options.limits={startPerMinute:1,requestsPerMinute:1000};}));
 
+test('warm manifest is optional public metadata; cart-edit tickets never preload private saved designs',()=>run(async(f,request,{open})=>{
+ const ticket=await open({format:'json',embed:'1'});assert.equal(ticket.status,200);assert.equal(ticket.data.warm.url,origin+'/konfigurator/shop/warm/');
+ assert.deepEqual(Object.keys(ticket.data.warm.manifest).sort(),['catalogPath','editorPath','fonts','motifs','schema']);assert.doesNotMatch(JSON.stringify(ticket.data.warm),/PRIVATE CUSTOMER|data:image|blob:|gse1\.|konfig_/);
+ const edited=await open({format:'json',config:'konfig_'+uuid(9),rev:'1',line:'theme'});assert.equal(edited.status,200);assert.equal(edited.data.warm,undefined);
+}));
+
 test('repeated design switches cannot extend the original source session',()=>run(async(f,request,{token})=>{
  let current=(await token()).token;
  const deadline=JSON.parse(Buffer.from(current.split('.')[1],'base64url')).exp*1000;
@@ -644,3 +653,65 @@ test('public search passes only eligible results and exact number matches throug
  const {token:t}=await token();
  for(const [q,total] of [['Haus',1],['D23',1],['23',1],['D230',0],['Geheim',0]]){const r=await request('/api/shop-entry/design-gallery?q='+encodeURIComponent(q),'GET',undefined,session(t));assert.equal(r.status,200,r.body.toString());assert.equal(r.data.total,total,q);}
 },f=>{galleryEntryFixture(f);const c=f.models.get(f.first.localWorkshopRecord).universal;c.profile.designs=[{id:'d1',name:'Haus',katalog:{designId:'TEST-D23'},objects:[]},{id:'secret',name:'Geheim',hidden:true,objects:[]}];}));
+test('public template HTTP warmup persists across restart, never renders on start and rejects revoked and legacy image URLs',async t=>{
+ const {default:os}=await import('node:os'),{default:path}=await import('node:path'),{createHash}=await import('node:crypto');
+ const directory=fs.mkdtempSync(path.join(os.tmpdir(),'public-template-http-'));t.after(()=>fs.rmSync(directory,{recursive:true,force:true}));
+ let paused=false,urls,bodyHash;
+ const setup=f=>{
+  f.options.publicPreviewDirectory=directory;
+  const model=f.models.get(f.first.localWorkshopRecord),binding=f.bindings.get(f.ids.shopifyProductId+'|'+f.ids.shopifyVariantId);
+  model.galleryCategoryIds=['linie-edelstahl','familie-fixture'];
+  model.universal={basePriceCents:binding.unitCents,extraMotifCents:169,motifCharge:'additional',photo:{},familyFormats:{fixedSize:'120x80'},profile:{kind:'universal-product',id:'http-template',geometry:{shape:'rect',width:120,height:80,holes:[]},material:{kind:'steel'},processing:{method:'engraving'},optionGroups:[],defaultDesignId:'d1',designs:Array.from({length:5},(_,i)=>({id:'d'+(i+1),objects:[]}))},localResources:{fonts:{},motifs:[],photoExamples:[]}};
+  binding.options={};f.store.workshop.galleryModel=id=>structuredClone(f.models.get(id));f.store.workshop.konfis={paused:()=>paused};f.store.registry.listActive=()=>[structuredClone(binding)];
+ };
+ await run(async(f,request,{open,token,entry})=>{
+  const cold=await open({format:'json'});assert.equal(cold.status,200);assert.deepEqual(cold.data.warm.manifest.previews,undefined);assert.deepEqual(fs.readdirSync(directory),[],'customer start creates no render/cache files');
+  assert.equal((await request('/api/shop-entry/public-preview-prepare','POST',f.ids)).status,404,'no public preparation route');
+  const prepared=await entry.preparePublicDesignPreviews(f.ids);assert.equal(prepared.prepared,3);urls=prepared.items.map(x=>x.url);
+  const ticket=await open({format:'json'});assert.deepEqual(ticket.data.warm.manifest.previews,urls);assert.equal(fs.readdirSync(directory).length,3);
+  assert.ok(!JSON.stringify(ticket.data.warm.manifest).includes('sgt1.'));
+  const image=await request(urls[0]);assert.equal(image.status,200);assert.match(image.headers['cache-control'],/public.*immutable/);bodyHash=createHash('sha256').update(image.body).digest('hex');
+  assert.equal((await request('/konfigurator/shop/vorschauen/'+bodyHash+'.svg')).status,404,'old renderer memory hash is never a public fallback while feature is enabled');
+  assert.equal((await request(urls[0],'GET',undefined,{Origin:'https://foreign.example'})).status,403);
+  const {token:sessionToken}=await token(),headers=session(sessionToken),gallery=await request('/api/shop-entry/design-gallery','GET',undefined,headers);assert.equal(gallery.status,200);assert.deepEqual(gallery.data.items.slice(0,3).map(x=>x.previewUrl),urls);
+  const fallback=await request('/api/shop-entry/design-gallery-preview','POST',{target:gallery.data.items[3].target},headers);assert.equal(fallback.status,200);assert.equal(fallback.headers['cache-control'],'private, no-store');
+  const after=await request('/api/shop-entry/design-gallery','GET',undefined,headers);assert.equal(after.data.items[3].previewUrl,undefined);
+ },setup);
+ await run(async(f,request,{open,entry})=>{
+  assert.ok((await entry.publicPreviewPreparation).items.every(x=>x.cached),'explicit startup prepares only this one already cached variant');
+  const ticket=await open({format:'json'});assert.equal(ticket.status,200);assert.deepEqual(ticket.data.warm.manifest.previews,urls,'fresh entry process uses identical saved URLs');
+  assert.equal((await request(urls[0],'HEAD')).status,200);assert.ok((await entry.preparePublicDesignPreviews(f.ids)).items.every(x=>x.cached));
+  paused=true;assert.equal((await request(urls[0])).status,404);assert.equal((await request('/konfigurator/shop/vorschauen/'+bodyHash+'.svg')).status,404);
+  assert.deepEqual((await open({format:'json'})).data.warm.manifest.previews,undefined);
+ },f=>{setup(f);f.options.publicPreviewPrepare=f.ids;});
+});
+
+test('combined public cache and module guards reject stale gallery targets and disabled logo upload through real HTTP',async t=>{
+ const {default:os}=await import('node:os'),{default:path}=await import('node:path');
+ const directory=fs.mkdtempSync(path.join(os.tmpdir(),'combined-cache-modules-'));t.after(()=>fs.rmSync(directory,{recursive:true,force:true}));
+ await run(async(f,request,{open,token,entry})=>{
+  const source=f.models.get(f.first.localWorkshopRecord),original=JSON.stringify(source.universal.profile);
+  const prepared=await entry.preparePublicDesignPreviews(f.ids);assert.equal(prepared.prepared,3);
+  const oldUrl=prepared.items[0].url;assert.equal((await request(oldUrl)).status,200);
+  const issued=await token(),headers=session(issued.token),before=await request('/api/shop-entry/design-gallery','GET',undefined,headers);
+  assert.equal(before.status,200);const target=before.data.items[0].target;
+  source.universal.moduleProfile.modules.designs=false;source.universal.moduleProfile.revision++;
+  assert.equal((await request(oldUrl)).status,404);
+  const warm=await open({format:'json'});assert.equal(warm.status,200);assert.equal(warm.data.warm.manifest.previews,undefined);
+  const model=await request('/api/shop-entry/model','GET',undefined,headers);assert.equal(model.status,200);assert.equal(model.data.startPreview,null);assert.equal(model.data.model.universal.profile.defaultDesignId,'d1');
+  for(const [route,method,data] of [['design-gallery','GET',undefined],['design-gallery-preview','POST',{target}],['design-switch','POST',{target}]]){
+   const result=await request('/api/shop-entry/'+route,method,data,headers);assert.equal(result.status,403,route);assert.equal(result.data.error.code,'shop_gallery_disabled');
+  }
+  const input={productId:f.first.localWorkshopRecord,productRevision:3,name:'synthetic.svg',original:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect width="20" height="20"/></svg>').toString('base64')};
+  const denied=await request('/api/shop-entry/customer-vector-logo/preview','POST',input,headers);
+  assert.equal(denied.status,422);assert.equal(denied.data.error.code,'customer_vector_logo');assert.match(denied.data.error.message,/nicht freigegeben/);
+  assert.deepEqual(await entry.preparePublicDesignPreviews(f.ids),{prepared:0,items:[]});assert.equal(fs.readdirSync(directory).length,3);
+  assert.equal(JSON.stringify(source.universal.profile),original);assert.equal(source.universal.logo.extraPriceCents,1299);
+ },f=>{
+  f.options.publicPreviewDirectory=directory;
+  const model=f.models.get(f.first.localWorkshopRecord),binding=f.bindings.get(f.ids.shopifyProductId+'|'+f.ids.shopifyVariantId);
+  model.galleryCategoryIds=['linie-edelstahl','familie-fixture'];
+  model.universal={basePriceCents:binding.unitCents,extraMotifCents:169,motifCharge:'additional',photo:{enabled:false},logo:{enabled:true,vectorUpload:true,extraPriceCents:1299},familyFormats:{fixedSize:'120x80'},moduleProfile:{schema:MODULE_PROFILE_SCHEMA,id:'combined-review',revision:1,modules:{options:true,designs:true,text:true,motifs:true,photo:false,logo:false,colors:false}},profile:{kind:'universal-product',id:'http-template',geometry:{shape:'rect',width:120,height:80,holes:[]},material:{kind:'steel'},processing:{profileId:'steel-engraving'},optionGroups:[],defaultDesignId:'d1',designs:Array.from({length:5},(_,i)=>({id:'d'+(i+1),objects:[]}))},localResources:{fonts:{},motifs:[],photoExamples:[]}};
+  binding.options={};f.store.workshop.galleryModel=id=>structuredClone(f.models.get(id));f.store.registry.listActive=()=>[structuredClone(binding)];
+ });
+});

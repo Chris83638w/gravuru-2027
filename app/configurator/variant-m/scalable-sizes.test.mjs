@@ -37,3 +37,16 @@ test('unsupported or inconsistent size definitions fail closed',()=>{
  }
  assert.equal(sizeConfiguration(config,{size:'30x20'}).profile.id,config.profile.id);
 });
+
+test('size-specific original artwork and mask references transfer exactly, while customer replacements and crop stay unchanged',()=>{
+ const c=structuredClone(config),small=c.scalableSizes.sizes[0].profile.designs[0],large=c.scalableSizes.sizes[1].profile.designs[0];
+ Object.assign(small.objects[1],{motif:'small-original',assetId:'small-asset',photoMaskAssetId:'small-mask'});
+ Object.assign(large.objects[1],{motif:'large-original',assetId:'large-asset',photoMaskAssetId:'large-mask',w:28.571428571428577});
+ const original={designId:'d',selected:'m',mOptions:{size:'22x14',mounting:'none'},objects:structuredClone(small.objects)};
+ const moved=scalableSizeState(c,original,{size:'30x20',mounting:'none'}).objects[1];
+ for(const key of ['motif','assetId','photoMaskAssetId','w'])assert.equal(moved[key],large.objects[1][key],key);
+ const edited=structuredClone(original);Object.assign(edited.objects[1],{motif:'customer-motif',assetId:'customer-asset',photoMaskAssetId:'customer-mask',uxUploadId:'upload-1',uxPhotoCrop:{zoom:1.2,x:0.1,y:-0.1,angle:5}});
+ const retained=scalableSizeState(c,edited,{size:'30x20',mounting:'none'}).objects[1];
+ for(const key of ['motif','assetId','photoMaskAssetId','uxUploadId','uxPhotoCrop'])assert.deepEqual(retained[key],edited.objects[1][key],key);
+ assert.deepEqual(original.objects,small.objects,'source composition remains unchanged');
+});

@@ -1,0 +1,7 @@
+{
+  "syntheticOnly": true,
+  "checkPassed": "Injected real CLI fsync failure aborts transaction before DROP; entire synthetic DB byte-identical; failed archive not overwritten/removed.",
+  "command": "node work/restabschluss/statistics-rollback-review/archive-fsync-failure-test.mjs",
+  "exitCode": 0,
+  "platform": "win32"
+}

@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {spawnSync} from 'node:child_process';
+import {pathToFileURL} from 'node:url';
+import {createHash} from 'node:crypto';
+import assert from 'node:assert/strict';
+const base=import.meta.dirname,first=fs.readdirSync(base).find(x=>x.startsWith('synthetic-')&&fs.existsSync(path.join(base,x,'missing','copy.sqlite')));
+assert.ok(first,'Run archive-copy-tests.mjs first.');
+const dir=fs.mkdtempSync(path.join(base,'fsync-fixture-'));fs.chmodSync(dir,0o700);
+const db=path.join(dir,'copy.sqlite'),backup=path.join(dir,'baseline.sqlite'),archive=path.join(dir,'archive.json');
+fs.copyFileSync(path.join(base,first,'missing','copy.sqlite'),db);fs.copyFileSync(path.join(base,first,'missing','baseline.sqlite'),backup);
+const preloader=path.join(dir,'fail-fsync.mjs');fs.writeFileSync(preloader,"import fs from 'node:fs'; fs.fsyncSync=()=>{throw Error('synthetic_archive_fsync_failure');};\n");
+const hash=()=>createHash('sha256').update(fs.readFileSync(db)).digest('hex'),before=hash();
+const r=spawnSync(process.execPath,['--import',pathToFileURL(preloader).href,path.join(base,'rt-suchstatistik-zurueck.mjs'),'--ausfuehren'],{encoding:'utf8',env:{...process.env,RT_DB:db,RT_SICHERUNG_DB:backup,RT_SUCHSTATISTIK_ARCHIV:archive}});
+assert.equal(r.status,1);assert.match(r.stdout,/synthetic_archive_fsync_failure/);assert.equal(hash(),before);
+assert.ok(fs.existsSync(archive),'Failed/partial archive remains exclusive; operator must choose a fresh filename.');
+console.log(JSON.stringify({syntheticOnly:true,checkPassed:'Injected real CLI fsync failure aborts transaction before DROP; entire synthetic DB byte-identical; failed archive not overwritten/removed.'}));

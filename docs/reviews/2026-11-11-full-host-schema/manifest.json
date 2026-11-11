@@ -1,0 +1,26 @@
+{
+  "schema": "gravuru-host-schema-review/v1",
+  "sourceBase": "ac10e6cee00469591514dcb4fa477b0547a54c48",
+  "appCandidate": "a038e1ae7e3de3954ea204f6925c60c7b4213d4f",
+  "runtimeChanged": false,
+  "installed": false,
+  "files": [
+    {
+      "file": "full-host-schema-review.md",
+      "sha256": "5cd4e0da146df91cb8c5a31538c662c600519fdd2e74baf2d35b4fa6e2fef340"
+    },
+    {
+      "file": "full-host-schema-audit.json",
+      "sha256": "9b8d7df09111fd0ea4a1f55242920cb56b6fb1d0b2c8c99804a8e9d6b6f59392"
+    },
+    {
+      "file": "schema-source-audit.mjs",
+      "sha256": "ab2a4a61563601e822d2d06b092ebf26242a3ddb72dafc409f37a544b9c106c2"
+    },
+    {
+      "file": "statistics-rollback-independent-review.md",
+      "sha256": "ae53cd4620d18b297d5543dfcff0d0bf9789745a8054ba7ad2551432a32628f3"
+    }
+  ],
+  "rollbackManifestSha256": "741301a4e2aa60504720520b45528a6f2d56c07ea2d82c6035ca607b6b397fb7"
+}

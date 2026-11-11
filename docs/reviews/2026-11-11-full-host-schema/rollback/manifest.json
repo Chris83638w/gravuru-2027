@@ -1,0 +1,48 @@
+{
+  "reviewArtifactOnly": true,
+  "sourceCommit": "78f820f1b4e626136e25f6b5c419a8d326667400",
+  "sourceGitBlob": "0e87ab68c9444b93dbefe2b2f8d661025ef6f7df",
+  "actualBaselineGitBlob": "0e87ab68c9444b93dbefe2b2f8d661025ef6f7df",
+  "files": [
+    {
+      "name": "baseline.mjs",
+      "bytes": 3968,
+      "sha256": "178cdf4b5ebaae541be89c871b16bfe854e2d1c889a662a618baf1ef1af58fba"
+    },
+    {
+      "name": "rt-suchstatistik-zurueck.mjs",
+      "bytes": 6295,
+      "sha256": "233f4dfd5e1d59bf8c3805a1d89598a7bed04b7cfab97926d179af1eb32ba0e5"
+    },
+    {
+      "name": "archive-before-rollback.patch",
+      "bytes": 4687,
+      "sha256": "5a575e882e3bda9995769a05a4a5e663c3b2d3a4d04bdf701dac2d2b04b9bd88"
+    },
+    {
+      "name": "archive-copy-tests.mjs",
+      "bytes": 5398,
+      "sha256": "364818995e7ea30ceab76475a37e618188f7e1978df64747c7e6ed580ccdbf06"
+    },
+    {
+      "name": "archive-fsync-failure-test.mjs",
+      "bytes": 1719,
+      "sha256": "a81e111f3f51c3de82a202377cac1897e73ab2f44a4d3aff5ae8c7611f9edd10"
+    },
+    {
+      "name": "README.md",
+      "bytes": 4394,
+      "sha256": "b711f35bf701d6723d7e93bfb284c0e824712f295c96586664048ba3d976db50"
+    },
+    {
+      "name": "test-results.json",
+      "bytes": 649,
+      "sha256": "6673f7e75fd9bd971599e211429809ac5c8e363ddb58bb0fb920b2faf3352801"
+    },
+    {
+      "name": "fsync-test-result.json",
+      "bytes": 326,
+      "sha256": "41b4ca44631ac022d26012bfcf5a8cd091691998005931d1a1f5db6fec888436"
+    }
+  ]
+}

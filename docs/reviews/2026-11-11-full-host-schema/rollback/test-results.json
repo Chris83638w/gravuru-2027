@@ -1,0 +1,13 @@
+{
+  "syntheticOnly": true,
+  "checksPassed": 5,
+  "results": [
+    "all non-motif rows archived before drop; cross-tenant/source, exact int64, hashes and untouched order/product retained",
+    "missing archive path aborts transaction and preserves complete schema/data",
+    "existing archive rejected by exclusive create; no overwrite and DB unchanged",
+    "read-only preflight creates no archive and does not modify synthetic DB",
+    "motif-only rollback still needs no unused archive"
+  ],
+  "platform": "win32",
+  "permissionLimit": "POSIX mode/owner and directory fsync require Linux operator copy test; data/archive ordering tested here."
+}

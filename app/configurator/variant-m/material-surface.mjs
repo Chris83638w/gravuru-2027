@@ -24,7 +24,9 @@ export function plateDepthPreview(svg,geometry,id='plate-depth'){
  if(![width,height].every(n=>Number.isFinite(n)&&n>0))throw Error('Plattenschatten: Maße fehlen.');
  const key='depth-'+String(id).replace(/[^a-zA-Z0-9_-]/g,'_');
  const silhouette=plateClipMarkup({...geometry,holes:[]}).replace('clip-rule=','fill-rule=');
- const shadow='<g data-plate-shadow="true" data-role="guide" aria-hidden="true" pointer-events="none"><defs><filter id="'+key+'" filterUnits="userSpaceOnUse" x="'+(-6*scale)+'" y="'+(-6*scale)+'" width="'+(width+12*scale)+'" height="'+(height+12*scale)+'"><feGaussianBlur stdDeviation="'+(.65*scale)+'"/></filter></defs><g transform="translate('+(.35*scale)+' '+(.9*scale)+')" fill="#23282c" opacity=".28" filter="url(#'+key+')">'+silhouette+'</g></g>';
+ // A diffuse shadow beneath the plate, separate from its physical edge. The
+ // directional offset gives depth without a crisp second silhouette or glow.
+ const shadow='<g data-plate-shadow="true" data-role="guide" aria-hidden="true" pointer-events="none"><defs><filter id="'+key+'" filterUnits="userSpaceOnUse" x="'+(-6*scale)+'" y="'+(-6*scale)+'" width="'+(width+12*scale)+'" height="'+(height+12*scale)+'"><feGaussianBlur stdDeviation="'+(1.05*scale)+'"/></filter></defs><g transform="translate('+(.35*scale)+' '+(1.4*scale)+')" fill="#23282c" opacity=".24" filter="url(#'+key+')">'+silhouette+'</g></g>';
  return svg.replace(/(<svg\b[^>]*>)/,'$1'+shadow);
 }
 export function surfacePreview(svg,url,geometry){

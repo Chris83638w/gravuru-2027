@@ -348,3 +348,10 @@ test('hashed gallery previews use browser caching; unavailable cache falls back 
  found=false;await client.loadDesignPreview('signed-choice',url);assert.equal(calls.at(-1).options.headers['X-Gravuru-Shop-Session'],token);
  await client.loadDesignPreview('signed-choice','https://foreign.example/x.svg');assert.ok(calls.every(c=>!c.path.includes('foreign.example')));
 });
+
+
+test('design search query is encoded separately from fixed options and preserves private session headers',async()=>{
+ const calls=[],client=createShopEntryClient({token,fetchImpl:async(url,options)=>{calls.push({url,options});return Response.json({items:[],total:0,nextPage:null});}});
+ await client.loadDesignGallery(0,'preferred',{size:'fixed'},'Haus & Familie');const url=new URL(calls[0].url,'http://localhost');assert.equal(url.searchParams.get('q'),'Haus & Familie');assert.equal(url.searchParams.get('size'),'fixed');assert.equal(calls[0].options.headers['X-Gravuru-Shop-Session'],token);
+ for(const q of ['x'.repeat(81),'a\nb',{}])await assert.rejects(client.loadDesignGallery(0,'preferred',null,q));assert.equal(calls.length,1);
+});

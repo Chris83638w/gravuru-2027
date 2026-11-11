@@ -25,6 +25,8 @@
 .ux-product-design-preview-dialog [data-product-preview]{display:block;object-fit:contain;width:100%;max-height:72dvh}
 .ux-product-design-preview-dialog [data-product-preview][hidden]{display:none}
 .ux-product-themes select{appearance:auto!important;padding-right:32px!important}
+.ux-design-search{margin:10px 0;min-width:0}.ux-design-search>label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}.ux-design-search-row{display:flex;align-items:center;gap:8px;min-width:0}.ux-design-search input{box-sizing:border-box;flex:1;width:100%;min-width:0;min-height:44px;border:1px solid #bfc4c6;border-radius:8px;padding:10px 12px;font:inherit;font-size:16px;background:#fff;color:#2f3437}.ux-design-search button{min-height:44px;border:1px solid #bfc4c6;border-radius:8px;padding:8px;background:#fff;color:#2f3437;font:inherit;cursor:pointer}.ux-design-search button[hidden],.ux-design-search-status[hidden]{display:none!important}.ux-design-search input:focus-visible,.ux-design-search button:focus-visible{outline:2px solid #435365;outline-offset:2px}.ux-design-search-status{font-size:13px;line-height:1.45}
 
 :host([data-ux-modern]) #ux-panel-design .ux-product-card .ux-product-enlarge .ux-ui-icon{width:16px!important;height:16px!important}
+:host([data-ux-modern]) #ux-panel-design .c-gallery [data-c-design][data-design-search-hidden]{display:none!important}
 @media(max-width:767px){:host([data-ux-modern]) #ux-panel-design .ux-product-card .ux-product-enlarge{display:none!important}}

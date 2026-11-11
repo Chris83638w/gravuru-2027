@@ -7,6 +7,7 @@ import {gallerySnapshotCodec} from './shop-gallery-snapshot.mjs';
 import {isAllSizesFamily,familyFormatOptions} from '../configurator/variant-m/family-formats.mjs';
 import {performance} from 'node:perf_hooks';
 import {moduleEnabled} from '../configurator/variant-m/module-profile.mjs';
+import {designSearchQuery,designSearchMetadata,matchesDesignSearch} from '../configurator/variant-m/design-search.mjs';
 
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const unavailable=()=>fail(409,'shop_gallery_changed','Dieses Design ist nicht mehr verfügbar. Bitte die Designauswahl neu öffnen.');
@@ -21,6 +22,8 @@ const fields=['sid','storeId','productId','productRevision','bindingId','assignm
 // approval remains the importer's responsibility, just as for normal entry.
 export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFor,allowedAssets,checkBinding=()=>{},checkBindings,waitMs=4000,onMeasure=()=>{},previewUrl=null}){
  const cache=new Map();
+ const searchIndexes=new WeakMap();
+ const searchMetadata=(design,config)=>{let index=searchIndexes.get(config);if(!index){index=new Map();searchIndexes.set(config,index);}if(!index.has(design.id))index.set(design.id,designSearchMetadata(design,config));return index.get(design.id);};
  const previews=new Map(),previewFiles=new Map();let previewBytes=0;
  const previewKey=(b,id)=>JSON.stringify([b.storeId,b.tenantId,b.productId,b.productRevision,b.options,id]);
  const cachedPreview=(b,id)=>previews.get(previewKey(b,id));
@@ -97,7 +100,7 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
      const design=profile.designs[designIndex];
      let selected;const at=performance.now();try{selected=selection(binding,model,design.id,prepared);}catch{continue;}finally{timings.selectionMs+=performance.now()-at;}
      const {geometry,price}=selected,dedupe=JSON.stringify([binding.productId,design.id,geometry.width,geometry.height,geometry.shape]);
-     cards.push({binding,scope,process,design:{katalog:{target:design.katalog?.target}},availability:{universal:{doorbell:{schema:model.universal.doorbell?.schema}}},designId:design.id,dedupe,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:model.name,designName:design.name||model.name,themes:design.themes||[],widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:price.unitCents,currency:price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
+     cards.push({binding,scope,process,search:searchMetadata(design,model.universal),design:{katalog:{target:design.katalog?.target}},availability:{universal:{doorbell:{schema:model.universal.doorbell?.schema}}},designId:design.id,dedupe,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:model.name,designName:design.name||model.name,themes:design.themes||[],widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:price.unitCents,currency:price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
      timings.cards++;
     }
    }catch(error){if([404,409,422,423].includes(error.status))continue;throw error;}
@@ -184,7 +187,7 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
    const source={scope,process,theme:profile.themeId||null},cards=[];
    for(const design of profile.designs){
     let selected;try{selected=selection(binding,own,design.id,{profile,geometry});}catch{continue;}
-    cards.push({binding,scope,process,design,designId:design.id,dedupe:design.id,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:own.name,designName:design.name||own.name,themes:design.themes||[],widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:selected.price.unitCents,currency:selected.price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
+    cards.push({binding,scope,process,search:searchMetadata(design,own.universal),design,designId:design.id,dedupe:design.id,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:own.name,designName:design.name||own.name,themes:design.themes||[],widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:selected.price.unitCents,currency:selected.price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
    }
    return {cards,source};
   }
@@ -205,7 +208,8 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   try{return await Promise.race([availableCards(context,sourceModel,options),new Promise(resolve=>{timer=setTimeout(()=>resolve(preparing),waitMs);})]);}
   finally{clearTimeout(timer);}
  }
- async function list(context,{page=0,theme='preferred',sourceModel=null,options=null}={}){
+ async function list(context,{page=0,theme='preferred',sourceModel=null,options=null,q=''}={}){
+  const query=designSearchQuery(q);
   if(!['preferred','all'].includes(theme))fail(422,'shop_gallery_theme','Dieses Thema gibt es nicht.');
   if(!Number.isSafeInteger(page)||page<0||page>10000)fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
   // Public entry supplies its revision-pinned source. Do not defeat the legacy
@@ -221,8 +225,8 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
    if(previous&&row.binding.shopifyVariantId!==context.binding.shopifyVariantId&&(previous.binding.shopifyVariantId===context.binding.shopifyVariantId||previous.card.unitCents<=row.card.unitCents))continue;
    choices.set(row.dedupe,row);
   }
-  const rows=[...choices.values()],start=page*40;
-  if(theme==='preferred'&&source?.theme)rows.sort((a,b)=>Number(b.card.themes.includes(source.theme))-Number(a.card.themes.includes(source.theme)));
+  const rows=[...choices.values()].filter(row=>matchesDesignSearch(row.search,query)),start=page*40;
+  rows.sort((a,b)=>a.search.rank-b.search.rank||(!query&&theme==='preferred'&&source?.theme?Number(b.card.themes.includes(source.theme))-Number(a.card.themes.includes(source.theme)):0));
   const items=rows.slice(start,start+40).map(({binding,designId,card})=>({...card,...(previewUrl&&cachedPreview(binding,designId)?{previewUrl:previewUrl(cachedPreview(binding,designId).hash)}:{}),target:issue(context,binding,designId,source.scope.key),current:binding.productId===context.binding.productId&&(binding.shopifyVariantId===context.binding.shopifyVariantId||options!==null&&binding.productRevision===context.binding.productRevision)}));
   return {items,nextPage:start+40<rows.length?page+1:null,total:rows.length,...(source?.theme?{hasTheme:true}:{})};
  }

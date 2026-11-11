@@ -345,7 +345,7 @@ async function otherGalleryCard(f,request,t){
 test('gallery endpoints require current authentication, correct origin and strictly shaped requests',()=>run(async(f,request,{token})=>{
  for(const [path,method,body] of [['design-gallery','GET'],['design-gallery-preview','POST',{target:'x'}],['design-switch','POST',{target:'x'}]]){const denied=await request('/api/shop-entry/'+path,method,body);assert.equal(denied.status,403);assert.equal(denied.data.error.code,'shop_entry_session');}
  const {token:t}=await token();
- for(const suffix of ['?page=-1','?page=1.5','?page=1&page=2','?page=10001','?product=1','?theme=foreign','?theme=all&theme=preferred'])assert.equal((await request('/api/shop-entry/design-gallery'+suffix,'GET',undefined,session(t))).status,422);
+ for(const suffix of ['?page=-1','?page=1.5','?page=1&page=2','?page=10001','?product=1','?theme=foreign','?theme=all&theme=preferred','?q=Haus&q=D23','?q='+encodeURIComponent('x'.repeat(81)),'?q=line%0Afeed'])assert.equal((await request('/api/shop-entry/design-gallery'+suffix,'GET',undefined,session(t))).status,422);
  assert.equal((await request('/api/shop-entry/design-gallery','POST',{},session(t))).status,405);
  for(const path of ['design-gallery-preview','design-switch']){
   assert.equal((await request('/api/shop-entry/'+path,'GET',undefined,session(t))).status,405);
@@ -638,3 +638,9 @@ test('startup warms the gallery without a customer and list never calls the full
  f.store.workshop.galleryModel=(id,rev)=>{reads++;return structuredClone(f.models.get(id));};
  f.store.registry.galleryRevision=()=> 'fixed';f.store.registry.listActiveForGallery=async()=>f.store.registry.listActive();
 }));
+
+
+test('public search passes only eligible results and exact number matches through the authenticated gallery route',()=>run(async(f,request,{token})=>{
+ const {token:t}=await token();
+ for(const [q,total] of [['Haus',1],['D23',1],['23',1],['D230',0],['Geheim',0]]){const r=await request('/api/shop-entry/design-gallery?q='+encodeURIComponent(q),'GET',undefined,session(t));assert.equal(r.status,200,r.body.toString());assert.equal(r.data.total,total,q);}
+},f=>{galleryEntryFixture(f);const c=f.models.get(f.first.localWorkshopRecord).universal;c.profile.designs=[{id:'d1',name:'Haus',katalog:{designId:'TEST-D23'},objects:[]},{id:'secret',name:'Geheim',hidden:true,objects:[]}];}));

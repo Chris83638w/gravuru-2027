@@ -8,7 +8,7 @@ import {keepoutPreview,spacerPreview,screwPreview} from '../configurator/variant
 import {mountingPlacementState} from '../configurator/variant-m/mounting-placement.mjs';
 import {designAreaPreview} from '../configurator/variant-m/design-area.mjs';
 import {textsNearHoles,holeHintText} from '../platform/sources/app/shared/models/hole-proximity.mjs';
-import {surfacePreview,scenePreview} from '../configurator/variant-m/material-surface.mjs';
+import {surfacePreview,scenePreview,plateDepthPreview} from '../configurator/variant-m/material-surface.mjs';
 import {examplePhotoMarkup,emptyMaskedPhotoMarkup} from '../configurator/variant-m/photo-placeholder.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
 import {workshopResources} from './catalog.mjs';
@@ -65,6 +65,9 @@ export function productPreview(model,{options={},examples=[],designId,layout='po
  let svg=studioSvg(p,d,previewFonts(c),{frameKey:options.frame,color:options.color,mountingKey:options.mounting,motifs:c.localResources.motifs,media,handles:false,id:'product-card',photoExampleMarkup,originalPhotoPreview:examples.length>0});
  svg=svg.replace('href="blob:gravuru-workshop-reference"','href="'+example+'"');
  for(const e of examples)svg=svg.replaceAll('href="blob:workshop-'+e.assetId+'"','href="'+e.url+'"');
+ // Match the customer editor's family-product presentation. Manufacturing
+ // artwork is generated separately and never receives this guide layer.
+ if(c.familyFormats)svg=plateDepthPreview(svg,p.geometry,'product-card');
  if(c.familyAcrylic)svg=spacerPreview(svg,p);
  if(!c.acrylic)return scenePreview(designAreaPreview(keepoutPreview(screwPreview(surfacePreview(svg,c.materialSurface,p.geometry),p),p,{show:keepout}),c,p,{show:designArea}),c.sceneBackground);
  backdrop??=image('scene-empty-v2.jpg');

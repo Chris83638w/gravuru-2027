@@ -193,11 +193,12 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
     if(result.mode!=='theme'||result.paymentConfirmed!==false||!Number.isSafeInteger(result.totalCents)||typeof result.handoffUrl!=='string')fail('Die Warenkorbübergabe wurde nicht vorbereitet.');
     return result;
   }
-  async function loadDesignGallery(page=0,theme='preferred',options=null){
+  async function loadDesignGallery(page=0,theme='preferred',options=null,q=''){
+    if(typeof q!=='string'||q.length>80||/[\u0000-\u001f\u007f]/.test(q))fail('Bitte einen Suchbegriff mit höchstens 80 Zeichen eingeben.');
     if(!['preferred','all'].includes(theme))fail('Dieses Thema gibt es nicht.');
     // Türschild-Konfi: Vorlagen der gerade gewählten Ausführung (Form & Größe, Farbe, Befestigung).
     const chosen=options&&typeof options==='object'?['size','color','mounting'].filter(k=>typeof options[k]==='string'&&/^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/.test(options[k])):[];
-    const extra=chosen.map(k=>'&'+k+'='+encodeURIComponent(options[k])).join('');
+    const extra=chosen.map(k=>'&'+k+'='+encodeURIComponent(options[k])).join('')+(q.trim()?'&q='+encodeURIComponent(q.trim()):'');
     if(!Number.isSafeInteger(page)||page<0||page>10000)fail('Diese Seite der Designauswahl gibt es nicht.');
     const controller=new AbortController();let timer;
     const retry='Die Designauswahl ist gerade nicht erreichbar. Deine Gestaltung bleibt erhalten. Bitte erneut versuchen.';

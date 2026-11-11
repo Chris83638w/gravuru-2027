@@ -4,6 +4,8 @@ import {preserveProductSelection} from './product-design-transfer.mjs';
 import {designGalleryCount} from './product-design-gallery-label.mjs';
 import {isLayeredDoorbell} from './product-model-module.mjs';
 import {isFamilyFormats,isAllSizesFamily} from './family-formats.mjs';
+import {installDesignSearchControl} from './design-search-control.mjs';
+import {installNativeDesignSearch} from './native-design-search.mjs';
 
 const money=cents=>new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(cents/100);
 export const productChoiceInfo=item=>`${item.widthMm/10} × ${item.heightMm/10} cm · ${money(item.unitCents)}`;
@@ -12,9 +14,9 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
  // These products already include their complete, format-specific design set.
  // Use the native gallery without repeating it across three main products.
  // Türschild-Konfi mit allen Größen lädt nur das Startdesign; weitere Designs kommen über diese Auswahl.
- if(isLayeredDoorbell(config)||(isFamilyFormats(config)&&!config.familyFormats.fixedSize&&!isAllSizesFamily(config)))return;
+ if(isLayeredDoorbell(config)||(isFamilyFormats(config)&&!config.familyFormats.fixedSize&&!isAllSizesFamily(config)))return installNativeDesignSearch({el,r,config});
  const allSizes=isAllSizesFamily(config),galleryOptions=()=>allSizes?structuredClone(el.state.mOptions||{}):undefined;
- let api;try{api=window.parent.GravuruShopEntry?.designGallery;}catch{}if(!api)return;
+ let api;try{api=window.parent.GravuruShopEntry?.designGallery;}catch{}if(!api)return installNativeDesignSearch({el,r,config});
  el.uxHasProductDesignGallery=true;
  const profile=()=>el.uxSelectedProfile?.()||config.profile;
  const design=()=>profile().designs.find(d=>d.id===el.state.designId);
@@ -38,7 +40,9 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
  const gallery=section;
  const status=gallery.querySelector('.ux-product-status'),grid=gallery.querySelector('.ux-product-grid'),more=gallery.querySelector('.ux-product-more');
  const themeLabel=gallery.querySelector('.ux-product-themes'),themes=themeLabel.querySelector('select');
- const pager=createGalleryPager((page,theme,options)=>api.load(page,theme,options));
+ grid.id='ux-design-search-results';
+ const pager=createGalleryPager((page,theme,options,q)=>api.load(page,theme,options,q));
+ const search=installDesignSearchControl({container:section,before:themeLabel,onChange:()=>load(),onInvalidate:()=>invalidate()});
  let epoch=0,switching=false,retryTimer,prepareRetries=0;const urls=[],queue=[];let active=0;
  const pump=()=>{while(active<2&&queue.length){const request=queue.shift(),{item,img,version}=request;
   if(version!==epoch||img.previewStarted)continue;img.previewStarted=true;active++;
@@ -58,7 +62,8 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
  async function load(){
   if(pager.loading||pager.next===null)return;const version=epoch;more.disabled=true;themes.disabled=true;status.textContent='Designs werden geladen …';
   try{
-   const result=await pager.load(themes.value,galleryOptions());if(!result)return;
+   const firstPage=pager.next===0,query=search.query;
+   const result=await pager.load(themes.value,galleryOptions(),query);if(!result||version!==epoch)return;
    if(result.status==='preparing'){
     status.textContent='Designs werden vorbereitet …';more.textContent='Erneut versuchen';more.hidden=false;
     if(prepareRetries++<4)retryTimer=setTimeout(load,1200);return;
@@ -73,16 +78,18 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
     card.append(select);grid.append(card);
     img.previewRequest={item,img,version};if(observer)observer.observe(img);else queue.push(img.previewRequest);
    }
-   if(!observer)pump();status.textContent=result.total?designGalleryCount(result.total):'Für dieses Produkt sind noch keine weiteren Designs verfügbar.';more.hidden=pager.next===null;
+   if(!observer)pump();status.textContent=query?(result.total===1?'1 Design gefunden':result.total?result.total+' Designs gefunden':'Keine passenden Designs gefunden. Versuche einen anderen Begriff oder leere die Suche.'):(result.total?designGalleryCount(result.total):'Für dieses Produkt sind noch keine weiteren Designs verfügbar.');more.hidden=pager.next===null;
+   if(firstPage&&query)el.uxReportDesignSearch?.(query,result.total);
   }catch(error){status.textContent=error.message||'Die Designauswahl ist gerade nicht erreichbar. Bitte erneut versuchen.';more.textContent='Erneut versuchen';more.hidden=false;}
   finally{if(version===epoch){more.disabled=false;themes.disabled=false;}}
  }
- function reset(){epoch++;pager.reset();clearTimeout(retryTimer);prepareRetries=0;observer?.disconnect();queue.length=0;grid.replaceChildren();for(const url of urls)URL.revokeObjectURL(url);urls.length=0;load();}
+ function invalidate(){epoch++;pager.reset();clearTimeout(retryTimer);prepareRetries=0;observer?.disconnect();queue.length=0;grid.replaceChildren();for(const url of urls)URL.revokeObjectURL(url);urls.length=0;more.hidden=true;el.uxReportDesignSearch?.('',0);status.textContent='Designs werden gesucht …';}
+ function reset(){invalidate();load();}
  themes.onchange=reset;
  // Invalidate stale pages even if size/mounting changes during a pending request.
  let shownFor=JSON.stringify(galleryOptions()??null);
  const sync=el.sync;el.sync=function(...args){const result=sync.apply(this,args),now=JSON.stringify(galleryOptions()??null);if(now!==shownFor){shownFor=now;reset();}for(const card of grid.querySelectorAll('.ux-product-choose'))card.setAttribute('aria-pressed',String(card.dataset.productDesignId===el.state.designId));return result;};more.onclick=()=>{clearTimeout(retryTimer);load();};
- window.addEventListener('pagehide',()=>{epoch++;pager.reset();clearTimeout(retryTimer);observer?.disconnect();for(const url of urls)URL.revokeObjectURL(url);},{once:true});
+ window.addEventListener('pagehide',()=>{search.dispose();epoch++;pager.reset();clearTimeout(retryTimer);observer?.disconnect();for(const url of urls)URL.revokeObjectURL(url);},{once:true});
  el.sync();
  // Begin loading immediately; the editor itself does not wait for thumbnails.
  load();

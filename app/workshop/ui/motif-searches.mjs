@@ -5,8 +5,9 @@ const filterKey='gravuru:motif-search-filters:v1:'+(document.querySelector('meta
 let savedFilters;try{savedFilters=JSON.parse(localStorage.getItem(filterKey)||'null');}catch{}
 if(['7','30','90','365'].includes(savedFilters?.days))form.elements.days.value=savedFilters.days;
 if(['shop','preview','all'].includes(savedFilters?.source))form.elements.source.value=savedFilters.source;
+if(['motif','design'].includes(savedFilters?.searchKind))form.elements.searchKind.value=savedFilters.searchKind;
 let selectedGroup=typeof savedFilters?.group==='string'&&savedFilters.group.length<=160?savedFilters.group:'';
-function rememberFilters(){try{localStorage.setItem(filterKey,JSON.stringify({days:form.elements.days.value,source:form.elements.source.value,group:selectedGroup}));}catch{/* A blocked preference store must not prevent loading the report. */}}
+function rememberFilters(){try{localStorage.setItem(filterKey,JSON.stringify({days:form.elements.days.value,source:form.elements.source.value,searchKind:form.elements.searchKind.value,group:selectedGroup}));}catch{/* A blocked preference store must not prevent loading the report. */}}
 function table(host,rows,missing=false){
  host.replaceChildren();if(!rows.length){const p=document.createElement('p');p.className='empty';p.textContent='Für diese Auswahl gibt es noch keine Suchanfragen.';host.append(p);return;}
  const table=document.createElement('table'),head=document.createElement('thead'),tr=document.createElement('tr');for(const label of ['Suchbegriff',missing?'Ohne Treffer':'Anzahl']){const th=document.createElement('th');th.scope='col';th.textContent=label;tr.append(th);}head.append(tr);table.append(head);const body=document.createElement('tbody');for(const row of rows){const tr=document.createElement('tr');for(const value of [row.term,missing?row.withoutResults:row.searches]){const td=document.createElement('td');td.textContent=String(value);tr.append(td);}body.append(tr);}table.append(body);host.append(table);

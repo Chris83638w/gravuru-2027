@@ -173,7 +173,7 @@ export async function installWorkflow(api){
  const gallery=$('.c-gallery');let moreExpanded=false,arranging=false;
  const moreToggle=document.createElement('button');moreToggle.type='button';moreToggle.className='workflow-more-designs';moreToggle.dataset.ux='more-designs';moreToggle.hidden=true;moreToggle.setAttribute('aria-expanded','false');
  ($('.ux-design-reveal')||gallery).after(moreToggle);
- function arrangeGallery(){if(arranging||!gallery)return;arranging=true;try{
+ function arrangeGallery(){if(arranging||!gallery)return;if(el.uxApplyDesignSearch?.())return;arranging=true;try{
   const order=galleryOrder(profile.designs,config?.designSelection==='all-approved'?null:productTheme(profile)),cards=new Map(all('.c-gallery [data-c-design]').map(c=>[c.dataset.cDesign,c]));
   const ordered=[...order.primary,...order.more].map(id=>cards.get(id)).filter(Boolean);
   if(ordered.some((card,i)=>gallery.children[i]!==card))for(const card of ordered)gallery.append(card);

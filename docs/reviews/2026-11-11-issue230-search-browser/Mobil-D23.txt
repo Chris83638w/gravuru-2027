@@ -1,0 +1,59 @@
+- banner:
+  - link "Übersicht":
+    - /url: /
+  - text: · Lokale v8-Prüfung · Suche + Material · keine Shopänderung
+- main "Dein Türschild gestalten":
+  - iframe [active]:
+    - main:
+      - main:
+        - status
+        - region "Produktvorschau":
+          - main:
+            - img "Gestaltbares Schild. Element auswählen und verschieben."
+            - generic: 50 mm
+            - generic: 20 mm
+          - button "Große Vorschau"
+        - region "Designs":
+          - button "Zurück"
+          - heading "Designs" [level=2]
+          - button "Fertig"
+          - tabpanel "Designs":
+            - heading "Wähle dein Design" [level=2]
+            - generic: Design suchen
+            - searchbox "Design suchen"
+            - button "Suche löschen": Leeren
+            - text: Themen
+            - combobox "Themen":
+              - option "Passende Themen zuerst" [selected]
+              - option "Alle Themen"
+            - status: 1 Design gefunden
+            - button "Design Vor- und Nachname mit Haus":
+              - img "Vor- und Nachname mit Haus"
+        - button "Zurück zum Produkt"
+        - generic: gravuru
+        - generic "Dein Produkt gestalten": Konfigurator
+        - button "Rückgängig":
+        - button "Wiederholen" [disabled]:
+        - button "Ebenen (2)":
+        - button "Entwurf speichern":
+        - button "Hilfe": "?"
+        - generic: Ansicht
+        - slider "Ansicht vergrößern"
+        - status: 100 %
+        - button "Gestaltung zurücksetzen"
+        - button "Ausführung und Größe auswählen":
+          - generic: Edelstahl · 5 × 2 cm
+        - strong: 7,99 €
+        - navigation "Gestaltung verwalten":
+          - button "Ausführung":
+            - generic: Ausführung
+          - button "Designs" [pressed]:
+            - generic: Designs
+          - button "Text":
+            - generic: Text
+          - button "Motive":
+            - generic: Motive
+          - button "Warenkorb":
+            - generic: Warenkorb
+        - status
+    - generic: › › › › › › › › › › ›

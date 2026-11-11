@@ -1,0 +1,328 @@
+{
+  "rows": [
+    {
+      "product": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "q": "",
+      "status": 200,
+      "total": 27,
+      "nextPage": null,
+      "ms": 94
+    },
+    {
+      "product": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "q": "Haus",
+      "status": 200,
+      "total": 2,
+      "nextPage": null,
+      "ms": 96
+    },
+    {
+      "product": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "q": "D23",
+      "status": 200,
+      "total": 1,
+      "nextPage": null,
+      "ms": 93
+    },
+    {
+      "product": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "q": "23",
+      "status": 200,
+      "total": 1,
+      "nextPage": null,
+      "ms": 88
+    },
+    {
+      "product": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "q": "kein-treffer-xyz",
+      "status": 200,
+      "total": 0,
+      "nextPage": null,
+      "ms": 82
+    },
+    {
+      "product": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "q": "",
+      "status": 200,
+      "total": 27,
+      "nextPage": null,
+      "ms": 101
+    },
+    {
+      "product": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "q": "Haus",
+      "status": 200,
+      "total": 2,
+      "nextPage": null,
+      "ms": 85
+    },
+    {
+      "product": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "q": "D23",
+      "status": 200,
+      "total": 1,
+      "nextPage": null,
+      "ms": 82
+    },
+    {
+      "product": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "q": "23",
+      "status": 200,
+      "total": 1,
+      "nextPage": null,
+      "ms": 99
+    },
+    {
+      "product": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "q": "kein-treffer-xyz",
+      "status": 200,
+      "total": 0,
+      "nextPage": null,
+      "ms": 85
+    },
+    {
+      "product": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "q": "",
+      "status": 200,
+      "total": 27,
+      "nextPage": null,
+      "ms": 67
+    },
+    {
+      "product": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "q": "Haus",
+      "status": 200,
+      "total": 2,
+      "nextPage": null,
+      "ms": 78
+    },
+    {
+      "product": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "q": "D23",
+      "status": 200,
+      "total": 1,
+      "nextPage": null,
+      "ms": 80
+    },
+    {
+      "product": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "q": "23",
+      "status": 200,
+      "total": 1,
+      "nextPage": null,
+      "ms": 94
+    },
+    {
+      "product": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "q": "kein-treffer-xyz",
+      "status": 200,
+      "total": 0,
+      "nextPage": null,
+      "ms": 82
+    },
+    {
+      "product": "Tuerschild-Acrylglas-3mm_v4",
+      "q": "",
+      "status": 200,
+      "total": 124,
+      "nextPage": 1,
+      "ms": 1939
+    },
+    {
+      "product": "Tuerschild-Acrylglas-3mm_v4",
+      "q": "Haus",
+      "status": 200,
+      "total": 12,
+      "nextPage": null,
+      "ms": 2076
+    },
+    {
+      "product": "Tuerschild-Acrylglas-3mm_v4",
+      "q": "D23",
+      "status": 200,
+      "total": 1,
+      "nextPage": null,
+      "ms": 2497
+    },
+    {
+      "product": "Tuerschild-Acrylglas-3mm_v4",
+      "q": "23",
+      "status": 200,
+      "total": 1,
+      "nextPage": null,
+      "ms": 2808
+    },
+    {
+      "product": "Tuerschild-Acrylglas-3mm_v4",
+      "q": "kein-treffer-xyz",
+      "status": 200,
+      "total": 0,
+      "nextPage": null,
+      "ms": 3121
+    },
+    {
+      "product": "Tuerschild-Edelstahl-5x2_v1",
+      "q": "",
+      "status": 200,
+      "total": 27,
+      "nextPage": null,
+      "ms": 111
+    },
+    {
+      "product": "Tuerschild-Edelstahl-5x2_v1",
+      "q": "Haus",
+      "status": 200,
+      "total": 2,
+      "nextPage": null,
+      "ms": 100
+    },
+    {
+      "product": "Tuerschild-Edelstahl-5x2_v1",
+      "q": "D23",
+      "status": 200,
+      "total": 1,
+      "nextPage": null,
+      "ms": 94
+    },
+    {
+      "product": "Tuerschild-Edelstahl-5x2_v1",
+      "q": "23",
+      "status": 200,
+      "total": 1,
+      "nextPage": null,
+      "ms": 95
+    },
+    {
+      "product": "Tuerschild-Edelstahl-5x2_v1",
+      "q": "kein-treffer-xyz",
+      "status": 200,
+      "total": 0,
+      "nextPage": null,
+      "ms": 95
+    },
+    {
+      "product": "Tuerschild-Edelstahl-6x2_v1",
+      "q": "",
+      "status": 200,
+      "total": 27,
+      "nextPage": null,
+      "ms": 101
+    },
+    {
+      "product": "Tuerschild-Edelstahl-6x2_v1",
+      "q": "Haus",
+      "status": 200,
+      "total": 2,
+      "nextPage": null,
+      "ms": 97
+    },
+    {
+      "product": "Tuerschild-Edelstahl-6x2_v1",
+      "q": "D23",
+      "status": 200,
+      "total": 1,
+      "nextPage": null,
+      "ms": 91
+    },
+    {
+      "product": "Tuerschild-Edelstahl-6x2_v1",
+      "q": "23",
+      "status": 200,
+      "total": 1,
+      "nextPage": null,
+      "ms": 107
+    },
+    {
+      "product": "Tuerschild-Edelstahl-6x2_v1",
+      "q": "kein-treffer-xyz",
+      "status": 200,
+      "total": 0,
+      "nextPage": null,
+      "ms": 106
+    },
+    {
+      "product": "Tuerschild-Edelstahl-8x2_v1",
+      "q": "",
+      "status": 200,
+      "total": 27,
+      "nextPage": null,
+      "ms": 108
+    },
+    {
+      "product": "Tuerschild-Edelstahl-8x2_v1",
+      "q": "Haus",
+      "status": 200,
+      "total": 2,
+      "nextPage": null,
+      "ms": 108
+    },
+    {
+      "product": "Tuerschild-Edelstahl-8x2_v1",
+      "q": "D23",
+      "status": 200,
+      "total": 1,
+      "nextPage": null,
+      "ms": 107
+    },
+    {
+      "product": "Tuerschild-Edelstahl-8x2_v1",
+      "q": "23",
+      "status": 200,
+      "total": 1,
+      "nextPage": null,
+      "ms": 107
+    },
+    {
+      "product": "Tuerschild-Edelstahl-8x2_v1",
+      "q": "kein-treffer-xyz",
+      "status": 200,
+      "total": 0,
+      "nextPage": null,
+      "ms": 111
+    }
+  ],
+  "controls": {
+    "analytics": 200,
+    "stats": {
+      "from": "2026-10-13",
+      "to": "2026-11-11",
+      "days": 30,
+      "source": "preview",
+      "searchKind": "design",
+      "group": "",
+      "groups": [
+        "Lokale v8-Prüfung"
+      ],
+      "totals": {
+        "searches": 3,
+        "withoutResults": 1
+      },
+      "rows": [
+        {
+          "term": "d23",
+          "searches": 1,
+          "withoutResults": 0
+        },
+        {
+          "term": "haus",
+          "searches": 1,
+          "withoutResults": 0
+        },
+        {
+          "term": "zzzzkeintreffer",
+          "searches": 1,
+          "withoutResults": 1
+        }
+      ],
+      "missing": [
+        {
+          "term": "zzzzkeintreffer",
+          "searches": 1,
+          "withoutResults": 1
+        }
+      ]
+    },
+    "writeBlocked": 403,
+    "unknownReportQuery": 422
+  }
+}

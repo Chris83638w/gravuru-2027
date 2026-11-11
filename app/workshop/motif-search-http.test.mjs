@@ -15,6 +15,12 @@ test('search events accept only known products; only an authenticated merchant c
  const now=Math.floor(Date.now()/1000),header=Buffer.from(JSON.stringify({alg:'HS256',typ:'JWT'})).toString('base64url'),payload=Buffer.from(JSON.stringify({aud:clientId,iat:now,nbf:now,exp:now+60,jti:'search-test',dest:'https://'+shop,iss:'https://'+shop+'/admin',sub:'123'})).toString('base64url'),signed=header+'.'+payload,token='Bearer '+signed+'.'+createHmac('sha256',secret).update(signed).digest('base64url');
  const report=await request(w,'/api/workshop/motif-search-stats?source=preview','GET',undefined,token);assert.equal(report.status,200);assert.equal(report.body.totals.searches,2);assert.equal(report.body.totals.withoutResults,1);assert.deepEqual(report.body.groups,['Schiefer-Gedenktafeln']);
  assert.equal((await request(w,'/api/workshop/motif-search-stats?source=shop','GET',undefined,token)).body.totals.searches,0);
+ assert.equal((await request(w,'/api/workshop/motif-search-events','POST',{productId:product.id,query:'D23',resultCount:2,searchKind:'design'})).body.accepted,true);
+ assert.equal((await request(w,'/api/workshop/motif-search-stats?source=preview&searchKind=design','GET',undefined,token)).body.totals.searches,1);
+ assert.equal((await request(w,'/api/workshop/motif-search-stats?source=preview','GET',undefined,token)).body.totals.searches,2,'old callers retain motif report');
+ assert.equal((await request(w,'/api/workshop/motif-search-events','POST',{productId:product.id,query:'Haus',resultCount:2,searchKind:'all'})).status,422);
+ assert.equal((await request(w,'/api/workshop/motif-search-events','POST',{productId:product.id,query:'name@example.com',resultCount:0,searchKind:'design'})).body.accepted,false);
+ assert.equal((await request(w,'/api/workshop/motif-search-stats?searchKind=design')).status,401);
  const previewId='cfg_00000000-0000-0000-0000-000000000001';
  fs.writeFileSync(path.join(dir,'motif-search-previews.json'),JSON.stringify({schema:'gravuru-motif-search-previews/v1',tenants:{gravuru:{[previewId]:'Prüfvorschau'},'anderer-shop':{'cfg_00000000-0000-0000-0000-000000000002':'Fremd'}}}));
  assert.equal((await request(w,'/api/workshop/motif-search-events','POST',{productId:previewId,query:'Hund',resultCount:1})).status,200);

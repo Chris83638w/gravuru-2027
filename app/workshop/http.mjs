@@ -405,19 +405,18 @@ function createTenantWorkshop(tenantId,{filename,seedConfig,legacy,designConvert
       if(pathname==='/api/workshop/motif-search-events'){
         if(method!=='POST')fail(405,'method_not_allowed','Suchereignisse benötigen POST.');
         const input=await body(req,1024);
-        if(Object.keys(input).some(k=>!['productId','query','resultCount'].includes(k)))fail(422,'motif_search_invalid','Ungültige Suchanfrage.');
+        if(Object.keys(input).some(k=>!['productId','query','resultCount','searchKind'].includes(k))||(input.searchKind!==undefined&&!['motif','design'].includes(input.searchKind)))fail(422,'motif_search_invalid','Ungültige Suchanfrage.');
         let product;try{product=repository.get(input.productId);}catch(error){
           const group=error.code==='not_found'?motifSearchPreviewGroup(filename,tenantId,input.productId):null;
           if(!group)throw error;
-          return json(res,200,{accepted:motifSearchStats.record({query:input.query,resultCount:input.resultCount,group,source:'preview'})});
+          return json(res,200,{accepted:motifSearchStats.record({query:input.query,resultCount:input.resultCount,searchKind:input.searchKind,group,source:'preview'})});
         }
         if(product.status==='archived'||product.document.kind!=='product')fail(404,'product_missing','Produkt nicht verfügbar.');
         assertKonfiAvailable(product.id);
         const categories=product.document.categoryIds||[],family=categories.find(id=>id.startsWith('familie-'));
         const group=(family?labelCategories([family])[family]?.label:null)||product.document.name.replace(/\s*[·–-]\s*\d+\s*[×x]\s*\d+\s*cm.*$/u,'');
         const source=konfis.get(product.id).status==='released'?'shop':'preview';
-        motifSearchStats.record({query:input.query,resultCount:input.resultCount,group,source});
-        return json(res,200,{accepted:true});
+        return json(res,200,{accepted:motifSearchStats.record({query:input.query,resultCount:input.resultCount,searchKind:input.searchKind,group,source})});
       }
       const merchantSession=verifySession?verifySession(req.headers.authorization,'merchant'):null;
       if(method!=='GET'&&!sameToken(req.headers['x-gravuru-csrf'],csrfToken))fail(403,'invalid_session','Bitte die Werkstatt neu laden.');

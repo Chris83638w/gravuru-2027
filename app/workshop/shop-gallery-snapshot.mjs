@@ -1,6 +1,6 @@
 import {createHmac,timingSafeEqual} from 'node:crypto';
 
-const schema='gravuru-shop-gallery-cache/v2';
+const schema='gravuru-shop-gallery-cache/v3';
 const bindingFields=['storeId','tenantId','shopDomain','shopifyProductId','shopifyVariantId','productId','productRevision','bindingId','assignmentRevision','options','unitCents'];
 const pick=(value,fields)=>Object.fromEntries(fields.map(k=>[k,value[k]]));
 const contextScope=context=>[context.store.workshop.tenantId,context.store.storeId,context.binding.shopDomain];
@@ -14,6 +14,7 @@ export function gallerySnapshotCodec(secret){
     binding:pick(row.binding,bindingFields),scope:pick(row.scope,['key','lineId','familyId']),process:row.process,
     design:{katalog:{target:row.design.katalog.target?pick(row.design.katalog.target,['lineId','familyId','explicit','released']):undefined}},
     availability:{universal:{doorbell:{schema:row.availability.universal.doorbell.schema}}},designId:row.designId,dedupe:row.dedupe,
+    search:pick(row.search,['text','number','rank','unnamedMotifs']),
     card:pick(row.card,['productId','productRevision','designId','productName','designName','themes','widthMm','heightMm','shape','unitCents','currency','shopifyProductId','shopifyVariantId'])
    }))]);
    const sources=[...snapshot.sources].map(([key,value])=>[key,{scope:pick(value.scope,['key','lineId','familyId']),process:value.process,theme:value.theme}]);

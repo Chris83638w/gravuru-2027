@@ -341,3 +341,26 @@ test('all door-sign pages stay inside their line, excluding memorials and doorbe
  const cards=[];let page=0;do{const result=await f.gallery.list(f.context,{page,theme:'all'});assert.equal(result.total,86);cards.push(...result.items);page=result.nextPage;}while(page!==null);
  assert.equal(cards.length,86);assert.equal(new Set(cards.map(c=>c.designId)).size,86);assert.deepEqual([...new Set(cards.map(c=>c.productId))].sort(),['cfg_1','cfg_4']);
 });
+
+
+test('search covers all eligible rows before paging, ranks originals first and ignores preferred theme during query',async()=>{
+ const f=fixture(),c=f.models.get('cfg_1').universal;c.profile.themeId='preferred';
+ c.profile.designs=Array.from({length:87},(_,i)=>({id:'d'+i,name:i<45?'Anderes':'Haus '+i,themes:i<45?['preferred']:['other'],katalog:{designId:'TEST-D'+i,prio:i===86?undefined:1,source:i===86?'TEST-D86 (Bestand, Original.cdr)':undefined},objects:[]}));
+ const result=await f.gallery.list(f.context,{q:'Haus'});assert.equal(result.total,42);assert.equal(result.items.length,40);assert.equal(result.items[0].designId,'d86');assert.equal(result.nextPage,1);
+ const tail=await f.gallery.list(f.context,{q:'Haus',page:1});assert.equal(tail.items.length,2);assert.equal(new Set([...result.items,...tail.items].map(d=>d.designId)).size,42);
+ assert.deepEqual((await f.gallery.list(f.context,{q:'D86'})).items.map(d=>d.designId),['d86']);
+ assert.deepEqual((await f.gallery.list(f.context,{q:'TEST-D86'})).items.map(d=>d.designId),['d86']);
+ assert.equal((await f.gallery.list(f.context,{q:'keintreffer'})).total,0);
+});
+test('search cannot reveal hidden, revoked, wrong-material or foreign-store templates',async()=>{
+ const f=fixture();f.add(2,{designs:[{id:'hidden',name:'Gesucht',hidden:true,objects:[]},{id:'revoked',name:'Gesucht',released:false,objects:[]},{id:'wrong-fit',name:'Gesucht',katalog:{fit:'passt nicht'},objects:[]}]});
+ f.add(3,{designs:[{id:'foreign',name:'Gesucht',objects:[]}]}).tenantId='foreign';f.add(4,{designs:[{id:'material',name:'Gesucht',objects:[]}]});f.models.get('cfg_4').universal.profile.material.kind='slate';
+ assert.equal((await f.gallery.list(f.context,{q:'Gesucht'})).total,0);
+ for(const q of ['x'.repeat(81),'line\nfeed',{},null])await assert.rejects(f.gallery.list(f.context,{q}),{code:'shop_gallery_query'});
+});
+test('search metadata follows the revision cache and survives signed snapshot restore',async()=>{
+ const f=fixture();let revision='r1',saved=null;f.store.registry.galleryRevision=()=>revision;f.store.registry.listActiveForGallery=async()=>f.store.registry.listActive();f.store.registry.galleryCache={read:async()=>saved,write:async(_revision,value)=>{saved=value;}};
+ f.models.get('cfg_1').universal.profile.designs[0].name='Anker';assert.equal((await f.gallery.list(f.context,{q:'Anker'})).total,1);
+ f.models.get('cfg_1').universal.profile.designs[0].name='Haus';revision='r2';assert.equal((await f.gallery.list(f.context,{q:'Anker'})).total,0);assert.equal((await f.gallery.list(f.context,{q:'Haus'})).total,1);
+ const restored=createShopDesignGallery({secret:'synthetic-only-gallery-secret',resolve:()=>{throw Error('unexpected resolution');},modelFor:()=>{throw Error('snapshot should restore without rebuilding');},allowedAssets:()=>new Set()});assert.equal((await restored.list(f.context,{q:'Haus'})).total,1);assert.equal((await restored.list(f.context,{q:'Anker'})).total,0);
+});

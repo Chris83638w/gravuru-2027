@@ -408,11 +408,11 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     }
     if(action==='design-gallery'){
      if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
-     if([...url.searchParams.keys()].some(k=>!['page','theme',...GALLERY_OPTIONS].includes(k))||['page','theme',...GALLERY_OPTIONS].some(k=>url.searchParams.getAll(k).length>1)||GALLERY_OPTIONS.some(k=>url.searchParams.has(k)&&!/^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/.test(url.searchParams.get(k)))||!['preferred','all'].includes(url.searchParams.get('theme')||'preferred')||!/^\d{1,5}$/.test(url.searchParams.get('page')||'0'))fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
+     if([...url.searchParams.keys()].some(k=>!['page','theme','q',...GALLERY_OPTIONS].includes(k))||['page','theme','q',...GALLERY_OPTIONS].some(k=>url.searchParams.getAll(k).length>1)||GALLERY_OPTIONS.some(k=>url.searchParams.has(k)&&!/^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/.test(url.searchParams.get(k)))||!['preferred','all'].includes(url.searchParams.get('theme')||'preferred')||!/^\d{1,5}$/.test(url.searchParams.get('page')||'0'))fail(422,'shop_gallery_page','Diese Seite der Designauswahl gibt es nicht.');
      checkOrigin(req,{mutating:false});const context=active(req),sourceModel=cardFor(context.store,context.binding);checkGalleryBinding(context.store,context.binding,sourceModel);
      // Türschild-Konfi: aktuelle Ausführung aus dem Konfi (Form & Größe, Farbe, Befestigung); nur dort ausgewertet.
      const chosen=GALLERY_OPTIONS.filter(k=>url.searchParams.has(k)),options=chosen.length&&isAllSizesFamily(sourceModel.universal)?Object.fromEntries(chosen.map(k=>[k,url.searchParams.get(k)])):null;
-     const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0),theme:url.searchParams.get('theme')||'preferred',sourceModel,options});active(req);
+     const result=await designGallery.list(context,{page:Number(url.searchParams.get('page')||0),theme:url.searchParams.get('theme')||'preferred',sourceModel,options,q:url.searchParams.get('q')||''});active(req);
      return json(res,200,result);
     }
     if(action==='customer-vector-logo/preview'){

@@ -5,7 +5,17 @@ import {processProfile} from '../../workshop/process-profiles.mjs';
 export const MODULE_PROFILE_SCHEMA='gravuru-configurator-modules/v1';
 export const MODULE_KEYS=Object.freeze(['options','designs','text','motifs','photo','logo','colors']);
 export const MODULE_LABELS=Object.freeze({options:'Ausführungen',designs:'Designs',text:'Text und Schriften',motifs:'Motive',photo:'Foto',logo:'Logo',colors:'Farbwahl'});
-const plain=v=>v!==null&&typeof v==='object'&&!Array.isArray(v)&&[Object.prototype,null].includes(Object.getPrototypeOf(v));
+// The native editor receives its pinned JSON model from its parent window.
+// That window has a different Object.prototype; class instances still do not
+// qualify. Keep the exact fields/versions/booleans below unchanged.
+const objectConstructor=Function.prototype.toString.call(Object);
+const plain=v=>{
+ if(v===null||typeof v!=='object'||Array.isArray(v))return false;
+ const prototype=Object.getPrototypeOf(v);
+ if(prototype===null)return true;
+ const constructor=Object.getOwnPropertyDescriptor(prototype,'constructor')?.value;
+ return Object.getPrototypeOf(prototype)===null&&typeof constructor==='function'&&constructor.prototype===prototype&&Function.prototype.toString.call(constructor)===objectConstructor;
+};
 const exact=(v,keys)=>plain(v)&&Object.keys(v).length===keys.length&&keys.every(key=>Object.hasOwn(v,key));
 const fail=(message,code='module_profile_invalid')=>{throw Object.assign(Error(message),{status:422,code});};
 

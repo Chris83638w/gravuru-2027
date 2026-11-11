@@ -1,42 +1,29 @@
 {
-  "schema": "gravuru-main-target-copy-comparison-package/v1",
-  "destination": "ops/issue230-main-target-compare-20261111",
+  "schema": "gravuru-main-target-category-compare-package/v1",
   "readOnly": true,
   "applicationRuntimeChanged": false,
-  "databaseFilesIncluded": false,
-  "previewBasisCommit": "af6fd986c735d97bddc974261398ab8c4e88e00b",
-  "previewPublishedCommit": "91d7f94f473da5661da59d86ed70188309741e10",
-  "runtimeHeadGuard": false,
-  "targetProductGroupSha256": "2da2130230341917f7a99d2a12889c1e2f10e408f64d3532e9c5ea6bae65713c",
-  "targetIdBindingSha256": "deb2ce71bf57d5ff85e5f186378d94f58edeecc1ce4d7c4151bebf6e8072886f",
+  "baseCommit": "630adcc0ee6dcdbb04e4345452d07604b83f59cb",
+  "destination": "ops/issue230-main-target-compare-20261111",
+  "actualDatabaseOpened": false,
   "tests": {
-    "passed": 9,
+    "passed": 14,
     "failed": 0,
     "skipped": 0,
-    "environment": "Windows Node 24.20.0; synthetic copies only"
+    "environment": "Windows Node24, synthetic copies and actual native resolver oracle only"
   },
-  "independentReview": "passed",
-  "actualServerComparisonPerformed": false,
+  "targetProductGroupSha256": "ae09cbf6b58719b61729c7fab7a5685b464aae1e8d08691a706111e97b58e407",
+  "targetIdBindingSha256": "f0bb7d95e89e3aae66ab04454d6476132fe197aaae7c1da48ce8209ced62d285",
+  "intentSerializedSha256": "fcfddddeae4a188ef980a67912e247d85bb42b46c1d4836de669207b01b2282b",
   "files": [
     {
-      "name": ".gitattributes",
-      "bytes": 8,
-      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
-    },
-    {
-      "name": "README.md",
-      "bytes": 8345,
-      "sha256": "0df8cdbc4a7f8f562a9b0fa4357fba8429ec4649f769328b3c8c6669876d8993"
-    },
-    {
       "name": "compare-main-target-copy.mjs",
-      "bytes": 26593,
-      "sha256": "bc3dc7f8a1f3d215c4415d22cd48ccd76131cd78ced7b9b76c590d4197438a93"
+      "bytes": 26088,
+      "sha256": "5c4394a4ad258dc30eca249fde5a3cc9d60e2755d8d00b62d76b61be29580394"
     },
     {
-      "name": "compare-main-target-copy.test.mjs",
-      "bytes": 15908,
-      "sha256": "90bde38122d96e63625a3767a5e18369353c9bd88cf55535a16f027048889bfe"
+      "name": "resolve-main-category-profiles-readonly.mjs",
+      "bytes": 8062,
+      "sha256": "e86c1ddf42fe957f2e60c9e7e769937e3c0f07571980cf382413b6db9cd48476"
     },
     {
       "name": "copy-guard.mjs",
@@ -44,14 +31,29 @@
       "sha256": "466ffb3e96fa8bcc2b569a3069abe7ea4ca00a856fae9a8cc65ac186b39a1671"
     },
     {
-      "name": "independent-review.md",
-      "bytes": 6519,
-      "sha256": "cdbe2663948bba4feb1c8b240efbb39547e10e9fd4fed338ec4203aae8243719"
+      "name": "compare-main-target-copy.test.mjs",
+      "bytes": 16357,
+      "sha256": "3990ffc931047800f909491e636dab702de902ebe7a25d290f8f7b19980f43ad"
+    },
+    {
+      "name": "resolve-main-category-profiles-readonly.test.mjs",
+      "bytes": 6504,
+      "sha256": "4fdf0e5b31ab2f8c487de52e91b3c1b97f92dcb85edb54373fd445e932072517"
+    },
+    {
+      "name": "README.md",
+      "bytes": 6707,
+      "sha256": "02fb22fadd44acc8db54fdf54451f3842fe1436f31e12b12ed1e5b6f4269cc85"
     },
     {
       "name": "tests.txt",
-      "bytes": 1170,
-      "sha256": "ec155dc639e878b46bfe3f5eb5c06b2974f4af5724e4476db4190f058a16e41b"
+      "bytes": 1751,
+      "sha256": "57801a9109777210f774c4ab7385021de965473aad2379ac5ec6ed48d25a2d8f"
+    },
+    {
+      "name": "artifact-pin-check.json",
+      "bytes": 596,
+      "sha256": "7d9b1c4c2e67a637139d270cafb7937ef0e54b6bbf9fd51403ede14d96977e76"
     }
   ]
 }

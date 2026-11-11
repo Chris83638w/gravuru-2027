@@ -1,0 +1,56 @@
+{
+  "previewOnly": true,
+  "noModelsOrDatabases": true,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 8051,
+      "sha256": "e7fa47078d24d28b63cfcc5f13ce794cf76fbe6f1f1aae5fee11d2c539f59739"
+    },
+    {
+      "path": "build-preserved-metadata.mjs",
+      "bytes": 5413,
+      "sha256": "b736331e32f43e6dc9cc2f91a7d04f0e4888b239687c8d63a72ef5e246527622"
+    },
+    {
+      "path": "check-unchanged-contract.mjs",
+      "bytes": 3385,
+      "sha256": "31c8a9d7ea296a011898aaacc029eb263eb386c1d9cba64e3718f3806ef42367"
+    },
+    {
+      "path": "independent-review.md",
+      "bytes": 4116,
+      "sha256": "ad36229c355606dac1be6ac8478de24ff5af56ffd0214610eee821c4126a2e49"
+    },
+    {
+      "path": "materialization-check.json",
+      "bytes": 424,
+      "sha256": "19cdfb16855853d8f564f70086092514ae2e47412154fbcbff5c9ebcb867ecae"
+    },
+    {
+      "path": "materialize-metadata-preview.mjs",
+      "bytes": 2485,
+      "sha256": "84e82f7ecc935abb154e7bb1af4eb5abd161820a71fbb723076d0df00d847643"
+    },
+    {
+      "path": "metadata-changes.json",
+      "bytes": 1793,
+      "sha256": "80a648089bd45174464cd5ed9ad16fcc1a51639a2cf1a5636b917da891d782bc"
+    },
+    {
+      "path": "unchanged-contract-proof.json",
+      "bytes": 1853,
+      "sha256": "10fb095b016983458f86b6b94226df18918ac4ed78a1bf395222aa05071546e0"
+    },
+    {
+      "path": "update-intent.preview.json",
+      "bytes": 8763,
+      "sha256": "fcfddddeae4a188ef980a67912e247d85bb42b46c1d4836de669207b01b2282b"
+    },
+    {
+      "path": "verification.json",
+      "bytes": 4047,
+      "sha256": "016e0d4b5f96c752f696f21eb2bd6eac21b747784ffcaa9cf82a2ef1dfddd7a2"
+    }
+  ]
+}

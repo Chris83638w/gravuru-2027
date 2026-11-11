@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "readOnly": true,
+  "variants": 778,
+  "pricesEqualToV9": 778,
+  "residualVariantsUnchanged": 30,
+  "mappingFileSha256": "3d0647b2cb671ba09199b6f9c4b9cdbfa58f24a0eafb1d2d672a18823070c9bf",
+  "unchanged": {
+    "elementRights": "f8d8f44cd3fd405c142cf59fcad7c016d97af678a3a4e1b4ac2cdc018e9b8ebc",
+    "profileAssignments": "0c6cf56e120231075153b6f0151ee82cbe9f83305ec61067fa379ea0559bf40a",
+    "productionProfile": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+  },
+  "configExceptProfileNameUnchanged": true,
+  "profileExceptNameUnchanged": true,
+  "familyFormatsProductGroupSha256": "7eb59a9264dd1b87fe57928224bd67b6cfe07e8c16bd08bb921df4b20192bc7a",
+  "profileExceptNameProductGroupSha256": "aba7863b0caaaeb3757f1a67ab940a1acdd8580d3965062acbbe22a739fe871b",
+  "nativePricingSourceSha256": "183d00d611042e2c2d9f6097787859656388adcc6ef92ae52c3c6498e4deb210",
+  "start": {
+    "defaultDesignId": "katalog-TAE-V2A-8x5-D1",
+    "sourcePlateMm": [
+      80,
+      53.3
+    ],
+    "projectedTargetMm": [
+      120,
+      80
+    ],
+    "geometry": {
+      "cornerRadiusMm": 5,
+      "height": 80,
+      "holes": [],
+      "safeMarginMm": 0,
+      "shape": "rect",
+      "width": 120
+    },
+    "projectedObjects": [
+      {
+        "id": "text-1",
+        "type": "text",
+        "text": "Rosenberg",
+        "x": 59.985,
+        "y": 49.04950000000001,
+        "w": 92.04798339843751,
+        "h": 15.876
+      },
+      {
+        "id": "text-2",
+        "type": "text",
+        "text": "Familie",
+        "x": 60,
+        "y": 28.97950000000001,
+        "w": 56.854116210937505,
+        "h": 15.876
+      }
+    ],
+    "projectedDesignProductGroupSha256": "c6601e9275aac63f227edf262a0005fcdc242f610e022a3078a6ff634b2960e2",
+    "sameAsPriorTarget": true
+  },
+  "motifFlags": {
+    "templateOrigin:true": 1367
+  }
+}

@@ -7,8 +7,9 @@ import {DatabaseSync} from 'node:sqlite';
 import {gunzipSync} from 'node:zlib';
 import {isDeepStrictEqual} from 'node:util';
 import {copyPath,argumentsOf,isCLI,printResult} from './copy-guard.mjs';
+import {MAIN_CATEGORIES,resolveMainCategoryProfilesReadOnly,summarizeResolution} from './resolve-main-category-profiles-readonly.mjs';
 
-export const PIN=Object.freeze({productId:'cfg_8e7ebe96-28d2-406f-b31e-036ee61f47e0',revision:1,assignmentRevision:1,storeId:'acryl',shopDomain:'gravuru-design.myshopify.com',shopifyProductId:'gid://shopify/Product/16190784602492',bindingDocumentSha256:'d2886e119ea9715af2b8905ebab8ecc1d199b07f8653476ce5e0fa26cd8cca79',targetProductGroupSha256:'2da2130230341917f7a99d2a12889c1e2f10e408f64d3532e9c5ea6bae65713c',targetBindingSha256:'deb2ce71bf57d5ff85e5f186378d94f58edeecc1ce4d7c4151bebf6e8072886f',rows:808,matched:778,residual:30,mappingSerializedSha256:'3d476d9d964158c1f96a9e55b5de5a2cfa36afd8b5d3bcd86313c12be2c77591',intentSerializedSha256:'80bbc2cca960c3ce736c789be1feaf9b5b15be6beb4e04864583a434a68dff4b'});
+export const PIN=Object.freeze({productId:'cfg_8e7ebe96-28d2-406f-b31e-036ee61f47e0',revision:1,assignmentRevision:1,storeId:'acryl',shopDomain:'gravuru-design.myshopify.com',shopifyProductId:'gid://shopify/Product/16190784602492',bindingDocumentSha256:'d2886e119ea9715af2b8905ebab8ecc1d199b07f8653476ce5e0fa26cd8cca79',targetProductGroupSha256:'ae09cbf6b58719b61729c7fab7a5685b464aae1e8d08691a706111e97b58e407',targetBindingSha256:'f0bb7d95e89e3aae66ab04454d6476132fe197aaae7c1da48ce8209ced62d285',rows:808,matched:778,residual:30,mappingSerializedSha256:'3d476d9d964158c1f96a9e55b5de5a2cfa36afd8b5d3bcd86313c12be2c77591',intentSerializedSha256:'fcfddddeae4a188ef980a67912e247d85bb42b46c1d4836de669207b01b2282b'});
 export const sha=value=>createHash('sha256').update(value).digest('hex');
 // Workshop copies can exceed 4 GiB. Never buffer a database file in memory.
 export function hashFile(file){
@@ -28,7 +29,7 @@ const TYPES=['fonts','motifs','colors','bestsellers'];
 const MODULES=['colors','designs','logo','motifs','options','photo','text'];
 const moduleSummary=p=>p==null?null:{id:p.id??null,revision:p.revision??null,schema:p.schema??null,modules:Object.fromEntries(MODULES.map(k=>[k,typeof p.modules?.[k]==='boolean'?p.modules[k]:null]))};
 const itemsSummary=items=>items===null?{count:null,sha256:null}:Array.isArray(items)?{count:items.length,sha256:productGroupHash(items)}:{count:null,sha256:null,invalid:true};
-const profileSnapshot=s=>s==null?null:{settingsRevision:s.settingsRevision??null,sources:Object.fromEntries(TYPES.map(type=>{const p=s.sources?.[type];return [type,{level:p?.level??null,mode:p?.mode??null,profileId:p?.profileId??null,profileRevision:p?.profileRevision??null,...itemsSummary(s.selections?.[type])}];}))};
+const profileSnapshot=s=>s==null?null:{settingsRevision:s.settingsRevision??null,sources:Object.fromEntries(TYPES.map(type=>{const p=s.sources?.[type];return [type,{level:p?.level??null,categoryId:p?.categoryId??null,mode:p?.mode??null,profileId:p?.profileId??null,profileRevision:p?.profileRevision??null,...itemsSummary(s.selections?.[type])}];}))};
 
 function openCopy(filename){
  const file=copyPath(filename);
@@ -48,13 +49,14 @@ const unique=(rows,label)=>{must(rows.length===1,'Expected exactly one '+label);
 
 // Exported pure/readonly core permits explicit synthetic pins in tests only.
 // The CLI below ALWAYS supplies PIN; it has no scope/hash/count override flags.
-export function compareMainTargetCopy({copy,profilesCopy,mappingFile,targetFile,intentFile,tenantId,legacySingleStore=false,pins=PIN}){
+export function compareMainTargetCopy({copy,profilesCopy,mappingFile,targetFile,intentFile,tenantId,resolverSource,legacySingleStore=false,pins=PIN}){
  must(typeof tenantId==='string'&&/^[a-z0-9][a-z0-9-]{0,39}$/.test(tenantId),'An explicit tenant ID is required.');
  const mappingBytes=readBytes(mappingFile),intentBytes=readBytes(intentFile);
  must(sha(mappingBytes)===pins.mappingSerializedSha256&&sha(intentBytes)===pins.intentSerializedSha256,'Preview mapping or intent file hash mismatch.');
  const mapping=parse(mappingBytes,'mapping'),target=readJSON(targetFile),intent=parse(intentBytes,'intent');
  must(productGroupHash(target)===pins.targetProductGroupSha256&&idBindingHash(target)===pins.targetBindingSha256,'Target document hash mismatch.');
  must(intent.executable===false&&intent.confirmed===false&&intent.imported===false&&intent.executed===false,'Only an unexecuted preview is accepted.');
+ must(intent.proposedUpdate?.documentProductGroupSha256===pins.targetProductGroupSha256&&intent.proposedUpdate.documentIdBindingSha256===pins.targetBindingSha256&&isDeepStrictEqual(intent.pins.targetCategoryIds,MAIN_CATEGORIES)&&isDeepStrictEqual(intent.pins.profileAssignments,target.profileAssignments)&&intent.pins.targetResolutionVerified===false,'Intent must pin this exact preserved-category target and remain unverified.');
  must(intent.actual.productId===pins.productId&&intent.actual.shopifyProductId===pins.shopifyProductId&&intent.actual.expectedRevision===pins.revision,'Preview target identity mismatch.');
  must(mapping.matches?.length===pins.matched&&mapping.residualVariants?.length===pins.residual,'Incomplete preview mapping.');
  const wanted=new Map();
@@ -135,19 +137,13 @@ export function compareMainTargetCopy({copy,profilesCopy,mappingFile,targetFile,
   const storedProductionPin=metadata.productionProfile==null?null:{id:metadata.productionProfile.id??null,revision:metadata.productionProfile.revision??null,sha256:metadata.productionProfile.sha256??null};
   const storedProductionRef=storedProductionPin===null?null:{id:storedProductionPin.id,revision:storedProductionPin.revision};
   let resourceProfiles={compared:false},productionProfile={actualReference:document.productionProfile??null,targetReference:target.productionProfile??null,storedMetadataPin:storedProductionPin,metadataReferenceMatchesDocument:isDeepStrictEqual(storedProductionRef,document.productionProfile??null),referenceEqual:isDeepStrictEqual(document.productionProfile??null,target.productionProfile??null),runtimeCompatibilityChecked:false};
-  must(Array.isArray(target.categoryIds)&&target.categoryIds.length===0&&TYPES.every(t=>target.profileAssignments?.[t]?.mode==='inherit'&&target.profileAssignments[t].profileId===null),'This narrow tool supports only the reviewed main target with no categories and all four assignments inherited.');
+  must(isDeepStrictEqual(target.categoryIds,MAIN_CATEGORIES)&&TYPES.every(t=>target.profileAssignments?.[t]?.mode==='inherit'&&target.profileAssignments[t].profileId===null),'This narrow tool requires exactly the two ordered existing main categories and all four inherited assignments.');
+  must(isDeepStrictEqual(document.categoryIds,target.categoryIds)&&isDeepStrictEqual(document.profileAssignments,target.profileAssignments),'Existing categories and inherited resource assignments must be preserved exactly.');
   if(profilesCopy){
-   const pdb=open(profilesCopy),ps=schema(pdb),settingsColumns=ps.need('profile_library_settings',['revision','document','tenant_id']);
-   const settings=unique(pdb.prepare('SELECT revision,document FROM profile_library_settings WHERE tenant_id=?').all(tenantId),'profile settings'),settingsDoc=parse(settings.document,'profile settings');
-   const selections={},sources={};
-   for(const type of TYPES){const a=settingsDoc.defaults?.[type];must(a&&['inherit','empty','override'].includes(a.mode),'Unsupported default profile assignment.');let items=null,ref=null;
-    if(a.mode==='empty')items=[];
-    if(a.mode==='override'){ps.need('profiles',['id','revision','type','tenant_id']);ps.need('profile_revisions',['profile_id','revision','document','tenant_id']);const p=unique(pdb.prepare('SELECT p.id,p.revision,p.type,r.document FROM profiles p JOIN profile_revisions r ON r.profile_id=p.id AND r.revision=p.revision AND r.tenant_id=p.tenant_id WHERE p.tenant_id=? AND p.id=?').all(tenantId,a.profileId),'default profile');const d=parse(p.document,'default profile');must(p.type===type&&d.type===type&&Array.isArray(d.items),'Default profile type/items mismatch.');items=d.items;ref=p;}
-    selections[type]=items;sources[type]={level:a.mode==='inherit'?'unbound':'default',categoryId:null,mode:a.mode,profileId:ref?.id??null,profileRevision:ref?.revision??null};
-   }
-   let filteredBestsellers=0;if(selections.motifs!==null&&selections.bestsellers!==null){const allowed=new Set(selections.motifs),before=selections.bestsellers.length;selections.bestsellers=selections.bestsellers.filter(id=>allowed.has(id));filteredBestsellers=before-selections.bestsellers.length;}
-   const actual=profileSnapshot({settingsRevision:settings.revision,selections,sources}),expected=profileSnapshot(intent.pins.localResolvedProfiles);
-   resourceProfiles={compared:true,scope:'Exact reviewed target: categories empty, product assignments inherit, current defaults only; no generic resolver substitution.',actual,expectedLocalV9:expected,selectionAndSourceDifferences:TYPES.filter(t=>!isDeepStrictEqual(actual.sources[t],expected.sources[t])),settingsRevisionMatches:actual.settingsRevision===expected.settingsRevision,filteredBestsellers};
+   const pdb=open(profilesCopy),ps=schema(pdb);ps.need('profile_library_settings',['revision','document','tenant_id']);
+   const projected=resolveMainCategoryProfilesReadOnly({db:pdb,tenantId,document:target,resolverSource});
+   const actual=projected.withCategories.snapshot,expected=summarizeResolution(intent.pins.localResolvedProfiles);
+   resourceProfiles={compared:true,scope:'Exactly the two ordered existing main categories; all four product assignments inherited; pinned native priority, no full catalogue validation.',actual,expectedLocalV9:expected,selectionAndSourceDifferences:TYPES.filter(t=>!isDeepStrictEqual(actual.sources[t],expected.sources[t])),settingsRevisionMatches:actual.settingsRevision===expected.settingsRevision,filteredBestsellers:projected.withCategories.filteredBestsellers,categoryEvidence:projected};
    if(document.productionProfile){const ref=document.productionProfile;ps.need('manufacturing_profile_revisions',['profile_id','revision','document','sha256','tenant_id']);const rows=pdb.prepare('SELECT profile_id,revision,document,sha256 FROM manufacturing_profile_revisions WHERE tenant_id=? AND profile_id=? AND revision=?').all(tenantId,ref.id,ref.revision);if(rows.length===1){const r=rows[0],d=parse(r.document,'manufacturing profile');productionProfile={...productionProfile,recordFound:true,id:r.profile_id,revision:r.revision,storedSha256:r.sha256,serializedDocumentSha256:sha(r.document),storedHashMatches:sha(r.document)===r.sha256,method:d.method,materialId:d.materialId,thicknessMm:d.thicknessMm,archived:d.archived};}else{productionProfile.recordFound=false;pending.push('Actual manufacturing profile revision absent or ambiguous.');}}
   }else pending.push('No profiles.copy.sqlite supplied; current inherited resource and manufacturing profile pins not compared.');
   if(!productionProfile.referenceEqual)pending.push('Existing actual manufacturing reference differs from target; must not be silently removed or replaced.');
@@ -159,8 +155,8 @@ export function compareMainTargetCopy({copy,profilesCopy,mappingFile,targetFile,
  return {...completed,copyEvidence:evidence};
 }
 if(isCLI(import.meta.url))try{
- const a=argumentsOf(process.argv.slice(2),['--copy','--profiles-copy','--mapping','--target','--intent','--tenant','--legacy-single-store']);
+ const a=argumentsOf(process.argv.slice(2),['--copy','--profiles-copy','--mapping','--target','--intent','--tenant','--legacy-single-store','--resolver-source']);
  for(const key of ['--copy','--mapping','--target','--intent','--tenant'])must(a[key],'Missing argument: '+key);
  must(a['--legacy-single-store']===undefined||a['--legacy-single-store']==='true','--legacy-single-store accepts only the explicit value true.');
- printResult(compareMainTargetCopy({copy:a['--copy'],profilesCopy:a['--profiles-copy'],mappingFile:a['--mapping'],targetFile:a['--target'],intentFile:a['--intent'],tenantId:a['--tenant'],legacySingleStore:a['--legacy-single-store']==='true',pins:PIN}));
+ printResult(compareMainTargetCopy({copy:a['--copy'],profilesCopy:a['--profiles-copy'],mappingFile:a['--mapping'],targetFile:a['--target'],intentFile:a['--intent'],tenantId:a['--tenant'],resolverSource:a['--resolver-source'],legacySingleStore:a['--legacy-single-store']==='true',pins:PIN}));
 }catch(error){console.error(JSON.stringify({readOnly:true,comparisonCompleted:false,error:error.message}));process.exitCode=1;}

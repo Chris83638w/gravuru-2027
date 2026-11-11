@@ -1,0 +1,12 @@
+{
+  "name": "Acryl-Hauptprodukt: Foto und SVG-Logo an (Chris, 11.11.2026)",
+  "modules": {
+    "colors": false,
+    "designs": true,
+    "logo": true,
+    "motifs": true,
+    "options": true,
+    "photo": true,
+    "text": true
+  }
+}

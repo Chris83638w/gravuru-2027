@@ -8,6 +8,7 @@ import {gzipSync} from 'node:zlib';
 import {PIN,sha,hashFile,productGroupHash,idBindingHash,compareMainTargetCopy} from './compare-main-target-copy.mjs';
 
 const here=path.dirname(fileURLToPath(import.meta.url));
+const resolverSource=path.join(process.env.GRAVURU_COMPARE_CODE_ROOT||path.resolve(here,'../..'),'app/workshop/profile-library.mjs');
 const assignments=()=>Object.fromEntries(['fonts','motifs','colors','bestsellers'].map(t=>[t,{mode:'inherit',profileId:null}]));
 const snapshot=()=>({settingsRevision:1,selections:Object.fromEntries(Object.keys(assignments()).map(t=>[t,null])),sources:Object.fromEntries(Object.keys(assignments()).map(t=>[t,{level:'unbound',mode:'inherit',profileId:null,profileRevision:null}]))});
 const modules={colors:false,designs:true,logo:true,motifs:true,options:true,photo:true,text:true};
@@ -18,10 +19,10 @@ function fixture(t){
  const cfg=PIN.productId,shop=PIN.shopDomain,product=PIN.shopifyProductId,tenant='gravuru';
  const groups=[{id:'size',name:'Form & Größe',values:Array.from({length:808},(_,i)=>({id:'s'+i,label:'Size '+i}))},{id:'color',name:'Farbe',values:[{id:'schwarz',label:'Schwarz'}]},{id:'mounting',name:'Befestigung',values:[{id:'K00',label:'Ohne Bohrung'}]}];
  const moduleProfile={id:'cmp_11111111-1111-4111-8111-111111111111',revision:1,schema:'gravuru-configurator-modules/v1',modules};
- const original={schema:'gravuru-product/v1',kind:'product',name:'DO-NOT-EXPORT-MODEL',masterId:null,categoryIds:[],profileAssignments:assignments(),config:{profile:{optionGroups:groups},moduleProfile,localResources:{fonts:{glyphs:{'2':'DO-NOT-EXPORT-GLYPHS','10':'NO-GLYPHS'}}},extraMotifCents:169,photo:{extraPriceCents:999},logo:{extraPriceCents:1299},quantityTiers:[{minQuantity:3,percentOff:5}],quantityTierScope:'complete-unit'}};
+ const original={schema:'gravuru-product/v1',kind:'product',name:'DO-NOT-EXPORT-MODEL',masterId:null,categoryIds:['extern-shopifyproductid-16190784602492','linie-acryl-tuerschilder'],profileAssignments:assignments(),config:{profile:{optionGroups:groups},moduleProfile,localResources:{fonts:{glyphs:{'2':'DO-NOT-EXPORT-GLYPHS','10':'NO-GLYPHS'}}},extraMotifCents:169,photo:{extraPriceCents:999},logo:{extraPriceCents:1299},quantityTiers:[{minQuantity:3,percentOff:5}],quantityTierScope:'complete-unit'}};
  const target=structuredClone(original);target.config.profile.optionGroups[0].values=groups[0].values.slice(0,778);target.name='Target preview';
  const originalBytes=JSON.stringify(original),bindingHash=idBindingHash(original),moduleDocument={name:'Fixture modules',modules};
- const intent={executable:false,confirmed:false,imported:false,executed:false,actual:{productId:cfg,shopifyProductId:product,expectedRevision:1},pins:{moduleProfile,localResolvedProfiles:snapshot()},v9:{moduleProfile:{sha256:productGroupHash(moduleDocument)}}};
+ const intent={executable:false,confirmed:false,imported:false,executed:false,actual:{productId:cfg,shopifyProductId:product,expectedRevision:1},proposedUpdate:{documentProductGroupSha256:productGroupHash(target),documentIdBindingSha256:idBindingHash(target)},pins:{moduleProfile,localResolvedProfiles:snapshot(),targetCategoryIds:[...target.categoryIds],profileAssignments:target.profileAssignments,targetResolutionVerified:false},v9:{moduleProfile:{sha256:productGroupHash(moduleDocument)}}};
  const mapping={matches:[],residualVariants:[]},rows=[];
  for(let i=0;i<808;i++){
   const id='gid://shopify/ProductVariant/'+(900000+i),options={size:'s'+i,color:'schwarz',mounting:'K00'},price=1000+(i<138?30:i<158?10:0);
@@ -59,7 +60,7 @@ function fixture(t){
  db.prepare('INSERT INTO catalog_live_order_approvals VALUES(?,?,?,?,1,?,?,?)').run(tenant,shop,product,cfg,sha(originalBytes),JSON.stringify(rows.map(r=>r.id)),'fixture-approval');db.close();
  const pdb=new DatabaseSync(profilesCopy);pdb.exec('PRAGMA journal_mode=DELETE; CREATE TABLE profile_library_settings(tenant_id TEXT,revision INTEGER,document TEXT);');pdb.prepare('INSERT INTO profile_library_settings VALUES(?,1,?)').run(tenant,JSON.stringify({defaults:assignments(),categories:{}}));pdb.close();
  const pins={...PIN,bindingDocumentSha256:bindingHash,targetProductGroupSha256:productGroupHash(target),targetBindingSha256:idBindingHash(target),mappingSerializedSha256:sha(mappingBytes),intentSerializedSha256:sha(intentBytes)};
- return {input:{copy,profilesCopy,mappingFile,targetFile,intentFile,tenantId:tenant,pins},rows,dir};
+ return {input:{copy,profilesCopy,mappingFile,targetFile,intentFile,tenantId:tenant,resolverSource,pins},rows,dir};
 }
 test('complete 808-row read compares 778 target plus 30 preserved options and all prices without writes or private output',t=>{
  const f=fixture(t),before=sha(fs.readFileSync(f.input.copy)),result=compareMainTargetCopy(f.input);

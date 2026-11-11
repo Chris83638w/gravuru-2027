@@ -1,3 +1,9 @@
+## 2026-11-11 · Mika/Codex · Lokale Suchfeldbilder und unabhängiger B-Review
+
+[Zwei echte lokale Screenshots](docs/reviews/2026-11-11-design-search-preview/README.md) sichern die visuelle Designsuche-Vorschau auf Desktop 1440×900 und Handybreite 390×844. Native R15-Basis, unveränderte r4-Bank mit 251 Designs/21 passend; Suchfeld nur lesender Platzierungsvorschlag, keine Suchfunktion. Ausschließlich der lokale Host erhielt den zuvor fehlenden Sitzungsverweis aus demselben Modell; keine Runtime-/Produkt-/Shop-/Pleskänderung. Vorübergehende Browsergröße zurückgesetzt. Nächster Schritt: Sichtentscheidung über die Platzierung.
+
+[Enger unabhängiger B-Review](docs/reviews/2026-11-10-seven-product-excel/plan-runner-review.md) für `411188db`: keine falschen Freigaben oder Planpaare festgestellt. Sieben echte Pläne bleiben mangels registrierter Quellen offen; 823 Kombinationen sind lediglich Quellenarithmetik. Keine Autorentests wiederholt, kein Import oder Schreiben an Produktdaten.
+
 ## 2026-11-09 · Mika/Codex · Verbindlicher Produktworkflow, Preise und Excel
 
 Neue Nutzeranweisung für alle Produkt-/Vorlagenchats: vor JEDEM neuen Produkt Module, Ausführungen, Preise und Standardwerte konkret bestätigen; eigene Modulwünsche abfragen, je Produkt eine versionierte Excel als Referenz. Kein neuer Konfi pro Produkt, vorhandene Skript-/API-Dienste verwenden. Nicht erlaubte Foto-/Logo-Funktionen und Bohrungsoptionen ausblenden, Gültigkeit je Material/Form/Größe prüfen. [Zentrale Anleitung mit bestehenden Verträgen und Grenzen](docs/handoffs/2026-11-09-produktanlage-module-excel-workflow.md), [Excel-Leervorlage](docs/templates/Produktfreigabe-Vorlage.xlsx), [Feldschema](docs/templates/Feldschema-Produktfreigabe.md). Einstieg in AGENTS, START_HERE und PRIO-KONFI aktualisiert; historische Demo-Aussagen als historischen Stand eingeordnet.

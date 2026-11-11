@@ -53,6 +53,7 @@ export const money = cents => euroFormat.format(cents / 100);
 // This adapter consumes the existing native profile. It never grants a runtime release.
 export function prepareConfig(input) {
   const config = input.moduleProfile===undefined?clone(input):applyModuleProfile(input,input.moduleProfile);
+  if(config.customerUI?.presentation!==undefined&&config.customerUI.presentation!=='prio-r15')fail('Ungültige Konfiguratoransicht.');
   if(config.scalableSizes){
     validateScalableSizes(config);
     for(const size of config.scalableSizes.sizes)prepareConfig(sizeConfiguration(config,{size:size.id}));

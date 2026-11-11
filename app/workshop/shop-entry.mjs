@@ -316,11 +316,13 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
   if(!startLimiter(input.ticket?'ticket':'start'))fail(429,'shop_entry_busy','Bitte kurz warten und erneut versuchen.');
   const {store,binding}=resolve({shopifyProductId:input.shopifyProductId,shopifyVariantId:input.shopifyVariantId});
   const startModel=modelFor(store,binding);
+  // Presentation is cosmetic and comes from this checked, fixed product revision.
+  const presentation=startModel.universal.customerUI?.presentation==='prio-r15'?'prio-r15':input.presentation;
   const issued=sessions.issue(binding,{customerId:proxy.customerId});
   const fragment=new URLSearchParams({s:issued.token});
   if(input.config){fragment.set('config',input.config);fragment.set('rev',input.rev);if(input.line)fragment.set('line',input.line);}
   if(input.back)fragment.set('back',input.back);
-  if(input.presentation)fragment.set('ui',input.presentation);
+  if(presentation)fragment.set('ui',presentation);
   if(input.embed){fragment.set('embed','1');if(input.leiste)fragment.set('leiste',input.leiste);}
   const target=origin+pagePath+'#'+fragment.toString();
   // Startkarte: dieselbe Zieladresse als JSON; die Produktseite öffnet beim Klick direkt den Konfigurator-Host.

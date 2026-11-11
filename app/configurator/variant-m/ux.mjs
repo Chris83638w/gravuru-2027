@@ -467,7 +467,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   // K14 / Ü15.1: Reiter Vorderseite/Rückseite über der Platte (nur Produkte mit Rückseite).
   if(config)installSurfaceTabs({el,r,config,button,say});
   if(config)installCommerce({el,config,files,pending:()=>uploadPending||el.uxDesignResourcePending===true});
-  if(config?.acrylic)await installAcrylicScene({el,r,config,files,select,selected,say,acceptFiles:acceptCustomerFiles});
+  if(config)await installAcrylicScene({el,r,config,files,select,selected,say,acceptFiles:acceptCustomerFiles});
   finishCustomerRights();
   finishTemplateDeletion();
   installFirstTextFocus({el,r});

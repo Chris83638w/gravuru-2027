@@ -3,6 +3,7 @@ import {nativeDoorbellConfig} from './doorbell-product.mjs';
 import {workshopResources} from './catalog.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
 import {isFamilyFormats} from '../configurator/variant-m/family-formats.mjs';
+import {isScalableSizes} from '../configurator/variant-m/scalable-sizes.mjs';
 import {isFormProduct,validateFormProduct} from './form-product.mjs';
 import {nativeSlateConfig} from './slate-product.mjs';
 import {nativeSpecimenConfig} from './specimen-product.mjs';
@@ -72,7 +73,20 @@ function nativeAcrylicConfig(input){
   return validated;
 }
 
-const nativeConfig = input => isFamilyFormats(input) ? prepareConfig(input) : input?.familyAcrylic ? nativeFamilyAcrylicConfig(input) : isLayeredDoorbell(input) ? nativeDoorbellConfig(input) : input?.doorbell||input?.profile?.material?.kind==='steel' ? nativeSpecimenConfig(input) : input?.profile?.material?.kind==='slate' ? nativeSlateConfig(input) : nativeAcrylicConfig(input);
+// The explicit size table owns dimensions and cent prices. Persist that same
+// contract instead of reducing a four-size print product to the older pilot.
+function nativeScalableAcrylicConfig(input){
+  if(!isScalableSizes(input)||input.profile?.material?.kind!=='acrylic'||input.profile?.processing?.profileId!=='color-print')fail('Skalierbare Acrylprodukte benötigen ein ausdrückliches Farbdruckprofil.');
+  const config=prepareConfig(input);
+  for(const size of config.scalableSizes.sizes){
+    const p=size.profile;
+    if(p.kind!=='universal-product'||p.geometry?.shape!=='rect'||p.geometry?.holes?.length!==0||p.material?.thicknessMm!==3||p.processing?.profileId!=='color-print')fail('Skalierbare Acrylbilder benötigen rechteckiges Acrylglas mit 3 mm und Farbdruck ohne Bohrungen.');
+    if(!p.designs.some(d=>d.id===p.defaultDesignId))fail('Das Standarddesign fehlt in einer Acrylgröße.');
+    for(const d of p.designs)validateDesign(config,d,{size:size.id},config.localResources?.fonts||{},config.localResources?.motifs||[],{template:true});
+  }
+  return config;
+}
+const nativeConfig = input => isFamilyFormats(input) ? prepareConfig(input) : isScalableSizes(input)&&input?.profile?.material?.kind==='acrylic' ? nativeScalableAcrylicConfig(input) : input?.familyAcrylic ? nativeFamilyAcrylicConfig(input) : isLayeredDoorbell(input) ? nativeDoorbellConfig(input) : input?.doorbell||input?.profile?.material?.kind==='steel' ? nativeSpecimenConfig(input) : input?.profile?.material?.kind==='slate' ? nativeSlateConfig(input) : nativeAcrylicConfig(input);
 
 export function makeProductDocument(input,{name,kind='product',masterId=null}={}){
   const config=nativeConfig(input),title=text(name??config.profile.name,1,200,'Produktname');

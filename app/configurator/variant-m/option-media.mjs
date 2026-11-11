@@ -31,17 +31,15 @@ export function optionThumbnail(option){
 // Befestigungskacheln (Chris 22./23.10.2026): Universal-/Katalogprodukte zeigen dieselben Kacheln wie die
 // alte Auswahl [data-fk-mount] (completion.mjs) – Icon, Bezeichnung, Aufpreis. Icons: hinterlegtes
 // Optionsbild bzw. Standardbild (optionThumbnail), sonst das Strichsymbol je Befestigungsart; unbekannte
-// Kennungen erhalten das Symbol „ohne Bohrung“. KGL (glatt) und KRA (rau, mit unebener Wand) haben eigene Klebesymbole.
+// Kennungen erhalten das Symbol „ohne Bohrung“. KGL (selbstklebend glatt) teilt das Klebesymbol mit KRA.
 export const MOUNT_ICONS=Object.freeze({
   K00:'<rect x="5" y="5" width="22" height="22" rx="2"/><path d="m10 22 12-12"/>',
   GWS:'<path d="M8 4v24m0-17h17m-17 10h17m-7-13v6m4-6v6m-4 4v6m4-6v6"/>',
-  KGL:'<path d="M5 25V7h22v10L17 27H5m12 0V17h10M9 11h12M9 15h5"/>',
-  // Raue Flächen (Chris 03.11.2026): gleicher Klebezettel, darunter eine unebene Wand.
-  KRA:'<path d="M6 21V5h20v8l-8 8H6m12 0v-8h8M10 9h11M10 12.5h5"/><path d="M3 27.5l2.2-1.8 2.2 1.8 2.2-1.8 2.2 1.8 2.2-1.8 2.2 1.8 2.2-1.8 2.2 1.8 2.2-1.8 2.2 1.8 2.2-1.8"/><path d="M5 30.2h.01M10.5 30.2h.01M16 30.2h.01M21.5 30.2h.01M27 30.2h.01"/>',
+  KRA:'<path d="M5 25V7h22v10L17 27H5m12 0V17h10M9 11h12M9 15h5"/>',
   SIL:'<path d="m6 26 12-12 7 7-7 7m-1-15 3-3 7 7-3 3M6 26l-3 3m15-17 5-5 3 3-5 5M23 7l4-4 2 2-3 5"/>',
   B04S:'<rect x="4" y="4" width="24" height="24" rx="2"/><circle cx="10" cy="10" r="2"/><circle cx="22" cy="10" r="2"/><circle cx="10" cy="22" r="2"/><circle cx="22" cy="22" r="2"/>'
 });
-const MOUNT_ICON_ALIASES=Object.freeze({});
+const MOUNT_ICON_ALIASES=Object.freeze({KGL:'KRA'});
 const attr=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const mountIconSvg=paths=>'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+paths+'</svg>';
 // Shop cards use line art for all mounting choices, derived from the actual holes.

@@ -4,9 +4,11 @@ import {money,quote} from './contract.mjs';
 import {baseAnchors} from './acrylic-base-anchors.mjs';
 import {PHOTO_ACCEPT} from './photo-upload.mjs';
 import {designPaintOrder} from '../../platform/sources/app/shared/models/design-layer-order.mjs';
+import {isScalableAcrylicScene,scalableAcrylicSceneLayout,scalableAcrylicBackdrop,transparentScalableAcrylicFace} from './scalable-acrylic-scene.mjs';
 // Kundenansicht: WebP-Fassungen (customer-images.json); PNG-Originale bleiben für Fertigung/Referenz.
 const ROOT='/acrylic-assets/';
 export async function installAcrylicScene({el,r,config,files,select,selected,say,acceptFiles}) {
+ if(isScalableAcrylicScene(config))return installScalableAcrylicScene({el,r,config});
  if(!config?.acrylic)return;
  const $=s=>r.querySelector(s),all=s=>[...r.querySelectorAll(s)];
  const css=document.createElement('style');css.textContent=await fetch('/configurator/variant-m/acrylic-scene.css').then(r=>r.text());r.append(css);
@@ -107,4 +109,57 @@ export async function installAcrylicScene({el,r,config,files,select,selected,say
  };
  // Production preparation is reserved for the future authenticated workbench.
  el.sync();
+}
+
+// Scalable products retain the universal multi-photo, mask, rights and export
+// paths. This installer adds only the existing backdrop/base presentation.
+export async function installScalableAcrylicScene({el,r,config}){
+ if(!isScalableAcrylicScene(config)||r.host.dataset.scalableAcrylicScene)return;
+ const stage=r.querySelector('.stage'),holder=r.querySelector('.plate-holder');if(!stage||!holder)return;
+ const response=await fetch('/configurator/variant-m/acrylic-scene.css');
+ if(!response.ok)throw Error('Acrylglasansicht konnte nicht geladen werden.');
+ const css=document.createElement('style');css.textContent=await response.text();r.append(css);
+ r.host.dataset.scalableAcrylicScene='true';stage.classList.add('acryl-scene','scalable-acryl-scene');
+ const scene=document.createElementNS('http://www.w3.org/2000/svg','svg');scene.classList.add('acryl-backdrop');
+ scene.setAttribute('viewBox','0 0 1448 1448');scene.setAttribute('aria-hidden','true');scene.setAttribute('data-preview-only','true');
+ const base=document.createElement('img');base.className='acryl-base';base.alt='Gewählter Sockel';base.hidden=true;
+ const baseBack=base.cloneNode();baseBack.classList.add('acryl-base-back');baseBack.alt='';baseBack.setAttribute('aria-hidden','true');
+ stage.prepend(scene);stage.append(baseBack,base);
+ const originalBody=el.svgBody;
+ el.svgBody=function(preview=true,...args){
+  const body=originalBody.call(this,preview,...args);if(!preview)return body;
+  const layout=scalableAcrylicSceneLayout(config,this.state.mOptions);
+  const dom=new DOMParser().parseFromString('<svg xmlns="http://www.w3.org/2000/svg">'+body+'</svg>','image/svg+xml');
+  return transparentScalableAcrylicFace(dom.documentElement,layout.geometry).innerHTML;
+ };
+ let previousLayout='';
+ function updateScene(){
+  const layout=scalableAcrylicSceneLayout(config,el.state.mOptions),{plate,stand,square,geometry}=layout;
+  const key=JSON.stringify([geometry.width,geometry.height,stand?.id]);
+  if(key!==previousLayout){
+   previousLayout=key;scene.innerHTML=scalableAcrylicBackdrop(layout);
+   for(const [key,value]of Object.entries(plate))stage.style.setProperty('--acryl-plate-'+key,value/square*100+'%');
+   stage.dataset.hasBase=String(!!stand);stage.dataset.acrylicSize=layout.options.size;
+   for(const layer of [base,baseBack]){
+    layer.hidden=!stand;
+    if(stand){
+     if(layer.getAttribute('src')!==stand.url)layer.src=stand.url;
+     for(const key of ['left','top','width','height'])layer.style[key]=stand[key]/square*100+'%';
+     layer.dataset.flat=String(stand.flat);
+    }else layer.removeAttribute('src');
+   }
+   if(stand){base.style.clipPath=stand.frontClip;baseBack.style.clipPath=stand.backClip;}
+  }
+  // The legacy shell regenerates this node on render. Physical mm are identical
+  // to selectedProfile, so the scene's outer square never changes artwork ratio.
+  const artwork=holder.querySelector('svg.scene');
+  if(artwork)artwork.setAttribute('viewBox',`0 0 ${geometry.width} ${geometry.height}`);
+  el.uxRefreshViewZoom?.();
+ }
+ for(const name of ['render','sync']){
+  const original=el[name];if(typeof original!=='function')continue;
+  el[name]=function(...args){const result=original.apply(this,args);updateScene();return result;};
+ }
+ el.sync();
+ return {update:updateScene};
 }

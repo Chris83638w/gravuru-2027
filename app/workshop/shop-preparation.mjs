@@ -1,11 +1,23 @@
 import {createHash} from 'node:crypto';
+import {AsyncLocalStorage} from 'node:async_hooks';
 import {isDeepStrictEqual} from 'node:util';
 import {isFormProduct,formReadiness} from './form-product.mjs';
 import {validateProductDocument,resolveProduct} from './product-model.mjs';
 import {quote,variantCombinations} from '../configurator/variant-m/contract.mjs';
 import {variantKey} from '../configurator/variant-m/commerce-model.mjs';
 import {isFamilyFormats} from '../configurator/variant-m/family-formats.mjs';
+import {isScalableSizes} from '../configurator/variant-m/scalable-sizes.mjs';
 import {moduleEnabled} from '../configurator/variant-m/module-profile.mjs';
+// Explicit private batch scope only. Database/head/profile/Shopify evidence is
+// still read by the original callers on every check; only this pure preparation
+// can be reused for an exactly equal record. Nothing survives the completed run.
+const preparationRuns=new AsyncLocalStorage(),RUN_PREPARATION_LIMIT=2;
+export async function withShopPreparationCache(work){
+ if(typeof work!=='function'||preparationRuns.getStore()?.active)throw Error('A preparation cache needs one explicit, non-nested run.');
+ const run={active:true,entries:new Map()};
+ try{return await preparationRuns.run(run,work);}
+ finally{run.active=false;run.entries.clear();}
+}
 // Read-only preparation. No Shopify credentials, IDs, writes or publication are fabricated.
 // Cache only an exact previously validated source and return isolated results.
 // Changed documents, metadata or status must pass validation again. Deep equality
@@ -14,6 +26,18 @@ const doorbellPreparations=new Map(),DOORBELL_PREPARATION_LIMIT=32;
 const familyPreparations=new Map(),FAMILY_PREPARATION_LIMIT=2;
 const slatePreparations=new Map(),SLATE_PREPARATION_LIMIT=2;
 export function prepareShopProduct(record){
+ const run=preparationRuns.getStore(),config=record.document?.config;
+ if(run?.active&&isScalableSizes(config)&&!config.acrylic&&config.profile?.material?.kind==='acrylic'&&config.profile?.processing?.profileId==='color-print'){
+  const key=createHash('sha256').update(JSON.stringify(record)).digest('hex'),cached=run.entries.get(key);
+  if(cached&&isDeepStrictEqual(record,cached.source)){
+   run.entries.delete(key);run.entries.set(key,cached);
+   return structuredClone(cached.result);
+  }
+  const result=prepareValidated(record,validateProductDocument(record.document));
+  run.entries.set(key,{source:structuredClone(record),result:structuredClone(result)});
+  if(run.entries.size>RUN_PREPARATION_LIMIT)run.entries.delete(run.entries.keys().next().value);
+  return result;
+ }
  const family=isFamilyFormats(record.document?.config),slate=record.document?.config?.profile?.material?.kind==='slate';
  const cache=slate?slatePreparations:family?familyPreparations:doorbellPreparations,limit=slate?SLATE_PREPARATION_LIMIT:family?FAMILY_PREPARATION_LIMIT:DOORBELL_PREPARATION_LIMIT;
  if(!family&&!slate&&record.document?.config?.doorbell?.schema!=='gravuru-doorbell/v1')return prepareValidated(record,validateProductDocument(record.document));

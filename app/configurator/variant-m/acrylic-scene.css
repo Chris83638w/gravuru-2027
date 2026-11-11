@@ -21,3 +21,16 @@
 
 /* Preserve scene proportions when the same stage moves into the flex fullscreen dialog. */
 :host([data-acrylic-scene]) .stage.acryl-scene{flex:0 0 auto!important}
+
+/* Scalable colour-print plates: one square scene around physical-ratio artwork.
+   This separate selector keeps the historical two-size acrylic scene intact. */
+:host([data-scalable-acrylic-scene]) :is(.ux-preview,.c-large-preview) .stage.scalable-acryl-scene{position:relative!important;isolation:isolate;display:block!important;aspect-ratio:1!important;width:min(100%,calc(100dvh - 195px))!important;height:auto!important;min-height:0!important;max-height:none!important;padding:0!important;overflow:hidden!important;background:#e2d0b7!important;border:0!important;border-radius:12px;flex:0 0 auto!important;margin-inline:auto!important}
+:host([data-scalable-acrylic-scene]) .stage.scalable-acryl-scene .plate-holder{position:absolute!important;left:var(--acryl-plate-left)!important;top:var(--acryl-plate-top)!important;width:var(--acryl-plate-width)!important;height:var(--acryl-plate-height)!important;aspect-ratio:var(--m-plate-width)/var(--m-plate-height)!important;max-width:none!important;max-height:none!important;margin:0!important;background:transparent!important;box-shadow:none!important;z-index:1}
+:host([data-scalable-acrylic-scene]) .stage.scalable-acryl-scene .plate-holder svg.scene{display:block!important;width:100%!important;height:100%!important;overflow:visible!important;background:transparent!important}
+:host([data-scalable-acrylic-scene]) .stage.scalable-acryl-scene .acryl-backdrop{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+:host([data-scalable-acrylic-scene]) .stage.scalable-acryl-scene .acryl-base{position:absolute;pointer-events:none;z-index:2}
+:host([data-scalable-acrylic-scene]) .stage.scalable-acryl-scene .acryl-base-back{z-index:0}
+:host([data-scalable-acrylic-scene]) .stage.scalable-acryl-scene .acryl-base[hidden]{display:none!important}
+:host([data-scalable-acrylic-scene]) .stage.scalable-acryl-scene :is(.dimension-x,.dimension-y){display:none!important}
+:host([data-scalable-acrylic-scene]) .c-large-preview .stage.scalable-acryl-scene{width:min(100%,calc(100dvh - 100px))!important}
+@media(max-width:767px){:host([data-scalable-acrylic-scene]) .ux-preview .stage.scalable-acryl-scene{width:min(100%,var(--ux-mobile-preview-h,40dvh))!important}}

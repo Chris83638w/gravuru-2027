@@ -1,0 +1,15 @@
+{
+ "rev": "a038e1ae7e3de3954ea204f6925c60c7b4213d4f",
+ "dateien": 1775,
+ "imPaket": 2,
+ "gzBytes": 105746,
+ "gzSha256": "15b4b1df2887b7002c5b48654784666eb48059934b9fe2354892ed56be354698",
+ "baumSha256": "3d185cd5f84939585615a0ef1d4fe096db6fa71ca24c8f1caebf7178bfd364e3",
+ "teile": [
+  [
+   "rt-a038e1ae-c.teil01",
+   105746,
+   "15b4b1df2887b7002c5b48654784666eb48059934b9fe2354892ed56be354698"
+  ]
+ ]
+}

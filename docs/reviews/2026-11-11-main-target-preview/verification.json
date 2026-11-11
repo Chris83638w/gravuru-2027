@@ -1,0 +1,56 @@
+{
+  "schema": "gravuru-main-target-preview-verification/v1",
+  "allPassed": true,
+  "codeCommit": "af6fd986c735d97bddc974261398ab8c4e88e00b",
+  "checks": {
+    "frozenV9FilesUnchanged": true,
+    "onlySixLabelFieldsChanged": true,
+    "nativeProductValidationUnchanged": true,
+    "nativeShopPreparationSourceReady": true,
+    "v9Prices778Unchanged": true,
+    "optionsAndGeometry778Unchanged": true,
+    "exactSkuMatches778": true,
+    "actualShopOptionMapping778": true,
+    "preserveAll808Ids": true,
+    "residualOnlyKnownSmall30": true,
+    "labelsAffected30": true
+  },
+  "targetDocumentGzipSha256": "6b2d5989b1dd4859f4a6923faab2cbf9f25102f1f3e95edd77dad48b386c52cc",
+  "nativePreparationSha256": "ca4be70652660dc919bd08115a4ae480a6d58568ef8f646eb5b06064fa9ffc45",
+  "protectedFiles": [
+    {
+      "name": "plan.json",
+      "sha256": "c3bb9aa77fdb72a50503d3f3cfc631e43ea3f9465c9e239fa4f9cd3e4e942d33"
+    },
+    {
+      "name": "source-document.json",
+      "sha256": "0f766fac0df850f5d65cabfeaa4defb51b82c84867c64ba4003b27d90de1d19a"
+    },
+    {
+      "name": "source-metadata.json",
+      "sha256": "4fe8b82f5b648f91e12105c12ad68462884fea50ecd056d697b25e9e788f0b96"
+    },
+    {
+      "name": "pair.json",
+      "sha256": "68175c8b35296e6995da5de4cbcb31f8ae9edb24e3c9225e07b1adb1f9b61a50"
+    },
+    {
+      "name": "template.json",
+      "sha256": "b8dc3ad6fb73f4dfce286cc20c23af6aab6c78db59b269df297b185ccb758cfb"
+    }
+  ],
+  "localWrites": "Preview artifact files only; no database or API constructors called.",
+  "serverVerified": false,
+  "shopReady": false,
+  "productionReady": false,
+  "sourceProductGroupDocumentSha256": "746f682929262b9a127a8d0613155dfba790ca57c524d027aa99797c5b40e3f8",
+  "targetProductGroupDocumentSha256": "2da2130230341917f7a99d2a12889c1e2f10e408f64d3532e9c5ea6bae65713c",
+  "sourceIdBindingDocumentSha256": "d75c917483a5ddedd380ac48c02c4ec3aea36b46f688557b8b9769fc5536eda2",
+  "targetIdBindingDocumentSha256": "deb2ce71bf57d5ff85e5f186378d94f58edeecc1ce4d7c4151bebf6e8072886f",
+  "targetTransportSerializedSha256": "2da2130230341917f7a99d2a12889c1e2f10e408f64d3532e9c5ea6bae65713c",
+  "hashMethods": {
+    "productGroup": "Recursively sorted object construction followed by JSON.stringify; integer-like keys use JavaScript enumeration order.",
+    "idBinding": "Recursively concatenated JSON strings with lexical object-key order, including integer-like keys.",
+    "transport": "SHA256 of exact transported JSON bytes; not the later stored SQL JSON bytes."
+  }
+}

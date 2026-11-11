@@ -1,0 +1,12 @@
+✔ plain uploads keep all four image edges visible, including mismatched restored frames (0.8449ms)
+✔ portrait and landscape uploads start covered and preserve aspect ratio during free resizing (0.1701ms)
+✔ pan works at 100% even without overhang and respects rotated slot coordinates (0.5253ms)
+✔ photo replacement rights allow crop but preserve fixed mask, and deny crop when read-only (0.564ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 90.2629

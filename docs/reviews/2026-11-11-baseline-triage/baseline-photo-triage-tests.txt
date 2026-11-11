@@ -1,0 +1,76 @@
+✖ native photo density follows physical scale and crop zoom, not pan or rotation (1.5432ms)
+✖ edited image pixels and each placement determine density; originals remain intact (0.209ms)
+✖ free uploads use contained image dimensions rather than the photo-slot cover (0.1729ms)
+✔ Ü5.1: Ampel grün ab Soll-DPI, gelb ab 60 %, rot darunter; Soll aus Fertigungsprofil, sonst 300 (0.3784ms)
+✔ Ü5.2: rot ergibt den freundlichen Hinweis und den Vermerk „Auflösung niedrig“ – keine Sperre, keine Bestätigung (0.5803ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 2
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 113.5596
+
+✖ failing tests:
+
+test at app\workshop\acrylic-photo-resolution.test.mjs:7:1
+✖ native photo density follows physical scale and crop zoom, not pan or rotation (1.5432ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  600 !== 300
+  
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/acrylic-photo-resolution.test.mjs:13:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 600,
+    expected: 300,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at app\workshop\acrylic-photo-resolution.test.mjs:15:1
+✖ edited image pixels and each placement determine density; originals remain intact (0.209ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/acrylic-photo-resolution.test.mjs:18:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at app\workshop\acrylic-photo-resolution.test.mjs:24:1
+✖ free uploads use contained image dimensions rather than the photo-slot cover (0.1729ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  300 !== 150
+  
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/workshop/acrylic-photo-resolution.test.mjs:28:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 300,
+    expected: 150,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

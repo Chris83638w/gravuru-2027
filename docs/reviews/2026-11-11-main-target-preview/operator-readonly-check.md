@@ -1,0 +1,44 @@
+# Minimaler Rückbeleg direkt auf der gesicherten Zielkopie
+
+**Privater Auftrag an Claude:** Auf deiner bereits gesicherten konsistenten DB-Kopie ausschließlich A–C unten prüfen. Nichts speichern, registrieren, freigeben oder importieren. Die angebotene vollständige Dokument-/Metadatenausgabe wird nicht benötigt. Zurück erwartet werden: `readOnly:true`, geprüfter Code-/Kopiestand und Zeitpunkt, tatsächlicher Tenant/Store/Shop, cfg-Kopf/Status/Hashes, vollständige 808/778/30-Abdeckungszähler, Hash der intern sortierten technischen Zuordnungstabelle, sämtliche fehlenden/abweichenden IDs/Optionen/Preise und Profilpins samt Auflösungsdifferenzen. Bei null Fehlern die jeweiligen Anzahlen explizit null nennen. Bei einer fehlenden Spalte, Profilauflösung oder unvollständigen Abfrage den konkreten unbelegten Teil melden, nicht pauschal erfolgreich abschließen. Keine vollständigen Modelle, DBs, Kundendaten, Schlüssel oder Tokens nach Git bzw. in Kommentare kopieren.
+
+Kein Import, kein Bestätigen/Ausführen, keine Bindungsaktivierung, kein Shopify-Schreiben. Vollständige native Dokumente/Metadaten und Datenbanken bleiben beim Operator. Nicht die normalen Repository-/Profil-Konstruktoren starten: sie können Tabellen/Migrationen anlegen. Bestehenden geprüften Kopie-Lesepfad mit `DatabaseSync(...,{readOnly:true})`, `query_only` und konsistentem Lesesnapshot verwenden; vorhandener Guard: `ops/issue230-operator-review-20261111/copy-guard.mjs`. Keine unbekannte Tabelle/fehlende Spalte als leeres erfolgreiches Ergebnis behandeln.
+
+## A. Tatsächliches Dokument im eigenen Speicher prüfen
+
+Für exakt `cfg_8e7ebe96-28d2-406f-b31e-036ee61f47e0` im festgelegten Store `acryl` und tatsächlichen Mandanten den Kopf und Revision 1 lesen. Den tatsächlichen Mandanten einmal explizit ausweisen; der vorhandene Inventarhelfer ist auf `gravuru` begrenzt, der neue Entwurf erfindet keine anderslautende Tenant-ID.
+
+Nur zurückmelden: cfg-ID, tenantId, headRevision, kind, archived, status, publishedRevision und **drei ausdrücklich benannte** Hashes: `productGroupDocumentSha256` (sortierter Objektaufbau, dann JSON.stringify mit JavaScripts numerischer Schlüsselreihenfolge), `idBindingDocumentSha256` (rekursiver JSON-Stringserializer, Schlüssel streng lexikalisch) und `storedJsonBytesSha256` (unveränderte SQL-JSON-Bytes). Die beiden ersten Verfahren liefern bei den numerischen Font-Schlüsseln unterschiedliche Werte! Erwarteter **ID-Binding**-Rev1-Hash aus dem Operatorregister: `d2886e119ea9715af2b8905ebab8ecc1d199b07f8653476ce5e0fa26cd8cca79`. Zielvergleich: Produktgruppenhash `2da2130230341917f7a99d2a12889c1e2f10e408f64d3532e9c5ea6bae65713c`, ID-Binding-Hash `deb2ce71bf57d5ff85e5f186378d94f58edeecc1ce4d7c4151bebf6e8072886f`. Katalogfreigaben verwenden ausschließlich den Hash der tatsächlich gespeicherten SQL-Bytes.
+
+Das Dokument intern mit dem neuen Ziel vergleichen. Ausgeben nur Pfade/Hashes/Counts sowie notwendige Werte zu masterId, categoryIds, profileAssignments, config.moduleProfile, productionProfile; native Auswahl-/Preisabweichungen kommen aus B. Tatsächliche SEO-/Namens-/Metadatenabweichungen melden, nicht automatisch mit den lokalen v9-Entwurfswerten überschreiben. Keine Ressourcen-, Schrift-, SVG-, Kunden- oder sonstigen beliebigen Dokumentinhalte ausgeben.
+
+## B. Alle 808 aktiven Zuordnungen vollständig prüfen
+
+Genau das Produkt `gid://shopify/Product/16190784602492`, Shop `gravuru-design.myshopify.com`, Store `acryl`, tatsächlicher Mandant. Vorhandener aktiver Join: `shop_product_binding_heads` → `shop_product_binding_revisions`, ergänzt um `form_shop_bindings`, `form_shop_binding_selections` und – falls im Schema vorhanden – `form_shop_binding_personalization`.
+
+Minimal je Zeile **intern** benötigt:
+
+- `tenant_id, shop, store_id, product_gid, variant_gid`;
+- `cfg_id, cfg_revision, document_sha256, binding_id, assignment revision`;
+- aus fester Bindung `shop, variant_id, product_id, product_revision, unit_cents`;
+- native `options` als geparstes JSON;
+- vorhandener Personalisierungsvertrag `document` oder ausdrückliches null.
+
+Gegen `variant-mapping.preview.json` über die vollständige Shopify-Variant-GID verbinden. 808 eindeutige Zeilen, keine fehlenden/zusätzlichen IDs, keine andere Produkt-/Storezuordnung. Für alle 778 Zielzeilen genaue native Optionen und tatsächlichen unit_cents gegen die Zielwerte prüfen; die 30 Restzeilen nur dem unveränderten Rev1-Bestand zuordnen. Optionswerte nicht aus gerundeten Anzeigetexten erraten. Der vorhandene lokale Match benutzt konkrete SKU, Farb-/Befestigungs-/Größenoptionen und braucht den nativen Gegenbeleg noch.
+
+**Kompakte Rückgabe:** Zähler 808/778/30, Gruppen nach cfg/revision/SHA/Zuordnungsrevision, Hash der vollständigen sortierten Prüftabelle; je 778+30 die technischen Variant-/Binding-IDs und erwarteten Revisionsstände, oder diese Tabelle privat behalten und nur vollständige Deltas zurückgeben. Ausgeben alle fehlenden/mehrdeutigen/abweichenden Optionen oder Preise, nicht nur Stichproben. Personalisierungsverträge nur als Schema/Hash/Version plus tatsächliche notwendige Aufpreise/Staffelpins melden; keine Offer-, Order-, Kunden- oder Token-Tabellen lesen.
+
+## C. Reale Profile, aktuelle Vererbung und Freigaben
+
+1. **Modulprofil:** Existiert der lokale Vorschlag `cmp_8b4e451e-a9c0-400d-a148-094475734fb5@1` im tatsächlichen Workshopregister? Pin erwartet `426c0c7c30fef430107c46f2a8cdb729a897e69211f6bd92f65b36112816901f`, Schalter `colors:false`, alle sechs übrigen `true`. Nur ID/Revision/Kopf/SHA/Schalter zurückgeben. Falls anderer echter Pin dieselbe bestätigte Auswahl repräsentiert, ID/Rev/SHA/Differenzen melden – nicht automatisch zuordnen. Dieses Modulprofil-Schema besitzt **kein Archivfeld**; nichts ergänzen oder daraus ableiten. Vorhandene Tabellen: `configurator_module_profiles` und `configurator_module_profile_revisions`, Mandant beachten.
+2. **Ressourcenprofile:** Das Ziel hat `categoryIds:[]` und fonts/motifs/colors/bestsellers jeweils `mode:inherit,profileId:null`. Daher sind die aktuellen tatsächlichen `profile_library_settings.defaults` maßgeblich. Den bestehenden nativen Auflösungsvertrag (`profile-library.mjs:180–203`) auf die Kopie anwenden/gegenprüfen. Zurück nur settingsRevision, Quellenlevel, Profil-ID/Revision, Auswahlzahl und Hash der geordneten Auswahl sowie Differenzen zum lokalen Pin in `update-intent.preview.json`. Der lokale v9-Stand hat alle vier selections null/unbound, settingsRevision 1; das beweist keine entsprechende Servereinstellung. Ganze Bibliotheken müssen nicht übertragen werden.
+3. **Fertigung:** Tatsächliches Rev1-`productionProfile` und gespeicherter Metadatenpin oder explizit null. Falls vorhanden, gegen reale manufacturing-Profilrevision samt Material/Verfahren/Stärke/Archivstatus prüfen und notwendige Pins melden. Ein tatsächlicher Verweis darf nicht still verschwinden. Ein fehlender Verweis verhindert nicht den ausdrücklich begrenzten `purpose:id-binding`-Weg, begründet aber **keine Produktionsfreigabe**. Vorhandener anderer/mangelhafter Verweis darf nicht als „fehlt“ umgedeutet werden.
+4. **Katalogfreigabe:** Nur vorhandenen Rev1-`catalog_live_order_approvals`-Beleg lesen: approvalId, Revision, serialisierter SHA, Variantenanzahl/Hash; fehlende Freigabe ausdrücklich null. Eine eventuell spätere Rev2-Freigabe ist ein eigener, hier nicht ausgeführter Schritt. Preise/Module/Starts sind fachlich bestätigt; diese technische Prüfung stellt sie nicht erneut zur Nutzerentscheidung.
+
+## D. Grenzen vor jeder späteren autorisierten Umsetzung
+
+Der neue Zielhash ist ein **lokaler** Previewhash. SQL-Revisionsnummer 2 setzt unveränderten tatsächlichen Kopf 1 voraus. Ein Zielprofilabgleich kann noch einen sichtbar versionierten Nachtrag erfordern. Der direkte native Updateweg muss bestehenden ID-/Revisionsvergleich und Importjournal behalten; der v9-`product-group execute`-Weg legt Produkte an und ist für dieses vorhandene Hauptprodukt nicht passend.
+
+Erst nach dem Zielvergleich und gesonderter Abnahme des konkreten Umfangs wäre ein Import/Preis-/Label-/Bindingablauf möglich. Keine alten 60-Sekunden-Belege wiederverwenden. 778 neue Bindungszuordnungen benötigen den dann echten aktuellen Dokumentstand und frische Shopify-Preise; ein API-Plan wird nicht mit erfundenen Rev2-Records vorgetäuscht. `persist()` akzeptiert maximal 100 Einträge je Aufruf, verlangt CAS und prüft vor Abschluss erneut die Belegfrische; daraus folgt keine pauschale 778er-Atomizitätsbehauptung. Der vorhandene Operatorablauf muss Wiederaufnahme und die 30 unveränderten Rev1-Zuordnungen konkret nachweisen.
+
+Die vollständigen 158 bestehenden Shop-Preisabweichungen stehen bereits im Preview. Kein weiterer breiter Shop-Export ist für diesen vorbereitenden Vergleich nötig; unmittelbar vor späteren Schreibschritten ist die native Frischeprüfung zwingend. H1, bestehende Produkt-/Varianten-IDs, Status und die 30 Restvarianten sind Erhaltungsvorgaben.

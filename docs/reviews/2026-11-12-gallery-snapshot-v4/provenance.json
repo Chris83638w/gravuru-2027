@@ -1,0 +1,23 @@
+{
+  "runtimeBaseCommit": "e49659fe9cd6e433e578a5ffd054e0345cbcc440",
+  "currentHead": "fcd104771f71c9fb4f48c03c5085ba99c0272675",
+  "nodeVersionObservedAfterRuns": "v24.20.0",
+  "provenanceLimit": "The original result records did not embed per-run source hashes or executable paths. These hashes were recorded after the runs; owned source bytes have not changed between cycle runs and this seal.",
+  "sourceFiles": {
+    "app/workshop/shop-gallery-snapshot.mjs": {
+      "baseSHA256": "71f3b47e10ca2bfbce22f9712c2a3b76e48fb4757443cdfa5d58b354377e8902",
+      "finalSHA256": "8d2451a35813c02c03814d949db92380262c0e7bb6312dea45bc9deb10823a0d"
+    },
+    "scripts/shop-gallery-benchmark.mjs": {
+      "baseSHA256": "f74c425e58bcfbd4d9e881873e5ea623b1cd3605f574e05ae069edf3b1df9336",
+      "finalSHA256": "b251e8832f670a501c7a05bf14d7df66e08ecee3519e408e9a689ef1928b4590"
+    },
+    "app/workshop/shop-design-gallery.test.mjs": {
+      "baseSHA256": "75e8f68d4d5916432a32c13daa91b1a8d497735c8b253650ff0d332f048d039c",
+      "finalSHA256": "17ff41ab39bee59c6fd4da48afde8f43341ca6f8176c09bbefffb26fdbf26604"
+    }
+  },
+  "referenceByteIdenticalToBase": true,
+  "scope": "Synthetic local Windows processes only, no real DB/server/network; frozen application source files listed in manifest.",
+  "nodeExecutableObservedAfterRuns": "C:\\Program Files\\nodejs\\node.exe"
+}

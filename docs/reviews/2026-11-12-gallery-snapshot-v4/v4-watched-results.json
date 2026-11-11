@@ -1,0 +1,43 @@
+[
+  {
+    "mode": "new",
+    "cards": 100000,
+    "exit": 0,
+    "watchdogStopped": false,
+    "watchLimitMiB": 1024,
+    "observedRssMiB": 363.4453125,
+    "elapsedSeconds": 0.8589999999967404,
+    "result": {
+      "mode": "new",
+      "cards": 100000,
+      "bindings": 8334,
+      "payloadBytes": 6033305,
+      "payloadSHA256": "75b02946a5f770548bc65d0c3bdc2118d8609ee934f313a43f94b84ee62dbfdc",
+      "mac": "b1746e0cdaa36717d0dcd7c6339ca10f3c7314bd856ff5d67004b8291333bf93",
+      "encodeMs": 614.53,
+      "before": {
+        "rss": 212033536,
+        "heapTotal": 231043072,
+        "heapUsed": 93002936,
+        "external": 2138760,
+        "arrayBuffers": 145627
+      },
+      "afterEncode": {
+        "rss": 381071360,
+        "heapTotal": 292323328,
+        "heapUsed": 219729864,
+        "external": 23127563,
+        "arrayBuffers": 21071150
+      },
+      "encodeMaxRssMiB": 369.22265625,
+      "afterWrite": {
+        "rss": 379711488,
+        "heapTotal": 292323328,
+        "heapUsed": 219768176,
+        "external": 23127563,
+        "arrayBuffers": 21071150
+      },
+      "maxRssMiB": 380.578125
+    }
+  }
+]

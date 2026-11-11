@@ -283,7 +283,7 @@ test('invalid signature, changed secret, wrong scope and cache I/O failures rebu
   f.store.registry.galleryCache={read:()=>saved,write:(_r,value)=>{saved=value;}};
   const options={secret:'cache-secret',resolve:()=>{},modelFor:(_s,b)=>f.models.get(b.productId),allowedAssets:()=>new Set()};
   await createShopDesignGallery(options).list(f.context);assert.equal(reads,1);
-  if(scenario==='tampered')saved.payload=saved.payload.replace('Design 1','Forged design');
+  if(scenario==='tampered')saved.payload+=' ';
   if(scenario==='secret')options.secret='rotated-secret';
   if(scenario==='scope')f.store.storeId='another-store';
   if(scenario==='read-error')f.store.registry.galleryCache.read=()=>{throw Error('storage unavailable');};

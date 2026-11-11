@@ -1,0 +1,92 @@
+{
+  "syntheticNativeCopyPilot": true,
+  "realOperatorDatabaseOpened": false,
+  "realTargetExecuted": false,
+  "fixturePreimageDatabaseSha256": "328ffe465cabcea6e632ec008b19984fc178a9bca73b0e1c523c0366a713fec2",
+  "syntheticReviewHash": "fda0bcf0227d02d7e9562a420bf24c734f8183dd310cd14aa64b5550aada227d",
+  "firstExecution": {
+    "schema": "gravuru-operator-product-update-receipt/v1",
+    "reviewHash": "fda0bcf0227d02d7e9562a420bf24c734f8183dd310cd14aa64b5550aada227d",
+    "approvalHash": "ede2686ff511e8b5be27d93a107894e88042148be9f7361e45085be91ea67b35",
+    "excelSha256": "75df45ab970f55e35dcfb77ed2bd5cdfdde2114b5fea0498eccb13a6b5ce7025",
+    "importKey": "synthetic-copy-update",
+    "importFingerprint": "2850048d1777e97980f77537a43150f94ff7676d80b7114a5049c3481be3ed10",
+    "productId": "cfg_6dc62d5c-c870-4335-a54e-2280f07c9969",
+    "revision": 2,
+    "replayed": false,
+    "newRevisions": 1,
+    "createdProducts": 0,
+    "document": {
+      "productGroupSha256": "9347614340301bdc0f90e5be80e1dd635d2a24dd792755710ad4d69e515b9a49",
+      "idBindingSha256": "fa1f8c69c5bdb84e612942e455ae1e4fcafcf40cadb95784090d17ef0d754db9"
+    },
+    "metadataSha256": "ff2e2eaa3b1e411f82e53f9a4668b3b2212e5a59360269315dc6e324402cea95",
+    "checkedUnderNativeWriteLockAt": "2026-11-11T22:00:02.729Z",
+    "nativeResult": [
+      {
+        "key": "synthetic-copy-update",
+        "id": "cfg_6dc62d5c-c870-4335-a54e-2280f07c9969",
+        "created": false,
+        "updated": true,
+        "revision": 2
+      }
+    ],
+    "shopifyWrites": 0,
+    "bindingWrites": 0,
+    "catalogApprovals": 0,
+    "publications": 0,
+    "receiptHash": "38432c4f98695f6ef8ea30ebb1731ebc990d1182227807bc54fee099215d339f"
+  },
+  "secondExecution": {
+    "schema": "gravuru-operator-product-update-receipt/v1",
+    "reviewHash": "fda0bcf0227d02d7e9562a420bf24c734f8183dd310cd14aa64b5550aada227d",
+    "approvalHash": "ede2686ff511e8b5be27d93a107894e88042148be9f7361e45085be91ea67b35",
+    "excelSha256": "75df45ab970f55e35dcfb77ed2bd5cdfdde2114b5fea0498eccb13a6b5ce7025",
+    "importKey": "synthetic-copy-update",
+    "importFingerprint": "2850048d1777e97980f77537a43150f94ff7676d80b7114a5049c3481be3ed10",
+    "productId": "cfg_6dc62d5c-c870-4335-a54e-2280f07c9969",
+    "revision": 2,
+    "replayed": true,
+    "newRevisions": 0,
+    "createdProducts": 0,
+    "document": {
+      "productGroupSha256": "9347614340301bdc0f90e5be80e1dd635d2a24dd792755710ad4d69e515b9a49",
+      "idBindingSha256": "fa1f8c69c5bdb84e612942e455ae1e4fcafcf40cadb95784090d17ef0d754db9"
+    },
+    "metadataSha256": "ff2e2eaa3b1e411f82e53f9a4668b3b2212e5a59360269315dc6e324402cea95",
+    "checkedUnderNativeWriteLockAt": "2026-11-11T22:00:02.859Z",
+    "nativeResult": [
+      {
+        "key": "synthetic-copy-update",
+        "id": "cfg_6dc62d5c-c870-4335-a54e-2280f07c9969",
+        "created": false
+      }
+    ],
+    "shopifyWrites": 0,
+    "bindingWrites": 0,
+    "catalogApprovals": 0,
+    "publications": 0,
+    "receiptHash": "b4bae9630d103981f532ba9719731f19e1f2d14afd1ab27f2dce45682b27783a"
+  },
+  "sourceDatabaseUnchangedCheckedOnCleanup": true,
+  "otherProductUnchanged": true,
+  "before": {
+    "revisions": 2,
+    "imports": 0,
+    "foreign": "unchanged"
+  },
+  "after": {
+    "revisions": 3,
+    "imports": 1,
+    "foreign": "unchanged"
+  },
+  "afterReplay": {
+    "revisions": 3,
+    "imports": 1,
+    "foreign": "unchanged"
+  },
+  "limits": [
+    "Synthetic native product and resource evidence; not a live/customer/real-copy acceptance.",
+    "Native repository and native product validator are used; operator full resource/asset/manufacturing validation remains required."
+  ]
+}

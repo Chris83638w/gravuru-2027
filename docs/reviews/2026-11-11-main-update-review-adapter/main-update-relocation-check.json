@@ -1,0 +1,74 @@
+{
+  "schema": "main-update-package-relocation-check/v1",
+  "fileCount": 12,
+  "bytes": 55311,
+  "manifestSha256": "79eb9502ad36ba793f13e69e6b47572267549e21fb64f6d4d81c747ae0f8aa98",
+  "packageByteIdentical": true,
+  "defaultRelativeCodeRootVerified": true,
+  "sourcePilotProofUnchanged": true,
+  "smoke": {
+    "passed": 1,
+    "failed": 0,
+    "scope": "first native copied repository update/replay test only; no code-root/proof env override",
+    "logSha256": "955579de84cc5d63734a928df79df7126438cc734339da98ed2d1de2a489a664"
+  },
+  "cliExecutionModeRejected": true,
+  "productionReviewHash": null,
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "e0b02d3d558e86f01e1d6e7cbe8689ff5f961c1b55d213e3cd8514d2c1db2a9c",
+      "bytes": 12551
+    },
+    {
+      "path": "copy-pilot-proof.json",
+      "sha256": "d733cd5bbfb7476112ff1102bf8fe34fbf243bce50a8a5c06a92cd1bced9d90b",
+      "bytes": 3654
+    },
+    {
+      "path": "independent-review.md",
+      "sha256": "a039877d4b2d0623f8cc0484cfd440c4e5c8eb3213a9c1f7ba46e3f0e6548fef",
+      "bytes": 4879
+    },
+    {
+      "path": "observation-required.json",
+      "sha256": "00d727b34370ff6ed6fced32162a34c9fabc9308ab5d1b2a953337b79d6f2619",
+      "bytes": 377
+    },
+    {
+      "path": "origin.json",
+      "sha256": "8de48fc6e010062cbc7a4f9084b5a90eba526c2b51c1eb8f596dbba7db6ec9f5",
+      "bytes": 281
+    },
+    {
+      "path": "readiness.json",
+      "sha256": "22a5d42d2e4e6a184eb18cedeacc0b2187cd8ac7d41dd8a5a7faadb579b74a2a",
+      "bytes": 779
+    },
+    {
+      "path": "test-repro-preservation.txt",
+      "sha256": "eb28e64cc3ef54dfb966d3ad8c86e979a5e086bc77c1a4250a2e21b9c416995c",
+      "bytes": 362
+    },
+    {
+      "path": "tests.txt",
+      "sha256": "17d3299a1f6667a9a2b13a7b8ee726fcb02c0d0f1bb4b450d35df994fb64baa2",
+      "bytes": 1011
+    },
+    {
+      "path": "update-review-cli.mjs",
+      "sha256": "9c17835a31d621ee696c063c523960206b824f7c51e9e446d35e4cd8429f40ac",
+      "bytes": 2658
+    },
+    {
+      "path": "update-review.mjs",
+      "sha256": "6f68a00b590b6dedb5af29229fea816e31b4cab2bea5e937a67ed220a9fdd571",
+      "bytes": 16340
+    },
+    {
+      "path": "update-review.test.mjs",
+      "sha256": "07b77028cbea0becc61ab18bcc5cc0a5a6507b6d6904b9026096f666f22227d6",
+      "bytes": 10631
+    }
+  ]
+}

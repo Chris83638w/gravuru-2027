@@ -1,0 +1,20 @@
+{
+  "schema": "gravuru-operator-update-preparation-readiness/v1",
+  "adapterImplemented": true,
+  "productionReviewPrepared": false,
+  "reviewHash": null,
+  "approvalHash": null,
+  "realCategoryEvidenceReceived": false,
+  "finalExcelAppendixCreated": false,
+  "operatorContextConnected": false,
+  "liveExecutionAvailable": false,
+  "actualServerCopyExecuted": false,
+  "blockers": [
+    "Actual preserved-category comparison and native full-validator/metadata observation required.",
+    "Operator must connect the existing native repository and the guarded metadata callback, with a fresh actual resource-pin reader.",
+    "Final versioned Excel addendum and actual user approval source required."
+  ],
+  "noAppChanges": true,
+  "noV9Changes": true,
+  "noShopifyWrites": true
+}

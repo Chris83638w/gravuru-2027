@@ -1,0 +1,6 @@
+{
+  "app/workshop/shop-draft-transfer.mjs": "045435ac58fc8e1a7fd1c79fc5e147f1410cc3686f997d045f380d6575aeca5c",
+  "app/workshop/shop-preparation.mjs": "633cd47ff251bb3927aff3ad991b7a80ee8fcd1d1549197983e63e0ccfabae32",
+  "app/workshop/shop-product-binding-check.mjs": "fa64a98057fd745391012cb7314b6072a169e79b9b6737cf611a268b7a4a8d68",
+  "app/workshop/cart-personalization.mjs": "3a720e14e24805e4ce2708a15124d90f7ca4a7dc99fe1353749894e213e6088e"
+}

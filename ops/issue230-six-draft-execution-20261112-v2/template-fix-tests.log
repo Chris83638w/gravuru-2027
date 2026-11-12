@@ -1,0 +1,19 @@
+✔ productUpdate selects only official UserError fields; the former code selection is invalid (2.3611ms)
+▶ six real content contracts through native transfer/bindings with an injected Shopify service
+  ✔ preparation pins exact six requests and rejects a plan tamper (515.9192ms)
+  ✔ lost create response stops with no bindings and never blindly creates again (8884.2361ms)
+  ✔ template GraphQL failure stops after first price, ten bindings and catalog approval; transfer stays completed (13222.4967ms)
+  ✔ explicit reconcile completes six DRAFTs, 45 exact heads/prices and stored contracts before entry (56951.0257ms)
+  ✔ completed replay performs no remote mutation and creates no new heads (56116.0096ms)
+  ✔ changed remote price or ACTIVE status stops before writes (5878.5968ms)
+  ✔ existing conflicting price contract and unauthenticated principal cannot change products (2863.2716ms)
+  ✔ all six native heads are checked before the first remote write (3240.8778ms)
+✔ six real content contracts through native transfer/bindings with an injected Shopify service (156920.8527ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 157366.4639

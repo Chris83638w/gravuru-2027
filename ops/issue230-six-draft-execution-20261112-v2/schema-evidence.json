@@ -1,0 +1,35 @@
+{
+  "schema": "issue230-product-update-user-errors-schema/v1",
+  "recordedAt": "2026-11-12T17:08:19.078Z",
+  "source": "Shopify connector graphql_schema; schema API version not reported by connector",
+  "readOnly": true,
+  "productUpdateUserErrors": {
+    "type": "[UserError!]!",
+    "namedType": "UserError"
+  },
+  "userError": {
+    "type": "UserError",
+    "kind": "OBJECT",
+    "fields": [
+      {
+        "name": "field",
+        "type": "[String!]",
+        "namedType": "String"
+      },
+      {
+        "name": "message",
+        "type": "String!",
+        "namedType": "String"
+      }
+    ]
+  },
+  "templateSuffix": {
+    "inputType": "ProductUpdateInput",
+    "field": "templateSuffix",
+    "type": "String"
+  },
+  "finding": "UserError has field/message, no code. SET_TEMPLATE must not request code. MetafieldsSetUserError has a separate contract and SET_META is unchanged.",
+  "hostApiVersionConfirmedByClaude": "2026-07",
+  "hostSchemaRawBytesReceived": false,
+  "hostDiagnosisComment": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6830425172"
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "issue230-six-draft-relocation-check/v1",
+  "platform": "win32",
+  "node": "v24.20.0",
+  "executedFrom": "work/restabschluss/six-draft-relocation-verify/ops/issue230-six-draft-execution-20261112",
+  "environmentInputs": {
+    "GRAVURU_NATIVE_ROOT": "work/issue230-integration-candidate (resolved absolute)",
+    "GRAVURU_SIX_COPY_RECORDS": "work/restabschluss/claude-75a304eb/ops/plesk/sechsgruppen-20261112/records (resolved absolute)"
+  },
+  "fallbackNativeRootExists": false,
+  "tests": {
+    "tests": 8,
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "exitCode": 0,
+    "log": "tests-relocated.txt"
+  },
+  "previousManifestSha256": "7e7d4a9093c28d981cefe3eae5f2eb12b5e41c380af768c963c0e88dcc5b338e",
+  "executionSourceFiles": [
+    {
+      "file": "six-drafts.mjs",
+      "sha256": "e39ae3613932c34d99a18eb08f2ddf4369b5ac30805abd504dcfd83ff592b88d",
+      "previousManifestMatch": true,
+      "relocatedMatch": true
+    },
+    {
+      "file": "shopify-steps.mjs",
+      "sha256": "a3c34298a6b7c2c2e0429ec4a2fb83a18c7387a8fbcdf372e6e11eed134607d2",
+      "previousManifestMatch": true,
+      "relocatedMatch": true
+    },
+    {
+      "file": "private-log.mjs",
+      "sha256": "5362eaea89752efad523165db0611d65b994bb61a5667e95bd330b97b8028dd9",
+      "previousManifestMatch": true,
+      "relocatedMatch": true
+    },
+    {
+      "file": "prepare-requests.mjs",
+      "sha256": "c92b533346593f6048cb7b6ba2e79f790c4ca6fa1e300392ff4ca3df37c99f6d",
+      "previousManifestMatch": true,
+      "relocatedMatch": true
+    }
+  ],
+  "remainingTestDatabaseDirectories": [],
+  "runtimeChanged": false,
+  "serverExecuted": false
+}

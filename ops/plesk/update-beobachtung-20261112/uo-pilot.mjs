@@ -1,4 +1,4 @@
-// Kopienpilot für das Hauptacryl-Update (Update, identische Wiederholung, erzwungener Driftabbruch) – NUR auf neuen
+// Kopienpilot für das Hauptacryl-Update (A Update + identische Wiederholung, B geänderte XLSX + Kopfdrift, C Insertdrift) – NUR auf neuen
 // Wegwerfkopien der drei Acryl-Datenbanken aus der Sicherung 20261111T212859Z. Review und XLSX sind die echten Dateien;
 // der Zustimmungsbeleg ist eine ausdrücklich SYNTHETISCHE Testvorgabe, die nur im Speicher dieses Prozesses existiert
 // und nie als Datei oder Nutzerzustimmung abgelegt wird. Nativer Validierungs-/CAS-/Snapshot-/Journalcode unverändert.
@@ -42,6 +42,7 @@ try{
  const [{createFontLibrary},{createProfileLibrary},{createProductionProfiles},{createDesignAssetStore},{workshopCatalog},{validateProductDocument},{isFormProduct},{productOverview},{createProductRepository},adapter,{createNativeUpdateResourcePinReader}]=await Promise.all(['app/workshop/font-library.mjs','app/workshop/profile-library.mjs','app/workshop/production-profiles.mjs','app/workshop/design-assets.mjs','app/workshop/catalog.mjs','app/workshop/product-model.mjs','app/workshop/form-product.mjs','app/workshop/product-preview.mjs','app/workshop/repository.mjs','ops/issue230-main-update-review-20261111/update-review.mjs','ops/issue230-main-resource-pins-20261111/read-resource-pins.mjs'].map(imp));
 
  function kontext(daten){
+  const probe={aufrufe:0,driftBei:Infinity,ausgeloest:0,imInsert:null,settingsVorher:null,settingsNachher:null};
   const wFile=path.join(daten,'workshop.sqlite'),aFile=path.join(daten,'design-assets.sqlite'),pFile=path.join(daten,'profiles.sqlite');
   const fonts=createFontLibrary({filename:aFile,tenantId:TENANT});
   const profiles=createProfileLibrary({filename:pFile,catalog:workshopCatalog(seed.universal.localResources),tenantId:TENANT});profiles.registerFonts(fonts.list());
@@ -49,11 +50,14 @@ try{
   const assets=createDesignAssetStore({filename:aFile,tenantId:TENANT});
   // Vollständiger nativer Validator: exakt der Nicht-Formprodukt-Zweig aus http.mjs:156
   const nativeValidate=value=>{const document=validateProductDocument(value);if(isFormProduct(document))throw Error('Dieser Anschluss gilt nur für das Haupt-Universalprodukt.');profiles.resolve(document);assets.validateDocument(document);productionProfiles.resolve(document);return document;};
-  const nativeSnapshotMetadata=document=>({profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)});
+  const nativeSnapshotMetadata=document=>{probe.aufrufe++;
+   if(probe.aufrufe===probe.driftBei){probe.ausgeloest++;probe.imInsert=/\bappend\b/.test(String(new Error().stack));probe.settingsVorher=profiles.settings().revision;
+    profiles.setCategory(review.observation.resourcePins.categoryIds[0],'fonts',{mode:'empty',profileId:null},profiles.settings().revision);probe.settingsNachher=profiles.settings().revision;}
+   return {profiles:profiles.resolve(document),productionProfile:productionProfiles.resolve(document)};};
   const readResourcePins=createNativeUpdateResourcePinReader({profiles,productionProfiles});
   const metadataSnapshot=adapter.guardedMetadataSnapshot(nativeSnapshotMetadata,readResourcePins);
   const repository=createProductRepository({filename:wFile,tenantId:TENANT,validateDocument:nativeValidate,snapshotMetadata:metadataSnapshot,catalogOverview:productOverview});
-  return {repository,metadataSnapshot,readResourcePins,wFile};
+  return {repository,metadataSnapshot,readResourcePins,wFile,probe};
  }
  const zaehle=file=>{const d=new DatabaseSync(file,{readOnly:true});try{const n=(q,...a)=>d.prepare(q).get(...a)?.n??null;return {produkte:n('SELECT COUNT(*) AS n FROM products WHERE tenant_id=?',TENANT),revisionen:n('SELECT COUNT(*) AS n FROM product_revisions WHERE tenant_id=?',TENANT),importjournal:n('SELECT COUNT(*) AS n FROM import_items WHERE tenant_id=?',TENANT),bindungskoepfe:n('SELECT COUNT(*) AS n FROM shop_product_binding_heads WHERE tenant_id=?',TENANT),bindungsrevisionen:n('SELECT COUNT(*) AS n FROM shop_product_binding_revisions WHERE tenant_id=?',TENANT),kopf:n('SELECT revision AS n FROM products WHERE tenant_id=? AND id=?',TENANT,PRODUKT),revisionenProdukt:n('SELECT COUNT(*) AS n FROM product_revisions WHERE tenant_id=? AND product_id=?',TENANT,PRODUKT)};}finally{d.close();}};
  const target=JSON.parse(fs.readFileSync(ZIEL,'utf8'));
@@ -75,9 +79,27 @@ try{
  schritt='B-kopfdrift';const alt=b.repository.get(PRODUKT,{revision:1});b.repository.save(PRODUKT,{...alt.document,name:alt.document.name+' (Kopienpilot: gleichzeitige Bearbeitung)'},1);const b2=zaehle(b.wFile);
  let f2=null;try{lauf(b);}catch(e){f2=kurzFehler(e);}
  const b3=zaehle(b.wFile);ergebnis.abbruchKopfdrift={vorDrift:b0,nachFremdbearbeitung:b2,fehler:f2,nachAbbruch:b3,keinWeitererStand:JSON.stringify(b2)===JSON.stringify(b3),journal:b.repository.importItem(IMPORTKEY)};
- ergebnis.sicherungUnveraendert=dateiSha(path.join(SICH,'workshop.sqlite'))===manifest['workshop.sqlite'].sha256;
+ // C) Insertdrift auf eigener frischer R1-Kopie: beim dritten folgenden nativen Snapshotaufruf (= Insert-Hook) wird einmal
+ //    eine Kategoriezuordnung in der C-PROFILKOPIE geändert; Leser, Guard und Adapter bleiben unverändert.
+ schritt='C-kopie';const c=kontext(kopie('c'));const c0=zaehle(c.wFile),cJournal0=c.repository.importItem(IMPORTKEY),cKopf0=c.repository.head(PRODUKT).revision;
+ schritt='C-insertdrift';c.probe.driftBei=c.probe.aufrufe+3;let f3=null;try{lauf(c);}catch(e){f3=kurzFehler(e);}
+ const c1=zaehle(c.wFile);ergebnis.abbruchInsertdrift={vorher:c0,journalVorher:cJournal0,kopfVorher:cKopf0,fehler:f3,ausloeserAnzahl:c.probe.ausgeloest,ausloeserImInsertHook:c.probe.imInsert,snapshotAufrufe:c.probe.aufrufe,profilSettingsRevision:[c.probe.settingsVorher,c.probe.settingsNachher],nachAbbruch:c1,workshopUnveraendert:JSON.stringify(c0)===JSON.stringify(c1),kopfNachher:c.repository.head(PRODUKT).revision,journalNachher:c.repository.importItem(IMPORTKEY)};
+ ergebnis.sicherungen=Object.fromEntries(DBS.map(f=>[f,dateiSha(path.join(SICH,f))===manifest[f].sha256]));ergebnis.sicherungUnveraendert=Object.values(ergebnis.sicherungen).every(Boolean);
+ const gleich=(x,y,ks)=>ks.every(k=>x[k]===y[k]);
+ const pruefungen={
+  A_update_rev2:r1.revision===2&&r1.replayed===false&&r1.newRevisions===1&&r1.createdProducts===0,
+  A_eine_neue_revision:a1.revisionen===a0.revisionen+1&&a1.revisionenProdukt===a0.revisionenProdukt+1&&a1.kopf===2&&a0.kopf===1,
+  A_ein_journaleintrag:a1.importjournal===a0.importjournal+1&&ergebnis.update.journal?.id===PRODUKT&&ergebnis.update.journal?.fingerprint===review.importFingerprint,
+  A_produkte_bindungen_unveraendert:gleich(a0,a1,['produkte','bindungskoepfe','bindungsrevisionen']),
+  A_wiederholung_noop:r2.replayed===true&&r2.newRevisions===0&&r2.revision===2&&JSON.stringify(a1)===JSON.stringify(a2),
+  B_excel_exakt:f1?.code==='excel_changed'&&ergebnis.abbruchGeaenderteExcel.datenUnveraendert,
+  B_kopfdrift_exakt:f2?.code==='head_changed'&&b2.kopf===2&&ergebnis.abbruchKopfdrift.keinWeitererStand&&ergebnis.abbruchKopfdrift.journal===null,
+  C_insertdrift_exakt:f3?.code==='invalid_snapshot_metadata'&&f3?.message==='snapshot_metadata_changed',
+  C_ausloeser_genau_einmal_im_insert:c.probe.ausgeloest===1&&c.probe.imInsert===true,
+  C_workshop_zurueckgerollt:cKopf0===1&&cJournal0===null&&ergebnis.abbruchInsertdrift.kopfNachher===1&&ergebnis.abbruchInsertdrift.journalNachher===null&&ergebnis.abbruchInsertdrift.workshopUnveraendert,
+  sicherungen_gegen_manifest:ergebnis.sicherungUnveraendert===true};
+ const ok=Object.values(pruefungen).every(v=>v===true);ergebnis.pruefungen=pruefungen;ergebnis.bestanden=ok;
  fs.writeFileSync(path.join(U,'TESTBELEG-updatepilot.json'),JSON.stringify(ergebnis,null,1),{flag:'wx',mode:0o600});
  log(ergebnis);
- const ok=r1.revision===2&&r1.newRevisions===1&&r2.replayed===true&&r2.newRevisions===0&&ergebnis.wiederholung.unveraendertGegenUpdate&&f1&&ergebnis.abbruchGeaenderteExcel.datenUnveraendert&&f2&&ergebnis.abbruchKopfdrift.keinWeitererStand&&ergebnis.abbruchKopfdrift.journal===null;
  if(!ok)process.exitCode=1;
 }catch(error){log({schritt,fehler:kurzFehler(error)});process.exitCode=1;}

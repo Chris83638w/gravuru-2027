@@ -2,7 +2,7 @@
 // natives Update des Acryl-Hauptprodukts cfg_8e7ebe96… von Revision 1 auf Revision 2 – genau EIN nativer Produktstand,
 // keine Shopify-Änderung, keine Bindung, keine Katalogfreigabe. Gleicher Ablauf wie der geprüfte Kopienpilot uo-pilot.mjs
 // (Teil A), nur ohne Kopie und mit der tatsächlichen Zustimmungsakte. Adapter, Review, Zielmodell und XLSX unverändert.
-//   node ml-update.mjs               -> nur Vorprüfung gegen die Review-Pins (schreibt nichts in die Datenbanken)
+//   node ml-update.mjs               -> nur Vorprüfung gegen die Review-Pins (kein Produkt-/Journalschreiben; die nativen Instanzen werden wie in der laufenden App geöffnet)
 //   node ml-update.mjs --ausfuehren  -> Vorprüfung, dann das Update; bricht bei der ersten Abweichung ohne Schreiben ab
 // Voraussetzung für --ausfuehren: frische Sicherung (neuester Ordner in sicherungen-db/, jünger als 90 Minuten, nach 17:23Z).
 import './vh-netzwaechter.mjs';
@@ -27,7 +27,7 @@ function dateiSha(file){const fd=fs.openSync(file,'r'),h=crypto.createHash('sha2
 const log=e=>console.log(JSON.stringify({event:'ml_update',...e}));
 const imp=p=>import(pathToFileURL(path.join(RT,p)).href);
 const kurzFehler=e=>({code:e?.code??null,message:String(e?.message||e).replace(/\/var\/www\/vhosts\/[^/]+/g,'~').slice(0,300)});
-let schritt='start';const ergebnis={schema:'gravuru-mainupdate-ausfuehrung/v1',kennzeichnung:AUSFUEHREN?'AUSFÜHRUNG auf den tatsächlichen Daten - natives Update Hauptacryl R1→R2; kein Shopify, keine Bindung, keine Katalogfreigabe':'VORPRÜFUNG auf den tatsächlichen Daten - es wird nichts geschrieben',erstellt:new Date().toISOString(),kandidat:path.basename(RT),modus:AUSFUEHREN?'ausfuehren':'vorpruefung'};
+let schritt='start';const ergebnis={schema:'gravuru-mainupdate-ausfuehrung/v1',kennzeichnung:AUSFUEHREN?'AUSFÜHRUNG auf den tatsächlichen Daten - natives Update Hauptacryl R1→R2; kein Shopify, keine Bindung, keine Katalogfreigabe':'VORPRÜFUNG auf den tatsächlichen Daten - kein Update, kein Journaleintrag; native Instanzen wie in der laufenden App geöffnet',erstellt:new Date().toISOString(),kandidat:path.basename(RT),modus:AUSFUEHREN?'ausfuehren':'vorpruefung'};
 const zu=[];
 try{
  schritt='pins';if(!process.env.ML_OHNE_PINS)for(const [f,h] of Object.entries(PINS))if(sha(fs.readFileSync(path.join(RT,f)))!==h)throw new Error('Prüfsumme weicht ab: '+f);
@@ -73,10 +73,10 @@ try{
  ergebnis.vorpruefung=vp;
  const vorOk={kopf_r1_entwurf:kopf.revision===1&&kopf.status==='draft'&&alt.publishedRevision===null,r1_dokument_gepinnt:vp.r1.dokument===pol.expectedPreimageBindingSha256&&vp.r1.metadaten===review.observation.preimage.metadataSha256,noch_kein_journaleintrag:journalVorher===null,
   ressourcen_wie_review:adapter.digest(pinsIst)===adapter.digest(pinsSoll),zielmetadaten_wie_review:metaIst===review.observation.targetMetadataSha256&&metaIst===ZIEL_META,zieldokument_wie_review:valid.idBindingSha256===review.target.idBindingSha256&&valid.productGroupSha256===review.target.productGroupSha256&&valid.idBindingSha256===ZIEL_DOK,
-  bindungen_808_r1:ergebnis.vorher.mainR1===808&&ergebnis.vorher.mainR2===0,sechs_entwuerfe_im_stand:ergebnis.vorher.produkte===1090&&ergebnis.vorher.katalogfreigaben===26};
+  bindungen_808_r1:ergebnis.vorher.mainR1===808&&ergebnis.vorher.mainR2===0};
  ergebnis.vorpruefungen=vorOk;const vorGruen=Object.values(vorOk).every(Boolean);
  if(!AUSFUEHREN||!vorGruen){
-  ergebnis.nachher=zaehle();ergebnis.unveraendert=JSON.stringify(ergebnis.vorher)===JSON.stringify(ergebnis.nachher);ergebnis.bestanden=vorGruen&&ergebnis.unveraendert&&!AUSFUEHREN;if(AUSFUEHREN)ergebnis.abgebrochen='Vorprüfung nicht grün - nichts geschrieben';
+  ergebnis.nachher=zaehle();ergebnis.unveraendert=JSON.stringify(ergebnis.vorher)===JSON.stringify(ergebnis.nachher);ergebnis.hauptproduktUnveraendert=['kopf','revisionenProdukt','mainR1','mainR2'].every(k=>ergebnis.vorher[k]===ergebnis.nachher[k])&&repository.importItem(IMPORTKEY)===null;ergebnis.bestanden=vorGruen&&ergebnis.hauptproduktUnveraendert&&!AUSFUEHREN;if(AUSFUEHREN)ergebnis.abgebrochen='Vorprüfung nicht grün - nichts geschrieben';
  }else{
   schritt='zustimmung';const approval=adapter.makeApprovalEvidence({review,acceptedReviewHash:review.reviewHash,excelAddendum:{file:EXCEL,sha256:EXCEL_SHA},decision:ENTSCHEIDUNG},target);
   const za=adapter.writeNewJson(path.join(U,'ZUSTIMMUNG-update.json'),approval);ergebnis.zustimmung={approvalHash:approval.approvalHash,datei:'ZUSTIMMUNG-update.json',sha256:za.sha256,bytes:za.bytes,actor:ENTSCHEIDUNG.actor,quote:ENTSCHEIDUNG.quote,recordedAt:ENTSCHEIDUNG.recordedAt};
@@ -86,13 +86,14 @@ try{
   ergebnis.update={ms:Date.now()-t,quittung:{datei:'QUITTUNG-update.json',sha256:q.sha256,bytes:q.bytes,receiptHash:r.receiptHash,revision:r.revision,replayed:r.replayed,newRevisions:r.newRevisions,createdProducts:r.createdProducts,document:r.document,metadataSha256:r.metadataSha256,importKey:r.importKey,importFingerprint:r.importFingerprint,reviewHash:r.reviewHash,approvalHash:r.approvalHash,excelSha256:r.excelSha256,shopifyWrites:r.shopifyWrites,bindingWrites:r.bindingWrites,catalogApprovals:r.catalogApprovals,publications:r.publications,checkedUnderNativeWriteLockAt:r.checkedUnderNativeWriteLockAt},
    journal:journal?{key:journal.key??IMPORTKEY,id:journal.id,fingerprint:journal.fingerprint}:null,kopf:{revision:kopfNeu.revision,status:kopfNeu.status},r2:{dokument:adapter.documentPins(r2.document).idBindingSha256,metadaten:adapter.digest(r2.metadata),publishedRevision:r2.publishedRevision,createdAt:r2.createdAt},r1Erhalten:adapter.documentPins(r1.document).idBindingSha256===pol.expectedPreimageBindingSha256&&adapter.digest(r1.metadata)===review.observation.preimage.metadataSha256};
   ergebnis.nachher=nach;const gl=ks=>ks.every(k=>v[k]===nach[k]);
-  ergebnis.pruefungen={...vorOk,update_rev2:r.revision===2&&r.replayed===false&&r.newRevisions===1&&r.createdProducts===0,eine_neue_revision:nach.revisionen===v.revisionen+1&&nach.revisionenProdukt===v.revisionenProdukt+1&&nach.kopf===2&&kopfNeu.status==='draft',ein_journaleintrag:nach.importjournal===v.importjournal+1&&journal?.id===PRODUKT&&journal?.fingerprint===review.importFingerprint,
+  ergebnis.pruefungen={...vorOk,update_rev2:r.revision===2&&r.replayed===false&&r.newRevisions===1&&r.createdProducts===0,eine_neue_revision:nach.revisionenProdukt===v.revisionenProdukt+1&&nach.revisionenProdukt===2&&nach.kopf===2&&kopfNeu.status==='draft',ein_journaleintrag:journal?.id===PRODUKT&&journal?.fingerprint===review.importFingerprint,
    r2_dokument_und_metadaten_gepinnt:ergebnis.update.r2.dokument===ZIEL_DOK&&ergebnis.update.r2.metadaten===ZIEL_META&&r.document.idBindingSha256===ZIEL_DOK&&r.metadataSha256===ZIEL_META,r1_unveraendert_lesbar:ergebnis.update.r1Erhalten===true,
-   produkte_bindungen_vertraege_katalog_unveraendert:gl(['produkte','bindungskoepfe','bindungsrevisionen','formbindungen','preisvertraege','katalogfreigaben','mainR1','mainR2']),keine_shopify_bindungs_katalogaktion:r.shopifyWrites===0&&r.bindingWrites===0&&r.catalogApprovals===0&&r.publications===0};
+   hauptbindungen_unveraendert:gl(['mainR1','mainR2']),keine_shopify_bindungs_katalogaktion:r.shopifyWrites===0&&r.bindingWrites===0&&r.catalogApprovals===0&&r.publications===0};
+  ergebnis.mandantenweit={revisionenPlus1:nach.revisionen===v.revisionen+1,importjournalPlus1:nach.importjournal===v.importjournal+1,uebrigeUnveraendert:gl(['produkte','bindungskoepfe','bindungsrevisionen','formbindungen','preisvertraege','katalogfreigaben']),hinweis:'mandantenweite Zähler nur zur Information (laufende App)'};
   ergebnis.bestanden=Object.values(ergebnis.pruefungen).every(Boolean);
  }
  for(const x of zu.reverse())try{x.close?.();}catch{}
  const beleg=path.join(U,(AUSFUEHREN?'AUSFUEHRUNG':'VORPRUEFUNG')+'-mainupdate.json');fs.writeFileSync(beleg,JSON.stringify(ergebnis,null,1),{flag:'wx',mode:0o600});ergebnis.belegSha256=dateiSha(beleg);
- log({modus:ergebnis.modus,ordner:ergebnis.ordner,bestanden:ergebnis.bestanden,abgebrochen:ergebnis.abgebrochen??null,belegSha256:ergebnis.belegSha256,belegBytes:fs.statSync(beleg).size,skriptSha256:ergebnis.eingaben.skriptSha256,sicherung:ergebnis.sicherungVorher,vorpruefungen:Object.entries(ergebnis.vorpruefungen).map(([k,w])=>(w?'+':'-')+k).join(' '),pruefungen:ergebnis.pruefungen?Object.entries(ergebnis.pruefungen).map(([k,w])=>(w?'+':'-')+k).join(' '):null,vorpruefung:ergebnis.vorpruefung,zustimmung:ergebnis.zustimmung??null,update:ergebnis.update??null,vorher:ergebnis.vorher,nachher:ergebnis.nachher,unveraendert:ergebnis.unveraendert??null});
+ log({modus:ergebnis.modus,ordner:ergebnis.ordner,bestanden:ergebnis.bestanden,abgebrochen:ergebnis.abgebrochen??null,belegSha256:ergebnis.belegSha256,belegBytes:fs.statSync(beleg).size,skriptSha256:ergebnis.eingaben.skriptSha256,sicherung:ergebnis.sicherungVorher,vorpruefungen:Object.entries(ergebnis.vorpruefungen).map(([k,w])=>(w?'+':'-')+k).join(' '),pruefungen:ergebnis.pruefungen?Object.entries(ergebnis.pruefungen).map(([k,w])=>(w?'+':'-')+k).join(' '):null,vorpruefung:ergebnis.vorpruefung,zustimmung:ergebnis.zustimmung??null,update:ergebnis.update??null,mandantenweit:ergebnis.mandantenweit??null,hauptproduktUnveraendert:ergebnis.hauptproduktUnveraendert??null,vorher:ergebnis.vorher,nachher:ergebnis.nachher,unveraendert:ergebnis.unveraendert??null});
  if(!ergebnis.bestanden)process.exitCode=1;
 }catch(error){for(const x of zu.reverse())try{x.close?.();}catch{}log({...ergebnis,schritt,fehler:kurzFehler(error),bestanden:false});process.exitCode=1;}

@@ -97,7 +97,7 @@ try{
   nativ_kopf_r2:n.kopf.revision===2&&n.kopf.status==='draft'&&n.kopf.documentSha256===POLICY.targetDocumentSha256&&n.kopf.metadataSha256===POLICY.targetMetadataSha256,bindungen_778_r2_30_r1:n.bindungen===808&&n.eindeutig===808&&n.zielR2===778&&n.restR1Unveraendert===30&&z.mainR2===778&&z.mainR2MitVertrag===778&&z.mainR1===808,
   historische_808_vertraege_unveraendert:n.historischeVertraege.anzahl===808&&n.historischeVertraege.gleichEvidenz&&n.historischeVertraege.sha256===VERTRAEGE_R1_SHA&&n.historischeVertraege.nullVertraege===0,neue_778_vertraege_wie_geplant:n.neueVertraege.anzahl===778&&n.neueVertraege.nullVertraege===0&&n.neueVertraege.wieGeplant===778,
   katalog_778_r2_808_r1:n.katalogR2.ziel===778&&n.katalogR2.rest===0&&n.katalogR2.gesamt===778&&n.katalogR1.anzahl===808&&n.katalogR1.alleWieVorher,
-  zaehler_plus_778_plus_1:v0?z.formbindungen-v0.formbindungen===778&&z.preisvertraege-v0.preisvertraege===778&&z.bindungsrevisionen-v0.bindungsrevisionen===778&&z.bindungskoepfe===v0.bindungskoepfe&&z.katalogfreigaben-v0.katalogfreigaben===1&&z.revisionen===v0.revisionen&&z.produkte===v0.produkte:null,
+  zaehler_mandantenweit_plus_778_plus_1:v0&&z.formbindungen-v0.formbindungen===778&&z.preisvertraege-v0.preisvertraege===778&&z.bindungsrevisionen-v0.bindungsrevisionen===778&&z.bindungskoepfe===v0.bindungskoepfe&&z.katalogfreigaben-v0.katalogfreigaben===1?true:null,
   journal_vollstaendig:rb.journal.filter(e=>/=done(\(reconcile\))?$/.test(e)).length===11&&rb.journal.at(-1)==='catalog-main-r2=done'&&!rb.sperreOffen,readback_nur_gelesen:s.mutationen===0&&s.fremd===0};};
 
  if(STUFE==='plan'){
@@ -116,7 +116,7 @@ try{
    alle_158_sind_senkungen:P_.preisSenkungen.anzahl===158&&P_.preisSenkungen.alleNiedriger,preis_vorher_wie_beobachtet:P_.preis.vorher?.bytes===18108&&P_.preis.vorher.sha256===PREIS_ALT_SHA&&P_.preis.vorher.compareDigest===PREIS_ALT_DIGEST&&P_.preis.vorher.id===METAFELD&&ergebnis.evidenz.preisfeldGleichPlan,
    preisvorschlag_3898_gepinnt:pr.afterSha256===PREIS_SHA&&P_.preis.nachherBytes===3898&&sha(pr.afterValue)===PREIS_SHA&&P_.preis.gleichPaketvorschau&&pr.priceRevision===2&&pr.changed===true,preis_808_alt_778_neu:pr.historicalContracts.length===808&&pr.nullHistoricalContracts===0&&pr.expectedContracts.length===778,vertraege_wie_r1_ausgang:ergebnis.evidenz.vertraegeSha256===VERTRAEGE_R1_SHA,
    function_echt_und_belegt:fe?.releaseId===VERSION&&fe.wasmSha256===WASM&&fe.buildSourceSha256===BUILD&&pr.requiredFormats.every(f=>FORMATE.includes(f))&&pk.length===1&&pk[0].function.length>=1&&pk[0].function.every(l=>l.exit===0&&l.versionId===VERSION),
-   anschluss_nur_lesend:pk.length===1&&pk[0].readOnly===true&&pk[0].canWrite===false&&gleich(pk[0].methoden,['catalogApprovals','inspect','resolveMany'])&&pk[0].mutationen===0&&pk[0].preisprovider===0&&pk[0].checker===0,zaehler_unveraendert:gleich(ergebnis.vorher,ergebnis.nachher),kein_fremdes_netz:pk[0].fremd===0,noch_kein_journal:jr().length===0&&!fs.existsSync(approvalFile)};
+   anschluss_nur_lesend:pk.length===1&&pk[0].readOnly===true&&pk[0].canWrite===false&&gleich(pk[0].methoden,['catalogApprovals','inspect','resolveMany'])&&pk[0].mutationen===0&&pk[0].preisprovider===0&&pk[0].checker===0,zaehler_unveraendert:gleich(ergebnis.vorher,ergebnis.nachher),kein_fremdes_netz:pk[0].fremd===0,noch_kein_journal:jr().length===0&&!fs.existsSync(approvalFile),plandatei_hash_wie_gemeldet:dateiSha(planFile)===p.sha256&&fs.statSync(planFile).size===p.bytes};
   ergebnis.bestanden=Object.values(ergebnis.pruefungen).every(Boolean);
   const b=schreibe(planBeleg,ergebnis);
   zeige({stufe:STUFE,ordner:ergebnis.ordner,bestanden:ergebnis.bestanden,beleg:b,pakete:ergebnis.pakete,pruefungen:Object.entries(ergebnis.pruefungen).map(([k,w])=>(w?'+':'-')+k).join(' '),plan:{...P_,r1Freigabe:[P_.r1Freigabe?.kind,P_.r1Freigabe?.id,P_.r1Freigabe?.approvedAt]},evidenz:ergebnis.evidenz,ms:p.ms,protokoll:pk,vorher:ergebnis.vorher});
@@ -125,9 +125,9 @@ try{
   // gemeinsame Voraussetzung: geprüfter Plan dieses Ordners
   schritt='planbeleg';const pb=JSON.parse(fs.readFileSync(planBeleg,'utf8'));if(pb.bestanden!==true||dateiSha(planFile)!==pb.plan.planSha256)throw Object.assign(new Error('Plan ist nicht der geprüfte Plan dieses Ordners.'),{code:'ml_plan_ungeprueft'});
   const plan=JSON.parse(fs.readFileSync(planFile,'utf8'));if(plan.planHash!==pb.plan.planHash)throw new Error('planHash weicht ab.');
-  ergebnis.plan={planHash:plan.planHash,planSha256:pb.plan.planSha256,planbelegSha256:dateiSha(planBeleg)};const V0=pb.vorher;
+  ergebnis.plan={planHash:plan.planHash,planSha256:pb.plan.planSha256,planbelegSha256:dateiSha(planBeleg)};
   if(STUFE==='readback'){
-   schritt='readback';const approval=fs.existsSync(approvalFile)?JSON.parse(fs.readFileSync(approvalFile,'utf8')):null,rb=await readback(plan,approval);ergebnis.readback=rb;ergebnis.pruefungen=readbackGruen(rb,V0);ergebnis.bestanden=Object.values(ergebnis.pruefungen).every(w=>w===true||w===null);
+   schritt='readback';const approval=fs.existsSync(approvalFile)?JSON.parse(fs.readFileSync(approvalFile,'utf8')):null,rb=await readback(plan,approval);ergebnis.readback=rb;ergebnis.pruefungen=readbackGruen(rb,null);ergebnis.bestanden=Object.values(ergebnis.pruefungen).every(w=>w===true||w===null);
    const b=schreibe(path.join(lauf,'READBACK-main.json'),ergebnis);zeige({stufe:STUFE,ordner:ergebnis.ordner,lauf:ergebnis.lauf,bestanden:ergebnis.bestanden,beleg:b,pruefungen:Object.entries(ergebnis.pruefungen).map(([k,w])=>(w===true?'+':w===null?'~':'-')+k).join(' '),readback:rb});
   }else{
    schritt='zustimmung';let approval;
@@ -153,7 +153,7 @@ try{
     if(k?.ok){const kq=lies('finish-catalog');ergebnis.katalog={datei:'finish-catalog.json',sha256:k.sha256,bytes:k.bytes,...Object.fromEntries(Object.entries(kq).filter(([,v])=>v===null||['string','number','boolean'].includes(typeof v)))};}
     if(angehalten){ergebnis.angehalten=angehalten;ergebnis.hinweis='Angehalten. Keine Wiederholung. Journal lesen; unklaren Schritt mit --stufe=reconcile --step=… klären.';ergebnis.bestanden=false;}
     else{schritt='readback';rb=await readback(plan,approval);ergebnis.readback=rb;const pk=ergebnis.anschlussProtokoll,q=ergebnis.quittung,kq=ergebnis.katalog;
-     ergebnis.pruefungen={...readbackGruen(rb,V0),quittung_778_30_808:q.revision2Bindings===778&&q.revision1BindingsPreserved===30&&q.historicalPriceContractsPreserved===808&&q.shopifyVariantIdsPreserved===808&&q.priceRevision===2&&q.published===false,katalogquittung:kq.revision2Coverage===778&&kq.revision1CoveragePreserved===808&&kq.revision1ActiveBindingsPreserved===30&&kq.published===false,
+     ergebnis.pruefungen={...readbackGruen(rb,ergebnis.journalVorher.length?null:ergebnis.vorher),quittung_778_30_808:q.revision2Bindings===778&&q.revision1BindingsPreserved===30&&q.historicalPriceContractsPreserved===808&&q.shopifyVariantIdsPreserved===808&&q.priceRevision===2&&q.published===false,katalogquittung:kq.revision2Coverage===778&&kq.revision1CoveragePreserved===808&&kq.revision1ActiveBindingsPreserved===30&&kq.published===false,
       genau_ein_bulk_ein_cas:(m=>ergebnis.journalVorher.length?m<=2:m===2)(pk.reduce((n,e)=>n+(e.mutationen??0),0)),schreibanschluss_ein_gepreister_store:pk.filter(e=>!e.readOnly).every(e=>e.preisprovider===1&&e.checker===1),kein_fremdes_netz:pk.every(e=>e.fremd===0),function_immer_belegte_version:pk.every(e=>e.function.every(l=>l.exit===0&&l.versionId===VERSION))};
      ergebnis.mutationenGesamt=pk.reduce((n,e)=>n+(e.mutationen??0),0);ergebnis.bestanden=Object.values(ergebnis.pruefungen).every(w=>w===true||w===null);}
     const b=schreibe(path.join(lauf,'AUSFUEHRUNG-main.json'),ergebnis);

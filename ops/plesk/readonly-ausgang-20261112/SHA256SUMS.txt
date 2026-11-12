@@ -1,0 +1,2 @@
+9588a042df3d98c457c630a74862a75e2160a8eb342b5236c8c6da9bbab14fcb  ro-ausgang.mjs
+8842e6d7b4fb0fba7a453f5e09bff3cd9c4681dcfb9061467c979b8b5635d93e  kompakt-serverwerte.json

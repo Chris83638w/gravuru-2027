@@ -1,0 +1,25 @@
+{
+ "schema": "gravuru-main-r1-ausgangsstand-kompakt/v1",
+ "kennzeichnung": "Rein lesend auf den tatsächlichen Daten, 12.11.2026 17:06 MEZ. Kein Plan, kein R2, keine Mutation, kein Schreibtransport, kein Operatoraufruf.",
+ "ordner": "sicherungen-db/readonly-ausgang-20261112T160607Z",
+ "bestanden": true, "pruefungenGruen": 10,
+ "lesebeleg": {"datei": "LESEBELEG-r1-ausgang.json", "bytes": 4591, "sha256": "07993ea1d74ac75777f27f7295fafe14c76055ef490b383f8c3affa6ab2ac831"},
+ "pakete": {"readonlyManifest": "5eea1f5815f93689b2cd6f0a2b0b54895c90e4b13b3f2e4208818f15e9168d01", "readonlyDateien": 8, "operatorManifest": "de182709cb4c004d338f666186cfa2785b755a708605adcf4d58b0c25721f416", "laufzeit": "kandidat-f85390b-20261112 (läuft live)", "runner": {"ro-ausgang.mjs": "9588a042df3d98c457c630a74862a75e2160a8eb342b5236c8c6da9bbab14fcb", "ro-paket.json": "6f7f79959f91a69183894be7e53d7069abf1404412fe728794f2c2448d3bf724"}},
+ "anschluss": {"dateien": ["acryl-employee-20261021-v1/data/workshop.sqlite", "acryl-employee-20261021-v1/data/profiles.sqlite"], "canWrite": false, "nativeMethoden": ["catalogApprovals", "inspect", "resolveMany"], "registryMethoden": ["resolveMany", "shopDomain", "storeId", "tenantId"], "schreibmodusAbgewiesen": "main_readonly_mode"},
+ "nativ": {"kopfRevision": 1, "status": "draft", "documentSha256": "d2886e119ea9715af2b8905ebab8ecc1d199b07f8653476ce5e0fa26cd8cca79", "metadataSha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a", "publishedRevision": null, "r1ErstelltAm": "2026-11-03T14:52:51.267Z", "revision2": "nicht vorhanden (main_readonly_revision)"},
+ "bindungen": {"anzahl": 808, "alleR1MitDokumentpin": true, "zielOptionenUndPreis": 778, "restPreis": 30, "assignmentRevisionen": [1], "sha256": "2d0b1dc73181bc84cc06454a7da2d7e5d0d5282b6a5cf1a42e73f598530c6746"},
+ "katalog": {"r1": {"anzahl": 808, "alleGleich": true, "kind": "catalog", "id": "chris-issue139-pr156-two-draft-previews", "approvedAt": "2026-11-03T14:58:10.308Z"}, "r2": {"alleNull": true}},
+ "vertraege": {"anzahl": 808, "nullVertraege": 0, "revisionen": ["1"], "basisGleichBindungspreis": 808, "sha256": "1fe75355a43c448c25d7800bfb63c9b0e8cb82dbee5d5ee6ae8649d6acd86da1", "gleichKopienEvidenz": true},
+ "fertigungsprofil": {"r1DokumentVerweis": null, "hinweis": "Das R1-Dokument trägt keinen productionProfile-Verweis; der Leser gibt deshalb null zurück."},
+ "shopify": {"transport": "vorhandener Eigentümer-App-Lesetransport (Client-Credentials der App), nur graphqlRead, kein graphqlWriteOnce", "status": "DRAFT", "varianten": 808, "produktUpdatedAt": "2026-11-12T06:30:19Z (gleich wie 11:10 MEZ)", "zielVorzustand": 778, "restVorzustand": 30, "idsGleichMapping": true, "preisGleichBindung": 808, "templateSuffix": "konfi", "customizationId": "katalog-formate-acryl-tuerschilder-familienschilder-eb5fe26624befe4a", "commerceSha256": "3994c72811722b4d1466b13f0e6d1956d8ff67d13f6d4c9d3ee7b7fe3cce1539",
+  "preisfeld": {"id": "gid://shopify/Metafield/200717188759932", "namespace": "app--423276544001", "key": "personalization", "type": "json", "bytes": 18108, "sha256": "7c997f49153d43a937a75501ed5bc016eda1003e129d1735528b801ee7962cf5", "compareDigest": "66b0aa6d8ab008aa31bc3ab39cec8d10760061bab055c3d990e74b882ed6500d", "gleichKopienEvidenz": true},
+  "leseabfragen": 5, "abfragekostenAngefragtTatsaechlich": [[54, 46], [37, 37], [37, 37], [37, 12], [6, 6]], "graphqlFehler": 0, "fremdeNetzversuche": 0},
+ "dateizustand": {"workshop.sqlite": "4.352.729.088 B, Änderungszeit vorher = nachher", "workshop.sqlite-wal": "23.904.272 B, vorher = nachher (zuletzt beim Appstart 09:32 MEZ geändert)", "workshop.sqlite-shm": "65.536 B, vorher = nachher", "profiles.sqlite": "77.824 B, vorher = nachher",
+  "NEU_DURCH_DIESEN_LAUF": "profiles.sqlite-wal (0 B) und profiles.sqlite-shm (32.768 B) gab es vorher nicht; SQLite hat sie beim readonly-Öffnen der WAL-Datenbank angelegt. Kein Dateninhalt, aber zwei neue Dateien im Live-Datenordner. Nicht gelöscht."},
+ "grenzen": [
+  "Kein Plan und kein Preisplan gerechnet (braucht das R2-Zieldokument; produktiv erst nach dem freigegebenen nativen Update).",
+  "Functioncallback nicht angeschlossen (Hostzugang abgelehnt, Entscheidung offen).",
+  "Zwei getrennte Lesesichten, keine atomare Sicht über beide Datenbanken und Shopify.",
+  "Vergleich der Verträge gegen die Evidenz des Kopienlaufs (Sicherung vom 11.11. abends); gleich."
+ ]
+}

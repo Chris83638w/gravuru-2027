@@ -1,0 +1,18 @@
+{
+ "schema": "gravuru-ausfuehrung-abschnitt/v1", "abschnitt": "2b sechs neue DRAFTs mit echtem Shopify – ANGEHALTEN nach Produkt 1", "zeit": "2026-11-12T16:59-17:10Z",
+ "freigabe": "#168 6829898414", "ordner": "sicherungen-db/sechsdraft-live-20261112T165945Z",
+ "beleg": {"datei": "AUSFUEHRUNG-sechsdraft.json", "bytes": 7933, "sha256": "aafba7432fdb92389a2dce1ad30bf22919091212ff7971f7ec1be45032475b31"},
+ "runner": {"sdl-live.mjs": "a033fb93224a639b618bb6d8b4171de80b8d9739c1641c04ff551324abb7951d", "sdl-diagnose.mjs": "9d47e8551bdd973b2f0c34230c2e595c3533c75b561c7915063e2640b57d2810", "schema-pruefung.mjs": "76d4d85fdffd373eafc4a7b16943fe37f47e53567e59db32485d40ba838cc4fd"},
+ "nativ": {"confirmExecute": "alle sechs Pläne bestätigt und ausgeführt (6 Zielrecords, Produkte 1084→1090)", "bestaetigungenInZustandJson": 6},
+ "operator": {"fehler": "six_drafts_unknown_reconcile_only", "ort": "shopify-steps.mjs write() für SET_TEMPLATE", "phasen": ["draft-transfer-intent", "pricing-intent", "pricing-response", "template-intent", "template-unknown"], "mutationenGesendet": 3, "leseabfragen": 6, "fremdeNetzversuche": 0},
+ "standShopify": {
+  "produkt1": {"gruppe": "Tuerschild-Acrylglas-3mm-5x2_v2", "shopifyProductId": "gid://shopify/Product/16203675074940", "titel": "Türschild Acrylglas 3 mm 5 × 2 cm (Schwarz/Anthrazit)", "status": "DRAFT", "publishedAt": null, "varianten": 10, "preisfeldVorhanden": true, "templateSuffix": null, "customizationId": null, "createdAt": "2026-11-12T17:01:24Z"},
+  "produkte2bis6": "bei Shopify nicht angelegt (Suche nach den fünf geplanten Handles: 0 Treffer)"},
+ "standRegistry": {"produkte": 1090, "bestaetigungen": 6, "ausfuehrungen": 6, "formbindungen": "33059→33069 (+10)", "preisvertraege": "2783→2793 (+10)", "bindungskoepfe": "16680→16690 (+10)", "katalogfreigaben": "20→21 (+1, Freigabe chris-168-6829898414-gesamtpaket)", "transfers": 1},
+ "ursache": {
+  "belegt": "Schema-Introspektion Admin-API 2026-07: productUpdate.userErrors hat den Typ UserError; UserError hat KEIN Feld code. Das Paket fragt in SET_TEMPLATE userErrors{field code message} ab. Das Dokument ist damit ungültig; Shopify lehnt es vor der Ausführung ab. Passend dazu: templateSuffix am Produkt ist unverändert null.",
+  "nichtBetroffen": "productSet (ProductSetUserError hat code), metafieldsSet (MetafieldsSetUserError hat code), productVariantsBulkUpdate (ProductVariantsBulkUpdateUserError hat code; Eingabefelder id/price/optionValues und optionName/name vorhanden), MetafieldsSetInput.compareDigest vorhanden. Die zwei Mutationen des Main-Operators sind schema-gültig.",
+  "warumImKopienlaufNichtAufgefallen": "Shopify war dort nachgebaut; die Attrappe prüft kein GraphQL-Schema."},
+ "noetig": "Korrektur in ops/issue230-six-draft-execution-20261112/shopify-steps.mjs: SET_TEMPLATE userErrors{field message} (ohne code); neues Manifest. Danach --reconcile im selben Ordner (Produkt 1: Template + Einstieg nachziehen; Produkte 2–6 regulär).",
+ "nichtGeschehen": "kein Zweitversuch, keine Veröffentlichung, keine Änderung an bestehenden Produkten, Main unberührt"
+}

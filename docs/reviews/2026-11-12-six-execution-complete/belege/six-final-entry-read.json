@@ -1,0 +1,773 @@
+{
+  "schema": "issue230-six-final-entry-read/v1",
+  "source": "Independent Shopify connector graphql_query",
+  "recordedAt": "2026-11-12T17:50:53.722Z",
+  "readOnly": true,
+  "queryPurpose": "Six exact product IDs, all options/prices and entry fields",
+  "appPricingLimitation": "The connector returned null for the separate owner-app pricing field. This read does not establish its absence; owner-app evidence remains required for that field.",
+  "response": {
+    "data": {
+      "nodes": [
+        {
+          "id": "gid://shopify/Product/16203675074940",
+          "title": "Türschild Acrylglas 3 mm 5 × 2 cm (Schwarz/Anthrazit)",
+          "handle": "gravuru-aa1ab9b728a83be4d368d76c24fb244932def06ed9d225cbba6e88fa4556f4aa",
+          "status": "DRAFT",
+          "createdAt": "2026-11-12T17:01:24Z",
+          "updatedAt": "2026-11-12T17:21:30Z",
+          "publishedAt": null,
+          "templateSuffix": "konfi",
+          "variants": {
+            "nodes": [
+              {
+                "id": "gid://shopify/ProductVariant/58189617660284",
+                "title": "Schwarz / Ohne Bohrung",
+                "price": "6.99",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Schwarz"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Ohne Bohrung"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58189617693052",
+                "title": "Schwarz / Selbstklebend – glatte Flächen",
+                "price": "9.98",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Schwarz"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Selbstklebend – glatte Flächen"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58189617725820",
+                "title": "Schwarz / Selbstklebend – raue Flächen",
+                "price": "10.98",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Schwarz"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Selbstklebend – raue Flächen"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58189617758588",
+                "title": "Schwarz / Mit 2 Bohrlöchern",
+                "price": "9.48",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Schwarz"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Mit 2 Bohrlöchern"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58189617791356",
+                "title": "Schwarz / Mit 2 Schrauben",
+                "price": "9.68",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Schwarz"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Mit 2 Schrauben"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58189617824124",
+                "title": "Anthrazit / Ohne Bohrung",
+                "price": "6.99",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Anthrazit"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Ohne Bohrung"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58189617856892",
+                "title": "Anthrazit / Selbstklebend – glatte Flächen",
+                "price": "9.98",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Anthrazit"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Selbstklebend – glatte Flächen"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58189617889660",
+                "title": "Anthrazit / Selbstklebend – raue Flächen",
+                "price": "10.98",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Anthrazit"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Selbstklebend – raue Flächen"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58189617922428",
+                "title": "Anthrazit / Mit 2 Bohrlöchern",
+                "price": "9.48",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Anthrazit"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Mit 2 Bohrlöchern"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58189617955196",
+                "title": "Anthrazit / Mit 2 Schrauben",
+                "price": "9.68",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Anthrazit"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Mit 2 Schrauben"
+                  }
+                ]
+              }
+            ],
+            "pageInfo": {
+              "hasNextPage": false,
+              "endCursor": "eyJsYXN0X2lkIjo1ODE4OTYxNzk1NTE5NiwibGFzdF92YWx1ZSI6MTB9"
+            }
+          },
+          "customizationId": {
+            "type": "single_line_text_field",
+            "value": "cfg_05601748-5e4d-4d18-b133-a5e4ad1a2d65",
+            "compareDigest": "051a87c75ab6d0e8fbbc299302c4393ca96153a9f0baffd0125970820d3cd164"
+          },
+          "pricing": null
+        },
+        {
+          "id": "gid://shopify/Product/16203715281276",
+          "title": "Türschild Acrylglas 3 mm 6 × 2 cm (Schwarz/Anthrazit)",
+          "handle": "gravuru-1201a8fa887cd44a492b8a7f9fbce1802214e9b1faf1f3e222bb6ef964bb9bfc",
+          "status": "DRAFT",
+          "createdAt": "2026-11-12T17:21:29Z",
+          "updatedAt": "2026-11-12T17:21:46Z",
+          "publishedAt": null,
+          "templateSuffix": "konfi",
+          "variants": {
+            "nodes": [
+              {
+                "id": "gid://shopify/ProductVariant/58190005666172",
+                "title": "Schwarz / Ohne Bohrung",
+                "price": "7.99",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Schwarz"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Ohne Bohrung"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190005698940",
+                "title": "Schwarz / Selbstklebend – glatte Flächen",
+                "price": "10.98",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Schwarz"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Selbstklebend – glatte Flächen"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190005731708",
+                "title": "Schwarz / Selbstklebend – raue Flächen",
+                "price": "11.98",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Schwarz"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Selbstklebend – raue Flächen"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190005764476",
+                "title": "Schwarz / Mit 2 Bohrlöchern",
+                "price": "10.48",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Schwarz"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Mit 2 Bohrlöchern"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190005797244",
+                "title": "Schwarz / Mit 2 Schrauben",
+                "price": "10.68",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Schwarz"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Mit 2 Schrauben"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190005830012",
+                "title": "Anthrazit / Ohne Bohrung",
+                "price": "7.99",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Anthrazit"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Ohne Bohrung"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190005862780",
+                "title": "Anthrazit / Selbstklebend – glatte Flächen",
+                "price": "10.98",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Anthrazit"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Selbstklebend – glatte Flächen"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190005895548",
+                "title": "Anthrazit / Selbstklebend – raue Flächen",
+                "price": "11.98",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Anthrazit"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Selbstklebend – raue Flächen"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190005928316",
+                "title": "Anthrazit / Mit 2 Bohrlöchern",
+                "price": "10.48",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Anthrazit"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Mit 2 Bohrlöchern"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190005961084",
+                "title": "Anthrazit / Mit 2 Schrauben",
+                "price": "10.68",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Anthrazit"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Mit 2 Schrauben"
+                  }
+                ]
+              }
+            ],
+            "pageInfo": {
+              "hasNextPage": false,
+              "endCursor": "eyJsYXN0X2lkIjo1ODE5MDAwNTk2MTA4NCwibGFzdF92YWx1ZSI6MTB9"
+            }
+          },
+          "customizationId": {
+            "type": "single_line_text_field",
+            "value": "cfg_06cc4368-dce5-4118-b404-0b28aa2b4bd7",
+            "compareDigest": "a4e91ec92f3f5c600edbbdc1b2b027b614193c1772cfa8ece27b3586d9d10c17"
+          },
+          "pricing": null
+        },
+        {
+          "id": "gid://shopify/Product/16203716100476",
+          "title": "Türschild Acrylglas 3 mm 8 × 2 cm (Schwarz/Anthrazit)",
+          "handle": "gravuru-8b2fad6b0be21c799e585ae6747e606c9c6cd4aeb4f7ba51d52da921e0e941a0",
+          "status": "DRAFT",
+          "createdAt": "2026-11-12T17:21:41Z",
+          "updatedAt": "2026-11-12T17:21:56Z",
+          "publishedAt": null,
+          "templateSuffix": "konfi",
+          "variants": {
+            "nodes": [
+              {
+                "id": "gid://shopify/ProductVariant/58190008156540",
+                "title": "Schwarz / Ohne Bohrung",
+                "price": "8.49",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Schwarz"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Ohne Bohrung"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190008189308",
+                "title": "Schwarz / Selbstklebend – glatte Flächen",
+                "price": "11.48",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Schwarz"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Selbstklebend – glatte Flächen"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190008222076",
+                "title": "Schwarz / Selbstklebend – raue Flächen",
+                "price": "12.48",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Schwarz"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Selbstklebend – raue Flächen"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190008254844",
+                "title": "Schwarz / Mit 2 Bohrlöchern",
+                "price": "10.98",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Schwarz"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Mit 2 Bohrlöchern"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190008287612",
+                "title": "Schwarz / Mit 2 Schrauben",
+                "price": "11.18",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Schwarz"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Mit 2 Schrauben"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190008320380",
+                "title": "Anthrazit / Ohne Bohrung",
+                "price": "8.49",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Anthrazit"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Ohne Bohrung"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190008353148",
+                "title": "Anthrazit / Selbstklebend – glatte Flächen",
+                "price": "11.48",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Anthrazit"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Selbstklebend – glatte Flächen"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190008385916",
+                "title": "Anthrazit / Selbstklebend – raue Flächen",
+                "price": "12.48",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Anthrazit"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Selbstklebend – raue Flächen"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190008418684",
+                "title": "Anthrazit / Mit 2 Bohrlöchern",
+                "price": "10.98",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Anthrazit"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Mit 2 Bohrlöchern"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190008451452",
+                "title": "Anthrazit / Mit 2 Schrauben",
+                "price": "11.18",
+                "selectedOptions": [
+                  {
+                    "name": "Farbe",
+                    "value": "Anthrazit"
+                  },
+                  {
+                    "name": "Befestigung",
+                    "value": "Mit 2 Schrauben"
+                  }
+                ]
+              }
+            ],
+            "pageInfo": {
+              "hasNextPage": false,
+              "endCursor": "eyJsYXN0X2lkIjo1ODE5MDAwODQ1MTQ1MiwibGFzdF92YWx1ZSI6MTB9"
+            }
+          },
+          "customizationId": {
+            "type": "single_line_text_field",
+            "value": "cfg_87b85218-cdc1-4552-9724-e8c2e692e7c6",
+            "compareDigest": "7c4274321f389b08d14fa43d8b311586e6d8ccd26510f264213f01817f70d29a"
+          },
+          "pricing": null
+        },
+        {
+          "id": "gid://shopify/Product/16203716854140",
+          "title": "Türschild Edelstahl 5 × 2 cm (gebürstet, Gravur)",
+          "handle": "gravuru-dbce29fbe9e522957857941816436428895db87f64e9900a8455fa9b9452733d",
+          "status": "DRAFT",
+          "createdAt": "2026-11-12T17:21:50Z",
+          "updatedAt": "2026-11-12T17:22:02Z",
+          "publishedAt": null,
+          "templateSuffix": "konfi",
+          "variants": {
+            "nodes": [
+              {
+                "id": "gid://shopify/ProductVariant/58190010614140",
+                "title": "Ohne Bohrung",
+                "price": "7.99",
+                "selectedOptions": [
+                  {
+                    "name": "Befestigung",
+                    "value": "Ohne Bohrung"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190010646908",
+                "title": "Selbstklebend – glatte Flächen",
+                "price": "10.98",
+                "selectedOptions": [
+                  {
+                    "name": "Befestigung",
+                    "value": "Selbstklebend – glatte Flächen"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190010679676",
+                "title": "Selbstklebend – raue Flächen",
+                "price": "11.98",
+                "selectedOptions": [
+                  {
+                    "name": "Befestigung",
+                    "value": "Selbstklebend – raue Flächen"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190010712444",
+                "title": "Mit 2 Bohrlöchern",
+                "price": "10.48",
+                "selectedOptions": [
+                  {
+                    "name": "Befestigung",
+                    "value": "Mit 2 Bohrlöchern"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190010745212",
+                "title": "Mit 2 Schrauben",
+                "price": "10.68",
+                "selectedOptions": [
+                  {
+                    "name": "Befestigung",
+                    "value": "Mit 2 Schrauben"
+                  }
+                ]
+              }
+            ],
+            "pageInfo": {
+              "hasNextPage": false,
+              "endCursor": "eyJsYXN0X2lkIjo1ODE5MDAxMDc0NTIxMiwibGFzdF92YWx1ZSI6NX0="
+            }
+          },
+          "customizationId": {
+            "type": "single_line_text_field",
+            "value": "cfg_d5698241-8036-419a-820e-e434c1482f7a",
+            "compareDigest": "844371b357d990dd8293de8ac5ccc1349e51052baae59a5b2da843a6547626d2"
+          },
+          "pricing": null
+        },
+        {
+          "id": "gid://shopify/Product/16203717804412",
+          "title": "Türschild Edelstahl 6 × 2 cm (gebürstet, Gravur)",
+          "handle": "gravuru-9311eefb3a3c1f70c9c1c21df982a426f651999b722f39f66218d2e824ec7236",
+          "status": "DRAFT",
+          "createdAt": "2026-11-12T17:21:59Z",
+          "updatedAt": "2026-11-12T17:22:10Z",
+          "publishedAt": null,
+          "templateSuffix": "konfi",
+          "variants": {
+            "nodes": [
+              {
+                "id": "gid://shopify/ProductVariant/58190020608380",
+                "title": "Ohne Bohrung",
+                "price": "8.79",
+                "selectedOptions": [
+                  {
+                    "name": "Befestigung",
+                    "value": "Ohne Bohrung"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190020641148",
+                "title": "Selbstklebend – glatte Flächen",
+                "price": "11.78",
+                "selectedOptions": [
+                  {
+                    "name": "Befestigung",
+                    "value": "Selbstklebend – glatte Flächen"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190020673916",
+                "title": "Selbstklebend – raue Flächen",
+                "price": "12.78",
+                "selectedOptions": [
+                  {
+                    "name": "Befestigung",
+                    "value": "Selbstklebend – raue Flächen"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190020706684",
+                "title": "Mit 2 Bohrlöchern",
+                "price": "11.28",
+                "selectedOptions": [
+                  {
+                    "name": "Befestigung",
+                    "value": "Mit 2 Bohrlöchern"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190020739452",
+                "title": "Mit 2 Schrauben",
+                "price": "11.48",
+                "selectedOptions": [
+                  {
+                    "name": "Befestigung",
+                    "value": "Mit 2 Schrauben"
+                  }
+                ]
+              }
+            ],
+            "pageInfo": {
+              "hasNextPage": false,
+              "endCursor": "eyJsYXN0X2lkIjo1ODE5MDAyMDczOTQ1MiwibGFzdF92YWx1ZSI6NX0="
+            }
+          },
+          "customizationId": {
+            "type": "single_line_text_field",
+            "value": "cfg_a488e415-011c-4358-b3ba-e7fc8f9b3b1a",
+            "compareDigest": "89f179da480e5ef3d66dfcad71e4e6382f90cdfb29b41ae6e2c3e74c5cd0c549"
+          },
+          "pricing": null
+        },
+        {
+          "id": "gid://shopify/Product/16203718459772",
+          "title": "Türschild Edelstahl 8 × 2 cm (gebürstet, Gravur)",
+          "handle": "gravuru-93beb545606751ab721f31589556c55aaa8108e2729d822a444bf8e2995db360",
+          "status": "DRAFT",
+          "createdAt": "2026-11-12T17:22:09Z",
+          "updatedAt": "2026-11-12T17:22:21Z",
+          "publishedAt": null,
+          "templateSuffix": "konfi",
+          "variants": {
+            "nodes": [
+              {
+                "id": "gid://shopify/ProductVariant/58190028734844",
+                "title": "Ohne Bohrung",
+                "price": "9.49",
+                "selectedOptions": [
+                  {
+                    "name": "Befestigung",
+                    "value": "Ohne Bohrung"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190028767612",
+                "title": "Selbstklebend – glatte Flächen",
+                "price": "12.48",
+                "selectedOptions": [
+                  {
+                    "name": "Befestigung",
+                    "value": "Selbstklebend – glatte Flächen"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190028800380",
+                "title": "Selbstklebend – raue Flächen",
+                "price": "13.48",
+                "selectedOptions": [
+                  {
+                    "name": "Befestigung",
+                    "value": "Selbstklebend – raue Flächen"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190028833148",
+                "title": "Mit 2 Bohrlöchern",
+                "price": "11.98",
+                "selectedOptions": [
+                  {
+                    "name": "Befestigung",
+                    "value": "Mit 2 Bohrlöchern"
+                  }
+                ]
+              },
+              {
+                "id": "gid://shopify/ProductVariant/58190028865916",
+                "title": "Mit 2 Schrauben",
+                "price": "12.18",
+                "selectedOptions": [
+                  {
+                    "name": "Befestigung",
+                    "value": "Mit 2 Schrauben"
+                  }
+                ]
+              }
+            ],
+            "pageInfo": {
+              "hasNextPage": false,
+              "endCursor": "eyJsYXN0X2lkIjo1ODE5MDAyODg2NTkxNiwibGFzdF92YWx1ZSI6NX0="
+            }
+          },
+          "customizationId": {
+            "type": "single_line_text_field",
+            "value": "cfg_a07b6e02-acd9-4ceb-83b5-d905fe29c00d",
+            "compareDigest": "67cae40959d209f574f94d2ae3e21c1d2b7702f959c143b821b4f9b31c438e77"
+          },
+          "pricing": null
+        }
+      ]
+    }
+  }
+}

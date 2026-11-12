@@ -1,0 +1,82 @@
+{
+  "schema": "issue230-six-execution-preservation-check/v1",
+  "allPassed": true,
+  "workbooks": 6,
+  "variantRows": 45,
+  "originalCells": 3711,
+  "previousCells": 6552,
+  "records": [
+    {
+      "group": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "allPassed": true,
+      "originalCells": 652,
+      "previousCells": 1133,
+      "newCellsCompared": 188,
+      "previousPartsPreserved": 25,
+      "addedSheets": 2,
+      "allPreviousCellsIdentical": true,
+      "allOriginalCellsIdentical": true,
+      "allPreservedPartsByteIdentical": true
+    },
+    {
+      "group": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "allPassed": true,
+      "originalCells": 652,
+      "previousCells": 1133,
+      "newCellsCompared": 188,
+      "previousPartsPreserved": 25,
+      "addedSheets": 2,
+      "allPreviousCellsIdentical": true,
+      "allOriginalCellsIdentical": true,
+      "allPreservedPartsByteIdentical": true
+    },
+    {
+      "group": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "allPassed": true,
+      "originalCells": 652,
+      "previousCells": 1133,
+      "newCellsCompared": 188,
+      "previousPartsPreserved": 25,
+      "addedSheets": 2,
+      "allPreviousCellsIdentical": true,
+      "allOriginalCellsIdentical": true,
+      "allPreservedPartsByteIdentical": true
+    },
+    {
+      "group": "Tuerschild-Edelstahl-5x2_v1",
+      "allPassed": true,
+      "originalCells": 585,
+      "previousCells": 1051,
+      "newCellsCompared": 158,
+      "previousPartsPreserved": 25,
+      "addedSheets": 2,
+      "allPreviousCellsIdentical": true,
+      "allOriginalCellsIdentical": true,
+      "allPreservedPartsByteIdentical": true
+    },
+    {
+      "group": "Tuerschild-Edelstahl-6x2_v1",
+      "allPassed": true,
+      "originalCells": 585,
+      "previousCells": 1051,
+      "newCellsCompared": 158,
+      "previousPartsPreserved": 25,
+      "addedSheets": 2,
+      "allPreviousCellsIdentical": true,
+      "allOriginalCellsIdentical": true,
+      "allPreservedPartsByteIdentical": true
+    },
+    {
+      "group": "Tuerschild-Edelstahl-8x2_v1",
+      "allPassed": true,
+      "originalCells": 585,
+      "previousCells": 1051,
+      "newCellsCompared": 158,
+      "previousPartsPreserved": 25,
+      "addedSheets": 2,
+      "allPreviousCellsIdentical": true,
+      "allOriginalCellsIdentical": true,
+      "allPreservedPartsByteIdentical": true
+    }
+  ]
+}

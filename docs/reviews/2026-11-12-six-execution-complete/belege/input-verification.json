@@ -1,0 +1,46 @@
+{
+  "schema": "issue230-six-execution-input-check/v1",
+  "allPassed": true,
+  "scope": {
+    "actualGroups": 6,
+    "actualVariantRows": 45,
+    "allExactOptionPricesMatch": true,
+    "operatorAndConnectorIdsMatch": true,
+    "allDraft": true,
+    "allUnpublished": true,
+    "allEntryFieldsMatch": true,
+    "noMedia": true,
+    "nativeCounterDeltasMatch": true,
+    "actualOwnerAppPricingRead": "operator report; independent connector cannot resolve separate owner-app field",
+    "individualBindingRecordsReceived": false,
+    "fullOriginalServerReceiptReceived": false
+  },
+  "inputsSha256": "893ba9cd21640d209c8b97091f536e4684f0efb8d256c4957424b9de39d5307c",
+  "sources": [
+    {
+      "path": "work/restabschluss/six-draft-final-f33942d9/received/2b-sechsdraft-ergebnis.json",
+      "bytes": 6081,
+      "sha256": "9033e653ec7eb6472a110d8468f3fc516b2c64205461503174d9f60ecd78cc23"
+    },
+    {
+      "path": "work/restabschluss/live-readbacks-20261112/six-final-entry-read.json",
+      "bytes": 27122,
+      "sha256": "4ca8486c97e742dcc32cf69494207ddc38c857dba3467dcaadd55cd7a312e9ab"
+    },
+    {
+      "path": "work/restabschluss/live-readbacks-20261112/six-final-products.json",
+      "bytes": 13241,
+      "sha256": "52a4a451588aa70ff1cce52875d936082a927ecb8362fd1f77f19b1ab8d4788d"
+    },
+    {
+      "path": "work/restabschluss/six-draft-actual-readback-20261112/expected-readback.json",
+      "bytes": 99514,
+      "sha256": "6e5f808c98b9e375903abf23f38a422ffa857c8b5a7d9524adf6dee5fe5ff24b"
+    },
+    {
+      "path": "work/restabschluss/six-draft-partial-0389cd6e/received/2a-sechsgruppen-vorbereitung.json",
+      "bytes": 3370,
+      "sha256": "5688cd3cce30eab0305a946ac479af13a18e44eaaefece35921e1d6884fbb435"
+    }
+  ]
+}

@@ -1,0 +1,267 @@
+{
+  "schema": "issue230-six-execution-final-review/v1",
+  "purpose": "completion-record-only-not-import-or-reimport",
+  "approval": {
+    "id": "chris-168-6829898414-gesamtpaket",
+    "quote": "Ja, Gesamtpaket ausführen",
+    "source": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6829898414"
+  },
+  "received": {
+    "schema": "issue230-six-draft-final-receipt/v1",
+    "commit": "f33942d9",
+    "path": "ops/plesk/ausfuehrung-20261112/2b-sechsdraft-ergebnis.json",
+    "bytes": 6081,
+    "sha256": "9033e653ec7eb6472a110d8468f3fc516b2c64205461503174d9f60ecd78cc23",
+    "gitBlobSha1": "910d938e66a18e53aaa5eeea6a7e722cde0418e8",
+    "gitBlobVerified": true,
+    "source": "https://github.com/Chris83638w/gravuru-2027/blob/f33942d9/ops/plesk/ausfuehrung-20261112/2b-sechsdraft-ergebnis.json",
+    "delivered": "Compact execution result, not original full server receipt",
+    "fullOriginalServerReceipt": {
+      "bytes": 32256,
+      "sha256": "3661f669a36c07b20950245e31c2aff9c2687422356f12a4c5a1cdd87d4d17f3",
+      "received": false
+    }
+  },
+  "checks": {
+    "dataChecksAllPassed": true,
+    "groups": 6,
+    "uniqueShopProducts": 6,
+    "uniqueNativeExecuteProducts": 6,
+    "nativeRevision": 1,
+    "confirmationsReportedAndMatched": 6,
+    "planPinsMatchedBetween2aAnd2b": 6,
+    "actualNativePlanHashesRecomputed": false,
+    "variants": 45,
+    "exactOptionAndPriceMatches": 45,
+    "allDraft": true,
+    "allPublishedAtNull": true,
+    "allTemplateSuffixKonfi": true,
+    "allCustomizationIdsMatch": true,
+    "allVariantPagesComplete": true,
+    "imagesEach": 0,
+    "originalCellsPreserved": 3711,
+    "previousCellsPreserved": 6552,
+    "oldPartsByteIdenticalPerWorkbook": 25,
+    "newSheetsPerWorkbook": 2,
+    "reimportNewCellsMatch": 1044,
+    "manualImagesReviewed": 18
+  },
+  "newIdentities": {
+    "actualCreatedAt": "2026-11-12",
+    "notPresentInHistoricalInventory": true,
+    "inventory": {
+      "path": "work/restabschluss/small-products-duplicate-review/inventory.json",
+      "bytes": 3607380,
+      "sha256": "f3868c6a0f256f92fa6905cbbeab3459eda96f2fb5fa09bd36c3ee73ed994be3"
+    },
+    "historicalInventoryIncluded": false
+  },
+  "operatorOnlyEvidence": {
+    "nativeChecksReportedPassed": 14,
+    "createdProducts": 6,
+    "confirmations": 6,
+    "executions": 6,
+    "formBindingsAdded": 45,
+    "pricingContractsAdded": 45,
+    "bindingHeadsAdded": 45,
+    "bindingRevisionsAdded": 45,
+    "catalogApprovalsAdded": 6,
+    "transfersAdded": 6,
+    "shopCreatesFirstAttempt": 1,
+    "shopCreatesReconcile": 5,
+    "replayAfterReconcileReported": false,
+    "individualBindingRecordsReceived": false,
+    "ownerAppPricing": "Operator report; independent connector null does not establish absence."
+  },
+  "process": {
+    "schema": "issue230-six-execution-process-results/v1",
+    "build": {
+      "exitCode": 0,
+      "log": "build.log"
+    },
+    "graftAndPreservation": {
+      "exitCode": 0,
+      "log": "graft.log"
+    },
+    "reimport": {
+      "exitCode": 3221226505,
+      "log": "reimport.log",
+      "completedWorkbooks": 6,
+      "completedRenders": 18,
+      "reportWritten": true,
+      "reportAllPassed": true,
+      "cleanProcessExit": false,
+      "causeEstablished": false,
+      "repeated": false
+    },
+    "scope": "Reimport content/exports completed before the nonzero process termination. Do not describe the entire runtime process as successful."
+  },
+  "protectedMain": {
+    "path": "outputs/Produktplaene-230-main-v7/Tuerschild-Acrylglas-3mm_v7.xlsx",
+    "sha256": "65d706e1a99cc599ba7a1c577de028208a5efd356f97bd997f68be3f899cde29",
+    "changed": false
+  },
+  "limits": [
+    "No new import/reimport is triggered by these appended Excel files. creationKeys remain bound to original source XLSX hashes.",
+    "Actual source/template/plan/cfg/profile IDs are distinct from historical copy IDs; prior sheets remain unchanged.",
+    "Full 32256-byte server receipt and individual native binding records were not delivered; reported pins/counts are not a local recomputation of those records.",
+    "Separate owner-app pricing metafield not independently readable through supplied connector result; no absence claim.",
+    "No browser/cart/production walkthrough performed for this evidence package.",
+    "Protected 16 ACTIVE products are being reviewed separately by root; this package makes no final preservation claim.",
+    "Main completion workbook awaits its own execution evidence."
+  ],
+  "records": [
+    {
+      "group": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "file": "akten/Tuerschild-Acrylglas-3mm-5x2_v6.xlsx",
+      "sha256": "c0f2dd6c3a1044f8a45c607e16f29b6a230b7fbb541cdf5db55a8f1246653acf",
+      "sourceId": "cfg_23a45954-40ce-4333-9aaf-e91025f2dadf",
+      "templateId": "pgt_b391d168-5ad9-4934-849d-60fd105e0ff4",
+      "planId": "pgp_756e450c-c28d-4124-8e50-c24014808fcf",
+      "planHash": "e1cc53513d62e895940d4da35c637940f1a8ac1d41af20fad5ab4e565db467cc",
+      "confirmationId": "pgc_85839c1a-b06f-4ce9-9a37-571eeca31fd3",
+      "cfg": "cfg_05601748-5e4d-4d18-b133-a5e4ad1a2d65",
+      "revision": 1,
+      "shopProductId": "gid://shopify/Product/16203675074940",
+      "variantIds": [
+        "gid://shopify/ProductVariant/58189617660284",
+        "gid://shopify/ProductVariant/58189617693052",
+        "gid://shopify/ProductVariant/58189617725820",
+        "gid://shopify/ProductVariant/58189617758588",
+        "gid://shopify/ProductVariant/58189617791356",
+        "gid://shopify/ProductVariant/58189617824124",
+        "gid://shopify/ProductVariant/58189617856892",
+        "gid://shopify/ProductVariant/58189617889660",
+        "gid://shopify/ProductVariant/58189617922428",
+        "gid://shopify/ProductVariant/58189617955196"
+      ],
+      "creationKey": "issue230-119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd"
+    },
+    {
+      "group": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "file": "akten/Tuerschild-Acrylglas-3mm-6x2_v6.xlsx",
+      "sha256": "1376b72b1ff3aebc4b3e72c37f0e172171b7ee589e6d7edf7d5d1b03a3c4283e",
+      "sourceId": "cfg_5f1fc960-d4a7-4a34-848f-d23d6e601dc4",
+      "templateId": "pgt_a7d885a4-9d99-4560-b608-359b5791dcf9",
+      "planId": "pgp_a387dee4-885d-4c5e-8c84-0fb1733453c8",
+      "planHash": "51725241d7c924fbe9d5fac04ca8ef9a23befc30ac7ebc1504fee3fe9548864a",
+      "confirmationId": "pgc_effb6b0a-bfb8-46d2-823c-0127d3996e79",
+      "cfg": "cfg_06cc4368-dce5-4118-b404-0b28aa2b4bd7",
+      "revision": 1,
+      "shopProductId": "gid://shopify/Product/16203715281276",
+      "variantIds": [
+        "gid://shopify/ProductVariant/58190005666172",
+        "gid://shopify/ProductVariant/58190005698940",
+        "gid://shopify/ProductVariant/58190005731708",
+        "gid://shopify/ProductVariant/58190005764476",
+        "gid://shopify/ProductVariant/58190005797244",
+        "gid://shopify/ProductVariant/58190005830012",
+        "gid://shopify/ProductVariant/58190005862780",
+        "gid://shopify/ProductVariant/58190005895548",
+        "gid://shopify/ProductVariant/58190005928316",
+        "gid://shopify/ProductVariant/58190005961084"
+      ],
+      "creationKey": "issue230-7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673"
+    },
+    {
+      "group": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "file": "akten/Tuerschild-Acrylglas-3mm-8x2_v6.xlsx",
+      "sha256": "5c2a3288ebafe591eb62b07ee83404b141a57de905e68808e87997aced2c04b6",
+      "sourceId": "cfg_21c49e96-cb88-4a71-9e8c-2432e49ba197",
+      "templateId": "pgt_dcb8b1ce-6b44-427c-99b4-9c6250c30834",
+      "planId": "pgp_393fb21b-9bc8-40ba-9aaa-357aaf9cc8d4",
+      "planHash": "306ee3b3bed8c969d7c04b784b6d124c7d6a9536ec90737e1d17fc45fa4c3def",
+      "confirmationId": "pgc_2a451b6a-9884-4056-9311-fd6ddfa114f0",
+      "cfg": "cfg_87b85218-cdc1-4552-9724-e8c2e692e7c6",
+      "revision": 1,
+      "shopProductId": "gid://shopify/Product/16203716100476",
+      "variantIds": [
+        "gid://shopify/ProductVariant/58190008156540",
+        "gid://shopify/ProductVariant/58190008189308",
+        "gid://shopify/ProductVariant/58190008222076",
+        "gid://shopify/ProductVariant/58190008254844",
+        "gid://shopify/ProductVariant/58190008287612",
+        "gid://shopify/ProductVariant/58190008320380",
+        "gid://shopify/ProductVariant/58190008353148",
+        "gid://shopify/ProductVariant/58190008385916",
+        "gid://shopify/ProductVariant/58190008418684",
+        "gid://shopify/ProductVariant/58190008451452"
+      ],
+      "creationKey": "issue230-02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2"
+    },
+    {
+      "group": "Tuerschild-Edelstahl-5x2_v1",
+      "file": "akten/Tuerschild-Edelstahl-5x2_v5.xlsx",
+      "sha256": "7a76254b6882cd36d79a157c35c2b71245fbee8ecd74efa68566fb485278cb4a",
+      "sourceId": "cfg_77bc4b05-217a-4162-82ca-7232129aa692",
+      "templateId": "pgt_a67639d0-c814-423d-95b4-ab7b8168a5fc",
+      "planId": "pgp_bf3fd92d-0bd2-4775-b4a4-1b819cd87697",
+      "planHash": "82890fbbe502277c653c51ca73839f4762605f5e5c525321f29eb6bf096e65c1",
+      "confirmationId": "pgc_598b6a5e-1ccb-47f1-bf49-9a6e79a3cff8",
+      "cfg": "cfg_d5698241-8036-419a-820e-e434c1482f7a",
+      "revision": 1,
+      "shopProductId": "gid://shopify/Product/16203716854140",
+      "variantIds": [
+        "gid://shopify/ProductVariant/58190010614140",
+        "gid://shopify/ProductVariant/58190010646908",
+        "gid://shopify/ProductVariant/58190010679676",
+        "gid://shopify/ProductVariant/58190010712444",
+        "gid://shopify/ProductVariant/58190010745212"
+      ],
+      "creationKey": "issue230-9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0"
+    },
+    {
+      "group": "Tuerschild-Edelstahl-6x2_v1",
+      "file": "akten/Tuerschild-Edelstahl-6x2_v5.xlsx",
+      "sha256": "1468a5c834300010b8d69e93fc516744d9988b854679f9cbd51f5fe7590d42e0",
+      "sourceId": "cfg_b6f946bd-f082-451d-b2c1-db8b372b79c2",
+      "templateId": "pgt_8fd61a1e-dd70-4506-9354-82fbdb4e00c2",
+      "planId": "pgp_9e123a34-5019-4f75-b3d9-16c6cc0c2658",
+      "planHash": "1a08991b43d687f9ea4f34c5a61aa73cebef03c56c1e2e030d4a8a6c9e462878",
+      "confirmationId": "pgc_a6d96b0a-1b0c-4613-b41a-1a68c40734c4",
+      "cfg": "cfg_a488e415-011c-4358-b3ba-e7fc8f9b3b1a",
+      "revision": 1,
+      "shopProductId": "gid://shopify/Product/16203717804412",
+      "variantIds": [
+        "gid://shopify/ProductVariant/58190020608380",
+        "gid://shopify/ProductVariant/58190020641148",
+        "gid://shopify/ProductVariant/58190020673916",
+        "gid://shopify/ProductVariant/58190020706684",
+        "gid://shopify/ProductVariant/58190020739452"
+      ],
+      "creationKey": "issue230-de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5"
+    },
+    {
+      "group": "Tuerschild-Edelstahl-8x2_v1",
+      "file": "akten/Tuerschild-Edelstahl-8x2_v5.xlsx",
+      "sha256": "06c4829cc9a09227135ef7b8c9a283568fc7efd4c2b6b38c9576e5d878cce361",
+      "sourceId": "cfg_26786f0e-bc5f-4a33-ba16-2b91b07cce07",
+      "templateId": "pgt_73547af4-6a32-4f65-adc3-510b99e5f307",
+      "planId": "pgp_b66e857a-eb93-4982-bdef-ead98bbe61bd",
+      "planHash": "0d26b88d94ba8b718a0cfc110f9634b1242f8248e82675961cf6f64f4a9620be",
+      "confirmationId": "pgc_6cc167f0-9d4a-4a9a-b62f-b189ddd0bcd7",
+      "cfg": "cfg_a07b6e02-acd9-4ceb-83b5-d905fe29c00d",
+      "revision": 1,
+      "shopProductId": "gid://shopify/Product/16203718459772",
+      "variantIds": [
+        "gid://shopify/ProductVariant/58190028734844",
+        "gid://shopify/ProductVariant/58190028767612",
+        "gid://shopify/ProductVariant/58190028800380",
+        "gid://shopify/ProductVariant/58190028833148",
+        "gid://shopify/ProductVariant/58190028865916"
+      ],
+      "creationKey": "issue230-440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317"
+    }
+  ],
+  "independentRootVisualSpotCheck": {
+    "source": "Root review message in this collaboration turn",
+    "method": "Three existing reimport PNGs inspected independently; no re-export",
+    "images": [
+      "Tuerschild-Acrylglas-3mm-5x2_v6.xlsx.Ausfuehrung-1-Reimport.png",
+      "Tuerschild-Acrylglas-3mm-8x2_v6.xlsx.Shopzuordnung-1-Reimport.png",
+      "Tuerschild-Edelstahl-6x2_v5.xlsx.Ausfuehrung-2-Reimport.png"
+    ],
+    "result": "Texts, IDs, price rows and source/evidence boundaries legible; no visible overlaps or clipping in the inspected excerpts.",
+    "scope": "3 excerpts, not an independent full18 visual review or native execution test"
+  }
+}

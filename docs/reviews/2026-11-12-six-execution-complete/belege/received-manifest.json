@@ -1,0 +1,16 @@
+{
+  "schema": "issue230-six-draft-final-receipt/v1",
+  "commit": "f33942d9",
+  "path": "ops/plesk/ausfuehrung-20261112/2b-sechsdraft-ergebnis.json",
+  "bytes": 6081,
+  "sha256": "9033e653ec7eb6472a110d8468f3fc516b2c64205461503174d9f60ecd78cc23",
+  "gitBlobSha1": "910d938e66a18e53aaa5eeea6a7e722cde0418e8",
+  "gitBlobVerified": true,
+  "source": "https://github.com/Chris83638w/gravuru-2027/blob/f33942d9/ops/plesk/ausfuehrung-20261112/2b-sechsdraft-ergebnis.json",
+  "delivered": "Compact execution result, not original full server receipt",
+  "fullOriginalServerReceipt": {
+    "bytes": 32256,
+    "sha256": "3661f669a36c07b20950245e31c2aff9c2687422356f12a4c5a1cdd87d4d17f3",
+    "received": false
+  }
+}

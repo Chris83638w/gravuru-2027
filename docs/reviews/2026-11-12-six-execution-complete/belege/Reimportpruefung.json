@@ -1,0 +1,152 @@
+{
+  "schema": "issue230-six-execution-artifact-reimport/v1",
+  "allPassed": true,
+  "workbooks": 6,
+  "records": [
+    {
+      "group": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "xlsxSha256": "c0f2dd6c3a1044f8a45c607e16f29b6a230b7fbb541cdf5db55a8f1246653acf",
+      "allNewCellValuesMatch": true,
+      "cellsCompared": 189,
+      "images": [
+        {
+          "name": "Tuerschild-Acrylglas-3mm-5x2_v6.xlsx.Ausfuehrung-1-Reimport.png",
+          "sheet": "Ausfuehrung",
+          "range": "A1:C28"
+        },
+        {
+          "name": "Tuerschild-Acrylglas-3mm-5x2_v6.xlsx.Ausfuehrung-2-Reimport.png",
+          "sheet": "Ausfuehrung",
+          "range": "A29:C47"
+        },
+        {
+          "name": "Tuerschild-Acrylglas-3mm-5x2_v6.xlsx.Shopzuordnung-1-Reimport.png",
+          "sheet": "Shopzuordnung",
+          "range": "A1:F18"
+        }
+      ],
+      "visuallyReviewed": false
+    },
+    {
+      "group": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "xlsxSha256": "1376b72b1ff3aebc4b3e72c37f0e172171b7ee589e6d7edf7d5d1b03a3c4283e",
+      "allNewCellValuesMatch": true,
+      "cellsCompared": 189,
+      "images": [
+        {
+          "name": "Tuerschild-Acrylglas-3mm-6x2_v6.xlsx.Ausfuehrung-1-Reimport.png",
+          "sheet": "Ausfuehrung",
+          "range": "A1:C28"
+        },
+        {
+          "name": "Tuerschild-Acrylglas-3mm-6x2_v6.xlsx.Ausfuehrung-2-Reimport.png",
+          "sheet": "Ausfuehrung",
+          "range": "A29:C47"
+        },
+        {
+          "name": "Tuerschild-Acrylglas-3mm-6x2_v6.xlsx.Shopzuordnung-1-Reimport.png",
+          "sheet": "Shopzuordnung",
+          "range": "A1:F18"
+        }
+      ],
+      "visuallyReviewed": false
+    },
+    {
+      "group": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "xlsxSha256": "5c2a3288ebafe591eb62b07ee83404b141a57de905e68808e87997aced2c04b6",
+      "allNewCellValuesMatch": true,
+      "cellsCompared": 189,
+      "images": [
+        {
+          "name": "Tuerschild-Acrylglas-3mm-8x2_v6.xlsx.Ausfuehrung-1-Reimport.png",
+          "sheet": "Ausfuehrung",
+          "range": "A1:C28"
+        },
+        {
+          "name": "Tuerschild-Acrylglas-3mm-8x2_v6.xlsx.Ausfuehrung-2-Reimport.png",
+          "sheet": "Ausfuehrung",
+          "range": "A29:C47"
+        },
+        {
+          "name": "Tuerschild-Acrylglas-3mm-8x2_v6.xlsx.Shopzuordnung-1-Reimport.png",
+          "sheet": "Shopzuordnung",
+          "range": "A1:F18"
+        }
+      ],
+      "visuallyReviewed": false
+    },
+    {
+      "group": "Tuerschild-Edelstahl-5x2_v1",
+      "xlsxSha256": "7a76254b6882cd36d79a157c35c2b71245fbee8ecd74efa68566fb485278cb4a",
+      "allNewCellValuesMatch": true,
+      "cellsCompared": 159,
+      "images": [
+        {
+          "name": "Tuerschild-Edelstahl-5x2_v5.xlsx.Ausfuehrung-1-Reimport.png",
+          "sheet": "Ausfuehrung",
+          "range": "A1:C28"
+        },
+        {
+          "name": "Tuerschild-Edelstahl-5x2_v5.xlsx.Ausfuehrung-2-Reimport.png",
+          "sheet": "Ausfuehrung",
+          "range": "A29:C47"
+        },
+        {
+          "name": "Tuerschild-Edelstahl-5x2_v5.xlsx.Shopzuordnung-1-Reimport.png",
+          "sheet": "Shopzuordnung",
+          "range": "A1:F13"
+        }
+      ],
+      "visuallyReviewed": false
+    },
+    {
+      "group": "Tuerschild-Edelstahl-6x2_v1",
+      "xlsxSha256": "1468a5c834300010b8d69e93fc516744d9988b854679f9cbd51f5fe7590d42e0",
+      "allNewCellValuesMatch": true,
+      "cellsCompared": 159,
+      "images": [
+        {
+          "name": "Tuerschild-Edelstahl-6x2_v5.xlsx.Ausfuehrung-1-Reimport.png",
+          "sheet": "Ausfuehrung",
+          "range": "A1:C28"
+        },
+        {
+          "name": "Tuerschild-Edelstahl-6x2_v5.xlsx.Ausfuehrung-2-Reimport.png",
+          "sheet": "Ausfuehrung",
+          "range": "A29:C47"
+        },
+        {
+          "name": "Tuerschild-Edelstahl-6x2_v5.xlsx.Shopzuordnung-1-Reimport.png",
+          "sheet": "Shopzuordnung",
+          "range": "A1:F13"
+        }
+      ],
+      "visuallyReviewed": false
+    },
+    {
+      "group": "Tuerschild-Edelstahl-8x2_v1",
+      "xlsxSha256": "06c4829cc9a09227135ef7b8c9a283568fc7efd4c2b6b38c9576e5d878cce361",
+      "allNewCellValuesMatch": true,
+      "cellsCompared": 159,
+      "images": [
+        {
+          "name": "Tuerschild-Edelstahl-8x2_v5.xlsx.Ausfuehrung-1-Reimport.png",
+          "sheet": "Ausfuehrung",
+          "range": "A1:C28"
+        },
+        {
+          "name": "Tuerschild-Edelstahl-8x2_v5.xlsx.Ausfuehrung-2-Reimport.png",
+          "sheet": "Ausfuehrung",
+          "range": "A29:C47"
+        },
+        {
+          "name": "Tuerschild-Edelstahl-8x2_v5.xlsx.Shopzuordnung-1-Reimport.png",
+          "sheet": "Shopzuordnung",
+          "range": "A1:F13"
+        }
+      ],
+      "visuallyReviewed": false
+    }
+  ],
+  "visuallyReviewed": false
+}

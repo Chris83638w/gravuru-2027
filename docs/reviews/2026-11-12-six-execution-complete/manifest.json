@@ -1,0 +1,275 @@
+{
+  "schema": "issue230-six-execution-completion-package/v1",
+  "purpose": "completion-evidence-only",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 5001,
+      "sha256": "c9958cbac367d0902c7ac94e91ef9fa7a8b4db7677a8f6dc24e6ad014e3bc4a5"
+    },
+    {
+      "path": "Review.json",
+      "bytes": 12500,
+      "sha256": "5dc1e4027ba9f339a63348ef7e548c60a0d526f97c5d459e1d61e19932ea7657"
+    },
+    {
+      "path": "akten/Tuerschild-Acrylglas-3mm-5x2_v6.xlsx",
+      "bytes": 57218,
+      "sha256": "c0f2dd6c3a1044f8a45c607e16f29b6a230b7fbb541cdf5db55a8f1246653acf"
+    },
+    {
+      "path": "akten/Tuerschild-Acrylglas-3mm-6x2_v6.xlsx",
+      "bytes": 57232,
+      "sha256": "1376b72b1ff3aebc4b3e72c37f0e172171b7ee589e6d7edf7d5d1b03a3c4283e"
+    },
+    {
+      "path": "akten/Tuerschild-Acrylglas-3mm-8x2_v6.xlsx",
+      "bytes": 57217,
+      "sha256": "5c2a3288ebafe591eb62b07ee83404b141a57de905e68808e87997aced2c04b6"
+    },
+    {
+      "path": "akten/Tuerschild-Edelstahl-5x2_v5.xlsx",
+      "bytes": 52101,
+      "sha256": "7a76254b6882cd36d79a157c35c2b71245fbee8ecd74efa68566fb485278cb4a"
+    },
+    {
+      "path": "akten/Tuerschild-Edelstahl-6x2_v5.xlsx",
+      "bytes": 52119,
+      "sha256": "1468a5c834300010b8d69e93fc516744d9988b854679f9cbd51f5fe7590d42e0"
+    },
+    {
+      "path": "akten/Tuerschild-Edelstahl-8x2_v5.xlsx",
+      "bytes": 52125,
+      "sha256": "06c4829cc9a09227135ef7b8c9a283568fc7efd4c2b6b38c9576e5d878cce361"
+    },
+    {
+      "path": "belege/2a-sechsgruppen-vorbereitung.json",
+      "bytes": 3370,
+      "sha256": "5688cd3cce30eab0305a946ac479af13a18e44eaaefece35921e1d6884fbb435"
+    },
+    {
+      "path": "belege/2b-sechsdraft-ergebnis.json",
+      "bytes": 6081,
+      "sha256": "9033e653ec7eb6472a110d8468f3fc516b2c64205461503174d9f60ecd78cc23"
+    },
+    {
+      "path": "belege/Erhaltungspruefung.json",
+      "bytes": 2358,
+      "sha256": "5a61f8b9b141942e98ea0e21c9f8fdf7bfce0d3f732102a7513c719d7485d05e"
+    },
+    {
+      "path": "belege/Manifest.json",
+      "bytes": 38015,
+      "sha256": "f53bce905b15135ae69aba481148e2dd21f31ffbdc399bf99b6e179381ad6a1e"
+    },
+    {
+      "path": "belege/Reimportpruefung.json",
+      "bytes": 4799,
+      "sha256": "84b90120d171fc32e70935154c1add6ab0336f912e6f318349f11b8c900a628a"
+    },
+    {
+      "path": "belege/Visuelle-Pruefung.json",
+      "bytes": 7689,
+      "sha256": "a6c4e20bb5e9fcc05edebc014467101b808770b7cf50134cb2c70c17ea4a236c"
+    },
+    {
+      "path": "belege/appendix-index.json",
+      "bytes": 112719,
+      "sha256": "0b40533b35433cced424fec426836a7b65267dde6a6a0a2f376aa127065dfd11"
+    },
+    {
+      "path": "belege/build.log",
+      "bytes": 1848,
+      "sha256": "cca83d7f0c1ba2b941b62f24b8613c77637e93f042b750497f557ef4132ae8f4"
+    },
+    {
+      "path": "belege/expected-readback.json",
+      "bytes": 99514,
+      "sha256": "6e5f808c98b9e375903abf23f38a422ffa857c8b5a7d9524adf6dee5fe5ff24b"
+    },
+    {
+      "path": "belege/final-six-inputs.json",
+      "bytes": 58826,
+      "sha256": "893ba9cd21640d209c8b97091f536e4684f0efb8d256c4957424b9de39d5307c"
+    },
+    {
+      "path": "belege/graft.log",
+      "bytes": 102,
+      "sha256": "5cfb4a8e764e8f3bbde862222ddbccd50cf14b8263b3343356241526678d9b38"
+    },
+    {
+      "path": "belege/input-verification.json",
+      "bytes": 1740,
+      "sha256": "0b669ae47164dde5bb67375d873ce9dcf1410cc6c309be07a7b72751fef6c1a9"
+    },
+    {
+      "path": "belege/process-results.json",
+      "bytes": 615,
+      "sha256": "dc7062931f03bae63fa02a441444e01583a1a59f1bc1e5c868b0070a98eaf21f"
+    },
+    {
+      "path": "belege/received-manifest.json",
+      "bytes": 706,
+      "sha256": "597d45df9180a3ac18f6e8531add22a1ea1b65cfe2641a9c1505bcd809c9004f"
+    },
+    {
+      "path": "belege/reimport.log",
+      "bytes": 542,
+      "sha256": "5adac59293573b9f1de5969db677fd2dd365599faac42622c6ac0bb76cab5497"
+    },
+    {
+      "path": "belege/six-final-entry-read.json",
+      "bytes": 27122,
+      "sha256": "4ca8486c97e742dcc32cf69494207ddc38c857dba3467dcaadd55cd7a312e9ab"
+    },
+    {
+      "path": "belege/six-final-products.json",
+      "bytes": 13241,
+      "sha256": "52a4a451588aa70ff1cce52875d936082a927ecb8362fd1f77f19b1ab8d4788d"
+    },
+    {
+      "path": "belege/workbook-assignment.json",
+      "bytes": 15405,
+      "sha256": "a64fba545de26ce2fed16945d1ed40f6558a115a4d24d8ef23a04256c7844d68"
+    },
+    {
+      "path": "repro/README.md",
+      "bytes": 2759,
+      "sha256": "b3b1fbc81015daf30772e3eec52b7a716dc6ba42d85d0a78241fc1633812058e"
+    },
+    {
+      "path": "repro/artifact-runtime.mjs",
+      "bytes": 816,
+      "sha256": "92d3c709de85435ce1194b856bbe57f0fc2cd8ccd47ef326e1fd38cc199116e6"
+    },
+    {
+      "path": "repro/build-appendices.mjs",
+      "bytes": 8385,
+      "sha256": "934ea32a78ab8a25eed4078f265b37ca9030aa06e14afbb8e27ad346d18dc56e"
+    },
+    {
+      "path": "repro/existing-graft-appendices.py",
+      "bytes": 10567,
+      "sha256": "80ef7e08d4061ee77d4c56494ee7f1ab71052f91d9d04304555b5f7107013d6f"
+    },
+    {
+      "path": "repro/existing-verify-preservation.py",
+      "bytes": 5242,
+      "sha256": "b9d97c807557396734ba9e9a19909618a272567fa2f6263b58e849ded149e31e"
+    },
+    {
+      "path": "repro/graft-and-verify.py",
+      "bytes": 5053,
+      "sha256": "afaeac1d1821dad502b263d0c3408dbb592e1eded16a32c5728372506d806a78"
+    },
+    {
+      "path": "repro/prepare-inputs.mjs",
+      "bytes": 7712,
+      "sha256": "893d0223d652bf96789c3308ff569c84d5141d1fbaf3ba3c1b556b8912c84ba3"
+    },
+    {
+      "path": "repro/verify-appendices.mjs",
+      "bytes": 2511,
+      "sha256": "b25365d6b631fb981606ad796983e95fa98381cc536556a3531b8cdaba33ebe1"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Acrylglas-3mm-5x2_v6.xlsx.Ausfuehrung-1-Reimport.png",
+      "bytes": 175001,
+      "sha256": "25e235a940bc94510b8ce6e1102ad8dc3fff468acd07fb1c10f7b41287cbdf87"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Acrylglas-3mm-5x2_v6.xlsx.Ausfuehrung-2-Reimport.png",
+      "bytes": 174955,
+      "sha256": "b5eca5e0d1629abce0e10225fbe12f5a6dac52a094327a5bfe2231319ae36519"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Acrylglas-3mm-5x2_v6.xlsx.Shopzuordnung-1-Reimport.png",
+      "bytes": 81647,
+      "sha256": "410ea5786e17eb24003cb6dea3f94fa119294dde1b474deda6244b69388e71ef"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Acrylglas-3mm-6x2_v6.xlsx.Ausfuehrung-1-Reimport.png",
+      "bytes": 174321,
+      "sha256": "47d059ea5b7e804459b9648b94049be180360f671b822aa214375b7b385f2870"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Acrylglas-3mm-6x2_v6.xlsx.Ausfuehrung-2-Reimport.png",
+      "bytes": 176033,
+      "sha256": "ad9e8801659e21a93fdd08a7f6eb1165ff9e85dadc11d96c11b2e94a41461348"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Acrylglas-3mm-6x2_v6.xlsx.Shopzuordnung-1-Reimport.png",
+      "bytes": 79427,
+      "sha256": "d225429dba643e13edf1256802ac2974429d5b1e26db6739626e66d7110a537a"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Acrylglas-3mm-8x2_v6.xlsx.Ausfuehrung-1-Reimport.png",
+      "bytes": 174125,
+      "sha256": "290bf4a752e7431f086eb65e6016ceb59e993368ac03eba74d651add68f522f2"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Acrylglas-3mm-8x2_v6.xlsx.Ausfuehrung-2-Reimport.png",
+      "bytes": 176110,
+      "sha256": "177dba2932ff42ba3f1fcc9f2b6cafdb73e83b16fb4c144677893a68b664de63"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Acrylglas-3mm-8x2_v6.xlsx.Shopzuordnung-1-Reimport.png",
+      "bytes": 79702,
+      "sha256": "a9fd7cf8934b011e704740be9658ba16b38beb7bc01cd223469f12f4b5bdfba1"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Edelstahl-5x2_v5.xlsx.Ausfuehrung-1-Reimport.png",
+      "bytes": 173443,
+      "sha256": "2207bce4578216ad4977768c30adafcf190924982804cb4606df8a2fbfff2101"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Edelstahl-5x2_v5.xlsx.Ausfuehrung-2-Reimport.png",
+      "bytes": 173704,
+      "sha256": "05ce624d7834cdaa8080789ff3d831af484b11287f2c314e9207a6d9e86f746e"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Edelstahl-5x2_v5.xlsx.Shopzuordnung-1-Reimport.png",
+      "bytes": 50230,
+      "sha256": "d76b34c517d88ec6a7928b574aee7cc7013dd82247b213a8bb927fede8a9eb72"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Edelstahl-6x2_v5.xlsx.Ausfuehrung-1-Reimport.png",
+      "bytes": 172953,
+      "sha256": "77f5abbea4a173f444df4afa43389980b0f03020e384d3ce9cdc832f68d7341f"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Edelstahl-6x2_v5.xlsx.Ausfuehrung-2-Reimport.png",
+      "bytes": 173747,
+      "sha256": "70208c308296cd4e3b4b0cbb9b52daee247a645d40e5e87e63c67992620e2c09"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Edelstahl-6x2_v5.xlsx.Shopzuordnung-1-Reimport.png",
+      "bytes": 50851,
+      "sha256": "10d5b0c49267f90627f29cba16d01eac9f4131d5a1eb76fe2a0b09e9522949e9"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Edelstahl-8x2_v5.xlsx.Ausfuehrung-1-Reimport.png",
+      "bytes": 173887,
+      "sha256": "376b821afd0a8e9d0685f223cff46ff5e014975f5bb26a988563b88c670f63ef"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Edelstahl-8x2_v5.xlsx.Ausfuehrung-2-Reimport.png",
+      "bytes": 175075,
+      "sha256": "d49213113d060d64245f106b02d9b90258feef43b89a71ed3c36990523274660"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Edelstahl-8x2_v5.xlsx.Shopzuordnung-1-Reimport.png",
+      "bytes": 50485,
+      "sha256": "86f6874c8bcd32f6e6b8408d1420f259e60f5608b607f1b0092bbdfeff7b7b6a"
+    }
+  ],
+  "fileCount": 52,
+  "totalBytes": 3268946,
+  "excluded": [
+    "Intermediate appendix workbooks",
+    "Unrelated full shop inventory",
+    "Unreceived full server receipts",
+    "Main execution workbook"
+  ],
+  "mainUnchangedSha256": "65d706e1a99cc599ba7a1c577de028208a5efd356f97bd997f68be3f899cde29"
+}

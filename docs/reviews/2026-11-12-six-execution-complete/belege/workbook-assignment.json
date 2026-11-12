@@ -1,0 +1,345 @@
+{
+  "schema": "issue230-final-execution-workbook-assignment/v1",
+  "purpose": "completion-evidence-only-not-an-import-payload",
+  "approval": {
+    "quote": "Ja, Gesamtpaket ausführen",
+    "source": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6829898414",
+    "id": "chris-168-6829898414-gesamtpaket"
+  },
+  "state": "awaiting_actual_execution_records",
+  "newSheetNames": [
+    "Ausfuehrung",
+    "Shopzuordnung"
+  ],
+  "newOutputDirectory": "outputs/Produktplaene-230-Ausfuehrungsnachweise-20261112",
+  "originalWorkbookWrite": false,
+  "productImportOrReimport": false,
+  "records": [
+    {
+      "group": "main-acrylic-existing",
+      "mode": "existing-product-update-completion-evidence-only",
+      "approvedWorkbook": {
+        "path": "outputs/Produktplaene-230-main-v7/Tuerschild-Acrylglas-3mm_v7.xlsx",
+        "bytes": 142074,
+        "sha256": "65d706e1a99cc599ba7a1c577de028208a5efd356f97bd997f68be3f899cde29"
+      },
+      "newVersionFile": "Tuerschild-Acrylglas-3mm_v8.xlsx",
+      "existingShopifyProductId": "gid://shopify/Product/16190784602492",
+      "existingNativeProductId": "cfg_8e7ebe96-28d2-406f-b31e-036ee61f47e0",
+      "nativeUpdateReviewHash": "8e8814cabbddb0354e0af029e1bdb09f0a668f69af03dd056792a99c6b7d517d",
+      "nativeImportFingerprint": "2872b28895453ec8fc3af89a293e7f3d144c56bdf03dbae6b09c5296fcb9e01f",
+      "creationKeyPolicy": "No new import identity; retain original historical provenance. Existing cfg update uses its pinned update fingerprint.",
+      "variantsToRead": 808,
+      "newRevisionBindings": 778,
+      "oldRevisionBindingsToPreserve": 30,
+      "variantMapping": {
+        "path": "work/restabschluss/main-target-preview/github-payload/variant-mapping.preview.json.gz",
+        "bytes": 34612,
+        "sha256": "3d0647b2cb671ba09199b6f9c4b9cdbfa58f24a0eafb1d2d672a18823070c9bf"
+      },
+      "actualExecution": null
+    },
+    {
+      "group": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "mode": "new-draft-completion-evidence-only",
+      "approvedWorkbook": {
+        "path": "outputs/Produktplaene-230-sechs-Kopienreview/Tuerschild-Acrylglas-3mm-5x2_v5.xlsx",
+        "bytes": 52201,
+        "sha256": "09821cf8498e2c6e7d981430d19f058b30e87f1020b13df9e8367d2818c35b01"
+      },
+      "newVersionFile": "Tuerschild-Acrylglas-3mm-5x2_v6.xlsx",
+      "originalExcel": {
+        "path": "work/product-plans-run-v8/excel/Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+        "sha256": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd"
+      },
+      "creationKey": "issue230-119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+      "creationKeyPolicy": "Retain exactly; new workbook SHA must never replace the original Excel SHA.",
+      "copyProvenance": {
+        "planId": "pgp_244eb7f7-a813-4d56-b587-c0240ef756d5",
+        "planHash": "ebc8935db17be6636a795cf52a9dd26f711463dbe56875d2bd7dee9995bfdc50",
+        "source": {
+          "key": "cfg_68c697b4-e32f-43bb-840c-a6149f1ec472",
+          "productId": "cfg_68c697b4-e32f-43bb-840c-a6149f1ec472",
+          "revision": 1,
+          "sha256": "723c95550dcd566492ca27e302b95fb35df2a259fb32b3a86ce2d641fa967fd7"
+        },
+        "template": {
+          "id": "pgt_83ec2106-eb89-406b-965d-5c61239a4e03",
+          "revision": 1,
+          "sha256": "ca3e77d2c4962aad973e6fa33c89684d353a4ba7fb08054f638760438c8f4f27"
+        },
+        "moduleProfile": {
+          "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+          "revision": 1,
+          "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+        },
+        "motifProfile": {
+          "id": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+          "revision": 1,
+          "storedDocumentSha256": "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4"
+        }
+      },
+      "expectedVariants": 10,
+      "actualExecution": null
+    },
+    {
+      "group": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "mode": "new-draft-completion-evidence-only",
+      "approvedWorkbook": {
+        "path": "outputs/Produktplaene-230-sechs-Kopienreview/Tuerschild-Acrylglas-3mm-6x2_v5.xlsx",
+        "bytes": 52213,
+        "sha256": "63b9e0033ae5e82d963aeb9520f89a029d3c8b96375333118b573583f4e9f1af"
+      },
+      "newVersionFile": "Tuerschild-Acrylglas-3mm-6x2_v6.xlsx",
+      "originalExcel": {
+        "path": "work/product-plans-run-v8/excel/Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+        "sha256": "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673"
+      },
+      "creationKey": "issue230-7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+      "creationKeyPolicy": "Retain exactly; new workbook SHA must never replace the original Excel SHA.",
+      "copyProvenance": {
+        "planId": "pgp_cac795e1-b1c1-46e6-a807-7347ad4d9826",
+        "planHash": "03093e0f155d60036c2589f28a32a4a6e2eec8b4ca3a209a018f9d8948b4893c",
+        "source": {
+          "key": "cfg_fcb59442-8cf1-4b46-ae8b-f6ee46511910",
+          "productId": "cfg_fcb59442-8cf1-4b46-ae8b-f6ee46511910",
+          "revision": 1,
+          "sha256": "117c568255874bfec1be1d6ff2380b6618dc3d119023e7dd1b8993d831846b75"
+        },
+        "template": {
+          "id": "pgt_52c7c665-e4cd-454d-9f78-e325f8cc439c",
+          "revision": 1,
+          "sha256": "bc630d4c3ddaaac9c7451a7bcd0e73eb6769884a60829395fc5879103fc30fe9"
+        },
+        "moduleProfile": {
+          "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+          "revision": 1,
+          "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+        },
+        "motifProfile": {
+          "id": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+          "revision": 1,
+          "storedDocumentSha256": "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4"
+        }
+      },
+      "expectedVariants": 10,
+      "actualExecution": null
+    },
+    {
+      "group": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "mode": "new-draft-completion-evidence-only",
+      "approvedWorkbook": {
+        "path": "outputs/Produktplaene-230-sechs-Kopienreview/Tuerschild-Acrylglas-3mm-8x2_v5.xlsx",
+        "bytes": 52199,
+        "sha256": "050e78e660425d8cb3877f94964a16d820c3aca0407fe463bd1e3e694321bb09"
+      },
+      "newVersionFile": "Tuerschild-Acrylglas-3mm-8x2_v6.xlsx",
+      "originalExcel": {
+        "path": "work/product-plans-run-v8/excel/Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+        "sha256": "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2"
+      },
+      "creationKey": "issue230-02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+      "creationKeyPolicy": "Retain exactly; new workbook SHA must never replace the original Excel SHA.",
+      "copyProvenance": {
+        "planId": "pgp_0a364376-f6c2-4836-b274-47b9efe030f4",
+        "planHash": "c9b7c3f21968a51b587044fc36861911200bbe198c0a817b3f48e500033e2fd2",
+        "source": {
+          "key": "cfg_809706a1-191d-4bc5-9960-6410f3222fb5",
+          "productId": "cfg_809706a1-191d-4bc5-9960-6410f3222fb5",
+          "revision": 1,
+          "sha256": "a2949c3d564bc5ed652f72f0a9823c417d2c911c71b7e05414372048dc995ac1"
+        },
+        "template": {
+          "id": "pgt_f4ced3ef-ca61-4931-a41c-08e148441510",
+          "revision": 1,
+          "sha256": "a92ba2bbbab70f6611e5b215e0cb026ca4faa7806566202f68c3b2670eecc8d5"
+        },
+        "moduleProfile": {
+          "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+          "revision": 1,
+          "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+        },
+        "motifProfile": {
+          "id": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+          "revision": 1,
+          "storedDocumentSha256": "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4"
+        }
+      },
+      "expectedVariants": 10,
+      "actualExecution": null
+    },
+    {
+      "group": "Tuerschild-Edelstahl-5x2_v1",
+      "mode": "new-draft-completion-evidence-only",
+      "approvedWorkbook": {
+        "path": "outputs/Produktplaene-230-sechs-Kopienreview/Tuerschild-Edelstahl-5x2_v4.xlsx",
+        "bytes": 47261,
+        "sha256": "8e66d99b6ab5913c0c42f168271afa590f25cc56ef49652983dce7fad6e959c2"
+      },
+      "newVersionFile": "Tuerschild-Edelstahl-5x2_v5.xlsx",
+      "originalExcel": {
+        "path": "work/product-plans-run-v8/excel/Tuerschild-Edelstahl-5x2_v1.xlsx",
+        "sha256": "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0"
+      },
+      "creationKey": "issue230-9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+      "creationKeyPolicy": "Retain exactly; new workbook SHA must never replace the original Excel SHA.",
+      "copyProvenance": {
+        "planId": "pgp_ebbbb351-5aa4-4afe-81bc-e78d9febae99",
+        "planHash": "3bc4abe777035399e7f79aa865c9c3110a2bd6e62a62fa3340ec4a7649d0bddc",
+        "source": {
+          "key": "cfg_64b480bd-2124-446d-a674-4443fa05b5f1",
+          "productId": "cfg_64b480bd-2124-446d-a674-4443fa05b5f1",
+          "revision": 1,
+          "sha256": "492c53dbcf56e592932f2443c5fcf757c6a36a99aa0bac523b50443700af4cd3"
+        },
+        "template": {
+          "id": "pgt_6c6cd65d-a071-4a5c-b3c9-5b45a2d540f5",
+          "revision": 1,
+          "sha256": "f6e03a5d29435c500d4b5319a35d48a990343fda68c7592720e3667011fda0f2"
+        },
+        "moduleProfile": {
+          "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+          "revision": 1,
+          "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+        },
+        "motifProfile": {
+          "id": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+          "revision": 1,
+          "storedDocumentSha256": "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4"
+        }
+      },
+      "expectedVariants": 5,
+      "actualExecution": null
+    },
+    {
+      "group": "Tuerschild-Edelstahl-6x2_v1",
+      "mode": "new-draft-completion-evidence-only",
+      "approvedWorkbook": {
+        "path": "outputs/Produktplaene-230-sechs-Kopienreview/Tuerschild-Edelstahl-6x2_v4.xlsx",
+        "bytes": 47278,
+        "sha256": "6e3961bae9f2009e93a2a6a6b35b1a9caabe6d20c59c3c52e8219531f322245a"
+      },
+      "newVersionFile": "Tuerschild-Edelstahl-6x2_v5.xlsx",
+      "originalExcel": {
+        "path": "work/product-plans-run-v8/excel/Tuerschild-Edelstahl-6x2_v1.xlsx",
+        "sha256": "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5"
+      },
+      "creationKey": "issue230-de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+      "creationKeyPolicy": "Retain exactly; new workbook SHA must never replace the original Excel SHA.",
+      "copyProvenance": {
+        "planId": "pgp_bf0b70c7-372d-4563-935a-554be24bfdd7",
+        "planHash": "ed2e6e192028d17c6f7488dfb7a9d08dbd1f327c35944750f43ae380a02a1a3e",
+        "source": {
+          "key": "cfg_c38e63be-e4f3-4c75-95a7-ca331ceae8ba",
+          "productId": "cfg_c38e63be-e4f3-4c75-95a7-ca331ceae8ba",
+          "revision": 1,
+          "sha256": "dcd63a77aaeddd112ab180e864c8d7c48e789077336d1d05dd92d466c40d277a"
+        },
+        "template": {
+          "id": "pgt_6e0e17af-51d9-4863-a137-6e6435f180a7",
+          "revision": 1,
+          "sha256": "92e1f407c8e283bdfc62a0871167a97df03e928748865dddf4b4f9a6c7e773f1"
+        },
+        "moduleProfile": {
+          "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+          "revision": 1,
+          "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+        },
+        "motifProfile": {
+          "id": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+          "revision": 1,
+          "storedDocumentSha256": "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4"
+        }
+      },
+      "expectedVariants": 5,
+      "actualExecution": null
+    },
+    {
+      "group": "Tuerschild-Edelstahl-8x2_v1",
+      "mode": "new-draft-completion-evidence-only",
+      "approvedWorkbook": {
+        "path": "outputs/Produktplaene-230-sechs-Kopienreview/Tuerschild-Edelstahl-8x2_v4.xlsx",
+        "bytes": 47283,
+        "sha256": "c7963bbd1deae43db3d7c6dd88cfdaeb11db1ba4b8f29a32128c9c6194a6169c"
+      },
+      "newVersionFile": "Tuerschild-Edelstahl-8x2_v5.xlsx",
+      "originalExcel": {
+        "path": "work/product-plans-run-v8/excel/Tuerschild-Edelstahl-8x2_v1.xlsx",
+        "sha256": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317"
+      },
+      "creationKey": "issue230-440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+      "creationKeyPolicy": "Retain exactly; new workbook SHA must never replace the original Excel SHA.",
+      "copyProvenance": {
+        "planId": "pgp_7ec62d5a-6d28-48c5-b8da-fe940e39ee0e",
+        "planHash": "cd1473f9a1a18927c558a8c4901bbaeb58a0781a589fd532fd1733d3ca5b96e0",
+        "source": {
+          "key": "cfg_f2bb6a4b-1ce0-4ba8-a0ab-d92af17a8de0",
+          "productId": "cfg_f2bb6a4b-1ce0-4ba8-a0ab-d92af17a8de0",
+          "revision": 1,
+          "sha256": "3b20aa4d3382a8ac604ea4f2a71e9e79357fae71fcf028158ecfe7bfa164fd71"
+        },
+        "template": {
+          "id": "pgt_654492e8-3d55-4d72-b578-e528a5ceb3a2",
+          "revision": 1,
+          "sha256": "3e70b4f170ba211f910e5d47b68efb4d9993556e47f286017d42e4f96b4410bf"
+        },
+        "moduleProfile": {
+          "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+          "revision": 1,
+          "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+        },
+        "motifProfile": {
+          "id": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+          "revision": 1,
+          "storedDocumentSha256": "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4"
+        }
+      },
+      "expectedVariants": 5,
+      "actualExecution": null
+    }
+  ],
+  "expectedReadbackRows": {
+    "main": 808,
+    "six": 45,
+    "total": 853
+  },
+  "protected16CurrentObservation": {
+    "path": "work/restabschluss/live-readbacks-20261112/protected16-before.json",
+    "bytes": 59192,
+    "sha256": "6ca0435eecda424e3bac6332bb002c8c67cc504412eec3800c3a877d838db642"
+  },
+  "protected16ObservationLimit": "Observed get_product fields only; no comprehensive metafield observation.",
+  "reportedPreparation2a": {
+    "source": "https://github.com/Chris83638w/gravuru-2027/issues/233#issuecomment-6830181250",
+    "conditionsReportedPassed": 13,
+    "moduleProfile": {
+      "id": "cmp_028bf4a6-4777-4d33-b821-9ae1509b5ca4",
+      "revision": 1
+    },
+    "motifProfile": {
+      "id": "prf_1bc10677-5d8b-4f04-8966-0e0f9e4a360d",
+      "revision": 1
+    },
+    "notFinalExecutionEvidence": true
+  },
+  "graftCore": {
+    "path": "work/restabschluss/six-plan-excel/graft-appendices.py",
+    "bytes": 10567,
+    "sha256": "80ef7e08d4061ee77d4c56494ee7f1ab71052f91d9d04304555b5f7107013d6f"
+  },
+  "preservationReader": {
+    "path": "work/restabschluss/six-plan-excel/verify-preservation.py",
+    "bytes": 5242,
+    "sha256": "b9d97c807557396734ba9e9a19909618a272567fa2f6263b58e849ded149e31e"
+  },
+  "priorMainRepro": {
+    "path": "work/restabschluss/main-v7-excel/README.md",
+    "bytes": 9965,
+    "sha256": "7b91eec14cc00c623232250a8e81a1ba64ae0d2541b48336b347c6b8c432ffb1"
+  },
+  "priorSixRepro": {
+    "path": "work/restabschluss/six-plan-excel/README.md",
+    "bytes": 10168,
+    "sha256": "8d3d707f408fb544cd4b131defa675efaf4231d5d145f311021e0a8bd839563e"
+  }
+}

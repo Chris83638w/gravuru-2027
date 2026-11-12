@@ -1,0 +1,172 @@
+{
+  "schema": "issue230-six-execution-manual-visual-review/v1",
+  "reviewer": "product_plans",
+  "method": "All 18 final Artifact reimport PNGs viewed individually with view_image; no Excel desktop UI claim",
+  "allPassed": true,
+  "workbooks": 6,
+  "images": [
+    {
+      "name": "Tuerschild-Acrylglas-3mm-5x2_v6.xlsx.Ausfuehrung-1-Reimport.png",
+      "sheet": "Ausfuehrung",
+      "range": "A1:C28",
+      "sha256": "25e235a940bc94510b8ce6e1102ad8dc3fff468acd07fb1c10f7b41287cbdf87",
+      "bytes": 175001,
+      "visuallyReviewed": true,
+      "result": "Legible; IDs, complete hashes, prices and provenance notes visible; no clipping or error cells observed."
+    },
+    {
+      "name": "Tuerschild-Acrylglas-3mm-5x2_v6.xlsx.Ausfuehrung-2-Reimport.png",
+      "sheet": "Ausfuehrung",
+      "range": "A29:C47",
+      "sha256": "b5eca5e0d1629abce0e10225fbe12f5a6dac52a094327a5bfe2231319ae36519",
+      "bytes": 174955,
+      "visuallyReviewed": true,
+      "result": "Legible; IDs, complete hashes, prices and provenance notes visible; no clipping or error cells observed."
+    },
+    {
+      "name": "Tuerschild-Acrylglas-3mm-5x2_v6.xlsx.Shopzuordnung-1-Reimport.png",
+      "sheet": "Shopzuordnung",
+      "range": "A1:F18",
+      "sha256": "410ea5786e17eb24003cb6dea3f94fa119294dde1b474deda6244b69388e71ef",
+      "bytes": 81647,
+      "visuallyReviewed": true,
+      "result": "Legible; IDs, complete hashes, prices and provenance notes visible; no clipping or error cells observed."
+    },
+    {
+      "name": "Tuerschild-Acrylglas-3mm-6x2_v6.xlsx.Ausfuehrung-1-Reimport.png",
+      "sheet": "Ausfuehrung",
+      "range": "A1:C28",
+      "sha256": "47d059ea5b7e804459b9648b94049be180360f671b822aa214375b7b385f2870",
+      "bytes": 174321,
+      "visuallyReviewed": true,
+      "result": "Legible; IDs, complete hashes, prices and provenance notes visible; no clipping or error cells observed."
+    },
+    {
+      "name": "Tuerschild-Acrylglas-3mm-6x2_v6.xlsx.Ausfuehrung-2-Reimport.png",
+      "sheet": "Ausfuehrung",
+      "range": "A29:C47",
+      "sha256": "ad9e8801659e21a93fdd08a7f6eb1165ff9e85dadc11d96c11b2e94a41461348",
+      "bytes": 176033,
+      "visuallyReviewed": true,
+      "result": "Legible; IDs, complete hashes, prices and provenance notes visible; no clipping or error cells observed."
+    },
+    {
+      "name": "Tuerschild-Acrylglas-3mm-6x2_v6.xlsx.Shopzuordnung-1-Reimport.png",
+      "sheet": "Shopzuordnung",
+      "range": "A1:F18",
+      "sha256": "d225429dba643e13edf1256802ac2974429d5b1e26db6739626e66d7110a537a",
+      "bytes": 79427,
+      "visuallyReviewed": true,
+      "result": "Legible; IDs, complete hashes, prices and provenance notes visible; no clipping or error cells observed."
+    },
+    {
+      "name": "Tuerschild-Acrylglas-3mm-8x2_v6.xlsx.Ausfuehrung-1-Reimport.png",
+      "sheet": "Ausfuehrung",
+      "range": "A1:C28",
+      "sha256": "290bf4a752e7431f086eb65e6016ceb59e993368ac03eba74d651add68f522f2",
+      "bytes": 174125,
+      "visuallyReviewed": true,
+      "result": "Legible; IDs, complete hashes, prices and provenance notes visible; no clipping or error cells observed."
+    },
+    {
+      "name": "Tuerschild-Acrylglas-3mm-8x2_v6.xlsx.Ausfuehrung-2-Reimport.png",
+      "sheet": "Ausfuehrung",
+      "range": "A29:C47",
+      "sha256": "177dba2932ff42ba3f1fcc9f2b6cafdb73e83b16fb4c144677893a68b664de63",
+      "bytes": 176110,
+      "visuallyReviewed": true,
+      "result": "Legible; IDs, complete hashes, prices and provenance notes visible; no clipping or error cells observed."
+    },
+    {
+      "name": "Tuerschild-Acrylglas-3mm-8x2_v6.xlsx.Shopzuordnung-1-Reimport.png",
+      "sheet": "Shopzuordnung",
+      "range": "A1:F18",
+      "sha256": "a9fd7cf8934b011e704740be9658ba16b38beb7bc01cd223469f12f4b5bdfba1",
+      "bytes": 79702,
+      "visuallyReviewed": true,
+      "result": "Legible; IDs, complete hashes, prices and provenance notes visible; no clipping or error cells observed."
+    },
+    {
+      "name": "Tuerschild-Edelstahl-5x2_v5.xlsx.Ausfuehrung-1-Reimport.png",
+      "sheet": "Ausfuehrung",
+      "range": "A1:C28",
+      "sha256": "2207bce4578216ad4977768c30adafcf190924982804cb4606df8a2fbfff2101",
+      "bytes": 173443,
+      "visuallyReviewed": true,
+      "result": "Legible; IDs, complete hashes, prices and provenance notes visible; no clipping or error cells observed."
+    },
+    {
+      "name": "Tuerschild-Edelstahl-5x2_v5.xlsx.Ausfuehrung-2-Reimport.png",
+      "sheet": "Ausfuehrung",
+      "range": "A29:C47",
+      "sha256": "05ce624d7834cdaa8080789ff3d831af484b11287f2c314e9207a6d9e86f746e",
+      "bytes": 173704,
+      "visuallyReviewed": true,
+      "result": "Legible; IDs, complete hashes, prices and provenance notes visible; no clipping or error cells observed."
+    },
+    {
+      "name": "Tuerschild-Edelstahl-5x2_v5.xlsx.Shopzuordnung-1-Reimport.png",
+      "sheet": "Shopzuordnung",
+      "range": "A1:F13",
+      "sha256": "d76b34c517d88ec6a7928b574aee7cc7013dd82247b213a8bb927fede8a9eb72",
+      "bytes": 50230,
+      "visuallyReviewed": true,
+      "result": "Legible; IDs, complete hashes, prices and provenance notes visible; no clipping or error cells observed."
+    },
+    {
+      "name": "Tuerschild-Edelstahl-6x2_v5.xlsx.Ausfuehrung-1-Reimport.png",
+      "sheet": "Ausfuehrung",
+      "range": "A1:C28",
+      "sha256": "77f5abbea4a173f444df4afa43389980b0f03020e384d3ce9cdc832f68d7341f",
+      "bytes": 172953,
+      "visuallyReviewed": true,
+      "result": "Legible; IDs, complete hashes, prices and provenance notes visible; no clipping or error cells observed."
+    },
+    {
+      "name": "Tuerschild-Edelstahl-6x2_v5.xlsx.Ausfuehrung-2-Reimport.png",
+      "sheet": "Ausfuehrung",
+      "range": "A29:C47",
+      "sha256": "70208c308296cd4e3b4b0cbb9b52daee247a645d40e5e87e63c67992620e2c09",
+      "bytes": 173747,
+      "visuallyReviewed": true,
+      "result": "Legible; IDs, complete hashes, prices and provenance notes visible; no clipping or error cells observed."
+    },
+    {
+      "name": "Tuerschild-Edelstahl-6x2_v5.xlsx.Shopzuordnung-1-Reimport.png",
+      "sheet": "Shopzuordnung",
+      "range": "A1:F13",
+      "sha256": "10d5b0c49267f90627f29cba16d01eac9f4131d5a1eb76fe2a0b09e9522949e9",
+      "bytes": 50851,
+      "visuallyReviewed": true,
+      "result": "Legible; IDs, complete hashes, prices and provenance notes visible; no clipping or error cells observed."
+    },
+    {
+      "name": "Tuerschild-Edelstahl-8x2_v5.xlsx.Ausfuehrung-1-Reimport.png",
+      "sheet": "Ausfuehrung",
+      "range": "A1:C28",
+      "sha256": "376b821afd0a8e9d0685f223cff46ff5e014975f5bb26a988563b88c670f63ef",
+      "bytes": 173887,
+      "visuallyReviewed": true,
+      "result": "Legible; IDs, complete hashes, prices and provenance notes visible; no clipping or error cells observed."
+    },
+    {
+      "name": "Tuerschild-Edelstahl-8x2_v5.xlsx.Ausfuehrung-2-Reimport.png",
+      "sheet": "Ausfuehrung",
+      "range": "A29:C47",
+      "sha256": "d49213113d060d64245f106b02d9b90258feef43b89a71ed3c36990523274660",
+      "bytes": 175075,
+      "visuallyReviewed": true,
+      "result": "Legible; IDs, complete hashes, prices and provenance notes visible; no clipping or error cells observed."
+    },
+    {
+      "name": "Tuerschild-Edelstahl-8x2_v5.xlsx.Shopzuordnung-1-Reimport.png",
+      "sheet": "Shopzuordnung",
+      "range": "A1:F13",
+      "sha256": "86f6874c8bcd32f6e6b8408d1420f259e60f5608b607f1b0092bbdfeff7b7b6a",
+      "bytes": 50485,
+      "visuallyReviewed": true,
+      "result": "Legible; IDs, complete hashes, prices and provenance notes visible; no clipping or error cells observed."
+    }
+  ],
+  "automaticReportUnchanged": true
+}

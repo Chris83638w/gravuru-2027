@@ -1,0 +1,432 @@
+{
+  "readOnly": true,
+  "shop": "gravuru-design.myshopify.com",
+  "observedFrom": "2026-11-12T17:49:34.316Z",
+  "products": [
+    {
+      "id": "gid://shopify/Product/16203675074940",
+      "title": "Türschild Acrylglas 3 mm 5 × 2 cm (Schwarz/Anthrazit)",
+      "vendor": "Gravuru Design",
+      "status": "DRAFT",
+      "productType": "",
+      "descriptionHtml": "",
+      "tags": [
+        "gravuru-source-babc6506eceb6596e4227971402f48ceff92ea4c9803d1f78f94d39d42e85f0d"
+      ],
+      "totalInventory": 0,
+      "featuredImageUrl": null,
+      "images": [],
+      "totalVariants": 10,
+      "variants": [
+        {
+          "id": "gid://shopify/ProductVariant/58189617660284",
+          "title": "Schwarz / Ohne Bohrung",
+          "sku": null,
+          "price": "6.99",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58189617693052",
+          "title": "Schwarz / Selbstklebend – glatte Flächen",
+          "sku": null,
+          "price": "9.98",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58189617725820",
+          "title": "Schwarz / Selbstklebend – raue Flächen",
+          "sku": null,
+          "price": "10.98",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58189617758588",
+          "title": "Schwarz / Mit 2 Bohrlöchern",
+          "sku": null,
+          "price": "9.48",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58189617791356",
+          "title": "Schwarz / Mit 2 Schrauben",
+          "sku": null,
+          "price": "9.68",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58189617824124",
+          "title": "Anthrazit / Ohne Bohrung",
+          "sku": null,
+          "price": "6.99",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58189617856892",
+          "title": "Anthrazit / Selbstklebend – glatte Flächen",
+          "sku": null,
+          "price": "9.98",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58189617889660",
+          "title": "Anthrazit / Selbstklebend – raue Flächen",
+          "sku": null,
+          "price": "10.98",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58189617922428",
+          "title": "Anthrazit / Mit 2 Bohrlöchern",
+          "sku": null,
+          "price": "9.48",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58189617955196",
+          "title": "Anthrazit / Mit 2 Schrauben",
+          "sku": null,
+          "price": "9.68",
+          "inventoryQuantity": 0
+        }
+      ],
+      "currencyCode": "EUR"
+    },
+    {
+      "id": "gid://shopify/Product/16203715281276",
+      "title": "Türschild Acrylglas 3 mm 6 × 2 cm (Schwarz/Anthrazit)",
+      "vendor": "Gravuru Design",
+      "status": "DRAFT",
+      "productType": "",
+      "descriptionHtml": "",
+      "tags": [
+        "gravuru-source-8047045231424fe6d0b98309643c430d92c30cba7c60e2ede6c2acde6d57fb2f"
+      ],
+      "totalInventory": 0,
+      "featuredImageUrl": null,
+      "images": [],
+      "totalVariants": 10,
+      "variants": [
+        {
+          "id": "gid://shopify/ProductVariant/58190005666172",
+          "title": "Schwarz / Ohne Bohrung",
+          "sku": null,
+          "price": "7.99",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190005698940",
+          "title": "Schwarz / Selbstklebend – glatte Flächen",
+          "sku": null,
+          "price": "10.98",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190005731708",
+          "title": "Schwarz / Selbstklebend – raue Flächen",
+          "sku": null,
+          "price": "11.98",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190005764476",
+          "title": "Schwarz / Mit 2 Bohrlöchern",
+          "sku": null,
+          "price": "10.48",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190005797244",
+          "title": "Schwarz / Mit 2 Schrauben",
+          "sku": null,
+          "price": "10.68",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190005830012",
+          "title": "Anthrazit / Ohne Bohrung",
+          "sku": null,
+          "price": "7.99",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190005862780",
+          "title": "Anthrazit / Selbstklebend – glatte Flächen",
+          "sku": null,
+          "price": "10.98",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190005895548",
+          "title": "Anthrazit / Selbstklebend – raue Flächen",
+          "sku": null,
+          "price": "11.98",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190005928316",
+          "title": "Anthrazit / Mit 2 Bohrlöchern",
+          "sku": null,
+          "price": "10.48",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190005961084",
+          "title": "Anthrazit / Mit 2 Schrauben",
+          "sku": null,
+          "price": "10.68",
+          "inventoryQuantity": 0
+        }
+      ],
+      "currencyCode": "EUR"
+    },
+    {
+      "id": "gid://shopify/Product/16203716100476",
+      "title": "Türschild Acrylglas 3 mm 8 × 2 cm (Schwarz/Anthrazit)",
+      "vendor": "Gravuru Design",
+      "status": "DRAFT",
+      "productType": "",
+      "descriptionHtml": "",
+      "tags": [
+        "gravuru-source-45c97cb3d612e76cc1f5abf4679429177f99282ee8c2f46db0af93fa9238241b"
+      ],
+      "totalInventory": 0,
+      "featuredImageUrl": null,
+      "images": [],
+      "totalVariants": 10,
+      "variants": [
+        {
+          "id": "gid://shopify/ProductVariant/58190008156540",
+          "title": "Schwarz / Ohne Bohrung",
+          "sku": null,
+          "price": "8.49",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190008189308",
+          "title": "Schwarz / Selbstklebend – glatte Flächen",
+          "sku": null,
+          "price": "11.48",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190008222076",
+          "title": "Schwarz / Selbstklebend – raue Flächen",
+          "sku": null,
+          "price": "12.48",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190008254844",
+          "title": "Schwarz / Mit 2 Bohrlöchern",
+          "sku": null,
+          "price": "10.98",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190008287612",
+          "title": "Schwarz / Mit 2 Schrauben",
+          "sku": null,
+          "price": "11.18",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190008320380",
+          "title": "Anthrazit / Ohne Bohrung",
+          "sku": null,
+          "price": "8.49",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190008353148",
+          "title": "Anthrazit / Selbstklebend – glatte Flächen",
+          "sku": null,
+          "price": "11.48",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190008385916",
+          "title": "Anthrazit / Selbstklebend – raue Flächen",
+          "sku": null,
+          "price": "12.48",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190008418684",
+          "title": "Anthrazit / Mit 2 Bohrlöchern",
+          "sku": null,
+          "price": "10.98",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190008451452",
+          "title": "Anthrazit / Mit 2 Schrauben",
+          "sku": null,
+          "price": "11.18",
+          "inventoryQuantity": 0
+        }
+      ],
+      "currencyCode": "EUR"
+    },
+    {
+      "id": "gid://shopify/Product/16203716854140",
+      "title": "Türschild Edelstahl 5 × 2 cm (gebürstet, Gravur)",
+      "vendor": "Gravuru Design",
+      "status": "DRAFT",
+      "productType": "",
+      "descriptionHtml": "",
+      "tags": [
+        "gravuru-source-7d0a0e77ea15d1159417ff33c80decdd5b93d10a00471ecce4341beaa19b6af3"
+      ],
+      "totalInventory": 0,
+      "featuredImageUrl": null,
+      "images": [],
+      "totalVariants": 5,
+      "variants": [
+        {
+          "id": "gid://shopify/ProductVariant/58190010614140",
+          "title": "Ohne Bohrung",
+          "sku": null,
+          "price": "7.99",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190010646908",
+          "title": "Selbstklebend – glatte Flächen",
+          "sku": null,
+          "price": "10.98",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190010679676",
+          "title": "Selbstklebend – raue Flächen",
+          "sku": null,
+          "price": "11.98",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190010712444",
+          "title": "Mit 2 Bohrlöchern",
+          "sku": null,
+          "price": "10.48",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190010745212",
+          "title": "Mit 2 Schrauben",
+          "sku": null,
+          "price": "10.68",
+          "inventoryQuantity": 0
+        }
+      ],
+      "currencyCode": "EUR"
+    },
+    {
+      "id": "gid://shopify/Product/16203717804412",
+      "title": "Türschild Edelstahl 6 × 2 cm (gebürstet, Gravur)",
+      "vendor": "Gravuru Design",
+      "status": "DRAFT",
+      "productType": "",
+      "descriptionHtml": "",
+      "tags": [
+        "gravuru-source-e608813a0ef3371a44cc1b2d2e2655f4a4ab2d718773e86c52efda1c9b94626a"
+      ],
+      "totalInventory": 0,
+      "featuredImageUrl": null,
+      "images": [],
+      "totalVariants": 5,
+      "variants": [
+        {
+          "id": "gid://shopify/ProductVariant/58190020608380",
+          "title": "Ohne Bohrung",
+          "sku": null,
+          "price": "8.79",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190020641148",
+          "title": "Selbstklebend – glatte Flächen",
+          "sku": null,
+          "price": "11.78",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190020673916",
+          "title": "Selbstklebend – raue Flächen",
+          "sku": null,
+          "price": "12.78",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190020706684",
+          "title": "Mit 2 Bohrlöchern",
+          "sku": null,
+          "price": "11.28",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190020739452",
+          "title": "Mit 2 Schrauben",
+          "sku": null,
+          "price": "11.48",
+          "inventoryQuantity": 0
+        }
+      ],
+      "currencyCode": "EUR"
+    },
+    {
+      "id": "gid://shopify/Product/16203718459772",
+      "title": "Türschild Edelstahl 8 × 2 cm (gebürstet, Gravur)",
+      "vendor": "Gravuru Design",
+      "status": "DRAFT",
+      "productType": "",
+      "descriptionHtml": "",
+      "tags": [
+        "gravuru-source-54ba95eb7eefa8961fc67dca5376b7424119c55e7b7d8f70d2b40fae5827e893"
+      ],
+      "totalInventory": 0,
+      "featuredImageUrl": null,
+      "images": [],
+      "totalVariants": 5,
+      "variants": [
+        {
+          "id": "gid://shopify/ProductVariant/58190028734844",
+          "title": "Ohne Bohrung",
+          "sku": null,
+          "price": "9.49",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190028767612",
+          "title": "Selbstklebend – glatte Flächen",
+          "sku": null,
+          "price": "12.48",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190028800380",
+          "title": "Selbstklebend – raue Flächen",
+          "sku": null,
+          "price": "13.48",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190028833148",
+          "title": "Mit 2 Bohrlöchern",
+          "sku": null,
+          "price": "11.98",
+          "inventoryQuantity": 0
+        },
+        {
+          "id": "gid://shopify/ProductVariant/58190028865916",
+          "title": "Mit 2 Schrauben",
+          "sku": null,
+          "price": "12.18",
+          "inventoryQuantity": 0
+        }
+      ],
+      "currencyCode": "EUR"
+    }
+  ],
+  "errors": [],
+  "observedTo": "2026-11-12T17:49:36.390Z"
+}

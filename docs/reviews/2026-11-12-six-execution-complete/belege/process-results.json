@@ -1,0 +1,23 @@
+{
+  "schema": "issue230-six-execution-process-results/v1",
+  "build": {
+    "exitCode": 0,
+    "log": "build.log"
+  },
+  "graftAndPreservation": {
+    "exitCode": 0,
+    "log": "graft.log"
+  },
+  "reimport": {
+    "exitCode": 3221226505,
+    "log": "reimport.log",
+    "completedWorkbooks": 6,
+    "completedRenders": 18,
+    "reportWritten": true,
+    "reportAllPassed": true,
+    "cleanProcessExit": false,
+    "causeEstablished": false,
+    "repeated": false
+  },
+  "scope": "Reimport content/exports completed before the nonzero process termination. Do not describe the entire runtime process as successful."
+}

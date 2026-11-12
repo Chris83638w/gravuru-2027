@@ -1,0 +1,205 @@
+{
+  "schema": "issue230-main-final-connection-source-pins/v1",
+  "commit": "e8c5cea73c351513816283f1b1cd4f97156c1c11",
+  "files": [
+    {
+      "file": "ml-update.mjs",
+      "bytes": 18143,
+      "sha256": "098ae9869ca94e7c4467f01212565a3dda53d6e4b5dc35ab251f8b9b9140c718",
+      "gitBlob": "d7970b4054d998e697681a74a2e95b5c31e98449",
+      "matches": true
+    },
+    {
+      "file": "ml-connections.mjs",
+      "bytes": 12176,
+      "sha256": "ecc6a54f074dbeae155f243fc9470cc556d0d1aa3323e80181f7e5bd435891ee",
+      "gitBlob": "176cc41ed6f9af50141b4c0d813ae4750b276632",
+      "matches": true
+    },
+    {
+      "file": "ml-lauf.mjs",
+      "bytes": 32064,
+      "sha256": "b075fc960ec5e8bd158e15c9a851e5c297076e98cd7236ef3e26a39492960745",
+      "gitBlob": "33a24b18a6eaa9be8bc36d2ca03ee6d11f6793e5",
+      "matches": true
+    }
+  ],
+  "packages": [
+    {
+      "directory": "main-shop-binding-operator-v2",
+      "manifestSha256": "de182709cb4c004d338f666186cfa2785b755a708605adcf4d58b0c25721f416",
+      "matches": true,
+      "files": [
+        {
+          "file": "main-operator.mjs",
+          "matches": true
+        },
+        {
+          "file": "main-pricing.mjs",
+          "matches": true
+        },
+        {
+          "file": "gateways.mjs",
+          "matches": true
+        },
+        {
+          "file": "journal.mjs",
+          "matches": true
+        },
+        {
+          "file": "operator.mjs",
+          "matches": true
+        },
+        {
+          "file": "main-operator.test.mjs",
+          "matches": true
+        },
+        {
+          "file": "main-pricing.test.mjs",
+          "matches": true
+        },
+        {
+          "file": "README.md",
+          "matches": true
+        },
+        {
+          "file": "baseline-manifest.json",
+          "matches": true
+        },
+        {
+          "file": "dependency-pins.json",
+          "matches": true
+        },
+        {
+          "file": "pricing-pins.json",
+          "matches": true
+        },
+        {
+          "file": "variant-mapping.preview.json.gz",
+          "matches": true
+        },
+        {
+          "file": "tests-v2-final.log",
+          "matches": true
+        },
+        {
+          "file": "function-freshness-tests.log",
+          "matches": true
+        },
+        {
+          "file": "pricing-journal-test.log",
+          "matches": true
+        },
+        {
+          "file": "pricing-proof-local.json",
+          "matches": true
+        },
+        {
+          "file": "pricing-value.preview.json",
+          "matches": true
+        },
+        {
+          "file": "local-checks.json",
+          "matches": true
+        },
+        {
+          "file": "function-build-reference.json",
+          "matches": true
+        },
+        {
+          "file": "fixtures/personalization.value.json",
+          "matches": true
+        },
+        {
+          "file": "fixtures/r1-preisvertraege-gruppen.json",
+          "matches": true
+        },
+        {
+          "file": "fixtures/varianten-808.csv",
+          "matches": true
+        },
+        {
+          "file": "fixtures/app-personalization-lesebeleg.json",
+          "matches": true
+        },
+        {
+          "file": "fixtures/function-build-20261108/compiled-proof.json",
+          "matches": true
+        },
+        {
+          "file": "fixtures/function-build-20261108/app-preservation-receipt.json",
+          "matches": true
+        }
+      ]
+    },
+    {
+      "directory": "main-production-readonly-connection",
+      "manifestSha256": "5eea1f5815f93689b2cd6f0a2b0b54895c90e4b13b3f2e4208818f15e9168d01",
+      "matches": true,
+      "files": [
+        {
+          "file": "adapter-factory.mjs",
+          "matches": true
+        },
+        {
+          "file": "readonly-target.mjs",
+          "matches": true
+        },
+        {
+          "file": "source-pins.json",
+          "matches": true
+        },
+        {
+          "file": "readonly-target.test.mjs",
+          "matches": true
+        },
+        {
+          "file": "tests.log",
+          "matches": true
+        },
+        {
+          "file": "scoped-history-test.log",
+          "matches": true
+        },
+        {
+          "file": "README.md",
+          "matches": true
+        },
+        {
+          "file": "local-checks.json",
+          "matches": true
+        }
+      ]
+    },
+    {
+      "directory": "function-version-reader",
+      "manifestSha256": "2a4ddc33fa888c458312ee0d9d0623b082c7dad72bdeb3fcfaf7488379a57d83",
+      "matches": true,
+      "files": [
+        {
+          "file": "active-version-readonly.mjs",
+          "matches": true
+        },
+        {
+          "file": "active-version-readonly.test.mjs",
+          "matches": true
+        },
+        {
+          "file": "README.md",
+          "matches": true
+        },
+        {
+          "file": "tests.log",
+          "matches": true
+        },
+        {
+          "file": "source-checks.json",
+          "matches": true
+        }
+      ]
+    }
+  ],
+  "callbackSha256": "a19760739bd0ece91d56becc6c645e4e9cfc3ba886cb9e43d85287fbb42b1839",
+  "callbackMatches": true,
+  "executed": false
+}

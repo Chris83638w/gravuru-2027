@@ -1,0 +1,10 @@
+✔ Function probe accepts fresh timestamp/proof hash on identical release and caches only its bounded observation (2.0149ms)
+✔ Function probe rejects real identity drift and stale observations (0.5059ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 665.4256

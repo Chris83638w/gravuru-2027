@@ -1,0 +1,18 @@
+{
+ "schema": "gravuru-hauptacryl-app-preisvertrag-lesebeleg/v1 (Abschrift der Ausgabe von pv-shopify-lesen.mjs; Serverdatei sha 92830db01baab249317edc7de8f5dde3d34a185763b2819304f71cb5f8568e74)",
+ "gelesen": "2026-11-12T10:10:56.696Z",
+ "nurLesend": true,
+ "mutationen": 0,
+ "identitaet": {"shopDomain": "gravuru-design.myshopify.com", "waehrung": "EUR", "appId": "gid://shopify/App/423276544001", "appTitel": "Gravuru Konfigurator", "appHandle": "gravuru-konfigurator", "apiVersionAngefragt": "2026-07", "apiVersionAntwort": "2026-07",
+  "scopes": ["read_cart_transforms", "read_files", "read_metaobjects", "read_orders", "read_products", "read_publications", "write_cart_transforms", "write_files", "write_metaobjects", "write_products", "write_publications"]},
+ "produkt": {"id": "gid://shopify/Product/16190784602492", "status": "DRAFT", "updatedAt": "2026-11-12T06:30:19Z"},
+ "metafeld": {"id": "gid://shopify/Metafield/200717188759932", "namespace": "app--423276544001", "key": "personalization", "type": "json", "ownerType": "PRODUCT",
+  "compareDigest": "66b0aa6d8ab008aa31bc3ab39cec8d10760061bab055c3d990e74b882ed6500d", "createdAt": "2026-11-03T14:53:03Z", "updatedAt": "2026-11-03T14:53:03Z",
+  "wertBytes": 18108, "wertSha256": "7c997f49153d43a937a75501ed5bc016eda1003e129d1735528b801ee7962cf5", "wertDatei": "personalization.value.json (bytegleich)",
+  "inhalt": {"schema": "gravuru-personalization-pricing/v1", "enabled": true, "productId": "gid://shopify/Product/16190784602492", "revision": 1, "currency": "EUR", "varianten": 808, "extraMotifCents": 169, "extraPhotoCents": 0, "extraLogoCents": null,
+   "quantityTiers": [{"minQuantity": 3, "percentOff": 5}, {"minQuantity": 5, "percentOff": 10}, {"minQuantity": 10, "percentOff": 15}], "quantityTierScope": "complete-unit", "history": null, "legacyOffers": null, "optionPrices": null,
+   "schluessel": ["schema", "enabled", "productId", "revision", "currency", "variants", "extraMotifCents", "extraPhotoCents", "quantityTiers", "quantityTierScope"]}},
+ "functions": [{"id": "01a0e45d-c47f-70b9-9d5a-a2c72120ae01", "title": "gravuru-personalization-price", "apiType": "cart_transform", "apiVersion": "2026-07", "app": {"id": "gid://shopify/App/423276544001", "title": "Gravuru Konfigurator"}}],
+ "cartTransforms": [{"id": "gid://shopify/CartTransform/172523900", "functionId": "01a0e45d-c47f-70b9-9d5a-a2c72120ae01", "blockOnFailure": true}],
+ "serverOrdner": "private/sicherungen-db/preisvertrag-shopify-20261112T101056Z"
+}

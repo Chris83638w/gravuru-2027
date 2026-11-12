@@ -1,0 +1,711 @@
+{
+ "schema": "gravuru-hauptacryl-r1-preisvertraege-gruppen/v1",
+ "vertragsform": {
+  "productId": "gid://shopify/Product/16190784602492",
+  "revision": "1",
+  "baseCents": "<baseCents je Variante>",
+  "extraMotifCents": 169,
+  "extraPhotoCents": 0,
+  "quantityTiers": [
+   {
+    "minQuantity": 3,
+    "percentOff": 5
+   },
+   {
+    "minQuantity": 5,
+    "percentOff": 10
+   },
+   {
+    "minQuantity": 10,
+    "percentOff": 15
+   }
+  ],
+  "quantityTierScope": "complete-unit"
+ },
+ "gruppen": [
+  {
+   "baseCents": 699,
+   "ziel": 0,
+   "rest": 2,
+   "normalisiertSha256": "df0b25f3a365dbf7df70e9a4ea93380fc3722f1318b5c528e097afa902d2d28c"
+  },
+  {
+   "baseCents": 799,
+   "ziel": 2,
+   "rest": 2,
+   "normalisiertSha256": "7bdd19a2e2282364a088426e76575d65dc3d1be95bd07ed1c3bfa3b0b976fafa"
+  },
+  {
+   "baseCents": 849,
+   "ziel": 0,
+   "rest": 2,
+   "normalisiertSha256": "c81aa54b0e47bbabebc57db114a6724ddb0e114af7e5fb1bdb53e849e44a77da"
+  },
+  {
+   "baseCents": 899,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "22c7df02c09e6bfb474b92b138662c0b01eef90547fa78fa8d52317515fda101"
+  },
+  {
+   "baseCents": 948,
+   "ziel": 0,
+   "rest": 2,
+   "normalisiertSha256": "1022dc4508b24753621c66d4f71115de3216668a375ae733f6a3a281de6464cd"
+  },
+  {
+   "baseCents": 998,
+   "ziel": 0,
+   "rest": 4,
+   "normalisiertSha256": "6e9faba58712efec88f0badf237d8416ebb0487b3120307e1a55aca46e1660fb"
+  },
+  {
+   "baseCents": 999,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "3de8d74ba14527905a9ddcbdc6d445d57c761a7b9ce51c00ef79d1924476c6af"
+  },
+  {
+   "baseCents": 1048,
+   "ziel": 2,
+   "rest": 2,
+   "normalisiertSha256": "1b578e35581dbc9eec2cd8b76d918a5e92aea5e1ba6d0f17c36c4b99e63605f7"
+  },
+  {
+   "baseCents": 1098,
+   "ziel": 4,
+   "rest": 8,
+   "normalisiertSha256": "e065bb7efc5081d1be7799c7d9e0cec03217546fc99e4ad4983de911e75e52e6"
+  },
+  {
+   "baseCents": 1148,
+   "ziel": 4,
+   "rest": 4,
+   "normalisiertSha256": "e0d3f086ceb06b46cada2d486881054ff836525a3870b487019d1836b9d0e680"
+  },
+  {
+   "baseCents": 1198,
+   "ziel": 10,
+   "rest": 2,
+   "normalisiertSha256": "92ffeb8c7dac25052731667b7df6afcd458d00498d06fd798c902894e5bcf3fb"
+  },
+  {
+   "baseCents": 1199,
+   "ziel": 16,
+   "rest": 0,
+   "normalisiertSha256": "637846ade919c39ab71fddd8c46289f4b5d1b4f72f5bc31c0c4936e8ea95a8e2"
+  },
+  {
+   "baseCents": 1248,
+   "ziel": 4,
+   "rest": 2,
+   "normalisiertSha256": "f90d6de30e497a838ac2f1692ec01efc814560a88ba093ff906e383809e525f7"
+  },
+  {
+   "baseCents": 1298,
+   "ziel": 12,
+   "rest": 0,
+   "normalisiertSha256": "1d401b0748bc67ce5ab318a5079c0e6dd02d0061c2ea47803aa1a91bf4714b20"
+  },
+  {
+   "baseCents": 1299,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "6ae8d506be5b8595983d8afa37ddf1c3dfc8fb85f26e285cbca6cae275085c7f"
+  },
+  {
+   "baseCents": 1398,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "d25abfa87e6a676fd68106d962cc0f5804ba8bd9cc83a1a25111bff123f7ffe1"
+  },
+  {
+   "baseCents": 1399,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "fb529046b465e3b5076d6a85ed926fe39c064883019341025b6595ebc6353102"
+  },
+  {
+   "baseCents": 1448,
+   "ziel": 16,
+   "rest": 0,
+   "normalisiertSha256": "d64c8c2dbffbb09e72b24de78043a6d9382c0e607df596031e8548830a771e8b"
+  },
+  {
+   "baseCents": 1498,
+   "ziel": 32,
+   "rest": 0,
+   "normalisiertSha256": "4813d2b398c620fb6996fb48702d9867fa400de782a83f0ac5bde021698fe896"
+  },
+  {
+   "baseCents": 1499,
+   "ziel": 14,
+   "rest": 0,
+   "normalisiertSha256": "2f61710a98f733d55da19d581ba9325c7a9c873669ca88eb14a796d99df1687f"
+  },
+  {
+   "baseCents": 1548,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "57847431ee70e458c98ed06b8d6be180fda26ddbcf6e53977e6e1c3e4332948e"
+  },
+  {
+   "baseCents": 1598,
+   "ziel": 24,
+   "rest": 0,
+   "normalisiertSha256": "43443905072d80f3fc3481773c16ec1a34e285c1afa3c6e714880c8f8448e1cf"
+  },
+  {
+   "baseCents": 1648,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "331a7d6679d95bd66b6befb0163ef9979b31e897acc9bf45495d5dc23d2705f8"
+  },
+  {
+   "baseCents": 1698,
+   "ziel": 8,
+   "rest": 0,
+   "normalisiertSha256": "d2b953497556a4d2d6f2606972935dd97d81e35d6886afe361e9e316fb32dad8"
+  },
+  {
+   "baseCents": 1699,
+   "ziel": 6,
+   "rest": 0,
+   "normalisiertSha256": "a664ed5580cf6bcd4edbe08b8d32034d30121b23c84fc5df7ce406198ea89646"
+  },
+  {
+   "baseCents": 1748,
+   "ziel": 14,
+   "rest": 0,
+   "normalisiertSha256": "51bd819663b6b3258a9816fe3548294c34d270970814dcd8e63bcb87576c8ae4"
+  },
+  {
+   "baseCents": 1798,
+   "ziel": 30,
+   "rest": 0,
+   "normalisiertSha256": "45ef5758edaa79bbe05a161e4a29159b81c1376f751f61169ed783114674961d"
+  },
+  {
+   "baseCents": 1799,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "1864c8c22502d8318ae88fe89e6d3e925ba225c1c2fc2d329a2a3b41fc591c32"
+  },
+  {
+   "baseCents": 1898,
+   "ziel": 14,
+   "rest": 0,
+   "normalisiertSha256": "00a1306a54fa738187a03a6de3c52fb3a93a16233605ccc10af410837824ca2b"
+  },
+  {
+   "baseCents": 1899,
+   "ziel": 16,
+   "rest": 0,
+   "normalisiertSha256": "1b0e86015fbd85c5d5efcd0a4e9d9b1ba2b3571337b98427dd9561be32d53581"
+  },
+  {
+   "baseCents": 1948,
+   "ziel": 6,
+   "rest": 0,
+   "normalisiertSha256": "e63531d372d91506b987e129ef8096143c2af7cf86a73cc9fc5ea8bbe1020269"
+  },
+  {
+   "baseCents": 1998,
+   "ziel": 12,
+   "rest": 0,
+   "normalisiertSha256": "4b2f7edfa06ab00aeeb00726f1c5d6acce5ed7c1ee35fa691c39900160ff8863"
+  },
+  {
+   "baseCents": 2048,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "42b0832b63ea487ddadbeb2e144fc287bb677ec00ca79429e4a4be4b4bc201df"
+  },
+  {
+   "baseCents": 2098,
+   "ziel": 10,
+   "rest": 0,
+   "normalisiertSha256": "1b159c565e3b3a8631caf9fad218348a0d16132e69be9e11342a7a5871f8869e"
+  },
+  {
+   "baseCents": 2148,
+   "ziel": 16,
+   "rest": 0,
+   "normalisiertSha256": "0e83e472661227186a8fb380320ba14d71c9043d04c7280107eb0434c7f9d3f8"
+  },
+  {
+   "baseCents": 2198,
+   "ziel": 34,
+   "rest": 0,
+   "normalisiertSha256": "029417a7e309bed669dbd9a1d2e1993b159f264defe5e6631d12f0c766d72023"
+  },
+  {
+   "baseCents": 2199,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "84568f07000484dcbfcf8a9c2ded3ef31d218ae6f74f4a079993eda63d98dfad"
+  },
+  {
+   "baseCents": 2298,
+   "ziel": 16,
+   "rest": 0,
+   "normalisiertSha256": "29786050184ff2736fc419f266f128dbbde05e6e3907a539e400c096cfb9b15e"
+  },
+  {
+   "baseCents": 2299,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "9cf02b6d2be5fe6a6f2ec339751f747176c6b34bbe21a33cd95dd31afd2135c4"
+  },
+  {
+   "baseCents": 2399,
+   "ziel": 10,
+   "rest": 0,
+   "normalisiertSha256": "9ffd8702c4141a9eb2106376b64b0e515f8c6c7d17470cab1c0d6be155d8f555"
+  },
+  {
+   "baseCents": 2448,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "b400491ad5bedbd8f8fbc619aa0b07d71bc23ab2eb97b06474b79a417bd02690"
+  },
+  {
+   "baseCents": 2498,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "d7d1d84e1ebdce9dfb4e94ff9a8abb62bdabb3cb3278c892322b4c0cd5ed24c8"
+  },
+  {
+   "baseCents": 2499,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "62e2ee434158702cc7b64d3294415b60c810e2058e0156216bb017d472f78b00"
+  },
+  {
+   "baseCents": 2548,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "ba190bae054cebb07e538a1bc2b667fd8cda1e374c422289ad569a484e4cffbb"
+  },
+  {
+   "baseCents": 2598,
+   "ziel": 6,
+   "rest": 0,
+   "normalisiertSha256": "3810c470da0ef7d216d99890200d0baafb1bc1b8453e97306a3af69702baacb4"
+  },
+  {
+   "baseCents": 2599,
+   "ziel": 12,
+   "rest": 0,
+   "normalisiertSha256": "118a146020c02767f29d071f5b9466bf07122a319aa696fafd45d57e01a289fb"
+  },
+  {
+   "baseCents": 2648,
+   "ziel": 10,
+   "rest": 0,
+   "normalisiertSha256": "c47164a6ae15f4d6653721b449580062a52e4f9a1434af84765a81ee9d3967b5"
+  },
+  {
+   "baseCents": 2698,
+   "ziel": 22,
+   "rest": 0,
+   "normalisiertSha256": "9b8e8963501d888cba0ec096d144873aa834511d2d770fb961e2285a5af787e3"
+  },
+  {
+   "baseCents": 2699,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "1a153bac2168ed59bd389ef9555d1a963faf0c85355b4065b3f48c070adaba8f"
+  },
+  {
+   "baseCents": 2748,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "2a5ded7f4c1ca9447aa8883ba1ec1b79b8c07b9f906fa66b1b2697bb5a7bfa11"
+  },
+  {
+   "baseCents": 2798,
+   "ziel": 18,
+   "rest": 0,
+   "normalisiertSha256": "83b41d494d580cc0d12785d26fa0c1121784c31aa4742a3a91c36a71b20bcc6e"
+  },
+  {
+   "baseCents": 2848,
+   "ziel": 12,
+   "rest": 0,
+   "normalisiertSha256": "39fa8793d5c5ef5ed3c1278c47562dbb411f0f4d6724ddadcf8d69ddcea6f481"
+  },
+  {
+   "baseCents": 2898,
+   "ziel": 28,
+   "rest": 0,
+   "normalisiertSha256": "95030073983bfaffbf761a1eceb9fb36b0451fff5de6d749fc299c104bd81412"
+  },
+  {
+   "baseCents": 2899,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "56cc963df3430c5e982b13b252b28841727368b528829baaf00e53d60875d8cf"
+  },
+  {
+   "baseCents": 2948,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "d43bbf7acc2c2e7e4f9021c8a3490c1955751b515aef764a8c6708ce4bc5af64"
+  },
+  {
+   "baseCents": 2988,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "30b373c811a6059e21db0bb7b83d50560c26a6bc3906f9c4ae3d06fca6c41e7e"
+  },
+  {
+   "baseCents": 2998,
+   "ziel": 18,
+   "rest": 0,
+   "normalisiertSha256": "da40d89ac5e5b3846409c66f3bfb102d802e695f73471d99543699755a16166c"
+  },
+  {
+   "baseCents": 2999,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "97286f2089a75b1c19a5957592e4786d96ad194505d597644377fcbad2c7cd26"
+  },
+  {
+   "baseCents": 3038,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "f40e503435ddbaccb0549c77878a27b347683f207941d21a28b5a3b934e5dd44"
+  },
+  {
+   "baseCents": 3098,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "3428a1bcf3790033f8d3acd9cf4b4ab6c9273d7d28f4626199ae545ec4ff8f1e"
+  },
+  {
+   "baseCents": 3148,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "74a1d8fb0d1da3f7fd2eadb344e50a5251d6fa35a1ce82e5b1c5d0be813c06ac"
+  },
+  {
+   "baseCents": 3198,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "9fdeb8391b8648a66db4bfa465e92ad15df43904b8b38e4aaaad31fc4e93dba9"
+  },
+  {
+   "baseCents": 3248,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "69aca19b5f6ab6018930dbf76505672a325d26be985c2156d1dc185438831376"
+  },
+  {
+   "baseCents": 3298,
+   "ziel": 6,
+   "rest": 0,
+   "normalisiertSha256": "119308fadfbd649cb26d2b3b9b8d4e37eddb9c4a49bcf3fd1c29209b01816b46"
+  },
+  {
+   "baseCents": 3299,
+   "ziel": 14,
+   "rest": 0,
+   "normalisiertSha256": "9eb294f574ea51a6f90b7b68d0fcfc47d44e17d419141f7af283411b7bbe0bd3"
+  },
+  {
+   "baseCents": 3398,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "583fac891d40aee3f20d711810fa9c5e1212784511000a30d6191252eb94e0ac"
+  },
+  {
+   "baseCents": 3399,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "a9f09785de6eb5887b32a545cd61ffdbd2cf8e8f1c38cb3155af119ed3161242"
+  },
+  {
+   "baseCents": 3548,
+   "ziel": 12,
+   "rest": 0,
+   "normalisiertSha256": "14a0850ff78bd8c932a711a0b3fcd3aa456f8473205b30a1eeff3a7ce742560e"
+  },
+  {
+   "baseCents": 3588,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "0d68355a878fc6f21c3690d9e89324fa9f866a8f99ac435fd4ac35e2dcabe2c5"
+  },
+  {
+   "baseCents": 3598,
+   "ziel": 26,
+   "rest": 0,
+   "normalisiertSha256": "1463819751ea4bf0345ab7bcdc6fbebdd07af8a7a1e26dfb3a7cbaf5cec03238"
+  },
+  {
+   "baseCents": 3638,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "e388b42043df9efe3185208b696453a1c7f703793e054770e7a210e320591eb4"
+  },
+  {
+   "baseCents": 3648,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "4a6f1bb10e28256828369b6e8da3af9a4f35ca0d026e11825b3046fe0b65f2bd"
+  },
+  {
+   "baseCents": 3698,
+   "ziel": 18,
+   "rest": 0,
+   "normalisiertSha256": "21ebd542f613d4629766b072d7896ab8bb2d7dc4f4a2fdf2787943da8fc5feea"
+  },
+  {
+   "baseCents": 3798,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "5dd0cbdc63111c1853c0abf280266dbe5636ba6bbd307ba78f5778e3481c583e"
+  },
+  {
+   "baseCents": 3799,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "a7fe24e9dd2d8c8ec4f7873e8e64d6c8a9bc9d183b8024a5015409b2256a2a0f"
+  },
+  {
+   "baseCents": 3899,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "9e55a89a6460b150626e0b5daf5f529f7c5f2ac1dafb28e240a92a59d2cbb177"
+  },
+  {
+   "baseCents": 3999,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "f4a17a7182b44a479ef240b9400362e83e382116f53df22a66cec89a03c06557"
+  },
+  {
+   "baseCents": 4048,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "7e5bb4019c9cece553be426c9b8e0f7918e8f794769b173ef154550a5626340c"
+  },
+  {
+   "baseCents": 4098,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "62c73a87e6bb4232af1afc4424189670e69b807fe4c0a145d2ac07a68d01dc71"
+  },
+  {
+   "baseCents": 4148,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "867cb5df272a4dda367d98aa13c5b2616897583b958e9bdb41252bbc6c7c062f"
+  },
+  {
+   "baseCents": 4198,
+   "ziel": 6,
+   "rest": 0,
+   "normalisiertSha256": "537173436b94f537d0c8114369ea46fc3311ed6e3e3868c3ec84e299680b1792"
+  },
+  {
+   "baseCents": 4248,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "6262251f99c6397d374cc87437e16187013b936fa607f01a05fb594c6b4c2a48"
+  },
+  {
+   "baseCents": 4298,
+   "ziel": 6,
+   "rest": 0,
+   "normalisiertSha256": "d009a623061f0c2105be03c2b73c38dc9628eee546e71fd337dccbe2769581b2"
+  },
+  {
+   "baseCents": 4299,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "d74770615b6b669075977ad1d6be332a7facefdb97f21d17161542b07b7a3c50"
+  },
+  {
+   "baseCents": 4398,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "95cfc1ae8ae7240c6e844e4882862ea4c11f487c6fdb6b58a2a68fdffb6af21a"
+  },
+  {
+   "baseCents": 4499,
+   "ziel": 10,
+   "rest": 0,
+   "normalisiertSha256": "0c78c3945b405b46c0d1131834914c2385688b2686df8e90dbda55112cc31988"
+  },
+  {
+   "baseCents": 4588,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "f1d43c60db800176ce09949a959dee1b9e97caa434c0918fb8a83567435f383b"
+  },
+  {
+   "baseCents": 4598,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "291ff238c31d163ce406818e936c7b9d7c2d508a28c27137c366ba9582e2484d"
+  },
+  {
+   "baseCents": 4638,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "ccb25c72cc8f4a840b0d6657105d9f721536f646be25f65c978bb492158b514e"
+  },
+  {
+   "baseCents": 4698,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "5469f4c1f3f1885d871c9e5968ca7f8a26ae34e856f1ab700f2eeed3b3e13fb6"
+  },
+  {
+   "baseCents": 4748,
+   "ziel": 10,
+   "rest": 0,
+   "normalisiertSha256": "2b735c768a76e289d9e5f7f02d05ebe932b5d0c7f57f42a4fd50f877fca56a0d"
+  },
+  {
+   "baseCents": 4788,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "874c3492cbe77a104ac65572e1d49485d19f5bc1f4e4bad238f0c693009dd7a7"
+  },
+  {
+   "baseCents": 4798,
+   "ziel": 20,
+   "rest": 0,
+   "normalisiertSha256": "6c9decb64765c51b4126caa1e2c851e4bfed9f50a507c64f92823d0070540b3b"
+  },
+  {
+   "baseCents": 4838,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "a5df2dafc53070b829a66b22b24c6fcfa02401baf72d168b923f05a6fa77f560"
+  },
+  {
+   "baseCents": 4898,
+   "ziel": 10,
+   "rest": 0,
+   "normalisiertSha256": "34526dd43c2f89540ce425060bc17f9312ba534c57cf562c430637d3dd856057"
+  },
+  {
+   "baseCents": 4899,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "67ed2474bec6d55e095192dac560895177f38029b7035d6a5c8e8ffc7bdd7f40"
+  },
+  {
+   "baseCents": 5148,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "802e89f0470cbd1c4d623987216859a38a352dd8d5e000539c5cd459637c9a0c"
+  },
+  {
+   "baseCents": 5198,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "5f8469e90adb99febce9d4ead90bf093683a3212fa97fb7b4d774c85fa3f5776"
+  },
+  {
+   "baseCents": 5298,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "c23968921695eac9f505a9014ee1294d931ccdb18ca1ece36a99df21c5406d5a"
+  },
+  {
+   "baseCents": 5999,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "f483b21ccc5eae87ecfc6b96e8b67be697ce8f16746d8d80f3658e0d8f2dcf9a"
+  },
+  {
+   "baseCents": 6288,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "a8186bb862e8e76052d88cec3cb86831f32d534dee1c688e86a1c3890add2ae1"
+  },
+  {
+   "baseCents": 6298,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "cc7f1fc0792fe31fc2e5a4f6e3b2ed18fe4fec95da5ad3518d4f4aa3a530ffbe"
+  },
+  {
+   "baseCents": 6338,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "4c3f2ca9fb4ddadf2e9677c18fd33a457a66128371e2edc1a50ba2f25e654f8f"
+  },
+  {
+   "baseCents": 6398,
+   "ziel": 2,
+   "rest": 0,
+   "normalisiertSha256": "73c6c816fe30322b25626a4305b586f49f7df44af946cd6b584a61a2b6843c2f"
+  },
+  {
+   "baseCents": 6499,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "08592d53de442dae847bae60324c0e5b90e81dd5a463db8d21dadcea29ffa119"
+  },
+  {
+   "baseCents": 6788,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "c35fb2f10377f1a94a8843e3ea23e8ab19d19bdeff728e497f121b7e24047724"
+  },
+  {
+   "baseCents": 6798,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "9cfc96c218ad456161034721da26698832b0910f096f3524c099d7d9850e6287"
+  },
+  {
+   "baseCents": 6838,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "173adbab1557f78d1a047f7f57b7320a39881adead89b9ade43afc92a51100a1"
+  },
+  {
+   "baseCents": 6898,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "b2ccb152b6fe64238cf93491d1abd4e1c8e267a693c687fba63f9f8931ec7e24"
+  },
+  {
+   "baseCents": 7399,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "44b41c9d4d4b0c728835b7f99fbf59c219e67bda52b6e18ce270932ca2a18852"
+  },
+  {
+   "baseCents": 7688,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "adced2a3844489b0878ac57d49477926cbea97b037d3abe9f8af025e6c7d8156"
+  },
+  {
+   "baseCents": 7698,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "4c287628a357db38e6d0832f059a5050b4bb9faecacbafb08f47d120527076eb"
+  },
+  {
+   "baseCents": 7738,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "755b87c76e590b06ac354eda50e57453a01d76a4ac4de1aafe59946c7c823057"
+  },
+  {
+   "baseCents": 7798,
+   "ziel": 4,
+   "rest": 0,
+   "normalisiertSha256": "3bb779565f622993fc1da36ec293bf4d6f13e11947b6b611e0c1171f4fdabb02"
+  }
+ ]
+}

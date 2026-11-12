@@ -1,0 +1,73 @@
+{
+  "schema": "issue230-main-operator-v2-local-checks/v1",
+  "node": "v24.20.0",
+  "execPath": "C:\\Program Files\\nodejs\\node.exe",
+  "appFilesChanged": 0,
+  "liveWrites": 0,
+  "realDatabaseOpened": false,
+  "hostIntegrationProven": false,
+  "activeFunctionVerified": false,
+  "tests": [
+    {
+      "log": "tests-v2-final.log",
+      "tests": 33,
+      "passed": 33,
+      "failed": 0,
+      "scope": "before narrow Function timestamp + journal allowlist corrections"
+    },
+    {
+      "log": "function-freshness-tests.log",
+      "tests": 2,
+      "passed": 2,
+      "failed": 0,
+      "scope": "fresh observation same identity + drift/stale rejection"
+    },
+    {
+      "log": "pricing-journal-test.log",
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "scope": "real locked journal full pricing workflow + reopen/replay"
+    }
+  ],
+  "actualInputProof": "Original808 prices/114 contract groups + pinned R2 target; binding IDs and Function capability evidence are synthetic in tests.",
+  "historicalR1FullDocumentExported": false,
+  "testDocumentPinOverride": "Only the connection test redirects its POLICY import to the synthetic R1 projection hash; production source has no override.",
+  "payload": {
+    "file": "pricing-value.preview.json",
+    "bytes": 3898,
+    "sha256": "37ef02c6f98f6b463179093aca38a715a153141d8281203a158ddbc3e49b0705",
+    "liveApplied": false
+  },
+  "sources": [
+    {
+      "file": "main-operator.mjs",
+      "sha256": "beef9898356b4f440bc1150d7d7b596260d5b435abf4e1b094b33f6c223aae61"
+    },
+    {
+      "file": "main-pricing.mjs",
+      "sha256": "888a584c7b5e4e5e4ab2a696c739d7246dab6f8c79fc7435996778283ccb1a83"
+    },
+    {
+      "file": "gateways.mjs",
+      "sha256": "28f6de08f7d1908d9ecc986ab5012c576d98ac7a9e0a4b90f096b76d4ffd631e"
+    },
+    {
+      "file": "journal.mjs",
+      "sha256": "5df1d5328cb7b12954a4125f529f52b52d4865d257c26b10e835cb677f7d5cf6"
+    },
+    {
+      "file": "operator.mjs",
+      "sha256": "45fc2a9fed4157b166d3dd1561cbcdfdd99d1ae597328779bf01b027f6bbfacb"
+    },
+    {
+      "file": "main-operator.test.mjs",
+      "sha256": "7518c03884d4b54d9d6123d28d6958680ee754603a42ac715dcb2296751d725c"
+    },
+    {
+      "file": "main-pricing.test.mjs",
+      "sha256": "c52bef1a117473c605dfcd5493b91ee46f4775808e32c9777bfba0181d1ff134"
+    }
+  ],
+  "independentReview": "pending"
+}

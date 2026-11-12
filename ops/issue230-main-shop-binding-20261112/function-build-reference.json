@@ -1,0 +1,17 @@
+{
+  "schema": "issue230-historical-function-build-reference/v1",
+  "evidenceOnly": true,
+  "actualActiveReleaseVerified": false,
+  "repositoryPath": "docs/reviews/2026-11-08-steel-pricing-input/",
+  "files": {
+    "compiled-proof.json": {
+      "bytes": 3838,
+      "sha256": "5977e9d9a510223d55f2f6635910aa7af97fcd300eaeec6480a56d921129f1a7"
+    },
+    "app-preservation-receipt.json": {
+      "bytes": 619,
+      "sha256": "1e3dd43696929b23de345be575108442feff0726209fed3138f4f539a5371781"
+    }
+  },
+  "buildSourceSha256Definition": "SHA256 of the exact Git blob bytes of compiled-proof.json; a historical reviewed build evidence pin, NOT a hash of the current V3 source or an asserted full historical source tree."
+}

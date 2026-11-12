@@ -1,3 +1,7 @@
+## 12.11.2026 · Codex/Astra · #230/#168: Main-v2-Preis-/Shop-/Bindingoperator geprueft
+
+[Uebergabe](docs/handoffs/2026-11-12-main-shop-price-operator.md): echte808 Istpreise/R1-Vertraege unabhaengig verglichen,3898-Byte-Preisvorschlag statt18108, vollstaendigeR1History erhalten.158 Preis-/30 Labelaenderungen auf182 Varianten;778 R2-Bindungen/30 R1. Owning-App-Frischcheck, Metafeld-CAS vor unveraenderlichen bepreisten Bindungen, getrennte Journalzustaende und readonlyAnschluss.33+2+1 gezielte Tests gruen, unabhaengiger Quell-/25Datei-/14Artefaktreview abgeschlossen; Journal-Allowlistbefund behoben. AktuelleFunctionversion und wirklicher privater Kopienanschluss bleiben offen, kein produktiver Plan oder Freigabe unterstellt. Preisbeleg-Abschrift/CSV-Zeilenendengrenze ehrlich archiviert. Keine App-/Shop-/Servermutation, keinPublish. Claude erhaelt Operator fuer den engen Kopienabschluss parallel zu sechs-DRAFT.
+
 ## 12.11.2026 · Codex/Astra · #168: Konfis-Status rein lesend geklaert
 
 [Befund und enger Vorschlag](docs/handoffs/2026-11-12-konfis-status-scope.md): lokale Entwurf-Labels sind weder Shopifystatus noch Kundensperre; keine Massenfreigabe. Pause sperrt Starts/Modelle, noch nicht alle Warenkorbanfragen bestehender Sitzungen. Vorbereitete Hostroute nicht aktiviert; Status-/UI-Ergaenzung als klarer spaeterer Rest, keine implementierte Reparatur behauptet. Keine App-/Produktmutation und kein Testlauf; aktuelle Produktpakete laufen getrennt weiter.

@@ -1,0 +1,1102 @@
+{
+  "schema": "gravuru-main-pricing-records-independent-review/v1",
+  "sourceCommit": "b0172a0b",
+  "sourceComment": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6820787259",
+  "mode": "local delivered-artifact read only; no driver execution, no DB, no network",
+  "allDeliveredChecksPassed": true,
+  "allManifestByteHashesMatch": false,
+  "checks": [
+    {
+      "name": "six non-CSV received file SHA256 values exact",
+      "passed": true
+    },
+    {
+      "name": "CSV declared SHA reproduced solely by CRLF to LF normalization",
+      "passed": true,
+      "detail": {
+        "receivedBytes": 62716,
+        "receivedSha256": "4c9cb98aa8c9ce7ec40b546a7b9b9164af6967ce6bdbf04b5b92922e0f36ae9c",
+        "declaredSha256": "9dae07a58e158a7de011cfc28a7756402a72f961838d4b231ea8ea7031103da8",
+        "receivedByteHashMatches": false,
+        "crlfCount": 809,
+        "lfNormalizedBytes": 61907,
+        "lfNormalizedSha256": "9dae07a58e158a7de011cfc28a7756402a72f961838d4b231ea8ea7031103da8",
+        "originalFileChanged": false
+      }
+    },
+    {
+      "name": "frozen mapping compressed bytes",
+      "passed": true
+    },
+    {
+      "name": "frozen mapping serialized bytes",
+      "passed": true
+    },
+    {
+      "name": "808 unique mapping IDs partitioned 778 + 30",
+      "passed": true
+    },
+    {
+      "name": "actual metafield bytes + reported raw SHA",
+      "passed": true
+    },
+    {
+      "name": "actual metafield fixed v1 scope and surcharges",
+      "passed": true
+    },
+    {
+      "name": "no undeclared logo/history/legacy/options fields in raw metafield",
+      "passed": true
+    },
+    {
+      "name": "raw metafield exact 808 IDs and all current prices",
+      "passed": true
+    },
+    {
+      "name": "published variant id:cents digest",
+      "passed": true
+    },
+    {
+      "name": "CSV 808 unique IDs",
+      "passed": true
+    },
+    {
+      "name": "all CSV IDs, SKU, grouping, current/binding/contract/target prices and change flags",
+      "passed": true,
+      "detail": []
+    },
+    {
+      "name": "driver input exact same 778 + 30 rows",
+      "passed": true
+    },
+    {
+      "name": "114 exact reconstructed normalized R1 contract hashes and group counts",
+      "passed": true
+    },
+    {
+      "name": "R1 internal contract shape matches raw metafield values",
+      "passed": true
+    },
+    {
+      "name": "158 already known price deltas only",
+      "passed": true
+    },
+    {
+      "name": "30 label changes, 6 overlaps, 182 combined variant IDs",
+      "passed": true
+    },
+    {
+      "name": "receipt namespace/product/app correspondence",
+      "passed": true
+    }
+  ],
+  "files": [
+    {
+      "file": "app-personalization-lesebeleg.json",
+      "bytes": 2491,
+      "expectedSha256": "08fc5f1b0f87ab3d945846ae8b869cae3b3ae9d42fcdd5e6a96db46c78511366",
+      "actualSha256": "08fc5f1b0f87ab3d945846ae8b869cae3b3ae9d42fcdd5e6a96db46c78511366"
+    },
+    {
+      "file": "personalization.value.json",
+      "bytes": 18108,
+      "expectedSha256": "7c997f49153d43a937a75501ed5bc016eda1003e129d1735528b801ee7962cf5",
+      "actualSha256": "7c997f49153d43a937a75501ed5bc016eda1003e129d1735528b801ee7962cf5"
+    },
+    {
+      "file": "pv-shopify-lesen.mjs",
+      "bytes": 6317,
+      "expectedSha256": "433160d1cf55918563fac117e0b4e289c7eb2f4497c6ee76bbbcf9063cd71183",
+      "actualSha256": "433160d1cf55918563fac117e0b4e289c7eb2f4497c6ee76bbbcf9063cd71183"
+    },
+    {
+      "file": "pv-varianten.json",
+      "bytes": 53500,
+      "expectedSha256": "37b769be31a5fd3c61855c6f6fc7ae34a4d89365574b511265522838b6f0fa85",
+      "actualSha256": "37b769be31a5fd3c61855c6f6fc7ae34a4d89365574b511265522838b6f0fa85"
+    },
+    {
+      "file": "pv-vertraege.mjs",
+      "bytes": 9361,
+      "expectedSha256": "ec82ea8fdf81878856b6247bc2dc84857baf522c31e417dccedb91a4820af160",
+      "actualSha256": "ec82ea8fdf81878856b6247bc2dc84857baf522c31e417dccedb91a4820af160"
+    },
+    {
+      "file": "r1-preisvertraege-gruppen.json",
+      "bytes": 17735,
+      "expectedSha256": "b46d9321cdefb7d82e9200b7d37a9be8300c2d9bd4d26b49754965e53907e4f5",
+      "actualSha256": "b46d9321cdefb7d82e9200b7d37a9be8300c2d9bd4d26b49754965e53907e4f5"
+    },
+    {
+      "file": "varianten-808.csv",
+      "bytes": 62716,
+      "expectedSha256": "9dae07a58e158a7de011cfc28a7756402a72f961838d4b231ea8ea7031103da8",
+      "actualSha256": "4c9cb98aa8c9ce7ec40b546a7b9b9164af6967ce6bdbf04b5b92922e0f36ae9c"
+    }
+  ],
+  "csvLineEndingEvidence": {
+    "receivedBytes": 62716,
+    "receivedSha256": "4c9cb98aa8c9ce7ec40b546a7b9b9164af6967ce6bdbf04b5b92922e0f36ae9c",
+    "declaredSha256": "9dae07a58e158a7de011cfc28a7756402a72f961838d4b231ea8ea7031103da8",
+    "receivedByteHashMatches": false,
+    "crlfCount": 809,
+    "lfNormalizedBytes": 61907,
+    "lfNormalizedSha256": "9dae07a58e158a7de011cfc28a7756402a72f961838d4b231ea8ea7031103da8",
+    "originalFileChanged": false
+  },
+  "checksumFileSha256": "0289b18ccdb244988b9ad006d0571db1136db6ff075b8fbec89d866f290c6d31",
+  "mapping": {
+    "gzipSha256": "3d0647b2cb671ba09199b6f9c4b9cdbfa58f24a0eafb1d2d672a18823070c9bf",
+    "serializedSha256": "3d476d9d964158c1f96a9e55b5de5a2cfa36afd8b5d3bcd86313c12be2c77591"
+  },
+  "counts": {
+    "variants": 808,
+    "target": 778,
+    "residual": 30,
+    "contractGroups": 114,
+    "targetDistinctBasePrices": 110,
+    "residualDistinctBasePrices": 10,
+    "unchangedTargetPrices": 620,
+    "changedTargetPrices": 158,
+    "priceDeltaCounts": {
+      "B02S:30": 138,
+      "B04S:10": 20
+    },
+    "labelChanges": 30,
+    "overlap": 6,
+    "combined": 182
+  },
+  "variantPriceSha256": "ce5fa7aec81a1be8b6a9ec3dbe116589d4a471d6a4640dc2c33a6bdaa654962f",
+  "groupHashMethod": "recursively sorted object -> JSON.stringify -> SHA256, exactly pv-vertraege.mjs; not native binding hash",
+  "groupChecks": [
+    {
+      "baseCents": 699,
+      "targetCount": 0,
+      "residualCount": 2,
+      "expectedSha256": "df0b25f3a365dbf7df70e9a4ea93380fc3722f1318b5c528e097afa902d2d28c",
+      "actualSha256": "df0b25f3a365dbf7df70e9a4ea93380fc3722f1318b5c528e097afa902d2d28c",
+      "passed": true
+    },
+    {
+      "baseCents": 799,
+      "targetCount": 2,
+      "residualCount": 2,
+      "expectedSha256": "7bdd19a2e2282364a088426e76575d65dc3d1be95bd07ed1c3bfa3b0b976fafa",
+      "actualSha256": "7bdd19a2e2282364a088426e76575d65dc3d1be95bd07ed1c3bfa3b0b976fafa",
+      "passed": true
+    },
+    {
+      "baseCents": 849,
+      "targetCount": 0,
+      "residualCount": 2,
+      "expectedSha256": "c81aa54b0e47bbabebc57db114a6724ddb0e114af7e5fb1bdb53e849e44a77da",
+      "actualSha256": "c81aa54b0e47bbabebc57db114a6724ddb0e114af7e5fb1bdb53e849e44a77da",
+      "passed": true
+    },
+    {
+      "baseCents": 899,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "22c7df02c09e6bfb474b92b138662c0b01eef90547fa78fa8d52317515fda101",
+      "actualSha256": "22c7df02c09e6bfb474b92b138662c0b01eef90547fa78fa8d52317515fda101",
+      "passed": true
+    },
+    {
+      "baseCents": 948,
+      "targetCount": 0,
+      "residualCount": 2,
+      "expectedSha256": "1022dc4508b24753621c66d4f71115de3216668a375ae733f6a3a281de6464cd",
+      "actualSha256": "1022dc4508b24753621c66d4f71115de3216668a375ae733f6a3a281de6464cd",
+      "passed": true
+    },
+    {
+      "baseCents": 998,
+      "targetCount": 0,
+      "residualCount": 4,
+      "expectedSha256": "6e9faba58712efec88f0badf237d8416ebb0487b3120307e1a55aca46e1660fb",
+      "actualSha256": "6e9faba58712efec88f0badf237d8416ebb0487b3120307e1a55aca46e1660fb",
+      "passed": true
+    },
+    {
+      "baseCents": 999,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "3de8d74ba14527905a9ddcbdc6d445d57c761a7b9ce51c00ef79d1924476c6af",
+      "actualSha256": "3de8d74ba14527905a9ddcbdc6d445d57c761a7b9ce51c00ef79d1924476c6af",
+      "passed": true
+    },
+    {
+      "baseCents": 1048,
+      "targetCount": 2,
+      "residualCount": 2,
+      "expectedSha256": "1b578e35581dbc9eec2cd8b76d918a5e92aea5e1ba6d0f17c36c4b99e63605f7",
+      "actualSha256": "1b578e35581dbc9eec2cd8b76d918a5e92aea5e1ba6d0f17c36c4b99e63605f7",
+      "passed": true
+    },
+    {
+      "baseCents": 1098,
+      "targetCount": 4,
+      "residualCount": 8,
+      "expectedSha256": "e065bb7efc5081d1be7799c7d9e0cec03217546fc99e4ad4983de911e75e52e6",
+      "actualSha256": "e065bb7efc5081d1be7799c7d9e0cec03217546fc99e4ad4983de911e75e52e6",
+      "passed": true
+    },
+    {
+      "baseCents": 1148,
+      "targetCount": 4,
+      "residualCount": 4,
+      "expectedSha256": "e0d3f086ceb06b46cada2d486881054ff836525a3870b487019d1836b9d0e680",
+      "actualSha256": "e0d3f086ceb06b46cada2d486881054ff836525a3870b487019d1836b9d0e680",
+      "passed": true
+    },
+    {
+      "baseCents": 1198,
+      "targetCount": 10,
+      "residualCount": 2,
+      "expectedSha256": "92ffeb8c7dac25052731667b7df6afcd458d00498d06fd798c902894e5bcf3fb",
+      "actualSha256": "92ffeb8c7dac25052731667b7df6afcd458d00498d06fd798c902894e5bcf3fb",
+      "passed": true
+    },
+    {
+      "baseCents": 1199,
+      "targetCount": 16,
+      "residualCount": 0,
+      "expectedSha256": "637846ade919c39ab71fddd8c46289f4b5d1b4f72f5bc31c0c4936e8ea95a8e2",
+      "actualSha256": "637846ade919c39ab71fddd8c46289f4b5d1b4f72f5bc31c0c4936e8ea95a8e2",
+      "passed": true
+    },
+    {
+      "baseCents": 1248,
+      "targetCount": 4,
+      "residualCount": 2,
+      "expectedSha256": "f90d6de30e497a838ac2f1692ec01efc814560a88ba093ff906e383809e525f7",
+      "actualSha256": "f90d6de30e497a838ac2f1692ec01efc814560a88ba093ff906e383809e525f7",
+      "passed": true
+    },
+    {
+      "baseCents": 1298,
+      "targetCount": 12,
+      "residualCount": 0,
+      "expectedSha256": "1d401b0748bc67ce5ab318a5079c0e6dd02d0061c2ea47803aa1a91bf4714b20",
+      "actualSha256": "1d401b0748bc67ce5ab318a5079c0e6dd02d0061c2ea47803aa1a91bf4714b20",
+      "passed": true
+    },
+    {
+      "baseCents": 1299,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "6ae8d506be5b8595983d8afa37ddf1c3dfc8fb85f26e285cbca6cae275085c7f",
+      "actualSha256": "6ae8d506be5b8595983d8afa37ddf1c3dfc8fb85f26e285cbca6cae275085c7f",
+      "passed": true
+    },
+    {
+      "baseCents": 1398,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "d25abfa87e6a676fd68106d962cc0f5804ba8bd9cc83a1a25111bff123f7ffe1",
+      "actualSha256": "d25abfa87e6a676fd68106d962cc0f5804ba8bd9cc83a1a25111bff123f7ffe1",
+      "passed": true
+    },
+    {
+      "baseCents": 1399,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "fb529046b465e3b5076d6a85ed926fe39c064883019341025b6595ebc6353102",
+      "actualSha256": "fb529046b465e3b5076d6a85ed926fe39c064883019341025b6595ebc6353102",
+      "passed": true
+    },
+    {
+      "baseCents": 1448,
+      "targetCount": 16,
+      "residualCount": 0,
+      "expectedSha256": "d64c8c2dbffbb09e72b24de78043a6d9382c0e607df596031e8548830a771e8b",
+      "actualSha256": "d64c8c2dbffbb09e72b24de78043a6d9382c0e607df596031e8548830a771e8b",
+      "passed": true
+    },
+    {
+      "baseCents": 1498,
+      "targetCount": 32,
+      "residualCount": 0,
+      "expectedSha256": "4813d2b398c620fb6996fb48702d9867fa400de782a83f0ac5bde021698fe896",
+      "actualSha256": "4813d2b398c620fb6996fb48702d9867fa400de782a83f0ac5bde021698fe896",
+      "passed": true
+    },
+    {
+      "baseCents": 1499,
+      "targetCount": 14,
+      "residualCount": 0,
+      "expectedSha256": "2f61710a98f733d55da19d581ba9325c7a9c873669ca88eb14a796d99df1687f",
+      "actualSha256": "2f61710a98f733d55da19d581ba9325c7a9c873669ca88eb14a796d99df1687f",
+      "passed": true
+    },
+    {
+      "baseCents": 1548,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "57847431ee70e458c98ed06b8d6be180fda26ddbcf6e53977e6e1c3e4332948e",
+      "actualSha256": "57847431ee70e458c98ed06b8d6be180fda26ddbcf6e53977e6e1c3e4332948e",
+      "passed": true
+    },
+    {
+      "baseCents": 1598,
+      "targetCount": 24,
+      "residualCount": 0,
+      "expectedSha256": "43443905072d80f3fc3481773c16ec1a34e285c1afa3c6e714880c8f8448e1cf",
+      "actualSha256": "43443905072d80f3fc3481773c16ec1a34e285c1afa3c6e714880c8f8448e1cf",
+      "passed": true
+    },
+    {
+      "baseCents": 1648,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "331a7d6679d95bd66b6befb0163ef9979b31e897acc9bf45495d5dc23d2705f8",
+      "actualSha256": "331a7d6679d95bd66b6befb0163ef9979b31e897acc9bf45495d5dc23d2705f8",
+      "passed": true
+    },
+    {
+      "baseCents": 1698,
+      "targetCount": 8,
+      "residualCount": 0,
+      "expectedSha256": "d2b953497556a4d2d6f2606972935dd97d81e35d6886afe361e9e316fb32dad8",
+      "actualSha256": "d2b953497556a4d2d6f2606972935dd97d81e35d6886afe361e9e316fb32dad8",
+      "passed": true
+    },
+    {
+      "baseCents": 1699,
+      "targetCount": 6,
+      "residualCount": 0,
+      "expectedSha256": "a664ed5580cf6bcd4edbe08b8d32034d30121b23c84fc5df7ce406198ea89646",
+      "actualSha256": "a664ed5580cf6bcd4edbe08b8d32034d30121b23c84fc5df7ce406198ea89646",
+      "passed": true
+    },
+    {
+      "baseCents": 1748,
+      "targetCount": 14,
+      "residualCount": 0,
+      "expectedSha256": "51bd819663b6b3258a9816fe3548294c34d270970814dcd8e63bcb87576c8ae4",
+      "actualSha256": "51bd819663b6b3258a9816fe3548294c34d270970814dcd8e63bcb87576c8ae4",
+      "passed": true
+    },
+    {
+      "baseCents": 1798,
+      "targetCount": 30,
+      "residualCount": 0,
+      "expectedSha256": "45ef5758edaa79bbe05a161e4a29159b81c1376f751f61169ed783114674961d",
+      "actualSha256": "45ef5758edaa79bbe05a161e4a29159b81c1376f751f61169ed783114674961d",
+      "passed": true
+    },
+    {
+      "baseCents": 1799,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "1864c8c22502d8318ae88fe89e6d3e925ba225c1c2fc2d329a2a3b41fc591c32",
+      "actualSha256": "1864c8c22502d8318ae88fe89e6d3e925ba225c1c2fc2d329a2a3b41fc591c32",
+      "passed": true
+    },
+    {
+      "baseCents": 1898,
+      "targetCount": 14,
+      "residualCount": 0,
+      "expectedSha256": "00a1306a54fa738187a03a6de3c52fb3a93a16233605ccc10af410837824ca2b",
+      "actualSha256": "00a1306a54fa738187a03a6de3c52fb3a93a16233605ccc10af410837824ca2b",
+      "passed": true
+    },
+    {
+      "baseCents": 1899,
+      "targetCount": 16,
+      "residualCount": 0,
+      "expectedSha256": "1b0e86015fbd85c5d5efcd0a4e9d9b1ba2b3571337b98427dd9561be32d53581",
+      "actualSha256": "1b0e86015fbd85c5d5efcd0a4e9d9b1ba2b3571337b98427dd9561be32d53581",
+      "passed": true
+    },
+    {
+      "baseCents": 1948,
+      "targetCount": 6,
+      "residualCount": 0,
+      "expectedSha256": "e63531d372d91506b987e129ef8096143c2af7cf86a73cc9fc5ea8bbe1020269",
+      "actualSha256": "e63531d372d91506b987e129ef8096143c2af7cf86a73cc9fc5ea8bbe1020269",
+      "passed": true
+    },
+    {
+      "baseCents": 1998,
+      "targetCount": 12,
+      "residualCount": 0,
+      "expectedSha256": "4b2f7edfa06ab00aeeb00726f1c5d6acce5ed7c1ee35fa691c39900160ff8863",
+      "actualSha256": "4b2f7edfa06ab00aeeb00726f1c5d6acce5ed7c1ee35fa691c39900160ff8863",
+      "passed": true
+    },
+    {
+      "baseCents": 2048,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "42b0832b63ea487ddadbeb2e144fc287bb677ec00ca79429e4a4be4b4bc201df",
+      "actualSha256": "42b0832b63ea487ddadbeb2e144fc287bb677ec00ca79429e4a4be4b4bc201df",
+      "passed": true
+    },
+    {
+      "baseCents": 2098,
+      "targetCount": 10,
+      "residualCount": 0,
+      "expectedSha256": "1b159c565e3b3a8631caf9fad218348a0d16132e69be9e11342a7a5871f8869e",
+      "actualSha256": "1b159c565e3b3a8631caf9fad218348a0d16132e69be9e11342a7a5871f8869e",
+      "passed": true
+    },
+    {
+      "baseCents": 2148,
+      "targetCount": 16,
+      "residualCount": 0,
+      "expectedSha256": "0e83e472661227186a8fb380320ba14d71c9043d04c7280107eb0434c7f9d3f8",
+      "actualSha256": "0e83e472661227186a8fb380320ba14d71c9043d04c7280107eb0434c7f9d3f8",
+      "passed": true
+    },
+    {
+      "baseCents": 2198,
+      "targetCount": 34,
+      "residualCount": 0,
+      "expectedSha256": "029417a7e309bed669dbd9a1d2e1993b159f264defe5e6631d12f0c766d72023",
+      "actualSha256": "029417a7e309bed669dbd9a1d2e1993b159f264defe5e6631d12f0c766d72023",
+      "passed": true
+    },
+    {
+      "baseCents": 2199,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "84568f07000484dcbfcf8a9c2ded3ef31d218ae6f74f4a079993eda63d98dfad",
+      "actualSha256": "84568f07000484dcbfcf8a9c2ded3ef31d218ae6f74f4a079993eda63d98dfad",
+      "passed": true
+    },
+    {
+      "baseCents": 2298,
+      "targetCount": 16,
+      "residualCount": 0,
+      "expectedSha256": "29786050184ff2736fc419f266f128dbbde05e6e3907a539e400c096cfb9b15e",
+      "actualSha256": "29786050184ff2736fc419f266f128dbbde05e6e3907a539e400c096cfb9b15e",
+      "passed": true
+    },
+    {
+      "baseCents": 2299,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "9cf02b6d2be5fe6a6f2ec339751f747176c6b34bbe21a33cd95dd31afd2135c4",
+      "actualSha256": "9cf02b6d2be5fe6a6f2ec339751f747176c6b34bbe21a33cd95dd31afd2135c4",
+      "passed": true
+    },
+    {
+      "baseCents": 2399,
+      "targetCount": 10,
+      "residualCount": 0,
+      "expectedSha256": "9ffd8702c4141a9eb2106376b64b0e515f8c6c7d17470cab1c0d6be155d8f555",
+      "actualSha256": "9ffd8702c4141a9eb2106376b64b0e515f8c6c7d17470cab1c0d6be155d8f555",
+      "passed": true
+    },
+    {
+      "baseCents": 2448,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "b400491ad5bedbd8f8fbc619aa0b07d71bc23ab2eb97b06474b79a417bd02690",
+      "actualSha256": "b400491ad5bedbd8f8fbc619aa0b07d71bc23ab2eb97b06474b79a417bd02690",
+      "passed": true
+    },
+    {
+      "baseCents": 2498,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "d7d1d84e1ebdce9dfb4e94ff9a8abb62bdabb3cb3278c892322b4c0cd5ed24c8",
+      "actualSha256": "d7d1d84e1ebdce9dfb4e94ff9a8abb62bdabb3cb3278c892322b4c0cd5ed24c8",
+      "passed": true
+    },
+    {
+      "baseCents": 2499,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "62e2ee434158702cc7b64d3294415b60c810e2058e0156216bb017d472f78b00",
+      "actualSha256": "62e2ee434158702cc7b64d3294415b60c810e2058e0156216bb017d472f78b00",
+      "passed": true
+    },
+    {
+      "baseCents": 2548,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "ba190bae054cebb07e538a1bc2b667fd8cda1e374c422289ad569a484e4cffbb",
+      "actualSha256": "ba190bae054cebb07e538a1bc2b667fd8cda1e374c422289ad569a484e4cffbb",
+      "passed": true
+    },
+    {
+      "baseCents": 2598,
+      "targetCount": 6,
+      "residualCount": 0,
+      "expectedSha256": "3810c470da0ef7d216d99890200d0baafb1bc1b8453e97306a3af69702baacb4",
+      "actualSha256": "3810c470da0ef7d216d99890200d0baafb1bc1b8453e97306a3af69702baacb4",
+      "passed": true
+    },
+    {
+      "baseCents": 2599,
+      "targetCount": 12,
+      "residualCount": 0,
+      "expectedSha256": "118a146020c02767f29d071f5b9466bf07122a319aa696fafd45d57e01a289fb",
+      "actualSha256": "118a146020c02767f29d071f5b9466bf07122a319aa696fafd45d57e01a289fb",
+      "passed": true
+    },
+    {
+      "baseCents": 2648,
+      "targetCount": 10,
+      "residualCount": 0,
+      "expectedSha256": "c47164a6ae15f4d6653721b449580062a52e4f9a1434af84765a81ee9d3967b5",
+      "actualSha256": "c47164a6ae15f4d6653721b449580062a52e4f9a1434af84765a81ee9d3967b5",
+      "passed": true
+    },
+    {
+      "baseCents": 2698,
+      "targetCount": 22,
+      "residualCount": 0,
+      "expectedSha256": "9b8e8963501d888cba0ec096d144873aa834511d2d770fb961e2285a5af787e3",
+      "actualSha256": "9b8e8963501d888cba0ec096d144873aa834511d2d770fb961e2285a5af787e3",
+      "passed": true
+    },
+    {
+      "baseCents": 2699,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "1a153bac2168ed59bd389ef9555d1a963faf0c85355b4065b3f48c070adaba8f",
+      "actualSha256": "1a153bac2168ed59bd389ef9555d1a963faf0c85355b4065b3f48c070adaba8f",
+      "passed": true
+    },
+    {
+      "baseCents": 2748,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "2a5ded7f4c1ca9447aa8883ba1ec1b79b8c07b9f906fa66b1b2697bb5a7bfa11",
+      "actualSha256": "2a5ded7f4c1ca9447aa8883ba1ec1b79b8c07b9f906fa66b1b2697bb5a7bfa11",
+      "passed": true
+    },
+    {
+      "baseCents": 2798,
+      "targetCount": 18,
+      "residualCount": 0,
+      "expectedSha256": "83b41d494d580cc0d12785d26fa0c1121784c31aa4742a3a91c36a71b20bcc6e",
+      "actualSha256": "83b41d494d580cc0d12785d26fa0c1121784c31aa4742a3a91c36a71b20bcc6e",
+      "passed": true
+    },
+    {
+      "baseCents": 2848,
+      "targetCount": 12,
+      "residualCount": 0,
+      "expectedSha256": "39fa8793d5c5ef5ed3c1278c47562dbb411f0f4d6724ddadcf8d69ddcea6f481",
+      "actualSha256": "39fa8793d5c5ef5ed3c1278c47562dbb411f0f4d6724ddadcf8d69ddcea6f481",
+      "passed": true
+    },
+    {
+      "baseCents": 2898,
+      "targetCount": 28,
+      "residualCount": 0,
+      "expectedSha256": "95030073983bfaffbf761a1eceb9fb36b0451fff5de6d749fc299c104bd81412",
+      "actualSha256": "95030073983bfaffbf761a1eceb9fb36b0451fff5de6d749fc299c104bd81412",
+      "passed": true
+    },
+    {
+      "baseCents": 2899,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "56cc963df3430c5e982b13b252b28841727368b528829baaf00e53d60875d8cf",
+      "actualSha256": "56cc963df3430c5e982b13b252b28841727368b528829baaf00e53d60875d8cf",
+      "passed": true
+    },
+    {
+      "baseCents": 2948,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "d43bbf7acc2c2e7e4f9021c8a3490c1955751b515aef764a8c6708ce4bc5af64",
+      "actualSha256": "d43bbf7acc2c2e7e4f9021c8a3490c1955751b515aef764a8c6708ce4bc5af64",
+      "passed": true
+    },
+    {
+      "baseCents": 2988,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "30b373c811a6059e21db0bb7b83d50560c26a6bc3906f9c4ae3d06fca6c41e7e",
+      "actualSha256": "30b373c811a6059e21db0bb7b83d50560c26a6bc3906f9c4ae3d06fca6c41e7e",
+      "passed": true
+    },
+    {
+      "baseCents": 2998,
+      "targetCount": 18,
+      "residualCount": 0,
+      "expectedSha256": "da40d89ac5e5b3846409c66f3bfb102d802e695f73471d99543699755a16166c",
+      "actualSha256": "da40d89ac5e5b3846409c66f3bfb102d802e695f73471d99543699755a16166c",
+      "passed": true
+    },
+    {
+      "baseCents": 2999,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "97286f2089a75b1c19a5957592e4786d96ad194505d597644377fcbad2c7cd26",
+      "actualSha256": "97286f2089a75b1c19a5957592e4786d96ad194505d597644377fcbad2c7cd26",
+      "passed": true
+    },
+    {
+      "baseCents": 3038,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "f40e503435ddbaccb0549c77878a27b347683f207941d21a28b5a3b934e5dd44",
+      "actualSha256": "f40e503435ddbaccb0549c77878a27b347683f207941d21a28b5a3b934e5dd44",
+      "passed": true
+    },
+    {
+      "baseCents": 3098,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "3428a1bcf3790033f8d3acd9cf4b4ab6c9273d7d28f4626199ae545ec4ff8f1e",
+      "actualSha256": "3428a1bcf3790033f8d3acd9cf4b4ab6c9273d7d28f4626199ae545ec4ff8f1e",
+      "passed": true
+    },
+    {
+      "baseCents": 3148,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "74a1d8fb0d1da3f7fd2eadb344e50a5251d6fa35a1ce82e5b1c5d0be813c06ac",
+      "actualSha256": "74a1d8fb0d1da3f7fd2eadb344e50a5251d6fa35a1ce82e5b1c5d0be813c06ac",
+      "passed": true
+    },
+    {
+      "baseCents": 3198,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "9fdeb8391b8648a66db4bfa465e92ad15df43904b8b38e4aaaad31fc4e93dba9",
+      "actualSha256": "9fdeb8391b8648a66db4bfa465e92ad15df43904b8b38e4aaaad31fc4e93dba9",
+      "passed": true
+    },
+    {
+      "baseCents": 3248,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "69aca19b5f6ab6018930dbf76505672a325d26be985c2156d1dc185438831376",
+      "actualSha256": "69aca19b5f6ab6018930dbf76505672a325d26be985c2156d1dc185438831376",
+      "passed": true
+    },
+    {
+      "baseCents": 3298,
+      "targetCount": 6,
+      "residualCount": 0,
+      "expectedSha256": "119308fadfbd649cb26d2b3b9b8d4e37eddb9c4a49bcf3fd1c29209b01816b46",
+      "actualSha256": "119308fadfbd649cb26d2b3b9b8d4e37eddb9c4a49bcf3fd1c29209b01816b46",
+      "passed": true
+    },
+    {
+      "baseCents": 3299,
+      "targetCount": 14,
+      "residualCount": 0,
+      "expectedSha256": "9eb294f574ea51a6f90b7b68d0fcfc47d44e17d419141f7af283411b7bbe0bd3",
+      "actualSha256": "9eb294f574ea51a6f90b7b68d0fcfc47d44e17d419141f7af283411b7bbe0bd3",
+      "passed": true
+    },
+    {
+      "baseCents": 3398,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "583fac891d40aee3f20d711810fa9c5e1212784511000a30d6191252eb94e0ac",
+      "actualSha256": "583fac891d40aee3f20d711810fa9c5e1212784511000a30d6191252eb94e0ac",
+      "passed": true
+    },
+    {
+      "baseCents": 3399,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "a9f09785de6eb5887b32a545cd61ffdbd2cf8e8f1c38cb3155af119ed3161242",
+      "actualSha256": "a9f09785de6eb5887b32a545cd61ffdbd2cf8e8f1c38cb3155af119ed3161242",
+      "passed": true
+    },
+    {
+      "baseCents": 3548,
+      "targetCount": 12,
+      "residualCount": 0,
+      "expectedSha256": "14a0850ff78bd8c932a711a0b3fcd3aa456f8473205b30a1eeff3a7ce742560e",
+      "actualSha256": "14a0850ff78bd8c932a711a0b3fcd3aa456f8473205b30a1eeff3a7ce742560e",
+      "passed": true
+    },
+    {
+      "baseCents": 3588,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "0d68355a878fc6f21c3690d9e89324fa9f866a8f99ac435fd4ac35e2dcabe2c5",
+      "actualSha256": "0d68355a878fc6f21c3690d9e89324fa9f866a8f99ac435fd4ac35e2dcabe2c5",
+      "passed": true
+    },
+    {
+      "baseCents": 3598,
+      "targetCount": 26,
+      "residualCount": 0,
+      "expectedSha256": "1463819751ea4bf0345ab7bcdc6fbebdd07af8a7a1e26dfb3a7cbaf5cec03238",
+      "actualSha256": "1463819751ea4bf0345ab7bcdc6fbebdd07af8a7a1e26dfb3a7cbaf5cec03238",
+      "passed": true
+    },
+    {
+      "baseCents": 3638,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "e388b42043df9efe3185208b696453a1c7f703793e054770e7a210e320591eb4",
+      "actualSha256": "e388b42043df9efe3185208b696453a1c7f703793e054770e7a210e320591eb4",
+      "passed": true
+    },
+    {
+      "baseCents": 3648,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "4a6f1bb10e28256828369b6e8da3af9a4f35ca0d026e11825b3046fe0b65f2bd",
+      "actualSha256": "4a6f1bb10e28256828369b6e8da3af9a4f35ca0d026e11825b3046fe0b65f2bd",
+      "passed": true
+    },
+    {
+      "baseCents": 3698,
+      "targetCount": 18,
+      "residualCount": 0,
+      "expectedSha256": "21ebd542f613d4629766b072d7896ab8bb2d7dc4f4a2fdf2787943da8fc5feea",
+      "actualSha256": "21ebd542f613d4629766b072d7896ab8bb2d7dc4f4a2fdf2787943da8fc5feea",
+      "passed": true
+    },
+    {
+      "baseCents": 3798,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "5dd0cbdc63111c1853c0abf280266dbe5636ba6bbd307ba78f5778e3481c583e",
+      "actualSha256": "5dd0cbdc63111c1853c0abf280266dbe5636ba6bbd307ba78f5778e3481c583e",
+      "passed": true
+    },
+    {
+      "baseCents": 3799,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "a7fe24e9dd2d8c8ec4f7873e8e64d6c8a9bc9d183b8024a5015409b2256a2a0f",
+      "actualSha256": "a7fe24e9dd2d8c8ec4f7873e8e64d6c8a9bc9d183b8024a5015409b2256a2a0f",
+      "passed": true
+    },
+    {
+      "baseCents": 3899,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "9e55a89a6460b150626e0b5daf5f529f7c5f2ac1dafb28e240a92a59d2cbb177",
+      "actualSha256": "9e55a89a6460b150626e0b5daf5f529f7c5f2ac1dafb28e240a92a59d2cbb177",
+      "passed": true
+    },
+    {
+      "baseCents": 3999,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "f4a17a7182b44a479ef240b9400362e83e382116f53df22a66cec89a03c06557",
+      "actualSha256": "f4a17a7182b44a479ef240b9400362e83e382116f53df22a66cec89a03c06557",
+      "passed": true
+    },
+    {
+      "baseCents": 4048,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "7e5bb4019c9cece553be426c9b8e0f7918e8f794769b173ef154550a5626340c",
+      "actualSha256": "7e5bb4019c9cece553be426c9b8e0f7918e8f794769b173ef154550a5626340c",
+      "passed": true
+    },
+    {
+      "baseCents": 4098,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "62c73a87e6bb4232af1afc4424189670e69b807fe4c0a145d2ac07a68d01dc71",
+      "actualSha256": "62c73a87e6bb4232af1afc4424189670e69b807fe4c0a145d2ac07a68d01dc71",
+      "passed": true
+    },
+    {
+      "baseCents": 4148,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "867cb5df272a4dda367d98aa13c5b2616897583b958e9bdb41252bbc6c7c062f",
+      "actualSha256": "867cb5df272a4dda367d98aa13c5b2616897583b958e9bdb41252bbc6c7c062f",
+      "passed": true
+    },
+    {
+      "baseCents": 4198,
+      "targetCount": 6,
+      "residualCount": 0,
+      "expectedSha256": "537173436b94f537d0c8114369ea46fc3311ed6e3e3868c3ec84e299680b1792",
+      "actualSha256": "537173436b94f537d0c8114369ea46fc3311ed6e3e3868c3ec84e299680b1792",
+      "passed": true
+    },
+    {
+      "baseCents": 4248,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "6262251f99c6397d374cc87437e16187013b936fa607f01a05fb594c6b4c2a48",
+      "actualSha256": "6262251f99c6397d374cc87437e16187013b936fa607f01a05fb594c6b4c2a48",
+      "passed": true
+    },
+    {
+      "baseCents": 4298,
+      "targetCount": 6,
+      "residualCount": 0,
+      "expectedSha256": "d009a623061f0c2105be03c2b73c38dc9628eee546e71fd337dccbe2769581b2",
+      "actualSha256": "d009a623061f0c2105be03c2b73c38dc9628eee546e71fd337dccbe2769581b2",
+      "passed": true
+    },
+    {
+      "baseCents": 4299,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "d74770615b6b669075977ad1d6be332a7facefdb97f21d17161542b07b7a3c50",
+      "actualSha256": "d74770615b6b669075977ad1d6be332a7facefdb97f21d17161542b07b7a3c50",
+      "passed": true
+    },
+    {
+      "baseCents": 4398,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "95cfc1ae8ae7240c6e844e4882862ea4c11f487c6fdb6b58a2a68fdffb6af21a",
+      "actualSha256": "95cfc1ae8ae7240c6e844e4882862ea4c11f487c6fdb6b58a2a68fdffb6af21a",
+      "passed": true
+    },
+    {
+      "baseCents": 4499,
+      "targetCount": 10,
+      "residualCount": 0,
+      "expectedSha256": "0c78c3945b405b46c0d1131834914c2385688b2686df8e90dbda55112cc31988",
+      "actualSha256": "0c78c3945b405b46c0d1131834914c2385688b2686df8e90dbda55112cc31988",
+      "passed": true
+    },
+    {
+      "baseCents": 4588,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "f1d43c60db800176ce09949a959dee1b9e97caa434c0918fb8a83567435f383b",
+      "actualSha256": "f1d43c60db800176ce09949a959dee1b9e97caa434c0918fb8a83567435f383b",
+      "passed": true
+    },
+    {
+      "baseCents": 4598,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "291ff238c31d163ce406818e936c7b9d7c2d508a28c27137c366ba9582e2484d",
+      "actualSha256": "291ff238c31d163ce406818e936c7b9d7c2d508a28c27137c366ba9582e2484d",
+      "passed": true
+    },
+    {
+      "baseCents": 4638,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "ccb25c72cc8f4a840b0d6657105d9f721536f646be25f65c978bb492158b514e",
+      "actualSha256": "ccb25c72cc8f4a840b0d6657105d9f721536f646be25f65c978bb492158b514e",
+      "passed": true
+    },
+    {
+      "baseCents": 4698,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "5469f4c1f3f1885d871c9e5968ca7f8a26ae34e856f1ab700f2eeed3b3e13fb6",
+      "actualSha256": "5469f4c1f3f1885d871c9e5968ca7f8a26ae34e856f1ab700f2eeed3b3e13fb6",
+      "passed": true
+    },
+    {
+      "baseCents": 4748,
+      "targetCount": 10,
+      "residualCount": 0,
+      "expectedSha256": "2b735c768a76e289d9e5f7f02d05ebe932b5d0c7f57f42a4fd50f877fca56a0d",
+      "actualSha256": "2b735c768a76e289d9e5f7f02d05ebe932b5d0c7f57f42a4fd50f877fca56a0d",
+      "passed": true
+    },
+    {
+      "baseCents": 4788,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "874c3492cbe77a104ac65572e1d49485d19f5bc1f4e4bad238f0c693009dd7a7",
+      "actualSha256": "874c3492cbe77a104ac65572e1d49485d19f5bc1f4e4bad238f0c693009dd7a7",
+      "passed": true
+    },
+    {
+      "baseCents": 4798,
+      "targetCount": 20,
+      "residualCount": 0,
+      "expectedSha256": "6c9decb64765c51b4126caa1e2c851e4bfed9f50a507c64f92823d0070540b3b",
+      "actualSha256": "6c9decb64765c51b4126caa1e2c851e4bfed9f50a507c64f92823d0070540b3b",
+      "passed": true
+    },
+    {
+      "baseCents": 4838,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "a5df2dafc53070b829a66b22b24c6fcfa02401baf72d168b923f05a6fa77f560",
+      "actualSha256": "a5df2dafc53070b829a66b22b24c6fcfa02401baf72d168b923f05a6fa77f560",
+      "passed": true
+    },
+    {
+      "baseCents": 4898,
+      "targetCount": 10,
+      "residualCount": 0,
+      "expectedSha256": "34526dd43c2f89540ce425060bc17f9312ba534c57cf562c430637d3dd856057",
+      "actualSha256": "34526dd43c2f89540ce425060bc17f9312ba534c57cf562c430637d3dd856057",
+      "passed": true
+    },
+    {
+      "baseCents": 4899,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "67ed2474bec6d55e095192dac560895177f38029b7035d6a5c8e8ffc7bdd7f40",
+      "actualSha256": "67ed2474bec6d55e095192dac560895177f38029b7035d6a5c8e8ffc7bdd7f40",
+      "passed": true
+    },
+    {
+      "baseCents": 5148,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "802e89f0470cbd1c4d623987216859a38a352dd8d5e000539c5cd459637c9a0c",
+      "actualSha256": "802e89f0470cbd1c4d623987216859a38a352dd8d5e000539c5cd459637c9a0c",
+      "passed": true
+    },
+    {
+      "baseCents": 5198,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "5f8469e90adb99febce9d4ead90bf093683a3212fa97fb7b4d774c85fa3f5776",
+      "actualSha256": "5f8469e90adb99febce9d4ead90bf093683a3212fa97fb7b4d774c85fa3f5776",
+      "passed": true
+    },
+    {
+      "baseCents": 5298,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "c23968921695eac9f505a9014ee1294d931ccdb18ca1ece36a99df21c5406d5a",
+      "actualSha256": "c23968921695eac9f505a9014ee1294d931ccdb18ca1ece36a99df21c5406d5a",
+      "passed": true
+    },
+    {
+      "baseCents": 5999,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "f483b21ccc5eae87ecfc6b96e8b67be697ce8f16746d8d80f3658e0d8f2dcf9a",
+      "actualSha256": "f483b21ccc5eae87ecfc6b96e8b67be697ce8f16746d8d80f3658e0d8f2dcf9a",
+      "passed": true
+    },
+    {
+      "baseCents": 6288,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "a8186bb862e8e76052d88cec3cb86831f32d534dee1c688e86a1c3890add2ae1",
+      "actualSha256": "a8186bb862e8e76052d88cec3cb86831f32d534dee1c688e86a1c3890add2ae1",
+      "passed": true
+    },
+    {
+      "baseCents": 6298,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "cc7f1fc0792fe31fc2e5a4f6e3b2ed18fe4fec95da5ad3518d4f4aa3a530ffbe",
+      "actualSha256": "cc7f1fc0792fe31fc2e5a4f6e3b2ed18fe4fec95da5ad3518d4f4aa3a530ffbe",
+      "passed": true
+    },
+    {
+      "baseCents": 6338,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "4c3f2ca9fb4ddadf2e9677c18fd33a457a66128371e2edc1a50ba2f25e654f8f",
+      "actualSha256": "4c3f2ca9fb4ddadf2e9677c18fd33a457a66128371e2edc1a50ba2f25e654f8f",
+      "passed": true
+    },
+    {
+      "baseCents": 6398,
+      "targetCount": 2,
+      "residualCount": 0,
+      "expectedSha256": "73c6c816fe30322b25626a4305b586f49f7df44af946cd6b584a61a2b6843c2f",
+      "actualSha256": "73c6c816fe30322b25626a4305b586f49f7df44af946cd6b584a61a2b6843c2f",
+      "passed": true
+    },
+    {
+      "baseCents": 6499,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "08592d53de442dae847bae60324c0e5b90e81dd5a463db8d21dadcea29ffa119",
+      "actualSha256": "08592d53de442dae847bae60324c0e5b90e81dd5a463db8d21dadcea29ffa119",
+      "passed": true
+    },
+    {
+      "baseCents": 6788,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "c35fb2f10377f1a94a8843e3ea23e8ab19d19bdeff728e497f121b7e24047724",
+      "actualSha256": "c35fb2f10377f1a94a8843e3ea23e8ab19d19bdeff728e497f121b7e24047724",
+      "passed": true
+    },
+    {
+      "baseCents": 6798,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "9cfc96c218ad456161034721da26698832b0910f096f3524c099d7d9850e6287",
+      "actualSha256": "9cfc96c218ad456161034721da26698832b0910f096f3524c099d7d9850e6287",
+      "passed": true
+    },
+    {
+      "baseCents": 6838,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "173adbab1557f78d1a047f7f57b7320a39881adead89b9ade43afc92a51100a1",
+      "actualSha256": "173adbab1557f78d1a047f7f57b7320a39881adead89b9ade43afc92a51100a1",
+      "passed": true
+    },
+    {
+      "baseCents": 6898,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "b2ccb152b6fe64238cf93491d1abd4e1c8e267a693c687fba63f9f8931ec7e24",
+      "actualSha256": "b2ccb152b6fe64238cf93491d1abd4e1c8e267a693c687fba63f9f8931ec7e24",
+      "passed": true
+    },
+    {
+      "baseCents": 7399,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "44b41c9d4d4b0c728835b7f99fbf59c219e67bda52b6e18ce270932ca2a18852",
+      "actualSha256": "44b41c9d4d4b0c728835b7f99fbf59c219e67bda52b6e18ce270932ca2a18852",
+      "passed": true
+    },
+    {
+      "baseCents": 7688,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "adced2a3844489b0878ac57d49477926cbea97b037d3abe9f8af025e6c7d8156",
+      "actualSha256": "adced2a3844489b0878ac57d49477926cbea97b037d3abe9f8af025e6c7d8156",
+      "passed": true
+    },
+    {
+      "baseCents": 7698,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "4c287628a357db38e6d0832f059a5050b4bb9faecacbafb08f47d120527076eb",
+      "actualSha256": "4c287628a357db38e6d0832f059a5050b4bb9faecacbafb08f47d120527076eb",
+      "passed": true
+    },
+    {
+      "baseCents": 7738,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "755b87c76e590b06ac354eda50e57453a01d76a4ac4de1aafe59946c7c823057",
+      "actualSha256": "755b87c76e590b06ac354eda50e57453a01d76a4ac4de1aafe59946c7c823057",
+      "passed": true
+    },
+    {
+      "baseCents": 7798,
+      "targetCount": 4,
+      "residualCount": 0,
+      "expectedSha256": "3bb779565f622993fc1da36ec293bf4d6f13e11947b6b611e0c1171f4fdabb02",
+      "actualSha256": "3bb779565f622993fc1da36ec293bf4d6f13e11947b6b611e0c1171f4fdabb02",
+      "passed": true
+    }
+  ],
+  "reportedServerGroupAggregate": {
+    "sha256": "d4467e5c22eae26e9653a4b7ca6eaa424ca83d004ee69ab17827798a1e68fa23",
+    "independentlyVerified": false,
+    "reason": "aggregate serialization expression is absent from delivered driver and grouped artifact; 114 individual hashes and all group counts independently verified"
+  },
+  "provenance": {
+    "rawMetafield": "delivered bytes match published raw SHA; original fetch not rerun",
+    "appReadReceipt": "explicit transcription; not original server receipt bytes",
+    "fullServerBindingReceipt": {
+      "delivered": false,
+      "reportedBytes": 324505,
+      "reportedSha256": "b21a91b1111745a365fb3194e5098f2b9820f200b0caaf1380c1d5589a13b861"
+    },
+    "variantAdminResponse": "raw variants.json absent; CSV and price list delivered",
+    "activeFunctionRelease": "not independently verified; admin Function and CartTransform IDs do not prove active app release/version or extension artifact"
+  },
+  "liveWrites": 0
+}

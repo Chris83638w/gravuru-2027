@@ -1,0 +1,20 @@
+{
+  "sourceBytes": 18108,
+  "targetBytes": 3898,
+  "targetSha256": "37ef02c6f98f6b463179093aca38a715a153141d8281203a158ddbc3e49b0705",
+  "syntheticFunctionEvidence": true,
+  "actualActiveFunctionVerified": false,
+  "currentRevision": 2,
+  "topVariants": 808,
+  "historicalR1Variants": 808,
+  "newBindingContracts": 778,
+  "preservedActiveR1": 30,
+  "requiredFormats": [
+    "history",
+    "v2",
+    "valueInput",
+    "variantDeltas",
+    "variantSequence",
+    "variantsFromRevision"
+  ]
+}

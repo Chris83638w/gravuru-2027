@@ -1,0 +1,57 @@
+{
+  "sourceCommit": "f85390bd3494920679b06c3b39cabf96c95c1343",
+  "mode": "read-only-source-comparison",
+  "allMatchCommit": true,
+  "files": [
+    {
+      "path": "app/workshop/shop-product-binding-adapter.mjs",
+      "bytes": 13860,
+      "sha256": "8bb592e8abffda09b4c00cbd9e891dd2d86a7c6c130622a4aeb893c4c29bf9bd"
+    },
+    {
+      "path": "app/workshop/shop-product-binding-check.mjs",
+      "bytes": 11506,
+      "sha256": "fa64a98057fd745391012cb7314b6072a169e79b9b6737cf611a268b7a4a8d68"
+    },
+    {
+      "path": "app/workshop/shop-product-binding-plan.mjs",
+      "bytes": 16300,
+      "sha256": "f570331f162ba8d4ec9feaea9f5a7571654609ba4f9fe31eb8ef301601f84bc5"
+    },
+    {
+      "path": "app/workshop/shop-product-binding-store.mjs",
+      "bytes": 33119,
+      "sha256": "119a276d75bb83a67457f0e2ad37849f27a56b7a1b4a9789f527d4efbb8bc600"
+    },
+    {
+      "path": "app/workshop/order-intake.mjs",
+      "bytes": 49600,
+      "sha256": "535a60bffebdfb1664e00a5629fef0071553146b7902ae6a4ce1853bfa3e43c8"
+    },
+    {
+      "path": "app/workshop/catalog-live-orders.mjs",
+      "bytes": 9315,
+      "sha256": "5eea8f61a044e3990075615593ba6fe6f2333a07439c79558176abf48099fe3d"
+    },
+    {
+      "path": "app/workshop/shop-preparation.mjs",
+      "bytes": 9597,
+      "sha256": "633cd47ff251bb3927aff3ad991b7a80ee8fcd1d1549197983e63e0ccfabae32"
+    },
+    {
+      "path": "app/workshop/cart-personalization.mjs",
+      "bytes": 11757,
+      "sha256": "3a720e14e24805e4ce2708a15124d90f7ca4a7dc99fe1353749894e213e6088e"
+    },
+    {
+      "path": "ops/shopify/master-release/pricing-history.mjs",
+      "bytes": 10837,
+      "sha256": "9f563d2107d4644b46e0b8f02831a176fbc8800173e1325b2cf00111a7c34c91"
+    },
+    {
+      "path": "ops/shopify/master-release/pricing-storage.mjs",
+      "bytes": 3811,
+      "sha256": "fb67492a30a4e208328b2aa84110b533f560bcb9f3534b65535ba2f581876ca8"
+    }
+  ]
+}

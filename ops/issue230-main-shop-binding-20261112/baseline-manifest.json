@@ -1,0 +1,63 @@
+{
+  "schema": "gravuru-issue230-main-operator-package/v1",
+  "files": [
+    {
+      "path": "main-operator.mjs",
+      "bytes": 20768,
+      "sha256": "c794e7a88ec7cdad5c1327e14bac222ea8b60f6b12988a481670c9a00a16381f"
+    },
+    {
+      "path": "gateways.mjs",
+      "bytes": 7297,
+      "sha256": "289f0ff26d62064d5bb607069dc5359de659d067e5994e03a0ebafa4f011d64c"
+    },
+    {
+      "path": "journal.mjs",
+      "bytes": 2492,
+      "sha256": "1d3550d9d623cea4e036f3549a5aa16e2506c757b3ee82560647d6cd9eae3729"
+    },
+    {
+      "path": "operator.mjs",
+      "bytes": 3414,
+      "sha256": "13310f4401af722916bf518bba21f7dfdefe38d26e26c150be011a504caf9208"
+    },
+    {
+      "path": "main-operator.test.mjs",
+      "bytes": 19222,
+      "sha256": "1645703abc862405d5ee98d7973c02fb929b24dc34b894c5a95ca16db5d6de7b"
+    },
+    {
+      "path": "variant-mapping.preview.json.gz",
+      "bytes": 34612,
+      "sha256": "3d0647b2cb671ba09199b6f9c4b9cdbfa58f24a0eafb1d2d672a18823070c9bf"
+    },
+    {
+      "path": "README.md",
+      "bytes": 12131,
+      "sha256": "d40e948de8e3be3ac1c717d5dbf9aae9d263f631b4f60944c32ba85f6e20d011"
+    },
+    {
+      "path": "dependency-pins.json",
+      "bytes": 1370,
+      "sha256": "8d7df3024b15350eaf6e5439fc6fb205468a6422eeb55b5422575025f8cb7992"
+    },
+    {
+      "path": "tests.log",
+      "bytes": 1997,
+      "sha256": "e5c242a030f1a4f11757a965b9151d70780fac36e5bc07dc9e4c4c243efaefe4"
+    },
+    {
+      "path": "local-checks.json",
+      "bytes": 1581,
+      "sha256": "374bc0fd703a48f9f859ad2bcaba98477fa7ec28ed09d84994505b77b6030936"
+    },
+    {
+      "path": "adapter-regression.log",
+      "bytes": 217,
+      "sha256": "2b57c45e8cbed3bb46d4af7f99f98fa4a3af902d22537160d017ddad00319759"
+    }
+  ],
+  "liveWrites": 0,
+  "hostConnectionIncluded": false,
+  "approvalIncluded": false
+}

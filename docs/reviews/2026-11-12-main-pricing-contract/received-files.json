@@ -1,0 +1,73 @@
+{
+  "schema": "issue230-received-main-price-evidence/v1",
+  "sourceComment": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6820787259",
+  "files": [
+    {
+      "file": "SHA256SUMS.txt",
+      "bytes": 636,
+      "sha256": "0289b18ccdb244988b9ad006d0571db1136db6ff075b8fbec89d866f290c6d31",
+      "origin": "b0172a0b/ops/plesk/hauptacryl-preisvertrag-20261112"
+    },
+    {
+      "file": "app-personalization-lesebeleg.json",
+      "bytes": 2491,
+      "sha256": "08fc5f1b0f87ab3d945846ae8b869cae3b3ae9d42fcdd5e6a96db46c78511366",
+      "origin": "b0172a0b/ops/plesk/hauptacryl-preisvertrag-20261112"
+    },
+    {
+      "file": "personalization.value.json",
+      "bytes": 18108,
+      "sha256": "7c997f49153d43a937a75501ed5bc016eda1003e129d1735528b801ee7962cf5",
+      "origin": "b0172a0b/ops/plesk/hauptacryl-preisvertrag-20261112"
+    },
+    {
+      "file": "pv-shopify-lesen.mjs",
+      "bytes": 6317,
+      "sha256": "433160d1cf55918563fac117e0b4e289c7eb2f4497c6ee76bbbcf9063cd71183",
+      "origin": "b0172a0b/ops/plesk/hauptacryl-preisvertrag-20261112"
+    },
+    {
+      "file": "pv-varianten.json",
+      "bytes": 53500,
+      "sha256": "37b769be31a5fd3c61855c6f6fc7ae34a4d89365574b511265522838b6f0fa85",
+      "origin": "b0172a0b/ops/plesk/hauptacryl-preisvertrag-20261112"
+    },
+    {
+      "file": "pv-vertraege.mjs",
+      "bytes": 9361,
+      "sha256": "ec82ea8fdf81878856b6247bc2dc84857baf522c31e417dccedb91a4820af160",
+      "origin": "b0172a0b/ops/plesk/hauptacryl-preisvertrag-20261112"
+    },
+    {
+      "file": "r1-preisvertraege-gruppen.json",
+      "bytes": 17735,
+      "sha256": "b46d9321cdefb7d82e9200b7d37a9be8300c2d9bd4d26b49754965e53907e4f5",
+      "origin": "b0172a0b/ops/plesk/hauptacryl-preisvertrag-20261112"
+    },
+    {
+      "file": "varianten-808.csv",
+      "bytes": 62716,
+      "sha256": "4c9cb98aa8c9ce7ec40b546a7b9b9164af6967ce6bdbf04b5b92922e0f36ae9c",
+      "origin": "b0172a0b/ops/plesk/hauptacryl-preisvertrag-20261112"
+    },
+    {
+      "file": "main-pricing-records-independent-review.md",
+      "bytes": 9008,
+      "sha256": "8f189fc9b78b607e2665df4080ac14e99d2bc7290461c4fff853584af59ef69a",
+      "origin": "independent local review"
+    },
+    {
+      "file": "main-pricing-records-independent-checks-v2.json",
+      "bytes": 40032,
+      "sha256": "70666086046530970ecaae20a814ae9ddefb4d3c6bf4ad36114fc40b01081ccb",
+      "origin": "independent local review"
+    }
+  ],
+  "limits": {
+    "sourceManifestCsvBytesMatch": false,
+    "csvLfNormalizationExplainsDifference": true,
+    "rawServerBindingReportReceived": false,
+    "currentActiveFunctionReleaseVerified": false,
+    "appReadEvidenceIsTranscript": true
+  }
+}

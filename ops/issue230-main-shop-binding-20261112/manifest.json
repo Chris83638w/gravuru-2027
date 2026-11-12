@@ -1,0 +1,136 @@
+{
+  "schema": "issue230-main-operator-package/v2",
+  "baselineManifestSha256": "a5cb7c6292bed11b1806652f3ca98e54300ecb4226bdf32351b5a9f3e5be9a66",
+  "files": [
+    {
+      "path": "main-operator.mjs",
+      "bytes": 24030,
+      "sha256": "beef9898356b4f440bc1150d7d7b596260d5b435abf4e1b094b33f6c223aae61"
+    },
+    {
+      "path": "main-pricing.mjs",
+      "bytes": 14469,
+      "sha256": "888a584c7b5e4e5e4ab2a696c739d7246dab6f8c79fc7435996778283ccb1a83"
+    },
+    {
+      "path": "gateways.mjs",
+      "bytes": 10903,
+      "sha256": "28f6de08f7d1908d9ecc986ab5012c576d98ac7a9e0a4b90f096b76d4ffd631e"
+    },
+    {
+      "path": "journal.mjs",
+      "bytes": 2505,
+      "sha256": "5df1d5328cb7b12954a4125f529f52b52d4865d257c26b10e835cb677f7d5cf6"
+    },
+    {
+      "path": "operator.mjs",
+      "bytes": 3496,
+      "sha256": "45fc2a9fed4157b166d3dd1561cbcdfdd99d1ae597328779bf01b027f6bbfacb"
+    },
+    {
+      "path": "main-operator.test.mjs",
+      "bytes": 26830,
+      "sha256": "7518c03884d4b54d9d6123d28d6958680ee754603a42ac715dcb2296751d725c"
+    },
+    {
+      "path": "main-pricing.test.mjs",
+      "bytes": 14630,
+      "sha256": "c52bef1a117473c605dfcd5493b91ee46f4775808e32c9777bfba0181d1ff134"
+    },
+    {
+      "path": "README.md",
+      "bytes": 15184,
+      "sha256": "ef421ab10f5f217c987a9f322777cf6fd463e3bd529f6669778ecc4ea299d7f8"
+    },
+    {
+      "path": "baseline-manifest.json",
+      "bytes": 1830,
+      "sha256": "a5cb7c6292bed11b1806652f3ca98e54300ecb4226bdf32351b5a9f3e5be9a66"
+    },
+    {
+      "path": "dependency-pins.json",
+      "bytes": 1906,
+      "sha256": "0c3a1d637400e2d80635f7cb9728ccb35cd55c24130c1d412a10086d3269b0f2"
+    },
+    {
+      "path": "pricing-pins.json",
+      "bytes": 354,
+      "sha256": "28b2e281ce6032f587256551d0529392ace19aa0ba735b299e1eba36e7b64f0e"
+    },
+    {
+      "path": "variant-mapping.preview.json.gz",
+      "bytes": 34612,
+      "sha256": "3d0647b2cb671ba09199b6f9c4b9cdbfa58f24a0eafb1d2d672a18823070c9bf"
+    },
+    {
+      "path": "tests-v2-final.log",
+      "bytes": 3591,
+      "sha256": "c9cee85f28de4112f0b7b02f3a147233430927299d1e7c8fa6f699599684bf90"
+    },
+    {
+      "path": "function-freshness-tests.log",
+      "bytes": 330,
+      "sha256": "1e64135c652824747ff17c748b9182b9cd53a219e46dee33737aa4adcfbffbfb"
+    },
+    {
+      "path": "pricing-journal-test.log",
+      "bytes": 242,
+      "sha256": "cec0dd1e7a5954a75f3877b2ac2a02fd610c016f3651a2f57a3ee8878caf030f"
+    },
+    {
+      "path": "pricing-proof-local.json",
+      "bytes": 490,
+      "sha256": "7cfba241263b9c12acc2977e7cd6d157de6f41fade20225f01978a87b882e1df"
+    },
+    {
+      "path": "pricing-value.preview.json",
+      "bytes": 3898,
+      "sha256": "37ef02c6f98f6b463179093aca38a715a153141d8281203a158ddbc3e49b0705"
+    },
+    {
+      "path": "local-checks.json",
+      "bytes": 2360,
+      "sha256": "af1a488c0d7389fc96f584ad9603b19c16fa91747c74ac1156ecc1a1c69c2e0a"
+    },
+    {
+      "path": "function-build-reference.json",
+      "bytes": 721,
+      "sha256": "8c501f08292ddefeb3b3dcb85da1c786c1582009372c101113f7946756878c9a"
+    },
+    {
+      "path": "fixtures/personalization.value.json",
+      "bytes": 18108,
+      "sha256": "7c997f49153d43a937a75501ed5bc016eda1003e129d1735528b801ee7962cf5"
+    },
+    {
+      "path": "fixtures/r1-preisvertraege-gruppen.json",
+      "bytes": 17735,
+      "sha256": "b46d9321cdefb7d82e9200b7d37a9be8300c2d9bd4d26b49754965e53907e4f5"
+    },
+    {
+      "path": "fixtures/varianten-808.csv",
+      "bytes": 62716,
+      "sha256": "4c9cb98aa8c9ce7ec40b546a7b9b9164af6967ce6bdbf04b5b92922e0f36ae9c"
+    },
+    {
+      "path": "fixtures/app-personalization-lesebeleg.json",
+      "bytes": 2491,
+      "sha256": "08fc5f1b0f87ab3d945846ae8b869cae3b3ae9d42fcdd5e6a96db46c78511366"
+    },
+    {
+      "path": "fixtures/function-build-20261108/compiled-proof.json",
+      "bytes": 3838,
+      "sha256": "5977e9d9a510223d55f2f6635910aa7af97fcd300eaeec6480a56d921129f1a7"
+    },
+    {
+      "path": "fixtures/function-build-20261108/app-preservation-receipt.json",
+      "bytes": 619,
+      "sha256": "1e3dd43696929b23de345be575108442feff0726209fed3138f4f539a5371781"
+    }
+  ],
+  "liveWrites": 0,
+  "appFilesChanged": 0,
+  "hostConnectionIncluded": false,
+  "activeFunctionVerified": false,
+  "approvalIncluded": false
+}

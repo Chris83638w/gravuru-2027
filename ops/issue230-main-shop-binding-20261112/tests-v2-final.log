@@ -1,0 +1,41 @@
+✔ native gateway preserves the exact registered adapter and its native read scope (5.0732ms)
+✔ pinned real 808 mapping: dry plan has exact 158 prices/30 labels/182 IDs and no writes (73.9264ms)
+✔ exact full orchestration: per-block fresh check then CAS/readback, all30 unchanged, replay no writes (337.8832ms)
+✔ no execute / wrong approval / wrong native head fail before any mutation (241.1109ms)
+✔ price drift, protected field drift or changed residual stop before writing (281.2329ms)
+✔ unknown successful Shopify mutation is not repeated; read-only reconcile then resume (299.7166ms)
+✔ unknown no-effect mutation requires reconciliation before explicit retry (282.8868ms)
+✔ mixed Shopify effect cannot be reconciled or trigger bindings (135.597ms)
+✔ protected field changed by write is caught by whole808 readback before any binding (103.5781ms)
+✔ check failure after two blocks stops and clean retry only processes remaining blocks (235.8417ms)
+✔ lost native persist response requires reconciliation; committed block is not repeated (289.4322ms)
+✔ CAS sees concurrent head change after check and does not advance later blocks (110.5456ms)
+✔ private durable journal detects tampering and blocks concurrent opening (20.3036ms)
+✔ Shopify gateway: complete250-page read and one182-ID bulk update, no productSet/create/publish (46.3937ms)
+✔ Shopify gateway refuses retrying transport and pagination drift (43.9875ms)
+✔ separate catalog finish requires complete main readback and preserves all808 R1 approval probes (306.8863ms)
+✔ catalog lost response is reconciled before retry; no duplicate native approval (357.5535ms)
+✔ changed R1 approval or residual R2 coverage prevents catalog finish (430.9032ms)
+✔ CLI plan invokes readOnly factory and only writes a new review JSON; execute flag rejected (84.0502ms)
+✔ rehashed plan with changed mapping preimage still cannot acquire mutation authority (75.4377ms)
+✔ pricing lost response stops before first binding, read-only reconcile then replay keeps all old contracts (386.3754ms)
+✔ pricing no-effect timeout and mixed foreign value require explicit reconciliation and no early bindings (218.3204ms)
+✔ changed historical contract blocks before any write; wrong new immutable contract blocks before next block (217.5791ms)
+✔ readonly gateway uses existing getters only, without idBindings construction or mutation surface (0.2826ms)
+✔ wrong authenticated app cannot write variants or app metafield; CAS uses the actual fresh digest (43.6133ms)
+✔ actual808 source prices -> bounded v2 with full immutable R1 history and only778 new contracts (38.3372ms)
+✔ missing or insufficient Function evidence and changed actual R1 contract fail before a plan (18.1374ms)
+✔ explicitly observed absent contracts remain null; absence is not fabricated evidence (16.2531ms)
+✔ existing identical target contract is reused byte-for-byte without revision churn (56.2238ms)
+✔ synchronous provider refuses unarmed, wrong identity/base and R1 residue, then revokes (26.9212ms)
+✔ existing real Function source prices all808 old and778 new lines plus uploads/tiers and rejects unknown revision (37.6499ms)
+✔ production connection rejects a synthetic full R1 document rather than trusting the test projection (293.0411ms)
+✔ connection rereads all808 immutable contracts before writes, guards provider, and rejects a changed residual (790.9121ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 33
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4750.8949

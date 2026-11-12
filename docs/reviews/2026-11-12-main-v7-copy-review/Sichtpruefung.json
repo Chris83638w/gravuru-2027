@@ -1,0 +1,44 @@
+{
+  "schema": "gravuru-main-v7-artifact-reimport/v1",
+  "xlsxSha256": "65d706e1a99cc599ba7a1c577de028208a5efd356f97bd997f68be3f899cde29",
+  "reviewHash": "8e8814cabbddb0354e0af029e1bdb09f0a668f69af03dd056792a99c6b7d517d",
+  "checks": [
+    {
+      "sheet": "HauptzielV7",
+      "exactValuesAndFormulas": true,
+      "errorCells": 0,
+      "rendered": true
+    },
+    {
+      "sheet": "Preisabgleich158",
+      "exactValuesAndFormulas": true,
+      "errorCells": 0,
+      "rendered": true
+    },
+    {
+      "sheet": "Groessenlabels30",
+      "exactValuesAndFormulas": true,
+      "errorCells": 0,
+      "rendered": true
+    },
+    {
+      "sheet": "Erhalten30",
+      "exactValuesAndFormulas": true,
+      "errorCells": 0,
+      "rendered": true
+    },
+    {
+      "sheet": "BelegeV7",
+      "exactValuesAndFormulas": true,
+      "errorCells": 0,
+      "rendered": true
+    },
+    {
+      "sheet": "AblaufV7",
+      "exactValuesAndFormulas": true,
+      "errorCells": 0,
+      "rendered": true
+    }
+  ],
+  "visuallyReviewed": false
+}

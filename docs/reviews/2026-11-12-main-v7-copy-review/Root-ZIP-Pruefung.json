@@ -1,0 +1,18 @@
+{
+  "rootIndependentZipCheck": true,
+  "xlsxSha256": "65d706e1a99cc599ba7a1c577de028208a5efd356f97bd997f68be3f899cde29",
+  "sourceSha256": "37a704d892b0f24fffdd87c7c5090652e5a949f3091dd8117ff83567e49d1429",
+  "oldPartsPreserved": 26,
+  "newReviewSheetsFirst": [
+    "HauptzielV7",
+    "Preisabgleich158",
+    "Groessenlabels30",
+    "Erhalten30",
+    "BelegeV7",
+    "AblaufV7"
+  ],
+  "oldSheetOrderAndAttributesPreserved": true,
+  "sourceUnchanged": true,
+  "approved": false,
+  "executed": false
+}

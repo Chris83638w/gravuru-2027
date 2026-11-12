@@ -1,0 +1,25 @@
+{
+  "schema": "gravuru-main-v7-preparation-checks/v1",
+  "scope": "Only appendix/graft/input preparation; no app/runtime/server tests.",
+  "graftXmlCase": {
+    "passed": true,
+    "fixture": "Actual source v6 read-only plus temporary synthetic six-sheet XML ZIP; no review/approval data and no final XLSX.",
+    "assertions": ["six-sheet order", "old package bytes", "old style definitions", "shared-string conversion", "cell/row/column style offsets", "formula preservation", "localSheetId plus six", "exclusive output", "source unchanged"]
+  },
+  "missingReviewHash": {
+    "passed": true,
+    "result": "Rejected before input reads, Artifact import or output creation."
+  },
+  "realInputs": {
+    "passed": true,
+    "reviewHash": "8e8814cabbddb0354e0af029e1bdb09f0a668f69af03dd056792a99c6b7d517d",
+    "method": "Pinned actual files plus unchanged native verifyUpdateReview and separate observation equality."
+  },
+  "javascriptSyntaxChecksPassed": ["build-appendices.mjs", "verify-appendices.mjs"],
+  "finalXlsxSha256": "65d706e1a99cc599ba7a1c577de028208a5efd356f97bd997f68be3f899cde29",
+  "sourceXlsxSha256": "37a704d892b0f24fffdd87c7c5090652e5a949f3091dd8117ff83567e49d1429",
+  "finalVerification": "See final Inhaltspruefung.json, Sichtpruefung.json and separate Visuelle-Pruefung.json; Artifact exit1 limit is explicit there.",
+  "noAppChanges": true,
+  "noServerOrShopWrites": true,
+  "approvalHash": null
+}

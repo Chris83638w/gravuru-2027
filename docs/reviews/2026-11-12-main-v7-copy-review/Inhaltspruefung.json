@@ -1,0 +1,19 @@
+{
+  "schema": "gravuru-main-v7-preservation-check/v1",
+  "allPassed": true,
+  "sourceSha256": "37a704d892b0f24fffdd87c7c5090652e5a949f3091dd8117ff83567e49d1429",
+  "xlsxSha256": "65d706e1a99cc599ba7a1c577de028208a5efd356f97bd997f68be3f899cde29",
+  "reviewHash": "8e8814cabbddb0354e0af029e1bdb09f0a668f69af03dd056792a99c6b7d517d",
+  "previousSheets": 12,
+  "newSheets": 6,
+  "previousCellsAndFormulasUnchanged": true,
+  "previousCellCount": 14499,
+  "preservedPartCount": 26,
+  "previousSheetTableRelationBytesUnchanged": true,
+  "newCellsCompared": 1711,
+  "priceRows": 158,
+  "labelRows": 30,
+  "preservedVariantRows": 30,
+  "approved": false,
+  "executed": false
+}

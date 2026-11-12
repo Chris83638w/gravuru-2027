@@ -1,0 +1,50 @@
+{
+  "schema": "gravuru-main-v7-manual-visual-review/v1",
+  "reviewer": "product_plans",
+  "xlsxSha256": "65d706e1a99cc599ba7a1c577de028208a5efd356f97bd997f68be3f899cde29",
+  "reviewHash": "8e8814cabbddb0354e0af029e1bdb09f0a668f69af03dd056792a99c6b7d517d",
+  "visuallyReviewed": true,
+  "files": [
+    {
+      "file": "HauptzielV7-Reimport.png",
+      "sha256": "8adce6618ad039b48d49f3579ede38051972c7ba264c55a26b444b5963e59e86",
+      "visuallyReviewed": true
+    },
+    {
+      "file": "Preisabgleich158-Reimport.png",
+      "sha256": "18e84e7f542d2733f7229c44c536c7f99b2074fd731fa89f09ad54bb0ebf2c05",
+      "visuallyReviewed": true
+    },
+    {
+      "file": "Groessenlabels30-Reimport.png",
+      "sha256": "ea4249b01d0ae369eac339745e1facb650e4d120f1d668045b94fe8f10dd73c6",
+      "visuallyReviewed": true
+    },
+    {
+      "file": "Erhalten30-Reimport.png",
+      "sha256": "d4b16905ac6847c9f72cd06bd2634060553704a26d7ee67f5137765b17aba0d3",
+      "visuallyReviewed": true
+    },
+    {
+      "file": "BelegeV7-Reimport.png",
+      "sha256": "5492bac0df7adca83ef4e9f664066bbf5f6e5a9efabc77a551d6cd5982ca8592",
+      "visuallyReviewed": true
+    },
+    {
+      "file": "AblaufV7-Reimport.png",
+      "sha256": "fd8f66d97c7499f14fbbf8afa8fcd3a604ed39e53cd7755f72b31db332cc3ca0",
+      "visuallyReviewed": true
+    }
+  ],
+  "findings": "Six final reimport images viewed. Exact identifier digits visible through explicit ID prefix; actual UTC timestamp visible; price/label/residual rows and copy-pilot scope readable. Price table image shows its opening rows; all158 rows were separately value/formula checked.",
+  "runtimeLimit": {
+    "artifactBuildExitCode": 1,
+    "artifactReimportExitCode": 1,
+    "additionalErrorMessage": null,
+    "completionArtifactsWritten": true,
+    "separateOoxmlCheckExitCode": 0,
+    "claim": "Actual output files independently parsed and reimported; no clean Artifact process exit or Excel desktop test claimed."
+  },
+  "approved": false,
+  "executed": false
+}

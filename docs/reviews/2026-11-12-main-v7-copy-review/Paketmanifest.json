@@ -1,0 +1,124 @@
+{
+  "schema": "gravuru-main-v7-delivery-files/v1",
+  "purpose": "copy-pilot-review-only",
+  "xlsxSha256": "65d706e1a99cc599ba7a1c577de028208a5efd356f97bd997f68be3f899cde29",
+  "reviewHash": "8e8814cabbddb0354e0af029e1bdb09f0a668f69af03dd056792a99c6b7d517d",
+  "approvalHash": null,
+  "approved": false,
+  "executed": false,
+  "deliverables": [
+    {
+      "file": "README.md",
+      "bytes": 2427,
+      "sha256": "e2ea06b071fcdcebdd926818827b0274d1f9bb7ffb537f6ee9c87348106e011d"
+    },
+    {
+      "file": "Tuerschild-Acrylglas-3mm_v7.xlsx",
+      "bytes": 142074,
+      "sha256": "65d706e1a99cc599ba7a1c577de028208a5efd356f97bd997f68be3f899cde29"
+    },
+    {
+      "file": "Manifest.json",
+      "bytes": 5834,
+      "sha256": "d607b0bffb4db97bddc7cc12a49bf67223ec3825077a6ffb0bef91ebd7f992ea"
+    },
+    {
+      "file": "Inhaltspruefung.json",
+      "bytes": 686,
+      "sha256": "232a498069a9570afc620aea8e197a93bf1debaceab781bd14c8ca2786b6b0c4"
+    },
+    {
+      "file": "Sichtpruefung.json",
+      "bytes": 1035,
+      "sha256": "2d533cec0e91170762b8c7f983bf58019ddf0dc7b3656061e2cd7be9ec299789"
+    },
+    {
+      "file": "Visuelle-Pruefung.json",
+      "bytes": 1997,
+      "sha256": "7d422d9a0b3c32748b1b163478c02de79634b9ce1427909c24e9c9e8e18b7634"
+    },
+    {
+      "file": "appendix-index.json",
+      "bytes": 68120,
+      "sha256": "c8d0c982c12365a52207d05f93f4ffdb1d98c1ec1f1fc50d51eb334de5d1905f"
+    },
+    {
+      "file": "HauptzielV7-Reimport.png",
+      "bytes": 132726,
+      "sha256": "8adce6618ad039b48d49f3579ede38051972c7ba264c55a26b444b5963e59e86"
+    },
+    {
+      "file": "Preisabgleich158-Reimport.png",
+      "bytes": 164047,
+      "sha256": "18e84e7f542d2733f7229c44c536c7f99b2074fd731fa89f09ad54bb0ebf2c05"
+    },
+    {
+      "file": "Groessenlabels30-Reimport.png",
+      "bytes": 294659,
+      "sha256": "ea4249b01d0ae369eac339745e1facb650e4d120f1d668045b94fe8f10dd73c6"
+    },
+    {
+      "file": "Erhalten30-Reimport.png",
+      "bytes": 423349,
+      "sha256": "d4b16905ac6847c9f72cd06bd2634060553704a26d7ee67f5137765b17aba0d3"
+    },
+    {
+      "file": "BelegeV7-Reimport.png",
+      "bytes": 247204,
+      "sha256": "5492bac0df7adca83ef4e9f664066bbf5f6e5a9efabc77a551d6cd5982ca8592"
+    },
+    {
+      "file": "AblaufV7-Reimport.png",
+      "bytes": 99832,
+      "sha256": "fd8f66d97c7499f14fbbf8afa8fcd3a604ed39e53cd7755f72b31db332cc3ca0"
+    }
+  ],
+  "reproduction": [
+    {
+      "file": "README.md",
+      "bytes": 9965,
+      "sha256": "7b91eec14cc00c623232250a8e81a1ba64ae0d2541b48336b347c6b8c432ffb1"
+    },
+    {
+      "file": "inputs.mjs",
+      "bytes": 5132,
+      "sha256": "adfc0578ba0817b78e04c07663807680081ecf1544637ca6ee0d732d7529c370"
+    },
+    {
+      "file": "artifact-runtime.mjs",
+      "bytes": 676,
+      "sha256": "f827515b99eeed34c032e7be101885f29c95666d87a020495ee2a951d7f6418e"
+    },
+    {
+      "file": "build-appendices.mjs",
+      "bytes": 11550,
+      "sha256": "2372ab495a824366ffa9dbb9304877adb5d4c4c4b171d0416f72262b3e2fb86c"
+    },
+    {
+      "file": "graft-appendices.py",
+      "bytes": 9899,
+      "sha256": "fdce69554b9feca531f197133014dcc0452315c66d7779c0282e60c8229d08b2"
+    },
+    {
+      "file": "verify-preservation.py",
+      "bytes": 5936,
+      "sha256": "29676ce4fa018e74ce38d292fdcbba1f952637b42eb70692f583cdffe0f0f2c7"
+    },
+    {
+      "file": "verify-appendices.mjs",
+      "bytes": 2283,
+      "sha256": "953794f8ec87260d440086338ad6079f81711a3beee5a506341c3cf4669bf5e6"
+    },
+    {
+      "file": "test-graft.py",
+      "bytes": 3980,
+      "sha256": "2b32991f359a694595021598f01d70cbaab72a890df65ebb6a75b62d160bc77b"
+    },
+    {
+      "file": "preparation-checks.json",
+      "bytes": 1419,
+      "sha256": "9d7cdf549cccfb71588c8167e29875ce1a82ac25213be738bbdbb8e2dc6283df"
+    }
+  ],
+  "excluded": "No early-build directories, __pycache__, package dependencies, intermediate appendix XLSX, initial renders or inspection dumps."
+}

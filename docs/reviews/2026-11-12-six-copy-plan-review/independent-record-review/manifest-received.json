@@ -1,0 +1,70 @@
+{
+  "schema": "independent-six-groups-receipt-review-files/v1",
+  "files": [
+    {
+      "file": "actual-records-comment.json",
+      "bytes": 5960,
+      "sha256": "3c602a415d358ddce559641aea97a848d7f0c8febeb23a7166d41de718f5cdb3"
+    },
+    {
+      "file": "compare-inputs-v9.mjs",
+      "bytes": 6595,
+      "sha256": "14160370c92fabae542e9c85bed327592cc4e109cd156ceed4de02a733023a8f"
+    },
+    {
+      "file": "independent-review.md",
+      "bytes": 7212,
+      "sha256": "4d467e43c6720ca1fe66a6e99fc65290c59ef7dcbfc52215871fea149a61633b"
+    },
+    {
+      "file": "input-v9-review-final.json",
+      "bytes": 11497,
+      "sha256": "da13744e93cd32c46ef6f638ff553547e7b5ac7029c529ea06dc1e6f82310b5c"
+    },
+    {
+      "file": "input-v9-review.json",
+      "bytes": 11306,
+      "sha256": "335398184450050c27cba12758c1c77627e9f8523e60d291039e282fdffe84db"
+    },
+    {
+      "file": "manifest.json",
+      "bytes": 1264,
+      "sha256": "b867b6bfb380e76bfc525f575298f74cf59a990b3262bc916ae20809f3d0e232"
+    },
+    {
+      "file": "operator-comments.json",
+      "bytes": 7635,
+      "sha256": "6ed44a3cbf35da55d44ce8559af2d52ae9bb8dd3709e98070303a84f3f0f7a8e"
+    },
+    {
+      "file": "received-records-review.json",
+      "bytes": 25184,
+      "sha256": "f227a8b882c7fb50148d0a81274acedfa731f6467936b463b8a9adf8fe6b20df"
+    },
+    {
+      "file": "received-records-review.md",
+      "bytes": 4813,
+      "sha256": "1be7642a5ba6ffafecd791fcc9d705a95b3154bea1b625abbae02cde84e02ab2"
+    },
+    {
+      "file": "review-received-records.mjs",
+      "bytes": 9315,
+      "sha256": "1777aa040e63a7d4ee021e9a9ed3e0e11a9d2d72b5362aad583e4e806213961b"
+    },
+    {
+      "file": "sg-eingaben.json",
+      "bytes": 20795,
+      "sha256": "08f6dbed3cd54f97f3f324d80c51cc65d8d97348f1533a8e12551f72e68b8fde"
+    },
+    {
+      "file": "sg-plaene.mjs",
+      "bytes": 21073,
+      "sha256": "5b48e6357bb7d78b144de7a861f2871b6c14316dc8ee08b4c371b6bb06a3bbc8"
+    },
+    {
+      "file": "sg-records.mjs",
+      "bytes": 7291,
+      "sha256": "4e5129e0c39ed18a582855b3e8b5ad0de310e680d61ae95c34e5264a7aad15af"
+    }
+  ]
+}

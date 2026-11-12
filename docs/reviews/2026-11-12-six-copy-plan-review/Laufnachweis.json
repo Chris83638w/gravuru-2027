@@ -1,0 +1,60 @@
+{
+  "schema": "gravuru-six-copy-plan-execution-evidence/v1",
+  "inputSha256": "1153dfacf9181081142ca57843b6dd68d95ad807c30b176ffbdd238f8e93154f",
+  "steps": [
+    {
+      "step": "index-received",
+      "exitCode": 0
+    },
+    {
+      "step": "input-validation-check-only",
+      "exitCode": 0,
+      "groups": 6,
+      "prices": 45
+    },
+    {
+      "step": "artifact-authoring",
+      "exitCode": 1,
+      "completeExpectedOutputsWritten": true,
+      "reported": {
+        "appendices": 6,
+        "priceRows": 45,
+        "finalWorkbooksWritten": 0
+      },
+      "additionalErrorMessageObserved": false
+    },
+    {
+      "step": "byte-preserving-graft",
+      "exitCode": 0,
+      "workbooks": 6
+    },
+    {
+      "step": "independent-OOXML-values-and-parts-check",
+      "exitCode": 0,
+      "allPassed": true,
+      "prices": 45,
+      "originalCells": 3711,
+      "previousCells": 5163
+    },
+    {
+      "step": "artifact-reimport",
+      "exitCode": 1,
+      "completeExpectedOutputsWritten": true,
+      "reported": {
+        "reimported": 6,
+        "newSheets": 6,
+        "visualReadingStillRequired": true
+      },
+      "additionalErrorMessageObserved": false
+    },
+    {
+      "step": "manual-image-reading",
+      "imagesRead": 18,
+      "workbooks": 6
+    }
+  ],
+  "limit": "Artifact processes each returned exit code 1 after reporting and writing all expected outputs, without additional error text. This is not reported as a green process exit. The resulting final files passed separate stdlib ZIP/XML/value verification and actual reimport/render/manual review. Cause not established; no dependency/runtime modification.",
+  "approved": false,
+  "executed": false,
+  "liveWrites": 0
+}

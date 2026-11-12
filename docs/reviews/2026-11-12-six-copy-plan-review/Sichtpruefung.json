@@ -1,0 +1,78 @@
+{
+  "schema": "gravuru-six-copy-plan-artifact-reimport/v1",
+  "checks": [
+    {
+      "key": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "xlsxSha256": "09821cf8498e2c6e7d981430d19f058b30e87f1020b13df9e8367d2818c35b01",
+      "exactNewValues": true,
+      "errorCells": 0,
+      "reimported": true,
+      "images": [
+        "Tuerschild-Acrylglas-3mm-5x2_v5.xlsx-Reimport-1.png",
+        "Tuerschild-Acrylglas-3mm-5x2_v5.xlsx-Reimport-2.png",
+        "Tuerschild-Acrylglas-3mm-5x2_v5.xlsx-Reimport-3.png"
+      ]
+    },
+    {
+      "key": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "xlsxSha256": "63b9e0033ae5e82d963aeb9520f89a029d3c8b96375333118b573583f4e9f1af",
+      "exactNewValues": true,
+      "errorCells": 0,
+      "reimported": true,
+      "images": [
+        "Tuerschild-Acrylglas-3mm-6x2_v5.xlsx-Reimport-1.png",
+        "Tuerschild-Acrylglas-3mm-6x2_v5.xlsx-Reimport-2.png",
+        "Tuerschild-Acrylglas-3mm-6x2_v5.xlsx-Reimport-3.png"
+      ]
+    },
+    {
+      "key": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "xlsxSha256": "050e78e660425d8cb3877f94964a16d820c3aca0407fe463bd1e3e694321bb09",
+      "exactNewValues": true,
+      "errorCells": 0,
+      "reimported": true,
+      "images": [
+        "Tuerschild-Acrylglas-3mm-8x2_v5.xlsx-Reimport-1.png",
+        "Tuerschild-Acrylglas-3mm-8x2_v5.xlsx-Reimport-2.png",
+        "Tuerschild-Acrylglas-3mm-8x2_v5.xlsx-Reimport-3.png"
+      ]
+    },
+    {
+      "key": "Tuerschild-Edelstahl-5x2_v1",
+      "xlsxSha256": "8e66d99b6ab5913c0c42f168271afa590f25cc56ef49652983dce7fad6e959c2",
+      "exactNewValues": true,
+      "errorCells": 0,
+      "reimported": true,
+      "images": [
+        "Tuerschild-Edelstahl-5x2_v4.xlsx-Reimport-1.png",
+        "Tuerschild-Edelstahl-5x2_v4.xlsx-Reimport-2.png",
+        "Tuerschild-Edelstahl-5x2_v4.xlsx-Reimport-3.png"
+      ]
+    },
+    {
+      "key": "Tuerschild-Edelstahl-6x2_v1",
+      "xlsxSha256": "6e3961bae9f2009e93a2a6a6b35b1a9caabe6d20c59c3c52e8219531f322245a",
+      "exactNewValues": true,
+      "errorCells": 0,
+      "reimported": true,
+      "images": [
+        "Tuerschild-Edelstahl-6x2_v4.xlsx-Reimport-1.png",
+        "Tuerschild-Edelstahl-6x2_v4.xlsx-Reimport-2.png",
+        "Tuerschild-Edelstahl-6x2_v4.xlsx-Reimport-3.png"
+      ]
+    },
+    {
+      "key": "Tuerschild-Edelstahl-8x2_v1",
+      "xlsxSha256": "c7963bbd1deae43db3d7c6dd88cfdaeb11db1ba4b8f29a32128c9c6194a6169c",
+      "exactNewValues": true,
+      "errorCells": 0,
+      "reimported": true,
+      "images": [
+        "Tuerschild-Edelstahl-8x2_v4.xlsx-Reimport-1.png",
+        "Tuerschild-Edelstahl-8x2_v4.xlsx-Reimport-2.png",
+        "Tuerschild-Edelstahl-8x2_v4.xlsx-Reimport-3.png"
+      ]
+    }
+  ],
+  "visuallyReviewed": false
+}

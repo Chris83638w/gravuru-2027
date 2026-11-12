@@ -1,0 +1,201 @@
+{
+ "schema": "gravuru-update-kopienpilot-TESTBELEG/v1",
+ "kennzeichnung": "TESTBELEG auf Wegwerfkopien - synthetische Zustimmungsvorgabe nur im Speicher, keine Nutzerfreigabe, kein produktiver Beleg",
+ "erstellt": "2026-11-12T07:48:29.811Z",
+ "ordner": "updatepilot-20261112T074826Z",
+ "reviewHash": "8e8814cabbddb0354e0af029e1bdb09f0a668f69af03dd056792a99c6b7d517d",
+ "excel": {
+  "datei": "Tuerschild-Acrylglas-3mm_v7.xlsx",
+  "sha256": "65d706e1a99cc599ba7a1c577de028208a5efd356f97bd997f68be3f899cde29",
+  "bytes": 142074
+ },
+ "kopienquelle": {
+  "sicherung": "20261111T212859Z",
+  "workshopSha256": "ebee203562b645c91ac6f0fdfe9bbe4c16ac8a1fac92345b275d105555cb1f2b"
+ },
+ "update": {
+  "ms": 19469,
+  "beleg": {
+   "revision": 2,
+   "replayed": false,
+   "newRevisions": 1,
+   "createdProducts": 0,
+   "productId": "cfg_8e7ebe96-28d2-406f-b31e-036ee61f47e0",
+   "document": {
+    "productGroupSha256": "ae09cbf6b58719b61729c7fab7a5685b464aae1e8d08691a706111e97b58e407",
+    "idBindingSha256": "f0bb7d95e89e3aae66ab04454d6476132fe197aaae7c1da48ce8209ced62d285"
+   },
+   "metadataSha256": "52476368aa083eebf168c30f1f2ea54415b18f1d6c02b53e41173fa58a2ef075",
+   "importKey": "issue230.main-acryl.16190784602492.rev1-to2",
+   "importFingerprint": "2872b28895453ec8fc3af89a293e7f3d144c56bdf03dbae6b09c5296fcb9e01f",
+   "reviewHash": "8e8814cabbddb0354e0af029e1bdb09f0a668f69af03dd056792a99c6b7d517d",
+   "excelSha256": "65d706e1a99cc599ba7a1c577de028208a5efd356f97bd997f68be3f899cde29",
+   "shopifyWrites": 0,
+   "bindingWrites": 0,
+   "catalogApprovals": 0,
+   "publications": 0,
+   "checkedUnderNativeWriteLockAt": "2026-11-12T07:50:07.149Z",
+   "receiptHash": "53b99eb6034103afa17288459ba59512ec8098efa0737181798ce464578bbe6f"
+  },
+  "vorher": {
+   "produkte": 1078,
+   "revisionen": 4406,
+   "importjournal": 4285,
+   "bindungskoepfe": 16680,
+   "bindungsrevisionen": 33059,
+   "kopf": 1,
+   "revisionenProdukt": 1
+  },
+  "nachher": {
+   "produkte": 1078,
+   "revisionen": 4407,
+   "importjournal": 4286,
+   "bindungskoepfe": 16680,
+   "bindungsrevisionen": 33059,
+   "kopf": 2,
+   "revisionenProdukt": 2
+  },
+  "journal": {
+   "key": "issue230.main-acryl.16190784602492.rev1-to2",
+   "fingerprint": "2872b28895453ec8fc3af89a293e7f3d144c56bdf03dbae6b09c5296fcb9e01f",
+   "id": "cfg_8e7ebe96-28d2-406f-b31e-036ee61f47e0"
+  },
+  "kopf": {
+   "revision": 2,
+   "status": "draft"
+  }
+ },
+ "wiederholung": {
+  "ms": 16107,
+  "beleg": {
+   "revision": 2,
+   "replayed": true,
+   "newRevisions": 0,
+   "createdProducts": 0,
+   "productId": "cfg_8e7ebe96-28d2-406f-b31e-036ee61f47e0",
+   "document": {
+    "productGroupSha256": "ae09cbf6b58719b61729c7fab7a5685b464aae1e8d08691a706111e97b58e407",
+    "idBindingSha256": "f0bb7d95e89e3aae66ab04454d6476132fe197aaae7c1da48ce8209ced62d285"
+   },
+   "metadataSha256": "52476368aa083eebf168c30f1f2ea54415b18f1d6c02b53e41173fa58a2ef075",
+   "importKey": "issue230.main-acryl.16190784602492.rev1-to2",
+   "importFingerprint": "2872b28895453ec8fc3af89a293e7f3d144c56bdf03dbae6b09c5296fcb9e01f",
+   "reviewHash": "8e8814cabbddb0354e0af029e1bdb09f0a668f69af03dd056792a99c6b7d517d",
+   "excelSha256": "65d706e1a99cc599ba7a1c577de028208a5efd356f97bd997f68be3f899cde29",
+   "shopifyWrites": 0,
+   "bindingWrites": 0,
+   "catalogApprovals": 0,
+   "publications": 0,
+   "checkedUnderNativeWriteLockAt": "2026-11-12T07:50:26.564Z",
+   "receiptHash": "fde414e580e745ea75222125a22a7b0d154c15072450f43434559927dc2d665b"
+  },
+  "nachher": {
+   "produkte": 1078,
+   "revisionen": 4407,
+   "importjournal": 4286,
+   "bindungskoepfe": 16680,
+   "bindungsrevisionen": 33059,
+   "kopf": 2,
+   "revisionenProdukt": 2
+  },
+  "unveraendertGegenUpdate": true
+ },
+ "abbruchGeaenderteExcel": {
+  "fehler": {
+   "code": "excel_changed",
+   "message": "excel_changed"
+  },
+  "datenUnveraendert": true
+ },
+ "abbruchKopfdrift": {
+  "vorDrift": {
+   "produkte": 1078,
+   "revisionen": 4406,
+   "importjournal": 4285,
+   "bindungskoepfe": 16680,
+   "bindungsrevisionen": 33059,
+   "kopf": 1,
+   "revisionenProdukt": 1
+  },
+  "nachFremdbearbeitung": {
+   "produkte": 1078,
+   "revisionen": 4407,
+   "importjournal": 4285,
+   "bindungskoepfe": 16680,
+   "bindungsrevisionen": 33059,
+   "kopf": 2,
+   "revisionenProdukt": 2
+  },
+  "fehler": {
+   "code": "head_changed",
+   "message": "head_changed"
+  },
+  "nachAbbruch": {
+   "produkte": 1078,
+   "revisionen": 4407,
+   "importjournal": 4285,
+   "bindungskoepfe": 16680,
+   "bindungsrevisionen": 33059,
+   "kopf": 2,
+   "revisionenProdukt": 2
+  },
+  "keinWeitererStand": true,
+  "journal": null
+ },
+ "abbruchInsertdrift": {
+  "vorher": {
+   "produkte": 1078,
+   "revisionen": 4406,
+   "importjournal": 4285,
+   "bindungskoepfe": 16680,
+   "bindungsrevisionen": 33059,
+   "kopf": 1,
+   "revisionenProdukt": 1
+  },
+  "journalVorher": null,
+  "kopfVorher": 1,
+  "fehler": {
+   "code": "invalid_snapshot_metadata",
+   "message": "snapshot_metadata_changed"
+  },
+  "ausloeserAnzahl": 1,
+  "ausloeserImInsertHook": true,
+  "snapshotAufrufe": 3,
+  "profilSettingsRevision": [
+   1,
+   2
+  ],
+  "nachAbbruch": {
+   "produkte": 1078,
+   "revisionen": 4406,
+   "importjournal": 4285,
+   "bindungskoepfe": 16680,
+   "bindungsrevisionen": 33059,
+   "kopf": 1,
+   "revisionenProdukt": 1
+  },
+  "workshopUnveraendert": true,
+  "kopfNachher": 1,
+  "journalNachher": null
+ },
+ "sicherungen": {
+  "workshop.sqlite": true,
+  "design-assets.sqlite": true,
+  "profiles.sqlite": true
+ },
+ "sicherungUnveraendert": true,
+ "pruefungen": {
+  "A_update_rev2": true,
+  "A_eine_neue_revision": true,
+  "A_ein_journaleintrag": true,
+  "A_produkte_bindungen_unveraendert": true,
+  "A_wiederholung_noop": true,
+  "B_excel_exakt": true,
+  "B_kopfdrift_exakt": true,
+  "C_insertdrift_exakt": true,
+  "C_ausloeser_genau_einmal_im_insert": true,
+  "C_workshop_zurueckgerollt": true,
+  "sicherungen_gegen_manifest": true
+ },
+ "bestanden": true
+}

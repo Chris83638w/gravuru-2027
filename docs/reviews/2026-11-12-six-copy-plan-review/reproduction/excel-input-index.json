@@ -1,0 +1,158 @@
+{
+  "schema": "gravuru-six-copy-plan-excel-input/v1",
+  "environment": "isolated-copy",
+  "tenantId": "gravuru",
+  "storeId": "acryl",
+  "recordsRoot": "work/restabschluss/claude-75a304eb/ops/plesk/sechsgruppen-20261112/records",
+  "recordProvenance": "local-reconstruction-matched-to-server-canonical-hashes",
+  "evidenceSource": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6819660449",
+  "sourceCommit": "75a304ebfa86ce3a5302c5940107a6e010be8322",
+  "confirmations": 0,
+  "executions": 0,
+  "shopifyWrites": 0,
+  "approvalHash": null,
+  "nativePins": {
+    "path": "PINS.json",
+    "sha256": "3d6b32e0d6a5a0ad0d93f861058bc51daa8cddee6175c23c77b914dd4ae57856"
+  },
+  "compactServerValues": {
+    "path": "kompakt-serverwerte.json",
+    "sha256": "65adc3ee9c6182023cd03096e512057459e807ba4f586319f5d1139971a721a7"
+  },
+  "moduleProfile": {
+    "path": "module-profile.get-record.json",
+    "sha256": "b9f97357900894f339feef456b29a05124575535f178433164c1808d1bdc3c81"
+  },
+  "motifProfile": {
+    "path": "motif-profile.get-record.json",
+    "sha256": "908980030de4902798d4b4cb2689c2d158c404fc75933f5b0cea26194fc6414f"
+  },
+  "records": [
+    {
+      "key": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "originalWorkbookSha256": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+      "creationKey": "issue230-119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+      "plan": {
+        "path": "Tuerschild-Acrylglas-3mm-5x2_v2/plan.json.gz",
+        "sha256": "fa8b42653968fdbc0df7ad5fc0d3951f3e83bfba6daad16703f81d30ef8af7af"
+      },
+      "template": {
+        "path": "Tuerschild-Acrylglas-3mm-5x2_v2/template.json",
+        "sha256": "ff86586aa5b6dbcb0e7af9b20e3d526bb444240924c4189448e95cc62656d040"
+      },
+      "sourceDocument": {
+        "path": "Tuerschild-Acrylglas-3mm-5x2_v2/source-document.json.gz",
+        "sha256": "22fd0eaae3893108e2ddf6f70cb33a9444967b3e717bf18574e8f06321a9e2b1"
+      },
+      "sourceMetadata": {
+        "path": "Tuerschild-Acrylglas-3mm-5x2_v2/source-metadata.json",
+        "sha256": "c89a16f25208de78de8950f5114add144d8f86d2bacd1a6606abbcc02657e535"
+      }
+    },
+    {
+      "key": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "originalWorkbookSha256": "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+      "creationKey": "issue230-7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+      "plan": {
+        "path": "Tuerschild-Acrylglas-3mm-6x2_v2/plan.json.gz",
+        "sha256": "1c897d72e501b49df44c802add9a4e32603e955385b7f0a5b6900e10408ff33d"
+      },
+      "template": {
+        "path": "Tuerschild-Acrylglas-3mm-6x2_v2/template.json",
+        "sha256": "46fca5a47404e924ed08481e08d10367d84ecba155ff21c8db69ecd3af973626"
+      },
+      "sourceDocument": {
+        "path": "Tuerschild-Acrylglas-3mm-6x2_v2/source-document.json.gz",
+        "sha256": "a58cfee2da4b92f0f4b3a0d72baf5e10b73429c50211e9ef6dff9986d65d35bc"
+      },
+      "sourceMetadata": {
+        "path": "Tuerschild-Acrylglas-3mm-6x2_v2/source-metadata.json",
+        "sha256": "c89a16f25208de78de8950f5114add144d8f86d2bacd1a6606abbcc02657e535"
+      }
+    },
+    {
+      "key": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "originalWorkbookSha256": "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+      "creationKey": "issue230-02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+      "plan": {
+        "path": "Tuerschild-Acrylglas-3mm-8x2_v2/plan.json.gz",
+        "sha256": "b892b74e3ab6d5ed8f3a909c81f2cd7e01252230988a3a86a35d37e7031b9fb3"
+      },
+      "template": {
+        "path": "Tuerschild-Acrylglas-3mm-8x2_v2/template.json",
+        "sha256": "93a7619c31d54fc551baef137d997ea8005cbaaddbde3f9d183950746189d5b7"
+      },
+      "sourceDocument": {
+        "path": "Tuerschild-Acrylglas-3mm-8x2_v2/source-document.json.gz",
+        "sha256": "f201405b2a0a6d67d0f76bf170a4e0c1c7fd58893b37075de993d9090c066f00"
+      },
+      "sourceMetadata": {
+        "path": "Tuerschild-Acrylglas-3mm-8x2_v2/source-metadata.json",
+        "sha256": "c89a16f25208de78de8950f5114add144d8f86d2bacd1a6606abbcc02657e535"
+      }
+    },
+    {
+      "key": "Tuerschild-Edelstahl-5x2_v1",
+      "originalWorkbookSha256": "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+      "creationKey": "issue230-9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+      "plan": {
+        "path": "Tuerschild-Edelstahl-5x2_v1/plan.json.gz",
+        "sha256": "818c48a599e12d83cd8e6de786daa6ed192a72e235b71018b2ddbbde7a4d29de"
+      },
+      "template": {
+        "path": "Tuerschild-Edelstahl-5x2_v1/template.json",
+        "sha256": "ba49fe86b527adca602340a936a9703543ca09862fbd168c9997a33a066f8c71"
+      },
+      "sourceDocument": {
+        "path": "Tuerschild-Edelstahl-5x2_v1/source-document.json.gz",
+        "sha256": "c2ec2cc007e0d7ff235b417df82adeec5942efbafdaefb0d17f58c6828b5b2ec"
+      },
+      "sourceMetadata": {
+        "path": "Tuerschild-Edelstahl-5x2_v1/source-metadata.json",
+        "sha256": "c89a16f25208de78de8950f5114add144d8f86d2bacd1a6606abbcc02657e535"
+      }
+    },
+    {
+      "key": "Tuerschild-Edelstahl-6x2_v1",
+      "originalWorkbookSha256": "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+      "creationKey": "issue230-de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+      "plan": {
+        "path": "Tuerschild-Edelstahl-6x2_v1/plan.json.gz",
+        "sha256": "e16f570ef7bea8ab3f75807d297b20f8c6abcc9c9b34804f153539673024cf7e"
+      },
+      "template": {
+        "path": "Tuerschild-Edelstahl-6x2_v1/template.json",
+        "sha256": "17c09a32f2801b7a621cdecf61c21aa3211dd9ee34da145a010e7abd405ea6fb"
+      },
+      "sourceDocument": {
+        "path": "Tuerschild-Edelstahl-6x2_v1/source-document.json.gz",
+        "sha256": "7b4ddeef08e7db04e7503f0f063da02f4ff54a708a9670bfc1c4f11b86df39d2"
+      },
+      "sourceMetadata": {
+        "path": "Tuerschild-Edelstahl-6x2_v1/source-metadata.json",
+        "sha256": "c89a16f25208de78de8950f5114add144d8f86d2bacd1a6606abbcc02657e535"
+      }
+    },
+    {
+      "key": "Tuerschild-Edelstahl-8x2_v1",
+      "originalWorkbookSha256": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+      "creationKey": "issue230-440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+      "plan": {
+        "path": "Tuerschild-Edelstahl-8x2_v1/plan.json.gz",
+        "sha256": "7c6daec74d91c6b2099c06b993683f691a48e07fa97db7ff7bf0bd1d772dbcda"
+      },
+      "template": {
+        "path": "Tuerschild-Edelstahl-8x2_v1/template.json",
+        "sha256": "8af9ce5a7a21e7c02c64e07e421518d72b2095763185805d7ab50fa00ce0ad6e"
+      },
+      "sourceDocument": {
+        "path": "Tuerschild-Edelstahl-8x2_v1/source-document.json.gz",
+        "sha256": "4b4dd966e016a9e08206359b1321bcc2cdc1de7d16d87e6688c74f415482778c"
+      },
+      "sourceMetadata": {
+        "path": "Tuerschild-Edelstahl-8x2_v1/source-metadata.json",
+        "sha256": "c89a16f25208de78de8950f5114add144d8f86d2bacd1a6606abbcc02657e535"
+      }
+    }
+  ]
+}

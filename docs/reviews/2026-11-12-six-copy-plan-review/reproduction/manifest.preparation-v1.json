@@ -1,0 +1,64 @@
+{
+  "schema": "gravuru-six-plan-excel-preparation-manifest/v1",
+  "status": "prepared-awaiting-complete-native-copy-records",
+  "xlsxCreated": 0,
+  "approved": false,
+  "executed": false,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 9067,
+      "sha256": "47541d241285f86e52d611aba3dd81c0924d1046e0217a07e60c5e0c4ad50dc9"
+    },
+    {
+      "path": "artifact-runtime.mjs",
+      "bytes": 676,
+      "sha256": "f827515b99eeed34c032e7be101885f29c95666d87a020495ee2a951d7f6418e"
+    },
+    {
+      "path": "build-appendices.mjs",
+      "bytes": 8008,
+      "sha256": "90365a70858a2c1fda81abf9bc700387fa9cb6ceb39f76405b0ab22105bb1388"
+    },
+    {
+      "path": "graft-appendices.py",
+      "bytes": 10567,
+      "sha256": "80ef7e08d4061ee77d4c56494ee7f1ab71052f91d9d04304555b5f7107013d6f"
+    },
+    {
+      "path": "index-received.mjs",
+      "bytes": 2006,
+      "sha256": "4ce84b7e8a5e064ef57a9ecde8253cb4362622ba20eb98576d99f152d47f79d0"
+    },
+    {
+      "path": "inputs.mjs",
+      "bytes": 9234,
+      "sha256": "1c071d75b0e13246d6d7672716de0e5d7be5128f0d6a17a99990cc7e5ff40e27"
+    },
+    {
+      "path": "preparation-checks.json",
+      "bytes": 1058,
+      "sha256": "68ead84b45a19ae7152ebee85f53802f8e7f63fc3ca4c83d97254f5c5c8513e3"
+    },
+    {
+      "path": "reference.mjs",
+      "bytes": 3562,
+      "sha256": "829108d4736bcc60ba19ff62ff3da32c9f5d0031a6f77ddb6c1681f242bfae6e"
+    },
+    {
+      "path": "v9-reference.json",
+      "bytes": 72783,
+      "sha256": "b028420d9f554696c7bb77deeb1990cda3dfd936317928b3f6f749a214d299fa"
+    },
+    {
+      "path": "verify-appendices.mjs",
+      "bytes": 2107,
+      "sha256": "c0a8d62156b4a3d4a962db3b3b7b915f71ab00d105063fd8a041a7ac7e020c4d"
+    },
+    {
+      "path": "verify-preservation.py",
+      "bytes": 5242,
+      "sha256": "b9d97c807557396734ba9e9a19909618a272567fa2f6263b58e849ded149e31e"
+    }
+  ]
+}

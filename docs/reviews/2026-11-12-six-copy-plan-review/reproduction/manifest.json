@@ -1,0 +1,81 @@
+{
+  "schema": "gravuru-six-plan-excel-reproduction-manifest/v2",
+  "status": "six-copy-review-workbooks-generated-and-checked",
+  "xlsxCreated": 6,
+  "approved": false,
+  "executed": false,
+  "previousPreparationManifestSha256": "4185d9c19bd4899c595da18b3a91866db2fe711a1a0eb7974650005ace25183c",
+  "outputManifest": {
+    "path": "outputs/Produktplaene-230-sechs-Kopienreview/Manifest.json",
+    "sha256": "992fa6a37d4262f9d3052548539d0d3ceb1e1fe6dd75dcb7473a827d963a6cf7"
+  },
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 10168,
+      "sha256": "8d3d707f408fb544cd4b131defa675efaf4231d5d145f311021e0a8bd839563e"
+    },
+    {
+      "path": "artifact-runtime.mjs",
+      "bytes": 676,
+      "sha256": "f827515b99eeed34c032e7be101885f29c95666d87a020495ee2a951d7f6418e"
+    },
+    {
+      "path": "build-appendices.mjs",
+      "bytes": 8344,
+      "sha256": "f1bc378e96fe97f424154036a423696024159d3dc72080143a8cf94e8e56fee1"
+    },
+    {
+      "path": "excel-input-index.json",
+      "bytes": 7096,
+      "sha256": "1153dfacf9181081142ca57843b6dd68d95ad807c30b176ffbdd238f8e93154f"
+    },
+    {
+      "path": "graft-appendices.py",
+      "bytes": 10567,
+      "sha256": "80ef7e08d4061ee77d4c56494ee7f1ab71052f91d9d04304555b5f7107013d6f"
+    },
+    {
+      "path": "index-received.mjs",
+      "bytes": 2241,
+      "sha256": "489ad1e29ede183a4a52a7ef9ed3cc5c6a41dd481f48811ef9d2424941288a48"
+    },
+    {
+      "path": "inputs.mjs",
+      "bytes": 10330,
+      "sha256": "11c5a282d8f60e38f68f83777058bc3e51d936cbebdcc8ea68f24c67fde081b6"
+    },
+    {
+      "path": "manifest.preparation-v1.json",
+      "bytes": 1884,
+      "sha256": "4185d9c19bd4899c595da18b3a91866db2fe711a1a0eb7974650005ace25183c",
+      "role": "historical-preparation-before-record-arrival"
+    },
+    {
+      "path": "preparation-checks.json",
+      "bytes": 1058,
+      "sha256": "68ead84b45a19ae7152ebee85f53802f8e7f63fc3ca4c83d97254f5c5c8513e3",
+      "role": "historical-preparation-before-record-arrival"
+    },
+    {
+      "path": "reference.mjs",
+      "bytes": 3562,
+      "sha256": "829108d4736bcc60ba19ff62ff3da32c9f5d0031a6f77ddb6c1681f242bfae6e"
+    },
+    {
+      "path": "v9-reference.json",
+      "bytes": 72783,
+      "sha256": "b028420d9f554696c7bb77deeb1990cda3dfd936317928b3f6f749a214d299fa"
+    },
+    {
+      "path": "verify-appendices.mjs",
+      "bytes": 2107,
+      "sha256": "c0a8d62156b4a3d4a962db3b3b7b915f71ab00d105063fd8a041a7ac7e020c4d"
+    },
+    {
+      "path": "verify-preservation.py",
+      "bytes": 5242,
+      "sha256": "b9d97c807557396734ba9e9a19909618a272567fa2f6263b58e849ded149e31e"
+    }
+  ]
+}

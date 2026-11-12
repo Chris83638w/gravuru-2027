@@ -1,0 +1,271 @@
+{
+  "schema": "gravuru-six-copy-plan-delivery/v1",
+  "purpose": "isolated-copy-plan-review-only",
+  "sourceCommit": "75a304ebfa86ce3a5302c5940107a6e010be8322",
+  "inputSha256": "1153dfacf9181081142ca57843b6dd68d95ad807c30b176ffbdd238f8e93154f",
+  "approved": false,
+  "executed": false,
+  "shopifyWrites": 0,
+  "recordsIndependentlyReviewed": true,
+  "xlsxReviewedBySeparateAgent": true,
+  "ownXlsxChecksComplete": true,
+  "files": [
+    {
+      "path": "Eingabepins.json",
+      "bytes": 7096,
+      "sha256": "1153dfacf9181081142ca57843b6dd68d95ad807c30b176ffbdd238f8e93154f"
+    },
+    {
+      "path": "Inhaltspruefung.json",
+      "bytes": 3994,
+      "sha256": "043a356f37251e6009f6f469ac051b1c7f97c4bde315232fb3dde276929d73b8"
+    },
+    {
+      "path": "Laufnachweis.json",
+      "bytes": 1712,
+      "sha256": "a5921eea462b734cd67e6f9a9056cffbebc66fcbe8f9968315ec101ace974f79"
+    },
+    {
+      "path": "Manifest.json",
+      "bytes": 34548,
+      "sha256": "992fa6a37d4262f9d3052548539d0d3ceb1e1fe6dd75dcb7473a827d963a6cf7"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4982,
+      "sha256": "984837cc73513473e906490c708fdd51f9901ce999d0b4afd78f770da7142c3d"
+    },
+    {
+      "path": "Records-Empfangspruefung.json",
+      "bytes": 25184,
+      "sha256": "f227a8b882c7fb50148d0a81274acedfa731f6467936b463b8a9adf8fe6b20df"
+    },
+    {
+      "path": "Records-Empfangspruefung.md",
+      "bytes": 4813,
+      "sha256": "1be7642a5ba6ffafecd791fcc9d705a95b3154bea1b625abbae02cde84e02ab2"
+    },
+    {
+      "path": "Root-Pruefung.json",
+      "bytes": 1755,
+      "sha256": "e141bfb0705a5e346112d25630b4a6ef1c89f47ebb2407cf80aaa867a4bcb7e5"
+    },
+    {
+      "path": "Sichtpruefung.json",
+      "bytes": 2712,
+      "sha256": "3336edeb88ae9eecd5599def215e181020b281a15b6ca53ad8ae986a0db64ce6"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-5x2_v5.xlsx",
+      "bytes": 52201,
+      "sha256": "09821cf8498e2c6e7d981430d19f058b30e87f1020b13df9e8367d2818c35b01"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-5x2_v5.xlsx-Reimport-1.png",
+      "bytes": 164274,
+      "sha256": "dfc728197fc06155a8118b1321182051db3b0433208fe7a3264d6f1795e72ae5"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-5x2_v5.xlsx-Reimport-2.png",
+      "bytes": 211001,
+      "sha256": "c780104fe1d3d6f8abd08ac3e1200afda7e248129e465acffe7f7bf91b2e7591"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-5x2_v5.xlsx-Reimport-3.png",
+      "bytes": 205399,
+      "sha256": "2cc972486761ee642209801854da34d9a51513a46cbd5a8aaea93386a7d9df82"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-6x2_v5.xlsx",
+      "bytes": 52213,
+      "sha256": "63b9e0033ae5e82d963aeb9520f89a029d3c8b96375333118b573583f4e9f1af"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-6x2_v5.xlsx-Reimport-1.png",
+      "bytes": 165429,
+      "sha256": "251c0bfebf2c623a06c634f23e4c3001c15655ef9beaf7007a6fb8a457a917fc"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-6x2_v5.xlsx-Reimport-2.png",
+      "bytes": 210916,
+      "sha256": "41dc584fcea5847460ee5ea797d40225f4de5b443ce3a4ed29107c2cad5951eb"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-6x2_v5.xlsx-Reimport-3.png",
+      "bytes": 205786,
+      "sha256": "c47bab398da48de12b5822609ef7287a0db2a080002c042d4fa467dec1b42563"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-8x2_v5.xlsx",
+      "bytes": 52199,
+      "sha256": "050e78e660425d8cb3877f94964a16d820c3aca0407fe463bd1e3e694321bb09"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-8x2_v5.xlsx-Reimport-1.png",
+      "bytes": 164468,
+      "sha256": "0be6f2b5ee17f504030df27718ebd730a7609cfc75a3411279e05b05c222071d"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-8x2_v5.xlsx-Reimport-2.png",
+      "bytes": 210377,
+      "sha256": "6f3bc6ba2c5cac94af77c366f8c18cfc47febb21c53ac47658a09dfa50fdb82d"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm-8x2_v5.xlsx-Reimport-3.png",
+      "bytes": 204800,
+      "sha256": "ab0e962aa88f4323a9cfae29a5b5fe396a73dfb901d0963e7685224572cdf05d"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-5x2_v4.xlsx",
+      "bytes": 47261,
+      "sha256": "8e66d99b6ab5913c0c42f168271afa590f25cc56ef49652983dce7fad6e959c2"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-5x2_v4.xlsx-Reimport-1.png",
+      "bytes": 160867,
+      "sha256": "8ecce4bc5c9ead05b4de6bdcedc829f2bcc3014f0b1212ab002c5870ac42f81b"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-5x2_v4.xlsx-Reimport-2.png",
+      "bytes": 210479,
+      "sha256": "ca5827fac64bb9100c08765d6c03c495ba46e538089eebbe1c25a9173e4c1483"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-5x2_v4.xlsx-Reimport-3.png",
+      "bytes": 162584,
+      "sha256": "bbae5ada709c91c93a9d0eff57e92dabbada8953bf2c0cdf99d49e14fce7569c"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-6x2_v4.xlsx",
+      "bytes": 47278,
+      "sha256": "6e3961bae9f2009e93a2a6a6b35b1a9caabe6d20c59c3c52e8219531f322245a"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-6x2_v4.xlsx-Reimport-1.png",
+      "bytes": 161429,
+      "sha256": "7747b9f20c0372b4117afb3bc9cc6fb731620b28c88c9c7d8592888fe7ec74d7"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-6x2_v4.xlsx-Reimport-2.png",
+      "bytes": 210249,
+      "sha256": "929c318ad45e583e481d731172b15c848c251c31c3a2f8e34d21e9f31e507bbc"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-6x2_v4.xlsx-Reimport-3.png",
+      "bytes": 162125,
+      "sha256": "c6091c6b74449a54bff59eba3522da2a79f9135f859b3f051a805e70f90608d4"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-8x2_v4.xlsx",
+      "bytes": 47283,
+      "sha256": "c7963bbd1deae43db3d7c6dd88cfdaeb11db1ba4b8f29a32128c9c6194a6169c"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-8x2_v4.xlsx-Reimport-1.png",
+      "bytes": 161706,
+      "sha256": "0f7fd59adbc87eb61f0df3a4e3b210d29f6ecd35adfdfa17228020e66f528051"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-8x2_v4.xlsx-Reimport-2.png",
+      "bytes": 209957,
+      "sha256": "63a5cb0d49b2cabcf667cb316ee819323337f2c5d2fb1a2b6eeebb87f8c07d7f"
+    },
+    {
+      "path": "Tuerschild-Edelstahl-8x2_v4.xlsx-Reimport-3.png",
+      "bytes": 162791,
+      "sha256": "b7bb2a84c67baf643ce6db8024511f3c43eb8349fbe9610103a60bc535946eac"
+    },
+    {
+      "path": "Visuelle-Pruefung.json",
+      "bytes": 5871,
+      "sha256": "c8ebbfb9ece72fe7f0a453e5cd27fa8ff29c517376657e9f42b7573666384e4b"
+    },
+    {
+      "path": "appendix-index.json",
+      "bytes": 120438,
+      "sha256": "bf9266e906af540a01c9b3519b34e21697d4f37416faa98916e52ea757935b46"
+    },
+    {
+      "path": "review-six-xlsx-root.py",
+      "bytes": 2143,
+      "sha256": "f08202d3ffdebcba4b5dd109e5470d22f55ce48d2b32bb8c39a969d86166171b"
+    }
+  ],
+  "reproduction": {
+    "sourceDirectory": "work/restabschluss/six-plan-excel",
+    "files": [
+      {
+        "path": "README.md",
+        "bytes": 10168,
+        "sha256": "8d3d707f408fb544cd4b131defa675efaf4231d5d145f311021e0a8bd839563e"
+      },
+      {
+        "path": "artifact-runtime.mjs",
+        "bytes": 676,
+        "sha256": "f827515b99eeed34c032e7be101885f29c95666d87a020495ee2a951d7f6418e"
+      },
+      {
+        "path": "build-appendices.mjs",
+        "bytes": 8344,
+        "sha256": "f1bc378e96fe97f424154036a423696024159d3dc72080143a8cf94e8e56fee1"
+      },
+      {
+        "path": "excel-input-index.json",
+        "bytes": 7096,
+        "sha256": "1153dfacf9181081142ca57843b6dd68d95ad807c30b176ffbdd238f8e93154f"
+      },
+      {
+        "path": "graft-appendices.py",
+        "bytes": 10567,
+        "sha256": "80ef7e08d4061ee77d4c56494ee7f1ab71052f91d9d04304555b5f7107013d6f"
+      },
+      {
+        "path": "index-received.mjs",
+        "bytes": 2241,
+        "sha256": "489ad1e29ede183a4a52a7ef9ed3cc5c6a41dd481f48811ef9d2424941288a48"
+      },
+      {
+        "path": "inputs.mjs",
+        "bytes": 10330,
+        "sha256": "11c5a282d8f60e38f68f83777058bc3e51d936cbebdcc8ea68f24c67fde081b6"
+      },
+      {
+        "path": "manifest.json",
+        "bytes": 2621,
+        "sha256": "9d1b5dc2d7e1408261f43bdc14e5c1c981c744af64dddb40866ca7771d0661fc"
+      },
+      {
+        "path": "manifest.preparation-v1.json",
+        "bytes": 1884,
+        "sha256": "4185d9c19bd4899c595da18b3a91866db2fe711a1a0eb7974650005ace25183c"
+      },
+      {
+        "path": "preparation-checks.json",
+        "bytes": 1058,
+        "sha256": "68ead84b45a19ae7152ebee85f53802f8e7f63fc3ca4c83d97254f5c5c8513e3"
+      },
+      {
+        "path": "reference.mjs",
+        "bytes": 3562,
+        "sha256": "829108d4736bcc60ba19ff62ff3da32c9f5d0031a6f77ddb6c1681f242bfae6e"
+      },
+      {
+        "path": "v9-reference.json",
+        "bytes": 72783,
+        "sha256": "b028420d9f554696c7bb77deeb1990cda3dfd936317928b3f6f749a214d299fa"
+      },
+      {
+        "path": "verify-appendices.mjs",
+        "bytes": 2107,
+        "sha256": "c0a8d62156b4a3d4a962db3b3b7b915f71ab00d105063fd8a041a7ac7e020c4d"
+      },
+      {
+        "path": "verify-preservation.py",
+        "bytes": 5242,
+        "sha256": "b9d97c807557396734ba9e9a19909618a272567fa2f6263b58e849ded149e31e"
+      }
+    ]
+  },
+  "excluded": "Intermediate appendix XLSX, initial preview PNGs, inspect NDJSON and __pycache__ are not delivery files.",
+  "independentXlsxReviewScope": "Root: all six ZIP/part/order/source/manifest/plan-reference checks; visual spot-check of 3 images. Separate creator manual review read all 18 images."
+}

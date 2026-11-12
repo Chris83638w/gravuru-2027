@@ -1,0 +1,4156 @@
+{
+  "schema": "gravuru-six-copy-plan-appendix-build/v1",
+  "purpose": "isolated-copy-plan-review-only",
+  "approvalHash": null,
+  "approved": false,
+  "executed": false,
+  "inputSha256": "1153dfacf9181081142ca57843b6dd68d95ad807c30b176ffbdd238f8e93154f",
+  "referenceSha256": "b028420d9f554696c7bb77deeb1990cda3dfd936317928b3f6f749a214d299fa",
+  "evidenceSource": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6819660449",
+  "sourceCommit": "75a304ebfa86ce3a5302c5940107a6e010be8322",
+  "records": [
+    {
+      "key": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "output": "Tuerschild-Acrylglas-3mm-5x2_v5.xlsx",
+      "previous": "outputs/Produktplaene-230-v9/Excel-Nachtraege/Tuerschild-Acrylglas-3mm-5x2_v4.xlsx",
+      "previousSha256": "c982030ca653e292d15175888633f63c6b65bdc28208cd6897411344b46d381a",
+      "original": "work/product-plans-run-v8/excel/Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "originalSha256": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+      "appendix": "Tuerschild-Acrylglas-3mm-5x2_v5.xlsx.appendix.xlsx",
+      "appendixSha256": "631f9a46158b86e2b15d05a74c63ffbd4a9f1006982573982d5aa17726dff1d2",
+      "planId": "pgp_244eb7f7-a813-4d56-b587-c0240ef756d5",
+      "planHash": "ebc8935db17be6636a795cf52a9dd26f711463dbe56875d2bd7dee9995bfdc50",
+      "creationKey": "issue230-119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+      "source": {
+        "key": "cfg_68c697b4-e32f-43bb-840c-a6149f1ec472",
+        "productId": "cfg_68c697b4-e32f-43bb-840c-a6149f1ec472",
+        "revision": 1,
+        "sha256": "723c95550dcd566492ca27e302b95fb35df2a259fb32b3a86ce2d641fa967fd7"
+      },
+      "template": {
+        "id": "pgt_83ec2106-eb89-406b-965d-5c61239a4e03",
+        "revision": 1,
+        "sha256": "ca3e77d2c4962aad973e6fa33c89684d353a4ba7fb08054f638760438c8f4f27"
+      },
+      "moduleProfile": {
+        "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+        "revision": 1,
+        "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+      },
+      "motifProfile": {
+        "id": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+        "revision": 1,
+        "storedDocumentSha256": "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4"
+      },
+      "variantReview": [
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Ohne Bohrung",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "K00"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "K00"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 699,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Selbstklebend – glatte Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KGL"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "KGL"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 998,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Selbstklebend – raue Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KRA"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "KRA"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 1098,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Mit 2 Bohrlöchern",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "B02"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 948,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Mit 2 Schrauben",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02S"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "B02S"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 968,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Ohne Bohrung",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "K00"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "K00"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 699,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Selbstklebend – glatte Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KGL"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "KGL"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 998,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Selbstklebend – raue Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KRA"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "KRA"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 1098,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Mit 2 Bohrlöchern",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "B02"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 948,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Mit 2 Schrauben",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02S"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "B02S"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 968,
+          "widthMm": 50
+        }
+      ],
+      "inputs": {
+        "key": "Tuerschild-Acrylglas-3mm-5x2_v2",
+        "originalWorkbookSha256": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+        "creationKey": "issue230-119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+        "plan": {
+          "path": "Tuerschild-Acrylglas-3mm-5x2_v2/plan.json.gz",
+          "sha256": "fa8b42653968fdbc0df7ad5fc0d3951f3e83bfba6daad16703f81d30ef8af7af"
+        },
+        "template": {
+          "path": "Tuerschild-Acrylglas-3mm-5x2_v2/template.json",
+          "sha256": "ff86586aa5b6dbcb0e7af9b20e3d526bb444240924c4189448e95cc62656d040"
+        },
+        "sourceDocument": {
+          "path": "Tuerschild-Acrylglas-3mm-5x2_v2/source-document.json.gz",
+          "sha256": "22fd0eaae3893108e2ddf6f70cb33a9444967b3e717bf18574e8f06321a9e2b1"
+        },
+        "sourceMetadata": {
+          "path": "Tuerschild-Acrylglas-3mm-5x2_v2/source-metadata.json",
+          "sha256": "c89a16f25208de78de8950f5114add144d8f86d2bacd1a6606abbcc02657e535"
+        }
+      },
+      "sheet": {
+        "name": "Kopienplan",
+        "title": "Türschild Acrylglas 3 mm 5 × 2 cm (Schwarz/Anthrazit) · Kopienplan",
+        "headers": [
+          "Angabe",
+          "Tatsächlicher Kopienstand",
+          "Einordnung"
+        ],
+        "body": [
+          [
+            "Zweck",
+            "Prüfunterlage der isolierten Serverkopie",
+            "KEINE Produktfreigabe"
+          ],
+          [
+            "Produktziel",
+            "Neue eigene Kleinproduktgruppe; später DRAFT",
+            "keine Altproduktänderung"
+          ],
+          [
+            "Produktive Plan-IDs",
+            "Noch nicht mit dieser Akte behauptet",
+            "spätere echte Zuordnung"
+          ],
+          [
+            "Neue Dateiversion",
+            "Tuerschild-Acrylglas-3mm-5x2_v5.xlsx",
+            "nur zusätzliches Blatt"
+          ],
+          [
+            "Bisherige Akte",
+            "Tuerschild-Acrylglas-3mm-5x2_v4.xlsx",
+            "v9-Herkunft unverändert"
+          ],
+          [
+            "Bisherige Akte SHA-256",
+            "c982030ca653e292d15175888633f63c6b65bdc28208cd6897411344b46d381a",
+            "Dateibytes"
+          ],
+          [
+            "Originalpreisakte",
+            "Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+            "Preisquelle"
+          ],
+          [
+            "Originalpreisakte SHA-256",
+            "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+            "dauerhafte creationKey-Quelle"
+          ],
+          [
+            "Creation-Key",
+            "issue230-119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+            "unverändert"
+          ],
+          [
+            "Produkt-Key",
+            "Tuerschild-Acrylglas-3mm-5x2_v2",
+            "unverändert"
+          ],
+          [
+            "Plan-ID",
+            "pgp_244eb7f7-a813-4d56-b587-c0240ef756d5",
+            "nur Kopie"
+          ],
+          [
+            "Nativer planHash",
+            "ebc8935db17be6636a795cf52a9dd26f711463dbe56875d2bd7dee9995bfdc50",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Plan gültig",
+            true,
+            "valid:true auf Kopie"
+          ],
+          [
+            "Planbestätigung / Ausführung",
+            "0 / 0",
+            "OFFEN"
+          ],
+          [
+            "Freigabebeleg",
+            "KEINER",
+            "approvalHash: null"
+          ],
+          [
+            "Shopify-Schreibvorgänge",
+            0,
+            "nicht ausgeführt"
+          ],
+          [
+            "Quell-ID",
+            "cfg_68c697b4-e32f-43bb-840c-a6149f1ec472",
+            "nur Kopie"
+          ],
+          [
+            "Quellrevision",
+            1,
+            "native Revision"
+          ],
+          [
+            "Quelldokument SHA-256",
+            "723c95550dcd566492ca27e302b95fb35df2a259fb32b3a86ce2d641fa967fd7",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Vorlagen-ID",
+            "pgt_83ec2106-eb89-406b-965d-5c61239a4e03",
+            "nur Kopie"
+          ],
+          [
+            "Vorlagenrevision",
+            1,
+            "native Revision"
+          ],
+          [
+            "Vorlagen SHA-256",
+            "ca3e77d2c4962aad973e6fa33c89684d353a4ba7fb08054f638760438c8f4f27",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Modulprofil-ID",
+            "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+            "echter Registereintrag auf Kopie"
+          ],
+          [
+            "Modulprofilrevision",
+            1,
+            "native Revision"
+          ],
+          [
+            "Modulprofil SHA-256",
+            "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Foto / SVG-Logo",
+            "AUS / AUS",
+            "bereits bestätigt"
+          ],
+          [
+            "Motivprofil-ID",
+            "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+            "echtes Auswahlprofil auf Kopie"
+          ],
+          [
+            "Motivprofilrevision",
+            1,
+            "separater Ausführungspin"
+          ],
+          [
+            "Motivprofil SHA-256",
+            "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4",
+            "native JSON-Feldfolge name/type/items"
+          ],
+          [
+            "Auswählbare Motive",
+            13,
+            "bestätigte IDs und Reihenfolge"
+          ],
+          [
+            "Enthaltene Designs",
+            27,
+            "unveränderte Originalauswahl"
+          ],
+          [
+            "Startdesign beibehalten",
+            "katalog-TRE-V2A-5x2-D1",
+            "bestätigt"
+          ],
+          [
+            "Startgröße beibehalten",
+            "TS-Acryl-RE-50X20-T30-SW",
+            "physische Größe unverändert"
+          ],
+          [
+            "Preisangaben",
+            "Bruttopreise inklusive 19 % MwSt.",
+            "bestätigt 11.11.2026"
+          ],
+          [
+            "Mengenstaffel",
+            "5 % ab 3 / 10 % ab 5 / 15 % ab 10",
+            "bestätigt 20.10.2026"
+          ],
+          [
+            "Staffelumfang",
+            "complete-unit",
+            "kompletter Stückpreis"
+          ],
+          [
+            "Motiv-Aufpreis (Cent)",
+            169,
+            "unverändert"
+          ],
+          [
+            "Verglichene Kombinationen",
+            10,
+            "alle Preise/Optionen wie v9"
+          ],
+          [
+            "Native Ressourcen-Settingsrevision",
+            1,
+            "tatsächlich gespeicherte Metadaten"
+          ],
+          [
+            "Ressourcenauflösung SHA-256",
+            "1252a9e6e4674a333d89c11d48b2f1882f2be029d7bdd2a8c92d1dc4aaccb271",
+            "separate Belegprojektion; Produktgruppen-Verfahren"
+          ],
+          [
+            "Quellmetadaten SHA-256",
+            "622ef3ae21f6f5f7a54acbecc62b84f8d9bd6f0645f076f5e6e49c5bab24d53d",
+            "separater Beleg; Produktgruppen-Verfahren"
+          ],
+          [
+            "Operatorquelle",
+            "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6819660449",
+            "tatsächlicher Kopiennachweis"
+          ],
+          [
+            "Operator-Codecommit",
+            "75a304ebfa86ce3a5302c5940107a6e010be8322",
+            "Quellstand"
+          ],
+          [
+            "Record-Herkunft",
+            "Lokal aus v9 mit tatsächlichen Kopien-IDs rekonstruiert",
+            "keine Server-Bytekopien"
+          ],
+          [
+            "Server-Abgleich",
+            "44 kanonische Werte, Planhashes und Planlängen geprüft",
+            "unabhängiger Empfangsreview"
+          ],
+          [
+            "Business-Entscheidungen",
+            "In erhaltenen v9-Akten belegt",
+            "nicht in neuen nativen Revisionsmetadaten"
+          ],
+          [
+            "Tenant / Store",
+            "gravuru / acryl",
+            "Operatorzuordnung der Kopie"
+          ],
+          [
+            "Eingabepaket SHA-256",
+            "1153dfacf9181081142ca57843b6dd68d95ad807c30b176ffbdd238f8e93154f",
+            "geprüfte Dateibytes"
+          ],
+          [
+            "Plan-JSON Datei SHA-256",
+            "fa8b42653968fdbc0df7ad5fc0d3951f3e83bfba6daad16703f81d30ef8af7af",
+            "ggf. Gzip-Dateibytes"
+          ],
+          [
+            "Lokaler v9-Ursprungsplan",
+            "pgp_7307b213-09ef-4758-b525-88aea139502d",
+            "ausschließlich Herkunft"
+          ],
+          [
+            "Lokaler v9-planHash",
+            "cd2405c8f0a53544cfaaf87f97d84234ba9c51d58ec6b0e388bb7212ef141392",
+            "ausschließlich Herkunft"
+          ],
+          [
+            "Preisvergleich",
+            "Optionen / physische Maße",
+            "Bruttopreis EUR"
+          ],
+          [
+            "Kombination 1",
+            "Farbe: Schwarz / Befestigung: Ohne Bohrung / 50 × 20 mm",
+            6.99
+          ],
+          [
+            "Kombination 2",
+            "Farbe: Schwarz / Befestigung: Selbstklebend – glatte Flächen / 50 × 20 mm",
+            9.98
+          ],
+          [
+            "Kombination 3",
+            "Farbe: Schwarz / Befestigung: Selbstklebend – raue Flächen / 50 × 20 mm",
+            10.98
+          ],
+          [
+            "Kombination 4",
+            "Farbe: Schwarz / Befestigung: Mit 2 Bohrlöchern / 50 × 20 mm",
+            9.48
+          ],
+          [
+            "Kombination 5",
+            "Farbe: Schwarz / Befestigung: Mit 2 Schrauben / 50 × 20 mm",
+            9.68
+          ],
+          [
+            "Kombination 6",
+            "Farbe: Anthrazit / Befestigung: Ohne Bohrung / 50 × 20 mm",
+            6.99
+          ],
+          [
+            "Kombination 7",
+            "Farbe: Anthrazit / Befestigung: Selbstklebend – glatte Flächen / 50 × 20 mm",
+            9.98
+          ],
+          [
+            "Kombination 8",
+            "Farbe: Anthrazit / Befestigung: Selbstklebend – raue Flächen / 50 × 20 mm",
+            10.98
+          ],
+          [
+            "Kombination 9",
+            "Farbe: Anthrazit / Befestigung: Mit 2 Bohrlöchern / 50 × 20 mm",
+            9.48
+          ],
+          [
+            "Kombination 10",
+            "Farbe: Anthrazit / Befestigung: Mit 2 Schrauben / 50 × 20 mm",
+            9.68
+          ],
+          [
+            "Motivauswahl",
+            "Exakte bestätigte Motiv-ID",
+            "Reihenfolge"
+          ],
+          [
+            "Motiv 1",
+            "import-6abda909c44bc599330856dd",
+            1
+          ],
+          [
+            "Motiv 2",
+            "import-0073ea6aa7103bb1e8ec9088",
+            2
+          ],
+          [
+            "Motiv 3",
+            "import-9373218480c87a6ad167f3cb",
+            3
+          ],
+          [
+            "Motiv 4",
+            "import-41fb65efd1d8996ac305f6ab",
+            4
+          ],
+          [
+            "Motiv 5",
+            "import-1abd6f06096e47c66b0b4e00",
+            5
+          ],
+          [
+            "Motiv 6",
+            "import-286db893566ced2e6bd75bad",
+            6
+          ],
+          [
+            "Motiv 7",
+            "import-d94f1406fde432cf9dd70389",
+            7
+          ],
+          [
+            "Motiv 8",
+            "import-9c76c3476a406eaac7f05e42",
+            8
+          ],
+          [
+            "Motiv 9",
+            "import-10edf8a5dd07bd1035ba508d",
+            9
+          ],
+          [
+            "Motiv 10",
+            "import-4269dbda54a15a99e178f00a",
+            10
+          ],
+          [
+            "Motiv 11",
+            "import-0f3193fd49e254bb5975e74d",
+            11
+          ],
+          [
+            "Motiv 12",
+            "import-54b3b489bbebe12119deda9a",
+            12
+          ],
+          [
+            "Motiv 13",
+            "import-8239d6c658366716f578c984",
+            13
+          ],
+          [
+            "Weiterer Ablauf",
+            "Erst tatsächliche Produktivpläne und konkrete Akten abnehmen",
+            "keine Übertragung der Kopien-IDs behauptet"
+          ],
+          [
+            "Altprodukte",
+            "Vorhandene ACTIVE-/Mehrgrößenprodukte bleiben erhalten",
+            "keine Löschung / kein Umhängen"
+          ]
+        ],
+        "renderRanges": [
+          "A1:C27",
+          "A28:C55",
+          "A56:C85"
+        ]
+      }
+    },
+    {
+      "key": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "output": "Tuerschild-Acrylglas-3mm-6x2_v5.xlsx",
+      "previous": "outputs/Produktplaene-230-v9/Excel-Nachtraege/Tuerschild-Acrylglas-3mm-6x2_v4.xlsx",
+      "previousSha256": "ae4c911c224ffd5fd129f507667c0273d364460b35d0fc2627bf616cce6fd982",
+      "original": "work/product-plans-run-v8/excel/Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "originalSha256": "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+      "appendix": "Tuerschild-Acrylglas-3mm-6x2_v5.xlsx.appendix.xlsx",
+      "appendixSha256": "e0fa13f3add08b51fc8bf765cae600776b022910902fe8bf19c434d536a9edc3",
+      "planId": "pgp_cac795e1-b1c1-46e6-a807-7347ad4d9826",
+      "planHash": "03093e0f155d60036c2589f28a32a4a6e2eec8b4ca3a209a018f9d8948b4893c",
+      "creationKey": "issue230-7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+      "source": {
+        "key": "cfg_fcb59442-8cf1-4b46-ae8b-f6ee46511910",
+        "productId": "cfg_fcb59442-8cf1-4b46-ae8b-f6ee46511910",
+        "revision": 1,
+        "sha256": "117c568255874bfec1be1d6ff2380b6618dc3d119023e7dd1b8993d831846b75"
+      },
+      "template": {
+        "id": "pgt_52c7c665-e4cd-454d-9f78-e325f8cc439c",
+        "revision": 1,
+        "sha256": "bc630d4c3ddaaac9c7451a7bcd0e73eb6769884a60829395fc5879103fc30fe9"
+      },
+      "moduleProfile": {
+        "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+        "revision": 1,
+        "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+      },
+      "motifProfile": {
+        "id": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+        "revision": 1,
+        "storedDocumentSha256": "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4"
+      },
+      "variantReview": [
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Ohne Bohrung",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "K00"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "K00"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 799,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Selbstklebend – glatte Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KGL"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "KGL"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 1098,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Selbstklebend – raue Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KRA"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "KRA"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 1198,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Mit 2 Bohrlöchern",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "B02"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 1048,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Mit 2 Schrauben",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02S"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "B02S"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 1068,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Ohne Bohrung",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "K00"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "K00"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 799,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Selbstklebend – glatte Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KGL"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "KGL"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 1098,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Selbstklebend – raue Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KRA"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "KRA"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 1198,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Mit 2 Bohrlöchern",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "B02"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 1048,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Mit 2 Schrauben",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02S"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "B02S"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 1068,
+          "widthMm": 60
+        }
+      ],
+      "inputs": {
+        "key": "Tuerschild-Acrylglas-3mm-6x2_v2",
+        "originalWorkbookSha256": "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+        "creationKey": "issue230-7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+        "plan": {
+          "path": "Tuerschild-Acrylglas-3mm-6x2_v2/plan.json.gz",
+          "sha256": "1c897d72e501b49df44c802add9a4e32603e955385b7f0a5b6900e10408ff33d"
+        },
+        "template": {
+          "path": "Tuerschild-Acrylglas-3mm-6x2_v2/template.json",
+          "sha256": "46fca5a47404e924ed08481e08d10367d84ecba155ff21c8db69ecd3af973626"
+        },
+        "sourceDocument": {
+          "path": "Tuerschild-Acrylglas-3mm-6x2_v2/source-document.json.gz",
+          "sha256": "a58cfee2da4b92f0f4b3a0d72baf5e10b73429c50211e9ef6dff9986d65d35bc"
+        },
+        "sourceMetadata": {
+          "path": "Tuerschild-Acrylglas-3mm-6x2_v2/source-metadata.json",
+          "sha256": "c89a16f25208de78de8950f5114add144d8f86d2bacd1a6606abbcc02657e535"
+        }
+      },
+      "sheet": {
+        "name": "Kopienplan",
+        "title": "Türschild Acrylglas 3 mm 6 × 2 cm (Schwarz/Anthrazit) · Kopienplan",
+        "headers": [
+          "Angabe",
+          "Tatsächlicher Kopienstand",
+          "Einordnung"
+        ],
+        "body": [
+          [
+            "Zweck",
+            "Prüfunterlage der isolierten Serverkopie",
+            "KEINE Produktfreigabe"
+          ],
+          [
+            "Produktziel",
+            "Neue eigene Kleinproduktgruppe; später DRAFT",
+            "keine Altproduktänderung"
+          ],
+          [
+            "Produktive Plan-IDs",
+            "Noch nicht mit dieser Akte behauptet",
+            "spätere echte Zuordnung"
+          ],
+          [
+            "Neue Dateiversion",
+            "Tuerschild-Acrylglas-3mm-6x2_v5.xlsx",
+            "nur zusätzliches Blatt"
+          ],
+          [
+            "Bisherige Akte",
+            "Tuerschild-Acrylglas-3mm-6x2_v4.xlsx",
+            "v9-Herkunft unverändert"
+          ],
+          [
+            "Bisherige Akte SHA-256",
+            "ae4c911c224ffd5fd129f507667c0273d364460b35d0fc2627bf616cce6fd982",
+            "Dateibytes"
+          ],
+          [
+            "Originalpreisakte",
+            "Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+            "Preisquelle"
+          ],
+          [
+            "Originalpreisakte SHA-256",
+            "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+            "dauerhafte creationKey-Quelle"
+          ],
+          [
+            "Creation-Key",
+            "issue230-7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+            "unverändert"
+          ],
+          [
+            "Produkt-Key",
+            "Tuerschild-Acrylglas-3mm-6x2_v2",
+            "unverändert"
+          ],
+          [
+            "Plan-ID",
+            "pgp_cac795e1-b1c1-46e6-a807-7347ad4d9826",
+            "nur Kopie"
+          ],
+          [
+            "Nativer planHash",
+            "03093e0f155d60036c2589f28a32a4a6e2eec8b4ca3a209a018f9d8948b4893c",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Plan gültig",
+            true,
+            "valid:true auf Kopie"
+          ],
+          [
+            "Planbestätigung / Ausführung",
+            "0 / 0",
+            "OFFEN"
+          ],
+          [
+            "Freigabebeleg",
+            "KEINER",
+            "approvalHash: null"
+          ],
+          [
+            "Shopify-Schreibvorgänge",
+            0,
+            "nicht ausgeführt"
+          ],
+          [
+            "Quell-ID",
+            "cfg_fcb59442-8cf1-4b46-ae8b-f6ee46511910",
+            "nur Kopie"
+          ],
+          [
+            "Quellrevision",
+            1,
+            "native Revision"
+          ],
+          [
+            "Quelldokument SHA-256",
+            "117c568255874bfec1be1d6ff2380b6618dc3d119023e7dd1b8993d831846b75",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Vorlagen-ID",
+            "pgt_52c7c665-e4cd-454d-9f78-e325f8cc439c",
+            "nur Kopie"
+          ],
+          [
+            "Vorlagenrevision",
+            1,
+            "native Revision"
+          ],
+          [
+            "Vorlagen SHA-256",
+            "bc630d4c3ddaaac9c7451a7bcd0e73eb6769884a60829395fc5879103fc30fe9",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Modulprofil-ID",
+            "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+            "echter Registereintrag auf Kopie"
+          ],
+          [
+            "Modulprofilrevision",
+            1,
+            "native Revision"
+          ],
+          [
+            "Modulprofil SHA-256",
+            "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Foto / SVG-Logo",
+            "AUS / AUS",
+            "bereits bestätigt"
+          ],
+          [
+            "Motivprofil-ID",
+            "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+            "echtes Auswahlprofil auf Kopie"
+          ],
+          [
+            "Motivprofilrevision",
+            1,
+            "separater Ausführungspin"
+          ],
+          [
+            "Motivprofil SHA-256",
+            "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4",
+            "native JSON-Feldfolge name/type/items"
+          ],
+          [
+            "Auswählbare Motive",
+            13,
+            "bestätigte IDs und Reihenfolge"
+          ],
+          [
+            "Enthaltene Designs",
+            27,
+            "unveränderte Originalauswahl"
+          ],
+          [
+            "Startdesign beibehalten",
+            "katalog-TRE-V2A-6x2-D1",
+            "bestätigt"
+          ],
+          [
+            "Startgröße beibehalten",
+            "TS-Acryl-RE-60X20-T30-SW",
+            "physische Größe unverändert"
+          ],
+          [
+            "Preisangaben",
+            "Bruttopreise inklusive 19 % MwSt.",
+            "bestätigt 11.11.2026"
+          ],
+          [
+            "Mengenstaffel",
+            "5 % ab 3 / 10 % ab 5 / 15 % ab 10",
+            "bestätigt 20.10.2026"
+          ],
+          [
+            "Staffelumfang",
+            "complete-unit",
+            "kompletter Stückpreis"
+          ],
+          [
+            "Motiv-Aufpreis (Cent)",
+            169,
+            "unverändert"
+          ],
+          [
+            "Verglichene Kombinationen",
+            10,
+            "alle Preise/Optionen wie v9"
+          ],
+          [
+            "Native Ressourcen-Settingsrevision",
+            1,
+            "tatsächlich gespeicherte Metadaten"
+          ],
+          [
+            "Ressourcenauflösung SHA-256",
+            "1252a9e6e4674a333d89c11d48b2f1882f2be029d7bdd2a8c92d1dc4aaccb271",
+            "separate Belegprojektion; Produktgruppen-Verfahren"
+          ],
+          [
+            "Quellmetadaten SHA-256",
+            "622ef3ae21f6f5f7a54acbecc62b84f8d9bd6f0645f076f5e6e49c5bab24d53d",
+            "separater Beleg; Produktgruppen-Verfahren"
+          ],
+          [
+            "Operatorquelle",
+            "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6819660449",
+            "tatsächlicher Kopiennachweis"
+          ],
+          [
+            "Operator-Codecommit",
+            "75a304ebfa86ce3a5302c5940107a6e010be8322",
+            "Quellstand"
+          ],
+          [
+            "Record-Herkunft",
+            "Lokal aus v9 mit tatsächlichen Kopien-IDs rekonstruiert",
+            "keine Server-Bytekopien"
+          ],
+          [
+            "Server-Abgleich",
+            "44 kanonische Werte, Planhashes und Planlängen geprüft",
+            "unabhängiger Empfangsreview"
+          ],
+          [
+            "Business-Entscheidungen",
+            "In erhaltenen v9-Akten belegt",
+            "nicht in neuen nativen Revisionsmetadaten"
+          ],
+          [
+            "Tenant / Store",
+            "gravuru / acryl",
+            "Operatorzuordnung der Kopie"
+          ],
+          [
+            "Eingabepaket SHA-256",
+            "1153dfacf9181081142ca57843b6dd68d95ad807c30b176ffbdd238f8e93154f",
+            "geprüfte Dateibytes"
+          ],
+          [
+            "Plan-JSON Datei SHA-256",
+            "1c897d72e501b49df44c802add9a4e32603e955385b7f0a5b6900e10408ff33d",
+            "ggf. Gzip-Dateibytes"
+          ],
+          [
+            "Lokaler v9-Ursprungsplan",
+            "pgp_6831ea29-73f3-40c4-abfa-834c8479d93d",
+            "ausschließlich Herkunft"
+          ],
+          [
+            "Lokaler v9-planHash",
+            "df492d24f7da24f765ff62b8b03daf44865d839045191f3b3e449ca8f37cc09f",
+            "ausschließlich Herkunft"
+          ],
+          [
+            "Preisvergleich",
+            "Optionen / physische Maße",
+            "Bruttopreis EUR"
+          ],
+          [
+            "Kombination 1",
+            "Farbe: Schwarz / Befestigung: Ohne Bohrung / 60 × 20 mm",
+            7.99
+          ],
+          [
+            "Kombination 2",
+            "Farbe: Schwarz / Befestigung: Selbstklebend – glatte Flächen / 60 × 20 mm",
+            10.98
+          ],
+          [
+            "Kombination 3",
+            "Farbe: Schwarz / Befestigung: Selbstklebend – raue Flächen / 60 × 20 mm",
+            11.98
+          ],
+          [
+            "Kombination 4",
+            "Farbe: Schwarz / Befestigung: Mit 2 Bohrlöchern / 60 × 20 mm",
+            10.48
+          ],
+          [
+            "Kombination 5",
+            "Farbe: Schwarz / Befestigung: Mit 2 Schrauben / 60 × 20 mm",
+            10.68
+          ],
+          [
+            "Kombination 6",
+            "Farbe: Anthrazit / Befestigung: Ohne Bohrung / 60 × 20 mm",
+            7.99
+          ],
+          [
+            "Kombination 7",
+            "Farbe: Anthrazit / Befestigung: Selbstklebend – glatte Flächen / 60 × 20 mm",
+            10.98
+          ],
+          [
+            "Kombination 8",
+            "Farbe: Anthrazit / Befestigung: Selbstklebend – raue Flächen / 60 × 20 mm",
+            11.98
+          ],
+          [
+            "Kombination 9",
+            "Farbe: Anthrazit / Befestigung: Mit 2 Bohrlöchern / 60 × 20 mm",
+            10.48
+          ],
+          [
+            "Kombination 10",
+            "Farbe: Anthrazit / Befestigung: Mit 2 Schrauben / 60 × 20 mm",
+            10.68
+          ],
+          [
+            "Motivauswahl",
+            "Exakte bestätigte Motiv-ID",
+            "Reihenfolge"
+          ],
+          [
+            "Motiv 1",
+            "import-6abda909c44bc599330856dd",
+            1
+          ],
+          [
+            "Motiv 2",
+            "import-0073ea6aa7103bb1e8ec9088",
+            2
+          ],
+          [
+            "Motiv 3",
+            "import-9373218480c87a6ad167f3cb",
+            3
+          ],
+          [
+            "Motiv 4",
+            "import-41fb65efd1d8996ac305f6ab",
+            4
+          ],
+          [
+            "Motiv 5",
+            "import-1abd6f06096e47c66b0b4e00",
+            5
+          ],
+          [
+            "Motiv 6",
+            "import-286db893566ced2e6bd75bad",
+            6
+          ],
+          [
+            "Motiv 7",
+            "import-d94f1406fde432cf9dd70389",
+            7
+          ],
+          [
+            "Motiv 8",
+            "import-9c76c3476a406eaac7f05e42",
+            8
+          ],
+          [
+            "Motiv 9",
+            "import-10edf8a5dd07bd1035ba508d",
+            9
+          ],
+          [
+            "Motiv 10",
+            "import-4269dbda54a15a99e178f00a",
+            10
+          ],
+          [
+            "Motiv 11",
+            "import-0f3193fd49e254bb5975e74d",
+            11
+          ],
+          [
+            "Motiv 12",
+            "import-54b3b489bbebe12119deda9a",
+            12
+          ],
+          [
+            "Motiv 13",
+            "import-8239d6c658366716f578c984",
+            13
+          ],
+          [
+            "Weiterer Ablauf",
+            "Erst tatsächliche Produktivpläne und konkrete Akten abnehmen",
+            "keine Übertragung der Kopien-IDs behauptet"
+          ],
+          [
+            "Altprodukte",
+            "Vorhandene ACTIVE-/Mehrgrößenprodukte bleiben erhalten",
+            "keine Löschung / kein Umhängen"
+          ]
+        ],
+        "renderRanges": [
+          "A1:C27",
+          "A28:C55",
+          "A56:C85"
+        ]
+      }
+    },
+    {
+      "key": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "output": "Tuerschild-Acrylglas-3mm-8x2_v5.xlsx",
+      "previous": "outputs/Produktplaene-230-v9/Excel-Nachtraege/Tuerschild-Acrylglas-3mm-8x2_v4.xlsx",
+      "previousSha256": "5bf1bee160f6c237df600b085bba7cc44b17dd1286a905354f3391cde4c6b093",
+      "original": "work/product-plans-run-v8/excel/Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "originalSha256": "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+      "appendix": "Tuerschild-Acrylglas-3mm-8x2_v5.xlsx.appendix.xlsx",
+      "appendixSha256": "1b09832a30c2b2a3da8b8623992229f30cd2730e686e4bffd266c44f9f0af510",
+      "planId": "pgp_0a364376-f6c2-4836-b274-47b9efe030f4",
+      "planHash": "c9b7c3f21968a51b587044fc36861911200bbe198c0a817b3f48e500033e2fd2",
+      "creationKey": "issue230-02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+      "source": {
+        "key": "cfg_809706a1-191d-4bc5-9960-6410f3222fb5",
+        "productId": "cfg_809706a1-191d-4bc5-9960-6410f3222fb5",
+        "revision": 1,
+        "sha256": "a2949c3d564bc5ed652f72f0a9823c417d2c911c71b7e05414372048dc995ac1"
+      },
+      "template": {
+        "id": "pgt_f4ced3ef-ca61-4931-a41c-08e148441510",
+        "revision": 1,
+        "sha256": "a92ba2bbbab70f6611e5b215e0cb026ca4faa7806566202f68c3b2670eecc8d5"
+      },
+      "moduleProfile": {
+        "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+        "revision": 1,
+        "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+      },
+      "motifProfile": {
+        "id": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+        "revision": 1,
+        "storedDocumentSha256": "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4"
+      },
+      "variantReview": [
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Ohne Bohrung",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "K00"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "K00"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 849,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Selbstklebend – glatte Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KGL"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "KGL"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 1148,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Selbstklebend – raue Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KRA"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "KRA"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 1248,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Mit 2 Bohrlöchern",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "B02"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 1098,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Mit 2 Schrauben",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02S"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "B02S"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 1118,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Ohne Bohrung",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "K00"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "K00"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 849,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Selbstklebend – glatte Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KGL"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "KGL"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 1148,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Selbstklebend – raue Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KRA"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "KRA"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 1248,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Mit 2 Bohrlöchern",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "B02"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 1098,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Mit 2 Schrauben",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02S"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "B02S"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 1118,
+          "widthMm": 80
+        }
+      ],
+      "inputs": {
+        "key": "Tuerschild-Acrylglas-3mm-8x2_v2",
+        "originalWorkbookSha256": "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+        "creationKey": "issue230-02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+        "plan": {
+          "path": "Tuerschild-Acrylglas-3mm-8x2_v2/plan.json.gz",
+          "sha256": "b892b74e3ab6d5ed8f3a909c81f2cd7e01252230988a3a86a35d37e7031b9fb3"
+        },
+        "template": {
+          "path": "Tuerschild-Acrylglas-3mm-8x2_v2/template.json",
+          "sha256": "93a7619c31d54fc551baef137d997ea8005cbaaddbde3f9d183950746189d5b7"
+        },
+        "sourceDocument": {
+          "path": "Tuerschild-Acrylglas-3mm-8x2_v2/source-document.json.gz",
+          "sha256": "f201405b2a0a6d67d0f76bf170a4e0c1c7fd58893b37075de993d9090c066f00"
+        },
+        "sourceMetadata": {
+          "path": "Tuerschild-Acrylglas-3mm-8x2_v2/source-metadata.json",
+          "sha256": "c89a16f25208de78de8950f5114add144d8f86d2bacd1a6606abbcc02657e535"
+        }
+      },
+      "sheet": {
+        "name": "Kopienplan",
+        "title": "Türschild Acrylglas 3 mm 8 × 2 cm (Schwarz/Anthrazit) · Kopienplan",
+        "headers": [
+          "Angabe",
+          "Tatsächlicher Kopienstand",
+          "Einordnung"
+        ],
+        "body": [
+          [
+            "Zweck",
+            "Prüfunterlage der isolierten Serverkopie",
+            "KEINE Produktfreigabe"
+          ],
+          [
+            "Produktziel",
+            "Neue eigene Kleinproduktgruppe; später DRAFT",
+            "keine Altproduktänderung"
+          ],
+          [
+            "Produktive Plan-IDs",
+            "Noch nicht mit dieser Akte behauptet",
+            "spätere echte Zuordnung"
+          ],
+          [
+            "Neue Dateiversion",
+            "Tuerschild-Acrylglas-3mm-8x2_v5.xlsx",
+            "nur zusätzliches Blatt"
+          ],
+          [
+            "Bisherige Akte",
+            "Tuerschild-Acrylglas-3mm-8x2_v4.xlsx",
+            "v9-Herkunft unverändert"
+          ],
+          [
+            "Bisherige Akte SHA-256",
+            "5bf1bee160f6c237df600b085bba7cc44b17dd1286a905354f3391cde4c6b093",
+            "Dateibytes"
+          ],
+          [
+            "Originalpreisakte",
+            "Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+            "Preisquelle"
+          ],
+          [
+            "Originalpreisakte SHA-256",
+            "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+            "dauerhafte creationKey-Quelle"
+          ],
+          [
+            "Creation-Key",
+            "issue230-02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+            "unverändert"
+          ],
+          [
+            "Produkt-Key",
+            "Tuerschild-Acrylglas-3mm-8x2_v2",
+            "unverändert"
+          ],
+          [
+            "Plan-ID",
+            "pgp_0a364376-f6c2-4836-b274-47b9efe030f4",
+            "nur Kopie"
+          ],
+          [
+            "Nativer planHash",
+            "c9b7c3f21968a51b587044fc36861911200bbe198c0a817b3f48e500033e2fd2",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Plan gültig",
+            true,
+            "valid:true auf Kopie"
+          ],
+          [
+            "Planbestätigung / Ausführung",
+            "0 / 0",
+            "OFFEN"
+          ],
+          [
+            "Freigabebeleg",
+            "KEINER",
+            "approvalHash: null"
+          ],
+          [
+            "Shopify-Schreibvorgänge",
+            0,
+            "nicht ausgeführt"
+          ],
+          [
+            "Quell-ID",
+            "cfg_809706a1-191d-4bc5-9960-6410f3222fb5",
+            "nur Kopie"
+          ],
+          [
+            "Quellrevision",
+            1,
+            "native Revision"
+          ],
+          [
+            "Quelldokument SHA-256",
+            "a2949c3d564bc5ed652f72f0a9823c417d2c911c71b7e05414372048dc995ac1",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Vorlagen-ID",
+            "pgt_f4ced3ef-ca61-4931-a41c-08e148441510",
+            "nur Kopie"
+          ],
+          [
+            "Vorlagenrevision",
+            1,
+            "native Revision"
+          ],
+          [
+            "Vorlagen SHA-256",
+            "a92ba2bbbab70f6611e5b215e0cb026ca4faa7806566202f68c3b2670eecc8d5",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Modulprofil-ID",
+            "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+            "echter Registereintrag auf Kopie"
+          ],
+          [
+            "Modulprofilrevision",
+            1,
+            "native Revision"
+          ],
+          [
+            "Modulprofil SHA-256",
+            "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Foto / SVG-Logo",
+            "AUS / AUS",
+            "bereits bestätigt"
+          ],
+          [
+            "Motivprofil-ID",
+            "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+            "echtes Auswahlprofil auf Kopie"
+          ],
+          [
+            "Motivprofilrevision",
+            1,
+            "separater Ausführungspin"
+          ],
+          [
+            "Motivprofil SHA-256",
+            "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4",
+            "native JSON-Feldfolge name/type/items"
+          ],
+          [
+            "Auswählbare Motive",
+            13,
+            "bestätigte IDs und Reihenfolge"
+          ],
+          [
+            "Enthaltene Designs",
+            27,
+            "unveränderte Originalauswahl"
+          ],
+          [
+            "Startdesign beibehalten",
+            "katalog-TRE-V2A-8x2-D1",
+            "bestätigt"
+          ],
+          [
+            "Startgröße beibehalten",
+            "TS-Acryl-RE-80X20-T30-SW",
+            "physische Größe unverändert"
+          ],
+          [
+            "Preisangaben",
+            "Bruttopreise inklusive 19 % MwSt.",
+            "bestätigt 11.11.2026"
+          ],
+          [
+            "Mengenstaffel",
+            "5 % ab 3 / 10 % ab 5 / 15 % ab 10",
+            "bestätigt 20.10.2026"
+          ],
+          [
+            "Staffelumfang",
+            "complete-unit",
+            "kompletter Stückpreis"
+          ],
+          [
+            "Motiv-Aufpreis (Cent)",
+            169,
+            "unverändert"
+          ],
+          [
+            "Verglichene Kombinationen",
+            10,
+            "alle Preise/Optionen wie v9"
+          ],
+          [
+            "Native Ressourcen-Settingsrevision",
+            1,
+            "tatsächlich gespeicherte Metadaten"
+          ],
+          [
+            "Ressourcenauflösung SHA-256",
+            "1252a9e6e4674a333d89c11d48b2f1882f2be029d7bdd2a8c92d1dc4aaccb271",
+            "separate Belegprojektion; Produktgruppen-Verfahren"
+          ],
+          [
+            "Quellmetadaten SHA-256",
+            "622ef3ae21f6f5f7a54acbecc62b84f8d9bd6f0645f076f5e6e49c5bab24d53d",
+            "separater Beleg; Produktgruppen-Verfahren"
+          ],
+          [
+            "Operatorquelle",
+            "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6819660449",
+            "tatsächlicher Kopiennachweis"
+          ],
+          [
+            "Operator-Codecommit",
+            "75a304ebfa86ce3a5302c5940107a6e010be8322",
+            "Quellstand"
+          ],
+          [
+            "Record-Herkunft",
+            "Lokal aus v9 mit tatsächlichen Kopien-IDs rekonstruiert",
+            "keine Server-Bytekopien"
+          ],
+          [
+            "Server-Abgleich",
+            "44 kanonische Werte, Planhashes und Planlängen geprüft",
+            "unabhängiger Empfangsreview"
+          ],
+          [
+            "Business-Entscheidungen",
+            "In erhaltenen v9-Akten belegt",
+            "nicht in neuen nativen Revisionsmetadaten"
+          ],
+          [
+            "Tenant / Store",
+            "gravuru / acryl",
+            "Operatorzuordnung der Kopie"
+          ],
+          [
+            "Eingabepaket SHA-256",
+            "1153dfacf9181081142ca57843b6dd68d95ad807c30b176ffbdd238f8e93154f",
+            "geprüfte Dateibytes"
+          ],
+          [
+            "Plan-JSON Datei SHA-256",
+            "b892b74e3ab6d5ed8f3a909c81f2cd7e01252230988a3a86a35d37e7031b9fb3",
+            "ggf. Gzip-Dateibytes"
+          ],
+          [
+            "Lokaler v9-Ursprungsplan",
+            "pgp_1d526e2a-fe1d-4749-be52-5386cf227afe",
+            "ausschließlich Herkunft"
+          ],
+          [
+            "Lokaler v9-planHash",
+            "8531d241fd230a52a14a4c77bf314bdc49c578a679fc5d0d1d9a6a439f995d53",
+            "ausschließlich Herkunft"
+          ],
+          [
+            "Preisvergleich",
+            "Optionen / physische Maße",
+            "Bruttopreis EUR"
+          ],
+          [
+            "Kombination 1",
+            "Farbe: Schwarz / Befestigung: Ohne Bohrung / 80 × 20 mm",
+            8.49
+          ],
+          [
+            "Kombination 2",
+            "Farbe: Schwarz / Befestigung: Selbstklebend – glatte Flächen / 80 × 20 mm",
+            11.48
+          ],
+          [
+            "Kombination 3",
+            "Farbe: Schwarz / Befestigung: Selbstklebend – raue Flächen / 80 × 20 mm",
+            12.48
+          ],
+          [
+            "Kombination 4",
+            "Farbe: Schwarz / Befestigung: Mit 2 Bohrlöchern / 80 × 20 mm",
+            10.98
+          ],
+          [
+            "Kombination 5",
+            "Farbe: Schwarz / Befestigung: Mit 2 Schrauben / 80 × 20 mm",
+            11.18
+          ],
+          [
+            "Kombination 6",
+            "Farbe: Anthrazit / Befestigung: Ohne Bohrung / 80 × 20 mm",
+            8.49
+          ],
+          [
+            "Kombination 7",
+            "Farbe: Anthrazit / Befestigung: Selbstklebend – glatte Flächen / 80 × 20 mm",
+            11.48
+          ],
+          [
+            "Kombination 8",
+            "Farbe: Anthrazit / Befestigung: Selbstklebend – raue Flächen / 80 × 20 mm",
+            12.48
+          ],
+          [
+            "Kombination 9",
+            "Farbe: Anthrazit / Befestigung: Mit 2 Bohrlöchern / 80 × 20 mm",
+            10.98
+          ],
+          [
+            "Kombination 10",
+            "Farbe: Anthrazit / Befestigung: Mit 2 Schrauben / 80 × 20 mm",
+            11.18
+          ],
+          [
+            "Motivauswahl",
+            "Exakte bestätigte Motiv-ID",
+            "Reihenfolge"
+          ],
+          [
+            "Motiv 1",
+            "import-6abda909c44bc599330856dd",
+            1
+          ],
+          [
+            "Motiv 2",
+            "import-0073ea6aa7103bb1e8ec9088",
+            2
+          ],
+          [
+            "Motiv 3",
+            "import-9373218480c87a6ad167f3cb",
+            3
+          ],
+          [
+            "Motiv 4",
+            "import-41fb65efd1d8996ac305f6ab",
+            4
+          ],
+          [
+            "Motiv 5",
+            "import-1abd6f06096e47c66b0b4e00",
+            5
+          ],
+          [
+            "Motiv 6",
+            "import-286db893566ced2e6bd75bad",
+            6
+          ],
+          [
+            "Motiv 7",
+            "import-d94f1406fde432cf9dd70389",
+            7
+          ],
+          [
+            "Motiv 8",
+            "import-9c76c3476a406eaac7f05e42",
+            8
+          ],
+          [
+            "Motiv 9",
+            "import-10edf8a5dd07bd1035ba508d",
+            9
+          ],
+          [
+            "Motiv 10",
+            "import-4269dbda54a15a99e178f00a",
+            10
+          ],
+          [
+            "Motiv 11",
+            "import-0f3193fd49e254bb5975e74d",
+            11
+          ],
+          [
+            "Motiv 12",
+            "import-54b3b489bbebe12119deda9a",
+            12
+          ],
+          [
+            "Motiv 13",
+            "import-8239d6c658366716f578c984",
+            13
+          ],
+          [
+            "Weiterer Ablauf",
+            "Erst tatsächliche Produktivpläne und konkrete Akten abnehmen",
+            "keine Übertragung der Kopien-IDs behauptet"
+          ],
+          [
+            "Altprodukte",
+            "Vorhandene ACTIVE-/Mehrgrößenprodukte bleiben erhalten",
+            "keine Löschung / kein Umhängen"
+          ]
+        ],
+        "renderRanges": [
+          "A1:C27",
+          "A28:C55",
+          "A56:C85"
+        ]
+      }
+    },
+    {
+      "key": "Tuerschild-Edelstahl-5x2_v1",
+      "output": "Tuerschild-Edelstahl-5x2_v4.xlsx",
+      "previous": "outputs/Produktplaene-230-v9/Excel-Nachtraege/Tuerschild-Edelstahl-5x2_v3.xlsx",
+      "previousSha256": "c845527e41f0538a541db63a6507ba671e8fdd801bfb9fe6df8ad3a603e7bfd2",
+      "original": "work/product-plans-run-v8/excel/Tuerschild-Edelstahl-5x2_v1.xlsx",
+      "originalSha256": "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+      "appendix": "Tuerschild-Edelstahl-5x2_v4.xlsx.appendix.xlsx",
+      "appendixSha256": "c74b4ef5f0ae5b8d14ef34677a3902cf28a8c5d63d1040f6c5afdcdfc8554811",
+      "planId": "pgp_ebbbb351-5aa4-4afe-81bc-e78d9febae99",
+      "planHash": "3bc4abe777035399e7f79aa865c9c3110a2bd6e62a62fa3340ec4a7649d0bddc",
+      "creationKey": "issue230-9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+      "source": {
+        "key": "cfg_64b480bd-2124-446d-a674-4443fa05b5f1",
+        "productId": "cfg_64b480bd-2124-446d-a674-4443fa05b5f1",
+        "revision": 1,
+        "sha256": "492c53dbcf56e592932f2443c5fcf757c6a36a99aa0bac523b50443700af4cd3"
+      },
+      "template": {
+        "id": "pgt_6c6cd65d-a071-4a5c-b3c9-5b45a2d540f5",
+        "revision": 1,
+        "sha256": "f6e03a5d29435c500d4b5319a35d48a990343fda68c7592720e3667011fda0f2"
+      },
+      "moduleProfile": {
+        "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+        "revision": 1,
+        "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+      },
+      "motifProfile": {
+        "id": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+        "revision": 1,
+        "storedDocumentSha256": "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4"
+      },
+      "variantReview": [
+        {
+          "choices": [
+            {
+              "display": "Ohne Bohrung",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "K00"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "K00"
+          },
+          "sizeKey": "GR-ES-RE-50X20-T15",
+          "unitCents": 799,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Selbstklebend – glatte Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KGL"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "KGL"
+          },
+          "sizeKey": "GR-ES-RE-50X20-T15",
+          "unitCents": 1098,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Selbstklebend – raue Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KRA"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "KRA"
+          },
+          "sizeKey": "GR-ES-RE-50X20-T15",
+          "unitCents": 1198,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Mit 2 Bohrlöchern",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "B02"
+          },
+          "sizeKey": "GR-ES-RE-50X20-T15",
+          "unitCents": 1048,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Mit 2 Schrauben",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02S"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "B02S"
+          },
+          "sizeKey": "GR-ES-RE-50X20-T15",
+          "unitCents": 1068,
+          "widthMm": 50
+        }
+      ],
+      "inputs": {
+        "key": "Tuerschild-Edelstahl-5x2_v1",
+        "originalWorkbookSha256": "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+        "creationKey": "issue230-9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+        "plan": {
+          "path": "Tuerschild-Edelstahl-5x2_v1/plan.json.gz",
+          "sha256": "818c48a599e12d83cd8e6de786daa6ed192a72e235b71018b2ddbbde7a4d29de"
+        },
+        "template": {
+          "path": "Tuerschild-Edelstahl-5x2_v1/template.json",
+          "sha256": "ba49fe86b527adca602340a936a9703543ca09862fbd168c9997a33a066f8c71"
+        },
+        "sourceDocument": {
+          "path": "Tuerschild-Edelstahl-5x2_v1/source-document.json.gz",
+          "sha256": "c2ec2cc007e0d7ff235b417df82adeec5942efbafdaefb0d17f58c6828b5b2ec"
+        },
+        "sourceMetadata": {
+          "path": "Tuerschild-Edelstahl-5x2_v1/source-metadata.json",
+          "sha256": "c89a16f25208de78de8950f5114add144d8f86d2bacd1a6606abbcc02657e535"
+        }
+      },
+      "sheet": {
+        "name": "Kopienplan",
+        "title": "Türschild Edelstahl 5 × 2 cm (gebürstet, Gravur) · Kopienplan",
+        "headers": [
+          "Angabe",
+          "Tatsächlicher Kopienstand",
+          "Einordnung"
+        ],
+        "body": [
+          [
+            "Zweck",
+            "Prüfunterlage der isolierten Serverkopie",
+            "KEINE Produktfreigabe"
+          ],
+          [
+            "Produktziel",
+            "Neue eigene Kleinproduktgruppe; später DRAFT",
+            "keine Altproduktänderung"
+          ],
+          [
+            "Produktive Plan-IDs",
+            "Noch nicht mit dieser Akte behauptet",
+            "spätere echte Zuordnung"
+          ],
+          [
+            "Neue Dateiversion",
+            "Tuerschild-Edelstahl-5x2_v4.xlsx",
+            "nur zusätzliches Blatt"
+          ],
+          [
+            "Bisherige Akte",
+            "Tuerschild-Edelstahl-5x2_v3.xlsx",
+            "v9-Herkunft unverändert"
+          ],
+          [
+            "Bisherige Akte SHA-256",
+            "c845527e41f0538a541db63a6507ba671e8fdd801bfb9fe6df8ad3a603e7bfd2",
+            "Dateibytes"
+          ],
+          [
+            "Originalpreisakte",
+            "Tuerschild-Edelstahl-5x2_v1.xlsx",
+            "Preisquelle"
+          ],
+          [
+            "Originalpreisakte SHA-256",
+            "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+            "dauerhafte creationKey-Quelle"
+          ],
+          [
+            "Creation-Key",
+            "issue230-9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+            "unverändert"
+          ],
+          [
+            "Produkt-Key",
+            "Tuerschild-Edelstahl-5x2_v1",
+            "unverändert"
+          ],
+          [
+            "Plan-ID",
+            "pgp_ebbbb351-5aa4-4afe-81bc-e78d9febae99",
+            "nur Kopie"
+          ],
+          [
+            "Nativer planHash",
+            "3bc4abe777035399e7f79aa865c9c3110a2bd6e62a62fa3340ec4a7649d0bddc",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Plan gültig",
+            true,
+            "valid:true auf Kopie"
+          ],
+          [
+            "Planbestätigung / Ausführung",
+            "0 / 0",
+            "OFFEN"
+          ],
+          [
+            "Freigabebeleg",
+            "KEINER",
+            "approvalHash: null"
+          ],
+          [
+            "Shopify-Schreibvorgänge",
+            0,
+            "nicht ausgeführt"
+          ],
+          [
+            "Quell-ID",
+            "cfg_64b480bd-2124-446d-a674-4443fa05b5f1",
+            "nur Kopie"
+          ],
+          [
+            "Quellrevision",
+            1,
+            "native Revision"
+          ],
+          [
+            "Quelldokument SHA-256",
+            "492c53dbcf56e592932f2443c5fcf757c6a36a99aa0bac523b50443700af4cd3",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Vorlagen-ID",
+            "pgt_6c6cd65d-a071-4a5c-b3c9-5b45a2d540f5",
+            "nur Kopie"
+          ],
+          [
+            "Vorlagenrevision",
+            1,
+            "native Revision"
+          ],
+          [
+            "Vorlagen SHA-256",
+            "f6e03a5d29435c500d4b5319a35d48a990343fda68c7592720e3667011fda0f2",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Modulprofil-ID",
+            "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+            "echter Registereintrag auf Kopie"
+          ],
+          [
+            "Modulprofilrevision",
+            1,
+            "native Revision"
+          ],
+          [
+            "Modulprofil SHA-256",
+            "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Foto / SVG-Logo",
+            "AUS / AUS",
+            "bereits bestätigt"
+          ],
+          [
+            "Motivprofil-ID",
+            "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+            "echtes Auswahlprofil auf Kopie"
+          ],
+          [
+            "Motivprofilrevision",
+            1,
+            "separater Ausführungspin"
+          ],
+          [
+            "Motivprofil SHA-256",
+            "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4",
+            "native JSON-Feldfolge name/type/items"
+          ],
+          [
+            "Auswählbare Motive",
+            13,
+            "bestätigte IDs und Reihenfolge"
+          ],
+          [
+            "Enthaltene Designs",
+            27,
+            "unveränderte Originalauswahl"
+          ],
+          [
+            "Startdesign beibehalten",
+            "katalog-TRE-V2A-5x2-D1",
+            "bestätigt"
+          ],
+          [
+            "Startgröße beibehalten",
+            "GR-ES-RE-50X20-T15",
+            "physische Größe unverändert"
+          ],
+          [
+            "Preisangaben",
+            "Bruttopreise inklusive 19 % MwSt.",
+            "bestätigt 11.11.2026"
+          ],
+          [
+            "Mengenstaffel",
+            "5 % ab 3 / 10 % ab 5 / 15 % ab 10",
+            "bestätigt 20.10.2026"
+          ],
+          [
+            "Staffelumfang",
+            "complete-unit",
+            "kompletter Stückpreis"
+          ],
+          [
+            "Motiv-Aufpreis (Cent)",
+            169,
+            "unverändert"
+          ],
+          [
+            "Verglichene Kombinationen",
+            5,
+            "alle Preise/Optionen wie v9"
+          ],
+          [
+            "Native Ressourcen-Settingsrevision",
+            1,
+            "tatsächlich gespeicherte Metadaten"
+          ],
+          [
+            "Ressourcenauflösung SHA-256",
+            "1252a9e6e4674a333d89c11d48b2f1882f2be029d7bdd2a8c92d1dc4aaccb271",
+            "separate Belegprojektion; Produktgruppen-Verfahren"
+          ],
+          [
+            "Quellmetadaten SHA-256",
+            "622ef3ae21f6f5f7a54acbecc62b84f8d9bd6f0645f076f5e6e49c5bab24d53d",
+            "separater Beleg; Produktgruppen-Verfahren"
+          ],
+          [
+            "Operatorquelle",
+            "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6819660449",
+            "tatsächlicher Kopiennachweis"
+          ],
+          [
+            "Operator-Codecommit",
+            "75a304ebfa86ce3a5302c5940107a6e010be8322",
+            "Quellstand"
+          ],
+          [
+            "Record-Herkunft",
+            "Lokal aus v9 mit tatsächlichen Kopien-IDs rekonstruiert",
+            "keine Server-Bytekopien"
+          ],
+          [
+            "Server-Abgleich",
+            "44 kanonische Werte, Planhashes und Planlängen geprüft",
+            "unabhängiger Empfangsreview"
+          ],
+          [
+            "Business-Entscheidungen",
+            "In erhaltenen v9-Akten belegt",
+            "nicht in neuen nativen Revisionsmetadaten"
+          ],
+          [
+            "Tenant / Store",
+            "gravuru / acryl",
+            "Operatorzuordnung der Kopie"
+          ],
+          [
+            "Eingabepaket SHA-256",
+            "1153dfacf9181081142ca57843b6dd68d95ad807c30b176ffbdd238f8e93154f",
+            "geprüfte Dateibytes"
+          ],
+          [
+            "Plan-JSON Datei SHA-256",
+            "818c48a599e12d83cd8e6de786daa6ed192a72e235b71018b2ddbbde7a4d29de",
+            "ggf. Gzip-Dateibytes"
+          ],
+          [
+            "Lokaler v9-Ursprungsplan",
+            "pgp_7699e1dc-2f19-427d-a983-0fd6610f9bd9",
+            "ausschließlich Herkunft"
+          ],
+          [
+            "Lokaler v9-planHash",
+            "24840f5fe16a074e5f842ae85bb6529285bee334254d5d82d99f98efc9f09117",
+            "ausschließlich Herkunft"
+          ],
+          [
+            "Preisvergleich",
+            "Optionen / physische Maße",
+            "Bruttopreis EUR"
+          ],
+          [
+            "Kombination 1",
+            "Befestigung: Ohne Bohrung / 50 × 20 mm",
+            7.99
+          ],
+          [
+            "Kombination 2",
+            "Befestigung: Selbstklebend – glatte Flächen / 50 × 20 mm",
+            10.98
+          ],
+          [
+            "Kombination 3",
+            "Befestigung: Selbstklebend – raue Flächen / 50 × 20 mm",
+            11.98
+          ],
+          [
+            "Kombination 4",
+            "Befestigung: Mit 2 Bohrlöchern / 50 × 20 mm",
+            10.48
+          ],
+          [
+            "Kombination 5",
+            "Befestigung: Mit 2 Schrauben / 50 × 20 mm",
+            10.68
+          ],
+          [
+            "Motivauswahl",
+            "Exakte bestätigte Motiv-ID",
+            "Reihenfolge"
+          ],
+          [
+            "Motiv 1",
+            "import-6abda909c44bc599330856dd",
+            1
+          ],
+          [
+            "Motiv 2",
+            "import-0073ea6aa7103bb1e8ec9088",
+            2
+          ],
+          [
+            "Motiv 3",
+            "import-9373218480c87a6ad167f3cb",
+            3
+          ],
+          [
+            "Motiv 4",
+            "import-41fb65efd1d8996ac305f6ab",
+            4
+          ],
+          [
+            "Motiv 5",
+            "import-1abd6f06096e47c66b0b4e00",
+            5
+          ],
+          [
+            "Motiv 6",
+            "import-286db893566ced2e6bd75bad",
+            6
+          ],
+          [
+            "Motiv 7",
+            "import-d94f1406fde432cf9dd70389",
+            7
+          ],
+          [
+            "Motiv 8",
+            "import-9c76c3476a406eaac7f05e42",
+            8
+          ],
+          [
+            "Motiv 9",
+            "import-10edf8a5dd07bd1035ba508d",
+            9
+          ],
+          [
+            "Motiv 10",
+            "import-4269dbda54a15a99e178f00a",
+            10
+          ],
+          [
+            "Motiv 11",
+            "import-0f3193fd49e254bb5975e74d",
+            11
+          ],
+          [
+            "Motiv 12",
+            "import-54b3b489bbebe12119deda9a",
+            12
+          ],
+          [
+            "Motiv 13",
+            "import-8239d6c658366716f578c984",
+            13
+          ],
+          [
+            "Weiterer Ablauf",
+            "Erst tatsächliche Produktivpläne und konkrete Akten abnehmen",
+            "keine Übertragung der Kopien-IDs behauptet"
+          ],
+          [
+            "Altprodukte",
+            "Vorhandene ACTIVE-/Mehrgrößenprodukte bleiben erhalten",
+            "keine Löschung / kein Umhängen"
+          ]
+        ],
+        "renderRanges": [
+          "A1:C27",
+          "A28:C55",
+          "A56:C80"
+        ]
+      }
+    },
+    {
+      "key": "Tuerschild-Edelstahl-6x2_v1",
+      "output": "Tuerschild-Edelstahl-6x2_v4.xlsx",
+      "previous": "outputs/Produktplaene-230-v9/Excel-Nachtraege/Tuerschild-Edelstahl-6x2_v3.xlsx",
+      "previousSha256": "4321b9c9328b38c95b14b18fa16f98bda14f04407c655dcc602fe8fda51fe9a3",
+      "original": "work/product-plans-run-v8/excel/Tuerschild-Edelstahl-6x2_v1.xlsx",
+      "originalSha256": "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+      "appendix": "Tuerschild-Edelstahl-6x2_v4.xlsx.appendix.xlsx",
+      "appendixSha256": "cbcbdf30a749b369b6c56491642981b6fa3b8ca42d48d1f37d4c7525ef27eb81",
+      "planId": "pgp_bf0b70c7-372d-4563-935a-554be24bfdd7",
+      "planHash": "ed2e6e192028d17c6f7488dfb7a9d08dbd1f327c35944750f43ae380a02a1a3e",
+      "creationKey": "issue230-de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+      "source": {
+        "key": "cfg_c38e63be-e4f3-4c75-95a7-ca331ceae8ba",
+        "productId": "cfg_c38e63be-e4f3-4c75-95a7-ca331ceae8ba",
+        "revision": 1,
+        "sha256": "dcd63a77aaeddd112ab180e864c8d7c48e789077336d1d05dd92d466c40d277a"
+      },
+      "template": {
+        "id": "pgt_6e0e17af-51d9-4863-a137-6e6435f180a7",
+        "revision": 1,
+        "sha256": "92e1f407c8e283bdfc62a0871167a97df03e928748865dddf4b4f9a6c7e773f1"
+      },
+      "moduleProfile": {
+        "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+        "revision": 1,
+        "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+      },
+      "motifProfile": {
+        "id": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+        "revision": 1,
+        "storedDocumentSha256": "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4"
+      },
+      "variantReview": [
+        {
+          "choices": [
+            {
+              "display": "Ohne Bohrung",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "K00"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "K00"
+          },
+          "sizeKey": "GR-ES-RE-60X20-T15",
+          "unitCents": 879,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Selbstklebend – glatte Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KGL"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "KGL"
+          },
+          "sizeKey": "GR-ES-RE-60X20-T15",
+          "unitCents": 1178,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Selbstklebend – raue Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KRA"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "KRA"
+          },
+          "sizeKey": "GR-ES-RE-60X20-T15",
+          "unitCents": 1278,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Mit 2 Bohrlöchern",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "B02"
+          },
+          "sizeKey": "GR-ES-RE-60X20-T15",
+          "unitCents": 1128,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Mit 2 Schrauben",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02S"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "B02S"
+          },
+          "sizeKey": "GR-ES-RE-60X20-T15",
+          "unitCents": 1148,
+          "widthMm": 60
+        }
+      ],
+      "inputs": {
+        "key": "Tuerschild-Edelstahl-6x2_v1",
+        "originalWorkbookSha256": "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+        "creationKey": "issue230-de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+        "plan": {
+          "path": "Tuerschild-Edelstahl-6x2_v1/plan.json.gz",
+          "sha256": "e16f570ef7bea8ab3f75807d297b20f8c6abcc9c9b34804f153539673024cf7e"
+        },
+        "template": {
+          "path": "Tuerschild-Edelstahl-6x2_v1/template.json",
+          "sha256": "17c09a32f2801b7a621cdecf61c21aa3211dd9ee34da145a010e7abd405ea6fb"
+        },
+        "sourceDocument": {
+          "path": "Tuerschild-Edelstahl-6x2_v1/source-document.json.gz",
+          "sha256": "7b4ddeef08e7db04e7503f0f063da02f4ff54a708a9670bfc1c4f11b86df39d2"
+        },
+        "sourceMetadata": {
+          "path": "Tuerschild-Edelstahl-6x2_v1/source-metadata.json",
+          "sha256": "c89a16f25208de78de8950f5114add144d8f86d2bacd1a6606abbcc02657e535"
+        }
+      },
+      "sheet": {
+        "name": "Kopienplan",
+        "title": "Türschild Edelstahl 6 × 2 cm (gebürstet, Gravur) · Kopienplan",
+        "headers": [
+          "Angabe",
+          "Tatsächlicher Kopienstand",
+          "Einordnung"
+        ],
+        "body": [
+          [
+            "Zweck",
+            "Prüfunterlage der isolierten Serverkopie",
+            "KEINE Produktfreigabe"
+          ],
+          [
+            "Produktziel",
+            "Neue eigene Kleinproduktgruppe; später DRAFT",
+            "keine Altproduktänderung"
+          ],
+          [
+            "Produktive Plan-IDs",
+            "Noch nicht mit dieser Akte behauptet",
+            "spätere echte Zuordnung"
+          ],
+          [
+            "Neue Dateiversion",
+            "Tuerschild-Edelstahl-6x2_v4.xlsx",
+            "nur zusätzliches Blatt"
+          ],
+          [
+            "Bisherige Akte",
+            "Tuerschild-Edelstahl-6x2_v3.xlsx",
+            "v9-Herkunft unverändert"
+          ],
+          [
+            "Bisherige Akte SHA-256",
+            "4321b9c9328b38c95b14b18fa16f98bda14f04407c655dcc602fe8fda51fe9a3",
+            "Dateibytes"
+          ],
+          [
+            "Originalpreisakte",
+            "Tuerschild-Edelstahl-6x2_v1.xlsx",
+            "Preisquelle"
+          ],
+          [
+            "Originalpreisakte SHA-256",
+            "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+            "dauerhafte creationKey-Quelle"
+          ],
+          [
+            "Creation-Key",
+            "issue230-de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+            "unverändert"
+          ],
+          [
+            "Produkt-Key",
+            "Tuerschild-Edelstahl-6x2_v1",
+            "unverändert"
+          ],
+          [
+            "Plan-ID",
+            "pgp_bf0b70c7-372d-4563-935a-554be24bfdd7",
+            "nur Kopie"
+          ],
+          [
+            "Nativer planHash",
+            "ed2e6e192028d17c6f7488dfb7a9d08dbd1f327c35944750f43ae380a02a1a3e",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Plan gültig",
+            true,
+            "valid:true auf Kopie"
+          ],
+          [
+            "Planbestätigung / Ausführung",
+            "0 / 0",
+            "OFFEN"
+          ],
+          [
+            "Freigabebeleg",
+            "KEINER",
+            "approvalHash: null"
+          ],
+          [
+            "Shopify-Schreibvorgänge",
+            0,
+            "nicht ausgeführt"
+          ],
+          [
+            "Quell-ID",
+            "cfg_c38e63be-e4f3-4c75-95a7-ca331ceae8ba",
+            "nur Kopie"
+          ],
+          [
+            "Quellrevision",
+            1,
+            "native Revision"
+          ],
+          [
+            "Quelldokument SHA-256",
+            "dcd63a77aaeddd112ab180e864c8d7c48e789077336d1d05dd92d466c40d277a",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Vorlagen-ID",
+            "pgt_6e0e17af-51d9-4863-a137-6e6435f180a7",
+            "nur Kopie"
+          ],
+          [
+            "Vorlagenrevision",
+            1,
+            "native Revision"
+          ],
+          [
+            "Vorlagen SHA-256",
+            "92e1f407c8e283bdfc62a0871167a97df03e928748865dddf4b4f9a6c7e773f1",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Modulprofil-ID",
+            "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+            "echter Registereintrag auf Kopie"
+          ],
+          [
+            "Modulprofilrevision",
+            1,
+            "native Revision"
+          ],
+          [
+            "Modulprofil SHA-256",
+            "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Foto / SVG-Logo",
+            "AUS / AUS",
+            "bereits bestätigt"
+          ],
+          [
+            "Motivprofil-ID",
+            "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+            "echtes Auswahlprofil auf Kopie"
+          ],
+          [
+            "Motivprofilrevision",
+            1,
+            "separater Ausführungspin"
+          ],
+          [
+            "Motivprofil SHA-256",
+            "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4",
+            "native JSON-Feldfolge name/type/items"
+          ],
+          [
+            "Auswählbare Motive",
+            13,
+            "bestätigte IDs und Reihenfolge"
+          ],
+          [
+            "Enthaltene Designs",
+            27,
+            "unveränderte Originalauswahl"
+          ],
+          [
+            "Startdesign beibehalten",
+            "katalog-TRE-V2A-6x2-D1",
+            "bestätigt"
+          ],
+          [
+            "Startgröße beibehalten",
+            "GR-ES-RE-60X20-T15",
+            "physische Größe unverändert"
+          ],
+          [
+            "Preisangaben",
+            "Bruttopreise inklusive 19 % MwSt.",
+            "bestätigt 11.11.2026"
+          ],
+          [
+            "Mengenstaffel",
+            "5 % ab 3 / 10 % ab 5 / 15 % ab 10",
+            "bestätigt 20.10.2026"
+          ],
+          [
+            "Staffelumfang",
+            "complete-unit",
+            "kompletter Stückpreis"
+          ],
+          [
+            "Motiv-Aufpreis (Cent)",
+            169,
+            "unverändert"
+          ],
+          [
+            "Verglichene Kombinationen",
+            5,
+            "alle Preise/Optionen wie v9"
+          ],
+          [
+            "Native Ressourcen-Settingsrevision",
+            1,
+            "tatsächlich gespeicherte Metadaten"
+          ],
+          [
+            "Ressourcenauflösung SHA-256",
+            "1252a9e6e4674a333d89c11d48b2f1882f2be029d7bdd2a8c92d1dc4aaccb271",
+            "separate Belegprojektion; Produktgruppen-Verfahren"
+          ],
+          [
+            "Quellmetadaten SHA-256",
+            "622ef3ae21f6f5f7a54acbecc62b84f8d9bd6f0645f076f5e6e49c5bab24d53d",
+            "separater Beleg; Produktgruppen-Verfahren"
+          ],
+          [
+            "Operatorquelle",
+            "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6819660449",
+            "tatsächlicher Kopiennachweis"
+          ],
+          [
+            "Operator-Codecommit",
+            "75a304ebfa86ce3a5302c5940107a6e010be8322",
+            "Quellstand"
+          ],
+          [
+            "Record-Herkunft",
+            "Lokal aus v9 mit tatsächlichen Kopien-IDs rekonstruiert",
+            "keine Server-Bytekopien"
+          ],
+          [
+            "Server-Abgleich",
+            "44 kanonische Werte, Planhashes und Planlängen geprüft",
+            "unabhängiger Empfangsreview"
+          ],
+          [
+            "Business-Entscheidungen",
+            "In erhaltenen v9-Akten belegt",
+            "nicht in neuen nativen Revisionsmetadaten"
+          ],
+          [
+            "Tenant / Store",
+            "gravuru / acryl",
+            "Operatorzuordnung der Kopie"
+          ],
+          [
+            "Eingabepaket SHA-256",
+            "1153dfacf9181081142ca57843b6dd68d95ad807c30b176ffbdd238f8e93154f",
+            "geprüfte Dateibytes"
+          ],
+          [
+            "Plan-JSON Datei SHA-256",
+            "e16f570ef7bea8ab3f75807d297b20f8c6abcc9c9b34804f153539673024cf7e",
+            "ggf. Gzip-Dateibytes"
+          ],
+          [
+            "Lokaler v9-Ursprungsplan",
+            "pgp_b216801b-a754-447b-be24-308e5f47de18",
+            "ausschließlich Herkunft"
+          ],
+          [
+            "Lokaler v9-planHash",
+            "8423f66172c8ff0258d5ca60591f42861457ba9634805d92941431dcfbf0764f",
+            "ausschließlich Herkunft"
+          ],
+          [
+            "Preisvergleich",
+            "Optionen / physische Maße",
+            "Bruttopreis EUR"
+          ],
+          [
+            "Kombination 1",
+            "Befestigung: Ohne Bohrung / 60 × 20 mm",
+            8.79
+          ],
+          [
+            "Kombination 2",
+            "Befestigung: Selbstklebend – glatte Flächen / 60 × 20 mm",
+            11.78
+          ],
+          [
+            "Kombination 3",
+            "Befestigung: Selbstklebend – raue Flächen / 60 × 20 mm",
+            12.78
+          ],
+          [
+            "Kombination 4",
+            "Befestigung: Mit 2 Bohrlöchern / 60 × 20 mm",
+            11.28
+          ],
+          [
+            "Kombination 5",
+            "Befestigung: Mit 2 Schrauben / 60 × 20 mm",
+            11.48
+          ],
+          [
+            "Motivauswahl",
+            "Exakte bestätigte Motiv-ID",
+            "Reihenfolge"
+          ],
+          [
+            "Motiv 1",
+            "import-6abda909c44bc599330856dd",
+            1
+          ],
+          [
+            "Motiv 2",
+            "import-0073ea6aa7103bb1e8ec9088",
+            2
+          ],
+          [
+            "Motiv 3",
+            "import-9373218480c87a6ad167f3cb",
+            3
+          ],
+          [
+            "Motiv 4",
+            "import-41fb65efd1d8996ac305f6ab",
+            4
+          ],
+          [
+            "Motiv 5",
+            "import-1abd6f06096e47c66b0b4e00",
+            5
+          ],
+          [
+            "Motiv 6",
+            "import-286db893566ced2e6bd75bad",
+            6
+          ],
+          [
+            "Motiv 7",
+            "import-d94f1406fde432cf9dd70389",
+            7
+          ],
+          [
+            "Motiv 8",
+            "import-9c76c3476a406eaac7f05e42",
+            8
+          ],
+          [
+            "Motiv 9",
+            "import-10edf8a5dd07bd1035ba508d",
+            9
+          ],
+          [
+            "Motiv 10",
+            "import-4269dbda54a15a99e178f00a",
+            10
+          ],
+          [
+            "Motiv 11",
+            "import-0f3193fd49e254bb5975e74d",
+            11
+          ],
+          [
+            "Motiv 12",
+            "import-54b3b489bbebe12119deda9a",
+            12
+          ],
+          [
+            "Motiv 13",
+            "import-8239d6c658366716f578c984",
+            13
+          ],
+          [
+            "Weiterer Ablauf",
+            "Erst tatsächliche Produktivpläne und konkrete Akten abnehmen",
+            "keine Übertragung der Kopien-IDs behauptet"
+          ],
+          [
+            "Altprodukte",
+            "Vorhandene ACTIVE-/Mehrgrößenprodukte bleiben erhalten",
+            "keine Löschung / kein Umhängen"
+          ]
+        ],
+        "renderRanges": [
+          "A1:C27",
+          "A28:C55",
+          "A56:C80"
+        ]
+      }
+    },
+    {
+      "key": "Tuerschild-Edelstahl-8x2_v1",
+      "output": "Tuerschild-Edelstahl-8x2_v4.xlsx",
+      "previous": "outputs/Produktplaene-230-v9/Excel-Nachtraege/Tuerschild-Edelstahl-8x2_v3.xlsx",
+      "previousSha256": "108c214d71612272fcae32ead1c4cb770b9264a61a0be0efdb2ecd506dcd7891",
+      "original": "work/product-plans-run-v8/excel/Tuerschild-Edelstahl-8x2_v1.xlsx",
+      "originalSha256": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+      "appendix": "Tuerschild-Edelstahl-8x2_v4.xlsx.appendix.xlsx",
+      "appendixSha256": "cd6b31d5ea55dc5ff63b351f8bf603ac925bc05635f38a5dc6da2ddf84106d74",
+      "planId": "pgp_7ec62d5a-6d28-48c5-b8da-fe940e39ee0e",
+      "planHash": "cd1473f9a1a18927c558a8c4901bbaeb58a0781a589fd532fd1733d3ca5b96e0",
+      "creationKey": "issue230-440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+      "source": {
+        "key": "cfg_f2bb6a4b-1ce0-4ba8-a0ab-d92af17a8de0",
+        "productId": "cfg_f2bb6a4b-1ce0-4ba8-a0ab-d92af17a8de0",
+        "revision": 1,
+        "sha256": "3b20aa4d3382a8ac604ea4f2a71e9e79357fae71fcf028158ecfe7bfa164fd71"
+      },
+      "template": {
+        "id": "pgt_654492e8-3d55-4d72-b578-e528a5ceb3a2",
+        "revision": 1,
+        "sha256": "3e70b4f170ba211f910e5d47b68efb4d9993556e47f286017d42e4f96b4410bf"
+      },
+      "moduleProfile": {
+        "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+        "revision": 1,
+        "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+      },
+      "motifProfile": {
+        "id": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+        "revision": 1,
+        "storedDocumentSha256": "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4"
+      },
+      "variantReview": [
+        {
+          "choices": [
+            {
+              "display": "Ohne Bohrung",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "K00"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "K00"
+          },
+          "sizeKey": "GR-ES-RE-80X20-T15",
+          "unitCents": 949,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Selbstklebend – glatte Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KGL"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "KGL"
+          },
+          "sizeKey": "GR-ES-RE-80X20-T15",
+          "unitCents": 1248,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Selbstklebend – raue Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KRA"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "KRA"
+          },
+          "sizeKey": "GR-ES-RE-80X20-T15",
+          "unitCents": 1348,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Mit 2 Bohrlöchern",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "B02"
+          },
+          "sizeKey": "GR-ES-RE-80X20-T15",
+          "unitCents": 1198,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Mit 2 Schrauben",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02S"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "B02S"
+          },
+          "sizeKey": "GR-ES-RE-80X20-T15",
+          "unitCents": 1218,
+          "widthMm": 80
+        }
+      ],
+      "inputs": {
+        "key": "Tuerschild-Edelstahl-8x2_v1",
+        "originalWorkbookSha256": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+        "creationKey": "issue230-440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+        "plan": {
+          "path": "Tuerschild-Edelstahl-8x2_v1/plan.json.gz",
+          "sha256": "7c6daec74d91c6b2099c06b993683f691a48e07fa97db7ff7bf0bd1d772dbcda"
+        },
+        "template": {
+          "path": "Tuerschild-Edelstahl-8x2_v1/template.json",
+          "sha256": "8af9ce5a7a21e7c02c64e07e421518d72b2095763185805d7ab50fa00ce0ad6e"
+        },
+        "sourceDocument": {
+          "path": "Tuerschild-Edelstahl-8x2_v1/source-document.json.gz",
+          "sha256": "4b4dd966e016a9e08206359b1321bcc2cdc1de7d16d87e6688c74f415482778c"
+        },
+        "sourceMetadata": {
+          "path": "Tuerschild-Edelstahl-8x2_v1/source-metadata.json",
+          "sha256": "c89a16f25208de78de8950f5114add144d8f86d2bacd1a6606abbcc02657e535"
+        }
+      },
+      "sheet": {
+        "name": "Kopienplan",
+        "title": "Türschild Edelstahl 8 × 2 cm (gebürstet, Gravur) · Kopienplan",
+        "headers": [
+          "Angabe",
+          "Tatsächlicher Kopienstand",
+          "Einordnung"
+        ],
+        "body": [
+          [
+            "Zweck",
+            "Prüfunterlage der isolierten Serverkopie",
+            "KEINE Produktfreigabe"
+          ],
+          [
+            "Produktziel",
+            "Neue eigene Kleinproduktgruppe; später DRAFT",
+            "keine Altproduktänderung"
+          ],
+          [
+            "Produktive Plan-IDs",
+            "Noch nicht mit dieser Akte behauptet",
+            "spätere echte Zuordnung"
+          ],
+          [
+            "Neue Dateiversion",
+            "Tuerschild-Edelstahl-8x2_v4.xlsx",
+            "nur zusätzliches Blatt"
+          ],
+          [
+            "Bisherige Akte",
+            "Tuerschild-Edelstahl-8x2_v3.xlsx",
+            "v9-Herkunft unverändert"
+          ],
+          [
+            "Bisherige Akte SHA-256",
+            "108c214d71612272fcae32ead1c4cb770b9264a61a0be0efdb2ecd506dcd7891",
+            "Dateibytes"
+          ],
+          [
+            "Originalpreisakte",
+            "Tuerschild-Edelstahl-8x2_v1.xlsx",
+            "Preisquelle"
+          ],
+          [
+            "Originalpreisakte SHA-256",
+            "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+            "dauerhafte creationKey-Quelle"
+          ],
+          [
+            "Creation-Key",
+            "issue230-440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+            "unverändert"
+          ],
+          [
+            "Produkt-Key",
+            "Tuerschild-Edelstahl-8x2_v1",
+            "unverändert"
+          ],
+          [
+            "Plan-ID",
+            "pgp_7ec62d5a-6d28-48c5-b8da-fe940e39ee0e",
+            "nur Kopie"
+          ],
+          [
+            "Nativer planHash",
+            "cd1473f9a1a18927c558a8c4901bbaeb58a0781a589fd532fd1733d3ca5b96e0",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Plan gültig",
+            true,
+            "valid:true auf Kopie"
+          ],
+          [
+            "Planbestätigung / Ausführung",
+            "0 / 0",
+            "OFFEN"
+          ],
+          [
+            "Freigabebeleg",
+            "KEINER",
+            "approvalHash: null"
+          ],
+          [
+            "Shopify-Schreibvorgänge",
+            0,
+            "nicht ausgeführt"
+          ],
+          [
+            "Quell-ID",
+            "cfg_f2bb6a4b-1ce0-4ba8-a0ab-d92af17a8de0",
+            "nur Kopie"
+          ],
+          [
+            "Quellrevision",
+            1,
+            "native Revision"
+          ],
+          [
+            "Quelldokument SHA-256",
+            "3b20aa4d3382a8ac604ea4f2a71e9e79357fae71fcf028158ecfe7bfa164fd71",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Vorlagen-ID",
+            "pgt_654492e8-3d55-4d72-b578-e528a5ceb3a2",
+            "nur Kopie"
+          ],
+          [
+            "Vorlagenrevision",
+            1,
+            "native Revision"
+          ],
+          [
+            "Vorlagen SHA-256",
+            "3e70b4f170ba211f910e5d47b68efb4d9993556e47f286017d42e4f96b4410bf",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Modulprofil-ID",
+            "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+            "echter Registereintrag auf Kopie"
+          ],
+          [
+            "Modulprofilrevision",
+            1,
+            "native Revision"
+          ],
+          [
+            "Modulprofil SHA-256",
+            "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3",
+            "Produktgruppen-Verfahren"
+          ],
+          [
+            "Foto / SVG-Logo",
+            "AUS / AUS",
+            "bereits bestätigt"
+          ],
+          [
+            "Motivprofil-ID",
+            "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+            "echtes Auswahlprofil auf Kopie"
+          ],
+          [
+            "Motivprofilrevision",
+            1,
+            "separater Ausführungspin"
+          ],
+          [
+            "Motivprofil SHA-256",
+            "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4",
+            "native JSON-Feldfolge name/type/items"
+          ],
+          [
+            "Auswählbare Motive",
+            13,
+            "bestätigte IDs und Reihenfolge"
+          ],
+          [
+            "Enthaltene Designs",
+            27,
+            "unveränderte Originalauswahl"
+          ],
+          [
+            "Startdesign beibehalten",
+            "katalog-TRE-V2A-8x2-D1",
+            "bestätigt"
+          ],
+          [
+            "Startgröße beibehalten",
+            "GR-ES-RE-80X20-T15",
+            "physische Größe unverändert"
+          ],
+          [
+            "Preisangaben",
+            "Bruttopreise inklusive 19 % MwSt.",
+            "bestätigt 11.11.2026"
+          ],
+          [
+            "Mengenstaffel",
+            "5 % ab 3 / 10 % ab 5 / 15 % ab 10",
+            "bestätigt 20.10.2026"
+          ],
+          [
+            "Staffelumfang",
+            "complete-unit",
+            "kompletter Stückpreis"
+          ],
+          [
+            "Motiv-Aufpreis (Cent)",
+            169,
+            "unverändert"
+          ],
+          [
+            "Verglichene Kombinationen",
+            5,
+            "alle Preise/Optionen wie v9"
+          ],
+          [
+            "Native Ressourcen-Settingsrevision",
+            1,
+            "tatsächlich gespeicherte Metadaten"
+          ],
+          [
+            "Ressourcenauflösung SHA-256",
+            "1252a9e6e4674a333d89c11d48b2f1882f2be029d7bdd2a8c92d1dc4aaccb271",
+            "separate Belegprojektion; Produktgruppen-Verfahren"
+          ],
+          [
+            "Quellmetadaten SHA-256",
+            "622ef3ae21f6f5f7a54acbecc62b84f8d9bd6f0645f076f5e6e49c5bab24d53d",
+            "separater Beleg; Produktgruppen-Verfahren"
+          ],
+          [
+            "Operatorquelle",
+            "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6819660449",
+            "tatsächlicher Kopiennachweis"
+          ],
+          [
+            "Operator-Codecommit",
+            "75a304ebfa86ce3a5302c5940107a6e010be8322",
+            "Quellstand"
+          ],
+          [
+            "Record-Herkunft",
+            "Lokal aus v9 mit tatsächlichen Kopien-IDs rekonstruiert",
+            "keine Server-Bytekopien"
+          ],
+          [
+            "Server-Abgleich",
+            "44 kanonische Werte, Planhashes und Planlängen geprüft",
+            "unabhängiger Empfangsreview"
+          ],
+          [
+            "Business-Entscheidungen",
+            "In erhaltenen v9-Akten belegt",
+            "nicht in neuen nativen Revisionsmetadaten"
+          ],
+          [
+            "Tenant / Store",
+            "gravuru / acryl",
+            "Operatorzuordnung der Kopie"
+          ],
+          [
+            "Eingabepaket SHA-256",
+            "1153dfacf9181081142ca57843b6dd68d95ad807c30b176ffbdd238f8e93154f",
+            "geprüfte Dateibytes"
+          ],
+          [
+            "Plan-JSON Datei SHA-256",
+            "7c6daec74d91c6b2099c06b993683f691a48e07fa97db7ff7bf0bd1d772dbcda",
+            "ggf. Gzip-Dateibytes"
+          ],
+          [
+            "Lokaler v9-Ursprungsplan",
+            "pgp_869d2800-de7c-48d6-96f4-87a5f889186e",
+            "ausschließlich Herkunft"
+          ],
+          [
+            "Lokaler v9-planHash",
+            "634a3d3f45e462a03a4b79add03cc0d323e7587378d8cc402a3495f638652199",
+            "ausschließlich Herkunft"
+          ],
+          [
+            "Preisvergleich",
+            "Optionen / physische Maße",
+            "Bruttopreis EUR"
+          ],
+          [
+            "Kombination 1",
+            "Befestigung: Ohne Bohrung / 80 × 20 mm",
+            9.49
+          ],
+          [
+            "Kombination 2",
+            "Befestigung: Selbstklebend – glatte Flächen / 80 × 20 mm",
+            12.48
+          ],
+          [
+            "Kombination 3",
+            "Befestigung: Selbstklebend – raue Flächen / 80 × 20 mm",
+            13.48
+          ],
+          [
+            "Kombination 4",
+            "Befestigung: Mit 2 Bohrlöchern / 80 × 20 mm",
+            11.98
+          ],
+          [
+            "Kombination 5",
+            "Befestigung: Mit 2 Schrauben / 80 × 20 mm",
+            12.18
+          ],
+          [
+            "Motivauswahl",
+            "Exakte bestätigte Motiv-ID",
+            "Reihenfolge"
+          ],
+          [
+            "Motiv 1",
+            "import-6abda909c44bc599330856dd",
+            1
+          ],
+          [
+            "Motiv 2",
+            "import-0073ea6aa7103bb1e8ec9088",
+            2
+          ],
+          [
+            "Motiv 3",
+            "import-9373218480c87a6ad167f3cb",
+            3
+          ],
+          [
+            "Motiv 4",
+            "import-41fb65efd1d8996ac305f6ab",
+            4
+          ],
+          [
+            "Motiv 5",
+            "import-1abd6f06096e47c66b0b4e00",
+            5
+          ],
+          [
+            "Motiv 6",
+            "import-286db893566ced2e6bd75bad",
+            6
+          ],
+          [
+            "Motiv 7",
+            "import-d94f1406fde432cf9dd70389",
+            7
+          ],
+          [
+            "Motiv 8",
+            "import-9c76c3476a406eaac7f05e42",
+            8
+          ],
+          [
+            "Motiv 9",
+            "import-10edf8a5dd07bd1035ba508d",
+            9
+          ],
+          [
+            "Motiv 10",
+            "import-4269dbda54a15a99e178f00a",
+            10
+          ],
+          [
+            "Motiv 11",
+            "import-0f3193fd49e254bb5975e74d",
+            11
+          ],
+          [
+            "Motiv 12",
+            "import-54b3b489bbebe12119deda9a",
+            12
+          ],
+          [
+            "Motiv 13",
+            "import-8239d6c658366716f578c984",
+            13
+          ],
+          [
+            "Weiterer Ablauf",
+            "Erst tatsächliche Produktivpläne und konkrete Akten abnehmen",
+            "keine Übertragung der Kopien-IDs behauptet"
+          ],
+          [
+            "Altprodukte",
+            "Vorhandene ACTIVE-/Mehrgrößenprodukte bleiben erhalten",
+            "keine Löschung / kein Umhängen"
+          ]
+        ],
+        "renderRanges": [
+          "A1:C27",
+          "A28:C55",
+          "A56:C80"
+        ]
+      }
+    }
+  ]
+}

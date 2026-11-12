@@ -1,0 +1,579 @@
+{
+ "schema": "gravuru-sechsgruppen-eingaben/v1",
+ "quelle": {
+  "repoCommit": "b2a0a19d00e2465bf4fafe523d0a7d63c412d0a9",
+  "transport": "docs/reviews/2026-11-11-issue230-native-plans-v9/transport",
+  "manifestSha256": "cb6eccb109a94014ace5441ab74a9736f5f33a78825075fa0085f33d4f59395b",
+  "excelCommit": "bf8824c80347f63ffeb2c05cc9a34a9ffed6f9bd"
+ },
+ "modulprofil": {
+  "id": "cmp_049bdd37-97bd-456e-8237-9856a00809da",
+  "revision": 1,
+  "name": "Kleinformate: Foto/Logo aus (Chris, 11.11.2026)",
+  "modules": {
+   "colors": false,
+   "designs": true,
+   "logo": false,
+   "motifs": true,
+   "options": true,
+   "photo": false,
+   "text": true
+  },
+  "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3",
+  "actor": "Astra recording explicit upload decision, 11.11.2026"
+ },
+ "motivprofil": {
+  "id": "prf_0fce513a-0973-45eb-8d03-09728290e17d",
+  "revision": 1,
+  "name": "Kleinformate: bestätigte 13 Motive (10.11.2026)",
+  "type": "motifs",
+  "items": [
+   "import-6abda909c44bc599330856dd",
+   "import-0073ea6aa7103bb1e8ec9088",
+   "import-9373218480c87a6ad167f3cb",
+   "import-41fb65efd1d8996ac305f6ab",
+   "import-1abd6f06096e47c66b0b4e00",
+   "import-286db893566ced2e6bd75bad",
+   "import-d94f1406fde432cf9dd70389",
+   "import-9c76c3476a406eaac7f05e42",
+   "import-10edf8a5dd07bd1035ba508d",
+   "import-4269dbda54a15a99e178f00a",
+   "import-0f3193fd49e254bb5975e74d",
+   "import-54b3b489bbebe12119deda9a",
+   "import-8239d6c658366716f578c984"
+  ],
+  "documentSha256": "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4",
+  "pinsDateiSha256": "13a46b9211a0fd7decd2ac7d98f7a7ac8154cd84144c69729a338da64e09f53c"
+ },
+ "dokumente": {
+  "bytes": 61954025,
+  "sha256": "c54078b43999661dd349259fe319b6c9c536ef1c965d012657e0d79869116257",
+  "brBytes": 3216490,
+  "brSha256": "e3af4aeb319819ffe3db1cbd58ed963dae8ae9a27a769145244ab93db544cd28",
+  "teile": [
+   {
+    "name": "sg-dokumente.br.teil01",
+    "bytes": 3216490,
+    "sha256": "e3af4aeb319819ffe3db1cbd58ed963dae8ae9a27a769145244ab93db544cd28"
+   }
+  ]
+ },
+ "gruppen": [
+  {
+   "ordner": "Tuerschild-Acrylglas-3mm-5x2_v2",
+   "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+   "excelSha256": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+   "dokument": {
+    "offset": 0,
+    "bytes": 9367162,
+    "sha256": "94645c95ba8d27cd51caeaae582503b0f4f57dc71c7ef04d32cd4c15979f2d04",
+    "gzSha256": "482e86d97a3b80c4182c7cdb03de53b8bf760397b7ee6bd869bcb8f1bd87cb16",
+    "kanonischSha256": "7d951cec1d47abc13b1c2c6d6e0552c0616e4843fc941e4c75943ad89aeb53f8"
+   },
+   "quelleName": "Türschild Acrylglas 3 mm 5 × 2 cm (Schwarz/Anthrazit)",
+   "motivprofilVerweis": {
+    "mode": "override",
+    "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d"
+   },
+   "v9": {
+    "quelle": {
+     "id": "cfg_a185d396-3f2d-40cc-8199-b802743da334",
+     "revision": 2,
+     "sha256": "7d951cec1d47abc13b1c2c6d6e0552c0616e4843fc941e4c75943ad89aeb53f8",
+     "status": "draft",
+     "publishedRevision": null,
+     "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+    },
+    "vorlage": {
+     "id": "pgt_31a79772-234a-485c-beec-c7565a7157c6",
+     "revision": 2,
+     "sha256": "bdc0ff479668e535903ad6cb17cd6e6ae04039437a8e3fbeaebc02a563d48a8e"
+    },
+    "planId": "pgp_7307b213-09ef-4758-b525-88aea139502d",
+    "planHash": "cd2405c8f0a53544cfaaf87f97d84234ba9c51d58ec6b0e388bb7212ef141392",
+    "scope": {
+     "lineId": "native-products",
+     "subcategoryId": "cfg_a185d396-3f2d-40cc-8199-b802743da334"
+    },
+    "vorlagenName": "Tuerschild-Acrylglas-3mm-5x2_v2"
+   },
+   "produkt": {
+    "key": "Tuerschild-Acrylglas-3mm-5x2_v2",
+    "name": "Türschild Acrylglas 3 mm 5 × 2 cm (Schwarz/Anthrazit)"
+   },
+   "erwartet": {
+    "kombinationen": 10,
+    "variantReview": 10,
+    "variantReviewSha256": "7c8030a91fdd8f8f86333578a1c8ba238cdd6f8c212de5a29a226807a23da303",
+    "optionen": {
+     "color": "schwarz",
+     "mounting": "K00"
+    },
+    "preis": {
+     "additionalMotifs": 0,
+     "currency": "EUR",
+     "listUnitCents": 699,
+     "options": {
+      "color": "schwarz",
+      "mounting": "K00"
+     },
+     "quantity": 1,
+     "quantityTier": null,
+     "quantityTierDiscountCents": 0,
+     "quantityTierScope": "complete-unit",
+     "totalCents": 699,
+     "unitCents": 699
+    },
+    "zielInhaltSha256": "327ecda267af9322859e335ebafcc89c849ab208a6ffcc297561492008ec9dd1",
+    "optionGroupsSha256": "c4515837d01476bc97afeccf0211b71f2c950d6d577df3a544cdcfee52edcb63",
+    "designs": 27,
+    "designIdsSha256": "cea1e8d42561d2f43e63c445c80d7711814f2f120ec08ae859beafe143dd4713",
+    "defaultDesignId": "katalog-TRE-V2A-5x2-D1",
+    "themeId": "familienschilder",
+    "foto": false,
+    "logo": false,
+    "module": {
+     "colors": false,
+     "designs": true,
+     "logo": false,
+     "motifs": true,
+     "options": true,
+     "photo": false,
+     "text": true
+    },
+    "kompiliertOhneKennungenSha256": "cb7b0544ced9c963880778691d40898ac7eab1b6c498735c97ae8c391d2b204e",
+    "fingerprint": "b5716c1406015c062d693bc7eb5db244d50c04c0ffd813db1f58aecf28875c7a",
+    "creationKey": "issue230-119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd"
+   }
+  },
+  {
+   "ordner": "Tuerschild-Acrylglas-3mm-6x2_v2",
+   "workbook": "Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+   "excelSha256": "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+   "dokument": {
+    "offset": 9367162,
+    "bytes": 9367589,
+    "sha256": "cec58d88841ced32a6762efe73d508e47ded93c8f967970e57f0ae7799a5b77b",
+    "gzSha256": "b49df47d71d9c5c99b1b54a4e78385e306df5a62b34e049067cad0a3ab208446",
+    "kanonischSha256": "4e74e4921f46d07382e2e2b605c3aaf237b11492905ed4e662a5e91aec22d3f5"
+   },
+   "quelleName": "Türschild Acrylglas 3 mm 6 × 2 cm (Schwarz/Anthrazit)",
+   "motivprofilVerweis": {
+    "mode": "override",
+    "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d"
+   },
+   "v9": {
+    "quelle": {
+     "id": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0",
+     "revision": 2,
+     "sha256": "4e74e4921f46d07382e2e2b605c3aaf237b11492905ed4e662a5e91aec22d3f5",
+     "status": "draft",
+     "publishedRevision": null,
+     "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+    },
+    "vorlage": {
+     "id": "pgt_e0676ce8-1bac-46fd-9665-ab04684143ec",
+     "revision": 2,
+     "sha256": "b38de2aba9530a86d71c61a569aee208295db3e63394b913a0dfb24ddfc52d69"
+    },
+    "planId": "pgp_6831ea29-73f3-40c4-abfa-834c8479d93d",
+    "planHash": "df492d24f7da24f765ff62b8b03daf44865d839045191f3b3e449ca8f37cc09f",
+    "scope": {
+     "lineId": "native-products",
+     "subcategoryId": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0"
+    },
+    "vorlagenName": "Tuerschild-Acrylglas-3mm-6x2_v2"
+   },
+   "produkt": {
+    "key": "Tuerschild-Acrylglas-3mm-6x2_v2",
+    "name": "Türschild Acrylglas 3 mm 6 × 2 cm (Schwarz/Anthrazit)"
+   },
+   "erwartet": {
+    "kombinationen": 10,
+    "variantReview": 10,
+    "variantReviewSha256": "adf2891169dfbd621e2dac48462211ae895f476874e890e582bf13af37c90c2b",
+    "optionen": {
+     "color": "schwarz",
+     "mounting": "K00"
+    },
+    "preis": {
+     "additionalMotifs": 0,
+     "currency": "EUR",
+     "listUnitCents": 799,
+     "options": {
+      "color": "schwarz",
+      "mounting": "K00"
+     },
+     "quantity": 1,
+     "quantityTier": null,
+     "quantityTierDiscountCents": 0,
+     "quantityTierScope": "complete-unit",
+     "totalCents": 799,
+     "unitCents": 799
+    },
+    "zielInhaltSha256": "327ecda267af9322859e335ebafcc89c849ab208a6ffcc297561492008ec9dd1",
+    "optionGroupsSha256": "c4515837d01476bc97afeccf0211b71f2c950d6d577df3a544cdcfee52edcb63",
+    "designs": 27,
+    "designIdsSha256": "50f5aeb675f03eaa29952e1ae7fbda0022443a47e9c545baccbd1016a0805193",
+    "defaultDesignId": "katalog-TRE-V2A-6x2-D1",
+    "themeId": "familienschilder",
+    "foto": false,
+    "logo": false,
+    "module": {
+     "colors": false,
+     "designs": true,
+     "logo": false,
+     "motifs": true,
+     "options": true,
+     "photo": false,
+     "text": true
+    },
+    "kompiliertOhneKennungenSha256": "ce4e49b21823615f4add15e7e71f78f2484d4cb543cfa41d4f4964a2b1334d4c",
+    "fingerprint": "95ca1a6c67e25110623647daf4cdccbd48c16c56927dd09c843fcabd00c3f62b",
+    "creationKey": "issue230-7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673"
+   }
+  },
+  {
+   "ordner": "Tuerschild-Acrylglas-3mm-8x2_v2",
+   "workbook": "Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+   "excelSha256": "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+   "dokument": {
+    "offset": 18734751,
+    "bytes": 9367969,
+    "sha256": "1ec018e04ad54cdef84bb223f32d04304b76de89c190f92514ba1837939213ca",
+    "gzSha256": "75234f061469f03d657455626d96195be287187bac8fdce737a3ad908fe5cd54",
+    "kanonischSha256": "21479a11ae22c881fe40a05975d8beb7aa2e1fafc30db657b04bd3591ee36ed2"
+   },
+   "quelleName": "Türschild Acrylglas 3 mm 8 × 2 cm (Schwarz/Anthrazit)",
+   "motivprofilVerweis": {
+    "mode": "override",
+    "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d"
+   },
+   "v9": {
+    "quelle": {
+     "id": "cfg_ecf40ca9-b1f0-4782-ae2d-768cbe62d03d",
+     "revision": 2,
+     "sha256": "21479a11ae22c881fe40a05975d8beb7aa2e1fafc30db657b04bd3591ee36ed2",
+     "status": "draft",
+     "publishedRevision": null,
+     "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+    },
+    "vorlage": {
+     "id": "pgt_2c75a0ba-8628-47b6-807c-5889687ad8f1",
+     "revision": 2,
+     "sha256": "b8248c437752b60adcbe783b7ecba56b3851de4b4ed7675b3371d0070015f9f7"
+    },
+    "planId": "pgp_1d526e2a-fe1d-4749-be52-5386cf227afe",
+    "planHash": "8531d241fd230a52a14a4c77bf314bdc49c578a679fc5d0d1d9a6a439f995d53",
+    "scope": {
+     "lineId": "native-products",
+     "subcategoryId": "cfg_ecf40ca9-b1f0-4782-ae2d-768cbe62d03d"
+    },
+    "vorlagenName": "Tuerschild-Acrylglas-3mm-8x2_v2"
+   },
+   "produkt": {
+    "key": "Tuerschild-Acrylglas-3mm-8x2_v2",
+    "name": "Türschild Acrylglas 3 mm 8 × 2 cm (Schwarz/Anthrazit)"
+   },
+   "erwartet": {
+    "kombinationen": 10,
+    "variantReview": 10,
+    "variantReviewSha256": "649e8f6126a6a54d1474e7089439f0d09bd14400a8178ce6e03867c2f422d90c",
+    "optionen": {
+     "color": "schwarz",
+     "mounting": "K00"
+    },
+    "preis": {
+     "additionalMotifs": 0,
+     "currency": "EUR",
+     "listUnitCents": 849,
+     "options": {
+      "color": "schwarz",
+      "mounting": "K00"
+     },
+     "quantity": 1,
+     "quantityTier": null,
+     "quantityTierDiscountCents": 0,
+     "quantityTierScope": "complete-unit",
+     "totalCents": 849,
+     "unitCents": 849
+    },
+    "zielInhaltSha256": "327ecda267af9322859e335ebafcc89c849ab208a6ffcc297561492008ec9dd1",
+    "optionGroupsSha256": "c4515837d01476bc97afeccf0211b71f2c950d6d577df3a544cdcfee52edcb63",
+    "designs": 27,
+    "designIdsSha256": "1403972524168bb70316cb4b7eacb28dc87001a1a05dc48cf9099ae449242e27",
+    "defaultDesignId": "katalog-TRE-V2A-8x2-D1",
+    "themeId": "familienschilder",
+    "foto": false,
+    "logo": false,
+    "module": {
+     "colors": false,
+     "designs": true,
+     "logo": false,
+     "motifs": true,
+     "options": true,
+     "photo": false,
+     "text": true
+    },
+    "kompiliertOhneKennungenSha256": "c27e409a4da6e1c3eed9665a07c45723a890d2eb4a7fcd5cb42ccd28c404c284",
+    "fingerprint": "1bfa8696d781ead9c25f7d5c6ae7ab755dd4f3639befa4e84ebb2b38e40ed972",
+    "creationKey": "issue230-02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2"
+   }
+  },
+  {
+   "ordner": "Tuerschild-Edelstahl-5x2_v1",
+   "workbook": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+   "excelSha256": "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+   "dokument": {
+    "offset": 28102720,
+    "bytes": 11283357,
+    "sha256": "9521226a9e91b0b297450eb81647f31e0bbb451eedde1c86101a02a0c574accd",
+    "gzSha256": "10c60aa98ecc74afd53202ef064b90fefbd046674aee10f7c8ae2523764e0c81",
+    "kanonischSha256": "c37159312125ef333a01ea1ab96d1c25fe46edfd946c52495a7e9039f2f1f466"
+   },
+   "quelleName": "Türschild Edelstahl 5 × 2 cm (gebürstet, Gravur)",
+   "motivprofilVerweis": {
+    "mode": "override",
+    "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d"
+   },
+   "v9": {
+    "quelle": {
+     "id": "cfg_9c64f1b8-5e95-49ae-8937-d5990a3b26a6",
+     "revision": 2,
+     "sha256": "c37159312125ef333a01ea1ab96d1c25fe46edfd946c52495a7e9039f2f1f466",
+     "status": "draft",
+     "publishedRevision": null,
+     "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+    },
+    "vorlage": {
+     "id": "pgt_26088966-d1b9-4212-92a3-4a3e3bb6a617",
+     "revision": 2,
+     "sha256": "2d76dc9c5eba6dcdb4c2cd8367905a380d71cdc7db28a55221fc86125079632a"
+    },
+    "planId": "pgp_7699e1dc-2f19-427d-a983-0fd6610f9bd9",
+    "planHash": "24840f5fe16a074e5f842ae85bb6529285bee334254d5d82d99f98efc9f09117",
+    "scope": {
+     "lineId": "native-products",
+     "subcategoryId": "cfg_9c64f1b8-5e95-49ae-8937-d5990a3b26a6"
+    },
+    "vorlagenName": "Tuerschild-Edelstahl-5x2_v1"
+   },
+   "produkt": {
+    "key": "Tuerschild-Edelstahl-5x2_v1",
+    "name": "Türschild Edelstahl 5 × 2 cm (gebürstet, Gravur)"
+   },
+   "erwartet": {
+    "kombinationen": 5,
+    "variantReview": 5,
+    "variantReviewSha256": "44b79defd4753331515f18180190c0574c0cbb5a68ada181a09d9052ff04e436",
+    "optionen": {
+     "mounting": "K00"
+    },
+    "preis": {
+     "additionalMotifs": 0,
+     "currency": "EUR",
+     "listUnitCents": 799,
+     "options": {
+      "mounting": "K00"
+     },
+     "quantity": 1,
+     "quantityTier": null,
+     "quantityTierDiscountCents": 0,
+     "quantityTierScope": "complete-unit",
+     "totalCents": 799,
+     "unitCents": 799
+    },
+    "zielInhaltSha256": "293bcafa10fbd9cb7881b27df5bf8abe90042f3e84935696c7b3ce374929404b",
+    "optionGroupsSha256": "a48e4874e79f63f959c6906dafdfc9dfe9789f34033250d29c744d248dddc0ad",
+    "designs": 27,
+    "designIdsSha256": "cea1e8d42561d2f43e63c445c80d7711814f2f120ec08ae859beafe143dd4713",
+    "defaultDesignId": "katalog-TRE-V2A-5x2-D1",
+    "themeId": "familienschilder",
+    "foto": false,
+    "logo": false,
+    "module": {
+     "colors": false,
+     "designs": true,
+     "logo": false,
+     "motifs": true,
+     "options": true,
+     "photo": false,
+     "text": true
+    },
+    "kompiliertOhneKennungenSha256": "ba32c1822c77ef190228056914d7673256b294c04fc57fa1a6d6b6e1280e8c58",
+    "fingerprint": "187d928072671b9301d28c058967fb1a603ad9aa1b71172d027d8984d6565958",
+    "creationKey": "issue230-9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0"
+   }
+  },
+  {
+   "ordner": "Tuerschild-Edelstahl-6x2_v1",
+   "workbook": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+   "excelSha256": "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+   "dokument": {
+    "offset": 39386077,
+    "bytes": 11283784,
+    "sha256": "f3aa10c351d7c0343c747193eb0081842f92055dcfa0f16a072ab457104e0f92",
+    "gzSha256": "7777eb39e1aa0ced03c289fab39f989454ba1399ff5a7f0b38886a856cf6610c",
+    "kanonischSha256": "3ef423c8c81ba076b3b61eaf116467464a42a70f266536451a870ab09824f516"
+   },
+   "quelleName": "Türschild Edelstahl 6 × 2 cm (gebürstet, Gravur)",
+   "motivprofilVerweis": {
+    "mode": "override",
+    "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d"
+   },
+   "v9": {
+    "quelle": {
+     "id": "cfg_d50868ac-bb33-476f-a07f-3a9a1b9af583",
+     "revision": 2,
+     "sha256": "3ef423c8c81ba076b3b61eaf116467464a42a70f266536451a870ab09824f516",
+     "status": "draft",
+     "publishedRevision": null,
+     "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+    },
+    "vorlage": {
+     "id": "pgt_176dd091-f9dc-4f7f-9bd1-42c350beb7f5",
+     "revision": 2,
+     "sha256": "7e75b75560592722a8b78ebb07f33565f8ffc839846d6f1f3a958d10ad20f35b"
+    },
+    "planId": "pgp_b216801b-a754-447b-be24-308e5f47de18",
+    "planHash": "8423f66172c8ff0258d5ca60591f42861457ba9634805d92941431dcfbf0764f",
+    "scope": {
+     "lineId": "native-products",
+     "subcategoryId": "cfg_d50868ac-bb33-476f-a07f-3a9a1b9af583"
+    },
+    "vorlagenName": "Tuerschild-Edelstahl-6x2_v1"
+   },
+   "produkt": {
+    "key": "Tuerschild-Edelstahl-6x2_v1",
+    "name": "Türschild Edelstahl 6 × 2 cm (gebürstet, Gravur)"
+   },
+   "erwartet": {
+    "kombinationen": 5,
+    "variantReview": 5,
+    "variantReviewSha256": "dffefd7f8037dffc243a0ec4681c2b999a320d2ea921529bb35da19fbda77d82",
+    "optionen": {
+     "mounting": "K00"
+    },
+    "preis": {
+     "additionalMotifs": 0,
+     "currency": "EUR",
+     "listUnitCents": 879,
+     "options": {
+      "mounting": "K00"
+     },
+     "quantity": 1,
+     "quantityTier": null,
+     "quantityTierDiscountCents": 0,
+     "quantityTierScope": "complete-unit",
+     "totalCents": 879,
+     "unitCents": 879
+    },
+    "zielInhaltSha256": "293bcafa10fbd9cb7881b27df5bf8abe90042f3e84935696c7b3ce374929404b",
+    "optionGroupsSha256": "a48e4874e79f63f959c6906dafdfc9dfe9789f34033250d29c744d248dddc0ad",
+    "designs": 27,
+    "designIdsSha256": "50f5aeb675f03eaa29952e1ae7fbda0022443a47e9c545baccbd1016a0805193",
+    "defaultDesignId": "katalog-TRE-V2A-6x2-D1",
+    "themeId": "familienschilder",
+    "foto": false,
+    "logo": false,
+    "module": {
+     "colors": false,
+     "designs": true,
+     "logo": false,
+     "motifs": true,
+     "options": true,
+     "photo": false,
+     "text": true
+    },
+    "kompiliertOhneKennungenSha256": "0bb97f1355fc6f941f545334203d3bf0a841c757bd183e25161903c60f1762c7",
+    "fingerprint": "ff3067cb58fe53b2027877192405e84d391ba4ab6bc9130b7b001db6be3368e2",
+    "creationKey": "issue230-de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5"
+   }
+  },
+  {
+   "ordner": "Tuerschild-Edelstahl-8x2_v1",
+   "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+   "excelSha256": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+   "dokument": {
+    "offset": 50669861,
+    "bytes": 11284164,
+    "sha256": "9fcf89dab365bcc053384d752c1321b66d07d228f8549aa0925c12708af600a6",
+    "gzSha256": "6880060a9dd4177bc0cd26474fb453aae618aefbd18a92a118f6ec85573b7e68",
+    "kanonischSha256": "9520da5156363805a1c11853b13795a09321410dc7b9ef1aa3fe711eb76ef2e3"
+   },
+   "quelleName": "Türschild Edelstahl 8 × 2 cm (gebürstet, Gravur)",
+   "motivprofilVerweis": {
+    "mode": "override",
+    "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d"
+   },
+   "v9": {
+    "quelle": {
+     "id": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+     "revision": 2,
+     "sha256": "9520da5156363805a1c11853b13795a09321410dc7b9ef1aa3fe711eb76ef2e3",
+     "status": "draft",
+     "publishedRevision": null,
+     "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+    },
+    "vorlage": {
+     "id": "pgt_abb30c39-1c05-4b4a-a666-812591d03a25",
+     "revision": 2,
+     "sha256": "bb1c8ed8834ba9b2975989515ae51dad725bb5e61d22577286db029459fb6476"
+    },
+    "planId": "pgp_869d2800-de7c-48d6-96f4-87a5f889186e",
+    "planHash": "634a3d3f45e462a03a4b79add03cc0d323e7587378d8cc402a3495f638652199",
+    "scope": {
+     "lineId": "native-products",
+     "subcategoryId": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f"
+    },
+    "vorlagenName": "Tuerschild-Edelstahl-8x2_v1"
+   },
+   "produkt": {
+    "key": "Tuerschild-Edelstahl-8x2_v1",
+    "name": "Türschild Edelstahl 8 × 2 cm (gebürstet, Gravur)"
+   },
+   "erwartet": {
+    "kombinationen": 5,
+    "variantReview": 5,
+    "variantReviewSha256": "a36223fb8f4c287b7a43968baa532c821b1982ecbddb32fc2a822b6e017da441",
+    "optionen": {
+     "mounting": "K00"
+    },
+    "preis": {
+     "additionalMotifs": 0,
+     "currency": "EUR",
+     "listUnitCents": 949,
+     "options": {
+      "mounting": "K00"
+     },
+     "quantity": 1,
+     "quantityTier": null,
+     "quantityTierDiscountCents": 0,
+     "quantityTierScope": "complete-unit",
+     "totalCents": 949,
+     "unitCents": 949
+    },
+    "zielInhaltSha256": "293bcafa10fbd9cb7881b27df5bf8abe90042f3e84935696c7b3ce374929404b",
+    "optionGroupsSha256": "a48e4874e79f63f959c6906dafdfc9dfe9789f34033250d29c744d248dddc0ad",
+    "designs": 27,
+    "designIdsSha256": "1403972524168bb70316cb4b7eacb28dc87001a1a05dc48cf9099ae449242e27",
+    "defaultDesignId": "katalog-TRE-V2A-8x2-D1",
+    "themeId": "familienschilder",
+    "foto": false,
+    "logo": false,
+    "module": {
+     "colors": false,
+     "designs": true,
+     "logo": false,
+     "motifs": true,
+     "options": true,
+     "photo": false,
+     "text": true
+    },
+    "kompiliertOhneKennungenSha256": "490cc4f53a2b7a3852bef7be059287431d1055f7746bf548aa280a22abb90625",
+    "fingerprint": "ee55560dfff4addb91eff45d9651b1dc25dd0a032011a1829a9e17d4870bfece",
+    "creationKey": "issue230-440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317"
+   }
+  }
+ ]
+}

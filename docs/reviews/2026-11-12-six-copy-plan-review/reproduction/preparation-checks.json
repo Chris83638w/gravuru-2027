@@ -1,0 +1,44 @@
+{
+  "schema": "gravuru-six-plan-excel-preparation-check/v1",
+  "syntaxChecked": {
+    "javascript": 6,
+    "python": 2
+  },
+  "originalNativeHashMethodVerified": [
+    {
+      "key": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "nativeV9PlanHashVerified": true,
+      "prices": 10
+    },
+    {
+      "key": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "nativeV9PlanHashVerified": true,
+      "prices": 10
+    },
+    {
+      "key": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "nativeV9PlanHashVerified": true,
+      "prices": 10
+    },
+    {
+      "key": "Tuerschild-Edelstahl-5x2_v1",
+      "nativeV9PlanHashVerified": true,
+      "prices": 5
+    },
+    {
+      "key": "Tuerschild-Edelstahl-6x2_v1",
+      "nativeV9PlanHashVerified": true,
+      "prices": 5
+    },
+    {
+      "key": "Tuerschild-Edelstahl-8x2_v1",
+      "nativeV9PlanHashVerified": true,
+      "prices": 5
+    }
+  ],
+  "originalMotifStoredHashVerified": true,
+  "missingInputsRejectedBeforeWorkbookCreation": true,
+  "actualCopyInputsAvailable": false,
+  "xlsxCreated": 0,
+  "fullEndToEndRun": false
+}

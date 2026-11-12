@@ -1,0 +1,48 @@
+{
+  "scope": "Independent ZIP byte and workbook relationship review; no Excel runtime rerun",
+  "allPassed": true,
+  "records": [
+    {
+      "file": "Tuerschild-Acrylglas-3mm-5x2_v5.xlsx",
+      "sha256": "09821cf8498e2c6e7d981430d19f058b30e87f1020b13df9e8367d2818c35b01",
+      "unchangedOldParts": 24,
+      "previousSheetsPreserved": 10,
+      "copyPlanAndCreationPinsPresent": true
+    },
+    {
+      "file": "Tuerschild-Acrylglas-3mm-6x2_v5.xlsx",
+      "sha256": "63b9e0033ae5e82d963aeb9520f89a029d3c8b96375333118b573583f4e9f1af",
+      "unchangedOldParts": 24,
+      "previousSheetsPreserved": 10,
+      "copyPlanAndCreationPinsPresent": true
+    },
+    {
+      "file": "Tuerschild-Acrylglas-3mm-8x2_v5.xlsx",
+      "sha256": "050e78e660425d8cb3877f94964a16d820c3aca0407fe463bd1e3e694321bb09",
+      "unchangedOldParts": 24,
+      "previousSheetsPreserved": 10,
+      "copyPlanAndCreationPinsPresent": true
+    },
+    {
+      "file": "Tuerschild-Edelstahl-5x2_v4.xlsx",
+      "sha256": "8e66d99b6ab5913c0c42f168271afa590f25cc56ef49652983dce7fad6e959c2",
+      "unchangedOldParts": 24,
+      "previousSheetsPreserved": 10,
+      "copyPlanAndCreationPinsPresent": true
+    },
+    {
+      "file": "Tuerschild-Edelstahl-6x2_v4.xlsx",
+      "sha256": "6e3961bae9f2009e93a2a6a6b35b1a9caabe6d20c59c3c52e8219531f322245a",
+      "unchangedOldParts": 24,
+      "previousSheetsPreserved": 10,
+      "copyPlanAndCreationPinsPresent": true
+    },
+    {
+      "file": "Tuerschild-Edelstahl-8x2_v4.xlsx",
+      "sha256": "c7963bbd1deae43db3d7c6dd88cfdaeb11db1ba4b8f29a32128c9c6194a6169c",
+      "unchangedOldParts": 24,
+      "previousSheetsPreserved": 10,
+      "copyPlanAndCreationPinsPresent": true
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "schema": "gravuru-six-copy-plan-manual-visual-review/v1",
+  "reviewer": "Codex product_plans",
+  "method": "view_image of all 18 actual Artifact reimport PNGs",
+  "visuallyReviewed": true,
+  "checks": [
+    {
+      "key": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "xlsxSha256": "09821cf8498e2c6e7d981430d19f058b30e87f1020b13df9e8367d2818c35b01",
+      "visuallyReviewed": true,
+      "images": [
+        {
+          "path": "Tuerschild-Acrylglas-3mm-5x2_v5.xlsx-Reimport-1.png",
+          "sha256": "dfc728197fc06155a8118b1321182051db3b0433208fe7a3264d6f1795e72ae5"
+        },
+        {
+          "path": "Tuerschild-Acrylglas-3mm-5x2_v5.xlsx-Reimport-2.png",
+          "sha256": "c780104fe1d3d6f8abd08ac3e1200afda7e248129e465acffe7f7bf91b2e7591"
+        },
+        {
+          "path": "Tuerschild-Acrylglas-3mm-5x2_v5.xlsx-Reimport-3.png",
+          "sha256": "2cc972486761ee642209801854da34d9a51513a46cbd5a8aaea93386a7d9df82"
+        }
+      ],
+      "findings": "Alle drei Ausschnitte tatsächlich gelesen: Produkt/Format, Kopienpins, Grenzen, bestätigte Angaben, Preis-/Motivzeilen lesbar; kein neuer Layoutfehler festgestellt."
+    },
+    {
+      "key": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "xlsxSha256": "63b9e0033ae5e82d963aeb9520f89a029d3c8b96375333118b573583f4e9f1af",
+      "visuallyReviewed": true,
+      "images": [
+        {
+          "path": "Tuerschild-Acrylglas-3mm-6x2_v5.xlsx-Reimport-1.png",
+          "sha256": "251c0bfebf2c623a06c634f23e4c3001c15655ef9beaf7007a6fb8a457a917fc"
+        },
+        {
+          "path": "Tuerschild-Acrylglas-3mm-6x2_v5.xlsx-Reimport-2.png",
+          "sha256": "41dc584fcea5847460ee5ea797d40225f4de5b443ce3a4ed29107c2cad5951eb"
+        },
+        {
+          "path": "Tuerschild-Acrylglas-3mm-6x2_v5.xlsx-Reimport-3.png",
+          "sha256": "c47bab398da48de12b5822609ef7287a0db2a080002c042d4fa467dec1b42563"
+        }
+      ],
+      "findings": "Alle drei Ausschnitte tatsächlich gelesen: Produkt/Format, Kopienpins, Grenzen, bestätigte Angaben, Preis-/Motivzeilen lesbar; kein neuer Layoutfehler festgestellt."
+    },
+    {
+      "key": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "xlsxSha256": "050e78e660425d8cb3877f94964a16d820c3aca0407fe463bd1e3e694321bb09",
+      "visuallyReviewed": true,
+      "images": [
+        {
+          "path": "Tuerschild-Acrylglas-3mm-8x2_v5.xlsx-Reimport-1.png",
+          "sha256": "0be6f2b5ee17f504030df27718ebd730a7609cfc75a3411279e05b05c222071d"
+        },
+        {
+          "path": "Tuerschild-Acrylglas-3mm-8x2_v5.xlsx-Reimport-2.png",
+          "sha256": "6f3bc6ba2c5cac94af77c366f8c18cfc47febb21c53ac47658a09dfa50fdb82d"
+        },
+        {
+          "path": "Tuerschild-Acrylglas-3mm-8x2_v5.xlsx-Reimport-3.png",
+          "sha256": "ab0e962aa88f4323a9cfae29a5b5fe396a73dfb901d0963e7685224572cdf05d"
+        }
+      ],
+      "findings": "Alle drei Ausschnitte tatsächlich gelesen: Produkt/Format, Kopienpins, Grenzen, bestätigte Angaben, Preis-/Motivzeilen lesbar; kein neuer Layoutfehler festgestellt."
+    },
+    {
+      "key": "Tuerschild-Edelstahl-5x2_v1",
+      "xlsxSha256": "8e66d99b6ab5913c0c42f168271afa590f25cc56ef49652983dce7fad6e959c2",
+      "visuallyReviewed": true,
+      "images": [
+        {
+          "path": "Tuerschild-Edelstahl-5x2_v4.xlsx-Reimport-1.png",
+          "sha256": "8ecce4bc5c9ead05b4de6bdcedc829f2bcc3014f0b1212ab002c5870ac42f81b"
+        },
+        {
+          "path": "Tuerschild-Edelstahl-5x2_v4.xlsx-Reimport-2.png",
+          "sha256": "ca5827fac64bb9100c08765d6c03c495ba46e538089eebbe1c25a9173e4c1483"
+        },
+        {
+          "path": "Tuerschild-Edelstahl-5x2_v4.xlsx-Reimport-3.png",
+          "sha256": "bbae5ada709c91c93a9d0eff57e92dabbada8953bf2c0cdf99d49e14fce7569c"
+        }
+      ],
+      "findings": "Alle drei Ausschnitte tatsächlich gelesen: Produkt/Format, Kopienpins, Grenzen, bestätigte Angaben, Preis-/Motivzeilen lesbar; kein neuer Layoutfehler festgestellt."
+    },
+    {
+      "key": "Tuerschild-Edelstahl-6x2_v1",
+      "xlsxSha256": "6e3961bae9f2009e93a2a6a6b35b1a9caabe6d20c59c3c52e8219531f322245a",
+      "visuallyReviewed": true,
+      "images": [
+        {
+          "path": "Tuerschild-Edelstahl-6x2_v4.xlsx-Reimport-1.png",
+          "sha256": "7747b9f20c0372b4117afb3bc9cc6fb731620b28c88c9c7d8592888fe7ec74d7"
+        },
+        {
+          "path": "Tuerschild-Edelstahl-6x2_v4.xlsx-Reimport-2.png",
+          "sha256": "929c318ad45e583e481d731172b15c848c251c31c3a2f8e34d21e9f31e507bbc"
+        },
+        {
+          "path": "Tuerschild-Edelstahl-6x2_v4.xlsx-Reimport-3.png",
+          "sha256": "c6091c6b74449a54bff59eba3522da2a79f9135f859b3f051a805e70f90608d4"
+        }
+      ],
+      "findings": "Alle drei Ausschnitte tatsächlich gelesen: Produkt/Format, Kopienpins, Grenzen, bestätigte Angaben, Preis-/Motivzeilen lesbar; kein neuer Layoutfehler festgestellt."
+    },
+    {
+      "key": "Tuerschild-Edelstahl-8x2_v1",
+      "xlsxSha256": "c7963bbd1deae43db3d7c6dd88cfdaeb11db1ba4b8f29a32128c9c6194a6169c",
+      "visuallyReviewed": true,
+      "images": [
+        {
+          "path": "Tuerschild-Edelstahl-8x2_v4.xlsx-Reimport-1.png",
+          "sha256": "0f7fd59adbc87eb61f0df3a4e3b210d29f6ecd35adfdfa17228020e66f528051"
+        },
+        {
+          "path": "Tuerschild-Edelstahl-8x2_v4.xlsx-Reimport-2.png",
+          "sha256": "63a5cb0d49b2cabcf667cb316ee819323337f2c5d2fb1a2b6eeebb87f8c07d7f"
+        },
+        {
+          "path": "Tuerschild-Edelstahl-8x2_v4.xlsx-Reimport-3.png",
+          "sha256": "b7bb2a84c67baf643ce6db8024511f3c43eb8349fbe9610103a60bc535946eac"
+        }
+      ],
+      "findings": "Alle drei Ausschnitte tatsächlich gelesen: Produkt/Format, Kopienpins, Grenzen, bestätigte Angaben, Preis-/Motivzeilen lesbar; kein neuer Layoutfehler festgestellt."
+    }
+  ],
+  "automaticReportUnmodified": "Sichtpruefung.json retains visuallyReviewed:false"
+}

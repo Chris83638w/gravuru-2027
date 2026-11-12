@@ -1,0 +1,2529 @@
+{
+  "schema": "gravuru-six-plan-excel-reference/v1",
+  "source": "frozen-v9-local-provenance-only",
+  "manifestSha256": "314d57c7a06621bc47391e239437dc6490148bd608b65554474598dbf2ccb69f",
+  "motifDocument": {
+    "name": "Kleinformate: bestätigte 13 Motive (10.11.2026)",
+    "type": "motifs",
+    "items": [
+      "import-6abda909c44bc599330856dd",
+      "import-0073ea6aa7103bb1e8ec9088",
+      "import-9373218480c87a6ad167f3cb",
+      "import-41fb65efd1d8996ac305f6ab",
+      "import-1abd6f06096e47c66b0b4e00",
+      "import-286db893566ced2e6bd75bad",
+      "import-d94f1406fde432cf9dd70389",
+      "import-9c76c3476a406eaac7f05e42",
+      "import-10edf8a5dd07bd1035ba508d",
+      "import-4269dbda54a15a99e178f00a",
+      "import-0f3193fd49e254bb5975e74d",
+      "import-54b3b489bbebe12119deda9a",
+      "import-8239d6c658366716f578c984"
+    ]
+  },
+  "motifStoredDocumentSha256": "fcce86f72ad8f3aba398bc2d655ec44bb172ca0df50cec1156c466a02b056cf4",
+  "records": [
+    {
+      "key": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "original": "work/product-plans-run-v8/excel/Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "originalSha256": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+      "previous": "outputs/Produktplaene-230-v9/Excel-Nachtraege/Tuerschild-Acrylglas-3mm-5x2_v4.xlsx",
+      "previousSha256": "c982030ca653e292d15175888633f63c6b65bdc28208cd6897411344b46d381a",
+      "output": "Tuerschild-Acrylglas-3mm-5x2_v5.xlsx",
+      "v9PlanId": "pgp_7307b213-09ef-4758-b525-88aea139502d",
+      "v9PlanHash": "cd2405c8f0a53544cfaaf87f97d84234ba9c51d58ec6b0e388bb7212ef141392",
+      "creationKey": "issue230-119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+      "importKey": "product-group:904cfec05eda9ff86467e77552ac1de17ed84a51c60fdd3de4dfbffd4b32d391",
+      "name": "Türschild Acrylglas 3 mm 5 × 2 cm (Schwarz/Anthrazit)",
+      "variantReview": [
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Ohne Bohrung",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "K00"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "K00"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 699,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Selbstklebend – glatte Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KGL"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "KGL"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 998,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Selbstklebend – raue Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KRA"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "KRA"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 1098,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Mit 2 Bohrlöchern",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "B02"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 948,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Mit 2 Schrauben",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02S"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "B02S"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 968,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Ohne Bohrung",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "K00"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "K00"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 699,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Selbstklebend – glatte Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KGL"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "KGL"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 998,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Selbstklebend – raue Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KRA"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "KRA"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 1098,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Mit 2 Bohrlöchern",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "B02"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 948,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Mit 2 Schrauben",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02S"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "B02S"
+          },
+          "sizeKey": "TS-Acryl-RE-50X20-T30-SW",
+          "unitCents": 968,
+          "widthMm": 50
+        }
+      ],
+      "geometry": {
+        "cornerRadiusMm": 0,
+        "height": 20,
+        "holes": [],
+        "safeMarginMm": 0,
+        "shape": "rect",
+        "width": 50
+      },
+      "material": {
+        "color": "#17191b",
+        "engravingSide": "back",
+        "kind": "acrylic",
+        "thicknessMm": 3,
+        "variant": "schwarz"
+      },
+      "optionGroups": [
+        {
+          "defaultValueId": "schwarz",
+          "id": "color",
+          "name": "Farbe",
+          "required": true,
+          "values": [
+            {
+              "currency": "EUR",
+              "id": "schwarz",
+              "label": "Schwarz",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "anthrazit",
+              "label": "Anthrazit",
+              "priceCents": 0
+            }
+          ]
+        },
+        {
+          "defaultValueId": "K00",
+          "id": "mounting",
+          "name": "Befestigung",
+          "required": true,
+          "values": [
+            {
+              "currency": "EUR",
+              "id": "K00",
+              "label": "Ohne Bohrung",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "KGL",
+              "label": "Selbstklebend – glatte Flächen",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "KRA",
+              "label": "Selbstklebend – raue Flächen",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "B02",
+              "label": "Mit 2 Bohrlöchern",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "B02S",
+              "label": "Mit 2 Schrauben",
+              "priceCents": 0
+            }
+          ]
+        }
+      ],
+      "optionFields": [],
+      "price": {
+        "additionalMotifs": 0,
+        "currency": "EUR",
+        "listUnitCents": 699,
+        "options": {
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "quantity": 1,
+        "quantityTier": null,
+        "quantityTierDiscountCents": 0,
+        "quantityTierScope": "complete-unit",
+        "totalCents": 699,
+        "unitCents": 699
+      },
+      "options": {
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "sourceNormalizedSha256": "84062b76f08564803e588be8b3e3b4edaa93cd2774c3de56a09c106563add899",
+      "compiledNormalizedSha256": "cb7b0544ced9c963880778691d40898ac7eab1b6c498735c97ae8c391d2b204e",
+      "moduleDocument": {
+        "name": "Kleinformate: Foto/Logo aus (Chris, 11.11.2026)",
+        "modules": {
+          "colors": false,
+          "designs": true,
+          "logo": false,
+          "motifs": true,
+          "options": true,
+          "photo": false,
+          "text": true
+        }
+      },
+      "moduleSha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3",
+      "motifProfile": {
+        "mode": "override",
+        "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d"
+      },
+      "defaultDesignId": "katalog-TRE-V2A-5x2-D1",
+      "defaultSize": "TS-Acryl-RE-50X20-T30-SW",
+      "designs": [
+        "katalog-TRE-V2A-5x2-D1",
+        "katalog-TRE-V2A-5x2-D2",
+        "katalog-TRE-V2A-5x2-D23",
+        "katalog-TRE-V2A-5x2-D26",
+        "katalog-TRE-V2A-5x2-D27",
+        "katalog-TRE-V2A-5x2-D3",
+        "katalog-TRE-V2A-5x2-D30",
+        "katalog-TRE-V2A-5x2-D32",
+        "katalog-TRE-V2A-5x2-D35",
+        "katalog-TRE-V2A-5x2-D37",
+        "katalog-TRE-V2A-5x2-D4",
+        "katalog-TRE-V2A-5x2-D42",
+        "katalog-TRE-V2A-5x2-D45",
+        "katalog-TRE-V2A-5x2-D5",
+        "katalog-TRE-V2A-5x2-D52",
+        "katalog-TRE-V2A-5x2-D53",
+        "katalog-TRE-V2A-5x2-D6",
+        "katalog-TRE-V2A-5x2-D203",
+        "katalog-TRE-V2A-5x2-D204",
+        "katalog-TRE-V2A-5x2-D307",
+        "katalog-TRE-V2A-5x2-D308",
+        "katalog-TRE-V2A-5x2-D801",
+        "katalog-TRE-V2A-5x2-D802",
+        "katalog-TRE-V2A-5x2-D807",
+        "katalog-TRE-V2A-5x2-D808",
+        "katalog-TRE-V2A-5x2-D815",
+        "katalog-TRE-V2A-5x2-D819"
+      ],
+      "quantityTiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ],
+      "quantityTierScope": "complete-unit",
+      "files": {
+        "plan.json": {
+          "path": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-5x2_v2/plan.json",
+          "sha256": "2c4a60655e48fa2f3f533d8aef73e1de8c356bdfcc256361cfaea406638018b4"
+        },
+        "source-document.json": {
+          "path": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-5x2_v2/source-document.json",
+          "sha256": "94645c95ba8d27cd51caeaae582503b0f4f57dc71c7ef04d32cd4c15979f2d04"
+        },
+        "pair.json": {
+          "path": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-5x2_v2/pair.json",
+          "sha256": "bc0a5bf40a44e60d5b576cb355020546c05c98378116af5029890a00bd32ddaf"
+        }
+      }
+    },
+    {
+      "key": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "original": "work/product-plans-run-v8/excel/Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "originalSha256": "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+      "previous": "outputs/Produktplaene-230-v9/Excel-Nachtraege/Tuerschild-Acrylglas-3mm-6x2_v4.xlsx",
+      "previousSha256": "ae4c911c224ffd5fd129f507667c0273d364460b35d0fc2627bf616cce6fd982",
+      "output": "Tuerschild-Acrylglas-3mm-6x2_v5.xlsx",
+      "v9PlanId": "pgp_6831ea29-73f3-40c4-abfa-834c8479d93d",
+      "v9PlanHash": "df492d24f7da24f765ff62b8b03daf44865d839045191f3b3e449ca8f37cc09f",
+      "creationKey": "issue230-7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+      "importKey": "product-group:eeb47dace27f53a3a47d961f304a8056fa5b5270923bb5b067190b4d3c6c42b2",
+      "name": "Türschild Acrylglas 3 mm 6 × 2 cm (Schwarz/Anthrazit)",
+      "variantReview": [
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Ohne Bohrung",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "K00"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "K00"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 799,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Selbstklebend – glatte Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KGL"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "KGL"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 1098,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Selbstklebend – raue Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KRA"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "KRA"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 1198,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Mit 2 Bohrlöchern",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "B02"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 1048,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Mit 2 Schrauben",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02S"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "B02S"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 1068,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Ohne Bohrung",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "K00"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "K00"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 799,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Selbstklebend – glatte Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KGL"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "KGL"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 1098,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Selbstklebend – raue Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KRA"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "KRA"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 1198,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Mit 2 Bohrlöchern",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "B02"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 1048,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Mit 2 Schrauben",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02S"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "B02S"
+          },
+          "sizeKey": "TS-Acryl-RE-60X20-T30-SW",
+          "unitCents": 1068,
+          "widthMm": 60
+        }
+      ],
+      "geometry": {
+        "cornerRadiusMm": 0,
+        "height": 20,
+        "holes": [],
+        "safeMarginMm": 0,
+        "shape": "rect",
+        "width": 60
+      },
+      "material": {
+        "color": "#17191b",
+        "engravingSide": "back",
+        "kind": "acrylic",
+        "thicknessMm": 3,
+        "variant": "schwarz"
+      },
+      "optionGroups": [
+        {
+          "defaultValueId": "schwarz",
+          "id": "color",
+          "name": "Farbe",
+          "required": true,
+          "values": [
+            {
+              "currency": "EUR",
+              "id": "schwarz",
+              "label": "Schwarz",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "anthrazit",
+              "label": "Anthrazit",
+              "priceCents": 0
+            }
+          ]
+        },
+        {
+          "defaultValueId": "K00",
+          "id": "mounting",
+          "name": "Befestigung",
+          "required": true,
+          "values": [
+            {
+              "currency": "EUR",
+              "id": "K00",
+              "label": "Ohne Bohrung",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "KGL",
+              "label": "Selbstklebend – glatte Flächen",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "KRA",
+              "label": "Selbstklebend – raue Flächen",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "B02",
+              "label": "Mit 2 Bohrlöchern",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "B02S",
+              "label": "Mit 2 Schrauben",
+              "priceCents": 0
+            }
+          ]
+        }
+      ],
+      "optionFields": [],
+      "price": {
+        "additionalMotifs": 0,
+        "currency": "EUR",
+        "listUnitCents": 799,
+        "options": {
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "quantity": 1,
+        "quantityTier": null,
+        "quantityTierDiscountCents": 0,
+        "quantityTierScope": "complete-unit",
+        "totalCents": 799,
+        "unitCents": 799
+      },
+      "options": {
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "sourceNormalizedSha256": "7943494ff391e7fc802e5c58357e381845ec01640f1d2008142a84dacd914798",
+      "compiledNormalizedSha256": "ce4e49b21823615f4add15e7e71f78f2484d4cb543cfa41d4f4964a2b1334d4c",
+      "moduleDocument": {
+        "name": "Kleinformate: Foto/Logo aus (Chris, 11.11.2026)",
+        "modules": {
+          "colors": false,
+          "designs": true,
+          "logo": false,
+          "motifs": true,
+          "options": true,
+          "photo": false,
+          "text": true
+        }
+      },
+      "moduleSha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3",
+      "motifProfile": {
+        "mode": "override",
+        "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d"
+      },
+      "defaultDesignId": "katalog-TRE-V2A-6x2-D1",
+      "defaultSize": "TS-Acryl-RE-60X20-T30-SW",
+      "designs": [
+        "katalog-TRE-V2A-6x2-D1",
+        "katalog-TRE-V2A-6x2-D2",
+        "katalog-TRE-V2A-6x2-D23",
+        "katalog-TRE-V2A-6x2-D26",
+        "katalog-TRE-V2A-6x2-D27",
+        "katalog-TRE-V2A-6x2-D3",
+        "katalog-TRE-V2A-6x2-D30",
+        "katalog-TRE-V2A-6x2-D32",
+        "katalog-TRE-V2A-6x2-D35",
+        "katalog-TRE-V2A-6x2-D37",
+        "katalog-TRE-V2A-6x2-D4",
+        "katalog-TRE-V2A-6x2-D42",
+        "katalog-TRE-V2A-6x2-D45",
+        "katalog-TRE-V2A-6x2-D5",
+        "katalog-TRE-V2A-6x2-D52",
+        "katalog-TRE-V2A-6x2-D53",
+        "katalog-TRE-V2A-6x2-D6",
+        "katalog-TRE-V2A-6x2-D203",
+        "katalog-TRE-V2A-6x2-D204",
+        "katalog-TRE-V2A-6x2-D307",
+        "katalog-TRE-V2A-6x2-D308",
+        "katalog-TRE-V2A-6x2-D801",
+        "katalog-TRE-V2A-6x2-D802",
+        "katalog-TRE-V2A-6x2-D807",
+        "katalog-TRE-V2A-6x2-D808",
+        "katalog-TRE-V2A-6x2-D815",
+        "katalog-TRE-V2A-6x2-D819"
+      ],
+      "quantityTiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ],
+      "quantityTierScope": "complete-unit",
+      "files": {
+        "plan.json": {
+          "path": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-6x2_v2/plan.json",
+          "sha256": "37100a4dba335facda14c50c526e6f67b22b1fa239f26d6bafe0b3146d01c344"
+        },
+        "source-document.json": {
+          "path": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-6x2_v2/source-document.json",
+          "sha256": "cec58d88841ced32a6762efe73d508e47ded93c8f967970e57f0ae7799a5b77b"
+        },
+        "pair.json": {
+          "path": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-6x2_v2/pair.json",
+          "sha256": "0cdac2b7b796dca5635e05848f346d87c48a17c65959e11cd280a22e4e870e87"
+        }
+      }
+    },
+    {
+      "key": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "original": "work/product-plans-run-v8/excel/Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "originalSha256": "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+      "previous": "outputs/Produktplaene-230-v9/Excel-Nachtraege/Tuerschild-Acrylglas-3mm-8x2_v4.xlsx",
+      "previousSha256": "5bf1bee160f6c237df600b085bba7cc44b17dd1286a905354f3391cde4c6b093",
+      "output": "Tuerschild-Acrylglas-3mm-8x2_v5.xlsx",
+      "v9PlanId": "pgp_1d526e2a-fe1d-4749-be52-5386cf227afe",
+      "v9PlanHash": "8531d241fd230a52a14a4c77bf314bdc49c578a679fc5d0d1d9a6a439f995d53",
+      "creationKey": "issue230-02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+      "importKey": "product-group:90acc7e12f3148b6291e80011fee04b82799a8034c4fb87c29362b57639c6c2b",
+      "name": "Türschild Acrylglas 3 mm 8 × 2 cm (Schwarz/Anthrazit)",
+      "variantReview": [
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Ohne Bohrung",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "K00"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "K00"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 849,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Selbstklebend – glatte Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KGL"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "KGL"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 1148,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Selbstklebend – raue Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KRA"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "KRA"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 1248,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Mit 2 Bohrlöchern",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "B02"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 1098,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Schwarz",
+              "id": "color",
+              "label": "Farbe",
+              "value": "schwarz"
+            },
+            {
+              "display": "Mit 2 Schrauben",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02S"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#17191b",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "schwarz"
+          },
+          "options": {
+            "color": "schwarz",
+            "mounting": "B02S"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 1118,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Ohne Bohrung",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "K00"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "K00"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 849,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Selbstklebend – glatte Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KGL"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "KGL"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 1148,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Selbstklebend – raue Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KRA"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "KRA"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 1248,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Mit 2 Bohrlöchern",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "B02"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 1098,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Anthrazit",
+              "id": "color",
+              "label": "Farbe",
+              "value": "anthrazit"
+            },
+            {
+              "display": "Mit 2 Schrauben",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02S"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#33373a",
+            "engravingSide": "back",
+            "kind": "acrylic",
+            "thicknessMm": 3,
+            "variant": "anthrazit"
+          },
+          "options": {
+            "color": "anthrazit",
+            "mounting": "B02S"
+          },
+          "sizeKey": "TS-Acryl-RE-80X20-T30-SW",
+          "unitCents": 1118,
+          "widthMm": 80
+        }
+      ],
+      "geometry": {
+        "cornerRadiusMm": 0,
+        "height": 20,
+        "holes": [],
+        "safeMarginMm": 0,
+        "shape": "rect",
+        "width": 80
+      },
+      "material": {
+        "color": "#17191b",
+        "engravingSide": "back",
+        "kind": "acrylic",
+        "thicknessMm": 3,
+        "variant": "schwarz"
+      },
+      "optionGroups": [
+        {
+          "defaultValueId": "schwarz",
+          "id": "color",
+          "name": "Farbe",
+          "required": true,
+          "values": [
+            {
+              "currency": "EUR",
+              "id": "schwarz",
+              "label": "Schwarz",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "anthrazit",
+              "label": "Anthrazit",
+              "priceCents": 0
+            }
+          ]
+        },
+        {
+          "defaultValueId": "K00",
+          "id": "mounting",
+          "name": "Befestigung",
+          "required": true,
+          "values": [
+            {
+              "currency": "EUR",
+              "id": "K00",
+              "label": "Ohne Bohrung",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "KGL",
+              "label": "Selbstklebend – glatte Flächen",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "KRA",
+              "label": "Selbstklebend – raue Flächen",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "B02",
+              "label": "Mit 2 Bohrlöchern",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "B02S",
+              "label": "Mit 2 Schrauben",
+              "priceCents": 0
+            }
+          ]
+        }
+      ],
+      "optionFields": [],
+      "price": {
+        "additionalMotifs": 0,
+        "currency": "EUR",
+        "listUnitCents": 849,
+        "options": {
+          "color": "schwarz",
+          "mounting": "K00"
+        },
+        "quantity": 1,
+        "quantityTier": null,
+        "quantityTierDiscountCents": 0,
+        "quantityTierScope": "complete-unit",
+        "totalCents": 849,
+        "unitCents": 849
+      },
+      "options": {
+        "color": "schwarz",
+        "mounting": "K00"
+      },
+      "sourceNormalizedSha256": "fa843a89582fa64a05d2a25e28d3724b20d54274b62a68b79dfc930088224fe1",
+      "compiledNormalizedSha256": "c27e409a4da6e1c3eed9665a07c45723a890d2eb4a7fcd5cb42ccd28c404c284",
+      "moduleDocument": {
+        "name": "Kleinformate: Foto/Logo aus (Chris, 11.11.2026)",
+        "modules": {
+          "colors": false,
+          "designs": true,
+          "logo": false,
+          "motifs": true,
+          "options": true,
+          "photo": false,
+          "text": true
+        }
+      },
+      "moduleSha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3",
+      "motifProfile": {
+        "mode": "override",
+        "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d"
+      },
+      "defaultDesignId": "katalog-TRE-V2A-8x2-D1",
+      "defaultSize": "TS-Acryl-RE-80X20-T30-SW",
+      "designs": [
+        "katalog-TRE-V2A-8x2-D1",
+        "katalog-TRE-V2A-8x2-D2",
+        "katalog-TRE-V2A-8x2-D23",
+        "katalog-TRE-V2A-8x2-D26",
+        "katalog-TRE-V2A-8x2-D27",
+        "katalog-TRE-V2A-8x2-D3",
+        "katalog-TRE-V2A-8x2-D30",
+        "katalog-TRE-V2A-8x2-D32",
+        "katalog-TRE-V2A-8x2-D35",
+        "katalog-TRE-V2A-8x2-D37",
+        "katalog-TRE-V2A-8x2-D4",
+        "katalog-TRE-V2A-8x2-D42",
+        "katalog-TRE-V2A-8x2-D45",
+        "katalog-TRE-V2A-8x2-D5",
+        "katalog-TRE-V2A-8x2-D52",
+        "katalog-TRE-V2A-8x2-D53",
+        "katalog-TRE-V2A-8x2-D6",
+        "katalog-TRE-V2A-8x2-D203",
+        "katalog-TRE-V2A-8x2-D204",
+        "katalog-TRE-V2A-8x2-D307",
+        "katalog-TRE-V2A-8x2-D308",
+        "katalog-TRE-V2A-8x2-D801",
+        "katalog-TRE-V2A-8x2-D802",
+        "katalog-TRE-V2A-8x2-D807",
+        "katalog-TRE-V2A-8x2-D808",
+        "katalog-TRE-V2A-8x2-D815",
+        "katalog-TRE-V2A-8x2-D819"
+      ],
+      "quantityTiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ],
+      "quantityTierScope": "complete-unit",
+      "files": {
+        "plan.json": {
+          "path": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-8x2_v2/plan.json",
+          "sha256": "8cfb1ad6e3c101218ef1917372d12aebfe1a8369e4a41816748039fce5eb9d5d"
+        },
+        "source-document.json": {
+          "path": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-8x2_v2/source-document.json",
+          "sha256": "1ec018e04ad54cdef84bb223f32d04304b76de89c190f92514ba1837939213ca"
+        },
+        "pair.json": {
+          "path": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-8x2_v2/pair.json",
+          "sha256": "3b6b864ecbcb0d1d4f8de40582466370ed32ae4c99d33cfa5d891d210a48a398"
+        }
+      }
+    },
+    {
+      "key": "Tuerschild-Edelstahl-5x2_v1",
+      "original": "work/product-plans-run-v8/excel/Tuerschild-Edelstahl-5x2_v1.xlsx",
+      "originalSha256": "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+      "previous": "outputs/Produktplaene-230-v9/Excel-Nachtraege/Tuerschild-Edelstahl-5x2_v3.xlsx",
+      "previousSha256": "c845527e41f0538a541db63a6507ba671e8fdd801bfb9fe6df8ad3a603e7bfd2",
+      "output": "Tuerschild-Edelstahl-5x2_v4.xlsx",
+      "v9PlanId": "pgp_7699e1dc-2f19-427d-a983-0fd6610f9bd9",
+      "v9PlanHash": "24840f5fe16a074e5f842ae85bb6529285bee334254d5d82d99f98efc9f09117",
+      "creationKey": "issue230-9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+      "importKey": "product-group:127783667e1ebbb3a5b08111a342a9216354fe9d30aad0d431b3c49a56866589",
+      "name": "Türschild Edelstahl 5 × 2 cm (gebürstet, Gravur)",
+      "variantReview": [
+        {
+          "choices": [
+            {
+              "display": "Ohne Bohrung",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "K00"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "K00"
+          },
+          "sizeKey": "GR-ES-RE-50X20-T15",
+          "unitCents": 799,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Selbstklebend – glatte Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KGL"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "KGL"
+          },
+          "sizeKey": "GR-ES-RE-50X20-T15",
+          "unitCents": 1098,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Selbstklebend – raue Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KRA"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "KRA"
+          },
+          "sizeKey": "GR-ES-RE-50X20-T15",
+          "unitCents": 1198,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Mit 2 Bohrlöchern",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "B02"
+          },
+          "sizeKey": "GR-ES-RE-50X20-T15",
+          "unitCents": 1048,
+          "widthMm": 50
+        },
+        {
+          "choices": [
+            {
+              "display": "Mit 2 Schrauben",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02S"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "B02S"
+          },
+          "sizeKey": "GR-ES-RE-50X20-T15",
+          "unitCents": 1068,
+          "widthMm": 50
+        }
+      ],
+      "geometry": {
+        "cornerRadiusMm": 0,
+        "height": 20,
+        "holes": [],
+        "safeMarginMm": 0,
+        "shape": "rect",
+        "width": 50
+      },
+      "material": {
+        "color": "#bac2c4",
+        "kind": "steel",
+        "thicknessMm": 1.5
+      },
+      "optionGroups": [
+        {
+          "defaultValueId": "K00",
+          "id": "mounting",
+          "name": "Befestigung",
+          "required": true,
+          "values": [
+            {
+              "currency": "EUR",
+              "id": "K00",
+              "label": "Ohne Bohrung",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "KGL",
+              "label": "Selbstklebend – glatte Flächen",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "KRA",
+              "label": "Selbstklebend – raue Flächen",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "B02",
+              "label": "Mit 2 Bohrlöchern",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "B02S",
+              "label": "Mit 2 Schrauben",
+              "priceCents": 0
+            }
+          ]
+        }
+      ],
+      "optionFields": [],
+      "price": {
+        "additionalMotifs": 0,
+        "currency": "EUR",
+        "listUnitCents": 799,
+        "options": {
+          "mounting": "K00"
+        },
+        "quantity": 1,
+        "quantityTier": null,
+        "quantityTierDiscountCents": 0,
+        "quantityTierScope": "complete-unit",
+        "totalCents": 799,
+        "unitCents": 799
+      },
+      "options": {
+        "mounting": "K00"
+      },
+      "sourceNormalizedSha256": "d0059b548991d054f255ae19a131a812cd811104c02e18716a63702bc6f7b574",
+      "compiledNormalizedSha256": "ba32c1822c77ef190228056914d7673256b294c04fc57fa1a6d6b6e1280e8c58",
+      "moduleDocument": {
+        "name": "Kleinformate: Foto/Logo aus (Chris, 11.11.2026)",
+        "modules": {
+          "colors": false,
+          "designs": true,
+          "logo": false,
+          "motifs": true,
+          "options": true,
+          "photo": false,
+          "text": true
+        }
+      },
+      "moduleSha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3",
+      "motifProfile": {
+        "mode": "override",
+        "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d"
+      },
+      "defaultDesignId": "katalog-TRE-V2A-5x2-D1",
+      "defaultSize": "GR-ES-RE-50X20-T15",
+      "designs": [
+        "katalog-TRE-V2A-5x2-D1",
+        "katalog-TRE-V2A-5x2-D2",
+        "katalog-TRE-V2A-5x2-D23",
+        "katalog-TRE-V2A-5x2-D26",
+        "katalog-TRE-V2A-5x2-D27",
+        "katalog-TRE-V2A-5x2-D3",
+        "katalog-TRE-V2A-5x2-D30",
+        "katalog-TRE-V2A-5x2-D32",
+        "katalog-TRE-V2A-5x2-D35",
+        "katalog-TRE-V2A-5x2-D37",
+        "katalog-TRE-V2A-5x2-D4",
+        "katalog-TRE-V2A-5x2-D42",
+        "katalog-TRE-V2A-5x2-D45",
+        "katalog-TRE-V2A-5x2-D5",
+        "katalog-TRE-V2A-5x2-D52",
+        "katalog-TRE-V2A-5x2-D53",
+        "katalog-TRE-V2A-5x2-D6",
+        "katalog-TRE-V2A-5x2-D203",
+        "katalog-TRE-V2A-5x2-D204",
+        "katalog-TRE-V2A-5x2-D307",
+        "katalog-TRE-V2A-5x2-D308",
+        "katalog-TRE-V2A-5x2-D801",
+        "katalog-TRE-V2A-5x2-D802",
+        "katalog-TRE-V2A-5x2-D807",
+        "katalog-TRE-V2A-5x2-D808",
+        "katalog-TRE-V2A-5x2-D815",
+        "katalog-TRE-V2A-5x2-D819"
+      ],
+      "quantityTiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ],
+      "quantityTierScope": "complete-unit",
+      "files": {
+        "plan.json": {
+          "path": "work/product-plans-run-v9/Tuerschild-Edelstahl-5x2_v1/plan.json",
+          "sha256": "ad12d65562bd7990064dd8b20099f4283f54a21ce7812d51c8eb8bddae59c458"
+        },
+        "source-document.json": {
+          "path": "work/product-plans-run-v9/Tuerschild-Edelstahl-5x2_v1/source-document.json",
+          "sha256": "9521226a9e91b0b297450eb81647f31e0bbb451eedde1c86101a02a0c574accd"
+        },
+        "pair.json": {
+          "path": "work/product-plans-run-v9/Tuerschild-Edelstahl-5x2_v1/pair.json",
+          "sha256": "92b22a979990a25a86fdcb0388c922c4f5c20f29a6e3b9bbed10bd54496300cb"
+        }
+      }
+    },
+    {
+      "key": "Tuerschild-Edelstahl-6x2_v1",
+      "original": "work/product-plans-run-v8/excel/Tuerschild-Edelstahl-6x2_v1.xlsx",
+      "originalSha256": "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+      "previous": "outputs/Produktplaene-230-v9/Excel-Nachtraege/Tuerschild-Edelstahl-6x2_v3.xlsx",
+      "previousSha256": "4321b9c9328b38c95b14b18fa16f98bda14f04407c655dcc602fe8fda51fe9a3",
+      "output": "Tuerschild-Edelstahl-6x2_v4.xlsx",
+      "v9PlanId": "pgp_b216801b-a754-447b-be24-308e5f47de18",
+      "v9PlanHash": "8423f66172c8ff0258d5ca60591f42861457ba9634805d92941431dcfbf0764f",
+      "creationKey": "issue230-de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+      "importKey": "product-group:17f2d04e5813c0ab0cd5533812e1d45fa1357fda5646fadb73b250568ff90f74",
+      "name": "Türschild Edelstahl 6 × 2 cm (gebürstet, Gravur)",
+      "variantReview": [
+        {
+          "choices": [
+            {
+              "display": "Ohne Bohrung",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "K00"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "K00"
+          },
+          "sizeKey": "GR-ES-RE-60X20-T15",
+          "unitCents": 879,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Selbstklebend – glatte Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KGL"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "KGL"
+          },
+          "sizeKey": "GR-ES-RE-60X20-T15",
+          "unitCents": 1178,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Selbstklebend – raue Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KRA"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "KRA"
+          },
+          "sizeKey": "GR-ES-RE-60X20-T15",
+          "unitCents": 1278,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Mit 2 Bohrlöchern",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "B02"
+          },
+          "sizeKey": "GR-ES-RE-60X20-T15",
+          "unitCents": 1128,
+          "widthMm": 60
+        },
+        {
+          "choices": [
+            {
+              "display": "Mit 2 Schrauben",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02S"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "B02S"
+          },
+          "sizeKey": "GR-ES-RE-60X20-T15",
+          "unitCents": 1148,
+          "widthMm": 60
+        }
+      ],
+      "geometry": {
+        "cornerRadiusMm": 0,
+        "height": 20,
+        "holes": [],
+        "safeMarginMm": 0,
+        "shape": "rect",
+        "width": 60
+      },
+      "material": {
+        "color": "#bac2c4",
+        "kind": "steel",
+        "thicknessMm": 1.5
+      },
+      "optionGroups": [
+        {
+          "defaultValueId": "K00",
+          "id": "mounting",
+          "name": "Befestigung",
+          "required": true,
+          "values": [
+            {
+              "currency": "EUR",
+              "id": "K00",
+              "label": "Ohne Bohrung",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "KGL",
+              "label": "Selbstklebend – glatte Flächen",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "KRA",
+              "label": "Selbstklebend – raue Flächen",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "B02",
+              "label": "Mit 2 Bohrlöchern",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "B02S",
+              "label": "Mit 2 Schrauben",
+              "priceCents": 0
+            }
+          ]
+        }
+      ],
+      "optionFields": [],
+      "price": {
+        "additionalMotifs": 0,
+        "currency": "EUR",
+        "listUnitCents": 879,
+        "options": {
+          "mounting": "K00"
+        },
+        "quantity": 1,
+        "quantityTier": null,
+        "quantityTierDiscountCents": 0,
+        "quantityTierScope": "complete-unit",
+        "totalCents": 879,
+        "unitCents": 879
+      },
+      "options": {
+        "mounting": "K00"
+      },
+      "sourceNormalizedSha256": "50b4aa4ca02354b4721e42379101a0bc62316ebaa7ced7212e47c10f32be7e82",
+      "compiledNormalizedSha256": "0bb97f1355fc6f941f545334203d3bf0a841c757bd183e25161903c60f1762c7",
+      "moduleDocument": {
+        "name": "Kleinformate: Foto/Logo aus (Chris, 11.11.2026)",
+        "modules": {
+          "colors": false,
+          "designs": true,
+          "logo": false,
+          "motifs": true,
+          "options": true,
+          "photo": false,
+          "text": true
+        }
+      },
+      "moduleSha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3",
+      "motifProfile": {
+        "mode": "override",
+        "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d"
+      },
+      "defaultDesignId": "katalog-TRE-V2A-6x2-D1",
+      "defaultSize": "GR-ES-RE-60X20-T15",
+      "designs": [
+        "katalog-TRE-V2A-6x2-D1",
+        "katalog-TRE-V2A-6x2-D2",
+        "katalog-TRE-V2A-6x2-D23",
+        "katalog-TRE-V2A-6x2-D26",
+        "katalog-TRE-V2A-6x2-D27",
+        "katalog-TRE-V2A-6x2-D3",
+        "katalog-TRE-V2A-6x2-D30",
+        "katalog-TRE-V2A-6x2-D32",
+        "katalog-TRE-V2A-6x2-D35",
+        "katalog-TRE-V2A-6x2-D37",
+        "katalog-TRE-V2A-6x2-D4",
+        "katalog-TRE-V2A-6x2-D42",
+        "katalog-TRE-V2A-6x2-D45",
+        "katalog-TRE-V2A-6x2-D5",
+        "katalog-TRE-V2A-6x2-D52",
+        "katalog-TRE-V2A-6x2-D53",
+        "katalog-TRE-V2A-6x2-D6",
+        "katalog-TRE-V2A-6x2-D203",
+        "katalog-TRE-V2A-6x2-D204",
+        "katalog-TRE-V2A-6x2-D307",
+        "katalog-TRE-V2A-6x2-D308",
+        "katalog-TRE-V2A-6x2-D801",
+        "katalog-TRE-V2A-6x2-D802",
+        "katalog-TRE-V2A-6x2-D807",
+        "katalog-TRE-V2A-6x2-D808",
+        "katalog-TRE-V2A-6x2-D815",
+        "katalog-TRE-V2A-6x2-D819"
+      ],
+      "quantityTiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ],
+      "quantityTierScope": "complete-unit",
+      "files": {
+        "plan.json": {
+          "path": "work/product-plans-run-v9/Tuerschild-Edelstahl-6x2_v1/plan.json",
+          "sha256": "8a0f296d0df9633261d7894d55443fcd6ae64bd3a31d95ce942335eafc76a386"
+        },
+        "source-document.json": {
+          "path": "work/product-plans-run-v9/Tuerschild-Edelstahl-6x2_v1/source-document.json",
+          "sha256": "f3aa10c351d7c0343c747193eb0081842f92055dcfa0f16a072ab457104e0f92"
+        },
+        "pair.json": {
+          "path": "work/product-plans-run-v9/Tuerschild-Edelstahl-6x2_v1/pair.json",
+          "sha256": "3dc396ec7e7c966f77e300640c14f8f0fdb9edb0997886941a759f69e1d2b220"
+        }
+      }
+    },
+    {
+      "key": "Tuerschild-Edelstahl-8x2_v1",
+      "original": "work/product-plans-run-v8/excel/Tuerschild-Edelstahl-8x2_v1.xlsx",
+      "originalSha256": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+      "previous": "outputs/Produktplaene-230-v9/Excel-Nachtraege/Tuerschild-Edelstahl-8x2_v3.xlsx",
+      "previousSha256": "108c214d71612272fcae32ead1c4cb770b9264a61a0be0efdb2ecd506dcd7891",
+      "output": "Tuerschild-Edelstahl-8x2_v4.xlsx",
+      "v9PlanId": "pgp_869d2800-de7c-48d6-96f4-87a5f889186e",
+      "v9PlanHash": "634a3d3f45e462a03a4b79add03cc0d323e7587378d8cc402a3495f638652199",
+      "creationKey": "issue230-440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+      "importKey": "product-group:ff4db9c063ef1b290807bb6f9130b2d65da3bfd50608a5d414ed82d4ff119eab",
+      "name": "Türschild Edelstahl 8 × 2 cm (gebürstet, Gravur)",
+      "variantReview": [
+        {
+          "choices": [
+            {
+              "display": "Ohne Bohrung",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "K00"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "K00"
+          },
+          "sizeKey": "GR-ES-RE-80X20-T15",
+          "unitCents": 949,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Selbstklebend – glatte Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KGL"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "KGL"
+          },
+          "sizeKey": "GR-ES-RE-80X20-T15",
+          "unitCents": 1248,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Selbstklebend – raue Flächen",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "KRA"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "KRA"
+          },
+          "sizeKey": "GR-ES-RE-80X20-T15",
+          "unitCents": 1348,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Mit 2 Bohrlöchern",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "B02"
+          },
+          "sizeKey": "GR-ES-RE-80X20-T15",
+          "unitCents": 1198,
+          "widthMm": 80
+        },
+        {
+          "choices": [
+            {
+              "display": "Mit 2 Schrauben",
+              "id": "mounting",
+              "label": "Befestigung",
+              "value": "B02S"
+            }
+          ],
+          "form": {
+            "id": "RE",
+            "label": "Rechteck"
+          },
+          "heightMm": 20,
+          "material": {
+            "color": "#bac2c4",
+            "kind": "steel",
+            "thicknessMm": 1.5
+          },
+          "options": {
+            "mounting": "B02S"
+          },
+          "sizeKey": "GR-ES-RE-80X20-T15",
+          "unitCents": 1218,
+          "widthMm": 80
+        }
+      ],
+      "geometry": {
+        "cornerRadiusMm": 0,
+        "height": 20,
+        "holes": [],
+        "safeMarginMm": 0,
+        "shape": "rect",
+        "width": 80
+      },
+      "material": {
+        "color": "#bac2c4",
+        "kind": "steel",
+        "thicknessMm": 1.5
+      },
+      "optionGroups": [
+        {
+          "defaultValueId": "K00",
+          "id": "mounting",
+          "name": "Befestigung",
+          "required": true,
+          "values": [
+            {
+              "currency": "EUR",
+              "id": "K00",
+              "label": "Ohne Bohrung",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "KGL",
+              "label": "Selbstklebend – glatte Flächen",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "KRA",
+              "label": "Selbstklebend – raue Flächen",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "B02",
+              "label": "Mit 2 Bohrlöchern",
+              "priceCents": 0
+            },
+            {
+              "currency": "EUR",
+              "id": "B02S",
+              "label": "Mit 2 Schrauben",
+              "priceCents": 0
+            }
+          ]
+        }
+      ],
+      "optionFields": [],
+      "price": {
+        "additionalMotifs": 0,
+        "currency": "EUR",
+        "listUnitCents": 949,
+        "options": {
+          "mounting": "K00"
+        },
+        "quantity": 1,
+        "quantityTier": null,
+        "quantityTierDiscountCents": 0,
+        "quantityTierScope": "complete-unit",
+        "totalCents": 949,
+        "unitCents": 949
+      },
+      "options": {
+        "mounting": "K00"
+      },
+      "sourceNormalizedSha256": "e43ad07bddd781269b54712d0907d12c234eccae17f152abbe6777908555251c",
+      "compiledNormalizedSha256": "490cc4f53a2b7a3852bef7be059287431d1055f7746bf548aa280a22abb90625",
+      "moduleDocument": {
+        "name": "Kleinformate: Foto/Logo aus (Chris, 11.11.2026)",
+        "modules": {
+          "colors": false,
+          "designs": true,
+          "logo": false,
+          "motifs": true,
+          "options": true,
+          "photo": false,
+          "text": true
+        }
+      },
+      "moduleSha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3",
+      "motifProfile": {
+        "mode": "override",
+        "profileId": "prf_0fce513a-0973-45eb-8d03-09728290e17d"
+      },
+      "defaultDesignId": "katalog-TRE-V2A-8x2-D1",
+      "defaultSize": "GR-ES-RE-80X20-T15",
+      "designs": [
+        "katalog-TRE-V2A-8x2-D1",
+        "katalog-TRE-V2A-8x2-D2",
+        "katalog-TRE-V2A-8x2-D23",
+        "katalog-TRE-V2A-8x2-D26",
+        "katalog-TRE-V2A-8x2-D27",
+        "katalog-TRE-V2A-8x2-D3",
+        "katalog-TRE-V2A-8x2-D30",
+        "katalog-TRE-V2A-8x2-D32",
+        "katalog-TRE-V2A-8x2-D35",
+        "katalog-TRE-V2A-8x2-D37",
+        "katalog-TRE-V2A-8x2-D4",
+        "katalog-TRE-V2A-8x2-D42",
+        "katalog-TRE-V2A-8x2-D45",
+        "katalog-TRE-V2A-8x2-D5",
+        "katalog-TRE-V2A-8x2-D52",
+        "katalog-TRE-V2A-8x2-D53",
+        "katalog-TRE-V2A-8x2-D6",
+        "katalog-TRE-V2A-8x2-D203",
+        "katalog-TRE-V2A-8x2-D204",
+        "katalog-TRE-V2A-8x2-D307",
+        "katalog-TRE-V2A-8x2-D308",
+        "katalog-TRE-V2A-8x2-D801",
+        "katalog-TRE-V2A-8x2-D802",
+        "katalog-TRE-V2A-8x2-D807",
+        "katalog-TRE-V2A-8x2-D808",
+        "katalog-TRE-V2A-8x2-D815",
+        "katalog-TRE-V2A-8x2-D819"
+      ],
+      "quantityTiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ],
+      "quantityTierScope": "complete-unit",
+      "files": {
+        "plan.json": {
+          "path": "work/product-plans-run-v9/Tuerschild-Edelstahl-8x2_v1/plan.json",
+          "sha256": "6832fac837f6b85673e37789e49f720d89ded30ecca2358560e12d006aca5275"
+        },
+        "source-document.json": {
+          "path": "work/product-plans-run-v9/Tuerschild-Edelstahl-8x2_v1/source-document.json",
+          "sha256": "9fcf89dab365bcc053384d752c1321b66d07d228f8549aa0925c12708af600a6"
+        },
+        "pair.json": {
+          "path": "work/product-plans-run-v9/Tuerschild-Edelstahl-8x2_v1/pair.json",
+          "sha256": "becb84ef29f75bab3e3a267be89a189f58d03c3d0145ed2c9aa78845af5f3951"
+        }
+      }
+    }
+  ]
+}

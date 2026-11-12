@@ -12,6 +12,13 @@ test('native and form editor aliases remain in their own release',()=>{
   ['/werkstatt/katalog','/werkstatt/katalog/'],['/werkstatt/designs/','/werkstatt/designs/'],
   ['/api/workshop/designs/svg','/api/workshop/designs/svg'],['/api/workshop/designs/target-preview','/api/workshop/designs/target-preview'],['/api/workshop/acryl/designs/target-preview','/api/workshop/designs/target-preview'],['/werkstatt/designs/bearbeiten','/werkstatt/designs/bearbeiten/'],['/werkstatt/designs/bearbeiten/','/werkstatt/designs/bearbeiten/'],['/api/workshop/acryl/designs/svg','/api/workshop/designs/svg']])assert.equal(acrylRoute(outer),inner);
 });
+test('Konfis page belongs to the native Acryl store; only the exact page route is added',()=>{
+ for(const outer of ['/werkstatt/konfis','/werkstatt/konfis/'])assert.equal(acrylRoute(outer),'/werkstatt/konfis/');
+ for(const outer of ['/werkstatt/konfis/x','/werkstatt/konfis/../mandanten/','/werkstatt/mandanten/','/werkstatt/module/','/api/workshop/konfis'])assert.equal(acrylRoute(outer),null);
+ assert.equal(acrylRoute('/api/workshop/acryl/konfis'),'/api/workshop/konfis');
+ for(const asset of ['konfis-ui.mjs','konfis.css'])assert.equal(acrylRoute('/workshop-acryl-ui/'+asset),'/workshop-ui/'+asset);
+ assert.match(acrylAssetText('<a href="/werkstatt/konfis/"><script src="/workshop-ui/konfis-ui.mjs"></script>api(\'/api/workshop/konfis?\')'),/href="\/werkstatt\/konfis\/".*\/workshop-acryl-ui\/konfis-ui\.mjs.*\/api\/workshop\/acryl\/konfis\?/s);
+});
 test('legacy paths and global integration endpoints keep their host dispatcher',()=>{
  for(const path of ['/api/workshop/designs','/api/workshop/designs/svg/x','/api/workshop/designs/target-preview/x','/_merchant-editor.html','/_bundle/editor-0123456789abcdef.mjs','/_runtime/fonts.json','/api/workshop/session','/api/configurator-test/session','/webhooks/shopify/orders-paid'])assert.equal(acrylRoute(path),null);
 });

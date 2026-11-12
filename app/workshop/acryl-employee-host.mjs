@@ -20,6 +20,8 @@ export function acrylRoute(pathname){
  if(orderPage)return '/werkstatt/'+orderPage[1]+'/';
  if(/^\/doorbell-assets\/[a-f0-9]{64}\.webp$/.test(pathname))return pathname;
  if(/^\/werkstatt\/motivsuche\/?$/.test(pathname))return '/werkstatt/motivsuche/';
+ // B1 Konfis (Menüpunkt der Acryl-Werkstatt): Seite liegt in der neuen Laufzeit; ohne diese Zeile endete der Aufruf als 404 in der alten.
+ if(/^\/werkstatt\/konfis\/?$/.test(pathname))return '/werkstatt/konfis/';
  if(pathname==='/workshop-ui/merchant-navigation.mjs')return pathname;
  if(/^\/werkstatt\/katalog\/?$/.test(pathname))return '/werkstatt/katalog/';
  if(/^\/werkstatt\/designs\/?$/.test(pathname))return '/werkstatt/designs/';

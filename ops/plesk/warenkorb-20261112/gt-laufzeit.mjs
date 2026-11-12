@@ -1,6 +1,6 @@
 // Neue Laufzeit für den Galerie-Fix (Entscheidung Chris 12.11.2026 „ja“): exakte Kopie der laufenden Laufzeit
 // kandidat-f85390b-20261112 in einen NEUEN Ordner, darin genau EINE Datei ersetzt
-// (app/configurator/variant-m/contract.mjs, Commit f1cf0c7b). Der laufende Ordner wird nur gelesen.
+// (app/configurator/variant-m/contract.mjs, Commit ff1f1ca7). Der laufende Ordner wird nur gelesen.
 // Umschalten (um-schalten.mjs) und Neustart sind eigene, getrennte Schritte.
 //   node gt-laufzeit.mjs              -> nur prüfen (Quelle, Prüfsummen, Platz)
 //   node gt-laufzeit.mjs --anlegen    -> neuen Ordner anlegen und prüfen
@@ -8,8 +8,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 const hier=import.meta.dirname,P=fs.realpathSync(process.env.GT_P||path.resolve(hier,'..'));
-const VON='kandidat-f85390b-20261112',AUF='kandidat-f1cf0c7-20261112',DATEI='app/configurator/variant-m/contract.mjs';
-const ALT_SHA='2a5bd4e1e755b84dd96cdff9af30a47c8cc372ba47ccc7215b8fdeca486e78cc',NEU_SHA='b83c894445f1f569d684f77c1eb1f837d76e77e8989691fab4ee6c54f8bcdced',NEU_QUELLE='ga-contract-f1cf0c7.mjs';
+const VON='kandidat-f85390b-20261112',AUF='kandidat-ff1f1ca-20261112',DATEI='app/configurator/variant-m/contract.mjs';
+const ALT_SHA='2a5bd4e1e755b84dd96cdff9af30a47c8cc372ba47ccc7215b8fdeca486e78cc',NEU_SHA='5acd5311e4744a4b252814824fcc6ed1c34a014d0c8c7073504621c7e26c16d0',NEU_QUELLE='ga-contract-ff1f1ca.mjs';
 const sha=b=>crypto.createHash('sha256').update(b).digest('hex');
 const log=e=>console.log(JSON.stringify({event:'gt_laufzeit',...e}));
 function inventar(root){let dateien=0,bytes=0,links=0;const h=crypto.createHash('sha256');const walk=rel=>{for(const e of fs.readdirSync(path.join(root,rel),{withFileTypes:true}).sort((a,b)=>a.name<b.name?-1:1)){const r=path.join(rel,e.name);if(e.isSymbolicLink()){links++;h.update('L '+r+' '+fs.readlinkSync(path.join(root,r))+'\n');}else if(e.isDirectory())walk(r);else if(e.isFile()){const s=fs.statSync(path.join(root,r));dateien++;bytes+=s.size;h.update('F '+r+' '+s.size+'\n');}}};walk('');return {dateien,bytes,links,listeSha256:h.digest('hex')};}

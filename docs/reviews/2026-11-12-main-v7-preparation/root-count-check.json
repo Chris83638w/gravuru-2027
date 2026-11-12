@@ -1,0 +1,10 @@
+{
+  "mappingHashMatches": true,
+  "excelHashMatches": true,
+  "matches": 778,
+  "residual": 30,
+  "prices": 158,
+  "labels": 30,
+  "overlap": 6,
+  "distinct": 182
+}

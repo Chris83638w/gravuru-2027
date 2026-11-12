@@ -1,0 +1,125 @@
+{
+  "schema": "gravuru-main-v7-document-preparation/v1",
+  "status": "read-review-plan-only",
+  "executable": false,
+  "approved": false,
+  "xlsxCreated": false,
+  "sourceCutoff": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6816307301",
+  "main": {
+    "tenantId": "gravuru",
+    "storeId": "acryl",
+    "shopDomain": "gravuru-design.myshopify.com",
+    "shopifyProductId": "16190784602492",
+    "nativeProductId": "cfg_8e7ebe96-28d2-406f-b31e-036ee61f47e0",
+    "expectedRevision": 1,
+    "proposedRevision": 2,
+    "expectedPreimageBindingSha256": "d2886e119ea9715af2b8905ebab8ecc1d199b07f8653476ce5e0fa26cd8cca79",
+    "targetProductGroupSha256": "ae09cbf6b58719b61729c7fab7a5685b464aae1e8d08691a706111e97b58e407",
+    "targetIdBindingSha256": "f0bb7d95e89e3aae66ab04454d6476132fe197aaae7c1da48ce8209ced62d285",
+    "targetIntentFileSha256": "fcfddddeae4a188ef980a67912e247d85bb42b46c1d4836de669207b01b2282b",
+    "name": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen",
+    "categoryIds": ["extern-shopifyproductid-16190784602492", "linie-acryl-tuerschilder"],
+    "preserveShopifyStatus": "DRAFT",
+    "preserveFeaturedMediaId": "70116579869052",
+    "preserveOtherMediaId": "70017733919100",
+    "newShopProducts": 0,
+    "newShopVariants": 0,
+    "deletedVariants": 0,
+    "publication": false
+  },
+  "origin": {
+    "run": "v9",
+    "excelFile": "outputs/Produktplaene-230-v9/Excel-Nachtraege/Tuerschild-Acrylglas-3mm_v6.xlsx",
+    "excelBytes": 122423,
+    "excelSha256": "37a704d892b0f24fffdd87c7c5090652e5a949f3091dd8117ff83567e49d1429",
+    "v9PlanId": "pgp_80a0c3b9-b599-428f-8626-05e3ace880b6",
+    "v9PlanHash": "83cd95dc900fcbc9631086f54c26591e2dbab75d285cc80fa46d64673f63bb33",
+    "meaning": "Current v9 plan provenance; v6 is the workbook file version. This pgp is not the existing-product update review."
+  },
+  "mapping": {
+    "file": "docs/reviews/2026-11-11-main-target-preview/variant-mapping.preview.json.gz",
+    "gzipFileSha256": "3d0647b2cb671ba09199b6f9c4b9cdbfa58f24a0eafb1d2d672a18823070c9bf",
+    "decompressedSerializedSha256": "3d476d9d964158c1f96a9e55b5de5a2cfa36afd8b5d3bcd86313c12be2c77591",
+    "existingVariants": 808,
+    "targetRevision2Variants": 778,
+    "preserveRevision1Variants": 30,
+    "equalV9Prices": 620,
+    "priceCorrections": 158,
+    "priceCorrectionsByMounting": [
+      {"mounting": "B02S", "count": 138, "targetMinusObservedCents": -30},
+      {"mounting": "B04S", "count": 20, "targetMinusObservedCents": -10}
+    ],
+    "labelCorrections": 30,
+    "labelAndPriceCorrections": 6,
+    "distinctVariantsWithPriceOrLabelCorrections": 182,
+    "bindingBlocks": {"count": 8, "maxSize": 100, "finalSize": 78, "actualHeadsAndWriteEvidence": null},
+    "labels": [
+      {"sizeKey": "TS-Acryl-RE-70X23P3-T30-SW", "widthMm": 70, "heightMm": 23.3, "before": "Rechteck · 7 × 2 cm", "after": "Rechteck · 7 × 2,33 cm", "variants": 10},
+      {"sizeKey": "TS-Acryl-RE-80X53P3-T30-SW", "widthMm": 80, "heightMm": 53.3, "before": "Rechteck · 8 × 5 cm", "after": "Rechteck · 8 × 5,33 cm", "variants": 10},
+      {"sizeKey": "TS-Acryl-AB-80X53P3-T30-SW", "widthMm": 80, "heightMm": 53.3, "before": "Rechteck abgerundet · 8 × 5 cm", "after": "Rechteck abgerundet · 8 × 5,33 cm", "variants": 10}
+    ]
+  },
+  "receivedEvidence": {
+    "categoryComparison": {
+      "resultComment": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6809368576",
+      "fileHashComment": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6811910513",
+      "privateArtifact": "main-target-category-comparison-20261111T225736Z.json",
+      "fileSha256": "52a8c92658d09e234761ffa2767769a361c940c30b5606ff6330ce0be5984381",
+      "comparisonCompleted": true,
+      "identityAndCoveragePassed": true,
+      "categoryAssignmentsPresent": [false, false],
+      "categoryChangesSelections": [],
+      "categoryChangesSources": [],
+      "notNativeAdapterObservation": true
+    },
+    "smallIdentities": {
+      "acrylArtifactSha256": "d085ede084fc8d4e9a0f7d41318c57a9c4e3573f0dbff2a76211e67eeb10f0e6",
+      "legacyArtifactSha256": "95ce8f304fc341190215b85c54b9f88d0bce252c947b372a2075584cfd53aa01",
+      "legacyWorkshopCopySha256": "22f02a882e1f9eb0bd0809cb4b021a5dec8dabcc8e322d5ddba648c67519c487",
+      "groups": 6,
+      "shopProducts": 22,
+      "relevantVariants": 126,
+      "acrylActiveHeads": 45,
+      "legacyActiveHeads": 0,
+      "unboundInBothRegisters": 81,
+      "boundMultiSizeProductIds": ["16190784602492", "16190784438652"],
+      "activeStandaloneCandidatesPreserved": 16,
+      "exactAliasesOrLocalUuidsFoundInEitherRegister": 0,
+      "selectedSmallTargets": null,
+      "newSmallProductsApproved": false,
+      "limit": "Exact fixed candidate and alias scope only. No arbitrary-title native inventory and no authorization to overwrite existing ACTIVE products or create six new products."
+    },
+    "galleryCopy": {
+      "codeCommit": "f85390bd3494920679b06c3b39cabf96c95c1343",
+      "coldExit": 0,
+      "reopenExit": 0,
+      "sourceCopyUnchanged": true,
+      "isolatedFullHostResultReceived": false,
+      "nativeUpdateObservationReceived": false,
+      "productApprovalImplied": false
+    }
+  },
+  "pendingNativeFields": {
+    "observationFileSha256": null,
+    "observedAt": null,
+    "nativeValidatorSourceSha256": null,
+    "preimageMetadataSha256": null,
+    "targetMetadataSha256": null,
+    "resourcePins": null,
+    "actualCopyPilotOrReviewEvidence": null,
+    "updateReviewHash": null,
+    "importFingerprint": null
+  },
+  "futureDocuments": {
+    "excelFile": "Tuerschild-Acrylglas-3mm_v7.xlsx",
+    "newSheets": ["HauptzielV7", "Preisabgleich158", "Groessenlabels30", "Erhalten30", "BelegeV7", "AblaufV7"],
+    "preserveAllPreviousWorksheetTableRelationBytes": true,
+    "excelSha256": null,
+    "rolloutManifestSha256": null,
+    "externalPackageManifestSha256": null,
+    "approvalHash": null,
+    "actualDecision": null,
+    "hashOrder": "origin v9 XLSX -> actual observation/update review -> new XLSX v7 + separate rollout manifest -> external package manifest -> actual approval evidence",
+    "adapterScope": "Exactly one native existing-product update; no Shopify, binding, catalogue approval or publication writer."
+  }
+}

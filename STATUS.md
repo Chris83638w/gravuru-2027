@@ -1,3 +1,7 @@
+## 12.11.2026 · Codex/Astra · #168: Konfis-Status rein lesend geklaert
+
+[Befund und enger Vorschlag](docs/handoffs/2026-11-12-konfis-status-scope.md): lokale Entwurf-Labels sind weder Shopifystatus noch Kundensperre; keine Massenfreigabe. Pause sperrt Starts/Modelle, noch nicht alle Warenkorbanfragen bestehender Sitzungen. Vorbereitete Hostroute nicht aktiviert; Status-/UI-Ergaenzung als klarer spaeterer Rest, keine implementierte Reparatur behauptet. Keine App-/Produktmutation und kein Testlauf; aktuelle Produktpakete laufen getrennt weiter.
+
 ## 12.11.2026 · Codex/Astra · #230/#168: sechs-DRAFT-Operator unabhaengig geprueft
 
 [Paket](docs/handoffs/2026-11-12-six-draft-operator-ready.md): sechs neue DRAFTs/45 Varianten ueber vorhandene native Transfer-/Preisvertrags-/Binding-/Katalogdienste vorbereitet. Preisvertrag vor erster unveraenderlicher Bindung, frischer CAS, Unknown/Reconcile ohne Zweitcreate, bestehender Konfi-Einstieg. Acht native synthetische Tests und enger portabler Relokationslauf gruen; alle13 Dateien/unveraenderter Ausfuehrungscode unabhaengig geprueft. Noch tatsaechlicher privater Fabrik-/Gruppen-execute-Anschluss auf separater Kopie durch Claude, keine echten Shopify-Writes. Main-Preisvertrag/History und aktive Function werden parallel rein lesend erhoben; eine konkrete Gesamtproduktfreigabe folgt erst nach diesen belegten Anschluessen. Laufzeitf85390b unveraendert live, kein App-/Themewechsel oder Publish durch dieses Paket.

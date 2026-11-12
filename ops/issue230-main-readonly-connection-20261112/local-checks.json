@@ -1,0 +1,39 @@
+{
+  "schema": "issue230-main-production-readonly-local-checks/v1",
+  "node": "v24.20.0",
+  "mode": "synthetic local SQLite fixture only; no live database, credentials or network",
+  "tests": [
+    {
+      "file": "tests.log",
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "scope": "native808mixedreads/fulloldcontracts/profiles/metadata/noDDL/noDBbytechanges and drift/privatefactory guards"
+    },
+    {
+      "file": "scoped-history-test.log",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "scope": "affected first case rerun after strict MainR1/R2 history scope;1586 historical rows"
+    }
+  ],
+  "fixture": {
+    "heads": 808,
+    "revision2Heads": 778,
+    "revision1Heads": 30,
+    "historicalRevision1Contracts": 808,
+    "totalFormBindingHistory": 1586,
+    "documents": "minimal synthetic stored read shapes, not full Main geometry validation",
+    "directSqlDdlDenied": true,
+    "bothSqliteFilesByteUnchanged": true
+  },
+  "nativeSourceCommit": "f85390bd3494920679b06c3b39cabf96c95c1343",
+  "nativeSourcePins": 12,
+  "allNativePinsComparedToGitBlobs": true,
+  "operatorPackageUnchanged": true,
+  "productionDatabaseRead": false,
+  "actualHostConnectionVerified": false,
+  "activeFunctionCallbackVerified": false,
+  "canWrite": false
+}

@@ -1,0 +1,41 @@
+{
+  "schema": "issue230-reader-source-check/v1",
+  "node": "v24.20.0",
+  "checkedAt": "2026-11-12T15:43:04.313Z",
+  "sdkImported": false,
+  "credentialsRead": false,
+  "networkCalls": 0,
+  "appMutations": 0,
+  "sourceApiShape": [
+    {
+      "file": "ops/shopify/stage-preserved-merchant.mjs",
+      "sha256": "1d0ef617199a4221528836980dd18ffe8850a440ec1c96eaf62051b59d93fb2d"
+    },
+    {
+      "file": "ops/shopify/stage-steel-pricing-preserved.mjs",
+      "sha256": "21f90abdc168d365f56f5070b3fae13deb921977cf75e975bd10016d62eb651b"
+    },
+    {
+      "file": "ops/shopify/publish-order-scope.mjs",
+      "sha256": "d92411f073cbcad56a29fc2dae5863640b1f55c48ab5ad9230e254b3d65f37cf"
+    }
+  ],
+  "historicalSnapshot": {
+    "file": "docs/releases/20261010/active-modules.json",
+    "gitBlob": "ce0c5288ae917b7ee733120dbecde9153a161081",
+    "sha256": "4f4d10cfa43782734652ba287c59b483bceb902305f1a8c532a21e0f5fd7ba0c",
+    "actualSnapshotAccepted": true,
+    "versionListSynthetic": true,
+    "notCurrentVersionProof": true,
+    "calls": [
+      "appVersions",
+      "activeAppVersion",
+      "appVersions"
+    ],
+    "releaseId": "gid://shopify/Release/1137137745921"
+  },
+  "frozenMainManifest": {
+    "path": "../main-shop-binding-operator-v2/manifest.json",
+    "sha256": "de182709cb4c004d338f666186cfa2785b755a708605adcf4d58b0c25721f416"
+  }
+}

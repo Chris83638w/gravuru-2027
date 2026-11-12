@@ -1,0 +1,22 @@
+{
+  "nativeSourceCommit": "f85390bd3494920679b06c3b39cabf96c95c1343",
+  "operatorManifest": "de182709cb4c004d338f666186cfa2785b755a708605adcf4d58b0c25721f416",
+  "native": {
+    "app/workshop/shop-product-binding-adapter.mjs": "8bb592e8abffda09b4c00cbd9e891dd2d86a7c6c130622a4aeb893c4c29bf9bd",
+    "app/workshop/shop-product-binding-store.mjs": "119a276d75bb83a67457f0e2ad37849f27a56b7a1b4a9789f527d4efbb8bc600",
+    "app/workshop/shop-product-binding-read-snapshot.mjs": "05d4ebc13a07c59d4248aca484d68824f225ac5eaee9c777dee46f0d2898136e",
+    "app/workshop/catalog-live-orders.mjs": "5eea8f61a044e3990075615593ba6fe6f2333a07439c79558176abf48099fe3d",
+    "app/workshop/production-profiles.mjs": "931d595d1abc374d84da7330476218f1f319aacc2648aa8210f1b8b9076c4cb3",
+    "app/workshop/shop-product-binding-check.mjs": "fa64a98057fd745391012cb7314b6072a169e79b9b6737cf611a268b7a4a8d68",
+    "app/workshop/shop-product-binding-plan.mjs": "f570331f162ba8d4ec9feaea9f5a7571654609ba4f9fe31eb8ef301601f84bc5",
+    "app/workshop/order-intake.mjs": "535a60bffebdfb1664e00a5629fef0071553146b7902ae6a4ce1853bfa3e43c8",
+    "app/workshop/shop-preparation.mjs": "633cd47ff251bb3927aff3ad991b7a80ee8fcd1d1549197983e63e0ccfabae32",
+    "app/workshop/cart-personalization.mjs": "3a720e14e24805e4ce2708a15124d90f7ca4a7dc99fe1353749894e213e6088e",
+    "ops/shopify/master-release/pricing-history.mjs": "9f563d2107d4644b46e0b8f02831a176fbc8800173e1325b2cf00111a7c34c91",
+    "ops/shopify/master-release/pricing-storage.mjs": "fb67492a30a4e208328b2aa84110b533f560bcb9f3534b65535ba2f581876ca8"
+  },
+  "operator": {
+    "main-operator.mjs": "beef9898356b4f440bc1150d7d7b596260d5b435abf4e1b094b33f6c223aae61",
+    "gateways.mjs": "28f6de08f7d1908d9ecc986ab5012c576d98ac7a9e0a4b90f096b76d4ffd631e"
+  }
+}

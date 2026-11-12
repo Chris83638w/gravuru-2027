@@ -1,0 +1,11 @@
+✔ native readonly bridge reads exact808 mixed heads, old contracts, metadata and approvals without changing either DB (2654.3031ms)
+✔ metadata/document pin drift and foreign manufacturing tenant are rejected (496.5888ms)
+✔ pinned production factory rejects writes before opening DBs and cannot accept synthetic document pins (374.6138ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3840.7267

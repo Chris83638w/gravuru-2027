@@ -1,0 +1,125 @@
+{
+  "schema": "issue230-main-readonly-independent-checks/v1",
+  "reviewer": "search_preview",
+  "manifestSha256": "5eea1f5815f93689b2cd6f0a2b0b54895c90e4b13b3f2e4208818f15e9168d01",
+  "files": [
+    {
+      "path": "adapter-factory.mjs",
+      "sha256": "e897b5d7c1e917ef1bc896ba456de78e9f66f4b1942c53bf2a277fa77797a015",
+      "ok": true
+    },
+    {
+      "path": "readonly-target.mjs",
+      "sha256": "a3824cc0d6f6a93a84a009c92a5df42b429340d3b48ce2243b58d1d7ce18db65",
+      "ok": true
+    },
+    {
+      "path": "source-pins.json",
+      "sha256": "094bf052ddeb5fe1717e6aff20b91f5e905c43a0e91274c32b814001cdbd8c97",
+      "ok": true
+    },
+    {
+      "path": "readonly-target.test.mjs",
+      "sha256": "81d1417e4fc2632b68d5e7877a5e8041d55f4e126188cb7679755aeb8dbed90b",
+      "ok": true
+    },
+    {
+      "path": "tests.log",
+      "sha256": "c2b3d0a088bb2473c607dcef3100a22428aa930de0f5e2f12605f52c33f5587f",
+      "ok": true
+    },
+    {
+      "path": "scoped-history-test.log",
+      "sha256": "cfb1f80531772c73246b4c4c31400e6244069ff2bd54d44fce40b37051199d5c",
+      "ok": true
+    },
+    {
+      "path": "README.md",
+      "sha256": "1b7068b2d26b49d6e6dfc0f88bc4457b7204bd5c6eeec7e13f62751d5990caa5",
+      "ok": true
+    },
+    {
+      "path": "local-checks.json",
+      "sha256": "78042a3ba56ea013c2a951b467f0e65ecea0eb28ec3718736fd0fe9f052f292f",
+      "ok": true
+    }
+  ],
+  "nativeSourceCommit": "f85390bd3494920679b06c3b39cabf96c95c1343",
+  "native": [
+    {
+      "path": "app/workshop/shop-product-binding-adapter.mjs",
+      "sha256": "8bb592e8abffda09b4c00cbd9e891dd2d86a7c6c130622a4aeb893c4c29bf9bd",
+      "ok": true
+    },
+    {
+      "path": "app/workshop/shop-product-binding-store.mjs",
+      "sha256": "119a276d75bb83a67457f0e2ad37849f27a56b7a1b4a9789f527d4efbb8bc600",
+      "ok": true
+    },
+    {
+      "path": "app/workshop/shop-product-binding-read-snapshot.mjs",
+      "sha256": "05d4ebc13a07c59d4248aca484d68824f225ac5eaee9c777dee46f0d2898136e",
+      "ok": true
+    },
+    {
+      "path": "app/workshop/catalog-live-orders.mjs",
+      "sha256": "5eea8f61a044e3990075615593ba6fe6f2333a07439c79558176abf48099fe3d",
+      "ok": true
+    },
+    {
+      "path": "app/workshop/production-profiles.mjs",
+      "sha256": "931d595d1abc374d84da7330476218f1f319aacc2648aa8210f1b8b9076c4cb3",
+      "ok": true
+    },
+    {
+      "path": "app/workshop/shop-product-binding-check.mjs",
+      "sha256": "fa64a98057fd745391012cb7314b6072a169e79b9b6737cf611a268b7a4a8d68",
+      "ok": true
+    },
+    {
+      "path": "app/workshop/shop-product-binding-plan.mjs",
+      "sha256": "f570331f162ba8d4ec9feaea9f5a7571654609ba4f9fe31eb8ef301601f84bc5",
+      "ok": true
+    },
+    {
+      "path": "app/workshop/order-intake.mjs",
+      "sha256": "535a60bffebdfb1664e00a5629fef0071553146b7902ae6a4ce1853bfa3e43c8",
+      "ok": true
+    },
+    {
+      "path": "app/workshop/shop-preparation.mjs",
+      "sha256": "633cd47ff251bb3927aff3ad991b7a80ee8fcd1d1549197983e63e0ccfabae32",
+      "ok": true
+    },
+    {
+      "path": "app/workshop/cart-personalization.mjs",
+      "sha256": "3a720e14e24805e4ce2708a15124d90f7ca4a7dc99fe1353749894e213e6088e",
+      "ok": true
+    },
+    {
+      "path": "ops/shopify/master-release/pricing-history.mjs",
+      "sha256": "9f563d2107d4644b46e0b8f02831a176fbc8800173e1325b2cf00111a7c34c91",
+      "ok": true
+    },
+    {
+      "path": "ops/shopify/master-release/pricing-storage.mjs",
+      "sha256": "fb67492a30a4e208328b2aa84110b533f560bcb9f3534b65535ba2f581876ca8",
+      "ok": true
+    }
+  ],
+  "operatorPins": [
+    {
+      "path": "main-operator.mjs",
+      "ok": true
+    },
+    {
+      "path": "gateways.mjs",
+      "ok": true
+    }
+  ],
+  "mainUnchanged": true,
+  "testsRerun": false,
+  "networkCalls": 0,
+  "privateDatabasesOpened": 0,
+  "allPassed": true
+}

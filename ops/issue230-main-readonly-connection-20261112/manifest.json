@@ -1,0 +1,49 @@
+{
+  "schema": "issue230-main-production-readonly-connection-package/v1",
+  "files": [
+    {
+      "path": "adapter-factory.mjs",
+      "bytes": 2499,
+      "sha256": "e897b5d7c1e917ef1bc896ba456de78e9f66f4b1942c53bf2a277fa77797a015"
+    },
+    {
+      "path": "readonly-target.mjs",
+      "bytes": 8974,
+      "sha256": "a3824cc0d6f6a93a84a009c92a5df42b429340d3b48ce2243b58d1d7ce18db65"
+    },
+    {
+      "path": "source-pins.json",
+      "bytes": 1779,
+      "sha256": "094bf052ddeb5fe1717e6aff20b91f5e905c43a0e91274c32b814001cdbd8c97"
+    },
+    {
+      "path": "readonly-target.test.mjs",
+      "bytes": 10020,
+      "sha256": "81d1417e4fc2632b68d5e7877a5e8041d55f4e126188cb7679755aeb8dbed90b"
+    },
+    {
+      "path": "tests.log",
+      "bytes": 469,
+      "sha256": "c2b3d0a088bb2473c607dcef3100a22428aa930de0f5e2f12605f52c33f5587f"
+    },
+    {
+      "path": "scoped-history-test.log",
+      "bytes": 257,
+      "sha256": "cfb1f80531772c73246b4c4c31400e6244069ff2bd54d44fce40b37051199d5c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 8755,
+      "sha256": "1b7068b2d26b49d6e6dfc0f88bc4457b7204bd5c6eeec7e13f62751d5990caa5"
+    },
+    {
+      "path": "local-checks.json",
+      "bytes": 1282,
+      "sha256": "78042a3ba56ea013c2a951b467f0e65ecea0eb28ec3718736fd0fe9f052f292f"
+    }
+  ],
+  "canWrite": false,
+  "privateDatabasePathsIncluded": false,
+  "credentialsIncluded": false,
+  "liveVerified": false
+}

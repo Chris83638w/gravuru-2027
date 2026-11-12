@@ -1,0 +1,23 @@
+{
+ "schema": "gravuru-hostleser-befund/v1",
+ "zeit": "2026-11-12T15:40Z",
+ "auftrag": "#168 6821623182 / 6821704569: vorhandenen Hostweg (Host-CLI + Automation-Zugang) nur lesend prüfen und appVersions/activeAppVersion lesen",
+ "runner": {"datei": "vr-leser.mjs", "bytes": 7861, "sha256": "7e05a38d9aca101bc7a9a9d456139c347afcf9ea7d8c709606761247d651c7b8"},
+ "schritt1_pruefen": {
+  "ok": true, "bereit": true,
+  "zugangsdatei": {"name": "gravuru-shopify-app-automation-token", "vorhanden": true, "regulaereDatei": true, "symlink": false, "eigentuemerIstProzess": true, "modus": "600", "bytes": 70, "geaendert": "2026-10-09T05:18:22Z", "inhaltGelesen": false},
+  "cli": {"name": "@shopify/cli", "version": "4.9.0", "modus": "755", "chunk": "dist/chunk-Q45XAEG2.js", "chunkBytes": 96853, "chunkSha256": "fd19acfe6a52b0fa306e48f1f44c7790f62a627253dd83f28494c61665221643"},
+  "node": "v24.22.2"
+ },
+ "schritt2_lesen": {
+  "ok": false,
+  "versuche": 1,
+  "fehlermeldungDerCli": "The custom token provided can't be used for the App Management API.",
+  "gelesen": {"appVersions": false, "activeAppVersion": false},
+  "geschrieben": "nur leerer Ordner sicherungen-db/versionsleser-20261112T154032Z/cli-arbeitsordner; keine Rohantwort, kein Zugangswert in Ausgabe oder Datei",
+  "nichtWiederholt": true
+ },
+ "befund": "Der Hostweg existiert und ist sauber abgesichert, aber Shopify nimmt den dort liegenden Automation-Zugang (Datei vom 09.10.2026) für die App-Management-Schnittstelle nicht mehr an. Der reale Versionsleser ist damit auf dem Host NICHT angeschlossen.",
+ "nichtBelegt": "Warum der Zugang abgelehnt wird (abgelaufen, widerrufen oder falscher Zugangstyp) ist nicht belegt.",
+ "standAktiveVersion": "Unverändert zwei unabhängige Lesungen von heute: Dev Dashboard (Claude, 11:30 MEZ) und lokale CLI (Astra, 11:56 MEZ): aktiv 1199363391489 / gravuru-2027-steel-pricing-input-20261108-v2."
+}

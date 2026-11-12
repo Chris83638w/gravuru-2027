@@ -1,0 +1,37 @@
+{
+ "schema": "gravuru-hostleser-erfolg/v1",
+ "kennzeichnung": "Rein lesend über vorhandene Host-CLI 4.9.0 und den von Chris selbst erneuerten Automation-Zugang; nur appVersions + activeAppVersion; kein deploy/release.",
+ "ursacheDerAblehnungUm1540Z": "Dienstkonto 'App automation token ending in f6cae0' (App Gravuru Konfigurator, keine Dev Shops): erstellt 09.10.2026, abgelaufen 08.11.2026 (Shopify-Admin, Einstellungen > Benutzer > Sicherheit).",
+ "erneuerung": "Chris hat das Token am 12.11.2026 selbst rotiert und den Wert selbst in private/gravuru-shopify-app-automation-token eingetragen (Datei geändert 16:28:11Z, weiter Modus 600, 70 B). Claude hat den Wert weder gesehen noch getippt.",
+ "runner": {"datei": "vr-leser.mjs", "sha256": "7e05a38d9aca101bc7a9a9d456139c347afcf9ea7d8c709606761247d651c7b8", "unveraendertSeitErstemVersuch": true},
+ "pruefen": {"zeit": "2026-11-12T16:29:13Z", "bereit": true, "modus": "600", "bytes": 70, "cli": "4.9.0"},
+ "lesen": {
+  "ordner": "sicherungen-db/versionsleser-20261112T162935Z",
+  "beobachtetUm": "2026-11-12T16:29:37.872Z", "dauerMs": 1811,
+  "dateien": [
+   {"datei": "versions.json", "bytes": 8706, "sha256": "0afcb4807a81ca33d1e3d907dd7d92385fc3df47d5f70dae7225f9ad22fead3a"},
+   {"datei": "active.json", "bytes": 39862, "sha256": "dd2dbf94272ddc59b8a77d558877353afbc88542665d2dcc2407fd3eeb12082f"},
+   {"datei": "LESEBELEG-aktive-version.json", "bytes": 4694, "sha256": "28a752e6324983a9abac0d0b3f2173ec617601c00a20694f0e9e4bd2c46e9964"}],
+  "appVersions": {"anzahl": 20, "aktiv": [{"versionId": "gid://shopify/Version/1199363391489", "versionTag": "gravuru-2027-steel-pricing-input-20261108-v2", "status": "active", "createdAt": "2026-11-08 07:44:05 UTC"}], "naechste": ["1199344418817 inactive", "1195873796097 inactive", "1191284113409 inactive"], "feldnamen": ["createdAt", "createdBy", "message", "status", "versionId", "versionTag"]},
+  "activeAppVersion": {
+   "releaseId": "gid://shopify/Release/1189458739201", "name": "Gravuru Konfigurator", "module": 8,
+   "typen": ["app_access", "app_home", "app_proxy", "branding", "data", "function", "theme_app_extension", "webhooks"],
+   "modulHash": "004ae211c55c889020d0d5236200676522a3e10ad315223d2082c38a9b8d46bf",
+   "modulHashDefinition": "sha256(JSON(canonical(fingerprint(appModuleVersions)))) wie ops/shopify/steel-pricing-preserved-version.mjs",
+   "function": {"registrationId": "3194be17-ee65-e144-e1da-65b8d1e1720183f0f9ef", "registrationUuid": "01a0e45d-c47f-70b9-9d5a-a2c72120ae01", "handle": "gravuru-personalization-price", "target": "cart.transform.run", "api_type": "cart_transform", "api_version": "2026-07", "app_key_passt": true, "module_id": "92c1bbf7-34fc-4bf6-927f-c6ca2a68112b",
+    "module_metadata": {"module_wasm_size_bytes": 20977, "module_compiled_size_bytes": 30128, "languages": ["JavaScript#ES2020"], "processed_by": ["Javy#9.1.0"], "standard_modules": ["shopify_functions_javy_v4"], "sha256": "e8c45d7fcd4d6e4799846f96a73fa4d0e0e487f096cd3382febe64cd27d223c8"},
+    "configSha256": "008751f82528b554f1ef918e154fdf0138185b9ff1f33becfe18f3aea5094594", "input_query": {"bytes": 823, "sha256": "cdfe1587948b86c69441de19b01c61e78a7772ff2598433bee069049891e95b9", "export": "cart-transform-run"}},
+   "theme": {"registrationId": "a4d6506c-8e89-ca7d-f5b1-1a0d1e00a1f9bb93e76a", "handle": "gravuru-storefront", "dateienInConfig": 4, "configSha256": "e1bece1fd8d4c51bf966a6f581100680a79c604c2180e3a0419a1e477ab8e425"}
+  }
+ },
+ "abgleich": {
+  "versionGleichDashboardUndLokalerCli": true,
+  "wasmGroesseGleich0811Beleg": "20.977 B = docs/reviews/2026-11-08-steel-pricing-input (WASM 20.977 B, a5c59354…32da2)",
+  "functionIdZuordnungJetztBelegt": "registrationUuid 01a0e45d-c47f-70b9-9d5a-a2c72120ae01 ist die Function-ID der Admin-API (shopifyFunctions/CartTransform 172523900); registrationId 3194be17-… ist die UID aus dem Dashboard."
+ },
+ "grenzen": [
+  "Die Antwort enthält Größe, module_id und Metadaten des WASM, aber kein WASM-SHA. a5c59354…32da2 ist weiter nur über den 08.11.-Beleg an diese Version gebunden; neu gestützt durch gleiche Bytezahl.",
+  "Ein erfolgreicher Leselauf; als Callback im Operator noch nicht verdrahtet.",
+  "Gültigkeit des neuen Tokens nicht gelesen (die Shopify-Seite mit dem neuen Wert habe ich bewusst nicht mehr geöffnet). Das alte lief 30 Tage."
+ ]
+}

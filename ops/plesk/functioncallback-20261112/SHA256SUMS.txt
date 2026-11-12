@@ -1,0 +1,2 @@
+a19760739bd0ece91d56becc6c645e4e9cfc3ba886cb9e43d85287fbb42b1839  fr-callback.mjs
+bbd192c834982be9668f3b9e875eb4f85a2d7a73ad30b67cb7aca43ba1abaef5  kompakt-serverwerte.json

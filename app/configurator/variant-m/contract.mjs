@@ -227,6 +227,25 @@ export function photoPolicyForDesign(config,designId,options={}){
  if(!design)fail('Unbekanntes Design.');
  return templatePhotoPrice(config,design,variant).policy;
 }
+// Main R2 (12.11.2026): the module check only needs the default design and the ink
+// of the selected execution. Building the full selected profile projects every
+// template of the family variant, so a gallery that quotes each template became
+// quadratic (127 templates: about 6 s on the host). Both values depend only on the
+// unchanged product configuration and the resolved options; the first call per
+// configuration and option set still runs selectedProfile with all of its checks.
+const moduleQuoteContexts=new WeakMap();
+function moduleQuoteContext(config,options){
+  const key=JSON.stringify(options);let byOptions=moduleQuoteContexts.get(config);
+  if(!byOptions){byOptions=new Map();moduleQuoteContexts.set(config,byOptions);}
+  let context=byOptions.get(key);
+  if(!context){
+    const profile=selectedProfile(config,options);
+    context=Object.freeze({defaultDesignId:profile.defaultDesignId,ink:getProcessingProfile(profile).ink});
+    if(byOptions.size>=512)byOptions.clear();
+    byOptions.set(key,context);
+  }
+  return context;
+}
 export function quote(config, objects, designId, values = {}, quantity = 1) {
   config=sizeConfiguration(config,values);
   if(config.reviewOnly&&config.basePriceCents===null)fail('Preis noch offen.');
@@ -234,7 +253,9 @@ export function quote(config, objects, designId, values = {}, quantity = 1) {
   const options = resolvedOptions(config, values);
   const design = isFamilyFormats(config)?selectedFamilyDesign(config,designId,options):isLayeredDoorbell(config)?selectedDoorbellDesign(config,designId,options):config.profile.designs.find(d => d.id === designId);
   if (!design) fail('Unbekanntes Design.');
-  const moduleIssue=config.moduleProfile&&moduleDesignIssue(config,{source:design,objects,designId,defaultDesignId:selectedProfile(config,options).defaultDesignId,options,defaultOptions:resolvedOptions(config),ink:getProcessingProfile(selectedProfile(config,options)).ink,template:objects.length===0});if(moduleIssue)fail(moduleIssue);
+  let moduleIssue=null;
+  if(config.moduleProfile){const shared=moduleQuoteContext(config,options);moduleIssue=moduleDesignIssue(config,{source:design,objects,designId,defaultDesignId:shared.defaultDesignId,options,defaultOptions:resolvedOptions(config),ink:shared.ink,template:objects.length===0});}
+  if(moduleIssue)fail(moduleIssue);
   const selectedBase=templatePhotoPrice(config,design,isFamilyFormats(config)?familyFormatSelection(config,options).variant:undefined).baseCents;
   // Original template motifs are included once. A duplicate must not inherit this credit.
   const included = new Map(design.objects.filter(o => o.type === 'motif').map(o => [o.id, o.motif]));

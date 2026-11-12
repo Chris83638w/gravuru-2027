@@ -1,0 +1,89 @@
+{
+  "schema": "issue230-documentation-receipt/v1",
+  "date": "2026-11-12",
+  "documentationOnly": true,
+  "source": {
+    "repository": "Chris83638w/gravuru-2027",
+    "branch": "dev/claude-db-sicherung-20261111",
+    "commit": "041527dd",
+    "paths": [
+      "ops/plesk/sechsdraft-20261112",
+      "ops/plesk/versionsbeleg-20261112"
+    ],
+    "comment": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6821399022",
+    "receivedOriginalFiles": 5,
+    "rawTestbelegAndJsonlSupplied": false
+  },
+  "files": [
+    {
+      "file": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "role": "review-or-documentation"
+    },
+    {
+      "file": "README.md",
+      "bytes": 2998,
+      "sha256": "e5f8e56ea692af61dbc281167208b8109339b07c936d809f2f62c92560e24dfb",
+      "role": "review-or-documentation"
+    },
+    {
+      "file": "received/sechsdraft-20261112/README.md",
+      "bytes": 2335,
+      "sha256": "fb3175150713473a1a397e9682981b77634ee1059331eb7125ea62f3862ad544",
+      "role": "unchanged-received-file"
+    },
+    {
+      "file": "received/sechsdraft-20261112/SHA256SUMS.txt",
+      "bytes": 248,
+      "sha256": "4b0db98ffa06895856a26df68a9991427561411e1cb028f00aa6dc8aeaa36164",
+      "role": "unchanged-received-file"
+    },
+    {
+      "file": "received/sechsdraft-20261112/kompakt-serverwerte.json",
+      "bytes": 6507,
+      "sha256": "da1601a30740dea6dd66479c82302f6042494b296b7b7e0c5d688bad5bdf9683",
+      "role": "unchanged-received-file"
+    },
+    {
+      "file": "received/sechsdraft-20261112/sd-lauf.mjs",
+      "bytes": 24915,
+      "sha256": "ee98990582a714cac54aa7aa991534936f47dc4f41bffbad2a164de9aed52e72",
+      "role": "unchanged-received-file"
+    },
+    {
+      "file": "received/versionsbeleg-20261112/aktive-appversion-lesebeleg.json",
+      "bytes": 2912,
+      "sha256": "72874750425e0d1ded1e9e79516dc0c8bcbb0cde9a5f8ec25c732ec69a99db1e",
+      "role": "unchanged-received-file"
+    },
+    {
+      "file": "review-six-host-files.mjs",
+      "bytes": 8720,
+      "sha256": "e97e3e301f3e13409c4a6618db4c2fd5c811ec922bc92ad149198ef7d3150baf",
+      "role": "review-or-documentation"
+    },
+    {
+      "file": "six-host-and-active-version-review.checks.json",
+      "bytes": 17573,
+      "sha256": "76a91267a971b844920b9f4d4fe2dcff4b3044bfdec5993752ca498f0d60d3e0",
+      "role": "review-or-documentation"
+    },
+    {
+      "file": "six-host-and-active-version-review.md",
+      "bytes": 7434,
+      "sha256": "3b99dce0c03a303fe63ff55f27a46b0565a818c9b35f5e98cdd3b76f0f362b12",
+      "role": "review-or-documentation"
+    }
+  ],
+  "packagingTestsRun": 0,
+  "appOrOperatorCodeChanged": false,
+  "priorPublishedReviewsChanged": false,
+  "reproduction": {
+    "originalWorkspaceScriptSha256": "b682c90ffbc592b8606de9cfa80778f7268769b75f1d245fd235d706ca71fb69",
+    "packagedScriptSha256": "e97e3e301f3e13409c4a6618db4c2fd5c811ec922bc92ad149198ef7d3150baf",
+    "changes": "Only repository/received input paths and explicit new wx output path; no new execution.",
+    "archivedReviewSha256": "3b99dce0c03a303fe63ff55f27a46b0565a818c9b35f5e98cdd3b76f0f362b12",
+    "archivedChecksSha256": "76a91267a971b844920b9f4d4fe2dcff4b3044bfdec5993752ca498f0d60d3e0"
+  }
+}

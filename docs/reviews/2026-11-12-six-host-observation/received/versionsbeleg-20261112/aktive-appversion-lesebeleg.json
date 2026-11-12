@@ -1,0 +1,41 @@
+{
+ "schema": "gravuru-aktive-appversion-lesebeleg/v1",
+ "gelesen": "2026-11-12T10:30Z",
+ "quelle": "Shopify Dev Dashboard, App Gravuru Konfigurator (gid://shopify/App/423276544001), Seiten Versionen und Versionsdetail, im bestehenden angemeldeten Browser von Chris; nur gelesen, kein Klick auf Version erstellen/veröffentlichen",
+ "nichtCli": "Kein CLI-Abruf: In Claudes Arbeitsumgebung gibt es keine Shopify-CLI und keine Partner-Anmeldung; die Laptop-VM erreicht die Anmeldedaten des Rechners nicht. Kein Login, keine neue Berechtigung.",
+ "aktiveVersion": {
+  "id": "1199363391489",
+  "name": "gravuru-2027-steel-pricing-input-20261108-v2",
+  "status": "Aktiv",
+  "veroeffentlicht": "2026-11-08 08:44",
+  "commit": "2abfd92",
+  "beschreibung": "Logo-Preisreparatur mit erhaltenen historischen Preisen; bestehende Theme-Dateien unveraendert."
+ },
+ "module": {
+  "function": {"handle": "gravuru-personalization-price", "uid": "3194be17-ee65-e144-e1da-65b8d1e1720183f0f9ef", "api_version": "2026-07", "anzahl": 1},
+  "themeErweiterung": {"handle": "gravuru-storefront", "uid": "a4d6506c-8e89-ca7d-f5b1-1a0d1e00a1f9bb93e76a", "anzahl": 1},
+  "metafelddefinition": {"schluessel": "product.metafields.app.personalization", "name": "Gravuru Personalisierungspreise", "type": "json", "access.admin": "merchant_read"},
+  "appProxy": {"prefix": "apps", "subpath": "konfigurator"},
+  "scopes": "read_files,read_metaobjects,read_orders,read_products,read_publications,write_files,write_metaobjects,write_products,write_publications",
+  "optional_scopes": "write_cart_transforms",
+  "webhooks_api_version": "2026-07"
+ },
+ "versionslisteNeueste": [
+  {"id": "1199363391489", "name": "gravuru-2027-steel-pricing-input-20261108-v2", "tag": "08.11.2026 08:44", "status": "Aktiv"},
+  {"id": "1199344418817", "name": "gravuru-2027-steel-pricing-input-artifact-20261108", "tag": "08.11.2026 07:51", "status": "nicht aktiv"},
+  {"id": "1195873796097", "name": "gravuru-2027-slate-options-20261105-v1", "tag": "05.11.2026 11:03", "status": "nicht aktiv"},
+  {"id": "1191284113409", "name": "gravuru-2027-issue139-pricing-20261102-v1", "tag": "02.11.2026 15:13", "status": "nicht aktiv"}
+ ],
+ "abgleichMit0811Beleg": {
+  "versionId": "gleich (1199363391489)",
+  "tag": "gleich",
+  "functionUid": "gleich (3194be17-…83f0f9ef)",
+  "themeUid": "gleich (a4d6506c-…bb93e76a)",
+  "keineNeuereVersion": true
+ },
+ "grenzen": [
+  "Das Dashboard zeigt weder WASM-Bytezahl noch WASM-SHA. a5c59354…32da2 / 20.977 B ist damit nicht neu gelesen, sondern folgt nur daraus, dass dieselbe Version aktiv ist wie am 08.11. belegt.",
+  "Zuordnung der Admin-API-Function-ID 01a0e45d-c47f-70b9-9d5a-a2c72120ae01 zur UID 3194be17-… ist hier nicht belegt (App hat genau eine Function; beide heißen gravuru-personalization-price).",
+  "Kein Screenshot: Bildschirmaufnahme des Tabs lief in ein Zeitlimit; Werte sind dem Seitentext entnommen."
+ ]
+}

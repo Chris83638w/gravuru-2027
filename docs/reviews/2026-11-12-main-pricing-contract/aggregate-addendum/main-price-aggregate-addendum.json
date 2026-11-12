@@ -1,0 +1,24 @@
+{
+  "schema": "issue230-main-price-groups-aggregate-addendum/v1",
+  "sourceComment": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6821399022",
+  "mode": "local original artifact read only; no tests, network or database access",
+  "source": {
+    "path": "work/restabschluss/claude-b0172a0b-price/ops/plesk/hauptacryl-preisvertrag-20261112/r1-preisvertraege-gruppen.json",
+    "bytes": 17735,
+    "sha256": "b46d9321cdefb7d82e9200b7d37a9be8300c2d9bd4d26b49754965e53907e4f5"
+  },
+  "expression": "SHA256(gruppen.slice().sort((a,b)=>a.normalisiertSha256<b.normalisiertSha256?-1:1).map(g=>g.normalisiertSha256+':'+(g.ziel+g.rest)).join('|'))",
+  "encoding": "UTF-8",
+  "delimiter": "|",
+  "trailingNewline": false,
+  "groups": 114,
+  "uniqueGroupHashes": 114,
+  "targetCount": 778,
+  "residualCount": 30,
+  "aggregateInputBytes": 7670,
+  "expectedSha256": "d4467e5c22eae26e9653a4b7ca6eaa424ca83d004ee69ab17827798a1e68fa23",
+  "actualSha256": "d4467e5c22eae26e9653a4b7ca6eaa424ca83d004ee69ab17827798a1e68fa23",
+  "passed": true,
+  "priorPublishedArtifactsModified": false,
+  "scope": "Closes only the previously unspecified group aggregate serialization; no new claim about undelivered raw server records, actual Function release or execution authority."
+}

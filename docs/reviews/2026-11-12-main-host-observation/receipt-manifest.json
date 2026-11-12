@@ -1,0 +1,79 @@
+{
+  "schema": "issue230-documentation-receipt/v1",
+  "date": "2026-11-12",
+  "documentationOnly": true,
+  "source": {
+    "repository": "Chris83638w/gravuru-2027",
+    "branch": "dev/claude-db-sicherung-20261111",
+    "commit": "4aa144101371313489c0cdcb31f91eeca279e299",
+    "path": "ops/plesk/mainanschluss-20261112",
+    "comment": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6821759961",
+    "receivedOriginalFiles": 4,
+    "compactValuesAreTranscript": true,
+    "rawTestbelegSupplied": false
+  },
+  "checks": {
+    "sixCopiedFilesByteIdentical": true,
+    "allThreeSuppliedChecksumsMatch": true,
+    "independentReviewAndChecksUnchanged": true,
+    "driverExecuted": false,
+    "newTestsRun": false,
+    "operatorPackageModified": false
+  },
+  "files": [
+    {
+      "file": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "role": "documentation"
+    },
+    {
+      "file": "main-host-connection-independent-checks.json",
+      "bytes": 6794,
+      "sha256": "61e48878a749ec9943c10058faa2d8483eda98c09953f02b54b298bb767c7d36",
+      "role": "unchanged-independent-review",
+      "sourcePath": "work/restabschluss/main-host-connection-independent-checks.json"
+    },
+    {
+      "file": "main-host-connection-independent-review.md",
+      "bytes": 8700,
+      "sha256": "0ba7578e583ad780b4dcb188e4f98403f6e74dea1816456bd44765e8acbe13f2",
+      "role": "unchanged-independent-review",
+      "sourcePath": "work/restabschluss/main-host-connection-independent-review.md"
+    },
+    {
+      "file": "README.md",
+      "bytes": 3075,
+      "sha256": "7d77382a543aa01945b722cf5a4d8523d283f287d360a1dc77e3b6521d3be6b4",
+      "role": "documentation"
+    },
+    {
+      "file": "received/kompakt-serverwerte.json",
+      "bytes": 7313,
+      "sha256": "6d2d05f2496ab845fbc68372183f57651dc07771cf8d6a3217bad2e7d54671d5",
+      "role": "unchanged-received-file",
+      "sourcePath": "ops/plesk/mainanschluss-20261112/kompakt-serverwerte.json"
+    },
+    {
+      "file": "received/mo-connections.mjs",
+      "bytes": 12617,
+      "sha256": "fd6a06fe9f47c27f9402460ed81b4d806a485c33b810968d2ae5538f75c3ff14",
+      "role": "unchanged-received-file",
+      "sourcePath": "ops/plesk/mainanschluss-20261112/mo-connections.mjs"
+    },
+    {
+      "file": "received/mo-lauf.mjs",
+      "bytes": 20042,
+      "sha256": "2f993ed99908195e98396ab0650303b06379968c9b4c91f38c9ad0f85e28983c",
+      "role": "unchanged-received-file",
+      "sourcePath": "ops/plesk/mainanschluss-20261112/mo-lauf.mjs"
+    },
+    {
+      "file": "received/SHA256SUMS.txt",
+      "bytes": 257,
+      "sha256": "941284beb291e9bc69b0ac4199189abb4a67e639deae06c3435e7568c1cc8dab",
+      "role": "unchanged-received-file",
+      "sourcePath": "ops/plesk/mainanschluss-20261112/SHA256SUMS.txt"
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "schema": "issue230-main-host-connection-independent-review/v1",
+  "sourceCommit": "4aa14410",
+  "sourceComment": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6821759961",
+  "mode": "read-only source and delivered artifact review; no driver import, no tests, no DB, no network",
+  "allDeliveredChecksPassed": true,
+  "deliveredChecksumFile": {
+    "bytes": 257,
+    "sha256": "941284beb291e9bc69b0ac4199189abb4a67e639deae06c3435e7568c1cc8dab"
+  },
+  "deliveredFiles": [
+    {
+      "path": "kompakt-serverwerte.json",
+      "bytes": 7313,
+      "declaredSha256": "6d2d05f2496ab845fbc68372183f57651dc07771cf8d6a3217bad2e7d54671d5",
+      "actualSha256": "6d2d05f2496ab845fbc68372183f57651dc07771cf8d6a3217bad2e7d54671d5",
+      "match": true
+    },
+    {
+      "path": "mo-lauf.mjs",
+      "bytes": 20042,
+      "declaredSha256": "2f993ed99908195e98396ab0650303b06379968c9b4c91f38c9ad0f85e28983c",
+      "actualSha256": "2f993ed99908195e98396ab0650303b06379968c9b4c91f38c9ad0f85e28983c",
+      "match": true
+    },
+    {
+      "path": "mo-connections.mjs",
+      "bytes": 12617,
+      "declaredSha256": "fd6a06fe9f47c27f9402460ed81b4d806a485c33b810968d2ae5538f75c3ff14",
+      "actualSha256": "fd6a06fe9f47c27f9402460ed81b4d806a485c33b810968d2ae5538f75c3ff14",
+      "match": true
+    }
+  ],
+  "frozenOperatorManifest": {
+    "sha256": "de182709cb4c004d338f666186cfa2785b755a708605adcf4d58b0c25721f416",
+    "files": 25,
+    "allFilesMatch": true
+  },
+  "nativeSourceCommit": "f85390bd3494920679b06c3b39cabf96c95c1343",
+  "nativeSourcePins": [
+    {
+      "path": "app/workshop/shop-product-binding-adapter.mjs",
+      "gitBlobSha256": "8bb592e8abffda09b4c00cbd9e891dd2d86a7c6c130622a4aeb893c4c29bf9bd",
+      "readCurrentFileMatchesGit": true,
+      "declaredPinMatches": true
+    },
+    {
+      "path": "app/workshop/shop-product-binding-check.mjs",
+      "gitBlobSha256": "fa64a98057fd745391012cb7314b6072a169e79b9b6737cf611a268b7a4a8d68",
+      "readCurrentFileMatchesGit": true,
+      "declaredPinMatches": true
+    },
+    {
+      "path": "app/workshop/shop-product-binding-plan.mjs",
+      "gitBlobSha256": "f570331f162ba8d4ec9feaea9f5a7571654609ba4f9fe31eb8ef301601f84bc5",
+      "readCurrentFileMatchesGit": true,
+      "declaredPinMatches": true
+    },
+    {
+      "path": "app/workshop/shop-product-binding-store.mjs",
+      "gitBlobSha256": "119a276d75bb83a67457f0e2ad37849f27a56b7a1b4a9789f527d4efbb8bc600",
+      "readCurrentFileMatchesGit": true,
+      "declaredPinMatches": true
+    },
+    {
+      "path": "app/workshop/order-intake.mjs",
+      "gitBlobSha256": "535a60bffebdfb1664e00a5629fef0071553146b7902ae6a4ce1853bfa3e43c8",
+      "readCurrentFileMatchesGit": true,
+      "declaredPinMatches": true
+    },
+    {
+      "path": "app/workshop/catalog-live-orders.mjs",
+      "gitBlobSha256": "5eea8f61a044e3990075615593ba6fe6f2333a07439c79558176abf48099fe3d",
+      "readCurrentFileMatchesGit": true,
+      "declaredPinMatches": true
+    },
+    {
+      "path": "app/workshop/shop-preparation.mjs",
+      "gitBlobSha256": "633cd47ff251bb3927aff3ad991b7a80ee8fcd1d1549197983e63e0ccfabae32",
+      "readCurrentFileMatchesGit": true,
+      "declaredPinMatches": true
+    },
+    {
+      "path": "app/workshop/cart-personalization.mjs",
+      "gitBlobSha256": "3a720e14e24805e4ce2708a15124d90f7ca4a7dc99fe1353749894e213e6088e",
+      "readCurrentFileMatchesGit": true,
+      "declaredPinMatches": true
+    },
+    {
+      "path": "ops/shopify/master-release/pricing-history.mjs",
+      "gitBlobSha256": "9f563d2107d4644b46e0b8f02831a176fbc8800173e1325b2cf00111a7c34c91",
+      "readCurrentFileMatchesGit": true,
+      "declaredPinMatches": true
+    },
+    {
+      "path": "ops/shopify/master-release/pricing-storage.mjs",
+      "gitBlobSha256": "fb67492a30a4e208328b2aa84110b533f560bcb9f3534b65535ba2f581876ca8",
+      "readCurrentFileMatchesGit": true,
+      "declaredPinMatches": true
+    },
+    {
+      "path": "app/workshop/http.mjs",
+      "gitBlobSha256": "e2d7071c46463ed097044dc979f22796670804e5dda4c389f84684a4fce0948f",
+      "readCurrentFileMatchesGit": true,
+      "declaredPinMatches": null
+    },
+    {
+      "path": "app/configurator/variant-m/build.mjs",
+      "gitBlobSha256": "b7dfb58afb136ed6ad6939b6a9df0a56c26eef4b16e5926c3b700594dd4fb782",
+      "readCurrentFileMatchesGit": true,
+      "declaredPinMatches": null
+    },
+    {
+      "path": "app/workshop/shopify-runtime-config.mjs",
+      "gitBlobSha256": "f7625e75e5a160d8858e74995b1004030d1c0f70de413c9a9a741e4b7e5800dd",
+      "readCurrentFileMatchesGit": true,
+      "declaredPinMatches": null
+    }
+  ],
+  "checks": [
+    {
+      "name": "all3 delivered checksum entries",
+      "passed": true
+    },
+    {
+      "name": "frozen operator manifest unchanged",
+      "passed": true
+    },
+    {
+      "name": "10 declared native pins match f853 Git blobs",
+      "passed": true
+    },
+    {
+      "name": "13 reviewed current native sources byte-equal f853",
+      "passed": true
+    },
+    {
+      "name": "runner source hashes agree with compact transcription",
+      "passed": true
+    },
+    {
+      "name": "reported copy deltas numerically consistent with778 inserts",
+      "passed": true
+    },
+    {
+      "name": "reported catalog phase adds exactly1 approval",
+      "passed": true
+    },
+    {
+      "name": "reported plan scope and block partition match fixed operator",
+      "passed": true
+    },
+    {
+      "name": "original TESTBELEG absent locally and not independently verified",
+      "passed": true,
+      "classification": "evidence boundary, not an execution success assertion"
+    }
+  ],
+  "reportedCopyDelta": {
+    "revisionen": 0,
+    "formbindungen": 778,
+    "mainR1": 0,
+    "mainR2": 778,
+    "mainR2MitVertrag": 778,
+    "preisvertraege": 778,
+    "bindungskoepfe": 0,
+    "bindungsrevisionen": 778,
+    "katalogfreigaben": 0
+  },
+  "executionEvidence": {
+    "claimedPassed": 20,
+    "originalTestReceiptDelivered": false,
+    "originalTestReceiptBytes": 11519,
+    "originalTestReceiptSha256": "067f5b38dde5c0e39bbb864b7638c31a53af7fd521ae9afe56c4b8415a109977",
+    "fullPlanDelivered": false,
+    "journalDelivered": false,
+    "privateEvidenceDelivered": false,
+    "sourceArchiveMoPaketDelivered": false,
+    "networkGuardDeliveredInTheseFourFiles": false,
+    "independentExecutionVerification": false
+  },
+  "sourceReview": {
+    "actualCliRunWithoutConnectOverride": true,
+    "nativeRegistryAdapterProviderShapesMatch": true,
+    "sameProcessEightRunCalls": true,
+    "eachFactoryOpensClosesCopyInstances": true,
+    "readonlyGatewayNoPersistOrApprove": true,
+    "readonlyDatabaseEnforced": false,
+    "shopifySynthetic": true,
+    "functionCallbackSynthetic": true,
+    "productionAuthorityProven": false,
+    "openSourceBugs": []
+  }
+}

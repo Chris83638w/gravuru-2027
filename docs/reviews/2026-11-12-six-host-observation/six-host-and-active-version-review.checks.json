@@ -1,0 +1,529 @@
+{
+  "schema": "issue230-six-host-and-active-version-independent-review/v1",
+  "reviewDate": "2026-11-12",
+  "method": "Read supplied files and native source; SHA/count/source consistency only. No runner/app import, tests, DB opening, network or server execution.",
+  "sourceCommit": "041527dd",
+  "allLocalConsistencyChecksPassed": true,
+  "checks": [
+    {
+      "name": "three_received_manifest_files_match",
+      "pass": true,
+      "evidence": [
+        {
+          "name": "README.md",
+          "expectedSha256": "fb3175150713473a1a397e9682981b77634ee1059331eb7125ea62f3862ad544",
+          "bytes": 2335,
+          "sha256": "fb3175150713473a1a397e9682981b77634ee1059331eb7125ea62f3862ad544",
+          "matches": true
+        },
+        {
+          "name": "kompakt-serverwerte.json",
+          "expectedSha256": "da1601a30740dea6dd66479c82302f6042494b296b7b7e0c5d688bad5bdf9683",
+          "bytes": 6507,
+          "sha256": "da1601a30740dea6dd66479c82302f6042494b296b7b7e0c5d688bad5bdf9683",
+          "matches": true
+        },
+        {
+          "name": "sd-lauf.mjs",
+          "expectedSha256": "ee98990582a714cac54aa7aa991534936f47dc4f41bffbad2a164de9aed52e72",
+          "bytes": 24915,
+          "sha256": "ee98990582a714cac54aa7aa991534936f47dc4f41bffbad2a164de9aed52e72",
+          "matches": true
+        }
+      ]
+    },
+    {
+      "name": "runner_matches_compact_byte_pin",
+      "pass": true,
+      "evidence": {
+        "datei": "sd-lauf.mjs",
+        "bytes": 24915,
+        "sha256": "ee98990582a714cac54aa7aa991534936f47dc4f41bffbad2a164de9aed52e72"
+      }
+    },
+    {
+      "name": "operator_manifest_matches_published_pin",
+      "pass": true,
+      "evidence": "f752b6f13a90ef61db552fd9441ae4167c4abd5cab7da3b56e58cfc563849512"
+    },
+    {
+      "name": "all_13_operator_files_match",
+      "pass": true,
+      "evidence": [
+        {
+          "file": "README.md",
+          "bytes": 11677,
+          "sha256": "a6f03e7e93504a333c10dda4424d4050a045d35e623659806af0946d9cd1c7de",
+          "matches": true
+        },
+        {
+          "file": "six-drafts.mjs",
+          "bytes": 14795,
+          "sha256": "e39ae3613932c34d99a18eb08f2ddf4369b5ac30805abd504dcfd83ff592b88d",
+          "matches": true
+        },
+        {
+          "file": "shopify-steps.mjs",
+          "bytes": 4953,
+          "sha256": "a3c34298a6b7c2c2e0429ec4a2fb83a18c7387a8fbcdf372e6e11eed134607d2",
+          "matches": true
+        },
+        {
+          "file": "private-log.mjs",
+          "bytes": 815,
+          "sha256": "5362eaea89752efad523165db0611d65b994bb61a5667e95bd330b97b8028dd9",
+          "matches": true
+        },
+        {
+          "file": "prepare-requests.mjs",
+          "bytes": 1271,
+          "sha256": "c92b533346593f6048cb7b6ba2e79f790c4ca6fa1e300392ff4ca3df37c99f6d",
+          "matches": true
+        },
+        {
+          "file": "references.json",
+          "bytes": 2786,
+          "sha256": "9f301bcb43500ea84660624175196f5556b10a9f56bae2954675d14787198437",
+          "matches": true
+        },
+        {
+          "file": "native-pins.json",
+          "bytes": 448,
+          "sha256": "2b305f66b1c08e21b1b7a418154234ba490181ed51f0ffa3746b9bd774bf9f9a",
+          "matches": true
+        },
+        {
+          "file": "readiness.json",
+          "bytes": 1482,
+          "sha256": "268ffda98d4ebb49681f9482df60e1672d2845be07c6623f8403e39d4ac020d5",
+          "matches": true
+        },
+        {
+          "file": "six-drafts.test.mjs",
+          "bytes": 10701,
+          "sha256": "89b44fa9a6a410e8f350d1b8d531962840ef225fa3d2c8c85732d495c5f06ea3",
+          "matches": true
+        },
+        {
+          "file": "tests-initial.txt",
+          "bytes": 998,
+          "sha256": "1ec345c159a788a4f5cd38ce002ae126397ce8a9617be8bdb15c115dcdfc7c0f",
+          "matches": true
+        },
+        {
+          "file": "tests-final.txt",
+          "bytes": 999,
+          "sha256": "7fee3fcc10d4760cb523b52ac7b10b98a4edaa0f6d009aa2b4526221309f679c",
+          "matches": true
+        },
+        {
+          "file": "tests-relocated.txt",
+          "bytes": 998,
+          "sha256": "5b0afbff3f58bca8e72e5dc4051f9a3e5415bc8684618f988d5f6ffd4024a4bf",
+          "matches": true
+        },
+        {
+          "file": "relocation-check.json",
+          "bytes": 1646,
+          "sha256": "59253703155f1ca5a5d6ff3fcf0e00a8ef8aed9ad0f368afb4141307f2a6fd10",
+          "matches": true
+        }
+      ]
+    },
+    {
+      "name": "four_direct_native_pins_match_f85390b",
+      "pass": true,
+      "evidence": [
+        {
+          "file": "app/workshop/shop-draft-transfer.mjs",
+          "expected": "045435ac58fc8e1a7fd1c79fc5e147f1410cc3686f997d045f380d6575aeca5c",
+          "localSha256": "045435ac58fc8e1a7fd1c79fc5e147f1410cc3686f997d045f380d6575aeca5c",
+          "f85390bSha256": "045435ac58fc8e1a7fd1c79fc5e147f1410cc3686f997d045f380d6575aeca5c",
+          "matches": true
+        },
+        {
+          "file": "app/workshop/shop-preparation.mjs",
+          "expected": "633cd47ff251bb3927aff3ad991b7a80ee8fcd1d1549197983e63e0ccfabae32",
+          "localSha256": "633cd47ff251bb3927aff3ad991b7a80ee8fcd1d1549197983e63e0ccfabae32",
+          "f85390bSha256": "633cd47ff251bb3927aff3ad991b7a80ee8fcd1d1549197983e63e0ccfabae32",
+          "matches": true
+        },
+        {
+          "file": "app/workshop/shop-product-binding-check.mjs",
+          "expected": "fa64a98057fd745391012cb7314b6072a169e79b9b6737cf611a268b7a4a8d68",
+          "localSha256": "fa64a98057fd745391012cb7314b6072a169e79b9b6737cf611a268b7a4a8d68",
+          "f85390bSha256": "fa64a98057fd745391012cb7314b6072a169e79b9b6737cf611a268b7a4a8d68",
+          "matches": true
+        },
+        {
+          "file": "app/workshop/cart-personalization.mjs",
+          "expected": "3a720e14e24805e4ce2708a15124d90f7ca4a7dc99fe1353749894e213e6088e",
+          "localSha256": "3a720e14e24805e4ce2708a15124d90f7ca4a7dc99fe1353749894e213e6088e",
+          "f85390bSha256": "3a720e14e24805e4ce2708a15124d90f7ca4a7dc99fe1353749894e213e6088e",
+          "matches": true
+        }
+      ]
+    },
+    {
+      "name": "six_original_plan_and_source_ids_match",
+      "pass": true,
+      "evidence": [
+        {
+          "gruppe": "Tuerschild-Acrylglas-3mm-5x2_v2",
+          "planId": "pgp_244eb7f7-a813-4d56-b587-c0240ef756d5",
+          "confirmationId": "pgc_22c468dd-bda9-4d5a-b02e-670fc85ba49d",
+          "zielProduktId": "cfg_898ea4c7-ed43-4965-a373-d7b63fbe39ff",
+          "quelleProduktId": "cfg_68c697b4-e32f-43bb-840c-a6149f1ec472",
+          "varianten": 10,
+          "planAndSourceMatch": true,
+          "variantsMatch": true,
+          "targetDistinct": true,
+          "confirmationShape": true
+        },
+        {
+          "gruppe": "Tuerschild-Acrylglas-3mm-6x2_v2",
+          "planId": "pgp_cac795e1-b1c1-46e6-a807-7347ad4d9826",
+          "confirmationId": "pgc_977a164b-a102-4c9e-8d0a-d4c38c01f52f",
+          "zielProduktId": "cfg_588a0a16-d7b1-4b8b-93ea-0bb686d24e6b",
+          "quelleProduktId": "cfg_fcb59442-8cf1-4b46-ae8b-f6ee46511910",
+          "varianten": 10,
+          "planAndSourceMatch": true,
+          "variantsMatch": true,
+          "targetDistinct": true,
+          "confirmationShape": true
+        },
+        {
+          "gruppe": "Tuerschild-Acrylglas-3mm-8x2_v2",
+          "planId": "pgp_0a364376-f6c2-4836-b274-47b9efe030f4",
+          "confirmationId": "pgc_48b8cb11-3297-4b24-b1b2-dbd6265c1b14",
+          "zielProduktId": "cfg_5a9a00a0-0a5c-43ae-b812-1cbaedb03f4d",
+          "quelleProduktId": "cfg_809706a1-191d-4bc5-9960-6410f3222fb5",
+          "varianten": 10,
+          "planAndSourceMatch": true,
+          "variantsMatch": true,
+          "targetDistinct": true,
+          "confirmationShape": true
+        },
+        {
+          "gruppe": "Tuerschild-Edelstahl-5x2_v1",
+          "planId": "pgp_ebbbb351-5aa4-4afe-81bc-e78d9febae99",
+          "confirmationId": "pgc_c4fc600e-7d08-42c8-9815-f904cebb2a12",
+          "zielProduktId": "cfg_7be84e79-a055-42ef-813e-8c2afcebc5a9",
+          "quelleProduktId": "cfg_64b480bd-2124-446d-a674-4443fa05b5f1",
+          "varianten": 5,
+          "planAndSourceMatch": true,
+          "variantsMatch": true,
+          "targetDistinct": true,
+          "confirmationShape": true
+        },
+        {
+          "gruppe": "Tuerschild-Edelstahl-6x2_v1",
+          "planId": "pgp_bf0b70c7-372d-4563-935a-554be24bfdd7",
+          "confirmationId": "pgc_bcc70ff7-acf2-4894-bf78-0d2cc507c3dd",
+          "zielProduktId": "cfg_d807ed3e-18bf-4d45-882b-2f5be9357a6b",
+          "quelleProduktId": "cfg_c38e63be-e4f3-4c75-95a7-ca331ceae8ba",
+          "varianten": 5,
+          "planAndSourceMatch": true,
+          "variantsMatch": true,
+          "targetDistinct": true,
+          "confirmationShape": true
+        },
+        {
+          "gruppe": "Tuerschild-Edelstahl-8x2_v1",
+          "planId": "pgp_7ec62d5a-6d28-48c5-b8da-fe940e39ee0e",
+          "confirmationId": "pgc_c5bc917c-20cb-4a15-8039-2402f48663f2",
+          "zielProduktId": "cfg_642a56e7-b7ac-43cd-9688-7842726ef6c2",
+          "quelleProduktId": "cfg_f2bb6a4b-1ce0-4ba8-a0ab-d92af17a8de0",
+          "varianten": 5,
+          "planAndSourceMatch": true,
+          "variantsMatch": true,
+          "targetDistinct": true,
+          "confirmationShape": true
+        }
+      ]
+    },
+    {
+      "name": "native_count_deltas_six",
+      "pass": true,
+      "evidence": {
+        "produkte": 6,
+        "revisionen": 6,
+        "importjournal": 6,
+        "plaene": 0,
+        "bestaetigungen": 6,
+        "ausfuehrungen": 6,
+        "formbindungen": 0,
+        "preisvertraege": 0,
+        "bindungskoepfe": 0,
+        "bindungsrevisionen": 0,
+        "katalogfreigaben": 0,
+        "transfers": 0
+      }
+    },
+    {
+      "name": "operator_count_deltas_45_and_6",
+      "pass": true,
+      "evidence": {
+        "produkte": 0,
+        "revisionen": 0,
+        "importjournal": 0,
+        "plaene": 0,
+        "bestaetigungen": 0,
+        "ausfuehrungen": 0,
+        "formbindungen": 45,
+        "preisvertraege": 45,
+        "bindungskoepfe": 45,
+        "bindungsrevisionen": 45,
+        "katalogfreigaben": 6,
+        "transfers": 6
+      }
+    },
+    {
+      "name": "all_15_reported_gate_names_exist_in_source",
+      "pass": true,
+      "evidence": {
+        "reported": [
+          "execute_sechs_neue_zielrecords",
+          "review_6_45",
+          "verlorene_antwort_stoppt_ohne_bindung",
+          "kein_blinder_zweitcreate",
+          "reconcile_6_drafts_45",
+          "bindungen_45_mit_vertrag",
+          "id_koepfe_45",
+          "katalogfreigaben_6",
+          "vertrag_vor_bindung_vor_einstieg",
+          "alle_draft_konfi_unveroeffentlicht",
+          "einstieg_gleich_cfg",
+          "replay_ohne_mutation",
+          "driftfaelle_stoppen_ohne_schreiben",
+          "quellkopie_unveraendert",
+          "kein_netzversuch"
+        ],
+        "source": [
+          "execute_sechs_neue_zielrecords",
+          "review_6_45",
+          "verlorene_antwort_stoppt_ohne_bindung",
+          "kein_blinder_zweitcreate",
+          "reconcile_6_drafts_45",
+          "bindungen_45_mit_vertrag",
+          "id_koepfe_45",
+          "katalogfreigaben_6",
+          "vertrag_vor_bindung_vor_einstieg",
+          "alle_draft_konfi_unveroeffentlicht",
+          "einstieg_gleich_cfg",
+          "replay_ohne_mutation",
+          "driftfaelle_stoppen_ohne_schreiben",
+          "quellkopie_unveraendert",
+          "kein_netzversuch"
+        ],
+        "note": "Names/report flags only; full raw runtime boolean map not supplied."
+      }
+    },
+    {
+      "name": "reported_unknown_reconcile_and_replay_are_consistent",
+      "pass": true,
+      "evidence": {
+        "verloreneCreateAntwort": {
+          "gestoppt": true,
+          "code": "shop_draft_transfer",
+          "status": 502,
+          "creates": 1,
+          "bindungen": 0
+        },
+        "zweiterCreateVersuch": {
+          "gestoppt": true,
+          "code": "shop_draft_transfer",
+          "status": 409,
+          "creates": 1
+        },
+        "reconcile": {
+          "produkte": 6,
+          "varianten": 45,
+          "schreibvorgaengeSynthetisch": {
+            "create": 6,
+            "personalization": 6,
+            "template": 6,
+            "customization_id": 6
+          }
+        },
+        "replay": {
+          "ok": true,
+          "neueSchreibvorgaenge": 0
+        },
+        "driftfaelle": {
+          "preis": "shop_draft_transfer",
+          "activeStatus": "shop_draft_transfer",
+          "vertragskonflikt": "six_drafts_pricing_conflict",
+          "ohneHaendlerrolle": "six_drafts_principal",
+          "falscherReviewHash": "six_drafts_approval",
+          "kopfdrift": "six_drafts_drift"
+        }
+      }
+    },
+    {
+      "name": "reported_small_pricing_scope_matches",
+      "pass": true,
+      "evidence": {
+        "spalten": [
+          "varianten",
+          "status",
+          "templateSuffix",
+          "vertragVarianten",
+          "extraMotifCents",
+          "extraPhotoCents",
+          "extraLogoCents",
+          "staffelstufen"
+        ],
+        "zeilen": [
+          [
+            10,
+            "DRAFT",
+            "konfi",
+            10,
+            169,
+            0,
+            null,
+            3
+          ],
+          [
+            10,
+            "DRAFT",
+            "konfi",
+            10,
+            169,
+            0,
+            null,
+            3
+          ],
+          [
+            10,
+            "DRAFT",
+            "konfi",
+            10,
+            169,
+            0,
+            null,
+            3
+          ],
+          [
+            5,
+            "DRAFT",
+            "konfi",
+            5,
+            169,
+            0,
+            null,
+            3
+          ],
+          [
+            5,
+            "DRAFT",
+            "konfi",
+            5,
+            169,
+            0,
+            null,
+            3
+          ],
+          [
+            5,
+            "DRAFT",
+            "konfi",
+            5,
+            169,
+            0,
+            null,
+            3
+          ]
+        ]
+      }
+    },
+    {
+      "name": "network_and_source_preservation_reported_not_independently_observed",
+      "pass": true,
+      "evidence": {
+        "reportedNetworkAttempts": 0,
+        "sourceHashEvidence": "Three original DB SHA values only in unavailable full TESTBELEG; report says equal."
+      }
+    },
+    {
+      "name": "historical_build_files_match_published_pins",
+      "pass": true,
+      "evidence": {
+        "bytes": 20977,
+        "sha256": "a5c59354755dcf73bdeca8006134847549d8712f70277634fab405db93532da2"
+      }
+    },
+    {
+      "name": "active_release_text_matches_historical_release",
+      "pass": true,
+      "evidence": {
+        "id": "1199363391489",
+        "name": "gravuru-2027-steel-pricing-input-20261108-v2",
+        "status": "Aktiv",
+        "veroeffentlicht": "2026-11-08 08:44",
+        "commit": "2abfd92",
+        "beschreibung": "Logo-Preisreparatur mit erhaltenen historischen Preisen; bestehende Theme-Dateien unveraendert."
+      }
+    },
+    {
+      "name": "one_function_uid_and_theme_uid_match_historical_release",
+      "pass": true,
+      "evidence": {
+        "function": {
+          "handle": "gravuru-personalization-price",
+          "uid": "3194be17-ee65-e144-e1da-65b8d1e1720183f0f9ef",
+          "api_version": "2026-07",
+          "anzahl": 1
+        },
+        "theme": {
+          "handle": "gravuru-storefront",
+          "uid": "a4d6506c-8e89-ca7d-f5b1-1a0d1e00a1f9bb93e76a",
+          "anzahl": 1
+        }
+      }
+    },
+    {
+      "name": "version_evidence_explicitly_bounds_wasm_screenshot_and_id_mapping",
+      "pass": true,
+      "evidence": [
+        "Das Dashboard zeigt weder WASM-Bytezahl noch WASM-SHA. a5c59354…32da2 / 20.977 B ist damit nicht neu gelesen, sondern folgt nur daraus, dass dieselbe Version aktiv ist wie am 08.11. belegt.",
+        "Zuordnung der Admin-API-Function-ID 01a0e45d-c47f-70b9-9d5a-a2c72120ae01 zur UID 3194be17-… ist hier nicht belegt (App hat genau eine Function; beide heißen gravuru-personalization-price).",
+        "Kein Screenshot: Bildschirmaufnahme des Tabs lief in ein Zeitlimit; Werte sind dem Seitentext entnommen."
+      ]
+    }
+  ],
+  "receivedVersionFile": {
+    "path": "ops/plesk/versionsbeleg-20261112/aktive-appversion-lesebeleg.json",
+    "bytes": 2912,
+    "sha256": "72874750425e0d1ded1e9e79516dc0c8bcbb0cde9a5f8ec25c732ec69a99db1e",
+    "upstreamChecksumSupplied": false
+  },
+  "rawFilesNotSupplied": [
+    {
+      "datei": "TESTBELEG-sechsdraft.json",
+      "bytes": 16276,
+      "sha256": "3eb9a6a28da472640393c5f70a2316d473eddc628a80b17a47985ad24b55220a"
+    },
+    {
+      "datei": "operator-log.jsonl",
+      "bytes": 36221,
+      "sha256": "d97651d84c4524d3838c090fe944f64744469446f7c3af554f234d84d017053a"
+    },
+    {
+      "datei": "sd-paket.json",
+      "bytes": 74589,
+      "sha256": "087d565e3afe8b44ba45849e650763e2bebf6448bf199279b7bad2e2d351f0db"
+    }
+  ],
+  "operatorReportedPasses": 15,
+  "independentlyReexecutedTests": 0,
+  "conclusion": {
+    "sixNativeCopyIntegration": "supported by reviewed runner and consistent operator compact report; not a full raw server receipt byte audit",
+    "activeRelease": "operator dashboard text observation of 1199363391489 at 2026-11-12T10:30Z matches historical release",
+    "mainCopyStillOpen": true,
+    "automaticFreshFunctionCallbackStillOpen": true,
+    "productApprovalGranted": false,
+    "productionWritesPerformedByReviewer": 0
+  }
+}

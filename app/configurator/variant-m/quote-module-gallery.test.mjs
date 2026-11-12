@@ -49,3 +49,19 @@ test('the module check still rejects a foreign ink when colours are switched off
  const recoloured=clone(d.objects);recoloured[0].color='#ff0000';
  assert.throws(()=>quote(c,recoloured,d.id,opts),/Farbwahl ist bei diesem Produkt ausgeschaltet/);
 });
+test('a default design set later on the same model is honoured when the design choice is switched off',()=>{
+ const c=fixture(3),opts=resolvedOptions(c),[a,b]=selectedProfile(c,opts).designs;
+ c.moduleProfile={...c.moduleProfile,modules:{...c.moduleProfile.modules,designs:false}};
+ c.profile.defaultDesignId=a.id;
+ // Empty object lists are template quotes and skip the module check, so quote with the design objects.
+ quote(c,a.objects,a.id,opts);assert.throws(()=>quote(c,b.objects,b.id,opts),/Designauswahl ist bei diesem Produkt ausgeschaltet/);
+ c.profile.defaultDesignId=b.id;
+ quote(c,b.objects,b.id,opts);assert.throws(()=>quote(c,a.objects,a.id,opts),/Designauswahl ist bei diesem Produkt ausgeschaltet/);
+});
+test('different executions on the same model keep their own quotes',()=>{
+ const c=fixture(4),sizes=c.familyFormats.formats.filter(f=>f.variants[0].designIds.length).map(f=>f.key),mountings=['K00','B02'];
+ const all=[];for(const size of sizes)for(const mounting of mountings){let opts;try{opts=resolvedOptions(c,{size,mounting});}catch{continue;}
+  const f=fixture(4),d=selectedProfile(f,opts).designs[0];
+  const fresh=quote(f,d.objects,d.id,opts),viaShared=quote(c,d.objects,d.id,opts);assert.deepEqual(viaShared,fresh);all.push(fresh.unitCents);}
+ assert.ok(all.length>=2);
+});

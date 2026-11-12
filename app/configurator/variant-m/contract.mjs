@@ -235,7 +235,9 @@ export function photoPolicyForDesign(config,designId,options={}){
 // configuration and option set still runs selectedProfile with all of its checks.
 const moduleQuoteContexts=new WeakMap();
 function moduleQuoteContext(config,options){
-  const key=JSON.stringify(options);let byOptions=moduleQuoteContexts.get(config);
+  // The stored default design is part of the key: a few editors set it on an existing
+  // model (e.g. the shop design switch); the next quote must then see the new value.
+  const key=JSON.stringify([config.profile?.defaultDesignId??null,options]);let byOptions=moduleQuoteContexts.get(config);
   if(!byOptions){byOptions=new Map();moduleQuoteContexts.set(config,byOptions);}
   let context=byOptions.get(key);
   if(!context){

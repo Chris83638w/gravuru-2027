@@ -1,0 +1,24 @@
+{
+ "schema": "gravuru-functioncallback-nachweis-kompakt/v1",
+ "kennzeichnung": "Echter frischer Functioncallback auf dem Host, 12.11.2026 17:33-17:35 MEZ. Nur Lesen bei Shopify (appVersions, activeAppVersion). Kein Operatorlauf, kein Plan, keine Datenbank, kein Produkt.",
+ "ordner": "sicherungen-db/functioncallback-20261112T163355Z",
+ "bestanden": true, "pruefungenGruen": 9,
+ "nachweis": {"datei": "NACHWEIS-functioncallback.json", "bytes": 4092, "sha256": "aa6a2e937dbd32cd15d5e8d486a93e4103a2f06f47910473e515d009051b9aac"},
+ "pakete": {"readerManifest": "2a4ddc33fa888c458312ee0d9d0623b082c7dad72bdeb3fcfaf7488379a57d83", "operatorManifest": "de182709cb4c004d338f666186cfa2785b755a708605adcf4d58b0c25721f416", "callback": {"datei": "fr-callback.mjs", "bytes": 10581, "sha256": "a19760739bd0ece91d56becc6c645e4e9cfc3ba886cb9e43d85287fbb42b1839"}, "sammeldatei": {"datei": "fr-paket.json", "bytes": 34149, "sha256": "7503ebf677d9677030e6acc449e60bf452d38dcb0ade88c17708a6e8b5183fa6"}, "maxAlterMs": 60000},
+ "reader": {"cliVersion": "4.9.0", "packageSha256": "79320bbe276c9a880521f5b26dd544811e953e1825db273d444f79a569f6ee3a", "clientChunkSha256": "fd19acfe6a52b0fa306e48f1f44c7790f62a627253dd83f28494c61665221643"},
+ "lesungen": [
+  {"nr": 1, "start": "2026-11-12T16:33:55.679Z", "readStartedAt": "2026-11-12T16:33:56.048Z", "observedAt": "2026-11-12T16:33:57.899Z", "readCompletedAt": "2026-11-12T16:33:58.338Z", "datei": "belege/active-version-000001.json", "bytes": 1405, "sha256": "90cee8857847a35573a8d3c9955415cb5e5744d2e0bacffb72202a2a2ebaed3b"},
+  {"nr": 2, "start": "2026-11-12T16:35:00.364Z", "readStartedAt": "2026-11-12T16:35:00.818Z", "observedAt": "2026-11-12T16:35:02.807Z", "readCompletedAt": "2026-11-12T16:35:03.235Z", "datei": "belege/active-version-000002.json", "bytes": 1405, "sha256": "1fbbacdb7f9dc544b2fa9d1f53ba06a0a3e5e3fb63471c206e51060b25b0c380"}
+ ],
+ "beobachtet": {"versionId": "gid://shopify/Version/1199363391489", "versionTag": "gravuru-2027-steel-pricing-input-20261108-v2", "releaseSnapshot": "gid://shopify/Release/1189458739201", "moduleCount": 8,
+  "function": {"registrationId": "3194be17-ee65-e144-e1da-65b8d1e1720183f0f9ef", "registrationUuid": "01a0e45d-c47f-70b9-9d5a-a2c72120ae01", "moduleId": "92c1bbf7-34fc-4bf6-927f-c6ca2a68112b", "wasmBytes": 20977, "inputQuerySha256": "cdfe1587948b86c69441de19b01c61e78a7772ff2598433bee069049891e95b9", "containsJsonValue": false, "containsValue": true, "configSha256": "008751f82528b554f1ef918e154fdf0138185b9ff1f33becfe18f3aea5094594"}, "wasmDigestRead": false},
+ "callbackErgebnis": {"schema": "issue230-active-pricing-function-evidence/v1", "releaseId": "gid://shopify/Version/1199363391489", "wasmSha256": "a5c59354755dcf73bdeca8006134847549d8712f70277634fab405db93532da2 (aus 08.11.-Beleg, nur für genau diese Version und 20.977 B)", "buildSourceSha256": "5977e9d9a510223d55f2f6635910aa7af97fcd300eaeec6480a56d921129f1a7", "observedAt": "aus der Lesung, unverändert", "reviewEvidenceSha256": "SHA der jeweiligen neuen Belegdatei", "formats": ["history", "v2", "valueInput", "variantDeltas", "variantSequence", "variantsFromRevision"]},
+ "probe": {"A": {"observedAt": "2026-11-12T16:33:57.899Z", "reviewEvidenceSha256": "90cee885…ed3b", "lesungen": 1}, "B_innerhalbFrist": {"observedAt": "2026-11-12T16:33:57.899Z", "lesungen": 1}, "driftAndereVersion": "pricing_active_function_changed (keine neue Lesung)", "unbelegtesFormat_v3": "pricing_function_format_unproven", "C_nach64916ms": {"observedAt": "2026-11-12T16:35:02.807Z", "reviewEvidenceSha256": "1fbbacdb…c380", "lesungen": 2}},
+ "grenzen": [
+  "WASM-SHA wird nicht gelesen (wasmDigestRead:false); Bindung über 08.11.-Beleg, gestützt durch gleiche Bytezahl, module_id und Query ohne jsonValue.",
+  "Callback Ende-zu-Ende über createMainFunctionProbe nachgewiesen, aber noch nicht in einer createConnections-Datei für den echten Lauf verdrahtet (das geschieht mit dem Plananschluss nach dem nativen Update).",
+  "Eine Lesung dauert ca. 2,7 s (Prozessstart bis Abschluss). Im 306-s-Blocklauf wären das ca. 6-8 Lesungen.",
+  "Versionsliste vor/nach dem Snapshot gleich; keine atomare Sperre gegen ein fremdes Deployment.",
+  "Gültigkeitsdauer des neuen Tokens nicht gelesen."
+ ]
+}

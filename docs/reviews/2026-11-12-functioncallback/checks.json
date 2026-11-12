@@ -1,0 +1,99 @@
+{
+  "schema": "issue230-real-functioncallback-independent-review/v1",
+  "sourceCommit": "08cab5eec30d54a1170df5067f4fec0978600d32",
+  "files": [
+    {
+      "file": "fr-callback.mjs",
+      "bytes": 10581,
+      "sha256": "a19760739bd0ece91d56becc6c645e4e9cfc3ba886cb9e43d85287fbb42b1839",
+      "gitBlob": "d072c94772cf88add84c3516048ad3794190c03d",
+      "matchesRemoteTree": true
+    },
+    {
+      "file": "kompakt-serverwerte.json",
+      "bytes": 4240,
+      "sha256": "bbd192c834982be9668f3b9e875eb4f85a2d7a73ad30b67cb7aca43ba1abaef5",
+      "gitBlob": "b959b7f41344cdb7b1597e3647dc3606a3f138a0",
+      "matchesRemoteTree": true
+    }
+  ],
+  "readerManifestSha256": "2a4ddc33fa888c458312ee0d9d0623b082c7dad72bdeb3fcfaf7488379a57d83",
+  "readerFiles": [
+    {
+      "file": "active-version-readonly.mjs",
+      "ok": true
+    },
+    {
+      "file": "active-version-readonly.test.mjs",
+      "ok": true
+    },
+    {
+      "file": "README.md",
+      "ok": true
+    },
+    {
+      "file": "tests.log",
+      "ok": true
+    },
+    {
+      "file": "source-checks.json",
+      "ok": true
+    }
+  ],
+  "mainSourceCommit": "49912d0",
+  "main": [
+    {
+      "file": "main-pricing.mjs",
+      "sha256": "888a584c7b5e4e5e4ab2a696c739d7246dab6f8c79fc7435996778283ccb1a83",
+      "bytes": 14469,
+      "equalsFrozenLocal": true
+    },
+    {
+      "file": "fixtures/function-build-20261108/compiled-proof.json",
+      "sha256": "5977e9d9a510223d55f2f6635910aa7af97fcd300eaeec6480a56d921129f1a7",
+      "bytes": 3838,
+      "equalsFrozenLocal": true
+    },
+    {
+      "file": "pricing-value.preview.json",
+      "sha256": "37ef02c6f98f6b463179093aca38a715a153141d8281203a158ddbc3e49b0705",
+      "bytes": 3898,
+      "equalsFrozenLocal": true
+    }
+  ],
+  "pricing": {
+    "schema": "gravuru-personalization-pricing/v2",
+    "revision": 2,
+    "historySchemas": [
+      "gravuru-personalization-pricing/v1"
+    ],
+    "requiredFormats": [
+      "history",
+      "v2",
+      "valueInput",
+      "variantDeltas",
+      "variantSequence",
+      "variantsFromRevision"
+    ],
+    "reportedFormats": [
+      "history",
+      "v2",
+      "valueInput",
+      "variantDeltas",
+      "variantSequence",
+      "variantsFromRevision"
+    ],
+    "exactFormatMatch": true,
+    "v3Required": false
+  },
+  "reportedTiming": {
+    "maxAgeMs": 60000,
+    "observationDeltaMs": 64908,
+    "secondStartAfterFirstCompletedMs": 62026
+  },
+  "callbackExecutedByReviewer": false,
+  "credentialReadsByReviewer": 0,
+  "hostOrShopWritesByReviewer": 0,
+  "privateFullProofReceived": false,
+  "operatorReportedPassed": 9
+}

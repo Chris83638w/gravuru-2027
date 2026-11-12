@@ -1,0 +1,52 @@
+{
+  "schema": "issue230-main-v8-artifact-reimport/v1",
+  "allPassed": true,
+  "workbooks": 1,
+  "records": [
+    {
+      "group": "main-acrylic-existing",
+      "xlsxSha256": "b0e7274ce05876d34c5f63e7703768936678f960e69f242c64e1d17579a2fe92",
+      "allNewCellValuesMatch": true,
+      "cellsCompared": 7482,
+      "images": [
+        {
+          "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.AusfuehrungV8-1-Reimport.png",
+          "sheet": "AusfuehrungV8",
+          "range": "A1:C28"
+        },
+        {
+          "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.AusfuehrungV8-2-Reimport.png",
+          "sheet": "AusfuehrungV8",
+          "range": "A29:C45"
+        },
+        {
+          "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.Varianten808-1-Reimport.png",
+          "sheet": "Varianten808",
+          "range": "A1:I22"
+        },
+        {
+          "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.Varianten808-2-Reimport.png",
+          "sheet": "Varianten808",
+          "range": "A777:I799"
+        },
+        {
+          "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.Varianten808-3-Reimport.png",
+          "sheet": "Varianten808",
+          "range": "A800:I815"
+        },
+        {
+          "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.BelegeV8-1-Reimport.png",
+          "sheet": "BelegeV8",
+          "range": "A1:C25"
+        },
+        {
+          "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.BelegeV8-2-Reimport.png",
+          "sheet": "BelegeV8",
+          "range": "A26:C34"
+        }
+      ],
+      "visuallyReviewed": false
+    }
+  ],
+  "visuallyReviewed": false
+}

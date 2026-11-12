@@ -1,0 +1,102 @@
+{
+  "schema": "issue230-main-v8-completion-preparation/v1",
+  "status": "prepared-awaiting-actual-execution-evidence",
+  "purpose": "completion-evidence-only-not-import",
+  "previousWorkbook": {
+    "path": "outputs/Produktplaene-230-main-v7/Tuerschild-Acrylglas-3mm_v7.xlsx",
+    "bytes": 142074,
+    "sha256": "65d706e1a99cc599ba7a1c577de028208a5efd356f97bd997f68be3f899cde29"
+  },
+  "outputFilename": "Tuerschild-Acrylglas-3mm_v8.xlsx",
+  "existingNativeIdentity": "cfg_8e7ebe96-28d2-406f-b31e-036ee61f47e0",
+  "existingShopIdentity": "gid://shopify/Product/16190784602492",
+  "approvedOriginalReview": {
+    "reviewHash": "8e8814cabbddb0354e0af029e1bdb09f0a668f69af03dd056792a99c6b7d517d",
+    "importFingerprint": "2872b28895453ec8fc3af89a293e7f3d144c56bdf03dbae6b09c5296fcb9e01f"
+  },
+  "noNewCreationKey": true,
+  "approvedScope": {
+    "allShopVariants": 808,
+    "targetR2": 778,
+    "preserveR1": 30,
+    "priceChanges": 158,
+    "labelChanges": 30,
+    "overlapPriceAndLabel": 6,
+    "uniqueShopMutationRows": 182,
+    "shopStatus": "DRAFT",
+    "publication": false,
+    "oldVariantDeletion": false
+  },
+  "plannedSheets": [
+    {
+      "name": "AusfuehrungV8",
+      "content": "Actual native update, operator review/approval/execution references and separately attributed reported counts; no ProductGroup-plan substitution."
+    },
+    {
+      "name": "Varianten808",
+      "content": "All existing808 Shopify variant IDs joined to actual final selectedOptions and exact cent values; R2-target778 and retainedR1-30 distinguished with evidence provenance."
+    },
+    {
+      "name": "BelegeV8",
+      "content": "Received files and SHA256, independent full Shopify readback, preservation checks, historical v7/copy evidence, scoped protected16 before/after result, limits."
+    }
+  ],
+  "missingActualInputs": [
+    "Delivered final Main execution result with commit/path/bytehash and actual update receipt/reference, current revision, actual final operator reviewHash and import/binding/catalog result pins as actually supplied",
+    "Complete final Main808 Shopify readback, field scope and last-page evidence from catalog_review, with its exact mapping check",
+    "Actual supplied native778R2+30R1/catalog/pricing-contract evidence; compact summary and full raw receipt distinguished; no individual records invented"
+  ],
+  "generationPolicy": "No final normalized execution JSON/XLSX until received actual inputs have been inspected. New output path exclusively; all old cells/formulas/worksheet/table/relation bytes preserved. Endnote does not execute/reimport anything.",
+  "pins": [
+    {
+      "path": "outputs/Produktplaene-230-main-v7/Tuerschild-Acrylglas-3mm_v7.xlsx",
+      "bytes": 142074,
+      "sha256": "65d706e1a99cc599ba7a1c577de028208a5efd356f97bd997f68be3f899cde29"
+    },
+    {
+      "path": "work/restabschluss/main-target-preview/github-payload/variant-mapping.preview.json.gz",
+      "bytes": 34612,
+      "sha256": "3d0647b2cb671ba09199b6f9c4b9cdbfa58f24a0eafb1d2d672a18823070c9bf"
+    },
+    {
+      "path": "work/restabschluss/final-execution-excel/build-appendices.mjs",
+      "bytes": 8385,
+      "sha256": "934ea32a78ab8a25eed4078f265b37ca9030aa06e14afbb8e27ad346d18dc56e"
+    },
+    {
+      "path": "work/restabschluss/final-execution-excel/graft-and-verify.py",
+      "bytes": 5053,
+      "sha256": "afaeac1d1821dad502b263d0c3408dbb592e1eded16a32c5728372506d806a78"
+    },
+    {
+      "path": "work/restabschluss/final-execution-excel/verify-appendices.mjs",
+      "bytes": 2511,
+      "sha256": "b25365d6b631fb981606ad796983e95fa98381cc536556a3531b8cdaba33ebe1"
+    },
+    {
+      "path": "work/restabschluss/six-plan-excel/graft-appendices.py",
+      "bytes": 10567,
+      "sha256": "80ef7e08d4061ee77d4c56494ee7f1ab71052f91d9d04304555b5f7107013d6f"
+    },
+    {
+      "path": "work/restabschluss/six-plan-excel/verify-preservation.py",
+      "bytes": 5242,
+      "sha256": "b9d97c807557396734ba9e9a19909618a272567fa2f6263b58e849ded149e31e"
+    },
+    {
+      "path": "work/restabschluss/live-readbacks-20261112/protected16-before.json",
+      "bytes": 59192,
+      "sha256": "6ca0435eecda424e3bac6332bb002c8c67cc504412eec3800c3a877d838db642"
+    },
+    {
+      "path": "work/restabschluss/live-readbacks-20261112/protected16-after.json",
+      "bytes": 59176,
+      "sha256": "3df9f8fa39dd2d64c1ddf8415880e9aaa466e6f871d95194d77171c8f0a13159"
+    },
+    {
+      "path": "work/restabschluss/live-readbacks-20261112/protected16-comparison.json",
+      "bytes": 3630,
+      "sha256": "292b28e2e24892b0caa9b3fae8a8e31721f118bb9138758bce87a7ff62f898f8"
+    }
+  ]
+}

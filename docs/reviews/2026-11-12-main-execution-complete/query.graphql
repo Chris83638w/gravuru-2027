@@ -1,0 +1,10 @@
+query MainFinalReadback($after: String) {
+ shop { myshopifyDomain currencyCode }
+ product(id: "gid://shopify/Product/16190784602492") {
+ id updatedAt status templateSuffix featuredMedia { id }
+ media(first:50) { nodes { id } pageInfo { hasNextPage endCursor } }
+ customization:metafield(namespace:"custom",key:"customization_id") { value }
+ variants(first:50,after:$after) { nodes { id sku price selectedOptions { name value } } pageInfo { hasNextPage endCursor } }
+ }
+}
+

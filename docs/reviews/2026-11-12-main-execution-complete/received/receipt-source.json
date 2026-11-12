@@ -1,0 +1,12 @@
+{
+  "repository": "Chris83638w/gravuru-2027",
+  "branch": "dev/claude-db-sicherung-20261111",
+  "commit": "f9af62fa193078afeee233ca1efdf6bf022caef6",
+  "path": "ops/plesk/ausfuehrung-20261112/3-main-ergebnis.json",
+  "gitBlobSha1": "22c42084e2b95fdf49a41957e8d9661bfa5a0034",
+  "comment": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6832031956",
+  "bytes": 8507,
+  "sha256": "ae2a8b119f17f676faf263b48c076de883cbb7c1339f1078d7bed57c0ddaa95f",
+  "gitBlobByteMatch": true,
+  "provenance": "Original Git file bytes; summarized operator report, not the private full execution proof"
+}

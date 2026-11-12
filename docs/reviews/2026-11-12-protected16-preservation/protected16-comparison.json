@@ -1,0 +1,124 @@
+{
+  "readOnly": true,
+  "beforeObservedFrom": "2026-11-12T16:55:21.084Z",
+  "afterObservedFrom": "2026-11-12T18:14:36.000Z",
+  "afterObservedTo": "2026-11-12T18:14:38.067Z",
+  "countBefore": 16,
+  "countAfter": 16,
+  "scope": "Only get_product fields actually returned. Inventory quantities excluded because live orders can change them. No claim about unqueried metafields.",
+  "allPassed": true,
+  "products": [
+    {
+      "id": "gid://shopify/Product/16067894018428",
+      "sameProtectedProjection": true,
+      "changedFields": [],
+      "beforeStatus": "ACTIVE",
+      "afterStatus": "ACTIVE"
+    },
+    {
+      "id": "gid://shopify/Product/16077792936316",
+      "sameProtectedProjection": true,
+      "changedFields": [],
+      "beforeStatus": "ACTIVE",
+      "afterStatus": "ACTIVE"
+    },
+    {
+      "id": "gid://shopify/Product/16077793132924",
+      "sameProtectedProjection": true,
+      "changedFields": [],
+      "beforeStatus": "ACTIVE",
+      "afterStatus": "ACTIVE"
+    },
+    {
+      "id": "gid://shopify/Product/16077793263996",
+      "sameProtectedProjection": true,
+      "changedFields": [],
+      "beforeStatus": "ACTIVE",
+      "afterStatus": "ACTIVE"
+    },
+    {
+      "id": "gid://shopify/Product/16077793329532",
+      "sameProtectedProjection": true,
+      "changedFields": [],
+      "beforeStatus": "ACTIVE",
+      "afterStatus": "ACTIVE"
+    },
+    {
+      "id": "gid://shopify/Product/16077793624444",
+      "sameProtectedProjection": true,
+      "changedFields": [],
+      "beforeStatus": "ACTIVE",
+      "afterStatus": "ACTIVE"
+    },
+    {
+      "id": "gid://shopify/Product/16077793755516",
+      "sameProtectedProjection": true,
+      "changedFields": [],
+      "beforeStatus": "ACTIVE",
+      "afterStatus": "ACTIVE"
+    },
+    {
+      "id": "gid://shopify/Product/16077794247036",
+      "sameProtectedProjection": true,
+      "changedFields": [],
+      "beforeStatus": "ACTIVE",
+      "afterStatus": "ACTIVE"
+    },
+    {
+      "id": "gid://shopify/Product/16077794312572",
+      "sameProtectedProjection": true,
+      "changedFields": [],
+      "beforeStatus": "ACTIVE",
+      "afterStatus": "ACTIVE"
+    },
+    {
+      "id": "gid://shopify/Product/16077794476412",
+      "sameProtectedProjection": true,
+      "changedFields": [],
+      "beforeStatus": "ACTIVE",
+      "afterStatus": "ACTIVE"
+    },
+    {
+      "id": "gid://shopify/Product/16078712930684",
+      "sameProtectedProjection": true,
+      "changedFields": [],
+      "beforeStatus": "ACTIVE",
+      "afterStatus": "ACTIVE"
+    },
+    {
+      "id": "gid://shopify/Product/16078712996220",
+      "sameProtectedProjection": true,
+      "changedFields": [],
+      "beforeStatus": "ACTIVE",
+      "afterStatus": "ACTIVE"
+    },
+    {
+      "id": "gid://shopify/Product/16078713028988",
+      "sameProtectedProjection": true,
+      "changedFields": [],
+      "beforeStatus": "ACTIVE",
+      "afterStatus": "ACTIVE"
+    },
+    {
+      "id": "gid://shopify/Product/16078713127292",
+      "sameProtectedProjection": true,
+      "changedFields": [],
+      "beforeStatus": "ACTIVE",
+      "afterStatus": "ACTIVE"
+    },
+    {
+      "id": "gid://shopify/Product/16078713880956",
+      "sameProtectedProjection": true,
+      "changedFields": [],
+      "beforeStatus": "ACTIVE",
+      "afterStatus": "ACTIVE"
+    },
+    {
+      "id": "gid://shopify/Product/16078714405244",
+      "sameProtectedProjection": true,
+      "changedFields": [],
+      "beforeStatus": "ACTIVE",
+      "afterStatus": "ACTIVE"
+    }
+  ]
+}

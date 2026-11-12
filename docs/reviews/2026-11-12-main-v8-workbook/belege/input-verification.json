@@ -1,0 +1,11 @@
+{
+  "schema": "issue230-main-v8-input-check/v1",
+  "allPassed": true,
+  "inputSha256": "0eeacdfa139194c445c8cc17548b23a9e9500767ba5be12ee4af99dde7c8b823",
+  "variants": 808,
+  "target": 778,
+  "residual": 30,
+  "allExactPricesOptionsSkus": true,
+  "receivedSummarySha256": "ae2a8b119f17f676faf263b48c076de883cbb7c1339f1078d7bed57c0ddaa95f",
+  "previousUnchanged": true
+}

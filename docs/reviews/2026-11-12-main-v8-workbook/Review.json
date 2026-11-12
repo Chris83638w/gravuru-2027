@@ -1,0 +1,216 @@
+{
+  "schema": "issue230-main-v8-completion-review/v1",
+  "purpose": "completion-evidence-only-no-import",
+  "workbook": {
+    "file": "Tuerschild-Acrylglas-3mm_v8.xlsx",
+    "bytes": 184257,
+    "sha256": "b0e7274ce05876d34c5f63e7703768936678f960e69f242c64e1d17579a2fe92"
+  },
+  "sourceReceipt": {
+    "commit": "f9af62fa193078afeee233ca1efdf6bf022caef6",
+    "file": "ops/plesk/ausfuehrung-20261112/3-main-ergebnis.json",
+    "deliveredBytes": 8507,
+    "deliveredSha256": "ae2a8b119f17f676faf263b48c076de883cbb7c1339f1078d7bed57c0ddaa95f",
+    "comment": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6832031956",
+    "fullPrivateReceipt": {
+      "bytes": 11296,
+      "sha256": "73d5bc348c2ef8b0d226f5be7da848eaf70599583b0da9096a92bb275e52acff",
+      "received": false
+    }
+  },
+  "actualPins": {
+    "shopProductId": "gid://shopify/Product/16190784602492",
+    "cfg": "cfg_8e7ebe96-28d2-406f-b31e-036ee61f47e0",
+    "nativeRevision": 2,
+    "documentSha256": "f0bb7d95e89e3aae66ab04454d6476132fe197aaae7c1da48ce8209ced62d285",
+    "documentHashMethod": "native-id-binding-string-canonical",
+    "metadataSha256": "52476368aa083eebf168c30f1f2ea54415b18f1d6c02b53e41173fa58a2ef075",
+    "nativeImportFingerprint": "2872b28895453ec8fc3af89a293e7f3d144c56bdf03dbae6b09c5296fcb9e01f",
+    "nativeOriginalReviewHash": "8e8814cabbddb0354e0af029e1bdb09f0a668f69af03dd056792a99c6b7d517d",
+    "nativeUpdateApprovalHash": "4a7e97e7b55bf8fefe10e4be8e9422fc8e5d0c1225ae6a2bde79bdb594981458",
+    "nativeUpdateReceiptHash": "4a313e25bc7c041db135d5cbd2da582956e2d7f81758cd8c1e60327460234e91",
+    "mainOperatorPlanHash": "698c6734669dba47c06b6d9008d4f0a3bcb6236967f72a02ebd259ba0b614258",
+    "pricingPlanHash": "3c85e66b02d6f020b2f58055aa6390c98f3b07af97ecdd7c29c61c56e251ed0f",
+    "mainOperatorApprovalHash": "242db8905f3060875cd23622fed4c7290cff9a72d5dd4596229906ee762c937a"
+  },
+  "independentShopRead": {
+    "allPassed": true,
+    "checks": 16,
+    "pages": 17,
+    "variants": 808,
+    "prices": 808,
+    "options": 808,
+    "skus": 808,
+    "targetRows": 778,
+    "residualRows": 30,
+    "priceChanges": 158,
+    "labelChanges": 30,
+    "uniqueChangedVariants": 182,
+    "overlap": 6,
+    "status": "DRAFT",
+    "h1AndAllMediaPreserved": true,
+    "historicalAliasPreserved": true,
+    "readAfterReportedCompletion": true,
+    "nativeTablesRead": false,
+    "priceMetafieldRead": false,
+    "evidenceDirectory": "../2026-11-12-main-execution-complete",
+    "evidenceManifestSha256": "3fa03b0ae523e7bd02d5bbc901d48a227c79e444823967f9bfce44b2973ce2f9"
+  },
+  "operatorReported": {
+    "finalChecks": "19/19",
+    "completionAt": "2026-11-12T18:08:20Z",
+    "journalEntries": 22,
+    "lockOpen": false,
+    "bindingsR2": 778,
+    "activeR1Preserved": 30,
+    "historicalR1PricingContractsPreserved": 808,
+    "newR2PricingContracts": 778,
+    "catalogR2Coverage": 778,
+    "catalogR1CoveragePreserved": 808,
+    "priceMetafieldSha256": "37ef02c6f98f6b463179093aca38a715a153141d8281203a158ddbc3e49b0705",
+    "summaryConsistencyChecks": 11,
+    "allSummaryConsistencyChecksPassed": true,
+    "fullNativeRecordsReceived": false
+  },
+  "preservation": {
+    "schema": "issue230-main-v8-preservation-check/v1",
+    "allPassed": true,
+    "workbooks": 1,
+    "variantRows": 808,
+    "originalCells": 14257,
+    "previousCells": 16227,
+    "newCellsCompared": 7482,
+    "oldSheets": 18,
+    "newSheets": 3,
+    "previousPartsPreserved": 32,
+    "allPreviousCellsIdentical": true,
+    "allOriginalCellsIdentical": true,
+    "allPreservedPartsByteIdentical": true
+  },
+  "reimport": {
+    "allNewCellsMatch": true,
+    "comparedCells": 7482,
+    "images": 7
+  },
+  "visual": {
+    "schema": "issue230-main-v8-manual-visual-review/v1",
+    "authorReview": {
+      "images": [
+        {
+          "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.AusfuehrungV8-1-Reimport.png",
+          "sheet": "AusfuehrungV8",
+          "range": "A1:C28",
+          "sha256": "ec393c4851719beb58bc3429636e02c1902a90078f0614eb249a81083df74182",
+          "bytes": 186136,
+          "visuallyReviewed": true,
+          "result": "Legible IDs, complete hashes, source limits and price columns; no clipping observed."
+        },
+        {
+          "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.AusfuehrungV8-2-Reimport.png",
+          "sheet": "AusfuehrungV8",
+          "range": "A29:C45",
+          "sha256": "ae67a73ca18e9b0b6a95329202b94e5f5879b32d2346bd88f522e3ee8876f7bd",
+          "bytes": 125179,
+          "visuallyReviewed": true,
+          "result": "Legible IDs, complete hashes, source limits and price columns; no clipping observed."
+        },
+        {
+          "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.Varianten808-1-Reimport.png",
+          "sheet": "Varianten808",
+          "range": "A1:I22",
+          "sha256": "a245a2c01c4573079bf22e767e71f56ad9848077d5cda85a974a2618df8fd64c",
+          "bytes": 183253,
+          "visuallyReviewed": true,
+          "result": "Legible IDs, complete hashes, source limits and price columns; no clipping observed."
+        },
+        {
+          "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.Varianten808-2-Reimport.png",
+          "sheet": "Varianten808",
+          "range": "A777:I799",
+          "sha256": "1ec0e27b2c1d0072597a384674996cd9e739742f29728c3610d9add2839fc814",
+          "bytes": 238646,
+          "visuallyReviewed": true,
+          "result": "Legible IDs, complete hashes, source limits and price columns; no clipping observed."
+        },
+        {
+          "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.Varianten808-3-Reimport.png",
+          "sheet": "Varianten808",
+          "range": "A800:I815",
+          "sha256": "fc38f1293c7b2bb5be227647f3e67a65df1969a9ae915374fbc238571de14bdc",
+          "bytes": 163148,
+          "visuallyReviewed": true,
+          "result": "Legible IDs, complete hashes, source limits and price columns; no clipping observed."
+        },
+        {
+          "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.BelegeV8-1-Reimport.png",
+          "sheet": "BelegeV8",
+          "range": "A1:C25",
+          "sha256": "b36155389b8a187e1cf21b893d5b3548345f9592fa9dc2f8107756102ef9ffe5",
+          "bytes": 204436,
+          "visuallyReviewed": true,
+          "result": "Legible IDs, complete hashes, source limits and price columns; no clipping observed."
+        },
+        {
+          "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.BelegeV8-2-Reimport.png",
+          "sheet": "BelegeV8",
+          "range": "A26:C34",
+          "sha256": "14d9b7ec8fd0e4027e6e54f6252b6416012caf0f486968d358883cb76a416bb9",
+          "bytes": 84478,
+          "visuallyReviewed": true,
+          "result": "Legible IDs, complete hashes, source limits and price columns; no clipping observed."
+        }
+      ],
+      "allPassed": true,
+      "scope": "All 3 new sheets; 7 displayed excerpts, not visual inspection of every one of 808 rows. All new cell values separately compared."
+    },
+    "independentRootReview": {
+      "images": [
+        "Tuerschild-Acrylglas-3mm_v8.xlsx.AusfuehrungV8-1-Reimport.png",
+        "Tuerschild-Acrylglas-3mm_v8.xlsx.Varianten808-3-Reimport.png",
+        "Tuerschild-Acrylglas-3mm_v8.xlsx.BelegeV8-2-Reimport.png"
+      ],
+      "allPassed": true,
+      "scope": "3 excerpts independently viewed; IDs/prices/evidence boundaries legible; no visible text loss."
+    },
+    "excelDesktopTest": false
+  },
+  "process": {
+    "schema": "issue230-main-v8-process-results/v1",
+    "build": {
+      "exitCode": 0,
+      "log": "build.log"
+    },
+    "graft": {
+      "exitCode": 0,
+      "log": "graft.log"
+    },
+    "reimport": {
+      "exitCode": 3221226505,
+      "log": "reimport.log",
+      "allNewCellValuesMatch": true,
+      "comparedCells": 7482,
+      "renderedImages": 7,
+      "completeReportWritten": true,
+      "cleanExit": false,
+      "causeEstablished": false,
+      "repeated": false
+    },
+    "limit": "The reimport process ended nonzero after all assertions, render files and completion report were written. This is not a clean runtime process result."
+  },
+  "protected16": {
+    "allPassed": true,
+    "statusEach": "ACTIVE",
+    "fieldsUnchanged": 16,
+    "inventoryQuantitiesCompared": false,
+    "unqueriedMetafieldsCompared": false,
+    "comparisonSha256": "292b28e2e24892b0caa9b3fae8a8e31721f118bb9138758bce87a7ff62f898f8"
+  },
+  "limits": [
+    "Private full server receipts/plan/binding rows are pinned as reported, not delivered or independently recomputed.",
+    "Native binding revision values in the table are attributed to the actual operator coverage, not Shopify fields.",
+    "Reimport process ended nonzero after all files and complete allPassed content report were written. No Excel desktop run claimed.",
+    "Seven visual excerpts cover all new sheets; full808 values are machine-compared, not all808 rows visually inspected.",
+    "No browser/cart/order/production operation performed by this workbook task.",
+    "No modification of original/v7/six completed workbooks, no new creationKey/import/reimport."
+  ]
+}

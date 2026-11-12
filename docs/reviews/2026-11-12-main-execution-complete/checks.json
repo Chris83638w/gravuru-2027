@@ -1,0 +1,2619 @@
+{
+  "schema": "issue230-main-final-independent-shop-readback/v1",
+  "source": "Actual Shopify connector read; no writes",
+  "allPassed": true,
+  "checks": [
+    {
+      "name": "seventeen_complete_pages",
+      "pass": true
+    },
+    {
+      "name": "808_unique_ids",
+      "pass": true
+    },
+    {
+      "name": "pagination_chain",
+      "pass": true
+    },
+    {
+      "name": "shop_currency_and_product",
+      "pass": true
+    },
+    {
+      "name": "stable_product_across_all_pages",
+      "pass": true,
+      "details": {
+        "updatedAt": "2026-11-12T18:02:55Z"
+      }
+    },
+    {
+      "name": "draft_and_konfi",
+      "pass": true
+    },
+    {
+      "name": "h1_and_all_media_preserved",
+      "pass": true
+    },
+    {
+      "name": "historical_custom_alias_preserved",
+      "pass": true
+    },
+    {
+      "name": "dedicated_product_tool_agrees",
+      "pass": true
+    },
+    {
+      "name": "exact_original_808_id_set",
+      "pass": true
+    },
+    {
+      "name": "778_target_rows_exact",
+      "pass": true,
+      "details": {
+        "matched": 778
+      }
+    },
+    {
+      "name": "30_residual_rows_unchanged",
+      "pass": true,
+      "details": {
+        "matched": 30
+      }
+    },
+    {
+      "name": "all_prices_options_skus_exact",
+      "pass": true,
+      "details": {
+        "prices": 808,
+        "options": 808,
+        "skus": 808
+      }
+    },
+    {
+      "name": "158_price_30_label_182_unique_deltas",
+      "pass": true,
+      "details": {
+        "prices": 158,
+        "labels": 30,
+        "unique": 182,
+        "overlap": 6
+      }
+    },
+    {
+      "name": "138_B02S_minus30_and20_B04S_minus10",
+      "pass": true
+    },
+    {
+      "name": "zero_variant_differences",
+      "pass": true
+    }
+  ],
+  "scope": {
+    "productId": "gid://shopify/Product/16190784602492",
+    "variants": 808,
+    "shopifyReads": 18,
+    "graphqlPages": 17,
+    "maxPageSize": 50,
+    "mutations": 0,
+    "nativeTablesRead": false,
+    "priceMetafieldRead": false
+  },
+  "timestamps": {
+    "firstPageRecordedAfterResponse": "2026-11-12T18:14:53.367Z",
+    "firstTimedRequest": "2026-11-12T18:14:53.368Z",
+    "finalResponse": "2026-11-12T18:15:43.066Z",
+    "stableProductUpdatedAt": "2026-11-12T18:02:55Z"
+  },
+  "sourcePins": {
+    "connectorPagesSha256": "3fb66e487edb18dee5af5331f1e56650a7f83927e186dc0e5db9eb1679103de9",
+    "productToolSha256": "1c0485d0b3baa706f64ab6e95fe561bae2f59c05b67be3f7f6478f2392d03431",
+    "mappingGzipSha256": "3d0647b2cb671ba09199b6f9c4b9cdbfa58f24a0eafb1d2d672a18823070c9bf",
+    "mappingJsonSha256": "3d476d9d964158c1f96a9e55b5de5a2cfa36afd8b5d3bcd86313c12be2c77591"
+  },
+  "preserved": {
+    "featuredMedia": "gid://shopify/MediaImage/70116579869052",
+    "mediaIds": [
+      "gid://shopify/MediaImage/70116579869052",
+      "gid://shopify/MediaImage/70017733919100"
+    ],
+    "customizationId": "katalog-formate-acryl-tuerschilder-familienschilder-eb5fe26624befe4a",
+    "status": "DRAFT",
+    "templateSuffix": "konfi"
+  },
+  "counts": {
+    "targets": 778,
+    "residual": 30,
+    "prices": 808,
+    "options": 808,
+    "skus": 808,
+    "priceChanges": 158,
+    "labelChanges": 30,
+    "uniqueChangedVariants": 182
+  },
+  "differences": [],
+  "observedDeltas": [
+    {
+      "id": "gid://shopify/ProductVariant/58104615993724",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-K00",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 799,
+      "afterCents": 799,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616026492",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-KGL",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 1098,
+      "afterCents": 1098,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616059260",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-KRA",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 1198,
+      "afterCents": 1198,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616092028",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-B02",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 1048,
+      "afterCents": 1048,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616124796",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": true,
+      "beforeCents": 1098,
+      "afterCents": 1068,
+      "deltaCents": -30,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616157564",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-K00",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 799,
+      "afterCents": 799,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616190332",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-KGL",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 1098,
+      "afterCents": 1098,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616223100",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-KRA",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 1198,
+      "afterCents": 1198,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616255868",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-B02",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 1048,
+      "afterCents": 1048,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616288636",
+      "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": true,
+      "beforeCents": 1098,
+      "afterCents": 1068,
+      "deltaCents": -30,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 7 × 2,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616780156",
+      "sku": "156-TS-Acryl-RE-90X30-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1198,
+      "afterCents": 1168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104616943996",
+      "sku": "156-TS-Acryl-RE-90X30-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1198,
+      "afterCents": 1168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104617107836",
+      "sku": "156-TS-Acryl-RE-120X40-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1498,
+      "afterCents": 1468,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104617271676",
+      "sku": "156-TS-Acryl-RE-120X40-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1498,
+      "afterCents": 1468,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104617435516",
+      "sku": "156-TS-Acryl-EL-120X40-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1498,
+      "afterCents": 1468,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104617599356",
+      "sku": "156-TS-Acryl-EL-120X40-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1498,
+      "afterCents": 1468,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104617763196",
+      "sku": "156-TS-Acryl-RE-150X50-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1698,
+      "afterCents": 1668,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104617927036",
+      "sku": "156-TS-Acryl-RE-150X50-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1698,
+      "afterCents": 1668,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104618090876",
+      "sku": "156-TS-Acryl-EL-150X50-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1798,
+      "afterCents": 1768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104618254716",
+      "sku": "156-TS-Acryl-EL-150X50-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1798,
+      "afterCents": 1768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104618418556",
+      "sku": "156-TS-Acryl-RE-180X60-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2198,
+      "afterCents": 2168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104618582396",
+      "sku": "156-TS-Acryl-RE-180X60-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2198,
+      "afterCents": 2168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104618746236",
+      "sku": "156-TS-Acryl-EL-180X60-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2198,
+      "afterCents": 2168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104618910076",
+      "sku": "156-TS-Acryl-EL-180X60-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2198,
+      "afterCents": 2168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104619073916",
+      "sku": "156-TS-Acryl-RE-210X70-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2498,
+      "afterCents": 2468,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104619237756",
+      "sku": "156-TS-Acryl-RE-210X70-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2498,
+      "afterCents": 2468,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104619401596",
+      "sku": "156-TS-Acryl-EL-210X70-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2798,
+      "afterCents": 2768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104619565436",
+      "sku": "156-TS-Acryl-EL-210X70-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2798,
+      "afterCents": 2768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104619729276",
+      "sku": "156-TS-Acryl-RE-240X80-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2798,
+      "afterCents": 2768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104619893116",
+      "sku": "156-TS-Acryl-RE-240X80-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2798,
+      "afterCents": 2768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104620056956",
+      "sku": "156-TS-Acryl-EL-240X80-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3198,
+      "afterCents": 3168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104620220796",
+      "sku": "156-TS-Acryl-EL-240X80-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3198,
+      "afterCents": 3168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104620384636",
+      "sku": "156-TS-Acryl-RE-270X90-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3298,
+      "afterCents": 3268,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104620548476",
+      "sku": "156-TS-Acryl-RE-270X90-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3298,
+      "afterCents": 3268,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104620712316",
+      "sku": "156-TS-Acryl-EL-270X90-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3598,
+      "afterCents": 3568,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104620876156",
+      "sku": "156-TS-Acryl-EL-270X90-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3598,
+      "afterCents": 3568,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104621039996",
+      "sku": "156-TS-Acryl-OV-300X100-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4298,
+      "afterCents": 4268,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104621203836",
+      "sku": "156-TS-Acryl-OV-300X100-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4298,
+      "afterCents": 4268,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104621695356",
+      "sku": "156-TS-Acryl-RE-80X35-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1198,
+      "afterCents": 1168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104621859196",
+      "sku": "156-TS-Acryl-RE-80X35-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1198,
+      "afterCents": 1168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104622023036",
+      "sku": "156-TS-Acryl-RE-120X52P5-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1598,
+      "afterCents": 1568,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104622186876",
+      "sku": "156-TS-Acryl-RE-120X52P5-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1598,
+      "afterCents": 1568,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104622350716",
+      "sku": "156-TS-Acryl-RE-160X70-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1998,
+      "afterCents": 1968,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104622514556",
+      "sku": "156-TS-Acryl-RE-160X70-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1998,
+      "afterCents": 1968,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104622678396",
+      "sku": "156-TS-Acryl-RE-240X105-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2898,
+      "afterCents": 2868,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104622842236",
+      "sku": "156-TS-Acryl-RE-240X105-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2898,
+      "afterCents": 2868,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104623006076",
+      "sku": "156-TS-Acryl-RE-320X140-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4198,
+      "afterCents": 4168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104623169916",
+      "sku": "156-TS-Acryl-RE-320X140-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4198,
+      "afterCents": 4168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104623333756",
+      "sku": "156-TS-Acryl-RE-400X175-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 5198,
+      "afterCents": 5168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104623497596",
+      "sku": "156-TS-Acryl-RE-400X175-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 5198,
+      "afterCents": 5168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104623661436",
+      "sku": "156-TS-Acryl-OV-300X160-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3698,
+      "afterCents": 3668,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104623825276",
+      "sku": "156-TS-Acryl-OV-300X160-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3698,
+      "afterCents": 3668,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104623989116",
+      "sku": "156-TS-Acryl-OV-150X80-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1998,
+      "afterCents": 1968,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104624152956",
+      "sku": "156-TS-Acryl-OV-150X80-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1998,
+      "afterCents": 1968,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104624316796",
+      "sku": "156-TS-Acryl-OV-225X120-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2598,
+      "afterCents": 2568,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104624480636",
+      "sku": "156-TS-Acryl-OV-225X120-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2598,
+      "afterCents": 2568,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104624513404",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-SW-K00",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 999,
+      "afterCents": 999,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104624546172",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-SW-KGL",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 1298,
+      "afterCents": 1298,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104624578940",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-SW-KRA",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 1398,
+      "afterCents": 1398,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104624611708",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-SW-B02",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 1248,
+      "afterCents": 1248,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104624644476",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": true,
+      "beforeCents": 1298,
+      "afterCents": 1268,
+      "deltaCents": -30,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104624677244",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-AN-K00",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 999,
+      "afterCents": 999,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104624710012",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-AN-KGL",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 1298,
+      "afterCents": 1298,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104624742780",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-AN-KRA",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 1398,
+      "afterCents": 1398,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104624775548",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-AN-B02",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 1248,
+      "afterCents": 1248,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104624808316",
+      "sku": "156-TS-Acryl-RE-80X53P3-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": true,
+      "beforeCents": 1298,
+      "afterCents": 1268,
+      "deltaCents": -30,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104624841084",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-SW-K00",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 999,
+      "afterCents": 999,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104624873852",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-SW-KGL",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 1298,
+      "afterCents": 1298,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104624906620",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-SW-KRA",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 1398,
+      "afterCents": 1398,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104624939388",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-SW-B02",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 1248,
+      "afterCents": 1248,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104624972156",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": true,
+      "beforeCents": 1298,
+      "afterCents": 1268,
+      "deltaCents": -30,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104625004924",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-AN-K00",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 999,
+      "afterCents": 999,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104625037692",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-AN-KGL",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 1298,
+      "afterCents": 1298,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104625070460",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-AN-KRA",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 1398,
+      "afterCents": 1398,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104625103228",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-AN-B02",
+      "priceChanged": false,
+      "labelsChanged": true,
+      "beforeCents": 1248,
+      "afterCents": 1248,
+      "deltaCents": 0,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104625135996",
+      "sku": "156-TS-Acryl-AB-80X53P3-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": true,
+      "beforeCents": 1298,
+      "afterCents": 1268,
+      "deltaCents": -30,
+      "beforeOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "afterOptions": [
+        {
+          "name": "Form & Größe",
+          "value": "Rechteck abgerundet · 8 × 5,33 cm"
+        },
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104625299836",
+      "sku": "156-TS-Acryl-RE-90X60-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1498,
+      "afterCents": 1468,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104625463676",
+      "sku": "156-TS-Acryl-RE-90X60-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1498,
+      "afterCents": 1468,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104625627516",
+      "sku": "156-TS-Acryl-AB-90X60-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1498,
+      "afterCents": 1468,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104625791356",
+      "sku": "156-TS-Acryl-AB-90X60-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1498,
+      "afterCents": 1468,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104625955196",
+      "sku": "156-TS-Acryl-OV-90X60-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1498,
+      "afterCents": 1468,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104626119036",
+      "sku": "156-TS-Acryl-OV-90X60-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1498,
+      "afterCents": 1468,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104626282876",
+      "sku": "156-TS-Acryl-RE-120X80-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1798,
+      "afterCents": 1768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104626446716",
+      "sku": "156-TS-Acryl-RE-120X80-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1798,
+      "afterCents": 1768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104626610556",
+      "sku": "156-TS-Acryl-AB-120X80-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1798,
+      "afterCents": 1768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104626774396",
+      "sku": "156-TS-Acryl-AB-120X80-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1798,
+      "afterCents": 1768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104626938236",
+      "sku": "156-TS-Acryl-OV-120X80-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1798,
+      "afterCents": 1768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104627102076",
+      "sku": "156-TS-Acryl-OV-120X80-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1798,
+      "afterCents": 1768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104627265916",
+      "sku": "156-TS-Acryl-RE-150X100-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2198,
+      "afterCents": 2168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104627429756",
+      "sku": "156-TS-Acryl-RE-150X100-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2198,
+      "afterCents": 2168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104627593596",
+      "sku": "156-TS-Acryl-AB-150X100-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2198,
+      "afterCents": 2168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104627757436",
+      "sku": "156-TS-Acryl-AB-150X100-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2198,
+      "afterCents": 2168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104627921276",
+      "sku": "156-TS-Acryl-OV-150X100-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2198,
+      "afterCents": 2168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104628085116",
+      "sku": "156-TS-Acryl-OV-150X100-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2198,
+      "afterCents": 2168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104628248956",
+      "sku": "156-TS-Acryl-RE-180X120-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2698,
+      "afterCents": 2668,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104628412796",
+      "sku": "156-TS-Acryl-RE-180X120-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2698,
+      "afterCents": 2668,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104628576636",
+      "sku": "156-TS-Acryl-AB-180X120-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2698,
+      "afterCents": 2668,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104628740476",
+      "sku": "156-TS-Acryl-AB-180X120-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2698,
+      "afterCents": 2668,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104628904316",
+      "sku": "156-TS-Acryl-OV-180X120-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2698,
+      "afterCents": 2668,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104629068156",
+      "sku": "156-TS-Acryl-OV-180X120-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2698,
+      "afterCents": 2668,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104629231996",
+      "sku": "156-TS-Acryl-RE-210X140-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2898,
+      "afterCents": 2868,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104629395836",
+      "sku": "156-TS-Acryl-RE-210X140-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2898,
+      "afterCents": 2868,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104629559676",
+      "sku": "156-TS-Acryl-AB-210X140-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2898,
+      "afterCents": 2868,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104629723516",
+      "sku": "156-TS-Acryl-AB-210X140-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2898,
+      "afterCents": 2868,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104629887356",
+      "sku": "156-TS-Acryl-OV-210X140-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2898,
+      "afterCents": 2868,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104630051196",
+      "sku": "156-TS-Acryl-OV-210X140-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2898,
+      "afterCents": 2868,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104630215036",
+      "sku": "156-TS-Acryl-RE-240X160-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3598,
+      "afterCents": 3568,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104630378876",
+      "sku": "156-TS-Acryl-RE-240X160-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3598,
+      "afterCents": 3568,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104630542716",
+      "sku": "156-TS-Acryl-AB-240X160-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3598,
+      "afterCents": 3568,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104630706556",
+      "sku": "156-TS-Acryl-AB-240X160-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3598,
+      "afterCents": 3568,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104630870396",
+      "sku": "156-TS-Acryl-OV-240X160-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3598,
+      "afterCents": 3568,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104631034236",
+      "sku": "156-TS-Acryl-OV-240X160-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3598,
+      "afterCents": 3568,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104631198076",
+      "sku": "156-TS-Acryl-RE-300X200-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4798,
+      "afterCents": 4768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104631263612",
+      "sku": "156-TS-Acryl-RE-300X200-T30-SW-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4838,
+      "afterCents": 4828,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104631427452",
+      "sku": "156-TS-Acryl-RE-300X200-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4798,
+      "afterCents": 4768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104631492988",
+      "sku": "156-TS-Acryl-RE-300X200-T30-AN-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4838,
+      "afterCents": 4828,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104631656828",
+      "sku": "156-TS-Acryl-AB-300X200-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4798,
+      "afterCents": 4768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104631722364",
+      "sku": "156-TS-Acryl-AB-300X200-T30-SW-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4838,
+      "afterCents": 4828,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104631886204",
+      "sku": "156-TS-Acryl-AB-300X200-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4798,
+      "afterCents": 4768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104631951740",
+      "sku": "156-TS-Acryl-AB-300X200-T30-AN-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4838,
+      "afterCents": 4828,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104632115580",
+      "sku": "156-TS-Acryl-OV-300X200-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4798,
+      "afterCents": 4768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104632279420",
+      "sku": "156-TS-Acryl-OV-300X200-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4798,
+      "afterCents": 4768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104632443260",
+      "sku": "156-TS-Acryl-RE-420X280-T30-SW-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 6838,
+      "afterCents": 6828,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104632607100",
+      "sku": "156-TS-Acryl-RE-420X280-T30-AN-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 6838,
+      "afterCents": 6828,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104632770940",
+      "sku": "156-TS-Acryl-AB-420X280-T30-SW-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 6838,
+      "afterCents": 6828,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104632934780",
+      "sku": "156-TS-Acryl-AB-420X280-T30-AN-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 6838,
+      "afterCents": 6828,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104633098620",
+      "sku": "156-TS-Acryl-RE-450X300-T30-SW-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 7738,
+      "afterCents": 7728,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104633262460",
+      "sku": "156-TS-Acryl-RE-450X300-T30-AN-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 7738,
+      "afterCents": 7728,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104633426300",
+      "sku": "156-TS-Acryl-AB-450X300-T30-SW-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 7738,
+      "afterCents": 7728,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104633590140",
+      "sku": "156-TS-Acryl-AB-450X300-T30-AN-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 7738,
+      "afterCents": 7728,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104633753980",
+      "sku": "156-TS-Acryl-QU-80X80-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1598,
+      "afterCents": 1568,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104633917820",
+      "sku": "156-TS-Acryl-QU-80X80-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1598,
+      "afterCents": 1568,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104634081660",
+      "sku": "156-TS-Acryl-QU-100X100-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1998,
+      "afterCents": 1968,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104634245500",
+      "sku": "156-TS-Acryl-QU-100X100-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1998,
+      "afterCents": 1968,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104634409340",
+      "sku": "156-TS-Acryl-QU-120X120-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2198,
+      "afterCents": 2168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104634573180",
+      "sku": "156-TS-Acryl-QU-120X120-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2198,
+      "afterCents": 2168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104634737020",
+      "sku": "156-TS-Acryl-QU-160X160-T30-SW-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3038,
+      "afterCents": 3028,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104634900860",
+      "sku": "156-TS-Acryl-QU-160X160-T30-AN-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3038,
+      "afterCents": 3028,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104635064700",
+      "sku": "156-TS-Acryl-QU-200X200-T30-SW-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3638,
+      "afterCents": 3628,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104635228540",
+      "sku": "156-TS-Acryl-QU-200X200-T30-AN-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3638,
+      "afterCents": 3628,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104635392380",
+      "sku": "156-TS-Acryl-QU-260X260-T30-SW-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4638,
+      "afterCents": 4628,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104635556220",
+      "sku": "156-TS-Acryl-QU-260X260-T30-AN-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4638,
+      "afterCents": 4628,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104635720060",
+      "sku": "156-TS-Acryl-QU-300X300-T30-SW-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 6338,
+      "afterCents": 6328,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104635883900",
+      "sku": "156-TS-Acryl-QU-300X300-T30-AN-B04S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 6338,
+      "afterCents": 6328,
+      "deltaCents": -10
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104636047740",
+      "sku": "156-TS-Acryl-R-65X65-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1498,
+      "afterCents": 1468,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104636211580",
+      "sku": "156-TS-Acryl-R-65X65-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1498,
+      "afterCents": 1468,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104636375420",
+      "sku": "156-TS-Acryl-R-85X85-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1798,
+      "afterCents": 1768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104636539260",
+      "sku": "156-TS-Acryl-R-85X85-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1798,
+      "afterCents": 1768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104636703100",
+      "sku": "156-TS-Acryl-R-120X120-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2098,
+      "afterCents": 2068,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104636866940",
+      "sku": "156-TS-Acryl-R-120X120-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2098,
+      "afterCents": 2068,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104637030780",
+      "sku": "156-TS-Acryl-R-160X160-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2998,
+      "afterCents": 2968,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104637194620",
+      "sku": "156-TS-Acryl-R-160X160-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2998,
+      "afterCents": 2968,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104637358460",
+      "sku": "156-TS-Acryl-R-200X200-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4098,
+      "afterCents": 4068,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104637522300",
+      "sku": "156-TS-Acryl-R-200X200-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4098,
+      "afterCents": 4068,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104637686140",
+      "sku": "156-TS-Acryl-RT1-90X60-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1498,
+      "afterCents": 1468,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104637849980",
+      "sku": "156-TS-Acryl-RT1-90X60-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1498,
+      "afterCents": 1468,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104638013820",
+      "sku": "156-TS-Acryl-RT1-120X80-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1798,
+      "afterCents": 1768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104638177660",
+      "sku": "156-TS-Acryl-RT1-120X80-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1798,
+      "afterCents": 1768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104638341500",
+      "sku": "156-TS-Acryl-RT1-150X100-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2198,
+      "afterCents": 2168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104638505340",
+      "sku": "156-TS-Acryl-RT1-150X100-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2198,
+      "afterCents": 2168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104638669180",
+      "sku": "156-TS-Acryl-RT1-180X120-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2698,
+      "afterCents": 2668,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104638833020",
+      "sku": "156-TS-Acryl-RT1-180X120-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2698,
+      "afterCents": 2668,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104638996860",
+      "sku": "156-TS-Acryl-RT1-210X140-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2898,
+      "afterCents": 2868,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104639160700",
+      "sku": "156-TS-Acryl-RT1-210X140-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2898,
+      "afterCents": 2868,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104639324540",
+      "sku": "156-TS-Acryl-RT1-240X160-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3598,
+      "afterCents": 3568,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104639488380",
+      "sku": "156-TS-Acryl-RT1-240X160-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3598,
+      "afterCents": 3568,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104639652220",
+      "sku": "156-TS-Acryl-RT1-300X200-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4798,
+      "afterCents": 4768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104639816060",
+      "sku": "156-TS-Acryl-RT1-300X200-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4798,
+      "afterCents": 4768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104639979900",
+      "sku": "156-TS-Acryl-RT2-90X60-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1498,
+      "afterCents": 1468,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104640143740",
+      "sku": "156-TS-Acryl-RT2-90X60-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1498,
+      "afterCents": 1468,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104640307580",
+      "sku": "156-TS-Acryl-RT2-120X80-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1798,
+      "afterCents": 1768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104640471420",
+      "sku": "156-TS-Acryl-RT2-120X80-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 1798,
+      "afterCents": 1768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104640635260",
+      "sku": "156-TS-Acryl-RT2-150X100-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2198,
+      "afterCents": 2168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104640799100",
+      "sku": "156-TS-Acryl-RT2-150X100-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2198,
+      "afterCents": 2168,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104640962940",
+      "sku": "156-TS-Acryl-RT2-180X120-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2698,
+      "afterCents": 2668,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104641126780",
+      "sku": "156-TS-Acryl-RT2-180X120-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2698,
+      "afterCents": 2668,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104641290620",
+      "sku": "156-TS-Acryl-RT2-210X140-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2898,
+      "afterCents": 2868,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104641454460",
+      "sku": "156-TS-Acryl-RT2-210X140-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 2898,
+      "afterCents": 2868,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104641618300",
+      "sku": "156-TS-Acryl-RT2-240X160-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3598,
+      "afterCents": 3568,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104641782140",
+      "sku": "156-TS-Acryl-RT2-240X160-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 3598,
+      "afterCents": 3568,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104641945980",
+      "sku": "156-TS-Acryl-RT2-300X200-T30-SW-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4798,
+      "afterCents": 4768,
+      "deltaCents": -30
+    },
+    {
+      "id": "gid://shopify/ProductVariant/58104642109820",
+      "sku": "156-TS-Acryl-RT2-300X200-T30-AN-B02S",
+      "priceChanged": true,
+      "labelsChanged": false,
+      "beforeCents": 4798,
+      "afterCents": 4768,
+      "deltaCents": -30
+    }
+  ],
+  "limits": [
+    "Structured connector responses serialized locally; hashes pin these files, not raw HTTP response bytes.",
+    "No native binding/history/catalog table evidence or price metafield/CAS proof from this Shopify-only read.",
+    "Original get_product first page and 17 complete GraphQL pages; no extra baseline or post-read mutation."
+  ]
+}

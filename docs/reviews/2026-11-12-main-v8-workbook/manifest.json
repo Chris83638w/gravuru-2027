@@ -1,0 +1,175 @@
+{
+  "schema": "issue230-main-v8-final-package/v1",
+  "purpose": "completion-evidence-only",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 4208,
+      "sha256": "353b8e39a861fcb545c7837bc7eadb4ef4f892d91ce158fa3c060e8bb1e68053"
+    },
+    {
+      "path": "Review.json",
+      "bytes": 9043,
+      "sha256": "5affc24782fb9638c2483703a41055fca1af04756a3e5366c0584e7a286df49b"
+    },
+    {
+      "path": "Tuerschild-Acrylglas-3mm_v8.xlsx",
+      "bytes": 184257,
+      "sha256": "b0e7274ce05876d34c5f63e7703768936678f960e69f242c64e1d17579a2fe92"
+    },
+    {
+      "path": "belege/Erhaltungspruefung.json",
+      "bytes": 383,
+      "sha256": "6d30d329dbd8db8a5a706833c573208f5c82aad4c3b7b9d8a29e340cb02348e9"
+    },
+    {
+      "path": "belege/Manifest.json",
+      "bytes": 52768,
+      "sha256": "f65f610829fb7eac6bc507d7596e9dfa2181d3407bb9b903b6f35fdf952ccb2b"
+    },
+    {
+      "path": "belege/Reimportpruefung.json",
+      "bytes": 1566,
+      "sha256": "780b4116daec420bcaecc4fd12ef40e9d38768c392881eeab0e85bd00ab4b648"
+    },
+    {
+      "path": "belege/Visuelle-Pruefung.json",
+      "bytes": 3542,
+      "sha256": "1cb28d820af4d6206a6b9c208be321854b9668b9c2d8b9088a59e8d227bcb85f"
+    },
+    {
+      "path": "belege/appendix-index.json",
+      "bytes": 916384,
+      "sha256": "d349997e8b5103bdf2f6abb0a9e765d5cbadf6d70a4abafbba117cc58d3dac70"
+    },
+    {
+      "path": "belege/build.log",
+      "bytes": 280,
+      "sha256": "93ba69f88e059e0b974b07eadb80dcfb38da215f884935bfe88e64febb85ced8"
+    },
+    {
+      "path": "belege/graft.log",
+      "bytes": 356,
+      "sha256": "3a18e38e03c82dfe59a9e90aa21c4becb8e50d5fba3e4f7eb9d4a6c17e7552cd"
+    },
+    {
+      "path": "belege/input-verification.json",
+      "bytes": 371,
+      "sha256": "4a3fbaa6dd7aecd88db3ce485e820a6525eb1bd8683c17d3f0abc73241e24184"
+    },
+    {
+      "path": "belege/process-results.json",
+      "bytes": 613,
+      "sha256": "4c28f662ccc8a12fd79d26158094700ee418cf39533d2d893aeedde60645871e"
+    },
+    {
+      "path": "belege/protected16-comparison.json",
+      "bytes": 3630,
+      "sha256": "292b28e2e24892b0caa9b3fae8a8e31721f118bb9138758bce87a7ff62f898f8"
+    },
+    {
+      "path": "belege/reimport.log",
+      "bytes": 163,
+      "sha256": "1a3328d926d2923deb183cd9e688f8385df7652cd1a1047e023244319fd2cf55"
+    },
+    {
+      "path": "repro/README.md",
+      "bytes": 2787,
+      "sha256": "438e8903e4f63fdeb823b81adedb5e48cd5c3015bced8e31a9a3364e398b2d4e"
+    },
+    {
+      "path": "repro/artifact-runtime.mjs",
+      "bytes": 816,
+      "sha256": "92d3c709de85435ce1194b856bbe57f0fc2cd8ccd47ef326e1fd38cc199116e6"
+    },
+    {
+      "path": "repro/build-appendices.mjs",
+      "bytes": 10547,
+      "sha256": "eff64f443947dd5ec1a0d6516a6bfd7ef9978943b94b5e5ac2877cc8b79c62a3"
+    },
+    {
+      "path": "repro/existing-graft-appendices.py",
+      "bytes": 10567,
+      "sha256": "80ef7e08d4061ee77d4c56494ee7f1ab71052f91d9d04304555b5f7107013d6f"
+    },
+    {
+      "path": "repro/existing-verify-preservation.py",
+      "bytes": 5242,
+      "sha256": "b9d97c807557396734ba9e9a19909618a272567fa2f6263b58e849ded149e31e"
+    },
+    {
+      "path": "repro/final-main-inputs.json",
+      "bytes": 615411,
+      "sha256": "0eeacdfa139194c445c8cc17548b23a9e9500767ba5be12ee4af99dde7c8b823"
+    },
+    {
+      "path": "repro/graft-and-verify.py",
+      "bytes": 4358,
+      "sha256": "c95f43e7646b45f48761e35b1d0f3c2efb179bb25b7888de4a735003898c1f3e"
+    },
+    {
+      "path": "repro/input-verification.json",
+      "bytes": 371,
+      "sha256": "4a3fbaa6dd7aecd88db3ce485e820a6525eb1bd8683c17d3f0abc73241e24184"
+    },
+    {
+      "path": "repro/preparation.json",
+      "bytes": 4610,
+      "sha256": "b2a106e9ac134f5b2fa18796437ce9f5e7ecf2bd88b10cafb283665f16b3d41b"
+    },
+    {
+      "path": "repro/prepare-inputs.mjs",
+      "bytes": 6183,
+      "sha256": "03c79587532d4bd05a7df06222d47f913e8c2a65016235d2f12cdb54e323dc2a"
+    },
+    {
+      "path": "repro/verify-appendices.mjs",
+      "bytes": 2504,
+      "sha256": "ce74893b0b6b8a6a513a0856bdce678343872e80b3b33f24cfa00c27cfd517f2"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Acrylglas-3mm_v8.xlsx.AusfuehrungV8-1-Reimport.png",
+      "bytes": 186136,
+      "sha256": "ec393c4851719beb58bc3429636e02c1902a90078f0614eb249a81083df74182"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Acrylglas-3mm_v8.xlsx.AusfuehrungV8-2-Reimport.png",
+      "bytes": 125179,
+      "sha256": "ae67a73ca18e9b0b6a95329202b94e5f5879b32d2346bd88f522e3ee8876f7bd"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Acrylglas-3mm_v8.xlsx.BelegeV8-1-Reimport.png",
+      "bytes": 204436,
+      "sha256": "b36155389b8a187e1cf21b893d5b3548345f9592fa9dc2f8107756102ef9ffe5"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Acrylglas-3mm_v8.xlsx.BelegeV8-2-Reimport.png",
+      "bytes": 84478,
+      "sha256": "14d9b7ec8fd0e4027e6e54f6252b6416012caf0f486968d358883cb76a416bb9"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Acrylglas-3mm_v8.xlsx.Varianten808-1-Reimport.png",
+      "bytes": 183253,
+      "sha256": "a245a2c01c4573079bf22e767e71f56ad9848077d5cda85a974a2618df8fd64c"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Acrylglas-3mm_v8.xlsx.Varianten808-2-Reimport.png",
+      "bytes": 238646,
+      "sha256": "1ec0e27b2c1d0072597a384674996cd9e739742f29728c3610d9add2839fc814"
+    },
+    {
+      "path": "sichtpruefung/Tuerschild-Acrylglas-3mm_v8.xlsx.Varianten808-3-Reimport.png",
+      "bytes": 163148,
+      "sha256": "fc38f1293c7b2bb5be227647f3e67a65df1969a9ae915374fbc238571de14bdc"
+    }
+  ],
+  "fileCount": 32,
+  "totalBytes": 3026236,
+  "externalReadbackPackage": {
+    "gitPath": "docs/reviews/2026-11-12-main-execution-complete",
+    "manifestSha256": "3fa03b0ae523e7bd02d5bbc901d48a227c79e444823967f9bfce44b2973ce2f9"
+  },
+  "xlsxSha256": "b0e7274ce05876d34c5f63e7703768936678f960e69f242c64e1d17579a2fe92",
+  "previousUnchangedSha256": "65d706e1a99cc599ba7a1c577de028208a5efd356f97bd997f68be3f899cde29",
+  "privateFullServerReceiptReceived": false
+}

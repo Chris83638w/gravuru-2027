@@ -1,0 +1,23 @@
+{
+  "schema": "issue230-main-v8-process-results/v1",
+  "build": {
+    "exitCode": 0,
+    "log": "build.log"
+  },
+  "graft": {
+    "exitCode": 0,
+    "log": "graft.log"
+  },
+  "reimport": {
+    "exitCode": 3221226505,
+    "log": "reimport.log",
+    "allNewCellValuesMatch": true,
+    "comparedCells": 7482,
+    "renderedImages": 7,
+    "completeReportWritten": true,
+    "cleanExit": false,
+    "causeEstablished": false,
+    "repeated": false
+  },
+  "limit": "The reimport process ended nonzero after all assertions, render files and completion report were written. This is not a clean runtime process result."
+}

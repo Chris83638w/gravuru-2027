@@ -1,0 +1,15 @@
+{
+  "schema": "issue230-main-v8-preservation-check/v1",
+  "allPassed": true,
+  "workbooks": 1,
+  "variantRows": 808,
+  "originalCells": 14257,
+  "previousCells": 16227,
+  "newCellsCompared": 7482,
+  "oldSheets": 18,
+  "newSheets": 3,
+  "previousPartsPreserved": 32,
+  "allPreviousCellsIdentical": true,
+  "allOriginalCellsIdentical": true,
+  "allPreservedPartsByteIdentical": true
+}

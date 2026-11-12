@@ -1,0 +1,387 @@
+{
+  "schema": "issue230-main-final-product-tool/v1",
+  "source": "Shopify connector get_product; structured response serialized locally",
+  "product": {
+    "id": "gid://shopify/Product/16190784602492",
+    "title": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen",
+    "vendor": "Gravuru",
+    "status": "DRAFT",
+    "productType": "Türschild",
+    "descriptionHtml": "",
+    "tags": [
+      "acryl",
+      "issue139-pr156-two-drafts-20261103",
+      "ohne-designs",
+      "tuerschild"
+    ],
+    "totalInventory": 0,
+    "featuredImageUrl": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-tuerschild-acryl-h1-vanessa-krueger-e5c9970d.png?v=1794421762",
+    "images": [
+      {
+        "url": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-tuerschild-acryl-h1-vanessa-krueger-e5c9970d.png?v=1794421762",
+        "altText": "Personalisiertes Türschild aus schwarzem Acrylglas, 3 mm, mit Vanessa Krüger und Hausmotiv – Beispielgestaltung",
+        "mediaId": "gid://shopify/MediaImage/70116579869052"
+      },
+      {
+        "url": "https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-tuerschild-acryl-leer-pr156-e5a1504afe98.webp?v=1793717959",
+        "altText": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen – leeres Schild, Vorschau 12 × 8 cm",
+        "mediaId": "gid://shopify/MediaImage/70017733919100"
+      }
+    ],
+    "totalVariants": 808,
+    "variants": [
+      {
+        "id": "gid://shopify/ProductVariant/58104615666044",
+        "title": "Rechteck · 8 × 2 cm / Schwarz / Ohne Bohrung",
+        "sku": "156-TS-Acryl-RE-80X20-T30-SW-K00",
+        "price": "8.49",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104615698812",
+        "title": "Rechteck · 8 × 2 cm / Schwarz / Selbstklebend – glatte Flächen",
+        "sku": "156-TS-Acryl-RE-80X20-T30-SW-KGL",
+        "price": "11.48",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104615731580",
+        "title": "Rechteck · 8 × 2 cm / Schwarz / Selbstklebend – raue Flächen",
+        "sku": "156-TS-Acryl-RE-80X20-T30-SW-KRA",
+        "price": "12.48",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104615764348",
+        "title": "Rechteck · 8 × 2 cm / Schwarz / Mit 2 Bohrlöchern",
+        "sku": "156-TS-Acryl-RE-80X20-T30-SW-B02",
+        "price": "10.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104615797116",
+        "title": "Rechteck · 8 × 2 cm / Schwarz / Mit 2 Schrauben",
+        "sku": "156-TS-Acryl-RE-80X20-T30-SW-B02S",
+        "price": "11.48",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104615829884",
+        "title": "Rechteck · 8 × 2 cm / Anthrazit / Ohne Bohrung",
+        "sku": "156-TS-Acryl-RE-80X20-T30-AN-K00",
+        "price": "8.49",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104615862652",
+        "title": "Rechteck · 8 × 2 cm / Anthrazit / Selbstklebend – glatte Flächen",
+        "sku": "156-TS-Acryl-RE-80X20-T30-AN-KGL",
+        "price": "11.48",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104615895420",
+        "title": "Rechteck · 8 × 2 cm / Anthrazit / Selbstklebend – raue Flächen",
+        "sku": "156-TS-Acryl-RE-80X20-T30-AN-KRA",
+        "price": "12.48",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104615928188",
+        "title": "Rechteck · 8 × 2 cm / Anthrazit / Mit 2 Bohrlöchern",
+        "sku": "156-TS-Acryl-RE-80X20-T30-AN-B02",
+        "price": "10.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104615960956",
+        "title": "Rechteck · 8 × 2 cm / Anthrazit / Mit 2 Schrauben",
+        "sku": "156-TS-Acryl-RE-80X20-T30-AN-B02S",
+        "price": "11.48",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104615993724",
+        "title": "Rechteck · 7 × 2,33 cm / Schwarz / Ohne Bohrung",
+        "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-K00",
+        "price": "7.99",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616026492",
+        "title": "Rechteck · 7 × 2,33 cm / Schwarz / Selbstklebend – glatte Flächen",
+        "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-KGL",
+        "price": "10.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616059260",
+        "title": "Rechteck · 7 × 2,33 cm / Schwarz / Selbstklebend – raue Flächen",
+        "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-KRA",
+        "price": "11.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616092028",
+        "title": "Rechteck · 7 × 2,33 cm / Schwarz / Mit 2 Bohrlöchern",
+        "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-B02",
+        "price": "10.48",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616124796",
+        "title": "Rechteck · 7 × 2,33 cm / Schwarz / Mit 2 Schrauben",
+        "sku": "156-TS-Acryl-RE-70X23P3-T30-SW-B02S",
+        "price": "10.68",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616157564",
+        "title": "Rechteck · 7 × 2,33 cm / Anthrazit / Ohne Bohrung",
+        "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-K00",
+        "price": "7.99",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616190332",
+        "title": "Rechteck · 7 × 2,33 cm / Anthrazit / Selbstklebend – glatte Flächen",
+        "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-KGL",
+        "price": "10.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616223100",
+        "title": "Rechteck · 7 × 2,33 cm / Anthrazit / Selbstklebend – raue Flächen",
+        "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-KRA",
+        "price": "11.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616255868",
+        "title": "Rechteck · 7 × 2,33 cm / Anthrazit / Mit 2 Bohrlöchern",
+        "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-B02",
+        "price": "10.48",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616288636",
+        "title": "Rechteck · 7 × 2,33 cm / Anthrazit / Mit 2 Schrauben",
+        "sku": "156-TS-Acryl-RE-70X23P3-T30-AN-B02S",
+        "price": "10.68",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616321404",
+        "title": "Rechteck · 6 × 2 cm / Schwarz / Ohne Bohrung",
+        "sku": "156-TS-Acryl-RE-60X20-T30-SW-K00",
+        "price": "7.99",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616354172",
+        "title": "Rechteck · 6 × 2 cm / Schwarz / Selbstklebend – glatte Flächen",
+        "sku": "156-TS-Acryl-RE-60X20-T30-SW-KGL",
+        "price": "10.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616386940",
+        "title": "Rechteck · 6 × 2 cm / Schwarz / Selbstklebend – raue Flächen",
+        "sku": "156-TS-Acryl-RE-60X20-T30-SW-KRA",
+        "price": "11.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616419708",
+        "title": "Rechteck · 6 × 2 cm / Schwarz / Mit 2 Bohrlöchern",
+        "sku": "156-TS-Acryl-RE-60X20-T30-SW-B02",
+        "price": "10.48",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616452476",
+        "title": "Rechteck · 6 × 2 cm / Schwarz / Mit 2 Schrauben",
+        "sku": "156-TS-Acryl-RE-60X20-T30-SW-B02S",
+        "price": "10.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616485244",
+        "title": "Rechteck · 6 × 2 cm / Anthrazit / Ohne Bohrung",
+        "sku": "156-TS-Acryl-RE-60X20-T30-AN-K00",
+        "price": "7.99",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616518012",
+        "title": "Rechteck · 6 × 2 cm / Anthrazit / Selbstklebend – glatte Flächen",
+        "sku": "156-TS-Acryl-RE-60X20-T30-AN-KGL",
+        "price": "10.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616550780",
+        "title": "Rechteck · 6 × 2 cm / Anthrazit / Selbstklebend – raue Flächen",
+        "sku": "156-TS-Acryl-RE-60X20-T30-AN-KRA",
+        "price": "11.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616583548",
+        "title": "Rechteck · 6 × 2 cm / Anthrazit / Mit 2 Bohrlöchern",
+        "sku": "156-TS-Acryl-RE-60X20-T30-AN-B02",
+        "price": "10.48",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616616316",
+        "title": "Rechteck · 6 × 2 cm / Anthrazit / Mit 2 Schrauben",
+        "sku": "156-TS-Acryl-RE-60X20-T30-AN-B02S",
+        "price": "10.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616649084",
+        "title": "Rechteck · 9 × 3 cm / Schwarz / Ohne Bohrung",
+        "sku": "156-TS-Acryl-RE-90X30-T30-SW-K00",
+        "price": "8.99",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616681852",
+        "title": "Rechteck · 9 × 3 cm / Schwarz / Selbstklebend – glatte Flächen",
+        "sku": "156-TS-Acryl-RE-90X30-T30-SW-KGL",
+        "price": "11.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616714620",
+        "title": "Rechteck · 9 × 3 cm / Schwarz / Selbstklebend – raue Flächen",
+        "sku": "156-TS-Acryl-RE-90X30-T30-SW-KRA",
+        "price": "12.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616747388",
+        "title": "Rechteck · 9 × 3 cm / Schwarz / Mit 2 Bohrlöchern",
+        "sku": "156-TS-Acryl-RE-90X30-T30-SW-B02",
+        "price": "11.48",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616780156",
+        "title": "Rechteck · 9 × 3 cm / Schwarz / Mit 2 Schrauben",
+        "sku": "156-TS-Acryl-RE-90X30-T30-SW-B02S",
+        "price": "11.68",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616812924",
+        "title": "Rechteck · 9 × 3 cm / Anthrazit / Ohne Bohrung",
+        "sku": "156-TS-Acryl-RE-90X30-T30-AN-K00",
+        "price": "8.99",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616845692",
+        "title": "Rechteck · 9 × 3 cm / Anthrazit / Selbstklebend – glatte Flächen",
+        "sku": "156-TS-Acryl-RE-90X30-T30-AN-KGL",
+        "price": "11.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616878460",
+        "title": "Rechteck · 9 × 3 cm / Anthrazit / Selbstklebend – raue Flächen",
+        "sku": "156-TS-Acryl-RE-90X30-T30-AN-KRA",
+        "price": "12.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616911228",
+        "title": "Rechteck · 9 × 3 cm / Anthrazit / Mit 2 Bohrlöchern",
+        "sku": "156-TS-Acryl-RE-90X30-T30-AN-B02",
+        "price": "11.48",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616943996",
+        "title": "Rechteck · 9 × 3 cm / Anthrazit / Mit 2 Schrauben",
+        "sku": "156-TS-Acryl-RE-90X30-T30-AN-B02S",
+        "price": "11.68",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104616976764",
+        "title": "Rechteck · 12 × 4 cm / Schwarz / Ohne Bohrung",
+        "sku": "156-TS-Acryl-RE-120X40-T30-SW-K00",
+        "price": "11.99",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104617009532",
+        "title": "Rechteck · 12 × 4 cm / Schwarz / Selbstklebend – glatte Flächen",
+        "sku": "156-TS-Acryl-RE-120X40-T30-SW-KGL",
+        "price": "14.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104617042300",
+        "title": "Rechteck · 12 × 4 cm / Schwarz / Selbstklebend – raue Flächen",
+        "sku": "156-TS-Acryl-RE-120X40-T30-SW-KRA",
+        "price": "15.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104617075068",
+        "title": "Rechteck · 12 × 4 cm / Schwarz / Mit 2 Bohrlöchern",
+        "sku": "156-TS-Acryl-RE-120X40-T30-SW-B02",
+        "price": "14.48",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104617107836",
+        "title": "Rechteck · 12 × 4 cm / Schwarz / Mit 2 Schrauben",
+        "sku": "156-TS-Acryl-RE-120X40-T30-SW-B02S",
+        "price": "14.68",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104617140604",
+        "title": "Rechteck · 12 × 4 cm / Anthrazit / Ohne Bohrung",
+        "sku": "156-TS-Acryl-RE-120X40-T30-AN-K00",
+        "price": "11.99",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104617173372",
+        "title": "Rechteck · 12 × 4 cm / Anthrazit / Selbstklebend – glatte Flächen",
+        "sku": "156-TS-Acryl-RE-120X40-T30-AN-KGL",
+        "price": "14.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104617206140",
+        "title": "Rechteck · 12 × 4 cm / Anthrazit / Selbstklebend – raue Flächen",
+        "sku": "156-TS-Acryl-RE-120X40-T30-AN-KRA",
+        "price": "15.98",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104617238908",
+        "title": "Rechteck · 12 × 4 cm / Anthrazit / Mit 2 Bohrlöchern",
+        "sku": "156-TS-Acryl-RE-120X40-T30-AN-B02",
+        "price": "14.48",
+        "inventoryQuantity": 0
+      },
+      {
+        "id": "gid://shopify/ProductVariant/58104617271676",
+        "title": "Rechteck · 12 × 4 cm / Anthrazit / Mit 2 Schrauben",
+        "sku": "156-TS-Acryl-RE-120X40-T30-AN-B02S",
+        "price": "14.68",
+        "inventoryQuantity": 0
+      }
+    ],
+    "currencyCode": "EUR"
+  }
+}
+

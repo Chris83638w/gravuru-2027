@@ -1,0 +1,82 @@
+{
+  "schema": "issue230-main-v8-manual-visual-review/v1",
+  "authorReview": {
+    "images": [
+      {
+        "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.AusfuehrungV8-1-Reimport.png",
+        "sheet": "AusfuehrungV8",
+        "range": "A1:C28",
+        "sha256": "ec393c4851719beb58bc3429636e02c1902a90078f0614eb249a81083df74182",
+        "bytes": 186136,
+        "visuallyReviewed": true,
+        "result": "Legible IDs, complete hashes, source limits and price columns; no clipping observed."
+      },
+      {
+        "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.AusfuehrungV8-2-Reimport.png",
+        "sheet": "AusfuehrungV8",
+        "range": "A29:C45",
+        "sha256": "ae67a73ca18e9b0b6a95329202b94e5f5879b32d2346bd88f522e3ee8876f7bd",
+        "bytes": 125179,
+        "visuallyReviewed": true,
+        "result": "Legible IDs, complete hashes, source limits and price columns; no clipping observed."
+      },
+      {
+        "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.Varianten808-1-Reimport.png",
+        "sheet": "Varianten808",
+        "range": "A1:I22",
+        "sha256": "a245a2c01c4573079bf22e767e71f56ad9848077d5cda85a974a2618df8fd64c",
+        "bytes": 183253,
+        "visuallyReviewed": true,
+        "result": "Legible IDs, complete hashes, source limits and price columns; no clipping observed."
+      },
+      {
+        "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.Varianten808-2-Reimport.png",
+        "sheet": "Varianten808",
+        "range": "A777:I799",
+        "sha256": "1ec0e27b2c1d0072597a384674996cd9e739742f29728c3610d9add2839fc814",
+        "bytes": 238646,
+        "visuallyReviewed": true,
+        "result": "Legible IDs, complete hashes, source limits and price columns; no clipping observed."
+      },
+      {
+        "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.Varianten808-3-Reimport.png",
+        "sheet": "Varianten808",
+        "range": "A800:I815",
+        "sha256": "fc38f1293c7b2bb5be227647f3e67a65df1969a9ae915374fbc238571de14bdc",
+        "bytes": 163148,
+        "visuallyReviewed": true,
+        "result": "Legible IDs, complete hashes, source limits and price columns; no clipping observed."
+      },
+      {
+        "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.BelegeV8-1-Reimport.png",
+        "sheet": "BelegeV8",
+        "range": "A1:C25",
+        "sha256": "b36155389b8a187e1cf21b893d5b3548345f9592fa9dc2f8107756102ef9ffe5",
+        "bytes": 204436,
+        "visuallyReviewed": true,
+        "result": "Legible IDs, complete hashes, source limits and price columns; no clipping observed."
+      },
+      {
+        "name": "Tuerschild-Acrylglas-3mm_v8.xlsx.BelegeV8-2-Reimport.png",
+        "sheet": "BelegeV8",
+        "range": "A26:C34",
+        "sha256": "14d9b7ec8fd0e4027e6e54f6252b6416012caf0f486968d358883cb76a416bb9",
+        "bytes": 84478,
+        "visuallyReviewed": true,
+        "result": "Legible IDs, complete hashes, source limits and price columns; no clipping observed."
+      }
+    ],
+    "allPassed": true,
+    "scope": "All 3 new sheets; 7 displayed excerpts, not visual inspection of every one of 808 rows. All new cell values separately compared."
+  },
+  "independentRootReview": {
+    "images": [
+      "Tuerschild-Acrylglas-3mm_v8.xlsx.AusfuehrungV8-1-Reimport.png",
+      "Tuerschild-Acrylglas-3mm_v8.xlsx.Varianten808-3-Reimport.png",
+      "Tuerschild-Acrylglas-3mm_v8.xlsx.BelegeV8-2-Reimport.png"
+    ],
+    "allPassed": true,
+    "scope": "3 excerpts independently viewed; IDs/prices/evidence boundaries legible; no visible text loss."
+  },
+  "excelDesktopTest": false
+}

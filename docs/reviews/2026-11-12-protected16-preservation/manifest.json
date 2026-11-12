@@ -1,0 +1,27 @@
+[
+  {
+    "path": "protected16-before.json",
+    "bytes": 59192,
+    "sha256": "6ca0435eecda424e3bac6332bb002c8c67cc504412eec3800c3a877d838db642"
+  },
+  {
+    "path": "protected16-after.json",
+    "bytes": 59176,
+    "sha256": "3df9f8fa39dd2d64c1ddf8415880e9aaa466e6f871d95194d77171c8f0a13159"
+  },
+  {
+    "path": "protected16-comparison.json",
+    "bytes": 3630,
+    "sha256": "292b28e2e24892b0caa9b3fae8a8e31721f118bb9138758bce87a7ff62f898f8"
+  },
+  {
+    "path": "compare-protected16.py",
+    "bytes": 2253,
+    "sha256": "f073ec172a7a09220aa7188a8a47fea23a6f63162ce33882b99b26d139ba8531"
+  },
+  {
+    "path": "README.md",
+    "bytes": 1522,
+    "sha256": "64d0c887969a37e8b730eaf4c473273b4ebebc80c4fafb5bb643d3977fbc7235"
+  }
+]

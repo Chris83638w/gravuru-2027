@@ -1,0 +1,75 @@
+{
+  "schema": "issue230-main-operator-summary-consistency/v1",
+  "allPassed": true,
+  "checks": [
+    {
+      "name": "original_git_blob",
+      "pass": true
+    },
+    {
+      "name": "approved_scope_and_frozen_operator",
+      "pass": true
+    },
+    {
+      "name": "native_target_pins",
+      "pass": true
+    },
+    {
+      "name": "reported_shop_matches_direct_read",
+      "pass": true
+    },
+    {
+      "name": "reported_pricing_payload_pin",
+      "pass": true
+    },
+    {
+      "name": "reported_native_778_plus30",
+      "pass": true
+    },
+    {
+      "name": "reported_history_matches_real_r1_baseline_pin",
+      "pass": true
+    },
+    {
+      "name": "reported_catalog_coverage",
+      "pass": true
+    },
+    {
+      "name": "reported_registry_count_deltas_consistent",
+      "pass": true
+    },
+    {
+      "name": "reported_completion_and_no_publish",
+      "pass": true
+    },
+    {
+      "name": "direct_read_after_reported_finish",
+      "pass": true
+    }
+  ],
+  "mode": "Only consistency of received operator summary and direct Shopify read; native tables and private execution records not independently opened",
+  "source": {
+    "repository": "Chris83638w/gravuru-2027",
+    "branch": "dev/claude-db-sicherung-20261111",
+    "commit": "f9af62fa193078afeee233ca1efdf6bf022caef6",
+    "path": "ops/plesk/ausfuehrung-20261112/3-main-ergebnis.json",
+    "gitBlobSha1": "22c42084e2b95fdf49a41957e8d9661bfa5a0034",
+    "comment": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6832031956",
+    "bytes": 8507,
+    "sha256": "ae2a8b119f17f676faf263b48c076de883cbb7c1339f1078d7bed57c0ddaa95f",
+    "gitBlobByteMatch": true,
+    "provenance": "Original Git file bytes; summarized operator report, not the private full execution proof"
+  },
+  "reportedCompletionAt": "2026-11-12T18:08:20Z",
+  "reportedPrivateProof": {
+    "datei": "AUSFUEHRUNG-main.json",
+    "bytes": 11296,
+    "sha256": "73d5bc348c2ef8b0d226f5be7da848eaf70599583b0da9096a92bb275e52acff"
+  },
+  "privateFullProofReceived": false,
+  "planHash": "698c6734669dba47c06b6d9008d4f0a3bcb6236967f72a02ebd259ba0b614258",
+  "approvalHash": "242db8905f3060875cd23622fed4c7290cff9a72d5dd4596229906ee762c937a",
+  "operatorReportedNativeConditions": "19/19",
+  "directShopReadbackConditions": "16/16",
+  "actualShopifyQueriesPerformedByThisScript": 0
+}

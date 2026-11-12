@@ -1,0 +1,15 @@
+{
+ "rev": "f85390bd3494920679b06c3b39cabf96c95c1343",
+ "dateien": 1825,
+ "imPaket": 29,
+ "gzBytes": 152262,
+ "gzSha256": "c57567b91b594fac29d8db017ae4b50b6a28fe53a0d0a8f98c3e8403f42adfc3",
+ "baumSha256": "468a7e0841d6a0f589d090ccb1332106758605bd58b63446550b561af5b69a4c",
+ "teile": [
+  [
+   "rt-f85390bd-e.teil01",
+   152262,
+   "c57567b91b594fac29d8db017ae4b50b6a28fe53a0d0a8f98c3e8403f42adfc3"
+  ]
+ ]
+}

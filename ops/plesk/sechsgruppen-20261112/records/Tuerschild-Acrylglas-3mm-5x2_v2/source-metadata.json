@@ -1,0 +1,62 @@
+{
+ "kennzeichnung": "KOPIEN-ID (isolated-copy, nicht in der Live-Registry)",
+ "revisionMetadata": {
+  "profiles": {
+   "selections": {
+    "fonts": null,
+    "motifs": [
+     "import-6abda909c44bc599330856dd",
+     "import-0073ea6aa7103bb1e8ec9088",
+     "import-9373218480c87a6ad167f3cb",
+     "import-41fb65efd1d8996ac305f6ab",
+     "import-1abd6f06096e47c66b0b4e00",
+     "import-286db893566ced2e6bd75bad",
+     "import-d94f1406fde432cf9dd70389",
+     "import-9c76c3476a406eaac7f05e42",
+     "import-10edf8a5dd07bd1035ba508d",
+     "import-4269dbda54a15a99e178f00a",
+     "import-0f3193fd49e254bb5975e74d",
+     "import-54b3b489bbebe12119deda9a",
+     "import-8239d6c658366716f578c984"
+    ],
+    "colors": null,
+    "bestsellers": null
+   },
+   "sources": {
+    "fonts": {
+     "level": "unbound",
+     "categoryId": null,
+     "mode": "inherit",
+     "profileId": null,
+     "profileRevision": null
+    },
+    "motifs": {
+     "level": "product",
+     "categoryId": null,
+     "mode": "override",
+     "profileId": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+     "profileRevision": 1
+    },
+    "colors": {
+     "level": "unbound",
+     "categoryId": null,
+     "mode": "inherit",
+     "profileId": null,
+     "profileRevision": null
+    },
+    "bestsellers": {
+     "level": "unbound",
+     "categoryId": null,
+     "mode": "inherit",
+     "profileId": null,
+     "profileRevision": null
+    }
+   },
+   "settingsRevision": 1,
+   "categoryPriority": "last-non-inherit-wins",
+   "warnings": []
+  },
+  "productionProfile": null
+ },
+ "hinweis": "Nativ gespeicherte Revisions-Metadaten der Kopie. Die businessDecisions aus dem v9-Transport sind hier nicht Teil der Metadaten."
+}

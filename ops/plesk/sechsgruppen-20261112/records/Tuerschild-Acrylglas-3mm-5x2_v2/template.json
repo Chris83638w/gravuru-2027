@@ -1,0 +1,100 @@
+{
+ "kennzeichnung": "KOPIEN-ID (isolated-copy, nicht in der Live-Registry)",
+ "id": "pgt_83ec2106-eb89-406b-965d-5c61239a4e03",
+ "revision": 1,
+ "document": {
+  "name": "Tuerschild-Acrylglas-3mm-5x2_v2",
+  "openQuestions": [],
+  "schema": "gravuru-product-group-template/v1",
+  "scope": {
+   "lineId": "native-products",
+   "subcategoryId": "cfg_68c697b4-e32f-43bb-840c-a6149f1ec472"
+  },
+  "targets": [
+   {
+    "familyId": "cfg_68c697b4-e32f-43bb-840c-a6149f1ec472",
+    "key": "cfg_68c697b4-e32f-43bb-840c-a6149f1ec472",
+    "material": {
+     "color": "#17191b",
+     "engravingSide": "back",
+     "kind": "acrylic",
+     "thicknessMm": 3,
+     "variant": "schwarz"
+    },
+    "moduleProfile": {
+     "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+     "revision": 1
+    },
+    "optionFields": [],
+    "optionGroups": [
+     {
+      "defaultValueId": "schwarz",
+      "id": "color",
+      "name": "Farbe",
+      "required": true,
+      "values": [
+       {
+        "currency": "EUR",
+        "id": "schwarz",
+        "label": "Schwarz",
+        "priceCents": 0
+       },
+       {
+        "currency": "EUR",
+        "id": "anthrazit",
+        "label": "Anthrazit",
+        "priceCents": 0
+       }
+      ]
+     },
+     {
+      "defaultValueId": "K00",
+      "id": "mounting",
+      "name": "Befestigung",
+      "required": true,
+      "values": [
+       {
+        "currency": "EUR",
+        "id": "K00",
+        "label": "Ohne Bohrung",
+        "priceCents": 0
+       },
+       {
+        "currency": "EUR",
+        "id": "KGL",
+        "label": "Selbstklebend – glatte Flächen",
+        "priceCents": 0
+       },
+       {
+        "currency": "EUR",
+        "id": "KRA",
+        "label": "Selbstklebend – raue Flächen",
+        "priceCents": 0
+       },
+       {
+        "currency": "EUR",
+        "id": "B02",
+        "label": "Mit 2 Bohrlöchern",
+        "priceCents": 0
+       },
+       {
+        "currency": "EUR",
+        "id": "B02S",
+        "label": "Mit 2 Schrauben",
+        "priceCents": 0
+       }
+      ]
+     }
+    ],
+    "sizeKey": "cfg_68c697b4-e32f-43bb-840c-a6149f1ec472",
+    "source": {
+     "productId": "cfg_68c697b4-e32f-43bb-840c-a6149f1ec472",
+     "revision": 1
+    }
+   }
+  ]
+ },
+ "sha256": "ca3e77d2c4962aad973e6fa33c89684d353a4ba7fb08054f638760438c8f4f27",
+ "actor": "Claude Kopienlauf sechs Gruppen (nur Wegwerfkopie, keine Freigabe)",
+ "createdAt": "2026-11-12T08:51:10.191Z"
+}

@@ -1,0 +1,370 @@
+{
+ "schema": "gravuru-sechsgruppen-kopienrecords/v1",
+ "kennzeichnung": "isolated-copy · confirm:0 · execute:0 · alle Kennungen unter \"kopie\" sind Kopien-IDs einer Wegwerfkopie und KEINE Einträge der Live-Registry",
+ "herkunft": {
+  "serverOrdner": "private/sicherungen-db/sechsgruppen-20261112T084929Z",
+  "testbelegSha256": "a541d5d1f1f5a34b967fcb7cc228d01148083d48dd9e7c9bfa79f5f9080998b2",
+  "recordsDateiAufServer": {
+   "bytes": 47037,
+   "sha256": "56062c29591481d12c6dc5fbd562adaf0606eeaf075a0a41f2e2f8c5cfb512ad",
+   "kompaktBytes": 17662,
+   "kompaktSha256": "962b1a3d5fb9fa34db48dfe82c68abe9be5a580d9c44a0c714b2d72b525af379"
+  },
+  "kompaktSha256": "65adc3ee9c6182023cd03096e512057459e807ba4f586319f5d1139971a721a7",
+  "tenant": "gravuru",
+  "register": {
+   "vertrag": "nativeModuleSources (Standard des Acryl-Hosts, keine Katalogregistry konfiguriert)",
+   "quellenVorher": 261,
+   "sicherung": "20261112T082349Z",
+   "kandidat": "kandidat-f85390b-20261112"
+  },
+  "transportManifestSha256": "cb6eccb109a94014ace5441ab74a9736f5f33a78825075fa0085f33d4f59395b"
+ },
+ "rekonstruktion": "plan.json.gz, template.json, source-document.json.gz und source-metadata.json sind aus dem v9-Transport mit der ID-Abbildung nachgebaut; jeder Nachbau ist gegen den auf dem Server aus dem gespeicherten Record berechneten kanonischen SHA-256 geprüft (Quelldokument, Revisions-Metadaten, Vorlage, kompiliertes Produktdokument, Fingerprint, planHash, Planlänge in Bytes).",
+ "confirm": 0,
+ "execute": 0,
+ "zuordnung": [
+  {
+   "gruppe": "Tuerschild-Acrylglas-3mm-5x2_v2",
+   "workbook": "Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+   "originalWorkbookSha256": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+   "sourceCommit": "bf8824c80347f63ffeb2c05cc9a34a9ffed6f9bd",
+   "creationKey": "issue230-119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+   "productKey": "Tuerschild-Acrylglas-3mm-5x2_v2",
+   "kopie": {
+    "quelle": {
+     "id": "cfg_68c697b4-e32f-43bb-840c-a6149f1ec472",
+     "revision": 1,
+     "status": "draft",
+     "sha256": "723c95550dcd566492ca27e302b95fb35df2a259fb32b3a86ce2d641fa967fd7",
+     "createdAt": "2026-11-12T08:51:00.156Z"
+    },
+    "vorlage": {
+     "id": "pgt_83ec2106-eb89-406b-965d-5c61239a4e03",
+     "revision": 1,
+     "sha256": "ca3e77d2c4962aad973e6fa33c89684d353a4ba7fb08054f638760438c8f4f27"
+    },
+    "plan": {
+     "id": "pgp_244eb7f7-a813-4d56-b587-c0240ef756d5",
+     "planHash": "ebc8935db17be6636a795cf52a9dd26f711463dbe56875d2bd7dee9995bfdc50",
+     "createdAt": "2026-11-12T08:51:15.072Z",
+     "dokumentBytes": 8486557
+    },
+    "modulprofil": {
+     "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+     "revision": 1,
+     "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+    },
+    "motivprofil": {
+     "id": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+     "revision": 1
+    }
+   },
+   "v9": {
+    "quelle": {
+     "id": "cfg_a185d396-3f2d-40cc-8199-b802743da334",
+     "revision": 2,
+     "sha256": "7d951cec1d47abc13b1c2c6d6e0552c0616e4843fc941e4c75943ad89aeb53f8",
+     "status": "draft",
+     "publishedRevision": null,
+     "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+    },
+    "vorlage": {
+     "id": "pgt_31a79772-234a-485c-beec-c7565a7157c6",
+     "revision": 2,
+     "sha256": "bdc0ff479668e535903ad6cb17cd6e6ae04039437a8e3fbeaebc02a563d48a8e"
+    },
+    "planId": "pgp_7307b213-09ef-4758-b525-88aea139502d",
+    "planHash": "cd2405c8f0a53544cfaaf87f97d84234ba9c51d58ec6b0e388bb7212ef141392"
+   },
+   "varianten": 10,
+   "preisAbCents": 699,
+   "designs": 27
+  },
+  {
+   "gruppe": "Tuerschild-Acrylglas-3mm-6x2_v2",
+   "workbook": "Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+   "originalWorkbookSha256": "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+   "sourceCommit": "bf8824c80347f63ffeb2c05cc9a34a9ffed6f9bd",
+   "creationKey": "issue230-7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+   "productKey": "Tuerschild-Acrylglas-3mm-6x2_v2",
+   "kopie": {
+    "quelle": {
+     "id": "cfg_fcb59442-8cf1-4b46-ae8b-f6ee46511910",
+     "revision": 1,
+     "status": "draft",
+     "sha256": "117c568255874bfec1be1d6ff2380b6618dc3d119023e7dd1b8993d831846b75",
+     "createdAt": "2026-11-12T08:51:15.534Z"
+    },
+    "vorlage": {
+     "id": "pgt_52c7c665-e4cd-454d-9f78-e325f8cc439c",
+     "revision": 1,
+     "sha256": "bc630d4c3ddaaac9c7451a7bcd0e73eb6769884a60829395fc5879103fc30fe9"
+    },
+    "plan": {
+     "id": "pgp_cac795e1-b1c1-46e6-a807-7347ad4d9826",
+     "planHash": "03093e0f155d60036c2589f28a32a4a6e2eec8b4ca3a209a018f9d8948b4893c",
+     "createdAt": "2026-11-12T08:51:29.115Z",
+     "dokumentBytes": 8486990
+    },
+    "modulprofil": {
+     "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+     "revision": 1,
+     "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+    },
+    "motivprofil": {
+     "id": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+     "revision": 1
+    }
+   },
+   "v9": {
+    "quelle": {
+     "id": "cfg_8e5ebd8e-a795-4bc8-a53f-884eb5e705d0",
+     "revision": 2,
+     "sha256": "4e74e4921f46d07382e2e2b605c3aaf237b11492905ed4e662a5e91aec22d3f5",
+     "status": "draft",
+     "publishedRevision": null,
+     "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+    },
+    "vorlage": {
+     "id": "pgt_e0676ce8-1bac-46fd-9665-ab04684143ec",
+     "revision": 2,
+     "sha256": "b38de2aba9530a86d71c61a569aee208295db3e63394b913a0dfb24ddfc52d69"
+    },
+    "planId": "pgp_6831ea29-73f3-40c4-abfa-834c8479d93d",
+    "planHash": "df492d24f7da24f765ff62b8b03daf44865d839045191f3b3e449ca8f37cc09f"
+   },
+   "varianten": 10,
+   "preisAbCents": 799,
+   "designs": 27
+  },
+  {
+   "gruppe": "Tuerschild-Acrylglas-3mm-8x2_v2",
+   "workbook": "Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+   "originalWorkbookSha256": "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+   "sourceCommit": "bf8824c80347f63ffeb2c05cc9a34a9ffed6f9bd",
+   "creationKey": "issue230-02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+   "productKey": "Tuerschild-Acrylglas-3mm-8x2_v2",
+   "kopie": {
+    "quelle": {
+     "id": "cfg_809706a1-191d-4bc5-9960-6410f3222fb5",
+     "revision": 1,
+     "status": "draft",
+     "sha256": "a2949c3d564bc5ed652f72f0a9823c417d2c911c71b7e05414372048dc995ac1",
+     "createdAt": "2026-11-12T08:51:29.554Z"
+    },
+    "vorlage": {
+     "id": "pgt_f4ced3ef-ca61-4931-a41c-08e148441510",
+     "revision": 1,
+     "sha256": "a92ba2bbbab70f6611e5b215e0cb026ca4faa7806566202f68c3b2670eecc8d5"
+    },
+    "plan": {
+     "id": "pgp_0a364376-f6c2-4836-b274-47b9efe030f4",
+     "planHash": "c9b7c3f21968a51b587044fc36861911200bbe198c0a817b3f48e500033e2fd2",
+     "createdAt": "2026-11-12T08:51:44.357Z",
+     "dokumentBytes": 8487370
+    },
+    "modulprofil": {
+     "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+     "revision": 1,
+     "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+    },
+    "motivprofil": {
+     "id": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+     "revision": 1
+    }
+   },
+   "v9": {
+    "quelle": {
+     "id": "cfg_ecf40ca9-b1f0-4782-ae2d-768cbe62d03d",
+     "revision": 2,
+     "sha256": "21479a11ae22c881fe40a05975d8beb7aa2e1fafc30db657b04bd3591ee36ed2",
+     "status": "draft",
+     "publishedRevision": null,
+     "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+    },
+    "vorlage": {
+     "id": "pgt_2c75a0ba-8628-47b6-807c-5889687ad8f1",
+     "revision": 2,
+     "sha256": "b8248c437752b60adcbe783b7ecba56b3851de4b4ed7675b3371d0070015f9f7"
+    },
+    "planId": "pgp_1d526e2a-fe1d-4749-be52-5386cf227afe",
+    "planHash": "8531d241fd230a52a14a4c77bf314bdc49c578a679fc5d0d1d9a6a439f995d53"
+   },
+   "varianten": 10,
+   "preisAbCents": 849,
+   "designs": 27
+  },
+  {
+   "gruppe": "Tuerschild-Edelstahl-5x2_v1",
+   "workbook": "Tuerschild-Edelstahl-5x2_v1.xlsx",
+   "originalWorkbookSha256": "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+   "sourceCommit": "bf8824c80347f63ffeb2c05cc9a34a9ffed6f9bd",
+   "creationKey": "issue230-9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+   "productKey": "Tuerschild-Edelstahl-5x2_v1",
+   "kopie": {
+    "quelle": {
+     "id": "cfg_64b480bd-2124-446d-a674-4443fa05b5f1",
+     "revision": 1,
+     "status": "draft",
+     "sha256": "492c53dbcf56e592932f2443c5fcf757c6a36a99aa0bac523b50443700af4cd3",
+     "createdAt": "2026-11-12T08:51:44.816Z"
+    },
+    "vorlage": {
+     "id": "pgt_6c6cd65d-a071-4a5c-b3c9-5b45a2d540f5",
+     "revision": 1,
+     "sha256": "f6e03a5d29435c500d4b5319a35d48a990343fda68c7592720e3667011fda0f2"
+    },
+    "plan": {
+     "id": "pgp_ebbbb351-5aa4-4afe-81bc-e78d9febae99",
+     "planHash": "3bc4abe777035399e7f79aa865c9c3110a2bd6e62a62fa3340ec4a7649d0bddc",
+     "createdAt": "2026-11-12T08:51:58.056Z",
+     "dokumentBytes": 10402334
+    },
+    "modulprofil": {
+     "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+     "revision": 1,
+     "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+    },
+    "motivprofil": {
+     "id": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+     "revision": 1
+    }
+   },
+   "v9": {
+    "quelle": {
+     "id": "cfg_9c64f1b8-5e95-49ae-8937-d5990a3b26a6",
+     "revision": 2,
+     "sha256": "c37159312125ef333a01ea1ab96d1c25fe46edfd946c52495a7e9039f2f1f466",
+     "status": "draft",
+     "publishedRevision": null,
+     "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+    },
+    "vorlage": {
+     "id": "pgt_26088966-d1b9-4212-92a3-4a3e3bb6a617",
+     "revision": 2,
+     "sha256": "2d76dc9c5eba6dcdb4c2cd8367905a380d71cdc7db28a55221fc86125079632a"
+    },
+    "planId": "pgp_7699e1dc-2f19-427d-a983-0fd6610f9bd9",
+    "planHash": "24840f5fe16a074e5f842ae85bb6529285bee334254d5d82d99f98efc9f09117"
+   },
+   "varianten": 5,
+   "preisAbCents": 799,
+   "designs": 27
+  },
+  {
+   "gruppe": "Tuerschild-Edelstahl-6x2_v1",
+   "workbook": "Tuerschild-Edelstahl-6x2_v1.xlsx",
+   "originalWorkbookSha256": "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+   "sourceCommit": "bf8824c80347f63ffeb2c05cc9a34a9ffed6f9bd",
+   "creationKey": "issue230-de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+   "productKey": "Tuerschild-Edelstahl-6x2_v1",
+   "kopie": {
+    "quelle": {
+     "id": "cfg_c38e63be-e4f3-4c75-95a7-ca331ceae8ba",
+     "revision": 1,
+     "status": "draft",
+     "sha256": "dcd63a77aaeddd112ab180e864c8d7c48e789077336d1d05dd92d466c40d277a",
+     "createdAt": "2026-11-12T08:51:58.593Z"
+    },
+    "vorlage": {
+     "id": "pgt_6e0e17af-51d9-4863-a137-6e6435f180a7",
+     "revision": 1,
+     "sha256": "92e1f407c8e283bdfc62a0871167a97df03e928748865dddf4b4f9a6c7e773f1"
+    },
+    "plan": {
+     "id": "pgp_bf0b70c7-372d-4563-935a-554be24bfdd7",
+     "planHash": "ed2e6e192028d17c6f7488dfb7a9d08dbd1f327c35944750f43ae380a02a1a3e",
+     "createdAt": "2026-11-12T08:52:12.065Z",
+     "dokumentBytes": 10402761
+    },
+    "modulprofil": {
+     "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+     "revision": 1,
+     "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+    },
+    "motivprofil": {
+     "id": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+     "revision": 1
+    }
+   },
+   "v9": {
+    "quelle": {
+     "id": "cfg_d50868ac-bb33-476f-a07f-3a9a1b9af583",
+     "revision": 2,
+     "sha256": "3ef423c8c81ba076b3b61eaf116467464a42a70f266536451a870ab09824f516",
+     "status": "draft",
+     "publishedRevision": null,
+     "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+    },
+    "vorlage": {
+     "id": "pgt_176dd091-f9dc-4f7f-9bd1-42c350beb7f5",
+     "revision": 2,
+     "sha256": "7e75b75560592722a8b78ebb07f33565f8ffc839846d6f1f3a958d10ad20f35b"
+    },
+    "planId": "pgp_b216801b-a754-447b-be24-308e5f47de18",
+    "planHash": "8423f66172c8ff0258d5ca60591f42861457ba9634805d92941431dcfbf0764f"
+   },
+   "varianten": 5,
+   "preisAbCents": 879,
+   "designs": 27
+  },
+  {
+   "gruppe": "Tuerschild-Edelstahl-8x2_v1",
+   "workbook": "Tuerschild-Edelstahl-8x2_v1.xlsx",
+   "originalWorkbookSha256": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+   "sourceCommit": "bf8824c80347f63ffeb2c05cc9a34a9ffed6f9bd",
+   "creationKey": "issue230-440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+   "productKey": "Tuerschild-Edelstahl-8x2_v1",
+   "kopie": {
+    "quelle": {
+     "id": "cfg_f2bb6a4b-1ce0-4ba8-a0ab-d92af17a8de0",
+     "revision": 1,
+     "status": "draft",
+     "sha256": "3b20aa4d3382a8ac604ea4f2a71e9e79357fae71fcf028158ecfe7bfa164fd71",
+     "createdAt": "2026-11-12T08:52:12.679Z"
+    },
+    "vorlage": {
+     "id": "pgt_654492e8-3d55-4d72-b578-e528a5ceb3a2",
+     "revision": 1,
+     "sha256": "3e70b4f170ba211f910e5d47b68efb4d9993556e47f286017d42e4f96b4410bf"
+    },
+    "plan": {
+     "id": "pgp_7ec62d5a-6d28-48c5-b8da-fe940e39ee0e",
+     "planHash": "cd1473f9a1a18927c558a8c4901bbaeb58a0781a589fd532fd1733d3ca5b96e0",
+     "createdAt": "2026-11-12T08:52:27.471Z",
+     "dokumentBytes": 10403141
+    },
+    "modulprofil": {
+     "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+     "revision": 1,
+     "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3"
+    },
+    "motivprofil": {
+     "id": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+     "revision": 1
+    }
+   },
+   "v9": {
+    "quelle": {
+     "id": "cfg_c2dc9d76-a1f5-4f89-8b1c-89fd0f94555f",
+     "revision": 2,
+     "sha256": "9520da5156363805a1c11853b13795a09321410dc7b9ef1aa3fe711eb76ef2e3",
+     "status": "draft",
+     "publishedRevision": null,
+     "metadataSha256": "b1beebfe5c01834e02d1a7299ffee8c4ed19e0dd93b541718a9157a44fb090ec"
+    },
+    "vorlage": {
+     "id": "pgt_abb30c39-1c05-4b4a-a666-812591d03a25",
+     "revision": 2,
+     "sha256": "bb1c8ed8834ba9b2975989515ae51dad725bb5e61d22577286db029459fb6476"
+    },
+    "planId": "pgp_869d2800-de7c-48d6-96f4-87a5f889186e",
+    "planHash": "634a3d3f45e462a03a4b79add03cc0d323e7587378d8cc402a3495f638652199"
+   },
+   "varianten": 5,
+   "preisAbCents": 949,
+   "designs": 27
+  }
+ ]
+}

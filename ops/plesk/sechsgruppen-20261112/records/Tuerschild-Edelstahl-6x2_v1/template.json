@@ -1,0 +1,78 @@
+{
+ "kennzeichnung": "KOPIEN-ID (isolated-copy, nicht in der Live-Registry)",
+ "id": "pgt_6e0e17af-51d9-4863-a137-6e6435f180a7",
+ "revision": 1,
+ "document": {
+  "name": "Tuerschild-Edelstahl-6x2_v1",
+  "openQuestions": [],
+  "schema": "gravuru-product-group-template/v1",
+  "scope": {
+   "lineId": "native-products",
+   "subcategoryId": "cfg_c38e63be-e4f3-4c75-95a7-ca331ceae8ba"
+  },
+  "targets": [
+   {
+    "familyId": "cfg_c38e63be-e4f3-4c75-95a7-ca331ceae8ba",
+    "key": "cfg_c38e63be-e4f3-4c75-95a7-ca331ceae8ba",
+    "material": {
+     "color": "#bac2c4",
+     "kind": "steel",
+     "thicknessMm": 1.5
+    },
+    "moduleProfile": {
+     "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+     "revision": 1
+    },
+    "optionFields": [],
+    "optionGroups": [
+     {
+      "defaultValueId": "K00",
+      "id": "mounting",
+      "name": "Befestigung",
+      "required": true,
+      "values": [
+       {
+        "currency": "EUR",
+        "id": "K00",
+        "label": "Ohne Bohrung",
+        "priceCents": 0
+       },
+       {
+        "currency": "EUR",
+        "id": "KGL",
+        "label": "Selbstklebend – glatte Flächen",
+        "priceCents": 0
+       },
+       {
+        "currency": "EUR",
+        "id": "KRA",
+        "label": "Selbstklebend – raue Flächen",
+        "priceCents": 0
+       },
+       {
+        "currency": "EUR",
+        "id": "B02",
+        "label": "Mit 2 Bohrlöchern",
+        "priceCents": 0
+       },
+       {
+        "currency": "EUR",
+        "id": "B02S",
+        "label": "Mit 2 Schrauben",
+        "priceCents": 0
+       }
+      ]
+     }
+    ],
+    "sizeKey": "cfg_c38e63be-e4f3-4c75-95a7-ca331ceae8ba",
+    "source": {
+     "productId": "cfg_c38e63be-e4f3-4c75-95a7-ca331ceae8ba",
+     "revision": 1
+    }
+   }
+  ]
+ },
+ "sha256": "92e1f407c8e283bdfc62a0871167a97df03e928748865dddf4b4f9a6c7e773f1",
+ "actor": "Claude Kopienlauf sechs Gruppen (nur Wegwerfkopie, keine Freigabe)",
+ "createdAt": "2026-11-12T08:52:07.553Z"
+}

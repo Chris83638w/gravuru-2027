@@ -1,0 +1,193 @@
+{
+ "schema": "gravuru-sechsgruppen-records-kompakt/v1 (lokal aus den gelesenen Serverwerten zusammengestellt)",
+ "ordner": "sechsgruppen-20261112T084929Z",
+ "belegSha256": "a541d5d1f1f5a34b967fcb7cc228d01148083d48dd9e7c9bfa79f5f9080998b2",
+ "recordsDatei": {
+  "bytes": 47037,
+  "sha256": "56062c29591481d12c6dc5fbd562adaf0606eeaf075a0a41f2e2f8c5cfb512ad",
+  "kompaktBytes": 17662,
+  "kompaktSha256": "962b1a3d5fb9fa34db48dfe82c68abe9be5a580d9c44a0c714b2d72b525af379"
+ },
+ "tenant": "gravuru",
+ "confirm": 0,
+ "execute": 0,
+ "register": {
+  "vertrag": "nativeModuleSources (Standard des Acryl-Hosts, keine Katalogregistry konfiguriert)",
+  "quellenVorher": 261,
+  "sicherung": "20261112T082349Z",
+  "kandidat": "kandidat-f85390b-20261112"
+ },
+ "mod": {
+  "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+  "revision": 1,
+  "sha256": "1becdb8eecb674692efc51e031516f695f5c26e2ed40111f417f87817aef4dc3",
+  "actor": "Claude Kopienlauf sechs Gruppen (nur Wegwerfkopie, keine Freigabe)",
+  "created_at": "2026-11-12T08:50:59.787Z",
+  "dokument": {
+   "modules": {
+    "colors": false,
+    "designs": true,
+    "logo": false,
+    "motifs": true,
+    "options": true,
+    "photo": false,
+    "text": true
+   },
+   "name": "Kleinformate: Foto/Logo aus (Chris, 11.11.2026)"
+  }
+ },
+ "mot": {
+  "kopf": {
+   "id": "prf_f83fabdb-8ec7-4b43-865c-23769ecb475e",
+   "revision": 1,
+   "created_at": "2026-11-12T08:50:59.792Z",
+   "updated_at": "2026-11-12T08:50:59.792Z"
+  },
+  "dokumentKanonischSha256": "8c3edbbe0ac9742b97babc8a82fe1b197cfb7101fee3d29ddb0c77baa9b473ca",
+  "einstellungen": {
+   "revision": 1,
+   "documentSha256": "e6b1c139393f9fa57efc508caca7cf8e59f33f60d11b06e1c4c30d60f9dbc0eb",
+   "updated_at": "2026-10-21T16:35:38.898Z"
+  }
+ },
+ "g": [
+  {
+   "o": "Tuerschild-Acrylglas-3mm-5x2_v2",
+   "q": {
+    "id": "cfg_68c697b4-e32f-43bb-840c-a6149f1ec472",
+    "rev": {
+     "revision": 1,
+     "status": "draft",
+     "created_at": "2026-11-12T08:51:00.156Z"
+    }
+   },
+   "t": {
+    "id": "pgt_83ec2106-eb89-406b-965d-5c61239a4e03",
+    "revision": 1,
+    "actor": "Claude Kopienlauf sechs Gruppen (nur Wegwerfkopie, keine Freigabe)",
+    "createdAt": "2026-11-12T08:51:10.191Z"
+   },
+   "p": {
+    "id": "pgp_244eb7f7-a813-4d56-b587-c0240ef756d5",
+    "planHash": "ebc8935db17be6636a795cf52a9dd26f711463dbe56875d2bd7dee9995bfdc50",
+    "createdAt": "2026-11-12T08:51:15.072Z",
+    "dokumentBytes": 8486557
+   }
+  },
+  {
+   "o": "Tuerschild-Acrylglas-3mm-6x2_v2",
+   "q": {
+    "id": "cfg_fcb59442-8cf1-4b46-ae8b-f6ee46511910",
+    "rev": {
+     "revision": 1,
+     "status": "draft",
+     "created_at": "2026-11-12T08:51:15.534Z"
+    }
+   },
+   "t": {
+    "id": "pgt_52c7c665-e4cd-454d-9f78-e325f8cc439c",
+    "revision": 1,
+    "actor": "Claude Kopienlauf sechs Gruppen (nur Wegwerfkopie, keine Freigabe)",
+    "createdAt": "2026-11-12T08:51:24.597Z"
+   },
+   "p": {
+    "id": "pgp_cac795e1-b1c1-46e6-a807-7347ad4d9826",
+    "planHash": "03093e0f155d60036c2589f28a32a4a6e2eec8b4ca3a209a018f9d8948b4893c",
+    "createdAt": "2026-11-12T08:51:29.115Z",
+    "dokumentBytes": 8486990
+   }
+  },
+  {
+   "o": "Tuerschild-Acrylglas-3mm-8x2_v2",
+   "q": {
+    "id": "cfg_809706a1-191d-4bc5-9960-6410f3222fb5",
+    "rev": {
+     "revision": 1,
+     "status": "draft",
+     "created_at": "2026-11-12T08:51:29.554Z"
+    }
+   },
+   "t": {
+    "id": "pgt_f4ced3ef-ca61-4931-a41c-08e148441510",
+    "revision": 1,
+    "actor": "Claude Kopienlauf sechs Gruppen (nur Wegwerfkopie, keine Freigabe)",
+    "createdAt": "2026-11-12T08:51:39.223Z"
+   },
+   "p": {
+    "id": "pgp_0a364376-f6c2-4836-b274-47b9efe030f4",
+    "planHash": "c9b7c3f21968a51b587044fc36861911200bbe198c0a817b3f48e500033e2fd2",
+    "createdAt": "2026-11-12T08:51:44.357Z",
+    "dokumentBytes": 8487370
+   }
+  },
+  {
+   "o": "Tuerschild-Edelstahl-5x2_v1",
+   "q": {
+    "id": "cfg_64b480bd-2124-446d-a674-4443fa05b5f1",
+    "rev": {
+     "revision": 1,
+     "status": "draft",
+     "created_at": "2026-11-12T08:51:44.816Z"
+    }
+   },
+   "t": {
+    "id": "pgt_6c6cd65d-a071-4a5c-b3c9-5b45a2d540f5",
+    "revision": 1,
+    "actor": "Claude Kopienlauf sechs Gruppen (nur Wegwerfkopie, keine Freigabe)",
+    "createdAt": "2026-11-12T08:51:53.615Z"
+   },
+   "p": {
+    "id": "pgp_ebbbb351-5aa4-4afe-81bc-e78d9febae99",
+    "planHash": "3bc4abe777035399e7f79aa865c9c3110a2bd6e62a62fa3340ec4a7649d0bddc",
+    "createdAt": "2026-11-12T08:51:58.056Z",
+    "dokumentBytes": 10402334
+   }
+  },
+  {
+   "o": "Tuerschild-Edelstahl-6x2_v1",
+   "q": {
+    "id": "cfg_c38e63be-e4f3-4c75-95a7-ca331ceae8ba",
+    "rev": {
+     "revision": 1,
+     "status": "draft",
+     "created_at": "2026-11-12T08:51:58.593Z"
+    }
+   },
+   "t": {
+    "id": "pgt_6e0e17af-51d9-4863-a137-6e6435f180a7",
+    "revision": 1,
+    "actor": "Claude Kopienlauf sechs Gruppen (nur Wegwerfkopie, keine Freigabe)",
+    "createdAt": "2026-11-12T08:52:07.553Z"
+   },
+   "p": {
+    "id": "pgp_bf0b70c7-372d-4563-935a-554be24bfdd7",
+    "planHash": "ed2e6e192028d17c6f7488dfb7a9d08dbd1f327c35944750f43ae380a02a1a3e",
+    "createdAt": "2026-11-12T08:52:12.065Z",
+    "dokumentBytes": 10402761
+   }
+  },
+  {
+   "o": "Tuerschild-Edelstahl-8x2_v1",
+   "q": {
+    "id": "cfg_f2bb6a4b-1ce0-4ba8-a0ab-d92af17a8de0",
+    "rev": {
+     "revision": 1,
+     "status": "draft",
+     "created_at": "2026-11-12T08:52:12.679Z"
+    }
+   },
+   "t": {
+    "id": "pgt_654492e8-3d55-4d72-b578-e528a5ceb3a2",
+    "revision": 1,
+    "actor": "Claude Kopienlauf sechs Gruppen (nur Wegwerfkopie, keine Freigabe)",
+    "createdAt": "2026-11-12T08:52:22.652Z"
+   },
+   "p": {
+    "id": "pgp_7ec62d5a-6d28-48c5-b8da-fe940e39ee0e",
+    "planHash": "cd1473f9a1a18927c558a8c4901bbaeb58a0781a589fd532fd1733d3ca5b96e0",
+    "createdAt": "2026-11-12T08:52:27.471Z",
+    "dokumentBytes": 10403141
+   }
+  }
+ ]
+}

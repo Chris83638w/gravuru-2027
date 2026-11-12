@@ -1,0 +1,78 @@
+{
+ "kennzeichnung": "KOPIEN-ID (isolated-copy, nicht in der Live-Registry)",
+ "id": "pgt_654492e8-3d55-4d72-b578-e528a5ceb3a2",
+ "revision": 1,
+ "document": {
+  "name": "Tuerschild-Edelstahl-8x2_v1",
+  "openQuestions": [],
+  "schema": "gravuru-product-group-template/v1",
+  "scope": {
+   "lineId": "native-products",
+   "subcategoryId": "cfg_f2bb6a4b-1ce0-4ba8-a0ab-d92af17a8de0"
+  },
+  "targets": [
+   {
+    "familyId": "cfg_f2bb6a4b-1ce0-4ba8-a0ab-d92af17a8de0",
+    "key": "cfg_f2bb6a4b-1ce0-4ba8-a0ab-d92af17a8de0",
+    "material": {
+     "color": "#bac2c4",
+     "kind": "steel",
+     "thicknessMm": 1.5
+    },
+    "moduleProfile": {
+     "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+     "revision": 1
+    },
+    "optionFields": [],
+    "optionGroups": [
+     {
+      "defaultValueId": "K00",
+      "id": "mounting",
+      "name": "Befestigung",
+      "required": true,
+      "values": [
+       {
+        "currency": "EUR",
+        "id": "K00",
+        "label": "Ohne Bohrung",
+        "priceCents": 0
+       },
+       {
+        "currency": "EUR",
+        "id": "KGL",
+        "label": "Selbstklebend – glatte Flächen",
+        "priceCents": 0
+       },
+       {
+        "currency": "EUR",
+        "id": "KRA",
+        "label": "Selbstklebend – raue Flächen",
+        "priceCents": 0
+       },
+       {
+        "currency": "EUR",
+        "id": "B02",
+        "label": "Mit 2 Bohrlöchern",
+        "priceCents": 0
+       },
+       {
+        "currency": "EUR",
+        "id": "B02S",
+        "label": "Mit 2 Schrauben",
+        "priceCents": 0
+       }
+      ]
+     }
+    ],
+    "sizeKey": "cfg_f2bb6a4b-1ce0-4ba8-a0ab-d92af17a8de0",
+    "source": {
+     "productId": "cfg_f2bb6a4b-1ce0-4ba8-a0ab-d92af17a8de0",
+     "revision": 1
+    }
+   }
+  ]
+ },
+ "sha256": "3e70b4f170ba211f910e5d47b68efb4d9993556e47f286017d42e4f96b4410bf",
+ "actor": "Claude Kopienlauf sechs Gruppen (nur Wegwerfkopie, keine Freigabe)",
+ "createdAt": "2026-11-12T08:52:22.652Z"
+}

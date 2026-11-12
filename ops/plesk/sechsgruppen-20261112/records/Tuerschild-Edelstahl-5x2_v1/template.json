@@ -1,0 +1,78 @@
+{
+ "kennzeichnung": "KOPIEN-ID (isolated-copy, nicht in der Live-Registry)",
+ "id": "pgt_6c6cd65d-a071-4a5c-b3c9-5b45a2d540f5",
+ "revision": 1,
+ "document": {
+  "name": "Tuerschild-Edelstahl-5x2_v1",
+  "openQuestions": [],
+  "schema": "gravuru-product-group-template/v1",
+  "scope": {
+   "lineId": "native-products",
+   "subcategoryId": "cfg_64b480bd-2124-446d-a674-4443fa05b5f1"
+  },
+  "targets": [
+   {
+    "familyId": "cfg_64b480bd-2124-446d-a674-4443fa05b5f1",
+    "key": "cfg_64b480bd-2124-446d-a674-4443fa05b5f1",
+    "material": {
+     "color": "#bac2c4",
+     "kind": "steel",
+     "thicknessMm": 1.5
+    },
+    "moduleProfile": {
+     "id": "cmp_38e59965-819c-426c-92c7-46dcbb01c4c5",
+     "revision": 1
+    },
+    "optionFields": [],
+    "optionGroups": [
+     {
+      "defaultValueId": "K00",
+      "id": "mounting",
+      "name": "Befestigung",
+      "required": true,
+      "values": [
+       {
+        "currency": "EUR",
+        "id": "K00",
+        "label": "Ohne Bohrung",
+        "priceCents": 0
+       },
+       {
+        "currency": "EUR",
+        "id": "KGL",
+        "label": "Selbstklebend – glatte Flächen",
+        "priceCents": 0
+       },
+       {
+        "currency": "EUR",
+        "id": "KRA",
+        "label": "Selbstklebend – raue Flächen",
+        "priceCents": 0
+       },
+       {
+        "currency": "EUR",
+        "id": "B02",
+        "label": "Mit 2 Bohrlöchern",
+        "priceCents": 0
+       },
+       {
+        "currency": "EUR",
+        "id": "B02S",
+        "label": "Mit 2 Schrauben",
+        "priceCents": 0
+       }
+      ]
+     }
+    ],
+    "sizeKey": "cfg_64b480bd-2124-446d-a674-4443fa05b5f1",
+    "source": {
+     "productId": "cfg_64b480bd-2124-446d-a674-4443fa05b5f1",
+     "revision": 1
+    }
+   }
+  ]
+ },
+ "sha256": "f6e03a5d29435c500d4b5319a35d48a990343fda68c7592720e3667011fda0f2",
+ "actor": "Claude Kopienlauf sechs Gruppen (nur Wegwerfkopie, keine Freigabe)",
+ "createdAt": "2026-11-12T08:51:53.615Z"
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "issue230-r1-receipt-checks/v1",
+  "documentationOnly": true,
+  "hostRunnerExecuted": false,
+  "rawHostEvidenceReceived": false,
+  "reportedHostChecks": 10,
+  "checks": [
+    {
+      "check": "received:ro-ausgang.mjs",
+      "bytes": 14318,
+      "sha256": "9588a042df3d98c457c630a74862a75e2160a8eb342b5236c8c6da9bbab14fcb",
+      "gitBlob": "d6ab83bfe236d085f412b0b827bf57ac07f25b29",
+      "passed": true
+    },
+    {
+      "check": "received:kompakt-serverwerte.json",
+      "bytes": 4414,
+      "sha256": "8842e6d7b4fb0fba7a453f5e09bff3cd9c4681dcfb9061467c979b8b5635d93e",
+      "gitBlob": "65afb800523c4c4e5ded1b3e02b805e17fb52fcd",
+      "passed": true
+    },
+    {
+      "check": "unchanged-package:issue230-main-readonly-connection-20261112",
+      "manifestSha256": "5eea1f5815f93689b2cd6f0a2b0b54895c90e4b13b3f2e4208818f15e9168d01",
+      "files": 8,
+      "passed": true
+    },
+    {
+      "check": "unchanged-package:issue230-main-shop-binding-20261112",
+      "manifestSha256": "de182709cb4c004d338f666186cfa2785b755a708605adcf4d58b0c25721f416",
+      "files": 25,
+      "passed": true
+    },
+    {
+      "check": "compact-receipt-consistent-with-known-baseline",
+      "passed": true
+    }
+  ]
+}

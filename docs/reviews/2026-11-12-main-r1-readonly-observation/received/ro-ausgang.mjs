@@ -1,0 +1,71 @@
+// R1-Ausgangsstand des Hauptacryls – REIN LESEND auf den tatsächlichen Daten, über Astras Readonly-Anschluss
+// (ops/issue230-main-readonly-connection-20261112 @ 881a83a, Manifest 5eea1f58…): zwei SQLite-Dateien readOnly + query_only,
+// keine Workshop-/Repository-/Profilkonstruktoren, keine Migration. Shopify nur über den vorhandenen Eigentümer-App-LESEtransport
+// (Client-Credentials der App wie in pv-shopify-lesen.mjs), kein Schreibtransport, keine Mutation.
+// KEIN Plan, KEIN R2: es wird nur geprüft, ob der heutige Stand genau der Ausgangsstand ist, auf dem der Main-Operator später planen würde.
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import {isDeepStrictEqual as gleich} from 'node:util';
+import {pathToFileURL} from 'node:url';
+const hier=import.meta.dirname,P=fs.realpathSync(process.env.RO_P||path.resolve(hier,'..')),RT=path.join(P,process.env.RO_RT||'kandidat-f85390b-20261112'),BASIS=path.join(P,'sicherungen-db');
+const OP=path.join(BASIS,'mainanschluss-20261112T105018Z','paket'),EVIDENZ=path.join(BASIS,'mainanschluss-20261112T105018Z','main-evidence.private.json'),LIVE=path.join(P,'acryl-employee-20261021-v1','data');
+const RO_MANIFEST='5eea1f5815f93689b2cd6f0a2b0b54895c90e4b13b3f2e4208818f15e9168d01',OP_MANIFEST='de182709cb4c004d338f666186cfa2785b755a708605adcf4d58b0c25721f416',SHOP='gravuru-design.myshopify.com';
+const sha=b=>crypto.createHash('sha256').update(b).digest('hex'),kurzFehler=e=>({code:e?.code??null,message:String(e?.message||e).replace(/\/var\/www\/vhosts\/[^/]+/g,'~').slice(0,240),wo:String(e?.stack||'').split('\n').slice(1,3).map(l=>l.trim().replace(/^at /,'').replace(/file:\/\/\S*\/private\//,'').slice(0,100))});
+let geheim=[],schritt='start',target=null;const out={event:'ro_ausgang',schema:'gravuru-main-r1-ausgangsstand-lesebeleg/v1',kennzeichnung:'Rein lesend auf den tatsächlichen Daten; kein Plan, kein R2, keine Mutation, kein Schreibtransport',zeit:new Date().toISOString()};
+const zeige=o=>{const t=JSON.stringify(o);if(geheim.some(g=>g&&t.includes(g)))throw new Error('Ausgabe enthielte einen Zugangswert');console.log(t);return t;};
+// Netz nur zu genau einem Host (Shopify-Shop), alles andere wird abgewiesen
+const fetchEcht=globalThis.fetch;let fremd=0;globalThis.fetch=(url,o)=>{let h='';try{h=new URL(String(url)).host;}catch{}if(h!==SHOP){fremd++;throw new Error('Netz gesperrt außer Shopify-Lesen');}return fetchEcht(url,o);};
+const zustand=()=>Object.fromEntries(['workshop.sqlite','workshop.sqlite-wal','workshop.sqlite-shm','profiles.sqlite','profiles.sqlite-wal'].map(f=>{try{const s=fs.statSync(path.join(LIVE,f));return [f,[s.size,s.mtimeMs]];}catch{return [f,null];}}));
+try{
+ // 1. Pakete: Readonly-Paket aus Sammeldatei in neuen Ordner, Main-v2-Paket unverändert vom Kopienlauf
+ schritt='pakete';const sammel=JSON.parse(fs.readFileSync(path.join(hier,'ro-paket.json'),'utf8')),mb=Buffer.from(sammel['manifest.json'],'base64');if(sha(mb)!==RO_MANIFEST)throw new Error('Readonly-Manifest weicht ab');
+ const man=JSON.parse(mb);for(const f of man.files){const b=Buffer.from(sammel[f.path]??'','base64');if(sha(b)!==f.sha256)throw new Error('Readonly-Paketdatei weicht ab: '+f.path);}
+ if(sha(fs.readFileSync(path.join(OP,'manifest.json')))!==OP_MANIFEST)throw new Error('Main-v2-Manifest weicht ab');for(const f of JSON.parse(fs.readFileSync(path.join(OP,'manifest.json'))).files)if(sha(fs.readFileSync(path.join(OP,f.path)))!==f.sha256)throw new Error('Main-v2-Datei weicht ab: '+f.path);
+ const ts=out.zeit.replace(/[-:]/g,'').slice(0,15)+'Z',U=path.join(BASIS,'readonly-ausgang-'+ts),RO=path.join(U,'ro-paket');fs.mkdirSync(U,{mode:0o700});fs.mkdirSync(RO,{mode:0o700});
+ for(const [n,b64] of Object.entries(sammel))fs.writeFileSync(path.join(RO,n),Buffer.from(b64,'base64'),{flag:'wx',mode:0o600});
+ out.ordner=path.basename(U);out.pakete={readonlyManifest:RO_MANIFEST,readonlyDateien:man.files.length,operatorManifest:OP_MANIFEST,runnerSha256:sha(fs.readFileSync(path.join(hier,'ro-ausgang.mjs'))),laufzeit:path.basename(RT)};
+ // 2. tatsächlicher Readonly-Anschluss
+ schritt='anschluss';const vorher=zustand();const wFile=fs.realpathSync(path.join(LIVE,'workshop.sqlite')),pFile=fs.realpathSync(path.join(LIVE,'profiles.sqlite'));
+ const imp=(root,f)=>import(pathToFileURL(path.join(root,f)).href),{createMainProductionReadonlyAdapterFactory}=await imp(RO,'adapter-factory.mjs'),op=await imp(OP,'main-operator.mjs'),g=await imp(OP,'gateways.mjs'),{POLICY,loadPinnedMapping,bindingView,digest,commerce}=op;
+ const adapterFactory=await createMainProductionReadonlyAdapterFactory({codeRoot:RT,operatorRoot:OP,workshopFilename:wFile,profilesFilename:pFile});
+ let schreibmodusAbgewiesen=null;try{await adapterFactory({readOnly:false,mode:'apply'});schreibmodusAbgewiesen=false;}catch(e){schreibmodusAbgewiesen=e.code||true;}
+ target=await adapterFactory({readOnly:true,mode:'plan'});const native=target.native,mapping=loadPinnedMapping(path.join(OP,'variant-mapping.preview.json.gz')),ids=[...mapping.matches,...mapping.residual].map(v=>v.id).sort();
+ out.anschluss={canWrite:target.canWrite,nativeMethoden:Object.keys(native).sort(),registryMethoden:Object.keys(target.registry).sort(),schreibmodusAbgewiesen,dateien:{workshop:path.relative(P,wFile),profiles:path.relative(P,pFile)}};
+ // 3. nativer Ausgangsstand
+ schritt='nativ';const rec=await native.inspect(),r1=target.workshop.repository.get(POLICY.productId,{revision:1});
+ let r2=null;try{target.workshop.repository.get(POLICY.productId,{revision:2});r2='vorhanden';}catch(e){r2='nicht vorhanden ('+(e.code||'fehler')+')';}
+ out.nativ={kopf:{revision:rec.revision,status:rec.status,documentSha256:rec.documentSha256,metadataSha256:rec.metadataSha256},kopfIstR1Pin:rec.revision===1&&rec.documentSha256===POLICY.beforeDocumentSha256,r1PublishedRevision:r1.publishedRevision,r1ErstelltAm:r1.createdAt,revision2:r2};
+ schritt='bindungen';const rows=(await native.resolveMany(ids.map(id=>({shopifyProductId:POLICY.shopifyProductId,shopifyVariantId:id})))).map(bindingView),by=new Map(rows.map(r=>[r.shopifyVariantId,r]));
+ const bOk={anzahl:rows.length,eindeutig:by.size,alleR1:rows.every(r=>r.productRevision===1&&r.documentSha256===POLICY.beforeDocumentSha256),zielOptionenUndPreis:mapping.matches.filter(m=>{const b=by.get(m.id);return b&&gleich(b.options,m.options)&&b.unitCents===m.beforeCents;}).length,restPreis:mapping.residual.filter(m=>by.get(m.id)?.unitCents===m.cents).length,assignmentRevisionen:[...new Set(rows.map(r=>r.assignmentRevision))].sort(),bindungenSha256:digest([...rows].sort((a,b)=>a.shopifyVariantId.localeCompare(b.shopifyVariantId)))};out.bindungen=bOk;
+ schritt='katalog';const k1=await native.catalogApprovals(1,ids),k2=await native.catalogApprovals(2,ids);
+ out.katalog={r1:{anzahl:k1.length,alleGleich:k1.every(r=>gleich(r,k1[0])),kind:k1[0]?.kind??null,id:k1[0]?.id??null,approvedAt:k1[0]?.approvedAt??null},r2:{anzahl:k2.length,alleNull:k2.every(r=>r===null)}};
+ schritt='vertraege';const hist=rows.map(r=>({bindingId:r.bindingId,shopifyVariantId:r.shopifyVariantId,contract:target.workshop.orderIntake.bindingPricing(r.bindingId)})).sort((a,b)=>a.shopifyVariantId.localeCompare(b.shopifyVariantId));
+ const ev=JSON.parse(fs.readFileSync(EVIDENZ,'utf8')),evHist=[...ev.historicalContracts].sort((a,b)=>a.shopifyVariantId.localeCompare(b.shopifyVariantId));
+ out.vertraege={anzahl:hist.length,nullVertraege:hist.filter(h=>h.contract===null).length,revisionen:[...new Set(hist.map(h=>String(h.contract?.revision)))],basisGleichBindung:hist.filter(h=>h.contract&&h.contract.baseCents===by.get(h.shopifyVariantId).unitCents).length,sha256:digest(hist),gleichKopienEvidenz:gleich(hist,evHist),kopienEvidenzSha256:digest(evHist)};
+ schritt='fertigungsprofil';try{const pr=target.workshop.productionProfiles.resolve(r1.document);out.fertigungsprofil=pr?{id:pr.id,revision:pr.revision,sha256:pr.sha256,blocker:Array.isArray(pr.blockers)?pr.blockers.length:null}:null;}catch(e){out.fertigungsprofil={fehler:e.code||String(e.message).slice(0,80)};}
+ target.close();target=null;const nachher=zustand();out.dateizustand={vorher,nachher,workshopGroesseGleich:vorher['workshop.sqlite']?.[0]===nachher['workshop.sqlite']?.[0],profilesUnveraendert:gleich(vorher['profiles.sqlite'],nachher['profiles.sqlite'])};
+ // 4. Shopify: vorhandener Eigentümer-App-Lesetransport, nur der Lese-Gateway des Operators (kein graphqlWriteOnce)
+ schritt='shopify-zugang';const {ADMIN_READONLY_IDENTITY:I}=await imp(RT,'app/workshop/shopify-admin-readonly.mjs');if(I.shopDomain!==SHOP)throw new Error('Shopidentität');
+ const appText=fs.readFileSync(path.join(P,'..','gravuru-2027-merchant','app.cjs'),'utf8'),cfgFile=(appText.match(/process\.env\.GRAVURU_SHOPIFY_CONFIG_FILE\s*=\s*(["'])(.*?)\1/)||[])[2];if(!cfgFile)throw Object.assign(new Error('Konfiguration fehlt'),{code:'ro_konfiguration'});
+ const secretFile=JSON.parse(fs.readFileSync(cfgFile,'utf8')).values?.GRAVURU_SHOPIFY_CLIENT_SECRET_FILE,st=fs.statSync(secretFile);if(!st.isFile()||st.mode&0o077||st.size<16||st.size>1024)throw Object.assign(new Error('Secretdatei'),{code:'ro_secretdatei'});
+ const secret=fs.readFileSync(secretFile,'utf8').trim();geheim.push(secret);if(!/^[A-Za-z0-9_-]{16,256}$/.test(secret))throw Object.assign(new Error('Secretformat'),{code:'ro_secretformat'});
+ const anfrage=async(url,o)=>{const c=new AbortController(),t=setTimeout(()=>c.abort(),30000);try{const r=await fetch(url,{...o,redirect:'error',cache:'no-store',signal:c.signal});if(!r.ok)throw Object.assign(new Error('HTTP '+r.status),{code:'ro_http_'+r.status});return r.json();}finally{clearTimeout(t);}};
+ const tk=await anfrage(`https://${SHOP}/admin/oauth/access_token`,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded',Accept:'application/json'},body:new URLSearchParams({grant_type:'client_credentials',client_id:I.clientId,client_secret:secret}).toString()});
+ if(typeof tk.access_token!=='string'||tk.access_token.length<16)throw Object.assign(new Error('Token'),{code:'ro_token'});geheim.push(tk.access_token);
+ let lesen=0;const kosten=[],fehlerGql=[];const graphqlRead=async(query,variables)=>{if(/\bmutation\b/.test(query))throw new Error('Nur Lesen');lesen++;const j=await anfrage(`https://${SHOP}/admin/api/${I.apiVersion}/graphql.json`,{method:'POST',headers:{'Content-Type':'application/json','X-Shopify-Access-Token':tk.access_token},body:JSON.stringify({query,variables})});if(j.extensions?.cost)kosten.push([j.extensions.cost.requestedQueryCost,j.extensions.cost.actualQueryCost]);if(j.errors?.length)fehlerGql.push(...j.errors.map(e=>String(e.extensions?.code||'')+':'+String(e.message).slice(0,120)).slice(0,3));return j;};
+ schritt='shopify-lesen';const shopify=g.createMainShopifyGateway({graphqlRead});out.shopify={gatewayMethoden:Object.keys(shopify).sort(),schreibtransport:false};
+ try{
+  const snap=await shopify.inspect(),base=commerce(snap),sv=new Map(base.variants.map(v=>[v.id,v]));
+  Object.assign(out.shopify,{status:snap.status,varianten:snap.variants.length,updatedAt:snap.updatedAt,zielVorzustand:mapping.matches.filter(m=>{const v=sv.get(m.id);return v&&v.priceCents===m.beforeCents&&gleich(v.selectedOptions,m.beforeOptions)&&v.protectedVariant.sku===m.sku;}).length,restVorzustand:mapping.residual.filter(m=>{const v=sv.get(m.id);return v&&v.priceCents===m.cents&&gleich(v.selectedOptions,m.options)&&v.protectedVariant.sku===m.sku;}).length,idsGleichMapping:gleich([...sv.keys()].sort(),ids),preisGleichBindung:rows.filter(r=>sv.get(r.shopifyVariantId)?.priceCents===r.unitCents).length,templateSuffix:snap.protectedProduct.templateSuffix,customizationId:snap.protectedProduct.customization?.value??null,commerceSha256:digest(base)});
+  const pf=await shopify.readPricing();out.shopify.preisfeld=pf?{id:pf.id,namespace:pf.namespace,key:pf.key,type:pf.type,bytes:Buffer.byteLength(pf.value),sha256:sha(pf.value),compareDigest:pf.compareDigest,gleichEvidenz:gleich(pf,ev.observedField),gleichImProduktlesen:snap.protectedProduct.personalization?.value===pf.value}:null;
+ }catch(e){out.shopify.fehler=kurzFehler(e);}
+ out.shopify.leseabfragen=lesen;out.shopify.kosten=kosten;out.shopify.graphqlFehler=fehlerGql;out.fremdeNetzversuche=fremd;
+ const s=out.shopify,n=out.nativ;
+ out.pruefungen={anschluss_nur_lesend:out.anschluss.canWrite===false&&out.anschluss.schreibmodusAbgewiesen==='main_readonly_mode'&&gleich(out.anschluss.nativeMethoden,['catalogApprovals','inspect','resolveMany'])&&gleich(out.anschluss.registryMethoden,['resolveMany','shopDomain','storeId','tenantId']),kopf_r1_gepinnt:n.kopfIstR1Pin&&n.kopf.status==='draft',kein_r2_vorhanden:n.revision2!=='vorhanden',bindungen_808_r1:bOk.anzahl===808&&bOk.eindeutig===808&&bOk.alleR1&&bOk.zielOptionenUndPreis===778&&bOk.restPreis===30,katalog_r1_808_r2_leer:out.katalog.r1.anzahl===808&&out.katalog.r1.alleGleich&&out.katalog.r1.kind==='catalog'&&out.katalog.r2.alleNull,vertraege_808_wie_kopie:out.vertraege.anzahl===808&&out.vertraege.nullVertraege===0&&out.vertraege.basisGleichBindung===808&&out.vertraege.gleichKopienEvidenz,profiles_datei_unveraendert:out.dateizustand.profilesUnveraendert,
+  shop_808_vorzustand:!s.fehler&&s.status==='DRAFT'&&s.varianten===808&&s.zielVorzustand===778&&s.restVorzustand===30&&s.idsGleichMapping&&s.preisGleichBindung===808,preisfeld_wie_beobachtet:!s.fehler&&s.preisfeld?.gleichEvidenz===true&&s.preisfeld.compareDigest==='66b0aa6d8ab008aa31bc3ab39cec8d10760061bab055c3d990e74b882ed6500d'&&s.preisfeld.gleichImProduktlesen,kein_fremdes_netz:fremd===0};
+ out.bestanden=Object.values(out.pruefungen).every(Boolean);schritt='beleg';
+ const text=JSON.stringify(out,null,1);if(geheim.some(x=>text.includes(x)))throw new Error('Beleg enthielte einen Zugangswert');fs.writeFileSync(path.join(U,'LESEBELEG-r1-ausgang.json'),text,{flag:'wx',mode:0o600});out.belegSha256=sha(text);out.belegBytes=Buffer.byteLength(text);
+ zeige(out);
+}catch(error){try{target?.close();}catch{}const f=kurzFehler(error);for(const x of geheim)if(x){f.message=f.message.replaceAll(x,'[entfernt]');}try{zeige({...out,schritt,fehler:f,bestanden:false});}catch{console.log(JSON.stringify({event:'ro_ausgang',schritt,bestanden:false,fehler:{code:'ro_ausgabe_gesperrt'}}));}process.exitCode=1;}
+finally{globalThis.fetch=fetchEcht;}

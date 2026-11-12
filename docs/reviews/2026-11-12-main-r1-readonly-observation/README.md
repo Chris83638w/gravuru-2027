@@ -1,0 +1,23 @@
+# Main: tatsächlicher R1-Ausgangsstand gelesen
+
+**STATUS: Host-Lesung von Claude ausgeführt und gemeldet; Empfang, Quellen und offene Rückfragen von Astra geprüft. Keine Produktausführung oder Veröffentlichung.** 12.11.2026 · #168/#230/#233.
+
+Quelle: [Claude #168, Kommentar 6828889696](https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6828889696), Commit `b0acb340`, `ops/plesk/readonly-ausgang-20261112`. Die beiden empfangenen Dateien liegen byteidentisch unter `received/`. Der Runner-SHA stimmt mit der Kompaktabschrift überein; beide Git-Blob-IDs sind unabhängig aus den empfangenen Bytes bestätigt. [checks.json](checks.json) hält außerdem die unveränderten acht Readonly- und 25 Mainoperator-Dateien fest. Der Hostrunner wurde hier nicht erneut ausgeführt.
+
+## Ergebnis und Grenzen
+
+Claude meldet zehn bestandene Prüfbedingungen auf den tatsächlichen Main-Daten und fünf echte Shopify-Leseabfragen. Native Revision R1, DRAFT, 808 aktive R1-Bindungen und 808 vollständige historische Preisverträge passen zum bisherigen Ausgangsstand. R2 fehlt erwartungsgemäß. Shopify meldet DRAFT mit denselben 808 Varianten, unveränderten Vorpreisen und dem bekannten Preisfeld mit 18.108 Bytes, SHA `7c997f49153d43a937a75501ed5bc016eda1003e129d1735528b801ee7962cf5` und compareDigest `66b0aa6d8ab008aa31bc3ab39cec8d10760061bab055c3d990e74b882ed6500d`. Die gemeldeten Vertragsdaten stimmen mit der Kopienevidenz überein.
+
+Der private vollständige `LESEBELEG-r1-ausgang.json` (4.591 Bytes, gemeldeter SHA `07993ea1d74ac75777f27f7295fafe14c76055ef490b383f8c3affa6ab2ac831`) wurde nicht übermittelt. Die zehn Hostbedingungen sind daher ein nachvollziehbarer Operatorbericht mit Quell- und Kompaktbeleg, kein unabhängiger erneuter Hosttest. Der Runner prüft den bekannten Ausgangsstand, berechnet keinen Plan und ruft den Operator nicht auf. Die fehlende R2 wird im Runner über eine abgefangene Leseausnahme festgestellt; die Abschrift benennt konkret `main_readonly_revision`. Die Native-/Shopify-Lesungen sind zeitlich getrennte Beobachtungen, keine gemeinsame atomare Transaktion.
+
+## Drei Rückfragen beantwortet
+
+1. **SQLite-Sidecars:** `profiles.sqlite-wal` (0 Bytes) und `profiles.sqlite-shm` (32.768 Bytes) wurden laut Claude beim Readonly-Öffnen angelegt. Das sind betriebliche SQLite-Dateien; die SHM-Datei ist nicht mit „keinerlei Bytes/Inhalt“ gleichzusetzen. Der Bericht meldet keine logischen Datenänderungen und unveränderte Größe/Änderungszeit der vier vorher vorhandenen Dateien. Ein byteweiser Hashvergleich dieser vier Dateien liegt nicht vor. Die vorher angekündigte Sidecar-Grenze ist damit konkret beobachtet. Dateien liegen lassen; keine Löschung oder Änderung auf `immutable=1`.
+2. **Fertigungsprofil:** Die README-Behauptung eines tatsächlichen Main-Fertigungsprofils war falsch. Sowohl tatsächliches R1 als auch vorbereitetes, exakt gepinntes R2 enthalten keinen `productionProfile`-Verweis; der Reader erhält korrekt `null`. [Getrennter Korrekturbeleg](main-readonly-r1-r2-profile-clarification.md). Das eingefrorene Helferpaket bleibt unverändert; keine neue Profilzuordnung und kein neuer Ausführungsblocker.
+3. **Einstiegskennung:** Der historische Main-Alias in `custom.customization_id` bleibt erhalten. Im belegten Einstieg steuert sein Nichtleerwert die Sichtbarkeit; die Auflösung verwendet Shopify-Produkt-/Varianten-IDs und die geschützte native Registry. Die sechs neuen DRAFTs dürfen deshalb weiterhin ihre tatsächlichen cfg-IDs erhalten, nach bepreisten Bindungen/Katalogreadback und mit vorhandenem CAS-Schutz. [Quellreview](main-customization-id-review-20261112.md) und [historischer Themeauszug vom 11.11.](main-shop-entry-theme-evidence.json). Kein neuer Themeabruf behauptet.
+
+## Verbleibender Schritt
+
+Der tatsächliche R1-/808-Leseanschluss ist damit abgearbeitet. Offen bleibt der echte frische Functioncallback. Die bereits gestellte Nutzerwahl zur eigenen Zugangserneuerung mit Claude oder zum zunächst zu erprobenden privaten Laptoptransport ist unbeantwortet; kein neuer Zugangversuch oder Brückenbau wird daraus abgeleitet. Danach genau eine gemeinsame Produktausführungsfrage stellen. Das native R1→R2-Update und der erst anschließend erzeugbare finale R2-Plan gehören in die spätere autorisierte Ausführung, nicht vor diese Frage.
+
+Main-v2 `49912d0`, sein Manifest `de182709cb4c004d338f666186cfa2785b755a708605adcf4d58b0c25721f416`, Helfer `881a83a` mit Manifest `5eea1f5815f93689b2cd6f0a2b0b54895c90e4b13b3f2e4208818f15e9168d01`, Sechsoperator und laufende App bleiben unverändert. Keine wiederholten Kopientests, kein neuer Appneustart und keine Produktmutation aus diesem Review.

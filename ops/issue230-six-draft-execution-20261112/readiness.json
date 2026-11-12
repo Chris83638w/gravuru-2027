@@ -1,0 +1,43 @@
+{
+  "schema": "issue230-six-draft-local-readiness/v1",
+  "prepared": true,
+  "locallyTested": true,
+  "nativeTests": {
+    "tests": 8,
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "exitCode": 0,
+    "log": "tests-final.txt",
+    "actualContentGroups": 6,
+    "variantRows": 45,
+    "store": "new disposable synthetic SQLite",
+    "shopify": "injected synthetic transport; global fetch blocked",
+    "approval": "synthetic fixture only; no real user approval"
+  },
+  "scope": {
+    "newDrafts": 6,
+    "variants": 45,
+    "existingProductMutations": 0,
+    "publish": 0,
+    "mediaWrites": 0,
+    "productionReady": false
+  },
+  "actualExecutedTargetIdsAvailable": false,
+  "actualFinalRequestsAvailable": false,
+  "actualHostIntegrationProven": false,
+  "shopifyWritesExecuted": 0,
+  "pending": [
+    "Operator supplies existing exact host instances/authenticated clients and concrete executed native target records after the one intended approval.",
+    "Generate six exact native requests from those actual records; attach existing authorization to the resulting reviewHash without another business decision.",
+    "Actual authenticated app-proxy/browser readback is separate.",
+    "No concrete approved main-image mapping for six new products; technical DRAFT creation remains possible without media."
+  ],
+  "relocation": {
+    "passed": true,
+    "tests": 8,
+    "log": "tests-relocated.txt",
+    "proof": "relocation-check.json",
+    "runtimeChanged": false
+  }
+}

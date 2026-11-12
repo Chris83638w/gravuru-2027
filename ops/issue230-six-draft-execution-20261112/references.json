@@ -1,0 +1,55 @@
+{
+  "schema": "issue230-six-draft-references/v1",
+  "source": "sg-eingaben.json@26b5993b independently verified against v9 and 75a304eb records",
+  "sourceSha256": "08f6dbed3cd54f97f3f324d80c51cc65d8d97348f1533a8e12551f72e68b8fde",
+  "groups": [
+    {
+      "group": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "productKey": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "excelSha256": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+      "variants": 10,
+      "compiledNormalizedSha256": "cb7b0544ced9c963880778691d40898ac7eab1b6c498735c97ae8c391d2b204e",
+      "variantReviewSha256": "7c8030a91fdd8f8f86333578a1c8ba238cdd6f8c212de5a29a226807a23da303"
+    },
+    {
+      "group": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "productKey": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "excelSha256": "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+      "variants": 10,
+      "compiledNormalizedSha256": "ce4e49b21823615f4add15e7e71f78f2484d4cb543cfa41d4f4964a2b1334d4c",
+      "variantReviewSha256": "adf2891169dfbd621e2dac48462211ae895f476874e890e582bf13af37c90c2b"
+    },
+    {
+      "group": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "productKey": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "excelSha256": "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+      "variants": 10,
+      "compiledNormalizedSha256": "c27e409a4da6e1c3eed9665a07c45723a890d2eb4a7fcd5cb42ccd28c404c284",
+      "variantReviewSha256": "649e8f6126a6a54d1474e7089439f0d09bd14400a8178ce6e03867c2f422d90c"
+    },
+    {
+      "group": "Tuerschild-Edelstahl-5x2_v1",
+      "productKey": "Tuerschild-Edelstahl-5x2_v1",
+      "excelSha256": "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+      "variants": 5,
+      "compiledNormalizedSha256": "ba32c1822c77ef190228056914d7673256b294c04fc57fa1a6d6b6e1280e8c58",
+      "variantReviewSha256": "44b79defd4753331515f18180190c0574c0cbb5a68ada181a09d9052ff04e436"
+    },
+    {
+      "group": "Tuerschild-Edelstahl-6x2_v1",
+      "productKey": "Tuerschild-Edelstahl-6x2_v1",
+      "excelSha256": "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+      "variants": 5,
+      "compiledNormalizedSha256": "0bb97f1355fc6f941f545334203d3bf0a841c757bd183e25161903c60f1762c7",
+      "variantReviewSha256": "dffefd7f8037dffc243a0ec4681c2b999a320d2ea921529bb35da19fbda77d82"
+    },
+    {
+      "group": "Tuerschild-Edelstahl-8x2_v1",
+      "productKey": "Tuerschild-Edelstahl-8x2_v1",
+      "excelSha256": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+      "variants": 5,
+      "compiledNormalizedSha256": "490cc4f53a2b7a3852bef7be059287431d1055f7746bf548aa280a22abb90625",
+      "variantReviewSha256": "a36223fb8f4c287b7a43968baa532c821b1982ecbddb32fc2a822b6e017da441"
+    }
+  ]
+}

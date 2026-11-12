@@ -1,0 +1,119 @@
+{
+  "manifestSha256": "7e7d4a9093c28d981cefe3eae5f2eb12b5e41c380af768c963c0e88dcc5b338e",
+  "files": [
+    {
+      "file": "README.md",
+      "ok": true
+    },
+    {
+      "file": "six-drafts.mjs",
+      "ok": true
+    },
+    {
+      "file": "shopify-steps.mjs",
+      "ok": true
+    },
+    {
+      "file": "private-log.mjs",
+      "ok": true
+    },
+    {
+      "file": "prepare-requests.mjs",
+      "ok": true
+    },
+    {
+      "file": "references.json",
+      "ok": true
+    },
+    {
+      "file": "native-pins.json",
+      "ok": true
+    },
+    {
+      "file": "readiness.json",
+      "ok": true
+    },
+    {
+      "file": "six-drafts.test.mjs",
+      "ok": true
+    },
+    {
+      "file": "tests-initial.txt",
+      "ok": true
+    },
+    {
+      "file": "tests-final.txt",
+      "ok": true
+    }
+  ],
+  "native": [
+    {
+      "file": "app/workshop/shop-draft-transfer.mjs",
+      "ok": true
+    },
+    {
+      "file": "app/workshop/shop-preparation.mjs",
+      "ok": true
+    },
+    {
+      "file": "app/workshop/shop-product-binding-check.mjs",
+      "ok": true
+    },
+    {
+      "file": "app/workshop/cart-personalization.mjs",
+      "ok": true
+    }
+  ],
+  "groups": [
+    {
+      "group": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "creationKey": true,
+      "key": true,
+      "compiled": true,
+      "variants": true,
+      "variantReview": true
+    },
+    {
+      "group": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "creationKey": true,
+      "key": true,
+      "compiled": true,
+      "variants": true,
+      "variantReview": true
+    },
+    {
+      "group": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "creationKey": true,
+      "key": true,
+      "compiled": true,
+      "variants": true,
+      "variantReview": true
+    },
+    {
+      "group": "Tuerschild-Edelstahl-5x2_v1",
+      "creationKey": true,
+      "key": true,
+      "compiled": true,
+      "variants": true,
+      "variantReview": true
+    },
+    {
+      "group": "Tuerschild-Edelstahl-6x2_v1",
+      "creationKey": true,
+      "key": true,
+      "compiled": true,
+      "variants": true,
+      "variantReview": true
+    },
+    {
+      "group": "Tuerschild-Edelstahl-8x2_v1",
+      "creationKey": true,
+      "key": true,
+      "compiled": true,
+      "variants": true,
+      "variantReview": true
+    }
+  ],
+  "readOnly": true,
+  "testsRerun": false
+}

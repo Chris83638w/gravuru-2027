@@ -1,0 +1,17 @@
+▶ six real content contracts through native transfer/bindings with an injected Shopify service
+  ✔ preparation pins exact six requests and rejects a plan tamper (530.6676ms)
+  ✔ lost create response stops with no bindings and never blindly creates again (6635.8355ms)
+  ✔ explicit reconcile completes six DRAFTs, 45 exact heads/prices and stored contracts before entry (52625.0382ms)
+  ✔ completed replay performs no remote mutation and creates no new heads (48093.3844ms)
+  ✔ changed remote price or ACTIVE status stops before writes (5659.032ms)
+  ✔ existing conflicting price contract and unauthenticated principal cannot change products (3322.5619ms)
+  ✔ all six native heads are checked before the first remote write (2899.6866ms)
+✔ six real content contracts through native transfer/bindings with an injected Shopify service (128599.7334ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 129105.8214

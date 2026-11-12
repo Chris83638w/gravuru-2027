@@ -1,0 +1,89 @@
+{
+  "manifestSha256": "f752b6f13a90ef61db552fd9441ae4167c4abd5cab7da3b56e58cfc563849512",
+  "fileChecks": [
+    {
+      "file": "README.md",
+      "ok": true
+    },
+    {
+      "file": "six-drafts.mjs",
+      "ok": true
+    },
+    {
+      "file": "shopify-steps.mjs",
+      "ok": true
+    },
+    {
+      "file": "private-log.mjs",
+      "ok": true
+    },
+    {
+      "file": "prepare-requests.mjs",
+      "ok": true
+    },
+    {
+      "file": "references.json",
+      "ok": true
+    },
+    {
+      "file": "native-pins.json",
+      "ok": true
+    },
+    {
+      "file": "readiness.json",
+      "ok": true
+    },
+    {
+      "file": "six-drafts.test.mjs",
+      "ok": true
+    },
+    {
+      "file": "tests-initial.txt",
+      "ok": true
+    },
+    {
+      "file": "tests-final.txt",
+      "ok": true
+    },
+    {
+      "file": "tests-relocated.txt",
+      "ok": true
+    },
+    {
+      "file": "relocation-check.json",
+      "ok": true
+    }
+  ],
+  "sourceChecks": [
+    {
+      "file": "six-drafts.mjs",
+      "unchanged": true,
+      "relocatedMatch": true
+    },
+    {
+      "file": "shopify-steps.mjs",
+      "unchanged": true,
+      "relocatedMatch": true
+    },
+    {
+      "file": "private-log.mjs",
+      "unchanged": true,
+      "relocatedMatch": true
+    },
+    {
+      "file": "prepare-requests.mjs",
+      "unchanged": true,
+      "relocatedMatch": true
+    }
+  ],
+  "testOnlyInputDiff": true,
+  "testsRerun": false,
+  "relocationLogReviewed": {
+    "tests": 8,
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0
+  },
+  "fallbackNativeRootExists": false,
+  "readmeOnlyPortableInstructions": true
+}

@@ -1,0 +1,97 @@
+{
+  "schema": "gravuru-operator-product-update-review/v1",
+  "kind": "operator-update-review-not-product-group-plan",
+  "scope": {
+    "tenantId": "gravuru",
+    "shopDomain": "gravuru-design.myshopify.com",
+    "storeId": "acryl",
+    "shopifyProductId": "gid://shopify/Product/16190784602492",
+    "productId": "cfg_8e7ebe96-28d2-406f-b31e-036ee61f47e0",
+    "expectedRevision": 1,
+    "importKey": "issue230.main-acryl.16190784602492.rev1-to2",
+    "expectedPreimageBindingSha256": "d2886e119ea9715af2b8905ebab8ecc1d199b07f8653476ce5e0fa26cd8cca79",
+    "targetProductGroupSha256": "ae09cbf6b58719b61729c7fab7a5685b464aae1e8d08691a706111e97b58e407",
+    "targetBindingSha256": "f0bb7d95e89e3aae66ab04454d6476132fe197aaae7c1da48ce8209ced62d285"
+  },
+  "origin": {
+    "excelFile": "Tuerschild-Acrylglas-3mm_v6.xlsx",
+    "excelSha256": "37a704d892b0f24fffdd87c7c5090652e5a949f3091dd8117ff83567e49d1429",
+    "v9PlanId": "pgp_80a0c3b9-b599-428f-8626-05e3ace880b6",
+    "v9PlanHash": "83cd95dc900fcbc9631086f54c26591e2dbab75d285cc80fa46d64673f63bb33"
+  },
+  "observation": {
+    "observedAt": "2026-11-12T07:21:10.464Z",
+    "scope": {
+      "tenantId": "gravuru",
+      "shopDomain": "gravuru-design.myshopify.com",
+      "storeId": "acryl",
+      "shopifyProductId": "gid://shopify/Product/16190784602492",
+      "productId": "cfg_8e7ebe96-28d2-406f-b31e-036ee61f47e0",
+      "expectedRevision": 1,
+      "importKey": "issue230.main-acryl.16190784602492.rev1-to2",
+      "expectedPreimageBindingSha256": "d2886e119ea9715af2b8905ebab8ecc1d199b07f8653476ce5e0fa26cd8cca79",
+      "targetProductGroupSha256": "ae09cbf6b58719b61729c7fab7a5685b464aae1e8d08691a706111e97b58e407",
+      "targetBindingSha256": "f0bb7d95e89e3aae66ab04454d6476132fe197aaae7c1da48ce8209ced62d285"
+    },
+    "preimage": {
+      "revision": 1,
+      "status": "draft",
+      "publishedRevision": null,
+      "documentBindingSha256": "d2886e119ea9715af2b8905ebab8ecc1d199b07f8653476ce5e0fa26cd8cca79",
+      "metadataSha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    "targetMetadataSha256": "52476368aa083eebf168c30f1f2ea54415b18f1d6c02b53e41173fa58a2ef075",
+    "resourcePins": {
+      "categoryIds": [
+        "extern-shopifyproductid-16190784602492",
+        "linie-acryl-tuerschilder"
+      ],
+      "categoryAssignments": [
+        {
+          "id": "extern-shopifyproductid-16190784602492",
+          "present": false,
+          "sha256": null
+        },
+        {
+          "id": "linie-acryl-tuerschilder",
+          "present": false,
+          "sha256": null
+        }
+      ],
+      "settings": {
+        "revision": 1,
+        "sha256": "f13deb8f92a43f226fd0b7bc7b434f515dec2460201a53f2661b7efefb8a279b"
+      },
+      "profiles": [],
+      "resolutionSha256": "364ecd257e39248e9197f3a5be5e656928c22a5a4b6878ce68612e61957f52b3",
+      "productionProfile": null
+    },
+    "evidence": {
+      "categoryComparisonSha256": "52a8c92658d09e234761ffa2767769a361c940c30b5606ff6330ce0be5984381",
+      "categoryComparisonPassed": true,
+      "nativeValidatorContract": "native-product+resources+assets+manufacturing",
+      "nativeValidatorSourceSha256": "f540c4de1a8bc22ce2989da0d978b01a1d3d7cbdc69b897114da533eefa1bd5e"
+    }
+  },
+  "target": {
+    "productGroupSha256": "ae09cbf6b58719b61729c7fab7a5685b464aae1e8d08691a706111e97b58e407",
+    "idBindingSha256": "f0bb7d95e89e3aae66ab04454d6476132fe197aaae7c1da48ce8209ced62d285"
+  },
+  "importFingerprint": "2872b28895453ec8fc3af89a293e7f3d144c56bdf03dbae6b09c5296fcb9e01f",
+  "authorizationScope": {
+    "nativeProductUpdates": 1,
+    "shopifyWrites": 0,
+    "bindingWrites": 0,
+    "catalogApprovals": 0,
+    "publications": 0,
+    "deletions": 0
+  },
+  "downstreamOnly": {
+    "plannedBindingRepoints": 778,
+    "preservedOldBindings": 30,
+    "knownShopPriceCorrections": 158,
+    "labelAffectedVariants": 30,
+    "requiresSeparateExplicitScope": true
+  },
+  "reviewHash": "8e8814cabbddb0354e0af029e1bdb09f0a668f69af03dd056792a99c6b7d517d"
+}

@@ -22,6 +22,10 @@ Das aktive Original-WASM (20977Byte/SHA256 a5c59354755dcf73bdeca8006134847549d87
 
 Die getrennte [Codeübergabe aea809f](2026-11-13-cart-mobile-fixes.md) enthält Mengenrückkehr/CartEdit-Vorrang und die mobile Reset-/Vorschaukorrektur: 13/13+5/5 gezielte Tests, unabhängige Reviews, lokale Chrome-Abnahme. Nicht als installiert melden. Claude erhält sie zum Abgleich seiner aktuellen Laufzeit und zum gemeinsamen Kandidaten mit seinem getrennten Startpaket. Unsere Dateien überschneiden sich nicht mit seinen angekündigten shop-entry-Dateien; sein installierter Galeriefix ff1f1ca bleibt erhalten. Kein neues Nutzer-Ja durch eine technische Übergabe.
 
+**Frisch gelesener Hostnachtrag:** [Claude #2336847815736](https://github.com/Chris83638w/gravuru-2027/issues/233#issuecomment-6847815736) meldet den Startfix `7e551ab4` inzwischen tatsächlich installiert, Neustart 13.11.08:16UTC, Status9/9 und Main-Galerie124 Designs. Nur `app/workshop/ui/shop-design-switch.mjs` ersetzt; aktuelle Basis für unsere spätere Übernahme ist daher `kandidat-7e551ab-20261113`. Bestehenden Startfix bewahren. Unsere vier Laufzeitdateien wurden dadurch nicht ersetzt; ihre eigene Installation bleibt unbelegt. Dieser neue Operatornachtrag ändert nicht das eingefrorene Bild-/Textpaket `cab5a96`.
+
+Paket und beide Codefixes wurden Claude zusätzlich direkt im bestehenden Chat zugestellt und sichtbar als Nachricht bestätigt. Zentrale Übergabe [#1686848148851](https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6848148851), Querverweise [#2306848182115](https://github.com/Chris83638w/gravuru-2027/issues/230#issuecomment-6848182115) und [#2336848182480](https://github.com/Chris83638w/gravuru-2027/issues/233#issuecomment-6848182480). Unabhängiger Abschlussleser bestätigt die klare Trennung des erfolgreichen Einzelfalls von offenen neuen Kaufwegen; keine Vollerfolgsbehauptung.
+
 ## Konkreter nächster Schritt und Freigabe
 
 1. Nutzer sieht sechs Bilder und Volltexte und nennt Zustimmung oder Änderungen anhand A52/A62/A82/S52/S62/S82.

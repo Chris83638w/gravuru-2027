@@ -1,0 +1,63 @@
+✔ fresh test link applies only to an explicit product preview or review model (1.5854ms)
+✔ fresh preview ignores the last test and never saves text or photos; ordinary recovery stays available (142.3775ms)
+✔ Sitzungsschutz: Änderung wird entprellt gespeichert, Neuladen stellt den Stand wieder her, „Neu beginnen“ setzt zurück (130.9703ms)
+✔ Sitzungsschutz: Foto-Referenzen bleiben, Bilder nicht – Hinweis zum erneuten Hochladen (106.2609ms)
+✔ Sitzungsschutz: laufende Designübernahme hat Vorrang; alte Sitzung bleibt bis zur nächsten gültigen Änderung erhalten (128.8124ms)
+✔ Sitzungsschutz: ungültige, fremde oder abgelaufene Stände werden still verworfen; gesperrter Speicher stört nicht (585.7018ms)
+✔ createSessionGuard: ungültiger Zwischenstand lässt den letzten gültigen stehen; Zeitgeber wird entprellt (1.3451ms)
+✔ Menge 10 überlebt pagehide und Wiederöffnen einschließlich Adapterzustand (103.3442ms)
+✔ ältere gespeicherte Sitzung ohne Mengenfeld stellt Gestaltung mit Menge 1 her (91.8243ms)
+✔ Sitzungsmengen halten die vorhandenen Grenzen 1–99 ein; ungültige Zwischenwerte überschreiben nichts (1.009ms)
+✖ explizites CartEdit früh: Servermenge 3 und Gestaltung haben Vorrang vor lokaler Menge 10 samt Uploads (78.5554ms)
+✖ explizites CartEdit spät: Servermenge 3 und Gestaltung haben Vorrang vor lokaler Menge 10 samt Uploads (88.8183ms)
+✔ ungültige CartEdit-URL unterdrückt lokale Gestaltung, Menge 10 und Upload-Recovery nicht (95.4463ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 11
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1931.2738
+
+✖ failing tests:
+
+test at app\configurator\variant-m\session-guard.test.mjs:241:37
+✖ explizites CartEdit früh: Servermenge 3 und Gestaltung haben Vorrang vor lokaler Menge 10 samt Uploads (78.5554ms)
+  AssertionError [ERR_ASSERTION]: Diese Gestaltung ist auf diesem Gerät nicht mehr zugänglich. Bitte die Gestaltung neu anlegen; die Warenkorbzeile bleibt bis dahin unverändert.
+  + actual - expected
+  
+  + undefined
+  - 'konfig_11111111-1111-4111-8111-111111111111'
+  
+      at restoreNativeCartThree (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/configurator/variant-m/session-guard.test.mjs:239:10)
+      at async TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/configurator/variant-m/session-guard.test.mjs:245:22)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'konfig_11111111-1111-4111-8111-111111111111',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at app\configurator\variant-m\session-guard.test.mjs:241:37
+✖ explizites CartEdit spät: Servermenge 3 und Gestaltung haben Vorrang vor lokaler Menge 10 samt Uploads (88.8183ms)
+  AssertionError [ERR_ASSERTION]: Diese Gestaltung ist auf diesem Gerät nicht mehr zugänglich. Bitte die Gestaltung neu anlegen; die Warenkorbzeile bleibt bis dahin unverändert.
+  + actual - expected
+  
+  + undefined
+  - 'konfig_11111111-1111-4111-8111-111111111111'
+  
+      at restoreNativeCartThree (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/configurator/variant-m/session-guard.test.mjs:239:10)
+      at async TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/configurator/variant-m/session-guard.test.mjs:249:22)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'konfig_11111111-1111-4111-8111-111111111111',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

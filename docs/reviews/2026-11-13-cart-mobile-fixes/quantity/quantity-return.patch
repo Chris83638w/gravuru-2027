@@ -1,0 +1,232 @@
+diff --git a/app/configurator/variant-m/session-guard.mjs b/app/configurator/variant-m/session-guard.mjs
+index 93726ad..60b8b66 100644
+--- a/app/configurator/variant-m/session-guard.mjs
++++ b/app/configurator/variant-m/session-guard.mjs
+@@ -8,6 +8,7 @@
+ export const SESSION_GUARD_SCHEMA='gravuru-session-guard/v1';
+ export const SESSION_GUARD_TTL_MS=7*24*60*60*1000;
+ export const SESSION_GUARD_DELAY_MS=1500;
++const validQuantity=value=>Number.isSafeInteger(value)&&value>=1&&value<=99;
+ export const sessionGuardKey=(productId,profileRevision)=>'gravuru-session:'+productId+':'+profileRevision;
+ // Mikails Testlink starts from the original preview on every reload. Shop sessions stay protected.
+ export const freshPreviewRequested=(config,search='')=>(config?.productPreview===true||config?.reviewOnly===true)&&new URLSearchParams(search).get('fresh')==='1';
+@@ -21,6 +22,7 @@ export function createSessionGuard({storage,productId,profileRevision,payload,re
+   const clear=()=>{try{storage?.removeItem(key);}catch{}};
+   const valid=data=>data&&typeof data==='object'&&!Array.isArray(data)&&data.schema===SESSION_GUARD_SCHEMA&&data.productId===productId&&data.profileRevision===profileRevision&&
+     Number.isSafeInteger(data.savedAt)&&data.savedAt<=clock()+60_000&&clock()-data.savedAt<=SESSION_GUARD_TTL_MS&&data.draft&&typeof data.draft==='object'&&!Array.isArray(data.draft)&&
++    (data.quantity===undefined||validQuantity(data.quantity))&&
+     (data.uploads===undefined||Array.isArray(data.uploads)&&data.uploads.every(u=>u&&typeof u==='object'&&typeof u.uploadId==='string'&&typeof u.objectId==='string'));
+   function read(){
+     let raw;try{raw=storage?.getItem(key);}catch{return null;}
+@@ -32,7 +34,7 @@ export function createSessionGuard({storage,productId,profileRevision,payload,re
+   function write(){
+     timer=null;if(!armed||busy)return false;
+     let data;
+-    try{const current=payload();data={schema:SESSION_GUARD_SCHEMA,productId,profileRevision,savedAt:clock(),draft:current.draft,uploads:(current.uploads||[]).map(u=>({objectId:u.objectId,uploadId:u.uploadId,kind:u.kind,name:u.name||''}))};}
++    try{const current=payload(),quantity=current.quantity??1;if(!validQuantity(quantity))return false;data={schema:SESSION_GUARD_SCHEMA,productId,profileRevision,savedAt:clock(),draft:current.draft,quantity,uploads:(current.uploads||[]).map(u=>({objectId:u.objectId,uploadId:u.uploadId,kind:u.kind,name:u.name||''}))};}
+     catch{return false;} // Ungültiger Zwischenstand: der letzte gültige bleibt gespeichert.
+     try{storage.setItem(key,JSON.stringify(data));return true;}catch{return false;}
+   }
+@@ -47,7 +49,7 @@ export function createSessionGuard({storage,productId,profileRevision,payload,re
+     recover(){
+       const data=read();if(!data)return null;
+       busy=true;
+-      try{restore(data.draft);return {uploads:data.uploads||[],savedAt:data.savedAt};}
++      try{restore(data.draft);return {uploads:data.uploads||[],savedAt:data.savedAt,quantity:data.quantity??1};}
+       catch{clear();return null;}
+       finally{busy=false;}
+     },
+diff --git a/app/configurator/variant-m/session-guard.test.mjs b/app/configurator/variant-m/session-guard.test.mjs
+index b22e3c5..0a22d1f 100644
+--- a/app/configurator/variant-m/session-guard.test.mjs
++++ b/app/configurator/variant-m/session-guard.test.mjs
+@@ -4,6 +4,7 @@ import fs from 'node:fs';
+ import vm from 'node:vm';
+ import {createSessionGuard,uploadReferences,sessionGuardKey,SESSION_GUARD_SCHEMA,SESSION_GUARD_TTL_MS,freshPreviewRequested} from './session-guard.mjs';
+ import {makeAcrylicConfig} from './acrylic-product.mjs';
++import {cartEditParams,installCartEdit} from './cart-edit.mjs';
+ import {prepareConfig,saveDraft,readDraft,DRAFT_SCHEMA} from './contract.mjs';
+ import {measureText} from '../../platform/sources/app/shared/models/doorbell-preview.mjs';
+ 
+@@ -13,7 +14,7 @@ const line=(name,marker)=>{const rows=source(name).split('\n').filter(s=>s.inclu
+ function block(name,start,end){const text=source(name),i=text.indexOf(start);assert(i>=0,start);const j=text.indexOf(end,i);assert(j>=0,end);return text.slice(i,j+end.length);}
+ const clone=v=>structuredClone(v);
+ // localStorage-Ersatz: speichert Strings, kann optional bei jedem Zugriff werfen.
+-function fakeStorage(initial={}){const data=new Map(Object.entries(initial));return {data,failing:false,getItem(k){if(this.failing)throw Error('blocked');return data.has(k)?data.get(k):null;},setItem(k,v){if(this.failing)throw Error('blocked');data.set(k,String(v));},removeItem(k){if(this.failing)throw Error('blocked');data.delete(k);}};}
++function fakeStorage(initial={}){const data=new Map(Object.entries(initial));return {data,failing:false,get length(){return data.size;},key(index){return [...data.keys()][index]??null;},getItem(k){if(this.failing)throw Error('blocked');return data.has(k)?data.get(k):null;},setItem(k,v){if(this.failing)throw Error('blocked');data.set(k,String(v));},removeItem(k){if(this.failing)throw Error('blocked');data.delete(k);}};}
+ function acrylicConfig(){
+   const resources=JSON.parse(fs.readFileSync(new URL('../../designs/acrylic-unser-anfang/resources.json',import.meta.url),'utf8'));
+   const config=makeAcrylicConfig({profile:{kind:'universal-product',schemaVersion:2}},resources,'a'.repeat(64));
+@@ -31,21 +32,28 @@ function editor(config,resources){
+   return el;
+ }
+ // Lädt die K7-Blöcke aus ux.mjs in einen Kontext: Guard anlegen, Sync-Hook, Wiederherstellung beim Start, „Neu beginnen“.
+-function mountUx({config,resources,storage,timers,pendingDesignTransfer=false,search=''}){
++function mountUx({config,resources,storage,timers,pendingDesignTransfer=false,search='',deferRecovery=false}){
+   const el=editor(config,resources),said=[],banner={hidden:true},files=new Map();
+-  const env={sessionUploads:null,persistUpload(){},missingUploads:[],el,config,profile:config.profile,files,uploadReferences,say:m=>said.push(m),said,banner,$:s=>s==='[data-ux-session]'?banner:{hidden:true},update(){},notifyCorrection(){},
+-    freshPreviewRequested,installAccountDrafts:()=>null,dialogs:{account:{}},button(){},esc:v=>v,uploadPending:false,URL:{revokeObjectURL(){}},location:{search,reload(){env.reloaded=true;}},
++  const quantityListeners=[],quantityField={value:'1',events:[],matches:s=>s==='[data-fk-quantity]',addEventListener(type,fn){if(type==='input')quantityListeners.push(fn);},dispatchEvent(event){this.events.push(event);for(const fn of quantityListeners)fn(event);return true;}};
++  const env={sessionUploads:null,persistUpload(){},missingUploads:[],el,config,profile:config.profile,files,uploadReferences,say:m=>said.push(m),said,banner,quantityField,quantity:1,Event:class{constructor(type,options){this.type=type;Object.assign(this,options);}},$:s=>s==='[data-ux-session]'?banner:s==='[data-fk-quantity]'?quantityField:{hidden:true},update(){},updatePrice(){env.priceUpdates=(env.priceUpdates||0)+1;},notifyCorrection(){},
++    freshPreviewRequested,cartEditParams,installAccountDrafts:()=>null,dialogs:{account:{}},button(){},esc:v=>v,uploadPending:false,URL:{revokeObjectURL(){}},location:{search,reload(){env.reloaded=true;}},
+     window:{parent:{GravuruShopEntry:{designGallery:{hasPendingTransfer:()=>pendingDesignTransfer}}},localStorage:storage,addEventListener(type,fn){(env.listeners[type]||=[]).push(fn);}},listeners:{},
+     createSessionGuard:options=>createSessionGuard({...options,schedule:fn=>{timers.queued=fn;return 1;},cancel:()=>{timers.queued=null;}})};
+   vm.createContext(env);
++  vm.runInContext(line('adapter.mjs',"const qty=$('[data-fk-quantity]');qty.addEventListener"),env);
++  env.changeQuantity=value=>{quantityField.value=String(value);quantityField.dispatchEvent(new env.Event('input',{bubbles:true}));env.t=quantityField;vm.runInContext(block('ux.mjs',"if(t.matches('[data-fk-quantity]'))",'sessionGuard?.touch();}'),env);};
+   vm.runInContext(line('ux.mjs','const freshPreview='),env);
+   vm.runInContext(line('ux.mjs','const chosenProfile='),env);
+   vm.runInContext(line('ux.mjs',"const oldSync=el.sync;el.sync=function(...args){"),env);
+   vm.runInContext(block('ux.mjs','  function restoreDraft(draft){','\n  }'),env);
+   vm.runInContext(block('ux.mjs','  let sessionGuard=null,initialDraft=null,accountDrafts=null;','\n  }'),env);
+   vm.runInContext(line('ux.mjs','const pendingDesignTransfer='),env);
+-  env.missingUploads=vm.runInContext('sessionGuard?.read()?.uploads||[]',env);
+-  vm.runInContext(block('ux.mjs','  if(sessionGuard&&!config?.workbench){','  }else sessionGuard=null;'),env);
++  vm.runInContext(line('ux.mjs','const recoverLocalSession='),env);
++  vm.runInContext(line('ux.mjs','const savedSession='),env);
++  env.missingUploads=vm.runInContext('savedSession?.uploads||[]',env);
++  env.prepareLocalRecovery=()=>vm.runInContext('(async()=>{'+line('ux.mjs','&&el.uxEnsureDraftResources){const stored=sessionGuard.read();')+'\n'+line('ux.mjs','const savedSession=')+'\n'+line('ux.mjs','const missingUploads=savedSession?')+'\nreturn {savedSession,missingUploads};})()',env);
++  env.finishRecovery=()=>vm.runInContext(block('ux.mjs','  if(sessionGuard&&!config?.workbench){','  }else sessionGuard=null;'),env);
++  if(!deferRecovery)env.finishRecovery();
+   vm.runInContext(line('ux.mjs',"if(config&&!config.workbench&&typeof el.draftPayload==='function')accountDrafts=installAccountDrafts("),env);
+   env.restart=()=>{env.action='session-restart';vm.runInContext('(function(){'+line('ux.mjs',"if(action==='session-restart')")+'})()',env);};
+   env.guard=()=>vm.runInContext('sessionGuard',env);
+@@ -168,7 +176,87 @@ test('createSessionGuard: ungültiger Zwischenstand lässt den letzten gültigen
+   assert.deepEqual(JSON.parse(storage.data.get(guard.key)).draft,{a:1},'letzter gültiger Stand bleibt');
+   payload={draft:{a:2},uploads:[{objectId:'o',uploadId:'u',kind:'logo',name:'l.png',extra:'nicht speichern'}]};assert.equal(guard.flush(),true);
+   assert.deepEqual(JSON.parse(storage.data.get(guard.key)).uploads,[{objectId:'o',uploadId:'u',kind:'logo',name:'l.png'}]);
+-  assert.deepEqual(guard.recover(),{uploads:[{objectId:'o',uploadId:'u',kind:'logo',name:'l.png'}],savedAt:1000});assert.deepEqual(calls,[{a:2}]);
++  assert.deepEqual(guard.recover(),{uploads:[{objectId:'o',uploadId:'u',kind:'logo',name:'l.png'}],savedAt:1000,quantity:1});assert.deepEqual(calls,[{a:2}]);
+   assert.deepEqual(uploadReferences([{id:'p',uxUploadId:'u1',uxUploadKind:'photo'},{id:'t',type:'text'}],new Map([['u1',{file:{name:'f.jpg'}}]])),[{objectId:'p',uploadId:'u1',kind:'photo',name:'f.jpg'}]);
+   assert.throws(()=>createSessionGuard({storage,productId:'',profileRevision:'r',payload(){},restore(){}}));
+ });
++
++// Claudes echter Rücksprung nutzt history.back(); bei neuem Editoraufbau greift
++// der lokale Sitzungsschutz. Kein Shopify-Warenkorb/Browserlauf wird hier simuliert.
++test('Menge 10 überlebt pagehide und Wiederöffnen einschließlich Adapterzustand',()=>{
++  const {config,resources}=acrylicConfig(),storage=fakeStorage(),timers={queued:null};
++  const first=mountUx({config,resources,storage,timers});
++  first.el.state.objects.find(o=>o.id==='names').text='Mengenprüfung';first.el.sync();timers.queued();
++  first.changeQuantity(10);
++  assert.equal(first.quantity,10);assert.equal(first.priceUpdates,1);
++  assert.equal(typeof timers.queued,'function','reine Mengenänderung plant eine Sicherung');
++  first.listeners.pagehide[0]();
++  assert.equal(JSON.parse(storage.data.get(first.guard().key)).quantity,10);
++  const reopened=mountUx({config,resources,storage,timers});
++  assert.equal(reopened.quantityField.value,'10');assert.equal(reopened.quantity,10,'echter Adapter-input-Hook übernimmt die Menge');
++  assert.equal(reopened.quantityField.events.at(-1).bubbles,true);
++  assert.equal(text(reopened.el),'Mengenprüfung');
++});
++
++test('ältere gespeicherte Sitzung ohne Mengenfeld stellt Gestaltung mit Menge 1 her',()=>{
++  const {config,resources}=acrylicConfig(),storage=fakeStorage(),timers={queued:null};
++  const first=mountUx({config,resources,storage,timers});
++  first.el.state.objects.find(o=>o.id==='names').text='Alt';first.el.sync();first.changeQuantity(10);assert.equal(first.guard().flush(),true);
++  const key=first.guard().key,old=JSON.parse(storage.data.get(key));delete old.quantity;storage.setItem(key,JSON.stringify(old));
++  const reopened=mountUx({config,resources,storage,timers});
++  assert.equal(text(reopened.el),'Alt');assert.equal(reopened.quantityField.value,'1');assert.equal(reopened.quantity,1);
++});
++
++test('Sitzungsmengen halten die vorhandenen Grenzen 1–99 ein; ungültige Zwischenwerte überschreiben nichts',()=>{
++  const storage=fakeStorage();let quantity=10;const options={storage,productId:'cfg_quantity',profileRevision:'cfg_quantity:1',payload:()=>({draft:{design:{}},quantity}),restore(){},clock:()=>1000};
++  const guard=createSessionGuard(options);guard.arm();assert.equal(guard.flush(),true);
++  const valid=storage.data.get(guard.key);
++  for(const value of [0,-1,100,1.5,NaN,'10']){quantity=value;assert.equal(guard.flush(),false);assert.equal(storage.data.get(guard.key),valid);}
++  for(const value of [0,100,1.5,'10',null]){storage.setItem(guard.key,JSON.stringify({...JSON.parse(valid),quantity:value}));assert.equal(guard.recover(),null);assert.equal(storage.data.has(guard.key),false);}
++  for(const value of [1,99]){quantity=value;assert.equal(guard.flush(),true);assert.equal(guard.recover().quantity,value);}
++});
++
++const CART_EDIT_QUERY='?config=konfig_11111111-1111-4111-8111-111111111111&rev=2';
++function savedLocalTen(){
++  const {config,resources}=acrylicConfig(),storage=fakeStorage(),timers={queued:null};
++  const first=mountUx({config,resources,storage,timers});
++  first.el.state.objects.find(o=>o.id==='names').text='Lokal';
++  const photo=first.el.state.objects.find(o=>o.type==='photoSlot');Object.assign(photo,{uxUploadId:'local-photo',uxUploadKind:'photo'});
++  first.files.set('local-photo',{file:{name:'local.jpg'}});first.el.sync();first.changeQuantity(10);assert.equal(first.guard().flush(),true);
++  storage.setItem('gravuru-acrylic-private:cart-test',JSON.stringify({token:'a'.repeat(64)}));
++  return {config,resources,storage,timers};
++}
++async function restoreNativeCartThree(env,{config,resources,storage}){
++  const saved=editor(config,resources);saved.state.objects.find(o=>o.id==='names').text='Server';
++  const document=saved.draftPayload({draft:true}),status={textContent:'',style:{removeProperty(){}}};
++  env.el.import=async file=>env.el.restoreDraft(JSON.parse(await file.text()),{draft:true});
++  const api={el:env.el,config,files:env.files,r:{querySelector:s=>s==='[data-fk-quantity]'?env.quantityField:status}};
++  const loaded={editorKind:'native',hints:[],photos:[],document,quantity:3,configuration:{cartLineId:null},draft:{id:'adraft_22222222-2222-4222-8222-222222222222',revision:1}};
++  const result=await installCartEdit(api,{storage,search:CART_EDIT_QUERY,request:async(path,options)=>{
++    assert.equal(path,'/api/workshop/cart-configurations/konfig_11111111-1111-4111-8111-111111111111/2');assert.equal(options.headers['X-Gravuru-Draft'],'a'.repeat(64));
++    return {ok:true,status:200,json:async()=>loaded};
++  }});
++  assert.equal(result?.configId,'konfig_11111111-1111-4111-8111-111111111111',status.textContent);
++}
++for(const timing of ['früh','spät'])test('explizites CartEdit '+timing+': Servermenge 3 und Gestaltung haben Vorrang vor lokaler Menge 10 samt Uploads',async()=>{
++  const setup=savedLocalTen(),env=mountUx({...setup,search:CART_EDIT_QUERY,deferRecovery:true});
++  const key=env.guard().key,before=setup.storage.data.get(key);let resourcesRead=0,uploadsRead=0;
++  env.el.uxEnsureDraftResources=async()=>{resourcesRead++;};env.sessionUploads={restore:async()=>{uploadsRead++;return [];},prune(){}};
++  if(timing==='früh')await restoreNativeCartThree(env,setup);
++  const preparation=await env.prepareLocalRecovery();env.missingUploads=preparation.missingUploads;env.finishRecovery();
++  assert.equal(preparation.savedSession,null);assert.equal(resourcesRead,0);assert.equal(uploadsRead,0,'keine lokalen Bilder über die CartEdit-Dateien legen');
++  assert.equal(env.banner.hidden,true);assert.equal(setup.storage.data.get(key),before,'ausgelassene Recovery löscht oder überschreibt den letzten Stand nicht');
++  if(timing==='spät')await restoreNativeCartThree(env,setup);
++  assert.equal(env.quantityField.value,'3');assert.equal(env.quantity,3);assert.equal(text(env.el),'Server');
++  assert.equal(env.el.state.objects.some(o=>o.uxUploadId==='local-photo'),false);
++  env.changeQuantity(5);assert.equal(env.guard().flush(),true,'nach CartEdit bleibt Sitzungsschutz aktiv');assert.equal(JSON.parse(setup.storage.data.get(key)).quantity,5);
++});
++
++test('ungültige CartEdit-URL unterdrückt lokale Gestaltung, Menge 10 und Upload-Recovery nicht',async()=>{
++  const setup=savedLocalTen(),env=mountUx({...setup,search:'?config=konfig_invalid&rev=2',deferRecovery:true});let resourcesRead=0,uploadsRead=0;
++  env.el.uxEnsureDraftResources=async draft=>{resourcesRead++;assert.equal(draft.design.objects.find(o=>o.id==='names').text,'Lokal');};
++  env.sessionUploads={restore:async uploads=>{uploadsRead++;assert.equal(uploads[0].uploadId,'local-photo');return [];},prune(){}};
++  const preparation=await env.prepareLocalRecovery();env.missingUploads=preparation.missingUploads;env.finishRecovery();
++  assert.equal(resourcesRead,1);assert.equal(uploadsRead,1);assert.equal(text(env.el),'Lokal');assert.equal(env.quantity,10);
++  assert.equal(env.el.state.objects.some(o=>o.uxUploadId==='local-photo'),true);
++});
+diff --git a/app/configurator/variant-m/ux.mjs b/app/configurator/variant-m/ux.mjs
+index aa095e2..8b5295e 100644
+--- a/app/configurator/variant-m/ux.mjs
++++ b/app/configurator/variant-m/ux.mjs
+@@ -20,6 +20,7 @@ import {installDesignReset,resetOriginalDesign} from './design-reset.mjs';
+ import {installLayout} from './layout.mjs';
+ import {alignmentContent,alignmentLabel} from './ui-icons.mjs';
+ import {installLegacyCartRestore} from './legacy-cart-restore.mjs';
++import {cartEditParams} from './cart-edit.mjs';
+ import {photoColorMode,photoColorFilter,photoEngravingPreviewFilter} from '../../platform/sources/app/shared/models/photo-color.mjs';
+ import {commercePrice} from './commerce-model.mjs';
+ import {previewResourceURL} from './preview-resource.mjs';
+@@ -352,7 +353,7 @@ export async function installUX(el,config,legacy,{attach}={}){
+   if(config&&!freshPreview&&profile.binding?.productId&&typeof profile.revision==='string'&&typeof el.draftPayload==='function'){
+     let storage=null;try{storage=window.localStorage;}catch{}
+     if(storage)sessionGuard=createSessionGuard({storage,productId:profile.binding.productId,profileRevision:profile.revision,
+-      payload:()=>({draft:el.draftPayload({draft:true}),uploads:uploadReferences(el.state.objects,files)}),restore:restoreDraft});
++      payload:()=>({draft:el.draftPayload({draft:true}),quantity:Number($('[data-fk-quantity]')?.value??1),uploads:uploadReferences(el.state.objects,files)}),restore:restoreDraft});
+   }
+   // Show usable, already loaded fonts immediately. Other visible rows load
+   // independently; a failed/slow font never holds the entire menu hostage.
+@@ -401,7 +402,7 @@ export async function installUX(el,config,legacy,{attach}={}){
+   r.addEventListener('input',e=>{const t=e.target;if(t.dataset.uxText){if(!t.dataset.editStarted){el.record();t.dataset.editStarted='true';}const o=el.state.objects.find(o=>o.id===t.dataset.uxText);
+     const limits=limitsFor(o),next=clampText(t.value,limits,o.text);
+     if(next!==t.value){const tooManyLines=t.value.split('\n').length>limits.maxLines,at=Math.min(t.selectionStart??next.length,next.length);t.value=next;try{t.setSelectionRange(at,at);}catch{}say(tooManyLines?'Höchstens '+limits.maxLines+' Zeilen.':'Höchstens '+limits.maxLength+' Zeichen.');}
+-    o.text=next;dirty=true;el.normalize();el.sync();}if(t.matches('[data-fk-quantity]'))updatePrice();});
++    o.text=next;dirty=true;el.normalize();el.sync();}if(t.matches('[data-fk-quantity]')){updatePrice();sessionGuard?.touch();}});
+   r.addEventListener('keydown',e=>{const t=e.target;if(!t.dataset?.uxText||e.key!=='Enter')return;const o=el.state.objects.find(o=>o.id===t.dataset.uxText);if(!o)return;const limits=limitsFor(o);if(t.value.split('\n').length>=limits.maxLines){e.preventDefault();say('Höchstens '+limits.maxLines+' Zeilen.');}});
+   r.addEventListener('input',e=>{const t=e.target,key=t.id==='ux-size'?'size':t.dataset.uxProp||t.dataset.uxContentProp;if(key&&t.value!==''&&Number.isFinite(Number(t.value))){e.stopImmediatePropagation();const value=Number(t.value);if(!['w','h','size'].includes(key)||value>0)changeObject(key,value);}},true);
+   r.addEventListener('focusout',e=>{if(e.target.dataset.uxText)delete e.target.dataset.editStarted;if(e.target.id==='ux-size'&&selected()?.type==='text')e.target.value=displayTextSize(selected());});
+@@ -482,13 +483,16 @@ export async function installUX(el,config,legacy,{attach}={}){
+   addDecoration();el.normalize();startUnselected();
+   // Ladezeit: Schriften/Motive des gesicherten Stands vor dem (synchronen) Wiederherstellen laden.
+   const pendingDesignTransfer=!!window.parent.GravuruShopEntry?.designGallery?.hasPendingTransfer();
+-  if(sessionGuard&&!config?.workbench&&!pendingDesignTransfer&&el.uxEnsureDraftResources){const stored=sessionGuard.read();if(stored)try{await el.uxEnsureDraftResources(stored.draft);}catch{}}
+-  const savedSession=sessionGuard&&!config?.workbench&&!pendingDesignTransfer?sessionGuard.read():null;
++  // An explicit cart revision owns restoration, whether its private read finishes before or after these steps.
++  const recoverLocalSession=!pendingDesignTransfer&&!cartEditParams(location.search);
++  if(sessionGuard&&!config?.workbench&&recoverLocalSession&&el.uxEnsureDraftResources){const stored=sessionGuard.read();if(stored)try{await el.uxEnsureDraftResources(stored.draft);}catch{}}
++  const savedSession=sessionGuard&&!config?.workbench&&recoverLocalSession?sessionGuard.read():null;
+   const missingUploads=savedSession?await sessionUploads?.restore(savedSession.uploads||[]):[];
+   if(sessionGuard&&!config?.workbench){
+     try{initialDraft=el.draftPayload({draft:true});}catch{initialDraft=null;}
+-    const recovered=initialDraft&&!pendingDesignTransfer?sessionGuard.recover():null;
++    const recovered=initialDraft&&recoverLocalSession?sessionGuard.recover():null;
+     if(recovered){
++      const quantity=$('[data-fk-quantity]');if(quantity){quantity.value=String(recovered.quantity);quantity.dispatchEvent(new Event('input',{bubbles:true}));}
+       $('[data-ux-session]').hidden=false;el.state.selected=null;el.sync();
+       if(missingUploads?.length)say('Dein letzter Stand wurde wiederhergestellt. '+missingUploads.length+' ältere Bilddatei(en) bitte erneut auswählen. Neue Fotos bleiben künftig auf diesem Gerät erhalten.');
+     }

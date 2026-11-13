@@ -1,0 +1,32 @@
+✔ fresh test link applies only to an explicit product preview or review model (1.4128ms)
+✔ fresh preview ignores the last test and never saves text or photos; ordinary recovery stays available (128.666ms)
+✔ Sitzungsschutz: Änderung wird entprellt gespeichert, Neuladen stellt den Stand wieder her, „Neu beginnen“ setzt zurück (114.9709ms)
+✔ Sitzungsschutz: Foto-Referenzen bleiben, Bilder nicht – Hinweis zum erneuten Hochladen (84.5221ms)
+✔ Sitzungsschutz: laufende Designübernahme hat Vorrang; alte Sitzung bleibt bis zur nächsten gültigen Änderung erhalten (132.0549ms)
+✔ Sitzungsschutz: ungültige, fremde oder abgelaufene Stände werden still verworfen; gesperrter Speicher stört nicht (506.0022ms)
+✔ createSessionGuard: ungültiger Zwischenstand lässt den letzten gültigen stehen; Zeitgeber wird entprellt (1.1871ms)
+✔ Menge 10 überlebt pagehide und Wiederöffnen einschließlich Adapterzustand (98.4981ms)
+✖ ältere gespeicherte Sitzung ohne Mengenfeld stellt Gestaltung mit Menge 1 her (61.7185ms)
+✔ Sitzungsmengen halten die vorhandenen Grenzen 1–99 ein; ungültige Zwischenwerte überschreiben nichts (0.8075ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 9
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1496.4946
+
+✖ failing tests:
+
+test at app\configurator\variant-m\session-guard.test.mjs:196:1
+✖ ältere gespeicherte Sitzung ohne Mengenfeld stellt Gestaltung mit Menge 1 her (61.7185ms)
+  SyntaxError [Error]: "undefined" is not valid JSON
+      at JSON.parse (<anonymous>)
+      at TestContext.<anonymous> (file:///C:/Users/Christopher%20Koch/Documents/Codex/2026-11-11/die-vollst-ndige-bergabe-findest-du/work/issue230-integration-candidate/app/configurator/variant-m/session-guard.test.mjs:200:40)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)

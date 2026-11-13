@@ -1,0 +1,17 @@
+{
+  "commit": "d8bf96da2da814c62af43f4adf32b9732bcaf7b0",
+  "files": [
+    {
+      "path": "app/configurator/variant-m/session-guard.mjs",
+      "sha256": "5c098a37695d98c1141bf65467d1428dc4202b76ccf32d709dd696686dbfc872"
+    },
+    {
+      "path": "app/configurator/variant-m/ux.mjs",
+      "sha256": "edac5b269432c58b3f18ac166aa9e1e43ccbfaca03f823ed1728607bfa569905"
+    },
+    {
+      "path": "app/configurator/variant-m/session-guard.test.mjs",
+      "sha256": "dd223ae269b03540199203853f1b0274ec463931e0d12499600e1f5f2aab2868"
+    }
+  ]
+}

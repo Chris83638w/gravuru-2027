@@ -1,0 +1,152 @@
+{
+  "schema": "gravuru-cart-mobile-fixes-package/v1",
+  "observedAt": "2026-11-13T08:21:16.4405677Z",
+  "installed": false,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": "browser-review.md",
+      "bytes": 2065,
+      "sha256": "beae00cbabff0ede2812f9de19c393a1fe421157f6de3dcf1746b224d59e2f0d"
+    },
+    {
+      "path": "local-build-proof.json",
+      "bytes": 3385,
+      "sha256": "901f442e363e21c024dceb2b2c2473132ea94bf1395bd475da99aeaca0281c37"
+    },
+    {
+      "path": "mobile-independent-review.md",
+      "bytes": 4162,
+      "sha256": "203f73188681c3d44abdcebdb7701a03de85615cfa60f341c77651b61890efc6"
+    },
+    {
+      "path": "mobile/change.patch",
+      "bytes": 13905,
+      "sha256": "3cabc5e58f36ba7628de81fd741490e8fe18b775673de92209316d168f8ca0f8"
+    },
+    {
+      "path": "mobile/design-reset.before.mjs",
+      "bytes": 1751,
+      "sha256": "a3a4d09c22205fa2f2ba824b6788757774512743e75f8617146e78f8bd9a8f06"
+    },
+    {
+      "path": "mobile/design-reset.before.test.mjs",
+      "bytes": 2229,
+      "sha256": "1ac71a34262414e04ec547a45a5fda4b14713ffd15108c14428ba7b5dfc69b51"
+    },
+    {
+      "path": "mobile/modern-navigation.before.css",
+      "bytes": 15615,
+      "sha256": "6b8457738d8054d62962f40f564a8487325079454a2fdd208bdceed7ee75690f"
+    },
+    {
+      "path": "mobile/pins.json",
+      "bytes": 1945,
+      "sha256": "dae24cf1cb4b032ed4a1bbd00bf520cf797beff7bcd639b9ae18cfbe700dffaa"
+    },
+    {
+      "path": "mobile/README.md",
+      "bytes": 6487,
+      "sha256": "b46e45626509298d0750eaec27227e4428c3969d64b9fd03c3f0d807e20642d5"
+    },
+    {
+      "path": "mobile/tests-final.log",
+      "bytes": 639,
+      "sha256": "f65df9a402a1b2257a0edd8f9d3af5d88ad75ebd7a5bea0108ae603af49d5442"
+    },
+    {
+      "path": "quantity-independent-review.md",
+      "bytes": 6178,
+      "sha256": "dc7ea33d536bd2235d37d20262cff2d76fd3bb3534f6f11ae5702596dc8678ea"
+    },
+    {
+      "path": "quantity/baseline-pins.json",
+      "bytes": 544,
+      "sha256": "9d976b85f5218769a70bd1901cf7b44b42fb5d72cee4782ddb2a84d04f144aa5"
+    },
+    {
+      "path": "quantity/checks.json",
+      "bytes": 2476,
+      "sha256": "18114c50db01796fd6b06959728beadfa0f768434c1fe7649c60a8d61b9931a0"
+    },
+    {
+      "path": "quantity/manifest.json",
+      "bytes": 1612,
+      "sha256": "01012d9121780c915180d920efc9a0e1b3cf4dda36c065d2e5994eceb6fff163"
+    },
+    {
+      "path": "quantity/quantity-return.patch",
+      "bytes": 23003,
+      "sha256": "207ca14681b0db159332aae978024ce556ed11618d910b497e06e1ebbf9b9681"
+    },
+    {
+      "path": "quantity/README.md",
+      "bytes": 7201,
+      "sha256": "88aa9bb213b5f8c8bd1c1110b890d3c550f695128c98e51289f70efab273eac1"
+    },
+    {
+      "path": "quantity/screw-measurement.json",
+      "bytes": 1755,
+      "sha256": "2868e1dd7dcb97cb4848ce2b3ba0d1e97324628cd4d337681e29695819a36405"
+    },
+    {
+      "path": "quantity/session-guard-cart-edit-tests-initial.log",
+      "bytes": 4161,
+      "sha256": "5e8f392fb35d3d0668933adf998676cf92deca9188f604a0fdbc730ec5ed7971"
+    },
+    {
+      "path": "quantity/session-guard-cart-edit-tests.log",
+      "bytes": 1620,
+      "sha256": "61663bb719724b14dafb18091dbe2992981cfc965eb0e6b967daa212dc45d59e"
+    },
+    {
+      "path": "quantity/session-guard-tests-initial.log",
+      "bytes": 2165,
+      "sha256": "4fc0d1c7e0b0570bd9e384be5908bcc293a0f9d0ef440363e22fb67a196ea891"
+    },
+    {
+      "path": "quantity/session-guard-tests.log",
+      "bytes": 1277,
+      "sha256": "ab385bd54be853bd3e56f24de6b9556123dcf5cad0b88ef2818abd36331d6698"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1277,
+      "sha256": "9103fad3a0c75783b20da13965bf2c6f344ff82f965bfc38faeaafd9e517134f"
+    },
+    {
+      "path": "screenshots/konfi-A52-local-fixed.png",
+      "bytes": 34721,
+      "sha256": "c5a83ad235dd65d4a0d35aede7a26217457594c08e95e49982b5480f5c250e59"
+    },
+    {
+      "path": "screenshots/konfi-main-local-fixed.png",
+      "bytes": 34247,
+      "sha256": "72a44fcd29daba48073310b47fd073421e025a6b6b53db6419e0d4a739de4c2a"
+    },
+    {
+      "path": "screenshots/konfi-S82-local-fixed.png",
+      "bytes": 33558,
+      "sha256": "6f4406ad6f88453e3ebaf7a96a59da90b3e955da55aa6082d9be245e729b1b6d"
+    },
+    {
+      "path": "screenshots/konfi-S82-local-fullscreen.png",
+      "bytes": 22042,
+      "sha256": "433d3de45012aebdef3ce27b504587105eb1b4c04914dc34ef438ec322d041cc"
+    },
+    {
+      "path": "screenshots/konfi-S82-local-quantity-restored.png",
+      "bytes": 33470,
+      "sha256": "78b6327c3899db6b6def124ab6bb6394f442e27b7b5734b398657cfa3962dbc9"
+    },
+    {
+      "path": "screenshots/konfi-S82-local-sheet.png",
+      "bytes": 23910,
+      "sha256": "f601249fe550d9e36d052e0c2025913bd9a16378a0e3a3789132487e2641655d"
+    }
+  ]
+}

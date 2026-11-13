@@ -20,6 +20,7 @@ import {installDesignReset,resetOriginalDesign} from './design-reset.mjs';
 import {installLayout} from './layout.mjs';
 import {alignmentContent,alignmentLabel} from './ui-icons.mjs';
 import {installLegacyCartRestore} from './legacy-cart-restore.mjs';
+import {cartEditParams} from './cart-edit.mjs';
 import {photoColorMode,photoColorFilter,photoEngravingPreviewFilter} from '../../platform/sources/app/shared/models/photo-color.mjs';
 import {commercePrice} from './commerce-model.mjs';
 import {previewResourceURL} from './preview-resource.mjs';
@@ -352,7 +353,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   if(config&&!freshPreview&&profile.binding?.productId&&typeof profile.revision==='string'&&typeof el.draftPayload==='function'){
     let storage=null;try{storage=window.localStorage;}catch{}
     if(storage)sessionGuard=createSessionGuard({storage,productId:profile.binding.productId,profileRevision:profile.revision,
-      payload:()=>({draft:el.draftPayload({draft:true}),uploads:uploadReferences(el.state.objects,files)}),restore:restoreDraft});
+      payload:()=>({draft:el.draftPayload({draft:true}),quantity:Number($('[data-fk-quantity]')?.value??1),uploads:uploadReferences(el.state.objects,files)}),restore:restoreDraft});
   }
   // Show usable, already loaded fonts immediately. Other visible rows load
   // independently; a failed/slow font never holds the entire menu hostage.
@@ -401,7 +402,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   r.addEventListener('input',e=>{const t=e.target;if(t.dataset.uxText){if(!t.dataset.editStarted){el.record();t.dataset.editStarted='true';}const o=el.state.objects.find(o=>o.id===t.dataset.uxText);
     const limits=limitsFor(o),next=clampText(t.value,limits,o.text);
     if(next!==t.value){const tooManyLines=t.value.split('\n').length>limits.maxLines,at=Math.min(t.selectionStart??next.length,next.length);t.value=next;try{t.setSelectionRange(at,at);}catch{}say(tooManyLines?'Höchstens '+limits.maxLines+' Zeilen.':'Höchstens '+limits.maxLength+' Zeichen.');}
-    o.text=next;dirty=true;el.normalize();el.sync();}if(t.matches('[data-fk-quantity]'))updatePrice();});
+    o.text=next;dirty=true;el.normalize();el.sync();}if(t.matches('[data-fk-quantity]')){updatePrice();sessionGuard?.touch();}});
   r.addEventListener('keydown',e=>{const t=e.target;if(!t.dataset?.uxText||e.key!=='Enter')return;const o=el.state.objects.find(o=>o.id===t.dataset.uxText);if(!o)return;const limits=limitsFor(o);if(t.value.split('\n').length>=limits.maxLines){e.preventDefault();say('Höchstens '+limits.maxLines+' Zeilen.');}});
   r.addEventListener('input',e=>{const t=e.target,key=t.id==='ux-size'?'size':t.dataset.uxProp||t.dataset.uxContentProp;if(key&&t.value!==''&&Number.isFinite(Number(t.value))){e.stopImmediatePropagation();const value=Number(t.value);if(!['w','h','size'].includes(key)||value>0)changeObject(key,value);}},true);
   r.addEventListener('focusout',e=>{if(e.target.dataset.uxText)delete e.target.dataset.editStarted;if(e.target.id==='ux-size'&&selected()?.type==='text')e.target.value=displayTextSize(selected());});
@@ -482,13 +483,16 @@ export async function installUX(el,config,legacy,{attach}={}){
   addDecoration();el.normalize();startUnselected();
   // Ladezeit: Schriften/Motive des gesicherten Stands vor dem (synchronen) Wiederherstellen laden.
   const pendingDesignTransfer=!!window.parent.GravuruShopEntry?.designGallery?.hasPendingTransfer();
-  if(sessionGuard&&!config?.workbench&&!pendingDesignTransfer&&el.uxEnsureDraftResources){const stored=sessionGuard.read();if(stored)try{await el.uxEnsureDraftResources(stored.draft);}catch{}}
-  const savedSession=sessionGuard&&!config?.workbench&&!pendingDesignTransfer?sessionGuard.read():null;
+  // An explicit cart revision owns restoration, whether its private read finishes before or after these steps.
+  const recoverLocalSession=!pendingDesignTransfer&&!cartEditParams(location.search);
+  if(sessionGuard&&!config?.workbench&&recoverLocalSession&&el.uxEnsureDraftResources){const stored=sessionGuard.read();if(stored)try{await el.uxEnsureDraftResources(stored.draft);}catch{}}
+  const savedSession=sessionGuard&&!config?.workbench&&recoverLocalSession?sessionGuard.read():null;
   const missingUploads=savedSession?await sessionUploads?.restore(savedSession.uploads||[]):[];
   if(sessionGuard&&!config?.workbench){
     try{initialDraft=el.draftPayload({draft:true});}catch{initialDraft=null;}
-    const recovered=initialDraft&&!pendingDesignTransfer?sessionGuard.recover():null;
+    const recovered=initialDraft&&recoverLocalSession?sessionGuard.recover():null;
     if(recovered){
+      const quantity=$('[data-fk-quantity]');if(quantity){quantity.value=String(recovered.quantity);quantity.dispatchEvent(new Event('input',{bubbles:true}));}
       $('[data-ux-session]').hidden=false;el.state.selected=null;el.sync();
       if(missingUploads?.length)say('Dein letzter Stand wurde wiederhergestellt. '+missingUploads.length+' ältere Bilddatei(en) bitte erneut auswählen. Neue Fotos bleiben künftig auf diesem Gerät erhalten.');
     }

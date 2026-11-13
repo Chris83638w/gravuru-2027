@@ -1,0 +1,18 @@
+✔ fresh test link applies only to an explicit product preview or review model (2.3563ms)
+✔ fresh preview ignores the last test and never saves text or photos; ordinary recovery stays available (135.7563ms)
+✔ Sitzungsschutz: Änderung wird entprellt gespeichert, Neuladen stellt den Stand wieder her, „Neu beginnen“ setzt zurück (113.3795ms)
+✔ Sitzungsschutz: Foto-Referenzen bleiben, Bilder nicht – Hinweis zum erneuten Hochladen (81.9315ms)
+✔ Sitzungsschutz: laufende Designübernahme hat Vorrang; alte Sitzung bleibt bis zur nächsten gültigen Änderung erhalten (117.0445ms)
+✔ Sitzungsschutz: ungültige, fremde oder abgelaufene Stände werden still verworfen; gesperrter Speicher stört nicht (549.9209ms)
+✔ createSessionGuard: ungültiger Zwischenstand lässt den letzten gültigen stehen; Zeitgeber wird entprellt (1.1091ms)
+✔ Menge 10 überlebt pagehide und Wiederöffnen einschließlich Adapterzustand (94.3969ms)
+✔ ältere gespeicherte Sitzung ohne Mengenfeld stellt Gestaltung mit Menge 1 her (87.0417ms)
+✔ Sitzungsmengen halten die vorhandenen Grenzen 1–99 ein; ungültige Zwischenwerte überschreiben nichts (0.8104ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1547.4919

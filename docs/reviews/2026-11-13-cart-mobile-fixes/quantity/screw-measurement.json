@@ -1,0 +1,78 @@
+{
+  "mode": "read-only native renderer markup, no browser measurement",
+  "confirmedDiameterSource": "ENTSCHEIDUNGEN.md:107 /3.39, Chris03.11.2026",
+  "results": [
+    {
+      "group": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "sourceSha256": "94645c95ba8d27cd51caeaae582503b0f4f57dc71c7ef04d32cd4c15979f2d04",
+      "geometry": {
+        "width": 50,
+        "height": 20,
+        "shape": "rect",
+        "cornerRadiusMm": 0,
+        "safeMarginMm": 0,
+        "holes": [
+          {
+            "x": 4,
+            "y": 10,
+            "diameter": 4
+          },
+          {
+            "x": 46,
+            "y": 10,
+            "diameter": 4
+          }
+        ]
+      },
+      "mountingPreview": {
+        "spacers": false,
+        "screws": true,
+        "diameter": 12,
+        "finish": "silver",
+        "keepoutMm": 1
+      },
+      "heads": [
+        5,
+        5
+      ],
+      "headFractionOfHeight": 0.25,
+      "geometryUnchanged": true
+    },
+    {
+      "group": "Tuerschild-Edelstahl-5x2_v1",
+      "sourceSha256": "9521226a9e91b0b297450eb81647f31e0bbb451eedde1c86101a02a0c574accd",
+      "geometry": {
+        "width": 50,
+        "height": 20,
+        "shape": "rect",
+        "cornerRadiusMm": 0,
+        "safeMarginMm": 0,
+        "holes": [
+          {
+            "x": 4,
+            "y": 10,
+            "diameter": 4
+          },
+          {
+            "x": 46,
+            "y": 10,
+            "diameter": 4
+          }
+        ]
+      },
+      "mountingPreview": {
+        "spacers": false,
+        "screws": true,
+        "diameter": 12,
+        "finish": "silver",
+        "keepoutMm": 1
+      },
+      "heads": [
+        5,
+        5
+      ],
+      "headFractionOfHeight": 0.25,
+      "geometryUnchanged": true
+    }
+  ]
+}

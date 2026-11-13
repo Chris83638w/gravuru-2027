@@ -8,9 +8,28 @@ export function resetOriginalDesign({el,choose,decorate}){
 
 export function installDesignReset({el,r,config,dialog,button,design,reset,say}){
  if(config?.workbench)return;
+ const stage=r.querySelector('.stage'),preview=r.querySelector('.ux-preview'),full=r.querySelector('.c-large-preview');
+ if(!stage||!preview)return;
  const bar=document.createElement('div');bar.className='ux-design-reset';
  bar.innerHTML=button('reset-design','Zurücksetzen');
- r.querySelector('.stage').append(bar);
+ // The plate is fitted to the whole stage. A second flex item in that same
+ // row pushes narrow products and their dimension labels outside the viewport.
+ // Keep the original control in its separate row, also while the native
+ // fullscreen dialog moves the stage out of the regular preview and back.
+ const place=()=>{
+  const expanded=!!full?.open&&full.contains(stage);
+  // The existing sheet layout owns its normal control row and restores the
+  // original stage parent in fullscreen (including its compact proxy rules).
+  if(el.dataset?.mobileDemo){if(expanded&&bar.parentNode!==stage)stage.append(bar);return;}
+  const home=expanded?stage.parentNode:preview,anchor=expanded?stage:r.querySelector('[data-ux-stage]');
+  if(anchor?.parentNode===home){if(anchor.nextSibling!==bar)anchor.after(bar);}
+  else if(bar.parentNode!==home)home.append(bar);
+ };
+ place();
+ if(full){
+  if(typeof MutationObserver==='function')new MutationObserver(place).observe(full,{attributes:true,attributeFilter:['open']});
+  full.addEventListener('close',place);
+ }
  const confirmation=dialog('reset-design','Gestaltung zurücksetzen?',
   '<p>Das gewählte Design <strong data-reset-design-name></strong> wird auf die Originalvorlage zurückgesetzt. Deine Textänderungen, Fotos und hinzugefügten Motive werden entfernt. Größe und Ausführung bleiben erhalten.</p><div class="ux-actions">'+button('reset-design-cancel','Abbrechen')+button('reset-design-confirm','Ja, zurücksetzen','class="ux-primary"')+'</div>');
  let pending=null;

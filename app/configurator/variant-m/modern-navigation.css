@@ -108,6 +108,11 @@
 @media(max-width:767px){
  :host([data-ux-modern][data-ux-mobile-tabs]) .ux-shell .ux-layout>.ux-preview:has(.ux-design-reset){height:calc(var(--ux-mobile-preview-h,40dvh) + 56px)!important}
  :host([data-ux-modern][data-ux-mobile-tabs][data-ux-photo-sizing="true"]) .ux-shell .ux-layout>.ux-preview:has(.ux-design-reset){height:min(calc(var(--ux-mobile-preview-h,40dvh) + 156px),calc(100dvh - 300px))!important}
+ /* The native reset is now a separate 56px row. Keep the former stage height,
+    including its dimension/zoom/photo gutters; do not subtract this row twice.
+    The sheet owns its controls, and fullscreen owns a separate flex container. */
+ :host([data-ux-modern][data-ux-mobile-tabs]:not([data-mobile-demo])) .ux-shell .ux-layout>.ux-preview:has(>.ux-design-reset){height:calc(var(--ux-mobile-preview-h,40dvh) + 112px)!important}
+ :host([data-ux-modern][data-ux-mobile-tabs][data-ux-photo-sizing="true"]:not([data-mobile-demo])) .ux-shell .ux-layout>.ux-preview:has(>.ux-design-reset){height:calc(min(calc(var(--ux-mobile-preview-h,40dvh) + 156px),calc(100dvh - 300px)) + 56px)!important}
  :host([data-ux-modern][data-ux-mobile-tabs][data-ux-compact-editing="true"]) .ux-direct-slot:not([hidden]){display:flex!important;justify-content:center!important;box-sizing:border-box!important;min-height:54px!important;flex:0 0 54px!important;width:100%!important;padding:2px 6px!important}
  :host([data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-direct-edit[data-object-kind]:not([data-object-kind=text]) button{min-height:44px!important;height:44px!important}
 }

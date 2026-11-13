@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import {installMobileDemo,keyboardViewport} from './demo.mjs';
 import {installPrioShopShell} from './shop-shell.mjs';
 import {freeFullscreenSurface} from './compact-controls.mjs';
@@ -540,4 +541,47 @@ test('mobile reset is clearly named and still delegates confirmation; disposal r
   assert.equal(reset.textContent,'Gestaltung zurücksetzen');reset.click();
   assert.ok(f.calls.some(c=>c[0]==='reset-confirmation'));assert.deepEqual(f.el.state,f.original);
   api.dispose();assert.equal(reset.textContent,'Zurücksetzen');
+});
+
+// Zurück-Taste/Wischgeste (Chris 13.11.2026)
+function historyStub(win){
+  const h={state:null,pushed:[],backs:0,pushState(state){this.pushed.push(state);this.state=state;},back(){this.backs++;}};
+  win.history=h;return h;
+}
+test('mobile back closes the open section first; buttons remove their own history entry',async t => {
+  const env=runtime(t),f=editorFixture(env),h=historyStub(env.win),api=await installMobileDemo(f.el);
+  f.r.querySelector('[data-demo-section=text]').click();
+  assert.equal(f.el.dataset.demoSheet,'panel');assert.equal(h.pushed.length,1);assert.equal(h.pushed[0].gravuruSheet,true);
+  f.r.querySelector('[data-demo-section=motif]')?.click();
+  assert.equal(h.pushed.length,1,'switching sections keeps one entry');
+  env.win.dispatchEvent({type:'popstate'});
+  assert.equal(f.el.dataset.demoSheet,'closed','back closes the section like Fertig');assert.equal(h.backs,0,'no extra navigation');
+  env.win.dispatchEvent({type:'popstate'});
+  assert.equal(f.el.dataset.demoSheet,'closed','a further back is left to the browser');
+  api.open('text');assert.equal(h.pushed.length,2);
+  f.r.querySelector('.md-sheet-close').click();
+  assert.equal(f.el.dataset.demoSheet,'closed');assert.equal(h.backs,1,'closing by button removes the entry');
+  env.win.dispatchEvent({type:'popstate'});
+  assert.equal(f.el.dataset.demoSheet,'closed','the matching popstate is ignored');
+  api.open('options');assert.equal(f.el.dataset.demoSheet,'panel','the next opening still works');assert.equal(h.pushed.length,3);
+});
+test('desktop keeps the previous behaviour without history entries',async t => {
+  const env=runtime(t),f=editorFixture(env),h=historyStub(env.win);env.win.innerWidth=1440;const api=await installMobileDemo(f.el);env.flush();
+  api.open('text');assert.equal(h.pushed.length,0);
+});
+test('browsers without history API keep the previous behaviour',async t => {
+  const env=runtime(t),f=editorFixture(env),api=await installMobileDemo(f.el);
+  assert.doesNotThrow(()=>{api.open('text');f.r.querySelector('.md-sheet-close').click();});assert.equal(f.el.dataset.demoSheet,'closed');
+});
+test('a hidden previous editor passes the back movement on after a design switch',async t => {
+  const env=runtime(t),f=editorFixture(env),h=historyStub(env.win);env.win.frameElement={hidden:true,style:{}};const api=await installMobileDemo(f.el);
+  api.open('design')||api.open('text');assert.equal(h.pushed.length,1);
+  env.win.dispatchEvent({type:'popstate'});
+  assert.equal(h.backs,1,'hidden frame forwards back');
+});
+test('footer columns follow the number of visible tabs; the cart is not pinned to column six',()=>{
+  const css=fs.readFileSync(new URL('./demo.css',import.meta.url),'utf8');
+  const bar=css.slice(css.indexOf(':host([data-mobile-demo]) .md-bar {'),css.indexOf('}',css.indexOf(':host([data-mobile-demo]) .md-bar {')));
+  assert.match(bar,/grid-auto-flow: column; grid-auto-columns: minmax\(0, 1fr\)/);assert.doesNotMatch(bar,/repeat\(6/);
+  assert.doesNotMatch(css,/completion-finish \{ grid-column: 6/);
 });

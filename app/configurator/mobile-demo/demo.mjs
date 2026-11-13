@@ -109,6 +109,10 @@ export async function installMobileDemo(el, config = window.UniversalConfig, con
   document.documentElement.dataset.mobileDemo = 'sheet';
   const pageStyle = make('style', ''); pageStyle.textContent = 'html[data-mobile-demo],html[data-mobile-demo] body{margin:0!important;padding:0!important;overflow:hidden!important;height:100%;background:#eef0f2}html[data-mobile-demo] main,html[data-mobile-demo] .c-main{margin:0!important;padding:0!important;max-width:none!important}html[data-mobile-demo] body>header,html[data-mobile-demo] body>footer{display:none!important}'; document.head.append(pageStyle);
   let current = 'closed', priorFocus = plus, resizeFrame = 0, disposed = false, viewportState, suppressPanel = false;
+  // Zurück-Taste/Wischgeste (Chris 13.11.2026): Auf dem Handy schließt „Zurück“ zuerst den offenen Bereich wie
+  // „Fertig“; erst danach verlässt der Browser den Konfigurator. Beim Öffnen entsteht genau ein eigener
+  // Verlaufseintrag, das Schließen per Knopf nimmt ihn wieder heraus. Ohne History-API bleibt alles wie bisher.
+  let backEntry = false, skipPop = false;
   let textEditor, textSelection;
   const desktop = () => window.innerWidth >= 1000;
   function refreshCloseAction() {
@@ -147,12 +151,23 @@ export async function installMobileDemo(el, config = window.UniversalConfig, con
     if (resizeFrame) cancelAnimationFrame(resizeFrame);
     resizeFrame = requestAnimationFrame(() => { resizeFrame = 0; if (!disposed) { el.uxRefreshViewZoom?.(); el.uxRefreshSelectionHandles?.(); el.uxRefreshTextToolbar?.(); el.uxRefreshOverlapNote?.(); } });
   }
+  function pushBackEntry() {
+    const history = window.history;
+    if (backEntry || desktop() || typeof history?.pushState !== 'function') return;
+    try { history.pushState({...(history.state && typeof history.state === 'object' ? history.state : {}), gravuruSheet:true}, ''); backEntry = true; } catch {}
+  }
+  function dropBackEntry() {
+    if (!backEntry) return;
+    backEntry = false;
+    try { skipPop = true; window.history.back(); } catch { skipPop = false; }
+  }
   function open(key, focus = true, nativeAlreadyShown = false) {
     if (disposed) return false;
     const native = toolButtons.get(key)?.native;
     if (key !== 'menu' && (!native || native.hidden || native.disabled)) return false;
     if (current === 'closed') priorFocus = r.activeElement || plus;
     current = key; editor.inert = false; el.dataset.demoSheet = key === 'menu' ? 'menu' : 'panel';
+    pushBackEntry();
     heading.textContent = sections.find(([k]) => k === key)?.[1] || 'Werkzeuge';
     back.hidden = key === 'menu'; menu.hidden = key !== 'menu';
     for (const [id,b] of navButtons) b.setAttribute('aria-pressed',String(id === key));
@@ -163,11 +178,12 @@ export async function installMobileDemo(el, config = window.UniversalConfig, con
     resize();
     return true;
   }
-  function shut(focus = true) {
+  function shut(focus = true, fromBack = false) {
     if (disposed) return;
     if (!desktop()) textSelection?.dismiss();
     if (editor.contains(r.activeElement)) r.activeElement?.blur?.();
     if (desktop()) { open('menu',false); return; }
+    if (!fromBack) dropBackEntry();
     current = 'closed'; el.dataset.demoSheet = 'closed';
     if (focus) (priorFocus?.isConnected ? priorFocus : plus).focus({ preventScroll: true });
     editor.inert = true; plus.setAttribute('aria-expanded', 'false'); resize();
@@ -206,6 +222,15 @@ export async function installMobileDemo(el, config = window.UniversalConfig, con
     return oldRevealTextIssue.apply(this, args);
   };
   on(r, 'keydown', event => { if (event.key === 'Escape' && current !== 'closed' && !$('dialog[open]')) { event.preventDefault(); shut(); } });
+  on(window, 'popstate', () => {
+    if (skipPop) { skipPop = false; return; }
+    if (!backEntry) return;
+    backEntry = false;
+    // Ein nach einem Designwechsel verstecktes altes Fenster gibt die Zurück-Bewegung weiter.
+    let frame = null; try { frame = window.frameElement; } catch {}
+    if (frame && (frame.hidden || frame.style?.display === 'none')) { try { window.history.back(); } catch {} return; }
+    if (current !== 'closed') shut(false, true);
+  });
   // Selection toolbar actions may intentionally request a native panel.
   on(r, 'click', event => {
     const action = event.target.closest?.('[data-ux]')?.dataset.ux;

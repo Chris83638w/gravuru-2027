@@ -16,7 +16,9 @@ export function installDemoPreviewAction({el, preview, trigger, plus}) {
       display:contents!important;
     }
     :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-preview{background:#fff!important}
-    :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-preview .stage:not(.acryl-scene){padding-bottom:60px!important}
+    /* Chris 13.11.2026: Platz unter dem Produkt nur für den „+“-Knopf (geschlossenes Menü). Bei offenem
+       Menü ist er ausgeblendet; das Produkt bekommt die Fläche, das Vergrößern-Symbol sitzt rechts daneben. */
+    :host([data-mobile-demo][data-demo-sheet="closed"][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .ux-layout > .ux-preview .stage:not(.acryl-scene){padding-bottom:60px!important}
     :host([data-mobile-demo][data-ux-layout][data-ux-neutral][data-ux-modern]) .ux-shell .md-preview-actions > button {
       position:absolute!important; transform:none!important; z-index:66;
       display:inline-flex!important; align-items:center; justify-content:center;
@@ -63,7 +65,10 @@ export function installDemoPreviewAction({el, preview, trigger, plus}) {
   };
   action.addEventListener('click', open);
   let frame=0,disposed=false;
-  const place=()=>{frame=0;if(disposed)return;const plate=preview.querySelector('.plate-holder'),pr=preview.getBoundingClientRect?.(),br=plate?.getBoundingClientRect?.();if(!pr||!br||!pr.width||!pr.height)return;const x=Math.max(4,Math.min(pr.width-48,br.right-pr.left-44)),y=br.bottom-pr.top+8;if(y+44<=pr.height){action.style.setProperty('--md-preview-action-x',Math.round(x)+'px');action.style.setProperty('--md-preview-action-y',Math.round(y)+'px');}};
+  const place=()=>{frame=0;if(disposed)return;const plate=preview.querySelector('.plate-holder'),pr=preview.getBoundingClientRect?.(),br=plate?.getBoundingClientRect?.();if(!pr||!br||!pr.width||!pr.height)return;const side=br.right-pr.left+6,middle=br.top-pr.top+br.height/2-22;let x,y;
+    // Rechts neben dem Produkt, mittig zur Höhe; nur ein sehr breites Schild (kein Platz rechts) behält den Platz darunter.
+    if(side+44<=pr.width-4&&middle>=0&&middle+44<=pr.height){x=side;y=middle;}else{x=Math.max(4,Math.min(pr.width-48,br.right-pr.left-44));y=br.bottom-pr.top+8;}
+    if(y+44<=pr.height){action.style.setProperty('--md-preview-action-x',Math.round(x)+'px');action.style.setProperty('--md-preview-action-y',Math.round(y)+'px');}};
   const schedule=()=>{if(!disposed&&!frame)frame=requestAnimationFrame(place);};
   const oldSync=el.sync;if(typeof oldSync==='function')el.sync=function(...args){const result=oldSync.apply(this,args);schedule();return result;};
   const view=doc.defaultView||window;view.addEventListener('resize',schedule);el.shadowRoot.addEventListener('input',schedule);

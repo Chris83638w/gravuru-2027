@@ -1,4 +1,4 @@
-import {isFamilyFormats,familyFormatSelection,familyFormatChoices,customerForm} from './family-formats.mjs';
+import {isFamilyFormats,familyFormatSelection,familyFormatChoices,customerForm,nearestFamilySize} from './family-formats.mjs';
 import {escapeXml as esc} from '../../platform/sources/app/shared/models/design-content.mjs';
 import {optionTileIcon,optionTilePrice} from './option-media.mjs';
 
@@ -45,7 +45,7 @@ export function installFamilyFormatsPresentation({el,config,picks,pictures}){
  const change=b=>{
   if(!b||b.disabled)return;
   let {familyGroup:key}=b.dataset,value=b.tagName==='SELECT'?b.value:b.dataset.familyValue;
-  if(key==='form'){const sizes=familyFormatChoices(config,options).find(f=>f.id===value).sizes;value=sizes.find(s=>s.available).key;key='size';}
+  if(key==='form'){const sizes=familyFormatChoices(config,options).find(f=>f.id===value).sizes;let current=null;try{current=familyFormatSelection(config,options).format.geometry;}catch{}value=(nearestFamilySize(sizes,current)||sizes.find(s=>s.available)).key;key='size';}
   try{el.uxChangeOption(key,value);}catch(error){el.shadowRoot.querySelector('.status').textContent=error.message;b.value=options[key];}
  };
  pictures.addEventListener('click',e=>change(e.target.closest('button[data-family-group]')));

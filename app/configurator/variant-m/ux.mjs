@@ -10,6 +10,8 @@ import {installCustomerHelp} from './customer-help.mjs';
 import {executionHeading} from './execution-registry.mjs';
 import {installReviewLayout} from './review-layout.mjs';
 import {installProductDesignGallery} from './product-design-gallery.mjs';
+import {installQuantityGuard} from './quantity-guard.mjs';
+import {missingNameField} from './workflow-model.mjs';
 import {installViewZoom} from './view-zoom.mjs';
 import {installMotifTileFit} from './motif-tile-fit.mjs';
 import {installUxDetails} from './ux-details.mjs';
@@ -269,6 +271,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   function textFieldIssue(o,{required=true}={}){
     const t=templateText(o);
     if(required&&t?.required===true&&requiredTextMissing(o.text,t.text))return 'Pflichtfeld: Bitte deinen eigenen Text eingeben.';
+    if(required&&missingNameField(el.state.objects,design())?.id===o.id)return 'Pflichtfeld: Bitte deinen Namen eingeben.';
     const issue=textLimitIssue(o.text,limitsFor(o));if(issue)return issue;
     if(o.uxTextOverflow==='length')return 'Text zu lang: Passt auch in der Mindestgröße nicht auf die Fläche. Bitte kürzen.';
     return '';
@@ -277,6 +280,7 @@ export async function installUX(el,config,legacy,{attach}={}){
     const issues=[];
     for(const t of (design()?.objects||[]).filter(t=>t.type==='text'&&t.required===true)){const o=el.state.objects.find(o=>o.id===t.id);if((!o||o.uxHidden)&&!canDeleteTemplateElement(config,el.state.designId,t))issues.push({id:t.id,message:'Pflichtfeld „'+fieldLabel(t,0)+'“ fehlt. Bitte einblenden und ausfüllen.'});}
     for(const o of el.state.objects.filter(o=>o.type==='text'&&!o.uxHidden&&o.customerEditable!==false)){const message=textFieldIssue(o);if(message)issues.push({id:o.id,message:fieldLabel(o,textIndex(o))+': '+message});}
+    const name=missingNameField(el.state.objects,design());if(name&&!issues.some(i=>i.id===name.id))issues.push({id:name.id,message:'Pflichtfeld „'+fieldLabel(name,0)+'“: Bitte deinen Namen eingeben.'});
     return issues;
   }
   el.uxTextLimits=limitsFor;el.uxTextIssues=textIssues;
@@ -284,12 +288,13 @@ export async function installUX(el,config,legacy,{attach}={}){
   el.uxAttemptTextValidation=()=>{textValidationAttempted=true;};
   el.uxRevealTextIssue=id=>{showTab('text');select(id);const field=all('[data-ux-text]').find(f=>f.dataset.uxText===id);field?.scrollIntoView?.({block:'center',behavior:'smooth'});field?.focus({preventScroll:true});};
   // Abschluss und Warenkorb bleiben gesperrt, solange ein Textfeld einen Hinweis trägt; das Feld wird gezeigt.
-  r.addEventListener('click',e=>{if(!e.target.closest('.completion-finish,.fk-buy-button'))return;textValidationAttempted=true;el.sync();const issue=textIssues()[0];if(!issue)return;e.preventDefault();e.stopImmediatePropagation();say(issue.message);el.uxRevealTextIssue(issue.id);},true);
+  r.addEventListener('click',e=>{if(!e.target.closest('.completion-finish,.fk-buy-button'))return;textValidationAttempted=true;el.sync();const issue=textIssues()[0],quantity=el.uxQuantityIssue?.();if(!issue&&!quantity)return;e.preventDefault();e.stopImmediatePropagation();if(issue){say(issue.message);el.uxRevealTextIssue(issue.id);}else{say(quantity);el.uxRevealQuantity?.();}},true);
   r.addEventListener('focusout',event=>{const id=event.target.dataset.uxText;if(id){touchedText.add(id);el.sync();}});
   const textControls=$('.ux-controls');
   function updateFields(){const texts=el.state.objects.filter(o=>o.type==='text');const signature=el.state.designId+'|'+texts.map((o,i)=>o.id+':'+fieldLabel(o,i)).join('|');if(signature!==fieldSignature){if(textControls.closest('.ux-fields'))$('#ux-panel-text').append(textControls);fieldSignature=signature;$('.ux-fields').innerHTML=texts.map((o,i)=>{const required=templateText(o)?.required===true,limits=limitsFor(o);return `<div class="ux-text-row" data-ux-row="${esc(o.id)}"><label for="ux-text-${i}">${esc(fieldLabel(o,i))}${required?' <span class="ux-text-required" title="Pflichtfeld">*</span>':''}</label><textarea id="ux-text-${i}" rows="1" autocorrect="off" spellcheck="false" autocapitalize="${/adresse|spruch/i.test(fieldLabel(o,i))?'sentences':'words'}" data-ux-text="${esc(o.id)}" aria-label="${esc(fieldLabel(o,i))}" ${limits.perLine||limits.wholeField?'':'maxlength="'+limits.maxLength+'"'} ${required?'aria-required="true"':''} aria-describedby="ux-text-count-${i} ux-text-issue-${i}"></textarea><small class="ux-text-meta"><span id="ux-text-count-${i}" data-ux-text-count="${esc(o.id)}" aria-live="polite"></span><span id="ux-text-issue-${i}" class="ux-text-issue" data-ux-text-issue="${esc(o.id)}" role="alert"></span></small></div>`;}).join('');}
     for(const field of all('[data-ux-text]')){const o=texts.find(o=>o.id===field.dataset.uxText),limits=limitsFor(o),row=field.closest('.ux-text-row');if(limits.perLine||limits.wholeField)field.removeAttribute('maxlength');else field.maxLength=limits.maxLength;if(r.activeElement!==field)field.value=o.text;field.disabled=!!o.uxLocked||!!o.uxHidden;row.classList.toggle('is-selected',el.state.selected===o.id);
-      const issue=o.uxHidden||o.customerEditable===false||!textValidationAttempted&&!touchedText.has(o.id)?'':textFieldIssue(o,{required:textValidationAttempted}),used=textLimitCount(o.text,limits),count=used>=limits.maxLength*.8?used+'/'+limits.maxLength+(limits.perLine?' je Zeile':''):'';row.classList.toggle('is-invalid',!!issue);field.setAttribute('aria-invalid',String(!!issue));
+      // Tester 13.11.2026: ein geleertes Pflichtfeld zeigt den Hinweis sofort nach dem Verlassen des Feldes (nicht beim Öffnen, Entscheidung 3.1).
+      const issue=o.uxHidden||o.customerEditable===false||!textValidationAttempted&&!touchedText.has(o.id)?'':textFieldIssue(o,{required:textValidationAttempted||!String(o.text??'').trim()}),used=textLimitCount(o.text,limits),count=used>=limits.maxLength*.8?used+'/'+limits.maxLength+(limits.perLine?' je Zeile':''):'';row.classList.toggle('is-invalid',!!issue);field.setAttribute('aria-invalid',String(!!issue));
       const countNode=row.querySelector('[data-ux-text-count]'),issueNode=row.querySelector('[data-ux-text-issue]');if(countNode&&countNode.textContent!==count)countNode.textContent=count;if(issueNode&&issueNode.textContent!==issue)issueNode.textContent=issue;}
     const o=selected(),isText=o?.type==='text';$('.ux-controls').hidden=!isText;
     if(isText){$('[data-ux-font-name]').textContent=fontDisplayName(o.font);if(r.activeElement!==$('#ux-size'))$('#ux-size').value=(config?.workbench?.embedded?roundEdit(o.size):displayTextSize(o));$('[data-ux=bold]').setAttribute('aria-pressed',!!o.bold);$('[data-ux=italic]')?.setAttribute('aria-pressed',!!o.italic);if($('[data-ux-color]'))$('[data-ux-color]').value=o.color||'#202824';for(const f of all('[data-ux-prop]'))if(r.activeElement!==f)f.value=(config?.workbench?.embedded?roundEdit(o[f.dataset.uxProp]||0):Math.round((o[f.dataset.uxProp]||0)*10)/10);}
@@ -542,6 +547,7 @@ export async function installUX(el,config,legacy,{attach}={}){
   el.addEventListener('gravuru-early-photo',takeEarlyPhoto);takeEarlyPhoto();
   if(config)installLegacyCartRestore({el,config,files});
   await installProductDesignGallery({el,r,config,files,say,dialog,esc});
+  installQuantityGuard({el,r,say});
   installReviewLayout({el,r});
   // Astra 1, #48 / #161 db4f4a4: adopt the reviewed visual shell around the
   // existing editor, preserving real artwork, controls and commerce handlers.

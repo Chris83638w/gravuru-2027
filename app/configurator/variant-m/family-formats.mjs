@@ -56,6 +56,15 @@ export function familyFormatChoices(c,o={}){
   return Math.abs(ar/br-1)>.01?ar-br:a.geometry.width*a.geometry.height-b.geometry.width*b.geometry.height;
  })}));
 }
+// Formwechsel (Tester/Chris 13.11.2026): nicht auf die kleinste Größe springen, sondern die verfügbare
+// Größe der neuen Form nehmen, die der bisherigen in Fläche und Seitenverhältnis am nächsten kommt.
+export function nearestFamilySize(sizes,current){
+ const list=(sizes||[]).filter(s=>s.available);if(!list.length)return null;
+ const w=current?.width,h=current?.height;if(!(w>0&&h>0))return list[0];
+ // Fläche zählt voll, Seitenverhältnis halb: rund 8,5 cm wird oval 12 × 8 cm, nicht das schmale 15 × 5 cm.
+ const score=s=>[Math.abs(Math.log((s.geometry.width*s.geometry.height)/(w*h)))+.5*Math.abs(Math.log((s.geometry.width/s.geometry.height)/(w/h))),Math.abs(Math.log(s.geometry.width/w))+Math.abs(Math.log(s.geometry.height/h))];
+ return list.map(s=>({s,k:score(s)})).sort((a,b)=>a.k[0]-b.k[0]||a.k[1]-b.k[1])[0].s;
+}
 export function scaleFamilyObjects(objects,from,to){
  const scale=Math.min(to.width/from.width,to.height/from.height),dx=(to.width-from.width*scale)/2,dy=(to.height-from.height*scale)/2;
  return objects.map(o=>{const n={...clone(o),x:o.x*scale+dx,y:o.y*scale+dy,w:o.w*scale,h:o.h*scale};

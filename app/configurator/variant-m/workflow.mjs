@@ -8,6 +8,8 @@ import {canEditElement,legacyElementRights} from './element-rights.mjs';
 import {layoutReviewIssues} from './layout-review.mjs';
 import {objectSurface} from './surfaces.mjs';
 import {captureDesignContent,carryDesignContent} from './design-content-transfer.mjs';
+import {isPhotoUnsupported,createPhotoDropConfirm} from './photo-drop-confirm.mjs';
+import {insetTextSurface} from './text-edge-margin.mjs';
 import {mountingPlacementState} from './mounting-placement.mjs';
 import {alignmentContent,uiIcon} from './ui-icons.mjs';
 import {maskContourGuides} from './contour-guides.mjs';
@@ -30,8 +32,10 @@ export async function installWorkflow(api){
  const chosenProfile=()=>el.uxSelectedProfile?.()||profile;
  // Existing layouts also put house numbers beside the device. The largest
  // free rectangle is an initial-placement aid, not the text resizing boundary.
+ // Chris 13.11.2026: Text hält beim automatischen Einpassen mindestens 2 mm Abstand zum Schildrand
+ // (auch rund/oval und nach Formwechsel). Motive und Linien dürfen weiter bis an den Rand (3.21, 5.9).
  const textSurface=()=>config?.doorbell?.schema==='gravuru-doorbell/v1'
-  ? doorbellTextSurface(chosenProfile()) : surface();
+  ? doorbellTextSurface(chosenProfile()) : config?insetTextSurface(surface()):surface();
  const surface=()=>{const geometry=el.uxProfileGeometry?.()||profile.geometry;if(config?.doorbell?.schema==='gravuru-doorbell/v1'&&geometry.designArea){const a=geometry.designArea;return {...geometry,x:a.left,y:a.top,width:a.right-a.left,height:a.bottom-a.top};}return config?{x:0,y:0,...geometry}:profile.frames.find(f=>f.key===el.state.fkFrame).acrylic;};
  const obstacles=()=>{const bell=(el.uxProfileGeometry?.()||profile.geometry).bell;return (!config||config.doorbell)&&bell?[{x:bell.x+bell.width/2,y:bell.y+bell.height/2,w:bell.width,h:bell.height}]:[];};
  function rename(){const tab=$('#ux-tab-options');if(tab)tab.lastChild.textContent=executionTabLabel(config);const contents=$('[data-ux=contents]');if(contents)contents.innerHTML=uiIcon('layers')+'<span class="ux-tool-label">Ebenen</span> <span data-ux-count>('+el.state.objects.length+')</span>';if(contents){contents.setAttribute('aria-label','Ebenen ('+el.state.objects.length+')');contents.title='Ebenen ('+el.state.objects.length+')';}const d=$('.ux-contents-dialog');d?.setAttribute('aria-label','Ebenenverwaltung');if(d)d.querySelector('h2').textContent='Ebenenverwaltung';}
@@ -97,6 +101,8 @@ export async function installWorkflow(api){
  // Gestaltungsfläche innerhalb des Randes (design-area.mjs); Klingelschild-Altpfad: Acrylfläche des Rahmens.
  function placementSurface(){if(!config)return surface();const current=el.uxProfileGeometry?.()||surface(),geometry={...current,holes:[],shape:current.shape??profile.geometry.shape},a=designArea(config,{geometry});return {x:a.left,y:a.top,width:a.right-a.left,height:a.bottom-a.top,shape:geometry.shape,...(geometry.shape==='contour'||geometry.cornerRadiusMm>0?{geometry}:{})};}
  function shrinkTo(o,scale){if(o.type==='text')setTextSize(o,o.size*scale);o.w*=scale;o.h*=scale;}
+ // Auch für den Designwechsel über die Produktgalerie (product-design-gallery.mjs).
+ el.uxPlaceObject=o=>place(o);
  function place(o){
   if(o.type==='motif'&&config){say('Freie Fläche für das Motiv wird gesucht …');placementJob=placementJob.then(()=>placeNewMotif({...api},o,{minScale:placementMinScale(o)})).catch(()=>say('Freie Fläche konnte nicht geprüft werden. Bitte die Motivposition prüfen.'));return;}
   const hit=freePlacement(o,placementSurface(),el.state.objects,obstacles(),{minScale:placementMinScale(o)});
@@ -140,12 +146,15 @@ export async function installWorkflow(api){
  const restore=el.restoreDraft;
  if(restore)el.restoreDraft=function(...args){const previous=changing;changing=true;try{return restore.apply(this,args);}finally{known=new Set(this.state.objects.map(o=>o.id));changing=previous;}};
  const choose=el.chooseDesign;
- el.chooseDesign=function(id){
+ const confirmPhotoDrop=createPhotoDropConfirm(dialog);
+ el.chooseDesign=function(id,{dropPhotos=false}={}){
   if(id===this.state.designId)return;
   const template=chosenProfile().designs.find(d=>d.id===id);if(!template)return;
   let next;
-  try{next=carryDesignContent(captureDesignContent(this.state.objects,chosenProfile().designs.find(d=>d.id===this.state.designId)),template,config,{id:()=>this.id()});}
-  catch(error){say(error.message);return false;}
+  try{next=carryDesignContent(captureDesignContent(this.state.objects,chosenProfile().designs.find(d=>d.id===this.state.designId)),template,config,{id:()=>this.id(),dropPhotos,geometry:this.uxProfileGeometry?.()||chosenProfile().geometry});}
+  catch(error){
+   if(isPhotoUnsupported(error)&&!dropPhotos){void confirmPhotoDrop().then(ok=>{if(ok)this.chooseDesign(id,{dropPhotos:true});});return false;}
+   say(error.message);return false;}
   changing=true;
   try{
    choose.call(this,id,{carry:false});this.state.objects=next.objects;

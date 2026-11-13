@@ -1,6 +1,7 @@
 import {saveDataActive,idleScheduler} from './preload-queue.mjs';
 import {createGalleryPager} from './gallery-pager.mjs';
 import {captureDesignContent,carryDesignContent,capturePhotoFiles} from './design-content-transfer.mjs';
+import {isPhotoUnsupported,createPhotoDropConfirm} from './photo-drop-confirm.mjs';
 import {preserveProductSelection} from './product-design-transfer.mjs';
 import {designGalleryCount} from './product-design-gallery-label.mjs';
 import {isLayeredDoorbell} from './product-model-module.mjs';
@@ -31,10 +32,13 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
  if(pending){try{
   const selection=preserveProductSelection(pending.selection,config);
   if(selection){el.state.mOptions=selection.options;const quantity=r.querySelector('[data-fk-quantity]');if(quantity)quantity.value=String(selection.quantity);}
-  const result=carryDesignContent(pending.content||{texts:pending.texts||[],photos:[]},design(),config,{id:()=>el.id()});
+  const result=carryDesignContent(pending.content||{texts:pending.texts||[],photos:[]},design(),config,{id:()=>el.id(),geometry:el.uxProfileGeometry?.()||profile().geometry});
   for(const photo of pending.content?.photos||[])if(!pending.photoFiles?.some(f=>f.id===photo.uxUploadId&&f.asset?.file))throw Error('Eine Fotodatei fehlt. Deine bisherige Gestaltung bleibt erhalten.');
   for(const item of pending.photoFiles||[]){const asset=item.asset;files.set(item.id,{...asset,url:URL.createObjectURL(asset.blob||asset.file)});}
-  el.state.objects=result.objects;el.state.selected=null;el.normalize();el.sync();
+  el.state.objects=result.objects;el.state.selected=null;
+  // Nicht zuordenbare Texte und frei mitgenommene Fotos: freie Fläche statt über dem ersten Feld (Chris 13.11.2026).
+  for(const key of result.added){const o=el.state.objects.find(o=>o.id===key);if(o)el.uxPlaceObject?.(o);}
+  el.normalize();el.sync();
   const note=section.querySelector('.ux-product-result');note.hidden=false;note.textContent='Deine Texte und Fotos wurden übernommen. Bitte die neue Anordnung prüfen.';say(note.textContent);
   r.querySelector('#ux-tab-design')?.click();el.uxMobileSteps?.show('design',{scroll:false});
  }catch(error){window.parent.postMessage({type:'gravuru-design-transfer-failed',message:error.message},location.origin);throw error;}}
@@ -64,13 +68,23 @@ export async function installProductDesignGallery({el,r,config,files,say,dialog,
   warmPreviews();pump();
  }
  const unsubscribePreviews=api.onPreviewActivity?.(setPreviewActivity);
+ const confirmPhotoDrop=createPhotoDropConfirm(dialog);
  const search=installDesignSearchControl({container:section,before:themeLabel,onChange:()=>load(),onInvalidate:()=>invalidate()});
  async function choose(item){
   if(switching)return;
   if(item.current&&profile().designs.some(d=>d.id===item.designId)){if(item.designId!==el.state.designId)el.chooseDesign(item.designId);return;}
   switching=true;if(!api.onPreviewActivity)setPreviewActivity(false);grid.inert=true;back.disabled=true;status.textContent='Design wird übernommen …';
-  try{const content=captureDesignContent(el.state.objects,design());await api.choose(item.target,{selection:{options:structuredClone(el.state.mOptions||{}),quantity:Number(r.querySelector('[data-fk-quantity]')?.value||1)},content,photoFiles:capturePhotoFiles(content,files),sizeLabel:productChoiceInfo(item)});status.textContent='';}
-  catch(error){status.textContent=error.message;}
+  const send=content=>api.choose(item.target,{selection:{options:structuredClone(el.state.mOptions||{}),quantity:Number(r.querySelector('[data-fk-quantity]')?.value||1)},content,photoFiles:capturePhotoFiles(content,files),sizeLabel:productChoiceInfo(item)});
+  try{const content=captureDesignContent(el.state.objects,design());
+   try{await send(content);}
+   catch(error){
+    // Neues Produkt ohne Fotofunktion: erst nach dem Hinweis ohne Foto wechseln (Chris 13.11.2026).
+    if(!isPhotoUnsupported(error)||!content.photos.length)throw error;
+    status.textContent='';if(!await confirmPhotoDrop()){status.textContent='Design nicht gewechselt. Dein Foto bleibt erhalten.';return;}
+    status.textContent='Design wird übernommen …';await send({...content,photos:[]});
+   }
+   status.textContent='';}
+  catch(error){status.textContent=error.message;say(error.message);status.scrollIntoView?.({block:'nearest'});}
   finally{switching=false;if(!api.onPreviewActivity)setPreviewActivity(true);grid.inert=false;back.disabled=false;}
  }
  async function load(){

@@ -1,0 +1,824 @@
+{
+  "schema": "gravuru-six-sales-copy-checks/v1",
+  "checkedAt": "2026-11-12T19:02:13.417Z",
+  "mode": "local-read-only-source-comparison",
+  "allPassed": true,
+  "checks": [
+    {
+      "name": "six exact distinct Shopify product IDs preserved",
+      "passed": true
+    },
+    {
+      "name": "all45 exact variant prices and selected options match frozen approved/readback data",
+      "passed": true
+    },
+    {
+      "name": "five correct mounting surcharges per product",
+      "passed": true
+    },
+    {
+      "name": "six original Excel hashes unchanged",
+      "passed": true
+    },
+    {
+      "name": "current six product descriptions and native SEO descriptions are empty; none reused",
+      "passed": true
+    },
+    {
+      "name": "Acryl3mm/steel1.5mm, widths50/60/80 and height20 sourced",
+      "passed": true
+    },
+    {
+      "name": "photo/logo disabled in every actual pricing snapshot",
+      "passed": true
+    },
+    {
+      "name": "13 motifs and169cent additional/changed motif charge sourced",
+      "passed": true
+    },
+    {
+      "name": "gross19percent and3/5/10 tier5/10/15 confirmed",
+      "passed": true
+    },
+    {
+      "name": "suggested handles unique within six; no global availability asserted",
+      "passed": true
+    },
+    {
+      "name": "SEO title under60 and description under160 characters",
+      "passed": true
+    }
+  ],
+  "priceChecks": [
+    {
+      "productKey": "A52",
+      "variantId": "gid://shopify/ProductVariant/58189617660284",
+      "unitCents": 699,
+      "proposedUnitCents": 699,
+      "shopReadbackCents": 699,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A52",
+      "variantId": "gid://shopify/ProductVariant/58189617693052",
+      "unitCents": 998,
+      "proposedUnitCents": 998,
+      "shopReadbackCents": 998,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A52",
+      "variantId": "gid://shopify/ProductVariant/58189617725820",
+      "unitCents": 1098,
+      "proposedUnitCents": 1098,
+      "shopReadbackCents": 1098,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A52",
+      "variantId": "gid://shopify/ProductVariant/58189617758588",
+      "unitCents": 948,
+      "proposedUnitCents": 948,
+      "shopReadbackCents": 948,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A52",
+      "variantId": "gid://shopify/ProductVariant/58189617791356",
+      "unitCents": 968,
+      "proposedUnitCents": 968,
+      "shopReadbackCents": 968,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A52",
+      "variantId": "gid://shopify/ProductVariant/58189617824124",
+      "unitCents": 699,
+      "proposedUnitCents": 699,
+      "shopReadbackCents": 699,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A52",
+      "variantId": "gid://shopify/ProductVariant/58189617856892",
+      "unitCents": 998,
+      "proposedUnitCents": 998,
+      "shopReadbackCents": 998,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A52",
+      "variantId": "gid://shopify/ProductVariant/58189617889660",
+      "unitCents": 1098,
+      "proposedUnitCents": 1098,
+      "shopReadbackCents": 1098,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A52",
+      "variantId": "gid://shopify/ProductVariant/58189617922428",
+      "unitCents": 948,
+      "proposedUnitCents": 948,
+      "shopReadbackCents": 948,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A52",
+      "variantId": "gid://shopify/ProductVariant/58189617955196",
+      "unitCents": 968,
+      "proposedUnitCents": 968,
+      "shopReadbackCents": 968,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A62",
+      "variantId": "gid://shopify/ProductVariant/58190005666172",
+      "unitCents": 799,
+      "proposedUnitCents": 799,
+      "shopReadbackCents": 799,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A62",
+      "variantId": "gid://shopify/ProductVariant/58190005698940",
+      "unitCents": 1098,
+      "proposedUnitCents": 1098,
+      "shopReadbackCents": 1098,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A62",
+      "variantId": "gid://shopify/ProductVariant/58190005731708",
+      "unitCents": 1198,
+      "proposedUnitCents": 1198,
+      "shopReadbackCents": 1198,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A62",
+      "variantId": "gid://shopify/ProductVariant/58190005764476",
+      "unitCents": 1048,
+      "proposedUnitCents": 1048,
+      "shopReadbackCents": 1048,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A62",
+      "variantId": "gid://shopify/ProductVariant/58190005797244",
+      "unitCents": 1068,
+      "proposedUnitCents": 1068,
+      "shopReadbackCents": 1068,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A62",
+      "variantId": "gid://shopify/ProductVariant/58190005830012",
+      "unitCents": 799,
+      "proposedUnitCents": 799,
+      "shopReadbackCents": 799,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A62",
+      "variantId": "gid://shopify/ProductVariant/58190005862780",
+      "unitCents": 1098,
+      "proposedUnitCents": 1098,
+      "shopReadbackCents": 1098,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A62",
+      "variantId": "gid://shopify/ProductVariant/58190005895548",
+      "unitCents": 1198,
+      "proposedUnitCents": 1198,
+      "shopReadbackCents": 1198,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A62",
+      "variantId": "gid://shopify/ProductVariant/58190005928316",
+      "unitCents": 1048,
+      "proposedUnitCents": 1048,
+      "shopReadbackCents": 1048,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A62",
+      "variantId": "gid://shopify/ProductVariant/58190005961084",
+      "unitCents": 1068,
+      "proposedUnitCents": 1068,
+      "shopReadbackCents": 1068,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A82",
+      "variantId": "gid://shopify/ProductVariant/58190008156540",
+      "unitCents": 849,
+      "proposedUnitCents": 849,
+      "shopReadbackCents": 849,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A82",
+      "variantId": "gid://shopify/ProductVariant/58190008189308",
+      "unitCents": 1148,
+      "proposedUnitCents": 1148,
+      "shopReadbackCents": 1148,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A82",
+      "variantId": "gid://shopify/ProductVariant/58190008222076",
+      "unitCents": 1248,
+      "proposedUnitCents": 1248,
+      "shopReadbackCents": 1248,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A82",
+      "variantId": "gid://shopify/ProductVariant/58190008254844",
+      "unitCents": 1098,
+      "proposedUnitCents": 1098,
+      "shopReadbackCents": 1098,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A82",
+      "variantId": "gid://shopify/ProductVariant/58190008287612",
+      "unitCents": 1118,
+      "proposedUnitCents": 1118,
+      "shopReadbackCents": 1118,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Schwarz"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A82",
+      "variantId": "gid://shopify/ProductVariant/58190008320380",
+      "unitCents": 849,
+      "proposedUnitCents": 849,
+      "shopReadbackCents": 849,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A82",
+      "variantId": "gid://shopify/ProductVariant/58190008353148",
+      "unitCents": 1148,
+      "proposedUnitCents": 1148,
+      "shopReadbackCents": 1148,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A82",
+      "variantId": "gid://shopify/ProductVariant/58190008385916",
+      "unitCents": 1248,
+      "proposedUnitCents": 1248,
+      "shopReadbackCents": 1248,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A82",
+      "variantId": "gid://shopify/ProductVariant/58190008418684",
+      "unitCents": 1098,
+      "proposedUnitCents": 1098,
+      "shopReadbackCents": 1098,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "A82",
+      "variantId": "gid://shopify/ProductVariant/58190008451452",
+      "unitCents": 1118,
+      "proposedUnitCents": 1118,
+      "shopReadbackCents": 1118,
+      "selectedOptions": [
+        {
+          "name": "Farbe",
+          "value": "Anthrazit"
+        },
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "S52",
+      "variantId": "gid://shopify/ProductVariant/58190010614140",
+      "unitCents": 799,
+      "proposedUnitCents": 799,
+      "shopReadbackCents": 799,
+      "selectedOptions": [
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "S52",
+      "variantId": "gid://shopify/ProductVariant/58190010646908",
+      "unitCents": 1098,
+      "proposedUnitCents": 1098,
+      "shopReadbackCents": 1098,
+      "selectedOptions": [
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "S52",
+      "variantId": "gid://shopify/ProductVariant/58190010679676",
+      "unitCents": 1198,
+      "proposedUnitCents": 1198,
+      "shopReadbackCents": 1198,
+      "selectedOptions": [
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "S52",
+      "variantId": "gid://shopify/ProductVariant/58190010712444",
+      "unitCents": 1048,
+      "proposedUnitCents": 1048,
+      "shopReadbackCents": 1048,
+      "selectedOptions": [
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "S52",
+      "variantId": "gid://shopify/ProductVariant/58190010745212",
+      "unitCents": 1068,
+      "proposedUnitCents": 1068,
+      "shopReadbackCents": 1068,
+      "selectedOptions": [
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "S62",
+      "variantId": "gid://shopify/ProductVariant/58190020608380",
+      "unitCents": 879,
+      "proposedUnitCents": 879,
+      "shopReadbackCents": 879,
+      "selectedOptions": [
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "S62",
+      "variantId": "gid://shopify/ProductVariant/58190020641148",
+      "unitCents": 1178,
+      "proposedUnitCents": 1178,
+      "shopReadbackCents": 1178,
+      "selectedOptions": [
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "S62",
+      "variantId": "gid://shopify/ProductVariant/58190020673916",
+      "unitCents": 1278,
+      "proposedUnitCents": 1278,
+      "shopReadbackCents": 1278,
+      "selectedOptions": [
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "S62",
+      "variantId": "gid://shopify/ProductVariant/58190020706684",
+      "unitCents": 1128,
+      "proposedUnitCents": 1128,
+      "shopReadbackCents": 1128,
+      "selectedOptions": [
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "S62",
+      "variantId": "gid://shopify/ProductVariant/58190020739452",
+      "unitCents": 1148,
+      "proposedUnitCents": 1148,
+      "shopReadbackCents": 1148,
+      "selectedOptions": [
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "S82",
+      "variantId": "gid://shopify/ProductVariant/58190028734844",
+      "unitCents": 949,
+      "proposedUnitCents": 949,
+      "shopReadbackCents": 949,
+      "selectedOptions": [
+        {
+          "name": "Befestigung",
+          "value": "Ohne Bohrung"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "S82",
+      "variantId": "gid://shopify/ProductVariant/58190028767612",
+      "unitCents": 1248,
+      "proposedUnitCents": 1248,
+      "shopReadbackCents": 1248,
+      "selectedOptions": [
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – glatte Flächen"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "S82",
+      "variantId": "gid://shopify/ProductVariant/58190028800380",
+      "unitCents": 1348,
+      "proposedUnitCents": 1348,
+      "shopReadbackCents": 1348,
+      "selectedOptions": [
+        {
+          "name": "Befestigung",
+          "value": "Selbstklebend – raue Flächen"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "S82",
+      "variantId": "gid://shopify/ProductVariant/58190028833148",
+      "unitCents": 1198,
+      "proposedUnitCents": 1198,
+      "shopReadbackCents": 1198,
+      "selectedOptions": [
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Bohrlöchern"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "productKey": "S82",
+      "variantId": "gid://shopify/ProductVariant/58190028865916",
+      "unitCents": 1218,
+      "proposedUnitCents": 1218,
+      "shopReadbackCents": 1218,
+      "selectedOptions": [
+        {
+          "name": "Befestigung",
+          "value": "Mit 2 Schrauben"
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "editorialReview": {
+    "performed": true,
+    "claimsMapped": true,
+    "unsupportedClaimsAdded": false,
+    "excludedClaims": [
+      "Lieferzeit",
+      "Versandpreis oder Versandzusage",
+      "Wetterfestigkeit/UV-Beständigkeit",
+      "Korrosionsklasse/Legierung",
+      "Herstellungsland",
+      "GPSR-/Zertifizierungsangaben",
+      "garantierte Textlänge oder Motivpassung",
+      "pauschale Untergrundhaftung"
+    ],
+    "namesAreExamples": true,
+    "imageVisualReviewPending": true,
+    "handlesAvailabilityNotChecked": true
+  },
+  "noExternalWrites": true,
+  "noOriginalArtifactChanges": true
+}

@@ -1,0 +1,93 @@
+{
+  "schema": "gravuru-six-sales-copy-package/v1",
+  "status": "REVIEW_DRAFT_NO_SHOP_WRITES",
+  "createdAt": "2026-11-12T19:02:33.628Z",
+  "files": [
+    {
+      "path": "A52.html",
+      "bytes": 2236,
+      "sha256": "0860d73faaa3d016288b169ca0745cc8250375482a932c4848c4fed0cd2cb6c5"
+    },
+    {
+      "path": "A52.md",
+      "bytes": 3872,
+      "sha256": "9701b429ad746d79cb94643a0d71e5ce2122958d9fd9f7c579e969cbebfc043d"
+    },
+    {
+      "path": "A62.html",
+      "bytes": 2226,
+      "sha256": "453782c94ebc0c8f8ba2e2b9a46b6863d3a73ab866f423fa2a06af1baa7614f2"
+    },
+    {
+      "path": "A62.md",
+      "bytes": 3849,
+      "sha256": "1da08f39ca6306dcc34c4baf5169369eb693b46c849ccdd09c129175d6fd12e1"
+    },
+    {
+      "path": "A82.html",
+      "bytes": 2232,
+      "sha256": "dd148ea425be396fe5cca1544e89323571860f39a51d436651bbbc9c80f1d2f2"
+    },
+    {
+      "path": "A82.md",
+      "bytes": 3867,
+      "sha256": "b2a5a5a0ae1883baa5cf5c0a8a0d9e931fa6af6b27a2c9604f08b5ba33084add"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3004,
+      "sha256": "6df225858df4062df76c7c45d7609ec62286d79e3440f332345f8a9e21b610b8"
+    },
+    {
+      "path": "S52.html",
+      "bytes": 2153,
+      "sha256": "1c9f91a13fa3610e811cc5c3a78c6dfc86315319f97ce346db87888ff5fbe171"
+    },
+    {
+      "path": "S52.md",
+      "bytes": 3795,
+      "sha256": "ea267300c9cca50ee472061f8cd43cc67c92867aeda04e7b6033af1651fdcaf9"
+    },
+    {
+      "path": "S62.html",
+      "bytes": 2135,
+      "sha256": "d6c9b34617a2fcd6088ef481840d08f86eded606290518813058cad407ee7518"
+    },
+    {
+      "path": "S62.md",
+      "bytes": 3754,
+      "sha256": "3e5c6e3c2df62ae8ef1c901cc208cc5bd65015b407ddeae15f7b0461388d4cd2"
+    },
+    {
+      "path": "S82.html",
+      "bytes": 2131,
+      "sha256": "da311772f81592afbdf5301ce476800f9d4215acc0f0b98893adfdc4d974b8bf"
+    },
+    {
+      "path": "S82.md",
+      "bytes": 3770,
+      "sha256": "ff6447042de6de6b5ff1fd2e16b9d4aa853ef8d4484f7e8bc1affe905e68bfb1"
+    },
+    {
+      "path": "checks.json",
+      "bytes": 20095,
+      "sha256": "d8c3889831a4569429fe4499509f6aafd15d15062390a1efb8d23632e02534df"
+    },
+    {
+      "path": "products.json",
+      "bytes": 55557,
+      "sha256": "877f65632c6cfb1e689eb492d54b288197ee21b0bbd9fefd8665d0960eb913c9"
+    },
+    {
+      "path": "sources.json",
+      "bytes": 9087,
+      "sha256": "8c0a1e204ec9ed7e81d6a486e727d6a80a949df69d531699c3100612e7370c37"
+    }
+  ],
+  "sourceValidation": {
+    "checks": 11,
+    "passed": 11,
+    "variantPricesAndOptions": 45
+  },
+  "imageStatus": "Alttexte an beauftragte Layouts gebunden, fertige Bilder noch durch Root visuell abzugleichen"
+}

@@ -1,0 +1,84 @@
+{
+  "schema": "gravuru-offline-review-final-checks/v1",
+  "checkedAt": "2026-11-13T08:34:36.612Z",
+  "products": 6,
+  "priceTables": 6,
+  "textCopies": 13,
+  "linkedFilesChecked": 30,
+  "externalAssets": 0,
+  "cartStatus": "partial",
+  "browserChecked": true,
+  "browserScope": [
+    "Desktop review page: navigation, filters, visible images",
+    "390x844 review page: detail layout; no physical phone"
+  ],
+  "screenshot": "review-final-overview.png",
+  "failures": [],
+  "files": [
+    {
+      "file": "index.html",
+      "bytes": 38687,
+      "sha256": "cd6be9d77db1c2f5011ec32a827e0f5cacbfcad46bb592ce5575726776f12d88"
+    },
+    {
+      "file": "FREIGABE.md",
+      "bytes": 20823,
+      "sha256": "f687f8177b0df7dc277f9c689c8441620249a8257ccc7f050602f16010f67f2a"
+    },
+    {
+      "file": "assets/review.js",
+      "bytes": 2814,
+      "sha256": "777a4f6fae89abe2b9b549cf1d92c4a8493c91f832e395c47c7704d07f73599b"
+    },
+    {
+      "file": "assets/review.css",
+      "bytes": 8595,
+      "sha256": "061bfb6f4aac11bc8541cc61f8ff0be6eeec1cb3ebca16749e0d035de0909a75"
+    },
+    {
+      "file": "data/products.json",
+      "bytes": 55557,
+      "sha256": "877f65632c6cfb1e689eb492d54b288197ee21b0bbd9fefd8665d0960eb913c9"
+    },
+    {
+      "file": "data/cart-review.json",
+      "bytes": 4463,
+      "sha256": "ca045f520208890f1c838072e52d2831cfe31dacd564b86abbcc3700bd09fb14"
+    },
+    {
+      "file": "data/product-status-final.json",
+      "bytes": 1710,
+      "sha256": "281c5bcd24bd385090a33b4cbc19dd03d827bbdfbfab2d0ef7ff441d670f9bd9"
+    },
+    {
+      "file": "images/A52-v1.png",
+      "bytes": 1183684,
+      "sha256": "0e680d9d6e966a145baa99715ff886626a24d6c916fa14a2c5bac6781c48f926"
+    },
+    {
+      "file": "images/A62-v1.png",
+      "bytes": 1194335,
+      "sha256": "4dff8168ec1b28c941714c83a697603217e0c233e95d66d1ed6b34c6aafb6c22"
+    },
+    {
+      "file": "images/A82-v1.png",
+      "bytes": 1090178,
+      "sha256": "4e29cda1d8b07e4b8728c249f9d4d6d8b7edc4923b34c5ba4b77852f99ca67b4"
+    },
+    {
+      "file": "images/S52-v1.png",
+      "bytes": 1290558,
+      "sha256": "d28716d1d1d2e4bf80a84bb96bb8d81bd88eb5da32d6c151495be89d11eb0140"
+    },
+    {
+      "file": "images/S62-v1.png",
+      "bytes": 1309993,
+      "sha256": "e8a87311f2e65cbaafefd8bb1beda109399a97f7e3893907f9f97e24c63d39fe"
+    },
+    {
+      "file": "images/S82-v1.png",
+      "bytes": 1217511,
+      "sha256": "e1fc2ce0689b11b38f23dcf81beef8616998d385ee02df1449432450ed4a6a89"
+    }
+  ]
+}

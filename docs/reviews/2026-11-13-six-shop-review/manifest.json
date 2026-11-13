@@ -1,0 +1,387 @@
+{
+  "schema": "gravuru-six-shop-review-package/v1",
+  "createdAt": "2026-11-13T08:34:36.833Z",
+  "status": "review-proposals-unapproved",
+  "shopWrites": 0,
+  "published": 0,
+  "sourceCodeCommit": "aea809f",
+  "newAgentCommit": "1104811",
+  "fileCount": 75,
+  "files": [
+    {
+      "file": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "file": "README.md",
+      "bytes": 3676,
+      "sha256": "ad55b7e3562bcec3954b7e3c0bc8c5d89f27d5911903fa676f9791c7c2b8c3d0"
+    },
+    {
+      "file": "agent-start.md",
+      "bytes": 7027,
+      "sha256": "5b2077bfc0bba4025ef9e7c07c438f2744881b0484b5ed3e837fa6f8773dddbb"
+    },
+    {
+      "file": "preview/FREIGABE.md",
+      "bytes": 20823,
+      "sha256": "f687f8177b0df7dc277f9c689c8441620249a8257ccc7f050602f16010f67f2a"
+    },
+    {
+      "file": "preview/README.md",
+      "bytes": 1771,
+      "sha256": "61b1d458523a1cc0c66f3d01062335b29b9aeefdbd663a10d047100c6995ff13"
+    },
+    {
+      "file": "preview/assets/review.css",
+      "bytes": 8595,
+      "sha256": "061bfb6f4aac11bc8541cc61f8ff0be6eeec1cb3ebca16749e0d035de0909a75"
+    },
+    {
+      "file": "preview/assets/review.js",
+      "bytes": 2814,
+      "sha256": "777a4f6fae89abe2b9b549cf1d92c4a8493c91f832e395c47c7704d07f73599b"
+    },
+    {
+      "file": "preview/cart-report-20261113.md",
+      "bytes": 3426,
+      "sha256": "3a5c41aa3d2da5f8c59fa4fa5d66594c64c62b2ca6f949245a1915e5303b917c"
+    },
+    {
+      "file": "preview/checks.json",
+      "bytes": 2491,
+      "sha256": "fdad04b6413feb60cc5ba4f9d7b64f20760be174ed4f4ec3a3aa84a97f325f84"
+    },
+    {
+      "file": "preview/data/cart-review.json",
+      "bytes": 4463,
+      "sha256": "ca045f520208890f1c838072e52d2831cfe31dacd564b86abbcc3700bd09fb14"
+    },
+    {
+      "file": "preview/data/handle-readback.json",
+      "bytes": 1172,
+      "sha256": "8b546f61d228219c9c32d821a28f76a0269f3bf21076170207ec409e159bdc3d"
+    },
+    {
+      "file": "preview/data/product-status-final.json",
+      "bytes": 1710,
+      "sha256": "281c5bcd24bd385090a33b4cbc19dd03d827bbdfbfab2d0ef7ff441d670f9bd9"
+    },
+    {
+      "file": "preview/data/products.json",
+      "bytes": 55557,
+      "sha256": "877f65632c6cfb1e689eb492d54b288197ee21b0bbd9fefd8665d0960eb913c9"
+    },
+    {
+      "file": "preview/data/texts/A52.html",
+      "bytes": 2236,
+      "sha256": "0860d73faaa3d016288b169ca0745cc8250375482a932c4848c4fed0cd2cb6c5"
+    },
+    {
+      "file": "preview/data/texts/A52.md",
+      "bytes": 3872,
+      "sha256": "9701b429ad746d79cb94643a0d71e5ce2122958d9fd9f7c579e969cbebfc043d"
+    },
+    {
+      "file": "preview/data/texts/A62.html",
+      "bytes": 2226,
+      "sha256": "453782c94ebc0c8f8ba2e2b9a46b6863d3a73ab866f423fa2a06af1baa7614f2"
+    },
+    {
+      "file": "preview/data/texts/A62.md",
+      "bytes": 3849,
+      "sha256": "1da08f39ca6306dcc34c4baf5169369eb693b46c849ccdd09c129175d6fd12e1"
+    },
+    {
+      "file": "preview/data/texts/A82.html",
+      "bytes": 2232,
+      "sha256": "dd148ea425be396fe5cca1544e89323571860f39a51d436651bbbc9c80f1d2f2"
+    },
+    {
+      "file": "preview/data/texts/A82.md",
+      "bytes": 3867,
+      "sha256": "b2a5a5a0ae1883baa5cf5c0a8a0d9e931fa6af6b27a2c9604f08b5ba33084add"
+    },
+    {
+      "file": "preview/data/texts/S52.html",
+      "bytes": 2153,
+      "sha256": "1c9f91a13fa3610e811cc5c3a78c6dfc86315319f97ce346db87888ff5fbe171"
+    },
+    {
+      "file": "preview/data/texts/S52.md",
+      "bytes": 3795,
+      "sha256": "ea267300c9cca50ee472061f8cd43cc67c92867aeda04e7b6033af1651fdcaf9"
+    },
+    {
+      "file": "preview/data/texts/S62.html",
+      "bytes": 2135,
+      "sha256": "d6c9b34617a2fcd6088ef481840d08f86eded606290518813058cad407ee7518"
+    },
+    {
+      "file": "preview/data/texts/S62.md",
+      "bytes": 3754,
+      "sha256": "3e5c6e3c2df62ae8ef1c901cc208cc5bd65015b407ddeae15f7b0461388d4cd2"
+    },
+    {
+      "file": "preview/data/texts/S82.html",
+      "bytes": 2131,
+      "sha256": "da311772f81592afbdf5301ce476800f9d4215acc0f0b98893adfdc4d974b8bf"
+    },
+    {
+      "file": "preview/data/texts/S82.md",
+      "bytes": 3770,
+      "sha256": "ff6447042de6de6b5ff1fd2e16b9d4aa853ef8d4484f7e8bc1affe905e68bfb1"
+    },
+    {
+      "file": "preview/images/A52-v1.png",
+      "bytes": 1183684,
+      "sha256": "0e680d9d6e966a145baa99715ff886626a24d6c916fa14a2c5bac6781c48f926"
+    },
+    {
+      "file": "preview/images/A62-v1.png",
+      "bytes": 1194335,
+      "sha256": "4dff8168ec1b28c941714c83a697603217e0c233e95d66d1ed6b34c6aafb6c22"
+    },
+    {
+      "file": "preview/images/A82-v1.png",
+      "bytes": 1090178,
+      "sha256": "4e29cda1d8b07e4b8728c249f9d4d6d8b7edc4923b34c5ba4b77852f99ca67b4"
+    },
+    {
+      "file": "preview/images/S52-v1.png",
+      "bytes": 1290558,
+      "sha256": "d28716d1d1d2e4bf80a84bb96bb8d81bd88eb5da32d6c151495be89d11eb0140"
+    },
+    {
+      "file": "preview/images/S62-v1.png",
+      "bytes": 1309993,
+      "sha256": "e8a87311f2e65cbaafefd8bb1beda109399a97f7e3893907f9f97e24c63d39fe"
+    },
+    {
+      "file": "preview/images/S82-v1.png",
+      "bytes": 1217511,
+      "sha256": "e1fc2ce0689b11b38f23dcf81beef8616998d385ee02df1449432450ed4a6a89"
+    },
+    {
+      "file": "preview/index.html",
+      "bytes": 38687,
+      "sha256": "cd6be9d77db1c2f5011ec32a827e0f5cacbfcad46bb592ce5575726776f12d88"
+    },
+    {
+      "file": "preview/konfi-A52-local-fixed.png",
+      "bytes": 34721,
+      "sha256": "c5a83ad235dd65d4a0d35aede7a26217457594c08e95e49982b5480f5c250e59"
+    },
+    {
+      "file": "preview/konfi-A52-mobile.png",
+      "bytes": 35830,
+      "sha256": "9dfbf938d4b6a07cc066b30b6abcb854f4e5b937c0737641688eb1c5a4443752"
+    },
+    {
+      "file": "preview/konfi-S82-local-fixed.png",
+      "bytes": 33558,
+      "sha256": "6f4406ad6f88453e3ebaf7a96a59da90b3e955da55aa6082d9be245e729b1b6d"
+    },
+    {
+      "file": "preview/konfi-S82-local-fullscreen.png",
+      "bytes": 22042,
+      "sha256": "433d3de45012aebdef3ce27b504587105eb1b4c04914dc34ef438ec322d041cc"
+    },
+    {
+      "file": "preview/konfi-S82-local-native-small.png",
+      "bytes": 30251,
+      "sha256": "3bc1b3ffa31e4c0c57f89ba00ca6fd1f2006e615c5097e4094b8620ee5aed30f"
+    },
+    {
+      "file": "preview/konfi-S82-local-quantity-restored.png",
+      "bytes": 33470,
+      "sha256": "78b6327c3899db6b6def124ab6bb6394f442e27b7b5734b398657cfa3962dbc9"
+    },
+    {
+      "file": "preview/konfi-S82-local-sheet.png",
+      "bytes": 23910,
+      "sha256": "f601249fe550d9e36d052e0c2025913bd9a16378a0e3a3789132487e2641655d"
+    },
+    {
+      "file": "preview/konfi-S82-mobile.png",
+      "bytes": 34087,
+      "sha256": "d9d717376e0905dc428dc880f5a632711b20caecce16144681623b1acff5b102"
+    },
+    {
+      "file": "preview/konfi-main-local-fixed.png",
+      "bytes": 34247,
+      "sha256": "72a44fcd29daba48073310b47fd073421e025a6b6b53db6419e0d4a739de4c2a"
+    },
+    {
+      "file": "preview/konfi-main-mobile-design.png",
+      "bytes": 38193,
+      "sha256": "e155275f79480525841105048fccd325bbd140811c82b322432d5fd0ff84e925"
+    },
+    {
+      "file": "preview/konfi-main-mobile.png",
+      "bytes": 36086,
+      "sha256": "731e18555e1c925b987266234c51dfdee24b5c4da88feddb817af525d74dd955"
+    },
+    {
+      "file": "preview/mobile-konfi-review-20261113.md",
+      "bytes": 3630,
+      "sha256": "1c1bf59e2bb342d206a40f39db5ef4a64d92319131497050c77bc6820c665846"
+    },
+    {
+      "file": "preview/references/A52-native.png",
+      "bytes": 105303,
+      "sha256": "c4cb0348d116e8ff0394ac81c2cdd29ee7c164a3114cabdcb3784aac8d36f7cb"
+    },
+    {
+      "file": "preview/references/A62-native.png",
+      "bytes": 142150,
+      "sha256": "6f34765ec94475a80a2a5500786688cae89a2b4ef4f2f12b3dcfd0330e7242ab"
+    },
+    {
+      "file": "preview/references/A82-native.png",
+      "bytes": 65569,
+      "sha256": "de2bc45d5415a9c406f8a7deaa73d765659a28227cc8a8bbf67e74bae41cb70e"
+    },
+    {
+      "file": "preview/references/S52-native.png",
+      "bytes": 713799,
+      "sha256": "ea02af353a3a68666559d3ede7ee8c3fc934ec991a4c34d7d6c84f895483f1c5"
+    },
+    {
+      "file": "preview/references/S62-native.png",
+      "bytes": 630458,
+      "sha256": "794633a8a631f812550a3ddcaff3878ec3079fb9ac00c1ceb5d084664130ecb0"
+    },
+    {
+      "file": "preview/references/S82-native.png",
+      "bytes": 413361,
+      "sha256": "edd513ee8d79fd5788f823a074a6eac8900fa9f0056025768f28272133928597"
+    },
+    {
+      "file": "preview/review-desktop.png",
+      "bytes": 48322,
+      "sha256": "462e296ed3e9c8b8aece833dc4d7b5c1be3066661ca1522b97a8d038c90d9c68"
+    },
+    {
+      "file": "preview/review-final-overview.png",
+      "bytes": 47374,
+      "sha256": "818a3c3538b0d57b0c32557f84a988cc8354a0842afceda3d1044b1aacfa97cc"
+    },
+    {
+      "file": "preview/review-mobile-detail.png",
+      "bytes": 27229,
+      "sha256": "ba5cb572b1c81603c91701ac8de9efc5bfa6c2ac4f6e3903391d63a157c875f4"
+    },
+    {
+      "file": "preview/review-mobile-overview.png",
+      "bytes": 27121,
+      "sha256": "ad11a0fe084daec5e4917cbb16ac15e4d3795c4058128a2931a378363ebbff84"
+    },
+    {
+      "file": "provenance/images/generation-specs.json",
+      "bytes": 15535,
+      "sha256": "6da969ef2b50b46ca70c6040047eb1d1f90e2ec3fb694c39ae389d92cfbe7dcf"
+    },
+    {
+      "file": "provenance/images/output-manifest.json",
+      "bytes": 1829,
+      "sha256": "a9107fe567a04261e7270ccd7fac31395074a9e8358c7fccd635ea80c5786e9e"
+    },
+    {
+      "file": "provenance/images/source-review.md",
+      "bytes": 8909,
+      "sha256": "3bdde5b1ea5a644a2bdfda4dc2b93ba43c079adb545c9d62c060cb4d46741823"
+    },
+    {
+      "file": "provenance/images/visual-review.md",
+      "bytes": 2179,
+      "sha256": "28d38f153e9272a8b9d144ee4c4c61f0922aaca37833fe7c390b0fc293201dd4"
+    },
+    {
+      "file": "provenance/texts/A52.html",
+      "bytes": 2236,
+      "sha256": "0860d73faaa3d016288b169ca0745cc8250375482a932c4848c4fed0cd2cb6c5"
+    },
+    {
+      "file": "provenance/texts/A52.md",
+      "bytes": 3872,
+      "sha256": "9701b429ad746d79cb94643a0d71e5ce2122958d9fd9f7c579e969cbebfc043d"
+    },
+    {
+      "file": "provenance/texts/A62.html",
+      "bytes": 2226,
+      "sha256": "453782c94ebc0c8f8ba2e2b9a46b6863d3a73ab866f423fa2a06af1baa7614f2"
+    },
+    {
+      "file": "provenance/texts/A62.md",
+      "bytes": 3849,
+      "sha256": "1da08f39ca6306dcc34c4baf5169369eb693b46c849ccdd09c129175d6fd12e1"
+    },
+    {
+      "file": "provenance/texts/A82.html",
+      "bytes": 2232,
+      "sha256": "dd148ea425be396fe5cca1544e89323571860f39a51d436651bbbc9c80f1d2f2"
+    },
+    {
+      "file": "provenance/texts/A82.md",
+      "bytes": 3867,
+      "sha256": "b2a5a5a0ae1883baa5cf5c0a8a0d9e931fa6af6b27a2c9604f08b5ba33084add"
+    },
+    {
+      "file": "provenance/texts/README.md",
+      "bytes": 3004,
+      "sha256": "6df225858df4062df76c7c45d7609ec62286d79e3440f332345f8a9e21b610b8"
+    },
+    {
+      "file": "provenance/texts/S52.html",
+      "bytes": 2153,
+      "sha256": "1c9f91a13fa3610e811cc5c3a78c6dfc86315319f97ce346db87888ff5fbe171"
+    },
+    {
+      "file": "provenance/texts/S52.md",
+      "bytes": 3795,
+      "sha256": "ea267300c9cca50ee472061f8cd43cc67c92867aeda04e7b6033af1651fdcaf9"
+    },
+    {
+      "file": "provenance/texts/S62.html",
+      "bytes": 2135,
+      "sha256": "d6c9b34617a2fcd6088ef481840d08f86eded606290518813058cad407ee7518"
+    },
+    {
+      "file": "provenance/texts/S62.md",
+      "bytes": 3754,
+      "sha256": "3e5c6e3c2df62ae8ef1c901cc208cc5bd65015b407ddeae15f7b0461388d4cd2"
+    },
+    {
+      "file": "provenance/texts/S82.html",
+      "bytes": 2131,
+      "sha256": "da311772f81592afbdf5301ce476800f9d4215acc0f0b98893adfdc4d974b8bf"
+    },
+    {
+      "file": "provenance/texts/S82.md",
+      "bytes": 3770,
+      "sha256": "ff6447042de6de6b5ff1fd2e16b9d4aa853ef8d4484f7e8bc1affe905e68bfb1"
+    },
+    {
+      "file": "provenance/texts/checks.json",
+      "bytes": 20095,
+      "sha256": "d8c3889831a4569429fe4499509f6aafd15d15062390a1efb8d23632e02534df"
+    },
+    {
+      "file": "provenance/texts/manifest.json",
+      "bytes": 2659,
+      "sha256": "0490feb66323718ba9a1b7c987ffd1d233c161f4f729a9e99cb41a9d41b326c3"
+    },
+    {
+      "file": "provenance/texts/products.json",
+      "bytes": 55557,
+      "sha256": "877f65632c6cfb1e689eb492d54b288197ee21b0bbd9fefd8665d0960eb913c9"
+    },
+    {
+      "file": "provenance/texts/sources.json",
+      "bytes": 9087,
+      "sha256": "8c0a1e204ec9ed7e81d6a486e727d6a80a949df69d531699c3100612e7370c37"
+    }
+  ]
+}

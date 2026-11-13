@@ -1,0 +1,63 @@
+{
+  "observedAt": "2026-11-13T08:23:37.016Z",
+  "readOnly": true,
+  "scope": "status/image-description counts only; not a new full variant readback",
+  "products": [
+    {
+      "product": "16190784602492",
+      "status": "DRAFT",
+      "variantCount": 808,
+      "images": 2,
+      "descriptionLength": 0,
+      "title": "Türschild Acrylglas 3 mm – Form und Größe selbst wählen"
+    },
+    {
+      "product": "16203675074940",
+      "status": "DRAFT",
+      "variantCount": 10,
+      "images": 0,
+      "descriptionLength": 0,
+      "title": "Türschild Acrylglas 3 mm 5 × 2 cm (Schwarz/Anthrazit)"
+    },
+    {
+      "product": "16203715281276",
+      "status": "DRAFT",
+      "variantCount": 10,
+      "images": 0,
+      "descriptionLength": 0,
+      "title": "Türschild Acrylglas 3 mm 6 × 2 cm (Schwarz/Anthrazit)"
+    },
+    {
+      "product": "16203716100476",
+      "status": "DRAFT",
+      "variantCount": 10,
+      "images": 0,
+      "descriptionLength": 0,
+      "title": "Türschild Acrylglas 3 mm 8 × 2 cm (Schwarz/Anthrazit)"
+    },
+    {
+      "product": "16203716854140",
+      "status": "DRAFT",
+      "variantCount": 5,
+      "images": 0,
+      "descriptionLength": 0,
+      "title": "Türschild Edelstahl 5 × 2 cm (gebürstet, Gravur)"
+    },
+    {
+      "product": "16203717804412",
+      "status": "DRAFT",
+      "variantCount": 5,
+      "images": 0,
+      "descriptionLength": 0,
+      "title": "Türschild Edelstahl 6 × 2 cm (gebürstet, Gravur)"
+    },
+    {
+      "product": "16203718459772",
+      "status": "DRAFT",
+      "variantCount": 5,
+      "images": 0,
+      "descriptionLength": 0,
+      "title": "Türschild Edelstahl 8 × 2 cm (gebürstet, Gravur)"
+    }
+  ]
+}

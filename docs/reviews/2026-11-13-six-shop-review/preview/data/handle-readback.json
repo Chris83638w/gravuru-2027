@@ -1,0 +1,23 @@
+{
+  "observedAt": "2026-11-12T19:04:23.282Z",
+  "readOnly": true,
+  "handles": [
+    "tuerschild-acrylglas-5x2-cm-gravur",
+    "tuerschild-acrylglas-6x2-cm-gravur",
+    "tuerschild-acrylglas-8x2-cm-gravur",
+    "tuerschild-edelstahl-5x2-cm-gravur",
+    "tuerschild-edelstahl-6x2-cm-gravur",
+    "tuerschild-edelstahl-8x2-cm-gravur"
+  ],
+  "query": "query ProposedSixHandles {p0:productByIdentifier(identifier:{handle:\"tuerschild-acrylglas-5x2-cm-gravur\"}){id title handle status}\np1:productByIdentifier(identifier:{handle:\"tuerschild-acrylglas-6x2-cm-gravur\"}){id title handle status}\np2:productByIdentifier(identifier:{handle:\"tuerschild-acrylglas-8x2-cm-gravur\"}){id title handle status}\np3:productByIdentifier(identifier:{handle:\"tuerschild-edelstahl-5x2-cm-gravur\"}){id title handle status}\np4:productByIdentifier(identifier:{handle:\"tuerschild-edelstahl-6x2-cm-gravur\"}){id title handle status}\np5:productByIdentifier(identifier:{handle:\"tuerschild-edelstahl-8x2-cm-gravur\"}){id title handle status}}",
+  "result": {
+    "data": {
+      "p0": null,
+      "p1": null,
+      "p2": null,
+      "p3": null,
+      "p4": null,
+      "p5": null
+    }
+  }
+}

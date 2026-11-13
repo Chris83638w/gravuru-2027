@@ -1,0 +1,205 @@
+{
+  "schema": "gravuru-six-sales-copy-sources/v1",
+  "createdAt": "2026-11-12T19:02:13.414Z",
+  "files": [
+    {
+      "id": "final-inputs",
+      "path": "work/restabschluss/final-execution-excel/final-six-inputs.json",
+      "bytes": 58826,
+      "sha256": "893ba9cd21640d209c8b97091f536e4684f0efb8d256c4957424b9de39d5307c",
+      "use": "Tatsächliche sechs Produktidentitäten, 45 Varianten, Preise, Modul- und Motivprofilpins."
+    },
+    {
+      "id": "shop-products",
+      "path": "work/restabschluss/live-readbacks-20261112/six-final-products.json",
+      "bytes": 13241,
+      "sha256": "52a4a451588aa70ff1cce52875d936082a927ecb8362fd1f77f19b1ab8d4788d",
+      "use": "Unabhängiger gelieferter Shopify-Readback; sechs derzeitige Beschreibungen leer."
+    },
+    {
+      "id": "shop-entry",
+      "path": "work/restabschluss/live-readbacks-20261112/six-final-entry-read.json",
+      "bytes": 27122,
+      "sha256": "4ca8486c97e742dcc32cf69494207ddc38c857dba3467dcaadd55cd7a312e9ab",
+      "use": "Vollständige 45 Varianten: IDs, Optionsbezeichnungen, Preise. Kein neuer Liveabruf."
+    },
+    {
+      "id": "decisions",
+      "path": "work/product-plans-run-v9/decisions.json",
+      "bytes": 6332,
+      "sha256": "390de02c2d4bea6ebc6b7fd9f5d72a33bfd1ebf77954f34af8ce4c3b03aa075d",
+      "use": "Bestätigte Steuer-, Staffel-, Upload-, Motiv- und Designentscheidungen; historische release-Flags beschreiben nur den damaligen lokalen Stand, nicht den inzwischen erfolgten Produktabschluss."
+    },
+    {
+      "id": "decision-register",
+      "path": "work/issue230-integration-candidate/ENTSCHEIDUNGEN.md",
+      "bytes": 76703,
+      "sha256": "3aeb651caec2eaffeeb009c72f8b394b5d10c0ffe0ea1575865674d8338ae071",
+      "lines": {
+        "motifRights": 42,
+        "motifPrice": 82,
+        "tiers": 131,
+        "motifOriginalIncluded": 141
+      }
+    },
+    {
+      "id": "material-reference",
+      "path": "work/issue230-integration-candidate/MATERIALREFERENZEN.md",
+      "bytes": 7860,
+      "sha256": "23a6e000b3a039bc00af962eaad9a4e8770d3d33643a770fc9adda0b12b5b340",
+      "lines": {
+        "steel": 11,
+        "acrylicAnthracite": 16,
+        "acrylicBlack": 17
+      },
+      "use": "Materialdarstellung; Produktstärken stammen zusätzlich aus tatsächlichen nativen Quellen, keine Musterannahme anderer Acrylarten."
+    },
+    {
+      "id": "source-A52",
+      "path": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-5x2_v2/source-document.json",
+      "bytes": 9367162,
+      "sha256": "94645c95ba8d27cd51caeaae582503b0f4f57dc71c7ef04d32cd4c15979f2d04",
+      "use": "Unveränderte fachliche Quelle: Maße, Materialstärke, Veredelung, Farben, Optionen und Designvorlage. Lokale UUIDs sind keine neuen Shopziele."
+    },
+    {
+      "id": "original-excel-A52",
+      "path": "work/product-plans-run-v8/excel/Tuerschild-Acrylglas-3mm-5x2_v2.xlsx",
+      "bytes": 40253,
+      "sha256": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+      "expectedOriginalSha256": "119e2f48ec4d92c91a1463946a95ef0d2f30deb2e07c0c13ce59c73583a339cd",
+      "use": "Bestätigte Originalpreisakte; unverändert erhalten."
+    },
+    {
+      "id": "source-A62",
+      "path": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-6x2_v2/source-document.json",
+      "bytes": 9367589,
+      "sha256": "cec58d88841ced32a6762efe73d508e47ded93c8f967970e57f0ae7799a5b77b",
+      "use": "Unveränderte fachliche Quelle: Maße, Materialstärke, Veredelung, Farben, Optionen und Designvorlage. Lokale UUIDs sind keine neuen Shopziele."
+    },
+    {
+      "id": "original-excel-A62",
+      "path": "work/product-plans-run-v8/excel/Tuerschild-Acrylglas-3mm-6x2_v2.xlsx",
+      "bytes": 40270,
+      "sha256": "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+      "expectedOriginalSha256": "7e588c53b57091cd5870a6bc24b81f5cca7d4ddb55cb722ce5156100d3267673",
+      "use": "Bestätigte Originalpreisakte; unverändert erhalten."
+    },
+    {
+      "id": "source-A82",
+      "path": "work/product-plans-run-v9/Tuerschild-Acrylglas-3mm-8x2_v2/source-document.json",
+      "bytes": 9367969,
+      "sha256": "1ec018e04ad54cdef84bb223f32d04304b76de89c190f92514ba1837939213ca",
+      "use": "Unveränderte fachliche Quelle: Maße, Materialstärke, Veredelung, Farben, Optionen und Designvorlage. Lokale UUIDs sind keine neuen Shopziele."
+    },
+    {
+      "id": "original-excel-A82",
+      "path": "work/product-plans-run-v8/excel/Tuerschild-Acrylglas-3mm-8x2_v2.xlsx",
+      "bytes": 40261,
+      "sha256": "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+      "expectedOriginalSha256": "02a4b9749dcbacbd8d13957e5194ad4ae27cc0f2e81922f5a3b95b0151f47cc2",
+      "use": "Bestätigte Originalpreisakte; unverändert erhalten."
+    },
+    {
+      "id": "source-S52",
+      "path": "work/product-plans-run-v9/Tuerschild-Edelstahl-5x2_v1/source-document.json",
+      "bytes": 11283357,
+      "sha256": "9521226a9e91b0b297450eb81647f31e0bbb451eedde1c86101a02a0c574accd",
+      "use": "Unveränderte fachliche Quelle: Maße, Materialstärke, Veredelung, Farben, Optionen und Designvorlage. Lokale UUIDs sind keine neuen Shopziele."
+    },
+    {
+      "id": "original-excel-S52",
+      "path": "work/product-plans-run-v8/excel/Tuerschild-Edelstahl-5x2_v1.xlsx",
+      "bytes": 35458,
+      "sha256": "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+      "expectedOriginalSha256": "9fe8b60b35e3c9f4de5ab5d738608b49e509041cb584f4e8d6a9242fb09357d0",
+      "use": "Bestätigte Originalpreisakte; unverändert erhalten."
+    },
+    {
+      "id": "source-S62",
+      "path": "work/product-plans-run-v9/Tuerschild-Edelstahl-6x2_v1/source-document.json",
+      "bytes": 11283784,
+      "sha256": "f3aa10c351d7c0343c747193eb0081842f92055dcfa0f16a072ab457104e0f92",
+      "use": "Unveränderte fachliche Quelle: Maße, Materialstärke, Veredelung, Farben, Optionen und Designvorlage. Lokale UUIDs sind keine neuen Shopziele."
+    },
+    {
+      "id": "original-excel-S62",
+      "path": "work/product-plans-run-v8/excel/Tuerschild-Edelstahl-6x2_v1.xlsx",
+      "bytes": 35477,
+      "sha256": "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+      "expectedOriginalSha256": "de58b14ae5e33146a52a17f7c1b176dd58cebb75479617d10852f5e91623e0f5",
+      "use": "Bestätigte Originalpreisakte; unverändert erhalten."
+    },
+    {
+      "id": "source-S82",
+      "path": "work/product-plans-run-v9/Tuerschild-Edelstahl-8x2_v1/source-document.json",
+      "bytes": 11284164,
+      "sha256": "9fcf89dab365bcc053384d752c1321b66d07d228f8549aa0925c12708af600a6",
+      "use": "Unveränderte fachliche Quelle: Maße, Materialstärke, Veredelung, Farben, Optionen und Designvorlage. Lokale UUIDs sind keine neuen Shopziele."
+    },
+    {
+      "id": "original-excel-S82",
+      "path": "work/product-plans-run-v8/excel/Tuerschild-Edelstahl-8x2_v1.xlsx",
+      "bytes": 35473,
+      "sha256": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+      "expectedOriginalSha256": "440f3a19ad1fac20d446b19b9fe9810a1daee6292d0ab3591a7f21f39dca7317",
+      "use": "Bestätigte Originalpreisakte; unverändert erhalten."
+    }
+  ],
+  "externalDecisionReferences": [
+    {
+      "id": "tax-issue",
+      "url": "https://github.com/Chris83638w/gravuru-2027/issues/230#issuecomment-6804508025",
+      "quote": "Ja, inklusive 19 % MwSt.",
+      "basis": "Dauerhafter Verweis der bereits dokumentierten Entscheidung; kein neuer Abruf."
+    },
+    {
+      "id": "motifs-issue",
+      "url": "https://github.com/Chris83638w/gravuru-2027/issues/230#issuecomment-6772716646",
+      "basis": "13-Motiv-Entscheidung gemäß gepinntem decisions.json."
+    }
+  ],
+  "coordinatorImageMapping": {
+    "id": "coordinator-image-mapping",
+    "source": "Direkte Root-Nachricht im aktuellen Auftrag vom 12.11.2026",
+    "mapping": {
+      "5": {
+        "designId": "TRE-V2A-5x2-D4",
+        "text": [
+          "Familie",
+          "Hoffmann"
+        ],
+        "layout": "Familie Hoffmann und horizontaler Linie",
+        "sourceView": "B1"
+      },
+      "6": {
+        "designId": "TRE-V2A-6x2-D23",
+        "text": [
+          "Vanessa",
+          "Krüger"
+        ],
+        "layout": "Vanessa Krüger und Hausmotiv",
+        "sourceView": "C2"
+      },
+      "8": {
+        "designId": "TRE-V2A-8x2-D801",
+        "text": [
+          "27",
+          "Familie",
+          "KAYA"
+        ],
+        "layout": "27, Familie KAYA und senkrechter Trennlinie",
+        "sourceView": "D3"
+      }
+    },
+    "files": [
+      "A52-v1.png",
+      "A62-v1.png",
+      "A82-v1.png",
+      "S52-v1.png",
+      "S62-v1.png",
+      "S82-v1.png"
+    ],
+    "scope": "Verkaufsbildvorschläge; keine neue Startdesign-/Katalogentscheidung. Bilder wurden von diesem Textagenten noch nicht visuell abgenommen."
+  },
+  "claimMapping": "Jeder Entwurf enthält claimSources: JSON-Pointer oder Zeilenangaben in den hier gehashten Quellen. Maß-, Material-, Preis- und Funktionsangaben in SEO und Alttext wiederholen dieselben belegten Produktmerkmale."
+}

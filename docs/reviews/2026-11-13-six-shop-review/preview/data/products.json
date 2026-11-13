@@ -1,0 +1,985 @@
+{
+  "schema": "gravuru-six-sales-copy-proposals/v1",
+  "createdAt": "2026-11-12T19:02:13.417Z",
+  "status": "FOR_JOINT_REVIEW_NOT_APPROVED",
+  "purpose": "Sechs Verkaufsentwürfe und SEO-/Alttextvorschläge; kein Importpayload, keine Produktmutation oder Veröffentlichung.",
+  "shop": "gravuru-design.myshopify.com",
+  "currency": "EUR",
+  "imageReviewRequired": true,
+  "products": [
+    {
+      "key": "A52",
+      "group": "Tuerschild-Acrylglas-3mm-5x2_v2",
+      "shopProductId": "gid://shopify/Product/16203675074940",
+      "shopNumericId": "16203675074940",
+      "nativeProductId": "cfg_05601748-5e4d-4d18-b133-a5e4ad1a2d65",
+      "current": {
+        "title": "Türschild Acrylglas 3 mm 5 × 2 cm (Schwarz/Anthrazit)",
+        "handle": "gravuru-aa1ab9b728a83be4d368d76c24fb244932def06ed9d225cbba6e88fa4556f4aa",
+        "status": "DRAFT",
+        "descriptionHtml": ""
+      },
+      "proposed": {
+        "title": "Türschild Acrylglas 5 × 2 cm mit Gravur",
+        "intro": "Dein Name auf kleinem Format: Gestalte ein Türschild aus schwarzem oder anthrazitfarbenem Acrylglas.",
+        "descriptionMarkdown": "Dein Name auf kleinem Format: Gestalte ein Türschild aus schwarzem oder anthrazitfarbenem Acrylglas.\n\nMit 5 × 2 cm bleibt dieses rechteckige Schild kompakt. Das 3 mm starke Acrylglas wird auf der Rückseite graviert. Wähle ein Design und passe den Beispieltext an – so wird aus der Vorlage dein eigenes Namensschild.\n\n**Maße und Material**\n\n- Maße: 5 × 2 cm (50 × 20 mm)\n- Form: Rechteckig\n- Material: Acrylglas, 3 mm stark\n- Farben: Schwarz oder Anthrazit\n- Gestaltung: Rückseitige Gravur mit deinem Text\n\n**So gestaltest du dein Schild**\n\nWähle ein Design, ersetze den Beispieltext und kontrolliere die Vorschau. Für eigene Ergänzungen steht eine Auswahl aus 13 Motiven bereit. Ob Text und Motiv gut zusammenpassen, prüfst du direkt in deiner Gestaltung. Foto- und Logo-Uploads sind bei diesem Kleinformat nicht vorgesehen.\n\nDas Produktbild zeigt eine Beispielgestaltung. Im Konfigurator kannst du ein anderes Design wählen und den Text anpassen.\n\n**Befestigung und Preise**\n\nAb 6,99 € pro Stück in der Variante „Ohne Bohrung“. Die Preise gelten gleichermaßen für Schwarz und Anthrazit. Die folgenden Preise verstehen sich inklusive 19 % MwSt., vor Mengenrabatt und zusätzlichen Motivkosten.\n\n| Variante | Aufpreis | Preis pro Stück |\n|---|---:|---:|\n| Ohne Bohrung | im Grundpreis | 6,99 € |\n| Selbstklebend – glatte Flächen | +2,99 € | 9,98 € |\n| Selbstklebend – raue Flächen | +3,99 € | 10,98 € |\n| Mit 2 Bohrlöchern | +2,49 € | 9,48 € |\n| Mit 2 Schrauben | +2,69 € | 9,68 € |\n\n**Motive und Mengenrabatt**\n\nIm gewählten Design enthaltene Originalmotive sind inklusive. Jedes zusätzlich eingefügte oder ersetzte Motiv kostet 1,69 €.\n\nMengenrabatt je Warenkorbposition: ab 3 Stück 5 %, ab 5 Stück 10 %, ab 10 Stück 15 %. Es gilt die höchste erreichte Stufe auf den Stückpreis einschließlich gewählter Befestigung und kostenpflichtiger Motive; die Stufen werden nicht addiert.",
+        "descriptionHtml": "<p><strong>Dein Name auf kleinem Format: Gestalte ein Türschild aus schwarzem oder anthrazitfarbenem Acrylglas.</strong></p>\n<p>Mit 5 × 2 cm bleibt dieses rechteckige Schild kompakt. Das 3 mm starke Acrylglas wird auf der Rückseite graviert. Wähle ein Design und passe den Beispieltext an – so wird aus der Vorlage dein eigenes Namensschild.</p>\n<h2>Maße und Material</h2>\n<ul><li>Maße: 5 × 2 cm (50 × 20 mm)</li><li>Form: Rechteckig</li><li>Material: Acrylglas, 3 mm stark</li><li>Farben: Schwarz oder Anthrazit</li><li>Gestaltung: Rückseitige Gravur mit deinem Text</li></ul>\n<h2>So gestaltest du dein Schild</h2>\n<p>Wähle ein Design, ersetze den Beispieltext und kontrolliere die Vorschau. Für eigene Ergänzungen steht eine Auswahl aus 13 Motiven bereit. Ob Text und Motiv gut zusammenpassen, prüfst du direkt in deiner Gestaltung. Foto- und Logo-Uploads sind bei diesem Kleinformat nicht vorgesehen.</p>\n<p>Das Produktbild zeigt eine Beispielgestaltung. Im Konfigurator kannst du ein anderes Design wählen und den Text anpassen.</p>\n<h2>Befestigung und Preise</h2>\n<p>Ab 6,99 € pro Stück in der Variante „Ohne Bohrung“. Die Preise gelten gleichermaßen für Schwarz und Anthrazit. Die folgenden Preise verstehen sich inklusive 19 % MwSt., vor Mengenrabatt und zusätzlichen Motivkosten.</p>\n<table><thead><tr><th>Variante</th><th>Aufpreis</th><th>Preis pro Stück</th></tr></thead><tbody><tr><td>Ohne Bohrung</td><td>im Grundpreis</td><td>6,99 €</td></tr><tr><td>Selbstklebend – glatte Flächen</td><td>+2,99 €</td><td>9,98 €</td></tr><tr><td>Selbstklebend – raue Flächen</td><td>+3,99 €</td><td>10,98 €</td></tr><tr><td>Mit 2 Bohrlöchern</td><td>+2,49 €</td><td>9,48 €</td></tr><tr><td>Mit 2 Schrauben</td><td>+2,69 €</td><td>9,68 €</td></tr></tbody></table>\n<h2>Motive und Mengenrabatt</h2>\n<p>Im gewählten Design enthaltene Originalmotive sind inklusive. Jedes zusätzlich eingefügte oder ersetzte Motiv kostet 1,69 €.</p>\n<p>Mengenrabatt je Warenkorbposition: ab 3 Stück 5 %, ab 5 Stück 10 %, ab 10 Stück 15 %. Es gilt die höchste erreichte Stufe auf den Stückpreis einschließlich gewählter Befestigung und kostenpflichtiger Motive; die Stufen werden nicht addiert.</p>",
+        "seoTitle": "Türschild Acrylglas 5 × 2 cm mit Gravur | Gravuru",
+        "seoDescription": "Türschild aus 3 mm Acrylglas in 5 × 2 cm: Schwarz oder Anthrazit, rückseitige Gravur, eigener Text und fünf Befestigungen. Im Konfigurator gestalten.",
+        "handle": "tuerschild-acrylglas-5x2-cm-gravur",
+        "images": [
+          {
+            "fileName": "A52-v1.png",
+            "altText": "Türschild aus schwarzem Acrylglas, 5 × 2 cm, mit Familie Hoffmann und horizontaler Linie",
+            "designId": "TRE-V2A-5x2-D4",
+            "exampleTexts": [
+              "Familie",
+              "Hoffmann"
+            ],
+            "referenceView": "B1",
+            "materialShown": "Schwarz",
+            "holesShown": false,
+            "status": "Bildvorschlag; finalen Bildinhalt vor Zuordnung abgleichen"
+          }
+        ]
+      },
+      "facts": [
+        {
+          "label": "Maße",
+          "value": "5 × 2 cm (50 × 20 mm)"
+        },
+        {
+          "label": "Form",
+          "value": "Rechteckig"
+        },
+        {
+          "label": "Material",
+          "value": "Acrylglas, 3 mm stark"
+        },
+        {
+          "label": "Farben",
+          "value": "Schwarz oder Anthrazit"
+        },
+        {
+          "label": "Gestaltung",
+          "value": "Rückseitige Gravur mit deinem Text"
+        }
+      ],
+      "prices": [
+        {
+          "id": "K00",
+          "label": "Ohne Bohrung",
+          "surchargeCents": 0,
+          "unitCents": 699,
+          "displaySurcharge": "im Grundpreis",
+          "displayUnitPrice": "6,99 €"
+        },
+        {
+          "id": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "surchargeCents": 299,
+          "unitCents": 998,
+          "displaySurcharge": "+2,99 €",
+          "displayUnitPrice": "9,98 €"
+        },
+        {
+          "id": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "surchargeCents": 399,
+          "unitCents": 1098,
+          "displaySurcharge": "+3,99 €",
+          "displayUnitPrice": "10,98 €"
+        },
+        {
+          "id": "B02",
+          "label": "Mit 2 Bohrlöchern",
+          "surchargeCents": 249,
+          "unitCents": 948,
+          "displaySurcharge": "+2,49 €",
+          "displayUnitPrice": "9,48 €"
+        },
+        {
+          "id": "B02S",
+          "label": "Mit 2 Schrauben",
+          "surchargeCents": 269,
+          "unitCents": 968,
+          "displaySurcharge": "+2,69 €",
+          "displayUnitPrice": "9,68 €"
+        }
+      ],
+      "motifSurchargeCents": 169,
+      "quantityTiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ],
+      "priceBasis": "EUR; Brutto inkl.19% MwSt.; Stückpreis vor Mengenrabatt und zusätzlichen/geänderten Motiven",
+      "claimSources": {
+        "identity": [
+          "final-inputs#/rows/0/shop",
+          "shop-entry#/response/data/nodes/0"
+        ],
+        "dimensions": [
+          "source-A52#/config/profile/geometry",
+          "final-inputs#/rows/0/variantRows"
+        ],
+        "material": [
+          "source-A52#/config/profile/material",
+          "source-A52#/name",
+          "material-reference:11,16,17"
+        ],
+        "mountingAndPrices": [
+          "final-inputs#/rows/0/variantRows",
+          "original-excel-A52",
+          "shop-entry#/response/data/nodes/0/variants/nodes"
+        ],
+        "customization": [
+          "source-A52#/config/profile/defaultDesignId",
+          "decisions#/starts"
+        ],
+        "motifSelection": [
+          "decisions#/motifs"
+        ],
+        "motifPrice": [
+          "final-inputs#/rows/0/pricing",
+          "decision-register:82,141"
+        ],
+        "uploadsOff": [
+          "final-inputs#/rows/0/pricing/photo",
+          "final-inputs#/rows/0/pricing/logo"
+        ],
+        "vat": [
+          "decisions#/tax",
+          "tax-issue"
+        ],
+        "quantityDiscount": [
+          "decisions#/quantityDiscount",
+          "final-inputs#/rows/0/pricing/quantityTiers",
+          "decision-register:131"
+        ],
+        "imageCaption": [
+          "coordinator-image-mapping"
+        ]
+      }
+    },
+    {
+      "key": "A62",
+      "group": "Tuerschild-Acrylglas-3mm-6x2_v2",
+      "shopProductId": "gid://shopify/Product/16203715281276",
+      "shopNumericId": "16203715281276",
+      "nativeProductId": "cfg_06cc4368-dce5-4118-b404-0b28aa2b4bd7",
+      "current": {
+        "title": "Türschild Acrylglas 3 mm 6 × 2 cm (Schwarz/Anthrazit)",
+        "handle": "gravuru-1201a8fa887cd44a492b8a7f9fbce1802214e9b1faf1f3e222bb6ef964bb9bfc",
+        "status": "DRAFT",
+        "descriptionHtml": ""
+      },
+      "proposed": {
+        "title": "Türschild Acrylglas 6 × 2 cm mit Gravur",
+        "intro": "Dein Text, ein schmales Format: Gestalte dein Acryl-Türschild in 6 × 2 cm.",
+        "descriptionMarkdown": "Dein Text, ein schmales Format: Gestalte dein Acryl-Türschild in 6 × 2 cm.\n\nDas 60 mm breite und 20 mm hohe Schild verbindet ein längliches Format mit 3 mm starkem Acrylglas. Entscheide dich für Schwarz oder Anthrazit und gestalte die rückseitige Gravur mit deinem Text in einem der vorhandenen Designs.\n\n**Maße und Material**\n\n- Maße: 6 × 2 cm (60 × 20 mm)\n- Form: Rechteckig\n- Material: Acrylglas, 3 mm stark\n- Farben: Schwarz oder Anthrazit\n- Gestaltung: Rückseitige Gravur mit deinem Text\n\n**So gestaltest du dein Schild**\n\nWähle ein Design, ersetze den Beispieltext und kontrolliere die Vorschau. Für eigene Ergänzungen steht eine Auswahl aus 13 Motiven bereit. Ob Text und Motiv gut zusammenpassen, prüfst du direkt in deiner Gestaltung. Foto- und Logo-Uploads sind bei diesem Kleinformat nicht vorgesehen.\n\nDas Produktbild zeigt eine Beispielgestaltung. Im Konfigurator kannst du ein anderes Design wählen und den Text anpassen.\n\n**Befestigung und Preise**\n\nAb 7,99 € pro Stück in der Variante „Ohne Bohrung“. Die Preise gelten gleichermaßen für Schwarz und Anthrazit. Die folgenden Preise verstehen sich inklusive 19 % MwSt., vor Mengenrabatt und zusätzlichen Motivkosten.\n\n| Variante | Aufpreis | Preis pro Stück |\n|---|---:|---:|\n| Ohne Bohrung | im Grundpreis | 7,99 € |\n| Selbstklebend – glatte Flächen | +2,99 € | 10,98 € |\n| Selbstklebend – raue Flächen | +3,99 € | 11,98 € |\n| Mit 2 Bohrlöchern | +2,49 € | 10,48 € |\n| Mit 2 Schrauben | +2,69 € | 10,68 € |\n\n**Motive und Mengenrabatt**\n\nIm gewählten Design enthaltene Originalmotive sind inklusive. Jedes zusätzlich eingefügte oder ersetzte Motiv kostet 1,69 €.\n\nMengenrabatt je Warenkorbposition: ab 3 Stück 5 %, ab 5 Stück 10 %, ab 10 Stück 15 %. Es gilt die höchste erreichte Stufe auf den Stückpreis einschließlich gewählter Befestigung und kostenpflichtiger Motive; die Stufen werden nicht addiert.",
+        "descriptionHtml": "<p><strong>Dein Text, ein schmales Format: Gestalte dein Acryl-Türschild in 6 × 2 cm.</strong></p>\n<p>Das 60 mm breite und 20 mm hohe Schild verbindet ein längliches Format mit 3 mm starkem Acrylglas. Entscheide dich für Schwarz oder Anthrazit und gestalte die rückseitige Gravur mit deinem Text in einem der vorhandenen Designs.</p>\n<h2>Maße und Material</h2>\n<ul><li>Maße: 6 × 2 cm (60 × 20 mm)</li><li>Form: Rechteckig</li><li>Material: Acrylglas, 3 mm stark</li><li>Farben: Schwarz oder Anthrazit</li><li>Gestaltung: Rückseitige Gravur mit deinem Text</li></ul>\n<h2>So gestaltest du dein Schild</h2>\n<p>Wähle ein Design, ersetze den Beispieltext und kontrolliere die Vorschau. Für eigene Ergänzungen steht eine Auswahl aus 13 Motiven bereit. Ob Text und Motiv gut zusammenpassen, prüfst du direkt in deiner Gestaltung. Foto- und Logo-Uploads sind bei diesem Kleinformat nicht vorgesehen.</p>\n<p>Das Produktbild zeigt eine Beispielgestaltung. Im Konfigurator kannst du ein anderes Design wählen und den Text anpassen.</p>\n<h2>Befestigung und Preise</h2>\n<p>Ab 7,99 € pro Stück in der Variante „Ohne Bohrung“. Die Preise gelten gleichermaßen für Schwarz und Anthrazit. Die folgenden Preise verstehen sich inklusive 19 % MwSt., vor Mengenrabatt und zusätzlichen Motivkosten.</p>\n<table><thead><tr><th>Variante</th><th>Aufpreis</th><th>Preis pro Stück</th></tr></thead><tbody><tr><td>Ohne Bohrung</td><td>im Grundpreis</td><td>7,99 €</td></tr><tr><td>Selbstklebend – glatte Flächen</td><td>+2,99 €</td><td>10,98 €</td></tr><tr><td>Selbstklebend – raue Flächen</td><td>+3,99 €</td><td>11,98 €</td></tr><tr><td>Mit 2 Bohrlöchern</td><td>+2,49 €</td><td>10,48 €</td></tr><tr><td>Mit 2 Schrauben</td><td>+2,69 €</td><td>10,68 €</td></tr></tbody></table>\n<h2>Motive und Mengenrabatt</h2>\n<p>Im gewählten Design enthaltene Originalmotive sind inklusive. Jedes zusätzlich eingefügte oder ersetzte Motiv kostet 1,69 €.</p>\n<p>Mengenrabatt je Warenkorbposition: ab 3 Stück 5 %, ab 5 Stück 10 %, ab 10 Stück 15 %. Es gilt die höchste erreichte Stufe auf den Stückpreis einschließlich gewählter Befestigung und kostenpflichtiger Motive; die Stufen werden nicht addiert.</p>",
+        "seoTitle": "Türschild Acrylglas 6 × 2 cm mit Gravur | Gravuru",
+        "seoDescription": "Acryl-Türschild 6 × 2 cm selbst gestalten: 3 mm stark, Schwarz oder Anthrazit, rückseitige Gravur. Design, eigenen Text und Befestigung auswählen.",
+        "handle": "tuerschild-acrylglas-6x2-cm-gravur",
+        "images": [
+          {
+            "fileName": "A62-v1.png",
+            "altText": "Türschild aus schwarzem Acrylglas, 6 × 2 cm, mit Vanessa Krüger und Hausmotiv",
+            "designId": "TRE-V2A-6x2-D23",
+            "exampleTexts": [
+              "Vanessa",
+              "Krüger"
+            ],
+            "referenceView": "C2",
+            "materialShown": "Schwarz",
+            "holesShown": false,
+            "status": "Bildvorschlag; finalen Bildinhalt vor Zuordnung abgleichen"
+          }
+        ]
+      },
+      "facts": [
+        {
+          "label": "Maße",
+          "value": "6 × 2 cm (60 × 20 mm)"
+        },
+        {
+          "label": "Form",
+          "value": "Rechteckig"
+        },
+        {
+          "label": "Material",
+          "value": "Acrylglas, 3 mm stark"
+        },
+        {
+          "label": "Farben",
+          "value": "Schwarz oder Anthrazit"
+        },
+        {
+          "label": "Gestaltung",
+          "value": "Rückseitige Gravur mit deinem Text"
+        }
+      ],
+      "prices": [
+        {
+          "id": "K00",
+          "label": "Ohne Bohrung",
+          "surchargeCents": 0,
+          "unitCents": 799,
+          "displaySurcharge": "im Grundpreis",
+          "displayUnitPrice": "7,99 €"
+        },
+        {
+          "id": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "surchargeCents": 299,
+          "unitCents": 1098,
+          "displaySurcharge": "+2,99 €",
+          "displayUnitPrice": "10,98 €"
+        },
+        {
+          "id": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "surchargeCents": 399,
+          "unitCents": 1198,
+          "displaySurcharge": "+3,99 €",
+          "displayUnitPrice": "11,98 €"
+        },
+        {
+          "id": "B02",
+          "label": "Mit 2 Bohrlöchern",
+          "surchargeCents": 249,
+          "unitCents": 1048,
+          "displaySurcharge": "+2,49 €",
+          "displayUnitPrice": "10,48 €"
+        },
+        {
+          "id": "B02S",
+          "label": "Mit 2 Schrauben",
+          "surchargeCents": 269,
+          "unitCents": 1068,
+          "displaySurcharge": "+2,69 €",
+          "displayUnitPrice": "10,68 €"
+        }
+      ],
+      "motifSurchargeCents": 169,
+      "quantityTiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ],
+      "priceBasis": "EUR; Brutto inkl.19% MwSt.; Stückpreis vor Mengenrabatt und zusätzlichen/geänderten Motiven",
+      "claimSources": {
+        "identity": [
+          "final-inputs#/rows/1/shop",
+          "shop-entry#/response/data/nodes/1"
+        ],
+        "dimensions": [
+          "source-A62#/config/profile/geometry",
+          "final-inputs#/rows/1/variantRows"
+        ],
+        "material": [
+          "source-A62#/config/profile/material",
+          "source-A62#/name",
+          "material-reference:11,16,17"
+        ],
+        "mountingAndPrices": [
+          "final-inputs#/rows/1/variantRows",
+          "original-excel-A62",
+          "shop-entry#/response/data/nodes/1/variants/nodes"
+        ],
+        "customization": [
+          "source-A62#/config/profile/defaultDesignId",
+          "decisions#/starts"
+        ],
+        "motifSelection": [
+          "decisions#/motifs"
+        ],
+        "motifPrice": [
+          "final-inputs#/rows/1/pricing",
+          "decision-register:82,141"
+        ],
+        "uploadsOff": [
+          "final-inputs#/rows/1/pricing/photo",
+          "final-inputs#/rows/1/pricing/logo"
+        ],
+        "vat": [
+          "decisions#/tax",
+          "tax-issue"
+        ],
+        "quantityDiscount": [
+          "decisions#/quantityDiscount",
+          "final-inputs#/rows/1/pricing/quantityTiers",
+          "decision-register:131"
+        ],
+        "imageCaption": [
+          "coordinator-image-mapping"
+        ]
+      }
+    },
+    {
+      "key": "A82",
+      "group": "Tuerschild-Acrylglas-3mm-8x2_v2",
+      "shopProductId": "gid://shopify/Product/16203716100476",
+      "shopNumericId": "16203716100476",
+      "nativeProductId": "cfg_87b85218-cdc1-4552-9724-e8c2e692e7c6",
+      "current": {
+        "title": "Türschild Acrylglas 3 mm 8 × 2 cm (Schwarz/Anthrazit)",
+        "handle": "gravuru-8b2fad6b0be21c799e585ae6747e606c9c6cd4aeb4f7ba51d52da921e0e941a0",
+        "status": "DRAFT",
+        "descriptionHtml": ""
+      },
+      "proposed": {
+        "title": "Türschild Acrylglas 8 × 2 cm mit Gravur",
+        "intro": "Mehr Breite für deine Gestaltung: Dein Acryl-Türschild im Format 8 × 2 cm.",
+        "descriptionMarkdown": "Mehr Breite für deine Gestaltung: Dein Acryl-Türschild im Format 8 × 2 cm.\n\nBei 80 mm Breite bleibt die Höhe dieses Schildes bei 20 mm. Das rechteckige Format besteht aus 3 mm starkem Acrylglas in Schwarz oder Anthrazit und erhält eine rückseitige Gravur. Passe eine Designvorlage mit deinem eigenen Text an.\n\n**Maße und Material**\n\n- Maße: 8 × 2 cm (80 × 20 mm)\n- Form: Rechteckig\n- Material: Acrylglas, 3 mm stark\n- Farben: Schwarz oder Anthrazit\n- Gestaltung: Rückseitige Gravur mit deinem Text\n\n**So gestaltest du dein Schild**\n\nWähle ein Design, ersetze den Beispieltext und kontrolliere die Vorschau. Für eigene Ergänzungen steht eine Auswahl aus 13 Motiven bereit. Ob Text und Motiv gut zusammenpassen, prüfst du direkt in deiner Gestaltung. Foto- und Logo-Uploads sind bei diesem Kleinformat nicht vorgesehen.\n\nDas Produktbild zeigt eine Beispielgestaltung. Im Konfigurator kannst du ein anderes Design wählen und den Text anpassen.\n\n**Befestigung und Preise**\n\nAb 8,49 € pro Stück in der Variante „Ohne Bohrung“. Die Preise gelten gleichermaßen für Schwarz und Anthrazit. Die folgenden Preise verstehen sich inklusive 19 % MwSt., vor Mengenrabatt und zusätzlichen Motivkosten.\n\n| Variante | Aufpreis | Preis pro Stück |\n|---|---:|---:|\n| Ohne Bohrung | im Grundpreis | 8,49 € |\n| Selbstklebend – glatte Flächen | +2,99 € | 11,48 € |\n| Selbstklebend – raue Flächen | +3,99 € | 12,48 € |\n| Mit 2 Bohrlöchern | +2,49 € | 10,98 € |\n| Mit 2 Schrauben | +2,69 € | 11,18 € |\n\n**Motive und Mengenrabatt**\n\nIm gewählten Design enthaltene Originalmotive sind inklusive. Jedes zusätzlich eingefügte oder ersetzte Motiv kostet 1,69 €.\n\nMengenrabatt je Warenkorbposition: ab 3 Stück 5 %, ab 5 Stück 10 %, ab 10 Stück 15 %. Es gilt die höchste erreichte Stufe auf den Stückpreis einschließlich gewählter Befestigung und kostenpflichtiger Motive; die Stufen werden nicht addiert.",
+        "descriptionHtml": "<p><strong>Mehr Breite für deine Gestaltung: Dein Acryl-Türschild im Format 8 × 2 cm.</strong></p>\n<p>Bei 80 mm Breite bleibt die Höhe dieses Schildes bei 20 mm. Das rechteckige Format besteht aus 3 mm starkem Acrylglas in Schwarz oder Anthrazit und erhält eine rückseitige Gravur. Passe eine Designvorlage mit deinem eigenen Text an.</p>\n<h2>Maße und Material</h2>\n<ul><li>Maße: 8 × 2 cm (80 × 20 mm)</li><li>Form: Rechteckig</li><li>Material: Acrylglas, 3 mm stark</li><li>Farben: Schwarz oder Anthrazit</li><li>Gestaltung: Rückseitige Gravur mit deinem Text</li></ul>\n<h2>So gestaltest du dein Schild</h2>\n<p>Wähle ein Design, ersetze den Beispieltext und kontrolliere die Vorschau. Für eigene Ergänzungen steht eine Auswahl aus 13 Motiven bereit. Ob Text und Motiv gut zusammenpassen, prüfst du direkt in deiner Gestaltung. Foto- und Logo-Uploads sind bei diesem Kleinformat nicht vorgesehen.</p>\n<p>Das Produktbild zeigt eine Beispielgestaltung. Im Konfigurator kannst du ein anderes Design wählen und den Text anpassen.</p>\n<h2>Befestigung und Preise</h2>\n<p>Ab 8,49 € pro Stück in der Variante „Ohne Bohrung“. Die Preise gelten gleichermaßen für Schwarz und Anthrazit. Die folgenden Preise verstehen sich inklusive 19 % MwSt., vor Mengenrabatt und zusätzlichen Motivkosten.</p>\n<table><thead><tr><th>Variante</th><th>Aufpreis</th><th>Preis pro Stück</th></tr></thead><tbody><tr><td>Ohne Bohrung</td><td>im Grundpreis</td><td>8,49 €</td></tr><tr><td>Selbstklebend – glatte Flächen</td><td>+2,99 €</td><td>11,48 €</td></tr><tr><td>Selbstklebend – raue Flächen</td><td>+3,99 €</td><td>12,48 €</td></tr><tr><td>Mit 2 Bohrlöchern</td><td>+2,49 €</td><td>10,98 €</td></tr><tr><td>Mit 2 Schrauben</td><td>+2,69 €</td><td>11,18 €</td></tr></tbody></table>\n<h2>Motive und Mengenrabatt</h2>\n<p>Im gewählten Design enthaltene Originalmotive sind inklusive. Jedes zusätzlich eingefügte oder ersetzte Motiv kostet 1,69 €.</p>\n<p>Mengenrabatt je Warenkorbposition: ab 3 Stück 5 %, ab 5 Stück 10 %, ab 10 Stück 15 %. Es gilt die höchste erreichte Stufe auf den Stückpreis einschließlich gewählter Befestigung und kostenpflichtiger Motive; die Stufen werden nicht addiert.</p>",
+        "seoTitle": "Türschild Acrylglas 8 × 2 cm mit Gravur | Gravuru",
+        "seoDescription": "Türschild Acrylglas 8 × 2 cm mit deinem Text gestalten. 3 mm stark, Schwarz oder Anthrazit, rückseitig graviert. Fünf Befestigungen zur Auswahl.",
+        "handle": "tuerschild-acrylglas-8x2-cm-gravur",
+        "images": [
+          {
+            "fileName": "A82-v1.png",
+            "altText": "Türschild aus schwarzem Acrylglas, 8 × 2 cm, mit 27, Familie KAYA und senkrechter Trennlinie",
+            "designId": "TRE-V2A-8x2-D801",
+            "exampleTexts": [
+              "27",
+              "Familie",
+              "KAYA"
+            ],
+            "referenceView": "D3",
+            "materialShown": "Schwarz",
+            "holesShown": false,
+            "status": "Bildvorschlag; finalen Bildinhalt vor Zuordnung abgleichen"
+          }
+        ]
+      },
+      "facts": [
+        {
+          "label": "Maße",
+          "value": "8 × 2 cm (80 × 20 mm)"
+        },
+        {
+          "label": "Form",
+          "value": "Rechteckig"
+        },
+        {
+          "label": "Material",
+          "value": "Acrylglas, 3 mm stark"
+        },
+        {
+          "label": "Farben",
+          "value": "Schwarz oder Anthrazit"
+        },
+        {
+          "label": "Gestaltung",
+          "value": "Rückseitige Gravur mit deinem Text"
+        }
+      ],
+      "prices": [
+        {
+          "id": "K00",
+          "label": "Ohne Bohrung",
+          "surchargeCents": 0,
+          "unitCents": 849,
+          "displaySurcharge": "im Grundpreis",
+          "displayUnitPrice": "8,49 €"
+        },
+        {
+          "id": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "surchargeCents": 299,
+          "unitCents": 1148,
+          "displaySurcharge": "+2,99 €",
+          "displayUnitPrice": "11,48 €"
+        },
+        {
+          "id": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "surchargeCents": 399,
+          "unitCents": 1248,
+          "displaySurcharge": "+3,99 €",
+          "displayUnitPrice": "12,48 €"
+        },
+        {
+          "id": "B02",
+          "label": "Mit 2 Bohrlöchern",
+          "surchargeCents": 249,
+          "unitCents": 1098,
+          "displaySurcharge": "+2,49 €",
+          "displayUnitPrice": "10,98 €"
+        },
+        {
+          "id": "B02S",
+          "label": "Mit 2 Schrauben",
+          "surchargeCents": 269,
+          "unitCents": 1118,
+          "displaySurcharge": "+2,69 €",
+          "displayUnitPrice": "11,18 €"
+        }
+      ],
+      "motifSurchargeCents": 169,
+      "quantityTiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ],
+      "priceBasis": "EUR; Brutto inkl.19% MwSt.; Stückpreis vor Mengenrabatt und zusätzlichen/geänderten Motiven",
+      "claimSources": {
+        "identity": [
+          "final-inputs#/rows/2/shop",
+          "shop-entry#/response/data/nodes/2"
+        ],
+        "dimensions": [
+          "source-A82#/config/profile/geometry",
+          "final-inputs#/rows/2/variantRows"
+        ],
+        "material": [
+          "source-A82#/config/profile/material",
+          "source-A82#/name",
+          "material-reference:11,16,17"
+        ],
+        "mountingAndPrices": [
+          "final-inputs#/rows/2/variantRows",
+          "original-excel-A82",
+          "shop-entry#/response/data/nodes/2/variants/nodes"
+        ],
+        "customization": [
+          "source-A82#/config/profile/defaultDesignId",
+          "decisions#/starts"
+        ],
+        "motifSelection": [
+          "decisions#/motifs"
+        ],
+        "motifPrice": [
+          "final-inputs#/rows/2/pricing",
+          "decision-register:82,141"
+        ],
+        "uploadsOff": [
+          "final-inputs#/rows/2/pricing/photo",
+          "final-inputs#/rows/2/pricing/logo"
+        ],
+        "vat": [
+          "decisions#/tax",
+          "tax-issue"
+        ],
+        "quantityDiscount": [
+          "decisions#/quantityDiscount",
+          "final-inputs#/rows/2/pricing/quantityTiers",
+          "decision-register:131"
+        ],
+        "imageCaption": [
+          "coordinator-image-mapping"
+        ]
+      }
+    },
+    {
+      "key": "S52",
+      "group": "Tuerschild-Edelstahl-5x2_v1",
+      "shopProductId": "gid://shopify/Product/16203716854140",
+      "shopNumericId": "16203716854140",
+      "nativeProductId": "cfg_d5698241-8036-419a-820e-e434c1482f7a",
+      "current": {
+        "title": "Türschild Edelstahl 5 × 2 cm (gebürstet, Gravur)",
+        "handle": "gravuru-dbce29fbe9e522957857941816436428895db87f64e9900a8455fa9b9452733d",
+        "status": "DRAFT",
+        "descriptionHtml": ""
+      },
+      "proposed": {
+        "title": "Türschild Edelstahl 5 × 2 cm mit Gravur",
+        "intro": "Klein im Format, persönlich im Text: Dein graviertes Türschild aus gebürstetem Edelstahl.",
+        "descriptionMarkdown": "Klein im Format, persönlich im Text: Dein graviertes Türschild aus gebürstetem Edelstahl.\n\nDas rechteckige Schild misst 5 × 2 cm und besteht aus 1,5 mm starkem Edelstahl. Die gebürstete Oberfläche bildet den Hintergrund für deine Gravur. Wähle ein Design, ersetze den Beispieltext und prüfe deine Gestaltung in der Vorschau.\n\n**Maße und Material**\n\n- Maße: 5 × 2 cm (50 × 20 mm)\n- Form: Rechteckig\n- Material: Gebürsteter Edelstahl, 1,5 mm stark\n- Gestaltung: Gravur mit deinem Text\n\n**So gestaltest du dein Schild**\n\nWähle ein Design, ersetze den Beispieltext und kontrolliere die Vorschau. Für eigene Ergänzungen steht eine Auswahl aus 13 Motiven bereit. Ob Text und Motiv gut zusammenpassen, prüfst du direkt in deiner Gestaltung. Foto- und Logo-Uploads sind bei diesem Kleinformat nicht vorgesehen.\n\nDas Produktbild zeigt eine Beispielgestaltung. Im Konfigurator kannst du ein anderes Design wählen und den Text anpassen.\n\n**Befestigung und Preise**\n\nAb 7,99 € pro Stück in der Variante „Ohne Bohrung“. Die folgenden Preise verstehen sich inklusive 19 % MwSt., vor Mengenrabatt und zusätzlichen Motivkosten.\n\n| Variante | Aufpreis | Preis pro Stück |\n|---|---:|---:|\n| Ohne Bohrung | im Grundpreis | 7,99 € |\n| Selbstklebend – glatte Flächen | +2,99 € | 10,98 € |\n| Selbstklebend – raue Flächen | +3,99 € | 11,98 € |\n| Mit 2 Bohrlöchern | +2,49 € | 10,48 € |\n| Mit 2 Schrauben | +2,69 € | 10,68 € |\n\n**Motive und Mengenrabatt**\n\nIm gewählten Design enthaltene Originalmotive sind inklusive. Jedes zusätzlich eingefügte oder ersetzte Motiv kostet 1,69 €.\n\nMengenrabatt je Warenkorbposition: ab 3 Stück 5 %, ab 5 Stück 10 %, ab 10 Stück 15 %. Es gilt die höchste erreichte Stufe auf den Stückpreis einschließlich gewählter Befestigung und kostenpflichtiger Motive; die Stufen werden nicht addiert.",
+        "descriptionHtml": "<p><strong>Klein im Format, persönlich im Text: Dein graviertes Türschild aus gebürstetem Edelstahl.</strong></p>\n<p>Das rechteckige Schild misst 5 × 2 cm und besteht aus 1,5 mm starkem Edelstahl. Die gebürstete Oberfläche bildet den Hintergrund für deine Gravur. Wähle ein Design, ersetze den Beispieltext und prüfe deine Gestaltung in der Vorschau.</p>\n<h2>Maße und Material</h2>\n<ul><li>Maße: 5 × 2 cm (50 × 20 mm)</li><li>Form: Rechteckig</li><li>Material: Gebürsteter Edelstahl, 1,5 mm stark</li><li>Gestaltung: Gravur mit deinem Text</li></ul>\n<h2>So gestaltest du dein Schild</h2>\n<p>Wähle ein Design, ersetze den Beispieltext und kontrolliere die Vorschau. Für eigene Ergänzungen steht eine Auswahl aus 13 Motiven bereit. Ob Text und Motiv gut zusammenpassen, prüfst du direkt in deiner Gestaltung. Foto- und Logo-Uploads sind bei diesem Kleinformat nicht vorgesehen.</p>\n<p>Das Produktbild zeigt eine Beispielgestaltung. Im Konfigurator kannst du ein anderes Design wählen und den Text anpassen.</p>\n<h2>Befestigung und Preise</h2>\n<p>Ab 7,99 € pro Stück in der Variante „Ohne Bohrung“. Die folgenden Preise verstehen sich inklusive 19 % MwSt., vor Mengenrabatt und zusätzlichen Motivkosten.</p>\n<table><thead><tr><th>Variante</th><th>Aufpreis</th><th>Preis pro Stück</th></tr></thead><tbody><tr><td>Ohne Bohrung</td><td>im Grundpreis</td><td>7,99 €</td></tr><tr><td>Selbstklebend – glatte Flächen</td><td>+2,99 €</td><td>10,98 €</td></tr><tr><td>Selbstklebend – raue Flächen</td><td>+3,99 €</td><td>11,98 €</td></tr><tr><td>Mit 2 Bohrlöchern</td><td>+2,49 €</td><td>10,48 €</td></tr><tr><td>Mit 2 Schrauben</td><td>+2,69 €</td><td>10,68 €</td></tr></tbody></table>\n<h2>Motive und Mengenrabatt</h2>\n<p>Im gewählten Design enthaltene Originalmotive sind inklusive. Jedes zusätzlich eingefügte oder ersetzte Motiv kostet 1,69 €.</p>\n<p>Mengenrabatt je Warenkorbposition: ab 3 Stück 5 %, ab 5 Stück 10 %, ab 10 Stück 15 %. Es gilt die höchste erreichte Stufe auf den Stückpreis einschließlich gewählter Befestigung und kostenpflichtiger Motive; die Stufen werden nicht addiert.</p>",
+        "seoTitle": "Türschild Edelstahl 5 × 2 cm mit Gravur | Gravuru",
+        "seoDescription": "Kleines Türschild aus gebürstetem Edelstahl, 5 × 2 cm und 1,5 mm stark. Mit eigenem Text gravieren lassen und eine von fünf Befestigungen wählen.",
+        "handle": "tuerschild-edelstahl-5x2-cm-gravur",
+        "images": [
+          {
+            "fileName": "S52-v1.png",
+            "altText": "Türschild aus gebürstetem Edelstahl, 5 × 2 cm, mit Familie Hoffmann und horizontaler Linie",
+            "designId": "TRE-V2A-5x2-D4",
+            "exampleTexts": [
+              "Familie",
+              "Hoffmann"
+            ],
+            "referenceView": "B1",
+            "materialShown": "Gebürsteter Edelstahl",
+            "holesShown": false,
+            "status": "Bildvorschlag; finalen Bildinhalt vor Zuordnung abgleichen"
+          }
+        ]
+      },
+      "facts": [
+        {
+          "label": "Maße",
+          "value": "5 × 2 cm (50 × 20 mm)"
+        },
+        {
+          "label": "Form",
+          "value": "Rechteckig"
+        },
+        {
+          "label": "Material",
+          "value": "Gebürsteter Edelstahl, 1,5 mm stark"
+        },
+        {
+          "label": "Gestaltung",
+          "value": "Gravur mit deinem Text"
+        }
+      ],
+      "prices": [
+        {
+          "id": "K00",
+          "label": "Ohne Bohrung",
+          "surchargeCents": 0,
+          "unitCents": 799,
+          "displaySurcharge": "im Grundpreis",
+          "displayUnitPrice": "7,99 €"
+        },
+        {
+          "id": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "surchargeCents": 299,
+          "unitCents": 1098,
+          "displaySurcharge": "+2,99 €",
+          "displayUnitPrice": "10,98 €"
+        },
+        {
+          "id": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "surchargeCents": 399,
+          "unitCents": 1198,
+          "displaySurcharge": "+3,99 €",
+          "displayUnitPrice": "11,98 €"
+        },
+        {
+          "id": "B02",
+          "label": "Mit 2 Bohrlöchern",
+          "surchargeCents": 249,
+          "unitCents": 1048,
+          "displaySurcharge": "+2,49 €",
+          "displayUnitPrice": "10,48 €"
+        },
+        {
+          "id": "B02S",
+          "label": "Mit 2 Schrauben",
+          "surchargeCents": 269,
+          "unitCents": 1068,
+          "displaySurcharge": "+2,69 €",
+          "displayUnitPrice": "10,68 €"
+        }
+      ],
+      "motifSurchargeCents": 169,
+      "quantityTiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ],
+      "priceBasis": "EUR; Brutto inkl.19% MwSt.; Stückpreis vor Mengenrabatt und zusätzlichen/geänderten Motiven",
+      "claimSources": {
+        "identity": [
+          "final-inputs#/rows/3/shop",
+          "shop-entry#/response/data/nodes/3"
+        ],
+        "dimensions": [
+          "source-S52#/config/profile/geometry",
+          "final-inputs#/rows/3/variantRows"
+        ],
+        "material": [
+          "source-S52#/config/profile/material",
+          "source-S52#/name",
+          "material-reference:11,16,17"
+        ],
+        "mountingAndPrices": [
+          "final-inputs#/rows/3/variantRows",
+          "original-excel-S52",
+          "shop-entry#/response/data/nodes/3/variants/nodes"
+        ],
+        "customization": [
+          "source-S52#/config/profile/defaultDesignId",
+          "decisions#/starts"
+        ],
+        "motifSelection": [
+          "decisions#/motifs"
+        ],
+        "motifPrice": [
+          "final-inputs#/rows/3/pricing",
+          "decision-register:82,141"
+        ],
+        "uploadsOff": [
+          "final-inputs#/rows/3/pricing/photo",
+          "final-inputs#/rows/3/pricing/logo"
+        ],
+        "vat": [
+          "decisions#/tax",
+          "tax-issue"
+        ],
+        "quantityDiscount": [
+          "decisions#/quantityDiscount",
+          "final-inputs#/rows/3/pricing/quantityTiers",
+          "decision-register:131"
+        ],
+        "imageCaption": [
+          "coordinator-image-mapping"
+        ]
+      }
+    },
+    {
+      "key": "S62",
+      "group": "Tuerschild-Edelstahl-6x2_v1",
+      "shopProductId": "gid://shopify/Product/16203717804412",
+      "shopNumericId": "16203717804412",
+      "nativeProductId": "cfg_a488e415-011c-4358-b3ba-e7fc8f9b3b1a",
+      "current": {
+        "title": "Türschild Edelstahl 6 × 2 cm (gebürstet, Gravur)",
+        "handle": "gravuru-9311eefb3a3c1f70c9c1c21df982a426f651999b722f39f66218d2e824ec7236",
+        "status": "DRAFT",
+        "descriptionHtml": ""
+      },
+      "proposed": {
+        "title": "Türschild Edelstahl 6 × 2 cm mit Gravur",
+        "intro": "Gebürsteter Edelstahl für deinen Namen: Gestalte dein Türschild in 6 × 2 cm.",
+        "descriptionMarkdown": "Gebürsteter Edelstahl für deinen Namen: Gestalte dein Türschild in 6 × 2 cm.\n\nMit 60 mm Breite und 20 mm Höhe bietet dieses Schild ein schmales, längliches Format. Der Edelstahl ist 1,5 mm stark. Gestalte die Gravur ausgehend von einer Designvorlage und entscheide dich für die passende Befestigungsvariante.\n\n**Maße und Material**\n\n- Maße: 6 × 2 cm (60 × 20 mm)\n- Form: Rechteckig\n- Material: Gebürsteter Edelstahl, 1,5 mm stark\n- Gestaltung: Gravur mit deinem Text\n\n**So gestaltest du dein Schild**\n\nWähle ein Design, ersetze den Beispieltext und kontrolliere die Vorschau. Für eigene Ergänzungen steht eine Auswahl aus 13 Motiven bereit. Ob Text und Motiv gut zusammenpassen, prüfst du direkt in deiner Gestaltung. Foto- und Logo-Uploads sind bei diesem Kleinformat nicht vorgesehen.\n\nDas Produktbild zeigt eine Beispielgestaltung. Im Konfigurator kannst du ein anderes Design wählen und den Text anpassen.\n\n**Befestigung und Preise**\n\nAb 8,79 € pro Stück in der Variante „Ohne Bohrung“. Die folgenden Preise verstehen sich inklusive 19 % MwSt., vor Mengenrabatt und zusätzlichen Motivkosten.\n\n| Variante | Aufpreis | Preis pro Stück |\n|---|---:|---:|\n| Ohne Bohrung | im Grundpreis | 8,79 € |\n| Selbstklebend – glatte Flächen | +2,99 € | 11,78 € |\n| Selbstklebend – raue Flächen | +3,99 € | 12,78 € |\n| Mit 2 Bohrlöchern | +2,49 € | 11,28 € |\n| Mit 2 Schrauben | +2,69 € | 11,48 € |\n\n**Motive und Mengenrabatt**\n\nIm gewählten Design enthaltene Originalmotive sind inklusive. Jedes zusätzlich eingefügte oder ersetzte Motiv kostet 1,69 €.\n\nMengenrabatt je Warenkorbposition: ab 3 Stück 5 %, ab 5 Stück 10 %, ab 10 Stück 15 %. Es gilt die höchste erreichte Stufe auf den Stückpreis einschließlich gewählter Befestigung und kostenpflichtiger Motive; die Stufen werden nicht addiert.",
+        "descriptionHtml": "<p><strong>Gebürsteter Edelstahl für deinen Namen: Gestalte dein Türschild in 6 × 2 cm.</strong></p>\n<p>Mit 60 mm Breite und 20 mm Höhe bietet dieses Schild ein schmales, längliches Format. Der Edelstahl ist 1,5 mm stark. Gestalte die Gravur ausgehend von einer Designvorlage und entscheide dich für die passende Befestigungsvariante.</p>\n<h2>Maße und Material</h2>\n<ul><li>Maße: 6 × 2 cm (60 × 20 mm)</li><li>Form: Rechteckig</li><li>Material: Gebürsteter Edelstahl, 1,5 mm stark</li><li>Gestaltung: Gravur mit deinem Text</li></ul>\n<h2>So gestaltest du dein Schild</h2>\n<p>Wähle ein Design, ersetze den Beispieltext und kontrolliere die Vorschau. Für eigene Ergänzungen steht eine Auswahl aus 13 Motiven bereit. Ob Text und Motiv gut zusammenpassen, prüfst du direkt in deiner Gestaltung. Foto- und Logo-Uploads sind bei diesem Kleinformat nicht vorgesehen.</p>\n<p>Das Produktbild zeigt eine Beispielgestaltung. Im Konfigurator kannst du ein anderes Design wählen und den Text anpassen.</p>\n<h2>Befestigung und Preise</h2>\n<p>Ab 8,79 € pro Stück in der Variante „Ohne Bohrung“. Die folgenden Preise verstehen sich inklusive 19 % MwSt., vor Mengenrabatt und zusätzlichen Motivkosten.</p>\n<table><thead><tr><th>Variante</th><th>Aufpreis</th><th>Preis pro Stück</th></tr></thead><tbody><tr><td>Ohne Bohrung</td><td>im Grundpreis</td><td>8,79 €</td></tr><tr><td>Selbstklebend – glatte Flächen</td><td>+2,99 €</td><td>11,78 €</td></tr><tr><td>Selbstklebend – raue Flächen</td><td>+3,99 €</td><td>12,78 €</td></tr><tr><td>Mit 2 Bohrlöchern</td><td>+2,49 €</td><td>11,28 €</td></tr><tr><td>Mit 2 Schrauben</td><td>+2,69 €</td><td>11,48 €</td></tr></tbody></table>\n<h2>Motive und Mengenrabatt</h2>\n<p>Im gewählten Design enthaltene Originalmotive sind inklusive. Jedes zusätzlich eingefügte oder ersetzte Motiv kostet 1,69 €.</p>\n<p>Mengenrabatt je Warenkorbposition: ab 3 Stück 5 %, ab 5 Stück 10 %, ab 10 Stück 15 %. Es gilt die höchste erreichte Stufe auf den Stückpreis einschließlich gewählter Befestigung und kostenpflichtiger Motive; die Stufen werden nicht addiert.</p>",
+        "seoTitle": "Türschild Edelstahl 6 × 2 cm mit Gravur | Gravuru",
+        "seoDescription": "Edelstahl-Türschild 6 × 2 cm mit Gravur: gebürstet und 1,5 mm stark. Design und Text im Konfigurator anpassen, Befestigung auswählen.",
+        "handle": "tuerschild-edelstahl-6x2-cm-gravur",
+        "images": [
+          {
+            "fileName": "S62-v1.png",
+            "altText": "Türschild aus gebürstetem Edelstahl, 6 × 2 cm, mit Vanessa Krüger und Hausmotiv",
+            "designId": "TRE-V2A-6x2-D23",
+            "exampleTexts": [
+              "Vanessa",
+              "Krüger"
+            ],
+            "referenceView": "C2",
+            "materialShown": "Gebürsteter Edelstahl",
+            "holesShown": false,
+            "status": "Bildvorschlag; finalen Bildinhalt vor Zuordnung abgleichen"
+          }
+        ]
+      },
+      "facts": [
+        {
+          "label": "Maße",
+          "value": "6 × 2 cm (60 × 20 mm)"
+        },
+        {
+          "label": "Form",
+          "value": "Rechteckig"
+        },
+        {
+          "label": "Material",
+          "value": "Gebürsteter Edelstahl, 1,5 mm stark"
+        },
+        {
+          "label": "Gestaltung",
+          "value": "Gravur mit deinem Text"
+        }
+      ],
+      "prices": [
+        {
+          "id": "K00",
+          "label": "Ohne Bohrung",
+          "surchargeCents": 0,
+          "unitCents": 879,
+          "displaySurcharge": "im Grundpreis",
+          "displayUnitPrice": "8,79 €"
+        },
+        {
+          "id": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "surchargeCents": 299,
+          "unitCents": 1178,
+          "displaySurcharge": "+2,99 €",
+          "displayUnitPrice": "11,78 €"
+        },
+        {
+          "id": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "surchargeCents": 399,
+          "unitCents": 1278,
+          "displaySurcharge": "+3,99 €",
+          "displayUnitPrice": "12,78 €"
+        },
+        {
+          "id": "B02",
+          "label": "Mit 2 Bohrlöchern",
+          "surchargeCents": 249,
+          "unitCents": 1128,
+          "displaySurcharge": "+2,49 €",
+          "displayUnitPrice": "11,28 €"
+        },
+        {
+          "id": "B02S",
+          "label": "Mit 2 Schrauben",
+          "surchargeCents": 269,
+          "unitCents": 1148,
+          "displaySurcharge": "+2,69 €",
+          "displayUnitPrice": "11,48 €"
+        }
+      ],
+      "motifSurchargeCents": 169,
+      "quantityTiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ],
+      "priceBasis": "EUR; Brutto inkl.19% MwSt.; Stückpreis vor Mengenrabatt und zusätzlichen/geänderten Motiven",
+      "claimSources": {
+        "identity": [
+          "final-inputs#/rows/4/shop",
+          "shop-entry#/response/data/nodes/4"
+        ],
+        "dimensions": [
+          "source-S62#/config/profile/geometry",
+          "final-inputs#/rows/4/variantRows"
+        ],
+        "material": [
+          "source-S62#/config/profile/material",
+          "source-S62#/name",
+          "material-reference:11,16,17"
+        ],
+        "mountingAndPrices": [
+          "final-inputs#/rows/4/variantRows",
+          "original-excel-S62",
+          "shop-entry#/response/data/nodes/4/variants/nodes"
+        ],
+        "customization": [
+          "source-S62#/config/profile/defaultDesignId",
+          "decisions#/starts"
+        ],
+        "motifSelection": [
+          "decisions#/motifs"
+        ],
+        "motifPrice": [
+          "final-inputs#/rows/4/pricing",
+          "decision-register:82,141"
+        ],
+        "uploadsOff": [
+          "final-inputs#/rows/4/pricing/photo",
+          "final-inputs#/rows/4/pricing/logo"
+        ],
+        "vat": [
+          "decisions#/tax",
+          "tax-issue"
+        ],
+        "quantityDiscount": [
+          "decisions#/quantityDiscount",
+          "final-inputs#/rows/4/pricing/quantityTiers",
+          "decision-register:131"
+        ],
+        "imageCaption": [
+          "coordinator-image-mapping"
+        ]
+      }
+    },
+    {
+      "key": "S82",
+      "group": "Tuerschild-Edelstahl-8x2_v1",
+      "shopProductId": "gid://shopify/Product/16203718459772",
+      "shopNumericId": "16203718459772",
+      "nativeProductId": "cfg_a07b6e02-acd9-4ceb-83b5-d905fe29c00d",
+      "current": {
+        "title": "Türschild Edelstahl 8 × 2 cm (gebürstet, Gravur)",
+        "handle": "gravuru-93beb545606751ab721f31589556c55aaa8108e2729d822a444bf8e2995db360",
+        "status": "DRAFT",
+        "descriptionHtml": ""
+      },
+      "proposed": {
+        "title": "Türschild Edelstahl 8 × 2 cm mit Gravur",
+        "intro": "Deine Gestaltung im breiten, schmalen Format: Ein Edelstahl-Türschild in 8 × 2 cm.",
+        "descriptionMarkdown": "Deine Gestaltung im breiten, schmalen Format: Ein Edelstahl-Türschild in 8 × 2 cm.\n\nDas 80 mm breite Schild ist 20 mm hoch und 1,5 mm stark. Auf der gebürsteten Edelstahloberfläche wird dein Text graviert. Nutze eine der vorhandenen Designvorlagen und prüfe die Anordnung vor dem Bestellen in der Vorschau.\n\n**Maße und Material**\n\n- Maße: 8 × 2 cm (80 × 20 mm)\n- Form: Rechteckig\n- Material: Gebürsteter Edelstahl, 1,5 mm stark\n- Gestaltung: Gravur mit deinem Text\n\n**So gestaltest du dein Schild**\n\nWähle ein Design, ersetze den Beispieltext und kontrolliere die Vorschau. Für eigene Ergänzungen steht eine Auswahl aus 13 Motiven bereit. Ob Text und Motiv gut zusammenpassen, prüfst du direkt in deiner Gestaltung. Foto- und Logo-Uploads sind bei diesem Kleinformat nicht vorgesehen.\n\nDas Produktbild zeigt eine Beispielgestaltung. Im Konfigurator kannst du ein anderes Design wählen und den Text anpassen.\n\n**Befestigung und Preise**\n\nAb 9,49 € pro Stück in der Variante „Ohne Bohrung“. Die folgenden Preise verstehen sich inklusive 19 % MwSt., vor Mengenrabatt und zusätzlichen Motivkosten.\n\n| Variante | Aufpreis | Preis pro Stück |\n|---|---:|---:|\n| Ohne Bohrung | im Grundpreis | 9,49 € |\n| Selbstklebend – glatte Flächen | +2,99 € | 12,48 € |\n| Selbstklebend – raue Flächen | +3,99 € | 13,48 € |\n| Mit 2 Bohrlöchern | +2,49 € | 11,98 € |\n| Mit 2 Schrauben | +2,69 € | 12,18 € |\n\n**Motive und Mengenrabatt**\n\nIm gewählten Design enthaltene Originalmotive sind inklusive. Jedes zusätzlich eingefügte oder ersetzte Motiv kostet 1,69 €.\n\nMengenrabatt je Warenkorbposition: ab 3 Stück 5 %, ab 5 Stück 10 %, ab 10 Stück 15 %. Es gilt die höchste erreichte Stufe auf den Stückpreis einschließlich gewählter Befestigung und kostenpflichtiger Motive; die Stufen werden nicht addiert.",
+        "descriptionHtml": "<p><strong>Deine Gestaltung im breiten, schmalen Format: Ein Edelstahl-Türschild in 8 × 2 cm.</strong></p>\n<p>Das 80 mm breite Schild ist 20 mm hoch und 1,5 mm stark. Auf der gebürsteten Edelstahloberfläche wird dein Text graviert. Nutze eine der vorhandenen Designvorlagen und prüfe die Anordnung vor dem Bestellen in der Vorschau.</p>\n<h2>Maße und Material</h2>\n<ul><li>Maße: 8 × 2 cm (80 × 20 mm)</li><li>Form: Rechteckig</li><li>Material: Gebürsteter Edelstahl, 1,5 mm stark</li><li>Gestaltung: Gravur mit deinem Text</li></ul>\n<h2>So gestaltest du dein Schild</h2>\n<p>Wähle ein Design, ersetze den Beispieltext und kontrolliere die Vorschau. Für eigene Ergänzungen steht eine Auswahl aus 13 Motiven bereit. Ob Text und Motiv gut zusammenpassen, prüfst du direkt in deiner Gestaltung. Foto- und Logo-Uploads sind bei diesem Kleinformat nicht vorgesehen.</p>\n<p>Das Produktbild zeigt eine Beispielgestaltung. Im Konfigurator kannst du ein anderes Design wählen und den Text anpassen.</p>\n<h2>Befestigung und Preise</h2>\n<p>Ab 9,49 € pro Stück in der Variante „Ohne Bohrung“. Die folgenden Preise verstehen sich inklusive 19 % MwSt., vor Mengenrabatt und zusätzlichen Motivkosten.</p>\n<table><thead><tr><th>Variante</th><th>Aufpreis</th><th>Preis pro Stück</th></tr></thead><tbody><tr><td>Ohne Bohrung</td><td>im Grundpreis</td><td>9,49 €</td></tr><tr><td>Selbstklebend – glatte Flächen</td><td>+2,99 €</td><td>12,48 €</td></tr><tr><td>Selbstklebend – raue Flächen</td><td>+3,99 €</td><td>13,48 €</td></tr><tr><td>Mit 2 Bohrlöchern</td><td>+2,49 €</td><td>11,98 €</td></tr><tr><td>Mit 2 Schrauben</td><td>+2,69 €</td><td>12,18 €</td></tr></tbody></table>\n<h2>Motive und Mengenrabatt</h2>\n<p>Im gewählten Design enthaltene Originalmotive sind inklusive. Jedes zusätzlich eingefügte oder ersetzte Motiv kostet 1,69 €.</p>\n<p>Mengenrabatt je Warenkorbposition: ab 3 Stück 5 %, ab 5 Stück 10 %, ab 10 Stück 15 %. Es gilt die höchste erreichte Stufe auf den Stückpreis einschließlich gewählter Befestigung und kostenpflichtiger Motive; die Stufen werden nicht addiert.</p>",
+        "seoTitle": "Türschild Edelstahl 8 × 2 cm mit Gravur | Gravuru",
+        "seoDescription": "Graviertes Edelstahl-Türschild 8 × 2 cm, gebürstet und 1,5 mm stark. Mit eigenem Text gestalten und aus fünf Befestigungsvarianten wählen.",
+        "handle": "tuerschild-edelstahl-8x2-cm-gravur",
+        "images": [
+          {
+            "fileName": "S82-v1.png",
+            "altText": "Türschild aus gebürstetem Edelstahl, 8 × 2 cm, mit 27, Familie KAYA und senkrechter Trennlinie",
+            "designId": "TRE-V2A-8x2-D801",
+            "exampleTexts": [
+              "27",
+              "Familie",
+              "KAYA"
+            ],
+            "referenceView": "D3",
+            "materialShown": "Gebürsteter Edelstahl",
+            "holesShown": false,
+            "status": "Bildvorschlag; finalen Bildinhalt vor Zuordnung abgleichen"
+          }
+        ]
+      },
+      "facts": [
+        {
+          "label": "Maße",
+          "value": "8 × 2 cm (80 × 20 mm)"
+        },
+        {
+          "label": "Form",
+          "value": "Rechteckig"
+        },
+        {
+          "label": "Material",
+          "value": "Gebürsteter Edelstahl, 1,5 mm stark"
+        },
+        {
+          "label": "Gestaltung",
+          "value": "Gravur mit deinem Text"
+        }
+      ],
+      "prices": [
+        {
+          "id": "K00",
+          "label": "Ohne Bohrung",
+          "surchargeCents": 0,
+          "unitCents": 949,
+          "displaySurcharge": "im Grundpreis",
+          "displayUnitPrice": "9,49 €"
+        },
+        {
+          "id": "KGL",
+          "label": "Selbstklebend – glatte Flächen",
+          "surchargeCents": 299,
+          "unitCents": 1248,
+          "displaySurcharge": "+2,99 €",
+          "displayUnitPrice": "12,48 €"
+        },
+        {
+          "id": "KRA",
+          "label": "Selbstklebend – raue Flächen",
+          "surchargeCents": 399,
+          "unitCents": 1348,
+          "displaySurcharge": "+3,99 €",
+          "displayUnitPrice": "13,48 €"
+        },
+        {
+          "id": "B02",
+          "label": "Mit 2 Bohrlöchern",
+          "surchargeCents": 249,
+          "unitCents": 1198,
+          "displaySurcharge": "+2,49 €",
+          "displayUnitPrice": "11,98 €"
+        },
+        {
+          "id": "B02S",
+          "label": "Mit 2 Schrauben",
+          "surchargeCents": 269,
+          "unitCents": 1218,
+          "displaySurcharge": "+2,69 €",
+          "displayUnitPrice": "12,18 €"
+        }
+      ],
+      "motifSurchargeCents": 169,
+      "quantityTiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ],
+      "priceBasis": "EUR; Brutto inkl.19% MwSt.; Stückpreis vor Mengenrabatt und zusätzlichen/geänderten Motiven",
+      "claimSources": {
+        "identity": [
+          "final-inputs#/rows/5/shop",
+          "shop-entry#/response/data/nodes/5"
+        ],
+        "dimensions": [
+          "source-S82#/config/profile/geometry",
+          "final-inputs#/rows/5/variantRows"
+        ],
+        "material": [
+          "source-S82#/config/profile/material",
+          "source-S82#/name",
+          "material-reference:11,16,17"
+        ],
+        "mountingAndPrices": [
+          "final-inputs#/rows/5/variantRows",
+          "original-excel-S82",
+          "shop-entry#/response/data/nodes/5/variants/nodes"
+        ],
+        "customization": [
+          "source-S82#/config/profile/defaultDesignId",
+          "decisions#/starts"
+        ],
+        "motifSelection": [
+          "decisions#/motifs"
+        ],
+        "motifPrice": [
+          "final-inputs#/rows/5/pricing",
+          "decision-register:82,141"
+        ],
+        "uploadsOff": [
+          "final-inputs#/rows/5/pricing/photo",
+          "final-inputs#/rows/5/pricing/logo"
+        ],
+        "vat": [
+          "decisions#/tax",
+          "tax-issue"
+        ],
+        "quantityDiscount": [
+          "decisions#/quantityDiscount",
+          "final-inputs#/rows/5/pricing/quantityTiers",
+          "decision-register:131"
+        ],
+        "imageCaption": [
+          "coordinator-image-mapping"
+        ]
+      }
+    }
+  ]
+}

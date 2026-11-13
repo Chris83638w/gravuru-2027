@@ -1,0 +1,72 @@
+{
+  "schema": "gravuru-cart-review/v1",
+  "status": "partial",
+  "title": "Teilweise geprüft – Motivpreis im bestehenden Warenkorb bestätigt",
+  "message": "Ein echter Warenkorbtest an einem bestehenden Edelstahlprodukt bestätigt den Motivaufpreis. Die sieben neuen Produktstände bleiben Entwürfe; deren vollständiger Kaufweg ist noch nicht bestätigt. Die sechs Bilder und Verkaufstexte bleiben Vorschläge.",
+  "reportDate": "2026-11-13",
+  "observedAt": "2026-11-13T08:34:36.278Z",
+  "checks": [
+    {
+      "label": "Preise im Konfigurator",
+      "result": "Hauptacryl, Acryl 5 × 2 cm und Edelstahl 8 × 2 cm zeigen im echten Browser die erwarteten Preise einschließlich der geprüften Aufpreise und Mengenrabatte."
+    },
+    {
+      "label": "Designauswahl wieder erreichbar",
+      "result": "Der Galerie-Fix ist eingebaut: 1,7–1,9 Sekunden bei den wiederholten Abrufen, 3,3 Sekunden beim ersten Abruf nach Neustart. Der zuvor gemessene Zeitabbruch tritt in diesen Prüfungen nicht mehr auf; Inhalt und Preise bleiben gleich."
+    },
+    {
+      "label": "Preislogik",
+      "result": "438 von 438 Fällen mit den tatsächlichen Preisfeldern in der JavaScript-Quelle bestanden. Zusätzlich wurde ein Motivpreis im echten Warenkorb eines bestehenden Produkts bestätigt. Der vollständige Lauf des aktiven kompilierten Programms (WASM) und dessen Instruktionsgrenze bleiben offen; das ursprüngliche Binary liegt nicht vor."
+    },
+    {
+      "label": "Echter Shopify-Warenkorb",
+      "result": "Claude bestätigt am 13.11. für das bestehende aktive Edelstahlprodukt 16190784438652: 19,99 € + 1,69 € Motiv = 21,68 € in der echten Warenkorbzeile. Nur die hinzugefügte Testzeile wurde anschließend entfernt, der vorherige Warenkorb wiederhergestellt. Die sieben Entwürfe werden weiterhin mit HTTP 422 abgewiesen; deren Zeilenpreise, Foto/Logo, Staffeln, Mengenwechsel und Zeilenersatz sind nicht vollständig geprüft. Keine Bestellung oder Zahlung."
+    },
+    {
+      "label": "Gestaltung wieder öffnen",
+      "result": "Der laufende Teststand setzt die Menge noch auf 1 zurück. Die lokale Korrektur ist mit 13 gezielten Fällen, unabhängigem Review und sichtbarem Neuladen bei Menge 10 geprüft und an Claude übergeben. Einbau und anschließender Hostnachweis stehen separat aus."
+    },
+    {
+      "label": "Mobiler Konfigurator",
+      "result": "Echter Konfigurator bei 390 × 844 geprüft; ein links abgeschnittener Vorschauausschnitt wurde gefunden. Die lokale Korrektur zeigt Hauptprodukt, Acryl 5 × 2 und Edelstahl 8 × 2 vollständig; Vollbild und Reset geprüft. Noch kein installierter Hostnachweis und kein physischer Handylauf."
+    },
+    {
+      "label": "Sichtprüfung 5 × 2 cm",
+      "result": "Schraubenköpfe entsprechen den bestätigten 5 mm, also einem Viertel der 20-mm-Schildhöhe. Native Geometrie geprüft; keine optische Verkleinerung vorgesehen."
+    },
+    {
+      "label": "Offener Gestaltungsbefund",
+      "result": "Claude meldet beim bestehenden Edelstahlprodukt, dass ein neu hinzugefügtes Hausmotiv zunächst den Text Rosenberg überlappt. Dieser separate Platzierungsbefund ist noch nicht behoben."
+    }
+  ],
+  "evidence": [
+    {
+      "label": "Warenkorbprüfung: Fälle, Preise und Screenshots (12.11.2026)",
+      "url": "https://github.com/Chris83638w/gravuru-2027/blob/6dd50ed0/ops/plesk/warenkorb-20261112/README.md"
+    },
+    {
+      "label": "Ergebnis der Warenkorbprüfung in Issue 168",
+      "url": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6833537396"
+    },
+    {
+      "label": "Aktueller Galerie-Fix: Einbau und echte Messungen",
+      "url": "https://github.com/Chris83638w/gravuru-2027/issues/233#issuecomment-6835153436"
+    },
+    {
+      "label": "Zusammenfassung des Galerie-Fixes und verbleibende Prüfpunkte",
+      "url": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6835154001"
+    },
+    {
+      "label": "Mobilprüfung mit Befund und Screenshots",
+      "url": "mobile-konfi-review-20261113.md"
+    },
+    {
+      "label": "Geprüfte lokale Korrekturen und Übergabe an Claude",
+      "url": "https://github.com/Chris83638w/gravuru-2027/blob/aea809f/docs/handoffs/2026-11-13-cart-mobile-fixes.md"
+    },
+    {
+      "label": "Echter Motivpreis-Test am bestehenden aktiven Produkt (Claude, 13.11.)",
+      "url": "https://github.com/Chris83638w/gravuru-2027/issues/168#issuecomment-6847480102"
+    }
+  ]
+}

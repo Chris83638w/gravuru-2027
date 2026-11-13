@@ -94,3 +94,33 @@ test('existing frame gateway forwards preview AbortSignal without changing selec
  const frame=f.active.frame;await f.api.preview('signed-choice','/public.svg',controller.signal);
  assert.deepEqual(calls,[['signed-choice','/public.svg',controller.signal]]);assert.equal(f.active.frame,frame);assert.equal(f.api.canGoBack(),false);
 });
+
+// Startzeit (Chris 13.11.2026): Die Designliste wird erst nach der Fertigmeldung des Editors angefordert.
+function readyFixture({readyFallbackMs=20000}={}){
+ const listeners=new Set(),calls=[];
+ const win={location:{origin:'https://test.example'},history:{replaceState(){}},addEventListener(_type,fn){listeners.add(fn);},removeEventListener(_type,fn){listeners.delete(fn);},setTimeout,clearTimeout};
+ const frame={style:{},contentWindow:{name:'editor'},remove(){}};
+ const client={loadDesignGallery:async(page)=>{calls.push(page);return {items:[]};},loadDesignPreview:async()=>new Blob()};
+ let api;
+ createDesignSwitch({initial:{client,data:{},resources:{},frame},fragment:new URLSearchParams('s=gse1.a.b'),container:{append(){}},activate:(_entry,a)=>{api=a;},toDataUrl:async()=>'',win,doc:{},readyFallbackMs});
+ const send=(source,data,origin=win.location.origin)=>{for(const listen of listeners)listen({origin,source,data});};
+ return {calls,frame,send,get api(){return api;}};
+}
+const tick=()=>new Promise(resolve=>setTimeout(resolve,0));
+test('design list waits for the editor ready message of its own frame',async()=>{
+ const f=readyFixture(),pending=f.api.load(0);await tick();
+ assert.deepEqual(f.calls,[],'no gallery request while the editor is still starting');
+ f.send({name:'other'},{type:'gravuru-ux-ready'});await tick();assert.deepEqual(f.calls,[],'ready of a foreign window is ignored');
+ f.send(f.frame.contentWindow,{type:'gravuru-ux-ready'},'https://foreign.example');await tick();assert.deepEqual(f.calls,[],'foreign origin is ignored');
+ f.send(f.frame.contentWindow,{type:'gravuru-other'});await tick();assert.deepEqual(f.calls,[],'other messages are ignored');
+ f.send(f.frame.contentWindow,{type:'gravuru-ux-ready'});assert.deepEqual(await pending,{items:[]});assert.deepEqual(f.calls,[0]);
+ await f.api.load(1);assert.deepEqual(f.calls,[0,1],'after ready further pages load immediately');
+});
+test('design list still loads if the ready message never arrives',async()=>{
+ const f=readyFixture({readyFallbackMs:15}),started=Date.now();await f.api.load(0);
+ assert.deepEqual(f.calls,[0]);assert.ok(Date.now()-started>=10);
+});
+test('a switched-to editor loads its list after its own ready message',async()=>{
+ const f=fixture();await f.api.choose('signed-target',{texts:[]});
+ assert.deepEqual(await f.api.load(0),{items:['next-design']});
+});

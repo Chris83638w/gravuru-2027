@@ -101,10 +101,10 @@ test('large text: real input, focusout, field refresh and workflow sync all reta
 });
 test('K1: actual text input handler keeps 32 chars / 2 lines and the direct editor clamps alike',async()=>{
  const {env,object,r}=textEnvironment();
- Object.assign(env,{textLimits,textLimitIssue,textLength,sameSampleText,clampText,dirty:false,updatePrice(){},design:()=>env.profile.designs[0],profile:{designs:[{id:'d',themes:['namensschilder'],objects:[{id:'name',type:'text',text:'Anna'}]}]}});
+ Object.assign(env,{textLimits,textLimitIssue,textLength,sameSampleText,clampText,dirty:false,updatePrice(){},sessionGuard:null,design:()=>env.profile.designs[0],profile:{designs:[{id:'d',themes:['namensschilder'],objects:[{id:'name',type:'text',text:'Anna'}]}]}});
  env.el.state.designId='d';env.el.record=()=>{};const said=[];env.say=m=>said.push(m);
  for(const marker of ['const templateText=','const limitsFor='])vm.runInContext(line('ux.mjs',marker),env);
- vm.runInContext(block('ux.mjs',"  r.addEventListener('input',e=>{const t=e.target;if(t.dataset.uxText){","updatePrice();});"),env);
+ vm.runInContext(block('ux.mjs',"  r.addEventListener('input',e=>{const t=e.target;if(t.dataset.uxText){","updatePrice();sessionGuard?.touch();}});"),env);
  vm.runInContext(line('ux.mjs',"r.addEventListener('keydown',e=>{const t=e.target;if(!t.dataset?.uxText||e.key!=='Enter')return;"),env);
  const field={value:'A'.repeat(40),selectionStart:40,dataset:{uxText:'name'},matches(){return false;},setSelectionRange(a){this.selectionStart=a;}};
  await dispatch(r,'input',inertEvent(field));assert.equal(object.text.length,32);assert.equal(field.value.length,32);assert.equal(said.at(-1),'Höchstens 32 Zeichen.');

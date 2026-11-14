@@ -2,6 +2,14 @@
 
 [Übergabe](docs/handoffs/2026-11-13-cart-mobile-fixes.md): vier Laufzeitdateien plus zwei gezielte Tests. Menge bleibt im Sitzungsschutz erhalten; gültiger CartEdit hat vor lokaler Wiederherstellung Vorrang. Resetleiste liegt außerhalb der horizontalen Plattenzeile und erhält eigene mobile Höhe. 13/13 Mengen-/CartEdit- sowie 5/5 Mobil-/Resetprüfungen, unabhängige Quellen-/Hashreviews und tatsächlicher lokaler Chrome-Lauf bei 390×844: volle Platten, Vollbild/Reset/Abbrechen und Menge10 nach Neuladen bestätigt. Zwei während Review/Sichtprüfung gefundene Zwischenfehler wurden vor Übernahme behoben. Galeriefix, Preise, IDs, Material und bestätigte 5-mm-Schrauben unverändert. Noch nicht installiert; Claude erhält enges Paket zum Abgleich mit seiner aktuellen Laufzeit. Echter Shopify-Cart bleibt wegen DRAFT gesperrt, aktiver WASM-Lauf mangels Original offen. Kein Publish/Shopwrite.
 
+## 14.11.2026 – Konfi-Befunde 13.11. live (Claude als Operator)
+
+- Branch `dev/claude-konfi-designwechsel-20261113`, Commit 68334981 (auf 4f909b1 Zurück-Taste/Reiterleiste). Laufzeit `kandidat-68334981-20261113` live seit 14.11. ~02:56 (Freigabe Chris im Chat: „ja“/„weiter“), Ablauf und Prüfsummen in #233.
+- Inhalt: Designwechsel ordnet Namensfelder nach Inhalt/Leserichtung (Feldnummern sind je Design vertauscht); Foto ohne Fotobereich frei mitnehmen bzw. Hinweis „keine Fotofunktion“ (Chris 13.11.); Text 2 mm vom Rand (Chris 13.11., nur Text); Formwechsel nächstliegende Größe; Menge 1–99 ganzzahlig und Pflicht-Name sofort/vor Übersicht; Handy-Vorschau größer, Vergrößern rechts; „Entfernt“-Hinweis nach 8 s weg.
+- Entscheidungen Chris 13.11.: Diskette bleibt (kein Kundenkonto), Weiter-Knopf/Warenkorb bleibt wie er ist.
+- Prüfungen: variant-m + mobile-demo 942/942; workshop-Fehler (Fotoauflösung, Katalog-Worker) bestehen identisch im Live-Stand 4572957 (Umgebung). Live: Schnörkel-Design zeigt „Familie / Müllermann“.
+- Offen: Handy-Test Chris; Acryl-Entwurf „Form und Größe selbst wählen“ liefert für 8 × 8 und rund keine Designliste (409 shop_gallery_changed) – vor dessen Go-live klären.
+
 ## 13.11.2026 · Codex/Astra · #238: Eigener Einstieg für neue Produkte und Designs
 
 [Vollständiger Auftrag #238](https://github.com/Chris83638w/gravuru-2027/issues/238), [Arbeitsbereich](docs/agent-start/Neue-Produkte-und-Designs/README.md): START.md, Teilauftragsvorlage und kurze Startanweisung für einen eigenen Agenten angelegt. Quellen, Design-Master, skriptbasierte Produktanlage, sichtbare Abnahme und ausdrückliche Veröffentlichungskontrolle sind festgehalten. Lokaler separater Ordner `Documents/Codex/Neue-Produkte-und-Designs` enthält dieselben drei Dateien. Noch kein konkretes neues Produkt/Design erfunden oder angelegt; laufender Türschildabschluss verbleibt bei Astra/Claude. Reines Auftragspaket, keine App-/Shopänderung.

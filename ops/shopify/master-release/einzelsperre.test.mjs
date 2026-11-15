@@ -53,3 +53,14 @@ test('gültige Warenkörbe: identisches Ergebnis wie die bisherige Preisfunktion
  assert.deepEqual(cartTransformRun(structuredClone(input)),cartTransformStrict(structuredClone(input)));
  for(const quantity of [1,3,5,10]){const v=structuredClone(input);v.cart.lines[0].quantity=quantity;assert.deepEqual(cartTransformRun(structuredClone(v)),cartTransformStrict(v));}
 });
+
+test('normale Produkte ohne Konfigurator-Preis werden nie gesperrt (ohne Metafeld, deaktiviert, kein ProductVariant)',()=>{
+ const base=real().cart.lines[0];
+ const plain=(id,pricing)=>({id,quantity:2,configuration:null,configRevision:null,offer:null,checkoutImage:null,motifs:null,uploads:null,logos:null,options:null,revision:null,designFile:null,merchandise:{__typename:'ProductVariant',id:'gid://shopify/ProductVariant/1',product:{id:'gid://shopify/Product/2',pricing}}});
+ for(const line of [plain('ohne',null),plain('aus',{value:JSON.stringify({schema:'gravuru-personalization-pricing/v1',enabled:false})}),{id:'custom',quantity:1,merchandise:{__typename:'CustomProduct'}}]){
+  const input={presentmentCurrencyRate:'1.0',cart:{lines:[base,line]}};
+  assert.deepEqual(rejectedPricingLines(structuredClone(input)),[]);
+  assert.deepEqual(validate(input,'CHECKOUT_COMPLETION'),[]);
+  assert.equal(price(cartTransformRun(structuredClone(input)),base.id),'19.99');
+ }
+});

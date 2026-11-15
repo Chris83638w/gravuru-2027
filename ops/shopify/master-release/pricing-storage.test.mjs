@@ -3,6 +3,17 @@ import assert from 'node:assert/strict';
 import {compactPricingHistory,encodeFunctionPricing} from './pricing-storage.mjs';
 import {resolvedPricingHistory,pricingForLine,expandPricingVariants} from './pricing-history.mjs';
 import {cartTransformRun} from './cart_transform_run.mjs';
+import {cartTransformStrict as strictTransform,cartTransformRun as isolatedTransform,rejectedPricingLines} from './cart_transform_run.mjs';
+
+// Chris 15.11.2026: Abgewiesene Positionen sperren nicht mehr den ganzen Warenkorb. Streng geprüft
+// wird weiter: die bisherige Prüfung wirft, die Position bekommt keinen Preis und steht auf der Sperrliste.
+function assertRejected(value,pattern){
+ if(pattern)assert.throws(()=>strictTransform(structuredClone(value)),pattern);else assert.throws(()=>strictTransform(structuredClone(value)));
+ const rejected=rejectedPricingLines(structuredClone(value));assert.ok(rejected.length>0,'Position steht auf der Sperrliste');
+ const ops=isolatedTransform(structuredClone(value)).operations;
+ for(const r of rejected)assert.ok(!ops.some(o=>o.lineUpdate?.cartLineId===r.lineId&&o.lineUpdate.price),'abgewiesene Position ohne Preis');
+}
+
 const productId='gid://shopify/Product/16190784438652';
 function contract(){
  const variants=Object.fromEntries(Array.from({length:404},(_,i)=>[String(58104613339516+i*32768),1748+i]));
@@ -40,11 +51,11 @@ test('dangling, cyclic, ambiguous and mixed references reject without altering l
  assert.deepEqual(resolvedPricingHistory(encodeFunctionPricing(p).pricing)[0],p.history[0]);
 });
 test('missing/omitted pricing fails closed for personalized cart, ordinary product still passes',()=>{
- const l=line(null);assert.throws(()=>cartTransformRun(input(l)),/pricing unavailable/);
+ const l=line(null);assertRejected(input(l),/pricing unavailable/);
  for(const k of ['revision','designFile','logos','motifs','uploads'])delete l[k];
  assert.deepEqual(cartTransformRun(input(l)),{operations:[]});
  l.configuration={value:'konfig_aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'};l.offer={value:'a'.repeat(64)};
- assert.throws(()=>cartTransformRun(input(l)),/pricing unavailable/);
+ assertRejected(input(l),/pricing unavailable/);
 });
 test('unequal prices retain explicit historical deltas and UTF8 bytes are checked',()=>{
  const p=contract();p.history[0].variants['58104613339516']+=1;
@@ -79,11 +90,14 @@ test('raw input cache is isolated by the complete contract and by Function invoc
  const lines=[line(a,2),line(b,2),line(a,1,undefined,0),line(b,1,undefined,0)];
  const invoke=ls=>cartTransformRun({presentmentCurrencyRate:'1',cart:{lines:ls}});
  assert.deepEqual(invoke(lines.map(raw)),invoke(lines));assert.deepEqual(invoke(lines.toReversed().map(raw)),invoke(lines.toReversed()));
- const bad=structuredClone(b);bad.currency='USD';assert.throws(()=>invoke([raw(lines[0]),raw(line(bad))]));
+ const strictInvoke=ls=>strictTransform({presentmentCurrencyRate:'1',cart:{lines:ls}});
+ const bad=structuredClone(b);bad.currency='USD';assert.throws(()=>strictInvoke([raw(lines[0]),raw(line(bad))]));
+ // Einzelsperre: die gültige Position behält ihren Preis, nur die fehlerhafte steht auf der Sperrliste.
+ assert.deepEqual(invoke([raw(lines[0]),raw(line(bad))]).operations,invoke([raw(lines[0])]).operations);assert.deepEqual(rejectedPricingLines({presentmentCurrencyRate:'1',cart:{lines:[raw(lines[0]),raw(line(bad))]}}).map(r=>r.index),[1]);
  const other=structuredClone(b);other.productId='gid://shopify/Product/9';for(const h of other.history)h.productId=other.productId;
  const mixed=line(other);mixed.merchandise.product.id=other.productId;assert.deepEqual(invoke([raw(lines[0]),raw(mixed)]),invoke([lines[0],mixed]));
  const changed=contract();changed.variants['58104613339516']+=999;const c=encodeFunctionPricing(changed).pricing;assert.deepEqual(invoke([raw(line(c))]),invoke([line(c)]));
- const malformed=raw(line(a));malformed.merchandise.product.pricing.value='{';assert.throws(()=>invoke([malformed]));
+ const malformed=raw(line(a));malformed.merchandise.product.pricing.value='{';assert.throws(()=>strictInvoke([malformed]));assertRejected({presentmentCurrencyRate:'1',cart:{lines:[malformed]}});
 });
 
 test('independent historical ID sequences never look up the selected variant in an unrelated revision',()=>{

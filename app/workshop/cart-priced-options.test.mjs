@@ -3,7 +3,7 @@ import {familyProductConfig} from './product-families.mjs';
 import {prepareConfig,optionFieldEntries} from '../configurator/variant-m/contract.mjs';
 import {commercePrice} from '../configurator/variant-m/commerce-model.mjs';
 import {capturePersonalization,personalizationForSnapshot,personalizationAttributes} from './cart-personalization.mjs';
-import {cartTransformRun} from '../../ops/shopify/master-release/cart_transform_run.mjs';
+import {cartTransformRun,cartTransformStrict,rejectedPricingLines} from '../../ops/shopify/master-release/cart_transform_run.mjs';
 const prices={silikon:699,'staender-klar':1399,'staender-schwarz':1599};
 function fixture(baseCents=2199,tiers=false){
  const family=JSON.parse(fs.readFileSync(new URL('../designs/steel-door-signs/family.json',import.meta.url)));
@@ -21,9 +21,9 @@ function snapshot(f,options={},added=0,quantity=1){
  const price=commercePrice(f.config,{objects,designId:f.design.id,mOptions:options},quantity);
  return {id:'proof_options',packageSha256:'a'.repeat(64),product:{basePriceCents:price.unitCents},selection:{price,fields:optionFieldEntries(f.config,options)}};
 }
-function transform(f,result,quantity){
+function transform(f,result,quantity,run=cartTransformRun){
  const attributes=Object.fromEntries(personalizationAttributes(result.personalization).map(a=>[a.key,a.value]));
- return cartTransformRun({presentmentCurrencyRate:'1',cart:{lines:[{id:'line',quantity,
+ return run({presentmentCurrencyRate:'1',cart:{lines:[{id:'line',quantity,
   motifs:{value:attributes._gravuru_motifs},uploads:{value:attributes._gravuru_uploads},options:{value:attributes._gravuru_options},revision:{value:attributes._gravuru_revision},designFile:{value:attributes['Bearbeitbarer Entwurf']},
   merchandise:{__typename:'ProductVariant',id:'gid://shopify/ProductVariant/301',product:{id:f.pricing.productId,pricing:{jsonValue:f.pricing}}}}]}});
 }
@@ -55,6 +55,9 @@ test('app-owned prices must match the saved product and unsupported paid input k
 test('checkout accepts the explicit no-options marker and rejects missing, unknown, duplicate or browser-priced options',()=>{
  const f=fixture(),result=personalizationForSnapshot(f.contract,snapshot(f));assert.equal(result.personalization.options,'-');assert.equal(transform(f,result,1).operations[0].lineUpdate.price.adjustment.fixedPricePerUnit.amount,'21.99');
  for(const value of [undefined,'','foreign','silikon,silikon','silikon:1','staender-klar,silikon']){
-  const changed={...result,personalization:{...result.personalization,options:value}};assert.throws(()=>transform(f,changed,1));
+  // Chris 15.11.2026: streng abgewiesen (bisherige Prüfung wirft), aber nur diese Position: kein Preis, Sperrliste für den Checkout.
+  const changed={...result,personalization:{...result.personalization,options:value}};assert.throws(()=>transform(f,changed,1,cartTransformStrict));
+  let ops;try{ops=transform(f,changed,1).operations;}catch{continue;}// schon die Warenkorbangaben werden serverseitig verweigert
+  assert.deepEqual(ops,[]);assert.equal(transform(f,changed,1,rejectedPricingLines).length,1);
  }
 });

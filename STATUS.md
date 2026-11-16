@@ -1,3 +1,13 @@
+## 16.11.2026 · Codex/Astra · #239 Acryl-Designauswahl
+
+Beim Hauptprodukt „Türschild Acrylglas 3 mm – Form und Größe selbst wählen“ lief der direkte Einstieg für Quadrat 8 × 8 cm und Rund 8,5 cm mit 120 beziehungsweise 115 Designs. Beide Ausführungen lieferten aus einer Sitzung auf Revision 1 HTTP 409. Auf einer privaten, danach entfernten Speicherkopie waren 30 aktive Zuordnungen auf Revision 1 und 778 auf Revision 2. [Bisherige Variantenprüfung](https://github.com/Chris83638w/gravuru-2027/blob/a46169437892482ef0d7dda5fb04e3af0c3a52a4/app/workshop/shop-design-gallery.mjs#L168-L173)
+
+Die Galerie liest den bestätigten aktiven Stand der gewählten Variante. Das gilt für dieselbe native Produkt-ID und dieselbe Katalog-Unterkategorie des Hauptprodukts. Vorschau, Preis und Designwechsel verwenden den gebundenen Zielstand. Der Designwechsel erzeugt wie bisher eine geprüfte Sitzung. [Quellcode](app/workshop/shop-design-gallery.mjs) · [HTTP-Regressionsprüfung](app/workshop/shop-design-switch-family.test.mjs)
+
+173 gezielte Tests bestanden. Lokaler R15-Browsertest mit synthetischen Varianten und gebundenen Revisionen. Beide Formen zeigten vor der Änderung den 409, danach die Designkarte. Nach der Auswahl lud der Editor Revision 2 und die gewählte Geometrie. [Vorher und nachher](docs/handoffs/2026-11-16-acryl-galerie/)
+
+Branch `dev/astra-acryl-galerie-revisionswechsel-20261116`. Nächster Schritt ist Claudes PR-Prüfung. Der Test der Änderung lief lokal. [Auftrag in Issue 239](https://github.com/Chris83638w/gravuru-2027/issues/239#issuecomment-6913428220)
+
 ## 16.11.2026 · Codex/Astra · #239 F03 Gestaltung im Warenkorb bearbeiten
 
 Der Browsercheck erfasste den Ursprung und die Schlüsselnamen. Der private Entwurfszugang lag im Tab-Speicher des Konfigurators und fehlte im neuen Tab. „Bearbeiten“ öffnet den Editor jetzt im Shop-Kontext. Für neue Warenkorbpositionen speichert der Browser einen verschlüsselten Zugang für genau die Konfigurationsrevision. Dieser Zugang läuft nach sieben Tagen ab. Ein kopierter Link ohne Entwurfszugang wurde abgewiesen. [Shop-Einstieg](app/workshop/shop-entry.mjs) · [Zugriffsprüfung](app/workshop/cart-edit-access.mjs)

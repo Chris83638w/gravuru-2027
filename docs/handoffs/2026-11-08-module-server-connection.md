@@ -32,7 +32,8 @@ Root-Operator bestätigte die getrennte v2-Aktivierung am **08.11.2026, 14:53:50
 - Tatsächlicher normaler Neustart: geschütztes öffentliches `/__test/health` nach **9.463 ms** HTTP200, `ready: true`. Dessen `shopifyConnected: false` beschreibt den privaten Hoststatus, nicht einen fehlgeschlagenen Modul-/Shopify-Preflight.
 - Authentifiziertes `GET /originale/verwaltung/api/context`: **HTTP200 in 19 ms**, 348 kleine Quellen, jede `detailsLoaded: false`, `targetsDeferred: true`, `executionEnabled: false`.
 - Authentifiziertes `GET /api/workshop/configurator-modules`: **HTTP200 in 19 ms**, beide tatsächlichen Stahlprofile weiter Revision1, `localOnly: true`, `shopifyWrites: 0`.
-- Nachgelagertes `GET /originale/verwaltung/api/sync`: **HTTP200 in 9.244 ms**. Der Inhalt der verschachtelten Zielantwort und der sichtbare Planablauf werden noch separat geprüft; aus HTTP200 allein wird keine vollständige Synchronisierungsabnahme abgeleitet.
+- Gewählte echte Stahlquelle `source-57cdbaeb72759aa5c09e23f6`: `GET /originale/verwaltung/api/sources?key=…` **HTTP200 in 42 ms**, genau eine Quelle mit `detailsLoaded: true`, aktuellen Optionen, Preisen, Material und Geometrie.
+- Nachgelagertes `GET /originale/verwaltung/api/sync`: zunächst **HTTP200 in 9.244 ms**, wiederholt **HTTP200 in 8.127 ms**. Der tatsächliche Inhalt ist geprüft: `targets.targets.length === 2`, `executionEnabled: false`. Der sichtbare bestätigte Planablauf bleibt eine getrennte Abnahme; aus dieser lesenden Prüfung folgt keine Aktivierung.
 
 Lokale Prüfungen vor Auslieferung: **7/7** gezielte HTTP-/Servicefälle grün, Syntaxprüfungen und Diffkontrolle bestanden, unabhängiger Review ohne Blocker. Der neue strukturelle Nachweis bestätigt null vollständige Dokumentlesungen im Erstabruf und ausschließlich gewählte Quellen im Detail. Optionen/Quellrevision/Bestätigung werden weiterhin frisch geprüft. [Implementierung und Prüfrouten](2026-11-08-module-management-lazy-sources.md) · [Paket-/Dateihashes](../reviews/2026-11-08-module-management-v2/package-proof.json).
 
@@ -48,8 +49,8 @@ Nur den Quell-Startwrapper `gravuru-2027-bulkapproval-3db1ef5d/app.cjs` aus der 
 
 ## Nächste konkrete Arbeit
 
-1. Sichtbaren Verwaltungsablauf und die verschachtelte Sync-Zielantwort am tatsächlich installierten v2 abschließen.
-2. Konkreten Quellabruf und Profilplan prüfen; Shopify-Ausführung bleibt gesperrt. Erstabrufe, zwei gespeicherte Profile und normaler Neustart sind bereits öffentlich authentifiziert nachgewiesen.
+1. Sichtbaren Verwaltungsablauf am tatsächlich installierten v2 abschließen. Verschachtelte Sync-Zielantwort und gewählter echter Quellabruf sind öffentlich authentifiziert nachgewiesen.
+2. Konkreten Profilplan prüfen; Shopify-Ausführung bleibt gesperrt. Erstabrufe, zwei gespeicherte Profile und normaler Neustart sind bereits öffentlich authentifiziert nachgewiesen.
 3. Zwölf Modul-Funktionsdateien auf der exakt aktiven R15-Basis vorbereiten, Legacy/Logo an-aus/Preis-/Speichergrenzen prüfen. Danach erst kontrollierter Kundenanschluss, zunächst ohne Änderung der r4-Produkte.
 4. Einen konkreten Profilplan bestätigen und prüfen, bevor eine neue Produktrevision/Shopify-Bindung geschrieben wird. Keine automatische Anlage neuer Artikel als Nebenwirkung.
 

@@ -1,10 +1,27 @@
 import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import os from 'node:os';import path from 'node:path';import {DatabaseSync} from 'node:sqlite';import {createHmac,randomBytes} from 'node:crypto';import {once} from 'node:events';
 import {createOrderIntake,verifyPaidWebhook} from './order-intake.mjs';import {build} from '../configurator/variant-m/build.mjs';import {createWorkshop} from './http.mjs';import {createPreviewServer} from '../configurator/variant-m/server.mjs';
+import {crossStoreOrders} from './cross-store-orders.mjs';
 const config={shopDomain:'gravuru-synthetic.myshopify.com',apiVersion:'2026-07',secret:randomBytes(32).toString('hex')};
 const sign=(payload,eventId='test-event-1234',overrides={})=>{const raw=Buffer.from(typeof payload==='string'?payload:JSON.stringify(payload));return {raw,headers:{'x-shopify-hmac-sha256':createHmac('sha256',config.secret).update(raw).digest('base64'),'x-shopify-shop-domain':config.shopDomain,'x-shopify-api-version':config.apiVersion,'x-shopify-topic':'orders/paid','x-shopify-webhook-id':eventId,...overrides}};};
 const order=token=>({id:101,test:true,financial_status:'paid',currency:'EUR',cancelled_at:null,customer:{email:'private-fixture@example.invalid'},line_items:[{id:201,variant_id:301,quantity:2,price:'29.99',properties:[{name:'_gravuru_offer',value:token}]}]});
 function setup(t){const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-order-')),filename=path.join(dir,'private.sqlite');let db=new DatabaseSync(filename),now=Date.now(),m={id:'proof_synthetic',packageSha256:'a'.repeat(64),product:{id:'cfg_synthetic',revision:2,name:'Synthetisches Schild',basePriceCents:2999,currency:'EUR'},productionProfile:{id:'mfg_synthetic',revision:3,sha256:'b'.repeat(64)}};const create=()=>createOrderIntake({database:db,snapshot:id=>{assert.equal(id,m.id);return structuredClone(m);},clock:()=>now});let intake=create();const record={id:m.product.id,revision:2,status:'draft',document:{schema:'gravuru-form-product/v1',kind:'product',basePriceCents:2999,designs:[{}]}};const binding=intake.bind({shopDomain:config.shopDomain,variantId:'301',record});const offer=()=>intake.offer({bindingId:binding.id,snapshotId:m.id,quantity:2});t.after(()=>{db.close();fs.rmSync(dir,{recursive:true,force:true});});return {get db(){return db;},get intake(){return intake;},offer,binding,record,changeTime:delta=>now+=delta,changeHash:()=>m.packageSha256='f'.repeat(64),reopen:()=>{db.close();db=new DatabaseSync(filename);intake=create();}};}
 const receive=(intake,message)=>intake.receive(message.raw,message.headers,config);
+test('F16: an unreadable order document or E3 record is isolated in the cross-store overview',t=>{
+ const f=setup(t),good=f.offer(),accepted=receive(f.intake,sign(order(good.property.value))).lines[0];
+ const db=f.db,shop=config.shopDomain,at='2026-11-16T12:00:00Z';
+ db.prepare('INSERT INTO form_order_lines(id,shop,order_id,line_id,offer_id,document,created_at) VALUES(?,?,?,?,?,?,?)')
+  .run('unreadable',shop,'102','202','separate-offer','{"privateFixture":',at);
+ db.prepare('INSERT INTO form_order_line_errors(id,shop,order_id,line_id,event_id,document,created_at) VALUES(?,?,?,?,?,?,?)')
+  .run('unreadable-error',shop,'103','203','bad-event','{"privateFixture":',at);
+ const store={storeId:'acryl',apiPrefix:'/api/workshop/acryl/',workshop:{orderIntake:f.intake}};
+ const result=crossStoreOrders([store],{shopDomain:shop,enabled:true});
+ assert.deepEqual(result.orders.map(line=>line.id),[accepted.id]);
+ assert.deepEqual(result.errors.map(error=>[error.orderId,error.lineId,error.overviewReadError]),
+  [['102','202',true],['103','203',true]]);
+ assert.ok(!JSON.stringify(result).includes('privateFixture'));
+ assert.throws(()=>f.intake.list(),SyntaxError);
+ assert.throws(()=>f.intake.errors(),SyntaxError);
+});
 test('cart offer resolution uses saved values and refuses changed snapshot hashes',t=>{
  const f=setup(t),o=f.offer(),input={offerId:o.id,offerToken:o.property.value,snapshotId:'proof_synthetic',shopDomain:config.shopDomain};
  assert.deepEqual(f.intake.resolveCartOffer(input),o);

@@ -1,3 +1,11 @@
+## 16.11.2026 · Codex/Astra · #239 F16 Werkstatt-Bestellübersicht
+
+Der ältere Merchant-Speicher lieferte auf einer Kopie sieben Positionen. Seine Laufzeit stellt die E3-Liste nicht bereit. Der Aufruf von `errors()` in `cross-store-orders.mjs` löste HTTP 503 für die gesamte Übersicht aus. Auf denselben Kopien lieferte der korrigierte Leser HTTP 200 mit 14 Positionen aus beiden Speichern. Darunter war Testbestellung #1032 mit vier Stück zu je 18,99 €. [Auftrag in Issue 239](https://github.com/Chris83638w/gravuru-2027/issues/239#issuecomment-6914109391)
+
+Die Übersicht zeigt einzelne fehlgeschlagene Positions- oder Statuslesevorgänge als Fehlerzeile. Für einen komplett fehlgeschlagenen Speicherabruf gilt weiterhin HTTP 503. 74 gezielte Tests bestanden. Die Bilder zeigen eine lokale Nachstellung mit synthetischen Daten. [Vorher](docs/handoffs/2026-11-16-f16-werkstatt/vorher-503.png) · [Nachher](docs/handoffs/2026-11-16-f16-werkstatt/nachher-positionen.png)
+
+Eigener Branch `dev/astra-f16-werkstatt-20261116`. Der nächste Schritt für F16 ist Claudes PR-Prüfung. Die Diagnosekopien wurden nach dem Test entfernt. Für die Live-Freigabe ist eine eigene Entscheidung erforderlich.
+
 ## 16.11.2026 · Codex/Astra · #239 F03 Gestaltung im Warenkorb bearbeiten
 
 Der Browsercheck erfasste den Ursprung und die Schlüsselnamen. Der private Entwurfszugang lag im Tab-Speicher des Konfigurators und fehlte im neuen Tab. „Bearbeiten“ öffnet den Editor jetzt im Shop-Kontext. Für neue Warenkorbpositionen speichert der Browser einen verschlüsselten Zugang für genau die Konfigurationsrevision. Dieser Zugang läuft nach sieben Tagen ab. Ein kopierter Link ohne Entwurfszugang wurde abgewiesen. [Shop-Einstieg](app/workshop/shop-entry.mjs) · [Zugriffsprüfung](app/workshop/cart-edit-access.mjs)

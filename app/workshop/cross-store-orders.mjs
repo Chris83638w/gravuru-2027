@@ -1,14 +1,32 @@
 // Read-only index over the already scoped stores; actions retain each store's own auth/CSRF.
 const stop=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
+const displayable = row => typeof row.id==='string' && typeof row.product?.name==='string' &&
+ typeof row.receivedAt==='string' && Number.isFinite(Date.parse(row.receivedAt)) &&
+ (!row.selection || (Array.isArray(row.selection.labels) && row.selection.labels.every(label=>typeof label?.label==='string')));
 export function crossStoreOrders(stores,{shopDomain,enabled=false}={}){
  const orders=[],errors=[],statuses={};
  for(const store of stores){
   const scope={storeId:store.storeId,apiPrefix:store.apiPrefix,pagePrefix:store.apiPrefix==='/api/workshop/acryl/'?'/werkstatt/acryl/':'/werkstatt/'};
-  for(const row of store.workshop.orderIntake.list()){
-   if(row.shopDomain!==shopDomain)continue;
-   const viewKey=store.storeId+':'+row.id;orders.push({...row,...scope,viewKey});statuses[viewKey]=store.workshop.orderIntake.status(row.id);
+  const intake=store.workshop.orderIntake;
+  const onUnreadable=row=>{
+   if(row.shopDomain!==shopDomain)return;
+   const {orderId,lineId,variantId,quantity}=row;
+   errors.push({...scope,shopDomain,orderId,lineId,variantId,quantity,status:'fehler',overviewReadError:true,
+    intakeError:'Die Position konnte für die Übersicht nicht vollständig gelesen werden.'});
+  };
+  for(const row of intake.list({onUnreadable})){
+   if(row?.shopDomain!==shopDomain)continue;
+   let status;
+   if(displayable(row)){
+    try{status=intake.status(row.id);}catch{/* Keep failures scoped to this position. */}
+   }
+   if(!status||typeof status!=='object'||Array.isArray(status)){onUnreadable(row);continue;}
+   const viewKey=store.storeId+':'+row.id;
+   orders.push({...row,...scope,viewKey});
+   statuses[viewKey]=status;
   }
-  for(const row of store.workshop.orderIntake.errors())if(row.shopDomain===shopDomain)errors.push({...row,...scope});
+  // The retained October 22 Merchant runtime predates the E3 error list.
+  for(const row of intake.errors?.({onUnreadable})??[])if(row.shopDomain===shopDomain)errors.push({...row,...scope});
  }
  orders.sort((a,b)=>b.receivedAt.localeCompare(a.receivedAt)||a.viewKey.localeCompare(b.viewKey));
  return {orders,errors,statuses,integration:{enabled,mode:'scoped-stores'}};

@@ -1,0 +1,3916 @@
+{
+  "product": "cardea",
+  "browser": "Chromium 157.0.8103.51",
+  "p02Commit": "c18800e96952955f9d72902630666da911dfba28",
+  "commonP01Commit": "a864464fa2ada7715a94560619f8b6a5fa4d68c1",
+  "localSignedProxy": true,
+  "desktop": {
+    "viewport": {
+      "width": 1360,
+      "height": 900
+    }
+  },
+  "mobile": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "network": {
+      "offline": false,
+      "latency": 150,
+      "downloadThroughput": 200000,
+      "uploadThroughput": 93750,
+      "connectionType": "cellular4g"
+    }
+  },
+  "fixtures": {
+    "vorher": {
+      "commit": "a864464fa2ada7715a94560619f8b6a5fa4d68c1",
+      "catalogCommit": "8236b8bf",
+      "product": "WP Cardea 2 · Hochformat 16 × 28 cm",
+      "assetCount": 18,
+      "modelSha256": "1f278b2aadf396c920342fc546cdb7ece857433252d3ee6d2d5e8699588c8329"
+    },
+    "nachher": {
+      "commit": "a261afe493871c00b530ccc430ab1a0df6c28b34",
+      "catalogCommit": "8236b8bf",
+      "product": "WP Cardea 2 · Hochformat 16 × 28 cm",
+      "assetCount": 18,
+      "modelSha256": "1f278b2aadf396c920342fc546cdb7ece857433252d3ee6d2d5e8699588c8329"
+    }
+  },
+  "cacheHeaders": {
+    "vorher": {
+      "/_acryl-runtime/lazy/katalog-kern.json": "public, max-age=3600",
+      "/_acryl-runtime/lazy/schriften/montserrat.json": "public, max-age=3600"
+    },
+    "nachher": {
+      "/_acryl-runtime/lazy/katalog-kern.json": "public, max-age=3600",
+      "/_acryl-runtime/lazy/schriften/montserrat.json": "public, max-age=3600"
+    }
+  },
+  "samples": [
+    {
+      "profile": "Desktop",
+      "cache": "kalt",
+      "version": "vorher",
+      "repeat": 1,
+      "editorReadyMs": 681,
+      "editorHtmlStartMs": 76,
+      "editorHtmlFirstByteMs": 95,
+      "editorHtmlDoneMs": 96.6,
+      "width": 1360,
+      "height": 900,
+      "design": "FK-RUNDUM",
+      "text": [
+        [
+          "name",
+          "Montserrat",
+          "Familie",
+          true
+        ],
+        [
+          "quote",
+          "Montserrat",
+          "Mustermann",
+          true
+        ],
+        [
+          "number",
+          "Montserrat",
+          "12a",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "artwork-d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "asset": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "FK-RUNDUM",
+        "FK-SEITLICH",
+        "FK-OBENUNTEN",
+        "FK-VERDECKT",
+        "FK-D05",
+        "FK-D06",
+        "FK-D07",
+        "FK-D08",
+        "FK-D09",
+        "FK-D10",
+        "FK-D11",
+        "FK-D12",
+        "FK-D13",
+        "FK-D14",
+        "FK-D15",
+        "FK-D16"
+      ],
+      "scenePaths": 24,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 30.1,
+          "end": 43.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 166590,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "frame": "shop",
+          "start": 42.5,
+          "end": 45.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 589,
+          "bodyBytes": 289
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "frame": "shop",
+          "start": 42.6,
+          "end": 47.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "frame": "shop",
+          "start": 42.7,
+          "end": 48.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 526,
+          "bodyBytes": 226
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "frame": "shop",
+          "start": 42.7,
+          "end": 50.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 619,
+          "bodyBytes": 319
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "frame": "shop",
+          "start": 42.7,
+          "end": 51.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 558,
+          "bodyBytes": 258
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "frame": "shop",
+          "start": 42.8,
+          "end": 52.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 48.6,
+          "end": 69.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 507915,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "frame": "shop",
+          "start": 52.3,
+          "end": 59.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 594,
+          "bodyBytes": 294
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "frame": "shop",
+          "start": 57.8,
+          "end": 62.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 607,
+          "bodyBytes": 307
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "frame": "shop",
+          "start": 58.2,
+          "end": 63.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 580,
+          "bodyBytes": 280
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "frame": "shop",
+          "start": 58.5,
+          "end": 65.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 584,
+          "bodyBytes": 284
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "frame": "shop",
+          "start": 58.6,
+          "end": 66.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "frame": "shop",
+          "start": 58.8,
+          "end": 70.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 651,
+          "bodyBytes": 351
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "frame": "shop",
+          "start": 60.3,
+          "end": 68,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 537,
+          "bodyBytes": 237
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "frame": "shop",
+          "start": 64.3,
+          "end": 71.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 567,
+          "bodyBytes": 267
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "frame": "shop",
+          "start": 65.1,
+          "end": 71.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 572,
+          "bodyBytes": 272
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "frame": "shop",
+          "start": 66.5,
+          "end": 72.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 585,
+          "bodyBytes": 285
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "frame": "shop",
+          "start": 67.9,
+          "end": 73.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 596,
+          "bodyBytes": 296
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "frame": "shop",
+          "start": 70.6,
+          "end": 74.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 76.3,
+          "end": 96.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 375604,
+          "bodyBytes": 375304
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "editor",
+          "start": 172.1,
+          "end": 172.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "editor",
+          "start": 172.2,
+          "end": 173.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        }
+      ],
+      "firstSwitch": {
+        "from": "FK-RUNDUM",
+        "to": "FK-D16",
+        "ms": 273.8,
+        "trusted": false,
+        "missingFonts": [
+          "Allura",
+          "Playfair Display"
+        ],
+        "missingMotifs": [],
+        "fontsReady": true,
+        "motifsReady": true
+      },
+      "surface": {
+        "path": "/_acryl-runtime/images/gravuru-edelstahl-feine-maserung-vorschau.50e74d27e1f6f494.webp",
+        "doneMs": 238
+      },
+      "metrics": {
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 2,
+        "fontsAndCatalogWireBytes": 674505,
+        "assetsBeforeHtml": 18,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 166590
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 507915
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "warm",
+      "version": "vorher",
+      "repeat": 1,
+      "editorReadyMs": 640,
+      "editorHtmlStartMs": 53,
+      "editorHtmlFirstByteMs": 55,
+      "editorHtmlDoneMs": 55.5,
+      "width": 1360,
+      "height": 900,
+      "design": "FK-RUNDUM",
+      "text": [
+        [
+          "name",
+          "Montserrat",
+          "Familie",
+          true
+        ],
+        [
+          "quote",
+          "Montserrat",
+          "Mustermann",
+          true
+        ],
+        [
+          "number",
+          "Montserrat",
+          "12a",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "artwork-d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "asset": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "FK-RUNDUM",
+        "FK-SEITLICH",
+        "FK-OBENUNTEN",
+        "FK-VERDECKT",
+        "FK-D05",
+        "FK-D06",
+        "FK-D07",
+        "FK-D08",
+        "FK-D09",
+        "FK-D10",
+        "FK-D11",
+        "FK-D12",
+        "FK-D13",
+        "FK-D14",
+        "FK-D15",
+        "FK-D16"
+      ],
+      "scenePaths": 24,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 28.8,
+          "end": 29.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "frame": "shop",
+          "start": 35.7,
+          "end": 37.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 589,
+          "bodyBytes": 289
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "frame": "shop",
+          "start": 35.8,
+          "end": 38.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "frame": "shop",
+          "start": 35.9,
+          "end": 39.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 526,
+          "bodyBytes": 226
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "frame": "shop",
+          "start": 35.9,
+          "end": 39.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 619,
+          "bodyBytes": 319
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "frame": "shop",
+          "start": 36,
+          "end": 40.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 558,
+          "bodyBytes": 258
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "frame": "shop",
+          "start": 36,
+          "end": 41.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 36.5,
+          "end": 37.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "frame": "shop",
+          "start": 38.8,
+          "end": 42.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 594,
+          "bodyBytes": 294
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "frame": "shop",
+          "start": 39.1,
+          "end": 43,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 607,
+          "bodyBytes": 307
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "frame": "shop",
+          "start": 39.9,
+          "end": 43.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 580,
+          "bodyBytes": 280
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "frame": "shop",
+          "start": 40.4,
+          "end": 44.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 584,
+          "bodyBytes": 284
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "frame": "shop",
+          "start": 41.5,
+          "end": 45.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "frame": "shop",
+          "start": 42.3,
+          "end": 46.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 651,
+          "bodyBytes": 351
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "frame": "shop",
+          "start": 42.9,
+          "end": 47.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 537,
+          "bodyBytes": 237
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "frame": "shop",
+          "start": 43.7,
+          "end": 48.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 567,
+          "bodyBytes": 267
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "frame": "shop",
+          "start": 44.5,
+          "end": 49.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 572,
+          "bodyBytes": 272
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "frame": "shop",
+          "start": 45.4,
+          "end": 50.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 585,
+          "bodyBytes": 285
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "frame": "shop",
+          "start": 48.3,
+          "end": 51.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 596,
+          "bodyBytes": 296
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "frame": "shop",
+          "start": 48.4,
+          "end": 51.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 53.7,
+          "end": 55.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 375304
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "editor",
+          "start": 123.7,
+          "end": 124.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "editor",
+          "start": 123.7,
+          "end": 124.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        }
+      ],
+      "firstSwitch": {
+        "from": "FK-RUNDUM",
+        "to": "FK-D16",
+        "ms": 285.1,
+        "trusted": false,
+        "missingFonts": [
+          "Allura",
+          "Playfair Display"
+        ],
+        "missingMotifs": [],
+        "fontsReady": true,
+        "motifsReady": true
+      },
+      "surface": {
+        "path": "/_acryl-runtime/images/gravuru-edelstahl-feine-maserung-vorschau.50e74d27e1f6f494.webp",
+        "doneMs": 188
+      },
+      "metrics": {
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 18,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "kalt",
+      "version": "nachher",
+      "repeat": 1,
+      "editorReadyMs": 652,
+      "editorHtmlStartMs": 53,
+      "editorHtmlFirstByteMs": 61,
+      "editorHtmlDoneMs": 62.3,
+      "width": 1360,
+      "height": 900,
+      "design": "FK-RUNDUM",
+      "text": [
+        [
+          "name",
+          "Montserrat",
+          "Familie",
+          true
+        ],
+        [
+          "quote",
+          "Montserrat",
+          "Mustermann",
+          true
+        ],
+        [
+          "number",
+          "Montserrat",
+          "12a",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "artwork-d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "asset": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "FK-RUNDUM",
+        "FK-SEITLICH",
+        "FK-OBENUNTEN",
+        "FK-VERDECKT",
+        "FK-D05",
+        "FK-D06",
+        "FK-D07",
+        "FK-D08",
+        "FK-D09",
+        "FK-D10",
+        "FK-D11",
+        "FK-D12",
+        "FK-D13",
+        "FK-D14",
+        "FK-D15",
+        "FK-D16"
+      ],
+      "scenePaths": 24,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 38.5,
+          "end": 53.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 166590,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "frame": "shop",
+          "start": 52.6,
+          "end": 55.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 589,
+          "bodyBytes": 289
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 53.9,
+          "end": 62.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 376052,
+          "bodyBytes": 375752
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 55.8,
+          "end": 70.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 507915,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "frame": "shop",
+          "start": 85.1,
+          "end": 87,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "frame": "shop",
+          "start": 85.2,
+          "end": 88.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 526,
+          "bodyBytes": 226
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "frame": "shop",
+          "start": 85.2,
+          "end": 89.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 619,
+          "bodyBytes": 319
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "frame": "shop",
+          "start": 85.3,
+          "end": 90.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 558,
+          "bodyBytes": 258
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "frame": "shop",
+          "start": 85.3,
+          "end": 91.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "frame": "shop",
+          "start": 85.4,
+          "end": 92,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 594,
+          "bodyBytes": 294
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "frame": "shop",
+          "start": 93.5,
+          "end": 95.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 607,
+          "bodyBytes": 307
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "frame": "shop",
+          "start": 93.8,
+          "end": 96.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 580,
+          "bodyBytes": 280
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "frame": "shop",
+          "start": 93.9,
+          "end": 97.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 584,
+          "bodyBytes": 284
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "frame": "shop",
+          "start": 94,
+          "end": 98.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "frame": "shop",
+          "start": 94.2,
+          "end": 100,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 651,
+          "bodyBytes": 351
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "frame": "shop",
+          "start": 94.5,
+          "end": 100.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 537,
+          "bodyBytes": 237
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "frame": "shop",
+          "start": 112,
+          "end": 114.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 567,
+          "bodyBytes": 267
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "frame": "shop",
+          "start": 112.1,
+          "end": 115.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 572,
+          "bodyBytes": 272
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "frame": "shop",
+          "start": 112.1,
+          "end": 116.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 585,
+          "bodyBytes": 285
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "frame": "shop",
+          "start": 112.5,
+          "end": 117.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 596,
+          "bodyBytes": 296
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "frame": "shop",
+          "start": 112.6,
+          "end": 119.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        }
+      ],
+      "firstSwitch": {
+        "from": "FK-RUNDUM",
+        "to": "FK-D16",
+        "ms": 290.3,
+        "trusted": false,
+        "missingFonts": [
+          "Allura",
+          "Playfair Display"
+        ],
+        "missingMotifs": [],
+        "fontsReady": true,
+        "motifsReady": true
+      },
+      "surface": {
+        "path": "/_acryl-runtime/images/gravuru-edelstahl-feine-maserung-vorschau.50e74d27e1f6f494.webp",
+        "doneMs": 201
+      },
+      "metrics": {
+        "fontsAndCatalogReads": 2,
+        "fontsAndCatalogNet": 2,
+        "fontsAndCatalogWireBytes": 674505,
+        "assetsBeforeHtml": 1,
+        "assetsAfterHtml": 17,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 166590
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 507915
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "warm",
+      "version": "nachher",
+      "repeat": 1,
+      "editorReadyMs": 641,
+      "editorHtmlStartMs": 42,
+      "editorHtmlFirstByteMs": 44,
+      "editorHtmlDoneMs": 44.3,
+      "width": 1360,
+      "height": 900,
+      "design": "FK-RUNDUM",
+      "text": [
+        [
+          "name",
+          "Montserrat",
+          "Familie",
+          true
+        ],
+        [
+          "quote",
+          "Montserrat",
+          "Mustermann",
+          true
+        ],
+        [
+          "number",
+          "Montserrat",
+          "12a",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "artwork-d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "asset": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "FK-RUNDUM",
+        "FK-SEITLICH",
+        "FK-OBENUNTEN",
+        "FK-VERDECKT",
+        "FK-D05",
+        "FK-D06",
+        "FK-D07",
+        "FK-D08",
+        "FK-D09",
+        "FK-D10",
+        "FK-D11",
+        "FK-D12",
+        "FK-D13",
+        "FK-D14",
+        "FK-D15",
+        "FK-D16"
+      ],
+      "scenePaths": 24,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 32.9,
+          "end": 33.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "frame": "shop",
+          "start": 41.3,
+          "end": 43.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 589,
+          "bodyBytes": 289
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 42.5,
+          "end": 44.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 375752
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 42.9,
+          "end": 44,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "frame": "shop",
+          "start": 69.9,
+          "end": 72.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "frame": "shop",
+          "start": 70,
+          "end": 73.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 526,
+          "bodyBytes": 226
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "frame": "shop",
+          "start": 70.1,
+          "end": 74.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 619,
+          "bodyBytes": 319
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "frame": "shop",
+          "start": 70.2,
+          "end": 75.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 558,
+          "bodyBytes": 258
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "frame": "shop",
+          "start": 70.2,
+          "end": 76.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "frame": "shop",
+          "start": 70.2,
+          "end": 77.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 594,
+          "bodyBytes": 294
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "frame": "shop",
+          "start": 74.7,
+          "end": 78.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 607,
+          "bodyBytes": 307
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "frame": "shop",
+          "start": 75.1,
+          "end": 78.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 580,
+          "bodyBytes": 280
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "frame": "shop",
+          "start": 76.1,
+          "end": 79.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 584,
+          "bodyBytes": 284
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "frame": "shop",
+          "start": 95.5,
+          "end": 97.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "frame": "shop",
+          "start": 96.9,
+          "end": 99.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 651,
+          "bodyBytes": 351
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "frame": "shop",
+          "start": 97.1,
+          "end": 100.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 537,
+          "bodyBytes": 237
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "frame": "shop",
+          "start": 97.1,
+          "end": 101.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 567,
+          "bodyBytes": 267
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "frame": "shop",
+          "start": 97.4,
+          "end": 102.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 572,
+          "bodyBytes": 272
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "frame": "shop",
+          "start": 97.5,
+          "end": 104,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 585,
+          "bodyBytes": 285
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "frame": "shop",
+          "start": 103.2,
+          "end": 105.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 596,
+          "bodyBytes": 296
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "frame": "shop",
+          "start": 104,
+          "end": 107.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        }
+      ],
+      "firstSwitch": {
+        "from": "FK-RUNDUM",
+        "to": "FK-D16",
+        "ms": 284.8,
+        "trusted": false,
+        "missingFonts": [
+          "Allura",
+          "Playfair Display"
+        ],
+        "missingMotifs": [],
+        "fontsReady": true,
+        "motifsReady": true
+      },
+      "surface": {
+        "path": "/_acryl-runtime/images/gravuru-edelstahl-feine-maserung-vorschau.50e74d27e1f6f494.webp",
+        "doneMs": 183
+      },
+      "metrics": {
+        "fontsAndCatalogReads": 2,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 1,
+        "assetsAfterHtml": 17,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "kalt",
+      "version": "nachher",
+      "repeat": 2,
+      "editorReadyMs": 662,
+      "editorHtmlStartMs": 48,
+      "editorHtmlFirstByteMs": 56,
+      "editorHtmlDoneMs": 74.4,
+      "width": 1360,
+      "height": 900,
+      "design": "FK-RUNDUM",
+      "text": [
+        [
+          "name",
+          "Montserrat",
+          "Familie",
+          true
+        ],
+        [
+          "quote",
+          "Montserrat",
+          "Mustermann",
+          true
+        ],
+        [
+          "number",
+          "Montserrat",
+          "12a",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "artwork-d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "asset": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "FK-RUNDUM",
+        "FK-SEITLICH",
+        "FK-OBENUNTEN",
+        "FK-VERDECKT",
+        "FK-D05",
+        "FK-D06",
+        "FK-D07",
+        "FK-D08",
+        "FK-D09",
+        "FK-D10",
+        "FK-D11",
+        "FK-D12",
+        "FK-D13",
+        "FK-D14",
+        "FK-D15",
+        "FK-D16"
+      ],
+      "scenePaths": 24,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 34.8,
+          "end": 42.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 166590,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "frame": "shop",
+          "start": 47.5,
+          "end": 49.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 589,
+          "bodyBytes": 289
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 48.8,
+          "end": 74.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 376052,
+          "bodyBytes": 375752
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 49.2,
+          "end": 53.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 507915,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "frame": "shop",
+          "start": 90.7,
+          "end": 92.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "frame": "shop",
+          "start": 90.8,
+          "end": 94.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 526,
+          "bodyBytes": 226
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "frame": "shop",
+          "start": 90.9,
+          "end": 95.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 619,
+          "bodyBytes": 319
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "frame": "shop",
+          "start": 91,
+          "end": 95.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 558,
+          "bodyBytes": 258
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "frame": "shop",
+          "start": 91,
+          "end": 96.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "frame": "shop",
+          "start": 91,
+          "end": 97.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 594,
+          "bodyBytes": 294
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "frame": "shop",
+          "start": 94,
+          "end": 98.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 607,
+          "bodyBytes": 307
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "frame": "shop",
+          "start": 125.8,
+          "end": 128.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 580,
+          "bodyBytes": 280
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "frame": "shop",
+          "start": 128.6,
+          "end": 130.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 584,
+          "bodyBytes": 284
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "frame": "shop",
+          "start": 128.9,
+          "end": 131.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "frame": "shop",
+          "start": 129,
+          "end": 132.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 651,
+          "bodyBytes": 351
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "frame": "shop",
+          "start": 129.1,
+          "end": 133.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 537,
+          "bodyBytes": 237
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "frame": "shop",
+          "start": 129.2,
+          "end": 133.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 567,
+          "bodyBytes": 267
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "frame": "shop",
+          "start": 132.8,
+          "end": 134.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 572,
+          "bodyBytes": 272
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "frame": "shop",
+          "start": 135,
+          "end": 136.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 585,
+          "bodyBytes": 285
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "frame": "shop",
+          "start": 136.1,
+          "end": 137.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 596,
+          "bodyBytes": 296
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "frame": "shop",
+          "start": 138.1,
+          "end": 140.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        }
+      ],
+      "firstSwitch": {
+        "from": "FK-RUNDUM",
+        "to": "FK-D16",
+        "ms": 285.8,
+        "trusted": false,
+        "missingFonts": [
+          "Allura",
+          "Playfair Display"
+        ],
+        "missingMotifs": [],
+        "fontsReady": true,
+        "motifsReady": true
+      },
+      "surface": {
+        "path": "/_acryl-runtime/images/gravuru-edelstahl-feine-maserung-vorschau.50e74d27e1f6f494.webp",
+        "doneMs": 220
+      },
+      "metrics": {
+        "fontsAndCatalogReads": 2,
+        "fontsAndCatalogNet": 2,
+        "fontsAndCatalogWireBytes": 674505,
+        "assetsBeforeHtml": 1,
+        "assetsAfterHtml": 17,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 166590
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 507915
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "warm",
+      "version": "nachher",
+      "repeat": 2,
+      "editorReadyMs": 629,
+      "editorHtmlStartMs": 37,
+      "editorHtmlFirstByteMs": 40,
+      "editorHtmlDoneMs": 39.9,
+      "width": 1360,
+      "height": 900,
+      "design": "FK-RUNDUM",
+      "text": [
+        [
+          "name",
+          "Montserrat",
+          "Familie",
+          true
+        ],
+        [
+          "quote",
+          "Montserrat",
+          "Mustermann",
+          true
+        ],
+        [
+          "number",
+          "Montserrat",
+          "12a",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "artwork-d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "asset": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "FK-RUNDUM",
+        "FK-SEITLICH",
+        "FK-OBENUNTEN",
+        "FK-VERDECKT",
+        "FK-D05",
+        "FK-D06",
+        "FK-D07",
+        "FK-D08",
+        "FK-D09",
+        "FK-D10",
+        "FK-D11",
+        "FK-D12",
+        "FK-D13",
+        "FK-D14",
+        "FK-D15",
+        "FK-D16"
+      ],
+      "scenePaths": 24,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 30,
+          "end": 30.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "frame": "shop",
+          "start": 36.6,
+          "end": 38.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 589,
+          "bodyBytes": 289
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 38,
+          "end": 39.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 375752
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 38.4,
+          "end": 39.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "frame": "shop",
+          "start": 65.3,
+          "end": 67.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "frame": "shop",
+          "start": 65.3,
+          "end": 67.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 526,
+          "bodyBytes": 226
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "frame": "shop",
+          "start": 65.4,
+          "end": 68.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 619,
+          "bodyBytes": 319
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "frame": "shop",
+          "start": 65.5,
+          "end": 69.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 558,
+          "bodyBytes": 258
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "frame": "shop",
+          "start": 65.5,
+          "end": 70.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "frame": "shop",
+          "start": 65.5,
+          "end": 70.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 594,
+          "bodyBytes": 294
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "frame": "shop",
+          "start": 69.8,
+          "end": 72,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 607,
+          "bodyBytes": 307
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "frame": "shop",
+          "start": 70.1,
+          "end": 73.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 580,
+          "bodyBytes": 280
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "frame": "shop",
+          "start": 71.7,
+          "end": 73.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 584,
+          "bodyBytes": 284
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "frame": "shop",
+          "start": 72.1,
+          "end": 74.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "frame": "shop",
+          "start": 90.1,
+          "end": 93,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 651,
+          "bodyBytes": 351
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "frame": "shop",
+          "start": 90.4,
+          "end": 94.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 537,
+          "bodyBytes": 237
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "frame": "shop",
+          "start": 91.4,
+          "end": 95.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 567,
+          "bodyBytes": 267
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "frame": "shop",
+          "start": 91.6,
+          "end": 97.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 572,
+          "bodyBytes": 272
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "frame": "shop",
+          "start": 91.6,
+          "end": 98.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 585,
+          "bodyBytes": 285
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "frame": "shop",
+          "start": 91.7,
+          "end": 99.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 596,
+          "bodyBytes": 296
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "frame": "shop",
+          "start": 97.7,
+          "end": 100.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        }
+      ],
+      "firstSwitch": {
+        "from": "FK-RUNDUM",
+        "to": "FK-D16",
+        "ms": 284.1,
+        "trusted": false,
+        "missingFonts": [
+          "Allura",
+          "Playfair Display"
+        ],
+        "missingMotifs": [],
+        "fontsReady": true,
+        "motifsReady": true
+      },
+      "surface": {
+        "path": "/_acryl-runtime/images/gravuru-edelstahl-feine-maserung-vorschau.50e74d27e1f6f494.webp",
+        "doneMs": 174
+      },
+      "metrics": {
+        "fontsAndCatalogReads": 2,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 1,
+        "assetsAfterHtml": 17,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "kalt",
+      "version": "vorher",
+      "repeat": 2,
+      "editorReadyMs": 662,
+      "editorHtmlStartMs": 65,
+      "editorHtmlFirstByteMs": 70,
+      "editorHtmlDoneMs": 71.2,
+      "width": 1360,
+      "height": 900,
+      "design": "FK-RUNDUM",
+      "text": [
+        [
+          "name",
+          "Montserrat",
+          "Familie",
+          true
+        ],
+        [
+          "quote",
+          "Montserrat",
+          "Mustermann",
+          true
+        ],
+        [
+          "number",
+          "Montserrat",
+          "12a",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "artwork-d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "asset": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "FK-RUNDUM",
+        "FK-SEITLICH",
+        "FK-OBENUNTEN",
+        "FK-VERDECKT",
+        "FK-D05",
+        "FK-D06",
+        "FK-D07",
+        "FK-D08",
+        "FK-D09",
+        "FK-D10",
+        "FK-D11",
+        "FK-D12",
+        "FK-D13",
+        "FK-D14",
+        "FK-D15",
+        "FK-D16"
+      ],
+      "scenePaths": 24,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 33.2,
+          "end": 39.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 166590,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "frame": "shop",
+          "start": 40.2,
+          "end": 42.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 589,
+          "bodyBytes": 289
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "frame": "shop",
+          "start": 40.3,
+          "end": 43.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "frame": "shop",
+          "start": 40.3,
+          "end": 44.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 526,
+          "bodyBytes": 226
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "frame": "shop",
+          "start": 40.4,
+          "end": 45.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 619,
+          "bodyBytes": 319
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "frame": "shop",
+          "start": 40.5,
+          "end": 46.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 558,
+          "bodyBytes": 258
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "frame": "shop",
+          "start": 40.5,
+          "end": 47.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 44.8,
+          "end": 61.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 507915,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "frame": "shop",
+          "start": 45.9,
+          "end": 48.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 594,
+          "bodyBytes": 294
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "frame": "shop",
+          "start": 46.1,
+          "end": 49.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 607,
+          "bodyBytes": 307
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "frame": "shop",
+          "start": 46.2,
+          "end": 50.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 580,
+          "bodyBytes": 280
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "frame": "shop",
+          "start": 46.6,
+          "end": 51.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 584,
+          "bodyBytes": 284
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "frame": "shop",
+          "start": 47.1,
+          "end": 53.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "frame": "shop",
+          "start": 48,
+          "end": 55.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 651,
+          "bodyBytes": 351
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "frame": "shop",
+          "start": 48.9,
+          "end": 56.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 537,
+          "bodyBytes": 237
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "frame": "shop",
+          "start": 49.9,
+          "end": 57.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 567,
+          "bodyBytes": 267
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "frame": "shop",
+          "start": 50.9,
+          "end": 59,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 572,
+          "bodyBytes": 272
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "frame": "shop",
+          "start": 51.9,
+          "end": 60.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 585,
+          "bodyBytes": 285
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "frame": "shop",
+          "start": 54.5,
+          "end": 62.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 596,
+          "bodyBytes": 296
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "frame": "shop",
+          "start": 56.1,
+          "end": 63.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 65.1,
+          "end": 71.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 375604,
+          "bodyBytes": 375304
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "editor",
+          "start": 139.7,
+          "end": 140.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "editor",
+          "start": 139.7,
+          "end": 140.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        }
+      ],
+      "firstSwitch": {
+        "from": "FK-RUNDUM",
+        "to": "FK-D16",
+        "ms": 288.4,
+        "trusted": false,
+        "missingFonts": [
+          "Allura",
+          "Playfair Display"
+        ],
+        "missingMotifs": [],
+        "fontsReady": true,
+        "motifsReady": true
+      },
+      "surface": {
+        "path": "/_acryl-runtime/images/gravuru-edelstahl-feine-maserung-vorschau.50e74d27e1f6f494.webp",
+        "doneMs": 206
+      },
+      "metrics": {
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 2,
+        "fontsAndCatalogWireBytes": 674505,
+        "assetsBeforeHtml": 18,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 166590
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 507915
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "warm",
+      "version": "vorher",
+      "repeat": 2,
+      "editorReadyMs": 656,
+      "editorHtmlStartMs": 60,
+      "editorHtmlFirstByteMs": 62,
+      "editorHtmlDoneMs": 62.2,
+      "width": 1360,
+      "height": 900,
+      "design": "FK-RUNDUM",
+      "text": [
+        [
+          "name",
+          "Montserrat",
+          "Familie",
+          true
+        ],
+        [
+          "quote",
+          "Montserrat",
+          "Mustermann",
+          true
+        ],
+        [
+          "number",
+          "Montserrat",
+          "12a",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "artwork-d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "asset": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "FK-RUNDUM",
+        "FK-SEITLICH",
+        "FK-OBENUNTEN",
+        "FK-VERDECKT",
+        "FK-D05",
+        "FK-D06",
+        "FK-D07",
+        "FK-D08",
+        "FK-D09",
+        "FK-D10",
+        "FK-D11",
+        "FK-D12",
+        "FK-D13",
+        "FK-D14",
+        "FK-D15",
+        "FK-D16"
+      ],
+      "scenePaths": 24,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 31.7,
+          "end": 32.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "frame": "shop",
+          "start": 39.6,
+          "end": 41.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 589,
+          "bodyBytes": 289
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "frame": "shop",
+          "start": 39.6,
+          "end": 42.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "frame": "shop",
+          "start": 39.7,
+          "end": 43.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 526,
+          "bodyBytes": 226
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "frame": "shop",
+          "start": 39.8,
+          "end": 44.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 619,
+          "bodyBytes": 319
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "frame": "shop",
+          "start": 39.8,
+          "end": 45.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 558,
+          "bodyBytes": 258
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "frame": "shop",
+          "start": 39.8,
+          "end": 46.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 40.1,
+          "end": 41.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "frame": "shop",
+          "start": 43,
+          "end": 47.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 594,
+          "bodyBytes": 294
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "frame": "shop",
+          "start": 43.3,
+          "end": 47.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 607,
+          "bodyBytes": 307
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "frame": "shop",
+          "start": 44.2,
+          "end": 48.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 580,
+          "bodyBytes": 280
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "frame": "shop",
+          "start": 45.2,
+          "end": 49.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 584,
+          "bodyBytes": 284
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "frame": "shop",
+          "start": 46.2,
+          "end": 51.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "frame": "shop",
+          "start": 47.1,
+          "end": 52.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 651,
+          "bodyBytes": 351
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "frame": "shop",
+          "start": 47.8,
+          "end": 53.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 537,
+          "bodyBytes": 237
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "frame": "shop",
+          "start": 48.8,
+          "end": 54.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 567,
+          "bodyBytes": 267
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "frame": "shop",
+          "start": 51.6,
+          "end": 55.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 572,
+          "bodyBytes": 272
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "frame": "shop",
+          "start": 51.8,
+          "end": 57,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 585,
+          "bodyBytes": 285
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "frame": "shop",
+          "start": 52.4,
+          "end": 58,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 596,
+          "bodyBytes": 296
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "frame": "shop",
+          "start": 53.6,
+          "end": 58.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 60.6,
+          "end": 62.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 375304
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "editor",
+          "start": 132.2,
+          "end": 132.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "editor",
+          "start": 132.2,
+          "end": 133.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        }
+      ],
+      "firstSwitch": {
+        "from": "FK-RUNDUM",
+        "to": "FK-D16",
+        "ms": 286,
+        "trusted": false,
+        "missingFonts": [
+          "Allura",
+          "Playfair Display"
+        ],
+        "missingMotifs": [],
+        "fontsReady": true,
+        "motifsReady": true
+      },
+      "surface": {
+        "path": "/_acryl-runtime/images/gravuru-edelstahl-feine-maserung-vorschau.50e74d27e1f6f494.webp",
+        "doneMs": 199
+      },
+      "metrics": {
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 18,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "kalt",
+      "version": "vorher",
+      "repeat": 3,
+      "editorReadyMs": 674,
+      "editorHtmlStartMs": 67,
+      "editorHtmlFirstByteMs": 72,
+      "editorHtmlDoneMs": 73,
+      "width": 1360,
+      "height": 900,
+      "design": "FK-RUNDUM",
+      "text": [
+        [
+          "name",
+          "Montserrat",
+          "Familie",
+          true
+        ],
+        [
+          "quote",
+          "Montserrat",
+          "Mustermann",
+          true
+        ],
+        [
+          "number",
+          "Montserrat",
+          "12a",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "artwork-d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "asset": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "FK-RUNDUM",
+        "FK-SEITLICH",
+        "FK-OBENUNTEN",
+        "FK-VERDECKT",
+        "FK-D05",
+        "FK-D06",
+        "FK-D07",
+        "FK-D08",
+        "FK-D09",
+        "FK-D10",
+        "FK-D11",
+        "FK-D12",
+        "FK-D13",
+        "FK-D14",
+        "FK-D15",
+        "FK-D16"
+      ],
+      "scenePaths": 24,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 35.3,
+          "end": 39.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 166590,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "frame": "shop",
+          "start": 45.4,
+          "end": 46.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 589,
+          "bodyBytes": 289
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "frame": "shop",
+          "start": 45.4,
+          "end": 48,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "frame": "shop",
+          "start": 45.5,
+          "end": 48.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 526,
+          "bodyBytes": 226
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "frame": "shop",
+          "start": 45.6,
+          "end": 50,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 619,
+          "bodyBytes": 319
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "frame": "shop",
+          "start": 45.6,
+          "end": 50.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 558,
+          "bodyBytes": 258
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "frame": "shop",
+          "start": 45.6,
+          "end": 51.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 45.9,
+          "end": 63.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 507915,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "frame": "shop",
+          "start": 48.6,
+          "end": 52.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 594,
+          "bodyBytes": 294
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "frame": "shop",
+          "start": 49,
+          "end": 53.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 607,
+          "bodyBytes": 307
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "frame": "shop",
+          "start": 49.5,
+          "end": 54.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 580,
+          "bodyBytes": 280
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "frame": "shop",
+          "start": 50.9,
+          "end": 55.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 584,
+          "bodyBytes": 284
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "frame": "shop",
+          "start": 51.2,
+          "end": 58.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "frame": "shop",
+          "start": 52,
+          "end": 59.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 651,
+          "bodyBytes": 351
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "frame": "shop",
+          "start": 54.7,
+          "end": 60,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 537,
+          "bodyBytes": 237
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "frame": "shop",
+          "start": 55.5,
+          "end": 61,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 567,
+          "bodyBytes": 267
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "frame": "shop",
+          "start": 55.6,
+          "end": 62,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 572,
+          "bodyBytes": 272
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "frame": "shop",
+          "start": 56.3,
+          "end": 62.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 585,
+          "bodyBytes": 285
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "frame": "shop",
+          "start": 59.2,
+          "end": 64.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 596,
+          "bodyBytes": 296
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "frame": "shop",
+          "start": 59.9,
+          "end": 65.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 67.1,
+          "end": 73.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 375604,
+          "bodyBytes": 375304
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "editor",
+          "start": 140.3,
+          "end": 140.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "editor",
+          "start": 140.3,
+          "end": 141.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        }
+      ],
+      "firstSwitch": {
+        "from": "FK-RUNDUM",
+        "to": "FK-D16",
+        "ms": 298.1,
+        "trusted": false,
+        "missingFonts": [
+          "Allura",
+          "Playfair Display"
+        ],
+        "missingMotifs": [],
+        "fontsReady": true,
+        "motifsReady": true
+      },
+      "surface": {
+        "path": "/_acryl-runtime/images/gravuru-edelstahl-feine-maserung-vorschau.50e74d27e1f6f494.webp",
+        "doneMs": 206
+      },
+      "metrics": {
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 2,
+        "fontsAndCatalogWireBytes": 674505,
+        "assetsBeforeHtml": 18,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 166590
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 507915
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "warm",
+      "version": "vorher",
+      "repeat": 3,
+      "editorReadyMs": 654,
+      "editorHtmlStartMs": 59,
+      "editorHtmlFirstByteMs": 61,
+      "editorHtmlDoneMs": 61.2,
+      "width": 1360,
+      "height": 900,
+      "design": "FK-RUNDUM",
+      "text": [
+        [
+          "name",
+          "Montserrat",
+          "Familie",
+          true
+        ],
+        [
+          "quote",
+          "Montserrat",
+          "Mustermann",
+          true
+        ],
+        [
+          "number",
+          "Montserrat",
+          "12a",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "artwork-d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "asset": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "FK-RUNDUM",
+        "FK-SEITLICH",
+        "FK-OBENUNTEN",
+        "FK-VERDECKT",
+        "FK-D05",
+        "FK-D06",
+        "FK-D07",
+        "FK-D08",
+        "FK-D09",
+        "FK-D10",
+        "FK-D11",
+        "FK-D12",
+        "FK-D13",
+        "FK-D14",
+        "FK-D15",
+        "FK-D16"
+      ],
+      "scenePaths": 24,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 31.3,
+          "end": 32,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "frame": "shop",
+          "start": 38.5,
+          "end": 40,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 589,
+          "bodyBytes": 289
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "frame": "shop",
+          "start": 38.6,
+          "end": 41.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "frame": "shop",
+          "start": 38.6,
+          "end": 42.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 526,
+          "bodyBytes": 226
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "frame": "shop",
+          "start": 38.6,
+          "end": 43.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 619,
+          "bodyBytes": 319
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "frame": "shop",
+          "start": 38.6,
+          "end": 44.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 558,
+          "bodyBytes": 258
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "frame": "shop",
+          "start": 38.6,
+          "end": 45.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 39,
+          "end": 39.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "frame": "shop",
+          "start": 41.9,
+          "end": 46.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 594,
+          "bodyBytes": 294
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "frame": "shop",
+          "start": 42.5,
+          "end": 47.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 607,
+          "bodyBytes": 307
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "frame": "shop",
+          "start": 43.6,
+          "end": 48.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 580,
+          "bodyBytes": 280
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "frame": "shop",
+          "start": 44.8,
+          "end": 49.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 584,
+          "bodyBytes": 284
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "frame": "shop",
+          "start": 48.8,
+          "end": 50.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "frame": "shop",
+          "start": 49,
+          "end": 51.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 651,
+          "bodyBytes": 351
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "frame": "shop",
+          "start": 49.1,
+          "end": 52.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 537,
+          "bodyBytes": 237
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "frame": "shop",
+          "start": 49.3,
+          "end": 53.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 567,
+          "bodyBytes": 267
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "frame": "shop",
+          "start": 49.7,
+          "end": 54.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 572,
+          "bodyBytes": 272
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "frame": "shop",
+          "start": 50.8,
+          "end": 55.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 585,
+          "bodyBytes": 285
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "frame": "shop",
+          "start": 51.3,
+          "end": 56.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 596,
+          "bodyBytes": 296
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "frame": "shop",
+          "start": 52.1,
+          "end": 57.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 59.6,
+          "end": 61.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 375304
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "editor",
+          "start": 130.6,
+          "end": 131.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "editor",
+          "start": 130.7,
+          "end": 131.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        }
+      ],
+      "firstSwitch": {
+        "from": "FK-RUNDUM",
+        "to": "FK-D16",
+        "ms": 285,
+        "trusted": false,
+        "missingFonts": [
+          "Allura",
+          "Playfair Display"
+        ],
+        "missingMotifs": [],
+        "fontsReady": true,
+        "motifsReady": true
+      },
+      "surface": {
+        "path": "/_acryl-runtime/images/gravuru-edelstahl-feine-maserung-vorschau.50e74d27e1f6f494.webp",
+        "doneMs": 195
+      },
+      "metrics": {
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 18,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "kalt",
+      "version": "nachher",
+      "repeat": 3,
+      "editorReadyMs": 643,
+      "editorHtmlStartMs": 44,
+      "editorHtmlFirstByteMs": 51,
+      "editorHtmlDoneMs": 51.5,
+      "width": 1360,
+      "height": 900,
+      "design": "FK-RUNDUM",
+      "text": [
+        [
+          "name",
+          "Montserrat",
+          "Familie",
+          true
+        ],
+        [
+          "quote",
+          "Montserrat",
+          "Mustermann",
+          true
+        ],
+        [
+          "number",
+          "Montserrat",
+          "12a",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "artwork-d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "asset": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "FK-RUNDUM",
+        "FK-SEITLICH",
+        "FK-OBENUNTEN",
+        "FK-VERDECKT",
+        "FK-D05",
+        "FK-D06",
+        "FK-D07",
+        "FK-D08",
+        "FK-D09",
+        "FK-D10",
+        "FK-D11",
+        "FK-D12",
+        "FK-D13",
+        "FK-D14",
+        "FK-D15",
+        "FK-D16"
+      ],
+      "scenePaths": 24,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 35.4,
+          "end": 42.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 166590,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "frame": "shop",
+          "start": 43.7,
+          "end": 45.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 589,
+          "bodyBytes": 289
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 44.9,
+          "end": 51.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 376052,
+          "bodyBytes": 375752
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 46.9,
+          "end": 54.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 507915,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "frame": "shop",
+          "start": 77.2,
+          "end": 79.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "frame": "shop",
+          "start": 77.3,
+          "end": 81.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 526,
+          "bodyBytes": 226
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "frame": "shop",
+          "start": 77.3,
+          "end": 82.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 619,
+          "bodyBytes": 319
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "frame": "shop",
+          "start": 77.3,
+          "end": 83.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 558,
+          "bodyBytes": 258
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "frame": "shop",
+          "start": 77.4,
+          "end": 85.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "frame": "shop",
+          "start": 77.5,
+          "end": 86.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 594,
+          "bodyBytes": 294
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "frame": "shop",
+          "start": 80.9,
+          "end": 89,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 607,
+          "bodyBytes": 307
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "frame": "shop",
+          "start": 100.5,
+          "end": 102.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 580,
+          "bodyBytes": 280
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "frame": "shop",
+          "start": 104.4,
+          "end": 106.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 584,
+          "bodyBytes": 284
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "frame": "shop",
+          "start": 104.8,
+          "end": 107.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "frame": "shop",
+          "start": 104.8,
+          "end": 108.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 651,
+          "bodyBytes": 351
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "frame": "shop",
+          "start": 105,
+          "end": 109.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 537,
+          "bodyBytes": 237
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "frame": "shop",
+          "start": 105.1,
+          "end": 109.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 567,
+          "bodyBytes": 267
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "frame": "shop",
+          "start": 107.6,
+          "end": 110.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 572,
+          "bodyBytes": 272
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "frame": "shop",
+          "start": 111.9,
+          "end": 113.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 585,
+          "bodyBytes": 285
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "frame": "shop",
+          "start": 112.6,
+          "end": 114.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 596,
+          "bodyBytes": 296
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "frame": "shop",
+          "start": 112.7,
+          "end": 115.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        }
+      ],
+      "firstSwitch": {
+        "from": "FK-RUNDUM",
+        "to": "FK-D16",
+        "ms": 291.6,
+        "trusted": false,
+        "missingFonts": [
+          "Allura",
+          "Playfair Display"
+        ],
+        "missingMotifs": [],
+        "fontsReady": true,
+        "motifsReady": true
+      },
+      "surface": {
+        "path": "/_acryl-runtime/images/gravuru-edelstahl-feine-maserung-vorschau.50e74d27e1f6f494.webp",
+        "doneMs": 192
+      },
+      "metrics": {
+        "fontsAndCatalogReads": 2,
+        "fontsAndCatalogNet": 2,
+        "fontsAndCatalogWireBytes": 674505,
+        "assetsBeforeHtml": 1,
+        "assetsAfterHtml": 17,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 166590
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 507915
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "warm",
+      "version": "nachher",
+      "repeat": 3,
+      "editorReadyMs": 641,
+      "editorHtmlStartMs": 40,
+      "editorHtmlFirstByteMs": 42,
+      "editorHtmlDoneMs": 42.7,
+      "width": 1360,
+      "height": 900,
+      "design": "FK-RUNDUM",
+      "text": [
+        [
+          "name",
+          "Montserrat",
+          "Familie",
+          true
+        ],
+        [
+          "quote",
+          "Montserrat",
+          "Mustermann",
+          true
+        ],
+        [
+          "number",
+          "Montserrat",
+          "12a",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "artwork-d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "asset": "d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8",
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "FK-RUNDUM",
+        "FK-SEITLICH",
+        "FK-OBENUNTEN",
+        "FK-VERDECKT",
+        "FK-D05",
+        "FK-D06",
+        "FK-D07",
+        "FK-D08",
+        "FK-D09",
+        "FK-D10",
+        "FK-D11",
+        "FK-D12",
+        "FK-D13",
+        "FK-D14",
+        "FK-D15",
+        "FK-D16"
+      ],
+      "scenePaths": 24,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 32,
+          "end": 32.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "frame": "shop",
+          "start": 39.6,
+          "end": 41.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 589,
+          "bodyBytes": 289
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 40.9,
+          "end": 42.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 375752
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 41.3,
+          "end": 41.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "frame": "shop",
+          "start": 67,
+          "end": 68.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "frame": "shop",
+          "start": 67,
+          "end": 70,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 526,
+          "bodyBytes": 226
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "frame": "shop",
+          "start": 67.1,
+          "end": 71.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 619,
+          "bodyBytes": 319
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "frame": "shop",
+          "start": 67.2,
+          "end": 72.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 558,
+          "bodyBytes": 258
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "frame": "shop",
+          "start": 67.3,
+          "end": 73.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "frame": "shop",
+          "start": 67.3,
+          "end": 73.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 594,
+          "bodyBytes": 294
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "frame": "shop",
+          "start": 72,
+          "end": 74.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 607,
+          "bodyBytes": 307
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "frame": "shop",
+          "start": 72.3,
+          "end": 75.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 580,
+          "bodyBytes": 280
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "frame": "shop",
+          "start": 73.1,
+          "end": 76.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 584,
+          "bodyBytes": 284
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "frame": "shop",
+          "start": 89.5,
+          "end": 91.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 552,
+          "bodyBytes": 252
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "frame": "shop",
+          "start": 91.9,
+          "end": 93.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 651,
+          "bodyBytes": 351
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "frame": "shop",
+          "start": 92.1,
+          "end": 94.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 537,
+          "bodyBytes": 237
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "frame": "shop",
+          "start": 92.2,
+          "end": 95.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 567,
+          "bodyBytes": 267
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "frame": "shop",
+          "start": 92.2,
+          "end": 95.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 572,
+          "bodyBytes": 272
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "frame": "shop",
+          "start": 92.4,
+          "end": 96.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 585,
+          "bodyBytes": 285
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "frame": "shop",
+          "start": 95,
+          "end": 97.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 596,
+          "bodyBytes": 296
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "frame": "shop",
+          "start": 98.8,
+          "end": 100.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 601,
+          "bodyBytes": 301
+        }
+      ],
+      "firstSwitch": {
+        "from": "FK-RUNDUM",
+        "to": "FK-D16",
+        "ms": 289,
+        "trusted": false,
+        "missingFonts": [
+          "Allura",
+          "Playfair Display"
+        ],
+        "missingMotifs": [],
+        "fontsReady": true,
+        "motifsReady": true
+      },
+      "surface": {
+        "path": "/_acryl-runtime/images/gravuru-edelstahl-feine-maserung-vorschau.50e74d27e1f6f494.webp",
+        "doneMs": 178
+      },
+      "metrics": {
+        "fontsAndCatalogReads": 2,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 1,
+        "assetsAfterHtml": 17,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          }
+        }
+      }
+    }
+  ],
+  "medians": [
+    {
+      "profile": "Desktop",
+      "cache": "kalt",
+      "vorher": {
+        "editorReadyMs": 674,
+        "editorHtmlStartMs": 67,
+        "editorHtmlFirstByteMs": 72,
+        "editorHtmlDoneMs": 73,
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 2,
+        "fontsAndCatalogWireBytes": 674505,
+        "assetsBeforeHtml": 18,
+        "assetsAfterHtml": 0,
+        "firstSwitchMs": 288.4
+      },
+      "nachher": {
+        "editorReadyMs": 652,
+        "editorHtmlStartMs": 48,
+        "editorHtmlFirstByteMs": 56,
+        "editorHtmlDoneMs": 62.3,
+        "fontsAndCatalogReads": 2,
+        "fontsAndCatalogNet": 2,
+        "fontsAndCatalogWireBytes": 674505,
+        "assetsBeforeHtml": 1,
+        "assetsAfterHtml": 17,
+        "firstSwitchMs": 290.3
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "warm",
+      "vorher": {
+        "editorReadyMs": 654,
+        "editorHtmlStartMs": 59,
+        "editorHtmlFirstByteMs": 61,
+        "editorHtmlDoneMs": 61.2,
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 18,
+        "assetsAfterHtml": 0,
+        "firstSwitchMs": 285.1
+      },
+      "nachher": {
+        "editorReadyMs": 641,
+        "editorHtmlStartMs": 40,
+        "editorHtmlFirstByteMs": 42,
+        "editorHtmlDoneMs": 42.7,
+        "fontsAndCatalogReads": 2,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 1,
+        "assetsAfterHtml": 17,
+        "firstSwitchMs": 284.8
+      }
+    }
+  ]
+}

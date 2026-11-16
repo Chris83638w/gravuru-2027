@@ -1,7 +1,7 @@
 import {pathToFileURL} from 'node:url';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createShopEntryClient,mapWorkshopPath,shopUrl} from './ui/shop-entry-client.mjs';
+import {createShopEntryClient,createShopResourceLoader,mapWorkshopPath,shopUrl,warmEditor} from './ui/shop-entry-client.mjs';
 
 const token='gse1.'+Buffer.from('{"v":1}').toString('base64url')+'.'+'a'.repeat(43);
 const sha='f'.repeat(64),konfig='konfig_'+'1'.repeat(8)+'-1111-1111-1111-'+'1'.repeat(12),adraft='adraft_'+'2'.repeat(8)+'-2222-2222-2222-'+'2'.repeat(12);
@@ -227,6 +227,63 @@ test('warm-up: targets come only from the page hint for the token store; editor 
  assert.deepEqual(calls,[['/_merchant-acryl-editor.html','low','same-origin'],['/_acryl-runtime/lazy/katalog-kern.json','low','same-origin'],['/_acryl-bundle/editor-0123456789abcdef.mjs','low','same-origin']],'Paket einmal, Fehler still');
  const failed=[];warmEditor(['/_merchant-acryl-editor.html'],{fetchImpl:async url=>{failed.push(url);return {ok:false,text:async()=>html};}});
  await new Promise(resolve=>setTimeout(resolve,10));assert.deepEqual(failed,['/_merchant-acryl-editor.html'],'Fehlerantwort: kein Paketabruf');
+});
+test('the editor shares in-flight public catalog and font requests and retries a failed resource',async()=>{
+ const catalog='/_acryl-runtime/lazy/katalog-kern.json',font='/_acryl-runtime/lazy/schriften/raleway.json';
+ const calls=[];let answerCatalog,failFont=true;
+ const loadJson=createShopResourceLoader({fetchImpl:async(url,options)=>{
+  calls.push({url,options});
+  if(url===catalog)return new Promise(resolve=>{answerCatalog=resolve;});
+  return {ok:!failFont,json:async()=>({url})};
+ }});
+ const warmed=warmEditor([catalog],{loadJson});
+ const editor=loadJson(catalog);
+ assert.equal(editor,loadJson(catalog,{priority:'high'}));
+ assert.deepEqual(calls,[{url:catalog,options:{credentials:'same-origin',priority:'low'}}]);
+ answerCatalog({ok:true,json:async()=>({fonts:{}})});
+ assert.equal(await editor,await warmed.catalog);
+ for(const url of ['/api/shop-entry/model','//foreign.example/katalog-kern.json',font+'?x=1'])assert.equal(loadJson(url),null);
+ await assert.rejects(loadJson(font),/raleway\.json/);
+ failFont=false;
+ assert.deepEqual(await loadJson(font,{priority:'high'}),{url:font});
+ assert.equal(await loadJson(font),await loadJson(font));
+ assert.deepEqual(calls.slice(1),[
+  {url:font,options:{credentials:'same-origin'}},
+  {url:font,options:{credentials:'same-origin',priority:'high'}}
+ ]);
+});
+test('a doorbell starts the artwork for the bound format and only fetches the rest on editor HTML',async()=>{
+ const path=id=>'/api/workshop/design-assets/'+id.repeat(64)+'/preview.svg';
+ const makeDesign=(id,key)=>({id,objects:[{type:'motif',motif:key}]});
+ const designs=[makeDesign('first','a'),makeDesign('selected','b')];
+ const calls=[];
+ const client=createShopEntryClient({token,fetchImpl:async(url,options)=>{
+  calls.push({url,options});return new Response('<svg/>');
+ }});
+ const universal={
+  profile:{defaultDesignId:'selected',designs,optionGroups:[{id:'format',defaultValueId:'bound'}]},
+  doorbell:{schema:'gravuru-doorbell/v1',formats:[{key:'bound',profile:{
+   designs:[makeDesign('first','a'),makeDesign('selected','c')]
+  }}]},
+  localResources:{motifs:['a','b','c'].map(key=>({key,svgFragment:'<image href="'+path(key)+'"/>'}))}
+ };
+ const toDataUrl=async()=> 'data:image/svg+xml;base64,PHN2Zy8+';
+ const {resources,loadRemaining}=client.prepareDoorbellResources(universal,toDataUrl);
+ assert.deepEqual(calls.map(({url,options})=>[url,options.priority]),[[mapWorkshopPath(path('c')),'high']]);
+ const complete=loadRemaining();
+ assert.equal(loadRemaining(),complete);
+ await complete;
+ assert.deepEqual(calls.map(({url,options})=>[url,options.priority]),[
+  [mapWorkshopPath(path('c')),'high'],[mapWorkshopPath(path('a')),'low'],[mapWorkshopPath(path('b')),'low']
+ ]);
+ for(const {options} of calls){
+  assert.equal(options.headers['X-Gravuru-Shop-Session'],token);
+  assert.equal(options.cache,'no-store');
+  assert.equal(options.credentials,'omit');
+ }
+ for(const key of ['a','b','c'])assert.equal(resources[path(key).replace('/workshop/','/workshop/acryl/')],resources[path(key)]);
+ assert.equal(Object.keys(resources).length,6);
+ assert.equal(client.prepareDoorbellResources({...universal,doorbell:undefined},toDataUrl),null);
 });
 test('shop embed opens a connection to the editor host once, only on intent toward the own start link',async t=>{
  const fs=await import('node:fs'),os=await import('node:os'),path=await import('node:path');

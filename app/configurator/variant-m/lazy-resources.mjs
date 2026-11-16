@@ -6,7 +6,15 @@ import {LAZY_BASE,startNeeds,draftNeeds,lazyUrls,motifLibraryUrl,coreCatalogUrl,
 import {observeVisibleResources} from './visible-resource-loader.mjs';
 
 // `priority` (fetch-Priorität, Chromium): 'low' beim Vorladen im Hintergrund (preload-queue.mjs).
-const fetchJSON=async(url,{priority}={})=>{const response=await fetch(url,{credentials:'same-origin',...(priority?{priority}:{})});if(!response.ok)throw Error('Laden fehlgeschlagen: '+url.split('/').pop());return response.json();};
+const fetchJSON=async(url,{priority}={})=>{
+  let shared;
+  try{shared=globalThis.window?.parent?.GravuruLoadEditorJson;}catch{/* Merchant previews can have a different parent origin. */}
+  const pending=shared?.(url,{priority});
+  if(pending)return pending;
+  const response=await fetch(url,{credentials:'same-origin',...(priority?{priority}:{})});
+  if(!response.ok)throw Error('Laden fehlgeschlagen: '+url.split('/').pop());
+  return response.json();
+};
 const fonts=new Map(),motifs=new Map();let library=null;
 const once=(cache,key,load)=>{if(!cache.has(key))cache.set(key,load().catch(error=>{cache.delete(key);throw error;}));return cache.get(key);};
 const loadFont=(entry,get)=>once(fonts,entry.name+'|'+entry.url,()=>get(entry.url));
@@ -34,7 +42,8 @@ export async function loadStart(config,{get=fetchJSON,base=LAZY_BASE}={}){
   const guess=startNeeds(config);
   const product=productFontIndex(config),byName=new Map(product.map(f=>[f.name,f]));
   const early=lazyUrls({fonts:guess.fonts},{fontIndex:guess.fonts.map(name=>byName.get(name)||({name,file:fontFileName(name)}))},base).fonts.map(f=>loadFont(f,get).catch(()=>null));
-  const catalog=await get(coreCatalogUrl(base));await Promise.all(early);
+  // Each editor owns the mutable catalog; the public response can be shared across frames.
+  const catalog=structuredClone(await get(coreCatalogUrl(base)));await Promise.all(early);
   // Produktschriften gehören in denselben Index: Schriftauswahl, Entwürfe und Warenkorb-Bearbeiten laden sie nach.
   if(product.length)catalog.font_index=[...(catalog.font_index||[]).filter(f=>!byName.has(f.name)),...product];
   const needs=startNeeds(config,{baseMotifs:Object.keys(catalog.motifs||{})});

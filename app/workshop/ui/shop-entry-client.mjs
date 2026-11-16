@@ -90,6 +90,24 @@ async function json(response){
   return body;
 }
 
+// Share public editor JSON with the iframe, including requests still in flight.
+// Private design resources continue to use the active shop session below.
+const SHARED_JSON=/^\/(?:_(?:acryl-)?runtime\/lazy\/(?:katalog-kern\.json|schriften\/[a-z0-9-]{1,80}\.json|motive\/[A-Za-z0-9_-]{1,80}\.json)|konfigurator\/shop\/schriften\/[a-f0-9]{64}\.json)$/;
+export function createShopResourceLoader({fetchImpl=globalThis.fetch}={}){
+  const pending=new Map();
+  return (path,{priority}={})=>{
+    if(typeof path!=='string'||!SHARED_JSON.test(path))return null;
+    if(!pending.has(path)){
+      const request=fetchImpl(path,{credentials:'same-origin',...(priority?{priority}:{})}).then(response=>{
+        if(!response.ok)fail('Laden fehlgeschlagen: '+path.split('/').pop());
+        return response.json();
+      }).catch(error=>{pending.delete(path);throw error;});
+      pending.set(path,request);
+    }
+    return pending.get(path);
+  };
+}
+
 // Vorwärmen: Ziele aus `<meta name="gravuru-warm">` für den Datenbereich (`st`) des Sitzungstokens.
 // Nur eigene, absolute Pfade; Fehler bedeuten einfach kein Vorwärmen.
 export function warmTargets(doc,token){
@@ -103,18 +121,26 @@ export function warmTargets(doc,token){
 // Lädt die Ziele mit niedriger Priorität in den Browser-Zwischenspeicher (Editor-Seite 5 min, Paket/Katalog länger),
 // aus der Editor-Seite zusätzlich ihr gehashtes Editor-Paket. Das Fenster findet sie danach ohne Netzwartezeit.
 // Ergebnis: `catalog` = Promise auf den Kernkatalog (oder null), für startResourceUrls.
-export function warmEditor(targets,{fetchImpl=globalThis.fetch}={}){
+export function warmEditor(targets,{fetchImpl=globalThis.fetch,loadJson}={}){
  const get=path=>fetchImpl(path,{credentials:'same-origin',priority:'low'});
  let catalog=Promise.resolve(null),catalogPath=null;
  for(const path of targets){
-  const request=get(path);
-  if(/\/katalog-kern\.json$/.test(path)){catalogPath=path;catalog=request.then(response=>response.ok?response.json():null).catch(()=>null);continue;}
-  request.then(async response=>{
+  if(/\/katalog-kern\.json$/.test(path)){
+   catalogPath=path;catalog=(loadJson?.(path,{priority:'low'})??get(path).then(response=>response.ok?response.json():null)).catch(()=>null);
+   continue;
+  }
+  get(path).then(async response=>{
    if(!response.ok||!/\.html$/.test(path))return;
    for(const bundle of new Set((await response.text()).match(/\/_[a-z-]*bundle\/[A-Za-z0-9_.-]+-[a-f0-9]{16}\.m?js/g)||[]))get(bundle).catch(()=>{});
   }).catch(()=>{});
  }
  return {catalog,catalogPath};
+}
+function doorbellStartDesign(universal){
+  const profile=universal.profile;
+  const format=profile.optionGroups?.find(group=>group.id==='format')?.defaultValueId;
+  const designs=universal.doorbell.formats?.find(item=>item.key===format)?.profile.designs??profile.designs??[];
+  return designs.find(design=>design.id===profile.defaultDesignId)??designs[0];
 }
 // Schriften und Bibliotheksmotive, die die Startdesigns aus dem Katalog brauchen – gleiche Adressen wie der Editor
 // (lazy-resources-model: Kerndesigns, ohne Produktressourcen und Grundmotive; Funkklingel nur Startdesign).
@@ -128,13 +154,19 @@ export function startResourceUrls(universal,catalog,catalogPath){
  // Nur Dateien, die der Host zwischenspeichern darf (acrylCacheControl: Slug-Namen); sonst wäre es ein Doppelabruf.
  const files=new Map((catalog.font_index||[]).filter(f=>typeof f?.name==='string'&&f.url===undefined&&/^[a-z0-9-]{1,80}\.json$/.test(f.file||'')).map(f=>[f.name,f.file])),motifKeys=new Set((catalog.motif_index||[]).map(m=>m?.key));
  const designs=Array.isArray(universal?.profile?.designs)?universal.profile.designs:[];
- const initial=universal?.doorbell?[designs.find(d=>d?.id===universal.profile.defaultDesignId)||designs[0]].filter(Boolean):designs;
+ const initial=universal?.doorbell?[doorbellStartDesign(universal)].filter(Boolean):designs;
  const urls=new Set();
  for(const o of initial.flatMap(d=>Array.isArray(d?.objects)?d.objects:[])){
   if(o?.type==='text'&&!localFonts.has(o.font)){if(own.has(o.font))urls.add(own.get(o.font));else if(validCatalog&&files.has(o.font))urls.add(base+'schriften/'+encodeURIComponent(files.get(o.font)));}
   if(o?.type==='motif'&&typeof o.motif==='string'&&/^[A-Za-z0-9_-]{1,80}$/.test(o.motif)&&motifKeys.has(o.motif)&&!skipMotifs.has(o.motif))urls.add(base+'motive/'+o.motif+'.json');
  }
  return [...urls].slice(0,24);
+}
+const previewPaths=value=>new Set(JSON.stringify(value??null).match(/\/api\/workshop\/design-assets\/[a-f0-9]{64}\/preview\.svg/g)||[]);
+function addPhotoMaskPaths(paths,designs){
+  for(const design of designs)for(const object of design.objects||[]){
+    if(/^[a-f0-9]{64}$/.test(object.photoMaskAssetId||''))paths.add(WORKSHOP+'design-assets/'+object.photoMaskAssetId+'/preview.svg');
+  }
 }
 export function createShopEntryClient({token,fetchImpl=globalThis.fetch,editStorage=()=>globalThis.localStorage}={}){
   if(typeof token!=='string'||!/^gse1\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(token))fail('Bitte öffne den Konfigurator über „Jetzt personalisieren“ auf der Produktseite.');
@@ -184,24 +216,44 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch,editStor
     }
     throw noCartEditAccess();
   }
-  // Private Designressourcen einmal laden; der Editor liest sie unter beiden Pfadfassungen (Acryl-Umschreibung).
-  async function loadResources(universal,toDataUrl){
-    const urls=new Set();
-    for(const match of JSON.stringify(universal).matchAll(/\/api\/workshop\/design-assets\/[a-f0-9]{64}\/preview\.svg/g))urls.add(match[0]);
-    for(const d of universal.profile.designs||[])for(const o of d.objects||[])if(/^[a-f0-9]{64}$/.test(o.photoMaskAssetId||''))urls.add(WORKSHOP+'design-assets/'+o.photoMaskAssetId+'/preview.svg');
+  function allPreviewPaths(universal){
+    const urls=previewPaths(universal);
+    addPhotoMaskPaths(urls,universal.profile.designs||[]);
     for(const item of universal.localResources?.photoExamples||[])if(/^[a-f0-9]{64}$/.test(item.assetId||''))urls.add(WORKSHOP+'design-assets/'+item.assetId+'/preview.svg');
-    const resources=Object.create(null);
+    return urls;
+  }
+  // Private Designressourcen einmal laden; der Editor liest sie unter beiden Pfadfassungen.
+  async function loadPreviewPaths(urls,toDataUrl,resources,options){
     // A model can carry decoration resources for three formats. Bound parallelism
     // avoids serial network roundtrips while preserving the same private routes.
     const pending=[...urls];
     await Promise.all(Array.from({length:Math.min(6,pending.length)},async()=>{
       for(let url;(url=pending.shift());){
-        const result=await request(url);if(!result.ok)fail('Eine Designgrafik konnte nicht geladen werden.');
+        const result=await request(url,options);if(!result.ok)fail('Eine Designgrafik konnte nicht geladen werden.');
         const dataUrl=await toDataUrl(await result.blob());
         resources[url]=dataUrl;resources[url.replace(WORKSHOP,ACRYL)]=dataUrl;
       }
     }));
     return resources;
+  }
+  function loadResources(universal,toDataUrl){
+    return loadPreviewPaths(allPreviewPaths(universal),toDataUrl,Object.create(null));
+  }
+  function prepareDoorbellResources(universal,toDataUrl){
+    if(universal.doorbell?.schema!=='gravuru-doorbell/v1')return null;
+    const design=doorbellStartDesign(universal);
+    if(!design)return null;
+    const keys=new Set((design.objects||[]).filter(object=>object.type==='motif').map(object=>object.motif));
+    const motifs=(universal.localResources?.motifs||[]).filter(motif=>keys.has(motif.key));
+    const first=previewPaths([design,...motifs]),all=allPreviewPaths(universal);
+    addPhotoMaskPaths(first,[design]);
+    const resources=Object.create(null);
+    const start=loadPreviewPaths(first,toDataUrl,resources,{priority:'high'});
+    start.catch(()=>{}); // The child handles the error once its HTML has arrived.
+    let complete;
+    return {resources,loadRemaining:()=>complete??=Promise.all([
+      start,loadPreviewPaths([...all].filter(path=>!first.has(path)),toDataUrl,resources,{priority:'low'})
+    ])};
   }
   async function submitCart(input,{draftToken}={}){
     if(typeof draftToken!=='string'||!/^[a-f0-9]{64}$/.test(draftToken))fail('Der private Entwurfszugang fehlt.');
@@ -258,6 +310,6 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch,editStor
     const response=await designRequest('design-gallery-preview',target,signal);if(!response.ok)await json(response);return response.blob();
   }
   async function switchDesign(target){return json(await designRequest('design-switch',target));}
-  return Object.freeze({request,loadModel,loadInitialModel,cartRevision,loadResources,submitCart,submitThemeCart,loadDesignGallery,loadDesignPreview,switchDesign});
+  return Object.freeze({request,loadModel,loadInitialModel,cartRevision,loadResources,prepareDoorbellResources,submitCart,submitThemeCart,loadDesignGallery,loadDesignPreview,switchDesign});
 }
 

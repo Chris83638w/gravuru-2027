@@ -62,7 +62,21 @@ export function build({outputDirectory=OUTPUT}={}){
   const oldIntro=source.slice(source.indexOf('<body>'),source.indexOf('<script id="preview-data"'));
   const formMarkup=oldIntro.match(/<label hidden>[\s\S]*?<\/label>/)?.[0];
   if(!formMarkup)throw Error('Interne Formularauswahl fehlt');
-  replaceOnce(oldIntro,'<body>\n<main class="c-main">'+formMarkup+'<p id="loading" role="status" hidden></p><main id="editor"></main>\n');
+  // Start the other private doorbell graphics once the HTML has been parsed,
+  // in parallel with the kernel and fonts. The compatibility gallery needs
+  // them all when binding its motifs, including the other formats.
+  const previewReadyScript=`<script>
+    try {
+      const loadRemaining = window.parent.GravuruLoadPreviewResources;
+      if (loadRemaining) {
+        window.GravuruPreviewReady = new Promise(resolve => {
+          document.addEventListener('DOMContentLoaded', resolve, {once:true});
+        }).then(() => loadRemaining());
+        window.GravuruPreviewReady.catch(() => {});
+      }
+    } catch {}
+  </script>`;
+  replaceOnce(oldIntro,'<body>\n'+previewReadyScript+'\n<main class="c-main">'+formMarkup+'<p id="loading" role="status" hidden></p><main id="editor"></main>\n');
   replaceOnce("document.querySelector('header').append(close)","document.querySelector('header')?.append(close)");
   replaceOnce("document.querySelector('.preview-badge').textContent=profile.purchasing.bellModel;",'');
   // Initialise compatibility controls outside the document. They supply the editor
@@ -117,7 +131,7 @@ export function build({outputDirectory=OUTPUT}={}){
   replaceOnce('await customElements.whenDefined(\'gravuru-configurator\');',
     "window.GravuruProfileChoices=await import('/configurator/variant-m/profile-selection.mjs');window.GravuruPreviewResource=await import('/configurator/variant-m/preview-resource.mjs');const adapter=await import('/configurator/variant-m/adapter.mjs');if(window.parent.UniversalConfig){const resources=await import('/configurator/variant-m/lazy-resources.mjs');await resources.hydrateContourFonts(window.parent.UniversalConfig);adapter.installUniversal(window.parent.UniversalConfig);}await customElements.whenDefined('gravuru-configurator');");
   replaceOnce('prepareMotifGeometry(entries);',
-    'if(!window.parent.UniversalConfig){Object.assign(catalog.fonts,window.parent.LabradorFonts);entries.unshift(window.parent.LabradorMotif);}const localResources=window.parent.UniversalConfig?.localResources;if(localResources)Object.assign(catalog.fonts,localResources.fonts);prepareMotifGeometry(entries.filter(e=>typeof e.svgFragment===\'string\'));if(localResources)entries.unshift(...localResources.motifs.map(m=>({...m,svgFragment:window.GravuruPreviewResource.previewResourceMarkup(m.svgFragment)})));window.GravuruTemplateOnlyMotifKeys=new Set((localResources?.motifs||[]).filter(m=>m.embeddedOnly===true||localResources.motive_in_bibliothek===false).map(m=>m.key));window.GravuruMotifCategories=window.GravuruProfileChoices.motifChoices(entries,window.parent.UniversalConfig?.workshopProfiles?.selections?.motifs,window.GravuruTemplateOnlyMotifKeys).map(({key,name,category})=>({key,name,category}));');
+    'if(!window.parent.UniversalConfig){Object.assign(catalog.fonts,window.parent.LabradorFonts);entries.unshift(window.parent.LabradorMotif);}const localResources=window.parent.UniversalConfig?.localResources;if(localResources)Object.assign(catalog.fonts,localResources.fonts);prepareMotifGeometry(entries.filter(e=>typeof e.svgFragment===\'string\'));if(window.GravuruPreviewReady)await window.GravuruPreviewReady;if(localResources)entries.unshift(...localResources.motifs.map(m=>({...m,svgFragment:window.GravuruPreviewResource.previewResourceMarkup(m.svgFragment)})));window.GravuruTemplateOnlyMotifKeys=new Set((localResources?.motifs||[]).filter(m=>m.embeddedOnly===true||localResources.motive_in_bibliothek===false).map(m=>m.key));window.GravuruMotifCategories=window.GravuruProfileChoices.motifChoices(entries,window.parent.UniversalConfig?.workshopProfiles?.selections?.motifs,window.GravuruTemplateOnlyMotifKeys).map(({key,name,category})=>({key,name,category}));');
   replaceOnce('await mount(form.value);',
     "const specimen=await mount(form.value);if(window.parent.UniversalConfig)adapter.installEarlyPhotoTap(specimen,window.parent.UniversalConfig);if(!window.parent.UniversalConfig){specimen.chooseDesign('FK-LABRADOR-MICHROMA-01');adapter.hardenDoorbell(specimen);}specimen.$('[data-setting=guides]').checked=false;specimen.cfg.orderEnabled=false;specimen.cfg.demo=true;specimen.sync();const ux=await import('/configurator/variant-m/ux.mjs');await ux.installUX(specimen,window.parent.UniversalConfig,window.parent.GravuruModelProfile,{attach:()=>host.replaceChildren(specimen)});");
   for(const item of read('designs/aosu-labrador/image-source-verification.json'))source=source.replaceAll(item.url,'/_runtime/images/'+item.name);

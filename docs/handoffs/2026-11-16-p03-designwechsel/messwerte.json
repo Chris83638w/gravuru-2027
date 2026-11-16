@@ -1,0 +1,4286 @@
+{
+  "target": "FK-D16",
+  "browser": "157.0.8103.51",
+  "fixtures": {
+    "vorher": {
+      "commit": "5efcfe086057c0e913c2e9352a6d6b96152117ba",
+      "catalogCommit": "8236b8bf",
+      "product": "WP Cardea 2 · Hochformat 16 × 28 cm",
+      "assetCount": 18,
+      "modelSha256": "1f278b2aadf396c920342fc546cdb7ece857433252d3ee6d2d5e8699588c8329"
+    },
+    "nachher": {
+      "commit": "2dd214b9bcb94084d4736cf6124f50837568aa19",
+      "catalogCommit": "8236b8bf",
+      "product": "WP Cardea 2 · Hochformat 16 × 28 cm",
+      "assetCount": 18,
+      "modelSha256": "1f278b2aadf396c920342fc546cdb7ece857433252d3ee6d2d5e8699588c8329"
+    }
+  },
+  "desktop": {
+    "viewport": {
+      "width": 1360,
+      "height": 900
+    }
+  },
+  "mobile": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "network": {
+      "offline": false,
+      "latency": 150,
+      "downloadThroughput": 200000,
+      "uploadThroughput": 93750,
+      "connectionType": "cellular4g"
+    }
+  },
+  "medians": [
+    {
+      "profile": "Desktop",
+      "cache": "kalt",
+      "vorher": {
+        "switchMs": 363.5,
+        "readyMs": 654,
+        "missing": [
+          [
+            "Allura",
+            "Playfair Display"
+          ],
+          [
+            "Allura",
+            "Playfair Display"
+          ],
+          [
+            "Allura",
+            "Playfair Display"
+          ]
+        ]
+      },
+      "nachher": {
+        "switchMs": 220.3,
+        "readyMs": 631,
+        "missing": [
+          [
+            "Allura",
+            "Playfair Display"
+          ],
+          [],
+          []
+        ]
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "warm",
+      "vorher": {
+        "switchMs": 226.1,
+        "readyMs": 630,
+        "missing": [
+          [],
+          [],
+          []
+        ]
+      },
+      "nachher": {
+        "switchMs": 224.3,
+        "readyMs": 628,
+        "missing": [
+          [],
+          [],
+          []
+        ]
+      }
+    },
+    {
+      "profile": "iPhone 13",
+      "cache": "kalt",
+      "vorher": {
+        "switchMs": 3337.4,
+        "readyMs": 7564,
+        "missing": [
+          [
+            "Allura",
+            "Playfair Display"
+          ],
+          [
+            "Allura",
+            "Playfair Display"
+          ],
+          [
+            "Allura",
+            "Playfair Display"
+          ]
+        ]
+      },
+      "nachher": {
+        "switchMs": 2698.9,
+        "readyMs": 7524,
+        "missing": [
+          [
+            "Allura",
+            "Playfair Display"
+          ],
+          [
+            "Allura",
+            "Playfair Display"
+          ],
+          [
+            "Allura",
+            "Playfair Display"
+          ]
+        ]
+      }
+    },
+    {
+      "profile": "iPhone 13",
+      "cache": "warm",
+      "vorher": {
+        "switchMs": 341.4,
+        "readyMs": 3474,
+        "missing": [
+          [
+            "Allura",
+            "Playfair Display"
+          ],
+          [
+            "Allura",
+            "Playfair Display"
+          ],
+          [
+            "Allura",
+            "Playfair Display"
+          ]
+        ]
+      },
+      "nachher": {
+        "switchMs": 335.9,
+        "readyMs": 3476,
+        "missing": [
+          [
+            "Allura",
+            "Playfair Display"
+          ],
+          [
+            "Allura",
+            "Playfair Display"
+          ],
+          [
+            "Allura",
+            "Playfair Display"
+          ]
+        ]
+      }
+    }
+  ],
+  "samples": [
+    {
+      "version": "vorher",
+      "profile": "Desktop",
+      "cache": "kalt",
+      "cycle": 1,
+      "readyMs": 672,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 365.2,
+      "at": 954.8999999985099,
+      "missing": [
+        "Allura",
+        "Playfair Display"
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "window": "shop",
+          "start": -956,
+          "done": -954,
+          "body": 289,
+          "decoded": 289,
+          "transfer": 589
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "window": "shop",
+          "start": -931,
+          "done": -899,
+          "body": 132246,
+          "decoded": 507615,
+          "transfer": 132546
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "window": "shop",
+          "start": -924,
+          "done": -922,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "window": "shop",
+          "start": -924,
+          "done": -915,
+          "body": 226,
+          "decoded": 226,
+          "transfer": 526
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "window": "shop",
+          "start": -924,
+          "done": -913,
+          "body": 319,
+          "decoded": 319,
+          "transfer": 619
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "window": "shop",
+          "start": -924,
+          "done": -913,
+          "body": 258,
+          "decoded": 258,
+          "transfer": 558
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "window": "shop",
+          "start": -924,
+          "done": -912,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "window": "shop",
+          "start": -924,
+          "done": -911,
+          "body": 294,
+          "decoded": 294,
+          "transfer": 594
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "window": "shop",
+          "start": -915,
+          "done": -909,
+          "body": 307,
+          "decoded": 307,
+          "transfer": 607
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "window": "shop",
+          "start": -913,
+          "done": -908,
+          "body": 280,
+          "decoded": 280,
+          "transfer": 580
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "window": "shop",
+          "start": -890,
+          "done": -888,
+          "body": 284,
+          "decoded": 284,
+          "transfer": 584
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "window": "shop",
+          "start": -890,
+          "done": -886,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "window": "shop",
+          "start": -890,
+          "done": -885,
+          "body": 351,
+          "decoded": 351,
+          "transfer": 651
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "window": "shop",
+          "start": -890,
+          "done": -885,
+          "body": 237,
+          "decoded": 237,
+          "transfer": 537
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "window": "shop",
+          "start": -890,
+          "done": -884,
+          "body": 267,
+          "decoded": 267,
+          "transfer": 567
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "window": "shop",
+          "start": -890,
+          "done": -883,
+          "body": 272,
+          "decoded": 272,
+          "transfer": 572
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "window": "shop",
+          "start": -883,
+          "done": -882,
+          "body": 285,
+          "decoded": 285,
+          "transfer": 585
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "window": "shop",
+          "start": -880,
+          "done": -878,
+          "body": 296,
+          "decoded": 296,
+          "transfer": 596
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "window": "shop",
+          "start": -878,
+          "done": -876,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+          "window": "shop",
+          "start": -106,
+          "done": -94,
+          "body": 136762,
+          "decoded": 471283,
+          "transfer": 137062
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -65,
+          "done": -54,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 75898
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "window": "shop",
+          "start": -52,
+          "done": -42,
+          "body": 95463,
+          "decoded": 344285,
+          "transfer": 95763
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/poppins.json",
+          "window": "shop",
+          "start": -9,
+          "done": -2,
+          "body": 49812,
+          "decoded": 172625,
+          "transfer": 50112
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": 42,
+          "done": 62,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 219735
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": 42,
+          "done": 57,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 131109
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/libre-baskerville.json",
+          "window": "shop",
+          "start": 56,
+          "done": 67,
+          "body": 102539,
+          "decoded": 340970,
+          "transfer": 102839
+        }
+      ],
+      "requestCountDuring": 3,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "vorher",
+      "profile": "Desktop",
+      "cache": "warm",
+      "cycle": 1,
+      "readyMs": 624,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 226.1,
+      "at": 855.2000000029802,
+      "missing": [],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "window": "shop",
+          "start": -856,
+          "done": -854,
+          "body": 289,
+          "decoded": 289,
+          "transfer": 589
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "window": "shop",
+          "start": -854,
+          "done": -853,
+          "body": 132246,
+          "decoded": 507615,
+          "transfer": 0
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "window": "shop",
+          "start": -819,
+          "done": -817,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "window": "shop",
+          "start": -819,
+          "done": -817,
+          "body": 226,
+          "decoded": 226,
+          "transfer": 526
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "window": "shop",
+          "start": -819,
+          "done": -816,
+          "body": 319,
+          "decoded": 319,
+          "transfer": 619
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "window": "shop",
+          "start": -819,
+          "done": -815,
+          "body": 258,
+          "decoded": 258,
+          "transfer": 558
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "window": "shop",
+          "start": -819,
+          "done": -814,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "window": "shop",
+          "start": -819,
+          "done": -813,
+          "body": 294,
+          "decoded": 294,
+          "transfer": 594
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "window": "shop",
+          "start": -815,
+          "done": -813,
+          "body": 307,
+          "decoded": 307,
+          "transfer": 607
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "window": "shop",
+          "start": -815,
+          "done": -812,
+          "body": 280,
+          "decoded": 280,
+          "transfer": 580
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "window": "shop",
+          "start": -814,
+          "done": -811,
+          "body": 284,
+          "decoded": 284,
+          "transfer": 584
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "window": "shop",
+          "start": -813,
+          "done": -810,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "window": "shop",
+          "start": -799,
+          "done": -798,
+          "body": 351,
+          "decoded": 351,
+          "transfer": 651
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "window": "shop",
+          "start": -797,
+          "done": -795,
+          "body": 237,
+          "decoded": 237,
+          "transfer": 537
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "window": "shop",
+          "start": -796,
+          "done": -794,
+          "body": 267,
+          "decoded": 267,
+          "transfer": 567
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "window": "shop",
+          "start": -796,
+          "done": -794,
+          "body": 272,
+          "decoded": 272,
+          "transfer": 572
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "window": "shop",
+          "start": -796,
+          "done": -793,
+          "body": 285,
+          "decoded": 285,
+          "transfer": 585
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "window": "shop",
+          "start": -796,
+          "done": -792,
+          "body": 296,
+          "decoded": 296,
+          "transfer": 596
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "window": "shop",
+          "start": -793,
+          "done": -791,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+          "window": "shop",
+          "start": -218,
+          "done": -217,
+          "body": 136762,
+          "decoded": 471283,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -212,
+          "done": -212,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "window": "shop",
+          "start": -206,
+          "done": -205,
+          "body": 95463,
+          "decoded": 344285,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/poppins.json",
+          "window": "shop",
+          "start": -202,
+          "done": -202,
+          "body": 49812,
+          "decoded": 172625,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/libre-baskerville.json",
+          "window": "shop",
+          "start": -199,
+          "done": -198,
+          "body": 102539,
+          "decoded": 340970,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/caveat.json",
+          "window": "shop",
+          "start": -196,
+          "done": -194,
+          "body": 262235,
+          "decoded": 847537,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/sacramento.json",
+          "window": "shop",
+          "start": -144,
+          "done": -142,
+          "body": 270641,
+          "decoded": 947729,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/cormorant-garamond.json",
+          "window": "shop",
+          "start": -133,
+          "done": -131,
+          "body": 143567,
+          "decoded": 507804,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": -128,
+          "done": -126,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": -127,
+          "done": -125,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 0
+        }
+      ],
+      "requestCountDuring": 0,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "nachher",
+      "profile": "Desktop",
+      "cache": "kalt",
+      "cycle": 1,
+      "readyMs": 641,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 353.4,
+      "at": 741.7000000029802,
+      "missing": [
+        "Allura",
+        "Playfair Display"
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "window": "shop",
+          "start": -743,
+          "done": -741,
+          "body": 289,
+          "decoded": 289,
+          "transfer": 589
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "window": "shop",
+          "start": -737,
+          "done": -723,
+          "body": 132246,
+          "decoded": 507615,
+          "transfer": 132546
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "window": "shop",
+          "start": -715,
+          "done": -713,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "window": "shop",
+          "start": -715,
+          "done": -712,
+          "body": 226,
+          "decoded": 226,
+          "transfer": 526
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "window": "shop",
+          "start": -715,
+          "done": -710,
+          "body": 319,
+          "decoded": 319,
+          "transfer": 619
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "window": "shop",
+          "start": -715,
+          "done": -709,
+          "body": 258,
+          "decoded": 258,
+          "transfer": 558
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "window": "shop",
+          "start": -715,
+          "done": -709,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "window": "shop",
+          "start": -715,
+          "done": -708,
+          "body": 294,
+          "decoded": 294,
+          "transfer": 594
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "window": "shop",
+          "start": -708,
+          "done": -707,
+          "body": 307,
+          "decoded": 307,
+          "transfer": 607
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "window": "shop",
+          "start": -708,
+          "done": -706,
+          "body": 280,
+          "decoded": 280,
+          "transfer": 580
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "window": "shop",
+          "start": -708,
+          "done": -705,
+          "body": 284,
+          "decoded": 284,
+          "transfer": 584
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "window": "shop",
+          "start": -707,
+          "done": -704,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "window": "shop",
+          "start": -707,
+          "done": -703,
+          "body": 351,
+          "decoded": 351,
+          "transfer": 651
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "window": "shop",
+          "start": -707,
+          "done": -702,
+          "body": 237,
+          "decoded": 237,
+          "transfer": 537
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "window": "shop",
+          "start": -706,
+          "done": -701,
+          "body": 267,
+          "decoded": 267,
+          "transfer": 567
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "window": "shop",
+          "start": -704,
+          "done": -701,
+          "body": 272,
+          "decoded": 272,
+          "transfer": 572
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "window": "shop",
+          "start": -704,
+          "done": -700,
+          "body": 285,
+          "decoded": 285,
+          "transfer": 585
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "window": "shop",
+          "start": -703,
+          "done": -699,
+          "body": 296,
+          "decoded": 296,
+          "transfer": 596
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "window": "shop",
+          "start": -702,
+          "done": -698,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -96,
+          "done": -86,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 75898
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "window": "shop",
+          "start": -83,
+          "done": -73,
+          "body": 95463,
+          "decoded": 344285,
+          "transfer": 95763
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/poppins.json",
+          "window": "shop",
+          "start": -44,
+          "done": -38,
+          "body": 49812,
+          "decoded": 172625,
+          "transfer": 50112
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/libre-baskerville.json",
+          "window": "shop",
+          "start": -36,
+          "done": -26,
+          "body": 102539,
+          "decoded": 340970,
+          "transfer": 102839
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/caveat.json",
+          "window": "shop",
+          "start": -7,
+          "done": 15,
+          "body": 262235,
+          "decoded": 847537,
+          "transfer": 262535
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": 48,
+          "done": 68,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 219735
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": 48,
+          "done": 64,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 131109
+        }
+      ],
+      "requestCountDuring": 2,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "nachher",
+      "profile": "Desktop",
+      "cache": "warm",
+      "cycle": 1,
+      "readyMs": 634,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 217.6,
+      "at": 869.1000000014901,
+      "missing": [],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "window": "shop",
+          "start": -870,
+          "done": -868,
+          "body": 289,
+          "decoded": 289,
+          "transfer": 589
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "window": "shop",
+          "start": -868,
+          "done": -867,
+          "body": 132246,
+          "decoded": 507615,
+          "transfer": 0
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "window": "shop",
+          "start": -840,
+          "done": -838,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "window": "shop",
+          "start": -840,
+          "done": -837,
+          "body": 226,
+          "decoded": 226,
+          "transfer": 526
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "window": "shop",
+          "start": -840,
+          "done": -836,
+          "body": 319,
+          "decoded": 319,
+          "transfer": 619
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "window": "shop",
+          "start": -840,
+          "done": -836,
+          "body": 258,
+          "decoded": 258,
+          "transfer": 558
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "window": "shop",
+          "start": -840,
+          "done": -835,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "window": "shop",
+          "start": -840,
+          "done": -834,
+          "body": 294,
+          "decoded": 294,
+          "transfer": 594
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "window": "shop",
+          "start": -835,
+          "done": -833,
+          "body": 307,
+          "decoded": 307,
+          "transfer": 607
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "window": "shop",
+          "start": -835,
+          "done": -833,
+          "body": 280,
+          "decoded": 280,
+          "transfer": 580
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "window": "shop",
+          "start": -835,
+          "done": -832,
+          "body": 284,
+          "decoded": 284,
+          "transfer": 584
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "window": "shop",
+          "start": -834,
+          "done": -831,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "window": "shop",
+          "start": -817,
+          "done": -815,
+          "body": 351,
+          "decoded": 351,
+          "transfer": 651
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "window": "shop",
+          "start": -816,
+          "done": -814,
+          "body": 237,
+          "decoded": 237,
+          "transfer": 537
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "window": "shop",
+          "start": -815,
+          "done": -813,
+          "body": 267,
+          "decoded": 267,
+          "transfer": 567
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "window": "shop",
+          "start": -814,
+          "done": -812,
+          "body": 272,
+          "decoded": 272,
+          "transfer": 572
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "window": "shop",
+          "start": -814,
+          "done": -812,
+          "body": 285,
+          "decoded": 285,
+          "transfer": 585
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "window": "shop",
+          "start": -814,
+          "done": -811,
+          "body": 296,
+          "decoded": 296,
+          "transfer": 596
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "window": "shop",
+          "start": -812,
+          "done": -810,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -221,
+          "done": -220,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "window": "shop",
+          "start": -217,
+          "done": -216,
+          "body": 95463,
+          "decoded": 344285,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/poppins.json",
+          "window": "shop",
+          "start": -214,
+          "done": -213,
+          "body": 49812,
+          "decoded": 172625,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/libre-baskerville.json",
+          "window": "shop",
+          "start": -208,
+          "done": -207,
+          "body": 102539,
+          "decoded": 340970,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/caveat.json",
+          "window": "shop",
+          "start": -204,
+          "done": -203,
+          "body": 262235,
+          "decoded": 847537,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/sacramento.json",
+          "window": "shop",
+          "start": -197,
+          "done": -195,
+          "body": 270641,
+          "decoded": 947729,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+          "window": "shop",
+          "start": -140,
+          "done": -138,
+          "body": 136762,
+          "decoded": 471283,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/cormorant-garamond.json",
+          "window": "shop",
+          "start": -132,
+          "done": -131,
+          "body": 143567,
+          "decoded": 507804,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": -127,
+          "done": -125,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": -127,
+          "done": -125,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 0
+        }
+      ],
+      "requestCountDuring": 0,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "nachher",
+      "profile": "Desktop",
+      "cache": "kalt",
+      "cycle": 2,
+      "readyMs": 631,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 219.5,
+      "at": 876.1999999955297,
+      "missing": [],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "window": "shop",
+          "start": -877,
+          "done": -875,
+          "body": 289,
+          "decoded": 289,
+          "transfer": 589
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "window": "shop",
+          "start": -875,
+          "done": -870,
+          "body": 132246,
+          "decoded": 507615,
+          "transfer": 132546
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "window": "shop",
+          "start": -845,
+          "done": -843,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "window": "shop",
+          "start": -845,
+          "done": -842,
+          "body": 226,
+          "decoded": 226,
+          "transfer": 526
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "window": "shop",
+          "start": -845,
+          "done": -841,
+          "body": 319,
+          "decoded": 319,
+          "transfer": 619
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "window": "shop",
+          "start": -845,
+          "done": -841,
+          "body": 258,
+          "decoded": 258,
+          "transfer": 558
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "window": "shop",
+          "start": -845,
+          "done": -840,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "window": "shop",
+          "start": -845,
+          "done": -837,
+          "body": 294,
+          "decoded": 294,
+          "transfer": 594
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "window": "shop",
+          "start": -842,
+          "done": -838,
+          "body": 307,
+          "decoded": 307,
+          "transfer": 607
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "window": "shop",
+          "start": -841,
+          "done": -838,
+          "body": 280,
+          "decoded": 280,
+          "transfer": 580
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "window": "shop",
+          "start": -825,
+          "done": -824,
+          "body": 284,
+          "decoded": 284,
+          "transfer": 584
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "window": "shop",
+          "start": -823,
+          "done": -821,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "window": "shop",
+          "start": -823,
+          "done": -820,
+          "body": 351,
+          "decoded": 351,
+          "transfer": 651
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "window": "shop",
+          "start": -823,
+          "done": -819,
+          "body": 237,
+          "decoded": 237,
+          "transfer": 537
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "window": "shop",
+          "start": -823,
+          "done": -818,
+          "body": 267,
+          "decoded": 267,
+          "transfer": 567
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "window": "shop",
+          "start": -823,
+          "done": -818,
+          "body": 272,
+          "decoded": 272,
+          "transfer": 572
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "window": "shop",
+          "start": -819,
+          "done": -817,
+          "body": 285,
+          "decoded": 285,
+          "transfer": 585
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "window": "shop",
+          "start": -815,
+          "done": -813,
+          "body": 296,
+          "decoded": 296,
+          "transfer": 596
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "window": "shop",
+          "start": -814,
+          "done": -812,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -239,
+          "done": -236,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 75898
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "window": "shop",
+          "start": -233,
+          "done": -230,
+          "body": 95463,
+          "decoded": 344285,
+          "transfer": 95763
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/poppins.json",
+          "window": "shop",
+          "start": -227,
+          "done": -225,
+          "body": 49812,
+          "decoded": 172625,
+          "transfer": 50112
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/libre-baskerville.json",
+          "window": "shop",
+          "start": -222,
+          "done": -219,
+          "body": 102539,
+          "decoded": 340970,
+          "transfer": 102839
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/caveat.json",
+          "window": "shop",
+          "start": -216,
+          "done": -212,
+          "body": 262235,
+          "decoded": 847537,
+          "transfer": 262535
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/sacramento.json",
+          "window": "shop",
+          "start": -206,
+          "done": -201,
+          "body": 270641,
+          "decoded": 947729,
+          "transfer": 270941
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+          "window": "shop",
+          "start": -143,
+          "done": -139,
+          "body": 136762,
+          "decoded": 471283,
+          "transfer": 137062
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/cormorant-garamond.json",
+          "window": "shop",
+          "start": -135,
+          "done": -132,
+          "body": 143567,
+          "decoded": 507804,
+          "transfer": 143867
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": -128,
+          "done": -121,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 219735
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": -128,
+          "done": -122,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 131109
+        }
+      ],
+      "requestCountDuring": 0,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "nachher",
+      "profile": "Desktop",
+      "cache": "warm",
+      "cycle": 2,
+      "readyMs": 628,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 224.3,
+      "at": 873.7000000029802,
+      "missing": [],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "window": "shop",
+          "start": -875,
+          "done": -873,
+          "body": 289,
+          "decoded": 289,
+          "transfer": 589
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "window": "shop",
+          "start": -873,
+          "done": -872,
+          "body": 132246,
+          "decoded": 507615,
+          "transfer": 0
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "window": "shop",
+          "start": -844,
+          "done": -843,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "window": "shop",
+          "start": -844,
+          "done": -841,
+          "body": 226,
+          "decoded": 226,
+          "transfer": 526
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "window": "shop",
+          "start": -844,
+          "done": -840,
+          "body": 319,
+          "decoded": 319,
+          "transfer": 619
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "window": "shop",
+          "start": -844,
+          "done": -839,
+          "body": 258,
+          "decoded": 258,
+          "transfer": 558
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "window": "shop",
+          "start": -844,
+          "done": -839,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "window": "shop",
+          "start": -844,
+          "done": -838,
+          "body": 294,
+          "decoded": 294,
+          "transfer": 594
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "window": "shop",
+          "start": -839,
+          "done": -837,
+          "body": 307,
+          "decoded": 307,
+          "transfer": 607
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "window": "shop",
+          "start": -839,
+          "done": -836,
+          "body": 280,
+          "decoded": 280,
+          "transfer": 580
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "window": "shop",
+          "start": -839,
+          "done": -836,
+          "body": 284,
+          "decoded": 284,
+          "transfer": 584
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "window": "shop",
+          "start": -837,
+          "done": -835,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "window": "shop",
+          "start": -822,
+          "done": -821,
+          "body": 351,
+          "decoded": 351,
+          "transfer": 651
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "window": "shop",
+          "start": -820,
+          "done": -818,
+          "body": 237,
+          "decoded": 237,
+          "transfer": 537
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "window": "shop",
+          "start": -820,
+          "done": -818,
+          "body": 267,
+          "decoded": 267,
+          "transfer": 567
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "window": "shop",
+          "start": -819,
+          "done": -817,
+          "body": 272,
+          "decoded": 272,
+          "transfer": 572
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "window": "shop",
+          "start": -819,
+          "done": -816,
+          "body": 285,
+          "decoded": 285,
+          "transfer": 585
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "window": "shop",
+          "start": -819,
+          "done": -815,
+          "body": 296,
+          "decoded": 296,
+          "transfer": 596
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "window": "shop",
+          "start": -815,
+          "done": -814,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -224,
+          "done": -223,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "window": "shop",
+          "start": -220,
+          "done": -219,
+          "body": 95463,
+          "decoded": 344285,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/poppins.json",
+          "window": "shop",
+          "start": -217,
+          "done": -216,
+          "body": 49812,
+          "decoded": 172625,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/libre-baskerville.json",
+          "window": "shop",
+          "start": -211,
+          "done": -210,
+          "body": 102539,
+          "decoded": 340970,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/caveat.json",
+          "window": "shop",
+          "start": -207,
+          "done": -205,
+          "body": 262235,
+          "decoded": 847537,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/sacramento.json",
+          "window": "shop",
+          "start": -183,
+          "done": -181,
+          "body": 270641,
+          "decoded": 947729,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+          "window": "shop",
+          "start": -139,
+          "done": -138,
+          "body": 136762,
+          "decoded": 471283,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/cormorant-garamond.json",
+          "window": "shop",
+          "start": -134,
+          "done": -133,
+          "body": 143567,
+          "decoded": 507804,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": -129,
+          "done": -127,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": -129,
+          "done": -127,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 0
+        }
+      ],
+      "requestCountDuring": 0,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "vorher",
+      "profile": "Desktop",
+      "cache": "kalt",
+      "cycle": 2,
+      "readyMs": 626,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 357.6,
+      "at": 733.1000000014901,
+      "missing": [
+        "Allura",
+        "Playfair Display"
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "window": "shop",
+          "start": -734,
+          "done": -732,
+          "body": 289,
+          "decoded": 289,
+          "transfer": 589
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "window": "shop",
+          "start": -710,
+          "done": -705,
+          "body": 132246,
+          "decoded": 507615,
+          "transfer": 132546
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "window": "shop",
+          "start": -705,
+          "done": -703,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "window": "shop",
+          "start": -705,
+          "done": -702,
+          "body": 226,
+          "decoded": 226,
+          "transfer": 526
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "window": "shop",
+          "start": -705,
+          "done": -702,
+          "body": 319,
+          "decoded": 319,
+          "transfer": 619
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "window": "shop",
+          "start": -705,
+          "done": -701,
+          "body": 258,
+          "decoded": 258,
+          "transfer": 558
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "window": "shop",
+          "start": -705,
+          "done": -698,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "window": "shop",
+          "start": -705,
+          "done": -699,
+          "body": 294,
+          "decoded": 294,
+          "transfer": 594
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "window": "shop",
+          "start": -696,
+          "done": -695,
+          "body": 307,
+          "decoded": 307,
+          "transfer": 607
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "window": "shop",
+          "start": -696,
+          "done": -694,
+          "body": 280,
+          "decoded": 280,
+          "transfer": 580
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "window": "shop",
+          "start": -696,
+          "done": -693,
+          "body": 284,
+          "decoded": 284,
+          "transfer": 584
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "window": "shop",
+          "start": -696,
+          "done": -693,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "window": "shop",
+          "start": -696,
+          "done": -692,
+          "body": 351,
+          "decoded": 351,
+          "transfer": 651
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "window": "shop",
+          "start": -696,
+          "done": -691,
+          "body": 237,
+          "decoded": 237,
+          "transfer": 537
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "window": "shop",
+          "start": -679,
+          "done": -678,
+          "body": 267,
+          "decoded": 267,
+          "transfer": 567
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "window": "shop",
+          "start": -679,
+          "done": -677,
+          "body": 272,
+          "decoded": 272,
+          "transfer": 572
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "window": "shop",
+          "start": -679,
+          "done": -676,
+          "body": 285,
+          "decoded": 285,
+          "transfer": 585
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "window": "shop",
+          "start": -678,
+          "done": -675,
+          "body": 296,
+          "decoded": 296,
+          "transfer": 596
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "window": "shop",
+          "start": -678,
+          "done": -675,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+          "window": "shop",
+          "start": -103,
+          "done": -100,
+          "body": 136762,
+          "decoded": 471283,
+          "transfer": 137062
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -83,
+          "done": -80,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 75898
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "window": "shop",
+          "start": -78,
+          "done": -75,
+          "body": 95463,
+          "decoded": 344285,
+          "transfer": 95763
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/poppins.json",
+          "window": "shop",
+          "start": -71,
+          "done": -68,
+          "body": 49812,
+          "decoded": 172625,
+          "transfer": 50112
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/libre-baskerville.json",
+          "window": "shop",
+          "start": -10,
+          "done": -7,
+          "body": 102539,
+          "decoded": 340970,
+          "transfer": 102839
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/caveat.json",
+          "window": "shop",
+          "start": -4,
+          "done": 1,
+          "body": 262235,
+          "decoded": 847537,
+          "transfer": 262535
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": 46,
+          "done": 52,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 219735
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": 46,
+          "done": 52,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 131109
+        }
+      ],
+      "requestCountDuring": 2,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "vorher",
+      "profile": "Desktop",
+      "cache": "warm",
+      "cycle": 2,
+      "readyMs": 631,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 226.2,
+      "at": 864,
+      "missing": [],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "window": "shop",
+          "start": -865,
+          "done": -863,
+          "body": 289,
+          "decoded": 289,
+          "transfer": 589
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "window": "shop",
+          "start": -863,
+          "done": -862,
+          "body": 132246,
+          "decoded": 507615,
+          "transfer": 0
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "window": "shop",
+          "start": -837,
+          "done": -835,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "window": "shop",
+          "start": -837,
+          "done": -834,
+          "body": 226,
+          "decoded": 226,
+          "transfer": 526
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "window": "shop",
+          "start": -837,
+          "done": -833,
+          "body": 319,
+          "decoded": 319,
+          "transfer": 619
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "window": "shop",
+          "start": -837,
+          "done": -832,
+          "body": 258,
+          "decoded": 258,
+          "transfer": 558
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "window": "shop",
+          "start": -837,
+          "done": -831,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "window": "shop",
+          "start": -837,
+          "done": -830,
+          "body": 294,
+          "decoded": 294,
+          "transfer": 594
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "window": "shop",
+          "start": -833,
+          "done": -830,
+          "body": 307,
+          "decoded": 307,
+          "transfer": 607
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "window": "shop",
+          "start": -832,
+          "done": -829,
+          "body": 280,
+          "decoded": 280,
+          "transfer": 580
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "window": "shop",
+          "start": -832,
+          "done": -828,
+          "body": 284,
+          "decoded": 284,
+          "transfer": 584
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "window": "shop",
+          "start": -815,
+          "done": -813,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "window": "shop",
+          "start": -813,
+          "done": -812,
+          "body": 351,
+          "decoded": 351,
+          "transfer": 651
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "window": "shop",
+          "start": -813,
+          "done": -811,
+          "body": 237,
+          "decoded": 237,
+          "transfer": 537
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "window": "shop",
+          "start": -813,
+          "done": -810,
+          "body": 267,
+          "decoded": 267,
+          "transfer": 567
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "window": "shop",
+          "start": -813,
+          "done": -809,
+          "body": 272,
+          "decoded": 272,
+          "transfer": 572
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "window": "shop",
+          "start": -813,
+          "done": -808,
+          "body": 285,
+          "decoded": 285,
+          "transfer": 585
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "window": "shop",
+          "start": -809,
+          "done": -807,
+          "body": 296,
+          "decoded": 296,
+          "transfer": 596
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "window": "shop",
+          "start": -808,
+          "done": -806,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+          "window": "shop",
+          "start": -237,
+          "done": -236,
+          "body": 136762,
+          "decoded": 471283,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -220,
+          "done": -219,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "window": "shop",
+          "start": -216,
+          "done": -216,
+          "body": 95463,
+          "decoded": 344285,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/poppins.json",
+          "window": "shop",
+          "start": -213,
+          "done": -212,
+          "body": 49812,
+          "decoded": 172625,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/libre-baskerville.json",
+          "window": "shop",
+          "start": -211,
+          "done": -210,
+          "body": 102539,
+          "decoded": 340970,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/caveat.json",
+          "window": "shop",
+          "start": -205,
+          "done": -203,
+          "body": 262235,
+          "decoded": 847537,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/sacramento.json",
+          "window": "shop",
+          "start": -197,
+          "done": -195,
+          "body": 270641,
+          "decoded": 947729,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/cormorant-garamond.json",
+          "window": "shop",
+          "start": -140,
+          "done": -138,
+          "body": 143567,
+          "decoded": 507804,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": -132,
+          "done": -131,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": -132,
+          "done": -130,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 0
+        }
+      ],
+      "requestCountDuring": 0,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "vorher",
+      "profile": "Desktop",
+      "cache": "kalt",
+      "cycle": 3,
+      "readyMs": 654,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 363.5,
+      "at": 758.5,
+      "missing": [
+        "Allura",
+        "Playfair Display"
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "window": "shop",
+          "start": -759,
+          "done": -758,
+          "body": 289,
+          "decoded": 289,
+          "transfer": 589
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "window": "shop",
+          "start": -758,
+          "done": -753,
+          "body": 132246,
+          "decoded": 507615,
+          "transfer": 132546
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "window": "shop",
+          "start": -728,
+          "done": -726,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "window": "shop",
+          "start": -728,
+          "done": -723,
+          "body": 226,
+          "decoded": 226,
+          "transfer": 526
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "window": "shop",
+          "start": -728,
+          "done": -722,
+          "body": 319,
+          "decoded": 319,
+          "transfer": 619
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "window": "shop",
+          "start": -728,
+          "done": -721,
+          "body": 258,
+          "decoded": 258,
+          "transfer": 558
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "window": "shop",
+          "start": -728,
+          "done": -720,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "window": "shop",
+          "start": -728,
+          "done": -720,
+          "body": 294,
+          "decoded": 294,
+          "transfer": 594
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "window": "shop",
+          "start": -722,
+          "done": -719,
+          "body": 307,
+          "decoded": 307,
+          "transfer": 607
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "window": "shop",
+          "start": -721,
+          "done": -718,
+          "body": 280,
+          "decoded": 280,
+          "transfer": 580
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "window": "shop",
+          "start": -705,
+          "done": -703,
+          "body": 284,
+          "decoded": 284,
+          "transfer": 584
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "window": "shop",
+          "start": -703,
+          "done": -702,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "window": "shop",
+          "start": -703,
+          "done": -701,
+          "body": 351,
+          "decoded": 351,
+          "transfer": 651
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "window": "shop",
+          "start": -703,
+          "done": -700,
+          "body": 237,
+          "decoded": 237,
+          "transfer": 537
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "window": "shop",
+          "start": -703,
+          "done": -699,
+          "body": 267,
+          "decoded": 267,
+          "transfer": 567
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "window": "shop",
+          "start": -703,
+          "done": -698,
+          "body": 272,
+          "decoded": 272,
+          "transfer": 572
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "window": "shop",
+          "start": -699,
+          "done": -698,
+          "body": 285,
+          "decoded": 285,
+          "transfer": 585
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "window": "shop",
+          "start": -697,
+          "done": -696,
+          "body": 296,
+          "decoded": 296,
+          "transfer": 596
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "window": "shop",
+          "start": -696,
+          "done": -695,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+          "window": "shop",
+          "start": -127,
+          "done": -124,
+          "body": 136762,
+          "decoded": 471283,
+          "transfer": 137062
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -107,
+          "done": -103,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 75898
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "window": "shop",
+          "start": -98,
+          "done": -94,
+          "body": 95463,
+          "decoded": 344285,
+          "transfer": 95763
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/poppins.json",
+          "window": "shop",
+          "start": -56,
+          "done": -53,
+          "body": 49812,
+          "decoded": 172625,
+          "transfer": 50112
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/libre-baskerville.json",
+          "window": "shop",
+          "start": -50,
+          "done": -47,
+          "body": 102539,
+          "decoded": 340970,
+          "transfer": 102839
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/caveat.json",
+          "window": "shop",
+          "start": -44,
+          "done": -39,
+          "body": 262235,
+          "decoded": 847537,
+          "transfer": 262535
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/sacramento.json",
+          "window": "shop",
+          "start": -6,
+          "done": -2,
+          "body": 270641,
+          "decoded": 947729,
+          "transfer": 270941
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": 46,
+          "done": 52,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 219735
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": 47,
+          "done": 52,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 131109
+        }
+      ],
+      "requestCountDuring": 2,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "vorher",
+      "profile": "Desktop",
+      "cache": "warm",
+      "cycle": 3,
+      "readyMs": 630,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 224.6,
+      "at": 865.5,
+      "missing": [],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "window": "shop",
+          "start": -866,
+          "done": -865,
+          "body": 289,
+          "decoded": 289,
+          "transfer": 589
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "window": "shop",
+          "start": -865,
+          "done": -864,
+          "body": 132246,
+          "decoded": 507615,
+          "transfer": 0
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "window": "shop",
+          "start": -837,
+          "done": -835,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "window": "shop",
+          "start": -837,
+          "done": -834,
+          "body": 226,
+          "decoded": 226,
+          "transfer": 526
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "window": "shop",
+          "start": -837,
+          "done": -834,
+          "body": 319,
+          "decoded": 319,
+          "transfer": 619
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "window": "shop",
+          "start": -837,
+          "done": -833,
+          "body": 258,
+          "decoded": 258,
+          "transfer": 558
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "window": "shop",
+          "start": -837,
+          "done": -832,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "window": "shop",
+          "start": -837,
+          "done": -831,
+          "body": 294,
+          "decoded": 294,
+          "transfer": 594
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "window": "shop",
+          "start": -833,
+          "done": -830,
+          "body": 307,
+          "decoded": 307,
+          "transfer": 607
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "window": "shop",
+          "start": -833,
+          "done": -829,
+          "body": 280,
+          "decoded": 280,
+          "transfer": 580
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "window": "shop",
+          "start": -832,
+          "done": -829,
+          "body": 284,
+          "decoded": 284,
+          "transfer": 584
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "window": "shop",
+          "start": -815,
+          "done": -813,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "window": "shop",
+          "start": -815,
+          "done": -812,
+          "body": 351,
+          "decoded": 351,
+          "transfer": 651
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "window": "shop",
+          "start": -815,
+          "done": -811,
+          "body": 237,
+          "decoded": 237,
+          "transfer": 537
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "window": "shop",
+          "start": -815,
+          "done": -810,
+          "body": 267,
+          "decoded": 267,
+          "transfer": 567
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "window": "shop",
+          "start": -814,
+          "done": -809,
+          "body": 272,
+          "decoded": 272,
+          "transfer": 572
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "window": "shop",
+          "start": -814,
+          "done": -808,
+          "body": 285,
+          "decoded": 285,
+          "transfer": 585
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "window": "shop",
+          "start": -810,
+          "done": -807,
+          "body": 296,
+          "decoded": 296,
+          "transfer": 596
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "window": "shop",
+          "start": -808,
+          "done": -807,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+          "window": "shop",
+          "start": -238,
+          "done": -237,
+          "body": 136762,
+          "decoded": 471283,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -221,
+          "done": -220,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "window": "shop",
+          "start": -218,
+          "done": -217,
+          "body": 95463,
+          "decoded": 344285,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/poppins.json",
+          "window": "shop",
+          "start": -214,
+          "done": -213,
+          "body": 49812,
+          "decoded": 172625,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/libre-baskerville.json",
+          "window": "shop",
+          "start": -212,
+          "done": -211,
+          "body": 102539,
+          "decoded": 340970,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/caveat.json",
+          "window": "shop",
+          "start": -206,
+          "done": -204,
+          "body": 262235,
+          "decoded": 847537,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/sacramento.json",
+          "window": "shop",
+          "start": -198,
+          "done": -197,
+          "body": 270641,
+          "decoded": 947729,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/cormorant-garamond.json",
+          "window": "shop",
+          "start": -174,
+          "done": -173,
+          "body": 143567,
+          "decoded": 507804,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": -129,
+          "done": -128,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": -129,
+          "done": -127,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 0
+        }
+      ],
+      "requestCountDuring": 0,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "nachher",
+      "profile": "Desktop",
+      "cache": "kalt",
+      "cycle": 3,
+      "readyMs": 619,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 220.3,
+      "at": 863.3000000044703,
+      "missing": [],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "window": "shop",
+          "start": -864,
+          "done": -863,
+          "body": 289,
+          "decoded": 289,
+          "transfer": 589
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "window": "shop",
+          "start": -861,
+          "done": -857,
+          "body": 132246,
+          "decoded": 507615,
+          "transfer": 132546
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "window": "shop",
+          "start": -830,
+          "done": -829,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "window": "shop",
+          "start": -830,
+          "done": -827,
+          "body": 226,
+          "decoded": 226,
+          "transfer": 526
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "window": "shop",
+          "start": -830,
+          "done": -827,
+          "body": 319,
+          "decoded": 319,
+          "transfer": 619
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "window": "shop",
+          "start": -830,
+          "done": -826,
+          "body": 258,
+          "decoded": 258,
+          "transfer": 558
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "window": "shop",
+          "start": -830,
+          "done": -825,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "window": "shop",
+          "start": -830,
+          "done": -824,
+          "body": 294,
+          "decoded": 294,
+          "transfer": 594
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "window": "shop",
+          "start": -827,
+          "done": -823,
+          "body": 307,
+          "decoded": 307,
+          "transfer": 607
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "window": "shop",
+          "start": -826,
+          "done": -823,
+          "body": 280,
+          "decoded": 280,
+          "transfer": 580
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "window": "shop",
+          "start": -811,
+          "done": -809,
+          "body": 284,
+          "decoded": 284,
+          "transfer": 584
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "window": "shop",
+          "start": -809,
+          "done": -807,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "window": "shop",
+          "start": -809,
+          "done": -806,
+          "body": 351,
+          "decoded": 351,
+          "transfer": 651
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "window": "shop",
+          "start": -809,
+          "done": -805,
+          "body": 237,
+          "decoded": 237,
+          "transfer": 537
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "window": "shop",
+          "start": -808,
+          "done": -804,
+          "body": 267,
+          "decoded": 267,
+          "transfer": 567
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "window": "shop",
+          "start": -808,
+          "done": -803,
+          "body": 272,
+          "decoded": 272,
+          "transfer": 572
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "window": "shop",
+          "start": -806,
+          "done": -803,
+          "body": 285,
+          "decoded": 285,
+          "transfer": 585
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "window": "shop",
+          "start": -802,
+          "done": -800,
+          "body": 296,
+          "decoded": 296,
+          "transfer": 596
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "window": "shop",
+          "start": -801,
+          "done": -799,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -240,
+          "done": -237,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 75898
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "window": "shop",
+          "start": -234,
+          "done": -231,
+          "body": 95463,
+          "decoded": 344285,
+          "transfer": 95763
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/poppins.json",
+          "window": "shop",
+          "start": -229,
+          "done": -226,
+          "body": 49812,
+          "decoded": 172625,
+          "transfer": 50112
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/libre-baskerville.json",
+          "window": "shop",
+          "start": -224,
+          "done": -221,
+          "body": 102539,
+          "decoded": 340970,
+          "transfer": 102839
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/caveat.json",
+          "window": "shop",
+          "start": -218,
+          "done": -214,
+          "body": 262235,
+          "decoded": 847537,
+          "transfer": 262535
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/sacramento.json",
+          "window": "shop",
+          "start": -208,
+          "done": -203,
+          "body": 270641,
+          "decoded": 947729,
+          "transfer": 270941
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+          "window": "shop",
+          "start": -144,
+          "done": -140,
+          "body": 136762,
+          "decoded": 471283,
+          "transfer": 137062
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/cormorant-garamond.json",
+          "window": "shop",
+          "start": -137,
+          "done": -133,
+          "body": 143567,
+          "decoded": 507804,
+          "transfer": 143867
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": -129,
+          "done": -125,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 219735
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": -129,
+          "done": -124,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 131109
+        }
+      ],
+      "requestCountDuring": 0,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "nachher",
+      "profile": "Desktop",
+      "cache": "warm",
+      "cycle": 3,
+      "readyMs": 623,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 225.9,
+      "at": 852.7999999970198,
+      "missing": [],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/api/shop-entry/design-assets/d499730e8da1084ca5e6405a61620ede00e6604698137ce07b483bbb758c1ce8/preview.svg",
+          "window": "shop",
+          "start": -854,
+          "done": -852,
+          "body": 289,
+          "decoded": 289,
+          "transfer": 589
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "window": "shop",
+          "start": -852,
+          "done": -851,
+          "body": 132246,
+          "decoded": 507615,
+          "transfer": 0
+        },
+        {
+          "path": "/api/shop-entry/design-assets/62209714468763eade9acdcde776fa6c76d45eda39664743fc5875dbce1a1568/preview.svg",
+          "window": "shop",
+          "start": -826,
+          "done": -824,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/7d991143ada23ad586ed1ced01eecf051e2e895e5422dfba66169bb75165eb8d/preview.svg",
+          "window": "shop",
+          "start": -825,
+          "done": -823,
+          "body": 226,
+          "decoded": 226,
+          "transfer": 526
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b1e677f73d3fe90365275f62ea9281d9df502e07e6d91db5fe22c33cbbe43cdb/preview.svg",
+          "window": "shop",
+          "start": -825,
+          "done": -822,
+          "body": 319,
+          "decoded": 319,
+          "transfer": 619
+        },
+        {
+          "path": "/api/shop-entry/design-assets/9526d8fb02678c6c2e87fe5d177990c38da23938b57fcc2e1f5daaa58523a887/preview.svg",
+          "window": "shop",
+          "start": -825,
+          "done": -821,
+          "body": 258,
+          "decoded": 258,
+          "transfer": 558
+        },
+        {
+          "path": "/api/shop-entry/design-assets/d97c1fea9fae32512dde3c09ada7c875665759110aeea9e13b06913de2ba610a/preview.svg",
+          "window": "shop",
+          "start": -825,
+          "done": -819,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8a53d8f9ebe68369ce407afb67e52ab44463fbacc1ac70326c31378ff970ca3d/preview.svg",
+          "window": "shop",
+          "start": -825,
+          "done": -818,
+          "body": 294,
+          "decoded": 294,
+          "transfer": 594
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e6a92901f8d2ca769c04308d11a0cece73ff7268c0058ab0f208b19754a5d7b8/preview.svg",
+          "window": "shop",
+          "start": -822,
+          "done": -817,
+          "body": 307,
+          "decoded": 307,
+          "transfer": 607
+        },
+        {
+          "path": "/api/shop-entry/design-assets/8db0cd43ae94c6ee84084dd795c3e4415f9c3980c5d3769d44cd32992577b303/preview.svg",
+          "window": "shop",
+          "start": -822,
+          "done": -817,
+          "body": 280,
+          "decoded": 280,
+          "transfer": 580
+        },
+        {
+          "path": "/api/shop-entry/design-assets/ad0da2619321e7438186276e5bce7439e9298aa09373a141eef2585fcb859494/preview.svg",
+          "window": "shop",
+          "start": -819,
+          "done": -816,
+          "body": 284,
+          "decoded": 284,
+          "transfer": 584
+        },
+        {
+          "path": "/api/shop-entry/design-assets/b02e7c275be9f6b106a0827f775b921b30e5e806dd3da5407fcdb2505ca1a579/preview.svg",
+          "window": "shop",
+          "start": -819,
+          "done": -815,
+          "body": 252,
+          "decoded": 252,
+          "transfer": 552
+        },
+        {
+          "path": "/api/shop-entry/design-assets/a446a349a988b51220f039514f4d94279e3ab8b71ad837acd0f84f3997233ebb/preview.svg",
+          "window": "shop",
+          "start": -801,
+          "done": -800,
+          "body": 351,
+          "decoded": 351,
+          "transfer": 651
+        },
+        {
+          "path": "/api/shop-entry/design-assets/cc86bf67714cbcc2b27398b03cae8e2805d805f553907dd491bce3edd79ae44f/preview.svg",
+          "window": "shop",
+          "start": -801,
+          "done": -799,
+          "body": 237,
+          "decoded": 237,
+          "transfer": 537
+        },
+        {
+          "path": "/api/shop-entry/design-assets/4b022cdfd573589af78ac198c04ef82d5f28a9c4b36be6b90d68d5a4a633ac53/preview.svg",
+          "window": "shop",
+          "start": -801,
+          "done": -798,
+          "body": 267,
+          "decoded": 267,
+          "transfer": 567
+        },
+        {
+          "path": "/api/shop-entry/design-assets/2838f9187dfed45382f1c4adb05683d2a36d43d698517b4f658ccda3c417d83e/preview.svg",
+          "window": "shop",
+          "start": -801,
+          "done": -797,
+          "body": 272,
+          "decoded": 272,
+          "transfer": 572
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e243321ca0874128995ea388ef65fe8e2293371ff5897d476fa20bddf7af2afb/preview.svg",
+          "window": "shop",
+          "start": -801,
+          "done": -796,
+          "body": 285,
+          "decoded": 285,
+          "transfer": 585
+        },
+        {
+          "path": "/api/shop-entry/design-assets/e9a66ca949736e112e6e8d37d4c536f1657cfd4e28a52c8b53bc274df00c6869/preview.svg",
+          "window": "shop",
+          "start": -801,
+          "done": -796,
+          "body": 296,
+          "decoded": 296,
+          "transfer": 596
+        },
+        {
+          "path": "/api/shop-entry/design-assets/eb00b33d558aaad77a1b75e1080b5c6457b62f0aa3084e1d8b342937b2253c62/preview.svg",
+          "window": "shop",
+          "start": -796,
+          "done": -794,
+          "body": 301,
+          "decoded": 301,
+          "transfer": 601
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -220,
+          "done": -219,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "window": "shop",
+          "start": -217,
+          "done": -216,
+          "body": 95463,
+          "decoded": 344285,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/poppins.json",
+          "window": "shop",
+          "start": -214,
+          "done": -213,
+          "body": 49812,
+          "decoded": 172625,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/libre-baskerville.json",
+          "window": "shop",
+          "start": -212,
+          "done": -211,
+          "body": 102539,
+          "decoded": 340970,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/caveat.json",
+          "window": "shop",
+          "start": -209,
+          "done": -208,
+          "body": 262235,
+          "decoded": 847537,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/sacramento.json",
+          "window": "shop",
+          "start": -201,
+          "done": -200,
+          "body": 270641,
+          "decoded": 947729,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+          "window": "shop",
+          "start": -194,
+          "done": -193,
+          "body": 136762,
+          "decoded": 471283,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/cormorant-garamond.json",
+          "window": "shop",
+          "start": -190,
+          "done": -189,
+          "body": 143567,
+          "decoded": 507804,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": -182,
+          "done": -181,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": -182,
+          "done": -180,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 0
+        }
+      ],
+      "requestCountDuring": 0,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "vorher",
+      "profile": "iPhone 13",
+      "cache": "kalt",
+      "cycle": 1,
+      "readyMs": 7564,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 3320.2,
+      "at": 5643.60000000149,
+      "missing": [
+        "Allura",
+        "Playfair Display"
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+          "window": "shop",
+          "start": -155,
+          "done": 2119,
+          "body": 136762,
+          "decoded": 471283,
+          "transfer": 137062
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": 42,
+          "done": 3064,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 219735
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": 42,
+          "done": 2249,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 131109
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": 2137,
+          "done": 3080,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 75898
+        }
+      ],
+      "requestCountDuring": 4,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "vorher",
+      "profile": "iPhone 13",
+      "cache": "warm",
+      "cycle": 1,
+      "readyMs": 3474,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 359.6,
+      "at": 1781.8999999985099,
+      "missing": [
+        "Allura",
+        "Playfair Display"
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+          "window": "shop",
+          "start": -132,
+          "done": -130,
+          "body": 136762,
+          "decoded": 471283,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -114,
+          "done": -113,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "window": "shop",
+          "start": -111,
+          "done": -110,
+          "body": 95463,
+          "decoded": 344285,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": 44,
+          "done": 46,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": 44,
+          "done": 47,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 0
+        }
+      ],
+      "requestCountDuring": 0,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "nachher",
+      "profile": "iPhone 13",
+      "cache": "kalt",
+      "cycle": 1,
+      "readyMs": 7524,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 2698.9,
+      "at": 5571.60000000149,
+      "missing": [
+        "Allura",
+        "Playfair Display"
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -90,
+          "done": 1304,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 75898
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": 43,
+          "done": 1990,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 131109
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": 43,
+          "done": 2440,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 219735
+        }
+      ],
+      "requestCountDuring": 3,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "nachher",
+      "profile": "iPhone 13",
+      "cache": "warm",
+      "cycle": 1,
+      "readyMs": 3511,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 343.6,
+      "at": 1761.7999999970198,
+      "missing": [
+        "Allura",
+        "Playfair Display"
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -95,
+          "done": -94,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "window": "shop",
+          "start": -92,
+          "done": -91,
+          "body": 95463,
+          "decoded": 344285,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": 43,
+          "done": 45,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": 43,
+          "done": 46,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 0
+        }
+      ],
+      "requestCountDuring": 0,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "nachher",
+      "profile": "iPhone 13",
+      "cache": "kalt",
+      "cycle": 2,
+      "readyMs": 7524,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 2707,
+      "at": 5536.70000000298,
+      "missing": [
+        "Allura",
+        "Playfair Display"
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -89,
+          "done": 1287,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 75898
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": 41,
+          "done": 2455,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 219735
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": 41,
+          "done": 2006,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 131109
+        }
+      ],
+      "requestCountDuring": 3,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "nachher",
+      "profile": "iPhone 13",
+      "cache": "warm",
+      "cycle": 2,
+      "readyMs": 3446,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 335.3,
+      "at": 1725.7999999970198,
+      "missing": [
+        "Allura",
+        "Playfair Display"
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -93,
+          "done": -92,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "window": "shop",
+          "start": -90,
+          "done": -89,
+          "body": 95463,
+          "decoded": 344285,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": 42,
+          "done": 43,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": 42,
+          "done": 44,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 0
+        }
+      ],
+      "requestCountDuring": 0,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "vorher",
+      "profile": "iPhone 13",
+      "cache": "kalt",
+      "cycle": 2,
+      "readyMs": 7522,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 3337.4,
+      "at": 5552.5,
+      "missing": [
+        "Allura",
+        "Playfair Display"
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+          "window": "shop",
+          "start": -88,
+          "done": 2241,
+          "body": 136762,
+          "decoded": 471283,
+          "transfer": 137062
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": 40,
+          "done": 3092,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 219735
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": 40,
+          "done": 2306,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 131109
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": 2245,
+          "done": 3138,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 75898
+        }
+      ],
+      "requestCountDuring": 4,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "vorher",
+      "profile": "iPhone 13",
+      "cache": "warm",
+      "cycle": 2,
+      "readyMs": 3505,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 341.4,
+      "at": 1777.2000000029802,
+      "missing": [
+        "Allura",
+        "Playfair Display"
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+          "window": "shop",
+          "start": -111,
+          "done": -110,
+          "body": 136762,
+          "decoded": 471283,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -101,
+          "done": -100,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "window": "shop",
+          "start": -97,
+          "done": -96,
+          "body": 95463,
+          "decoded": 344285,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": 43,
+          "done": 45,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": 43,
+          "done": 46,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 0
+        }
+      ],
+      "requestCountDuring": 0,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "vorher",
+      "profile": "iPhone 13",
+      "cache": "kalt",
+      "cycle": 3,
+      "readyMs": 7580,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 3337.4,
+      "at": 5603.30000000447,
+      "missing": [
+        "Allura",
+        "Playfair Display"
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+          "window": "shop",
+          "start": -88,
+          "done": 2234,
+          "body": 136762,
+          "decoded": 471283,
+          "transfer": 137062
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": 41,
+          "done": 3091,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 219735
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": 41,
+          "done": 2307,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 131109
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": 2244,
+          "done": 3143,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 75898
+        }
+      ],
+      "requestCountDuring": 4,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "vorher",
+      "profile": "iPhone 13",
+      "cache": "warm",
+      "cycle": 3,
+      "readyMs": 3461,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 340.5,
+      "at": 1725.5,
+      "missing": [
+        "Allura",
+        "Playfair Display"
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+          "window": "shop",
+          "start": -130,
+          "done": -129,
+          "body": 136762,
+          "decoded": 471283,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -112,
+          "done": -111,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "window": "shop",
+          "start": -109,
+          "done": -108,
+          "body": 95463,
+          "decoded": 344285,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": 44,
+          "done": 46,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": 44,
+          "done": 47,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 0
+        }
+      ],
+      "requestCountDuring": 0,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "nachher",
+      "profile": "iPhone 13",
+      "cache": "kalt",
+      "cycle": 3,
+      "readyMs": 7547,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 2686.1,
+      "at": 5556.69999999553,
+      "missing": [
+        "Allura",
+        "Playfair Display"
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -107,
+          "done": 1272,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 75898
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": 42,
+          "done": 2429,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 219735
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": 42,
+          "done": 1991,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 131109
+        }
+      ],
+      "requestCountDuring": 3,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "nachher",
+      "profile": "iPhone 13",
+      "cache": "warm",
+      "cycle": 3,
+      "readyMs": 3476,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 335.9,
+      "at": 1760.0999999940395,
+      "missing": [
+        "Allura",
+        "Playfair Display"
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": -111,
+          "done": -110,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "window": "shop",
+          "start": -107,
+          "done": -106,
+          "body": 95463,
+          "decoded": 344285,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": 44,
+          "done": 45,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 0
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": 44,
+          "done": 46,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 0
+        }
+      ],
+      "requestCountDuring": 0,
+      "designRequestCount": 0,
+      "trusted": true
+    }
+  ]
+}

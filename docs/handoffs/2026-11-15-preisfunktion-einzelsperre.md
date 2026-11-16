@@ -1,4 +1,17 @@
-# Preisfunktion: Einzelsperre statt Warenkorb-Sperre (15.11.2026)
+# Preisfunktion: Einzelsperre statt Warenkorb-Sperre (15.11.2026, live seit 16.11.2026)
+
+**Stand 16.11.2026: live.** Chris hat am 16.11. „ja“ und „mach du das“ geschrieben, Claude hat selbst eingespielt.
+
+Aktive Versionen:
+- Stufe A `gravuru-2027-checkout-pruefung-20261116-a1` (1223817953281)
+- Stufe B `gravuru-2027-preis-einzelsperre-20261116-b1` (1223825227777), jetzt aktiv
+
+Checkout-Regel „Konfigurator-Preis: ungültige Gestaltung sperren“ (218759548): aktiv, Sperre bei App-Problem an.
+
+Ausgerollt wurde `ops/shopify/einzelsperre-release/`. Basis ist exakt die aktive Fassung vom 08.11., **ohne** die unveröffentlichte V3-Zubehörlogik aus `master-release/`. Werkzeug: `release.mjs` mit den Modi inventar, snapshot, projekt, kandidat, pruefen und freigeben. Vor jeder Freigabe läuft ein Modulvergleich.
+
+Messwerte und Live-Test stehen in `STATUS.md` (16.11.). Die folgenden Abschnitte beschreiben den Stand vor dem Einspielen.
+
 
 Claude als Operator. Branch `dev/claude-preisfunktion-einzelsperre-20261115`. Design-Master/Konfi unberührt.
 

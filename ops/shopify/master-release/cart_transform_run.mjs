@@ -20,17 +20,24 @@ export function cartTransformStrict(input){return runPricing(input,{isolate:fals
 export function rejectedPricingLines(input){return runPricing(input,{isolate:true}).rejected;}
 function runPricing(input,{isolate}){
  const pricingForLine=createPricingResolver();
- const priced=[],legacy=[],rejected=[];
+ const prepared=[],legacy=[],rejected=[];
+ const reject=(index,error)=>rejected.push({index,lineId:input.cart.lines[index].id,reason:String(error?.message||error)});
  input.cart.lines.forEach((line,index)=>{
   try{
    const own=priceOne(line,pricingForLine,input);
-   if(own.legacy)legacy.push(own.legacy);
-   else if(own.line)priced.push(...currentPriceTransform({...input,cart:{...input.cart,lines:[own.line]}}).operations);
-  }catch(error){
-   if(!isolate)throw error;
-   rejected.push({index,lineId:line.id,reason:String(error?.message||error)});
-  }
+   if(own.legacy)legacy.push(own.legacy);else if(own.line)prepared.push({index,line:own.line});
+  }catch(error){if(!isolate)throw error;reject(index,error);}
  });
+ const priceLines=list=>currentPriceTransform({...input,cart:{...input.cart,lines:list.map(p=>p.line)}}).operations;
+ // Normalfall wie bisher in einem Aufruf (gleiche Rechenkosten); nur bei einem Fehler Position für Position.
+ let priced;
+ try{priced=priceLines(prepared);}
+ catch(error){
+  if(!isolate)throw error;
+  priced=[];
+  for(const p of prepared){try{priced.push(...priceLines([p]));}catch(lineError){reject(p.index,lineError);}}
+ }
+ rejected.sort((a,b)=>a.index-b.index);
  return {result:withCheckoutDesignImages(input,{operations:[...priced,...legacy]}),rejected};
 }
 function priceOne(line,pricingForLine,input){

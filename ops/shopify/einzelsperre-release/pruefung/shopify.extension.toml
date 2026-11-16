@@ -1,12 +1,10 @@
-# Checkout-Sperre für Positionen, die die Preisfunktion abweist (Chris 15.11.2026).
-# Gehört in das vollständige App-Projekt unter extensions/gravuru-checkout-guard/.
 api_version = "2026-07"
 
 [[extensions]]
 name = "gravuru-checkout-guard"
 handle = "gravuru-checkout-guard"
 type = "function"
-description = "Sperrt nur Positionen ohne gültigen Konfigurator-Preis am Checkout"
+description = "Sperrt am Checkout nur Positionen ohne gültigen Konfigurator-Preis"
 
   [[extensions.targeting]]
   target = "cart.validations.generate.run"

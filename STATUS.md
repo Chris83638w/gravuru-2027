@@ -1,3 +1,21 @@
+## 16.11.2026 – Preisfunktion Einzelsperre live (Claude als Operator)
+
+- Anlass: Am 15.11. hat Shopify wegen zweier alter Testpositionen jede Warenkorbänderung abgelehnt. Chris: „Beim Kunden darf es nicht so sein“. Freigaben im Chat: „ja“ (Umbau), „ja“ (einspielen), „mach du das“.
+- Live in zwei Stufen über `private/claude-einzelsperre-20261116/release-v4.mjs`. CLI 4.9.0, Automation-Token, nie `--allow-deletes`.
+  - A `gravuru-2027-checkout-pruefung-20261116-a1` (1223817953281): neue Validierung `gravuru-checkout-guard`. Die Preisfunktion bekam einen Nachbau der aktiven Quelle (20.977→20.945 Bytes). 8→9 Module, 0 geändert. Checkout-Regel 218759548 aktiv, Sperre bei App-Problem an.
+  - B `gravuru-2027-preis-einzelsperre-20261116-b1` (1223825227777): nur die Binärdatei der Preisfunktion (→22.036 Bytes). 9→9 Module, 0 geändert.
+- Quelle: `ops/shopify/einzelsperre-release/` auf Basis der aktiven Fassung vom 08.11. (1c3c61f + Patches, pricing-history 2abfd92), ohne die unveröffentlichte V3-Zubehörlogik. `master-release/` enthält dieselbe Einzelsperre für den späteren V3-Stand.
+- Prüfungen:
+  - 47/47 Preistests.
+  - Gleichwertigkeit gegen die aktive Logik: 3.926 gültige Eingaben identisch, 41 abgewiesene sauber isoliert.
+  - WASM-Läufe: echte Eingabe 3,2 Mio. Anweisungen, Prüfung 3,3 Mio. Grenze 11 Mio., neu bis 14 verschiedene Gestaltungen pro Warenkorb, bisher 15.
+- Live-Test (Laptop-Warenkorb Chris):
+  - Eine Position ohne Konfigurator ließ sich hinzufügen (vorher 422).
+  - Der Checkout zeigte nur für diese Position „Diese Gestaltung ist nicht mehr bestellbar …“.
+  - Testzeile wieder entfernt, Checkout danach ohne Hinweis, 56,35 € unverändert. Funktionsprotokoll: alle Läufe OK.
+- Rückweg: Version A bzw. 1199363391489 wieder freigeben. Die Checkout-Regel kann aktiv bleiben.
+- Offen: Die FPD-Transformation `copy-line-item-from-bundles` meldet seit 30.04. Checkout-Fehler, vor Go-live prüfen.
+
 ## 13.11.2026 · Codex/Astra · #230/#168: Mengenrückkehr und Handyvorschau lokal korrigiert
 
 [Übergabe](docs/handoffs/2026-11-13-cart-mobile-fixes.md): vier Laufzeitdateien plus zwei gezielte Tests. Menge bleibt im Sitzungsschutz erhalten; gültiger CartEdit hat vor lokaler Wiederherstellung Vorrang. Resetleiste liegt außerhalb der horizontalen Plattenzeile und erhält eigene mobile Höhe. 13/13 Mengen-/CartEdit- sowie 5/5 Mobil-/Resetprüfungen, unabhängige Quellen-/Hashreviews und tatsächlicher lokaler Chrome-Lauf bei 390×844: volle Platten, Vollbild/Reset/Abbrechen und Menge10 nach Neuladen bestätigt. Zwei während Review/Sichtprüfung gefundene Zwischenfehler wurden vor Übernahme behoben. Galeriefix, Preise, IDs, Material und bestätigte 5-mm-Schrauben unverändert. Noch nicht installiert; Claude erhält enges Paket zum Abgleich mit seiner aktuellen Laufzeit. Echter Shopify-Cart bleibt wegen DRAFT gesperrt, aktiver WASM-Lauf mangels Original offen. Kein Publish/Shopwrite.

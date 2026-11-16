@@ -24,13 +24,17 @@ Kundenablauf (native variant-m-Produkte):
 5. Der signierte App-Proxy liefert eine eigene HTML-Seite und zwei JS-Module unter
    /apps/konfigurator. Die Seite liest /cart/data mit X-Gravuru-Cart-Handoff.
    Signatur, Shop, Sitzung, Kundenidentität, Registry und Entwurf werden erneut geprüft.
-   Die Übergabe enthält Variante, Menge, Preis, öffentliche Eigenschaften und PNG;
+   Die Übergabe enthält Variante, Menge, Preis und öffentliche Eigenschaften; das PNG nur
+   noch, wenn kein serverseitiges Checkout-Bild vorliegt (siehe 6);
    keine privaten Entwurfs-/Sitzungsschlüssel, Originalfotos oder Produktionsdateien.
-6. Browser liest den vorhandenen Shop-Cookie-Warenkorb /cart.js. Vor dem Upload beansprucht
+6. Browser liest den vorhandenen Shop-Cookie-Warenkorb /cart.js. Vor dem Schreiben beansprucht
    POST /apps/konfigurator/cart/claim das Angebot einmalig (SQLite theme_cart_transfers,
-   Mandant + offer_id). POST /cart/add.js mit FormData überträgt _Entwurf als PNG-Datei,
-   Design/Format/Gravurtext/Bearbeiten und _gravuru_offer/_gravuru_config/_gravuru_rev
-   sowie bestehende Preisvertragseigenschaften.
+   Mandant + offer_id). Design/Format/Gravurtext/Bearbeiten, _gravuru_offer/_gravuru_config/
+   _gravuru_rev und bestehende Preisvertragseigenschaften gehen per POST /cart/add.js mit.
+   Seit 16.11.2026 (Ladezeit): Ist checkoutImage konfiguriert, liefert /cart/data die READY-
+   Shopify-Datei als _gravuru_checkout_image und KEIN PNG; der Browser schreibt dann JSON und
+   setzt _Entwurf als Text auf genau diese cdn.shopify.com-Adresse (kein Bild-Down-/Upload über
+   das Kundengerät). Ohne checkoutImage bleibt der bisherige Weg: FormData mit _Entwurf als PNG-Datei.
 7. Rücklesen /cart.js: genau eine passende Angebotsposition, Produkt, Variante, Menge,
    ursprünglicher Einzel-/Gesamtpreis, sämtliche Eigenschaften und Shopify-Vorschau-URL.
    Rabatte dürfen den Endpreis nur reduzieren. Andere Positionen müssen erhalten bleiben.

@@ -148,7 +148,8 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  imagePending=true;const pendingImage=await proxyRequest('/cart/data');assert.equal(pendingImage.status,502);assert.equal(pendingImage.data.error.code,'checkout_image_pending');assert.equal(imageCalls,0);
  imagePending=false;const data=await proxyRequest('/cart/data');assert.equal(data.status,200,JSON.stringify(data.data));const p=data.data;
  assert.equal(p.variantId,product.variants[3].shopifyVariantId.split('/').at(-1));assert.equal(p.quantity,2);assert.equal(p.totalCents,chosen.priceCents*2);
- assert.equal(p.properties._gravuru_config,prepared.data.configuration.id);assert.equal(p.properties._gravuru_rev,'1');assert.ok(p.properties.Gravurtext);assert.equal(p.preview.type,'image/png');
+ assert.equal(p.properties._gravuru_config,prepared.data.configuration.id);assert.equal(p.properties._gravuru_rev,'1');assert.ok(p.properties.Gravurtext);
+ assert.equal(p.preview,undefined,'with a READY Shopify file no PNG travels to the customer device');assert.ok(JSON.stringify(p).length<64*1024,'handoff stays small');
  assert.ok(!JSON.stringify(p).includes(draft.token));assert.ok(!JSON.stringify(p).includes(token));assert.equal(new URL(p.properties._gravuru_bearbeiten).searchParams.get('line'),'theme');
  assert.equal(p.properties.Bearbeiten,undefined);
  assert.equal(p.properties._gravuru_checkout_image,registeredImage);assert.equal(imageCalls,1);
@@ -210,9 +211,12 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  const shopFetch=async(url,o)=>{
   if(url==='/cart.js')return Response.json(structuredClone(themeCart));
   if(url==='/cart/add.js'){
-   adds++;const uploaded=o.body.get('items[0][properties][_Entwurf]');assert.equal(uploaded.type,'image/png');assert.deepEqual(Buffer.from(await uploaded.arrayBuffer()),Buffer.from(png,'base64'));const props={};for(const [key,v]of o.body.entries()){const m=key.match(/^items\[0\]\[properties\]\[(.+)\]$/);if(m)props[m[1]]=typeof v==='string'?v:'https://cdn.shopify.com/s/files/1/uploads/preview-'+adds+'.png';}
-   const q=Number(o.body.get('items[0][quantity]'));
-   themeCart.items.push(priceThemeLine({key:'added-'+adds,variant_id:Number(o.body.get('items[0][id]')),product_id:Number(p.productId),properties:props},q));
+   // Hosted preview: plain JSON text properties, _Entwurf is the server-made Shopify file, no file upload.
+   adds++;assert.equal(typeof o.body,'string');assert.equal(o.headers['Content-Type'],'application/json');
+   const body=JSON.parse(o.body);assert.equal(body.items.length,1);const item=body.items[0],props=item.properties;
+   assert.equal(props._Entwurf,registeredImage);assert.equal(props._Entwurf,props._gravuru_checkout_image);
+   assert.ok(o.body.length<64*1024,'cart write stays small');
+   themeCart.items.push(priceThemeLine({key:'added-'+adds,variant_id:item.id,product_id:Number(p.productId),properties:props},item.quantity));
    return Response.json({items:themeCart.items.slice(-1)});
   }
   if(url==='/cart/change.js'){

@@ -89,3 +89,46 @@ test('a ready plate picture replaces the flat engraving preview in the cart; any
  {const p=payload(),f=fixture(p,{expectImage:jpeg});await f.client.submit(p,{image:jpeg});assert.equal(f.cart.items.length,2);}
  for(const bad of [new Blob(['x'],{type:'text/plain'}),new Blob([new Uint8Array(1536*1024+1)],{type:'image/jpeg'}),'x',null]){const p=payload(),f=fixture(p);await f.client.submit(p,{image:bad});assert.equal(f.cart.items.length,2);}
 });
+
+// Hosted preview (16.11.2026): the server already made a READY Shopify file, so the
+// browser sends only text properties and never uploads or downloads the PNG itself.
+const hostedUrl='https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-gestaltung-'+'d'.repeat(64)+'.png?v=1700000000';
+function hostedPayload(rev=1){const p=payload(rev);delete p.preview;p.properties._gravuru_bild='https://app.example/gestaltung/x.png';p.properties._gravuru_checkout_image=hostedUrl;return p;}
+function hostedFixture(p,{old,alter}={}){
+ const cart={currency:'EUR',items:[...(old?[{...line(old),properties:{...line(old).properties,_Entwurf:hostedUrl}}]:[])]},bodies=[];
+ const fetchImpl=async(url,options)=>{
+  if(url==='/de/cart.js')return Response.json(structuredClone(cart));
+  if(url==='/de/cart/add.js'){
+   assert.equal(typeof options.body,'string');assert.equal(options.headers['Content-Type'],'application/json');bodies.push(options.body);
+   const item=JSON.parse(options.body).items[0];assert.equal(item.id,Number(p.variantId));assert.equal(item.quantity,p.quantity);
+   const added={...line(p),properties:item.properties};alter?.(added);cart.items.push(added);return Response.json({items:[added]});
+  }
+  if(url==='/de/cart/change.js'){const body=JSON.parse(options.body);const at=cart.items.findIndex(l=>l.key===body.id);cart.items.splice(at,1);return Response.json(structuredClone(cart));}
+  assert.fail(url);
+ };
+ return {client:createThemeCartClient({fetchImpl,root:'/de/',claim:async()=>{}}),cart,bodies};
+}
+test('hosted preview: text-only cart write with the server-made Shopify file as _Entwurf',async()=>{
+ const p=hostedPayload(),f=hostedFixture(p);const result=await f.client.submit(p,{image:new Blob([new Uint8Array([255,216,255])],{type:'image/jpeg'})});
+ assert.equal(f.bodies.length,1);assert.ok(f.bodies[0].length<4096);assert.ok(!f.bodies[0].includes('iVBORw0KGgo'));
+ const props=JSON.parse(f.bodies[0]).items[0].properties;assert.equal(props._Entwurf,hostedUrl);assert.equal(props.Gravurtext,'Familie Müller');
+ assert.equal(result.line.properties._Entwurf,hostedUrl);
+});
+test('hosted preview: editing replaces only the previous revision',async()=>{
+ const p=hostedPayload(2),f=hostedFixture(p,{old:hostedPayload(1)});await f.client.submit(p);
+ assert.equal(f.cart.items.length,1);assert.equal(f.cart.items[0].properties._gravuru_rev,'2');
+});
+test('hosted preview: a different or missing preview in the cart is rejected',async()=>{
+ for(const alter of [l=>{l.properties._Entwurf='https://cdn.shopify.com/s/files/1/uploads/other.png';},l=>{delete l.properties._Entwurf;}]){
+  const p=hostedPayload(),f=hostedFixture(p,{alter});await assert.rejects(f.client.submit(p),/stimmen nicht überein/);
+ }
+});
+test('hosted preview: no inline PNG requires a valid Shopify file address',()=>{
+ for(const bad of [undefined,'','https://evil.example/files/gravuru-gestaltung-'+'d'.repeat(64)+'.png','https://cdn.shopify.com/s/files/1/uploads/x.png','https://cdn.shopify.com/s/files/1/0920/5550/3228/files/other.png','javascript:alert(1)']){
+  const p=hostedPayload();if(bad===undefined)delete p.properties._gravuru_checkout_image;else p.properties._gravuru_checkout_image=bad;
+  assert.throws(()=>validateThemeCartPayload(p),/Gestaltungsvorschau fehlt/);
+ }
+ assert.ok(validateThemeCartPayload(hostedPayload()));
+ // With an inline PNG the legacy upload path stays in force, even if a checkout image is present.
+ const both=hostedPayload();both.preview={type:'image/png',base64:png};assert.ok(validateThemeCartPayload(both));
+});

@@ -1,3 +1,13 @@
+## 16.11.2026 – V1 umgesetzt: Warenkorb ohne Bild-Down-/Upload über das Kundengerät (Claude als Operator)
+
+- Freigabe: Chris „B, setz V1 selbst um“ – ausdrückliche Ausnahme von der Prio-Konfi-Zuständigkeit (Mika/Mikail) nur für V1. V2–V4 bleiben Vorschlag.
+- Branch `dev/claude-warenkorb-bild-url-20261116`; Details: [Übergabe](docs/handoffs/2026-11-16-warenkorb-ladezeit-vorschlag.md).
+- `/cart/data` liefert kein PNG mehr, wenn das serverseitige Checkout-Bild vorliegt; `theme-cart-client.mjs` schreibt dann JSON mit `_Entwurf` = READY-Shopify-Datei. Ohne Checkout-Bild unverändert alter Weg.
+- Prüfung: gesamte Suite `node --test app/configurator/variant-m/*.test.mjs app/workshop/*.test.mjs` auf unverändertem main 2721 Tests / 205 Fehler, mit Änderung 2725 / dieselben 205 (kein neuer Fehler; vorbestehend, lokale Umgebung ohne Python-Produktionsbibliotheken). Gezielt grün: theme-cart-client (17), theme-cart-flow (2), shop-entry-flow, shop-entry-client, shopify-checkout-image, checkout-design-image, cart-edit-revision, thank-you-preview.
+- Live-Theme `190984126844` lesend geprüft: kompatibel ohne Theme-Änderung.
+- Nicht erledigt: Deploy auf app-2027, echter Shopify-Warenkorbtest, erneute Handy-Messung (erwartet ≈ −60 s am Handy).
+- Nächster Schritt: Review des Branches, dann Deploy nach Freigabe Chris und Messung wiederholen.
+
 ## 16.11.2026 – Vorschlag Warenkorb-Ladezeit (Claude als Operator, nur lesend)
 
 - Messung am Live-Stand `1c5f8062` (Byte-Vergleich der 7 Shop-Einstiegsdateien identisch): Klick „Warenkorb“ → Position im Warenkorb Handy ≈ 113 s, Desktop ≈ 39 s.

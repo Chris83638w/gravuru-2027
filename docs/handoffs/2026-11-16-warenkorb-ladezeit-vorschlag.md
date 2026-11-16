@@ -57,7 +57,18 @@ Das Vorschaubild wandert dreimal: (1) Server → Shopify Files (`shopify-checkou
 
 Nicht Teil dieses Vorschlags, aber gemessen (separat entscheiden): Produktseite 1,4 MB HTML (Estimator-App ≈ 230 KB, JSON-LD mit 250 Varianten ≈ 193 KB, ungenutzte FPD-Einstellungen ≈ 26 KB); Consentmo-Cookiebanner überdeckt am Handy den Konfi-Warenkorbbutton; in 2 von 5 Desktop-Läufen öffnete „Jetzt personalisieren“ ganzseitig statt im Fenster.
 
+## Umsetzung V1 (Chris 16.11.2026: „B, setz V1 selbst um“)
+
+Ausdrückliche Ausnahme von der Prio-Konfi-Zuständigkeit durch Chris für **V1**; V2–V4 bleiben Vorschlag. Branch `dev/claude-warenkorb-bild-url-20261116`.
+
+- `app/workshop/shop-entry.mjs`: `/cart/data` entfernt `preview`, sobald `checkoutImage` die READY-Shopify-Datei geliefert hat.
+- `app/workshop/ui/theme-cart-client.mjs`: neuer Export `hostedPreview()`; ohne Inline-PNG nur gültig mit `cdn.shopify.com/…/files/gravuru-gestaltung-<64 hex>.png`. `submit()` schreibt dann JSON (`items[0].properties._Entwurf` = diese Adresse); Rückleseprüfung verlangt exakt diese Adresse. Mit Inline-PNG unverändert alter Weg (FormData).
+- `app/workshop/ui/theme-cart-ui.mjs` (Ausweichseite): Vorschau aus der Shopify-Adresse, falls kein PNG (CSP `img-src https://cdn.shopify.com` war bereits erlaubt).
+- Tests: `theme-cart-client.test.mjs` +4 (Textschreiben, Bearbeiten, falsche/fehlende Vorschau, Adressprüfung); `theme-cart-flow.test.mjs` auf neues Verhalten (kein PNG im Payload, JSON-Add mit `_Entwurf` = Checkout-Bild). Vorbestehende, unabhängige Fehler auf main unverändert: `shop-entry` „customer logo conversion…“, `konfis` „Werkstatt einheitlich…“.
+- Live-Theme gelesen (Theme `190984126844`): `snippets/gravuru-warenkorb-bearbeiten.liquid` zeigt `_Entwurf` bei Präfix `https://cdn.shopify.com/` als Bild; `_`-Eigenschaften werden in `main-cart`/`cart-drawer` ausgeblendet → kompatibel ohne Theme-Änderung.
+- Grenzen: Synthetische Tests, kein echter Shopify-Warenkorbtest mit dem neuen Code (erst nach Deploy möglich). `checkoutImage` (Shopify `fileCreate` + Polling) liegt weiter im kritischen Pfad (V2).
+
 ## Offene Freigaben
 
-- Chris/Mikail: Umsetzung V1–V4 durch wen (Mika laut Prio-Regel oder ausdrücklich Claude).
-- Keine Live-/Theme-/Function-Änderung ohne gesonderte Freigabe.
+- Deploy des Branches auf `app-2027` nur nach Freigabe Chris, danach Handy-Messung wiederholen.
+- V2–V4: Entscheidung Chris/Mikail.

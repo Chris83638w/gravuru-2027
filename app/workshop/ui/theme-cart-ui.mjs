@@ -1,4 +1,4 @@
-import {createThemeCartClient} from './theme-cart-client.mjs';
+import {createThemeCartClient,hostedPreview} from './theme-cart-client.mjs';
 const status=document.querySelector('#status'),button=document.querySelector('#check'),back=document.querySelector('#back');
 const proxy=document.querySelector('[data-proxy-path]').dataset.proxyPath,token=new URLSearchParams(location.hash.slice(1)).get('handoff');
 const root=window.Shopify?.routes?.root||'/';
@@ -15,7 +15,8 @@ async function run(){
   if(!/^[a-f0-9]{64}$/.test(token||''))throw Error('Bitte starte die Warenkorbübergabe im Konfigurator.');
   payload??=await request('data');
   if(location.hostname!==payload.shopDomain)throw Error('Diese Übergabe gehört zu einem anderen Shop.');
-  const image=document.querySelector('#preview');image.src='data:image/png;base64,'+payload.preview.base64;image.hidden=false;
+  const image=document.querySelector('#preview'),hosted=hostedPreview(payload);
+  if(payload.preview?.base64||hosted){image.src=payload.preview?.base64?'data:image/png;base64,'+payload.preview.base64:hosted;image.hidden=false;}
   document.querySelector('#details').textContent=[payload.properties.Design,payload.properties.Format,...Object.entries(payload.properties).filter(([k])=>k.startsWith('Gravurtext')).map(([,v])=>v)].filter(Boolean).join('\n');
   client??=createThemeCartClient({root,claim:()=>request('claim','POST'),onProgress:text=>{status.textContent=text;}});
   const submit=()=>client.submit(payload),result=navigator.locks?await navigator.locks.request('gravuru-theme-cart',submit):await submit();

@@ -1,3 +1,15 @@
+## 16.11.2026 – F01 live, alte Produkte auf Entwurf, Gesamtstand gesichert (Claude als Operator, #239)
+
+- **F01 live:** PR #240 ist als `a4616943` in `main`. Neue Laufzeit `private/kandidat-a4616943-20261116`.
+  - Baum `3ec4f6d3…6d19`, 1.866 Dateien, Rücklesen gleich, keine fremden Dateien.
+  - `app.cjs` umgeschaltet: SHA vorher `592fe3eb…`, nachher `7dae24cd…`. Sicherung in `app.cjs.bak-20261116-f01`. Danach „App neu starten“.
+  - Kontrolle: Katalog 200, Session 401, Webhook-GET 405.
+  - Rückweg: `node ../private/claude-f01-20261116/umschalten-f01.cjs --zurueck`, danach Neustart.
+  - Werkzeuge liegen in `ops/plesk/f01-20261116/`. Testbestellung 1 → 4 macht Astra.
+- **Alte Produkte:** Die 1.109 aktiven Produkte, die vor dem 01.10.2026 angelegt wurden, sind per Admin-Sammelaktion auf Entwurf gesetzt. Das war Chris' Entscheidung vom 10.11., die Sicherung liegt laut Chris vor. Gelöscht wurde nichts. Aktiv bleiben die 87 neuen Produkte.
+- **Gesamtstand:** gesichert in `docs/sicherung/2026-11-16-gesamtstand.md`, mit korrigiertem Produktstatus.
+- **Aufgabenteilung bis Go-live:** steht in #239.
+
 ## 16.11.2026 · Codex/Astra · #239 F01 Mengenänderung beim Bestelleingang
 
 Der Bestelleingang prüft bei geänderter Menge den Stückpreis centgenau anhand des unveränderlichen Angebots und seines Staffelvertrags. Die übernommene Position speichert die bestellte Menge und referenziert den ursprünglichen Gestaltungsstand. [Implementierung](app/workshop/order-intake.mjs) · [Shopify-Beleg zum Stückpreis](https://github.com/Chris83638w/gravuru-2027/issues/239#issuecomment-6910255393)

@@ -20,4 +20,20 @@ test('background design resources load sequentially instead of competing with ea
  await installDoorbellDesignLoading(el,config)();
  assert.deepEqual(loaded,['a','b']);assert.equal(peak,1);assert.equal(refreshes,1);
 });
+test('the selected design takes priority and background template loads resume afterwards',async()=>{
+ let finish;
+ const calls=[],el={fontData:{A:{}},motifs:{},selected:'a',chooseDesign(id){this.selected=id;},sync(){},
+  uxEnsureDesignResources(design,{priority}){
+   calls.push([design.id,priority]);
+   if(priority==='high')return new Promise(resolve=>{finish=()=>{this.fontData.B={};resolve();};});
+   return Promise.resolve();
+  }};
+ const warm=installDoorbellDesignLoading(el,config),choice=el.chooseDesign('b'),background=warm();
+ await Promise.resolve();
+ assert.deepEqual(calls,[['b','high']]);
+ assert.equal(el.selected,'a');
+ finish();await Promise.all([choice,background]);
+ assert.deepEqual(calls,[['b','high'],['a','low'],['b','low']]);
+ assert.equal(el.selected,'b');
+});
 test('all126 true imported products load fewer start fonts without dropping available templates',()=>{const dir=path.resolve('..','import-dryrun','documents');if(!fs.existsSync(dir))return;const files=fs.readdirSync(dir).filter(f=>f.endsWith('.json'));assert.equal(files.length,126);for(const file of files){const c=JSON.parse(fs.readFileSync(path.join(dir,file))).config;const all=startNeeds({...c,doorbell:null}).fonts;const initial=startNeeds(c).fonts;assert.ok(initial.length<all.length,file);assert.ok(initial.length>0);assert.equal(c.profile.designs.length,16);}});

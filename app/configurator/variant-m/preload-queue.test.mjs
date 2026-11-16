@@ -129,6 +129,16 @@ test('Opening current panels promotes visible content, leaving explicit legacy a
  await f.el.uxEnsureAllFonts();assert.equal(f.requests.filter(r=>r.url.includes('/schriften/')).length,3);
 });
 
+test('doorbell text suggestions wait for a text action',async()=>{
+ const f=await fakeEditor('doorbell-text-intent');
+ const q=installBackgroundLoading({el:f.el,r:f.r,config:{doorbell:{},profile:{optionGroups:[]}},win:f.win});
+ await f.run();
+ assert.equal(q.state('fonts'),'skipped');
+ assert.equal(f.requests.some(r=>r.url.includes('/schriften/')),false);
+ await q.request('fonts');
+ assert.deepEqual(f.requests.filter(r=>r.url.includes('/schriften/')).map(r=>r.url),['/l/schriften/montserrat.json']);
+});
+
 test('Save-Data preloads no optional font/motif/image; explicit visible request still works',async()=>{
  const f=await fakeEditor('bounded-savedata');f.win.navigator.connection={saveData:true};
  const q=installBackgroundLoading({el:f.el,r:f.r,config:{profile:{optionGroups:[]}},win:f.win});await f.run();

@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {acrylRoute,acrylAssetText,acrylCacheControl} from './acryl-employee-host.mjs';
 import {createConfiguratorIntegration} from './configurator-integration.mjs';
+import {DOORBELL_STEEL_SURFACE} from '../platform/sources/app/shared/models/doorbell-material-preview.mjs';
 test('native and form editor aliases remain in their own release',()=>{
  for(const [outer,inner]of [
   ['/_merchant-acryl-editor.html','/_merchant-editor.html'],['/_merchant-acryl-form-editor.html','/_merchant-form-editor.html'],
@@ -44,4 +45,13 @@ test('static editor files may be cached by the browser; everything else stays pr
  assert.equal(acrylCacheControl('/_merchant-acryl-editor.html',200),'private, max-age=300');
  assert.equal(acrylCacheControl('/_acryl-runtime/lazy/motive-alle.json',200),'public, max-age=3600');assert.equal(acrylCacheControl('/_acryl-runtime/lazy/motive/leuchtturm_1.json',200),'public, max-age=3600');
  for(const [p,s] of [['/_acryl-bundle/editor.mjs',200],['/_acryl-runtime/lazy/schriften/../x.json',200],['/_acryl-runtime/lazy/motive/../a.json',200],['/api/workshop/acryl/acrylic-drafts',200],['/_merchant-acryl-editor.html',404],['/werkstatt/',200]])assert.equal(acrylCacheControl(p,s),null,p);
+});
+
+test('only the content-versioned doorbell texture receives the long cache policy through the Acryl host',()=>{
+ const outer=acrylAssetText(DOORBELL_STEEL_SURFACE);
+ assert.equal(acrylRoute(outer),DOORBELL_STEEL_SURFACE);
+ assert.equal(acrylCacheControl(outer,200),'public, max-age=31536000, immutable');
+ assert.equal(acrylCacheControl(outer,404),null);
+ assert.equal(acrylCacheControl(outer.replace(/\.[a-f0-9]{16}\.webp$/,'.webp'),200),null);
+ assert.equal(acrylCacheControl(outer.replace(/\.[a-f0-9]{16}\.webp$/,'.png'),200),null);
 });

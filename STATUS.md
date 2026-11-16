@@ -8,6 +8,16 @@ Der Editor stellt Gestaltung, Foto und Menge wieder her. Beim Aktualisieren verw
 
 Ältere Positionen brauchen weiterhin einen vorhandenen Entwurfszugang. Die Prüfung auf einem physischen Handy steht aus. Branch `dev/astra-f03-bearbeiten-20261116` auf `main`. Nächster Schritt ist Claudes PR-Prüfung. Keine Live-Aktivierung von F03.
 
+## 16.11.2026 · Codex/Astra · #239 P01 Cardea-Textur
+
+Nach Claudes Freigabe von F03 verwendet der Funkklingel-Renderer die vorhandene Edelstahltextur als WebP. Der Dateiname trägt den SHA-256-Präfix. Beide Editor-Routen liefern die versionierte Textur mit einem Jahr Cache-Laufzeit. Die bisherige PNG-Adresse liefert weiterhin das Original. [Review und Freigabe](https://github.com/Chris83638w/gravuru-2027/pull/242#issuecomment-6911662650) · [Renderer](app/platform/sources/app/shared/models/doorbell-material-preview.mjs)
+
+WP Cardea 2 Hochformat im lokalen R15-Editor mit signiertem Test-Einstieg. 24 Chromium-Messungen mit demselben Modell vor und nach der Änderung. Die Textur schrumpfte von 1.440.952 auf 97.754 Byte bei 1.536 × 1.024 Pixeln. Unter dem iPhone-13-Mobilnetzprofil lag der Median bis zum vollständigen Texturtransfer bei 24,68 → 11,69 s mit kaltem Cache und 16,45 → 2,60 s mit warmem Cache. Der Bedienstart bei kaltem Cache lag bei 11,75 → 11,74 s. Die warmen WebP-Läufe übertrugen für die Textur 0 Byte. [Einzelläufe und Profile](docs/handoffs/2026-11-16-p01-cardea/messwerte.json)
+
+186 gezielte Tests bestanden. Die verglichenen Desktop- und Mobilansichten zeigen dieselbe Kontur und Materialwirkung. Das WebP wurde auch in der iPhone-13-Emulation mit WebKit geladen. [Mobil vorher](docs/handoffs/2026-11-16-p01-cardea/vorher-mobil.png) · [Mobil nachher](docs/handoffs/2026-11-16-p01-cardea/nachher-mobil.png) · [WebKit](docs/handoffs/2026-11-16-p01-cardea/nachher-webkit.png)
+
+Branch `dev/astra-p01-cardea-webp-20261116` auf `main` `425f1488`. Nächster Schritt ist die Prüfung des PR. Keine Live-Aktivierung.
+
 ## 16.11.2026 – F01 live, alte Produkte auf Entwurf, Gesamtstand gesichert (Claude als Operator, #239)
 
 - **F01 live:** PR #240 ist als `a4616943` in `main`. Neue Laufzeit `private/kandidat-a4616943-20261116`.

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {createHmac,randomBytes,randomUUID} from 'node:crypto';
+import {createHash,createHmac,randomBytes,randomUUID} from 'node:crypto';
 import {EventEmitter} from 'node:events';
 import {Readable} from 'node:stream';
 import {build} from '../configurator/variant-m/build.mjs';
@@ -12,6 +12,7 @@ import {createWorkshop} from './http.mjs';
 import {createShopifyAdminHost} from './shopify-admin-host.mjs';
 import {createMerchantRequest} from './ui/merchant-request.mjs';
 import {merchantDownload} from './ui/merchant-downloads.mjs';
+import {DOORBELL_STEEL_SURFACE} from '../platform/sources/app/shared/models/doorbell-material-preview.mjs';
 
 const config={mode:'embedded-test',origin:'https://workshop.example',shopDomain:'fixture.myshopify.com',clientId:'fixture-client'};
 const sessions={mode:'test-only',shopDomain:config.shopDomain,clientId:config.clientId,secret:randomBytes(32).toString('hex')};
@@ -176,6 +177,19 @@ test('embedded host does not expose customer editor, model data, dotfiles or tra
   const {request}=setup(t);
   for(const route of ['/','/models.json','/editor.html','/form-editor.html','/konfigurator/form/','/.env','/workshop-ui/%2e%2e%2fhttp.mjs','/workshop-ui/no-file.html'])assert.equal((await request(route)).status,404,route);
   const r=await request('/werkstatt/',{method:'HEAD'});assert.equal(r.status,200);assert.equal(r.bytes.length,0);assert.ok(Number(r.headers['content-length'])>0);
+});
+test('the public doorbell texture is a WebP whose name matches its bytes; old PNG links still resolve',async t=>{
+  const {request}=setup(t);
+  const original='/_runtime/images/gravuru-edelstahl-feine-maserung-vorschau.png';
+  const texture=await request(DOORBELL_STEEL_SURFACE);
+  assert.equal(texture.status,200);
+  assert.equal(texture.headers['content-type'],'image/webp');
+  assert.equal(texture.headers['cache-control'],'public, max-age=31536000, immutable');
+  assert.ok(DOORBELL_STEEL_SURFACE.endsWith('.'+createHash('sha256').update(texture.bytes).digest('hex').slice(0,16)+'.webp'));
+  const legacy=await request(original);
+  assert.equal(legacy.status,200);
+  assert.equal(legacy.headers['content-type'],'image/png');
+  assert.equal(legacy.headers['cache-control'],'no-store');
 });
 test('loopback preview keeps original host, frame and unauthenticated local behavior',async t=>{
   const {request}=setup(t,false);const page=await request('/werkstatt/');assert.equal(page.status,200);assert.ok(!page.bytes.toString().includes('shopify-api-key'));assert.match(page.headers['content-security-policy'],/frame-ancestors 'self'/);

@@ -1,8 +1,7 @@
 import {escapeXml as esc} from './design-content.mjs';
 
-// Existing empty AOSU surface, documented in MATERIALREFERENZEN.md. Preview only:
-// never copy the lettering from the steel-reference-v4 specimen into a product.
-export const DOORBELL_STEEL_SURFACE='/_runtime/images/gravuru-edelstahl-feine-maserung-vorschau.png';
+// Existing empty AOSU preview surface from MATERIALREFERENZEN.md, named by its SHA-256 prefix.
+export const DOORBELL_STEEL_SURFACE='/_runtime/images/gravuru-edelstahl-feine-maserung-vorschau.50e74d27e1f6f494.webp';
 export function doorbellMaterialPreview(profile,acrylic,id){
  const {width:w,height:h}=profile.geometry,a=acrylic;
  const source=profile.admin?.steelImageUrl||DOORBELL_STEEL_SURFACE;

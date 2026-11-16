@@ -10,6 +10,7 @@ import {createWorkshop} from '../../workshop/http.mjs';
 import {readThemeCatalog} from '../../workshop/theme-catalog.mjs';
 import {openKatalog,katalogPath} from '../../workshop/katalog-source.mjs';
 import {doorbellImageResource,isDoorbellImagePath} from '../../workshop/doorbell-image-resource.mjs';
+import {DOORBELL_STEEL_SURFACE} from '../../platform/sources/app/shared/models/doorbell-material-preview.mjs';
 import {isPrioPresentationAsset} from '../mobile-demo/assets.mjs';
 import {createPreparedEditorBundles} from '../../workshop/prepared-editor-bundles.mjs';
 
@@ -130,7 +131,7 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
       // Kundenbilder (Szene, Sockel, Beispielfoto): einen Tag im Cache, damit vorgeladene Sockelansichten
       // (background-loading.mjs) beim Wechsel ohne neuen Abruf erscheinen. Alles andere bleibt no-store.
       if(pathname.startsWith('/acrylic-assets/'))headers['Cache-Control']='public, max-age=86400';
-      if(isDoorbellImagePath(pathname))headers['Cache-Control']='public, max-age=31536000, immutable';
+      if(isDoorbellImagePath(pathname)||pathname===DOORBELL_STEEL_SURFACE)headers['Cache-Control']='public, max-age=31536000, immutable';
       if(compressible.has(extension)){headers.Vary='Accept-Encoding';if(bytes.length>1024&&acceptsGzip(req.headers['accept-encoding'])){bytes=await compressed(file,bytes,!transformed);headers['Content-Encoding']='gzip';}}
       headers['Content-Length']=bytes.length;
       res.writeHead(200,headers);

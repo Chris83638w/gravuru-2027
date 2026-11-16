@@ -1,3 +1,11 @@
+## 16.11.2026 – V4 umgesetzt: Fortschrittsanzeige (Claude als Operator)
+
+- Freigabe: Chris „mach V4 auch“. Branch `dev/claude-warenkorb-v4-20261116` (baut auf V1–V3 auf).
+- Befund (Handy-Screenshots der Messung): Editor zeigte „1–3 von 3“, danach übernahm die Shopseite mit einem Satz ohne Zählung – der längste Teil; nirgends Bewegung, wirkte bis zu einer Minute eingefroren. Der Editor-Knopf wird nach Schritt 3 wieder frei, die Shop-Überlagerung deckt ihn ab.
+- `shop-cart.mjs`: durchgehende Zählung „1–3 von 4“, Ladesymbol (`data-busy`, CSS in `completion.css`, ohne Animation bei „reduzierte Bewegung“), nach 12 s Hinweis „Bei langsamer Verbindung dauert das etwas länger – bitte das Fenster geöffnet lassen.“
+- `shop-embed.mjs` (Shopseite): „4 von 4 · …“ inkl. der Teilschritte aus `theme-cart-client`, großes Ladesymbol, Hinweis nach 15 s; Fehler- und Störungsanzeigen ohne Ladesymbol.
+- Prüfung: Gesamtsuite 2726 / dieselben 205 vorbestehenden Fehler wie main; `shop-cart.test.mjs` prüft zusätzlich: Fehlermeldung ohne Ladesymbol. Darstellung lokal als Bild geprüft, nicht im echten Shop.
+
 ## 16.11.2026 – V2 + V3 umgesetzt (Claude als Operator)
 
 - Freigabe: Chris „ja, mach V2 und V3“ – Ausnahme von der Prio-Konfi-Zuständigkeit für V2/V3; V4 bleibt Vorschlag. Branch `dev/claude-warenkorb-v2-v3-20261116` (baut auf V1 auf).

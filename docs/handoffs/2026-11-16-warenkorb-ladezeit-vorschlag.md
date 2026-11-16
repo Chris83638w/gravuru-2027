@@ -72,7 +72,10 @@ Ausdrückliche Ausnahme von der Prio-Konfi-Zuständigkeit durch Chris für **V1*
 
 Branch `dev/claude-warenkorb-v2-v3-20261116`, Details in `STATUS.md`. Kern: Kundenvorschau als WebP hochladen (3,24 MB → ≈ 0,19 MB Base64), serverseitig weiter als PNG gespeichert; Shopify-Checkout-Bild startet schon beim `theme-cart`-Aufruf.
 
+## Umsetzung V4 (Chris 16.11.2026: „mach V4 auch“)
+
+Branch `dev/claude-warenkorb-v4-20261116`: durchgehende Zählung 1–4 über Editor und Shopseite, Ladesymbol, Hinweis bei langsamer Verbindung. Details in `STATUS.md`.
+
 ## Offene Freigaben
 
 - Deploy des Branches auf `app-2027` nur nach Freigabe Chris, danach Handy-Messung wiederholen.
-- V4: Entscheidung Chris/Mikail.

@@ -15,6 +15,7 @@ test('native cart checks required text only on completion and before any image o
   await result.button.events.click();
   assert.equal(attempted,true);assert.equal(revealed,'name');assert.equal(work,0);
   assert.equal(result.status.textContent,'Bitte Name ausfüllen.');assert.equal(result.button.disabled,false);
+  assert.equal('busy' in result.status.dataset,false,'V4: Fehlermeldung ohne Ladesymbol');
  }finally{
   for(const key of ['window','document'])if(previous[key]===undefined)delete globalThis[key];else globalThis[key]=previous[key];
  }

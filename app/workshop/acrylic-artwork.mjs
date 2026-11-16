@@ -43,7 +43,7 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfac
  const layered=isLayeredDoorbell(config);
  if(config.doorbell&&!layered)fail('Die getrennte Fertigungsausgabe für Edelstahlträger und Acrylglasauflage ist noch nicht angebunden.');
  const native=manifest.schema===NATIVE_REVIEW;
- if(saved.schema!==(native?'gravuru-native-review-input/v1':'gravuru-acrylic-review-input/v1')||native!==(['slate','steel'].includes(config.profile.material.kind)||!!config.familyAcrylic||isFamilyFormats(config)||layered)||saved.profileRevision!==config.profile.revision||manifest.product.id!==config.profile.id)fail('Die gesicherte Produktrevision ist nicht eindeutig.');
+ if(saved.schema!==(native?'gravuru-native-review-input/v1':'gravuru-acrylic-review-input/v1')||native!==(['slate','steel','aluDibond'].includes(config.profile.material.kind)||!!config.familyAcrylic||isFamilyFormats(config)||layered)||saved.profileRevision!==config.profile.revision||manifest.product.id!==config.profile.id)fail('Die gesicherte Produktrevision ist nicht eindeutig.');
  // Profile fonts were frozen at checkout after the original product document.
  // Validate against those hash-verified paths, just like validateAcrylicReview;
  // never resolve a missing font from today's library or the browser.
@@ -75,6 +75,10 @@ export async function acrylicArtwork(archive,archiveHash,{engraving=false,surfac
    photos.push({fieldId:field,bytes:bytes.toString('base64'),width:photo.width,height:photo.height,...nativePhotoTreatment(config.profile,o,{edited:!!entry.edited,engraving}),...(o.uxUploadKind==='logo'&&o.uxLogoTint?{nativeTint:color}:{}),sourcePath:path});photoFields.push(field);
    }
   }else if(o.type==='photoSlot'){
+   if(config.profile.material.kind==='aluDibond'){
+    if(o.required)fail('Erforderliches eigenes Foto fehlt.');
+    continue;
+   }
    const example=config.localResources.photoExamples?.find(e=>e.designId===design.id&&e.slotId===o.id);if(o.required&&!example)fail('Erforderliches eigenes Foto fehlt.');if(!example)continue;
    const bytes=files.get('quellen/'+example.assetId+'-vorschau.svg');if(!bytes)fail('Beispielfoto fehlt im gesicherten Stand.');const clip='native-example-'+index,mask=maskFor(o,clip);
    body=`<defs>${mask.defs}</defs><g ${mask.attribute}><image href="${dataSvg(bytes)}" x="${-o.w/2}" y="${-o.h/2}" width="${o.w}" height="${o.h}" preserveAspectRatio="none"/></g>`;

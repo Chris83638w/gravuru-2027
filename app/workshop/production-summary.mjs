@@ -19,7 +19,7 @@ import {customerVectorLogoFragment} from './customer-vector-logo-media.mjs';
 export const PRODUCTION_SUMMARY_SCHEMA='gravuru-production-summary/v1';
 export const SUMMARY_FILES=Object.freeze({pdf:'summary.pdf',json:'summary.json'});
 const METHOD_LABELS={print:'UV-Druck',engraving:'Gravur'};
-const MATERIAL_KINDS={acrylic:'Acrylglas',slate:'Schiefer',steel:'Edelstahl',wood:'Holz'};
+const MATERIAL_KINDS={acrylic:'Acrylglas',slate:'Schiefer',steel:'Edelstahl',wood:'Holz',aluDibond:'Alu-Dibond'};
 const fail=message=>{throw Object.assign(Error(message),{status:422,code:'production_summary'});};
 const round=(v,digits=2)=>Number.isFinite(v)?Number(v.toFixed(digits)):null;
 const cents=v=>Number.isSafeInteger(v)?v:null;

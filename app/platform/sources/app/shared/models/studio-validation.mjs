@@ -21,7 +21,7 @@ export function validateStudio(p,original,{extraFontIds=[],motifs=[],fonts,catal
  if(!p.geometry||!p.material)throw Error('Produktgeometrie oder Material fehlt.');
  const {width,height,margin,shape,radius}=dimensions(p);
  if(![width,height,margin,radius].every(Number.isFinite)||width<10||height<10||width>2000||height>2000||margin<0||margin*2>=Math.min(width,height)||!['rect','ellipse','contour'].includes(shape)||radius<0||radius>Math.min(width,height)/2)throw Error('Bitte gültige Produktmaße und eine passende Form eingeben.');
- if(!['steel','acrylic','wood','slate','other','print'].includes(p.material.kind)||!/^#[0-9a-f]{6}$/i.test(p.material.color)||!Number.isFinite(p.material.thicknessMm)||p.material.thicknessMm<=0||p.material.thicknessMm>100)throw Error('Bitte Material, Farbe und Stärke prüfen.');
+ if(!['steel','acrylic','wood','slate','aluDibond','other','print'].includes(p.material.kind)||!/^#[0-9a-f]{6}$/i.test(p.material.color)||!Number.isFinite(p.material.thicknessMm)||p.material.thicknessMm<=0||p.material.thicknessMm>100)throw Error('Bitte Material, Farbe und Stärke prüfen.');
  validateProcessingProfile(p);validateOptionGroups(p.optionGroups,{catalogSizes});
  if(p.workingArea!==undefined){const a=p.workingArea;if(shape!=='contour'||!a||![a.headHeightMm,a.previewHeightMm].every(Number.isFinite)||a.headHeightMm<10||a.previewHeightMm>height||Math.abs(a.previewHeightMm-a.headHeightMm-10)>.001)throw Error('Ungültige Grabstecker-Kopfansicht.');}
  if(shape==='contour'){validateContourGeometry(p.geometry);for(const group of p.optionGroups||[])for(const value of group.values||[])if(value.holes!==undefined)validateGeometryHoles({...p,geometry:{...p.geometry,holes:value.holes}});}

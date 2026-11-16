@@ -22,7 +22,15 @@ const w=createWorkshop({filename:path.join(dir,'workshop.sqlite'),seedConfig:see
 const available={...workshopResources().fonts,...w.fonts.resources()};
 const plan=await planKatalogImport(katalog,lineId,{repository:w.repository,families:w.families,available,converter:convertFont,fontLibrary:w.fonts,profiles:w.profiles,assets:w.assets});
 const result=applyKatalogImport(plan,{repository:w.repository,families:w.families});
-const products=result.products.map(p=>{const r=w.repository.get(p.id),c=r.document.config;return {id:p.id,sub:p.key.split(':')[2],revision:r.revision,name:r.document.name,start:c.profile.defaultDesignId,designs:c.profile.designs.length,mounting:c.profile.optionGroups.find(g=>g.id==='mounting').values.map(v=>v.id+':'+v.priceCents),photo:{enabled:c.photo.enabled,includedCount:c.photo.includedCount,extraPriceCents:c.photo.extraPriceCents}};});
+const products=result.products.map(p=>{
+ const r=w.repository.get(p.id),c=r.document.config,profile=c.profile;
+ const start=profile.designs.find(design=>design.id===profile.defaultDesignId);
+ return {id:p.id,sub:p.key.split(':')[2],revision:r.revision,name:r.document.name,start:profile.defaultDesignId,designs:profile.designs.length,
+  material:profile.material.kind,widthMm:profile.geometry.width,heightMm:profile.geometry.height,
+  startPhotoFields:start.objects.filter(o=>o.type==='photoSlot').length,
+  mounting:profile.optionGroups.find(g=>g.id==='mounting').values.map(v=>v.id+':'+v.priceCents),
+  photo:{enabled:c.photo.enabled,includedCount:c.photo.includedCount,extraPriceCents:c.photo.extraPriceCents}};
+});
 const server=createPreviewServer({workshop:w,outputDirectory:dir});
 server.listen(0,'127.0.0.1',()=>fs.writeFileSync(path.join(dir,'ready.json'),JSON.stringify({url:'http://127.0.0.1:'+server.address().port,products},null,1),{mode:0o600}));
 process.on('SIGTERM',()=>server.close(()=>{w.close();process.exit(0);}));

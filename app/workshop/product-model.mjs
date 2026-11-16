@@ -1,4 +1,5 @@
 import {nativeFamilyAcrylicConfig} from './family-acrylic-product.mjs';
+import {nativeFamilyPrintConfig} from './family-print-product.mjs';
 import {nativeDoorbellConfig} from './doorbell-product.mjs';
 import {workshopResources} from './catalog.mjs';
 import {isLayeredDoorbell} from '../configurator/variant-m/doorbell-selection.mjs';
@@ -99,7 +100,7 @@ function nativeScalableAcrylicConfig(input){
   }
   return config;
 }
-const nativeConfig = input => isFamilyFormats(input) ? prepareConfig(input) : isScalableSizes(input)&&input?.profile?.material?.kind==='acrylic' ? nativeScalableAcrylicConfig(input) : input?.familyAcrylic ? nativeFamilyAcrylicConfig(input) : isLayeredDoorbell(input) ? nativeDoorbellConfig(input) : input?.doorbell||input?.profile?.material?.kind==='steel' ? nativeSpecimenConfig(input) : input?.profile?.material?.kind==='slate' ? nativeSlateConfig(input) : nativeAcrylicConfig(input);
+const nativeConfig = input => isFamilyFormats(input) ? prepareConfig(input) : input?.profile?.material?.kind==='aluDibond' ? nativeFamilyPrintConfig(input) : isScalableSizes(input)&&input?.profile?.material?.kind==='acrylic' ? nativeScalableAcrylicConfig(input) : input?.familyAcrylic ? nativeFamilyAcrylicConfig(input) : isLayeredDoorbell(input) ? nativeDoorbellConfig(input) : input?.doorbell||input?.profile?.material?.kind==='steel' ? nativeSpecimenConfig(input) : input?.profile?.material?.kind==='slate' ? nativeSlateConfig(input) : nativeAcrylicConfig(input);
 
 export function makeProductDocument(input,{name,kind='product',masterId=null}={}){
   const config=nativeConfig(input),title=text(name??config.profile.name,1,200,'Produktname');

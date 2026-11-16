@@ -33,7 +33,7 @@ const keys=(o,allowed)=>{if(!o||typeof o!=='object'||Array.isArray(o)||Object.ke
 export function validateAcrylicReview(record,config,input){
  keys(input,['productId','productRevision','designId','objects','options','quantity','media','preview','customerPreview','ui','textOnTop']);
  const ui=editorUi(input.ui);
- if((!config.acrylic&&!config.doorbell&&!config.familyAcrylic&&!isFamilyFormats(config)&&!['slate','steel'].includes(config.profile?.material?.kind))||input.productId!==record.id||input.productRevision!==record.revision)fail('Produkt und feste Revision stimmen nicht überein.');
+ if((!config.acrylic&&!config.doorbell&&!config.familyAcrylic&&!isFamilyFormats(config)&&!['slate','steel','aluDibond'].includes(config.profile?.material?.kind))||input.productId!==record.id||input.productRevision!==record.revision)fail('Produkt und feste Revision stimmen nicht überein.');
  if(!Number.isSafeInteger(input.quantity)||input.quantity<1||input.quantity>99)fail('Menge: 1 bis 99.');
  if(!Array.isArray(input.objects)||input.objects.length>120)fail('Ungültiger Elementumfang.');
  const source=selectedProfile(config,input.options).designs.find(d=>d.id===input.designId);if(!source)fail('Design gehört nicht zum Produkt.');

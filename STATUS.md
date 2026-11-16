@@ -1,3 +1,11 @@
+## 16.11.2026 · Codex/Astra · #239 und #241 Druck-Paket für Pferde-Boxenschilder
+
+Die Werkstatt kann `aluDibond` als weißen Träger für `color-print` im Format 300 × 200 × 3 mm prüfen. Der Katalogimport von D02 „Fair Lady“ übernimmt die schwarzen Druckflächen bis zur Schnittkante. Die technische Ausgabe verwendet den gesicherten nativen Produktstand mit vollflächigem Sonderfarbkanal `RDG_WHITE`, 1,5 mm Weißbeschnitt und blauer Sonderfarbkontur `CutContour` bei 0,2 mm Linienstärke.
+
+`photoBackgroundDefault` kann in `design.json` je Fotofeld `keep` oder `remove` setzen. Ohne Eintrag ist das Entfernen vorausgewählt. Der Browser-Test bestätigte die Kundenwahl nach einem Fototausch. Das Beispielbild ist in der Vorschau sichtbar. Das Prüf-PDF enthält das hochgeladene Testbild. [D02 im Konfigurator](docs/handoffs/2026-11-16-bsuv/vorschau-d02.png) · [Kundenwahl](docs/handoffs/2026-11-16-bsuv/foto-kundenwahl.png) · [Druckkanäle](docs/handoffs/2026-11-16-bsuv/druckkanaele.png)
+
+Im lokalen Prüfkatalog waren Familienvalidierung, Katalogbau, Startansicht und PDF-Download erfolgreich. Die verglichenen Produktdokumente aus Edelstahl, Schiefer und Acryl sowie ein vorhandener Druckexport waren bytegleich zu `main`. Offen sind die Fertigungsabnahme, die spätere Pilotanlage, die Fotopreisregel je Design und die Vorauswahlwerte für D01–D28.
+
 ## 16.11.2026 · Codex/Astra · #239 F03 Gestaltung im Warenkorb bearbeiten
 
 Der Browsercheck erfasste den Ursprung und die Schlüsselnamen. Der private Entwurfszugang lag im Tab-Speicher des Konfigurators und fehlte im neuen Tab. „Bearbeiten“ öffnet den Editor jetzt im Shop-Kontext. Für neue Warenkorbpositionen speichert der Browser einen verschlüsselten Zugang für genau die Konfigurationsrevision. Dieser Zugang läuft nach sieben Tagen ab. Ein kopierter Link ohne Entwurfszugang wurde abgewiesen. [Shop-Einstieg](app/workshop/shop-entry.mjs) · [Zugriffsprüfung](app/workshop/cart-edit-access.mjs)

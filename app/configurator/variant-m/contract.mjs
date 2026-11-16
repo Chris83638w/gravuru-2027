@@ -317,6 +317,7 @@ export function validateDesign(config, design, options, fonts, motifs, {template
     if (o.role !== undefined && !OBJECT_ROLES.includes(o.role)) fail('Ungültige Ebenenrolle.');
     const raw = source.objects.find(s => s.id === o.id);
     if (raw ? objectRole(o) !== objectRole(raw) : isGuideObject(o)) fail('Die Ebenenrolle einer Vorlage kann nicht vom Kunden geändert werden.');
+    if(o.photoBackgroundDefault!==raw?.photoBackgroundDefault)fail('Die Freistellen-Vorauswahl gehört zur Vorlage.');
   }
   // Geometry locks are product rules, not just disabled drag handles. Colour
   // and an uploaded photograph may change without changing the fixed layout.
@@ -404,7 +405,7 @@ export function validateDesign(config, design, options, fonts, motifs, {template
 
 // Explicit whitelist: no selected objects, embedded photo bytes, arbitrary URLs or credentials.
 const objectKeys = ['id','type','x','y','w','h','rotation','color','text','font','size','bold','italic','motif','fieldKey',
-  'letterSpacing','textAnchor','lineHeight','customerEditable','templateOrigin','includedInDesign','slateIncluded','photoShape','photoMaskAssetId','required','shape','filled','strokeWidth','preserveColors','acrylicFixed',
+  'letterSpacing','textAnchor','lineHeight','customerEditable','templateOrigin','includedInDesign','slateIncluded','photoShape','photoMaskAssetId','photoBackgroundDefault','required','shape','filled','strokeWidth','preserveColors','acrylicFixed',
   'uxHidden','uxLocked','uxUploadId','uxUploadKind','uxLogoTint','uxVectorLogo','uxPhotoBackground','uxPhotoCrop','uxPhotoColor','uxDecoration','uxPersonal','cSourceId','technicalLocked','assetId','opacity','locked','role','surfaceId'];
 export function cleanObject(o) { return Object.fromEntries(objectKeys.filter(k => o[k] !== undefined).map(k => [k, clone(o[k])])); }
 export function editedDesignTexts(config,state){

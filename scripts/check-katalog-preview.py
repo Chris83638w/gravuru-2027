@@ -25,6 +25,18 @@ def crop_plate(png):
     ys = [y for y, n in enumerate(rows) if n > 0.4 * max(rows)]; xs = [x for x, n in enumerate(cols) if n > 0.4 * max(cols)]
     return im.crop((min(xs), min(ys), max(xs) + 2, max(ys) + 2))
 
+def crop_white_plate(png, frame, product, scale):
+    from PIL import Image
+    width = product['widthMm']
+    height = product['heightMm']
+    locator = frame.locator(f'svg.scene rect[width="{width}"][height="{height}"][fill^="url("]').first
+    bounds = locator.bounding_box()
+    if not bounds:
+        raise RuntimeError('Alu-Dibond-Platte ist in der Vorschau nicht sichtbar.')
+    x, y, w, h = (bounds[k] for k in ('x', 'y', 'width', 'height'))
+    with Image.open(png) as image:
+        return image.convert('RGB').crop(tuple(round(v * scale) for v in (x, y, x + w, y + h)))
+
 
 def main_image(plate, target, size=2000):
     """Shop-Hauptbild: Platte mittig auf hellem Grund mit weichem Schatten (Seitenverhältnis bleibt)."""
@@ -43,31 +55,39 @@ a = ap.parse_args(); out = Path(a.out); out.mkdir(parents=True, exist_ok=True)
 report = {'linie': a.linie, 'products': [], 'errors': []}
 with tempfile.TemporaryDirectory(prefix='g27-katalog-preview-') as tmp:
     folder = Path(tmp); env = dict(os.environ); env['PYTHONPATH'] = str(ROOT / '.local-data/python')
-    log = (folder / 'server.log').open('w')
-    server = subprocess.Popen(['node', str(ROOT / 'scripts/fixtures/katalog-preview.mjs'), str(folder), a.katalog, a.linie], cwd=ROOT, env=env, stdout=log, stderr=log)
+    with (folder / 'server.log').open('w', encoding='utf-8') as log:
+        server = subprocess.Popen(['node', str(ROOT / 'scripts/fixtures/katalog-preview.mjs'), str(folder), a.katalog, a.linie], cwd=ROOT, env=env, stdout=log, stderr=log)
     try:
         until = time.monotonic() + 600
         while not (folder / 'ready.json').exists():
-            if server.poll() is not None or time.monotonic() > until: raise RuntimeError((folder / 'server.log').read_text()[-2000:])
+            if server.poll() is not None or time.monotonic() > until: raise RuntimeError((folder / 'server.log').read_text(encoding='utf-8')[-2000:])
             time.sleep(.2)
         f = json.loads((folder / 'ready.json').read_text()); base = f['url']
         with sync_playwright() as pw:
             browser = pw.chromium.launch(args=['--no-sandbox'])
             for p in f['products']:
-                page = browser.new_page(viewport={'width': 1440, 'height': 1000}, device_scale_factor=3); errs = []
+                scale = 3
+                page = browser.new_page(viewport={'width': 1440, 'height': 1000}, device_scale_factor=scale); errs = []
                 page.on('pageerror', lambda e: errs.append(str(e)))
                 page.goto(base + '/?configuration=' + p['id'] + '&revision=' + str(p['revision']))
                 page.wait_for_selector('iframe', timeout=60000); frame = page.frames[1]
-                frame.wait_for_selector('[data-ux-empty-photo-slot]', timeout=60000)
+                if p['startPhotoFields']:
+                    frame.wait_for_selector('[data-ux-empty-photo-slot]', timeout=60000)
+                else:
+                    frame.wait_for_selector('svg.scene', timeout=60000)
                 time.sleep(1.5)
                 slug = p['start'].replace('katalog-', '')
                 page.screenshot(path=str(out / f'{slug}.png'))
-                plate = crop_plate(out / f'{slug}.png')
+                screenshot = out / f'{slug}.png'
+                plate = crop_white_plate(screenshot, frame, p, scale) if p['material'] == 'aluDibond' else crop_plate(screenshot)
                 if plate:
                     plate.save(out / f'{slug}-platte.png')
                     if a.hauptbilder: main_image(plate, out / f'hauptbild-{p["sub"]}-{slug}.jpg')
-                info = frame.evaluate("""()=>({photoSlots:document.querySelectorAll('[data-ux-empty-photo-slot]').length,
-                    placeholderImages:document.querySelectorAll('[data-ux-placeholder] image').length})""")
+                scene = frame.locator('svg.scene').first
+                info = {
+                    'photoSlots': scene.locator('[data-ux-empty-photo-slot]').count(),
+                    'placeholderImages': scene.locator('[data-ux-placeholder] image').count(),
+                }
                 report['products'].append({**p, **info, 'pageErrors': errs, 'screenshot': f'{slug}.png'})
                 page.close()
             browser.close()

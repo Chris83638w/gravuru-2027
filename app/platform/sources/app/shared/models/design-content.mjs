@@ -111,6 +111,7 @@ export function validateDesignContent(d,{universal=false,extraFontIds=[]}={}){
   if(o.type==='motif'&&(typeof o.motif!=='string'||!/^[\w-]{1,120}$/.test(o.motif)))throw Error('Motivkennung fehlt.');
   if(o.type==='photoSlot'&&(!['rect','circle','ellipse','arch','template'].includes(o.photoShape)||!/^photo-[\w-]+$/.test(o.fieldKey)||typeof o.required!=='boolean'))throw Error('Ungültiger Fotobereich.');
   if(o.type==='photoSlot'&&d.objects.filter(v=>v.fieldKey===o.fieldKey).length!==1)throw Error('Jeder Fotobereich benötigt eine eindeutige Kennung.');
+  if(o.photoBackgroundDefault!==undefined&&(o.type!=='photoSlot'||!['keep','remove'].includes(o.photoBackgroundDefault)))throw Error('Ungültige Freistellen-Vorauswahl im Fotobereich.');
  }
 }
 let libraryJob;

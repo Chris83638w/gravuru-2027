@@ -3,7 +3,12 @@
 // meldet nur die einmalige Übergabekennung herauf; diese Seite holt die geprüften Werte über den App-Proxy und
 // legt sie wie die bisherige Zwischenseite (theme-cart-ui.mjs) in den normalen Warenkorb. Ohne JavaScript
 // oder bei Strg-/Mittelklick bleibt der normale Link (ganze Seite) unverändert.
-import {createThemeCartClient,cartImage} from './theme-cart-client.mjs';
+import * as themeCart from './theme-cart-client.mjs';
+// #252 Versionswechsel: Shop-Module haben feste URLs (max-age=300); offene Tabs behalten ihre geladenen Module.
+// Namespace-Import statt benannter Importe: ein älteres theme-cart-client.mjs ohne neue Exporte bricht das Laden nicht ab.
+// Die kleine JSON-Übergabe (ohne PNG) wird nur angefordert, wenn der tatsächlich geladene Client sie verarbeiten kann.
+const {createThemeCartClient,cartImage}=themeCart,HOSTED_CART_PREVIEW=typeof themeCart.hostedPreview==='function';
+export function cartRequestHeaders(token,path){return {'X-Gravuru-Cart-Handoff':token,...(path==='data'&&HOSTED_CART_PREVIEW?{'X-Gravuru-Cart-Preview':'hosted'}:{})};}
 
 const EDITOR_ORIGIN='__EDITOR_ORIGIN__',PROXY='__PROXY_PATH__';
 const TOKEN=/^[a-f0-9]{64}$/;
@@ -244,7 +249,7 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
  close.addEventListener('click',hide);
  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!shell.hidden)hide();});
  async function request(token,path,method='GET'){
-  const r=await fetch(PROXY+'/cart/'+path,{method,credentials:'same-origin',cache:'no-store',headers:{'X-Gravuru-Cart-Handoff':token}});
+  const r=await fetch(PROXY+'/cart/'+path,{method,credentials:'same-origin',cache:'no-store',headers:cartRequestHeaders(token,path)});
   const data=await r.json().catch(()=>({}));if(!r.ok)throw Error(data.error?.message||'Die Warenkorbübergabe konnte nicht geladen werden.');return data;
  }
  async function handoff(token,source,image){

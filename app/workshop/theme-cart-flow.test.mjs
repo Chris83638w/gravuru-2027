@@ -143,6 +143,7 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  assert.ok(imageCalls>=1,'checkout image starts with the theme-cart handoff');imageCalls=0;
  function signed(){const q=new URLSearchParams({shop:shopDomain,path_prefix:proxyPath,timestamp:String(Math.floor(now/1000)),logged_in_customer_id:''});q.set('signature',appProxySignature(q,secret));return q;}
  const proxyRequest=(part,method='GET',token=transferToken,extra={})=>request(proxyPath+part+'?'+signed(),method,undefined,{'X-Gravuru-Cart-Handoff':token,...(method==='POST'?{Origin:'https://'+shopDomain}:{}),...extra});
+ const hosted={'X-Gravuru-Cart-Preview':'hosted'};// #252: der neue Client meldet, dass er die gehostete Vorschau verarbeitet
  const page=await proxyRequest('/cart');assert.equal(page.status,200);assert.match(page.headers['content-type'],/text\/html/);assert.ok(!page.body.includes(Buffer.from(draft.token)));assert.ok(!page.body.includes(Buffer.from(transferToken)));
  for(const file of ['/theme-cart-ui.mjs','/theme-cart-client.mjs']){const r=await proxyRequest(file);assert.equal(r.status,200);assert.match(r.headers['content-type'],/javascript/);}
  assert.equal((await request(proxyPath+'/cart/data')).status,401);
@@ -152,13 +153,17 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  const wrongCustomer=signed();wrongCustomer.set('logged_in_customer_id','42');wrongCustomer.delete('signature');wrongCustomer.set('signature',appProxySignature(wrongCustomer,secret));
  assert.equal((await request(proxyPath+'/cart/data?'+wrongCustomer,'GET',undefined,{'X-Gravuru-Cart-Handoff':transferToken})).status,403);
  imagePending=true;const pendingImage=await proxyRequest('/cart/data');assert.equal(pendingImage.status,502);assert.equal(pendingImage.data.error.code,'checkout_image_pending');assert.equal(imageCalls,0);
- imagePending=false;const data=await proxyRequest('/cart/data');assert.equal(data.status,200,JSON.stringify(data.data));const p=data.data;
+ imagePending=false;const data=await proxyRequest('/cart/data','GET',transferToken,hosted);assert.equal(data.status,200,JSON.stringify(data.data));const p=data.data;
  assert.equal(p.variantId,product.variants[3].shopifyVariantId.split('/').at(-1));assert.equal(p.quantity,2);assert.equal(p.totalCents,chosen.priceCents*2);
  assert.equal(p.properties._gravuru_config,prepared.data.configuration.id);assert.equal(p.properties._gravuru_rev,'1');assert.ok(p.properties.Gravurtext);
  assert.equal(p.preview,undefined,'with a READY Shopify file no PNG travels to the customer device');assert.ok(JSON.stringify(p).length<64*1024,'handoff stays small');
  assert.ok(!JSON.stringify(p).includes(draft.token));assert.ok(!JSON.stringify(p).includes(token));assert.equal(new URL(p.properties._gravuru_bearbeiten).searchParams.get('line'),'theme');
  assert.equal(p.properties.Bearbeiten,undefined);
  assert.equal(p.properties._gravuru_checkout_image,registeredImage);assert.equal(imageCalls,1);
+ // #252 Versionswechsel: Tabs mit älterem, zwischengespeichertem Client fragen ohne Kennzeichen und erhalten weiter das PNG.
+ const olderTab=await proxyRequest('/cart/data');assert.equal(olderTab.status,200);assert.equal(olderTab.data.preview.type,'image/png');assert.match(olderTab.data.preview.base64,/^iVBORw0KGgo/);
+ assert.equal(olderTab.data.properties._gravuru_checkout_image,registeredImage);assert.deepEqual({...olderTab.data,preview:undefined},{...p,preview:undefined},'same handoff apart from the PNG');
+ assert.equal((await proxyRequest('/cart/data','GET',transferToken,{'X-Gravuru-Cart-Preview':'other'})).data.preview.type,'image/png','only the exact capability drops the PNG');imageCalls=1;
  const editUrl=new URL(p.properties._gravuru_bearbeiten);
  assert.equal(editUrl.searchParams.get('ui'),'prio-r15','presentation survives the private handoff round trip');
  assert.deepEqual([...editUrl.searchParams.keys()].sort(),['config','line','product','rev','ui','variant']);
@@ -251,7 +256,7 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  const abandonedTransfer=await request('/api/shop-entry/theme-cart','POST',{draftId:draft.id,expectedRevision:2,quantity:3,configId:p.configuration.id,cartLineId:'theme',cartRevision:1},headers);assert.equal(abandonedTransfer.status,200);
  const edited=await request('/api/shop-entry/acrylic-drafts/'+draft.id,'POST',{input:{...input,quantity:3},expectedRevision:2},headers);assert.equal(edited.status,200,JSON.stringify(edited.data));
  const edit=await request('/api/shop-entry/theme-cart','POST',{draftId:draft.id,expectedRevision:3,quantity:3,configId:p.configuration.id,cartLineId:'theme',cartRevision:1,presentation:'prio-r15'},headers);assert.equal(edit.status,200,JSON.stringify(edit.data));
- const editToken=new URLSearchParams(new URL(edit.data.handoffUrl).hash.slice(1)).get('handoff'),editData=await proxyRequest('/cart/data','GET',editToken);assert.equal(editData.status,200);
+ const editToken=new URLSearchParams(new URL(edit.data.handoffUrl).hash.slice(1)).get('handoff'),editData=await proxyRequest('/cart/data','GET',editToken,hosted);assert.equal(editData.status,200);
  assert.equal(editData.data.previousRevision,1);assert.equal(editData.data.configuration.rev,3);
  assert.equal(new URL(editData.data.properties._gravuru_bearbeiten).searchParams.get('ui'),'prio-r15','editing keeps the approved presentation for the next return');
  await bridge(editToken).submit(editData.data);assert.equal(adds,2);assert.equal(removes,1);assert.equal(themeCart.items.length,2);assert.deepEqual(themeCart.items[0],other);
@@ -268,7 +273,7 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
   const requestInput=shopCartRequest({saved:{draftId:started.data.id,revision:1},quantity:1,cartMode:'theme',presentation:fragment.get('ui')});
   const handoff=await entryClient.submitThemeCart(requestInput,{draftToken:started.data.token});
   const handoffToken=new URLSearchParams(new URL(handoff.handoffUrl).hash.slice(1)).get('handoff');
-  const transfer=await proxyRequest('/cart/data','GET',handoffToken);
+  const transfer=await proxyRequest('/cart/data','GET',handoffToken,hosted);
   assert.equal(transfer.status,200,JSON.stringify(transfer.data));
   assert.equal(transfer.data.unitCents,1999);
   await bridge(handoffToken).submit(transfer.data);

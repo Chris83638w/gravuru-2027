@@ -1,3 +1,21 @@
+## 16.11.2026 – #252 Versionswechsel beim Warenkorb behoben (Claude als Operator)
+
+- Auftrag: Chris über Codex/Astra (Issue #252). Kein Merge, kein Deployment.
+- Ursache:
+  - Die Shop-Module haben feste URLs (`max-age=300`), offene Tabs behalten ihre Module.
+  - Ein alter Client (Stand `72bf9bb2`) bekam vom neuen Server `/cart/data` ohne PNG und brach mit „Die Gestaltungsvorschau fehlt“ ab.
+  - Die neue Übergabeseite brach beim Import ab, wenn der Browser noch den Client ohne den Export `hostedPreview` hatte.
+- Lösung:
+  - Der Server lässt das PNG nur weg, wenn `/cart/data` mit `X-Gravuru-Cart-Preview: hosted` kommt.
+  - `shop-embed.mjs` und `theme-cart-ui.mjs` importieren den Client als Namespace und senden den Kopf nur, wenn der geladene Client `hostedPreview` hat.
+  - Alter Client → PNG-Pfad wie bisher; neuer Client → kleine JSON-Übergabe.
+- Tests:
+  - Neu `theme-cart-version-skew.test.mjs` (6 Tests) mit den Modulen von `72bf9bb2` als Fixtures: alt/neu je für Client, Übergabeseite und `shop-embed`. Die beiden Tests „neue Übergabeseite“ schlagen auf dem alten Stand `11f4752c` fehl, einer davon mit genau dem gemeldeten Importfehler.
+  - `theme-cart-flow` prüft zusätzlich: ohne Kopf PNG plus Checkout-Bild, ein falscher Kopfwert behält ebenfalls das PNG.
+  - Gezielte Suiten 140/140.
+  - `app/workshop` + `variant-m`: 2731 Tests, 4 Fehler und 14 abgebrochen. Alle vorbestehend (Katalog-Worker, Fotoauflösung, „Werkstatt einheitlich“).
+- Offen: Browsertest beider Tab-Stände durch Astra; danach Freigabe und Deploy durch Chris.
+
 ## 16.11.2026 – V4 umgesetzt: Fortschrittsanzeige (Claude als Operator)
 
 - Freigabe: Chris „mach V4 auch“. Branch `dev/claude-warenkorb-v4-20261116` (baut auf V1–V3 auf).

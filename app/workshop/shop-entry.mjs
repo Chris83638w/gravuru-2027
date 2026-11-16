@@ -456,7 +456,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     prepared.payload.properties._gravuru_checkout_image=await checkoutImage(prepared.payload.properties._gravuru_bild);
     active({headers:{'x-gravuru-shop-session':transfer.sessionToken}});prepared.resolve();
     // The READY Shopify file becomes _Entwurf as text; no PNG round trip through the customer's device.
-    delete prepared.payload.preview;
+    // #252: only for clients that announce it. Tabs still running an older cached client keep the PNG path.
+    if(req.headers['x-gravuru-cart-preview']==='hosted')delete prepared.payload.preview;
    }
    return json(res,200,prepared.payload);
   }

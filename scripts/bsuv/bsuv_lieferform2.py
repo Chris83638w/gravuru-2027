@@ -276,7 +276,7 @@ def convert(pdf_path):
         elif kind == 'foto':
             flush(); n = o['n']; w = o['win']; b = o['bbox']
             parts.append(f'<defs><clipPath id="FOTO_CLIP_{n}" clipPathUnits="userSpaceOnUse"><path d="{o["mask"]}"/></clipPath></defs>')
-            parts.append(f'<g id="foto-{n}" data-upload-window="{fmt(mm(w.x0))} {fmt(mm(w.y0))} {fmt(mm(w.width))} {fmt(mm(w.height))}">'
+            parts.append(f'<g id="foto-{n}" data-upload-hint="separate" data-upload-window="{fmt(mm(w.x0))} {fmt(mm(w.y0))} {fmt(mm(w.width))} {fmt(mm(w.height))}">'
                          f'<path d="{o["mask"]}" fill="none"/>'
                          f'<image id="beispielfoto-{n}" data-field="photo" data-example="true" x="{fmt(mm(b.x0))}" y="{fmt(mm(b.y0))}" width="{fmt(mm(b.width))}" height="{fmt(mm(b.height))}" preserveAspectRatio="none" clip-path="url(#FOTO_CLIP_{n})" href="{o["file"]}"/></g>')
             foto_layers.append(o)

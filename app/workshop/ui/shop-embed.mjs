@@ -174,7 +174,7 @@ export function acceptedMessage(event,frame){
  // loaded: Fensterseite ist da (Wächter aus); ready: Editor bedienbar (eigene Kopfzeile, Fensterleiste ausblenden).
  if(data?.type==='gravuru-shop-ready')return {type:'loaded'};
  if(data?.type==='gravuru-shop-editor-ready')return {type:'ready'};
- if(data?.type==='gravuru-shop-failed')return {type:'failed',message:typeof data.message==='string'?data.message.slice(0,300):''};
+ if(data?.type==='gravuru-shop-failed')return {type:'failed',message:typeof data.message==='string'?data.message.slice(0,300):'',...(data.cartAccessMissing===true?{cartAccessMissing:true}:{})};
  // cartImage: Platte mit Material, wie im Überblick des Konfigurators (nur Anzeige, sonst die Gravurvorschau).
  if(data?.type==='gravuru-shop-handoff'&&TOKEN.test(data.token||''))return {type:'handoff',token:data.token,image:cartImage(data.cartImage)};
  return null;
@@ -193,6 +193,7 @@ export function connectOnIntent(doc=globalThis.document,origin=EDITOR_ORIGIN,onI
 }
 export function install({root=window.Shopify?.routes?.root||'/'}={}){
  if(window.__gravuruShopEmbed)return window.__gravuruShopEmbed;
+ const cartEdit=location.pathname===PROXY+'/start'?document.querySelector('a[data-gravuru-cart-edit]'):null;
  const style=document.createElement('style');style.textContent=STYLE;document.head.append(style);
  const shell=document.createElement('div');shell.className='gv-embed';shell.hidden=true;shell.setAttribute('role','dialog');shell.setAttribute('aria-modal','true');shell.setAttribute('aria-label','Produkt personalisieren');
  const bar=document.createElement('div');bar.className='gv-embed__bar';
@@ -215,7 +216,7 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
   box.replaceChildren(document.createTextNode(text));status.hidden=false;
   const wait=document.createElement('button');wait.type='button';wait.textContent='Weiter warten';wait.addEventListener('click',()=>{status.hidden=true;arm(20000);});
   const again=document.createElement('button');again.type='button';again.textContent='Neu laden';again.addEventListener('click',()=>{status.hidden=true;const key=frameKey;load(key,key);arm();});
-  const page=document.createElement('a');page.href=pageStartUrl(frameKey)||frameKey;page.target='_top';page.rel='nofollow';page.textContent='Ohne Fenster öffnen';
+  const page=document.createElement('a');page.href=cartEdit?.href||pageStartUrl(frameKey)||frameKey;page.target='_top';page.rel='nofollow';page.textContent='Ohne Fenster öffnen';
   box.append(document.createElement('br'),wait,again,page);
  }
  function arm(ms=15000){clearTimeout(watchdog);watchdog=setTimeout(()=>{if(!frameReady&&!shell.hidden)trouble('Der Konfigurator braucht gerade ungewöhnlich lange. Du kannst weiter warten, neu laden oder ihn ohne Fenster öffnen.');},ms);}
@@ -232,7 +233,7 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
   document.documentElement.classList.add('gv-embed-open');close.focus();
  }
  // Schließen behält das geladene Fenster: erneutes Öffnen ist sofort da (gleicher Stand).
- function hide(){if(busy)return;shell.hidden=true;status.hidden=true;document.documentElement.classList.remove('gv-embed-open');lastFocus?.focus?.();}
+ function hide(){if(busy)return;if(cartEdit){location.assign(root+'cart');return;}shell.hidden=true;status.hidden=true;document.documentElement.classList.remove('gv-embed-open');lastFocus?.focus?.();}
  close.addEventListener('click',hide);
  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!shell.hidden)hide();});
  async function request(token,path,method='GET'){
@@ -259,9 +260,13 @@ export function install({root=window.Shopify?.routes?.root||'/'}={}){
   if(message.type==='close')hide();
   else if(message.type==='loaded'){frameReady=true;clearTimeout(watchdog);if(!busy)status.hidden=true;}
   else if(message.type==='ready'){frameReady=true;clearTimeout(watchdog);if(!busy)status.hidden=true;bar.hidden=true;}
-  else if(message.type==='failed'){frameReady=false;clearTimeout(watchdog);bar.hidden=false;trouble((message.message?message.message+' ':'')+'Bitte neu laden oder den Konfigurator ohne Fenster öffnen.');}
+  else if(message.type==='failed'){
+   if(cartEdit&&message.cartAccessMissing){location.replace(cartEdit.href);return;}
+   frameReady=false;clearTimeout(watchdog);bar.hidden=false;trouble((message.message?message.message+' ':'')+'Bitte neu laden oder den Konfigurator ohne Fenster öffnen.');
+  }
   else handoff(message.token,event.source,message.image);
  });
+ if(cartEdit){open(cartEdit.dataset.gravuruCartEdit);return;}
  const config=pageConfig();
  if(config){
   prepareProductPage(config);

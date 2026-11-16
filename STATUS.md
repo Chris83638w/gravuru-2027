@@ -1,3 +1,13 @@
+## 16.11.2026 · Codex/Astra · #239 F03 Gestaltung im Warenkorb bearbeiten
+
+Der Browsercheck erfasste den Ursprung und die Schlüsselnamen. Der private Entwurfszugang lag im Tab-Speicher des Konfigurators und fehlte im neuen Tab. „Bearbeiten“ öffnet den Editor jetzt im Shop-Kontext. Für neue Warenkorbpositionen speichert der Browser einen verschlüsselten Zugang für genau die Konfigurationsrevision. Dieser Zugang läuft nach sieben Tagen ab. Ein kopierter Link ohne Entwurfszugang wurde abgewiesen. [Shop-Einstieg](app/workshop/shop-entry.mjs) · [Zugriffsprüfung](app/workshop/cart-edit-access.mjs)
+
+Der Editor stellt Gestaltung, Foto und Menge wieder her. Beim Aktualisieren verwendet er denselben Entwurf. Der Vergleich berücksichtigt die Schriftgrößengenauigkeit des Editors. [Wiederherstellung](app/configurator/variant-m/cart-edit.mjs) · [Warenkorb](app/configurator/variant-m/shop-cart.mjs)
+
+176 gezielte Tests bestanden. Der lokale R15-Browsertest mit simuliertem Shopify war im selben Tab, im neuen Tab ohne Öffner, nach Neuladen und im emulierten iPhone-13-Profil in Chromium und WebKit erfolgreich. Nach Neuladen wurde der Text bearbeitet. Der simulierte Warenkorb zeigte Revision 2 mit zwei Stück und behielt den zweiten Artikel. [Neuer Tab](docs/handoffs/screenshots/2026-11-16-f03-neuer-tab.png) · [Handyemulation mit WebKit](docs/handoffs/screenshots/2026-11-16-f03-handy.png) · [Ersetzte Position](docs/handoffs/screenshots/2026-11-16-f03-position-ersetzt.png)
+
+Ältere Positionen brauchen weiterhin einen vorhandenen Entwurfszugang. Die Prüfung auf einem physischen Handy steht aus. Branch `dev/astra-f03-bearbeiten-20261116` auf `main`. Nächster Schritt ist Claudes PR-Prüfung. Keine Live-Aktivierung von F03.
+
 ## 16.11.2026 – F01 live, alte Produkte auf Entwurf, Gesamtstand gesichert (Claude als Operator, #239)
 
 - **F01 live:** PR #240 ist als `a4616943` in `main`. Neue Laufzeit `private/kandidat-a4616943-20261116`.

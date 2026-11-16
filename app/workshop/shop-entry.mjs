@@ -17,6 +17,7 @@ import {queueGalleryPreview} from './shop-gallery-preview-queue.mjs';
 import {prepareAcrylicReview} from './acrylic-review.mjs';
 import {customerVectorLogoPreview,VECTOR_LOGO_REQUEST_BYTES} from './customer-vector-logo-media.mjs';
 import {loadCartRevision,loadCartRevisionPhoto} from './cart-edit-revision.mjs';
+import {createCartEditAccess} from './cart-edit-access.mjs';
 import {CART_CONFIG_ID,CART_LINE_ID} from './cart-configuration.mjs';
 import {PAUSED_MESSAGE} from './konfi-status.mjs';
 import {createModelResponseCache,modelResponseKey} from './customer-model-response-cache.mjs';
@@ -105,6 +106,7 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
  const PAGE_CSP=pageCsp(shopDomain);
  // Shop-seitige Module über den App-Proxy; shop-embed.mjs kennt Konfigurator-Host und Proxy-Pfad fest.
  const customerImages=createCustomerDesignImages({origin,shopDomain,secret,stores:fixed});
+ const cartEditAccess=createCartEditAccess({secret,clock});
  const themeFiles=new Map(['theme-cart-ui.mjs','theme-cart-client.mjs','shop-embed.mjs'].map(name=>[proxyPath+'/'+name,name==='shop-embed.mjs'?Buffer.from(fs.readFileSync(ui(name),'utf8').replaceAll('__EDITOR_ORIGIN__',origin).replaceAll('__PROXY_PATH__',proxyPath)):fs.readFileSync(ui(name))]));
  const themeTransfers=new Map(),themePath=proxyPath+'/cart';
 
@@ -331,6 +333,14 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
    if(!input.config)try{assets=shopWarmManifest(presentedModel(startModel,binding,store).universal,{editorPath:store.nativeEditorPath,pagePath,previews:publicPreviews?.urls(binding)});}catch{/* Warming is optional; the actual start remains authoritative. */}
    return json(res,200,{url:target,expiresAt:issued.expiresAt,...(assets?{warm:{url:origin+warmPath,manifest:assets}}:{})});
   }
+  if(input.config&&input.line==='theme'&&!input.embed){
+   // Keep the editor under the same shop as when it wrote its browser storage.
+   const embedded=new URLSearchParams(fragment);embedded.set('embed','1');
+   const frameUrl=origin+pagePath+'#'+embedded;
+   const html=Buffer.from('<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Gestaltung bearbeiten</title></head><body><main><p>Deine Gestaltung wird geöffnet …</p><a href="'+esc(target)+'" data-gravuru-cart-edit="'+esc(frameUrl)+'">Ohne Fenster öffnen</a></main><script type="module" src="'+esc(proxyPath)+'/shop-embed.mjs"></script></body></html>');
+   const csp="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; frame-src "+origin+"; base-uri 'none'; object-src 'none'; frame-ancestors 'none'";
+   res.writeHead(200,headersFor('text/html; charset=utf-8',{'Content-Length':html.length,'Content-Security-Policy':csp}));return res.end(html);
+  }
   // Shopify reicht die Weiterleitung an den Browser durch; Meta-Refresh und Verweis sind der Rückfall.
   const html=Buffer.from(simplePage('Konfigurator wird geöffnet …','Einen Moment – der Konfigurator wird geöffnet.',{link:target}));
   res.writeHead(302,headersFor('text/html; charset=utf-8',{Location:target,'Content-Length':html.length}));res.end(html);
@@ -376,7 +386,9 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     const args={workshop:store.workshop,registry:store.registry,shopDomain,proxyPath,...(presentation?{presentation}:{}),...(typeof store.workshop.orderIntake.imageSnapshot==='function'?{customerImageUrl:id=>customerImages.url(store.storeId,id)}:{})};
     const prepared=prepareThemeCart(args,binding,themeInput,{draftToken}),token=randomBytes(32).toString('hex');
     themeTransfers.set(token,{args,binding:structuredClone(binding),input:structuredClone(themeInput),draftToken,sessionToken:req.headers['x-gravuru-shop-session'],customerId:session.customerId,expiresAt:clock()+limit.contextTtlMs});
-    return json(res,200,{handoffUrl:'https://'+shopDomain+themePath+'#handoff='+token,shopDomain,configuration:prepared.payload.configuration,quantity:prepared.payload.quantity,totalCents:prepared.payload.totalCents,mode:'theme',paymentConfirmed:false,productionReady:false});
+    const {id:configId,rev}=prepared.payload.configuration;
+    const editAccess=cartEditAccess.issue(draftToken,{configId,rev,binding,customerId:session.customerId});
+    return json(res,200,{handoffUrl:'https://'+shopDomain+themePath+'#handoff='+token,shopDomain,configuration:prepared.payload.configuration,editAccess,quantity:prepared.payload.quantity,totalCents:prepared.payload.totalCents,mode:'theme',paymentConfirmed:false,productionReady:false});
    }
    const key=createHash('sha256').update(JSON.stringify([store.storeId,binding.bindingId,binding.assignmentRevision,...fields.map(k=>data[k]??null),draftToken])).digest('hex');
    let operation=cartContext.operations.get(key);
@@ -595,10 +607,18 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
      if(req.method!=='GET')fail(405,'shop_entry_method','Diese Anfrageart ist nicht verfügbar.');
      if(url.search&&url.search!=='?edited=1')fail(404,'shop_entry_route','Diese Funktion ist nicht verfügbar.');
      checkOrigin(req,{mutating:false});
-     const context=active(req),drafts=context.store.workshop.customerDrafts,access={drafts,configId:revision[1],rev:Number(revision[2]),draftToken:req.headers['x-gravuru-draft']};
+     const context=active(req),drafts=context.store.workshop.customerDrafts,configId=revision[1],rev=Number(revision[2]);
+     const editAccess=req.headers['x-gravuru-cart-edit'];
+     let draftToken=req.headers['x-gravuru-draft'];
+     if(editAccess!==undefined){
+      if(revision[3]||draftToken!==undefined)fail(404,'cart_private','Diese Gestaltung ist nicht zugänglich.');
+      draftToken=cartEditAccess.recover(editAccess,{configId,rev,binding:context.binding,customerId:context.session.customerId});
+      if(!draftToken)fail(404,'cart_private','Diese Gestaltung ist nicht zugänglich.');
+     }
+     const access={drafts,configId,rev,draftToken};
      const loaded=loadCartRevision({...access,repository:context.store.workshop.repository});
      if(loaded.draft.productId!==context.session.productId||loaded.draft.productRevision!==context.session.productRevision||loaded.editorKind!=='native')fail(404,'cart_private','Diese Gestaltung gehört nicht zu diesem Produkt.');
-     if(!revision[3])return json(res,200,loaded);
+     if(!revision[3])return json(res,200,editAccess===undefined?loaded:{...loaded,draftToken});
      const photo=loadCartRevisionPhoto({...access,uploadId:revision[3],edited:url.searchParams.get('edited')==='1'});
      res.writeHead(200,headersFor(photo.contentType,{'Content-Length':photo.bytes.length,'Content-Security-Policy':"default-src 'none'; sandbox"}));return res.end(photo.bytes);
     }

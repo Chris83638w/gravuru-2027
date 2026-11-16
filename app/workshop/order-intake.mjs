@@ -1,4 +1,4 @@
-import {choiceOptions} from '../configurator/variant-m/contract.mjs';
+import {applyQuantityTier,choiceOptions,quantityTierFor} from '../configurator/variant-m/contract.mjs';
 import {createCatalogLiveOrders} from './catalog-live-orders.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
 import {createOrderStatus} from './order-status.mjs';
@@ -11,6 +11,7 @@ import {tenantOption,ensureTenantColumns,TENANT_COLUMN} from './tenant.mjs';
 import {createShopProductBindingStore} from './shop-product-binding-store.mjs';
 import {SURCHARGE_UNAVAILABLE_MESSAGE} from '../configurator/variant-m/surcharge-availability.mjs';
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'order_intake'});};
+const OFFER_MISMATCH='Shop-Variante, Menge oder Preis weichen vom gesicherten Entwurf ab.';
 const optionKey=o=>JSON.stringify(Object.entries(o||{}).sort());
 // K14 / Ü12.1: Zusatzfelder des Prüfstands als sichtbare Warenkorb-Eigenschaften (Bezeichnung → Anzeige).
 const offerFields=m=>Array.isArray(m.selection?.fields)&&m.selection.fields.length?{fields:m.selection.fields.map(f=>({label:f.label,value:f.display}))}:{};
@@ -358,9 +359,12 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
     const properties=line.properties||[];if(!Array.isArray(properties))fail(422,'Ungültige Positionszuordnung.');const refs=properties.filter(p=>p?.name==='_gravuru_offer');
     if(!refs.length){if(line.variant_id&&db.prepare('SELECT 1 FROM form_shop_bindings WHERE shop=? AND variant_id=? AND tenant_id=?').get(shop,identifier(line.variant_id),tenant))fail(422,'Für diese konfigurierte Variante fehlt der gesicherte Entwurf.');return;}
     if(refs.length!==1||typeof refs[0].value!=='string'||!/^[a-f0-9]{64}$/.test(refs[0].value))fail(422,'Ungültige Entwurfszuordnung.');
-    const o=db.prepare('SELECT * FROM form_order_offers WHERE token_hash=? AND tenant_id=?').get(sha(refs[0].value),tenant);if(!o)fail(422,'Entwurfszuordnung nicht gefunden.');const b=binding(o.binding_id),extra=offerPricing(o.id),unit=extra?.unitCents??b.unit_cents;
+    const o=db.prepare('SELECT * FROM form_order_offers WHERE token_hash=? AND tenant_id=?').get(sha(refs[0].value),tenant);if(!o)fail(422,'Entwurfszuordnung nicht gefunden.');const b=binding(o.binding_id),extra=offerPricing(o.id);
     const approved=payload.test===false?approvedLiveLine(shop,b,'gid://shopify/Product/'+identifier(line.product_id),config.mode):null;
-    if(b.shop!==shop||b.variant_id!==identifier(line.variant_id)||line.quantity!==o.quantity||money(line.price)!==unit)fail(422,'Shop-Variante, Menge oder Preis weichen vom gesicherten Entwurf ab.');
+    const quantity=line.quantity;
+    if(b.shop!==shop||b.variant_id!==identifier(line.variant_id)||!Number.isSafeInteger(quantity)||quantity<1||quantity>99)fail(422,OFFER_MISMATCH);
+    const unitCents=money(line.price),quantityChanged=quantity!==o.quantity;
+    if(!quantityChanged&&unitCents!==(extra?.unitCents??b.unit_cents))fail(422,OFFER_MISMATCH);
     // If an exact-ID assignment exists, validate its immutable history for THIS
     // offer's binding. A newer active head must not rewrite a purchased design.
     if(db.prepare("SELECT 1 FROM sqlite_master WHERE type='table' AND name='shop_product_binding_revisions'").get()){
@@ -374,10 +378,24 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
     // K8 (Ü9.1): Die Position verweist auf genau die Konfigurations-Revision, die zu diesem Angebot gesichert wurde.
     // Fehlt sie oder ist sie unbekannt, wird nur diese Position abgelehnt (E3), nicht die ganze Bestellung.
     const configuration=configurationFor(properties,o.id);
-    const old=db.prepare('SELECT * FROM form_order_lines WHERE shop=? AND order_id=? AND line_id=? AND tenant_id=?').get(shop,orderId,lineId,tenant);if(old){if(old.offer_id!==o.id)fail(409,'Bestellposition darf ihren Entwurf nicht wechseln.');result.push(JSON.parse(old.document));return;}
+    const old=db.prepare('SELECT * FROM form_order_lines WHERE shop=? AND order_id=? AND line_id=? AND tenant_id=?').get(shop,orderId,lineId,tenant);
+    if(old){
+     if(old.offer_id!==o.id)fail(409,'Bestellposition darf ihren Entwurf nicht wechseln.');
+     const recorded=JSON.parse(old.document);
+     if(recorded.quantity!==quantity||recorded.unitCents!==unitCents)fail(422,OFFER_MISMATCH);
+     result.push(recorded);return;
+    }
     if(db.prepare('SELECT 1 FROM form_order_lines WHERE offer_id=? AND tenant_id=?').get(o.id,tenant))fail(409,'Dieser Entwurf wurde bereits einer anderen Bestellposition zugeordnet.');
     if(o.expires_at<clock())fail(422,'Die Checkout-Zuordnung ist abgelaufen; vor Übernahme prüfen.');const m=snapshot(o.snapshot_id);if(m.packageSha256!==o.package_sha256)fail(409,'Der gesicherte Prüfstand wurde verändert.');
-    const id='orderline_'+randomUUID(),document={id,shopDomain:shop,orderId,lineId,variantId:b.variant_id,bindingId:b.id,snapshotId:o.snapshot_id,...(configuration?{configuration}:{}),sourcePackageSha256:o.package_sha256,product:{...m.product},sourceSchema:m.schema||'gravuru-form-review/v1',...(m.selection?{selection:structuredClone(m.selection)}:{}),productionProfile:m.productionProfile?{id:m.productionProfile.id,revision:m.productionProfile.revision,sha256:m.productionProfile.sha256}:null,quantity:o.quantity,unitCents:unit,totalCents:unit*o.quantity,currency:'EUR',status:payload.test===true?'test-paid-event-recorded':'paid-event-recorded',test:payload.test===true,...(approved?{liveApproval:approved,shopifyProductId:'gid://shopify/Product/'+identifier(line.product_id)}:{}),receivedAt:at(),productionReady:false,customerDownloadAllowed:false};
+    if(quantityChanged){
+     // Check the original quote against its immutable contract before repricing its complete unit for the paid quantity.
+     const contract=pricing(b.id),quotedPrice=m.selection?.price;
+     if(!extra||!contract?.quantityTiers?.length||quotedPrice?.quantity!==o.quantity||
+        JSON.stringify(extra)!==JSON.stringify(personalizationForSnapshot(contract,m)))fail(422,OFFER_MISMATCH);
+     const tier=quantityTierFor(contract,quantity);
+     if(unitCents!==applyQuantityTier(quotedPrice.listUnitCents,tier))fail(422,OFFER_MISMATCH);
+    }
+    const id='orderline_'+randomUUID(),document={id,shopDomain:shop,orderId,lineId,variantId:b.variant_id,bindingId:b.id,snapshotId:o.snapshot_id,...(configuration?{configuration}:{}),sourcePackageSha256:o.package_sha256,product:{...m.product},sourceSchema:m.schema||'gravuru-form-review/v1',...(m.selection?{selection:structuredClone(m.selection)}:{}),productionProfile:m.productionProfile?{id:m.productionProfile.id,revision:m.productionProfile.revision,sha256:m.productionProfile.sha256}:null,quantity,unitCents,totalCents:unitCents*quantity,currency:'EUR',status:payload.test===true?'test-paid-event-recorded':'paid-event-recorded',test:payload.test===true,...(approved?{liveApproval:approved,shopifyProductId:'gid://shopify/Product/'+identifier(line.product_id)}:{}),receivedAt:at(),productionReady:false,customerDownloadAllowed:false};
     db.prepare('INSERT INTO form_order_lines(id,shop,order_id,line_id,offer_id,document,created_at,tenant_id) VALUES(?,?,?,?,?,?,?,?)').run(id,shop,orderId,lineId,o.id,JSON.stringify(document),at(),tenant);result.push(document);
    }
    if(result.length){

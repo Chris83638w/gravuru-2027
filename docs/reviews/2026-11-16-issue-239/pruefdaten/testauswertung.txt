@@ -1,0 +1,73 @@
+core-tests-configured.log
+# tests 2702
+# pass 2684
+# fail 7
+# skipped 11
+# duration_ms 163037.2029
+
+not ok 815 - native photo density follows physical scale and crop zoom, not pan or rotation
+not ok 816 - edited image pixels and each placement determine density; originals remain intact
+not ok 817 - free uploads use contained image dimensions rather than the photo-slot cover
+not ok 1076 - databaseEpoch changes on own writes, rolled-back writes, schema changes, foreign commits and TEMP schema; reads leave it alone
+not ok 1077 - repository.readEpoch follows every repository write, including a rolled-back save
+not ok 1078 - repository.revisionState: product state without the document column, same errors as get, blind to writes elsewhere in the file
+ok 1435 - font-import.py reports missing glyphs from the cmap; a complete font has none # SKIP Python 3 mit fontTools nicht verfügbar
+ok 1436 - E4: a font without Ä/Ö/Ü/ß/€ is refused with the list of missing characters; an explicit reason accepts it with glyphWarnings # SKIP Python 3 mit fontTools nicht verfügbar
+ok 1550 - real offline Chromium rasterizes native text/plate/photos and rejects external SVG resources # SKIP
+not ok 1721 - Werkstatt einheitlich: jede Werkstattseite trägt dieselbe erzeugte Kopfzeile und das gemeinsame Raster
+ok 1987 - real immutable r4 bank prepares only three original previews; all 251 designs and 404 variant data stay byte-identical # SKIP
+ok 2009 - exact approved r4 bank: both logo profiles preserve 251 originals, 80 sizes and all 404 native prices # SKIP
+ok 2310 - real 251-original bank: all 404 original prices, fresh checks, late rollback and atomic retry # SKIP
+ok 1 - workshop.sqlite # SKIP File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it.
+ok 2 - profiles.sqlite-wal # SKIP File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it.
+ok 3 - design-assets.sqlite-shm # SKIP File symlink capability unavailable: EPERM; Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it.
+ok 2 - real authenticated server and databases with confirmed private permissions # SKIP Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it.
+ok 2 - Git ancestor guard after the private-permission check # SKIP Filesystem does not expose private POSIX permissions after chmod(0700): mode 40666; the runtime must reject it.
+
+
+ops-tests-configured.log
+# tests 45
+# pass 37
+# fail 8
+# skipped 0
+# duration_ms 222.5122
+
+not ok 19 - captures only the fixed app, keeps two matching configs and a real rollback version, without release or leaked token
+not ok 20 - missing, empty, public or symlinked token fails before any CLI call or baseline creation
+not ok 21 - Git directories and unexpected CLI versions are rejected before network
+not ok 27 - TOML ordering and comments may differ while all original files and semantic values remain verified
+not ok 28 - invalid TOML and configuration changes by a CLI invocation cannot complete a baseline
+not ok 29 - upstream error, timeout and token echo are never printed or stored as successful capture
+not ok 31 - CLI names with spaces are preserved as data, without any shell invocation
+not ok 32 - linked output symlink is rejected and its external target is left intact
+
+
+✔ echte Eingabe 15.11.: bisher ganzer Warenkorb gesperrt, jetzt nur die alten Positionen (4.083ms)
+✔ Checkout-Prüfung sperrt nur beim Checkout und nennt die Position; im Warenkorb bleibt alles bedienbar (3.9353ms)
+✔ Größe nicht mehr in der Preisliste: nur diese Position wird abgewiesen und am Checkout gesperrt (1.1005ms)
+✔ Position ohne Konfigurator-Angaben (am Konfigurator vorbei) wird nie zum Listenpreis verkauft (0.967ms)
+✔ gültige Warenkörbe: identisches Ergebnis wie die bisherige Preisfunktion (0.9923ms)
+✔ normale Produkte ohne Konfigurator-Preis werden nie gesperrt (ohne Metafeld, deaktiviert, kein ProductVariant) (1.2012ms)
+✔ Freigabe-Quelle: aktive Abfrage unverändert, Prüfung nutzt identische Preislogik (1.7678ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 74.2485
+
+✔ accepts only known rebuilt binary fields alongside the new app home (6.8418ms)
+✔ different function query, scopes, theme assets or missing module still block publication (2.6822ms)
+✔ stages all seven original modules without releasing and verifies unchanged active version (8.1191ms)
+✔ changed active version refuses candidate creation (0.7075ms)
+✔ changed remote function reference rejects candidate readback without any release (1.2928ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 73.3508

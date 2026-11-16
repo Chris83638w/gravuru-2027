@@ -1,0 +1,86 @@
+{
+  "products": 1196,
+  "variants": 24598,
+  "appPricingProducts": 14,
+  "checked": 501,
+  "priceDifferences": 0,
+  "missingVariants": 0,
+  "zeroPriceVariants": 1,
+  "differences": [],
+  "missing": [],
+  "zero": [
+    "gid://shopify/ProductVariant/57311791415676"
+  ],
+  "oversizedMetafields": [],
+  "core": [
+    {
+      "product": "gid://shopify/Product/16189689987452",
+      "schema": "gravuru-personalization-pricing/v1",
+      "revision": 1,
+      "extraMotif": 169,
+      "extraLogo": null,
+      "extraPhoto": 0,
+      "tiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ],
+      "bytes": 574
+    },
+    {
+      "product": "gid://shopify/Product/16189690118524",
+      "schema": "gravuru-personalization-pricing/v1",
+      "revision": 1,
+      "extraMotif": 169,
+      "extraLogo": null,
+      "extraPhoto": 0,
+      "tiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ],
+      "bytes": 574
+    },
+    {
+      "product": "gid://shopify/Product/16190784438652",
+      "schema": "gravuru-personalization-pricing/v2",
+      "revision": 2,
+      "extraMotif": 169,
+      "extraLogo": 1299,
+      "extraPhoto": 0,
+      "tiers": [
+        {
+          "minQuantity": 3,
+          "percentOff": 5
+        },
+        {
+          "minQuantity": 5,
+          "percentOff": 10
+        },
+        {
+          "minQuantity": 10,
+          "percentOff": 15
+        }
+      ],
+      "bytes": 2318
+    }
+  ]
+}

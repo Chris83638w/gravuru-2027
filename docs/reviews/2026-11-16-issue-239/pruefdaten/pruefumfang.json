@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-16",
+  "issue": "https://github.com/Chris83638w/gravuru-2027/issues/239",
+  "codeCommit": "546d4b0a26d68306e23c05438675e2d41cc5aef9",
+  "catalogCommit": "8236b8bfab7322447ec46661c116fa526331af3d",
+  "activeProducts": 1196,
+  "variants": 24598,
+  "onlineStoreUrls": 1194,
+  "excelCompared": 424,
+  "testCartRemoved": true,
+  "paidOrderCreated": false,
+  "codeOrProductChanges": false,
+  "sourceWorkbookHashes": {
+    "gravuru-katalog-audit/kataloge/Stammdaten-Gravuru.xlsx": "ffbe572dfe19f6bde4e2a21d52f4045d0029cbda3f4779d7328ecf1266711d44",
+    "gravuru-katalog-audit/zeichnungen/edelstahl-schilder-2027/Edelstahl-Schilder-Liste.xlsx": "fc3e423a58d6c25cf5196a2693107f50eadaebffdabae0035378a0a28440fb70"
+  }
+}

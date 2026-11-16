@@ -1,0 +1,54 @@
+{
+  "product": "Acryl D8",
+  "profile": "mobile-net-cache-bypass",
+  "now": 8207.60000000149,
+  "results": [
+    {
+      "alreadyReady": false,
+      "click": 5370.5,
+      "h": 844,
+      "loaded": 7674,
+      "ready": 8062,
+      "vis": "visible",
+      "w": 390,
+      "warm": false
+    }
+  ],
+  "shopNav": [
+    {
+      "bytes": 84176,
+      "doc": 4148.10000000149,
+      "ttfb": 154.39999999850988
+    }
+  ],
+  "starts": [
+    {
+      "end": 4064.89999999851,
+      "start": 2761.8000000044703,
+      "ttfb": 241.89999999850988,
+      "url": "https://gravuru-design.myshopify.com/apps/konfigurator/shop-embed.mjs",
+      "wire": 10489
+    },
+    {
+      "end": 4447.5,
+      "start": 4066,
+      "ttfb": 206.89999999850988,
+      "url": "https://gravuru-design.myshopify.com/apps/konfigurator/theme-cart-client.mjs",
+      "wire": 3994
+    },
+    {
+      "end": 5947.60000000149,
+      "start": 4987.30000000447,
+      "ttfb": 890.3999999985099,
+      "url": "https://gravuru-design.myshopify.com/apps/konfigurator/start",
+      "wire": 1218
+    },
+    {
+      "end": 6900.70000000298,
+      "start": 5365.20000000298,
+      "ttfb": null,
+      "url": "https://gravuru-design.myshopify.com/apps/konfigurator/start",
+      "wire": 0
+    }
+  ]
+}

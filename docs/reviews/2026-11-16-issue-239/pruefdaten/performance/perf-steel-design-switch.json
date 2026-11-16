@@ -1,0 +1,49 @@
+{
+  "dmark": {
+    "frameCount": 2,
+    "p": {
+      "click": 59210.90000000596,
+      "fail": null,
+      "ready": 63188.60000000149
+    },
+    "t": 63211.10000000149
+  },
+  "resources": [
+    {
+      "bytes": 2844,
+      "end": 553.1000000014901,
+      "path": "/konfigurator/shop/shop-design-switch.mjs",
+      "start": 373.80000000447035
+    },
+    {
+      "bytes": 122566,
+      "end": 1753.60000000149,
+      "path": "/api/shop-entry/model",
+      "start": 741.5
+    },
+    {
+      "bytes": 100685,
+      "end": 3787.400000005961,
+      "path": "/_merchant-acryl-editor.html",
+      "start": 1759.7000000029802
+    },
+    {
+      "bytes": 645,
+      "end": 60053.70000000298,
+      "path": "/api/shop-entry/design-switch",
+      "start": 59215
+    },
+    {
+      "bytes": 122795,
+      "end": 61117.70000000298,
+      "path": "/api/shop-entry/model",
+      "start": 60055.80000000447
+    },
+    {
+      "bytes": 100633,
+      "end": 61868.80000000447,
+      "path": "/_merchant-acryl-editor.html",
+      "start": 61125
+    }
+  ]
+}

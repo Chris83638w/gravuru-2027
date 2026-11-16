@@ -1,0 +1,17 @@
+{
+  "init": {
+    "at": 800.3999999985099,
+    "early": false
+  },
+  "marker": {
+    "at": 1546.7999999970198,
+    "early": false,
+    "ready": true
+  },
+  "now": 1764.0999999940395,
+  "ready": true,
+  "viewport": [
+    390,
+    844
+  ]
+}

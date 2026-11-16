@@ -1,0 +1,72 @@
+{
+  "database": {
+    "counts": {
+      "products": 1090,
+      "product_revisions": 4419,
+      "product_families": 1,
+      "form_customer_drafts": 16,
+      "form_review_snapshots": 100,
+      "cart_configurations": 76,
+      "cart_configuration_revisions": 97,
+      "form_order_offers": 97,
+      "form_order_lines": 6,
+      "form_order_line_errors": 0,
+      "form_order_events": 5,
+      "form_export_jobs": 0,
+      "production_release_events": 0,
+      "shop_product_binding_heads": 16725,
+      "catalog_live_order_approvals": 27,
+      "doorbell_live_order_approvals": 252
+    },
+    "declaredForeignKeys": 22,
+    "triggers": 76,
+    "pageSize": 4096,
+    "freePages": 18997,
+    "orphans": {
+      "offerSnapshot": 0,
+      "configOffer": 0,
+      "orderOffer": 0
+    },
+    "ownTest": [
+      [
+        1,
+        1,
+        "2026-11-16T05:51:13.762Z"
+      ]
+    ],
+    "orderTestCounts": [
+      [
+        1,
+        6
+      ]
+    ],
+    "intakeErrorCounts": []
+  },
+  "liveHashes": {
+    "app/workshop/order-intake.mjs": "535a60bffebdfb1664e00a5629fef0071553146b7902ae6a4ce1853bfa3e43c8",
+    "app/workshop/ui/shop-entry-client.mjs": "2f6d2673b48a0baa623383599575f79a04bb7af98c4b7a6e22a25450f99345d4",
+    "app/configurator/variant-m/cart-edit.mjs": "6520760dfb4ec7769a6d44b56bdb91c8c2f32186d50025971937cfd9738f2c75"
+  },
+  "inventory": {
+    "total": 900,
+    "candidateCount": 12,
+    "merchantReleaseCount": 33,
+    "releaseWorkTop": [
+      "cli-deploy-1794787448325.log",
+      "projekt-A",
+      "aktiv-vor-A.json",
+      "cli-release-1794787880779.log",
+      "projekt-A-dateien.json",
+      "projekt-B",
+      "aktiv-vor-B.json",
+      "projekt-B-dateien.json",
+      "kandidat-A.json",
+      "cli-deploy-1794787814458.log",
+      "snapshot-aktiv.json",
+      "kandidat-B.json",
+      "cli-release-1794787536000.log",
+      ".cli-config"
+    ],
+    "node": null
+  }
+}

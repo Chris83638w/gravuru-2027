@@ -1,0 +1,105 @@
+{
+  "source": "546d4b0a26d68306e23c05438675e2d41cc5aef9",
+  "comparison": {
+    "valid": 2250,
+    "rejected": 1500,
+    "differing": 0
+  },
+  "probes": [
+    {
+      "name": "unchanged real valid line",
+      "prices": [
+        "19.99"
+      ],
+      "rejected": [],
+      "checkoutErrors": 0
+    },
+    {
+      "name": "replace editable design link with meaningless text",
+      "prices": [
+        "19.99"
+      ],
+      "rejected": [],
+      "checkoutErrors": 0
+    },
+    {
+      "name": "remove configuration, configuration revision and offer; keep arbitrary nonempty design link",
+      "prices": [
+        "19.99"
+      ],
+      "rejected": [],
+      "checkoutErrors": 0
+    },
+    {
+      "name": "same design, customer changes motifs count to 1",
+      "prices": [
+        "21.68"
+      ],
+      "rejected": [],
+      "checkoutErrors": 0
+    },
+    {
+      "name": "same design, customer changes motifs count to 0",
+      "prices": [
+        "19.99"
+      ],
+      "rejected": [],
+      "checkoutErrors": 0
+    },
+    {
+      "name": "same design, customer changes logos count to 1",
+      "prices": [
+        "32.98"
+      ],
+      "rejected": [],
+      "checkoutErrors": 0
+    },
+    {
+      "name": "same design, customer changes logos count to 0",
+      "prices": [
+        "19.99"
+      ],
+      "rejected": [],
+      "checkoutErrors": 0
+    },
+    {
+      "name": "same design, customer changes uploads count to 1",
+      "prices": [
+        "19.99"
+      ],
+      "rejected": [],
+      "checkoutErrors": 0
+    },
+    {
+      "name": "same design, customer changes uploads count to 0",
+      "prices": [
+        "19.99"
+      ],
+      "rejected": [],
+      "checkoutErrors": 0
+    },
+    {
+      "name": "missing price metadata, existing personalization attributes",
+      "prices": [],
+      "rejected": [
+        {
+          "index": 0,
+          "reason": "Personalization pricing unavailable"
+        }
+      ],
+      "checkoutErrors": 1
+    },
+    {
+      "name": "missing price metadata and all personalization attributes",
+      "prices": [],
+      "rejected": [],
+      "checkoutErrors": 0
+    },
+    {
+      "name": "disabled V1 price with existing personalization attributes",
+      "prices": [],
+      "rejected": [],
+      "checkoutErrors": 0
+    }
+  ]
+}

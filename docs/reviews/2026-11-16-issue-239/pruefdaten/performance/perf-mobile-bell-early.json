@@ -1,0 +1,54 @@
+{
+  "product": "WP Cardea 2",
+  "profile": "mobile-net-cache-bypass",
+  "now": 9515.10000000149,
+  "results": [
+    {
+      "alreadyReady": false,
+      "click": 6744.70000000298,
+      "h": 844,
+      "loaded": 8646,
+      "ready": 9457.89999999851,
+      "vis": "visible",
+      "w": 390,
+      "warm": false
+    }
+  ],
+  "shopNav": [
+    {
+      "bytes": 138755,
+      "doc": 4937.89999999851,
+      "ttfb": 506
+    }
+  ],
+  "starts": [
+    {
+      "end": 5073.5,
+      "start": 4604.80000000447,
+      "ttfb": 225.39999999850988,
+      "url": "https://gravuru-design.myshopify.com/apps/konfigurator/shop-embed.mjs",
+      "wire": 10489
+    },
+    {
+      "end": 5537.89999999851,
+      "start": 5074.20000000298,
+      "ttfb": 226.39999999850988,
+      "url": "https://gravuru-design.myshopify.com/apps/konfigurator/theme-cart-client.mjs",
+      "wire": 3994
+    },
+    {
+      "end": 6990.30000000447,
+      "start": 6675.20000000298,
+      "ttfb": 289.79999999701977,
+      "url": "https://gravuru-design.myshopify.com/apps/konfigurator/start",
+      "wire": 1050
+    },
+    {
+      "end": 7558.60000000149,
+      "start": 6738,
+      "ttfb": null,
+      "url": "https://gravuru-design.myshopify.com/apps/konfigurator/start",
+      "wire": 0
+    }
+  ]
+}

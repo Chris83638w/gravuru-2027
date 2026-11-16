@@ -1,0 +1,23 @@
+{
+  "results": [
+    {
+      "alreadyReady": false,
+      "click": 57505.30000000447,
+      "h": 844,
+      "loaded": 59040.10000000149,
+      "ready": 59517.70000000298,
+      "vis": "visible",
+      "w": 390,
+      "warm": true
+    },
+    {
+      "alreadyReady": true,
+      "click": 76632.5,
+      "h": 844,
+      "vis": "visible",
+      "w": 390,
+      "warm": true
+    }
+  ],
+  "konfiRequests": 0
+}

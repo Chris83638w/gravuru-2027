@@ -1,0 +1,122 @@
+[
+  {
+    "file": "design-assets.sqlite",
+    "version": 0,
+    "bytes": 166719488,
+    "quick_check": [
+      [
+        "ok"
+      ]
+    ],
+    "foreign_key_errors": 0,
+    "tables": [
+      "workshop_fonts",
+      "design_sources",
+      "design_assets",
+      "material_surfaces",
+      "photo_example_sources",
+      "form_contours",
+      "review_photo_edits"
+    ]
+  },
+  {
+    "file": "workshop.sqlite",
+    "version": 4,
+    "bytes": 4352729088,
+    "quick_check": [
+      [
+        "ok"
+      ]
+    ],
+    "foreign_key_errors": 0,
+    "tables": [
+      "tenants",
+      "tenant_settings",
+      "products",
+      "product_revisions",
+      "import_items",
+      "product_catalog",
+      "product_families",
+      "product_family_revisions",
+      "konfi_status",
+      "konfi_status_events",
+      "ai_design_jobs",
+      "ai_design_batches",
+      "ai_design_batch_items",
+      "form_variant_sets",
+      "form_variant_revisions",
+      "form_variant_imports",
+      "form_variant_members",
+      "batch_jobs",
+      "variant_batch_jobs",
+      "form_customer_drafts",
+      "form_customer_revisions",
+      "form_customer_photos",
+      "form_review_snapshots",
+      "acrylic_review_requests",
+      "form_print_proofs",
+      "form_export_jobs",
+      "form_export_events",
+      "export_output_checks",
+      "storefront_cart_handoffs",
+      "cart_configurations",
+      "cart_configuration_revisions",
+      "form_shop_bindings",
+      "form_shop_binding_personalization",
+      "form_offer_personalization",
+      "form_shop_binding_selections",
+      "form_order_offers",
+      "form_order_events",
+      "form_order_customers",
+      "form_order_lines",
+      "form_order_line_errors",
+      "form_order_status_events",
+      "form_order_refund_reports",
+      "production_release_events",
+      "acrylic_customer_drafts",
+      "acrylic_customer_revisions",
+      "customer_file_grants",
+      "customer_file_revocations",
+      "shop_draft_transfers",
+      "customer_drafts",
+      "customer_draft_photos",
+      "design_corrections",
+      "acryl_shop_jobs",
+      "catalog_structure_settings",
+      "form_order_event_selections",
+      "shop_product_binding_revisions",
+      "shop_product_binding_heads",
+      "theme_cart_transfers",
+      "doorbell_live_order_approvals",
+      "shop_gallery_cache",
+      "catalog_live_order_approvals",
+      "motif_search_daily",
+      "configurator_module_profiles",
+      "configurator_module_profile_revisions",
+      "product_group_templates",
+      "product_group_template_revisions",
+      "product_group_creation_plans",
+      "product_group_confirmations",
+      "product_group_creation_results"
+    ]
+  },
+  {
+    "file": "profiles.sqlite",
+    "version": 2,
+    "bytes": 77824,
+    "quick_check": [
+      [
+        "ok"
+      ]
+    ],
+    "foreign_key_errors": 0,
+    "tables": [
+      "profiles",
+      "profile_revisions",
+      "profile_library_settings",
+      "profile_settings_revisions",
+      "manufacturing_profiles",
+      "manufacturing_profile_revisions"
+    ]
+  }
+]

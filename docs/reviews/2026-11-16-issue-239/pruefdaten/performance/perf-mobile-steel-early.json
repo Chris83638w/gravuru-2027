@@ -1,0 +1,54 @@
+{
+  "product": "Edelstahl",
+  "profile": "mobile-net-cache-bypass",
+  "now": 8139.39999999851,
+  "results": [
+    {
+      "alreadyReady": false,
+      "click": 5272.89999999851,
+      "h": 844,
+      "loaded": 7491.70000000298,
+      "ready": 8058.89999999851,
+      "vis": "visible",
+      "w": 390,
+      "warm": false
+    }
+  ],
+  "shopNav": [
+    {
+      "bytes": 112782,
+      "doc": 4210,
+      "ttfb": 153.80000000447035
+    }
+  ],
+  "starts": [
+    {
+      "end": 2946,
+      "start": 1046.89999999851,
+      "ttfb": 212.4000000059605,
+      "url": "https://gravuru-design.myshopify.com/apps/konfigurator/shop-embed.mjs",
+      "wire": 10489
+    },
+    {
+      "end": 3549.20000000298,
+      "start": 2953.10000000149,
+      "ttfb": 223.79999999701977,
+      "url": "https://gravuru-design.myshopify.com/apps/konfigurator/theme-cart-client.mjs",
+      "wire": 3994
+    },
+    {
+      "end": 5762.70000000298,
+      "start": 5209,
+      "ttfb": 512.3000000044703,
+      "url": "https://gravuru-design.myshopify.com/apps/konfigurator/start",
+      "wire": 1276
+    },
+    {
+      "end": 6452.39999999851,
+      "start": 5266.10000000149,
+      "ttfb": null,
+      "url": "https://gravuru-design.myshopify.com/apps/konfigurator/start",
+      "wire": 0
+    }
+  ]
+}

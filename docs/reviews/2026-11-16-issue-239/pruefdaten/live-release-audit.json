@@ -1,0 +1,93 @@
+{
+  "active": [
+    {
+      "id": "gid://shopify/Version/1223825227777",
+      "tag": "gravuru-2027-preis-einzelsperre-20261116-b1",
+      "status": "active"
+    }
+  ],
+  "moduleCount": 9,
+  "modules": [
+    {
+      "handle": "app_home",
+      "type": "app_home",
+      "wasmBytes": null,
+      "configHash": "5dd5b548cd6ed6129e12d8a447b65922682fce006b82df72e55d14a3a271bfae",
+      "matchesCandidate": true
+    },
+    {
+      "handle": "gravuru-personalization-price",
+      "type": "function",
+      "wasmBytes": 22036,
+      "configHash": "a5f79600774706f25bc8b085a97f5089a48c14783acb634b97ca15df5b1bed19",
+      "matchesCandidate": true
+    },
+    {
+      "handle": "app_access",
+      "type": "app_access",
+      "wasmBytes": null,
+      "configHash": "6b04986890edecc580a367e23a636e419669506235e31462526d4863ff412c7e",
+      "matchesCandidate": true
+    },
+    {
+      "handle": "branding",
+      "type": "branding",
+      "wasmBytes": null,
+      "configHash": "1e92e36ea7bbcce760b659a13c1741ac8e0fdbf93db2b028cbcdb7ca3edef710",
+      "matchesCandidate": true
+    },
+    {
+      "handle": "gravuru-checkout-guard",
+      "type": "function",
+      "wasmBytes": 23127,
+      "configHash": "c65d4e3f06702a9c58b683add65e85f1561c82a9a1d68672f9e5536afb0c958a",
+      "matchesCandidate": true
+    },
+    {
+      "handle": "gravuru-storefront",
+      "type": "theme_app_extension",
+      "wasmBytes": null,
+      "configHash": "e1bece1fd8d4c51bf966a6f581100680a79c604c2180e3a0419a1e477ab8e425",
+      "matchesCandidate": true
+    },
+    {
+      "handle": "data",
+      "type": "data",
+      "wasmBytes": null,
+      "configHash": "cb1a25a35a8374e9b95af83453a43830063d82f989339d8de51b2a8bfb202287",
+      "matchesCandidate": true
+    },
+    {
+      "handle": "app_proxy",
+      "type": "app_proxy",
+      "wasmBytes": null,
+      "configHash": "4d40fecc17325a705dd8a9bea140cc14893dadd146c05889b488f0388450fd1a",
+      "matchesCandidate": true
+    },
+    {
+      "handle": "webhooks",
+      "type": "webhooks",
+      "wasmBytes": null,
+      "configHash": "95313c57afa695e3368ba9bd58580ce178dae59bb2668a76755af332933f6f13",
+      "matchesCandidate": true
+    }
+  ],
+  "binaries": {
+    "A/gravuru-personalization-price": {
+      "bytes": 20945,
+      "sha256": "3c82b825873c7d8f2b31b82d49fafc9b85ff670744c0d00011f141d792eb1cd6"
+    },
+    "A/gravuru-checkout-guard": {
+      "bytes": 23127,
+      "sha256": "93b5f15cee38d7f87a5d50dacc7b7324a302d754fbece1fb81e820f22f563a6a"
+    },
+    "B/gravuru-personalization-price": {
+      "bytes": 22036,
+      "sha256": "8b33937d43aba7c8e86b1c4c3341e3e9224f1ab43d043608f7cbdee4d8f8bf4e"
+    },
+    "B/gravuru-checkout-guard": {
+      "bytes": 23127,
+      "sha256": "93b5f15cee38d7f87a5d50dacc7b7324a302d754fbece1fb81e820f22f563a6a"
+    }
+  }
+}

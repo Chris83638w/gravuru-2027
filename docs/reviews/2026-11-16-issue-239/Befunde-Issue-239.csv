@@ -1,0 +1,15 @@
+﻿ID;Priorität;Befund;Belegniveau;Nächster Schritt
+F01;Kritisch;Normale Mengenänderung passt nicht mehr zum gespeicherten Angebot;Live-Kasse + eigener DB-Datensatz + aktiver Code;"Menge und Angebot vor Zahlung synchronisieren; ganzen Ablauf testen"
+F02;Kritisch;Kostenpflichtige Extras sind nicht an den echten Entwurf gebunden;Gezielte Gegenproben mit ausgelieferter Quelle;Entwurf, Extras, Variante, Menge und Preis vor Zahlung manipulationsgeschützt binden
+F03;Wichtig;Bearbeiten scheitert beim gerade angelegten Warenkorbentwurf;Live in ursprünglichem und weiterem Tab;Privaten Zugriff zwischen eingebettetem und eigenständigem Editor erhalten
+F04;Wichtig;Ablauf des Angebots wird erst nach Zahlung streng geprüft;Aktiver Quellcode und Tests;Abgelaufenen Stand vor Zahlung erneuern oder abfangen
+F05;Wichtig;Einzelsperre schützt nicht vor Ressourcenabbruch;Installationsabfrage und vorhandene Release-Messung;Aktuelle WASM-Grenzfälle und Mischwarenkörbe messen
+F06;Wichtig;FPD meldet weiterhin Funktionsfehler;Shopify-Detailansicht;Aktuelle Ausführungsprotokolle und FPD-/Mischwarenkorb prüfen
+F07;Wichtig;Originalquellen für Preise und Geometrie nicht vollständig geschlossen;Excel-Zellabgleich, Katalog, Entscheidungen, Dateihashes;Verbindliche Quellenmatrix und Freigaben je Produktstand herstellen
+F08;Wichtig;"Tests nicht vollständig grün; allgemeine CI-Freigabesperre fehlt";Eigene Testläufe und GitHub-/Workflow-Prüfung;Fachliche Tests abstimmen und Linux-Freigabelauf verpflichtend machen
+F09;Wichtig;Wiederherstellbarkeit nicht praktisch belegt;Sicherungsanzeige, Speicherpfade und Rechteprüfung;Isolierten Restore einschließlich beider Datenbereiche durchführen
+F10;Wichtig;Echter Ablauf bis Produktionsdatei nicht nachgewiesen;Aktive DB enthält nur Testpositionen und keine Produktionsfreigabe-Ereignisse;Vollständigen Abnahmeauftrag in geeigneter Testumgebung durchführen
+F11;Wichtig;Mehrere konkurrierende aktuelle Projektstände;Einstiegsdokumente, Branches, tatsächliche Runtime;Ein verbindliches Betriebsmanifest mit Hashes pflegen
+F12;Kleinigkeit;Testnavigation und technische Entwurfskennung sichtbar;Öffentliches Theme und eigene Kassenansicht;Navigation bereinigen und Entwurf kundenverständlich anzeigen
+F13;Kleinigkeit;Aktives Nullpreisprodukt ohne Onlineshop-Veröffentlichung;Shopify-Leseabfrage und 404-Aufruf;Vor Veröffentlichung verbindlichen Preis festlegen
+F14;Wichtig;Beide fehlenden Erkennungssignale lassen Position ungeprüft;"Lokale Fehlerfallprobe; kein aktueller Live-Fall belegt";Personalisierungspflicht unabhängig von entfernbaren Attributen erkennen

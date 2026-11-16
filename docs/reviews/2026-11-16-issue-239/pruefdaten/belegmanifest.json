@@ -1,0 +1,242 @@
+[
+  {
+    "file": "Befunde-Issue-239.csv",
+    "bytes": 2624,
+    "sha256": "2532fdf94c2a2de5c43f8c54c11a5b871ca597ba953697de77499b29398198ba"
+  },
+  {
+    "file": "Konfi-Performance-Issue-239.md",
+    "bytes": 9230,
+    "sha256": "1bff22df587667a30dbb7c3656d695109551e61209f8624b246eabe994384086"
+  },
+  {
+    "file": "Pruefbericht-Issue-239.md",
+    "bytes": 43485,
+    "sha256": "601bb4dc844637660f3cb98d6d9ec68f442009b8f1556e01ff65a2a6d4254fd0"
+  },
+  {
+    "file": "README.md",
+    "bytes": 709,
+    "sha256": "fcc66dd842e4cccae823501033785473dcca103341fcf075042e110ad813605f"
+  },
+  {
+    "file": "audit-239-belege/fpd-funktionsfehler.jpg",
+    "bytes": 44167,
+    "sha256": "804ec7e2de89723b443edf16f62e5332fe188fcca32695b169aaef459290be45"
+  },
+  {
+    "file": "audit-239-belege/kasse-menge-vier.jpg",
+    "bytes": 50624,
+    "sha256": "0cf3302daf12728814705399008db8a07e42df96f783277605c77f17aa1c5490"
+  },
+  {
+    "file": "audit-239-belege/kassenregel-aktiv.jpg",
+    "bytes": 35943,
+    "sha256": "91add6d74d6287269d912a239a09ae43de2e940055829c25eedb7a11057109ed"
+  },
+  {
+    "file": "audit-239-belege/r15-desktop-live.jpg",
+    "bytes": 140313,
+    "sha256": "84ff3dda0b5dcd7ae78a1363e2f99639356e3f1a4144a74583b90819a120db95"
+  },
+  {
+    "file": "audit-239-belege/r15-menge-100-gesperrt.jpg",
+    "bytes": 53480,
+    "sha256": "0b5c252f4a2f10231239f2d0c797160d07b569e7790cf1276a802441c7674c81"
+  },
+  {
+    "file": "audit-239-belege/r15-mobil-live.jpg",
+    "bytes": 52059,
+    "sha256": "5cf788e450604521930021a3acd1436311e2151763d5b68de2fe53a269d7d8a9"
+  },
+  {
+    "file": "audit-239-belege/r15-pflichtname-mobil.jpg",
+    "bytes": 51414,
+    "sha256": "47e4c337f28dcf58d8ffb35df30e303380382122b50ce2482c07e4c2475785f7"
+  },
+  {
+    "file": "audit-239-belege/warenkorb-bearbeiten-fehler.jpg",
+    "bytes": 24935,
+    "sha256": "8a59d6c23f7e6123b5db2bda3ccc76aa70740374002e7405c53cfd60aa37ce4b"
+  },
+  {
+    "file": "audit-239-belege/warenkorb-bearbeiten-originaltab.jpg",
+    "bytes": 11967,
+    "sha256": "ebb4aee7e3c7c7ba97a138c447614c944bbbf272b1e383529a2c4bfa743d2c04"
+  },
+  {
+    "file": "audit-239-belege/warenkorb-bereinigt.jpg",
+    "bytes": 76256,
+    "sha256": "f3dafa9fc03307a28963694e8f45268851d309a1772ddb5dbfd7412c9d10bae2"
+  },
+  {
+    "file": "audit-239-belege/warenkorb-eigener-test.jpg",
+    "bytes": 91846,
+    "sha256": "90e7ab13e2f6b125bb46518ea4dcee3cd4dac5c44fdde23f1005a8ffb8be8702"
+  },
+  {
+    "file": "audit-239-belege/warenkorb-menge-vier.jpg",
+    "bytes": 89396,
+    "sha256": "0d1c155750e1425742ea53d166be51329c0ba136592c3d0ec74b0373936188c5"
+  },
+  {
+    "file": "pruefdaten/active-database-check.json",
+    "bytes": 3053,
+    "sha256": "320c993ba02a2cd5d8c7e5be9479fcc8f96e4c7b8f99584efc2297e33050b024"
+  },
+  {
+    "file": "pruefdaten/database-deep-audit.json",
+    "bytes": 1893,
+    "sha256": "bbc65df2f0f9670ff4bcd5d5832f854606a12bf0edd9199f6e4d04dc79cd8e52"
+  },
+  {
+    "file": "pruefdaten/excel-variantenvergleich.csv",
+    "bytes": 87506,
+    "sha256": "90a270edeb5d460afd99b0bc64cbf36c5d082c8c47073fb929370bb777ddd52a"
+  },
+  {
+    "file": "pruefdaten/live-release-audit.json",
+    "bytes": 2781,
+    "sha256": "0ef67288948a5300bc476c136adf714b470457dfe9a703b47eec1f15e2321126"
+  },
+  {
+    "file": "pruefdaten/owner-price-audit.json",
+    "bytes": 1785,
+    "sha256": "96675a5381da9a8d6add02616da98818d869e858c8e13f75bf8d8d16a5688bf8"
+  },
+  {
+    "file": "pruefdaten/performance-starts.csv",
+    "bytes": 1834,
+    "sha256": "4f9adcc743d2431932bbf8b19fa9bfc600a086c13578730ab49ec00b4db58e40"
+  },
+  {
+    "file": "pruefdaten/performance/additional-observations.json",
+    "bytes": 1081,
+    "sha256": "f4f1049f546148e36aceb40693992b8e5b932f0a850c3521cadb44011ac188a9"
+  },
+  {
+    "file": "pruefdaten/performance/perf-acryl-direct-cache-allowed-first.json",
+    "bytes": 238,
+    "sha256": "ff1a9e86a78a6d40c06371b206efa663b64c5e5445e54f90b520a0b8a2ad146b"
+  },
+  {
+    "file": "pruefdaten/performance/perf-acryl-direct-cache-allowed-reload.json",
+    "bytes": 238,
+    "sha256": "1fbc6db8e751f5b08e80d00374b095d26b735a93e2b7a31379646ea3d897b6a7"
+  },
+  {
+    "file": "pruefdaten/performance/perf-acryl-direct-ready-reload.json",
+    "bytes": 234,
+    "sha256": "11b4787a012d7f447c3ef4e263570db5f49c833a78ae1ad21d5436013dd6ec73"
+  },
+  {
+    "file": "pruefdaten/performance/perf-acryl-direct-ready.json",
+    "bytes": 225,
+    "sha256": "23e53c79323a77d5f614ece9be967cb9cbf1d321ab3b594fd85e37b269cf692b"
+  },
+  {
+    "file": "pruefdaten/performance/perf-bell-direct-cache-allowed.json",
+    "bytes": 223,
+    "sha256": "37ef58018a642cd8418f31665914c25f3fd3e1e2e0621c4f9100f633e7b7ca1d"
+  },
+  {
+    "file": "pruefdaten/performance/perf-bell-direct-ready.json",
+    "bytes": 222,
+    "sha256": "8af866d07445548ec72561d522e8458a8773603103f6a39c108c9c39f8558370"
+  },
+  {
+    "file": "pruefdaten/performance/perf-breakdown-acryl-mobile-cache-allowed-first.json",
+    "bytes": 6899,
+    "sha256": "12a734934c0f8a358a3503c4b44518eb849e7dd20bdf891468fdc63b1ec6fefb"
+  },
+  {
+    "file": "pruefdaten/performance/perf-breakdown-acryl-mobile-reload.json",
+    "bytes": 7235,
+    "sha256": "8202607fe2a8235554933299d33193ecaa70bc903c7d7aa8799042fce0cb706a"
+  },
+  {
+    "file": "pruefdaten/performance/perf-breakdown-acryl-mobile.json",
+    "bytes": 12188,
+    "sha256": "7a836fa5ffc1b69298fe92bf7ac256b56fc5665426f90b65faddb85334c8e2c0"
+  },
+  {
+    "file": "pruefdaten/performance/perf-breakdown-bell-mobile-reload.json",
+    "bytes": 19439,
+    "sha256": "91c8337b3f468fefb70ef7d70132ab8a4c9c8a7063ced92dad1d11860a4c148d"
+  },
+  {
+    "file": "pruefdaten/performance/perf-breakdown-bell-mobile.json",
+    "bytes": 17893,
+    "sha256": "5594505e85df1ff01cf3c93da26aebffe765896aff434b331cc0c9ada6e17ae0"
+  },
+  {
+    "file": "pruefdaten/performance/perf-breakdown-steel-mobile-reload.json",
+    "bytes": 6103,
+    "sha256": "0d43e7f94403be90a32587d2afc56e55a9fc7c9daba6d99e914397b461f40be1"
+  },
+  {
+    "file": "pruefdaten/performance/perf-breakdown-steel-mobile.json",
+    "bytes": 11496,
+    "sha256": "e5801002eca83867999071f216f26c4aa2f850918955587ee225e199f32dcd90"
+  },
+  {
+    "file": "pruefdaten/performance/perf-mobile-acryl-early.json",
+    "bytes": 1249,
+    "sha256": "fc78a5c078fe014159f0809acef535fab143fe5f6e957bc3ef9a9189f51fa25e"
+  },
+  {
+    "file": "pruefdaten/performance/perf-mobile-bell-early.json",
+    "bytes": 1259,
+    "sha256": "1f9ead86561937ca187fe9de979aa33ab116d96399c51c4074d9fee83f7bd774"
+  },
+  {
+    "file": "pruefdaten/performance/perf-mobile-steel-early.json",
+    "bytes": 1268,
+    "sha256": "bd5065739a8026d51b49e77b8198c4d335389f09fa038aea774dca1ba618e049"
+  },
+  {
+    "file": "pruefdaten/performance/perf-mobile-steel-first.json",
+    "bytes": 1304,
+    "sha256": "4bbe687382d23c20259a1141af83f5e021ef97204dd341a20ad1ce0f9d61d751"
+  },
+  {
+    "file": "pruefdaten/performance/perf-reopen.json",
+    "bytes": 403,
+    "sha256": "258c99126c67e73cb5b9d9fd07c85e452f6150b82b8f5b9f783267784fe5cdd0"
+  },
+  {
+    "file": "pruefdaten/performance/perf-server-phases.json",
+    "bytes": 1061,
+    "sha256": "ff55e14f65d009d02ce86fe44abe5ff5ecac3f2c364e667746d5f166f7f0ab41"
+  },
+  {
+    "file": "pruefdaten/performance/perf-steel-design-switch.json",
+    "bytes": 1036,
+    "sha256": "45a55de810eaefc7b0edf513bec0542f7e1474efb568c4950795aebae1a85da3"
+  },
+  {
+    "file": "pruefdaten/performance/perf-steel-direct-ready-reload.json",
+    "bytes": 234,
+    "sha256": "b5d36ea97cefb04a67cb5d85ef018cb26f164e805b2dace28d646a3fcdabe5b0"
+  },
+  {
+    "file": "pruefdaten/performance/perf-steel-direct-ready.json",
+    "bytes": 233,
+    "sha256": "707b0e4c4c6dfd53398c71bf08cabbddc67179cf7b48f23837be785a7b2b92cd"
+  },
+  {
+    "file": "pruefdaten/price-audit-results.json",
+    "bytes": 2283,
+    "sha256": "11be737413560b708afa193fcb4450c40fab417eda134065a6ee8126702a3dad"
+  },
+  {
+    "file": "pruefdaten/pruefumfang.json",
+    "bytes": 730,
+    "sha256": "4d8b7b89e34dddeaba36b0f85b7793d5e6730554eb9feca7a019acf4a610ddf5"
+  },
+  {
+    "file": "pruefdaten/testauswertung.txt",
+    "bytes": 4947,
+    "sha256": "e3a5aa5844f37ea8d82012e102a8ecc7b8964ce7aca6b9cbca23cd7e66008392"
+  }
+]

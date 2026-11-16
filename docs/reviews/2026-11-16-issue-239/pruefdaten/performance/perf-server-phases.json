@@ -1,0 +1,56 @@
+[
+  {
+    "kind": "WRAPPER",
+    "candidate": "kandidat-68334981-20261113",
+    "modelCache": "enabled"
+  },
+  {
+    "kind": "PHASE",
+    "log": "logs/error_log",
+    "rows": 0,
+    "tail": []
+  },
+  {
+    "kind": "PHASE",
+    "log": "gravuru-2027-merchant/stderr.log",
+    "rows": 148,
+    "tail": [
+      {
+        "hits": 2,
+        "misses": 0,
+        "timed": 2,
+        "msContext": 33,
+        "msState": 1,
+        "msChecks": 0,
+        "msStartGallery": 48,
+        "msStartPublic": 743,
+        "msSend": 0,
+        "msBuild": 735
+      },
+      {
+        "hits": 1,
+        "misses": 1,
+        "timed": 2,
+        "msContext": 29,
+        "msState": 1,
+        "msChecks": 1,
+        "msStartGallery": 29,
+        "msStartPublic": 103,
+        "msSend": 2,
+        "msBuild": 0
+      },
+      {
+        "hits": 1,
+        "misses": 0,
+        "timed": 1,
+        "msContext": 14,
+        "msState": 0,
+        "msChecks": 0,
+        "msStartGallery": 3,
+        "msStartPublic": 114,
+        "msSend": 0,
+        "msBuild": 226
+      }
+    ]
+  }
+]

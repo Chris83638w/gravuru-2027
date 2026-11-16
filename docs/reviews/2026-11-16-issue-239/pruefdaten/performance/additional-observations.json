@@ -1,0 +1,41 @@
+{
+  "profile": {
+    "viewportWidth": 390,
+    "viewportHeight": 844,
+    "downloadBytesPerSecond": 200000,
+    "uploadBytesPerSecond": 93750,
+    "latencyMs": 150
+  },
+  "editorCore": {
+    "path": "/_acryl-bundle/editor-0bb2be6ce333600c.mjs",
+    "compressedBytes": 503031,
+    "decodedBytes": 1512902,
+    "cacheControl": "public, max-age=31536000, immutable"
+  },
+  "doorbellTexture": {
+    "pngBytes": 1440952,
+    "webpBytes": 97754,
+    "pixels": [
+      1536,
+      1024
+    ],
+    "cacheControl": "private, no-store",
+    "repeatLoadStartMs": 6920,
+    "repeatLoadEndMs": 18893
+  },
+  "steelGallery": {
+    "editorReadyMs": 7458,
+    "listDoneMs": 7919,
+    "firstThreePreviewBytes": [
+      100225,
+      101476,
+      101219
+    ],
+    "lastOfThreeDoneMs": 10521
+  },
+  "notes": [
+    "Die Zeitpunkte für den direkten Editor starten mit dessen Navigation.",
+    "Ein iframe-Eintrag im Elternfenster und die Navigation im Kind können denselben Abruf darstellen.",
+    "Die Netzwerkprofile des Haupttabs und des direkt gemessenen Editors sind getrennte Versuche."
+  ]
+}

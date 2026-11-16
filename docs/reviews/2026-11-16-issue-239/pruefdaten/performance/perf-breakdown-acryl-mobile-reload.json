@@ -1,0 +1,298 @@
+{
+  "product": "Acryl D8",
+  "label": "direkter Editor, Cache aus, 1,6 Mbit/s, Wiederholung",
+  "editor": [
+    {
+      "nav": [
+        {
+          "begin": 1049,
+          "cache": "",
+          "decoded": 375304,
+          "encoded": 100633,
+          "end": 3462,
+          "path": "/_merchant-acryl-editor.html",
+          "received": 1205,
+          "status": 200,
+          "type": "navigation",
+          "wait": 150,
+          "wire": 100933
+        }
+      ],
+      "paint": [],
+      "resources": [
+        {
+          "begin": 1250,
+          "cache": "",
+          "decoded": 1512902,
+          "encoded": 503031,
+          "end": 5795,
+          "path": "/_acryl-bundle/editor-0bb2be6ce333600c.mjs",
+          "received": 1944,
+          "status": 200,
+          "type": "other",
+          "wait": 692,
+          "wire": 503331
+        },
+        {
+          "begin": 1250,
+          "cache": "",
+          "decoded": 136576,
+          "encoded": 38965,
+          "end": 3046,
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "received": 1903,
+          "status": 200,
+          "type": "other",
+          "wait": 651,
+          "wire": 39265
+        },
+        {
+          "begin": 5847,
+          "cache": "",
+          "decoded": 8108,
+          "encoded": 3087,
+          "end": 6046,
+          "path": "/_acryl-bundle/editor-6ee9bdee5f9ebc6b.mjs",
+          "received": 5998,
+          "status": 200,
+          "type": "script",
+          "wait": 150,
+          "wire": 3387
+        },
+        {
+          "begin": 6056,
+          "cache": "",
+          "decoded": 420962,
+          "encoded": 117925,
+          "end": 7762,
+          "path": "/konfigurator/shop/schriften/62f89cb6e004b5774d40aeb31591d9e8c79ce83da4544bc8ef81fa4db4ed171c.json",
+          "received": 6482,
+          "status": 200,
+          "type": "fetch",
+          "wait": 424,
+          "wire": 118225
+        },
+        {
+          "begin": 6056,
+          "cache": "",
+          "decoded": 204106,
+          "encoded": 50313,
+          "end": 7279,
+          "path": "/konfigurator/shop/schriften/77b4abc87ded094d18460011188e82c4db2d76e2b4db8fb0b47010d1c5cf4eae.json",
+          "received": 6399,
+          "status": 200,
+          "type": "fetch",
+          "wait": 341,
+          "wire": 50613
+        },
+        {
+          "begin": 6056,
+          "cache": "",
+          "decoded": 346914,
+          "encoded": 77455,
+          "end": 7378,
+          "path": "/konfigurator/shop/schriften/9b3e2f8741a92b71d01568deb991538159ce4d849e6d795cc20412259a8199c7.json",
+          "received": 6295,
+          "status": 200,
+          "type": "fetch",
+          "wait": 237,
+          "wire": 77755
+        },
+        {
+          "begin": 6056,
+          "cache": "",
+          "decoded": 166290,
+          "encoded": 44542,
+          "end": 7429,
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "received": 6601,
+          "status": 200,
+          "type": "fetch",
+          "wait": 543,
+          "wire": 44842
+        }
+      ]
+    }
+  ],
+  "h": 844,
+  "measuredAt": 8184,
+  "net": [
+    150,
+    1.45
+  ],
+  "path": "/konfigurator/shop/",
+  "ready": true,
+  "root": {
+    "nav": [
+      {
+        "begin": 0,
+        "cache": "",
+        "decoded": 2257,
+        "encoded": 980,
+        "end": 179,
+        "path": "/konfigurator/shop/",
+        "received": 153,
+        "status": 200,
+        "type": "navigation",
+        "wait": 150,
+        "wire": 1280
+      }
+    ],
+    "paint": [
+      [
+        "first-paint",
+        216
+      ],
+      [
+        "first-contentful-paint",
+        216
+      ]
+    ],
+    "resources": [
+      {
+        "begin": 188,
+        "cache": "",
+        "decoded": 18200,
+        "encoded": 7382,
+        "end": 409,
+        "path": "/konfigurator/shop/shop-entry-client.mjs",
+        "received": 350,
+        "status": 200,
+        "type": "other",
+        "wait": 150,
+        "wire": 7682
+      },
+      {
+        "begin": 188,
+        "cache": "",
+        "decoded": 6649,
+        "encoded": 2763,
+        "end": 379,
+        "path": "/konfigurator/shop/shop-entry-page.mjs",
+        "received": 351,
+        "status": 200,
+        "type": "script",
+        "wait": 150,
+        "wire": 3063
+      },
+      {
+        "begin": 382,
+        "cache": "",
+        "decoded": 7267,
+        "encoded": 2844,
+        "end": 564,
+        "path": "/konfigurator/shop/shop-design-switch.mjs",
+        "received": 533,
+        "status": 200,
+        "type": "script",
+        "wait": 150,
+        "wire": 3144
+      },
+      {
+        "begin": 565,
+        "cache": "",
+        "decoded": 1258,
+        "encoded": 685,
+        "end": 732,
+        "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+        "received": 716,
+        "status": 200,
+        "type": "script",
+        "wait": 150,
+        "wire": 985
+      },
+      {
+        "begin": 734,
+        "cache": "",
+        "decoded": 166290,
+        "encoded": 44542,
+        "end": 1262,
+        "path": "/_acryl-runtime/lazy/katalog-kern.json",
+        "received": 948,
+        "status": 200,
+        "type": "fetch",
+        "wait": 210,
+        "wire": 44842
+      },
+      {
+        "begin": 734,
+        "cache": "",
+        "decoded": 37180,
+        "encoded": 10542,
+        "end": 1045,
+        "path": "/api/shop-entry/model",
+        "received": 947,
+        "status": 200,
+        "type": "fetch",
+        "wait": 210,
+        "wire": 10842
+      },
+      {
+        "begin": 1047,
+        "cache": "",
+        "decoded": 43407,
+        "encoded": 14543,
+        "end": 2445,
+        "path": "/api/shop-entry/design-gallery-preview",
+        "received": 1901,
+        "status": 200,
+        "type": "fetch",
+        "wait": 852,
+        "wire": 14843
+      },
+      {
+        "begin": 1048,
+        "cache": "",
+        "decoded": 420962,
+        "encoded": 118040,
+        "end": 3680,
+        "path": "/konfigurator/shop/schriften/62f89cb6e004b5774d40aeb31591d9e8c79ce83da4544bc8ef81fa4db4ed171c.json",
+        "received": 1251,
+        "status": 200,
+        "type": "fetch",
+        "wait": 195,
+        "wire": 118340
+      },
+      {
+        "begin": 1048,
+        "cache": "",
+        "decoded": 204106,
+        "encoded": 50313,
+        "end": 2345,
+        "path": "/konfigurator/shop/schriften/77b4abc87ded094d18460011188e82c4db2d76e2b4db8fb0b47010d1c5cf4eae.json",
+        "received": 1205,
+        "status": 200,
+        "type": "fetch",
+        "wait": 150,
+        "wire": 50613
+      },
+      {
+        "begin": 1048,
+        "cache": "",
+        "decoded": 346914,
+        "encoded": 77455,
+        "end": 3214,
+        "path": "/konfigurator/shop/schriften/9b3e2f8741a92b71d01568deb991538159ce4d849e6d795cc20412259a8199c7.json",
+        "received": 1307,
+        "status": 200,
+        "type": "fetch",
+        "wait": 251,
+        "wire": 77755
+      },
+      {
+        "begin": 1050,
+        "cache": "",
+        "decoded": 375304,
+        "encoded": 100633,
+        "end": 3462,
+        "path": "/_merchant-acryl-editor.html",
+        "received": 1205,
+        "status": 200,
+        "type": "iframe",
+        "wait": 150,
+        "wire": 100933
+      }
+    ]
+  },
+  "w": 390
+}

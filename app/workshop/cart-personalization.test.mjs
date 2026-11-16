@@ -268,3 +268,19 @@ test('all-motif revision prices template motifs through the secured snapshot and
  for(const chargedMotifs of [undefined,-1,0,1.5,201])assert.throws(()=>personalizationForSnapshot(contract,{...manifest,selection:{price:{...price,chargedMotifs}}}));
  const legacy={...contract};delete legacy.motifCharge;assert.throws(()=>personalizationForSnapshot(legacy,manifest));
 });
+
+test('F04: an offer older than seven days is accepted while its saved price contract still prices it identically',t=>{
+  const f=fixture(t);let now=Date.now();
+  const intake=createOrderIntake({database:f.db,snapshot:id=>{assert.equal(id,f.m.id);return structuredClone(f.m);},clock:()=>now});
+  const binding=intake.bind(f.args),o=intake.offer({bindingId:binding.id,snapshotId:f.m.id,quantity:2});
+  const attributes=prepareCartRequest(o).variables.input.lines[0].attributes;
+  const cfg={shopDomain:shop,apiVersion:'2026-07',secret:'synthetic-webhook-secret-only'};
+  const receive=(p,eventId)=>{const raw=Buffer.from(JSON.stringify(p));return intake.receive(raw,{'x-shopify-hmac-sha256':createHmac('sha256',cfg.secret).update(raw).digest('base64'),'x-shopify-shop-domain':shop,'x-shopify-api-version':'2026-07','x-shopify-topic':'orders/paid','x-shopify-webhook-id':eventId},cfg);};
+  const payload=id=>({id,test:true,financial_status:'paid',currency:'EUR',line_items:[{id:id+100,variant_id:301,quantity:2,price:'36.36',properties:attributes.map(a=>({name:a.key,value:a.value}))}]});
+  now+=8*86400000;
+  // A changed saved price for the old design is still refused after expiry.
+  const drift=structuredClone(payload(111));drift.line_items[0].price='35.00';
+  assert.equal(receive(drift,'synthetic-f04-drift').lines.length,0);
+  const late=receive(payload(112),'synthetic-f04-late');
+  assert.equal(late.lines.length,1);assert.equal(late.lines[0].totalCents,7272);
+});

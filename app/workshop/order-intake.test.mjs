@@ -36,7 +36,9 @@ test('E3: an invalid position is rejected alone with status „fehler“; no ord
  }
  assert.equal(f.db.prepare('SELECT count(*) AS n FROM form_order_events').get().n,n,'every delivery is acknowledged once');
  f.changeHash();assert.match(receive(f.intake,sign(payload,'test-event-hash')).errors[0].intakeError,/verändert/);
- const b=f.offer();f.changeTime(8*86400000);const late=receive(f.intake,sign({...order(b.property.value),id:103},'test-event-late'));assert.equal(late.lines.length,0);assert.match(late.errors[0].intakeError,/abgelaufen/);
+ const b=f.offer();f.changeTime(8*86400000);const late=receive(f.intake,sign({...order(b.property.value),id:103},'test-event-late'));
+ // F04 (Chris 16.11.2026): ein acht Tage altes Angebot mit unverändertem Preis wird angenommen.
+ assert.equal(late.lines.length,1);assert.equal(late.errors?.length||0,0);
  assert.throws(()=>f.db.exec("UPDATE form_order_line_errors SET document='{}'"),/immutable/);
  const rows=JSON.stringify(f.db.prepare('SELECT * FROM form_order_line_errors').all());assert.ok(!rows.includes(o.property.value));assert.ok(!rows.includes(payload.customer.email));
 });

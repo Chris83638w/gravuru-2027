@@ -27,6 +27,7 @@ FONTMAP = {
  'HoneyScript-Light': ('Bad Script', 'Auswahl Claude 16.11.2026, offen'), 'Frenchpress': ('Amatic SC', 'Auswahl Claude 16.11.2026, offen'),
 }
 HINT_TEXT = {'Foto-Upload', 'hier klicken'}
+BLACK_BACK = {'D02', 'D03', 'D04', 'D05', 'D06'}  # schwarze Rueckplatte (Chris 16.11.2026 10:01)
 TEXTFIX = {('D05', 'Bestizer'): 'Besitzer', ('D11', 'Tierarzt.:'): 'Tierarzt:'}
 
 def mm(v): return round(v*K, 4)
@@ -141,20 +142,44 @@ def convert(pdf_path):
             cand = sorted(cand, key=lambda c: fitz.Rect(c['scissor']).get_area())
             win = b & PLATE
             if cand and (any(it[0] == 'c' for it in cand[0]['items']) or fitz.Rect(cand[0]['scissor']).get_area() < 0.98*win.get_area()):
-                c = cand[0]; mpath = path_d(c['items'], True); win = fitz.Rect(c['scissor']) & PLATE
+                c = cand[0]; mpath = path_d(c['items'], True); win = fitz.Rect(c['scissor']) & PLATE; used_clip = True
             else:
+                used_clip = False
                 mpath = f"M{fmt(mm(win.x0))} {fmt(mm(win.y0))}H{fmt(mm(win.x1))}V{fmt(mm(win.y1))}H{fmt(mm(win.x0))}Z"
             pix = fitz.Pixmap(doc, x)
             if smask != 'null':
                 m = fitz.Pixmap(doc, int(smask.split()[0])); pix = fitz.Pixmap(pix, m) if pix.n < 4 else pix
             if pix.colorspace and pix.colorspace.n != 3: pix = fitz.Pixmap(fitz.csRGB, pix)
             photo = Image.frombytes('RGBA' if pix.alpha else 'RGB', (pix.w, pix.h), pix.samples).convert('RGBA')
-            own = [hh for hh in hints if (win if not cand else fitz.Rect(cand[0]['scissor'])).contains(hh[0])]
+            # Schwarze Rueckplatte (Chris 16.11.2026 10:01): Fotofeld nur dort, wo das Motiv ist, nicht von Beginn an ueber die ganze Platte
+            arr = np.asarray(photo)[:, :, :3].astype(float); lum = arr.mean(2)
+            if dn in BLACK_BACK and not used_clip and not pix.alpha:
+                cols = (lum > 14).mean(0); rows = (lum > 14).mean(1)
+                xs = np.where(cols > 0.02)[0]; ys = np.where(rows > 0.02)[0]
+                cw = fitz.Rect(b.x0+xs.min()/pix.w*b.width, b.y0+ys.min()/pix.h*b.height, b.x0+(xs.max()+1)/pix.w*b.width, b.y0+(ys.max()+1)/pix.h*b.height)
+                for hh in hints:  # Feld mindestens so gross wie der Hinweiskreis
+                    if cw.contains(hh[0]):
+                        need = 2*hh[1] + 2/K
+                        if cw.width < need: g = (need-cw.width)/2; cw = fitz.Rect(cw.x0-g, cw.y0, cw.x1+g, cw.y1)
+                        if cw.height < need: g = (need-cw.height)/2; cw = fitz.Rect(cw.x0, cw.y0-g, cw.x1, cw.y1+g)
+                cw = fitz.Rect(round(mm(cw.x0))/K, round(mm(cw.y0))/K, round(mm(cw.x1))/K, round(mm(cw.y1))/K) & PLATE
+                black = np.median(arr[lum < 22], axis=0)/255
+                final.append(('backdrop', {'fill': hexc(black)}))
+                notes.append(f'Schwarze Rueckplatte: Fotofeld auf Motivbereich {mm(cw.x0):.0f}–{mm(cw.x1):.0f} × {mm(cw.y0):.0f}–{mm(cw.y1):.0f} mm begrenzt (vorher ganze Platte), Grund {hexc(black)} als Flaeche')
+                win = cw; mpath = f"M{fmt(mm(win.x0))} {fmt(mm(win.y0))}H{fmt(mm(win.x1))}V{fmt(mm(win.y1))}H{fmt(mm(win.x0))}Z"
+            own = [hh for hh in hints if win.contains(hh[0])]
             if own:
                 zoom = pix.w / b.width
                 hl = hint_layer(pdf_path, own, zoom)
                 lay = Image.frombytes('RGBA', (hl.w, hl.h), hl.samples)
-                lay = lay.crop((round(b.x0*zoom), round(b.y0*zoom), round(b.x0*zoom)+pix.w, round(b.y0*zoom)+pix.h))
+                # Hinweiskreis ganz ins Fotofeld schieben, falls er ueber den Rand ragt (Groesse und Aussehen bleiben)
+                dx = dy = 0.0
+                for hh in own:
+                    r_ = hh[1]
+                    dx = max(dx, win.x0 - (hh[0].x - r_)) if hh[0].x - r_ < win.x0 else min(dx, win.x1 - (hh[0].x + r_)) if hh[0].x + r_ > win.x1 else dx
+                    dy = max(dy, win.y0 - (hh[0].y - r_)) if hh[0].y - r_ < win.y0 else min(dy, win.y1 - (hh[0].y + r_)) if hh[0].y + r_ > win.y1 else dy
+                if dx or dy: notes.append(f'Foto-Upload-Hinweis um {mm(dx):.0f}/{mm(dy):.0f} mm verschoben, damit er ganz im Fotofeld liegt')
+                lay = lay.crop((round((b.x0-dx)*zoom), round((b.y0-dy)*zoom), round((b.x0-dx)*zoom)+pix.w, round((b.y0-dy)*zoom)+pix.h))
                 photo.alpha_composite(lay)
             if pix.alpha:
                 fn = f'foto-{foto_n}.png'; photo.save(OUT/code/fn, optimize=True)
@@ -287,6 +312,9 @@ def convert(pdf_path):
             if not group: gbox = fitz.Rect(r); gcolor = key
             else: gbox |= r
             group.append(f'<path d="{d}" ' + ' '.join(attrs) + '/>')
+        elif kind == 'backdrop':
+            flush(); deko_n += 1
+            parts.append(f'<g id="deko-{deko_n}" data-quelle="schwarze-rueckplatte"><rect x="0" y="0" width="{W}" height="{H}" fill="{o["fill"]}"/></g>')
         elif kind == 'overlay':
             flush(); deko_n += 1
             parts.append(f'<g id="deko-{deko_n}" data-quelle="transparente-bildflaeche"><path d="{o["d"]}" fill="{o["fill"]}" opacity="{o["opacity"]}"/></g>')

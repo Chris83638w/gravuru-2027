@@ -8,6 +8,7 @@ import {exportSettings} from '../configurator/variant-m/print-export-model.mjs';
 import {productionPackage} from './production-summary.mjs';
 import {surfaceFileName} from '../configurator/variant-m/surfaces.mjs';
 export const ACRYLIC_PRINT_RECIPE='gravuru-acrylic-print-proof/v7';
+const aluDibondFinish={finish:'aluDibond',bleedMm:1.5,white:'full',whiteBleedMm:1.5,mirror:false};
 export const acrylicPrintKey=settings=>digest(JSON.stringify({recipe:ACRYLIC_PRINT_RECIPE,settings:formPrintSettings(settings)}));
 export async function acrylicContourProof(archive,archiveHash){
  const a=await acrylicArtwork(archive,archiveHash);
@@ -27,7 +28,8 @@ async function printSide(a,requested){
  return {raw,settings,delivery,pdf:delivery.pdf};
 }
 export async function createAcrylicPrintProof(archive,archiveHash,input={},context={}){
- const a=await acrylicArtwork(archive,archiveHash),requested=formPrintSettings({...a.manifest.productionProfile?.document.output,...input});
+ const a=await acrylicArtwork(archive,archiveHash),settingsInput=formPrintSettings({...a.manifest.productionProfile?.document.output,...input});
+ const requested=a.manifest.product.material?.kind==='aluDibond'?{...settingsInput,...aluDibondFinish}:settingsInput;
  if(a.manifest.product.method!=='print')throw Object.assign(Error('Acrylgravur benötigt eine eigene Ausgabe ohne Druckweiß.'),{status:422});
  const front=await printSide(a,requested),{raw,settings,delivery}=front,{pdf}=delivery,warnings=[];
  if(requested.bleedMm&&!raw.bleedMm)warnings.push('Kein Druck am Außenrand: Der angeforderte Überdruck wurde nicht hinzugefügt.');

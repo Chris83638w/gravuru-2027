@@ -9,8 +9,11 @@ export function exportSettings(geometry,input={}){
  for(const h of holes)if(![h.x,h.y,h.diameter].every(Number.isFinite)||h.diameter<=0||h.x-h.diameter/2<0||h.y-h.diameter/2<0||h.x+h.diameter/2>width||h.y+h.diameter/2>height)throw Error('Ungültiges Bohrbild.');
  if(shape==='contour')validateContourGeometry(geometry);
  const o={profile:'roland',bleedMm:0,white:'motif',whiteBleedMm:0,mirror:false,dpi:300,...input};
- if(![300,600].includes(o.dpi)||!['roland','mimaki'].includes(o.profile)||![0,1].includes(o.bleedMm)||![0,1].includes(o.whiteBleedMm)||!['motif','full','none'].includes(o.white)||typeof o.mirror!=='boolean'||o.whiteBleedMm>o.bleedMm)throw Error('Ungültige Exporteinstellungen. Weißüberdruck darf den Farbüberdruck nicht überschreiten.');
- if(shape==='contour'&&(o.bleedMm||o.whiteBleedMm))throw Error('Randüberdruck für freie Konturen bitte über die Werkstatt-Fertigungsprüfung erzeugen.');
+ const aluDibond=o.finish==='aluDibond';
+ const validBleed=aluDibond?o.bleedMm===1.5&&o.whiteBleedMm===1.5&&o.white==='full'&&o.mirror===false:
+  o.finish===undefined&&[0,1].includes(o.bleedMm)&&[0,1].includes(o.whiteBleedMm)&&o.whiteBleedMm<=o.bleedMm;
+ if(![300,600].includes(o.dpi)||!['roland','mimaki'].includes(o.profile)||!validBleed||!['motif','full','none'].includes(o.white)||typeof o.mirror!=='boolean')throw Error('Ungültige Exporteinstellungen. Weißüberdruck darf den Farbüberdruck nicht überschreiten.');
+ if(!aluDibond&&shape==='contour'&&(o.bleedMm||o.whiteBleedMm))throw Error('Randüberdruck für freie Konturen bitte über die Werkstatt-Fertigungsprüfung erzeugen.');
  return {...o,geometry:{width,height,shape,cornerRadiusMm,holes,...(shape==='contour'?{outlinePath:geometry.outlinePath}: {})},pageWidthMm:width+2*o.bleedMm,pageHeightMm:height+2*o.bleedMm,colorSpace:'DeviceCMYK'};
 }
 // Generic maximum-black separation. No measured printer/ink/media ICC transform.
@@ -137,7 +140,8 @@ export async function printPDF({settings,pixels,kind='combined',paths=null,artwo
  const transform=`${PT} 0 0 ${-PT} 0 ${n(H*PT)} cm`;
  const geo=`${s.mirror?-1:1} 0 0 1 ${n(bleed+(s.mirror?s.geometry.width:0))} ${bleed} cm`;
  const fn=pdf.add('<< /FunctionType 2 /Domain [0 1] /C0 [0 0 0 0] /C1 [0 0 0 0] /N 1 >>');
- const cutFn=pdf.add('<< /FunctionType 2 /Domain [0 1] /C0 [0 0 0 0] /C1 [0 1 0 0] /N 1 >>');
+ const blueCut=s.finish==='aluDibond';
+ const cutFn=pdf.add(blueCut?'<< /FunctionType 2 /Domain [0 1] /C0 [1 1 1] /C1 [0 0 1] /N 1 >>':'<< /FunctionType 2 /Domain [0 1] /C0 [0 0 0 0] /C1 [0 1 0 0] /N 1 >>');
  const props=[],streams=[],refs=[];
  const layer=(name,body)=>{const id=pdf.add(`<< /Type /OCG /Name (${name}) >>`);props.push(`/L${id} ${id} 0 R`);refs.push(`${id} 0 R`);streams.push(`/OC /L${id} BDC\nq\n${transform}\n${body}\nQ\nEMC`);};
  let image='';
@@ -180,9 +184,9 @@ export async function printPDF({settings,pixels,kind='combined',paths=null,artwo
   layer(kind==='white'||mimaki?'Weissersatz Vektor':'RDG_WHITE',(kind==='white'?'0 0 0 1 k':mimaki?'0 0 0 0 k':'/GSWhite gs /White cs 1 scn')+'\n'+white);
   if(kind==='combined'){const last=streams.pop();streams.unshift(last);} // Underprint before color; both use overprint, RIP validation remains required.
  }
- if(kind==='combined'||kind==='color-cut'||kind==='white-spot-cut'||kind==='cut')layer('CutContour',`${geo}\n/Cut CS 1 SCN 0.05 w\n${paths?.cut||contourPath(s.geometry)} S`);
+ if(kind==='combined'||kind==='color-cut'||kind==='white-spot-cut'||kind==='cut')layer('CutContour',`${geo}\n/Cut CS 1 SCN ${blueCut?'0.2':'0.05'} w\n${paths?.cut||contourPath(s.geometry)} S`);
  const content=await pdf.stream('',b(streams.join('\n'))),box=`[0 0 ${n(W*PT)} ${n(H*PT)}]`,trim=`[${n(bleed*PT)} ${n(bleed*PT)} ${n((W-bleed)*PT)} ${n((H-bleed)*PT)}]`;
- pdf.set(page,`<< /Type /Page /Parent ${pages} 0 R /MediaBox ${box} /BleedBox ${box} /TrimBox ${trim} /Resources << /XObject << ${image} >> /ColorSpace << ${((s.profile==='roland'&&kind==='combined'&&s.white!=='none')||['white-spot','white-spot-cut'].includes(kind))?`/White [/Separation /RDG_WHITE /DeviceCMYK ${fn} 0 R]`:''} ${['combined','color-cut','white-spot-cut','cut'].includes(kind)?`/Cut [/Separation /CutContour /DeviceCMYK ${cutFn} 0 R]`:''} >> /ExtGState << /GSWhite << /Type /ExtGState /OP true /op true /OPM 1 >> >> /Properties << ${props.join(' ')} >> >> /Contents ${content} 0 R >>`);
+ pdf.set(page,`<< /Type /Page /Parent ${pages} 0 R /MediaBox ${box} /BleedBox ${box} /TrimBox ${trim} /Resources << /XObject << ${image} >> /ColorSpace << ${((s.profile==='roland'&&kind==='combined'&&s.white!=='none')||['white-spot','white-spot-cut'].includes(kind))?`/White [/Separation /RDG_WHITE /DeviceCMYK ${fn} 0 R]`:''} ${['combined','color-cut','white-spot-cut','cut'].includes(kind)?`/Cut [/Separation /CutContour ${blueCut?'/DeviceRGB':'/DeviceCMYK'} ${cutFn} 0 R]`:''} >> /ExtGState << /GSWhite << /Type /ExtGState /OP true /op true /OPM 1 >> >> /Properties << ${props.join(' ')} >> >> /Contents ${content} 0 R >>`);
  pdf.set(pages,`<< /Type /Pages /Kids [${page} 0 R] /Count 1 >>`);pdf.set(catalog,`<< /Type /Catalog /Pages ${pages} 0 R /OCProperties << /OCGs [${refs.join(' ')}] /D << /Order [${refs.join(' ')}] /ON [${refs.join(' ')}] >> >> >>`);return pdf.finish(catalog);
 }
 const crcTable=Array.from({length:256},(_,v)=>{for(let k=0;k<8;k++)v=v&1?0xedb88320^(v>>>1):v>>>1;return v>>>0;});

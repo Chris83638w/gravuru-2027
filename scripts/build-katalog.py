@@ -12,7 +12,7 @@ import argparse, html, json, math, subprocess, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-MAT = {'steel': 'Edelstahl', 'slate': 'Schiefer', 'acrylic': 'Acrylglas', 'aluminium-composite': 'Alu-Dibond'}
+MAT = {'steel': 'Edelstahl', 'slate': 'Schiefer', 'acrylic': 'Acrylglas', 'aluDibond': 'Alu-Dibond', 'aluminium-composite': 'Alu-Dibond'}
 SHAPE = {'rect': 'Rechteck', 'ellipse': 'Oval', 'plaque': 'eingezogene Ecken', 'contour': 'Kontur'}
 LAYOUT = {'left-right': 'seitlich mittig', 'top-bottom': 'oben/unten', 'corners': 'in den Ecken', 'top-center': 'oben mittig', 'none': 'ohne Löcher'}
 

@@ -154,7 +154,9 @@ def prepare_svg(data):
  return root
 def run(data):
  g,s=data['geometry'],data['settings'];mw,mh=g['widthMm'],g['heightMm'];dpi=s['dpi'];requested=s['bleedMm']
- c.require(g['schema']=='gravuru-contour/v1' and 0<mw<=500 and 0<mh<=500 and dpi in [300,600] and requested in [0,1],'Ungültiges Druckformat.')
+ alu_dibond=s.get('finish')=='aluDibond'
+ valid_bleed=(requested==1.5 and s['whiteBleedMm']==1.5 and s['white']=='full' and s['mirror'] is False) if alu_dibond else s.get('finish') is None and requested in [0,1]
+ c.require(g['schema']=='gravuru-contour/v1' and 0<mw<=500 and 0<mh<=500 and dpi in [300,600] and valid_bleed,'Ungültiges Druckformat.')
  root=prepare_svg(data)
  parts,text_vectors,nontext_root=text_module.split_artwork(root,set(data['textFields']),c.require,number)
  # Only the outer edge is expanded; original hole paths are never enlarged or filled.
@@ -162,7 +164,8 @@ def run(data):
  # Native customer products are engraved/printed first, then drilled (Issue 48/10).
  artwork_rings=[outer] if data.get('fillDrillHoles') is True else rings
  holes=[r for r in artwork_rings if r['role']=='hole'];plain=' '.join(r['d']+' Z' for r in artwork_rings)
- polygon=c.Polygon(c.flatten(c.parse_path(outer['d'])));expanded=polygon.buffer(1,quad_segs=32)
+ polygon=c.Polygon(c.flatten(c.parse_path(outer['d'])))
+ expanded=polygon.buffer(requested,join_style=2) if alu_dibond else polygon.buffer(1,quad_segs=32)
  c.require(expanded.geom_type=='Polygon','Überdruckkontur ist nicht eindeutig.')
  coords=list(expanded.exterior.coords);expanded_d='M'+' L'.join(number(x)+' '+number(y) for x,y in coords)+' Z';extended=[{'d':expanded_d},*holes]
  def prepare(bleed):
@@ -177,9 +180,10 @@ def run(data):
   inner_edge=(outer_mask==255)&(np.asarray(Image.fromarray(outer_mask).filter(ImageFilter.MinFilter(3)))<255)
   return W,H,rgba,original,mask,inner_edge,touches
  W,H,rgba,original,mask,edge,touches=prepare(requested)
- bleed=requested if touches else 0
+ bleed=requested if touches or alu_dibond else 0
+ color_bleed=bleed and not alu_dibond
  if requested and not bleed:W,H,rgba,original,mask,edge,touches=prepare(0)
- if bleed:
+ if color_bleed:
   expanded_mask=mask(' '.join(r['d']+' Z' for r in extended));outside=(expanded_mask>0)&(original==0)
   # Sample fully covered inner-edge pixels, not the contour antialias fringe.
   # Actual artwork alpha is preserved, including empty and translucent edges.
@@ -201,7 +205,7 @@ def run(data):
   x,y,x2,y2=int(xs.min()),int(ys.min()),int(xs.max())+1,int(ys.max())+1;b=a[y:y2,x:x2]
   layers.append({'type':'raster','x':x*(mw+2*bleed)/W-bleed,'y':y*(mh+2*bleed)/H-bleed,'widthMm':(x2-x)*(mw+2*bleed)/W,'heightMm':(y2-y)*(mh+2*bleed)/H,'width':x2-x,'height':y2-y,'rgb':enc(b[:,:,:3]),'alpha':enc(b[:,:,3])})
  white_alpha=render_root(nontext_root)[:,:,3].copy()
- if bleed:
+ if color_bleed:
   outside_ink=rgba.copy();outside_ink[:,:,3][original>0]=0;bitmap(outside_ink)
   white_alpha=np.maximum(white_alpha,outside_ink[:,:,3])
  for part in parts:
@@ -210,7 +214,7 @@ def run(data):
  if s['mirror']:white_alpha=np.flip(white_alpha,axis=1).copy()
  if s['mirror']:rgba=np.flip(rgba,axis=1).copy();white_allowed=np.flip(white_allowed,axis=1).copy()
  enc=lambda a:base64.b64encode(np.ascontiguousarray(a).tobytes()).decode()
- return {'width':W,'height':H,'rgb':enc(rgba[:,:,:3]),'alpha':enc(rgba[:,:,3]),'whiteAllowed':enc(white_allowed),'whiteAlpha':enc(white_alpha),'artworkLayers':layers,'textVectors':text_vectors,'bleedMm':bleed,'whiteBleedMm':white_bleed,'edgeInk':touches,'paths':{'cut':pdf_path(rings),'artwork':pdf_path(artwork_rings),'color':pdf_path(extended if bleed else artwork_rings),'white':pdf_path(extended if white_bleed else artwork_rings)}}
+ return {'width':W,'height':H,'rgb':enc(rgba[:,:,:3]),'alpha':enc(rgba[:,:,3]),'whiteAllowed':enc(white_allowed),'whiteAlpha':enc(white_alpha),'artworkLayers':layers,'textVectors':text_vectors,'bleedMm':bleed,'whiteBleedMm':white_bleed,'edgeInk':touches,'paths':{'cut':pdf_path(rings),'artwork':pdf_path(artwork_rings),'color':pdf_path(extended if color_bleed else artwork_rings),'white':pdf_path(extended if white_bleed else artwork_rings)}}
 if __name__=='__main__':
  try:
   result=run(json.load(sys.stdin));print(json.dumps(result))

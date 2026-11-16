@@ -12,6 +12,7 @@ import {zipFiles} from '../configurator/variant-m/print-export-model.mjs';
 import {workshopResources} from './catalog.mjs';
 import {nativeSpecimenConfig,steelPreviewSurface} from './specimen-product.mjs';
 import {nativeFamilyAcrylicConfig} from './family-acrylic-product.mjs';
+import {nativeFamilyPrintConfig} from './family-print-product.mjs';
 import {nativeSlateConfig} from './slate-product.mjs';
 import {makeProductDocument} from './product-model.mjs';
 import {nativeContour} from './acrylic-artwork.mjs';
@@ -33,7 +34,8 @@ const FAMILY_SCHEMAS=['gravuru-product-family/v1',FAMILY_SCHEMA];
 export const FAMILY_MATERIALS=Object.freeze({
  steel:{name:'Edelstahl',processing:'steel-engraving',ink:'Gravur erscheint dunkel auf dem Metall; Weiß bleibt ungraviert.',color:()=>'#bac2c4',adapter:'steel'},
  slate:{name:'Schiefer',processing:'slate-engraving',ink:'Gravur erscheint hell auf dem dunklen Stein; Weiß bleibt ungraviert.',color:()=>'#343b3d',adapter:'slate'},
- acrylic:{name:'Acrylglas',processing:'acrylic-engraving',ink:'Gravur erscheint hell (weiß) auf dem farbigen Acrylglas; Weiß bleibt ungraviert.',color:v=>v==='anthrazit'?'#33373a':v==='satiniert'?'#7b7d7e':'#17191b',adapter:'acrylic'}
+ acrylic:{name:'Acrylglas',processing:'acrylic-engraving',ink:'Gravur erscheint hell (weiß) auf dem farbigen Acrylglas; Weiß bleibt ungraviert.',color:v=>v==='anthrazit'?'#33373a':v==='satiniert'?'#7b7d7e':'#17191b',adapter:'acrylic'},
+ aluDibond:{name:'Alu-Dibond',processing:'color-print',ink:'Farbdruck auf weißer Platte.',color:()=>'#ffffff',adapter:'print'}
 });
 const fail=(status,code,message)=>{throw Object.assign(Error(message),{status,code});};
 const invalid=message=>fail(422,'family_invalid',message);
@@ -100,10 +102,11 @@ export function validateFamily(f){
  only(f.material,['kind','variant','label','thicknessMm','processingProfileId','engravingSide'],'Material');
  if(f.material.engravingSide!==undefined&&!ENGRAVING_SIDES.includes(f.material.engravingSide))invalid('Gravurseite: front oder back.');
  const material=FAMILY_MATERIALS[f.material.kind];
- if(!material||!text(f.material.label,80))invalid('Material: Edelstahl, Acrylglas oder Schiefer mit Bezeichnung angeben.');
+ if(!material||!text(f.material.label,80))invalid('Material: Edelstahl, Acrylglas, Schiefer oder Alu-Dibond mit Bezeichnung angeben.');
  if(f.schema!==FAMILY_SCHEMA&&(f.material.kind!=='steel'||f.material.thicknessMm!==1.5))invalid('Familienformat v1 beschreibt nur Edelstahl 1,5 mm.');
  const processId=f.material.processingProfileId;
  if(processId!==null&&!isProcessProfileId(processId))invalid('Unbekanntes Verfahrensprofil: '+processId);
+ if(f.material.kind==='aluDibond'&&(processId!==null&&processId!=='color-print'||f.material.engravingSide==='back'))invalid('Alu-Dibond benötigt Farbdruck auf der Vorderseite.');
  if(processId!==null&&processId!==material.processing&&processId!=='color-print')invalid(`${material.name} wird mit „${material.processing}“ graviert.`);
  if(f.material.variant!==undefined&&!text(f.material.variant,40))invalid('Materialvariante prüfen.');
  if(!open(f.material.thicknessMm)&&!mm(f.material.thicknessMm,0.3,50))invalid('Materialstärke: 0,3 bis 50 mm oder offen.');
@@ -266,6 +269,7 @@ export function familyProductConfig(f,s,revision,{previewOnly=false}={}){
  const tiers=sizeQuantityTiers(f,s);if(tiers!==undefined)c.quantityTiers=structuredClone(tiers);
  if(previewOnly){if(f.material.kind==='steel')c.materialSurface=steelPreviewSurface();return prepareConfig(c);}
  if(f.material.kind==='steel'){c.materialSurface=steelPreviewSurface();return nativeSpecimenConfig(c);}
+ if(FAMILY_MATERIALS[f.material.kind].adapter==='print')return nativeFamilyPrintConfig(c);
  return f.material.kind==='acrylic'?nativeFamilyAcrylicConfig(c):nativeSlateConfig(c);
 }
 

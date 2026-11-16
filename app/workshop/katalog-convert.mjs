@@ -10,11 +10,12 @@
 // - `katalogFamilyToProduct`: Familie + Linie/Unterkategorie + Größe → Produktdokument über
 //   die vorhandene Familienanlage (`familyProductConfig`), Preise in Cent (offen = Fehler).
 // design.json (optional, nur gelesene Felder): `themes:[…]`, `bestseller`, `fields:{<ebene>:
-// {required, maxLength, maxLines, locked, label}}`. Pflichtfeld ohne Angabe: das Namensfeld
+// {required, maxLength, maxLines, locked, label, photoBackgroundDefault}}`. Pflichtfeld ohne Angabe: das Namensfeld
 // (`data-feld` name/familie/hausnummer, sonst der größte Text) – alles andere wird nicht geraten.
 import {measureText} from '../platform/sources/app/shared/models/doorbell-preview.mjs';
 import {validColor} from '../platform/sources/app/shared/models/processing-profiles.mjs';
 import {escapeXml,validContentId} from '../platform/sources/app/shared/models/design-content.mjs';
+import {contourPathCommands} from '../platform/sources/app/shared/models/contour-geometry.mjs';
 import {customerLayoutIssue} from '../configurator/variant-m/contract.mjs';
 import {applyNewMotifRights,checkWholePrintDesign} from '../configurator/variant-m/new-motif-rights.mjs';
 import {familyProductConfig,familyProcess,geometryOf,validateFamily,sizeQuantityTiers} from './product-families.mjs';
@@ -202,7 +203,7 @@ export function parseDesignSvg(svgText){
 }
 
 // ---- Design → Vorlage ----
-const fieldRule=(design,layerId)=>{const f=design.fields?.[layerId];if(f===undefined)return {};if(!f||typeof f!=='object'||Array.isArray(f))fail(design.id+': design.json fields.'+layerId+' ist kein Objekt.');for(const k of Object.keys(f))if(!['required','maxLength','maxLines','locked','label'].includes(k))fail(design.id+': design.json fields.'+layerId+' kennt „'+k+'“ nicht.');for(const k of ['required','locked'])if(f[k]!==undefined&&typeof f[k]!=='boolean')fail(design.id+': fields.'+layerId+'.'+k+' ist true oder false.');for(const k of ['maxLength','maxLines']){const [min,max]=TEXT_LIMIT_RANGES[k];if(f[k]!==undefined&&!(Number.isInteger(f[k])&&f[k]>=min&&f[k]<=max))fail(design.id+': fields.'+layerId+'.'+k+' ist eine ganze Zahl von '+min+' bis '+max+'.');}return f;};
+const fieldRule=(design,layerId)=>{const f=design.fields?.[layerId];if(f===undefined)return {};if(!f||typeof f!=='object'||Array.isArray(f))fail(design.id+': design.json fields.'+layerId+' ist kein Objekt.');for(const k of Object.keys(f))if(!['required','maxLength','maxLines','locked','label','photoBackgroundDefault'].includes(k))fail(design.id+': design.json fields.'+layerId+' kennt „'+k+'“ nicht.');for(const k of ['required','locked'])if(f[k]!==undefined&&typeof f[k]!=='boolean')fail(design.id+': fields.'+layerId+'.'+k+' ist true oder false.');for(const k of ['maxLength','maxLines']){const [min,max]=TEXT_LIMIT_RANGES[k];if(f[k]!==undefined&&!(Number.isInteger(f[k])&&f[k]>=min&&f[k]<=max))fail(design.id+': fields.'+layerId+'.'+k+' ist eine ganze Zahl von '+min+' bis '+max+'.');}return f;};
 // design.json `movable: true` (Vorgabe Chris 20.10.2026 für Gedenktafeln 22 × 14): alle Elemente
 // verschiebbar – Texte wie bisher, dazu Motive und das Fotofeld (ohne Skalieren, Ersetzen bleibt beim Foto).
 const movableAll=design=>design.json?.movable===true||design.movable===true;
@@ -218,6 +219,25 @@ const isPlateArea=layer=>{
  const points=[1,4,7,10].map(i=>[Number(tokens[i]),Number(tokens[i+1])]);
  return new Set(points.map(p=>p.join(','))).size===4&&points.every((p,i)=>{const q=points[(i+1)%4];return (p[0]===q[0])!==(p[1]===q[1]);});
 };
+
+function printPlateFill(layer,[width,height]){
+ const [part]=layer.pathAttributes,[x,y,w,h]=layer.bounds;
+ if(layer.kind!=='deko'||layer.rotation||layer.paths.length!==1||part.fill==='none'||
+    part.stroke&&part.stroke!=='none'||part.opacity!==1)return null;
+ const tolerance=.01,bleed=1.5+tolerance;
+ if(x>tolerance||x< -bleed||y>tolerance||y< -bleed||
+    x+w<width-tolerance||x+w>width+bleed||y+h<height-tolerance||y+h>height+bleed)return null;
+ const path=layer.paths[0];
+ if(!/^[Mm][LlHhVv\d.,+eE\s-]+[Zz]$/.test(path))return null;
+ const commands=contourPathCommands(path);
+ if(commands.map(command=>command.command).join('')!=='MLLLZ')return null;
+ const points=commands.slice(0,-1).map(command=>command.values);
+ if(new Set(points.map(point=>point.join(','))).size!==4||
+    !points.every(([px,py],i)=>{const [qx,qy]=points[(i+1)%4];return (px===qx)!==(py===qy);}))return null;
+ // The painted background reaches trim. The exporter makes the white bleed
+ // using the verified plate contour.
+ return {bounds:[0,0,width,height],paths:[`M0 0H${width}V${height}H0Z`]};
+}
 
 // `fonts`: Glyphenressourcen (Name → {regular:{units,glyphs}}) aller Schriften, die das
 // Design verwendet; fehlt eine, bricht die Umwandlung mit „Schrift fehlt“ ab (nie Ersatz).
@@ -235,6 +255,7 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
  let photo=false;
  for(const layer of parsed.layers){
   const id=slug(layer.id),rule=fieldRule(design,layer.id),guide=layer.kind==='guide';
+  if(rule.photoBackgroundDefault!==undefined&&(layer.kind!=='foto'||!['keep','remove'].includes(rule.photoBackgroundDefault)))fail(design.id+': fields.'+layer.id+'.photoBackgroundDefault erwartet keep oder remove für ein Fotofeld.');
   if(layer.kind==='text'||(guide&&layer.text)){
    const font=layer.font;if(!fonts[font])fail(design.id+': Schrift fehlt: '+font+' (Ebene „'+layer.id+'“).');
    const fieldKey=layer.fieldKey||id;
@@ -262,15 +283,16 @@ export function katalogDesignToTemplate(design,family,theme,{fonts={},svgText}={
    if(!process.tools.photo)fail(design.id+': Fotofeld „'+layer.id+'“, aber das Verfahren „'+process.id+'“ sieht kein Foto vor.');
    const [bx,by,bw,bh]=layer.bounds,fieldKey='photo-'+id;
    if(fieldKeys.has(fieldKey))fail(design.id+': Fotofeld „'+fieldKey+'“ doppelt.');fieldKeys.add(fieldKey);
-   objects.push({id,type:'photoSlot',fieldKey,photoShape:layer.shape,...(layer.maskSvg?{photoMaskAssetId:createHash('sha256').update(layer.maskSvg).digest('hex')}:{}),required:rule.required??true,x:round(bx+bw/2),y:round(by+bh/2),w:round(bw),h:round(bh),rotation:round(layer.rotation),templateOrigin:true,customerEditable:true});
+   objects.push({id,type:'photoSlot',fieldKey,photoShape:layer.shape,...(layer.maskSvg?{photoMaskAssetId:createHash('sha256').update(layer.maskSvg).digest('hex')}:{}),required:rule.required??true,...(rule.photoBackgroundDefault===undefined?{}:{photoBackgroundDefault:rule.photoBackgroundDefault}),x:round(bx+bw/2),y:round(by+bh/2),w:round(bw),h:round(bh),rotation:round(layer.rotation),templateOrigin:true,customerEditable:true});
    if(layer.maskSvg||layer.exampleImage)photoAssets.push({slotId:id,maskSvg:layer.maskSvg??null,exampleImage:layer.exampleImage??null});
    rights[id]={content:false,color:false,replace:true,move:movableAll(design),scale:false,delete:false};photo=true;
    if(layer.placeholder)placeholders.push({slotId:id,file:layer.placeholder,widthMm:round(bw),heightMm:round(bh)});
   }else{
-   const [bx,by,bw,bh]=layer.bounds;
-   if(samePlate([bw,bh],plate)&&Math.abs(bx)<0.5&&Math.abs(by)<0.5&&isPlateArea(layer)){notes.push('Ebene „'+layer.id+'“ füllt die ganze Platte (Plattenfläche aus Corel) und wird nicht übernommen.');continue;}
+   const plateFill=family.material.kind==='aluDibond'?printPlateFill(layer,plate):null;
+   const [bx,by,bw,bh]=(plateFill||layer).bounds;
+   if(!plateFill&&samePlate([bw,bh],plate)&&Math.abs(bx)<0.5&&Math.abs(by)<0.5&&isPlateArea(layer)){notes.push('Ebene „'+layer.id+'“ füllt die ganze Platte (Plattenfläche aus Corel) und wird nicht übernommen.');continue;}
    const key=templateId+'-'+id;
-   motifs.push({key,svgFragment:layer.paths.map((d,i)=>{
+   motifs.push({key,svgFragment:(plateFill||layer).paths.map((d,i)=>{
     const a=layer.pathAttributes?.[i]||{},fill=print?paint(a.fill??'#000000'):a.fill==='none'?'none':'currentColor',stroke=a.stroke&&a.stroke!=='none'?(print?paint(a.stroke):'currentColor'):null;
     // Gravur ersetzt nur die Farbe durch Profiltinte; Kontur, Aussparungen und Deckkraft bleiben Quelle.
     return '<path d="'+d+'" fill="'+fill+'" fill-rule="'+(a.evenodd?'evenodd':'nonzero')+'"'+(stroke?' stroke="'+stroke+'" stroke-width="'+a.strokeMm+'"':'')+(a.opacity!==undefined&&(print||a.opacity!==1)?' opacity="'+a.opacity+'"':'')+(stroke?' stroke-linecap="'+a.linecap+'" stroke-linejoin="'+a.linejoin+'" stroke-miterlimit="'+a.miterlimit+'"':'')+'/>';

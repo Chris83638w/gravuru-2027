@@ -9,6 +9,10 @@ import {canEditElement} from './element-rights.mjs';
 
 // Ohne HEIC: iOS Safari wandelt Fotos aus der Mediathek dann selbst in JPEG um (kein `capture`, Galerie bleibt wählbar).
 export const PHOTO_ACCEPT='image/jpeg,image/png,image/webp';
+export function photoBackgroundChoice(object){
+  const choice=object.uxPhotoBackground;
+  return choice==='keep'||choice==='remove'?choice:object.photoBackgroundDefault==='keep'?'keep':'remove';
+}
 const TAP_SLOP=6;
 
 // Reine Rahmen/Konturen über einem Fotobereich nehmen keinen Fototipp an.

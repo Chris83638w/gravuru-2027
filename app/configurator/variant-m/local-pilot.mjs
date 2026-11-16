@@ -4,6 +4,11 @@ import {validateDesignContent} from '../../platform/sources/app/shared/models/de
 import {isArtworkResource} from './artwork-resource.mjs';
 import {productFontIndex} from './lazy-resources-model.mjs';
 
+const motifPathPattern=(fill,stroke)=>new RegExp(String.raw`^(?:<path d="[MmLlHhVvCcSsQqTtAaZz\d.,+eE\s-]+" fill="(?:${fill})" fill-rule="(?:evenodd|nonzero)"(?: stroke="(?:${stroke})" stroke-width="\d+(?:\.\d+)?")?(?: opacity="(?:0(?:\.\d+)?|1(?:\.0+)?)")?(?: stroke-linecap="(?:butt|round|square)" stroke-linejoin="(?:miter|round|bevel)" stroke-miterlimit="\d+(?:\.\d+)?")?\/>)+$`);
+const engravingMotifPath=motifPathPattern('currentColor|none','currentColor');
+const printPaint=String.raw`#[a-fA-F\d]{3}(?:[a-fA-F\d]{3})?|[A-Za-z]+|[rR][gG][bB][aA]?\([\d\s.,%]+\)`;
+const printMotifPath=motifPathPattern(printPaint,printPaint);
+
 export function localFontIds(config) {
   if (!config.localResources) return [];
   if (config.reviewOnly !== true || config.profile.binding?.kind !== 'local-review' || config.profile.features?.orderEnabled !== false) throw Error('Eigene Schriftressourcen sind nur im lokalen Prüfprodukt erlaubt.');
@@ -19,10 +24,11 @@ export function localFontIds(config) {
     if(!f||!Number.isFinite(f.units)||f.units<=0||!f.glyphs)throw Error('Lokale Schrift ungültig.');
     for(const [character,g] of Object.entries(f.glyphs))if([...character].length!==1||!Number.isFinite(g.a)||typeof g.d!=='string'||!/^[MmLlHhVvCcSsQqTtAaZz\d.,+eE\s-]*$/.test(g.d))throw Error('Lokale Schrift enthält ungültige Pfade.');
   }
+  const motifPath=config.profile.material?.kind==='aluDibond'&&config.profile.processing?.profileId==='color-print'?printMotifPath:engravingMotifPath;
   for(const m of resources.motifs){
     if(m.artwork!==undefined){if(!isArtworkResource(m))throw Error('Importierte Designressource ist ungültig.');continue;}
     if(m.embeddedOnly!==undefined&&typeof m.embeddedOnly!=='boolean')throw Error('Vorlagenmotiv-Kennzeichnung ist ungültig.');
-    if(!/^[\w.-]{1,120}$/.test(m.key)||!Array.isArray(m.bounds)||m.bounds.length!==4||!m.bounds.every(Number.isFinite)||m.bounds[2]<=0||m.bounds[3]<=0||typeof m.svgFragment!=='string'||!m.svgFragment.match(/^(?:<path d="[MmLlHhVvCcSsQqTtAaZz\d.,+eE\s-]+" fill="(?:currentColor|none)" fill-rule="(?:evenodd|nonzero)"(?: stroke="currentColor" stroke-width="\d+(?:\.\d+)?")?(?: opacity="(?:0(?:\.\d+)?|1(?:\.0+)?)")?(?: stroke-linecap="(?:butt|round|square)" stroke-linejoin="(?:miter|round|bevel)" stroke-miterlimit="\d+(?:\.\d+)?")?\/>)+$/))throw Error('Lokales Motiv enthält nicht erlaubte Inhalte.');
+    if(!/^[\w.-]{1,120}$/.test(m.key)||!Array.isArray(m.bounds)||m.bounds.length!==4||!m.bounds.every(Number.isFinite)||m.bounds[2]<=0||m.bounds[3]<=0||typeof m.svgFragment!=='string'||!motifPath.test(m.svgFragment))throw Error('Lokales Motiv enthält nicht erlaubte Inhalte.');
   }
   return ids;
 }

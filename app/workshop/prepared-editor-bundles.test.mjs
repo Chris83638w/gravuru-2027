@@ -80,12 +80,24 @@ async function get(port,pathname,headers={},method='GET'){
 test('actual embedded-host authorization and security headers remain on prepared HTTP responses',async t=>{
  const dir=fixture(t),domain='gravuru-test.myshopify.com',origin='https://konfi.example.test',clientId='testclient';
  const native=createPreviewServer({outputDirectory:dir,workshop:{sessionContext:{mode:'test-only',shopDomain:domain,clientId}},embeddedApp:{mode:'embedded-test',origin,shopDomain:domain,clientId}});
- const prepared=native.prepareBundleDelivery(acrylAssetText);let fallback=0;
+ const prepared=native.prepareBundleDelivery(acrylAssetText,{includeEditorPage:true});let fallback=0;
  const outer=http.createServer((req,res)=>{const target=acrylRoute(new globalThis.URL(req.url,origin).pathname);if(prepared(req,res,target||''))return;fallback++;res.writeHead(418,{'Cache-Control':'private, no-store'}).end();});
  t.after(()=>{outer.close();outer.closeAllConnections();});outer.listen(0,'127.0.0.1');await once(outer,'listening');const port=outer.address().port,p='/_acryl-bundle/'+NAME;
  const h={host:'konfi.example.test',origin,'sec-fetch-site':'same-origin','accept-encoding':'gzip'};
  const good=await get(port,p,h);assert.equal(good.status,200);assert.equal(gunzipSync(good.body).toString(),acrylAssetText(source));
  assert.match(good.headers['content-security-policy'],/frame-ancestors https:\/\/gravuru-test.myshopify.com/);assert.equal(good.headers['referrer-policy'],'no-referrer');assert.equal(good.headers['x-content-type-options'],'nosniff');assert.equal(good.headers['access-control-allow-origin'],undefined);
+ const renderer='/_merchant-acryl-editor.html',html=await get(port,renderer,h),plain=await get(port,renderer,{...h,'accept-encoding':'identity'});
+ assert.equal(html.status,200);
+ assert.equal(html.headers['content-type'],'text/html; charset=utf-8');
+ assert.equal(html.headers['cache-control'],'private, max-age=300');
+ assert.equal(html.headers['content-encoding'],'gzip');assert.equal(html.headers.vary,'Accept-Encoding');
+ assert.match(html.headers['content-security-policy'],/frame-ancestors 'self'/);
+ assert.equal(gunzipSync(html.body).toString(),acrylAssetText(fs.readFileSync(path.join(dir,'editor.html'),'utf8')));
+ assert.ok(gunzipSync(html.body).equals(plain.body));
+ assert.equal((await get(port,renderer,h,'HEAD')).body.length,0);
+ assert.equal((await get(port,renderer,{...h,'sec-fetch-site':'cross-site'})).status,403);
+ fs.appendFileSync(path.join(dir,'editor.html'),'<p>Neu</p>');
+ assert.match(gunzipSync((await get(port,renderer,h)).body).toString(),/<p>Neu<\/p>$/);
  const cases=[{...h,host:'other.test'},{...h,origin:'https://other.test'},{...h,'sec-fetch-site':'cross-site'}];
  for(const bad of cases){const r=await get(port,p,bad);assert.equal(r.status,403);assert.equal(r.headers['cache-control'],'no-store');}
  assert.equal((await get(port,p,h,'HEAD')).body.length,0);assert.equal((await get(port,p,h,'OPTIONS')).status,405);assert.equal(fallback,0);

@@ -386,7 +386,8 @@ test('Befestigungskacheln: jede Befestigung als Kachel mit Icon, Bezeichnung und
  const mounting=p.optionGroups.find(g=>g.id==='mounting');
  assert.deepEqual(mounting.values.map(v=>v.id),['K00','KGL','KRA','B02','B02S']);
  // Icon: Standardbild (Bohrbild) als <img>, sonst Strichsymbol; KGL und KRA haben eigene Klebesymbole, Unbekanntes → „ohne Bohrung“.
- assert.match(optionTileIcon(mounting.values.find(v=>v.id==='B02')),/^<img src="data:image\/png;base64,[A-Za-z0-9+/=]+" alt="">$/);
+ assert.match(optionTileIcon(mounting.values.find(v=>v.id==='B02')),/^<img src="\/_runtime\/images\/option-b02\.[a-f0-9]{16}\.png" alt="" loading="lazy" decoding="async">$/);
+ assert.equal(optionTileIcon({id:'B02',thumbnail:'data:image/png;base64,AA=='}),'<img src="data:image/png;base64,AA==" alt="">');
  assert.equal(optionTileIcon({id:'B02',holes:[{},{}],thumbnailDisabled:true}),optionTileIcon({id:'FREMD'}),'Bild abgeschaltet → Symbol „ohne Bohrung“');
  assert.ok(optionTileIcon({id:'K00'}).includes(MOUNT_ICONS.K00)&&optionTileIcon({id:'K00'}).startsWith('<svg viewBox="0 0 32 32"'));
  assert.notEqual(optionTileIcon({id:'KGL'}),optionTileIcon({id:'KRA'}));assert.ok(optionTileIcon({id:'KGL'}).includes(MOUNT_ICONS.KGL));assert.ok(optionTileIcon({id:'KRA'}).includes(MOUNT_ICONS.KRA));

@@ -1,6 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {acrylRoute,acrylAssetText,acrylCacheControl} from './acryl-employee-host.mjs';
+import fs from 'node:fs';
+import {createHash} from 'node:crypto';
+import {acrylRoute,acrylAssetText,acrylCacheControl,isAcrylPublicEditorJson} from './acryl-employee-host.mjs';
+import {OPTION_STANDARD_IMAGES} from '../configurator/variant-m/option-standard-images.mjs';
 import {createConfiguratorIntegration} from './configurator-integration.mjs';
 import {DOORBELL_STEEL_SURFACE} from '../platform/sources/app/shared/models/doorbell-material-preview.mjs';
 test('native and form editor aliases remain in their own release',()=>{
@@ -45,6 +48,18 @@ test('static editor files may be cached by the browser; everything else stays pr
  assert.equal(acrylCacheControl('/_merchant-acryl-editor.html',200),'private, max-age=300');
  assert.equal(acrylCacheControl('/_acryl-runtime/lazy/motive-alle.json',200),'public, max-age=3600');assert.equal(acrylCacheControl('/_acryl-runtime/lazy/motive/leuchtturm_1.json',200),'public, max-age=3600');
  for(const [p,s] of [['/_acryl-bundle/editor.mjs',200],['/_acryl-runtime/lazy/schriften/../x.json',200],['/_acryl-runtime/lazy/motive/../a.json',200],['/api/workshop/acryl/acrylic-drafts',200],['/_merchant-acryl-editor.html',404],['/werkstatt/',200]])assert.equal(acrylCacheControl(p,s),null,p);
+});
+test('only known option images have immutable URLs and only public lazy JSON can pass through encoded',()=>{
+ for(const url of Object.values(OPTION_STANDARD_IMAGES)){
+  const outer=acrylAssetText(url),name=url.split('/').at(-1);
+  const bytes=fs.readFileSync(new URL('../designs/aosu-labrador/runtime/images/'+name,import.meta.url));
+  assert.equal(createHash('sha256').update(bytes).digest('hex').slice(0,16),name.split('.')[1]);
+  assert.equal(acrylRoute(outer),url);
+  assert.equal(acrylCacheControl(outer,200),'public, max-age=31536000, immutable');
+ }
+ assert.equal(acrylCacheControl('/_acryl-runtime/images/option-fake.0123456789abcdef.png',200),null);
+ for(const url of ['/_acryl-runtime/lazy/katalog-kern.json','/_acryl-runtime/lazy/schriften/lora.json'])assert.equal(isAcrylPublicEditorJson(url),true);
+ for(const url of ['/_merchant-acryl-editor.html','/_acryl-runtime/lazy/schriften/../lora.json','/api/workshop/acryl/customer-drafts','/api/shop-entry/model'])assert.equal(isAcrylPublicEditorJson(url),false);
 });
 
 test('only the content-versioned doorbell texture receives the long cache policy through the Acryl host',()=>{

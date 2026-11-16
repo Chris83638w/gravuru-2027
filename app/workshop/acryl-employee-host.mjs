@@ -3,9 +3,11 @@ import {createConfiguratorIntegration} from './configurator-integration.mjs';
 import {ORDER_WEBHOOK_PATH} from './shopify-order-webhook.mjs';
 import {DOORBELL_STATUS_WEBHOOK_PATH} from './doorbell-status-webhook.mjs';
 import {DOORBELL_STEEL_SURFACE} from '../platform/sources/app/shared/models/doorbell-material-preview.mjs';
+import {isStandardOptionImage} from '../configurator/variant-m/option-standard-images.mjs';
 const rewrites=[['/api/workshop/','/api/workshop/acryl/'],['/workshop-ui/','/workshop-acryl-ui/'],['/configurator/','/acryl-configurator/'],['/platform/','/acryl-platform/'],['/workshop/','/acryl-workshop/'],['/_merchant-form-editor.html','/_merchant-acryl-form-editor.html'],['/werkstatt/kundenansicht','/werkstatt/acryl/kundenansicht'],['/acryl-galerie/Designgalerie.html','/werkstatt/acryl/'],['/acryl-galerie/Formvorlagen.html','/werkstatt/acryl/formen/']];
 const nativeAssets=[['/_bundle/','/_acryl-bundle/'],['/_runtime/','/_acryl-runtime/'],['/acrylic-assets/','/acryl-assets/']];
 const steelSurfacePath=acrylAssetText(DOORBELL_STEEL_SURFACE);
+export const isAcrylPublicEditorJson=pathname=>/^\/_acryl-runtime\/lazy\/(?:katalog-kern\.json|motive-alle\.json|schriften\/[a-z0-9-]{1,80}\.json|motive\/[A-Za-z0-9_-]{1,80}\.json)$/.test(pathname);
 // Ladezeit (Chris 27.10.2026, „prüfe alles“): statische Editor-Dateien durfte der Browser bisher nie behalten
 // (jedes Öffnen lud Editor-Seite und Nachlade-Schriften neu). Gehashte Pakete dauerhaft, Katalog/Schriften/Motive 1 h,
 // Editor-Seite 5 min (nur Browser). Alles andere bleibt „private, no-store“.
@@ -13,8 +15,9 @@ export function acrylCacheControl(pathname,status){
  if(status!==200)return null;
  if(/^\/_acryl-bundle\/[A-Za-z0-9_.-]+-[a-f0-9]{16}\.m?js$/.test(pathname))return 'public, max-age=31536000, immutable';
  if(pathname===steelSurfacePath)return 'public, max-age=31536000, immutable';
- if(/^\/_acryl-runtime\/lazy\/(?:katalog-kern\.json|motive-alle\.json|schriften\/[a-z0-9-]{1,80}\.json|motive\/[A-Za-z0-9_-]{1,80}\.json)$/.test(pathname))return 'public, max-age=3600';
+ if(isAcrylPublicEditorJson(pathname))return 'public, max-age=3600';
  if(pathname==='/_merchant-acryl-editor.html')return 'private, max-age=300';
+ if(pathname.startsWith('/_acryl-runtime/images/option-')&&isStandardOptionImage(acrylRoute(pathname)))return 'public, max-age=31536000, immutable';
  return null;
 }
 export function acrylRoute(pathname){
@@ -80,7 +83,7 @@ export async function createAcrylEmployeeHost({legacyRelease,dataDirectory,env=p
   integration=createConfiguratorIntegration({settings:customerIntegration,legacy:existing.workshop,acryl:acrylWorkshop,origin:config.origin,shopifySessions:config.runtime.shopifySessions,orderWebhook:config.orderWebhook});
   inner.address=net.Server.prototype.address;net.Server.prototype.listen.call(inner,0,'127.0.0.1');await once(inner,'listening');
  }catch(e){inner?.close();existing?.close();lock?.stdin.end();throw e;}
- const deliverBundle=inner.prepareBundleDelivery(acrylAssetText);
+ const deliverBundle=inner.prepareBundleDelivery(acrylAssetText,{includeEditorPage:true});
  const port=inner.address().port,server=http.createServer((req,res)=>{
   let url;try{url=new URL(req.url,config.origin);}catch{return res.writeHead(400).end();}
   if(req.headers.host!==config.host||req.headers['x-forwarded-proto']!=='https'||!req.url.startsWith('/')||req.url.startsWith('//'))return res.writeHead(403).end();
@@ -93,6 +96,8 @@ export async function createAcrylEmployeeHost({legacyRelease,dataDirectory,env=p
   if(!target)return existing.emit('request',req,res);
   if(deliverBundle(req,res,target))return;
   const headers={host:config.host};for(const key of ['authorization','accept','accept-language','content-type','content-length','origin','x-gravuru-csrf','x-gravuru-draft','sec-fetch-site','sec-fetch-mode','sec-fetch-dest'])if(req.headers[key]!==undefined)headers[key]=req.headers[key];
+  // Public JSON passes through untouched. The text rewrites below still need identity.
+  if(isAcrylPublicEditorJson(url.pathname)&&req.headers['accept-encoding'])headers['accept-encoding']=req.headers['accept-encoding'];
   const upstream=http.request({hostname:'127.0.0.1',port,path:target+url.search,method:req.method,headers},response=>{
    const publicDoorbellImage=response.statusCode===200&&/^\/doorbell-assets\/[a-f0-9]{64}\.webp$/.test(target);
    const head={...response.headers,'Cache-Control':publicDoorbellImage?(response.headers['cache-control']||'public, max-age=31536000, immutable'):(acrylCacheControl(url.pathname,response.statusCode)||'private, no-store'),'X-Robots-Tag':'noindex, nofollow, noarchive'};delete head['cache-control'];

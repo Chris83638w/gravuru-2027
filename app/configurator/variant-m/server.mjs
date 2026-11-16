@@ -13,6 +13,7 @@ import {doorbellImageResource,isDoorbellImagePath} from '../../workshop/doorbell
 import {DOORBELL_STEEL_SURFACE} from '../../platform/sources/app/shared/models/doorbell-material-preview.mjs';
 import {isPrioPresentationAsset} from '../mobile-demo/assets.mjs';
 import {createPreparedEditorBundles} from '../../workshop/prepared-editor-bundles.mjs';
+import {isStandardOptionImage} from './option-standard-images.mjs';
 
 const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.txt':'text/plain; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.svg':'image/svg+xml','.gz':'application/gzip'};
 // Ladezeit: Textantworten gzip-komprimiert, wenn der Browser es anbietet (Inhalt unverändert).
@@ -131,6 +132,7 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
       // Kundenbilder (Szene, Sockel, Beispielfoto): einen Tag im Cache, damit vorgeladene Sockelansichten
       // (background-loading.mjs) beim Wechsel ohne neuen Abruf erscheinen. Alles andere bleibt no-store.
       if(pathname.startsWith('/acrylic-assets/'))headers['Cache-Control']='public, max-age=86400';
+      if(isStandardOptionImage(pathname))headers['Cache-Control']='public, max-age=31536000, immutable';
       if(isDoorbellImagePath(pathname)||pathname===DOORBELL_STEEL_SURFACE)headers['Cache-Control']='public, max-age=31536000, immutable';
       if(compressible.has(extension)){headers.Vary='Accept-Encoding';if(bytes.length>1024&&acceptsGzip(req.headers['accept-encoding'])){bytes=await compressed(file,bytes,!transformed);headers['Content-Encoding']='gzip';}}
       headers['Content-Length']=bytes.length;
@@ -140,7 +142,7 @@ export function createPreviewServer({outputDirectory=OUTPUT,workshop,embeddedApp
   });
   // Private composition hook, not a URL or a second authorization policy.
   // Acryl bundles keep the same host check while avoiding the loopback/rewrite per request.
-  server.prepareBundleDelivery=transform=>createPreparedEditorBundles({outputDirectory,transform,
+  server.prepareBundleDelivery=(transform,{includeEditorPage=false}={})=>createPreparedEditorBundles({outputDirectory,transform,includeEditorPage,
     authorize:(req,pathname)=>adminHost?adminHost.authorize(req,pathname)&&adminHost.allows(pathname):
       [`127.0.0.1:${server.address()?.port}`,`localhost:${server.address()?.port}`].includes(req.headers.host)&&
       (!req.headers.origin||req.headers.origin==='http://'+req.headers.host)&&req.headers['sec-fetch-site']!=='cross-site',

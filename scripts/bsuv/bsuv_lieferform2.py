@@ -3,7 +3,9 @@
 import sys, json, re, math, hashlib, unicodedata
 from pathlib import Path
 import numpy as np, cv2, pymupdf as fitz
-from PIL import ImageFont
+from PIL import ImageFont, Image
+sys.path.insert(0, str(Path(__file__).parent))
+from hinweis_bitmap import hint_layer
 
 SRC = Path(sys.argv[1]); OUT = Path(sys.argv[2]); KAT = Path(sys.argv[3])
 SOURCE_PDF_SHA = sys.argv[4] if len(sys.argv) > 4 else None
@@ -99,10 +101,15 @@ def convert(pdf_path):
             if o['type'] == 'f' and fill and min(fill) > 0.99 and abs(r.width-PLATE.width) < 1 and abs(r.height-PLATE.height) < 1 and (o.get('fill_opacity') or 1) == 1:
                 plate_rect = (o, fill); continue
             if o['type'] == 'f' and fill and min(fill) > 0.99 and abs((o.get('fill_opacity') or 1)-0.6) < 0.01 and is_circle(r):
-                hints.append((fitz.Point((r.x0+r.x1)/2, (r.y0+r.y1)/2), r.width/2)); skip_next_stroke_center = hints[-1][0]; continue
+                hints.append((fitz.Point((r.x0+r.x1)/2, (r.y0+r.y1)/2), r.width/2, None, None)); skip_next_stroke_center = hints[-1][0]; continue
             ringcol = col if o['type'] == 's' else fill
             if skip_next_stroke_center is not None and is_circle(r) and ringcol and max(ringcol) < 0.05 \
                and abs((r.x0+r.x1)/2-skip_next_stroke_center.x) < 3 and abs((r.y0+r.y1)/2-skip_next_stroke_center.y) < 3:
+                if o['type'] == 's':
+                    hints[-1] = (hints[-1][0], hints[-1][1], r.width/2, o.get('width') or 4)
+                else:
+                    c0 = hints[-1][0]; ds = [math.hypot(it[1].x-c0.x, it[1].y-c0.y) for it in o['items'] if it[0] in ('l', 'c')]
+                    hints[-1] = (c0, hints[-1][1], (max(ds)+min(ds))/2, max(ds)-min(ds))
                 skip_next_stroke_center = None; continue
             skip_next_stroke_center = None
             if dn == 'D28' and o['type'] == 'f' and fill and max(fill) < 0.2 and abs((o.get('fill_opacity') or 1)-0.49) < 0.01:
@@ -140,9 +147,19 @@ def convert(pdf_path):
             pix = fitz.Pixmap(doc, x)
             if smask != 'null':
                 m = fitz.Pixmap(doc, int(smask.split()[0])); pix = fitz.Pixmap(pix, m) if pix.n < 4 else pix
-                fn = f'foto-{foto_n}.png'; pix.save(OUT/code/fn)
+            if pix.colorspace and pix.colorspace.n != 3: pix = fitz.Pixmap(fitz.csRGB, pix)
+            photo = Image.frombytes('RGBA' if pix.alpha else 'RGB', (pix.w, pix.h), pix.samples).convert('RGBA')
+            own = [hh for hh in hints if (win if not cand else fitz.Rect(cand[0]['scissor'])).contains(hh[0])]
+            if own:
+                zoom = pix.w / b.width
+                hl = hint_layer(pdf_path, own, zoom)
+                lay = Image.frombytes('RGBA', (hl.w, hl.h), hl.samples)
+                lay = lay.crop((round(b.x0*zoom), round(b.y0*zoom), round(b.x0*zoom)+pix.w, round(b.y0*zoom)+pix.h))
+                photo.alpha_composite(lay)
+            if pix.alpha:
+                fn = f'foto-{foto_n}.png'; photo.save(OUT/code/fn, optimize=True)
             else:
-                fn = f'foto-{foto_n}.jpg'; (OUT/code/fn).write_bytes(doc.extract_image(x)['image'])
+                fn = f'foto-{foto_n}.jpg'; photo.convert('RGB').save(OUT/code/fn, quality=92, subsampling=0)
             final.append(('foto', {'n': foto_n, 'bbox': b, 'mask': mpath, 'win': win, 'file': fn}))
             continue
         # flache Ueberlagerung -> Vektorflaeche mit Deckkraft
@@ -276,7 +293,7 @@ def convert(pdf_path):
         elif kind == 'foto':
             flush(); n = o['n']; w = o['win']; b = o['bbox']
             parts.append(f'<defs><clipPath id="FOTO_CLIP_{n}" clipPathUnits="userSpaceOnUse"><path d="{o["mask"]}"/></clipPath></defs>')
-            parts.append(f'<g id="foto-{n}" data-upload-hint="separate" data-upload-window="{fmt(mm(w.x0))} {fmt(mm(w.y0))} {fmt(mm(w.width))} {fmt(mm(w.height))}">'
+            parts.append(f'<g id="foto-{n}" data-upload-window="{fmt(mm(w.x0))} {fmt(mm(w.y0))} {fmt(mm(w.width))} {fmt(mm(w.height))}">'
                          f'<path d="{o["mask"]}" fill="none"/>'
                          f'<image id="beispielfoto-{n}" data-field="photo" data-example="true" x="{fmt(mm(b.x0))}" y="{fmt(mm(b.y0))}" width="{fmt(mm(b.width))}" height="{fmt(mm(b.height))}" preserveAspectRatio="none" clip-path="url(#FOTO_CLIP_{n})" href="{o["file"]}"/></g>')
             foto_layers.append(o)
@@ -305,7 +322,7 @@ def convert(pdf_path):
                 'einzelPdfSha256': sha(pdf_path), 'zerlegung': 'gravuru-2027 scripts/bogen_zerlegen.py'},
      'productionSources': {'white': 'RDG_WHITE.svg', 'cut': 'CutContour.svg', 'whiteName': 'RDG_WHITE', 'whiteSpreadMm': 1.5,
                            'cutColor': '#0000ff', 'direction': 'normal lesbar', 'printSide': 'front'},
-     'photos': [{'feld': f'foto-{f["n"]}', 'file': f['file'], 'sha256': sha(OUT/code/f['file']), 'rolle': 'Beispielfoto aus der Corel-Vorlage, nur Vorschau, nie Fertigung'} for f in foto_layers],
+     'photos': [{'feld': f'foto-{f["n"]}', 'file': f['file'], 'sha256': sha(OUT/code/f['file']), 'rolle': 'Beispielfoto samt Corel-Hinweis „Foto-Upload hier klicken“, nur Vorschau, nie Fertigung'} for f in foto_layers],
      'fontReplacements': [{'original': k, 'ersatz': v[0], 'quelle': v[1]} for k, v in sorted(fontrepl.items())],
      'corrections': sorted(set(corrections)), 'notes': notes,
      'integration': {'status': 'lieferform2-entwurf', 'familyId': None, 'liveImported': False,

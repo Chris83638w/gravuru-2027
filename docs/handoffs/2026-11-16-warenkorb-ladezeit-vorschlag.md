@@ -68,7 +68,11 @@ Ausdrückliche Ausnahme von der Prio-Konfi-Zuständigkeit durch Chris für **V1*
 - Live-Theme gelesen (Theme `190984126844`): `snippets/gravuru-warenkorb-bearbeiten.liquid` zeigt `_Entwurf` bei Präfix `https://cdn.shopify.com/` als Bild; `_`-Eigenschaften werden in `main-cart`/`cart-drawer` ausgeblendet → kompatibel ohne Theme-Änderung.
 - Grenzen: Synthetische Tests, kein echter Shopify-Warenkorbtest mit dem neuen Code (erst nach Deploy möglich). `checkoutImage` (Shopify `fileCreate` + Polling) liegt weiter im kritischen Pfad (V2).
 
+## Umsetzung V2 + V3 (Chris 16.11.2026: „ja, mach V2 und V3“)
+
+Branch `dev/claude-warenkorb-v2-v3-20261116`, Details in `STATUS.md`. Kern: Kundenvorschau als WebP hochladen (3,24 MB → ≈ 0,19 MB Base64), serverseitig weiter als PNG gespeichert; Shopify-Checkout-Bild startet schon beim `theme-cart`-Aufruf.
+
 ## Offene Freigaben
 
 - Deploy des Branches auf `app-2027` nur nach Freigabe Chris, danach Handy-Messung wiederholen.
-- V2–V4: Entscheidung Chris/Mikail.
+- V4: Entscheidung Chris/Mikail.

@@ -109,7 +109,7 @@ export function installUniversal(configInput) {
       return body;
     };
     el.svg = function() { return svg(current()); };
-    el.png = async function() {
+    el.png = async function({type='image/png',quality}={}) {
       let source=await embedSurface(this.svg(true),config.materialSurface);
       if(this.uxEmbedPreviewUploads)source=await this.uxEmbedPreviewUploads(source);
       const url = URL.createObjectURL(new Blob([source], {type:'image/svg+xml'}));
@@ -121,7 +121,7 @@ export function installUniversal(configInput) {
         canvas.width = Math.round((width + padding) * scale);
         canvas.height = Math.round((height + padding) * scale);
         canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
-        return await new Promise((resolve,reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(Error('Vorschau konnte nicht erstellt werden.')), 'image/png'));
+        return await new Promise((resolve,reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(Error('Vorschau konnte nicht erstellt werden.')), type, quality));
       } finally { URL.revokeObjectURL(url); }
     };
     el.normalize = function() {

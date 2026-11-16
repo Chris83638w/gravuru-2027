@@ -386,6 +386,8 @@ export function createShopEntry({origin,shopDomain,secret,stores,checkoutImage=n
     const args={workshop:store.workshop,registry:store.registry,shopDomain,proxyPath,...(presentation?{presentation}:{}),...(typeof store.workshop.orderIntake.imageSnapshot==='function'?{customerImageUrl:id=>customerImages.url(store.storeId,id)}:{})};
     const prepared=prepareThemeCart(args,binding,themeInput,{draftToken}),token=randomBytes(32).toString('hex');
     themeTransfers.set(token,{args,binding:structuredClone(binding),input:structuredClone(themeInput),draftToken,sessionToken:req.headers['x-gravuru-shop-session'],customerId:session.customerId,expiresAt:clock()+limit.contextTtlMs});
+    // Shopify fileCreate + polling runs while the browser opens the cart handoff; /cart/data reuses the pending task.
+    if(checkoutImage&&prepared.payload.properties._gravuru_bild)checkoutImage(prepared.payload.properties._gravuru_bild).catch(()=>{});
     const {id:configId,rev}=prepared.payload.configuration;
     const editAccess=cartEditAccess.issue(draftToken,{configId,rev,binding,customerId:session.customerId});
     return json(res,200,{handoffUrl:'https://'+shopDomain+themePath+'#handoff='+token,shopDomain,configuration:prepared.payload.configuration,editAccess,quantity:prepared.payload.quantity,totalCents:prepared.payload.totalCents,mode:'theme',paymentConfirmed:false,productionReady:false});

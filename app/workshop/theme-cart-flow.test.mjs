@@ -29,6 +29,8 @@ import {cartValidationsGenerateRun} from '../../ops/shopify/einzelsperre-release
 // das Produkt ist das mitgelieferte native Mustermodell (der Katalogimport ist kein Teil dieser Tests).
 const mapping=JSON.parse(fs.readFileSync(new URL('../../docs/handoffs/2026-10-22-shopify-7x2-hauptprodukte.json',import.meta.url),'utf8'));
 const origin='https://app.example',shopDomain=mapping.shopDomain,secret='synthetic-app-secret-value-7x2',proxyPath='/apps/konfigurator';
+// V3: Shop-Editor sendet die Kundenvorschau als WebP; der Prüfstand speichert weiterhin PNG.
+const webp='UklGRmoAAABXRUJQVlA4WAoAAAAQAAAAJwAAOwAAQUxQSBMAAAABDzD/ERFCLJj4Sy+Fzoj+p04BAFZQOCAwAAAAMAMAnQEqKAA8AD4xGItEIiGhEVQAIAMEtIAACtIj6x5ssAD+9vnv6tJpEgAAAAAA';
 const png='iVBORw0KGgoAAAANSUhEUgAAACgAAAA8CAIAAACb22+3AAAAOklEQVR4nO3NIQEAMAgAsPOEaDT9M9ABg9kKLLL6Xfgnq1gsFovFYrFYLBaLxWKxWCwWi8VisVgsXhqq4AGG9djEFQAAAABJRU5ErkJggg==';
 const euro=c=>(c/100).toFixed(2);
 
@@ -96,11 +98,13 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  assert.ok(!JSON.stringify(model.data).includes(secret));
  // 3. Gestaltung mit Foto als privater Entwurf/Prüfstand, Ausführung = Variante 4 („B02“) statt der Seitenvariante.
  const chosen=variants[3],source=config.profile.designs[0];
- const input={productId:record.id,productRevision:record.revision,designId:source.id,objects:structuredClone(source.objects),options:structuredClone(chosen.options),quantity:2,media:[{id:'kundenfoto',original:png}],preview:png,customerPreview:png};
+ const input={productId:record.id,productRevision:record.revision,designId:source.id,objects:structuredClone(source.objects),options:structuredClone(chosen.options),quantity:2,media:[{id:'kundenfoto',original:png}],preview:png,customerPreview:webp};
  Object.assign(input.objects.find(o=>o.type==='photoSlot'),{uxUploadId:'kundenfoto',uxUploadKind:'photo'});
  const created=await request('/api/shop-entry/acrylic-drafts','POST',{input},session);assert.equal(created.status,201,JSON.stringify(created.data));
  const draft=created.data;assert.match(draft.id,/^adraft_/);assert.match(draft.token,/^[a-f0-9]{64}$/);assert.equal(draft.revision,1);
  const manifest=w.customerDrafts.review(draft.snapshotId).manifest;assert.deepEqual(manifest.selection.options,chosen.options);assert.equal(manifest.selection.price.quantity,2);assert.equal(manifest.productionReady,false);
+ const storedCustomerPng=readReviewPackage(w.customerDrafts.downloadSnapshot(draft.snapshotId,'package'),manifest.packageSha256,NATIVE_REVIEW_SCHEMAS).files.get('gestaltung-kundenansicht.png');
+ assert.ok(storedCustomerPng.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10])),'WebP customer preview is stored as PNG');assert.deepEqual([storedCustomerPng.readUInt32BE(16),storedCustomerPng.readUInt32BE(20)],[40,60]);
  // Ohne Entwurfstoken ist der Entwurf nicht fortschreibbar; fremder Produktstand wird abgewiesen.
  assert.equal((await request('/api/shop-entry/acrylic-drafts/'+draft.id,'POST',{input,expectedRevision:1},session)).status,404);
  assert.equal((await request('/api/shop-entry/acrylic-drafts','POST',{input:{...input,productRevision:record.revision+1}},session)).status,409);
@@ -135,6 +139,8 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  const prepared={data:await entryClient.submitThemeCart(requestInput,{draftToken:draft.token})};
  assert.equal(prepared.data.mode,'theme');assert.equal(sent.length,0,'no separate Storefront cart is created');
  const transferToken=new URLSearchParams(new URL(prepared.data.handoffUrl).hash.slice(1)).get('handoff');assert.match(transferToken,/^[a-f0-9]{64}$/);
+ // V2: Shopify-Checkout-Bild startet bereits mit der Übergabe (nicht erst mit /cart/data).
+ assert.ok(imageCalls>=1,'checkout image starts with the theme-cart handoff');imageCalls=0;
  function signed(){const q=new URLSearchParams({shop:shopDomain,path_prefix:proxyPath,timestamp:String(Math.floor(now/1000)),logged_in_customer_id:''});q.set('signature',appProxySignature(q,secret));return q;}
  const proxyRequest=(part,method='GET',token=transferToken,extra={})=>request(proxyPath+part+'?'+signed(),method,undefined,{'X-Gravuru-Cart-Handoff':token,...(method==='POST'?{Origin:'https://'+shopDomain}:{}),...extra});
  const page=await proxyRequest('/cart');assert.equal(page.status,200);assert.match(page.headers['content-type'],/text\/html/);assert.ok(!page.body.includes(Buffer.from(draft.token)));assert.ok(!page.body.includes(Buffer.from(transferToken)));
@@ -185,7 +191,7 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
  const legacyData=await proxyRequest('/cart/data','GET',legacyToken);assert.equal(legacyData.status,200);
  assert.equal(new URL(legacyData.data.properties._gravuru_bearbeiten).searchParams.get('ui'),null,'legacy callers remain on the legacy editor');
  const customerImagePath=new URL(p.properties._gravuru_bild).pathname;
- const customerImage=await request(customerImagePath);assert.equal(customerImage.status,200);assert.deepEqual(customerImage.body,Buffer.from(png,'base64'));
+ const customerImage=await request(customerImagePath);assert.equal(customerImage.status,200);assert.deepEqual(customerImage.body,storedCustomerPng);
  assert.equal((await request(customerImagePath,'HEAD')).body.length,0);
  assert.equal((await request(customerImagePath+'?original=1')).status,404);
  assert.equal((await request(customerImagePath.replace(/.$/,'x'))).status,404);
@@ -303,5 +309,5 @@ test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and sign
   assert.equal((await deliver('evt-f01-changed-retry',{...payment,line_items:[{...line,quantity:3}]})).data.rejectedLines,1);
   assert.deepEqual(w.orderIntake.forSnapshot(started.data.snapshotId),[ordered]);
  });
- now+=31*60*1000;assert.deepEqual((await request(customerImagePath)).body,Buffer.from(png,'base64'),'immutable image survives draft changes, payment and expired handoff');assert.equal((await proxyRequest('/cart/data','GET',editToken)).status,403);
+ now+=31*60*1000;assert.deepEqual((await request(customerImagePath)).body,storedCustomerPng,'immutable image survives draft changes, payment and expired handoff');assert.equal((await proxyRequest('/cart/data','GET',editToken)).status,403);
 });

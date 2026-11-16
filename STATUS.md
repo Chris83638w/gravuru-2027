@@ -1,3 +1,12 @@
+## 16.11.2026 – V2 + V3 umgesetzt (Claude als Operator)
+
+- Freigabe: Chris „ja, mach V2 und V3“ – Ausnahme von der Prio-Konfi-Zuständigkeit für V2/V3; V4 bleibt Vorschlag. Branch `dev/claude-warenkorb-v2-v3-20261116` (baut auf V1 auf).
+- Messung Entwurfssicherung (Handy): Request 3,3 MB, davon `customerPreview` 3,24 MB (PNG 1712×1179 mit Materialtextur, 2,43 MB). Als WebP q90: 142 KB.
+- V3: `shop-cart.mjs` sendet die Kundenvorschau als WebP (`el.png({type,quality})`, Standard unverändert PNG; ohne WebP-Encoder PNG). `acrylic-review.mjs` dekodiert WebP serverseitig (vorhandener Foto-Worker) und speichert wie bisher `gestaltung-kundenansicht.png` → Warenkorbbild, Checkout-Bild und Bearbeiten unverändert PNG.
+- V2: `shop-entry.mjs` startet `checkoutImage` schon beim `theme-cart`-POST; `/cart/data` nutzt die laufende/gecachte Aufgabe. Gewinn klein (≈ 1–3 s), weil die Bildadresse erst nach der Entwurfssicherung existiert.
+- Prüfung: Gesamtsuite main 2721/205 Fehler, mit V1–V3 2726/dieselben 205. Neu: WebP-Ablauf im `theme-cart-flow`-Test (gespeichert als PNG, ausgeliefert identisch), WebP/PNG-Rückfall in `issue48-customer`.
+- Erwartung Handy: Entwurfssicherung ≈ 37 s → ≈ 3–5 s. Nicht erledigt: Deploy, echte Handy-Messung, Safari-Prüfung (WebP-Encoder).
+
 ## 16.11.2026 – V1 umgesetzt: Warenkorb ohne Bild-Down-/Upload über das Kundengerät (Claude als Operator)
 
 - Freigabe: Chris „B, setz V1 selbst um“ – ausdrückliche Ausnahme von der Prio-Konfi-Zuständigkeit (Mika/Mikail) nur für V1. V2–V4 bleiben Vorschlag.

@@ -125,9 +125,10 @@ export async function prepareAcrylicReview({record,config,input,assets,preparePh
  if(typeof input.preview!=='string'||input.preview.length>3*1024*1024)fail('Die Gestaltungsvorschau fehlt oder ist zu groß.');
  if(input.customerPreview!==undefined){
   if(typeof input.customerPreview!=='string'||input.customerPreview.length>8*1024*1024)fail('Die Kundenvorschau fehlt oder ist zu groß.');
-  const customer=await preparePhoto(input.customerPreview),png=customer.original;
+  // Shop editor sends compact WebP (upload over mobile networks); the package keeps a PNG as before.
+  const customer=await preparePhoto(input.customerPreview),webp=customer.original.subarray(0,4).toString('latin1')==='RIFF'&&customer.original.subarray(8,12).toString('latin1')==='WEBP',png=webp?customer.preview:customer.original;
   if(!png.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]))||customer.width>4096||customer.height>4096)fail('Die Kundenvorschau muss ein PNG bis 4096 Pixel sein.');
-  add('gestaltung-kundenansicht.png',png,'Verlustfreie Kundenvorschau desselben gesicherten Gestaltungsstands; kein Fertigungsnachweis.');
+  add('gestaltung-kundenansicht.png',png,(webp?'Kundenvorschau (vom Browser als WebP gesendet, serverseitig als PNG gespeichert)':'Verlustfreie Kundenvorschau')+' desselben gesicherten Gestaltungsstands; kein Fertigungsnachweis.');
  }
  const image=await preparePhoto(input.preview);add('gestaltung-referenz.png',image.preview,'Vom Browser übermittelte Gestaltungsvorschau; kein serverseitiger Fertigungsnachweis.');
  const preview=Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${image.width} ${image.height}"><image width="${image.width}" height="${image.height}" href="data:image/png;base64,${image.preview.toString('base64')}"/></svg>`);

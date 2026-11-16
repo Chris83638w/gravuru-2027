@@ -9,6 +9,9 @@ import {createAcrylicDraftClient} from './acrylic-draft-client.mjs';
 import {editorUi} from './toolbar-placement-model.mjs';
 import {logoMediaPayload} from './logo-upload.mjs';
 
+// Customer preview for the cart: WebP keeps the upload small (PNG with material texture ≈3 MB);
+// browsers without WebP encoding return PNG, which the server accepts unchanged.
+export async function customerPreviewBlob(el){const blob=await el.png({type:'image/webp',quality:.9});return blob?.type==='image/webp'||blob?.type==='image/png'?blob:el.png();}
 const base64=blob=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result.split(',')[1]);reader.onerror=()=>reject(Error('Die Bilddatei konnte nicht gelesen werden.'));reader.readAsDataURL(blob);});
 async function referencePng(svg,geometry){
  const canvas=document.createElement('canvas');canvas.height=900;canvas.width=Math.round(900*geometry.width/geometry.height);
@@ -62,7 +65,7 @@ export function installShopCart(api,footer,gate){
    const prepared=await prepareCartImages({
     artwork:()=>printArtwork(api),
     media:()=>Promise.all(used.map(id=>logoMediaPayload(api.files.get(id),id))),
-    reference:art=>referencePng(art.svg,art.geometry),customer:async()=>base64(await api.el.png())
+    reference:art=>referencePng(art.svg,art.geometry),customer:async()=>base64(await customerPreviewBlob(api.el))
    });
    const ui=editorUi(api.el.state.ui);
    const payload={...binding,textOnTop:true,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:count,media:prepared.media,preview:prepared.preview,customerPreview:prepared.customerPreview,...(ui?{ui}:{})};

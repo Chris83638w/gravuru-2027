@@ -355,6 +355,17 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
     if(!known||typeof configId!=='string'||typeof rev!=='string'||!/^[1-9][0-9]{0,8}$/.test(rev)||known.id!==configId||known.rev!==Number(rev))fail(422,'Die Konfigurations-Revision dieser Position ist unbekannt oder gehört zu einem anderen Stand.');
     return {id:known.id,rev:known.rev};
    }
+   // F04 (#243): Nach Ablauf gilt dieselbe Preisregel wie vor Ablauf – nichts wird großzügiger.
+   // Ohne Aufpreisvertrag setzt die Preisfunktion keinen Preis; die Kasse verlangt den Variantenpreis der Bindung,
+   // genau den prüft der Eingang auch vor Ablauf (siehe Preisvergleich oben). Ein Staffelpreis aus dem Angebot ist an
+   // der Kasse für solche Bindungen nicht erreichbar (Befund F15). Mit Aufpreisvertrag muss der unveränderliche
+   // Vertrag der Bindung den Entwurf weiterhin identisch bepreisen.
+   function priceStillCurrent(b,m,extra,unitCents){
+    try{
+     if(!extra)return unitCents===b.unit_cents;
+     const contract=pricing(b.id);return !!contract&&JSON.stringify(extra)===JSON.stringify(personalizationForSnapshot(contract,m));
+    }catch{return false;}
+   }
    function admit(line,lineId){
     const properties=line.properties||[];if(!Array.isArray(properties))fail(422,'Ungültige Positionszuordnung.');const refs=properties.filter(p=>p?.name==='_gravuru_offer');
     if(!refs.length){if(line.variant_id&&db.prepare('SELECT 1 FROM form_shop_bindings WHERE shop=? AND variant_id=? AND tenant_id=?').get(shop,identifier(line.variant_id),tenant))fail(422,'Für diese konfigurierte Variante fehlt der gesicherte Entwurf.');return;}
@@ -386,7 +397,10 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
      result.push(recorded);return;
     }
     if(db.prepare('SELECT 1 FROM form_order_lines WHERE offer_id=? AND tenant_id=?').get(o.id,tenant))fail(409,'Dieser Entwurf wurde bereits einer anderen Bestellposition zugeordnet.');
-    if(o.expires_at<clock())fail(422,'Die Checkout-Zuordnung ist abgelaufen; vor Übernahme prüfen.');const m=snapshot(o.snapshot_id);if(m.packageSha256!==o.package_sha256)fail(409,'Der gesicherte Prüfstand wurde verändert.');
+    const m=snapshot(o.snapshot_id);
+    // F04 (#239, Chris 16.11.2026: „Ja, annehmen“): Der gespeicherte Entwurf bleibt gültig. Ein älteres Angebot
+    // wird angenommen, solange der heutige Preisvertrag genau denselben Preis ergibt; sonst wie bisher abgelehnt.
+    if(o.expires_at<clock()&&!priceStillCurrent(b,m,extra,unitCents))fail(422,'Die Checkout-Zuordnung ist abgelaufen; vor Übernahme prüfen.');if(m.packageSha256!==o.package_sha256)fail(409,'Der gesicherte Prüfstand wurde verändert.');
     if(quantityChanged){
      // The original quote must pass the same percentage-tier contract as checkout before repricing.
      const contract=pricing(b.id),quotedPrice=m.selection?.price;

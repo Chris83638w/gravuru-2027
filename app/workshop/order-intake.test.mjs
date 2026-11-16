@@ -3,7 +3,7 @@ import {createOrderIntake,verifyPaidWebhook} from './order-intake.mjs';import {b
 const config={shopDomain:'gravuru-synthetic.myshopify.com',apiVersion:'2026-07',secret:randomBytes(32).toString('hex')};
 const sign=(payload,eventId='test-event-1234',overrides={})=>{const raw=Buffer.from(typeof payload==='string'?payload:JSON.stringify(payload));return {raw,headers:{'x-shopify-hmac-sha256':createHmac('sha256',config.secret).update(raw).digest('base64'),'x-shopify-shop-domain':config.shopDomain,'x-shopify-api-version':config.apiVersion,'x-shopify-topic':'orders/paid','x-shopify-webhook-id':eventId,...overrides}};};
 const order=token=>({id:101,test:true,financial_status:'paid',currency:'EUR',cancelled_at:null,customer:{email:'private-fixture@example.invalid'},line_items:[{id:201,variant_id:301,quantity:2,price:'29.99',properties:[{name:'_gravuru_offer',value:token}]}]});
-function setup(t){const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-order-')),filename=path.join(dir,'private.sqlite');let db=new DatabaseSync(filename),now=Date.now(),m={id:'proof_synthetic',packageSha256:'a'.repeat(64),product:{id:'cfg_synthetic',revision:2,name:'Synthetisches Schild',basePriceCents:2999,currency:'EUR'},productionProfile:{id:'mfg_synthetic',revision:3,sha256:'b'.repeat(64)}};const create=()=>createOrderIntake({database:db,snapshot:id=>{assert.equal(id,m.id);return structuredClone(m);},clock:()=>now});let intake=create();const record={id:m.product.id,revision:2,status:'draft',document:{schema:'gravuru-form-product/v1',kind:'product',basePriceCents:2999,designs:[{}]}};const binding=intake.bind({shopDomain:config.shopDomain,variantId:'301',record});const offer=()=>intake.offer({bindingId:binding.id,snapshotId:m.id,quantity:2});t.after(()=>{db.close();fs.rmSync(dir,{recursive:true,force:true});});return {get db(){return db;},get intake(){return intake;},offer,binding,record,changeTime:delta=>now+=delta,changeHash:()=>m.packageSha256='f'.repeat(64),reopen:()=>{db.close();db=new DatabaseSync(filename);intake=create();}};}
+function setup(t){const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-order-')),filename=path.join(dir,'private.sqlite');let db=new DatabaseSync(filename),now=Date.now(),m={id:'proof_synthetic',packageSha256:'a'.repeat(64),product:{id:'cfg_synthetic',revision:2,name:'Synthetisches Schild',basePriceCents:2999,currency:'EUR'},productionProfile:{id:'mfg_synthetic',revision:3,sha256:'b'.repeat(64)}};const create=()=>createOrderIntake({database:db,snapshot:id=>{assert.equal(id,m.id);return structuredClone(m);},clock:()=>now});let intake=create();const record={id:m.product.id,revision:2,status:'draft',document:{schema:'gravuru-form-product/v1',kind:'product',basePriceCents:2999,designs:[{}]}};const binding=intake.bind({shopDomain:config.shopDomain,variantId:'301',record});const offer=()=>intake.offer({bindingId:binding.id,snapshotId:m.id,quantity:2});t.after(()=>{db.close();fs.rmSync(dir,{recursive:true,force:true});});return {get m(){return m;},get db(){return db;},get intake(){return intake;},offer,binding,record,changeTime:delta=>now+=delta,changeHash:()=>m.packageSha256='f'.repeat(64),reopen:()=>{db.close();db=new DatabaseSync(filename);intake=create();}};}
 const receive=(intake,message)=>intake.receive(message.raw,message.headers,config);
 test('cart offer resolution uses saved values and refuses changed snapshot hashes',t=>{
  const f=setup(t),o=f.offer(),input={offerId:o.id,offerToken:o.property.value,snapshotId:'proof_synthetic',shopDomain:config.shopDomain};
@@ -36,7 +36,9 @@ test('E3: an invalid position is rejected alone with status „fehler“; no ord
  }
  assert.equal(f.db.prepare('SELECT count(*) AS n FROM form_order_events').get().n,n,'every delivery is acknowledged once');
  f.changeHash();assert.match(receive(f.intake,sign(payload,'test-event-hash')).errors[0].intakeError,/verändert/);
- const b=f.offer();f.changeTime(8*86400000);const late=receive(f.intake,sign({...order(b.property.value),id:103},'test-event-late'));assert.equal(late.lines.length,0);assert.match(late.errors[0].intakeError,/abgelaufen/);
+ const b=f.offer();f.changeTime(8*86400000);const late=receive(f.intake,sign({...order(b.property.value),id:103},'test-event-late'));
+ // F04 (Chris 16.11.2026): ein acht Tage altes Angebot mit unverändertem Preis wird angenommen.
+ assert.equal(late.lines.length,1);assert.equal(late.errors?.length||0,0);
  assert.throws(()=>f.db.exec("UPDATE form_order_line_errors SET document='{}'"),/immutable/);
  const rows=JSON.stringify(f.db.prepare('SELECT * FROM form_order_line_errors').all());assert.ok(!rows.includes(o.property.value));assert.ok(!rows.includes(payload.customer.email));
 });
@@ -114,4 +116,20 @@ test('gallery approval batch checks every variant, reuses one document hash and 
  assert.equal(intake.doorbellLiveApproval(inputs[1]),null);
  db.prepare('UPDATE product_revisions SET document=?').run(body+' ');
  assert.deepEqual(await intake.doorbellGalleryApprovals(inputs),[null,null,null]);assert.equal(reads,2,'a second request must rehash the fixed document');
+});
+
+test('F04 (#243): after expiry the same price rule applies as before expiry, never a looser one',t=>{
+ const f=setup(t);
+ f.m.product.basePriceCents=2849;f.m.selection={price:{quantity:4,quantityTier:{minQuantity:3,percentOff:5},quantityTierDiscountCents:150}};
+ const fresh=()=>{const o=f.intake.offer({bindingId:f.binding.id,snapshotId:f.m.id,quantity:4});assert.equal(o.unitCents,2849);return o;};
+ let n=0;const paid=(o,price)=>{n++;const p=order(o.property.value);p.id=400+n;p.line_items[0].id=500+n;p.line_items[0].quantity=4;p.line_items[0].price=price;return receive(f.intake,sign(p,'test-event-f04-'+n)).lines.length;};
+ // Vor Ablauf: Ohne Aufpreisvertrag verlangt die Kasse den Variantenpreis der Bindung; nur der wird übernommen.
+ const before=['28.49','29.99','27.00'].map(price=>paid(fresh(),price));
+ const late=['28.49','29.99','27.00'].map(()=>fresh());
+ f.changeTime(8*86400000);
+ // Nach Ablauf bleibt das Wiederöffnen aus dem Warenkorb gesperrt; der Kunde sichert neu.
+ assert.throws(()=>f.intake.resolveCartOffer({offerId:late[1].id,offerToken:late[1].property.value,snapshotId:f.m.id,shopDomain:config.shopDomain}),/abgelaufen/);
+ const after=['28.49','29.99','27.00'].map((price,i)=>paid(late[i],price));
+ // Gleiches Ergebnis vor und nach Ablauf: Staffel (an der Kasse ohne Vertrag nicht erreichbar) und zu niedrig abgewiesen.
+ assert.deepEqual(before,[0,1,0]);assert.deepEqual(after,[0,1,0]);
 });

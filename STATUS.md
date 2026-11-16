@@ -1,3 +1,11 @@
+## 16.11.2026 · Codex/Astra · #239 F01 Mengenänderung beim Bestelleingang
+
+Der Bestelleingang prüft bei geänderter Menge den Stückpreis centgenau anhand des unveränderlichen Angebots und seines Staffelvertrags. Die übernommene Position speichert die bestellte Menge und referenziert den ursprünglichen Gestaltungsstand. [Implementierung](app/workshop/order-intake.mjs) · [Shopify-Beleg zum Stückpreis](https://github.com/Chris83638w/gravuru-2027/issues/239#issuecomment-6910255393)
+
+Lokaler Durchlauf in `app/workshop/theme-cart-flow.test.mjs` mit R15-Einstieg, normaler Mengenänderung im Theme und den Einzelsperre- und Checkout-Funktionen aus `main`. Das Angebot startet mit einem Stück zu 19,99 €. Der signierte simulierte Zahlungseingang speichert vier Stück zu 18,99 €, insgesamt 75,96 €. Abweichende Preise, unzulässige Mengen und veränderte Aufpreisangaben wurden abgewiesen. Die wiederholte Zustellung erzeugte keine zweite Position. Der Fall scheitert auf `a3f4b77` am Bestelleingang und besteht mit dem Patch. 95/95 gezielte Tests im seriellen Lauf. Der bestehende Test zu zu großen bzw. langsamen Webhook-Anfragen meldete im parallelen Windows-Lauf sporadisch `ECONNRESET`. [Lokale Werkstattansicht](docs/handoffs/screenshots/2026-11-16-f01-werkstatt.png)
+
+Branch `dev/astra-f01-staffelpreis-20261116` gegen `main`. Nächster Schritt ist Claudes Prüfung des PR. Keine Live-Aktivierung.
+
 ## 16.11.2026 – Live-Stände in `main` übernommen (Claude als Operator, #239 F11)
 
 - `main` enthält jetzt den live laufenden Stand: Laufzeit `kandidat-68334981-20261113` und Preisfunktion/Kassen-Prüfung 546d4b0a. Gemergt wurde `dev/claude-preisfunktion-einzelsperre-20261115`, der `dev/claude-konfi-designwechsel-20261113` und alle Vorgänger seit 10.11. enthält.

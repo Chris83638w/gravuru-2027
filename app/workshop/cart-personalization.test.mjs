@@ -163,6 +163,27 @@ test('binding rejects missing scope, open tiers, different product rules and for
  for(const patch of [{quantityTierScope:undefined},{quantityTier:{minQuantity:2,percentOff:5}},{listUnitCents:1},{quantityTierDiscountCents:1},{fieldCents:100},{backCents:100}])assert.throws(()=>personalizationForSnapshot(c,{...manifest,selection:{price:{...price,...patch}}}));
 });
 
+test('a fixed-price tier from an old offer is not a checkout contract for a changed paid quantity',t=>{
+ const f=fixture(t),config=f.record.document.config;
+ config.quantityTiers=[{minQuantity:3,unitCents:1800}];
+ const state={objects:[],designId:'test',mOptions:{mounting:'none'}};
+ const originalPrice=commercePrice(config,state,1),fixedPrice=commercePrice(config,state,4);
+ assert.equal(originalPrice.unitCents,2299);
+ assert.equal(fixedPrice.unitCents,1800);
+ f.m.product.basePriceCents=originalPrice.unitCents;
+ f.m.selection.price=originalPrice;
+ const binding=f.intake.bind({record:f.record,shopDomain:shop,variantId:'301',options:{mounting:'none'}});
+ const offer=f.intake.offer({bindingId:binding.id,snapshotId:f.m.id,quantity:1});
+ const cfg={shopDomain:shop,apiVersion:'2026-07',secret:'synthetic-fixed-tier-webhook-secret'};
+ const raw=Buffer.from(JSON.stringify({id:101,test:true,financial_status:'paid',currency:'EUR',
+  line_items:[{id:201,variant_id:301,quantity:4,price:'18.00',properties:[offer.property]}]}));
+ const received=f.intake.receive(raw,{'x-shopify-hmac-sha256':createHmac('sha256',cfg.secret).update(raw).digest('base64'),
+  'x-shopify-shop-domain':shop,'x-shopify-api-version':cfg.apiVersion,'x-shopify-topic':'orders/paid','x-shopify-webhook-id':'evt-fixed-tier-change'},cfg);
+ assert.equal(received.lines.length,0);
+ assert.match(received.errors[0]?.intakeError,/Menge oder Preis weichen/);
+ assert.equal(f.intake.list().length,0);
+});
+
 test('complete-unit uses each saved product family tier and keeps field/back charges in the editor calculation',t=>{
  const f=fixture(t),config=f.record.document.config,state={designId:'test',mOptions:{mounting:'none'},objects:[{id:'photo',type:'photoSlot',uxUploadId:'one',uxUploadKind:'photo'}]};config.quantityTierScope='complete-unit';
  config.quantityTiers=[{minQuantity:3,percentOff:5},{minQuantity:5,percentOff:10},{minQuantity:10,percentOff:15}];

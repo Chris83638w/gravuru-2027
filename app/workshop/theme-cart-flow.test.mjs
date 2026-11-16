@@ -19,6 +19,9 @@ import {createThemeCartClient} from './ui/theme-cart-client.mjs';
 import {prepareShopProduct} from './shop-preparation.mjs';
 import {createShopEntryClient} from './ui/shop-entry-client.mjs';
 import {shopCartRequest} from '../configurator/variant-m/shop-cart.mjs';
+import {createOrderWebhookHandler,ORDER_WEBHOOK_PATH} from './shopify-order-webhook.mjs';
+import {cartTransformRun} from '../../ops/shopify/einzelsperre-release/preis/src/master-release/cart_transform_run.mjs';
+import {cartValidationsGenerateRun} from '../../ops/shopify/einzelsperre-release/pruefung/src/cart_validation_run.mjs';
 
 // Durchlauf des öffentlichen Einstiegs mit echter Werkstatt: Start über App-Proxy-Signatur → Modell →
 // Gestaltung als privater Prüfstand → normaler Theme-Warenkorb (synthetischer Ajax-Shop)
@@ -29,17 +32,29 @@ const origin='https://app.example',shopDomain=mapping.shopDomain,secret='synthet
 const png='iVBORw0KGgoAAAANSUhEUgAAACgAAAA8CAIAAACb22+3AAAAOklEQVR4nO3NIQEAMAgAsPOEaDT9M9ABg9kKLLL6Xfgnq1gsFovFYrFYLBaLxWKxWCwWi8VisVgsXhqq4AGG9djEFQAAAABJRU5ErkJggg==';
 const euro=c=>(c/100).toFixed(2);
 
-test('theme cart: signed entry, motif, immutable design, preview upload, edit and signed order intake',async t=>{
+test('theme cart: signed entry, immutable design, edit, quantity 1 to 4 and signed order intake',async t=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-shop-entry-flow-'));build({outputDirectory:dir});
  const seed=JSON.parse(fs.readFileSync(path.join(dir,'models.json')))[0];
- const w=createWorkshop({filename:':memory:',seedConfig:seed.universal,legacy:seed.legacy,shopifySessions:{mode:'test-only',shopDomain,clientId:'synthetic-client',secret}});
+ const quantityTiers=[{minQuantity:3,percentOff:5},{minQuantity:5,percentOff:10},{minQuantity:10,percentOff:15}];
+ const quantityTierScope='complete-unit';
+ Object.assign(seed.universal,{quantityTiers,quantityTierScope});
+ const webhookConfig={shopDomain,secret,apiVersion:'2026-07',mode:'test-only'};
+ const w=createWorkshop({filename:':memory:',seedConfig:seed.universal,legacy:seed.legacy,orderWebhook:webhookConfig,shopifySessions:{mode:'test-only',shopDomain,clientId:'synthetic-client',secret}});
  t.after(()=>{w.close();fs.rmSync(dir,{recursive:true,force:true});});
  const product=mapping.products[0];
  const record=w.repository.copy(w.defaultId,{expectedRevision:1,name:product.shopifyTitle,kind:'product'});
  // Jede Shopify-Variante der Übergabe bekommt eine gespeicherte Ausführung des Musterprodukts (echte Preise des Modells).
- const variants=prepareShopProduct(record).variants.slice(0,product.variants.length);
- const bound=w.orderIntake.bindVariants({record,shopDomain,mappings:variants.map((v,i)=>({key:v.key,variantId:product.variants[i].shopifyVariantId.split('/').at(-1)}))});
- assert.equal(bound.bindings.length,product.variants.length);
+ const plan=prepareShopProduct(record);
+ const variants=plan.variants.slice(0,product.variants.length);
+ const staffelVariant=plan.variants.find(v=>v.priceCents===1999);
+ assert.ok(staffelVariant);
+ const mappings=variants.map((v,i)=>({key:v.key,variantId:product.variants[i].shopifyVariantId.split('/').at(-1)}));
+ if(!mappings.some(m=>m.key===staffelVariant.key))mappings.push({key:staffelVariant.key,variantId:'99001'});
+ const pricing={schema:'gravuru-personalization-pricing/v1',enabled:true,productId:product.shopifyProductId,revision:1,currency:'EUR',
+  variants:Object.fromEntries(mappings.map(m=>[m.variantId,plan.variants.find(v=>v.key===m.key).priceCents])),
+  extraMotifCents:record.document.config.extraMotifCents,extraPhotoCents:record.document.config.photo.extraPriceCents,quantityTiers,quantityTierScope};
+ const bound=w.orderIntake.bindVariants({record,shopDomain,mappings,personalizationPricing:pricing});
+ assert.equal(bound.bindings.length,mappings.length);
  const registry={resolve({shopifyProductId,shopifyVariantId}){
   const b=bound.bindings.find(x=>'gid://shopify/ProductVariant/'+x.variantId===shopifyVariantId);
   if(shopifyProductId!==product.shopifyProductId||!b)throw Object.assign(Error('Keine ausdrückliche aktive Zuordnung.'),{status:404,code:'shop_binding_active_not_found'});
@@ -59,11 +74,12 @@ test('theme cart: signed entry, motif, immutable design, preview upload, edit an
  const store={storeId:'acryl',registry,workshop:w,apiPrefix:'/api/workshop/',nativeEditorPath:'/_merchant-editor.html',formEditorPath:'/_merchant-form-editor.html',cart:createBoundTestCart({workshop:w,registry,shopDomain,transportOptions:{fetchImpl}})};
  const registeredImage='https://cdn.shopify.com/s/files/1/0920/5550/3228/files/gravuru-gestaltung-'+'c'.repeat(64)+'.png';let imageCalls=0,imagePending=false;
  let now=1_800_000_000_000;const entry=createShopEntry({origin,shopDomain,secret,stores:[store],proxyPath,clock:()=>now,modelSlimmer:null,checkoutImage:async source=>{assert.ok(source.startsWith(origin+'/gestaltung/'));if(imagePending)throw Object.assign(Error('Bild wird vorbereitet.'),{status:502,code:'checkout_image_pending'});imageCalls++;return registeredImage;}});
- const server=http.createServer((req,res)=>entry.handle(req,res,new URL(req.url,origin)));server.listen(0,'127.0.0.1');await once(server,'listening');
+ const webhook=createOrderWebhookHandler({intake:w.orderIntake,config:webhookConfig});
+ const server=http.createServer((req,res)=>req.url===ORDER_WEBHOOK_PATH?webhook(req,res):entry.handle(req,res,new URL(req.url,origin)));server.listen(0,'127.0.0.1');await once(server,'listening');
  t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));});
  const request=(pathname,method='GET',data,extra={})=>new Promise((resolve,reject)=>{
   const bytes=data===undefined?null:Buffer.from(JSON.stringify(data));
-  const headers={Host:'app.example','X-Forwarded-Proto':'https',...(method==='GET'?{}:{Origin:origin,'Content-Type':'application/json'}),...(bytes?{'Content-Length':bytes.length}:{}),...extra};
+  const headers={Host:'app.example','X-Forwarded-Proto':'https',...(method==='GET'?{}:{'Content-Type':'application/json'}),...(method!=='GET'&&pathname!==ORDER_WEBHOOK_PATH?{Origin:origin}:{}),...(bytes?{'Content-Length':bytes.length}:{}),...extra};
   const req=http.request({host:'127.0.0.1',port:server.address().port,path:pathname,method,headers},res=>{const chunks=[];res.on('data',c=>chunks.push(c));res.on('end',()=>{const body=Buffer.concat(chunks);let json=null;try{json=JSON.parse(body);}catch{}resolve({status:res.statusCode,headers:res.headers,body,data:json});});});req.on('error',reject);req.end(bytes);
  });
  // 1. Start wie von Shopify weitergeleitet: Produktseite zeigt Variante 2 (hier „KGL“), der Kunde ist nicht angemeldet.
@@ -160,13 +176,41 @@ test('theme cart: signed entry, motif, immutable design, preview upload, edit an
  assert.equal((await request(customerImagePath,'GET',undefined,{Host:'evil.example'})).status,403);
  const other={key:'9:other',variant_id:9,product_id:9,quantity:1,properties:{Name:'Unverändert'},original_price:500,original_line_price:500,final_line_price:500};
  const themeCart={currency:'EUR',items:[other]};let adds=0,removes=0;
+ const shopifyFunctionLine=(item,quantity=item.quantity)=>{
+  const {properties}=item;
+  return {id:item.key,quantity,merchandise:{__typename:'ProductVariant',id:'gid://shopify/ProductVariant/'+item.variant_id,
+   product:{id:product.shopifyProductId,pricing:{jsonValue:pricing}}},
+   configuration:{value:properties._gravuru_config},configRevision:{value:properties._gravuru_rev},offer:{value:properties._gravuru_offer},
+   motifs:{value:properties._gravuru_motifs},uploads:{value:properties._gravuru_uploads},
+   revision:{value:properties._gravuru_revision},designFile:{value:properties['Bearbeitbarer Entwurf']}};
+ };
+ const priceThemeLine=(item,quantity)=>{
+  const cartLine=shopifyFunctionLine(item,quantity);
+  const {operations}=cartTransformRun({presentmentCurrencyRate:'1',cart:{lines:[cartLine]}});
+  const amount=operations[0].lineUpdate.price.adjustment.fixedPricePerUnit.amount;
+  const unit=Math.round(Number(amount)*100);
+  return {...item,quantity,original_price:unit,original_line_price:unit*quantity,final_line_price:unit*quantity};
+ };
  const shopFetch=async(url,o)=>{
   if(url==='/cart.js')return Response.json(structuredClone(themeCart));
   if(url==='/cart/add.js'){
    adds++;const uploaded=o.body.get('items[0][properties][_Entwurf]');assert.equal(uploaded.type,'image/png');assert.deepEqual(Buffer.from(await uploaded.arrayBuffer()),Buffer.from(png,'base64'));const props={};for(const [key,v]of o.body.entries()){const m=key.match(/^items\[0\]\[properties\]\[(.+)\]$/);if(m)props[m[1]]=typeof v==='string'?v:'https://cdn.shopify.com/s/files/1/uploads/preview-'+adds+'.png';}
-   const q=Number(o.body.get('items[0][quantity]'));themeCart.items.push({key:'added-'+adds,variant_id:Number(o.body.get('items[0][id]')),product_id:Number(p.productId),quantity:q,original_price:p.unitCents,original_line_price:p.unitCents*q,final_line_price:p.unitCents*q,properties:props});return Response.json({items:themeCart.items.slice(-1)});
+   const q=Number(o.body.get('items[0][quantity]'));
+   themeCart.items.push(priceThemeLine({key:'added-'+adds,variant_id:Number(o.body.get('items[0][id]')),product_id:Number(p.productId),properties:props},q));
+   return Response.json({items:themeCart.items.slice(-1)});
   }
-  if(url==='/cart/change.js'){removes++;const b=JSON.parse(o.body);assert.equal(b.quantity,0);const i=themeCart.items.findIndex(x=>x.key===b.id);assert.ok(i>0);themeCart.items.splice(i,1);return Response.json(structuredClone(themeCart));}
+  if(url==='/cart/change.js'){
+   const change=JSON.parse(o.body),i=themeCart.items.findIndex(x=>x.key===change.id);assert.ok(i>0);
+   if(change.quantity===0){removes++;themeCart.items.splice(i,1);}
+   else themeCart.items[i]=priceThemeLine(themeCart.items[i],change.quantity);
+   return Response.json(structuredClone(themeCart));
+  }
+  if(url==='/checkout'){
+   const items=themeCart.items.slice(1);
+   const {operations}=cartValidationsGenerateRun({buyerJourney:{step:'CHECKOUT_COMPLETION'},cart:{lines:items.map(item=>shopifyFunctionLine(item))}});
+   assert.deepEqual(operations,[]);
+   return Response.json({items:items.map(item=>priceThemeLine(item,item.quantity))});
+  }
   assert.fail(url);
  };
  const bridge=token=>createThemeCartClient({fetchImpl:shopFetch,claim:async()=>{const r=await proxyRequest('/cart/claim','POST',token);assert.equal(r.status,200,JSON.stringify(r.data));}});
@@ -186,8 +230,58 @@ test('theme cart: signed entry, motif, immutable design, preview upload, edit an
  assert.equal(new URL(editData.data.properties._gravuru_bearbeiten).searchParams.get('ui'),'prio-r15','editing keeps the approved presentation for the next return');
  await bridge(editToken).submit(editData.data);assert.equal(adds,2);assert.equal(removes,1);assert.equal(themeCart.items.length,2);assert.deepEqual(themeCart.items[0],other);
  // Signed order intake still binds precisely to the immutable edited design.
- const item=themeCart.items[1],paid={id:13745774461308,test:true,financial_status:'paid',currency:'EUR',customer:{id:42},line_items:[{id:9001,product_id:Number(p.productId),variant_id:item.variant_id,quantity:3,price:euro(item.original_price),properties:Object.entries(item.properties).map(([name,value])=>({name,value}))}]};
+ const item=themeCart.items[1],paid={id:123456,test:true,financial_status:'paid',currency:'EUR',customer:{id:42},line_items:[{id:9001,product_id:Number(p.productId),variant_id:item.variant_id,quantity:3,price:euro(item.original_price),properties:Object.entries(item.properties).map(([name,value])=>({name,value}))}]};
  const raw=Buffer.from(JSON.stringify(paid)),received=w.orderIntake.receive(raw,{'x-shopify-hmac-sha256':createHmac('sha256',secret).update(raw).digest('base64'),'x-shopify-shop-domain':shopDomain,'x-shopify-api-version':'2026-07','x-shopify-topic':'orders/paid','x-shopify-webhook-id':'evt-theme-cart-0001'},{shopDomain,secret,apiVersion:'2026-07'});
  assert.equal(received.errors.length,0,JSON.stringify(received.errors));assert.equal(received.lines.length,1);assert.equal(received.lines[0].snapshotId,edited.data.snapshotId);assert.deepEqual(received.lines[0].configuration,{id:p.configuration.id,rev:3});assert.equal(received.lines[0].productionReady,false);
+
+ await t.test('F01 changes quantity in the theme and accepts only the exact checkout tier at orders/paid',async()=>{
+  themeCart.items.splice(1);
+  const started=await request('/api/shop-entry/acrylic-drafts','POST',{input:{...input,options:staffelVariant.options,quantity:1}},session);
+  assert.equal(started.status,201,JSON.stringify(started.data));
+  const draftHeaders={...session,'X-Gravuru-Draft':started.data.token};
+  const requestInput=shopCartRequest({saved:{draftId:started.data.id,revision:1},quantity:1,cartMode:'theme',presentation:fragment.get('ui')});
+  const handoff=await entryClient.submitThemeCart(requestInput,{draftToken:started.data.token});
+  const handoffToken=new URLSearchParams(new URL(handoff.handoffUrl).hash.slice(1)).get('handoff');
+  const transfer=await proxyRequest('/cart/data','GET',handoffToken);
+  assert.equal(transfer.status,200,JSON.stringify(transfer.data));
+  assert.equal(transfer.data.unitCents,1999);
+  await bridge(handoffToken).submit(transfer.data);
+  const before=themeCart.items[1];
+  assert.equal(before.quantity,1);
+  const action=await shopFetch('/cart/change.js',{body:JSON.stringify({id:before.key,quantity:4})});
+  assert.equal((await action.json()).items[1].final_line_price,7596);
+  const checkout=(await (await shopFetch('/checkout')).json()).items[0];
+  assert.equal(checkout.quantity,4);
+  assert.equal(checkout.original_price,1899);
+  assert.deepEqual(checkout.properties,before.properties,'the theme keeps the original offer and design');
+  const line={id:9002,product_id:checkout.product_id,variant_id:checkout.variant_id,quantity:checkout.quantity,price:euro(checkout.original_price),
+   properties:Object.entries(checkout.properties).map(([name,value])=>({name,value}))};
+  const payment={id:123457,test:true,financial_status:'paid',currency:'EUR',line_items:[line]};
+  const deliver=(event,payload=payment)=>request(ORDER_WEBHOOK_PATH,'POST',payload,{
+   'x-shopify-hmac-sha256':createHmac('sha256',secret).update(JSON.stringify(payload)).digest('base64'),
+   'x-shopify-shop-domain':shopDomain,'x-shopify-api-version':'2026-07','x-shopify-topic':'orders/paid','x-shopify-webhook-id':event});
+  const invalidChanges=[{price:'18.98'},{price:'19.00'},{price:'19.99'},{quantity:0},{quantity:100},
+   {properties:line.properties.map(p=>p.name==='_gravuru_motifs'?{...p,value:'1'}:p)}];
+  for(const [i,change] of invalidChanges.entries()){
+   const bad=await deliver('evt-f01-rejected-'+i,{...payment,line_items:[{...line,...change}]});
+   assert.equal(bad.status,200);
+   assert.equal(bad.data.rejectedLines,1);
+   assert.equal(w.orderIntake.forSnapshot(started.data.snapshotId).length,0);
+  }
+  const accepted=await deliver('evt-f01-exact-tier');
+  assert.equal(accepted.status,200);
+  assert.deepEqual(accepted.data,{accepted:true,duplicate:false,matchedLines:1,rejectedLines:0,testOnly:true});
+  const [ordered]=w.orderIntake.forSnapshot(started.data.snapshotId);
+  assert.deepEqual([ordered.quantity,ordered.unitCents,ordered.totalCents],[4,1899,7596]);
+  assert.deepEqual(ordered.configuration,transfer.data.configuration);
+  assert.equal(ordered.selection.price.quantity,1);
+  assert.equal(ordered.productionReady,false);
+  const original=await request('/api/shop-entry/cart-configurations/'+ordered.configuration.id+'/1',undefined,undefined,draftHeaders);
+  assert.equal(original.status,200);
+  assert.equal(original.data.quantity,1);
+  assert.equal((await deliver('evt-f01-exact-tier')).data.duplicate,true);
+  assert.equal((await deliver('evt-f01-changed-retry',{...payment,line_items:[{...line,quantity:3}]})).data.rejectedLines,1);
+  assert.deepEqual(w.orderIntake.forSnapshot(started.data.snapshotId),[ordered]);
+ });
  now+=31*60*1000;assert.deepEqual((await request(customerImagePath)).body,Buffer.from(png,'base64'),'immutable image survives draft changes, payment and expired handoff');assert.equal((await proxyRequest('/cart/data','GET',editToken)).status,403);
 });

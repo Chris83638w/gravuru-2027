@@ -355,12 +355,14 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
     if(!known||typeof configId!=='string'||typeof rev!=='string'||!/^[1-9][0-9]{0,8}$/.test(rev)||known.id!==configId||known.rev!==Number(rev))fail(422,'Die Konfigurations-Revision dieser Position ist unbekannt oder gehört zu einem anderen Stand.');
     return {id:known.id,rev:known.rev};
    }
-   // Review Astra (#243, P1): Nach Ablauf muss der bezahlte Stückpreis centgenau dem gesicherten Angebot entsprechen.
-   // Ohne Aufpreisvertrag ist das der Variantenpreis der Bindung abzüglich der Staffel des Prüfstands (wie in offer()).
-   // Mit Aufpreisvertrag muss der unveränderliche Vertrag dieser Bindung den Entwurf weiterhin identisch bepreisen.
+   // F04 (#243): Nach Ablauf gilt dieselbe Preisregel wie vor Ablauf – nichts wird großzügiger.
+   // Ohne Aufpreisvertrag setzt die Preisfunktion keinen Preis; die Kasse verlangt den Variantenpreis der Bindung,
+   // genau den prüft der Eingang auch vor Ablauf (siehe Preisvergleich oben). Ein Staffelpreis aus dem Angebot ist an
+   // der Kasse für solche Bindungen nicht erreichbar (Befund F15). Mit Aufpreisvertrag muss der unveränderliche
+   // Vertrag der Bindung den Entwurf weiterhin identisch bepreisen.
    function priceStillCurrent(b,m,extra,unitCents){
     try{
-     if(!extra)return unitCents===tierUnitCents(b.unit_cents,m);
+     if(!extra)return unitCents===b.unit_cents;
      const contract=pricing(b.id);return !!contract&&JSON.stringify(extra)===JSON.stringify(personalizationForSnapshot(contract,m));
     }catch{return false;}
    }

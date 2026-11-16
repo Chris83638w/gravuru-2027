@@ -2,7 +2,7 @@
 // (nie in Anfragen an fremde Hosts, nie im Referrer). Der Editor im iframe arbeitet wie in der Händler-
 // Kundenansicht über window.parent: Modell, private Designressourcen, Anfragefunktion und der Warenkorbzugang
 // (GravuruShopEntry, ausgewertet von shop-cart.mjs) liegen auf dieser Seite.
-import {createShopEntryClient,shopUrl,embeddedCart,previewJpeg,surfaceThumbnail,warmTargets,warmEditor,startResourceUrls} from './shop-entry-client.mjs';
+import {createShopEntryClient,createShopResourceLoader,shopUrl,embeddedCart,previewJpeg,surfaceThumbnail,warmTargets,warmEditor,startResourceUrls} from './shop-entry-client.mjs';
 import {createDesignSwitch} from './shop-design-switch.mjs';
 const status=document.querySelector('#status'),header=document.querySelector('header'),back=document.querySelector('#back'),title=document.querySelector('#title');
 const loading=document.querySelector('#loading-screen'),progress=document.querySelector('#progress'),preview=document.querySelector('#start-preview'),editor=document.querySelector('#editor');
@@ -10,17 +10,20 @@ const fragment=new URLSearchParams(location.hash.replace(/^#/,''));
 const toDataUrl=blob=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob);});
 try{
   const client=createShopEntryClient({token:fragment.get('s')||''});
-  const warm=warmEditor(warmTargets(document,fragment.get('s')||''));
+  const loadJson=createShopResourceLoader();
+  window.GravuruLoadEditorJson=loadJson;
+  const warm=warmEditor(warmTargets(document,fragment.get('s')||''),{loadJson});
   let storage=null;
   try{storage=window.sessionStorage;}catch{/* The cart edit can retry as a standalone page. */}
   const data=await client.loadInitialModel(fragment,storage),model=data.model;
   title.textContent=model.name;progress.value=1;status.textContent='Deine Gestaltung wird vorbereitet …';
   // Same signed design target and renderer as the gallery; no separate artwork logic.
   if(data.startPreview)client.loadDesignPreview(data.startPreview.target,data.startPreview.previewUrl).then(toDataUrl).then(url=>{preview.src=url;preview.hidden=false;}).catch(()=>{});
-  // Startschriften/-motive aus dem Katalog sofort holen (das Fenster liest sie dann aus dem Zwischenspeicher).
-  const warmed=new Set(),warmStart=catalog=>{for(const url of startResourceUrls(model.universal,catalog,warm.catalogPath)){if(warmed.has(url))continue;warmed.add(url);fetch(url,{credentials:'same-origin'}).catch(()=>{});}};
+  // Das Editorfenster übernimmt laufende Abrufe von Startschriften und Motiven.
+  const warmStart=catalog=>{for(const url of startResourceUrls(model.universal,catalog,warm.catalogPath))loadJson(url,{priority:'high'})?.catch(()=>{});};
   warmStart(null);warm.catalog.then(warmStart);
-  const resources=await client.loadResources(model.universal,toDataUrl);
+  const doorbellResources=client.prepareDoorbellResources(model.universal,toDataUrl);
+  const resources=doorbellResources?.resources??await client.loadResources(model.universal,toDataUrl);
   progress.value=2;
   const backUrl=shopUrl(data.shopDomain,fragment.get('back'));
   // Fenster über der Produktseite (shop-embed.mjs): Übergabe und Schließen gehen an die Shop-Seite, kein Seitenwechsel.
@@ -31,6 +34,7 @@ try{
   if(embedded)back.addEventListener('click',event=>{event.preventDefault();leave();});
   function activate(entry,designGallery){
     const {client,data,resources}=entry,model=data.model;frame=entry.frame;
+    window.GravuruLoadPreviewResources=entry.loadRemaining;
     window.GravuruPreviewResources=resources;window.GravuruModelProfile=model.legacy;window.UniversalConfig=model.universal;
     window.GravuruWorkshopReview={productId:model.configuration.id,productRevision:model.configuration.revision};window.GravuruMerchantRequest=client.request;
     const surface=model.universal?.materialSurface||null,small=surfaceThumbnail(surface);
@@ -44,7 +48,7 @@ try{
   const edit=new URLSearchParams();for(const key of ['config','rev','line'])if(fragment.has(key))edit.set(key,fragment.get(key));
   const toolbar=fragment.getAll('leiste');if(embedded&&toolbar.length===1&&['a','b'].includes(toolbar[0]))edit.set('leiste',toolbar[0]);
   frame=document.createElement('iframe');frame.title=model.name+' personalisieren';frame.src=data.editorPath+(edit.size?'?'+edit:'');
-  createDesignSwitch({initial:{client,data,resources,frame},fragment,container:document.querySelector('#editor'),activate,toDataUrl});header.hidden=false;
+  createDesignSwitch({initial:{client,data,resources,frame,loadRemaining:doorbellResources?.loadRemaining},fragment,container:document.querySelector('#editor'),activate,toDataUrl});header.hidden=false;
   // Fenster-Modus: der Produktseite melden, dass die Seite da ist (sonst zeigt sie nach einer Weile einen Hinweis mit Ausweg).
   if(embedded)frame.addEventListener('load',()=>window.parent.postMessage({type:'gravuru-shop-ready'},shopOrigin),{once:true});
   window.addEventListener('message',event=>{

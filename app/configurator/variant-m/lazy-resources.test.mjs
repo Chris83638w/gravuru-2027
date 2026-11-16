@@ -24,6 +24,21 @@ test('contour validation hydrates actual outlines for every switchable size and 
 // Jeder Test lädt eine eigene Modulinstanz (eigene Zwischenspeicher für Schriften/Bibliothek).
 const freshLoader=name=>import('./lazy-resources.mjs?'+name);
 
+test('an editor can extend a shared catalog without changing the objects handed to another editor',async()=>{
+ const loader=await freshLoader('shared-catalog');
+ const url='/konfigurator/shop/schriften/'+'a'.repeat(64)+'.json';
+ const raw={font_index:[],fonts:{},motifs:{},motif_index:[]};
+ const font={regular:{units:1000,glyphs:{}}};
+ const get=async path=>path===url?font:raw;
+ const profile={designs:[{objects:[{type:'text',font:'Eigene'}]}]};
+ const first=await loader.loadStart({profile,localResources:{lazyFonts:[{name:'Eigene',url}]}},{get});
+ const second=await loader.loadStart({profile:{designs:[]}},{get});
+ assert.deepEqual(first.catalog.fonts,{Eigene:font});
+ assert.deepEqual(first.catalog.font_index,[{name:'Eigene',url}]);
+ assert.deepEqual(raw,{font_index:[],fonts:{},motifs:{},motif_index:[]});
+ assert.deepEqual(second.catalog,raw);
+});
+
 const runtime=path.join(ROOT,'designs/aosu-labrador/runtime');
 const editorSource=()=>fs.readFileSync(path.join(ROOT,'references/aosu-upgrade-2026-09-21/verification/editor-source.html'),'utf8');
 const sourceUrls=()=>JSON.parse(editorSource().match(/<script[^>]*id="preview-urls"[^>]*>([\s\S]*?)<\/script>/)[1]);

@@ -355,9 +355,14 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
     if(!known||typeof configId!=='string'||typeof rev!=='string'||!/^[1-9][0-9]{0,8}$/.test(rev)||known.id!==configId||known.rev!==Number(rev))fail(422,'Die Konfigurations-Revision dieser Position ist unbekannt oder gehört zu einem anderen Stand.');
     return {id:known.id,rev:known.rev};
    }
-   function priceStillCurrent(b,m,extra){
-    if(!extra)return true; // Ohne Aufpreisvertrag wurde der bezahlte Preis bereits gegen den heutigen Variantenpreis geprüft.
-    try{const contract=pricing(b.id);return !!contract&&JSON.stringify(extra)===JSON.stringify(personalizationForSnapshot(contract,m));}catch{return false;}
+   // Review Astra (#243, P1): Nach Ablauf muss der bezahlte Stückpreis centgenau dem gesicherten Angebot entsprechen.
+   // Ohne Aufpreisvertrag ist das der Variantenpreis der Bindung abzüglich der Staffel des Prüfstands (wie in offer()).
+   // Mit Aufpreisvertrag muss der unveränderliche Vertrag dieser Bindung den Entwurf weiterhin identisch bepreisen.
+   function priceStillCurrent(b,m,extra,unitCents){
+    try{
+     if(!extra)return unitCents===tierUnitCents(b.unit_cents,m);
+     const contract=pricing(b.id);return !!contract&&JSON.stringify(extra)===JSON.stringify(personalizationForSnapshot(contract,m));
+    }catch{return false;}
    }
    function admit(line,lineId){
     const properties=line.properties||[];if(!Array.isArray(properties))fail(422,'Ungültige Positionszuordnung.');const refs=properties.filter(p=>p?.name==='_gravuru_offer');
@@ -393,7 +398,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
     const m=snapshot(o.snapshot_id);
     // F04 (#239, Chris 16.11.2026: „Ja, annehmen“): Der gespeicherte Entwurf bleibt gültig. Ein älteres Angebot
     // wird angenommen, solange der heutige Preisvertrag genau denselben Preis ergibt; sonst wie bisher abgelehnt.
-    if(o.expires_at<clock()&&!priceStillCurrent(b,m,extra))fail(422,'Die Checkout-Zuordnung ist abgelaufen; vor Übernahme prüfen.');if(m.packageSha256!==o.package_sha256)fail(409,'Der gesicherte Prüfstand wurde verändert.');
+    if(o.expires_at<clock()&&!priceStillCurrent(b,m,extra,unitCents))fail(422,'Die Checkout-Zuordnung ist abgelaufen; vor Übernahme prüfen.');if(m.packageSha256!==o.package_sha256)fail(409,'Der gesicherte Prüfstand wurde verändert.');
     if(quantityChanged){
      // The original quote must pass the same percentage-tier contract as checkout before repricing.
      const contract=pricing(b.id),quotedPrice=m.selection?.price;

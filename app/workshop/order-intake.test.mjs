@@ -3,7 +3,7 @@ import {createOrderIntake,verifyPaidWebhook} from './order-intake.mjs';import {b
 const config={shopDomain:'gravuru-synthetic.myshopify.com',apiVersion:'2026-07',secret:randomBytes(32).toString('hex')};
 const sign=(payload,eventId='test-event-1234',overrides={})=>{const raw=Buffer.from(typeof payload==='string'?payload:JSON.stringify(payload));return {raw,headers:{'x-shopify-hmac-sha256':createHmac('sha256',config.secret).update(raw).digest('base64'),'x-shopify-shop-domain':config.shopDomain,'x-shopify-api-version':config.apiVersion,'x-shopify-topic':'orders/paid','x-shopify-webhook-id':eventId,...overrides}};};
 const order=token=>({id:101,test:true,financial_status:'paid',currency:'EUR',cancelled_at:null,customer:{email:'private-fixture@example.invalid'},line_items:[{id:201,variant_id:301,quantity:2,price:'29.99',properties:[{name:'_gravuru_offer',value:token}]}]});
-function setup(t){const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-order-')),filename=path.join(dir,'private.sqlite');let db=new DatabaseSync(filename),now=Date.now(),m={id:'proof_synthetic',packageSha256:'a'.repeat(64),product:{id:'cfg_synthetic',revision:2,name:'Synthetisches Schild',basePriceCents:2999,currency:'EUR'},productionProfile:{id:'mfg_synthetic',revision:3,sha256:'b'.repeat(64)}};const create=()=>createOrderIntake({database:db,snapshot:id=>{assert.equal(id,m.id);return structuredClone(m);},clock:()=>now});let intake=create();const record={id:m.product.id,revision:2,status:'draft',document:{schema:'gravuru-form-product/v1',kind:'product',basePriceCents:2999,designs:[{}]}};const binding=intake.bind({shopDomain:config.shopDomain,variantId:'301',record});const offer=()=>intake.offer({bindingId:binding.id,snapshotId:m.id,quantity:2});t.after(()=>{db.close();fs.rmSync(dir,{recursive:true,force:true});});return {get db(){return db;},get intake(){return intake;},offer,binding,record,changeTime:delta=>now+=delta,changeHash:()=>m.packageSha256='f'.repeat(64),reopen:()=>{db.close();db=new DatabaseSync(filename);intake=create();}};}
+function setup(t){const dir=fs.mkdtempSync(path.join(os.tmpdir(),'g27-order-')),filename=path.join(dir,'private.sqlite');let db=new DatabaseSync(filename),now=Date.now(),m={id:'proof_synthetic',packageSha256:'a'.repeat(64),product:{id:'cfg_synthetic',revision:2,name:'Synthetisches Schild',basePriceCents:2999,currency:'EUR'},productionProfile:{id:'mfg_synthetic',revision:3,sha256:'b'.repeat(64)}};const create=()=>createOrderIntake({database:db,snapshot:id=>{assert.equal(id,m.id);return structuredClone(m);},clock:()=>now});let intake=create();const record={id:m.product.id,revision:2,status:'draft',document:{schema:'gravuru-form-product/v1',kind:'product',basePriceCents:2999,designs:[{}]}};const binding=intake.bind({shopDomain:config.shopDomain,variantId:'301',record});const offer=()=>intake.offer({bindingId:binding.id,snapshotId:m.id,quantity:2});t.after(()=>{db.close();fs.rmSync(dir,{recursive:true,force:true});});return {get m(){return m;},get db(){return db;},get intake(){return intake;},offer,binding,record,changeTime:delta=>now+=delta,changeHash:()=>m.packageSha256='f'.repeat(64),reopen:()=>{db.close();db=new DatabaseSync(filename);intake=create();}};}
 const receive=(intake,message)=>intake.receive(message.raw,message.headers,config);
 test('cart offer resolution uses saved values and refuses changed snapshot hashes',t=>{
  const f=setup(t),o=f.offer(),input={offerId:o.id,offerToken:o.property.value,snapshotId:'proof_synthetic',shopDomain:config.shopDomain};
@@ -116,4 +116,14 @@ test('gallery approval batch checks every variant, reuses one document hash and 
  assert.equal(intake.doorbellLiveApproval(inputs[1]),null);
  db.prepare('UPDATE product_revisions SET document=?').run(body+' ');
  assert.deepEqual(await intake.doorbellGalleryApprovals(inputs),[null,null,null]);assert.equal(reads,2,'a second request must rehash the fixed document');
+});
+
+test('F04 review (#243 P1): after expiry an offer without surcharge contract needs exactly its saved tier price',t=>{
+ const f=setup(t);
+ f.m.product.basePriceCents=2849;f.m.selection={price:{quantity:4,quantityTier:{minQuantity:3,percentOff:5},quantityTierDiscountCents:150}};
+ const o=f.intake.offer({bindingId:f.binding.id,snapshotId:f.m.id,quantity:4});assert.equal(o.unitCents,2849);
+ f.changeTime(8*86400000);
+ const paid=(price,id,event)=>{const p=order(o.property.value);p.id=id;p.line_items[0].quantity=4;p.line_items[0].price=price;return receive(f.intake,sign(p,event));};
+ // Listenpreis statt gesichertem Staffelpreis: nach Ablauf abgewiesen.
+ const list=paid('29.99',301,'test-event-f04-list');assert.equal(list.lines.length,0);assert.match(list.errors[0].intakeError,/abgelaufen/);
 });

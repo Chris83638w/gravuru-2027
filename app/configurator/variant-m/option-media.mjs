@@ -1,7 +1,7 @@
 // Small, self-contained option thumbnails survive product copies and exports.
 export const MAX_THUMBNAIL_LENGTH=350000;
 import {SPACER_FINISHES,spacerCap,screwHead} from './spacer-cap.mjs';
-import {OPTION_STANDARD_IMAGES} from './option-standard-images.mjs';
+import {OPTION_STANDARD_IMAGES,isStandardOptionImage} from './option-standard-images.mjs';
 import {escapeXml as esc} from '../../platform/sources/app/shared/models/design-content.mjs';
 export {SPACER_FINISHES};
 export function validateThumbnail(value){
@@ -61,7 +61,7 @@ export function mountingTileIcon(option){
 export function optionTileIcon(option,{mounting=false}={}){
   if(mounting)return mountingTileIcon(option);
   const image=optionThumbnail(option);
-  if(image)return '<img src="'+attr(image)+'" alt="">';
+  if(image)return '<img src="'+attr(image)+'" alt=""'+(isStandardOptionImage(image)?' loading="lazy" decoding="async"':'')+'>';
   return mountIconSvg(MOUNT_ICONS[option.id]||MOUNT_ICONS[MOUNT_ICON_ALIASES[option.id]]||MOUNT_ICONS.K00);
 }
 // Preistext der Kachel wie in der Auswahlliste: „+2,99 €“ oder „ohne Aufpreis“; Größen mit Komplettpreis

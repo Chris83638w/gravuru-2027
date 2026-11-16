@@ -1,0 +1,5840 @@
+{
+  "product": "acryl",
+  "browser": "157.0.8103.51",
+  "repeats": 3,
+  "fixtures": {
+    "vorher": {
+      "commit": "a1623799af312692e6b1b6c4e4fee7c77d90f084",
+      "catalogCommit": "8236b8bf",
+      "product": "Acrylglasbild Unser Anfang (Schriften-Testmodell)",
+      "assetCount": 0,
+      "modelSha256": "c69f6dc3ff4521d5d210abfe86c7d5c715cf221b3b920cf32a708745e5e9181e"
+    },
+    "nachher": {
+      "commit": "5efcfe086057c0e913c2e9352a6d6b96152117ba",
+      "catalogCommit": "8236b8bf",
+      "product": "Acrylglasbild Unser Anfang (Schriften-Testmodell)",
+      "assetCount": 0,
+      "modelSha256": "c69f6dc3ff4521d5d210abfe86c7d5c715cf221b3b920cf32a708745e5e9181e"
+    }
+  },
+  "desktop": {
+    "viewport": {
+      "width": 1360,
+      "height": 900
+    }
+  },
+  "mobile": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "network": {
+      "offline": false,
+      "latency": 150,
+      "downloadThroughput": 200000,
+      "uploadThroughput": 93750,
+      "connectionType": "cellular4g"
+    }
+  },
+  "medians": [
+    {
+      "profile": "Desktop",
+      "cache": "kalt",
+      "vorher": {
+        "readyMs": 609,
+        "coreBodyBytes": 503622,
+        "coreDecodedBytes": 1514532,
+        "htmlBodyBytes": 375752,
+        "htmlDoneMs": 59,
+        "bytesToReady": 3540864,
+        "requestsToReady": 19
+      },
+      "nachher": {
+        "readyMs": 595,
+        "coreBodyBytes": 429836,
+        "coreDecodedBytes": 1403193,
+        "htmlBodyBytes": 99449,
+        "htmlDoneMs": 54,
+        "bytesToReady": 1902037,
+        "requestsToReady": 19
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "warm",
+      "vorher": {
+        "readyMs": 586,
+        "coreBodyBytes": 503622,
+        "coreDecodedBytes": 1514532,
+        "htmlBodyBytes": 375752,
+        "htmlDoneMs": 45,
+        "bytesToReady": 670329,
+        "requestsToReady": 11
+      },
+      "nachher": {
+        "readyMs": 584,
+        "coreBodyBytes": 429836,
+        "coreDecodedBytes": 1403193,
+        "htmlBodyBytes": 99449,
+        "htmlDoneMs": 45,
+        "bytesToReady": 670329,
+        "requestsToReady": 11
+      }
+    },
+    {
+      "profile": "iPhone 13",
+      "cache": "kalt",
+      "vorher": {
+        "readyMs": 19053,
+        "coreBodyBytes": 503622,
+        "coreDecodedBytes": 1514532,
+        "htmlBodyBytes": 375752,
+        "htmlDoneMs": 14652,
+        "bytesToReady": 3392858,
+        "requestsToReady": 16
+      },
+      "nachher": {
+        "readyMs": 10891,
+        "coreBodyBytes": 429836,
+        "coreDecodedBytes": 1403193,
+        "htmlBodyBytes": 99449,
+        "htmlDoneMs": 6729,
+        "bytesToReady": 1754031,
+        "requestsToReady": 16
+      }
+    },
+    {
+      "profile": "iPhone 13",
+      "cache": "warm",
+      "vorher": {
+        "readyMs": 4576,
+        "coreBodyBytes": 503622,
+        "coreDecodedBytes": 1514532,
+        "htmlBodyBytes": 375752,
+        "htmlDoneMs": 3199,
+        "bytesToReady": 522323,
+        "requestsToReady": 8
+      },
+      "nachher": {
+        "readyMs": 4547,
+        "coreBodyBytes": 429836,
+        "coreDecodedBytes": 1403193,
+        "htmlBodyBytes": 99449,
+        "htmlDoneMs": 3177,
+        "bytesToReady": 522323,
+        "requestsToReady": 8
+      }
+    }
+  ],
+  "samples": [
+    {
+      "version": "vorher",
+      "profile": "Desktop",
+      "cache": "kalt",
+      "cycle": 1,
+      "readyMs": 609,
+      "coreBodyBytes": 503622,
+      "coreDecodedBytes": 1514532,
+      "htmlBodyBytes": 375752,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 62,
+      "bytesToReady": 3541050,
+      "requestsToReady": 20,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 9,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 12,
+          "done": 16,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 12,
+          "done": 16,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 22,
+          "done": 23,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 23,
+          "done": 24,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 31,
+          "done": 46,
+          "beforeReady": true,
+          "bodyBytes": 166290,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 166590,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 32,
+          "done": 40,
+          "beforeReady": true,
+          "bodyBytes": 404766,
+          "decodedBodyBytes": 404766,
+          "transferBytes": 405066,
+          "window": "shop"
+        },
+        {
+          "path": "/favicon.ico",
+          "start": 40,
+          "done": 44,
+          "beforeReady": true,
+          "bodyBytes": 0,
+          "decodedBodyBytes": 0,
+          "transferBytes": 300,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/design-gallery-preview",
+          "start": 44,
+          "done": 55,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 208659,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 49,
+          "done": 68,
+          "beforeReady": true,
+          "bodyBytes": 507615,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 507915,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 49,
+          "done": 70,
+          "beforeReady": true,
+          "bodyBytes": 723247,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 723547,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 50,
+          "done": 71,
+          "beforeReady": true,
+          "bodyBytes": 344285,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 344585,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/design-gallery",
+          "start": 609,
+          "done": 612,
+          "beforeReady": false,
+          "bodyBytes": 38,
+          "decodedBodyBytes": 38,
+          "transferBytes": 338,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 47,
+          "done": 62,
+          "beforeReady": true,
+          "bodyBytes": 375752,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 376052,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-99526cbc0522ef2e.mjs",
+          "start": 80,
+          "done": 85,
+          "beforeReady": true,
+          "bodyBytes": 503622,
+          "decodedBodyBytes": 1514532,
+          "transferBytes": 503922,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 80,
+          "done": 83,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 39265,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 386,
+          "done": 391,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/reference.webp",
+          "start": 386,
+          "done": 391,
+          "beforeReady": true,
+          "bodyBytes": 96632,
+          "decodedBodyBytes": 96632,
+          "transferBytes": 96932,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 557,
+          "done": 561,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/shopping-cart.svg",
+          "start": 591,
+          "done": 593,
+          "beforeReady": true,
+          "bodyBytes": 530,
+          "decodedBodyBytes": 530,
+          "transferBytes": 830,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assistant.js",
+          "start": 594,
+          "done": 597,
+          "beforeReady": true,
+          "bodyBytes": 49944,
+          "decodedBodyBytes": 49944,
+          "transferBytes": 50244,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "vorher",
+      "profile": "Desktop",
+      "cache": "warm",
+      "cycle": 1,
+      "readyMs": 579,
+      "coreBodyBytes": 503622,
+      "coreDecodedBytes": 1514532,
+      "htmlBodyBytes": 375752,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 45,
+      "bytesToReady": 878988,
+      "requestsToReady": 12,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 5,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 8,
+          "done": 10,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 9,
+          "done": 10,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 27,
+          "done": 28,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 29,
+          "done": 30,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 32,
+          "done": 33,
+          "beforeReady": true,
+          "bodyBytes": 166290,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 33,
+          "done": 37,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 39,
+          "done": 41,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 208659,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 42,
+          "done": 42,
+          "beforeReady": true,
+          "bodyBytes": 507615,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 42,
+          "done": 43,
+          "beforeReady": true,
+          "bodyBytes": 723247,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 42,
+          "done": 43,
+          "beforeReady": true,
+          "bodyBytes": 344285,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/design-gallery",
+          "start": 580,
+          "done": 582,
+          "beforeReady": false,
+          "bodyBytes": 38,
+          "decodedBodyBytes": 38,
+          "transferBytes": 338,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 43,
+          "done": 45,
+          "beforeReady": true,
+          "bodyBytes": 375752,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-99526cbc0522ef2e.mjs",
+          "start": 55,
+          "done": 58,
+          "beforeReady": true,
+          "bodyBytes": 503622,
+          "decodedBodyBytes": 1514532,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 55,
+          "done": 59,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 360,
+          "done": 364,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/reference.webp",
+          "start": 360,
+          "done": 364,
+          "beforeReady": true,
+          "bodyBytes": 96632,
+          "decodedBodyBytes": 96632,
+          "transferBytes": 96932,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 531,
+          "done": 534,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/shopping-cart.svg",
+          "start": 562,
+          "done": 565,
+          "beforeReady": true,
+          "bodyBytes": 530,
+          "decodedBodyBytes": 530,
+          "transferBytes": 830,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assistant.js",
+          "start": 566,
+          "done": 568,
+          "beforeReady": true,
+          "bodyBytes": 49944,
+          "decodedBodyBytes": 49944,
+          "transferBytes": 50244,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "nachher",
+      "profile": "Desktop",
+      "cache": "kalt",
+      "cycle": 1,
+      "readyMs": 604,
+      "coreBodyBytes": 429836,
+      "coreDecodedBytes": 1403193,
+      "htmlBodyBytes": 99449,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 60,
+      "bytesToReady": 1902223,
+      "requestsToReady": 20,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 7,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 14,
+          "done": 17,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 14,
+          "done": 18,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 33,
+          "done": 34,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 35,
+          "done": 36,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 37,
+          "done": 62,
+          "beforeReady": true,
+          "bodyBytes": 45541,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 45841,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 38,
+          "done": 47,
+          "beforeReady": true,
+          "bodyBytes": 404766,
+          "decodedBodyBytes": 404766,
+          "transferBytes": 405066,
+          "window": "shop"
+        },
+        {
+          "path": "/favicon.ico",
+          "start": 39,
+          "done": 40,
+          "beforeReady": true,
+          "bodyBytes": 0,
+          "decodedBodyBytes": 0,
+          "transferBytes": 300,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/design-gallery-preview",
+          "start": 50,
+          "done": 59,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 208659,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 97,
+          "done": 115,
+          "beforeReady": true,
+          "bodyBytes": 132246,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 132546,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 97,
+          "done": 113,
+          "beforeReady": true,
+          "bodyBytes": 95463,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 95763,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 97,
+          "done": 127,
+          "beforeReady": true,
+          "bodyBytes": 179449,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 179749,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/design-gallery",
+          "start": 605,
+          "done": 607,
+          "beforeReady": false,
+          "bodyBytes": 38,
+          "decodedBodyBytes": 38,
+          "transferBytes": 338,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 53,
+          "done": 60,
+          "beforeReady": true,
+          "bodyBytes": 99449,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 99749,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-1eaad0238fbce1f5.mjs",
+          "start": 73,
+          "done": 77,
+          "beforeReady": true,
+          "bodyBytes": 429836,
+          "decodedBodyBytes": 1403193,
+          "transferBytes": 430136,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 73,
+          "done": 76,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 39265,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 383,
+          "done": 387,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/reference.webp",
+          "start": 383,
+          "done": 387,
+          "beforeReady": true,
+          "bodyBytes": 96632,
+          "decodedBodyBytes": 96632,
+          "transferBytes": 96932,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 554,
+          "done": 557,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/shopping-cart.svg",
+          "start": 588,
+          "done": 591,
+          "beforeReady": true,
+          "bodyBytes": 530,
+          "decodedBodyBytes": 530,
+          "transferBytes": 830,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assistant.js",
+          "start": 591,
+          "done": 594,
+          "beforeReady": true,
+          "bodyBytes": 49944,
+          "decodedBodyBytes": 49944,
+          "transferBytes": 50244,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "nachher",
+      "profile": "Desktop",
+      "cache": "warm",
+      "cycle": 1,
+      "readyMs": 587,
+      "coreBodyBytes": 429836,
+      "coreDecodedBytes": 1403193,
+      "htmlBodyBytes": 99449,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 46,
+      "bytesToReady": 878988,
+      "requestsToReady": 12,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 5,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 9,
+          "done": 10,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 9,
+          "done": 10,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 27,
+          "done": 28,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 29,
+          "done": 30,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 32,
+          "done": 32,
+          "beforeReady": true,
+          "bodyBytes": 45541,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 32,
+          "done": 36,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 40,
+          "done": 41,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 208659,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 42,
+          "done": 43,
+          "beforeReady": true,
+          "bodyBytes": 132246,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 42,
+          "done": 45,
+          "beforeReady": true,
+          "bodyBytes": 179449,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 42,
+          "done": 45,
+          "beforeReady": true,
+          "bodyBytes": 95463,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/design-gallery",
+          "start": 588,
+          "done": 590,
+          "beforeReady": false,
+          "bodyBytes": 38,
+          "decodedBodyBytes": 38,
+          "transferBytes": 338,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 43,
+          "done": 46,
+          "beforeReady": true,
+          "bodyBytes": 99449,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-1eaad0238fbce1f5.mjs",
+          "start": 57,
+          "done": 60,
+          "beforeReady": true,
+          "bodyBytes": 429836,
+          "decodedBodyBytes": 1403193,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 57,
+          "done": 60,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 366,
+          "done": 370,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/reference.webp",
+          "start": 367,
+          "done": 370,
+          "beforeReady": true,
+          "bodyBytes": 96632,
+          "decodedBodyBytes": 96632,
+          "transferBytes": 96932,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 539,
+          "done": 542,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/shopping-cart.svg",
+          "start": 570,
+          "done": 573,
+          "beforeReady": true,
+          "bodyBytes": 530,
+          "decodedBodyBytes": 530,
+          "transferBytes": 830,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assistant.js",
+          "start": 574,
+          "done": 576,
+          "beforeReady": true,
+          "bodyBytes": 49944,
+          "decodedBodyBytes": 49944,
+          "transferBytes": 50244,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "nachher",
+      "profile": "Desktop",
+      "cache": "kalt",
+      "cycle": 2,
+      "readyMs": 592,
+      "coreBodyBytes": 429836,
+      "coreDecodedBytes": 1403193,
+      "htmlBodyBytes": 99449,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 54,
+      "bytesToReady": 1902037,
+      "requestsToReady": 19,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 3,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 7,
+          "done": 10,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 7,
+          "done": 10,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 28,
+          "done": 29,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 30,
+          "done": 30,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 32,
+          "done": 35,
+          "beforeReady": true,
+          "bodyBytes": 45541,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 45841,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 33,
+          "done": 38,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 44,
+          "done": 45,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 208659,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 46,
+          "done": 51,
+          "beforeReady": true,
+          "bodyBytes": 132246,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 132546,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 47,
+          "done": 55,
+          "beforeReady": true,
+          "bodyBytes": 179449,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 179749,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 47,
+          "done": 55,
+          "beforeReady": true,
+          "bodyBytes": 95463,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 95763,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/design-gallery",
+          "start": 592,
+          "done": 594,
+          "beforeReady": false,
+          "bodyBytes": 38,
+          "decodedBodyBytes": 38,
+          "transferBytes": 338,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 48,
+          "done": 54,
+          "beforeReady": true,
+          "bodyBytes": 99449,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 99749,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 67,
+          "done": 71,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 39265,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-1eaad0238fbce1f5.mjs",
+          "start": 67,
+          "done": 72,
+          "beforeReady": true,
+          "bodyBytes": 429836,
+          "decodedBodyBytes": 1403193,
+          "transferBytes": 430136,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 370,
+          "done": 374,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/reference.webp",
+          "start": 370,
+          "done": 374,
+          "beforeReady": true,
+          "bodyBytes": 96632,
+          "decodedBodyBytes": 96632,
+          "transferBytes": 96932,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 544,
+          "done": 547,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/shopping-cart.svg",
+          "start": 575,
+          "done": 578,
+          "beforeReady": true,
+          "bodyBytes": 530,
+          "decodedBodyBytes": 530,
+          "transferBytes": 830,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assistant.js",
+          "start": 578,
+          "done": 580,
+          "beforeReady": true,
+          "bodyBytes": 49944,
+          "decodedBodyBytes": 49944,
+          "transferBytes": 50244,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "nachher",
+      "profile": "Desktop",
+      "cache": "warm",
+      "cycle": 2,
+      "readyMs": 584,
+      "coreBodyBytes": 429836,
+      "coreDecodedBytes": 1403193,
+      "htmlBodyBytes": 99449,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 45,
+      "bytesToReady": 670329,
+      "requestsToReady": 11,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 4,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 7,
+          "done": 9,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 8,
+          "done": 9,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 27,
+          "done": 28,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 29,
+          "done": 30,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 31,
+          "done": 32,
+          "beforeReady": true,
+          "bodyBytes": 45541,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 32,
+          "done": 36,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 39,
+          "done": 39,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 41,
+          "done": 42,
+          "beforeReady": true,
+          "bodyBytes": 132246,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 41,
+          "done": 44,
+          "beforeReady": true,
+          "bodyBytes": 179449,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 41,
+          "done": 44,
+          "beforeReady": true,
+          "bodyBytes": 95463,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/design-gallery",
+          "start": 585,
+          "done": 587,
+          "beforeReady": false,
+          "bodyBytes": 38,
+          "decodedBodyBytes": 38,
+          "transferBytes": 338,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 42,
+          "done": 45,
+          "beforeReady": true,
+          "bodyBytes": 99449,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-1eaad0238fbce1f5.mjs",
+          "start": 56,
+          "done": 58,
+          "beforeReady": true,
+          "bodyBytes": 429836,
+          "decodedBodyBytes": 1403193,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 56,
+          "done": 59,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 362,
+          "done": 367,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/reference.webp",
+          "start": 362,
+          "done": 367,
+          "beforeReady": true,
+          "bodyBytes": 96632,
+          "decodedBodyBytes": 96632,
+          "transferBytes": 96932,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 534,
+          "done": 537,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/shopping-cart.svg",
+          "start": 568,
+          "done": 570,
+          "beforeReady": true,
+          "bodyBytes": 530,
+          "decodedBodyBytes": 530,
+          "transferBytes": 830,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assistant.js",
+          "start": 571,
+          "done": 573,
+          "beforeReady": true,
+          "bodyBytes": 49944,
+          "decodedBodyBytes": 49944,
+          "transferBytes": 50244,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "vorher",
+      "profile": "Desktop",
+      "cache": "kalt",
+      "cycle": 2,
+      "readyMs": 599,
+      "coreBodyBytes": 503622,
+      "coreDecodedBytes": 1514532,
+      "htmlBodyBytes": 375752,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 57,
+      "bytesToReady": 3540864,
+      "requestsToReady": 19,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 3,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 7,
+          "done": 10,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 7,
+          "done": 11,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 28,
+          "done": 29,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 30,
+          "done": 31,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 32,
+          "done": 35,
+          "beforeReady": true,
+          "bodyBytes": 166290,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 166590,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 33,
+          "done": 38,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 41,
+          "done": 42,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 208659,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 44,
+          "done": 49,
+          "beforeReady": true,
+          "bodyBytes": 507615,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 507915,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 44,
+          "done": 55,
+          "beforeReady": true,
+          "bodyBytes": 723247,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 723547,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 44,
+          "done": 62,
+          "beforeReady": true,
+          "bodyBytes": 344285,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 344585,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/design-gallery",
+          "start": 599,
+          "done": 602,
+          "beforeReady": false,
+          "bodyBytes": 38,
+          "decodedBodyBytes": 38,
+          "transferBytes": 338,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 44,
+          "done": 57,
+          "beforeReady": true,
+          "bodyBytes": 375752,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 376052,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-99526cbc0522ef2e.mjs",
+          "start": 77,
+          "done": 97,
+          "beforeReady": true,
+          "bodyBytes": 503622,
+          "decodedBodyBytes": 1514532,
+          "transferBytes": 503922,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 77,
+          "done": 80,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 39265,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 380,
+          "done": 384,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/reference.webp",
+          "start": 380,
+          "done": 384,
+          "beforeReady": true,
+          "bodyBytes": 96632,
+          "decodedBodyBytes": 96632,
+          "transferBytes": 96932,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 549,
+          "done": 552,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/shopping-cart.svg",
+          "start": 582,
+          "done": 585,
+          "beforeReady": true,
+          "bodyBytes": 530,
+          "decodedBodyBytes": 530,
+          "transferBytes": 830,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assistant.js",
+          "start": 585,
+          "done": 587,
+          "beforeReady": true,
+          "bodyBytes": 49944,
+          "decodedBodyBytes": 49944,
+          "transferBytes": 50244,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "vorher",
+      "profile": "Desktop",
+      "cache": "warm",
+      "cycle": 2,
+      "readyMs": 586,
+      "coreBodyBytes": 503622,
+      "coreDecodedBytes": 1514532,
+      "htmlBodyBytes": 375752,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 44,
+      "bytesToReady": 670329,
+      "requestsToReady": 11,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 4,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 7,
+          "done": 8,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 7,
+          "done": 8,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 26,
+          "done": 27,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 28,
+          "done": 29,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 30,
+          "done": 31,
+          "beforeReady": true,
+          "bodyBytes": 166290,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 31,
+          "done": 35,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 37,
+          "done": 38,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 40,
+          "done": 40,
+          "beforeReady": true,
+          "bodyBytes": 507615,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 40,
+          "done": 41,
+          "beforeReady": true,
+          "bodyBytes": 723247,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 40,
+          "done": 41,
+          "beforeReady": true,
+          "bodyBytes": 344285,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/design-gallery",
+          "start": 586,
+          "done": 588,
+          "beforeReady": false,
+          "bodyBytes": 38,
+          "decodedBodyBytes": 38,
+          "transferBytes": 338,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 41,
+          "done": 44,
+          "beforeReady": true,
+          "bodyBytes": 375752,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-99526cbc0522ef2e.mjs",
+          "start": 56,
+          "done": 59,
+          "beforeReady": true,
+          "bodyBytes": 503622,
+          "decodedBodyBytes": 1514532,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 56,
+          "done": 60,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 364,
+          "done": 368,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/reference.webp",
+          "start": 364,
+          "done": 368,
+          "beforeReady": true,
+          "bodyBytes": 96632,
+          "decodedBodyBytes": 96632,
+          "transferBytes": 96932,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 536,
+          "done": 539,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/shopping-cart.svg",
+          "start": 569,
+          "done": 572,
+          "beforeReady": true,
+          "bodyBytes": 530,
+          "decodedBodyBytes": 530,
+          "transferBytes": 830,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assistant.js",
+          "start": 572,
+          "done": 574,
+          "beforeReady": true,
+          "bodyBytes": 49944,
+          "decodedBodyBytes": 49944,
+          "transferBytes": 50244,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "vorher",
+      "profile": "Desktop",
+      "cache": "kalt",
+      "cycle": 3,
+      "readyMs": 621,
+      "coreBodyBytes": 503622,
+      "coreDecodedBytes": 1514532,
+      "htmlBodyBytes": 375752,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 59,
+      "bytesToReady": 3540864,
+      "requestsToReady": 19,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 4,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 10,
+          "done": 13,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 10,
+          "done": 14,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 30,
+          "done": 31,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 32,
+          "done": 32,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 34,
+          "done": 37,
+          "beforeReady": true,
+          "bodyBytes": 166290,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 166590,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 35,
+          "done": 41,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 44,
+          "done": 45,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 208659,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 46,
+          "done": 50,
+          "beforeReady": true,
+          "bodyBytes": 507615,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 507915,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 46,
+          "done": 55,
+          "beforeReady": true,
+          "bodyBytes": 723247,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 723547,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 46,
+          "done": 57,
+          "beforeReady": true,
+          "bodyBytes": 344285,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 344585,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/design-gallery",
+          "start": 621,
+          "done": 623,
+          "beforeReady": false,
+          "bodyBytes": 38,
+          "decodedBodyBytes": 38,
+          "transferBytes": 338,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 47,
+          "done": 59,
+          "beforeReady": true,
+          "bodyBytes": 375752,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 376052,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-99526cbc0522ef2e.mjs",
+          "start": 68,
+          "done": 73,
+          "beforeReady": true,
+          "bodyBytes": 503622,
+          "decodedBodyBytes": 1514532,
+          "transferBytes": 503922,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 68,
+          "done": 71,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 39265,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 389,
+          "done": 393,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/reference.webp",
+          "start": 389,
+          "done": 393,
+          "beforeReady": true,
+          "bodyBytes": 96632,
+          "decodedBodyBytes": 96632,
+          "transferBytes": 96932,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 570,
+          "done": 573,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/shopping-cart.svg",
+          "start": 603,
+          "done": 605,
+          "beforeReady": true,
+          "bodyBytes": 530,
+          "decodedBodyBytes": 530,
+          "transferBytes": 830,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assistant.js",
+          "start": 606,
+          "done": 608,
+          "beforeReady": true,
+          "bodyBytes": 49944,
+          "decodedBodyBytes": 49944,
+          "transferBytes": 50244,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "vorher",
+      "profile": "Desktop",
+      "cache": "warm",
+      "cycle": 3,
+      "readyMs": 627,
+      "coreBodyBytes": 503622,
+      "coreDecodedBytes": 1514532,
+      "htmlBodyBytes": 375752,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 50,
+      "bytesToReady": 670329,
+      "requestsToReady": 11,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 5,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 9,
+          "done": 10,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 9,
+          "done": 10,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 30,
+          "done": 31,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 31,
+          "done": 32,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 35,
+          "done": 35,
+          "beforeReady": true,
+          "bodyBytes": 166290,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 35,
+          "done": 39,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 43,
+          "done": 44,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 46,
+          "done": 46,
+          "beforeReady": true,
+          "bodyBytes": 507615,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 46,
+          "done": 47,
+          "beforeReady": true,
+          "bodyBytes": 723247,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 46,
+          "done": 47,
+          "beforeReady": true,
+          "bodyBytes": 344285,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/design-gallery",
+          "start": 628,
+          "done": 629,
+          "beforeReady": false,
+          "bodyBytes": 38,
+          "decodedBodyBytes": 38,
+          "transferBytes": 338,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 47,
+          "done": 50,
+          "beforeReady": true,
+          "bodyBytes": 375752,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 60,
+          "done": 63,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-99526cbc0522ef2e.mjs",
+          "start": 60,
+          "done": 62,
+          "beforeReady": true,
+          "bodyBytes": 503622,
+          "decodedBodyBytes": 1514532,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 392,
+          "done": 396,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/reference.webp",
+          "start": 392,
+          "done": 396,
+          "beforeReady": true,
+          "bodyBytes": 96632,
+          "decodedBodyBytes": 96632,
+          "transferBytes": 96932,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 578,
+          "done": 581,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/shopping-cart.svg",
+          "start": 610,
+          "done": 613,
+          "beforeReady": true,
+          "bodyBytes": 530,
+          "decodedBodyBytes": 530,
+          "transferBytes": 830,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assistant.js",
+          "start": 613,
+          "done": 616,
+          "beforeReady": true,
+          "bodyBytes": 49944,
+          "decodedBodyBytes": 49944,
+          "transferBytes": 50244,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "nachher",
+      "profile": "Desktop",
+      "cache": "kalt",
+      "cycle": 3,
+      "readyMs": 595,
+      "coreBodyBytes": 429836,
+      "coreDecodedBytes": 1403193,
+      "htmlBodyBytes": 99449,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 54,
+      "bytesToReady": 1902037,
+      "requestsToReady": 19,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 3,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 12,
+          "done": 15,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 12,
+          "done": 16,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 31,
+          "done": 32,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 33,
+          "done": 33,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 35,
+          "done": 38,
+          "beforeReady": true,
+          "bodyBytes": 45541,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 45841,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 36,
+          "done": 41,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 44,
+          "done": 45,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 208659,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 46,
+          "done": 50,
+          "beforeReady": true,
+          "bodyBytes": 132246,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 132546,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 46,
+          "done": 56,
+          "beforeReady": true,
+          "bodyBytes": 179449,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 179749,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 46,
+          "done": 56,
+          "beforeReady": true,
+          "bodyBytes": 95463,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 95763,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/design-gallery",
+          "start": 595,
+          "done": 597,
+          "beforeReady": false,
+          "bodyBytes": 38,
+          "decodedBodyBytes": 38,
+          "transferBytes": 338,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 47,
+          "done": 54,
+          "beforeReady": true,
+          "bodyBytes": 99449,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 99749,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-1eaad0238fbce1f5.mjs",
+          "start": 71,
+          "done": 76,
+          "beforeReady": true,
+          "bodyBytes": 429836,
+          "decodedBodyBytes": 1403193,
+          "transferBytes": 430136,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 71,
+          "done": 74,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 39265,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 373,
+          "done": 376,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/reference.webp",
+          "start": 373,
+          "done": 377,
+          "beforeReady": true,
+          "bodyBytes": 96632,
+          "decodedBodyBytes": 96632,
+          "transferBytes": 96932,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 544,
+          "done": 548,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/shopping-cart.svg",
+          "start": 578,
+          "done": 581,
+          "beforeReady": true,
+          "bodyBytes": 530,
+          "decodedBodyBytes": 530,
+          "transferBytes": 830,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assistant.js",
+          "start": 581,
+          "done": 583,
+          "beforeReady": true,
+          "bodyBytes": 49944,
+          "decodedBodyBytes": 49944,
+          "transferBytes": 50244,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "nachher",
+      "profile": "Desktop",
+      "cache": "warm",
+      "cycle": 3,
+      "readyMs": 584,
+      "coreBodyBytes": 429836,
+      "coreDecodedBytes": 1403193,
+      "htmlBodyBytes": 99449,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 44,
+      "bytesToReady": 670329,
+      "requestsToReady": 11,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 3,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 7,
+          "done": 8,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 7,
+          "done": 8,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 26,
+          "done": 27,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 28,
+          "done": 29,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 30,
+          "done": 31,
+          "beforeReady": true,
+          "bodyBytes": 45541,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 31,
+          "done": 35,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 38,
+          "done": 38,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 40,
+          "done": 41,
+          "beforeReady": true,
+          "bodyBytes": 132246,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 40,
+          "done": 42,
+          "beforeReady": true,
+          "bodyBytes": 179449,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 40,
+          "done": 43,
+          "beforeReady": true,
+          "bodyBytes": 95463,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/design-gallery",
+          "start": 585,
+          "done": 587,
+          "beforeReady": false,
+          "bodyBytes": 38,
+          "decodedBodyBytes": 38,
+          "transferBytes": 338,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 41,
+          "done": 44,
+          "beforeReady": true,
+          "bodyBytes": 99449,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-1eaad0238fbce1f5.mjs",
+          "start": 56,
+          "done": 59,
+          "beforeReady": true,
+          "bodyBytes": 429836,
+          "decodedBodyBytes": 1403193,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 56,
+          "done": 60,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 363,
+          "done": 366,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/reference.webp",
+          "start": 363,
+          "done": 367,
+          "beforeReady": true,
+          "bodyBytes": 96632,
+          "decodedBodyBytes": 96632,
+          "transferBytes": 96932,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 535,
+          "done": 538,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/shopping-cart.svg",
+          "start": 567,
+          "done": 570,
+          "beforeReady": true,
+          "bodyBytes": 530,
+          "decodedBodyBytes": 530,
+          "transferBytes": 830,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assistant.js",
+          "start": 571,
+          "done": 573,
+          "beforeReady": true,
+          "bodyBytes": 49944,
+          "decodedBodyBytes": 49944,
+          "transferBytes": 50244,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "vorher",
+      "profile": "iPhone 13",
+      "cache": "kalt",
+      "cycle": 1,
+      "readyMs": 19053,
+      "coreBodyBytes": 503622,
+      "coreDecodedBytes": 1514532,
+      "htmlBodyBytes": 375752,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 14647,
+      "bytesToReady": 3392858,
+      "requestsToReady": 16,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 351,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 357,
+          "done": 692,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 358,
+          "done": 614,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 615,
+          "done": 816,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 817,
+          "done": 989,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 991,
+          "done": 2846,
+          "beforeReady": true,
+          "bodyBytes": 166290,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 166590,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 992,
+          "done": 4032,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 4035,
+          "done": 10610,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 208659,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 4037,
+          "done": 16621,
+          "beforeReady": true,
+          "bodyBytes": 507615,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 507915,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 4037,
+          "done": 17752,
+          "beforeReady": true,
+          "bodyBytes": 723247,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 723547,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 4037,
+          "done": 14022,
+          "beforeReady": true,
+          "bodyBytes": 344285,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 344585,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 4038,
+          "done": 14647,
+          "beforeReady": true,
+          "bodyBytes": 375752,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 376052,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-99526cbc0522ef2e.mjs",
+          "start": 4272,
+          "done": 16699,
+          "beforeReady": true,
+          "bodyBytes": 503622,
+          "decodedBodyBytes": 1514532,
+          "transferBytes": 503922,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 4272,
+          "done": 5839,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 39265,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 18074,
+          "done": 18455,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 18256,
+          "done": 19005,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "vorher",
+      "profile": "iPhone 13",
+      "cache": "warm",
+      "cycle": 1,
+      "readyMs": 4565,
+      "coreBodyBytes": 503622,
+      "coreDecodedBytes": 1514532,
+      "htmlBodyBytes": 375752,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 3189,
+      "bytesToReady": 522323,
+      "requestsToReady": 8,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 350,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 356,
+          "done": 689,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 356,
+          "done": 612,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 613,
+          "done": 815,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 816,
+          "done": 987,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 990,
+          "done": 990,
+          "beforeReady": true,
+          "bodyBytes": 166290,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 990,
+          "done": 3179,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 3183,
+          "done": 3184,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 3186,
+          "done": 3186,
+          "beforeReady": true,
+          "bodyBytes": 507615,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 3186,
+          "done": 3187,
+          "beforeReady": true,
+          "bodyBytes": 723247,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 3186,
+          "done": 3187,
+          "beforeReady": true,
+          "bodyBytes": 344285,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 3187,
+          "done": 3189,
+          "beforeReady": true,
+          "bodyBytes": 375752,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-99526cbc0522ef2e.mjs",
+          "start": 3203,
+          "done": 3206,
+          "beforeReady": true,
+          "bodyBytes": 503622,
+          "decodedBodyBytes": 1514532,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 3204,
+          "done": 3207,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 3592,
+          "done": 3969,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 3771,
+          "done": 4518,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "nachher",
+      "profile": "iPhone 13",
+      "cache": "kalt",
+      "cycle": 1,
+      "readyMs": 10914,
+      "coreBodyBytes": 429836,
+      "coreDecodedBytes": 1403193,
+      "htmlBodyBytes": 99449,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 6746,
+      "bytesToReady": 1754031,
+      "requestsToReady": 16,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 346,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 353,
+          "done": 686,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 353,
+          "done": 609,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 610,
+          "done": 813,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 814,
+          "done": 983,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 986,
+          "done": 1604,
+          "beforeReady": true,
+          "bodyBytes": 45541,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 45841,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 987,
+          "done": 3429,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 3433,
+          "done": 8412,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 208659,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 3436,
+          "done": 7394,
+          "beforeReady": true,
+          "bodyBytes": 132246,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 132546,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 3436,
+          "done": 8138,
+          "beforeReady": true,
+          "bodyBytes": 179449,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 179749,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 3436,
+          "done": 6662,
+          "beforeReady": true,
+          "bodyBytes": 95463,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 95763,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 3437,
+          "done": 6746,
+          "beforeReady": true,
+          "bodyBytes": 99449,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 99749,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-1eaad0238fbce1f5.mjs",
+          "start": 3657,
+          "done": 9576,
+          "beforeReady": true,
+          "bodyBytes": 429836,
+          "decodedBodyBytes": 1403193,
+          "transferBytes": 430136,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 3657,
+          "done": 5232,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 39265,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 9931,
+          "done": 10322,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 10112,
+          "done": 10869,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "nachher",
+      "profile": "iPhone 13",
+      "cache": "warm",
+      "cycle": 1,
+      "readyMs": 4573,
+      "coreBodyBytes": 429836,
+      "coreDecodedBytes": 1403193,
+      "htmlBodyBytes": 99449,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 3206,
+      "bytesToReady": 522323,
+      "requestsToReady": 8,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 347,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 354,
+          "done": 692,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 354,
+          "done": 616,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 617,
+          "done": 827,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 828,
+          "done": 997,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 998,
+          "done": 999,
+          "beforeReady": true,
+          "bodyBytes": 45541,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 999,
+          "done": 3195,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 3200,
+          "done": 3200,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 3202,
+          "done": 3203,
+          "beforeReady": true,
+          "bodyBytes": 132246,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 3202,
+          "done": 3205,
+          "beforeReady": true,
+          "bodyBytes": 179449,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 3202,
+          "done": 3205,
+          "beforeReady": true,
+          "bodyBytes": 95463,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 3203,
+          "done": 3206,
+          "beforeReady": true,
+          "bodyBytes": 99449,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-1eaad0238fbce1f5.mjs",
+          "start": 3214,
+          "done": 3217,
+          "beforeReady": true,
+          "bodyBytes": 429836,
+          "decodedBodyBytes": 1403193,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 3214,
+          "done": 3218,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 3609,
+          "done": 3999,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 3787,
+          "done": 4526,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "nachher",
+      "profile": "iPhone 13",
+      "cache": "kalt",
+      "cycle": 2,
+      "readyMs": 10891,
+      "coreBodyBytes": 429836,
+      "coreDecodedBytes": 1403193,
+      "htmlBodyBytes": 99449,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 6729,
+      "bytesToReady": 1754031,
+      "requestsToReady": 16,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 342,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 348,
+          "done": 683,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 349,
+          "done": 606,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 607,
+          "done": 811,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 812,
+          "done": 982,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 984,
+          "done": 1606,
+          "beforeReady": true,
+          "bodyBytes": 45541,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 45841,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 985,
+          "done": 3414,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 3417,
+          "done": 8390,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 208659,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 3420,
+          "done": 7387,
+          "beforeReady": true,
+          "bodyBytes": 132246,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 132546,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 3420,
+          "done": 8126,
+          "beforeReady": true,
+          "bodyBytes": 179449,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 179749,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 3420,
+          "done": 6652,
+          "beforeReady": true,
+          "bodyBytes": 95463,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 95763,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 3421,
+          "done": 6729,
+          "beforeReady": true,
+          "bodyBytes": 99449,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 99749,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-1eaad0238fbce1f5.mjs",
+          "start": 3637,
+          "done": 9560,
+          "beforeReady": true,
+          "bodyBytes": 429836,
+          "decodedBodyBytes": 1403193,
+          "transferBytes": 430136,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 3637,
+          "done": 5198,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 39265,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 9916,
+          "done": 10296,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 10096,
+          "done": 10843,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "nachher",
+      "profile": "iPhone 13",
+      "cache": "warm",
+      "cycle": 2,
+      "readyMs": 4539,
+      "coreBodyBytes": 429836,
+      "coreDecodedBytes": 1403193,
+      "htmlBodyBytes": 99449,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 3177,
+      "bytesToReady": 522323,
+      "requestsToReady": 8,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 338,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 345,
+          "done": 681,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 345,
+          "done": 603,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 605,
+          "done": 806,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 806,
+          "done": 977,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 979,
+          "done": 979,
+          "beforeReady": true,
+          "bodyBytes": 45541,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 979,
+          "done": 3167,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 3170,
+          "done": 3171,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 3173,
+          "done": 3174,
+          "beforeReady": true,
+          "bodyBytes": 132246,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 3173,
+          "done": 3176,
+          "beforeReady": true,
+          "bodyBytes": 179449,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 3173,
+          "done": 3176,
+          "beforeReady": true,
+          "bodyBytes": 95463,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 3174,
+          "done": 3177,
+          "beforeReady": true,
+          "bodyBytes": 99449,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-1eaad0238fbce1f5.mjs",
+          "start": 3196,
+          "done": 3198,
+          "beforeReady": true,
+          "bodyBytes": 429836,
+          "decodedBodyBytes": 1403193,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 3196,
+          "done": 3199,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 3579,
+          "done": 3947,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 3762,
+          "done": 4490,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "vorher",
+      "profile": "iPhone 13",
+      "cache": "kalt",
+      "cycle": 2,
+      "readyMs": 19047,
+      "coreBodyBytes": 503622,
+      "coreDecodedBytes": 1514532,
+      "htmlBodyBytes": 375752,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 14652,
+      "bytesToReady": 3392858,
+      "requestsToReady": 16,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 343,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 349,
+          "done": 687,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 349,
+          "done": 609,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 610,
+          "done": 811,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 811,
+          "done": 982,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 984,
+          "done": 2838,
+          "beforeReady": true,
+          "bodyBytes": 166290,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 166590,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 985,
+          "done": 4031,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 4034,
+          "done": 10606,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 208659,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 4037,
+          "done": 16625,
+          "beforeReady": true,
+          "bodyBytes": 507615,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 507915,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 4037,
+          "done": 14005,
+          "beforeReady": true,
+          "bodyBytes": 344285,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 344585,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 4037,
+          "done": 17756,
+          "beforeReady": true,
+          "bodyBytes": 723247,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 723547,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 4038,
+          "done": 14652,
+          "beforeReady": true,
+          "bodyBytes": 375752,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 376052,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-99526cbc0522ef2e.mjs",
+          "start": 4266,
+          "done": 16687,
+          "beforeReady": true,
+          "bodyBytes": 503622,
+          "decodedBodyBytes": 1514532,
+          "transferBytes": 503922,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 4266,
+          "done": 5827,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 39265,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 18074,
+          "done": 18459,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 18255,
+          "done": 19000,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "vorher",
+      "profile": "iPhone 13",
+      "cache": "warm",
+      "cycle": 2,
+      "readyMs": 4586,
+      "coreBodyBytes": 503622,
+      "coreDecodedBytes": 1514532,
+      "htmlBodyBytes": 375752,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 3228,
+      "bytesToReady": 522323,
+      "requestsToReady": 8,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 350,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 356,
+          "done": 614,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 356,
+          "done": 692,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 615,
+          "done": 818,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 819,
+          "done": 1013,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 1015,
+          "done": 1016,
+          "beforeReady": true,
+          "bodyBytes": 166290,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 1016,
+          "done": 3218,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 3222,
+          "done": 3222,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 3225,
+          "done": 3225,
+          "beforeReady": true,
+          "bodyBytes": 507615,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 3225,
+          "done": 3226,
+          "beforeReady": true,
+          "bodyBytes": 723247,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 3225,
+          "done": 3226,
+          "beforeReady": true,
+          "bodyBytes": 344285,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 3226,
+          "done": 3228,
+          "beforeReady": true,
+          "bodyBytes": 375752,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-99526cbc0522ef2e.mjs",
+          "start": 3243,
+          "done": 3246,
+          "beforeReady": true,
+          "bodyBytes": 503622,
+          "decodedBodyBytes": 1514532,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 3243,
+          "done": 3246,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 3624,
+          "done": 3999,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 3800,
+          "done": 4540,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "vorher",
+      "profile": "iPhone 13",
+      "cache": "kalt",
+      "cycle": 3,
+      "readyMs": 19062,
+      "coreBodyBytes": 503622,
+      "coreDecodedBytes": 1514532,
+      "htmlBodyBytes": 375752,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 14662,
+      "bytesToReady": 3392858,
+      "requestsToReady": 16,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 355,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 360,
+          "done": 697,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 360,
+          "done": 619,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 620,
+          "done": 817,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 818,
+          "done": 1002,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 1005,
+          "done": 2835,
+          "beforeReady": true,
+          "bodyBytes": 166290,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 166590,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 1005,
+          "done": 4055,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 4058,
+          "done": 10601,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 208659,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 4060,
+          "done": 16631,
+          "beforeReady": true,
+          "bodyBytes": 507615,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 507915,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 4060,
+          "done": 17775,
+          "beforeReady": true,
+          "bodyBytes": 723247,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 723547,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 4061,
+          "done": 14025,
+          "beforeReady": true,
+          "bodyBytes": 344285,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 344585,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 4061,
+          "done": 14662,
+          "beforeReady": true,
+          "bodyBytes": 375752,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 376052,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-99526cbc0522ef2e.mjs",
+          "start": 4296,
+          "done": 16715,
+          "beforeReady": true,
+          "bodyBytes": 503622,
+          "decodedBodyBytes": 1514532,
+          "transferBytes": 503922,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 4296,
+          "done": 5880,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 39265,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 18093,
+          "done": 18483,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 18273,
+          "done": 19014,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "vorher",
+      "profile": "iPhone 13",
+      "cache": "warm",
+      "cycle": 3,
+      "readyMs": 4576,
+      "coreBodyBytes": 503622,
+      "coreDecodedBytes": 1514532,
+      "htmlBodyBytes": 375752,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 3199,
+      "bytesToReady": 522323,
+      "requestsToReady": 8,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 352,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 361,
+          "done": 687,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 361,
+          "done": 609,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 610,
+          "done": 810,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 811,
+          "done": 980,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 982,
+          "done": 982,
+          "beforeReady": true,
+          "bodyBytes": 166290,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 982,
+          "done": 3189,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 3192,
+          "done": 3193,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 3195,
+          "done": 3195,
+          "beforeReady": true,
+          "bodyBytes": 507615,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 3195,
+          "done": 3196,
+          "beforeReady": true,
+          "bodyBytes": 723247,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 3195,
+          "done": 3196,
+          "beforeReady": true,
+          "bodyBytes": 344285,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 3196,
+          "done": 3199,
+          "beforeReady": true,
+          "bodyBytes": 375752,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 3213,
+          "done": 3216,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-99526cbc0522ef2e.mjs",
+          "start": 3213,
+          "done": 3216,
+          "beforeReady": true,
+          "bodyBytes": 503622,
+          "decodedBodyBytes": 1514532,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 3604,
+          "done": 3983,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 3783,
+          "done": 4529,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "nachher",
+      "profile": "iPhone 13",
+      "cache": "kalt",
+      "cycle": 3,
+      "readyMs": 10853,
+      "coreBodyBytes": 429836,
+      "coreDecodedBytes": 1403193,
+      "htmlBodyBytes": 99449,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 6712,
+      "bytesToReady": 1754031,
+      "requestsToReady": 16,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 344,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 350,
+          "done": 682,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 350,
+          "done": 605,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 607,
+          "done": 807,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 807,
+          "done": 979,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 981,
+          "done": 1599,
+          "beforeReady": true,
+          "bodyBytes": 45541,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 45841,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 981,
+          "done": 3396,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 3400,
+          "done": 8354,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 208659,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 3402,
+          "done": 7365,
+          "beforeReady": true,
+          "bodyBytes": 132246,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 132546,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 3402,
+          "done": 8112,
+          "beforeReady": true,
+          "bodyBytes": 179449,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 179749,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 3402,
+          "done": 6634,
+          "beforeReady": true,
+          "bodyBytes": 95463,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 95763,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 3403,
+          "done": 6712,
+          "beforeReady": true,
+          "bodyBytes": 99449,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 99749,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-1eaad0238fbce1f5.mjs",
+          "start": 3614,
+          "done": 9534,
+          "beforeReady": true,
+          "bodyBytes": 429836,
+          "decodedBodyBytes": 1403193,
+          "transferBytes": 430136,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 3614,
+          "done": 5178,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 39265,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 9895,
+          "done": 10268,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 10075,
+          "done": 10807,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        }
+      ]
+    },
+    {
+      "version": "nachher",
+      "profile": "iPhone 13",
+      "cache": "warm",
+      "cycle": 3,
+      "readyMs": 4547,
+      "coreBodyBytes": 429836,
+      "coreDecodedBytes": 1403193,
+      "htmlBodyBytes": 99449,
+      "htmlDecodedBytes": 375752,
+      "htmlDoneMs": 3176,
+      "bytesToReady": 522323,
+      "requestsToReady": 8,
+      "selected": "acryl-unser-anfang-01",
+      "designs": [
+        "acryl-unser-anfang-01"
+      ],
+      "text": [
+        [
+          "heading",
+          "U N S E R   A N F A N G",
+          "Montserrat",
+          true
+        ],
+        [
+          "names",
+          "Anna & Lukas",
+          "Lora",
+          true
+        ],
+        [
+          "place",
+          "Am See in Hamburg",
+          "Raleway",
+          true
+        ],
+        [
+          "date",
+          "14.06.2020",
+          "Montserrat",
+          true
+        ],
+        [
+          "slogan",
+          "Hier begann unser Wir.",
+          "Lora",
+          true
+        ]
+      ],
+      "scenePaths": 86,
+      "sceneImages": [
+        "/acryl-assets/reference.webp"
+      ],
+      "optionImages": 0,
+      "transfer": [
+        {
+          "path": "/konfigurator/shop/",
+          "start": 0,
+          "done": 343,
+          "beforeReady": true,
+          "bodyBytes": 2235,
+          "decodedBodyBytes": 2235,
+          "transferBytes": 2535,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-client.mjs",
+          "start": 348,
+          "done": 667,
+          "beforeReady": true,
+          "bodyBytes": 22588,
+          "decodedBodyBytes": 22588,
+          "transferBytes": 22888,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-entry-page.mjs",
+          "start": 348,
+          "done": 589,
+          "beforeReady": true,
+          "bodyBytes": 7111,
+          "decodedBodyBytes": 7111,
+          "transferBytes": 7411,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-design-switch.mjs",
+          "start": 591,
+          "done": 793,
+          "beforeReady": true,
+          "bodyBytes": 7267,
+          "decodedBodyBytes": 7267,
+          "transferBytes": 7567,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/shop-selection-transfer.mjs",
+          "start": 794,
+          "done": 963,
+          "beforeReady": true,
+          "bodyBytes": 1258,
+          "decodedBodyBytes": 1258,
+          "transferBytes": 1558,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "start": 965,
+          "done": 966,
+          "beforeReady": true,
+          "bodyBytes": 45541,
+          "decodedBodyBytes": 166290,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/api/shop-entry/model",
+          "start": 965,
+          "done": 3166,
+          "beforeReady": true,
+          "bodyBytes": 404880,
+          "decodedBodyBytes": 404880,
+          "transferBytes": 405180,
+          "window": "shop"
+        },
+        {
+          "path": "/konfigurator/shop/vorschauen/d818347de28b1d20ea0d4c28815730098a432c80595ec01315f8e22c112caf24.svg",
+          "start": 3170,
+          "done": 3171,
+          "beforeReady": true,
+          "bodyBytes": 208359,
+          "decodedBodyBytes": 208359,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "start": 3173,
+          "done": 3174,
+          "beforeReady": true,
+          "bodyBytes": 132246,
+          "decodedBodyBytes": 507615,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "start": 3173,
+          "done": 3175,
+          "beforeReady": true,
+          "bodyBytes": 179449,
+          "decodedBodyBytes": 723247,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "start": 3173,
+          "done": 3176,
+          "beforeReady": true,
+          "bodyBytes": 95463,
+          "decodedBodyBytes": 344285,
+          "transferBytes": 0,
+          "window": "shop"
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "start": 3174,
+          "done": 3176,
+          "beforeReady": true,
+          "bodyBytes": 99449,
+          "decodedBodyBytes": 375752,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-1eaad0238fbce1f5.mjs",
+          "start": 3185,
+          "done": 3187,
+          "beforeReady": true,
+          "bodyBytes": 429836,
+          "decodedBodyBytes": 1403193,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/_acryl-bundle/editor-525420419a930df8.mjs",
+          "start": 3185,
+          "done": 3188,
+          "beforeReady": true,
+          "bodyBytes": 38965,
+          "decodedBodyBytes": 136576,
+          "transferBytes": 0,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-assets/scene-empty-v2.webp",
+          "start": 3577,
+          "done": 3921,
+          "beforeReady": true,
+          "bodyBytes": 19446,
+          "decodedBodyBytes": 19446,
+          "transferBytes": 19746,
+          "window": "editor"
+        },
+        {
+          "path": "/acryl-configurator/mobile-demo/demo.css",
+          "start": 3756,
+          "done": 4498,
+          "beforeReady": true,
+          "bodyBytes": 55138,
+          "decodedBodyBytes": 55138,
+          "transferBytes": 55438,
+          "window": "editor"
+        }
+      ]
+    }
+  ]
+}

@@ -29,6 +29,35 @@ test('combined orders keep both stores, rejected lines, immutable IDs and indepe
  assert.equal(selectedOrder(r.orders,'same'),null);assert.equal(selectedOrder(r.orders,'acryl:same').orderId,'new');
  assert.equal(selectedOrder(r.orders.slice(0,1),'same'),r.orders[0]);
 });
+test('an older Merchant runtime without E3 still contributes orders alongside recent Acryl positions',()=>{
+ const input=stores();
+ delete input[0].workshop.orderIntake.errors;
+ const result=crossStoreOrders(input,{shopDomain:shop,enabled:true});
+ assert.deepEqual(new Set(result.orders.map(order=>order.storeId)),new Set(['legacy','acryl']));
+ assert.equal(result.statuses['legacy:same'].label,'legacy same');
+ assert.equal(result.errors.length,1);
+ assert.equal(result.errors[0].storeId,'acryl');
+});
+test('a failed position or invalid display record becomes a scoped error row',()=>{
+ const failed={...row('broken','position-101'),lineId:'11',quantity:4};
+ const badDisplay={...row('bad-display','position-102'),lineId:'12',receivedAt:null};
+ const foreign={...failed,shopDomain:'other.myshopify.com',orderId:'foreign'};
+ const input=[store('legacy',[row('healthy','legacy-order'),failed,foreign]),store('acryl',[row('healthy','acryl-order'),badDisplay])];
+ const status=input[0].workshop.orderIntake.status,calls=[];
+ input[0].workshop.orderIntake.status=id=>{
+  calls.push(id);
+  if(id===failed.id)throw Error('private detail');
+  return status(id);
+ };
+ const result=crossStoreOrders(input,{shopDomain:shop,enabled:true});
+ assert.deepEqual(result.orders.map(order=>order.orderId),['acryl-order','legacy-order']);
+ assert.deepEqual(calls,['healthy','broken']);
+ assert.deepEqual(result.errors.map(error=>[error.orderId,error.lineId,error.pagePrefix,error.status,error.overviewReadError]),[
+  ['position-101','11','/werkstatt/','fehler',true],
+  ['position-102','12','/werkstatt/acryl/','fehler',true],
+ ]);
+ assert.ok(!JSON.stringify(result).includes('private detail'));
+});
 test('combined endpoint requires the merchant and fixed origin; accepts no writes or partial index',async()=>{
  let reads=0;const s=stores();for(const x of s){const old=x.workshop.orderIntake.list;x.workshop.orderIntake.list=()=>{reads++;return old();};}
  const api=createCrossStoreOrders({stores:s,origin,shopDomain:shop,verifyMerchant:t=>t==='Bearer good'?{role:'merchant',shopDomain:shop,subject:'operator'}:null,enabled:true});

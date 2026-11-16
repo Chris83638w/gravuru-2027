@@ -13,6 +13,21 @@ import {SURCHARGE_UNAVAILABLE_MESSAGE} from '../configurator/variant-m/surcharge
 const fail=(status,message)=>{throw Object.assign(Error(message),{status,code:'order_intake'});};
 const OFFER_MISMATCH='Shop-Variante, Menge oder Preis weichen vom gesicherten Entwurf ab.';
 const optionKey=o=>JSON.stringify(Object.entries(o||{}).sort());
+const samePositionId=(value,stored)=>value===stored||(typeof value==='number'&&String(value)===stored);
+function positionDocuments(rows,onUnreadable){
+ if(!onUnreadable)return rows.map(row=>JSON.parse(row.document));
+ const documents=[];
+ for(const row of rows){
+  let document;
+  try{document=JSON.parse(row.document);}catch{/* Use the stored identity in the overview. */}
+  if(document?.shopDomain===row.shop&&samePositionId(document.orderId,row.order_id)&&samePositionId(document.lineId,row.line_id)){
+   documents.push(document);
+  }else{
+   onUnreadable({shopDomain:row.shop,orderId:row.order_id,lineId:row.line_id});
+  }
+ }
+ return documents;
+}
 // K14 / Ü12.1: Zusatzfelder des Prüfstands als sichtbare Warenkorb-Eigenschaften (Bezeichnung → Anzeige).
 const offerFields=m=>Array.isArray(m.selection?.fields)&&m.selection.fields.length?{fields:m.selection.fields.map(f=>({label:f.label,value:f.display}))}:{};
 const sha=v=>createHash('sha256').update(v).digest('hex');
@@ -171,7 +186,10 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
  }
  // E3: rejected single positions (status „fehler“). Append-only per delivery; the overview shows the latest reason
  // per shop line until that line is accepted by a later delivery.
- const errorRows=(where='',...args)=>db.prepare('SELECT e.document FROM form_order_line_errors e WHERE e.tenant_id=? AND e.rowid=(SELECT max(rowid) FROM form_order_line_errors x WHERE x.tenant_id=e.tenant_id AND x.shop=e.shop AND x.order_id=e.order_id AND x.line_id=e.line_id) AND NOT EXISTS(SELECT 1 FROM form_order_lines l WHERE l.tenant_id=e.tenant_id AND l.shop=e.shop AND l.order_id=e.order_id AND l.line_id=e.line_id)'+where+' ORDER BY e.rowid DESC LIMIT 200').all(tenant,...args).map(r=>JSON.parse(r.document));
+ const errorRecords=(where='',...args)=>db.prepare('SELECT e.shop,e.order_id,e.line_id,e.document FROM form_order_line_errors e WHERE e.tenant_id=? AND e.rowid=(SELECT max(rowid) FROM form_order_line_errors x WHERE x.tenant_id=e.tenant_id AND x.shop=e.shop AND x.order_id=e.order_id AND x.line_id=e.line_id) AND NOT EXISTS(SELECT 1 FROM form_order_lines l WHERE l.tenant_id=e.tenant_id AND l.shop=e.shop AND l.order_id=e.order_id AND l.line_id=e.line_id)'+where+' ORDER BY e.rowid DESC LIMIT 200').all(tenant,...args);
+ const errorRows=(where='',...args)=>positionDocuments(errorRecords(where,...args));
+ const list=options=>positionDocuments(
+  db.prepare('SELECT shop,order_id,line_id,document FROM form_order_lines WHERE tenant_id=? ORDER BY rowid DESC LIMIT 200').all(tenant),options?.onUnreadable);
  const rejected=id=>{const r=db.prepare('SELECT document FROM form_order_line_errors WHERE id=? AND tenant_id=?').get(id,tenant);if(!r)fail(404,'Bestellposition nicht gefunden.');return JSON.parse(r.document);};
  // Freigabeprozess (K5) kennt auch abgelehnte Positionen: sie stehen dort als „fehler“ mit dem Grund aus dem Eingang.
  const lineOrRejected=id=>typeof id==='string'&&id.startsWith('ordererror_')?rejected(id):get(id);
@@ -180,7 +198,7 @@ export function createOrderIntake({database:db,snapshot,clock=Date.now,autoRelea
  const statuses=createOrderStatus({database:db,clock,production:(line,shop)=>release.state(line.id,{shop}),tenantId:tenant});
  release=createProductionRelease({database:db,clock,line:lineOrRejected,shopStatus:line=>statuses.shopState(line),autoRelease,rejectedLines:()=>errorRows(),tenantId:tenant});
  const forSnapshot=snapshotId=>typeof snapshotId==='string'?db.prepare("SELECT document FROM form_order_lines WHERE json_extract(document,'$.snapshotId')=? AND tenant_id=? ORDER BY rowid").all(snapshotId,tenant).map(r=>JSON.parse(r.document)):[];
- return {tenantId:tenant,get,forSnapshot,catalogLiveApproval:catalogLive.approval,catalogLiveApprovals:catalogLive.approvals,approveCatalogLiveProducts:catalogLive.approve,catalogLiveOrderScope:input=>doorbellLiveOrderScope(input,'catalog-live-approved'),doorbellLiveApproval:input=>doorbellLiveApproval(input),doorbellGalleryApprovals,doorbellLiveOrderScope,approveDoorbellLiveProducts,production:release,errors:()=>errorRows(),customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=? AND tenant_id=?').get(line.shopDomain,line.orderId,tenant)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list:()=>db.prepare('SELECT document FROM form_order_lines WHERE tenant_id=? ORDER BY rowid DESC LIMIT 200').all(tenant).map(r=>JSON.parse(r.document)),bindings:()=>db.prepare('SELECT b.*,s.options AS selection_options FROM form_shop_bindings b LEFT JOIN form_shop_binding_selections s ON s.binding_id=b.id AND s.tenant_id=b.tenant_id WHERE b.tenant_id=? ORDER BY b.rowid DESC').all(tenant).map(r=>safeBinding(r,r.selection_options===null?null:JSON.parse(r.selection_options))),
+ return {tenantId:tenant,get,forSnapshot,catalogLiveApproval:catalogLive.approval,catalogLiveApprovals:catalogLive.approvals,approveCatalogLiveProducts:catalogLive.approve,catalogLiveOrderScope:input=>doorbellLiveOrderScope(input,'catalog-live-approved'),doorbellLiveApproval:input=>doorbellLiveApproval(input),doorbellGalleryApprovals,doorbellLiveOrderScope,approveDoorbellLiveProducts,production:release,errors:({onUnreadable}={})=>positionDocuments(errorRecords(),onUnreadable),customer:id=>{const line=get(id);return db.prepare('SELECT customer_id FROM form_order_customers WHERE shop=? AND order_id=? AND tenant_id=?').get(line.shopDomain,line.orderId,tenant)?.customer_id||null;},status:id=>statuses.forLine(get(id)),list,bindings:()=>db.prepare('SELECT b.*,s.options AS selection_options FROM form_shop_bindings b LEFT JOIN form_shop_binding_selections s ON s.binding_id=b.id AND s.tenant_id=b.tenant_id WHERE b.tenant_id=? ORDER BY b.rowid DESC').all(tenant).map(r=>safeBinding(r,r.selection_options===null?null:JSON.parse(r.selection_options))),
   // Internal immutable display-image lookup, used only AFTER capability verification.
   imageSnapshot(offerId,shopDomain){
    if(typeof offerId!=='string'||!/^offer_[a-f0-9-]{36}$/.test(offerId)||!domain(shopDomain))fail(404,'Gestaltungsbild nicht gefunden.');

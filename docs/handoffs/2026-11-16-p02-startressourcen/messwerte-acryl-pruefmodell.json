@@ -1,0 +1,4052 @@
+{
+  "product": "acryl",
+  "browser": "Chromium 157.0.8103.51",
+  "p02Commit": "c18800e96952955f9d72902630666da911dfba28",
+  "commonP01Commit": "a864464fa2ada7715a94560619f8b6a5fa4d68c1",
+  "localSignedProxy": true,
+  "desktop": {
+    "viewport": {
+      "width": 1360,
+      "height": 900
+    }
+  },
+  "mobile": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "network": {
+      "offline": false,
+      "latency": 150,
+      "downloadThroughput": 200000,
+      "uploadThroughput": 93750,
+      "connectionType": "cellular4g"
+    }
+  },
+  "fixtures": {
+    "vorher": {
+      "commit": "a864464fa2ada7715a94560619f8b6a5fa4d68c1",
+      "catalogCommit": "8236b8bf",
+      "product": "Acrylglasbild Unser Anfang (Schriften-Testmodell)",
+      "assetCount": 0,
+      "modelSha256": "c69f6dc3ff4521d5d210abfe86c7d5c715cf221b3b920cf32a708745e5e9181e"
+    },
+    "nachher": {
+      "commit": "a261afe493871c00b530ccc430ab1a0df6c28b34",
+      "catalogCommit": "8236b8bf",
+      "product": "Acrylglasbild Unser Anfang (Schriften-Testmodell)",
+      "assetCount": 0,
+      "modelSha256": "c69f6dc3ff4521d5d210abfe86c7d5c715cf221b3b920cf32a708745e5e9181e"
+    }
+  },
+  "cacheHeaders": {
+    "vorher": {
+      "/_acryl-runtime/lazy/katalog-kern.json": "public, max-age=3600",
+      "/_acryl-runtime/lazy/schriften/lora.json": "public, max-age=3600",
+      "/_acryl-runtime/lazy/schriften/montserrat.json": "public, max-age=3600",
+      "/_acryl-runtime/lazy/schriften/raleway.json": "public, max-age=3600"
+    },
+    "nachher": {
+      "/_acryl-runtime/lazy/katalog-kern.json": "public, max-age=3600",
+      "/_acryl-runtime/lazy/schriften/lora.json": "public, max-age=3600",
+      "/_acryl-runtime/lazy/schriften/montserrat.json": "public, max-age=3600",
+      "/_acryl-runtime/lazy/schriften/raleway.json": "public, max-age=3600"
+    }
+  },
+  "samples": [
+    {
+      "profile": "Desktop",
+      "cache": "kalt",
+      "version": "vorher",
+      "repeat": 1,
+      "editorReadyMs": 635,
+      "editorHtmlStartMs": 56,
+      "editorHtmlFirstByteMs": 70,
+      "editorHtmlDoneMs": 70.8,
+      "width": 1360,
+      "height": 900,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 35.5,
+          "end": 49.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 166590,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 56.4,
+          "end": 70.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 375604,
+          "bodyBytes": 375304
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 61.3,
+          "end": 78.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 507915,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 61.4,
+          "end": 76.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 723547,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 61.5,
+          "end": 79.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 344585,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "editor",
+          "start": 149.7,
+          "end": 150.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "editor",
+          "start": 149.8,
+          "end": 151.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "editor",
+          "start": 149.8,
+          "end": 151.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "editor",
+          "start": 149.9,
+          "end": 151.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 8,
+        "fontsAndCatalogNet": 4,
+        "fontsAndCatalogWireBytes": 1742637,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 166590
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 507915
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 723547
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 344585
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "warm",
+      "version": "vorher",
+      "repeat": 1,
+      "editorReadyMs": 609,
+      "editorHtmlStartMs": 46,
+      "editorHtmlFirstByteMs": 48,
+      "editorHtmlDoneMs": 47.7,
+      "width": 1360,
+      "height": 900,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 34,
+          "end": 34.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 44.4,
+          "end": 45,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 44.5,
+          "end": 46,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 44.5,
+          "end": 45.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 46,
+          "end": 47.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 375304
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "editor",
+          "start": 136.8,
+          "end": 137.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "editor",
+          "start": 136.9,
+          "end": 138.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "editor",
+          "start": 136.9,
+          "end": 138.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "editor",
+          "start": 136.9,
+          "end": 138.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 8,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "kalt",
+      "version": "nachher",
+      "repeat": 1,
+      "editorReadyMs": 619,
+      "editorHtmlStartMs": 54,
+      "editorHtmlFirstByteMs": 67,
+      "editorHtmlDoneMs": 68.1,
+      "width": 1360,
+      "height": 900,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 37.5,
+          "end": 50.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 166590,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 55,
+          "end": 68.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 376052,
+          "bodyBytes": 375752
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 57.6,
+          "end": 76.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 507915,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 57.7,
+          "end": 75.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 723547,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 57.8,
+          "end": 76.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 344585,
+          "bodyBytes": 344285
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 4,
+        "fontsAndCatalogWireBytes": 1742637,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 166590
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 507915
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 723547
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 344585
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "warm",
+      "version": "nachher",
+      "repeat": 1,
+      "editorReadyMs": 612,
+      "editorHtmlStartMs": 45,
+      "editorHtmlFirstByteMs": 47,
+      "editorHtmlDoneMs": 47.4,
+      "width": 1360,
+      "height": 900,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 31.7,
+          "end": 32.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 44,
+          "end": 44.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 44.2,
+          "end": 45.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 44.2,
+          "end": 45.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 45.5,
+          "end": 47.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 375752
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "kalt",
+      "version": "nachher",
+      "repeat": 2,
+      "editorReadyMs": 606,
+      "editorHtmlStartMs": 50,
+      "editorHtmlFirstByteMs": 62,
+      "editorHtmlDoneMs": 62.6,
+      "width": 1360,
+      "height": 900,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 36.3,
+          "end": 40.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 166590,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 48.7,
+          "end": 56.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 507915,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 48.8,
+          "end": 58.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 723547,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 48.8,
+          "end": 59.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 344585,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 50.1,
+          "end": 62.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 376052,
+          "bodyBytes": 375752
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 4,
+        "fontsAndCatalogWireBytes": 1742637,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 166590
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 507915
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 723547
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 344585
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "warm",
+      "version": "nachher",
+      "repeat": 2,
+      "editorReadyMs": 600,
+      "editorHtmlStartMs": 42,
+      "editorHtmlFirstByteMs": 44,
+      "editorHtmlDoneMs": 44.3,
+      "width": 1360,
+      "height": 900,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 30.9,
+          "end": 31.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 40.5,
+          "end": 41.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 40.6,
+          "end": 42.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 40.6,
+          "end": 42.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 42,
+          "end": 44.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 375752
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "kalt",
+      "version": "vorher",
+      "repeat": 2,
+      "editorReadyMs": 598,
+      "editorHtmlStartMs": 46,
+      "editorHtmlFirstByteMs": 52,
+      "editorHtmlDoneMs": 53.1,
+      "width": 1360,
+      "height": 900,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 33.9,
+          "end": 50.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 166590,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 46.3,
+          "end": 53.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 375604,
+          "bodyBytes": 375304
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 69.5,
+          "end": 74.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 507915,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 69.6,
+          "end": 81.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 723547,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 69.7,
+          "end": 81.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 344585,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "editor",
+          "start": 131.6,
+          "end": 132.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "editor",
+          "start": 131.7,
+          "end": 134.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "editor",
+          "start": 131.7,
+          "end": 134.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "editor",
+          "start": 131.7,
+          "end": 133.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 8,
+        "fontsAndCatalogNet": 4,
+        "fontsAndCatalogWireBytes": 1742637,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 166590
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 507915
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 723547
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 344585
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "warm",
+      "version": "vorher",
+      "repeat": 2,
+      "editorReadyMs": 593,
+      "editorHtmlStartMs": 42,
+      "editorHtmlFirstByteMs": 44,
+      "editorHtmlDoneMs": 44.4,
+      "width": 1360,
+      "height": 900,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 30.5,
+          "end": 31.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 41,
+          "end": 41.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 41.1,
+          "end": 42.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 41.2,
+          "end": 42.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 42.5,
+          "end": 44.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 375304
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "editor",
+          "start": 125.9,
+          "end": 126.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "editor",
+          "start": 126.1,
+          "end": 127.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "editor",
+          "start": 126.1,
+          "end": 127.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "editor",
+          "start": 126.1,
+          "end": 127.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 8,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "kalt",
+      "version": "vorher",
+      "repeat": 3,
+      "editorReadyMs": 601,
+      "editorHtmlStartMs": 48,
+      "editorHtmlFirstByteMs": 59,
+      "editorHtmlDoneMs": 59.9,
+      "width": 1360,
+      "height": 900,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 35.2,
+          "end": 38.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 166590,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 46.6,
+          "end": 64.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 507915,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 46.7,
+          "end": 64.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 723547,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 46.8,
+          "end": 56.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 344585,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 48.1,
+          "end": 60,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 375604,
+          "bodyBytes": 375304
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "editor",
+          "start": 134.8,
+          "end": 135.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "editor",
+          "start": 134.8,
+          "end": 136.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "editor",
+          "start": 134.8,
+          "end": 136.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "editor",
+          "start": 134.9,
+          "end": 136.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 8,
+        "fontsAndCatalogNet": 4,
+        "fontsAndCatalogWireBytes": 1742637,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 166590
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 507915
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 723547
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 344585
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "warm",
+      "version": "vorher",
+      "repeat": 3,
+      "editorReadyMs": 587,
+      "editorHtmlStartMs": 40,
+      "editorHtmlFirstByteMs": 42,
+      "editorHtmlDoneMs": 42.8,
+      "width": 1360,
+      "height": 900,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 30.3,
+          "end": 30.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 39.4,
+          "end": 39.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 39.4,
+          "end": 40.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 39.5,
+          "end": 40.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 40.7,
+          "end": 42.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 375304
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "editor",
+          "start": 125.7,
+          "end": 126.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "editor",
+          "start": 125.8,
+          "end": 128,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "editor",
+          "start": 125.8,
+          "end": 127.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "editor",
+          "start": 125.9,
+          "end": 127.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 8,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "kalt",
+      "version": "nachher",
+      "repeat": 3,
+      "editorReadyMs": 596,
+      "editorHtmlStartMs": 43,
+      "editorHtmlFirstByteMs": 55,
+      "editorHtmlDoneMs": 56.1,
+      "width": 1360,
+      "height": 900,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 30.9,
+          "end": 33.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 166590,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 42.4,
+          "end": 49.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 507915,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 42.5,
+          "end": 52.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 723547,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 42.6,
+          "end": 49,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 344585,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 43.9,
+          "end": 56.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 376052,
+          "bodyBytes": 375752
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 4,
+        "fontsAndCatalogWireBytes": 1742637,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 166590
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 507915
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 723547
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 344585
+          }
+        }
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "warm",
+      "version": "nachher",
+      "repeat": 3,
+      "editorReadyMs": 585,
+      "editorHtmlStartMs": 42,
+      "editorHtmlFirstByteMs": 45,
+      "editorHtmlDoneMs": 45.3,
+      "width": 1360,
+      "height": 900,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 30.7,
+          "end": 31.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 40.5,
+          "end": 41.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 40.5,
+          "end": 42.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 40.6,
+          "end": 42.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 42.1,
+          "end": 45.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 375752
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          }
+        }
+      }
+    },
+    {
+      "profile": "iPhone 13 · mobiles Netz",
+      "cache": "kalt",
+      "version": "vorher",
+      "repeat": 1,
+      "editorReadyMs": 19075,
+      "editorHtmlStartMs": 4036,
+      "editorHtmlFirstByteMs": 4188,
+      "editorHtmlDoneMs": 14661.7,
+      "width": 390,
+      "height": 844,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 992.9,
+          "end": 2827.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 166590,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 4034.9,
+          "end": 16628.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 507915,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 4034.9,
+          "end": 17745.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 723547,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 4035,
+          "end": 14014.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 344585,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 4036.3,
+          "end": 14661.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 375604,
+          "bodyBytes": 375304
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "editor",
+          "start": 16746.9,
+          "end": 16747.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "editor",
+          "start": 16746.9,
+          "end": 17745.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "editor",
+          "start": 16747,
+          "end": 16748.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "editor",
+          "start": 16747,
+          "end": 16748.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 8,
+        "fontsAndCatalogNet": 4,
+        "fontsAndCatalogWireBytes": 1742637,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 166590
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 507915
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 723547
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 344585
+          }
+        }
+      }
+    },
+    {
+      "profile": "iPhone 13 · mobiles Netz",
+      "cache": "warm",
+      "version": "vorher",
+      "repeat": 1,
+      "editorReadyMs": 4640,
+      "editorHtmlStartMs": 3181,
+      "editorHtmlFirstByteMs": 3184,
+      "editorHtmlDoneMs": 3184.1,
+      "width": 390,
+      "height": 844,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 983,
+          "end": 983.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 3179.8,
+          "end": 3180.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 3179.9,
+          "end": 3181.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 3180,
+          "end": 3181.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 3181.6,
+          "end": 3184.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 375304
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "editor",
+          "start": 3283.9,
+          "end": 3284.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "editor",
+          "start": 3284,
+          "end": 3285.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "editor",
+          "start": 3284,
+          "end": 3285.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "editor",
+          "start": 3284.1,
+          "end": 3285.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 8,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          }
+        }
+      }
+    },
+    {
+      "profile": "iPhone 13 · mobiles Netz",
+      "cache": "kalt",
+      "version": "nachher",
+      "repeat": 1,
+      "editorReadyMs": 19054,
+      "editorHtmlStartMs": 4057,
+      "editorHtmlFirstByteMs": 4210,
+      "editorHtmlDoneMs": 14668.4,
+      "width": 390,
+      "height": 844,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 983.8,
+          "end": 2835.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 166590,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 4056.1,
+          "end": 16635.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 507915,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 4056.2,
+          "end": 17766.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 723547,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 4056.3,
+          "end": 14034,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 344585,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 4057.5,
+          "end": 14668.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 376052,
+          "bodyBytes": 375752
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 4,
+        "fontsAndCatalogWireBytes": 1742637,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 166590
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 507915
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 723547
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 344585
+          }
+        }
+      }
+    },
+    {
+      "profile": "iPhone 13 · mobiles Netz",
+      "cache": "warm",
+      "version": "nachher",
+      "repeat": 1,
+      "editorReadyMs": 4581,
+      "editorHtmlStartMs": 3171,
+      "editorHtmlFirstByteMs": 3172,
+      "editorHtmlDoneMs": 3172.6,
+      "width": 390,
+      "height": 844,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 972.9,
+          "end": 973.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 3169.7,
+          "end": 3170.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 3169.8,
+          "end": 3170.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 3169.9,
+          "end": 3171.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 3171,
+          "end": 3172.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 375752
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          }
+        }
+      }
+    },
+    {
+      "profile": "iPhone 13 · mobiles Netz",
+      "cache": "kalt",
+      "version": "nachher",
+      "repeat": 2,
+      "editorReadyMs": 19103,
+      "editorHtmlStartMs": 4050,
+      "editorHtmlFirstByteMs": 4203,
+      "editorHtmlDoneMs": 14659.1,
+      "width": 390,
+      "height": 844,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 1003.8,
+          "end": 2841.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 166590,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 4049.2,
+          "end": 16628.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 507915,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 4049.3,
+          "end": 14021.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 344585,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 4049.3,
+          "end": 17755.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 723547,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 4050.6,
+          "end": 14659.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 376052,
+          "bodyBytes": 375752
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 4,
+        "fontsAndCatalogWireBytes": 1742637,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 166590
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 507915
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 344585
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 723547
+          }
+        }
+      }
+    },
+    {
+      "profile": "iPhone 13 · mobiles Netz",
+      "cache": "warm",
+      "version": "nachher",
+      "repeat": 2,
+      "editorReadyMs": 4652,
+      "editorHtmlStartMs": 3196,
+      "editorHtmlFirstByteMs": 3198,
+      "editorHtmlDoneMs": 3198.2,
+      "width": 390,
+      "height": 844,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 990.1,
+          "end": 990.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 3194.8,
+          "end": 3195.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 3194.8,
+          "end": 3195.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 3194.9,
+          "end": 3196.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 3196.2,
+          "end": 3198.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 375752
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          }
+        }
+      }
+    },
+    {
+      "profile": "iPhone 13 · mobiles Netz",
+      "cache": "kalt",
+      "version": "vorher",
+      "repeat": 2,
+      "editorReadyMs": 19025,
+      "editorHtmlStartMs": 4028,
+      "editorHtmlFirstByteMs": 4181,
+      "editorHtmlDoneMs": 14645.3,
+      "width": 390,
+      "height": 844,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 987.8,
+          "end": 2825.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 166590,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 4027.1,
+          "end": 16606.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 507915,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 4027.1,
+          "end": 17724,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 723547,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 4027.2,
+          "end": 14008.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 344585,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 4028.4,
+          "end": 14645.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 375604,
+          "bodyBytes": 375304
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "editor",
+          "start": 16719.8,
+          "end": 16720.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "editor",
+          "start": 16719.9,
+          "end": 16721.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "editor",
+          "start": 16719.9,
+          "end": 17724.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "editor",
+          "start": 16720,
+          "end": 16721.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 8,
+        "fontsAndCatalogNet": 4,
+        "fontsAndCatalogWireBytes": 1742637,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 166590
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 507915
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 723547
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 344585
+          }
+        }
+      }
+    },
+    {
+      "profile": "iPhone 13 · mobiles Netz",
+      "cache": "warm",
+      "version": "vorher",
+      "repeat": 2,
+      "editorReadyMs": 4626,
+      "editorHtmlStartMs": 3205,
+      "editorHtmlFirstByteMs": 3207,
+      "editorHtmlDoneMs": 3207.4,
+      "width": 390,
+      "height": 844,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 978.8,
+          "end": 979.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 3204.2,
+          "end": 3204.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 3204.3,
+          "end": 3205.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 3204.3,
+          "end": 3205.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 3205.6,
+          "end": 3207.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 375304
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "editor",
+          "start": 3304.8,
+          "end": 3305.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "editor",
+          "start": 3304.9,
+          "end": 3306.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "editor",
+          "start": 3304.9,
+          "end": 3306.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "editor",
+          "start": 3305,
+          "end": 3306.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 8,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          }
+        }
+      }
+    },
+    {
+      "profile": "iPhone 13 · mobiles Netz",
+      "cache": "kalt",
+      "version": "vorher",
+      "repeat": 3,
+      "editorReadyMs": 19029,
+      "editorHtmlStartMs": 4022,
+      "editorHtmlFirstByteMs": 4175,
+      "editorHtmlDoneMs": 14647.8,
+      "width": 390,
+      "height": 844,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 968.7,
+          "end": 2817.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 166590,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 4021.2,
+          "end": 16618,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 507915,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 4021.3,
+          "end": 17731.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 723547,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 4021.4,
+          "end": 14002.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 344585,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 4022.7,
+          "end": 14647.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 375604,
+          "bodyBytes": 375304
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "editor",
+          "start": 16727.5,
+          "end": 16728.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "editor",
+          "start": 16727.6,
+          "end": 17731.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "editor",
+          "start": 16727.7,
+          "end": 16728.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "editor",
+          "start": 16727.7,
+          "end": 16729.2,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 8,
+        "fontsAndCatalogNet": 4,
+        "fontsAndCatalogWireBytes": 1742637,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 166590
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 507915
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 723547
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 344585
+          }
+        }
+      }
+    },
+    {
+      "profile": "iPhone 13 · mobiles Netz",
+      "cache": "warm",
+      "version": "vorher",
+      "repeat": 3,
+      "editorReadyMs": 4566,
+      "editorHtmlStartMs": 3176,
+      "editorHtmlFirstByteMs": 3179,
+      "editorHtmlDoneMs": 3179.2,
+      "width": 390,
+      "height": 844,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 968.7,
+          "end": 969.3,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 3175,
+          "end": 3175.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 3175.3,
+          "end": 3176.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 3175.4,
+          "end": 3176.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 3176.6,
+          "end": 3179.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 375304
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "editor",
+          "start": 3268.3,
+          "end": 3269,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "editor",
+          "start": 3268.3,
+          "end": 3270.1,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "editor",
+          "start": 3268.4,
+          "end": 3269.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "editor",
+          "start": 3268.5,
+          "end": 3269.7,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 8,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 2,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          }
+        }
+      }
+    },
+    {
+      "profile": "iPhone 13 · mobiles Netz",
+      "cache": "kalt",
+      "version": "nachher",
+      "repeat": 3,
+      "editorReadyMs": 19015,
+      "editorHtmlStartMs": 4021,
+      "editorHtmlFirstByteMs": 4173,
+      "editorHtmlDoneMs": 14641.2,
+      "width": 390,
+      "height": 844,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 980.5,
+          "end": 2830.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 166590,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 4019.6,
+          "end": 16615.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 507915,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 4019.8,
+          "end": 13999.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 344585,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 4019.8,
+          "end": 17735.5,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 723547,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 4021,
+          "end": 14641.4,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 376052,
+          "bodyBytes": 375752
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 4,
+        "fontsAndCatalogWireBytes": 1742637,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 166590
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 507915
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 344585
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 1,
+            "wireBytesBeforeReady": 723547
+          }
+        }
+      }
+    },
+    {
+      "profile": "iPhone 13 · mobiles Netz",
+      "cache": "warm",
+      "version": "nachher",
+      "repeat": 3,
+      "editorReadyMs": 4623,
+      "editorHtmlStartMs": 3220,
+      "editorHtmlFirstByteMs": 3222,
+      "editorHtmlDoneMs": 3222.7,
+      "width": 390,
+      "height": 844,
+      "design": "acryl-unser-anfang-01",
+      "text": [
+        [
+          "heading",
+          "Montserrat",
+          "U N S E R   A N F A N G",
+          true
+        ],
+        [
+          "names",
+          "Lora",
+          "Anna & Lukas",
+          true
+        ],
+        [
+          "place",
+          "Raleway",
+          "Am See in Hamburg",
+          true
+        ],
+        [
+          "date",
+          "Montserrat",
+          "14.06.2020",
+          true
+        ],
+        [
+          "slogan",
+          "Lora",
+          "Hier begann unser Wir.",
+          true
+        ]
+      ],
+      "art": [
+        {
+          "key": "acryl-pin",
+          "asset": null,
+          "inline": true
+        },
+        {
+          "key": "acryl-heart",
+          "asset": null,
+          "inline": true
+        }
+      ],
+      "gallery": [
+        "acryl-unser-anfang-01"
+      ],
+      "scenePaths": 86,
+      "requests": [
+        {
+          "path": "/_acryl-runtime/lazy/katalog-kern.json",
+          "frame": "shop",
+          "start": 1012.4,
+          "end": 1012.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 166290
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/montserrat.json",
+          "frame": "shop",
+          "start": 3219.2,
+          "end": 3219.9,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 507615
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/lora.json",
+          "frame": "shop",
+          "start": 3219.2,
+          "end": 3220.8,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 723247
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/raleway.json",
+          "frame": "shop",
+          "start": 3219.2,
+          "end": 3220.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 344285
+        },
+        {
+          "path": "/_merchant-acryl-editor.html",
+          "frame": "shop",
+          "start": 3220.5,
+          "end": 3222.6,
+          "startedBeforeReady": true,
+          "endedBeforeReady": true,
+          "transferBytes": 0,
+          "bodyBytes": 375752
+        }
+      ],
+      "metrics": {
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0,
+        "byPath": {
+          "/_acryl-runtime/lazy/katalog-kern.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/montserrat.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/lora.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          },
+          "/_acryl-runtime/lazy/schriften/raleway.json": {
+            "readsBeforeReady": 1,
+            "netBeforeReady": 0,
+            "wireBytesBeforeReady": 0
+          }
+        }
+      }
+    }
+  ],
+  "medians": [
+    {
+      "profile": "Desktop",
+      "cache": "kalt",
+      "vorher": {
+        "editorReadyMs": 601,
+        "editorHtmlStartMs": 48,
+        "editorHtmlFirstByteMs": 59,
+        "editorHtmlDoneMs": 59.9,
+        "fontsAndCatalogReads": 8,
+        "fontsAndCatalogNet": 4,
+        "fontsAndCatalogWireBytes": 1742637,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0
+      },
+      "nachher": {
+        "editorReadyMs": 606,
+        "editorHtmlStartMs": 50,
+        "editorHtmlFirstByteMs": 62,
+        "editorHtmlDoneMs": 62.6,
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 4,
+        "fontsAndCatalogWireBytes": 1742637,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0
+      }
+    },
+    {
+      "profile": "Desktop",
+      "cache": "warm",
+      "vorher": {
+        "editorReadyMs": 593,
+        "editorHtmlStartMs": 42,
+        "editorHtmlFirstByteMs": 44,
+        "editorHtmlDoneMs": 44.4,
+        "fontsAndCatalogReads": 8,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0
+      },
+      "nachher": {
+        "editorReadyMs": 600,
+        "editorHtmlStartMs": 42,
+        "editorHtmlFirstByteMs": 45,
+        "editorHtmlDoneMs": 45.3,
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0
+      }
+    },
+    {
+      "profile": "iPhone 13 · mobiles Netz",
+      "cache": "kalt",
+      "vorher": {
+        "editorReadyMs": 19029,
+        "editorHtmlStartMs": 4028,
+        "editorHtmlFirstByteMs": 4181,
+        "editorHtmlDoneMs": 14647.8,
+        "fontsAndCatalogReads": 8,
+        "fontsAndCatalogNet": 4,
+        "fontsAndCatalogWireBytes": 1742637,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0
+      },
+      "nachher": {
+        "editorReadyMs": 19054,
+        "editorHtmlStartMs": 4050,
+        "editorHtmlFirstByteMs": 4203,
+        "editorHtmlDoneMs": 14659.1,
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 4,
+        "fontsAndCatalogWireBytes": 1742637,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0
+      }
+    },
+    {
+      "profile": "iPhone 13 · mobiles Netz",
+      "cache": "warm",
+      "vorher": {
+        "editorReadyMs": 4626,
+        "editorHtmlStartMs": 3181,
+        "editorHtmlFirstByteMs": 3184,
+        "editorHtmlDoneMs": 3184.1,
+        "fontsAndCatalogReads": 8,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0
+      },
+      "nachher": {
+        "editorReadyMs": 4623,
+        "editorHtmlStartMs": 3196,
+        "editorHtmlFirstByteMs": 3198,
+        "editorHtmlDoneMs": 3198.2,
+        "fontsAndCatalogReads": 4,
+        "fontsAndCatalogNet": 0,
+        "fontsAndCatalogWireBytes": 0,
+        "assetsBeforeHtml": 0,
+        "assetsAfterHtml": 0
+      }
+    }
+  ]
+}

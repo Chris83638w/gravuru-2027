@@ -16,6 +16,17 @@ const sameBinding=(a,b)=>['storeId','tenantId','shopDomain','shopifyProductId','
 const optionKey=o=>JSON.stringify(Object.entries(o||{}).sort());
 const identity=b=>({shopifyProductId:b.shopifyProductId,shopifyVariantId:b.shopifyVariantId});
 const fields=['sid','storeId','productId','productRevision','bindingId','assignmentRevision','shopifyProductId','shopifyVariantId','designId','scope','sourceProductId','sourceProductRevision'];
+function hasFamilyGallerySource(config){
+ const source=config.familyFormats.source;
+ return Boolean(source?.lineId&&source.subcategoryId);
+}
+function sameFamilyGallery(source,target,sourceConfig,targetConfig){
+ if(source.shopifyProductId!==target.shopifyProductId||source.productId!==target.productId||
+    !isAllSizesFamily(sourceConfig)||!isAllSizesFamily(targetConfig))return false;
+ if(source.productRevision===target.productRevision)return true;
+ const from=sourceConfig.familyFormats.source,to=targetConfig.familyFormats.source;
+ return hasFamilyGallerySource(sourceConfig)&&from.lineId===to.lineId&&from.subcategoryId===to.subcategoryId;
+}
 
 // No catalogue imports or approvals happen here. Customer designs are taken
 // only from the fixed, already activated product model. Catalogue target
@@ -63,9 +74,9 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   if(input.scope!==source.scope.key||input.sourceProductId!==context.binding.productId||input.sourceProductRevision!==context.binding.productRevision)unavailable();
   const model=modelFor(current.store,current.binding);checkBinding(current.store,current.binding,model);
   const selected=selection(current.binding,model,input.designId);
-  // Türschild-Konfi: andere Farbe/Größe desselben Shopify-Produkts und Produktstands ist kein Prozesswechsel
-  // in eine andere Linie (Acryl schwarz ↔ anthrazit); der Scope ist ohnehin das eigene Produkt.
-  const sameAllSizesProduct=isAllSizesFamily(sourceModel.universal)&&current.binding.shopifyProductId===context.binding.shopifyProductId&&current.binding.productId===context.binding.productId&&current.binding.productRevision===context.binding.productRevision&&source.scope.key===destination.scope.key;
+  // Ein Hauptprodukt kann aktive Varianten aus mehreren freigegebenen Ständen enthalten.
+  const sameAllSizesProduct=sameFamilyGallery(context.binding,current.binding,sourceModel.universal,targetModel.universal);
+  if(sameAllSizesProduct&&current.binding.productRevision!==context.binding.productRevision)requireDesignChoice(targetModel.universal);
   if(!sameAllSizesProduct&&!galleryTargetAllowed(source,destination,selected.design))unavailable();
   return {...current,model,...selected};
  }
@@ -158,24 +169,32 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   const b=context.binding;if(!options)return b;
   // Wie der Konfi selbst normalisieren (Standardfarbe/-befestigung, keine fremden Schlüssel), dann exakt vergleichen.
   let wanted;try{wanted=familyFormatOptions(own.universal,options);}catch{fail(409,'shop_gallery_variant','Diese Ausführung ist im Shop nicht verfügbar. Bitte eine andere Größe oder Befestigung wählen.');}
-  if(optionKey(wanted)===optionKey(b.options))return b;
+  const wantedKey=optionKey(wanted);
+  if(wantedKey===optionKey(b.options))return b;
   const {registry,workshop}=context.store,intake=workshop.orderIntake;let found;
   if(typeof intake?.bindings==='function'&&typeof registry.resolve==='function'){
    // Like the cart path: inexpensive saved selections identify candidate IDs;
    // only the exact active head supplies authority. Do not validate every
    // unrelated product document in the store when one size/mounting changes.
    if(intake.tenantId!==b.tenantId)unavailable();
-   const candidates=intake.bindings().filter(x=>x.shopDomain===b.shopDomain&&x.productId===b.productId&&x.productRevision===b.productRevision&&optionKey(x.options)===optionKey(wanted));
+   const candidates=new Map();
+   const sameRevisionOnly=!hasFamilyGallerySource(own.universal);
+   for(const row of intake.bindings()){
+    if(row.shopDomain!==b.shopDomain||row.productId!==b.productId||optionKey(row.options)!==wantedKey)continue;
+    if(sameRevisionOnly&&row.productRevision!==b.productRevision)continue;
+    if(!candidates.has(row.variantId))candidates.set(row.variantId,new Set());
+    candidates.get(row.variantId).add(row.productRevision);
+   }
    found=[];
-   for(const variantId of new Set(candidates.map(x=>x.variantId))){
+   for(const [variantId,revisions] of candidates){
     if(typeof variantId!=='string'||!/^[1-9][0-9]{0,19}$/.test(variantId))unavailable();
     let active;try{active=registry.resolve({shopifyProductId:b.shopifyProductId,shopifyVariantId:'gid://shopify/ProductVariant/'+variantId});}catch(error){if(error.status===404&&error.code==='shop_binding_active_not_found')continue;throw error;}
-    if(!active||active.storeId!==b.storeId||active.tenantId!==b.tenantId||active.shopDomain!==b.shopDomain||active.shopifyProductId!==b.shopifyProductId||active.shopifyVariantId!=='gid://shopify/ProductVariant/'+variantId||active.productId!==b.productId||active.productRevision!==b.productRevision||optionKey(active.options)!==optionKey(wanted))unavailable();
+    if(!active||active.storeId!==b.storeId||active.tenantId!==b.tenantId||active.shopDomain!==b.shopDomain||active.shopifyProductId!==b.shopifyProductId||active.shopifyVariantId!=='gid://shopify/ProductVariant/'+variantId||active.productId!==b.productId||!revisions.has(active.productRevision)||optionKey(active.options)!==wantedKey)unavailable();
     found.push(active);
    }
   }else{
    // Legacy adapters without the native saved-selection API keep their checks.
-   found=registry.listActive().filter(x=>x.storeId===b.storeId&&x.tenantId===b.tenantId&&x.shopDomain===b.shopDomain&&x.shopifyProductId===b.shopifyProductId&&x.productId===b.productId&&x.productRevision===b.productRevision&&optionKey(x.options)===optionKey(wanted));
+   found=registry.listActive().filter(x=>x.storeId===b.storeId&&x.tenantId===b.tenantId&&x.shopDomain===b.shopDomain&&x.shopifyProductId===b.shopifyProductId&&x.productId===b.productId&&x.productRevision===b.productRevision&&optionKey(x.options)===wantedKey);
   }
   if(found.length!==1)fail(409,'shop_gallery_variant','Diese Ausführung ist im Shop nicht verfügbar. Bitte eine andere Größe oder Befestigung wählen.');
   return found[0];
@@ -185,12 +204,19 @@ export function createShopDesignGallery({secret,resolve,modelFor,cardFor=modelFo
   // neither a store-wide binding scan nor the 250,000-card warm-up.
   const own=sourceModel,allSizes=own&&isAllSizesFamily(own.universal);
   if(own?.universal.familyFormats?.fixedSize||allSizes){
-   const binding=allSizes?variantBinding(context,own,options):context.binding,profile=selectedProfile(own.universal,binding.options),scope=galleryScope(own,binding),process=galleryProcess(profile),geometry=physicalGeometry(own.universal,{mOptions:binding.options});
-   checkBinding(context.store,binding,own);
+   const binding=allSizes?variantBinding(context,own,options):context.binding;
+   let model=own;
+   if(binding.productRevision!==context.binding.productRevision){
+    model=cardFor(context.store,binding);
+    if(!sameFamilyGallery(context.binding,binding,own.universal,model.universal))unavailable();
+    requireDesignChoice(model.universal);
+   }
+   checkBinding(context.store,binding,model);
+   const profile=selectedProfile(model.universal,binding.options),scope=galleryScope(own,context.binding),process=galleryProcess(profile),geometry=physicalGeometry(model.universal,{mOptions:binding.options});
    const source={scope,process,theme:profile.themeId||null},cards=[];
    for(const design of profile.designs){
-    let selected;try{selected=selection(binding,own,design.id,{profile,geometry});}catch{continue;}
-    cards.push({binding,scope,process,search:searchMetadata(design,own.universal),design,designId:design.id,dedupe:design.id,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:own.name,designName:design.name||own.name,themes:design.themes||[],widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:selected.price.unitCents,currency:selected.price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
+    let selected;try{selected=selection(binding,model,design.id,{profile,geometry});}catch{continue;}
+    cards.push({binding,scope,process,search:searchMetadata(design,model.universal),design,designId:design.id,dedupe:design.id,card:{productId:binding.productId,productRevision:binding.productRevision,designId:design.id,productName:model.name,designName:design.name||model.name,themes:design.themes||[],widthMm:geometry.width,heightMm:geometry.height,shape:geometry.shape,unitCents:selected.price.unitCents,currency:selected.price.currency,shopifyProductId:binding.shopifyProductId,shopifyVariantId:binding.shopifyVariantId}});
    }
    return {cards,source};
   }

@@ -64,9 +64,10 @@ export function attach(el,{catalog,entries,prepare,get=fetchJSON,base=LAZY_BASE}
     el.motifs[e.key]=e.svgFragment;el.catalog.motifs[e.key]=e.svgFragment;el.catalog.motif_bounds[e.key]=e.bounds;if(el.labels)el.labels[e.key]=e.name;};
   async function prepared(list,{background=()=>false}={}){const copy=list.map(m=>structuredClone(m));for(let i=0;i<copy.length;i+=40){prepare(copy.slice(i,i+40));if(copy.length>40)await (background()?idlePause:pause)();}return copy;}
   el.uxKnownFonts=()=>[...new Set([...fontIndex.map(f=>f.name),...Object.keys(el.fontData)])];
-  el.uxEnsureFonts=async(names=[])=>{
+  el.uxEnsureFonts=async(names=[],{priority}={})=>{
     const urls=lazyUrls({fonts:[...new Set(names)].filter(n=>!el.fontData[n])},{fontIndex},base).fonts;if(!urls.length)return;
-    const data=await Promise.all(urls.map(f=>loadFont(f,get)));urls.forEach((f,i)=>addFont(f.name,data[i]));el.uxFontChoicesRefresh?.();
+    const data=await Promise.all(urls.map(f=>loadFont(f,url=>get(url,priority?{priority}:undefined))));
+    urls.forEach((f,i)=>addFont(f.name,data[i]));el.uxFontChoicesRefresh?.();
   };
   el.uxEnsureAllFonts=()=>el.uxEnsureFonts(fontIndex.map(f=>f.name));
   // Hintergrund (preload-queue.mjs): Schriften einzeln nacheinander mit niedriger Priorität. Eine laufende
@@ -101,7 +102,7 @@ export function attach(el,{catalog,entries,prepare,get=fetchJSON,base=LAZY_BASE}
       changed:()=>{el.uxLibraryRefresh?.();el.dispatchEvent(new CustomEvent('gravuru-motif-library',{detail:{partial:true}}));}});
     el.uxEnsureVisibleMotifs=()=>visible.refresh({retry:true});
   }
-  el.uxEnsureDesignResources=async design=>{const needs=resourceNeeds(design?.objects,{localFonts:Object.keys(el.fontData),localMotifs:Object.keys(el.motifs)});await Promise.all([el.uxEnsureFonts(needs.fonts),el.uxEnsureMotifs(needs.motifs)]);};
+  el.uxEnsureDesignResources=async(design,options)=>{const needs=resourceNeeds(design?.objects,{localFonts:Object.keys(el.fontData),localMotifs:Object.keys(el.motifs)});await Promise.all([el.uxEnsureFonts(needs.fonts,options),el.uxEnsureMotifs(needs.motifs,options)]);};
   // Entwurf (Sitzungsschutz, Kundenkonto, Warenkorb, Datei): genau seine Schriften und Motive vor readDraft.
   el.uxEnsureDraftResources=async draft=>{
     const needs=draftNeeds(draft,{localFonts:Object.keys(el.fontData),localMotifs:Object.keys(el.motifs)});

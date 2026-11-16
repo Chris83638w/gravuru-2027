@@ -7,19 +7,23 @@ export function designResourcesReady(design,fonts={},motifs={}){
 export function installDoorbellDesignLoading(el,config,say=()=>{}){
  if(!isLayeredDoorbell(config)||typeof el.uxEnsureDesignResources!=='function')return null;
  const designs=()=>el.uxSelectedProfile?.().designs||config.profile.designs;
- const choose=el.chooseDesign;let sequence=0;
+ const choose=el.chooseDesign;let sequence=0,foreground=null;
  el.chooseDesign=function(id,...args){
   const request=++sequence,design=designs().find(d=>d.id===id);
-  if(!design||designResourcesReady(design,this.fontData,this.motifs)){this.uxDesignResourcePending=false;return choose.call(this,id,...args);}
+  if(!design||designResourcesReady(design,this.fontData,this.motifs)){foreground=null;this.uxDesignResourcePending=false;return choose.call(this,id,...args);}
   this.uxDesignResourcePending=true;say('Design wird geladen …');this.sync?.();
-  return this.uxEnsureDesignResources(design).then(()=>{
+  foreground=this.uxEnsureDesignResources(design,{priority:'high'}).then(()=>{
    if(request!==sequence)return;
    if(!designResourcesReady(design,this.fontData,this.motifs))throw Error('Designressourcen fehlen.');
    say('');return choose.call(this,id,...args);
-  }).catch(()=>{if(request===sequence)say('Das Design konnte nicht geladen werden. Bitte erneut wählen.');}).finally(()=>{if(request===sequence){this.uxDesignResourcePending=false;this.sync?.();}});
+  }).catch(()=>{if(request===sequence)say('Das Design konnte nicht geladen werden. Bitte erneut wählen.');}).finally(()=>{if(request===sequence){foreground=null;this.uxDesignResourcePending=false;this.sync?.();}});
+  return foreground;
  };
  return async()=>{
-  for(const design of designs())await el.uxEnsureDesignResources(design);
+  for(const design of designs()){
+   while(foreground)await foreground;
+   try{await el.uxEnsureDesignResources(design,{priority:'low'});}catch{/* One unavailable preview must not stop the other cards. */}
+  }
   el.uxRefreshThumbnails?.();el.sync();
  };
 }

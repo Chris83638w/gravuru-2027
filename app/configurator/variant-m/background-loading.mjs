@@ -48,7 +48,9 @@ export function installBackgroundLoading({el,r,config,win=window}){
   // but opening the current text/motif tabs never invokes it.
   const recommended=RECOMMENDED_FONTS.slice(0,2);
   queue.add('motifs',{background:()=>config?.moduleProfile?.modules?.motifs===false?undefined:el.uxPrefetchInitialMotifs?.(),now:()=>el.uxEnsureVisibleMotifs?.(),saveData:'skip'});
-  queue.add('fonts',{background:()=>el.uxPrefetchFonts?.({priority:'low',names:recommended}),now:()=>el.uxEnsureFonts?.(recommended),saveData:'skip'});
+  // The doorbell gallery needs its own typefaces. Offer common text fonts on
+  // text actions so they do not compete with the first template selection.
+  queue.add('fonts',{background:()=>el.uxPrefetchFonts?.({priority:'low',names:recommended}),now:()=>el.uxEnsureFonts?.(recommended),saveData:config?.doorbell?'never':'skip'});
   // Kundenaktionen: Schritt/Reiter gewechselt, Schriftauswahl oder Optionsfeld angefasst.
   const promoteVisible=()=>{for(const [selector,key] of PANEL_TASKS){const panel=r.querySelector(selector);if(panel&&!panel.hidden&&panel.offsetParent!==null)queue.request(key).catch(()=>{});}};
   r.addEventListener('click',event=>{

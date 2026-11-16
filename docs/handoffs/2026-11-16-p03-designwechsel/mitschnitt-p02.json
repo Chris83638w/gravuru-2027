@@ -1,0 +1,193 @@
+{
+  "target": "FK-D16",
+  "browser": "157.0.8103.51",
+  "fixtures": {
+    "vorher": {
+      "commit": "a1623799af312692e6b1b6c4e4fee7c77d90f084",
+      "catalogCommit": "8236b8bf",
+      "product": "WP Cardea 2 · Hochformat 16 × 28 cm",
+      "assetCount": 18,
+      "modelSha256": "1f278b2aadf396c920342fc546cdb7ece857433252d3ee6d2d5e8699588c8329"
+    },
+    "nachher": {
+      "commit": "5efcfe086057c0e913c2e9352a6d6b96152117ba",
+      "catalogCommit": "8236b8bf",
+      "product": "WP Cardea 2 · Hochformat 16 × 28 cm",
+      "assetCount": 18,
+      "modelSha256": "1f278b2aadf396c920342fc546cdb7ece857433252d3ee6d2d5e8699588c8329"
+    }
+  },
+  "desktop": {
+    "viewport": {
+      "width": 1360,
+      "height": 900
+    }
+  },
+  "mobile": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "network": {
+      "offline": false,
+      "latency": 150,
+      "downloadThroughput": 200000,
+      "uploadThroughput": 93750,
+      "connectionType": "cellular4g"
+    }
+  },
+  "medians": [
+    {
+      "profile": "iPhone 13",
+      "cache": "kalt",
+      "vorher": {
+        "switchMs": 10405.3,
+        "readyMs": 11707,
+        "missing": [
+          [
+            "Allura",
+            "Playfair Display"
+          ]
+        ]
+      },
+      "nachher": {
+        "switchMs": 3315.3,
+        "readyMs": 7531,
+        "missing": [
+          [
+            "Allura",
+            "Playfair Display"
+          ]
+        ]
+      }
+    }
+  ],
+  "samples": [
+    {
+      "version": "vorher",
+      "profile": "iPhone 13",
+      "cache": "kalt",
+      "cycle": 1,
+      "readyMs": 11707,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 10405.3,
+      "at": 9333.29999999702,
+      "missing": [
+        "Allura",
+        "Playfair Display"
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+          "window": "shop",
+          "start": -224,
+          "done": 6968,
+          "body": 471283,
+          "decoded": 471283,
+          "transfer": 471583
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": 44,
+          "done": 10144,
+          "body": 770311,
+          "decoded": 770311,
+          "transfer": 770611
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": 44,
+          "done": 7329,
+          "body": 474787,
+          "decoded": 474787,
+          "transfer": 475087
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": 6982,
+          "done": 9794,
+          "body": 256743,
+          "decoded": 256743,
+          "transfer": 257043
+        }
+      ],
+      "requestCountDuring": 4,
+      "designRequestCount": 0,
+      "trusted": true
+    },
+    {
+      "version": "nachher",
+      "profile": "iPhone 13",
+      "cache": "kalt",
+      "cycle": 1,
+      "readyMs": 7531,
+      "from": "FK-RUNDUM",
+      "to": "FK-D16",
+      "ms": 3315.3,
+      "at": 5569.70000000298,
+      "missing": [
+        "Allura",
+        "Playfair Display"
+      ],
+      "fonts": [
+        "Allura",
+        "Montserrat",
+        "Playfair Display"
+      ],
+      "fontsReady": true,
+      "motifsReady": true,
+      "assetRequests": [
+        {
+          "path": "/_acryl-runtime/lazy/schriften/nunito.json",
+          "window": "shop",
+          "start": -108,
+          "done": 2218,
+          "body": 136762,
+          "decoded": 471283,
+          "transfer": 137062
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/allura.json",
+          "window": "shop",
+          "start": 41,
+          "done": 3056,
+          "body": 219435,
+          "decoded": 770311,
+          "transfer": 219735
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/playfair-display.json",
+          "window": "shop",
+          "start": 41,
+          "done": 2281,
+          "body": 130809,
+          "decoded": 474787,
+          "transfer": 131109
+        },
+        {
+          "path": "/_acryl-runtime/lazy/schriften/josefin-sans.json",
+          "window": "shop",
+          "start": 2225,
+          "done": 3118,
+          "body": 75598,
+          "decoded": 256743,
+          "transfer": 75898
+        }
+      ],
+      "requestCountDuring": 4,
+      "designRequestCount": 0,
+      "trusted": true
+    }
+  ]
+}

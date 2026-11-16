@@ -11,7 +11,9 @@ const toDataUrl=blob=>new Promise((resolve,reject)=>{const reader=new FileReader
 try{
   const client=createShopEntryClient({token:fragment.get('s')||''});
   const warm=warmEditor(warmTargets(document,fragment.get('s')||''));
-  const data=await client.loadInitialModel(fragment,sessionStorage),model=data.model;
+  let storage=null;
+  try{storage=window.sessionStorage;}catch{/* The cart edit can retry as a standalone page. */}
+  const data=await client.loadInitialModel(fragment,storage),model=data.model;
   title.textContent=model.name;progress.value=1;status.textContent='Deine Gestaltung wird vorbereitet …';
   // Same signed design target and renderer as the gallery; no separate artwork logic.
   if(data.startPreview)client.loadDesignPreview(data.startPreview.target,data.startPreview.previewUrl).then(toDataUrl).then(url=>{preview.src=url;preview.hidden=false;}).catch(()=>{});
@@ -34,7 +36,7 @@ try{
     const surface=model.universal?.materialSurface||null,small=surfaceThumbnail(surface);
     const image=()=>previewJpeg(entry.frame?.contentDocument?.querySelector('gravuru-configurator'),{surface,small});
     const submitCart=embedded?embeddedCart(client.submitThemeCart,shopOrigin,{image}):client.submitThemeCart;
-    window.GravuruShopEntry=Object.freeze({productId:model.configuration.id,productRevision:model.configuration.revision,shopDomain:data.shopDomain,shopifyProductId:data.binding?.shopifyProductId||null,shopifyVariantId:data.binding?.shopifyVariantId||null,expiresAt:data.expiresAt,csrfToken:'shop-entry',request:client.request,submitCart,cartMode:'theme',themeCartPath:data.themeCartPath,backUrl,embedded,designGallery,productName:model.name,...(fragment.getAll('ui').length===1&&fragment.get('ui')==='prio-r15'?{presentation:'prio-r15'}:{})});
+    window.GravuruShopEntry=Object.freeze({productId:model.configuration.id,productRevision:model.configuration.revision,shopDomain:data.shopDomain,shopifyProductId:data.binding?.shopifyProductId||null,shopifyVariantId:data.binding?.shopifyVariantId||null,expiresAt:data.expiresAt,csrfToken:'shop-entry',request:client.request,cartRevision:client.cartRevision,submitCart,cartMode:'theme',themeCartPath:data.themeCartPath,backUrl,embedded,designGallery,productName:model.name,...(fragment.getAll('ui').length===1&&fragment.get('ui')==='prio-r15'?{presentation:'prio-r15'}:{})});
     title.textContent=model.name;document.title=model.name+' · Jetzt personalisieren';back.href=backUrl;
     if(embedded&&surface)setTimeout(small,4000);
   }
@@ -56,5 +58,5 @@ try{
   editor.hidden=false;editor.inert=true;editor.append(frame);
 }catch(error){status.hidden=false;progress.hidden=true;status.textContent=error.message;
   // Fenster-Modus: Fehler auch der Produktseite melden (nur Typ und Text, keine Sitzungsdaten); sie bietet den Ausweg an.
-  if(fragment.get('embed')==='1'&&window.parent!==window)window.parent.postMessage({type:'gravuru-shop-failed',message:String(error?.message||'').slice(0,300)},'*');
+  if(fragment.get('embed')==='1'&&window.parent!==window)window.parent.postMessage({type:'gravuru-shop-failed',message:String(error?.message||'').slice(0,300),...(error?.code==='cart_edit_access_missing'?{cartAccessMissing:true}:{})},'*');
 }

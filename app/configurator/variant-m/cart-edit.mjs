@@ -2,7 +2,8 @@
 // der Editor lädt genau diese Revision vom Server (nur mit dem privaten Entwurfszugriff dieses Geräts)
 // und merkt sich den Bearbeiten-Kontext für „Warenkorb aktualisieren“. Nichts davon liegt in URLs oder Storage
 // außer den bereits vorhandenen privaten Entwurfszugängen.
-import {cleanObject} from './contract.mjs';
+import {cleanObject,physicalScale} from './contract.mjs';
+import {roundEdit} from './design-edit.mjs';
 
 const CONFIG = /^konfig_[a-f0-9-]{36}$/, STORAGE_PREFIXES = ['gravuru-acrylic-private:','gravuru-form-draft:'];
 
@@ -47,14 +48,33 @@ async function photoFile(request, endpoint, token, uploadId, edited) {
   return new File([blob], (edited ? 'bearbeitet-' : 'original-') + uploadId + '.' + (type==='image/svg+xml'?'svg':type.split('/')[1] || 'png'), {type});
 }
 
+function cartObjects(objects,scale,acrylic){
+  return objects.map(value=>{
+    const object=cleanObject(value);
+    if(object.uxHidden===false)delete object.uxHidden;
+    if(object.uxLocked===false)delete object.uxLocked;
+    // The acrylic scene always keeps the background of its main photo.
+    if(acrylic&&object.id==='photo-main'&&object.uxPhotoBackground==='keep')delete object.uxPhotoBackground;
+    if(object.type==='text'){
+      // Rendering measures text bounds again at the editor's physical font-size precision.
+      delete object.w;
+      delete object.h;
+      object.size=roundEdit(object.size*scale);
+    }
+    return object;
+  });
+}
+
 // Stellt Gestaltung, Ausführung, Menge und Fotos der Revision im Editor her. Passt der Produkt-/Profilstand nicht,
 // bleibt der Editor leer und der Kunde sieht den Hinweis (readDraft lehnt fremde Profilrevisionen ab).
-export async function installCartEdit(api, {request = window.parent?.GravuruMerchantRequest || fetch, storage = sessionStorage, search = location.search} = {}) {
+export async function installCartEdit(api, {request = window.parent?.GravuruMerchantRequest || fetch, storage, search = location.search} = {}) {
   const params = cartEditParams(search);
   if (!params || !api.config || !api.el?.import) return null;
-  const say = message => {const node = api.r.querySelector('.fk-order-status') || api.r.querySelector('[data-ux-status]'); if (node) {node.textContent = message; node.style.removeProperty('display');}};
+  const say = message => {const node = api.r.querySelector('[data-ux-status]') || api.r.querySelector('.fk-order-status'); if (node) {node.textContent = message; node.style.removeProperty('display');}};
   try {
-    const loaded = await loadCartRevision({request, storage, params}), endpoint = '/api/workshop/cart-configurations/' + params.configId + '/' + params.rev;
+    const shopEntry=globalThis.window?.parent?.GravuruShopEntry;
+    const loaded = shopEntry?.cartRevision?.(params) ?? await loadCartRevision({request, storage:storage??sessionStorage, params});
+    const endpoint = '/api/workshop/cart-configurations/' + params.configId + '/' + params.rev;
     if(loaded.editorKind&&loaded.editorKind!=='native')throw Error('Diese gespeicherte Gestaltung benötigt den Formeditor.');
     const blocking = loaded.hints.filter(h => !/bereits Revision/.test(h));
     if (blocking.length) {say(blocking.join(' ')); return null;}
@@ -65,15 +85,17 @@ export async function installCartEdit(api, {request = window.parent?.GravuruMerc
       api.files.set(photo.uploadId, entry);
     }
     await api.el.import(new File([JSON.stringify(loaded.document)], 'revision-' + params.rev + '.json', {type: 'application/json'}));
-    const expected = JSON.stringify(loaded.document.design.objects.map(cleanObject)), actual = JSON.stringify(api.el.state.objects.map(cleanObject));
+    const scale=physicalScale(api.config,loaded.document.options);
+    const expected=JSON.stringify(cartObjects(loaded.document.design.objects,scale,api.config.acrylic));
+    const actual=JSON.stringify(cartObjects(api.el.state.objects,scale,api.config.acrylic));
     if (actual !== expected) throw Error(api.r.querySelector('.status')?.textContent || 'Die gespeicherte Gestaltung passt nicht zu diesem Produkt.');
     const quantity = api.r.querySelector('[data-fk-quantity]');
     if (quantity && Number.isSafeInteger(loaded.quantity)) {quantity.value = String(loaded.quantity); quantity.dispatchEvent(new Event('input', {bubbles: true}));}
     const legacyStatus = api.r.querySelector('.status'); if (legacyStatus) legacyStatus.textContent = '';
-    api.el.sync();
-    const context = {configId: params.configId, rev: params.rev, cartLineId: params.cartLineId==='theme'&&window.parent?.GravuruShopEntry?.cartMode==='theme'?'theme':params.cartLineId && loaded.configuration.cartLineId ? loaded.configuration.cartLineId : null,
+    const context = {configId: params.configId, rev: params.rev, cartLineId: params.cartLineId==='theme'&&shopEntry?.cartMode==='theme'?'theme':params.cartLineId && loaded.configuration.cartLineId ? loaded.configuration.cartLineId : null,
       draftId: loaded.draft.id, draftToken: loaded.token, draftRevision: loaded.draft.revision};
     api.el.cartEdit = context;
+    api.el.sync();
     say('Deine Gestaltung aus dem Warenkorb (Revision ' + params.rev + ') ist geladen.' + (context.cartLineId ? ' „Warenkorb aktualisieren“ ersetzt die bestehende Position.' : ' Die Warenkorbposition wurde nicht gefunden; die Gestaltung wird neu hinzugefügt.') + (loaded.hints.length ? ' ' + loaded.hints.join(' ') : ''));
     return context;
   } catch (error) {say(error.message); return null;}

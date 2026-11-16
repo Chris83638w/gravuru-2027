@@ -34,15 +34,19 @@ test('form edit uses only existing private form draft credentials',async()=>{
  assert.equal(loaded.editorKind,'form');assert.equal(calls[0].options.headers['X-Gravuru-Draft'],token);assert.ok(!calls[0].url.includes(token));
 });
 
-test('theme cart edit retains its replacement mode only in the public theme-cart entry',async t=>{
+test('theme cart edit keeps replacement mode when the renderer remeasures text at editor precision',async t=>{
  const previous=globalThis.window;t.after(()=>{if(previous===undefined)delete globalThis.window;else globalThis.window=previous;});
- const loaded={editorKind:'native',configuration:{cartLineId:null},hints:[],photos:[],document:{design:{objects:[]}},draft:{id:'adraft_x',revision:1}};
+ const savedText={id:'name',type:'text',text:'Test',x:12,y:5,w:118,h:37.4286,size:31.1905};
+ const renderedText={...savedText,w:117.998,h:37.428,size:31.19};
+ const loaded={editorKind:'native',configuration:{cartLineId:null},hints:[],photos:[],document:{design:{objects:[savedText]}},draft:{id:'adraft_x',revision:1}};
  const token='a'.repeat(64),store=storage({'gravuru-acrylic-private:x':JSON.stringify({token})});
  for(const mode of ['theme','storefront']){
   globalThis.window={parent:{GravuruShopEntry:{cartMode:mode}}};
-  const status={textContent:'',style:{removeProperty(){}}},api={config:{},files:new Map(),el:{state:{objects:[]},import:async()=>{},sync(){}},r:{querySelector:s=>s.includes('status')?status:null}};
+  const status={textContent:'',style:{removeProperty(){}}},api={config:{},files:new Map(),el:{state:{objects:[{...renderedText}]},import:async()=>{},sync(){}},r:{querySelector:s=>s.includes('status')?status:null}};
   const result=await installCartEdit(api,{request:async()=>Response.json(loaded),storage:store,search:'?config='+konfig+'&rev=1&line=theme'});
   assert.equal(result.cartLineId,mode==='theme'?'theme':null);
   assert.equal(api.el.cartEdit,result);
+  api.el.state.objects[0].text='Fremder Text';
+  assert.equal(await installCartEdit(api,{request:async()=>Response.json(loaded),storage:store,search:'?config='+konfig+'&rev=1&line=theme'}),null);
  }
 });

@@ -339,11 +339,31 @@ test('gallery client aborts a hanging proxy request at five seconds and a retry 
 
 test('cart bootstrap chooses the private saved design before loading the small model',async()=>{
  const calls=[],secret='e'.repeat(64),storage={length:1,key:()=> 'gravuru-acrylic-private:test',getItem:()=>JSON.stringify({token:secret})};
- const client=createShopEntryClient({token,fetchImpl:async(url,options)=>{calls.push({url,options});if(url.includes('cart-configurations/'))return Response.json({document:{design:{id:'D207'}}});return Response.json({model:{key:'acryl',universal:{profile:{}},configuration:{id:'p'}},editorPath:'/_merchant-acryl-editor.html',shopDomain:'gravuru-design.myshopify.com'});}});
+ const client=createShopEntryClient({token,fetchImpl:async(url,options)=>{calls.push({url,options});if(url.includes('cart-configurations/'))return Response.json({configuration:{id:konfig,rev:2},document:{design:{id:'D207'}}});return Response.json({model:{key:'acryl',universal:{profile:{}},configuration:{id:'p'}},editorPath:'/_merchant-acryl-editor.html',shopDomain:'gravuru-design.myshopify.com'});}});
  await client.loadInitialModel(new URLSearchParams({config:konfig,rev:'2'}),storage);
  assert.equal(calls[0].options.headers['X-Gravuru-Draft'],secret);assert.equal(calls[1].url,'/api/shop-entry/model?design=D207');
  assert.ok(calls.every(c=>!c.url.includes(secret)));assert.equal(calls[1].options.headers['X-Gravuru-Draft'],undefined);
+ assert.equal(client.cartRevision({configId:konfig,rev:2}).token,secret);
  await assert.rejects(client.loadInitialModel(new URLSearchParams({config:konfig,rev:'2'}),{length:0}),/nicht mehr zugänglich/);
+ assert.equal(client.cartRevision({configId:konfig,rev:2}),null);
+});
+
+test('cart edit recovers a same-revision draft from the browser access without storing the draft token',async()=>{
+ const draftToken='f'.repeat(64),sealed='gce1.c2FtcGxl',calls=[];
+ const client=createShopEntryClient({token,editStorage:()=>({getItem(key){
+  assert.equal(key,'gravuru-cart-edit:'+konfig+':2');
+  return JSON.stringify({token:sealed,expiresAt:Date.now()+60_000});
+ }}),fetchImpl:async(url,{headers})=>{
+  calls.push({url,headers});
+  if(url.includes('cart-configurations/'))return Response.json({configuration:{id:konfig,rev:2},draftToken,document:{design:{id:'D207'}}});
+  return Response.json({model:{key:'acryl',universal:{profile:{}},configuration:{id:'p'}},editorPath:'/_merchant-acryl-editor.html',shopDomain:'gravuru-design.myshopify.com'});
+ }});
+ await client.loadInitialModel(new URLSearchParams({config:konfig,rev:'2'}),null);
+ assert.equal(calls.length,2);
+ assert.equal(calls[0].headers['X-Gravuru-Cart-Edit'],sealed);
+ assert.equal(calls[1].headers['X-Gravuru-Cart-Edit'],undefined);
+ assert.equal(client.cartRevision({configId:konfig,rev:2}).token,draftToken);
+ assert.equal(client.cartRevision({configId:konfig,rev:1}),null);
 });
 
 test('hashed gallery previews use browser caching; unavailable cache falls back to the authenticated preview',async()=>{

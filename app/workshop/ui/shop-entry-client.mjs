@@ -5,6 +5,9 @@ const API='/api/shop-entry/',WORKSHOP='/api/workshop/',ACRYL=WORKSHOP+'acryl/';
 const ALLOWED=[/^acrylic-drafts(?:\/adraft_[a-f0-9-]{36})?$/,/^customer-vector-logo\/preview$/,/^design-assets\/[a-f0-9]{64}\/preview\.svg$/,/^cart-configurations\/konfig_[a-f0-9-]{36}\/[1-9][0-9]{0,8}(?:\/photos\/[A-Za-z0-9_-]{1,100})?(?:\?edited=1)?$/];
 const EDITORS=/^\/_merchant(?:-acryl)?-editor\.html$/;
 const fail=message=>{throw Error(message);};
+const editStorageKey=(id,rev)=>'gravuru-cart-edit:'+id+':'+rev;
+const sealedEditToken=/^gce1\.[A-Za-z0-9_-]{1,240}$/;
+const noCartEditAccess=()=>Object.assign(Error('Diese Gestaltung ist auf diesem Gerät nicht mehr zugänglich. Die Warenkorbzeile bleibt unverändert.'),{code:'cart_edit_access_missing'});
 
 export function mapWorkshopPath(path){
   if(typeof path!=='string')fail('Ungültige Anfrage.');
@@ -133,7 +136,7 @@ export function startResourceUrls(universal,catalog,catalogPath){
  }
  return [...urls].slice(0,24);
 }
-export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
+export function createShopEntryClient({token,fetchImpl=globalThis.fetch,editStorage=()=>globalThis.localStorage}={}){
   if(typeof token!=='string'||!/^gse1\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(token))fail('Bitte öffne den Konfigurator über „Jetzt personalisieren“ auf der Produktseite.');
   const headers=extra=>({...extra,'X-Gravuru-Shop-Session':token});
   const request=async(path,options={})=>fetchImpl(mapWorkshopPath(path),{...options,headers:headers(options.headers||{}),credentials:'omit',cache:'no-store'});
@@ -143,22 +146,43 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
     if(model?.key!=='acryl'||!model.universal?.profile||!model.configuration?.id||!EDITORS.test(data.editorPath||'')||typeof data.shopDomain!=='string'||!/^[a-z0-9][a-z0-9-]*\.myshopify\.com$/.test(data.shopDomain))fail('Das Produkt ist für diesen Konfigurator nicht vorbereitet.');
     return data;
   }
+  let loadedCartRevision=null;
+  const cartRevision=({configId,rev})=>loadedCartRevision?.configuration?.id===configId&&loadedCartRevision.configuration.rev===rev?loadedCartRevision:null;
   async function loadInitialModel(fragment,storage){
+    loadedCartRevision=null;
     const config=fragment.get('config'),rev=fragment.get('rev');
     if(!/^konfig_[a-f0-9-]{36}$/.test(config||'')||! /^[1-9][0-9]{0,8}$/.test(rev||''))return loadModel(fragment.get('design'));
+    const endpoint=WORKSHOP+'cart-configurations/'+config+'/'+rev;
+    async function modelForRevision(response,draftAccess){
+      const {draftToken,...loaded}=await json(response),id=loaded.document?.design?.id;
+      if(typeof id!=='string')fail('Die gespeicherte Gestaltung konnte nicht geladen werden.');
+      const access=draftAccess??draftToken;
+      if(!/^[a-f0-9]{64}$/.test(access||''))fail('Der private Entwurfszugang konnte nicht wiederhergestellt werden.');
+      // Keep the recovered draft credential in this page's memory until the editor mounts.
+      loadedCartRevision={...loaded,token:access};
+      return loadModel(id);
+    }
+    let stored;
+    try{
+      const persistent=editStorage(),key=editStorageKey(config,rev);
+      const grant=JSON.parse(persistent?.getItem(key)||'null');
+      if(grant?.expiresAt<=Date.now())persistent.removeItem(key);
+      else if(sealedEditToken.test(grant?.token||''))stored=grant.token;
+    }catch{}
+    if(stored){
+      const response=await request(endpoint,{headers:{'X-Gravuru-Cart-Edit':stored}});
+      if(response.status!==404)return modelForRevision(response);
+    }
     // The same private token gate as cart-edit.mjs. Select the saved template
     // before mounting; the editor still restores and verifies the full draft.
     const tokens=new Set();
     try{for(let i=0;i<storage.length;i++){const key=storage.key(i);if(!['gravuru-acrylic-private:','gravuru-form-draft:'].some(p=>key?.startsWith(p)))continue;const value=JSON.parse(storage.getItem(key)||'null');if(/^[a-f0-9]{64}$/.test(value?.token||''))tokens.add(value.token);}}catch{}
     for(const token of tokens){
-      const response=await request(WORKSHOP+'cart-configurations/'+config+'/'+rev,{headers:{'X-Gravuru-Draft':token}});
+      const response=await request(endpoint,{headers:{'X-Gravuru-Draft':token}});
       if(response.status===404)continue;
-      const loaded=await json(response);
-      const id=loaded.document?.design?.id;
-      if(typeof id!=='string')fail('Die gespeicherte Gestaltung konnte nicht geladen werden.');
-      return loadModel(id);
+      return modelForRevision(response,token);
     }
-    fail('Diese Gestaltung ist auf diesem Gerät nicht mehr zugänglich. Die Warenkorbzeile bleibt unverändert.');
+    throw noCartEditAccess();
   }
   // Private Designressourcen einmal laden; der Editor liest sie unter beiden Pfadfassungen (Acryl-Umschreibung).
   async function loadResources(universal,toDataUrl){
@@ -191,6 +215,11 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
     if(typeof draftToken!=='string'||!/^[a-f0-9]{64}$/.test(draftToken))fail('Der private Entwurfszugang fehlt.');
     const result=await json(await fetchImpl(API+'theme-cart',{method:'POST',credentials:'omit',cache:'no-store',headers:headers({'Content-Type':'application/json','X-Gravuru-Draft':draftToken}),body:JSON.stringify(input)}));
     if(result.mode!=='theme'||result.paymentConfirmed!==false||!Number.isSafeInteger(result.totalCents)||typeof result.handoffUrl!=='string')fail('Die Warenkorbübergabe wurde nicht vorbereitet.');
+    const {configuration,editAccess}=result;
+    if(/^konfig_[a-f0-9-]{36}$/.test(configuration?.id||'')&&Number.isSafeInteger(configuration.rev)&&configuration.rev>0&&
+       sealedEditToken.test(editAccess?.token||'')&&Number.isSafeInteger(editAccess.expiresAt)&&editAccess.expiresAt>Date.now()){
+      try{editStorage()?.setItem(editStorageKey(configuration.id,configuration.rev),JSON.stringify(editAccess));}catch{}
+    }
     return result;
   }
   async function loadDesignGallery(page=0,theme='preferred',options=null,q=''){
@@ -229,6 +258,6 @@ export function createShopEntryClient({token,fetchImpl=globalThis.fetch}={}){
     const response=await designRequest('design-gallery-preview',target,signal);if(!response.ok)await json(response);return response.blob();
   }
   async function switchDesign(target){return json(await designRequest('design-switch',target));}
-  return Object.freeze({request,loadModel,loadInitialModel,loadResources,submitCart,submitThemeCart,loadDesignGallery,loadDesignPreview,switchDesign});
+  return Object.freeze({request,loadModel,loadInitialModel,cartRevision,loadResources,submitCart,submitThemeCart,loadDesignGallery,loadDesignPreview,switchDesign});
 }
 

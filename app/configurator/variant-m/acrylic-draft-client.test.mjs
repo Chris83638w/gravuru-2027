@@ -28,6 +28,24 @@ test('designs and pinned product revisions have separate access records', async 
   await save(input, 'csrf'); await save({...input, designId: 'other'}, 'csrf'); await save({...input, productRevision: 3}, 'csrf');
   assert.equal(s.data.size, 3); assert.ok(paths.every(p => p === '/api/workshop/acrylic-drafts'));
 });
+test('saving a recovered cart edit updates its own draft and preserves other drafts of the same design', async () => {
+  const s = storage(), calls = [];
+  const otherId = 'adraft_0123-abcdef', otherToken = 'b'.repeat(64);
+  const fetchImpl = async (url, options) => {
+    const {expectedRevision} = JSON.parse(options.body);
+    calls.push({url, expectedRevision, token: options.headers['X-Gravuru-Draft']});
+    return Response.json(expectedRevision ?
+      {id, revision: expectedRevision + 1, snapshotId: 'edited'} :
+      {id: otherId, token: otherToken, revision: 1, snapshotId: 'other'});
+  };
+  const save = createAcrylicDraftClient({storage:s,fetchImpl});
+  await save(input, 'csrf');
+  const before = [...s.data], edit = {draftId: id, draftToken: token, draftRevision: 3};
+  assert.equal((await save(input, 'csrf', edit)).draftId, id);
+  assert.equal((await save(input, 'csrf', edit)).revision, 5, 'a retry uses the last confirmed draft revision');
+  assert.deepEqual(calls.slice(1), [3,4].map(expectedRevision=>({url:'/api/workshop/acrylic-drafts/'+id,expectedRevision,token})));
+  assert.deepEqual([...s.data], before);
+});
 test('a revision conflict keeps the known access and never retries automatically', async () => {
   const s = storage(); let calls = 0;
   const save = createAcrylicDraftClient({storage: s, fetchImpl: async () => {

@@ -2,13 +2,16 @@
 // the existing private server package and in the editor, never in URLs/storage.
 export function createAcrylicDraftClient({fetchImpl = globalThis.fetch, storage} = {}) {
   const known = new Map();
-  return async function save(input, csrfToken) {
-    const key = 'gravuru-acrylic-private:' + JSON.stringify([input.productId, input.productRevision, input.designId]);
+  return async function save(input, csrfToken, cartEdit = null) {
+    const key = cartEdit?.draftId || 'gravuru-acrylic-private:' + JSON.stringify([input.productId, input.productRevision, input.designId]);
     let previous = known.get(key);
     if (!previous) {
-      let raw;
-      try {raw = storage.getItem(key); storage.setItem(key, raw || 'null'); previous = raw ? JSON.parse(raw) : null;}
-      catch {throw Error('Der private Entwurfszugriff kann in diesem Tab nicht gespeichert werden. Bitte den Browserspeicher zulassen.');}
+      if (cartEdit) previous = {id: cartEdit.draftId, token: cartEdit.draftToken, revision: cartEdit.draftRevision};
+      else {
+        let raw;
+        try {raw = storage.getItem(key); storage.setItem(key, raw || 'null'); previous = raw ? JSON.parse(raw) : null;}
+        catch {throw Error('Der private Entwurfszugriff kann in diesem Tab nicht gespeichert werden. Bitte den Browserspeicher zulassen.');}
+      }
       if (previous && (!/^adraft_[a-f0-9-]+$/.test(previous.id) || !/^[a-f0-9]{64}$/.test(previous.token) ||
           !Number.isSafeInteger(previous.revision) || previous.revision < 1)) throw Error('Der gespeicherte Entwurfszugriff ist ungültig.');
     }
@@ -24,7 +27,8 @@ export function createAcrylicDraftClient({fetchImpl = globalThis.fetch, storage}
         previous && credential.id !== previous.id || typeof result.snapshotId !== 'string') throw Error('Die Entwurfssicherung wurde nicht vollständig bestätigt.');
     known.set(key, credential);
     let accessStored = true;
-    try {storage.setItem(key, JSON.stringify(credential));} catch {accessStored = false;}
+    // A cart edit already has its own access. Preserve any other tab draft of this design.
+    if (!cartEdit) try {storage.setItem(key, JSON.stringify(credential));} catch {accessStored = false;}
     // Ü5.2: Auflösungs-Hinweise sind Text für den Editor, nie eine Sperre.
     const photoHints = Array.isArray(result.photoHints) ? result.photoHints.filter(h => typeof h?.text === 'string' && ['gelb','rot'].includes(h.grade)).map(h => ({objectId: String(h.objectId ?? ''), grade: h.grade, text: h.text})) : [];
     return {id: result.snapshotId, draftId: credential.id, revision: credential.revision, accessStored, draftToken:credential.token, photoHints};

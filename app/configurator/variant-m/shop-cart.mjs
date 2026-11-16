@@ -67,10 +67,11 @@ export function installShopCart(api,footer,gate){
    const ui=editorUi(api.el.state.ui);
    const payload={...binding,textOnTop:true,designId:api.el.state.designId,objects:api.el.state.objects.map(cleanObject),options:api.el.state.mOptions,quantity:count,media:prepared.media,preview:prepared.preview,customerPreview:prepared.customerPreview,...(ui?{ui}:{})};
    if(fingerprint!==JSON.stringify(api.el.state))throw Error('Die Gestaltung wurde während der Sicherung geändert. Bitte erneut in den Warenkorb legen.');
-   save??=createAcrylicDraftClient({storage:sessionStorage,fetchImpl:gate.request});
+   const cartEdit=api.el.cartEdit;
+   save??=createAcrylicDraftClient({storage:cartEdit?null:sessionStorage,fetchImpl:gate.request});
    say('2 von 3 · Gestaltung wird gesichert …');
-   const saved=await save(payload,gate.csrfToken||'shop-entry');
-   const body=shopCartRequest({saved,cartEdit:api.el.cartEdit,quantity:count,cartMode:gate.cartMode,presentation:gate.presentation});
+   const saved=await save(payload,gate.csrfToken||'shop-entry',cartEdit);
+   const body=shopCartRequest({saved,cartEdit,quantity:count,cartMode:gate.cartMode,presentation:gate.presentation});
    say('3 von 3 · Warenkorb wird geprüft …');
    const result=await gate.submitCart(body,{draftToken:saved.draftToken});
    if(fingerprint!==JSON.stringify(api.el.state)||count!==quantity())throw Error('Die Gestaltung wurde während der Übergabe geändert. Bitte erneut in den Warenkorb legen.');

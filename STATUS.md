@@ -4,6 +4,12 @@ Neue Nutzeranweisung für alle Produkt-/Vorlagenchats: vor JEDEM neuen Produkt M
 
 Nur Dokumentation/Referenzvorlage. Runtime, Preise, Designs, Shopify und Produktbindungen unverändert; keine neue Profilaktivierung, kein neues Vollbackup. Unabhängiger Vertragsreview durchgeführt, Fundstellen und Foto-/Logo-Abnahmesatz korrigiert. Excel-Struktur/Formeln und sichtbare Lesbarkeit separat geprüft; Dokumentdiff und lokale Verweise vor Veröffentlichung geprüft. Automatischer XLSX-Importer/Freigabeexport bleibt eine offene Anbindung; PR223/224 weiterhin nicht produktiv aktiviert. Nächster Schritt: andere Vorlagenchats informieren und je neuem Produkt den vollständigen Bestätigungsplan vorlegen. Server-/Drive-Empfehlung dokumentiert: Übertragungsweg prüfen und öffentliche Assets gezielt ausliefern, kein Hostingumzug beschlossen.
 
+## 16.11.2026 · Claude als Operator – Pferde-Boxenschilder UV Alu-Dibond 30 × 20
+
+- Katalog-Branch `dev/bsuv-ad-30x20-konfi-20261116` (`345770e22`): 28 Designs D01–D28 in Lieferform 2 (Druck), Unterkategorie Pferde-Boxenschilder, Produktfreigabe-Excel r1 (offen). Code: `scripts/bsuv/`.
+- Prüfungen: `parseDesignSvg` 28/28, `build-katalog.py --metadata-only` ohne Fehler, Sichtvergleich Corel ↔ Render.
+- Offen: Ersatzschriften, Verlaufsabweichungen, Excel-Bestätigung; Familie Alu-Dibond 30 × 20 fehlt. Übergabe: [docs/handoffs/2026-11-16-bsuv-ad-30x20-konfi.md](docs/handoffs/2026-11-16-bsuv-ad-30x20-konfi.md).
+
 ## 2026-11-08 · Mika/Codex · R15 als Prio Konfi gesichert, Anschlussplan
 
 Verbindlicher Einstieg: [PRIO-KONFI.md](PRIO-KONFI.md), [Übergabe](docs/handoffs/2026-11-08-prio-konfi-mika.md). Nutzerfreigabe R15 und Main-Übernahme dokumentiert; gemeinsamer Konfi nur Mika + Nutzer, andere KIs nur bestätigte Produktoptionsdaten. Vollständige versionierte Quellen vor Änderung lokal archiviert und auf GitHub über `prio-konfi-approved-r15-20261108` / `backup/main-before-prio-20261108` gesichert. 2.026 R15-Paketdateien per SHA-256 erneut geprüft, keine Abweichungen. Drei Rechercheberichte sichern Galerie-/Shopify-Stand und Zakeke-Primärquellen. Regel in #168/#48 und an drei bekannte Designchats sowie eigene Unteragenten versandt.

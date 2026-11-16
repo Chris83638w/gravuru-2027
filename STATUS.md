@@ -1,3 +1,23 @@
+## 16.11.2026 – Go-live: Gesamtstand `1c5f8062` live (Claude als Operator, #239)
+
+- Freigabe: Chris „live“ (18:40).
+- Live-Laufzeit: `private/kandidat-1c5f8062-20261116`.
+  - Enthält F03, F04 (#243), P01–P03 (#244/#245/#250/#251), F16 (#246) und Acryl-409 (#247).
+  - Baum-SHA `9def17e837c75f5b53109f6c80b276ccedd841950869cf590397acc82010cabc`. 1.888 Dateien, davon 68 aus dem Paket.
+  - Paket `rt-1c5f8062-g.teil01`, gz-SHA `a15f7a44dd08b31ab83e509ba10b169fd3b98ac5af22c89f8d037de277b095b4`.
+- `app.cjs` wurde umgeschaltet: `7dae24cd…` → `f8104523…`. Sicherung: `app.cjs.bak-20261116-golive`. Danach wurde die App neu gestartet.
+- Prüfung im Shopify-Admin:
+  - Werkstatt-Katalog lädt (13 Linien, 106 Hauptprodukte).
+  - Bestellübersicht lädt wieder (14 Positionen, kein 503 mehr).
+- Rückweg: `node ../private/claude-golive-20261116/umschalten-golive.cjs --zurueck` → `kandidat-a4616943-20261116`.
+- Offen nach Go-live:
+  - F02/F14 Checkout-Wächter neu
+  - F15 Absicherung in der Produktkette
+  - F17 Fotopreis je Design (#249)
+  - Acryl Rev-1-Varianten (#230)
+  - PR-Triage #210–#237
+  - Handytest Chris
+
 ## 16.11.2026 · Codex/Astra · #239 F16 Werkstatt-Bestellübersicht
 
 Der ältere Merchant-Speicher lieferte auf einer Kopie sieben Positionen. Seine Laufzeit stellt die E3-Liste nicht bereit. Der Aufruf von `errors()` in `cross-store-orders.mjs` löste HTTP 503 für die gesamte Übersicht aus. Auf denselben Kopien lieferte der korrigierte Leser HTTP 200 mit 14 Positionen aus beiden Speichern. Darunter war Testbestellung #1032 mit vier Stück zu je 18,99 €. [Auftrag in Issue 239](https://github.com/Chris83638w/gravuru-2027/issues/239#issuecomment-6914109391)
